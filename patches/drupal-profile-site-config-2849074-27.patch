@@ -1,0 +1,156 @@
+diff --git a/lib/Drupal/Core/Installer/Form/SiteConfigureForm.php b/lib/Drupal/Core/Installer/Form/SiteConfigureForm.php
+index 540da5598d..daed84c99b 100644
+--- a/lib/Drupal/Core/Installer/Form/SiteConfigureForm.php
++++ b/lib/Drupal/Core/Installer/Form/SiteConfigureForm.php
+@@ -152,10 +152,13 @@ public function buildForm(array $form, FormStateInterface $form_state) {
+       '#required' => TRUE,
+       '#weight' => -20,
+     ];
++    // Use the default site mail if one is already configured, or fall back to
++    // PHP's configured sendmail_from.
++    $default_site_mail = $this->config('system.site')->get('mail') ?: ini_get('sendmail_from');
+     $form['site_information']['site_mail'] = [
+       '#type' => 'email',
+       '#title' => $this->t('Site email address'),
+-      '#default_value' => ini_get('sendmail_from'),
++      '#default_value' => $default_site_mail,
+       '#description' => $this->t("Automated emails, such as registration information, will be sent from this address. Use an address ending in your site's domain to help prevent these emails from being flagged as spam."),
+       '#required' => TRUE,
+       '#weight' => -15,
+@@ -199,11 +202,14 @@ public function buildForm(array $form, FormStateInterface $form_state) {
+       '#description' => $this->t('Select the default country for the site.'),
+       '#weight' => 0,
+     ];
++    // Use the default site timezone if one is already configured, or fall back
++    // to the system timezone if set (and avoid throwing a warning in
++    // PHP >=5.4).
++    $default_timezone = $this->config('system.date')->get('timezone.default') ?: @date_default_timezone_get();
+     $form['regional_settings']['date_default_timezone'] = [
+       '#type' => 'select',
+       '#title' => $this->t('Default time zone'),
+-      // Use system timezone if set, but avoid throwing a warning in PHP >=5.4
+-      '#default_value' => @date_default_timezone_get(),
++      '#default_value' => $default_timezone,
+       '#options' => system_time_zones(NULL, TRUE),
+       '#description' => $this->t('By default, dates in this site will be displayed in the chosen time zone.'),
+       '#weight' => 5,
+diff --git a/modules/system/src/Tests/Installer/InstallerSiteConfigProfileTest.php b/modules/system/src/Tests/Installer/InstallerSiteConfigProfileTest.php
+new file mode 100644
+index 0000000000..945fc960e8
+--- /dev/null
++++ b/modules/system/src/Tests/Installer/InstallerSiteConfigProfileTest.php
+@@ -0,0 +1,65 @@
++<?php
++
++namespace Drupal\system\Tests\Installer;
++
++use Drupal\simpletest\InstallerTestBase;
++
++/**
++ * Verifies that the installer defaults to the existing site email address and
++ * timezone, if they were provided by the install profile.
++ *
++ * @group Installer
++ */
++class InstallerSiteConfigProfileTest extends InstallerTestBase {
++
++  /**
++   * {@inheritdoc}
++   */
++  protected $profile = 'testing_site_config';
++
++  /**
++   * The site mail we expect to be set from the install profile.
++   *
++   * @see testing_site_config_install()
++   */
++  const EXPECTED_SITE_MAIL = 'profile-testing-site-config@example.com';
++
++  /**
++   * The timezone we expect to be set from the install profile.
++   *
++   * @see testing_site_config_install()
++   */
++  const EXPECTED_TIMEZONE = 'America/Los_Angeles';
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function installParameters() {
++    $parameters = parent::installParameters();
++
++    // Don't override the site email address, allowing it to default to the one
++    // from our install profile.
++    unset($parameters['forms']['install_configure_form']['site_mail']);
++
++    return $parameters;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function setUpSite() {
++    $this->assertFieldByName('site_mail', self::EXPECTED_SITE_MAIL);
++    $this->assertFieldByName('date_default_timezone', self::EXPECTED_TIMEZONE);
++
++    return parent::setUpSite();
++  }
++
++  /**
++   * Verify the correct site config was set.
++   */
++  public function testInstaller() {
++    $this->assertEqual($this->config('system.site')->get('mail'), self::EXPECTED_SITE_MAIL);
++    $this->assertEqual($this->config('system.date')->get('timezone.default'), self::EXPECTED_TIMEZONE);
++  }
++
++}
+diff --git a/modules/system/src/Tests/Installer/InstallerTest.php b/modules/system/src/Tests/Installer/InstallerTest.php
+index be51057ad8..454e9e67ec 100644
+--- a/modules/system/src/Tests/Installer/InstallerTest.php
++++ b/modules/system/src/Tests/Installer/InstallerTest.php
+@@ -75,6 +75,9 @@ protected function setUpSite() {
+     // Assert that the expected title is present.
+     $this->assertEqual('Configure site', $this->cssSelect('main h2')[0]);
+
++    // Assert the system timezone is selected as the default.
++    $this->assertFieldByName('date_default_timezone', 'Australia/Sydney');
++
+     parent::setUpSite();
+   }
+
+diff --git a/profiles/testing_site_config/testing_site_config.info.yml b/profiles/testing_site_config/testing_site_config.info.yml
+new file mode 100644
+index 0000000000..31a390557e
+--- /dev/null
++++ b/profiles/testing_site_config/testing_site_config.info.yml
+@@ -0,0 +1,6 @@
++name: Testing site config
++type: profile
++description: 'Minimal profile for testing with default site config.'
++version: VERSION
++core: 8.x
++hidden: true
+diff --git a/profiles/testing_site_config/testing_site_config.install b/profiles/testing_site_config/testing_site_config.install
+new file mode 100644
+index 0000000000..6b6b919b0b
+--- /dev/null
++++ b/profiles/testing_site_config/testing_site_config.install
+@@ -0,0 +1,17 @@
++<?php
++
++/**
++ * Implements hook_install().
++ */
++function testing_site_config_install() {
++  // Set the site email address to something that is not sendmail_from.
++  \Drupal::configFactory()->getEditable('system.site')
++    ->set('mail', 'profile-testing-site-config@example.com')
++    ->save(TRUE);
++
++  // Set the time zone to something that is not the system timezone (which is
++  // Australia/Sydney in the testing environment).
++  \Drupal::configFactory()->getEditable('system.date')
++    ->set('timezone.default', 'America/Los_Angeles')
++    ->save(TRUE);
++}

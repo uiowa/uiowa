@@ -1,0 +1,32 @@
+name: uiowa
+recipe: drupal8
+
+proxy:
+  appserver:
+    - uiowa.lndo.site
+    - "*.uiowa.lndo.site"
+
+config:
+  webroot: docroot
+  php: '7.1'
+  via: apache
+  drush: composer
+  drupal: false
+  xdebug: true
+  ssl: true
+
+services:
+  cache:
+    type: memcached:1.5
+  appserver:
+    overrides:
+      services:
+        environment:
+          AH_SITE_ENVIRONMENT: lando
+          AH_NON_PRODUCTION: 1
+          PHP_IDE_CONFIG: serverName=uiowa.lndo.site
+
+events:
+  post-start:
+    - appserver: cd $LANDO_MOUNT && composer install --no-suggest
+    - appserver: cd $LANDO_MOUNT && ./vendor/bin/drush multisite:generate lando --yes
