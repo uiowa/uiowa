@@ -1,4 +1,4 @@
-# uiowa801
+# uiowa
 The uiowa application on Acquia Cloud.
 
 ## Requirements
@@ -10,9 +10,9 @@ The uiowa application on Acquia Cloud.
     - [Install](https://docs.devwithlando.io/installation/installing.html)
 
 ## Usage
-1) Clone the application repository to your machine: `git clone git@github.com:uiowa/uiowa801.git ~/acquia/uiowa801`.
+1) Clone the application repository to your machine: `git clone git@github.com:uiowa/uiowa.git ~/acquia/uiowa`.
 2) Verify that Docker is running.
-3) Use a terminal window and navigate to your application directory. For example: `cd ~/acquia/uiowa801`.
+3) Use a terminal window and navigate to your application directory. For example: `cd ~/acquia/uiowa`.
 4) Run `lando start`. This will spin up new docker containers using our custom recipes.
 5) You can ssh into the appserver container by running: `lando ssh` from within the application directory.
  
@@ -31,7 +31,7 @@ All Drush commands should be executed on the appserver container. For example:
     ```
 2) Navigate to your application directory, For example:
    ```
-   cd ~/acquia/uiowa801
+   cd ~/acquia/uiowa
    ```
 3) SSH into the appserver container:
    ```
