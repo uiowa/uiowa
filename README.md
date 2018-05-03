@@ -8,6 +8,8 @@ The uiowa application on Acquia Cloud.
     - If you have forgotten your passphrase you will need to regenerate a new SSH key.
 - Lando
     - [Install](https://docs.devwithlando.io/installation/installing.html)
+- Credentials
+    - https://github.com/uiowa/multisite#requirements
 
 ## Usage
 1) Clone the application repository to your machine: `git clone git@github.com:uiowa/uiowa.git ~/acquia/uiowa`.
