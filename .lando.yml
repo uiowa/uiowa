@@ -1,10 +1,10 @@
-name: uiowa
+name: uiowa801
 recipe: drupal8
 
 proxy:
   appserver:
-    - uiowa.lndo.site
-    - "*.uiowa.lndo.site"
+    - uiowa801.lndo.site
+    - "*.uiowa801.lndo.site"
 
 config:
   webroot: docroot
@@ -24,7 +24,7 @@ services:
         environment:
           AH_SITE_ENVIRONMENT: lando
           AH_NON_PRODUCTION: 1
-          PHP_IDE_CONFIG: serverName=uiowa.lndo.site
+          PHP_IDE_CONFIG: serverName=uiowa801.lndo.site
 
 events:
   post-start:
