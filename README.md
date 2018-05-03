@@ -42,7 +42,7 @@ All Drush commands should be executed on the appserver container. For example:
     drush status
     ```
 
-#### Multisites
+#### Multisite
 Multisite management is handled via our suite of Drush commands: [multisite](https://github.com/uiowa/multisite). 
 
 After the appserver container starts, lando automatically calls the `drush multisite:generate` command. To sync your
@@ -55,7 +55,7 @@ multisite directory. For example:
 - `lando ssh`
 - `cd docroot/sites/mysite.uiowa.edu`
 - `drush sql:create`
-- `drush si uiowa`
+- `drush si uiowa --sites-subdir mysite.uiowa.edu`
 - `drush uli`
 
 ### Xdebug and PHPStorm
