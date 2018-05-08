@@ -2530,7 +2530,8 @@
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
                     }
-                }
+                },
+                "patches_applied": []
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
@@ -5894,7 +5895,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:uiowa/multisite",
-                "reference": "5104a669f5840e05dd345a20a48ec73eb5f04e16"
+                "reference": "0b0115e8eb1cc4502bcb3f1215f3e95785103ccb"
             },
             "require": {
                 "composer/installers": "^1.4",
@@ -5904,7 +5905,8 @@
             },
             "require-dev": {
                 "drush/drush": "~9",
-                "phpunit/phpunit": "~5"
+                "phpunit/phpunit": "~5",
+                "squizlabs/php_codesniffer": "~3"
             },
             "type": "drupal-drush",
             "extra": {
@@ -5914,14 +5916,9 @@
                     }
                 }
             },
-            "autoload": {
-                "psr-4": {
-                    "Multisite\\": "src/Multisite"
-                }
-            },
             "autoload-dev": {
                 "psr-4": {
-                    "Multisite\\Tests\\": "tests/",
+                    "MultisiteCommands\\Tests\\": "tests/",
                     "Unish\\": "vendor/drush/drush/tests/"
                 }
             },
@@ -5932,7 +5929,7 @@
                 }
             ],
             "description": "Drush multisite generation on Acquia Cloud.",
-            "time": "2018-05-02T15:13:09+00:00"
+            "time": "2018-05-08T21:00:04+00:00"
         },
         {
             "name": "uiowa/uiowa_bar",
@@ -7778,14 +7775,8 @@
         "uiowa/uiowa_bar": 20,
         "drupal/memcache": 15,
         "drupal/acquia_purge": 10,
-        "drupal/entity_browser": 15,
-        "drupal/inline_entity_form": 10,
-        "drupal/media_entity_browser": 15,
         "drupal/masquerade": 10,
-        "drupal/roleassign": 15,
-        "drupal/entity_embed": 10,
-        "drupal/focal_point": 10,
-        "drupal/menu_block": 20
+        "drupal/roleassign": 15
     },
     "prefer-stable": true,
     "prefer-lowest": false,
