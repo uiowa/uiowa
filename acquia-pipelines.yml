@@ -19,7 +19,7 @@ events:
       - install:
           script:
             - 'composer global require hirak/prestissimo'
-            - 'composer install --no-dev --no-suggest -o'
+            - 'composer install --no-dev --no-suggest --no-interaction -o'
             - './vendor/bin/drush multisite:generate $ENV --yes'
   post-deploy:
     steps:
