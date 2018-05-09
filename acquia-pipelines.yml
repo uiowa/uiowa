@@ -12,9 +12,11 @@ events:
             - 'if [ $SOURCE_VCS_PATH == master ]; then export ENV=prod; fi'
       - config:
           script:
+            - 'mkdir $HOME/.drush/'
             - 'touch $HOME/.drush/config.yml'
             - 'echo -e "uiowa:\n\tmultisite:\n\tgithub:\n\ttoken: $GH_TOKEN" >> $HOME/.drush/config.yml'
             - 'echo -e "\n\t\tacquia:\n\tuser: $AC_USER\n\ttoken: $AC_TOKEN" >> $HOME/.drush/config.yml'
+            - 'cat $HOME/.drush/config.yml'
       - debug:
           script:
             - 'printenv'
