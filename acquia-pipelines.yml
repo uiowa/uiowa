@@ -15,7 +15,7 @@ events:
             - 'mkdir $HOME/.drush/'
             - 'touch $HOME/.drush/drush.yml'
             - |
-              'cat > $HOME/.drush/drush.yml \<\<EOL
+              cat > $HOME/.drush/drush.yml <<EOL
               uiowa:
                 multisite:
                   github:
@@ -23,7 +23,7 @@ events:
                   acquia:
                     user: $AC_USER
                     token: $AC_TOKEN
-              EOL'
+              EOL
             - 'cat $HOME/.drush/config.yml'
       - debug:
           script:
