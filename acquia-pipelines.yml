@@ -25,12 +25,9 @@ events:
                     token: $AC_TOKEN
               EOL
             - 'cat $HOME/.drush/drush.yml'
-      - debug:
+      - printenv:
           script:
             - 'printenv'
-      - token:
-          script:
-            - 'git config --global github.token $GH_TOKEN'
       - install:
           script:
             - 'composer global require hirak/prestissimo'
