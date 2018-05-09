@@ -13,9 +13,9 @@ events:
       - config:
           script:
             - 'mkdir $HOME/.drush/'
-            - 'touch $HOME/.drush/config.yml'
+            - 'touch $HOME/.drush/drush.yml'
             - |
-              'cat <<EOL > $HOME/.drush/config.yml
+              'cat > $HOME/.drush/drush.yml <<EOL
               uiowa:
                 multisite:
                   github:
