@@ -38,10 +38,11 @@ All Drush commands should be executed on the appserver container. For example:
 3) SSH into the appserver container:
    ```
    lando ssh
+   drush status
    ```
-4) Hello world:
+4) Or do it in one line:
     ```
-    drush status
+    lando drush status
     ```
 
 #### Multisite
