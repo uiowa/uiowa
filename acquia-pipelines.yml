@@ -14,15 +14,16 @@ events:
           script:
             - 'mkdir $HOME/.drush/'
             - 'touch $HOME/.drush/config.yml'
-            - 'cat <<EOL > $HOME/.drush/config.yml
-            uiowa:
-              multisite:
-                github:
-                  token: $GH_TOKEN
-                acquia:
-                  user: $AC_USER
-                  token: $AC_TOKEN
-            EOL'
+            - |
+              'cat <<EOL > $HOME/.drush/config.yml
+              uiowa:
+                multisite:
+                  github:
+                    token: $GH_TOKEN
+                  acquia:
+                    user: $AC_USER
+                    token: $AC_TOKEN
+              EOL'
             - 'cat $HOME/.drush/config.yml'
       - debug:
           script:
