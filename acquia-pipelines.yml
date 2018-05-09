@@ -34,9 +34,9 @@ events:
             - './vendor/bin/drush multisite:generate $ENV --yes'
   post-deploy:
     steps:
-      - do-something:
+      - post-deploy:
           script:
-            - 'echo something'
+            - 'echo Deployed.'
 variables:
   global:
     GH_TOKEN:
