@@ -5958,7 +5958,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:uiowa/uiowa_profile",
-                "reference": "9b9fbc7d94f82381497bbee4a2707384b2630322"
+                "reference": "60c01bff34f3cb828abc9cef0c614505fc205554"
             },
             "require": {
                 "composer/installers": "^1.4",
@@ -5975,7 +5975,7 @@
                 "drupal/media_entity_browser": "^2.0@alpha",
                 "drupal/memcache": "^2.0@alpha",
                 "drupal/menu_admin_per_menu": "^1.0",
-                "drupal/menu_block": "1.x-dev",
+                "drupal/menu_block": "1.x-dev#fbfb8fe",
                 "drupal/pathauto": "^1.1",
                 "drupal/redirect": "^1.1",
                 "drupal/roleassign": "^1.0@alpha",
@@ -5993,9 +5993,8 @@
             "extra": {
                 "patches": {
                     "drupal/menu_block": {
-                        "2+ level menu block not limited to active parent": "https://www.drupal.org/files/issues/menu_block-2811337-expand_only_active_tree-30.patch",
-                        "Add option to make the starting level follow the active menu item": "https://www.drupal.org/files/issues/menu_block-follow-2756675-32.patch",
-                        "Hide block title if menu tree contains no links": "https://www.drupal.org/files/issues/2018-04-12/menu_block-hide_block_if_no_links-2757215-7.patch"
+                        "Add option to make the starting level follow the active menu item": "https://www.drupal.org/files/issues/2018-05-01/menu_block-follow-2756675-43.patch",
+                        "Hide block title if menu tree contains no links": "https://www.drupal.org/files/issues/2018-05-08/menu_block-hide_block_if_no_links-2757215-9.patch"
                     }
                 }
             },
@@ -6006,7 +6005,7 @@
                 }
             ],
             "description": "UIowa base profile.",
-            "time": "2018-05-03T14:52:54+00:00"
+            "time": "2018-05-08T21:12:09+00:00"
         },
         {
             "name": "webflo/drupal-finder",
@@ -7775,8 +7774,14 @@
         "uiowa/uiowa_bar": 20,
         "drupal/memcache": 15,
         "drupal/acquia_purge": 10,
+        "drupal/entity_browser": 15,
+        "drupal/inline_entity_form": 10,
+        "drupal/media_entity_browser": 15,
         "drupal/masquerade": 10,
-        "drupal/roleassign": 15
+        "drupal/roleassign": 15,
+        "drupal/entity_embed": 10,
+        "drupal/focal_point": 10,
+        "drupal/menu_block": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
