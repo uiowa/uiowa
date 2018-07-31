@@ -75,4 +75,4 @@ multisite directory. For example:
 6) Refresh the browser page.
 
 PHPStorm should detect an incoming connection and pop-up a server configuration. Save the configuration and start
-debugging. 
+debugging. If you need to debug Drush commands, use the vendored path to the Drush wrapper script, e.g. `./vendor/bin/drush my-command`.
