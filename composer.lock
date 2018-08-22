@@ -1479,6 +1479,10 @@
                     "homepage": "https://www.drupal.org/user/3556170"
                 },
                 {
+                    "name": "ayang",
+                    "homepage": "https://www.drupal.org/user/1777884"
+                },
+                {
                     "name": "dmitrii",
                     "homepage": "https://www.drupal.org/user/411965"
                 },
@@ -2934,6 +2938,54 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/metatag",
                 "issues": "http://drupal.org/project/issues/metatag"
+            }
+        },
+        {
+            "name": "drupal/override_node_options",
+            "version": "2.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/override_node_options",
+                "reference": "8.x-2.4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/override_node_options-8.x-2.4.zip",
+                "reference": "8.x-2.4",
+                "shasum": "0d00dbefc7f9103c863af2607a988bf68681df60"
+            },
+            "require": {
+                "drupal/core": "^8.4.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-2.4",
+                    "datestamp": "1522490884",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Oliver Davies",
+                    "homepage": "https://www.drupal.org/user/381388",
+                    "email": "oliver@oliverdavies.uk"
+                }
+            ],
+            "description": "Allows permissions to be set on each node option such as published and authoring information.",
+            "homepage": "https://www.drupal.org/project/override_node_options",
+            "support": {
+                "source": "http://cgit.drupalcode.org/override_node_options"
             }
         },
         {
@@ -6506,7 +6558,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:uiowa/uiowa_profile",
-                "reference": "35386b23d35aab1ce91ac23506005a04fca10263"
+                "reference": "b93fb8adafe937654e998b307d97fa834c6813a5"
             },
             "require": {
                 "composer/installers": "^1.4",
@@ -6527,6 +6579,7 @@
                 "drupal/menu_admin_per_menu": "^1.0",
                 "drupal/menu_block": "1.x-dev#fbfb8fe",
                 "drupal/metatag": "^1.5",
+                "drupal/override_node_options": "^2.4",
                 "drupal/pathauto": "^1.1",
                 "drupal/redirect": "^1.1",
                 "drupal/roleassign": "^1.0@alpha",
@@ -6561,7 +6614,7 @@
                 }
             ],
             "description": "UIowa base profile.",
-            "time": "2018-07-26T20:44:44+00:00"
+            "time": "2018-08-21T21:12:50+00:00"
         },
         {
             "name": "webflo/drupal-finder",
@@ -7188,17 +7241,6 @@
         {
             "name": "drupal-composer/drupal-security-advisories",
             "version": "8.x-dev",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/drupal-composer/drupal-security-advisories.git",
-                "reference": "e54c7bdcf3e91256d70bdcd26b5473fcf29e0392"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/drupal-composer/drupal-security-advisories/zipball/e54c7bdcf3e91256d70bdcd26b5473fcf29e0392",
-                "reference": "e54c7bdcf3e91256d70bdcd26b5473fcf29e0392",
-                "shasum": ""
-            },
             "conflict": {
                 "drupal/acquia_contenthub": "<1.0,<1.4",
                 "drupal/alinks": "<1.1",
@@ -7902,17 +7944,6 @@
         {
             "name": "roave/security-advisories",
             "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "053766d789f6393e5bc0896635d35abf8d2d362e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/053766d789f6393e5bc0896635d35abf8d2d362e",
-                "reference": "053766d789f6393e5bc0896635d35abf8d2d362e",
-                "shasum": ""
-            },
             "conflict": {
                 "3f/pygmentize": "<1.2",
                 "adodb/adodb-php": "<5.20.12",
