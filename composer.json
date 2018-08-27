@@ -14,10 +14,11 @@
         }
     },
     "require": {
+        "php": "^7",
         "composer/installers": "^1.4",
         "cweagans/composer-patches": "^1.6",
         "drupal-composer/drupal-scaffold": "^2.3",
-        "drupal/core": "^8.4",
+        "drupal/core": "^8.6",
         "drush/drush": "^9",
         "richardbporter/drush-users-commands": "^1.0",
         "uiowa/multisite": "dev-master",
@@ -37,7 +38,8 @@
         },
         "patches": {
             "drupal/core": {
-                "SiteConfigureForm overrides value from install profile": "https://www.drupal.org/files/issues/2018-03-27/drupal-profile-site-config-2849074-31-8.6.x.patch"
+                "SiteConfigureForm overrides value from install profile": "https://www.drupal.org/files/issues/2018-03-27/drupal-profile-site-config-2849074-31-8.6.x.patch",
+                "The Media library doesn't modify the 'media' view if installed in a profile": "https://www.drupal.org/files/issues/2018-08-10/2992056-2.patch"
             }
         },
         "patchLevel": {
@@ -50,7 +52,7 @@
             "recurse": true,
             "replace": false,
             "ignore-duplicates": false,
-            "merge-dev": true,
+            "merge-dev": false,
             "merge-extra": false,
             "merge-extra-deep": false,
             "merge-scripts": false
@@ -70,7 +72,7 @@
     },
     "require-dev": {
         "drupal-composer/drupal-security-advisories": "8.x-dev",
-        "phpunit/phpunit": "^4.0",
+        "phpunit/phpunit": "~6",
         "roave/security-advisories": "dev-master"
     }
 }
