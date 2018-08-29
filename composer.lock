@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6c01d2497d320678b2fe2b8751ba493b",
+    "content-hash": "bcd458952592d82bf092653efcf6e864",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1479,10 +1479,6 @@
                     "homepage": "https://www.drupal.org/user/3556170"
                 },
                 {
-                    "name": "ayang",
-                    "homepage": "https://www.drupal.org/user/1777884"
-                },
-                {
                     "name": "dmitrii",
                     "homepage": "https://www.drupal.org/user/411965"
                 },
@@ -2734,10 +2730,6 @@
                 {
                     "name": "Jeremy",
                     "homepage": "https://www.drupal.org/user/409"
-                },
-                {
-                    "name": "bdragon",
-                    "homepage": "https://www.drupal.org/user/53081"
                 },
                 {
                     "name": "catch",
@@ -4770,30 +4762,32 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.8.18",
+            "version": "v0.9.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "5357b1cffc8fb375d6a9e3c86d5c82dd38a40834"
+                "reference": "4f5b6c090948773a8bfeea6a0f07ab7d0b24e932"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/5357b1cffc8fb375d6a9e3c86d5c82dd38a40834",
-                "reference": "5357b1cffc8fb375d6a9e3c86d5c82dd38a40834",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/4f5b6c090948773a8bfeea6a0f07ab7d0b24e932",
+                "reference": "4f5b6c090948773a8bfeea6a0f07ab7d0b24e932",
                 "shasum": ""
             },
             "require": {
                 "dnoegel/php-xdg-base-dir": "0.1",
+                "ext-json": "*",
+                "ext-tokenizer": "*",
                 "jakub-onderka/php-console-highlighter": "0.3.*",
-                "nikic/php-parser": "~1.3|~2.0|~3.0",
-                "php": ">=5.3.9",
+                "nikic/php-parser": "~1.3|~2.0|~3.0|~4.0",
+                "php": ">=5.4.0",
                 "symfony/console": "~2.3.10|^2.4.2|~3.0|~4.0",
                 "symfony/var-dumper": "~2.7|~3.0|~4.0"
             },
             "require-dev": {
-                "hoa/console": "~3.16|~1.14",
-                "phpunit/phpunit": "^4.8.35|^5.4.3",
-                "symfony/finder": "~2.1|~3.0|~4.0"
+                "bamarni/composer-bin-plugin": "^1.2",
+                "hoa/console": "~2.15|~3.16",
+                "phpunit/phpunit": "~4.8.35|~5.0|~6.0|~7.0"
             },
             "suggest": {
                 "ext-pcntl": "Enabling the PCNTL extension makes PsySH a lot happier :)",
@@ -4808,15 +4802,15 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-develop": "0.8.x-dev"
+                    "dev-develop": "0.9.x-dev"
                 }
             },
             "autoload": {
                 "files": [
-                    "src/Psy/functions.php"
+                    "src/functions.php"
                 ],
                 "psr-4": {
-                    "Psy\\": "src/Psy/"
+                    "Psy\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -4838,7 +4832,7 @@
                 "interactive",
                 "shell"
             ],
-            "time": "2018-04-02T05:41:44+00:00"
+            "time": "2018-08-11T15:54:43+00:00"
         },
         {
             "name": "richardbporter/drush-users-commands",
@@ -6547,33 +6541,12 @@
             "time": "2018-08-02T20:24:32+00:00"
         },
         {
-            "name": "uiowa/uiowa_bar",
-            "version": "dev-8.x-1.x",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:uiowa/uiowa_bar",
-                "reference": "e0f863c339f481d9bad1fa5befc2cc748405b394"
-            },
-            "require": {
-                "composer/installers": "^1.5"
-            },
-            "type": "drupal-custom-module",
-            "authors": [
-                {
-                    "name": "OneIT",
-                    "homepage": "https://oneit.uiowa.edu"
-                }
-            ],
-            "description": "Drupal Module to implement the University of Iowa Branding Bar.",
-            "time": "2018-02-01T21:51:35+00:00"
-        },
-        {
-            "name": "uiowa/uiowa_profile",
+            "name": "uiowa/rusty",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git@github.com:uiowa/uiowa_profile",
-                "reference": "b93fb8adafe937654e998b307d97fa834c6813a5"
+                "url": "git@github.com:uiowa/rusty",
+                "reference": "393e19b3d5d06c4c55ce40d9baca813d5e03c9b5"
             },
             "require": {
                 "composer/installers": "^1.4",
@@ -6608,7 +6581,7 @@
             "require-dev": {
                 "behat/mink": "^1.7",
                 "behat/mink-goutte-driver": "^1.2",
-                "phpunit/phpunit": "^4.0"
+                "phpunit/phpunit": "^6"
             },
             "type": "drupal-profile",
             "extra": {
@@ -6629,7 +6602,28 @@
                 }
             ],
             "description": "UIowa base profile.",
-            "time": "2018-08-21T21:12:50+00:00"
+            "time": "2018-08-28T15:02:15+00:00"
+        },
+        {
+            "name": "uiowa/uiowa_bar",
+            "version": "dev-8.x-1.x",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:uiowa/uiowa_bar",
+                "reference": "e0f863c339f481d9bad1fa5befc2cc748405b394"
+            },
+            "require": {
+                "composer/installers": "^1.5"
+            },
+            "type": "drupal-custom-module",
+            "authors": [
+                {
+                    "name": "OneIT",
+                    "homepage": "https://oneit.uiowa.edu"
+                }
+            ],
+            "description": "Drupal Module to implement the University of Iowa Branding Bar.",
+            "time": "2018-02-01T21:51:35+00:00"
         },
         {
             "name": "webflo/drupal-finder",
@@ -7256,6 +7250,17 @@
         {
             "name": "drupal-composer/drupal-security-advisories",
             "version": "8.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/drupal-composer/drupal-security-advisories.git",
+                "reference": "e54c7bdcf3e91256d70bdcd26b5473fcf29e0392"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/drupal-composer/drupal-security-advisories/zipball/e54c7bdcf3e91256d70bdcd26b5473fcf29e0392",
+                "reference": "e54c7bdcf3e91256d70bdcd26b5473fcf29e0392",
+                "shasum": ""
+            },
             "conflict": {
                 "drupal/acquia_contenthub": "<1.0,<1.4",
                 "drupal/alinks": "<1.1",
@@ -7308,7 +7313,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities",
-            "time": "2018-08-08T19:07:12+00:00"
+            "time": "2018-07-11T18:06:45+00:00"
         },
         {
             "name": "fabpot/goutte",
@@ -7364,6 +7369,52 @@
                 "scraper"
             ],
             "time": "2017-11-19T08:45:40+00:00"
+        },
+        {
+            "name": "mikey179/vfsStream",
+            "version": "v1.6.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mikey179/vfsStream.git",
+                "reference": "d5fec95f541d4d71c4823bb5e30cf9b9e5b96145"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mikey179/vfsStream/zipball/d5fec95f541d4d71c4823bb5e30cf9b9e5b96145",
+                "reference": "d5fec95f541d4d71c4823bb5e30cf9b9e5b96145",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.6.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "org\\bovigo\\vfs\\": "src/main/php"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Frank Kleine",
+                    "homepage": "http://frankkleine.de/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Virtual file system to mock the real file system in unit tests.",
+            "homepage": "http://vfs.bovigo.org/",
+            "time": "2017-08-01T08:02:14+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -8125,6 +8176,17 @@
         {
             "name": "roave/security-advisories",
             "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Roave/SecurityAdvisories.git",
+                "reference": "053766d789f6393e5bc0896635d35abf8d2d362e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/053766d789f6393e5bc0896635d35abf8d2d362e",
+                "reference": "053766d789f6393e5bc0896635d35abf8d2d362e",
+                "shasum": ""
+            },
             "conflict": {
                 "3f/pygmentize": "<1.2",
                 "adodb/adodb-php": "<5.20.12",
@@ -8279,7 +8341,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2018-08-14T15:39:17+00:00"
+            "time": "2018-07-18T13:51:34+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -8964,6 +9026,72 @@
             "time": "2018-03-19T22:32:39+00:00"
         },
         {
+            "name": "symfony/phpunit-bridge",
+            "version": "v4.1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/phpunit-bridge.git",
+                "reference": "d5f433034543bbe3b0dfa2f34e6cc85bf839846f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/d5f433034543bbe3b0dfa2f34e6cc85bf839846f",
+                "reference": "d5f433034543bbe3b0dfa2f34e6cc85bf839846f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "conflict": {
+                "phpunit/phpunit": "<4.8.35|<5.4.3,>=5.0"
+            },
+            "suggest": {
+                "ext-zip": "Zip support is required when using bin/simple-phpunit",
+                "symfony/debug": "For tracking deprecated interfaces usages at runtime with DebugClassLoader"
+            },
+            "bin": [
+                "bin/simple-phpunit"
+            ],
+            "type": "symfony-bridge",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.1-dev"
+                },
+                "thanks": {
+                    "name": "phpunit/phpunit",
+                    "url": "https://github.com/sebastianbergmann/phpunit"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ],
+                "psr-4": {
+                    "Symfony\\Bridge\\PhpUnit\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony PHPUnit Bridge",
+            "homepage": "https://symfony.com",
+            "time": "2018-08-27T17:47:02+00:00"
+        },
+        {
             "name": "theseer/tokenizer",
             "version": "1.1.0",
             "source": {
@@ -9008,7 +9136,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "uiowa/multisite": 20,
-        "uiowa/uiowa_profile": 20,
+        "uiowa/rusty": 20,
         "drupal-composer/drupal-security-advisories": 20,
         "roave/security-advisories": 20,
         "uiowa/uiowa_bar": 20,
