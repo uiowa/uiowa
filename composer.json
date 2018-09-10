@@ -19,8 +19,8 @@
         "cweagans/composer-patches": "^1.6",
         "drupal-composer/drupal-scaffold": "^2.3",
         "drupal/core": "^8.6",
-        "drush/drush": "^9",
-        "richardbporter/drush-users-commands": "^1.0",
+        "drush/drush": "^9.4",
+        "richardbporter/drush-users-commands": "^2",
         "uiowa/multisite": "dev-master",
         "uiowa/rusty": "dev-master",
         "wikimedia/composer-merge-plugin": "^1.4"
@@ -32,7 +32,7 @@
             "docroot/modules/contrib/{$name}": ["type:drupal-module"],
             "docroot/profiles/{$name}": ["type:drupal-profile"],
             "docroot/themes/contrib/{$name}": ["type:drupal-theme"],
-            "drush/contrib/{$name}": ["type:drupal-drush"],
+            "drush/Commands/{$name}": ["type:drupal-drush"],
             "docroot/modules/custom/{$name}": ["type:drupal-custom-module"],
             "docroot/themes/custom/{$name}": ["type:drupal-custom-theme"]
         },
