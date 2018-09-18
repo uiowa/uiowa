@@ -58,7 +58,7 @@ multisite directory. For example:
 - `lando ssh`
 - `cd docroot/sites/mysite.uiowa.edu`
 - `drush sql:create`
-- `drush si uiowa --sites-subdir mysite.uiowa.edu`
+- `drush si {profile_name} --sites-subdir mysite.uiowa.edu`
 - `drush uli`
 
 ### Xdebug and PHPStorm
