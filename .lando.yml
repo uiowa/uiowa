@@ -25,9 +25,21 @@ services:
           AH_SITE_ENVIRONMENT: lando
           AH_NON_PRODUCTION: 1
           PHP_IDE_CONFIG: serverName=uiowa.lndo.site
+  node:
+    type: node:8
+    globals:
+      gulp-cli: 2.0.1
 
 events:
   post-start:
     - appserver: curl -o pipelines https://cloud.acquia.com/pipeline-client/download && chmod a+x pipelines && mv pipelines /usr/local/bin
     - appserver: cd $LANDO_MOUNT && composer install --no-suggest
     - appserver: cd $LANDO_MOUNT && ./vendor/bin/drush multisite:generate lando --yes
+
+tooling:
+  npm:
+    service: node
+  node:
+    service: node
+  gulp:
+    service: node
