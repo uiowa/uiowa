@@ -15,10 +15,9 @@ The uiowa application on Acquia Cloud.
 1) Clone the application repository to your machine: `git clone git@github.com:uiowa/uiowa.git ~/acquia/uiowa`.
 2) Verify that Docker is running.
 3) Use a terminal window and navigate to your application directory. For example: `cd ~/acquia/uiowa`.
-4) Run `lando start`. This will spin up new docker containers using our custom recipes.
-5) You can ssh into the appserver container by running: `lando ssh` from within the application directory.
+4) Run `lando start`. This will spin up the docker containers specified in the .lando.yml file.
  
- Check the [Lando documentation](https://docs.devwithlando.io/cli/usage.html) for details.
+Check the [Lando documentation](https://docs.devwithlando.io/cli/usage.html) for details on using the CLI.
 
 ### Composer
 This application uses Composer to manage dependencies, including Drupal. Lando will call `composer install` after the
@@ -27,23 +26,34 @@ appserver container starts. To get updated dependencies, run `git pull` and then
 ### Drush
 All Drush commands should be executed on the appserver container. For example:
 
-1) Be sure your Lando instance is running:
-    ```
-    lando list
-    ```
-2) Navigate to your application directory, For example:
-   ```
-   cd ~/acquia/uiowa
-   ```
-3) SSH into the appserver container:
-   ```
-   lando ssh
-   drush status
-   ```
-4) Or do it in one line:
-    ```
-    lando drush status
-    ```
+SSH into the appserver container first:
+```
+lando ssh
+cd docroot/sites/mysite.uiowa.edu
+drush status
+```
+
+Or execute it via Lando tooling:
+```
+lando drush status -l mysite.uiowa.edu
+```
+
+### Node
+All Node commands should be executed on the node container. For example:
+
+SSH into the node container first:
+```
+lando ssh node
+cd docroot/sites/mysite.uiowa.edu/themes/mytheme
+npm install
+gulp
+```
+
+Or execute it via Lando tooling:
+```
+lando npm install docroot/sites/mysite.uiowa.edu/themes/mytheme
+lando gulp --cwd docroot/sites/mysite.uiowa.edu/themes/mytheme
+```
 
 #### Multisite
 Multisite management is handled via our suite of Drush commands: [multisite](https://github.com/uiowa/multisite). 
