@@ -16,6 +16,8 @@ config:
   ssl: true
 
 services:
+  database:
+    type: mysql:5.6
   cache:
     type: memcached:1.5
   appserver:
