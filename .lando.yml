@@ -27,6 +27,9 @@ services:
           AH_SITE_ENVIRONMENT: lando
           AH_NON_PRODUCTION: 1
           PHP_IDE_CONFIG: serverName=uiowa.lndo.site
+          SIMPLETEST_BASE_URL: https://uiowa.lndo.site
+          SIMPLETEST_DB: mysql://drupal8:drupal8@database/drupal8
+          SYMFONY_DEPRECATIONS_HELPER: disabled
   node:
     type: node:8
     globals:
