@@ -1794,6 +1794,57 @@
             }
         },
         {
+            "name": "drupal/config_update",
+            "version": "1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/config_update",
+                "reference": "8.x-1.5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/config_update-8.x-1.5.zip",
+                "reference": "8.x-1.5",
+                "shasum": "2f7ae5f90b1c0ab8edf84680d2651e81fab6a126"
+            },
+            "require": {
+                "drupal/core": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.5",
+                    "datestamp": "1512587912",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "jhodgdon",
+                    "homepage": "https://www.drupal.org/user/155601"
+                },
+                {
+                    "name": "nedjo",
+                    "homepage": "https://www.drupal.org/user/4481"
+                }
+            ],
+            "description": "Provides basic revert and update functionality for other modules",
+            "homepage": "https://www.drupal.org/project/config_update",
+            "support": {
+                "source": "http://cgit.drupalcode.org/config_update"
+            }
+        },
+        {
             "name": "drupal/core",
             "version": "8.6.3",
             "source": {
@@ -2560,6 +2611,83 @@
             "homepage": "https://www.drupal.org/project/externalauth",
             "support": {
                 "source": "http://cgit.drupalcode.org/externalauth"
+            }
+        },
+        {
+            "name": "drupal/features",
+            "version": "3.8.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/features",
+                "reference": "8.x-3.8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/features-8.x-3.8.zip",
+                "reference": "8.x-3.8",
+                "shasum": "15cebd00e38d63c0d946682e76327a03499c27be"
+            },
+            "require": {
+                "drupal/config_update": "^1.4",
+                "drupal/core": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-3.x": "3.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-3.8",
+                    "datestamp": "1536512284",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                },
+                "drush": {
+                    "services": {
+                        "drush.services.yml": "^9"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "dawehner",
+                    "homepage": "https://www.drupal.org/user/99340"
+                },
+                {
+                    "name": "e2thex",
+                    "homepage": "https://www.drupal.org/user/189123"
+                },
+                {
+                    "name": "febbraro",
+                    "homepage": "https://www.drupal.org/user/43670"
+                },
+                {
+                    "name": "jmiccolis",
+                    "homepage": "https://www.drupal.org/user/31731"
+                },
+                {
+                    "name": "mpotter",
+                    "homepage": "https://www.drupal.org/user/616192"
+                },
+                {
+                    "name": "nedjo",
+                    "homepage": "https://www.drupal.org/user/4481"
+                },
+                {
+                    "name": "tim.plunkett",
+                    "homepage": "https://www.drupal.org/user/241634"
+                }
+            ],
+            "description": "Enables administrators to package configuration into modules",
+            "homepage": "https://www.drupal.org/project/features",
+            "support": {
+                "source": "http://cgit.drupalcode.org/features"
             }
         },
         {
@@ -7135,7 +7263,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:uiowa/rusty",
-                "reference": "1dd0301320796d0ff428fbd0ab66b9b1c1c91238"
+                "reference": "f2aa22934cea85e698fe4e24fb316adac45176f3"
             },
             "require": {
                 "composer/installers": "^1.4",
@@ -7148,6 +7276,7 @@
                 "drupal/entity_browser": "^2.0@alpha",
                 "drupal/entity_embed": "^1.0@beta",
                 "drupal/entity_reference_revisions": "^1.5",
+                "drupal/features": "^3.8",
                 "drupal/field_group": "^1.0",
                 "drupal/focal_point": "^1.0@beta",
                 "drupal/google_analytics": "^2.2",
@@ -7197,7 +7326,7 @@
                 }
             ],
             "description": "UIowa base profile.",
-            "time": "2018-11-19T20:59:34+00:00"
+            "time": "2018-12-06T16:29:43+00:00"
         },
         {
             "name": "uiowa/uiowa_bar",
@@ -7845,6 +7974,11 @@
         {
             "name": "drupal-composer/drupal-security-advisories",
             "version": "8.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/drupal-composer/drupal-security-advisories.git",
+                "reference": "fbfcf3499c18873405dd72751a567bf208943eb4"
+            },
             "conflict": {
                 "drupal/acquia_contenthub": "<1.0,<1.4",
                 "drupal/alinks": "<1.1",
@@ -7897,7 +8031,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities",
-            "time": "2018-10-31T19:07:06+00:00"
+            "time": "2018-11-14T17:07:40+00:00"
         },
         {
             "name": "drupal/devel",
@@ -8842,6 +8976,11 @@
         {
             "name": "roave/security-advisories",
             "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Roave/SecurityAdvisories.git",
+                "reference": "6acf968142215f1614f5909aa006b2bf1ec45cb1"
+            },
             "conflict": {
                 "3f/pygmentize": "<1.2",
                 "adodb/adodb-php": "<5.20.12",
@@ -8996,7 +9135,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2018-11-01T18:39:28+00:00"
+            "time": "2018-11-16T03:31:38+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
