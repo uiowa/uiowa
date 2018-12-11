@@ -105,16 +105,16 @@
         },
         {
             "name": "composer/installers",
-            "version": "v1.5.0",
+            "version": "v1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/installers.git",
-                "reference": "049797d727261bf27f2690430d935067710049c2"
+                "reference": "cfcca6b1b60bc4974324efb5783c13dca6932b5b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/installers/zipball/049797d727261bf27f2690430d935067710049c2",
-                "reference": "049797d727261bf27f2690430d935067710049c2",
+                "url": "https://api.github.com/repos/composer/installers/zipball/cfcca6b1b60bc4974324efb5783c13dca6932b5b",
+                "reference": "cfcca6b1b60bc4974324efb5783c13dca6932b5b",
                 "shasum": ""
             },
             "require": {
@@ -221,7 +221,7 @@
                 "zend",
                 "zikula"
             ],
-            "time": "2017-12-29T09:13:20+00:00"
+            "time": "2018-08-27T06:10:37+00:00"
         },
         {
             "name": "composer/semver",
@@ -7263,7 +7263,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:uiowa/rusty",
-                "reference": "21570d50641fcfaefb19f9168b4bb36c5ec7465d"
+                "reference": "e593169a839e8b97bc97c4d975e54ffdc27d041a"
             },
             "require": {
                 "composer/installers": "^1.4",
@@ -7293,11 +7293,13 @@
                 "drupal/paragraphs": "^1.3",
                 "drupal/pathauto": "^1.1",
                 "drupal/redirect": "^1.1",
-                "drupal/samlauth": "^2",
                 "drupal/schema_metatag": "^1.2",
                 "drupal/simple_sitemap": "^2.12",
                 "drupal/superfish": "^1.2",
-                "uiowa/uiowa_bar": "dev-8.x-1.x"
+                "uiowa/uiowa_auth": "dev-master",
+                "uiowa/uiowa_bar": "dev-8.x-1.x",
+                "uiowa/uiowa_bootstrap": "dev-master",
+                "uiowa/uiowa_env": "dev-master"
             },
             "require-dev": {
                 "behat/mink": "^1.7",
@@ -7326,7 +7328,24 @@
                 }
             ],
             "description": "UIowa base profile.",
-            "time": "2018-12-07T18:18:11+00:00"
+            "time": "2018-12-11T19:20:48+00:00"
+        },
+        {
+            "name": "uiowa/uiowa_auth",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:uiowa/uiowa_auth",
+                "reference": "a6021e5a595eb167ce22d4bb9fe0407e9f63fe51"
+            },
+            "require": {
+                "composer/installers": "^1.6",
+                "drupal/externalauth": "^1.1",
+                "drupal/samlauth": "^2.0"
+            },
+            "type": "drupal-custom-module",
+            "description": "Disables Drupal authentication and implements HawkID SSO.",
+            "time": "2018-12-11T17:08:17+00:00"
         },
         {
             "name": "uiowa/uiowa_bar",
@@ -7348,6 +7367,30 @@
             ],
             "description": "Drupal Module to implement the University of Iowa Branding Bar.",
             "time": "2018-11-16T15:48:20+00:00"
+        },
+        {
+            "name": "uiowa/uiowa_bootstrap",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:uiowa/uiowa_bootstrap",
+                "reference": "594f1ff7cc6046d901bc95c124122d4e4f8a2b67"
+            },
+            "type": "drupal-custom-theme",
+            "description": "Base theme for UIowa Drupal 8 sites based on Bootstrap 4.",
+            "time": "2018-12-11T18:09:29+00:00"
+        },
+        {
+            "name": "uiowa/uiowa_env",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:uiowa/uiowa_env",
+                "reference": "4903953f5c32eddd66a6e2c4fc195553fa0fdadb"
+            },
+            "type": "drupal-custom-module",
+            "description": "Indicate the environment via the toolbar.",
+            "time": "2018-12-11T19:19:25+00:00"
         },
         {
             "name": "webflo/drupal-finder",
@@ -7974,6 +8017,11 @@
         {
             "name": "drupal-composer/drupal-security-advisories",
             "version": "8.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/drupal-composer/drupal-security-advisories.git",
+                "reference": "fbfcf3499c18873405dd72751a567bf208943eb4"
+            },
             "conflict": {
                 "drupal/acquia_contenthub": "<1.0,<1.4",
                 "drupal/alinks": "<1.1",
@@ -8026,7 +8074,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities",
-            "time": "2018-10-31T19:07:06+00:00"
+            "time": "2018-11-14T17:07:40+00:00"
         },
         {
             "name": "drupal/devel",
@@ -8971,6 +9019,11 @@
         {
             "name": "roave/security-advisories",
             "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Roave/SecurityAdvisories.git",
+                "reference": "6acf968142215f1614f5909aa006b2bf1ec45cb1"
+            },
             "conflict": {
                 "3f/pygmentize": "<1.2",
                 "adodb/adodb-php": "<5.20.12",
@@ -9125,7 +9178,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2018-11-01T18:39:28+00:00"
+            "time": "2018-11-16T03:31:38+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -9975,7 +10028,10 @@
         "drupal/masquerade": 10,
         "drupal/media_entity_browser": 15,
         "drupal/menu_block": 20,
-        "uiowa/uiowa_bar": 20
+        "uiowa/uiowa_auth": 20,
+        "uiowa/uiowa_bar": 20,
+        "uiowa/uiowa_bootstrap": 20,
+        "uiowa/uiowa_env": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
