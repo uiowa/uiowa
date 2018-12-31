@@ -2066,6 +2066,57 @@
             }
         },
         {
+            "name": "drupal/components",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/components",
+                "reference": "8.x-1.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/components-8.x-1.0.zip",
+                "reference": "8.x-1.0",
+                "shasum": "adb1872a655466d575c2d3396f7ca2daba0a2918"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0",
+                    "datestamp": "1461060840",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "JohnAlbin",
+                    "homepage": "https://www.drupal.org/user/32095"
+                },
+                {
+                    "name": "RobLoach",
+                    "homepage": "https://www.drupal.org/user/61114"
+                }
+            ],
+            "description": "Registers “component libraries” defined in modules and themes with the Twig system",
+            "homepage": "https://www.drupal.org/project/components",
+            "support": {
+                "source": "http://cgit.drupalcode.org/components"
+            }
+        },
+        {
             "name": "drupal/config_filter",
             "version": "1.4.0",
             "source": {
@@ -7655,7 +7706,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:uiowa/rusty",
-                "reference": "c2f2c613f5f388b450a18972a6f2cfb17b8534ff"
+                "reference": "e1f15d99a473fa48c65c8ac3ff17743f262cb8d1"
             },
             "require": {
                 "composer/installers": "^1.6",
@@ -7666,6 +7717,7 @@
                 "drupal/adminimal_theme": "^1.3",
                 "drupal/administerusersbyrole": "^3.0@alpha",
                 "drupal/chosen": "^2.6",
+                "drupal/components": "^1.0",
                 "drupal/config_ignore": "^2.1",
                 "drupal/config_split": "^1.4",
                 "drupal/editor_advanced_link": "^1.4",
@@ -7724,7 +7776,7 @@
                 }
             ],
             "description": "UIowa base profile.",
-            "time": "2018-12-14T20:06:54+00:00"
+            "time": "2018-12-26T20:21:54+00:00"
         },
         {
             "name": "uiowa/uiowa_auth",
@@ -8425,6 +8477,11 @@
         {
             "name": "drupal-composer/drupal-security-advisories",
             "version": "8.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/drupal-composer/drupal-security-advisories.git",
+                "reference": "fbfcf3499c18873405dd72751a567bf208943eb4"
+            },
             "conflict": {
                 "drupal/acquia_contenthub": "<1.0,<1.4",
                 "drupal/alinks": "<1.1",
@@ -9422,6 +9479,11 @@
         {
             "name": "roave/security-advisories",
             "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Roave/SecurityAdvisories.git",
+                "reference": "6acf968142215f1614f5909aa006b2bf1ec45cb1"
+            },
             "conflict": {
                 "3f/pygmentize": "<1.2",
                 "adodb/adodb-php": "<5.20.12",
