@@ -7705,7 +7705,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:uiowa/multisite",
-                "reference": "c7fca084bc85df4893cf5406fc6f4e62168e60f4"
+                "reference": "162ca301d22b6658421963a6eb53e67a334d6d94"
             },
             "require": {
                 "composer/installers": "^1.4",
@@ -7715,21 +7715,64 @@
                 "symfony/process": "^3"
             },
             "require-dev": {
-                "phpunit/phpunit": "~5",
-                "squizlabs/php_codesniffer": "~3"
+                "phpunit/phpunit": "~6",
+                "wikimedia/composer-merge-plugin": "^1.4"
             },
             "type": "drupal-drush",
             "extra": {
                 "drush": {
                     "services": {
-                        "drush.services.yml": "^9.4"
+                        "drush.services.yml": "^9.6"
                     }
+                },
+                "merge-plugin": {
+                    "include": [
+                        "vendor/drush/drush/composer.json"
+                    ],
+                    "recurse": false,
+                    "replace": false,
+                    "ignore-duplicates": false,
+                    "merge-dev": true,
+                    "merge-extra": false,
+                    "merge-extra-deep": false,
+                    "merge-scripts": false
+                },
+                "installer-paths": {
+                    "vendor/drush/drush/sut/core": [
+                        "type:drupal-core"
+                    ],
+                    "vendor/drush/drush/sut/libraries/{$name}": [
+                        "type:drupal-library"
+                    ],
+                    "vendor/drush/drush/sut/modules/unish/{$name}": [
+                        "drupal/devel"
+                    ],
+                    "vendor/drush/drush/sut/themes/unish/{$name}": [
+                        "drupal/empty_theme"
+                    ],
+                    "vendor/drush/drush/sut/modules/contrib/{$name}": [
+                        "type:drupal-module"
+                    ],
+                    "vendor/drush/drush/sut/profiles/contrib/{$name}": [
+                        "type:drupal-profile"
+                    ],
+                    "vendor/drush/drush/sut/themes/contrib/{$name}": [
+                        "type:drupal-theme"
+                    ],
+                    "vendor/drush/drush/sut/drush/contrib/{$name}": [
+                        "type:drupal-drush"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Multisite\\": "src/"
                 }
             },
             "autoload-dev": {
                 "psr-4": {
-                    "MultisiteCommands\\Tests\\": "tests/",
-                    "Unish\\": "vendor/drush/drush/tests/"
+                    "Multisite\\Tests\\": "tests/",
+                    "Unish\\": "vendor/drush/drush/tests/unish/"
                 }
             },
             "authors": [
@@ -7739,7 +7782,7 @@
                 }
             ],
             "description": "Drush multisite generation on Acquia Cloud.",
-            "time": "2018-12-31T20:22:05+00:00"
+            "time": "2019-01-07T16:51:24+00:00"
         },
         {
             "name": "uiowa/rusty",
