@@ -3938,8 +3938,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.5+2-dev",
-                    "datestamp": "1531329820",
+                    "version": "8.x-1.5+5-dev",
+                    "datestamp": "1543953180",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -7705,7 +7705,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:uiowa/multisite",
-                "reference": "162ca301d22b6658421963a6eb53e67a334d6d94"
+                "reference": "4d87079f96f3c59d4f138d7bae91b697262119e9"
             },
             "require": {
                 "composer/installers": "^1.4",
@@ -7720,6 +7720,7 @@
             },
             "type": "drupal-drush",
             "extra": {
+                "installer-name": "Multisite",
                 "drush": {
                     "services": {
                         "drush.services.yml": "^9.6"
@@ -7782,7 +7783,7 @@
                 }
             ],
             "description": "Drush multisite generation on Acquia Cloud.",
-            "time": "2019-01-07T16:51:24+00:00"
+            "time": "2019-01-08T19:47:16+00:00"
         },
         {
             "name": "uiowa/rusty",
@@ -8561,11 +8562,6 @@
         {
             "name": "drupal-composer/drupal-security-advisories",
             "version": "8.x-dev",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/drupal-composer/drupal-security-advisories.git",
-                "reference": "fbfcf3499c18873405dd72751a567bf208943eb4"
-            },
             "conflict": {
                 "drupal/acquia_contenthub": "<1.0,<1.4",
                 "drupal/alinks": "<1.1",
@@ -9563,11 +9559,6 @@
         {
             "name": "roave/security-advisories",
             "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "6acf968142215f1614f5909aa006b2bf1ec45cb1"
-            },
             "conflict": {
                 "3f/pygmentize": "<1.2",
                 "adodb/adodb-php": "<5.20.12",
