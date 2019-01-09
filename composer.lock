@@ -2017,6 +2017,65 @@
             }
         },
         {
+            "name": "drupal/better_normalizers",
+            "version": "1.0.0-beta3",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/better_normalizers",
+                "reference": "8.x-1.0-beta3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/better_normalizers-8.x-1.0-beta3.zip",
+                "reference": "8.x-1.0-beta3",
+                "shasum": "876c5f0006c3764677e1dbe6dec60a32d5a2d636"
+            },
+            "require": {
+                "drupal/core": "^8.3"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-beta3",
+                    "datestamp": "1493796785",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Sam152",
+                    "homepage": "https://www.drupal.org/user/1485048"
+                },
+                {
+                    "name": "andypost",
+                    "homepage": "https://www.drupal.org/user/118908"
+                },
+                {
+                    "name": "chr.fritsch",
+                    "homepage": "https://www.drupal.org/user/2103716"
+                },
+                {
+                    "name": "larowlan",
+                    "homepage": "https://www.drupal.org/user/395439"
+                }
+            ],
+            "description": "Improve the normalizers in core.",
+            "homepage": "https://www.drupal.org/project/better_normalizers",
+            "support": {
+                "source": "http://cgit.drupalcode.org/better_normalizers"
+            }
+        },
+        {
             "name": "drupal/components",
             "version": "1.0.0",
             "source": {
@@ -2655,6 +2714,80 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/ctools",
                 "issues": "https://www.drupal.org/project/issues/ctools"
+            }
+        },
+        {
+            "name": "drupal/default_content",
+            "version": "1.0.0-alpha7",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/default_content",
+                "reference": "8.x-1.0-alpha7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/default_content-8.x-1.0-alpha7.zip",
+                "reference": "8.x-1.0-alpha7",
+                "shasum": "4f1b49cdad6d74ef879f4700caaa11703ba85ad7"
+            },
+            "require": {
+                "drupal/core": "~8.3"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-alpha7",
+                    "datestamp": "1508448545",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Alpha releases are not covered by Drupal security advisories."
+                    }
+                },
+                "patches_applied": {
+                    "Respect revision ids for entity_reference_revisions": "https://www.drupal.org/files/issues/2018-08-06/exported_revision_ids-2989887-6.patch"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Berdir",
+                    "homepage": "https://www.drupal.org/user/214652"
+                },
+                {
+                    "name": "Sam152",
+                    "homepage": "https://www.drupal.org/user/1485048"
+                },
+                {
+                    "name": "andypost",
+                    "homepage": "https://www.drupal.org/user/118908"
+                },
+                {
+                    "name": "benjy",
+                    "homepage": "https://www.drupal.org/user/1852732"
+                },
+                {
+                    "name": "dawehner",
+                    "homepage": "https://www.drupal.org/user/99340"
+                },
+                {
+                    "name": "jibran",
+                    "homepage": "https://www.drupal.org/user/1198144"
+                },
+                {
+                    "name": "larowlan",
+                    "homepage": "https://www.drupal.org/user/395439"
+                }
+            ],
+            "description": "Imports default content when a module is enabled",
+            "homepage": "https://www.drupal.org/project/default_content",
+            "support": {
+                "source": "http://cgit.drupalcode.org/default_content"
             }
         },
         {
@@ -3784,8 +3917,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.5+5-dev",
-                    "datestamp": "1543953180",
+                    "version": "8.x-1.5+2-dev",
+                    "datestamp": "1531329820",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -7637,7 +7770,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:uiowa/rusty",
-                "reference": "de6f1bb9a230029a80d57d4602ba65d50fd261ca"
+                "reference": "8b994ace53bed4e058b3b6a76768e6505ba2ae61"
             },
             "require": {
                 "composer/installers": "^1.6",
@@ -7647,9 +7780,11 @@
                 "drupal/address": "^1.4",
                 "drupal/adminimal_theme": "^1.3",
                 "drupal/administerusersbyrole": "^3.0@alpha",
+                "drupal/better_normalizers": "^1.0@beta",
                 "drupal/components": "^1.0",
                 "drupal/config_ignore": "^2.1",
                 "drupal/config_split": "^1.4",
+                "drupal/default_content": "^1.0@alpha",
                 "drupal/editor_advanced_link": "^1.4",
                 "drupal/entity_browser": "^2.0@alpha",
                 "drupal/entity_embed": "^1.0@beta",
@@ -7696,6 +7831,9 @@
                     },
                     "drupal/administerusersbyrole": {
                         "Undefined index: id": "https://www.drupal.org/files/issues/2018-11-01/undefined-index-3010662-4.patch"
+                    },
+                    "drupal/default_content": {
+                        "Respect revision ids for entity_reference_revisions": "https://www.drupal.org/files/issues/2018-08-06/exported_revision_ids-2989887-6.patch"
                     }
                 }
             },
@@ -7706,7 +7844,7 @@
                 }
             ],
             "description": "UIowa base profile.",
-            "time": "2019-01-09T15:19:50+00:00"
+            "time": "2019-01-09T21:47:29+00:00"
         },
         {
             "name": "uiowa/uiowa_auth",
@@ -8407,6 +8545,11 @@
         {
             "name": "drupal-composer/drupal-security-advisories",
             "version": "8.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/drupal-composer/drupal-security-advisories.git",
+                "reference": "fbfcf3499c18873405dd72751a567bf208943eb4"
+            },
             "conflict": {
                 "drupal/acquia_contenthub": "<1.0,<1.4",
                 "drupal/alinks": "<1.1",
@@ -9558,6 +9701,11 @@
         {
             "name": "roave/security-advisories",
             "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Roave/SecurityAdvisories.git",
+                "reference": "6acf968142215f1614f5909aa006b2bf1ec45cb1"
+            },
             "conflict": {
                 "3f/pygmentize": "<1.2",
                 "adodb/adodb-php": "<5.20.12",
