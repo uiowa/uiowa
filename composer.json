@@ -11,6 +11,14 @@
         "rusty": {
             "type": "git",
             "url": "git@github.com:uiowa/rusty"
+        },
+        "grad": {
+            "type": "git",
+            "url": "git@github.com:uiowa/grad"
+        },
+        "clas": {
+            "type": "git",
+            "url": "git@github.com:uiowa/clas"
         }
     },
     "require": {
@@ -21,6 +29,8 @@
         "drupal/core": "^8.6",
         "drush/drush": "^9.4",
         "richardbporter/drush-users-commands": "^2",
+        "uiowa/clas": "dev-master",
+        "uiowa/grad": "dev-master",
         "uiowa/multisite": "dev-master",
         "uiowa/rusty": "dev-master",
         "wikimedia/composer-merge-plugin": "^1.4"
@@ -39,7 +49,8 @@
         "patches": {
             "drupal/core": {
                 "SiteConfigureForm overrides value from install profile": "https://www.drupal.org/files/issues/2018-03-27/drupal-profile-site-config-2849074-31-8.6.x.patch",
-                "The Media library doesn't modify the 'media' view if installed in a profile": "https://www.drupal.org/files/issues/2018-08-10/2992056-2.patch"
+                "The Media library doesn't modify the 'media' view if installed in a profile": "https://www.drupal.org/files/issues/2018-08-10/2992056-2.patch",
+                "User forms broken for admin without 'administer users": "https://www.drupal.org/files/issues/2018-06-15/user.form_.subadmin-2854252-89.patch"
             }
         },
         "patchLevel": {
