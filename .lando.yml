@@ -10,12 +10,14 @@ config:
   webroot: docroot
   php: '7.1'
   via: apache
-  drush: composer
+  drush: path:/app/vendor/bin/drush
   drupal: false
   xdebug: true
   ssl: true
 
 services:
+  database:
+    type: mysql:5.6
   cache:
     type: memcached:1.5
   appserver:
@@ -25,6 +27,9 @@ services:
           AH_SITE_ENVIRONMENT: lando
           AH_NON_PRODUCTION: 1
           PHP_IDE_CONFIG: serverName=uiowa.lndo.site
+          SIMPLETEST_BASE_URL: https://uiowa.lndo.site
+          SIMPLETEST_DB: mysql://drupal8:drupal8@database/drupal8
+          SYMFONY_DEPRECATIONS_HELPER: disabled
   node:
     type: node:8
     globals:
@@ -34,7 +39,7 @@ events:
   post-start:
     - appserver: curl -o pipelines https://cloud.acquia.com/pipeline-client/download && chmod a+x pipelines && mv pipelines /usr/local/bin
     - appserver: cd $LANDO_MOUNT && composer install --no-suggest
-    - appserver: cd $LANDO_MOUNT && ./vendor/bin/drush multisite:generate lando --yes
+    - appserver: cd $LANDO_MOUNT && ./vendor/bin/drush multisite:generate lando
 
 tooling:
   npm:
@@ -43,3 +48,5 @@ tooling:
     service: node
   gulp:
     service: node
+  pipelines:
+    service: appserver
