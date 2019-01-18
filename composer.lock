@@ -3921,8 +3921,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.5+2-dev",
-                    "datestamp": "1531329820",
+                    "version": "8.x-1.5+5-dev",
+                    "datestamp": "1543953180",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -7859,7 +7859,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:uiowa/rusty",
-                "reference": "df2d18dd56bc71542c146a11a2f486550bc1efeb"
+                "reference": "1bba16ba2e54e28bb78d05bca90c790b4f650c8c"
             },
             "require": {
                 "composer/installers": "^1.6",
@@ -7906,7 +7906,11 @@
             "require-dev": {
                 "behat/mink": "^1.7",
                 "behat/mink-goutte-driver": "^1.2",
-                "phpunit/phpunit": "^6"
+                "drupal/devel": "^1.2",
+                "drupal/stage_file_proxy": "^1.0@alpha",
+                "mikey179/vfsstream": "^1.6",
+                "phpunit/phpunit": "^6",
+                "symfony/phpunit-bridge": "^4.1"
             },
             "type": "drupal-profile",
             "extra": {
@@ -7933,7 +7937,7 @@
                 }
             ],
             "description": "UIowa base profile.",
-            "time": "2019-01-17T20:46:26+00:00"
+            "time": "2019-01-18T15:23:31+00:00"
         },
         {
             "name": "uiowa/uiowa_auth",
@@ -8635,11 +8639,6 @@
         {
             "name": "drupal-composer/drupal-security-advisories",
             "version": "8.x-dev",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/drupal-composer/drupal-security-advisories.git",
-                "reference": "fbfcf3499c18873405dd72751a567bf208943eb4"
-            },
             "conflict": {
                 "drupal/acquia_contenthub": "<1.0,<1.4",
                 "drupal/alinks": "<1.1",
@@ -9866,11 +9865,6 @@
         {
             "name": "roave/security-advisories",
             "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "6acf968142215f1614f5909aa006b2bf1ec45cb1"
-            },
             "conflict": {
                 "3f/pygmentize": "<1.2",
                 "adodb/adodb-php": "<5.20.12",
