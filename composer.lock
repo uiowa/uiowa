@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9d5c825332c0ee82355e7edbf2e903f7",
+    "content-hash": "138e8ee636c782256f3f0782df6bff87",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -3330,17 +3330,11 @@
         },
         {
             "name": "drupal/focal_point",
-            "version": "1.0.0-beta6",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/focal_point",
-                "reference": "8.x-1.0-beta6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/focal_point-8.x-1.0-beta6.zip",
-                "reference": "8.x-1.0-beta6",
-                "shasum": "b06d3540ee49113e266191b2dba3af5d82990f38"
+                "reference": "059feb86bf4343131d6bce74b4655cedac273e9c"
             },
             "require": {
                 "drupal/core": "*",
@@ -3355,11 +3349,11 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta6",
-                    "datestamp": "1519932484",
+                    "version": "8.x-1.0-beta6+11-dev",
+                    "datestamp": "1543268280",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Beta releases are not covered by Drupal security advisories."
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -3377,7 +3371,8 @@
             "homepage": "https://www.drupal.org/project/focal_point",
             "support": {
                 "source": "http://cgit.drupalcode.org/focal_point"
-            }
+            },
+            "time": "2019-01-18T18:27:06+00:00"
         },
         {
             "name": "drupal/fontawesome",
@@ -3479,7 +3474,7 @@
                 },
                 "drupal": {
                     "version": "8.x-2.3",
-                    "datestamp": "1548968580",
+                    "datestamp": "1531469021",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4089,6 +4084,73 @@
                 "source": "http://cgit.drupalcode.org/menu_block"
             },
             "time": "2018-05-01T03:10:15+00:00"
+        },
+        {
+            "name": "drupal/menu_breadcrumb",
+            "version": "1.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/menu_breadcrumb",
+                "reference": "8.x-1.7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/menu_breadcrumb-8.x-1.7.zip",
+                "reference": "8.x-1.7",
+                "shasum": "998c7908bd411afe745f91c725b39483e6dd693f"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.7",
+                    "datestamp": "1549606384",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "RyanPrice",
+                    "homepage": "https://www.drupal.org/user/873848"
+                },
+                {
+                    "name": "aaron",
+                    "homepage": "https://www.drupal.org/user/33420"
+                },
+                {
+                    "name": "gdevlugt",
+                    "homepage": "https://www.drupal.org/user/167273"
+                },
+                {
+                    "name": "rphair",
+                    "homepage": "https://www.drupal.org/user/3196607"
+                },
+                {
+                    "name": "vaibhavjain",
+                    "homepage": "https://www.drupal.org/user/1159692"
+                },
+                {
+                    "name": "xurizaemon",
+                    "homepage": "https://www.drupal.org/user/76026"
+                }
+            ],
+            "description": "Create breadcrumbs from nested menu titles and/or taxonomy membership.",
+            "homepage": "https://www.drupal.org/project/menu_breadcrumb",
+            "support": {
+                "source": "http://cgit.drupalcode.org/menu_breadcrumb"
+            }
         },
         {
             "name": "drupal/metatag",
@@ -7846,58 +7908,8 @@
             "time": "2018-10-18T08:46:28+00:00"
         },
         {
-            "name": "uiowa/clas",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:uiowa/clas",
-                "reference": "9f86889f36274218ed7bec9d390943bea7c4fa05"
-            },
-            "require": {
-                "composer/installers": "^1.6",
-                "cweagans/composer-patches": "^1.6",
-                "drupal/acquia_connector": "^1.14",
-                "drupal/acquia_purge": "^1.0@beta",
-                "drupal/config_split": "^1.4",
-                "drupal/imagemagick": "^2.3",
-                "uiowa/uiowa_auth": "dev-master",
-                "uiowa/uiowa_bar": "dev-8.x-1.x",
-                "uiowa/uiowa_bootstrap": "dev-master",
-                "uiowa/uiowa_env": "dev-master",
-                "uiowa/uiowa_footer": "dev-master"
-            },
-            "type": "drupal-profile",
-            "description": "CLAS install profile.",
-            "time": "2018-12-13T16:10:35+00:00"
-        },
-        {
-            "name": "uiowa/grad",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:uiowa/grad",
-                "reference": "25e75c93ed88882e20c7bba924c921f02d2648bc"
-            },
-            "require": {
-                "composer/installers": "^1.6",
-                "cweagans/composer-patches": "^1.6",
-                "drupal/acquia_connector": "^1.14",
-                "drupal/acquia_purge": "^1.0@beta",
-                "drupal/config_split": "^1.4",
-                "drupal/imagemagick": "^2.3",
-                "uiowa/uiowa_auth": "dev-master",
-                "uiowa/uiowa_bar": "dev-8.x-1.x",
-                "uiowa/uiowa_bootstrap": "dev-master",
-                "uiowa/uiowa_env": "dev-master",
-                "uiowa/uiowa_footer": "dev-master"
-            },
-            "type": "drupal-profile",
-            "description": "Graduate college install profile.",
-            "time": "2018-12-13T16:04:43+00:00"
-        },
-        {
             "name": "uiowa/multisite",
-            "version": "dev-master",
+            "version": "1.0.0-alpha1",
             "source": {
                 "type": "git",
                 "url": "git@github.com:uiowa/multisite",
@@ -7983,11 +7995,11 @@
         },
         {
             "name": "uiowa/rusty",
-            "version": "dev-master",
+            "version": "1.0.0-alpha1",
             "source": {
                 "type": "git",
                 "url": "git@github.com:uiowa/rusty",
-                "reference": "c6996788bbc51f7225210a4e37fe9c4ec64322c9"
+                "reference": "d49c2563f25b46e487f4ec696cefd28513706eaf"
             },
             "require": {
                 "composer/installers": "^1.6",
@@ -8007,7 +8019,7 @@
                 "drupal/entity_embed": "^1.0@beta",
                 "drupal/entity_reference_revisions": "^1.5",
                 "drupal/field_group": "^1.0",
-                "drupal/focal_point": "^1.0@beta",
+                "drupal/focal_point": "1.x-dev",
                 "drupal/fontawesome": "^2.9",
                 "drupal/google_analytics": "^2.2",
                 "drupal/imagecache_external": "^1.0",
@@ -8019,6 +8031,7 @@
                 "drupal/memcache": "^2.0",
                 "drupal/menu_admin_per_menu": "^1.0",
                 "drupal/menu_block": "1.x-dev#fbfb8fe",
+                "drupal/menu_breadcrumb": "^1.7",
                 "drupal/metatag": "^1.5",
                 "drupal/override_node_options": "^2.4",
                 "drupal/paragraphs": "^1.3",
@@ -8027,11 +8040,11 @@
                 "drupal/schema_metatag": "^1.2",
                 "drupal/simple_sitemap": "^2.12",
                 "drupal/superfish": "^1.2",
-                "uiowa/uiowa_auth": "dev-master",
-                "uiowa/uiowa_bar": "dev-8.x-1.x",
-                "uiowa/uiowa_bootstrap": "dev-master",
-                "uiowa/uiowa_env": "dev-master",
-                "uiowa/uiowa_footer": "dev-master"
+                "uiowa/uiowa_auth": "^1.0",
+                "uiowa/uiowa_bar": "^1.0",
+                "uiowa/uiowa_bootstrap": "^1.0",
+                "uiowa/uiowa_env": "^1.0",
+                "uiowa/uiowa_footer": "^1.0"
             },
             "require-dev": {
                 "behat/mink": "^1.7",
@@ -8067,11 +8080,11 @@
                 }
             ],
             "description": "UIowa base profile.",
-            "time": "2019-02-01T20:46:04+00:00"
+            "time": "2019-02-11T21:01:38+00:00"
         },
         {
             "name": "uiowa/uiowa_auth",
-            "version": "dev-master",
+            "version": "1.0.0-alpha1",
             "source": {
                 "type": "git",
                 "url": "git@github.com:uiowa/uiowa_auth",
@@ -8088,11 +8101,11 @@
         },
         {
             "name": "uiowa/uiowa_bar",
-            "version": "dev-8.x-1.x",
+            "version": "1.0.0-alpha1",
             "source": {
                 "type": "git",
                 "url": "git@github.com:uiowa/uiowa_bar",
-                "reference": "da64598299bea043dd72a4ca93b569d7ad3b8c5a"
+                "reference": "19878285723161c3d5f068806b08002e6e385fa0"
             },
             "require": {
                 "composer/installers": "^1.5"
@@ -8105,23 +8118,23 @@
                 }
             ],
             "description": "Drupal Module to implement the University of Iowa Branding Bar.",
-            "time": "2019-01-30T22:50:28+00:00"
+            "time": "2019-02-08T16:26:40+00:00"
         },
         {
             "name": "uiowa/uiowa_bootstrap",
-            "version": "dev-master",
+            "version": "1.0.0-alpha1",
             "source": {
                 "type": "git",
                 "url": "git@github.com:uiowa/uiowa_bootstrap",
-                "reference": "72e64e53afd4112162fe84ff77c60b9c8d36dd55"
+                "reference": "c5ea67100ff0b36c9ccf5681f32df043c2c718f6"
             },
             "type": "drupal-custom-theme",
             "description": "Base theme for UIowa Drupal 8 sites based on Bootstrap 4.",
-            "time": "2019-02-01T18:05:53+00:00"
+            "time": "2019-02-11T19:08:10+00:00"
         },
         {
             "name": "uiowa/uiowa_env",
-            "version": "dev-master",
+            "version": "1.0.0-alpha1",
             "source": {
                 "type": "git",
                 "url": "git@github.com:uiowa/uiowa_env",
@@ -8133,15 +8146,15 @@
         },
         {
             "name": "uiowa/uiowa_footer",
-            "version": "dev-master",
+            "version": "1.0.0-alpha1",
             "source": {
                 "type": "git",
                 "url": "git@github.com:uiowa/uiowa_footer",
-                "reference": "517bb96594c100c3ba8f5519063c732b1bdda6d9"
+                "reference": "86ff87b4301fabd4c354d8e18276dbf41b0d1af5"
             },
             "type": "drupal-custom-module",
             "description": "Configuration and block implementation for common footer.",
-            "time": "2019-01-28T16:47:20+00:00"
+            "time": "2019-02-08T19:52:20+00:00"
         },
         {
             "name": "webflo/drupal-finder",
@@ -8769,6 +8782,11 @@
         {
             "name": "drupal-composer/drupal-security-advisories",
             "version": "8.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/drupal-composer/drupal-security-advisories.git",
+                "reference": "221e69ab2cb3dec23f68166897dc2be5489cf783"
+            },
             "conflict": {
                 "drupal/acquia_contenthub": "<1.0,<1.4",
                 "drupal/alinks": "<1.1",
@@ -9841,6 +9859,11 @@
         {
             "name": "roave/security-advisories",
             "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Roave/SecurityAdvisories.git",
+                "reference": "e1b9176e35e8a4521c8b9720f4b5601d5caa68c5"
+            },
             "conflict": {
                 "3f/pygmentize": "<1.2",
                 "adodb/adodb-php": "<5.20.12",
@@ -10896,24 +10919,15 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "uiowa/clas": 20,
-        "uiowa/grad": 20,
-        "uiowa/multisite": 20,
-        "uiowa/rusty": 20,
         "drupal-composer/drupal-security-advisories": 20,
         "roave/security-advisories": 20,
         "drupal/acquia_purge": 10,
-        "uiowa/uiowa_auth": 20,
-        "uiowa/uiowa_bar": 20,
-        "uiowa/uiowa_bootstrap": 20,
-        "uiowa/uiowa_env": 20,
-        "uiowa/uiowa_footer": 20,
         "drupal/administerusersbyrole": 15,
         "drupal/better_normalizers": 10,
         "drupal/default_content": 15,
         "drupal/entity_browser": 15,
         "drupal/entity_embed": 10,
-        "drupal/focal_point": 10,
+        "drupal/focal_point": 20,
         "drupal/inline_entity_form": 5,
         "drupal/masquerade": 10,
         "drupal/media_entity_browser": 15,
