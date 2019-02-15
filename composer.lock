@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d7cb32d50a9efa2ff11b7444f57c3e61",
+    "content-hash": "cf37ee85b8a399f67afb4f216bef9c9c",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -7994,6 +7994,95 @@
             "time": "2019-02-12T19:05:52+00:00"
         },
         {
+            "name": "uiowa/sitenow",
+            "version": "1.0.0-alpha4",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:uiowa/sitenow",
+                "reference": "013bef6b9b56c849a2f25ec48c509f547333abc7"
+            },
+            "require": {
+                "composer/installers": "^1.6",
+                "cweagans/composer-patches": "^1.6",
+                "drupal/acquia_connector": "^1.14",
+                "drupal/acquia_purge": "^1.0@beta",
+                "drupal/address": "^1.4",
+                "drupal/adminimal_theme": "^1.3",
+                "drupal/administerusersbyrole": "^3.0@alpha",
+                "drupal/better_normalizers": "^1.0@beta",
+                "drupal/components": "^1.0",
+                "drupal/config_ignore": "^2.1",
+                "drupal/config_split": "^1.4",
+                "drupal/default_content": "^1.0@alpha",
+                "drupal/editor_advanced_link": "^1.4",
+                "drupal/entity_browser": "^2.0@alpha",
+                "drupal/entity_embed": "^1.0@beta",
+                "drupal/entity_reference_revisions": "^1.5",
+                "drupal/field_group": "^1.0",
+                "drupal/focal_point": "1.x-dev",
+                "drupal/fontawesome": "^2.9",
+                "drupal/google_analytics": "^2.2",
+                "drupal/imagecache_external": "^1.0",
+                "drupal/imagemagick": "^2.3",
+                "drupal/inline_entity_form": "^1.0@RC",
+                "drupal/linkit": "^5.0beta",
+                "drupal/masquerade": "^2.0@beta",
+                "drupal/media_entity_browser": "^2.0@alpha",
+                "drupal/memcache": "^2.0",
+                "drupal/menu_admin_per_menu": "^1.0",
+                "drupal/menu_block": "1.x-dev#fbfb8fe",
+                "drupal/menu_breadcrumb": "^1.7",
+                "drupal/metatag": "^1.5",
+                "drupal/override_node_options": "^2.4",
+                "drupal/paragraphs": "^1.3",
+                "drupal/pathauto": "^1.1",
+                "drupal/redirect": "^1.1",
+                "drupal/schema_metatag": "^1.2",
+                "drupal/simple_sitemap": "^2.12",
+                "drupal/superfish": "^1.2",
+                "uiowa/uiowa_auth": "^1.0",
+                "uiowa/uiowa_bar": "^1.0",
+                "uiowa/uiowa_bootstrap": "^1.0",
+                "uiowa/uiowa_env": "^1.0",
+                "uiowa/uiowa_footer": "^1.0"
+            },
+            "require-dev": {
+                "behat/mink": "^1.7",
+                "behat/mink-goutte-driver": "^1.2",
+                "drupal/devel": "^1.2",
+                "drupal/stage_file_proxy": "^1.0@alpha",
+                "mikey179/vfsstream": "^1.6",
+                "phpunit/phpunit": "^6",
+                "symfony/phpunit-bridge": "^4.1"
+            },
+            "type": "drupal-profile",
+            "extra": {
+                "patches": {
+                    "drupal/menu_block": {
+                        "Add option to make the starting level follow the active menu item": "https://www.drupal.org/files/issues/2018-05-01/menu_block-follow-2756675-43.patch",
+                        "Hide block title if menu tree contains no links": "https://www.drupal.org/files/issues/2018-05-08/menu_block-hide_block_if_no_links-2757215-9.patch"
+                    },
+                    "drupal/metatag": {
+                        "Allow each tag to have its own permission": "https://www.drupal.org/files/issues/metatag-n2782797-16.patch"
+                    },
+                    "drupal/administerusersbyrole": {
+                        "Undefined index: id": "https://www.drupal.org/files/issues/2018-11-01/undefined-index-3010662-4.patch"
+                    },
+                    "drupal/default_content": {
+                        "Respect revision ids for entity_reference_revisions": "https://www.drupal.org/files/issues/2018-08-06/exported_revision_ids-2989887-6.patch"
+                    }
+                }
+            },
+            "authors": [
+                {
+                    "name": "OneIT",
+                    "homepage": "https://oneit.uiowa.edu"
+                }
+            ],
+            "description": "UIowa base profile.",
+            "time": "2019-02-15T21:04:28+00:00"
+        },
+        {
             "name": "uiowa/uiowa_auth",
             "version": "1.0.0-alpha2",
             "source": {
@@ -10830,20 +10919,9 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "uiowa/sitenow": 15,
         "drupal-composer/drupal-security-advisories": 20,
-        "roave/security-advisories": 20,
-        "drupal/acquia_purge": 10,
-        "drupal/administerusersbyrole": 15,
-        "drupal/better_normalizers": 10,
-        "drupal/default_content": 15,
-        "drupal/entity_browser": 15,
-        "drupal/entity_embed": 10,
-        "drupal/focal_point": 20,
-        "drupal/inline_entity_form": 5,
-        "drupal/masquerade": 10,
-        "drupal/media_entity_browser": 15,
-        "drupal/menu_block": 20,
-        "drupal/stage_file_proxy": 15
+        "roave/security-advisories": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
