@@ -51,8 +51,9 @@ gulp
 
 Or execute it via Lando tooling:
 ```
-lando npm install docroot/sites/mysite.uiowa.edu/themes/mytheme
-lando gulp --cwd docroot/sites/mysite.uiowa.edu/themes/mytheme
+cd docroot/sites/mysite.uiowa.edu/themes/mytheme
+lando npm install
+lando gulp
 ```
 
 #### Multisite
