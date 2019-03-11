@@ -2383,63 +2383,6 @@
             }
         },
         {
-            "name": "drupal/config_ignore",
-            "version": "2.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupal.org/project/config_ignore",
-                "reference": "8.x-2.1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/config_ignore-8.x-2.1.zip",
-                "reference": "8.x-2.1",
-                "shasum": "07e00684930706632b3f2fc2a7433ffdae57cde7"
-            },
-            "require": {
-                "drupal/config_filter": "1.*",
-                "drupal/core": "~8.0"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-2.x": "2.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-2.1",
-                    "datestamp": "1507706044",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Tommy Lynge Jørgensen",
-                    "homepage": "https://www.drupal.org/u/tlyngej",
-                    "email": "tlyngej@gmail.com",
-                    "role": "Maintainer"
-                },
-                {
-                    "name": "Fabian Bircher",
-                    "homepage": "https://www.drupal.org/u/bircher",
-                    "role": "Maintainer"
-                }
-            ],
-            "description": "Ignore certain configuration during import.",
-            "homepage": "http://drupal.org/project/config_ignore",
-            "support": {
-                "source": "http://cgit.drupalcode.org/config_ignore",
-                "issues": "http://drupal.org/project/config_ignore",
-                "irc": "irc://irc.freenode.org/drupal-contribute"
-            }
-        },
-        {
             "name": "drupal/config_split",
             "version": "1.4.0",
             "source": {
@@ -8430,11 +8373,11 @@
         },
         {
             "name": "uiowa/multisite",
-            "version": "1.0.0-alpha6",
+            "version": "1.0.0-beta1",
             "source": {
                 "type": "git",
                 "url": "git@github.com:uiowa/multisite",
-                "reference": "ecb386c77469fd1c3bcfc3967f6e7f4553e914e1"
+                "reference": "4767b69f016c11cbe62184f0cdad86396a55395d"
             },
             "require": {
                 "composer/installers": "^1.4",
@@ -8512,15 +8455,15 @@
                 }
             ],
             "description": "Drush multisite generation on Acquia Cloud.",
-            "time": "2019-03-06T22:06:31+00:00"
+            "time": "2019-03-11T18:43:06+00:00"
         },
         {
             "name": "uiowa/sitenow",
-            "version": "1.0.0-alpha11",
+            "version": "1.0.0-beta1",
             "source": {
                 "type": "git",
                 "url": "git@github.com:uiowa/sitenow",
-                "reference": "315938961c66ae29db97b5ae262f867e2df1755e"
+                "reference": "183a0cbbedb17ec4635961e1f7798b5cdff0bfc4"
             },
             "require": {
                 "composer/installers": "^1.6",
@@ -8532,7 +8475,6 @@
                 "drupal/administerusersbyrole": "^3.0@alpha",
                 "drupal/better_normalizers": "^1.0@beta",
                 "drupal/components": "^1.0",
-                "drupal/config_ignore": "^2.1",
                 "drupal/config_split": "^1.4",
                 "drupal/default_content": "^1.0@alpha",
                 "drupal/editor_advanced_link": "^1.4",
@@ -8601,7 +8543,7 @@
                 }
             ],
             "description": "UIowa ITS SiteNow profile.",
-            "time": "2019-03-11T14:04:44+00:00"
+            "time": "2019-03-11T18:43:24+00:00"
         },
         {
             "name": "uiowa/uiowa_auth",
@@ -9391,6 +9333,63 @@
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities",
             "time": "2019-03-06T19:07:38+00:00"
+        },
+        {
+            "name": "drupal/config_ignore",
+            "version": "2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/config_ignore",
+                "reference": "8.x-2.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/config_ignore-8.x-2.1.zip",
+                "reference": "8.x-2.1",
+                "shasum": "07e00684930706632b3f2fc2a7433ffdae57cde7"
+            },
+            "require": {
+                "drupal/config_filter": "1.*",
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-2.1",
+                    "datestamp": "1507706044",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Tommy Lynge Jørgensen",
+                    "homepage": "https://www.drupal.org/u/tlyngej",
+                    "email": "tlyngej@gmail.com",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Fabian Bircher",
+                    "homepage": "https://www.drupal.org/u/bircher",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Ignore certain configuration during import.",
+            "homepage": "http://drupal.org/project/config_ignore",
+            "support": {
+                "source": "http://cgit.drupalcode.org/config_ignore",
+                "issues": "http://drupal.org/project/config_ignore",
+                "irc": "irc://irc.freenode.org/drupal-contribute"
+            }
         },
         {
             "name": "drupal/devel",
@@ -10405,7 +10404,6 @@
                 "mock",
                 "xunit"
             ],
-            "abandoned": true,
             "time": "2018-08-09T05:50:03+00:00"
         },
         {
