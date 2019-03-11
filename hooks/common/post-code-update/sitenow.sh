@@ -18,4 +18,4 @@ repo_url="$5"
 repo_type="$6"
 
 # Configuration workflow for sitenow profile.
-/var/www/html/$site.$target_env/vendor/bin/drush mse 'csex database, updb, cim' --profile sitenow --yes;
+/var/www/html/$site.$target_env/vendor/bin/drush multisite:execute 'csex database, updb, cim' --profile sitenow --yes;
