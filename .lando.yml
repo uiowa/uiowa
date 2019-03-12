@@ -43,7 +43,7 @@ services:
 
 events:
   post-start:
-    - appserver: curl -o pipelines https://cloud.acquia.com/pipeline-client/download && chmod a+x pipelines && mv pipelines /usr/local/bin
+    - appserver: which pipelines > /dev/null || (curl -o pipelines https://cloud.acquia.com/pipeline-client/download && chmod a+x pipelines && mv pipelines /usr/local/bin)
     - appserver: cd $LANDO_MOUNT && composer install --no-suggest
     - appserver: cd $LANDO_MOUNT && drush multisite:generate lando
 
