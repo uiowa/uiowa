@@ -50,11 +50,14 @@ events:
 tooling:
   drush:
     cmd: /app/drush/drush.sh
+  pipelines:
+    service: appserver
+  drupalcs:
+    service: appserver
+    cmd: ./vendor/bin/phpcs --standard=Drupal,DrupalPractice --ignore=*.css,node_modules
   npm:
     service: node
   node:
     service: node
   gulp:
     service: node
-  pipelines:
-    service: appserver
