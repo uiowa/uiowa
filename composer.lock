@@ -2075,6 +2075,10 @@
                     "homepage": "https://www.drupal.org/user/86106"
                 },
                 {
+                    "name": "dww",
+                    "homepage": "https://www.drupal.org/user/46549"
+                },
+                {
                     "name": "googletorp",
                     "homepage": "https://www.drupal.org/user/386230"
                 },
@@ -3476,7 +3480,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/focal_point",
-                "reference": "059feb86bf4343131d6bce74b4655cedac273e9c"
+                "reference": "685fe5120340a8678a015cce58f75179f5ce1ff3"
             },
             "require": {
                 "drupal/core": "*",
@@ -3491,8 +3495,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-beta6+11-dev",
-                    "datestamp": "1543268280",
+                    "version": "8.x-1.0-beta6+12-dev",
+                    "datestamp": "1547836080",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -3514,7 +3518,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/focal_point"
             },
-            "time": "2019-01-18T18:27:06+00:00"
+            "time": "2019-03-01T20:40:27+00:00"
         },
         {
             "name": "drupal/fontawesome",
@@ -4571,6 +4575,9 @@
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "Port purge commands to Drush 9": "https://www.drupal.org/files/issues/2921309-17-port-purge-drush-9.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4983,7 +4990,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.11",
-                    "datestamp": "1542564480",
+                    "datestamp": "1552334285",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -8460,11 +8467,11 @@
         },
         {
             "name": "uiowa/sitenow",
-            "version": "1.0.0-beta4",
+            "version": "1.0.0-beta5",
             "source": {
                 "type": "git",
                 "url": "git@github.com:uiowa/sitenow",
-                "reference": "889c43edf3dbfbadcf2357f651b5a595c80cce98"
+                "reference": "9648cfffa025746f78236e3aee2f0e59199f6d84"
             },
             "require": {
                 "composer/installers": "^1.6",
@@ -8500,6 +8507,7 @@
                 "drupal/override_node_options": "^2.4",
                 "drupal/paragraphs": "^1.3",
                 "drupal/pathauto": "^1.1",
+                "drupal/purge": "^3.0@beta",
                 "drupal/redirect": "^1.1",
                 "drupal/schema_metatag": "^1.2",
                 "drupal/simple_sitemap": "^2.12",
@@ -8534,6 +8542,9 @@
                     },
                     "drupal/default_content": {
                         "Respect revision ids for entity_reference_revisions": "https://www.drupal.org/files/issues/2018-08-06/exported_revision_ids-2989887-6.patch"
+                    },
+                    "drupal/purge": {
+                        "Port purge commands to Drush 9": "https://www.drupal.org/files/issues/2921309-17-port-purge-drush-9.patch"
                     }
                 }
             },
@@ -8544,7 +8555,7 @@
                 }
             ],
             "description": "UIowa ITS SiteNow profile.",
-            "time": "2019-03-13T20:05:16+00:00"
+            "time": "2019-03-15T18:11:44+00:00"
         },
         {
             "name": "uiowa/uiowa_auth",
@@ -11678,6 +11689,7 @@
         "drupal/masquerade": 20,
         "drupal/media_entity_browser": 15,
         "drupal/menu_block": 20,
+        "drupal/purge": 10,
         "drupal/stage_file_proxy": 15
     },
     "prefer-stable": true,
