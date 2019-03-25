@@ -55,6 +55,9 @@ tooling:
   drupalcs:
     service: appserver
     cmd: ./vendor/bin/phpcs --standard=Drupal,DrupalPractice --ignore=*.css,node_modules
+  phpunit:
+    service: appserver
+    cmd: /app/vendor/bin/phpunit
   npm:
     service: node
   node:
