@@ -12,7 +12,7 @@ use Consolidation\AnnotatedCommand\CommandError;
 class MultisiteCommands extends BltTasks {
 
   /**
-   *Require the --site-uri option so it can be used in postMultisiteInit.
+   * Require the --site-uri option so it can be used in postMultisiteInit.
    *
    * @hook validate recipes:multisite:init
    */
