@@ -37,7 +37,7 @@ services:
 
 events:
   post-start:
-    - appserver: cd $LANDO_MOUNT && blt source:build:composer
+    - appserver: cd $LANDO_MOUNT && composer install --no-suggest
 
 tooling:
   drush:
