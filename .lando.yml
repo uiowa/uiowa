@@ -1,0 +1,62 @@
+name: uiowa
+recipe: drupal8
+
+excludes:
+  - vendor
+
+proxy:
+  appserver:
+    - uiowa.lndo.site
+    - "*.uiowa.lndo.site"
+
+config:
+  webroot: docroot
+  php: '7.2'
+  via: apache
+  drupal: false
+  drush: false
+  xdebug: true
+  ssl: true
+
+services:
+  database:
+    type: mysql:5.7
+  cache:
+    type: memcached:1
+  appserver:
+    overrides:
+      environment:
+        AH_SITE_ENVIRONMENT: lando
+        AH_NON_PRODUCTION: 1
+        PHP_IDE_CONFIG: serverName=uiowa.lndo.site
+        SIMPLETEST_BASE_URL: https://uiowa.lndo.site
+        SIMPLETEST_DB: mysql://drupal8:drupal8@database/drupal8
+        SYMFONY_DEPRECATIONS_HELPER: disabled
+  node:
+    type: node:10
+    globals:
+      gulp-cli: 2.0.1
+
+events:
+  post-start:
+    - appserver: which pipelines > /dev/null || (curl -o pipelines https://cloud.acquia.com/pipeline-client/download && chmod a+x pipelines && mv pipelines /usr/local/bin)
+    - appserver: cd $LANDO_MOUNT && composer install --no-suggest
+    - appserver: cd $LANDO_MOUNT && drush multisite:generate lando
+
+tooling:
+  drush:
+    cmd: /app/drush/drush.sh
+  pipelines:
+    service: appserver
+  drupalcs:
+    service: appserver
+    cmd: ./vendor/bin/phpcs --standard=Drupal,DrupalPractice --ignore=*.css,node_modules
+  phpunit:
+    service: appserver
+    cmd: /app/vendor/bin/phpunit
+  npm:
+    service: node
+  node:
+    service: node
+  gulp:
+    service: node
