@@ -37,7 +37,7 @@ class MultisiteCommands extends BltTasks {
     $root = $this->getConfigValue('repo.root');
 
     $data = <<<EOD
-    
+
 // Directory aliases for {$uri}.
 \$sites['{$machineName}.uiowa.lndo.site'] = '{$machineName}';
 \$sites['{$machineName}.dev.drupal.uiowa.edu'] = '{$machineName}';
