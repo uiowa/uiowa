@@ -107,7 +107,24 @@
         "patchLevel": {
             "drupal/core": "-p2"
         },
-        "patches": [],
+        "patches": {
+            "drupal/menu_block": {
+                "Add option to make the starting level follow the active menu item": "https://www.drupal.org/files/issues/2018-05-01/menu_block-follow-2756675-43.patch",
+                "Hide block title if menu tree contains no links": "https://www.drupal.org/files/issues/2018-05-08/menu_block-hide_block_if_no_links-2757215-9.patch"
+            },
+            "drupal/metatag": {
+                "Allow each tag to have its own permission": "https://www.drupal.org/files/issues/metatag-n2782797-16.patch"
+            },
+            "drupal/administerusersbyrole": {
+                "Undefined index: id": "https://www.drupal.org/files/issues/2018-11-01/undefined-index-3010662-4.patch"
+            },
+            "drupal/default_content": {
+                "Respect revision ids for entity_reference_revisions": "https://www.drupal.org/files/issues/2018-08-06/exported_revision_ids-2989887-6.patch"
+            },
+            "drupal/purge": {
+                "Port purge commands to Drush 9": "https://www.drupal.org/files/issues/2921309-17-port-purge-drush-9.patch"
+            }
+        },
         "installer-types": ["bower-asset", "npm-asset"],
         "installer-paths": {
             "docroot/core": ["type:drupal-core"],
