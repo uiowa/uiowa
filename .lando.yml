@@ -37,21 +37,14 @@ services:
 
 events:
   post-start:
-    - appserver: which pipelines > /dev/null || (curl -o pipelines https://cloud.acquia.com/pipeline-client/download && chmod a+x pipelines && mv pipelines /usr/local/bin)
-    - appserver: cd $LANDO_MOUNT && composer install --no-suggest
-    - appserver: cd $LANDO_MOUNT && drush multisite:generate lando
+    - appserver: cd $LANDO_MOUNT && blt source:build:composer
 
 tooling:
   drush:
     cmd: /app/drush/drush.sh
-  pipelines:
+  blt:
     service: appserver
-  drupalcs:
-    service: appserver
-    cmd: ./vendor/bin/phpcs --standard=Drupal,DrupalPractice --ignore=*.css,node_modules
-  phpunit:
-    service: appserver
-    cmd: /app/vendor/bin/phpunit
+    cmd: /app/vendor/bin/blt
   npm:
     service: node
   node:
