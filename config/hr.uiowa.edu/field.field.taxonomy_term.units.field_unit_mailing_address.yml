@@ -1,0 +1,61 @@
+uuid: 23308372-1230-475d-a317-547ceff63d01
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_unit_mailing_address
+    - taxonomy.vocabulary.units
+  module:
+    - address
+id: taxonomy_term.units.field_unit_mailing_address
+field_name: field_unit_mailing_address
+entity_type: taxonomy_term
+bundle: units
+label: 'Mailing Address'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    country_code: US
+    langcode: null
+    administrative_area: ''
+    locality: ''
+    dependent_locality: ''
+    postal_code: ''
+    sorting_code: ''
+    address_line1: ''
+    address_line2: ''
+    organization: ''
+    given_name: ''
+    additional_name: ''
+    family_name: ''
+default_value_callback: ''
+settings:
+  available_countries: {  }
+  langcode_override: ''
+  field_overrides:
+    givenName:
+      override: hidden
+    additionalName:
+      override: hidden
+    familyName:
+      override: hidden
+    organization:
+      override: hidden
+    addressLine1:
+      override: optional
+    addressLine2:
+      override: optional
+    postalCode:
+      override: optional
+    sortingCode:
+      override: optional
+    dependentLocality:
+      override: optional
+    locality:
+      override: optional
+    administrativeArea:
+      override: optional
+  fields: {  }
+field_type: address
