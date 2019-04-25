@@ -1,0 +1,14 @@
+<?php
+
+/**
+ * @file
+ * Install hooks for uiowa_events.
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function uiowa_events_uninstall() {
+  // Remove the module configuration.
+  \Drupal::configFactory()->getEditable('uiowa_events.settings')->delete();
+}

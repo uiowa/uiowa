@@ -1,0 +1,66 @@
+<?php
+
+/**
+ * @file
+ * The sitenow profile cannot contain a hook_install() implementation.
+ * @see: https://www.drupal.org/project/drupal/issues/2982052
+ */
+
+/**
+ * Update some uiowa_footer settings which are ignored.
+ */
+function sitenow_update_8001() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uiowa_footer.settings');
+
+  $config
+    ->set('login_link', TRUE)
+    ->set('custom_menu_2', 'footer-second')
+    ->save();
+}
+
+/**
+ * Delete user login block for uiowa_bootstrap theme.
+ */
+function sitenow_update_8002() {
+  /** @var \Drupal\Core\Entity\EntityStorageInterface $block_storage */
+  $block_storage = \Drupal::service('entity_type.manager')->getStorage('block');
+
+  /** @var \Drupal\block\Entity\Block[] $blocks */
+  $block = $block_storage->load('uiowa_bootstrap_login');
+
+  if ($block) {
+    $block->delete();
+  }
+}
+
+/**
+ * Delete entities related to uievents.
+ */
+function sitenow_update_8003() {
+  $paragraphs = \Drupal::entityTypeManager()
+    ->getStorage('paragraph')
+    ->loadByProperties(['type' => 'events']);
+
+  foreach ($paragraphs as $paragraph) {
+    $paragraph->delete();
+  }
+
+  $ids = Drupal::entityQuery('uievents')
+    ->execute();
+  if (!empty($ids)) {
+    $controller = \Drupal::entityManager()->getStorage('uievents');
+    $entities = $controller->loadMultiple($ids);
+    $controller->delete($entities);
+  }
+}
+
+/**
+ * Delete config_ignore key_value entry.
+ */
+function sitenow_update_8004() {
+  $query = \Drupal::database()->delete('key_value')
+    ->condition('collection', 'system.schema')
+    ->condition('name', 'config_ignore')
+    ->execute();
+}

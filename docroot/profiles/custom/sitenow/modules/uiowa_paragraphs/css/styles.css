@@ -1,0 +1,34 @@
+/* UIowa Paragraph Styles */
+.paragraph {
+  margin-bottom: 1rem;
+}
+.paragraph--type--section {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  padding-top: 1rem;
+  margin-bottom: 0;
+}
+.paragraph--type--section.has-section-image {
+  min-height: 600px;
+  background-color: transparent !important;
+}
+.paragraph--type--section.has-section-image .section-content {
+  min-height: 600px;
+}
+.paragraph--type--section > picture {
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+@supports (object-fit: cover) {
+  .paragraph--type--section > picture > img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+}

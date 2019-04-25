@@ -1,0 +1,66 @@
+<?php
+
+/**
+ * @file
+ * Contains uiowa_card.module.
+ */
+
+use Drupal\media\Entity\Media;
+use Drupal\file\Entity\File;
+use Drupal\Core\Template\Attribute;
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uiowa_card_preprocess_paragraph__card(&$variables) {
+  $paragraph = $variables['paragraph'];
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    // Create new card attributers.
+    $variables['card_attributes'] = new Attribute();
+    // Add css if applicable.
+    $variables['#attached']['library'][] = 'uiowa_card/default';
+    // Add card link behavior for links.
+    $link_field = $paragraph->get('field_card_link');
+    if (!$link_field->isEmpty()) {
+      $link = $link_field->first()->getValue();
+      $variables['card_attributes']['data-href'] = $link['uri'];
+      $variables['card_attributes']['tabindex'] = '0';
+      $variables['card_attributes']['role'] = 'link';
+      $variables['card_attributes']['aria-label'] = $link['title'];
+      $variables['card_attributes']['name'] = $link['title'];
+      $variables['card_attributes']['title'] = $link['title'];
+      $variables['#attached']['library'][] = 'uiowa_card/card-link-js';
+    }
+    // Render card image.
+    $image_field = $paragraph->get('field_card_image');
+    if (!$image_field->isEmpty()) {
+      $image = $image_field->first()->getValue();
+      $media = Media::load($image['target_id']);
+      $media_field = $media->get('field_media_image')
+        ->first()
+        ->getValue();
+      $file = File::load($media_field['target_id']);
+      $uri = $file->getFileUri();
+      $alt = ($media_field['alt'] ? $media_field['alt'] : '');
+      $image = [
+        '#theme' => 'image_style',
+        '#width' => NULL,
+        '#height' => NULL,
+        '#style_name' => 'uiowa_card',
+        '#uri' => $uri,
+        '#alt' => $alt,
+        '#weight' => -1,
+        '#attributes' => [
+          'class' => 'card-img-top',
+        ],
+      ];
+      $variables["content"]['card_image'] = $image;
+    }
+  }
+  $variables['content']['field_card_link'] ?? FALSE;
+  if ($variables['content']['field_card_link']) {
+    $variables['content']['field_card_link'][0]["#options"]['attributes']['class'][] = 'card-link';
+    $variables['content']['field_card_link'][0]["#options"]['attributes']['class'][] = 'js-card-link';
+  }
+}
