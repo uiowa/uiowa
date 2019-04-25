@@ -1,24 +1,19 @@
 project:
-  machine_name: sitenow
   prefix: BLT
   human_name: 'The sitenow platform on the uiowa application.'
   profile:
     name: sitenow
-  local:
-    protocol: http
-    hostname: 'uiowa.lndo.site'
+  local: {  }
 git:
   default_branch: master
   remotes:
-    - git@github.com:uiowa/uiowa.git
+    - 'git@github.com:uiowa/uiowa.git'
   hooks:
     commit-msg: false
 deploy:
   tag_source: true
 drush:
   aliases:
-    remote: '${project.machine_name}.test'
-    local: self
     ci: self
   default_alias: '${drush.aliases.local}'
 modules:
