@@ -1,0 +1,84 @@
+uuid: 83c1cf28-5d14-4f6f-a4c7-19e7bf05a662
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.blockquote.field_blockquote_cite
+    - field.field.paragraph.blockquote.field_blockquote_content
+    - field.field.paragraph.blockquote.field_blockquote_footer
+    - field.field.paragraph.blockquote.field_uip_classes
+    - field.field.paragraph.blockquote.field_uip_colwidth
+    - field.field.paragraph.blockquote.field_uip_id
+    - paragraphs.paragraphs_type.blockquote
+  module:
+    - field_group
+    - link
+third_party_settings:
+  field_group:
+    group_uip_settings:
+      children:
+        - field_uip_colwidth
+        - field_uip_classes
+        - field_uip_id
+      parent_name: ''
+      weight: 3
+      format_type: details
+      format_settings:
+        id: ''
+        classes: ''
+        open: false
+        required_fields: true
+      label: Settings
+id: paragraph.blockquote.default
+targetEntityType: paragraph
+bundle: blockquote
+mode: default
+content:
+  field_blockquote_cite:
+    weight: 2
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+    region: content
+  field_blockquote_content:
+    weight: 0
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+  field_blockquote_footer:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_uip_classes:
+    weight: 6
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_uip_colwidth:
+    weight: 5
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_uip_id:
+    weight: 7
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden:
+  created: true
+  status: true
+  uid: true

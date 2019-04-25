@@ -1,0 +1,48 @@
+uuid: 55dbe519-a422-4549-8535-246e8df895c4
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.preview
+    - field.field.paragraph.events.field_events_audiences
+    - field.field.paragraph.events.field_events_department
+    - field.field.paragraph.events.field_events_event_types
+    - field.field.paragraph.events.field_events_gen_interests
+    - field.field.paragraph.events.field_events_keywords
+    - field.field.paragraph.events.field_events_more
+    - field.field.paragraph.events.field_events_more_path
+    - field.field.paragraph.events.field_events_results
+    - field.field.paragraph.events.field_uip_classes
+    - field.field.paragraph.events.field_uip_colwidth
+    - field.field.paragraph.events.field_uip_display_title
+    - field.field.paragraph.events.field_uip_id
+    - field.field.paragraph.events.field_uip_title
+    - paragraphs.paragraphs_type.events
+_core:
+  default_config_hash: y2x5pyoEIA3lBYAfQPZfG8pb8NburdWCZxltTBttinE
+id: paragraph.events.preview
+targetEntityType: paragraph
+bundle: events
+mode: preview
+content:
+  field_uip_title:
+    type: string
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  field_events_audiences: true
+  field_events_department: true
+  field_events_event_types: true
+  field_events_gen_interests: true
+  field_events_keywords: true
+  field_events_more: true
+  field_events_more_path: true
+  field_events_results: true
+  field_uip_classes: true
+  field_uip_colwidth: true
+  field_uip_display_title: true
+  field_uip_id: true

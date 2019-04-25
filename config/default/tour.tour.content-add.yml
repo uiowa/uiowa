@@ -1,0 +1,242 @@
+uuid: 4220652e-4625-4224-a70b-d7b1b1298755
+langcode: en
+status: true
+dependencies:
+  module:
+    - sitenow
+id: content-add
+label: 'Adding Content'
+module: sitenow
+routes:
+  -
+    route_name: node.add
+    route_params:
+      node_type: page
+tips:
+  page:
+    id: page
+    plugin: text
+    label: Page
+    weight: 0
+    attributes: {  }
+    body: '<p>On this step we''ll explain you the different parts of a page. Hang in there, there is a lot to touch on.</p><p>Lets get going!</p>'
+    location: top
+  title:
+    id: title
+    plugin: text
+    label: 'Page Title'
+    weight: 1
+    attributes:
+      data-id: edit-title-wrapper
+    body: '<p>First off, give your page a title. This is a required field. Other required fields are marked with a red asterisk.</p>'
+    location: bottom
+  page-advanced:
+    id: page-advanced
+    plugin: text
+    label: Advanced
+    weight: 2
+    attributes:
+      data-id: edit-advanced
+    body: '<p>There are a lot of optional advanced settings for the page tucked away here. You will use this part when dealing with menu placement, URL path, custom SEO settings.</p><p>Click on the section titles to expand them and see what they offer.</p>'
+    location: left
+  page-teaser-text:
+    id: page-teaser-text
+    plugin: text
+    label: 'Content Description'
+    weight: 3
+    attributes:
+      data-id: edit-node-teaser
+    body: '<p>One advanced setting to take note of is the Content Description. Type a short summary of you content here. It will be used if there are any displays around the site that reference this content. By default, this is also used by search engines when they crawl and index your site.</p><p>To learn more about Search Engine Optimization (SEO) for your site, <a href="https://uiowa.github.io/sitenow/seo">view our documentation section about SEO</a>.</p>'
+    location: left
+  content-blocks:
+    id: content-blocks
+    plugin: text
+    label: 'Content Blocks'
+    weight: 4
+    attributes:
+      data-id: edit-field-page-content-block-wrapper
+    body: '<p>Content blocks make up the content of the page. There is just so much that can be done with these. We will step through the basics.</p><p>To get a more detailed overview, <a href="https://uiowa.github.io/sitenow/content-blocks">view our documentation section about content blocks</a>.</p>'
+    location: right
+  content-blocks-admin-title:
+    id: content-blocks-admin-title
+    plugin: text
+    label: 'Section Administrative Title'
+    weight: 5
+    attributes:
+      data-id: edit-field-page-content-block-0-subform-field-section-title-wrapper
+    body: '<p>Give your section an administrative label. This isn''t displayed to users, but is helpful when working with more than one section on a page.</p>'
+    location: bottom
+  content-blocks-actions:
+    id: content-blocks-actions
+    plugin: text
+    label: 'Content Block Actions'
+    weight: 6
+    attributes:
+      data-id: field-page-content-block-0-collapse
+    body: '<p>Each content block comes with actions which let you edit, remove or duplicate the content block.</p><p>Duplicating a content block will attempt to make a copy of everything within it, even other content blocks!</p>'
+    location: left
+  content-blocks-section-settings:
+    id: content-blocks-section-settings
+    plugin: text
+    label: 'Section Settings'
+    weight: 7
+    attributes:
+      data-id: field-page-content-block-values
+    body: '<p>Each section can optionally be configured to have a background image, etc.</p>'
+    location: bottom
+  content-blocks-add-section:
+    id: content-blocks-add-section
+    plugin: text
+    label: 'Add Section'
+    weight: 8
+    attributes:
+      data-id: field-page-content-block-section-add-more
+    body: '<p>Use this button to add another section.</p>'
+    location: top
+  content-blocks-drag:
+    id: content-blocks-drag
+    plugin: text
+    label: Reorder
+    weight: 9
+    attributes:
+      data-class: field-multiple-drag
+    body: '<p>Content blocks can be reordered using this handle.</p><p><strong>Note</strong>: You cannot drag an item to another level of nesting.</p>'
+    location: right
+  content-blocks-settings:
+    id: content-blocks-settings
+    plugin: text
+    label: 'Content Block Settings'
+    weight: 10
+    attributes:
+      data-class: 'paragraphs-subform .field-group-details'
+    body: '<p>Each content block comes with a set of advanced settings. Click this one to open and then click next. I''ll wait for you.</p>'
+    location: top
+  content-blocks-colwidth:
+    id: content-blocks-colwidth
+    plugin: text
+    label: 'Column width'
+    weight: 11
+    body: '<p>The content blocks within a section each have a column width setting that defaults to "Full." Cards default to "Fluid," which means it will fill the horizontal space unless another content block within the same section gets in the way.</p><p>Two or more fluid content blocks will create divide the horizontal space up equally.</p><p>The other options, Quarter, Third, and Half will set and respect certain widths.</p>'
+  content-blocks-add-more:
+    id: content-blocks-add-more
+    plugin: text
+    label: 'Add Another?'
+    weight: 12
+    attributes:
+      data-id: edit-field-page-content-block-0-subform-field-section-content-block-add-more
+    body: '<p>Use this button to add another content block. Click the dropbutton arrow and see what other types are available.</p>'
+    location: top
+  wysiwyg:
+    id: wysiwyg
+    plugin: text
+    label: 'Text Editor (WYSIWYG) Overview'
+    weight: 13
+    attributes:
+      data-class: field--widget-text-textarea
+    body: '<p>The What-You-See-Is-What-You-Get (WYSIWYG) text editor gives you the ability to format your content and add links/media. This editor is available on most text areas around the site.</p><p>For more details, <a href="https://uiowa.github.io/sitenow/wysiwyg">view our documentation section about the WYSIWYG</a>.</p>'
+    location: top
+  text-styles:
+    id: text-styles
+    plugin: text
+    label: 'Text Format'
+    weight: 14
+    attributes:
+      data-class: cke_button__bold
+    body: '<p>You can style your text with the bold, italic, strike-through options. These can be used in conjunction with each other or other buttons on the toolbar.</p>'
+    location: bottom
+  format:
+    id: format
+    plugin: text
+    label: 'Paragraph Format'
+    weight: 15
+    attributes:
+      data-class: cke_combo__format
+    body: '<p>Here you add headings to your content. It is important for accessibility/usability that headings are used sequentially and not for style purposes. The heading will be applied to the current line/paragraph. Hit Enter/Return to break out and return to the normal format.</p>'
+    location: bottom
+  align:
+    id: align
+    plugin: text
+    label: 'Text Alignment'
+    weight: 16
+    attributes:
+      data-class: cke_button__justifycenter
+    body: '<p>There are three options for text alignment. Left, center and right. Text is left-aligned by default. The alignment will continue until the next line break similar to headings.</p>'
+    location: bottom
+  lists:
+    id: lists
+    plugin: text
+    label: Lists
+    weight: 17
+    attributes:
+      data-class: cke_button__bold
+    body: '<p>There are two types of lists you can create. Unordered (bullet points) and ordered (numbered). To create a list, click on one of the list buttons. This will insert the first list item and you can start typing. For each additional item, press Return/Enter on your keyboard. If you want to add another line to the same list item, press Shift+Return/Enter. To break out of the list and continue with other content. Press Return/Enter twice.</p>'
+    location: bottom
+  remove-format:
+    id: remove-format
+    plugin: text
+    label: 'Remove Formatting'
+    weight: 18
+    attributes:
+      data-class: cke_button__removeformat
+    body: '<p>You can quickly remove all formatting from highlighted text using the Remove Format button.</p>'
+    location: bottom
+  links:
+    id: links
+    plugin: text
+    label: Links
+    weight: 19
+    attributes:
+      data-class: cke_button__drupallink
+    body: '<p>Links to internal or external paths can be added with the link button. A separate configuration window will load.</p><p>The ''<em>URL</em>'' field will attempt to find related content based on what is typed. If no suitable result is found and selected an normal link will be created.</p><p>''<em>Upload file</em>'' will allow you to add a file that doesn''t already exist on the site. ''<em>Advanced</em>'' provides additional, though optional, configuration for the link.</p><p>You can edit an existing link by placing the cursor on the link and clicking the link button.</p><p>This is covered in more detail in, <a href="https://uiowa.github.io/sitenow/wysiwyg">our WYSIWYG documentation section</a>.</p>'
+    location: bottom
+  unlink:
+    id: unlink
+    plugin: text
+    label: 'Remove Link'
+    weight: 20
+    attributes:
+      data-class: cke_button__drupalunlink
+    body: '<p>Links can also be removed easily with the Unlink button.</p>'
+    location: bottom
+  table:
+    id: table
+    plugin: text
+    label: Tables
+    weight: 21
+    attributes:
+      data-class: cke_button__table
+    body: '<p>A table is a structured set of data made up of of rows and columns (tabular data). A separate configuration window will load. You can set initial row and column counts, designate the headers for the table and provide a table caption.</p><p><strong>Note</strong>: Though not required, a caption is strongly recommended to provide an overall description of the data found in the table.</p><p>After initializing the table, you can enter data and/or right-click on the table to add additional rows/columns or edit table properties.</p>'
+    location: bottom
+  entity-embed:
+    id: entity-embed
+    plugin: text
+    label: 'Media Entity Embed (Image)'
+    weight: 22
+    attributes:
+      data-class: cke_button__media_entity_embed
+    body: '<p>This allows you to add new or existing images to your content. A separate configuration window will load. When uploading an image, specify a name that can be used later on to find the image in the media library and choose an image. After upload, provide alternative text for the image to aid visually impaired users.</p><p>Optionally, clicking on the image thumbnail allows you to specify the portion of an image that is most important. This information can be used when the image is cropped so that you don''t, for example, end up with an image that cuts off the subject''s head.</p><p>After saving the entity, another window will load allowing you to change the size of the image used, the alignment and allow you to provide a caption that is display with the image.</p>'
+    location: bottom
+  source:
+    id: source
+    plugin: text
+    label: 'View/Edit Source'
+    weight: 23
+    attributes:
+      data-class: cke_button__source
+    body: '<p>You can look under the hood at anytime to see the markup for the content.</p><p>If you know your stuff you can write your own HTML staying within the restrictions of the <a href=''/filter/tips''>filtered_html format</a>.</p><p>HTML that is not allowed will be stripped out before rendering to site visitors.</p>'
+    location: bottom
+  page-actions:
+    id: page-actions
+    plugin: text
+    label: Publish/Save/Preview
+    weight: 24
+    attributes:
+      data-id: edit-actions
+    body: '<p>You can save, preview and publish the page here.</p><p>Site visitors will only see content marked as published.</p>'
+    location: top
+  next-step:
+    id: next-step
+    plugin: text
+    label: 'That''s It!'
+    weight: 25
+    body: '<p>Thanks for sticking with us.</p><p>As you are using the site, look for the tour icon which designates a tour is available on that page, otherwise, <a href="//uiowa.github.io/sitenow" >view our documentation</a> for more information.</p>'

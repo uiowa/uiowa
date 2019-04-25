@@ -1,0 +1,81 @@
+uuid: f819a283-a5b8-4925-97a5-68b85e060ae5
+langcode: en
+status: true
+dependencies:
+  module:
+    - sitenow
+id: media
+label: 'Add Media'
+module: sitenow
+routes:
+  -
+    route_name: entity.media.add_form
+tips:
+  intro:
+    id: intro
+    plugin: text
+    label: 'Media Overview'
+    body: '<p>Before we begin here, to see all media on the site, head over to the <a href="/admin/content/media">Media Overview</a>.</p><p>This tour will describe the new media upload process.</p><p>Also, make sure you are in the right place. Each media type has a separate upload page:</p><p><a href="/media/add/file?tour=1" class="button button--primary">File</a></p><p><a href="/media/add/image?tour=1" class="button button--primary">Image</a></p><p><a href="/media/add/image_background?tour=1" class="button button--primary">Background Image</a></p>'
+    weight: 0
+  name:
+    id: name
+    plugin: text
+    label: 'Give it a name'
+    body: '<p>This provides an administrative name for the file. This is helpful when searching and selecting media items later on. This can be the same as the filename, but is independent.</p>'
+    weight: 1
+    attributes:
+      data-id: edit-name-wrapper
+    location: bottom
+  upload:
+    id: upload
+    plugin: text
+    label: 'Upload the file'
+    body: '<p>Go ahead and select a file from you computer. The help text points out any restrictions regarding file size, type.</p>'
+    weight: 2
+    attributes:
+      data-class: form-type-managed-file
+    location: bottom
+  post-upload:
+    id: post-upload
+    plugin: text
+    label: 'After upload'
+    body: '<p>More settings may display after uploading.</p><p>For example, images, you must provide alternative text for the image to aid visually-impaired users.</p><p>Additionally, clicking on the image thumbnail allows you to select the focus area of the image. This prevents the main focus from being cropped out for certain displays around the site.</p>'
+    weight: 3
+  img-alt:
+    id: img-alt
+    plugin: text
+    label: 'Alternative Text'
+    body: '<p>It is important to provide alternative text for images to aid visually-impaired users.</p>'
+    weight: 4
+    attributes:
+      data-class: form-item-field-media-image-0-alt
+    location: right
+  img-thumbnail:
+    id: img-thumbnail
+    plugin: text
+    label: 'Select a focal point'
+    body: '<p>This is a rendered thumbnail of your uploaded image. There are areas of the site that will use this image and crop it to fit the space. Click on the focus area of the image. This helps to make sure that someone''s head isn''t chopped off during cropping.</p>'
+    weight: 5
+    attributes:
+      data-class: image-style-thumbnail
+    location: bottom
+  img-preview:
+    id: img-preview
+    plugin: text
+    label: 'Preview image'
+    body: '<p>You can preview the image with different image styles used on the site to make sure the focus you selected will work for the image.</p>'
+    weight: 6
+    attributes:
+      data-class: focal-point-preview-link
+  other:
+    id: other
+    plugin: text
+    label: 'Other settings'
+    body: '<p>There are other settings available to you, but they are all optional and set to the ideal default.</p><p>Site visitors will only see content marked as published.</p>'
+    weight: 7
+  next_step:
+    id: next_step
+    plugin: text
+    label: 'Where to next?'
+    body: '<p><a href="/node/add/page?tour=1" class="button button--primary">Page Content</a></p>'
+    weight: 8

@@ -1,0 +1,49 @@
+uuid: 745f1b03-fed3-4b4e-ac0a-d4e7d167d057
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.section.field_section_alignitems
+    - field.field.paragraph.section.field_section_container
+    - field.field.paragraph.section.field_section_content_block
+    - field.field.paragraph.section.field_section_image
+    - field.field.paragraph.section.field_section_justifycontent
+    - field.field.paragraph.section.field_section_title
+    - field.field.paragraph.section.field_uip_classes
+    - field.field.paragraph.section.field_uip_id
+    - paragraphs.paragraphs_type.section
+  module:
+    - entity_reference_revisions
+_core:
+  default_config_hash: gDkspcFj26cytK9vPmVx6W5pY06HX-KaT7ajfyxAwKk
+id: paragraph.section.default
+targetEntityType: paragraph
+bundle: section
+mode: default
+content:
+  field_section_content_block:
+    type: entity_reference_revisions_entity_view
+    weight: 0
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
+  field_section_image:
+    type: entity_reference_entity_view
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      view_mode: edgy
+      link: false
+    third_party_settings: {  }
+hidden:
+  field_section_alignitems: true
+  field_section_container: true
+  field_section_justifycontent: true
+  field_section_title: true
+  field_uip_classes: true
+  field_uip_config: true
+  field_uip_id: true

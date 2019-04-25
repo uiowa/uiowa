@@ -1,0 +1,31 @@
+uuid: d80e2c95-7785-4891-bc60-e17e053e1bdf
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.preview
+    - field.field.paragraph.text.field_text_body
+    - field.field.paragraph.text.field_uip_colwidth
+    - field.field.paragraph.text.field_uip_id
+    - paragraphs.paragraphs_type.text
+  module:
+    - text
+_core:
+  default_config_hash: n_gKhByGHhR-VL64yVw-641lTE5bAGP_dpj6nL6A4pw
+id: paragraph.text.preview
+targetEntityType: paragraph
+bundle: text
+mode: preview
+content:
+  field_text_body:
+    weight: 0
+    label: hidden
+    settings:
+      trim_length: 300
+    third_party_settings: {  }
+    type: text_trimmed
+    region: content
+hidden:
+  field_uip_classes: true
+  field_uip_colwidth: true
+  field_uip_id: true

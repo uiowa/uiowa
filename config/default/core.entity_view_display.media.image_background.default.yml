@@ -1,0 +1,55 @@
+uuid: 17b64160-5bd4-4901-8a6f-4a2756dfb5c0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.media.image_background.field_media_image_1
+    - image.style.thumbnail
+    - media.type.image_background
+  module:
+    - image
+    - user
+_core:
+  default_config_hash: V-P0XPgGlT877CXIJycR7c1AV-1a5V4LuPpQqjs4bNQ
+id: media.image_background.default
+targetEntityType: media
+bundle: image_background
+mode: default
+content:
+  created:
+    label: hidden
+    type: timestamp
+    weight: 0
+    region: content
+    settings:
+      date_format: medium
+      custom_date_format: ''
+      timezone: ''
+    third_party_settings: {  }
+  field_media_image_1:
+    weight: 6
+    label: above
+    settings:
+      image_style: ''
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+    region: content
+  thumbnail:
+    type: image
+    weight: 5
+    label: hidden
+    settings:
+      image_style: thumbnail
+      image_link: ''
+    region: content
+    third_party_settings: {  }
+  uid:
+    label: hidden
+    type: author
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  name: true

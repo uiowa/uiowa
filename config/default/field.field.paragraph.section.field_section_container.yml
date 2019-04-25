@@ -1,0 +1,25 @@
+uuid: 03de2004-4141-4a29-8765-9452f9d93e4b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_section_container
+    - paragraphs.paragraphs_type.section
+  module:
+    - options
+_core:
+  default_config_hash: 0P2FCipPiHHwoum2L1c0nAztqvZgXaMEmj6OGsH5ong
+id: paragraph.section.field_section_container
+field_name: field_section_container
+entity_type: paragraph
+bundle: section
+label: 'Content Width'
+description: 'Control the width of all content within this section.'
+required: true
+translatable: false
+default_value:
+  -
+    value: container-fluid
+default_value_callback: ''
+settings: {  }
+field_type: list_string

@@ -1,0 +1,21 @@
+uuid: 5923026a-594e-4e13-b9ed-8bf9f8122d0a
+langcode: en
+status: true
+dependencies: {  }
+id: site
+label: site
+description: 'The site config split. The folder configuration is overridden in settings.php to the sites directory - it is not reflected here.'
+folder: ''
+module: {  }
+theme: {  }
+blacklist: {  }
+graylist:
+  - config_split.config_split.site
+  - google_analytics.settings
+  - metatag.metatag_defaults.global
+  - system.site
+  - uiowa_footer.settings
+  - 'block.*'
+graylist_dependents: true
+graylist_skip_equal: true
+weight: 90

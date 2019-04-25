@@ -1,0 +1,36 @@
+uuid: 98ee6d36-b1c5-405b-97db-fa797a86317a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_page_content_block
+    - node.type.page
+    - paragraphs.paragraphs_type.section
+  module:
+    - entity_reference_revisions
+_core:
+  default_config_hash: VXs3XYHgzH2zt-IfR71WHRAJNd1fDMwOTRte5O6aetk
+id: node.page.field_page_content_block
+field_name: field_page_content_block
+entity_type: node
+bundle: page
+label: 'Content Blocks'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      section: section
+    target_bundles_drag_drop:
+      section:
+        enabled: true
+        weight: 2
+      text:
+        weight: 4
+        enabled: false
+field_type: entity_reference_revisions

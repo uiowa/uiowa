@@ -1,0 +1,30 @@
+uuid: f46e6e14-3f4f-4040-8590-54787d3c7269
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.text.field_text_body
+    - field.field.paragraph.text.field_uip_classes
+    - field.field.paragraph.text.field_uip_colwidth
+    - field.field.paragraph.text.field_uip_id
+    - paragraphs.paragraphs_type.text
+  module:
+    - text
+_core:
+  default_config_hash: LLx9gDOuchcvkhqFSiA4GtlTrLgdZXc7Tney9DPhFEg
+id: paragraph.text.default
+targetEntityType: paragraph
+bundle: text
+mode: default
+content:
+  field_text_body:
+    weight: 0
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+hidden:
+  field_uip_classes: true
+  field_uip_colwidth: true
+  field_uip_id: true
