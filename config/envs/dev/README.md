@@ -1,0 +1,1 @@
+This directory contains configuration to be imported into your Drupal site via config_split for the Dev environment. See [configuration management](http://blt.readthedocs.io/en/9.x/readme/configuration-management/) for more information.
