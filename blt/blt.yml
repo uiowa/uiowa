@@ -1,15 +1,16 @@
 project:
-  machine_name: blt
+  machine_name: sitenow
   prefix: BLT
-  human_name: 'BLTed 8'
+  human_name: 'The sitenow platform on the uiowa application.'
   profile:
     name: sitenow
   local:
     protocol: http
-    hostname: 'local.${project.machine_name}.com'
+    hostname: 'uiowa.lndo.site'
 git:
   default_branch: master
-  remotes: {  }
+  remotes:
+    - git@github.com:uiowa/uiowa.git
   hooks:
     commit-msg: false
 deploy:
@@ -23,18 +24,18 @@ drush:
 modules:
   local:
     enable: [dblog, devel, seckit, views_ui]
-    uninstall: [acquia_connector, shield]
+    uninstall: [acquia_connector]
   ci:
     enable: {  }
-    uninstall: [acquia_connector, shield]
+    uninstall: [acquia_connector]
   dev:
-    enable: [acquia_connector, shield]
+    enable: [acquia_connector]
     uninstall: {  }
   test:
-    enable: [acquia_connector, shield]
+    enable: [acquia_connector]
     uninstall: [devel, views_ui]
   prod:
-    enable: [acquia_connector, shield]
+    enable: [acquia_connector]
     uninstall: [devel, views_ui]
 disable-targets:
   tests:
