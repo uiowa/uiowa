@@ -18,20 +18,20 @@ drush:
   default_alias: '${drush.aliases.local}'
 modules:
   local:
-    enable: [dblog, devel, seckit, views_ui]
-    uninstall: [acquia_connector]
+    enable: {  }
+    uninstall: {  }
   ci:
     enable: {  }
-    uninstall: [acquia_connector]
+    uninstall: {  }
   dev:
-    enable: [acquia_connector]
+    enable: {  }
     uninstall: {  }
   test:
-    enable: [acquia_connector]
-    uninstall: [devel, views_ui]
+    enable: {  }
+    uninstall: {  }
   prod:
-    enable: [acquia_connector]
-    uninstall: [devel, views_ui]
+    enable: {  }
+    uninstall: {  }
 disable-targets:
   tests:
     yaml: { lint: { files: true } }
