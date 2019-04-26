@@ -16,9 +16,11 @@ $sites['sitenow.uiowa.lndo.site'] = 'default';
 $sites['sitenow.dev.drupal.uiowa.edu'] = 'default';
 $sites['sitenow.test.drupal.uiowa.edu'] = 'default';
 $sites['sitenow.prod.drupal.uiowa.edu'] = 'default';
+$sites['sitenow.uiowa.edu'] = 'default';
 
 // Directory aliases for hr.uiowa.edu.
-$sites['hr.uiowa.lndo.site'] = 'hr.uiowa.edu';
-$sites['hr.dev.drupal.uiowa.edu'] = 'hr.uiowa.edu';
-$sites['hr.test.drupal.uiowa.edu'] = 'hr.uiowa.edu';
-$sites['hr.prod.drupal.uiowa.edu'] = 'hr.uiowa.edu';
+$sites['hr.uiowa.lndo.site'] = 'hr';
+$sites['hr.dev.drupal.uiowa.edu'] = 'hr';
+$sites['hr.test.drupal.uiowa.edu'] = 'hr';
+$sites['hr.prod.drupal.uiowa.edu'] = 'hr';
+$sites['hr.uiowa.edu'] = 'hr';
