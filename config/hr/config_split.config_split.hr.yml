@@ -1,0 +1,40 @@
+uuid: 5923026a-594e-4e13-b9ed-8bf9f8122d0a
+langcode: en
+status: false
+dependencies: {  }
+id: hr
+label: hr
+description: 'The site config split. '
+folder: ../config/hr
+module:
+  address: 0
+  content_moderation: 0
+  hr_core: 0
+  telephone: 0
+  workflows: 0
+theme:
+  hr: 0
+blacklist: {  }
+graylist:
+  - config_split.config_split.database
+  - hr.settings
+  - image.style.uiowa_card_icon
+  - system.site
+  - system.theme
+  - taxonomy.vocabulary.units
+  - user.role.editor
+  - user.role.webmaster
+  - views.view.moderated_content
+  - views.view.units
+  - workflows.workflow.editorial
+  - config_split.config_split.hr
+  - 'core.entity_form_display.taxonomy_term.units.*'
+  - 'core.entity_view_display.taxonomy_term.units.*'
+  - 'core.entity_view_display.taxonomy_term.units.*'
+  - 'core.entity_form_display.media.*'
+  - 'field.field.taxonomy_term.units.*'
+  - 'field.storage.taxonomy_term.field_unit_*'
+  - 'block.block.*'
+graylist_dependents: true
+graylist_skip_equal: true
+weight: 90
