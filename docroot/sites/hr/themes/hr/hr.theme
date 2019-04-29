@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * HR theme.
- */
-
 use Drupal\node\NodeInterface;
 
 /**
@@ -34,7 +29,7 @@ function hr_theme_suggestions_taxonomy_term_alter(array &$suggestions, array $va
  * Implements hook_preprocess_HOOK().
  */
 function hr_preprocess_menu_local_task(&$variables) {
-  $variables['element']['#link']['url']->setOption('attributes', ['class' => ['nav-link']]);
+  $variables['element']['#link']['url']->setOption('attributes', array('class' => array('nav-link')));
 
   // If there is not an existing class array, create an empty array.
   if (!isset($variables['attributes']['class'])) {
@@ -76,7 +71,7 @@ function hr_preprocess_paragraph__card(&$variables) {
     if (isset($variables["content"]['card_image'])) {
       if ($paragraph->hasField('field_uip_classes') && !$paragraph->get('field_uip_classes')->isEmpty()) {
         $values = $paragraph->get('field_uip_classes')->getValue();
-        if (array_search('card--img-icon', array_column($values, 'value')) !== FALSE) {
+        if (array_search('card--img-icon', array_column($values, 'value')) !== false) {
           $variables["content"]["card_image"]["#style_name"] = 'uiowa_card_icon';
           $variables['content']['card_image']['#theme_wrappers'] = [
             'container' => ['#attributes' => ['class' => ['card--img-icon-wrapper']]],
