@@ -11,6 +11,11 @@
  * @see example.sites.php
  */
 
+// Require local sites.php if available.
+if (file_exists(__DIR__ . '/sites.local.php')) {
+  require __DIR__ . '/sites.local.php';
+}
+
 // Directory aliases for sitenow.uiowa.edu (default).
 $sites['sitenow.uiowa.lndo.site'] = 'default';
 $sites['sitenow.dev.drupal.uiowa.edu'] = 'default';
