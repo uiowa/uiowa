@@ -1,0 +1,287 @@
+<?php
+
+/**
+ * @file
+ * Article configuration for the University of Iowa.
+ */
+
+use Drupal\media\Entity\Media;
+use Drupal\file\Entity\File;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Component\Utility\Html;
+use Drupal\views\Views;
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function sitenow_articles_entity_extra_field_info() {
+  $extra = [];
+
+  $extra['node']['article'] = [
+    'display' => [
+      'article_created_date' => [
+        'label' => t('Created Date'),
+        'description' => t('Date the node was created.'),
+        'weight' => 100,
+        'visible' => TRUE,
+      ],
+    ],
+  ];
+
+  return $extra;
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_articles_preprocess_breadcrumb(&$variables) {
+  // Not ideal. Unset view contextual filter breadcrumb duplicates.
+  // Waiting for https://www.drupal.org/project/drupal/issues/2966004,
+  // https://www.drupal.org/project/drupal/issues/2787051...
+  $routes = [];
+  foreach ($variables["links"] as $key => $link) {
+    $routes[$key] = $link->getUrl()->getRouteName();
+  }
+  // For breadcrumb links built from view articles path, reduce duplicates.
+  if (in_array('view.articles.page_articles', $routes)) {
+    $unique_routes = array_keys(array_unique($routes, SORT_REGULAR));
+    foreach ($variables["breadcrumb"] as $key => $value) {
+      if (!in_array($key, $unique_routes)) {
+        unset($variables["breadcrumb"][$key]);
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_articles_preprocess_field(&$variables) {
+  if ($variables["element"]["#field_name"] == 'field_article_author') {
+    if ($variables["element"]["#formatter"] == 'entity_reference_label') {
+      $variables["element"]["#title"] = 'Written by';
+      $variables["label"] = 'Written by';
+    }
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function sitenow_articles_theme_suggestions_field_alter(array &$suggestions, array $variables) {
+  if ($variables["element"]["#field_name"] == 'field_article_author') {
+    if ($variables["element"]["#formatter"] == 'entity_reference_label') {
+      $suggestions[] = 'field__node__field_article_author__sep';
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_articles_preprocess_node(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+
+    $node = $variables["node"];
+    switch ($node->getType()) {
+      case 'article':
+        $image_field = $node->get('field_image');
+        if (!$image_field->isEmpty()) {
+          if ($variables["view_mode"] == 'teaser') {
+            $style = 'large';
+          }
+          else {
+            $style = 'uiowa_article';
+
+            $variables['content']['article_author'] = $node->field_article_author->view([
+              'type' => 'entity_reference_label',
+              'label' => 'inline',
+              'settings' => [],
+            ]);
+          }
+          $image = $image_field->first()->getValue();
+          $media = Media::load($image['target_id']);
+          $media_field = $media->get('field_media_image')
+            ->first()
+            ->getValue();
+          $file = File::load($media_field['target_id']);
+          $uri = $file->getFileUri();
+          $alt = ($media_field['alt'] ? $media_field['alt'] : '');
+          $image = [
+            '#theme' => 'image_style',
+            '#width' => NULL,
+            '#height' => NULL,
+            '#style_name' => $style,
+            '#uri' => $uri,
+            '#alt' => $alt,
+            '#weight' => -1,
+            '#attributes' => [
+              'class' => 'article-image',
+            ],
+          ];
+          $variables["content"]['article_image'] = $image;
+        }
+        break;
+
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function sitenow_articles_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  switch ($entity->getType()) {
+    case 'article':
+      if ($display->getComponent('article_created_date')) {
+        $created = $entity->get('created')->value;
+        $date = \Drupal::service('date.formatter')->format($created, 'medium');
+        $build['article_created_date'] = [
+          '#type' => 'markup',
+          '#markup' => '<span class="article-created-date">' . $date . '</span>',
+        ];
+      }
+      break;
+
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_articles_preprocess_views_view(&$variables) {
+  switch ($variables["id"]) {
+    case 'articles':
+      if (empty($variables["header"]["area"]["#text"])) {
+        unset($variables["header"]["area"]);
+      }
+      break;
+
+  }
+}
+
+/**
+ * Implements hook_preprocess_views_view_summary().
+ */
+function sitenow_articles_preprocess_views_view_summary(&$variables) {
+  if ($variables["view"]->current_display == 'block_articles_archive') {
+    foreach ($variables["rows"] as $key => $value) {
+      $explode = explode('/', $value->url);
+      unset($explode[3]);
+      $explode[2] = substr_replace($explode[2], '/', 4, 0);
+      $value->url = implode("/", $explode);
+    }
+  }
+}
+
+/**
+ * Implements hook_uip_classes_alter().
+ */
+function sitenow_articles_uip_classes_alter(&$options, $entity, $bundle) {
+  switch ($bundle) {
+    case 'articles':
+      $options['hide-descriptions'] = 'Hide Summaries';
+      $options['hide-images'] = 'Hide Images';
+      $options['grid'] = 'Grid';
+      $options['masonry'] = 'Masonry';
+      break;
+
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function sitenow_articles_theme($existing, $type, $theme, $path) {
+  return [
+    'paragraph__articles__default' => [
+      'template' => 'paragraph--articles--default',
+      'base hook' => 'paragraph',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_articles_preprocess_paragraph(&$variables) {
+  $paragraph = $variables['paragraph'];
+  switch ($paragraph->bundle()) {
+    case 'articles':
+      $admin_context = \Drupal::service('router.admin_context');
+      if (!$admin_context->isAdminRoute()) {
+
+        // Display title if it exists.
+        if ($paragraph->hasField('field_uip_display_title')) {
+          if ($paragraph->field_uip_display_title->value == 1) {
+            $variables['display_title'] = TRUE;
+          }
+        }
+
+        if ($paragraph->hasField('field_uip_classes') && !$paragraph->get('field_uip_classes')->isEmpty()) {
+          $classes = $paragraph->get('field_uip_classes')->getValue();
+          // Clean array of classes selected.
+          $classes = array_column($classes, 'value');
+          // Check for grid classes otherwise add list class.
+          $display_options = [
+            'grid',
+            'masonry',
+          ];
+          $result = array_intersect($display_options, $classes);
+          if (!$result) {
+            $variables['attributes']['class'][] = 'list';
+          }
+        }
+        else {
+          $variables['attributes']['class'][] = 'list';
+        }
+        // Get field_uip_colwidth value.
+        if ($paragraph->hasField('field_uip_colwidth')) {
+          $variables['attributes']['class'][] = $paragraph->field_uip_colwidth->value;
+        }
+        // Get field_uip_id value.
+        if ($paragraph->hasField('field_uip_id')) {
+          $variables['attributes']['id'][] = Html::getUniqueId($paragraph->field_uip_id->value);
+        }
+
+        $view = Views::getView('articles_block');
+        $view->setDisplay('block_articles');
+
+        if ($paragraph->hasField('field_reference') && !$paragraph->get('field_reference')->isEmpty()) {
+          $tids = $paragraph->get('field_reference')->getValue();
+          // Clean array of classes selected.
+          $tids = array_column($tids, 'target_id');
+        }
+        else {
+          $tids = ['all'];
+        }
+        // Contextual relationship filter.
+        $args = implode('+', $tids);
+        $view->setArguments([$args]);
+        $view->setAjaxEnabled(TRUE);
+
+        if ($paragraph->hasField('field_uip_items') && !$paragraph->get('field_uip_items')->isEmpty()) {
+          $items = $paragraph->field_uip_items->value;
+          $view->setItemsPerPage($items);
+        }
+        $pager_type = 'some';
+        // Show pager if it exists and is set.
+        if ($paragraph->hasField('field_uip_pager')) {
+          if ($paragraph->field_uip_pager->value == 1) {
+            $pager_type = 'full';
+          }
+        }
+
+        $pager = $view->display_handler->getOption('pager');
+        // IF show pager, change pager_type to 'full'.
+        $pager['type'] = $pager_type;
+        $view->display_handler->setOption('pager', $pager);
+
+        $variables['content']['view'] = $view->render();
+      }
+
+      break;
+  }
+}
