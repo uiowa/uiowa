@@ -1,21 +1,21 @@
 project:
-  machine_name: uiowa01
-  prefix: BLT
-  human_name: 'BLTed 8'
+  prefix: UIowa01
+  human_name: 'UIowa 01'
   profile:
     name: lightning
-  local:
-    protocol: http
-    hostname: 'local.${project.machine_name}.com'
+  local: {  }
 git:
   default_branch: master
   remotes: {  }
 deploy:
   tag_source: true
+drupal:
+  db:
+    username: root
+    password: ''
+    host: database
 drush:
   aliases:
-    remote: '${project.machine_name}.test'
-    local: self
     ci: self
   default_alias: '${drush.aliases.local}'
 modules:
