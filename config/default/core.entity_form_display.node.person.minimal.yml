@@ -1,0 +1,44 @@
+uuid: d63a5af5-4caf-47ca-8251-ad98e467930a
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.node.minimal
+    - field.field.node.person.field_person_email
+    - field.field.node.person.field_person_first_name
+    - field.field.node.person.field_person_last_name
+    - field.field.node.person.field_person_phone
+    - node.type.person
+id: node.person.minimal
+targetEntityType: node
+bundle: person
+mode: minimal
+content:
+  field_person_first_name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_person_last_name:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  field_person_email: true
+  field_person_phone: true
+  moderation_state: true
+  path: true
+  promote: true
+  status: true
+  sticky: true
+  title: true
+  uid: true
+  url_redirects: true

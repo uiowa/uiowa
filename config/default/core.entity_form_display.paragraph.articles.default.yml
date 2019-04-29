@@ -1,0 +1,99 @@
+uuid: bd9effb6-f9c7-4e4e-b269-19f6935a5888
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.articles.field_reference
+    - field.field.paragraph.articles.field_uip_classes
+    - field.field.paragraph.articles.field_uip_colwidth
+    - field.field.paragraph.articles.field_uip_display_title
+    - field.field.paragraph.articles.field_uip_id
+    - field.field.paragraph.articles.field_uip_items
+    - field.field.paragraph.articles.field_uip_pager
+    - field.field.paragraph.articles.field_uip_title
+    - paragraphs.paragraphs_type.articles
+  module:
+    - field_group
+third_party_settings:
+  field_group:
+    group_uip_settings:
+      children:
+        - field_uip_colwidth
+        - field_uip_classes
+        - field_uip_id
+      parent_name: ''
+      weight: 5
+      format_type: details
+      format_settings:
+        id: ''
+        classes: ''
+        open: false
+        required_fields: true
+      label: 'Article listing settings'
+id: paragraph.articles.default
+targetEntityType: paragraph
+bundle: articles
+mode: default
+content:
+  field_reference:
+    weight: 2
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete_tags
+    region: content
+  field_uip_classes:
+    weight: 5
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_uip_colwidth:
+    weight: 4
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_uip_display_title:
+    weight: 1
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_uip_id:
+    weight: 6
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_uip_items:
+    weight: 3
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_uip_pager:
+    weight: 4
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_uip_title:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden:
+  created: true
+  status: true
+  uid: true

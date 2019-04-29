@@ -1,0 +1,34 @@
+uuid: bda65427-5b02-4e7d-94b7-02e6af41dce4
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.preview
+    - field.field.paragraph.articles.field_reference
+    - field.field.paragraph.articles.field_uip_classes
+    - field.field.paragraph.articles.field_uip_colwidth
+    - field.field.paragraph.articles.field_uip_display_title
+    - field.field.paragraph.articles.field_uip_id
+    - field.field.paragraph.articles.field_uip_title
+    - paragraphs.paragraphs_type.articles
+id: paragraph.articles.preview
+targetEntityType: paragraph
+bundle: articles
+mode: preview
+content:
+  field_uip_title:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden:
+  field_reference: true
+  field_uip_classes: true
+  field_uip_colwidth: true
+  field_uip_display_title: true
+  field_uip_id: true
+  field_uip_items: true
+  field_uip_pager: true

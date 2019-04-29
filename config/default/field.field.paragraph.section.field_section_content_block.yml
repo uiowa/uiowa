@@ -5,9 +5,10 @@ dependencies:
   config:
     - field.storage.paragraph.field_section_content_block
     - paragraphs.paragraphs_type.accordion
+    - paragraphs.paragraphs_type.articles
+    - paragraphs.paragraphs_type.blockquote
     - paragraphs.paragraphs_type.card
     - paragraphs.paragraphs_type.events
-    - paragraphs.paragraphs_type.blockquote
     - paragraphs.paragraphs_type.section
     - paragraphs.paragraphs_type.text
   module:
@@ -32,8 +33,9 @@ settings:
       text: text
       accordion: accordion
       card: card
-      events: events
       blockquote: blockquote
+      events: events
+      articles: articles
     target_bundles_drag_drop:
       section:
         weight: 3
@@ -56,4 +58,7 @@ settings:
       events:
         enabled: true
         weight: 10
+      articles:
+        enabled: true
+        weight: 11
 field_type: entity_reference_revisions
