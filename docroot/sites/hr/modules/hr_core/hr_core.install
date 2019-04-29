@@ -2,7 +2,10 @@
 
 /**
  * @file
+ * Install tasks.
  */
+
+use Drupal\taxonomy\Entity\Term;
 
 /**
  * Populate FAQ Categories.
@@ -33,7 +36,7 @@ function hr_core_update_8001() {
     'Working at Iowa',
   ];
   foreach ($terms as $term) {
-    $new_term = \Drupal\taxonomy\Entity\Term::create([
+    $new_term = Term::create([
       'vid' => 'faq_categories',
       'name' => $term,
     ]);
@@ -43,7 +46,7 @@ function hr_core_update_8001() {
   }
 
   // Benefits tree.
-  $parent = \Drupal\taxonomy\Entity\Term::create(['vid' => 'faq_categories', 'name' => 'Benefits']);
+  $parent = Term::create(['vid' => 'faq_categories', 'name' => 'Benefits']);
   $parent->enforceIsNew();
   $parent->save();
   $parent_tid = $parent->id();
@@ -69,7 +72,7 @@ function hr_core_update_8001() {
     "Workers' Compensation - Supervisor Questions",
   ];
   foreach ($terms as $term) {
-    $new_term = \Drupal\taxonomy\Entity\Term::create([
+    $new_term = Term::create([
       'vid' => 'faq_categories',
       'name' => $term,
       'parent' => $parent_tid,
@@ -80,7 +83,7 @@ function hr_core_update_8001() {
   }
 
   // Retirement tree.
-  $parent = \Drupal\taxonomy\Entity\Term::create(['vid' => 'faq_categories', 'name' => 'Retirement']);
+  $parent = Term::create(['vid' => 'faq_categories', 'name' => 'Retirement']);
   $parent->enforceIsNew();
   $parent->save();
   $parent_tid = $parent->id();
@@ -93,7 +96,7 @@ function hr_core_update_8001() {
     'University Retirement Plans',
   ];
   foreach ($terms as $term) {
-    $new_term = \Drupal\taxonomy\Entity\Term::create([
+    $new_term = Term::create([
       'vid' => 'faq_categories',
       'name' => $term,
       'parent' => $parent_tid,
@@ -104,7 +107,7 @@ function hr_core_update_8001() {
   }
 
   // Compensation and Classification tree.
-  $parent = \Drupal\taxonomy\Entity\Term::create(['vid' => 'faq_categories', 'name' => 'Compensation and Classification']);
+  $parent = Term::create(['vid' => 'faq_categories', 'name' => 'Compensation and Classification']);
   $parent->enforceIsNew();
   $parent->save();
   $parent_tid = $parent->id();
@@ -117,7 +120,7 @@ function hr_core_update_8001() {
     'Creating a Local Job Description',
   ];
   foreach ($terms as $term) {
-    $new_term = \Drupal\taxonomy\Entity\Term::create([
+    $new_term = Term::create([
       'vid' => 'faq_categories',
       'name' => $term,
       'parent' => $parent_tid,
@@ -128,7 +131,7 @@ function hr_core_update_8001() {
   }
 
   // Disaster Preparedness tree.
-  $parent = \Drupal\taxonomy\Entity\Term::create(['vid' => 'faq_categories', 'name' => 'Disaster Preparedness']);
+  $parent = Term::create(['vid' => 'faq_categories', 'name' => 'Disaster Preparedness']);
   $parent->enforceIsNew();
   $parent->save();
   $parent_tid = $parent->id();
@@ -140,7 +143,7 @@ function hr_core_update_8001() {
     "Curtailment of Operations (Closure) and Employee's Pay Status",
   ];
   foreach ($terms as $term) {
-    $new_term = \Drupal\taxonomy\Entity\Term::create([
+    $new_term = Term::create([
       'vid' => 'faq_categories',
       'name' => $term,
       'parent' => $parent_tid,
@@ -151,7 +154,7 @@ function hr_core_update_8001() {
   }
 
   // liveWELL tree.
-  $parent = \Drupal\taxonomy\Entity\Term::create(['vid' => 'faq_categories', 'name' => 'liveWELL']);
+  $parent = Term::create(['vid' => 'faq_categories', 'name' => 'liveWELL']);
   $parent->enforceIsNew();
   $parent->save();
   $parent_tid = $parent->id();
@@ -165,7 +168,7 @@ function hr_core_update_8001() {
     'My Personal Wellness Modules',
   ];
   foreach ($terms as $term) {
-    $new_term = \Drupal\taxonomy\Entity\Term::create([
+    $new_term = Term::create([
       'vid' => 'faq_categories',
       'name' => $term,
       'parent' => $parent_tid,
@@ -176,16 +179,16 @@ function hr_core_update_8001() {
   }
 
   // E-Verify tree.
-  $parent = \Drupal\taxonomy\Entity\Term::create(['vid' => 'faq_categories', 'name' => 'E-Verify']);
+  $parent = Term::create(['vid' => 'faq_categories', 'name' => 'E-Verify']);
   $parent->enforceIsNew();
   $parent->save();
   $parent_tid = $parent->id();
   $terms = [
     'Ongoing Compliance with E-Verify',
-	  'New Contracts with the E-Verify Clause',
+    'New Contracts with the E-Verify Clause',
   ];
   foreach ($terms as $term) {
-    $new_term = \Drupal\taxonomy\Entity\Term::create([
+    $new_term = Term::create([
       'vid' => 'faq_categories',
       'name' => $term,
       'parent' => $parent_tid,
@@ -196,7 +199,7 @@ function hr_core_update_8001() {
   }
 
   // I-9 Management tree.
-  $parent = \Drupal\taxonomy\Entity\Term::create(['vid' => 'faq_categories', 'name' => 'I-9 Management']);
+  $parent = Term::create(['vid' => 'faq_categories', 'name' => 'I-9 Management']);
   $parent->enforceIsNew();
   $parent->save();
   $parent_tid = $parent->id();
@@ -211,7 +214,7 @@ function hr_core_update_8001() {
     'Reports',
   ];
   foreach ($terms as $term) {
-    $new_term = \Drupal\taxonomy\Entity\Term::create([
+    $new_term = Term::create([
       'vid' => 'faq_categories',
       'name' => $term,
       'parent' => $parent_tid,
@@ -222,7 +225,7 @@ function hr_core_update_8001() {
   }
 
   // Payroll tree.
-  $parent = \Drupal\taxonomy\Entity\Term::create(['vid' => 'faq_categories', 'name' => 'Payroll']);
+  $parent = Term::create(['vid' => 'faq_categories', 'name' => 'Payroll']);
   $parent->enforceIsNew();
   $parent->save();
   $parent_tid = $parent->id();
@@ -234,7 +237,7 @@ function hr_core_update_8001() {
     'Preferred First Name',
   ];
   foreach ($terms as $term) {
-    $new_term = \Drupal\taxonomy\Entity\Term::create([
+    $new_term = Term::create([
       'vid' => 'faq_categories',
       'name' => $term,
       'parent' => $parent_tid,
