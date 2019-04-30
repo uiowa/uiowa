@@ -60,15 +60,7 @@ BLT provides an automation layer for testing, building, and launching Drupal 8 a
    ```
    $sites['8888.localhost'] = 'mysite';
    ```
-7. Configure `local.settings.php` by editing docroot/sites/mysite/blt.yml:
-   ```
-  drupal:
-  db:
-    database: mysite
-    host: database
-    user: root
-    password: null
-  ```
+7. Configure `local.settings.php` to override Lando defaults.
 8. Start the built-in PHP server.
     ```
     $ drush -l mysite rs --dns
