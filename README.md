@@ -32,7 +32,7 @@ BLT provides an automation layer for testing, building, and launching Drupal 8 a
   db:
     database: mysite
     host: database
-    user: root
+    username: root
     password: null
   ```
 3. Run `lando blt setup`.
