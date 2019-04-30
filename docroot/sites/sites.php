@@ -56,4 +56,10 @@
  * @see https://www.drupal.org/documentation/install/multi-site
  */
 
+// Directory aliases for iowasuperfund.uiowa.edu.
 $sites['iowasuperfund.uiowa.local.site'] = 'iowasuperfund';
+$sites['iowasuperfund.uiowa.lndo.site'] = 'iowasuperfund';
+$sites['iowasuperfund-d8.dev.drupal.uiowa.edu'] = 'iowasuperfund';
+$sites['iowasuperfund-d8.test.drupal.uiowa.edu'] = 'iowasuperfund';
+$sites['iowasuperfund.prod.drupal.uiowa.edu'] = 'iowasuperfund';
+$sites['iowasuperfund.uiowa.edu'] = 'hr';
