@@ -1,4 +1,42 @@
 name: uiowa01
 recipe: drupal8
+
+proxy:
+  appserver:
+    - uiowa.lndo.site
+    - "*.uiowa.lndo.site"
+
 config:
-  webroot: docroot
+  webroot: ./docroot
+  php: '7.2'
+  via: apache
+  drupal: false
+  drush: false
+  xdebug: true
+  ssl: true
+
+services:
+  database:
+    type: mysql:5.7
+  cache:
+    type: memcached:1
+  appserver:
+    run:
+      - composer install --no-suggest
+    overrides:
+      environment:
+        HOME: /app
+#        AH_SITE_ENVIRONMENT: lando
+        IS_LANDO: 1
+        AH_NON_PRODUCTION: 1
+        PHP_IDE_CONFIG: serverName=uiowa.lndo.site
+        SIMPLETEST_BASE_URL: https://uiowa.lndo.site
+        SIMPLETEST_DB: mysql://drupal8:drupal8@database/drupal8
+        SYMFONY_DEPRECATIONS_HELPER: disabled
+
+tooling:
+  blt:
+    service: appserver
+    cmd: /app/vendor/bin/blt
+  drush:
+    cmd: /app/drush/drush.sh

@@ -62,4 +62,4 @@ $sites['iowasuperfund.uiowa.lndo.site'] = 'iowasuperfund';
 $sites['iowasuperfund-d8.dev.drupal.uiowa.edu'] = 'iowasuperfund';
 $sites['iowasuperfund-d8.test.drupal.uiowa.edu'] = 'iowasuperfund';
 $sites['iowasuperfund.prod.drupal.uiowa.edu'] = 'iowasuperfund';
-$sites['iowasuperfund.uiowa.edu'] = 'hr';
+$sites['iowasuperfund.uiowa.edu'] = 'iowasuperfund';
