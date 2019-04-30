@@ -1,0 +1,41 @@
+uuid: 29543f90-b99a-4bcb-8508-764401e20f22
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.person.field_person_email
+    - field.field.node.person.field_person_first_name
+    - field.field.node.person.field_person_last_name
+    - field.field.node.person.field_person_phone
+    - node.type.person
+  module:
+    - telephone
+    - user
+id: node.person.default
+targetEntityType: node
+bundle: person
+mode: default
+content:
+  field_person_email:
+    type: email_mailto
+    weight: 0
+    region: content
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+  field_person_phone:
+    weight: 1
+    label: inline
+    settings:
+      title: ''
+    third_party_settings: {  }
+    type: telephone_link
+    region: content
+  links:
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_person_first_name: true
+  field_person_last_name: true

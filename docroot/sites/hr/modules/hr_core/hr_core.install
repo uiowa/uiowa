@@ -1,0 +1,249 @@
+<?php
+
+/**
+ * @file
+ * Install tasks.
+ */
+
+use Drupal\taxonomy\Entity\Term;
+
+/**
+ * Populate FAQ Categories.
+ */
+function hr_core_update_8001() {
+  $terms = [
+    'Collective Bargaining Updates',
+    'Dual Career Services',
+    'Tobacco Free Policy',
+    'Reference Checks',
+    'American with Disabilities Act (ADA)',
+    'Behavior Risk Management',
+    'Career Development',
+    'Child Care Subsidy Program',
+    'Competencies',
+    'Employee Assistance Program',
+    'Employee Exit Interviews',
+    'FLSA Update - Employee Questions',
+    'FLSA Update - Supervisor Questions',
+    'Mandatory Reduction in Time',
+    'Medical Documentation Management',
+    'Military Leave Rights',
+    'Merit Supervisory Exempt and Confidential',
+    'Merit Positions',
+    'Reduction in Force - AFSCME Covered Staff',
+    'Reduction in Force - SEIU Covered Staff',
+    'UI LEAD',
+    'Working at Iowa',
+  ];
+  foreach ($terms as $term) {
+    $new_term = Term::create([
+      'vid' => 'faq_categories',
+      'name' => $term,
+    ]);
+
+    $new_term->enforceIsNew();
+    $new_term->save();
+  }
+
+  // Benefits tree.
+  $parent = Term::create(['vid' => 'faq_categories', 'name' => 'Benefits']);
+  $parent->enforceIsNew();
+  $parent->save();
+  $parent_tid = $parent->id();
+  $terms = [
+    'Affordable Care Act',
+    'Dependent Eligibility Verification',
+    'Catastrophic Leave',
+    'Catastrophic Leave - Employees in Need of Donations',
+    'Catastrophic Leave - Employees Making Donations',
+    'Catastrophic Leave - Department Questions',
+    'Change of Job (e.g. Merit to P&S or P&S to Merit)',
+    'COBRA',
+    'Flexible Spending Accounts',
+    'General Benefits',
+    'International Travel Insurance',
+    'Long-Term Disability',
+    'New Hires',
+    'Prescription Drug Program',
+    'Student Health Insurance',
+    'Termination',
+    'Treasury Direct (U.S. Savings Bonds)',
+    "Workers’ Compensation – Employee Questions",
+    "Workers' Compensation - Supervisor Questions",
+  ];
+  foreach ($terms as $term) {
+    $new_term = Term::create([
+      'vid' => 'faq_categories',
+      'name' => $term,
+      'parent' => $parent_tid,
+    ]);
+
+    $new_term->enforceIsNew();
+    $new_term->save();
+  }
+
+  // Retirement tree.
+  $parent = Term::create(['vid' => 'faq_categories', 'name' => 'Retirement']);
+  $parent->enforceIsNew();
+  $parent->save();
+  $parent_tid = $parent->id();
+  $terms = [
+    'IPERS Refunds',
+    'Retirement from the University',
+    'Retirees',
+    'Saving Extra for Retirement',
+    'TIAA CREF Cash Withdrawals',
+    'University Retirement Plans',
+  ];
+  foreach ($terms as $term) {
+    $new_term = Term::create([
+      'vid' => 'faq_categories',
+      'name' => $term,
+      'parent' => $parent_tid,
+    ]);
+
+    $new_term->enforceIsNew();
+    $new_term->save();
+  }
+
+  // Compensation and Classification tree.
+  $parent = Term::create(['vid' => 'faq_categories', 'name' => 'Compensation and Classification']);
+  $parent->enforceIsNew();
+  $parent->save();
+  $parent_tid = $parent->id();
+  $terms = [
+    'Pay Practices',
+    'Pay Plan',
+    'Job Classifications',
+    'Professional and Scientific Compensation',
+    'Working Titles',
+    'Creating a Local Job Description',
+  ];
+  foreach ($terms as $term) {
+    $new_term = Term::create([
+      'vid' => 'faq_categories',
+      'name' => $term,
+      'parent' => $parent_tid,
+    ]);
+
+    $new_term->enforceIsNew();
+    $new_term->save();
+  }
+
+  // Disaster Preparedness tree.
+  $parent = Term::create(['vid' => 'faq_categories', 'name' => 'Disaster Preparedness']);
+  $parent->enforceIsNew();
+  $parent->save();
+  $parent_tid = $parent->id();
+  $terms = [
+    'Health and Safety Considerations',
+    'Employee Contact Lists',
+    'Notice to Employees and Unions',
+    'Job Assignments / Reassignments',
+    "Curtailment of Operations (Closure) and Employee's Pay Status",
+  ];
+  foreach ($terms as $term) {
+    $new_term = Term::create([
+      'vid' => 'faq_categories',
+      'name' => $term,
+      'parent' => $parent_tid,
+    ]);
+
+    $new_term->enforceIsNew();
+    $new_term->save();
+  }
+
+  // liveWELL tree.
+  $parent = Term::create(['vid' => 'faq_categories', 'name' => 'liveWELL']);
+  $parent->enforceIsNew();
+  $parent->save();
+  $parent_tid = $parent->id();
+  $terms = [
+    'Live Healthy Iowa',
+    'Health Coach Service',
+    'liveWELL Points and Wellness Store',
+    'My Health and Wellness',
+    'Recreation Membership Incentive Program',
+    'Personal Health Assessment',
+    'My Personal Wellness Modules',
+  ];
+  foreach ($terms as $term) {
+    $new_term = Term::create([
+      'vid' => 'faq_categories',
+      'name' => $term,
+      'parent' => $parent_tid,
+    ]);
+
+    $new_term->enforceIsNew();
+    $new_term->save();
+  }
+
+  // E-Verify tree.
+  $parent = Term::create(['vid' => 'faq_categories', 'name' => 'E-Verify']);
+  $parent->enforceIsNew();
+  $parent->save();
+  $parent_tid = $parent->id();
+  $terms = [
+    'Ongoing Compliance with E-Verify',
+    'New Contracts with the E-Verify Clause',
+  ];
+  foreach ($terms as $term) {
+    $new_term = Term::create([
+      'vid' => 'faq_categories',
+      'name' => $term,
+      'parent' => $parent_tid,
+    ]);
+
+    $new_term->enforceIsNew();
+    $new_term->save();
+  }
+
+  // I-9 Management tree.
+  $parent = Term::create(['vid' => 'faq_categories', 'name' => 'I-9 Management']);
+  $parent->enforceIsNew();
+  $parent->save();
+  $parent_tid = $parent->id();
+  $terms = [
+    'Using I-9 Management',
+    'Timeline for Completing I-9s',
+    'Login/Passwords',
+    'Documents',
+    'Non Residents',
+    'Paper I-9 Forms',
+    'Reverification/Rehires',
+    'Reports',
+  ];
+  foreach ($terms as $term) {
+    $new_term = Term::create([
+      'vid' => 'faq_categories',
+      'name' => $term,
+      'parent' => $parent_tid,
+    ]);
+
+    $new_term->enforceIsNew();
+    $new_term->save();
+  }
+
+  // Payroll tree.
+  $parent = Term::create(['vid' => 'faq_categories', 'name' => 'Payroll']);
+  $parent->enforceIsNew();
+  $parent->save();
+  $parent_tid = $parent->id();
+  $terms = [
+    'Year End Tax Forms',
+    'Featured Questions',
+    'TALX and THE WORK NUMBER®',
+    'Multiple Direct Deposit',
+    'Preferred First Name',
+  ];
+  foreach ($terms as $term) {
+    $new_term = Term::create([
+      'vid' => 'faq_categories',
+      'name' => $term,
+      'parent' => $parent_tid,
+    ]);
+
+    $new_term->enforceIsNew();
+    $new_term->save();
+  }
+}

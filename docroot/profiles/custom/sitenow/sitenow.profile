@@ -265,6 +265,8 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
     case 'node_page_edit_form':
     case 'node_page_form':
+    case 'node_article_edit_form':
+    case 'node_article_form':
       if (isset($form['field_teaser'])) {
         // Create node_teaser group in the advanced container.
         $form['node_teaser'] = [
@@ -283,6 +285,29 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         ];
         // Set field_teaser to node_teaser group.
         $form['field_teaser']['#group'] = 'node_teaser';
+      }
+      if (isset($form['field_image'])) {
+        // Create node_image group in the advanced container.
+        $form['node_image'] = [
+          '#type' => 'details',
+          '#title' => t('Featured Image'),
+          '#group' => 'advanced',
+          '#attributes' => [
+            'class' => ['node-form-image'],
+          ],
+          '#attached' => [
+            'library' => ['node/drupal.node'],
+          ],
+          '#weight' => -10,
+          '#optional' => TRUE,
+          '#open' => FALSE,
+        ];
+        // Set field_image to node_image group.
+        $form['field_image']['#group'] = 'node_image';
+        if (isset($form['field_image_caption'])) {
+          // Set field_image_caption to node_image group.
+          $form['field_image_caption']['#group'] = 'node_image';
+        }
       }
       if (isset($form['field_related_content']) || isset($form['field_reference'])) {
         // Create node_relations group in the advanced container.

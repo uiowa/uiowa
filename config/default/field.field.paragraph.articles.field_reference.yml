@@ -1,0 +1,29 @@
+uuid: c6cdf35a-aed0-4ba4-bc14-dbfa4d6a59f9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_reference
+    - paragraphs.paragraphs_type.articles
+    - taxonomy.vocabulary.tags
+id: paragraph.articles.field_reference
+field_name: field_reference
+entity_type: paragraph
+bundle: articles
+label: 'Filter articles by reference'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      tags: tags
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

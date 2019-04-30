@@ -4,13 +4,12 @@ status: true
 dependencies: {  }
 id: hr
 label: hr
-description: 'The site config split. '
+description: 'The site config split.'
 folder: ../config/hr
 module:
   address: 0
   content_moderation: 0
   hr_core: 0
-  telephone: 0
   workflows: 0
 theme:
   hr: 0
@@ -18,21 +17,38 @@ blacklist: {  }
 graylist:
   - config_split.config_split.database
   - config_split.config_split.hr
+  - core.base_field_override.node.faq.promote
+  - core.base_field_override.node.faq.title
+  - core.entity_form_display.node.faq.default
+  - core.entity_form_display.paragraph.faqs.default
+  - core.entity_view_display.node.faq.default
+  - core.entity_view_display.node.faq.teaser
+  - core.entity_view_display.paragraph.faqs.default
+  - field.field.node.faq.field_faq_categories
+  - field.field.node.faq.field_faq_content
+  - field.storage.node.field_faq_categories
+  - field.storage.node.field_faq_content
+  - field.storage.paragraph.field_reference
   - hr.settings
   - image.style.uiowa_card_icon
+  - node.type.faq
+  - paragraphs.paragraphs_type.faqs
   - system.site
   - system.theme
+  - taxonomy.vocabulary.faq_categories
   - taxonomy.vocabulary.units
   - user.role.editor
   - user.role.webmaster
   - views.view.moderated_content
   - views.view.units
   - workflows.workflow.editorial
+  - views.view.faqs
   - 'core.entity_form_display.taxonomy_term.units.*'
   - 'core.entity_view_display.taxonomy_term.units.*'
   - 'core.entity_view_display.taxonomy_term.units.*'
   - 'core.entity_form_display.media.*'
   - 'field.field.taxonomy_term.units.*'
+  - 'field.field.paragraph.faqs.*'
   - 'field.storage.taxonomy_term.field_unit_*'
   - 'block.block.*'
 graylist_dependents: true
