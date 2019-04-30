@@ -35,7 +35,7 @@ BLT provides an automation layer for testing, building, and launching Drupal 8 a
     user: root
     password: null
   ```
-3. Run `blt setup`.
+3. Run `lando blt setup`.
 4. Edit `sites.local.php` to route requests to multisite directories:
    ```
    $sites['mysite.uiowa.lndo.site'] = 'mysite';
