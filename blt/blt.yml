@@ -35,3 +35,12 @@ modules:
   prod:
     enable: [acquia_connector, shield]
     uninstall: [devel, views_ui]
+disable-targets:
+  tests:
+    yaml: { lint: { files: true } }
+    behat:
+      run: true
+    drupal:
+      run: true
+cloud:
+  appId: 21a2a0ab-b4ed-4ecf-8bd4-9266c70f5ef1
