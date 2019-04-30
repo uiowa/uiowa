@@ -24,6 +24,25 @@ This project is based on BLT, an open-source project template and tool that enab
 # Setup Local Environment.
 
 BLT provides an automation layer for testing, building, and launching Drupal 8 applications. For ease when updating codebase it is recommended to use  Drupal VM. If you prefer, you can use another tool such as Docker, [DDEV](https://blt.readthedocs.io/en/latest/alternative-environment-tips/ddev.md), [Docksal](https://blt.readthedocs.io/en/latest/alternative-environment-tips/docksal.md), [Lando](https://blt.readthedocs.io/en/latest/alternative-environment-tips/lando.md), (other) Vagrant, or your own custom LAMP stack, however support is very limited for these solutions.
+## Lando
+1. Run `lando start`.
+2. Configure `local.settings.php` by editing docroot/sites/mysite/blt.yml:
+   ```
+  drupal:
+  db:
+    database: mysite
+    host: database
+    user: root
+    password: null
+  ```
+3. Run `blt setup`.
+4. Edit `sites.local.php` to route requests to multisite directories:
+   ```
+   $sites['mysite.uiowa.lndo.site'] = 'mysite';
+   ```
+5. Profit.
+
+## Runserver
 1. Install Homebrew.
 2. Install PHP 7.2 via Homebrew.
    ```
@@ -45,10 +64,15 @@ BLT provides an automation layer for testing, building, and launching Drupal 8 a
    ```
    $sites['8888.localhost'] = 'mysite';
    ```
-7. Sync all sites
+7. Configure `local.settings.php` by editing docroot/sites/mysite/blt.yml:
    ```
-     $ blt drupal:sync:all-sites
-    ```
+  drupal:
+  db:
+    database: mysite
+    host: database
+    user: root
+    password: null
+  ```
 8. Start the built-in PHP server.
     ```
     $ drush -l mysite rs --dns
