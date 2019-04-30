@@ -7,12 +7,12 @@
   <description>BLT PHP_CodeSniffer standards overrides.</description>
 
   <!-- By default, warnings and errors cause an exception. -->
-  <config name="ignore_warnings_on_exit" value="0" />
+  <config name="ignore_warnings_on_exit" value="1" />
   <config name="ignore_errors_on_exit" value="0" />
 
   <!-- Set ignore extensions. -->
   <!-- @see https://www.drupal.org/node/2867601#comment-12075633 -->
-  <arg name="ignore" value="*.css,*.md,*.txt,*.png,*.gif,*.jpeg,*.jpg,*.svg"/>
+  <arg name="ignore" value="*.css,*.md,*.txt,*.png,*.gif,*.jpeg,*.jpg,*.svg,default.local.settings.php,uiowa_bootstrap"/>
 
   <!-- Use colors in output. -->
   <arg name="colors"/>

@@ -10,7 +10,6 @@ Search for and replace the following placeholders within this file:
 
 | Placeholder | Example |
 | --- | --- |
-| `#ACQUIA_CLOUD_URL` | https://cloud.acquia.com/app/develop/applications/12345678-1234-1234-12345678901234567 |
 | `#GIT_PRIMARY_DEV_BRANCH` | `master` or `develop` |
 | `#GITHUB_ORG` | The "org" in https://github.com/org/project |
 | `#GITHUB_PROJECT` | The "project" in https://github.com/org/project |
@@ -47,6 +46,49 @@ This project is based on BLT, an open-source project template and tool that enab
 # Setup Local Environment.
 
 BLT provides an automation layer for testing, building, and launching Drupal 8 applications. For ease when updating codebase it is recommended to use  Drupal VM. If you prefer, you can use another tool such as Docker, [DDEV](https://blt.readthedocs.io/en/latest/alternative-environment-tips/ddev.md), [Docksal](https://blt.readthedocs.io/en/latest/alternative-environment-tips/docksal.md), [Lando](https://blt.readthedocs.io/en/latest/alternative-environment-tips/lando.md), (other) Vagrant, or your own custom LAMP stack, however support is very limited for these solutions.
+## Lando
+1. Run `lando start`.
+2. Ensure every multisite database exists either through an SQL client or
+   executing `lando drush sql:create` for each multisite.
+3. Set up the application:
+   1. For first-time setup, run `lando blt setup`.
+   2. For existing setups, run `lando blt drupal:sync:all-sites`.
+      1. Note: this will discard active configuration!
+4. Edit `sites.local.php` to route requests to multisite directories:
+   ```
+   $sites['mysite.uiowa.lndo.site'] = 'mysite';
+   ```
+5. Profit.
+
+## Runserver
+1. Install Homebrew.
+2. Install PHP 7.2 via Homebrew.
+   ```
+   brew install php@7.2
+   ```
+3. Install MariaDB
+   ```
+   brew install mariadb
+   ```
+4. Start MariaDB.
+   ```
+   brew services start mariadb
+   ```
+5. Install Composer dependencies.
+    ```
+    $ composer install
+    ```
+6. Route the site of your choice in `sites.local.php`.
+   ```
+   $sites['8888.localhost'] = 'mysite';
+   ```
+7. Configure `local.settings.php` to override Lando defaults.
+8. Start the built-in PHP server.
+    ```
+    $ drush -l mysite rs --dns
+    ```
+
+## Drupal VM (Vagrant)
 1. Install Composer dependencies.
 After you have forked, cloned the project and setup your blt.yml file install Composer Dependencies. (Warning: this can take some time based on internet speeds.)
     ```
@@ -142,7 +184,5 @@ BLT uses a number of configuration (`.yml` or `.json`) files to define and custo
 
 ## Resources
 
-* JIRA - #JIRA_URL
 * GitHub - https://github.com/#GITHUB_ORG/#GITHUB_PROJECT
-* Acquia Cloud subscription - #ACQUIA_CLOUD_URL
-* TravisCI - #TRAVIS_URL
+* Acquia Cloud subscription - https://cloud.acquia.com/app/develop/applications/21a2a0ab-b4ed-4ecf-8bd4-9266c70f5ef1

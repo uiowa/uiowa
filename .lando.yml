@@ -21,8 +21,6 @@ services:
   cache:
     type: memcached:1
   appserver:
-    run:
-      - composer install --no-suggest
     overrides:
       environment:
         HOME: /app
@@ -33,6 +31,14 @@ services:
         SIMPLETEST_BASE_URL: https://uiowa.lndo.site
         SIMPLETEST_DB: mysql://drupal8:drupal8@database/drupal8
         SYMFONY_DEPRECATIONS_HELPER: disabled
+  node:
+    type: node:10
+    globals:
+      gulp-cli: 2.0.1
+
+events:
+  post-start:
+    - appserver: cd $LANDO_MOUNT && composer install --no-suggest
 
 tooling:
   blt:
