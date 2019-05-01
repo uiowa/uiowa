@@ -1,13 +1,13 @@
 <?php
 
-namespace My\Example\Project\Tests;
+namespace Sitenow\Tests\PHPUnit\Unit;
 
-use PHPUnit\Framework\TestCase;
+use Drupal\Tests\UnitTestCase;
 
 /**
  * Class ExampleTest.
  */
-class ExampleTest extends TestCase {
+class ExampleTest extends UnitTestCase {
 
   /**
    * Asserts that universal laws are constant.
