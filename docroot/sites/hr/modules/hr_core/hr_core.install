@@ -9,9 +9,32 @@ use Drupal\taxonomy\Entity\Term;
 use Drupal\Core\Config\FileStorage;
 
 /**
- * Populate FAQ Categories.
+ * Rename site config split to hr and import.
  */
 function hr_core_update_8001() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('config_split.config_split.site');
+
+  $config
+    ->set('id', 'hr')
+    ->set('label', 'hr')
+    ->set('description', 'The HR site config split.')
+    ->set('folder', '../config/hr')
+    ->save();
+
+  drupal_flush_all_caches();
+
+  $config_path = DRUPAL_ROOT . '/../config/hr/';
+  $source = new FileStorage($config_path);
+
+  $config_storage = \Drupal::service('config.storage');
+  $config_storage->write('config_split.config_split.hr', $source->read('config_split.config_split.hr'));
+}
+
+/**
+ * Populate FAQ Categories.
+ */
+function hr_core_update_8002() {
   // Obtain configuration from yaml files.
   $config_path = DRUPAL_ROOT . '/../config/hr/';
   $source = new FileStorage($config_path);
