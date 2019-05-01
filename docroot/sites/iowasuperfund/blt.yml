@@ -3,8 +3,11 @@ project:
     hostname: null
     protocol: null
   machine_name: iowasuperfund
-  human_name: iowasuperfund
+  human_name: iowasuperfund.uiowa.edu
 drush:
   aliases:
-    local: self
-    remote: 'y'
+    local: iowasuperfund.local
+    remote: iowasuperfund.dev
+drupal:
+  db:
+    database: iowasuperfund
