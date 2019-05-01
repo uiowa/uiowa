@@ -1,0 +1,59 @@
+{#
+/**
+ * @file
+ * Template for a one-two-three-one column layout.
+ */
+#}
+{%
+set classes = [
+'layout',
+'layout--one-two-three-one',
+]
+%}
+
+<div{{ attributes.addClass(classes) }}>
+  <div class="container">
+    {% if content.top %}
+      <div {{ region_attributes.top.addClass('layout__region', 'layout__region--top') }}>
+        {{ content.top }}
+      </div>
+    {% endif %}
+  </div>
+  <div class="container">
+    {% if content.first_middle_left %}
+      <div {{ region_attributes.first_middle_left.addClass('layout__region', 'layout__region--first-middle-left') }}>
+        {{ content.first_middle_left }}
+      </div>
+    {% endif %}
+    {% if content.first_middle_right %}
+      <div {{ region_attributes.first_middle_right.addClass('layout__region', 'layout__region--first-middle-right') }}>
+        {{ content.first_middle_right }}
+      </div>
+    {% endif %}
+  </div>
+    <div class="container">
+    {% if content.second_middle_left %}
+      <div {{ region_attributes.second_middle_left.addClass('layout__region', 'layout__region--second-middle-left') }}>
+        {{ content.second_middle_left }}
+      </div>
+    {% endif %}
+        {% if content.second_middle_center %}
+      <div {{ region_attributes.second_middle_center.addClass('layout__region', 'layout__region--second-middle-center') }}>
+        {{ content.second_middle_center }}
+      </div>
+    {% endif %}
+    {% if content.second_middle_right %}
+      <div {{ region_attributes.second_middle_right.addClass('layout__region', 'layout__region--second-middle-right') }}>
+        {{ content.second_middle_right }}
+      </div>
+    {% endif %}
+  </div>
+  <div class="container">
+    {% if content.bottom %}
+      <div {{ region_attributes.bottom.addClass('layout__region', 'layout__region--bottom') }}>
+        {{ content.bottom }}
+      </div>
+    {% endif %}
+  </div>
+</div>
+

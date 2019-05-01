@@ -1,0 +1,42 @@
+{#
+/**
+ * @file
+ * Template for a one-two-one column layout.
+ */
+#}
+{%
+set classes = [
+'layout',
+'layout--one-two-one',
+]
+%}
+
+<div{{ attributes.addClass(classes) }}>
+  <div class="container">
+    {% if content.top %}
+      <div {{ region_attributes.top.addClass('layout__region', 'layout__region--top') }}>
+        {{ content.top }}
+      </div>
+    {% endif %}
+  </div>
+  <div class="container">
+    {% if content.middle_left %}
+      <div {{ region_attributes.middle_left.addClass('layout__region', 'layout__region--middle-left') }}>
+        {{ content.middle_left }}
+      </div>
+    {% endif %}
+    {% if content.middle_right %}
+      <div {{ region_attributes.middle_right.addClass('layout__region', 'layout__region--middle-right') }}>
+        {{ content.middle_right }}
+      </div>
+    {% endif %}
+  </div>
+  <div class="container">
+    {% if content.bottom %}
+      <div {{ region_attributes.bottom.addClass('layout__region', 'layout__region--bottom') }}>
+        {{ content.bottom }}
+      </div>
+    {% endif %}
+  </div>
+</div>
+

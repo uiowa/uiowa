@@ -1,0 +1,50 @@
+// Config ///////////////
+// Import this file into your components to use variables and general libraries.
+
+// Imports ///////////////
+@import '../node_modules/susy/sass/susy';
+@import '../node_modules/breakpoint-sass/stylesheets/breakpoint';
+
+// Susy ///////////////
+$susy: (
+  'columns': susy-repeat(6),
+  'gutters': 0,
+);
+
+// Breakpoints ///////////////
+// usage: `@include breakpoint($small) {}`
+$screen: "only screen" !default;
+$small-max: 767px !default;
+$medium-max: 1023px !default;
+$small: $screen max-width $small-max;
+$up-sm: $screen $small-max + 1;
+$medium: $screen $small-max + 1 $medium-max;
+$large: $screen $medium-max + 1;
+
+// Colors ///////////////
+$white: #fff;
+$red: #ee696c;
+$yellow: #e8ed57;
+$blk: #000;
+$dark-gray: lighten($blk, 20%);
+$med-gray: lighten($blk, 40%);
+$light-gray: lighten($blk, 70%);
+$lighter-gray: lighten($blk, 90%);
+$off-white: lighten($blk, 97%);
+
+// Utility color variables ///////////////
+$heading: $dark-gray;
+$link: $med-gray;
+
+// Font stacks ///////////////
+// usage: `font-family: $poppins;`
+$arial: Arial, "Helvetica Neue", Helvetica, sans-serif !default;
+$georgia: Georgia, Times, "Times New Roman", serif !default;
+$helvetica: "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+$opensans: 'Open Sans', sans-serif !default;
+$poppins: 'Poppins', sans-serif !default;
+
+// Text variables ///////////////
+// usage: `font-family: $body_font;`
+$heading_font: $opensans;
+$body_font: $poppins;
