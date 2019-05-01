@@ -9,4 +9,4 @@
  */
 
 $blt_override_config_directories = FALSE;
-$config_directories[CONFIG_SYNC_DIRECTORY] = DRUPAL_ROOT . '/profile/custom/sitenow/config/sync';
+$config_directories[CONFIG_SYNC_DIRECTORY] = DRUPAL_ROOT . '/profiles/custom/sitenow/config/sync';
