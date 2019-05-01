@@ -6,11 +6,22 @@
  */
 
 use Drupal\taxonomy\Entity\Term;
+use Drupal\Core\Config\FileStorage;
 
 /**
  * Populate FAQ Categories.
  */
 function hr_core_update_8001() {
+  // Obtain configuration from yaml files.
+  $config_path = DRUPAL_ROOT . '/../config/hr/';
+  $source = new FileStorage($config_path);
+
+  // Obtain the storage manager for vocabularies.
+  // Create a new vocabulary from the yaml configuration and save.
+  \Drupal::entityManager()->getStorage('taxonomy_vocabulary')
+    ->create($source->read('taxonomy.vocabulary.faq_categories'))
+    ->save();
+
   $terms = [
     'Collective Bargaining Updates',
     'Dual Career Services',
