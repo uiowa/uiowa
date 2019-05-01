@@ -768,7 +768,6 @@ $settings['entity_update_batch_size'] = 50;
 if (file_exists('/var/www/site-php')) {
   require '/var/www/site-php/uiowa01/iowasuperfund-settings.inc';
 }
-
 require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
 /**
  * IMPORTANT.
