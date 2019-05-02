@@ -87,12 +87,13 @@ function sitenow_articles_preprocess_node(&$variables) {
     $node = $variables["node"];
     switch ($node->getType()) {
       case 'article':
-        $image_field = $node->get('field_image');
-        if (!$image_field->isEmpty()) {
-          if ($variables["view_mode"] == 'teaser') {
+        switch ($variables['view_mode']) {
+          case 'teaser':
             $style = 'large';
-          }
-          else {
+            break;
+
+          case 'full':
+          case 'default':
             $style = 'uiowa_article';
 
             $variables['content']['article_author'] = $node->field_article_author->view([
@@ -100,7 +101,11 @@ function sitenow_articles_preprocess_node(&$variables) {
               'label' => 'inline',
               'settings' => [],
             ]);
-          }
+            break;
+
+        }
+        $image_field = $node->get('field_image');
+        if (!$image_field->isEmpty()) {
           $image = $image_field->first()->getValue();
           $media = Media::load($image['target_id']);
           $media_field = $media->get('field_media_image')
