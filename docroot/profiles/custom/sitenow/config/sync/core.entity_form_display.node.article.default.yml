@@ -13,6 +13,7 @@ dependencies:
     - field.field.node.article.field_teaser
     - node.type.article
   module:
+    - content_moderation
     - entity_browser_entity_form
     - inline_entity_form
     - media_library
@@ -94,6 +95,12 @@ content:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
+  moderation_state:
+    type: moderation_state_default
+    weight: 15
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   path:
     type: path
     weight: 12
@@ -143,5 +150,4 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-hidden:
-  moderation_state: true
+hidden: {  }

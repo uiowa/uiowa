@@ -1,20 +1,17 @@
-uuid: 0825cfdd-af2f-4022-8897-60283b52bb51
+uuid: 1422930d-3372-4cd5-928e-49b4905e924f
 langcode: en
 status: true
 dependencies: {  }
-_core:
-  default_config_hash: LO6rl3XZgu-dL4gZtQftKWfrayfBJ6Vti8-I08HVU7w
-id: editor
-label: Editor
-weight: -8
-is_admin: false
+id: publisher
+label: Publisher
+weight: -7
+is_admin: null
 permissions:
   - 'access administration pages'
   - 'access content overview'
   - 'access file_link_browser entity browser pages'
   - 'access files overview'
   - 'access media overview'
-  - 'access media_entity_browser entity browser pages'
   - 'access media_wysiwyg_browser entity browser pages'
   - 'access metatag tag advanced__canonical_url'
   - 'access metatag tag advanced__image_src'
@@ -55,7 +52,6 @@ permissions:
   - 'delete any person content'
   - 'delete any remote_video media'
   - 'delete article revisions'
-  - 'delete event feed'
   - 'delete own article content'
   - 'delete own file media'
   - 'delete own image media'
@@ -82,17 +78,22 @@ permissions:
   - 'enter article revision log entry'
   - 'enter page revision log entry'
   - 'enter person revision log entry'
+  - 'override article authored by option'
+  - 'override article authored on option'
   - 'override article published option'
   - 'override page published option'
   - 'override person published option'
   - 'revert article revisions'
   - 'revert page revisions'
+  - 'use editorial transition archive'
+  - 'use editorial transition archived_published'
   - 'use editorial transition create_new_draft'
   - 'use editorial transition needs_review'
+  - 'use editorial transition publish'
   - 'use text format filtered_html'
+  - 'view any unpublished content'
   - 'view article revisions'
   - 'view latest version'
-  - 'view media'
   - 'view own unpublished content'
   - 'view page revisions'
   - 'view the administration theme'
