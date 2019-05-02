@@ -107,9 +107,9 @@ var options = {
   browserSync: {
     // Put your local site URL here to prevent Browsersync
     // from prompting you to add additional scripts to your page.
-    // proxy: {
-    //   target: 'http://local.example.com'
-    // },
+    proxy: {
+      target: 'https://iowasuperfund.uiowa.local.site'
+    },
     open: 'external',
     xip: true,
     logConnections: true
