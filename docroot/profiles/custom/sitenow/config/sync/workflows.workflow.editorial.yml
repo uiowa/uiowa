@@ -2,6 +2,10 @@ uuid: bc53f025-6404-4f83-a327-b4ac195bc5c8
 langcode: en
 status: true
 dependencies:
+  config:
+    - node.type.article
+    - node.type.page
+    - node.type.person
   module:
     - content_moderation
 id: editorial
@@ -9,6 +13,11 @@ label: Editorial
 type: content_moderation
 type_settings:
   states:
+    archived:
+      published: false
+      default_revision: true
+      label: Archived
+      weight: 1
     draft:
       label: Draft
       published: false
@@ -25,13 +34,27 @@ type_settings:
       label: Review
       weight: -1
   transitions:
+    archive:
+      label: Archive
+      from:
+        - published
+      to: archived
+      weight: 1
+    archived_published:
+      label: 'Restore from archive'
+      from:
+        - archived
+      to: published
+      weight: 2
     create_new_draft:
       label: 'Create New Draft'
       to: draft
       weight: -2
       from:
+        - archived
         - draft
         - published
+        - review
     needs_review:
       label: 'Needs Review'
       from:
@@ -47,4 +70,8 @@ type_settings:
         - draft
         - published
         - review
-  entity_types: {  }
+  entity_types:
+    node:
+      - article
+      - page
+      - person

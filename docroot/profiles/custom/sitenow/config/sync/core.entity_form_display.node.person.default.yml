@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.person.field_person_phone
     - node.type.person
   module:
+    - content_moderation
     - path
     - telephone
 id: node.person.default
@@ -53,6 +54,12 @@ content:
     settings:
       placeholder: ''
     third_party_settings: {  }
+  moderation_state:
+    type: moderation_state_default
+    weight: 11
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   path:
     type: path
     weight: 8
@@ -95,5 +102,4 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
-  moderation_state: true
   title: true

@@ -20,19 +20,24 @@ bundle: article
 mode: default
 content:
   article_created_date:
-    weight: 0
+    weight: 1
     region: content
     settings: {  }
     third_party_settings: {  }
   body:
-    weight: 1
+    weight: 2
     label: hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
+  content_moderation_control:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   links:
-    weight: 2
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
