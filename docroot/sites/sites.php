@@ -56,10 +56,16 @@
  * @see https://www.drupal.org/documentation/install/multi-site
  */
 
+// Directory aliases for basetheme.uiowa.edu.
+$sites['basetheme.uiowa.local.site'] = 'basetheme';
+$sites['basetheme.uiowa.lndo.site'] = 'basetheme';
+$sites['basetheme-d8.dev.drupal.uiowa.edu'] = 'basetheme';
+$sites['basetheme.prod.drupal.uiowa.edu'] = 'basetheme';
+$sites['basetheme.uiowa.edu'] = 'basetheme';
+
 // Directory aliases for iowasuperfund.uiowa.edu.
 $sites['iowasuperfund.uiowa.local.site'] = 'iowasuperfund';
 $sites['iowasuperfund.uiowa.lndo.site'] = 'iowasuperfund';
 $sites['iowasuperfund-d8.dev.drupal.uiowa.edu'] = 'iowasuperfund';
-$sites['iowasuperfund-d8.test.drupal.uiowa.edu'] = 'iowasuperfund';
 $sites['iowasuperfund.prod.drupal.uiowa.edu'] = 'iowasuperfund';
 $sites['iowasuperfund.uiowa.edu'] = 'iowasuperfund';
