@@ -55,6 +55,11 @@ function sitenow_people_inline_entity_form_table_fields_alter(array &$fields, ar
         'label' => t('Last Name'),
         'weight' => 1,
       ];
+      $fields['moderation_state'] = [
+        'type' => 'field',
+        'label' => t('State'),
+        'weight' => 2,
+      ];
     }
   }
 }
