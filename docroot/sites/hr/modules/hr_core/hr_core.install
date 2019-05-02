@@ -18,17 +18,13 @@ function hr_core_update_8001() {
   $config
     ->set('id', 'hr')
     ->set('label', 'hr')
-    ->set('description', 'The HR site config split.')
+    ->set('description', 'The site config split.')
     ->set('folder', '../config/hr')
+    ->set('weight', 90)
+    ->setName('config_split.config_split.hr')
     ->save();
 
   drupal_flush_all_caches();
-
-  $config_path = DRUPAL_ROOT . '/../config/hr/';
-  $source = new FileStorage($config_path);
-
-  $config_storage = \Drupal::service('config.storage');
-  $config_storage->write('config_split.config_split.hr', $source->read('config_split.config_split.hr'));
 }
 
 /**
