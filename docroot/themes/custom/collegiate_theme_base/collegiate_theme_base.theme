@@ -1,0 +1,41 @@
+<?php
+
+/**
+ * @file
+ * Functions to support theming in the collegiate_theme_base theme.
+ */
+
+use Drupal\Component\Utility\Html;
+
+/**
+ * Implements hook_preprocess_HOOK() for html.html.twig.
+ */
+function collegiate_theme_base_preprocess_html(&$variables) {
+  // Body classes for sidebars.
+  if (isset($variables['page']['sidebar_first']) && isset($variables['page']['sidebar_second'])) {
+    $variables['attributes']['class'][] = Html::cleanCssIdentifier('layout-page-sidebars-both');
+  }
+  elseif (isset($variables['page']['sidebar_first'])) {
+    $variables['attributes']['class'][] = Html::cleanCssIdentifier('layout-page-sidebars-first');
+  }
+  elseif (isset($variables['page']['sidebar_second'])) {
+    $variables['attributes']['class'][] = Html::cleanCssIdentifier('layout-page-sidebars-second');
+  }
+  else {
+    $variables['attributes']['class'][] = Html::cleanCssIdentifier('layout-page-sidebars-none');
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for page.html.twig.
+ */
+function collegiate_theme_base_preprocess_page(&$variables) {
+
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for node.html.twig.
+ */
+function collegiate_theme_base_preprocess_node(&$variables) {
+
+}

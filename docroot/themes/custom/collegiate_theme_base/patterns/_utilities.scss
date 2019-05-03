@@ -1,0 +1,63 @@
+// Utilities ///////////////
+
+// Mixins ///////////////
+@mixin clearfix {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+@mixin opac-color($r, $g, $b, $pertc) {
+  background: rgb($r, $g, $b);
+  background: rgba($r, $g, $b, $pertc);
+}
+
+@mixin region-spacer($color, $direction: bottom) {
+  border-top: 1px dotted $color;
+
+  @if $direction == top {
+    padding-top: 25px;
+    margin-top: 25px;
+  }
+
+  @else {
+    padding-bottom: 25px;
+    margin-bottom: 25px;
+  }
+}
+
+@mixin borderradius($px: 5px) {
+  border-radius: $px;
+  // background-clip: padding-box;
+}
+// Extends ///////////////
+%no-ul-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+
+  > li {
+    display: inline-block;
+    list-style-type: none;
+    margin: 2px;
+  }
+}
+
+%shadow {
+  box-shadow: 0 0 2px 0 rgba($med-gray, 1);
+}
+
+%shadow-none {
+  box-shadow: none;
+}
+
+%blocked-style {
+  border: 1px solid $white;
+  padding: 12px;
+  border-radius: 5px;
+  background: $off-white;
+
+  @extend %shadow;
+}

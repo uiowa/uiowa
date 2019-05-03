@@ -1,0 +1,178 @@
+@import '../../node_modules/susy/sass/susy';
+@import '../../node_modules/breakpoint-sass/stylesheets/breakpoint';
+
+$susy: (
+  'columns': susy-repeat(12),
+  'gutters': 0,
+);
+
+
+// Breakpoints & MQ's ///////////////
+$screen: "only screen" !default;
+$small-max: 767px !default;
+$medium-max: 1023px !default;
+$small: $screen max-width $small-max;
+$up-sm: $screen $small-max + 1;
+$medium: $screen $small-max + 1 $medium-max;
+$large: $screen $medium-max + 1;
+
+@mixin clearfix {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+.container {
+  @include clearfix;
+  padding: 1em;
+  max-width: 80em;
+  margin: gutter() auto;
+  position: relative;
+}
+
+/// Cog Panel Layouts /////////////////////////////
+.layout--one-col { // one-column
+  .layout__region--main {
+    width: span(12 of 12 last);
+  }
+}
+
+.layout--one-two-one { // one-two-one
+  @include breakpoint($up-sm) {
+    .layout__region--middle-left {
+      float: left;
+      width: span(6 of 12);
+    }
+
+    .layout__region--middle-right {
+      float: left;
+      width: span(6 of 12 last);
+    }
+  }
+}
+
+.layout--one-two-one-cl { // one-two-one content left
+  @include breakpoint($up-sm) {
+    .layout__region--middle-left {
+      float: left;
+      width: span(9 of 12);
+    }
+
+    .layout__region--middle-right {
+      float: left;
+      width: span(3 of 12 last);
+    }
+  }
+}
+
+.layout--one-two-one-cr { // one-two-one content right
+  @include breakpoint($up-sm) {
+    .layout__region--middle-left {
+      float: left;
+      width: span(3 of 12);
+    }
+
+    .layout__region--middle-right {
+      float: left;
+      width: span(9 of 12 last);
+    }
+  }
+}
+
+.layout--one-three-one { // one-three-one
+  @include breakpoint($up-sm) {
+    .layout__region--middle-left {
+      float: left;
+      width: span(4 of 12);
+    }
+
+    .layout__region--middle-center {
+      float: left;
+      width: span(4 of 12);
+    }
+
+    .layout__region--middle-right {
+      float: left;
+      width: span(4 of 12 last);
+    }
+  }
+}
+
+.layout--one-three-one-cm { // one-three-one content middle
+  @include breakpoint($up-sm) {
+    .layout__region--middle-left {
+      float: left;
+      width: span(3 of 12);
+    }
+
+    .layout__region--middle-center {
+      float: left;
+      width: span(6 of 12);
+    }
+
+    .layout__region--middle-right {
+      float: left;
+      width: span(3 of 12 last);
+    }
+  }
+}
+
+.layout--one-two-three-one { // one-two-three-one
+  @include breakpoint($up-sm) {
+    .layout__region--first-middle-left {
+      float: left;
+      width: span(6 of 12);
+    }
+
+    .layout__region--first-middle-right {
+      float: left;
+      width: span(6 of 12 last);
+    }
+
+    .layout__region--second-middle-left {
+      float: left;
+      width: span(4 of 12);
+    }
+
+    .layout__region--second-middle-center {
+      float: left;
+      width: span(4 of 12);
+    }
+
+    .layout__region--second-middle-right {
+      float: left;
+      width: span(4 of 12 last);
+    }
+  }
+}
+
+.layout--one-three-two-one { // one-three-two-one
+  @include breakpoint($up-sm) {
+    .layout__region--first-middle-left {
+      float: left;
+      width:  span(4 of 12);
+    }
+
+    .layout__region--first-middle-center {
+      float: left;
+      width: span(4 of 12);
+    }
+
+    .layout__region--first-middle-right {
+      float: left;
+      width: span(4 of 12 last);
+    }
+
+    .layout__region--second-middle-left {
+      float: left;
+      width: span(6 of 12);
+    }
+
+    .layout__region--second-middle-right {
+      float: left;
+      width: span(6 of 12 last);
+    }
+  }
+}
