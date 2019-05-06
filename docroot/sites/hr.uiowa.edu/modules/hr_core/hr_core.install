@@ -19,7 +19,7 @@ function hr_core_update_8001() {
     ->set('id', 'hr')
     ->set('label', 'hr')
     ->set('description', 'The site config split.')
-    ->set('folder', '../config/hr')
+    ->set('folder', '../config/hr.uiowa.edu')
     ->set('weight', 90)
     ->setName('config_split.config_split.hr')
     ->save();
@@ -32,7 +32,7 @@ function hr_core_update_8001() {
  */
 function hr_core_update_8002() {
   // Obtain configuration from yaml files.
-  $config_path = DRUPAL_ROOT . '/../config/hr/';
+  $config_path = DRUPAL_ROOT . '/../config/hr.uiowa.edu/';
   $source = new FileStorage($config_path);
 
   // Obtain the storage manager for vocabularies.
