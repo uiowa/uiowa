@@ -45,6 +45,8 @@ class MultisiteCommands extends BltTasks {
     $default['test']['uri'] = $test;
     $default['dev']['uri'] = $dev;
     file_put_contents("{$root}/drush/sites/{$machineName}.site.yml", Yaml::dump($default, 10, 2));
+    $this->say("Deleted <comment>{$uri}.site.yml</comment> BLT Drush alias file.");
+    $this->say("Created <comment>{$machineName}.site.yml</comment> Drush alias file.");
 
     // Overwrite the multisite blt.yml file.
     $blt = Yaml::parse(file_get_contents("{$root}/docroot/sites/{$uri}/blt.yml"));
@@ -52,6 +54,7 @@ class MultisiteCommands extends BltTasks {
     $blt['drush']['aliases']['remote'] = "{$machineName}.dev";
     $blt['drupal']['db']['database'] = $machineName;
     file_put_contents("{$root}/docroot/sites/{$uri}/blt.yml", Yaml::dump($blt, 10, 2));
+    $this->say("Overwrote <comment>{$root}/docroot/sites/{$uri}/blt.yml</comment> file with machine name.");
 
     // Write sites.php data.
     $data = <<<EOD
