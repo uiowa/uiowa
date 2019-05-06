@@ -44,14 +44,14 @@ class MultisiteCommands extends BltTasks {
     $default['prod']['uri'] = $uri;
     $default['test']['uri'] = $test;
     $default['dev']['uri'] = $dev;
-    file_put_contents("{$root}/drush/sites/{$machineName}.site.yml", Yaml::dump($default, 10));
+    file_put_contents("{$root}/drush/sites/{$machineName}.site.yml", Yaml::dump($default, 10, 2));
 
     // Overwrite the multisite blt.yml file.
     $blt = Yaml::parse(file_get_contents("{$root}/docroot/sites/{$uri}/blt.yml"));
     $blt['project']['machine_name'] = $machineName;
     $blt['drush']['aliases']['remote'] = "{$machineName}.dev";
     $blt['drupal']['db']['database'] = $machineName;
-    file_put_contents("{$root}/docroot/sites/{$uri}/blt.yml", Yaml::dump($blt, 10));
+    file_put_contents("{$root}/docroot/sites/{$uri}/blt.yml", Yaml::dump($blt, 10, 2));
 
     // Write sites.php data.
     $data = <<<EOD
