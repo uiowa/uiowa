@@ -6,17 +6,6 @@
         "type": {
             "href": "http:\/\/drupal.org\/rest\/type\/paragraph\/section"
         },
-        "http:\/\/drupal.org\/rest\/relation\/paragraph\/section\/uid": [
-            {
-                "href": "http:\/\/eight.uiowa.edu\/user\/1?_format=hal_json",
-                "lang": "en"
-            }
-        ],
-        "http:\/\/drupal.org\/rest\/relation\/paragraph\/section\/revision_uid": [
-            {
-                "href": "http:\/\/eight.uiowa.edu\/user\/1?_format=hal_json"
-            }
-        ],
         "http:\/\/drupal.org\/rest\/relation\/paragraph\/section\/field_section_content_block": [
             {
                 "href": ""
@@ -44,7 +33,7 @@
     ],
     "revision_id": [
         {
-            "value": 165
+            "value": 178
         }
     ],
     "langcode": [
@@ -58,109 +47,6 @@
             "target_id": "section"
         }
     ],
-    "_embedded": {
-        "http:\/\/drupal.org\/rest\/relation\/paragraph\/section\/uid": [
-            {
-                "_links": {
-                    "self": {
-                        "href": "http:\/\/eight.uiowa.edu\/user\/1?_format=hal_json"
-                    },
-                    "type": {
-                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
-                    }
-                },
-                "uuid": [
-                    {
-                        "value": "615bdc60-c457-4987-bc72-d067a85885e1"
-                    }
-                ],
-                "lang": "en"
-            }
-        ],
-        "http:\/\/drupal.org\/rest\/relation\/paragraph\/section\/revision_uid": [
-            {
-                "_links": {
-                    "self": {
-                        "href": "http:\/\/eight.uiowa.edu\/user\/1?_format=hal_json"
-                    },
-                    "type": {
-                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
-                    }
-                },
-                "uuid": [
-                    {
-                        "value": "615bdc60-c457-4987-bc72-d067a85885e1"
-                    }
-                ]
-            }
-        ],
-        "http:\/\/drupal.org\/rest\/relation\/paragraph\/section\/field_section_content_block": [
-            {
-                "_links": {
-                    "self": {
-                        "href": ""
-                    },
-                    "type": {
-                        "href": "http:\/\/drupal.org\/rest\/type\/paragraph\/text"
-                    }
-                },
-                "uuid": [
-                    {
-                        "value": "cda60f36-2994-4b7d-ba72-fa09a6309713"
-                    }
-                ],
-                "target_revision_id": "161"
-            },
-            {
-                "_links": {
-                    "self": {
-                        "href": ""
-                    },
-                    "type": {
-                        "href": "http:\/\/drupal.org\/rest\/type\/paragraph\/card"
-                    }
-                },
-                "uuid": [
-                    {
-                        "value": "db5acd5b-c838-4750-881b-7b792b6f751d"
-                    }
-                ],
-                "target_revision_id": "162"
-            },
-            {
-                "_links": {
-                    "self": {
-                        "href": ""
-                    },
-                    "type": {
-                        "href": "http:\/\/drupal.org\/rest\/type\/paragraph\/card"
-                    }
-                },
-                "uuid": [
-                    {
-                        "value": "cf8f949e-a3c2-4bd5-ac54-9ea330696b98"
-                    }
-                ],
-                "target_revision_id": "163"
-            },
-            {
-                "_links": {
-                    "self": {
-                        "href": ""
-                    },
-                    "type": {
-                        "href": "http:\/\/drupal.org\/rest\/type\/paragraph\/card"
-                    }
-                },
-                "uuid": [
-                    {
-                        "value": "e83032ac-94b0-4a4e-8cfa-fcf696b36442"
-                    }
-                ],
-                "target_revision_id": "164"
-            }
-        ]
-    },
     "status": [
         {
             "value": true,
@@ -189,6 +75,11 @@
             "value": "field_page_content_block"
         }
     ],
+    "behavior_settings": [
+        {
+            "value": []
+        }
+    ],
     "default_langcode": [
         {
             "value": true,
@@ -211,6 +102,74 @@
             "value": "container"
         }
     ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/paragraph\/section\/field_section_content_block": [
+            {
+                "_links": {
+                    "self": {
+                        "href": ""
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/paragraph\/text"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "cda60f36-2994-4b7d-ba72-fa09a6309713"
+                    }
+                ],
+                "target_revision_id": "174"
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": ""
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/paragraph\/card"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "db5acd5b-c838-4750-881b-7b792b6f751d"
+                    }
+                ],
+                "target_revision_id": "175"
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": ""
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/paragraph\/card"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "cf8f949e-a3c2-4bd5-ac54-9ea330696b98"
+                    }
+                ],
+                "target_revision_id": "176"
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": ""
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/paragraph\/card"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "e83032ac-94b0-4a4e-8cfa-fcf696b36442"
+                    }
+                ],
+                "target_revision_id": "177"
+            }
+        ]
+    },
     "field_section_justifycontent": [
         {
             "value": "justify-content-start"
