@@ -6,17 +6,6 @@
         "type": {
             "href": "http:\/\/drupal.org\/rest\/type\/paragraph\/section"
         },
-        "http:\/\/drupal.org\/rest\/relation\/paragraph\/section\/uid": [
-            {
-                "href": "http:\/\/eight.uiowa.edu\/user\/1?_format=hal_json",
-                "lang": "en"
-            }
-        ],
-        "http:\/\/drupal.org\/rest\/relation\/paragraph\/section\/revision_uid": [
-            {
-                "href": "http:\/\/eight.uiowa.edu\/user\/1?_format=hal_json"
-            }
-        ],
         "http:\/\/drupal.org\/rest\/relation\/paragraph\/section\/field_section_content_block": [
             {
                 "href": ""
@@ -41,7 +30,7 @@
     ],
     "revision_id": [
         {
-            "value": 145
+            "value": 188
         }
     ],
     "langcode": [
@@ -55,93 +44,6 @@
             "target_id": "section"
         }
     ],
-    "_embedded": {
-        "http:\/\/drupal.org\/rest\/relation\/paragraph\/section\/uid": [
-            {
-                "_links": {
-                    "self": {
-                        "href": "http:\/\/eight.uiowa.edu\/user\/1?_format=hal_json"
-                    },
-                    "type": {
-                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
-                    }
-                },
-                "uuid": [
-                    {
-                        "value": "615bdc60-c457-4987-bc72-d067a85885e1"
-                    }
-                ],
-                "lang": "en"
-            }
-        ],
-        "http:\/\/drupal.org\/rest\/relation\/paragraph\/section\/revision_uid": [
-            {
-                "_links": {
-                    "self": {
-                        "href": "http:\/\/eight.uiowa.edu\/user\/1?_format=hal_json"
-                    },
-                    "type": {
-                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
-                    }
-                },
-                "uuid": [
-                    {
-                        "value": "615bdc60-c457-4987-bc72-d067a85885e1"
-                    }
-                ]
-            }
-        ],
-        "http:\/\/drupal.org\/rest\/relation\/paragraph\/section\/field_section_content_block": [
-            {
-                "_links": {
-                    "self": {
-                        "href": ""
-                    },
-                    "type": {
-                        "href": "http:\/\/drupal.org\/rest\/type\/paragraph\/text"
-                    }
-                },
-                "uuid": [
-                    {
-                        "value": "70507d31-60c9-4413-bdea-3f2c3740425a"
-                    }
-                ],
-                "target_revision_id": "142"
-            },
-            {
-                "_links": {
-                    "self": {
-                        "href": ""
-                    },
-                    "type": {
-                        "href": "http:\/\/drupal.org\/rest\/type\/paragraph\/blockquote"
-                    }
-                },
-                "uuid": [
-                    {
-                        "value": "2b6bcc85-07c4-45b0-b683-bac900bb503e"
-                    }
-                ],
-                "target_revision_id": "143"
-            },
-            {
-                "_links": {
-                    "self": {
-                        "href": ""
-                    },
-                    "type": {
-                        "href": "http:\/\/drupal.org\/rest\/type\/paragraph\/text"
-                    }
-                },
-                "uuid": [
-                    {
-                        "value": "ebd8619b-73cc-439d-9aca-f3c14230f98b"
-                    }
-                ],
-                "target_revision_id": "144"
-            }
-        ]
-    },
     "status": [
         {
             "value": true,
@@ -170,7 +72,18 @@
             "value": "field_page_content_block"
         }
     ],
+    "behavior_settings": [
+        {
+            "value": []
+        }
+    ],
     "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "revision_translation_affected": [
         {
             "value": true,
             "lang": "en"
@@ -186,6 +99,58 @@
             "value": "container"
         }
     ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/paragraph\/section\/field_section_content_block": [
+            {
+                "_links": {
+                    "self": {
+                        "href": ""
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/paragraph\/text"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "70507d31-60c9-4413-bdea-3f2c3740425a"
+                    }
+                ],
+                "target_revision_id": "185"
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": ""
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/paragraph\/blockquote"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "2b6bcc85-07c4-45b0-b683-bac900bb503e"
+                    }
+                ],
+                "target_revision_id": "186"
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": ""
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/paragraph\/text"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "ebd8619b-73cc-439d-9aca-f3c14230f98b"
+                    }
+                ],
+                "target_revision_id": "187"
+            }
+        ]
+    },
     "field_section_justifycontent": [
         {
             "value": "justify-content-start"
