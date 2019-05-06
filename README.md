@@ -26,17 +26,12 @@ This project is based on BLT, an open-source project template and tool that enab
 BLT provides an automation layer for testing, building, and launching Drupal 8 applications. For ease when updating codebase it is recommended to use  Drupal VM. If you prefer, you can use another tool such as Docker, [DDEV](https://blt.readthedocs.io/en/latest/alternative-environment-tips/ddev.md), [Docksal](https://blt.readthedocs.io/en/latest/alternative-environment-tips/docksal.md), [Lando](https://blt.readthedocs.io/en/latest/alternative-environment-tips/lando.md), (other) Vagrant, or your own custom LAMP stack, however support is very limited for these solutions.
 ## Lando
 1. Run `lando start`.
+2. Run `lando blt  blt:init:settings` to create local.settings.php files for each multisite.
 2. Ensure every multisite database exists either through an SQL client or
    executing `lando drush sql:create` for each multisite.
-3. Set up the application:
-   1. For first-time setup, run `lando blt setup`.
-   2. For existing setups, run `lando blt drupal:sync:all-sites`.
+3. Run `lando blt drupal:sync:all-sites` to sync all multisites.
       1. Note: this will discard active configuration!
-4. Edit `sites.local.php` to route requests to multisite directories:
-   ```
-   $sites['mysite.uiowa.lndo.site'] = 'mysite';
-   ```
-5. Profit.
+4. Profit.
 
 ## Runserver
 1. Install Homebrew.
