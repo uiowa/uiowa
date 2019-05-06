@@ -2,15 +2,15 @@ project:
   local:
     hostname: null
     protocol: null
-  machine_name: sitenow
-  human_name: sitenow.uiowa.edu
+  machine_name: default
+  human_name: default.dev.drupal.uiowa.edu
 drush:
   aliases:
     local: self
-    remote: sitenow.dev
+    remote: default.dev
 drupal:
   db:
-    database: sitenow
+    database: default
     host: database
     user: root
     password: null
