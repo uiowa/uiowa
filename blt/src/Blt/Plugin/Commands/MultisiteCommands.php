@@ -5,6 +5,7 @@ namespace Sitenow\Blt\Plugin\Commands;
 use Acquia\Blt\Robo\BltTasks;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Defines commands in the Sitenow namespace.
@@ -33,14 +34,24 @@ class MultisiteCommands extends BltTasks {
   public function postMultisiteInit($result, CommandData $commandData) {
     $uri = $commandData->input()->getOption('site-uri');
     $machineName = $this->generateMachineName($uri);
+    $dev = "{$machineName}.dev.drupal.uiowa.edu";
+    $test = "{$machineName}.dev.drupal.uiowa.edu";
     $root = $this->getConfigValue('repo.root');
+
+    // Re-generate the Drush alias so it is more useful.
+    unlink("{$root}/drush/sites/{$uri}.site.yml");
+    $default = Yaml::parse(file_get_contents("{$root}/drush/sites/uiowa.site.yml"));
+    $default['prod']['uri'] = $uri;
+    $default['test']['uri'] = $test;
+    $default['dev']['uri'] = $dev;
+    file_put_contents("{$root}/drush/sites/{$machineName}.site.yml", Yaml::dump($default, 10));
 
     $data = <<<EOD
 
 // Directory aliases for {$uri}.
 \$sites['{$machineName}.uiowa.lndo.site'] = '{$uri}';
-\$sites['{$machineName}.dev.drupal.uiowa.edu'] = '{$uri}';
-\$sites['{$machineName}.test.drupal.uiowa.edu'] = '{$uri}';
+\$sites['{$dev}'] = '{$uri}';
+\$sites['{$test}'] = '{$uri}';
 \$sites['{$machineName}.prod.drupal.uiowa.edu'] = '{$uri}';
 
 EOD;
