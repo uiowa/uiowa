@@ -196,10 +196,11 @@ class SettingsForm extends ConfigFormBase {
     foreach ($entities as $entity) {
       \Drupal::service('pathauto.generator')->updateEntityAlias($entity, 'update');
     }
-    // Rebuild routes.
-    \Drupal::service('router.builder')->rebuild();
 
     parent::submitForm($form, $form_state);
+
+    // Clear cache.
+    drupal_flush_all_caches();
   }
 
 }
