@@ -35,7 +35,7 @@ class MultisiteCommands extends BltTasks {
     $uri = $commandData->input()->getOption('site-uri');
     $machineName = $this->generateMachineName($uri);
     $dev = "{$machineName}.dev.drupal.uiowa.edu";
-    $test = "{$machineName}.dev.drupal.uiowa.edu";
+    $test = "{$machineName}.stage.drupal.uiowa.edu";
     $root = $this->getConfigValue('repo.root');
 
     // Re-generate the Drush alias so it is more useful.
