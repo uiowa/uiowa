@@ -16,12 +16,11 @@ if (file_exists(__DIR__ . '/sites.local.php')) {
   require __DIR__ . '/sites.local.php';
 }
 
-// Directory aliases for sitenow.uiowa.edu (default).
-$sites['sitenow.uiowa.lndo.site'] = 'default';
-$sites['sitenow.dev.drupal.uiowa.edu'] = 'default';
-$sites['sitenow.test.drupal.uiowa.edu'] = 'default';
-$sites['sitenow.prod.drupal.uiowa.edu'] = 'default';
-$sites['sitenow.uiowa.edu'] = 'default';
+// Directory aliases for the default site.
+$sites['uiowa.lndo.site'] = 'default';
+$sites['demo.dev.drupal.uiowa.edu'] = 'default';
+$sites['demo.test.drupal.uiowa.edu'] = 'default';
+$sites['demo.prod.drupal.uiowa.edu'] = 'default';
 
 // Directory aliases for hr.uiowa.edu.
 $sites['hr.uiowa.lndo.site'] = 'hr.uiowa.edu';
