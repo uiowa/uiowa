@@ -1,4 +1,4 @@
-uuid: 3708512c-d04f-4542-8147-7ed22588ceea
+uuid: 478d0ed8-1bc1-4728-a6f4-e0a17441858b
 langcode: en
 status: true
 dependencies:
@@ -634,7 +634,8 @@ display:
           operator: in
           value:
             editorial-draft: editorial-draft
-            editorial-archived: editorial-archived
+            editorial-review: editorial-review
+            editorial-published: editorial-published
           group: 1
           exposed: true
           expose:
@@ -650,6 +651,8 @@ display:
             remember_roles:
               authenticated: authenticated
               anonymous: '0'
+              editor: '0'
+              webmaster: '0'
               administrator: '0'
             reduce: true
           is_grouped: false
