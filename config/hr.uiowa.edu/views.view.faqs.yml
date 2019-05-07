@@ -4,11 +4,14 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
+    - field.storage.node.field_faq_categories
+    - field.storage.node.field_faq_content
     - node.type.faq
     - taxonomy.vocabulary.faq_categories
   module:
     - node
     - taxonomy
+    - text
     - user
 id: faqs
 label: 'Frequently Asked Questions'
