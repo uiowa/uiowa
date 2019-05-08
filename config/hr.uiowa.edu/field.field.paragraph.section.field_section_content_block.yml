@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.storage.paragraph.field_section_content_block
     - paragraphs.paragraphs_type.accordion
+    - paragraphs.paragraphs_type.articles
     - paragraphs.paragraphs_type.blockquote
     - paragraphs.paragraphs_type.card
     - paragraphs.paragraphs_type.events
@@ -35,6 +36,7 @@ settings:
       card: card
       blockquote: blockquote
       events: events
+      articles: articles
       faqs: faqs
     target_bundles_drag_drop:
       section:
@@ -58,6 +60,9 @@ settings:
       events:
         enabled: true
         weight: 10
+      articles:
+        enabled: true
+        weight: 12
       faqs:
         enabled: true
         weight: 14
