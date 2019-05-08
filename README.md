@@ -46,7 +46,7 @@ This project is based on BLT, an open-source project template and tool that enab
     ```
     blt blt:init:settings
     ```
-7. Configure each `sites/*/settings/local.settings.php` file to connect to the appropriate MySQL database. You'll need to use the user/password you set during step 3. The host should 'localhost`.
+7. Configure each `sites/*/settings/local.settings.php` file to connect to the appropriate MySQL database. You'll need to use the user/password you set during step 3. The host should `localhost`.
 8. If the databases do not exist, use `drush sql:create` to create them. For example:
     ```
     drush -l mysite sql:create
