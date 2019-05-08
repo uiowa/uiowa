@@ -28,3 +28,26 @@ if ($site_dir != 'default') {
  */
 $blt_override_config_directories = FALSE;
 $config_directories[CONFIG_SYNC_DIRECTORY] = DRUPAL_ROOT . '/profiles/custom/sitenow/config/sync';
+
+/**
+ * Set the environment indicator colors.
+ */
+$env = getenv('AH_SITE_ENVIRONMENT');
+
+switch ($env) {
+  case 'dev':
+    $settings['simple_environment_indicator'] = '#4363d8 dev';
+    break;
+
+  case 'test':
+    $settings['simple_environment_indicator'] = '#f58231 test';
+    break;
+
+  case 'prod':
+    $settings['simple_environment_indicator'] = '#e6194b prod';
+    break;
+
+  default:
+    $settings['simple_environment_indicator'] = '#3cb44b local';
+    break;
+}
