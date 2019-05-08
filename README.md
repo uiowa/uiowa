@@ -26,11 +26,14 @@ This project is based on BLT, an open-source project template and tool that enab
 2. Install PHP 7.2 via Homebrew.
    ```
    brew install php@7.2
+   brew link php@7.2
    ```
-3. Install MariaDB
+   Follow the instructions to get PHP7.2 in your $PATH.
+3. Install MariaDB.
    ```
    brew install mariadb
    ```
+   Follow the instructions for securing your MySQL instance.
 4. Start MariaDB.
    ```
    brew services start mariadb
@@ -43,21 +46,18 @@ This project is based on BLT, an open-source project template and tool that enab
     ```
     blt blt:init:settings
     ```
-7. Configure `local.settings.php` to connect to the MySQL instance.
-    ```
-    'database' => $db_name,
-    'username' => 'root',
-    'password' => '',
-    'host' => 'localhost',
-    'port' => '3306',
-    ```
-8. If the database does not exist, use `drush sql:create` to create it.
+7. Configure each `sites/*/settings/local.settings.php` file to connect to the appropriate MySQL database. You'll need to use the user/password you set during step 3. The host should 'localhost`.
+8. If the databases do not exist, use `drush sql:create` to create them. For example:
     ```
     drush -l mysite sql:create
     ```
 9. Start the built-in PHP server.
     ```
     $ drush -l mysite rs --dns
+    ```
+10. Sync all multisites.
+    ```
+    blt drupal:sync:all-sites
     ```
     
 The PolicyCommands file will overwrite the `sites.local.php` file to route the
