@@ -39,7 +39,11 @@ This project is based on BLT, an open-source project template and tool that enab
     ```
     $ composer install
     ```
-6. Configure `local.settings.php` to connect to the MySQL instance:
+6. Create all `sites/*/settings/local.settings.php` files.
+    ```
+    blt blt:init:settings
+    ```
+7. Configure `local.settings.php` to connect to the MySQL instance.
     ```
     'database' => $db_name,
     'username' => 'root',
@@ -47,11 +51,11 @@ This project is based on BLT, an open-source project template and tool that enab
     'host' => 'localhost',
     'port' => '3306',
     ```
-6. If the database does not exist, use `drush sql:create` to create it.
+8. If the database does not exist, use `drush sql:create` to create it.
     ```
     drush -l mysite sql:create
     ```
-7. Start the built-in PHP server.
+9. Start the built-in PHP server.
     ```
     $ drush -l mysite rs --dns
     ```
