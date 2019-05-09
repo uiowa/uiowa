@@ -125,3 +125,12 @@ HTML that is not allowed will be stripped out before rendering to site visitors.
 This button will expand the text editor to use the full screen. This is helpful for distraction free writing, or working with a lot of content at once.
 
 ![maximize](assets/images/maximize.png) 
+
+### Allowed Classes
+
+To extend formatting of content within the WYSIWYG, certain HTML classes are allowed on the following elements: a, blockquote, p (text-align-* only), div, table, thead, tbody, tfoot, th, tr and td.
+
+Some of those allowed classes are:
+
+- w-25, w-50, w-75, w-100: Element widths of 25%, 50%, 75% and 100%.
+- align-baseline, align-top, align-middle, align-bottom: Vertical alignment of inline and table cell elements.
