@@ -40,7 +40,7 @@ switch ($env) {
     break;
 
   case 'test':
-    $settings['simple_environment_indicator'] = '#f58231 test';
+    $settings['simple_environment_indicator'] = '#C3561A test';
     break;
 
   case 'prod':
@@ -48,6 +48,6 @@ switch ($env) {
     break;
 
   default:
-    $settings['simple_environment_indicator'] = '#3cb44b local';
+    $settings['simple_environment_indicator'] = '#31873E local';
     break;
 }
