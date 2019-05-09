@@ -54,7 +54,7 @@ class MultisiteCommands extends BltTasks {
     $blt['drush']['aliases']['remote'] = "{$machineName}.dev";
     $blt['drupal']['db']['database'] = $machineName;
     file_put_contents("{$root}/docroot/sites/{$uri}/blt.yml", Yaml::dump($blt, 10, 2));
-    $this->say("Overwrote <comment>{$root}/docroot/sites/{$uri}/blt.yml</comment> file with machine name.");
+    $this->say("Overwrote <comment>{$root}/docroot/sites/{$uri}/blt.yml</comment> file.");
 
     // Write sites.php data.
     $data = <<<EOD
