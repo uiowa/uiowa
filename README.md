@@ -48,16 +48,11 @@ This project is based on BLT, an open-source project template and tool that enab
     ```
     blt blt:init:settings
     ```
-7. Initialize the default site.
-    ```
-    drush sql:create
-    blt sync
-    ```
-8. Sync all multisites.
+7. Sync all multisites.
     ```
     blt drupal:sync:all-sites
     ```
-9. Start the built-in PHP server.
+8. Start the built-in PHP server.
     ```
     $ drush -l mysite rs --dns
     ```
