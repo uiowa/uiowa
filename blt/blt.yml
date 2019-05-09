@@ -42,3 +42,9 @@ drupal:
     database: null
     username: root
     password: null
+sync:
+  commands:
+    - blt:init:settings
+    - drupal:sync:db
+    - drupal:update
+    - drupal:config:import
