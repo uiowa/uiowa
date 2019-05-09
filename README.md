@@ -23,7 +23,7 @@ This project is based on BLT, an open-source project template and tool that enab
 ----
 # Setup Local Environment.
 1. Install [Drush Launcher](https://github.com/drush-ops/drush-launcher).
-  - Ensure that there are no other Drush versions in your $PATH in `~/.bashrc` or `~.bash_profile`.
+    - Ensure that there are no other Drush versions in your $PATH in `~/.bashrc` or `~.bash_profile`.
 1. Install [Homebrew](https://brew.sh/).
 2. Install PHP 7.2 via Homebrew.
    ```
