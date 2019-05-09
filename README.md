@@ -73,28 +73,6 @@ different ports. You'll need to manually edit the `sites.local.php` file in
 that scenario.
 
 ---
-## Other Local Setup Steps
-
-1. Set up frontend build and theme.
-By default BLT sets up a site with the lightning profile and a cog base theme. You can choose your own profile before setup in the blt.yml file. If you do choose to use cog, see [Cog's documentation](https://github.com/acquia-pso/cog/blob/8.x-1.x/STARTERKIT/README.md#create-cog-sub-theme) for installation.
-See [BLT's Frontend docs](https://blt.readthedocs.io/en/latest/frontend/) to see how to automate the theme requirements and frontend tests.
-After the initial theme setup you can configure `blt/blt.yml` to install and configure your frontend dependencies with `blt setup`.
-
-2. Pull Files locally.
-Use BLT to pull all files down from your Cloud environment.
-
-   ```
-   $ blt drupal:sync:files
-   ```
-
-3. Sync the Cloud Database.
-If you have an existing database you can use BLT to pull down the database from your Cloud environment.
-   ```
-   $ blt sync
-   ```
-
-
----
 
 # Resources
 
