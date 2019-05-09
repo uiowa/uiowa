@@ -44,18 +44,20 @@ This project is based on BLT, an open-source project template and tool that enab
     ```
     $ composer install
     ```
-6. Initialize `docroot/sites/*/settings/local.settings.php` files.
+6. Initialize multisite `local.settings.php` files.
     ```
     blt blt:init:settings
     ```
-    This will only create settings file if they do not already exist. You can
-    remove them all by running `rm -f docroot/sites/*/settings/local.settings.php`, if desired.
-7. Sync all multisites.
+7. Initialize the default site.
+    ```
+    drush sql:create
+    blt sync
+    ```
+8. Sync all multisites.
     ```
     blt drupal:sync:all-sites
     ```
-    Multisite databases will be created if they do not exist already.
-8. Start the built-in PHP server.
+9. Start the built-in PHP server.
     ```
     $ drush -l mysite rs --dns
     ```
