@@ -44,15 +44,12 @@ This project is based on BLT, an open-source project template and tool that enab
     ```
     $ composer install
     ```
-6. Initialize multisite `local.settings.php` files.
-    ```
-    blt blt:init:settings
-    ```
-7. Sync all multisites.
+6. Sync all multisites.
     ```
     blt drupal:sync:all-sites
     ```
-8. Start the built-in PHP server.
+    or `blt dsa` for short.
+7. Start the built-in PHP server.
     ```
     $ drush -l mysite rs --dns
     ```
@@ -66,6 +63,10 @@ The `drush/Commands/PolicyCommands.php` file will overwrite the
 possible to serve multiple sites from different runserver commands with two 
 different ports. You'll need to manually edit the `sites.local.php` file in 
 that scenario.
+
+The `drupal:sync:all-sites` command will generate settings files only if they
+do not exist. If you want to re-generate all multisite local settings files,
+you can run `rm -f docroot/sites/*/settings/local.settings.php` beforehand.
 
 ---
 
