@@ -35,7 +35,7 @@ This project is based on BLT, an open-source project template and tool that enab
    ```
    brew install mariadb
    ```
-   Follow the instructions for securing your MySQL instance.
+   Keep the username `root` with no password.
 4. Start MariaDB.
    ```
    brew services start mariadb
@@ -44,20 +44,18 @@ This project is based on BLT, an open-source project template and tool that enab
     ```
     $ composer install
     ```
-6. Create all `sites/*/settings/local.settings.php` files.
+6. Initialize `docroot/sites/*/settings/local.settings.php` files.
     ```
     blt blt:init:settings
     ```
-7. Configure each `sites/*/settings/local.settings.php` file to connect to the appropriate MySQL database. You'll need to use the user/password you set during step 3. The host should be `localhost`.
-8. If the databases do not exist, use `drush sql:create` to create them. For example:
-    ```
-    drush -l mysite sql:create
-    ```
-9. Sync all multisites.
+    This will only create settings file if they do not already exist. You can
+    remove them all by running `rm -f docroot/sites/*/settings/local.settings.php`, if desired.
+7. Sync all multisites.
     ```
     blt drupal:sync:all-sites
     ```
-10. Start the built-in PHP server.
+    Multisite databases will be created if they do not exist already.
+8. Start the built-in PHP server.
     ```
     $ drush -l mysite rs --dns
     ```
