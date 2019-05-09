@@ -53,13 +53,13 @@ This project is based on BLT, an open-source project template and tool that enab
     ```
     drush -l mysite sql:create
     ```
-9. Start the built-in PHP server.
-    ```
-    $ drush -l mysite rs --dns
-    ```
-10. Sync all multisites.
+9. Sync all multisites.
     ```
     blt drupal:sync:all-sites
+    ```
+10. Start the built-in PHP server.
+    ```
+    $ drush -l mysite rs --dns
     ```
     
 Visit the site in your browser by navigating to http://localhost:8888. You can
