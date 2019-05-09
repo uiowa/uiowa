@@ -21,23 +21,10 @@ drush:
   aliases:
     ci: self
   default_alias: '${drush.aliases.local}'
-modules:
-  local:
-    enable: {  }
-    uninstall: {  }
-  ci:
-    enable: {  }
-    uninstall: {  }
-  dev:
-    enable: {  }
-    uninstall: {  }
-  test:
-    enable: {  }
-    uninstall: {  }
-  prod:
-    enable: {  }
-    uninstall: {  }
 disable-targets:
+  drupal:
+    toggle:
+      modules: true
   tests:
     yaml: { lint: { files: true } }
     behat:
@@ -49,3 +36,15 @@ tests:
     - config: '${repo.root}'
 cloud:
   appId: 6bcc006f-9a0e-425e-aba0-198585dd2b56
+drupal:
+  db:
+    host: localhost
+    database: null
+    username: root
+    password: null
+sync:
+  commands:
+    - blt:init:settings
+    - drupal:sync:db
+    - drupal:update
+    - drupal:config:import
