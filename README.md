@@ -62,7 +62,9 @@ This project is based on BLT, an open-source project template and tool that enab
     blt drupal:sync:all-sites
     ```
     
-Visit the page in your browser by navigating to http://localhost:8888.
+Visit the site in your browser by navigating to http://localhost:8888. You can
+log in using `drush -l mysite uli`, although Drush returns the incorrect URI.
+Copy the path and append to `http://localhost:8888`.
     
 The `drush/Commands/PolicyCommands.php` file will overwrite the 
 sites.local.php` file to route the correct site when running `drush rs`. It is
