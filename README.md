@@ -67,7 +67,7 @@ log in using `drush -l mysite uli`, although Drush returns the incorrect URI.
 Copy the path and append to `http://localhost:8888`.
     
 The `drush/Commands/PolicyCommands.php` file will overwrite the 
-sites.local.php` file to route the correct site when running `drush rs`. It is
+`sites.local.php` file to route the correct site when running `drush rs`. It is
 possible to serve multiple sites from different runserver commands with two 
 different ports. You'll need to manually edit the `sites.local.php` file in 
 that scenario.
