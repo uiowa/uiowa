@@ -22,7 +22,9 @@ This project is based on BLT, an open-source project template and tool that enab
 
 ----
 # Setup Local Environment.
-1. Install Homebrew.
+1. Install [Drush Launcher](https://github.com/drush-ops/drush-launcher).
+  - Ensure that there are no other Drush versions in your $PATH in `~/.bashrc` or `~.bash_profile`.
+1. Install [Homebrew](https://brew.sh/).
 2. Install PHP 7.2 via Homebrew.
    ```
    brew install php@7.2
@@ -46,7 +48,7 @@ This project is based on BLT, an open-source project template and tool that enab
     ```
     blt blt:init:settings
     ```
-7. Configure each `sites/*/settings/local.settings.php` file to connect to the appropriate MySQL database. You'll need to use the user/password you set during step 3. The host should `localhost`.
+7. Configure each `sites/*/settings/local.settings.php` file to connect to the appropriate MySQL database. You'll need to use the user/password you set during step 3. The host should be `localhost`.
 8. If the databases do not exist, use `drush sql:create` to create them. For example:
     ```
     drush -l mysite sql:create
@@ -60,10 +62,13 @@ This project is based on BLT, an open-source project template and tool that enab
     blt drupal:sync:all-sites
     ```
     
-The PolicyCommands file will overwrite the `sites.local.php` file to route the
-correct site when running `drush rs`. It is possible to serve multiple sites
-from different runserver commands with two different ports. You'll need to 
-manually edit the `sites.local.php` file in that scenario.
+Visit the page in your browser by navigating to http://localhost:8888.
+    
+The `drush/Commands/PolicyCommands.php` file will overwrite the 
+sites.local.php` file to route the correct site when running `drush rs`. It is
+possible to serve multiple sites from different runserver commands with two 
+different ports. You'll need to manually edit the `sites.local.php` file in 
+that scenario.
 
 ---
 ## Other Local Setup Steps
