@@ -21,23 +21,10 @@ drush:
   aliases:
     ci: self
   default_alias: '${drush.aliases.local}'
-modules:
-  local:
-    enable: {  }
-    uninstall: {  }
-  ci:
-    enable: {  }
-    uninstall: {  }
-  dev:
-    enable: {  }
-    uninstall: {  }
-  test:
-    enable: {  }
-    uninstall: {  }
-  prod:
-    enable: {  }
-    uninstall: {  }
 disable-targets:
+  drupal:
+    toggle:
+      modules: true
   tests:
     yaml: { lint: { files: true } }
     behat:
