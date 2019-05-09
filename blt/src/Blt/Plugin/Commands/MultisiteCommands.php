@@ -72,6 +72,28 @@ EOD;
   }
 
   /**
+   * Create any databases that do not exist before syncing.
+   *
+   * @hook pre-command drupal:sync:all-sites
+   */
+  public function preSyncAllSites(CommandData $commandData) {
+    $multisites = $this->getConfigValue('multisites');
+    $this->say('Checking that all multisite databases exist...');
+
+    foreach ($multisites as $multisite) {
+      $this->switchSiteContext($multisite);
+      $database = $this->getConfigValue('drupal.db.database');
+
+      $task = $this->taskDrush()
+        ->stopOnFail()
+        ->drush('sql:query')
+        ->arg("CREATE DATABASE IF NOT EXISTS {$database}");
+
+      $task->run();
+    }
+  }
+
+  /**
    * Given a URI, create and return a unique ID.
    *
    * Used for internal subdomain and Drush alias group name, i.e. file name.
