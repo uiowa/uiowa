@@ -94,6 +94,24 @@ EOD;
   }
 
   /**
+   * Remove any local multisite settings files.
+   *
+   * @hook pre-command blt:init:settings
+   */
+  public function preInitSettings(CommandData $commandData) {
+    $multisites = $this->getConfigValue('multisites');
+    $this->say('Removing all multisite local settings files...');
+
+    foreach ($multisites as $multisite) {
+      $root = $this->getConfigValue('repo.root');
+      $task = $this->taskFilesystemStack()
+        ->remove("{$root}/docroot/sites/{$multisite}/settings/local.settings.php");
+
+      $task->run();
+    }
+  }
+
+  /**
    * Given a URI, create and return a unique ID.
    *
    * Used for internal subdomain and Drush alias group name, i.e. file name.
