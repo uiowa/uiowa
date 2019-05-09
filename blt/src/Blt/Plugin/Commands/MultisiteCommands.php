@@ -54,7 +54,7 @@ class MultisiteCommands extends BltTasks {
     $blt['drush']['aliases']['remote'] = "{$machineName}.dev";
     $blt['drupal']['db']['database'] = $machineName;
     file_put_contents("{$root}/docroot/sites/{$uri}/blt.yml", Yaml::dump($blt, 10, 2));
-    $this->say("Overwrote <comment>{$root}/docroot/sites/{$uri}/blt.yml</comment> file with machine name.");
+    $this->say("Overwrote <comment>{$root}/docroot/sites/{$uri}/blt.yml</comment> file.");
 
     // Write sites.php data.
     $data = <<<EOD
@@ -69,6 +69,17 @@ EOD;
 
     file_put_contents($root . '/docroot/sites/sites.php', $data, FILE_APPEND);
     $this->say('Added <comment>sites.php</comment> entries. Adjust as needed and commit.');
+  }
+
+  /**
+   * Zero out the sites.local.php file as this seems to mess with BLT.
+   *
+   * @hook pre-command drupal:sync:all-sites
+   */
+  public function preSync(CommandData $commandData) {
+    $root = $this->getConfigValue('repo.root');
+    file_put_contents("{$root}/docroot/sites/sites.local.php", "<?php\n");
+    $this->yell('The sites.local.php file has been emptied. Restart Drush runserver after sync is complete.');
   }
 
   /**
