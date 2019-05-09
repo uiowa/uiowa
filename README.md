@@ -22,27 +22,20 @@ This project is based on BLT, an open-source project template and tool that enab
 
 ----
 # Setup Local Environment.
-
-BLT provides an automation layer for testing, building, and launching Drupal 8 applications. For ease when updating codebase it is recommended to use  Drupal VM. If you prefer, you can use another tool such as Docker, [DDEV](https://blt.readthedocs.io/en/latest/alternative-environment-tips/ddev.md), [Docksal](https://blt.readthedocs.io/en/latest/alternative-environment-tips/docksal.md), [Lando](https://blt.readthedocs.io/en/latest/alternative-environment-tips/lando.md), (other) Vagrant, or your own custom LAMP stack, however support is very limited for these solutions.
-## Lando
-1. Run `lando start`.
-2. Run `lando blt  blt:init:settings` to create local.settings.php files for each multisite.
-2. Ensure every multisite database exists either through an SQL client or
-   executing `lando drush sql:create` for each multisite.
-3. Run `lando blt drupal:sync:all-sites` to sync all multisites.
-      1. Note: this will discard active configuration!
-4. Profit.
-
-## Runserver
-1. Install Homebrew.
+1. Install [Drush Launcher](https://github.com/drush-ops/drush-launcher).
+    - Ensure that there are no other Drush versions in your $PATH in `~/.bashrc` or `~.bash_profile`.
+1. Install [Homebrew](https://brew.sh/).
 2. Install PHP 7.2 via Homebrew.
    ```
    brew install php@7.2
+   brew link php@7.2
    ```
-3. Install MariaDB
+   Follow the instructions to get PHP7.2 in your $PATH.
+3. Install MariaDB.
    ```
    brew install mariadb
    ```
+   Keep the username `root` with no password.
 4. Start MariaDB.
    ```
    brew services start mariadb
@@ -51,37 +44,29 @@ BLT provides an automation layer for testing, building, and launching Drupal 8 a
     ```
     $ composer install
     ```
-6. Route the site of your choice in `sites.local.php`.
-   ```
-   $sites['8888.localhost'] = 'mysite';
-   ```
-7. Configure `local.settings.php` to override Lando defaults.
-8. Start the built-in PHP server.
+6. Sync all multisites.
+    ```
+    blt drupal:sync:all-sites
+    ```
+    or `blt dsa` for short.
+7. Start the built-in PHP server.
     ```
     $ drush -l mysite rs --dns
     ```
+    
+Visit the site in your browser by navigating to http://localhost:8888. You can
+log in using `drush -l mysite uli`, although Drush returns the incorrect URI.
+Copy the path and append to `http://localhost:8888`.
+    
+The `drush/Commands/PolicyCommands.php` file will overwrite the 
+`sites.local.php` file to route the correct site when running `drush rs`. It is
+possible to serve multiple sites from different runserver commands with two 
+different ports. You'll need to manually edit the `sites.local.php` file in 
+that scenario.
 
----
-## Other Local Setup Steps
-
-1. Set up frontend build and theme.
-By default BLT sets up a site with the lightning profile and a cog base theme. You can choose your own profile before setup in the blt.yml file. If you do choose to use cog, see [Cog's documentation](https://github.com/acquia-pso/cog/blob/8.x-1.x/STARTERKIT/README.md#create-cog-sub-theme) for installation.
-See [BLT's Frontend docs](https://blt.readthedocs.io/en/latest/frontend/) to see how to automate the theme requirements and frontend tests.
-After the initial theme setup you can configure `blt/blt.yml` to install and configure your frontend dependencies with `blt setup`.
-
-2. Pull Files locally.
-Use BLT to pull all files down from your Cloud environment.
-
-   ```
-   $ blt drupal:sync:files
-   ```
-
-3. Sync the Cloud Database.
-If you have an existing database you can use BLT to pull down the database from your Cloud environment.
-   ```
-   $ blt sync
-   ```
-
+The `drupal:sync:all-sites` command will generate settings files only if they
+do not exist. If you want to re-generate all multisite local settings files,
+you can run `rm -f docroot/sites/*/settings/local.settings.php` beforehand.
 
 ---
 
