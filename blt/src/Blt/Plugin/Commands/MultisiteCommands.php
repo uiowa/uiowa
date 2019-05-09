@@ -72,21 +72,14 @@ EOD;
   }
 
   /**
-   * Remove any local multisite settings files.
+   * Zero out the sites.local.php file as this seems to mess with BLT.
    *
-   * @hook pre-command blt:init:settings
+   * @hook pre-command drupal:sync:all-sites
    */
-  public function preInitSettings(CommandData $commandData) {
-    $multisites = $this->getConfigValue('multisites');
-    $this->say('Removing all multisite local settings files...');
-
-    foreach ($multisites as $multisite) {
-      $root = $this->getConfigValue('repo.root');
-      $task = $this->taskFilesystemStack()
-        ->remove("{$root}/docroot/sites/{$multisite}/settings/local.settings.php");
-
-      $task->run();
-    }
+  public function preSync(CommandData $commandData) {
+    $root = $this->getConfigValue('repo.root');
+    file_put_contents("{$root}/docroot/sites/sites.local.php", "<?php\n");
+    $this->yell('The sites.local.php file has been emptied. Restart Drush runserver after sync is complete.');
   }
 
   /**
