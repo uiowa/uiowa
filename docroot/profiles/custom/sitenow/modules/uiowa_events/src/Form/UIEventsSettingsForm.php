@@ -76,11 +76,31 @@ class UIEventsSettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    // Check if path already exists.
+    $path = $form_state->getValue('uiowa_events_single_event_path');
+    // Clean up path first.
+    $path = \Drupal::service('pathauto.alias_cleaner')->cleanString($path);
+    $path_exists = \Drupal::service('path.alias_storage')->aliasExists('/' . $path, 'en');
+    if ($path_exists) {
+      $form_state->setErrorByName('path', $this->t('This path is already in-use.'));
+    }
+
+    parent::validateForm($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    $path = $form_state->getValue('uiowa_events_single_event_path');
+    // Clean path.
+    $path = \Drupal::service('pathauto.alias_cleaner')->cleanString($path);
+
     $this->config('uiowa_events.settings')
       ->set('uiowa_events.event_link', $form_state->getValue('uiowa_events_event_link'))
       ->set('uiowa_events.cache_time', $form_state->getValue('uiowa_events_cache_time'))
-      ->set('uiowa_events.single_event_path', $form_state->getValue('uiowa_events_single_event_path'))
+      ->set('uiowa_events.single_event_path', $path)
       ->save();
     parent::submitForm($form, $form_state);
   }
