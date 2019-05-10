@@ -91,7 +91,18 @@ class MultisiteCommands extends BltTasks {
 EOD;
 
     file_put_contents($root . '/docroot/sites/sites.php', $data, FILE_APPEND);
-    $this->say('Added <comment>sites.php</comment> entries. Adjust as needed and commit.');
+    $this->say('Added <comment>sites.php</comment> entries. Adjust as needed.');
+
+    // Remove the new local settings file - it has the wrong database name.
+    $file = "{$root}/docroot/sites/{$dir}/settings/local.settings.php";
+
+    if (file_exists($file)) {
+      unlink($file);
+    }
+
+    $this->invokeCommand('blt:init:settings');
+    $this->say('<comment>Multisite initialization complete</comment>. Diff and commit code changes to a new feature branch. Install the site locally by running the below Drush command.');
+    $this->yell("drush site:install sitenow --sites-subdir {$dir} --existing-config");
   }
 
   /**
