@@ -1,11 +1,13 @@
 name: collegiate_theme_base
 type: theme
 base theme: classy
-description: Acquia D8 starter theme
+description: Collegiate D8 base theme
 package: Custom
 core: 8.x
+stylesheets-remove:
+  - modules/custom/uiowa_bar/css/uiowa-bar.css
 libraries:
-  - collegiate_theme_base/global
+  - collegiate_theme_base/global-styling
   - collegiate_theme_base/layouts
 regions:
   header: 'Header'
@@ -19,3 +21,8 @@ regions:
   sidebar_first: 'Sidebar first'
   sidebar_second: 'Sidebar second'
   footer: 'Footer'
+# Components
+component-libraries:
+  site-name:
+    paths:
+    - node_modules/@bspeare/uds/components/site-name

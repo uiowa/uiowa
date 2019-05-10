@@ -1,69 +1,29 @@
 {
-  "name": "collegiate_theme_base",
-  "version": "0.1.0",
-  "description": "Front-end build tools for collegiate_theme_base.",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/acquia-pso/cog.git"
+  "name": "collegiate_base_theme",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "author": "",
+  "license": "ISC",
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-preset-es2015": "^6.24.1",
+    "@bspeare/uds": "^0.1.0",
     "breakpoint-sass": "^2.7.1",
     "browser-sync": "^2.21.0",
-    "del": "^3.0.0",
-    "eslint": "^4.13.1",
-    "eslint-config-airbnb": "^16.1.0",
-    "eslint-plugin-import": "^2.8.0",
-    "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-react": "^7.5.1",
     "gulp": "^3.9.1",
-    "gulp-autoprefixer": "^5.0.0",
-    "gulp-babel": "^7.0.0",
-    "gulp-clean-css": "^3.9.0",
-    "gulp-eslint": "^4.0.0",
-    "gulp-load-plugins": "^1.5.0",
-    "gulp-parker": "^0.1.6",
-    "gulp-plumber": "^1.2.0",
-    "gulp-rename": "1.2.x",
-    "gulp-sass": "^4.0.1",
-    "gulp-sass-glob": "^1.0.8",
-    "gulp-sass-lint": "^1.3.4",
-    "gulp-size": "^3.0.0",
-    "gulp-sourcemaps": "^2.6.2",
-    "gulp-stylelint": "^7.0.0",
-    "gulp-uglify": "^3.0.0",
-    "gulp-util": "^3.0.8",
-    "gulp-watch": "^5.0.0",
-    "node-sass": "^4.9.2",
-    "pa11y": "^5.0.4",
-    "postcss-syntax": "^0.26.1",
-    "run-sequence": "^2.2.0",
-    "stylelint": "^9.2.1",
-    "stylelint-config-get-off-my-lawn": "^2.0.0",
-    "stylelint-config-recommended-scss": "^3.0.0",
-    "stylelint-config-sass-guidelines": "^5.0.0",
-    "stylelint-config-standard": "^18.0.0",
-    "stylelint-no-browser-hacks": "^1.1.0",
-    "stylelint-order": "^0.8.0",
-    "stylelint-scss": "^3.1.0",
-    "stylelint-selector-bem-pattern": "^2.0.0",
-    "susy": "^3.0.1",
-    "typey": "^1.1.2"
+    "gulp-autoprefixer": "^6.0.0",
+    "gulp-notify": "^3.2.0",
+    "gulp-plumber": "^1.2.1",
+    "gulp-sass": "^4.0.2",
+    "gulp-sass-glob": "^1.0.9",
+    "gulp-scss-lint": "^0.7.2",
+    "gulp-sourcemaps": "^2.6.4",
+    "node-sass": "^4.11.0",
+    "susy": "^3.0.1"
   },
-  "engines": {
-    "node": "8.9.x"
-  },
-  "private": true,
-  "//": "The postinstall script is needed to work-around this Drupal core bug: https://www.drupal.org/node/2329453",
-  "scripts": {
-    "postinstall": "find node_modules/ -name '*.info' -type f -delete",
-    "install-tools": "npm install --force",
-    "uninstall-tools": "rm -r node_modules;",
-    "build": "gulp",
-    "build:dev": "gulp build:dev",
-    "serve": "gulp serve",
-    "watch": "gulp watch"
-  },
-  "dependencies": {}
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.8.2"
+  }
 }

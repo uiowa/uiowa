@@ -1,0 +1,15 @@
+// Import site utilities.
+@import "../global/utils/init";
+
+$susy: (
+  'columns': susy-repeat(12),
+  'gutters': 0,
+);
+
+.container {
+  @include clearfix;
+  padding: 1em;
+  max-width: 80em;
+  margin: gutter() auto;
+  position: relative;
+}

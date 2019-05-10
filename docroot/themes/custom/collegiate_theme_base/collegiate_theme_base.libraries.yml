@@ -1,26 +1,28 @@
-# Main theme library.
-global:
+global-styling:
   js:
-    js/collegiate-theme-base.js: {}
+    assets/js/collegiate-theme-base.js: {}
   css:
     base:
-      css/base/elements.min.css: {}
+      assets/css/global/global.css: {}
     layout:
-      css/layouts/layout-main.css: {}
+      assets/css/layouts/layout-main.css: {}
     component:
-      css/components/branding/branding.min.css: {}
-      css/components/breadcrumb/breadcrumb.min.css: {}
-      css/components/form/form.min.css: {}
-      css/components/header/header.min.css: {}
-      css/components/menu/menu.min.css: {}
-      css/components/messages/messages.min.css: {}
-      css/components/table/table.min.css: {}
-      css/components/tabs/tabs.min.css: {}
-      css/components/buttons/buttons.min.css: {}
+      assets/css/components/branding/branding.css: {}
+      assets/css/components/breadcrumb/breadcrumb.css: {}
+      assets/css/components/buttons/buttons.css: {}
+      assets/css/components/form/form.css: {}
+      assets/css/components/header/header.css: {}
+      assets/css/components/menu/menu.css: {}
+      assets/css/components/messages/messages.css: {}
+      assets/css/components/table/table.css: {}
+      assets/css/components/tabs/tabs.css: {}
+      assets/css/components/uiowa-bar/uiowa-bar.css: {}
     theme:
-      css/theme/print.min.css: { media: print }
-
-layouts:
+      assets/css/theme/print.min.css: { media: print }
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+site-name:
   css:
-    layout:
-      css/layouts/layouts.min.css: {}
+    component:
+      assets/css/components/site-name/site-name.css: {}
