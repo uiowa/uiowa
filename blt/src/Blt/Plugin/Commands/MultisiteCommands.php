@@ -84,7 +84,6 @@ class MultisiteCommands extends BltTasks {
     $data = <<<EOD
 
 // Directory aliases for {$dir}.
-\$sites['{$machineName}.uiowa.lndo.site'] = '{$dir}';
 \$sites['{$dev}'] = '{$dir}';
 \$sites['{$test}'] = '{$dir}';
 \$sites['{$machineName}.prod.drupal.uiowa.edu'] = '{$dir}';
