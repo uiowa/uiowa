@@ -18,11 +18,31 @@ class MultisiteCommands extends BltTasks {
    * @hook validate recipes:multisite:init
    */
   public function validateMultisiteInit(CommandData $commandData) {
-    if ($uri = $commandData->input()->getOption('site-uri')) {
-      $commandData->input()->setOption('site-dir', $uri);
+    $uri = $commandData->input()->getOption('site-uri');
+
+    if (!$uri) {
+      return new CommandError('Sitenow: you must supply the site URI via the --site-uri option.');
     }
     else {
-      return new CommandError('Sitenow: you must supply the site URI via the --site-uri option.');
+      if (parse_url($uri, PHP_URL_SCHEME) == NULL) {
+        $uri = "https://{$uri}";
+      }
+
+      if ($parsed = parse_url($uri)) {
+        if (isset($parsed['path'])) {
+          return new CommandError('Sitenow: Subdirectory sites are not supported.');
+        }
+
+        $commandData->input()->setOption('site-uri', $uri);
+        $commandData->input()->setOption('site-dir', $parsed['host']);
+        $machineName = $this->generateMachineName($uri);
+        $commandData->input()->setOption('remote-alias', "{$machineName}.dev");
+        $this->getConfig()->set('drupal.db.database', $machineName);
+
+      }
+      else {
+        return new CommandError('Cannot parse URI for validation.');
+      }
     }
   }
 
@@ -33,37 +53,41 @@ class MultisiteCommands extends BltTasks {
    */
   public function postMultisiteInit($result, CommandData $commandData) {
     $uri = $commandData->input()->getOption('site-uri');
+    $dir = $commandData->input()->getOption('site-dir');
     $machineName = $this->generateMachineName($uri);
     $dev = "{$machineName}.dev.drupal.uiowa.edu";
     $test = "{$machineName}.stage.drupal.uiowa.edu";
     $root = $this->getConfigValue('repo.root');
 
     // Re-generate the Drush alias so it is more useful.
-    unlink("{$root}/drush/sites/{$uri}.site.yml");
+    $file = "{$root}/drush/sites/{$dir}.site.yml";
+    if (file_exists($file)) {
+      unlink("{$root}/drush/sites/{$dir}.site.yml");
+    }
+
     $default = Yaml::parse(file_get_contents("{$root}/drush/sites/uiowa.site.yml"));
-    $default['prod']['uri'] = $uri;
+    $default['prod']['uri'] = $dir;
     $default['test']['uri'] = $test;
     $default['dev']['uri'] = $dev;
+
     file_put_contents("{$root}/drush/sites/{$machineName}.site.yml", Yaml::dump($default, 10, 2));
-    $this->say("Deleted <comment>{$uri}.site.yml</comment> BLT Drush alias file.");
     $this->say("Created <comment>{$machineName}.site.yml</comment> Drush alias file.");
 
     // Overwrite the multisite blt.yml file.
-    $blt = Yaml::parse(file_get_contents("{$root}/docroot/sites/{$uri}/blt.yml"));
+    $blt = Yaml::parse(file_get_contents("{$root}/docroot/sites/{$dir}/blt.yml"));
     $blt['project']['machine_name'] = $machineName;
-    $blt['drush']['aliases']['remote'] = "{$machineName}.dev";
     $blt['drupal']['db']['database'] = $machineName;
-    file_put_contents("{$root}/docroot/sites/{$uri}/blt.yml", Yaml::dump($blt, 10, 2));
-    $this->say("Overwrote <comment>{$root}/docroot/sites/{$uri}/blt.yml</comment> file.");
+    file_put_contents("{$root}/docroot/sites/{$dir}/blt.yml", Yaml::dump($blt, 10, 2));
+    $this->say("Overwrote <comment>{$root}/docroot/sites/{$dir}/blt.yml</comment> file.");
 
     // Write sites.php data.
     $data = <<<EOD
 
-// Directory aliases for {$uri}.
-\$sites['{$machineName}.uiowa.lndo.site'] = '{$uri}';
-\$sites['{$dev}'] = '{$uri}';
-\$sites['{$test}'] = '{$uri}';
-\$sites['{$machineName}.prod.drupal.uiowa.edu'] = '{$uri}';
+// Directory aliases for {$dir}.
+\$sites['{$machineName}.uiowa.lndo.site'] = '{$dir}';
+\$sites['{$dev}'] = '{$dir}';
+\$sites['{$test}'] = '{$dir}';
+\$sites['{$machineName}.prod.drupal.uiowa.edu'] = '{$dir}';
 
 EOD;
 
@@ -94,7 +118,7 @@ EOD;
    *   The ID.
    */
   protected function generateMachineName($uri) {
-    $parsed = parse_url("//{$uri}");
+    $parsed = parse_url($uri);
 
     if (substr($parsed['host'], -9) === 'uiowa.edu') {
       // Don't use the suffix if the host equals uiowa.edu.
