@@ -48,7 +48,6 @@ This project is based on BLT, an open-source project template and tool that enab
     ```
     blt drupal:sync:all-sites
     ```
-    or `blt dsa` for short.
 8. Start the built-in PHP server.
     ```
     $ drush -l mysite rs --dns
@@ -92,6 +91,9 @@ Additional [BLT documentation](http://blt.readthedocs.io) may be useful. You may
 ```
 $ blt
 ```
+
+Most of the BLT commands referenced above have shorthand aliases. Check the
+output of `blt` for details.
 
 ## Working With a BLT Project
 
