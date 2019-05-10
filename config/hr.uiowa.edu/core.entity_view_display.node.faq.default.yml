@@ -14,17 +14,29 @@ targetEntityType: node
 bundle: faq
 mode: default
 content:
-  field_faq_content:
+  content_moderation_control:
     weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_faq_categories:
+    type: entity_reference_label
+    weight: 2
+    region: content
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_faq_content:
+    weight: 1
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   links:
-    weight: 1
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
-hidden:
-  field_faq_categories: true
+hidden: {  }
