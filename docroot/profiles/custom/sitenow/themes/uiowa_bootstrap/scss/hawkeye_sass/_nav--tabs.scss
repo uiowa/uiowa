@@ -1,0 +1,35 @@
+div.tabs {
+  margin: 0;
+}
+ul.tabs {
+  margin: 0; //0 0 0.5em
+  background-color: $white;
+  border-bottom: 1px solid $gray-200;
+}
+.tabs > li {
+  margin-right: 0; //0.3em
+  margin-bottom: -1px;
+  border-bottom: 1px solid $gray-200;
+}
+[dir="rtl"] .tabs > li {
+  margin-left: 0; //0.3em
+}
+.tabs a {
+  padding: 0.2em 2em;
+  color: $gray-900;
+}
+.tabs li.is-active {
+  border-bottom: 1px solid $white;
+  border-top: 1px solid $gray-200;
+  border-right: 1px solid $gray-200;
+  border-left: 1px solid $gray-200;
+}
+.tabs a.is-active {
+  background-color: transparent;
+}
+.tabs a:focus,
+.tabs a:hover {
+  background-color: $gray-900;
+  color: $white;
+  text-decoration: none;
+}
