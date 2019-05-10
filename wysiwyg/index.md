@@ -134,3 +134,22 @@ Some of those allowed classes are:
 
 - w-25, w-50, w-75, w-100: Element widths of 25%, 50%, 75% and 100%.
 - align-baseline, align-top, align-middle, align-bottom: Vertical alignment of inline and table cell elements.
+
+#### Example Usage
+
+```
+<table>
+  <thead>
+    <tr>
+      <th class="w-50">Header Half 01</th>
+      <th class="w-50">Header Half 02</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="align-middle">middle</td>
+      <td class="align-bottom">bottom</td>
+    </tr>
+  </tbody>
+</table>
+```
