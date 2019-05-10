@@ -57,14 +57,7 @@ This project is based on BLT, an open-source project template and tool that enab
 Visit the site in your browser by navigating to http://localhost:8888. You can
 log in using `drush -l mysite uli`, although Drush returns the incorrect URI.
 Copy the path and append to `http://localhost:8888`.
-
-9. Configure Stage File Proxy.
-    - In local.settings.php add the following lines:
-    ```
-    $config['stage_file_proxy.settings']['origin'] = 'https://mysite.com';
-    $config['stage_file_proxy.settings']['hotlink'] = TRUE;
-    ```
-    
+   
 The `drush/Commands/PolicyCommands.php` file will overwrite the 
 `sites.local.php` file to route the correct site when running `drush rs`. It is
 possible to serve multiple sites from different runserver commands with two 
@@ -74,6 +67,20 @@ that scenario.
 The `drupal:sync:all-sites` command will generate settings files only if they
 do not exist. If you want to re-generate all multisite local settings files,
 you can run `rm -f docroot/sites/*/settings/local.settings.php` beforehand.
+
+Local configuration overrides can be set in the local.settings.php file for
+each multisite. For example, to configure stage file proxy:
+```
+$config['stage_file_proxy.settings']['origin'] = 'https://mysite.com';
+$config['stage_file_proxy.settings']['hotlink'] = TRUE;
+```
+
+To create a new multisite, run the `blt recipes:multisite:init` command with
+the `--site-uri` option specified. Respond 'no' when prompted for database
+credentials. Review the code changes and commit to a feature branch. Run the
+Drush snippet given to install the site locally. When ready to deploy to Acquia
+Cloud, open a pull request for review. Once merged and deployed, the database
+can be synced.
 
 ---
 
