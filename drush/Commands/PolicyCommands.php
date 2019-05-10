@@ -34,7 +34,7 @@ EOD;
       ]));
     }
     else {
-      file_put_contents(DRUPAL_ROOT . '/sites/sites.local.php', "<?php");
+      file_put_contents(DRUPAL_ROOT . '/sites/sites.local.php', "<?php\n");
       $this->logger()->notice(dt('Overwrote sites.local.php to route default site.'));
     }
   }
