@@ -24,32 +24,32 @@ This project is based on BLT, an open-source project template and tool that enab
 # Setup Local Environment.
 1. Install [Drush Launcher](https://github.com/drush-ops/drush-launcher).
     - Ensure that there are no other Drush versions in your $PATH in `~/.bashrc` or `~.bash_profile`.
-1. Install [Homebrew](https://brew.sh/).
-2. Install PHP 7.2 via Homebrew.
+2. Install [Homebrew](https://brew.sh/).
+3. Install PHP 7.2 via Homebrew.
    ```
    brew install php@7.2
    brew link php@7.2
    ```
    Follow the instructions to get PHP7.2 in your $PATH.
-3. Install MariaDB.
+4. Install MariaDB.
    ```
    brew install mariadb
    ```
    Keep the username `root` with no password.
-4. Start MariaDB.
+5. Start MariaDB.
    ```
    brew services start mariadb
    ```
-5. Install Composer dependencies.
+6. Install Composer dependencies.
     ```
     $ composer install
     ```
-6. Sync all multisites.
+7. Sync all multisites.
     ```
     blt drupal:sync:all-sites
     ```
     or `blt dsa` for short.
-7. Start the built-in PHP server.
+8. Start the built-in PHP server.
     ```
     $ drush -l mysite rs --dns
     ```
@@ -57,6 +57,13 @@ This project is based on BLT, an open-source project template and tool that enab
 Visit the site in your browser by navigating to http://localhost:8888. You can
 log in using `drush -l mysite uli`, although Drush returns the incorrect URI.
 Copy the path and append to `http://localhost:8888`.
+
+9. Configure Stage File Proxy.
+    - In local.settings.php add the following lines:
+    ```
+    $config['stage_file_proxy.settings']['origin'] = 'https://mysite.com';
+    $config['stage_file_proxy.settings']['hotlink'] = TRUE;
+    ```
     
 The `drush/Commands/PolicyCommands.php` file will overwrite the 
 `sites.local.php` file to route the correct site when running `drush rs`. It is
