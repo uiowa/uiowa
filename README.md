@@ -31,6 +31,17 @@ This project is based on BLT, an open-source project template and tool that enab
    brew link php@7.2
    ```
    Follow the instructions to get PHP7.2 in your $PATH.
+   
+   You may also want to increase some key PHP resources. Homebrew should have installed PHP at:
+   `/usr/local/etc/php/`
+   
+   edit the php.ini file within the version of PHP you are using. Consider increasing the following defaults:
+   
+   - memory_limit = 256M
+   - max_input_vars = 3000
+   
+   Save the file.
+   
 4. Install MariaDB.
    ```
    brew install mariadb
