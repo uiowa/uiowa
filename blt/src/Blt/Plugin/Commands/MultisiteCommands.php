@@ -54,6 +54,7 @@ class MultisiteCommands extends BltTasks {
   public function postMultisiteInit($result, CommandData $commandData) {
     $uri = $commandData->input()->getOption('site-uri');
     $dir = $commandData->input()->getOption('site-dir');
+    $db = str_replace('.', '_', $dir);
     $machineName = $this->generateMachineName($uri);
     $dev = "{$machineName}.dev.drupal.uiowa.edu";
     $test = "{$machineName}.stage.drupal.uiowa.edu";
@@ -76,7 +77,7 @@ class MultisiteCommands extends BltTasks {
     // Overwrite the multisite blt.yml file.
     $blt = Yaml::parse(file_get_contents("{$root}/docroot/sites/{$dir}/blt.yml"));
     $blt['project']['machine_name'] = $machineName;
-    $blt['drupal']['db']['database'] = $machineName;
+    $blt['drupal']['db']['database'] = $db;
     file_put_contents("{$root}/docroot/sites/{$dir}/blt.yml", Yaml::dump($blt, 10, 2));
     $this->say("Overwrote <comment>{$root}/docroot/sites/{$dir}/blt.yml</comment> file.");
 
@@ -103,6 +104,7 @@ EOD;
     $this->invokeCommand('blt:init:settings');
     $this->say('<comment>Multisite initialization complete</comment>. Diff and commit code changes to a new feature branch. Install the site locally by running the below Drush command.');
     $this->yell("drush site:install sitenow --sites-subdir {$dir} --existing-config");
+    $this->say("Acquia Cloud database must be named <comment>{$db}</comment>. Create in the Cloud UI.");
   }
 
   /**
