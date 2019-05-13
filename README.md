@@ -52,8 +52,9 @@ This project is based on BLT, an open-source project template and tool that enab
    brew services start mariadb
    ```
 6. Install [NVM](https://github.com/nvm-sh/nvm#installation-and-update).
-    Once installed, install Yarn globally:
+    Once installed, install the .nvmrc-specified node and Yarn globally:
     ```
+    nvm install
     npm install -g yarn
     ```
 7. Install Composer dependencies.
