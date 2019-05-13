@@ -94,6 +94,9 @@ Acquia Cloud UI. Once merged and deployed, the database can be synced.
 
 Example: `blt recipes:multisite:init --site-uri mysite.com`.
 
+## Databases
+Use [SequelPro](https://www.sequelpro.com/) to manage your local databases.
+
 ---
 
 # Resources
