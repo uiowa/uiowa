@@ -31,6 +31,17 @@ This project is based on BLT, an open-source project template and tool that enab
    brew link php@7.2
    ```
    Follow the instructions to get PHP7.2 in your $PATH.
+   
+   You may also want to increase some key PHP resources. Homebrew should have installed PHP at:
+   `/usr/local/etc/php/`
+   
+   edit the php.ini file within the version of PHP you are using. Consider increasing the following defaults:
+   
+   - memory_limit = 256M
+   - max_input_vars = 3000
+   
+   Save the file.
+   
 4. Install MariaDB.
    ```
    brew install mariadb
@@ -48,7 +59,6 @@ This project is based on BLT, an open-source project template and tool that enab
     ```
     blt drupal:sync:all-sites
     ```
-    or `blt dsa` for short.
 8. Start the built-in PHP server.
     ```
     $ drush -l mysite rs --dns
@@ -57,14 +67,7 @@ This project is based on BLT, an open-source project template and tool that enab
 Visit the site in your browser by navigating to http://localhost:8888. You can
 log in using `drush -l mysite uli`, although Drush returns the incorrect URI.
 Copy the path and append to `http://localhost:8888`.
-
-9. Configure Stage File Proxy.
-    - In local.settings.php add the following lines:
-    ```
-    $config['stage_file_proxy.settings']['origin'] = 'https://mysite.com';
-    $config['stage_file_proxy.settings']['hotlink'] = TRUE;
-    ```
-    
+   
 The `drush/Commands/PolicyCommands.php` file will overwrite the 
 `sites.local.php` file to route the correct site when running `drush rs`. It is
 possible to serve multiple sites from different runserver commands with two 
@@ -75,6 +78,26 @@ The `drupal:sync:all-sites` command will generate settings files only if they
 do not exist. If you want to re-generate all multisite local settings files,
 you can run `rm -f docroot/sites/*/settings/local.settings.php` beforehand.
 
+Local configuration overrides can be set in the local.settings.php file for
+each multisite. For example, to configure stage file proxy:
+```
+$config['stage_file_proxy.settings']['origin'] = 'https://mysite.com';
+$config['stage_file_proxy.settings']['hotlink'] = TRUE;
+```
+
+To create a new multisite, run the `blt recipes:multisite:init` command with
+the `--site-uri` option specified. Respond 'no' when prompted for database
+credentials. Review the code changes and commit to a feature branch. Run the
+Drush snippet given to install the site locally. When ready to deploy to Acquia
+Cloud, open a pull request for review. Create the database and domains in the 
+Acquia Cloud UI. Once merged and deployed, the database can be synced. 
+
+Example: `blt recipes:multisite:init --site-uri mysite.com`.
+
+## Databases
+Use [SequelPro](https://www.sequelpro.com/) to manage your local databases. You
+can connect via localhost using the credentials set when installing MariaDB.
+
 ---
 
 # Resources
@@ -83,6 +106,9 @@ Additional [BLT documentation](http://blt.readthedocs.io) may be useful. You may
 ```
 $ blt
 ```
+
+Most of the BLT commands referenced above have shorthand aliases. Check the
+output of `blt` for details.
 
 ## Working With a BLT Project
 
