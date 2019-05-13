@@ -89,8 +89,8 @@ To create a new multisite, run the `blt recipes:multisite:init` command with
 the `--site-uri` option specified. Respond 'no' when prompted for database
 credentials. Review the code changes and commit to a feature branch. Run the
 Drush snippet given to install the site locally. When ready to deploy to Acquia
-Cloud, open a pull request for review. Once merged and deployed, the database
-can be synced. 
+Cloud, open a pull request for review. Create the database and domains in the 
+Acquia Cloud UI. Once merged and deployed, the database can be synced. 
 
 Example: `blt recipes:multisite:init --site-uri mysite.com`.
 
