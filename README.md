@@ -51,15 +51,20 @@ This project is based on BLT, an open-source project template and tool that enab
    ```
    brew services start mariadb
    ```
-6. Install Composer dependencies.
+6. Install [NVM](https://github.com/nvm-sh/nvm#installation-and-update).
+    Once installed, install Yarn globally:
+    ```
+    npm install -g yarn
+    ```
+7. Install Composer dependencies.
     ```
     $ composer install
     ```
-7. Sync all multisites.
+8. Sync all multisites.
     ```
     blt drupal:sync:all-sites
     ```
-8. Start the built-in PHP server.
+9. Start the built-in PHP server.
     ```
     $ drush -l mysite rs --dns
     ```
