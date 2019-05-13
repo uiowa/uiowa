@@ -92,7 +92,7 @@ class MultisiteCommands extends BltTasks {
 EOD;
 
     file_put_contents($root . '/docroot/sites/sites.php', $data, FILE_APPEND);
-    $this->say('Added <comment>sites.php</comment> entries. Adjust as needed.');
+    $this->say('Added <comment>sites.php</comment> entries. Adjust as needed. Create domains in the Acquia Cloud UI.');
 
     // Remove the new local settings file - it has the wrong database name.
     $file = "{$root}/docroot/sites/{$dir}/settings/local.settings.php";
