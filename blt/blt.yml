@@ -48,3 +48,10 @@ sync:
     - drupal:sync:db
     - drupal:update
     - drupal:config:import
+command-hooks:
+  frontend-reqs:
+    dir: ${docroot}/themes/contrib/claro
+    command: 'yarn install'
+  frontend-assets:
+    dir: ${docroot}/themes/contrib/claro
+    command: 'yarn build:css && yarn build:js'
