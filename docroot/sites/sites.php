@@ -42,8 +42,3 @@ $sites['sitesgis.prod.drupal.uiowa.edu'] = 'gis.sites.uiowa.edu';
 $sites['sitesgis.dev.drupal.uiowa.edu'] = 'gis.sites.uiowa.edu';
 $sites['sitesgis.stage.drupal.uiowa.edu'] = 'gis.sites.uiowa.edu';
 $sites['sitesgis.prod.drupal.uiowa.edu'] = 'gis.sites.uiowa.edu';
-
-// Directory aliases for protolabs.uiowa.edu.
-$sites['protolabs.dev.drupal.uiowa.edu'] = 'protolabs.uiowa.edu';
-$sites['protolabs.stage.drupal.uiowa.edu'] = 'protolabs.uiowa.edu';
-$sites['protolabs.prod.drupal.uiowa.edu'] = 'protolabs.uiowa.edu';
