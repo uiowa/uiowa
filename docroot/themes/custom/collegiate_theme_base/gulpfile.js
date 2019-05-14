@@ -1,44 +1,78 @@
 // Include gulp.
-var gulp = require('gulp');
-var config = require('./config.json');
+const { src, dest, parallel, series, watch } = require('gulp');
+const config = require('./config.json');
 
 // Include plugins.
-var sass = require('gulp-sass');
-var plumber = require('gulp-plumber');
-var notify = require('gulp-notify');
-var autoprefixer = require('gulp-autoprefixer');
-var glob = require('gulp-sass-glob');
-var sourcemaps = require('gulp-sourcemaps');
+const sass = require('gulp-sass');
+const plumber = require('gulp-plumber');
+const prefix = require('gulp-autoprefixer');
+const glob = require('gulp-sass-glob');
+const sourcemaps = require('gulp-sourcemaps');
+const browsersync = require('browser-sync');
 
-// CSS.
-gulp.task('css', function() {
-  return gulp.src(config.css.src)
-    .pipe(glob())
-    .pipe(plumber({
-      errorHandler: function (error) {
-        notify.onError({
-          title:    "Gulp",
-          subtitle: "Failure!",
-          message:  "Error: <%= error.message %>",
-          sound:    "Beep"
-        }) (error);
-        this.emit('end');
-      }}))
+/*
+ * Directories here
+ */
+var paths = {
+  build: './assets/',
+  scss: './scss/'
+};
+
+// SCSS bundled into CSS task
+function css() {
+  return src(config.css.src)
     .pipe(sourcemaps.init())
-    .pipe(sass({
-      outputStyle: 'compressed',
-      errLogToConsole: true,
-      includePaths: config.css.includePaths
+    .pipe(glob())
+    // Stay live and reload on error
+    .pipe(plumber({
+      handleError: function (err) {
+        console.log(err);
+        this.emit('end');
+      }
     }))
-    .pipe(autoprefixer(['last 2 versions', '> 1%', 'ie 9', 'ie 10']))
+    .pipe(sass({
+      includePaths: [config.css.includePaths],
+      outputStyle: 'compressed'
+    }).on('error', function (err) {
+      console.log(err.message);
+      // sass.logError
+      this.emit('end');
+    }))
+    .pipe(prefix(['last 2 versions', '> 1%', 'ie 9', 'ie 10'], {
+      cascade: true
+    }))
+    //.pipe(minifyCSS())
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest(config.css.dest));
-});
+    .pipe(dest(config.css.dest));
+}
 
-// Static Server + Watch
-gulp.task('serve', ['css'], function() {
-  gulp.watch(config.css.src, ['css']);
-});
+// BrowserSync
+function browserSync() {
+  browsersync({
+    server: {
+      baseDir: paths.build
+    },
+    notify: false,
+    browser: "google chrome",
+    //proxy: "http://uiowa.lndo.site:8080"
+  });
+}
 
-// Default Task
-gulp.task('default', ['serve']);
+// BrowserSync reload
+function browserReload() {
+  return browsersync.reload;
+}
+
+// Watch files
+function watchFiles() {
+  // Watch SCSS changes
+  watch(paths.scss + '**/*.scss', parallel(css))
+    .on('change', browserReload());
+}
+
+const watching = parallel(watchFiles, browserSync);
+
+//exports.js = js;
+exports.css = css;
+exports.default = parallel(css);
+exports.watch = watching;
