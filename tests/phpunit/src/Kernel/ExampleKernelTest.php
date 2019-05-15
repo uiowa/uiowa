@@ -52,7 +52,7 @@ class ExampleKernelTest extends EntityKernelTestBase {
     $node = $this->createNode([
       'title' => $title,
       'type' => 'page',
-      'uid' => $editor->id()
+      'uid' => $editor->id(),
     ]);
 
     $this->assertEquals($title, $node->getTitle());
