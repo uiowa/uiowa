@@ -1,0 +1,29 @@
+language: php
+
+php:
+  - '7.2'
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+services:
+  - mysql
+
+matrix:
+  fast_finish: true
+
+before_install:
+  - phpenv config-rm xdebug.ini
+
+install:
+  - composer install --no-suggest
+
+script:
+  - export SIMPLETEST_BASE_URL=http://localhost:8080
+  - export SIMPLETEST_DB=mysql://root@localhost/drupal
+  - export SYMFONY_DEPRECATIONS_HELPER=disabled
+  - ./vendor/bin/drush runserver --default-server=builtin 8080 &
+  - sleep 3
+  - ./vendor/bin/phpunit tests/phpunit/src/Functional
+
