@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\sitenow\Functional;
+namespace Sitenow\Tests\PHPUnit\Functional;
 
 /**
  * Class EditorTest.
