@@ -23,11 +23,11 @@
     <!-- Example for changing the driver args to webdriver tests MINK_DRIVER_ARGS_WEBDRIVER value: '["firefox", null, "http://localhost:4444/wd/hub"]' -->
   </php>
   <testsuites>
-    <testsuite name="app">
-      <directory>./tests/phpunit</directory>
+    <testsuite name="unit">
+      <directory>./tests/phpunit/unit</directory>
     </testsuite>
-    <testsuite name="sitenow">
-      <directory>./docroot/profiles/custom/sitenow/tests/</directory>
+    <testsuite name="kernel">
+      <directory>./tests/phpunit/kernel</directory>
     </testsuite>
   </testsuites>
   <listeners>
