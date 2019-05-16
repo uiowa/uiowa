@@ -1,0 +1,15 @@
+<div class="card">
+  <div class="card-header" id="{{ label }}">
+    <div class="mb-0 h5">
+      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#{{ id }}" aria-expanded="false" aria-controls="{{ id }}">
+        {{ heading }}
+      </button>
+    </div>
+  </div>
+
+  <div id="{{ id }}" class="collapse" aria-labelledby="{{ label }}" data-parent="#{{ parent }}">
+    <div class="card-body">
+      {{ content }}
+    </div>
+  </div>
+</div>
