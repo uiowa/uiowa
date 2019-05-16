@@ -64,3 +64,10 @@ function sitenow_update_8004() {
     ->condition('name', 'config_ignore')
     ->execute();
 }
+
+/**
+ * Flush all caches so sites pick up the new theme location.
+ */
+function sitenow_update_8005() {
+  drupal_flush_all_caches();
+}
