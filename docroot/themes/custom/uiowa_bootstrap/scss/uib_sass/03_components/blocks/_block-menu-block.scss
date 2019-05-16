@@ -1,0 +1,34 @@
+.block-menu-block {
+  .menu {
+    @extend .nav;
+    @extend .flex-column;
+  }
+  .menu-item {
+    @extend .nav-item;
+  }
+}
+
+.block-menu-block.card {
+  .card-body {
+    padding: 0;
+    display: block;
+  }
+  ul.menu {
+    @extend .list-group;
+    @extend .list-group-flush;
+    .menu-item a {
+      @extend .list-group-item;
+      @extend .list-group-item-action;
+      border-radius: 0;
+      background-color: transparent;
+      &:hover, &:focus {
+        background-color: $primary;
+        color: $white;
+      }
+    }
+    .menu-item a:first-child,
+    .menu-item a:last-child {
+      border-radius: 0;
+    }
+  }
+}
