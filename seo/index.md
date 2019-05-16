@@ -1,7 +1,7 @@
 ---
 title: "Search Engine Optimization (SEO)"
 has_children: false
-nav_order: 9
+nav_order: 10
 ---
 
 # Search Engine Optimization (SEO)
