@@ -87,20 +87,20 @@
     <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
 
     <div{{ content_attributes.addClass(content_classes, 'layout-content') }}">
-    {{ page.content }}
-  </div>{# /.layout-content #}
+      {{ page.content }}
+    </div>{# /.layout-content #}
 
-  {% if sidebar_first %}
-    <aside{{ sidebar_attributes.addClass(sidebar_classes, 'layout-sidebar-first', 'order-first').setAttribute('role', 'complementary') }}>
-      {{ page.sidebar_first }}
-    </aside>
-  {% endif %}
+    {% if sidebar_first %}
+      <div{{ sidebar_attributes.addClass(sidebar_classes, 'layout-sidebar-first', 'order-first').setAttribute('role', 'region') }}>
+        {{ page.sidebar_first }}
+      </div>
+    {% endif %}
 
-  {% if sidebar_second %}
-    <aside{{ sidebar_attributes.addClass(sidebar_classes, 'layout-sidebar-second', 'order-last').setAttribute('role', 'complementary') }}>
-      {{ page.sidebar_second }}
-    </aside>
-  {% endif %}
+    {% if sidebar_second %}
+      <div{{ sidebar_attributes.addClass(sidebar_classes, 'layout-sidebar-second', 'order-last').setAttribute('role', 'region') }}>
+        {{ page.sidebar_second }}
+      </div>
+    {% endif %}
   </div>
 </main>
 
