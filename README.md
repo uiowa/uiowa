@@ -70,15 +70,17 @@ This project is based on BLT, an open-source project template and tool that enab
     $ drush -l mysite rs --dns
     ```
     
-Visit the site in your browser by navigating to http://localhost:8888. You can
-log in using `drush -l mysite uli`, although Drush returns the incorrect URI.
-Copy the path and append to `http://localhost:8888`.
-   
+Visit the site in your browser by navigating to http://localhost:8888. 
+
 The `drush/Commands/PolicyCommands.php` file will overwrite the 
 `sites.local.php` file to route the correct site when running `drush rs`. It is
 possible to serve multiple sites from different runserver commands with two 
 different ports. You'll need to manually edit the `sites.local.php` file in 
 that scenario.
+
+Once the server is running and the multisite is routed, you can log in by 
+changing directory to `docroot/sites/mysite` and running `drush uli`. Note that
+this only works when the sites.php/local.sites.php file is routing the multisite.
 
 The `drupal:sync:all-sites` command will generate settings files only if they
 do not exist. If you want to re-generate all multisite local settings files,
