@@ -14,7 +14,7 @@ On this page you can change many of the global site settings available to you.
 
 ## Site Details
 
-Change your site name, give it a slogan or update the site email address.
+You can change your site name, give it a slogan or update the site email address.
 
 ## Front Page
 
