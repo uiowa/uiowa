@@ -55,7 +55,7 @@ class GitCommands extends BltTasks {
       }
     }
     else {
-      $this->say('There are no branches to clean up.');
+      $this->yell('There are no branches to clean up!');
     }
   }
 
