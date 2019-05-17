@@ -2,7 +2,7 @@
 # for the entire application. For site-specific settings, like URI, use
 # ../docroot/sites/[site]/drush.yml
 ssh:
-  options: '-A'
+  options: '-A -o PasswordAuthentication=no -p 22'
 
 drush:
   paths:
