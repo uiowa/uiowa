@@ -17,7 +17,12 @@
     &.semi-transparent {
       background-color: rgba(52, 58, 64, 0.8) !important;
     }
-    blockquote {
+    blockquote, blockquote p {
+      border-color: $white;
+      &:before {
+        background-color: $white;
+        color: $dark;
+      }
       footer {
         color: $gray-500;
       }
@@ -39,8 +44,12 @@
         text-decoration: none;
       }
     }
-    blockquote {
-      border-left: 4px solid $gray-900;
+    blockquote, blockquote p {
+      border-color: $gray-900;
+      &:before {
+        background-color: $gray-900;
+        color: $white;
+      }
       footer {
         color: $gray-900;
       }
@@ -55,7 +64,12 @@
     &.semi-transparent {
       background-color: rgba(248, 249, 250, 0.8) !important;
     }
-    blockquote {
+    blockquote, blockquote p {
+      border-color: $gray-900;
+      &:before {
+        background-color: $gray-900;
+        color: $white;
+      }
       footer {
         color: $gray-900;
       }
@@ -109,7 +123,7 @@
 }
 .paragraph.bg-dark.semi-transparent {
   background-color: rgba(52, 58, 64, 0.8) !important;
-  color: white;
+  color: $white;
 }
 
 .paragraph--type--section.bg-dark {
