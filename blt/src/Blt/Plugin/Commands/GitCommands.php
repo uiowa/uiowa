@@ -36,22 +36,26 @@ class GitCommands extends BltTasks {
       list($sha, $ref) = explode("\t", $head);
 
       if (!in_array($ref, $keep)) {
-        $delete[] = $ref;
+        $delete[$sha] = $ref;
       }
     }
 
-    $this->io()->section('Refs');
-    $this->io()->listing($delete);
+    if (!empty($delete)) {
+      $this->printArrayAsTable($delete, ['SHA', 'Ref']);
 
-    if (!$this->confirm('You will delete all the branches above from the Acquia remote. Are you sure?')) {
-      throw new \Exception('Aborted.');
+      if (!$this->confirm('You will delete all the branches above from the Acquia remote. Are you sure?')) {
+        throw new \Exception('Aborted.');
+      }
+      else {
+        foreach ($delete as $ref) {
+          $this->taskExecStack()
+            ->exec("git push --delete acquia {$ref}")
+            ->run();
+        }
+      }
     }
     else {
-      foreach ($delete as $ref) {
-        $this->taskExecStack()
-          ->exec("git push --delete acquia {$ref}")
-          ->run();
-      }
+      $this->say('There are no branches to clean up.');
     }
   }
 
