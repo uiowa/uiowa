@@ -10,11 +10,13 @@ use Acquia\Blt\Robo\BltTasks;
 class GitCommands extends BltTasks {
 
   /**
-   * Delete all remote branches except master and develop.
+   * Delete all remote branches except master and develop from Acquia remote.
    *
-   * @command clean:acquia
+   * @command git:clean:acquia
+   *
+   * @aliases gca
    */
-  public function cleanAcquiaRemote() {
+  public function cleanAcquia() {
     $result = $this->taskExecStack()
       ->exec('git ls-remote --heads acquia')
       ->stopOnFail()
