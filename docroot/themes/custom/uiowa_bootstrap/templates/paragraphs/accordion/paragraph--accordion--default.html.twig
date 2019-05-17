@@ -50,6 +50,8 @@
   <div{{ attributes.addClass(classes) }}>
     {% if display_title %}
         {{ content.field_uip_title }}
+    {% else %}
+        <div class="sr-only">{{ content.field_uip_title }}</div>
     {% endif %}
     {% block content %}
         {{ content|without('field_uip_title') }}
