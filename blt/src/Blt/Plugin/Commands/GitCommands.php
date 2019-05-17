@@ -3,9 +3,6 @@
 namespace Sitenow\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
-use Consolidation\AnnotatedCommand\CommandData;
-use Consolidation\AnnotatedCommand\CommandError;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Defines commands in the Sitenow namespace.
