@@ -20,6 +20,19 @@ function uiowa_blockquote_theme($existing, $type, $theme, $path) {
 }
 
 /**
+ * Implements hook_uip_classes_alter().
+ */
+function uiowa_blockquote_uip_classes_alter(&$options, $entity, $bundle) {
+  switch ($bundle) {
+    case 'blockquote':
+      $options['blockquote-center'] = 'Align Center';
+      $options['blockquote-right'] = 'Align Right';
+      break;
+
+  }
+}
+
+/**
  * Implements hook_theme_suggestions_HOOK_alter().
  */
 function uiowa_blockquote_theme_suggestions_field_alter(&$suggestions, $variables) {
