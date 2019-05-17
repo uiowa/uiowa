@@ -6,8 +6,6 @@ dev:
     dump-dir: /mnt/tmp
   root: /var/www/html/uiowa.dev/docroot
   user: uiowa.dev
-  ssh:
-    options: '-p 22'
 prod:
   uri: demo.prod.drupal.uiowa.edu
   host: web-33201.prod.hosting.acquia.com
@@ -16,8 +14,6 @@ prod:
     dump-dir: /mnt/tmp
   root: /var/www/html/uiowa.prod/docroot
   user: uiowa.prod
-  ssh:
-    options: '-p 22'
 test:
   uri: demo.stage.drupal.uiowa.edu
   host: staging-15039.prod.hosting.acquia.com
@@ -26,7 +22,5 @@ test:
     dump-dir: /mnt/tmp
   root: /var/www/html/uiowa.test/docroot
   user: uiowa.test
-  ssh:
-    options: '-p 22'
 local:
   uri: default
