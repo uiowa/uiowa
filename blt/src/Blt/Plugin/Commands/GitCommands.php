@@ -17,6 +17,7 @@ class GitCommands extends BltTasks {
   public function cleanAcquiaRemote() {
     $result = $this->taskExecStack()
       ->exec('git ls-remote --heads acquia')
+      ->stopOnFail()
       ->silent(TRUE)
       ->run();
 
