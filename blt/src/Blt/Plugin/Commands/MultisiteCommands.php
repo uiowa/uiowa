@@ -66,7 +66,8 @@ class MultisiteCommands extends BltTasks {
       unlink("{$root}/drush/sites/{$dir}.site.yml");
     }
 
-    $default = Yaml::parse(file_get_contents("{$root}/drush/sites/uiowa.site.yml"));
+    $app = $this->getConfig()->get('project.prefix');
+    $default = Yaml::parse(file_get_contents("{$root}/drush/sites/{$app}.site.yml"));
     $default['prod']['uri'] = $dir;
     $default['test']['uri'] = $test;
     $default['dev']['uri'] = $dev;
