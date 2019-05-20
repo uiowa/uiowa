@@ -62,15 +62,35 @@ Links to internal or external paths can be added with the link button. A separat
 
 ![link](assets/images/a.png) 
 
-- The _URL_ field will attempt to find related content/documents based on what is typed. If no suitable result is found and selected an normal link will be created.
-- _Upload file_ will allow you to add a file that doesn't already exist on the site.
-- _Advanced_ provides additional, though optional, configuration for the link.
-
 You can edit an existing link by placing the cursor on the link and clicking the link button.
 
 Links can also be removed easily with the "Unlink" button.
 
 ![remove link](assets/images/a-remove.png) 
+
+### URL
+
+Add the link's connecting URL. Start typing to find content.
+
+### Title
+
+Add a name that populates the title attribute of the link, usually shown as a small tooltip on hover.
+
+### Upload A File
+
+Allows you to add a file that doesn't already exist on the site. Insert a name and browse to find a file from your computer.
+
+### Advanced
+
+Provides additional, though optional, configuration for the link. Configurations such as, CSS classes, ID, open in a new window button, and Relation (rel).
+
+#### CSS Classes
+
+List of CSS classes to add to the link, separated by spaces. Alternatively, add one or more of these predefined *button* styles: (Primary, Secondary, Success, Info, Warning, Danger, Small, Large, Full-Width).
+
+#### ID
+
+Allows linking to this content using a *URL fragment*. Must be unique.
 
 ## Tables
 
