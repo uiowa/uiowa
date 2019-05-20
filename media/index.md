@@ -1,7 +1,7 @@
 ---
 title: "Media (Images and Files)"
 has_children: false
-nav_order: 6
+nav_order: 7
 ---
 
 # Media (Images and Files)

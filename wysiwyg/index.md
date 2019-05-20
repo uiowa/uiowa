@@ -1,7 +1,7 @@
 ---
 title: "WYSIWYG (What-You-See-Is-What-You-Get) Text Editor"
 has_children: false
-nav_order: 5
+nav_order: 6
 ---
 
 # WYSIWYG (What-You-See-Is-What-You-Get) Text Editor
