@@ -26,11 +26,15 @@ You can quickly remove all formatting from highlighted text using the "Remove Fo
 
 ![remove format](assets/images/remove-format.png) 
 
+### Styles
+
+Using the "Block Styles" drop-down, you can add paragraph styles within your content. The paragraph style will be applied to the current line/paragraph. Hit Enter/Return to break out and return to to the normal format.
+
 ### Headings
 
 Using the "Paragraph Format" drop-down, you can add headings within your content. The heading will be applied to the current line/paragraph. Hit Enter/Return to break out and return to the normal format.
 
-![paragraph format](assets/images/paragraph-format.png) 
+![paragraph format](assets/images/paragraph-format.png)
 
 It is important for accessibility and usability that headings are used sequentially and not for style purposes. 
 
