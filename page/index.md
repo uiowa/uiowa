@@ -40,7 +40,9 @@ Link this content to one or more existing pieces of content within this site. Re
 
 #### References
 
-For References, comma-separate your references.
+For References, comma-separate your references to link separate content to existing terms within this site.
+
+Additionally, to view existing terms and to create new terms click the *Click here to create new terms* link to go to the /admin/structure/taxonomy page.
 
 ### Menu Settings
 
