@@ -96,9 +96,19 @@ After upload, provide alternative text for the image to aid visually impaired us
 
 Optionally, clicking on the image thumbnail allows you to specify the portion of an image that is most important. This information can be used when the image is cropped so that you don't, for example, end up with an image that cuts off the subject's head.
 
-After saving the entity, another window will load allowing you to change the size of the image used, the alignment and allow you to provide a caption that is display with the image.
+After saving the entity, another window will load allowing you to change the size of the image used, the alignment and allow you to provide a caption that is displayed with the image.
 
 You can read more about media images and files within the [Media section of our documentation](../media/index.md).
+
+## Media (Remote Video)
+
+The "Media Entity Embed" (Remote Video) button allows you to add remote videos to your content. A separate configuration window will load.
+
+When uploading a remote video, add an existing Youtube or Vimeo video URL.
+
+After saving entity, another window will load allowing you to change the display size of the video used, the alignment and allow you to provide a caption that is displayed with the image.
+
+You can read more about media remote videos within the [Media section of our documentation](../media/index.md).
 
 ## Editor Options
 

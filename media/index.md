@@ -14,6 +14,12 @@ When adding an image or document, give the file a name. This is helpful when sea
 
 Next, select a file from you computer. Below each upload field there is help text points out any restrictions regarding file size, type.
 
+# Media (Remote Videos)
+
+By default, remote videos can be added to your site.
+
+You can either add them directly to your site by going to Content > Media (/admin/content/media), or as you create content through fields and [WYSIWYG](../wysiwyg/index.md) text editors.
+
 ## Images
 
 **Pro Tip**: For images, try to upload high-resolution, small file size images. This will ensure fast loading and great viewing experiences.
