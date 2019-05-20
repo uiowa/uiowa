@@ -96,6 +96,31 @@ Acquia Cloud UI. Once merged and deployed, the database can be synced.
 
 Example: `blt recipes:multisite:init --site-uri mysite.com`.
 
+## XDebug
+
+`pecl install xdebug`
+
+Open your php.ini file (should be located at: /usr/local/etc/php/7.2/php.ini). Confirm there is a line like:
+`zend_extension="xdebug.so"`
+
+Ideally this should be at the bottom of the file near the other extensions' config. Ultimately, your php.ini should have the following:
+
+```
+[xdebug]
+zend_extension="xdebug.so"
+xdebug.remote_enable=1
+xdebug.remote_log=/tmp/xdebug
+```
+
+Make sure you IDE is configured to use the same PHP executable. In PHPStorm this is located under Preferences > PHP > CLI Interpeter. Click the dots to configure the location.
+
+If using PHPStorm make sure your .bash_profile has the line and source it `source ~/.bash_profile`:
+`export XDEBUG_CONFIG="idekey=PHPSTORM"`
+
+Restart your server and clear the site's cache.
+
+Place a breakpoint and Start listening for PHP Debug Connections. Visit your site where your breakpoint should trigger and accept the incoming connection.
+
 ## Databases
 Use [SequelPro](https://www.sequelpro.com/) to manage your local databases. You
 can connect via localhost using the credentials set when installing MariaDB.
