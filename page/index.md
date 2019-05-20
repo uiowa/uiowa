@@ -18,9 +18,17 @@ There are a lot of optional advanced settings.
 
 ### Revision Information
 
+You can view the date and time of the last saved revision.
+
+Additionally, type a revision log message indicating what changes you have made to the page.
+
+When the page is saved, the revision log will be saved including the typed message, date and time of revision, and author for future reference.
+
 ### Content Description
 
 Type a short summary of you content here. It will be used if there are any displays around the site that reference this content. By default, this is also used by search engines when they crawl and index your site.
+
+When the page is saved the content description will be saved for future reference.
 
 ### Relationships
 
@@ -37,6 +45,8 @@ For References, comma-separate your references.
 ### Menu Settings
 
 ### SEO Settings
+
+
 
 ### URL Alias
 
