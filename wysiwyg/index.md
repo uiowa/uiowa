@@ -84,6 +84,12 @@ Allows you to add a file that doesn't already exist on the site. Insert a name a
 
 Provides additional, though optional, configuration for the link. Configurations such as, CSS classes, ID, open in a new window button, and Relation (rel).
 
+### Buttons
+
+To quick add a button style to a link create a link and under Add Link > Advanced > CSS classes, select one of the given styles.
+
+Examples include: Primary, Secondary, Success, Info, Warning, Danger, Small, Large, and Full-Width.
+
 #### CSS Classes
 
 List of CSS classes to add to the link, separated by spaces. Alternatively, add one or more of these predefined *button* styles: (Primary, Secondary, Success, Info, Warning, Danger, Small, Large, Full-Width).
