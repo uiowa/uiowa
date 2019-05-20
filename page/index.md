@@ -46,6 +46,24 @@ Additionally, to view existing terms and to create new terms click the *Click he
 
 ### Menu Settings
 
+You can provide a menu link. Clicking the button will create a menu link at the top of the page in the navigation bar. When the button is activated, additional options such as the menu link title, description, parent item, and weight of the webpage's menu link are available to configure.
+
+#### Menu link title
+
+Add a title that will display as the menu link in the navigation bar.
+
+#### Description
+
+Add a description that will display when hovering over the menu link.
+
+#### Parent item
+
+Choose the parent item for the webpage, which will display this webpages menu link in a drop down menu under the selected parent.
+
+#### Weight
+
+Change the menu link's weight. Menu links with lower weights are displayed before links with higher weights.
+
 ### SEO Settings
 
 
