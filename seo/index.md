@@ -25,3 +25,5 @@ To kick-start the Google crawling/indexing process you can setup at [Google Webm
 ~~For Bing, you can [submit your URL](http://www.bing.com/toolbox/submit-site-url).~~
 
 Bing has recently retired their URL submit tool and now has a similar service to Google's for webmasters. [You can sign-up for Bing's Webmasters service here](https://www.bing.com/toolbox/webmaster/).
+
+
