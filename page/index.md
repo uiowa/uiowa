@@ -46,7 +46,7 @@ Additionally, to view existing terms and to create new terms click the *Click he
 
 ### Menu Settings
 
-You can provide a menu link. Clicking the button will create a menu link at the top of the page in the navigation bar. When the button is activated, additional options such as the menu link title, description, parent item, and weight of the webpage's menu link are available to configure.
+You can provide a menu link. Select the button will create a menu link at the top of the page in the navigation bar. When the button is activated, additional options such as the menu link title, description, parent item, and weight of the webpage's menu link are available to configure.
 
 #### Menu link title
 
@@ -66,17 +66,27 @@ Change the menu link's weight. Menu links with lower weights are displayed befor
 
 ### SEO Settings
 
-
+### URL Redirect
 
 ### URL Alias
 
+Check the box to automatically generate a URL alias. Otherwise, specify an alternative path by which this data can be accessed. For example, type "/about" when writing an about page.
+
 ### Authoring Information
+
+Write the username of the content author.
 
 ### Publishing Options
 
+Publishing options contains additional page options.
+
 #### Visually hide title
 
+Select *Visually hide title* button to hide the title.
+
 #### Remove sidebar regions
+
+Select *Remove sidebar regions* to remove the webpage's sidebar.
 
 ## Content Blocks
 
