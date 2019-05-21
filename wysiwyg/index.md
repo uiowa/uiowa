@@ -92,8 +92,6 @@ Provides additional, though optional, configuration for the link. Configurations
 
 To quick add a button style to a link create a link and under Add Link > Advanced > CSS classes, select one of the given styles.
 
-Examples include: Primary, Secondary, Success, Info, Warning, Danger, Small, Large, and Full-Width.
-
 #### CSS Classes
 
 List of CSS classes to add to the link, separated by spaces. Alternatively, add one or more of these predefined *button* styles: (Primary, Secondary, Success, Info, Warning, Danger, Small, Large, Full-Width).
@@ -101,6 +99,12 @@ List of CSS classes to add to the link, separated by spaces. Alternatively, add 
 #### ID
 
 Allows linking to this content using a *URL fragment*. Must be unique.
+
+## Blockquotes
+
+A blockquote element defines a section of the webpage that is quoted from another source. The blockquote visually indicates that the text is a quote.
+
+![blockquote](assets/images/blockquote.png)
 
 ## Tables
 

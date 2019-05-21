@@ -32,6 +32,8 @@ There are default "access denied" and "page not found" pages, but if you want to
 
 You can configure the global footer for the site.
 
+*Note:* Only webmasters can manage footer menus, if content is assigned to the footer, editors are blocked from making menu changes to the node.
+
 ### Footer Variant
 
 All sites come with the UIowa Standard variant. Depending on the site there may be other options to choose from. Contact your developer if you would like to create a custom variant that differs from the current option(s).
