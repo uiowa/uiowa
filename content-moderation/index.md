@@ -1,7 +1,7 @@
 ---
 title: "Content Moderation"
 has_children: false
-nav_order: 10
+nav_order: 11
 ---
 
 # Content Moderation and Workflow

@@ -1,7 +1,7 @@
 ---
-title: "Redirect"
+title: "URL Redirects"
 has_children: false
-nav_order: 14
+nav_order: 15
 ---
 
 # Redirect
