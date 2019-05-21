@@ -1,10 +1,13 @@
 ---
 title: "Basic Pages"
 has_children: false
-nav_order: 4
+parent: "Content"
+nav_order: 2
 ---
 
-# Basic Pages
+# Basic Page
+
+Use *basic pages* for your static content, such as an *About us* page.
 
 Basic pages are quite versatile and will most likely make up most of the content on your site.
 
