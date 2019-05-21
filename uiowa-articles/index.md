@@ -1,7 +1,7 @@
 ---
 title: "SiteNow Articles"
 has_children: false
-nav_order: 15
+nav_order: 4
 ---
 
 # SiteNow Articles

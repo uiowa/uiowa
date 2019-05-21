@@ -1,7 +1,7 @@
 ---
 title: "University of Iowa Branding Bar"
 has_children: false
-nav_order: 3
+nav_order: 5
 ---
 
 # University of Iowa Branding Bar
