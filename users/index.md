@@ -6,8 +6,8 @@ nav_order: 10
 
 # User Management and Roles
 
-When you login to your site, you will be assigned a role. The default roles are editor and
-webmaster. Editors are mostly responsible for content management. Webmasters
+When you login to your site, you will be assigned a role. The default roles are editor, publisher, and
+webmaster. Editors are mostly responsible for content management. Publishers and Webmasters
 have elevated permissions to handle more administrative tasks, like managing
 users.
 
@@ -15,7 +15,7 @@ To see an overview of the people with access to the site, go to People (/admin/p
 
 ## Adding Users
 
-*Note:* Webmaster role required.
+*Note:* Publisher/ Webmaster role required.
 
 From the people overview page click the Add User action button (/admin/people/create).
 
@@ -25,7 +25,7 @@ Set their status to active (default), and select the role(s) you would like the 
 
 ## Managing Existing Users
 
-*Note:* Webmaster role required.
+*Note:* Publisher/ Webmaster role required.
 
 From the people overview page you can edit one or more existing users at a time. You can block/grant their access to the site, add/remove roles or cancel their account.
 
