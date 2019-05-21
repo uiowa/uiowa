@@ -8,7 +8,7 @@ nav_order: 9
 
 All menus can be managed by going to the menus overview page (admin/structure/menu).
 
-There are for menus by default:
+There are four menus by default:
 
 - Main Menu
 - Social Media
@@ -27,3 +27,7 @@ With the right permissions, for each existing menu item you can:
 - **Delete** - This will delete the menu link. Not the content.
 - **Enable/Disable** - This will show/hide the menu link in the given menu.
 - **Reorder** - You can change the order of menu items within the given menu.
+
+## Social Media Menu
+
+Within this menu is an icon picker. Clicking on the FontAwesome Icon bar will open a large selection of icons to pick from.
