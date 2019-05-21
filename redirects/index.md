@@ -10,6 +10,8 @@ Go to Redirect via Configuration > URL redirects (/admin/config/search/redirect)
 
 On this page you can configure webpage redirects from with your website.
 
+If a page changes the path through title change, menu placement, etc. a redirect will automatically be created.
+
 ## Add redirect
 
 Click to redirect webpage to a different webaddress.
