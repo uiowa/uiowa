@@ -6,10 +6,7 @@ nav_order: 10
 
 # User Management and Roles
 
-When you login to your site, you will be assigned a role. The default roles are editor, publisher, and
-webmaster. Editors are mostly responsible for content management. Publishers and Webmasters
-have elevated permissions to handle more administrative tasks, like managing
-users.
+When you login to your site, you will be assigned a role. The default roles are editor, publisher, and webmaster. Editors are mostly responsible for content management. Publishers have additional developer settings, and Webmasters have elevated permissions to handle more administrative tasks, like managing users.
 
 To see an overview of the people with access to the site, go to People (/admin/people).
 
