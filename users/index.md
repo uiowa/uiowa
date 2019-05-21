@@ -15,7 +15,7 @@ To see an overview of the people with access to the site, go to People (/admin/p
 
 ## Adding Users
 
-*Note:* Publisher/ Webmaster role required.
+*Note:* Webmaster role required.
 
 From the people overview page click the Add User action button (/admin/people/create).
 
@@ -25,7 +25,7 @@ Set their status to active (default), and select the role(s) you would like the 
 
 ## Managing Existing Users
 
-*Note:* Publisher/ Webmaster role required.
+*Note:* Webmaster role required.
 
 From the people overview page you can edit one or more existing users at a time. You can block/grant their access to the site, add/remove roles or cancel their account.
 
