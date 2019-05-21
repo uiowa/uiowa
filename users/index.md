@@ -27,3 +27,22 @@ Set their status to active (default), and select the role(s) you would like the 
 From the people overview page you can edit one or more existing users at a time. You can block/grant their access to the site, add/remove roles or cancel their account.
 
 When canceling an account, options will be presented about how to handle site content that user may have created. The option you select may have unintended consequences. When in doubt, but you need to keep the user from logging into your site, just change their status to blocked.
+
+## User Roles
+
+While Webmasters have additional permissions above Publishers, both roles have the same permissions in terms of Content Moderation.
+
+### Editors
+  * Create new content
+  * Move content from Draft to Review
+  * View all own content
+  * View content which is Published
+### Publishers (and Webmasters)
+  * Create new content
+  * Move content from Draft to Review
+  * Move content from Review to Published
+  * Move content from Published to Archived
+  * Move content from Archived to Published
+  * View all content
+### Non-Users
+  * View content which is Published
