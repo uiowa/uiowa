@@ -101,6 +101,10 @@ We have a whole section of documentation dedicated to our [WYSIWYG text editor](
 
 ## Page Actions
 
-You can save and publish the page at the bottom of the edit form.
+You can save, preview, delete, and configure the current state of the page at the bottom of the edit form.
+
+### Change to:
+
+You can change the current state of the page to either published, draft, or archived.
 
 **Note**: Site visitors will only see content marked as published.
