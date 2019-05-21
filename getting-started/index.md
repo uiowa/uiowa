@@ -21,7 +21,7 @@ Open your web browser and enter the URL of your site. Add `/saml/login` to the e
 
 Click the login link in the footer of the site.
 
-##
+## HawkID Login
 
 Once there, click the `HawkID Login` link. This will redirect you to the single-
 sign-on page for HawkID authentication. Enter your credentials and you will be
