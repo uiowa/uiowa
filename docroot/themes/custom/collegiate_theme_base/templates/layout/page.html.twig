@@ -42,59 +42,81 @@
  * @see html.html.twig
  */
 #}
+{%
+  set classes = [
+    'block',
+    'navbar',
+    'navbar--main',
+    'block-menu',
+    'navigation',
+    'menu--' ~ derivative_plugin_id|clean_class,
+  ]
+%}
 
-<header class="header site-header">
-    <div class="layout-container-flex">
-        <div class="header__brand">
-            {% if site_name %}
-                <a class="header__logo-link" href="{{ path('<front>') }}" title="{{ 'Home'|t }}" rel="home">{{ site_name }}</a>
-            {% endif %}
-            {% if site_slogan %}
-                <div class="header__slogan">{{ site_slogan }}</div>
-            {% endif %}
-        </div>
-        <nav class="navbar navbar--main">
-            {{ page.primary_menu }}
-        </nav>
-    </div>
-    {# /.layout-container-flex#}
+<header class="header site-header {{ collegiate_theme_base_header_alignment_settings }}">
+  <div class="layout-container-flex">
+
+    {{ attach_library('collegiate_theme_base/site-name') }}
+    {% include "@site-name/site-name.twig" with {
+        site_logo: site_logo,
+        site_title: 'Home'|t,
+        site_front: path('<front>'),
+        site_name: site_name,
+        site_slogan: site_slogan
+    } %}
+
+    {% set heading_id = attributes.id ~ '-menu'|clean_id %}
+    <nav role="navigation" aria-labelledby="{{ heading_id }}"
+      {{ attributes.addClass(classes)|without('role', 'aria-labelledby') }}>
+      {# Label. If not displayed, we still provide it for screen readers. #}
+      {% if not configuration.label_display %}
+      {% set title_attributes = title_attributes.addClass('visually-hidden') %}
+      {% endif %}
+      {{ title_prefix }}
+      <h2{{ title_attributes.setAttribute('id', heading_id) }}>
+        {{ configuration.label }}</h2>
+        {{ title_suffix }}
+        {{ page.primary_menu }}
+    </nav>
+  </div>
+  {# /.layout-container-flex#}
 </header>
 
 <div class="layout-container-fluid">
 
-    {{ page.secondary_menu }}
-    {{ page.breadcrumb }}
-    {{ page.highlighted }}
-    {{ page.help }}
+  {{ page.secondary_menu }}
+  {{ page.breadcrumb }}
+  {{ page.highlighted }}
+  {{ page.help }}
 
-    <main role="main">
-        <a id="main-content" tabindex="-1"></a>
-        {# link is in html.html.twig #}
+  <main role="main">
+    <a id="main-content" tabindex="-1"></a>
+    {# link is in html.html.twig #}
 
-        <div class="layout-content">
-            {{ page.content }}
-        </div>
-        {# /.layout-content #}
+    <div class="layout-content">
+      {{ page.content }}
+    </div>
+    {# /.layout-content #}
 
-        {% if page.sidebar_first %}
-            <aside class="layout-sidebar-first" role="complementary">
-                {{ page.sidebar_first }}
-            </aside>
-        {% endif %}
-
-        {% if page.sidebar_second %}
-            <aside class="layout-sidebar-second" role="complementary">
-                {{ page.sidebar_second }}
-            </aside>
-        {% endif %}
-
-    </main>
-
-    {% if page.footer %}
-        <footer role="contentinfo">
-            {{ page.footer }}
-        </footer>
+    {% if page.sidebar_first %}
+    <aside class="layout-sidebar-first" role="complementary">
+      {{ page.sidebar_first }}
+    </aside>
     {% endif %}
+
+    {% if page.sidebar_second %}
+    <aside class="layout-sidebar-second" role="complementary">
+      {{ page.sidebar_second }}
+    </aside>
+    {% endif %}
+
+  </main>
+
+  {% if page.footer %}
+  <footer role="contentinfo">
+    {{ page.footer }}
+  </footer>
+  {% endif %}
 
 </div>
 {# /.layout-container-fluid #}
