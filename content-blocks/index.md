@@ -37,7 +37,11 @@ By default, basic pages load with an initial section and text area content block
 - Card
 - Accordion
 - Blockquote
-- UIowa Events _(coming soon!)_
+- Events
+
+### Articles
+
+You will need to create a lot of articles to user the pager, filter by reference.
 
 ## Settings
 
