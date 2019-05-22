@@ -94,13 +94,18 @@ function uiowa_events_paragraph_preprocess_paragraph(&$variables) {
           'items_per_page' => $instance_values['results'],
         ]);
 
-        if (isset($events['events'])) {
+        if (!empty($events['events'])) {
           foreach ($events['events'] as $e) {
             $variables['list'][] = [
               '#theme' => 'uiowa_events_teaser',
               '#event' => $e,
             ];
           }
+        }
+        else {
+          $variables['list'] = [
+            '#markup' => '<div class="events-empty"><p>There are currently no results to display.</p></div>',
+          ];
         }
 
         // If we have more link checked and link provided, pass it.

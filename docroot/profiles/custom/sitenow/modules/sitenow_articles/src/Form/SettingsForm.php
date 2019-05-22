@@ -165,6 +165,8 @@ class SettingsForm extends ConfigFormBase {
     $display['display_options']['path'] = $path;
     $feed['display_options']['path'] = $path . '/feed';
 
+    $archive["display_options"]["arguments"]["created_year_month"]["summary_options"]["base_path"] = $path;
+
     if ($show_archive == 1) {
       $archive["display_options"]["enabled"] = TRUE;
     }
