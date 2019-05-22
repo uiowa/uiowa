@@ -100,6 +100,17 @@ Example: `blt recipes:multisite:init --site-uri mysite.com`.
 
 `pecl install xdebug`
 
+Take note of where the extension is installed by viewing the output of the above command:
+```
+Build process completed successfully
+Installing '/usr/local/Cellar/php@7.2/7.2.18/pecl/20170718/xdebug.so'
+install ok: channel://pecl.php.net/xdebug-2.7.2
+Extension xdebug enabled in php.ini
+```
+
+You may need to change the path if you get an error when running a simple PHP
+command like `php --ini`.
+
 Open your php.ini file (should be located at: /usr/local/etc/php/7.2/php.ini). Confirm there is a line like:
 `zend_extension="xdebug.so"`
 
