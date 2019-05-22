@@ -47,9 +47,9 @@ disable-targets:
 cloud:
   appId: 21a2a0ab-b4ed-4ecf-8bd4-9266c70f5ef1
 command-hooks:
-  source:build:frontend-reqs:
+  frontend-reqs:
     dir: ${docroot}/themes/custom/collegiate_base_theme
     command: 'npm install'
-  source:build:frontend-assets:
+  frontend-assets:
     dir: ${docroot}/themes/custom/collegiate_base_theme
     command: 'npm run build'
