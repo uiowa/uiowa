@@ -12,9 +12,9 @@ drupal:
   db:
     database: iowasuperfund_uiowa_edu
 command-hooks:
-  source:build:frontend-reqs:
+  frontend-reqs:
     dir: ./themes/iowasuperfund
     command: 'npm install'
-  source:build:frontend-assets:
+  frontend-assets:
     dir: ./themes/iowasuperfund
     command: 'npm run build'
