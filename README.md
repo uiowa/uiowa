@@ -1,22 +1,6 @@
-# My Project
+# UIowa01
 
-A brief description of My Project.
-
-## Using This Template
-
-Remove this section after initial setup!
-
-Search for and replace the following placeholders within this file:
-
-| Placeholder | Example |
-| --- | --- |
-| `#GIT_PRIMARY_DEV_BRANCH` | `master` or `develop` |
-| `#GITHUB_ORG` | The "org" in https://github.com/org/project |
-| `#GITHUB_PROJECT` | The "project" in https://github.com/org/project |
-| `#JIRA_URL` | https://org.atlassian.net/projects/PROJ |
-| `#LOCAL_DEV_SITE_ALIAS` | `@example.local` |
-| `#LOCAL_DEV_URL` | http://local.example.com/ |
-| `#TRAVIS_URL` | https://travis-ci.com/org/PROJ |
+An application for deploying sites on the uiowa01 container.
 
 # Getting Started
 
@@ -32,11 +16,11 @@ This project is based on BLT, an open-source project template and tool that enab
     2. [Setup Acquia Cloud SSH Keys](https://docs.acquia.com/acquia-cloud/ssh/generate)
 7. Clone your forked repository. By default, Git names this "origin" on your local.
     ```
-    $ git clone git@github.com:<account>/#GITHUB_PROJECT.git
+    $ git clone git@github.com:<account>/uiowa01.git
     ```
 8. To ensure that upstream changes to the parent repository may be tracked, add the upstream locally as well.
     ```
-    $ git remote add upstream git@github.com:#GITHUB_ORG/#GITHUB_PROJECT.git
+    $ git remote add upstream git@github.com:uiowa/uiowa01.git
     ```
 
 9. Update your the configuration located in the `/blt/blt.yml` file to match your site's needs. See [configuration files](#important-configuration-files) for other important configuration files.
@@ -116,15 +100,11 @@ SSH into your localized Drupal VM environment automated with the BLT launch and 
 5. Setup a local Drupal site with an empty database.
 Use BLT to setup the site with configuration.  If it is a multisite you can identify a specific site.
    ```
-     $ blt setup
-    ```
-   or
-   ```
    $ blt setup --site=[sitename]
    ```
 
 6. Log into your site with drush.
-Access the site and do necessary work at #LOCAL_DEV_URL by running the following commands.
+Access the site and do necessary work at https://uiowa.local.site by running the following commands.
     ```
     $ cd docroot
     $ drush uli
@@ -162,9 +142,10 @@ $ blt
 ``` 
 
 Note the following properties of this project:
-* Primary development branch: #GIT_PRIMARY_DEV_BRANCH
-* Local environment: #LOCAL_DEV_SITE_ALIAS
-* Local site URL: #LOCAL_DEV_URL
+* Primary development branch: master
+* Local environment: @<site_folder>.local
+* Drupal VM site URL: https://<site_folder>.uiowa.local.site
+* Lando site URL: https://<site_folder>.uiowa.lndo.site
 
 ## Working With a BLT Project
 
@@ -184,5 +165,5 @@ BLT uses a number of configuration (`.yml` or `.json`) files to define and custo
 
 ## Resources
 
-* GitHub - https://github.com/#GITHUB_ORG/#GITHUB_PROJECT
+* GitHub - https://github.com/uiowa/uiowa01
 * Acquia Cloud subscription - https://cloud.acquia.com/app/develop/applications/21a2a0ab-b4ed-4ecf-8bd4-9266c70f5ef1
