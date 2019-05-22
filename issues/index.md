@@ -6,11 +6,13 @@ nav_order: 17
 
 # Known Issues
 
-- There are issues with embedding content within the [WYSIWYG text editor](../wysiwyg/index.md) with certain versions of Chrome. We recommend using another browser if you encounter any of the following:
-  - After embedding a file into the content area, you can't type or advance the cursor from the file focus.
-  - Tabbing or arrow keys also do not work.
-  - Pasting text into the editor, pastes over the embedded file link.
-  - The embed media window doesn't close after reopening.
+- Sometimes content can get saved and immediately result in an "...unexpected error." This could be caused by any number of issues, but if the error is just occuring on one page of the site, an editor can first attempt to resolve this issue by re-saving the content. If that doesn't work, a webmaster can attempt to revert back to a working version of the content. Find the affected content via admin/content and edit. Click on the revision tab and click to view previous revision, if any, to find the last working version. Go back to the revisions overview and revert to that working version.
+
+- **UPDATE**: This issue can no longer be replicated. ~~There are issues with embedding content within the [WYSIWYG text editor](../wysiwyg/index.md) with certain versions of Chrome. We recommend using another browser if you encounter any of the following:~~
+  - ~~After embedding a file into the content area, you can't type or advance the cursor from the file focus.~~
+  - ~~Tabbing or arrow keys also do not work.~~
+  - ~~Pasting text into the editor, pastes over the embedded file link.~~
+  - ~~The embed media window doesn't close after reopening.~~
 
 - #139: Table resize doesn't work and that allowed classes (wysiwyg) is a workaround.
 
