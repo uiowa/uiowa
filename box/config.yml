@@ -58,17 +58,7 @@ mysql_users:
         name: drupal
         host: '%'
         password: drupal
-        priv: 'drupal%.*:ALL'
-    -
-        name: drupal
-        host: '%'
-        password: drupal
-        priv: 'iowasuperfund_uiowa_edu%.*:ALL'
-    -
-        name: drupal
-        host: '%'
-        password: drupal
-        priv: 'basetheme%.*:ALL'
+        priv: '*.*:ALL'
 drupal_install_site: false
 configure_drush_aliases: false
 extra_packages:
