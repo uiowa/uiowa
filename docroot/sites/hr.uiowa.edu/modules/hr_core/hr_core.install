@@ -277,3 +277,14 @@ function hr_core_update_8002() {
     $new_term->save();
   }
 }
+
+/**
+ * Import new config ignore settings before uiowa_bar settings get erased.
+ */
+function hr_core_update_8003() {
+  // Obtain configuration from yaml files.
+  $config_path = DRUPAL_ROOT . '/profiles/custom/sitenow/config/sync/';
+  $source = new FileStorage($config_path);
+  $config_storage = \Drupal::service('config.storage');
+  $config_storage->write('config_ignore.settings', $source->read('config_ignore.settings'));
+}
