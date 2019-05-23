@@ -17,7 +17,12 @@
     &.semi-transparent {
       background-color: rgba(52, 58, 64, 0.8) !important;
     }
-    blockquote {
+    blockquote, blockquote p {
+      border-color: $white;
+      &:before {
+        background-color: $white;
+        color: $dark;
+      }
       footer {
         color: $gray-500;
       }
@@ -39,8 +44,12 @@
         text-decoration: none;
       }
     }
-    blockquote {
-      border-left: 4px solid $gray-900;
+    blockquote, blockquote p {
+      border-color: $gray-900;
+      &:before {
+        background-color: $gray-900;
+        color: $white;
+      }
       footer {
         color: $gray-900;
       }
@@ -55,7 +64,12 @@
     &.semi-transparent {
       background-color: rgba(248, 249, 250, 0.8) !important;
     }
-    blockquote {
+    blockquote, blockquote p {
+      border-color: $gray-900;
+      &:before {
+        background-color: $gray-900;
+        color: $white;
+      }
       footer {
         color: $gray-900;
       }
@@ -70,18 +84,21 @@
 .paragraph--type--section.has-section-image.bg-light,
 .paragraph--type--section.bg-light {
   .paragraph--type--text.bg-dark {
+    @extend .bg-dark;
     color: $white;
     &.semi-transparent {
       background-color: rgba(52, 58, 64, 0.8) !important;
     }
   }
   .paragraph--type--text.bg-light {
+    @extend .bg-light;
     color: $gray-900;
     &.semi-transparent {
       background-color: rgba(248, 249, 250, 0.8) !important;
     }
   }
   .paragraph--type--text.bg-yellow {
+    @extend .bg-yellow;
     color: $gray-900;
     &.semi-transparent {
       background-color: rgba(255, 205, 0, 0.8) !important;
@@ -106,5 +123,14 @@
 }
 .paragraph.bg-dark.semi-transparent {
   background-color: rgba(52, 58, 64, 0.8) !important;
-  color: white;
+  color: $white;
+}
+
+.paragraph--type--section.bg-dark {
+  .paragraph--type--accordion,
+  .paragraph--type--card,
+  .paragraph--type--events,
+  .paragraph--type--articles {
+    color: initial;
+  }
 }
