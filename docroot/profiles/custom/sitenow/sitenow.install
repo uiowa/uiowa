@@ -71,3 +71,44 @@ function sitenow_update_8004() {
 function sitenow_update_8005() {
   drupal_flush_all_caches();
 }
+
+/**
+ * Reset schema version locally for botched D8.7 update.
+ */
+function sitenow_update_8006() {
+  if (getenv('AH_SITE_ENVIRONMENT') === FALSE) {
+    drupal_set_installed_schema_version('system', 8699);
+    drupal_set_installed_schema_version('content_moderation', 8699);
+    drupal_set_installed_schema_version('file', 8699);
+    drupal_set_installed_schema_version('media', 8699);
+    drupal_set_installed_schema_version('media_library', 8699);
+    drupal_set_installed_schema_version('node', 8699);
+    drupal_set_installed_schema_version('taxonomy', 8699);
+
+    $key_value = \Drupal::keyValue('post_update');
+    $update_list = $key_value->get('existing_updates');
+
+    $remove = [
+      'content_moderation_post_update_entity_display_dependencies',
+      'content_moderation_post_update_set_default_moderation_state',
+      'content_moderation_post_update_set_views_filter_latest_translation_affected_revision',
+      'media_library_post_update_display_modes',
+      'media_library_post_update_table_display',
+      'media_post_update_enable_standalone_url',
+      'menu_link_content_post_update_make_menu_link_content_revisionable',
+      'system_post_update_add_expand_all_items_key_in_system_menu_block',
+      'system_post_update_clear_menu_cache',
+      'taxonomy_post_update_make_taxonomy_term_revisionable',
+      'taxonomy_post_update_remove_hierarchy_from_vocabularies',
+      'views_post_update_exposed_filter_blocks_label_display',
+      'views_post_update_make_placeholders_translatable',
+    ];
+
+    foreach ($remove as $value) {
+      $key = array_search($value, $update_list);
+      unset($update_list[$key]);
+    }
+
+    $key_value->set('existing_updates', $update_list);
+  }
+}
