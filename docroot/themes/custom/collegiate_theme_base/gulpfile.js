@@ -31,8 +31,8 @@ function css() {
       }
     }))
     .pipe(sass({
-      includePaths: [config.css.includePaths],
-      outputStyle: 'compressed'
+      outputStyle: 'compressed',
+      includePaths: config.css.includePaths
     }).on('error', function (err) {
       console.log(err.message);
       // sass.logError
@@ -54,7 +54,7 @@ function browserSync() {
     },
     notify: false,
     browser: "google chrome",
-    //proxy: "http://uiowa.lndo.site:8080"
+    //proxy: "http://uiowa.lndo.site:8000"
   });
 }
 
