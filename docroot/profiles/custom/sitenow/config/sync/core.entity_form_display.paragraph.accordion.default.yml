@@ -37,15 +37,22 @@ bundle: accordion
 mode: default
 content:
   field_accordion_item:
-    type: entity_reference_paragraphs
+    type: paragraphs
     weight: 2
     settings:
       title: Accordion
       title_plural: 'Accordion Items'
-      edit_mode: preview
-      add_mode: button
+      edit_mode: closed
+      closed_mode: preview
+      autocollapse: all
+      closed_mode_threshold: 2
+      add_mode: dropdown
       form_display_mode: default
       default_paragraph_type: accordion_item
+      features:
+        duplicate: duplicate
+        collapse_edit_all: '0'
+        add_above: '0'
     third_party_settings: {  }
     region: content
   field_uip_classes:
