@@ -82,3 +82,10 @@ function uiowa_media_wysiwyg_inline_entity_form_entity_form_alter(&$entity_form,
     }
   }
 }
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function uiowa_media_wysiwyg_form_media_library_add_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['#attached']['library'][] = 'uiowa_media_wysiwyg/media_overrides';
+}
