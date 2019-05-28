@@ -79,9 +79,9 @@ Check the box to automatically generate a URL alias. Otherwise, specify an alter
 
 Write the username of the content author.
 
-### Publishing Options
+### Page Options
 
-Publishing options contains additional page options.
+Page options contains additional page options.
 
 #### Visually hide title
 
