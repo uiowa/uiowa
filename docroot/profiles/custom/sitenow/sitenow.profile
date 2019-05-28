@@ -558,3 +558,22 @@ function sitenow_link_alter(&$variables) {
     ]);
   }
 }
+
+/**
+ * Implements hook_library_info_alter().
+ */
+function sitenow_library_info_alter(&$libraries, $extension) {
+  if ($extension == 'core') {
+    if (isset($libraries['ckeditor'])) {
+      $libraries['ckeditor'] = [
+        'version' => '4.11.4',
+        'js' => [
+          '/profiles/custom/sitenow/js/ckeditor/ckeditor.js' => [
+            'preprocess' => FALSE,
+            'minified' => TRUE,
+          ],
+        ],
+      ];
+    }
+  }
+}
