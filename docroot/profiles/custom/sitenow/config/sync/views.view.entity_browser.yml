@@ -3,10 +3,9 @@ langcode: und
 status: true
 dependencies:
   config:
-    - media.type.image
-    - media.type.remote_video
     - image.style.thumbnail
     - media.type.image
+    - media.type.remote_video
   module:
     - entity_browser
     - image
@@ -173,6 +172,7 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
+          use_field_cardinality: true
           entity_type: media
           plugin_id: entity_browser_select
         thumbnail__target_id:
