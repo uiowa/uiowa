@@ -8,7 +8,6 @@ dependencies:
     - field.field.node.page.field_page_content_block
     - field.field.node.page.field_publish_options
     - field.field.node.page.field_reference
-    - field.field.node.page.field_related_content
     - field.field.node.page.field_teaser
     - node.type.page
     - workflows.workflow.editorial
@@ -69,15 +68,6 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete_tags
-    region: content
-  field_related_content:
-    weight: 11
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete
     region: content
   field_teaser:
     weight: 1
