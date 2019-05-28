@@ -60,9 +60,9 @@ function uiowa_card_preprocess_paragraph__card(&$variables) {
       $variables["content"]['card_image'] = $image;
     }
   }
-  $variables['content']['field_card_link'] ?? FALSE;
-  if ($variables['content']['field_card_link']) {
-    $variables['content']['field_card_link'][0]["#options"]['attributes']['class'][] = 'card-link';
-    $variables['content']['field_card_link'][0]["#options"]['attributes']['class'][] = 'js-card-link';
+
+  if (isset($variables['content']['field_card_link'], $variables['content']['field_card_link'][0])) {
+    $variables['content']['field_card_link'][0]['#options']['attributes']['class'][] = 'card-link';
+    $variables['content']['field_card_link'][0]['#options']['attributes']['class'][] = 'js-card-link';
   }
 }
