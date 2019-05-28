@@ -13,9 +13,9 @@ use Drupal\views\Views;
  * Implements hook_module_implements_alter().
  */
 function hr_core_module_implements_alter(&$implementations, $hook) {
-  $hooks_to_order = array(
+  $hooks_to_order = [
     'form_alter',
-  );
+  ];
 
   if (in_array($hook, $hooks_to_order)) {
     $group = $implementations['hr_core'];
@@ -31,7 +31,6 @@ function hr_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
     case 'node_page_edit_form':
     case 'node_page_form':
-      $foo = $form;
       if (isset($form['field_related_content']) && isset($form['node_relations'])) {
         // Set field_related_content to node_reference group.
         $form['field_related_content']['#group'] = 'node_relations';
