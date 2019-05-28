@@ -5,6 +5,8 @@
  * Contains uiowa_accordion.module.
  */
 
+use Drupal\Core\Routing\AdminContext;
+
 /**
  * Implements hook_preprocess_field().
  */
@@ -28,11 +30,14 @@ function uiowa_accordion_preprocess_field(&$variables) {
  * Implements hook_preprocess_paragraph().
  */
 function uiowa_accordion_preprocess_paragraph__accordion_item(&$variables) {
+  /** @var Drupal\paragraphs\Entity\Paragraph $paragraph */
   $paragraph = $variables['paragraph'];
+
+  /** @var Drupal\Core\Routing\AdminContext $admin_context */
   $admin_context = \Drupal::service('router.admin_context');
+
   if (!$admin_context->isAdminRoute()) {
-    $variables['accordion_parent'] = 'accordion-' . $paragraph->getParentEntity()
-      ->id();
+    $variables['accordion_parent'] = 'accordion-' . $paragraph->getParentEntity()->id();
     $variables['id'] = $paragraph->id();
   }
 }
