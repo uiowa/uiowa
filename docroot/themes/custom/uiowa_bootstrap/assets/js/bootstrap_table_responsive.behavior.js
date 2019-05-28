@@ -11,6 +11,9 @@
                 if (!$(this).closest(".table-responsive").length) {
                     $(this).wrap("<div class='table-responsive'></div>");
                 }
+
+              $(this).addClass('table-striped table-bordered');
+              $('thead', this).addClass('thead-dark');
             });
         }
     };
