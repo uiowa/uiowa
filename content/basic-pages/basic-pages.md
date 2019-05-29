@@ -35,11 +35,7 @@ When the page is saved the content description will be saved for future referenc
 
 ### Relationships
 
-You can create relationships to taxonomy terms (References) and other content (Related Content) that already exist on the site.
-
-#### Related Content
-
-Link this content to one or more existing pieces of content within this site. Related content will display as a linked menu to that content. Most commonly, this is helpful to link to other content on the site that might live elsewhere in the menu system.
+You can create relationships to taxonomy terms (References) and other content that already exist on the site.
 
 #### References
 

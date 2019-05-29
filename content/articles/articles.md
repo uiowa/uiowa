@@ -39,7 +39,7 @@ Additionally, add a caption to give the user more information on the picture.
 
 ### Relationships
 
-You can create relationships to taxonomy terms (References) and other content (Related Content) that already exist on the site.
+You can create relationships to taxonomy terms (References) and other content that already exist on the site.
 
 #### References
 
