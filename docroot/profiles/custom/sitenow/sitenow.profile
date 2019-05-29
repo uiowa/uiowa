@@ -584,6 +584,6 @@ function sitenow_page_attachments(array &$attachments) {
   // Attach css file on admin pages.
   $admin_context = \Drupal::service('router.admin_context');
   if ($admin_context->isAdminRoute()) {
-    $variables['#attached']['library'][] = 'sitenow/admin-overrides';
+    $attachments['#attached']['library'][] = 'sitenow/admin-overrides';
   }
 }
