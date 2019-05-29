@@ -50,3 +50,10 @@ sync:
     - drupal:sync:db
     - drupal:update
     - drupal:config:import
+command-hooks:
+  frontend-reqs:
+    dir: ${docroot}/themes/custom/uiowa_bootstrap
+    command: 'source $NVM_DIR/nvm.sh && nvm use && npm install'
+  frontend-assets:
+    dir: ${docroot}/themes/custom/uiowa_bootstrap
+    command: 'gulp css && gulp js'
