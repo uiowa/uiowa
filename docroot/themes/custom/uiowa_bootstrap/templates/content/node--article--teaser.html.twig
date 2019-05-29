@@ -78,11 +78,12 @@
     node.isSticky() ? 'node--sticky',
     not node.isPublished() ? 'node--unpublished',
     view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+    'media'
   ]
 %}
 {{ attach_library('classy/node') }}
 <article{{ attributes.addClass(classes) }}>
-  <div{{ content_attributes.addClass('node__content') }}>
+  <div{{ content_attributes.addClass('node__content media-body') }}>
       {{ title_prefix }}
       {% if not page %}
         <h3{{ title_attributes }}>
@@ -94,7 +95,7 @@
       {{ content|without('article_image') }}
   </div>
     {% if content.article_image %}
-        <figure class="article_image">
+        <figure class="content-image">
             {{ content.article_image }}
         </figure>
     {% endif %}
