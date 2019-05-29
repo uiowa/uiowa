@@ -311,7 +311,7 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
           $form['field_image_caption']['#group'] = 'node_image';
         }
       }
-      if (isset($form['field_related_content']) || isset($form['field_reference'])) {
+      if (isset($form['field_reference'])) {
         // Create node_relations group in the advanced container.
         $form['node_relations'] = [
           '#type' => 'details',
@@ -327,8 +327,7 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
           '#optional' => TRUE,
           '#open' => FALSE,
         ];
-        // Set field_reference and field_related_content to node_reference group.
-        $form['field_related_content']['#group'] = 'node_relations';
+        // Set field_reference to node_reference group.
         $form['field_reference']['#group'] = 'node_relations';
       }
       if (isset($form['field_publish_options'])) {
@@ -571,6 +570,24 @@ function sitenow_preprocess_field(&$variables) {
         $variables['attributes']['class'][] = 'h5';
       }
       break;
+  }
+}
 
+/**
+ * Implements hook_library_info_alter().
+ */
+function sitenow_library_info_alter(&$libraries, $extension) {
+  if ($extension == 'core') {
+    if (isset($libraries['ckeditor'])) {
+      $libraries['ckeditor'] = [
+        'version' => '4.11.4',
+        'js' => [
+          '/profiles/custom/sitenow/js/ckeditor/ckeditor.js' => [
+            'preprocess' => FALSE,
+            'minified' => TRUE,
+          ],
+        ],
+      ];
+    }
   }
 }
