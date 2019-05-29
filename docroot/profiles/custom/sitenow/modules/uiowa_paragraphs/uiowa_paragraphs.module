@@ -57,7 +57,6 @@ function uiowa_paragraphs_entity_create(EntityInterface $entity) {
  * Implements hook_field_widget_WIDGET_TYPE_form_alter().
  */
 function uiowa_paragraphs_field_widget_paragraphs_form_alter(&$element, FormStateInterface $form_state, $context) {
-  $element['#attached']['library'][] = 'sitenow/admin-paragraphs';
   // Hide paragraph classes if no options.
   if (isset($element['subform']['field_uip_classes'])) {
     // If count equals one and that item is _none, disable/hide.
