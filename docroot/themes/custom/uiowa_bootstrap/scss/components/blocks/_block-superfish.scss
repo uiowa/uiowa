@@ -1,4 +1,4 @@
-$sf-color: $link-color;
+$sf-color: $gray-900;
 $anchor-padding-width: 1rem;
 $anchor-padding-height: 1rem;
 $dropdown-items-bg: $gray-900;
@@ -8,6 +8,10 @@ $accordion-items-bg: $gray-600;
 
 .block-superfish {
   position: static;
+
+  .sf-menu ul {
+    display: none;
+  }
 
   .block__title {
     @extend .sr-only;
@@ -57,7 +61,7 @@ $accordion-items-bg: $gray-600;
 
         &:hover,
         &:focus {
-          box-shadow: 0px -3px 0px $link-color inset;
+          box-shadow: 0px -3px 0px $primary inset;
         }
       }
 
@@ -119,7 +123,7 @@ $accordion-items-bg: $gray-600;
     }
 
     li.sf-depth-1.active-trail > a {
-      box-shadow: 0px -3px 0px $link-color inset;
+      box-shadow: 0px -3px 0px $primary inset;
     }
 
     a.sf-depth-1 {
@@ -162,9 +166,7 @@ $accordion-items-bg: $gray-600;
     border-top: 1px solid darken($sf-color, 6);
     margin-bottom: -2rem;
 
-
     li {
-
       &.sf-clone-parent > a.sf-depth-1 {
         background: inherit;
         &:hover, &:focus {
