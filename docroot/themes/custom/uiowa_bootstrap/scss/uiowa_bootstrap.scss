@@ -16,7 +16,10 @@
  */
 @import "bootstrap/scss/functions";
 @import "bootstrap/scss/variables";
-@import "uib_variables/variables";
+
+// Import our variables first to override Bootstrap.
+@import "variables";
+
 @import "bootstrap/scss/mixins";
 @import "bootstrap/scss/root";
 @import "bootstrap/scss/reboot";
@@ -50,7 +53,9 @@
 @import "bootstrap/scss/utilities";
 @import "bootstrap/scss/print";
 
-/*!
+/**
  * Uiowa_bootstrap partials.
  */
-@import "uib_sass/**/*.scss";
+@import "utilities/*.scss";
+@import "elements/*.scss";
+@import "components/**/*.scss";
