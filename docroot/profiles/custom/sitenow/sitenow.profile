@@ -334,7 +334,7 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
           // Create node_publish group in the advanced container.
           $form['node_publish'] = [
             '#type' => 'details',
-            '#title' => t('Publishing Options'),
+            '#title' => t('Page Options'),
             '#group' => 'advanced',
             '#attributes' => [
               'class' => ['node-form-publish'],
