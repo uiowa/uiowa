@@ -336,7 +336,7 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
           // Create node_publish group in the advanced container.
           $form['node_publish'] = [
             '#type' => 'details',
-            '#title' => t('Publishing Options'),
+            '#title' => t('Page Options'),
             '#group' => 'advanced',
             '#attributes' => [
               'class' => ['node-form-publish'],
@@ -589,5 +589,16 @@ function sitenow_library_info_alter(&$libraries, $extension) {
         ],
       ];
     }
+  }
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function sitenow_page_attachments(array &$attachments) {
+  // Attach css file on admin pages.
+  $admin_context = \Drupal::service('router.admin_context');
+  if ($admin_context->isAdminRoute()) {
+    $attachments['#attached']['library'][] = 'sitenow/admin-overrides';
   }
 }
