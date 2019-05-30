@@ -16,7 +16,8 @@ class MultisiteCommands extends BltTasks {
    * Execute a Drush command against all multisites.
    *
    * @param string $cmd
-   *   The Drush command to execute, e.g. 'cron' or 'cache:rebuild'.
+   *   The simple Drush command to execute, e.g. 'cron' or 'cache:rebuild'. No
+   *    support for options or arguments at this time.
    *
    * @command sitenow:multisite:execute
    *
