@@ -13,6 +13,33 @@ use Symfony\Component\Yaml\Yaml;
 class MultisiteCommands extends BltTasks {
 
   /**
+   * Execute a Drush command against all multisites.
+   *
+   * @param string $cmd
+   *   The Drush command to execute, e.g. 'cron' or 'cache:rebuild'.
+   *
+   * @command sitenow:multisite:execute
+   *
+   * @aliases sme
+   *
+   * @throws \Exception
+   */
+  public function execute($cmd) {
+    if (!$this->confirm("You will execute 'drush {$cmd}' on all multisites. Are you sure?", TRUE)) {
+      throw new \Exception('Aborted.');
+    }
+    else {
+      foreach ($this->getConfigValue('multisites') as $multisite) {
+        $this->switchSiteContext($multisite);
+
+        $this->taskDrush()
+          ->drush($cmd)
+          ->run();
+      }
+    }
+  }
+
+  /**
    * Require the --site-uri option so it can be used in postMultisiteInit.
    *
    * @hook validate recipes:multisite:init
