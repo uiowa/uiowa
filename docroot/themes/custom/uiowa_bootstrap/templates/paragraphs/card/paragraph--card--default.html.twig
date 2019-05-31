@@ -46,16 +46,15 @@
 ] %}
 
 {% block paragraph %}
-  <div{{ attributes.addclass(classes) }}>
-    {% include "@card/card-item.html.twig" with {
-      card_attributes: card_attributes,
-      header_before: content.card_image,
-      header: false,
-      header_after: false,
-      card_body: [content.field_card_title, content.field_card_subtitle, content.field_card_body],
-      footer_before: content.field_card_link,
-      footer: false,
-      footer_after: false
-    } %}
+<div{{ attributes.addclass(classes) }}>
+  <div{{ card_attributes.addClass('card') }}>
+    {{ content.card_image }}
+
+    <div class="card-body">
+      {{ content.field_card_title }}
+      {{ content.field_card_subtitle }}
+      {{ content.field_card_body }}
+    </div>
   </div>
+</div>
 {% endblock paragraph %}
