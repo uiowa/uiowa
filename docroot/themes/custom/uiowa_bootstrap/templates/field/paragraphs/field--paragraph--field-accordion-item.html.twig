@@ -37,7 +37,9 @@
  * @see template_preprocess_field()
  */
 #}
-{% include "@collapse/accordion.html.twig" with {
-  parent_id: 'accordion-' ~ parent_id,
-  items: items
-} %}
+
+<div id="{{ 'accordion-' ~ parent_id }}">
+  {% for item in items %}
+    {{ item }}
+  {% endfor %}
+</div>
