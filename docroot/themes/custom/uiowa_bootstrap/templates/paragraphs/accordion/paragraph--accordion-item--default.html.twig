@@ -38,10 +38,22 @@
  * @ingroup themeable
  */
 #}
-{% include "@collapse/accordion-item.html.twig" with {
-  heading: content.field_accordion_item_title,
-  label: 'heading' ~ id,
-  id: 'pid' ~ id,
-  parent: accordion_parent,
-  content: content.field_accordion_item_body
-} %}
+
+{% set label = 'heading' ~ id %}
+{% set id = 'pid' ~ id %}
+
+<div class="card">
+  <div class="card-header" id="{{ heading }}">
+    <h3 class="mb-0 h5">
+      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#{{ id }}" aria-expanded="false" aria-controls="{{ id }}">
+        {{ content.field_accordion_item_title }}
+      </button>
+    </h3>
+  </div>
+
+  <div id="{{ id }}" class="collapse" aria-labelledby="{{ heading }}" data-parent="#{{ accordion_parent }}">
+    <div class="card-body">
+      {{ content.field_accordion_item_body }}
+    </div>
+  </div>
+</div>
