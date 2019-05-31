@@ -133,6 +133,35 @@ If you have an existing database you can use BLT to pull down the database from 
 
 
 ---
+# Contributing
+
+1. [Open a new issue](https://github.com/uiowa/uiowa01/issues/new). Take note of the issue number.
+2. Make sure master branch is up-to-date.
+    ```console
+    git pull
+    ```
+3. Create a new feature branch. Name your feature branch starting with **feature_** and a brief underscore separate summary of the change.
+    ```console
+    git checkout -b feature_add_new_content_type
+    ```
+4. Commit changes regularly as you go.
+    ```console
+    git commit -am "Added date field to content type."
+    ```
+5. When your feature is ready to be tested, push it to Github. Please note that you are pushing to a branch of the same name as what you created locally.
+    ```console
+    git push - origin feature_add_new_content_type
+    ```
+6. Create a Pull Request for your feature branch. When you push it to Github via the command line, you may see a message like this: 
+    ```console
+    remote: Create a pull request for 'feature_add_new_content_type' on GitHub by visiting:
+    remote:      https://github.com/uiowa/uiowa01/pull/new/feature_add_new_content_type
+    ```
+    Create the pull request by visiting the referenced URL.
+7. Once your feature has been reviewed by another developer, the PR can be merged into the master branch via the Github UI.
+8. Nice work!
+
+---
 
 # Resources 
 
