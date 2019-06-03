@@ -50,3 +50,10 @@ sync:
     - drupal:sync:db
     - drupal:update
     - drupal:config:import
+command-hooks:
+  frontend-reqs:
+    dir: ${docroot}
+    command: '. $NVM_DIR/nvm.sh && nvm install && yarn install'
+  frontend-assets:
+    dir: ${docroot}
+    command: 'yarn workspaces run gulp'

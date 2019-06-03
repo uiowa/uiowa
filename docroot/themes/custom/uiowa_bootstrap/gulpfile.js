@@ -35,13 +35,25 @@ gulp.task('css', function() {
     .pipe(gulp.dest(config.css.dest));
 });
 
-gulp.task('bootstrap_js', function() {
-    gulp.src('./node_modules/bootstrap/dist/js/bootstrap.bundle.js')
-        .pipe(gulp.dest('./assets/js'));
+// JS
+gulp.task('js', function() {
+  return gulp.src(config.js.src)
+    .pipe(sourcemaps.init())
+    .pipe(plumber({
+      errorHandler: function (error) {
+        notify.onError({
+          title:    "JS",
+          subtitle: "Failure!",
+          message:  "Error: <%= error.message %>",
+          sound:    "Beep"
+        }) (error);
+        this.emit('end');
+      }}))
+    .pipe(gulp.dest(config.js.dest));
 });
 
 // Static Server + Watch
-gulp.task('serve', ['css', 'bootstrap_js'], function() {
+gulp.task('serve', ['css', 'js'], function() {
   gulp.watch(config.css.src, ['css']);
 });
 
