@@ -19,8 +19,7 @@ events:
               - composer install --ansi
               - source ${BLT_DIR}/scripts/pipelines/setup_env
               - nvm install 10
-              - nvm alias default 10
-              - nvm use default
+              - npm install --global yarn
         - validate:
             type: script
             script:
