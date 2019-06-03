@@ -29,9 +29,10 @@ drush/Commands/contrib
 docroot/modules/custom
 
 # Ignore custom theme build artifacts
-docroot/sites/*/themes/*/node_modules
-docroot/themes/custom/*/node_modules
-docroot/themes/custom/*/css
+docroot/sites/*/themes/*/assets/css
+docroot/sites/*/themes/*/assets/js
+docroot/themes/custom/*/assets/css
+docroot/themes/custom/*/assets/js
 docroot/themes/custom/*/styleguide
 
 # Ignore build artifacts
@@ -133,8 +134,10 @@ nbproject/*
 # PHPStorm
 atlassian-ide-plugin.xml
 
-#NPM
+# NPM
+node_modules/
 npm-debug.log
+yarn-error.log
 
 # Drush 9 Checksums
 drush/sites/.checksums
