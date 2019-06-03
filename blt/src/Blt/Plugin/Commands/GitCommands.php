@@ -12,11 +12,11 @@ class GitCommands extends BltTasks {
   /**
    * Delete all remote branches except master and develop from Acquia remote.
    *
-   * @command git:clean:acquia
+   * @command sitenow:git:clean
    *
-   * @aliases gca
+   * @aliases sgc
    */
-  public function cleanAcquia() {
+  public function clean() {
     $result = $this->taskExecStack()
       ->exec('git ls-remote --heads acquia')
       ->stopOnFail()
