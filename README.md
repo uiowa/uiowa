@@ -25,7 +25,11 @@ This project is based on BLT, an open-source project template and tool that enab
 1. Install [Drush Launcher](https://github.com/drush-ops/drush-launcher).
     - Ensure that there are no other Drush versions in your $PATH in `~/.bashrc` or `~.bash_profile`.
 2. Install [Homebrew](https://brew.sh/).
-3. Install PHP 7.2 via Homebrew.
+3. Install [NVM](https://github.com/nvm-sh/nvm#installation-and-update) and then Yarn, globally.
+  ```
+  npm install --global yarn
+  ```
+4. Install PHP 7.2 via Homebrew.
    ```
    brew install php@7.2
    brew link php@7.2
@@ -42,24 +46,24 @@ This project is based on BLT, an open-source project template and tool that enab
    
    Save the file.
    
-4. Install MariaDB.
+5. Install MariaDB.
    ```
    brew install mariadb
    ```
    Keep the username `root` with no password.
-5. Start MariaDB.
+6. Start MariaDB.
    ```
    brew services start mariadb
    ```
-6. Install Composer dependencies.
+7. Install Composer dependencies.
     ```
     $ composer install
     ```
-7. Sync all multisites.
+8. Sync all multisites.
     ```
     blt drupal:sync:all-sites
     ```
-8. Start the built-in PHP server.
+9. Start the built-in PHP server.
     ```
     $ drush -l mysite rs --dns
     ```
