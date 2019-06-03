@@ -52,8 +52,8 @@ sync:
     - drupal:config:import
 command-hooks:
   frontend-reqs:
-    dir: ${docroot}/themes/custom/uiowa_bootstrap
-    command: '. $NVM_DIR/nvm.sh && nvm install && npm install'
+    dir: ${docroot}
+    command: '. $NVM_DIR/nvm.sh && nvm install && yarn install'
   frontend-assets:
-    dir: ${docroot}/themes/custom/uiowa_bootstrap
-    command: './node_modules/.bin/gulp css && ./node_modules/.bin/gulp js'
+    dir: ${docroot}
+    command: 'yarn workspaces run gulp'
