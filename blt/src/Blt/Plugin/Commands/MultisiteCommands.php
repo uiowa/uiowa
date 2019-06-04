@@ -77,7 +77,7 @@ class MultisiteCommands extends BltTasks {
         $commandData->input()->setOption('site-uri', $uri);
         $commandData->input()->setOption('site-dir', $parsed['host']);
         $machineName = $this->generateMachineName($uri);
-        $commandData->input()->setOption('remote-alias', "{$machineName}.dev");
+        $commandData->input()->setOption('remote-alias', "{$machineName}.prod");
         $this->getConfig()->set('drupal.db.database', $machineName);
 
       }
