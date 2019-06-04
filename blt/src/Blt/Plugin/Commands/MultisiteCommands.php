@@ -55,7 +55,7 @@ class MultisiteCommands extends BltTasks {
 
     foreach ($creds as $cred) {
       if (!$this->getConfigValue($cred)) {
-        return new CommandError("You must set {$cred} in your blt/local.blt.yml file. <comment>DO NOT</comment> commit these anywhere in the repository!");
+        return new CommandError("You must set {$cred} in your {$this->getConfigValue('repo.root')}/blt/local.blt.yml file. DO NOT commit these anywhere in the repository!");
       }
     }
 
