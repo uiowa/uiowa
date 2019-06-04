@@ -177,7 +177,7 @@ EOD;
       ->args([
         'system.site',
         'name',
-        $uri,
+        $dir,
       ])
       ->run();
 
