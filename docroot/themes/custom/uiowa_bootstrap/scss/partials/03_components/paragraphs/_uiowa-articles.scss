@@ -4,7 +4,7 @@
     @extend .h5;
   }
   .more-link {
-    margin-top: 2rem;
+    @include mt(3);
   }
 }
 .paragraph--type--articles.list {
@@ -25,7 +25,7 @@
     @extend .media;
   }
   figure img {
-    @extend .ml-2;
+    @include ml(3);
     max-width: 80px;
     @include media-breakpoint-up(sm) {
       max-width: 150px;
