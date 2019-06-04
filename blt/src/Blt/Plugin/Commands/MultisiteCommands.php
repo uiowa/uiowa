@@ -136,8 +136,40 @@ EOD;
     }
 
     $this->invokeCommand('blt:init:settings');
-    $this->say('<comment>Multisite initialization complete</comment>. Diff and commit code changes to a new feature branch. Install the site locally by running the below Drush command.');
-    $this->yell("drush site:install sitenow --sites-subdir {$dir} --existing-config");
+
+    // Site install locally so we can do some post-install tasks.
+    // @see: https://www.drupal.org/project/drupal/issues/2982052
+    $this->switchSiteContext($dir);
+
+    $uid = uniqid('admin_');
+
+    $this->taskDrush()
+      ->drush('site:install')
+      ->arg('sitenow')
+      ->options([
+        'sites-subdir' => $dir,
+        'existing-config' => NULL,
+        'account-name' => $uid,
+        'account-mail' => base64_decode('aXRzLXdlYkB1aW93YS5lZHU='),
+      ])
+      ->run();
+
+    $this->taskDrush()
+      ->drush('user:role:add')
+      ->args([
+        'administrator',
+        $uid,
+      ])
+      ->run();
+
+    $this->taskDrush()
+      ->drush('config:set')
+      ->args([
+        'system.site.name',
+        $uri,
+      ])
+      ->run();
+
     $this->say("Acquia Cloud database must be named <comment>{$db}</comment>. Create in the Cloud UI.");
   }
 
