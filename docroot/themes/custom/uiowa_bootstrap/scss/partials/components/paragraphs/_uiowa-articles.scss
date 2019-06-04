@@ -4,7 +4,7 @@
     @extend .h5;
   }
   .more-link {
-    @extend .mt-2;
+    margin-top: 2rem;
   }
 }
 .paragraph--type--articles.list {
@@ -96,8 +96,8 @@
 .paragraph--type--section.bg-dark {
   .paragraph--type--articles.list {
     .views-row {
-      @extend .bg-dark;
-      @extend .text-light;
+      background-color: $dark;
+      color: $light;
       a {
         color: $yellow;
       }
@@ -107,14 +107,14 @@
 .paragraph--type--section.bg-light {
   .paragraph--type--articles.list {
     .views-row {
-      @extend .bg-light;
+      background-color: $light;
     }
   }
 }
 .paragraph--type--section.bg-yellow {
   .paragraph--type--articles.list {
     .views-row {
-      @extend .bg-yellow;
+      background-color: $yellow;
       a {
         color: $black;
         text-decoration: underline;
