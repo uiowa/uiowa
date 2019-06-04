@@ -92,12 +92,21 @@ class MultisiteCommands extends BltTasks {
     $test = "{$machineName}.stage.drupal.uiowa.edu";
     $root = $this->getConfigValue('repo.root');
 
-    // Re-generate the Drush alias so it is more useful.
-    $file = "{$root}/drush/sites/{$dir}.site.yml";
-    if (file_exists($file)) {
-      unlink("{$root}/drush/sites/{$dir}.site.yml");
+    // Remove some files that we probably don't need.
+    $files = [
+      "{$root}/docroot/sites/{$dir}/default.services.yml",
+      "{$root}/docroot/sites/{$dir}/services.yml",
+      "{$root}/drush/sites/{$dir}.site.yml"
+    ];
+
+    foreach ($files as $file) {
+      if (file_exists($file)) {
+        unlink($file);
+        $this->logger->debug("Deleted {$file}.");
+      }
     }
 
+    // Re-generate the Drush alias so it is more useful.
     $app = $this->getConfig()->get('project.prefix');
     $default = Yaml::parse(file_get_contents("{$root}/drush/sites/{$app}.site.yml"));
     $default['prod']['uri'] = $dir;
