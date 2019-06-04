@@ -202,7 +202,7 @@ EOD;
       "Assuming tests pass, merge the PR to deploy to the dev environment.",
       "Create a database named <comment>{$db}</comment> in the Cloud UI.",
       "Create domains added to sites.php in the Cloud UI.",
-      "Sync local database and files to dev environment - remember to clear cache locally!",
+      "Sync local database and files to dev environment - remember to clear cache locally <comment>first</comment>!",
       "Re-deploy the master branch to the dev environment in the Cloud UI. This will run the cloud hooks successfully.",
       "Coordinate a new release to deploy to the test and prod environments.",
       "Sync the database and files to the test and prod environments.",
