@@ -198,7 +198,7 @@ EOD;
 
     $this->yell("Follow these next steps!");
     $steps = [
-      "Open a PR at https://github.com/uiowa/uiowa/compare/master...{$branch}.",
+      "Open a PR at https://github.com/uiowa/{$app}/compare/master...{$branch}.",
       "Assuming tests pass, merge the PR to deploy to the dev environment.",
       "Create a database named <comment>{$db}</comment> in the Cloud UI.",
       "Create domains added to sites.php in the Cloud UI.",
