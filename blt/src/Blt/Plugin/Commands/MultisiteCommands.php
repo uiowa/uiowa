@@ -3,6 +3,8 @@
 namespace Sitenow\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
+use AcquiaCloudApi\CloudApi\Client;
+use AcquiaCloudApi\CloudApi\Connector;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
 use Symfony\Component\Yaml\Yaml;
@@ -46,6 +48,17 @@ class MultisiteCommands extends BltTasks {
    * @hook validate recipes:multisite:init
    */
   public function validateMultisiteInit(CommandData $commandData) {
+    $creds = [
+      'credentials.acquia.key',
+      'credentials.acquia.secret',
+    ];
+
+    foreach ($creds as $cred) {
+      if (!$this->getConfigValue($cred)) {
+        return new CommandError("You must set {$cred} in your blt/local.blt.yml file. <comment>DO NOT</comment> commit these anywhere in the repository!");
+      }
+    }
+
     $uri = $commandData->input()->getOption('site-uri');
 
     if (!$uri) {
@@ -196,16 +209,25 @@ EOD;
       ->printMetadata(FALSE)
       ->run();
 
+    $connector = new Connector([
+      'key' => $this->getConfigValue('credentials.acquia.key'),
+      'secret' => $this->getConfigValue('credentials.acquia.secret')
+    ]);
+
+    $cloud = Client::factory($connector);
+
+    $application = $cloud->application($this->getConfigValue('cloud.appId'));
+    $cloud->databaseCreate($application->uuid, $db);
+
     $this->yell("Follow these next steps!");
     $steps = [
       "Open a PR at https://github.com/uiowa/{$app}/compare/master...{$branch}.",
       "Assuming tests pass, merge the PR to deploy to the dev environment.",
-      "Create a database named <comment>{$db}</comment> in the Cloud UI.",
-      "Create domains added to sites.php in the Cloud UI.",
       "Sync local database and files to dev environment - remember to clear cache locally <comment>first</comment>!",
       "Re-deploy the master branch to the dev environment in the Cloud UI. This will run the cloud hooks successfully.",
       "Coordinate a new release to deploy to the test and prod environments.",
       "Sync the database and files to the test and prod environments.",
+      "Add the multisite domains to environments as needed.",
     ];
 
     $this->io()->listing($steps);
