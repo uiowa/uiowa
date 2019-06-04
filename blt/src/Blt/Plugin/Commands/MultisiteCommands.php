@@ -96,7 +96,7 @@ class MultisiteCommands extends BltTasks {
     $files = [
       "{$root}/docroot/sites/{$dir}/default.services.yml",
       "{$root}/docroot/sites/{$dir}/services.yml",
-      "{$root}/drush/sites/{$dir}.site.yml"
+      "{$root}/drush/sites/{$dir}.site.yml",
     ];
 
     foreach ($files as $file) {
