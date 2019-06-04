@@ -211,7 +211,7 @@ EOD;
 
     $connector = new Connector([
       'key' => $this->getConfigValue('credentials.acquia.key'),
-      'secret' => $this->getConfigValue('credentials.acquia.secret')
+      'secret' => $this->getConfigValue('credentials.acquia.secret'),
     ]);
 
     $cloud = Client::factory($connector);
