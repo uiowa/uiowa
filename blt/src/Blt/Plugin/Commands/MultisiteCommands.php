@@ -174,7 +174,8 @@ EOD;
     $this->taskDrush()
       ->drush('config:set')
       ->args([
-        'system.site.name',
+        'system.site',
+        'name',
         $uri,
       ])
       ->run();
