@@ -15,6 +15,21 @@ use Symfony\Component\Yaml\Yaml;
 class MultisiteCommands extends BltTasks {
 
   /**
+   * A no-op command.
+   *
+   * This is called in sync.commands to override the frontend step.
+   *
+   * @see: https://github.com/acquia/blt/issues/3697
+   *
+   * @command sitenow:multisite:noop
+   *
+   * @aliases smn
+   */
+  public function noop() {
+
+  }
+
+  /**
    * Execute a Drush command against all multisites.
    *
    * @param string $cmd
