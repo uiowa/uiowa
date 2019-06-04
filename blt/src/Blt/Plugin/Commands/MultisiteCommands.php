@@ -105,7 +105,7 @@ class MultisiteCommands extends BltTasks {
     $default['dev']['uri'] = $dev;
 
     file_put_contents("{$root}/drush/sites/{$machineName}.site.yml", Yaml::dump($default, 10, 2));
-    $this->say("Created <comment>{$machineName}.site.yml</comment> Drush alias file.");
+    $this->say("Updated <comment>{$machineName}.site.yml</comment> Drush alias file with <info>local, dev, test and prod</info> aliases.");
 
     // Overwrite the multisite blt.yml file.
     $blt = Yaml::parse(file_get_contents("{$root}/docroot/sites/{$dir}/blt.yml"));
@@ -113,7 +113,7 @@ class MultisiteCommands extends BltTasks {
     $blt['drupal']['db']['database'] = $db;
     $blt['drush']['aliases']['local'] = 'self';
     file_put_contents("{$root}/docroot/sites/{$dir}/blt.yml", Yaml::dump($blt, 10, 2));
-    $this->say("Overwrote <comment>{$root}/docroot/sites/{$dir}/blt.yml</comment> file.");
+    $this->say("Overwrote <comment>docroot/sites/{$dir}/blt.yml</comment> file with standardized names.");
 
     // Write sites.php data.
     $data = <<<EOD
@@ -126,7 +126,7 @@ class MultisiteCommands extends BltTasks {
 EOD;
 
     file_put_contents($root . '/docroot/sites/sites.php', $data, FILE_APPEND);
-    $this->say('Added <comment>sites.php</comment> entries. Adjust as needed. Create domains in the Acquia Cloud UI.');
+    $this->say('Added default <comment>sites.php</comment> entries.');
 
     // Remove the new local settings file - it has the wrong database name.
     $file = "{$root}/docroot/sites/{$dir}/settings/local.settings.php";
