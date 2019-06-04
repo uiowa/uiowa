@@ -170,7 +170,33 @@ EOD;
       ])
       ->run();
 
-    $this->say("Acquia Cloud database must be named <comment>{$db}</comment>. Create in the Cloud UI.");
+    $branch = "create-{$dir}";
+
+    $this->taskGit()
+      ->dir($this->getConfigValue("repo.root"))
+      ->exec("git checkout -b {$branch} master")
+      ->add('docroot/sites/sites.php')
+      ->commit("Add sites.php entries for {$dir}.")
+      ->add("docroot/sites/{$dir}")
+      ->commit("Initialize multisite {$dir} directory.")
+      ->exec("git push -u origin {$branch}")
+      ->interactive(FALSE)
+      ->printOutput(FALSE)
+      ->printMetadata(FALSE)
+      ->run();
+
+    $this->yell("Follow these next steps!");
+    $steps = [
+      "Open a PR at https://github.com/uiowa/uiowa/compare/master...{$branch}",
+      "Assuming tests pass, merge the PR to deploy to the dev environment",
+      "Create a database named <comment>{$db}</comment> in the Cloud UI",
+      "Create domains added to sites.php in the Cloud UI",
+      "Sync local database and files to dev environment - remember to clear cache locally!",
+      "Re-deploy the master branch to the dev environment in the CLoud UI",
+      "Coordinate a new release to deploy to test and prod environments"
+    ];
+
+    $this->io()->listing($steps);
   }
 
   /**
