@@ -193,7 +193,7 @@ EOD;
       "Create domains added to sites.php in the Cloud UI",
       "Sync local database and files to dev environment - remember to clear cache locally!",
       "Re-deploy the master branch to the dev environment in the CLoud UI",
-      "Coordinate a new release to deploy to test and prod environments"
+      "Coordinate a new release to deploy to test and prod environments",
     ];
 
     $this->io()->listing($steps);
