@@ -78,3 +78,10 @@ function sitenow_update_8005() {
 function sitenow_update_8006() {
 
 }
+
+/**
+ * Flush all caches so sites pick asset location changes.
+ */
+function sitenow_update_8007() {
+  drupal_flush_all_caches();
+}
