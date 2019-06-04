@@ -3,7 +3,7 @@
     @extend .h5;
   }
   .more-link {
-    margin-top: 2rem;
+    @include mt(3);
   }
 }
 .paragraph--type--events.list {
@@ -18,7 +18,7 @@
     @extend .media;
   }
   img {
-    margin-left: 2rem;
+    @include ml(3);
     max-width: 80px;
     @include media-breakpoint-up(sm) {
       max-width: 150px;
