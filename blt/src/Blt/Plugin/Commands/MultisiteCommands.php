@@ -107,6 +107,7 @@ class MultisiteCommands extends BltTasks {
     $blt = Yaml::parse(file_get_contents("{$root}/docroot/sites/{$dir}/blt.yml"));
     $blt['project']['machine_name'] = $machineName;
     $blt['drupal']['db']['database'] = $db;
+    $blt['drush']['aliases']['local'] = 'self';
     file_put_contents("{$root}/docroot/sites/{$dir}/blt.yml", Yaml::dump($blt, 10, 2));
     $this->say("Overwrote <comment>{$root}/docroot/sites/{$dir}/blt.yml</comment> file.");
 
