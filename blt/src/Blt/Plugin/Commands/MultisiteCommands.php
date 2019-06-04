@@ -72,6 +72,10 @@ class MultisiteCommands extends BltTasks {
         return new CommandError('Cannot parse URI for validation.');
       }
     }
+
+    if (!$commandData->input()->getOption('no-interaction')) {
+      return new CommandError("You must specify the --no-interaction option.");
+    }
   }
 
   /**
