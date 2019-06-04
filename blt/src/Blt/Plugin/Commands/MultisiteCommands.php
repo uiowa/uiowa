@@ -109,6 +109,7 @@ class MultisiteCommands extends BltTasks {
     // Re-generate the Drush alias so it is more useful.
     $app = $this->getConfig()->get('project.prefix');
     $default = Yaml::parse(file_get_contents("{$root}/drush/sites/{$app}.site.yml"));
+    $default['local']['uri'] = $dir;
     $default['prod']['uri'] = $dir;
     $default['test']['uri'] = $test;
     $default['dev']['uri'] = $dev;
