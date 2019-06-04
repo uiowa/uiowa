@@ -9,6 +9,7 @@ dependencies:
     - paragraphs.paragraphs_type.blockquote
     - paragraphs.paragraphs_type.card
     - paragraphs.paragraphs_type.events
+    - paragraphs.paragraphs_type.featured_content
     - paragraphs.paragraphs_type.section
     - paragraphs.paragraphs_type.text
   module:
@@ -36,6 +37,7 @@ settings:
       blockquote: blockquote
       events: events
       articles: articles
+      featured_content: featured_content
     target_bundles_drag_drop:
       section:
         weight: 3
@@ -61,4 +63,7 @@ settings:
       articles:
         enabled: true
         weight: 11
+      featured_content:
+        enabled: true
+        weight: 16
 field_type: entity_reference_revisions

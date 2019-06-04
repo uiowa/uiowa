@@ -88,6 +88,7 @@ function uiowa_paragraphs_preprocess_paragraph(&$variables) {
       case 'accordion_item':
       case 'blockquote':
       case 'card':
+      case 'featured_content':
         // Add css if applicable.
         $variables['#attached']['library'][] = 'uiowa_paragraphs/default';
 

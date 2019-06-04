@@ -1,0 +1,32 @@
+uuid: fddfa487-adbd-4728-9df5-63f32991ffae
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_featured_content
+    - node.type.article
+    - node.type.page
+    - node.type.person
+    - paragraphs.paragraphs_type.featured_content
+id: paragraph.featured_content.field_featured_content
+field_name: field_featured_content
+entity_type: paragraph
+bundle: featured_content
+label: 'Featured Content'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      article: article
+      page: page
+      person: person
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: article
+field_type: entity_reference
