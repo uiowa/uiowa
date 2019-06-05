@@ -33,6 +33,10 @@ apache_vhosts:
         servername: basetheme.uiowa.local.site
         documentroot: '{{ drupal_core_path }}'
         extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+    -
+        servername: test.uiowa.local.site
+        documentroot: '{{ drupal_core_path }}'
+        extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
 apache_vhosts_ssl:
     -
         servername: '{{ drupal_domain }}'
@@ -51,6 +55,10 @@ mysql_databases:
         collation: utf8_general_ci
     -
         name: basetheme
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: test
         encoding: utf8
         collation: utf8_general_ci
 mysql_users:
