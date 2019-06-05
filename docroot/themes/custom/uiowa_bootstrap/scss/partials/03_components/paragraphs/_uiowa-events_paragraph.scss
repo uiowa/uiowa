@@ -3,7 +3,7 @@
     @extend .h5;
   }
   .more-link {
-    @extend .mt-2;
+    @include mt(3);
   }
 }
 .paragraph--type--events.list {
@@ -18,7 +18,7 @@
     @extend .media;
   }
   img {
-    @extend .ml-2;
+    @include ml(3);
     max-width: 80px;
     @include media-breakpoint-up(sm) {
       max-width: 150px;
@@ -94,8 +94,8 @@
 .paragraph--type--section.bg-dark {
   .paragraph--type--events.list {
     .uiowa-event-teaser {
-      @extend .bg-dark;
-      @extend .text-light;
+      background-color: $dark;
+      color: $light;
       a {
         color: $yellow;
       }
@@ -105,14 +105,14 @@
 .paragraph--type--section.bg-light {
   .paragraph--type--events.list {
     .uiowa-event-teaser {
-      @extend .bg-light;
+      background-color: $light;
     }
   }
 }
 .paragraph--type--section.bg-yellow {
   .paragraph--type--events.list {
     .uiowa-event-teaser {
-      @extend .bg-yellow;
+      background-color: $yellow;
       a {
         color: $black;
         text-decoration: underline;
