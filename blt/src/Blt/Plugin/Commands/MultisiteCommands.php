@@ -209,7 +209,7 @@ EOD;
       ])
       ->run();
 
-    $branch = "init-{$dir}";
+    $branch = "initialize-{$dir}";
 
     $this->taskGit()
       ->dir($this->getConfigValue("repo.root"))
