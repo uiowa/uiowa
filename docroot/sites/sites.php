@@ -69,3 +69,9 @@ $sites['iowasuperfund.uiowa.lndo.site'] = 'iowasuperfund';
 $sites['iowasuperfund-d8.dev.drupal.uiowa.edu'] = 'iowasuperfund';
 $sites['iowasuperfund.prod.drupal.uiowa.edu'] = 'iowasuperfund';
 $sites['iowasuperfund.uiowa.edu'] = 'iowasuperfund';
+
+// Directory aliases for iowasuperfund.uiowa.edu.
+$sites['test.uiowa.local.site'] = 'test';
+$sites['testuiowa01-d8.dev.drupal.uiowa.edu'] = 'test';
+$sites['testuiowa01.prod.drupal.uiowa.edu'] = 'test';
+$sites['testuiowa01.uiowa.edu'] = 'test';

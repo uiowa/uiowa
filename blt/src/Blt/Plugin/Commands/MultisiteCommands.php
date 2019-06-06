@@ -1,6 +1,6 @@
 <?php
 
-namespace Sitenow\Blt\Plugin\Commands;
+namespace Collegiate\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
 use Consolidation\AnnotatedCommand\CommandData;
@@ -39,7 +39,7 @@ class MultisiteCommands extends BltTasks {
     $data = <<<EOD
 
 // Directory aliases for {$uri}.
-\$sites['{$machineName}.uiowa.lndo.site'] = '{$machineName}';
+\$sites['{$machineName}.uiowa.local.site'] = '{$machineName}';
 \$sites['{$machineName}.dev.drupal.uiowa.edu'] = '{$machineName}';
 \$sites['{$machineName}.test.drupal.uiowa.edu'] = '{$machineName}';
 \$sites['{$machineName}.prod.drupal.uiowa.edu'] = '{$machineName}';
