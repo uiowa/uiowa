@@ -1,0 +1,33 @@
+name: collegiate_theme
+type: theme
+base theme: classy
+description: Collegiate D8 base theme
+package: Custom
+core: 8.x
+stylesheets-remove:
+  - modules/custom/uiowa_bar/css/uiowa-bar.css
+libraries-override:
+  classy/base: false
+libraries:
+  - collegiate_theme/global-styling
+  - collegiate_theme/layouts
+regions:
+  header: 'Header'
+  primary_menu: 'Primary menu'
+  secondary_menu: 'Secondary menu'
+  page_top: 'Page top'
+  page_bottom: 'Page bottom'
+  featured: 'Featured'
+  breadcrumb: 'Breadcrumb'
+  content: 'Content'
+  sidebar_first: 'Sidebar first'
+  sidebar_second: 'Sidebar second'
+  footer: 'Footer'
+# Components
+component-libraries:
+  site-name:
+    paths:
+    - node_modules/@bspeare/uds/components/site-name
+  banner:
+    paths:
+    - node_modules/@bspeare/uds/components/banner
