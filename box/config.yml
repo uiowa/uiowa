@@ -34,6 +34,11 @@ apache_vhosts:
         documentroot: '{{ drupal_core_path }}'
         extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
     -
+        servername: clas.uiowa.local.site
+        documentroot: '{{ drupal_core_path }}'
+        extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+        apache_vhosts_ssl:
+    -
         servername: test.uiowa.local.site
         documentroot: '{{ drupal_core_path }}'
         extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
@@ -55,6 +60,10 @@ mysql_databases:
         collation: utf8_general_ci
     -
         name: basetheme
+        encoding: utf8
+        collation: utf8_general_ci
+    -
+        name: clas
         encoding: utf8
         collation: utf8_general_ci
     -
