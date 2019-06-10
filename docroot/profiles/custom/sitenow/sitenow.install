@@ -6,6 +6,8 @@
  * @see: https://www.drupal.org/project/drupal/issues/2982052
  */
 
+use Drupal\user\Entity\User;
+
 /**
  * Update some uiowa_footer settings which are ignored.
  */
@@ -80,8 +82,19 @@ function sitenow_update_8006() {
 }
 
 /**
- * Flush all caches so sites pick asset location changes.
+ * Update existing sites with user 1 info.
  */
 function sitenow_update_8007() {
+  $user = User::load(1);
+  $user->setUsername(uniqid('admin_'));
+  $user->setEmail(base64_decode('aXRzLXdlYkB1aW93YS5lZHU='));
+  $user->addRole('administrator');
+  $user->save();
+}
+
+/**
+ * Flush all caches so sites pick asset location changes.
+ */
+function sitenow_update_8008() {
   drupal_flush_all_caches();
 }
