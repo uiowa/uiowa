@@ -14,7 +14,7 @@ Go to Webforms via Structure > Webforms (/admin/structure/webform)
 
 On this page you can create new Webforms or view previous ones.
 
-##How to create a webform
+## How to create a webform
 
 1. At the top of the page click *Structure, Webforms, Add Webform.* 
 2. Enter the title of the webform in the Title field and optionally provide additional information about the form or submission process in the Body field. By default, content entered in the Body field will display above the fields of the webform.
