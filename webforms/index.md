@@ -6,9 +6,28 @@ nav_order: 14
 
 # Webforms
 
+A webform is a form or questionnaire that is accessible to users. Submission results and statistics are recorded and accessible to privileged users.
+
+Webforms are commonly used for "Contact Us" forms.
+
 Go to Webforms via Structure > Webforms (/admin/structure/webform)
 
 On this page you can create new Webforms or view previous ones.
+
+##How to create a webform
+
+1. At the top of the page click *Structure, Webforms, Add Webform.* 
+2. Enter the title of the webform in the Title field and optionally provide additional information about the form or submission process in the Body field. By default, content entered in the Body field will display above the fields of the webform.
+3. (Optionally) Select the Category and Status of the webform. Default is Category: None, Status: Open.
+4. Click *Save* at the bottom of the page to continue to the *Form builder*.
+
+
+
+
+
+
+
+
 
 ## Add webform
 
