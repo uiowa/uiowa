@@ -72,15 +72,18 @@ function uiowa_bootstrap_preprocess_input(&$variables) {
     }
   }
   if ($variables['element']['#type'] == 'submit') {
+    $btn_classes = [
+      'btn-primary',
+      'btn-secondary',
+      'btn-success',
+      'btn-warning',
+      'btn-danger',
+      'btn-link',
+      'btn-light',
+      'btn-dark',
+    ];
     if (is_object($variables['attributes']['class'])) {
-      if (empty(array_intersect([
-        'btn-primary',
-        'btn-secondary',
-        'btn-success',
-        'btn-warning',
-        'btn-danger',
-        'btn-link',
-      ], $variables['attributes']['class']->value()))) {
+      if (empty(array_intersect($btn_classes, $variables['attributes']['class']->value()))) {
         $variables['attributes']['class']->addClass('btn-primary');
       }
       if (!in_array('btn', $variables['attributes']['class']->value())) {
@@ -88,8 +91,12 @@ function uiowa_bootstrap_preprocess_input(&$variables) {
       }
     }
     else {
-      $variables['attributes']['class'][] = 'btn';
-      $variables['attributes']['class'][] = 'btn-primary';
+      if (empty(array_intersect($btn_classes, $variables['attributes']['class']))) {
+        $variables['attributes']['class'][] = 'btn-primary';
+      }
+      if (!in_array('btn', $variables['attributes']['class'])) {
+        $variables['attributes']['class'][] = 'btn';
+      }
       $variables['attributes'] = new Attribute($variables['attributes']);
     }
   }
