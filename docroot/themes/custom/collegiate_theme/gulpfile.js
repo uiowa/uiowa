@@ -18,6 +18,11 @@ var paths = {
   scss: './scss/'
 };
 
+function copy() {
+  return src('./node_modules/@bspeare/uds/dist/scss/uds_components/*.scss')
+      .pipe(dest('./uds/'));
+}
+
 // SCSS bundled into CSS task
 function css() {
   return src(config.css.src)
@@ -31,13 +36,13 @@ function css() {
       }
     }))
     .pipe(sass({
-      outputStyle: 'compressed',
-      includePaths: config.css.includePaths
-    }).on('error', function (err) {
-      console.log(err.message);
-      // sass.logError
-      this.emit('end');
-    }))
+        outputStyle: 'compressed',
+        includePaths: config.css.includePaths
+      }).on('error', function (err) {
+        console.log(err.message);
+        // sass.logError
+        this.emit('end');
+      }))
     .pipe(prefix(['last 2 versions', '> 1%', 'ie 9', 'ie 10'], {
       cascade: true
     }))
@@ -73,6 +78,7 @@ function watchFiles() {
 const watching = parallel(watchFiles, browserSync);
 
 //exports.js = js;
+exports.copy = copy;
 exports.css = css;
 exports.default = parallel(css);
 exports.watch = watching;
