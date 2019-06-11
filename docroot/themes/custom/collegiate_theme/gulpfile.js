@@ -19,7 +19,7 @@ var paths = {
 };
 
 function copy() {
-  return src('./node_modules/@bspeare/uds/dist/scss/uds_components/*.scss')
+  return src(['./node_modules/@bspeare/uds/**/*.scss', './node_modules/@bspeare/uds/**/*.twig'])
       .pipe(dest('./uds/'));
 }
 
