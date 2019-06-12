@@ -5,11 +5,14 @@
  * Article configuration for the University of Iowa.
  */
 
+use Drupal\Core\Link;
+use Drupal\Core\Url;
 use Drupal\media\Entity\Media;
 use Drupal\file\Entity\File;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Component\Utility\Html;
+use Drupal\views\Entity\View;
 use Drupal\views\Views;
 
 /**
@@ -73,6 +76,29 @@ function sitenow_articles_theme_suggestions_field_alter(array &$suggestions, arr
   if ($variables["element"]["#field_name"] == 'field_article_author') {
     if ($variables["element"]["#formatter"] == 'entity_reference_label') {
       $suggestions[] = 'field__node__field_article_author__sep';
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_articles_preprocess_page(&$variables) {
+  $current_route = \Drupal::routeMatch();
+  $route_name = $current_route->getRouteName();
+  if ($route_name == 'view.articles.page_articles') {
+    // Get the current user.
+    $user = \Drupal::currentUser();
+    // Check for permission.
+    if ($user->hasPermission('administer sitenow articles') == TRUE) {
+      // Print warning message informing user to use basic site settings.
+      $url = Url::fromRoute('sitenow_articles.settings_form');
+      $settings_link = Link::fromTextAndUrl(t('SiteNow Articles'), $url)
+        ->toString();
+      $message_text = t('This page can be configured here: @settings_link', [
+        '@settings_link' => $settings_link,
+      ]);
+      \Drupal::messenger()->addStatus($message_text);
     }
   }
 }
@@ -285,6 +311,37 @@ function sitenow_articles_preprocess_paragraph(&$variables) {
         $view->display_handler->setOption('pager', $pager);
 
         $variables['content']['view'] = $view->render();
+
+        // If we have more link checked and link provided, pass it.
+        if ($paragraph->hasField('field_articles_more')) {
+          $more = ($paragraph->field_articles_more->value == 1) ? TRUE : FALSE;
+          if ($more == TRUE) {
+            $variables['more'] = [
+              '#type' => 'container',
+              '#attributes' => [
+                'class' => 'more-link',
+              ],
+            ];
+
+            $view = View::load('articles');
+            $default =& $view->getDisplay('default');
+
+            if (!empty($more_path = $paragraph->get('field_articles_more_path')->getValue())) {
+              $url = Url::fromUri($more_path[0]['uri']);
+            }
+            else {
+              $url = Url::fromRoute('view.articles.page_articles');
+            }
+            $variables['more']['btn'] = [
+              '#type' => 'link',
+              '#title' => 'View more ' . strtolower($default['display_options']['title']),
+              '#url' => $url,
+              '#attributes' => [
+                'class' => ['btn', 'btn-primary'],
+              ],
+            ];
+          }
+        }
       }
 
       break;
