@@ -72,10 +72,12 @@ On this page you can create new Webforms or view previous ones.
 2. **To change the *Title* or *Body* of the webform**, click the *Edit* tab under the *operations* column. Make your changes and then click the *Save* button at the bottom of the page.
 3. **To add, edit or remove fields/form components**, click the *Webforms* tab. Follow steps 5 through 8 of *How to create a webform*, above.
 
+## Additional webform configuration
 
-
-
-
-
-
-
+For more information about additional webform configuration options, including
+  - how to conditionally show or require fields,
+  - how to view, download and delete webform submissions,
+  - how to send an email when a form is submitted,
+  - how to provide a custom confirmation message upon successful form submission, and
+  - how to close a webform (to prevent additional submissions),
+please refer to the Advanced webform configuration page.
