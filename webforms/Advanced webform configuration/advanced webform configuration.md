@@ -30,3 +30,22 @@ If the user selects the "Person Type" Student, you want to know what their class
   
 ## How to view, download and delete webform submissions
 
+### To view, download or delete webform submissions and submitted data:
+  1. Login to the website.
+  2. Navigate to the webform and click on the *Results* tab.
+    - To view a single submission, click on the view link for the submission.
+    - To view an analysis of the submitted data, such as the number of submissions per component values, calculuations, and averages, click on the *Analysis* link. 
+    - To view the submission results in a table, click the *Table* link.
+### To download submitted data:
+  3. Click the *Download* link.
+  4. Configure the download and export options, then click the *Download* button at the bottom of the page.
+### To delete all submitted data:
+  3. Click the *Clear* link.
+  4. Confirm that you want to delete all submissions for the webform by clicking the *Clear* button at the bottom of the page.
+ 
+    
+    
+    
+    
+    
+    
