@@ -69,7 +69,7 @@ Often when a user submits a webform it is desired to send an email notifying som
   7. Click the *Save* button at the bottom of the page.
     
 ## How to provide a custom confirmation message upon successful form submission:
-  - Refer to the above section, *To send an email to a user-provided email address*.
+  - Refer to the above section, "To send an email to a user-provided email address".
   
 ## How to close a webform:
 Closing a form prevents any further submissions by any users.
