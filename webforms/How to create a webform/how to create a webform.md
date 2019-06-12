@@ -1,7 +1,7 @@
 ---
 title: "How to create a webform"
 has_children: false
-parent: "webforms"
+parent: "Webforms"
 nav_order: 1
 ---
 
