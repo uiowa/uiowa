@@ -30,49 +30,9 @@ This project is based on BLT, an open-source project template and tool that enab
 # Setup Local Environment.
 
 BLT provides an automation layer for testing, building, and launching Drupal 8 applications. For ease when updating codebase it is recommended to use  Drupal VM. If you prefer, you can use another tool such as Docker, [DDEV](https://blt.readthedocs.io/en/latest/alternative-environment-tips/ddev.md), [Docksal](https://blt.readthedocs.io/en/latest/alternative-environment-tips/docksal.md), [Lando](https://blt.readthedocs.io/en/latest/alternative-environment-tips/lando.md), (other) Vagrant, or your own custom LAMP stack, however support is very limited for these solutions.
-## Lando
-1. Run `lando start`.
-2. Ensure every multisite database exists either through an SQL client or
-   executing `lando drush sql:create` for each multisite.
-3. Set up the application:
-   1. For first-time setup, run `lando blt setup`.
-   2. For existing setups, run `lando blt drupal:sync:all-sites`.
-      1. Note: this will discard active configuration!
-4. Edit `sites.local.php` to route requests to multisite directories:
-   ```
-   $sites['mysite.uiowa.lndo.site'] = 'mysite';
-   ```
-5. Profit.
-
-## Runserver
-1. Install Homebrew.
-2. Install PHP 7.2 via Homebrew.
-   ```
-   brew install php@7.2
-   ```
-3. Install MariaDB
-   ```
-   brew install mariadb
-   ```
-4. Start MariaDB.
-   ```
-   brew services start mariadb
-   ```
-5. Install Composer dependencies.
-    ```
-    $ composer install
-    ```
-6. Route the site of your choice in `sites.local.php`.
-   ```
-   $sites['8888.localhost'] = 'mysite';
-   ```
-7. Configure `local.settings.php` to override Lando defaults.
-8. Start the built-in PHP server.
-    ```
-    $ drush -l mysite rs --dns
-    ```
 
 ## Drupal VM (Vagrant)
+### Setup project
 1. Install Composer dependencies.
 After you have forked, cloned the project and setup your blt.yml file install Composer Dependencies. (Warning: this can take some time based on internet speeds.)
     ```
@@ -97,13 +57,14 @@ SSH into your localized Drupal VM environment automated with the BLT launch and 
     $ vagrant ssh
     ```
 
-5. Setup a local Drupal site with an empty database.
+### Site initialization
+1. Setup a local Drupal site with an empty database.
 Use BLT to setup the site with configuration.  If it is a multisite you can identify a specific site.
    ```
    $ blt setup --site=[sitename]
    ```
 
-6. Log into your site with drush.
+2. Log into your site with drush.
 Access the site and do necessary work at https://uiowa.local.site by running the following commands.
     ```
     $ cd docroot
@@ -111,21 +72,16 @@ Access the site and do necessary work at https://uiowa.local.site by running the
     ```
 
 ---
-## Other Local Setup Steps
+### Other Local Setup Steps
 
-1. Set up frontend build and theme.
-By default BLT sets up a site with the lightning profile and a cog base theme. You can choose your own profile before setup in the blt.yml file. If you do choose to use cog, see [Cog's documentation](https://github.com/acquia-pso/cog/blob/8.x-1.x/STARTERKIT/README.md#create-cog-sub-theme) for installation.
-See [BLT's Frontend docs](https://blt.readthedocs.io/en/latest/frontend/) to see how to automate the theme requirements and frontend tests.
-After the initial theme setup you can configure `blt/blt.yml` to install and configure your frontend dependencies with `blt setup`.
-
-2. Pull Files locally.
+1. Pull Files locally.
 Use BLT to pull all files down from your Cloud environment.
 
    ```
    $ blt drupal:sync:files
    ```
 
-3. Sync the Cloud Database.
+2. Sync the Cloud Database.
 If you have an existing database you can use BLT to pull down the database from your Cloud environment.
    ```
    $ blt sync

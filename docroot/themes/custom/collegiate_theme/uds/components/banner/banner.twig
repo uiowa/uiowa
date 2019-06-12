@@ -1,0 +1,13 @@
+<div class="banner" {% if field_banner_image %} style="background-image: url('{% spaceless %}{{ field_banner_image }}{% endspaceless %}'); background-size: cover; background-position: center" {% endif %}>
+    <div class="banner__container">
+        {% if field_title is not empty %}
+            <h3 class="banner__title">{{ field_title }}</h3>
+        {% endif %}
+        {% if field_summary is not empty %}
+            <div class="banner__summary">{{ field_summary }}</div>
+        {% endif %}
+        {% if field_link_url is not empty %}
+        <a href="{{ field_link_url }}" class="banner__link">{{ field_link_title }}</a>
+        {% endif %}
+    </div>
+</div>
