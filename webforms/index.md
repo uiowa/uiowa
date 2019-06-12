@@ -22,7 +22,7 @@ On this page you can create new Webforms or view previous ones.
 4. Click *Save* at the bottom of the page to continue to the *Form builder page*, where you can add fields to the webform.
 5. To add a field to the webform, select "Add element".
 Element Types:
- [] Hi
+- **Checkboxes** - Format a set of options as checkboxes. Similar to radios, except that users may select more than one option.
 
 
 
