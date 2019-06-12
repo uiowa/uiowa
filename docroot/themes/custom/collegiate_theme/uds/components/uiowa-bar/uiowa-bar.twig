@@ -1,0 +1,24 @@
+<div id="uiowa-bar--wrapper" class="uiowa-bar--wrapper container-fluid" role="region" aria-label="University of Iowa global header">
+{% include '@uiowa-logo' with { logo_path : '/images/uiowa.svg#uiowa-logo' } %}
+
+{% if config.wordmark == 'uiowa' %}
+        {{ include('@uiowa_bar/parts/uiowa-wordmark.html.twig') }}
+    {% elseif config.wordmark == 'uihc'  %}
+        {{ include('@uiowa_bar/parts/uihc-wordmark.html.twig') }}
+    {% endif %}
+    <div id="uiowa-search" class="uiowa-bar--navbar d-flex align-items-center mt-2 mt-sm-0">
+        <ul class="uiowa-bar--navbar--links d-inline-flex px-0 mx-1">
+            {% if config.link_1_title and config.link_1_url %}
+                <li class="mr-2">
+                    <a href="{{ config.link_1_url }}">{{ config.link_1_title }}</a>
+                </li>
+            {% endif %}
+            {% if config.link_2_title and config.link_2_url %}
+                <li class="mr-2">
+                    <a href="{{ config.link_2_url }}">{{ config.link_2_title }}</a>
+                </li>
+            {% endif %}
+        </ul>
+{% include '@uiowa-search' %}
+    </div>
+</div>
