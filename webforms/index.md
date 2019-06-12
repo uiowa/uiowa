@@ -21,7 +21,7 @@ On this page you can create new Webforms or view previous ones.
 3. (Optionally) Select the Category and Status of the webform. Default is Category: None, Status: Open.
 4. Click *Save* at the bottom of the page to continue to the *Form builder page*, where you can add fields to the webform.
 5. To add a field to the webform, select "Add element".
-Element Types:
+- Element Types:
   - Basic Elements:
     - **Checkboxes** - Format a set of options as checkboxes. Similar to radios, except that users may select more than one option.
     - **Hidden** - Provides a form element for an HTML "hidden" input element.
