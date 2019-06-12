@@ -56,6 +56,7 @@ Often when a user submits a webform it is desired to send an email notifying som
   6. Select *To email* and enter the recipient email address.
   7. Select *From email* and enter your email address.
   8. Click the *Save* button at the bottom of the page.
+  
 ### To send an email to a user-provided email address (e.g. to the user submitting the form):
 **Note:** To send an email to a user, the form must include an E-mail field to collect an email address from the user. For information about adding fields to a webform, please see the support article How to create or edit a webform.
 
@@ -67,7 +68,10 @@ Often when a user submits a webform it is desired to send an email notifying som
   6. Under *Additinoal Settings* setup your desired email reply.
   7. Click the *Save* button at the bottom of the page.
     
-    
+### How to provide a custom confirmation message upon successful form submission:
+  1. Login to the website.
+  2. Navigate to the webform.
+  3. Click
     
     
     
