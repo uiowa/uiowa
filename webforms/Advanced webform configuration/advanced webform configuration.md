@@ -1,7 +1,7 @@
 ---
 title: "Advanced webform configuration"
 has_children: false
-parent: "webforms"
+parent: "Webforms"
 nav_order: 2
 ---
 
