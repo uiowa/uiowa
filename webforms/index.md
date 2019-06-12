@@ -62,12 +62,20 @@ On this page you can create new Webforms or view previous ones.
     - **Submit button(s)** - Provides an element that contains a Webform's submit, draft, wizard, and/or preview buttons.
   - Other Elements:
     - **Generic element** - Provides a generic form element.
+6. To configure a field on the webform, select *Add element* in the *Select an element* menu. The configuration options differ between the types of fields, but most include tabs for *Properties* (e.g. field title, description, and default value), *Display* (e.g. should the field label be above or inline with the field), and *Validation* (e.g. are users required to fill out this field?).
+7. To remove a field from the webform, select the drop-down list arrow icon that displays under the *Operations* column in the *Build* section of the *Webforms* page.
+8. Click the *Save elements* button at the bottom of the page to save your changes.
+
+## How to edit a webform
+
+1. Login to your website and navigate to the webform that you want to edit.
+2. **To change the *Title* or *Body* of the webform**, click the *Edit* tab under the *operations* column. Make your changes and then click the *Save* button at the bottom of the page.
+3. **To add, edit or remove fields/form components**, click the *Webforms* tab. Follow steps 5 through 8 of *How to create a webform*, above.
 
 
-## Add webform
 
-Clicking the *Add webform* button opens a pop-up window and allows a form to be created and customized. In this window you can add the Title, Administrative Description, Category, or Status you wish your form to possess. Click *Save* when done.
 
-## Filter Webforms
 
-Within *Filter Webforms* you can filter through previous forms by a variety of options. Options such as, active and inactive forms, their category, and through a search bar that searches for given titles, descriptions, elements, usernames, or roles.
+
+
+
