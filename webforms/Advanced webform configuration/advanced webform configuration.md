@@ -42,8 +42,30 @@ If the user selects the "Person Type" Student, you want to know what their class
 ### To delete all submitted data:
   3. Click the *Clear* link.
   4. Confirm that you want to delete all submissions for the webform by clicking the *Clear* button at the bottom of the page.
- 
-    
+
+## How to send an email when a form is submitted
+
+Often when a user submits a webform it is desired to send an email notifying someone of the submission or to the user confirming their submission.
+
+### To send an email to a specific email address:
+  1. Login to the website.
+  2. Navigate to the webform.
+  3. Click the *Emails/ Handlers* link.
+  4. Click *Add email*.
+  5. Enter the email address of the recipient in the *Title* field to correctly label it.
+  6. Select *To email* and enter the recipient email address.
+  7. Select *From email* and enter your email address.
+  8. Click the *Save* button at the bottom of the page.
+### To send an email to a user-provided email address (e.g. to the user submitting the form):
+**Note:** To send an email to a user, the form must include an E-mail field to collect an email address from the user. For information about adding fields to a webform, please see the support article How to create or edit a webform.
+
+  1. Login to the website.
+  2. Navigate to the webform.
+  3. Click the *Emails/ Handlers* link.
+  4. Click *Edit* under the email.
+  5. Click the *Advanced* tab.
+  6. Under *Additinoal Settings* setup your desired email reply.
+  7. Click the *Save* button at the bottom of the page.
     
     
     
