@@ -7,7 +7,7 @@ nav_order: 2
 
 # Advanced webform configuration
 
-## How to conditionally show or require fields
+## How to conditionally show or require fields:
 
 1. Login to the website.
 2. Navigate to the webform (Structure < Webforms < Find your webform).
@@ -16,7 +16,7 @@ nav_order: 2
 5. Select *Conditions* at the top of the *Edit* menu.
 6. Add your conditions and then click the *Save* conditions button at the bottom of the page.
 
-## An example of conditional fields.
+## An example of conditional fields:
 
 Suppose you have a webform with a radio field title "Person type" with the options *Faculty*, *Staff*, and *Student* and a radio field titled *Student classification* with the options *Freshman, Sophomore, Junior, and Senior.*
 If the user selects the "Person Type" Student, you want to know what their classification is (freshman, sophomore, junior, or senior). However, you do not want to display the "Student classification" field to users who identify as *Faculty* or *Staff.*
@@ -28,7 +28,7 @@ If the user selects the "Person Type" Student, you want to know what their class
   - Now when the form is viewed, the "Student classification" field does not display and is not requried unless the "Person type" selected is "Student". The default state of the form. Note that the *Student classification* field does not display.
   - The state of the form when the *Person type* selected is *Student*. Note that the *Student classification* field is displayed and is required.
   
-## How to view, download and delete webform submissions
+## How to view, download and delete webform submissions:
 
 ### To view, download or delete webform submissions and submitted data:
   1. Login to the website.
@@ -43,7 +43,7 @@ If the user selects the "Person Type" Student, you want to know what their class
   3. Click the *Clear* link.
   4. Confirm that you want to delete all submissions for the webform by clicking the *Clear* button at the bottom of the page.
 
-## How to send an email when a form is submitted
+## How to send an email when a form is submitted:
 
 Often when a user submits a webform it is desired to send an email notifying someone of the submission or to the user confirming their submission.
 
@@ -68,10 +68,16 @@ Often when a user submits a webform it is desired to send an email notifying som
   6. Under *Additinoal Settings* setup your desired email reply.
   7. Click the *Save* button at the bottom of the page.
     
-### How to provide a custom confirmation message upon successful form submission:
+## How to provide a custom confirmation message upon successful form submission:
+  - Refer to the above section, *To send an email to a user-provided email address*.
+  
+## How to close a webform:
+Closing a form prevents any further submissions by any users.
+
   1. Login to the website.
   2. Navigate to the webform.
-  3. Click
-    
+  3. Select the *Form* tab.
+  4. Under *Form General Settings* change the *Form status* to closed.
+  5. Click *Save* at the bottom of the page.
     
     
