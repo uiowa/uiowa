@@ -54,12 +54,12 @@ function css() {
 // BrowserSync
 function browserSync() {
   browsersync({
-    server: {
-      baseDir: paths.build
-    },
+    // server: {
+    //   baseDir: paths.build
+    // },
     notify: false,
     browser: "google chrome",
-    //proxy: "http://uiowa.lndo.site:8000"
+    proxy: "http://basetheme.uiowa.local.site"
   });
 }
 
