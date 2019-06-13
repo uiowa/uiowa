@@ -91,3 +91,10 @@ function sitenow_update_8007() {
   $user->addRole('administrator');
   $user->save();
 }
+
+/**
+ * Flush all caches so sites pick asset location changes.
+ */
+function sitenow_update_8008() {
+  drupal_flush_all_caches();
+}
