@@ -1,0 +1,55 @@
+<?php
+
+/**
+ * @file
+ * Module file for rotating images based on EXIF data.
+ */
+
+ use Drupal\file\FileInterface;
+
+/**
+ * Implements hook_entity_presave().
+ */
+function uiowa_exif_file_presave(FileInterface $file) {
+  if ($file->isNew() && $file->getMimeType() == 'image/jpeg') {
+    $fmdm = \Drupal::service('file_metadata_manager');
+    $metadata = $fmdm->uri($file->getFileUri());
+    $orientation = $metadata->getMetaData('exif', 'Orientation');
+    if ($orientation) {
+
+      // EXIF: 1 is standard.
+      // 6 and 8 are rotated 90, cw and ccw respectively
+      // 5 and 7 are 6 and 8, but then flipped over the x-axis
+      // 3 is rotated 180
+      // 2 and 4 are 1 and 3, but then flipped over the x-axis
+      // Currently not addressing any flipping.
+      switch ($orientation['value']) {
+        case 6:
+          $degrees = 90;
+          break;
+
+        case 8:
+          $degrees = 270;
+          break;
+
+        case 3:
+          $degrees = 180;
+          break;
+
+        default:
+          $degrees = 0;
+      }
+      if ($degrees != 0) {
+        $image = \Drupal::service('image.factory')->get($file->getFileUri());
+
+        // Replace the old EXIF data, so that downloaded images or other
+        // render methods won't overcorrect.
+        $metadata->setMetadata('exif', 'Orientation', 1);
+        $metadata->saveMetadataToFile('exif');
+        if ($image->rotate($degrees)) {
+          $image->save();
+        }
+      }
+    }
+  }
+}
