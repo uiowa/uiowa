@@ -11,6 +11,8 @@
  * Implements hook_entity_presave().
  */
 function uiowa_exif_file_presave(FileInterface $file) {
+  // FMDM only parses jpeg correctly for EXIF, not TIFF. Luckily,
+  // should see very few TIFF orientation issues.
   if ($file->isNew() && $file->getMimeType() == 'image/jpeg') {
     $fmdm = \Drupal::service('file_metadata_manager');
     $metadata = $fmdm->uri($file->getFileUri());
@@ -46,6 +48,7 @@ function uiowa_exif_file_presave(FileInterface $file) {
         // render methods won't overcorrect.
         $metadata->setMetadata('exif', 'Orientation', 1);
         $metadata->saveMetadataToFile('exif');
+        // Save only if rotate() completed successfully.
         if ($image->rotate($degrees)) {
           $image->save();
         }
