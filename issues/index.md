@@ -22,4 +22,4 @@ nav_order: 17
   - To avoid this, don't try to select more than one image at a time. No workaround for now.
   
 - There is a known issue that when you add an item to a details container or flexbox container in webform that the 'add element' button on the container will dissapear.
-  -Workarounds for this are clicking edit on the container and then closing the edit panel, or by simply creating the element on the top level and dragging it underneath the desired container.
+  - Workarounds for this are clicking edit on the container and then closing the edit panel, or by simply creating the element on the top level and dragging it underneath the desired container.
