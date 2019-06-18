@@ -44,7 +44,11 @@ function sitenow_articles_preprocess_breadcrumb(&$variables) {
   // https://www.drupal.org/project/drupal/issues/2787051...
   $routes = [];
   foreach ($variables["links"] as $key => $link) {
-    $routes[$key] = $link->getUrl()->getRouteName();
+    $url = $link->getURL();
+    // Test for external paths.
+    if ($url->isRouted()) {
+      $routes[$key] = $link->getUrl()->getRouteName();
+    }
   }
   // For breadcrumb links built from view articles path, reduce duplicates.
   if (in_array('view.articles.page_articles', $routes)) {
