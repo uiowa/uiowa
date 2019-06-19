@@ -175,6 +175,12 @@ EOD;
 
     $this->invokeCommand('blt:init:settings');
 
+    // Create the config directory with a file to commit.
+    $this->taskFilesystemStack()
+      ->mkdir("{$root}/config/{$dir}")
+      ->touch("{$root}/config/{$dir}/.gitkeep")
+      ->run();
+
     // Site install locally so we can do some post-install tasks.
     // @see: https://www.drupal.org/project/drupal/issues/2982052
     $this->switchSiteContext($dir);
@@ -219,7 +225,9 @@ EOD;
       ->add("docroot/sites/{$dir}")
       ->commit("Initialize multisite {$dir} directory")
       ->add("drush/sites/{$machineName}.site.yml")
-      ->commit("Add Drush aliases for {$dir}")
+      ->commit("Create Drush aliases for {$dir}")
+      ->add("config/{$dir}")
+      ->commit("Create config directory for {$dir}")
       ->exec("git push -u origin {$branch}")
       ->checkout('master')
       ->interactive(FALSE)
