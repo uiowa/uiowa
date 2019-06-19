@@ -10,6 +10,8 @@
  */
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\file\Entity\File;
+use Drupal\media\Entity\Media;
 
 /**
  * Implements hook_entity_presave().
@@ -61,5 +63,96 @@ function sitenow_people_inline_entity_form_table_fields_alter(array &$fields, ar
         'weight' => 2,
       ];
     }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_people_preprocess_page_title(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    $route_name = \Drupal::routeMatch()->getRouteName();
+    if ($route_name == 'entity.node.canonical') {
+      $node = \Drupal::routeMatch()->getParameter('node');
+    }
+    elseif ($route_name == 'entity.node.preview') {
+      $node = \Drupal::routeMatch()->getParameter('node_preview');
+    }
+    if (isset($node)) {
+      switch ($node->getType()) {
+        case 'person':
+          if ($node->hasField('field_person_credential') && !$node->get('field_person_credential')
+            ->isEmpty()) {
+            $variables['subtitle'] = $node->field_person_credential->value;
+          }
+          break;
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_people_preprocess_node(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+
+    $node = $variables["node"];
+    switch ($node->getType()) {
+      case 'person':
+        switch ($variables["view_mode"]) {
+          case 'teaser':
+
+            break;
+        }
+        // Render person image.
+        $image_field = $node->get('field_image');
+        if (!$image_field->isEmpty()) {
+          $image = $image_field->first()->getValue();
+          $media = Media::load($image['target_id']);
+          $media_field = $media->get('field_media_image')
+            ->first()
+            ->getValue();
+          $file = File::load($media_field['target_id']);
+          $uri = $file->getFileUri();
+          $alt = ($media_field['alt'] ? $media_field['alt'] : '');
+          $image = [
+            '#theme' => 'image_style',
+            '#width' => NULL,
+            '#height' => NULL,
+            '#style_name' => 'sitenow_square_m',
+            '#uri' => $uri,
+            '#alt' => $alt,
+            '#weight' => -1,
+            '#attributes' => [
+              'class' => 'person-image',
+            ],
+          ];
+          $variables["content"]['person_image'] = $image;
+        }
+        break;
+
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_people_preprocess_field(&$variables) {
+  switch ($variables["element"]["#field_name"]) {
+    case 'field_person_position':
+      switch ($variables["element"]["#view_mode"]) {
+        case 'full':
+          $variables['attributes']['class'][] = 'h5';
+          break;
+
+        case 'teaser':
+          $variables['attributes']['class'][] = 'h6';
+          break;
+      }
+      break;
   }
 }
