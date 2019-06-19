@@ -175,6 +175,12 @@ EOD;
 
     $this->invokeCommand('blt:init:settings');
 
+    // Create the config directory with a file to commit.
+    $this->taskFilesystemStack()
+      ->mkdir("{$root}/config/{$dir}")
+      ->touch("{$root}/config/{$dir}/.gitkeep")
+      ->run();
+
     // Site install locally so we can do some post-install tasks.
     // @see: https://www.drupal.org/project/drupal/issues/2982052
     $this->switchSiteContext($dir);
@@ -215,10 +221,15 @@ EOD;
       ->dir($this->getConfigValue("repo.root"))
       ->exec("git checkout -b {$branch} master")
       ->add('docroot/sites/sites.php')
-      ->commit("Add sites.php entries for {$dir}.")
+      ->commit("Add sites.php entries for {$dir}")
       ->add("docroot/sites/{$dir}")
-      ->commit("Initialize multisite {$dir} directory.")
+      ->commit("Initialize multisite {$dir} directory")
+      ->add("drush/sites/{$machineName}.site.yml")
+      ->commit("Create Drush aliases for {$dir}")
+      ->add("config/{$dir}")
+      ->commit("Create config directory for {$dir}")
       ->exec("git push -u origin {$branch}")
+      ->checkout('master')
       ->interactive(FALSE)
       ->printOutput(FALSE)
       ->printMetadata(FALSE)
@@ -238,11 +249,14 @@ EOD;
     $this->yell("Follow these next steps!");
     $steps = [
       "Open a PR at https://github.com/uiowa/{$app}/compare/master...{$branch}.",
-      "Assuming tests pass, merge the PR to deploy to the dev environment.",
+      "Wait for the tests to pass, then merge the PR to trigger a Pipelines job.'
+      'Check out and pull the master branch to update your local codebase.',
+      'Wait for the Pipelines job to complete so that the code is deployed to the dev environment.",
       "Sync local database and files to dev environment - remember to clear cache locally <comment>first</comment>!",
       "Re-deploy the master branch to the dev environment in the Cloud UI. This will run the cloud hooks successfully.",
+      "Sync the single, multisite database to the test and prod environments using the Cloud UI.",
       "Coordinate a new release to deploy to the test and prod environments.",
-      "Sync the database and files to the test and prod environments.",
+      "Sync the multisite files to the test and prod environments using Drush.",
       "Add the multisite domains to environments as needed.",
     ];
 
