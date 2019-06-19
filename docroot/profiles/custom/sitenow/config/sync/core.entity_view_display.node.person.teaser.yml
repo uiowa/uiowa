@@ -6,6 +6,7 @@ dependencies:
     - core.entity_view_mode.node.teaser
     - field.field.node.person.field_image
     - field.field.node.person.field_person_bio
+    - field.field.node.person.field_person_credential
     - field.field.node.person.field_person_email
     - field.field.node.person.field_person_first_name
     - field.field.node.person.field_person_last_name
@@ -21,15 +22,23 @@ targetEntityType: node
 bundle: person
 mode: teaser
 content:
+  field_person_credential:
+    type: string
+    weight: 0
+    region: content
+    label: visually_hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
   field_person_email:
     type: email_mailto
-    weight: 1
+    weight: 2
     region: content
     label: inline
     settings: {  }
     third_party_settings: {  }
   field_person_phone:
-    weight: 2
+    weight: 3
     label: inline
     settings:
       title: ''
@@ -38,14 +47,14 @@ content:
     region: content
   field_person_position:
     type: string
-    weight: 0
+    weight: 1
     region: content
-    label: hidden
+    label: visually_hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
   links:
-    weight: 3
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
