@@ -1,19 +1,19 @@
-uuid: 53faae98-c4f0-48f6-ab84-7d8cb7071a17
+uuid: 7186051d-e616-4f83-8725-59d0180b8025
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_image
     - media.type.image
-    - node.type.article
-id: node.article.field_image
+    - node.type.person
+id: node.person.field_image
 field_name: field_image
 entity_type: node
-bundle: article
-label: 'Featured Image'
+bundle: person
+label: 'Person Photo'
 description: ''
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
@@ -24,5 +24,5 @@ settings:
     sort:
       field: _none
     auto_create: true
-    auto_create_bundle: image
+    auto_create_bundle: ''
 field_type: entity_reference

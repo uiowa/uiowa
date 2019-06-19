@@ -4,10 +4,15 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
+    - field.field.node.person.field_image
+    - field.field.node.person.field_person_bio
+    - field.field.node.person.field_person_credential
     - field.field.node.person.field_person_email
     - field.field.node.person.field_person_first_name
     - field.field.node.person.field_person_last_name
     - field.field.node.person.field_person_phone
+    - field.field.node.person.field_person_position
+    - field.field.node.person.field_teaser
     - node.type.person
   module:
     - telephone
@@ -17,31 +22,46 @@ targetEntityType: node
 bundle: person
 mode: teaser
 content:
-  content_moderation_control:
-    weight: 3
+  field_person_credential:
+    type: string
+    weight: 0
     region: content
-    settings: {  }
+    label: visually_hidden
+    settings:
+      link_to_entity: false
     third_party_settings: {  }
   field_person_email:
     type: email_mailto
-    weight: 0
+    weight: 2
     region: content
     label: inline
     settings: {  }
     third_party_settings: {  }
   field_person_phone:
-    weight: 1
+    weight: 3
     label: inline
     settings:
       title: ''
     third_party_settings: {  }
     type: telephone_link
     region: content
+  field_person_position:
+    type: string
+    weight: 1
+    region: content
+    label: visually_hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
   links:
-    weight: 2
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
+  content_moderation_control: true
+  field_image: true
+  field_person_bio: true
   field_person_first_name: true
   field_person_last_name: true
+  field_teaser: true

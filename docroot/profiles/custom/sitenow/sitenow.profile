@@ -267,11 +267,13 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
     case 'node_page_form':
     case 'node_article_edit_form':
     case 'node_article_form':
+    case 'node_person_edit_form':
+    case 'node_person_form':
       if (isset($form['field_teaser'])) {
         // Create node_teaser group in the advanced container.
         $form['node_teaser'] = [
           '#type' => 'details',
-          '#title' => t('Content Description'),
+          '#title' => $form["field_teaser"]["widget"][0]["#title"],
           '#group' => 'advanced',
           '#attributes' => [
             'class' => ['node-form-teaser'],
@@ -290,7 +292,7 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         // Create node_image group in the advanced container.
         $form['node_image'] = [
           '#type' => 'details',
-          '#title' => t('Featured Image'),
+          '#title' => $form["field_image"]["widget"]["#title"],
           '#group' => 'advanced',
           '#attributes' => [
             'class' => ['node-form-image'],
@@ -555,6 +557,19 @@ function sitenow_link_alter(&$variables) {
       '@icon' => $variables['options']['fa_icon'],
       '@title' => $variables['text'],
     ]);
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_preprocess_field(&$variables) {
+  switch ($variables["element"]["#field_name"]) {
+    case 'title':
+      if ($variables["element"]["#view_mode"] == 'teaser') {
+        $variables['attributes']['class'][] = 'h5';
+      }
+      break;
   }
 }
 

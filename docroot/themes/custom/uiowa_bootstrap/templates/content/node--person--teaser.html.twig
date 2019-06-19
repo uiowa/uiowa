@@ -72,31 +72,31 @@
 #}
 {%
   set classes = [
-    'node',
-    'node--type-' ~ node.bundle|clean_class,
-    node.isPromoted() ? 'node--promoted',
-    node.isSticky() ? 'node--sticky',
-    not node.isPublished() ? 'node--unpublished',
-    view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
-    'media'
-  ]
+  'node',
+  'node--type-' ~ node.bundle|clean_class,
+  node.isPromoted() ? 'node--promoted',
+  node.isSticky() ? 'node--sticky',
+  not node.isPublished() ? 'node--unpublished',
+  view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+  'media',
+]
 %}
 {{ attach_library('classy/node') }}
 <article{{ attributes.addClass(classes) }}>
   <div{{ content_attributes.addClass('node__content media-body') }}>
-      {{ title_prefix }}
-      {% if not page %}
-        <h3{{ title_attributes }}>
-          <a href="{{ url }}" rel="bookmark">{{ label }}</a>
-        </h3>
-      {% endif %}
-      {{ title_suffix }}
-
-      {{ content|without('article_image') }}
-  </div>
-    {% if content.article_image %}
-        <figure class="content-image">
-            {{ content.article_image }}
-        </figure>
+    {{ title_prefix }}
+    {% if not page %}
+      <h3{{ title_attributes }}>
+        <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+      </h3>
     {% endif %}
+    {{ title_suffix }}
+
+    {{ content|without('person_image') }}
+  </div>
+  {% if content.person_image %}
+    <figure class="content-image">
+      {{ content.person_image }}
+    </figure>
+  {% endif %}
 </article>

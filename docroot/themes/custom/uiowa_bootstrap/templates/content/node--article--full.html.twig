@@ -103,10 +103,10 @@
 
   <div{{ content_attributes.addClass('node__content') }}>
       {% if content.article_image %}
-        <figure class="article_image">
+        <figure class="content-image">
           {{ content.article_image }}
           {% if content.field_image_caption %}
-            <figcaption>
+            <figcaption class="figure-caption">
               {{ content.field_image_caption }}
             </figcaption>
           {% endif %}
