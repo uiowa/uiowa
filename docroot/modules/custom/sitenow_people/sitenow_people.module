@@ -69,6 +69,32 @@ function sitenow_people_inline_entity_form_table_fields_alter(array &$fields, ar
 /**
  * Implements hook_preprocess_HOOK().
  */
+function sitenow_people_preprocess_page_title(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    $route_name = \Drupal::routeMatch()->getRouteName();
+    if ($route_name == 'entity.node.canonical') {
+      $node = \Drupal::routeMatch()->getParameter('node');
+    }
+    elseif ($route_name == 'entity.node.preview') {
+      $node = \Drupal::routeMatch()->getParameter('node_preview');
+    }
+    if (isset($node)) {
+      switch ($node->getType()) {
+        case 'person':
+          if ($node->hasField('field_person_credential') && !$node->get('field_person_credential')
+            ->isEmpty()) {
+            $variables['subtitle'] = $node->field_person_credential->value;
+          }
+          break;
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
 function sitenow_people_preprocess_node(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
