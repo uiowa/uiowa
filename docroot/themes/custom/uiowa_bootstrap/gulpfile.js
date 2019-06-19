@@ -55,6 +55,7 @@ gulp.task('js', function() {
 // Static Server + Watch
 gulp.task('serve', ['css', 'js'], function() {
   gulp.watch(config.css.src, ['css']);
+  gulp.watch(config.js.src, ['js']);
 });
 
 // Default Task
