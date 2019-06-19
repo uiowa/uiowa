@@ -26,15 +26,18 @@ function uiowa_exif_file_presave(FileInterface $file) {
       // 2 and 4 are 1 and 3, but then flipped over the x-axis
       // Currently not addressing any flipping.
       switch ($orientation['value']) {
+        case 5:
         case 6:
           $degrees = 90;
           break;
 
+        case 7:
         case 8:
           $degrees = 270;
           break;
 
         case 3:
+        case 4:
           $degrees = 180;
           break;
 
