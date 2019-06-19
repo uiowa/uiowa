@@ -249,11 +249,14 @@ EOD;
     $this->yell("Follow these next steps!");
     $steps = [
       "Open a PR at https://github.com/uiowa/{$app}/compare/master...{$branch}.",
-      "Assuming tests pass, merge the PR to deploy to the dev environment.",
+      "Wait for the tests to pass, then merge the PR to trigger a Pipelines job.'
+      'Check out and pull the master branch to update your local codebase.',
+      'Wait for the Pipelines job to complete so that the code is deployed to the dev environment.",
       "Sync local database and files to dev environment - remember to clear cache locally <comment>first</comment>!",
       "Re-deploy the master branch to the dev environment in the Cloud UI. This will run the cloud hooks successfully.",
+      "Sync the single, multisite database to the test and prod environments using the Cloud UI.",
       "Coordinate a new release to deploy to the test and prod environments.",
-      "Sync the database and files to the test and prod environments.",
+      "Sync the multisite files to the test and prod environments using Drush.",
       "Add the multisite domains to environments as needed.",
     ];
 
