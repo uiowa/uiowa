@@ -218,6 +218,8 @@ EOD;
       ->commit("Add sites.php entries for {$dir}.")
       ->add("docroot/sites/{$dir}")
       ->commit("Initialize multisite {$dir} directory.")
+      ->add("drush/sites/{$machineName}.site.yml")
+      ->commit("Add Drush aliases for {$dir}.")
       ->exec("git push -u origin {$branch}")
       ->checkout('master')
       ->interactive(FALSE)
