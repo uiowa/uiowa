@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: veterans.uiowa.edu
+    protocol: https
+  machine_name: veterans
+  human_name: veterans.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: veterans.prod
+drupal:
+  db:
+    database: veterans_uiowa_edu
+    host: localhost
+    user: root
+    password: null
