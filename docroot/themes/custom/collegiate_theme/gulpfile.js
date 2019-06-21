@@ -19,8 +19,9 @@ var paths = {
 };
 
 function copy() {
-  return src(['./node_modules/@bspeare/uds/**/*.scss', './node_modules/@bspeare/uds/**/*.twig'])
-      .pipe(dest('./uds/'));
+  return src(['./node_modules/@uiowa/hds/**/*.scss', './node_modules/@uiowa/hds/**/*.js', './node_modules/@uiowa/hds/**/*.twig'
+  ])
+    .pipe(dest('./hds/'));
 }
 
 // SCSS bundled into CSS task

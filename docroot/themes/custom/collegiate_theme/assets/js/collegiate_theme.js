@@ -1,6 +1,6 @@
 /**
  * @file
- * Collegiate Theme Base behaviors.
+ * Collegiate Subtheme behaviors.
  */
 
 (function ($, Drupal) {
@@ -10,7 +10,7 @@
   /**
    * Behavior description.
    */
-  Drupal.behaviors.iowasuperfund = {
+  Drupal.behaviors.collegiate_theme = {
     attach: function (context, settings) {
 
       console.log('It works!');
