@@ -102,17 +102,17 @@ The format for saving the key is as follows. Open the local.blt.yml file in a co
     
     
 To create a new multisite:
-1. Run the `blt recipes:multisite:init` command with the `--site-uri` option specified.
-*Example:* `blt recipes:multisite:init --site-uri mysite.com`.
-2. Respond 'no' when prompted for database credentials. If it fails, run it again with --no-interaction.
-3. Follow the in terminal instructions.
-3. Review the code changes and commit to a feature branch. 
-4. Run the Drush snippet given to install the site locally. 
-5. When ready to deploy to Acquia Cloud, open a pull request for review. 
-6. Create the database and domains in the Acquia Cloud UI.
-7. Once merged and deployed, the database can be synced in the following order. Dev -> Stage/Test -> Prod. Make sure to clear the site's cache.
-*Example:* "drush @uri.dev cr" --> "drush sql:sync @uri.local @uri.dev". If the sql:sync fails try, "drush -l uri.uiowa.edu rsync @self:%files @uri.dev:%files".
-8. Email Hostmaster with CNAME request template in ITS-web@uiowa.edu -> Drafts -> Email Templates -> SiteNow Templates.
+1. Run the `blt recipes:multisite:init` command with the `--site-uri` and `--no-interaction` options specified.
+*Example: `blt recipes:multisite:init --site-uri mysite.com --no-interaction`
+2. When ready to deploy to Acquia Cloud, open a pull request for review. 
+3. Create the domains in the Acquia Cloud UI.
+4. Once merged and deployed, the database can be synced in the following order. Dev -> Stage/Test -> Prod. The Cloud UI should be used to sync the database initially. Make sure to clear the site's cache.
+
+*Note: Drush should not be used to sync the database initially because it will bootstrap the wrong site. Make sure the paths are correct.*
+
+*Example: "drush @uri.dev cr" --> "drush sql:sync @uri.local @uri.dev". If the sql:sync fails try, "drush -l uri.uiowa.edu rsync @self:%files @uri.dev:%files".*
+
+5. Email Hostmaster with CNAME request template in ITS-web@uiowa.edu -> Drafts -> Email Templates -> SiteNow Templates.
 
 ## XDebug
 
