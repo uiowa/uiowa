@@ -70,15 +70,10 @@ $sites['iowasuperfund-d8.dev.drupal.uiowa.edu'] = 'iowasuperfund';
 $sites['iowasuperfund.prod.drupal.uiowa.edu'] = 'iowasuperfund';
 $sites['iowasuperfund.uiowa.edu'] = 'iowasuperfund';
 
-// Directory aliases for iowasuperfund.uiowa.edu.
-$sites['test.uiowa.local.site'] = 'test';
-$sites['testuiowa01-d8.dev.drupal.uiowa.edu'] = 'test';
-$sites['testuiowa01.prod.drupal.uiowa.edu'] = 'test';
-$sites['testuiowa01.uiowa.edu'] = 'test';
-
 // Directory aliases for clas.uiowa.edu.
 $sites['clas.uiowa.local.site'] = 'clas';
 $sites['clas.uiowa.lndo.site'] = 'clas';
 $sites['clas-d8.dev.drupal.uiowa.edu'] = 'clas';
 $sites['clas.prod.drupal.uiowa.edu'] = 'clas';
 $sites['clas.uiowa.edu'] = 'clas';
+
