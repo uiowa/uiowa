@@ -53,15 +53,6 @@ class UIEventsSettingsForm extends ConfigFormBase {
       ],
     ];
 
-    $form['global']['uiowa_events_cache_time'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Events Caching'),
-      '#default_value' => $config->get('uiowa_events.cache_time'),
-      '#description' => $this->t('Enter the number of minutes event data should be cached. (Minimum of 5 minutes)'),
-      '#size' => 60,
-      '#required' => TRUE,
-    ];
-
     $form['global']['uiowa_events_single_event_path'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Single event path'),
