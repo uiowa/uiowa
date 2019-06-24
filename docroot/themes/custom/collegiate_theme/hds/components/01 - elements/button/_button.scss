@@ -1,0 +1,53 @@
+// https://fractal.build/guide/components/including-sub-components.html#providing-context-data-to-sub-components
+
+.bttn {
+  @extend %bttn;
+}
+
+.bttn--primary{
+  @extend %bttn--primary;
+}
+
+.bttn--secondary {
+  @extend %bttn--secondary;
+}
+
+.bttn--secondary__light {
+  @extend %bttn--secondary__light;
+}
+
+.bttn--tertiary {
+  @extend %bttn--tertiary;
+}
+
+.bttn--full {
+  @extend %bttn--full;
+}
+
+.bttn--outline {
+  @extend %bttn--outline;
+}
+
+.bttn__apply {
+  margin-top: unset;
+  padding: .7rem;
+  border: 1px solid $white;
+  font-size: .95rem;
+  display: none;
+  @include breakpoint(sm) {
+    display: block;
+  }
+}
+
+.bg-type--dark {
+  padding: $md;
+  background: $secondary;
+}
+
+.bg-type--light {
+  padding: $md;
+  background: #fff;
+}
+
+@media (hover: hover) {}
+@media (hover: none) {}

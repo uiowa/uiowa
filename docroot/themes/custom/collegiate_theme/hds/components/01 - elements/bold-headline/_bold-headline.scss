@@ -1,0 +1,14 @@
+.bold-headline {
+  @include bracket();
+  width: intrinsic;
+  width: -moz-max-content;
+  width: -webkit-max-content;
+  @include margin($right: auto, $bottom: $xlg, $left: auto);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  font-family: $font-family-caps-light;
+  font-size: $h3-font-size;
+  &.bold-headline--negative {
+    color: $white;
+  }
+}

@@ -1,0 +1,115 @@
+.card {
+  position: relative;
+  transition: transform .35s, z-index .5s;
+  @include margin($right: $sm, $bottom: $md, $left: $sm);
+  @include flexbox;
+  @include flex-direction($value: column);
+  &:first-child {
+    @include margin($left: 0);
+  }
+  &:last-child {
+    @include margin($right: 0);
+  }
+
+  &__wrapper {
+    @include breakpoint(sm) {
+      @include flexbox;
+    }
+  }
+
+  &__img {
+    @include margin($bottom: $md);
+  }
+
+  &__label {
+    letter-spacing: .09rem;
+    text-transform: uppercase;
+  }
+
+  &__title {
+    font-size: $h6-font-size;
+    @include margin($top: $sm, $bottom: $sm);
+    a {
+      text-decoration: none;
+      color: $secondary;
+    }
+  }
+
+  &__date {
+    font-weight: $font-weight-bold;
+  }
+
+  &__text {
+    @include margin($top: $sm, $bottom: $sm);
+  }
+
+  &__link {
+    text-decoration: none;
+    letter-spacing: .05rem;
+    text-transform: uppercase;
+    color: $secondary;
+    font-weight: $font-weight-light;
+  }
+
+  &__details {
+    @include element-invisible;
+    .is-open & {
+      clear: both;
+      @include element-invisible-off;
+      @include padding($top: $sm, $bottom: $sm);
+    }
+  }
+
+  &.is-open {
+    padding: $md;
+    transform: translateY(-10px) scale(1.01);
+    background: $light;
+    box-shadow: 3px 5px 5px 0 rgba(13, 23, 33, 0.1);
+  }
+}
+
+
+
+
+
+
+.card__bttn {
+  position: relative;
+
+  display: block;
+  float: left;
+
+  width: 30px;
+  height: 30px;
+  padding: 0;
+
+  cursor: pointer;
+  transition: background .25s,border .25s,color .25s,transform .25s;
+
+  border: none;
+  border: 1px solid $secondary;
+  border-radius: 50%;
+  background: $white;
+
+  @include margin($right: $sm);
+  .is-open & {
+    background: $secondary;
+  }
+
+  &:before {
+    padding: $xsm;
+
+    content: "\f141";
+
+    color: $secondary;
+
+    @include fas();
+
+    .is-open & {
+      content: "\f00d";
+
+      color: $white;
+    }
+  }
+}
+

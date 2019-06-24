@@ -1,0 +1,51 @@
+/////// Breadcrumbs
+
+.breadcrumb {
+  list-style: none;
+  @include margin($top: 0, $right: 0, $bottom: $sm, $left:0);
+    ol {
+      @extend %no-ul-list;
+    }
+}
+
+.breadcrumb::before,
+.breadcrumb::after {
+  display: table;
+  content: ' ';
+  @include flex($fb: 0);
+  @include order($int: 1);
+}
+
+.breadcrumb::after {
+  clear: both;
+}
+
+.breadcrumb li {
+  float: left;
+  cursor: default;
+  text-transform: uppercase;
+  color: $secondary;
+  font-size: $small-font-size;
+}
+
+.breadcrumb li:not(:last-child)::after {
+  position: relative;
+  content: "/";
+  opacity: 1;
+  color: $grey-light;
+  @include margin($top: 0, $right: $sm, $bottom: 0, $left:$sm);
+}
+
+.breadcrumb a {
+  text-decoration: none;
+  color: $link-color;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb .disabled {
+  cursor: not-allowed;
+  color: $grey-light;
+}

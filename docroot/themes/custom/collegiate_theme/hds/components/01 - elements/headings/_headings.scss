@@ -1,0 +1,53 @@
+ h1,
+ h2,
+ h3,
+ h4,
+ h5,
+ h6 {
+  color: $secondary;
+  font-weight: $font-weight-medium-bold;
+  line-height: 1.125;
+}
+
+ h1 {
+  font-size: $h1-font-size;
+  @include margin($bottom: $sm);
+}
+/*
+ h1:not(:first-child) {
+  @include margin($top: $sm-md);
+}
+*/
+
+ h2 {
+  font-size: $h2-font-size;
+  @include margin($bottom: $sm);
+}
+/*
+ h2:not(:first-child) {
+  @include margin($top: $md);
+}
+*/
+ h3 {
+  font-size: $h3-font-size;
+  @include margin($bottom: $sm);
+}
+/*
+ h3:not(:first-child) {
+  @include margin($top: $md);
+}
+*/
+ h4 {
+  font-size: $h4-font-size;
+  @include margin($bottom: $sm);
+}
+
+ h5 {
+  font-size: $h5-font-size;
+  @include margin($bottom: $sm-md);
+}
+
+ h6 {
+  font-size: $h6-font-size;
+  @include margin($bottom: $sm-md);
+}

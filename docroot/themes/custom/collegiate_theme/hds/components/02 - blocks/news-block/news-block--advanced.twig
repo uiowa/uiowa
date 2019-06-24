@@ -1,0 +1,28 @@
+<div class="card__wrapper">
+
+{% set counter = 0 %}
+
+{% for item in news.items %}
+        <div class="card">
+            <img class="card__img" src="{{ item.card_image }}" alt="Card image cap">
+            <div class="card__body">
+                <span class="card__label">{{ item.card_tag }}</span>
+                <h2 class="card__title">
+                    <a href="{{ item.card_link_url }}">{{ item.card_title }}</a>
+                </h2>
+                <button id="card__button{{ counter }}" class="card__bttn">
+                    <span class="element-invisible">Details</span></button>
+
+                <div class="card__details">
+                    <span class="card__date">{{ item.card__date }}</span>
+                    <p class="card__text">{{ item.card_text }}</p>
+                    <a class="card__link" href="{{ item.card_link_url }}">{{ item.card_link_title }}</a>
+                </div>
+            </div>
+        </div>
+{% set counter = counter + 1 %}
+{% endfor %}
+
+</div>
+
+<a href="/" class="bttn bttn--primary bttn--full">More News</a>

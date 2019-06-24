@@ -1,0 +1,278 @@
+//=======================================================
+// Mixins
+//=======================================================
+
+// Clearfix
+@mixin clearfix {
+  &::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}
+
+// Makes an element visually hidden, but accessible.
+// @see http://snook.ca/archives/html_and_css/hiding-content-for-accessibility
+@mixin element-invisible {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+}
+
+// Turns off the element-invisible effect.
+@mixin element-invisible-off {
+  position: static !important;
+  clip: auto;
+  height: auto;
+  width: auto;
+  overflow: auto;
+}
+
+// Makes an element visually hidden by default, but visible when focused.
+@mixin element-focusable {
+  @include element-invisible;
+  &:active,
+  &:focus {
+    @include element-invisible-off;
+  }
+}
+
+@mixin fas() {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  line-height: 1;
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+}
+
+
+// Gold Bracket ///////////////
+
+@mixin bracket() {
+  position: relative;
+  @include margin($top: $sm, $bottom: $sm);
+  padding: $md;
+  &:before,
+  &:after {
+    content: ' ';
+    position: absolute;
+    top: 0;
+    width: $sm;
+    height: 100%;
+    border: 3px solid $primary;
+  }
+
+  &:before {
+    left: -1em;
+    border-right: 0;
+  }
+
+  &:after {
+    right: -1em;
+    border-left: 0;
+  }
+}
+
+// Media Queries ///////////////
+
+@mixin breakpoint($class) {
+  @if $class==xs {
+    @media (max-width: 767px) {
+      @content;
+    }
+  }
+
+  @else if $class==sm {
+    @media (min-width: 768px) {
+      @content;
+    }
+  }
+
+  @else if $class==md {
+    @media (min-width: 992px) {
+      @content;
+    }
+  }
+
+  @else if $class==lg {
+    @media (min-width: 1200px) {
+      @content;
+    }
+  }
+
+  @else {
+    @warn "Breakpoint mixin supports: xs, sm, md, lg";
+  }
+}
+
+////// Flexbox
+
+@mixin flexbox {
+  display: flex;
+}
+
+//fg flex-grow fs flex-shrink fb flex-basis
+@mixin flex($fg: 1, $fs: 0, $fb: auto) {
+  flex: $fg $fs $fb;
+}
+
+@mixin flex-direction($value: row) {
+  flex-direction: $value;
+}
+
+@mixin flex-wrap($value: nowrap) {
+  flex-wrap: $value;
+}
+
+@mixin order($int: 0) {
+  order: $int;
+}
+
+
+//////////  Padding/Margin
+
+@mixin padding($top: null, $right: null, $bottom: null, $left: null) {
+  padding-top: $top;
+  padding-right: $right;
+  padding-bottom: $bottom;
+  padding-left: $left;
+}
+
+@mixin margin($top: null, $right: null, $bottom: null, $left: null) {
+  margin-top: $top;
+  margin-right: $right;
+  margin-bottom: $bottom;
+  margin-left: $left;
+}
+
+
+
+// Extends ///////////////
+%shadow {
+  text-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+}
+
+
+%no-ul-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  >li {
+    display: inline-block;
+    list-style-type: none;
+    margin: 0;
+  }
+}
+
+%container {
+  max-width: 84.375em;
+  margin: 0 auto;
+  position: relative;
+  @include padding($top: 0, $right: $lg, $bottom: 0, $left: $lg);
+  @include breakpoint(sm) {
+    padding: 0;
+  }
+}
+
+/*
+%shadow {
+  box-shadow: 0 0 2px 0 rgba($med-gray, 1);
+}
+
+%shadow-none {
+  box-shadow: none;
+}
+
+%blocked-style {
+  border: 1px solid $white;
+  padding: 12px;
+  border-radius: 5px;
+  background: $off-white;
+  @extend %shadow;
+}
+*/
+
+// Font Smoothing ///////////////
+%font-smoothing-on {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+%font-smoothing-off {
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
+}
+
+// Buttons
+
+
+%bttn {
+  display: inline-block;
+  position: relative;
+  margin-top: auto;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: $base-font-size;
+  font-weight: $font-weight-bold;
+  @include margin($top: auto);
+  @include padding($top: $md, $right: $xlg, $bottom: $md, $left: $xlg);
+    &:before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      width: 100%;
+      height: 4px;
+      background-color: $primary;
+      transform-origin: center;
+      transform: translate(-50%, 0) scaleX(0);
+      transition: transform 0.3s ease-in-out;
+    }
+    &:hover::before {
+      transform: translate(-50%, 0) scaleX(1);
+    }
+}
+
+
+%bttn--primary {
+  color: $secondary;
+  background: $primary;
+  &::before {
+    background-color: $white;
+  }
+}
+
+%bttn--secondary {
+  color: $primary;
+  background: $secondary;
+}
+
+%bttn--secondary__light {
+  color: $white;
+}
+
+%bttn--tertiary {
+  color: $secondary;
+  background: $white;
+}
+
+%bttn--full {
+  display: block;
+}
+
+%bttn--outline {
+  border: 2px solid $primary;
+  i {
+    color: $primary;
+    font-size: $h6-font-size;
+    @include padding($right: $sm);
+  }
+}

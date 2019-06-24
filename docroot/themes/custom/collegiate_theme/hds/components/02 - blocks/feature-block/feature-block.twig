@@ -1,0 +1,36 @@
+<div id="feature__container" class="feature__container">
+
+{% set counter = 0 %}
+
+{% for item in feature.items %}
+
+{% if counter == 0 %}
+    {% set openclass = 'feature is-open' %}
+{% else %}
+    {% set openclass = 'feature' %}
+{% endif %}
+
+<a href="{{ item.feature_link }}" tabindex="0" class="{{ openclass }}">
+    <div class="feature__wrapper" {% if item.feature_banner_image %} style="background-image: url('{% spaceless %}{{ item.feature_banner_image }}{% endspaceless %}'); background-size: cover; background-position: center" {% endif %}>
+
+        <div class="feature__content">
+            <div class="feature__bracket">
+                <h2 class="feature__heading">{{ item.feature_title }}</h2>
+                <hr class="feature__hr">
+                <p class="feature__subheading">{{ item.feature_sub }}</p>
+            </div>
+        </div>
+
+        <div class="feature__teaser">
+            <h3 class="feature__teaser-heading">{{ item.feature_title }}
+                <i aria-hidden="true" class="fas fa-plus"></i>
+            </h3>
+        </div>
+
+    </div>
+</a>
+
+{% set counter = counter + 1 %}
+{% endfor %}
+
+</div>

@@ -60,7 +60,7 @@ function browserSync() {
     // },
     notify: false,
     browser: "google chrome",
-    proxy: "http://basetheme.uiowa.local.site"
+    proxy: "http://clas.uiowa.local.site/"
   });
 }
 
@@ -76,7 +76,7 @@ function watchFiles() {
     .on('change', browserReload());
 }
 
-const watching = parallel(watchFiles, browserSync);
+const watching = parallel(copy, watchFiles, browserSync);
 
 //exports.js = js;
 exports.copy = copy;

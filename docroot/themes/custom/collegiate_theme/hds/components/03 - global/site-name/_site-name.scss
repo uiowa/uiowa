@@ -1,0 +1,41 @@
+.header__brand {
+   @include breakpoint(sm) {
+     @include flex($fg: 1, $fs: 1, $fb: 0);
+   }
+  @include margin($right: $lg);
+  @include padding($top: $md,$bottom: $md);
+  .site-header__left &,
+  .site-header__center & {
+    flex: unset;
+    @include padding($top: $md, $right: 0, $bottom: $md, $left: 0);
+  }
+  .site-header__center & {
+    text-align: center;
+  }
+}
+
+.header__slogan {
+  font-size: $h6-font-size;
+  .site-header--primary & {
+    color: $secondary;
+  }
+  .site-header--secondary & {
+    color: $white;
+  }
+}
+
+.header__logo-link {
+  @include padding($bottom: $md);
+  text-decoration: none;
+  color: $secondary;
+  font-size: $h4-font-size;
+  font-weight: $font-weight-bold;
+  .site-header--primary & {
+    color: $secondary;
+  }
+  .site-header--secondary & {
+    color: $white;
+  }
+}
+
+

@@ -1,0 +1,160 @@
+// Superfish overrides for Mega Menu
+@media only screen and (min-width: 992px) {
+  .has-mega {
+    ul.sf-submenu {
+      visibility: hidden !important;
+    }
+
+    /* hide arrow indicators */
+    span.sf-sub-indicator {
+      display: none;
+    }
+
+    ul.sf-hidden {
+      display: block !important;
+    }
+
+    ul.sf-menu {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+      -webkit-box-pack: start;
+      -ms-flex-pack: start;
+      justify-content: flex-start;
+    }
+
+    ul.sf-menu li {
+      float: none;
+      min-width: 250px;
+      width: auto;
+      flex-basis: 0;
+      flex-grow: 1;
+      float: none;
+      width: auto;
+    }
+
+    .sf-menu ul {
+      box-shadow: none !important;
+      min-width: 12em;
+    }
+
+
+    .block-superfish .sf-horizontal,
+    .region-primary-menu .sf-horizontal {
+      align-items: unset;
+    }
+
+    .navbar--main {
+      overflow: hidden;
+      max-height: 55px;
+      background: #000;
+      transition: max-height 0.3s;
+    }
+
+    .navbar--main.is-hover {
+      max-height: 600px;
+      overflow: visible;
+      background: #000;
+    }
+
+    .block-superfish .menu li a:hover ul li a {
+      background: #000 !important;
+      display: none;
+    }
+
+    .block-superfish .menu li {
+      flex-basis: 0;
+      flex-grow: 1;
+      float: none;
+      width: auto;
+    }
+
+    .block-superfish .menu li:hover {
+      background: #333 !important;
+    }
+
+    #superfish-main {
+
+      display: flex;
+
+    }
+
+    .sf-menu ul li {
+      background: none !important;
+    }
+
+    .sf-menu ul {
+      position: unset;
+    }
+
+    .block-superfish .sf-style-none ul li a,
+    .block-superfish .menu ul li a,
+    .region-primary-menu .sf-style-none ul li a,
+    .region-primary-menu .menu ul li a {
+      color: #fff;
+      background: none;
+      padding: .5rem 1.2rem !important;
+      font-weight: 300;
+    }
+
+    .block-superfish .sf-style-none li a li a,
+    .block-superfish .menu li a li a,
+    .region-primary-menu .sf-style-none li a li a,
+    .region-primary-menu .menu li a li a {
+      padding: 10px !important;
+    }
+
+    .site-header__center .navbar--main {
+      align-items: unset;
+      background: #000;
+    }
+
+    .site-header__left .sf-menu,
+    .site-header__center .sf-menu,
+    .site-header__left .region-primary-menu .menu,
+    .site-header__center .region-primary-menu .menu {
+      background: none;
+      width: 100%;
+    }
+
+    .block-superfish .sf-style-none li a,
+    .block-superfish .menu li a,
+    .region-primary-menu .sf-style-none li a,
+    .region-primary-menu .menu li a {
+      padding: 1.2rem;
+      padding-right: 1.2rem;
+      color: #fff;
+    }
+
+    .block-superfish .sf-style-none li a:hover,
+    .block-superfish .sf-style-none li a:focus,
+    .block-superfish .menu li a:hover,
+    .block-superfish .menu li a:focus,
+    .region-primary-menu .sf-style-none li a:hover,
+    .region-primary-menu .sf-style-none li a:focus,
+    .region-primary-menu .menu li a:hover,
+    .region-primary-menu .menu li a:focus {
+      box-shadow: none;
+      background: #666;
+    }
+
+    .block-superfish .sf-style-none ul,
+    .block-superfish .menu ul,
+    .region-primary-menu .sf-style-none ul,
+    .region-primary-menu .menu ul {
+      background-color: unset !important;
+      width: 100% !important;
+    }
+
+    .block-superfish .sf-style-none>li>a.sf-depth-1.menuparent:before,
+    .block-superfish .menu>li>a.sf-depth-1.menuparent:before,
+    .region-primary-menu .sf-style-none>li>a.sf-depth-1.menuparent:before,
+    .region-primary-menu .menu>li>a.sf-depth-1.menuparent:before {
+      content: unset;
+    }
+  }
+}
+
+

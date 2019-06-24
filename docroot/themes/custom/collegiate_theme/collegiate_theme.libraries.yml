@@ -7,16 +7,25 @@ global-styling:
     layout:
       assets/css/layouts/layout-main.css: {}
     component:
-      assets/css/components/branding/branding.css: {}
-      assets/css/components/breadcrumb/breadcrumb.css: {}
-      assets/css/components/buttons/buttons.css: {}
-      assets/css/components/form/form.css: {}
-      assets/css/components/header/header.css: {}
-      assets/css/components/superfish/superfish.css: {}
-      assets/css/components/messages/messages.css: {}
-      assets/css/components/table/table.css: {}
-      assets/css/components/tabs/tabs.css: {}
-      assets/css/components/uiowa-bar/uiowa-bar.css: {}
+      assets/css/components/elements/breadcrumbs/breadcrumbs.css: {}
+      assets/css/components/elements/blockquote/blockquote.css: {}
+      assets/css/components/elements/bold-headline/bold-headline.css: {}
+      assets/css/components/elements/buttons/buttons.css: {}
+      assets/css/components/elements/forms/forms.css: {}
+      assets/css/components/elements/headings/headings.css: {}
+      assets/css/components/elements/lists/lists.css: {}
+      assets/css/components/elements/messages/messages.css: {}
+      assets/css/components/elements/pagination/pagination.css: {}
+      assets/css/components/elements/paragraph/paragraph.css: {}
+      assets/css/components/elements/tables/tables.css: {}
+      assets/css/components/elements/table/table.css: {}
+      assets/css/components/elements/tabs/tabs.css: {}
+      assets/css/components/elements/video/video.css: {}
+      assets/css/components/global/branding/branding.css: {}
+      assets/css/components/global/header/header.css: {}
+      assets/css/components/global/menus/superfish/superfish.css: {}
+      assets/css/components/global/uiowa-bar/uiowa-bar.css: {}
+      assets/css/components/templates/page-layouts/page-layouts.css: {}
     theme:
       assets/css/theme/print.min.css: { media: print }
   dependencies:
@@ -25,12 +34,16 @@ global-styling:
 site-name:
   css:
     component:
-      assets/css/components/site-name/site-name.css: { preprocess: false }
+      assets/css/components/global/site-name/site-name.css: { preprocess: false }
 banner:
   css:
     component:
-      assets/css/components/banner/banner.css: { preprocess: false }
+      assets/css/components/blocks/banner/banner.css: { preprocess: false }
 main-menu:
   css:
     component:
-      assets/css/components/main-menu/main-menu.css: { preprocess: false }
+      assets/css/components/global/menus/main-menu/main-menu.css: { preprocess: false }
+mega-menu:
+  css:
+    component:
+      assets/css/components/global/menus/mega-menu/mega-menu.css: { preprocess: false }

@@ -1,0 +1,41 @@
+// duplicate styles from superfish.css
+
+.region-primary-menu {
+  .menu,
+  .menu * {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .menu li {
+    position: relative;
+  }
+  .menu li.menu-item:first-child a {
+    .site-header__left & {
+      padding-left: 0;
+    }
+  }
+  .menu ul {
+    position: absolute;
+    display: none;
+    top: 100%;
+    left: 0;
+    z-index: 99;
+  }
+  .menu>li {
+    float: left;
+  }
+  .menu li:hover>ul,
+  .sf-menu li.sfHover>ul {
+    display: block;
+  }
+  .menu a {
+    display: block;
+    position: relative;
+  }
+  .menu ul ul {
+    top: 0;
+    left: 100%;
+  }
+}
+

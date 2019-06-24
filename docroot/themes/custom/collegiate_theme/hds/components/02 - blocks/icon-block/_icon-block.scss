@@ -1,0 +1,56 @@
+.icon {
+  padding: $lg;
+  @include flex($fb: calc(100% - 50%));
+  @include breakpoint(sm) {
+    flex: 1;
+  }
+  &:nth-child(odd) {
+    @include flex($fg: 0, $fs: 0, $fb: 50%);
+    @include breakpoint(sm) {
+      flex: 1;
+    }
+  }
+
+
+  @include breakpoint(sm) {
+    border-right: 1px solid #ccc;
+    padding: $xlg;
+  }
+  a {
+    text-decoration: none;
+    &:hover .icon__img {
+      fill: $primary;
+    }
+  }
+  &:last-child {
+    border-right: none;
+  }
+  svg {
+    width: 100%;
+    height: auto;
+  }
+
+  &__container {
+    text-align: center;
+    flex-wrap: wrap;
+    @include flexbox;
+    @extend %no-ul-list;
+  }
+
+
+  &__wrapper {
+    background: $light;
+  }
+
+  &__img {
+    display: block;
+    fill: $secondary;
+  }
+
+  &__heading {
+    text-decoration: none;
+    color: $secondary;
+    font-size: $base-font-size;
+    @include margin($top: $md);
+  }
+}

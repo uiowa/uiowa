@@ -1,0 +1,48 @@
+{% if site_type == 'primary' %}
+
+    {% include '@uiowa-bar' with {
+    bg_color: 'uiowa-bar--primary',
+    site_type: 'uiowa-bar--standard'
+     } %}
+
+{% elseif site_type == 'secondary' %}
+
+    {% include '@uiowa-bar' with {
+    bg_color: 'uiowa-bar--secondary',
+    site_type: 'uiowa-bar--standard'
+     }
+     %}
+
+{% elseif site_type == 'tertiary' %}
+
+    {% include '@uiowa-bar' with {
+    bg_color: 'uiowa-bar--primary',
+    site_type: 'uiowa-bar--home'
+     }
+     %}
+
+{% endif %}
+
+<header class="header site-header {{ header_alignment }} {{ header_type }}">
+    <div class="header__container {{ header_color }}">
+
+        {% if site_type == 'primary' %}
+            {% include '@site-name' %}
+        {% elseif site_type == 'secondary' %}
+            {% include '@site-name' %}
+        {% elseif site_type == 'tertiary' %}
+        {% endif %}
+
+        <nav class="navbar navbar--main {{ nav_type }}">
+            <div id="nav" class="region-primary-menu">
+                {% if menu_type == 'superfish' %}
+                    {% include '@superfish' %}
+                {% elseif menu_type == 'main' %}
+                    {% include '@main-menu' %}
+                {% elseif menu_type == 'mega' %}
+                    {% include '@mega-menu' %}
+                {% endif %}
+            </div>
+        </nav>
+    </div>
+</header>

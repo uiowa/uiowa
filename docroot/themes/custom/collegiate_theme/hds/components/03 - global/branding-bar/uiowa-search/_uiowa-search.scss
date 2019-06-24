@@ -1,0 +1,125 @@
+.search-button {
+  position: absolute;
+  z-index: 200;
+  top: $xsm;
+  right: $sm;
+  .uiowa-bar--home & {
+    top: $md;
+     @include breakpoint(sm) {
+       top: 0;
+     }
+  }
+  display: block;
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  cursor: pointer;
+  transition: background .25s,border .25s,color .25s,transform .25s;
+  border: none;
+  border-radius: 50%;
+  background: $white;
+     @include breakpoint(sm) {
+        position: relative;
+        top: 0;
+        right: 0;
+     }
+  @include margin($left: $lg, $right: $sm);
+  .is-open & {
+    border: 1px solid $white;
+    background: $secondary;
+  }
+  &:before {
+    padding: $xsm;
+    content: "\f002";
+    color: $secondary;
+    font-size: $base-font-size;
+    @include fas();
+    .is-open & {
+      content: "\f00d";
+      color: $white;
+    }
+  }
+}
+
+.search-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: table;
+  visibility: hidden;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  transition: opacity .5s, visibility .5s;
+  text-align: center;
+  opacity: 0;
+  background-color: rgba(0, 0, 0, .85);
+  @include flexbox;
+  .is-open & {
+    z-index: 100;
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+.search-wrapper {
+  #search-form input[type="text"] {
+    width: 90%;
+    padding: $sm-md;
+    color: $grey;
+    outline: none;
+    font-size: $h5-font-size;
+  }
+
+  #search-form {
+    position: relative;
+    overflow: hidden;
+    height: 4em;
+    background-color: $white;
+  }
+
+  .centered {
+    display: inline-block;
+    width: 50%;
+    vertical-align: middle;
+    color: $white;
+    background: transparent;
+    @include padding($top: $sm, $right: $sm-md, $bottom: $sm, $left: $sm-md);
+  }
+
+  #search-text {
+    border-width: 0;
+    background: transparent;
+  }
+
+
+  #search-submit {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 65px;
+    cursor: pointer;
+    text-align: center;
+    color: $secondary;
+    border-width: 0;
+    background-color: $primary;
+    font-size: $base-font-size;
+    line-height: 1;
+  }
+}
+
+.search-overlay {
+  .tabs {
+    border: none;
+    background: transparent;
+  }
+  .tab > a[aria-selected=false] {
+    color: $white;
+    &:hover {
+      color: $secondary;
+    }
+  }
+
+}

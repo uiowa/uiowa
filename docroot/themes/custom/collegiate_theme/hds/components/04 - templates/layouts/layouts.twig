@@ -1,0 +1,150 @@
+{% if site_type == 'primary' %}
+
+    {% include '@uiowa-bar' with {
+    bg_color: 'uiowa-bar--primary',
+    site_type: 'uiowa-bar--standard'
+    }
+%}
+
+{% elseif site_type == 'secondary' %}
+
+    {% include '@uiowa-bar' with {
+    bg_color: 'uiowa-bar--secondary',
+    site_type: 'uiowa-bar--standard'
+    }
+%}
+
+{% elseif site_type == 'tertiary' %}
+
+    {% include '@uiowa-bar' with {
+    bg_color: 'uiowa-bar--primary',
+    site_type: 'uiowa-bar--home'
+    }
+%}
+
+{% endif %}
+
+<header class="header site-header {{ header_type }} {{ header_alignment }}">
+    <div class="header__container {{ header_color }}">
+
+        {% if site_type == 'primary' %}
+            {% include '@site-name' %}
+        {% elseif site_type == 'secondary' %}
+            {% include '@site-name' %}
+        {% elseif site_type == 'tertiary' %}
+        {% endif %}
+
+        <nav class="navbar navbar--main {{ nav_type }}">
+            <div id="nav" class="region-primary-menu">
+                {% if menu_type == 'superfish' %}
+                    {% include '@superfish' %}
+                {% elseif menu_type == 'main' %}
+                    {% include '@main-menu' %}
+                {% elseif menu_type == 'mega' %}
+                    {% include '@mega-menu' %}
+                {% endif %}
+            </div>
+        </nav>
+    </div>
+</header>
+
+
+
+{% include '@feature-block' with {
+    field_banner_image_1: '../../images/feature1.jpg',
+    field_banner_image_2: '../../images/feature2.jpg',
+    field_banner_image_3: '../../images/feature3.jpg'
+    }
+%}
+
+{% include '@icon-block' with {
+    icon_image_1: '../../images/stack-of-books.svg#icon',
+    icon_image_2: '../../images/scholarship.svg#icon',
+    icon_image_3: '../../images/map-pin.svg#icon',
+    icon_image_4: '../../images/paper.svg#icon'
+    }
+%}
+
+<hr class="spacing"/>
+
+{% include '@bold-headline' with {
+    bold_headline : 'Bold Hawkeye Headline Here'
+    }
+%}
+
+<div class="layout-container">
+
+    {% include '@stat-block' with {
+    stat_title_1: '24,000',
+    stat_summary_1: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    stat_image_1: '../../images/feature1.jpg',
+    stat_title_2: '25,000',
+    stat_summary_2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    stat_image_2: '../../images/feature2.jpg',
+    stat_title_3: '26,000',
+    stat_summary_3: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    stat_image_3: '../../images/feature3.jpg',
+    stat_title_4: '27,000',
+    stat_summary_4: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    stat_image_4: '../../images/feature1.jpg',
+    stat_items: '3'
+    }
+%}
+
+</div>
+
+<hr class="spacing"/>
+<hr class="spacing"/>
+
+{% include '@banner-block' with {
+    field_title: 'Bold Hawkeye Headline Here',
+    field_summary: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.',
+    field_link_url: 'https://example.com',
+    field_link_title: 'Call to Action',
+    field_banner_bg_image: '../../images/bg.jpg',
+    field_banner_image: '../../images/herky-01.png'
+    }
+%}
+
+<hr class="spacing"/>
+
+{% include '@bold-headline' with {
+    bold_headline : 'News and Features'
+    }
+%}
+
+<div class="layout-container">
+    {% include '@news-block--advanced' %}
+</div>
+
+<hr class="spacing"/>
+
+{% include '@portraits-block' %}
+
+<hr class="spacing"/>
+
+{% include '@bold-headline' with {
+    bold_headline : 'Rotating Highlight Area'
+    }
+%}
+
+<div class="layout-container">
+    {% include '@news-block' %}
+</div>
+
+<hr class="spacing"/>
+
+
+
+{% include '@footer' with {
+    footer_logo : '../../images/dome.png'
+} %}
+
+<style>
+    hr.spacing {
+        border: 0;
+        height: 1px;
+        background: transparent;
+        margin: 50px 0;
+    }
+</style>
