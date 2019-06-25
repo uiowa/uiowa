@@ -28,11 +28,11 @@
 
 {% block content %}
     {{ attach_library('collegiate_theme/banner') }}
-    {% include "@banner/banner.twig" with {
-        field_banner_image : file_url(content.field_banner_image['#items'].entity.uri.value),
-        field_title: content.field_title,
-        field_summary: content.field_summary,
-        field_link_url: content.field_link[0]['#url'],
-        field_link_title: content.field_link[0]['#title'],
+    {% include "@banner/banner-block.twig" with {
+        banner_bg_image : file_url(content.field_banner_image['#items'].entity.uri.value),
+        banner_title: content.field_title,
+        banner_summary: content.field_summary,
+        banner_link_url: content.field_link[0]['#url'],
+        banner_link_title: content.field_link[0]['#title'],
     } %}
 {% endblock %}

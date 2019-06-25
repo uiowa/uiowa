@@ -1,18 +1,17 @@
-<div class="banner" {% if field_banner_bg_image %}
-  style="background-image: url('{% spaceless %}{{ field_banner_bg_image }}{% endspaceless %}'); background-size: cover; background-position: center"
+<div class="banner" {% if banner_bg_image %}
+  style="background-image: url('{% spaceless %}{{ banner_bg_image }}{% endspaceless %}'); background-size: cover; background-position: center"
   {% endif %}>
-  <img class="banner__image" src="{{ field_banner_image }}" />
+  <img class="banner__image" src="{{ banner_image }}" />
   <div class="banner__container">
-    {% if field_title is not empty %}
-    <h3 class="banner__title">{{ field_title }}</h3>
+    {% if banner_title is not empty %}
+    <h3 class="banner__title">{{ banner_title }}</h3>
     {% endif %}
-    {% if field_summary is not empty %}
-    <p class="banner__summary">{{ field_summary }}</p>
+    {% if banner_summary is not empty %}
+    <p class="banner__summary">{{ banner_summary }}</p>
     {% endif %}
-    {% include '@button' with {
-      rendered_component: rendered_component
-      }
-    %}
+    {% if banner_link_url is not empty %}
+        <a href="{{ banner_link_url }}" class="bttn bttn--tertiary">{{ banner_link_title }}</a>
+    {% endif %}
   </div>
 </div>
 
