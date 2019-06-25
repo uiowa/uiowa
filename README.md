@@ -84,6 +84,8 @@ The `drupal:sync:all-sites` command will generate settings files only if they
 do not exist. If you want to re-generate all multisite local settings files,
 you can run `rm -f docroot/sites/*/settings/local.settings.php` beforehand.
 
+The `blt frontend` command will setup the theme and compile the theme's assets along with any other subthemes within the uiowa repo. Note `blt drupal:sync:all-sites` should complete this step. Check to make sure.
+
 Local configuration overrides can be set in the local.settings.php file for
 each multisite. For example, to configure stage file proxy:
 ```
