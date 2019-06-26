@@ -2,6 +2,11 @@
 
 .header__container {
   @extend %container;
+  &--full {
+ @include breakpoint(sm) {
+   @include flexbox;
+  }
+}
   @include breakpoint(sm) {
     @include flexbox;
     .site-header__left &,

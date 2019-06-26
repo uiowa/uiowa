@@ -42,16 +42,18 @@
  * @see html.html.twig
  */
 #}
-{%
-  set classes = [
-    'block',
-    'navbar',
-    'navbar--main',
-    'block-menu',
-    'navigation',
-    'menu--' ~ derivative_plugin_id|clean_class,
-  ]
-%}
+
+{% if collegiate_theme_container_settings == 'page__container' %}
+    {% set header_classes = ['header__container'] %}
+    {% set page_classes = ['page__container'] %}
+{% elseif collegiate_theme_container_settings == 'page__container--full' %}
+    {% set header_classes = ['header__container--full'] %}
+    {% set page_classes = ['page__container--full'] %}
+{% else %}
+    {% set header_classes = ['header__container--full'] %}
+    {% set page_classes = ['page__container'] %}
+{% endif %}
+
 
 {% if collegiate_theme_header_color_settings == 'site-header--secondary' %}
     {% set navbar_classes = ['navbar--secondary'] %}
@@ -60,7 +62,7 @@
 {% endif %}
 
 <header class="header site-header {{ collegiate_theme_header_color_settings }} {{ collegiate_theme_header_alignment_settings }}">
-  <div class="header__container">
+<div {{ attributes.addClass(header_classes) }}>
 
     {{ attach_library('collegiate_theme/site-name') }}
     {% include "@site-name/site-name.twig" with {
@@ -73,7 +75,7 @@
 
     {% set heading_id = attributes.id ~ '-menu'|clean_id %}
     <nav role="navigation" aria-labelledby="{{ heading_id }}"
-      {{ attributes.addClass(classes, navbar_classes)|without('role', 'aria-labelledby') }}>
+{{ attributes.addClass(navbar_classes, 'header__container', 'navbar--main', 'block-menu')|without('role', 'aria-labelledby') }}>
       {# Label. If not displayed, we still provide it for screen readers. #}
       {% if not configuration.label_display %}
       {% set title_attributes = title_attributes.addClass('visually-hidden') %}
@@ -85,16 +87,20 @@
         {{ page.primary_menu }}
     </nav>
   </div>
-  {# /.layout-container-flex#}
+  {# /.container#}
 </header>
 
-<div class="page__container">
+
+<div class="{{ collegiate_theme_container_settings }}">
 
   {{ page.secondary_menu }}
   {{ page.breadcrumb }}
   {{ page.highlighted }}
   {{ page.help }}
 
+</div>
+
+<div class="{% if not node.layout_builder__layout %}{{ collegiate_theme_container_settings }}{% endif %}">
   <main role="main">
     <a id="main-content" tabindex="-1"></a>
     {# link is in html.html.twig #}
@@ -117,10 +123,12 @@
     {% endif %}
 
   </main>
-
+  </div>
   {% if page.footer %}
   <footer role="contentinfo">
+  <div class="{{ collegiate_theme_container_settings }}">
     {{ page.footer }}
+    </div>
   </footer>
   {% endif %}
 

@@ -116,8 +116,7 @@
     li {
       li {
         a {
-          &:after,
-          &:focus {
+          &:after {
             height: 1px;
             .site-header--secondary &,
             .site-header--tertiary & {
@@ -150,8 +149,7 @@
         .navbar--primary & {
           color: $secondary;
         }
-        &:after,
-        &:focus {
+        &:after{
           position: absolute;
           bottom: 0;
           left: 0;
@@ -159,11 +157,9 @@
           height: 2px;
           content: "";
           transition: 300ms;
-
           .site-header--secondary &,
           .site-header--tertiary & {
             background: $primary;
-
           }
 
           .site-header--primary & {

@@ -44,4 +44,15 @@ function collegiate_theme_form_system_theme_settings_alter(&$form, FormStateInte
     ],
     '#default_value' => theme_get_setting('site-header--secondary'),
   ];
+  $form['collegiate_theme_settings']['collegiate_theme_container_settings'] = [
+    '#type' => 'select',
+    '#title' => t('Container Settings'),
+    '#description' => t('Select an option'),
+    '#options' => [
+      'page__container' => t('Container (default)'),
+      'page__container--full' => t('Full Width'),
+      'page__container--mixed' => t('Full Width (Header Only)'),
+    ],
+    '#default_value' => theme_get_setting('page__container'),
+  ];
 }
