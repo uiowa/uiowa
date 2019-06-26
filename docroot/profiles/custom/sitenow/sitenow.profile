@@ -585,30 +585,30 @@ function sitenow_page_attachments(array &$attachments) {
 }
 
 /**
- * Implements hook_toolbar()
+ * Implements hook_toolbar().
  */
 function sitenow_toolbar() {
 
   $url = Url::fromUri('https://docs.sitenow.uiowa.edu');
 
-  $items = array();
-  $items['support'] = array(
+  $items = [];
+  $items['support'] = [
     '#type' => 'toolbar_item',
-    'tab' => array(
+    'tab' => [
       '#type' => 'link',
       '#url' => $url,
       '#title' => 'SiteNow Help',
-      '#options' => array(
-        'attributes' => array(
-        'title' => t('Opens help documentation in a new window'),
-        'target' => '_blank'
-        ),
-      ),
-    ),
+      '#options' => [
+        'attributes' => [
+          'title' => t('Opens help documentation in a new window'),
+          'target' => '_blank',
+        ],
+      ],
+    ],
     // Devel is weighted 999. This can be altered later
     // if additional toolbar options are needed.
     '#weight' => 1100,
-  );
+  ];
 
   return $items;
 }
