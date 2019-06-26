@@ -9,11 +9,11 @@ folder: ../config/brand.uiowa.edu
 module:
   brand_core: 0
 theme: {  }
-blacklist:
+blacklist: {  }
+graylist:
   - config_split.config_split.brand
   - core.entity_form_display.node.lockup.default
   - core.entity_view_display.node.lockup.default
-  - core.entity_view_display.node.lockup.teaser
   - field.storage.node.field_lockup_org
   - field.storage.node.field_lockup_primary_unit
   - field.storage.node.field_lockup_sub_unit
@@ -26,7 +26,6 @@ blacklist:
   - workflows.workflow.lockup
   - 'core.base_field_override.node.lockup.*'
   - 'field.field.node.lockup.*'
-graylist: {  }
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 110
