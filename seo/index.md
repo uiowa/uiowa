@@ -14,9 +14,14 @@ You can override the defaults for each instance under the Advanced tab of the ed
 
 By default on the basic page content type, the "Content Description" field is used for the meta description value.
 
-## Sitemap
+## Sitemap (Work in Progress)
 
 Each site automatically generates a sitemap which can be found at /sitemap.xml
+
+When creating a site it is recommended to take the sitemap and create a Google search console property. Similar to how it was done with Drupal 7 sites.
+Instructions:
+https://support.google.com/webmasters/answer/34592?hl=en
+https://www.drupal.org/docs/7/modules/metatag/howto-verify-a-site-on-google-webmaster-tools-d7-d8
 
 ## Notifying Search Engines
 
