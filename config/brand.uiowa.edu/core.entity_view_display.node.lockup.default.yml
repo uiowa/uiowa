@@ -1,0 +1,49 @@
+uuid: 6e9fa4d5-ea3e-4f66-abf7-0b9c32a9c213
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.lockup.field_lockup_org
+    - field.field.node.lockup.field_lockup_primary_unit
+    - field.field.node.lockup.field_lockup_sub_unit
+    - node.type.lockup
+  module:
+    - user
+id: node.lockup.default
+targetEntityType: node
+bundle: lockup
+mode: default
+content:
+  content_moderation_control:
+    weight: -20
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_lockup_org:
+    weight: 102
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_lockup_primary_unit:
+    weight: 103
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_lockup_sub_unit:
+    weight: 104
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden: {  }
