@@ -8,3 +8,42 @@
  * This file is no longer required in Drupal 8.
  * @see https://www.drupal.org/node/2217931
  */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_alter().
+ */
+function brand_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    case 'node_lockup_edit_form':
+    case 'node_lockup_form':
+      $form['#attached']['library'][] = 'brand_core/lockup-preview';
+      $module_handler = Drupal::service('module_handler');
+      $form["#module_path"] = $module_handler->getModule('brand_core')->getPath();
+      break;
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_alter().
+ */
+function brand_core_theme_suggestions_alter(array &$suggestions, array $variables, $hook) {
+  if (isset($variables['form'])) {
+    if ($variables["form"]["#form_id"] == 'node_lockup_form' || $variables['form']['#form_id'] == 'node_lockup_edit_form') {
+      $suggestions[] = 'node_edit_form__lockup';
+    }
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function brand_core_theme($existing, $type, $theme, $path) {
+  return [
+    'node_edit_form__lockup' => [
+      'template' => 'node-edit-form--lockup',
+      'base hook' => 'form',
+    ],
+  ];
+}

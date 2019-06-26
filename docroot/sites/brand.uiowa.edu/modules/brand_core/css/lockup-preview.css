@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+#lockup-preview {
+  display: none;
+}
+#lockup-preview .block-iowa {
+  width: 200px;
+}
+.lockup-horizontal, .lockup-stacked {
+  margin-bottom: 2rem;
+}
+.lockup-stacked {
+  text-align: center;
+}
+.lockup-stacked .lockup-content {
+  display: table;
+  margin: 0 auto;
+  border-top: 3px solid;
+  min-width: 200px;
+}
+.lockup-horizontal {
+  display: flex;
+}
+.lockup-horizontal .lockup-content {
+  border-left: 3px solid;
+  min-height: 59px;
+  margin-left: 0.5rem;
+  padding-left: 0.5rem;
+  display: table;
+}
+.lockup-horizontal .lockup-content .lockup-content-inner {
+  display: table-cell;
+  vertical-align: middle;
+}
+.primary-unit, .sub-unit {
+  white-space: pre-wrap;
+  font-family: 'Roboto', sans-serif;
+}
+.primary-unit {
+  font-weight: 700;
+  font-size: 12pt;
+}
+.sub-unit {
+  font-size: 10pt;
+}
+.field--name-field-lockup-primary-unit textarea,
+.field--name-field-lockup-sub-unit textarea {
+  resize: none;
+}
