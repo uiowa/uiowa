@@ -4,6 +4,7 @@ namespace Example\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\YamlMunge;
+use Acquia\Blt\Robo\Common\YamlWriter;
 use Acquia\Blt\Robo\Exceptions\BltException;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
@@ -267,17 +268,14 @@ class MultisiteCommands extends BltTasks {
    *
    * @param array $url
    *   The local URL for the site.
-   * @param string $site_name
-   *   The machine name of the site.
    * @param array $newDBSettings
    *   An array of database configuration options or empty array.
    */
-  protected function configureDrupalVm($url, $site_name, $newDBSettings) {
-    $this->logger->warning("Automatically configuring your Drupal VM instance will remove formatting and comments from your config.yml file.");
+  protected function configureDrupalVm($url, $newDBSettings) {
     $configure_vm = $this->confirm("Would you like to generate new virtual host entry and database for this site inside Drupal VM?");
     if ($configure_vm) {
-      $this->projectDrupalVmConfigFile = $this->getConfigValue('vm.config');
-      $vm_config = Yaml::parse(file_get_contents($this->projectDrupalVmConfigFile));
+      $yamlWriter = new YamlWriter($this->getConfigValue('vm.config'));
+      $vm_config = $yamlWriter->getContents();
       $vm_config['apache_vhosts'][] = [
         'servername' => $url['host'],
         'documentroot' => $vm_config['apache_vhosts'][0]['documentroot'],
@@ -292,8 +290,8 @@ class MultisiteCommands extends BltTasks {
           'collation' => $vm_config['mysql_databases'][0]['collation'],
         ];
       }
-      file_put_contents($this->projectDrupalVmConfigFile,
-        Yaml::dump($vm_config, 4));
+
+      $yamlWriter->write($vm_config);
     }
   }
 
@@ -319,6 +317,7 @@ class MultisiteCommands extends BltTasks {
   }
 
   /**
+   * @param $default_site_dir
    * @return string
    */
   protected function createDefaultBltSiteYml($default_site_dir) {
@@ -352,6 +351,7 @@ class MultisiteCommands extends BltTasks {
    * @param $new_site_dir
    * @param $machine_name
    * @param $url
+   * @param $local_alias
    * @param $remote_alias
    * @param $database_name
    */
@@ -359,20 +359,18 @@ class MultisiteCommands extends BltTasks {
     $new_site_dir,
     $machine_name,
     $url,
+    $local_alias,
     $remote_alias,
     $database_name
   ) {
-
     $site_yml_filename = $new_site_dir . '/blt.yml';
-
     $site_yml['project']['machine_name'] = $machine_name;
     $site_yml['project']['human_name'] = $machine_name;
     $site_yml['project']['local']['protocol'] = $url['scheme'];
     $site_yml['project']['local']['hostname'] = $url['host'];
-    $site_yml['drupal']['db']['database'] = $database_name;
-    $site_yml['drush']['aliases']['local'] = 'self';
+    $site_yml['drush']['aliases']['local'] = $local_alias;
     $site_yml['drush']['aliases']['remote'] = $remote_alias;
-
+    $site_yml['drupal']['db']['database'] = $database_name;
     YamlMunge::mergeArrayIntoFile($site_yml, $site_yml_filename);
   }
 
@@ -386,6 +384,7 @@ class MultisiteCommands extends BltTasks {
     $result = $this->taskCopyDir([
       $default_site_dir => $new_site_dir,
     ])
+      ->exclude(['local.settings.php', 'files'])
       ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_VERBOSE)
       ->run();
     if (!$result->wasSuccessful()) {
@@ -410,8 +409,10 @@ class MultisiteCommands extends BltTasks {
   }
 
   protected function resetMultisiteConfig() {
-    $this->getConfig()->set('multisites', []);
-    $this->getConfig()->populateHelperConfig();
+    /** @var \Acquia\Blt\Robo\Config\DefaultConfig $config */
+    $config = $this->getConfig();
+    $config->set('multisites', []);
+    $config->populateHelperConfig();
   }
 
   /**
@@ -547,19 +548,21 @@ class MultisiteCommands extends BltTasks {
   }
 
   /**
+   * @param $site_name
    * @param $options
+   * @param $dest
    *
    * @return string
    */
-  protected function getNewSiteRemoteAlias($site_name, $options) {
-    if (empty($options['remote-alias'])) {
-      $default = $site_name . '.local';
-      $alias = $this->askDefault("Default remote drush alias", $default);
+  protected function getNewSiteAlias($site_name, $options, $dest) {
+    $option = $dest . '-alias';
+    if (!empty($options[$option])) {
+      return $options[$option];
     }
     else {
-      $alias = $options['remote-alias'];
+      $default = $site_name . '.' . $dest;
+      return $this->askDefault("Default $dest drush alias", $default);
     }
-    return $alias;
   }
 
   /**
@@ -569,15 +572,14 @@ class MultisiteCommands extends BltTasks {
     $aliases = [
       'local' => [
         'uri' => $machine_name,
+        'root' => '${env.cwd}/docroot',
       ],
     ];
 
     if ($this->getInspector()->isDrupalVmConfigPresent()) {
-      $this->defaultDrupalVmDrushAliasesFile = $this->getConfigValue('blt.root') . '/scripts/drupal-vm/drupal-vm.site.yml';
-      var_dump($this->defaultDrupalVmDrushAliasesFile, 'alias file path');
-      $new_aliases = Expander::parse(file_get_contents($this->defaultDrupalVmDrushAliasesFile), $this->getConfig()->export());
-      var_dump($new_aliases, 'new aliases');
-      $aliases = array_merge($new_aliases, $aliases);
+      $defaultDrupalVmDrushAliasesFile = $this->getConfigValue('blt.root') . '/scripts/drupal-vm/drupal-vm.site.yml';
+      var_dump($defaultDrupalVmDrushAliasesFile, 'alias file path');
+      $aliases = Expander::parse(file_get_contents($defaultDrupalVmDrushAliasesFile), $this->getConfig()->export());
       var_dump($aliases, 'aliases');
     }
 
