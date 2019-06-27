@@ -114,17 +114,19 @@ class MultisiteCommands extends BltTasks {
 
     $newDBSettings = $this->setLocalDbConfig($site_dir);
     if ($this->getInspector()->isDrupalVmConfigPresent()) {
-      $this->configureDrupalVm($url, $machine_name, $newDBSettings);
+      $this->configureDrupalVm($url, $newDBSettings);
     }
     $default_site_dir = $this->getConfigValue('docroot') . '/sites/default';
     $this->createDefaultBltSiteYml($default_site_dir);
 //    $this->createSiteDrushAlias('default');
     $this->createNewSiteDir($default_site_dir, $new_site_dir);
 
-    $remote_alias = $this->getNewSiteRemoteAlias($machine_name, $options);
-    $this->createNewBltSiteYml($new_site_dir, $machine_name, $url, $remote_alias, $newDBSettings['database']);
+    $remote_alias = $this->getNewSiteAlias($machine_name, $options, 'remote');
+    // Default local alias to self and don't prompt the user.
+    $local_alias = 'self';
+    $this->createNewBltSiteYml($new_site_dir, $machine_name, $url, $local_alias, $remote_alias, $newDBSettings['database']);
     $this->createNewSiteConfigDir($site_dir);
-    $this->createSiteDrushAlias($machine_name);
+    $this->createSiteDrushAlias($machine_name, $site_dir);
     $this->resetMultisiteConfig();
 
     $input->setOption('site-uri', $domain);
@@ -146,6 +148,12 @@ class MultisiteCommands extends BltTasks {
    * This will be called after the `uiowa:multisite` command is executed.
    *
    * @hook post-command uiowa:multisite
+   *
+   * @param $result
+   * @param \Consolidation\AnnotatedCommand\CommandData $commandData
+   *
+   * @throws \Acquia\Blt\Robo\Exceptions\BltException
+   * @throws \Robo\Exception\TaskException
    */
   public function postMultisite($result, CommandData $commandData) {
     if ($result instanceof CommandError) {
@@ -167,18 +175,9 @@ class MultisiteCommands extends BltTasks {
 
     $this->removeExtraFiles($site_dir);
 
-//    $this->regenerateDrushAliases($machine_name, $site_dir, $domains);
+    $this->regenerateDrushAliases($machine_name, $site_dir, $domains);
 
     $this->writeToSitesPhpFile($site_dir, $domains);
-
-    // Remove the new local settings file - it has the wrong database name.
-    $file = "{$this->getConfigValue('docroot')}/sites/{$site_dir}/settings/local.settings.php";
-
-    if (file_exists($file)) {
-      unlink($file);
-    }
-
-    $this->invokeCommand('blt:init:settings');
 
     // Site install locally so we can do some post-install tasks.
     // @see: https://www.drupal.org/project/drupal/issues/2982052
@@ -186,42 +185,47 @@ class MultisiteCommands extends BltTasks {
 
     // $uid = uniqid('admin_');
 
-    // @todo Move this to a method.
+    if ($this->confirm("Would you like to run site:install for $site_dir?")) {
 
-    if (!$install_profile) {
-      $install_profile = $this->askDefault('Install profile to install', DEFAULT_INSTALL_PROFILE);
+      // @todo Move this to a method.
+
+      if (!$install_profile) {
+        $install_profile = $this->askDefault('Install profile to install', DEFAULT_INSTALL_PROFILE);
+      }
+
+      // @todo Validate install profile exists.
+
+      $this->taskDrush()
+        ->drush('site:install')
+        ->interactive(TRUE)
+        ->arg($install_profile)
+        ->options([
+          'sites-subdir' => $site_dir,
+          //        'existing-config' => NULL,
+          //        'account-name' => $uid,
+          //        'account-mail' => base64_decode('aXRzLXdlYkB1aW93YS5lZHU='),
+        ])
+        ->run();
+
+      //    $this->taskDrush()
+      //      ->drush('user:role:add')
+      //      ->args([
+      //        'administrator',
+      //        $uid,
+      //      ])
+      //      ->run();
+
+      //    $this->taskDrush()
+      //      ->drush('config:set')
+      //      ->args([
+      //        'system.site',
+      //        'name',
+      //        $dir,
+      //      ])
+      //      ->run();
     }
 
-    // @todo Validate install profile exists.
 
-    $this->taskDrush()
-      ->drush('site:install')
-      ->interactive(TRUE)
-      ->arg($install_profile)
-      ->options([
-        'sites-subdir' => $site_dir,
-//        'existing-config' => NULL,
-//        'account-name' => $uid,
-        'account-mail' => base64_decode('aXRzLXdlYkB1aW93YS5lZHU='),
-      ])
-      ->run();
-
-//    $this->taskDrush()
-//      ->drush('user:role:add')
-//      ->args([
-//        'administrator',
-//        $uid,
-//      ])
-//      ->run();
-
-//    $this->taskDrush()
-//      ->drush('config:set')
-//      ->args([
-//        'system.site',
-//        'name',
-//        $dir,
-//      ])
-//      ->run();
 
 //    $branch = "initialize-{$dir}";
 
@@ -560,28 +564,29 @@ class MultisiteCommands extends BltTasks {
       return $options[$option];
     }
     else {
-      $default = $site_name . '.' . $dest;
+      // Local should be self.
+      if ($dest === 'local') {
+        $default = 'self';
+      } else {
+        $default = $site_name . '.' . $dest;
+      }
       return $this->askDefault("Default $dest drush alias", $default);
     }
   }
 
   /**
    * @param $machine_name
+   * @param $site_dir
    */
-  protected function createSiteDrushAlias($machine_name) {
-    $aliases = [
-      'local' => [
-        'uri' => $machine_name,
-        'root' => '${env.cwd}/docroot',
-      ],
-    ];
-
+  protected function createSiteDrushAlias($machine_name, $site_dir) {
     if ($this->getInspector()->isDrupalVmConfigPresent()) {
       $defaultDrupalVmDrushAliasesFile = $this->getConfigValue('blt.root') . '/scripts/drupal-vm/drupal-vm.site.yml';
-      var_dump($defaultDrupalVmDrushAliasesFile, 'alias file path');
       $aliases = Expander::parse(file_get_contents($defaultDrupalVmDrushAliasesFile), $this->getConfig()->export());
-      var_dump($aliases, 'aliases');
     }
+
+    $aliases['local']['uri'] = $site_dir;
+    $aliases['local']['root'] = '${env.cwd}/docroot';
+//    unset($aliases['local']['ssh']);
 
     $filename = $this->getConfigValue('drush.alias-dir') . "/$machine_name.site.yml";
     YamlMunge::mergeArrayIntoFile($aliases, $filename);

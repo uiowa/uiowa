@@ -56,24 +56,16 @@
  * @see https://www.drupal.org/documentation/install/multi-site
  */
 
-// Directory aliases for basetheme.uiowa.edu.
-$sites['basetheme.uiowa.local.site'] = 'basetheme';
-$sites['basetheme.uiowa.lndo.site'] = 'basetheme';
-$sites['basetheme-d8.dev.drupal.uiowa.edu'] = 'basetheme';
-$sites['basetheme.prod.drupal.uiowa.edu'] = 'basetheme';
-$sites['basetheme.uiowa.edu'] = 'basetheme';
-
-// Directory aliases for iowasuperfund.uiowa.edu.
-$sites['iowasuperfund.uiowa.local.site'] = 'iowasuperfund';
-$sites['iowasuperfund.uiowa.lndo.site'] = 'iowasuperfund';
-$sites['iowasuperfund-d8.dev.drupal.uiowa.edu'] = 'iowasuperfund';
-$sites['iowasuperfund.prod.drupal.uiowa.edu'] = 'iowasuperfund';
-$sites['iowasuperfund.uiowa.edu'] = 'iowasuperfund';
-
 // Directory aliases for clas.uiowa.edu.
 $sites['clas.uiowa.local.site'] = 'clas';
 $sites['clas.uiowa.lndo.site'] = 'clas';
 $sites['clas-d8.dev.drupal.uiowa.edu'] = 'clas';
 $sites['clas.prod.drupal.uiowa.edu'] = 'clas';
 $sites['clas.uiowa.edu'] = 'clas';
+
+// Directory aliases for grad.uiowa.edu.
+$sites['grad.uiowa.local.site'] = 'grad.uiowa.edu';
+$sites['grad.dev.drupal.uiowa.edu'] = 'grad.uiowa.edu';
+$sites['grad.stage.drupal.uiowa.edu'] = 'grad.uiowa.edu';
+$sites['grad.prod.drupal.uiowa.edu'] = 'grad.uiowa.edu';
 
