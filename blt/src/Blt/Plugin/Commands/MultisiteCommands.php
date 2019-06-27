@@ -14,6 +14,7 @@ use Symfony\Component\Yaml\Yaml;
 
 define('LOCAL_BASE_DOMAIN', 'local.site');
 define('UIOWA_BASE_DOMAIN', 'uiowa.edu');
+define('DEFAULT_INSTALL_PROFILE', 'collegiate');
 
 /**
  * Adds commands in the uiowa:* space.
@@ -57,6 +58,8 @@ class MultisiteCommands extends BltTasks {
    * @option string $site-uri
    * @option string $machine-name
    * @option string $remote-alias
+   * @option string $install-profile
+   * @option string $account-mail
    *
    * @aliases um uimultisite
    *
@@ -66,7 +69,6 @@ class MultisiteCommands extends BltTasks {
    */
   public function generate(InputInterface $input) {
 
-    $this->say('This is the replacement multisite command');
     $this->say("This will generate a new site in the docroot/sites directory.");
 
     $options = $input->getOptions();
@@ -115,7 +117,7 @@ class MultisiteCommands extends BltTasks {
     }
     $default_site_dir = $this->getConfigValue('docroot') . '/sites/default';
     $this->createDefaultBltSiteYml($default_site_dir);
-    $this->createSiteDrushAlias('default');
+//    $this->createSiteDrushAlias('default');
     $this->createNewSiteDir($default_site_dir, $new_site_dir);
 
     $remote_alias = $this->getNewSiteRemoteAlias($machine_name, $options);
@@ -153,6 +155,7 @@ class MultisiteCommands extends BltTasks {
     // $uri = $commandData->input()->getOption('site-uri');
     $site_dir = $commandData->input()->getOption('site-dir');
     $machine_name = $input->getOption('machine-name');
+    $install_profile = $input->getOption('install-profile');
 
     $domains = [
       'local' => "{$machine_name}.uiowa.local.site",
@@ -163,7 +166,7 @@ class MultisiteCommands extends BltTasks {
 
     $this->removeExtraFiles($site_dir);
 
-    $this->regenerateDrushAliases($machine_name, $site_dir, $domains);
+//    $this->regenerateDrushAliases($machine_name, $site_dir, $domains);
 
     $this->writeToSitesPhpFile($site_dir, $domains);
 
@@ -175,24 +178,33 @@ class MultisiteCommands extends BltTasks {
     }
 
     $this->invokeCommand('blt:init:settings');
-//
+
     // Site install locally so we can do some post-install tasks.
     // @see: https://www.drupal.org/project/drupal/issues/2982052
-//    $this->switchSiteContext($dir);
-//
-//    $uid = uniqid('admin_');
-//
-//    $this->taskDrush()
-//      ->drush('site:install')
-//      ->arg('sitenow')
-//      ->options([
-//        'sites-subdir' => $dir,
+    $this->switchSiteContext($site_dir);
+
+    // $uid = uniqid('admin_');
+
+    // @todo Move this to a method.
+
+    if (!$install_profile) {
+      $install_profile = $this->askDefault('Install profile to install', DEFAULT_INSTALL_PROFILE);
+    }
+
+    // @todo Validate install profile exists.
+
+    $this->taskDrush()
+      ->drush('site:install')
+      ->interactive(TRUE)
+      ->arg($install_profile)
+      ->options([
+        'sites-subdir' => $site_dir,
 //        'existing-config' => NULL,
 //        'account-name' => $uid,
-//        'account-mail' => base64_decode('aXRzLXdlYkB1aW93YS5lZHU='),
-//      ])
-//      ->run();
-//
+        'account-mail' => base64_decode('aXRzLXdlYkB1aW93YS5lZHU='),
+      ])
+      ->run();
+
 //    $this->taskDrush()
 //      ->drush('user:role:add')
 //      ->args([
@@ -200,7 +212,7 @@ class MultisiteCommands extends BltTasks {
 //        $uid,
 //      ])
 //      ->run();
-//
+
 //    $this->taskDrush()
 //      ->drush('config:set')
 //      ->args([
@@ -562,8 +574,11 @@ class MultisiteCommands extends BltTasks {
 
     if ($this->getInspector()->isDrupalVmConfigPresent()) {
       $this->defaultDrupalVmDrushAliasesFile = $this->getConfigValue('blt.root') . '/scripts/drupal-vm/drupal-vm.site.yml';
+      var_dump($this->defaultDrupalVmDrushAliasesFile, 'alias file path');
       $new_aliases = Expander::parse(file_get_contents($this->defaultDrupalVmDrushAliasesFile), $this->getConfig()->export());
+      var_dump($new_aliases, 'new aliases');
       $aliases = array_merge($new_aliases, $aliases);
+      var_dump($aliases, 'aliases');
     }
 
     $filename = $this->getConfigValue('drush.alias-dir') . "/$machine_name.site.yml";
