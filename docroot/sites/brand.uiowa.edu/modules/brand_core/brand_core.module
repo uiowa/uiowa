@@ -18,9 +18,21 @@ function brand_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
   switch ($form_id) {
     case 'node_lockup_edit_form':
     case 'node_lockup_form':
+      // Attach lockup preview libraries.
       $form['#attached']['library'][] = 'brand_core/lockup-preview';
+
+      // Pass relative module path for use in custom template.
       $module_handler = Drupal::service('module_handler');
       $form["#module_path"] = $module_handler->getModule('brand_core')->getPath();
+
+      // Alter form based on current moderation state.
+      switch ($form["moderation_state"]["widget"][0]["state"]["#default_value"]) {
+        case 'draft':
+          // Change submit button text.
+          $form['actions']['submit']['#value'] = t('Submit for approval');
+          break;
+      }
+
       break;
   }
 }
@@ -29,6 +41,7 @@ function brand_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
  * Implements hook_theme_suggestions_alter().
  */
 function brand_core_theme_suggestions_alter(array &$suggestions, array $variables, $hook) {
+  // Suggest a template with placeholder lockup preview markup.
   if (isset($variables['form'])) {
     if ($variables["form"]["#form_id"] == 'node_lockup_form' || $variables['form']['#form_id'] == 'node_lockup_edit_form') {
       $suggestions[] = 'node_edit_form__lockup';
