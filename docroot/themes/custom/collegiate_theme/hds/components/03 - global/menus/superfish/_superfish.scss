@@ -1,0 +1,345 @@
+.navbar--main {
+    @include breakpoint(sm) {
+      @include flexbox;
+      @include flex($fg: 1, $fs: 1, $fb: 0);
+    }
+
+  .site-header__left &,
+  .site-header__center & {
+    display: block;
+    flex: unset;
+  }
+
+  .site-header__center & {
+    @include breakpoint(sm) {
+      @include flexbox;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
+
+.site-header__left .navbar--secondary,
+.site-header__center .navbar--secondary {
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.site-header__left .navbar--primary,
+.site-header__center .navbar--primary {
+  border-top: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+
+.region-primary-menu {
+  @include breakpoint(sm) {
+    @include flexbox;
+    align-items: center;
+  }
+  @include margin($top: auto, $left: auto);
+  .site-header__left &,
+  .site-header__center & {
+    margin-left: unset;
+  }
+}
+
+.sf-menu,
+.region-primary-menu .menu {
+  float: none;
+  @extend %no-ul-list;
+  font-size: $base-font-size;
+  ul li {
+    font-size: $base-font-size;
+  }
+  .site-header__left &,
+  .site-header__center & {
+    width: 100%;
+  }
+  .site-header__left & {
+    padding: 0;
+  }
+}
+
+.block-superfish,
+.region-primary-menu {
+  @include breakpoint(sm) {
+    @include flexbox;
+    @include margin($left: auto);
+  }
+
+  .site-header__left &,
+  .site-header__center & {
+    display: block;
+    @include margin($left: unset);
+  }
+
+  .block__title {
+    @include element-invisible;
+  }
+}
+
+
+.block-superfish {
+  #superfish-main-toggle {
+    position: absolute;
+    top: 90px;
+    right: 0;
+    padding: $sm;
+    color: $grey;
+    &:before {
+      content: "\f0c9";
+      font-size: $h5-font-size;
+      @include fas();
+    }
+
+    &.sf-expanded {
+      &:before {
+        content: "\f00d";
+        font-size: $h5-font-size;
+        @include fas();
+      }
+    }
+
+    span {
+      @include element-invisible;
+    }
+  }
+}
+
+.block-superfish,
+.region-primary-menu {
+
+  // Shared styles
+  .sf-style-none,
+  .menu {
+    overflow: visible;
+    @include clearfix;
+    li {
+      li {
+        a {
+          &:after {
+            height: 1px;
+            .site-header--secondary &,
+            .site-header--tertiary & {
+              background: none;
+              //CSS dashed border using linear-gradient
+              background-image: linear-gradient(90deg, $primary, $primary 75%, transparent 75%, transparent 100%);
+              background-size: 10px 1px;
+            }
+            .site-header--primary & {
+              background: none;
+              //CSS dashed border using linear-gradient
+              background-image: linear-gradient(90deg, $secondary, $secondary 75%, transparent 75%, transparent 100%);
+              background-size: 10px 1px;
+            }
+          }
+        }
+      }
+
+      a {
+        position: relative;
+        padding: $md;
+        transition: background 0.8s ease-out;
+        text-decoration: none;
+        color: $secondary;
+        font-weight: $font-weight-medium-bold;
+        @extend %font-smoothing-on;
+        .navbar--secondary & {
+          color: $white;
+        }
+        .navbar--primary & {
+          color: $secondary;
+        }
+        &:after{
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 0%;
+          height: 2px;
+          content: "";
+          transition: 300ms;
+          .site-header--secondary &,
+          .site-header--tertiary & {
+            background: $primary;
+          }
+
+          .site-header--primary & {
+            background: $secondary;
+          }
+        }
+
+        &:hover:after,
+        &:focus:after {
+          width: 100%;
+        }
+      }
+
+      &.sf-depth-1 ul {
+        top: 100%;
+      }
+    }
+
+    .sf-sub-indicator {
+      display: none;
+    }
+
+    // Top level menu items.
+    a.sf-depth-1 {}
+
+    >li>a.sf-depth-1.menuparent {
+      position: relative;
+      @include padding($right: $xlg);
+      &:before {
+        position: absolute;
+        top: 50%;
+        right: $xsm;
+        margin-top: -0.4rem;
+        content: "\f078";
+        color: inherit;
+        font-size: $base-font-size;
+        @include fas();
+      }
+    }
+
+    // Dropdown items.
+    ul {
+      box-shadow: (0px 0px 3px rgba(0, 0, 0, 0.3));
+      @extend %font-smoothing-on;
+      li a {
+        color: $white;
+      }
+    }
+  }
+
+  // Horizontal styles.
+  .sf-horizontal {
+    @include flexbox;
+    align-items: center;
+    margin-top: auto;
+    .site-header__default & {
+      @include flexbox;
+      align-items: center;
+      margin-top: auto;
+    }
+
+    li:hover>ul,
+    li.sfHover>ul {
+      top: 0%;
+    }
+
+    li.sf-depth-1:hover>ul,
+    li.sf-depth-1.sfHover>ul {
+      top: 100%;
+    }
+
+    li.sf-depth-1.active-trail>a {
+
+    }
+
+    li:first-child a.sf-depth-1 {
+      .site-header__left & {
+        @include padding($left: 0);
+      }
+    }
+
+    a.sf-depth-1.menuparent {
+      &.active {
+        background: transparent;
+      }
+    }
+  }
+
+  .sf-with-ul {
+    @include flexbox;
+    align-items: center;
+    justify-content: space-between;
+    &:before {
+      order: 2;
+      content: $base-font-size;
+      @include fas();
+    }
+
+    &:only-child {
+      &:before {
+        content: '';
+      }
+    }
+  }
+
+  // Accordion styles.
+  .sf-accordion {
+    float: none !important;
+    width: auto !important;
+    margin-bottom: -2rem;
+    border-top: 1px solid $secondary;
+    li {
+      &.sf-clone-parent>a.sf-depth-1 {
+        background: inherit;
+        &:hover,
+        &:focus {
+          background-color: $white;
+          box-shadow: none;
+        }
+      }
+
+      a.sf-depth-1.menuparent:before {
+        color: $white;
+      }
+
+      a {
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+        &.sf-depth-1 {
+          color: $white;
+          background: $secondary;
+          @extend %font-smoothing-on;
+        }
+        &:hover,
+        &:focus {
+          background-color: $primary;
+          box-shadow: none;
+        }
+      }
+    }
+
+    .sf-with-ul {
+      @include flexbox;
+      align-items: center;
+      justify-content: space-between;
+      &:before {
+        position: absolute;
+        top: 50%;
+        right: $md;
+        order: 2;
+        margin-top: -0.7rem;
+        content: "\f0c9";
+        color: inherit;
+        font-size: $base-font-size;
+        @include fas();
+      }
+
+      &:only-child {
+        &:before {
+          content: '';
+        }
+      }
+    }
+  }
+
+  ul.sf-menu.menu.sf-accordion {}
+}
+
+
+
+.sf-menu ul li {
+  .site-header--secondary & {
+    background: $secondary !important;
+  }
+
+  .site-header--tertiary & {
+    background: $white !important;
+  }
+
+  .site-header--primary & {
+    background: $white !important;
+  }
+}

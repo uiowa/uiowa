@@ -1,0 +1,47 @@
+<div class="{{ bg_color}} {{ site_type }} uiowa-bar--wrapper" role="region" aria-label="University of Iowa global header">
+<div class="uiowa-bar__container">
+{% if bg_color == 'uiowa-bar--primary' %}
+
+{% include '@uiowa-logo' with {
+    logo_path_2 : '../../images/uiowa-secondary.svg#logo',
+    logo_color: 'logo-icon--primary'
+     } %}
+
+{% include '@uiowa-links' with {
+    bg_color: 'quick-links--primary'
+     } %}
+
+{% include '@uiowa-apply' with {
+    btn_color: 'bttn--primary'
+     } %}
+
+{% include '@uiowa-search' with {
+    title : 'Search this site',
+    search_color: 'search-popup--primary'
+     } %}
+
+{% elseif bg_color == 'uiowa-bar--secondary' %}
+
+{% include '@uiowa-logo' with {
+    logo_path_2 : '../../images/uiowa-secondary.svg#logo',
+    logo_color: 'logo-icon--secondary'
+     } %}
+
+{% include '@uiowa-links' with {
+    bg_color: 'quick-links--secondary'
+     } %}
+
+{% include '@uiowa-apply' with {
+    btn_color: 'bttn--secondary'
+     } %}
+
+{% include '@uiowa-search' with {
+    title : 'Search this site',
+    search_color: 'search-popup--secondary'
+     } %}
+
+{% endif %}
+
+</div>
+</div>
+

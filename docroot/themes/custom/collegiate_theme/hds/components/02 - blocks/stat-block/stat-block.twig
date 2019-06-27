@@ -1,0 +1,90 @@
+<div class="slick-container">
+
+    {% for item in stat.items %}
+        <div class="stat" {% if item.stat_image %} style="background-image: url('{% spaceless %}{{ item.stat_image }}{% endspaceless %}'); background-size: cover; background-position: center" {% endif %}>
+            <h2 class="stat__title">{{ item.stat_title }}</h2>
+            <p class="stat__description">{{ item.stat_summary }}</p>
+        </div>
+    {% endfor %}
+
+</div>
+
+{% if stat_items == '2' %}
+    <script>
+        $(document).ready(function () {
+            $('.slick-container').slick({
+                infinite: true,
+                slidesToShow: 2,
+                slidesToScroll: 1,
+                responsive: [
+                {
+                    breakpoint: 600,
+                    settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                    }
+                }
+                ]
+                });
+        });
+    </script>
+{% elseif stat_items == '3' %}
+    <script>
+        $(document).ready(function () {
+            $('.slick-container').slick({
+                infinite: false,
+                slidesToShow: 3,
+                slidesToScroll: 1,
+                responsive: [
+                {
+                    breakpoint: 600,
+                    settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                    }
+                }
+                ]
+                });
+        });
+    </script>
+{% elseif stat_items == '4' %}
+    <script>
+        $(document).ready(function () {
+            $('.slick-container').slick({
+                infinite: false,
+                slidesToShow: 4,
+                slidesToScroll: 1,
+                responsive: [
+                {
+                    breakpoint: 600,
+                    settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                    }
+                }
+                ]
+                });
+        });
+    </script>
+{% endif %}

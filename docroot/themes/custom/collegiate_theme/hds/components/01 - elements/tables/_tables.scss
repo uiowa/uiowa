@@ -1,0 +1,243 @@
+//// Table Elements
+
+ table {
+  width: 100%;
+  font-size: $content-font-size;
+}
+
+ table {
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+ table td,
+ table th {
+  padding: $sm;
+  vertical-align: top;
+  border: 1px solid $light;
+  border-width: 0 0 1px;
+}
+
+ table th {
+  color: $secondary;
+}
+
+ table th:not([align]) {
+  text-align: left;
+}
+
+ table thead td,
+ table thead th {
+  color: $grey;
+  border-width: 0 0 2px;
+}
+
+ table tfoot td,
+ table tfoot th {
+  color: $grey;
+  border-width: 2px 0 0;
+}
+
+ table tbody tr:last-child td,
+ table tbody tr:last-child th {
+  border-bottom-width: 0;
+}
+
+.table {
+  color: $secondary;
+  background-color: $white;
+}
+
+.table td,
+.table th {
+  vertical-align: top;
+  border: 1px solid $light;
+  border-width: 0 0 1px;
+  @include padding($top: $xsm, $right: $sm, $bottom: $xsm, $left: $sm);
+}
+
+.table td.is-white,
+.table th.is-white {
+  color: $secondary;
+  border-color: $white;
+  background-color: $white;
+}
+
+.table td.is-black,
+.table th.is-black {
+  color: $white;
+  border-color: $secondary;
+  background-color: $secondary;
+}
+
+.table td.is-light,
+.table th.is-light {
+  color: $grey;
+  border-color: $light;
+  background-color: $light;
+}
+
+.table td.is-dark,
+.table th.is-dark {
+  color: $light;
+  border-color: $grey;
+  background-color: $grey;
+}
+
+.table td.is-primary,
+.table th.is-primary {
+  color: $white;
+  border-color: $success;
+  background-color: $success;
+}
+
+.table td.is-link,
+.table th.is-link {
+  color: $white;
+  border-color: $link-color;
+  background-color: $link-color;
+}
+
+.table td.is-info,
+.table th.is-info {
+  color: $white;
+  border-color: $link-color;
+  background-color: $link-color;
+}
+
+.table td.is-success,
+.table th.is-success {
+  color: $white;
+  border-color: $success;
+  background-color: $success;
+}
+
+.table td.is-warning,
+.table th.is-warning {
+  color: rgba(0, 0, 0, 0.7);
+  border-color: $warning;
+  background-color: $warning;
+}
+
+.table td.is-danger,
+.table th.is-danger {
+  color: $white;
+  border-color: $danger;
+  background-color: $danger;
+}
+
+.table td.is-narrow,
+.table th.is-narrow {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.table td.is-selected,
+.table th.is-selected {
+  color: $white;
+  background-color: $success;
+}
+
+.table td.is-selected a,
+.table td.is-selected strong,
+.table th.is-selected a,
+.table th.is-selected strong {
+  color: currentColor;
+}
+
+.table th {
+  color: $secondary;
+}
+
+.table th:not([align]) {
+  text-align: left;
+}
+
+.table tr.is-selected {
+  color: $white;
+  background-color: $secondary;
+}
+
+.table tr.is-selected a,
+.table tr.is-selected strong {
+  color: currentColor;
+}
+
+.table tr.is-selected td,
+.table tr.is-selected th {
+  color: currentColor;
+  border-color: $white;
+}
+
+.table thead {
+  background-color: transparent;
+}
+
+.table thead td,
+.table thead th {
+  color: $grey;
+  border-width: 0 0 2px;
+}
+
+.table tfoot {
+  background-color: transparent;
+}
+
+.table tfoot td,
+.table tfoot th {
+  color: $grey;
+  border-width: 2px 0 0;
+}
+
+.table tbody {
+  background-color: transparent;
+}
+
+.table tbody tr:last-child td,
+.table tbody tr:last-child th {
+  border-bottom-width: 0;
+}
+
+.table.is-bordered td,
+.table.is-bordered th {
+  border-width: 1px;
+}
+
+.table.is-bordered tr:last-child td,
+.table.is-bordered tr:last-child th {
+  border-bottom-width: 1px;
+}
+
+.table.is-fullwidth {
+  width: 100%;
+}
+
+.table.is-hoverable tbody tr:not(.is-selected):hover {
+  background-color: $light;
+}
+
+.table.is-hoverable.is-striped tbody tr:not(.is-selected):hover {
+  background-color: $light;
+}
+
+.table.is-hoverable.is-striped tbody tr:not(.is-selected):hover:nth-child(even) {
+  background-color: $light;
+}
+
+.table.is-narrow td,
+.table.is-narrow th {
+  padding: 0.25em 0.5em;
+  @include padding($top: $xsm, $right: $sm, $bottom: $xsm, $left: $sm);
+}
+
+.table.is-striped tbody tr:not(.is-selected):nth-child(even) {
+  background-color: $light;
+}
+
+.table-container {
+  overflow: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+}
+

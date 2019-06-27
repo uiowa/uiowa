@@ -1,0 +1,206 @@
+<div class="hds-content">
+
+  <form>
+    <fieldset>
+      <legend>Fieldset</legend>
+      <div class="">
+        <div class="">
+          <label>Input Label</label>
+          <input type="text" placeholder="placeholder">
+        </div>
+      </div>
+      <div class="row">
+        <div class="">
+          <label>Input Label</label>
+          <input type="text" placeholder="placeholder">
+        </div>
+        <div class="">
+          <label>Input Label</label>
+          <input type="text" placeholder="placeholder">
+        </div>
+
+      </div>
+      <div class="">
+        <div class="">
+          <label>Textarea Label</label>
+          <textarea placeholder="placeholder"></textarea>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+  <form>
+    <label>Input Label
+      <input type="text" placeholder="placeholder"
+        aria-describedby="exampleHelpText">
+    </label>
+    <p class="help-text" id="exampleHelpText">Here's how you use this input
+      field!</p>
+    <label>
+      How many?
+      <input type="number" value="100">
+    </label>
+    <label>
+      What did do you think?
+      <textarea placeholder="None"></textarea>
+    </label>
+    <label>Select Menu
+      <select>
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+        <option value="D">D</option>
+      </select>
+    </label>
+    <div class="">
+      <fieldset class="">
+        <legend>Choose one</legend>
+        <input type="radio" name="n" value="Orange" id="formOrange"
+          required="required">
+        <label for="formOrange">Orange</label>
+        <input type="radio" name="n" value="Green" id="formGreen">
+        <label for="formGreem">Green</label>
+        <input type="radio" name="n" value="Blue" id="formBlue">
+        <label for="formBlue">Blue</label>
+      </fieldset>
+      <fieldset class="">
+        <legend>Check the boxes</legend>
+        <input id="formCheckbox1" type="checkbox">
+        <label for="formCheckbox1">Checkbox 1</label>
+        <input id="formCheckbox2" type="checkbox">
+        <label for="formCheckbox2">Checkbox 2</label>
+        <input id="formCheckbox3" type="checkbox">
+        <label for="formCheckbox3">Checkbox 3</label>
+      </fieldset>
+    </div>
+
+  </form>
+
+  <form class="contact-message-feedback-form contact-message-form contact-form"
+    data-user-info-from-browser=""
+    data-drupal-selector="contact-message-feedback-form" action="/contact"
+    method="post" id="contact-message-feedback-form" accept-charset="UTF-8"
+    data-drupal-form-fields="edit-name,edit-mail,edit-subject-0-value,edit-message-0-value,edit-submit,edit-preview">
+    <div
+      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-name form-item-name">
+      <label for="edit-name" class="js-form-required form-required">Your
+        name</label>
+      <input data-drupal-selector="edit-name" type="text" id="edit-name"
+        name="name" value="" size="60" maxlength="255"
+        class="form-text required" required="required" aria-required="true">
+
+    </div>
+    <input autocomplete="off"
+      data-drupal-selector="form-9vro7exz-jam4c6mtwaqbjdhevghyuqqprxse9upt7g"
+      type="hidden" name="form_build_id"
+      value="form-9vro7Exz-JAM4C6MtWAqBJdHEVGHyuQQpRXSE9UpT7g">
+    <input data-drupal-selector="edit-contact-message-feedback-form"
+      type="hidden" name="form_id" value="contact_message_feedback_form">
+    <div
+      class="js-form-item form-item js-form-type-email form-type-email js-form-item-mail form-item-mail">
+      <label for="edit-mail" class="js-form-required form-required">Your email
+        address</label>
+      <input data-drupal-selector="edit-mail" type="email" id="edit-mail"
+        name="mail" value="" size="60" maxlength="254"
+        class="form-email required" required="required" aria-required="true">
+
+    </div>
+    <div
+      class="field--type-string field--name-subject field--widget-string-textfield js-form-wrapper form-wrapper"
+      data-drupal-selector="edit-subject-wrapper" id="edit-subject-wrapper">
+      <div
+        class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-subject-0-value form-item-subject-0-value">
+        <label for="edit-subject-0-value"
+          class="js-form-required form-required">Subject</label>
+        <input class="js-text-full text-full form-text required"
+          data-drupal-selector="edit-subject-0-value" type="text"
+          id="edit-subject-0-value" name="subject[0][value]" value="" size="60"
+          maxlength="100" placeholder="" required="required"
+          aria-required="true">
+
+      </div>
+
+    </div>
+    <div
+      class="field--type-language field--name-langcode field--widget-language-select js-form-wrapper form-wrapper"
+      data-drupal-selector="edit-langcode-wrapper" id="edit-langcode-wrapper">
+    </div>
+    <div
+      class="field--type-string-long field--name-message field--widget-string-textarea js-form-wrapper form-wrapper"
+      data-drupal-selector="edit-message-wrapper" id="edit-message-wrapper">
+      <div
+        class="js-form-item form-item js-form-type-textarea form-type-textarea js-form-item-message-0-value form-item-message-0-value">
+        <label for="edit-message-0-value"
+          class="js-form-required form-required">Message</label>
+        <div class="form-textarea-wrapper">
+          <textarea
+            class="js-text-full text-full form-textarea required resize-vertical"
+            data-drupal-selector="edit-message-0-value"
+            id="edit-message-0-value" name="message[0][value]" rows="12"
+            cols="60" placeholder="" required="required"
+            aria-required="true"></textarea>
+        </div>
+
+      </div>
+
+    </div>
+    <div data-drupal-selector="edit-actions"
+      class="form-actions js-form-wrapper form-wrapper" id="edit-actions"><input
+        data-drupal-selector="edit-submit" type="submit" id="edit-submit"
+        name="op" value="Send message"
+        class="button button--primary js-form-submit form-submit">
+      <input data-drupal-selector="edit-preview" type="submit" id="edit-preview"
+        name="op" value="Preview" class="button js-form-submit form-submit">
+    </div>
+
+  </form>
+
+
+
+
+  <form class="user-login-form" data-drupal-selector="user-login-form"
+    action="/user/login" method="post" id="user-login-form"
+    accept-charset="UTF-8">
+    <div
+      class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-name form-item-name">
+      <label for="edit-name"
+        class="js-form-required form-required">Username</label>
+      <input autocorrect="none" autocapitalize="none" spellcheck="false"
+        autofocus="autofocus" data-drupal-selector="edit-name"
+        aria-describedby="edit-name--description" type="text" id="edit-name"
+        name="name" value="" size="60" maxlength="60" class="form-text required"
+        required="required" aria-required="true">
+
+      <div id="edit-name--description" class="description">
+        Enter your username.
+      </div>
+    </div>
+    <div
+      class="js-form-item form-item js-form-type-password form-type-password js-form-item-pass form-item-pass">
+      <label for="edit-pass"
+        class="js-form-required form-required">Password</label>
+      <input data-drupal-selector="edit-pass"
+        aria-describedby="edit-pass--description" type="password" id="edit-pass"
+        name="pass" size="60" maxlength="128" class="form-text required"
+        required="required" aria-required="true">
+
+      <div id="edit-pass--description" class="description">
+        Enter the password that accompanies your username.
+      </div>
+    </div>
+    <input autocomplete="off"
+      data-drupal-selector="form-svpbtk-zp8-ffcpxi9fj9q8k4ssw-819b0apjgelapi"
+      type="hidden" name="form_build_id"
+      value="form-svPbtk_Zp8-fFCpXi9FJ9q8K4sSw-819B0aPjGElaPI">
+    <input data-drupal-selector="edit-user-login-form" type="hidden"
+      name="form_id" value="user_login_form">
+    <div data-drupal-selector="edit-actions"
+      class="form-actions js-form-wrapper form-wrapper" id="edit-actions"><input
+        data-drupal-selector="edit-submit" type="submit" id="edit-submit"
+        name="op" value="Log in" class="button js-form-submit form-submit">
+    </div>
+
+  </form>
+
+</div>
+

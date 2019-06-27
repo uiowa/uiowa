@@ -1,0 +1,13 @@
+<div class="header__brand">
+    {% if site_logo %}
+        <a href="{{ site_front }}" title="{{ site_title }}" rel="home" class="site-logo">
+            <img src="{{ site_logo }}" alt="{{ site_title }}"/>
+        </a>
+    {% endif %}
+    {% if site_slogan %}
+        <div class="header__slogan">{{ site_slogan }}</div>
+    {% endif %}
+    {% if site_name %}
+        <a class="header__logo-link" href="{{ site_front }}" title="{{ site_title }}" rel="home">{{ site_name }}</a>
+    {% endif %}
+</div>

@@ -1,0 +1,84 @@
+.stat {
+  position: relative;
+  padding: 5rem;
+  text-align: center;
+  &:before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    content: "";
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+
+  &__title {
+    position: relative;
+    margin: 0;
+    text-transform: uppercase;
+    color: $white;
+    font-family: $font-family-caps-bold;
+    font-size: $h3-font-size;
+    &:after {
+      display: block;
+      width: 15%;
+      height: 4px;
+      margin: 0 auto;
+      content: "";
+      background-color: #ffcd00;
+    }
+  }
+
+  &__description {
+    position: relative;
+    color: #fff;
+    @include margin($top: $md);
+  }
+}
+
+// Slick overrides
+
+.slick-initialized .slick-track {
+  @include flexbox;
+  .slick-slide {
+    align-items: center; //optional
+    justify-content: center; //optional
+    height: auto;
+    @include flexbox;
+  }
+}
+
+.slick-track {
+  @include flexbox;
+}
+
+.slick-track .slick-slide {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: auto !important;
+  @include margin($right: $sm, $left: $sm);
+  div {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.slick-prev:before {
+  content: "\f053" !important;
+}
+
+.slick-next:before {
+  content: "\f054" !important;
+}
+
+.slick-next::before,
+.slick-prev::before {
+  opacity: .75;
+  color: #000 !important;
+  font-family: "Font Awesome 5 Free" !important;
+  font-size: $h6-font-size;
+  line-height: 1;
+  @include fas();
+}

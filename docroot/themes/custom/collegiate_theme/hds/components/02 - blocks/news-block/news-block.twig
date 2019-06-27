@@ -1,0 +1,19 @@
+<div class="card__wrapper">
+
+{% for item in news.items|slice(0, 2) %}
+<div class="card">
+    <img class="card__img" src="{{ item.card_image }}" alt="Card image cap">
+    <div class="card__body">
+        <h2 class="card__title">
+            <a href="{{ item.card_link_url }}">{{ item.card_title }}</a>
+        </h2>
+        <p class="card__text">{{ item.card_text }}</p>
+    </div>
+<a class="bttn bttn--primary bttn--full" href="{{ item.card_link_url }}">{{ item.card_link_title }}</a>
+</div>
+{% endfor %}
+
+</div>
+
+
+

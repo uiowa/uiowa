@@ -1,0 +1,167 @@
+.feature {
+  overflow: hidden;
+  transition: flex-basis 500ms ease-in-out;
+  color: $white;
+  @include flexbox;
+  @include breakpoint(sm) {
+    @include flex($fb: 10em);
+  }
+  @include flex-direction($value: column);
+
+  &__container {
+    @include breakpoint(sm) {
+      @include flexbox;
+    }
+  }
+
+  &__wrapper {
+    position: relative;
+
+    min-height: 540px;
+    &:after {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      content: "";
+      background: linear-gradient(transparent 1%, transparent 49%, rgba(0, 0, 0, .7));
+    }
+  }
+  a {
+    text-decoration: none;
+    color: $white;
+  }
+
+  &__content {
+    position: absolute;
+    bottom: 0;
+    transition: opacity .3s linear;
+    opacity: 0;
+    @include padding($top: $xlg, $right: $xlg, $bottom: $sm, $left: $xlg);
+  }
+
+  &__hr {
+    border: 0;
+    border-top: 1px solid #eee;
+    @include margin($top: $md, $bottom: $md);
+  }
+
+  &__bracket {
+    z-index: 1;
+    @include bracket();
+  }
+
+  &__heading {
+    white-space: nowrap;
+    margin: 0;
+    color: $white;
+    font-size: $h2-font-size;
+    line-height: 1;
+    @extend %shadow;
+  }
+
+  &__subheading {
+    white-space: nowrap;
+    margin: 0;
+    font-size: $base-font-size;
+    @extend %shadow;
+  }
+
+  &__teaser {
+    position: absolute;
+    z-index: 1;
+    bottom: 0;
+    width: 100%;
+    padding: $md;
+    transition: opacity .4s linear;
+    opacity: 1;
+    color: $white;
+    background: rgba(0, 0, 0, 0.75);
+    box-shadow: 0 5px 30px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  &__teaser-heading {
+    display: inline;
+    margin: 0;
+    color: $white;
+    font-size: $h6-font-size;
+    font-weight: $font-weight-medium-bold;
+    font-style: normal;
+    line-height: 1;
+    i {
+      padding-left: $sm;
+      &.fa-plus:before {
+        padding: $xsm;
+        color: $primary;
+        border: 1px solid $white;
+        border-radius: 50%;
+        font-size: $small-font-size;
+      }
+    }
+  }
+}
+
+
+.feature:hover .feature__content,
+.feature:focus .feature__content {
+  opacity: 1;
+}
+
+.feature.is-open .feature__content {
+  opacity: 1;
+}
+
+.feature.is-open .feature__teaser {
+  opacity: 0;
+}
+
+.feature:hover .feature__teaser,
+.feature:focus .feature__teaser {
+  opacity: 0;
+}
+
+.feature.is-open {
+  cursor: pointer;
+  @include breakpoint(sm) {
+    @include flex($fb: 20em);
+  }
+}
+
+.feature:hover,
+.feature:focus {
+  cursor: pointer;
+  @include breakpoint(sm) {
+    @include flex($fb: 20em);
+  }
+}
+
+/* Safari 11+ */
+
+@media not all and (min-resolution:.001dpcm) {
+  @supports (-webkit-appearance:none) and (stroke-color:transparent) {
+
+    .feature.is-open {
+      flex-basis: unset;
+      @include breakpoint(sm) {
+        width: 66.3%;
+      }
+    }
+
+    .feature {
+      flex: unset;
+      transition: width 500ms ease-in-out;
+      @include breakpoint(sm) {
+        width: 33.3%;
+      }
+    }
+
+    .feature:hover,
+    .feature:focus {
+      flex-basis: unset;
+      @include breakpoint(sm) {
+        width: 66.3%;
+      }
+    }
+  }
+}

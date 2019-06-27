@@ -1,0 +1,169 @@
+.quick-links {
+  position: relative;
+  z-index: 100;
+  display: block;
+  cursor: pointer;
+  transition: background .25s, border .25s, color .25s, transform .25s;
+  text-transform: uppercase;
+  border: none;
+  font-family: $font-family-sans-serif;
+  font-size: $base-font-size;
+  font-weight: $font-weight-bold;
+  @include margin($right: $sm);
+  @include padding($top: $xsm-sm, $right: $md, $bottom: $xsm-sm, $left: $md);
+  &:after {
+    padding: $xsm;
+    font-size: $base-font-size;
+    @include fas();
+  }
+  &:before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 100%;
+    height: 4px;
+    background-color: $white;
+    transform-origin: center;
+    transform: translate(-50%, 0) scaleX(0);
+    transition: transform 0.3s ease-in-out;
+  }
+  &:hover::before {
+    transform: translate(-50%, 0) scaleX(1);
+  }
+
+}
+
+
+
+
+.quick-links--primary {
+  .quick-links[aria-expanded="true"] {
+    transform: translateY(-14px) scale(1.00);
+    color: $primary;
+    border: 1px solid $dark-gray;
+    outline: none;
+    background: $dark-gray;
+    box-shadow: 3px 5px 10px 0 rgba(13, 23, 33, .2);
+    &:after {
+      content: "\f106";
+      color: $primary;
+    }
+  }
+  .quick-links[aria-expanded="false"] {
+    color: $secondary;
+    border: 1px solid $white;
+    background: $primary;
+    &:after {
+      content: "\f107";
+      color: $secondary;
+    }
+  }
+}
+
+
+
+  .quick-links--secondary {
+    .quick-links[aria-expanded="true"] {
+      transform: translateY(-14px) scale(1.00);
+      color: $light;
+      border: 1px solid $grey;
+      outline: none;
+      background: $grey;
+      box-shadow: 3px 5px 10px 0 rgba(13, 23, 33, .2);
+      &:after {
+        content: "\f106";
+        color: $white;
+      }
+    }
+
+    .quick-links[aria-expanded="false"] {
+      color: $primary;
+      border: 1px solid $white;
+      background: $secondary;
+      &:after {
+        content: "\f107";
+        color: $white;
+      }
+    }
+  }
+
+
+
+    .quick-nav {
+      display: none;
+      visibility: hidden;
+      transition: opacity .5s, visibility .5s;
+      opacity: 0;
+      border: none;
+      .quick-links--primary & {
+        background-color: $dark-gray;
+      }
+      .quick-links--secondary & {
+        background-color: $grey;
+      }
+      &.is-open {
+        position: absolute;
+        z-index: 100;
+        top: 42px;
+        left: 0;
+        display: block;
+        visibility: visible;
+        width: 20em;
+        transition: background .25s, border .25s, color .25s, transform .25s;
+        transform: translateY(-14px) scale(1.00);
+        opacity: 1;
+        box-shadow: 8px 27px 48px -44px rgba(0, 0, 0, 0.75);
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+      }
+      li {
+        position: relative;
+        list-style: none;
+        padding: $sm;
+        a {
+          padding: $sm;
+          text-decoration: none;
+          color: $white;
+          &:hover:after {
+            right: 0;
+            width: 100%;
+          }
+          &:after {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            display: block;
+            width: 0;
+            height: 1px;
+            content: "";
+            transition: right 0.3s ease 0s, width .3s ease 0s;
+            background: none repeat scroll 0 0 transparent;
+            .quick-links--primary & {
+              background: $primary;
+            }
+            .quick-links--secondary & {
+              background: $secondary;
+            }
+          }
+          .quick-links--primary & {
+            color: $white;
+          }
+          .quick-links--secondary & {
+            color: $light;
+          }
+        }
+      }
+    }
+
+    .quick-nav__wrapper {
+      position: relative;
+      display: none;
+      @include breakpoint(sm) {
+        @include margin($left: auto);
+         width: 180px;
+         display: block;
+      }
+    }

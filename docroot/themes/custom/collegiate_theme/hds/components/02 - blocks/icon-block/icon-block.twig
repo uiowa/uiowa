@@ -1,0 +1,18 @@
+<div class="icon__wrapper">
+
+    <ul class="icon__container">
+
+      {% for item in icons.items %}
+      <li class="icon">
+        <a href="{{ item.icon_link }}">
+          <svg class="icon__img" width="100%" height="100%" viewbox="0 0 611 195">
+            <use xlink:href="{{ item.icon_image }}"></use>
+          </svg>
+          <h2 class="icon__heading">{{ item.icon_title }}</h2>
+        </a>
+      </li>
+      {% endfor %}
+
+    </ul>
+
+</div>

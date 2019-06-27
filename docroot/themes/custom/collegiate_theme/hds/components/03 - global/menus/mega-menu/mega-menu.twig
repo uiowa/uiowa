@@ -1,0 +1,18 @@
+{% if menu_type == 'mega' %}
+    <header class="header site-header  site-header__center">
+        <div class="layout-container-flex">
+            <nav class="navbar navbar--main navbar--tertiary">
+                <div id="nav" class="region-primary-menu">
+                {% endif %}
+
+                {% include '@superfish' %}
+
+                {% if menu_type == 'mega' %}
+                </nav>
+            </div>
+        </div>
+    </header>
+{% endif %}
+
+<script type='text/javascript' src="../raw/mega-menu/modernizr-custom.js"></script>
+<script type='text/javascript' src="../raw/mega-menu/mega-menu.js"></script>

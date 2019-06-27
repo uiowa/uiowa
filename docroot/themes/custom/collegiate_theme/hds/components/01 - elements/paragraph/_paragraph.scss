@@ -1,0 +1,90 @@
+//// Typographic Elements
+
+/*
+ p:not(:last-child),
+ dl:not(:last-child),
+ ol:not(:last-child),
+ ul:not(:last-child),
+ blockquote:not(:last-child),
+ pre:not(:last-child),
+ table:not(:last-child) {
+  @include margin($bottom: $sm);
+}
+*/
+
+ p,
+ dl,
+ ol,
+ ul,
+ blockquote,
+ pre,
+ table {
+  font-weight: $font-weight-light;
+}
+
+ p {
+  line-height: 1.4;
+  font-size: $content-font-size;
+  @include margin($bottom: $md);
+}
+
+ a {
+  color: $link-color;
+}
+
+ figure {
+  text-align: center;
+  @include margin($left: $lg, $right: $lg);
+}
+
+ figure:not(:first-child) {
+  @include margin($top: $lg);
+}
+
+ figure:not(:last-child) {
+  @include margin($bottom: $lg);
+}
+
+ figure img {
+  display: inline-block;
+}
+
+ figure figcaption {
+  font-style: italic;
+}
+
+ pre {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: $md;
+  white-space: pre;
+  word-wrap: normal;
+}
+
+ sup,
+ sub {
+  font-size: 75%;
+}
+
+.is-small {
+  font-size: $small-font-size;
+}
+
+.is-medium {
+  font-size: $h6-font-size;
+}
+
+.is-large {
+  font-size: $h4-font-size;
+}
+
+.image {
+  position: relative;
+  display: block;
+}
+
+.image img {
+  display: block;
+  width: 100%;
+  height: auto;
+}

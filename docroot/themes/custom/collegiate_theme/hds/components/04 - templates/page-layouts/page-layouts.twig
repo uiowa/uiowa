@@ -1,0 +1,94 @@
+{% if site_type == 'primary' %}
+
+    {% include '@uiowa-bar' with {
+    bg_color: 'uiowa-bar--primary',
+    site_type: 'uiowa-bar--standard'
+    }
+%}
+
+{% elseif site_type == 'secondary' %}
+
+    {% include '@uiowa-bar' with {
+    bg_color: 'uiowa-bar--secondary',
+    site_type: 'uiowa-bar--standard'
+    }
+%}
+
+{% elseif site_type == 'tertiary' %}
+
+    {% include '@uiowa-bar' with {
+    bg_color: 'uiowa-bar--primary',
+    site_type: 'uiowa-bar--home'
+    }
+%}
+
+{% endif %}
+
+<header class="header site-header {{ header_type }} {{ header_alignment }}">
+    <div class="header__container {{ header_color }}">
+
+        {% if site_type == 'primary' %}
+            {% include '@site-name' %}
+        {% elseif site_type == 'secondary' %}
+            {% include '@site-name' %}
+        {% elseif site_type == 'tertiary' %}
+        {% endif %}
+
+        <nav class="navbar navbar--main {{ nav_type }}">
+            <div id="nav" class="region-primary-menu">
+                {% if menu_type == 'superfish' %}
+                    {% include '@superfish' %}
+                {% elseif menu_type == 'main' %}
+                    {% include '@main-menu' %}
+                {% elseif menu_type == 'mega' %}
+                    {% include '@mega-menu' %}
+                {% endif %}
+            </div>
+        </nav>
+    </div>
+</header>
+
+
+<main class="content page__container hds-content" role="main">
+
+{% include '@breadcrumbs' %}
+        <a id="main-content" tabindex="-1"></a>
+                    <article role="article" class="node node--type-page node--view-mode-full">
+<h1>Page Title</h1>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan, metus ultrices eleifend gravida, nulla nunc varius lectus, nec rutrum justo nibh eu lectus. Ut vulputate semper dui. Fusce erat odio, sollicitudin vel erat vel, interdum mattis neque.</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan, metus ultrices eleifend gravida, nulla nunc varius lectus, nec rutrum justo nibh eu lectus. Ut vulputate semper dui. Fusce erat odio, sollicitudin vel erat vel, interdum mattis neque.</p>
+
+<h2>Second Level</h2>
+
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan, metus ultrices eleifend gravida, nulla nunc varius lectus, nec rutrum justo nibh eu lectus. Ut vulputate semper dui. Fusce erat odio, sollicitudin vel erat vel, interdum mattis neque.</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan, metus ultrices eleifend gravida, nulla nunc varius lectus, nec rutrum justo nibh eu lectus. Ut vulputate semper dui. Fusce erat odio, sollicitudin vel erat vel, interdum mattis neque.</p>
+
+<h3>Third Level</h3>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan, metus ultrices eleifend gravida, nulla nunc varius lectus, nec rutrum justo nibh eu lectus. Ut vulputate semper dui. Fusce erat odio, sollicitudin vel erat vel, interdum mattis neque.</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan, metus ultrices eleifend gravida, nulla nunc varius lectus, nec rutrum justo nibh eu lectus. Ut vulputate semper dui. Fusce erat odio, sollicitudin vel erat vel, interdum mattis neque.</p>
+
+<h4>Fourth Level</h4>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan, metus ultrices eleifend gravida, nulla nunc varius lectus, nec rutrum justo nibh eu lectus. Ut vulputate semper dui. Fusce erat odio, sollicitudin vel erat vel, interdum mattis neque.</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan, metus ultrices eleifend gravida, nulla nunc varius lectus, nec rutrum justo nibh eu lectus. Ut vulputate semper dui. Fusce erat odio, sollicitudin vel erat vel, interdum mattis neque.</p>
+<h5>Fifth Level</h5>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan, metus ultrices eleifend gravida, nulla nunc varius lectus, nec rutrum justo nibh eu lectus. Ut vulputate semper dui. Fusce erat odio, sollicitudin vel erat vel, interdum mattis neque.</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan, metus ultrices eleifend gravida, nulla nunc varius lectus, nec rutrum justo nibh eu lectus. Ut vulputate semper dui. Fusce erat odio, sollicitudin vel erat vel, interdum mattis neque.</p>
+
+   </article>
+</main>
+
+
+<hr class="spacing"/>
+
+{% include '@footer' with {
+    footer_logo : '../../images/dome.png'
+} %}
+
+<style>
+    hr.spacing {
+        border: 0;
+        height: 1px;
+        background: transparent;
+        margin: 50px 0;
+    }
+</style>

@@ -1,0 +1,25 @@
+.uiowa-bar--wrapper {
+  /*
+  padding: 0;
+   @include breakpoint(sm) {
+     align-items: center;
+     @include flexbox;
+     //justify-content: space-between;
+   }
+   */
+  &.uiowa-bar--primary {
+    background-color: $primary;
+  }
+  &.uiowa-bar--secondary {
+    background-color: $secondary;
+  }
+}
+
+ .uiowa-bar__container {
+   @extend %container;
+   @include padding($top: $sm, $right: 0, $bottom: $sm, $left: 0);
+    @include breakpoint(sm) {
+      align-items: center;
+      @include flexbox;
+    }
+ }

@@ -1,0 +1,25 @@
+.menu--account {
+  .menu {
+    @include flexbox;
+    @include margin($top: $md, $left: 0, $bottom: $sm);
+    li {
+      @include flexbox;
+      a {
+        display: block;
+        text-decoration: none;
+        color: $med-gray;
+        border: 1px solid $grey-light;
+        border-right: none;
+        @include padding($top: $sm, $right: $md, $bottom: $sm, $left: $md);
+        &:hover {
+          background: $light;
+        }
+      }
+      &:last-child {
+        a {
+          border-right: 1px solid $grey-light;
+        }
+      }
+    }
+  }
+}

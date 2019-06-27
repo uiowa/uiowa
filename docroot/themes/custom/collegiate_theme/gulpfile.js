@@ -19,8 +19,9 @@ var paths = {
 };
 
 function copy() {
-  return src(['./node_modules/@bspeare/uds/**/*.scss', './node_modules/@bspeare/uds/**/*.twig'])
-      .pipe(dest('./uds/'));
+  return src(['./node_modules/@uiowa/hds/**/*.scss', './node_modules/@uiowa/hds/**/*.js', './node_modules/@uiowa/hds/**/*.twig'
+  ])
+    .pipe(dest('./hds/'));
 }
 
 // SCSS bundled into CSS task
@@ -59,7 +60,7 @@ function browserSync() {
     // },
     notify: false,
     browser: "google chrome",
-    proxy: "http://basetheme.uiowa.local.site"
+    proxy: "http://clas.uiowa.local.site/"
   });
 }
 
@@ -75,7 +76,7 @@ function watchFiles() {
     .on('change', browserReload());
 }
 
-const watching = parallel(watchFiles, browserSync);
+const watching = parallel(copy, watchFiles, browserSync);
 
 //exports.js = js;
 exports.copy = copy;
