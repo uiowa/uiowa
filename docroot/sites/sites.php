@@ -63,3 +63,9 @@ $sites['clas-d8.dev.drupal.uiowa.edu'] = 'clas';
 $sites['clas.prod.drupal.uiowa.edu'] = 'clas';
 $sites['clas.uiowa.edu'] = 'clas';
 
+// Directory aliases for grad.uiowa.edu.
+$sites['grad.uiowa.local.site'] = 'grad.uiowa.edu';
+$sites['grad.dev.drupal.uiowa.edu'] = 'grad.uiowa.edu';
+$sites['grad.stage.drupal.uiowa.edu'] = 'grad.uiowa.edu';
+$sites['grad.prod.drupal.uiowa.edu'] = 'grad.uiowa.edu';
+

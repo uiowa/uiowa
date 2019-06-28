@@ -230,7 +230,7 @@ class MultisiteCommands extends BltTasks {
 
 
 
-    $branch = "initialize-{$site_dir}";
+    $branch = "initialize-{$machine_name}";
 
     $this->taskGit()
       ->dir($this->getConfigValue("repo.root"))
