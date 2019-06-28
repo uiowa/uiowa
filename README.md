@@ -84,6 +84,8 @@ The `drupal:sync:all-sites` command will generate settings files only if they
 do not exist. If you want to re-generate all multisite local settings files,
 you can run `rm -f docroot/sites/*/settings/local.settings.php` beforehand.
 
+The `blt frontend` command will setup the theme and compile the theme's assets along with any other subthemes within the uiowa repo. Note `blt drupal:sync:all-sites` should complete this step. Check to make sure.
+
 Local configuration overrides can be set in the local.settings.php file for
 each multisite. For example, to configure stage file proxy:
 ```
@@ -91,14 +93,19 @@ $config['stage_file_proxy.settings']['origin'] = 'https://mysite.com';
 $config['stage_file_proxy.settings']['hotlink'] = TRUE;
 ```
 
-To create a new multisite, run the `blt recipes:multisite:init` command with
-the `--site-uri` option specified. Respond 'no' when prompted for database
-credentials. Review the code changes and commit to a feature branch. Run the
-Drush snippet given to install the site locally. When ready to deploy to Acquia
-Cloud, open a pull request for review. Create the database and domains in the 
-Acquia Cloud UI. Once merged and deployed, the database can be synced. 
-
-Example: `blt recipes:multisite:init --site-uri mysite.com`.
+## Provision a Drupal 8 Site
+Before you start, make sure you have an Acquia Cloud key and secret key saved in the `blt/local.blt.yml` file.
+```
+credentials:
+  acquia:
+    key: Put new key here
+    secret: Put new secret here
+```
+    
+To create a new multisite:
+1. Run the `blt recipes:multisite:init` (`rmi` for short) command with the `--site-uri` and `--no-interaction` options specified.
+2. Follow the directions the command prints to the terminal. 
+3. Email Hostmaster with CNAME request template in ITS-web@uiowa.edu -> Drafts -> Email Templates -> SiteNow Templates.
 
 ## XDebug
 

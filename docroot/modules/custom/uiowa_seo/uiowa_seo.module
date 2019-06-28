@@ -13,8 +13,8 @@ use Drupal\Core\Form\FormStateInterface;
 function uiowa_seo_form_google_analytics_admin_settings_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Restrict access to some Google Analytics form items for all roles
   // except administrator.
-  $user = \Drupal::currentUser()->getRoles();
-  if (!in_array("administrator", $user)) {
+  $roles = \Drupal::currentUser()->getRoles();
+  if (!in_array('administrator', $roles)) {
     $form['tracking']['#access'] = FALSE;
     $form['advanced']['#access'] = FALSE;
   }
@@ -34,8 +34,8 @@ function uiowa_seo_entity_type_alter(array &$entity_types) {
 function uiowa_seo_form_metatag_defaults_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Restrict access to most meta tag form items for all roles
   // except administrator.
-  $user = \Drupal::currentUser()->getRoles();
-  if (!in_array("administrator", $user)) {
+  $roles = \Drupal::currentUser()->getRoles();
+  if (!in_array('administrator', $roles)) {
     $form['basic']['#access'] = FALSE;
     $form['advanced']['#access'] = FALSE;
     $form['schema_article']['#access'] = FALSE;
