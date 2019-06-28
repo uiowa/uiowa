@@ -15,8 +15,8 @@ class CustomListBuilderHandler extends MetatagDefaultsListBuilder {
   public function load() {
     $entities = parent::load();
 
-    $user = \Drupal::currentUser()->getRoles();
-    if (!in_array('administrator', $user)) {
+    $roles = \Drupal::currentUser()->getRoles();
+    if (!in_array('administrator', $roles)) {
 
       // Return only the global entity.
       if (isset($entities['global'])) {
