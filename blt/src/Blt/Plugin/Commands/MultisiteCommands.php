@@ -6,6 +6,8 @@ use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\YamlMunge;
 use Acquia\Blt\Robo\Common\YamlWriter;
 use Acquia\Blt\Robo\Exceptions\BltException;
+use AcquiaCloudApi\CloudApi\Client;
+use AcquiaCloudApi\CloudApi\Connector;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
 use Grasmash\YamlExpander\Expander;
@@ -61,6 +63,7 @@ class MultisiteCommands extends BltTasks {
    * @option string $remote-alias
    * @option string $install-profile
    * @option string $account-mail
+   * @option string $dry-run
    *
    * @aliases um uimultisite
    *
@@ -207,64 +210,64 @@ class MultisiteCommands extends BltTasks {
         ])
         ->run();
 
-      //    $this->taskDrush()
-      //      ->drush('user:role:add')
-      //      ->args([
-      //        'administrator',
-      //        $uid,
-      //      ])
-      //      ->run();
+//          $this->taskDrush()
+//            ->drush('user:role:add')
+//            ->args([
+//              'administrator',
+//              $uid,
+//            ])
+//            ->run();
 
-      //    $this->taskDrush()
-      //      ->drush('config:set')
-      //      ->args([
-      //        'system.site',
-      //        'name',
-      //        $dir,
-      //      ])
-      //      ->run();
+          $this->taskDrush()
+            ->drush('config:set')
+            ->args([
+              'system.site',
+              'name',
+              $site_dir,
+            ])
+            ->run();
     }
 
 
 
-//    $branch = "initialize-{$dir}";
+    $branch = "initialize-{$site_dir}";
 
-//    $this->taskGit()
-//      ->dir($this->getConfigValue("repo.root"))
-//      ->exec("git checkout -b {$branch} master")
-//      ->add('docroot/sites/sites.php')
-//      ->commit("Add sites.php entries for {$dir}.")
-//      ->add("docroot/sites/{$dir}")
-//      ->commit("Initialize multisite {$dir} directory.")
-//      ->exec("git push -u origin {$branch}")
-//      ->interactive(FALSE)
+    $this->taskGit()
+      ->dir($this->getConfigValue("repo.root"))
+      ->exec("git checkout -b {$branch} master")
+      ->add('docroot/sites/sites.php')
+      ->commit("Add sites.php entries for {$site_dir}.")
+      ->add("docroot/sites/{$site_dir}")
+      ->commit("Initialize {$site_dir} site directory.")
+      ->exec("git push -u origin {$branch}")
+      ->interactive(FALSE)
 //      ->printOutput(FALSE)
 //      ->printMetadata(FALSE)
-//      ->run();
+      ->run();
 
 //    $connector = new Connector([
 //      'key' => $this->getConfigValue('credentials.acquia.key'),
 //      'secret' => $this->getConfigValue('credentials.acquia.secret'),
 //    ]);
-//
+
 //    $cloud = Client::factory($connector);
-//
+
 //    $application = $cloud->application($this->getConfigValue('cloud.appId'));
 //    $cloud->databaseCreate($application->uuid, $db);
 //    $this->say("Created <comment>{$db}</comment> database.");
 
-//    $this->yell("Follow these next steps!");
-//    $steps = [
-//      "Open a PR at https://github.com/uiowa/{$app}/compare/master...{$branch}.",
+    $this->yell("Follow these next steps:");
+    $steps = [
+      "Open a PR at https://github.com/uiowa/{$this->getConfig()->get('project.prefix')}/compare/master...{$branch}.",
 //      "Assuming tests pass, merge the PR to deploy to the dev environment.",
 //      "Sync local database and files to dev environment - remember to clear cache locally <comment>first</comment>!",
 //      "Re-deploy the master branch to the dev environment in the Cloud UI. This will run the cloud hooks successfully.",
 //      "Coordinate a new release to deploy to the test and prod environments.",
 //      "Sync the database and files to the test and prod environments.",
 //      "Add the multisite domains to environments as needed.",
-//    ];
+    ];
 //
-//    $this->io()->listing($steps);
+    $this->io()->listing($steps);
   }
 
   /**
