@@ -188,7 +188,7 @@ class MultisiteCommands extends BltTasks {
 
     // $uid = uniqid('admin_');
 
-    if ($this->confirm("Would you like to run site:install for $site_dir?")) {
+    if ($install_site = $this->confirm("Would you like to run site:install for $site_dir?")) {
 
       // @todo Move this to a method.
 
@@ -242,7 +242,7 @@ class MultisiteCommands extends BltTasks {
       ->exec("git push -u origin {$branch}")
       ->interactive(FALSE)
 //      ->printOutput(FALSE)
-//      ->printMetadata(FALSE)
+      ->printMetadata(FALSE)
       ->run();
 
 //    $connector = new Connector([
@@ -258,14 +258,17 @@ class MultisiteCommands extends BltTasks {
 
     $this->yell("Follow these next steps:");
     $steps = [
-      "Open a PR at https://github.com/uiowa/{$this->getConfig()->get('project.prefix')}/compare/master...{$branch}.",
-//      "Assuming tests pass, merge the PR to deploy to the dev environment.",
-//      "Sync local database and files to dev environment - remember to clear cache locally <comment>first</comment>!",
-//      "Re-deploy the master branch to the dev environment in the Cloud UI. This will run the cloud hooks successfully.",
-//      "Coordinate a new release to deploy to the test and prod environments.",
-//      "Sync the database and files to the test and prod environments.",
-//      "Add the multisite domains to environments as needed.",
+      0 => "Open a PR at https://github.com/uiowa/{$this->getConfig()->get('project.prefix')}/compare/master...{$branch}.",
+//      1 => "Assuming tests pass, merge the PR to deploy to the dev environment.",
+//      3 => "Re-deploy the master branch to the dev environment in the Cloud UI. This will run the cloud hooks successfully.",
+//      4 => "Coordinate a new release to deploy to the test and prod environments.",
+      6 => "Add the multisite domains to environments as needed.",
     ];
+
+    if ($install_site) {
+      $steps[2] = "Sync local database and files to dev environment - remember to clear cache locally <comment>first</comment>!";
+      $steps[5] = "Sync the database and files to the test and prod environments.";
+    }
 //
     $this->io()->listing($steps);
   }
