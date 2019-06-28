@@ -14,7 +14,7 @@ function uiowa_seo_form_google_analytics_admin_settings_alter(&$form, FormStateI
   // Restrict access to some Google Analytics form items for all roles
   // except administrator.
   $user = \Drupal::currentUser()->getRoles();
-  if (!in_array("administrator", $user)) {
+  if (!in_array('administrator', $user)) {
     $form['tracking']['#access'] = FALSE;
     $form['advanced']['#access'] = FALSE;
   }
@@ -35,7 +35,7 @@ function uiowa_seo_form_metatag_defaults_edit_form_alter(&$form, FormStateInterf
   // Restrict access to most meta tag form items for all roles
   // except administrator.
   $user = \Drupal::currentUser()->getRoles();
-  if (!in_array("administrator", $user)) {
+  if (!in_array('administrator', $user)) {
     $form['basic']['#access'] = FALSE;
     $form['advanced']['#access'] = FALSE;
     $form['schema_article']['#access'] = FALSE;
