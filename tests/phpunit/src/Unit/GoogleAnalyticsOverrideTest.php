@@ -11,7 +11,7 @@ use Drupal\uiowa_seo\ConfigOverrides\GoogleAnalyticsOverride;
  * We have to override the configuration like this instead of disabling the
  * Google Analytics module because it is listed in Config Ignore.
  *
- * @group uiowa_seo.
+ * @group unit
  */
 class GoogleAnalyticsOverrideTest extends UnitTestCase {
 
