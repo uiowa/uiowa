@@ -94,27 +94,18 @@ $config['stage_file_proxy.settings']['hotlink'] = TRUE;
 ```
 
 ## Provision a Drupal 8 Site
-Before you start, make sure you have an Acquia Cloud key and secret key saved in the local.blt.yml file.
-*Example:* /uiowa/blt/local.blt.yml
-The format for saving the key is as follows. Open the local.blt.yml file in a code editor and put in:
-"credentials:
+Before you start, make sure you have an Acquia Cloud key and secret key saved in the `blt/local.blt.yml` file.
+```
+credentials:
   acquia:
     key: Put new key here
-    secret: Put new secret here"
-    
+    secret: Put new secret here
+```
     
 To create a new multisite:
-1. Run the `blt recipes:multisite:init` command with the `--site-uri` and `--no-interaction` options specified.
-*Example: `blt recipes:multisite:init --site-uri mysite.com --no-interaction`
-2. When ready to deploy to Acquia Cloud, open a pull request for review. 
-3. Create the domains in the Acquia Cloud UI.
-4. Once merged and deployed, the database can be synced in the following order. Dev -> Stage/Test -> Prod. The Cloud UI should be used to sync the database initially. Make sure to clear the site's cache.
-
-*Note: Drush should not be used to sync the database initially because it will bootstrap the wrong site. Make sure the paths are correct.*
-
-*Example: "drush @uri.dev cr" --> "drush sql:sync @uri.local @uri.dev". If the sql:sync fails try, "drush -l uri.uiowa.edu rsync @self:%files @uri.dev:%files".*
-
-5. Email Hostmaster with CNAME request template in ITS-web@uiowa.edu -> Drafts -> Email Templates -> SiteNow Templates.
+1. Run the `blt recipes:multisite:init` (`rmi` for short) command with the `--site-uri` and `--no-interaction` options specified.
+2. Follow the directions the command prints to the terminal. 
+3. Email Hostmaster with CNAME request template in ITS-web@uiowa.edu -> Drafts -> Email Templates -> SiteNow Templates.
 
 ## XDebug
 
