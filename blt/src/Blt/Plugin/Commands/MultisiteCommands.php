@@ -234,15 +234,9 @@ class MultisiteCommands extends BltTasks {
 
     $this->taskGit()
       ->dir($this->getConfigValue("repo.root"))
-      ->exec("git checkout -b {$branch} master")
+      ->exec("git checkout -b {$branch}")
       ->add('docroot/sites/sites.php')
       ->commit("Add sites.php entries for {$site_dir}.")
-      ->interactive(FALSE)
-      ->run();
-
-    $this->taskGit()
-      ->dir($this->getConfigValue("repo.root"))
-      ->exec("git checkout {$branch}")
       ->add("docroot/sites/{$site_dir}")
       ->commit("Initialize {$site_dir} site directory.")
       ->exec("git push -u origin {$branch}")
