@@ -61,7 +61,7 @@ function sitenow_update_8003() {
  * Delete config_ignore key_value entry.
  */
 function sitenow_update_8004() {
-  $query = \Drupal::database()->delete('key_value')
+  \Drupal::database()->delete('key_value')
     ->condition('collection', 'system.schema')
     ->condition('name', 'config_ignore')
     ->execute();
