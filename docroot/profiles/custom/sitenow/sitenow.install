@@ -106,10 +106,5 @@ function sitenow_update_8009() {
   $schema = Drupal::keyValue('system.schema')->get('uiowa_seo');
   Drupal::keyValue('system.schema')->delete('uiowa_seo');
   Drupal::keyValue('system.schema')->set('sitenow_seo', $schema);
-
-  /** @var \Drupal\Core\Extension\ModuleInstaller $module_installer */
-  $module_installer = Drupal::service('module_installer');
-  $module_installer->uninstall(['uiowa_seo']);
-
   drupal_flush_all_caches();
 }
