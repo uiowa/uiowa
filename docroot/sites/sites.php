@@ -67,3 +67,8 @@ $sites['careers.prod.drupal.uiowa.edu'] = 'careers.uiowa.edu';
 $sites['veterans.dev.drupal.uiowa.edu'] = 'veterans.uiowa.edu';
 $sites['veterans.stage.drupal.uiowa.edu'] = 'veterans.uiowa.edu';
 $sites['veterans.prod.drupal.uiowa.edu'] = 'veterans.uiowa.edu';
+
+// Directory aliases for sitenow.uiowa.edu.
+$sites['sitenow.dev.drupal.uiowa.edu'] = 'sitenow.uiowa.edu';
+$sites['sitenow.stage.drupal.uiowa.edu'] = 'sitenow.uiowa.edu';
+$sites['sitenow.prod.drupal.uiowa.edu'] = 'sitenow.uiowa.edu';
