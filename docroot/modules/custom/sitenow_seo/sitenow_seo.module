@@ -10,7 +10,7 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function uiowa_seo_form_google_analytics_admin_settings_alter(&$form, FormStateInterface $form_state, $form_id) {
+function sitenow_seo_form_google_analytics_admin_settings_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Restrict access to some Google Analytics form items for all roles
   // except administrator.
   $roles = \Drupal::currentUser()->getRoles();
@@ -23,15 +23,15 @@ function uiowa_seo_form_google_analytics_admin_settings_alter(&$form, FormStateI
 /**
  * Implements hook_entity_type_alter().
  */
-function uiowa_seo_entity_type_alter(array &$entity_types) {
+function sitenow_seo_entity_type_alter(array &$entity_types) {
   // Add custom list builder handler to control output for non administrators.
-  $entity_types['metatag_defaults']->setHandlerClass('list_builder', '\Drupal\uiowa_seo\CustomListBuilderHandler\CustomListBuilderHandler');
+  $entity_types['metatag_defaults']->setHandlerClass('list_builder', '\Drupal\sitenow_seo\CustomListBuilderHandler\CustomListBuilderHandler');
 }
 
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function uiowa_seo_form_metatag_defaults_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function sitenow_seo_form_metatag_defaults_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Restrict access to most meta tag form items for all roles
   // except administrator.
   $roles = \Drupal::currentUser()->getRoles();

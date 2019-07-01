@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\uiowa_seo\CustomListBuilderHandler;
+namespace Drupal\sitenow_seo\CustomListBuilderHandler;
 
 use Drupal\metatag\MetatagDefaultsListBuilder;
 
