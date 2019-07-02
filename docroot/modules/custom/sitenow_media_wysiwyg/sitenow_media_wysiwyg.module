@@ -10,14 +10,14 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * Implements hook_preprocess_page().
  */
-function uiowa_media_wysiwyg_preprocess_page(&$variables) {
-  $variables['#attached']['library'][] = 'uiowa_media_wysiwyg/ckeditor_settings_overrides';
+function sitenow_media_wysiwyg_preprocess_page(&$variables) {
+  $variables['#attached']['library'][] = 'sitenow_media_wysiwyg/ckeditor_settings_overrides';
 }
 
 /**
  * Implements hook_form_FORMID_alter().
  */
-function uiowa_media_wysiwyg_form_entity_embed_dialog_alter(&$form, FormStateInterface $form_state, $form_id) {
+function sitenow_media_wysiwyg_form_entity_embed_dialog_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Hide the selected entities link.
   $form['entity']['#access'] = FALSE;
   // Get the user input.
@@ -48,7 +48,7 @@ function uiowa_media_wysiwyg_form_entity_embed_dialog_alter(&$form, FormStateInt
 /**
  * Implements hook_form_FORMID_alter().
  */
-function uiowa_media_wysiwyg_form_editor_link_dialog_alter(&$form, FormStateInterface $form_state, $form_id) {
+function sitenow_media_wysiwyg_form_editor_link_dialog_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['file_upload'] = [
     '#type' => 'details',
     '#title' => t('Upload a file'),
@@ -59,7 +59,7 @@ function uiowa_media_wysiwyg_form_editor_link_dialog_alter(&$form, FormStateInte
     '#entity_browser' => 'file_link_browser',
     '#cardinality' => '1',
   ];
-  $form['#attached']['library'][] = 'uiowa_media_wysiwyg/button_style';
+  $form['#attached']['library'][] = 'sitenow_media_wysiwyg/button_style';
   $form['attributes']['class']['#description'] = $form['attributes']['class']['#description'] . " Alternatively, add one or more of these predefined <em>button</em> styles: <small>
 <a href='#' data-btn-type='btn-primary' class='button-style'>Primary</a>, 
 <a href='#' data-btn-type='btn-secondary' class='button-style'>Secondary</a>,
@@ -75,7 +75,7 @@ function uiowa_media_wysiwyg_form_editor_link_dialog_alter(&$form, FormStateInte
 /**
  * Implements hook_inline_entity_form_entity_form_alter().
  */
-function uiowa_media_wysiwyg_inline_entity_form_entity_form_alter(&$entity_form, &$form_state) {
+function sitenow_media_wysiwyg_inline_entity_form_entity_form_alter(&$entity_form, &$form_state) {
   if ($entity_form["#entity_type"] == 'media' && $entity_form["#bundle"] == 'file') {
     if ($entity_form["#op"] == 'add') {
       $entity_form["revision_log_message"]["#access"] = FALSE;
@@ -86,6 +86,6 @@ function uiowa_media_wysiwyg_inline_entity_form_entity_form_alter(&$entity_form,
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function uiowa_media_wysiwyg_form_media_library_add_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $form['#attached']['library'][] = 'uiowa_media_wysiwyg/media_overrides';
+function sitenow_media_wysiwyg_form_media_library_add_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['#attached']['library'][] = 'sitenow_media_wysiwyg/media_overrides';
 }
