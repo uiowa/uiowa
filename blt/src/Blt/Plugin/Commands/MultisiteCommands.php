@@ -269,7 +269,7 @@ EOD;
    * @hook pre-command drupal:sync:all-sites
    */
   public function preSyncAllSites(CommandData $commandData) {
-    $this->unsetMultisiteRoute();
+    $this->killServer();
   }
 
   /**
@@ -278,16 +278,17 @@ EOD;
    * @hook pre-command drupal:sync
    */
   public function preSync(CommandData $commandData) {
-    $this->unsetMultisiteRoute();
+    $this->killServer();
   }
 
   /**
    * Overwrite the sites.php file with no routed multisite.
    */
-  protected function unsetMultisiteRoute() {
+  protected function killServer() {
     $root = $this->getConfigValue('repo.root');
     file_put_contents("{$root}/docroot/sites/sites.local.php", "<?php\n");
-    $this->yell('The sites.local.php file has been emptied. Restart Drush runserver after sync is complete.');
+    $this->getContainer()->get('executor')->killProcessByPort('8888');
+    $this->yell('The sites.local.php file has been emptied. Runserver has been stopped.');
   }
 
   /**
