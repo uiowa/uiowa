@@ -264,11 +264,27 @@ EOD;
   }
 
   /**
-   * Zero out the sites.local.php file as this seems to mess with BLT.
+   * Unset the routed multisite so Drush/BLT does not bootstrap it.
    *
    * @hook pre-command drupal:sync:all-sites
    */
+  public function preSyncAllSites(CommandData $commandData) {
+    $this->unsetMultisiteRoute();
+  }
+
+  /**
+   * Unset the routed multisite so Drush/BLT does not bootstrap it.
+   *
+   * @hook pre-command drupal:sync
+   */
   public function preSync(CommandData $commandData) {
+    $this->unsetMultisiteRoute();
+  }
+
+  /**
+   * Overwrite the sites.php file with no routed multisite.
+   */
+  protected function unsetMultisiteRoute() {
     $root = $this->getConfigValue('repo.root');
     file_put_contents("{$root}/docroot/sites/sites.local.php", "<?php\n");
     $this->yell('The sites.local.php file has been emptied. Restart Drush runserver after sync is complete.');
