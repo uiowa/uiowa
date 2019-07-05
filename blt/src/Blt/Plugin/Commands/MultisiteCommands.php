@@ -63,9 +63,9 @@ class MultisiteCommands extends BltTasks {
    * @option string $remote-alias
    * @option string $install-profile
    * @option string $account-mail
-   * @option string $dry-run
+   * @option string $pretend
    *
-   * @aliases um uimultisite
+   * @aliases uis uisite
    *
    * @param \Symfony\Component\Console\Input\InputInterface $input
    *
@@ -76,22 +76,6 @@ class MultisiteCommands extends BltTasks {
     $this->say("This will generate a new site in the docroot/sites directory.");
 
     $options = $input->getOptions();
-
-    /**
-     * [x] Input the domain as either example, example.uiowa.edu, or uiowaexample.com.
-     * [x] If the domain in the previous step is entered as example, it converts it to example.uiowa.edu.
-     * [x] Generate a site directory location using the above domain as the folder name.
-     * [x] Generate domains for local, dev, test, and prod environments.
-     * Validate each domain to ensure that it isn't duplicated within the application. Make appropriate adjustments if any domain already exists (grad1.uiowa.edu?).
-     * [x] Update sites.php
-     * Generate local database credentials
-     * [x] Generate correct docroot/sites/{site}/blt.yml
-     * Generate the local database if it doesn't already exist.
-     * Invoke blt setup --site=example.uiowa.edu to setup site.
-     * Create a Github repo.
-     * Create remote AC site instance.
-     * Create remote AC database instance.
-     */
 
     // 1. Get the production domain.
     $domain = $this->getNewSiteDomain($options);
@@ -106,7 +90,6 @@ class MultisiteCommands extends BltTasks {
     $new_site_dir = $this->getConfigValue('docroot') . '/sites/' . $site_dir;
     $this->say('>>> new site dir: ' . $new_site_dir);
 
-    // @todo Decide whether it is important to include this here, even though it is redundant.
     if (file_exists($new_site_dir)) {
       throw new BltException("Cannot generate new multisite, $new_site_dir already exists!");
     }
@@ -148,6 +131,25 @@ class MultisiteCommands extends BltTasks {
   }
 
   /**
+   * Removes a multisite from the application.
+   *
+   * @command uiowa:multisite:remove
+   *
+   * @option string $site-dir
+   *
+   * @aliases uir uiremove
+   *
+   * @param \Symfony\Component\Console\Input\InputInterface $input
+   */
+  public function remove(InputInterface $input) {
+    if ($this->confirm('Are you sure that you want to remove this site? This action cannot be undone.')) {
+      // Delete the config/{$site_dir} directory.
+      // Delete the docroot/sites/{$site_dir} directory.
+      // Remove the alias file
+    }
+  }
+
+  /**
    * This will be called after the `uiowa:multisite` command is executed.
    *
    * @hook post-command uiowa:multisite
@@ -164,10 +166,10 @@ class MultisiteCommands extends BltTasks {
     }
     $this->say('>>> Running post-command hook');
     $input = $commandData->input();
-    // $uri = $commandData->input()->getOption('site-uri');
-    $site_dir = $commandData->input()->getOption('site-dir');
+    $site_dir = $input->getOption('site-dir');
     $machine_name = $input->getOption('machine-name');
     $install_profile = $input->getOption('install-profile');
+    $options = $input->getOptions();
 
     $domains = [
       'local' => "{$machine_name}.uiowa.local.site",
@@ -180,55 +182,18 @@ class MultisiteCommands extends BltTasks {
 
     $this->regenerateDrushAliases($machine_name, $site_dir, $domains);
 
+    // @todo Validate domains, if possible.
     $this->writeToSitesPhpFile($site_dir, $domains);
 
     // Site install locally so we can do some post-install tasks.
     // @see: https://www.drupal.org/project/drupal/issues/2982052
     $this->switchSiteContext($site_dir);
 
+    $db = $this->getConfigValue('drupal.db');
+
     // $uid = uniqid('admin_');
 
-    if ($install_site = $this->confirm("Would you like to run site:install for $site_dir?")) {
-
-      // @todo Move this to a method.
-
-      if (!$install_profile) {
-        $install_profile = $this->askDefault('Install profile to install', DEFAULT_INSTALL_PROFILE);
-      }
-
-      // @todo Validate install profile exists.
-
-      $this->taskDrush()
-        ->drush('site:install')
-        ->interactive(TRUE)
-        ->arg($install_profile)
-        ->options([
-          'sites-subdir' => $site_dir,
-          //        'existing-config' => NULL,
-          //        'account-name' => $uid,
-          //        'account-mail' => base64_decode('aXRzLXdlYkB1aW93YS5lZHU='),
-        ])
-        ->run();
-
-//          $this->taskDrush()
-//            ->drush('user:role:add')
-//            ->args([
-//              'administrator',
-//              $uid,
-//            ])
-//            ->run();
-
-          $this->taskDrush()
-            ->drush('config:set')
-            ->args([
-              'system.site',
-              'name',
-              $site_dir,
-            ])
-            ->run();
-    }
-
-
+    $install = $this->installSite($site_dir, $install_profile, $options + ['account-name' => 'admin']);
 
     $branch = "initialize-{$machine_name}";
 
@@ -241,35 +206,37 @@ class MultisiteCommands extends BltTasks {
       ->commit("Initialize {$site_dir} site directory.")
       ->exec("git push -u origin {$branch}")
       ->interactive(FALSE)
-//      ->printOutput(FALSE)
+      ->printOutput(FALSE)
       ->printMetadata(FALSE)
       ->run();
 
-//    $connector = new Connector([
-//      'key' => $this->getConfigValue('credentials.acquia.key'),
-//      'secret' => $this->getConfigValue('credentials.acquia.secret'),
-//    ]);
+    $connector = new Connector([
+      'key' => $this->getConfigValue('credentials.acquia.key'),
+      'secret' => $this->getConfigValue('credentials.acquia.secret'),
+    ]);
 
-//    $cloud = Client::factory($connector);
+    $cloud = Client::factory($connector);
 
-//    $application = $cloud->application($this->getConfigValue('cloud.appId'));
-//    $cloud->databaseCreate($application->uuid, $db);
-//    $this->say("Created <comment>{$db}</comment> database.");
+    $application = $cloud->application($this->getConfigValue('cloud.appId'));
+    $cloud->databaseCreate($application->uuid, $db['database']);
+    $this->say("Created <comment>{$db['database']}</comment> database.");
 
     $this->yell("Follow these next steps:");
     $steps = [
       0 => "Open a PR at https://github.com/uiowa/{$this->getConfig()->get('project.prefix')}/compare/master...{$branch}.",
-//      1 => "Assuming tests pass, merge the PR to deploy to the dev environment.",
+      1 => "Assuming tests pass, merge the PR to deploy to the dev environment.",
 //      3 => "Re-deploy the master branch to the dev environment in the Cloud UI. This will run the cloud hooks successfully.",
 //      4 => "Coordinate a new release to deploy to the test and prod environments.",
       6 => "Add the multisite domains to environments as needed.",
     ];
 
-    if ($install_site) {
+    if ($install) {
       $steps[2] = "Sync local database and files to dev environment - remember to clear cache locally <comment>first</comment>!";
       $steps[5] = "Sync the database and files to the test and prod environments.";
     }
-//
+
+    ksort($steps);
+
     $this->io()->listing($steps);
   }
 
@@ -613,18 +580,33 @@ class MultisiteCommands extends BltTasks {
    */
   protected function writeToSitesPhpFile($dir, $domains) {
 
-    $data = "// Directory aliases for {$dir}.\n";
+    require_once($this->getConfigValue('docroot') . '/sites/sites.php');
+    $data = '';
+    $added = [];
 
     foreach ($domains as $domain) {
-      $data .= <<<EOD
+
+      // Check if domain is already in docroot/sites/sites.php.
+      if (isset($sites) && isset($sites[$domain])) {
+        $this->say("The domain <comment>$domain</comment> already exists in the sites.php file.");
+      }
+      else {
+        $data .= <<<EOD
 \$sites['{$domain}'] = '{$dir}';
 
 EOD;
+        $added[] = $domain;
+      }
     }
-    $data .= "\n";
 
-    file_put_contents($this->getConfigValue('docroot') . '/sites/sites.php', $data, FILE_APPEND);
-    $this->say('Added default <comment>sites.php</comment> entries.');
+    if ($data !== '') {
+      $data = "// Directory aliases for {$dir}.\n$data\n";
+      file_put_contents($this->getConfigValue('docroot') . '/sites/sites.php', $data, FILE_APPEND);
+      $this->say('Added the following domains to <comment>sites.php</comment>:');
+      $this->io()->listing($added);
+    }
+
+
   }
 
   /**
@@ -662,7 +644,6 @@ EOD;
     $files = [
       "{$this->getConfigValue('docroot')}/sites/{$site_dir}/default.services.yml",
       "{$this->getConfigValue('docroot')}/sites/{$site_dir}/services.yml",
-//      "{$this->getConfigValue('drush.alias-dir')}/{$dir}.site.yml",
     ];
 
     foreach ($files as $file) {
@@ -671,6 +652,58 @@ EOD;
         $this->logger->debug("Deleted {$file}.");
       }
     }
+  }
+
+  protected function installSite($site_dir, $install_profile, array $options) {
+    if ($install_site = $this->confirm("Would you like to run site:install for $site_dir?")) {
+
+      $options_map = [
+        'sites-subdir' => 'site-dir',
+        'account-name' => 'account-name',
+        'account-mail' => 'account-mail',
+      ];
+
+      foreach ($options_map as $opt => $map) {
+        if (isset($options[$map])) {
+          $options_map[$opt] = $options[$map];
+        }
+        else {
+          unset($options_map[$opt]);
+        }
+      }
+
+      if (!$install_profile) {
+        $install_profile = $this->askDefault('Install profile to install', DEFAULT_INSTALL_PROFILE);
+      }
+
+      // @todo Validate install profile exists.
+
+      $this->taskDrush()
+        ->drush('site:install')
+        ->interactive(TRUE)
+        ->arg($install_profile)
+        ->options($options_map)
+        ->run();
+
+      //          $this->taskDrush()
+      //            ->drush('user:role:add')
+      //            ->args([
+      //              'administrator',
+      //              $uid,
+      //            ])
+      //            ->run();
+
+      $this->taskDrush()
+        ->drush('config:set')
+        ->args([
+          'system.site',
+          'name',
+          $site_dir,
+        ])
+        ->run();
+    }
+
+    return $install_site;
   }
 
 }
