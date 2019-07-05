@@ -104,7 +104,7 @@ class MultisiteCommands extends BltTasks {
     }
     $default_site_dir = $this->getConfigValue('docroot') . '/sites/default';
     $this->createDefaultBltSiteYml($default_site_dir);
-//    $this->createSiteDrushAlias('default');
+    // $this->createSiteDrushAlias('default');
     $this->createNewSiteDir($default_site_dir, $new_site_dir);
 
     $remote_alias = $this->getNewSiteAlias($machine_name, $options, 'remote');
@@ -190,8 +190,6 @@ class MultisiteCommands extends BltTasks {
     $this->switchSiteContext($site_dir);
 
     $db = $this->getConfigValue('drupal.db');
-
-    // $uid = uniqid('admin_');
 
     $install = $this->installSite($site_dir, $install_profile, $options + ['account-name' => 'admin']);
 
