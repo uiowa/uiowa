@@ -11,12 +11,12 @@
  * @param array &$variables
  *   Array reference of arguments given to the theme() function.
  */
-function template_preprocess_uiowa_events_single_event(array &$variables) {
+function template_preprocess_sitenow_events_single_event(array &$variables) {
   // Add single-event css/js.
-  $variables['#attached']['library'][] = 'uiowa_events/single-event';
+  $variables['#attached']['library'][] = 'sitenow_events/single-event';
   // Quick hack to get the data structured properly.
   // This is due to the standardize parsing of data for all events.
-  // @see uiowa_events_prepare_data.
+  // @see sitenow_events_prepare_data.
   $variables['data'] = $variables['data'][0];
   if (isset($variables['data']['event_instances'])) {
     // All event instances are passed in the event_instances array.
@@ -48,7 +48,7 @@ function template_preprocess_uiowa_events_single_event(array &$variables) {
       'date' => [
         '#type' => 'html_tag',
         '#tag' => 'span',
-        '#value' => uiowa_events_format_instance($current_instance['event_instance']),
+        '#value' => sitenow_events_format_instance($current_instance['event_instance']),
         '#attributes' => [
           'class' => [
             'date-instance__date',
@@ -77,7 +77,7 @@ function template_preprocess_uiowa_events_single_event(array &$variables) {
           'date' => [
             '#type' => 'html_tag',
             '#tag' => 'span',
-            '#value' => uiowa_events_format_instance($instance['event_instance']),
+            '#value' => sitenow_events_format_instance($instance['event_instance']),
             '#attributes' => [
               'class' => [
                 'date-instance__date',
@@ -99,7 +99,7 @@ function template_preprocess_uiowa_events_single_event(array &$variables) {
           'date' => [
             '#type' => 'html_tag',
             '#tag' => 'span',
-            '#value' => uiowa_events_format_instance($instance['event_instance']),
+            '#value' => sitenow_events_format_instance($instance['event_instance']),
             '#attributes' => [
               'class' => [
                 'date-instance__date',

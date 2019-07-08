@@ -1,13 +1,13 @@
 <?php
 
-namespace Drupal\uiowa_events\Routing;
+namespace Drupal\sitenow_events\Routing;
 
 use Symfony\Component\Routing\Route;
 
 /**
  * Defines a dynamic path based off of the redirect uri variable.
  */
-class UIEventsRoutes {
+class EventsRoutes {
 
   /**
    * Returns an array of route objects.
@@ -18,12 +18,12 @@ class UIEventsRoutes {
   public function routes() {
     $routes = [];
 
-    $path = \Drupal::config('uiowa_events.settings')->get('uiowa_events.single_event_path')?: 'event';
+    $path = \Drupal::config('sitenow_events.settings')->get('sitenow_events.single_event_path')?: 'event';
 
-    $routes['uiowa_events.single_controller.' . $path] = new Route(
+    $routes['sitenow_events.single_controller.' . $path] = new Route(
       $path . '/{event_id}/{event_instance}',
       [
-        '_controller' => '\Drupal\uiowa_events\Controller\UIEventsController::build',
+        '_controller' => '\Drupal\sitenow_events\Controller\EventsController::build',
       ],
       [
         '_permission'  => 'access content',
