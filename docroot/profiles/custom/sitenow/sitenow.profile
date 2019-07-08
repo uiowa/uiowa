@@ -583,3 +583,34 @@ function sitenow_page_attachments(array &$attachments) {
     $attachments['#attached']['library'][] = 'sitenow/admin-overrides';
   }
 }
+
+/**
+ * Implements hook_toolbar().
+ */
+function sitenow_toolbar() {
+
+  $url = Url::fromUri('//docs.sitenow.uiowa.edu');
+
+  $items = [];
+  $items['support'] = [
+    '#type' => 'toolbar_item',
+    'tab' => [
+      '#type' => 'link',
+      '#url' => $url,
+      '#title' => 'SiteNow Help',
+      '#options' => [
+        'attributes' => [
+          'title' => t('Opens help documentation in a new window'),
+          'id' => 'toolbar-item-sitenow-help',
+          'class' => [
+            'toolbar-item',
+          ],
+          'role' => 'button',
+          'target' => '_blank',
+        ],
+      ],
+    ],
+  ];
+
+  return $items;
+}
