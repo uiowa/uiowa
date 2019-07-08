@@ -67,8 +67,6 @@ class MultisiteCommands extends BltTasks {
    *
    * @aliases uis uisite
    *
-   * @param \Symfony\Component\Console\Input\InputInterface $input
-   *
    * @throws \Acquia\Blt\Robo\Exceptions\BltException
    */
   public function generate(InputInterface $input) {
@@ -138,14 +136,12 @@ class MultisiteCommands extends BltTasks {
    * @option string $site-dir
    *
    * @aliases uir uiremove
-   *
-   * @param \Symfony\Component\Console\Input\InputInterface $input
    */
   public function remove(InputInterface $input) {
     if ($this->confirm('Are you sure that you want to remove this site? This action cannot be undone.')) {
       // Delete the config/{$site_dir} directory.
       // Delete the docroot/sites/{$site_dir} directory.
-      // Remove the alias file
+      // Remove the alias file.
     }
   }
 
@@ -153,9 +149,6 @@ class MultisiteCommands extends BltTasks {
    * This will be called after the `uiowa:multisite` command is executed.
    *
    * @hook post-command uiowa:multisite
-   *
-   * @param $result
-   * @param \Consolidation\AnnotatedCommand\CommandData $commandData
    *
    * @throws \Acquia\Blt\Robo\Exceptions\BltException
    * @throws \Robo\Exception\TaskException
@@ -223,8 +216,8 @@ class MultisiteCommands extends BltTasks {
     $steps = [
       0 => "Open a PR at https://github.com/uiowa/{$this->getConfig()->get('project.prefix')}/compare/master...{$branch}.",
       1 => "Assuming tests pass, merge the PR to deploy to the dev environment.",
-//      3 => "Re-deploy the master branch to the dev environment in the Cloud UI. This will run the cloud hooks successfully.",
-//      4 => "Coordinate a new release to deploy to the test and prod environments.",
+    // 3 => "Re-deploy the master branch to the dev environment in the Cloud UI. This will run the cloud hooks successfully.",
+    // 4 => "Coordinate a new release to deploy to the test and prod environments.",
       6 => "Add the multisite domains to environments as needed.",
     ];
 
@@ -246,7 +239,7 @@ class MultisiteCommands extends BltTasks {
    * @param array $newDBSettings
    *   An array of database configuration options or empty array.
    */
-  protected function configureDrupalVm($url, $newDBSettings) {
+  protected function configureDrupalVm(array $url, array $newDBSettings) {
     $configure_vm = $this->confirm("Would you like to generate new virtual host entry and database for this site inside Drupal VM?");
     if ($configure_vm) {
       $yamlWriter = new YamlWriter($this->getConfigValue('vm.config'));
@@ -292,8 +285,13 @@ class MultisiteCommands extends BltTasks {
   }
 
   /**
-   * @param $default_site_dir
+   * Creates the default blt.yml file for a site.
+   *
+   * @param string $default_site_dir
+   *   The default site directory.
+   *
    * @return string
+   *   The default site directory.
    */
   protected function createDefaultBltSiteYml($default_site_dir) {
     if (!file_exists($default_site_dir . "/blt.yml")) {
@@ -323,17 +321,25 @@ class MultisiteCommands extends BltTasks {
   }
 
   /**
-   * @param $new_site_dir
-   * @param $machine_name
-   * @param $url
-   * @param $local_alias
-   * @param $remote_alias
-   * @param $database_name
+   * Creates a blt.yml file for a site.
+   *
+   * @param string $new_site_dir
+   *   The new site directory.
+   * @param string $machine_name
+   *   The site machine name.
+   * @param array $url
+   *   The array of URL parts.
+   * @param string $local_alias
+   *   The local alias.
+   * @param string $remote_alias
+   *   The remote alias.
+   * @param string $database_name
+   *   The database name.
    */
   protected function createNewBltSiteYml(
     $new_site_dir,
     $machine_name,
-    $url,
+    array $url,
     $local_alias,
     $remote_alias,
     $database_name
@@ -350,8 +356,12 @@ class MultisiteCommands extends BltTasks {
   }
 
   /**
-   * @param $default_site_dir
-   * @param $new_site_dir
+   * Creates the site settings directory.
+   *
+   * @param string $default_site_dir
+   *   The default site directory.
+   * @param string $new_site_dir
+   *   The new site directory.
    *
    * @throws \Acquia\Blt\Robo\Exceptions\BltException
    */
@@ -368,12 +378,15 @@ class MultisiteCommands extends BltTasks {
   }
 
   /**
-   * @param $site_name
+   * Creates the site config directory.
+   *
+   * @param string $site_dir
+   *   The site directory.
    *
    * @throws \Acquia\Blt\Robo\Exceptions\BltException
    */
-  protected function createNewSiteConfigDir($site_name) {
-    $config_dir = $this->getConfigValue('docroot') . '/' . $this->getConfigValue('cm.core.path') . '/' . $site_name;
+  protected function createNewSiteConfigDir($site_dir) {
+    $config_dir = $this->getConfigValue('docroot') . '/' . $this->getConfigValue('cm.core.path') . '/' . $site_dir;
     $result = $this->taskFilesystemStack()
       ->mkdir($config_dir)
       ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_VERBOSE)
@@ -383,6 +396,9 @@ class MultisiteCommands extends BltTasks {
     }
   }
 
+  /**
+   * Resets the config for multisites.
+   */
   protected function resetMultisiteConfig() {
     /** @var \Acquia\Blt\Robo\Config\DefaultConfig $config */
     $config = $this->getConfig();
@@ -418,7 +434,7 @@ class MultisiteCommands extends BltTasks {
         return new CommandError('Subdirectory sites are not supported.');
       }
 
-      // If input contains no periods, it is assumed that it was meant to be a subdomain of uiowa.edu.
+      // If input contains no periods, assume that it is a subdomain of 'uiowa.edu'.
       if (strpos($parsed['host'], '.') === FALSE) {
         $uri .= '.' . UIOWA_BASE_DOMAIN;
       }
@@ -471,6 +487,7 @@ class MultisiteCommands extends BltTasks {
    * Used for internal subdomain and Drush alias group name, i.e. file name.
    *
    * @param array $options
+   *   The command options.
    * @param string $uri
    *   The multisite URI.
    *
@@ -482,7 +499,8 @@ class MultisiteCommands extends BltTasks {
     if (empty($options['machine-name'])) {
       $parsed = parse_url($uri);
       $check = $parsed['host'];
-    } else {
+    }
+    else {
       $check = $options['machine-name'];
     }
 
@@ -523,13 +541,19 @@ class MultisiteCommands extends BltTasks {
   }
 
   /**
-   * @param $site_name
-   * @param $options
-   * @param $dest
+   * Get an alias for a new site.
+   *
+   * @param string $machine_name
+   *   The site machine name.
+   * @param array $options
+   *   The options for the command.
+   * @param string $dest
+   *   The type of alias (e.g. 'local' or 'remote').
    *
    * @return string
+   *   The generated alias.
    */
-  protected function getNewSiteAlias($site_name, $options, $dest) {
+  protected function getNewSiteAlias($machine_name, array $options, $dest) {
     $option = $dest . '-alias';
     if (!empty($options[$option])) {
       return $options[$option];
@@ -538,16 +562,21 @@ class MultisiteCommands extends BltTasks {
       // Local should be self.
       if ($dest === 'local') {
         $default = 'self';
-      } else {
-        $default = $site_name . '.' . $dest;
+      }
+      else {
+        $default = $machine_name . '.' . $dest;
       }
       return $this->askDefault("Default $dest drush alias", $default);
     }
   }
 
   /**
-   * @param $machine_name
-   * @param $site_dir
+   * Create a drush alias for a new site.
+   *
+   * @param string $machine_name
+   *   The site machine name.
+   * @param string $site_dir
+   *   The site directory.
    */
   protected function createSiteDrushAlias($machine_name, $site_dir) {
     if ($this->getInspector()->isDrupalVmConfigPresent()) {
@@ -557,8 +586,7 @@ class MultisiteCommands extends BltTasks {
 
     $aliases['local']['uri'] = $site_dir;
     $aliases['local']['root'] = '${env.cwd}/docroot';
-//    unset($aliases['local']['ssh']);
-
+    // unset($aliases['local']['ssh']);.
     $filename = $this->getConfigValue('drush.alias-dir') . "/$machine_name.site.yml";
     YamlMunge::mergeArrayIntoFile($aliases, $filename);
 
@@ -573,12 +601,15 @@ class MultisiteCommands extends BltTasks {
   /**
    * Write sites.php data.
    *
-   * @param $dir
-   * @param $domains
+   * @param string $site_dir
+   *   The site directory.
+   * @param array $domains
+   *   The generated list of domains.
    */
-  protected function writeToSitesPhpFile($dir, $domains) {
+  protected function writeToSitesPhpFile($site_dir, array $domains) {
+    $sites = NULL;
 
-    require_once($this->getConfigValue('docroot') . '/sites/sites.php');
+    require_once $this->getConfigValue('docroot') . '/sites/sites.php';
     $data = '';
     $added = [];
 
@@ -590,7 +621,7 @@ class MultisiteCommands extends BltTasks {
       }
       else {
         $data .= <<<EOD
-\$sites['{$domain}'] = '{$dir}';
+\$sites['{$domain}'] = '{$site_dir}';
 
 EOD;
         $added[] = $domain;
@@ -598,23 +629,25 @@ EOD;
     }
 
     if ($data !== '') {
-      $data = "// Directory aliases for {$dir}.\n$data\n";
+      $data = "// Directory aliases for {$site_dir}.\n$data\n";
       file_put_contents($this->getConfigValue('docroot') . '/sites/sites.php', $data, FILE_APPEND);
       $this->say('Added the following domains to <comment>sites.php</comment>:');
       $this->io()->listing($added);
     }
-
 
   }
 
   /**
    * Re-generate the drush alias so it is more useful.
    *
-   * @param $machine_name
-   * @param $site_dir
-   * @param $domains
+   * @param string $machine_name
+   *   The machine name of the site.
+   * @param string $site_dir
+   *   The site directory.
+   * @param array $domains
+   *   The generated array of domains for the site.
    */
-  protected function regenerateDrushAliases($machine_name, $site_dir, $domains) {
+  protected function regenerateDrushAliases($machine_name, $site_dir, array $domains) {
     $filename = "{$this->getConfigValue('drush.alias-dir')}/{$machine_name}.site.yml";
     if (file_exists($filename)) {
       $default = Yaml::parse(file_get_contents($filename));
@@ -636,7 +669,8 @@ EOD;
   /**
    * Remove some files that we don't need.
    *
-   * @param $site_dir
+   * @param string $site_dir
+   *   The site directory.
    */
   protected function removeExtraFiles($site_dir) {
     $files = [
@@ -652,6 +686,21 @@ EOD;
     }
   }
 
+  /**
+   * Install the new multisite.
+   *
+   * @param string $site_dir
+   *   The site directory.
+   * @param string $install_profile
+   *   The install profile to install.
+   * @param array $options
+   *   The command options.
+   *
+   * @return bool
+   *   Flag indicating whether the site was installed.
+   *
+   * @throws \Robo\Exception\TaskException
+   */
   protected function installSite($site_dir, $install_profile, array $options) {
     if ($install_site = $this->confirm("Would you like to run site:install for $site_dir?")) {
 
@@ -675,7 +724,6 @@ EOD;
       }
 
       // @todo Validate install profile exists.
-
       $this->taskDrush()
         ->drush('site:install')
         ->interactive(TRUE)
@@ -683,14 +731,13 @@ EOD;
         ->options($options_map)
         ->run();
 
-      //          $this->taskDrush()
-      //            ->drush('user:role:add')
-      //            ->args([
-      //              'administrator',
-      //              $uid,
-      //            ])
-      //            ->run();
-
+      // $this->taskDrush()
+      // ->drush('user:role:add')
+      // ->args([
+      // 'administrator',
+      // $uid,
+      // ])
+      // ->run();
       $this->taskDrush()
         ->drush('config:set')
         ->args([
