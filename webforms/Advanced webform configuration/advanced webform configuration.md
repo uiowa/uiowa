@@ -20,9 +20,19 @@ nav_order: 3
 
 Suppose you have a webform with a radio field title "Person type" with the options *Faculty*, *Staff*, and *Student* and a radio field titled *Student classification* with the options *Freshman, Sophomore, Junior, and Senior.*
 If the user selects the "Person Type" Student, you want to know what their classification is (freshman, sophomore, junior, or senior). However, you do not want to display the "Student classification" field to users who identify as *Faculty* or *Staff.*
-  1. Add a condition to show the "Student classification" field when the value of the "Person type" field is "Student".
+  1. Add a condition to show the "Student classification" field when the value of the "Person type" field is "Student". 
+    **Note:** You're going to want to do this in the "Student" field
+    - Conditions if Person field =  checkboxes:
+        Conditions for student: State = Visible if *all* of the following met: Student[checkboxes] *checked*
+        Hidden if *all* of the following is met: Student[checkboxes] *unchecked*
+    - Conditions if Person type =  select:
+        Conditions for student: State = Visible if “all” of the following is met: Person[Select] 'Value is' *Student*
+        Hidden if *all* of the following is met: Person[Radios] 'Value is not' *Student*
+    - Conditions if Person type =  radios:
+        Conditions for student: State =  Visible if “all” of the following is met: Person[Radios] 'Value is' *Student*
+        Hidden if *all* of the following is met: Person[Select] 'Value is not' *Student*
   2. Add a condition to require the "Student classificaiton" field when the value of the "Person type" field is "Student".
- **Note:** The "Person type" field must be configured as "required" for this to work.
+  **Note:** The "Person type" field must be configured as "required" for this to work.
   - In the *Radios*, *General* menu, select *Form Validation* and check the *Required* box to require a selection.
   3. Click the "Save conditions" button at the bottom of the page.
   - Now when the form is viewed, the "Student classification" field does not display and is not requried unless the "Person type" selected is "Student". The default state of the form. Note that the *Student classification* field does not display.
