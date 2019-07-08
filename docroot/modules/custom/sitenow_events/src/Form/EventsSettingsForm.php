@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\uiowa_events\Form;
+namespace Drupal\sitenow_events\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -8,20 +8,20 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * Configure UIowa Events settings for this site.
  */
-class UIEventsSettingsForm extends ConfigFormBase {
+class EventsSettingsForm extends ConfigFormBase {
 
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'uiowa_events_settings';
+    return 'sitenow_events_settings';
   }
 
   /**
    * {@inheritdoc}
    */
   protected function getEditableConfigNames() {
-    return ['uiowa_events.settings'];
+    return ['sitenow_events.settings'];
   }
 
   /**
@@ -29,7 +29,7 @@ class UIEventsSettingsForm extends ConfigFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildForm($form, $form_state);
-    $config = $this->config('uiowa_events.settings');
+    $config = $this->config('sitenow_events.settings');
 
     $form['markup'] = [
       '#type' => 'markup',
@@ -42,10 +42,10 @@ class UIEventsSettingsForm extends ConfigFormBase {
       '#description' => $this->t('These settings affect all University of Iowa event lists and single instances.'),
     ];
 
-    $form['global']['uiowa_events_event_link'] = [
+    $form['global']['sitenow_events_event_link'] = [
       '#type' => 'select',
       '#title' => $this->t('Link Option'),
-      '#default_value' => $config->get('uiowa_events.event_link'),
+      '#default_value' => $config->get('sitenow_events.event_link'),
       '#description' => $this->t('Choose to have events link to events.uiowa.edu or an event page on this site.'),
       '#options' => [
         'event-link-external' => $this->t('Link to events.uiowa.edu'),
@@ -53,11 +53,11 @@ class UIEventsSettingsForm extends ConfigFormBase {
       ],
     ];
 
-    $form['global']['uiowa_events_single_event_path'] = [
+    $form['global']['sitenow_events_single_event_path'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Single event path'),
       '#description' => $this->t('The base path component for a single event. Defaults to <em>event</em>.'),
-      '#default_value' => $config->get('uiowa_events.single_event_path'),
+      '#default_value' => $config->get('sitenow_events.single_event_path'),
       '#required' => TRUE,
     ];
 
@@ -69,7 +69,7 @@ class UIEventsSettingsForm extends ConfigFormBase {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // Check if path already exists.
-    $path = $form_state->getValue('uiowa_events_single_event_path');
+    $path = $form_state->getValue('sitenow_events_single_event_path');
     // Clean up path first.
     $path = \Drupal::service('pathauto.alias_cleaner')->cleanString($path);
     $path_exists = \Drupal::service('path.alias_storage')->aliasExists('/' . $path, 'en');
@@ -84,14 +84,14 @@ class UIEventsSettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $path = $form_state->getValue('uiowa_events_single_event_path');
+    $path = $form_state->getValue('sitenow_events_single_event_path');
     // Clean path.
     $path = \Drupal::service('pathauto.alias_cleaner')->cleanString($path);
 
-    $this->config('uiowa_events.settings')
-      ->set('uiowa_events.event_link', $form_state->getValue('uiowa_events_event_link'))
-      ->set('uiowa_events.cache_time', $form_state->getValue('uiowa_events_cache_time'))
-      ->set('uiowa_events.single_event_path', $path)
+    $this->config('sitenow_events.settings')
+      ->set('sitenow_events.event_link', $form_state->getValue('sitenow_events_event_link'))
+      ->set('sitenow_events.cache_time', $form_state->getValue('sitenow_events_cache_time'))
+      ->set('sitenow_events.single_event_path', $path)
       ->save();
     parent::submitForm($form, $form_state);
   }

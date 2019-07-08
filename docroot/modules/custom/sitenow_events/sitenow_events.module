@@ -25,7 +25,7 @@ use Drupal\Component\Utility\Xss;
  * @see options_allowed_values()
  */
 function _get_filter_field_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
-  $filter_options = _uiowa_events_get_filter_options();
+  $filter_options = _sitenow_events_get_filter_options();
   $options = ['0' => 'None'];
   switch ($definition->getName()) {
     case 'field_events_department':
@@ -74,13 +74,13 @@ function _get_filter_field_options(FieldStorageConfig $definition, ContentEntity
  * @return array
  *   An array of filters keyed by id.
  */
-function _uiowa_events_get_filter_options() {
+function _sitenow_events_get_filter_options() {
   $options = [];
   $endpoints = [
-    \Drupal::config('uiowa_events.settings')
-      ->get('uiowa_events.filters_endpoint'),
-    \Drupal::config('uiowa_events.settings')
-      ->get('uiowa_events.keywords_endpoint'),
+    \Drupal::config('sitenow_events.settings')
+      ->get('sitenow_events.filters_endpoint'),
+    \Drupal::config('sitenow_events.settings')
+      ->get('sitenow_events.keywords_endpoint'),
   ];
   foreach ($endpoints as $endpoint) {
     try {
@@ -95,7 +95,7 @@ function _uiowa_events_get_filter_options() {
       }
     }
     catch (RequestException $e) {
-      watchdog_exception('uiowa_events', $e);
+      watchdog_exception('sitenow_events', $e);
     }
     if (!empty($results)) {
       $forest = [];
@@ -184,10 +184,10 @@ function _build_options_list(array $tree, $r = 0, $p = NULL, array &$options = [
  * @return mixed
  *   A request object.
  */
-function uiowa_events_load(array $params = ['display_id' => 'events'], array $args = ['views', 'event_instances_api.json'], $cache = TRUE) {
+function sitenow_events_load(array $params = ['display_id' => 'events'], array $args = ['views', 'event_instances_api.json'], $cache = TRUE) {
   // Endpoint base.
-  $config = \Drupal::config('uiowa_events.settings');
-  $endpoint = $config->get('uiowa_events.base_endpoint');
+  $config = \Drupal::config('sitenow_events.settings');
+  $endpoint = $config->get('sitenow_events.base_endpoint');
   // Append args to the $endpoint.
   $endpoint = $endpoint . implode('/', $args);
   // If we have parameters.
@@ -210,12 +210,12 @@ function uiowa_events_load(array $params = ['display_id' => 'events'], array $ar
       $data = $request->getBody();
     }
     catch (RequestException $e) {
-      watchdog_exception('uiowa_events', $e);
+      watchdog_exception('sitenow_events', $e);
     }
     // Decode the json.
     $json = json_decode($data, TRUE);
     // Return an array of events with optional params.
-    $events = uiowa_events_prepare_data($json);
+    $events = sitenow_events_prepare_data($json);
     $events['cache'] = 'miss';
 
     // If cache is not set to TRUE.
@@ -237,7 +237,7 @@ function uiowa_events_load(array $params = ['display_id' => 'events'], array $ar
  * @return string
  *   http query string.
  *
- * @see uiowa_events_load()
+ * @see sitenow_events_load()
  */
 function _build_http_query(array $query) {
   $query_array = [];
@@ -284,7 +284,7 @@ function _build_http_query(array $query) {
  * @return array
  *   A request object.
  */
-function uiowa_events_prepare_data(array $events) {
+function sitenow_events_prepare_data(array $events) {
   if (empty($events)) {
     // We need to set the events array key to prevent undefined indices.
     $events['events'] = [];
@@ -343,7 +343,7 @@ function uiowa_events_prepare_data(array $events) {
  * @return array
  *   A request object.
  */
-function uiowa_events_instance_values($events_instance) {
+function sitenow_events_instance_values($events_instance) {
   $instance_values = [
     'department' => NULL,
     'audiences' => NULL,
@@ -403,18 +403,18 @@ function uiowa_events_instance_values($events_instance) {
 /**
  * Implements hook_theme().
  */
-function uiowa_events_theme($existing, $type, $theme, $path) {
+function sitenow_events_theme($existing, $type, $theme, $path) {
   return [
-    'uiowa_events_teaser' => [
+    'sitenow_events_teaser' => [
       'path' => $path,
-      'template' => 'templates/uiowa-events-teaser',
-      'file' => 'includes/uiowa_events.teaser.inc',
+      'template' => 'templates/sitenow-eventss-teaser',
+      'file' => 'includes/sitenow_events.teaser.inc',
       'variables' => ['event' => NULL],
     ],
-    'uiowa_events_single_event' => [
+    'sitenow_events_single_event' => [
       'path' => $path,
-      'template' => 'templates/uiowa-events-single-event',
-      'file' => 'includes/uiowa_events.single_event.inc',
+      'template' => 'templates/sitenow-eventss-single-event',
+      'file' => 'includes/sitenow_events.single_event.inc',
       'variables' => ['data' => NULL],
     ],
   ];
@@ -429,7 +429,7 @@ function uiowa_events_theme($existing, $type, $theme, $path) {
  * @return string
  *   The human-readable date string.
  */
-function uiowa_events_format_instance(array $event_instance) {
+function sitenow_events_format_instance(array $event_instance) {
   if ($event_instance['all_day']) {
     $start = date('l, F j, Y', strtotime($event_instance['start']));
   }
@@ -460,7 +460,7 @@ function uiowa_events_format_instance(array $event_instance) {
 /**
  * Implements hook_field_widget_WIDGET_TYPE_form_alter().
  */
-function uiowa_events_field_widget_paragraphs_form_alter(&$element, &$form_state, $context) {
+function sitenow_events_field_widget_paragraphs_form_alter(&$element, &$form_state, $context) {
   if ($element["#paragraph_type"] == 'events') {
     if (!empty($element['subform']['field_events_more'])) {
       $parents_array = $element['subform']['#parents'];

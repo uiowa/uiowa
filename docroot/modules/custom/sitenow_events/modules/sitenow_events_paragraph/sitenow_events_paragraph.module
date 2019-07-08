@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains uiowa_paragraph.module.
+ * Paragraphs events bundle functionality.
  */
 
 use Drupal\Component\Utility\Html;
@@ -11,7 +11,7 @@ use Drupal\Core\Url;
 /**
  * Implements hook_uip_classes_alter().
  */
-function uiowa_events_uip_classes_alter(&$options, $entity, $bundle) {
+function sitenow_events_uip_classes_alter(&$options, $entity, $bundle) {
   switch ($bundle) {
     case 'events':
       $options['hide-descriptions'] = 'Hide Descriptions';
@@ -26,7 +26,7 @@ function uiowa_events_uip_classes_alter(&$options, $entity, $bundle) {
 /**
  * Implements hook_theme().
  */
-function uiowa_events_paragraph_theme($existing, $type, $theme, $path) {
+function sitenow_events_paragraph_theme($existing, $type, $theme, $path) {
   return [
     'paragraph__events__default' => [
       'template' => 'paragraph--events--default',
@@ -38,7 +38,7 @@ function uiowa_events_paragraph_theme($existing, $type, $theme, $path) {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function uiowa_events_paragraph_preprocess_paragraph(&$variables) {
+function sitenow_events_paragraph_preprocess_paragraph(&$variables) {
   $paragraph = $variables['paragraph'];
   switch ($paragraph->bundle()) {
     case 'events':
@@ -78,10 +78,10 @@ function uiowa_events_paragraph_preprocess_paragraph(&$variables) {
           $variables['attributes']['id'][] = Html::getUniqueId($paragraph->field_uip_id->value);
         }
 
-        $instance_values = uiowa_events_instance_values($paragraph);
+        $instance_values = sitenow_events_instance_values($paragraph);
         $start = date('d-m-Y');
 
-        $events = uiowa_events_load([
+        $events = sitenow_events_load([
           'display_id' => 'events',
           'filters[department]' => $instance_values['department'],
           'filters[audiences]' => $instance_values['audiences'],
@@ -97,7 +97,7 @@ function uiowa_events_paragraph_preprocess_paragraph(&$variables) {
         if (!empty($events['events'])) {
           foreach ($events['events'] as $e) {
             $variables['list'][] = [
-              '#theme' => 'uiowa_events_teaser',
+              '#theme' => 'sitenow_events_teaser',
               '#event' => $e,
             ];
           }

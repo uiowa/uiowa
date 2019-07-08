@@ -14,8 +14,8 @@ use Drupal\Core\Url;
  * @param array $variables
  *   Variables from the theme function.
  */
-function template_preprocess_uiowa_events_teaser(array &$variables) {
-  $config = \Drupal::config('uiowa_events.settings');
+function template_preprocess_sitenow_events_teaser(array &$variables) {
+  $config = \Drupal::config('sitenow_events.settings');
   if (isset($variables['event']['photo_url'])) {
     $variables['event']['image'] = [
       '#theme' => 'imagecache_external',
@@ -24,12 +24,12 @@ function template_preprocess_uiowa_events_teaser(array &$variables) {
       '#alt' => $variables['event']['title'],
     ];
   }
-  $external_link = ($config->get('uiowa_events.event_link') == 'event-link-external') ? TRUE : FALSE;
+  $external_link = ($config->get('sitenow_events.event_link') == 'event-link-external') ? TRUE : FALSE;
   if ($external_link) {
     $variables['event']['url'] = $variables['event']['events_site_url'];
   }
   else {
-    $single_event_path = $config->get('uiowa_events.single_event_path');;
+    $single_event_path = $config->get('sitenow_events.single_event_path');;
     // Add a parameter on the URL for event instances.
     foreach ($variables['event']['event_instances'] as $key => $instance) {
       if ($variables['event']['instance_start'] == $instance['event_instance']['start']) {
@@ -39,7 +39,7 @@ function template_preprocess_uiowa_events_teaser(array &$variables) {
     $event_path = isset($instance_id) ? "{$variables['event']['id']}/{$instance_id}" : $variables['event']['id'];
     $variables['event']['url'] = Url::fromUri("internal:/{$single_event_path}/{$event_path}", ['alias' => TRUE]);
   }
-  $variables['event']['date_string'] = uiowa_events_format_instance([
+  $variables['event']['date_string'] = sitenow_events_format_instance([
     'start' => $variables['event']['instance_start'],
     'end' => $variables['event']['instance_end'],
     'all_day' => $variables['event']['instance_all_day'],
