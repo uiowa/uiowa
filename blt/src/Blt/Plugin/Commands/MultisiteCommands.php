@@ -76,7 +76,6 @@ class MultisiteCommands extends BltTasks {
       return new CommandError("The errors listed above need to be corrected prior to running this command.");
     }
 
-
   }
 
   /**
