@@ -73,6 +73,11 @@ $sites['sitenow.dev.drupal.uiowa.edu'] = 'sitenow.uiowa.edu';
 $sites['sitenow.stage.drupal.uiowa.edu'] = 'sitenow.uiowa.edu';
 $sites['sitenow.prod.drupal.uiowa.edu'] = 'sitenow.uiowa.edu';
 
+// Directory aliases for pentacrestmuseums.uiowa.edu.
+$sites['pentacrestmuseums.dev.drupal.uiowa.edu'] = 'pentacrestmuseums.uiowa.edu';
+$sites['pentacrestmuseums.stage.drupal.uiowa.edu'] = 'pentacrestmuseums.uiowa.edu';
+$sites['pentacrestmuseums.prod.drupal.uiowa.edu'] = 'pentacrestmuseums.uiowa.edu';
+
 // Directory aliases for mnh.uiowa.edu.
 $sites['mnh.dev.drupal.uiowa.edu'] = 'mnh.uiowa.edu';
 $sites['mnh.stage.drupal.uiowa.edu'] = 'mnh.uiowa.edu';
