@@ -1,8 +1,16 @@
 project:
+  local:
+    hostname: pentacrestmuseums.uiowa.edu
+    protocol: https
   machine_name: pentacrestmuseums
-drupal:
-  db:
-    database: pentacrestmuseums_uiowa_edu
+  human_name: pentacrestmuseums.uiowa.edu
 drush:
   aliases:
     local: self
+    remote: pentacrestmuseums.dev
+drupal:
+  db:
+    database: pentacrestmuseums_uiowa_edu
+    host: localhost
+    user: root
+    password: null
