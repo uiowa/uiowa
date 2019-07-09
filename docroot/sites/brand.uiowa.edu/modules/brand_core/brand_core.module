@@ -60,3 +60,27 @@ function brand_core_theme($existing, $type, $theme, $path) {
     ],
   ];
 }
+
+/**
+ * Implements hook_mail().
+ */
+function brand_core_mail($key, &$message, $params) {
+  $message['from'] = \Drupal::config('system.site')->get('mail');
+  $options = [
+    'langcode' => $message['langcode'],
+  ];
+  switch ($key) {
+    case 'lockup-review-digest':
+      $message['subject'] = t('Brand Manual - You have @results @label to review', ['@results' => $params['results'], '@label' => $params['label']], $options);
+      $message['body'][] = t('You have @results @label to review:', [
+        '@results' => $params['results'],
+        '@label' => $params['label'],
+        '@login' => $params['login'],
+      ], $options);
+      foreach ($params['lockups'] as $lockup) {
+        $message['body'][] = t('- @lockup', ['@lockup' => $lockup], $options);
+      }
+      $message['body'][] = t('@login', ['@login' => $params['login']], $options);
+      break;
+  }
+}
