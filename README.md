@@ -52,18 +52,23 @@ If the blt alias is not available use this command outside and inside vagrant (o
     ```
 
 4. SSH into your VM.
-SSH into your localized Drupal VM environment automated with the BLT launch and automation tools.
+SSH into your localized Drupal VM environment automated with the BLT launch and automation tools. You'll run most other commands from inside Drupal VM.
     ```
     $ vagrant ssh
     ```
 
 ### Site initialization
 1. Setup a local Drupal site with an empty database.
-Use BLT to setup the site with configuration.  If it is a multisite you can identify a specific site.
+Use the `uiowa:multisite` (or `uisite` or `uis`) to generate a new site and the related directories and files. Run this command and follow the prompts.
    ```
-   $ blt setup --site=[sitename]
+   $ blt uis
    ```
+   This command will also:
 
+      * Generate the necessary Drupal VM configuration.
+      * Create a new git branch and push it to Github for review.
+      * Optionally run a site installation.
+      * Create a database in Acquia Cloud for each environment.
 2. Log into your site with drush.
 Access the site and do necessary work at https://uiowa.local.site by running the following commands.
     ```

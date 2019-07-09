@@ -26,14 +26,6 @@ apache_vhosts:
     documentroot: /var/www/dashboard
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
   -
-    servername: iowasuperfund.uiowa.local.site
-    documentroot: '{{ drupal_core_path }}'
-    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-  -
-    servername: basetheme.uiowa.local.site
-    documentroot: '{{ drupal_core_path }}'
-    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-  -
     servername: clas.uiowa.local.site
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
@@ -46,14 +38,6 @@ apache_vhosts:
 mysql_databases:
   -
     name: drupal
-    encoding: utf8
-    collation: utf8_general_ci
-  -
-    name: iowasuperfund_uiowa_edu
-    encoding: utf8
-    collation: utf8_general_ci
-  -
-    name: basetheme_uiowa_edu
     encoding: utf8
     collation: utf8_general_ci
   -
