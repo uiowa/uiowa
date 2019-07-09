@@ -53,6 +53,33 @@ class MultisiteCommands extends BltTasks {
   }
 
   /**
+   * Require the --site-uri option so it can be used in postMultisiteInit.
+   *
+   * @hook validate uiowa:multisite
+   */
+  public function validateMultisite(CommandData $commandData) {
+    $creds = [
+      'credentials.acquia.key',
+      'credentials.acquia.secret',
+    ];
+
+    $errors = [];
+
+    foreach ($creds as $cred) {
+      if (!$this->getConfigValue($cred)) {
+        $errors[] = "{$cred} is not set in the {$this->getConfigValue('repo.root')}/blt/local.blt.yml file.";
+      }
+    }
+
+    if (!empty($errors)) {
+      $this->io()->listing($errors);
+      return new CommandError("The errors listed above need to be corrected prior to running this command.");
+    }
+
+
+  }
+
+  /**
    * Generates a new multisite.
    *
    * @command uiowa:multisite

@@ -100,7 +100,7 @@ credentials:
     key: [key]
     secret: [secret]
 ```
-The `key` and `secret` values can be created by visiting this page: https://cloud.acquia.com/a/profile/tokens
+The `key` and `secret` values can be created by visiting this page: https://cloud.acquia.com/a/profile/tokens. The `blt/local.blt.yml` file __must not__ be committed to the git repo.
 
 ---
 # Contributing
