@@ -1,7 +1,7 @@
 uiowa_dcv.settings_form:
   path: 'admin/config/system/dcv'
   defaults:
-    _controller: \Drupal\uiowa_dcv\Controller\UiowaDcvController::uiowa_dcv_form
+    _form: 'Drupal\uiowa_dcv\Form\UIowaDCVFileForm'
     _title: 'Domain Control Validation'
   requirements:
     _permission: 'administer dcv configuration'
@@ -9,7 +9,7 @@ uiowa_dcv.settings_form:
 uiowa_dcv.file:
   path: '.well-known/pki-validation/{filename}'
   defaults:
-    _controller: \Drupal\uiowa_dcv\Controller\UiowaDcvController::uiowa_dcv_file
+    _controller: \Drupal\uiowa_dcv\Controller\UiowaDcvController::file
     _title: 'DCV File'
   requirements:
     _permission: 'access content'
