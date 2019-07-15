@@ -227,16 +227,7 @@ class MultisiteCommands extends BltTasks {
       ->printMetadata(FALSE)
       ->run();
 
-    $connector = new Connector([
-      'key' => $this->getConfigValue('credentials.acquia.key'),
-      'secret' => $this->getConfigValue('credentials.acquia.secret'),
-    ]);
-
-    $cloud = Client::factory($connector);
-
-    $application = $cloud->application($this->getConfigValue('cloud.appId'));
-    $cloud->databaseCreate($application->uuid, $db['database']);
-    $this->say("Created <comment>{$db['database']}</comment> database.");
+    $this->createRemoteDatabase($db['database']);
 
     $this->yell("Follow these next steps:");
     $steps = [
@@ -780,6 +771,41 @@ EOD;
     }
 
     return $install_site;
+  }
+
+  /**
+   * Create the remote database, if it doesn't already exist.
+   *
+   * @param string $db_name
+   *   The database name.
+   */
+  protected function createRemoteDatabase($db_name) {
+    $connector = new Connector([
+      'key' => $this->getConfigValue('credentials.acquia.key'),
+      'secret' => $this->getConfigValue('credentials.acquia.secret'),
+    ]);
+
+    $cloud = Client::factory($connector);
+
+    $application = $cloud->application($this->getConfigValue('cloud.appId'));
+
+    $dbs = $cloud->databases($this->getConfigValue('cloud.appId'));
+
+    $db_exists = FALSE;
+
+    foreach ($dbs->getArrayCopy() as $db) {
+      if ($db->name === $db_name) {
+        $db_exists = TRUE;
+      }
+    }
+
+    if (!$db_exists) {
+      $cloud->databaseCreate($application->uuid, $db_name);
+      $this->say("Created <comment>{$db_name}</comment> database on Acquia Cloud.");
+    }
+    else {
+      $this->say('The remote database already exists.');
+    }
   }
 
 }
