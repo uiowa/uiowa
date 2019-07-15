@@ -24,6 +24,11 @@ function copy() {
     .pipe(dest('./hds/'));
 }
 
+function fontCopy() {
+  return src(['./node_modules/@uiowa/hds/assets/**/*.woff', './node_modules/@uiowa/hds/assets/**/*.woff2'])
+    .pipe(dest('./assets/'));
+}
+
 // SCSS bundled into CSS task
 function css() {
   return src(config.css.src)
@@ -76,10 +81,10 @@ function watchFiles() {
     .on('change', browserReload());
 }
 
-const watching = parallel(copy, watchFiles, browserSync);
+const watching = parallel(watchFiles, browserSync);
 
 //exports.js = js;
-exports.copy = copy;
+exports.copy = parallel(copy, fontCopy);
 exports.css = css;
 exports.default = parallel(css);
 exports.watch = watching;
