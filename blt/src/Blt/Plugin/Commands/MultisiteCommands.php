@@ -118,14 +118,18 @@ class MultisiteCommands extends BltTasks {
       throw new BltException("Cannot generate new multisite, $new_site_dir already exists!");
     }
 
+    $domains = $this->generateDomains($machine_name, $site_dir);
+
     $url = parse_url($domain);
 
     $input->setOption('site-dir', $site_dir);
 
     $newDBSettings = $this->setLocalDbConfig($site_dir);
+
     if ($this->getInspector()->isDrupalVmConfigPresent()) {
-      $this->configureDrupalVm($url, $newDBSettings);
+      $this->configureDrupalVm($domains['local'], $newDBSettings);
     }
+
     $default_site_dir = $this->getConfigValue('docroot') . '/sites/default';
     $this->createDefaultBltSiteYml($default_site_dir);
     // $this->createSiteDrushAlias('default');
@@ -190,12 +194,7 @@ class MultisiteCommands extends BltTasks {
     $install_profile = $input->getOption('install-profile');
     $options = $input->getOptions();
 
-    $domains = [
-      'local' => "{$machine_name}.uiowa.local.site",
-      'dev' => "{$machine_name}.dev.drupal.uiowa.edu",
-      'test' => "{$machine_name}.stage.drupal.uiowa.edu",
-      'prod' => "{$machine_name}.prod.drupal.uiowa.edu",
-    ];
+    $domains = $this->generateDomains($machine_name, $site_dir);
 
     $this->removeExtraFiles($site_dir);
 
@@ -214,20 +213,20 @@ class MultisiteCommands extends BltTasks {
 
     $branch = "initialize-{$machine_name}";
 
-    $this->taskGit()
-      ->dir($this->getConfigValue("repo.root"))
-      ->exec("git checkout -b {$branch}")
-      ->add('docroot/sites/sites.php')
-      ->commit("Add sites.php entries for {$site_dir}.")
-      ->add("docroot/sites/{$site_dir}")
-      ->commit("Initialize {$site_dir} site directory.")
-      ->exec("git push -u origin {$branch}")
-      ->interactive(FALSE)
-      ->printOutput(FALSE)
-      ->printMetadata(FALSE)
-      ->run();
-
-    $this->createRemoteDatabase($db['database']);
+//    $this->taskGit()
+//      ->dir($this->getConfigValue("repo.root"))
+//      ->exec("git checkout -b {$branch}")
+//      ->add('docroot/sites/sites.php')
+//      ->commit("Add sites.php entries for {$site_dir}.")
+//      ->add("docroot/sites/{$site_dir}")
+//      ->commit("Initialize {$site_dir} site directory.")
+//      ->exec("git push -u origin {$branch}")
+//      ->interactive(FALSE)
+//      ->printOutput(FALSE)
+//      ->printMetadata(FALSE)
+//      ->run();
+//
+//    $this->createRemoteDatabase($db['database']);
 
     $this->yell("Follow these next steps:");
     $steps = [
@@ -250,23 +249,23 @@ class MultisiteCommands extends BltTasks {
   }
 
   /**
-   * Updates box/config.yml with settings for new multisite.
+   * Updates box/config.yml with settings  for new multisite.
    *
-   * @param array $url
-   *   The local URL for the site.
+   * @param string $local_domain
+   *   The local domain to be added to the Drupal VM config.
    * @param array $newDBSettings
    *   An array of database configuration options or empty array.
    *
    * @return string
    *   A flag indicating whether the VM was configured.
    */
-  protected function configureDrupalVm(array $url, array $newDBSettings) {
+  protected function configureDrupalVm($local_domain, array $newDBSettings) {
     $configure_vm = $this->confirm("Would you like to generate new virtual host entry and database for this site inside Drupal VM?");
     if ($configure_vm) {
       $yamlWriter = new YamlWriter($this->getConfigValue('vm.config'));
       $vm_config = $yamlWriter->getContents();
       $vm_config['apache_vhosts'][] = [
-        'servername' => $url['host'],
+        'servername' => $local_domain,
         'documentroot' => $vm_config['apache_vhosts'][0]['documentroot'],
         'extra_parameters' => $vm_config['apache_vhosts'][0]['extra_parameters'],
       ];
@@ -624,6 +623,33 @@ class MultisiteCommands extends BltTasks {
     else {
       $this->logger->warning('Unable to create drush file: ' . $filename);
     }
+  }
+
+  /**
+   * Generate a set of domain names.
+   *
+   * @param string $machine_name
+   *   The machine name of the site.
+   * @param string $site_dir
+   *   The production domain.
+   *
+   * @return array
+   *   The domain names.
+   */
+  protected function generateDomains($machine_name, $site_dir) {
+    static $domains = [];
+
+    if (!isset($domains[$machine_name])) {
+      $domains[$machine_name] = [
+        'local' => "{$machine_name}.uiowa.local.site",
+        'dev' => "{$machine_name}.dev.drupal.uiowa.edu",
+        'test' => "{$machine_name}.stage.drupal.uiowa.edu",
+        'prod_alt' => "{$machine_name}.prod.drupal.uiowa.edu",
+        'prod' => $site_dir,
+      ];
+    }
+
+    return $domains[$machine_name];
   }
 
   /**
