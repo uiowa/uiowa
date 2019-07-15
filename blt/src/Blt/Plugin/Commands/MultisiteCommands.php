@@ -612,7 +612,12 @@ class MultisiteCommands extends BltTasks {
 
     $aliases['local']['uri'] = $site_dir;
     $aliases['local']['root'] = '${env.cwd}/docroot';
-    // unset($aliases['local']['ssh']);.
+
+    // Unset variables that cause drush commands to run via vagrant.
+    unset($aliases['local']['host']);
+    unset($aliases['local']['user']);
+    unset($aliases['local']['ssh']);
+
     $filename = $this->getConfigValue('drush.alias-dir') . "/$machine_name.site.yml";
     YamlMunge::mergeArrayIntoFile($aliases, $filename);
 
@@ -683,7 +688,7 @@ EOD;
       $default = [];
     }
 
-    $default['local']['uri'] = $site_dir;
+    $default['local']['uri'] = $domains['local'];
     $default['prod']['uri'] = $site_dir;
     $default['test']['uri'] = $domains['test'];
     $default['dev']['uri'] = $domains['dev'];
