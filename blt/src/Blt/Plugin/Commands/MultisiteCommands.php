@@ -213,20 +213,20 @@ class MultisiteCommands extends BltTasks {
 
     $branch = "initialize-{$machine_name}";
 
-//    $this->taskGit()
-//      ->dir($this->getConfigValue("repo.root"))
-//      ->exec("git checkout -b {$branch}")
-//      ->add('docroot/sites/sites.php')
-//      ->commit("Add sites.php entries for {$site_dir}.")
-//      ->add("docroot/sites/{$site_dir}")
-//      ->commit("Initialize {$site_dir} site directory.")
-//      ->exec("git push -u origin {$branch}")
-//      ->interactive(FALSE)
-//      ->printOutput(FALSE)
-//      ->printMetadata(FALSE)
-//      ->run();
-//
-//    $this->createRemoteDatabase($db['database']);
+    $this->taskGit()
+      ->dir($this->getConfigValue("repo.root"))
+      ->exec("git checkout -b {$branch}")
+      ->add('docroot/sites/sites.php')
+      ->commit("Add sites.php entries for {$site_dir}.")
+      ->add("docroot/sites/{$site_dir}")
+      ->commit("Initialize {$site_dir} site directory.")
+      ->exec("git push -u origin {$branch}")
+      ->interactive(FALSE)
+      ->printOutput(FALSE)
+      ->printMetadata(FALSE)
+      ->run();
+
+    $this->createRemoteDatabase($db['database']);
 
     $this->yell("Follow these next steps:");
     $steps = [
