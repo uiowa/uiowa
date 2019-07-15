@@ -231,16 +231,17 @@ class MultisiteCommands extends BltTasks {
 
     $this->yell("Follow these next steps:");
     $steps = [
-      0 => "Open a PR at https://github.com/uiowa/{$this->getConfig()->get('project.prefix')}/compare/master...{$branch}.",
-      1 => "Assuming tests pass, merge the PR to deploy to the dev environment.",
-    // 3 => "Re-deploy the master branch to the dev environment in the Cloud UI. This will run the cloud hooks successfully.",
-    // 4 => "Coordinate a new release to deploy to the test and prod environments.",
-      6 => "Add the multisite domains to environments as needed.",
+      0 => "If an entry was added to the Drupal VM config (box/config.yml), exit the VM and run `vagrant provision`.",
+      1 => "Open a PR at https://github.com/uiowa/{$this->getConfig()->get('project.prefix')}/compare/master...{$branch}.",
+      2 => "Assuming tests pass, merge the PR to deploy to the dev environment.",
+    // 4 => "Re-deploy the master branch to the dev environment in the Cloud UI. This will run the cloud hooks successfully.",
+    // 5 => "Coordinate a new release to deploy to the test and prod environments.",
+      7 => "Add the multisite domains to environments as needed.",
     ];
 
     if ($install) {
-      $steps[2] = "Sync local database and files to dev environment - remember to clear cache locally <comment>first</comment>!";
-      $steps[5] = "Sync the database and files to the test and prod environments.";
+      $steps[3] = "Sync local database and files to dev environment - remember to clear cache locally <comment>first</comment>!";
+      $steps[6] = "Sync the database and files to the test and prod environments.";
     }
 
     ksort($steps);
@@ -255,6 +256,9 @@ class MultisiteCommands extends BltTasks {
    *   The local URL for the site.
    * @param array $newDBSettings
    *   An array of database configuration options or empty array.
+   *
+   * @return string
+   *   A flag indicating whether the VM was configured.
    */
   protected function configureDrupalVm(array $url, array $newDBSettings) {
     $configure_vm = $this->confirm("Would you like to generate new virtual host entry and database for this site inside Drupal VM?");
@@ -278,6 +282,8 @@ class MultisiteCommands extends BltTasks {
 
       $yamlWriter->write($vm_config);
     }
+
+    return $configure_vm;
   }
 
   /**
