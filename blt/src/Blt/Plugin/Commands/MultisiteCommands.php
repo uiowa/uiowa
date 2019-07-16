@@ -765,7 +765,7 @@ EOD;
       ];
 
       foreach ($options_map as $opt => $map) {
-        if (isset($options[$map])) {
+        if (!empty($options[$map])) {
           $options_map[$opt] = $options[$map];
         }
         else {
