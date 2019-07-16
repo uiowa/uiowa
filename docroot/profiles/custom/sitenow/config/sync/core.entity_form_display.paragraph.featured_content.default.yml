@@ -2,19 +2,20 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.accordion.field_accordion_item
-    - field.field.paragraph.accordion.field_uip_classes
-    - field.field.paragraph.accordion.field_uip_colwidth
-    - field.field.paragraph.accordion.field_uip_display_title
-    - field.field.paragraph.accordion.field_uip_id
-    - field.field.paragraph.accordion.field_uip_title
-    - paragraphs.paragraphs_type.accordion
+    - entity_browser.browser.featured_content_browser
+    - field.field.paragraph.featured_content.field_featured_content
+    - field.field.paragraph.featured_content.field_uip_classes
+    - field.field.paragraph.featured_content.field_uip_colwidth
+    - field.field.paragraph.featured_content.field_uip_display_title
+    - field.field.paragraph.featured_content.field_uip_id
+    - field.field.paragraph.featured_content.field_uip_title
+    - paragraphs.paragraphs_type.featured_content
   module:
+    - entity_browser
     - field_group
-    - paragraphs
 third_party_settings:
   field_group:
-    group_uip_settings:
+    group_settings:
       children:
         - field_uip_colwidth
         - field_uip_classes
@@ -23,44 +24,38 @@ third_party_settings:
       weight: 3
       format_type: details
       format_settings:
-        label: 'Accordion Settings'
-        required_fields: true
         id: ''
         classes: ''
         open: false
-      label: 'Accordion Settings'
-id: paragraph.accordion.default
+        required_fields: true
+      label: 'Featured Content Settings'
+id: paragraph.featured_content.default
 targetEntityType: paragraph
-bundle: accordion
+bundle: featured_content
 mode: default
 content:
-  field_accordion_item:
-    type: paragraphs
+  field_featured_content:
     weight: 2
     settings:
-      title: Accordion
-      title_plural: 'Accordion Items'
-      edit_mode: closed
-      closed_mode: preview
-      autocollapse: all
-      closed_mode_threshold: 2
-      add_mode: dropdown
-      form_display_mode: default
-      default_paragraph_type: accordion_item
-      features:
-        duplicate: duplicate
-        collapse_edit_all: '0'
-        add_above: '0'
+      entity_browser: featured_content_browser
+      field_widget_display: label
+      field_widget_remove: true
+      open: true
+      selection_mode: selection_append
+      field_widget_edit: false
+      field_widget_replace: false
+      field_widget_display_settings: {  }
     third_party_settings: {  }
+    type: entity_browser_entity_reference
     region: content
   field_uip_classes:
-    weight: 3
+    weight: 5
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_uip_colwidth:
-    weight: 2
+    weight: 4
     settings: {  }
     third_party_settings: {  }
     type: options_select
@@ -73,7 +68,7 @@ content:
     type: boolean_checkbox
     region: content
   field_uip_id:
-    weight: 4
+    weight: 6
     settings:
       size: 60
       placeholder: ''
@@ -91,4 +86,3 @@ content:
 hidden:
   created: true
   status: true
-  uid: true

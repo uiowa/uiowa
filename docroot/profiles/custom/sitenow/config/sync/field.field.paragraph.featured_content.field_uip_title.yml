@@ -2,19 +2,17 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.paragraph.field_uip_colwidth
+    - field.storage.paragraph.field_uip_title
     - paragraphs.paragraphs_type.featured_content
-  module:
-    - options
-id: paragraph.featured_content.field_uip_colwidth
-field_name: field_uip_colwidth
+id: paragraph.featured_content.field_uip_title
+field_name: field_uip_title
 entity_type: paragraph
 bundle: featured_content
-label: 'Column Width'
+label: Title
 description: ''
-required: false
+required: true
 translatable: true
 default_value: {  }
 default_value_callback: ''
 settings: {  }
-field_type: list_string
+field_type: string
