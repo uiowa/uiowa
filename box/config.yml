@@ -35,6 +35,10 @@ apache_vhosts:
     certificate_file: /etc/ssl/certs/ssl-cert-snakeoil.pem
     certificate_key_file: /etc/ssl/private/ssl-cert-snakeoil.key
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: theming.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
 mysql_databases:
   -
     name: drupal
@@ -42,6 +46,10 @@ mysql_databases:
     collation: utf8_general_ci
   -
     name: clas
+    encoding: utf8
+    collation: utf8_general_ci
+  -
+    name: theming_uiowa_edu
     encoding: utf8
     collation: utf8_general_ci
 mysql_users:
