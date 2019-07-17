@@ -68,5 +68,4 @@ $sites['theming.uiowa.local.site'] = 'theming.uiowa.edu';
 $sites['theming.dev.drupal.uiowa.edu'] = 'theming.uiowa.edu';
 $sites['theming.stage.drupal.uiowa.edu'] = 'theming.uiowa.edu';
 $sites['theming.prod.drupal.uiowa.edu'] = 'theming.uiowa.edu';
-$sites['theming.uiowa.edu'] = 'theming.uiowa.edu';
 
