@@ -6,9 +6,8 @@ use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * File upload form for UIowa Domain Control Validation
+ * File upload form for UIowa Domain Control Validation.
  */
-
 class UIowaDCVFileForm extends configFormBase {
 
   /**
@@ -18,19 +17,25 @@ class UIowaDCVFileForm extends configFormBase {
     return 'uiowa_dcv_settings';
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getEditableConfigNames() {
     return ['uiowa_dcv.settings'];
   }
 
+  /**
+   * Builds administration form.
+   */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildForm($form, $form_state);
 
     global $base_url;
 
-    $form['markup'] = [
-      '#type' => 'markup',
-      '#markup' => $this->t('DCV file load.'),
-    ];
+    // $form['markup'] = [
+      // '#type' => 'markup',
+      // '#markup' => $this->t('DCV file load.'),
+    // ];
 
     $form['file'] = [
       '#type' => 'file',
@@ -44,7 +49,7 @@ class UIowaDCVFileForm extends configFormBase {
 
     // If it is not set, config::get() defaults to NULL.
     if ($current = \Drupal::config('dcv_file')->get()) {
-      $form['file']['#description'] = t('The hash file to upload. Currently set to <a href="@path">@file</a>.', [
+      $form['file']['#description'] = $this->t('The hash file to upload. Currently set to <a href="@path">@file</a>.', [
         '@path' => $base_url . '/.well-known/pki-validation/' . $current,
         '@file' => $current,
       ]);
@@ -60,18 +65,6 @@ class UIowaDCVFileForm extends configFormBase {
     }
 
     return $form;
-  }
-  
-  /**
-   * File upload handler.
-   */
-  public function file($filename) {
-    if (file_exists('public://dcv/{$filename}')) {
-      return new BinaryFileResponse('public://dcv/{$filename}', 200, ['Content-Type' => 'text/plain']);
-    }
-    else {
-      throw new NotFoundHttpException();
-    }
   }
 
   /**
@@ -100,7 +93,8 @@ class UIowaDCVFileForm extends configFormBase {
       ],
       FALSE,
       FILE_EXISTS_REPLACE
-    );
+      );
+    }
 
     if ($file) {
       // Ensure the filename is uppercase since DCV is case-sensitive.
@@ -116,7 +110,6 @@ class UIowaDCVFileForm extends configFormBase {
     else {
       $form_state->setErrorByName('file', $this->t('No file was uploaded.'));
     }
-    } 
   }
 
   /**
