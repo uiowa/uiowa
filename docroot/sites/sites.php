@@ -63,3 +63,10 @@ $sites['clas-d8.dev.drupal.uiowa.edu'] = 'clas';
 $sites['clas.prod.drupal.uiowa.edu'] = 'clas';
 $sites['clas.uiowa.edu'] = 'clas';
 
+// Directory aliases for theming.uiowa.edu.
+$sites['theming.uiowa.local.site'] = 'theming.uiowa.edu';
+$sites['theming.dev.drupal.uiowa.edu'] = 'theming.uiowa.edu';
+$sites['theming.stage.drupal.uiowa.edu'] = 'theming.uiowa.edu';
+$sites['theming.prod.drupal.uiowa.edu'] = 'theming.uiowa.edu';
+$sites['theming.uiowa.edu'] = 'theming.uiowa.edu';
+
