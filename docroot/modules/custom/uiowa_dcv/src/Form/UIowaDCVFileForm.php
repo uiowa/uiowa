@@ -2,13 +2,13 @@
 
 namespace Drupal\uiowa_dcv\Form;
 
-use Drupal\Core\Form\ConfigFormBase;
+use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
  * File upload form for UIowa Domain Control Validation.
  */
-class UIowaDCVFileForm extends configFormBase {
+class UIowaDCVFileForm extends FormBase {
 
   /**
    * {@inheritdoc}
@@ -18,25 +18,16 @@ class UIowaDCVFileForm extends configFormBase {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  public function getEditableConfigNames() {
-    return ['uiowa_dcv.settings'];
-  }
-
-  /**
    * Builds administration form.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $form = parent::buildForm($form, $form_state);
-
     global $base_url;
 
-    // $form['markup'] = [
-      // '#type' => 'markup',
-      // '#markup' => $this->t('DCV file load.'),
-    // ];
-
+    $form['markup'] = [
+      '#type' => 'markup',
+      '#markup' => $this->t('DCV file load.'),
+      ];
+    
     $form['file'] = [
       '#type' => 'file',
       '#title' => $this->t('File'),
@@ -70,7 +61,7 @@ class UIowaDCVFileForm extends configFormBase {
   /**
    * Delete submit handler.
    */
-  public function delete($form, &$form_state) {
+  public function delete(&$form, $form_state) {
     $dir = 'public://dcv/';
     file_unmanaged_delete_recursive($dir);
     variable_del('dcv_file');
@@ -79,8 +70,8 @@ class UIowaDCVFileForm extends configFormBase {
   /**
    * Page validate handler.
    */
-  public function validate($form, &$form_state) {
-    if ($form_state['values']['op'] == 'Submit') {
+  public function validateForm(&$form, $form_state) {
+    if ($form_state->getValue('op') == 'Submit') {
       $dir = 'public://dcv/';
       file_unmanaged_delete_recursive($dir);
       file_prepare_directory($dir, FILE_CREATE_DIRECTORY);
@@ -92,36 +83,36 @@ class UIowaDCVFileForm extends configFormBase {
         ],
       ],
       FALSE,
+      NULL,
       FILE_EXISTS_REPLACE
       );
+
+      if ($file) {
+        // Ensure the filename is uppercase since DCV is case-sensitive.
+        $info = pathinfo($file[0]->getFileUri());
+        $filename = strtoupper($info['filename']) . '.' . $info['extension'];
+        $form_state->set('file', $file[0]);
+        $form_state->set('dcv_file', $filename);
+
+        if (file_unmanaged_copy($file[0]->getFileUri(), $dir . $filename) === FALSE) {
+          $form_state->setErrorByName('file', $this->t("Failed to write the uploaded file to the site's file folder."));
+        }
     }
-
-    if ($file) {
-      // Ensure the filename is uppercase since DCV is case-sensitive.
-      $info = pathinfo($file->uri);
-      $filename = strtoupper($info['filename']) . '.' . $info['extension'];
-      $form_state['storage']['file'] = $file;
-      $form_state['storage']['dcv_file'] = $filename;
-
-      if (file_unmanaged_copy($file->uri, $dir . $filename) === FALSE) {
-        $form_state->setErrorByName('file', $this->t("Failed to write the uploaded file to the site's file folder."));
+      else {
+        $form_state->setErrorByName('file', $this->t('No file was uploaded.'));
       }
-    }
-    else {
-      $form_state->setErrorByName('file', $this->t('No file was uploaded.'));
     }
   }
 
   /**
    * Page submit handler.
    */
-  public function submit($form, &$form_state) {
-    file_delete($form_state['storage']['file']);
-    // Recommended to change this to $form_state->set(***), but leaving for now.
-    unset($form_state['storage']['file']);
+  public function submitForm(&$form, $form_state) {
+    file_delete($form_state->get('file')->id());
+    $form_state->set('file', NULL);
 
-    $filename = $form_state['storage']['dcv_file'];
-    \Drupal::configFactory()->getEditable()->set('dcv_file', $filename);
+    $filename = $form_state->get('dcv_file');
+    \Drupal::configFactory()->getEditable('dcv_file')->set('dcv_file', $filename);
 
     drupal_set_message($this->t('Uploaded @file successfully.', [
       '@file' => $filename,
