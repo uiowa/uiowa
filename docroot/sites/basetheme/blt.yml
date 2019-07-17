@@ -1,10 +1,12 @@
 project:
   local:
-    hostname: null
-    protocol: null
+    hostname: basetheme.uiowa.local.site
+    protocol: https
   machine_name: basetheme
-  human_name: basetheme
+  human_name: basetheme.uiowa.local.site
 drush:
   aliases:
     local: self
-    remote: basetheme.local
+drupal:
+  db:
+    database: basetheme_uiowa_edu

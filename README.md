@@ -52,18 +52,23 @@ If the blt alias is not available use this command outside and inside vagrant (o
     ```
 
 4. SSH into your VM.
-SSH into your localized Drupal VM environment automated with the BLT launch and automation tools.
+SSH into your localized Drupal VM environment automated with the BLT launch and automation tools. You'll run most other commands from inside Drupal VM.
     ```
     $ vagrant ssh
     ```
 
 ### Site initialization
 1. Setup a local Drupal site with an empty database.
-Use BLT to setup the site with configuration.  If it is a multisite you can identify a specific site.
+Use the `uiowa:multisite` (or `uisite` or `uis`) to generate a new site and the related directories and files. Run this command and follow the prompts.
    ```
-   $ blt setup --site=[sitename]
+   $ blt uis
    ```
+   This command will also:
 
+      * Generate the necessary Drupal VM configuration.
+      * Create a new git branch and push it to Github for review.
+      * Optionally run a site installation.
+      * Create a database in Acquia Cloud for each environment.
 2. Log into your site with drush.
 Access the site and do necessary work at https://uiowa.local.site by running the following commands.
     ```
@@ -72,21 +77,30 @@ Access the site and do necessary work at https://uiowa.local.site by running the
     ```
 
 ---
-### Other Local Setup Steps
+### Other Local Development Tasks
 
 1. Pull Files locally.
 Use BLT to pull all files down from your Cloud environment.
 
-   ```
+   ```console
    $ blt drupal:sync:files
    ```
 
 2. Sync the Cloud Database.
 If you have an existing database you can use BLT to pull down the database from your Cloud environment.
-   ```
+   ```console
    $ blt sync
    ```
 
+### Acquia Cloud API Credentials
+Running the `blt uis` command requires having an Acquia Cloud API key stored in the `blt/local.blt.yml` file. Create this file if it doesn't already exist and add the following section to it:
+```yaml
+credentials:
+  acquia:
+    key: [key]
+    secret: [secret]
+```
+The `key` and `secret` values can be created by visiting this page: https://cloud.acquia.com/a/profile/tokens. The `blt/local.blt.yml` file __must not__ be committed to the git repo.
 
 ---
 # Contributing
@@ -121,22 +135,21 @@ If you have an existing database you can use BLT to pull down the database from 
 
 # Resources 
 
-Additional [BLT documentation](http://blt.readthedocs.io) may be useful. You may also access a list of BLT commands by running this:
+Additional [BLT documentation](https://docs.acquia.com/blt/) may be useful. You may also access a list of BLT commands by running this:
 ```
 $ blt
 ``` 
 
 Note the following properties of this project:
-* Primary development branch: master
-* Local environment: @<site_folder>.local
-* Drupal VM site URL: https://<site_folder>.uiowa.local.site
-* Lando site URL: https://<site_folder>.uiowa.lndo.site
+* Primary development branch: _master_
+* Local environment: _@[machine_name].local_
+* Drupal VM site URL: _https://[machine_name].uiowa.local.site_
 
-## Working With a BLT Project
+The `machine_name` for a site will be generated during the site initialization process. A site with the URL `example.uiowa.edu` would have a machine_name of `example` and a site with the URL `sub.example.uiowa.edu` would have the machine_name of `example_sub`.
 
-BLT projects are designed to instill software development best practices (including git workflows). 
+## Workflow
 
-Our BLT Developer documentation includes an [example workflow](http://blt.readthedocs.io/en/latest/readme/dev-workflow/#workflow-example-local-development).
+We use a _feature branch_ workflow model, as described in [these BLT docs](https://docs.acquia.com/blt/developer/dev-workflow/#feature-branch-workflow).
 
 ### Important Configuration Files
 
