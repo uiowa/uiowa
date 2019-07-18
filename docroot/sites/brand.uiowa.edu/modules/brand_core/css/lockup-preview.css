@@ -1,8 +1,13 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap'); #lockup-preview {
   display: none;
 }
+#lockup-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 #lockup-preview .block-iowa {
-  width: 200px;
+  width: 250px;
 }
 .lockup-horizontal,
 .lockup-stacked {
@@ -15,16 +20,24 @@
   display: table;
   margin: 0 auto;
   border-top: 3px solid;
-  min-width: 200px;
+  min-width: 250px;
+  margin-top: calc(-5px + 17px);
+}
+.lockup-stacked .lockup-content-inner {
+  padding: 0 13px;
+}
+.lockup-stacked .primary-unit {
+  margin-top: 5px;
+  display: inline-block;
 }
 .lockup-horizontal {
   display: flex;
 }
 .lockup-horizontal .lockup-content {
   border-left: 3px solid;
-  min-height: 59px;
-  margin-left: 0.5rem;
-  padding-left: 0.5rem;
+  min-height: 74px;
+  margin-left: 18px;
+  padding-left: 19px;
   display: table;
 }
 .lockup-horizontal .lockup-content .lockup-content-inner {
@@ -37,11 +50,14 @@
   font-family: 'Roboto', sans-serif;
 }
 .primary-unit {
-  font-weight: 700;
-  font-size: 12pt;
+  margin-bottom: 3px;
+  font-weight: 800;
+  font-size: 28px;
+  line-height: 1.25;
 }
 .sub-unit {
-  font-size: 10pt;
+  font-size: 21px;
+  line-height: 1.25;
 }
 .field--name-field-lockup-primary-unit textarea,
 .field--name-field-lockup-sub-unit textarea {
