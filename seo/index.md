@@ -14,24 +14,17 @@ You can override the defaults for each instance under the Advanced tab of the ed
 
 By default on the basic page content type, the "Content Description" field is used for the meta description value.
 
-## Sitemap (Work in Progress)
+## Sitemap
 
 Each site automatically generates a sitemap which can be found at /sitemap.xml
 
-When creating a site it is recommended to take the sitemap and create a Google search console property. Similar to how it was done with Drupal 7 sites.
+When creating a site it is recommended, though not required to submit your sitemap to Google via their search console service. This let's Google know about your site and in turn Google provides tools to optimize your site when it comes to SEO. [Read Google's specific instructions](https://support.google.com/webmasters/answer/6332964).
 
-### Instructions
+**Note**: In order to verify ownership of the website, you must verify through Google Analytics. [Read about how to configure Google Analytics for your site](../google-analytics/index.md).
 
-Google: https://support.google.com/webmasters/answer/34592?hl=en
-
-Drupal 8: https://www.drupal.org/docs/7/modules/metatag/howto-verify-a-site-on-google-webmaster-tools-d7-d8
 
 ## Notifying Search Engines
 
 To kick-start the Google crawling/indexing process you can setup at [Google Webmasters](https://www.google.com/webmasters) and submit your sitemap and/or [submit your URL](https://www.google.com/webmasters/tools/submit-url?pli=1)
 
-~~For Bing, you can [submit your URL](http://www.bing.com/toolbox/submit-site-url).~~
-
-Bing has recently retired their URL submit tool and now has a similar service to Google's for webmasters. [You can sign-up for Bing's Webmasters service here](https://www.bing.com/toolbox/webmaster/).
-
-
+Bing has a similar service to Google's for webmasters. [You can sign-up for Bing's Webmasters service here](https://www.bing.com/toolbox/webmaster/).
