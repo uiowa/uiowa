@@ -1,18 +1,23 @@
+uuid: 6486b2fe-c85e-47df-b1f8-7377dd88f43d
 langcode: en
 status: true
 dependencies:
-  config:
-    - field.storage.paragraph.field_uip_id
-    - paragraphs.paragraphs_type.featured_content
-id: paragraph.featured_content.field_uip_id
+  module:
+    - paragraphs
+_core:
+  default_config_hash: P90LmDBOlivsTpiHG4z6dgCVNfYQgTDAnBy-OXLYizE
+id: paragraph.field_uip_id
 field_name: field_uip_id
 entity_type: paragraph
-bundle: featured_content
-label: 'Unique ID'
-description: ''
-required: false
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
 translatable: true
-default_value: {  }
-default_value_callback: ''
-settings: {  }
-field_type: string
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
