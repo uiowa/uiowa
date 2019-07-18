@@ -25,4 +25,16 @@ CKEDITOR.on( 'dialogDefinition', function( ev )
         infoTab.remove('hAlign');
         infoTab.remove('wordWrap');
     }
+    if (dialogName == 'tableProperties') {
+        // Get the properties tab reference.
+        var infoTab = dialogDefinition.getContents('info');
+
+        // Remove unnecessary bits from this tab.
+        infoTab.remove('txtBorder');
+        infoTab.remove('cmbAlign');
+        infoTab.remove('txtWidth');
+        infoTab.remove('txtHeight');
+        infoTab.remove('txtCellSpace');
+        infoTab.remove('txtCellPad');
+    }
 });
