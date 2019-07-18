@@ -3,7 +3,7 @@ CKEDITOR.on( 'dialogDefinition', function( ev )
     var dialogName = ev.data.name;
     var dialogDefinition = ev.data.definition;
 
-    if (dialogName == 'table') {
+    if (dialogName == 'table' || 'tableProperties') {
         // Get the properties tab reference.
         var infoTab = dialogDefinition.getContents('info');
 
