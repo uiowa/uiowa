@@ -18,16 +18,23 @@ class UIowaDCVFileForm extends FormBase {
   }
 
   /**
-   * Builds administration form.
+   * {@inheritdoc}
+   */
+  public function getEditableConfigNames() {
+    return 'uiowa_dcv.settings';
+  }
+
+  /**
+   * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     global $base_url;
 
     $form['markup'] = [
       '#type' => 'markup',
-      '#markup' => $this->t('DCV file load.'),
-      ];
-    
+      '#markup' => $this->t('Domain control validation configuration.'),
+    ];
+
     $form['file'] = [
       '#type' => 'file',
       '#title' => $this->t('File'),
@@ -39,7 +46,7 @@ class UIowaDCVFileForm extends FormBase {
     ];
 
     // If it is not set, config::get() defaults to NULL.
-    if ($current = \Drupal::config('dcv_file')->get()) {
+    if ($current = \Drupal::config('uiowa_dcv.settings')->get('dcv_file')) {
       $form['file']['#description'] = $this->t('The hash file to upload. Currently set to <a href="@path">@file</a>.', [
         '@path' => $base_url . '/.well-known/pki-validation/' . $current,
         '@file' => $current,
@@ -48,7 +55,7 @@ class UIowaDCVFileForm extends FormBase {
       $form['delete'] = [
         '#type' => 'submit',
         '#value' => $this->t('Delete'),
-        '#submit' => ['uiowa_dcv_delete'],
+        '#submit' => ['::delete'],
       ];
     }
     else {
@@ -62,13 +69,17 @@ class UIowaDCVFileForm extends FormBase {
    * Delete submit handler.
    */
   public function delete(&$form, $form_state) {
-    $dir = 'public://dcv/';
-    file_unmanaged_delete_recursive($dir);
-    variable_del('dcv_file');
+    $filename = $form_state->get('dcv_file');
+    if (file_unmanaged_delete_recursive("public://dcv/{$filename}")) {
+      \Drupal::configFactory()->getEditable('uiowa_dcv.settings')
+        ->set('dcv_file', NULL)
+        ->save();
+      drupal_set_message($this->t('Deleted successfully.'));
+    }
   }
 
   /**
-   * Page validate handler.
+   * {@inheritdoc}
    */
   public function validateForm(&$form, $form_state) {
     if ($form_state->getValue('op') == 'Submit') {
@@ -97,7 +108,7 @@ class UIowaDCVFileForm extends FormBase {
         if (file_unmanaged_copy($file[0]->getFileUri(), $dir . $filename) === FALSE) {
           $form_state->setErrorByName('file', $this->t("Failed to write the uploaded file to the site's file folder."));
         }
-    }
+      }
       else {
         $form_state->setErrorByName('file', $this->t('No file was uploaded.'));
       }
@@ -105,14 +116,18 @@ class UIowaDCVFileForm extends FormBase {
   }
 
   /**
-   * Page submit handler.
+   * {@inheritdoc}
    */
   public function submitForm(&$form, $form_state) {
-    file_delete($form_state->get('file')->id());
-    $form_state->set('file', NULL);
+    if ($form_state->get('file')) {
+      file_delete($form_state->get('file')->id());
+      $form_state->set('file', NULL);
+    }
 
     $filename = $form_state->get('dcv_file');
-    \Drupal::configFactory()->getEditable('dcv_file')->set('dcv_file', $filename);
+    \Drupal::configFactory()->getEditable('uiowa_dcv.settings')
+      ->set('dcv_file', $filename)
+      ->save();
 
     drupal_set_message($this->t('Uploaded @file successfully.', [
       '@file' => $filename,
