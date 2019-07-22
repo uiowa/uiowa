@@ -24,11 +24,7 @@ class LockupController extends ControllerBase {
     $lockup_stacked_rgb_file = $path . ' LockupStacked-RGB.svg';
     fwrite(fopen(file_directory_temp() . '/' . $lockup_stacked_rgb_file, 'w'), $lockup_stacked_rgb);
 
-    $lockup_stacked_cmyk = LockupController::generateLockup($node, '#FFD600', "#000000", 'stacked');
-    $lockup_stacked_cmyk_file = $path . ' LockupStacked-CMYK.svg';
-    fwrite(fopen(file_directory_temp() . '/' . $lockup_stacked_cmyk_file, 'w'), $lockup_stacked_cmyk);
-
-    $lockup_stacked_reversed = LockupController::generateLockup($node, '#FFFFFF', "#FFFFFF", 'stacked');
+    $lockup_stacked_reversed = LockupController::generateLockup($node, '#FFCD00', "#FFFFFF", 'stacked');
     $lockup_stacked_reversed_file = $path . ' LockupStacked-REVERSED.svg';
     fwrite(fopen(file_directory_temp() . '/' . $lockup_stacked_reversed_file, 'w'), $lockup_stacked_reversed);
 
@@ -40,11 +36,7 @@ class LockupController extends ControllerBase {
     $lockup_horizontal_rgb_file = $path . ' LockupHorizontal-RGB.svg';
     fwrite(fopen(file_directory_temp() . '/' . $lockup_horizontal_rgb_file, 'w'), $lockup_horizontal_rgb);
 
-    $lockup_horizontal_cmyk = LockupController::generateLockup($node, '#FFCD00', "#000000", 'horizontal');
-    $lockup_horizontal_cmyk_file = $path . ' LockupHorizontal-CMYK.svg';
-    fwrite(fopen(file_directory_temp() . '/' . $lockup_horizontal_cmyk_file, 'w'), $lockup_horizontal_cmyk);
-
-    $lockup_horizontal_reversed = LockupController::generateLockup($node, '#FFFFFF', "#FFFFFF", 'horizontal');
+    $lockup_horizontal_reversed = LockupController::generateLockup($node, '#FFCD00', "#FFFFFF", 'horizontal');
     $lockup_horizontal_reversed_file = $path . ' LockupHorizontal-REVERSED.svg';
     fwrite(fopen(file_directory_temp() . '/' . $lockup_horizontal_reversed_file, 'w'), $lockup_horizontal_reversed);
 
@@ -58,11 +50,9 @@ class LockupController extends ControllerBase {
 
     $zip->addFile(file_directory_temp() . '/' . $lockup_stacked_black_file, $path . "-Lockup/" . $lockup_stacked_black_file);
     $zip->addFile(file_directory_temp() . '/' . $lockup_stacked_rgb_file, $path . "-Lockup/" . $lockup_stacked_rgb_file);
-    $zip->addFile(file_directory_temp() . '/' . $lockup_stacked_cmyk_file, $path . "-Lockup/" . $lockup_stacked_cmyk_file);
     $zip->addFile(file_directory_temp() . '/' . $lockup_stacked_reversed_file, $path . "-Lockup/" . $lockup_stacked_reversed_file);
     $zip->addFile(file_directory_temp() . '/' . $lockup_horizontal_black_file, $path . "-Lockup/" . $lockup_horizontal_black_file);
     $zip->addFile(file_directory_temp() . '/' . $lockup_horizontal_rgb_file, $path . "-Lockup/" . $lockup_horizontal_rgb_file);
-    $zip->addFile(file_directory_temp() . '/' . $lockup_horizontal_cmyk_file, $path . "-Lockup/" . $lockup_horizontal_cmyk_file);
     $zip->addFile(file_directory_temp() . '/' . $lockup_horizontal_reversed_file, $path . "-Lockup/" . $lockup_horizontal_reversed_file);
 
     $zip->close();
@@ -77,11 +67,9 @@ class LockupController extends ControllerBase {
     unlink($zip_filename);
     unlink(file_directory_temp() . '/' . $lockup_stacked_black_file);
     unlink(file_directory_temp() . '/' . $lockup_stacked_rgb_file);
-    unlink(file_directory_temp() . '/' . $lockup_stacked_cmyk_file);
     unlink(file_directory_temp() . '/' . $lockup_stacked_reversed_file);
     unlink(file_directory_temp() . '/' . $lockup_horizontal_black_file);
     unlink(file_directory_temp() . '/' . $lockup_horizontal_rgb_file);
-    unlink(file_directory_temp() . '/' . $lockup_horizontal_cmyk_file);
     unlink(file_directory_temp() . '/' . $lockup_horizontal_reversed_file);
     return [
       '#type' => 'markup',
@@ -106,39 +94,73 @@ class LockupController extends ControllerBase {
     $svg_width = 0;
     $sub_height = 0;
 
-    if (!empty($node->field_lockup_sub_unit->value)) {
-      $hasSecondary = TRUE;
-    }
+    $primary = new EasySVG();
 
     // Unit name generation.
     $primary_text = $node->field_lockup_primary_unit->value;
-    $sub_text = $node->field_lockup_sub_unit->value;
-
-    $primary = new EasySVG();
-    $sub = new EasySVG();
+    $primary_explode = explode(PHP_EOL, $primary_text);
+    $lines = [];
+    foreach ($primary_explode as $line) {
+      str_replace('\r', '', $line);
+      $lines[] = $primary->textDimensions($line);
+    }
+    $max = max($lines);
+    $primary_lines = count($primary_explode);
 
     $primary->setFont($bold, 8, $text_color);
     $primary_dimensions = $primary->textDimensions($primary_text);
     if ($primary_dimensions[0] > $svg_width) {
       $svg_width = $primary_dimensions[0];
     }
+
     $svg_half_width = $svg_width / 2;
+
+    if (!empty($node->field_lockup_sub_unit->value)) {
+      $hasSecondary = TRUE;
+      $sub_text = $node->field_lockup_sub_unit->value;
+      $sub_text = $node->field_lockup_sub_unit->value;
+      $sub_explode = explode(PHP_EOL, $sub_text);
+      $sub = new EasySVG();
+    }
 
     switch ($type) {
       case 'stacked':
         LockupController::addStackedLogo($primary, $iowa_color);
+        // Border. Width based on primary width.
         $primary->addRect([
           'x' => 680.91 - $svg_half_width - 3.528,
           'y' => '376',
           'width' => $svg_width + 7.506,
           'height' => '0.8',
+          'style' => 'fill:' . $text_color,
         ]);
+        // Primary Line 1.
         $primary->addText(html_entity_decode(
-          $primary_text,
+          $primary_explode[0],
           ENT_QUOTES | ENT_XML1,
           'UTF-8'),
           680.91 - $svg_half_width,
           '382'
+        );
+        // Primary Line 2.
+        $line2 = $primary->textDimensions($lines[1]);
+        $line2_midpoint = $line2[0] / 2;
+        $primary->addText(html_entity_decode(
+          $primary_explode[1],
+          ENT_QUOTES | ENT_XML1,
+          'UTF-8'),
+          680.91 - $line2_midpoint,
+          '392'
+        );
+        // Primary Line 3.
+        $line3 = $primary->textDimensions($lines[2]);
+        $line3_midpoint = $line3[0] / 2;
+        $primary->addText(html_entity_decode(
+          $primary_explode[2],
+          ENT_QUOTES | ENT_XML1,
+          'UTF-8'),
+          680.91 - $line3_midpoint,
+          '402'
         );
         $primary->setLineHeight(9.6);
         $primary->setLetterSpacing(0);
@@ -146,11 +168,13 @@ class LockupController extends ControllerBase {
 
       case 'horizontal':
         LockupController::addHorizontalLogo($primary, $iowa_color);
+        // Border. Height based on primary and secondary combined height.
         $primary->addRect([
           'x' => 675.15,
           'y' => '384.4',
           'width' => 0.8,
-          'height' => '30.6'
+          'height' => '30.6',
+          'style' => 'fill:' . $text_color,
         ]);
         break;
 
