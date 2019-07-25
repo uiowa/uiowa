@@ -218,6 +218,8 @@ class MultisiteCommands extends BltTasks {
       ->exec("git checkout -b {$branch}")
       ->add('docroot/sites/sites.php')
       ->commit("Add sites.php entries for {$site_dir}.")
+      ->add("box/config.yml")
+      ->commit("Added site and database definitions to Drupal VM config for {$site_dir}.")
       ->add("docroot/sites/{$site_dir}")
       ->commit("Initialize {$site_dir} site directory.")
       ->exec("git push -u origin {$branch}")
