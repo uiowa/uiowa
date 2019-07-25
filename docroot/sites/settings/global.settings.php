@@ -14,7 +14,7 @@ if ($site_dir != 'default') {
   $db_name = str_replace('.', '_', $site_dir);
 
   if (file_exists('/var/www/site-php')) {
-    require "/var/www/site-php/uiowa/{$db_name}-settings.inc";
+    require "/var/www/site-php/uiowa01/{$db_name}-settings.inc";
   }
 }
 
