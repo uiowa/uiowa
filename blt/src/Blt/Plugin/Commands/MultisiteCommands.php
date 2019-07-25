@@ -223,6 +223,7 @@ class MultisiteCommands extends BltTasks {
       ->add("docroot/sites/{$site_dir}")
       ->commit("Initialize {$site_dir} site directory.")
       ->exec("git push -u origin {$branch}")
+      ->checkout('master')
       ->interactive(FALSE)
       ->printOutput(FALSE)
       ->printMetadata(FALSE)
