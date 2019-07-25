@@ -222,6 +222,8 @@ class MultisiteCommands extends BltTasks {
       ->commit("Added site and database definitions to Drupal VM config for {$site_dir}.")
       ->add("docroot/sites/{$site_dir}")
       ->commit("Initialize {$site_dir} site directory.")
+      ->add("config/{$site_dir}")
+      ->commit("Create config directory for {$site_dir}")
       ->exec("git push -u origin {$branch}")
       ->checkout('master')
       ->interactive(FALSE)
