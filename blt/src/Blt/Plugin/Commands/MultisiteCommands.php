@@ -411,6 +411,7 @@ class MultisiteCommands extends BltTasks {
     $config_dir = $this->getConfigValue('docroot') . '/' . $this->getConfigValue('cm.core.path') . '/' . $site_dir;
     $result = $this->taskFilesystemStack()
       ->mkdir($config_dir)
+      ->touch("{$config_dir}/.gitkeep")
       ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_VERBOSE)
       ->run();
     if (!$result->wasSuccessful()) {
