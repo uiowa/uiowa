@@ -130,6 +130,10 @@ The `key` and `secret` values can be created by visiting this page: https://clou
     Create the pull request by visiting the referenced URL.
 7. Once your feature has been reviewed by another developer, the PR can be merged into the master branch via the Github UI.
 8. Nice work!
+9. If you have recently restarted your computer, you may need to run the following command for `git push` to work from inside of the vagrant:
+    ```console
+    ssh-add -K ~/.ssh/id_rsa
+    ```
 
 ---
 
