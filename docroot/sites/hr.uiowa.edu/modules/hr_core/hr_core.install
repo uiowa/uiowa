@@ -6,6 +6,7 @@
  */
 
 use Drupal\taxonomy\Entity\Term;
+use Drupal\redirect\Entity\Redirect;
 use Drupal\Core\Config\FileStorage;
 
 /**
@@ -287,4 +288,39 @@ function hr_core_update_8003() {
   $source = new FileStorage($config_path);
   $config_storage = \Drupal::service('config.storage');
   $config_storage->write('config_ignore.settings', $source->read('config_ignore.settings'));
+}
+
+/**
+ * Purge existing redirects.
+ */
+function hr_core_update_8004() {
+  \Drupal::database()->truncate('redirect')->execute();
+}
+
+/**
+ * First batch of redirects.
+ */
+function hr_core_update_8005() {
+
+  $path = drupal_get_path('module', 'hr_core');
+  $csv = array_map('str_getcsv', file($path . '/redirects/batch01.csv'));
+  $header = FALSE;
+
+  if ($header === TRUE) {
+    unset($csv[0]);
+  }
+
+  foreach ($csv as $redirect) {
+    $source_path = $redirect[0];
+    $redirect_path = $redirect[1];
+    $existing = \Drupal::service('redirect.repository')->findBySourcePath($source_path);
+    if (empty($existing)) {
+      Redirect::create([
+        'redirect_source' => $source_path,
+        'redirect_redirect' => $redirect_path,
+        'language' => 'en',
+        'status_code' => '301',
+      ])->save();
+    }
+  }
 }
