@@ -77,3 +77,8 @@ $sites['sitenow.prod.drupal.uiowa.edu'] = 'sitenow.uiowa.edu';
 $sites['mnh.dev.drupal.uiowa.edu'] = 'mnh.uiowa.edu';
 $sites['mnh.stage.drupal.uiowa.edu'] = 'mnh.uiowa.edu';
 $sites['mnh.prod.drupal.uiowa.edu'] = 'mnh.uiowa.edu';
+
+// Directory aliases for oldcap.uiowa.edu.
+$sites['oldcap.dev.drupal.uiowa.edu'] = 'oldcap.uiowa.edu';
+$sites['oldcap.stage.drupal.uiowa.edu'] = 'oldcap.uiowa.edu';
+$sites['oldcap.prod.drupal.uiowa.edu'] = 'oldcap.uiowa.edu';
