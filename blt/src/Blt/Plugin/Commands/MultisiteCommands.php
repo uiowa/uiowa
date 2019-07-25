@@ -703,12 +703,13 @@ EOD;
    *   The generated array of domains for the site.
    */
   protected function regenerateDrushAliases($machine_name, $site_dir, array $domains) {
-    $filename = "{$this->getConfigValue('drush.alias-dir')}/{$machine_name}.site.yml";
-    if (file_exists($filename)) {
-      $default = Yaml::parse(file_get_contents($filename));
+    $default_filename = "{$this->getConfigValue('drush.alias-dir')}/{$this->getConfig()->get('project.prefix')}.site.yml";
+    $to_filename = "{$this->getConfigValue('drush.alias-dir')}/{$machine_name}.site.yml";
+    if (file_exists($default_filename)) {
+      $default = Yaml::parse(file_get_contents($default_filename));
     }
     else {
-      $this->logger->warning('Drush alias file does not already exist: ' . $filename);
+      $this->logger->warning('Drush alias file does not already exist: ' . $default_filename);
       $default = [];
     }
 
@@ -717,7 +718,7 @@ EOD;
     $default['test']['uri'] = $domains['test'];
     $default['dev']['uri'] = $domains['dev'];
 
-    file_put_contents($filename, Yaml::dump($default, 10, 2));
+    file_put_contents($to_filename, Yaml::dump($default, 10, 2));
     $this->say("Updated <comment>{$machine_name}.site.yml</comment> Drush alias file with <info>local, dev, test and prod</info> aliases.");
   }
 
