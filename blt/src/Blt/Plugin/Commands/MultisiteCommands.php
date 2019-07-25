@@ -244,7 +244,7 @@ EOD;
 
     $application = $cloud->application($this->getConfigValue('cloud.appId'));
     $cloud->databaseCreate($application->uuid, $db);
-    $this->say("Created <comment>{$db}</comment> database.");
+    $this->say("Created <comment>{$db}</comment> cloud database.");
 
     $this->yell("Follow these next steps!");
     $steps = [
