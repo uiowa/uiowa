@@ -39,6 +39,10 @@ apache_vhosts:
     servername: theming.uiowa.local.site
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: gradcogscilang.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
 mysql_databases:
   -
     name: drupal
@@ -50,6 +54,10 @@ mysql_databases:
     collation: utf8_general_ci
   -
     name: theming_uiowa_edu
+    encoding: utf8
+    collation: utf8_general_ci
+  -
+    name: cogscilang_grad_uiowa_edu
     encoding: utf8
     collation: utf8_general_ci
 mysql_users:
