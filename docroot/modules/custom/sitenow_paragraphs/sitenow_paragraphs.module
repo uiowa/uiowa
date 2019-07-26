@@ -1,0 +1,325 @@
+<?php
+
+/**
+ * @file
+ * Contains sitenow_paragraph.module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Component\Utility\Html;
+use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\Core\Template\Attribute;
+
+/**
+ * Implements hook_theme().
+ */
+function sitenow_paragraphs_theme($existing, $type, $theme, $path) {
+  return [
+    'field__paragraph__field_section_content_block__section' => [
+      'template' => 'field--paragraph--field-section-content-block--section',
+      'base hook' => 'field',
+    ],
+    'paragraph__section__default' => [
+      'template' => 'paragraph--section--default',
+      'base hook' => 'paragraph',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_entity_create().
+ */
+function sitenow_paragraphs_entity_create(EntityInterface $entity) {
+  // On new basic pages.
+  if ($entity->bundle() == 'page' && $entity->isNew()) {
+    // Create a text within a section default.
+    $text = Paragraph::create([
+      'type' => 'text',
+    ]);
+    $text->isNew();
+    $section = Paragraph::create([
+      'type' => 'section',
+    ]);
+    $section_blocks = $section->get('field_section_content_block');
+    $section_blocks->appendItem($text);
+    $section->isNew();
+
+    // Add the nested section/text to the node's field.
+    $field = $entity->get('field_page_content_block');
+    $field->appendItem($section);
+  }
+}
+
+/**
+ * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ */
+function sitenow_paragraphs_field_widget_paragraphs_form_alter(&$element, FormStateInterface $form_state, $context) {
+  // Hide paragraph classes if no options.
+  if (isset($element['subform']['field_uip_classes'])) {
+    // If count equals one and that item is _none, disable/hide.
+    if (count($element['subform']['field_uip_classes']['widget']['#options']) == 1 && array_key_exists('_none', $element['subform']['field_uip_classes']['widget']['#options'])) {
+      $element['subform']['field_uip_classes']['#access'] = FALSE;
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_paragraphs_preprocess_paragraph(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    $paragraph = $variables['paragraph'];
+    if ($paragraph->hasField('field_uip_classes') && !$paragraph->get('field_uip_classes')->isEmpty()) {
+      $classes = [];
+      $values = $paragraph->get('field_uip_classes')->getValue();
+      array_walk_recursive($values, function ($v) use (&$classes) {
+        $classes[] = $v;
+      });
+      $variables['attributes']['class'] = (isset($variables['attributes']['class'])) ? array_merge($variables['attributes']['class'], $classes) : $classes;
+    }
+    switch ($paragraph->bundle()) {
+      case 'section':
+      case 'text':
+      case 'accordion':
+      case 'accordion_item':
+      case 'blockquote':
+      case 'card':
+        // Add css if applicable.
+        $variables['#attached']['library'][] = 'sitenow_paragraphs/default';
+
+        // Display title if it exists.
+        if ($paragraph->hasField('field_uip_display_title')) {
+          if ($paragraph->field_uip_display_title->value == 1) {
+            $variables['display_title'] = TRUE;
+          }
+        }
+        // Get field_uip_colwidth value.
+        if ($paragraph->hasField('field_uip_colwidth')) {
+          $variables['attributes']['class'][] = $paragraph->field_uip_colwidth->value;
+        }
+        // Get field_uip_id value.
+        if ($paragraph->hasField('field_uip_id') && !$paragraph->get('field_uip_id')->isEmpty()) {
+          $variables['attributes']['id'][] = Html::getUniqueId($paragraph->field_uip_id->value);
+        }
+        // If section...
+        if ($paragraph->bundle() == 'section') {
+          // If section container.
+          $variables["content"]["field_section_content_block"]['#attributes']['class'][] = (!$paragraph->get('field_section_container')->isEmpty()
+            ? $paragraph->field_section_container->value : 'container');
+
+          // If section image.
+          $image_field = $paragraph->get('field_section_image');
+          if (!$image_field->isEmpty()) {
+            $variables['attributes']['class'][] = 'has-section-image';
+          }
+        }
+        break;
+
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_paragraphs_preprocess_field(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    switch ($variables['element']['#field_name']) {
+      case 'field_section_content_block':
+        $paragraph = $variables["element"]["#object"];
+        $variables['section_attributes'] = new Attribute();
+        $variables['section_attributes']->addClass('section-content');
+        $variables['section_attributes']->addClass('row');
+        // If section alignitems.
+        $variables['section_attributes']['class'][] = (!$paragraph->get('field_section_alignitems')->isEmpty()
+          ? $paragraph->field_section_alignitems->value : 'align-items-center');
+        // If section justifycontent.
+        $variables['section_attributes']['class'][] = (!$paragraph->get('field_section_justifycontent')->isEmpty()
+          ? $paragraph->field_section_justifycontent->value : 'justify-content-start');
+        break;
+    }
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function sitenow_paragraphs_theme_suggestions_field_alter(&$suggestions, $variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    switch ($variables['element']['#field_name']) {
+      case 'field_media_image_1':
+      case 'field_section_image':
+        $suggestions[] = 'field__no_markup';
+        break;
+
+      case 'field_page_content_block':
+        $suggestions[] = 'field__no_item_wrapper';
+        break;
+    }
+  }
+}
+
+/**
+ * Set dynamic allowed values for the uip_classes field.
+ *
+ * @param \Drupal\field\Entity\FieldStorageConfig $definition
+ *   The field definition.
+ * @param \Drupal\Core\Entity\ContentEntityInterface|null $entity
+ *   The entity being created if applicable.
+ * @param bool $cacheable
+ *   Boolean indicating if the results are cacheable.
+ *
+ * @return array
+ *   An array of possible key and value options.
+ *
+ * @see options_allowed_values()
+ */
+function uip_classes_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, &$cacheable) {
+  $cacheable = FALSE;
+  $options = [];
+  $bundle = $entity->bundle();
+
+  switch ($bundle) {
+    case 'section':
+      $options['bg-light'] = 'Light Gray Background';
+      $options['bg-dark'] = 'Dark Background';
+      $options['bg-yellow'] = 'Yellow Background';
+      break;
+
+    case 'text':
+      $options['bg-light'] = 'Light Gray Background';
+      $options['bg-dark'] = 'Dark Background';
+      $options['bg-yellow'] = 'Yellow Background';
+      $options['semi-transparent'] = 'Semi-Transparent Background';
+      break;
+
+  }
+
+  // Allow modules to alter classes.
+  \Drupal::moduleHandler()->alter('uip_classes', $options, $entity, $bundle);
+
+  return $options;
+}
+
+/**
+ * Set dynamic allowed values for the uip_colwidth field.
+ *
+ * @param \Drupal\field\Entity\FieldStorageConfig $definition
+ *   The field definition.
+ * @param \Drupal\Core\Entity\ContentEntityInterface|null $entity
+ *   The entity being created if applicable.
+ * @param bool $cacheable
+ *   Boolean indicating if the results are cacheable.
+ *
+ * @return array
+ *   An array of possible key and value options.
+ *
+ * @see options_allowed_values()
+ */
+function uip_colwidth_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, &$cacheable) {
+  $cacheable = FALSE;
+  $options = [
+    'col-md' => 'Fluid',
+    'col-md-3' => 'Quarter',
+    'col-md-4' => 'Third',
+    'col-md-6' => 'Half',
+    'col-md-12' => 'Full',
+  ];
+  $bundle = $entity->bundle();
+  // Allow modules to alter classes.
+  \Drupal::moduleHandler()->alter('uip_colwidth', $options, $entity, $bundle);
+
+  return $options;
+}
+
+/**
+ * Set dynamic allowed values for the section_container field.
+ *
+ * @param \Drupal\field\Entity\FieldStorageConfig $definition
+ *   The field definition.
+ * @param \Drupal\Core\Entity\ContentEntityInterface|null $entity
+ *   The entity being created if applicable.
+ * @param bool $cacheable
+ *   Boolean indicating if the results are cacheable.
+ *
+ * @return array
+ *   An array of possible key and value options.
+ *
+ * @see options_allowed_values()
+ */
+function section_container_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, &$cacheable) {
+  $cacheable = FALSE;
+  $options = [
+    'container' => 'Medium',
+    'container-fluid' => 'Large',
+  ];
+  $bundle = $entity->bundle();
+  // Allow modules to alter classes.
+  \Drupal::moduleHandler()->alter('section_container', $options, $entity, $bundle);
+
+  return $options;
+}
+
+/**
+ * Set dynamic allowed values for the section_alignitems field.
+ *
+ * @param \Drupal\field\Entity\FieldStorageConfig $definition
+ *   The field definition.
+ * @param \Drupal\Core\Entity\ContentEntityInterface|null $entity
+ *   The entity being created if applicable.
+ * @param bool $cacheable
+ *   Boolean indicating if the results are cacheable.
+ *
+ * @return array
+ *   An array of possible key and value options.
+ *
+ * @see options_allowed_values()
+ */
+function section_alignitems_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, &$cacheable) {
+  $cacheable = FALSE;
+  $options = [
+    'align-items-center' => 'Middle',
+    'align-items-start' => 'Top',
+    'align-items-end' => 'Bottom',
+  ];
+  $bundle = $entity->bundle();
+  // Allow modules to alter classes.
+  \Drupal::moduleHandler()->alter('section_alignitems', $options, $entity, $bundle);
+
+  return $options;
+}
+
+/**
+ * Set dynamic allowed values for the section_justifycontent field.
+ *
+ * @param \Drupal\field\Entity\FieldStorageConfig $definition
+ *   The field definition.
+ * @param \Drupal\Core\Entity\ContentEntityInterface|null $entity
+ *   The entity being created if applicable.
+ * @param bool $cacheable
+ *   Boolean indicating if the results are cacheable.
+ *
+ * @return array
+ *   An array of possible key and value options.
+ *
+ * @see options_allowed_values()
+ */
+function section_justifycontent_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, &$cacheable) {
+  $cacheable = FALSE;
+  $options = [
+    'justify-content-start' => 'Left',
+    'justify-content-center' => 'Center',
+    'justify-content-end' => 'Right',
+  ];
+  $bundle = $entity->bundle();
+  // Allow modules to alter classes.
+  \Drupal::moduleHandler()->alter('section_justifycontent', $options, $entity, $bundle);
+
+  return $options;
+}
