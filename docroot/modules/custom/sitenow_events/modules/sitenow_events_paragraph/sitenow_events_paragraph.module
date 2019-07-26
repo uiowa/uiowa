@@ -1,0 +1,140 @@
+<?php
+
+/**
+ * @file
+ * Paragraphs events bundle functionality.
+ */
+
+use Drupal\Component\Utility\Html;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_uip_classes_alter().
+ */
+function sitenow_events_uip_classes_alter(&$options, $entity, $bundle) {
+  switch ($bundle) {
+    case 'events':
+      $options['hide-descriptions'] = 'Hide Descriptions';
+      $options['hide-images'] = 'Hide Images';
+      $options['grid'] = 'Grid';
+      $options['masonry'] = 'Masonry';
+      break;
+
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function sitenow_events_paragraph_theme($existing, $type, $theme, $path) {
+  return [
+    'paragraph__events__default' => [
+      'template' => 'paragraph--events--default',
+      'base hook' => 'paragraph',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_events_paragraph_preprocess_paragraph(&$variables) {
+  $paragraph = $variables['paragraph'];
+  switch ($paragraph->bundle()) {
+    case 'events':
+      $admin_context = \Drupal::service('router.admin_context');
+      if (!$admin_context->isAdminRoute()) {
+
+        // Display title if it exists.
+        if ($paragraph->hasField('field_uip_display_title')) {
+          if ($paragraph->field_uip_display_title->value == 1) {
+            $variables['display_title'] = TRUE;
+          }
+        }
+
+        if ($paragraph->hasField('field_uip_classes') && !$paragraph->get('field_uip_classes')->isEmpty()) {
+          $classes = $paragraph->get('field_uip_classes')->getValue();
+          // Clean array of classes selected.
+          $classes = array_column($classes, 'value');
+          // Check for grid classes otherwise add list class.
+          $display_options = [
+            'grid',
+            'masonry',
+          ];
+          $result = array_intersect($display_options, $classes);
+          if (!$result) {
+            $variables['attributes']['class'][] = 'list';
+          }
+        }
+        else {
+          $variables['attributes']['class'][] = 'list';
+        }
+        // Get field_uip_colwidth value.
+        if ($paragraph->hasField('field_uip_colwidth')) {
+          $variables['attributes']['class'][] = $paragraph->field_uip_colwidth->value;
+        }
+        // Get field_uip_id value.
+        if ($paragraph->hasField('field_uip_id')) {
+          $variables['attributes']['id'][] = Html::getUniqueId($paragraph->field_uip_id->value);
+        }
+
+        $instance_values = sitenow_events_instance_values($paragraph);
+        $start = date('d-m-Y');
+
+        $events = sitenow_events_load([
+          'display_id' => 'events',
+          'filters[department]' => $instance_values['department'],
+          'filters[audiences]' => $instance_values['audiences'],
+          'filters[interests]' => $instance_values['interests'],
+          'filters[types]' => $instance_values['event_types'],
+          'filters[keywords]' => $instance_values['keywords'],
+          'filters[startdate][value][date]' => date('m-d-Y', strtotime($start)),
+          'filters[enddate][value][date]' => date('m-d-Y', strtotime($start . '+365 days')),
+          'page' => 0,
+          'items_per_page' => $instance_values['results'],
+        ]);
+
+        if (!empty($events['events'])) {
+          foreach ($events['events'] as $e) {
+            $variables['list'][] = [
+              '#theme' => 'sitenow_events_teaser',
+              '#event' => $e,
+            ];
+          }
+        }
+        else {
+          $variables['list'] = [
+            '#markup' => '<div class="events-empty"><p>There are currently no results to display.</p></div>',
+          ];
+        }
+
+        // If we have more link checked and link provided, pass it.
+        $more = ($instance_values['more'][0]['value'] == 1) ? TRUE : FALSE;
+        if ($more == TRUE) {
+          $variables['more'] = [
+            '#type' => 'container',
+            '#attributes' => [
+              'class' => 'more-link',
+            ],
+          ];
+          if (!empty($instance_values['more_path'])) {
+            $url = Url::fromUri($instance_values['more_path'][0]['uri']);
+          }
+          else {
+            $url = Url::fromUri('//events.uiowa.edu');
+          }
+
+          $variables['more']['btn'] = [
+            '#type' => 'link',
+            '#title' => 'View more events',
+            '#url' => $url,
+            '#attributes' => [
+              'class' => ['btn', 'btn-primary'],
+            ],
+          ];
+        }
+      }
+
+      break;
+  }
+}
