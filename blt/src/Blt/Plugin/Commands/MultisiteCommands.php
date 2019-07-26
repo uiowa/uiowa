@@ -213,14 +213,27 @@ class MultisiteCommands extends BltTasks {
 
     $branch = "initialize-{$machine_name}";
 
-    $this->taskGit()
+    $gitTask = $this->taskGit()
       ->dir($this->getConfigValue("repo.root"))
       ->exec("git checkout -b {$branch}")
       ->add('docroot/sites/sites.php')
       ->commit("Add sites.php entries for {$site_dir}.")
       ->add("docroot/sites/{$site_dir}")
       ->commit("Initialize {$site_dir} site directory.")
-      ->exec("git push -u origin {$branch}")
+      ->add("config/{$site_dir}")
+      ->commit("Create config directory for {$site_dir}")
+      ->add("drush/sites/{$machine_name}.site.yml")
+      ->commit("Added drush alias for {$machine_name}.");
+
+    // Check if the box/config.yml file has been modified.
+    if ($vm_changed = $this->checkDirty('box/config.yml')) {
+      $this->say("Drupal VM config was updated and changes will be committed.");
+      $gitTask = $gitTask->add("box/config.yml")
+        ->commit("Added site and database definitions to Drupal VM config for {$site_dir}.");
+    }
+
+    $gitTask->exec("git push -u origin {$branch}")
+      ->checkout('master')
       ->interactive(FALSE)
       ->printOutput(FALSE)
       ->printMetadata(FALSE)
@@ -230,13 +243,16 @@ class MultisiteCommands extends BltTasks {
 
     $this->yell("Follow these next steps:");
     $steps = [
-      0 => "If an entry was added to the Drupal VM config (box/config.yml), exit the VM and run `vagrant provision`.",
       1 => "Open a PR at https://github.com/uiowa/{$this->getConfig()->get('project.prefix')}/compare/master...{$branch}.",
       2 => "Assuming tests pass, merge the PR to deploy to the dev environment.",
     // 4 => "Re-deploy the master branch to the dev environment in the Cloud UI. This will run the cloud hooks successfully.",
     // 5 => "Coordinate a new release to deploy to the test and prod environments.",
       7 => "Add the multisite domains to environments as needed.",
     ];
+
+    if ($vm_changed) {
+      $steps[0] = "Drupal VM config (box/config.yml) was updated, exit the VM (`exit`) and run `vagrant provision`.";
+    }
 
     if ($install) {
       $steps[3] = "Sync local database and files to dev environment - remember to clear cache locally <comment>first</comment>!";
@@ -246,6 +262,25 @@ class MultisiteCommands extends BltTasks {
     ksort($steps);
 
     $this->io()->listing($steps);
+  }
+
+  /**
+   * Checks if a path has been changed.
+   *
+   * @param string $path
+   *   The path to check.
+   *
+   * @return bool
+   *   Whether git is dirty or not.
+   */
+  public function checkDirty($path) {
+    $result = $this->taskExec('git status --porcelain')
+      ->printMetadata(FALSE)
+      ->printOutput(TRUE)
+      ->interactive(FALSE)
+      ->run();
+
+    return strpos($result->getMessage(), $path) !== FALSE;
   }
 
   /**
@@ -411,6 +446,7 @@ class MultisiteCommands extends BltTasks {
     $config_dir = $this->getConfigValue('docroot') . '/' . $this->getConfigValue('cm.core.path') . '/' . $site_dir;
     $result = $this->taskFilesystemStack()
       ->mkdir($config_dir)
+      ->touch("{$config_dir}/.gitkeep")
       ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_VERBOSE)
       ->run();
     if (!$result->wasSuccessful()) {
@@ -702,12 +738,13 @@ EOD;
    *   The generated array of domains for the site.
    */
   protected function regenerateDrushAliases($machine_name, $site_dir, array $domains) {
-    $filename = "{$this->getConfigValue('drush.alias-dir')}/{$machine_name}.site.yml";
-    if (file_exists($filename)) {
-      $default = Yaml::parse(file_get_contents($filename));
+    $default_filename = "{$this->getConfigValue('drush.alias-dir')}/{$this->getConfig()->get('project.prefix')}.site.yml";
+    $to_filename = "{$this->getConfigValue('drush.alias-dir')}/{$machine_name}.site.yml";
+    if (file_exists($default_filename)) {
+      $default = Yaml::parse(file_get_contents($default_filename));
     }
     else {
-      $this->logger->warning('Drush alias file does not already exist: ' . $filename);
+      $this->logger->warning('Drush alias file does not already exist: ' . $default_filename);
       $default = [];
     }
 
@@ -716,7 +753,7 @@ EOD;
     $default['test']['uri'] = $domains['test'];
     $default['dev']['uri'] = $domains['dev'];
 
-    file_put_contents($filename, Yaml::dump($default, 10, 2));
+    file_put_contents($to_filename, Yaml::dump($default, 10, 2));
     $this->say("Updated <comment>{$machine_name}.site.yml</comment> Drush alias file with <info>local, dev, test and prod</info> aliases.");
   }
 
