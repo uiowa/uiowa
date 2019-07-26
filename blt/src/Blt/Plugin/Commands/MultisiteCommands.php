@@ -221,7 +221,9 @@ class MultisiteCommands extends BltTasks {
       ->add("docroot/sites/{$site_dir}")
       ->commit("Initialize {$site_dir} site directory.")
       ->add("config/{$site_dir}")
-      ->commit("Create config directory for {$site_dir}");
+      ->commit("Create config directory for {$site_dir}")
+      ->add("drush/sites/{$machine_name}.site.yml")
+      ->commit("Added drush alias for {$machine_name}.");
 
     // Check if the box/config.yml file has been modified.
     if ($vm_changed = $this->checkDirty('box/config.yml')) {
@@ -233,8 +235,8 @@ class MultisiteCommands extends BltTasks {
     $gitTask->exec("git push -u origin {$branch}")
       // ->checkout('master')
       ->interactive(FALSE)
-      ->printOutput(FALSE)
-      ->printMetadata(FALSE)
+      // ->printOutput(FALSE)
+      // ->printMetadata(FALSE)
       ->run();
 
     $this->createRemoteDatabase($db['database']);
