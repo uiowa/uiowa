@@ -1,7 +1,11 @@
+.paragraph--type--text {
+  padding-top: $grid-gutter-width/2;
+  padding-bottom: $grid-gutter-width/2;
+}
 .paragraph--type--text.bg-yellow,
 .paragraph--type--text.bg-light {
   color: $gray-900;
-  a {
+  a:not(.btn):not(.alert-link) {
     color: $black;
     text-decoration: underline;
     &:hover, &:focus {
@@ -11,7 +15,7 @@
 }
 .paragraph--type--text.bg-dark {
   color: $white;
-  a {
+  a:not(.btn):not(.alert-link) {
     color: $yellow;
   }
 }
