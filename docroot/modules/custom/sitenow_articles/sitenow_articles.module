@@ -124,7 +124,7 @@ function sitenow_articles_preprocess_node(&$variables) {
 
           case 'full':
           case 'default':
-            $style = 'uiowa_article';
+            $style = 'sitenow_article';
 
             $variables['content']['article_author'] = $node->field_article_author->view([
               'type' => 'entity_reference_label',
