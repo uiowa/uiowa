@@ -233,10 +233,10 @@ class MultisiteCommands extends BltTasks {
     }
 
     $gitTask->exec("git push -u origin {$branch}")
-      // ->checkout('master')
+      ->checkout('master')
       ->interactive(FALSE)
-      // ->printOutput(FALSE)
-      // ->printMetadata(FALSE)
+      ->printOutput(FALSE)
+      ->printMetadata(FALSE)
       ->run();
 
     $this->createRemoteDatabase($db['database']);
