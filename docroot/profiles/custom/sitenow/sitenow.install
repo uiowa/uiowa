@@ -61,7 +61,7 @@ function sitenow_update_8003() {
  * Delete config_ignore key_value entry.
  */
 function sitenow_update_8004() {
-  $query = \Drupal::database()->delete('key_value')
+  \Drupal::database()->delete('key_value')
     ->condition('collection', 'system.schema')
     ->condition('name', 'config_ignore')
     ->execute();
@@ -96,5 +96,15 @@ function sitenow_update_8007() {
  * Flush all caches so sites pick asset location changes.
  */
 function sitenow_update_8008() {
+  drupal_flush_all_caches();
+}
+
+/**
+ * Update sitenow_seo schema version to match uiowa_seo.
+ */
+function sitenow_update_8009() {
+  $schema = Drupal::keyValue('system.schema')->get('uiowa_seo');
+  Drupal::keyValue('system.schema')->delete('uiowa_seo');
+  Drupal::keyValue('system.schema')->set('sitenow_seo', $schema);
   drupal_flush_all_caches();
 }
