@@ -98,7 +98,7 @@ class SitenowDcvFileForm extends FormBase {
       ];
     }
     else {
-      $form['file']['#description'] = $this->t('The hash file to upload.');
+      $form['file']['#description'] = $this->t('The hash file to upload. The file name will be converted to uppercase automatically');
     }
 
     return $form;
