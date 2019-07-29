@@ -125,6 +125,7 @@ class SitenowDcvFileForm extends FormBase {
       $this->fileSystem->deleteRecursive($dir);
       $this->fileSystem->prepareDirectory($dir, FileSystemInterface::CREATE_DIRECTORY);
 
+      /** @var \Drupal\file\FileInterface $file */
       $file = file_save_upload('file', [
         'file_validate_is_file' => [],
         'file_validate_extensions' => [
@@ -132,18 +133,18 @@ class SitenowDcvFileForm extends FormBase {
         ],
       ],
       FALSE,
-      NULL,
+      0,
       FileSystemInterface::EXISTS_REPLACE
       );
 
       if ($file) {
         // Ensure the filename is uppercase since DCV is case-sensitive.
-        $info = pathinfo($file[0]->getFileUri());
+        $info = pathinfo($file->getFileUri());
         $filename = strtoupper($info['filename']) . '.' . $info['extension'];
-        $form_state->set('file', $file[0]);
+        $form_state->set('file', $file);
         $form_state->set('dcv_file', $filename);
 
-        if ($this->fileSystem->copy($file[0]->getFileUri(), $dir . $filename) === FALSE) {
+        if ($this->fileSystem->copy($file->getFileUri(), $dir . $filename) === FALSE) {
           $form_state->setErrorByName('file', $this->t("Failed to write the uploaded file to the site's file folder."));
         }
       }
