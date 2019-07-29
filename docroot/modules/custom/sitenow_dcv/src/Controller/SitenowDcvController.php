@@ -1,14 +1,14 @@
 <?php
 
-namespace Drupal\uiowa_dcv\Controller;
+namespace Drupal\sitenow_dcv\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 /**
- * Returns responses for Uiowa DCV routes.
+ * Returns responses for DCV routes.
  */
-class UiowaDcvController extends ControllerBase {
+class SitenowDcvController extends ControllerBase {
 
   /**
    * Returns file content.
