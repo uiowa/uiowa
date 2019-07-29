@@ -7,6 +7,7 @@ use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Messenger\MessengerInterface;
+use Drupal\Core\State\State;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -35,6 +36,13 @@ class SitenowDcvFileForm extends FormBase {
   protected $entityStorage;
 
   /**
+   * The state service.
+   *
+   * @var \Drupal\Core\State\State
+   */
+  protected $state;
+
+  /**
    * SitenowDcvFileForm constructor.
    *
    * @param \Drupal\Core\File\FileSystemInterface $fileSystem
@@ -43,11 +51,14 @@ class SitenowDcvFileForm extends FormBase {
    *   The messenger service.
    * @param \Drupal\Core\Entity\EntityStorageInterface $entityStorage
    *   The entity storage service.
+   * @param \Drupal\Core\State\State $state
+   *   The state service.
    */
-  public function __construct(FileSystemInterface $fileSystem, MessengerInterface $messenger, EntityStorageInterface $entityStorage) {
+  public function __construct(FileSystemInterface $fileSystem, MessengerInterface $messenger, EntityStorageInterface $entityStorage, State $state) {
     $this->fileSystem = $fileSystem;
     $this->messenger = $messenger;
     $this->entityStorage = $entityStorage;
+    $this->state = $state;
   }
 
   /**
@@ -57,7 +68,8 @@ class SitenowDcvFileForm extends FormBase {
     return new static(
       $container->get('file_system'),
       $container->get('messenger'),
-      $container->get('entity_type.manager')->getStorage('file')
+      $container->get('entity_type.manager')->getStorage('file'),
+      $container->get('state')
     );
   }
 
@@ -96,46 +108,31 @@ class SitenowDcvFileForm extends FormBase {
       '#value' => $this->t('Submit'),
     ];
 
-    // If it is not set, config::get() defaults to NULL.
-    if ($current = \Drupal::config('sitenow_dcv.settings')->get('dcv_file')) {
-      $form['file']['#description'] = $this->t('The hash file to upload. Currently set to <a href="@path">@file</a>.', [
-        '@path' => $base_url . '/.well-known/pki-validation/' . $current,
-        '@file' => $current,
-      ]);
+    /* @var \Drupal\file\Entity\File[] $file */
+    $file = \Drupal::entityTypeManager()
+      ->getStorage('file')
+      ->loadByProperties(['filename' => $this->state->get('sitenow_dcv_filename', '')]);
 
-      $form['delete'] = [
-        '#type' => 'submit',
-        '#value' => $this->t('Delete'),
-        '#submit' => ['::delete'],
-      ];
+    // There can only be one file with this name since we are replacing on upload.
+    $file = array_pop($file);
+
+    if ($file) {
+      $form['file']['#description'] = $this->t('The hash file to upload. Currently set to <a href="@path">@file</a>.', [
+        '@path' => $base_url . '/.well-known/pki-validation/' . $file->getFilename(),
+        '@file' => $file->getFilename(),
+      ]);
     }
     else {
-      $form['file']['#description'] = $this->t('The hash file to upload. The file name will be converted to uppercase automatically');
+      $form['file']['#description'] = $this->t('The hash file to upload.');
     }
 
     return $form;
   }
 
   /**
-   * Delete submit handler.
-   */
-  public function delete(&$form, $form_state) {
-    if ($this->fileSystem->deleteRecursive("public://dcv/")) {
-      \Drupal::configFactory()->getEditable('sitenow_dcv.settings')
-        ->set('dcv_file', NULL)
-        ->save();
-      $this->messenger->addMessage($this->t('Deleted successfully.'));
-    }
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function validateForm(&$form, $form_state) {
-    $dir = 'public://dcv/';
-    $this->fileSystem->deleteRecursive($dir);
-    $this->fileSystem->prepareDirectory($dir, FileSystemInterface::CREATE_DIRECTORY);
-
     /** @var \Drupal\file\FileInterface $file */
     $file = file_save_upload('file', [
       'file_validate_is_file' => [],
@@ -149,18 +146,10 @@ class SitenowDcvFileForm extends FormBase {
     );
 
     if ($file) {
-      // Ensure the filename is uppercase since DCV is case-sensitive.
-      $info = pathinfo($file->getFileUri());
-      $filename = strtoupper($info['filename']) . '.' . $info['extension'];
-      $form_state->set('file', $file);
-      $form_state->set('dcv_file', $filename);
-
-      if ($this->fileSystem->copy($file->getFileUri(), $dir . $filename) === FALSE) {
-        $form_state->setErrorByName('file', $this->t("Failed to write the uploaded file to the site's file folder."));
-      }
+      $form_state->set('sitenow_dcv_filename', $file->getFilename());
     }
     else {
-      $form_state->setErrorByName('file', $this->t('No file was uploaded.'));
+      $form_state->setErrorByName('file', $this->t('There was an error trying to upload the file.'));
     }
   }
 
@@ -168,15 +157,8 @@ class SitenowDcvFileForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(&$form, $form_state) {
-    if ($form_state->get('file')) {
-      $this->entityStorage->delete([$form_state->get('file')]);
-      $form_state->set('file', NULL);
-    }
-
-    $filename = $form_state->get('dcv_file');
-    \Drupal::configFactory()->getEditable('sitenow_dcv.settings')
-      ->set('dcv_file', $filename)
-      ->save();
+    $filename = $form_state->get('sitenow_dcv_filename');
+    $this->state->set('sitenow_dcv_filename', $filename);
 
     $this->messenger->addMessage($this->t('Uploaded @file successfully.', [
       '@file' => $filename,
