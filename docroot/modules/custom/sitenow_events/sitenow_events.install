@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * @file
+ * Install hooks for sitenow_events.
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function sitenow_events_uninstall() {
+  // Remove the module configuration.
+  \Drupal::configFactory()->getEditable('sitenow_events.settings')->delete();
+}
+
+/**
+ * Delete the unused uievents database table.
+ */
+function sitenow_events_update_8001() {
+  Drupal::database()->schema()->dropTable('uievents');
+  drupal_flush_all_caches();
+}
