@@ -15,8 +15,16 @@ class SitenowDcvController extends ControllerBase {
    * Returns file content.
    */
   public function dcvFile($filename) {
-    if (file_exists("public://dcv/{$filename}")) {
-      return new BinaryFileResponse("public://dcv/{$filename}", 200, ['Content-Type' => 'text/plain']);
+    /* @var \Drupal\file\Entity\File[] $file */
+    $file = \Drupal::entityTypeManager()
+      ->getStorage('file')
+      ->loadByProperties(['filename' => $filename]);
+
+    // There can only be one file with this name since we are replacing on upload.
+    $file = array_pop($file);
+
+    if ($file) {
+      return new BinaryFileResponse($file->getFileUri(), 200, ['Content-Type' => 'text/plain']);
     }
     else {
       throw new NotFoundHttpException();
