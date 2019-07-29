@@ -2,6 +2,7 @@
 
 namespace Drupal\sitenow_dcv\Form;
 
+use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -27,16 +28,26 @@ class SitenowDcvFileForm extends FormBase {
   protected $messenger;
 
   /**
+   * The entity storage service.
+   *
+   * @var \Drupal\Core\Entity\EntityStorageInterface
+   */
+  protected $entityStorage;
+
+  /**
    * SitenowDcvFileForm constructor.
    *
    * @param \Drupal\Core\File\FileSystemInterface $fileSystem
    *   The file system service.
    * @param \Drupal\Core\Messenger\MessengerInterface $messenger
    *   The messenger service.
+   * @param \Drupal\Core\Entity\EntityStorageInterface $entityStorage
+   *   The entity storage service.
    */
-  public function __construct(FileSystemInterface $fileSystem, MessengerInterface $messenger) {
+  public function __construct(FileSystemInterface $fileSystem, MessengerInterface $messenger, EntityStorageInterface $entityStorage) {
     $this->fileSystem = $fileSystem;
     $this->messenger = $messenger;
+    $this->entityStorage = $entityStorage;
   }
 
   /**
@@ -45,7 +56,8 @@ class SitenowDcvFileForm extends FormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('file_system'),
-      $container->get('messenger')
+      $container->get('messenger'),
+      $container->get('entity_type.manager')->getStorage('file')
     );
   }
 
@@ -159,7 +171,7 @@ class SitenowDcvFileForm extends FormBase {
    */
   public function submitForm(&$form, $form_state) {
     if ($form_state->get('file')) {
-      file_delete($form_state->get('file')->id());
+      $this->entityStorage->delete([$form_state->get('file')]);
       $form_state->set('file', NULL);
     }
 
