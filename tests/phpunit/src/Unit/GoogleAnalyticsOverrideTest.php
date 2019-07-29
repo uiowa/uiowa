@@ -3,7 +3,7 @@
 namespace Drupal\Tests\uiowa_seo\Unit\ConfigOverride;
 
 use Drupal\Tests\UnitTestCase;
-use Drupal\uiowa_seo\ConfigOverrides\GoogleAnalyticsOverride;
+use Drupal\sitenow_seo\ConfigOverrides\GoogleAnalyticsOverride;
 
 /**
  * Tests Google Analytics is not tracking on non-production environments.
