@@ -11,7 +11,7 @@
   .paragraph--type--text {
     background-color: $dark;
     color: $white;
-    a {
+    a:not(.btn):not(.alert-link) {
       color: $yellow;
     }
     &.semi-transparent {
@@ -37,7 +37,7 @@
     &.semi-transparent {
       background-color: rgba(255, 205, 0, 0.8) !important;
     }
-    a {
+    a:not(.btn):not(.alert-link) {
       color: $black;
       text-decoration: underline;
       &:hover, &:focus {
