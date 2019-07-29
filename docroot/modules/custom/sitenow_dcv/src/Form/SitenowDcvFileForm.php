@@ -1,27 +1,27 @@
 <?php
 
-namespace Drupal\uiowa_dcv\Form;
+namespace Drupal\sitenow_dcv\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * File upload form for UIowa Domain Control Validation.
+ * File upload form for domain control validation.
  */
-class UIowaDCVFileForm extends FormBase {
+class SitenowDcvFileForm extends FormBase {
 
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'uiowa_dcv_settings';
+    return 'sitenow_dcv_settings';
   }
 
   /**
    * {@inheritdoc}
    */
   public function getEditableConfigNames() {
-    return 'uiowa_dcv.settings';
+    return 'sitenow_dcv.settings';
   }
 
   /**
@@ -46,7 +46,7 @@ class UIowaDCVFileForm extends FormBase {
     ];
 
     // If it is not set, config::get() defaults to NULL.
-    if ($current = \Drupal::config('uiowa_dcv.settings')->get('dcv_file')) {
+    if ($current = \Drupal::config('sitenow_dcv.settings')->get('dcv_file')) {
       $form['file']['#description'] = $this->t('The hash file to upload. Currently set to <a href="@path">@file</a>.', [
         '@path' => $base_url . '/.well-known/pki-validation/' . $current,
         '@file' => $current,
@@ -71,7 +71,7 @@ class UIowaDCVFileForm extends FormBase {
   public function delete(&$form, $form_state) {
     $filename = $form_state->get('dcv_file');
     if (file_unmanaged_delete_recursive("public://dcv/{$filename}")) {
-      \Drupal::configFactory()->getEditable('uiowa_dcv.settings')
+      \Drupal::configFactory()->getEditable('sitenow_dcv.settings')
         ->set('dcv_file', NULL)
         ->save();
       drupal_set_message($this->t('Deleted successfully.'));
@@ -125,7 +125,7 @@ class UIowaDCVFileForm extends FormBase {
     }
 
     $filename = $form_state->get('dcv_file');
-    \Drupal::configFactory()->getEditable('uiowa_dcv.settings')
+    \Drupal::configFactory()->getEditable('sitenow_dcv.settings')
       ->set('dcv_file', $filename)
       ->save();
 

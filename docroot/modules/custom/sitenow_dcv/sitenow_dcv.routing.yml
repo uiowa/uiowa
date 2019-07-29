@@ -1,15 +1,15 @@
-uiowa_dcv.settings:
+sitenow_dcv.settings:
   path: 'admin/config/system/dcv'
   defaults:
-    _form: 'Drupal\uiowa_dcv\Form\UIowaDCVFileForm'
+    _form: 'Drupal\sitenow_dcv\Form\SitenowDcvFileForm'
     _title: 'Domain Control Validation'
   requirements:
     _permission: 'administer dcv configuration'
 
-uiowa_dcv.file:
+sitenow_dcv.file:
   path: '.well-known/pki-validation/{filename}'
   defaults:
-    _controller: \Drupal\uiowa_dcv\Controller\UiowaDcvController::dcvFile
+    _controller: \Drupal\sitenow_dcv\Controller\SitenowDcvController::dcvFile
     _title: 'DCV File'
   requirements:
     _permission: 'access content'
