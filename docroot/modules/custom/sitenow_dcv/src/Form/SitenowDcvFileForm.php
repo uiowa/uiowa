@@ -2,10 +2,10 @@
 
 namespace Drupal\sitenow_dcv\Form;
 
-use Drupal\Core\File\FileSystem;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Messenger\MessengerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -13,20 +13,30 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class SitenowDcvFileForm extends FormBase {
   /**
-   * Drupal file system.
+   * The file system service.
    *
-   * @var \Drupal\Core\File\FileSystem
+   * @var \Drupal\Core\File\FileSystemInterface
    */
   protected $fileSystem;
 
   /**
+   * The messenger service.
+   *
+   * @var \Drupal\Core\Messenger\MessengerInterface
+   */
+  protected $messenger;
+
+  /**
    * SitenowDcvFileForm constructor.
    *
-   * @param \Drupal\Core\File\FileSystem $fileSystem
-   *   The Drupal file system.
+   * @param \Drupal\Core\File\FileSystemInterface $fileSystem
+   *   The file system service.
+   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
+   *   The messenger service.
    */
-  public function __construct(FileSystem $fileSystem) {
+  public function __construct(FileSystemInterface $fileSystem, MessengerInterface $messenger) {
     $this->fileSystem = $fileSystem;
+    $this->messenger = $messenger;
   }
 
   /**
@@ -34,7 +44,8 @@ class SitenowDcvFileForm extends FormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('file_system')
+      $container->get('file_system'),
+      $container->get('messenger')
     );
   }
 
@@ -97,12 +108,11 @@ class SitenowDcvFileForm extends FormBase {
    * Delete submit handler.
    */
   public function delete(&$form, $form_state) {
-    $filename = $form_state->get('dcv_file');
     if ($this->fileSystem->deleteRecursive("public://dcv/")) {
       \Drupal::configFactory()->getEditable('sitenow_dcv.settings')
         ->set('dcv_file', NULL)
         ->save();
-      drupal_set_message($this->t('Deleted successfully.'));
+      $this->messenger->addMessage($this->t('Deleted successfully.'));
     }
   }
 
@@ -157,7 +167,7 @@ class SitenowDcvFileForm extends FormBase {
       ->set('dcv_file', $filename)
       ->save();
 
-    drupal_set_message($this->t('Uploaded @file successfully.', [
+    $this->messenger->addMessage($this->t('Uploaded @file successfully.', [
       '@file' => $filename,
     ]));
   }
