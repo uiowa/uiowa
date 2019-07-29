@@ -46,16 +46,16 @@ class BrandCoreCommands extends DrushCommands {
       $params['login'] = Url::fromUri($base_url . '/saml/login', $url_options)->toString();
       $result = $mailManager->mail('brand_core', 'lockup-review-digest', 'joe-whitsitt@uiowa.edu', 'en', $params, NULL, TRUE);
       if ($result['result'] !== TRUE) {
-        \Drupal::logger('brand_core')->error(t('Lockup Review Digest Not Sent'));
+        \Drupal::logger('brand_core')->error('Lockup Review Digest Not Sent');
         $this->output()->writeln('Lockup Review Digest Not Sent');
       }
       else {
-        \Drupal::logger('brand_core')->notice(t('Lockup Review Digest Sent'));
+        \Drupal::logger('brand_core')->notice('Lockup Review Digest Sent');
         $this->output()->writeln('Lockup Review Digest Sent');
       }
     }
     else {
-      \Drupal::logger('brand_core')->notice(t('Lockup Review Digest - No items to review'));
+      \Drupal::logger('brand_core')->notice('Lockup Review Digest - No items to review');
       $this->output()->writeln('Lockup Review Digest - No items to review');
       return;
     }
