@@ -2,13 +2,41 @@
 
 namespace Drupal\sitenow_dcv\Form;
 
+use Drupal\Core\File\FileSystem;
+use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * File upload form for domain control validation.
  */
 class SitenowDcvFileForm extends FormBase {
+  /**
+   * Drupal file system.
+   *
+   * @var \Drupal\Core\File\FileSystem
+   */
+  protected $fileSystem;
+
+  /**
+   * SitenowDcvFileForm constructor.
+   *
+   * @param \Drupal\Core\File\FileSystem $fileSystem
+   *   The Drupal file system.
+   */
+  public function __construct(FileSystem $fileSystem) {
+    $this->fileSystem = $fileSystem;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('file_system')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -70,7 +98,7 @@ class SitenowDcvFileForm extends FormBase {
    */
   public function delete(&$form, $form_state) {
     $filename = $form_state->get('dcv_file');
-    if (file_unmanaged_delete_recursive("public://dcv/{$filename}")) {
+    if ($this->fileSystem->deleteRecursive("public://dcv/")) {
       \Drupal::configFactory()->getEditable('sitenow_dcv.settings')
         ->set('dcv_file', NULL)
         ->save();
@@ -84,8 +112,8 @@ class SitenowDcvFileForm extends FormBase {
   public function validateForm(&$form, $form_state) {
     if ($form_state->getValue('op') == 'Submit') {
       $dir = 'public://dcv/';
-      file_unmanaged_delete_recursive($dir);
-      file_prepare_directory($dir, FILE_CREATE_DIRECTORY);
+      $this->fileSystem->deleteRecursive($dir);
+      $this->fileSystem->prepareDirectory($dir, FileSystemInterface::CREATE_DIRECTORY);
 
       $file = file_save_upload('file', [
         'file_validate_is_file' => [],
@@ -95,7 +123,7 @@ class SitenowDcvFileForm extends FormBase {
       ],
       FALSE,
       NULL,
-      FILE_EXISTS_REPLACE
+      FileSystemInterface::EXISTS_REPLACE
       );
 
       if ($file) {
@@ -105,7 +133,7 @@ class SitenowDcvFileForm extends FormBase {
         $form_state->set('file', $file[0]);
         $form_state->set('dcv_file', $filename);
 
-        if (file_unmanaged_copy($file[0]->getFileUri(), $dir . $filename) === FALSE) {
+        if ($this->fileSystem->copy($file[0]->getFileUri(), $dir . $filename) === FALSE) {
           $form_state->setErrorByName('file', $this->t("Failed to write the uploaded file to the site's file folder."));
         }
       }
