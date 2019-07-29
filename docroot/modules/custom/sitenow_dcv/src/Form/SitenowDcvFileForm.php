@@ -132,37 +132,35 @@ class SitenowDcvFileForm extends FormBase {
    * {@inheritdoc}
    */
   public function validateForm(&$form, $form_state) {
-    if ($form_state->getValue('op') == 'Submit') {
-      $dir = 'public://dcv/';
-      $this->fileSystem->deleteRecursive($dir);
-      $this->fileSystem->prepareDirectory($dir, FileSystemInterface::CREATE_DIRECTORY);
+    $dir = 'public://dcv/';
+    $this->fileSystem->deleteRecursive($dir);
+    $this->fileSystem->prepareDirectory($dir, FileSystemInterface::CREATE_DIRECTORY);
 
-      /** @var \Drupal\file\FileInterface $file */
-      $file = file_save_upload('file', [
-        'file_validate_is_file' => [],
-        'file_validate_extensions' => [
-          'txt',
-        ],
+    /** @var \Drupal\file\FileInterface $file */
+    $file = file_save_upload('file', [
+      'file_validate_is_file' => [],
+      'file_validate_extensions' => [
+        'txt',
       ],
-      FALSE,
-      0,
-      FileSystemInterface::EXISTS_REPLACE
-      );
+    ],
+    FALSE,
+    0,
+    FileSystemInterface::EXISTS_REPLACE
+    );
 
-      if ($file) {
-        // Ensure the filename is uppercase since DCV is case-sensitive.
-        $info = pathinfo($file->getFileUri());
-        $filename = strtoupper($info['filename']) . '.' . $info['extension'];
-        $form_state->set('file', $file);
-        $form_state->set('dcv_file', $filename);
+    if ($file) {
+      // Ensure the filename is uppercase since DCV is case-sensitive.
+      $info = pathinfo($file->getFileUri());
+      $filename = strtoupper($info['filename']) . '.' . $info['extension'];
+      $form_state->set('file', $file);
+      $form_state->set('dcv_file', $filename);
 
-        if ($this->fileSystem->copy($file->getFileUri(), $dir . $filename) === FALSE) {
-          $form_state->setErrorByName('file', $this->t("Failed to write the uploaded file to the site's file folder."));
-        }
+      if ($this->fileSystem->copy($file->getFileUri(), $dir . $filename) === FALSE) {
+        $form_state->setErrorByName('file', $this->t("Failed to write the uploaded file to the site's file folder."));
       }
-      else {
-        $form_state->setErrorByName('file', $this->t('No file was uploaded.'));
-      }
+    }
+    else {
+      $form_state->setErrorByName('file', $this->t('No file was uploaded.'));
     }
   }
 
