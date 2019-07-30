@@ -6,7 +6,6 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\State\State;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -20,13 +19,6 @@ class SitenowDcvFileForm extends FormBase {
    * @var \Drupal\Core\File\FileSystemInterface
    */
   protected $fileSystem;
-
-  /**
-   * The messenger service.
-   *
-   * @var \Drupal\Core\Messenger\MessengerInterface
-   */
-  protected $messenger;
 
   /**
    * The entity type manager service.
@@ -47,16 +39,13 @@ class SitenowDcvFileForm extends FormBase {
    *
    * @param \Drupal\Core\File\FileSystemInterface $fileSystem
    *   The file system service.
-   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
-   *   The messenger service.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity storage service.
    * @param \Drupal\Core\State\State $state
    *   The state service.
    */
-  public function __construct(FileSystemInterface $fileSystem, MessengerInterface $messenger, EntityTypeManagerInterface $entityTypeManager, State $state) {
+  public function __construct(FileSystemInterface $fileSystem, EntityTypeManagerInterface $entityTypeManager, State $state) {
     $this->fileSystem = $fileSystem;
-    $this->messenger = $messenger;
     $this->entityTypeManager = $entityTypeManager;
     $this->state = $state;
   }
@@ -67,7 +56,6 @@ class SitenowDcvFileForm extends FormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('file_system'),
-      $container->get('messenger'),
       $container->get('entity_type.manager'),
       $container->get('state')
     );
@@ -160,7 +148,7 @@ class SitenowDcvFileForm extends FormBase {
     $filename = $form_state->get('sitenow_dcv_filename');
     $this->state->set('sitenow_dcv_filename', $filename);
 
-    $this->messenger->addMessage($this->t('Uploaded @file successfully.', [
+    $this->messenger()->addMessage($this->t('Uploaded @file successfully.', [
       '@file' => $filename,
     ]));
   }
