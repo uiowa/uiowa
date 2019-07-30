@@ -5,96 +5,86 @@ vagrant_box: geerlingguy/drupal-vm
 workspace: /root
 drupal_site_name: 'UIowa 01'
 vagrant_synced_folders:
-    -
-        local_path: .
-        destination: /var/www/uiowa01
-        type: nfs
+  -
+    local_path: .
+    destination: /var/www/uiowa01
+    type: nfs
 drupal_build_composer_project: false
 drupal_composer_path: false
 drupal_composer_install_dir: /var/www/uiowa01
 drupal_core_path: /var/www/uiowa01/docroot
 ssh_home: /var/www/uiowa01
 apache_vhosts:
-    -
-        servername: '{{ drupal_domain }}'
-        serveralias: 'www.{{ drupal_domain }}'
-        documentroot: '{{ drupal_core_path }}'
-        extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-    -
-        servername: 'dashboard.{{ drupal_domain }}'
-        serveralias: 'www.dashboard.{{ drupal_domain }}'
-        documentroot: /var/www/dashboard
-        extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-    -
-        servername: iowasuperfund.uiowa.local.site
-        documentroot: '{{ drupal_core_path }}'
-        extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-    -
-        servername: basetheme.uiowa.local.site
-        documentroot: '{{ drupal_core_path }}'
-        extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-    -
-        servername: clas.uiowa.local.site
-        documentroot: '{{ drupal_core_path }}'
-        extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-        apache_vhosts_ssl:
-    -
-        servername: test.uiowa.local.site
-        documentroot: '{{ drupal_core_path }}'
-        extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-apache_vhosts_ssl:
-    -
-        servername: '{{ drupal_domain }}'
-        documentroot: '{{ drupal_core_path }}'
-        certificate_file: /etc/ssl/certs/ssl-cert-snakeoil.pem
-        certificate_key_file: /etc/ssl/private/ssl-cert-snakeoil.key
-        extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: '{{ drupal_domain }}'
+    serveralias: 'www.{{ drupal_domain }}'
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: 'dashboard.{{ drupal_domain }}'
+    serveralias: 'www.dashboard.{{ drupal_domain }}'
+    documentroot: /var/www/dashboard
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: clas.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: '{{ drupal_domain }}'
+    documentroot: '{{ drupal_core_path }}'
+    certificate_file: /etc/ssl/certs/ssl-cert-snakeoil.pem
+    certificate_key_file: /etc/ssl/private/ssl-cert-snakeoil.key
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: theming.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: gradcogscilang.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
 mysql_databases:
-    -
-        name: drupal
-        encoding: utf8
-        collation: utf8_general_ci
-    -
-        name: iowasuperfund_uiowa_edu
-        encoding: utf8
-        collation: utf8_general_ci
-    -
-        name: basetheme_uiowa_edu
-        encoding: utf8
-        collation: utf8_general_ci
-    -
-        name: clas
-        encoding: utf8
-        collation: utf8_general_ci
-    -
-        name: test
-        encoding: utf8
-        collation: utf8_general_ci
+  -
+    name: drupal
+    encoding: utf8
+    collation: utf8_general_ci
+  -
+    name: clas
+    encoding: utf8
+    collation: utf8_general_ci
+  -
+    name: theming_uiowa_edu
+    encoding: utf8
+    collation: utf8_general_ci
+  -
+    name: cogscilang_grad_uiowa_edu
+    encoding: utf8
+    collation: utf8_general_ci
 mysql_users:
-    -
-        name: drupal
-        host: '%'
-        password: drupal
-        priv: '*.*:ALL'
+  -
+    name: drupal
+    host: '%'
+    password: drupal
+    priv: '*.*:ALL'
 drupal_install_site: false
 configure_drush_aliases: false
 extra_packages:
-    - patchutils
-    - sqlite
+  - patchutils
+  - sqlite
 installed_extras:
-    - adminer
-    - selenium
-    - drush
-    - mailhog
-    - memcached
-    - nodejs
-    - solr
-    - xdebug
+  - adminer
+  - selenium
+  - drush
+  - mailhog
+  - memcached
+  - nodejs
+  - solr
+  - xdebug
 php_version: '7.2'
 php_packages_extra:
-    - 'php{{ php_version }}-bz2'
-    - 'php{{ php_version }}-imagick'
-    - imagemagick
+  - 'php{{ php_version }}-bz2'
+  - 'php{{ php_version }}-imagick'
+  - imagemagick
 php_xdebug_version: 2.7.1
 php_xdebug_default_enable: 0
 php_xdebug_cli_disable: 'yes'
@@ -102,5 +92,5 @@ php_xdebug_remote_port: '9000'
 php_memory_limit: 512M
 solr_version: 4.5.1
 post_provision_scripts:
-    - ../../../acquia/blt/scripts/drupal-vm/configure-solr.sh
-    - ../../../acquia/blt/scripts/drupal-vm/post-provision.php
+  - ../../../acquia/blt/scripts/drupal-vm/configure-solr.sh
+  - ../../../acquia/blt/scripts/drupal-vm/post-provision.php

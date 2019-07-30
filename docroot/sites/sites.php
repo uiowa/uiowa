@@ -56,29 +56,23 @@
  * @see https://www.drupal.org/documentation/install/multi-site
  */
 
-// Directory aliases for basetheme.uiowa.edu.
-$sites['basetheme.uiowa.local.site'] = 'basetheme';
-$sites['basetheme.uiowa.lndo.site'] = 'basetheme';
-$sites['basetheme-d8.dev.drupal.uiowa.edu'] = 'basetheme';
-$sites['basetheme.prod.drupal.uiowa.edu'] = 'basetheme';
-$sites['basetheme.uiowa.edu'] = 'basetheme';
-
-// Directory aliases for iowasuperfund.uiowa.edu.
-$sites['iowasuperfund.uiowa.local.site'] = 'iowasuperfund';
-$sites['iowasuperfund.uiowa.lndo.site'] = 'iowasuperfund';
-$sites['iowasuperfund-d8.dev.drupal.uiowa.edu'] = 'iowasuperfund';
-$sites['iowasuperfund.prod.drupal.uiowa.edu'] = 'iowasuperfund';
-$sites['iowasuperfund.uiowa.edu'] = 'iowasuperfund';
-
-// Directory aliases for iowasuperfund.uiowa.edu.
-$sites['test.uiowa.local.site'] = 'test';
-$sites['testuiowa01-d8.dev.drupal.uiowa.edu'] = 'test';
-$sites['testuiowa01.prod.drupal.uiowa.edu'] = 'test';
-$sites['testuiowa01.uiowa.edu'] = 'test';
-
 // Directory aliases for clas.uiowa.edu.
 $sites['clas.uiowa.local.site'] = 'clas';
 $sites['clas.uiowa.lndo.site'] = 'clas';
 $sites['clas-d8.dev.drupal.uiowa.edu'] = 'clas';
 $sites['clas.prod.drupal.uiowa.edu'] = 'clas';
 $sites['clas.uiowa.edu'] = 'clas';
+
+// Directory aliases for theming.uiowa.edu.
+$sites['theming.uiowa.local.site'] = 'theming.uiowa.edu';
+$sites['theming.dev.drupal.uiowa.edu'] = 'theming.uiowa.edu';
+$sites['theming.stage.drupal.uiowa.edu'] = 'theming.uiowa.edu';
+$sites['theming.prod.drupal.uiowa.edu'] = 'theming.uiowa.edu';
+
+// Directory aliases for cogscilang.grad.uiowa.edu.
+$sites['gradcogscilang.uiowa.local.site'] = 'cogscilang.grad.uiowa.edu';
+$sites['gradcogscilang.dev.drupal.uiowa.edu'] = 'cogscilang.grad.uiowa.edu';
+$sites['gradcogscilang.stage.drupal.uiowa.edu'] = 'cogscilang.grad.uiowa.edu';
+$sites['gradcogscilang.prod.drupal.uiowa.edu'] = 'cogscilang.grad.uiowa.edu';
+$sites['cogscilang.grad.uiowa.edu'] = 'cogscilang.grad.uiowa.edu';
+
