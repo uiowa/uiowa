@@ -92,6 +92,7 @@ class SitenowDcvFileForm extends FormBase {
     $form['file'] = [
       '#type' => 'file',
       '#title' => $this->t('File'),
+      '#description' => $this->t('The hash file to upload. Note that the file name in the URL is case sensitive. '),
     ];
 
     $form['submit'] = [
@@ -108,13 +109,10 @@ class SitenowDcvFileForm extends FormBase {
     $file = array_pop($file);
 
     if ($file) {
-      $form['file']['#description'] = $this->t('The hash file to upload. Currently set to <a href="@path">@file</a>.', [
+      $form['file']['#description'] .= $this->t('Currently set to <a href="@path">@file</a>.', [
         '@path' => $base_url . '/.well-known/pki-validation/' . $file->getFilename(),
         '@file' => $file->getFilename(),
       ]);
-    }
-    else {
-      $form['file']['#description'] = $this->t('The hash file to upload.');
     }
 
     return $form;
