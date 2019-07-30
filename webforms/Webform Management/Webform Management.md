@@ -5,7 +5,7 @@ parent: "Webforms"
 nav_order: 1
 ---
 
-# Webform Management and Best Practices (Work in Progress)
+# Webform Management and Best Practices
 It is crucial to safely handle collected data from webforms. The following information explains the best practices on the type of information (protected data) that should not be collected.
 
 ## Protecting Data
