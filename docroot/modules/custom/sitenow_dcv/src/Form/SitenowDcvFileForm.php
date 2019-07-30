@@ -92,7 +92,9 @@ class SitenowDcvFileForm extends FormBase {
     $form['file'] = [
       '#type' => 'file',
       '#title' => $this->t('File'),
-      '#description' => $this->t('The hash file to upload. Note that the file name in the URL is case sensitive. '),
+      '#description' => $this->t('The hash file to upload. Note that the file name in the URL is case sensitive. @whitespace', [
+        '@whitespace' => ' ',
+      ]),
     ];
 
     $form['submit'] = [
