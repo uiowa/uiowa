@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - basic_types_news
+  module:
+    - ctools
+    - taxonomy
+id: news_tags
+label: 'News Tags'
+type: 'canonical_entities:taxonomy_term'
+pattern: 'news/[term:name]'
+selection_criteria:
+  852d96c6-e597-4441-a4bf-4a014c49c608:
+    id: 'entity_bundle:taxonomy_term'
+    bundles:
+      news_tags: news_tags
+    negate: false
+    context_mapping:
+      taxonomy_term: taxonomy_term
+    uuid: 852d96c6-e597-4441-a4bf-4a014c49c608
+selection_logic: and
+weight: -5
+relationships: {  }

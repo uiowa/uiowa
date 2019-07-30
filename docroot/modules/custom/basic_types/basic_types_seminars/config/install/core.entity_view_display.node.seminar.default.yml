@@ -1,0 +1,140 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.date_format.12hr_time
+    - core.date_format.12hr_long_date
+    - field.field.node.seminar.body
+    - field.field.node.seminar.seminar_attachments
+    - field.field.node.seminar.seminar_date
+    - field.field.node.seminar.seminar_hosts
+    - field.field.node.seminar.seminar_image
+    - field.field.node.seminar.seminar_link
+    - field.field.node.seminar.seminar_location
+    - field.field.node.seminar.seminar_speakers
+    - field.field.node.seminar.seminar_sponsors
+    - field.field.node.seminar.seminar_tags
+    - field.field.node.seminar.seminar_types
+    - node.type.seminar
+  module:
+    - date_recur
+    - datetime
+    - entity_reference_revisions
+    - file
+    - image
+    - link
+    - text
+    - user
+id: node.seminar.default
+targetEntityType: node
+bundle: seminar
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 5
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  seminar_attachments:
+    weight: 7
+    label: above
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    type: file_default
+    region: content
+  seminar_date:
+    weight: 2
+    label: inline
+    settings:
+      format_type: 12hr_long_date
+      occurrence_format_type: 12hr_long_date
+      same_end_date_format_type: 12hr_time
+      separator: '-'
+      timezone_override: ''
+      interpreter: ''
+      show_next: 100
+      count_per_item: true
+    third_party_settings: {  }
+    type: date_recur_basic_formatter
+    region: content
+  seminar_hosts:
+    type: entity_reference_revisions_entity_view
+    weight: 8
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
+  seminar_image:
+    weight: 1
+    label: hidden
+    settings:
+      image_style: ''
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+    region: content
+  seminar_link:
+    weight: 6
+    label: inline
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  seminar_location:
+    weight: 3
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  seminar_speakers:
+    type: entity_reference_revisions_entity_view
+    weight: 4
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
+  seminar_sponsors:
+    type: entity_reference_revisions_entity_view
+    weight: 9
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
+  seminar_tags:
+    weight: 11
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  seminar_types:
+    weight: 10
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+hidden:
