@@ -48,7 +48,7 @@ class SitenowDcvController extends ControllerBase {
       ->getStorage('file')
       ->loadByProperties(['filename' => $filename]);
 
-    // There can only be one (file replaced on upload).
+    // There can be only one (file replaced on upload).
     $file = array_pop($file);
 
     if ($file) {
