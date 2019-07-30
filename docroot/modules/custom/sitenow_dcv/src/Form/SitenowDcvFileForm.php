@@ -2,7 +2,7 @@
 
 namespace Drupal\sitenow_dcv\Form;
 
-use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -29,11 +29,11 @@ class SitenowDcvFileForm extends FormBase {
   protected $messenger;
 
   /**
-   * The entity storage service.
+   * The entity type manager service.
    *
-   * @var \Drupal\Core\Entity\EntityStorageInterface
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $entityStorage;
+  protected $entityTypeManager;
 
   /**
    * The state service.
@@ -49,15 +49,15 @@ class SitenowDcvFileForm extends FormBase {
    *   The file system service.
    * @param \Drupal\Core\Messenger\MessengerInterface $messenger
    *   The messenger service.
-   * @param \Drupal\Core\Entity\EntityStorageInterface $entityStorage
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity storage service.
    * @param \Drupal\Core\State\State $state
    *   The state service.
    */
-  public function __construct(FileSystemInterface $fileSystem, MessengerInterface $messenger, EntityStorageInterface $entityStorage, State $state) {
+  public function __construct(FileSystemInterface $fileSystem, MessengerInterface $messenger, EntityTypeManagerInterface $entityTypeManager, State $state) {
     $this->fileSystem = $fileSystem;
     $this->messenger = $messenger;
-    $this->entityStorage = $entityStorage;
+    $this->entityTypeManager = $entityTypeManager;
     $this->state = $state;
   }
 
@@ -68,7 +68,7 @@ class SitenowDcvFileForm extends FormBase {
     return new static(
       $container->get('file_system'),
       $container->get('messenger'),
-      $container->get('entity_type.manager')->getStorage('file'),
+      $container->get('entity_type.manager'),
       $container->get('state')
     );
   }
@@ -109,7 +109,7 @@ class SitenowDcvFileForm extends FormBase {
     ];
 
     /* @var \Drupal\file\Entity\File[] $file */
-    $file = \Drupal::entityTypeManager()
+    $file = $this->entityTypeManager
       ->getStorage('file')
       ->loadByProperties(['filename' => $this->state->get('sitenow_dcv_filename', '')]);
 
