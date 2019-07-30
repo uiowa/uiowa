@@ -10,7 +10,7 @@ nav_order: 3
 ## How to conditionally show or require fields:
 
 1. Login to the website.
-2. Navigate to the webform (Structure < Webforms < Find your webform).
+2. Navigate to the webform (Structure -> Webforms -> Find your webform).
 3. Select *Build* under the *Operations* column.
 4. Select *Edit* from the desired content item.
 5. Select *Conditions* at the top of the *Edit* menu.
