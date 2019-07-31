@@ -1,6 +1,6 @@
 .paragraph--type--featured-content {
     .field--name-title {
-      display: block;
+      display: inline-block;
     }
     .more-link {
       margin-top: 2rem;
@@ -49,17 +49,18 @@
       @extend .card;
       margin-bottom: ($grid-gutter-width / 2);
       flex-direction: column-reverse;
-    }
-    figure img {
-      @extend .card-img-top;
-      max-width: 100%;
-      margin: 0;
-    }
-    .node__content {
-      @extend .card-body;
-    }
-    .node__content .field--name-title {
-      @extend .card-title;
+      figure img {
+        @extend .card-img-top;
+        max-width: 100%;
+        margin: 0;
+      }
+      .node__content {
+        @extend .card-body;
+        width: 100%;
+      }
+      .node__content .field--name-title {
+        @extend .card-title;
+      }
     }
   }
   .paragraph--type--featured-content.masonry {
@@ -72,17 +73,18 @@
     article.node--view-mode-teaser {
       display: flex;
       flex-direction: column-reverse;
-    }
-    figure img {
-      @extend .card-img-top;
-      max-width: 100%;
-      margin: 0;
-    }
-    .node__content {
-      @extend .card-body;
-    }
-    .node__content .field--name-title {
-      @extend .card-title;
+      figure img {
+        @extend .card-img-top;
+        max-width: 100%;
+        margin: 0;
+      }
+      .node__content {
+        @extend .card-body;
+        width: 100%;
+      }
+      .node__content .field--name-title {
+        @extend .card-title;
+      }
     }
   }
   .paragraph--type--featured-content.hide-images {
@@ -95,12 +97,12 @@
       display: none;
     }
   }
-  
+
   .paragraph--type--section.bg-dark {
     .paragraph--type--featured-content.list {
-      .featured-content-item {
-        background-color: $dark;
-        color: $light;
+      .views-row {
+        @extend .bg-dark;
+        @extend .text-light;
         a {
           color: $yellow;
         }
@@ -109,15 +111,15 @@
   }
   .paragraph--type--section.bg-light {
     .paragraph--type--featured-content.list {
-      .featured-content-item {
-        background-color: $light;
+      .views-row {
+        @extend .bg-light;
       }
     }
   }
   .paragraph--type--section.bg-yellow {
     .paragraph--type--featured-content.list {
-      .featured-content-item {
-        background-color: $yellow;
+      .views-row {
+        @extend .bg-yellow;
         a {
           color: $black;
           text-decoration: underline;
