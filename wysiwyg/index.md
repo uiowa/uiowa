@@ -78,8 +78,8 @@ Links can also be removed easily with the "Unlink" button.
 
 Free online tools that can check your website for broken links and links that redirect:
 
-- [https://validator.w3.org/checklink] (to check more than one page, check the box "Check linked documents recursively" and enter a number in the "recursion depth" field)
-- [http://www.brokenlinkcheck.com/broken-links.php]
+- [validator.w3.org](https://validator.w3.org/checklink) (to check more than one page, check the box "Check linked documents recursively" and enter a number in the "recursion depth" field)
+- [brokenlinkcheck.com](http://www.brokenlinkcheck.com/broken-links.php)
 
 ### URL
 
