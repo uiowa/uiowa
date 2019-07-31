@@ -70,6 +70,18 @@
                 $(".lockup-horizontal .sub-unit").text(secondaryPreviewText);
             });
 
+            if ($("#edit-moderation-state-0-state :selected").val() == 'draft') {
+                $("#edit-submit").prop('value', 'Submit for approval');
+            }
+            $('#edit-moderation-state-0-state').change(function(){
+                if ($(this).val() == 'draft') {
+                    $("#edit-submit").prop('value', 'Submit for approval');
+                }
+                else {
+                    $("#edit-submit").prop('value', 'Save');
+                }
+            });
+
             // Sanitizes text for the textarea.
             function textareaSanitize(text, numberOfLines) {
                 var sanitizedText;
