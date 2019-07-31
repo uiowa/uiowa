@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: assessment.uiowa.edu
+    protocol: https
+  machine_name: assessment
+  human_name: assessment.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: assessment.prod
+drupal:
+  db:
+    database: assessment_uiowa_edu
+    host: localhost
+    user: root
+    password: null
