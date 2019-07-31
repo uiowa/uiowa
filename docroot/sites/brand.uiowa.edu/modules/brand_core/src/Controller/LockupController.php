@@ -3,7 +3,7 @@
 namespace Drupal\brand_core\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\brand_core\EasySVG as EasySVG;
+use Drupal\brand_core\BrandSVG;
 
 /**
  * Generates Lockup.
@@ -67,7 +67,7 @@ class LockupController extends ControllerBase {
     $bold = drupal_get_path('module', 'brand_core') . '/fonts/RobotoBold.svg';
     $regular = drupal_get_path('module', 'brand_core') . '/fonts/RobotoRegular.svg';
 
-    $lockup = new EasySVG();
+    $lockup = new BrandSVG();
 
     $svg_center = 216;
 
