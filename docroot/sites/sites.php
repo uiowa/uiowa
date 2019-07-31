@@ -88,6 +88,11 @@ $sites['assessment.dev.drupal.uiowa.edu'] = 'assessment.uiowa.edu';
 $sites['assessment.stage.drupal.uiowa.edu'] = 'assessment.uiowa.edu';
 $sites['assessment.prod.drupal.uiowa.edu'] = 'assessment.uiowa.edu';
 
+// Directory aliases for etc.engineering.uiowa.edu.
+$sites['engineeringetc.dev.drupal.uiowa.edu'] = 'etc.engineering.uiowa.edu';
+$sites['engineeringetc.stage.drupal.uiowa.edu'] = 'etc.engineering.uiowa.edu';
+$sites['engineeringetc.prod.drupal.uiowa.edu'] = 'etc.engineering.uiowa.edu';
+
 // Directory aliases for law.uiowa.edu.
 $sites['law.dev.drupal.uiowa.edu'] = 'law.uiowa.edu';
 $sites['law.stage.drupal.uiowa.edu'] = 'law.uiowa.edu';
