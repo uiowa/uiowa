@@ -4,6 +4,8 @@ has_children: false
 nav_order: 20
 ---
 
+# Policies
+
 # Removal of inactive sites
 
 Periodically, ITS will audit SiteNow websites for activity. Websites that have not been logged in to for at least 6 months will be considered inactive.
