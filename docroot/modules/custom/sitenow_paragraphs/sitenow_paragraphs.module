@@ -88,6 +88,7 @@ function sitenow_paragraphs_preprocess_paragraph(&$variables) {
       case 'accordion_item':
       case 'blockquote':
       case 'card':
+      case 'webform':
         // Add css if applicable.
         $variables['#attached']['library'][] = 'sitenow_paragraphs/default';
 
@@ -195,6 +196,7 @@ function uip_classes_allowed_values(FieldStorageConfig $definition, ContentEntit
       break;
 
     case 'text':
+    case 'webform':
       $options['bg-light'] = 'Light Gray Background';
       $options['bg-dark'] = 'Dark Background';
       $options['bg-yellow'] = 'Gold Background';

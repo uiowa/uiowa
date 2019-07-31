@@ -11,6 +11,7 @@ dependencies:
     - paragraphs.paragraphs_type.events
     - paragraphs.paragraphs_type.section
     - paragraphs.paragraphs_type.text
+    - paragraphs.paragraphs_type.webform
   module:
     - entity_reference_revisions
 _core:
@@ -36,6 +37,7 @@ settings:
       blockquote: blockquote
       events: events
       articles: articles
+      webform: webform
     target_bundles_drag_drop:
       section:
         weight: 3
@@ -61,4 +63,7 @@ settings:
       articles:
         enabled: true
         weight: 11
+      webform:
+        enabled: true
+        weight: 18
 field_type: entity_reference_revisions
