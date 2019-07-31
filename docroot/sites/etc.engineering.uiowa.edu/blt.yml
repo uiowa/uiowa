@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: etc.engineering.uiowa.edu
+    protocol: https
+  machine_name: engineeringetc
+  human_name: etc.engineering.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: engineeringetc.prod
+drupal:
+  db:
+    database: etc_engineering_uiowa_edu
+    host: localhost
+    user: root
+    password: null
