@@ -75,11 +75,11 @@ On this page you can create new Webforms or view previous ones.
 
 ## Additional webform configuration
 
-For more information about additional webform configuration options, including
-  - how to conditionally show or require fields,
-  - how to view, download and delete webform submissions,
-  - how to send an email when a form is submitted,
-  - how to provide a custom confirmation message upon successful form submission, and
-  - how to close a webform (to prevent additional submissions),
+For more information about additional webform configuration options, including:
+  - how to conditionally show or require fields
+  - how to view, download and delete webform submissions
+  - how to send an email when a form is submitted
+  - how to provide a custom confirmation message upon successful form submission
+  - how to close a webform (to prevent additional submissions)
   
 Please refer to the [Advanced webform configuration](https://docs.sitenow.uiowa.edu/webforms/advanced-webform-configuration/advanced-webform-configuration.html) page.
