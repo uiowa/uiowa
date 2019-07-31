@@ -1,8 +1,9 @@
-uuid: 9e8ed0a2-c73e-47f5-ad92-f251e9424a7f
+uuid: 0ceffa44-6969-4b75-ac06-9f73e6f523f6
 langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.paragraph.preview
     - field.field.paragraph.featured_content.field_featured_content
     - field.field.paragraph.featured_content.field_uip_classes
     - field.field.paragraph.featured_content.field_uip_colwidth
@@ -10,20 +11,11 @@ dependencies:
     - field.field.paragraph.featured_content.field_uip_id
     - field.field.paragraph.featured_content.field_uip_title
     - paragraphs.paragraphs_type.featured_content
-id: paragraph.featured_content.default
+id: paragraph.featured_content.preview
 targetEntityType: paragraph
 bundle: featured_content
-mode: default
+mode: preview
 content:
-  field_featured_content:
-    weight: 1
-    label: hidden
-    settings:
-      view_mode: teaser
-      link: false
-    third_party_settings: {  }
-    type: entity_reference_entity_view
-    region: content
   field_uip_title:
     weight: 0
     label: hidden
@@ -33,6 +25,7 @@ content:
     type: string
     region: content
 hidden:
+  field_featured_content: true
   field_uip_classes: true
   field_uip_colwidth: true
   field_uip_display_title: true

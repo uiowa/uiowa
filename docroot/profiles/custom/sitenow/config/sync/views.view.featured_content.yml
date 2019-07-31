@@ -1,3 +1,4 @@
+uuid: 6a17af0c-2fbb-4208-b515-072e389367af
 langcode: en
 status: true
 dependencies:
@@ -5,13 +6,11 @@ dependencies:
     - field.storage.node.field_image
     - field.storage.node.field_teaser
     - image.style.paragraph_preview
-    - taxonomy.vocabulary.tags
   module:
     - content_moderation
     - entity_browser
     - media
     - node
-    - taxonomy
     - user
 id: featured_content
 label: 'Featured Content'
@@ -398,62 +397,6 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        term_node_tid:
-          id: term_node_tid
-          table: node_field_data
-          field: term_node_tid
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: Terms
-          exclude: false
-          alter:
-            alter_text: true
-            text: '{{ term_node_tid__name }} (<em>{{ term_node_tid__vocabulary }}</em>)'
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          type: separator
-          separator: ', '
-          link_to_taxonomy: true
-          limit: false
-          vids:
-            tags: '0'
-          entity_type: node
-          plugin_id: taxonomy_index_tid
         uid:
           id: uid
           table: node_field_data
@@ -803,54 +746,6 @@ display:
           entity_type: node
           entity_field: type
           plugin_id: bundle
-        tid:
-          id: tid
-          table: taxonomy_index
-          field: tid
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: or
-          value: {  }
-          group: 1
-          exposed: true
-          expose:
-            operator_id: tid_op
-            label: Terms
-            description: ''
-            use_operator: false
-            operator: tid_op
-            identifier: tid
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              editor: '0'
-              publisher: '0'
-              webmaster: '0'
-              administrator: '0'
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-          type: textfield
-          limit: true
-          vid: tags
-          hierarchy: false
-          error_message: true
-          plugin_id: taxonomy_index_tid
         moderation_state:
           id: moderation_state
           table: node_field_data
@@ -912,7 +807,6 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
@@ -933,12 +827,9 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
         - 'config:field.storage.node.field_image'
         - 'config:field.storage.node.field_teaser'
         - 'config:workflow_list'
-
-        
