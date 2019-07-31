@@ -74,6 +74,13 @@ Links can also be removed easily with the "Unlink" button.
 
 ![remove link](assets/images/a-remove.png) 
 
+### Checking for broken links
+
+Free online tools that can check your website for broken links and links that redirect:
+
+- https://validator.w3.org/checklink (to check more than one page, check the box "Check linked documents recursively" and enter a number in the "recursion depth" field)
+- http://www.brokenlinkcheck.com/broken-links.php
+
 ### URL
 
 Add the link's connecting URL. Start typing to find content.
