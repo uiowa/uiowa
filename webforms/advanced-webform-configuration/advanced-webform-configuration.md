@@ -74,10 +74,14 @@ Often when a user submits a webform it is desired to send an email notifying som
   3. Click the *Emails/ Handlers* link.
   4. Click *Edit* under the email.
   5. Click the *Advanced* tab.
-  6. Under *Additinoal Settings* setup your desired email reply.
+  6. Under *Additional Settings* setup your desired email reply.
   7. Click the *Save* button at the bottom of the page.
-    
-## How to provide a custom confirmation message upon successful form submission:
+
+## Future Confirmation Settings:
+
+By default after submitting a webform it will return the user to the page where the form was filled out, not the webform entity. A feature in progress will allow custom confirmation/ redirection to a different page if configured.
+
+### How to provide a custom confirmation message upon successful form submission:
   - Refer to the above section, "To send an email to a user-provided email address".
   
 ## How to close a webform:
