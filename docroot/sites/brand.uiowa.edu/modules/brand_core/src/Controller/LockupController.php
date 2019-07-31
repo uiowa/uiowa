@@ -85,8 +85,6 @@ class LockupController extends ControllerBase {
     $bold = drupal_get_path('module', 'brand_core') . '/fonts/RobotoBold.svg';
     $regular = drupal_get_path('module', 'brand_core') . '/fonts/RobotoRegular.svg';
 
-
-
     // Determine all text features needed.
     $alt = FALSE;
     $hasSecondary = FALSE;
@@ -96,7 +94,7 @@ class LockupController extends ControllerBase {
 
     $lockup = new EasySVG();
 
-    $svg_center = 216.005;
+    $svg_center = 216;
 
     if (!empty($node->field_lockup_sub_unit->value)) {
       $sub_text = $node->field_lockup_sub_unit->value;
@@ -112,18 +110,18 @@ class LockupController extends ControllerBase {
     // Unit name generation.
     $primary_text = $node->field_lockup_primary_unit->value;
     $primary_explode = explode(PHP_EOL, $primary_text);
-    $primary_lines = [];
     $primary_count = count($primary_explode);
     $lockup->setFont($bold, 8, $text_color);
     $lockup->setLineHeight(9.6);
-    $lockup->setLetterSpacing(0);
+    $lockup->setLetterSpacing(.01);
 
-    foreach ($primary_explode as $line) {
-      str_replace('\r', '', $line);
+    $primary_lines = [];
+    foreach ($primary_explode as $key => $line) {
+      $primary_explode[$key] = preg_replace('~[[:cntrl:]]~', '', $line);
       $primary_lines[] = $lockup->textDimensions($line);
     }
 
-    $primary_dimensions = $lockup->textDimensions($primary_text);
+    $primary_dimensions = $lockup->textDimensions($primary_explode[0]);
     $primary_width = $primary_dimensions[0];
     $primary_center = $primary_width / 2;
     $horizontal_height = $primary_dimensions[1] + $sub_dimensions[1];
@@ -134,9 +132,9 @@ class LockupController extends ControllerBase {
         LockupController::addStackedLogo($lockup, $iowa_color);
         // Border. Width based on primary width.
         $lockup->addRect([
-          'x' => $svg_center - $primary_center - 3.528,
-          'y' => '134.98',
-          'width' => $primary_width + 7.506,
+          'x' => $svg_center - $primary_center - 3.52 - .282,
+          'y' => '133.22',
+          'width' => $primary_width + 7.50 - 0.37 + .474,
           'height' => '0.8',
           'style' => 'fill:' . $text_color,
         ]);
@@ -146,7 +144,7 @@ class LockupController extends ControllerBase {
           ENT_QUOTES | ENT_XML1,
           'UTF-8'),
           $svg_center - $primary_center,
-          '141.213'
+          142.9 - 1 - ($primary_lines[0][1] / 2)
         );
         // Primary Line 2.
         $p2_center = $primary_lines[1][0] / 2;
@@ -155,7 +153,7 @@ class LockupController extends ControllerBase {
           ENT_QUOTES | ENT_XML1,
           'UTF-8'),
           $svg_center - $p2_center,
-          '150.662'
+          152.36 - 1 - ($primary_lines[1][1] / 2)
         );
         // Primary Line 3.
         $p3_center = $primary_lines[2][0] / 2;
@@ -164,19 +162,22 @@ class LockupController extends ControllerBase {
           ENT_QUOTES | ENT_XML1,
           'UTF-8'),
           $svg_center - $p3_center,
-          '160.111'
+          161.82 - 1 - ($primary_lines[2][1] / 2)
         );
 
         switch ($primary_count) {
           case 1:
-            $sub_y = 152.248;
+            $sub_y = 150.33;
             break;
+
           case 2:
-            $sub_y = 161.697;
+            $sub_y = 160.28;
             break;
+
           case 3:
-            $sub_y = 171.146;
+            $sub_y = 170.23;
             break;
+
         }
         $lockup->setFont($regular, 6, $text_color);
         $lockup->setLineHeight(7.5);
@@ -188,7 +189,7 @@ class LockupController extends ControllerBase {
           ENT_QUOTES | ENT_XML1,
           'UTF-8'),
           $svg_center - $s1_center,
-          $sub_y
+          $sub_y - 2
         );
 
         $s2_center = $sublines[1][0] / 2;
@@ -197,7 +198,7 @@ class LockupController extends ControllerBase {
           ENT_QUOTES | ENT_XML1,
           'UTF-8'),
           $svg_center - $s2_center,
-          $sub_y + 7.718
+          $sub_y + 7.57 - 2
         );
 
         $s3_center = $sublines[2][0] / 2;
@@ -206,7 +207,7 @@ class LockupController extends ControllerBase {
           ENT_QUOTES | ENT_XML1,
           'UTF-8'),
           $svg_center - $s3_center,
-          $sub_y + 15.436
+          $sub_y + 15.43 - 2
         );
         break;
 
@@ -242,10 +243,10 @@ class LockupController extends ControllerBase {
    * Add Stacked Logo.
    */
   public function addStackedLogo($svg, $iowa_color) {
-    $svg->addPath('M189,113.1h-1.72v12.42H189V130h-9.49v-4.5h1.72V113.1h-1.72v-4.47H189Z', ["fill" => $iowa_color]);
-    $svg->addPath('M201.65,130h-6.88c-2.49,0-4.13-1.63-4.13-4.32V112.94a4,4,0,0,1,4.13-4.31h6.88a4,4,0,0,1,4.13,4.31V125.7A4,4,0,0,1,201.65,130Zm-1.94-4.5V113.1h-3v12.42Z', ["fill" => $iowa_color]);
-    $svg->addPath('M208.17,113.1h-1.51v-4.47h9v4.47H214l1.54,10.29,3.2-14.76h4.56l3.42,14.76,1.24-10.29h-1.57v-4.47h8.87v4.47h-1.48L231.07,130h-7.24L221,117.41,218.16,130h-7Z', ["fill" => $iowa_color]);
-    $svg->addPath('M233.19,125.52h1.63l3.24-16.89h9.71l3.2,16.89h1.51V130h-7.24l-.68-5.21H241l-.64,5.21h-7.12Zm11-4.62-1.39-8.63-1.41,8.63Z', ["fill" => $iowa_color]);
+    $svg->addPath('M189,111.1h-1.72v12.42H189V128h-9.49v-4.5h1.72V111.1h-1.72v-4.47H189Z', ["fill" => $iowa_color]);
+    $svg->addPath('M201.65,128h-6.88c-2.49,0-4.13-1.63-4.13-4.32V110.94a4,4,0,0,1,3.68-4.3,3.38,3.38,0,0,1,.45,0h6.88a4,4,0,0,1,4.14,3.86,3.38,3.38,0,0,1,0,.45V123.7a4,4,0,0,1-3.69,4.29A3.2,3.2,0,0,1,201.65,128Zm-1.94-4.5V111.1h-3v12.42Z', ["fill" => $iowa_color]);
+    $svg->addPath('M208.17,111.1h-1.51v-4.47h9v4.47H214l1.54,10.29,3.2-14.76h4.56l3.42,14.76L228,111.1h-1.57v-4.47h8.87v4.47h-1.48L231.07,128h-7.24L221,115.41,218.16,128h-7Z', ["fill" => $iowa_color]);
+    $svg->addPath('M233.19,123.52h1.63l3.24-16.89h9.71l3.2,16.89h1.51V128h-7.24l-.68-5.21H241l-.64,5.21h-7.12Zm11-4.62-1.39-8.63-1.41,8.63Z', ["fill" => $iowa_color]);
   }
 
   /**
