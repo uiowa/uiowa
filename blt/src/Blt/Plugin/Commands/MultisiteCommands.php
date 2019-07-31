@@ -256,8 +256,7 @@ EOD;
       'Rebuild the cache on the dev site.',
       'Re-deploy the pipelines-build-master branch to the dev environment in the Cloud UI. This will run the cloud hooks successfully.',
       'Sync the multisite database to the test and prod environments using the Cloud UI.',
-      'Coordinate a new release to deploy to the test and prod environments.',
-      'Clear the cache on the test and prod sites and re-deploy the tag artifacts.',
+      'Coordinate a new release and deploy to the test and prod environments.',
       'Sync the multisite files to the test and prod environments using Drush.',
       'Add the multisite domains to environments as needed.',
     ];
