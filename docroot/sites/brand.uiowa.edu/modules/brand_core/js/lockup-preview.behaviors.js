@@ -74,7 +74,7 @@
                 $("#edit-submit").prop('value', 'Submit for approval');
             }
             $('#edit-moderation-state-0-state').change(function(){
-                if ($(this).val() == 'draft') {
+                if ($(this).val() === 'draft') {
                     $("#edit-submit").prop('value', 'Submit for approval');
                 }
                 else {
