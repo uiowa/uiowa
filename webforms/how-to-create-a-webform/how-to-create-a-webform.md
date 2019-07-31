@@ -81,4 +81,5 @@ For more information about additional webform configuration options, including
   - how to send an email when a form is submitted,
   - how to provide a custom confirmation message upon successful form submission, and
   - how to close a webform (to prevent additional submissions),
-please refer to the Advanced webform configuration page.
+  
+Please refer to the [Advanced webform configuration](https://docs.sitenow.uiowa.edu/webforms/advanced-webform-configuration/advanced-webform-configuration.html) page.
