@@ -1,7 +1,7 @@
 ---
 title: "Policies"
 has_children: false
-nav_order: 20
+nav_order: 0
 ---
 
 # Policies
