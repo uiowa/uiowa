@@ -25,14 +25,6 @@ function brand_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       $module_handler = Drupal::service('module_handler');
       $form["#module_path"] = $module_handler->getModule('brand_core')->getPath();
 
-      // Alter form based on current moderation state.
-      switch ($form["moderation_state"]["widget"][0]["state"]["#default_value"]) {
-        case 'draft':
-          // Change submit button text.
-          $form['actions']['submit']['#value'] = t('Submit for approval');
-          break;
-      }
-
       break;
   }
 }
