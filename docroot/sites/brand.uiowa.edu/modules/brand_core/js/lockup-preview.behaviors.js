@@ -12,6 +12,7 @@
             var primaryPreviewText;
             var secondaryValueText;
             var secondaryPreviewText;
+            var isValid = '0';
 
             // regex = /([^\p{L}0-9\n -]+)/ug;
             // The above regex was transpiled in to the one below, when all browsers are finally able to process regex 'u' tags, the above one can be used.
@@ -53,6 +54,9 @@
                 textarea.val(primaryValueText);
                 $(".lockup-stacked .primary-unit").text(primaryPreviewText);
                 $(".lockup-horizontal .primary-unit").text(primaryPreviewText);
+
+                // Check if input is valid.
+                isInputValid();
             });
 
             subUnit.on("input", function (event) {
@@ -68,6 +72,9 @@
                 textarea.val(secondaryValueText);
                 $(".lockup-stacked .sub-unit").text(secondaryPreviewText);
                 $(".lockup-horizontal .sub-unit").text(secondaryPreviewText);
+
+                // Check if input is valid.
+                isInputValid();
             });
 
             if ($("#edit-moderation-state-0-state :selected").val() == 'draft') {
@@ -190,6 +197,18 @@
                     return true;
                 }
                 return false;
+            }
+
+            // Determine if the input is valid. Sets isValid boolean.
+            function isInputValid() {
+                if (primaryValueText === primaryPreviewText && secondaryValueText === secondaryPreviewText) {
+                    isValid = '1';
+                }
+                else {
+                    isValid = '0';
+                }
+
+                $('#is-input-valid').val(isValid);
             }
         }
     };
