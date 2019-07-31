@@ -28,18 +28,6 @@ class LockupController extends ControllerBase {
     $lockup_stacked_reversed_file = $path . ' LockupStacked-REVERSED.svg';
     fwrite(fopen(file_directory_temp() . '/' . $lockup_stacked_reversed_file, 'w'), $lockup_stacked_reversed);
 
-    $lockup_horizontal_black = LockupController::generateLockup($node, '#000000', "#000000", 'horizontal');
-    $lockup_horizontal_black_file = $path . ' LockupHorizontal-BLACK.svg';
-    fwrite(fopen(file_directory_temp() . '/' . $lockup_horizontal_black_file, 'w'), $lockup_horizontal_black);
-
-    $lockup_horizontal_rgb = LockupController::generateLockup($node, '#FFCD00', "#000000", 'horizontal');
-    $lockup_horizontal_rgb_file = $path . ' LockupHorizontal-RGB.svg';
-    fwrite(fopen(file_directory_temp() . '/' . $lockup_horizontal_rgb_file, 'w'), $lockup_horizontal_rgb);
-
-    $lockup_horizontal_reversed = LockupController::generateLockup($node, '#FFCD00', "#FFFFFF", 'horizontal');
-    $lockup_horizontal_reversed_file = $path . ' LockupHorizontal-REVERSED.svg';
-    fwrite(fopen(file_directory_temp() . '/' . $lockup_horizontal_reversed_file, 'w'), $lockup_horizontal_reversed);
-
     $zip = new \ZipArchive();
 
     $zip_filename = 'temporary://lockup.zip';
@@ -51,9 +39,6 @@ class LockupController extends ControllerBase {
     $zip->addFile(file_directory_temp() . '/' . $lockup_stacked_black_file, $path . "-Lockup/" . $lockup_stacked_black_file);
     $zip->addFile(file_directory_temp() . '/' . $lockup_stacked_rgb_file, $path . "-Lockup/" . $lockup_stacked_rgb_file);
     $zip->addFile(file_directory_temp() . '/' . $lockup_stacked_reversed_file, $path . "-Lockup/" . $lockup_stacked_reversed_file);
-    $zip->addFile(file_directory_temp() . '/' . $lockup_horizontal_black_file, $path . "-Lockup/" . $lockup_horizontal_black_file);
-    $zip->addFile(file_directory_temp() . '/' . $lockup_horizontal_rgb_file, $path . "-Lockup/" . $lockup_horizontal_rgb_file);
-    $zip->addFile(file_directory_temp() . '/' . $lockup_horizontal_reversed_file, $path . "-Lockup/" . $lockup_horizontal_reversed_file);
 
     $zip->close();
 
@@ -68,9 +53,6 @@ class LockupController extends ControllerBase {
     unlink(file_directory_temp() . '/' . $lockup_stacked_black_file);
     unlink(file_directory_temp() . '/' . $lockup_stacked_rgb_file);
     unlink(file_directory_temp() . '/' . $lockup_stacked_reversed_file);
-    unlink(file_directory_temp() . '/' . $lockup_horizontal_black_file);
-    unlink(file_directory_temp() . '/' . $lockup_horizontal_rgb_file);
-    unlink(file_directory_temp() . '/' . $lockup_horizontal_reversed_file);
     return [
       '#type' => 'markup',
       '#markup' => $this->t('Hello @path', ['@path' => $path]),
@@ -84,13 +66,6 @@ class LockupController extends ControllerBase {
     // Load all of the needed assets to create the graphics.
     $bold = drupal_get_path('module', 'brand_core') . '/fonts/RobotoBold.svg';
     $regular = drupal_get_path('module', 'brand_core') . '/fonts/RobotoRegular.svg';
-
-    // Determine all text features needed.
-    $alt = FALSE;
-    $hasSecondary = FALSE;
-    $tagline = FALSE;
-    $primary_text = '';
-    $sub_height = 0;
 
     $lockup = new EasySVG();
 
@@ -221,16 +196,6 @@ class LockupController extends ControllerBase {
           'height' => $horizontal_height,
           'style' => 'fill:' . $text_color,
         ]);
-
-        // Primary Line 1.
-        $lockup->addText(html_entity_decode(
-          $primary_explode[0],
-          ENT_QUOTES | ENT_XML1,
-          'UTF-8'),
-          '255.126',
-          144 - $horizontal_middle
-        );
-        break;
 
     }
 
