@@ -1,2 +1,3 @@
 // Allow empty <span> tags, which are used for FontAwesome icons.
-CKEDITOR.dtd.$removeEmpty['span'] = false;
+//CKEDITOR.dtd.$removeEmpty['span'] = false;
+CKEDITOR.config.allowedContent = true;
