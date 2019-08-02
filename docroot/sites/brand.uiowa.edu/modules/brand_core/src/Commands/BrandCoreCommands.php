@@ -32,7 +32,9 @@ class BrandCoreCommands extends DrushCommands {
       // Access field data from the view results.
       foreach ($view as $row) {
         $entity = $row->_entity;
-        $params['lockups'][] = $entity->getTitle();
+        $timestamp = $entity->get('revision_timestamp');
+        $date = \Drupal::service('date.formatter')->format($timestamp->value, 'short', NULL, 'America/Chicago');
+        $params['lockups'][] = $entity->getTitle() . ' - Last updated: ' . $date;
       }
       $label = $results > 1 ? 'lockups' : 'lockup';
       // Prepare params for digest email.
