@@ -12,6 +12,7 @@
             var primaryPreviewText;
             var secondaryValueText;
             var secondaryPreviewText;
+            var Timer = 0;
             var isValid = true;
 
             // regex = /([^\p{L}0-9\n -]+)/ug;
@@ -220,19 +221,30 @@
             // Determine if the input is valid. Sets isValid boolean.
             function isInputValid() {
                 if (primaryValueText === primaryPreviewText && secondaryValueText === secondaryPreviewText) {
+                    if (Timer) {
+                        clearTimeout(Timer);
+                    }
+
                     isValid = true;
+                    $('#valid-text-lockup-warning').addClass('warning-hidden');
                 }
                 else {
-                    isValid = false;
+                    if (Timer) {
+                        clearTimeout(Timer);
+                    }
+    
+                    Timer = setTimeout(function() {
+                        isValid = false;
+                        $('#valid-text-lockup-warning').removeClass('warning-hidden');
+                        document.getElementById('edit-submit').disabled = !isValid;
+                    }, 500);
                 }
-
-                document.getElementById('edit-submit').disabled = !isValid;
             }
 
             // Add warning HTML.
             function warningHTML()  {
                 let warningHTML = '\
-                    <div id="valid-text-lockup-warning">\
+                    <div id="valid-text-lockup-warning" class="warning-hidden">\
                         <h3><i class="fas fa-exclamation"></i>Your current wording does not meet the necessary criteria</h3>\
                         <div class="warning-body">\
                             <p>\
