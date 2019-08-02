@@ -25,17 +25,6 @@ function brand_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       $module_handler = Drupal::service('module_handler');
       $form["#module_path"] = $module_handler->getModule('brand_core')->getPath();
 
-      // Add hidden field for validation.
-      $form['is_valid'] = array(
-        '#type' => 'hidden',
-        '#value' => '0',
-        '#attributes' => array(
-          'id' => array(
-            'is-input-valid',
-          ),
-        ),
-      );
-
       break;
   }
 }
