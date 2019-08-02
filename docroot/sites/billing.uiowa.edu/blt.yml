@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: billing.uiowa.edu
+    protocol: https
+  machine_name: billing
+  human_name: billing.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: billing.prod
+drupal:
+  db:
+    database: billing_uiowa_edu
+    host: localhost
+    user: root
+    password: null
