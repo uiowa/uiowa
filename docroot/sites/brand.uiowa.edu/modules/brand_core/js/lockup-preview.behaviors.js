@@ -227,6 +227,7 @@
 
                     isValid = true;
                     $('#valid-text-lockup-warning').addClass('warning-hidden');
+                    $('#edit-submit').prop('disabled', false);
                 }
                 else {
                     if (Timer) {
@@ -236,7 +237,7 @@
                     Timer = setTimeout(function() {
                         isValid = false;
                         $('#valid-text-lockup-warning').removeClass('warning-hidden');
-                        document.getElementById('edit-submit').disabled = !isValid;
+                        $('#edit-submit').prop('disabled', true);
                     }, 500);
                 }
             }
@@ -257,7 +258,7 @@
                         </div>\
                     </div>\
                 ';
-                $('.layout-region-node-footer__content').prepend(warningHTML);
+                $('.layout-region-node-main').append(warningHTML);
             }
         }
     };
