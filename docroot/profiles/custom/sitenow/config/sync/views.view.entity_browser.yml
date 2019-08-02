@@ -5,7 +5,9 @@ dependencies:
   config:
     - image.style.thumbnail
     - media.type.image
+    - media.type.instagram
     - media.type.remote_video
+    - media.type.twitter
   module:
     - entity_browser
     - image
@@ -471,7 +473,9 @@ display:
           operator: in
           value:
             image: image
+            instagram: instagram
             remote_video: remote_video
+            twitter: twitter
           group: 1
           exposed: false
           expose:
