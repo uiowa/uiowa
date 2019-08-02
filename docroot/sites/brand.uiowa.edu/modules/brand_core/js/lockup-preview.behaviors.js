@@ -80,15 +80,30 @@
                 isInputValid();
             });
 
-            if ($("#edit-moderation-state-0-state :selected").val() == 'draft') {
-                $("#edit-submit").prop('value', 'Submit for approval');
+            switch ($("#edit-moderation-state-0-state :selected").val()) {
+                case 'draft':
+                    $("#edit-submit").prop('value', 'Save draft');
+                    break;
+                case 'review':
+                    $("#edit-submit").prop('value', 'Submit for approval');
+                    break;
+                default:
+                    $("#edit-submit").prop('value', 'Save');
+                    break;
+
             }
             $('#edit-moderation-state-0-state').change(function(){
-                if ($(this).val() === 'draft') {
-                    $("#edit-submit").prop('value', 'Submit for approval');
-                }
-                else {
-                    $("#edit-submit").prop('value', 'Save');
+                switch ($(this).val()) {
+                    case 'draft':
+                        $("#edit-submit").prop('value', 'Save draft');
+                        break;
+                    case 'review':
+                        $("#edit-submit").prop('value', 'Submit for approval');
+                        break;
+                    default:
+                        $("#edit-submit").prop('value', 'Save');
+                        break;
+
                 }
             });
 

@@ -9,6 +9,7 @@
  * @see https://www.drupal.org/node/2217931
  */
 
+use Drupal\user\Entity\User;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
@@ -24,6 +25,72 @@ function brand_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       // Pass relative module path for use in custom template.
       $module_handler = Drupal::service('module_handler');
       $form["#module_path"] = $module_handler->getModule('brand_core')->getPath();
+
+      // Create node_fields group in the advanced container.
+      $form['node_fields'] = [
+        '#type' => 'details',
+        '#title' => 'Lockup Details',
+        '#group' => 'advanced',
+        '#attributes' => [
+          'class' => ['node-form-fields'],
+        ],
+        '#attached' => [
+          'library' => ['node/drupal.node'],
+        ],
+        '#weight' => -99,
+        '#optional' => FALSE,
+        '#open' => TRUE,
+      ];
+      // Set fields to node_fields group.
+      $form['title']['#group'] = 'node_fields';
+      $form['field_lockup_org']['#group'] = 'node_fields';
+      $form['field_lockup_primary_unit']['#group'] = 'node_fields';
+      $form['field_lockup_sub_unit']['#group'] = 'node_fields';
+
+      $form_object = $form_state->getFormObject();
+      $nid = $form_object->getEntity()->id();
+      if (isset($nid)) {
+        // Query database for relevant revision logs.
+        $connection = \Drupal::database();
+        $query = $connection->select('node_revision', 'r');
+        $query->condition('r.nid', $nid, '=');
+        $query->fields('r', [
+          'revision_uid',
+          'revision_timestamp',
+          'revision_log',
+        ]);
+        $query->orderBy('revision_timestamp', 'DESC');
+        $query->range(0, 5);
+        $result = $query->execute();
+
+        // Pull the latest revisions (5) together for display.
+        $log_items = '';
+        foreach ($result as $record) {
+          $uid = $record->revision_uid;
+          $user = User::load($uid);
+          $email = $user->getEmail();
+          $username = $user->getUsername();
+          $timestamp = $record->revision_timestamp;
+          $date = \Drupal::service('date.formatter')->format($timestamp, 'short');
+          if (!empty($record->revision_log)) {
+            $log_items .= '<strong>' . $date . '</strong> - ' . $username . ' (' . $email . ')<br /><em>' . $record->revision_log . '</em><br /><br />';
+          }
+          else {
+            $log_items .= '<strong>' . $date . '</strong> - ' . $username . ' (' . $email . ')<br /><br />';
+          }
+        }
+
+        // Render log entries in the revision_information group.
+        $form['node_logs'] = [
+          '#type' => 'details',
+          '#title' => 'Latest Revisions',
+          '#group' => 'revision_information',
+          '#weight' => 26,
+          '#optional' => FALSE,
+          '#open' => FALSE,
+          '#markup' => $log_items,
+        ];
+      }
 
       break;
   }
