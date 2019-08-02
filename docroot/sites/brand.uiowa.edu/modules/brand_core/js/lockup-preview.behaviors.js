@@ -12,7 +12,8 @@
             var primaryPreviewText;
             var secondaryValueText;
             var secondaryPreviewText;
-            var isValid = '0';
+            var Timer = 0;
+            var isValid = true;
 
             // regex = /([^\p{L}0-9\n -]+)/ug;
             // The above regex was transpiled in to the one below, when all browsers are finally able to process regex 'u' tags, the above one can be used.
@@ -27,6 +28,9 @@
 
             // Hide preview markup initially.
             lockupPreview.hide();
+
+            // Add warning HTML.
+            warningHTML();
 
             // Show preview and inject content based on existing input or live input.
             if (primaryUnit.val() !== "") {
@@ -217,13 +221,43 @@
             // Determine if the input is valid. Sets isValid boolean.
             function isInputValid() {
                 if (primaryValueText === primaryPreviewText && secondaryValueText === secondaryPreviewText) {
-                    isValid = '1';
+                    if (Timer) {
+                        clearTimeout(Timer);
+                    }
+
+                    isValid = true;
+                    $('#valid-text-lockup-warning').addClass('warning-hidden');
                 }
                 else {
-                    isValid = '0';
+                    if (Timer) {
+                        clearTimeout(Timer);
+                    }
+    
+                    Timer = setTimeout(function() {
+                        isValid = false;
+                        $('#valid-text-lockup-warning').removeClass('warning-hidden');
+                        document.getElementById('edit-submit').disabled = !isValid;
+                    }, 500);
                 }
+            }
 
-                $('#is-input-valid').val(isValid);
+            // Add warning HTML.
+            function warningHTML()  {
+                let warningHTML = '\
+                    <div id="valid-text-lockup-warning" class="warning-hidden">\
+                        <h3><i class="fas fa-exclamation"></i>Your current wording does not meet the necessary criteria</h3>\
+                        <div class="warning-body">\
+                            <p>\
+                                The Primary Unit and Sub Unit textboxes must meet the following criteria:\
+                            </p>\
+                            <ul>\
+                                <li>There may not be special characters except for dashes between words</li>\
+                                <li>There may be no dashes or spaces at the beginning or the end of lines.</li>\
+                            </ul>\
+                        </div>\
+                    </div>\
+                ';
+                $('.layout-region-node-footer__content').prepend(warningHTML);
             }
         }
     };
