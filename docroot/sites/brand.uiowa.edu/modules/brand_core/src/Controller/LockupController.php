@@ -28,7 +28,7 @@ class LockupController extends ControllerBase {
         return $response;
       }
 
-      if ($node->get('moderation_state')->getValue() !== 'published') {
+      if ($node->get('moderation_state')->get(0)->getString() !== 'published') {
         $response = [
           '#markup' => $this->t('Content not approved for download.'),
         ];
@@ -60,14 +60,9 @@ class LockupController extends ControllerBase {
       $zip->addFile(file_directory_temp() . '/' . $lockup_stacked_rgb_file, $path . "-Lockup/" . $lockup_stacked_rgb_file);
       $zip->addFile(file_directory_temp() . '/' . $lockup_stacked_reversed_file, $path . "-Lockup/" . $lockup_stacked_reversed_file);
 
-      // Load instructions file.
-      $media = Media::load(1416);
-      $fid = $media->field_media_file->target_id;
-      $file = File::load($fid);
-      $uri = $file->getFileUri();
-      $stream_wrapper_manager = \Drupal::service('stream_wrapper_manager')->getViaUri($uri);
-      $file_path = $stream_wrapper_manager->realpath();
-      $zip->addFile($file_path, $path . "-Lockup/instructions.txt");
+      // Read the instructions.
+      $instructions = drupal_get_path('module', 'brand_core') . '/lockup-instructions.txt';
+      $zip->addFile($instructions, $path . "-Lockup/lockup-instructions.txt");
 
       $zip->close();
 
