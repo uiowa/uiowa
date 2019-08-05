@@ -4,6 +4,8 @@ namespace Drupal\brand_core\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\brand_core\BrandSVG;
+use Drupal\file\Entity\File;
+use Drupal\media\Entity\Media;
 
 /**
  * Generates Lockup.
@@ -14,49 +16,80 @@ class LockupController extends ControllerBase {
    * Generate Lockup.
    */
   public function generate($nid) {
-    $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
-    $path = $node->getTitle();
-    $lockup_stacked_black = LockupController::generateLockup($node, '#000000', "#000000", 'stacked');
-    $lockup_stacked_black_file = $path . ' LockupStacked-BLACK.svg';
-    fwrite(fopen(file_directory_temp() . '/' . $lockup_stacked_black_file, 'w'), $lockup_stacked_black);
+    $is_node = \Drupal::entityQuery('node')->condition('nid', $nid)->execute();
 
-    $lockup_stacked_rgb = LockupController::generateLockup($node, '#FFCD00', "#000000", 'stacked');
-    $lockup_stacked_rgb_file = $path . ' LockupStacked-RGB.svg';
-    fwrite(fopen(file_directory_temp() . '/' . $lockup_stacked_rgb_file, 'w'), $lockup_stacked_rgb);
+    if ($is_node) {
+      $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
 
-    $lockup_stacked_reversed = LockupController::generateLockup($node, '#FFCD00', "#FFFFFF", 'stacked');
-    $lockup_stacked_reversed_file = $path . ' LockupStacked-REVERSED.svg';
-    fwrite(fopen(file_directory_temp() . '/' . $lockup_stacked_reversed_file, 'w'), $lockup_stacked_reversed);
+      if ($node->bundle() !== 'lockup') {
+        $response = [
+          '#markup' => $this->t('This is not a lockup and thus cannot be download. Silly user.'),
+        ];
+        return $response;
+      }
 
-    $zip = new \ZipArchive();
+      if ($node->get('moderation_state')->getValue() !== 'published') {
+        $response = [
+          '#markup' => $this->t('Content not approved for download.'),
+        ];
+        return $response;
+      }
 
-    $zip_filename = 'temporary://lockup.zip';
+      $path = $node->getTitle();
+      $lockup_stacked_black = LockupController::generateLockup($node, '#000000', "#000000", 'stacked');
+      $lockup_stacked_black_file = $path . ' LockupStacked-BLACK.svg';
+      fwrite(fopen(file_directory_temp() . '/' . $lockup_stacked_black_file, 'w'), $lockup_stacked_black);
 
-    if ($zip->open(\Drupal::service('file_system')->realpath($zip_filename), \ZipArchive::CREATE) !== TRUE) {
-      exit("cannot open <$zip_filename>\n");
+      $lockup_stacked_rgb = LockupController::generateLockup($node, '#FFCD00', "#000000", 'stacked');
+      $lockup_stacked_rgb_file = $path . ' LockupStacked-RGB.svg';
+      fwrite(fopen(file_directory_temp() . '/' . $lockup_stacked_rgb_file, 'w'), $lockup_stacked_rgb);
+
+      $lockup_stacked_reversed = LockupController::generateLockup($node, '#FFCD00', "#FFFFFF", 'stacked');
+      $lockup_stacked_reversed_file = $path . ' LockupStacked-REVERSED.svg';
+      fwrite(fopen(file_directory_temp() . '/' . $lockup_stacked_reversed_file, 'w'), $lockup_stacked_reversed);
+
+      $zip = new \ZipArchive();
+
+      $zip_filename = 'temporary://lockup.zip';
+
+      if ($zip->open(\Drupal::service('file_system')->realpath($zip_filename), \ZipArchive::CREATE) !== TRUE) {
+        exit("cannot open <$zip_filename>\n");
+      }
+
+      $zip->addFile(file_directory_temp() . '/' . $lockup_stacked_black_file, $path . "-Lockup/" . $lockup_stacked_black_file);
+      $zip->addFile(file_directory_temp() . '/' . $lockup_stacked_rgb_file, $path . "-Lockup/" . $lockup_stacked_rgb_file);
+      $zip->addFile(file_directory_temp() . '/' . $lockup_stacked_reversed_file, $path . "-Lockup/" . $lockup_stacked_reversed_file);
+
+      // Load instructions file.
+      $media = Media::load(1416);
+      $fid = $media->field_media_file->target_id;
+      $file = File::load($fid);
+      $uri = $file->getFileUri();
+      $stream_wrapper_manager = \Drupal::service('stream_wrapper_manager')->getViaUri($uri);
+      $file_path = $stream_wrapper_manager->realpath();
+      $zip->addFile($file_path, $path . "-Lockup/instructions.txt");
+
+      $zip->close();
+
+      header('Content-type: application/zip');
+      header("Content-disposition: attachment; filename=" . $path . "-Lockup.zip");
+      readfile(\Drupal::service('file_system')->realpath($zip_filename));
+
+      ob_clean();
+      flush();
+      readfile($zip_filename);
+      unlink($zip_filename);
+      unlink(file_directory_temp() . '/' . $lockup_stacked_black_file);
+      unlink(file_directory_temp() . '/' . $lockup_stacked_rgb_file);
+      unlink(file_directory_temp() . '/' . $lockup_stacked_reversed_file);
+
     }
-
-    $zip->addFile(file_directory_temp() . '/' . $lockup_stacked_black_file, $path . "-Lockup/" . $lockup_stacked_black_file);
-    $zip->addFile(file_directory_temp() . '/' . $lockup_stacked_rgb_file, $path . "-Lockup/" . $lockup_stacked_rgb_file);
-    $zip->addFile(file_directory_temp() . '/' . $lockup_stacked_reversed_file, $path . "-Lockup/" . $lockup_stacked_reversed_file);
-
-    $zip->close();
-
-    header('Content-type: application/zip');
-    header("Content-disposition: attachment; filename=" . $path . "-Lockup.zip");
-    readfile(\Drupal::service('file_system')->realpath($zip_filename));
-
-    ob_clean();
-    flush();
-    readfile($zip_filename);
-    unlink($zip_filename);
-    unlink(file_directory_temp() . '/' . $lockup_stacked_black_file);
-    unlink(file_directory_temp() . '/' . $lockup_stacked_rgb_file);
-    unlink(file_directory_temp() . '/' . $lockup_stacked_reversed_file);
-    return [
-      '#type' => 'markup',
-      '#markup' => $this->t('Hello @path', ['@path' => $path]),
-    ];
+    else {
+      $response = [
+        '#markup' => $this->t('This is not a lockup and thus cannot be download. Silly user.'),
+      ];
+      return $response;
+    }
   }
 
   /**
