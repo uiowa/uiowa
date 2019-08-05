@@ -78,6 +78,11 @@ class LockupController extends ControllerBase {
       unlink(file_directory_temp() . '/' . $lockup_stacked_rgb_file);
       unlink(file_directory_temp() . '/' . $lockup_stacked_reversed_file);
 
+      $response = [
+        '#markup' => $this->t('Download should begin momentarily.'),
+      ];
+      return $response;
+
     }
     else {
       $response = [
