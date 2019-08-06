@@ -26,27 +26,24 @@
             // The maximum number of rows that the textareas are allowed to have.
             var maxRows = 3;
 
-            // Hide preview markup initially.
-            lockupPreview.hide();
-
             // Add warning HTML.
             warningHTML();
 
             // Show preview and inject content based on existing input or live input.
             if (primaryUnit.val() !== "") {
-                $("#lockup-preview").show();
+                $("#lockup-preview").addClass('show-preview');
                 $(".lockup-stacked .primary-unit").text(primaryUnit.val());
                 $(".lockup-horizontal .primary-unit").text(primaryUnit.val());
             }
 
             if (subUnit.val() !== "") {
-                $("#lockup-preview").show();
+                $("#lockup-preview").addClass('show-preview');
                 $(".lockup-stacked .sub-unit").text(subUnit.val());
                 $(".lockup-horizontal .sub-unit").text(subUnit.val());
             }
 
             primaryUnit.on("input", function (event) {
-                $("#lockup-preview").show();
+                $("#lockup-preview").addClass('show-preview');
 
                 var textarea = $(this),
                     text = textarea.val(),
@@ -58,6 +55,9 @@
                 textarea.val(primaryValueText);
                 $(".lockup-stacked .primary-unit").text(primaryPreviewText);
                 $(".lockup-horizontal .primary-unit").text(primaryPreviewText);
+
+                // Set the divider line width.
+                calcDivider();
 
                 // Check if input is valid.
                 isInputValid();
@@ -259,6 +259,29 @@
                     </div>\
                 ';
                 $('.layout-region-node-main').append(warningHTML);
+            }
+
+            // Create a hidden element that is used for measuring and setting the width of the dividing line.
+            function calcDivider() {
+                // Create the element to measure for stacked divider.
+                if (!$('#primary-first-line-measure-stacked').length) {
+                    $('.layout-region-node-main').append('<div id="primary-first-line-measure-stacked"></div>');
+                }
+                
+                // Create the stacked divider.
+                if (!$('#stacked-divider').length) {
+                    $('.lockup-stacked .lockup-content-inner').before('<div id="stacked-divider"></div>');
+                }
+
+                //grab the first line of the Primary unit text and put it in the measurer.
+                $('#primary-first-line-measure-stacked').text($('.lockup-stacked .lockup-content-inner .primary-unit').text().split('\n')[0]);
+                let divWidth = $('#primary-first-line-measure-stacked').outerWidth();
+                let divPos = ($('.lockup-stacked .lockup-content').outerWidth()/2) - (divWidth/2)
+
+                $('#stacked-divider').css({
+                    "width": divWidth,
+                    "left": divPos
+                });
             }
         }
     };
