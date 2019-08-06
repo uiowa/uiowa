@@ -12,6 +12,7 @@ dependencies:
     - paragraphs.paragraphs_type.faqs
     - paragraphs.paragraphs_type.section
     - paragraphs.paragraphs_type.text
+    - paragraphs.paragraphs_type.webform
   module:
     - entity_reference_revisions
 _core:
@@ -38,6 +39,7 @@ settings:
       events: events
       articles: articles
       faqs: faqs
+      webform: webform
     target_bundles_drag_drop:
       section:
         weight: 3
@@ -62,7 +64,10 @@ settings:
         weight: 10
       articles:
         enabled: true
-        weight: 12
+        weight: 11
+      webform:
+        enabled: true
+        weight: 18
       faqs:
         enabled: true
         weight: 14
