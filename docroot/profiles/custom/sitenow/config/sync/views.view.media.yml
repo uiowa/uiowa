@@ -4,8 +4,6 @@ status: true
 dependencies:
   config:
     - image.style.thumbnail
-    - media.type.file
-    - media.type.image
   module:
     - image
     - media
@@ -616,9 +614,7 @@ display:
           group_type: group
           admin_label: ''
           operator: in
-          value:
-            file: file
-            image: image
+          value: {  }
           group: 1
           exposed: true
           expose:
@@ -634,8 +630,12 @@ display:
             remember_roles:
               authenticated: authenticated
               anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
               administrator: '0'
-            reduce: true
+            reduce: false
           is_grouped: false
           group_info:
             label: ''
