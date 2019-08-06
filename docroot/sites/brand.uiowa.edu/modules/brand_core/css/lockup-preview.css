@@ -18,13 +18,24 @@
 }
 .lockup-stacked .lockup-content {
   display: table;
+  position: relative;
   margin: 0 auto;
-  border-top: 3px solid;
   min-width: 250px;
-  margin-top: calc(-5px + 17px);
+  /* I've added 3 because i removed the top border. */
+  margin-top: calc(-5px + 17px + 3px);
 }
 .lockup-stacked .lockup-content-inner {
   padding: 0 13px;
+}
+#stacked-divider {
+  content: '';
+  height: 3px;
+  background-color: #000;
+  position: absolute;
+
+  /* These will be edited. */
+  width: 0px;
+  left: 0px;
 }
 .lockup-stacked .primary-unit {
   margin-top: 5px;
@@ -43,6 +54,7 @@
 .lockup-horizontal .lockup-content .lockup-content-inner {
   display: table-cell;
   vertical-align: middle;
+  padding: 13px 0px;
 }
 .primary-unit,
 .sub-unit {
@@ -106,4 +118,26 @@
 
 #valid-text-lockup-warning .warning-body {
   padding: 0px 30px 20px 15px;
+}
+
+#primary-first-line-measure-stacked {
+  position: absolute;
+  color: transparent;
+  left: -9999px;
+  top: -9999px;
+  display: inline-block;
+  padding: 0px 13px;
+  font-weight: 800;
+  font-size: 28px;
+  line-height: 1.25;
+  white-space: pre-wrap;
+  font-family: 'Roboto', sans-serif;
+}
+
+#lockup-preview {
+  display: none;
+}
+
+#lockup-preview.show-preview {
+  display: flex;
 }
