@@ -537,6 +537,7 @@ function sitenow_preprocess_node(&$variables) {
     }
   }
 }
+
 /**
  * Implements hook_form_BASE_FORM_ID_alter() for menu_link_content_form.
  */
