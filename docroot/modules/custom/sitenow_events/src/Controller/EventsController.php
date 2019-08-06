@@ -13,8 +13,8 @@ class EventsController extends ControllerBase {
   /**
    * Builds the response.
    *
-   * @param string $event_id
-   *   The id of the event.
+   * @param int $event_id
+   *   The ID of the event.
    * @param int $event_instance
    *   The ID of the event instance.
    *
