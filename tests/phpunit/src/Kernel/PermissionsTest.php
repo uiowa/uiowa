@@ -15,13 +15,6 @@ class PermissionsTest extends EntityKernelTestBase {
   use NodeCreationTrait;
 
   /**
-   * Disable strict schema checking.
-   *
-   * @var bool
-   */
-  protected $strictConfigSchema = FALSE;
-
-  /**
    * Additional modules to enable.
    *
    * {@inheritdoc}
