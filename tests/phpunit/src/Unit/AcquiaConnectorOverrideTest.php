@@ -11,8 +11,18 @@ use Drupal\sitenow\ConfigOverride\AcquiaConnectorOverride;
  * @group unit
  */
 class AcquiaConnectorOverrideTest extends UnitTestCase {
-
+  /**
+   * RequestStack mock.
+   *
+   * @var \Symfony\Component\HttpFoundation\RequestStack
+   */
   protected $requestStack;
+
+  /**
+   * Request mock.
+   *
+   * @var \Symfony\Component\HttpFoundation\Request
+   */
   protected $request;
 
   /**
