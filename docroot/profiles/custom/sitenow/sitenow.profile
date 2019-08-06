@@ -14,6 +14,8 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\NodeInterface;
 use Drupal\user\Entity\User;
 use Drupal\views\ViewExecutable;
+use Drupal\media\Entity\Media;
+use Drupal\file\Entity\File;
 
 /**
  * Implements hook_toolbar_alter().
@@ -492,6 +494,49 @@ function sitenow_preprocess_page(&$variables) {
   }
 }
 
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_preprocess_node(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+
+    $node = $variables["node"];
+    switch ($node->getType()) {
+      case 'page':
+        switch ($variables['view_mode']) {
+          case 'teaser':
+            $style = 'sitenow_card';
+            $image_field = $node->get('field_image');
+            if (!$image_field->isEmpty()) {
+              $image = $image_field->first()->getValue();
+              $media = Media::load($image['target_id']);
+              $media_field = $media->get('field_media_image')
+                ->first()
+                ->getValue();
+              $file = File::load($media_field['target_id']);
+              $uri = $file->getFileUri();
+              $alt = ($media_field['alt'] ? $media_field['alt'] : '');
+              $image = [
+                '#theme' => 'image_style',
+                '#width' => NULL,
+                '#height' => NULL,
+                '#style_name' => $style,
+                '#uri' => $uri,
+                '#alt' => $alt,
+                '#weight' => -1,
+                '#attributes' => [
+                  'class' => 'page-image',
+                ],
+              ];
+              $variables["content"]['page_image'] = $image;
+            }
+            break;
+        }
+        break;
+    }
+  }
+}
 /**
  * Implements hook_form_BASE_FORM_ID_alter() for menu_link_content_form.
  */
