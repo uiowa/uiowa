@@ -76,7 +76,7 @@
  * specific needs.
  *
  * @code
- * $databases['default']['default'] = [
+ * $databases['default']['default'] = array (
  *   'database' => 'databasename',
  *   'username' => 'sqlusername',
  *   'password' => 'sqlpassword',
@@ -85,7 +85,7 @@
  *   'driver' => 'mysql',
  *   'prefix' => '',
  *   'collation' => 'utf8mb4_general_ci',
- * ];
+ * );
  * @endcode
  */
 $databases = [];
@@ -156,13 +156,13 @@ $databases = [];
  * The 'default' element is mandatory and holds the prefix for any tables
  * not specified elsewhere in the array. Example:
  * @code
- *   'prefix' => [
+ *   'prefix' => array(
  *     'default'   => 'main_',
  *     'users'     => 'shared_',
  *     'sessions'  => 'shared_',
  *     'role'      => 'shared_',
  *     'authmap'   => 'shared_',
- *   ],
+ *   ),
  * @endcode
  * You can also use a reference to a schema/database as a prefix. This may be
  * useful if your Drupal installation exists in a schema that is not the default
@@ -170,13 +170,13 @@ $databases = [];
  * time.
  * Example:
  * @code
- *   'prefix' => [
+ *   'prefix' => array(
  *     'default'   => 'main.',
  *     'users'     => 'shared.',
  *     'sessions'  => 'shared.',
  *     'role'      => 'shared.',
  *     'authmap'   => 'shared.',
- *   ];
+ *   );
  * @endcode
  * NOTE: MySQL and SQLite's definition of a schema is a database.
  *
@@ -185,14 +185,14 @@ $databases = [];
  * example, to enable MySQL SELECT queries to exceed the max_join_size system
  * variable, and to reduce the database connection timeout to 5 seconds:
  * @code
- * $databases['default']['default'] = [
- *   'init_commands' => [
+ * $databases['default']['default'] = array(
+ *   'init_commands' => array(
  *     'big_selects' => 'SET SQL_BIG_SELECTS=1',
- *   ],
- *   'pdo' => [
+ *   ),
+ *   'pdo' => array(
  *     PDO::ATTR_TIMEOUT => 5,
- *   ],
- * ];
+ *   ),
+ * );
  * @endcode
  *
  * WARNING: The above defaults are designed for database portability. Changing
@@ -207,22 +207,22 @@ $databases = [];
  *
  * Sample Database configuration format for PostgreSQL (pgsql):
  * @code
- *   $databases['default']['default'] = [
+ *   $databases['default']['default'] = array(
  *     'driver' => 'pgsql',
  *     'database' => 'databasename',
  *     'username' => 'sqlusername',
  *     'password' => 'sqlpassword',
  *     'host' => 'localhost',
  *     'prefix' => '',
- *   ];
+ *   );
  * @endcode
  *
  * Sample Database configuration format for SQLite (sqlite):
  * @code
- *   $databases['default']['default'] = [
+ *   $databases['default']['default'] = array(
  *     'driver' => 'sqlite',
  *     'database' => '/path/to/databasefilename',
- *   ];
+ *   );
  * @endcode
  */
 
@@ -246,9 +246,9 @@ $databases = [];
  *
  * Example:
  * @code
- *   $config_directories = [
+ *   $config_directories = array(
  *     CONFIG_SYNC_DIRECTORY => '/directory/outside/webroot',
- *   ];
+ *   );
  * @endcode
  */
 $config_directories = [];
@@ -705,9 +705,9 @@ $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
  *
  * For example:
  * @code
- * $settings['trusted_host_patterns'] = [
+ * $settings['trusted_host_patterns'] = array(
  *   '^www\.example\.com$',
- * ];
+ * );
  * @endcode
  * will allow the site to only run from www.example.com.
  *
@@ -718,12 +718,12 @@ $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
  *
  * For example:
  * @code
- * $settings['trusted_host_patterns'] = [
+ * $settings['trusted_host_patterns'] = array(
  *   '^example\.com$',
  *   '^.+\.example\.com$',
  *   '^example\.org$',
  *   '^.+\.example\.org$',
- * ];
+ * );
  * @endcode
  * will allow the site to run off of all variants of example.com and
  * example.org, with all subdomains included.
