@@ -4,7 +4,7 @@
     @extend .h5;
   }
   .more-link {
-    @include mt(3);
+    @extend .mt-2;
   }
 }
 .paragraph--type--articles.list {
@@ -25,7 +25,7 @@
     @extend .media;
   }
   figure img {
-    @include ml(3);
+    @extend .ml-2;
     max-width: 80px;
     @include media-breakpoint-up(sm) {
       max-width: 150px;
@@ -53,6 +53,8 @@
   }
   figure img {
     @extend .card-img-top;
+    max-width: 100%;
+    margin: 0;
   }
   .node__content {
     @extend .card-body;
@@ -74,6 +76,8 @@
   }
   figure img {
     @extend .card-img-top;
+    max-width: 100%;
+    margin: 0;
   }
   .node__content {
     @extend .card-body;
@@ -96,8 +100,8 @@
 .paragraph--type--section.bg-dark {
   .paragraph--type--articles.list {
     .views-row {
-      background-color: $dark;
-      color: $light;
+      @extend .bg-dark;
+      @extend .text-light;
       a {
         color: $yellow;
       }
@@ -107,14 +111,14 @@
 .paragraph--type--section.bg-light {
   .paragraph--type--articles.list {
     .views-row {
-      background-color: $light;
+      @extend .bg-light;
     }
   }
 }
 .paragraph--type--section.bg-yellow {
   .paragraph--type--articles.list {
     .views-row {
-      background-color: $yellow;
+      @extend .bg-yellow;
       a {
         color: $black;
         text-decoration: underline;
