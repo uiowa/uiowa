@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.page.body
+    - field.field.node.page.field_image
     - field.field.node.page.field_meta_tags
     - field.field.node.page.field_page_content_block
     - field.field.node.page.field_publish_options
@@ -21,13 +22,13 @@ bundle: page
 mode: default
 content:
   content_moderation_control:
-    weight: -20
+    weight: 0
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
   field_page_content_block:
     type: entity_reference_revisions_entity_view
-    weight: 0
+    weight: 1
     label: hidden
     settings:
       view_mode: default
@@ -35,12 +36,13 @@ content:
     third_party_settings: {  }
     region: content
   links:
-    weight: 1
+    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
   body: true
+  field_image: true
   field_meta_tags: true
   field_publish_options: true
   field_reference: true
