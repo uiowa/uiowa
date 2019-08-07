@@ -1,0 +1,20 @@
+uuid: 4d29f6ba-77f2-4dec-a648-5b4bf7e8da7e
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.lockup
+id: approved_author
+label: 'Approved to Author'
+subject: '[site:name] - Lockup [node:title] Approved'
+recipient_types:
+  author:
+    id: author
+    provider: workbench_email
+    status: true
+    settings: {  }
+bundles:
+  'node:lockup': 'node:lockup'
+body:
+  value: "Your lockup, [node:title] has been approved.\r\n\r\n[node:log]\r\n\r\n---\r\nYou can download the lockup here: [site:url]/lockup/generator/[node:nid]\r\n\r\nPlease refer to the instructions included with the download."
+  format: plain_text
