@@ -1,18 +1,18 @@
-uuid: 99951812-b790-49c8-9505-525fd4ebfd98
+uuid: a63f9e25-f211-453f-a180-c1c64187556b
 langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.accordion.field_accordion_item
-    - field.field.paragraph.accordion.field_uip_classes
-    - field.field.paragraph.accordion.field_uip_colwidth
-    - field.field.paragraph.accordion.field_uip_display_title
-    - field.field.paragraph.accordion.field_uip_id
-    - field.field.paragraph.accordion.field_uip_title
-    - paragraphs.paragraphs_type.accordion
+    - field.field.paragraph.webform.field_uip_classes
+    - field.field.paragraph.webform.field_uip_colwidth
+    - field.field.paragraph.webform.field_uip_display_title
+    - field.field.paragraph.webform.field_uip_id
+    - field.field.paragraph.webform.field_uip_title
+    - field.field.paragraph.webform.field_webform
+    - paragraphs.paragraphs_type.webform
   module:
     - field_group
-    - paragraphs
+    - webform
 third_party_settings:
   field_group:
     group_uip_settings:
@@ -24,44 +24,25 @@ third_party_settings:
       weight: 3
       format_type: details
       format_settings:
-        label: 'Accordion Settings'
+        label: 'Additional Webform Settings'
         required_fields: true
         id: ''
         classes: ''
         open: false
-      label: 'Accordion Settings'
-id: paragraph.accordion.default
+      label: 'Additional Webform Settings'
+id: paragraph.webform.default
 targetEntityType: paragraph
-bundle: accordion
+bundle: webform
 mode: default
 content:
-  field_accordion_item:
-    type: paragraphs
-    weight: 2
-    settings:
-      title: Accordion
-      title_plural: 'Accordion Items'
-      edit_mode: closed
-      closed_mode: preview
-      autocollapse: all
-      closed_mode_threshold: 2
-      add_mode: dropdown
-      form_display_mode: default
-      default_paragraph_type: accordion_item
-      features:
-        duplicate: duplicate
-        collapse_edit_all: '0'
-        add_above: '0'
-    third_party_settings: {  }
-    region: content
   field_uip_classes:
-    weight: 3
+    weight: 1
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_uip_colwidth:
-    weight: 2
+    weight: 0
     settings: {  }
     third_party_settings: {  }
     type: options_select
@@ -74,7 +55,7 @@ content:
     type: boolean_checkbox
     region: content
   field_uip_id:
-    weight: 4
+    weight: 2
     settings:
       size: 60
       placeholder: ''
@@ -89,7 +70,13 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
+  field_webform:
+    weight: 2
+    settings:
+      default_data: true
+    third_party_settings: {  }
+    type: webform_entity_reference_select
+    region: content
 hidden:
   created: true
   status: true
-  uid: true
