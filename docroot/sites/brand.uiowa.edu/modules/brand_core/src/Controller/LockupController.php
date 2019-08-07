@@ -4,8 +4,6 @@ namespace Drupal\brand_core\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\brand_core\BrandSVG;
-use Drupal\file\Entity\File;
-use Drupal\media\Entity\Media;
 
 /**
  * Generates Lockup.
