@@ -91,6 +91,6 @@
         {% endif %}
         {{ title_suffix }}
 
-        {{ content }}
+        {{ content|without('links') }}
     </div>
 </article>
