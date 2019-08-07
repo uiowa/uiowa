@@ -58,4 +58,4 @@ command-hooks:
     command: '. $NVM_DIR/nvm.sh && nvm install && yarn install'
   frontend-assets:
     dir: ${docroot}
-    command: 'yarn workspaces run gulp'
+    command: '. $NVM_DIR/nvm.sh && nvm use && yarn workspaces run gulp'
