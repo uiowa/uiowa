@@ -107,3 +107,8 @@ $sites['diversity.prod.drupal.uiowa.edu'] = 'diversity.uiowa.edu';
 $sites['billing.dev.drupal.uiowa.edu'] = 'billing.uiowa.edu';
 $sites['billing.stage.drupal.uiowa.edu'] = 'billing.uiowa.edu';
 $sites['billing.prod.drupal.uiowa.edu'] = 'billing.uiowa.edu';
+
+// Directory aliases for bme.engineering.uiowa.edu.
+$sites['engineeringbme.dev.drupal.uiowa.edu'] = 'bme.engineering.uiowa.edu';
+$sites['engineeringbme.stage.drupal.uiowa.edu'] = 'bme.engineering.uiowa.edu';
+$sites['engineeringbme.prod.drupal.uiowa.edu'] = 'bme.engineering.uiowa.edu';
