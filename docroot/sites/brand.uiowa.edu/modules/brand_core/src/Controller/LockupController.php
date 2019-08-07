@@ -45,7 +45,7 @@ class LockupController extends ControllerBase {
       fwrite(fopen(file_directory_temp() . '/' . $lockup_stacked_rgb_file, 'w'), $lockup_stacked_rgb);
 
       $lockup_stacked_reversed = LockupController::generateLockup($node, '#FFCD00', "#FFFFFF", 'stacked');
-      $lockup_stacked_reversed_file = $path . ' LockupStacked-REVERSED.svg';
+      $lockup_stacked_reversed_file = $path . ' LockupStacked-RGB-REVERSED.svg';
       fwrite(fopen(file_directory_temp() . '/' . $lockup_stacked_reversed_file, 'w'), $lockup_stacked_reversed);
 
       $zip = new \ZipArchive();
