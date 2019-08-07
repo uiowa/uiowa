@@ -4,3 +4,62 @@
  * @file
  * Install, update and uninstall functions for the brand_core module.
  */
+
+use Drupal\taxonomy\Entity\Term;
+use Drupal\Core\Config\FileStorage;
+
+/**
+ * Populate organization terms.
+ */
+function brand_core_update_8001() {
+  // Obtain configuration from yaml files.
+  $config_path = DRUPAL_ROOT . '/../config/brand.uiowa.edu/';
+  $source = new FileStorage($config_path);
+
+  // Obtain the storage manager for vocabularies.
+  // Create a new vocabulary from the yaml configuration and save.
+  \Drupal::entityManager()->getStorage('taxonomy_vocabulary')
+    ->create($source->read('taxonomy.vocabulary.orgs'))
+    ->save();
+
+  $terms = [
+    "Athletics",
+    "Carver College of Medicine",
+    "Center for Disabilities and Development",
+    "College of Dentistry",
+    "College of Education",
+    "College of Engineering",
+    "College of Law",
+    "College of Liberal Arts and Sciences",
+    "College of Nursing",
+    "College of Pharmacy",
+    "College of Public Health",
+    "Dance Marathon",
+    "Division of Continuing Education",
+    "Division of Student Life",
+    "Graduate College",
+    "Human Resources",
+    "Information Technology Services",
+    "Institute of Clinical and Translational Sciences",
+    "Office of the President",
+    "Office of the Provost",
+    "Tippie College of Business",
+    "University College",
+    "University Hygienic Lab",
+    "University Libraries",
+    "VP Finance and Operations",
+    "VP General Counsel",
+    "VP Medical Affairs",
+    "VP Research",
+    "VP Strategic Communication",
+  ];
+  foreach ($terms as $term) {
+    $new_term = Term::create([
+      'vid' => 'orgs',
+      'name' => $term,
+    ]);
+
+    $new_term->enforceIsNew();
+    $new_term->save();
+  }
+}
