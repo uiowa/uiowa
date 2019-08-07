@@ -1,0 +1,102 @@
+uuid: bca957a7-f937-4438-bfd6-8007caa98363
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.lockup
+  enforced:
+    config:
+      0: workbench_email.workbench_email_template.approved_author
+      2: workbench_email.workbench_email_template.denied_author
+  module:
+    - content_moderation
+    - workbench_email
+third_party_settings:
+  workbench_email:
+    workbench_email_templates:
+      publish:
+        approved_author: approved_author
+      deny:
+        denied_author: denied_author
+id: lockup
+label: Lockup
+type: content_moderation
+type_settings:
+  states:
+    archived:
+      published: false
+      default_revision: true
+      label: Archived
+      weight: 1
+    denied:
+      published: false
+      default_revision: true
+      label: Denied
+      weight: -1
+    draft:
+      label: Draft
+      published: false
+      default_revision: false
+      weight: -3
+    published:
+      published: true
+      default_revision: true
+      label: Approved
+      weight: 0
+    review:
+      published: false
+      default_revision: false
+      label: Review
+      weight: -2
+  transitions:
+    archive:
+      label: Archive
+      from:
+        - denied
+        - published
+      to: archived
+      weight: 1
+    archived_published:
+      label: 'Restore from archive'
+      from:
+        - archived
+      to: published
+      weight: 2
+    create_new_draft:
+      label: 'Create New Draft'
+      to: draft
+      weight: -3
+      from:
+        - archived
+        - denied
+        - draft
+        - published
+        - review
+    deny:
+      label: Deny
+      from:
+        - draft
+        - published
+        - review
+      to: denied
+      weight: -1
+    needs_review:
+      label: 'Needs Review'
+      from:
+        - denied
+        - draft
+        - review
+      to: review
+      weight: -2
+    publish:
+      label: Approve
+      to: published
+      weight: 0
+      from:
+        - draft
+        - published
+        - review
+  entity_types:
+    node:
+      - lockup
+  default_moderation_state: draft

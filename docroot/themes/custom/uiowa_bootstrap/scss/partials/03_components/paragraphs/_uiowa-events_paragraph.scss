@@ -1,5 +1,5 @@
 .paragraph--type--events {
-  .uiowa-event-title {
+  .sitenow-event-title {
     @extend .h5;
   }
   .more-link {
@@ -11,10 +11,10 @@
     @extend .list-group;
     @extend .list-group-flush;
   }
-  .uiowa-event-teaser {
+  .sitenow-event-teaser {
     @extend .list-group-item;
   }
-  .uiowa-event {
+  .sitenow-event {
     @extend .media;
   }
   img {
@@ -27,7 +27,7 @@
       max-width: 220px;
     }
   }
-  .uiowa-event-content {
+  .sitenow-event-content {
     @extend .media-body;
   }
 }
@@ -35,22 +35,22 @@
   .uiowa-events {
     @extend .row;
   }
-  .uiowa-event {
+  .sitenow-event {
     @extend .card;
     margin-bottom: ($grid-gutter-width / 2);
     flex-direction: column-reverse;
   }
-  .uiowa-event-teaser {
+  .sitenow-event-teaser {
     @extend .col-sm-6;
     @extend .col-md-4;
   }
   img {
     @extend .card-img-top;
   }
-  .uiowa-event-content {
+  .sitenow-event-content {
     @extend .card-body;
   }
-  .uiowa-event-content .uiowa-event-title {
+  .sitenow-event-content .sitenow-event-title {
     @extend .card-title;
   }
 }
@@ -58,21 +58,21 @@
   .uiowa-events {
     @extend .card-columns;
   }
-  .uiowa-event-teaser {
+  .sitenow-event-teaser {
     @extend .card;
 
   }
-  .uiowa-event {
+  .sitenow-event {
     display: flex;
     flex-direction: column-reverse;
   }
   img {
     @extend .card-img-top;
   }
-  .uiowa-event-content {
+  .sitenow-event-content {
     @extend .card-body;
   }
-  .uiowa-event-content .uiowa-event-title {
+  .sitenow-event-content .sitenow-event-title {
     @extend .card-title;
   }
 }
@@ -82,18 +82,18 @@
   }
 }
 .paragraph--type--events.hide-descriptions {
-  .uiowa-event-description {
+  .sitenow-event-description {
     display: none;
   }
 }
-.uiowa-event-single {
+.sitenow-event-single {
   @extend .container;
   margin-bottom: 2rem;
 }
 
 .paragraph--type--section.bg-dark {
   .paragraph--type--events.list {
-    .uiowa-event-teaser {
+    .sitenow-event-teaser {
       background-color: $dark;
       color: $light;
       a {
@@ -104,14 +104,14 @@
 }
 .paragraph--type--section.bg-light {
   .paragraph--type--events.list {
-    .uiowa-event-teaser {
+    .sitenow-event-teaser {
       background-color: $light;
     }
   }
 }
 .paragraph--type--section.bg-yellow {
   .paragraph--type--events.list {
-    .uiowa-event-teaser {
+    .sitenow-event-teaser {
       background-color: $yellow;
       a {
         color: $black;
