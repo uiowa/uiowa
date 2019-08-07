@@ -1,0 +1,32 @@
+uuid: 0ceffa44-6969-4b75-ac06-9f73e6f523f6
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.preview
+    - field.field.paragraph.featured_content.field_featured_content
+    - field.field.paragraph.featured_content.field_uip_classes
+    - field.field.paragraph.featured_content.field_uip_colwidth
+    - field.field.paragraph.featured_content.field_uip_display_title
+    - field.field.paragraph.featured_content.field_uip_id
+    - field.field.paragraph.featured_content.field_uip_title
+    - paragraphs.paragraphs_type.featured_content
+id: paragraph.featured_content.preview
+targetEntityType: paragraph
+bundle: featured_content
+mode: preview
+content:
+  field_uip_title:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden:
+  field_featured_content: true
+  field_uip_classes: true
+  field_uip_colwidth: true
+  field_uip_display_title: true
+  field_uip_id: true
