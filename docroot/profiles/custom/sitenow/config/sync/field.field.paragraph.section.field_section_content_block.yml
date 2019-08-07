@@ -12,6 +12,7 @@ dependencies:
     - paragraphs.paragraphs_type.featured_content
     - paragraphs.paragraphs_type.section
     - paragraphs.paragraphs_type.text
+    - paragraphs.paragraphs_type.webform
   module:
     - entity_reference_revisions
 id: paragraph.section.field_section_content_block
@@ -35,6 +36,7 @@ settings:
       blockquote: blockquote
       events: events
       articles: articles
+      webform: webform
       featured_content: featured_content
     target_bundles_drag_drop:
       section:
@@ -61,6 +63,9 @@ settings:
       articles:
         enabled: true
         weight: 11
+      webform:
+        enabled: true
+        weight: 18
       featured_content:
         enabled: true
         weight: 16
