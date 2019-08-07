@@ -9,13 +9,12 @@ dependencies:
     - paragraphs.paragraphs_type.blockquote
     - paragraphs.paragraphs_type.card
     - paragraphs.paragraphs_type.events
+    - paragraphs.paragraphs_type.featured_content
     - paragraphs.paragraphs_type.section
     - paragraphs.paragraphs_type.text
     - paragraphs.paragraphs_type.webform
   module:
     - entity_reference_revisions
-_core:
-  default_config_hash: bUTS_G1eBuI19AR3ES1LI-tzR2Tt0pUbgj96D7e-r0M
 id: paragraph.section.field_section_content_block
 field_name: field_section_content_block
 entity_type: paragraph
@@ -38,6 +37,7 @@ settings:
       events: events
       articles: articles
       webform: webform
+      featured_content: featured_content
     target_bundles_drag_drop:
       section:
         weight: 3
@@ -66,4 +66,7 @@ settings:
       webform:
         enabled: true
         weight: 18
+      featured_content:
+        enabled: true
+        weight: 16
 field_type: entity_reference_revisions
