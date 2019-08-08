@@ -91,13 +91,13 @@
     </div>{# /.layout-content #}
 
     {% if sidebar_first %}
-      <div{{ sidebar_attributes.addClass(sidebar_classes, 'layout-sidebar-first', 'order-first').setAttribute('role', 'region') }}>
+      <div{{ sidebar_attributes.addClass(sidebar_classes, 'layout-sidebar-first', 'order-first').setAttribute('role', 'region').setAttribute('aria-label', 'secondary sidebar') }}>
         {{ page.sidebar_first }}
       </div>
     {% endif %}
 
     {% if sidebar_second %}
-      <div{{ sidebar_attributes.addClass(sidebar_classes, 'layout-sidebar-second', 'order-last').setAttribute('role', 'region') }}>
+      <div{{ sidebar_attributes.addClass(sidebar_classes, 'layout-sidebar-second', 'order-last').setAttribute('role', 'region').setAttribute('aria-label', 'secondary sidebar') }}>
         {{ page.sidebar_second }}
       </div>
     {% endif %}
