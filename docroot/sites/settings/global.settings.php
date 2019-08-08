@@ -11,10 +11,11 @@
  * The default site will be set to use the uiowa database by BLT.
  */
 if ($site_dir != 'default') {
-  $db_name = str_replace('.', '_', $site_dir);
+  $db = str_replace('.', '_', $site_dir);
+  $db = str_replace('-', '_', $db);
 
   if (file_exists('/var/www/site-php')) {
-    require "/var/www/site-php/uiowa/{$db_name}-settings.inc";
+    require "/var/www/site-php/uiowa/{$db}-settings.inc";
   }
 }
 
