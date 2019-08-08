@@ -11,14 +11,6 @@ to login.
 
 ## Logging In
 
-There are two ways to login to a site.
-
-### Method 1:
-
-Open your web browser and enter the URL of your site. Add `/saml/login` to the end of the URL to go to the login page. For example, `https://mysite.uiowa.edu/user`. 
-
-### Method 2:
-
 Click the login link in the footer of the site.
 
 ## HawkID Login
