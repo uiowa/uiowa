@@ -6,10 +6,8 @@ dependencies:
     - field.field.paragraph.carousel_item.field_carousel_item_caption
     - field.field.paragraph.carousel_item.field_carousel_item_image
     - field.field.paragraph.carousel_item.field_uip_id
-    - image.style.ui_edgy_no_crop_lg
     - paragraphs.paragraphs_type.carousel_item
   module:
-    - image
     - text
 id: paragraph.carousel_item.default
 targetEntityType: paragraph
@@ -24,13 +22,13 @@ content:
     type: text_default
     region: content
   field_carousel_item_image:
-    weight: 0
+    type: entity_reference_entity_view
+    weight: 2
     label: hidden
     settings:
-      image_style: ui_edgy_no_crop_lg
-      image_link: ''
+      view_mode: default
+      link: false
     third_party_settings: {  }
-    type: image
     region: content
 hidden:
   field_uip_id: true

@@ -6,11 +6,10 @@ dependencies:
     - field.field.paragraph.carousel_item.field_carousel_item_caption
     - field.field.paragraph.carousel_item.field_carousel_item_image
     - field.field.paragraph.carousel_item.field_uip_id
-    - image.style.thumbnail
     - paragraphs.paragraphs_type.carousel_item
   module:
     - field_group
-    - image
+    - media_library
     - text
 third_party_settings:
   field_group:
@@ -40,12 +39,11 @@ content:
     type: text_textarea
     region: content
   field_carousel_item_image:
+    type: media_library_widget
     weight: 0
     settings:
-      progress_indicator: throbber
-      preview_image_style: thumbnail
+      media_types: {  }
     third_party_settings: {  }
-    type: image_image
     region: content
   field_uip_id:
     weight: 3
