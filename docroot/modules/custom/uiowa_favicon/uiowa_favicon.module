@@ -1,0 +1,342 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for uiowa_favicon module.
+ *
+ * @DCG
+ * This file is no longer required in Drupal 8.
+ * @see https://www.drupal.org/node/2217931
+ */
+
+// function uiowa_favicon_preprocess_html(&$vars) {
+//     $base_path = $GLOBALS['base_path'];
+//     $assets = $base_path . drupal_get_path('module', 'uiowa_favicon') . '/assets';
+
+//     $elements = array();
+  
+//     $elements[] = array(
+//       '#tag' => 'link',
+//       '#attributes' => array(
+//         'rel' => 'apple-touch-icon',
+//         'sizes' => '57x57',
+//         'href' => $assets . '/apple-touch-icon-57x57.png',
+//       ),
+//     );
+//     $elements[] = array(
+//       '#tag' => 'link',
+//       '#attributes' => array(
+//         'rel' => 'apple-touch-icon',
+//         'sizes' => '60x60',
+//         'href' => $assets . '/apple-touch-icon-60x60.png',
+//       ),
+//     );
+//     $elements[] = array(
+//       '#tag' => 'link',
+//       '#attributes' => array(
+//         'rel' => 'apple-touch-icon',
+//         'sizes' => '72x72',
+//         'href' => $assets . '/apple-touch-icon-72x72.png',
+//       ),
+//     );
+//     $elements[] = array(
+//       '#tag' => 'link',
+//       '#attributes' => array(
+//         'rel' => 'apple-touch-icon',
+//         'sizes' => '76x76',
+//         'href' => $assets . '/apple-touch-icon-76x76.png',
+//       ),
+//     );
+//     $elements[] = array(
+//       '#tag' => 'link',
+//       '#attributes' => array(
+//         'rel' => 'apple-touch-icon',
+//         'sizes' => '114x114',
+//         'href' => $assets . '/apple-touch-icon-114x114.png',
+//       ),
+//     );
+//     $elements[] = array(
+//       '#tag' => 'link',
+//       '#attributes' => array(
+//         'rel' => 'apple-touch-icon',
+//         'sizes' => '120x120',
+//         'href' => $assets . '/apple-touch-icon-120x120.png',
+//       ),
+//     );
+//     $elements[] = array(
+//       '#tag' => 'link',
+//       '#attributes' => array(
+//         'rel' => 'apple-touch-icon',
+//         'sizes' => '144x144',
+//         'href' => $assets . '/apple-touch-icon-144x144.png',
+//       ),
+//     );
+//     $elements[] = array(
+//       '#tag' => 'link',
+//       '#attributes' => array(
+//         'rel' => 'apple-touch-icon',
+//         'sizes' => '152x152',
+//         'href' => $assets . '/apple-touch-icon-152x152.png',
+//       ),
+//     );
+//     $elements[] = array(
+//       '#tag' => 'link',
+//       '#attributes' => array(
+//         'rel' => 'apple-touch-icon',
+//         'sizes' => '180x180',
+//         'href' => $assets . '/apple-touch-icon-180x180.png',
+//       ),
+//     );
+//     $elements[] = array(
+//       '#tag' => 'link',
+//       '#attributes' => array(
+//         'rel' => 'icon',
+//         'type' => 'image/png',
+//         'sizes' => '32x32',
+//         'href' => $assets . '/favicon-32x32.png',
+//       ),
+//     );
+//     $elements[] = array(
+//       '#tag' => 'link',
+//       '#attributes' => array(
+//         'rel' => 'icon',
+//         'type' => 'image/png',
+//         'sizes' => '192x192',
+//         'href' => $assets . '/android-chrome-192x192.png',
+//       ),
+//     );
+//     $elements[] = array(
+//       '#tag' => 'link',
+//       '#attributes' => array(
+//         'rel' => 'icon',
+//         'type' => 'image/png',
+//         'sizes' => '96x96',
+//         'href' => $assets . '/favicon-96x96.png',
+//       ),
+//     );
+//     $elements[] = array(
+//       '#tag' => 'link',
+//       '#attributes' => array(
+//         'rel' => 'icon',
+//         'type' => 'image/png',
+//         'sizes' => '16x16',
+//         'href' => $assets . '/favicon-16x16.png',
+//       ),
+//     );
+//     $elements[] = array(
+//       '#tag' => 'link',
+//       '#attributes' => array(
+//         'rel' => 'manifest',
+//         'href' => $assets . '/manifest.json',
+//       ),
+//     );
+//     $elements[] = array(
+//       '#tag' => 'link',
+//       '#attributes' => array(
+//         'rel' => 'mask-icon',
+//         'href' => $assets . '/safari-pinned-tab.svg',
+//       ),
+//     );
+//     $elements[] = array(
+//       '#tag' => 'meta',
+//       '#attributes' => array(
+//         'name' => 'msapplication-TileColor',
+//         'content' => '#000000',
+//       )
+//     );
+//     $elements[] = array(
+//       '#tag' => 'meta',
+//       '#attributes' => array(
+//         'name' => 'msapplication-TileImage',
+//         'content' => $assets . '/mstile-144x144.png',
+//       )
+//     );
+//     $elements[] = array(
+//       '#tag' => 'meta',
+//       '#attributes' => array(
+//         'name' => 'theme-color',
+//         'content' => '#ffffff',
+//       )
+//     );
+  
+//     foreach ($elements as $key => $element) {
+//         $variables['page']['#attached']['html_head'][] = $element;
+//     }
+//     $variables['page']['#attached']['html_head'][] = [
+//         '#tag' => 'link',
+//         '#attributes' => [
+//           'rel' => 'icon',
+//           'type' => 'image/png',
+//           'sizes' => '96x96',
+//           'href' => $assets . '/favicon-96x96.png',
+//         ]
+//     ];
+// } 
+
+// function uiowa_favicon_page_attachments(array &$page) {
+//     $base_path = $GLOBALS['base_path'];
+//     $assets = $base_path . drupal_get_path('module', 'uiowa_favicon') . '/assets';
+
+//     $elements = array();
+  
+//     $elements[] = array(
+//       '#tag' => 'link',
+//       '#attributes' => array(
+//         'rel' => 'apple-touch-icon',
+//         'sizes' => '57x57',
+//         'href' => $assets . '/apple-touch-icon-57x57.png',
+//       ),
+//     );
+//     $elements[] = array(
+//       '#tag' => 'link',
+//       '#attributes' => array(
+//         'rel' => 'apple-touch-icon',
+//         'sizes' => '60x60',
+//         'href' => $assets . '/apple-touch-icon-60x60.png',
+//       ),
+//     );
+//     $elements[] = array(
+//       '#tag' => 'link',
+//       '#attributes' => array(
+//         'rel' => 'apple-touch-icon',
+//         'sizes' => '72x72',
+//         'href' => $assets . '/apple-touch-icon-72x72.png',
+//       ),
+//     );
+//     $elements[] = array(
+//       '#tag' => 'link',
+//       '#attributes' => array(
+//         'rel' => 'apple-touch-icon',
+//         'sizes' => '76x76',
+//         'href' => $assets . '/apple-touch-icon-76x76.png',
+//       ),
+//     );
+//     $elements[] = array(
+//       '#tag' => 'link',
+//       '#attributes' => array(
+//         'rel' => 'apple-touch-icon',
+//         'sizes' => '114x114',
+//         'href' => $assets . '/apple-touch-icon-114x114.png',
+//       ),
+//     );
+//     $elements[] = array(
+//       '#tag' => 'link',
+//       '#attributes' => array(
+//         'rel' => 'apple-touch-icon',
+//         'sizes' => '120x120',
+//         'href' => $assets . '/apple-touch-icon-120x120.png',
+//       ),
+//     );
+//     $elements[] = array(
+//       '#tag' => 'link',
+//       '#attributes' => array(
+//         'rel' => 'apple-touch-icon',
+//         'sizes' => '144x144',
+//         'href' => $assets . '/apple-touch-icon-144x144.png',
+//       ),
+//     );
+//     $elements[] = array(
+//       '#tag' => 'link',
+//       '#attributes' => array(
+//         'rel' => 'apple-touch-icon',
+//         'sizes' => '152x152',
+//         'href' => $assets . '/apple-touch-icon-152x152.png',
+//       ),
+//     );
+//     $elements[] = array(
+//       '#tag' => 'link',
+//       '#attributes' => array(
+//         'rel' => 'apple-touch-icon',
+//         'sizes' => '180x180',
+//         'href' => $assets . '/apple-touch-icon-180x180.png',
+//       ),
+//     );
+//     $elements[] = array(
+//       '#tag' => 'link',
+//       '#attributes' => array(
+//         'rel' => 'icon',
+//         'type' => 'image/png',
+//         'sizes' => '32x32',
+//         'href' => $assets . '/favicon-32x32.png',
+//       ),
+//     );
+//     $elements[] = array(
+//       '#tag' => 'link',
+//       '#attributes' => array(
+//         'rel' => 'icon',
+//         'type' => 'image/png',
+//         'sizes' => '192x192',
+//         'href' => $assets . '/android-chrome-192x192.png',
+//       ),
+//     );
+//     $elements[] = array(
+//       '#tag' => 'link',
+//       '#attributes' => array(
+//         'rel' => 'icon',
+//         'type' => 'image/png',
+//         'sizes' => '96x96',
+//         'href' => $assets . '/favicon-96x96.png',
+//       ),
+//     );
+//     $elements[] = array(
+//       '#tag' => 'link',
+//       '#attributes' => array(
+//         'rel' => 'icon',
+//         'type' => 'image/png',
+//         'sizes' => '16x16',
+//         'href' => $assets . '/favicon-16x16.png',
+//       ),
+//     );
+//     $elements[] = array(
+//       '#tag' => 'link',
+//       '#attributes' => array(
+//         'rel' => 'manifest',
+//         'href' => $assets . '/manifest.json',
+//       ),
+//     );
+//     $elements[] = array(
+//       '#tag' => 'link',
+//       '#attributes' => array(
+//         'rel' => 'mask-icon',
+//         'href' => $assets . '/safari-pinned-tab.svg',
+//       ),
+//     );
+//     $elements[] = array(
+//       '#tag' => 'meta',
+//       '#attributes' => array(
+//         'name' => 'msapplication-TileColor',
+//         'content' => '#000000',
+//       )
+//     );
+//     $elements[] = array(
+//       '#tag' => 'meta',
+//       '#attributes' => array(
+//         'name' => 'msapplication-TileImage',
+//         'content' => $assets . '/mstile-144x144.png',
+//       )
+//     );
+//     $elements[] = array(
+//       '#tag' => 'meta',
+//       '#attributes' => array(
+//         'name' => 'theme-color',
+//         'content' => '#ffffff',
+//       )
+//     );
+  
+//     foreach ($elements as $key => $element) {
+//         $page['#attached']['html_head'][] = $element;
+//         ksm($page['#attached']['html_head'][$key]);
+//     }
+// }
+function uiowa_favicon_page_attachments(array &$page) {
+    
+      $page['#attached']['html_head'][] = [
+        [
+          '#tag' => 'meta',
+          '#value' => nothing
+        ],
+        'google_analytics_tracking_script',
+      ];
+    }
+  }
+  
