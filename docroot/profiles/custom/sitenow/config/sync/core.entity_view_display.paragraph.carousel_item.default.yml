@@ -1,0 +1,36 @@
+uuid: 41a0b6d6-9f7a-4ea6-aa22-ca70747cabaa
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.carousel_item.field_carousel_item_caption
+    - field.field.paragraph.carousel_item.field_carousel_item_image
+    - field.field.paragraph.carousel_item.field_uip_id
+    - image.style.ui_edgy_no_crop_lg
+    - paragraphs.paragraphs_type.carousel_item
+  module:
+    - image
+    - text
+id: paragraph.carousel_item.default
+targetEntityType: paragraph
+bundle: carousel_item
+mode: default
+content:
+  field_carousel_item_caption:
+    weight: 1
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_carousel_item_image:
+    weight: 0
+    label: hidden
+    settings:
+      image_style: ui_edgy_no_crop_lg
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+    region: content
+hidden:
+  field_uip_id: true

@@ -1,0 +1,82 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for sitenow_carousel module.
+ *
+ * @DCG
+ * This file is no longer required in Drupal 8.
+ * @see https://www.drupal.org/node/2217931
+ */
+
+use Drupal\Core\Template\Attribute;
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_field_widget_form_alter().
+ */
+function sitenow_carousel_field_widget_form_alter(&$element, FormStateInterface $form_state, $context) {
+  // Maps field names to an array containing a single format.
+  $map = [
+    'field_carousel_item_caption' => ['minimal'],
+  ];
+
+  $field_name = $context['items']->getFieldDefinition()->getName();
+
+  if (array_key_exists($field_name, $map)) {
+    $element['#allowed_formats'] = $map[$field_name];
+    $element['#after_build'][] = '_remove_text_format_box';
+  }
+}
+
+/**
+ * Widget form alter #after_build callback.
+ */
+function _remove_text_format_box($form_element, FormStateInterface $form_state) {
+  // Remove help, guidelines and wrapper.
+  unset($form_element['format']['help']);
+  unset($form_element['format']['guidelines']);
+  unset($form_element['format']['#type']);
+  unset($form_element['format']['#theme_wrappers']);
+
+  return $form_element;
+}
+
+/**
+ * Implements hook_preprocess_field().
+ */
+function sitenow_carousel_preprocess_field(&$variables) {
+  /** @var Drupal\Core\Routing\AdminContext $admin_context */
+  $admin_context = \Drupal::service('router.admin_context');
+
+  switch ($variables['element']['#field_name']) {
+    case 'field_carousel_item':
+
+      if (!$admin_context->isAdminRoute()) {
+        $variables['attributes']['class'][] = 'carousel-inner';
+        $variables['parent_id'] = $variables['element']['#object']->id();
+      }
+
+      break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_paragraph().
+ */
+function sitenow_carousel_preprocess_paragraph__carousel(&$variables) {
+  /** @var Drupal\paragraphs\Entity\Paragraph $paragraph */
+  $paragraph = $variables['paragraph'];
+
+  /** @var Drupal\Core\Routing\AdminContext $admin_context */
+  $admin_context = \Drupal::service('router.admin_context');
+
+  if (!$admin_context->isAdminRoute()) {
+    $variables['id'] = 'carousel-' . $paragraph->id();
+
+    if (isset($variables['content']['field_carousel_item'][0])) {
+      $variables['content']['field_carousel_item'][0]['#attributes'] = new Attribute();
+      $variables['content']['field_carousel_item'][0]['#attributes']->addClass('active');
+    }
+  }
+}
