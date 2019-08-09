@@ -79,7 +79,25 @@ function sitenow_paragraphs_preprocess_paragraph(&$variables) {
       array_walk_recursive($values, function ($v) use (&$classes) {
         $classes[] = $v;
       });
+      // For featured content only.
+      // Articles and Events hav similar functionality that could later be combined...
+      if ($paragraph->bundle() == 'featured_content') {
+        // Check for grid classes otherwise add list class.
+        $display_options = [
+          'grid',
+          'masonry',
+        ];
+        $result = array_intersect($display_options, $classes);
+        if (!$result) {
+          $classes[] = 'list';
+        }
+      }
       $variables['attributes']['class'] = (isset($variables['attributes']['class'])) ? array_merge($variables['attributes']['class'], $classes) : $classes;
+    }
+    else {
+      if ($paragraph->bundle() == 'featured_content') {
+        $variables['attributes']['class'][] = 'list';
+      }
     }
     switch ($paragraph->bundle()) {
       case 'section':
@@ -88,6 +106,8 @@ function sitenow_paragraphs_preprocess_paragraph(&$variables) {
       case 'accordion_item':
       case 'blockquote':
       case 'card':
+      case 'webform':
+      case 'featured_content':
         // Add css if applicable.
         $variables['#attached']['library'][] = 'sitenow_paragraphs/default';
 
@@ -195,10 +215,18 @@ function uip_classes_allowed_values(FieldStorageConfig $definition, ContentEntit
       break;
 
     case 'text':
+    case 'webform':
       $options['bg-light'] = 'Light Gray Background';
       $options['bg-dark'] = 'Dark Background';
       $options['bg-yellow'] = 'Gold Background';
       $options['semi-transparent'] = 'Semi-Transparent Background';
+      break;
+
+    case 'featured_content':
+      $options['hide-descriptions'] = 'Hide Summaries';
+      $options['hide-images'] = 'Hide Images';
+      $options['grid'] = 'Grid';
+      $options['masonry'] = 'Masonry';
       break;
 
   }
@@ -318,6 +346,8 @@ function section_justifycontent_allowed_values(FieldStorageConfig $definition, C
     'justify-content-start' => 'Left',
     'justify-content-center' => 'Center',
     'justify-content-end' => 'Right',
+    'justify-content-around' => 'Space Around',
+    'justify-content-between' => 'Space Between',
   ];
   $bundle = $entity->bundle();
   // Allow modules to alter classes.
