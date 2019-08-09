@@ -56,6 +56,15 @@
     {% endif %}
     {% block content %}
       <div id="{{ id }}" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+          {% for i in 0..carousel_item_count %}
+            {% if i == 0 %}
+              <li data-target="#{{ id }}" data-slide-to="0" class="active"></li>
+            {% else %}
+              <li data-target="#{{ id }}" data-slide-to="{{ i }}"></li>
+            {% endif %}
+          {% endfor %}
+        </ol>
         {{ content|without('field_uip_title') }}
       </div>
       <a class="carousel-control-prev" href="#{{ id }}" role="button" data-slide="prev">
