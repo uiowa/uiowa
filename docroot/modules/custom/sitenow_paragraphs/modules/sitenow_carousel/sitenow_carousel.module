@@ -54,7 +54,6 @@ function sitenow_carousel_preprocess_field(&$variables) {
 
       if (!$admin_context->isAdminRoute()) {
         $variables['attributes']['class'][] = 'carousel-inner';
-        $variables['parent_id'] = $variables['element']['#object']->id();
       }
 
       break;
