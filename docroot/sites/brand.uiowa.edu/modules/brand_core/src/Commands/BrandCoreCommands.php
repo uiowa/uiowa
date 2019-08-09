@@ -46,7 +46,9 @@ class BrandCoreCommands extends DrushCommands {
         'query' => ['destination' => '/admin/content/lockups'],
       ];
       $params['login'] = Url::fromUri($base_url . '/saml/login', $url_options)->toString();
-      $result = $mailManager->mail('brand_core', 'lockup-review-digest', 'osc-brand@uiowa.edu', 'en', $params, NULL, TRUE);
+      $system_site_config = \Drupal::config('system.site');
+      $site_email = $system_site_config->get('mail');
+      $result = $mailManager->mail('brand_core', 'lockup-review-digest', $site_email, 'en', $params, NULL, TRUE);
       if ($result['result'] !== TRUE) {
         \Drupal::logger('brand_core')->error('Lockup Review Digest Not Sent');
         $this->output()->writeln('Lockup Review Digest Not Sent');
