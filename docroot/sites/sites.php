@@ -98,7 +98,27 @@ $sites['law.dev.drupal.uiowa.edu'] = 'law.uiowa.edu';
 $sites['law.stage.drupal.uiowa.edu'] = 'law.uiowa.edu';
 $sites['law.prod.drupal.uiowa.edu'] = 'law.uiowa.edu';
 
+// Directory aliases for diversity.uiowa.edu.
+$sites['diversity.dev.drupal.uiowa.edu'] = 'diversity.uiowa.edu';
+$sites['diversity.stage.drupal.uiowa.edu'] = 'diversity.uiowa.edu';
+$sites['diversity.prod.drupal.uiowa.edu'] = 'diversity.uiowa.edu';
+
 // Directory aliases for billing.uiowa.edu.
 $sites['billing.dev.drupal.uiowa.edu'] = 'billing.uiowa.edu';
 $sites['billing.stage.drupal.uiowa.edu'] = 'billing.uiowa.edu';
 $sites['billing.prod.drupal.uiowa.edu'] = 'billing.uiowa.edu';
+
+// Directory aliases for bme.engineering.uiowa.edu.
+$sites['engineeringbme.dev.drupal.uiowa.edu'] = 'bme.engineering.uiowa.edu';
+$sites['engineeringbme.stage.drupal.uiowa.edu'] = 'bme.engineering.uiowa.edu';
+$sites['engineeringbme.prod.drupal.uiowa.edu'] = 'bme.engineering.uiowa.edu';
+
+// Directory aliases for staff-council.uiowa.edu.
+$sites['staff-council.dev.drupal.uiowa.edu'] = 'staff-council.uiowa.edu';
+$sites['staff-council.stage.drupal.uiowa.edu'] = 'staff-council.uiowa.edu';
+$sites['staff-council.prod.drupal.uiowa.edu'] = 'staff-council.uiowa.edu';
+
+// Directory aliases for pentacrestmuseums.uiowa.edu.
+$sites['pentacrestmuseums.dev.drupal.uiowa.edu'] = 'pentacrestmuseums.uiowa.edu';
+$sites['pentacrestmuseums.stage.drupal.uiowa.edu'] = 'pentacrestmuseums.uiowa.edu';
+$sites['pentacrestmuseums.prod.drupal.uiowa.edu'] = 'pentacrestmuseums.uiowa.edu';

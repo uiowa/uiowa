@@ -8,3 +8,138 @@
  * This file is no longer required in Drupal 8.
  * @see https://www.drupal.org/node/2217931
  */
+
+use Drupal\user\Entity\User;
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_alter().
+ */
+function brand_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    case 'node_lockup_edit_form':
+    case 'node_lockup_form':
+      // Attach lockup preview libraries.
+      $form['#attached']['library'][] = 'brand_core/lockup-preview';
+
+      // Pass relative module path for use in custom template.
+      $module_handler = Drupal::service('module_handler');
+      $form["#module_path"] = $module_handler->getModule('brand_core')->getPath();
+
+      // Create node_fields group in the advanced container.
+      $form['node_fields'] = [
+        '#type' => 'details',
+        '#title' => 'Lockup Details',
+        '#group' => 'advanced',
+        '#attributes' => [
+          'class' => ['node-form-fields'],
+        ],
+        '#attached' => [
+          'library' => ['node/drupal.node'],
+        ],
+        '#weight' => -99,
+        '#optional' => FALSE,
+        '#open' => TRUE,
+      ];
+      // Set fields to node_fields group.
+      $form['title']['#group'] = 'node_fields';
+      $form['field_lockup_org']['#group'] = 'node_fields';
+      $form['field_lockup_primary_unit']['#group'] = 'node_fields';
+      $form['field_lockup_sub_unit']['#group'] = 'node_fields';
+
+      $form_object = $form_state->getFormObject();
+      $nid = $form_object->getEntity()->id();
+      if (isset($nid)) {
+        // Query database for relevant revision logs.
+        $connection = \Drupal::database();
+        $query = $connection->select('node_revision', 'r');
+        $query->condition('r.nid', $nid, '=');
+        $query->fields('r', [
+          'revision_uid',
+          'revision_timestamp',
+          'revision_log',
+        ]);
+        $query->orderBy('revision_timestamp', 'DESC');
+        $query->range(0, 5);
+        $result = $query->execute();
+
+        // Pull the latest revisions (5) together for display.
+        $log_items = '';
+        foreach ($result as $record) {
+          $uid = $record->revision_uid;
+          $user = User::load($uid);
+          $email = $user->getEmail();
+          $username = $user->getUsername();
+          $timestamp = $record->revision_timestamp;
+          $date = \Drupal::service('date.formatter')->format($timestamp, 'short');
+          if (!empty($record->revision_log)) {
+            $log_items .= '<strong>' . $date . '</strong> - ' . $username . ' (' . $email . ')<br /><em>' . $record->revision_log . '</em><br /><br />';
+          }
+          else {
+            $log_items .= '<strong>' . $date . '</strong> - ' . $username . ' (' . $email . ')<br /><br />';
+          }
+        }
+
+        // Render log entries in the revision_information group.
+        $form['node_logs'] = [
+          '#type' => 'details',
+          '#title' => 'Latest Revisions',
+          '#group' => 'revision_information',
+          '#weight' => 26,
+          '#optional' => FALSE,
+          '#open' => FALSE,
+          '#markup' => $log_items,
+        ];
+      }
+
+      break;
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_alter().
+ */
+function brand_core_theme_suggestions_alter(array &$suggestions, array $variables, $hook) {
+  // Suggest a template with placeholder lockup preview markup.
+  if (isset($variables['form'])) {
+    if ($variables["form"]["#form_id"] == 'node_lockup_form' || $variables['form']['#form_id'] == 'node_lockup_edit_form') {
+      $suggestions[] = 'node_edit_form__lockup';
+    }
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function brand_core_theme($existing, $type, $theme, $path) {
+  return [
+    'node_edit_form__lockup' => [
+      'template' => 'node-edit-form--lockup',
+      'base hook' => 'form',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_mail().
+ */
+function brand_core_mail($key, &$message, $params) {
+  $message['from'] = \Drupal::config('system.site')->get('mail');
+  $options = [
+    'langcode' => $message['langcode'],
+  ];
+  switch ($key) {
+    case 'lockup-review-digest':
+      $message['subject'] = t('Brand Manual - You have @results @label to review', ['@results' => $params['results'], '@label' => $params['label']], $options);
+      $message['body'][] = t('You have @results @label to review:', [
+        '@results' => $params['results'],
+        '@label' => $params['label'],
+        '@login' => $params['login'],
+      ], $options);
+      foreach ($params['lockups'] as $lockup) {
+        $message['body'][] = t('- @lockup', ['@lockup' => $lockup], $options);
+      }
+      $message['body'][] = t('@login', ['@login' => $params['login']], $options);
+      break;
+  }
+}

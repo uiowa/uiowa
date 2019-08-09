@@ -87,12 +87,12 @@
     {{ title_prefix }}
     {% if not page %}
       <h3{{ title_attributes }}>
-        <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+        <a href="{{ url }}" rel="bookmark">{{ label }}</a>{% if content.field_person_credential %} <small class="subtitle h6">{{ content.field_person_credential.0 }}</small>{% endif %}
       </h3>
     {% endif %}
     {{ title_suffix }}
 
-    {{ content|without('person_image') }}
+    {{ content|without('person_image', 'field_person_credential', 'links') }}
   </div>
   {% if content.person_image %}
     <figure class="content-image">
