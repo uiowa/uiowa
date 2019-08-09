@@ -1,0 +1,60 @@
+uuid: 38e6f4fb-29ab-40fd-8435-3972fb9b9d51
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.carousel_item.field_carousel_item_caption
+    - field.field.paragraph.carousel_item.field_carousel_item_image
+    - field.field.paragraph.carousel_item.field_uip_id
+    - image.style.thumbnail
+    - paragraphs.paragraphs_type.carousel_item
+  module:
+    - field_group
+    - image
+    - text
+third_party_settings:
+  field_group:
+    group_carousel_item_settings:
+      children:
+        - field_uip_id
+      parent_name: ''
+      weight: 2
+      format_type: details
+      format_settings:
+        id: ''
+        classes: ''
+        open: false
+        required_fields: true
+      label: 'Carousel Item Settings'
+id: paragraph.carousel_item.default
+targetEntityType: paragraph
+bundle: carousel_item
+mode: default
+content:
+  field_carousel_item_caption:
+    weight: 1
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_carousel_item_image:
+    weight: 0
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+    type: image_image
+    region: content
+  field_uip_id:
+    weight: 3
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden:
+  created: true
+  status: true

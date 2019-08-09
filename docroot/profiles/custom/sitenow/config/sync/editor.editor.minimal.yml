@@ -1,0 +1,64 @@
+uuid: ab1abd12-d7ec-4a19-a5e9-5f8cf610fde9
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.minimal
+  module:
+    - ckeditor
+format: minimal
+editor: ckeditor
+settings:
+  toolbar:
+    rows:
+      -
+        -
+          name: Formatting
+          items:
+            - Bold
+            - Underline
+            - Italic
+            - Strike
+            - JustifyLeft
+            - JustifyRight
+            - JustifyCenter
+            - JustifyBlock
+            - Superscript
+            - Subscript
+            - SpecialChar
+        -
+          name: Links
+          items:
+            - DrupalLink
+            - DrupalUnlink
+        -
+          name: Media
+          items:
+            - Blockquote
+        -
+          name: Tools
+          items:
+            - Source
+            - Undo
+            - Redo
+        -
+          name: Format
+          items:
+            - Styles
+            - Format
+  plugins:
+    drupallink:
+      linkit_enabled: true
+      linkit_profile: default
+    language:
+      language_list: un
+    stylescombo:
+      styles: "div.lead|Lead Paragraph\r\ndiv.alert.alert-success|Alert Success\r\ndiv.alert.alert-info|Alert Info\r\ndiv.alert.alert-warning|Alert Warning\r\ndiv.alert.alert-danger|Alert Danger"
+image_upload:
+  status: false
+  scheme: public
+  directory: inline-images
+  max_size: ''
+  max_dimensions:
+    width: null
+    height: null
