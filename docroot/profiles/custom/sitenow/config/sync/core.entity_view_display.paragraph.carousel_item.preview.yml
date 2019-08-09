@@ -1,0 +1,37 @@
+uuid: 6b67087d-18b9-4b41-9ff5-07e10c253901
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.preview
+    - field.field.paragraph.carousel_item.field_carousel_item_caption
+    - field.field.paragraph.carousel_item.field_carousel_item_image
+    - field.field.paragraph.carousel_item.field_uip_id
+    - image.style.paragraph_preview
+    - paragraphs.paragraphs_type.carousel_item
+  module:
+    - media
+    - text
+id: paragraph.carousel_item.preview
+targetEntityType: paragraph
+bundle: carousel_item
+mode: preview
+content:
+  field_carousel_item_caption:
+    weight: 1
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_carousel_item_image:
+    type: media_thumbnail
+    weight: 2
+    label: hidden
+    settings:
+      image_style: paragraph_preview
+      image_link: ''
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_uip_id: true
