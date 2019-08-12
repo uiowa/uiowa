@@ -9,7 +9,7 @@
  * @see https://www.drupal.org/node/2217931
  */
 
-// function uiowa_favicon_preprocess_html(&$vars) {
+// function uiowa_favicon_preprocess_html(&$variables) {
 //     $base_path = $GLOBALS['base_path'];
 //     $assets = $base_path . drupal_get_path('module', 'uiowa_favicon') . '/assets';
 
@@ -152,25 +152,18 @@
 //       )
 //     );
 //     $elements[] = array(
-//       '#tag' => 'meta',
-//       '#attributes' => array(
-//         'name' => 'theme-color',
-//         'content' => '#ffffff',
-//       )
+//         '#tag' => 'meta',
+//         '#attributes' => array(
+//           'name' => 'theme-color',
+//           'content' => '#ffffff',
+//         )
 //     );
-  
+
 //     foreach ($elements as $key => $element) {
-//         $variables['page']['#attached']['html_head'][] = $element;
+//         ksm($element);
+//         $variables['page']['#attached']['html_head'][$key] = $element;
 //     }
-//     $variables['page']['#attached']['html_head'][] = [
-//         '#tag' => 'link',
-//         '#attributes' => [
-//           'rel' => 'icon',
-//           'type' => 'image/png',
-//           'sizes' => '96x96',
-//           'href' => $assets . '/favicon-96x96.png',
-//         ]
-//     ];
+//     ksm($variables['page']['#attached']['html_head']);
 // } 
 
 // function uiowa_favicon_page_attachments(array &$page) {
@@ -330,14 +323,22 @@
 // }
 
 
-// function uiowa_favicon_page_attachments(array &$page) {
+function uiowa_favicon_page_attachments(array &$page) {
     
-//     $page['#attached']['html_head'][] = [
-//     [
-//         '#tag' => 'meta',
-//         '#value' => nothing
-//     ],
-//     'google_analytics_tracking_script',
-//     ];
-//   }
+    $page['#attached']['html_head'][] = [
+    [
+        '#tag' => 'meta',
+        '#value' => 'EXAMPLETEXT'
+    ],
+    'google_analytics_tracking_script',
+    ];
+
+    // $page['#attached']['html_head'][] = [
+    //     '#tag' => 'meta',
+    //     '#attributes' => array(
+    //         'name' => 'theme-color',
+    //         'content' => '#ffffff'
+    //     )
+    // ];
+  }
   
