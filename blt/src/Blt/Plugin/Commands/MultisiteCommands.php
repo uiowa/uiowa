@@ -115,6 +115,7 @@ class MultisiteCommands extends BltTasks {
     $uri = $commandData->input()->getOption('site-uri');
     $dir = $commandData->input()->getOption('site-dir');
     $db = str_replace('.', '_', $dir);
+    $db = str_replace('-', '_', $db);
     $machineName = $this->generateMachineName($uri);
     $dev = "{$machineName}.dev.drupal.uiowa.edu";
     $test = "{$machineName}.stage.drupal.uiowa.edu";
