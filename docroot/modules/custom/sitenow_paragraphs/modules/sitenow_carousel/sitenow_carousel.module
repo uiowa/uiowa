@@ -10,37 +10,6 @@
  */
 
 use Drupal\Core\Template\Attribute;
-use Drupal\Core\Form\FormStateInterface;
-
-/**
- * Implements hook_field_widget_form_alter().
- */
-function sitenow_carousel_field_widget_form_alter(&$element, FormStateInterface $form_state, $context) {
-  // Maps field names to an array containing a single format.
-  $map = [
-    'field_carousel_item_caption' => ['minimal'],
-  ];
-
-  $field_name = $context['items']->getFieldDefinition()->getName();
-
-  if (array_key_exists($field_name, $map)) {
-    $element['#allowed_formats'] = $map[$field_name];
-    $element['#after_build'][] = '_remove_text_format_box';
-  }
-}
-
-/**
- * Widget form alter #after_build callback.
- */
-function _remove_text_format_box($form_element, FormStateInterface $form_state) {
-  // Remove help, guidelines and wrapper.
-  unset($form_element['format']['help']);
-  unset($form_element['format']['guidelines']);
-  unset($form_element['format']['#type']);
-  unset($form_element['format']['#theme_wrappers']);
-
-  return $form_element;
-}
 
 /**
  * Implements hook_preprocess_field().
