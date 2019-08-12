@@ -112,3 +112,8 @@ $sites['billing.prod.drupal.uiowa.edu'] = 'billing.uiowa.edu';
 $sites['engineeringbme.dev.drupal.uiowa.edu'] = 'bme.engineering.uiowa.edu';
 $sites['engineeringbme.stage.drupal.uiowa.edu'] = 'bme.engineering.uiowa.edu';
 $sites['engineeringbme.prod.drupal.uiowa.edu'] = 'bme.engineering.uiowa.edu';
+
+// Directory aliases for staff-council.uiowa.edu.
+$sites['staff-council.dev.drupal.uiowa.edu'] = 'staff-council.uiowa.edu';
+$sites['staff-council.stage.drupal.uiowa.edu'] = 'staff-council.uiowa.edu';
+$sites['staff-council.prod.drupal.uiowa.edu'] = 'staff-council.uiowa.edu';
