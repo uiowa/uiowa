@@ -6,7 +6,13 @@ dependencies:
     - field.storage.paragraph.field_text_body
     - paragraphs.paragraphs_type.text
   module:
+    - allowed_formats
     - text
+third_party_settings:
+  allowed_formats:
+    filtered_html: filtered_html
+    minimal: '0'
+    plain_text: '0'
 _core:
   default_config_hash: cgp8OdzBvtNL0wQ2XBDlBiE2rs78PYHf32S97-Q3u44
 id: paragraph.text.field_text_body
