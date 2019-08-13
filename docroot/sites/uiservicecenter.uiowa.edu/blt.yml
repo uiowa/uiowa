@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: uiservicecenter.uiowa.edu
+    protocol: https
+  machine_name: uiservicecenter
+  human_name: uiservicecenter.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: uiservicecenter.prod
+drupal:
+  db:
+    database: uiservicecenter_uiowa_edu
+    host: localhost
+    user: root
+    password: null
