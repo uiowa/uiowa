@@ -1,0 +1,92 @@
+.paragraph.paragraph--type--carousel {
+  background-color: inherit !important;
+
+  &.bg-dark.semi-transparent,
+  &.bg-light.semi-transparent,
+  &.bg-yellow.semi-transparent {
+    background-color: inherit !important;
+  }
+
+  .carousel-caption {
+    background-color: $dark;
+    color: $white;
+
+    a {
+      color: $yellow;
+    }
+
+    blockquote, blockquote p {
+      border-color: $white;
+      &:before {
+        background-color: $white;
+        color: $dark;
+      }
+      footer {
+        color: $gray-500;
+      }
+    }
+  }
+
+  &.bg-dark.semi-transparent .carousel-caption {
+    background-color: rgba(52, 58, 64, 0.8) !important;
+  }
+
+  &.bg-yellow .carousel-caption {
+    background-color: $yellow;
+
+    a {
+      color: $black;
+      text-decoration: underline;
+
+      &:hover, &:focus {
+        text-decoration: none;
+      }
+    }
+
+    blockquote, blockquote p {
+      border-color: $gray-900;
+      &:before {
+        background-color: $gray-900;
+        color: $white;
+      }
+      footer {
+        color: $gray-900;
+      }
+    }
+  }
+
+  &.bg-yellow.semi-transparent .carousel-caption {
+    background-color: rgba(255, 205, 0, 0.8) !important;
+  }
+
+  &.bg-light .carousel-caption {
+    color: $gray-900;
+    background-color: $light;
+
+    a {
+      color: $black;
+      text-decoration: underline;
+
+      &:hover, &:focus {
+        text-decoration: none;
+      }
+    }
+
+    blockquote, blockquote p {
+      border-color: $gray-900;
+
+      &:before {
+        background-color: $gray-900;
+        color: $white;
+      }
+
+      footer {
+        color: $gray-900;
+      }
+    }
+  }
+
+  &.bg-light.semi-transparent .carousel-caption {
+    background-color: rgba(248, 249, 250, 0.8) !important;
+  }
+}
