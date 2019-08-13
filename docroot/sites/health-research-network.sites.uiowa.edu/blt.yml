@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: health-research-network.sites.uiowa.edu
+    protocol: https
+  machine_name: siteshealth-research-network
+  human_name: health-research-network.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: siteshealth-research-network.prod
+drupal:
+  db:
+    database: health_research_network_sites_uiowa_edu
+    host: localhost
+    user: root
+    password: null
