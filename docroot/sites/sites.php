@@ -127,3 +127,8 @@ $sites['pentacrestmuseums.prod.drupal.uiowa.edu'] = 'pentacrestmuseums.uiowa.edu
 $sites['uiservicecenter.dev.drupal.uiowa.edu'] = 'uiservicecenter.uiowa.edu';
 $sites['uiservicecenter.stage.drupal.uiowa.edu'] = 'uiservicecenter.uiowa.edu';
 $sites['uiservicecenter.prod.drupal.uiowa.edu'] = 'uiservicecenter.uiowa.edu';
+
+// Directory aliases for health-research-network.sites.uiowa.edu.
+$sites['siteshealth-research-network.dev.drupal.uiowa.edu'] = 'health-research-network.sites.uiowa.edu';
+$sites['siteshealth-research-network.stage.drupal.uiowa.edu'] = 'health-research-network.sites.uiowa.edu';
+$sites['siteshealth-research-network.prod.drupal.uiowa.edu'] = 'health-research-network.sites.uiowa.edu';
