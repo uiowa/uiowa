@@ -1,0 +1,35 @@
+.view-display-id-page_people_table {
+  tr.draggable {
+    position: relative;
+
+    .tabledrag-handle {
+      margin: 0.5rem 0rem;
+      height: 16px;
+
+      .handle {
+        background-position: 0rem;
+        width: 16px;
+        height: 16px;
+        padding: 0rem;
+        margin: 0rem;
+      }
+    }
+
+    & + td {
+      padding-left: 0rem;
+
+      fieldset {
+        margin-bottom: 0rem;
+      }
+
+      input {
+        margin: 0;
+      }
+    }
+
+
+    &.drag {
+      box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    }
+  }
+}
