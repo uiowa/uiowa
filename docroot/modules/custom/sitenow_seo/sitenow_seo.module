@@ -36,6 +36,7 @@ function sitenow_seo_form_metatag_defaults_edit_form_alter(&$form, FormStateInte
   // except administrator.
   $roles = \Drupal::currentUser()->getRoles();
   if (!in_array('administrator', $roles)) {
+    $form['favicons']['#access'] = FALSE;
     $form['basic']['#access'] = FALSE;
     $form['advanced']['#access'] = FALSE;
     $form['schema_article']['#access'] = FALSE;
