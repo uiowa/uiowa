@@ -122,3 +122,8 @@ $sites['staff-council.prod.drupal.uiowa.edu'] = 'staff-council.uiowa.edu';
 $sites['pentacrestmuseums.dev.drupal.uiowa.edu'] = 'pentacrestmuseums.uiowa.edu';
 $sites['pentacrestmuseums.stage.drupal.uiowa.edu'] = 'pentacrestmuseums.uiowa.edu';
 $sites['pentacrestmuseums.prod.drupal.uiowa.edu'] = 'pentacrestmuseums.uiowa.edu';
+
+// Directory aliases for uiservicecenter.uiowa.edu.
+$sites['uiservicecenter.dev.drupal.uiowa.edu'] = 'uiservicecenter.uiowa.edu';
+$sites['uiservicecenter.stage.drupal.uiowa.edu'] = 'uiservicecenter.uiowa.edu';
+$sites['uiservicecenter.prod.drupal.uiowa.edu'] = 'uiservicecenter.uiowa.edu';
