@@ -11,7 +11,11 @@ use Symfony\Component\HttpFoundation\RequestStack;
  * Acquia connector configuration overrides.
  */
 class AcquiaConnectorOverride implements ConfigFactoryOverrideInterface {
-
+  /**
+   * The RequestStack service.
+   *
+   * @var \Symfony\Component\HttpFoundation\RequestStack
+   */
   protected $requestStack;
 
   /**
