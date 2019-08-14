@@ -1,3 +1,35 @@
+.view-id-people {
+  .view-content {
+    @extend .list-group;
+    @extend .list-group-flush;
+  }
+  .views-row {
+    @extend .list-group-item;
+  }
+  .view-content:first-child .views-row:first-child {
+    border-top: 1px solid $list-group-border-color;
+  }
+  .view-content:last-child .views-row:last-child {
+    border-bottom: 1px solid $list-group-border-color;
+  }
+  article.node--view-mode-teaser {
+    @extend .media;
+  }
+  figure img {
+    margin-left: 2rem;
+    max-width: 80px;
+    @include media-breakpoint-up(sm) {
+      max-width: 150px;
+    }
+    @include media-breakpoint-up(md) {
+      max-width: 220px;
+    }
+  }
+  .node__content {
+    @extend .media-body;
+  }
+}
+
 .view-display-id-page_people_table {
   .tabledrag-changed-warning {
     @extend .alert;
