@@ -55,7 +55,7 @@
         <div class="sr-only">{{ content.field_uip_title }}</div>
     {% endif %}
     {% block content %}
-      <div id="{{ id }}" class="carousel slide" data-ride="carousel">
+      <div id="{{ id }}" class="carousel slide" data-ride="carousel" data-interval="false">
         <ol class="carousel-indicators">
           {% for i in 0..carousel_item_count %}
             {% if i == 0 %}
