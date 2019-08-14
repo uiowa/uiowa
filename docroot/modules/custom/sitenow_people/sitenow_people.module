@@ -11,6 +11,8 @@
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
 use Drupal\file\Entity\File;
 use Drupal\media\Entity\Media;
 use Drupal\views\ViewExecutable;
@@ -127,6 +129,39 @@ function sitenow_people_preprocess_page_title(&$variables) {
 /**
  * Implements hook_preprocess_HOOK().
  */
+function sitenow_people_preprocess_page(&$variables) {
+  $current_route = \Drupal::routeMatch();
+  $route_name = $current_route->getRouteName();
+  if (strpos($route_name, 'view.people.') === 0) {
+    // Get the current user.
+    $user = \Drupal::currentUser();
+    // Check for permission.
+    if ($user->hasPermission('administer sitenow people') == TRUE) {
+      // Print warning message informing user to use basic site settings.
+      $url = Url::fromRoute('sitenow_people.settings_form');
+      $settings_link = Link::fromTextAndUrl(t('SiteNow People'), $url)
+        ->toString();
+      if ($route_name == 'view.people.page_people_table') {
+        $message_text = t('This page can be configured here: @settings_link. 
+        This page is currently manually sorted. 
+        You can adjust the order by dragging the arrows up/down and then clicking "Save order" at the bottom of this page.', [
+          '@settings_link' => $settings_link,
+        ]);
+      }
+      else {
+        $message_text = t('This page can be configured here: @settings_link', [
+          '@settings_link' => $settings_link,
+        ]);
+      }
+
+      \Drupal::messenger()->addStatus($message_text);
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
 function sitenow_people_preprocess_node(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
@@ -167,6 +202,20 @@ function sitenow_people_preprocess_node(&$variables) {
         break;
 
     }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_people_preprocess_views_view(&$variables) {
+  switch ($variables["id"]) {
+    case 'people':
+      if (empty($variables["header"]["area"]["#text"])) {
+        unset($variables["header"]["area"]);
+      }
+      break;
+
   }
 }
 

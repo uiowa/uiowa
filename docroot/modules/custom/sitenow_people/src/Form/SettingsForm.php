@@ -127,7 +127,6 @@ class SettingsForm extends ConfigFormBase {
     $path = $form_state->getValue('sitenow_people_path');
     $header_content = $form_state->getValue('sitenow_people_header_content');
     $sort = $form_state->getValue('sitenow_people_sort');
-
     // Clean path.
     $path = \Drupal::service('pathauto.alias_cleaner')->cleanString($path);
 
@@ -139,23 +138,21 @@ class SettingsForm extends ConfigFormBase {
     unset($displays['default']);
     foreach ($displays as $display) {
       $display[$display['id']] =& $view->getDisplay($display['id']);
-      // Set title.
-      $display[$display['id']]["display_options"]["title"] = $title;
       // Set validated and clean path.
       $display[$display['id']]['display_options']['path'] = $path;
       $display[$display['id']]["display_options"]["enabled"] = FALSE;
     }
-    // $foo = $view;
     $default =& $view->getDisplay('default');
-
+    // Set title.
+    $default['display_options']["title"] = $title;
     // Set header area content.
     $default['display_options']['header']['area']['content']['value'] = $header_content['value'];
 
     // Enable/Disable view.
     if ($status == 1) {
       $view->set('status', TRUE);
-      // $enabled_display =& $view->getDisplay($sort);
-      // $enabled_display["display_options"]["enabled"] = TRUE;
+      $enabled_display =& $view->getDisplay($sort);
+      $enabled_display["display_options"]["enabled"] = TRUE;
     }
     else {
       $view->set('status', FALSE);
