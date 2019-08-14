@@ -47,7 +47,7 @@ class SettingsForm extends ConfigFormBase {
     // Remove Master display from options.
     unset($sort_options['default']);
 
-    // Get the default view settings
+    // Get the default view settings.
     $default =& $view->getDisplay('default');
     // Get the enabled display.
     $enabled_display =& $view->getDisplay($default_sort);
