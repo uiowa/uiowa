@@ -1,10 +1,17 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap'); #lockup-preview {
-  display: none;
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+.layout-region-node-main, .layout-region-node-footer {
+  float: right;
+  padding-right: 0;
+  padding-left: 2rem;
+}
+.layout-region-node-secondary {
+  float: left;
 }
 #lockup-preview {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  overflow: auto;
+  align-items: start;
 }
 #lockup-preview .block-iowa {
   width: 250px;
@@ -60,7 +67,7 @@
 }
 .primary-unit,
 .sub-unit {
-  white-space: pre-wrap;
+  white-space: nowrap;
   font-family: 'Roboto', sans-serif;
 }
 .primary-unit {
@@ -99,7 +106,7 @@
   margin-bottom: 20px;
 }
 
-#valid-text-lockup-warning h3 {    
+#valid-text-lockup-warning h3 {
   padding: 10px 30px 10px 15px;
   display: flex;
   margin-top: 0px;
@@ -136,9 +143,9 @@
   font-family: 'Roboto', sans-serif;
 }
 
-#lockup-preview {
-  display: none;
-}
+/*#lockup-preview {*/
+/*  display: none;*/
+/*}*/
 
 #lockup-preview.show-preview {
   display: flex;
