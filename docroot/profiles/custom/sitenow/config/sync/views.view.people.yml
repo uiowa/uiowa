@@ -264,12 +264,52 @@ display:
         options: {  }
       path: people
       display_extenders: {  }
-      title: 'News Display'
+      title: Staff
       enabled: false
       footer: {  }
       defaults:
         footer: false
+        sorts: false
       display_description: ''
+      sorts:
+        sticky:
+          id: sticky
+          table: node_field_data
+          field: sticky
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: false
+          expose:
+            label: ''
+          entity_type: node
+          entity_field: sticky
+          plugin_id: standard
+        field_person_first_name_value:
+          id: field_person_first_name_value
+          table: node__field_person_first_name
+          field: field_person_first_name_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: false
+          expose:
+            label: ''
+          plugin_id: standard
+        field_person_last_name_value:
+          id: field_person_last_name_value
+          table: node__field_person_last_name
+          field: field_person_last_name_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: false
+          expose:
+            label: ''
+          plugin_id: standard
     cache_metadata:
       contexts:
         - 'languages:language_interface'
@@ -289,12 +329,52 @@ display:
         options: {  }
       path: people
       display_extenders: {  }
-      title: 'News Display'
-      enabled: false
+      title: Staff
+      enabled: true
       footer: {  }
       defaults:
         footer: false
+        sorts: false
       display_description: ''
+      sorts:
+        sticky:
+          id: sticky
+          table: node_field_data
+          field: sticky
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: false
+          expose:
+            label: ''
+          entity_type: node
+          entity_field: sticky
+          plugin_id: standard
+        field_person_last_name_value:
+          id: field_person_last_name_value
+          table: node__field_person_last_name
+          field: field_person_last_name_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: false
+          expose:
+            label: ''
+          plugin_id: standard
+        field_person_first_name_value:
+          id: field_person_first_name_value
+          table: node__field_person_first_name
+          field: field_person_first_name_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: false
+          expose:
+            label: ''
+          plugin_id: standard
     cache_metadata:
       contexts:
         - 'languages:language_interface'
@@ -314,8 +394,8 @@ display:
         options: {  }
       path: people
       display_extenders: {  }
-      title: 'News Display'
-      enabled: true
+      title: Staff
+      enabled: false
       footer: {  }
       defaults:
         footer: false
@@ -556,7 +636,7 @@ display:
       tags:
         - 'config:core.entity_view_display.node.article.default'
         - 'config:core.entity_view_display.node.article.teaser'
-        - 'config:core.entity_view_display.node.page.default'
         - 'config:core.entity_view_display.node.page.teaser'
+        - 'config:core.entity_view_display.node.page.default'
         - 'config:core.entity_view_display.node.person.default'
         - 'config:core.entity_view_display.node.person.teaser'
