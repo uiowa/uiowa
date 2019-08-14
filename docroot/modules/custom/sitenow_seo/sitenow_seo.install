@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * @file
+ * Install hooks for sitenow_seo.
+ */
+
+/**
+ * Rebuild the cache for removed list builder handler service.
+ */
+function sitenow_seo_update_8001() {
+  drupal_flush_all_caches();
+}
