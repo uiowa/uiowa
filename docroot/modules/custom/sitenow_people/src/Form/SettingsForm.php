@@ -32,20 +32,27 @@ class SettingsForm extends ConfigFormBase {
     $form = parent::buildForm($form, $form_state);
     $view = View::load('people');
 
-    // Setup sort options.
+    // Setup sort options by getting all displays.
     $displays = $view->get('display');
     $sort_options = [];
+    // Set Sticky/Last/First as default.
     $default_sort = 'page_people_slf';
     foreach ($displays as $display) {
       $sort_options[$display['id']] = $display['display_title'];
+      // Override the default sort value. Assumes only one display is enabled...
       if (isset($display["display_options"]["enabled"]) && $display["display_options"]["enabled"] == 1) {
         $default_sort = $display['id'];
       }
     }
+    // Remove Master display from options.
     unset($sort_options['default']);
+
+    // Get the default view settings
     $default =& $view->getDisplay('default');
+    // Get the enabled display.
     $enabled_display =& $view->getDisplay($default_sort);
 
+    // Get view_people status.
     if ($view->get('status') == TRUE) {
       $status = 1;
     }
@@ -57,7 +64,6 @@ class SettingsForm extends ConfigFormBase {
       '#type' => 'markup',
       '#markup' => $this->t('<p>These settings allows you to customize the display of people on the site.</p>'),
     ];
-
     $form['global'] = [
       '#type' => 'fieldset',
       '#title' => 'Settings',
@@ -127,13 +133,14 @@ class SettingsForm extends ConfigFormBase {
     $path = $form_state->getValue('sitenow_people_path');
     $header_content = $form_state->getValue('sitenow_people_header_content');
     $sort = $form_state->getValue('sitenow_people_sort');
+
     // Clean path.
     $path = \Drupal::service('pathauto.alias_cleaner')->cleanString($path);
 
     // Load people listing view.
     $view = View::load('people');
 
-    // // Setup sort options.
+    // For all displays but Master, disable and set path.
     $displays = $view->get('display');
     unset($displays['default']);
     foreach ($displays as $display) {
@@ -142,13 +149,15 @@ class SettingsForm extends ConfigFormBase {
       $display[$display['id']]['display_options']['path'] = $path;
       $display[$display['id']]["display_options"]["enabled"] = FALSE;
     }
+
+    // Set default display to set global settings.
     $default =& $view->getDisplay('default');
     // Set title.
     $default['display_options']["title"] = $title;
     // Set header area content.
     $default['display_options']['header']['area']['content']['value'] = $header_content['value'];
 
-    // Enable/Disable view.
+    // Enable/Disable view_people and set selected "sort" as enabled display.
     if ($status == 1) {
       $view->set('status', TRUE);
       $enabled_display =& $view->getDisplay($sort);
