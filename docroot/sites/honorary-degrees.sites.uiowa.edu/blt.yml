@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: honorary-degrees.sites.uiowa.edu
+    protocol: https
+  machine_name: siteshonorary-degrees
+  human_name: honorary-degrees.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: siteshonorary-degrees.prod
+drupal:
+  db:
+    database: honorary_degrees_sites_uiowa_edu
+    host: localhost
+    user: root
+    password: null
