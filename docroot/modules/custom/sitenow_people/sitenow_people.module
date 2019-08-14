@@ -25,23 +25,8 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
     case 'node_person_edit_form':
     case 'node_person_form':
       if (isset($form['field_person_hide'])) {
-        // Create node_teaser group in the advanced container.
-        $form['node_person_options'] = [
-          '#type' => 'details',
-          '#title' => 'Person Options',
-          '#group' => 'advanced',
-          '#attributes' => [
-            'class' => ['node-form-person-options'],
-          ],
-          '#attached' => [
-            'library' => ['node/drupal.node'],
-          ],
-          '#weight' => 99,
-          '#optional' => TRUE,
-          '#open' => FALSE,
-        ];
-        // Set field_teaser to node_teaser group.
-        $form['field_person_hide']['#group'] = 'node_person_options';
+        // Set field_person_hide to options group (promotion options).
+        $form['field_person_hide']['#group'] = 'options';
       }
       break;
   }
