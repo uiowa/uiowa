@@ -19,3 +19,15 @@ function sitenow_seo_form_google_analytics_admin_settings_alter(&$form, FormStat
     $form['advanced']['#access'] = FALSE;
   }
 }
+
+/**
+ * Implements hook_metatags_alter().
+ */
+function sitenow_metatags_alter(array &$metatags, array &$context) {
+  // Append the page number to the title, if it is set and greater than 0.
+  $page = pager_find_page();
+
+  if ($page) {
+    $metatags['title'] .= " | Page {$page}";
+  }
+}
