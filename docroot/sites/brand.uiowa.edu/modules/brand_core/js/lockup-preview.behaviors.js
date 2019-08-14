@@ -42,12 +42,33 @@
                 $(".lockup-horizontal .sub-unit").text(subUnit.val());
             }
 
+          var maxLength = 3;
+          $('#mytext').on('input focus keydown keyup', function() {
+            var text = $(this).val();
+            var lines = text.split(/(\r\n|\n|\r)/gm);
+            for (var i = 0; i < lines.length; i++) {
+              if (lines[i].length > maxLength) {
+                lines[i] = lines[i].substring(0, maxLength);
+              }
+            }
+            $(this).val(lines.join(''));
+          });
+
             primaryUnit.on("input", function (event) {
                 $("#lockup-preview").addClass('show-preview');
 
                 var textarea = $(this),
                     text = textarea.val(),
                     numberOfLines = (text.match(/\n/g) || []).length + 1;
+                // Restrict character length per line.
+                var maxLength = 35;
+                var lines = text.split(/(\r\n|\n|\r)/gm);
+                for (var i = 0; i < lines.length; i++) {
+                  if (lines[i].length > maxLength) {
+                    lines[i] = lines[i].substring(0, maxLength);
+                  }
+                }
+                $(this).val(lines.join(''));
 
                 primaryValueText = textareaSanitize(text, numberOfLines);
                 primaryPreviewText  = previewSanitize(text, numberOfLines);
@@ -69,6 +90,15 @@
                 var textarea = $(this),
                     text = textarea.val(),
                     numberOfLines = (text.match(/\n/g) || []).length + 1;
+                // Restrict character length per line.
+                var maxLength = 35;
+                var lines = text.split(/(\r\n|\n|\r)/gm);
+                for (var i = 0; i < lines.length; i++) {
+                  if (lines[i].length > maxLength) {
+                    lines[i] = lines[i].substring(0, maxLength);
+                  }
+                }
+                $(this).val(lines.join(''));
 
                 secondaryValueText = textareaSanitize(text, numberOfLines);
                 secondaryPreviewText  = previewSanitize(text, numberOfLines);
@@ -233,7 +263,7 @@
                     if (Timer) {
                         clearTimeout(Timer);
                     }
-    
+
                     Timer = setTimeout(function() {
                         isValid = false;
                         $('#valid-text-lockup-warning').removeClass('warning-hidden');
@@ -246,14 +276,15 @@
             function warningHTML()  {
                 let warningHTML = '\
                     <div id="valid-text-lockup-warning" class="warning-hidden">\
-                        <h3><i class="fas fa-exclamation"></i>Your current wording does not meet the necessary criteria</h3>\
+                        <h3><i class="fas fa-exclamation"></i>Invalid text</h3>\
                         <div class="warning-body">\
                             <p>\
-                                The Primary Unit and Sub Unit textboxes must meet the following criteria:\
+                                Correct primary unit or sub unit fields to meet the following criteria:\
                             </p>\
                             <ul>\
-                                <li>There may not be special characters except for dashes between words</li>\
-                                <li>There may be no dashes or spaces at the beginning or the end of lines.</li>\
+                                <li>No special characters.</li>\
+                                <li>No spaces at the beginning or end of lines.</li>\
+                                <li>No more than three lines of text each for primary and sub unit names.</li>\
                             </ul>\
                         </div>\
                     </div>\
@@ -267,7 +298,7 @@
                 if (!$('#primary-first-line-measure-stacked').length) {
                     $('.layout-region-node-main').append('<div id="primary-first-line-measure-stacked"></div>');
                 }
-                
+
                 // Create the stacked divider.
                 if (!$('#stacked-divider').length) {
                     $('.lockup-stacked .lockup-content-inner').before('<div id="stacked-divider"></div>');
