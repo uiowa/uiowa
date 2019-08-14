@@ -31,11 +31,22 @@ class SettingsForm extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildForm($form, $form_state);
     $view = View::load('people');
-    $display =& $view->getDisplay('page_people');
 
+    // Setup sort options.
+    $displays = $view->get('display');
+    $sort_options = [];
+    $default_sort = 'page_people_slf';
+    foreach ($displays as $display) {
+      $sort_options[$display['id']] = $display['display_title'];
+      if (isset($display["display_options"]["enabled"]) && $display["display_options"]["enabled"] == 1) {
+        $default_sort = $display['id'];
+      }
+    }
+    unset($sort_options['default']);
     $default =& $view->getDisplay('default');
+    $enabled_display =& $view->getDisplay($default_sort);
 
-    if ($display["display_options"]["enabled"] == TRUE) {
+    if ($view->get('status') == TRUE) {
       $status = 1;
     }
     else {
@@ -70,7 +81,7 @@ class SettingsForm extends ConfigFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('People path'),
       '#description' => $this->t('The base path for the people listing. Defaults to <em>people</em>.'),
-      '#default_value' => $display['display_options']['path'],
+      '#default_value' => $enabled_display['display_options']['path'],
       '#required' => TRUE,
     ];
     $form['global']['sitenow_people_header_content'] = [
@@ -80,11 +91,13 @@ class SettingsForm extends ConfigFormBase {
       '#description' => $this->t('Enter any content that is displayed above the people listing.'),
       '#default_value' => $default["display_options"]["header"]["area"]["content"]["value"],
     ];
-    if ($view->get('status') == FALSE) {
-      $error_text = $this->t('Related functionality has been turned off. Please contact an administrator.');
-      \Drupal::messenger()->addError($error_text);
-      $form['#disabled'] = TRUE;
-    }
+    $form['global']['sitenow_people_sort'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Sort'),
+      '#options' => $sort_options,
+      '#default_value' => $default_sort,
+      '#description' => $this->t('Choose the sorting preference for the people listing.'),
+    ];
     return $form;
   }
 
@@ -113,29 +126,40 @@ class SettingsForm extends ConfigFormBase {
     $title = $form_state->getValue('sitenow_people_title');
     $path = $form_state->getValue('sitenow_people_path');
     $header_content = $form_state->getValue('sitenow_people_header_content');
+    $sort = $form_state->getValue('sitenow_people_sort');
 
     // Clean path.
     $path = \Drupal::service('pathauto.alias_cleaner')->cleanString($path);
 
     // Load people listing view.
     $view = View::load('people');
-    $display =& $view->getDisplay('page_people');
+
+    // // Setup sort options.
+    $displays = $view->get('display');
+    unset($displays['default']);
+    foreach ($displays as $display) {
+      $display[$display['id']] =& $view->getDisplay($display['id']);
+      // Set title.
+      $display[$display['id']]["display_options"]["title"] = $title;
+      // Set validated and clean path.
+      $display[$display['id']]['display_options']['path'] = $path;
+      $display[$display['id']]["display_options"]["enabled"] = FALSE;
+    }
+    // $foo = $view;
     $default =& $view->getDisplay('default');
-    // Enable/Disable view display.
-    if ($status == 1) {
-      $display["display_options"]["enabled"] = TRUE;
-    }
-    else {
-      $display["display_options"]["enabled"] = FALSE;
-    }
-    // Set title.
-    $default["display_options"]["title"] = $title;
-    $feed["display_options"]["title"] = $title;
-    // Set validated and clean path.
-    $display['display_options']['path'] = $path;
 
     // Set header area content.
     $default['display_options']['header']['area']['content']['value'] = $header_content['value'];
+
+    // Enable/Disable view.
+    if ($status == 1) {
+      $view->set('status', TRUE);
+      // $enabled_display =& $view->getDisplay($sort);
+      // $enabled_display["display_options"]["enabled"] = TRUE;
+    }
+    else {
+      $view->set('status', FALSE);
+    }
 
     $view->save();
 

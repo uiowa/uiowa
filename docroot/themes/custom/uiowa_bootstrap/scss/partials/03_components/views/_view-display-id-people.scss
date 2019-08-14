@@ -1,9 +1,26 @@
 .view-display-id-page_people_table {
+  .tabledrag-changed-warning {
+    @extend .alert;
+    @extend .alert-warning;
+  }
+  thead {
+    @extend .sr-only;
+  }
+  .views-field-title,
+  .views-field-draggableviews {
+    width: 0px;
+    padding: 0;
+    margin: 0;
+    vertical-align: middle;
+  }
+  .tabledrag-title {
+    @extend .sr-only;
+  }
   tr.draggable {
     position: relative;
 
     .tabledrag-handle {
-      margin: 0.5rem 0rem;
+      margin: 0 0.5rem 0 0;
       height: 16px;
 
       .handle {

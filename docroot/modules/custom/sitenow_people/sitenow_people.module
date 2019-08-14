@@ -10,8 +10,40 @@
  */
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\Entity\File;
 use Drupal\media\Entity\Media;
+use Drupal\views\ViewExecutable;
+
+/**
+ * Implements hook_form_alter().
+ */
+function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    case 'node_person_edit_form':
+    case 'node_person_form':
+      if (isset($form['field_person_hide'])) {
+        // Create node_teaser group in the advanced container.
+        $form['node_person_options'] = [
+          '#type' => 'details',
+          '#title' => 'Person Options',
+          '#group' => 'advanced',
+          '#attributes' => [
+            'class' => ['node-form-person-options'],
+          ],
+          '#attached' => [
+            'library' => ['node/drupal.node'],
+          ],
+          '#weight' => 99,
+          '#optional' => TRUE,
+          '#open' => FALSE,
+        ];
+        // Set field_teaser to node_teaser group.
+        $form['field_person_hide']['#group'] = 'node_person_options';
+      }
+      break;
+  }
+}
 
 /**
  * Implements hook_entity_presave().
@@ -154,5 +186,14 @@ function sitenow_people_preprocess_field(&$variables) {
           break;
       }
       break;
+  }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function sitenow_people_views_pre_render(ViewExecutable $view) {
+  if ($view->id() == "people" && $view->current_display == 'page_people_table') {
+    $view->field["draggableviews"]->options["label"] = 'Sort Control';
   }
 }
