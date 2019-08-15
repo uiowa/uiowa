@@ -152,3 +152,8 @@ $sites['faculty-senate.prod.drupal.uiowa.edu'] = 'faculty-senate.uiowa.edu';
 $sites['siteshonorary-degrees.dev.drupal.uiowa.edu'] = 'honorary-degrees.sites.uiowa.edu';
 $sites['siteshonorary-degrees.stage.drupal.uiowa.edu'] = 'honorary-degrees.sites.uiowa.edu';
 $sites['siteshonorary-degrees.prod.drupal.uiowa.edu'] = 'honorary-degrees.sites.uiowa.edu';
+
+// Directory aliases for honors.uiowa.edu.
+$sites['honors.dev.drupal.uiowa.edu'] = 'honors.uiowa.edu';
+$sites['honors.stage.drupal.uiowa.edu'] = 'honors.uiowa.edu';
+$sites['honors.prod.drupal.uiowa.edu'] = 'honors.uiowa.edu';
