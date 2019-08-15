@@ -5,11 +5,9 @@ dependencies:
   config:
     - core.entity_form_mode.media.media_library
     - field.field.media.audio.field_media_audio_file
-    - field.field.media.audio.field_media_audio_transcript
     - media.type.audio
   module:
     - file
-    - text
 _core:
   default_config_hash: 9XTn4CqOB0W8nLo5kOOaNqJAP63e2yQEzMtKttPrlVw
 id: media.audio.media_library
@@ -23,15 +21,6 @@ content:
     region: content
     settings:
       progress_indicator: throbber
-    third_party_settings: {  }
-  field_media_audio_transcript:
-    type: text_textarea_with_summary
-    weight: 2
-    region: content
-    settings:
-      rows: 9
-      placeholder: ''
-      summary_rows: 3
     third_party_settings: {  }
   name:
     type: string_textfield
