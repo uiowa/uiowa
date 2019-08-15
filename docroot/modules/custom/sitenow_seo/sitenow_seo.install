@@ -5,9 +5,56 @@
  * Install hooks for sitenow_seo.
  */
 
+use Drupal\user\Entity\Role;
+
 /**
  * Rebuild the cache for removed list builder handler service.
  */
 function sitenow_seo_update_8001() {
   drupal_flush_all_caches();
+}
+
+/**
+ * Update metatag permission changes for sites that split role configuration.
+ */
+function sitenow_seo_update_8003() {
+  $grants = [
+    'access metatag tag advanced__geo_placename',
+    'access metatag tag basic__title',
+  ];
+
+  $revokes = [
+    'access metatag tag schema_article__schema_article_aggregate_rating',
+    'access metatag tag schema_article__schema_article_has_part',
+    'access metatag tag schema_article__schema_article_main_entity_of_page',
+    'access metatag tag schema_article__schema_article_publisher',
+    'access metatag tag schema_article__schema_article_review',
+    'administer meta tags'
+  ];
+
+  $roles = Role::loadMultiple(['editor', 'publisher', 'webmaster']);
+
+  /** @var \Drupal\User\Entity\Role $role */
+  foreach ($roles as $role) {
+    foreach ($grants as $grant) {
+      $role->grantPermission($grant);
+      $role->save();
+
+      \Drupal::logger('sitenow_seo')->notice(t('Granted @grant to @role role.', [
+        '@grant' => $grant,
+        '@role' => $role->id(),
+      ]));
+    }
+
+    foreach ($revokes as $revoke) {
+      $role->revokePermission($revoke);
+      $role->save();
+
+      \Drupal::logger('sitenow_seo')->notice(t('Revoked @revoke to @role role.', [
+        '@revoke' => $revoke,
+        '@role' => $role->id(),
+      ]));
+
+    }
+  }
 }
