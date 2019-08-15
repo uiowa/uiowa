@@ -4,12 +4,10 @@ status: true
 dependencies:
   config:
     - field.field.media.audio.field_media_audio_file
-    - field.field.media.audio.field_media_audio_transcript
     - media.type.audio
   module:
     - file
     - path
-    - text
 id: media.audio.default
 targetEntityType: media
 bundle: audio
@@ -28,15 +26,6 @@ content:
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
-  field_media_audio_transcript:
-    weight: 26
-    settings:
-      rows: 5
-      placeholder: ''
-      summary_rows: 3
-    third_party_settings: {  }
-    type: text_textarea_with_summary
-    region: content
   name:
     type: string_textfield
     weight: 0
