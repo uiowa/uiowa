@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * @file
+ * Install tasks.
+ */
+
+/**
+ * Update articles page meta description.
+ */
+function sitenow_articles_update_8002() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('views.view.articles');
+
+  $config
+    ->set('display.page_articles.display_options.display_extenders.metatag_display_extender.metatags.description', 'The latest articles from [site:name].')
+    ->save();
+}
