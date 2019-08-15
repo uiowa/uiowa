@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: faculty-senate.uiowa.edu
+    protocol: https
+  machine_name: faculty-senate
+  human_name: faculty-senate.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: faculty-senate.prod
+drupal:
+  db:
+    database: faculty_senate_uiowa_edu
+    host: localhost
+    user: root
+    password: null
