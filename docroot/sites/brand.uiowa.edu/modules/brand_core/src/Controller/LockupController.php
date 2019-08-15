@@ -64,7 +64,7 @@ class LockupController extends ControllerBase {
 
       $zip->close();
 
-      header('Content-type: application/zip');
+      header('Content-type: application/x-zip-compressed');
       header("Content-disposition: attachment; filename=" . $path . "-Lockup.zip");
       readfile(\Drupal::service('file_system')->realpath($zip_filename));
 
