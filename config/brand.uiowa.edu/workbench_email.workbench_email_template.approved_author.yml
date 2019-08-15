@@ -6,7 +6,7 @@ dependencies:
     - node.type.lockup
 id: approved_author
 label: 'Approved to Author'
-subject: '[site:name] - Lockup [node:title] Approved'
+subject: '[site:name] - Lockup approved'
 recipient_types:
   author:
     id: author
@@ -16,5 +16,5 @@ recipient_types:
 bundles:
   'node:lockup': 'node:lockup'
 body:
-  value: "Your lockup, [node:title] has been approved.\r\n\r\n[node:log]\r\n\r\n---\r\nYou can download the lockup here: [site:url]/lockup/generator/[node:nid]\r\n\r\nPlease refer to the instructions included with the download."
-  format: plain_text
+  value: "<p>The [node:title] lockup submission has been <strong>approved</strong> and is available for download at [site:url]/lockup-system/approved.</p>\r\n\r\n<p>The lockup set provides vector SVG files in black and two-color options. The files with block IOWA set in gold use RGB color created with the approved gold hex value for web. For print applications use a CMYK color space and switch gold to CMYK: 0 14 100 0 or PMS 116C depending on your production specs.</p>\r\n\r\n<p>SVG files can be opened in adobe illustrator and converted to the file formats of your choice. Tools such as https://cloudconvert.com/&nbsp;are also available. Visit [site:url] for additional visual identity guidelines or contact osc-brand@uiowa.edu with any follow up questions.</p>\r\n\r\n<p>--<br />\r\nOffice of Strategic Communication,<br />\r\nUniversity of Iowa Brand Management Team<br />\r\nhttps://brand.uiowa.edu<br />\r\nosc-brand@uiowa.edu</p>\r\n"
+  format: filtered_html
