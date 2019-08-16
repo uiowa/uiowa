@@ -6,6 +6,8 @@ dependencies:
     - core.entity_form_mode.media.media_library
     - field.field.media.audio.field_media_audio_file
     - media.type.audio
+  module:
+    - file
 _core:
   default_config_hash: 9XTn4CqOB0W8nLo5kOOaNqJAP63e2yQEzMtKttPrlVw
 id: media.audio.media_library
@@ -13,6 +15,13 @@ targetEntityType: media
 bundle: audio
 mode: media_library
 content:
+  field_media_audio_file:
+    type: file_generic
+    weight: 1
+    region: content
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
   name:
     type: string_textfield
     weight: 0
@@ -23,7 +32,6 @@ content:
     third_party_settings: {  }
 hidden:
   created: true
-  field_media_audio_file: true
   path: true
   status: true
   uid: true
