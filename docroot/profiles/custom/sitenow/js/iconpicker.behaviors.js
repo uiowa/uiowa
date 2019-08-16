@@ -7,7 +7,8 @@
     attach: function (context) {
       $('.fa-iconpicker', context).once('iconpicker').each(function () {
         $(this).iconpicker({
-          inputSearch: true
+          inputSearch: true,
+          placement: 'top'
         });
       });
     }

@@ -21,28 +21,13 @@ function sitenow_seo_form_google_analytics_admin_settings_alter(&$form, FormStat
 }
 
 /**
- * Implements hook_entity_type_alter().
+ * Implements hook_metatags_alter().
  */
-function sitenow_seo_entity_type_alter(array &$entity_types) {
-  // Add custom list builder handler to control output for non administrators.
-  $entity_types['metatag_defaults']->setHandlerClass('list_builder', '\Drupal\sitenow_seo\CustomListBuilderHandler\CustomListBuilderHandler');
-}
+function sitenow_metatags_alter(array &$metatags, array &$context) {
+  // Append the page number to the title, if it is set and greater than 0.
+  $page = pager_find_page();
 
-/**
- * Implements hook_form_FORM_ID_alter().
- */
-function sitenow_seo_form_metatag_defaults_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // Restrict access to most meta tag form items for all roles
-  // except administrator.
-  $roles = \Drupal::currentUser()->getRoles();
-  if (!in_array('administrator', $roles)) {
-    $form['basic']['#access'] = FALSE;
-    $form['advanced']['#access'] = FALSE;
-    $form['schema_article']['#access'] = FALSE;
-    $form['schema_web_site']['#access'] = FALSE;
-    $form['site_verification']['baidu']['#access'] = FALSE;
-    $form['site_verification']['norton_safe_web']['#access'] = FALSE;
-    $form['site_verification']['pinterest']['#access'] = FALSE;
-    $form['site_verification']['yandex']['#access'] = FALSE;
+  if ($page) {
+    $metatags['title'] .= " | Page {$page}";
   }
 }
