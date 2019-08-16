@@ -1,0 +1,27 @@
+uuid: 9d7a4fb4-b726-4a56-b1ed-b55454b539ad
+langcode: en
+status: true
+dependencies:
+  module:
+    - crop
+    - media_entity_twitter
+third_party_settings:
+  crop:
+    image_field: null
+id: twitter
+label: Twitter
+description: 'A single tweet from Twitter.'
+source: twitter
+queue_thumbnail_downloads: false
+new_revision: false
+source_configuration:
+  source_field: field_media_twitter
+  use_twitter_api: false
+  generate_thumbnails: false
+  consumer_key: ''
+  consumer_secret: ''
+  oauth_access_token: ''
+  oauth_access_token_secret: ''
+field_map:
+  id: field_media_twitter
+  user: name

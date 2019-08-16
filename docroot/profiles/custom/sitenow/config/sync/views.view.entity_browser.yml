@@ -5,8 +5,11 @@ dependencies:
   config:
     - image.style.thumbnail
     - media.type.audio
+    - media.type.facebook
     - media.type.image
+    - media.type.instagram
     - media.type.remote_video
+    - media.type.twitter
   module:
     - entity_browser
     - image
@@ -598,9 +601,12 @@ display:
           admin_label: ''
           operator: in
           value:
+            facebook: facebook
             audio: audio
             image: image
+            instagram: instagram
             remote_video: remote_video
+            twitter: twitter
           group: 1
           exposed: true
           expose:
@@ -647,8 +653,11 @@ display:
           operator: in
           value:
             audio: audio
+            facebook: facebook
             image: image
+            instagram: instagram
             remote_video: remote_video
+            twitter: twitter
           group: 1
           exposed: false
           expose:
