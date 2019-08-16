@@ -12,15 +12,18 @@
     margin-left: 1rem;
   }
 }
-figure.caption.embedded-entity figcaption {
+figure.caption.embedded-entity figcaption,
+figure.caption.caption-drupal-entity figcaption {
   margin-top: 0.5rem;
   @extend .figure-caption;
 }
-figure.caption.embedded-entity.align-right figcaption {
+figure.caption.embedded-entity.align-right figcaption,
+figure.caption.caption-drupal-entity.align-right figcaption {
   text-align: right;
 }
 .alert {
-  figure.caption.embedded-entity figcaption {
+  figure.caption.embedded-entity figcaption,
+  figure.caption.caption-drupal-entity figcaption {
     color: $gray-900;
   }
 }
