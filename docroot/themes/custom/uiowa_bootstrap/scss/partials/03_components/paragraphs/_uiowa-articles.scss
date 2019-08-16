@@ -22,17 +22,7 @@
     border-bottom: 1px solid $list-group-border-color;
   }
   article.node--type-article {
-    @extend .media;
-  }
-  figure img {
-    @extend .ml-2;
-    max-width: 80px;
-    @include media-breakpoint-up(sm) {
-      max-width: 150px;
-    }
-    @include media-breakpoint-up(md) {
-      max-width: 220px;
-    }
+    display: flex;
   }
   .node__content {
     @extend .media-body;
