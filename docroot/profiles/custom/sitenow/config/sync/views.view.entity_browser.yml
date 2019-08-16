@@ -4,8 +4,8 @@ status: true
 dependencies:
   config:
     - image.style.thumbnail
-    - media.type.facebook
     - media.type.audio
+    - media.type.facebook
     - media.type.image
     - media.type.instagram
     - media.type.remote_video
@@ -653,8 +653,11 @@ display:
           operator: in
           value:
             audio: audio
+            facebook: facebook
             image: image
+            instagram: instagram
             remote_video: remote_video
+            twitter: twitter
           group: 1
           exposed: false
           expose:

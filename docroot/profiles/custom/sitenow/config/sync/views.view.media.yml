@@ -5,8 +5,13 @@ dependencies:
   config:
     - image.style.thumbnail
     - media.type.audio
+    - media.type.facebook
     - media.type.file
     - media.type.image
+    - media.type.image_background
+    - media.type.instagram
+    - media.type.remote_video
+    - media.type.twitter
   module:
     - image
     - media
@@ -619,8 +624,13 @@ display:
           operator: in
           value:
             audio: audio
+            facebook: facebook
             file: file
             image: image
+            image_background: image_background
+            instagram: instagram
+            remote_video: remote_video
+            twitter: twitter
           group: 1
           exposed: true
           expose:
@@ -641,7 +651,7 @@ display:
               publisher: '0'
               webmaster: '0'
               administrator: '0'
-            reduce: false
+            reduce: true
           is_grouped: false
           group_info:
             label: ''
