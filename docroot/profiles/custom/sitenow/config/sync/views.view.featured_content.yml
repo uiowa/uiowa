@@ -73,11 +73,7 @@ display:
       style:
         type: table
         options:
-          grouping:
-            -
-              field: type
-              rendered: true
-              rendered_strip: false
+          grouping: {  }
           row_class: ''
           default_row_class: true
           override: true
@@ -823,7 +819,8 @@ display:
     display_title: 'Entity browser'
     position: 1
     display_options:
-      display_extenders: {  }
+      display_extenders:
+        metatag_display_extender: {  }
     cache_metadata:
       max-age: -1
       contexts:
