@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - image.style.thumbnail
+    - media.type.audio
     - media.type.file
     - media.type.image
   module:
@@ -617,6 +618,7 @@ display:
           admin_label: ''
           operator: in
           value:
+            audio: audio
             file: file
             image: image
           group: 1
@@ -634,6 +636,10 @@ display:
             remember_roles:
               authenticated: authenticated
               anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
               administrator: '0'
             reduce: true
           is_grouped: false
