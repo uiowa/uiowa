@@ -29,8 +29,7 @@
   position: relative;
   margin: 0 auto;
   min-width: 250px;
-  /* I've added 3 because i removed the top border. */
-  margin-top: calc(-5px + 17px + 3px);
+  margin-top: 8px;
 }
 .lockup-stacked .lockup-content-inner {
   padding: 0 13px;
@@ -45,7 +44,7 @@
   left: 0px;
 }
 .lockup-stacked .primary-unit {
-  margin-top: 5px;
+  margin-top: 18px;
   display: inline-block;
 }
 .lockup-horizontal {
@@ -66,14 +65,17 @@
 }
 .primary-unit,
 .sub-unit {
-  white-space: nowrap;
+  width: 700px;
+  overflow-x: scroll;
+  height: auto;
+  white-space: pre-wrap;
   font-family: 'Roboto', sans-serif;
 }
 .primary-unit {
   margin-bottom: 3px;
   font-weight: 800;
   font-size: 28px;
-  line-height: 1.25;
+  line-height: 1.18;
 }
 .sub-unit {
   font-size: 21px;
