@@ -162,3 +162,8 @@ $sites['honors.prod.drupal.uiowa.edu'] = 'honors.uiowa.edu';
 $sites['orgcot.dev.drupal.uiowa.edu'] = 'cot.org.uiowa.edu';
 $sites['orgcot.stage.drupal.uiowa.edu'] = 'cot.org.uiowa.edu';
 $sites['orgcot.prod.drupal.uiowa.edu'] = 'cot.org.uiowa.edu';
+
+// Directory aliases for cbig.engineering.uiowa.edu.
+$sites['engineeringcbig.dev.drupal.uiowa.edu'] = 'cbig.engineering.uiowa.edu';
+$sites['engineeringcbig.stage.drupal.uiowa.edu'] = 'cbig.engineering.uiowa.edu';
+$sites['engineeringcbig.prod.drupal.uiowa.edu'] = 'cbig.engineering.uiowa.edu';
