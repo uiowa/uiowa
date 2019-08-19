@@ -4,8 +4,14 @@ status: true
 dependencies:
   config:
     - image.style.thumbnail
+    - media.type.audio
+    - media.type.facebook
     - media.type.file
     - media.type.image
+    - media.type.image_background
+    - media.type.instagram
+    - media.type.remote_video
+    - media.type.twitter
   module:
     - image
     - media
@@ -617,8 +623,14 @@ display:
           admin_label: ''
           operator: in
           value:
+            audio: audio
+            facebook: facebook
             file: file
             image: image
+            image_background: image_background
+            instagram: instagram
+            remote_video: remote_video
+            twitter: twitter
           group: 1
           exposed: true
           expose:
@@ -634,6 +646,10 @@ display:
             remember_roles:
               authenticated: authenticated
               anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
               administrator: '0'
             reduce: true
           is_grouped: false

@@ -770,7 +770,10 @@ display:
         type: views_query
         options: {  }
       path: news
-      display_extenders: {  }
+      display_extenders:
+        metatag_display_extender:
+          metatags:
+            description: 'The latest articles from [site:name].'
       title: 'News Display'
       enabled: true
       footer:
