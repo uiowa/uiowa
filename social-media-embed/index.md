@@ -29,11 +29,14 @@ You can add them directly to your site as you create content through fields and 
        2. In the popup window, click the settings icon in the top right corner and select ‘See full post’
        3. Copy URL of the full post
           1. Ex: https://www.facebook.com/itsuiowa/photos/a.866602790022409/2938371746178826/?type=3
-3. In Drupal, on the WYSIWYG, click the media icon in the toolbar
+3. In Drupal, in the WYSIWYG, click the **media icon** on the toolbar
 4. In the header of the popup window, select ‘Facebook’ 
 5. Paste the URL you copied from Facebook in the Facebook* text box
+6. Select how wide you would like to display the post (ie 'Display As *')
+7. Select how you would like to align the post with 'Align'
+8. You can add a caption that would appear on the bottom of the post you embed
 6. Save
-7. Note: while in the editing view of your node, you will only see ‘Posted by: Name on Date’
+7. Note: while in the editing view of your node, you will only see a summary of the post‘Posted by: Name on Date’
 
 # Twitter
 
@@ -46,12 +49,16 @@ You can add them directly to your site as you create content through fields and 
 
 ### **How to embed a tweet in your WYSIWYG**
 1. Click on the tweet you wish to embed for the full view
+    1. You can also select the share icon then 'Copy link to Tweet'
 2. Copy URL of the single tweet
     1. Ex: https://twitter.com/temiAlchemy/status/1150835103163133953
 3. In Drupal, on the WYSIWYG, click the media icon in the toolbar
 4. In the header of the popup window, select ‘Twitter’ 
 5. Paste the URL you copied from Twitter in the Twitter URL* text box
-6. Save
+6. Select how wide you would like to display the post (ie 'Display As *')
+7. Select how you would like to align the post with 'Align'
+8. You can add a caption that would appear on the bottom of the post you embed
+9. Save
 
 # Instagram
 
@@ -70,4 +77,9 @@ You can add them directly to your site as you create content through fields and 
 4. In Drupal, on the WYSIWYG, click the media icon in the toolbar
 5. In the header of the popup window, select ‘Instagram’ 
 6. Paste the URL you copied from Instagram in the Instagram* text box
-7. Save
+7. Select how wide you would like to display the post (ie 'Display As *')
+8. Select how you would like to align the post with 'Align'
+9. You can add a caption that would appear on the bottom of the post you embed
+10. Save
+
+**Note: will only see the outline of the Instagram post in your editing view**
