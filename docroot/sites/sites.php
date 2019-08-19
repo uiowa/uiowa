@@ -157,3 +157,8 @@ $sites['siteshonorary-degrees.prod.drupal.uiowa.edu'] = 'honorary-degrees.sites.
 $sites['honors.dev.drupal.uiowa.edu'] = 'honors.uiowa.edu';
 $sites['honors.stage.drupal.uiowa.edu'] = 'honors.uiowa.edu';
 $sites['honors.prod.drupal.uiowa.edu'] = 'honors.uiowa.edu';
+
+// Directory aliases for cot.org.uiowa.edu.
+$sites['orgcot.dev.drupal.uiowa.edu'] = 'cot.org.uiowa.edu';
+$sites['orgcot.stage.drupal.uiowa.edu'] = 'cot.org.uiowa.edu';
+$sites['orgcot.prod.drupal.uiowa.edu'] = 'cot.org.uiowa.edu';
