@@ -1,6 +1,7 @@
 ---
 title: "Images and Files"
 has_children: false
+parent: "Media"
 nav_order: 8
 ---
 

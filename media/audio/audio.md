@@ -1,6 +1,7 @@
 ---
 title: "Audio"
 has_children: false
+parent: "Media"
 nav_order: 8
 ---
 
