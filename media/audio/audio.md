@@ -16,7 +16,7 @@ There are different way for you to add an audio file to your site
 5. Add an ‘Audio File’
     1. **File size max = 50MB**
 6. Save
-7. In Drupal, on the WYSIWYG, click the media icon in the toolbar
+7. Navigate to the WYSIWYG you wish to embed the audio file on -> click the media icon in the toolbar
 8. Select the audio file you uploaded in the ‘Media Library’ to insert it into your WYSIWYG content
 9. Select how wide you would like to display the post (ie ‘Display As *’)
 10. Select how you would like to align the post with ‘Align’
@@ -25,7 +25,7 @@ There are different way for you to add an audio file to your site
 
 ### Add Media option #2
 
-1. In Drupal, on the WYSIWYG, click the media icon in the toolbar
+1. In Drupal, navigate to the WYSIWYG you wish to embed your audio file on -> click the media icon in the toolbar
 2. In the header of the popup window, select ‘Upload Audio’ 
 3. Add the ‘Name’
 4. Upload the ‘Audio file’
