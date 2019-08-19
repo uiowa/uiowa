@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: cot.org.uiowa.edu
+    protocol: https
+  machine_name: orgcot
+  human_name: cot.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgcot.prod
+drupal:
+  db:
+    database: cot_org_uiowa_edu
+    host: localhost
+    user: root
+    password: null
