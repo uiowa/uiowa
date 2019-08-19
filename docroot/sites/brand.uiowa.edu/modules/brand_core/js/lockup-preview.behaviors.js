@@ -42,33 +42,12 @@
                 $(".lockup-horizontal .sub-unit").text(subUnit.val());
             }
 
-          var maxLength = 3;
-          $('#mytext').on('input focus keydown keyup', function() {
-            var text = $(this).val();
-            var lines = text.split(/(\r\n|\n|\r)/gm);
-            for (var i = 0; i < lines.length; i++) {
-              if (lines[i].length > maxLength) {
-                lines[i] = lines[i].substring(0, maxLength);
-              }
-            }
-            $(this).val(lines.join(''));
-          });
-
             primaryUnit.on("input", function (event) {
                 $("#lockup-preview").addClass('show-preview');
 
                 var textarea = $(this),
                     text = textarea.val(),
                     numberOfLines = (text.match(/\n/g) || []).length + 1;
-                // Restrict character length per line.
-                var maxLength = 35;
-                var lines = text.split(/(\r\n|\n|\r)/gm);
-                for (var i = 0; i < lines.length; i++) {
-                  if (lines[i].length > maxLength) {
-                    lines[i] = lines[i].substring(0, maxLength);
-                  }
-                }
-                $(this).val(lines.join(''));
 
                 primaryValueText = textareaSanitize(text, numberOfLines);
                 primaryPreviewText  = previewSanitize(text, numberOfLines);
@@ -90,15 +69,6 @@
                 var textarea = $(this),
                     text = textarea.val(),
                     numberOfLines = (text.match(/\n/g) || []).length + 1;
-                // Restrict character length per line.
-                var maxLength = 35;
-                var lines = text.split(/(\r\n|\n|\r)/gm);
-                for (var i = 0; i < lines.length; i++) {
-                  if (lines[i].length > maxLength) {
-                    lines[i] = lines[i].substring(0, maxLength);
-                  }
-                }
-                $(this).val(lines.join(''));
 
                 secondaryValueText = textareaSanitize(text, numberOfLines);
                 secondaryPreviewText  = previewSanitize(text, numberOfLines);
