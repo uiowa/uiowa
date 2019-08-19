@@ -61,6 +61,7 @@ You can add them directly to your site as you create content through fields and 
 3. Select the 'Settings' icon
 4. Select 'Privacy and Security'
 5. Make sure the 'Private Account' isn't selected
+
 ### **How to embed an Instagram post in your WYSIWYG**
 1. Click on the post you wish to embed
 2. Click on the three dots in the upper right corner
