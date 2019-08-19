@@ -8,7 +8,7 @@ nav_order: 8
 # Audio
 
 There are different way for you to add an audio file to your site
-### Add Media option #1
+### Add Audio option #1
 1. Go to ‘Content’
 2. In the header, select ‘Media’ -> located right next to ‘Content’
 3. ‘Add media’ -> ‘Audio’
@@ -23,7 +23,7 @@ There are different way for you to add an audio file to your site
 11. You can add a caption that would appear on the bottom of the audio file you embed
 12. Embed
 
-### Add Media option #2
+### Add Audio option #2
 
 1. In Drupal, navigate to the WYSIWYG you wish to embed your audio file on -> click the media icon in the toolbar
 2. In the header of the popup window, select ‘Upload Audio’ 
