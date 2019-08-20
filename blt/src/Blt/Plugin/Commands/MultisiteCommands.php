@@ -211,47 +211,53 @@ class MultisiteCommands extends BltTasks {
 
     $install = $this->installSite($site_dir, $install_profile, $options + ['account-name' => 'admin']);
 
-    $branch = "initialize-{$machine_name}";
+    $vm_changed = $this->checkDirty('box/config.yml');
 
-    $gitTask = $this->taskGit()
-      ->dir($this->getConfigValue("repo.root"))
-      ->exec("git checkout -b {$branch}")
-      ->add('docroot/sites/sites.php')
-      ->commit("Add sites.php entries for {$site_dir}.")
-      ->add("docroot/sites/{$site_dir}")
-      ->commit("Initialize {$site_dir} site directory.")
-      ->add("config/{$site_dir}")
-      ->commit("Create config directory for {$site_dir}")
-      ->add("drush/sites/{$machine_name}.site.yml")
-      ->commit("Added drush alias for {$machine_name}.");
+    if ($git_updates = $this->confirm("Would you like to commit and push updates to the git repo?", TRUE)) {
+      $branch = "initialize-{$machine_name}";
+      $gitTask = $this->taskGit()
+        ->dir($this->getConfigValue("repo.root"))
+        ->exec("git checkout -b {$branch}")
+        ->add('docroot/sites/sites.php')
+        ->commit("Add sites.php entries for {$site_dir}.")
+        ->add("docroot/sites/{$site_dir}")
+        ->commit("Initialize {$site_dir} site directory.")
+        ->add("config/{$site_dir}")
+        ->commit("Create config directory for {$site_dir}")
+        ->add("drush/sites/{$machine_name}.site.yml")
+        ->commit("Added drush alias for {$machine_name}.");
 
-    // Check if the box/config.yml file has been modified.
-    if ($vm_changed = $this->checkDirty('box/config.yml')) {
-      $this->say("Drupal VM config was updated and changes will be committed.");
-      $gitTask = $gitTask->add("box/config.yml")
-        ->commit("Added site and database definitions to Drupal VM config for {$site_dir}.");
+      // Check if the box/config.yml file has been modified.
+      if ($vm_changed) {
+        $this->say("Drupal VM config was updated and changes will be committed.");
+        $gitTask = $gitTask->add("box/config.yml")
+          ->commit("Added site and database definitions to Drupal VM config for {$site_dir}.");
+      }
+
+      $gitTask->exec("git push -u origin {$branch}")
+        ->checkout('master')
+        ->interactive(FALSE)
+        ->printOutput(FALSE)
+        ->printMetadata(FALSE)
+        ->run();
     }
-
-    $gitTask->exec("git push -u origin {$branch}")
-      ->checkout('master')
-      ->interactive(FALSE)
-      ->printOutput(FALSE)
-      ->printMetadata(FALSE)
-      ->run();
 
     $this->createRemoteDatabase($db['database']);
 
     $this->yell("Follow these next steps:");
     $steps = [
-      1 => "Open a PR at https://github.com/uiowa/{$this->getConfig()->get('project.prefix')}/compare/master...{$branch}.",
-      2 => "Assuming tests pass, merge the PR to deploy to the dev environment.",
     // 4 => "Re-deploy the master branch to the dev environment in the Cloud UI. This will run the cloud hooks successfully.",
-    // 5 => "Coordinate a new release to deploy to the test and prod environments.",
       7 => "Add the multisite domains to environments as needed.",
     ];
 
+    if ($git_updates && isset($branch)) {
+      $steps[1] = "Open a PR at https://github.com/uiowa/{$this->getConfig()->get('project.prefix')}/compare/master...{$branch}.";
+      $steps[2] = "Assuming tests pass, merge the PR to deploy to the dev environment.";
+      // 5 => "Coordinate a new release to deploy to the test and prod environments.",
+    }
+
     if ($vm_changed) {
-      $steps[0] = "Drupal VM config (box/config.yml) was updated, exit the VM (`exit`) and run `vagrant provision`.";
+      $steps[0] = "Drupal VM config (box/config.yml) was updated, exit the VM (`exit`) and run `vagrant provision` to enable new local sites.";
     }
 
     if ($install) {
@@ -284,7 +290,7 @@ class MultisiteCommands extends BltTasks {
   }
 
   /**
-   * Updates box/config.yml with settings  for new multisite.
+   * Updates box/config.yml with settings for new multisite.
    *
    * @param string $local_domain
    *   The local domain to be added to the Drupal VM config.
@@ -378,7 +384,7 @@ class MultisiteCommands extends BltTasks {
   }
 
   /**
-   * Creates a blt.yml file for a site.
+   * Create new site.yml.
    *
    * @param string $new_site_dir
    *   The new site directory.
