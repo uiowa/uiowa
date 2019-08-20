@@ -21,7 +21,7 @@ class LockupController extends ControllerBase {
 
       if ($node->bundle() !== 'lockup') {
         $response = [
-          '#markup' => $this->t('This is not a lockup and thus cannot be download. Silly user.'),
+          '#markup' => $this->t('This is not a lockup and thus cannot be downloaded.'),
         ];
         return $response;
       }
@@ -74,8 +74,8 @@ class LockupController extends ControllerBase {
       $zip->addFile(file_directory_temp() . '/' . $lockup_horizontal_reversed_file, $path . "-Lockup/" . $lockup_horizontal_reversed_file);
 
       // Read the instructions.
-      $instructions = drupal_get_path('module', 'brand_core') . '/lockup-instructions.txt';
-      $zip->addFile($instructions, $path . "-Lockup/lockup-instructions.txt");
+      $instructions = drupal_get_path('module', 'brand_core') . '/lockup-instructions.docx';
+      $zip->addFile($instructions, $path . "-Lockup/lockup-instructions.docx");
 
       $zip->close();
 
@@ -273,7 +273,7 @@ class LockupController extends ControllerBase {
         // Border. Height based on primary and secondary combined height.
         $lockup->addRect([
           'x' => 206.77,
-          'y' => 144 - $total_middle + 9,
+          'y' => 144 - $total_middle + 11,
           'width' => 0.8,
           'height' => $total_height - 19,
           'style' => 'fill:' . $text_color,
@@ -285,7 +285,7 @@ class LockupController extends ControllerBase {
           ENT_QUOTES | ENT_XML1,
           'UTF-8'),
           255.126 - 42,
-          144 - $horizontal_middle - $horizontal_combined_y
+          144 - $horizontal_middle - $horizontal_combined_y + 1
         );
         // Primary Line 2.
         $lockup->addText(html_entity_decode(
@@ -293,7 +293,7 @@ class LockupController extends ControllerBase {
           ENT_QUOTES | ENT_XML1,
           'UTF-8'),
           255.126 - 42,
-          144 - $horizontal_middle - $horizontal_combined_y + 10
+          144 - $horizontal_middle - $horizontal_combined_y + 10.5
         );
         // Primary Line 3.
         $lockup->addText(html_entity_decode(
@@ -301,7 +301,7 @@ class LockupController extends ControllerBase {
           ENT_QUOTES | ENT_XML1,
           'UTF-8'),
           255.126 - 42,
-          144 - $horizontal_middle - $horizontal_combined_y + 20
+          144 - $horizontal_middle - $horizontal_combined_y + 20.5
         );
 
         $lockup->setFont($regular, 6, $text_color);
@@ -313,7 +313,7 @@ class LockupController extends ControllerBase {
           ENT_QUOTES | ENT_XML1,
           'UTF-8'),
           255.126 - 42,
-          144 - $horizontal_middle - $horizontal_combined_y + 21
+          144 - $horizontal_middle - $horizontal_combined_y + 22
         );
 
         $lockup->addText(html_entity_decode(
@@ -321,7 +321,7 @@ class LockupController extends ControllerBase {
           ENT_QUOTES | ENT_XML1,
           'UTF-8'),
           255.126 - 42,
-          144 - $horizontal_middle - $horizontal_combined_y + 28.57
+          144 - $horizontal_middle - $horizontal_combined_y + 29.57
         );
 
         $lockup->addText(html_entity_decode(
@@ -329,7 +329,7 @@ class LockupController extends ControllerBase {
           ENT_QUOTES | ENT_XML1,
           'UTF-8'),
           255.126 - 42,
-          144 - $horizontal_middle - $horizontal_combined_y + 36.14
+          144 - $horizontal_middle - $horizontal_combined_y + 37.14
         );
         break;
 
