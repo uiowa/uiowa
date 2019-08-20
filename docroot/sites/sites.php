@@ -172,3 +172,8 @@ $sites['registrar.prod.drupal.uiowa.edu'] = 'registrar.uiowa.edu';
 $sites['engineeringcbig.dev.drupal.uiowa.edu'] = 'cbig.engineering.uiowa.edu';
 $sites['engineeringcbig.stage.drupal.uiowa.edu'] = 'cbig.engineering.uiowa.edu';
 $sites['engineeringcbig.prod.drupal.uiowa.edu'] = 'cbig.engineering.uiowa.edu';
+
+// Directory aliases for looc.course.uiowa.edu.
+$sites['courselooc.dev.drupal.uiowa.edu'] = 'looc.course.uiowa.edu';
+$sites['courselooc.stage.drupal.uiowa.edu'] = 'looc.course.uiowa.edu';
+$sites['courselooc.prod.drupal.uiowa.edu'] = 'looc.course.uiowa.edu';
