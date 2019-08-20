@@ -244,13 +244,16 @@
                                 Correct primary unit or sub unit fields to meet the following criteria:\
                             </p>\
                             <ul>\
-                                <li>No special characters.</li>\
+                                <li>No special characters except for the following:\
+                                        <ul><li>\n: ; . , \\ \/ ( ) | \' \' \" \" ` - \u2013 \u2013\u2013</li></ul>\
+                                </li>\
                                 <li>No spaces at the beginning or end of lines.</li>\
                                 <li>No more than three lines of text each for primary and sub unit names.</li>\
                             </ul>\
                         </div>\
                     </div>\
                 ';
+                console.log(warningHTML);
                 $('.layout-region-node-main').append(warningHTML);
             }
 
