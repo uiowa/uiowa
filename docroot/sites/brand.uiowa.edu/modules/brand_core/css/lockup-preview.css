@@ -1,10 +1,17 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap'); #lockup-preview {
-  display: none;
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap'); .layout-region-node-main,
+.layout-region-node-footer {
+  float: right;
+  padding-right: 0;
+  padding-left: 2rem;
+}
+.layout-region-node-secondary {
+  float: left;
 }
 #lockup-preview {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  overflow: auto;
+  align-items: start;
 }
 #lockup-preview .block-iowa {
   width: 250px;
@@ -22,8 +29,7 @@
   position: relative;
   margin: 0 auto;
   min-width: 250px;
-  /* I've added 3 because i removed the top border. */
-  margin-top: calc(-5px + 17px + 3px);
+  margin-top: 8px;
 }
 .lockup-stacked .lockup-content-inner {
   padding: 0 13px;
@@ -33,13 +39,12 @@
   height: 3px;
   background-color: #000;
   position: absolute;
-
   /* These will be edited. */
   width: 0px;
   left: 0px;
 }
 .lockup-stacked .primary-unit {
-  margin-top: 5px;
+  margin-top: 18px;
   display: inline-block;
 }
 .lockup-horizontal {
@@ -60,6 +65,9 @@
 }
 .primary-unit,
 .sub-unit {
+  width: 700px;
+  overflow-x: scroll;
+  height: auto;
   white-space: pre-wrap;
   font-family: 'Roboto', sans-serif;
 }
@@ -67,7 +75,7 @@
   margin-bottom: 3px;
   font-weight: 800;
   font-size: 28px;
-  line-height: 1.25;
+  line-height: 1.18;
 }
 .sub-unit {
   font-size: 21px;
@@ -99,12 +107,12 @@
   margin-bottom: 20px;
 }
 
-#valid-text-lockup-warning h3 {    
+#valid-text-lockup-warning h3 {
   padding: 10px 30px 10px 15px;
   display: flex;
   margin-top: 0px;
   align-items: center;
-  background-color: #BE514C;
+  background-color: #be514c;
   color: #fafafa;
   margin-bottom: 0px;
 }
@@ -136,9 +144,9 @@
   font-family: 'Roboto', sans-serif;
 }
 
-#lockup-preview {
-  display: none;
-}
+/*#lockup-preview {*/
+/*  display: none;*/
+/*}*/
 
 #lockup-preview.show-preview {
   display: flex;
