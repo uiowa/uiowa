@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: looc.course.uiowa.edu
+    protocol: https
+  machine_name: courselooc
+  human_name: looc.course.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: courselooc.prod
+drupal:
+  db:
+    database: looc_course_uiowa_edu
+    host: localhost
+    user: root
+    password: null
