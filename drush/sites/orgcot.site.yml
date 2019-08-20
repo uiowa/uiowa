@@ -1,24 +1,27 @@
 local:
-  uri: hr.uiowa.edu
+  uri: cot.org.uiowa.edu
   root: '${env.cwd}/docroot'
 dev:
-  uri: hr.dev.drupal.uiowa.edu
+  uri: orgcot.dev.drupal.uiowa.edu
   host: staging-15039.prod.hosting.acquia.com
   options: {  }
-  paths: { dump-dir: /mnt/tmp }
+  paths:
+    dump-dir: /mnt/tmp
   root: /var/www/html/uiowa.dev/docroot
   user: uiowa.dev
 prod:
-  uri: hr.uiowa.edu
+  uri: cot.org.uiowa.edu
   host: web-33201.prod.hosting.acquia.com
   options: {  }
-  paths: { dump-dir: /mnt/tmp }
+  paths:
+    dump-dir: /mnt/tmp
   root: /var/www/html/uiowa.prod/docroot
   user: uiowa.prod
 test:
-  uri: hr.stage.drupal.uiowa.edu
+  uri: orgcot.stage.drupal.uiowa.edu
   host: staging-15039.prod.hosting.acquia.com
   options: {  }
-  paths: { dump-dir: /mnt/tmp }
+  paths:
+    dump-dir: /mnt/tmp
   root: /var/www/html/uiowa.test/docroot
   user: uiowa.test
