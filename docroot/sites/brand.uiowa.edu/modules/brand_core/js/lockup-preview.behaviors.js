@@ -18,6 +18,10 @@
             // The maximum number of rows that the textareas are allowed to have.
             var maxRows = 3;
 
+            // The max number of characters per line by primary and sub units.
+            var primaryMaxChars = 35;
+            var subMaxChars     = 40;
+
             // Add warning HTML.
             warningHTML();
 
@@ -42,8 +46,8 @@
                     text = textarea.val(),
                     numberOfLines = (text.match(/\n/g) || []).length + 1;
 
-                primaryValueText = textareaSanitize(text, numberOfLines);
-                primaryPreviewText  = previewSanitize(text, numberOfLines);
+                primaryValueText    = textareaSanitize(text, numberOfLines, 'primary');
+                primaryPreviewText  = previewSanitize(text, numberOfLines, 'primary');
 
                 textarea.val(primaryValueText);
                 $(".lockup-stacked .primary-unit").text(primaryPreviewText);
@@ -63,8 +67,8 @@
                     text = textarea.val(),
                     numberOfLines = (text.match(/\n/g) || []).length + 1;
 
-                secondaryValueText = textareaSanitize(text, numberOfLines);
-                secondaryPreviewText  = previewSanitize(text, numberOfLines);
+                secondaryValueText    = textareaSanitize(text, numberOfLines, 'sub');
+                secondaryPreviewText  = previewSanitize(text, numberOfLines, 'sub');
 
                 textarea.val(secondaryValueText);
                 $(".lockup-stacked .sub-unit").text(secondaryPreviewText);
@@ -100,16 +104,16 @@
             });
 
             // Sanitizes text for the textarea.
-            function textareaSanitize(text, numberOfLines) {
+            function textareaSanitize(text, numberOfLines, unit) {
                 var sanitizedText;
                 // Change all dumb quotes to smart quotes.
                 sanitizedText = dumbQuotes(text);
                 // Redundantly limit any newlines and prevent pasting more than the max number of lines.
-                sanitizedText = limitNewlines(maxRows, numberOfLines , sanitizedText);
+                sanitizedText = limitLines(numberOfLines , sanitizedText, unit);
                 return (sanitizedText);
             }
             // Sanitizes text for the Preview.
-            function previewSanitize(text, numberOfLines) {
+            function previewSanitize(text, numberOfLines, unit) {
                 var sanitizedText;
                 // Remove all non quote, space, or dash special characters.
                 sanitizedText = limitCharacters(text);
@@ -118,22 +122,43 @@
                 // Change all dumb quotes to smart quotes.
                 sanitizedText = dumbQuotes(sanitizedText);
                 // Redundantly limit any newlines and prevent pasting more than the max number of lines.
-                sanitizedText = limitNewlines(maxRows, numberOfLines , sanitizedText);
+                sanitizedText = limitLines(numberOfLines , sanitizedText, unit);
                 return (sanitizedText);
             }
 
             // Creates a limit on newlines and deletes any after the limit has been reached.
-            function limitNewlines(limit, nLines, string) {
-                if (nLines > limit) {
-                    var toRemove = nLines-limit;
-                    var modText = string.split('').reverse();
+            // Also limits the number of characters per line.
+            function limitLines(nLines, string, unit) {
+                var modText = string;
+
+                // Limits newlines.
+                if (nLines > maxRows) {
+                    var toRemove = nLines-maxRows;
+                    modText = string.split('').reverse();
                     while (toRemove > 0) {
                         modText.splice(modText.indexOf('\n'), 1);
                         toRemove--;
                     }
-                    return modText.reverse().join('');
+                    modText = modText.reverse().join('');
                 }
-                return string;
+
+                // Limits characters.
+                var maxChars = 1000000;
+                switch (unit) {
+                    case 'primary':
+                        maxChars = primaryMaxChars;
+                      break;
+                    case 'sub':
+                        maxChars = subMaxChars;
+                      break;
+                }
+
+                var lines = modText.split('\n');
+                for (var i = 0; i < lines.length; i++) {
+                    lines[i] = lines[i].substring(0, maxChars);
+                }
+                                                     
+                return lines.join('\n');
             }
 
             // Replace Dumb quotes with Smart Quotes.
@@ -244,7 +269,7 @@
                             </p>\
                             <ul>\
                                 <li>Only the following special characters are allowed:\
-                                        <ul><li> : ; . , \\ \/ ( ) | \' \" \u2018 \u2019 \u201C \u201D ` - \u2013 \u2013\u2013</li></ul>\
+                                        <ul><li> : ; . , \\ \/ ( ) | \' \" \u2018 \u2019 \u201C \u201D ` - \u2012  \u2013  \u2014  \u2015</li></ul>\
                                 </li>\
                                 <li>No spaces are allowed at the beginning or end of lines.</li>\
                                 <li>No more than three lines of text each are allowed for primary and sub unit names.</li>\
@@ -281,7 +306,7 @@
             // Cleans up text with specified acceptable characters.
             // Assistance comes from here: https://stackoverflow.com/questions/13946651/matching-special-characters-and-letters-in-regex.
             function limitCharacters(lockupText) {
-                var matchRegex = /[\w :;.,\\\/()|'"‘’“” `\—\-\–\—\n\x84\x93\x94]*/g;
+                var matchRegex = /[\w :;.,\\\/()|'"‘’“” `\—\-\–\—\‒\–\—\―\n]*/g;
                 return lockupText.match(matchRegex).join('');
             }
         }
