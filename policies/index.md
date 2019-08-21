@@ -7,7 +7,7 @@ nav_order: 18
 # Policies
 
 
-## Domain Changes
+## 'WWW' Addresses
 
 Starting with the Drupal 8 service, 'WWW' sites will not be supported and all 'WWW' requests will redirect to the same URL without 'WWW'.
 
