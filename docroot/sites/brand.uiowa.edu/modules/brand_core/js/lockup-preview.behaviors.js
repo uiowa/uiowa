@@ -244,7 +244,7 @@
                             </p>\
                             <ul>\
                                 <li>Only the following special characters are allowed:\
-                                        <ul><li> : ; . , \\ \/ ( ) | \' \" \u2018 \u2019 \u201C \u201D ` - \u2013 \u2013\u2013</li></ul>\
+                                        <ul><li> : ; . , \\ \/ ( ) | \' \" \u2018 \u2019 \u201C \u201D ` - \u2012  \u2013  \u2014  \u2015</li></ul>\
                                 </li>\
                                 <li>No spaces are allowed at the beginning or end of lines.</li>\
                                 <li>No more than three lines of text each are allowed for primary and sub unit names.</li>\
@@ -281,7 +281,7 @@
             // Cleans up text with specified acceptable characters.
             // Assistance comes from here: https://stackoverflow.com/questions/13946651/matching-special-characters-and-letters-in-regex.
             function limitCharacters(lockupText) {
-                var matchRegex = /[\w :;.,\\\/()|'"‘’“” `\—\-\–\—\n\x84\x93\x94]*/g;
+                var matchRegex = /[\w :;.,\\\/()|'"‘’“” `\—\-\–\—\‒\–\—\―\n]*/g;
                 return lockupText.match(matchRegex).join('');
             }
         }
