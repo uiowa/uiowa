@@ -6,6 +6,12 @@ nav_order: 18
 
 # Policies
 
+
+## Domain Changes
+
+Starting with the Drupal 8 service, 'WWW' sites will not be supported and all 'WWW' requests will redirect to the same URL without 'WWW'.
+
+
 ## Removal of inactive sites
 
 Periodically, ITS will audit SiteNow websites for activity. Websites that have not been logged in to for at least 6 months will be considered inactive.
@@ -15,12 +21,13 @@ When a website has been determined to be inactive, ITS will attempt to contact t
 Once a website is removed due to inactivity, a copy of the site content cannot be restored.
 
 
+## Platform Updates
+
+Occassionally there will be platform updates where new features, theme changes, security updates or underlying tech updates will be updated. During this time it is possible for website downtime or loss of functionality. There may also be a customer review or test process to insure the changes are working as intended.
+
+
 ## Videos
 
 SiteNow sites don't allow video uploads directly to the site. Videos are large files that the service is not equipped to handle. Instead, there are oEmbed options like YouTube or Vimeo.
 
 To maintain accessibility, transcripts or captions should be included with those embeded videos.
-
-## Domain Changes
-
-Starting with the Drupal 8 service, 'WWW' sites will not be supported and all 'WWW' requests will redirect to the same URL without 'WWW'.
