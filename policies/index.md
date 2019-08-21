@@ -20,3 +20,7 @@ Once a website is removed due to inactivity, a copy of the site content cannot b
 SiteNow sites don't allow video uploads directly to the site. Videos are large files that the service is not equipped to handle. Instead, there are oEmbed options like YouTube or Vimeo.
 
 To maintain accessibility, transcripts or captions should be included with those embeded videos.
+
+## Domain Changes
+
+Starting with the Drupal 8 service, 'WWW' sites will not be supported and all 'WWW' requests will redirect to the same URL without 'WWW'.
