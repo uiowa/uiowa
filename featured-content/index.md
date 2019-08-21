@@ -7,7 +7,7 @@ nav_order: 21
 # Featured Content
 Featured Content includes content types: [Basic Page](../content/basic-pages/basic-pages.md), [Person](../content/person/person.md) and [Article](../content/articles/articles.md)
 
-1. Add content (whether it is a person, basic page, or article)
+1. Add content (whether it is a basic page, person or article)
 2. Edit the page you wish to display the featured content
 3. In the paragraphs selection dropdown, select ‘Add Featured Content’
     1. Add a unique ‘Title’
