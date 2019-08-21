@@ -9,7 +9,7 @@ Featured Content includes content types: [Basic Page](../content/basic-pages/bas
 
 1. Add content (whether it is a basic page, person or article)
 2. Edit the page you wish to display the featured content
-3. In the paragraphs selection dropdown, select ‘Add Featured Content’'
+3. In the paragraphs selection dropdown, select ‘Add Featured Content’
     1. Add a unique ‘Title’
         1. You can select whether or not you would like to ‘Display Title’ with the checkbox underneath the ‘Title’ textbox
     2. Select ’Select Content’
