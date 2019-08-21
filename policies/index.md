@@ -13,3 +13,10 @@ Periodically, ITS will audit SiteNow websites for activity. Websites that have n
 When a website has been determined to be inactive, ITS will attempt to contact the designated site owners via their University of Iowa email addresses to verify if the website is still needed. If ITS does not receive a response within 1 week, a follow-up email will be sent. If a response to the follow-up email is not received within 1 week, the website is subject to removal without further notice.
 
 Once a website is removed due to inactivity, a copy of the site content cannot be restored.
+
+
+## Videos
+
+SiteNow sites don't allow video uploads directly to the site. Videos are large files that the service is not equipped to handle. Instead, there are oEmbed options like YouTube or Vimeo.
+
+To maintain accessibility, transcripts or captions should be included with those embeded videos.
