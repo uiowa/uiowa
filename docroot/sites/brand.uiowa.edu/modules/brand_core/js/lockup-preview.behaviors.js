@@ -252,7 +252,6 @@
                         </div>\
                     </div>\
                 ';
-                console.log(warningHTML);
                 $('.layout-region-node-main').append(warningHTML);
             }
 
@@ -282,7 +281,7 @@
             // Cleans up text with specified acceptable characters.
             // Assistance comes from here: https://stackoverflow.com/questions/13946651/matching-special-characters-and-letters-in-regex.
             function limitCharacters(lockupText) {
-                var matchRegex = /[\w :;.,\\\/()|'"‘’“” `\-\–\—\n\x84\x93\x94]*/g;
+                var matchRegex = /[\w :;.,\\\/()|'"‘’“” `\—\-\–\—\n\x84\x93\x94]*/g;
                 return lockupText.match(matchRegex).join('');
             }
         }
