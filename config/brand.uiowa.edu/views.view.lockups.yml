@@ -27,7 +27,7 @@ display:
       access:
         type: perm
         options:
-          perm: 'create lockup content'
+          perm: 'access content'
       cache:
         type: tag
         options: {  }
@@ -814,7 +814,18 @@ display:
           plugin_id: moderation_state_filter
       sorts: {  }
       title: 'Lockup Moderation'
-      header: {  }
+      header:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content: '<a class="btn btn-primary" href="/node/add/lockup">Create a Lockup</a><br><br>'
+          plugin_id: text_custom
       footer: {  }
       empty: {  }
       relationships:
@@ -852,7 +863,8 @@ display:
     display_title: Lockups
     position: 3
     display_options:
-      display_extenders: {  }
+      display_extenders:
+        metatag_display_extender: {  }
       path: lockup-system
       display_description: ''
       title: Lockups
