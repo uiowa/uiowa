@@ -271,11 +271,11 @@
                 //grab the first line of the Primary unit text and put it in the measurer.
                 $('#primary-first-line-measure-stacked').text($('.lockup-stacked .lockup-content-inner .primary-unit').text().split('\n')[0]);
                 let divWidth = $('#primary-first-line-measure-stacked').outerWidth();
-                let divPos = ($('.lockup-stacked .lockup-content').outerWidth()/2) - (divWidth/2)
+                let divPos = ($('.lockup-stacked .lockup-content').outerWidth()/2) - (divWidth/2);
 
                 $('#stacked-divider').css({
-                    "width": divWidth,
-                    "left": divPos
+                    "width": divWidth - 21,
+                    "left": divPos + 10
                 });
             }
 
