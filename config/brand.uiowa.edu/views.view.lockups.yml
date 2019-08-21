@@ -814,7 +814,18 @@ display:
           plugin_id: moderation_state_filter
       sorts: {  }
       title: 'Lockup Moderation'
-      header: {  }
+      header:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content: '<a class="btn btn-primary" href="/node/add/lockup">Create a Lockup</a><br><br>'
+          plugin_id: text_custom
       footer: {  }
       empty: {  }
       relationships:
