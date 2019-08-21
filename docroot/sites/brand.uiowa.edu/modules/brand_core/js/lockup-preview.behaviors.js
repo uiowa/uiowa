@@ -83,7 +83,6 @@
                 default:
                     $("#edit-submit").prop('value', 'Save');
                     break;
-
             }
             $('#edit-moderation-state-0-state').change(function(){
                 switch ($(this).val()) {
@@ -96,7 +95,6 @@
                     default:
                         $("#edit-submit").prop('value', 'Save');
                         break;
-
                 }
             });
 
@@ -244,11 +242,11 @@
                                 Correct primary unit or sub unit fields to meet the following criteria:\
                             </p>\
                             <ul>\
-                                <li>No special characters except for the following:\
-                                        <ul><li>\n: ; . , \\ \/ ( ) | \' \' \" \" ` - \u2013 \u2013\u2013</li></ul>\
+                                <li>Only the following special characters are allowed:\
+                                        <ul><li> : ; . , \\ \/ ( ) | \' \" \u2018 \u2019 \u201C \u201D ` - \u2013 \u2013\u2013</li></ul>\
                                 </li>\
-                                <li>No spaces at the beginning or end of lines.</li>\
-                                <li>No more than three lines of text each for primary and sub unit names.</li>\
+                                <li>No spaces are allowed at the beginning or end of lines.</li>\
+                                <li>No more than three lines of text each are allowed for primary and sub unit names.</li>\
                             </ul>\
                         </div>\
                     </div>\
@@ -281,9 +279,9 @@
             }
 
             // Cleans up text with specified acceptable characters.
-            //  assistance comes from here: https://stackoverflow.com/questions/13946651/matching-special-characters-and-letters-in-regex.
+            // Assistance comes from here: https://stackoverflow.com/questions/13946651/matching-special-characters-and-letters-in-regex.
             function limitCharacters(lockupText) {
-                var matchRegex = /[\w ()\-\–\—;':`"\\\n|,.\/]*/g;
+                var matchRegex = /[\w :;.,\\\/()|'"‘’“” `\-\–\—\n\x84\x93\x94]*/g;
                 return lockupText.match(matchRegex).join('');
             }
         }
