@@ -26,6 +26,7 @@
                 $("#lockup-preview").addClass('show-preview');
                 $(".lockup-stacked .primary-unit").text(primaryUnit.val());
                 $(".lockup-horizontal .primary-unit").text(primaryUnit.val());
+                calcDivider();
             }
 
             if (subUnit.val() !== "") {
