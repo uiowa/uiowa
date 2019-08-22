@@ -187,3 +187,8 @@ $sites['engineeringbiomost.prod.drupal.uiowa.edu'] = 'biomost.engineering.uiowa.
 $sites['labmeyerholz.dev.drupal.uiowa.edu'] = 'meyerholz.lab.uiowa.edu';
 $sites['labmeyerholz.stage.drupal.uiowa.edu'] = 'meyerholz.lab.uiowa.edu';
 $sites['labmeyerholz.prod.drupal.uiowa.edu'] = 'meyerholz.lab.uiowa.edu';
+
+// Directory aliases for accreditation.uiowa.edu.
+$sites['accreditation.dev.drupal.uiowa.edu'] = 'accreditation.uiowa.edu';
+$sites['accreditation.stage.drupal.uiowa.edu'] = 'accreditation.uiowa.edu';
+$sites['accreditation.prod.drupal.uiowa.edu'] = 'accreditation.uiowa.edu';
