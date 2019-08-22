@@ -29,7 +29,7 @@
 
             /*
             ----------------------------------------------------------------------
-            Things to be done on initialization of the page
+            Things to be done on initialization of the page.
             ----------------------------------------------------------------------
             */
 
