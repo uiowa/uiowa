@@ -36,20 +36,19 @@
             // Add warning HTML.
             warningHTML();
 
-            // Do preliminary placement of the divider for the stacked lockup.
-            calcDivider();
-
             // Show preview and inject content based on existing input or live input for both the Primary Unit and Sub Unit.
             if (primaryUnit.val() !== "") {
                 $(".lockup-stacked .primary-unit").text(primaryUnit.val());
                 $(".lockup-horizontal .primary-unit").text(primaryUnit.val());
-                calcDivider();
             }
 
             if (subUnit.val() !== "") {
                 $(".lockup-stacked .sub-unit").text(subUnit.val());
                 $(".lockup-horizontal .sub-unit").text(subUnit.val());
             }
+
+            // Do preliminary placement of the divider for the stacked lockup.
+            calcDivider();
 
             // Set the submit button text based on the 'Save as' option.
             setSubmitButton($("#edit-moderation-state-0-state :selected").val());
