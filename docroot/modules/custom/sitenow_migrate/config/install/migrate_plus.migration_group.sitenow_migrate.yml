@@ -1,0 +1,19 @@
+id: sitenow_migrate
+label: D7 files import
+description: Import D7 files to D8 media entities
+source_type: D7 SQL db
+dependencies:
+  enforced:
+    module:
+      - sitenow_migrate
+shared_configuration:
+ source:
+   key: drupal_7
+   database:
+     driver: mysql
+     username: root
+     password: ''
+     host: 127.0.0.1
+     port: '33067'
+     database: custom_tippie
+     prefix: null

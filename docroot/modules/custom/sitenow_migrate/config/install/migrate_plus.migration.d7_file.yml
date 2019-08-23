@@ -1,0 +1,86 @@
+# This should be removed
+# uuid: 60d1401e-c009-48af-ab46-692796f1c784 
+
+
+id: d7_file
+# More robust if check source, and if not specified, site default
+langcode: en
+
+status: true
+dependencies: {  }
+
+class: Drupal\migrate\Plugin\Migration
+field_plugin_method: alterFieldInstanceMigration
+cck_plugin_method: null
+migration_tags:
+  - 'Drupal 7'
+  - Content
+  - Files
+migration_group: sitenow_migrate
+label: 'Public files'
+
+
+source:
+  plugin: files
+  scheme: public
+  constants:
+    # Need to update this...
+    source_base_path: 'https://tippie.dev.drupal.uiowa.edu/'
+    user_id: 0
+process:
+  # Update to generate a new fid to avoid conflicts? We're not working with fresh installs
+  # Default behavior--create new fid?
+  # fid:
+    # -
+      # plugin: get
+      # source: fid
+  filename:
+    -
+      plugin: get
+      source: filename
+  source_full_path:
+    -
+      plugin: concat
+      delimiter: /
+      source:
+        - constants/source_base_path
+        - filepath
+    -
+      plugin: urlencode
+  uri:
+    -
+      plugin: file_copy
+      source:
+        - '@source_full_path'
+        - uri
+  filemime:
+    -
+      plugin: get
+      source: filemime
+  status:
+    -
+      plugin: get
+      source: status
+  created:
+    -
+      plugin: get
+      source: timestamp
+  changed:
+    -
+      plugin: get
+      source: timestamp
+
+# Likely not importing users--set to 0 for anonymous.
+  uid:
+    -
+      plugin: concat
+      source:
+        - user_id
+
+destination:
+  plugin: 'entity:file'
+
+
+migration_dependencies:
+  required: {  }
+  optional: {  }

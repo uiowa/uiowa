@@ -1,0 +1,5 @@
+services:
+  post_rowsave_subscriber:
+    class: 'Drupal\sitenow_migrate\EventSubscriber\PostRowSaveEvent'
+    tags:
+      - { name: 'event_subscriber' }
