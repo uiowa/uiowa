@@ -63,6 +63,7 @@ class ReplaceCommands extends BltTasks {
       if ($db_name == $yaml['drupal']['db']['database']) {
         $this->say("Deploying updates to <comment>{$multisite}</comment>...");
         $this->switchSiteContext($multisite);
+        $this->taskDrush()->drush('cache:rebuild')->run();
         $this->invokeCommand('drupal:update');
         $this->say("Finished deploying updates to {$multisite}.");
 
