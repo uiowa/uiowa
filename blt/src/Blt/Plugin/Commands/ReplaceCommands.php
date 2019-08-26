@@ -46,4 +46,11 @@ class OverrideCommands extends BltTasks {
     }
   }
 
+  /**
+   * @hook replace-command artifact:ac-hooks:post-db-copy
+   */
+  public function replacePostDbCopy() {
+
+  }
+
 }
