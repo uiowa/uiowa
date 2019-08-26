@@ -30,6 +30,11 @@ if ($site_dir != 'default') {
 $blt_override_config_directories = FALSE;
 $config_directories[CONFIG_SYNC_DIRECTORY] = DRUPAL_ROOT . '/profiles/custom/sitenow/config/sync';
 
+// Unset the VCS config directory so cim/cex default to sync.
+if (isset($config_directories['vcs'])) {
+  unset($config_directories['vcs']);
+}
+
 /**
  * Set the environment indicator colors.
  */
