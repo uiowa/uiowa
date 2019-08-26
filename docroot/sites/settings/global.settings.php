@@ -35,6 +35,11 @@ if (isset($config_directories['vcs'])) {
   unset($config_directories['vcs']);
 }
 
+// Require site installs through the CLI.
+if (drupal_installation_attempted() && php_sapi_name() != 'cli') {
+  exit;
+}
+
 /**
  * Set the environment indicator colors.
  */
