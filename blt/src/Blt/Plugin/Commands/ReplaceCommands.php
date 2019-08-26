@@ -3,21 +3,22 @@
 namespace Sitenow\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
+use Acquia\Blt\Robo\Common\YamlMunge;
 use Acquia\Blt\Robo\Exceptions\BltException;
 
 /**
  * BLT override commands.
  */
-class OverrideCommands extends BltTasks {
+class ReplaceCommands extends BltTasks {
 
   /**
-   * Override the drupal:update BLT command.
+   * Replace the drupal:update BLT command.
    *
-   * This override only runs updb on bootstrapped sites.
+   * Only run updb on bootstrapped sites.
    *
    * @hook replace-command drupal:update
    */
-  public function overrideDrupalUpdate() {
+  public function replaceDrupalUpdate() {
     $result = $this->taskDrush()
       ->stopOnFail()
       ->drush('status')
@@ -47,10 +48,27 @@ class OverrideCommands extends BltTasks {
   }
 
   /**
+   * Replace the post-db-copy AC hook.
+   *
    * @hook replace-command artifact:ac-hooks:post-db-copy
    */
-  public function replacePostDbCopy() {
+  public function replacePostDbCopy($site, $target_env, $db_name, $source_env) {
+    $root = $this->getConfigValue('repo.root');
 
+    foreach ($this->getConfigValue('multisites') as $multisite) {
+      // Parse each multisite blt.yml file to get the correct database.
+      $yaml = YamlMunge::parseFile("{$root}/docroot/sites/{$multisite}/blt.yml");
+
+      // Trigger drupal:update for this site.
+      if ($db_name == $yaml['drupal']['db']['database']) {
+        $this->say("Deploying updates to <comment>{$multisite}</comment>...");
+        $this->switchSiteContext($multisite);
+        $this->invokeCommand('drupal:update');
+        $this->say("Finished deploying updates to {$multisite}.");
+
+        break;
+      }
+    }
   }
 
 }
