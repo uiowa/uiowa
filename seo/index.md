@@ -6,7 +6,7 @@ nav_order: 12
 
 # Search Engine Optimization (SEO)
 
-"Out of the box," your site is pretty well optimized for Search Engines to crawl and index your site. You can edit some SEO settings under the Advanced tab of the edit page for individual pieces of content.
+"Out of the box," your site is pretty well optimized for Search Engines to crawl and index your site. You can edit some SEO settings under the Advanced tab when editing content.
 
 By default on the basic page content type, the "Content Description" field is used for the meta description value.
 
