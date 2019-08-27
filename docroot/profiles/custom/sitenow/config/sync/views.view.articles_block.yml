@@ -52,7 +52,7 @@ display:
       pager:
         type: full
         options:
-          items_per_page: 10
+          items_per_page: 9
           offset: 0
           id: 0
           total_pages: null
@@ -62,9 +62,9 @@ display:
             first: '« First'
             last: 'Last »'
           expose:
-            items_per_page: false
+            items_per_page: true
             items_per_page_label: 'Items per page'
-            items_per_page_options: '5, 10, 25, 50'
+            items_per_page_options: '9'
             items_per_page_options_all: false
             items_per_page_options_all_label: '- All -'
             offset: false
@@ -236,7 +236,7 @@ display:
           entity_field: tid
           plugin_id: taxonomy
       display_extenders: {  }
-      group_by: true
+      group_by: false
       use_ajax: true
     cache_metadata:
       max-age: -1
@@ -254,7 +254,10 @@ display:
     display_title: Block
     position: 1
     display_options:
-      display_extenders: {  }
+      display_extenders:
+        metatag_display_extender: {  }
+      allow:
+        items_per_page: false
     cache_metadata:
       max-age: -1
       contexts:
