@@ -224,10 +224,10 @@ EOD;
     $cloud->databaseCreate($application->uuid, $db);
     $this->say("Created <comment>{$db}</comment> cloud database.");
 
-    $this->yell("Follow these next steps!");
+    $this->say("Continue initializing additional multisites or follow the next steps below.");
 
     $steps = [
-      'Continue initializing additional multisites or get this branch merged via a PR.',
+      'Push this branch and merge via a pull request.',
       'Coordinate a new release and deploy to the test and prod environments.',
       'Add the multisite domains to environments as needed.',
       'Add the webmaster account(s) to the production site.',
