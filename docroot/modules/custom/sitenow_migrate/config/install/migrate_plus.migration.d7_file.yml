@@ -26,6 +26,7 @@ source:
   constants:
     # Need to update this...
     source_base_path: 'https://tippie.dev.drupal.uiowa.edu/'
+    drupal_file_directory: 'public://import/'
     user_id: 0
 process:
   # Update to generate a new fid to avoid conflicts? We're not working with fresh installs
@@ -38,13 +39,21 @@ process:
     -
       plugin: get
       source: filename
+  destination_full_path:
+    -
+      plugin: concat
+      source:
+        - constants/drupal_file_directory
+        - filename
+    -
+      plugin: urlencode
   source_full_path:
     -
       plugin: concat
       delimiter: /
       source:
         - constants/source_base_path
-        - filepath
+        - uri
     -
       plugin: urlencode
   uri:
@@ -52,7 +61,9 @@ process:
       plugin: file_copy
       source:
         - '@source_full_path'
-        - uri
+        - '@destination_full_path'
+      file_exists: 'rename'
+      move: FALSE
   filemime:
     -
       plugin: get

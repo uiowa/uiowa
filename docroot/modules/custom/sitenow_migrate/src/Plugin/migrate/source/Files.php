@@ -68,6 +68,7 @@ class Files extends SqlBase {
      * Can be done with the following.
      * file_delete($file->id());
      */
+    $row->source_url = file_create_url($row->uri);
     return parent::prepareRow($row);
   }
 

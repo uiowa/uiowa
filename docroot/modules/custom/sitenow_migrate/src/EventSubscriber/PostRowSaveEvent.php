@@ -30,7 +30,6 @@ class PostRowSaveEvent implements EventSubscriberInterface {
   public function onPostRowSave($event) {
     $row = $event->getRow();
     $fids = $event->getDestinationIdValues();
-    drush_print("..." . $fids[0]);
     $this->makeEntity($row, $fids);
   }
 
