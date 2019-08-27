@@ -20,7 +20,7 @@ Each site automatically generates a sitemap which can be found at /sitemap.xml
 
 When creating a site it is recommended, though not required to submit your sitemap to Google via their search console service. This let's Google know about your site and in turn Google provides tools to optimize your site when it comes to SEO. [Read Google's specific instructions](https://support.google.com/webmasters/answer/6332964).
 
-**Note**: In order to verify ownership of the website, you must verify through Google Analytics. [Read about how to configure Google Analytics for your site](../google-analytics/index.md).
+**Note**: In order to verify ownership of the website, you must verify using the URL-prefix property option and then through the Google Analytics method. [Read about how to configure Google Analytics for your site](../google-analytics/index.md).
 
 
 ## Notifying Search Engines
