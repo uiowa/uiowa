@@ -43,11 +43,6 @@ $sites['protostudios.dev.drupal.uiowa.edu'] = 'protostudios.uiowa.edu';
 $sites['protostudios.stage.drupal.uiowa.edu'] = 'protostudios.uiowa.edu';
 $sites['protostudios.prod.drupal.uiowa.edu'] = 'protostudios.uiowa.edu';
 
-// Directory aliases for www.dentistry.uiowa.edu.
-$sites['dentistry.dev.drupal.uiowa.edu'] = 'www.dentistry.uiowa.edu';
-$sites['dentistry.stage.drupal.uiowa.edu'] = 'www.dentistry.uiowa.edu';
-$sites['dentistry.prod.drupal.uiowa.edu'] = 'www.dentistry.uiowa.edu';
-
 // Directory aliases for uiventures.uiowa.edu.
 $sites['uiventures.dev.drupal.uiowa.edu'] = 'uiventures.uiowa.edu';
 $sites['uiventures.stage.drupal.uiowa.edu'] = 'uiventures.uiowa.edu';
