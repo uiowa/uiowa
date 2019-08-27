@@ -30,7 +30,52 @@ class ReplaceCommands extends BltTasks {
     $status = json_decode($result->getMessage());
 
     if (empty($status->bootstrap) || $status->bootstrap != 'Successful') {
-      $this->logger->warning('Site not bootstrapped. Cannot update database.');
+      $result = $this->taskDrush()
+        ->stopOnFail()
+        ->drush('sql:query')
+        ->arg('show tables')
+        ->silent(TRUE)
+        ->run();
+
+      $tables = $result->getMessage();
+
+      if (empty($tables)) {
+        $this->logger->warning('No database tables found. Installing sitenow....');
+        $uri = $this->getConfig()->get('site');
+
+        $uid = uniqid('admin_');
+
+        $this->taskDrush()
+          ->stopOnFail()
+          ->drush('site:install')
+          ->arg('sitenow')
+          ->options([
+            'sites-subdir' => $uri,
+            'existing-config' => NULL,
+            'account-name' => $uid,
+            'account-mail' => base64_decode('aXRzLXdlYkB1aW93YS5lZHU='),
+          ])
+          ->run();
+
+        // Post-install tasks.
+        // @see: https://www.drupal.org/project/drupal/issues/2982052
+        $this->taskDrush()
+          ->drush('user:role:add')
+          ->args([
+            'administrator',
+            $uid,
+          ])
+          ->run();
+
+        $this->taskDrush()
+          ->drush('config:set')
+          ->args([
+            'system.site',
+            'name',
+            $uri,
+          ])
+          ->run();
+      }
     }
     else {
       $task = $this->taskDrush()
