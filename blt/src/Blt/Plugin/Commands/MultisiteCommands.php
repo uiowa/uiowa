@@ -63,6 +63,20 @@ class MultisiteCommands extends BltTasks {
    * @hook validate recipes:multisite:init
    */
   public function validateMultisiteInit(CommandData $commandData) {
+    $result = $this->taskGit()
+      ->dir($this->getConfigValue("repo.root"))
+      ->exec('git rev-parse --abbrev-ref HEAD')
+      ->interactive(FALSE)
+      ->printOutput(FALSE)
+      ->printMetadata(FALSE)
+      ->run();
+
+    $branch = $result->getMessage();
+
+    if ($branch == 'master' || $branch == 'develop') {
+      return new CommandError('You must run this command on a feature branch created off master.');
+    }
+
     $creds = [
       'credentials.acquia.key',
       'credentials.acquia.secret',
