@@ -21,7 +21,6 @@ dependencies:
     - datetime
     - entity_reference_revisions
     - file
-    - image
     - link
     - text
     - user
@@ -33,7 +32,7 @@ content:
   body:
     label: hidden
     type: text_default
-    weight: 5
+    weight: 4
     settings: {  }
     third_party_settings: {  }
     region: content
@@ -43,7 +42,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   seminar_attachments:
-    weight: 7
+    weight: 6
     label: above
     settings:
       use_description_as_link_text: true
@@ -78,13 +77,13 @@ content:
     weight: 1
     label: hidden
     settings:
-      image_style: ''
+      image_style: seminar_image
       image_link: ''
     third_party_settings: {  }
-    type: image
+    type: media_thumbnail
     region: content
   seminar_link:
-    weight: 6
+    weight: 5
     label: inline
     settings:
       trim_length: 80
@@ -105,7 +104,7 @@ content:
     region: content
   seminar_speakers:
     type: entity_reference_revisions_entity_view
-    weight: 4
+    weight: 7
     label: above
     settings:
       view_mode: default

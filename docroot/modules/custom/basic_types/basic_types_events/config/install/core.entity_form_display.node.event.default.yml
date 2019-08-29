@@ -15,7 +15,6 @@ dependencies:
     - date_recur_modular
     - datetime
     - file
-    - image
     - link
     - path
     - text
@@ -55,10 +54,11 @@ content:
   event_image:
     weight: 5
     settings:
-      progress_indicator: throbber
-      preview_image_style: thumbnail
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
-    type: image_image
+    type: entity_reference_autocomplete
     region: content
   event_link:
     weight: 4
