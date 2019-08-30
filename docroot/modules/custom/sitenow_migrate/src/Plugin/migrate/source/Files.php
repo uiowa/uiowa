@@ -16,6 +16,27 @@ use Drupal\migrate\Row;
 class Files extends SqlBase {
 
   /**
+   * The public file directory path.
+   *
+   * @var string
+   */
+  protected $publicPath;
+
+  /**
+   * The private file directory path, if any.
+   *
+   * @var string
+   */
+  protected $privatePath;
+
+  /**
+   * The temporary file directory path.
+   *
+   * @var string
+   */
+  protected $temporaryPath;
+
+  /**
    * {@inheritdoc}
    */
   public function query() {
@@ -34,13 +55,13 @@ class Files extends SqlBase {
    */
   public function fields() {
     $fields = [
-      'fid' => $this->t('fid'),
-      'filename' => $this->t('filename'),
-      'uri' => $this->t('uri'),
-      'filemime' => $this->t('filemime'),
-      'timestamp' => $this->t('timestamp'),
-      'type' => $this->t('file type'),
-      'created' => $this->t('created timestamp'),
+      'fid' => $this->t('File ID from D7'),
+      'filename' => $this->t('Filename'),
+      'uri' => $this->t('URI'),
+      'filemime' => $this->t('Filemime'),
+      'timestamp' => $this->t('Timestamp'),
+      'type' => $this->t('File type'),
+      'created' => $this->t('Created timestamp'),
     ];
     return $fields;
   }
@@ -68,7 +89,9 @@ class Files extends SqlBase {
      * Can be done with the following.
      * file_delete($file->id());
      */
-    $row->source_url = file_create_url($row->uri);
+
+    // Create filepath based on URI.
+    $row->setSourceProperty('uri', str_replace("public://", "", $row->getSourceProperty('uri')));
     return parent::prepareRow($row);
   }
 

@@ -1,19 +1,17 @@
 id: d7_article
 label: Article node migration from Drupal 7
-migration_group: custom
-dependencies:
-  enforced:
-    module:
-      - sitenow_migrate
+migration_group: sitenow_migrate
 source:
-  plugin: files
+  plugin: articles
+  constants:
+    USER_ID: 0
 destination:
   plugin: entity:node
   bundle: article
 process:
-  nid: nid
-  vid: vid
-  type: type
+# Leave these out, since we're not migrating to a fresh install.
+  # nid: nid
+  # vid: vid
   langcode:
     plugin: static_map
     bypass: true
@@ -21,11 +19,20 @@ process:
     map:
       und: en
   title: title
-  uid: uid
+  type:
+    plugin: default_value
+    default_value: article
+# Likely not importing users--set to 0 for anonymous.
+  uid:
+    -
+      plugin: concat
+      source:
+        - USER_ID
   status: status
   created: created
   changed: changed
   promote: promote
+  body: body
   sticky: sticky
   'body/format':
     plugin: static_map
@@ -38,5 +45,3 @@ process:
       4: full_html
   'body/value': body_value
   'body/summary': body_summary
-  field_tags: tags
-  field_image: images

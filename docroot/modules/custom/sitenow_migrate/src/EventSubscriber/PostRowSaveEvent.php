@@ -28,9 +28,13 @@ class PostRowSaveEvent implements EventSubscriberInterface {
    * {@inheritdoc}
    */
   public function onPostRowSave($event) {
-    $row = $event->getRow();
-    $fids = $event->getDestinationIdValues();
-    $this->makeEntity($row, $fids);
+    $migration = $event->getMigration();
+    // Only need this processing for the file migrations.
+    if ($migration->label() == 'd7_file') {
+      $row = $event->getRow();
+      $fids = $event->getDestinationIdValues();
+      $this->makeEntity($row, $fids);
+    }
   }
 
   /**
@@ -40,23 +44,47 @@ class PostRowSaveEvent implements EventSubscriberInterface {
     $entityManager = \Drupal::entityTypeManager();
     $file = $entityManager->getStorage('file')->load($fids[0]);
     if ($file) {
-      // Currently only images are handled.
-      // Will need to be updated for other types of files.
-      $bundle = 'image';
+      $fileType = explode('/', $file->getMimeType())[0];
+      // We currently don't retrieve the alt or title from the images.
       $alt = '';
       $title = '';
-      $media = $entityManager->getStorage('media')->create([
-        'bundle' => $bundle,
-        'field_media_image' => [
-          'target_id' => $fids[0],
-          'alt' => $alt,
-          'title' => $title,
-        ],
-        'langcode' => 'en',
-      ]);
-      $media->setName($file->getFileName());
-      $media->setOwnerId(0);
-      $media->save();
+
+      // Currently handles images and documents.
+      // May need to check for other file types.
+      switch ($fileType) {
+        case 'image':
+          $media = $entityManager->getStorage('media')->create([
+            'bundle' => 'image',
+            'field_media_image' => [
+              'target_id' => $fids[0],
+              'alt' => $alt,
+              'title' => $title,
+            ],
+            'langcode' => 'en',
+          ]);
+          $media->setName($file->getFileName());
+          $media->setOwnerId(0);
+          $media->save();
+          break;
+
+        case 'application':
+        case 'document':
+        case 'file':
+          $media = $entityManager->getStorage('media')->create([
+            'bundle' => 'file',
+            'field_media_file' => [
+              'target_id' => $fids[0],
+            ],
+            'langcode' => 'en',
+          ]);
+          $media->setName($file->getFileName());
+          $media->setOwnerId(0);
+          $media->save();
+          break;
+
+        default:
+          return;
+      }
     }
   }
 

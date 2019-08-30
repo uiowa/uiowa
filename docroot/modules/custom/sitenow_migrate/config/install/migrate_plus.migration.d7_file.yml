@@ -1,59 +1,40 @@
-# This should be removed
-# uuid: 60d1401e-c009-48af-ab46-692796f1c784 
-
-
 id: d7_file
-# More robust if check source, and if not specified, site default
-langcode: en
-
-status: true
-dependencies: {  }
-
-class: Drupal\migrate\Plugin\Migration
-field_plugin_method: alterFieldInstanceMigration
-cck_plugin_method: null
+label: Files
 migration_tags:
-  - 'Drupal 7'
+  - Drupal 7
   - Content
   - Files
-migration_group: sitenow_migrate
-label: 'Public files'
 
+migration_group: sitenow_migrate
 
 source:
   plugin: files
-  scheme: public
+  # scheme: public
   constants:
     # Need to update this...
-    source_base_path: 'https://tippie.dev.drupal.uiowa.edu/'
-    drupal_file_directory: 'public://import/'
-    user_id: 0
+    SOURCE_BASE_PATH: 'http://brainworkshop.sites.uiowa.edu/sites/brainworkshop.sites.uiowa.edu/files/'
+    DRUPAL_FILE_DIRECTORY: 'public://images/'
+    USER_ID: 0
 process:
-  # Update to generate a new fid to avoid conflicts? We're not working with fresh installs
-  # Default behavior--create new fid?
-  # fid:
-    # -
-      # plugin: get
-      # source: fid
   filename:
     -
       plugin: get
       source: filename
-  destination_full_path:
-    -
-      plugin: concat
-      source:
-        - constants/drupal_file_directory
-        - filename
-    -
-      plugin: urlencode
   source_full_path:
     -
       plugin: concat
       delimiter: /
       source:
-        - constants/source_base_path
+        - constants/SOURCE_BASE_PATH
         - uri
+    -
+      plugin: urlencode
+  destination_full_path:
+    -
+      plugin: concat
+      source:
+        - constants/DRUPAL_FILE_DIRECTORY
+        - filename
     -
       plugin: urlencode
   uri:
@@ -62,8 +43,8 @@ process:
       source:
         - '@source_full_path'
         - '@destination_full_path'
-      file_exists: 'rename'
-      move: FALSE
+      # file_exists: 'rename'
+      # move: FALSE
   filemime:
     -
       plugin: get
@@ -80,13 +61,12 @@ process:
     -
       plugin: get
       source: timestamp
-
 # Likely not importing users--set to 0 for anonymous.
   uid:
     -
       plugin: concat
       source:
-        - user_id
+        - constants/USER_ID
 
 destination:
   plugin: 'entity:file'
