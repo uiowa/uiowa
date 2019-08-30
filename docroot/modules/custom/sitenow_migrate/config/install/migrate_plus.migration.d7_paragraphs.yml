@@ -1,0 +1,26 @@
+id: d7_paragraph
+label: Basic page body content migration from Drupal 7
+migration_group: sitenow_migrate
+source:
+  plugin: paragraphs
+  constants:
+    USER_ID: 0
+    BODY_FORMAT: 0
+destination:
+  plugin: entity_reference_revisions:paragraph
+  # Placing all content into a single text field.
+  # Section added as part of the node migration.
+  default_bundle: text
+process:
+  langcode:
+    plugin: static_map
+    bypass: true
+    source: language
+    map:
+      und: en
+  field_text_body_value: body_value
+  field_text_body_format:
+    -
+      plugin: concat
+      source:
+        - constants/BODY_FORMAT

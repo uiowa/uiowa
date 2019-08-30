@@ -1,14 +1,14 @@
-id: d7_article
-label: Article node migration from Drupal 7
+id: d7_basic-page
+label: Basic page migration from Drupal 7
 migration_group: sitenow_migrate
 source:
-  plugin: articles
+  plugin: basic_pages
   constants:
     USER_ID: 0
     BODY_FORMAT: filtered_html
 destination:
   plugin: entity:node
-  bundle: article
+  bundle: basic
 process:
 # Leave these out, since we're not migrating to a fresh install.
   # nid: nid
@@ -22,19 +22,17 @@ process:
   title: title
   type:
     plugin: default_value
-    default_value: article
+    default_value: basic
 # Likely not importing users--set to 0 for anonymous.
   uid:
     -
       plugin: concat
       source:
-        - constants/USER_ID
+        - constants/SER_ID
   status: status
   created: created
   changed: changed
   promote: promote
-
-  # Need to reference field_revision_field_article_body for this.
   body: body
   sticky: sticky
   'body/format':
@@ -44,3 +42,7 @@ process:
         - constants/BODY_FORMAT
   'body/value': body_value
   'body/summary': body_summary
+# Need to migrate body content into paragraphs prior to node migration.
+migration_dependencies:
+  required:
+    - d7_paragraphs
