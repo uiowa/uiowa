@@ -50,6 +50,7 @@ class ReplaceCommands extends BltTasks {
         // Post-install tasks.
         // @see: https://www.drupal.org/project/drupal/issues/2982052
         $this->taskDrush()
+          ->stopOnFail()
           ->drush('user:role:add')
           ->args([
             'administrator',
@@ -58,6 +59,7 @@ class ReplaceCommands extends BltTasks {
           ->run();
 
         $this->taskDrush()
+          ->stopOnFail()
           ->drush('config:set')
           ->args([
             'system.site',
