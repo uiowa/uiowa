@@ -1,0 +1,35 @@
+uuid: 8433d284-dbeb-4116-9b23-1dcb67dd5c3f
+langcode: en
+status: true
+dependencies:
+  config:
+    - image.style.sitenow_carousel_large
+    - image.style.sitenow_carousel_medium
+    - image.style.sitenow_carousel_small
+  theme:
+    - uiowa_bootstrap
+id: sitenow_carousel
+label: 'SiteNow Carousel'
+image_style_mappings:
+  -
+    breakpoint_id: uiowa_bootstrap.xl
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: sitenow_carousel_large
+  -
+    breakpoint_id: uiowa_bootstrap.lg
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: sitenow_carousel_large
+  -
+    breakpoint_id: uiowa_bootstrap.md
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: sitenow_carousel_medium
+  -
+    breakpoint_id: uiowa_bootstrap.sm
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: sitenow_carousel_small
+breakpoint_group: uiowa_bootstrap
+fallback_image_style: sitenow_carousel_large
