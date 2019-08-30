@@ -30,7 +30,7 @@ class ReplaceCommands extends BltTasks {
         $this->say("Finished deploying updates to $multisite.");
       }
       else {
-        $this->logger->warning("Cannot bootstrap <comment>$multisite</comment>. Installing SiteNow....");
+        $this->logger->warning("Drupal not installed for <comment>$multisite</comment>. Installing SiteNow....");
         $uri = $this->getConfig()->get('site');
 
         $uid = uniqid('admin_');
