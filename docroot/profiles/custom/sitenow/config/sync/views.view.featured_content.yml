@@ -6,6 +6,10 @@ dependencies:
     - field.storage.node.field_image
     - field.storage.node.field_teaser
     - image.style.paragraph_preview
+    - node.type.article
+    - node.type.page
+    - node.type.person
+    - workflows.workflow.editorial
   module:
     - content_moderation
     - entity_browser
@@ -73,11 +77,7 @@ display:
       style:
         type: table
         options:
-          grouping:
-            -
-              field: type
-              rendered: true
-              rendered_strip: false
+          grouping: {  }
           row_class: ''
           default_row_class: true
           override: true
@@ -714,7 +714,10 @@ display:
           group_type: group
           admin_label: ''
           operator: in
-          value: {  }
+          value:
+            article: article
+            page: page
+            person: person
           group: 1
           exposed: true
           expose:
@@ -730,11 +733,12 @@ display:
             remember_roles:
               authenticated: authenticated
               anonymous: '0'
+              viewer: '0'
               editor: '0'
               publisher: '0'
               webmaster: '0'
               administrator: '0'
-            reduce: false
+            reduce: true
           is_grouped: false
           group_info:
             label: ''
@@ -758,7 +762,11 @@ display:
           group_type: group
           admin_label: ''
           operator: in
-          value: {  }
+          value:
+            editorial-draft: editorial-draft
+            editorial-review: editorial-review
+            editorial-published: editorial-published
+            editorial-archived: editorial-archived
           group: 1
           exposed: true
           expose:
@@ -774,11 +782,12 @@ display:
             remember_roles:
               authenticated: authenticated
               anonymous: '0'
+              viewer: '0'
               editor: '0'
               publisher: '0'
               webmaster: '0'
               administrator: '0'
-            reduce: false
+            reduce: true
           is_grouped: false
           group_info:
             label: ''
@@ -823,7 +832,8 @@ display:
     display_title: 'Entity browser'
     position: 1
     display_options:
-      display_extenders: {  }
+      display_extenders:
+        metatag_display_extender: {  }
     cache_metadata:
       max-age: -1
       contexts:

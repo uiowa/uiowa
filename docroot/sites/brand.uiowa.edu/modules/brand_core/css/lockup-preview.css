@@ -1,13 +1,26 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap'); #lockup-preview {
-  display: none;
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+.layout-region-node-main,
+.layout-region-node-footer {
+  float: right;
+  padding-right: 0;
+  padding-left: 2rem;
+}
+.layout-region-node-secondary {
+  float: left;
 }
 #lockup-preview {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  overflow: auto;
+  align-items: start;
 }
 #lockup-preview .block-iowa {
-  width: 250px;
+  max-width: 250px;
+  flex: 250px 0 0;
+}
+#lockup-preview .lockup-horizontal .block-iowa {
+  margin-top: 4px;
 }
 .lockup-horizontal,
 .lockup-stacked {
@@ -22,25 +35,28 @@
   position: relative;
   margin: 0 auto;
   min-width: 250px;
-  /* I've added 3 because i removed the top border. */
-  margin-top: calc(-5px + 17px + 3px);
+  margin-top: 11px;
 }
 .lockup-stacked .lockup-content-inner {
   padding: 0 13px;
+}
+.lockup-stacked .primary-unit {
+  margin-top: 17px;
+  display: inline-block;
+  margin-bottom: 4px;
+  letter-spacing: -0.9px;
+}
+.lockup-stacked .sub-unit {
+  letter-spacing: -1px;
 }
 #stacked-divider {
   content: '';
   height: 3px;
   background-color: #000;
   position: absolute;
-
   /* These will be edited. */
   width: 0px;
   left: 0px;
-}
-.lockup-stacked .primary-unit {
-  margin-top: 5px;
-  display: inline-block;
 }
 .lockup-horizontal {
   display: flex;
@@ -48,7 +64,7 @@
 .lockup-horizontal .lockup-content {
   color: #000;
   border-left: 3px solid;
-  min-height: 74px;
+  margin-top: 13px;
   margin-left: 18px;
   padding-left: 19px;
   display: table;
@@ -56,22 +72,34 @@
 .lockup-horizontal .lockup-content .lockup-content-inner {
   display: table-cell;
   vertical-align: middle;
-  padding: 13px 0px;
+  padding-bottom: 7px;
+}
+.lockup-horizontal .primary-unit {
+  letter-spacing: -0.5px;
+  margin-bottom: 7px;
+}
+.lockup-horizontal .sub-unit {
+  letter-spacing: -0.7px;
 }
 .primary-unit,
 .sub-unit {
+  -webkit-font-smoothing: subpixel-antialiased;
+  font-smoothing: subpixel-antialiased;
+  width: 700px;
+  font-weight: 700;
+  overflow-x: scroll;
+  height: auto;
   white-space: pre-wrap;
   font-family: 'Roboto', sans-serif;
 }
 .primary-unit {
-  margin-bottom: 3px;
-  font-weight: 800;
   font-size: 28px;
-  line-height: 1.25;
+  line-height: 1.18;
 }
 .sub-unit {
   font-size: 21px;
   line-height: 1.25;
+  letter-spacing: 0.3px;
 }
 .field--name-field-lockup-primary-unit textarea,
 .field--name-field-lockup-sub-unit textarea {
@@ -80,16 +108,13 @@
   overflow-wrap: normal;
   overflow-x: scroll;
 }
-
 #edit-submit:disabled:hover {
   background-color: #ededed;
   border-color: #d4d4d4;
 }
-
 #valid-text-lockup-warning.warning-hidden {
   display: none;
 }
-
 #valid-text-lockup-warning {
   display: block;
   background-color: #ffe6e6;
@@ -98,13 +123,12 @@
   margin-top: 10px;
   margin-bottom: 20px;
 }
-
-#valid-text-lockup-warning h3 {    
+#valid-text-lockup-warning h3 {
   padding: 10px 30px 10px 15px;
   display: flex;
   margin-top: 0px;
   align-items: center;
-  background-color: #BE514C;
+  background-color: #be514c;
   color: #fafafa;
   margin-bottom: 0px;
 }
@@ -117,11 +141,9 @@
   border-radius: 500px;
   padding: 8px 14px;
 }
-
 #valid-text-lockup-warning .warning-body {
   padding: 0px 30px 20px 15px;
 }
-
 #primary-first-line-measure-stacked {
   position: absolute;
   color: transparent;
@@ -129,17 +151,9 @@
   top: -9999px;
   display: inline-block;
   padding: 0px 13px;
-  font-weight: 800;
+  font-weight: 700;
   font-size: 28px;
   line-height: 1.25;
   white-space: pre-wrap;
   font-family: 'Roboto', sans-serif;
-}
-
-#lockup-preview {
-  display: none;
-}
-
-#lockup-preview.show-preview {
-  display: flex;
 }

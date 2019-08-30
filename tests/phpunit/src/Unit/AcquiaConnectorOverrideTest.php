@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\sitenow\Unit\ConfigOverride;
+namespace Drupal\Tests\sitenow\Unit;
 
 use Drupal\Tests\UnitTestCase;
 use Drupal\sitenow\ConfigOverride\AcquiaConnectorOverride;

@@ -21,7 +21,7 @@ class LockupController extends ControllerBase {
 
       if ($node->bundle() !== 'lockup') {
         $response = [
-          '#markup' => $this->t('This is not a lockup and thus cannot be download. Silly user.'),
+          '#markup' => $this->t('This is not a lockup and thus cannot be downloaded.'),
         ];
         return $response;
       }
@@ -46,6 +46,18 @@ class LockupController extends ControllerBase {
       $lockup_stacked_reversed_file = $path . ' LockupStacked-RGB-REVERSED.svg';
       fwrite(fopen(file_directory_temp() . '/' . $lockup_stacked_reversed_file, 'w'), $lockup_stacked_reversed);
 
+      $lockup_horizontal_black = LockupController::generateLockup($node, '#000000', "#000000", 'horizontal');
+      $lockup_horizontal_black_file = $path . ' LockupHorizontal-BLACK.svg';
+      fwrite(fopen(file_directory_temp() . '/' . $lockup_horizontal_black_file, 'w'), $lockup_horizontal_black);
+
+      $lockup_horizontal_rgb = LockupController::generateLockup($node, '#FFCD00', "#000000", 'horizontal');
+      $lockup_horizontal_rgb_file = $path . ' LockupHorizontal-RGB.svg';
+      fwrite(fopen(file_directory_temp() . '/' . $lockup_horizontal_rgb_file, 'w'), $lockup_horizontal_rgb);
+
+      $lockup_horizontal_reversed = LockupController::generateLockup($node, '#FFCD00', "#FFFFFF", 'horizontal');
+      $lockup_horizontal_reversed_file = $path . ' LockupHorizontal-RGB-REVERSED.svg';
+      fwrite(fopen(file_directory_temp() . '/' . $lockup_horizontal_reversed_file, 'w'), $lockup_horizontal_reversed);
+
       $zip = new \ZipArchive();
 
       $zip_filename = 'temporary://lockup.zip';
@@ -57,10 +69,13 @@ class LockupController extends ControllerBase {
       $zip->addFile(file_directory_temp() . '/' . $lockup_stacked_black_file, $path . "-Lockup/" . $lockup_stacked_black_file);
       $zip->addFile(file_directory_temp() . '/' . $lockup_stacked_rgb_file, $path . "-Lockup/" . $lockup_stacked_rgb_file);
       $zip->addFile(file_directory_temp() . '/' . $lockup_stacked_reversed_file, $path . "-Lockup/" . $lockup_stacked_reversed_file);
+      $zip->addFile(file_directory_temp() . '/' . $lockup_horizontal_black_file, $path . "-Lockup/" . $lockup_horizontal_black_file);
+      $zip->addFile(file_directory_temp() . '/' . $lockup_horizontal_rgb_file, $path . "-Lockup/" . $lockup_horizontal_rgb_file);
+      $zip->addFile(file_directory_temp() . '/' . $lockup_horizontal_reversed_file, $path . "-Lockup/" . $lockup_horizontal_reversed_file);
 
       // Read the instructions.
-      $instructions = drupal_get_path('module', 'brand_core') . '/lockup-instructions.txt';
-      $zip->addFile($instructions, $path . "-Lockup/lockup-instructions.txt");
+      $instructions = drupal_get_path('module', 'brand_core') . '/lockup-instructions.docx';
+      $zip->addFile($instructions, $path . "-Lockup/lockup-instructions.docx");
 
       $zip->close();
 
@@ -75,16 +90,19 @@ class LockupController extends ControllerBase {
       unlink(file_directory_temp() . '/' . $lockup_stacked_black_file);
       unlink(file_directory_temp() . '/' . $lockup_stacked_rgb_file);
       unlink(file_directory_temp() . '/' . $lockup_stacked_reversed_file);
+      unlink(file_directory_temp() . '/' . $lockup_horizontal_black_file);
+      unlink(file_directory_temp() . '/' . $lockup_horizontal_rgb_file);
+      unlink(file_directory_temp() . '/' . $lockup_horizontal_reversed_file);
 
       $response = [
-        '#markup' => $this->t('Download should begin momentarily.'),
+        '#markup' => $this->t('Download should begin shortly.'),
       ];
       return $response;
 
     }
     else {
       $response = [
-        '#markup' => $this->t('This is not a lockup and thus cannot be download. Silly user.'),
+        '#markup' => $this->t('This is not a lockup and thus cannot be downloaded.'),
       ];
       return $response;
     }
@@ -101,10 +119,28 @@ class LockupController extends ControllerBase {
     $lockup = new BrandSVG();
 
     $svg_center = 216;
+    $horizontal_combined_y = 0;
+    $total_lines = 0;
 
     if (!empty($node->field_lockup_sub_unit->value)) {
       $sub_text = $node->field_lockup_sub_unit->value;
       $sub_explode = explode(PHP_EOL, $sub_text);
+      $sub_count = count($sub_explode);
+      $total_lines = $total_lines + $sub_count;
+      switch ($sub_count) {
+        case 1:
+          $horizontal_combined_y = $horizontal_combined_y + 3;
+          break;
+
+        case 2:
+          $horizontal_combined_y = $horizontal_combined_y + 6;
+          break;
+
+        case 3:
+          $horizontal_combined_y = $horizontal_combined_y + 9;
+          break;
+
+      }
       $lockup->setFont($regular, 6, $text_color);
       $sub_dimensions = $lockup->textDimensions($sub_text);
       foreach ($sub_explode as $line) {
@@ -117,6 +153,24 @@ class LockupController extends ControllerBase {
     $primary_text = $node->field_lockup_primary_unit->value;
     $primary_explode = explode(PHP_EOL, $primary_text);
     $primary_count = count($primary_explode);
+    $total_lines = $total_lines + $primary_count;
+    switch ($primary_count) {
+      case 1:
+        $stacked_sub_y = 150.33;
+        $horizontal_combined_y = $horizontal_combined_y + 0;
+        break;
+
+      case 2:
+        $stacked_sub_y = 160.28;
+        $horizontal_combined_y = $horizontal_combined_y + 5;
+        break;
+
+      case 3:
+        $stacked_sub_y = 170.23;
+        $horizontal_combined_y = $horizontal_combined_y + 10;
+        break;
+
+    }
     $lockup->setFont($bold, 8, $text_color);
     $lockup->setLineHeight(9.6);
     $lockup->setLetterSpacing(.01);
@@ -130,8 +184,19 @@ class LockupController extends ControllerBase {
     $primary_dimensions = $lockup->textDimensions($primary_explode[0]);
     $primary_width = $primary_dimensions[0];
     $primary_center = $primary_width / 2;
-    $horizontal_height = $primary_dimensions[1] + $sub_dimensions[1];
+    if (isset($sub_dimensions)) {
+      $horizontal_height = $primary_dimensions[1] + $sub_dimensions[1];
+      $total_height = $total_lines * $horizontal_height;
+    }
+    else {
+      $horizontal_height = $primary_dimensions[1];
+      $total_height = $total_lines * $horizontal_height;
+
+    }
+
     $horizontal_middle = $horizontal_height / 2;
+    $total_height = $total_height + 7.6;
+    $total_middle = $total_height / 2;
 
     switch ($type) {
       case 'stacked':
@@ -171,23 +236,9 @@ class LockupController extends ControllerBase {
           161.82 - 1 - ($primary_lines[2][1] / 2)
         );
 
-        switch ($primary_count) {
-          case 1:
-            $sub_y = 150.33;
-            break;
-
-          case 2:
-            $sub_y = 160.28;
-            break;
-
-          case 3:
-            $sub_y = 170.23;
-            break;
-
-        }
         $lockup->setFont($regular, 6, $text_color);
         $lockup->setLineHeight(7.5);
-        $lockup->setLetterSpacing(0);
+        $lockup->setLetterSpacing(0.02);
 
         $s1_center = $sublines[0][0] / 2;
         $lockup->addText(html_entity_decode(
@@ -195,7 +246,7 @@ class LockupController extends ControllerBase {
           ENT_QUOTES | ENT_XML1,
           'UTF-8'),
           $svg_center - $s1_center,
-          $sub_y - 2
+          $stacked_sub_y - 2
         );
 
         $s2_center = $sublines[1][0] / 2;
@@ -204,7 +255,7 @@ class LockupController extends ControllerBase {
           ENT_QUOTES | ENT_XML1,
           'UTF-8'),
           $svg_center - $s2_center,
-          $sub_y + 7.57 - 2
+          $stacked_sub_y + 7.57 - 2
         );
 
         $s3_center = $sublines[2][0] / 2;
@@ -213,7 +264,7 @@ class LockupController extends ControllerBase {
           ENT_QUOTES | ENT_XML1,
           'UTF-8'),
           $svg_center - $s3_center,
-          $sub_y + 15.43 - 2
+          $stacked_sub_y + 15.43 - 2
         );
         break;
 
@@ -222,11 +273,65 @@ class LockupController extends ControllerBase {
         // Border. Height based on primary and secondary combined height.
         $lockup->addRect([
           'x' => 206.77,
-          'y' => 144 - $horizontal_middle,
+          'y' => 144 - $total_middle + 11,
           'width' => 0.8,
-          'height' => $horizontal_height,
+          'height' => $total_height - 19,
           'style' => 'fill:' . $text_color,
         ]);
+
+        // Primary Line 1.
+        $lockup->addText(html_entity_decode(
+          $primary_explode[0],
+          ENT_QUOTES | ENT_XML1,
+          'UTF-8'),
+          255.126 - 42,
+          144 - $horizontal_middle - $horizontal_combined_y + 1
+        );
+        // Primary Line 2.
+        $lockup->addText(html_entity_decode(
+          $primary_explode[1],
+          ENT_QUOTES | ENT_XML1,
+          'UTF-8'),
+          255.126 - 42,
+          144 - $horizontal_middle - $horizontal_combined_y + 10.5
+        );
+        // Primary Line 3.
+        $lockup->addText(html_entity_decode(
+          $primary_explode[2],
+          ENT_QUOTES | ENT_XML1,
+          'UTF-8'),
+          255.126 - 42,
+          144 - $horizontal_middle - $horizontal_combined_y + 20.5
+        );
+
+        $lockup->setFont($regular, 6, $text_color);
+        $lockup->setLineHeight(7.5);
+        $lockup->setLetterSpacing(0.02);
+
+        $lockup->addText(html_entity_decode(
+          $sub_explode[0],
+          ENT_QUOTES | ENT_XML1,
+          'UTF-8'),
+          255.126 - 42,
+          144 - $horizontal_middle - $horizontal_combined_y + 22
+        );
+
+        $lockup->addText(html_entity_decode(
+          $sub_explode[1],
+          ENT_QUOTES | ENT_XML1,
+          'UTF-8'),
+          255.126 - 42,
+          144 - $horizontal_middle - $horizontal_combined_y + 29.57
+        );
+
+        $lockup->addText(html_entity_decode(
+          $sub_explode[2],
+          ENT_QUOTES | ENT_XML1,
+          'UTF-8'),
+          255.126 - 42,
+          144 - $horizontal_middle - $horizontal_combined_y + 37.14
+        );
+        break;
 
     }
 
