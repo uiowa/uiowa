@@ -4,7 +4,6 @@ namespace Sitenow\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\YamlMunge;
-use Acquia\Blt\Robo\Exceptions\BltException;
 
 /**
  * BLT override commands.
@@ -12,35 +11,26 @@ use Acquia\Blt\Robo\Exceptions\BltException;
 class ReplaceCommands extends BltTasks {
 
   /**
-   * Replace the drupal:update BLT command.
+   * Replace the artifact:update:drupal:all-sites BLT command.
    *
-   * Only run updb on bootstrapped sites.
+   * Run a site:install if Drupal is not installed.
    *
-   * @hook replace-command drupal:update
+   * @hook replace-command artifact:update:drupal:all-sites
    */
-  public function replaceDrupalUpdate() {
-    $result = $this->taskDrush()
-      ->stopOnFail()
-      ->drush('status')
-      ->option('fields', 'bootstrap')
-      ->option('format', 'json')
-      ->silent(TRUE)
-      ->run();
+  public function replaceDrupalUpdateAll() {
+    // Disable alias since we are targeting specific uri.
+    $this->config->set('drush.alias', '');
 
-    $status = json_decode($result->getMessage());
+    foreach ($this->getConfigValue('multisites') as $multisite) {
+      $this->switchSiteContext($multisite);
 
-    if (empty($status->bootstrap) || $status->bootstrap != 'Successful') {
-      $result = $this->taskDrush()
-        ->stopOnFail()
-        ->drush('sql:query')
-        ->arg('show tables')
-        ->silent(TRUE)
-        ->run();
-
-      $tables = $result->getMessage();
-
-      if (empty($tables)) {
-        $this->logger->warning('No database tables found. Installing sitenow....');
+      if ($this->getInspector()->isDrupalInstalled()) {
+        $this->say("Deploying updates to <comment>$multisite</comment>...");
+        $this->invokeCommand('drupal:update');
+        $this->say("Finished deploying updates to $multisite.");
+      }
+      else {
+        $this->logger->warning("Cannot bootstrap <comment>$multisite</comment>. Installing SiteNow....");
         $uri = $this->getConfig()->get('site');
 
         $uid = uniqid('admin_');
@@ -60,6 +50,7 @@ class ReplaceCommands extends BltTasks {
         // Post-install tasks.
         // @see: https://www.drupal.org/project/drupal/issues/2982052
         $this->taskDrush()
+          ->stopOnFail()
           ->drush('user:role:add')
           ->args([
             'administrator',
@@ -68,6 +59,7 @@ class ReplaceCommands extends BltTasks {
           ->run();
 
         $this->taskDrush()
+          ->stopOnFail()
           ->drush('config:set')
           ->args([
             'system.site',
@@ -76,19 +68,6 @@ class ReplaceCommands extends BltTasks {
           ])
           ->run();
       }
-    }
-    else {
-      $task = $this->taskDrush()
-        ->stopOnFail()
-        ->drush("updb");
-
-      $result = $task->run();
-
-      if (!$result->wasSuccessful()) {
-        throw new BltException("Failed to execute database updates!");
-      }
-
-      $this->invokeCommands(['drupal:config:import', 'drupal:toggle:modules']);
     }
   }
 
