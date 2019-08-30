@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "81627ec74d4e7229c5c099dc79d1799a",
+    "content-hash": "f0d9079dab78cec39c9265687c85531a",
     "packages": [
         {
             "name": "acquia/blt",
@@ -9937,6 +9937,54 @@
             ],
             "description": "A polyfill for getallheaders.",
             "time": "2019-03-08T08:55:37+00:00"
+        },
+        {
+            "name": "richardbporter/drush-users-commands",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/richardbporter/drush-users-commands.git",
+                "reference": "6da6dbde0fa56671cd4fca84a9c5541d2bcdcb7c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/richardbporter/drush-users-commands/zipball/6da6dbde0fa56671cd4fca84a9c5541d2bcdcb7c",
+                "reference": "6da6dbde0fa56671cd4fca84a9c5541d2bcdcb7c",
+                "shasum": ""
+            },
+            "require": {
+                "composer/installers": "^1.4",
+                "drush/drush": "^9.4",
+                "php": "^7"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~5",
+                "squizlabs/php_codesniffer": "~3"
+            },
+            "type": "drupal-drush",
+            "extra": {
+                "drush": {
+                    "services": {
+                        "drush.services.yml": "^9.4"
+                    }
+                },
+                "installer-name": "UsersCommands"
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Richard B. Porter",
+                    "homepage": "http://www.richardbporter.com"
+                }
+            ],
+            "description": "Drush commands to interact with multiple Drupal users.",
+            "keywords": [
+                "Drush",
+                "drupal",
+                "list-users",
+                "user-list"
+            ],
+            "time": "2018-09-08T14:16:37+00:00"
         },
         {
             "name": "robrichards/xmlseclibs",
