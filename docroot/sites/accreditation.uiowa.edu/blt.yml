@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: accreditation.uiowa.edu
+    protocol: https
+  machine_name: accreditation
+  human_name: accreditation.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: accreditation.prod
+drupal:
+  db:
+    database: accreditation_uiowa_edu
+    host: localhost
+    user: root
+    password: null
