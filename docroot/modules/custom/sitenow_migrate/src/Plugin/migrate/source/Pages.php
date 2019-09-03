@@ -9,11 +9,11 @@ use Drupal\migrate\Row;
  * Basic implementation of the source plugin.
  *
  * @MigrateSource(
- *  id = "basic_pages",
+ *  id = "pages",
  *  source_module = "sitenow_migrate"
  * )
  */
-class BasicPages extends SqlBase {
+class Pages extends SqlBase {
 
   /**
    * The public file directory path.
@@ -44,6 +44,7 @@ class BasicPages extends SqlBase {
       ->fields('n', [
         'nid',
         'vid',
+        'type',
         'language',
         'title',
         'uid',
@@ -55,7 +56,7 @@ class BasicPages extends SqlBase {
         'sticky',
         'tnid',
         'translate',
-      ])
+        ])
       ->condition('n.type', 'page');
     return $query;
   }

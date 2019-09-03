@@ -1,14 +1,14 @@
-id: d7_article
-label: Article node migration from Drupal 7
+id: d7_page
+label: Basic page migration from Drupal 7
 migration_group: sitenow_migrate
 source:
-  plugin: articles
+  plugin: pages
   constants:
     USER_ID: 0
     BODY_FORMAT: filtered_html
 destination:
   plugin: entity:node
-  type: article
+  type: page
 process:
 # Leave these out, since we're not migrating to a fresh install.
   # nid: nid
@@ -22,7 +22,7 @@ process:
   title: title
   type:
     plugin: default_value
-    default_value: article
+    default_value: page
 # Likely not importing users--set to 0 for anonymous.
   uid:
     -
@@ -34,9 +34,29 @@ process:
   changed: changed
   promote: promote
   sticky: sticky
+  
+  'field_page_content_block/target_id':
+    -
+      plugin: migration_lookup
+      migration: d7_paragraph
+      no_stub: true
+      source: entity_id
+    -
+      plugin: extract
+      index:
+        - 0
 
-  # Need to reference field_revision_field_article_body for this.
-  body: field_article_body_value
+  'field_page_content_block/target_revision_id':
+    -
+      plugin: migration_lookup
+      migration: d7_paragraph
+      no_stub: true
+      source: entity_id
+    -
+      plugin: extract
+      index:
+        - 1
+
   langcode:
     plugin: static_map
     bypass: true
@@ -45,4 +65,7 @@ process:
       und: en
   
   # Needs to be tested.
-  field_teaser: field_article_body_summary
+  'field_teaser/value': body_summary
+migration_dependencies:
+  required:
+    - d7_paragraph

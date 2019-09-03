@@ -40,23 +40,29 @@ class Articles extends SqlBase {
    * {@inheritdoc}
    */
   public function query() {
-    $query = $this->select('node', 'n')
+    $query = $this->select('field_revision_field_article_body', 'b');
+    $query->join('node', 'n', 'n.nid = b.entity_id');
+    $query = $query->fields('b', [
+      'entity_type',
+      'bundle',
+      'deleted',
+      'entity_id',
+      'revision_id',
+      'language',
+      'delta',
+      'field_article_body_value',
+      'field_article_body_summary',
+      'field_article_body_format',
+    ])
       ->fields('n', [
-        'nid',
-        'vid',
-        'language',
         'title',
-        'uid',
-        'status',
         'created',
         'changed',
-        'comment',
+        'status',
         'promote',
         'sticky',
-        'tnid',
-        'translate',
       ])
-      ->condition('n.type', 'article');
+      ->condition('b.bundle', 'article');
     return $query;
   }
 
@@ -65,19 +71,16 @@ class Articles extends SqlBase {
    */
   public function fields() {
     $fields = [
-      'nid' => $this->t('Node ID'),
-      'vid' => $this->t('Node revision ID'),
-      'language' => $this->t('Language'),
-      'title' => $this->t('Node Title'),
-      'uid' => $this->t('User ID of node author'),
-      'status' => $this->t('Published/unpublished'),
-      'created' => $this->t('Timestamp of creation'),
-      'changed' => $this->t('Timestamp of last change'),
-      'comment' => $this->t('Comments enabled/disabled'),
-      'promote' => $this->t('Promoted'),
-      'sticky' => $this->t('Stickied'),
-      'tnid' => $this->t('Translation ID'),
-      'translate' => $this->t('Page being translated?'),
+      'entity_type' => $this->t('Entity the body is attached to. Typically "node"'),
+      'bundle' => $this->t('Entity bundle'),
+      'deleted' => $this->t('0/1 if marked for deletion'),
+      'entity_id' => $this->t('Entity ID body is attached to'),
+      'revision_id' => $this->t('Revision ID for this content'),
+      'language' => $this->t('Language for this field'),
+      'delta' => $this->t('Field delta'),
+      'field_article_body_value' => $this->t('Body content'),
+      'field_article_body_summary' => $this->t('Body:summary content'),
+      'field_article_body_format' => $this->t('Body:format selection'),
     ];
     return $fields;
   }
@@ -87,7 +90,7 @@ class Articles extends SqlBase {
    */
   public function getIds() {
     return [
-      'nid' => [
+      'entity_id' => [
         'type' => 'integer',
         'alias' => 'n',
       ],

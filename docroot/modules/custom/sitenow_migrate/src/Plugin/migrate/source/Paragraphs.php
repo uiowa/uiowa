@@ -9,7 +9,7 @@ use Drupal\migrate\Row;
  * Basic implementation of the source plugin.
  *
  * @MigrateSource(
- *  id = "basic_pages",
+ *  id = "paragraphs",
  *  source_module = "sitenow_migrate"
  * )
  */
@@ -40,7 +40,7 @@ class Paragraphs extends SqlBase {
    * {@inheritdoc}
    */
   public function query() {
-    $query = $this->select('field_revision_body', 'b')
+    $query = $this->select('field_data_body', 'b')
       ->fields('b', [
         'entity_type',
         'bundle',
@@ -52,7 +52,8 @@ class Paragraphs extends SqlBase {
         'body_value',
         'body_summary',
         'body_format',
-      ]);
+      ])
+      ->condition('b.bundle', 'page');
     return $query;
   }
 
@@ -61,19 +62,16 @@ class Paragraphs extends SqlBase {
    */
   public function fields() {
     $fields = [
-      'nid' => $this->t('Node ID'),
-      'vid' => $this->t('Node revision ID'),
-      'language' => $this->t('Language'),
-      'title' => $this->t('Node Title'),
-      'uid' => $this->t('User ID of node author'),
-      'status' => $this->t('Published/unpublished'),
-      'created' => $this->t('Timestamp of creation'),
-      'changed' => $this->t('Timestamp of last change'),
-      'comment' => $this->t('Comments enabled/disabled'),
-      'promote' => $this->t('Promoted'),
-      'sticky' => $this->t('Stickied'),
-      'tnid' => $this->t('Translation ID'),
-      'translate' => $this->t('Page being translated?'),
+      'entity_type' => $this->t('Entity the body is attached to. Typically "node"'),
+      'bundle' => $this->t('Entity bundle'),
+      'deleted' => $this->t('0/1 if marked for deletion'),
+      'entity_id' => $this->t('Entity ID body is attached to'),
+      'revision_id' => $this->t('Revision ID for this content'),
+      'language' => $this->t('Language for this field'),
+      'delta' => $this->t('Field delta'),
+      'body_value' => $this->t('Body content'),
+      'body_summary' => $this->t('Body:summary content'),
+      'body_format' => $this->t('Body:format selection'),
     ];
     return $fields;
   }
@@ -83,7 +81,7 @@ class Paragraphs extends SqlBase {
    */
   public function getIds() {
     return [
-      'nid' => [
+      'entity_id' => [
         'type' => 'integer',
         'alias' => 'n',
       ],
