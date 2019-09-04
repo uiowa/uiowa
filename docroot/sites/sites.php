@@ -207,3 +207,8 @@ $sites['dentistry.prod.drupal.uiowa.edu'] = 'dentistry.uiowa.edu';
 $sites['labmartin.dev.drupal.uiowa.edu'] = 'martin.lab.uiowa.edu';
 $sites['labmartin.stage.drupal.uiowa.edu'] = 'martin.lab.uiowa.edu';
 $sites['labmartin.prod.drupal.uiowa.edu'] = 'martin.lab.uiowa.edu';
+
+// Directory aliases for multilingualsyntax.lab.uiowa.edu.
+$sites['labmultilingualsyntax.dev.drupal.uiowa.edu'] = 'multilingualsyntax.lab.uiowa.edu';
+$sites['labmultilingualsyntax.stage.drupal.uiowa.edu'] = 'multilingualsyntax.lab.uiowa.edu';
+$sites['labmultilingualsyntax.prod.drupal.uiowa.edu'] = 'multilingualsyntax.lab.uiowa.edu';
