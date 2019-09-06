@@ -9,7 +9,7 @@ nav_order: 18
 
 ## 'WWW' Addresses
 
-Starting with the Drupal 8 service, 'WWW' sites will not be supported and all 'WWW' requests will redirect to the same URL without 'WWW'.
+Starting with the Drupal 8 service, 'WWW' sites will not be supported and all 'WWW' requests will redirect to the non-WWW equivalent.
 
 
 ## Removal of inactive sites
@@ -23,11 +23,10 @@ Once a website is removed due to inactivity, a copy of the site content cannot b
 
 ## Platform Updates
 
-Occassionally there will be platform updates where new features, theme changes, security updates or underlying tech updates will be updated. During this time it is possible for website downtime or loss of functionality. There may also be a customer review or test process to insure the changes are working as intended.
-
+Occassionally there will be platform updates where new features, theme changes, security updates or general functionality will be updated. During this time it is possible for some website downtime or loss of functionality. For certain updates, a customer review or test process will be scheduled ahead of the rollout to ensure any changes to the platform will work as intended.
 
 ## Videos
 
-SiteNow sites don't allow video uploads directly to the site. Videos are large files that the service is not equipped to handle. Instead, there are oEmbed options like YouTube or Vimeo.
+SiteNow sites don't allow video uploads directly to the site. The SiteNow service is no equipped to handle the storage and playback of large video files. Instead, we encourage the use of third-party services such as YouTube and Vimeo which can be embedded into WYSIWYG text areas.
 
-To maintain accessibility, transcripts or captions should be included with those embeded videos.
+To maintain the accessibility of videos, captions should be added and/or transcripts should be made available near the video.
