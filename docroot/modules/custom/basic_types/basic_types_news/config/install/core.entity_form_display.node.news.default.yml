@@ -10,12 +10,12 @@ dependencies:
     - field.field.node.news.news_link
     - field.field.node.news.news_location
     - field.field.node.news.news_tags
-    - image.style.thumbnail
     - node.type.news
   module:
     - datetime
     - file
     - link
+    - media_library
     - path
     - text
 id: node.news.default
@@ -62,11 +62,9 @@ content:
   news_image:
     weight: 6
     settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+      media_types: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: media_library_widget
     region: content
   news_link:
     weight: 5

@@ -13,13 +13,13 @@ dependencies:
     - field.field.node.seminar.seminar_sponsors
     - field.field.node.seminar.seminar_tags
     - field.field.node.seminar.seminar_types
-    - image.style.thumbnail
     - node.type.seminar
   module:
     - date_recur_modular
     - datetime
     - file
     - link
+    - media_library
     - paragraphs
     - path
     - text
@@ -77,11 +77,9 @@ content:
   seminar_image:
     weight: 6
     settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+      media_types: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: media_library_widget
     region: content
   seminar_link:
     weight: 5

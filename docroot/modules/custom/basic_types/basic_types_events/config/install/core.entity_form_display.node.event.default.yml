@@ -9,13 +9,12 @@ dependencies:
     - field.field.node.event.event_link
     - field.field.node.event.event_location
     - field.field.node.event.event_tags
-    - image.style.thumbnail
     - node.type.event
   module:
     - date_recur_modular
-    - datetime
     - file
     - link
+    - media_library
     - path
     - text
 id: node.event.default
@@ -54,11 +53,9 @@ content:
   event_image:
     weight: 5
     settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+      media_types: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: media_library_widget
     region: content
   event_link:
     weight: 4

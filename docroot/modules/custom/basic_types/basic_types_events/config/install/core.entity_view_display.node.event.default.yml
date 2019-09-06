@@ -2,8 +2,8 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.date_format.12hr_time
     - core.date_format.12hr_long_date
+    - core.date_format.12hr_time
     - field.field.node.event.body
     - field.field.node.event.event_attachments
     - field.field.node.event.event_date
@@ -11,12 +11,13 @@ dependencies:
     - field.field.node.event.event_link
     - field.field.node.event.event_location
     - field.field.node.event.event_tags
+    - image.style.event_image
     - node.type.event
   module:
     - date_recur
-    - datetime
     - file
     - link
+    - media
     - text
     - user
 id: node.event.default
