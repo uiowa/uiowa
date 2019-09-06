@@ -217,3 +217,8 @@ $sites['labmultilingualsyntax.prod.drupal.uiowa.edu'] = 'multilingualsyntax.lab.
 $sites['seru.dev.drupal.uiowa.edu'] = 'seru.uiowa.edu';
 $sites['seru.stage.drupal.uiowa.edu'] = 'seru.uiowa.edu';
 $sites['seru.prod.drupal.uiowa.edu'] = 'seru.uiowa.edu';
+
+// Directory aliases for mootcourt.org.uiowa.edu.
+$sites['orgmootcourt.dev.drupal.uiowa.edu'] = 'mootcourt.org.uiowa.edu';
+$sites['orgmootcourt.stage.drupal.uiowa.edu'] = 'mootcourt.org.uiowa.edu';
+$sites['orgmootcourt.prod.drupal.uiowa.edu'] = 'mootcourt.org.uiowa.edu';
