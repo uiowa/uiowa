@@ -38,10 +38,8 @@ By default, basic pages load with an initial section and text area content block
 - Accordion
 - Blockquote
 - Events
-
-### Articles
-
-You will need to create a lot of articles to user the pager, filter by reference.
+- Articles
+- Featured Content
 
 ## Settings
 
@@ -69,7 +67,7 @@ See the figure below to see how the content blocks in each section (row) can be 
 
 ### Styles
 
-Depending on the content block, a select box might be available that allows additional styles to be applied to the content block. Though multiple classes can be selected, they might conflict with each other.
+Depending on the content block, a select box might be available that allows additional styles to be applied to the content block. Though multiple classes can be selected, they might conflict with each other or only one might apply.
 
 ### Unique ID
 
