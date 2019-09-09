@@ -526,25 +526,27 @@ function sitenow_preprocess_node(&$variables) {
             if (!$image_field->isEmpty()) {
               $image = $image_field->first()->getValue();
               $media = Media::load($image['target_id']);
-              $media_field = $media->get('field_media_image')
-                ->first()
-                ->getValue();
-              $file = File::load($media_field['target_id']);
-              $uri = $file->getFileUri();
-              $alt = ($media_field['alt'] ? $media_field['alt'] : '');
-              $image = [
-                '#theme' => 'image_style',
-                '#width' => NULL,
-                '#height' => NULL,
-                '#style_name' => $style,
-                '#uri' => $uri,
-                '#alt' => $alt,
-                '#weight' => -1,
-                '#attributes' => [
-                  'class' => 'page-image',
-                ],
-              ];
-              $variables["content"]['page_image'] = $image;
+              if ($media) {
+                $media_field = $media->get('field_media_image')
+                  ->first()
+                  ->getValue();
+                $file = File::load($media_field['target_id']);
+                $uri = $file->getFileUri();
+                $alt = ($media_field['alt'] ? $media_field['alt'] : '');
+                $image = [
+                  '#theme' => 'image_style',
+                  '#width' => NULL,
+                  '#height' => NULL,
+                  '#style_name' => $style,
+                  '#uri' => $uri,
+                  '#alt' => $alt,
+                  '#weight' => -1,
+                  '#attributes' => [
+                    'class' => 'page-image',
+                  ],
+                ];
+                $variables["content"]['page_image'] = $image;
+              }
             }
             break;
         }
