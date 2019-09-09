@@ -23,3 +23,5 @@ nav_order: 17
   
 - There is a known issue that when you add an item to a details container or flexbox container in webform that the 'add element' button on the container will dissapear.
   - Workarounds for this are clicking edit on the container and then closing the edit panel, or by simply creating the element on the top level and dragging it underneath the desired container.
+  
+- For the the People Manual Sort option, Drag handles are the only way to order people. "Show row weights" does not show the weight fields with integer fallback sorting. Additionally, new people are added to the top of the list instead of the bottom.
