@@ -222,3 +222,8 @@ $sites['seru.prod.drupal.uiowa.edu'] = 'seru.uiowa.edu';
 $sites['orgmootcourt.dev.drupal.uiowa.edu'] = 'mootcourt.org.uiowa.edu';
 $sites['orgmootcourt.stage.drupal.uiowa.edu'] = 'mootcourt.org.uiowa.edu';
 $sites['orgmootcourt.prod.drupal.uiowa.edu'] = 'mootcourt.org.uiowa.edu';
+
+// Directory aliases for alphachisigma-alphatheta.org.uiowa.edu.
+$sites['orgalphachisigma-alphatheta.dev.drupal.uiowa.edu'] = 'alphachisigma-alphatheta.org.uiowa.edu';
+$sites['orgalphachisigma-alphatheta.stage.drupal.uiowa.edu'] = 'alphachisigma-alphatheta.org.uiowa.edu';
+$sites['orgalphachisigma-alphatheta.prod.drupal.uiowa.edu'] = 'alphachisigma-alphatheta.org.uiowa.edu';
