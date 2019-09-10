@@ -450,6 +450,7 @@ class MultisiteCommands extends BltTasks {
    * @input string $domain
    *
    * @aliases uils
+   *
    * @throws \Acquia\Blt\Robo\Exceptions\BltException
    */
   public function createLocalSettingsFile($domain) {
@@ -460,13 +461,12 @@ class MultisiteCommands extends BltTasks {
 
     // Get the context for the site.
     $this->switchSiteContext($domain);
-    // Check if domain directory exists
-    // Check if local settings file exists
-    // If it exists, ask if it should be overwritten
+
+    // If settings file exists, ask if it should be overwritten.
     if (file_exists($new) && !$this->confirm('The local.settings.php file already exists. Are you sure you want to overwrite it?')) {
       $copy = FALSE;
     }
-    // If yes,
+
     if ($copy) {
       $this->taskFilesystemStack()->copy($default, $new, TRUE)->run();
 
