@@ -227,3 +227,13 @@ $sites['orgmootcourt.prod.drupal.uiowa.edu'] = 'mootcourt.org.uiowa.edu';
 $sites['orgalphachisigma-alphatheta.dev.drupal.uiowa.edu'] = 'alphachisigma-alphatheta.org.uiowa.edu';
 $sites['orgalphachisigma-alphatheta.stage.drupal.uiowa.edu'] = 'alphachisigma-alphatheta.org.uiowa.edu';
 $sites['orgalphachisigma-alphatheta.prod.drupal.uiowa.edu'] = 'alphachisigma-alphatheta.org.uiowa.edu';
+
+// Directory aliases for qulat.sites.uiowa.edu.
+$sites['sitesqulat.dev.drupal.uiowa.edu'] = 'qulat.sites.uiowa.edu';
+$sites['sitesqulat.stage.drupal.uiowa.edu'] = 'qulat.sites.uiowa.edu';
+$sites['sitesqulat.prod.drupal.uiowa.edu'] = 'qulat.sites.uiowa.edu';
+
+// Directory aliases for iti.uiowa.edu.
+$sites['iti.dev.drupal.uiowa.edu'] = 'iti.uiowa.edu';
+$sites['iti.stage.drupal.uiowa.edu'] = 'iti.uiowa.edu';
+$sites['iti.prod.drupal.uiowa.edu'] = 'iti.uiowa.edu';
