@@ -232,3 +232,8 @@ $sites['orgalphachisigma-alphatheta.prod.drupal.uiowa.edu'] = 'alphachisigma-alp
 $sites['sitesqulat.dev.drupal.uiowa.edu'] = 'qulat.sites.uiowa.edu';
 $sites['sitesqulat.stage.drupal.uiowa.edu'] = 'qulat.sites.uiowa.edu';
 $sites['sitesqulat.prod.drupal.uiowa.edu'] = 'qulat.sites.uiowa.edu';
+
+// Directory aliases for iti.uiowa.edu.
+$sites['iti.dev.drupal.uiowa.edu'] = 'iti.uiowa.edu';
+$sites['iti.stage.drupal.uiowa.edu'] = 'iti.uiowa.edu';
+$sites['iti.prod.drupal.uiowa.edu'] = 'iti.uiowa.edu';
