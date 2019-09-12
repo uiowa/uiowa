@@ -1,0 +1,23 @@
+uuid: 1ef1c5d5-e490-4fb8-8506-e7b841997129
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_display_image
+    - node.type.person
+id: node.person.field_display_image
+field_name: field_display_image
+entity_type: node
+bundle: person
+label: 'Display Image'
+description: 'By default, the image is displayed for listings and SEO purposes. If checked, image will display on this content''s page.'
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

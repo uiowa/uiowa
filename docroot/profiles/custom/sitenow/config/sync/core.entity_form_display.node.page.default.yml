@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.page.body
+    - field.field.node.page.field_display_image
     - field.field.node.page.field_image
     - field.field.node.page.field_meta_tags
     - field.field.node.page.field_page_content_block
@@ -29,6 +30,13 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_display_image:
+    weight: 26
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
   field_image:
     type: media_library_widget
     weight: 3

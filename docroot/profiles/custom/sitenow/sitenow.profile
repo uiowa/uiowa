@@ -521,7 +521,8 @@ function sitenow_preprocess_node(&$variables) {
   if (!$admin_context->isAdminRoute()) {
 
     $node = $variables["node"];
-    switch ($node->getType()) {
+    $type = $node->getType();
+    switch ($type) {
       case 'page':
       case 'article':
       case 'person':
@@ -539,6 +540,9 @@ function sitenow_preprocess_node(&$variables) {
             }
             break;
 
+        }
+        if ($type == 'person') {
+          $style = 'sitenow_square_m';
         }
         if ($display_image) {
           $image_field = $node->get('field_image');

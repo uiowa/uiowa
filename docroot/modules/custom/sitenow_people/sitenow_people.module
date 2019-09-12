@@ -148,54 +148,6 @@ function sitenow_people_preprocess_page(&$variables) {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function sitenow_people_preprocess_node(&$variables) {
-  $admin_context = \Drupal::service('router.admin_context');
-  if (!$admin_context->isAdminRoute()) {
-
-    $node = $variables["node"];
-    switch ($node->getType()) {
-      case 'person':
-        switch ($variables["view_mode"]) {
-          case 'teaser':
-
-            break;
-        }
-        // Render person image.
-        $image_field = $node->get('field_image');
-        if (!$image_field->isEmpty()) {
-          $image = $image_field->first()->getValue();
-          $media = Media::load($image['target_id']);
-          if ($media) {
-            $media_field = $media->get('field_media_image')
-              ->first()
-              ->getValue();
-            $file = File::load($media_field['target_id']);
-            $uri = $file->getFileUri();
-            $alt = ($media_field['alt'] ? $media_field['alt'] : '');
-            $image = [
-              '#theme' => 'image_style',
-              '#width' => NULL,
-              '#height' => NULL,
-              '#style_name' => 'sitenow_square_m',
-              '#uri' => $uri,
-              '#alt' => $alt,
-              '#weight' => -1,
-              '#attributes' => [
-                'class' => 'node-image',
-              ],
-            ];
-            $variables["content"]['node_image'] = $image;
-          }
-        }
-        break;
-
-    }
-  }
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
 function sitenow_people_preprocess_views_view(&$variables) {
   switch ($variables["id"]) {
     case 'people':

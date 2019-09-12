@@ -6,6 +6,7 @@ dependencies:
     - core.entity_form_mode.node.minimal
     - field.field.node.article.body
     - field.field.node.article.field_article_author
+    - field.field.node.article.field_display_image
     - field.field.node.article.field_image
     - field.field.node.article.field_image_caption
     - field.field.node.article.field_meta_tags
@@ -59,6 +60,13 @@ content:
     third_party_settings:
       entity_browser_entity_form:
         entity_browser_id: _none
+  field_display_image:
+    weight: 26
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
   field_image:
     type: media_library_widget
     weight: 3
