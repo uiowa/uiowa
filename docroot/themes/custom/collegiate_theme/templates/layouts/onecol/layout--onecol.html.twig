@@ -22,26 +22,22 @@
   ]
 %}
 
-{{ attach_library('collegiate_theme/admin') }}
-
 {% if content.content %}
 
     {% if region_attributes.content.storage['data-region'] %}
-    <h3 class="region-title">Full Width Column</h3>
-      {% endif %}
-
-
-  <section{{ attributes.addClass(classes) }}>
-
-
-  {% if region_attributes.content.storage['data-region'] %}
-  <div {{ region_attributes.content.addClass('flex__wrapper') }}>
+        {{ attach_library('collegiate_theme/admin') }}
+        <h3 class="region-title">Full Width Column</h3>
     {% endif %}
-      {{ content.content }}
+
+    <section{{ attributes.addClass(classes) }}>
+
         {% if region_attributes.content.storage['data-region'] %}
-</div>
- {% endif %}
+            <div {{ region_attributes.content.addClass('flex__wrapper') }}>
+            {% endif %}
+            {{ content.content }}
+            {% if region_attributes.content.storage['data-region'] %}
+            </div>
+        {% endif %}
 
-  </section>
+    </section>
 {% endif %}
-
