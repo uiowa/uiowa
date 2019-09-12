@@ -1,41 +1,43 @@
 {
     "_links": {
         "self": {
-            "href": "http:\/\/localhost\/about?_format=hal_json"
+            "href": "http:\/\/localhost\/media\/2\/edit?_format=hal_json"
         },
         "type": {
-            "href": "http:\/\/drupal.org\/rest\/type\/node\/page"
+            "href": "http:\/\/drupal.org\/rest\/type\/media\/image"
         },
-        "http:\/\/drupal.org\/rest\/relation\/node\/page\/revision_uid": [
-            {
-                "href": "http:\/\/localhost\/user\/1?_format=hal_json"
-            }
-        ],
-        "http:\/\/drupal.org\/rest\/relation\/node\/page\/uid": [
+        "http:\/\/drupal.org\/rest\/relation\/media\/image\/uid": [
             {
                 "href": "http:\/\/localhost\/user\/1?_format=hal_json",
                 "lang": "en"
             }
         ],
-        "http:\/\/drupal.org\/rest\/relation\/node\/page\/field_page_content_block": [
+        "http:\/\/drupal.org\/rest\/relation\/media\/image\/thumbnail": [
             {
-                "href": ""
+                "href": "",
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/media\/image\/field_media_image": [
+            {
+                "href": "",
+                "lang": "en"
             }
         ]
     },
-    "nid": [
+    "mid": [
         {
             "value": 2
         }
     ],
     "uuid": [
         {
-            "value": "922b3b26-306a-457c-ba18-2c00966f81cf"
+            "value": "8dc6542c-41fd-4970-a20c-1986920e95b5"
         }
     ],
     "vid": [
         {
-            "value": 22
+            "value": 2
         }
     ],
     "langcode": [
@@ -44,36 +46,25 @@
             "lang": "en"
         }
     ],
-    "type": [
+    "bundle": [
         {
-            "target_id": "page"
+            "target_id": "image"
         }
     ],
-    "revision_timestamp": [
+    "revision_created": [
         {
-            "value": "2019-09-11T18:34:10+00:00",
+            "value": "2019-09-11T18:25:32+00:00",
             "format": "Y-m-d\\TH:i:sP"
         }
     ],
+    "status": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
     "_embedded": {
-        "http:\/\/drupal.org\/rest\/relation\/node\/page\/revision_uid": [
-            {
-                "_links": {
-                    "self": {
-                        "href": "http:\/\/localhost\/user\/1?_format=hal_json"
-                    },
-                    "type": {
-                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
-                    }
-                },
-                "uuid": [
-                    {
-                        "value": "1ca81c0d-23b8-4e15-a37d-bcf03c094126"
-                    }
-                ]
-            }
-        ],
-        "http:\/\/drupal.org\/rest\/relation\/node\/page\/uid": [
+        "http:\/\/drupal.org\/rest\/relation\/media\/image\/uid": [
             {
                 "_links": {
                     "self": {
@@ -91,60 +82,69 @@
                 "lang": "en"
             }
         ],
-        "http:\/\/drupal.org\/rest\/relation\/node\/page\/field_page_content_block": [
+        "http:\/\/drupal.org\/rest\/relation\/media\/image\/thumbnail": [
             {
                 "_links": {
                     "self": {
                         "href": ""
                     },
                     "type": {
-                        "href": "http:\/\/drupal.org\/rest\/type\/paragraph\/section"
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/file"
                     }
                 },
                 "uuid": [
                     {
-                        "value": "4c4ad1ab-7352-4be1-b2b9-c4794c6d6f51"
+                        "value": "33dafac8-8410-4b97-bb9c-41e10d24bae4"
                     }
                 ],
-                "target_revision_id": "210"
+                "lang": "en",
+                "alt": "Herky the Hawk",
+                "title": null,
+                "width": "480",
+                "height": "480"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/media\/image\/field_media_image": [
+            {
+                "_links": {
+                    "self": {
+                        "href": ""
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/file"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "33dafac8-8410-4b97-bb9c-41e10d24bae4"
+                    }
+                ],
+                "lang": "en",
+                "alt": "Herky the Hawk",
+                "title": "",
+                "width": "480",
+                "height": "480"
             }
         ]
     },
-    "status": [
+    "name": [
         {
-            "value": true,
-            "lang": "en"
-        }
-    ],
-    "title": [
-        {
-            "value": "About",
+            "value": "herky.jpg",
             "lang": "en"
         }
     ],
     "created": [
         {
-            "value": "2019-01-14T20:06:56+00:00",
+            "value": "2019-09-11T18:25:27+00:00",
             "lang": "en",
             "format": "Y-m-d\\TH:i:sP"
         }
     ],
     "changed": [
         {
-            "value": "2019-09-11T18:34:10+00:00",
+            "value": "2019-09-11T18:25:27+00:00",
             "lang": "en",
             "format": "Y-m-d\\TH:i:sP"
-        }
-    ],
-    "promote": [
-        {
-            "value": false
-        }
-    ],
-    "sticky": [
-        {
-            "value": false,
-            "lang": "en"
         }
     ],
     "default_langcode": [
@@ -156,20 +156,6 @@
     "revision_translation_affected": [
         {
             "value": true,
-            "lang": "en"
-        }
-    ],
-    "moderation_state": [
-        {
-            "value": "published",
-            "lang": "en"
-        }
-    ],
-    "path": [
-        {
-            "alias": "\/about",
-            "pid": 41,
-            "langcode": "en",
             "lang": "en"
         }
     ]
