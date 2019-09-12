@@ -118,6 +118,7 @@ function sitenow_articles_preprocess_node(&$variables) {
     $node = $variables["node"];
     switch ($node->getType()) {
       case 'article':
+        $display_image = TRUE;
         switch ($variables['view_mode']) {
           case 'teaser':
             $style = 'sitenow_card';
@@ -126,7 +127,9 @@ function sitenow_articles_preprocess_node(&$variables) {
           case 'full':
           case 'default':
             $style = 'sitenow_article';
-
+            if ($node->field_display_image->value == '0') {
+              $display_image = FALSE;
+            }
             $variables['content']['article_author'] = $node->field_article_author->view([
               'type' => 'entity_reference_label',
               'label' => 'inline',
@@ -135,30 +138,32 @@ function sitenow_articles_preprocess_node(&$variables) {
             break;
 
         }
-        $image_field = $node->get('field_image');
-        if (!$image_field->isEmpty()) {
-          $image = $image_field->first()->getValue();
-          $media = Media::load($image['target_id']);
-          if ($media) {
-            $media_field = $media->get('field_media_image')
-              ->first()
-              ->getValue();
-            $file = File::load($media_field['target_id']);
-            $uri = $file->getFileUri();
-            $alt = ($media_field['alt'] ? $media_field['alt'] : '');
-            $image = [
-              '#theme' => 'image_style',
-              '#width' => NULL,
-              '#height' => NULL,
-              '#style_name' => $style,
-              '#uri' => $uri,
-              '#alt' => $alt,
-              '#weight' => -1,
-              '#attributes' => [
-                'class' => 'article-image',
-              ],
-            ];
-            $variables["content"]['article_image'] = $image;
+        if ($display_image) {
+          $image_field = $node->get('field_image');
+          if (!$image_field->isEmpty()) {
+            $image = $image_field->first()->getValue();
+            $media = Media::load($image['target_id']);
+            if ($media) {
+              $media_field = $media->get('field_media_image')
+                ->first()
+                ->getValue();
+              $file = File::load($media_field['target_id']);
+              $uri = $file->getFileUri();
+              $alt = ($media_field['alt'] ? $media_field['alt'] : '');
+              $image = [
+                '#theme' => 'image_style',
+                '#width' => NULL,
+                '#height' => NULL,
+                '#style_name' => $style,
+                '#uri' => $uri,
+                '#alt' => $alt,
+                '#weight' => -1,
+                '#attributes' => [
+                  'class' => 'node-image',
+                ],
+              ];
+              $variables["content"]['node_image'] = $image;
+            }
           }
         }
         break;

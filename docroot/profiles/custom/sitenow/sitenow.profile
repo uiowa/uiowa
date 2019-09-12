@@ -312,6 +312,10 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
           // Set field_image_caption to node_image group.
           $form['field_image_caption']['#group'] = 'node_image';
         }
+        if (isset($form['field_display_image'])) {
+          // Set field_display_image to node_image group.
+          $form['field_display_image']['#group'] = 'node_image';
+        }
       }
       if (isset($form['field_reference'])) {
         // Create node_relations group in the advanced container.
@@ -519,36 +523,50 @@ function sitenow_preprocess_node(&$variables) {
     $node = $variables["node"];
     switch ($node->getType()) {
       case 'page':
+      case 'article':
+      case 'person':
+        $display_image = TRUE;
         switch ($variables['view_mode']) {
           case 'teaser':
             $style = 'sitenow_card';
-            $image_field = $node->get('field_image');
-            if (!$image_field->isEmpty()) {
-              $image = $image_field->first()->getValue();
-              $media = Media::load($image['target_id']);
-              if ($media) {
-                $media_field = $media->get('field_media_image')
-                  ->first()
-                  ->getValue();
-                $file = File::load($media_field['target_id']);
-                $uri = $file->getFileUri();
-                $alt = ($media_field['alt'] ? $media_field['alt'] : '');
-                $image = [
-                  '#theme' => 'image_style',
-                  '#width' => NULL,
-                  '#height' => NULL,
-                  '#style_name' => $style,
-                  '#uri' => $uri,
-                  '#alt' => $alt,
-                  '#weight' => -1,
-                  '#attributes' => [
-                    'class' => 'page-image',
-                  ],
-                ];
-                $variables["content"]['page_image'] = $image;
-              }
+            break;
+
+          case 'full':
+          case 'default':
+            $style = 'sitenow_article';
+            if ($node->field_display_image->value == '0') {
+              $display_image = FALSE;
             }
             break;
+
+        }
+        if ($display_image) {
+          $image_field = $node->get('field_image');
+          if (!$image_field->isEmpty()) {
+            $image = $image_field->first()->getValue();
+            $media = Media::load($image['target_id']);
+            if ($media) {
+              $media_field = $media->get('field_media_image')
+                ->first()
+                ->getValue();
+              $file = File::load($media_field['target_id']);
+              $uri = $file->getFileUri();
+              $alt = ($media_field['alt'] ? $media_field['alt'] : '');
+              $image = [
+                '#theme' => 'image_style',
+                '#width' => NULL,
+                '#height' => NULL,
+                '#style_name' => $style,
+                '#uri' => $uri,
+                '#alt' => $alt,
+                '#weight' => -1,
+                '#attributes' => [
+                  'class' => 'node-image',
+                ],
+              ];
+              $variables["content"]['node_image'] = $image;
+            }
+          }
         }
         break;
     }
