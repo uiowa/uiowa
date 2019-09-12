@@ -6,9 +6,6 @@
  */
 
 use Drupal\Component\Utility\Html;
-use Drupal\block\Entity\Block;
-use Drupal\Core\Layout\LayoutDefinition;
-use \Drupal\block_content\BlockContentInterface;
 
 /**
  * Implements hook_preprocess_HOOK() for html.html.twig.
@@ -52,28 +49,6 @@ function collegiate_theme_preprocess_node(&$variables) {
 /**
  * Implements hook_preprocess_HOOK() for block.html.twig.
  */
-
-
 function collegiate_theme_preprocess_block(&$variables) {
   $variables['collegiate_theme_container_settings'] = theme_get_setting('collegiate_theme_container_settings');
-  if (isset($variables["elements"]["#id"])) {
-    $block_id = $variables["elements"]["#id"];
-    $block = \Drupal\block\Entity\Block::load($block_id);
-
-    if ($block) {
-      $variables["content"]["#attributes"]["region"] = $block->getRegion();
-    }
-  }
 }
-
-
-function collegiate_theme_theme() {
-  return [
-    'advanced_layout_1' => [
-      'template' => 'templates/layouts/two_column/two-column',
-      // layout_plugin expects the theme hook to be declared with this:
-      'render element' => 'content',
-    ],
-  ];
-}
-
