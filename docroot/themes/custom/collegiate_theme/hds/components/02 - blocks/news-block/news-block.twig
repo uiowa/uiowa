@@ -1,19 +1,24 @@
-<div class="card__wrapper">
+{% if block_type == 'advanced' %}
 
-{% for item in news.items|slice(0, 2) %}
-<div class="card">
-    <img class="card__img" src="{{ item.card_image }}" alt="Card image cap">
-    <div class="card__body">
-        <h2 class="card__title">
-            <a href="{{ item.card_link_url }}">{{ item.card_title }}</a>
-        </h2>
-        <p class="card__text">{{ item.card_text }}</p>
-    </div>
-<a class="bttn bttn--primary bttn--full" href="{{ item.card_link_url }}">{{ item.card_link_title }}</a>
-</div>
-{% endfor %}
+  <div class="news-card__wrapper">
 
-</div>
+    {% set news_card_position = 0 %}
+
+    {% for item in news.items %}
+      {% include "@news-block--advanced" with {
+        "news_card_image": item.card_image,
+        "news_card_tag": item.card_tag,
+        "news_card_title": item.card_title,
+        "news_card_text": item.card_text,
+        "news_card_date": item.card_date,
+        "news_card_link_url": item.card_link_url,
+        "news_card_link_title": item.card_link_title
+      } %}
+
+      {% set news_card_position = news_card_position + 1 %}
+    {% endfor %}
+
+  </div>
 
 
-
+{% endif %}

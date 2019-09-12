@@ -1,0 +1,49 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a two-column 66-33 layout.
+ *
+ * Available variables:
+ * - content: The content for this layout.
+ * - attributes: HTML attributes for the layout <div>.
+ *
+ * @ingroup themeable
+ * @see https://www.drupal.org/docs/8/api/layout-api/how-to-register-layouts
+ * @see https://v4-alpha.getbootstrap.com/layout/grid/
+ */
+#}
+{% if content.first %}
+
+  <section{{ attributes.addClass(classes) }}>
+
+    <div class="layout__region layout__region--first flex__wrapper feature__container">
+    {% if region_attributes.first.storage['data-region'] %}
+      <h3 class="region-title">Left Column</h3>
+        {% endif %}
+
+      {% if region_attributes.first.storage['data-region'] %}
+  <div {{ region_attributes.first.addClass('flex__wrapper') }}>
+    {% endif %}
+     {{ content.first }}
+          {% if region_attributes.first.storage['data-region'] %}
+</div>
+ {% endif %}
+
+    </div>
+
+    <div class="layout__region layout__region--second flex__wrapper feature__container">
+
+    {% if region_attributes.second.storage['data-region'] %}
+      <h3 class="region-title">Right Column</h3>
+        {% endif %}
+    {% if region_attributes.second.storage['data-region'] %}
+  <div {{ region_attributes.second.addClass('flex__wrapper') }}>
+    {% endif %}
+  {{ content.second }}
+        {% if region_attributes.second.storage['data-region'] %}
+</div>
+ {% endif %}
+    </div>
+
+  </section>
+{% endif %}

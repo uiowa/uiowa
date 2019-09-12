@@ -3,85 +3,66 @@
   <button class="search-button" tabindex="0" role="button" aria-expanded="false">
     <span class="element-invisible">Open</span>
   </button>
-  <div class="search-overlay">
+  <div class="search-overlay" aria-labelledby="search-overlay_label" aria-modal="true">
     <div class="centered">
+      <h2 id="search-overlay_label" class="element-invisible">Search Options</h2>
 
-
-<ul class="tabs"  id="search-tabs" data-tabs="data-tabs">
-<li class="tab">
+      <ul class="tabs" id="search-tabs" data-tabs="data-tabs">
+        <li class="tab">
           <a data-tabby-default="data-tabby-default" href="#site">This Site</a>
         </li>
-<li class="tab">
+        <li class="tab">
           <a href="#uiowa">All of uiowa.edu</a>
         </li>
       </ul>
 
       <div id="site">
-        <h2 class="element-invisible">This Site</h2>
-        <form class="s" aria-label="site search" role="search"
+        <h3 class="element-invisible">Search this Site</h3>
+        <form
+          class="s"
+          aria-label="site search"
+          role="search"
           data-drupal-selector="uiowa-bar-search-form"
           action="http://iowasuperfund.uiowa.lndo.site:8000/google-search"
-          method="post" id="search-form" accept-charset="UTF-8"
+          method="post"
+          id="search-form"
+          accept-charset="UTF-8"
           data-drupal-form-fields="edit-search-terms,edit-submit-search">
-          <div
-            class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-search-terms form-item-search-terms">
+          <div class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-search-terms form-item-search-terms">
             <label class="sr-only" for="edit-search-terms">Search</label>
-            <input placeholder="{{ title }}"
-              class="form-control form-control-sm mt-0 form-text"
-              data-drupal-selector="edit-search-terms" type="text"
-              id="search-text" name="search-terms" value="" size="15"
-              maxlength="256">
+            <input placeholder="{{ title }}" class="form-control form-control-sm mt-0 form-text" data-drupal-selector="edit-search-terms" type="text" id="search-text" name="search-terms" value="" size="15" maxlength="256">
           </div>
-          <input
-            class="mx-0 form-control-sm btn-sm btn-dark button js-form-submit btn form-submit"
-            data-drupal-selector="edit-submit-search" type="submit"
-            id="search-submit" name="btnG" value="Search">
-          <input autocomplete="off"
-            data-drupal-selector="form-wwapt2pnelnvvvf6jg0zatqo2o1jdqpfmcnviqdhpq0"
-            type="hidden" name="form_build_id"
-            value="form-WwAPt2PnElnvvvf6jg0ZaTQo2o1jDqPFmCnVIqDHPq0">
-          <input data-drupal-selector="edit-uiowa-bar-search-form-form-token"
-            type="hidden" name="form_token"
-            value="ZeoM7GSaKfuhVPstwmtubp-LvC3SA4rlizajpv8FT1M">
-          <input data-drupal-selector="edit-uiowa-bar-search-form" type="hidden"
-            name="form_id" value="uiowa_bar_search_form">
+          <input class="mx-0 form-control-sm btn-sm btn-dark button js-form-submit btn form-submit" data-drupal-selector="edit-submit-search" type="submit" id="search-submit" name="btnG" value="Search">
+          <input autocomplete="off" data-drupal-selector="form-wwapt2pnelnvvvf6jg0zatqo2o1jdqpfmcnviqdhpq0" type="hidden" name="form_build_id" value="form-WwAPt2PnElnvvvf6jg0ZaTQo2o1jDqPFmCnVIqDHPq0">
+          <input data-drupal-selector="edit-uiowa-bar-search-form-form-token" type="hidden" name="form_token" value="ZeoM7GSaKfuhVPstwmtubp-LvC3SA4rlizajpv8FT1M">
+          <input data-drupal-selector="edit-uiowa-bar-search-form" type="hidden" name="form_id" value="uiowa_bar_search_form">
         </form>
 
       </div>
 
       <div id="uiowa">
-        <h2 class="element-invisible">All of uiowa.edu</h2>
-        <form class="s" aria-label="site search" role="search"
+        <h3 class="element-invisible">Search all of uiowa.edu</h3>
+        <form
+          class="s"
+          aria-label="site search"
+          role="search"
           data-drupal-selector="uiowa-bar-search-form"
           action="http://iowasuperfund.uiowa.lndo.site:8000/google-search"
-          method="post" id="search-form" accept-charset="UTF-8"
+          method="post"
+          id="search-form"
+          accept-charset="UTF-8"
           data-drupal-form-fields="edit-search-terms,edit-submit-search">
-          <div
-            class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-search-terms form-item-search-terms">
+          <div class="js-form-item form-item js-form-type-textfield form-type-textfield js-form-item-search-terms form-item-search-terms">
             <label class="sr-only" for="edit-search-terms">Search</label>
-            <input placeholder="Search uiowa.edu"
-              class="form-control form-control-sm mt-0 form-text"
-              data-drupal-selector="edit-search-terms" type="text"
-              id="search-text" name="search-terms" value="" size="15"
-              maxlength="256">
+            <input placeholder="Search uiowa.edu" class="form-control form-control-sm mt-0 form-text" data-drupal-selector="edit-search-terms" type="text" id="search-text" name="search-terms" value="" size="15" maxlength="256">
           </div>
-          <input
-            class="mx-0 form-control-sm btn-sm btn-dark button js-form-submit btn form-submit"
-            data-drupal-selector="edit-submit-search" type="submit"
-            id="search-submit" name="btnG" value="Search">
-          <input autocomplete="off"
-            data-drupal-selector="form-wwapt2pnelnvvvf6jg0zatqo2o1jdqpfmcnviqdhpq0"
-            type="hidden" name="form_build_id"
-            value="form-WwAPt2PnElnvvvf6jg0ZaTQo2o1jDqPFmCnVIqDHPq0">
-          <input data-drupal-selector="edit-uiowa-bar-search-form-form-token"
-            type="hidden" name="form_token"
-            value="ZeoM7GSaKfuhVPstwmtubp-LvC3SA4rlizajpv8FT1M">
-          <input data-drupal-selector="edit-uiowa-bar-search-form" type="hidden"
-            name="form_id" value="uiowa_bar_search_form">
+          <input class="mx-0 form-control-sm btn-sm btn-dark button js-form-submit btn form-submit" data-drupal-selector="edit-submit-search" type="submit" id="search-submit" name="btnG" value="Search">
+          <input autocomplete="off" data-drupal-selector="form-wwapt2pnelnvvvf6jg0zatqo2o1jdqpfmcnviqdhpq0" type="hidden" name="form_build_id" value="form-WwAPt2PnElnvvvf6jg0ZaTQo2o1jDqPFmCnVIqDHPq0">
+          <input data-drupal-selector="edit-uiowa-bar-search-form-form-token" type="hidden" name="form_token" value="ZeoM7GSaKfuhVPstwmtubp-LvC3SA4rlizajpv8FT1M">
+          <input data-drupal-selector="edit-uiowa-bar-search-form" type="hidden" name="form_id" value="uiowa_bar_search_form">
         </form>
 
       </div>
     </div>
   </div>
 </div>
-

@@ -1,13 +1,16 @@
-.card {
+.news-card {
   position: relative;
   transition: transform .35s, z-index .5s;
-  @include margin($right: $sm, $bottom: $md, $left: $sm);
+  @include margin($right: $sm, $bottom: 0, $left: $sm);
   @include flexbox;
   @include flex-direction($value: column);
-  &:first-child {
+  @include flex($fg: 1, $fs: 1, $fb: 0%);
+
+  &:first-of-type {
     @include margin($left: 0);
   }
-  &:last-child {
+
+  &:last-of-type {
     @include margin($right: 0);
   }
 
@@ -68,29 +71,19 @@
   }
 }
 
-
-
-
-
-
-.card__bttn {
+.news-card__bttn {
   position: relative;
-
   display: block;
   float: left;
-
   width: 30px;
   height: 30px;
   padding: 0;
-
   cursor: pointer;
   transition: background .25s,border .25s,color .25s,transform .25s;
-
   border: none;
   border: 1px solid $secondary;
   border-radius: 50%;
   background: $white;
-
   @include margin($right: $sm);
   .is-open & {
     background: $secondary;
@@ -98,16 +91,11 @@
 
   &:before {
     padding: $xsm;
-
     content: "\f141";
-
     color: $secondary;
-
     @include fas();
-
     .is-open & {
       content: "\f00d";
-
       color: $white;
     }
   }

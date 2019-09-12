@@ -1,0 +1,46 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a one column layout.
+ *
+ * Available variables:
+ * - content: The content for this layout.
+ * - attributes: HTML attributes for the layout <div>.
+ *
+ * @ingroup themeable
+ * @see https://www.drupal.org/docs/8/api/layout-api/how-to-register-layouts
+ * @see https://v4-alpha.getbootstrap.com/layout/grid/
+ */
+#}
+{%
+  set classes = [
+    'layout',
+    'layout--onecol',
+    'flex__wrapper',
+    'feature__container',
+    settings.extra_classes,
+  ]
+%}
+
+
+{% if content.content %}
+
+    {% if region_attributes.content.storage['data-region'] %}
+    <h3 class="region-title">Full Width Column</h3>
+      {% endif %}
+
+
+  <section{{ attributes.addClass(classes) }}>
+
+
+  {% if region_attributes.content.storage['data-region'] %}
+  <div {{ region_attributes.content.addClass('flex__wrapper') }}>
+    {% endif %}
+      {{ content.content }}
+        {% if region_attributes.content.storage['data-region'] %}
+</div>
+ {% endif %}
+
+  </section>
+{% endif %}
+

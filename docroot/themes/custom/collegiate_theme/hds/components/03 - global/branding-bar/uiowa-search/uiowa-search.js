@@ -10,13 +10,16 @@ if (document.querySelector(".search-button")) {
 
 function searchToggle() {
   const wrapper = document.querySelector(".search-wrapper");
+  const body = document.body;
 
   if (wrapper.classList.contains("is-open")) {
     this.setAttribute("aria-expanded", "false");
     wrapper.classList.remove("is-open");
+    body.classList.remove("search-is-open");
   } else {
     wrapper.classList.add("is-open");
     this.setAttribute("aria-expanded", "true");
+    body.classList.add("search-is-open");
   }
 }
 

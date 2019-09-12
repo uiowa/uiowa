@@ -1,0 +1,29 @@
+layout_onecol:
+  label: 'Collegiate One Column'
+  path: templates/layouts/onecol/layout--onecol
+  template: templates/layouts/onecol/layout--onecol
+  library: collegiate_theme/onecol
+  category: 'Columns: 1'
+  default_region: content
+  icon_map:
+    - [content]
+  regions:
+    content:
+      label: Content
+layout_twocol:
+  label: 'Collegiate Two Column'
+  path: templates/layouts/twocol/layout--twocol
+  template: templates/layouts/onecol/layout--twocol
+  library: collegiate_theme/twocol
+  default_region: first
+  class: '\Drupal\layout_builder\Plugin\Layout\TwoColumnLayout'
+  category: 'Columns: 2'
+  default_region: first
+  icon_map:
+    - [first, second]
+  regions:
+    first:
+      label: First
+    second:
+      label: Second
+

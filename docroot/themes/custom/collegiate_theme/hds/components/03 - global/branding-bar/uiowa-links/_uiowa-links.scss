@@ -1,9 +1,11 @@
 .quick-links {
   position: relative;
-  z-index: 100;
+  z-index: 900;
+  .search-is-open & {
+    z-index: 100;
+  }
   display: block;
   cursor: pointer;
-  transition: background .25s, border .25s, color .25s, transform .25s;
   text-transform: uppercase;
   border: none;
   font-family: $font-family-sans-serif;
@@ -11,11 +13,13 @@
   font-weight: $font-weight-bold;
   @include margin($right: $sm);
   @include padding($top: $xsm-sm, $right: $md, $bottom: $xsm-sm, $left: $md);
+
   &:after {
     padding: $xsm;
     font-size: $base-font-size;
     @include fas();
   }
+
   &:before {
     content: '';
     position: absolute;
@@ -28,32 +32,32 @@
     transform: translate(-50%, 0) scaleX(0);
     transition: transform 0.3s ease-in-out;
   }
+
   &:hover::before {
     transform: translate(-50%, 0) scaleX(1);
   }
-
 }
-
-
-
 
 .quick-links--primary {
   .quick-links[aria-expanded="true"] {
-    transform: translateY(-14px) scale(1.00);
-    color: $primary;
-    border: 1px solid $dark-gray;
+    color: $white;
+    //border: 1px solid $dark-gray;
     outline: none;
-    background: $dark-gray;
+    background: $secondary;
     box-shadow: 3px 5px 10px 0 rgba(13, 23, 33, .2);
+    border: 1px solid $primary;
+
     &:after {
-      content: "\f106";
+      content: "\f00d";
       color: $primary;
     }
   }
+
   .quick-links[aria-expanded="false"] {
     color: $secondary;
     border: 1px solid $white;
     background: $primary;
+
     &:after {
       content: "\f107";
       color: $secondary;
@@ -63,107 +67,138 @@
 
 
 
-  .quick-links--secondary {
-    .quick-links[aria-expanded="true"] {
-      transform: translateY(-14px) scale(1.00);
-      color: $light;
-      border: 1px solid $grey;
-      outline: none;
-      background: $grey;
-      box-shadow: 3px 5px 10px 0 rgba(13, 23, 33, .2);
-      &:after {
-        content: "\f106";
-        color: $white;
-      }
-    }
+.quick-links--secondary {
+  .quick-links[aria-expanded="true"] {
+    color: $primary;
+    border: 1px solid $white;
+    background: $secondary;
+    outline: none;
+    //background: $grey;
+    box-shadow: 3px 5px 10px 0 rgba(13, 23, 33, .2);
 
-    .quick-links[aria-expanded="false"] {
-      color: $primary;
-      border: 1px solid $white;
-      background: $secondary;
-      &:after {
-        content: "\f107";
-        color: $white;
-      }
+    &:after {
+      content: "\f00d";
+      color: $white;
     }
   }
 
+  .quick-links[aria-expanded="false"] {
+    color: $primary;
+    border: 1px solid $white;
+    background: $secondary;
+
+    &:after {
+      content: "\f107";
+      color: $white;
+    }
+  }
+}
 
 
-    .quick-nav {
-      display: none;
-      visibility: hidden;
-      transition: opacity .5s, visibility .5s;
-      opacity: 0;
-      border: none;
-      .quick-links--primary & {
-        background-color: $dark-gray;
+.uiowa-bar--primary .uiowa-bar__container,
+.uiowa-bar--secondary .uiowa-bar__container {
+  position: unset !important;
+}
+
+.quick-nav {
+  display: flex;
+  padding: 9px 0;
+  height: 218px;
+  transition: top 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94);
+  position: absolute;
+  top: -218px;
+  left: 0;
+  width: 100%;
+
+  .quick-links--primary & {
+    background-color: $secondary;
+    background-color: rgba(0, 0, 0, .85);
+  }
+
+  .quick-links--secondary & {
+    //background-color: $grey;
+    background-color: $secondary;
+    background-color: rgba(0, 0, 0, .85);
+  }
+
+  &.is-open {
+    position: absolute;
+    z-index: 201;
+    top: 0;
+    //transition: top 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94);
+    box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.15);
+  }
+
+  ul {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 50%;
+    height: 120px;
+    margin: 10px 0 0 50px;
+  }
+
+  li {
+    position: relative;
+    list-style: none;
+    display: inline;
+    padding: 10px 0;
+    width: 50%;
+    a {
+      padding: 0;
+      text-decoration: none;
+      color: $white;
+          &:before {
+            content: "\f101";
+            color: $primary;
+              font-size: $base-font-size;
+              @include fas();
+              padding-right: $sm;
+              position: absolute;
+              left: -25px;
+            }
+
+      &:hover:after {
+        right: 0;
+        width: 100%;
       }
-      .quick-links--secondary & {
-        background-color: $grey;
-      }
-      &.is-open {
+
+      &:after {
         position: absolute;
-        z-index: 100;
-        top: 42px;
+        bottom: 0;
         left: 0;
         display: block;
-        visibility: visible;
-        width: 20em;
-        transition: background .25s, border .25s, color .25s, transform .25s;
-        transform: translateY(-14px) scale(1.00);
-        opacity: 1;
-        box-shadow: 8px 27px 48px -44px rgba(0, 0, 0, 0.75);
-      }
-      ul {
-        list-style: none;
-        margin: 0;
-      }
-      li {
-        position: relative;
-        list-style: none;
-        padding: $sm;
-        a {
-          padding: $sm;
-          text-decoration: none;
-          color: $white;
-          &:hover:after {
-            right: 0;
-            width: 100%;
-          }
-          &:after {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            display: block;
-            width: 0;
-            height: 1px;
-            content: "";
-            transition: right 0.3s ease 0s, width .3s ease 0s;
-            background: none repeat scroll 0 0 transparent;
-            .quick-links--primary & {
-              background: $primary;
-            }
-            .quick-links--secondary & {
-              background: $secondary;
-            }
-          }
-          .quick-links--primary & {
-            color: $white;
-          }
-          .quick-links--secondary & {
-            color: $light;
-          }
+        width: 0;
+        height: 3px;
+        content: "";
+        transition: right 0.3s ease 0s, width .3s ease 0s;
+        background: none repeat scroll 0 0 transparent;
+
+        .quick-links--primary & {
+          background: $primary;
+        }
+
+        .quick-links--secondary & {
+          background: $secondary;
         }
       }
-    }
 
-    .quick-nav__wrapper {
-      position: relative;
-      display: none;
-      @include breakpoint(sm) {
-        @include margin($left: auto);
-         width: 180px;
-         display: block;
+      .quick-links--primary & {
+        color: $white;
+      }
+
+      .quick-links--secondary & {
+        color: $light;
       }
     }
+  }
+}
+
+.quick-nav__wrapper {
+  display: none;
+  @include breakpoint(sm) {
+    @include margin($left: auto);
+    display: block;
+  }
+}

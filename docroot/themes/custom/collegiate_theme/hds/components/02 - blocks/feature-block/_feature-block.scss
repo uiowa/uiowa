@@ -1,33 +1,44 @@
 .feature {
+  position: relative;
   overflow: hidden;
-  transition: flex-basis 500ms ease-in-out;
+  min-height: 300px;
+  transition: all 0.4s cubic-bezier(0.61, -0.44, 0.33, 1.39);
   color: $white;
-  @include flexbox;
+  @include flex(1, 0, 100%);
+
   @include breakpoint(sm) {
-    @include flex($fb: 10em);
+    align-self: auto;
+    order: 0;
+    min-height: 500px;
+    @include flex(1, 1, 0%);
   }
-  @include flex-direction($value: column);
 
   &__container {
+    flex-wrap: wrap;
+    @include flexbox;
     @include breakpoint(sm) {
-      @include flexbox;
+      align-content: stretch;
+      align-items: stretch;
+      flex-direction: row;
+     // flex-wrap: nowrap;
+      justify-content: flex-start;
+    }
+
+    &.image {
+      min-height: 540px;
     }
   }
 
-  &__wrapper {
-    position: relative;
-
-    min-height: 540px;
-    &:after {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      content: "";
-      background: linear-gradient(transparent 1%, transparent 49%, rgba(0, 0, 0, .7));
-    }
+  &:hover:after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    content: "";
+    background: linear-gradient(transparent 1%, transparent 49%, rgba(0, 0, 0, .7));
   }
+
   a {
     text-decoration: none;
     color: $white;
@@ -50,11 +61,12 @@
   &__bracket {
     z-index: 1;
     @include bracket();
+    //width: 500px;
   }
 
   &__heading {
-    white-space: nowrap;
     margin: 0;
+    //white-space: nowrap;
     color: $white;
     font-size: $h2-font-size;
     line-height: 1;
@@ -62,8 +74,8 @@
   }
 
   &__subheading {
-    white-space: nowrap;
     margin: 0;
+    //white-space: nowrap;
     font-size: $base-font-size;
     @extend %shadow;
   }
@@ -89,6 +101,7 @@
     font-weight: $font-weight-medium-bold;
     font-style: normal;
     line-height: 1;
+
     i {
       padding-left: $sm;
       &.fa-plus:before {
@@ -102,18 +115,51 @@
   }
 }
 
+@include breakpoint(sm) {
+  .feature {
+    transition: all 0.3s ease;
+  }
+}
+
+
+.feature__container-expanded {
+  .feature {
+    @include breakpoint(sm) {
+      flex: unset;
+      width: 25%;
+    }
+  }
+
+  .feature:nth-child(1) {
+    @include breakpoint(sm) {
+      flex-grow: 1;
+    }
+
+    &::after {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      content: "";
+      background: linear-gradient(transparent 1%, transparent 49%, rgba(0, 0, 0, .7));
+    }
+
+    .feature__content {
+      opacity: 1;
+    }
+
+    .feature__teaser {
+      opacity: 0;
+    }
+  }
+}
+
+
 
 .feature:hover .feature__content,
 .feature:focus .feature__content {
   opacity: 1;
-}
-
-.feature.is-open .feature__content {
-  opacity: 1;
-}
-
-.feature.is-open .feature__teaser {
-  opacity: 0;
 }
 
 .feature:hover .feature__teaser,
@@ -121,47 +167,188 @@
   opacity: 0;
 }
 
-.feature.is-open {
+.feature__container {
+  //pointer-events: none;
+}
+
+.feature__container>.feature {
   cursor: pointer;
+  pointer-events: auto;
+}
+
+
+.feature__container:hover>.feature,
+.feature__container:focus-within>.feature {
   @include breakpoint(sm) {
-    @include flex($fb: 20em);
+    @include flex(1, 1, 0%);
+  }
+
+  .feature__content {
+    opacity: 0;
+  }
+
+  .feature__teaser {
+    opacity: 1;
   }
 }
 
-.feature:hover,
-.feature:focus {
-  cursor: pointer;
+.feature__container-expanded:hover>.feature,
+.feature__container-expanded:focus-within>.feature {
   @include breakpoint(sm) {
-    @include flex($fb: 20em);
+    flex: unset;
+    flex-grow: 0;
   }
 }
 
-/* Safari 11+ */
 
-@media not all and (min-resolution:.001dpcm) {
-  @supports (-webkit-appearance:none) and (stroke-color:transparent) {
+.feature__container:hover>.feature:hover,
+.feature__container:focus-within>.feature:focus {
+  .feature__content {
+    opacity: 1;
+  }
 
-    .feature.is-open {
-      flex-basis: unset;
-      @include breakpoint(sm) {
-        width: 66.3%;
+  .feature__teaser {
+    opacity: 0;
+  }
+}
+
+.feature__container-expanded:hover>.feature:hover,
+.feature__container-expanded:focus-within>.feature:focus {
+  flex-grow: 1;
+}
+
+
+
+// Video
+
+.feature__container.feature__one-col {
+  video {
+    width: 100%;
+  }
+}
+
+.video-btn {
+  position: absolute;
+  z-index: 1;
+  top: 20px;
+  left: 15px;
+  width: 50px;
+  height: 50px;
+  padding: $sm;
+  cursor: pointer;
+  color: $white;
+  border: none;
+  background: none;
+  font-size: $h4-font-size;
+
+  &:before {
+    content: "\f28b";
+    @include fas();
+  }
+
+  &__play:before {
+    content: "\f144";
+  }
+}
+
+.video-btn:hover {
+  color: $secondary;
+}
+
+.video__container {
+  position: relative;
+}
+
+// Accordion Stack
+
+.feature__container.image-stack {
+  @include breakpoint(sm) {
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 100vh;
+  }
+}
+
+.image-stack {
+  .feature:nth-child(1) {
+    @include breakpoint(sm) {
+      flex: 0 0 70%;
+      width: unset;
+      &:hover {
+        flex: 1 1 auto;
       }
     }
+  }
 
-    .feature {
-      flex: unset;
-      transition: width 500ms ease-in-out;
-      @include breakpoint(sm) {
-        width: 33.3%;
-      }
+  .feature:nth-child(2),
+  .feature:nth-child(3) {
+    @include breakpoint(sm) {
+      flex: 0 0 15%;
+      width: unset;
     }
+  }
 
-    .feature:hover,
-    .feature:focus {
-      flex-basis: unset;
-      @include breakpoint(sm) {
-        width: 66.3%;
-      }
+  .feature:last-child {
+    .feature__teaser {
+      border-bottom: none;
     }
+  }
+
+  .feature__teaser {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    border-bottom: 1px solid $secondary;
+    background: rgba(255, 255, 255, 0.8);
+  }
+
+  .feature__teaser-heading {
+    color: $secondary;
+  }
+
+  .feature__teaser-heading i.fa-plus::before {
+    color: $secondary;
+    border: 1px solid $secondary;
+  }
+}
+
+.feature__container.image-stack.feature__three-col:hover>.feature:hover,
+.feature__container.image-stack.feature__three-col:focus-within>.feature:focus {
+  @include breakpoint(sm) {
+    width: 100vw;
+  }
+
+  .feature__content {
+    opacity: 1;
+  }
+
+  .feature__teaser {
+    opacity: 0;
+  }
+}
+
+
+.feature__container.image-stack:hover>.feature:nth-child(1),
+.feature__container.image-stack:focus-within>.feature:nth-child(1),
+.feature__container.image-stack:hover>.feature:nth-child(2),
+.feature__container.image-stack:focus-within>.feature:nth-child(2),
+.feature__container.image-stack:hover>.feature:nth-child(3),
+.feature__container.image-stack:focus-within>.feature:nth-child(3) {
+  @include breakpoint(sm) {
+    flex: 0 0 15%;
+    width: 100vw;
+    transition: all 0.3s ease;
+  }
+}
+
+.feature__container.image-stack:hover>.feature:nth-child(1):hover,
+.feature__container.image-stack:focus-within>.feature:nth-child(1):focus,
+.feature__container.image-stack:hover>.feature:nth-child(2):hover,
+.feature__container.image-stack:focus-within>.feature:nth-child(2):focus,
+.feature__container.image-stack:hover>.feature:nth-child(3):hover,
+.feature__container.image-stack:focus-within>.feature:nth-child(3):focus {
+  @include breakpoint(sm) {
+    flex: 0 0 70%;
+    transition: all 0.3s ease;
   }
 }

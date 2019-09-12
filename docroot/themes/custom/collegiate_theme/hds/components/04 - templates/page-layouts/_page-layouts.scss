@@ -4,3 +4,10 @@
     @extend %container;
   }
 }
+
+.flex__wrapper {
+  @include breakpoint(sm) {
+    flex-wrap: wrap;
+    @include flexbox;
+  }
+}

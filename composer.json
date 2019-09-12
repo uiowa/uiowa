@@ -64,6 +64,7 @@
         "drupal/config_split": "^1.4",
         "drupal/core": "^8.7.1",
         "drupal/features": "^3.8",
+        "drupal/layout_builder_styles": "^1.0@beta",
         "drupal/memcache": "2.0-alpha7",
         "drupal/paragraphs": "^1.8",
         "drupal/pathauto": "^1.4",
@@ -91,7 +92,12 @@
         "patchLevel": {
             "drupal/core": "-p2"
         },
-        "patches": [],
+        "patches": {
+            "drupal/layout_builder_styles": {
+                "Section Dependency": "https://www.drupal.org/files/issues/2019-08-23/layout_builder_styles-3062261-%2310.patch",
+                "Group Styles": "https://www.drupal.org/files/issues/2019-08-16/style_groups_for_layout_builder_styles-3075502.patch"
+            }
+        },
         "installer-types": [
             "bower-asset",
             "npm-asset"
