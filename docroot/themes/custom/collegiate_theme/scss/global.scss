@@ -30,3 +30,42 @@
     @include margin(0, 0, $lg, 0);
   }
 }
+
+.layout__region {
+@include breakpoint(sm) {
+  @include padding($right: $sm, $bottom: 0, $left: $sm);
+}
+.section-padding__removed & {
+  @include breakpoint(sm) {
+  @include padding($right: 0, $bottom: 0, $left: 0);
+  }
+}
+&:first-of-type {
+  @include padding($left: 0);
+}
+
+&:last-of-type {
+  @include padding($right: 0);
+}
+}
+
+/*
+@include flexbox;
+@include flex-direction($value: column);
+@include flex($fg: 1, $fs: 1, $fb: 0%);
+
+&:first-of-type {
+  @include margin($left: 0);
+}
+
+&:last-of-type {
+  @include margin($right: 0);
+}
+*/
+
+.layout--threecol .feature,
+.layout--twocol .feature  {
+  flex-basis: 100%;
+}
+
+
