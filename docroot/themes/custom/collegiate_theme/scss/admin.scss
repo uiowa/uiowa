@@ -28,15 +28,25 @@
   padding: 1.5em;
 }
 
-.layout--threecol .layout-builder-block,
-.layout--threecol .layout-builder__add-block {
-  flex-basis: 100%;
-}
-
-.layout--twocol .layout-builder-block,
-.layout--twocol .layout-builder__add-block {
-  //flex-basis: 100%;
-}
+.layout--threecol,
+.layout--twocol,
+.layout--onecol {
+   .layout-builder-block,
+   .layout-builder__add-block {
+     flex-basis: 100%;
+   }
+      &.section-column__row  {
+        .layout-builder-block,
+        .layout-builder__add-block {
+          flex-basis: unset;
+          flex: 1 1 0%;
+        }
+        .layout-builder-block.block-spacer-separator,
+        .layout-builder-block.block-inline-blockuiowa-text-area {
+          flex-basis: 100%;
+        }
+      }
+    }
 
 
 
@@ -55,6 +65,7 @@
   width: 100%;
 }
 
+/*
 .region-title {
   background: #eff6fc;
   text-align: center;
@@ -73,6 +84,7 @@
     cursor: pointer;
   }
 }
+*/
 
 .block-inline-blockuiowa-feature {
   display: flex;

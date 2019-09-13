@@ -41,9 +41,31 @@
   &:last-of-type {
     @include padding($right: 0);
   }
+
+  &.layout--onecol {
+    @include padding($right: 0, $bottom: 0, $left: 0);
+  }
 }
 
-.layout--threecol .feature,
-.layout--twocol .feature {
-  flex-basis: 100%;
+.layout__region {
+.feature,
+.banner {
+   flex-basis: 100%;
+  .section-column__row & {
+    flex-basis: unset;
+  }
+}
+}
+
+
+.layout__region.section-column__row .feature,
+.layout__region.section-column__row .banner {
+  -ms-flex-preferred-size: unset;
+  flex-basis: unset;
+}
+
+
+// Admin only styles
+.toolbar-menu {
+  font-size: unset;
 }
