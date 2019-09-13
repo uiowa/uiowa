@@ -14,8 +14,6 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\NodeInterface;
 use Drupal\user\Entity\User;
 use Drupal\views\ViewExecutable;
-use Drupal\media\Entity\Media;
-use Drupal\file\Entity\File;
 
 /**
  * Implements hook_toolbar_alter().
@@ -508,6 +506,20 @@ function sitenow_preprocess_page(&$variables) {
           $variables['page']['sidebar_first'] = [];
           $variables['page']['sidebar_second'] = [];
         }
+      }
+      $type = $node->getType();
+      switch ($type) {
+        case 'page':
+        case 'article':
+          if ($node->hasField('field_display_image') && $node->get('field_display_image')->value == '1') {
+            if ($node->hasField('field_image') && !$node->get('field_image')
+              ->isEmpty()) {
+              $image = $node->field_image->view('edgy');
+              $variables['node_image'] = $image;
+            }
+          }
+          break;
+
       }
     }
   }
