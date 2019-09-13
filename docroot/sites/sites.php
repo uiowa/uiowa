@@ -202,3 +202,38 @@ $sites['labmerlino.prod.drupal.uiowa.edu'] = 'merlino.lab.uiowa.edu';
 $sites['dentistry.dev.drupal.uiowa.edu'] = 'dentistry.uiowa.edu';
 $sites['dentistry.stage.drupal.uiowa.edu'] = 'dentistry.uiowa.edu';
 $sites['dentistry.prod.drupal.uiowa.edu'] = 'dentistry.uiowa.edu';
+
+// Directory aliases for martin.lab.uiowa.edu.
+$sites['labmartin.dev.drupal.uiowa.edu'] = 'martin.lab.uiowa.edu';
+$sites['labmartin.stage.drupal.uiowa.edu'] = 'martin.lab.uiowa.edu';
+$sites['labmartin.prod.drupal.uiowa.edu'] = 'martin.lab.uiowa.edu';
+
+// Directory aliases for multilingualsyntax.lab.uiowa.edu.
+$sites['labmultilingualsyntax.dev.drupal.uiowa.edu'] = 'multilingualsyntax.lab.uiowa.edu';
+$sites['labmultilingualsyntax.stage.drupal.uiowa.edu'] = 'multilingualsyntax.lab.uiowa.edu';
+$sites['labmultilingualsyntax.prod.drupal.uiowa.edu'] = 'multilingualsyntax.lab.uiowa.edu';
+
+// Directory aliases for seru.uiowa.edu.
+$sites['seru.dev.drupal.uiowa.edu'] = 'seru.uiowa.edu';
+$sites['seru.stage.drupal.uiowa.edu'] = 'seru.uiowa.edu';
+$sites['seru.prod.drupal.uiowa.edu'] = 'seru.uiowa.edu';
+
+// Directory aliases for mootcourt.org.uiowa.edu.
+$sites['orgmootcourt.dev.drupal.uiowa.edu'] = 'mootcourt.org.uiowa.edu';
+$sites['orgmootcourt.stage.drupal.uiowa.edu'] = 'mootcourt.org.uiowa.edu';
+$sites['orgmootcourt.prod.drupal.uiowa.edu'] = 'mootcourt.org.uiowa.edu';
+
+// Directory aliases for alphachisigma-alphatheta.org.uiowa.edu.
+$sites['orgalphachisigma-alphatheta.dev.drupal.uiowa.edu'] = 'alphachisigma-alphatheta.org.uiowa.edu';
+$sites['orgalphachisigma-alphatheta.stage.drupal.uiowa.edu'] = 'alphachisigma-alphatheta.org.uiowa.edu';
+$sites['orgalphachisigma-alphatheta.prod.drupal.uiowa.edu'] = 'alphachisigma-alphatheta.org.uiowa.edu';
+
+// Directory aliases for qulat.sites.uiowa.edu.
+$sites['sitesqulat.dev.drupal.uiowa.edu'] = 'qulat.sites.uiowa.edu';
+$sites['sitesqulat.stage.drupal.uiowa.edu'] = 'qulat.sites.uiowa.edu';
+$sites['sitesqulat.prod.drupal.uiowa.edu'] = 'qulat.sites.uiowa.edu';
+
+// Directory aliases for iti.uiowa.edu.
+$sites['iti.dev.drupal.uiowa.edu'] = 'iti.uiowa.edu';
+$sites['iti.stage.drupal.uiowa.edu'] = 'iti.uiowa.edu';
+$sites['iti.prod.drupal.uiowa.edu'] = 'iti.uiowa.edu';
