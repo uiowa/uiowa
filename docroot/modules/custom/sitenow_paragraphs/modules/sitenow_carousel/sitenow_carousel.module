@@ -43,8 +43,7 @@ function sitenow_carousel_preprocess_paragraph__carousel(&$variables) {
     $variables['id'] = 'carousel-' . $paragraph->id();
 
     if (isset($variables['content']['field_carousel_item'][0])) {
-      $variables['content']['field_carousel_item'][0]['#attributes'] = new Attribute();
-      $variables['content']['field_carousel_item'][0]['#attributes']->addClass('active');
+      $variables['content']['field_carousel_item'][0]['#attributes']['class'][] = 'active';
     }
 
     // Subtract one from the number of items since the indicators are zero-based.

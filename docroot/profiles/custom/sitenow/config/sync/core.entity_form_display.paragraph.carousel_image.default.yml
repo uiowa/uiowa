@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.paragraph.carousel_image.field_carousel_image_caption
     - field.field.paragraph.carousel_image.field_carousel_image_image
+    - field.field.paragraph.carousel_image.field_uip_classes
     - field.field.paragraph.carousel_image.field_uip_id
     - paragraphs.paragraphs_type.carousel_image
   module:
@@ -15,6 +16,7 @@ third_party_settings:
   field_group:
     group_carousel_image_settings:
       children:
+        - field_uip_classes
         - field_uip_id
       parent_name: ''
       weight: 2
@@ -45,8 +47,14 @@ content:
       media_types: {  }
     third_party_settings: {  }
     region: content
+  field_uip_classes:
+    weight: 4
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
   field_uip_id:
-    weight: 3
+    weight: 5
     settings:
       size: 60
       placeholder: ''
