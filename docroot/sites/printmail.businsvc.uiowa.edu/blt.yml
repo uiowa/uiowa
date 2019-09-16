@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: printmail.businsvc.uiowa.edu
+    protocol: https
+  machine_name: businsvcprintmail
+  human_name: printmail.businsvc.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: businsvcprintmail.prod
+drupal:
+  db:
+    database: printmail_businsvc_uiowa_edu
+    host: localhost
+    user: root
+    password: null
