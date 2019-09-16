@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: kroska.lab.uiowa.edu
+    protocol: https
+  machine_name: labkroska
+  human_name: kroska.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labkroska.prod
+drupal:
+  db:
+    database: kroska_lab_uiowa_edu
+    host: localhost
+    user: root
+    password: null
