@@ -4,11 +4,15 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.paragraph.preview
+    - field.field.paragraph.articles.field_articles_more
+    - field.field.paragraph.articles.field_articles_more_path
     - field.field.paragraph.articles.field_reference
     - field.field.paragraph.articles.field_uip_classes
     - field.field.paragraph.articles.field_uip_colwidth
     - field.field.paragraph.articles.field_uip_display_title
     - field.field.paragraph.articles.field_uip_id
+    - field.field.paragraph.articles.field_uip_items
+    - field.field.paragraph.articles.field_uip_pager
     - field.field.paragraph.articles.field_uip_title
     - paragraphs.paragraphs_type.articles
 id: paragraph.articles.preview
@@ -25,6 +29,8 @@ content:
     type: string
     region: content
 hidden:
+  field_articles_more: true
+  field_articles_more_path: true
   field_reference: true
   field_uip_classes: true
   field_uip_colwidth: true
