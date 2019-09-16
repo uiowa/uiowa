@@ -108,8 +108,9 @@ To create a new multisite:
 3. If necessary, email Hostmaster with CNAME request template in ITS-web@uiowa.edu -> Drafts -> Email Templates -> SiteNow Templates.
 
 ## Site Split
-To register a configuration split for a multisite, create the split locally and export to the site split directory.
-`mkdir config/www.mysite.uiowa.edu`
+Please see config/README.md first.
+
+To register a configuration split for a multisite, create the split locally in the UI and export to the site split directory.
 `drush config-split:export mysitesplit`
 
 Deploy the code changes to each environment per the normal process and import the configuration from the split manually.
