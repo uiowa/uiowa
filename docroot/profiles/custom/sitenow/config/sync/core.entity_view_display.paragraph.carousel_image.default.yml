@@ -1,27 +1,27 @@
-uuid: 41a0b6d6-9f7a-4ea6-aa22-ca70747cabaa
+uuid: 803322b7-917a-4699-a375-19dbf18b71d5
 langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.carousel_item.field_carousel_item_caption
-    - field.field.paragraph.carousel_item.field_carousel_item_image
-    - field.field.paragraph.carousel_item.field_uip_id
-    - paragraphs.paragraphs_type.carousel_item
+    - field.field.paragraph.carousel_image.field_carousel_image_caption
+    - field.field.paragraph.carousel_image.field_carousel_image_image
+    - field.field.paragraph.carousel_image.field_uip_id
+    - paragraphs.paragraphs_type.carousel_image
   module:
     - text
-id: paragraph.carousel_item.default
+id: paragraph.carousel_image.default
 targetEntityType: paragraph
-bundle: carousel_item
+bundle: carousel_image
 mode: default
 content:
-  field_carousel_item_caption:
+  field_carousel_image_caption:
     weight: 1
     label: hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
-  field_carousel_item_image:
+  field_carousel_image_image:
     type: entity_reference_entity_view
     weight: 2
     label: hidden

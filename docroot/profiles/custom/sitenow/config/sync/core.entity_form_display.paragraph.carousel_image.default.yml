@@ -1,19 +1,19 @@
-uuid: 38e6f4fb-29ab-40fd-8435-3972fb9b9d51
+uuid: 816b89dc-55e8-4ec9-b9a9-c2545751f76b
 langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.carousel_item.field_carousel_item_caption
-    - field.field.paragraph.carousel_item.field_carousel_item_image
-    - field.field.paragraph.carousel_item.field_uip_id
-    - paragraphs.paragraphs_type.carousel_item
+    - field.field.paragraph.carousel_image.field_carousel_image_caption
+    - field.field.paragraph.carousel_image.field_carousel_image_image
+    - field.field.paragraph.carousel_image.field_uip_id
+    - paragraphs.paragraphs_type.carousel_image
   module:
     - field_group
     - media_library
     - text
 third_party_settings:
   field_group:
-    group_carousel_item_settings:
+    group_carousel_image_settings:
       children:
         - field_uip_id
       parent_name: ''
@@ -24,13 +24,13 @@ third_party_settings:
         classes: ''
         open: false
         required_fields: true
-      label: 'Carousel Item Settings'
-id: paragraph.carousel_item.default
+      label: 'Carousel Image Settings'
+id: paragraph.carousel_image.default
 targetEntityType: paragraph
-bundle: carousel_item
+bundle: carousel_image
 mode: default
 content:
-  field_carousel_item_caption:
+  field_carousel_image_caption:
     weight: 1
     settings:
       rows: 3
@@ -38,7 +38,7 @@ content:
     third_party_settings: {  }
     type: text_textarea
     region: content
-  field_carousel_item_image:
+  field_carousel_image_image:
     type: media_library_widget
     weight: 0
     settings:

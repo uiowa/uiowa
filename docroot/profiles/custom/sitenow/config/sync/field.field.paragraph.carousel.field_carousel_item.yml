@@ -5,7 +5,7 @@ dependencies:
   config:
     - field.storage.paragraph.field_carousel_item
     - paragraphs.paragraphs_type.carousel
-    - paragraphs.paragraphs_type.carousel_item
+    - paragraphs.paragraphs_type.carousel_image
   module:
     - entity_reference_revisions
 id: paragraph.carousel.field_carousel_item
@@ -23,7 +23,7 @@ settings:
   handler_settings:
     negate: 0
     target_bundles:
-      carousel_item: carousel_item
+      carousel_image: carousel_image
     target_bundles_drag_drop:
       accordion:
         weight: 13
@@ -43,7 +43,7 @@ settings:
       carousel:
         weight: 18
         enabled: false
-      carousel_item:
+      carousel_image:
         enabled: true
         weight: 19
       events:

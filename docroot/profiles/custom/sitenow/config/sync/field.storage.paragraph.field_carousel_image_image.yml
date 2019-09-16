@@ -1,16 +1,17 @@
-uuid: 95975299-cb1a-42b2-869b-56d252b4435b
+uuid: 6884ebed-5204-4263-9efe-cbe417f324b9
 langcode: en
 status: true
 dependencies:
   module:
+    - media
     - paragraphs
-    - text
-id: paragraph.field_carousel_item_caption
-field_name: field_carousel_item_caption
+id: paragraph.field_carousel_image_image
+field_name: field_carousel_image_image
 entity_type: paragraph
-type: text_long
-settings: {  }
-module: text
+type: entity_reference
+settings:
+  target_type: media
+module: core
 locked: false
 cardinality: 1
 translatable: true
