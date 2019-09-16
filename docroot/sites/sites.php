@@ -237,3 +237,8 @@ $sites['sitesqulat.prod.drupal.uiowa.edu'] = 'qulat.sites.uiowa.edu';
 $sites['iti.dev.drupal.uiowa.edu'] = 'iti.uiowa.edu';
 $sites['iti.stage.drupal.uiowa.edu'] = 'iti.uiowa.edu';
 $sites['iti.prod.drupal.uiowa.edu'] = 'iti.uiowa.edu';
+
+// Directory aliases for international.uiowa.edu.
+$sites['international.dev.drupal.uiowa.edu'] = 'international.uiowa.edu';
+$sites['international.stage.drupal.uiowa.edu'] = 'international.uiowa.edu';
+$sites['international.prod.drupal.uiowa.edu'] = 'international.uiowa.edu';
