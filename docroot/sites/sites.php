@@ -242,3 +242,8 @@ $sites['iti.prod.drupal.uiowa.edu'] = 'iti.uiowa.edu';
 $sites['international.dev.drupal.uiowa.edu'] = 'international.uiowa.edu';
 $sites['international.stage.drupal.uiowa.edu'] = 'international.uiowa.edu';
 $sites['international.prod.drupal.uiowa.edu'] = 'international.uiowa.edu';
+
+// Directory aliases for printmail.businsvc.uiowa.edu.
+$sites['businsvcprintmail.dev.drupal.uiowa.edu'] = 'printmail.businsvc.uiowa.edu';
+$sites['businsvcprintmail.stage.drupal.uiowa.edu'] = 'printmail.businsvc.uiowa.edu';
+$sites['businsvcprintmail.prod.drupal.uiowa.edu'] = 'printmail.businsvc.uiowa.edu';
