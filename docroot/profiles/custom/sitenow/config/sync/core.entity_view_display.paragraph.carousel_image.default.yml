@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.paragraph.carousel_image.field_carousel_image_caption
     - field.field.paragraph.carousel_image.field_carousel_image_image
+    - field.field.paragraph.carousel_image.field_uip_classes
     - field.field.paragraph.carousel_image.field_uip_id
     - paragraphs.paragraphs_type.carousel_image
   module:
@@ -15,7 +16,7 @@ bundle: carousel_image
 mode: default
 content:
   field_carousel_image_caption:
-    weight: 1
+    weight: 0
     label: hidden
     settings: {  }
     third_party_settings: {  }
@@ -23,12 +24,13 @@ content:
     region: content
   field_carousel_image_image:
     type: entity_reference_entity_view
-    weight: 2
+    weight: 1
     label: hidden
     settings:
-      view_mode: sitenow_carousel
+      view_mode: sitenow_16_9
       link: false
     third_party_settings: {  }
     region: content
 hidden:
+  field_uip_classes: true
   field_uip_id: true
