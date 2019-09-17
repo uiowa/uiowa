@@ -39,8 +39,8 @@ function collegiate_theme_form_system_theme_settings_alter(&$form, FormStateInte
     '#description' => t('Select an option'),
     '#options' => [
       'site-header--secondary' => t('Black Background, White Text (default)'),
-      'site-header__primary' => t('Gold Background, Black Text'),
-      'site-header__tertiary' => t('White Background, Black Text'),
+      'site-header--primary' => t('Gold Background, Black Text'),
+      'site-header--tertiary' => t('White Background, Black Text'),
     ],
     '#default_value' => theme_get_setting('site-header--secondary'),
   ];
