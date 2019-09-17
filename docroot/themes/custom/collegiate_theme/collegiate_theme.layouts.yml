@@ -1,0 +1,66 @@
+layout_onecol:
+  label: 'Collegiate One Column'
+  path: templates/layouts/onecol/layout--onecol
+  template: templates/layouts/onecol/layout--onecol
+  library: collegiate_theme/onecol
+  category: 'Columns: 1'
+  default_region: content
+  icon_map:
+    - [content]
+  regions:
+    content:
+      label: Content
+
+layout_twocol:
+  label: 'Collegiate Two Column'
+  path: templates/layouts/twocol/layout--twocol
+  template: layout--twocol
+  library: collegiate_theme/twocol
+  default_region: first
+  class: '\Drupal\layout_builder\Plugin\Layout\TwoColumnLayout'
+  category: 'Columns: 2'
+  default_region: first
+  icon_map:
+    - [first, second]
+  regions:
+    first:
+      label: First
+    second:
+      label: Second
+
+layout_threecol:
+  label: 'Collegiate Three column'
+  path: templates/layouts/threecol/threecol
+  template: layout--threecol
+  library: collegiate_theme/threecol
+  class: '\Drupal\layout_builder\Plugin\Layout\ThreeColumnLayout'
+  category: 'Columns: 3'
+  default_region: second
+  icon_map:
+    - [first, second, third]
+  regions:
+    first:
+      label: First
+    second:
+      label: Second
+    third:
+      label: Third
+
+layout_fourcol:
+  label: 'Collegiate Four Column'
+  path: templates/layouts/fourcol/fourcol
+  template: layout--fourcol
+  library: collegiate_theme/fourcol
+  category: 'Columns: 4'
+  default_region: first
+  icon_map:
+    - [first, second, third, fourth]
+  regions:
+    first:
+      label: First
+    second:
+      label: Second
+    third:
+      label: Third
+    fourth:
+      label: Fourth

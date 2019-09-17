@@ -77,7 +77,7 @@ function browserReload() {
 // Watch files
 function watchFiles() {
   // Watch SCSS changes
-  watch(paths.scss + '**/*.scss', parallel(css))
+  watch(paths.scss + '**/*.scss', parallel(css, copy))
     .on('change', browserReload());
 }
 

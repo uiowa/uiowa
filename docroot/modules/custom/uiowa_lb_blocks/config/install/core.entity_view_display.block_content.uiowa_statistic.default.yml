@@ -1,0 +1,40 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_statistic
+    - field.field.block_content.uiowa_statistic.field_uiowa_statistic_excerpt
+    - field.field.block_content.uiowa_statistic.field_uiowa_statistic_image
+    - field.field.block_content.uiowa_statistic.field_uiowa_statistic_title
+  module:
+    - image
+id: block_content.uiowa_statistic.default
+targetEntityType: block_content
+bundle: uiowa_statistic
+mode: default
+content:
+  field_uiowa_statistic_excerpt:
+    weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_uiowa_statistic_image:
+    weight: 2
+    label: above
+    settings:
+      image_style: ''
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+    region: content
+  field_uiowa_statistic_title:
+    weight: 0
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden: {  }

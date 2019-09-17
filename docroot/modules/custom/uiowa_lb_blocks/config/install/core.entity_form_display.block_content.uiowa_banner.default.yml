@@ -1,0 +1,59 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_banner
+    - field.field.block_content.uiowa_banner.field_uiowa_banner_excerpt
+    - field.field.block_content.uiowa_banner.field_uiowa_banner_image
+    - field.field.block_content.uiowa_banner.field_uiowa_banner_link
+    - field.field.block_content.uiowa_banner.field_uiowa_banner_title
+    - image.style.thumbnail
+  module:
+    - image
+    - link
+id: block_content.uiowa_banner.default
+targetEntityType: block_content
+bundle: uiowa_banner
+mode: default
+content:
+  field_uiowa_banner_excerpt:
+    weight: 27
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+  field_uiowa_banner_image:
+    type: image_image
+    weight: 29
+    settings:
+      preview_image_style: thumbnail
+      progress_indicator: throbber
+    region: content
+    third_party_settings: {  }
+  field_uiowa_banner_link:
+    weight: 28
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+    region: content
+  field_uiowa_banner_title:
+    weight: 26
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  info:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }

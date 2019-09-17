@@ -1,33 +1,33 @@
 <div class="portrait__bg">
 
-    {% if not attributes is defined %}
-        {% include '@bold-headline' with {
-    bold_headline: 'Social Profiles',
-    headline_type: 'bold-headline--negative'
-} %}
-    {% endif %}
+  {% if not attributes is defined %}
+    {% include '@bold-headline' with {
+			"bold_headline": 'Social Profiles',
+			"headline_type": 'bold-headline--negative'
+    } %}
+  {% endif %}
 
-    <div class="portrait__wrapper">
-        <ul class="portrait__container">
+  <div class="portrait__wrapper">
+    <ul class="portrait__container">
 
-            {% for item in portrait.items %}
+      {% for item in portrait.items %}
 
-                <li class="portrait">
-                    <div class="portrait__item">
-                        <div class="portrait__gradient">
-                            <h3 class="portrait__title">
-                                {{ item.portrait_title }}<br/>
-                                <span>{{ item.portrait_sub }}</span>
-                            </h3>
-                        </div>
-                        <div class="embed-responsive embed-responsive-9by16">
-                            <iframe title="{{ item.portrait_title }}" id="player" src="{{ item.portrait_link }}" frameborder="0" allow="autoplay encrypted-media allowfullscreen"></iframe>
-                        </div>
-                    </div>
-                </li>
+        <li class="portrait">
+          <div class="portrait__item">
+            <div class="portrait__gradient">
+              <h3 class="portrait__title">
+                {{ item.portrait_title }}<br/>
+                <span>{{ item.portrait_sub }}</span>
+              </h3>
+            </div>
+            <div class="embed-responsive embed-responsive-9by16">
+              <iframe title="{{ item.portrait_title }}" id="player" src="{{ item.portrait_link }}" frameborder="0" allow="autoplay encrypted-media allowfullscreen"></iframe>
+            </div>
+          </div>
+        </li>
 
-            {% endfor %}
-        </ul>
+      {% endfor %}
+    </ul>
 
-    </div>
+  </div>
 </div>

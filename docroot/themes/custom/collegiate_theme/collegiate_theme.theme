@@ -52,3 +52,13 @@ function collegiate_theme_preprocess_node(&$variables) {
 function collegiate_theme_preprocess_block(&$variables) {
   $variables['collegiate_theme_container_settings'] = theme_get_setting('collegiate_theme_container_settings');
 }
+
+/**
+ * Implements hook_form_alter().
+ */
+function collegiate_theme_form_alter(&$form, $form_state, $form_id) {
+  if (strpos($form_id, 'node_page_layout_builder_form') !== FALSE) {
+    $form['actions']['#attributes']['class'][] = 'hds-content page__container';
+    $form['layout_builder_message']['#attributes']['class'][] = 'hds-content page__container';
+  }
+}

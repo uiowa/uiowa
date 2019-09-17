@@ -1,0 +1,43 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a one column layout.
+ *
+ * Available variables:
+ * - content: The content for this layout.
+ * - attributes: HTML attributes for the layout <div>.
+ *
+ * @ingroup themeable
+ * @see https://www.drupal.org/docs/8/api/layout-api/how-to-register-layouts
+ * @see https://v4-alpha.getbootstrap.com/layout/grid/
+ */
+#}
+{%
+  set classes = [
+    'layout',
+    'layout__region',
+    'layout--onecol',
+    'flex__wrapper',
+    'feature__container',
+    settings.extra_classes,
+  ]
+%}
+
+{% if content.content %}
+
+    {% if region_attributes.content.storage['data-region'] %}
+        {{ attach_library('collegiate_theme/admin') }}
+    {% endif %}
+
+    <section{{ attributes.addClass(classes) }}>
+
+        {% if region_attributes.content.storage['data-region'] %}
+            <div {{ region_attributes.content.addClass('flex__wrapper') }}>
+            {% endif %}
+            {{ content.content }}
+            {% if region_attributes.content.storage['data-region'] %}
+            </div>
+        {% endif %}
+
+    </section>
+{% endif %}
