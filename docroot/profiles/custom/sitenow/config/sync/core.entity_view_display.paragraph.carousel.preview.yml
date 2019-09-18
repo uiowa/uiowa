@@ -1,0 +1,42 @@
+uuid: d76de6e3-a3e4-48df-a089-6219b40146a4
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.preview
+    - field.field.paragraph.carousel.field_carousel_item
+    - field.field.paragraph.carousel.field_uip_classes
+    - field.field.paragraph.carousel.field_uip_colwidth
+    - field.field.paragraph.carousel.field_uip_display_title
+    - field.field.paragraph.carousel.field_uip_id
+    - field.field.paragraph.carousel.field_uip_title
+    - paragraphs.paragraphs_type.carousel
+  module:
+    - entity_reference_revisions
+id: paragraph.carousel.preview
+targetEntityType: paragraph
+bundle: carousel
+mode: preview
+content:
+  field_carousel_item:
+    type: entity_reference_revisions_entity_view
+    weight: 1
+    label: hidden
+    settings:
+      view_mode: preview
+      link: ''
+    third_party_settings: {  }
+    region: content
+  field_uip_title:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden:
+  field_uip_classes: true
+  field_uip_colwidth: true
+  field_uip_display_title: true
+  field_uip_id: true
