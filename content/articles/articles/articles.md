@@ -1,7 +1,7 @@
 ---
-title: "Articles"
-has_children: true
-parent: "Content"
+title: "Article Content"
+has_children: false
+parent: "Articles"
 nav_order: 2
 ---
 

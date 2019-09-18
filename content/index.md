@@ -8,4 +8,4 @@ nav_order: 2
 
 Go to Add Content via Content > Add Content (/node/add)
 
-On this page you can add three types of content: Article, Basic page, and Person.
+On this page you can add three types of content: [Article](articles/index.md), [Basic page](basic-pages/basic-pages.md), and [Person](person/person.md).
