@@ -1,0 +1,66 @@
+uuid: 816b89dc-55e8-4ec9-b9a9-c2545751f76b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.carousel_image.field_carousel_image_caption
+    - field.field.paragraph.carousel_image.field_carousel_image_image
+    - field.field.paragraph.carousel_image.field_uip_classes
+    - field.field.paragraph.carousel_image.field_uip_id
+    - paragraphs.paragraphs_type.carousel_image
+  module:
+    - field_group
+    - media_library
+    - text
+third_party_settings:
+  field_group:
+    group_carousel_image_settings:
+      children:
+        - field_uip_classes
+        - field_uip_id
+      parent_name: ''
+      weight: 2
+      format_type: details
+      format_settings:
+        id: ''
+        classes: ''
+        open: false
+        required_fields: true
+      label: 'Carousel Image Settings'
+id: paragraph.carousel_image.default
+targetEntityType: paragraph
+bundle: carousel_image
+mode: default
+content:
+  field_carousel_image_caption:
+    weight: 1
+    settings:
+      rows: 3
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_carousel_image_image:
+    type: media_library_widget
+    weight: 0
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+    region: content
+  field_uip_classes:
+    weight: 4
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_uip_id:
+    weight: 5
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden:
+  created: true
+  status: true
