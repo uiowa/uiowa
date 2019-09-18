@@ -5,7 +5,7 @@ parent: "Articles"
 nav_order: 2
 ---
 
-# Article
+# Article Content
 
 Use *articles* for time-sensitive content like news, press releases or blog posts.
 

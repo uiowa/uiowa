@@ -2,9 +2,10 @@
 title: "Articles Paragraph"
 has_children: false
 parent: "Articles"
-nav_order: 1
+nav_order: 2
 ---
 # Articles Paragraph
+
 ## On a page where you wish to list all of the articles regardless of their ‘Tags’:
 1. Add a ‘Section’
 2. Add the ‘Articles’ paragraph
