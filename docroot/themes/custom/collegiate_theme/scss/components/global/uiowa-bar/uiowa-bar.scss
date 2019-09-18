@@ -1,7 +1,79 @@
 @import "assets/scss/_variables.scss";
 @import "assets/scss/_utilities.scss";
-@import "components/03 - global/branding-bar/uiowa-apply/_uiowa-apply.scss";
-@import "components/03 - global/branding-bar/uiowa-links/_uiowa-links.scss";
-@import "components/03 - global/branding-bar/uiowa-search/_uiowa-search.scss";
-@import "components/03 - global/branding-bar/uiowa-bar/_uiowa-bar.scss";
-@import "components/03 - global/branding-bar/uiowa-search/_uiowa-search.scss";
+//@import "components/03 - global/branding-bar/uiowa-apply/_uiowa-apply.scss";
+//@import "components/03 - global/branding-bar/uiowa-links/_uiowa-links.scss";
+//@import "components/03 - global/branding-bar/uiowa-search/_uiowa-search.scss";
+//@import "components/03 - global/branding-bar/uiowa-bar/_uiowa-bar.scss";
+//@import "components/03 - global/branding-bar/uiowa-search/_uiowa-search.scss";
+
+
+// apply hds styles to uiowa_bar search form
+
+.hds-content {
+  &.hds-content__search {
+    display: flex;
+    justify-content: flex-start;
+    height: $xlg;
+
+    .form-item,
+    .form-actions {
+      margin: 0;
+    }
+
+    input[type="text"] {
+      margin: 0;
+      height: $xlg;
+      border-radius: 0;
+    }
+
+    input[type="submit"] {
+      height: $xlg;
+      margin-left: -4px;
+      @include padding($top: $sm, $bottom: $sm);
+    }
+  }
+}
+
+
+// additional styles for uiowa_bar
+
+#uiowa-search {
+  display: flex;
+}
+
+.uiowa-bar--navbar--links {
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  li {
+    display: inline-flex;
+    @include margin($right: $xlg);
+
+    a {
+      text-decoration: none;
+    }
+  }
+}
+
+// styles for html.html.twig
+
+.uiowa__container {
+  background: $secondary;
+  @include padding($top: $sm, $bottom: $sm);
+  .uiowa-bar--wrapper {
+    @extend %container;
+    padding: 0;
+    background: $secondary;
+  }
+}
+
+.uiowa__container--full {
+  @include padding($top: $sm, $right: $lg, $bottom: $sm, $left: $lg);
+  background: $secondary;
+  .uiowa-bar--wrapper {
+    background: $secondary;
+  }
+}
+
+
