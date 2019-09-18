@@ -48,7 +48,7 @@
       {{ 'Skip to main content'|t }}
     </a>
 
-{% set my_attribute = create_attribute() %}
+{% set uiowa_attribute = create_attribute() %}
 
 {% if collegiate_theme_container_settings == 'page__container' %}
     {% set header_classes = ['uiowa__container'] %}
@@ -58,7 +58,7 @@
     {% set header_classes = ['uiowa__container--full'] %}
 {% endif %}
 
-<div {{ my_attribute.addClass(header_classes) }}>{{ page_top }}</div>
+<div {{ uiowa_attribute.addClass(header_classes) }}>{{ page_top }}</div>
     {{ page }}
     {{ page_bottom }}
     <js-bottom-placeholder token="{{ placeholder_token }}">
