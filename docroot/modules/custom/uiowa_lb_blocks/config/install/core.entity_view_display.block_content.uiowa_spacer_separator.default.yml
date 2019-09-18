@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_spacer_separator
+    - field.field.block_content.uiowa_spacer_separator.field_uiowa_spacer_separator_txt
+  module:
+    - text
+id: block_content.uiowa_spacer_separator.default
+targetEntityType: block_content
+bundle: uiowa_spacer_separator
+mode: default
+content:
+  field_uiowa_spacer_separator_txt:
+    weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+hidden: {  }

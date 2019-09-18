@@ -1,36 +1,95 @@
-<div id="feature__container" class="feature__container">
+{% if block_type == 'basic' %}
 
-{% set counter = 0 %}
+<div id="feature__container"
+  class="feature__container {{ feature_type }} {{ feature_state }}">
 
-{% for item in feature.items %}
+  {% set counter = 0 %}
+  {% for item in feature.items %}
+  {% if counter == 0 %}
+  {% set firstitem = 'true' %}
+  {% else %}
+  {% set firstitem = 'false' %}
+  {% endif %}
 
-{% if counter == 0 %}
-    {% set openclass = 'feature is-open' %}
-{% else %}
-    {% set openclass = 'feature' %}
-{% endif %}
+  {% include "@feature-block--basic" with {
+    "feature_banner_image": item.feature_banner_image,
+    "feature_link": item.feature_link,
+    "feature_title": item.feature_title,
+    "feature_sub": item.feature_sub
+  } %}
 
-<a href="{{ item.feature_link }}" tabindex="0" class="{{ openclass }}">
-    <div class="feature__wrapper" {% if item.feature_banner_image %} style="background-image: url('{% spaceless %}{{ item.feature_banner_image }}{% endspaceless %}'); background-size: cover; background-position: center" {% endif %}>
+  {% set counter = counter + 1 %}
+  {% endfor %}
+
+</div>
+
+{% elseif block_type == 'advanced' %}
+
+{% if feature_type == 'video' %}
+<div class="video__container">
+  <button class="video-btn video-btn__pause" id="video-btn">
+    <span class="element-invisible">Pause</span></button>
+  {% endif %}
+
+  <div id="feature__container"
+    class="feature__container {{ feature_type }} {{ feature_state }}">
+
+    {% set counter = 0 %}
+
+    {% for item in feature.items %}
+
+    {% if counter == 0 %}
+    {% set firstitem = 'true' %}
+    {% else %}
+    {% set firstitem = 'false' %}
+    {% endif %}
+
+    {% if feature_type == 'video' %}
+
+    {% if firstitem == 'true' %}
+
+    <a href="{{ item.feature_link }}" tabindex="0" aria-expanded="{{ firstitem }}" class="feature">
+      <div class="feature__wrapper">
+
+        <video autoplay="autoplay" muted="muted" loop="loop" id="video-container">
+          <source src="https://tippie.uiowa.edu/sites/tippie.uiowa.edu/files/video/tippie_build1_final_720.mp4" type="video/mp4">
+        </video>
 
         <div class="feature__content">
-            <div class="feature__bracket">
-                <h2 class="feature__heading">{{ item.feature_title }}</h2>
-                <hr class="feature__hr">
-                <p class="feature__subheading">{{ item.feature_sub }}</p>
-            </div>
+          <div class="feature__bracket">
+            <h2 class="feature__heading">{{ item.feature_title }}</h2>
+            <hr class="feature__hr">
+            <p class="feature__subheading">{{ item.feature_sub }}</p>
+          </div>
         </div>
 
         <div class="feature__teaser">
-            <h3 class="feature__teaser-heading">{{ item.feature_title }}
-                <i aria-hidden="true" class="fas fa-plus"></i>
-            </h3>
+          <h3 class="feature__teaser-heading">{{ item.feature_title }}
+            <i aria-hidden="true" class="fas fa-plus"></i>
+          </h3>
         </div>
 
-    </div>
-</a>
+      </div>
+    </a>
+    {% else %}
 
-{% set counter = counter + 1 %}
-{% endfor %}
+    {% include "@feature-block--basic" with {
+      "feature_banner_image": item.feature_banner_image,
+      "feature_link": item.feature_link,
+      "feature_title": item.feature_title,
+      "feature_sub": item.feature_sub
+    } %}
 
+    {% endif %}
+    {% endif %}
+
+    {% set counter = counter + 1 %}
+    {% endfor %}
+
+  </div>
+
+  {% if feature_type == 'video' %}
 </div>
+{% endif %}
+
+{% endif %}

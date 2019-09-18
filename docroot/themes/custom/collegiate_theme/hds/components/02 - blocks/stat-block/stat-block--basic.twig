@@ -1,0 +1,6 @@
+<div class="stat" {% if stat_image %}
+  style="background-image: url('{% spaceless %}{{ stat_image }}{% endspaceless %}'); background-size: cover; background-position: center"
+  {% endif %}>
+  <h2 class="stat__title">{{ stat_title }}</h2>
+  <p class="stat__description">{{ stat_summary }}</p>
+</div>

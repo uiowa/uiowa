@@ -1,18 +1,18 @@
 {% if button.background_type == 'bg-type--dark' %}
-<div class="bg-type--dark">
+  <div class="bg-type--dark">
   {% elseif button.background_type == 'bg-type--light' %}
-  <div class="bg-type--light">
+    <div class="bg-type--light">
     {% endif %}
 
     <a href="{{ button.link }}" class="bttn {{ button.type }}">
       {% if button.icon == 'yes' %}
-      <i class="fas fa-info-circle"></i>
+        <i class="fas fa-info-circle"></i>
       {% endif %}
       {{ button.text }}
     </a>
 
     {% if button.background_type == 'bg-type--dark' %}
-  </div>
+    </div>
   {% elseif button.background_type == 'bg-type--light' %}
-</div>
+  </div>
 {% endif %}

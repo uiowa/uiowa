@@ -1,0 +1,165 @@
+@import "assets/scss/_variables.scss";
+@import "assets/scss/_utilities.scss";
+@import "assets/scss/_fonts.scss";
+@import "assets/scss/_base.scss";
+@import url('https://use.fontawesome.com/releases/v5.8.2/css/all.css');
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900&display=swap');
+
+// Full-width and Container spacing adjustments
+
+.block-help-block,
+.hds-content.form-actions,
+.messages,
+.js-form-type-vertical-tabs {
+  .page__full & {
+    @include margin($top: 0, $right: $lg, $bottom: 0, $left: $lg);
+  }
+
+  .page & {
+    @extend %container;
+  }
+}
+
+.messages {
+  .page & {
+    @include padding($top: $md, $right: $lg, $bottom: $md, $left: $lg);
+  }
+}
+
+// Layout Builder Editor Styles
+
+.contextual .trigger {
+  position: relative !important;
+}
+
+.layout-builder__region {
+  width: 100%;
+}
+
+.layout-builder-block {
+  padding: 0;
+  cursor: move;
+}
+
+.layout-builder__add-block {
+  padding: 1.5em;
+}
+
+.layout--threecol,
+.layout--twocol,
+.layout--onecol {
+
+  .layout-builder-block,
+  .layout-builder__add-block {
+    flex-basis: 100%;
+  }
+
+  &.section-column__row {
+
+    .layout-builder-block,
+    .layout-builder__add-block {
+      flex-basis: unset;
+      flex: 1 1 0%;
+    }
+
+    .layout-builder-block.block-spacer-separator,
+    .layout-builder-block.block-inline-blockuiowa-text-area {
+      flex-basis: 100%;
+    }
+  }
+}
+
+.layout--onecol.feature__container-expanded {
+
+  .layout-builder-block,
+  .layout-builder__add-block {
+    flex-basis: unset;
+    flex: 1 1 0%;
+  }
+}
+
+.slick-container .layout-builder__region-label {
+  display: none !important;
+}
+
+.block-inline-blockuiowa-card,
+.block-inline-blockuiowa-noteworthy {
+  position: relative;
+  display: flex;
+  flex: 1;
+}
+
+.card__wrapper .card__wrapper {
+  width: 100%;
+}
+
+/*
+.region-title {
+  background: #eff6fc;
+  text-align: center;
+  display: inline-block;
+  position: absolute;
+  padding: 10px 10px 5px 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 10.5px;
+  letter-spacing: .2em;
+  color: #2f91da;
+  z-index: 100;
+
+  button {
+    z-index: 90000;
+    cursor: pointer;
+  }
+}
+*/
+
+.block-inline-blockuiowa-feature {
+  display: flex;
+  flex: 1;
+}
+
+.feature__container-expanded .block-inline-blockuiowa-feature .feature {
+  flex: 1;
+}
+
+.block-inline-blockuiowa-feature .feature:hover .feature__content,
+.block-inline-blockuiowa-feature .feature:focus .feature__content {
+  opacity: 0;
+}
+
+.block-inline-blockuiowa-feature .feature:nth-child(1) .feature__teaser {
+  opacity: 1;
+}
+
+.block-inline-blockuiowa-feature .feature {
+  flex: 1 1 0%;
+  display: flex;
+  min-height: 500px;
+}
+
+.block-inline-blockuiowa-feature .feature__wrapper {
+  width: 100%;
+}
+
+.feature__container .layout__region .layout-builder__region {
+  align-content: stretch;
+  align-items: stretch;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  display: flex;
+}
+
+.feature__container-expanded .layout__region .layout-builder__region:hover>.feature,
+.feature__container-expanded .layout__region .layout-builder__region:focus-within>.feature {
+  @include breakpoint(sm) {
+    flex: unset;
+    flex-grow: 0;
+  }
+}
+
+.feature__container-expanded .layout__region .layout-builder__region:hover>.feature:hover,
+.feature__container-expanded .layout__region .layout-builder__region:focus-within>.feature:focus {
+  flex-grow: 1;
+}

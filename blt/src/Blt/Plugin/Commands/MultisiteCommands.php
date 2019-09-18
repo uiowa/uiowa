@@ -441,6 +441,40 @@ class MultisiteCommands extends BltTasks {
   }
 
   /**
+   * Create the local settings.php file.
+   *
+   * @command uiowa:settings:local
+   *
+   * @param1 string $domain
+   *
+   * @input string $domain
+   *
+   * @aliases uils
+   *
+   * @throws \Acquia\Blt\Robo\Exceptions\BltException
+   */
+  public function createLocalSettingsFile($domain) {
+    $filename = 'local.settings.php';
+    $copy = TRUE;
+    $new = $this->getConfigValue('docroot') . "/sites/$domain/settings/$filename";
+    $default = $this->getConfigValue('docroot') . "/sites/default/settings/default.$filename";
+
+    // Get the context for the site.
+    $this->switchSiteContext($domain);
+
+    // If settings file exists, ask if it should be overwritten.
+    if (file_exists($new) && !$this->confirm('The local.settings.php file already exists. Are you sure you want to overwrite it?')) {
+      $copy = FALSE;
+    }
+
+    if ($copy) {
+      $this->taskFilesystemStack()->copy($default, $new, TRUE)->run();
+
+      $this->getConfig()->expandFileProperties($new);
+    }
+  }
+
+  /**
    * Creates the site config directory.
    *
    * @param string $site_dir

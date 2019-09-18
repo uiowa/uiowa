@@ -61,6 +61,16 @@
     {% set navbar_classes = ['navbar--primary'] %}
 {% endif %}
 
+{% set node_attributes = create_attribute() %}
+
+{% if collegiate_theme_container_settings == 'page__container' %}
+    {% set node_classes = ['page'] %}
+{% elseif collegiate_theme_container_settings == 'page__container--mixed' %}
+    {% set node_classes = ['page'] %}
+{% else %}
+    {% set node_classes = ['page__full'] %}
+{% endif %}
+
 <header class="header site-header {{ collegiate_theme_header_color_settings }} {{ collegiate_theme_header_alignment_settings }}">
 <div {{ attributes.addClass(header_classes) }}>
 
@@ -91,6 +101,7 @@
 </header>
 
 
+
 <div class="{{ collegiate_theme_container_settings }}">
 
   {{ page.secondary_menu }}
@@ -100,14 +111,11 @@
 
 </div>
 
-<div class="{% if not node.layout_builder__layout %}{{ collegiate_theme_container_settings }}{% endif %}">
+<div {{ node_attributes.addClass(node_classes) }}>
   <main role="main">
     <a id="main-content" tabindex="-1"></a>
     {# link is in html.html.twig #}
-
-<div class="hds-content">
       {{ page.content }}
-    </div>
     {# /.layout-content #}
 
     {% if page.sidebar_first %}
