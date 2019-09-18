@@ -5,11 +5,28 @@
 @import url('https://use.fontawesome.com/releases/v5.8.2/css/all.css');
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900&display=swap');
 
-// Layout Builder Editor Styles
+// Full-width and Container spacing adjustments
 
-.block-help-block {
-  @extend %container;
+.block-help-block,
+.hds-content.form-actions,
+.messages,
+.js-form-type-vertical-tabs {
+  .page__full & {
+    @include margin($top: 0, $right: $lg, $bottom: 0, $left: $lg);
+  }
+
+  .page & {
+    @extend %container;
+  }
 }
+
+.messages {
+  .page & {
+    @include padding($top: $md, $right: $lg, $bottom: $md, $left: $lg);
+  }
+}
+
+// Layout Builder Editor Styles
 
 .contextual .trigger {
   position: relative !important;
@@ -31,29 +48,34 @@
 .layout--threecol,
 .layout--twocol,
 .layout--onecol {
-   .layout-builder-block,
-   .layout-builder__add-block {
-     flex-basis: 100%;
-   }
-      &.section-column__row  {
-        .layout-builder-block,
-        .layout-builder__add-block {
-          flex-basis: unset;
-          flex: 1 1 0%;
-        }
-        .layout-builder-block.block-spacer-separator,
-        .layout-builder-block.block-inline-blockuiowa-text-area {
-          flex-basis: 100%;
-        }
-      }
+
+  .layout-builder-block,
+  .layout-builder__add-block {
+    flex-basis: 100%;
+  }
+
+  &.section-column__row {
+
+    .layout-builder-block,
+    .layout-builder__add-block {
+      flex-basis: unset;
+      flex: 1 1 0%;
     }
 
+    .layout-builder-block.block-spacer-separator,
+    .layout-builder-block.block-inline-blockuiowa-text-area {
+      flex-basis: 100%;
+    }
+  }
+}
+
 .layout--onecol.feature__container-expanded {
-   .layout-builder-block,
-   .layout-builder__add-block {
-     flex-basis: unset;
-     flex: 1 1 0%;
-   }
+
+  .layout-builder-block,
+  .layout-builder__add-block {
+    flex-basis: unset;
+    flex: 1 1 0%;
+  }
 }
 
 .slick-container .layout-builder__region-label {

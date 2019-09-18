@@ -21,4 +21,13 @@
    height: 23px;
 }
 
-
+.page__container--full {
+  .region-breadcrumb,
+  .page-title,
+  .block-field-blocknodepagebody {
+    @include padding($top: 0, $right: $lg, $bottom: 0, $left: $lg);
+  }
+  nav.tabs {
+    @include margin($right: $lg, $left: $lg);
+  }
+}
