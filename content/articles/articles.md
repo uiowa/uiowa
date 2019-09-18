@@ -1,6 +1,6 @@
 ---
 title: "Articles"
-has_children: false
+has_children: true
 parent: "Content"
 nav_order: 2
 ---
