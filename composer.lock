@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3cb6146737933a4907ca286dc3390f40",
+    "content-hash": "a5713c175ded2e63d111f2648b09e218",
     "packages": [
         {
             "name": "acquia/blt",
@@ -680,16 +680,16 @@
         },
         {
             "name": "behat/mink-selenium2-driver",
-            "version": "dev-master",
+            "version": "1.3.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/minkphp/MinkSelenium2Driver.git",
-                "reference": "3ab9f315e9ad63cc518ccc72910754fedd6de015"
+                "reference": "0a09c4341621fca937a726827611b20ce3e2c259"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/minkphp/MinkSelenium2Driver/zipball/3ab9f315e9ad63cc518ccc72910754fedd6de015",
-                "reference": "3ab9f315e9ad63cc518ccc72910754fedd6de015",
+                "url": "https://api.github.com/repos/minkphp/MinkSelenium2Driver/zipball/0a09c4341621fca937a726827611b20ce3e2c259",
+                "reference": "0a09c4341621fca937a726827611b20ce3e2c259",
                 "shasum": ""
             },
             "require": {
@@ -703,7 +703,7 @@
             "type": "mink-driver",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.4.x-dev"
+                    "dev-master": "1.3.x-dev"
                 }
             },
             "autoload": {
@@ -737,7 +737,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2019-09-02T09:49:55+00:00"
+            "time": "2019-09-02T09:46:54+00:00"
         },
         {
             "name": "behat/transliterator",
@@ -4993,7 +4993,6 @@
                 },
                 "patches_applied": {
                     "2869592 - Disabled update module shouldn't produce a status report warning": "https://www.drupal.org/files/issues/2869592-remove-update-warning-7.patch",
-                    "2885441 - EntityReferenceAutocompleteWidget should define its size setting as an integer": "https://www.drupal.org/files/issues/2885441-2.patch",
                     "2815221 - Add quickedit to the latest-revision route": "https://www.drupal.org/files/issues/2019-03-05/2815221-116.patch",
                     "1356276 - Allow profiles to define a base/parent profile and load them in the correct order": "https://www.drupal.org/files/issues/2018-10-12/1356276-531.patch",
                     "2914389 - Allow profiles to exclude dependencies of their parent": "https://www.drupal.org/files/issues/2018-07-09/2914389-8-do-not-test.patch"
@@ -15549,7 +15548,7 @@
             "dist": {
                 "type": "path",
                 "url": "docroot/profiles/custom/collegiate_basic",
-                "reference": "70bb8a246d460086e272c870c7d118b2190eef81"
+                "reference": "1e3c919a51926a0ebf556c9eef75c96015225e11"
             },
             "require": {
                 "composer/installers": "^1.6",
@@ -15560,6 +15559,8 @@
                 "drupal/components": "^1.0",
                 "drupal/config_actions_provider": "^1.0@RC",
                 "drupal/config_sync": "^2.0@beta",
+                "drupal/layout_builder_restrictions": "^2.2",
+                "drupal/lightning_media": "^3.12",
                 "drupal/linkit": "^5.0beta"
             },
             "type": "drupal-profile",
@@ -18068,7 +18069,8 @@
         "drupal/better_normalizers": 10,
         "drupal/layout_builder_styles": 10,
         "drupal/stage_file_proxy": 10,
-        "uiowa/collegiate": 20
+        "uiowa/collegiate": 20,
+        "uiowa/collegiate_basic": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
