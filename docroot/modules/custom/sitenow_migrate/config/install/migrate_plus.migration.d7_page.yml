@@ -6,6 +6,7 @@ source:
   constants:
     USER_ID: 0
     BODY_FORMAT: filtered_html
+    DELTA: 0
 destination:
   plugin: entity:node
   type: page
@@ -34,28 +35,6 @@ process:
   changed: changed
   promote: promote
   sticky: sticky
-  
-  'field_page_content_block/target_id':
-    -
-      plugin: migration_lookup
-      migration: d7_paragraph
-      no_stub: true
-      source: entity_id
-    -
-      plugin: extract
-      index:
-        - 0
-
-  'field_page_content_block/target_revision_id':
-    -
-      plugin: migration_lookup
-      migration: d7_paragraph
-      no_stub: true
-      source: entity_id
-    -
-      plugin: extract
-      index:
-        - 1
 
   langcode:
     plugin: static_map
@@ -65,7 +44,10 @@ process:
       und: en
   
   # Needs to be tested.
-  'field_teaser/value': body_summary
-migration_dependencies:
-  required:
-    - d7_paragraph
+  field_teaser:
+    -
+      plugin: get
+      source: body_summary
+# migration_dependencies:
+  # required:
+    # - d7_paragraph

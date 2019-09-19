@@ -37,6 +37,11 @@ process:
 
   # Need to reference field_revision_field_article_body for this.
   body: field_article_body_value
+  # 'body/format':
+    # -
+      # plugin: concat
+      # source:
+        # - constants/BODY_FORMAT
   langcode:
     plugin: static_map
     bypass: true
@@ -45,4 +50,8 @@ process:
       und: en
   
   # Needs to be tested.
-  field_teaser: field_article_body_summary
+  field_teaser: 
+    -
+      plugin: get
+      source: field_article_body_summary
+  moderation_state: moderation_state

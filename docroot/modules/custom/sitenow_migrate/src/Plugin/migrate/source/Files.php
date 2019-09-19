@@ -59,9 +59,8 @@ class Files extends SqlBase {
       'filename' => $this->t('Filename'),
       'uri' => $this->t('URI'),
       'filemime' => $this->t('Filemime'),
-      'timestamp' => $this->t('Timestamp'),
-      'type' => $this->t('File type'),
-      'created' => $this->t('Created timestamp'),
+      'field_file_image_alt_text_value' => $this->t('Image alt text'),
+      'field_file_image_title_text_value' => $this->t('Image title text'),
     ];
     return $fields;
   }
@@ -92,7 +91,30 @@ class Files extends SqlBase {
 
     // Create filepath based on URI.
     $row->setSourceProperty('uri', str_replace("public://", "", $row->getSourceProperty('uri')));
+
+    $fileType = explode('/', $row->getSourceProperty('filemime'))[0];
+    if ($fileType == 'image') {
+      $row->setSourceProperty('meta', $this->fetchMeta($row));
+    }
     return parent::prepareRow($row);
+  }
+
+  /**
+   * If the migrated file is an image, grab the alt and title text values.
+   */
+  public function fetchMeta($row) {
+    $query = $this->select('file_managed', 'f');
+    $query->join('field_data_field_file_image_alt_text', 'a', 'a.entity_id = f.fid');
+    $query->join('field_data_field_file_image_title_text', 't', 't.entity_id = f.fid');
+    $result = $query->fields('a', [
+      'field_file_image_alt_text_value',
+    ])
+      ->fields('t', [
+        'field_file_image_title_text_value',
+      ])
+      ->condition('f.fid', $row->fid)
+      ->execute();
+    return $result->fetchAssoc();
   }
 
 }

@@ -40,23 +40,29 @@ class Pages extends SqlBase {
    * {@inheritdoc}
    */
   public function query() {
-    $query = $this->select('node', 'n')
-      ->fields('n', [
-        'nid',
-        'vid',
-        'type',
-        'language',
-        'title',
-        'uid',
-        'status',
-        'created',
-        'changed',
-        'comment',
-        'promote',
-        'sticky',
-        'tnid',
-        'translate',
-        ])
+    $query = $this->select('node', 'n');
+    $query->join('field_data_body', 'b', 'n.nid = b.entity_id');
+    $query = $query->fields('n', [
+      'nid',
+      'vid',
+      'type',
+      'language',
+      'title',
+      'uid',
+      'status',
+      'created',
+      'changed',
+      'comment',
+      'promote',
+      'sticky',
+      'tnid',
+      'translate',
+    ])
+      ->fields('b', [
+        'body_value',
+        'body_summary',
+        'body_format',
+      ])
       ->condition('n.type', 'page');
     return $query;
   }
@@ -100,7 +106,111 @@ class Pages extends SqlBase {
    */
   public function prepareRow(Row $row) {
     // Can do extra preparation work here.
+    switch ($row->getSourceProperty('status')) {
+
+      case 1:
+        $row->setSourceProperty('moderation_state', 'published');
+        break;
+
+      default:
+        $row->setSourceProperty('moderation_state', 'draft');
+    }
+
+    $content = $row->getSourceProperty('body_value');
+    $content = preg_replace_callback("|\[\[\{.*?\"fid\":\"(.*?)\".*?\]\]|", [$this, 'fids'], $content);
+    $row->setSourceProperty('body_value', $content);
+
+    // Check summary, and create one if none exists.
+    if (!$row->getSourceProperty('body_summary')) {
+      $new_summary = substr($content, 0, 200);
+      $looper = TRUE;
+      while ($looper && strlen($new_summary) > 0) {
+        switch (substr($new_summary, -1)) {
+
+          case '.':
+          case '!':
+          case '?':
+            $looper = FALSE;
+            break;
+
+          case ';':
+          case ':':
+          case '"':
+            $looper = FALSE;
+            $new_summary = $new_summary . '...';
+            break;
+
+          default:
+            $new_summary = substr($new_summary, 0, -1);
+        }
+      }
+      $new_summary = preg_replace("|<.*?>|", '', $new_summary);
+      $row->setSourceProperty('body_summary', $new_summary);
+    }
+
     return parent::prepareRow($row);
+  }
+
+  /**
+   * Regex to find Drupal 7 JSON for inline embedded files.
+   */
+  public function fids($match) {
+    $fid = $match[1];
+    $file_data = $this->fidQuery($fid);
+    if ($file_data) {
+      $uuid = $this->getMid($file_data['filename'])['uuid'];
+      return $this->constructInlineEntity($uuid);
+    }
+    // Failed to find a file, so let's leave the content unchanged.
+    return $match;
+  }
+
+  /**
+   * Simple query to get info on the Drupal 7 file based on fid.
+   */
+  public function fidQuery($fid) {
+    $query = $this->select('file_managed', 'f')
+      ->fields('f', [
+        'uid',
+        'filesize',
+        'timestamp',
+        'type',
+        'filename',
+        'filemime',
+      ])
+      ->condition('f.fid', $fid);
+    $results = $query->execute();
+    return $results->fetchAssoc();
+  }
+
+  /**
+   * Fetch the media uuid based on the provided filename.
+   */
+  public function getMid($filename) {
+    $connection = \Drupal::database();
+    $query = $connection->select('file_managed', 'f');
+    $query->join('media__field_media_image', 'fmi', 'f.fid = fmi.field_media_image_target_id');
+    $query->join('media', 'm', 'fmi.entity_id = m.mid');
+    $result = $query->fields('m', ['uuid'])->condition('f.filename', $filename)
+      ->execute();
+    return $result->fetchAssoc();
+  }
+
+  /**
+   * Build the new inline embed entity format for Drupal 8 images.
+   */
+  public function constructInlineEntity($uuid) {
+    $parts = [
+      '<drupal-entity',
+      'data-embed-button="media_entity_embed"',
+      'data-entity-embed-display="view_mode:media.image_medium"',
+      'data-entity-embed-display-settings=""',
+      'data-entity-type="media"',
+      'data-entity-uuid="' . $uuid . '"',
+      'data-langcode="en">',
+      '</drupal-entity>',
+    ];
+    return implode(" ", $parts);
   }
 
 }
