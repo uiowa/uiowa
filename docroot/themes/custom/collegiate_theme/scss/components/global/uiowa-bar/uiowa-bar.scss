@@ -13,7 +13,7 @@
   &.hds-content__search {
     display: flex;
     justify-content: flex-start;
-    height: $xlg;
+    height: $lg;
 
     .form-item,
     .form-actions {
@@ -22,18 +22,19 @@
 
     input[type="text"] {
       margin: 0;
-      height: $xlg;
+      height: $lg;
       border-radius: 0;
+      border: none;
     }
 
     input[type="submit"] {
-      height: $xlg;
+      height: $lg;
       margin-left: -4px;
-      @include padding($top: $sm, $bottom: $sm);
+      font-size: $small-font-size;
+      @include padding($top: $xsm-sm, $bottom: $xsm-sm);
     }
   }
 }
-
 
 // additional styles for uiowa_bar
 
@@ -75,5 +76,3 @@
     background: $secondary;
   }
 }
-
-

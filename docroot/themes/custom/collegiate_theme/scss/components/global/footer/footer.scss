@@ -1,4 +1,77 @@
 @import "assets/scss/_variables.scss";
 @import "assets/scss/_utilities.scss";
-@import "components/03 - global/footer/_footer.scss";
+//@import "components/03 - global/footer/_footer.scss";
 
+.uiowa-footer--default {
+  align-items: baseline;
+
+  @include breakpoint(sm) {
+    display: flex;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  .menu {
+    margin: 0;
+    li.menu-item {
+      list-style: none;
+    }
+  }
+
+  .block-title {
+    color: $white;
+    font-size: 1.5rem;
+  }
+
+  .col-md-8.col-left {
+    flex-grow: 1;
+  }
+
+  .col-sm-6 {
+    @include breakpoint(sm) {
+      display: flex;
+    }
+
+    .menu {
+      @include breakpoint(sm) {
+        @include padding($top: 0, $right: 0, $bottom: 0, $left: $xlg);
+      }
+    }
+  }
+}
+
+
+
+// styles for html.html.twig
+
+.uiowa__container {
+  .uiowa-footer--default {
+    padding: $lg;
+    background: $secondary;
+    @extend %container;
+    @include breakpoint(sm) {
+      @include padding($top: $lg, $right: 0, $bottom: 0, $left: 0);
+    }
+  }
+
+  .uiowa-footer--login-link {
+    background: $secondary;
+    @extend %container;
+  }
+}
+
+.uiowa__container--full {
+  .uiowa-footer--default {
+    padding: $lg;
+    background: $secondary;
+    @include breakpoint(sm) {
+      @include padding($top: $lg, $right: 0, $bottom: 0, $left: 0);
+    }
+  }
+
+  .uiowa-footer--login-link {
+    background: $secondary;
+  }
+}
