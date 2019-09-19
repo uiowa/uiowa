@@ -20,6 +20,9 @@ When a website has been determined to be inactive, ITS will attempt to contact t
 
 Once a website is removed due to inactivity, a copy of the site content cannot be restored.
 
+## Domain Changes
+
+Each request to change a website's domain will be reviewed on case-by-case basis. Complications can arise with absolute URLs within the site content. Changing a website's domain is a multi-step process and will be billed to the site owner. In some cases, it may be more cost effective for the site owner to request a replacement website and move content manually. As the existing site might be linked to from other sites, the site owner is responsible for advertising the change to campus and others.
 
 ## Platform Updates
 
