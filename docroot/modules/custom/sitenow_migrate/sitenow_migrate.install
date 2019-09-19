@@ -5,7 +5,7 @@
  * Removes config/install files upon uninstall.
  *
  * Required for module changes, as this needs to be uninstalled
- * and then reinstalled for migration changes to register.
+ * and then reinstalled for changes to register.
  */
 
 /**
@@ -13,16 +13,12 @@
  */
 function sitenow_migrate_uninstall() {
   $module_path = DRUPAL_ROOT . base_path() . drupal_get_path('module', 'sitenow_migrate') . '/config/install';
-  $configs = [];
   $files = file_scan_directory($module_path, '/migrate_plus/');
   if ($files) {
     foreach ($files as $file) {
-      $configs[] = $file->name;
+      drush_print('...' . $file->name);
+      \Drupal::configFactory()->getEditable($file->name)->delete();
     }
-  }
-  foreach ($configs as $config_name) {
-    drush_print("..." . $config_name);
-    \Drupal::configFactory()->getEditable($config_name)->delete();
   }
   return TRUE;
 }

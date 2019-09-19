@@ -85,6 +85,9 @@ class Pages extends SqlBase {
       'sticky' => $this->t('Stickied'),
       'tnid' => $this->t('Translation ID'),
       'translate' => $this->t('Page being translated?'),
+      'body_value' => $this->t('The actual body text being migrated'),
+      'body_summary' => $this->t('The page\'s summary test'),
+      'body_format' => $this->t('The body text field\'s formatting'),
     ];
     return $fields;
   }
@@ -105,7 +108,7 @@ class Pages extends SqlBase {
    * Prepare Row used for altering source data prior to its insertion into the destination.
    */
   public function prepareRow(Row $row) {
-    // Can do extra preparation work here.
+    // Determine if the content should be published or not.
     switch ($row->getSourceProperty('status')) {
 
       case 1:
@@ -116,13 +119,15 @@ class Pages extends SqlBase {
         $row->setSourceProperty('moderation_state', 'draft');
     }
 
+    // Search for D7 inline embeds and replace with D8 inline entities.
     $content = $row->getSourceProperty('body_value');
-    $content = preg_replace_callback("|\[\[\{.*?\"fid\":\"(.*?)\".*?\]\]|", [$this, 'fids'], $content);
+    $content = preg_replace_callback("|\[\[\{.*?\"fid\":\"(.*?)\".*?\]\]|", [$this, 'entityReplace'], $content);
     $row->setSourceProperty('body_value', $content);
 
     // Check summary, and create one if none exists.
     if (!$row->getSourceProperty('body_summary')) {
       $new_summary = substr($content, 0, 200);
+      // Shorten the string until we reach a natural(ish) breaking point.
       $looper = TRUE;
       while ($looper && strlen($new_summary) > 0) {
         switch (substr($new_summary, -1)) {
@@ -144,17 +149,18 @@ class Pages extends SqlBase {
             $new_summary = substr($new_summary, 0, -1);
         }
       }
+      // Strip out any HTML, and set the new summary.
       $new_summary = preg_replace("|<.*?>|", '', $new_summary);
       $row->setSourceProperty('body_summary', $new_summary);
     }
-
+    // Call the parent prepareRow.
     return parent::prepareRow($row);
   }
 
   /**
    * Regex to find Drupal 7 JSON for inline embedded files.
    */
-  public function fids($match) {
+  public function entityReplace($match) {
     $fid = $match[1];
     $file_data = $this->fidQuery($fid);
     if ($file_data) {
@@ -170,14 +176,7 @@ class Pages extends SqlBase {
    */
   public function fidQuery($fid) {
     $query = $this->select('file_managed', 'f')
-      ->fields('f', [
-        'uid',
-        'filesize',
-        'timestamp',
-        'type',
-        'filename',
-        'filemime',
-      ])
+      ->fields('f', ['filename'])
       ->condition('f.fid', $fid);
     $results = $query->execute();
     return $results->fetchAssoc();
@@ -191,7 +190,8 @@ class Pages extends SqlBase {
     $query = $connection->select('file_managed', 'f');
     $query->join('media__field_media_image', 'fmi', 'f.fid = fmi.field_media_image_target_id');
     $query->join('media', 'm', 'fmi.entity_id = m.mid');
-    $result = $query->fields('m', ['uuid'])->condition('f.filename', $filename)
+    $result = $query->fields('m', ['uuid'])
+      ->condition('f.filename', $filename)
       ->execute();
     return $result->fetchAssoc();
   }

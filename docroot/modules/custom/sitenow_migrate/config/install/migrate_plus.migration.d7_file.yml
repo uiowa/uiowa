@@ -1,25 +1,27 @@
 # Files with duplicate filenames will all be imported,
 # but all will copy from the same source.
+# This also leads to fewer files being migrated than exist in file_managed,
+# and that are listed in drush migrate-status.
 id: d7_file
 label: Files
 migration_tags:
   - Drupal 7
   - Content
   - Files
-
 migration_group: sitenow_migrate
 
 source:
   plugin: files
-  # scheme: public
   constants:
-    # Need to update this...
+    # Need to update this according to the site being migrated.
     SOURCE_BASE_PATH: 'http://brainworkshop.sites.uiowa.edu/sites/brainworkshop.sites.uiowa.edu/files/'
     DRUPAL_FILE_DIRECTORY: 'public://images/'
-    USER_ID: 0
+
+destination:
+  plugin: 'entity:file'
+
 process:
   filename:
-    -
       plugin: get
       source: filename
   source_full_path:
@@ -40,40 +42,15 @@ process:
     -
       plugin: urlencode
   uri:
-    -
-      plugin: file_copy
-      source:
-        - '@source_full_path'
-        - '@destination_full_path'
-      # file_exists: 'rename'
-      # move: FALSE
-  filemime:
-    -
-      plugin: get
-      source: filemime
-  status:
-    -
-      plugin: get
-      source: status
-  created:
-    -
-      plugin: get
-      source: timestamp
-  changed:
-    -
-      plugin: get
-      source: timestamp
-# Likely not importing users--set to 0 for anonymous.
+    plugin: file_copy
+    source:
+      - '@source_full_path'
+      - '@destination_full_path'
+  filemime: filemime
+  status: status
+  created: timestamp
+  changed: timestamp
+  # Likely not importing users--set to 0 for anonymous.
   uid:
-    -
-      plugin: concat
-      source:
-        - constants/USER_ID
-
-destination:
-  plugin: 'entity:file'
-
-
-migration_dependencies:
-  required: {  }
-  optional: {  }
+    plugin: default_value
+    default_value: 0

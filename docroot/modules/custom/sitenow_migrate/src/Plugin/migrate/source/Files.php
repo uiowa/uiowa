@@ -59,8 +59,6 @@ class Files extends SqlBase {
       'filename' => $this->t('Filename'),
       'uri' => $this->t('URI'),
       'filemime' => $this->t('Filemime'),
-      'field_file_image_alt_text_value' => $this->t('Image alt text'),
-      'field_file_image_title_text_value' => $this->t('Image title text'),
     ];
     return $fields;
   }

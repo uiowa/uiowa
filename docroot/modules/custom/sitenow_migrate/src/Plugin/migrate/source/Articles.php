@@ -107,7 +107,9 @@ class Articles extends SqlBase {
    * Prepare Row used for altering source data prior to its insertion into the destination.
    */
   public function prepareRow(Row $row) {
+    // Determine if the content should be published or not.
     switch ($row->getSourceProperty('status')) {
+
       case 1:
         $row->setSourceProperty('moderation_state', 'published');
         break;
@@ -116,14 +118,16 @@ class Articles extends SqlBase {
         $row->setSourceProperty('moderation_state', 'draft');
     }
 
+    // Search for D7 inline embeds and replace with D8 inline entities.
     $content = $row->getSourceProperty('field_article_body_value');
-    $content = preg_replace_callback("|\[\[\{.*?\"fid\":\"(.*?)\".*?\]\]|", [$this, 'fids'], $content);
+    $content = preg_replace_callback("|\[\[\{.*?\"fid\":\"(.*?)\".*?\]\]|", [$this, 'entityReplace'], $content);
     $row->setSourceProperty('field_article_body_value', $content);
 
     // Check summary, and create one if none exists.
     if (!$row->getSourceProperty('field_article_body_summary')) {
       $new_summary = substr($content, 0, 200);
       $looper = TRUE;
+      // Shorten the string until we reach a natural(ish) breaking point.
       while ($looper && strlen($new_summary) > 0) {
         switch (substr($new_summary, -1)) {
 
@@ -144,16 +148,18 @@ class Articles extends SqlBase {
             $new_summary = substr($new_summary, 0, -1);
         }
       }
+      // Strip out any HTML, and set the new summary.
       $new_summary = preg_replace("|<.*?>|", '', $new_summary);
       $row->setSourceProperty('field_article_body_summary', $new_summary);
     }
+    // Call the parent prepareRow.
     return parent::prepareRow($row);
   }
 
   /**
    * Regex to find Drupal 7 JSON for inline embedded files.
    */
-  public function fids($match) {
+  public function entityReplace($match) {
     $fid = $match[1];
     $file_data = $this->fidQuery($fid);
     if ($file_data) {
@@ -169,14 +175,7 @@ class Articles extends SqlBase {
    */
   public function fidQuery($fid) {
     $query = $this->select('file_managed', 'f')
-      ->fields('f', [
-        'uid',
-        'filesize',
-        'timestamp',
-        'type',
-        'filename',
-        'filemime',
-      ])
+      ->fields('f', ['filename'])
       ->condition('f.fid', $fid);
     $results = $query->execute();
     return $results->fetchAssoc();
@@ -190,7 +189,8 @@ class Articles extends SqlBase {
     $query = $connection->select('file_managed', 'f');
     $query->join('media__field_media_image', 'fmi', 'f.fid = fmi.field_media_image_target_id');
     $query->join('media', 'm', 'fmi.entity_id = m.mid');
-    $result = $query->fields('m', ['uuid'])->condition('f.filename', $filename)
+    $result = $query->fields('m', ['uuid'])
+      ->condition('f.filename', $filename)
       ->execute();
     return $result->fetchAssoc();
   }

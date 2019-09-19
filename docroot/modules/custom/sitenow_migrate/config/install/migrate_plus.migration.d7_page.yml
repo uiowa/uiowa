@@ -1,17 +1,16 @@
 id: d7_page
 label: Basic page migration from Drupal 7
 migration_group: sitenow_migrate
+
 source:
   plugin: pages
-  constants:
-    USER_ID: 0
-    BODY_FORMAT: filtered_html
-    DELTA: 0
+
 destination:
   plugin: entity:node
   type: page
+
 process:
-# Leave these out, since we're not migrating to a fresh install.
+  # Leave these out, since we're not migrating to a fresh install.
   # nid: nid
   # vid: vid
   langcode:
@@ -26,28 +25,22 @@ process:
     default_value: page
 # Likely not importing users--set to 0 for anonymous.
   uid:
-    -
-      plugin: concat
-      source:
-        - constants/USER_ID
+    plugin: default_value
+    default_value: 0
   status: status
   created: created
   changed: changed
   promote: promote
   sticky: sticky
-
   langcode:
     plugin: static_map
     bypass: true
     source: language
     map:
       und: en
-  
-  # Needs to be tested.
-  field_teaser:
-    -
-      plugin: get
-      source: body_summary
-# migration_dependencies:
-  # required:
-    # - d7_paragraph
+  field_teaser: body_summary
+  moderation_state: moderation_state
+
+migration_dependencies:
+  required:
+    - d7_file

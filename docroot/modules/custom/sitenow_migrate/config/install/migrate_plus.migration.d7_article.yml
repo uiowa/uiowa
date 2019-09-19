@@ -1,16 +1,16 @@
 id: d7_article
 label: Article node migration from Drupal 7
 migration_group: sitenow_migrate
+
 source:
   plugin: articles
-  constants:
-    USER_ID: 0
-    BODY_FORMAT: filtered_html
+
 destination:
   plugin: entity:node
   type: article
+
 process:
-# Leave these out, since we're not migrating to a fresh install.
+  # Leave these out, since we're not migrating to a fresh install.
   # nid: nid
   # vid: vid
   langcode:
@@ -23,35 +23,25 @@ process:
   type:
     plugin: default_value
     default_value: article
-# Likely not importing users--set to 0 for anonymous.
+  # Likely not importing users--set to 0 for anonymous.
   uid:
-    -
-      plugin: concat
-      source:
-        - constants/USER_ID
+    plugin: default_value
+    default_value: 0
   status: status
   created: created
   changed: changed
   promote: promote
   sticky: sticky
-
-  # Need to reference field_revision_field_article_body for this.
   body: field_article_body_value
-  # 'body/format':
-    # -
-      # plugin: concat
-      # source:
-        # - constants/BODY_FORMAT
   langcode:
     plugin: static_map
     bypass: true
     source: language
     map:
       und: en
-  
-  # Needs to be tested.
-  field_teaser: 
-    -
-      plugin: get
-      source: field_article_body_summary
+  field_teaser: field_article_body_summary
   moderation_state: moderation_state
+
+migration_dependencies:
+  required:
+    - d7_file

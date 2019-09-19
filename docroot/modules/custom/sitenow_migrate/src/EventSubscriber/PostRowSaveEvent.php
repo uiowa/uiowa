@@ -24,18 +24,19 @@ class PostRowSaveEvent implements EventSubscriberInterface {
   }
 
   /**
-   * Calls for the creation of a media entity after file creation.
+   * Calls for additional processing after migration import.
    *
    * {@inheritdoc}
    */
   public function onPostRowSave($event) {
     $migration = $event->getMigration();
-    // Only need this processing for the file migrations.
+    // Calls for creating a media entity for imported files.
     if ($migration->id() == 'd7_file') {
       $row = $event->getRow();
       $fids = $event->getDestinationIdValues();
       $this->makeEntity($row, $fids);
     }
+    // Body content needs to be put into paragraph for Basic Pages.
     elseif ($migration->id() == 'd7_page') {
       $row = $event->getRow();
       $nids = $event->getDestinationIdValues();
@@ -54,6 +55,7 @@ class PostRowSaveEvent implements EventSubscriberInterface {
       // Currently handles images and documents.
       // May need to check for other file types.
       switch ($fileType) {
+
         case 'image':
           $meta = $row->getSourceProperty('meta');
           $media = $entityManager->getStorage('media')->create([
@@ -92,9 +94,9 @@ class PostRowSaveEvent implements EventSubscriberInterface {
   }
 
   /**
-   * Edits the (blank) text paragraph associated with the new node.
+   * Edits the empty text paragraph associated with the new node.
    *
-   * Rollback functionality is preserved this way.
+   * Rollback functionality is preserved this way, as well.
    */
   public function createParagraph($row, $nids) {
     $newContent = $row->getSourceProperty('body_value');
