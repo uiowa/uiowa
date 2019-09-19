@@ -108,6 +108,8 @@ function sitenow_paragraphs_preprocess_paragraph(&$variables) {
       case 'card':
       case 'webform':
       case 'featured_content':
+      case 'carousel':
+      case 'carousel_image':
         // Add css if applicable.
         $variables['#attached']['library'][] = 'sitenow_paragraphs/default';
 
@@ -216,6 +218,7 @@ function uip_classes_allowed_values(FieldStorageConfig $definition, ContentEntit
 
     case 'text':
     case 'webform':
+    case 'carousel_image':
       $options['bg-light'] = 'Light Gray Background';
       $options['bg-dark'] = 'Dark Background';
       $options['bg-yellow'] = 'Gold Background';
@@ -227,6 +230,10 @@ function uip_classes_allowed_values(FieldStorageConfig $definition, ContentEntit
       $options['hide-images'] = 'Hide Images';
       $options['grid'] = 'Grid';
       $options['masonry'] = 'Masonry';
+      break;
+
+    case 'carousel':
+      $options['carousel-fade'] = 'Crossfade';
       break;
 
   }
