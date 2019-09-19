@@ -1,0 +1,79 @@
+<?php
+
+/**
+ * @file
+ * Provides a basic seminar content type for standard sites.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function entity_types_seminars_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.entity_types_seminars':
+      $filepath = dirname(__FILE__) . '/README.md';
+      if (file_exists($filepath)) {
+        $readme = file_get_contents($filepath);
+      }
+      else {
+        $filepath = dirname(__FILE__) . '/README.txt';
+        if (file_exists($filepath)) {
+          $readme = file_get_contents($filepath);
+        }
+      }
+      if (!isset($readme)) {
+        return NULL;
+      }
+
+      /* @var \Drupal\Core\Extension\ModuleHandler $moduleHandler*/
+      $moduleHandler = \Drupal::service('module_handler');
+      if ($moduleHandler->moduleExists('markdown')) {
+        $filters = $moduleHandler->invoke('markdown', 'filter_info');
+        $info = $filters['filter_markdown'];
+
+        if (function_exists($info['process callback'])) {
+          $output = $info['process callback']($readme, NULL);
+        }
+        else {
+          $output = '<pre>' . $readme . '</pre>';
+        }
+      }
+      else {
+        $output = '<pre>' . $readme . '</pre>';
+      }
+
+      return $output;
+  }
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function entity_types_seminars_page_attachments(array &$attachments) {
+  $attachments['#attached']['library'][] = 'entity_types_seminars/entity_types_seminars_styling';
+}
+
+/**
+ * Implements hook_theme().
+ */
+function entity_types_seminars_theme(array $variables) {
+  $theme = [];
+
+  $theme['node__seminar'] = [
+    'render element' => 'content',
+    'base hook' => 'node',
+    'template' => 'node--seminar',
+    'path' => drupal_get_path('module', 'entity_types_seminars') . '/templates',
+  ];
+
+  $theme['node__seminar__teaser'] = [
+    'render element' => 'content',
+    'base hook' => 'node',
+    'template' => 'node--seminar--teaser',
+    'path' => drupal_get_path('module', 'entity_types_seminars') . '/templates',
+  ];
+
+  return $theme;
+}

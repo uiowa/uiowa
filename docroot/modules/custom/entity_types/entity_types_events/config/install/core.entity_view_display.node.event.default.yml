@@ -1,0 +1,100 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.date_format.12hr_long_date
+    - core.date_format.12hr_time
+    - field.field.node.event.body
+    - field.field.node.event.event_attachments
+    - field.field.node.event.event_date
+    - field.field.node.event.event_image
+    - field.field.node.event.event_link
+    - field.field.node.event.event_location
+    - field.field.node.event.event_tags
+    - image.style.event_image
+    - node.type.event
+  module:
+    - date_recur
+    - file
+    - link
+    - media
+    - text
+    - user
+id: node.event.default
+targetEntityType: node
+bundle: event
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 4
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  event_attachments:
+    weight: 6
+    label: above
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    type: file_default
+    region: content
+  event_date:
+    weight: 2
+    label: inline
+    settings:
+      format_type: 12hr_long_date
+      occurrence_format_type: 12hr_long_date
+      same_end_date_format_type: 12hr_time
+      separator: '-'
+      timezone_override: ''
+      interpreter: ''
+      show_next: 100
+      count_per_item: true
+    third_party_settings: {  }
+    type: date_recur_basic_formatter
+    region: content
+  event_image:
+    weight: 1
+    label: hidden
+    settings:
+      image_style: event_image
+      image_link: ''
+    third_party_settings: {  }
+    type: media_thumbnail
+    region: content
+  event_link:
+    weight: 5
+    label: inline
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  event_location:
+    weight: 3
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  event_tags:
+    weight: 7
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  links:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

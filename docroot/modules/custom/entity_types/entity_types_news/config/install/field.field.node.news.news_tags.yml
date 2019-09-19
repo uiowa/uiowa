@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.news_tags
+    - node.type.news
+    - taxonomy.vocabulary.news_tags
+id: node.news.news_tags
+field_name: news_tags
+entity_type: node
+bundle: news
+label: Tags
+description: 'This a reference to the News Tags taxonomy. You can add terms to that vocabulary by typing a previously unused term to the field. Only webmasters have permission to edit taxonomies.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      news_tags: news_tags
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

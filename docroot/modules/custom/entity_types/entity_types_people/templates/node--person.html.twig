@@ -1,0 +1,216 @@
+{#
+/**
+ * @file
+ * Default theme implementation for the basic person content type.
+ */
+#}
+{%
+  set classes = [
+    node.bundle|clean_class,
+    node.isPromoted() ? 'is-promoted',
+    node.isSticky() ? 'is-sticky',
+    not node.isPublished() ? 'is-unpublished',
+    view_mode ? view_mode|clean_class,
+    'clearfix',
+  ]
+%}
+{#
+<div>path={{ file_url(node.person_image.entity.field_media_image.entity.uri.value) }}</div>
+<div>uri={{ node.person_image.entity.field_media_image.entity.uri.value }}</div>
+<div>label={{ node.person_image.entity.field_media_image.entity.label }}</div>
+<div>alt={{ node.person_image.entity.field_media_image.alt }}</div>
+<div>{{ content.person_image }}</div>
+#}
+
+{# Display person_image. #}
+{% if node.person_image.value is not empty %}
+  <div class="field field-name-person-image">
+    {% if node.person_image.entity.field_media_image.entity.uri.value is not empty %}
+      {% set image = {
+        '#theme':      'image_style',
+        '#style_name': 'person_image',
+        '#uri':        node.person_image.entity.field_media_image.entity.uri.value,
+        '#alt':        node.person_image.entity.field_media_image.alt,
+        '#attributes': { },
+      } %}
+      {{ image }}
+    {% endif %}
+  </div>
+{% endif %}
+
+{# Display person_job_title. #}
+{% if node.person_job_title.value is not empty %}
+  <div class="field field-name-person-job-title">
+    {{ node.person_job_title.value }}
+  </div>
+{% endif %}
+
+{#
+{% if node.person_address.address_line1 is not empty %}
+    {% set address = address ~ node.person_address.address_line1 ~ '<br/>' %}
+{% endif %}
+{% if node.person_address.address_line2 is not empty %}
+    {% set address = address ~ node.person_address.address_line2 ~ '<br/>' %}
+{% endif %}
+{% if node.person_address.locality is not empty %}
+    {% set address = address ~ node.person_address.locality %}
+{% endif %}
+{% if node.person_address.administrative_area is not empty %}
+    {% set address = address ~ ', ' ~ node.person_address.administrative_area %}
+{% endif %}
+{% if node.person_address.postal_code is not empty %}
+    {% set address = address ~ ' ' ~ node.person_address.postal_code %}
+{% endif %}
+{% set address = address ~ '<br/>' %}
+{{ address|raw }}
+#}
+
+{# Display address information from multiple fields. #}
+{% if (node.person_room.value is not empty)or(node.person_building.value is not empty)
+        or(node.person_address.value is not empty)or(node.person_phone.value is not empty)
+        or(node.person_email.value is not empty) %}
+  <h2 class="field-header">Contact Information</h2>
+  {% set address = '' %}
+  {% if node.person_room.value is not empty %}
+    {% set address = address ~ node.person_room.value %}
+  {% endif %}
+  {% if node.person_building.value is not empty %}
+    {% set address = address ~ ' ' ~ node.person_building.value %}
+  {% endif %}
+  {% if address is not empty %}
+    <div class="field field-name-person-room-building">
+      {{ address|raw }}
+    </div>
+  {% endif %}
+  {% if node.person_address.value is not empty %}
+    <div class="field field-name-person-address">
+      {% if (node.person_address.value is not empty) %}
+        {{ content.person_address[0] }}
+{#        {{ content.person_address[0]|without('country') }}#}
+      {% endif %}
+    </div>
+  {% endif %}
+  {% if node.person_phone.value is not empty %}
+    {% set phone = '<a href="tel:+1-' ~ node.person_phone.value ~ '">' ~ node.person_phone.value|trim|replace({'(': '', ')': '', ' ': '-', '.': '-'}) ~ '</a>' %}
+    <div class="field field-name-person-phone">
+      {{ phone|raw }}
+    </div>
+  {% endif %}
+  {% if node.person_email.value is not empty %}
+    <div class="field field-name-person-email">
+      {{ link(node.person_email.value, 'mailto:' ~ node.person_email.value) }}
+    </div>
+  {% endif %}
+{% endif %}
+
+{# Display person_types. #}
+{% if node.person_type.value is not empty %}
+  <h2 class="field-header">Person Types</h2>
+  <div class="field field-name-person-types">
+    {% set output = '' %}
+    {% for key, item in node.person_type.getvalue %}
+      {% if key > 0 %}
+        {% set output = output ~ ', ' %}
+      {% endif %}
+      {% if node.person_type[key].entity.label is not empty %}
+{#        {% set output = output ~ '<a href="' ~ path('entity.taxonomy_term.canonical', {'taxonomy_term': node.person_type[key].entity.tid.value}) ~ '">' ~ node.person_type[key].entity.label ~ '</a>' %} #}
+        {% set output = output ~ node.person_type[key].entity.label %}
+      {% endif %}
+    {% endfor %}
+    {{ output|raw }}
+  </div>
+{% endif %}
+
+{# Display person_departments. #}
+{% if node.person_department.value is not empty %}
+  <h2 class="field-header">Departments</h2>
+  <div class="field field-name-person-departments">
+    {% for key, item in node.person_department.getvalue %}
+      {% set output = '' %}
+      {% if key > 0 %}
+        {% set output = output ~ '<br/>' %}
+      {% endif %}
+      {% if node.person_department[key].entity.label is not empty %}
+        {% set output = output ~ '<a href="' ~ path('entity.taxonomy_term.canonical', {'taxonomy_term': node.person_department[key].entity.tid.value}) ~ '">' ~ node.person_department[key].entity.label ~ '</a>' %}
+      {% endif %}
+      {{ output|raw }}
+    {% endfor %}
+  </div>
+{% endif %}
+
+{# Display person_affiliations. #}
+{% if node.person_affiliation.value is not empty %}
+  <h2 class="field-header">Affiliations</h2>
+  <div class="field field-name-person-affiliations">
+    {% for key, item in node.person_affiliation.getvalue %}
+      {% set output = '' %}
+      {% if key > 0 %}
+        {% set output = output ~ '<br/>' %}
+      {% endif %}
+      {% if node.person_affiliation[key].value is not empty %}
+        {% set output = output ~ node.person_affiliation[key].value %}
+      {% endif %}
+      {{ output|raw }}
+    {% endfor %}
+  </div>
+{% endif %}
+
+{# Display person_websites. #}
+{% if node.person_website.value is not empty %}
+  <h2 class="field-header">Websites</h2>
+  <div class="field field-name-person-websites">
+    {% for key, item in node.person_website.getvalue %}
+      {% set output = '' %}
+      {% if key > 0 %}
+        {% set output = output ~ '<br/>' %}
+      {% endif %}
+      {% if node.person_website[key].uri is not empty %}
+        {% set output = output ~ '<a href="' ~ node.person_website[key].uri ~ '">' %}
+      {% endif %}
+      {% if node.person_website[key].title is not empty %}
+        {% set output = output ~ node.person_website[key].title %}
+      {% endif %}
+      {% if node.person_website[key].uri is not empty %}
+        {% set output = output ~ '</a>' %}
+      {% endif %}
+      {{ output|raw }}
+    {% endfor %}
+  </div>
+{% endif %}
+
+{# Display person_office_hours. #}
+{% if node.person_office_hours.value is not empty %}
+  <h2 class="field-header">Office Hours</h2>
+  <div class="field field-name-person-office-hours">
+    {% for key, item in node.person_office_hours.getvalue %}
+      {% set output = '' %}
+      {% if key > 0 %}
+        {% set output = output ~ '<br/>' %}
+      {% endif %}
+      {% if node.person_office_hours[key].value is not empty %}
+        {% set output = output ~ node.person_office_hours[key].value %}
+      {% endif %}
+      {{ output|raw }}
+    {% endfor %}
+  </div>
+{% endif %}
+
+{# Display person_bio. #}
+{% if node.person_bio.value is not empty %}
+  <h2 class="field-header">Biography</h2>
+  <div class="field field-name-person-bio">
+    {{ node.person_bio.value|raw }}
+  </div>
+{% endif %}
+
+{# Display person_resume_cv. #}
+{% if node.person_resume_cv.value is not empty %}
+  <div class="field field-name-person-resume-cv">
+    <a href="{{ file_url(node.person_resume_cv.entity.uri.value) }}">Resume/CV</a>
+  </div>
+{% endif %}
+
+{# Display last modified date of the node. #}
+<div class="field field-name-person-last-modified">
+  Last Modified Date: {{ node.updated|date("F j, Y", "America/Chicago") }}
+</div>

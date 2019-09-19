@@ -1,0 +1,43 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.news.body
+    - field.field.node.news.news_attachments
+    - field.field.node.news.news_author
+    - field.field.node.news.news_date
+    - field.field.node.news.news_image
+    - field.field.node.news.news_link
+    - field.field.node.news.news_location
+    - field.field.node.news.news_tags
+    - node.type.news
+  module:
+    - text
+    - user
+id: node.news.teaser
+targetEntityType: node
+bundle: news
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  news_attachments: true
+  news_author: true
+  news_date: true
+  news_image: true
+  news_link: true
+  news_location: true
+  news_tags: true
