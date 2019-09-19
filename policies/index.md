@@ -26,7 +26,17 @@ Each request to change a website's domain will be reviewed on case-by-case basis
 
 ## Platform Updates
 
-Occassionally there will be platform updates where new features, theme changes, security updates or general functionality will be updated. During this time it is possible for some website downtime or loss of functionality. For certain updates, a customer review or test process will be scheduled ahead of the rollout to ensure any changes to the platform will work as intended.
+Occasionally there will be platform updates where new features, theme changes, security updates or general functionality will be updated. During this time, it is possible for some website downtime or loss of functionality. For certain updates, a customer review or test process will be scheduled ahead of the rollout to ensure any changes to the platform will work as intended.
+
+## Accessibility/Security
+
+SiteNow strives to create a WCAG 2.0 compliant and secure websites. We reserve the right to deny requests from site owners that we believe will not meet those standards (e.g. JavaScript embeds, poor color contrast combinations). and that we will deny feature requests that we believe won't meet those standards (e.g. JavaScript embeds, inaccessible font colors).
+
+If we are notified that a site has been flagged as inaccessible or vulnerable to attack, we will take steps to remedy the issue. If an immediate remediation cannot be performed to resolve the issue, we reserve the right to suspend or permanently remove the website.
+
+Checkout these websites for more information:
+https://itsecurity.uiowa.edu/
+https://itaccessibility.uiowa.edu/web
 
 ## Videos
 
