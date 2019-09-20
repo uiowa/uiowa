@@ -28,7 +28,9 @@ class RequestASiteUrlConstraint {
       return;
     }
 
-    if (parse_url($value, PHP_URL_SCHEME) == 'http') {
+    $url = parse_url($value);
+
+    if ($url['scheme'] == 'http') {
       $formState->setError(
         $element,
         t('URL @value must begin with https:// scheme.', [
@@ -38,16 +40,14 @@ class RequestASiteUrlConstraint {
     }
 
     foreach (['port', 'user', 'pass', 'path', 'query', 'fragment'] as $invalid) {
-      if ($url = parse_url($value)) {
-        if (isset($url[$invalid])) {
-          $formState->setError(
-            $element,
-            t('URL @value must not contain a @invalid.', [
-              '@value' => $value,
-              '@invalid' => $invalid,
-            ])
-          );
-        }
+      if (isset($url[$invalid])) {
+        $formState->setError(
+          $element,
+          t('URL @value must not contain a @invalid.', [
+            '@value' => $value,
+            '@invalid' => $invalid,
+          ])
+        );
       }
     }
 
@@ -56,17 +56,14 @@ class RequestASiteUrlConstraint {
       $pattern = $formState->getValue('url_pattern');
       $pattern = explode('*.', $pattern)[1];
 
-      // This should already be a valid URL via builtin webform validation.
-      $host = parse_url($value, PHP_URL_HOST);
-
       // The host should not contain more than 4 parts, i.e. subdomains of
       // approved URL patterns. E.g. foo.bar.sites.uiowa.edu is invalid.
-      $parts = explode('.', $host);
+      $parts = explode('.', $url['host']);
 
       // The host should match the pattern minus the '*.' placeholder.
-      $match = str_replace('*.', '', $host);
+      $match = str_replace('*.', '', $url['host']);
 
-      if (count($parts) > 4 || $host != $match) {
+      if (count($parts) > 4 || $url['host'] != $match) {
         $formState->setError(
           $element,
           t('URL @value must match the URL pattern @pattern.', [
