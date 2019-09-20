@@ -30,13 +30,15 @@ class RequestASiteUrlConstraint {
 
     $url = parse_url($value);
 
-    if ($url['scheme'] == 'http') {
-      $formState->setError(
-        $element,
-        t('URL @value must begin with https:// scheme.', [
-          '@value' => $value,
-        ])
-      );
+    if ($formState->getValue('request_type') == 'New') {
+      if ($url['scheme'] == 'http') {
+        $formState->setError(
+          $element,
+          t('URL @value must begin with https:// scheme.', [
+            '@value' => $value,
+          ])
+        );
+      }
     }
 
     foreach (['port', 'user', 'pass', 'path', 'query', 'fragment'] as $invalid) {
