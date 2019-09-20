@@ -12,7 +12,7 @@ id: request_a_site
 title: 'Request a Site'
 description: 'SiteNow site request form.'
 category: ''
-elements: "hawkid:\n  '#type': textfield\n  '#title': HawkID\n  '#description': 'Your HawkID will be granted webmaster access to the site.'\n  '#readonly': true\n  '#default_value': '[current-user:name]'\n  '#required': true\nemail:\n  '#type': email\n  '#title': Email\n  '#description': 'Your email address will be used for all communications related to this request.'\n  '#readonly': true\n  '#default_value': '[current-user:mail]'\n  '#required': true\nurl_pattern:\n  '#type': select\n  '#title': 'URL Pattern'\n  '#description': 'The * character indicates a pre-approved URL pattern.'\n  '#options':\n    '*.conference.uiowa.edu': '*.conference.uiowa.edu'\n    '*.org.uiowa.edu': '*.org.uiowa.edu'\n    '*.lab.uiowa.edu': '*.lab.uiowa.edu'\n    '*.course.uiowa.edu': '*.course.uiowa.edu'\n    '*.studio.uiowa.edu': '*.studio.uiowa.edu'\n    '*.sites.uiowa.edu': '*.sites.uiowa.edu'\n    'Top-level uiowa.edu domain': 'Top-level uiowa.edu domain'\n    'Non-uiowa.edu domain': 'Non-uiowa.edu domain'\n  '#required': true\ntop_level_message:\n  '#type': webform_message\n  '#states':\n    visible:\n      ':input[name=\"url_pattern\"]':\n        value: 'Top-level uiowa.edu domain'\n  '#message_type': warning\n  '#message_message': 'Top-level uiowa.edu domains are subject to approval by UI Hostmaster.'\nnon_uiowa_message:\n  '#type': webform_message\n  '#states':\n    visible:\n      ':input[name=\"url_pattern\"]':\n        value: 'Non-uiowa.edu domain'\n  '#message_type': warning\n  '#message_message': 'Site owners are responsible for purchasing and maintaining non-uiowa.edu domains.'\nurl:\n  '#type': url\n  '#title': URL\n  '#description': 'The URL must match the pattern selected above.'\n  '#required': true\n  '#states':\n    visible:\n      ':input[name=\"url_pattern\"]':\n        filled: true\n  '#default_value': 'https://'\nadditional_comments_or_questions:\n  '#type': textarea\n  '#title': 'Additional comments or questions'\nactions:\n  '#type': webform_actions\n  '#title': 'Submit button(s)'\n  '#submit__attributes':\n    class:\n      - 'btn btn-primary'"
+elements: "hawkid:\n  '#type': textfield\n  '#title': HawkID\n  '#description': 'Your HawkID will be granted webmaster access to the site.'\n  '#readonly': true\n  '#default_value': '[current-user:name]'\n  '#required': true\nemail:\n  '#type': email\n  '#title': Email\n  '#description': 'Your email address will be used for all communications related to this request.'\n  '#readonly': true\n  '#default_value': '[current-user:mail]'\n  '#required': true\ndepartment_organization:\n  '#type': textfield\n  '#title': Department/organization\n  '#description': 'The department or organization this site belongs to.'\n  '#required': true\nrequest_type:\n  '#type': radios\n  '#title': 'Request type'\n  '#options':\n    New: 'New -- This is a new SiteNow site.'\n    Existing: 'Existing -- I have an existing site.'\n    Consultation: 'Consultation -- I would like a consultation regarding another option.'\n  '#required': true\nurl_pattern:\n  '#type': select\n  '#title': 'URL Pattern'\n  '#description': 'The * character indicates a pre-approved URL pattern.'\n  '#options':\n    '*.conference.uiowa.edu': '*.conference.uiowa.edu'\n    '*.org.uiowa.edu': '*.org.uiowa.edu'\n    '*.lab.uiowa.edu': '*.lab.uiowa.edu'\n    '*.course.uiowa.edu': '*.course.uiowa.edu'\n    '*.studio.uiowa.edu': '*.studio.uiowa.edu'\n    '*.sites.uiowa.edu': '*.sites.uiowa.edu'\n  '#required': true\n  '#states':\n    visible:\n      ':input[name=\"request_type\"]':\n        value: New\nurl:\n  '#type': url\n  '#title': URL\n  '#required': true\n  '#states':\n    visible:\n      - ':input[name=\"request_type\"]':\n          value: New\n      - or\n      - ':input[name=\"request_type\"]':\n          value: Existing\n  '#default_value': 'https://'\nadditional_comments_or_questions:\n  '#type': textarea\n  '#title': 'Comments or questions'\n  '#states':\n    visible:\n      ':input[name=\"request_type\"]':\n        checked: true\nactions:\n  '#type': webform_actions\n  '#title': 'Submit button(s)'\n  '#submit__attributes':\n    class:\n      - 'btn btn-primary'"
 css: ''
 javascript: ''
 settings:
@@ -21,8 +21,8 @@ settings:
   ajax_progress_type: ''
   ajax_effect: ''
   ajax_speed: null
-  page: false
-  page_submit_path: ''
+  page: true
+  page_submit_path: request-a-site
   page_confirm_path: ''
   page_admin_theme: false
   form_title: source_entity_webform
@@ -129,16 +129,11 @@ settings:
 access:
   create:
     roles:
-      - anonymous
       - authenticated
     users: {  }
     permissions: {  }
   view_any:
-    roles:
-      - editor
-      - publisher
-      - webmaster
-      - administrator
+    roles: {  }
     users: {  }
     permissions: {  }
   update_any:
