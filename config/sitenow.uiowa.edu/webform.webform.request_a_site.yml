@@ -12,7 +12,7 @@ id: request_a_site
 title: 'Request a Site'
 description: 'SiteNow site request form.'
 category: ''
-elements: "hawkid:\n  '#type': textfield\n  '#title': HawkID\n  '#description': 'Your HawkID will be granted webmaster access to the site.'\n  '#readonly': true\n  '#default_value': '[current-user:name]'\n  '#required': true\nemail:\n  '#type': email\n  '#title': Email\n  '#description': 'Your email address will be used for all communications related to this request.'\n  '#readonly': true\n  '#default_value': '[current-user:mail]'\n  '#required': true\ndepartment_organization:\n  '#type': textfield\n  '#title': Department/organization\n  '#description': 'The department or organization this site belongs to.'\n  '#required': true\nrequest_type:\n  '#type': radios\n  '#title': 'Request type'\n  '#options':\n    New: 'New -- This is a new SiteNow site.'\n    Existing: 'Existing -- I have an existing site.'\n    Consultation: 'Consultation -- I would like a consultation regarding another option.'\n  '#required': true\nurl_pattern:\n  '#type': select\n  '#title': 'URL Pattern'\n  '#description': 'The * character indicates a pre-approved URL pattern.'\n  '#options':\n    '*.conference.uiowa.edu': '*.conference.uiowa.edu'\n    '*.org.uiowa.edu': '*.org.uiowa.edu'\n    '*.lab.uiowa.edu': '*.lab.uiowa.edu'\n    '*.course.uiowa.edu': '*.course.uiowa.edu'\n    '*.studio.uiowa.edu': '*.studio.uiowa.edu'\n    '*.sites.uiowa.edu': '*.sites.uiowa.edu'\n  '#required': true\n  '#states':\n    visible:\n      ':input[name=\"request_type\"]':\n        value: New\nurl:\n  '#type': url\n  '#title': URL\n  '#required': true\n  '#states':\n    visible:\n      - ':input[name=\"request_type\"]':\n          value: New\n      - or\n      - ':input[name=\"request_type\"]':\n          value: Existing\n  '#default_value': 'https://'\nadditional_comments_or_questions:\n  '#type': textarea\n  '#title': 'Comments or questions'\n  '#states':\n    visible:\n      ':input[name=\"request_type\"]':\n        checked: true\nactions:\n  '#type': webform_actions\n  '#title': 'Submit button(s)'\n  '#submit__attributes':\n    class:\n      - 'btn btn-primary'"
+elements: "hawkid:\n  '#type': textfield\n  '#title': HawkID\n  '#description': 'Your HawkID will be granted webmaster access to the site.'\n  '#readonly': true\n  '#default_value': '[current-user:name]'\n  '#required': true\nemail:\n  '#type': email\n  '#title': Email\n  '#description': 'Your email address will be used for all communications related to this request.'\n  '#readonly': true\n  '#default_value': '[current-user:mail]'\n  '#required': true\ndepartment_organization:\n  '#type': textfield\n  '#title': Department/organization\n  '#description': 'The department or organization this site belongs to.'\n  '#required': true\nrequest_type:\n  '#type': radios\n  '#title': 'Request type'\n  '#options':\n    New: 'New -- This is a new SiteNow site.'\n    Existing: 'Existing -- I have an existing site.'\n    Consultation: 'Consultation -- I would like a consultation regarding another option.'\n  '#required': true\nurl_pattern:\n  '#type': select\n  '#title': 'URL Pattern'\n  '#description': 'The * character indicates a pre-approved URL pattern.'\n  '#options':\n    '*.conference.uiowa.edu': '*.conference.uiowa.edu'\n    '*.org.uiowa.edu': '*.org.uiowa.edu'\n    '*.lab.uiowa.edu': '*.lab.uiowa.edu'\n    '*.course.uiowa.edu': '*.course.uiowa.edu'\n    '*.studio.uiowa.edu': '*.studio.uiowa.edu'\n    '*.sites.uiowa.edu': '*.sites.uiowa.edu'\n  '#required': true\n  '#states':\n    visible:\n      ':input[name=\"request_type\"]':\n        value: New\nurl:\n  '#type': url\n  '#title': URL\n  '#required': true\n  '#states':\n    visible:\n      - ':input[name=\"request_type\"]':\n          value: New\n      - or\n      - ':input[name=\"request_type\"]':\n          value: Existing\n  '#default_value': 'https://'\nadditional_comments_or_questions:\n  '#type': textarea\n  '#title': 'Comments or questions'\n  '#states':\n    required:\n      ':input[name=\"request_type\"]':\n        value: Consultation\nactions:\n  '#type': webform_actions\n  '#title': 'Submit button(s)'\n  '#submit__attributes':\n    class:\n      - 'btn btn-primary'"
 css: ''
 javascript: ''
 settings:
@@ -21,8 +21,8 @@ settings:
   ajax_progress_type: ''
   ajax_effect: ''
   ajax_speed: null
-  page: true
-  page_submit_path: request-a-site
+  page: false
+  page_submit_path: ''
   page_confirm_path: ''
   page_admin_theme: false
   form_title: source_entity_webform
@@ -175,7 +175,7 @@ access:
 handlers:
   email:
     id: email
-    label: 'Contact Email'
+    label: 'Confirmation Email'
     handler_id: email
     status: true
     conditions: {  }
@@ -183,17 +183,17 @@ handlers:
     settings:
       states:
         - completed
-      to_mail: '[webform_submission:values:contact_email:raw]'
+      to_mail: '[webform_submission:values:email:raw]'
       to_options: {  }
       cc_mail: ''
       cc_options: {  }
       bcc_mail: ''
       bcc_options: {  }
-      from_mail: ITS-WebServices@uiowa.edu
+      from_mail: _default
       from_options: {  }
       from_name: 'ITS Web Services'
       subject: 'SiteNow Request Confirmed'
-      body: "Thank you for requesting a SiteNow site - you have been identified as the point of contact for the site &quot;[webform_submission:values:site_title]&quot;.<br />\r\n<br />\r\nA member of the SiteNow team will review your request and a response should be given within two business days.<br />\r\n<br />\r\nIf you have any questions, please email us at its-web@uiowa.edu.<br />\r\n<br />\r\nRegards,<br />\r\nthe SiteNow team."
+      body: "Thank you for requesting a SiteNow site.<br />\r\n<br />\r\nA member of the SiteNow team will review your request and follow up with you as soon as possible.<br />\r\n<br />\r\nKind regards,<br />\r\nthe SiteNow team."
       excluded_elements: {  }
       ignore_access: false
       exclude_empty: true
@@ -217,16 +217,16 @@ handlers:
     settings:
       states:
         - completed
-      to_mail: its-web@uiowa.edu
+      to_mail: _default
       to_options: {  }
       cc_mail: ''
       cc_options: {  }
       bcc_mail: ''
       bcc_options: {  }
-      from_mail: '[webform_submission:values:contact_email:raw]'
+      from_mail: '[webform_submission:values:email:raw]'
       from_options: {  }
-      from_name: SiteNow
-      subject: 'SiteNow site request'
+      from_name: '[webform_submission:values:email:raw]'
+      subject: 'SiteNow Request'
       body: _default
       excluded_elements: {  }
       ignore_access: true
