@@ -27,8 +27,10 @@ for (let i = 0; i < elements.length; i++) {
   };
 }
 
+if (document.getElementById("video-btn")) {
+  document.getElementById("video-btn").addEventListener("click", pausePlay);
+}
 
-document.getElementById("video-btn").addEventListener("click", pausePlay);
 const video = document.getElementById("video-container");
 const btn = document.getElementById("video-btn");
 

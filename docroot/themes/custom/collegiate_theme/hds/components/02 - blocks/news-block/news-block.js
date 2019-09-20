@@ -1,22 +1,34 @@
-if (document.getElementById("news-card__button0")) {
-  for (i = 0; i < document.getElementsByClassName("news-card").length; i++) {
-    const buttonId = `news-card__button${i}`;
-    document.getElementById(buttonId).addEventListener("click", cardToggle);
-  }
-}
+// Listen for all clicks on the document
 
-function cardToggle({
-  target
-}) {
-  const buttonId = target.id;
-  const id = buttonId.replace("news-card__button", "");
-  for (i = 0; i < document.getElementsByClassName("news-card").length; i++) {
-    if (id != i) {
-      document.getElementsByClassName("news-card")[i].classList.remove("is-open");
-      document.getElementById(buttonId).setAttribute("aria-expanded", "false");
+document.addEventListener(
+  "click",
+  function (e) {
+    // Leave if it's not a .toggle-bttn
+    if (!e.target.classList.contains("toggle-bttn")) return;
+
+    // Add the active/open class
+    e.target.classList.toggle("active");
+    e.target.parentNode.parentNode.classList.toggle("is-open");
+
+    if (e.target.classList.contains("active")) {
+      e.target.setAttribute("aria-expanded", "true");
+    } else {
+      e.target.setAttribute("aria-expanded", "false");
     }
-  }
-  if (document.getElementsByClassName("news-card")[id].classList.toggle("is-open")) {
-    document.getElementById(buttonId).setAttribute("aria-expanded", "true")
-  }
-}
+
+    // Get all toggle bttn links
+    var links = document.querySelectorAll(".toggle-bttn");
+
+    // Loop through each link
+    for (var i = 0; i < links.length; i++) {
+      // If the link is the one clicked, skip it
+      if (links[i] === e.target) continue;
+
+      // Remove the .active/.is-open class
+      links[i].classList.remove("active");
+      links[i].setAttribute("aria-expanded", "false");
+      links[i].parentNode.parentNode.classList.remove("is-open");
+    }
+  },
+  false
+);
