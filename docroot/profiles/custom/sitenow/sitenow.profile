@@ -505,6 +505,17 @@ function sitenow_preprocess_page(&$variables) {
           $variables['page']['sidebar_second'] = [];
         }
       }
+      $type = $node->getType();
+      switch ($type) {
+        case 'page':
+        case 'article':
+          $image = $node->field_image->get(0)->view('sitenow_16_9');
+          if ($image) {
+            $variables['node_image'] = $image;
+          }
+          break;
+
+      }
     }
   }
 }
