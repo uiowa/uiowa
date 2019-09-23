@@ -275,7 +275,7 @@ EOD;
    * @return string
    *   The ID.
    */
-  protected function generateMachineName($uri) {
+  public function generateMachineName($uri) {
     $parsed = parse_url($uri);
 
     if (substr($parsed['host'], -9) === 'uiowa.edu') {
