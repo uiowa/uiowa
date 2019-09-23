@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: printmail.bo.uiowa.edu
+    protocol: https
+  machine_name: boprintmail
+  human_name: printmail.bo.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: boprintmail.prod
+drupal:
+  db:
+    database: printmail_bo_uiowa_edu
+    host: localhost
+    user: root
+    password: null
