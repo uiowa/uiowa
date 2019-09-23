@@ -3,6 +3,7 @@ title: "University of Iowa Branding Bar"
 has_children: false
 nav_order: 5
 ---
+# ATTENTION: We're moving our Documentation to our [SiteNow Website](https://sitenow.uiowa.edu/documentation/site-management-documentation/university-iowa-branding-bar)
 
 # University of Iowa Branding Bar
 

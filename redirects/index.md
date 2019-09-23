@@ -3,6 +3,7 @@ title: "URL Redirects"
 has_children: false
 nav_order: 16
 ---
+# ATTENTION: We're moving our Documentation to our [SiteNow Website](https://sitenow.uiowa.edu/documentation/site-management-documentation/url-redirects)
 
 # Redirect
 

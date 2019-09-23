@@ -4,6 +4,8 @@ has_children: false
 nav_order: 10
 ---
 
+# ATTENTION: We're moving our Documentation to our [SiteNow Website](https://sitenow.uiowa.edu/documentation/site-management-documentation/user-management-and-roles)
+
 # User Management and Roles
 
 When you login to your site, you will be assigned a role. The default roles are editor, publisher, and webmaster. Editors are mostly responsible for content management. Publishers have additional developer settings, and Webmasters have elevated permissions to handle more administrative tasks, like managing users.

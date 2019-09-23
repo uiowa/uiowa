@@ -6,6 +6,7 @@ nav_order: 18
 
 # Policies
 
+# ATTENTION: We're moving our Documentation to our [SiteNow Website](https://sitenow.uiowa.edu/policies)
 
 ## 'WWW' Addresses
 

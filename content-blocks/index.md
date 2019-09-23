@@ -3,6 +3,7 @@ title: "Content Blocks"
 has_children: true
 nav_order: 6
 ---
+# ATTENTION: We're moving our Documentation to our [SiteNow Website](https://sitenow.uiowa.edu/documentation/content-documentation/content-blocks)
 
 # Content Blocks
 

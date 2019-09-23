@@ -3,6 +3,7 @@ title: "WYSIWYG (What-You-See-Is-What-You-Get) Text Editor"
 has_children: false
 nav_order: 7
 ---
+# ATTENTION: We're moving our Documentation to our [SiteNow Website](https://sitenow.uiowa.edu/documentation/content-documentation/wysiwyg)
 
 # WYSIWYG (What-You-See-Is-What-You-Get) Text Editor
 
