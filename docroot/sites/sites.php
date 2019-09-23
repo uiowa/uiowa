@@ -243,20 +243,15 @@ $sites['international.dev.drupal.uiowa.edu'] = 'international.uiowa.edu';
 $sites['international.stage.drupal.uiowa.edu'] = 'international.uiowa.edu';
 $sites['international.prod.drupal.uiowa.edu'] = 'international.uiowa.edu';
 
-// Directory aliases for printmail.businsvc.uiowa.edu.
-$sites['businsvcprintmail.dev.drupal.uiowa.edu'] = 'printmail.businsvc.uiowa.edu';
-$sites['businsvcprintmail.stage.drupal.uiowa.edu'] = 'printmail.businsvc.uiowa.edu';
-$sites['businsvcprintmail.prod.drupal.uiowa.edu'] = 'printmail.businsvc.uiowa.edu';
-
 // Directory aliases for kroska.lab.uiowa.edu.
 $sites['labkroska.dev.drupal.uiowa.edu'] = 'kroska.lab.uiowa.edu';
 $sites['labkroska.stage.drupal.uiowa.edu'] = 'kroska.lab.uiowa.edu';
 $sites['labkroska.prod.drupal.uiowa.edu'] = 'kroska.lab.uiowa.edu';
 
-// Directory aliases for printmail.bo.uiowa.edu.
-$sites['boprintmail.dev.drupal.uiowa.edu'] = 'printmail.bo.uiowa.edu';
-$sites['boprintmail.stage.drupal.uiowa.edu'] = 'printmail.bo.uiowa.edu';
-$sites['boprintmail.prod.drupal.uiowa.edu'] = 'printmail.bo.uiowa.edu';
+// Directory aliases for printmail.fo.uiowa.edu.
+$sites['foprintmail.dev.drupal.uiowa.edu'] = 'printmail.fo.uiowa.edu';
+$sites['foprintmail.stage.drupal.uiowa.edu'] = 'printmail.fo.uiowa.edu';
+$sites['foprintmail.prod.drupal.uiowa.edu'] = 'printmail.fo.uiowa.edu';
 
 // Directory aliases for iniworkshop.conference.uiowa.edu.
 $sites['conferenceiniworkshop.dev.drupal.uiowa.edu'] = 'iniworkshop.conference.uiowa.edu';
