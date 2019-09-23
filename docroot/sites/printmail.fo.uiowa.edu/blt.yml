@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: printmail.fo.uiowa.edu
+    protocol: https
+  machine_name: foprintmail
+  human_name: printmail.fo.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: foprintmail.prod
+drupal:
+  db:
+    database: printmail_fo_uiowa_edu
+    host: localhost
+    user: root
+    password: null
