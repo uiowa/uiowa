@@ -3,6 +3,7 @@ title: "Managing Menus"
 has_children: false
 nav_order: 9
 ---
+# ATTENTION: We're moving our Documentation to our [SiteNow Website](https://sitenow.uiowa.edu/documentation/site-management-documentation/managing-menus)
 
 # Managing Menus
 
