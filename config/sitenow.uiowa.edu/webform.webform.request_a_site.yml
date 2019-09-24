@@ -173,13 +173,79 @@ access:
     users: {  }
     permissions: {  }
 handlers:
+  site_created_email:
+    id: email
+    label: 'Site Created Email'
+    handler_id: site_created_email
+    status: true
+    conditions: {  }
+    weight: -47
+    settings:
+      states: {  }
+      to_mail: '[webform_submission:values:email:raw]'
+      to_options: {  }
+      cc_mail: ''
+      cc_options: {  }
+      bcc_mail: ''
+      bcc_options: {  }
+      from_mail: its-web@uiowa.edu
+      from_options: {  }
+      from_name: 'ITS SiteNow Team'
+      subject: 'SiteNow Site Created'
+      body: "Hello,<br />\r\n&nbsp;<br />\r\nThe&nbsp;SiteNow&nbsp;website&nbsp;[webform_submission:values:url] has been created.&nbsp;<br />\r\n&nbsp;&nbsp;<br />\r\nTo log in using your&nbsp;HawkID&nbsp;credentials, click the login link in the bottom left corner of the website.<br />\r\n&nbsp;<br />\r\nInformation about getting started and customizing your website is available on the front page (when you are logged in) and online at https://sitenow.uiowa.edu/documentation.<br />\r\n&nbsp;<br />\r\nFor questions or problems, please contact the ITS Help Desk:<br />\r\n<br />\r\nPhone: 319-384-4357<br />\r\nEmail:&nbsp;<a href=\"mailto:its-helpdesk@uiowa.edu\" style=\"color:#954f72; text-decoration:underline\">its-helpdesk@uiowa.edu</a><br />\r\nChat:&nbsp;<a href=\"https://helpdesk.its.uiowa.edu/connect\" style=\"color:#954f72; text-decoration:underline\">Help Desk Online Chat</a>&nbsp;<br />\r\n&nbsp;<br />\r\nRegards,<br />\r\nITS SiteNow Team<br />\r\n&nbsp;"
+      excluded_elements: {  }
+      ignore_access: false
+      exclude_empty: true
+      exclude_empty_checkbox: false
+      html: true
+      attachments: false
+      twig: false
+      debug: false
+      reply_to: ''
+      return_path: ''
+      sender_mail: ''
+      sender_name: ''
+      theme_name: ''
+  hostmaster_email:
+    id: email
+    label: 'Hostmaster Email'
+    handler_id: hostmaster_email
+    status: true
+    conditions: {  }
+    weight: -48
+    settings:
+      states: {  }
+      to_mail: hostmaster@uiowa.edu
+      to_options: {  }
+      cc_mail: '[current-user:mail]'
+      cc_options: {  }
+      bcc_mail: ''
+      bcc_options: {  }
+      from_mail: its-web@uiowa.edu
+      from_options: {  }
+      from_name: 'ITS SiteNow Team'
+      subject: 'SiteNow DNS Request'
+      body: "Hostmaster,<br />\r\n<br />\r\nWould you please create a CNAME for [webform_submission:values:url] pointing to acquia-dlb.its.uiowa.edu?<br />\r\n<br />\r\nThank you,<br />\r\nITS SiteNow Team<br />\r\n[current-user:mail]"
+      excluded_elements: {  }
+      ignore_access: false
+      exclude_empty: true
+      exclude_empty_checkbox: false
+      html: true
+      attachments: false
+      twig: false
+      debug: false
+      reply_to: ''
+      return_path: ''
+      sender_mail: ''
+      sender_name: ''
+      theme_name: ''
   email:
     id: email
     label: 'Confirmation Email'
     handler_id: email
     status: true
     conditions: {  }
-    weight: 0
+    weight: -50
     settings:
       states:
         - completed
@@ -189,11 +255,11 @@ handlers:
       cc_options: {  }
       bcc_mail: ''
       bcc_options: {  }
-      from_mail: _default
+      from_mail: noreply@sitenow.uiowa.edu
       from_options: {  }
-      from_name: 'ITS Web Services'
+      from_name: ''
       subject: 'SiteNow Request Confirmed'
-      body: "Thank you for requesting a SiteNow site.<br />\r\n<br />\r\nA member of the SiteNow team will review your request and follow up with you as soon as possible.<br />\r\n<br />\r\nKind regards,<br />\r\nthe SiteNow team."
+      body: "Thank you for requesting a SiteNow site.<br />\r\n<br />\r\nA member of the ITS SiteNow Team will review your request and follow up with you as soon as possible.<br />\r\n<br />\r\nRegards,<br />\r\nITS SiteNow team"
       excluded_elements: {  }
       ignore_access: false
       exclude_empty: true
@@ -213,89 +279,23 @@ handlers:
     handler_id: sitenow_site_request
     status: true
     conditions: {  }
-    weight: 0
+    weight: -49
     settings:
       states:
         - completed
-      to_mail: _default
+      to_mail: its-web@uiowa.edu
       to_options: {  }
       cc_mail: ''
       cc_options: {  }
       bcc_mail: ''
       bcc_options: {  }
-      from_mail: '[webform_submission:values:email:raw]'
+      from_mail: noreply@sitenow.uiowa.edu
       from_options: {  }
-      from_name: '[webform_submission:values:email:raw]'
+      from_name: ''
       subject: 'SiteNow Request'
       body: _default
       excluded_elements: {  }
       ignore_access: true
-      exclude_empty: true
-      exclude_empty_checkbox: false
-      html: true
-      attachments: false
-      twig: false
-      debug: false
-      reply_to: ''
-      return_path: ''
-      sender_mail: ''
-      sender_name: ''
-      theme_name: ''
-  hostmaster_email:
-    id: email
-    label: 'Hostmaster Email'
-    handler_id: hostmaster_email
-    status: true
-    conditions: {  }
-    weight: 0
-    settings:
-      states: {  }
-      to_mail: hostmaster@uiowa.edu
-      to_options: {  }
-      cc_mail: '[current-user:mail]'
-      cc_options: {  }
-      bcc_mail: ''
-      bcc_options: {  }
-      from_mail: its-web@uiowa.edu
-      from_options: {  }
-      from_name: 'ITS Custom Solutions & Integrations'
-      subject: 'SiteNow DNS Request'
-      body: "Hostmaster,<br />\r\n<br />\r\nWould you please create a CNAME for [webform_submission:values:url] pointing to acquia-dlb.its.uiowa.edu?<br />\r\n<br />\r\nThank you,<br />\r\nITS Custom Solutions &amp; Integrations<br />\r\n[current-user:mail]"
-      excluded_elements: {  }
-      ignore_access: false
-      exclude_empty: true
-      exclude_empty_checkbox: false
-      html: true
-      attachments: false
-      twig: false
-      debug: false
-      reply_to: ''
-      return_path: ''
-      sender_mail: ''
-      sender_name: ''
-      theme_name: ''
-  site_created_email:
-    id: email
-    label: 'Site Created Email'
-    handler_id: site_created_email
-    status: true
-    conditions: {  }
-    weight: 0
-    settings:
-      states: {  }
-      to_mail: '[webform_submission:values:email:raw]'
-      to_options: {  }
-      cc_mail: ''
-      cc_options: {  }
-      bcc_mail: ''
-      bcc_options: {  }
-      from_mail: its-web@uiowa.edu
-      from_options: {  }
-      from_name: 'ITS Custom Solutions & Integrations'
-      subject: 'SiteNow Site Created'
-      body: "Hello,<br />\r\n&nbsp;<br />\r\nThe&nbsp;SiteNow&nbsp;website&nbsp;[webform_submission:values:url] has been created.&nbsp;<br />\r\n&nbsp;&nbsp;<br />\r\nTo log in using your&nbsp;HawkID&nbsp;credentials, click the login link in the bottom left corner of the website.<br />\r\n&nbsp;<br />\r\nInformation about getting started and customizing your website is available on the front page (when you are logged in) and online at https://sitenow.uiowa.edu/documentation.<br />\r\n&nbsp;<br />\r\nFor questions or problems, please contact the ITS Help Desk:<br />\r\n<br />\r\nPhone: 319-384-4357<br />\r\nEmail:&nbsp;<a href=\"mailto:its-helpdesk@uiowa.edu\" style=\"color:#954f72; text-decoration:underline\">its-helpdesk@uiowa.edu</a><br />\r\nChat:&nbsp;<a href=\"https://helpdesk.its.uiowa.edu/connect\" style=\"color:#954f72; text-decoration:underline\">Help Desk Online Chat</a>&nbsp;<br />\r\n&nbsp;<br />\r\nRegards,<br />\r\nITS - Web Services &nbsp;<br />\r\n&nbsp;"
-      excluded_elements: {  }
-      ignore_access: false
       exclude_empty: true
       exclude_empty_checkbox: false
       html: true
