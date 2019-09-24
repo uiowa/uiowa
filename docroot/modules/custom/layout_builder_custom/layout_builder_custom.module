@@ -34,10 +34,13 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
 
     $label_display += [
       '#attributes' => [
-        'name' => 'inline_block_label_display'
+        'name' => 'inline_block_label_display',
       ],
     ];
 
-    $form['settings'] += ['label_display' => $label_display, 'label' => $label];
+    $form['settings'] += [
+      'label_display' => $label_display,
+      'label' => $label,
+    ];
   }
 }
