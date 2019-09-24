@@ -4,19 +4,19 @@
 
     @include media-breakpoint-up(xs) {
         $featured-img-size-xs: 80px;
-    
+
         figure {
           flex-basis: $featured-img-size-xs;
-      
+
           img {
             margin-left: 0;
             max-width: $featured-img-size-xs;
           }
         }
-    
+
         .node__content {
           @extend .media-body;
-    
+
           margin-right: 2rem;
           flex-basis: calc(100% - #{$featured-img-size-xs} - 2rem);
         }
@@ -27,7 +27,7 @@
 
         figure {
             flex-basis: $featured-img-size-sm;
-        
+
             img {
             max-width: $featured-img-size-sm;
             }
@@ -43,7 +43,7 @@
 
         figure {
             flex-basis: $featured-img-size-md;
-            
+
             img {
             max-width: $featured-img-size-md;
             }
@@ -56,6 +56,9 @@
 
     // Styles for the masonry display.
     .masonry & {
+        figure {
+          flex-basis: 0px;
+        }
         .node__content {
             margin-right: 0;
         }
@@ -63,6 +66,9 @@
 
     // Styles for the grid display.
     .grid & {
+      figure {
+        flex-basis: 0px;
+      }
         .node__content {
             margin-right: 0;
         }

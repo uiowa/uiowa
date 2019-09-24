@@ -102,23 +102,14 @@
   {% endif %}
 
   <div{{ content_attributes.addClass('node__content') }}>
-      {% if content.article_image %}
-        <figure class="content-image">
-          {{ content.article_image }}
-          {% if content.field_image_caption %}
-            <figcaption class="figure-caption">
-              {{ content.field_image_caption }}
-            </figcaption>
-          {% endif %}
-        </figure>
-      {% endif %}
       <div class="article-meta">
+        {{ content.field_image_caption }}
       {% if content.article_author %}
         {{ content.article_created_date }}{{ content.article_author }}
       {% else %}
           {{ content.article_created_date }}
       {% endif %}
           </div>
-      {{ content|without('article_image', 'article_author', 'article_created_date', 'field_image_caption') }}
+      {{ content|without('field_image', 'article_author', 'article_created_date', 'field_image_caption') }}
   </div>
 </article>
