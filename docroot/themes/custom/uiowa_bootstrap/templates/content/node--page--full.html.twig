@@ -78,25 +78,30 @@
     node.isSticky() ? 'node--sticky',
     not node.isPublished() ? 'node--unpublished',
     view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
-    'media'
   ]
 %}
 {{ attach_library('classy/node') }}
 <article{{ attributes.addClass(classes) }}>
-  <div{{ content_attributes.addClass('node__content media-body') }}>
-      {{ title_prefix }}
-      {% if not page %}
-        <h3{{ title_attributes }}>
-          <a href="{{ url }}" rel="bookmark">{{ label }}</a>
-        </h3>
-      {% endif %}
-      {{ title_suffix }}
 
-      {{ content|without('node_image', 'links') }}
+  {{ title_prefix }}
+  {% if not page %}
+    <h2{{ title_attributes }}>
+      <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+    </h2>
+  {% endif %}
+  {{ title_suffix }}
+
+  {% if display_submitted %}
+    <footer class="node__meta">
+      {{ author_picture }}
+      <div{{ author_attributes.addClass('node__submitted') }}>
+        {% trans %}Submitted by {{ author_name }} on {{ date }}{% endtrans %}
+        {{ metadata }}
+      </div>
+    </footer>
+  {% endif %}
+
+  <div{{ content_attributes.addClass('node__content') }}>
+      {{ content|without('field_image') }}
   </div>
-    {% if content.node_image %}
-        <figure class="content-image">
-            {{ content.node_image }}
-        </figure>
-    {% endif %}
 </article>
