@@ -13,7 +13,31 @@ use Drupal\Core\Form\FormStateInterface;
 function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   if ($form_id == 'layout_builder_add_block') {
     $form['settings']['label']['#required'] = FALSE;
-
     $form['settings']['label_display']['#default_value'] = FALSE;
+
+    $label = $form['settings']['label'];
+    $label_display = $form['settings']['label_display'];
+
+    unset($form['settings']['label']);
+    unset($form['settings']['label_display']);
+
+    $label += [
+      '#attributes' => ['name' => 'inline_block_label'],
+      '#states' => [
+        'visible' => [
+          ':input[name="inline_block_label_display"]' => [
+            'checked' => TRUE,
+          ],
+        ],
+      ],
+    ];
+
+    $label_display += [
+      '#attributes' => [
+        'name' => 'inline_block_label_display'
+      ],
+    ];
+
+    $form['settings'] += ['label_display' => $label_display, 'label' => $label];
   }
 }
