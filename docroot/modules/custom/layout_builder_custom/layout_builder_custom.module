@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * @file
+ * Contains lb_enhancements.module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_alter().
+ */
+function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id == 'layout_builder_add_block') {
+    $form['settings']['label']['#required'] = FALSE;
+
+    $form['settings']['label_display']['#default_value'] = FALSE;
+  }
+}
