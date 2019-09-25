@@ -7,7 +7,7 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * Request a site webform URL field callable.
  */
-class RequestASiteUrlConstraint {
+class RequestASiteUriConstraint {
 
   /**
    * Validates given element.
