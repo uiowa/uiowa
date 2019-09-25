@@ -25,17 +25,6 @@ class RequestASiteUriConstraint {
 
     $url = parse_url($value);
 
-    if ($formState->getValue('request_type') == 'New') {
-      if ($url['scheme'] == 'http') {
-        $formState->setError(
-          $element,
-          t('URL @value must begin with https:// scheme.', [
-            '@value' => $value,
-          ])
-        );
-      }
-    }
-
     foreach (['port', 'user', 'pass', 'path', 'query', 'fragment'] as $invalid) {
       if (isset($url[$invalid])) {
         $formState->setError(
@@ -50,20 +39,44 @@ class RequestASiteUriConstraint {
 
     // Validate the URL pattern if this is a new site.
     if ($formState->getValue('request_type') == 'New') {
+      if ($url['scheme'] == 'http') {
+        $formState->setError(
+          $element,
+          t('URL @value must begin with https:// scheme.', [
+            '@value' => $value,
+          ])
+        );
+      }
+
       $pattern = $formState->getValue('url_pattern');
       $pattern = explode('*.', $pattern)[1];
 
-      // The host should not contain more than 4 parts, i.e. subdomains of
-      // approved URL patterns. E.g. foo.bar.sites.uiowa.edu is invalid.
+      // The host should contain exactly 4 parts,=. Subdomains of approved URL
+      // patterns are not allowed, e.g. foo.bar.sites.uiowa.edu is invalid.
       $parts = explode('.', $url['host']);
 
-      // The host should match the pattern minus the '*.' placeholder.
-      $match = str_replace('*.', '', $url['host']);
-
-      if (count($parts) > 4 || $url['host'] != $match) {
+      if (count($parts) != 4) {
         $formState->setError(
           $element,
-          t('URL @value must match the URL pattern @pattern.', [
+          t('URL @value must match the URL pattern *.@pattern.', [
+            '@value' => $value,
+            '@pattern' => $pattern,
+          ])
+        );
+      }
+
+      // Assuming the host contains exactly 4 parts, the last three should match
+      // the pattern (minus the '*.' placeholder) when combined.
+      $match = implode('.', [
+        $parts[1],
+        $parts[2],
+        $parts[3],
+      ]);
+
+      if ($match != $pattern) {
+        $formState->setError(
+          $element,
+          t('URL @value must match the URL pattern *.@pattern.', [
             '@value' => $value,
             '@pattern' => $pattern,
           ])
