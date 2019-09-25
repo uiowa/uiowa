@@ -7,6 +7,8 @@
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\media\Entity\Media;
+use Drupal\file\Entity\File;
 use Drupal\views\Views;
 
 /**
@@ -164,6 +166,42 @@ function hr_core_preprocess_node(&$variables) {
 
     $node = $variables["node"];
     switch ($node->getType()) {
+      case 'article':
+        switch ($variables['view_mode']) {
+          case 'full':
+          case 'default':
+            $style = 'sitenow_16_9_large';
+            $image_field = $node->get('field_image');
+            if (!$image_field->isEmpty()) {
+              $image = $image_field->first()->getValue();
+              $media = Media::load($image['target_id']);
+              if ($media) {
+                $media_field = $media->get('field_media_image')
+                  ->first()
+                  ->getValue();
+                $file = File::load($media_field['target_id']);
+                $uri = $file->getFileUri();
+                $alt = ($media_field['alt'] ? $media_field['alt'] : '');
+                $image = [
+                  '#theme' => 'image_style',
+                  '#width' => NULL,
+                  '#height' => NULL,
+                  '#style_name' => $style,
+                  '#uri' => $uri,
+                  '#alt' => $alt,
+                  '#weight' => -1,
+                  '#attributes' => [
+                    'class' => 'content-image',
+                  ],
+                ];
+                $variables["content"]['node_image'] = $image;
+              }
+            }
+            break;
+
+        }
+        break;
+
       case 'faq':
         if ($variables["view_mode"] == 'teaser') {
           $variables['id'] = 'nid-' . $node->id();
