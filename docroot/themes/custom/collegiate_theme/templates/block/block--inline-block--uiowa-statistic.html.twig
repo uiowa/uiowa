@@ -46,7 +46,7 @@ https://www.drupal.org/node/2367463
     {{ title_prefix }}
     {{ title_suffix }}
     {% include "@stat-block/stat-block--basic.twig" with {
-      "stat_image": file_url(content.field_uiowa_statistic_image['#items'].entity.uri.value),
+      "stat_image": file_url(content.field_uiowa_statistic_image[0]['#media'].image.entity.uri.value | image_style('medium')),
       "stat_title": content.field_uiowa_statistic_title,
       "stat_summary": content.field_uiowa_statistic_excerpt,
     } %}

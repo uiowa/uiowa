@@ -45,7 +45,7 @@ set classes = [
     {{ attach_library('collegiate_theme/card-block') }}
 
       {% include "@card-block/card-block--basic.twig" with {
-        "card_image": file_url(content.field_uiowa_card_image['#items'].entity.uri.value),
+        "card_image": file_url(content.field_uiowa_card_image[0]['#media'].image.entity.uri.value | image_style('medium')),
         "card_title": content.field_uiowa_card_title,
         "card_text": content.field_uiowa_card_excerpt,
         "card_link_url": content.field_uiowa_card_link[0]['#url'],

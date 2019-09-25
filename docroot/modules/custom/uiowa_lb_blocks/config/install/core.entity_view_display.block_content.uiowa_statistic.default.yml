@@ -6,8 +6,6 @@ dependencies:
     - field.field.block_content.uiowa_statistic.field_uiowa_statistic_excerpt
     - field.field.block_content.uiowa_statistic.field_uiowa_statistic_image
     - field.field.block_content.uiowa_statistic.field_uiowa_statistic_title
-  module:
-    - image
 id: block_content.uiowa_statistic.default
 targetEntityType: block_content
 bundle: uiowa_statistic
@@ -21,13 +19,13 @@ content:
     type: basic_string
     region: content
   field_uiowa_statistic_image:
+    type: entity_reference_entity_view
     weight: 2
     label: above
     settings:
-      image_style: ''
-      image_link: ''
+      view_mode: default
+      link: false
     third_party_settings: {  }
-    type: image
     region: content
   field_uiowa_statistic_title:
     weight: 0
