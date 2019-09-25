@@ -257,3 +257,8 @@ $sites['foprintmail.prod.drupal.uiowa.edu'] = 'printmail.fo.uiowa.edu';
 $sites['conferenceiniworkshop.dev.drupal.uiowa.edu'] = 'iniworkshop.conference.uiowa.edu';
 $sites['conferenceiniworkshop.stage.drupal.uiowa.edu'] = 'iniworkshop.conference.uiowa.edu';
 $sites['conferenceiniworkshop.prod.drupal.uiowa.edu'] = 'iniworkshop.conference.uiowa.edu';
+
+// Directory aliases for logsdon.lab.uiowa.edu.
+$sites['lablogsdon.dev.drupal.uiowa.edu'] = 'logsdon.lab.uiowa.edu';
+$sites['lablogsdon.stage.drupal.uiowa.edu'] = 'logsdon.lab.uiowa.edu';
+$sites['lablogsdon.prod.drupal.uiowa.edu'] = 'logsdon.lab.uiowa.edu';
