@@ -86,7 +86,7 @@ class RequestASiteUriConstraint {
     }
 
     // Assuming the URI checks out, set some hidden fields based on it.
-    $formState->setValue('url_without_scheme', str_replace($url['scheme'], '', $value));
+    $formState->setValue('url_host', $url['host']);
 
     $command = new MultisiteCommands();
     $machine_name = $command->generateMachineName($value);
