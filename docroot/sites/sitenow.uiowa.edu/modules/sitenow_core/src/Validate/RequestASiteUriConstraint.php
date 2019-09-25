@@ -88,7 +88,7 @@ class RequestASiteUriConstraint {
     // Assuming the URI checks out, set the internal prod domain value.
     $command = new MultisiteCommands();
     $machine_name = $command->generateMachineName($value);
-    $formState->setValue('internal_production_domain', "{$machine_name}.prod.drupal.uiowa.edu");
+    $formState->setValue('internal_production_domain', "https://{$machine_name}.prod.drupal.uiowa.edu");
   }
 
 }
