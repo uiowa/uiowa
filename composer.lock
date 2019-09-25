@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a5713c175ded2e63d111f2648b09e218",
+    "content-hash": "d167ef76bea3c2a0536e52f4d473659f",
     "packages": [
         {
             "name": "acquia/blt",
@@ -6596,6 +6596,49 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/layout_library"
             }
+        },
+        {
+            "name": "drupal/lb_direct_add",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/lb_direct_add.git",
+                "reference": "0e915bc17094157985b351db9237eb6b68a5a236"
+            },
+            "require": {
+                "drupal/core": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.x-dev",
+                    "datestamp": "1569430086",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Sean Adams-Hiett",
+                    "homepage": "https://www.drupal.org/user/62893",
+                    "email": "pyrello@gmail.com"
+                }
+            ],
+            "description": "Converts the 'Add block' link in Layout Builder into a drop-button to directly add custom block types.",
+            "homepage": "https://www.drupal.org/project/lb_direct_add",
+            "support": {
+                "source": "https://git.drupalcode.org/project/lb_direct_add"
+            },
+            "time": "2019-09-25T15:18:52+00:00"
         },
         {
             "name": "drupal/libraries",
@@ -18068,6 +18111,7 @@
     "stability-flags": {
         "drupal/better_normalizers": 10,
         "drupal/layout_builder_styles": 10,
+        "drupal/lb_direct_add": 20,
         "drupal/stage_file_proxy": 10,
         "uiowa/collegiate": 20,
         "uiowa/collegiate_basic": 20
