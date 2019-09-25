@@ -85,10 +85,12 @@ class RequestASiteUriConstraint {
       }
     }
 
-    // Assuming the URI checks out, set the internal prod domain value.
+    // Assuming the URI checks out, set some hidden fields based on it.
+    $formState->setValue('url_without_scheme', str_replace($url['scheme'], '', $value));
+
     $command = new MultisiteCommands();
     $machine_name = $command->generateMachineName($value);
-    $formState->setValue('internal_production_domain', "https://{$machine_name}.prod.drupal.uiowa.edu");
+    $formState->setValue('url_internal_production', "https://{$machine_name}.prod.drupal.uiowa.edu");
   }
 
 }
