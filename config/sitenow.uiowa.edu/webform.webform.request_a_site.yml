@@ -184,40 +184,6 @@ access:
     users: {  }
     permissions: {  }
 handlers:
-  sitenow_site_request:
-    id: email
-    label: 'Form Submission Email'
-    handler_id: sitenow_site_request
-    status: true
-    conditions: {  }
-    weight: -50
-    settings:
-      states:
-        - completed
-      to_mail: its-web@uiowa.edu
-      to_options: {  }
-      cc_mail: ''
-      cc_options: {  }
-      bcc_mail: ''
-      bcc_options: {  }
-      from_mail: noreply@sitenow.uiowa.edu
-      from_options: {  }
-      from_name: 'ITS SiteNow Team'
-      subject: 'SiteNow Request'
-      body: _default
-      excluded_elements: {  }
-      ignore_access: true
-      exclude_empty: true
-      exclude_empty_checkbox: false
-      html: true
-      attachments: false
-      twig: false
-      debug: false
-      reply_to: ''
-      return_path: ''
-      sender_mail: ''
-      sender_name: ''
-      theme_name: ''
   site_created_email:
     id: email
     label: 'Site Created Email'
@@ -342,6 +308,40 @@ handlers:
       ignore_access: false
       exclude_empty: true
       exclude_empty_checkbox: true
+      html: true
+      attachments: false
+      twig: false
+      debug: false
+      reply_to: ''
+      return_path: ''
+      sender_mail: ''
+      sender_name: ''
+      theme_name: ''
+  form_submission_email:
+    id: email
+    label: 'Form Submission Email'
+    handler_id: form_submission_email
+    status: true
+    conditions: {  }
+    weight: -49
+    settings:
+      states:
+        - completed
+      to_mail: its-web@uiowa.edu
+      to_options: {  }
+      cc_mail: ''
+      cc_options: {  }
+      bcc_mail: ''
+      bcc_options: {  }
+      from_mail: noreply@sitenow.uiowa.edu
+      from_options: {  }
+      from_name: 'ITS SiteNow Team'
+      subject: 'SiteNow Request'
+      body: _default
+      excluded_elements: {  }
+      ignore_access: true
+      exclude_empty: true
+      exclude_empty_checkbox: false
       html: true
       attachments: false
       twig: false
