@@ -184,40 +184,6 @@ access:
     users: {  }
     permissions: {  }
 handlers:
-  email:
-    id: email
-    label: 'Confirmation Email'
-    handler_id: email
-    status: true
-    conditions: {  }
-    weight: -49
-    settings:
-      states:
-        - completed
-      to_mail: '[webform_submission:values:email:raw]'
-      to_options: {  }
-      cc_mail: ''
-      cc_options: {  }
-      bcc_mail: ''
-      bcc_options: {  }
-      from_mail: noreply@sitenow.uiowa.edu
-      from_options: {  }
-      from_name: 'ITS SiteNow Team'
-      subject: 'SiteNow Request Confirmed'
-      body: "Thank you for requesting a SiteNow site.<br />\r\n<br />\r\nA member of the ITS SiteNow Team will review your request and follow up with you as soon as possible.<br />\r\n<br />\r\nRegards,<br />\r\nITS SiteNow Team"
-      excluded_elements: {  }
-      ignore_access: false
-      exclude_empty: true
-      exclude_empty_checkbox: true
-      html: true
-      attachments: false
-      twig: false
-      debug: false
-      reply_to: ''
-      return_path: ''
-      sender_mail: ''
-      sender_name: ''
-      theme_name: ''
   sitenow_site_request:
     id: email
     label: 'Form Submission Email'
@@ -258,7 +224,7 @@ handlers:
     handler_id: site_created_email
     status: true
     conditions: {  }
-    weight: -47
+    weight: -46
     settings:
       states: {  }
       to_mail: '[webform_submission:values:email:raw]'
@@ -291,7 +257,7 @@ handlers:
     handler_id: hostmaster_email
     status: true
     conditions: {  }
-    weight: -48
+    weight: -47
     settings:
       states: {  }
       to_mail: hostmaster@uiowa.edu
@@ -324,7 +290,7 @@ handlers:
     handler_id: site_created_email_url_internal_production
     status: true
     conditions: {  }
-    weight: 5
+    weight: -45
     settings:
       states: {  }
       to_mail: _default
@@ -342,6 +308,40 @@ handlers:
       ignore_access: false
       exclude_empty: true
       exclude_empty_checkbox: false
+      html: true
+      attachments: false
+      twig: false
+      debug: false
+      reply_to: ''
+      return_path: ''
+      sender_mail: ''
+      sender_name: ''
+      theme_name: ''
+  confirmation_email:
+    id: email
+    label: 'Confirmation Email'
+    handler_id: confirmation_email
+    status: true
+    conditions: {  }
+    weight: -48
+    settings:
+      states:
+        - completed
+      to_mail: '[webform_submission:values:email:raw]'
+      to_options: {  }
+      cc_mail: ''
+      cc_options: {  }
+      bcc_mail: ''
+      bcc_options: {  }
+      from_mail: noreply@sitenow.uiowa.edu
+      from_options: {  }
+      from_name: 'ITS SiteNow Team'
+      subject: 'SiteNow Request Confirmed'
+      body: "Thank you for requesting a SiteNow site.<br />\r\n<br />\r\nA member of the ITS SiteNow Team will review your request and follow up with you as soon as possible.<br />\r\n<br />\r\nRegards,<br />\r\nITS SiteNow Team"
+      excluded_elements: {  }
+      ignore_access: false
+      exclude_empty: true
+      exclude_empty_checkbox: true
       html: true
       attachments: false
       twig: false
