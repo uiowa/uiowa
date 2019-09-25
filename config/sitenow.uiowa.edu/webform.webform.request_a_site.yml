@@ -12,7 +12,7 @@ id: request_a_site
 title: 'Request a Site'
 description: 'SiteNow site request form.'
 category: ''
-elements: "hawkid:\n  '#type': textfield\n  '#title': HawkID\n  '#description': 'Your HawkID will be granted webmaster access to the site.'\n  '#readonly': true\n  '#default_value': '[current-user:name]'\n  '#required': true\nemail:\n  '#type': email\n  '#title': Email\n  '#description': 'Your email address will be used for all communications related to this request.'\n  '#readonly': true\n  '#default_value': '[current-user:mail]'\n  '#required': true\ndepartment_organization:\n  '#type': textfield\n  '#title': Department/organization\n  '#description': 'The department or organization this site belongs to.'\n  '#required': true\nrequest_type:\n  '#type': radios\n  '#title': 'Request type'\n  '#options':\n    New: 'New -- This is a new SiteNow site.'\n    Existing: 'Existing -- I have an existing site.'\n    Consultation: 'Consultation -- I would like a consultation regarding another option.'\n  '#required': true\nurl_pattern:\n  '#type': select\n  '#title': 'URL Pattern'\n  '#description': 'The * character indicates the part of the URL you can customize.&nbsp;'\n  '#help_title': Help\n  '#help': 'The URL must not contain more subdomains than indicated by the pattern. For example, https://foo.org.uiowa.edu is valid but https://foo.bar.org.uiowa.edu is invalid.'\n  '#options':\n    '*.conference.uiowa.edu': '*.conference.uiowa.edu'\n    '*.org.uiowa.edu': '*.org.uiowa.edu'\n    '*.lab.uiowa.edu': '*.lab.uiowa.edu'\n    '*.course.uiowa.edu': '*.course.uiowa.edu'\n    '*.studio.uiowa.edu': '*.studio.uiowa.edu'\n    '*.sites.uiowa.edu': '*.sites.uiowa.edu'\n  '#required': true\n  '#states':\n    visible:\n      ':input[name=\"request_type\"]':\n        value: New\nuri:\n  '#type': url\n  '#title': URL\n  '#description': 'The site URL.'\n  '#help_title': Help\n  '#help': 'URL stands for Uniform Resource Locator and is&nbsp;commonly used to reference web pages.&nbsp;'\n  '#required': true\n  '#states':\n    visible:\n      ':input[name=\"request_type\"]':\n        '!value': Consultation\nadditional_comments_or_questions:\n  '#type': textarea\n  '#title': 'Comments or questions'\n  '#states':\n    required:\n      ':input[name=\"request_type\"]':\n        value: Consultation\nactions:\n  '#type': webform_actions\n  '#title': 'Submit button(s)'\n  '#submit__attributes':\n    class:\n      - 'btn btn-primary'"
+elements: "hawkid:\n  '#type': textfield\n  '#title': HawkID\n  '#description': 'Your HawkID will be granted webmaster access to the site.'\n  '#readonly': true\n  '#default_value': '[current-user:name]'\n  '#required': true\nemail:\n  '#type': email\n  '#title': Email\n  '#description': 'Your email address will be used for all communications related to this request.'\n  '#readonly': true\n  '#default_value': '[current-user:mail]'\n  '#required': true\ndepartment_organization:\n  '#type': textfield\n  '#title': Department/organization\n  '#description': 'The department or organization this site belongs to.'\n  '#required': true\nrequest_type:\n  '#type': radios\n  '#title': 'Request type'\n  '#options':\n    New: 'New -- This is a new SiteNow site.'\n    Existing: 'Existing -- I have an existing site.'\n    Consultation: 'Consultation -- I would like a consultation regarding another option.'\n  '#required': true\nurl_pattern:\n  '#type': select\n  '#title': 'URL Pattern'\n  '#description': 'The * character indicates the part of the URL you can customize.&nbsp;'\n  '#help_title': Help\n  '#help': 'The URL must not contain more subdomains than indicated by the pattern. For example, https://foo.org.uiowa.edu is valid but https://foo.bar.org.uiowa.edu is invalid.'\n  '#options':\n    '*.conference.uiowa.edu': '*.conference.uiowa.edu'\n    '*.org.uiowa.edu': '*.org.uiowa.edu'\n    '*.lab.uiowa.edu': '*.lab.uiowa.edu'\n    '*.course.uiowa.edu': '*.course.uiowa.edu'\n    '*.studio.uiowa.edu': '*.studio.uiowa.edu'\n    '*.sites.uiowa.edu': '*.sites.uiowa.edu'\n  '#required': true\n  '#states':\n    visible:\n      ':input[name=\"request_type\"]':\n        value: New\nuri:\n  '#type': url\n  '#title': URL\n  '#description': 'The site URL.'\n  '#help_title': Help\n  '#help': 'URL stands for Uniform Resource Locator and is&nbsp;commonly used to reference web pages. It typically starts with http:// or https://.'\n  '#required': true\n  '#states':\n    visible:\n      ':input[name=\"request_type\"]':\n        '!value': Consultation\nadditional_comments_or_questions:\n  '#type': textarea\n  '#title': 'Comments or questions'\n  '#states':\n    required:\n      ':input[name=\"request_type\"]':\n        value: Consultation\ninternal_production_domain:\n  '#type': hidden\n  '#title': 'Internal production domain'\nmarkup:\n  '#type': webform_markup\n  '#private': true\n  '#display_on': view\n  '#markup': 'blt rmi --site-uri&nbsp;[webform_submission:values:uri] --no-interaction'\nactions:\n  '#type': webform_actions\n  '#title': 'Submit button(s)'\n  '#submit__attributes':\n    class:\n      - 'btn btn-primary'"
 css: ''
 javascript: ''
 settings:
@@ -190,7 +190,7 @@ handlers:
     handler_id: email
     status: true
     conditions: {  }
-    weight: -50
+    weight: -49
     settings:
       states:
         - completed
@@ -202,9 +202,9 @@ handlers:
       bcc_options: {  }
       from_mail: noreply@sitenow.uiowa.edu
       from_options: {  }
-      from_name: ''
+      from_name: 'ITS SiteNow Team'
       subject: 'SiteNow Request Confirmed'
-      body: "Thank you for requesting a SiteNow site.<br />\r\n<br />\r\nA member of the ITS SiteNow Team will review your request and follow up with you as soon as possible.<br />\r\n<br />\r\nRegards,<br />\r\nITS SiteNow team"
+      body: "Thank you for requesting a SiteNow site.<br />\r\n<br />\r\nA member of the ITS SiteNow Team will review your request and follow up with you as soon as possible.<br />\r\n<br />\r\nRegards,<br />\r\nITS SiteNow Team"
       excluded_elements: {  }
       ignore_access: false
       exclude_empty: true
@@ -224,7 +224,7 @@ handlers:
     handler_id: sitenow_site_request
     status: true
     conditions: {  }
-    weight: -49
+    weight: -50
     settings:
       states:
         - completed
@@ -236,7 +236,7 @@ handlers:
       bcc_options: {  }
       from_mail: noreply@sitenow.uiowa.edu
       from_options: {  }
-      from_name: ''
+      from_name: 'ITS SiteNow Team'
       subject: 'SiteNow Request'
       body: _default
       excluded_elements: {  }
@@ -271,7 +271,7 @@ handlers:
       from_options: {  }
       from_name: 'ITS SiteNow Team'
       subject: 'SiteNow Site Created'
-      body: "Hello,<br />\r\n&nbsp;<br />\r\nThe&nbsp;SiteNow&nbsp;website&nbsp;[webform_submission:values:url] has been created.&nbsp;<br />\r\n&nbsp;&nbsp;<br />\r\nTo log in using your&nbsp;HawkID&nbsp;credentials, click the login link in the bottom left corner of the website.<br />\r\n&nbsp;<br />\r\nInformation about getting started and customizing your website is available on the front page (when you are logged in) and online at https://sitenow.uiowa.edu/documentation.<br />\r\n&nbsp;<br />\r\nFor questions or problems, please contact the ITS Help Desk:<br />\r\n<br />\r\nPhone: 319-384-4357<br />\r\nEmail:&nbsp;<a href=\"mailto:its-helpdesk@uiowa.edu\" style=\"color:#954f72; text-decoration:underline\">its-helpdesk@uiowa.edu</a><br />\r\nChat:&nbsp;<a href=\"https://helpdesk.its.uiowa.edu/connect\" style=\"color:#954f72; text-decoration:underline\">Help Desk Online Chat</a>&nbsp;<br />\r\n&nbsp;<br />\r\nRegards,<br />\r\nITS SiteNow Team<br />\r\n&nbsp;"
+      body: "Hello,<br />\r\n&nbsp;<br />\r\nThe&nbsp;SiteNow&nbsp;website&nbsp;[webform_submission:values:uri] has been created.&nbsp;<br />\r\n&nbsp;&nbsp;<br />\r\nTo log in using your&nbsp;HawkID&nbsp;credentials, click the login link in the bottom left corner of the website.<br />\r\n&nbsp;<br />\r\nInformation about getting started and customizing your website is available on the front page (when you are logged in) and online at https://sitenow.uiowa.edu/documentation.<br />\r\n&nbsp;<br />\r\nFor questions or problems, please contact the ITS Help Desk:<br />\r\n<br />\r\nPhone: 319-384-4357<br />\r\nEmail:&nbsp;<a href=\"mailto:its-helpdesk@uiowa.edu\" style=\"color:#954f72; text-decoration:underline\">its-helpdesk@uiowa.edu</a><br />\r\nChat:&nbsp;<a href=\"https://helpdesk.its.uiowa.edu/connect\" style=\"color:#954f72; text-decoration:underline\">Help Desk Online Chat</a>&nbsp;<br />\r\n&nbsp;<br />\r\nRegards,<br />\r\nITS SiteNow Team<br />\r\n&nbsp;"
       excluded_elements: {  }
       ignore_access: false
       exclude_empty: true
@@ -304,7 +304,40 @@ handlers:
       from_options: {  }
       from_name: 'ITS SiteNow Team'
       subject: 'SiteNow DNS Request'
-      body: "Hostmaster,<br />\r\n<br />\r\nWould you please create a CNAME for [webform_submission:values:url] pointing to acquia-dlb.its.uiowa.edu?<br />\r\n<br />\r\nThank you,<br />\r\nITS SiteNow Team<br />\r\n[current-user:mail]"
+      body: "Hostmaster,<br />\r\n<br />\r\nWould you please create a CNAME for [webform_submission:values:uri] pointing to acquia-dlb.its.uiowa.edu?<br />\r\n<br />\r\nThank you,<br />\r\nITS SiteNow Team<br />\r\n[current-user:mail]"
+      excluded_elements: {  }
+      ignore_access: false
+      exclude_empty: true
+      exclude_empty_checkbox: false
+      html: true
+      attachments: false
+      twig: false
+      debug: false
+      reply_to: ''
+      return_path: ''
+      sender_mail: ''
+      sender_name: ''
+      theme_name: ''
+  email_1:
+    id: email
+    label: 'Site Created Email - Internal Production Domain'
+    handler_id: email_1
+    status: true
+    conditions: {  }
+    weight: 0
+    settings:
+      states: {  }
+      to_mail: _default
+      to_options: {  }
+      cc_mail: ''
+      cc_options: {  }
+      bcc_mail: ''
+      bcc_options: {  }
+      from_mail: its-web@uiowa.edu
+      from_options: {  }
+      from_name: 'ITS SiteNow Team'
+      subject: 'SiteNow Site Created'
+      body: "Hello,<br />\r\n&nbsp;<br />\r\nThe&nbsp;SiteNow&nbsp;website&nbsp;[webform_submission:values:internal_production_domain] has been created.&nbsp;<br />\r\n&nbsp;&nbsp;<br />\r\nTo log in using your&nbsp;HawkID&nbsp;credentials, click the login link in the bottom left corner of the website.<br />\r\n&nbsp;<br />\r\nInformation about getting started and customizing your website is available on the front page (when you are logged in) and online at https://sitenow.uiowa.edu/documentation.<br />\r\n&nbsp;<br />\r\nFor questions or problems, please contact the ITS Help Desk:<br />\r\n<br />\r\nPhone: 319-384-4357<br />\r\nEmail:&nbsp;<a href=\"mailto:its-helpdesk@uiowa.edu\" style=\"color:#954f72; text-decoration:underline\">its-helpdesk@uiowa.edu</a><br />\r\nChat:&nbsp;<a href=\"https://helpdesk.its.uiowa.edu/connect\" style=\"color:#954f72; text-decoration:underline\">Help Desk Online Chat</a>&nbsp;<br />\r\n&nbsp;<br />\r\nRegards,<br />\r\nITS SiteNow Team"
       excluded_elements: {  }
       ignore_access: false
       exclude_empty: true
