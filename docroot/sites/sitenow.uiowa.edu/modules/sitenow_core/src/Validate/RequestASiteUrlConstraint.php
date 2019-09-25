@@ -23,11 +23,6 @@ class RequestASiteUrlConstraint {
     $webformKey = $element['#webform_key'];
     $value = $formState->getValue($webformKey);
 
-    // Skip empty unique fields or arrays (aka #multiple).
-    if ($value === '' || is_array($value)) {
-      return;
-    }
-
     $url = parse_url($value);
 
     if ($formState->getValue('request_type') == 'New') {
