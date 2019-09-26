@@ -3,7 +3,7 @@
 namespace Drupal\sitenow_core\Validate;
 
 use Drupal\Core\Form\FormStateInterface;
-use Sitenow\Blt\Plugin\Commands\MultisiteCommands;
+use Sitenow\Multisite;
 
 /**
  * Request a site webform URL field callable.
@@ -87,10 +87,8 @@ class RequestASiteUriConstraint {
 
     // Assuming the URI checks out, set some hidden fields based on it.
     $formState->setValue('url_host', $url['host']);
-
-    $command = new MultisiteCommands();
-    $machine_name = $command->generateMachineName($value);
-    $formState->setValue('url_internal_production', "https://{$machine_name}.prod.drupal.uiowa.edu");
+    $id = Multisite::getIdentifier($value);
+    $formState->setValue('url_internal_production', "https://{$id}.prod.drupal.uiowa.edu");
   }
 
 }

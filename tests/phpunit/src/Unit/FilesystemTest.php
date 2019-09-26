@@ -5,7 +5,7 @@ namespace Drupal\Tests\sitenow\Unit;
 use Drupal\Tests\UnitTestCase;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
-use Sitenow\Blt\Plugin\Commands\MultisiteCommands;
+use Sitenow\Multisite;
 
 /**
  * Basic file system tests.
@@ -95,16 +95,15 @@ EOD;
 
       // The default site does not follow the same naming conventions.
       if ($site != 'default') {
-        $command = new MultisiteCommands();
-        $machine_name = $command->generateMachineName("https://{$site}");
+        $id = Multisite::getIdentifier("https://{$site}");
 
         $blt = Yaml::parse(file_get_contents("{$path}/blt.yml"));
         $this->assertEquals($site, $blt['project']['local']['hostname']);
         $this->assertEquals($site, $blt['project']['human_name']);
-        $this->assertEquals($machine_name, $blt['project']['machine_name']);
+        $this->assertEquals($id, $blt['project']['id']);
         $this->assertEquals('https', $blt['project']['local']['protocol']);
         $this->assertEquals('self', $blt['drush']['aliases']['local']);
-        $this->assertEquals("{$machine_name}.prod", $blt['drush']['aliases']['remote']);
+        $this->assertEquals("{$id}.prod", $blt['drush']['aliases']['remote']);
 
         $db = str_replace('.', '_', $site);
         $db = str_replace('-', '_', $db);
