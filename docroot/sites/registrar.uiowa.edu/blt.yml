@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: registrar.uiowa.edu
+    protocol: https
+  machine_name: registrar
+  human_name: registrar.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: registrar.prod
+drupal:
+  db:
+    database: registrar_uiowa_edu
+    host: localhost
+    user: root
+    password: null

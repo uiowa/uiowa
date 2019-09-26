@@ -1,0 +1,27 @@
+local:
+  uri: staff-council.uiowa.edu
+  root: '${env.cwd}/docroot'
+dev:
+  uri: staff-council.dev.drupal.uiowa.edu
+  host: uiowadev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+  root: /var/www/html/uiowa.dev/docroot
+  user: uiowa.dev
+prod:
+  uri: staff-council.uiowa.edu
+  host: uiowa.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+  root: /var/www/html/uiowa.prod/docroot
+  user: uiowa.prod
+test:
+  uri: staff-council.stage.drupal.uiowa.edu
+  host: uiowastg.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+  root: /var/www/html/uiowa.test/docroot
+  user: uiowa.test

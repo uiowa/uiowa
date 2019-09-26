@@ -3,6 +3,8 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.articles.field_articles_more
+    - field.field.paragraph.articles.field_articles_more_path
     - field.field.paragraph.articles.field_reference
     - field.field.paragraph.articles.field_uip_classes
     - field.field.paragraph.articles.field_uip_colwidth
@@ -26,6 +28,8 @@ content:
     type: string
     region: content
 hidden:
+  field_articles_more: true
+  field_articles_more_path: true
   field_reference: true
   field_uip_classes: true
   field_uip_colwidth: true

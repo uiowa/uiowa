@@ -1,0 +1,40 @@
+uuid: 838859e4-4c1c-4618-85b9-5aaac92c9515
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.webform.field_uip_classes
+    - field.field.paragraph.webform.field_uip_colwidth
+    - field.field.paragraph.webform.field_uip_display_title
+    - field.field.paragraph.webform.field_uip_id
+    - field.field.paragraph.webform.field_uip_title
+    - field.field.paragraph.webform.field_webform
+    - paragraphs.paragraphs_type.webform
+  module:
+    - webform
+id: paragraph.webform.default
+targetEntityType: paragraph
+bundle: webform
+mode: default
+content:
+  field_uip_title:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_webform:
+    weight: 1
+    label: hidden
+    settings:
+      source_entity: true
+    third_party_settings: {  }
+    type: webform_entity_reference_entity_view
+    region: content
+hidden:
+  field_uip_classes: true
+  field_uip_colwidth: true
+  field_uip_display_title: true
+  field_uip_id: true

@@ -1,0 +1,53 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for sitenow_carousel module.
+ *
+ * @DCG
+ * This file is no longer required in Drupal 8.
+ * @see https://www.drupal.org/node/2217931
+ */
+
+use Drupal\Core\Template\Attribute;
+
+/**
+ * Implements hook_preprocess_field().
+ */
+function sitenow_carousel_preprocess_field(&$variables) {
+  /** @var Drupal\Core\Routing\AdminContext $admin_context */
+  $admin_context = \Drupal::service('router.admin_context');
+
+  switch ($variables['element']['#field_name']) {
+    case 'field_carousel_item':
+
+      if (!$admin_context->isAdminRoute()) {
+        $variables['attributes']['class'][] = 'carousel-inner';
+      }
+
+      break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_paragraph().
+ */
+function sitenow_carousel_preprocess_paragraph__carousel(&$variables) {
+  /** @var Drupal\paragraphs\Entity\Paragraph $paragraph */
+  $paragraph = $variables['paragraph'];
+
+  /** @var Drupal\Core\Routing\AdminContext $admin_context */
+  $admin_context = \Drupal::service('router.admin_context');
+
+  if (!$admin_context->isAdminRoute()) {
+    $variables['id'] = 'carousel-' . $paragraph->id();
+
+    if (isset($variables['content']['field_carousel_item'][0])) {
+      $variables['content']['field_carousel_item'][0]['#attributes']['class'][] = 'active';
+    }
+
+    // Subtract one from the number of items since the indicators are zero-based.
+    // @see paragraph--carousel--default.html.twig
+    $variables['carousel_item_count'] = $variables['content']['field_carousel_item']['#items']->count() - 1;
+  }
+}
