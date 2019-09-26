@@ -78,7 +78,7 @@ function collegiate_set_default_theme() {
   Drupal::configFactory()
     ->getEditable('system.theme')
     ->set('default', 'collegiate_theme')
-    ->set('admin', 'adminimal_theme;')
+    ->set('admin', 'claro;')
     ->save(TRUE);
 
   // Use the admin theme for creating content.
