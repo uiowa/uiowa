@@ -75,9 +75,12 @@
 </nav>
 
 {% if page.header|render|striptags|trim %}
-  <header role="banner">
-    <div class="container">
-      {{ page.header }}
+  <header role="banner" {{ header_attributes }}>
+    {{ node_image }}
+    <div class="page-header">
+      <div class="container">
+        {{ page.header }}
+      </div>
     </div>
   </header>
 {% endif %}
