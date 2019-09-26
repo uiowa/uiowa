@@ -44,7 +44,7 @@ set classes = [
     {{ title_suffix }}
     {{ attach_library('collegiate_theme/feature-block') }}
     {% include "@feature-block/feature-block--basic.twig" with {
-			"feature_banner_image": file_url(content.field_uiowa_feature_image['#items'].entity.uri.value),
+			"feature_banner_image": file_url(content.field_uiowa_feature_image[0]['#media'].image.entity.uri.value | image_style('medium')),
 			"feature_title": content.field_uiowa_feature_title,
 			"feature_sub": content.field_uiowa_feature_sub,
 			"feature_link": content.field_uiowa_feature_link[0]['#url'],

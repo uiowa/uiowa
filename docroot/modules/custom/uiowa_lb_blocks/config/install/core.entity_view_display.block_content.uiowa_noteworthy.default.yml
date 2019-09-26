@@ -9,7 +9,6 @@ dependencies:
     - field.field.block_content.uiowa_noteworthy.field_uiowa_noteworthy_sub
     - field.field.block_content.uiowa_noteworthy.field_uiowa_noteworthy_title
   module:
-    - image
     - link
 id: block_content.uiowa_noteworthy.default
 targetEntityType: block_content
@@ -24,13 +23,13 @@ content:
     type: basic_string
     region: content
   field_uiowa_noteworthy_image:
-    weight: 2
+    type: entity_reference_entity_view
+    weight: 5
     label: above
     settings:
-      image_style: ''
-      image_link: ''
+      view_mode: default
+      link: false
     third_party_settings: {  }
-    type: image
     region: content
   field_uiowa_noteworthy_link:
     weight: 1

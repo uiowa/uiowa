@@ -45,5 +45,11 @@ disable-targets:
       run: true
     drupal:
       run: true
+validate:
+  twig:
+    functions:
+      - drupal_image
+    filters:
+      - image_style
 cloud:
   appId: 21a2a0ab-b4ed-4ecf-8bd4-9266c70f5ef1

@@ -3,13 +3,13 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_banner
+    - entity_browser.browser.media_browser
     - field.field.block_content.uiowa_banner.field_uiowa_banner_excerpt
     - field.field.block_content.uiowa_banner.field_uiowa_banner_image
     - field.field.block_content.uiowa_banner.field_uiowa_banner_link
     - field.field.block_content.uiowa_banner.field_uiowa_banner_title
-    - image.style.thumbnail
   module:
-    - image
+    - entity_browser
     - link
 id: block_content.uiowa_banner.default
 targetEntityType: block_content
@@ -25,11 +25,18 @@ content:
     type: string_textarea
     region: content
   field_uiowa_banner_image:
-    type: image_image
+    type: entity_browser_entity_reference
     weight: 29
     settings:
-      preview_image_style: thumbnail
-      progress_indicator: throbber
+      entity_browser: media_browser
+      field_widget_display: rendered_entity
+      field_widget_edit: true
+      field_widget_remove: true
+      selection_mode: selection_append
+      field_widget_display_settings:
+        view_mode: thumbnail
+      open: true
+      field_widget_replace: false
     region: content
     third_party_settings: {  }
   field_uiowa_banner_link:

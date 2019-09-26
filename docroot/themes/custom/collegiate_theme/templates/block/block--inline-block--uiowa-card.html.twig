@@ -44,14 +44,18 @@ set classes = [
     {{ title_suffix }}
     {{ attach_library('collegiate_theme/card-block') }}
 
-      {% include "@card-block/card-block--basic.twig" with {
-        "card_image": file_url(content.field_uiowa_card_image['#items'].entity.uri.value),
+      {% embed "@card-block/card-block--basic.twig" with {
+        "card_image": drupal_image(content.field_uiowa_card_image[0]['#media'].image.entity.uri.value, 'uiowa_lb_blocks',  { class: 'card__img', alt: content.field_uiowa_card_image[0]['#media'].image.alt }, responsive=true),
         "card_title": content.field_uiowa_card_title,
         "card_text": content.field_uiowa_card_excerpt,
         "card_link_url": content.field_uiowa_card_link[0]['#url'],
         "card_link_title": content.field_uiowa_card_link[0]['#title'],
         "card_position": elements['#weight']
       } %}
+        {% block card_img %}
+          {{ card_image }}
+        {% endblock %}
+      {% endembed %}
 
   {% endblock %}
   {% if attributes.hasClass('js-layout-builder-block') %}
