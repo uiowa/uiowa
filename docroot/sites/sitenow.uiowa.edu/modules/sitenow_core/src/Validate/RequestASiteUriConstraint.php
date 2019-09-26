@@ -85,6 +85,16 @@ class RequestASiteUriConstraint {
       }
     }
 
+    // Validate that the URI does not already exist.
+    if (file_exists(DRUPAL_ROOT . '/sites/' . $url['host'])) {
+      $formState->setError(
+        $element,
+        t('URL @value already exists. Please choose another.', [
+          '@value' => $value,
+        ])
+      );
+    }
+
     // Assuming the URI checks out, set some hidden fields based on it.
     $formState->setValue('url_host', $url['host']);
     $id = Multisite::getIdentifier($value);
