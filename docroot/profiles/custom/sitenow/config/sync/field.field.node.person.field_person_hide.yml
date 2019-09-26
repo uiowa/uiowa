@@ -1,0 +1,23 @@
+uuid: 25449a15-6463-43f1-a896-c127701cf62c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_person_hide
+    - node.type.person
+id: node.person.field_person_hide
+field_name: field_person_hide
+entity_type: node
+bundle: person
+label: 'Hide on lists'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

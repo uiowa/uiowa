@@ -104,6 +104,8 @@ $accordion-items-bg: $gray-600;
 
       li a {
         color: #fff;
+        white-space: normal;
+        word-break: break-word;
       }
     }
   }
@@ -222,5 +224,9 @@ $accordion-items-bg: $gray-600;
   }
   ul.sf-menu.menu.sf-accordion {
     @extend .row;
+    margin: 0;
+  }
+  ul.sf-menu.menu.sf-accordion.sf-expanded {
+    margin: 0px -5px !important;
   }
 }

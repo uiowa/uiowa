@@ -4,7 +4,7 @@
     @extend .h5;
   }
   .more-link {
-    @include mt(3);
+    @extend .mt-2;
   }
 }
 .paragraph--type--articles.list {
@@ -22,17 +22,7 @@
     border-bottom: 1px solid $list-group-border-color;
   }
   article.node--type-article {
-    @extend .media;
-  }
-  figure img {
-    @include ml(3);
-    max-width: 80px;
-    @include media-breakpoint-up(sm) {
-      max-width: 150px;
-    }
-    @include media-breakpoint-up(md) {
-      max-width: 220px;
-    }
+    display: flex;
   }
   .node__content {
     @extend .media-body;
@@ -53,6 +43,8 @@
   }
   figure img {
     @extend .card-img-top;
+    max-width: 100%;
+    margin: 0;
   }
   .node__content {
     @extend .card-body;
@@ -74,6 +66,8 @@
   }
   figure img {
     @extend .card-img-top;
+    max-width: 100%;
+    margin: 0;
   }
   .node__content {
     @extend .card-body;
@@ -96,8 +90,8 @@
 .paragraph--type--section.bg-dark {
   .paragraph--type--articles.list {
     .views-row {
-      background-color: $dark;
-      color: $light;
+      @extend .bg-dark;
+      @extend .text-light;
       a {
         color: $yellow;
       }
@@ -107,14 +101,14 @@
 .paragraph--type--section.bg-light {
   .paragraph--type--articles.list {
     .views-row {
-      background-color: $light;
+      @extend .bg-light;
     }
   }
 }
 .paragraph--type--section.bg-yellow {
   .paragraph--type--articles.list {
     .views-row {
-      background-color: $yellow;
+      @extend .bg-yellow;
       a {
         color: $black;
         text-decoration: underline;

@@ -14,6 +14,8 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\NodeInterface;
 use Drupal\user\Entity\User;
 use Drupal\views\ViewExecutable;
+use Drupal\media\Entity\Media;
+use Drupal\file\Entity\File;
 
 /**
  * Implements hook_toolbar_alter().
@@ -40,8 +42,10 @@ function sitenow_preprocess_select(&$variables) {
       // Remove none option.
       // Not the best solution, possibly look at:
       // https://www.drupal.org/files/issues/2117827-21.patch.
-      if ($variables['options'][0]['value'] == '_none' || $variables['options'][0]['value'] == '') {
-        unset($variables['options'][0]);
+      if (isset($variables['options'], $variables['options'][0], $variables['options'][0]['value'])) {
+        if ($variables['options'][0]['value'] == '_none' || $variables['options'][0]['value'] == '') {
+          unset($variables['options'][0]);
+        }
       }
     }
   }
@@ -359,6 +363,21 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         }
       }
       break;
+
+    case 'webform_ui_element_form':
+      if (\Drupal::currentUser()->hasPermission('administer webforms') === FALSE) {
+        // Remove access to wrapper, element, label attributes.
+        $form["properties"]["wrapper_attributes"]['#access'] = FALSE;
+        $form["properties"]["element_attributes"]['#access'] = FALSE;
+        $form["properties"]["label_attributes"]['#access'] = FALSE;
+
+        // Remove access to message close fields. Conflicts with Bootstrap alert close.
+        $form["properties"]["markup"]["message_close"]['#access'] = FALSE;
+        $form["properties"]["markup"]["message_close_effect"]['#access'] = FALSE;
+        $form["properties"]["markup"]["message_storage"]['#access'] = FALSE;
+        $form["properties"]["markup"]["message_id"]['#access'] = FALSE;
+      }
+      break;
   }
 }
 
@@ -493,6 +512,52 @@ function sitenow_preprocess_page(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_preprocess_node(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+
+    $node = $variables["node"];
+    switch ($node->getType()) {
+      case 'page':
+        switch ($variables['view_mode']) {
+          case 'teaser':
+            $style = 'sitenow_card';
+            $image_field = $node->get('field_image');
+            if (!$image_field->isEmpty()) {
+              $image = $image_field->first()->getValue();
+              $media = Media::load($image['target_id']);
+              if ($media) {
+                $media_field = $media->get('field_media_image')
+                  ->first()
+                  ->getValue();
+                $file = File::load($media_field['target_id']);
+                $uri = $file->getFileUri();
+                $alt = ($media_field['alt'] ? $media_field['alt'] : '');
+                $image = [
+                  '#theme' => 'image_style',
+                  '#width' => NULL,
+                  '#height' => NULL,
+                  '#style_name' => $style,
+                  '#uri' => $uri,
+                  '#alt' => $alt,
+                  '#weight' => -1,
+                  '#attributes' => [
+                    'class' => 'page-image',
+                  ],
+                ];
+                $variables["content"]['page_image'] = $image;
+              }
+            }
+            break;
+        }
+        break;
+    }
+  }
+}
+
+/**
  * Implements hook_form_BASE_FORM_ID_alter() for menu_link_content_form.
  */
 function sitenow_form_menu_link_content_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
@@ -553,7 +618,7 @@ function sitenow_link_alter(&$variables) {
   if (!empty($variables['options']['fa_icon'])) {
     $variables['options']['attributes']['class'][] = 'fa-icon';
 
-    $variables['text'] = t('<i class="fa @icon" aria-hidden="true"></i> <span class="menu-link-title">@title</span>', [
+    $variables['text'] = t('<span class="fa @icon" aria-hidden="true"></span> <span class="menu-link-title">@title</span>', [
       '@icon' => $variables['options']['fa_icon'],
       '@title' => $variables['text'],
     ]);
@@ -613,4 +678,25 @@ function sitenow_toolbar() {
   ];
 
   return $items;
+}
+
+/**
+ * Implements hook_editor_js_settings_alter().
+ */
+function sitenow_editor_js_settings_alter(array &$settings) {
+  foreach (array_keys($settings['editor']['formats']) as $text_format_id) {
+    if ($settings['editor']['formats'][$text_format_id]['editor'] === 'ckeditor') {
+      // Adjust CKEditor settings to allow empty span tags for use with FontAwesome.
+      $settings['editor']['formats'][$text_format_id]['editorSettings']['customConfig'] =
+        base_path() . drupal_get_path('profile', 'sitenow') . '/js/ckeditor_config.js';
+      /* The following will allow Fontawesome to display icons in the CKEditor preview,
+       * but collapsing an open text field will bypass the convertSVGtoTag, essentially
+       * removing itself from the source code.
+       * $settings['editor']['formats'][$text_format_id]['editorSettings']['customConfig'] =
+       * base_path() . drupal_get_path('module', 'fontawesome') . '/js/plugins/drupalfontawesome/plugin.js';
+       * $settings['editor']['formats'][$text_format_id]['editorSettings']['customConfig'] =
+       * base_path() . drupal_get_path('module', 'fontawesome') . '/js/plugins/drupalfontawesome/plugin.es6.js';
+       */
+    }
+  }
 }

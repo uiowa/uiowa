@@ -1,0 +1,89 @@
+uuid: b47a6c97-c48c-434f-9e0b-3ac84534a78e
+langcode: en
+status: true
+dependencies:
+  config:
+    - entity_browser.browser.featured_content_browser
+    - field.field.paragraph.featured_content.field_featured_content
+    - field.field.paragraph.featured_content.field_uip_classes
+    - field.field.paragraph.featured_content.field_uip_colwidth
+    - field.field.paragraph.featured_content.field_uip_display_title
+    - field.field.paragraph.featured_content.field_uip_id
+    - field.field.paragraph.featured_content.field_uip_title
+    - paragraphs.paragraphs_type.featured_content
+  module:
+    - entity_browser
+    - field_group
+third_party_settings:
+  field_group:
+    group_settings:
+      children:
+        - field_uip_colwidth
+        - field_uip_classes
+        - field_uip_id
+      parent_name: ''
+      weight: 3
+      format_type: details
+      format_settings:
+        id: ''
+        classes: ''
+        open: false
+        required_fields: true
+      label: 'Featured Content Settings'
+id: paragraph.featured_content.default
+targetEntityType: paragraph
+bundle: featured_content
+mode: default
+content:
+  field_featured_content:
+    weight: 2
+    settings:
+      entity_browser: featured_content_browser
+      field_widget_display: label
+      field_widget_remove: true
+      open: true
+      selection_mode: selection_append
+      field_widget_edit: false
+      field_widget_replace: false
+      field_widget_display_settings: {  }
+    third_party_settings: {  }
+    type: entity_browser_entity_reference
+    region: content
+  field_uip_classes:
+    weight: 5
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_uip_colwidth:
+    weight: 4
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_uip_display_title:
+    weight: 1
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_uip_id:
+    weight: 6
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_uip_title:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden:
+  created: true
+  status: true

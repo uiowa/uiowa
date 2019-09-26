@@ -14,6 +14,7 @@ use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Component\Utility\Html;
 use Drupal\views\Entity\View;
 use Drupal\views\Views;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Implements hook_entity_extra_field_info().
@@ -119,12 +120,12 @@ function sitenow_articles_preprocess_node(&$variables) {
       case 'article':
         switch ($variables['view_mode']) {
           case 'teaser':
-            $style = 'uiowa_card';
+            $style = 'sitenow_card';
             break;
 
           case 'full':
           case 'default':
-            $style = 'uiowa_article';
+            $style = 'sitenow_article';
 
             $variables['content']['article_author'] = $node->field_article_author->view([
               'type' => 'entity_reference_label',
@@ -138,25 +139,27 @@ function sitenow_articles_preprocess_node(&$variables) {
         if (!$image_field->isEmpty()) {
           $image = $image_field->first()->getValue();
           $media = Media::load($image['target_id']);
-          $media_field = $media->get('field_media_image')
-            ->first()
-            ->getValue();
-          $file = File::load($media_field['target_id']);
-          $uri = $file->getFileUri();
-          $alt = ($media_field['alt'] ? $media_field['alt'] : '');
-          $image = [
-            '#theme' => 'image_style',
-            '#width' => NULL,
-            '#height' => NULL,
-            '#style_name' => $style,
-            '#uri' => $uri,
-            '#alt' => $alt,
-            '#weight' => -1,
-            '#attributes' => [
-              'class' => 'article-image',
-            ],
-          ];
-          $variables["content"]['article_image'] = $image;
+          if ($media) {
+            $media_field = $media->get('field_media_image')
+              ->first()
+              ->getValue();
+            $file = File::load($media_field['target_id']);
+            $uri = $file->getFileUri();
+            $alt = ($media_field['alt'] ? $media_field['alt'] : '');
+            $image = [
+              '#theme' => 'image_style',
+              '#width' => NULL,
+              '#height' => NULL,
+              '#style_name' => $style,
+              '#uri' => $uri,
+              '#alt' => $alt,
+              '#weight' => -1,
+              '#attributes' => [
+                'class' => 'article-image',
+              ],
+            ];
+            $variables["content"]['article_image'] = $image;
+          }
         }
         break;
 
@@ -295,11 +298,13 @@ function sitenow_articles_preprocess_paragraph(&$variables) {
         // Contextual relationship filter.
         $args = implode('+', $tids);
         $view->setArguments([$args]);
-        $view->setAjaxEnabled(TRUE);
 
         if ($paragraph->hasField('field_uip_items') && !$paragraph->get('field_uip_items')->isEmpty()) {
           $items = $paragraph->field_uip_items->value;
           $view->setItemsPerPage($items);
+          $view->setExposedInput([
+            'items_per_page' => $items,
+          ]);
         }
         $pager_type = 'some';
         // Show pager if it exists and is set.
@@ -314,6 +319,8 @@ function sitenow_articles_preprocess_paragraph(&$variables) {
         $pager['type'] = $pager_type;
         $view->display_handler->setOption('pager', $pager);
 
+        $view->preExecute();
+        $view->execute();
         $variables['content']['view'] = $view->render();
 
         // If we have more link checked and link provided, pass it.
@@ -349,5 +356,42 @@ function sitenow_articles_preprocess_paragraph(&$variables) {
       }
 
       break;
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function sitenow_articles_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $view = $form_state->get('view');
+  if ($view->id() == 'articles_block') {
+    if ($view->current_display == 'block_articles') {
+      $exposed_input = $view->getExposedInput();
+      if (isset($exposed_input["items_per_page"])) {
+        $form["items_per_page"]["#options"] = [$exposed_input["items_per_page"] => $exposed_input["items_per_page"]];
+        $form["#attributes"]["class"][] = 'hidden';
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ */
+function sitenow_articles_field_widget_paragraphs_form_alter(&$element, &$form_state, $context) {
+  if ($element["#paragraph_type"] == 'articles') {
+    if (!empty($element['subform']['field_articles_more'])) {
+      $parents_array = $element['subform']['#parents'];
+      $parents = array_shift($parents_array) . '[' . implode('][', $parents_array) . ']';
+      if (!empty($element['subform']['field_articles_more_path'])) {
+        $element['subform']['field_articles_more_path']['#states'] = [
+          'visible' => [
+            ':input[name="' . $parents . '[field_articles_more][value]"]' => [
+              'checked' => TRUE,
+            ],
+          ],
+        ];
+      }
+    }
   }
 }

@@ -1,0 +1,29 @@
+uuid: b4c00769-e4a5-4327-a9a6-7b020a0e0543
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_lockup_org
+    - node.type.lockup
+    - taxonomy.vocabulary.orgs
+id: node.lockup.field_lockup_org
+field_name: field_lockup_org
+entity_type: node
+bundle: lockup
+label: Organization
+description: 'Approved lockups can be searched and filtered by organization.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      orgs: orgs
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

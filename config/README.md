@@ -14,9 +14,14 @@ high weight means config entities in this split will take precedence on import.
 
 ## Site Split
 ### Weight: 90
-Site splits are not created by default. A site can create one and it should be
-named the same as the multisite machine name (site directory). BLT will activate
-the split, if it exists. 
+Site splits are not created by default. A multisite can create one and it should
+be named the same as the multisite machine name. Check the multisite's blt.yml
+file in the multisite directory for the machine name. BLT will activate the 
+split, if it exists. 
+
+Site splits should be stored in the `../config/` directory relative from
+the docroot. The config directory should contain the split directory named as
+the multisite URI. This is created automatically during provisioning.
 
 ## Caveats
 **DO NOT** export the same configuration with different values to multiple 

@@ -38,18 +38,18 @@
         }
     },
     "config": {
-        "sort-packages": true,
-        "optimize-autoloader": true,
-        "apcu-autoloader": true
+        "sort-packages": true
     },
     "require": {
         "acquia/blt": "10.x-dev",
+        "acquia/memcache-settings": "*",
         "bower-asset/chosen": "^1.8",
         "drupal/acquia_connector": "^1.5.0",
         "drupal/acquia_purge": "^1.0-beta3",
         "drupal/address": "^1.4",
         "drupal/adminimal_theme": "^1.3",
         "drupal/administerusersbyrole": "3.0-alpha2",
+        "drupal/allowed_formats": "^1.1",
         "drupal/better_normalizers": "^1.0@beta",
         "drupal/components": "^1.0",
         "drupal/config_ignore": "2.x-dev",
@@ -57,6 +57,8 @@
         "drupal/core": "^8.7",
         "drupal/cshs": "^1.0@beta",
         "drupal/default_content": "^1.0@alpha",
+        "drupal/devel": "^2.1",
+        "drupal/draggableviews": "^1.2",
         "drupal/editor_advanced_link": "^1.4",
         "drupal/entity_browser": "2.x-dev",
         "drupal/entity_embed": "^1.0@RC",
@@ -71,25 +73,37 @@
         "drupal/imagemagick": "^2.3",
         "drupal/inline_entity_form": "^1.0@RC",
         "drupal/linkit": "5.x-dev",
+        "drupal/mailsystem": "^4.1",
         "drupal/masquerade": "2.x-dev#2011b21",
-        "drupal/memcache": "2.0-alpha7",
+        "drupal/media_entity_facebook": "^2.0@alpha",
+        "drupal/media_entity_instagram": "2.x-dev",
+        "drupal/media_entity_twitter": "2.x-dev",
         "drupal/menu_admin_per_menu": "^1.0",
         "drupal/menu_block": "1.x-dev#fbfb8fe",
         "drupal/menu_breadcrumb": "^1.7",
         "drupal/menu_link_weight": "^1.0@beta",
         "drupal/metatag": "^1.5",
+        "drupal/mimemail": "^1.0@alpha",
         "drupal/override_node_options": "^2.4",
         "drupal/paragraphs": "^1.3",
         "drupal/pathauto": "^1.1",
         "drupal/purge": "^3.0@beta",
+        "drupal/rabbit_hole": "^1.0@beta",
         "drupal/redirect": "^1.1",
+        "drupal/reroute_email": "^1.1",
+        "drupal/robotstxt": "^1.2",
         "drupal/schema_metatag": "^1.2",
         "drupal/simple_sitemap": "^2.12",
         "drupal/simplei": "^1.1",
+        "drupal/stage_file_proxy": "^1.0@beta",
         "drupal/superfish": "^1.2",
+        "drupal/swiftmailer": "^1.0@beta",
         "drupal/webform": "^5.2",
+        "drupal/workbench_email": "^1.2",
         "drush/drush": "^9.6.3",
+        "kartsims/easysvg": "^1.0",
         "npm-asset/fontawesome-iconpicker": "^3.2",
+        "richardbporter/drush-users-commands": "^2.0",
         "typhonius/acquia-php-sdk-v2": "^1.0",
         "uiowa/uiowa_auth": "^1.0",
         "uiowa/uiowa_bar": "^1.0",
@@ -98,8 +112,7 @@
     },
     "require-dev": {
         "acquia/blt-require-dev": "^10.0.0-alpha1",
-        "drupal/devel": "^2.0.0",
-        "drupal/stage_file_proxy": "^1.0@beta",
+        "drupal/config_inspector": "^1.0@beta",
         "webflo/drupal-core-require-dev": "^8.7"
     },
     "extra": {
@@ -109,9 +122,6 @@
             "drupal/core": "-p2"
         },
         "patches": {
-            "drupal/entity_browser": {
-                "Enable view to select just a single entry": "https://www.drupal.org/files/issues/2019-05-11/entity-browser-single-selection-2845941-123.patch"
-            },
             "drupal/menu_block": {
                 "Add option to make the starting level follow the active menu item": "https://www.drupal.org/files/issues/2018-05-01/menu_block-follow-2756675-43.patch",
                 "Hide block title if menu tree contains no links": "https://www.drupal.org/files/issues/2018-05-08/menu_block-hide_block_if_no_links-2757215-9.patch"
@@ -134,21 +144,44 @@
             "drupal/core": {
                 "The Media library doesn't modify the 'media' view if installed in a profile": "https://www.drupal.org/files/issues/2019-05-12/2992056.patch",
                 "Site extensions don't get rediscovered after drush cr": "https://www.drupal.org/files/issues/2018-07-11/specify_sitepath_cache_rebuild_extension_discovery-2985199-3.patch",
-                "View output is not used for entityreference options": "https://www.drupal.org/files/issues/2019-04-16/2174633-views-273.patch",
+                "View output is not used for entityreference options": "https://www.drupal.org/files/issues/2019-08-08/drupal-use_view_output_for_entityreference_options-2174633-323.patch",
                 "Allow alter oembed providers": "https://www.drupal.org/files/issues/2019-05-15/drupal-allow_alter_oembed_providers-3008119-4.patch"
             }
         },
-        "installer-types": ["bower-asset", "npm-asset"],
+        "installer-types": [
+            "bower-asset",
+            "npm-asset"
+        ],
         "installer-paths": {
-            "docroot/core": ["type:drupal-core"],
-            "docroot/modules/contrib/{$name}": ["type:drupal-module"],
-            "docroot/modules/uiowa/{$name}": ["type:drupal-custom-module"],
-            "docroot/profiles/contrib/{$name}": ["type:drupal-profile"],
-            "docroot/profiles/custom/{$name}": ["type:drupal-custom-profile"],
-            "docroot/themes/contrib/{$name}": ["type:drupal-theme"],
-            "docroot/themes/custom/{$name}": ["type:drupal-custom-theme"],
-            "docroot/libraries/{$name}": ["type:drupal-library", "type:bower-asset", "type:npm-asset"],
-            "drush/Commands/contrib/{$name}": ["type:drupal-drush"]
+            "docroot/core": [
+                "type:drupal-core"
+            ],
+            "docroot/modules/contrib/{$name}": [
+                "type:drupal-module"
+            ],
+            "docroot/modules/uiowa/{$name}": [
+                "type:drupal-custom-module"
+            ],
+            "docroot/profiles/contrib/{$name}": [
+                "type:drupal-profile"
+            ],
+            "docroot/profiles/custom/{$name}": [
+                "type:drupal-custom-profile"
+            ],
+            "docroot/themes/contrib/{$name}": [
+                "type:drupal-theme"
+            ],
+            "docroot/themes/custom/{$name}": [
+                "type:drupal-custom-theme"
+            ],
+            "docroot/libraries/{$name}": [
+                "type:drupal-library",
+                "type:bower-asset",
+                "type:npm-asset"
+            ],
+            "drush/Commands/contrib/{$name}": [
+                "type:drupal-drush"
+            ]
         },
         "drupal-scaffold": {
             "initial": {
