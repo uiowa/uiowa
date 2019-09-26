@@ -100,7 +100,7 @@ EOD;
         $blt = Yaml::parse(file_get_contents("{$path}/blt.yml"));
         $this->assertEquals($site, $blt['project']['local']['hostname']);
         $this->assertEquals($site, $blt['project']['human_name']);
-        $this->assertEquals($id, $blt['project']['id']);
+        $this->assertEquals($id, $blt['project']['machine_name']);
         $this->assertEquals('https', $blt['project']['local']['protocol']);
         $this->assertEquals('self', $blt['drush']['aliases']['local']);
         $this->assertEquals("{$id}.prod", $blt['drush']['aliases']['remote']);
