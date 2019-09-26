@@ -30,17 +30,28 @@ class PostRowSaveEvent implements EventSubscriberInterface {
    */
   public function onPostRowSave($event) {
     $migration = $event->getMigration();
-    // Calls for creating a media entity for imported files.
-    if ($migration->id() == 'd7_file') {
-      $row = $event->getRow();
-      $fids = $event->getDestinationIdValues();
-      $this->makeEntity($row, $fids);
-    }
-    // Body content needs to be put into paragraph for Basic Pages.
-    elseif ($migration->id() == 'd7_page') {
-      $row = $event->getRow();
-      $nids = $event->getDestinationIdValues();
-      $this->createParagraph($row, $nids);
+    switch ($migration->id()) {
+
+      // Calls for creating a media entity for imported files.
+      case 'd7_file':
+        $row = $event->getRow();
+        $fids = $event->getDestinationIdValues();
+        $this->makeEntity($row, $fids);
+        break;
+
+      // Body content needs to be put into paragraph for Basic Pages.
+      case 'd7_page':
+        $row = $event->getRow();
+        $nids = $event->getDestinationIdValues();
+        $this->createParagraph($row, $nids);
+        break;
+
+      // Inefficient node_load, but body/format migration won't correctly attach.
+      case 'd7_article':
+        $nids = $event->getDestinationIdValues();
+        $node = entity_load('node', $nids[0]);
+        $node->body->format = 'filtered_html';
+        $node->save();
     }
   }
 
@@ -109,7 +120,10 @@ class PostRowSaveEvent implements EventSubscriberInterface {
     $paragraph_target = end($section->get('field_section_content_block')->getValue());
     $paragraph = Paragraph::load($paragraph_target['target_id']);
 
-    $paragraph->set('field_text_body', $newContent);
+    $paragraph->set('field_text_body', [
+      'value' => $newContent,
+      'format' => 'filtered_html'
+      ]);
     $paragraph->save();
     $node->save();
   }
