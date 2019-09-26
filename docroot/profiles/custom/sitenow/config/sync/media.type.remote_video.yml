@@ -1,10 +1,15 @@
 uuid: f9ffada2-1933-4af3-8646-6e09ba93ed37
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - crop
+third_party_settings:
+  crop:
+    image_field: null
 id: remote_video
 label: 'Remote video'
-description: 'A remotely hosted video from YouTube or Vimeo.'
+description: 'A remotely hosted video from YouTube, Vimeo or University of Iowa (Kaltura/MediaSpace).'
 source: 'oembed:video'
 queue_thumbnail_downloads: false
 new_revision: false
@@ -13,5 +18,6 @@ source_configuration:
   providers:
     - YouTube
     - Vimeo
+    - 'University of Iowa'
   source_field: field_media_oembed_video
 field_map: {  }
