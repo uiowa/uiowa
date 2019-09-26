@@ -1,11 +1,16 @@
 <div class="news-card">
-  <img class="news-card__img" src="{{ news_card_image }}" alt="news-card image cap">
+  {% block news_card_img %}
+    {% if news_card_image %}
+      <img class="news-card__img" src="{{ news_card_image }}" alt="Alt Text">
+    {% endif %}
+  {% endblock %}
   <div class="news-card__body">
     <span class="news-card__label">{{ news_card_tag }}</span>
     <h2 class="news-card__title">
       <a href="{{ news-card_link_url }}">{{ news_card_title }}</a>
     </h2>
-    <button id="news-card__button{{ news_card_position }}" class="news-card__bttn toggle-bttn" aria-expanded="false"><span class="element-invisible">Details</span></button>
+    <button id="news-card__button{{ news_card_position }}" class="news-card__bttn toggle-bttn" aria-expanded="false">
+      <span class="element-invisible">Details</span></button>
     <div class="news-card__details">
       <span class="news-card__date">{{ news_card__date }}</span>
       <p class="news-card__text">{{ news_card_text }}</p>
