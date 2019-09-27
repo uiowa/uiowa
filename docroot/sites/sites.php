@@ -4,10 +4,6 @@
  * @file
  * Multisite directory aliases.
  *
- * These may need to be more restrictive depending on how acquia_purge
- * determines the purge domains for multisites.
- *
- * @see https://www.drupal.org/project/acquia_purge/issues/3050554
  * @see example.sites.php
  */
 
@@ -132,11 +128,6 @@ $sites['siteshealth-research-network.prod.drupal.uiowa.edu'] = 'health-research-
 $sites['classrooms.dev.drupal.uiowa.edu'] = 'classrooms.uiowa.edu';
 $sites['classrooms.stage.drupal.uiowa.edu'] = 'classrooms.uiowa.edu';
 $sites['classrooms.prod.drupal.uiowa.edu'] = 'classrooms.uiowa.edu';
-
-// Directory aliases for rdmevents.sites.uiowa.edu.
-$sites['sitesrdmevents.dev.drupal.uiowa.edu'] = 'rdmevents.sites.uiowa.edu';
-$sites['sitesrdmevents.stage.drupal.uiowa.edu'] = 'rdmevents.sites.uiowa.edu';
-$sites['sitesrdmevents.prod.drupal.uiowa.edu'] = 'rdmevents.sites.uiowa.edu';
 
 // Directory aliases for faculty-senate.uiowa.edu.
 $sites['faculty-senate.dev.drupal.uiowa.edu'] = 'faculty-senate.uiowa.edu';
