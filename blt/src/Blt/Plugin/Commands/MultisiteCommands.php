@@ -149,8 +149,8 @@ class MultisiteCommands extends BltTasks {
       // Delete the site code.
       $this->taskFilesystemStack()
         ->remove("{$root}/config/{$dir}")
-        ->remove("{$root}/config/{$dir}")
-        ->remove("drush/sites/{$id}.site.yml")
+        ->remove("{$root}/docroot/sites/{$dir}")
+        ->remove("{$root}/drush/sites/{$id}.site.yml")
         ->run();
 
       // Remove the directory aliases from sites.php.
