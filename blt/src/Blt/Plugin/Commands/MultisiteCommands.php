@@ -123,12 +123,11 @@ class MultisiteCommands extends BltTasks {
       $application = $cloud->application($this->getConfigValue('cloud.appId'));
       $databases = $cloud->databases($application->uuid);
 
-      if (in_array($db, $databases->getArrayCopy())) {
-        $cloud->databaseDelete($application->uuid, $db);
-        $this->say("Deleted <comment>{$db}</comment> cloud database.");
-      }
-      else {
-        $this->logger->warning("AC Database {$db} does not exist in this application.");
+      foreach ($databases as $database) {
+        if ($database->name == $db) {
+          $cloud->databaseDelete($application->uuid, $db);
+          $this->say("Deleted <comment>{$db}</comment> cloud database.");
+        }
       }
 
       foreach ($cloud->environments($application->uuid) as $environment) {
