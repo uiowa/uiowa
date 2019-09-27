@@ -78,4 +78,21 @@ class Multisite {
     return $id;
   }
 
+  /**
+   * Given a multisite ID, return an array of internal domains.
+   *
+   * @param string $id
+   *   The multisite identifier.
+   *
+   * @return array
+   *   Internal domains keyed by AC environment machine name.
+   */
+  public static function getInternalDomains($id) {
+    return [
+      'dev' => "{$id}.dev.drupal.uiowa.edu",
+      'test' => "{$id}.stage.drupal.uiowa.edu",
+      'prod' => "{$id}.prod.drupal.uiowa.edu",
+    ];
+  }
+
 }
