@@ -18,21 +18,52 @@ class FilesystemTest extends UnitTestCase {
    * Test that the robots.txt file does not exist.
    */
   public function testRobotsTxtDoesNotExist() {
-    $this->assertFileNotExists(__DIR__ . '/../../../../docroot/robots.txt');
+    $this->assertFileNotExists($this->root . '/robots.txt');
+  }
+
+  /**
+   * Test sites.php entries exist.
+   */
+  public function testDirectoryAliasesExist() {
+    $finder = new Finder();
+    $dirs = $finder
+      ->in($this->root . '/sites/')
+      ->directories()
+      ->depth('< 1')
+      ->exclude(['default', 'g', 'settings'])
+      ->sortByName();
+
+    $haystack = file_get_contents($this->root . '/sites/sites.php');
+
+    foreach ($dirs->getIterator() as $dir) {
+      $site = $dir->getRelativePathname();
+      $id = Multisite::getIdentifier("https://{$site}");
+
+      /** @var $dev */
+      /** @var $test */
+      /** @var $prod */
+      extract(Multisite::getInternalDomains($id));
+
+      $needle = <<<EOD
+\$sites['$dev'] = '$site';
+\$sites['$test'] = '$site';
+\$sites['$prod'] = '$site';
+EOD;
+      $this->assertContains($needle, $haystack);
+    }
   }
 
   /**
    * Test global settings are as expected.
    */
   public function testGlobalSettingsFile() {
-    $file = __DIR__ . '/../../../../docroot/sites/settings/global.settings.php';
+    $file = $this->root . '/sites/settings/global.settings.php';
     $this->assertFileExists($file);
     $haystack = file_get_contents($file);
 
     $needle = <<<EOD
-if (\$site_dir != 'default') {
-  \$db = str_replace('.', '_', \$site_dir);
-  \$db = str_replace('-', '_', \$db);
+if (\$dir != 'default') {
+  \$db = Multisite::getDatabase(\$dir);
 
   if (file_exists('/var/www/site-php')) {
     require "/var/www/site-php/uiowa/{\$db}-settings.inc";
@@ -76,7 +107,7 @@ EOD;
   public function testMultisiteFiles() {
     $finder = new Finder();
     $dirs = $finder
-      ->in(__DIR__ . '/../../../../docroot/sites/')
+      ->in($this->root . '/sites/')
       ->directories()
       ->depth('< 1')
       ->exclude(['g', 'settings'])
