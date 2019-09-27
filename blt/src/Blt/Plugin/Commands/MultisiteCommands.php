@@ -104,7 +104,7 @@ class MultisiteCommands extends BltTasks {
         'dev' => $dev,
         'test' => $test,
         'prod' => $prod,
-      ]
+      ],
     ];
 
     $this->printArrayAsTable($delete);
@@ -120,8 +120,15 @@ class MultisiteCommands extends BltTasks {
       $cloud = Client::factory($connector);
 
       $application = $cloud->application($this->getConfigValue('cloud.appId'));
-      $cloud->databaseDelete($application->uuid, $db);
-      $this->say("Deleted <comment>{$db}</comment> cloud database.");
+      $databases = $cloud->databases($application->uuid);
+
+      if (in_array($db, $databases->getArrayCopy())) {
+        $cloud->databaseDelete($application->uuid, $db);
+        $this->say("Deleted <comment>{$db}</comment> cloud database.");
+      }
+      else {
+        $this->logger->warning("AC Database {$db} does not exist in this application.");
+      }
 
       foreach ($cloud->environments($application->uuid) as $environment) {
         $domain = Multisite::getInternalDomains($id)[$environment->name];
