@@ -101,9 +101,10 @@ class MultisiteCommands extends BltTasks {
     $delete = [
       'database' => $db,
       'domains' => [
-        'dev' => $dev,
-        'test' => $test,
-        'prod' => $prod,
+        $dev,
+        $test,
+        $prod,
+        $dir,
       ],
     ];
 
