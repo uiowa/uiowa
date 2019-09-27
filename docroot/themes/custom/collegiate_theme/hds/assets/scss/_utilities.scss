@@ -152,6 +152,19 @@
 }
 
 
+//////////  Responsive BG Image
+
+@mixin responsive-bg {
+  [data-responsive-background-image] {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center
+  }
+  [data-responsive-background-image] img {
+       display: none;
+  }
+}
+
 
 // Extends ///////////////
 %shadow {
