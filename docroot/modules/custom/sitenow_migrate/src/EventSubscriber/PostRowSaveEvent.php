@@ -48,9 +48,15 @@ class PostRowSaveEvent implements EventSubscriberInterface {
 
       // Inefficient node_load, but body/format migration won't correctly attach.
       case 'd7_article':
+      case 'd7_person':
         $nids = $event->getDestinationIdValues();
         $node = entity_load('node', $nids[0]);
-        $node->body->format = 'filtered_html';
+        if ($node->getType() == 'article') {
+          $node->body->format = 'filtered_html';
+        }
+        else {
+          $node->field_person_bio->format = 'filtered_html';
+        }
         $node->save();
     }
   }
@@ -122,8 +128,8 @@ class PostRowSaveEvent implements EventSubscriberInterface {
 
     $paragraph->set('field_text_body', [
       'value' => $newContent,
-      'format' => 'filtered_html'
-      ]);
+      'format' => 'filtered_html',
+    ]);
     $paragraph->save();
     $node->save();
   }
