@@ -257,3 +257,8 @@ $sites['conferenceiniworkshop.prod.drupal.uiowa.edu'] = 'iniworkshop.conference.
 $sites['lablogsdon.dev.drupal.uiowa.edu'] = 'logsdon.lab.uiowa.edu';
 $sites['lablogsdon.stage.drupal.uiowa.edu'] = 'logsdon.lab.uiowa.edu';
 $sites['lablogsdon.prod.drupal.uiowa.edu'] = 'logsdon.lab.uiowa.edu';
+
+// Directory aliases for electronicmusic.studio.uiowa.edu.
+$sites['studioelectronicmusic.dev.drupal.uiowa.edu'] = 'electronicmusic.studio.uiowa.edu';
+$sites['studioelectronicmusic.stage.drupal.uiowa.edu'] = 'electronicmusic.studio.uiowa.edu';
+$sites['studioelectronicmusic.prod.drupal.uiowa.edu'] = 'electronicmusic.studio.uiowa.edu';
