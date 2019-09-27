@@ -170,14 +170,14 @@ EOD;
       file_put_contents("{$root}/docroot/sites/sites.php", $contents);
 
       $this->taskGit()
-        ->dir($this->getConfigValue("repo.root"))
+        ->dir($root)
         ->add('docroot/sites/sites.php')
         ->commit("Deleted sites.php entries for {$dir}")
-        ->add("docroot/sites/{$dir}")
+        ->add("docroot/sites/{$dir}/")
         ->commit("Deleted multisite {$dir} directory")
         ->add("drush/sites/{$id}.site.yml")
         ->commit("Deleted Drush aliases for {$dir}")
-        ->add("config/{$dir}")
+        ->add("config/{$dir}/")
         ->commit("Deleted config directory for {$dir}")
         ->interactive(FALSE)
         ->printOutput(FALSE)
