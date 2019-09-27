@@ -131,9 +131,19 @@ class MultisiteCommands extends BltTasks {
       }
 
       foreach ($cloud->environments($application->uuid) as $environment) {
-        $domain = Multisite::getInternalDomains($id)[$environment->name];
-        $cloud->deleteDomain($environment->name, $domain);
-        $this->say("Deleted <comment>{$domain}</comment> cloud domain.");
+        // We only care about dev/test/prod environment domains.
+        if (isset($environment->name, $delete['domains'])) {
+          $domain = Multisite::getInternalDomains($id)[$environment->name];
+
+          if (in_array($domain, $environment->domains)) {
+            $cloud->deleteDomain($environment->name, $domain);
+            $this->say("Deleted <comment>{$domain}</comment> cloud domain.");
+          }
+          else {
+            $this->logger->warning("Domain {$domain} does not exist on environment {$environment->name}.");
+          }
+
+        }
       }
 
       // Delete the site code.
