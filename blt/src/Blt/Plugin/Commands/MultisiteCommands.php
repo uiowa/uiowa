@@ -98,7 +98,7 @@ class MultisiteCommands extends BltTasks {
 
     $this->say("Selected site <comment>{$dir}</comment>.");
 
-    $delete = [
+    $properties = [
       'database' => $db,
       'domains' => [
         $dev,
@@ -108,7 +108,7 @@ class MultisiteCommands extends BltTasks {
       ],
     ];
 
-    $this->printArrayAsTable($delete);
+    $this->printArrayAsTable($properties);
     if (!$this->confirm("The cloud properties above will be deleted. Are you sure?", FALSE)) {
       throw new UserAbortException();
     }
@@ -132,18 +132,11 @@ class MultisiteCommands extends BltTasks {
       }
 
       foreach ($cloud->environments($application->uuid) as $environment) {
-        // We only care about dev/test/prod environment domains.
-        if (isset($delete['domains'][$environment->name])) {
-          $domain = Multisite::getInternalDomains($id)[$environment->name];
-
-          if (in_array($domain, $environment->domains)) {
+        if ($intersect = array_intersect($properties['domains'], $environment->domains)) {
+          foreach ($intersect as $domain) {
             $cloud->deleteDomain($environment->uuid, $domain);
             $this->say("Deleted <comment>{$domain}</comment> cloud domain.");
           }
-          else {
-            $this->logger->warning("Domain {$domain} does not exist on environment {$environment->name}.");
-          }
-
         }
       }
 
