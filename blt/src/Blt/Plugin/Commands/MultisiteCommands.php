@@ -96,9 +96,19 @@ class MultisiteCommands extends BltTasks {
     $test = Multisite::getInternalDomains($id)['test'];
     $prod = Multisite::getInternalDomains($id)['prod'];
 
-    $this->yell('If you need a fresh, on-demand backup, you should make one now!');
+    $this->say("Selected site <comment>{$dir}</comment>.");
 
-    if (!$this->confirm("You will delete the {$db} database and the {$dev}, {$test} and {$prod} internal domains. Are you sure?", FALSE)) {
+    $delete = [
+      'database' => $db,
+      'domains' => [
+        'dev' => $dev,
+        'test' => $test,
+        'prod' => $prod,
+      ]
+    ];
+
+    $this->printArrayAsTable($delete);
+    if (!$this->confirm("The cloud properties above will be deleted. Are you sure?", FALSE)) {
       throw new UserAbortException();
     }
     else {
