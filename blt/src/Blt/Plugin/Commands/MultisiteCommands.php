@@ -98,7 +98,7 @@ class MultisiteCommands extends BltTasks {
 
     $this->yell('If you need a fresh, on-demand backup, you should make one now!');
 
-    if (!$this->confirm("You will delete the {$db} database and the {$dev}, {$test} and {$prod} internal domains. Are you sure?")) {
+    if (!$this->confirm("You will delete the {$db} database and the {$dev}, {$test} and {$prod} internal domains. Are you sure?", FALSE)) {
       throw new UserAbortException();
     }
     else {
