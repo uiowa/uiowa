@@ -124,7 +124,7 @@ class MultisiteCommands extends BltTasks {
         ->remove("drush/sites/{$id}.site.yml")
         ->run();
 
-      // Remove the directory aliases from sites.php
+      // Remove the directory aliases from sites.php.
       $contents = file_get_contents("{$root}/docroot/sites/sites.php");
 
       // Remove sites.php data.
@@ -169,8 +169,6 @@ EOD;
    * @requireCredentials
    */
   public function validateMultisiteInit(CommandData $commandData) {
-
-
     $uri = $commandData->input()->getOption('site-uri');
 
     if (!$uri) {
@@ -211,11 +209,13 @@ EOD;
   public function postMultisiteInit($result, CommandData $commandData) {
     $uri = $commandData->input()->getOption('site-uri');
     $dir = $commandData->input()->getOption('site-dir');
-    $db = str_replace('.', '_', $dir);
-    $db = str_replace('-', '_', $db);
+
+    $db = Multisite::getDatabase($dir);
     $id = Multisite::getIdentifier($uri);
-    $dev = "{$id}.dev.drupal.uiowa.edu";
-    $test = "{$id}.stage.drupal.uiowa.edu";
+    $dev = Multisite::getInternalDomains($id)['dev'];
+    $test = Multisite::getInternalDomains($id)['test'];
+    $prod = Multisite::getInternalDomains($id)['prod'];
+
     $root = $this->getConfigValue('repo.root');
 
     // Remove some files that we probably don't need.
@@ -236,9 +236,9 @@ EOD;
     $app = $this->getConfig()->get('project.prefix');
     $default = Yaml::parse(file_get_contents("{$root}/drush/sites/{$app}.site.yml"));
     $default['local']['uri'] = $dir;
-    $default['prod']['uri'] = $dir;
-    $default['test']['uri'] = $test;
     $default['dev']['uri'] = $dev;
+    $default['test']['uri'] = $test;
+    $default['prod']['uri'] = $dir;
 
     file_put_contents("{$root}/drush/sites/{$id}.site.yml", Yaml::dump($default, 10, 2));
     $this->say("Updated <comment>{$id}.site.yml</comment> Drush alias file with <info>local, dev, test and prod</info> aliases.");
@@ -257,7 +257,7 @@ EOD;
 // Directory aliases for {$dir}.
 \$sites['{$dev}'] = '{$dir}';
 \$sites['{$test}'] = '{$dir}';
-\$sites['{$id}.prod.drupal.uiowa.edu'] = '{$dir}';
+\$sites['{$prod}'] = '{$dir}';
 
 EOD;
 
