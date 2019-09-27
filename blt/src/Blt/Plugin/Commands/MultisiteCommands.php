@@ -5,6 +5,10 @@ namespace Sitenow\Blt\Plugin\Commands;
 use Acquia\Blt\Robo\BltTasks;
 use AcquiaCloudApi\CloudApi\Client;
 use AcquiaCloudApi\CloudApi\Connector;
+use AcquiaCloudApi\Response\ApplicationResponse;
+use AcquiaCloudApi\Response\DatabaseResponse;
+use AcquiaCloudApi\Response\DatabasesResponse;
+use AcquiaCloudApi\Response\EnvironmentResponse;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
 use Drush\Exceptions\UserAbortException;
@@ -120,9 +124,13 @@ class MultisiteCommands extends BltTasks {
 
       $cloud = Client::factory($connector);
 
+      /** @var \AcquiaCloudApi\Response\ApplicationResponse $application */
       $application = $cloud->application($this->getConfigValue('cloud.appId'));
+
+      /** @var \AcquiaCloudApi\Response\DatabasesResponse $databases */
       $databases = $cloud->databases($application->uuid);
 
+      /** @var \AcquiaCloudApi\Response\DatabaseResponse $database */
       foreach ($databases as $database) {
         if ($database->name == $db) {
           $cloud->databaseDelete($application->uuid, $db);
@@ -130,6 +138,7 @@ class MultisiteCommands extends BltTasks {
         }
       }
 
+      /** @var \AcquiaCloudApi\Response\EnvironmentResponse $environment */
       foreach ($cloud->environments($application->uuid) as $environment) {
         if ($intersect = array_intersect($properties['domains'], $environment->domains)) {
           foreach ($intersect as $domain) {
@@ -325,7 +334,9 @@ EOD;
 
     $cloud = Client::factory($connector);
 
+    /** @var \AcquiaCloudApi\Response\ApplicationResponse $application */
     $application = $cloud->application($this->getConfigValue('cloud.appId'));
+
     $cloud->databaseCreate($application->uuid, $db);
     $this->say("Created <comment>{$db}</comment> cloud database.");
 
