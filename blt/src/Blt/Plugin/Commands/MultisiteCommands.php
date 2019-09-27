@@ -96,7 +96,7 @@ class MultisiteCommands extends BltTasks {
     $test = Multisite::getInternalDomains($id)['test'];
     $prod = Multisite::getInternalDomains($id)['prod'];
 
-    $this->yell('Daily backups will persist after the database is deleted. If you need a fresh, on-demand backup, you should make one now!');
+    $this->yell('If you need a fresh, on-demand backup, you should make one now!');
 
     if (!$this->confirm("You will delete the {$db} database and the {$dev}, {$test} and {$prod} internal domains. Are you sure?")) {
       throw new UserAbortException();
