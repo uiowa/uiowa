@@ -8,6 +8,8 @@ description: ''
 folder: ../config/brand.uiowa.edu
 module:
   brand_core: 0
+  mailsystem: 0
+  swiftmailer: 0
   workbench_email: 0
 theme: {  }
 blacklist: {  }
@@ -21,11 +23,13 @@ graylist:
   - node.type.lockup
   - pathauto.pattern.lockup
   - taxonomy.vocabulary.orgs
-  - user.role.authenticated
+  - uiowa_auth.settings
+  - user.role.collaborator
   - user.role.editor
   - user.role.publisher
   - user.role.viewer
   - user.role.webmaster
+  - views.view.lockups
   - views.view.lockup_moderation
   - workflows.workflow.lockup
   - 'core.base_field_override.node.lockup.*'

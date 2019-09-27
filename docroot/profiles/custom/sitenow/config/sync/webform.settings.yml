@@ -15,7 +15,7 @@ settings:
   default_form_disable_back: false
   default_form_submit_back: false
   default_form_unsaved: false
-  default_form_novalidate: false
+  default_form_novalidate: true
   default_form_disable_inline_errors: false
   default_form_required: false
   default_form_details_toggle: true
@@ -29,13 +29,13 @@ settings:
   default_preview_title: '[webform:title]: Preview'
   default_preview_message: 'Please review your submission. Your submission is not complete until you press the &quot;Submit&quot; button!'
   preview_classes: "messages messages--error\r\nmessages messages--warning\r\nmessages messages--status\r\n"
-  default_draft_button_label: 'Save Draft'
-  default_draft_saved_message: 'Submission saved. You may return to this form later and it will restore the current values.'
-  default_draft_loaded_message: 'A partially-completed form was found. Please complete the remaining portions.'
   default_confirmation_message: 'New submission added to [webform:title].'
   default_confirmation_back_label: 'Back to form'
   confirmation_classes: "messages messages--error\r\nmessages messages--warning\r\nmessages messages--status\r\n"
   confirmation_back_classes: "button\r\n"
+  default_ajax_progress_type: throbber
+  default_ajax_effect: fade
+  default_ajax_speed: 500
   dialog_options:
     narrow:
       title: Narrow
@@ -47,6 +47,9 @@ settings:
       title: Wide
       width: 1000
   dialog: false
+  default_draft_button_label: 'Save Draft'
+  default_draft_saved_message: 'Submission saved. You may return to this form later and it will restore the current values.'
+  default_draft_loaded_message: 'A partially-completed form was found. Please complete the remaining portions.'
   default_form_file_limit: ''
   default_submission_label: '[webform_submission:submitted-to]: Submission #[webform_submission:serial]'
   default_submission_access_denied_message: 'Please login to access this submission.'
@@ -156,6 +159,7 @@ element:
     webform_location_geocomplete: webform_location_geocomplete
     webform_location_places: webform_location_places
     webform_mapping: webform_mapping
+    webform_more: webform_more
     webform_name: webform_name
     webform_rating: webform_rating
     webform_section: webform_section

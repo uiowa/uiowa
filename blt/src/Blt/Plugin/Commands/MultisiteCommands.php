@@ -8,6 +8,7 @@ use AcquiaCloudApi\CloudApi\Connector;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
 use Symfony\Component\Yaml\Yaml;
+use Sitenow\Multisite;
 
 /**
  * Defines commands in the Sitenow namespace.
@@ -63,6 +64,20 @@ class MultisiteCommands extends BltTasks {
    * @hook validate recipes:multisite:init
    */
   public function validateMultisiteInit(CommandData $commandData) {
+    $result = $this->taskGit()
+      ->dir($this->getConfigValue("repo.root"))
+      ->exec('git rev-parse --abbrev-ref HEAD')
+      ->interactive(FALSE)
+      ->printOutput(FALSE)
+      ->printMetadata(FALSE)
+      ->run();
+
+    $branch = $result->getMessage();
+
+    if ($branch == 'master' || $branch == 'develop') {
+      return new CommandError('You must run this command on a feature branch created off master.');
+    }
+
     $creds = [
       'credentials.acquia.key',
       'credentials.acquia.secret',
@@ -91,9 +106,9 @@ class MultisiteCommands extends BltTasks {
 
         $commandData->input()->setOption('site-uri', $uri);
         $commandData->input()->setOption('site-dir', $parsed['host']);
-        $machineName = $this->generateMachineName($uri);
-        $commandData->input()->setOption('remote-alias', "{$machineName}.prod");
-        $this->getConfig()->set('drupal.db.database', $machineName);
+        $id = Multisite::getIdentifier($uri);
+        $commandData->input()->setOption('remote-alias', "{$id}.prod");
+        $this->getConfig()->set('drupal.db.database', $id);
 
       }
       else {
@@ -116,9 +131,9 @@ class MultisiteCommands extends BltTasks {
     $dir = $commandData->input()->getOption('site-dir');
     $db = str_replace('.', '_', $dir);
     $db = str_replace('-', '_', $db);
-    $machineName = $this->generateMachineName($uri);
-    $dev = "{$machineName}.dev.drupal.uiowa.edu";
-    $test = "{$machineName}.stage.drupal.uiowa.edu";
+    $id = Multisite::getIdentifier($uri);
+    $dev = "{$id}.dev.drupal.uiowa.edu";
+    $test = "{$id}.stage.drupal.uiowa.edu";
     $root = $this->getConfigValue('repo.root');
 
     // Remove some files that we probably don't need.
@@ -143,12 +158,12 @@ class MultisiteCommands extends BltTasks {
     $default['test']['uri'] = $test;
     $default['dev']['uri'] = $dev;
 
-    file_put_contents("{$root}/drush/sites/{$machineName}.site.yml", Yaml::dump($default, 10, 2));
-    $this->say("Updated <comment>{$machineName}.site.yml</comment> Drush alias file with <info>local, dev, test and prod</info> aliases.");
+    file_put_contents("{$root}/drush/sites/{$id}.site.yml", Yaml::dump($default, 10, 2));
+    $this->say("Updated <comment>{$id}.site.yml</comment> Drush alias file with <info>local, dev, test and prod</info> aliases.");
 
     // Overwrite the multisite blt.yml file.
     $blt = Yaml::parse(file_get_contents("{$root}/docroot/sites/{$dir}/blt.yml"));
-    $blt['project']['machine_name'] = $machineName;
+    $blt['project']['machine_name'] = $id;
     $blt['drupal']['db']['database'] = $db;
     $blt['drush']['aliases']['local'] = 'self';
     file_put_contents("{$root}/docroot/sites/{$dir}/blt.yml", Yaml::dump($blt, 10, 2));
@@ -160,7 +175,7 @@ class MultisiteCommands extends BltTasks {
 // Directory aliases for {$dir}.
 \$sites['{$dev}'] = '{$dir}';
 \$sites['{$test}'] = '{$dir}';
-\$sites['{$machineName}.prod.drupal.uiowa.edu'] = '{$dir}';
+\$sites['{$id}.prod.drupal.uiowa.edu'] = '{$dir}';
 
 EOD;
 
@@ -182,59 +197,22 @@ EOD;
       ->touch("{$root}/config/{$dir}/.gitkeep")
       ->run();
 
-    // Site install locally so we can do some post-install tasks.
-    // @see: https://www.drupal.org/project/drupal/issues/2982052
-    $this->switchSiteContext($dir);
-
-    $uid = uniqid('admin_');
-
-    $this->taskDrush()
-      ->drush('site:install')
-      ->arg('sitenow')
-      ->options([
-        'sites-subdir' => $dir,
-        'existing-config' => NULL,
-        'account-name' => $uid,
-        'account-mail' => base64_decode('aXRzLXdlYkB1aW93YS5lZHU='),
-      ])
-      ->run();
-
-    $this->taskDrush()
-      ->drush('user:role:add')
-      ->args([
-        'administrator',
-        $uid,
-      ])
-      ->run();
-
-    $this->taskDrush()
-      ->drush('config:set')
-      ->args([
-        'system.site',
-        'name',
-        $dir,
-      ])
-      ->run();
-
-    $branch = "initialize-{$dir}";
-
     $this->taskGit()
       ->dir($this->getConfigValue("repo.root"))
-      ->exec("git checkout -b {$branch} master")
       ->add('docroot/sites/sites.php')
       ->commit("Add sites.php entries for {$dir}")
       ->add("docroot/sites/{$dir}")
       ->commit("Initialize multisite {$dir} directory")
-      ->add("drush/sites/{$machineName}.site.yml")
+      ->add("drush/sites/{$id}.site.yml")
       ->commit("Create Drush aliases for {$dir}")
       ->add("config/{$dir}")
       ->commit("Create config directory for {$dir}")
-      ->exec("git push -u origin {$branch}")
-      ->checkout('master')
       ->interactive(FALSE)
       ->printOutput(FALSE)
       ->printMetadata(FALSE)
       ->run();
+
+    $this->say("Committed site <comment>{$dir}</comment> code.");
 
     $connector = new Connector([
       'key' => $this->getConfigValue('credentials.acquia.key'),
@@ -247,19 +225,13 @@ EOD;
     $cloud->databaseCreate($application->uuid, $db);
     $this->say("Created <comment>{$db}</comment> cloud database.");
 
-    $this->yell("Follow these next steps!");
+    $this->say("Continue initializing additional multisites or follow the next steps below.");
+
     $steps = [
-      "Open a PR at https://github.com/uiowa/{$app}/compare/master...{$branch}.",
-      'Wait for the tests to pass, then merge the PR to trigger a Pipelines job.',
-      'Check out and pull the master branch to update your local codebase.',
-      'Wait for the Pipelines job to complete so that the code is deployed to the dev environment.',
-      'Sync local database and files to dev environment.',
-      'Rebuild the cache on the dev site.',
-      'Re-deploy the pipelines-build-master branch to the dev environment in the Cloud UI. This will run the cloud hooks successfully.',
-      'Sync the multisite database to the test and prod environments using the Cloud UI.',
+      'Push this branch and merge via a pull request.',
       'Coordinate a new release and deploy to the test and prod environments.',
-      'Sync the multisite files to the test and prod environments using Drush.',
       'Add the multisite domains to environments as needed.',
+      'Add the webmaster account(s) to the production site.',
     ];
 
     $this->io()->listing($steps);
@@ -291,55 +263,6 @@ EOD;
     file_put_contents("{$root}/docroot/sites/sites.local.php", "<?php\n");
     $this->getContainer()->get('executor')->killProcessByPort('8888');
     $this->yell('The sites.local.php file has been emptied. Runserver has been stopped.');
-  }
-
-  /**
-   * Given a URI, create and return a unique ID.
-   *
-   * Used for internal subdomain and Drush alias group name, i.e. file name.
-   *
-   * @param string $uri
-   *   The multisite URI.
-   *
-   * @return string
-   *   The ID.
-   */
-  protected function generateMachineName($uri) {
-    $parsed = parse_url($uri);
-
-    if (substr($parsed['host'], -9) === 'uiowa.edu') {
-      // Don't use the suffix if the host equals uiowa.edu.
-      $machineName = substr($parsed['host'], 0, -10);
-
-      // Reverse the subdomains.
-      $parts = array_reverse(explode('.', $machineName));
-
-      // Unset the www subdomain - considered the same site.
-      $key = array_search('www', $parts);
-      if ($key !== FALSE) {
-        unset($parts[$key]);
-      }
-      $machineName = implode('', $parts);
-    }
-    else {
-      // This site has a non-uiowa.edu TLD.
-      $parts = explode('.', $parsed['host']);
-
-      // Unset the www subdomain - considered the same site.
-      $key = array_search('www', $parts);
-      if ($key !== FALSE) {
-        unset($parts[$key]);
-      }
-
-      // Pop off the suffix to be used later as a prefix.
-      $extension = array_pop($parts);
-
-      // Reverse the subdomains.
-      $parts = array_reverse($parts);
-      $machineName = $extension . '-' . implode('', $parts);
-    }
-
-    return $machineName;
   }
 
 }

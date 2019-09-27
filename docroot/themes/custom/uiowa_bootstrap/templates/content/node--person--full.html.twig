@@ -105,9 +105,9 @@
     {{ content.content_moderation_control }}
     <div class="row">
       <div class="col-md-6 col-lg-3 person-meta">
-        {% if content.person_image %}
+        {% if content.node_image %}
           <figure class="content-image">
-            {{ content.person_image }}
+            {{ content.node_image }}
             {% if content.field_image_caption %}
               <figcaption>
                 {{ label }}
@@ -115,7 +115,7 @@
             {% endif %}
           </figure>
         {% endif %}
-        {{ content|without('person_image', 'field_image', 'field_person_bio', 'content_moderation_control') }}
+        {{ content|without('node_image', 'field_image', 'field_person_bio', 'content_moderation_control') }}
       </div>
       <div class="col-md-6 col-lg-9 person-content">
         {{ content.field_person_bio }}

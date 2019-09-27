@@ -8,6 +8,7 @@ dependencies:
     - paragraphs.paragraphs_type.articles
     - paragraphs.paragraphs_type.blockquote
     - paragraphs.paragraphs_type.card
+    - paragraphs.paragraphs_type.carousel
     - paragraphs.paragraphs_type.events
     - paragraphs.paragraphs_type.faqs
     - paragraphs.paragraphs_type.featured_content
@@ -38,8 +39,9 @@ settings:
       events: events
       articles: articles
       faqs: faqs
-      webform: webform
       featured_content: featured_content
+      carousel: carousel
+      webform: webform
     target_bundles_drag_drop:
       section:
         weight: 3
@@ -65,13 +67,19 @@ settings:
       articles:
         enabled: true
         weight: 11
-      webform:
-        enabled: true
-        weight: 18
       faqs:
         enabled: true
         weight: 14
       featured_content:
         enabled: true
         weight: 16
+      carousel:
+        enabled: true
+        weight: 18
+      webform:
+        enabled: true
+        weight: 18
+      carousel_image:
+        weight: 19
+        enabled: false
 field_type: entity_reference_revisions

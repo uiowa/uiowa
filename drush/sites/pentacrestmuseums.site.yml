@@ -3,7 +3,7 @@ local:
   root: '${env.cwd}/docroot'
 dev:
   uri: pentacrestmuseums.dev.drupal.uiowa.edu
-  host: staging-15039.prod.hosting.acquia.com
+  host: uiowadev.ssh.prod.acquia-sites.com
   options: {  }
   paths:
     dump-dir: /mnt/tmp
@@ -11,7 +11,7 @@ dev:
   user: uiowa.dev
 prod:
   uri: pentacrestmuseums.uiowa.edu
-  host: web-33201.prod.hosting.acquia.com
+  host: uiowa.ssh.prod.acquia-sites.com
   options: {  }
   paths:
     dump-dir: /mnt/tmp
@@ -19,7 +19,7 @@ prod:
   user: uiowa.prod
 test:
   uri: pentacrestmuseums.stage.drupal.uiowa.edu
-  host: staging-15039.prod.hosting.acquia.com
+  host: uiowastg.ssh.prod.acquia-sites.com
   options: {  }
   paths:
     dump-dir: /mnt/tmp
