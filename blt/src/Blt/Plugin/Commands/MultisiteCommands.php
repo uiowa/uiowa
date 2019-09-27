@@ -217,7 +217,7 @@ EOD;
         $commandData->input()->setOption('site-dir', $parsed['host']);
         $id = Multisite::getIdentifier($uri);
         $commandData->input()->setOption('remote-alias', "{$id}.prod");
-        $this->getConfig()->set('drupal.db.database', $id);
+        $this->getConfig()->set('drupal.db.database', $parsed['host']);
 
       }
       else {
