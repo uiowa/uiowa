@@ -7,6 +7,8 @@ use AcquiaCloudApi\CloudApi\Client;
 use AcquiaCloudApi\CloudApi\Connector;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
+use Drush\Exceptions\UserAbortException;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 use Sitenow\Multisite;
 
@@ -59,36 +61,141 @@ class MultisiteCommands extends BltTasks {
   }
 
   /**
+   * Deletes multisite code, database and domains.
+   *
+   * @command sitenow:multisite:delete
+   *
+   * @aliases smd
+   *
+   * @throws \Exception
+   *
+   * @requireFeatureBranch
+   * @requireCredentials
+   */
+  public function delete() {
+    $root = $this->getConfigValue("repo.root");
+
+    $finder = new Finder();
+
+    $dirs = $finder
+      ->in("{$root}/docroot/sites/")
+      ->directories()
+      ->depth('< 1')
+      ->exclude(['default', 'g', 'settings'])
+      ->sortByName();
+
+    $sites = [];
+    foreach ($dirs->getIterator() as $dir) {
+      $sites[] = $dir->getRelativePathname();
+    }
+
+    $dir = $this->askChoice('Select which site to delete.', $sites);
+    $db = Multisite::getDatabase($dir);
+    $id = Multisite::getIdentifier("https://{$dir}");
+    $dev = Multisite::getInternalDomains($id)['dev'];
+    $test = Multisite::getInternalDomains($id)['test'];
+    $prod = Multisite::getInternalDomains($id)['prod'];
+
+    $this->say("Selected site <comment>{$dir}</comment>.");
+
+    $properties = [
+      'database' => $db,
+      'domains' => [
+        $dev,
+        $test,
+        $prod,
+        $dir,
+      ],
+    ];
+
+    $this->printArrayAsTable($properties);
+    if (!$this->confirm("The cloud properties above will be deleted. Are you sure?", FALSE)) {
+      throw new UserAbortException();
+    }
+    else {
+      $connector = new Connector([
+        'key' => $this->getConfigValue('credentials.acquia.key'),
+        'secret' => $this->getConfigValue('credentials.acquia.secret'),
+      ]);
+
+      $cloud = Client::factory($connector);
+
+      /** @var \AcquiaCloudApi\Response\ApplicationResponse $application */
+      $application = $cloud->application($this->getConfigValue('cloud.appId'));
+
+      /** @var \AcquiaCloudApi\Response\DatabasesResponse $databases */
+      $databases = $cloud->databases($application->uuid);
+
+      /** @var \AcquiaCloudApi\Response\DatabaseResponse $database */
+      foreach ($databases as $database) {
+        if ($database->name == $db) {
+          $cloud->databaseDelete($application->uuid, $db);
+          $this->say("Deleted <comment>{$db}</comment> cloud database.");
+        }
+      }
+
+      /** @var \AcquiaCloudApi\Response\EnvironmentResponse $environment */
+      foreach ($cloud->environments($application->uuid) as $environment) {
+        if ($intersect = array_intersect($properties['domains'], $environment->domains)) {
+          foreach ($intersect as $domain) {
+            $cloud->deleteDomain($environment->uuid, $domain);
+            $this->say("Deleted <comment>{$domain}</comment> cloud domain.");
+          }
+        }
+      }
+
+      // Delete the site code.
+      $this->taskFilesystemStack()
+        ->remove("{$root}/config/{$dir}")
+        ->remove("{$root}/docroot/sites/{$dir}")
+        ->remove("{$root}/drush/sites/{$id}.site.yml")
+        ->run();
+
+      // Remove the directory aliases from sites.php.
+      $contents = file_get_contents("{$root}/docroot/sites/sites.php");
+
+      // Remove sites.php data.
+      $data = <<<EOD
+
+// Directory aliases for {$dir}.
+\$sites['{$dev}'] = '{$dir}';
+\$sites['{$test}'] = '{$dir}';
+\$sites['{$prod}'] = '{$dir}';
+
+EOD;
+
+      $contents = str_replace($data, '', $contents);
+      file_put_contents("{$root}/docroot/sites/sites.php", $contents);
+
+      $this->taskGit()
+        ->dir($root)
+        ->add('docroot/sites/sites.php')
+        ->commit("Deleted sites.php entries for {$dir}")
+        ->add("docroot/sites/{$dir}/")
+        ->commit("Deleted multisite {$dir} directory")
+        ->add("drush/sites/{$id}.site.yml")
+        ->commit("Deleted Drush aliases for {$dir}")
+        ->add("config/{$dir}/")
+        ->commit("Deleted config directory for {$dir}")
+        ->interactive(FALSE)
+        ->printOutput(FALSE)
+        ->printMetadata(FALSE)
+        ->run();
+
+      $this->say("Committed deletion of site <comment>{$dir}</comment> code.");
+      $this->say("Continue deleting additional multisites or push this branch and merge via a pull request. Immediate production release not necessary.");
+    }
+  }
+
+  /**
    * Require the --site-uri option so it can be used in postMultisiteInit.
    *
    * @hook validate recipes:multisite:init
+   *
+   * @requireFeatureBranch
+   * @requireCredentials
    */
   public function validateMultisiteInit(CommandData $commandData) {
-    $result = $this->taskGit()
-      ->dir($this->getConfigValue("repo.root"))
-      ->exec('git rev-parse --abbrev-ref HEAD')
-      ->interactive(FALSE)
-      ->printOutput(FALSE)
-      ->printMetadata(FALSE)
-      ->run();
-
-    $branch = $result->getMessage();
-
-    if ($branch == 'master' || $branch == 'develop') {
-      return new CommandError('You must run this command on a feature branch created off master.');
-    }
-
-    $creds = [
-      'credentials.acquia.key',
-      'credentials.acquia.secret',
-    ];
-
-    foreach ($creds as $cred) {
-      if (!$this->getConfigValue($cred)) {
-        return new CommandError("You must set {$cred} in your {$this->getConfigValue('repo.root')}/blt/local.blt.yml file. DO NOT commit these anywhere in the repository!");
-      }
-    }
-
     $uri = $commandData->input()->getOption('site-uri');
 
     if (!$uri) {
@@ -108,7 +215,7 @@ class MultisiteCommands extends BltTasks {
         $commandData->input()->setOption('site-dir', $parsed['host']);
         $id = Multisite::getIdentifier($uri);
         $commandData->input()->setOption('remote-alias', "{$id}.prod");
-        $this->getConfig()->set('drupal.db.database', $id);
+        $this->getConfig()->set('drupal.db.database', $parsed['host']);
 
       }
       else {
@@ -129,11 +236,13 @@ class MultisiteCommands extends BltTasks {
   public function postMultisiteInit($result, CommandData $commandData) {
     $uri = $commandData->input()->getOption('site-uri');
     $dir = $commandData->input()->getOption('site-dir');
-    $db = str_replace('.', '_', $dir);
-    $db = str_replace('-', '_', $db);
+
+    $db = Multisite::getDatabase($dir);
     $id = Multisite::getIdentifier($uri);
-    $dev = "{$id}.dev.drupal.uiowa.edu";
-    $test = "{$id}.stage.drupal.uiowa.edu";
+    $dev = Multisite::getInternalDomains($id)['dev'];
+    $test = Multisite::getInternalDomains($id)['test'];
+    $prod = Multisite::getInternalDomains($id)['prod'];
+
     $root = $this->getConfigValue('repo.root');
 
     // Remove some files that we probably don't need.
@@ -154,9 +263,9 @@ class MultisiteCommands extends BltTasks {
     $app = $this->getConfig()->get('project.prefix');
     $default = Yaml::parse(file_get_contents("{$root}/drush/sites/{$app}.site.yml"));
     $default['local']['uri'] = $dir;
-    $default['prod']['uri'] = $dir;
-    $default['test']['uri'] = $test;
     $default['dev']['uri'] = $dev;
+    $default['test']['uri'] = $test;
+    $default['prod']['uri'] = $dir;
 
     file_put_contents("{$root}/drush/sites/{$id}.site.yml", Yaml::dump($default, 10, 2));
     $this->say("Updated <comment>{$id}.site.yml</comment> Drush alias file with <info>local, dev, test and prod</info> aliases.");
@@ -175,7 +284,7 @@ class MultisiteCommands extends BltTasks {
 // Directory aliases for {$dir}.
 \$sites['{$dev}'] = '{$dir}';
 \$sites['{$test}'] = '{$dir}';
-\$sites['{$id}.prod.drupal.uiowa.edu'] = '{$dir}';
+\$sites['{$prod}'] = '{$dir}';
 
 EOD;
 
@@ -221,7 +330,9 @@ EOD;
 
     $cloud = Client::factory($connector);
 
+    /** @var \AcquiaCloudApi\Response\ApplicationResponse $application */
     $application = $cloud->application($this->getConfigValue('cloud.appId'));
+
     $cloud->databaseCreate($application->uuid, $db);
     $this->say("Created <comment>{$db}</comment> cloud database.");
 
@@ -253,6 +364,45 @@ EOD;
    */
   public function preSync(CommandData $commandData) {
     $this->killServer();
+  }
+
+  /**
+   * Validate that the command is being run on a feature branch.
+   *
+   * @hook validate @requireFeatureBranch
+   */
+  public function validateFeatureBranch() {
+    $result = $this->taskGit()
+      ->dir($this->getConfigValue("repo.root"))
+      ->exec('git rev-parse --abbrev-ref HEAD')
+      ->interactive(FALSE)
+      ->printOutput(FALSE)
+      ->printMetadata(FALSE)
+      ->run();
+
+    $branch = $result->getMessage();
+
+    if ($branch == 'master' || $branch == 'develop') {
+      return new CommandError('You must run this command on a feature branch created off master.');
+    }
+  }
+
+  /**
+   * Validate necessary credentials are set.
+   *
+   * @hook validate @requireCredentials
+   */
+  public function validateCredentials() {
+    $credentials = [
+      'credentials.acquia.key',
+      'credentials.acquia.secret',
+    ];
+
+    foreach ($credentials as $cred) {
+      if (!$this->getConfigValue($cred)) {
+        return new CommandError("You must set {$cred} in your {$this->getConfigValue('repo.root')}/blt/local.blt.yml file. DO NOT commit these anywhere in the repository!");
+      }
+    }
   }
 
   /**

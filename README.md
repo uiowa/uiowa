@@ -93,19 +93,25 @@ $config['stage_file_proxy.settings']['origin'] = 'https://mysite.com';
 $config['stage_file_proxy.settings']['hotlink'] = TRUE;
 ```
 
-## Provision a Drupal 8 Site
-Before you start, make sure you have an Acquia Cloud key and secret key saved in the `blt/local.blt.yml` file.
+Make sure you have an Acquia Cloud key and secret key saved in the `blt/local.blt.yml` file.
 ```
 credentials:
   acquia:
     key: Put new key here
     secret: Put new secret here
 ```
-    
+## Create Multisite
 To create a new multisite:
 1. Run the `blt recipes:multisite:init` (`rmi` for short) command with the `--site-uri` and `--no-interaction` options specified.
-2. Follow the directions the command prints to the terminal. 
+2. Follow the directions the command prints to the terminal.
 3. If necessary, email Hostmaster with CNAME request template in ITS-web@uiowa.edu -> Drafts -> Email Templates -> SiteNow Templates.
+
+## Delete Multisite
+To delete a multisite:
+1. Run the `blt sitenow:multisite:delete` (`smd` for short) command on a feature branch created from master.
+2. Follow the directions the command prints to the terminal.
+3. Remove any related cron jobs from the Acquia Cloud interface.
+3. If necessary, email Hostmaster to remove the CNAME that is no longer in use.
 
 ## Site Split
 Please see config/README.md first.
