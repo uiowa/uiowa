@@ -81,7 +81,7 @@ class MultisiteCommands extends BltTasks {
       ->in("{$root}/docroot/sites/")
       ->directories()
       ->depth('< 1')
-      ->exclude(['g', 'settings'])
+      ->exclude(['default', 'g', 'settings'])
       ->sortByName();
 
     $sites = [];
