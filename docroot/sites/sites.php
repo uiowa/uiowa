@@ -4,10 +4,6 @@
  * @file
  * Multisite directory aliases.
  *
- * These may need to be more restrictive depending on how acquia_purge
- * determines the purge domains for multisites.
- *
- * @see https://www.drupal.org/project/acquia_purge/issues/3050554
  * @see example.sites.php
  */
 
