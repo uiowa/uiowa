@@ -8,6 +8,11 @@ namespace Sitenow;
 class Multisite {
 
   /**
+   * Static class.
+   */
+  private function __construct() {}
+
+  /**
    * Given a site directory name, return the standardized database name.
    *
    * @param string $dir
