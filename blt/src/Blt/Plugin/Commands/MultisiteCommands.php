@@ -136,7 +136,7 @@ class MultisiteCommands extends BltTasks {
           $domain = Multisite::getInternalDomains($id)[$environment->name];
 
           if (in_array($domain, $environment->domains)) {
-            $cloud->deleteDomain($environment->name, $domain);
+            $cloud->deleteDomain($environment->uuid, $domain);
             $this->say("Deleted <comment>{$domain}</comment> cloud domain.");
           }
           else {
