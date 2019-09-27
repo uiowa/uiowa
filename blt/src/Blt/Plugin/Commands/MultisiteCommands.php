@@ -7,6 +7,8 @@ use AcquiaCloudApi\CloudApi\Client;
 use AcquiaCloudApi\CloudApi\Connector;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
+use Drush\Exceptions\UserAbortException;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 use Sitenow\Multisite;
 
@@ -59,35 +61,115 @@ class MultisiteCommands extends BltTasks {
   }
 
   /**
+   * Deletes multisite code, database and domains.
+   *
+   * @command sitenow:multisite:delete
+   *
+   * @aliases smd
+   *
+   * @throws \Exception
+   *
+   * @requireFeatureBranch
+   * @requireCredentials
+   */
+  public function delete() {
+    $root = $this->getConfigValue("repo.root");
+
+    $finder = new Finder();
+
+    $dirs = $finder
+      ->in("{$root}/docroot/sites/")
+      ->directories()
+      ->depth('< 1')
+      ->exclude(['g', 'settings'])
+      ->sortByName();
+
+    $sites = [];
+    foreach ($dirs->getIterator() as $dir) {
+      $sites[] = $dir->getRelativePathname();
+    }
+
+    $dir = $this->askChoice('Select which site to delete.', $sites);
+    $db = Multisite::getDatabase($dir);
+    $id = Multisite::getIdentifier("https://{$dir}");
+    $dev = Multisite::getInternalDomains($id)['dev'];
+    $test = Multisite::getInternalDomains($id)['test'];
+    $prod = Multisite::getInternalDomains($id)['prod'];
+
+    if (!$this->confirm("You will delete the {$db} database and the {$dev}, {$test} and {$prod} internal domains. Are you sure?")) {
+      throw new UserAbortException();
+    }
+    else {
+      $connector = new Connector([
+        'key' => $this->getConfigValue('credentials.acquia.key'),
+        'secret' => $this->getConfigValue('credentials.acquia.secret'),
+      ]);
+
+      $cloud = Client::factory($connector);
+
+      $application = $cloud->application($this->getConfigValue('cloud.appId'));
+      $cloud->databaseDelete($application->uuid, $db);
+      $this->say("Deleted <comment>{$db}</comment> cloud database.");
+
+      foreach ($cloud->environments($application->uuid) as $environment) {
+        $domain = Multisite::getInternalDomains($id)[$environment->name];
+        $cloud->deleteDomain($environment->name, $domain);
+        $this->say("Deleted <comment>{$domain}</comment> cloud domain.");
+      }
+
+      // Delete the site code.
+      $this->taskFilesystemStack()
+        ->remove("{$root}/config/{$dir}")
+        ->remove("{$root}/config/{$dir}")
+        ->remove("drush/sites/{$id}.site.yml")
+        ->run();
+
+      // Remove the directory aliases from sites.php
+      $contents = file_get_contents("{$root}/docroot/sites/sites.php");
+
+      // Remove sites.php data.
+      $data = <<<EOD
+
+// Directory aliases for {$dir}.
+\$sites['{$dev}'] = '{$dir}';
+\$sites['{$test}'] = '{$dir}';
+\$sites['{$prod}'] = '{$dir}';
+
+EOD;
+
+      $contents = str_replace($data, '', $contents);
+      file_put_contents("{$root}/docroot/sites/sites.php", $contents);
+
+      $this->taskGit()
+        ->dir($this->getConfigValue("repo.root"))
+        ->add('docroot/sites/sites.php')
+        ->commit("Deleted sites.php entries for {$dir}")
+        ->add("docroot/sites/{$dir}")
+        ->commit("Deleted multisite {$dir} directory")
+        ->add("drush/sites/{$id}.site.yml")
+        ->commit("Deleted Drush aliases for {$dir}")
+        ->add("config/{$dir}")
+        ->commit("Deleted config directory for {$dir}")
+        ->interactive(FALSE)
+        ->printOutput(FALSE)
+        ->printMetadata(FALSE)
+        ->run();
+
+      $this->say("Committed deletion of site <comment>{$dir}</comment> code.");
+      $this->say("Continue deleting additional multisites or push this branch and merge via a pull request. Immediate production release not necessary.");
+    }
+  }
+
+  /**
    * Require the --site-uri option so it can be used in postMultisiteInit.
    *
    * @hook validate recipes:multisite:init
+   *
+   * @requireFeatureBranch
+   * @requireCredentials
    */
   public function validateMultisiteInit(CommandData $commandData) {
-    $result = $this->taskGit()
-      ->dir($this->getConfigValue("repo.root"))
-      ->exec('git rev-parse --abbrev-ref HEAD')
-      ->interactive(FALSE)
-      ->printOutput(FALSE)
-      ->printMetadata(FALSE)
-      ->run();
 
-    $branch = $result->getMessage();
-
-    if ($branch == 'master' || $branch == 'develop') {
-      return new CommandError('You must run this command on a feature branch created off master.');
-    }
-
-    $creds = [
-      'credentials.acquia.key',
-      'credentials.acquia.secret',
-    ];
-
-    foreach ($creds as $cred) {
-      if (!$this->getConfigValue($cred)) {
-        return new CommandError("You must set {$cred} in your {$this->getConfigValue('repo.root')}/blt/local.blt.yml file. DO NOT commit these anywhere in the repository!");
-      }
-    }
 
     $uri = $commandData->input()->getOption('site-uri');
 
