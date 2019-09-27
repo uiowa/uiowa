@@ -38,11 +38,9 @@ class FilesystemTest extends UnitTestCase {
     foreach ($dirs->getIterator() as $dir) {
       $site = $dir->getRelativePathname();
       $id = Multisite::getIdentifier("https://{$site}");
-
-      /** @var $dev */
-      /** @var $test */
-      /** @var $prod */
-      extract(Multisite::getInternalDomains($id));
+      $dev = Multisite::getInternalDomains($id)['dev'];
+      $test = Multisite::getInternalDomains($id)['test'];
+      $prod = Multisite::getInternalDomains($id)['prod'];
 
       $needle = <<<EOD
 \$sites['$dev'] = '$site';
