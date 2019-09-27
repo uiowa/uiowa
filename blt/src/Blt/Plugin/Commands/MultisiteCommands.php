@@ -338,6 +338,45 @@ EOD;
   }
 
   /**
+   * Validate that the command is being run on a feature branch.
+   *
+   * @hook validate @requireFeatureBranch
+   */
+  public function validateFeatureBranch() {
+    $result = $this->taskGit()
+      ->dir($this->getConfigValue("repo.root"))
+      ->exec('git rev-parse --abbrev-ref HEAD')
+      ->interactive(FALSE)
+      ->printOutput(FALSE)
+      ->printMetadata(FALSE)
+      ->run();
+
+    $branch = $result->getMessage();
+
+    if ($branch == 'master' || $branch == 'develop') {
+      return new CommandError('You must run this command on a feature branch created off master.');
+    }
+  }
+
+  /**
+   * Validate necessary credentials are set.
+   *
+   * @hook validate @requireCredentials
+   */
+  public function validateCredentials() {
+    $credentials = [
+      'credentials.acquia.key',
+      'credentials.acquia.secret',
+    ];
+
+    foreach ($credentials as $cred) {
+      if (!$this->getConfigValue($cred)) {
+        return new CommandError("You must set {$cred} in your {$this->getConfigValue('repo.root')}/blt/local.blt.yml file. DO NOT commit these anywhere in the repository!");
+      }
+    }
+  }
+
+  /**
    * Overwrite the sites.php file with no routed multisite.
    */
   protected function killServer() {
