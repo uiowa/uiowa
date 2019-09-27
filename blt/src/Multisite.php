@@ -23,7 +23,7 @@ class Multisite {
    */
   public static function getDatabase($dir) {
     // @todo: Access BLT project prefix.
-    if ($dir = 'default') {
+    if ($dir == 'default') {
       $db = 'uiowa';
     }
     else {
