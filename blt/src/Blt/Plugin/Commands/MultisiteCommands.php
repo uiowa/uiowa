@@ -132,7 +132,7 @@ class MultisiteCommands extends BltTasks {
 
       foreach ($cloud->environments($application->uuid) as $environment) {
         // We only care about dev/test/prod environment domains.
-        if (isset($environment->name, $delete['domains'])) {
+        if (isset($delete['domains'][$environment->name])) {
           $domain = Multisite::getInternalDomains($id)[$environment->name];
 
           if (in_array($domain, $environment->domains)) {
