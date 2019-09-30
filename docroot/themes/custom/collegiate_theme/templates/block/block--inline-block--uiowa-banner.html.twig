@@ -48,19 +48,24 @@ https://www.drupal.org/node/2367463
     {{ title_prefix }}
     {{ title_suffix }}
     {% embed "@banner/banner-block.twig" with {
-      "banner_bg_image": drupal_image(content.field_uiowa_banner_image[0]['#media'].image.entity.uri.value, 'uiowa_lb_blocks',  { class: 'card__img', alt: content.field_uiowa_card_image[0]['#media'].image.alt }, responsive=true),
+      "banner_bg_preview_image": file_url(content.field_uiowa_banner_image[0]['#media'].image.entity.uri.value | image_style('medium')),
+      "banner_bg_image": drupal_image(content.field_uiowa_banner_image[0]['#media'].image.entity.uri.value, 'uiowa_lb_blocks',  { class: 'card__img', alt: content.field_banner_card_image[0]['#media'].image.alt }, responsive=true),
       "banner_title": content.field_uiowa_banner_title,
       "banner_summary": content.field_uiowa_banner_excerpt,
       "banner_link_url": content.field_uiowa_banner_link[0]['#url'],
       "banner_link_title": content.field_uiowa_banner_link[0]['#title'],
     } %}
       {% block banner_bg %}
-        <div class="banner" data-responsive-background-image="true">
-          {{ banner_bg_image }}
-        {% endblock %}
-      {% endembed %}
+        {% if attributes.hasClass('js-layout-builder-block') %}
+          <div class="banner" {% if banner_bg_preview_image %} style="background-image: url('{% spaceless %}{{ banner_bg_preview_image }}{% endspaceless %}'); background-size: cover; background-position: center" {% endif %}>
+          {% else %}
+            <div class="banner" data-responsive-background-image="true">
+              {{ banner_bg_image }}
+            {% endif %}
+          {% endblock %}
+        {% endembed %}
+      {% endblock %}
 
-    {% endblock %}
-    {% if attributes.hasClass('js-layout-builder-block') %}
-    </div>
-  {% endif %}
+  {% if attributes.hasClass('js-layout-builder-block') %}
+  </div>
+{% endif %}
