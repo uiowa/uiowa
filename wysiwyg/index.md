@@ -3,8 +3,6 @@ title: "WYSIWYG (What-You-See-Is-What-You-Get) Text Editor"
 has_children: false
 nav_order: 7
 ---
-# ATTENTION: We're moving our Documentation to our [SiteNow Website](https://sitenow.uiowa.edu/documentation/content-documentation/wysiwyg)
-
 # WYSIWYG (What-You-See-Is-What-You-Get) Text Editor
 
 The What-You-See-Is-What-You-Get (WYSIWYG) text editor gives you the ability to format your content and add links/media. This text editor is available on most text areas around the site.

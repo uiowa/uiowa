@@ -4,8 +4,6 @@ has_children: false
 parent: "Content"
 nav_order: 2
 ---
-# ATTENTION: We're moving our Documentation to our [SiteNow Website](https://sitenow.uiowa.edu/documentation/content-documentation/person-content-type)
-
 # Person
 
 Currently in development. Currently used to create authors for articles.

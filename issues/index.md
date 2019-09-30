@@ -3,8 +3,6 @@ title: "Known Issues"
 has_children: false
 nav_order: 17
 ---
-# ATTENTION: We're moving our Documentation to our [SiteNow Website](https://sitenow.uiowa.edu/known-issues)
-
 # Known Issues
 
 - There are issues with embedding content within the [WYSIWYG text editor](../wysiwyg/index.md) with certain versions of Chrome. We recommend using another browser if you encounter any of the following:

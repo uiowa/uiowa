@@ -6,8 +6,6 @@ nav_order: 18
 
 # Policies
 
-# ATTENTION: We're moving our Documentation to our [SiteNow Website](https://sitenow.uiowa.edu/policies)
-
 ## 'WWW' Addresses
 
 The SiteNow service is set up to redirect www requests to the bare domain equivalent. Redirecting from a bare domain to the www equivalent is not supported.

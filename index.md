@@ -1,10 +1,6 @@
 ---
 title: "Home"
 ---
-<meta http-equiv="refresh" content="4; URL='https://sitenow.uiowa.edu/documentation'" /> 
-
-# ATTENTION: We're moving our Documentation to our [SiteNow Website](https://sitenow.uiowa.edu/documentation)
-
 
 # SiteNow Documentation
 

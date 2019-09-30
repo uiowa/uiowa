@@ -4,8 +4,6 @@ has_children: false
 parent: 'Content Blocks'
 nav_order: 1
 ---
-# ATTENTION: We're moving our Documentation to our [SiteNow Website](https://sitenow.uiowa.edu/documentation/content-documentation/content-blocks/uiowa-events)
-
 # University of Iowa Events
 
 The ability to display upcoming events from [events.uiowa.edu](//events.uiowa.edu) is available as a content block type. Events are added to the system by going to [content.uiowa.edu](//content.uiowa.edu). Follow the documentation there to get started.

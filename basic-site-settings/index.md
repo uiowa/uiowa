@@ -3,7 +3,6 @@ title: "Basic Site Settings and Footer Configuration"
 has_children: false
 nav_order: 4
 ---
-# ATTENTION: We're moving our Documentation to our [SiteNow Website](https://sitenow.uiowa.edu/documentation/site-management-documentation/basic-site-settings-and-footer-configuration)
 
 # Basic Site Settings and Footer Configuration
 

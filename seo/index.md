@@ -3,8 +3,6 @@ title: "Search Engine Optimization (SEO)"
 has_children: false
 nav_order: 12
 ---
-# ATTENTION: We're moving our Documentation to our [SiteNow Website](https://sitenow.uiowa.edu/documentation/site-management-documentation/search-engine-optimization)
-
 # Search Engine Optimization (SEO)
 
 "Out of the box," your site is pretty well optimized for Search Engines to crawl and index your site. You can edit some SEO settings under the Advanced tab when editing content.

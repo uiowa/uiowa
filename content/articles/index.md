@@ -4,7 +4,6 @@ has_children: true
 parent: "Content"
 nav_order: 2
 ---
-# ATTENTION: We're moving our Documentation to our [SiteNow Website](https://sitenow.uiowa.edu/documentation/content-documentation/article-content-type)
 
 # Article
 ## Article Content
