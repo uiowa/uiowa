@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - sitenow
+    - uiowa_articles
+id: settings-form
+label: 'Settings Form'
+module: sitenow
+routes:
+  -
+    route_name: sitenow_articles.settings_form
+tips:
+  intro:
+    id: intro
+    plugin: text
+    label: 'SiteNow Article Settings'
+    weight: 0
+    body: '<p>On this page you can change many of the global site settings available to you. Let''s step through them.</p><p>For more information about SiteNow Article settings, visit <a href="https://sitenow.uiowa.edu/documentation">view our documentation</a>.</p>'
+  title:
+    id: title
+    plugin: text
+    label: 'Articles Title'
+    weight: 1
+    attributes:
+      data-id: edit-title-wrapper
+    body: '<p>First off, give your page a title. This is a required field. Other required fields are marked with a red asterisk.</p>'
+    location: bottom

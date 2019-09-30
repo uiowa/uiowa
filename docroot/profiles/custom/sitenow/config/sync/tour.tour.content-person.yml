@@ -1,0 +1,235 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - sitenow
+id: content-person
+label: 'Adding A Person'
+module: sitenow
+routes:
+  -
+    route_name: node.add
+    route_params:
+      node_type: person
+tips:
+  person:
+    id: person
+    plugin: text
+    label: Person
+    weight: 0
+    attributes: {  }
+    body: '<p>On this tour, we''ll explain you the different parts of a Person. Hang in there, there is a lot to touch on.</p><p>Lets get going!</p>'
+    location: top
+  title:
+    id: title
+    plugin: text
+    label: 'Person Title'
+    weight: 1
+    attributes:
+      data-id: edit-title-wrapper
+    body: '<p>First off, give your page a title. This is a required field. Other required fields are marked with a red asterisk.</p>'
+    location: bottom
+  page-advanced:
+    id: person-advanced
+    plugin: text
+    label: Advanced
+    weight: 2
+    attributes:
+      data-id: edit-advanced
+    body: '<p>There are a lot of optional advanced settings for the page tucked away here. You will use this part when dealing with menu placement, URL path, custom SEO settings.</p><p>Click on the section titles to expand them and see what they offer.</p>'
+    location: left
+  page-teaser-text:
+    id: page-teaser-text
+    plugin: text
+    label: 'Short Biography'
+    weight: 3
+    attributes:
+      data-id: edit-node-teaser
+    body: '<p>What will display when you migrate to the /people page that displays a full list of the people you created.</p>'
+    location: left
+  person-image-entity:  
+    id: person-image-entity
+    plugin: text
+    label: 'Person Photo'
+    weight: 4
+    attributes:
+      data-id: edit-node-image
+    body: '<p>A picture of the select person.</p>'
+    location: left
+  person-first-name-text:
+    id: person-first-name-text
+    plugin: text
+    label: 'First Name'
+    weight: 5
+    attributes:
+      data-id: edit-field-person-first-name-0-value
+    body: '<p>First name is required</p>'
+    location: left
+  person-last-name-text:
+    id: person-last-name-text
+    plugin: text
+    label: 'Last Name'
+    weight: 6
+    attributes:
+      data-id: edit-field-person-last-name-0-value
+    body: '<p>Last name is required</p>'
+    location: left
+  wysiwyg:
+    id: wysiwyg
+    plugin: text
+    label: 'Text Editor (WYSIWYG) Overview'
+    weight: 7
+    attributes:
+      data-class: field--widget-text-textarea
+    body: '<p>Biography is what will display when you go to the full view of the person.</p><p>The What-You-See-Is-What-You-Get (WYSIWYG) text editor gives you the ability to format your content and add links/media. This editor is available on most text areas around the site.</p><p>For more details, <a href="https://docs.sitenow.uiowa.edu/wysiwyg">view our documentation section about the WYSIWYG</a>.</p>'
+    location: top
+  text-styles:
+    id: text-styles
+    plugin: text
+    label: 'Text Format'
+    weight: 8
+    attributes:
+      data-class: cke_button__bold
+    body: '<p>You can style your text with the bold, italic, strike-through options. These can be used in conjunction with each other or other buttons on the toolbar.</p>'
+    location: bottom
+  format:
+    id: format
+    plugin: text
+    label: 'Paragraph Format'
+    weight: 9
+    attributes:
+      data-class: cke_combo__format
+    body: '<p>Here you add headings to your content. It is important for accessibility/usability that headings are used sequentially and not for style purposes. The heading will be applied to the current line/paragraph. Hit Enter/Return to break out and return to the normal format.</p>'
+    location: bottom
+  align:
+    id: align
+    plugin: text
+    label: 'Text Alignment'
+    weight: 10
+    attributes:
+      data-class: cke_button__justifycenter
+    body: '<p>There are three options for text alignment. Left, center and right. Text is left-aligned by default. The alignment will continue until the next line break similar to headings.</p>'
+    location: bottom
+  lists:
+    id: lists
+    plugin: text
+    label: Lists
+    weight: 11
+    attributes:
+      data-class: cke_button__bold
+    body: '<p>There are two types of lists you can create. Unordered (bullet points) and ordered (numbered). To create a list, click on one of the list buttons. This will insert the first list item and you can start typing. For each additional item, press Return/Enter on your keyboard. If you want to add another line to the same list item, press Shift+Return/Enter. To break out of the list and continue with other content. Press Return/Enter twice.</p>'
+    location: bottom
+  remove-format:
+    id: remove-format
+    plugin: text
+    label: 'Remove Formatting'
+    weight: 12
+    attributes:
+      data-class: cke_button__removeformat
+    body: '<p>You can quickly remove all formatting from highlighted text using the Remove Format button.</p>'
+    location: bottom
+  links:
+    id: links
+    plugin: text
+    label: Links
+    weight: 13
+    attributes:
+      data-class: cke_button__drupallink
+    body: '<p>Links to internal or external paths can be added with the link button. A separate configuration window will load.</p><p>The ''<em>URL</em>'' field will attempt to find related content based on what is typed. If no suitable result is found and selected an normal link will be created.</p><p>''<em>Upload file</em>'' will allow you to add a file that doesn''t already exist on the site. ''<em>Advanced</em>'' provides additional, though optional, configuration for the link.</p><p>You can edit an existing link by placing the cursor on the link and clicking the link button.</p><p>This is covered in more detail in, <a href="https://docs.sitenow.uiowa.edu/wysiwyg">our WYSIWYG documentation section</a>.</p>'
+    location: bottom
+  unlink:
+    id: unlink
+    plugin: text
+    label: 'Remove Link'
+    weight: 14
+    attributes:
+      data-class: cke_button__drupalunlink
+    body: '<p>Links can also be removed easily with the Unlink button.</p>'
+    location: bottom
+  table:
+    id: table
+    plugin: text
+    label: Tables
+    weight: 15
+    attributes:
+      data-class: cke_button__table
+    body: '<p>A table is a structured set of data made up of of rows and columns (tabular data). A separate configuration window will load. You can set initial row and column counts, designate the headers for the table and provide a table caption.</p><p><strong>Note</strong>: Though not required, a caption is strongly recommended to provide an overall description of the data found in the table.</p><p>After initializing the table, you can enter data and/or right-click on the table to add additional rows/columns or edit table properties.</p>'
+    location: bottom
+  entity-embed:
+    id: entity-embed
+    plugin: text
+    label: 'Media Entity Embed (Images)'
+    weight: 16
+    attributes:
+      data-class: cke_button__media_entity_embed
+    body: '<p>This allows you to add new or existing images to your content. A separate configuration window will load. When uploading an image, specify a name that can be used later on to find the image in the media library and choose an image. After upload, provide alternative text for the image to aid visually impaired users.</p><p>Optionally, clicking on the image thumbnail allows you to specify the portion of an image that is most important. This information can be used when the image is cropped so that you don''t, for example, end up with an image that cuts off the subject''s head.</p><p>After saving the entity, another window will load allowing you to change the size of the image used, the alignment and allow you to provide a caption that is display with the image.</p>'
+    location: bottom
+  entity-embed-video:
+    id: entity-embed-video
+    plugin: text
+    label: 'Media Entity Embed (Video)'
+    weight: 17
+    attributes:
+      data-class: cke_button__media_entity_embed
+    body: '<p>This allows you to add new or existing videos to your content. A separate configuration window will load. When uploading a video URL, specify the URL of the video you wish to display. You can add videos from YouTube, UIowa, or Vimeo.</p>'
+    location: bottom
+  entity-embed-audio:
+    id: entity-embed-audio
+    plugin: text
+    label: 'Media Entity Embed (Audio)'
+    weight: 18
+    attributes:
+      data-class: cke_button__media_entity_embed
+    body: '<p>This allows you to add new or existing audio files to your content. A separate configuration window will load. When uploading an audio file, specify a name that can be used later on to find the audio file in the media library.</p>'
+    location: bottom
+  entity-embed-twitter:
+    id: entity-embed-twitter
+    plugin: text
+    label: 'Media Entity Embed (Twitter)'
+    weight: 19
+    attributes:
+      data-class: cke_button__media_entity_embed
+    body: '<p>This allows you to add new or existing tweets to your content. A separate configuration window will load. When uploading a tweet, specify the URL of the tweet you wish to display. Make sure twitter account is public.</p>'
+    location: bottom
+    entity-embed-facebook:
+    id: entity-embed-facebook
+    plugin: text
+    label: 'Media Entity Embed (Facebook)'
+    weight: 20
+    attributes:
+      data-class: cke_button__media_entity_embed
+    body: '<p>This allows you to add new or existing Facebook posts to your content. A separate configuration window will load. When uploading a Facebook post, add the URL of the post you wish to display. Make sure the Facebook post is public. </p>'
+    location: bottom
+  entity-embed-instagram:
+    id: entity-embed-instagram
+    plugin: text
+    label: 'Media Entity Embed (Instagram)'
+    weight: 21
+    attributes:
+      data-class: cke_button__media_entity_embed
+    body: '<p>This allows you to add new or existing Instagram posts to your content. A separate configuration window will load. When uploading an Instagram post, add the URL of the post you wish to display. Make sure the Instagram post is public. </p>'
+    location: bottom
+  source:
+    id: source
+    plugin: text
+    label: 'View/Edit Source'
+    weight: 22
+    attributes:
+      data-class: cke_button__source
+    body: '<p>You can look under the hood at anytime to see the markup for the content.</p><p>If you know your stuff you can write your own HTML staying within the restrictions of the <a href=''/filter/tips''>filtered_html format</a>.</p><p>HTML that is not allowed will be stripped out before rendering to site visitors.</p>'
+    location: bottom
+  page-actions:
+    id: page-actions
+    plugin: text
+    label: Publish/Save/Preview
+    weight: 23
+    attributes:
+      data-id: edit-actions
+    body: '<p>You can save, preview and publish the page here.</p><p>Site visitors will only see content marked as published.</p>'
+    location: top
+  next-step:
+    id: next-step
+    plugin: text
+    label: 'That''s It!'
+    weight: 24
+    body: '<p>Thanks for sticking with us.</p><p>As you are using the site, look for the tour icon which designates a tour is available on that page, otherwise, <a href="//docs.sitenow.uiowa.edu" >view our documentation</a> for more information.</p>'
