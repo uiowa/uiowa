@@ -4,7 +4,6 @@ has_children: false
 parent: "Content"
 nav_order: 2
 ---
-
 # Basic Page
 
 Use *basic pages* for your static content, such as an *About us* page.

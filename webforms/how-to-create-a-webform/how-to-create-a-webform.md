@@ -4,7 +4,6 @@ has_children: false
 parent: "Webforms"
 nav_order: 2
 ---
-
 # Webforms
 
 A webform is a form or questionnaire that is accessible to users. Submission results and statistics are recorded and accessible to privileged users.

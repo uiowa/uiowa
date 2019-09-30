@@ -4,7 +4,6 @@ has_children: false
 parent: "Webforms"
 nav_order: 3
 ---
-
 # Advanced webform configuration
 
 ## How to conditionally show or require fields:
