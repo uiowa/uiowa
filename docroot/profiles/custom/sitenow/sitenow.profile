@@ -73,6 +73,19 @@ function sitenow_views_pre_render(ViewExecutable $view) {
       $view->result = $non_admins;
     }
   }
+
+  // JSON view webmaster API Modifier.
+  if ($view->id() == "webmaster_api") {
+    if (isset($view->field) && isset($view->field['nothing'])) {
+      foreach ($view->result as $result) {
+        if ($result) {
+          $user = User::load($result->uid);
+          $email = $user->getEmail();
+          $view->field['nothing']->options['alter']['text'] = $email;
+        }
+      }
+    }
+  }
 }
 
 /**
@@ -695,6 +708,15 @@ function sitenow_editor_js_settings_alter(array &$settings) {
        * $settings['editor']['formats'][$text_format_id]['editorSettings']['customConfig'] =
        * base_path() . drupal_get_path('module', 'fontawesome') . '/js/plugins/drupalfontawesome/plugin.es6.js';
        */
+    }
+  }
+}
+
+function sitenow_preprocess_views_view_field(&$variables) {
+  if ($variables['view']->id() == "webmaster_page_test" || $variables['view']->id() == "webmaster_api") {
+    if (isset($variables['view']->field) && $variables['field']->realField == 'nothing') {
+      // kint($variables['view']->field);
+      $variables['output'] = 'doggy';
     }
   }
 }
