@@ -9,6 +9,7 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\NodeInterface;
@@ -42,8 +43,10 @@ function sitenow_preprocess_select(&$variables) {
       // Remove none option.
       // Not the best solution, possibly look at:
       // https://www.drupal.org/files/issues/2117827-21.patch.
-      if ($variables['options'][0]['value'] == '_none' || $variables['options'][0]['value'] == '') {
-        unset($variables['options'][0]);
+      if (isset($variables['options'], $variables['options'][0], $variables['options'][0]['value'])) {
+        if ($variables['options'][0]['value'] == '_none' || $variables['options'][0]['value'] == '') {
+          unset($variables['options'][0]);
+        }
       }
     }
   }
@@ -510,6 +513,7 @@ function sitenow_preprocess_page(&$variables) {
   if (!$admin_context->isAdminRoute()) {
     $node = \Drupal::routeMatch()->getParameter('node');
     if ($node instanceof NodeInterface) {
+      $variables['header_attributes'] = new Attribute();
       if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
         $publish_options = $node->get('field_publish_options')->getValue();
         if (array_search('no_sidebars', array_column($publish_options, 'value')) !== FALSE) {
@@ -517,6 +521,21 @@ function sitenow_preprocess_page(&$variables) {
           $variables['page']['sidebar_first'] = [];
           $variables['page']['sidebar_second'] = [];
         }
+        if (array_search('title_hidden', array_column($publish_options, 'value')) !== FALSE) {
+          $variables['header_attributes']->addClass('title-hidden');
+        }
+      }
+      $type = $node->getType();
+      switch ($type) {
+        case 'page':
+        case 'article':
+          if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
+            $image = $node->get('field_image')->view('sitenow_16_9');
+            $variables['node_image'] = $image;
+            $variables['header_attributes']->addClass('has-bg-img');
+          }
+          break;
+
       }
     }
   }
@@ -530,11 +549,17 @@ function sitenow_preprocess_node(&$variables) {
   if (!$admin_context->isAdminRoute()) {
 
     $node = $variables["node"];
-    switch ($node->getType()) {
+    $type = $node->getType();
+    switch ($type) {
       case 'page':
+      case 'article':
+      case 'person':
         switch ($variables['view_mode']) {
           case 'teaser':
             $style = 'sitenow_card';
+            if ($type == 'person') {
+              $style = 'sitenow_square_m';
+            }
             $image_field = $node->get('field_image');
             if (!$image_field->isEmpty()) {
               $image = $image_field->first()->getValue();
@@ -555,10 +580,10 @@ function sitenow_preprocess_node(&$variables) {
                   '#alt' => $alt,
                   '#weight' => -1,
                   '#attributes' => [
-                    'class' => 'page-image',
+                    'class' => 'node-image',
                   ],
                 ];
-                $variables["content"]['page_image'] = $image;
+                $variables["content"]['node_image'] = $image;
               }
             }
             break;

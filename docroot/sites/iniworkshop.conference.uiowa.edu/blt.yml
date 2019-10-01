@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: iniworkshop.conference.uiowa.edu
+    protocol: https
+  machine_name: conferenceiniworkshop
+  human_name: iniworkshop.conference.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: conferenceiniworkshop.prod
+drupal:
+  db:
+    database: iniworkshop_conference_uiowa_edu
+    host: localhost
+    user: root
+    password: null

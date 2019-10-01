@@ -156,36 +156,35 @@ function sitenow_people_preprocess_node(&$variables) {
     switch ($node->getType()) {
       case 'person':
         switch ($variables["view_mode"]) {
-          case 'teaser':
-
+          case 'full':
+            $image_field = $node->get('field_image');
+            if (!$image_field->isEmpty()) {
+              $image = $image_field->first()->getValue();
+              $media = Media::load($image['target_id']);
+              if ($media) {
+                $media_field = $media->get('field_media_image')
+                  ->first()
+                  ->getValue();
+                $file = File::load($media_field['target_id']);
+                $uri = $file->getFileUri();
+                $alt = ($media_field['alt'] ? $media_field['alt'] : '');
+                $image = [
+                  '#theme' => 'image_style',
+                  '#width' => NULL,
+                  '#height' => NULL,
+                  '#style_name' => 'sitenow_square_m',
+                  '#uri' => $uri,
+                  '#alt' => $alt,
+                  '#weight' => -1,
+                  '#attributes' => [
+                    'class' => 'content-image',
+                  ],
+                ];
+                $variables["content"]['node_image'] = $image;
+              }
+            }
             break;
-        }
-        // Render person image.
-        $image_field = $node->get('field_image');
-        if (!$image_field->isEmpty()) {
-          $image = $image_field->first()->getValue();
-          $media = Media::load($image['target_id']);
-          if ($media) {
-            $media_field = $media->get('field_media_image')
-              ->first()
-              ->getValue();
-            $file = File::load($media_field['target_id']);
-            $uri = $file->getFileUri();
-            $alt = ($media_field['alt'] ? $media_field['alt'] : '');
-            $image = [
-              '#theme' => 'image_style',
-              '#width' => NULL,
-              '#height' => NULL,
-              '#style_name' => 'sitenow_square_m',
-              '#uri' => $uri,
-              '#alt' => $alt,
-              '#weight' => -1,
-              '#attributes' => [
-                'class' => 'person-image',
-              ],
-            ];
-            $variables["content"]['person_image'] = $image;
-          }
+
         }
         break;
 

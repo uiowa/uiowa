@@ -5,14 +5,18 @@
  * Global settings for every multisite.
  */
 
+use Sitenow\Multisite;
+
 /**
  * Standardize on an escaped site directory DB include for AC.
  *
  * The default site will be set to use the uiowa database by BLT.
+ *
+ * @var $site_dir
+ *    This is a BLT variable based off the Drupal kernel $site_path.
  */
 if ($site_dir != 'default') {
-  $db = str_replace('.', '_', $site_dir);
-  $db = str_replace('-', '_', $db);
+  $db = Multisite::getDatabase($site_dir);
 
   if (file_exists('/var/www/site-php')) {
     require "/var/www/site-php/uiowa/{$db}-settings.inc";

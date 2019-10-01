@@ -1,26 +1,26 @@
 {
     "_links": {
         "self": {
-            "href": "http:\/\/localhost\/media\/1?_format=hal_json"
+            "href": "http:\/\/localhost\/media\/1\/edit?_format=hal_json"
         },
         "type": {
             "href": "http:\/\/drupal.org\/rest\/type\/media\/image_background"
         },
-        "http:\/\/drupal.org\/rest\/relation\/media\/image_background\/thumbnail": [
-            {
-                "href": "http:\/\/localhost\/sites\/default\/files\/2019-02\/2018_09_01-Iowa%20v%20N.%20Illinois-tschoon-978_0.jpg",
-                "lang": "en"
-            }
-        ],
         "http:\/\/drupal.org\/rest\/relation\/media\/image_background\/uid": [
             {
                 "href": "http:\/\/localhost\/user\/1?_format=hal_json",
                 "lang": "en"
             }
         ],
+        "http:\/\/drupal.org\/rest\/relation\/media\/image_background\/thumbnail": [
+            {
+                "href": "",
+                "lang": "en"
+            }
+        ],
         "http:\/\/drupal.org\/rest\/relation\/media\/image_background\/field_media_image_1": [
             {
-                "href": "http:\/\/localhost\/sites\/default\/files\/2019-02\/2018_09_01-Iowa%20v%20N.%20Illinois-tschoon-978_0.jpg",
+                "href": "",
                 "lang": "en"
             }
         ]
@@ -53,7 +53,7 @@
     ],
     "revision_created": [
         {
-            "value": "2019-05-06T15:57:06+00:00",
+            "value": "2019-09-04T21:13:58+00:00",
             "format": "Y-m-d\\TH:i:sP"
         }
     ],
@@ -63,18 +63,30 @@
             "lang": "en"
         }
     ],
-    "name": [
-        {
-            "value": "IOWA",
-            "lang": "en"
-        }
-    ],
     "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/media\/image_background\/uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/localhost\/user\/1?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "1ca81c0d-23b8-4e15-a37d-bcf03c094126"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
         "http:\/\/drupal.org\/rest\/relation\/media\/image_background\/thumbnail": [
             {
                 "_links": {
                     "self": {
-                        "href": "http:\/\/localhost\/sites\/default\/files\/2019-02\/2018_09_01-Iowa%20v%20N.%20Illinois-tschoon-978_0.jpg"
+                        "href": ""
                     },
                     "type": {
                         "href": "http:\/\/drupal.org\/rest\/type\/file\/file"
@@ -92,29 +104,11 @@
                 "height": "1534"
             }
         ],
-        "http:\/\/drupal.org\/rest\/relation\/media\/image_background\/uid": [
-            {
-                "_links": {
-                    "self": {
-                        "href": "http:\/\/localhost\/user\/1?_format=hal_json"
-                    },
-                    "type": {
-                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
-                    }
-                },
-                "uuid": [
-                    {
-                        "value": "c50aa417-d200-4e66-aa54-15bdbb954c72"
-                    }
-                ],
-                "lang": "en"
-            }
-        ],
         "http:\/\/drupal.org\/rest\/relation\/media\/image_background\/field_media_image_1": [
             {
                 "_links": {
                     "self": {
-                        "href": "http:\/\/localhost\/sites\/default\/files\/2019-02\/2018_09_01-Iowa%20v%20N.%20Illinois-tschoon-978_0.jpg"
+                        "href": ""
                     },
                     "type": {
                         "href": "http:\/\/drupal.org\/rest\/type\/file\/file"
@@ -128,11 +122,17 @@
                 "lang": "en",
                 "alt": "Iowa v Northern Illinois in football at Kinnick Stadium - 01 Sep 2018",
                 "title": "",
-                "width": "2400",
-                "height": "1005"
+                "width": "1350",
+                "height": "564"
             }
         ]
     },
+    "name": [
+        {
+            "value": "IOWA",
+            "lang": "en"
+        }
+    ],
     "created": [
         {
             "value": "2019-01-09T04:34:54+00:00",
@@ -142,7 +142,7 @@
     ],
     "changed": [
         {
-            "value": "2019-02-15T17:29:47+00:00",
+            "value": "2019-09-11T18:29:30+00:00",
             "lang": "en",
             "format": "Y-m-d\\TH:i:sP"
         }
