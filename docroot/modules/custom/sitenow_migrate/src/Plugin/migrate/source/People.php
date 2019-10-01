@@ -108,13 +108,19 @@ class People extends SqlBase {
       'status' => $this->t('Published/unpublished'),
       'created' => $this->t('Timestamp of creation'),
       'changed' => $this->t('Timestamp of last change'),
-      'comment' => $this->t('Comments enabled/disabled'),
       'promote' => $this->t('Promoted'),
       'sticky' => $this->t('Stickied'),
       'tnid' => $this->t('Translation ID'),
-      'body_value' => $this->t('The actual body text being migrated'),
-      'body_summary' => $this->t("The page's summary test"),
-      'body_format' => $this->t("The body text field's formatting"),
+      'field_people_first_name_value' => $this->t("Person's first name"),
+      'field_people_last_name_value' => $this->t("Person's last name"),
+      'field_person_bio_value' => $this->t('Person biography text'),
+      'field_person_bio_summary' => $this->t('Person biography short text summary'),
+      'field_person_email_email' => $this->t('Person email value (open text field)'),
+      'field_person_image_fid' => $this->t('D7 FID for person profile image'),
+      'field_person_office_value' => $this->t('Person office location (open text field)'),
+      'field_person_phone_value' => $this->t('Person phone number (open text field)'),
+      'field_person_position_value' => $this->t('Person position (open text field)'),
+      'field_person_website_url' => $this->t('Person website URL (open text field'),
     ];
     return $fields;
   }
