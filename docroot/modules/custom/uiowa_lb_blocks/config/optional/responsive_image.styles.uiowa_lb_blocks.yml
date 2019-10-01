@@ -5,37 +5,36 @@ dependencies:
     - image.style.uiowa_lb_block_image_1200_x_800
     - image.style.uiowa_lb_block_image_2000_x_1300
     - image.style.uiowa_lb_block_image_560_x_373
-    - image.style.uiowa_lb_block_image_760_x_507
     - image.style.uiowa_lb_block_image_990_x_660
-  theme:
-    - collegiate_theme
+  module:
+    - uiowa_lb_blocks
 id: uiowa_lb_blocks
 label: 'UIowa LB Blocks'
 image_style_mappings:
   -
-    breakpoint_id: collegiate_theme.extra_large
+    breakpoint_id: uiowa_lb_blocks.extra_large
     multiplier: 1x
     image_mapping_type: image_style
     image_mapping: uiowa_lb_block_image_2000_x_1300
   -
-    breakpoint_id: collegiate_theme.large
+    breakpoint_id: uiowa_lb_blocks.large
     multiplier: 1x
     image_mapping_type: image_style
     image_mapping: uiowa_lb_block_image_1200_x_800
   -
-    breakpoint_id: collegiate_theme.medium
+    breakpoint_id: uiowa_lb_blocks.medium
     multiplier: 1x
     image_mapping_type: image_style
     image_mapping: uiowa_lb_block_image_990_x_660
   -
-    breakpoint_id: collegiate_theme.small
-    multiplier: 1x
-    image_mapping_type: image_style
-    image_mapping: uiowa_lb_block_image_760_x_507
-  -
-    breakpoint_id: collegiate_theme.extra_small
+    breakpoint_id: uiowa_lb_blocks.small
     multiplier: 1x
     image_mapping_type: image_style
     image_mapping: uiowa_lb_block_image_560_x_373
-breakpoint_group: collegiate_theme
+  -
+    breakpoint_id: uiowa_lb_blocks.extra_small
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: uiowa_lb_block_image_560_x_373
+breakpoint_group: uiowa_lb_blocks
 fallback_image_style: uiowa_lb_block_image_560_x_373

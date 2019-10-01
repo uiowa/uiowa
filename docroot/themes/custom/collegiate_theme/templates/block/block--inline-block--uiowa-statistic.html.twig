@@ -41,16 +41,29 @@ https://www.drupal.org/node/2367463
 {% if attributes.hasClass('js-layout-builder-block') %}
   <div{{ attributes.addclass(classes) }}>
   {% endif %}
-  {% block content %}
-    {{ attach_library('collegiate_theme/stat-block') }}
-    {{ title_prefix }}
-    {{ title_suffix }}
-    {% include "@stat-block/stat-block--basic.twig" with {
-      "stat_image": file_url(content.field_uiowa_statistic_image[0]['#media'].image.entity.uri.value | image_style('medium')),
-      "stat_title": content.field_uiowa_statistic_title,
-      "stat_summary": content.field_uiowa_statistic_excerpt,
-    } %}
-  {% endblock %}
+
+{% block content %}
+  {{ attach_library('collegiate_theme/stat-block') }}
+  {{ attach_library('collegiate_theme/responsive-bg') }}
+  {{ title_prefix }}
+  {{ title_suffix }}
+  {% embed "@stat-block/stat-block--basic.twig" with {
+    "stat_preview_image": file_url(content.field_uiowa_statistic_image[0]['#media'].image.entity.uri.value | image_style('medium')),
+    "stat_image": drupal_image(content.field_uiowa_statistic_image[0]['#media'].image.entity.uri.value, 'uiowa_lb_blocks',  { class: 'card__img', alt: content.field_uiowa_statistic_image[0]['#media'].image.alt }, responsive=true),
+    "stat_title": content.field_uiowa_statistic_title,
+    "stat_summary": content.field_uiowa_statistic_excerpt,
+  } %}
+    {% block stat_bg %}
+      {% if attributes.hasClass('js-layout-builder-block') %}
+        <div class="stat" {% if stat_preview_image %} style="background-image: url('{% spaceless %}{{ stat_preview_image }}{% endspaceless %}'); background-size: cover; background-position: center" {% endif %}>
+        {% else %}
+          <div class="stat" data-responsive-background-image="true">
+            {{ stat_image }}
+          {% endif %}
+        {% endblock %}
+      {% endembed %}
+    {% endblock %}
+
   {% if attributes.hasClass('js-layout-builder-block') %}
   </div>
 {% endif %}
