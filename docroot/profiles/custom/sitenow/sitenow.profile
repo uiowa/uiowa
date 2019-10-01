@@ -736,12 +736,3 @@ function sitenow_editor_js_settings_alter(array &$settings) {
     }
   }
 }
-
-function sitenow_preprocess_views_view_field(&$variables) {
-  if ($variables['view']->id() == "webmaster_page_test" || $variables['view']->id() == "webmaster_api") {
-    if (isset($variables['view']->field) && $variables['field']->realField == 'nothing') {
-      // kint($variables['view']->field);
-      $variables['output'] = 'doggy';
-    }
-  }
-}
