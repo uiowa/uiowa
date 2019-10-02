@@ -171,7 +171,7 @@ class LockupController extends ControllerBase {
     }
     $lockup->setFont($bold, 8, $text_color);
     $lockup->setLineHeight(9.6);
-    $lockup->setLetterSpacing(.01);
+    // $lockup->setLetterSpacing(.01);
 
     $primary_lines = [];
     foreach ($primary_explode as $key => $line) {
@@ -236,7 +236,7 @@ class LockupController extends ControllerBase {
 
         $lockup->setFont($regular, 6, $text_color);
         $lockup->setLineHeight(7.5);
-        $lockup->setLetterSpacing(0.02);
+        // $lockup->setLetterSpacing(0.02);
 
         $s1_center = $sublines[0][0] / 2;
         $lockup->addText(html_entity_decode(
@@ -304,7 +304,7 @@ class LockupController extends ControllerBase {
 
         $lockup->setFont($regular, 6, $text_color);
         $lockup->setLineHeight(7.5);
-        $lockup->setLetterSpacing(0.02);
+        // $lockup->setLetterSpacing(0.02);
 
         $lockup->addText(html_entity_decode(
           $sub_explode[0],
