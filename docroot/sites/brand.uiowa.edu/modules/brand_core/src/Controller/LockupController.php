@@ -79,12 +79,13 @@ class LockupController extends ControllerBase {
 
       $zip->close();
 
-      header('Content-type: application/x-zip-compressed');
+      header('Content-type: application/zip');
       header("Content-disposition: attachment; filename=" . $path . "-Lockup.zip");
       readfile(\Drupal::service('file_system')->realpath($zip_filename));
 
       ob_clean();
       flush();
+      ob_end_flush();
       readfile($zip_filename);
       unlink($zip_filename);
       unlink(file_directory_temp() . '/' . $lockup_stacked_black_file);
@@ -94,10 +95,7 @@ class LockupController extends ControllerBase {
       unlink(file_directory_temp() . '/' . $lockup_horizontal_rgb_file);
       unlink(file_directory_temp() . '/' . $lockup_horizontal_reversed_file);
 
-      $response = [
-        '#markup' => $this->t('Download should begin shortly.'),
-      ];
-      return $response;
+      exit();
 
     }
     else {
