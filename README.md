@@ -19,7 +19,7 @@ This project is based on BLT, an open-source project template and tool that enab
     ```
 7. Update your the configuration located in the `/blt/blt.yml` file to match your site's needs. See [configuration files](#important-configuration-files) for other important configuration files.
 8. Add the Acquia repository as a secondary remote. You can get the Acquia remote URL from the [Acquia Cloud interface](https://docs.acquia.com/acquia-cloud/develop/repository/git).
-  `git add acquia ACQUIA_REMOTE_URL`
+  `git remote add acquia ACQUIA_REMOTE_URL`
 
 
 ----
