@@ -3,37 +3,37 @@ status: true
 dependencies:
   module:
     - sitenow
-    - uiowa_articles
-id: settings-form
+    - sitenow_people
+id: settings-form-people
 label: 'Settings Form'
 module: sitenow
 routes:
   -
-    route_name: sitenow_articles.settings_form
+    route_name: sitenow_people.settings_form
 tips:
   intro:
     id: intro
     plugin: text
-    label: 'SiteNow Article Settings'
+    label: 'People Page'
     weight: 0
-    body: '<p>On this page you can change many of the global site settings available to you. Let''s step through them.</p><p>For more information about SiteNow Article settings, visit <a href="https://sitenow.uiowa.edu/documentation">view our documentation</a>.</p>'
+    body: '<p>On this page you can change many of the global site settings available to you. Let''s step through them.</p><p>For more information about SiteNow People settings, visit <a href="https://sitenow.uiowa.edu/documentation">view our documentation</a>.</p>'
   title:
     id: title
     plugin: text
-    label: 'Articles Title'
+    label: 'People Title'
     weight: 1
     attributes:
-      data-id: edit-sitenow-articles-title
+      data-id: edit-sitenow-people-title
     body: '<p>First off, give your page a title. This is a required field. Other required fields are marked with a red asterisk.</p>'
     location: bottom
   path:
     id: path
     plugin: text
-    label: 'Articles Path'
+    label: 'People Path'
     weight: 2
     attributes:
-      data-id: edit-sitenow-articles-path
-    body: '<p>The path where the existing articles will be displayed. The default path is YourSiteURL/news)</p>'
+      data-id: edit-sitenow-people-path
+    body: '<p>The path where the existing people entities will be displayed. The default path is YourSiteURL/people)</p>'
     location: bottom
   wysiwyg:
     id: wysiwyg
@@ -42,7 +42,7 @@ tips:
     weight: 3
     attributes:
       data-class: field--widget-text-textarea
-    body: '<p>The What-You-See-Is-What-You-Get (WYSIWYG) text editor gives you the ability to format your content and add links/media. This editor is available on most text areas around the site.</p><p>For more details, <a href="https://docs.sitenow.uiowa.edu/wysiwyg">view our documentation section about the WYSIWYG</a>.</p>'
+    body: '<p>The What-You-See-Is-What-You-Get (WYSIWYG) text editor gives you the ability to format your content and add links/media. This editor is available on most text areas around the site.</p><p>For more details, <a href="https://sitenow.uiowa.edu/documentation/content-documentation/wysiwyg">view our documentation section about the WYSIWYG</a>.</p>'
     location: top
   text-styles:
     id: text-styles
@@ -51,7 +51,7 @@ tips:
     weight: 4
     attributes:
       data-class: cke_button__bold
-    body: '<p>The Header Content text will display above the articles on the /news page.</p><p>You can style your text with the bold, italic, strike-through options. These can be used in conjunction with each other or other buttons on the toolbar.</p>'
+    body: '<p>The Header Content text will display above the published people on the /people page.</p><p>You can style your text with the bold, italic, strike-through options. These can be used in conjunction with each other or other buttons on the toolbar.</p>'
     location: bottom
   format:
     id: format
@@ -134,18 +134,27 @@ tips:
       data-class: cke_button__source
     body: '<p>You can look under the hood at anytime to see the markup for the content.</p><p>If you know your stuff you can write your own HTML staying within the restrictions of the <a href=''/filter/tips''>filtered_html format</a>.</p><p>HTML that is not allowed will be stripped out before rendering to site visitors.</p>'
     location: bottom
+  action-links:
+    id: action-links
+    plugin: text
+    label: 'Sort'
+    weight: 14
+    attributes:
+      data-id: edit-sitenow-people-sort
+    body: '<p>You can choose how you wish to sort the people entities. Sort by last name, first name or manual sort where you can manually drag individual (person) entities into the order you wish to display them by editing the /people page.</p>'
+    location: bottom
   page-actions:
     id: page-actions
     plugin: text
-    label: Publish/Save/Preview
-    weight: 14
+    label: Save Configurations
+    weight: 15
     attributes:
       data-id: edit-actions
-    body: '<p>You can Save configuration here.</p><p>Site visitors will only see the article content marked as published.</p>'
+    body: '<p>You can Save configuration here.</p><p>Site visitors will only see the people content marked as published on your desired URL path.</p>'
     location: top
   next-step:
     id: next-step
     plugin: text
     label: 'That''s It!'
-    weight: 15
-    body: '<p>Thanks for sticking with us.</p><p>As you are using the site, look for the tour icon which designates a tour is available on that page, otherwise, <a href="//sitenow.uiowa.edu/documentation/content-documentation/wysiwyg" >view our documentation</a> for more information.</p>'
+    weight: 16
+    body: '<p>Thanks for sticking with us.</p><p>As you are using the site, look for the tour icon which designates a tour is available on that page, otherwise, <a href="//docs.sitenow.uiowa.edu" >view our documentation</a> for more information.</p>'

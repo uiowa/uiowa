@@ -158,62 +158,17 @@ tips:
   entity-embed:
     id: entity-embed
     plugin: text
-    label: 'Media Entity Embed (Images)'
+    label: 'Media Entity Embed'
     weight: 16
     attributes:
       data-class: cke_button__media_entity_embed
-    body: '<p>This allows you to add new or existing images to your content. A separate configuration window will load. When uploading an image, specify a name that can be used later on to find the image in the media library and choose an image. After upload, provide alternative text for the image to aid visually impaired users.</p><p>Optionally, clicking on the image thumbnail allows you to specify the portion of an image that is most important. This information can be used when the image is cropped so that you don''t, for example, end up with an image that cuts off the subject''s head.</p><p>After saving the entity, another window will load allowing you to change the size of the image used, the alignment and allow you to provide a caption that is display with the image.</p>'
-    location: bottom
-  entity-embed-video:
-    id: entity-embed-video
-    plugin: text
-    label: 'Media Entity Embed (Video)'
-    weight: 17
-    attributes:
-      data-class: cke_button__media_entity_embed
-    body: '<p>This allows you to add new or existing videos to your content. A separate configuration window will load. When uploading a video URL, specify the URL of the video you wish to display. You can add videos from YouTube, UIowa, or Vimeo.</p>'
-    location: bottom
-  entity-embed-audio:
-    id: entity-embed-audio
-    plugin: text
-    label: 'Media Entity Embed (Audio)'
-    weight: 18
-    attributes:
-      data-class: cke_button__media_entity_embed
-    body: '<p>This allows you to add new or existing audio files to your content. A separate configuration window will load. When uploading an audio file, specify a name that can be used later on to find the audio file in the media library.</p>'
-    location: bottom
-  entity-embed-twitter:
-    id: entity-embed-twitter
-    plugin: text
-    label: 'Media Entity Embed (Twitter)'
-    weight: 19
-    attributes:
-      data-class: cke_button__media_entity_embed
-    body: '<p>This allows you to add new or existing tweets to your content. A separate configuration window will load. When uploading a tweet, specify the URL of the tweet you wish to display. Make sure twitter account is public.</p>'
-    location: bottom
-    entity-embed-facebook:
-    id: entity-embed-facebook
-    plugin: text
-    label: 'Media Entity Embed (Facebook)'
-    weight: 20
-    attributes:
-      data-class: cke_button__media_entity_embed
-    body: '<p>This allows you to add new or existing Facebook posts to your content. A separate configuration window will load. When uploading a Facebook post, add the URL of the post you wish to display. Make sure the Facebook post is public. </p>'
-    location: bottom
-  entity-embed-instagram:
-    id: entity-embed-instagram
-    plugin: text
-    label: 'Media Entity Embed (Instagram)'
-    weight: 21
-    attributes:
-      data-class: cke_button__media_entity_embed
-    body: '<p>This allows you to add new or existing Instagram posts to your content. A separate configuration window will load. When uploading an Instagram post, add the URL of the post you wish to display. Make sure the Instagram post is public. </p>'
+    body: '<p>This allows you to add new or existing images, videos from a URL, audio files, Tweets, Instagram and Facebook posts to your content. A separate configuration window will load. <a href=https://sitenow.uiowa.edu/documentation/content-documentation/media>Click here for media documentation</a>.</p>'
     location: bottom
   source:
     id: source
     plugin: text
     label: 'View/Edit Source'
-    weight: 22
+    weight: 17
     attributes:
       data-class: cke_button__source
     body: '<p>You can look under the hood at anytime to see the markup for the content.</p><p>If you know your stuff you can write your own HTML staying within the restrictions of the <a href=''/filter/tips''>filtered_html format</a>.</p><p>HTML that is not allowed will be stripped out before rendering to site visitors.</p>'
@@ -222,7 +177,7 @@ tips:
     id: page-actions
     plugin: text
     label: Publish/Save/Preview
-    weight: 23
+    weight: 18
     attributes:
       data-id: edit-actions
     body: '<p>You can save, preview and publish the page here.</p><p>Site visitors will only see content marked as published.</p>'
@@ -231,5 +186,5 @@ tips:
     id: next-step
     plugin: text
     label: 'That''s It!'
-    weight: 24
-    body: '<p>Thanks for sticking with us.</p><p>As you are using the site, look for the tour icon which designates a tour is available on that page, otherwise, <a href="//docs.sitenow.uiowa.edu" >view our documentation</a> for more information.</p>'
+    weight: 19
+    body: '<p>Thanks for sticking with us.</p><p>As you are using the site, look for the tour icon which designates a tour is available on that page, otherwise, <a href="https://sitenow.uiowa.edu/documentation" >view our documentation</a> for more information.</p>'
