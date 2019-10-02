@@ -1,18 +1,20 @@
 .card {
   position: relative;
   transition: transform .35s, z-index .5s;
-  @include margin($right: $sm, $bottom: 0, $left: $sm);
   @include flexbox;
   @include flex-direction($value: column);
   @include flex($fg: 1, $fs: 1, $fb: 0%);
 
-  &:first-of-type {
-   @include margin($left: 0);
-  }
-  &:last-of-type {
-    @include margin($right: 0);
-  }
+&__row {
+  @include margin($right: $sm, $bottom: 0, $left: $sm);
+   &:first-of-type {
+     @include margin($left: 0);
+   }
 
+   &:last-of-type {
+     @include margin($right: 0);
+   }
+}
   &__wrapper {
     @include breakpoint(sm) {
       @include flexbox;

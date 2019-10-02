@@ -17,7 +17,7 @@
 
     <section{{ attributes.addClass(classes) }}>
 
-        <div class="layout__region layout__region--first flex__wrapper feature__container">
+        <div class="layout__region layout__region--first flex__wrapper feature__container flex__wrapper">
 
             {% if region_attributes.first.storage['data-region'] %}
                 {{ attach_library('collegiate_theme/admin') }}
@@ -30,7 +30,7 @@
 
         </div>
 
-        <div class="layout__region layout__region--second flex__wrapper feature__container">
+        <div class="layout__region layout__region--second flex__wrapper feature__container flex__wrapper">
 
             {% if region_attributes.second.storage['data-region'] %}
                 <div {{ region_attributes.second.addClass('flex__wrapper') }}>

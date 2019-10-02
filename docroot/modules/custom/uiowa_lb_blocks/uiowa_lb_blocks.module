@@ -12,31 +12,31 @@ use Drupal\Core\Form\FormStateInterface;
  */
 function uiowa_lb_blocks_form_alter(&$form, $form_state, $form_id) {
   if ($form_id == 'layout_builder_add_block') {
-    $form['layout_builder_block_override'] = array(
+    $form['layout_builder_block_override'] = [
       '#type' => 'checkbox',
-      '#title' => t("Override this block's default margins."),
+      '#title' => t("Override Block Styles"),
       '#required' => FALSE,
-    );
+    ];
     $form['layout_builder_style_margin']['#states'] = [
-    'visible' => [
-      ':input[name="layout_builder_block_override"]' => [
-        'checked' => TRUE,
+      'visible' => [
+        ':input[name="layout_builder_block_override"]' => [
+          'checked' => TRUE,
+        ],
       ],
-    ],
     ];
   }
   if ($form_id == 'layout_builder_update_block') {
-    $form['layout_builder_block_override'] = array(
+    $form['layout_builder_block_override'] = [
       '#type' => 'checkbox',
-      '#title' => t("Override this block's default margins."),
+      '#title' => t("Override Block Styles"),
       '#required' => FALSE,
-    );
+    ];
     $form['layout_builder_style_margin']['#states'] = [
-    'visible' => [
-      ':input[name="layout_builder_block_override"]' => [
-        'checked' => TRUE,
+      'visible' => [
+        ':input[name="layout_builder_block_override"]' => [
+          'checked' => TRUE,
+        ],
       ],
-    ],
     ];
   }
 }

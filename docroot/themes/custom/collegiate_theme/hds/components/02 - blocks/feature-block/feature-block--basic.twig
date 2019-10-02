@@ -1,6 +1,6 @@
 {% block feature_bg %}
   {% if feature_banner_image %}
-    <a href="{{ feature_link }}" tabindex="0" aria-expanded="{{ firstitem }}" class="feature feature__{{ counter }}" {% if feature_banner_image %} style="background-image: url('{% spaceless %}{{ feature_banner_image }}{% endspaceless %}'); background-size: cover; background-position: center" {% endif %}>
+    <a href="{{ feature_link }}" tabindex="0" aria-expanded="{{ firstitem }}" class="feature feature__{{ counter }} {{ feature_classes }}" {% if feature_banner_image %} style="background-image: url('{% spaceless %}{{ feature_banner_image }}{% endspaceless %}'); background-size: cover; background-position: center" {% endif %}>
   {% endif %}
 {% endblock %}
 <div class="feature__wrapper">

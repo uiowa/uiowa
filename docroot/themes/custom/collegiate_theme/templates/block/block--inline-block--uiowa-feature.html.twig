@@ -44,6 +44,7 @@ set classes = [
     {{ title_suffix }}
     {{ attach_library('collegiate_theme/feature-block') }}
     {% embed "@feature-block/feature-block--basic.twig" with {
+      "feature_classes": attributes['class'],
       "feature_banner_preview_image": file_url(content.field_uiowa_feature_image[0]['#media'].image.entity.uri.value | image_style('medium')),
       "feature_banner_image": drupal_image(content.field_uiowa_feature_image[0]['#media'].image.entity.uri.value, 'uiowa_lb_blocks',  { class: 'card__img', alt: content.field_uiowa_feature_image[0]['#media'].image.alt }, responsive=true),
       "feature_title": content.field_uiowa_feature_title,
@@ -52,9 +53,9 @@ set classes = [
     } %}
       {% block feature_bg %}
         {% if attributes.hasClass('js-layout-builder-block') %}
-          <a href="{{ feature_link }}" tabindex="0" aria-expanded="{{ firstitem }}" class="feature feature__{{ counter }}" {% if feature_banner_preview_image %} style="background-image: url('{% spaceless %}{{ feature_banner_preview_image }}{% endspaceless %}'); background-size: cover; background-position: center" {% endif %}>
+          <a href="{{ feature_link }}" tabindex="0" aria-expanded="{{ firstitem }}" class="feature feature__{{ counter }} {{ feature_classes }}" {% if feature_banner_preview_image %} style="background-image: url('{% spaceless %}{{ feature_banner_preview_image }}{% endspaceless %}'); background-size: cover; background-position: center" {% endif %}>
       {% else %}
-          <a href="{{ feature_link }}" tabindex="0" aria-expanded="{{ firstitem }}" class="feature feature__{{ counter }}" data-responsive-background-image="true">
+          <a href="{{ feature_link }}" tabindex="0" aria-expanded="{{ firstitem }}" class="feature feature__{{ counter }} {{ feature_classes }}" data-responsive-background-image="true">
             {{ feature_banner_image }}
         {% endif %}
       {% endblock %}

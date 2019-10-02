@@ -17,6 +17,46 @@
   }
 }
 
+
+.section-padding {
+  @include breakpoint(sm) {
+    &__top {
+      padding-top: $md;
+    }
+
+    &__right {
+      padding-right: $md;
+    }
+
+    &__bottom {
+      padding-bottom: $md;
+    }
+
+    &__left {
+      padding-left: $md;
+    }
+  }
+}
+
+.block-margin {
+  @include breakpoint(sm) {
+  &__top {
+    margin-top: $md;
+  }
+  &__right {
+    margin-right: $md;
+  }
+  &__bottom {
+    margin-bottom: $md;
+  }
+  &__left {
+    margin-left: $md;
+  }
+}
+}
+
+/*
+
 .section-padding__side {
   @include breakpoint(sm) {
     @include padding($right: $md, $left: $md);
@@ -47,6 +87,9 @@
   }
 }
 
+*/
+
+
 .layout__region {
 .feature,
 .banner {
@@ -63,7 +106,6 @@
   -ms-flex-preferred-size: unset;
   flex-basis: unset;
 }
-
 
 // Admin only styles
 .toolbar-menu {
