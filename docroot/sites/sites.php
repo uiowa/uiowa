@@ -258,3 +258,8 @@ $sites['lablogsdon.prod.drupal.uiowa.edu'] = 'logsdon.lab.uiowa.edu';
 $sites['studioelectronicmusic.dev.drupal.uiowa.edu'] = 'electronicmusic.studio.uiowa.edu';
 $sites['studioelectronicmusic.stage.drupal.uiowa.edu'] = 'electronicmusic.studio.uiowa.edu';
 $sites['studioelectronicmusic.prod.drupal.uiowa.edu'] = 'electronicmusic.studio.uiowa.edu';
+
+// Directory aliases for wu.lab.uiowa.edu.
+$sites['labwu.dev.drupal.uiowa.edu'] = 'wu.lab.uiowa.edu';
+$sites['labwu.stage.drupal.uiowa.edu'] = 'wu.lab.uiowa.edu';
+$sites['labwu.prod.drupal.uiowa.edu'] = 'wu.lab.uiowa.edu';
