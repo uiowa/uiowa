@@ -1,0 +1,109 @@
+<?php
+
+/**
+ * @file
+ * Install and uninstall functions for the Lightning installation profile.
+ */
+
+use Drupal\Core\Entity\Entity\EntityViewDisplay;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\lightning_core\ConfigHelper as Config;
+
+/**
+ * Makes updates to some basic config that ships with Lightning.
+ *
+ * Install the body field on the basic block_content type, delete the Create
+ * landing page shortcut, and uninstall the Media Demo Content Module.
+ */
+function collegiate_update_8001() {
+  // Install the body field on the basic block_content type.
+  $field = FieldConfig::load('block_content.basic.body');
+  if (empty($field)) {
+    $config = Config::forModule('lightning');
+    $config->getEntity('field_config', 'block_content.basic.body')->save();
+
+    $display = EntityViewDisplay::load('block_content.basic.default');
+    if ($display) {
+      /** @var \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display */
+      $display->setComponent('body', [
+        'type' => 'text_default',
+        'weight' => 0,
+        'label' => 'hidden',
+        'settings' => [],
+        'third_party_settings' => [],
+      ])->save();
+    }
+    else {
+      $config->getEntity('entity_view_display', 'block_content.basic.default')->save();
+    }
+  }
+
+  // Delete the `Create Landing Page` toolbar shortcut.
+  $properties = ['link__uri' => 'internal:/admin/structure/landing-page'];
+  $shortcuts = \Drupal::entityTypeManager()->getStorage('shortcut')->loadByProperties($properties);
+  foreach ($shortcuts as $shortcut) {
+    $shortcut->delete();
+  }
+
+  // Uninstall the Media Demo Content module.
+  \Drupal::service('module_installer')->uninstall(['lightning_media_democontent']);
+}
+
+/**
+ * Removed in Lightning 8.x-2.06.
+ *
+ * Formerly created roles for editing content types.
+ */
+function collegiate_update_8002() {
+}
+
+/**
+ * Enables the lightning_core module.
+ */
+function collegiate_update_8003() {
+  Drupal::service('module_installer')->install(['lightning_core']);
+}
+
+/**
+ * Enables Entity API.
+ */
+function collegiate_update_8004() {
+    /*
+     * This ancient line is disabled in order to evade a strict coding standards
+     * check. It should not be necessary at this point anyway, since it dates from
+     * the days of Lightning 1.x, which has long since been end-of-life.
+     *
+     * eval('interface Drupal\entity\Entity\RevisionableEntityBundleInterface{}');
+     */
+  Drupal::service('module_installer')->install(['entity']);
+}
+
+/**
+ * Removed in Lightning 8.x-2.04.
+ *
+ * Formerly installed Contact Storage.
+ */
+function collegiate_update_8005() {
+}
+
+/**
+ * Removed in Lightning 8.x-2.04.
+ *
+ * Formerly Granted permission to use contact form(s).
+ */
+function collegiate_update_8006() {
+}
+
+/**
+ * Implements hook_update_dependencies().
+ */
+function collegiate_update_dependencies() {
+  return [
+    'media_entity' => [
+      // Lightning 8004 must run before Media Entity 8002.
+      8002 => [
+        'lightning' => 8004,
+      ],
+    ],
+  ];
+}
