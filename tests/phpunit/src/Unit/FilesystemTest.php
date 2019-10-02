@@ -60,8 +60,8 @@ EOD;
     $haystack = file_get_contents($file);
 
     $needle = <<<EOD
-if (\$dir != 'default') {
-  \$db = Multisite::getDatabase(\$dir);
+if (\$site_dir != 'default') {
+  \$db = Multisite::getDatabase(\$site_dir);
 
   if (file_exists('/var/www/site-php')) {
     require "/var/www/site-php/uiowa/{\$db}-settings.inc";
