@@ -1,0 +1,69 @@
+uuid: 0551598b-1758-4f0e-a0db-14dbf73ec646
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_card
+    - entity_browser.browser.media_browser
+    - field.field.block_content.uiowa_card.field_uiowa_card_excerpt
+    - field.field.block_content.uiowa_card.field_uiowa_card_image
+    - field.field.block_content.uiowa_card.field_uiowa_card_link
+    - field.field.block_content.uiowa_card.field_uiowa_card_title
+  module:
+    - entity_browser
+    - link
+_core:
+  default_config_hash: DP9oyU-p4FW07ybDySeBGEGXRiL-pvUgBn0GgKFuLfA
+id: block_content.uiowa_card.default
+targetEntityType: block_content
+bundle: uiowa_card
+mode: default
+content:
+  field_uiowa_card_excerpt:
+    weight: 27
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+  field_uiowa_card_image:
+    type: entity_browser_entity_reference
+    weight: 29
+    settings:
+      entity_browser: media_browser
+      field_widget_display: rendered_entity
+      field_widget_edit: true
+      field_widget_remove: true
+      selection_mode: selection_append
+      field_widget_display_settings:
+        view_mode: thumbnail
+      open: true
+      field_widget_replace: false
+    region: content
+    third_party_settings: {  }
+  field_uiowa_card_link:
+    weight: 28
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+    region: content
+  field_uiowa_card_title:
+    weight: 26
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  info:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }

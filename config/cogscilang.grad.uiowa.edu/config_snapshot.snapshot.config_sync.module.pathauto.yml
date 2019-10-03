@@ -1,0 +1,67 @@
+uuid: dc80e7f7-22d8-4819-84ef-36d1b5efbc9a
+langcode: en
+status: true
+dependencies:
+  module:
+    - pathauto
+id: config_sync.module.pathauto
+snapshotSet: config_sync
+extensionType: module
+extensionName: pathauto
+items:
+  -
+    collection: ''
+    name: pathauto.settings
+    data:
+      enabled_entity_types:
+        - user
+      punctuation:
+        hyphen: 1
+      verbose: false
+      separator: '-'
+      max_length: 100
+      max_component_length: 100
+      transliterate: true
+      reduce_ascii: false
+      case: true
+      ignore_words: 'a, an, as, at, before, but, by, for, from, is, in, into, like, of, off, on, onto, per, since, than, the, this, that, to, up, via, with'
+      update_action: 2
+      safe_tokens:
+        - alias
+        - path
+        - join-path
+        - login-url
+        - url
+        - url-brief
+  -
+    collection: ''
+    name: system.action.pathauto_update_alias_node
+    data:
+      id: pathauto_update_alias_node
+      label: 'Update URL alias'
+      status: true
+      langcode: en
+      type: node
+      plugin: pathauto_update_alias
+      dependencies:
+        enforced:
+          module:
+            - node
+        module:
+          - pathauto
+  -
+    collection: ''
+    name: system.action.pathauto_update_alias_user
+    data:
+      id: pathauto_update_alias_user
+      label: 'Update URL alias'
+      status: true
+      langcode: en
+      type: user
+      plugin: pathauto_update_alias
+      dependencies:
+        enforced:
+          module:
+            - user
+        module:
+          - pathauto

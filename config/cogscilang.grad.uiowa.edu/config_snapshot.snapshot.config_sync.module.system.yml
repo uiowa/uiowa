@@ -1,0 +1,325 @@
+uuid: 874f844d-e9fa-49d1-91fc-a5bb6be1e8b9
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+id: config_sync.module.system
+snapshotSet: config_sync
+extensionType: module
+extensionName: system
+items:
+  -
+    collection: ''
+    name: core.date_format.fallback
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      id: fallback
+      label: 'Fallback date format'
+      locked: true
+      pattern: 'D, m/d/Y - H:i'
+  -
+    collection: ''
+    name: core.date_format.html_date
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      id: html_date
+      label: 'HTML Date'
+      locked: true
+      pattern: Y-m-d
+  -
+    collection: ''
+    name: core.date_format.html_datetime
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      id: html_datetime
+      label: 'HTML Datetime'
+      locked: true
+      pattern: 'Y-m-d\TH:i:sO'
+  -
+    collection: ''
+    name: core.date_format.html_month
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      id: html_month
+      label: 'HTML Month'
+      locked: true
+      pattern: Y-m
+  -
+    collection: ''
+    name: core.date_format.html_time
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      id: html_time
+      label: 'HTML Time'
+      locked: true
+      pattern: 'H:i:s'
+  -
+    collection: ''
+    name: core.date_format.html_week
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      id: html_week
+      label: 'HTML Week'
+      locked: true
+      pattern: Y-\WW
+  -
+    collection: ''
+    name: core.date_format.html_year
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      id: html_year
+      label: 'HTML Year'
+      locked: true
+      pattern: 'Y'
+  -
+    collection: ''
+    name: core.date_format.html_yearless_date
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      id: html_yearless_date
+      label: 'HTML Yearless date'
+      locked: true
+      pattern: m-d
+  -
+    collection: ''
+    name: core.date_format.long
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      id: long
+      label: 'Default long date'
+      locked: false
+      pattern: 'l, F j, Y - H:i'
+  -
+    collection: ''
+    name: core.date_format.medium
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      id: medium
+      label: 'Default medium date'
+      locked: false
+      pattern: 'D, m/d/Y - H:i'
+  -
+    collection: ''
+    name: core.date_format.short
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      id: short
+      label: 'Default short date'
+      locked: false
+      pattern: 'm/d/Y - H:i'
+  -
+    collection: ''
+    name: system.authorize
+    data:
+      filetransfer_default: null
+  -
+    collection: ''
+    name: system.cron
+    data:
+      threshold:
+        requirements_warning: 172800
+        requirements_error: 1209600
+      logging: 1
+  -
+    collection: ''
+    name: system.date
+    data:
+      country:
+        default: ''
+      first_day: 0
+      timezone:
+        default: ''
+        user:
+          configurable: true
+          warn: false
+          default: 0
+  -
+    collection: ''
+    name: system.diff
+    data:
+      context:
+        lines_leading: 2
+        lines_trailing: 2
+  -
+    collection: ''
+    name: system.file
+    data:
+      allow_insecure_uploads: false
+      default_scheme: public
+      path:
+        temporary: ''
+      temporary_maximum_age: 21600
+  -
+    collection: ''
+    name: system.image
+    data:
+      toolkit: gd
+  -
+    collection: ''
+    name: system.image.gd
+    data:
+      jpeg_quality: 75
+  -
+    collection: ''
+    name: system.logging
+    data:
+      error_level: hide
+  -
+    collection: ''
+    name: system.mail
+    data:
+      interface:
+        default: php_mail
+  -
+    collection: ''
+    name: system.maintenance
+    data:
+      message: '@site is currently under maintenance. We should be back shortly. Thank you for your patience.'
+      langcode: en
+  -
+    collection: ''
+    name: system.menu.account
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      id: account
+      label: 'User account menu'
+      description: 'Links related to the active user account'
+      locked: true
+  -
+    collection: ''
+    name: system.menu.admin
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      id: admin
+      label: Administration
+      description: 'Administrative task links'
+      locked: true
+  -
+    collection: ''
+    name: system.menu.footer
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      id: footer
+      label: Footer
+      description: 'Site information links'
+      locked: true
+  -
+    collection: ''
+    name: system.menu.main
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      id: main
+      label: 'Main navigation'
+      description: 'Site section links'
+      locked: true
+  -
+    collection: ''
+    name: system.menu.tools
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      id: tools
+      label: Tools
+      description: 'User tool links, often added by modules'
+      locked: true
+  -
+    collection: ''
+    name: system.performance
+    data:
+      cache:
+        page:
+          max_age: 0
+      css:
+        preprocess: true
+        gzip: true
+      fast_404:
+        enabled: true
+        paths: '/\.(?:txt|png|gif|jpe?g|css|js|ico|swf|flv|cgi|bat|pl|dll|exe|asp)$/i'
+        exclude_paths: '/\/(?:styles|imagecache)\//'
+        html: '<!DOCTYPE html><html><head><title>404 Not Found</title></head><body><h1>Not Found</h1><p>The requested URL "@path" was not found on this server.</p></body></html>'
+      js:
+        preprocess: true
+        gzip: true
+      stale_file_threshold: 2592000
+  -
+    collection: ''
+    name: system.rss
+    data:
+      channel:
+        description: ''
+      items:
+        limit: 10
+        view_mode: rss
+      langcode: en
+  -
+    collection: ''
+    name: system.site
+    data:
+      uuid: ''
+      name: ''
+      mail: ''
+      slogan: ''
+      page:
+        403: ''
+        404: ''
+        front: /user/login
+      admin_compact_mode: false
+      weight_select_max: 100
+      langcode: en
+      default_langcode: en
+  -
+    collection: ''
+    name: system.theme
+    data:
+      admin: adminimal_theme
+      default: collegiate_theme
+  -
+    collection: ''
+    name: system.theme.global
+    data:
+      favicon:
+        mimetype: image/vnd.microsoft.icon
+        path: ''
+        url: ''
+        use_default: true
+      features:
+        comment_user_picture: true
+        comment_user_verification: true
+        favicon: true
+        node_user_picture: true
+      logo:
+        path: ''
+        url: ''
+        use_default: true

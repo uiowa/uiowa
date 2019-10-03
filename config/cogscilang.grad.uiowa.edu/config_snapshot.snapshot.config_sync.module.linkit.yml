@@ -1,0 +1,51 @@
+uuid: 99ad1d13-855d-4a92-b886-854e78673047
+langcode: en
+status: true
+dependencies:
+  module:
+    - linkit
+id: config_sync.module.linkit
+snapshotSet: config_sync
+extensionType: module
+extensionName: linkit
+items:
+  -
+    collection: ''
+    name: image.style.linkit_result_thumbnail
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      name: linkit_result_thumbnail
+      label: 'Linkit result thumbnail'
+      effects:
+        2943df29-38ea-459c-ba1d-290489bb1807:
+          uuid: 2943df29-38ea-459c-ba1d-290489bb1807
+          id: image_scale_and_crop
+          weight: 1
+          data:
+            width: 50
+            height: 50
+  -
+    collection: ''
+    name: linkit.linkit_profile.default
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - node
+      id: default
+      label: Default
+      description: 'A default Linkit profile'
+      matchers:
+        556010a3-e317-48b3-b4ed-854c10f4b950:
+          uuid: 556010a3-e317-48b3-b4ed-854c10f4b950
+          id: 'entity:node'
+          weight: 0
+          settings:
+            metadata: 'by [node:author] | [node:created:medium]'
+            bundles: {  }
+            group_by_bundle: false
+            include_unpublished: false
+            substitution_type: canonical

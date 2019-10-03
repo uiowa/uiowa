@@ -1,0 +1,30 @@
+uuid: 6086a1d5-5a1a-4ca3-8d19-841d7e3acfa8
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_banner
+    - field.storage.block_content.field_uiowa_banner_image
+    - media.type.image
+_core:
+  default_config_hash: X1uHp4wG9dE928ztm6Wf5TFbn69iD7x3kGMheOjXGIw
+id: block_content.uiowa_banner.field_uiowa_banner_image
+field_name: field_uiowa_banner_image
+entity_type: block_content
+bundle: uiowa_banner
+label: Image
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

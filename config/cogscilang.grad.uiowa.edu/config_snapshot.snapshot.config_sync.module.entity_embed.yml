@@ -1,0 +1,34 @@
+uuid: a73e8389-bfc1-4a55-9317-00b904f93b80
+langcode: en
+status: true
+dependencies:
+  module:
+    - entity_embed
+id: config_sync.module.entity_embed
+snapshotSet: config_sync
+extensionType: module
+extensionName: entity_embed
+items:
+  -
+    collection: ''
+    name: embed.button.node
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - entity_embed
+          - node
+      label: Node
+      id: node
+      type_id: entity
+      type_settings:
+        entity_type: node
+        bundles: {  }
+        display_plugins: {  }
+      icon_uuid: null
+  -
+    collection: ''
+    name: entity_embed.settings
+    data:
+      rendered_entity_mode: false

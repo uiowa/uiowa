@@ -1,0 +1,320 @@
+uuid: 83fb4910-a3e0-406c-96d7-60f4e066975b
+langcode: en
+status: true
+dependencies:
+  module:
+    - lightning_media_image
+id: config_sync.module.lightning_media_image
+snapshotSet: config_sync
+extensionType: module
+extensionName: lightning_media_image
+items:
+  -
+    collection: ''
+    name: core.entity_form_display.media.image.default
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - field.field.media.image.field_media_in_library
+          - field.field.media.image.image
+          - image.style.thumbnail
+          - media.type.image
+        module:
+          - image
+      third_party_settings: {  }
+      id: media.image.default
+      targetEntityType: media
+      bundle: image
+      mode: default
+      content:
+        field_media_in_library:
+          type: boolean_checkbox
+          weight: 4
+          settings:
+            display_label: true
+          third_party_settings: {  }
+          region: content
+        image:
+          type: image_image
+          weight: 0
+          settings:
+            progress_indicator: throbber
+            preview_image_style: thumbnail
+          third_party_settings: {  }
+          region: content
+        name:
+          type: string_textfield
+          weight: 3
+          settings:
+            size: 60
+            placeholder: ''
+          third_party_settings: {  }
+          region: content
+      hidden:
+        created: true
+        uid: true
+  -
+    collection: ''
+    name: core.entity_form_display.media.image.media_browser
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - core.entity_form_mode.media.media_browser
+          - field.field.media.image.field_media_in_library
+          - field.field.media.image.image
+          - image.style.medium
+          - media.type.image
+        module:
+          - image
+      id: media.image.media_browser
+      targetEntityType: media
+      bundle: image
+      mode: media_browser
+      content:
+        field_media_in_library:
+          type: boolean_checkbox
+          weight: 4
+          settings:
+            display_label: true
+          third_party_settings: {  }
+          region: content
+        image:
+          type: image_image
+          weight: 0
+          settings:
+            preview_image_style: medium
+            progress_indicator: throbber
+          third_party_settings:
+            lightning_media:
+              file_links: false
+              remove_button: false
+          region: content
+        name:
+          type: string_textfield
+          weight: 3
+          settings:
+            size: 60
+            placeholder: ''
+          third_party_settings: {  }
+          region: content
+      hidden:
+        created: true
+        uid: true
+  -
+    collection: ''
+    name: core.entity_view_display.media.image.default
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - field.field.media.image.field_media_in_library
+          - field.field.media.image.image
+          - media.type.image
+        module:
+          - image
+      id: media.image.default
+      targetEntityType: media
+      bundle: image
+      mode: default
+      content:
+        image:
+          type: image
+          weight: 0
+          label: hidden
+          settings:
+            image_style: ''
+            image_link: ''
+          third_party_settings: {  }
+          region: content
+      hidden:
+        created: true
+        field_media_in_library: true
+        name: true
+        thumbnail: true
+        uid: true
+  -
+    collection: ''
+    name: core.entity_view_display.media.image.embedded
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - core.entity_view_mode.media.embedded
+          - field.field.media.image.field_media_in_library
+          - field.field.media.image.image
+          - media.type.image
+        module:
+          - image
+      id: media.image.embedded
+      targetEntityType: media
+      bundle: image
+      mode: embedded
+      content:
+        image:
+          type: image
+          weight: 0
+          label: hidden
+          settings:
+            image_style: ''
+            image_link: ''
+          third_party_settings: {  }
+          region: content
+      hidden:
+        created: true
+        field_media_in_library: true
+        name: true
+        thumbnail: true
+        uid: true
+  -
+    collection: ''
+    name: core.entity_view_display.media.image.thumbnail
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - core.entity_view_mode.media.thumbnail
+          - field.field.media.image.image
+          - media.type.image
+        module:
+          - image
+      id: media.image.thumbnail
+      targetEntityType: media
+      bundle: image
+      mode: thumbnail
+      content:
+        image:
+          type: image
+          weight: 0
+          label: hidden
+          settings:
+            image_style: medium
+            image_link: ''
+          third_party_settings: {  }
+          region: content
+      hidden:
+        created: true
+        field_media_in_library: true
+        name: true
+        thumbnail: true
+        uid: true
+  -
+    collection: ''
+    name: entity_browser.browser.image_browser
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - lightning_media
+      name: image_browser
+      label: 'Image browser'
+      display: modal
+      display_configuration:
+        width: ''
+        height: ''
+        link_text: 'Select Image(s)'
+        auto_open: false
+      selection_display: no_display
+      selection_display_configuration: {  }
+      widget_selector: tabs
+      widget_selector_configuration: {  }
+      widgets:
+        44d52e51-9627-43b5-a637-3b0462041d1c:
+          settings:
+            submit_text: Select
+            form_mode: media_browser
+            return_file: true
+          uuid: 44d52e51-9627-43b5-a637-3b0462041d1c
+          weight: -9
+          label: Upload
+          id: file_upload
+  -
+    collection: ''
+    name: field.field.media.image.field_media_in_library
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - field.storage.media.field_media_in_library
+          - media.type.image
+      id: media.image.field_media_in_library
+      field_name: field_media_in_library
+      entity_type: media
+      bundle: image
+      label: 'Show in media library'
+      description: ''
+      required: false
+      translatable: false
+      default_value:
+        -
+          value: 1
+      default_value_callback: ''
+      settings:
+        on_label: 'Shown in media library'
+        off_label: 'Hidden in media library'
+      field_type: boolean
+  -
+    collection: ''
+    name: field.field.media.image.image
+    data:
+      langcode: und
+      status: true
+      dependencies:
+        config:
+          - field.storage.media.image
+          - media.type.image
+        module:
+          - image
+      id: media.image.image
+      field_name: image
+      entity_type: media
+      bundle: image
+      label: Image
+      description: ''
+      required: true
+      translatable: false
+      default_value: {  }
+      default_value_callback: ''
+      settings:
+        file_directory: '[date:custom:Y]-[date:custom:m]'
+        file_extensions: 'png gif jpg jpeg'
+        max_filesize: ''
+        max_resolution: ''
+        min_resolution: ''
+        alt_field: true
+        alt_field_required: false
+        title_field: false
+        title_field_required: false
+        default_image:
+          uuid: null
+          alt: ''
+          title: ''
+          width: null
+          height: null
+        handler: 'default:file'
+        handler_settings: {  }
+      field_type: image
+  -
+    collection: ''
+    name: media.type.image
+    data:
+      langcode: und
+      status: true
+      dependencies:
+        module:
+          - media
+      id: image
+      label: Image
+      description: 'Locally hosted images.'
+      source: image
+      source_configuration:
+        source_field: image
+      field_map: {  }

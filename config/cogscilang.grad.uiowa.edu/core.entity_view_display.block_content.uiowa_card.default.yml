@@ -1,0 +1,56 @@
+uuid: d5b54081-ffc1-4644-b316-1bcd06fbb7cc
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_card
+    - field.field.block_content.uiowa_card.field_uiowa_card_excerpt
+    - field.field.block_content.uiowa_card.field_uiowa_card_image
+    - field.field.block_content.uiowa_card.field_uiowa_card_link
+    - field.field.block_content.uiowa_card.field_uiowa_card_title
+  module:
+    - link
+_core:
+  default_config_hash: K-rZA6BQMt8f3aGhKSLmO6eQ89Rtntu7MiLUJ9pqzEA
+id: block_content.uiowa_card.default
+targetEntityType: block_content
+bundle: uiowa_card
+mode: default
+content:
+  field_uiowa_card_excerpt:
+    weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_uiowa_card_image:
+    type: entity_reference_entity_view
+    weight: 3
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
+  field_uiowa_card_link:
+    weight: 2
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  field_uiowa_card_title:
+    weight: 0
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden: {  }
