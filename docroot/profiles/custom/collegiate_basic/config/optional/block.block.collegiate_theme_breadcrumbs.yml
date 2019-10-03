@@ -1,0 +1,29 @@
+uuid: 2635afba-36b8-4993-8d59-491fbfc12da7
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - collegiate_theme
+_core:
+  default_config_hash: uEnWEHycGW76iqU5PULwlRTXgkSxsy85WCvxh4m9VFw
+id: collegiate_theme_breadcrumbs
+theme: collegiate_theme
+region: breadcrumb
+weight: 0
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  provider: system
+  label_display: '0'
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    bundles:
+      page: page
+    negate: true
+    context_mapping:
+      node: '@node.node_route_context:node'
