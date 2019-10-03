@@ -76,19 +76,6 @@ function sitenow_views_pre_render(ViewExecutable $view) {
       $view->result = $non_admins;
     }
   }
-
-  // JSON view webmaster API Modifier.
-  if ($view->id() == "webmaster_api") {
-    if (isset($view->field) && isset($view->field['nothing'])) {
-      foreach ($view->result as $result) {
-        if ($result) {
-          $user = User::load($result->uid);
-          $email = $user->getEmail();
-          $view->field['nothing']->options['alter']['text'] = $email;
-        }
-      }
-    }
-  }
 }
 
 /**
