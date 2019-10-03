@@ -1,0 +1,18 @@
+uuid: d811d093-9f9b-4d33-bd04-d6056b327177
+langcode: en
+status: true
+dependencies:
+  module:
+    - samlauth
+id: config_sync.module.samlauth
+snapshotSet: config_sync
+extensionType: module
+extensionName: samlauth
+items:
+  -
+    collection: ''
+    name: samlauth.authentication
+    data:
+      security_authn_requests_sign: true
+      security_messages_sign: true
+      strict: true

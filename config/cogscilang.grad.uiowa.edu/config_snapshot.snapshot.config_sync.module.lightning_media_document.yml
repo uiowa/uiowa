@@ -1,0 +1,356 @@
+uuid: ea12eb4b-a5b6-4f9a-8f1a-2de75146a5de
+langcode: en
+status: true
+dependencies:
+  module:
+    - lightning_media_document
+id: config_sync.module.lightning_media_document
+snapshotSet: config_sync
+extensionType: module
+extensionName: lightning_media_document
+items:
+  -
+    collection: ''
+    name: core.entity_form_display.media.document.default
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - field.field.media.document.field_document
+          - field.field.media.document.field_media_in_library
+          - media.type.document
+        module:
+          - file
+      id: media.document.default
+      targetEntityType: media
+      bundle: document
+      mode: default
+      content:
+        field_document:
+          weight: 0
+          settings:
+            progress_indicator: throbber
+          third_party_settings: {  }
+          type: file_generic
+          region: content
+        field_media_in_library:
+          type: boolean_checkbox
+          settings:
+            display_label: true
+          weight: 3
+          third_party_settings: {  }
+          region: content
+        name:
+          type: string_textfield
+          weight: 2
+          settings:
+            size: 60
+            placeholder: ''
+          third_party_settings: {  }
+          region: content
+      hidden:
+        created: true
+        uid: true
+  -
+    collection: ''
+    name: core.entity_form_display.media.document.media_browser
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - core.entity_form_mode.media.media_browser
+          - field.field.media.document.field_document
+          - field.field.media.document.field_media_in_library
+          - media.type.document
+      id: media.document.media_browser
+      targetEntityType: media
+      bundle: document
+      mode: media_browser
+      content:
+        field_media_in_library:
+          type: boolean_checkbox
+          settings:
+            display_label: true
+          weight: 1
+          third_party_settings: {  }
+          region: content
+        name:
+          type: string_textfield
+          weight: 0
+          settings:
+            size: 60
+            placeholder: ''
+          third_party_settings: {  }
+          region: content
+      hidden:
+        created: true
+        field_document: true
+        uid: true
+  -
+    collection: ''
+    name: core.entity_view_display.media.document.default
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - field.field.media.document.field_document
+          - field.field.media.document.field_media_in_library
+          - image.style.thumbnail
+          - media.type.document
+        module:
+          - file
+          - image
+          - user
+      id: media.document.default
+      targetEntityType: media
+      bundle: document
+      mode: default
+      content:
+        created:
+          label: hidden
+          type: timestamp
+          weight: 0
+          settings:
+            date_format: medium
+            custom_date_format: ''
+            timezone: ''
+          third_party_settings: {  }
+          region: content
+        field_document:
+          weight: 2
+          label: above
+          settings: {  }
+          third_party_settings: {  }
+          type: file_default
+          region: content
+        name:
+          label: hidden
+          type: string
+          weight: -5
+          settings:
+            link_to_entity: false
+          third_party_settings: {  }
+          region: content
+        thumbnail:
+          type: image
+          weight: 1
+          label: hidden
+          settings:
+            image_style: thumbnail
+            image_link: ''
+          third_party_settings: {  }
+          region: content
+        uid:
+          label: hidden
+          type: author
+          weight: 0
+          settings: {  }
+          third_party_settings: {  }
+          region: content
+      hidden:
+        field_media_in_library: true
+  -
+    collection: ''
+    name: core.entity_view_display.media.document.embedded
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - core.entity_view_mode.media.embedded
+          - field.field.media.document.field_document
+          - field.field.media.document.field_media_in_library
+          - media.type.document
+        module:
+          - file
+      id: media.document.embedded
+      targetEntityType: media
+      bundle: document
+      mode: embedded
+      content:
+        field_document:
+          weight: 0
+          label: hidden
+          settings: {  }
+          third_party_settings: {  }
+          type: file_default
+          region: content
+      hidden:
+        created: true
+        field_media_in_library: true
+        name: true
+        thumbnail: true
+        uid: true
+  -
+    collection: ''
+    name: core.entity_view_display.media.document.media_library
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - core.entity_view_mode.media.media_library
+          - field.field.media.document.field_document
+          - field.field.media.document.field_media_in_library
+          - image.style.thumbnail
+          - media.type.document
+        module:
+          - image
+      id: media.document.media_library
+      targetEntityType: media
+      bundle: document
+      mode: media_library
+      content:
+        thumbnail:
+          type: image
+          weight: 0
+          label: hidden
+          settings:
+            image_style: thumbnail
+            image_link: ''
+          third_party_settings: {  }
+          region: content
+      hidden:
+        created: true
+        field_document: true
+        field_media_in_library: true
+        name: true
+        uid: true
+  -
+    collection: ''
+    name: core.entity_view_display.media.document.thumbnail
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - core.entity_view_mode.media.thumbnail
+          - image.style.medium
+          - media.type.document
+        module:
+          - image
+      id: media.document.thumbnail
+      targetEntityType: media
+      bundle: document
+      mode: thumbnail
+      content:
+        thumbnail:
+          type: image
+          weight: 0
+          label: hidden
+          settings:
+            image_style: medium
+            image_link: ''
+          third_party_settings: {  }
+          region: content
+      hidden:
+        created: true
+        field_document: true
+        field_media_in_library: true
+        name: true
+        uid: true
+  -
+    collection: ''
+    name: field.field.media.document.field_document
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - field.storage.media.field_document
+          - media.type.document
+        module:
+          - file
+      id: media.document.field_document
+      field_name: field_document
+      entity_type: media
+      bundle: document
+      label: Document
+      description: ''
+      required: false
+      translatable: false
+      default_value: {  }
+      default_value_callback: ''
+      settings:
+        file_directory: '[date:custom:Y]-[date:custom:m]'
+        file_extensions: 'txt pdf doc docx'
+        max_filesize: ''
+        description_field: false
+        handler: 'default:file'
+        handler_settings: {  }
+      field_type: file
+  -
+    collection: ''
+    name: field.field.media.document.field_media_in_library
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - field.storage.media.field_media_in_library
+          - media.type.document
+      id: media.document.field_media_in_library
+      field_name: field_media_in_library
+      entity_type: media
+      bundle: document
+      label: 'Show in media library'
+      description: ''
+      required: false
+      translatable: true
+      default_value:
+        -
+          value: 1
+      default_value_callback: ''
+      settings:
+        on_label: 'Shown in media library'
+        off_label: 'Hidden in media library'
+      field_type: boolean
+  -
+    collection: ''
+    name: field.storage.media.field_document
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - file
+          - media
+      id: media.field_document
+      field_name: field_document
+      entity_type: media
+      type: file
+      settings:
+        display_field: false
+        display_default: false
+        uri_scheme: public
+        target_type: file
+      module: file
+      locked: false
+      cardinality: 1
+      translatable: true
+      indexes: {  }
+      persist_with_no_fields: false
+      custom_storage: false
+  -
+    collection: ''
+    name: media.type.document
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - media
+      id: document
+      label: Document
+      description: 'A locally hosted document, such as a PDF.'
+      source: file
+      queue_thumbnail_downloads: false
+      new_revision: false
+      source_configuration:
+        source_field: field_document
+      field_map:
+        mime: field_mime_type
+        size: field_document_size

@@ -1,0 +1,89 @@
+uuid: 44eefe03-a452-48c0-9e36-cfe4aae0d806
+langcode: en
+status: true
+dependencies:
+  module:
+    - entity_types
+id: config_sync.module.entity_types
+snapshotSet: config_sync
+extensionType: module
+extensionName: entity_types
+items:
+  -
+    collection: ''
+    name: core.date_format.12hr_long_date
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        enforced:
+          module:
+            - entity_types
+      id: 12hr_long_date
+      label: '12-hour Long date'
+      locked: false
+      pattern: 'l, F j, Y - g:ia'
+  -
+    collection: ''
+    name: core.date_format.12hr_medium_date
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        enforced:
+          module:
+            - entity_types
+      id: 12hr_medium_date
+      label: '12-hour Medium date'
+      locked: false
+      pattern: 'D, m/d/Y - g:ia'
+  -
+    collection: ''
+    name: core.date_format.12hr_short_date
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        enforced:
+          module:
+            - entity_types
+      id: 12hr_short_date
+      label: '12-hour Short date'
+      locked: false
+      pattern: 'm/d/Y - g:ia'
+  -
+    collection: ''
+    name: core.date_format.12hr_time
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        enforced:
+          module:
+            - entity_types
+      id: 12hr_time
+      label: '12-hour Time'
+      locked: false
+      pattern: 'g:ia'
+  -
+    collection: ''
+    name: field.storage.node.layout_builder__layout
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - layout_builder
+          - node
+      id: node.layout_builder__layout
+      field_name: layout_builder__layout
+      entity_type: node
+      type: layout_section
+      settings: {  }
+      module: layout_builder
+      locked: true
+      cardinality: 1
+      translatable: false
+      indexes: {  }
+      persist_with_no_fields: false
+      custom_storage: false

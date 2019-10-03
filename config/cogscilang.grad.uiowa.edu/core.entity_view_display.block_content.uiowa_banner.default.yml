@@ -1,0 +1,56 @@
+uuid: c317efd2-51a2-4e4f-8352-e9aebe7c3f77
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_banner
+    - field.field.block_content.uiowa_banner.field_uiowa_banner_excerpt
+    - field.field.block_content.uiowa_banner.field_uiowa_banner_image
+    - field.field.block_content.uiowa_banner.field_uiowa_banner_link
+    - field.field.block_content.uiowa_banner.field_uiowa_banner_title
+  module:
+    - link
+_core:
+  default_config_hash: '-vzofvav-HlgC1n-M1sOjvwYb4YYdYG550CnZDpIqKM'
+id: block_content.uiowa_banner.default
+targetEntityType: block_content
+bundle: uiowa_banner
+mode: default
+content:
+  field_uiowa_banner_excerpt:
+    weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_uiowa_banner_image:
+    type: entity_reference_entity_view
+    weight: 3
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
+  field_uiowa_banner_link:
+    weight: 2
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  field_uiowa_banner_title:
+    weight: 0
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden: {  }
