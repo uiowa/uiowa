@@ -263,3 +263,8 @@ $sites['studioelectronicmusic.prod.drupal.uiowa.edu'] = 'electronicmusic.studio.
 $sites['labwu.dev.drupal.uiowa.edu'] = 'wu.lab.uiowa.edu';
 $sites['labwu.stage.drupal.uiowa.edu'] = 'wu.lab.uiowa.edu';
 $sites['labwu.prod.drupal.uiowa.edu'] = 'wu.lab.uiowa.edu';
+
+// Directory aliases for gsab.org.uiowa.edu.
+$sites['orggsab.dev.drupal.uiowa.edu'] = 'gsab.org.uiowa.edu';
+$sites['orggsab.stage.drupal.uiowa.edu'] = 'gsab.org.uiowa.edu';
+$sites['orggsab.prod.drupal.uiowa.edu'] = 'gsab.org.uiowa.edu';
