@@ -240,7 +240,6 @@ EOD;
       '--site-uri' => "https://{$host}",
       '--site-dir' => $host,
       '--remote-alias' => "{$id}.prod",
-      '--no-interaction' => '',
     ]);
 
     // Remove some files that we probably don't need.
