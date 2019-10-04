@@ -3,19 +3,19 @@ status: true
 dependencies:
   enforced:
     module:
-      - entity_types
+      - entity_types_deadlines
   module:
-    - layout_builder
+    - link
     - node
-id: node.layout_builder__layout
-field_name: layout_builder__layout
+id: node.deadline_link
+field_name: deadline_link
 entity_type: node
-type: layout_section
+type: link
 settings: {  }
-module: layout_builder
-locked: true
+module: link
+locked: false
 cardinality: 1
-translatable: false
+translatable: true
 indexes: {  }
 persist_with_no_fields: false
 custom_storage: false
