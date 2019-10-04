@@ -30,7 +30,7 @@ class ReplaceCommands extends BltTasks {
         $this->say("Finished deploying updates to $multisite.");
       }
       else {
-        $this->logger->warning("Drupal not installed for <comment>$multisite</comment>. Installing SiteNow....");
+        $this->logger->warning("Drupal not installed for <comment>$multisite</comment>. Installing from configuration in sitenow profile....");
         $uri = $this->getConfig()->get('site');
 
         $uid = uniqid('admin_');
@@ -67,6 +67,29 @@ class ReplaceCommands extends BltTasks {
             $uri,
           ])
           ->run();
+
+        $root = $this->getConfigValue('repo.root');
+        $yaml = YamlMunge::parseFile("{$root}/docroot/sites/{$multisite}/blt.yml");
+
+        if (isset($yaml['project'], $yaml['project']['requester'])
+          && !empty($yaml['project']['requester'])) {
+          $this->taskDrush()
+            ->stopOnFail()
+            ->drush('user:create')
+            ->args([
+              $yaml['project']['requester']
+            ])
+            ->run();
+
+          $this->taskDrush()
+            ->stopOnFail()
+            ->drush('user:role:add')
+            ->args([
+              'webmaster',
+              $yaml['project']['requester']
+            ])
+            ->run();
+        }
       }
     }
   }
