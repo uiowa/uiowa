@@ -334,7 +334,6 @@ EOD;
       'Push this branch and merge via a pull request.',
       'Coordinate a new release and deploy to the test and prod environments.',
       'Add the multisite domains to environments as needed.',
-      'Add the webmaster account(s) to the production site.',
     ];
 
     $this->io()->listing($steps);
