@@ -76,9 +76,7 @@ class ReplaceCommands extends BltTasks {
           $this->taskDrush()
             ->stopOnFail()
             ->drush('user:create')
-            ->args([
-              $yaml['project']['requester']
-            ])
+            ->args([$yaml['project']['requester']])
             ->run();
 
           $this->taskDrush()
@@ -86,7 +84,7 @@ class ReplaceCommands extends BltTasks {
             ->drush('user:role:add')
             ->args([
               'webmaster',
-              $yaml['project']['requester']
+              $yaml['project']['requester'],
             ])
             ->run();
         }
