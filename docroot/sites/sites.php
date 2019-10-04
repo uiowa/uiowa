@@ -268,8 +268,3 @@ $sites['labwu.prod.drupal.uiowa.edu'] = 'wu.lab.uiowa.edu';
 $sites['orggsab.dev.drupal.uiowa.edu'] = 'gsab.org.uiowa.edu';
 $sites['orggsab.stage.drupal.uiowa.edu'] = 'gsab.org.uiowa.edu';
 $sites['orggsab.prod.drupal.uiowa.edu'] = 'gsab.org.uiowa.edu';
-
-// Directory aliases for foo.com.
-$sites['com-foo.dev.drupal.uiowa.edu'] = 'foo.com';
-$sites['com-foo.stage.drupal.uiowa.edu'] = 'foo.com';
-$sites['com-foo.prod.drupal.uiowa.edu'] = 'foo.com';
