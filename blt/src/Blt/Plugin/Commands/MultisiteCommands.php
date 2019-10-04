@@ -113,6 +113,8 @@ class MultisiteCommands extends BltTasks {
       throw new UserAbortException();
     }
     else {
+      /** @var \AcquiaCloudApi\CloudApi\Client $cloud */
+      /** @var \AcquiaCloudApi\Response\ApplicationResponse $application */
       list($cloud, $application) = $this->getAcquiaCloudApi();
 
       /** @var \AcquiaCloudApi\Response\DatabasesResponse $databases */
@@ -320,6 +322,8 @@ EOD;
 
     $this->say("Committed site <comment>{$host}</comment> code.");
 
+    /** @var \AcquiaCloudApi\CloudApi\Client $cloud */
+    /** @var \AcquiaCloudApi\Response\ApplicationResponse $application */
     list($cloud, $application) = $this->getAcquiaCloudApi();
     $cloud->databaseCreate($application->uuid, $db);
     $this->say("Created <comment>{$db}</comment> cloud database.");
@@ -415,6 +419,7 @@ EOD;
       'secret' => $this->getConfigValue('credentials.acquia.secret'),
     ]);
 
+    /** @var \AcquiaCloudApi\CloudApi\Client $cloud */
     $cloud = Client::factory($connector);
 
     /** @var \AcquiaCloudApi\Response\ApplicationResponse $application */
