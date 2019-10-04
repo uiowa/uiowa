@@ -113,15 +113,7 @@ class MultisiteCommands extends BltTasks {
       throw new UserAbortException();
     }
     else {
-      $connector = new Connector([
-        'key' => $this->getConfigValue('credentials.acquia.key'),
-        'secret' => $this->getConfigValue('credentials.acquia.secret'),
-      ]);
-
-      $cloud = Client::factory($connector);
-
-      /** @var \AcquiaCloudApi\Response\ApplicationResponse $application */
-      $application = $cloud->application($this->getConfigValue('cloud.appId'));
+      list($cloud, $application) = $this->getAcquiaCloudApi();
 
       /** @var \AcquiaCloudApi\Response\DatabasesResponse $databases */
       $databases = $cloud->databases($application->uuid);
@@ -328,16 +320,7 @@ EOD;
 
     $this->say("Committed site <comment>{$host}</comment> code.");
 
-    $connector = new Connector([
-      'key' => $this->getConfigValue('credentials.acquia.key'),
-      'secret' => $this->getConfigValue('credentials.acquia.secret'),
-    ]);
-
-    $cloud = Client::factory($connector);
-
-    /** @var \AcquiaCloudApi\Response\ApplicationResponse $application */
-    $application = $cloud->application($this->getConfigValue('cloud.appId'));
-
+    list($cloud, $application) = $this->getAcquiaCloudApi();
     $cloud->databaseCreate($application->uuid, $db);
     $this->say("Created <comment>{$db}</comment> cloud database.");
 
@@ -418,6 +401,29 @@ EOD;
     file_put_contents("{$root}/docroot/sites/sites.local.php", "<?php\n");
     $this->getContainer()->get('executor')->killProcessByPort('8888');
     $this->yell('The sites.local.php file has been emptied. Runserver has been stopped.');
+  }
+
+  /**
+   * Return new ConnectorInterface and ApplicationResponse for this application.
+   *
+   * @return array
+   *   Array of ConnectorInterface and ApplicationResponse variables.
+   */
+  protected function getAcquiaCloudApi() {
+    $connector = new Connector([
+      'key' => $this->getConfigValue('credentials.acquia.key'),
+      'secret' => $this->getConfigValue('credentials.acquia.secret'),
+    ]);
+
+    $cloud = Client::factory($connector);
+
+    /** @var \AcquiaCloudApi\Response\ApplicationResponse $application */
+    $application = $cloud->application($this->getConfigValue('cloud.appId'));
+
+    return [
+      $cloud,
+      $application,
+    ];
   }
 
 }
