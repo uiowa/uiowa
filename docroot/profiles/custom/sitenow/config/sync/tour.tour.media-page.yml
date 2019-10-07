@@ -1,29 +1,29 @@
-uuid: 00f9010e-4100-4c36-a12b-eabfdad808d0
+uuid: c0968d21-3299-4f4f-a858-ec3f4dd4e75f
 langcode: en
 status: true
 dependencies:
   module:
     - sitenow
-id: content
-label: 'Content Overview'
+id: media-page
+label: 'Media Overview'
 module: sitenow
 routes:
   -
-    route_name: view.content.page_1
+    route_name: entity.media.collection
   -
-    route_name: system.admin_content
+    route_name: view.media.media_page_list
 tips:
   intro:
     id: intro
     plugin: text
-    label: 'Content Overview'
-    body: '<p>This page allows you to browse your content, see some details, edit and execute actions on it.</p><p>Let''s go step by step.</p>'
+    label: 'Media Overview'
+    body: '<p>This page allows you to browse your media content, see some details, edit and execute actions on it.</p><p>Let''s go step by step.</p>'
     weight: 0
-  media:
-    id: media
+  media-view:
+    id: media-view
     plugin: text
-    label: Media
-    body: '<p>This is will take you to the media (files/images) overview which is similar to this page.</p><p><a_href="/media/add?tour=1">Click here for our guided Media tour</a></p>'
+    label: 'Media View'
+    body: "<p>You can select how you would like to display your current media entities - Grid or Table view.</p><p><a\_href=\"/media/add?tour=1\">If you want to learn how to add media, click here for our guided Media tour</a></p>"
     weight: 1
     attributes:
       data-class: 'tabs.primary li:nth-child(2)'
@@ -31,8 +31,8 @@ tips:
   add:
     id: add
     plugin: text
-    label: 'Add Content'
-    body: '<p>When it is time to add new content to your site, this will guide you in doing so.</p>'
+    label: 'Add Media'
+    body: "<p>When it is time to add media to your site, <a\_href=\"/media/add?tour=1\">click here for the tour</a>. You can add files, images, audio files, videos and social media posts.</p>"
     weight: 2
     attributes:
       data-class: action-links
@@ -44,7 +44,7 @@ tips:
     body: '<p>Filters can be used to search the content based on author, type, title and other parameters.</p>'
     weight: 3
     attributes:
-      data-id: views-exposed-form-content-page-1
+      data-id: edit-submit-media-library
     location: bottom
   actions:
     id: actions
@@ -53,7 +53,7 @@ tips:
     body: '<p>They let you execute actions on multiple content items at once. Check which actions are offered in the drop-down.</p>'
     weight: 4
     attributes:
-      data-id: edit-node-bulk-form--2
+      data-id: edit-submit--2
     location: bottom
   actions-checkbox:
     id: actions-checkbox
@@ -62,26 +62,8 @@ tips:
     body: '<p>In order to define which items to execute an action on use the checkboxes. The one in the header row will select all items on a page and the ones in the rows below will select corresponding individual items.</p>'
     weight: 5
     attributes:
-      data-class: 'views-table .select-all'
+      data-class: 'views-form-media-library-page .select-all'
     location: right
-  sort:
-    id: sort
-    plugin: text
-    label: Sorting
-    body: '<p>Click on the links in the header row to sort the list. Arrow next to the active sort link indicates the sort direction (ascending or descending).</p>'
-    weight: 6
-    attributes:
-      data-class: 'views-table #view-changed-table-column'
-    location: right
-  operations:
-    id: operations
-    plugin: text
-    label: 'Content operations'
-    body: '<p>Use content operations dropbutton to edit or delete a given content item.</p>'
-    weight: 7
-    attributes:
-      data-class: 'views-table tr:nth-child(1) .views-field-operations'
-    location: left
   next_step:
     id: next_step
     plugin: text
