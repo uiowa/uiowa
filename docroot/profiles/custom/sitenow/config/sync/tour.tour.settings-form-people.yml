@@ -17,7 +17,15 @@ tips:
     plugin: text
     label: 'People Page'
     weight: 0
-    body: '<p>On this page you can change many of the global site settings available to you. Let''s step through them.</p><p>For more information about SiteNow People settings, visit <a href="https://sitenow.uiowa.edu/documentation">view our documentation</a>.</p>'
+    body: '<p>On this page you can change many of the SiteNow People settings available to you. Let''s step through them.</p><p><a href="https://sitenow.uiowa.edu/documentation">For more information, view our documentation</a>.</p>'
+  checkbox:
+    id: checkbox
+    plugin: text
+    label: 'Enable/Disable'
+    weight: 1
+    attributes:
+      data-class: form-checkbox
+    body: '<p>Toggling the "Enabled" checkbox for SiteNow People, will display/not display every published person at the configurable path below.</p>'
   title:
     id: title
     plugin: text
@@ -25,7 +33,7 @@ tips:
     weight: 1
     attributes:
       data-id: edit-sitenow-people-title
-    body: '<p>First off, give your page a title. This is a required field. Other required fields are marked with a red asterisk.</p>'
+    body: '<p>First off, give your page a title. This is a required field. Other required fields are marked with a red asterisk. This will display above the published people.</p>'
     location: bottom
   path:
     id: path
@@ -34,15 +42,24 @@ tips:
     weight: 2
     attributes:
       data-id: edit-sitenow-people-path
-    body: '<p>The path where the existing people entities will be displayed. The default path is YourSiteURL/people)</p>'
+    body: '<p>The path where the existing entities will be displayed. The default path is YourSiteURL/people)</p>'
     location: bottom
+  header:
+    id: header
+    plugin: text
+    label: 'Header Content'
+    weight: 3
+    attributes:
+      data-class: form-item-sitenow-people-header-content-value
+    body: '<p>The Header Content text will display above the published content on the people page.</p>'
+    location: right
   wysiwyg:
     id: wysiwyg
     plugin: text
     label: 'Text Editor (WYSIWYG) Overview'
     weight: 3
     attributes:
-      data-class: field--widget-text-textarea
+      data-id: cke_edit-sitenow-people-header-content-value
     body: '<p>The What-You-See-Is-What-You-Get (WYSIWYG) text editor gives you the ability to format your content and add links/media. This editor is available on most text areas around the site.</p><p>For more details, <a href="https://sitenow.uiowa.edu/documentation/content-documentation/wysiwyg">view our documentation section about the WYSIWYG</a>.</p>'
     location: top
   text-styles:
@@ -52,7 +69,7 @@ tips:
     weight: 4
     attributes:
       data-class: cke_button__bold
-    body: "<p>The Header\_Content\_text\_will\_display\_above\_the published people\_on\_the\_/people\_page.</p><p>You can style your text with the bold, italic, strike-through options. These can be used in conjunction with each other or other buttons on the toolbar.</p>"
+    body: '<p>You can style your text with the bold, italic, strike-through options. These can be used in conjunction with each other or other buttons on the toolbar.</p>'
     location: bottom
   format:
     id: format
