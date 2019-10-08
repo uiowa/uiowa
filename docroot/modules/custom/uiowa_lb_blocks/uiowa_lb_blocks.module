@@ -46,18 +46,22 @@ function uiowa_lb_blocks_form_alter(&$form, $form_state, $form_id) {
  */
 function uiowa_lb_blocks_preprocess_html(&$variables) {
   $block_breadcrumbs = Block::load('collegiate_theme_page_title');
-  $visibility = $block_breadcrumbs->getVisibility();
-  $visibility['entity_bundle:node']['bundles']['article'] = 'article';
-  $visibility['entity_bundle:node']['bundles']['page'] = 'page';
-  $visibility['entity_bundle:node']['negate'] = 1;
-  $block_breadcrumbs->setVisibilityConfig('entity_bundle:node', $visibility['entity_bundle:node']);
-  $block_breadcrumbs->save();
+  if (isset($block_breadcrumbs)) {
+    $visibility = $block_breadcrumbs->getVisibility();
+    $visibility['entity_bundle:node']['bundles']['article'] = 'article';
+    $visibility['entity_bundle:node']['bundles']['page'] = 'page';
+    $visibility['entity_bundle:node']['negate'] = 1;
+    $block_breadcrumbs->setVisibilityConfig('entity_bundle:node', $visibility['entity_bundle:node']);
+    $block_breadcrumbs->save();
+  }
 
   $block_title = Block::load('collegiate_theme_breadcrumbs');
-  $visibility = $block_title->getVisibility();
-  $visibility['entity_bundle:node']['bundles']['article'] = 'article';
-  $visibility['entity_bundle:node']['bundles']['page'] = 'page';
-  $visibility['entity_bundle:node']['negate'] = 1;
-  $block_title->setVisibilityConfig('entity_bundle:node', $visibility['entity_bundle:node']);
-  $block_title->save();
+  if (isset($block_title)) {
+    $visibility = $block_title->getVisibility();
+    $visibility['entity_bundle:node']['bundles']['article'] = 'article';
+    $visibility['entity_bundle:node']['bundles']['page'] = 'page';
+    $visibility['entity_bundle:node']['negate'] = 1;
+    $block_title->setVisibilityConfig('entity_bundle:node', $visibility['entity_bundle:node']);
+    $block_title->save();
+  }
 }
