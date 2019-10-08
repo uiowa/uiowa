@@ -17,48 +17,65 @@ tips:
     plugin: text
     label: 'SiteNow Article Settings'
     weight: 0
-    body: '<p>On this page you can change many of the global site settings available to you. Let''s step through them.</p><p>For more information about SiteNow Article settings, visit <a href="https://sitenow.uiowa.edu/documentation">view our documentation</a>.</p>'
+    body: '<p>On this page you can change many of the SiteNow Article settings available to you. Let''s step through them.</p><p>For more information about SiteNow Articles, <a href="https://sitenow.uiowa.edu/documentation">view our documentation</a>.</p>'
+  checkbox:
+    id: checkbox
+    plugin: text
+    label: 'Enable/Disable'
+    weight: 1
+    attributes:
+      data-class: form-checkbox
+    body: '<p>Toggling the "Enabled" checkbox for SiteNow Articles, will display/not display published articles at the configurable path below.</p>'
   title:
     id: title
     plugin: text
     label: 'Articles Title'
-    weight: 1
+    weight: 2
     attributes:
       data-id: edit-sitenow-articles-title
-    body: '<p>First off, give your page a title. This is a required field. Other required fields are marked with a red asterisk.</p>'
+    body: '<p>First off, you can give your page a title. This is a required field. Other required fields are marked with a red asterisk. This will display above the published articles</p>'
     location: bottom
   path:
     id: path
     plugin: text
     label: 'Articles Path'
-    weight: 2
+    weight: 3
     attributes:
       data-id: edit-sitenow-articles-path
-    body: '<p>The path where the existing articles will be displayed. The default path is YourSiteURL/news)</p>'
+    body: '<p>The path where the published articles will be displayed. The default path is YourSiteURL/news)</p>'
     location: bottom
+  header:
+    id: header
+    plugin: text
+    label: 'Header Content'
+    weight: 4
+    attributes:
+      data-class: form-item-sitenow-articles-header-content-value
+    body: '<p>The Header Content text will display above the articles on the news page.</p>'
+    location: right
   wysiwyg:
     id: wysiwyg
     plugin: text
     label: 'Text Editor (WYSIWYG) Overview'
-    weight: 3
+    weight: 5
     attributes:
-      data-class: field--widget-text-textarea
-    body: '<p>The What-You-See-Is-What-You-Get (WYSIWYG) text editor gives you the ability to format your content and add links/media. This editor is available on most text areas around the site.</p><p>For more details, <a href="https://docs.sitenow.uiowa.edu/wysiwyg">view our documentation section about the WYSIWYG</a>.</p>'
+      data-id: cke_edit-sitenow-articles-header-content-value
+    body: '<p>The What-You-See-Is-What-You-Get (WYSIWYG) text editor gives you the ability to format your content and add links/media. This editor is available on most text areas around the site.</p><p>For more details, <a href="https://sitenow.uiowa.edu/documentation/content-documentation/wysiwyg">view our documentation section about the WYSIWYG</a>.</p>'
     location: top
   text-styles:
     id: text-styles
     plugin: text
     label: 'Text Format'
-    weight: 4
+    weight: 6
     attributes:
       data-class: cke_button__bold
-    body: "<p>The Header\_Content\_text\_will\_display\_above\_the articles\_on\_the\_/news\_page.</p><p>You can style your text with the bold, italic, strike-through options. These can be used in conjunction with each other or other buttons on the toolbar.</p>"
+    body: '<p>You can style your text with the bold, italic, strike-through options. These can be used in conjunction with each other or other buttons on the toolbar.</p>'
     location: bottom
   format:
     id: format
     plugin: text
     label: 'Paragraph Format'
-    weight: 5
+    weight: 7
     attributes:
       data-class: cke_combo__format
     body: '<p>Here you add headings to your content. It is important for accessibility/usability that headings are used sequentially and not for style purposes. The heading will be applied to the current line/paragraph. Hit Enter/Return to break out and return to the normal format.</p>'
@@ -67,7 +84,7 @@ tips:
     id: align
     plugin: text
     label: 'Text Alignment'
-    weight: 6
+    weight: 8
     attributes:
       data-class: cke_button__justifycenter
     body: '<p>There are three options for text alignment. Left, center and right. Text is left-aligned by default. The alignment will continue until the next line break similar to headings.</p>'
@@ -76,7 +93,7 @@ tips:
     id: lists
     plugin: text
     label: Lists
-    weight: 7
+    weight: 9
     attributes:
       data-class: cke_button__bold
     body: '<p>There are two types of lists you can create. Unordered (bullet points) and ordered (numbered). To create a list, click on one of the list buttons. This will insert the first list item and you can start typing. For each additional item, press Return/Enter on your keyboard. If you want to add another line to the same list item, press Shift+Return/Enter. To break out of the list and continue with other content. Press Return/Enter twice.</p>'
@@ -85,7 +102,7 @@ tips:
     id: remove-format
     plugin: text
     label: 'Remove Formatting'
-    weight: 8
+    weight: 10
     attributes:
       data-class: cke_button__removeformat
     body: '<p>You can quickly remove all formatting from highlighted text using the Remove Format button.</p>'
@@ -94,16 +111,16 @@ tips:
     id: links
     plugin: text
     label: Links
-    weight: 9
+    weight: 11
     attributes:
       data-class: cke_button__drupallink
-    body: '<p>Links to internal or external paths can be added with the link button. A separate configuration window will load.</p><p>The ''<em>URL</em>'' field will attempt to find related content based on what is typed. If no suitable result is found and selected an normal link will be created.</p><p>''<em>Upload file</em>'' will allow you to add a file that doesn''t already exist on the site. ''<em>Advanced</em>'' provides additional, though optional, configuration for the link.</p><p>You can edit an existing link by placing the cursor on the link and clicking the link button.</p><p>This is covered in more detail in, <a href="https://docs.sitenow.uiowa.edu/wysiwyg">our WYSIWYG documentation section</a>.</p>'
+    body: '<p>Links to internal or external paths can be added with the link button. A separate configuration window will load.</p><p>The ''<em>URL</em>'' field will attempt to find related content based on what is typed. If no suitable result is found and selected an normal link will be created.</p><p>''<em>Upload file</em>'' will allow you to add a file that doesn''t already exist on the site. ''<em>Advanced</em>'' provides additional, though optional, configuration for the link.</p><p>You can edit an existing link by placing the cursor on the link and clicking the link button.</p><p>This is covered in more detail in, <a href="https://sitenow.uiowa.edu/documentation/content-documentation/wysiwyg">our WYSIWYG documentation section</a>.</p>'
     location: bottom
   unlink:
     id: unlink
     plugin: text
     label: 'Remove Link'
-    weight: 10
+    weight: 12
     attributes:
       data-class: cke_button__drupalunlink
     body: '<p>Links can also be removed easily with the Unlink button.</p>'
@@ -112,7 +129,7 @@ tips:
     id: table
     plugin: text
     label: Tables
-    weight: 11
+    weight: 13
     attributes:
       data-class: cke_button__table
     body: '<p>A table is a structured set of data made up of of rows and columns (tabular data). A separate configuration window will load. You can set initial row and column counts, designate the headers for the table and provide a table caption.</p><p><strong>Note</strong>: Though not required, a caption is strongly recommended to provide an overall description of the data found in the table.</p><p>After initializing the table, you can enter data and/or right-click on the table to add additional rows/columns or edit table properties.</p>'
@@ -121,7 +138,7 @@ tips:
     id: entity-embed
     plugin: text
     label: 'Media Entity Embed'
-    weight: 12
+    weight: 14
     attributes:
       data-class: cke_button__media_entity_embed
     body: '<p>This allows you to add new or existing images, videos from a URL, audio files, Tweets, Instagram and Facebook posts to your content. A separate configuration window will load. <a href=https://sitenow.uiowa.edu/documentation/content-documentation/media>Click here for media documentation</a>.</p>'
@@ -130,7 +147,7 @@ tips:
     id: source
     plugin: text
     label: 'View/Edit Source'
-    weight: 13
+    weight: 15
     attributes:
       data-class: cke_button__source
     body: '<p>You can look under the hood at anytime to see the markup for the content.</p><p>If you know your stuff you can write your own HTML staying within the restrictions of the <a href=''/filter/tips''>filtered_html format</a>.</p><p>HTML that is not allowed will be stripped out before rendering to site visitors.</p>'
@@ -139,14 +156,30 @@ tips:
     id: page-actions
     plugin: text
     label: Publish/Save/Preview
-    weight: 14
+    weight: 16
     attributes:
       data-id: edit-actions
     body: '<p>You can Save configuration here.</p><p>Site visitors will only see the article content marked as published.</p>'
     location: top
+  archive:
+    id: archive
+    plugin: text
+    label: 'Archive'
+    weight: 17
+    attributes:
+      data-id: edit-sitenow-articles-archive
+    body: '<p>Toggling the "Enabled" checkbox for Display monthly archive, will display/hide the menu that allows site visitors to see a monthly archive listing.</p>'
+  rss:
+    id: rss
+    plugin: text
+    label: 'RSS Feed'
+    weight: 18
+    attributes:
+      data-id: edit-sitenow-articles-feed
+    body: '<p>Toggling the "Enabled" checkbox for the RSS Feed icon, will display/hide the icon below the articles for site visitors.</p>'
   next-step:
     id: next-step
     plugin: text
     label: 'That''s It!'
-    weight: 15
+    weight: 19
     body: '<p>Thanks for sticking with us.</p><p>As you are using the site, look for the tour icon which designates a tour is available on that page, otherwise, <a href="//sitenow.uiowa.edu/documentation/content-documentation/wysiwyg" >view our documentation</a> for more information.</p>'
