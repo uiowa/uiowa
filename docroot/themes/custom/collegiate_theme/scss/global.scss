@@ -6,57 +6,100 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900&display=swap');
 
 .section-margin {
-  @include margin($md, 0, $md, 0);
-
   &__top {
-    @include margin($md, 0, 0, 0);
-  }
+    margin-top: $md;
 
-  &__bottom {
-    @include margin(0, 0, $md, 0);
-  }
-}
-
-.section-padding__side {
-  @include breakpoint(sm) {
-    @include padding($right: $md, $left: $md);
-  }
-}
-
-.layout__region {
-  @include breakpoint(sm) {
-    @include padding($right: $sm, $bottom: 0, $left: $sm);
-  }
-
-  .section-padding__removed & {
-    @include breakpoint(sm) {
-      @include padding($right: 0, $bottom: 0, $left: 0);
+    &.page__container {
+      margin-top: $md;
     }
   }
 
-  &:first-of-type {
-    @include padding($left: 0);
+  &__bottom {
+    margin-bottom: $md;
+
+    &.page__container {
+      margin-bottom: $md;
+    }
+  }
+}
+
+.layout--fourcol,
+.layout--threecol,
+.layout--twocol,
+.layout--onecol {
+  margin-bottom: $md;
+
+  &.section-margin__removed {
+    margin-bottom: 0;
   }
 
-  &:last-of-type {
-    @include padding($right: 0);
+  &.section-margin__removed.section-margin__bottom {
+    margin-bottom: $md;
+  }
+}
+
+.layout--onecol,
+.layout--onecol-flex {
+  &.page__container {
+    margin-bottom: $md;
   }
 
-  &.layout--onecol {
-    @include padding($right: 0, $bottom: 0, $left: 0);
+  &.page__container.section-margin__removed {
+    margin-bottom: 0;
+  }
+}
+
+.section-padding {
+  @include breakpoint(sm) {
+    &__top {
+      padding-top: $md;
+    }
+
+    &__right {
+      padding-right: $md;
+    }
+
+    &__bottom {
+      padding-bottom: $md;
+    }
+
+    &__left {
+      padding-left: $md;
+    }
+  }
+}
+
+.block-margin {
+  @include breakpoint(sm) {
+    &__top {
+      margin-top: $md;
+    }
+
+    &__right {
+      margin-right: $md;
+    }
+
+    &__bottom {
+      margin-bottom: $md;
+    }
+
+    &__left {
+      margin-left: $md;
+    }
   }
 }
 
 .layout__region {
-.feature,
-.banner {
-   flex-basis: 100%;
-  .section-column__row & {
-    flex-basis: unset;
+
+  .feature,
+  .banner {
+    flex-basis: 100%;
+
+    .section-column__row & {
+      flex-basis: unset;
+    }
   }
 }
-}
-
 
 .layout__region.section-column__row .feature,
 .layout__region.section-column__row .banner {
@@ -64,8 +107,8 @@
   flex-basis: unset;
 }
 
-
 // Admin only styles
 .toolbar-menu {
   font-size: unset;
 }
+

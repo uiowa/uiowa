@@ -1,6 +1,6 @@
 {% block banner_bg %}
   {% if banner_bg_image %}
-    <div class="banner" {% if banner_bg_image %} style="background-image: url('{% spaceless %}{{ banner_bg_image }}{% endspaceless %}'); background-size: cover; background-position: center" {% endif %}>
+    <div class="banner {{ banner_classes }}" {% if banner_bg_image %} style="background-image: url('{% spaceless %}{{ banner_bg_image }}{% endspaceless %}'); background-size: cover; background-position: center" {% endif %}>
     {% endif %}
   {% endblock %}
   {% if banner_image %}

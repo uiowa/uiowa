@@ -4,19 +4,22 @@
   justify-content: center;
   padding: 5rem;
   text-align: center;
-  @include breakpoint(sm) {
-    @include margin($right: $sm, $bottom: 0, $left: $sm);
-  }
   @include flexbox;
   @include flex-direction($value: column);
   @include flex($fg: 1, $fs: 1, $fb: 0%);
 
-  &:first-of-type {
-    @include margin($left: 0);
-  }
+  &__row {
+    @include breakpoint(sm) {
+      @include margin($right: $sm, $bottom: 0, $left: $sm);
+    }
 
-  &:last-of-type {
-    @include margin($right: 0);
+    &:first-of-type {
+      @include margin($left: 0);
+    }
+
+    &:last-of-type {
+      @include margin($right: 0);
+    }
   }
 
   &:before {

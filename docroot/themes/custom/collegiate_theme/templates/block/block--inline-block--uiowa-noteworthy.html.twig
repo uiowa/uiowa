@@ -45,6 +45,7 @@ set classes = [
     {{ attach_library('collegiate_theme/news-block') }}
 
       {% embed "@news-block/news-block--advanced.twig" with {
+        "news_classes": attributes['class'],
         "news_card_image": drupal_image(content.field_uiowa_noteworthy_image[0]['#media'].image.entity.uri.value, 'uiowa_lb_blocks',  { class: 'news-card__img', alt: content.field_uiowa_noteworthy_image[0]['#media'].image.alt }, responsive=true),
         "news_card_title": content.field_uiowa_noteworthy_title,
         "news_card_text": content.field_uiowa_noteworthy_excerpt,

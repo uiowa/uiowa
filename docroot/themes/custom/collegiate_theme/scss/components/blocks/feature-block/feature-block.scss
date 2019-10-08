@@ -1,3 +1,27 @@
 @import "assets/scss/_variables.scss";
 @import "assets/scss/_utilities.scss";
 @import "components/02 - blocks/feature-block/_feature-block.scss";
+
+
+.layout--onecol {
+  .feature {
+
+    &::after {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      content: "";
+      background: linear-gradient(transparent 1%, transparent 49%, rgba(0, 0, 0, .7));
+    }
+
+    .feature__content {
+      opacity: 1;
+    }
+
+    .feature__teaser {
+      opacity: 0;
+    }
+  }
+}
