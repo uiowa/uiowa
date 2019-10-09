@@ -9,6 +9,7 @@
  * @see https://www.drupal.org/node/2217931
  */
 
+use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Field\FieldFilteredMarkup;
 use Drupal\Core\Url;
 use Drupal\user\Entity\User;
@@ -163,6 +164,54 @@ function brand_core_preprocess_views_view_field(&$variables) {
       }
     }
   }
+}
+
+/**
+ * Implements hook_token_info().
+ */
+function brand_core_token_info() {
+  // Need to define a custom token because a prefix is needed..
+  $type = [
+    'name' => t('Brand'),
+    'description' => t('Custom tokens for brand.uiowa.edu'),
+  ];
+  $node['custom_log'] = [
+    'name' => t('Custom Log'),
+    'description' => t('Custom node log'),
+  ];
+  return [
+    'types' => ['brand' => $type],
+    'tokens' => ['brand' => $node],
+  ];
+}
+
+/**
+ * Implements hook_tokens().
+ */
+function brand_core_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
+  $replacements = [];
+
+  if ($type == 'brand' && !empty($data['node'])) {
+    foreach ($tokens as $name => $original) {
+      switch ($name) {
+        // Token node:log but with "Edit: " in front.
+        case 'custom_log':
+          $log = $data['node']->get('revision_log')->value;
+          if ($log) {
+            // This is what it is all for!
+            $replacements[$original] = 'Edit: ' . $log;
+          }
+          else {
+            // Blank if nothing.
+            $replacements[$original] = '';
+          }
+
+          break;
+      }
+    }
+  }
+
+  return $replacements;
 }
 
 /**

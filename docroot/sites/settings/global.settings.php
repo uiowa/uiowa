@@ -5,14 +5,18 @@
  * Global settings for every multisite.
  */
 
+use Sitenow\Multisite;
+
 /**
  * Standardize on an escaped site directory DB include for AC.
  *
  * The default site will be set to use the uiowa database by BLT.
+ *
+ * @var $site_dir
+ *    This is a BLT variable based off the Drupal kernel $site_path.
  */
 if ($site_dir != 'default') {
-  $db = str_replace('.', '_', $site_dir);
-  $db = str_replace('-', '_', $db);
+  $db = Multisite::getDatabase($site_dir);
 
   if (file_exists('/var/www/site-php')) {
     require "/var/www/site-php/uiowa/{$db}-settings.inc";
@@ -62,3 +66,15 @@ switch ($env) {
     $settings['simple_environment_indicator'] = '#31873E local';
     break;
 }
+
+/**
+ * A custom theme for the offline page.
+ *
+ * This applies when the site is explicitly set to maintenance mode through the
+ * administration page or when the database is inactive due to an error.
+ * The template file should also be copied into the theme. It is located inside
+ * 'core/modules/system/templates/maintenance-page.html.twig'.
+ *
+ * Note: This setting does not apply to installation and update pages.
+ */
+$settings['maintenance_theme'] = 'seven';

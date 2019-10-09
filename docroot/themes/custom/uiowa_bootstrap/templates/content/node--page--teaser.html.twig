@@ -92,11 +92,11 @@
         {% endif %}
         {{ title_suffix }}
 
-        {{ content|without('page_image', 'links') }}
+        {{ content|without('node_image', 'links') }}
     </div>
-    {% if content.page_image %}
+    {% if content.node_image %}
         <figure class="content-image">
-            {{ content.page_image }}
+            {{ content.node_image }}
         </figure>
     {% endif %}
 </article>

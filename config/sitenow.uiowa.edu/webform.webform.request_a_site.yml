@@ -1,0 +1,353 @@
+uuid: 916bac9e-3d2b-4d5c-862f-6cf053ba01f1
+langcode: en
+status: open
+dependencies: {  }
+open: null
+close: null
+weight: 0
+uid: 6126
+template: false
+archive: false
+id: request_a_site
+title: 'Request a Site'
+description: 'SiteNow site request form.'
+category: ''
+elements: "hawkid:\n  '#type': textfield\n  '#title': HawkID\n  '#description': 'Your HawkID will be granted webmaster access to the site.'\n  '#readonly': true\n  '#default_value': '[current-user:name]'\n  '#required': true\nemail:\n  '#type': email\n  '#title': Email\n  '#description': 'Your email address will be used for all communications related to this request.'\n  '#readonly': true\n  '#default_value': '[current-user:mail]'\n  '#required': true\ndepartment_organization:\n  '#type': textfield\n  '#title': Department/organization\n  '#description': 'The department or organization this site belongs to.'\n  '#required': true\nrequest_type:\n  '#type': radios\n  '#title': 'Request type'\n  '#options':\n    New: 'New -- This is a new SiteNow site.'\n    Existing: 'Existing -- I have an existing site.'\n    Consultation: 'Consultation -- I would like a consultation regarding another option.'\n  '#required': true\nurl_pattern:\n  '#type': select\n  '#title': 'URL Pattern'\n  '#description': 'The * character indicates the part of the URL you can customize.&nbsp;'\n  '#help_title': Help\n  '#help': 'The URL must not contain more subdomains than indicated by the pattern. For example, https://foo.org.uiowa.edu is valid but https://foo.bar.org.uiowa.edu is invalid.'\n  '#options':\n    '*.conference.uiowa.edu': '*.conference.uiowa.edu'\n    '*.org.uiowa.edu': '*.org.uiowa.edu'\n    '*.lab.uiowa.edu': '*.lab.uiowa.edu'\n    '*.course.uiowa.edu': '*.course.uiowa.edu'\n    '*.studio.uiowa.edu': '*.studio.uiowa.edu'\n    '*.sites.uiowa.edu': '*.sites.uiowa.edu'\n  '#required': true\n  '#states':\n    visible:\n      ':input[name=\"request_type\"]':\n        value: New\nuri:\n  '#type': url\n  '#title': URL\n  '#description': 'The site URL.'\n  '#help_title': Help\n  '#help': 'URL stands for Uniform Resource Locator and is&nbsp;commonly used to reference web pages. It typically starts with http:// or https://.'\n  '#required': true\n  '#states':\n    visible:\n      ':input[name=\"request_type\"]':\n        '!value': Consultation\nadditional_comments_or_questions:\n  '#type': textarea\n  '#title': 'Comments or questions'\n  '#states':\n    required:\n      ':input[name=\"request_type\"]':\n        value: Consultation\nactions:\n  '#type': webform_actions\n  '#title': 'Submit button(s)'\n  '#submit__attributes':\n    class:\n      - 'btn btn-primary'\nurl_host:\n  '#type': hidden\n  '#title': 'URL host'\nurl_internal_production:\n  '#type': hidden\n  '#title': 'URL internal production'\nmarkup:\n  '#type': webform_markup\n  '#private': true\n  '#display_on': view\n  '#markup': 'blt sitenow:multisite:create [webform_submission:values:uri] [webform_submission:values:hawkid]'"
+css: ''
+javascript: ''
+settings:
+  ajax: false
+  ajax_scroll_top: ''
+  ajax_progress_type: ''
+  ajax_effect: ''
+  ajax_speed: null
+  page: false
+  page_submit_path: ''
+  page_confirm_path: ''
+  page_admin_theme: false
+  form_title: source_entity_webform
+  form_submit_once: false
+  form_exception_message: ''
+  form_open_message: ''
+  form_close_message: ''
+  form_previous_submissions: true
+  form_confidential: false
+  form_confidential_message: ''
+  form_remote_addr: true
+  form_convert_anonymous: false
+  form_prepopulate: false
+  form_prepopulate_source_entity: false
+  form_prepopulate_source_entity_required: false
+  form_prepopulate_source_entity_type: ''
+  form_reset: false
+  form_disable_autocomplete: false
+  form_novalidate: false
+  form_disable_inline_errors: false
+  form_required: false
+  form_unsaved: true
+  form_disable_back: false
+  form_submit_back: false
+  form_autofocus: false
+  form_details_toggle: false
+  form_access_denied: default
+  form_access_denied_title: ''
+  form_access_denied_message: ''
+  form_access_denied_attributes: {  }
+  form_file_limit: ''
+  submission_label: ''
+  submission_log: true
+  submission_views: {  }
+  submission_views_replace:
+    webform_routes: {  }
+    node_routes: {  }
+  submission_user_columns: {  }
+  submission_user_duplicate: false
+  submission_access_denied: default
+  submission_access_denied_title: ''
+  submission_access_denied_message: ''
+  submission_access_denied_attributes: {  }
+  submission_exception_message: ''
+  submission_locked_message: ''
+  submission_excluded_elements: {  }
+  submission_exclude_empty: false
+  submission_exclude_empty_checkbox: false
+  previous_submission_message: ''
+  previous_submissions_message: ''
+  autofill: false
+  autofill_message: ''
+  autofill_excluded_elements: {  }
+  wizard_progress_bar: true
+  wizard_progress_pages: false
+  wizard_progress_percentage: false
+  wizard_progress_link: false
+  wizard_start_label: ''
+  wizard_preview_link: false
+  wizard_confirmation: true
+  wizard_confirmation_label: ''
+  wizard_track: ''
+  preview: 0
+  preview_label: ''
+  preview_title: ''
+  preview_message: ''
+  preview_attributes: {  }
+  preview_excluded_elements: {  }
+  preview_exclude_empty: true
+  preview_exclude_empty_checkbox: false
+  draft: none
+  draft_multiple: false
+  draft_auto_save: false
+  draft_saved_message: ''
+  draft_loaded_message: ''
+  draft_pending_single_message: ''
+  draft_pending_multiple_message: ''
+  confirmation_type: message
+  confirmation_title: 'SiteNow Request Submitted '
+  confirmation_message: "Thank you for requesting a SiteNow site.<br />\r\n<br />\r\nA member of the ITS SiteNow Team will review your request and follow up with you as soon as possible."
+  confirmation_url: ''
+  confirmation_attributes: {  }
+  confirmation_back: true
+  confirmation_back_label: ''
+  confirmation_back_attributes: {  }
+  confirmation_exclude_query: false
+  confirmation_exclude_token: false
+  confirmation_update: false
+  limit_total: null
+  limit_total_interval: null
+  limit_total_message: ''
+  limit_total_unique: false
+  limit_user: null
+  limit_user_interval: null
+  limit_user_message: ''
+  limit_user_unique: false
+  entity_limit_total: null
+  entity_limit_total_interval: null
+  entity_limit_user: null
+  entity_limit_user_interval: null
+  purge: none
+  purge_days: null
+  results_disabled: false
+  results_disabled_ignore: false
+  token_update: false
+access:
+  create:
+    roles:
+      - requester
+      - viewer
+      - editor
+      - publisher
+      - webmaster
+      - administrator
+    users: {  }
+    permissions: {  }
+  view_any:
+    roles:
+      - administrator
+    users: {  }
+    permissions: {  }
+  update_any:
+    roles:
+      - administrator
+    users: {  }
+    permissions: {  }
+  delete_any:
+    roles:
+      - administrator
+    users: {  }
+    permissions: {  }
+  purge_any:
+    roles:
+      - administrator
+    users: {  }
+    permissions: {  }
+  view_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  update_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  delete_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  administer:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  test:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  configuration:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+handlers:
+  site_created_email:
+    id: email
+    label: 'Site Created Email'
+    handler_id: site_created_email
+    status: true
+    conditions: {  }
+    weight: -46
+    settings:
+      states: {  }
+      to_mail: '[webform_submission:values:email:raw]'
+      to_options: {  }
+      cc_mail: ''
+      cc_options: {  }
+      bcc_mail: ''
+      bcc_options: {  }
+      from_mail: its-web@uiowa.edu
+      from_options: {  }
+      from_name: 'ITS - Custom Solutions & Integrations - Web Services'
+      subject: 'SiteNow Site Created'
+      body: "Hello,<br />\r\n&nbsp;<br />\r\nThe&nbsp;SiteNow&nbsp;website&nbsp;[webform_submission:values:uri] has been created.&nbsp;<br />\r\n&nbsp;&nbsp;<br />\r\nTo log in using your&nbsp;HawkID&nbsp;credentials, click the login link in the bottom left corner of the website.<br />\r\n&nbsp;<br />\r\nInformation about getting started and customizing your website is available on the front page (when you are logged in) and online at https://sitenow.uiowa.edu/documentation.<br />\r\n&nbsp;<br />\r\nFor questions or problems, please contact the ITS Help Desk:<br />\r\n<br />\r\nPhone: 319-384-4357<br />\r\nEmail:&nbsp;<a href=\"mailto:its-helpdesk@uiowa.edu\" style=\"color:#954f72; text-decoration:underline\">its-helpdesk@uiowa.edu</a><br />\r\nChat:&nbsp;<a href=\"https://helpdesk.its.uiowa.edu/connect\" style=\"color:#954f72; text-decoration:underline\">Help Desk Online Chat</a>&nbsp;<br />\r\n&nbsp;<br />\r\nRegards,<br />\r\nITS - Custom Solutions & Integrations - Web Services<br />\r\n&nbsp;"
+      excluded_elements: {  }
+      ignore_access: false
+      exclude_empty: true
+      exclude_empty_checkbox: false
+      html: true
+      attachments: false
+      twig: false
+      debug: false
+      reply_to: ''
+      return_path: ''
+      sender_mail: ''
+      sender_name: ''
+      theme_name: ''
+  hostmaster_email:
+    id: email
+    label: 'Hostmaster Email'
+    handler_id: hostmaster_email
+    status: true
+    conditions: {  }
+    weight: -47
+    settings:
+      states: {  }
+      to_mail: hostmaster@uiowa.edu
+      to_options: {  }
+      cc_mail: '[current-user:mail]'
+      cc_options: {  }
+      bcc_mail: ''
+      bcc_options: {  }
+      from_mail: its-web@uiowa.edu
+      from_options: {  }
+      from_name: 'ITS SiteNow Team'
+      subject: 'SiteNow DNS Request'
+      body: "Hostmaster,<br />\r\n<br />\r\nWould you please create a CNAME for [webform_submission:values:url_host] pointing to acquia-dlb.its.uiowa.edu?<br />\r\n<br />\r\nThank you,<br />\r\nITS - Custom Solutions & Integrations - Web Services<br />\r\n[current-user:mail]"
+      excluded_elements: {  }
+      ignore_access: false
+      exclude_empty: true
+      exclude_empty_checkbox: false
+      html: true
+      attachments: false
+      twig: false
+      debug: false
+      reply_to: ''
+      return_path: ''
+      sender_mail: ''
+      sender_name: ''
+      theme_name: ''
+  site_created_email_url_internal_production:
+    id: email
+    label: 'Site Created Email - URL internal production'
+    handler_id: site_created_email_url_internal_production
+    status: true
+    conditions: {  }
+    weight: -45
+    settings:
+      states: {  }
+      to_mail: _default
+      to_options: {  }
+      cc_mail: ''
+      cc_options: {  }
+      bcc_mail: ''
+      bcc_options: {  }
+      from_mail: its-web@uiowa.edu
+      from_options: {  }
+      from_name: 'ITS - Custom Solutions & Integrations - Web Services'
+      subject: 'SiteNow Site Created'
+      body: "Hello,<br />\r\n&nbsp;<br />\r\nThe&nbsp;SiteNow&nbsp;website&nbsp;[webform_submission:values:url_internal_production] has been created. Please note that this is an internal, production domain. Please notify us when you are ready to go live.<br />\r\n&nbsp;&nbsp;<br />\r\nTo log in using your&nbsp;HawkID&nbsp;credentials, click the login link in the bottom left corner of the website.<br />\r\n&nbsp;<br />\r\nInformation about getting started and customizing your website is available on the front page (when you are logged in) and online at https://sitenow.uiowa.edu/documentation.<br />\r\n&nbsp;<br />\r\nFor questions or problems, please contact the ITS Help Desk:<br />\r\n<br />\r\nPhone: 319-384-4357<br />\r\nEmail:&nbsp;<a href=\"mailto:its-helpdesk@uiowa.edu\" style=\"color:#954f72; text-decoration:underline\">its-helpdesk@uiowa.edu</a><br />\r\nChat:&nbsp;<a href=\"https://helpdesk.its.uiowa.edu/connect\" style=\"color:#954f72; text-decoration:underline\">Help Desk Online Chat</a>&nbsp;<br />\r\n&nbsp;<br />\r\nRegards,<br />\r\nITS - Custom Solutions & Integrations - Web Services"
+      excluded_elements: {  }
+      ignore_access: false
+      exclude_empty: true
+      exclude_empty_checkbox: false
+      html: true
+      attachments: false
+      twig: false
+      debug: false
+      reply_to: ''
+      return_path: ''
+      sender_mail: ''
+      sender_name: ''
+      theme_name: ''
+  confirmation_email:
+    id: email
+    label: 'Confirmation Email'
+    handler_id: confirmation_email
+    status: true
+    conditions: {  }
+    weight: -48
+    settings:
+      states:
+        - completed
+      to_mail: '[webform_submission:values:email:raw]'
+      to_options: {  }
+      cc_mail: ''
+      cc_options: {  }
+      bcc_mail: ''
+      bcc_options: {  }
+      from_mail: noreply@sitenow.uiowa.edu
+      from_options: {  }
+      from_name: 'ITS - Custom Solutions & Integrations - Web Services'
+      subject: 'SiteNow Request Confirmed'
+      body: "Thank you for requesting a SiteNow site.<br />\r\n<br />\r\nA member of the ITS SiteNow Team will review your request and follow up with you as soon as possible.<br />\r\n<br />\r\nRegards,<br />\r\nITS - Custom Solutions & Integrations - Web Services"
+      excluded_elements: {  }
+      ignore_access: false
+      exclude_empty: true
+      exclude_empty_checkbox: true
+      html: true
+      attachments: false
+      twig: false
+      debug: false
+      reply_to: ''
+      return_path: ''
+      sender_mail: ''
+      sender_name: ''
+      theme_name: ''
+  form_submission_email:
+    id: email
+    label: 'Form Submission Email'
+    handler_id: form_submission_email
+    status: true
+    conditions: {  }
+    weight: -49
+    settings:
+      states:
+        - completed
+      to_mail: its-web@uiowa.edu
+      to_options: {  }
+      cc_mail: ''
+      cc_options: {  }
+      bcc_mail: ''
+      bcc_options: {  }
+      from_mail: noreply@sitenow.uiowa.edu
+      from_options: {  }
+      from_name: 'ITS - Custom Solutions & Integrations - Web Services'
+      subject: 'SiteNow Request'
+      body: _default
+      excluded_elements: {  }
+      ignore_access: true
+      exclude_empty: true
+      exclude_empty_checkbox: false
+      html: true
+      attachments: false
+      twig: false
+      debug: false
+      reply_to: ''
+      return_path: ''
+      sender_mail: ''
+      sender_name: ''
+      theme_name: ''

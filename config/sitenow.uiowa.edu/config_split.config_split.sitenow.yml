@@ -6,11 +6,17 @@ id: sitenow
 label: sitenow
 description: 'The site split.'
 folder: ../config/sitenow.uiowa.edu
-module: {  }
+module:
+  sitenow_core: 0
 theme: {  }
 blacklist: {  }
 graylist:
+  - config_ignore.settings
   - config_split.config_split.sitenow
+  - uiowa_auth.settings
+  - user.role.requester
+  - 'webform.webform.*'
+  - 'block.block.*'
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 0
