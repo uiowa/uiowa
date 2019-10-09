@@ -4,10 +4,6 @@
  * @file
  * Multisite directory aliases.
  *
- * These may need to be more restrictive depending on how acquia_purge
- * determines the purge domains for multisites.
- *
- * @see https://www.drupal.org/project/acquia_purge/issues/3050554
  * @see example.sites.php
  */
 
@@ -132,11 +128,6 @@ $sites['siteshealth-research-network.prod.drupal.uiowa.edu'] = 'health-research-
 $sites['classrooms.dev.drupal.uiowa.edu'] = 'classrooms.uiowa.edu';
 $sites['classrooms.stage.drupal.uiowa.edu'] = 'classrooms.uiowa.edu';
 $sites['classrooms.prod.drupal.uiowa.edu'] = 'classrooms.uiowa.edu';
-
-// Directory aliases for rdmevents.sites.uiowa.edu.
-$sites['sitesrdmevents.dev.drupal.uiowa.edu'] = 'rdmevents.sites.uiowa.edu';
-$sites['sitesrdmevents.stage.drupal.uiowa.edu'] = 'rdmevents.sites.uiowa.edu';
-$sites['sitesrdmevents.prod.drupal.uiowa.edu'] = 'rdmevents.sites.uiowa.edu';
 
 // Directory aliases for faculty-senate.uiowa.edu.
 $sites['faculty-senate.dev.drupal.uiowa.edu'] = 'faculty-senate.uiowa.edu';
@@ -267,3 +258,13 @@ $sites['lablogsdon.prod.drupal.uiowa.edu'] = 'logsdon.lab.uiowa.edu';
 $sites['studioelectronicmusic.dev.drupal.uiowa.edu'] = 'electronicmusic.studio.uiowa.edu';
 $sites['studioelectronicmusic.stage.drupal.uiowa.edu'] = 'electronicmusic.studio.uiowa.edu';
 $sites['studioelectronicmusic.prod.drupal.uiowa.edu'] = 'electronicmusic.studio.uiowa.edu';
+
+// Directory aliases for wu.lab.uiowa.edu.
+$sites['labwu.dev.drupal.uiowa.edu'] = 'wu.lab.uiowa.edu';
+$sites['labwu.stage.drupal.uiowa.edu'] = 'wu.lab.uiowa.edu';
+$sites['labwu.prod.drupal.uiowa.edu'] = 'wu.lab.uiowa.edu';
+
+// Directory aliases for gsab.org.uiowa.edu.
+$sites['orggsab.dev.drupal.uiowa.edu'] = 'gsab.org.uiowa.edu';
+$sites['orggsab.stage.drupal.uiowa.edu'] = 'gsab.org.uiowa.edu';
+$sites['orggsab.prod.drupal.uiowa.edu'] = 'gsab.org.uiowa.edu';

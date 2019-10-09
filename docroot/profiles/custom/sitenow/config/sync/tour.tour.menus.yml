@@ -30,12 +30,30 @@ tips:
   overview:
     id: overview
     plugin: text
-    label: 'Menu Table'
+    label: 'Reorder'
     weight: 3
-    body: '<p>For each menu link item within the following table, you can:</p> <ul> <li><strong>Edit</strong> - If you have the ability to edit a link, the "Edit" button should be visible.</li> <li><strong>Delete</strong> - If you have the ability to delete a link, a drop-down arrow should be visible next to the "Edit" button which will display the option to delete the link.</li> <li><strong>Enable/Disable</strong> - Toggling the "Enabled" checkbox for each menu link, will show/hide the menu link within the menu when displayed to site visitors.</li> <li><strong>Reorder</strong> - Each menu link item can be reordered using the handle left of the menu link name.</li> </ul>'
+    attributes:
+      data-class: tabledrag-handle
+    body: '<p>Each menu link item can be reordered using the handle left of the menu link name</p>'
+  checkbox:
+    id: checkbox
+    plugin: text
+    label: 'Enable/Disable'
+    weight: 4
+    attributes:
+      data-class: form-checkbox
+    body: '<p>Toggling the "Enabled" checkbox for each menu link, will show/hide the menu link within the menu when displayed to site visitors.</p>'
+  dropdown:
+    id: dropdown
+    plugin: text
+    label: 'Edit'
+    weight: 5
+    attributes:
+      data-class: dropbutton
+    body: '<p>If you have the ability to edit a link, the "Edit" button should be visible.</p><p><h2>Delete</h2> If you have the ability to delete a link, a drop-down arrow should be visible next to the "Edit" button which will display the option to delete the link.</p>'
   menus:
     id: menus
     plugin: text
     label: Menus
-    weight: 4
+    weight: 6
     body: '<p>Depending on your role within the site, there are currently four available menus for this site:</p><p><a href="/admin/structure/menu/manage/main?tour" class="button button--primary">Main Navigation</a></p><p><a href="/admin/structure/menu/manage/social?tour" class="button button--primary">Social Media</a></p><p><a href="/admin/structure/menu/manage/footer?tour" class="button button--primary">Footer</a></p><p><a href="/admin/structure/menu/manage/footer-second?tour" class="button button--primary">Footer Second</a></p>'
