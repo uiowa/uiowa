@@ -88,6 +88,7 @@
 <main{{ main_attributes.addClass(main_classes, 'main', 'container-fluid').setAttribute('role', 'main') }}>
   <div class="row">
     <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
+    <a id="return-to-top" tabindex="-2"></a>{# link is in html.html.twig #}
 
     <div{{ content_attributes.addClass(content_classes, 'layout-content') }}">
       {{ page.content }}
