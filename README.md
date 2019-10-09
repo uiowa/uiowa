@@ -106,13 +106,13 @@ credentials:
 ```
 ## Create Multisite
 To create a new multisite:
-1. Run the `blt recipes:multisite:init` (`rmi` for short) command with the `--site-uri` and `--no-interaction` options specified.
+1. Run the `blt sitenow:multisite:create` command (`smc` for short) on a feature branch created from master.
 2. Follow the directions the command prints to the terminal.
 3. If necessary, email Hostmaster with CNAME request template in ITS-web@uiowa.edu -> Drafts -> Email Templates -> SiteNow Templates.
 
 ## Delete Multisite
 To delete a multisite:
-1. Run the `blt sitenow:multisite:delete` (`smd` for short) command on a feature branch created from master.
+1. Run the `blt sitenow:multisite:delete` command (`smd` for short) on a feature branch created from master.
 2. Follow the directions the command prints to the terminal.
 3. Remove any related cron jobs from the Acquia Cloud interface.
 3. If necessary, email Hostmaster to remove the CNAME that is no longer in use.

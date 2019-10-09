@@ -113,15 +113,9 @@ class MultisiteCommands extends BltTasks {
       throw new UserAbortException();
     }
     else {
-      $connector = new Connector([
-        'key' => $this->getConfigValue('credentials.acquia.key'),
-        'secret' => $this->getConfigValue('credentials.acquia.secret'),
-      ]);
-
-      $cloud = Client::factory($connector);
-
+      /** @var \AcquiaCloudApi\CloudApi\Client $cloud */
       /** @var \AcquiaCloudApi\Response\ApplicationResponse $application */
-      $application = $cloud->application($this->getConfigValue('cloud.appId'));
+      list($cloud, $application) = $this->getAcquiaCloudApi();
 
       /** @var \AcquiaCloudApi\Response\DatabasesResponse $databases */
       $databases = $cloud->databases($application->uuid);
@@ -188,68 +182,71 @@ EOD;
   }
 
   /**
-   * Require the --site-uri option so it can be used in postMultisiteInit.
+   * Validate sitenow:multisite:create command.
    *
-   * @hook validate recipes:multisite:init
+   * @hook validate sitenow:multisite:create
    *
    * @requireFeatureBranch
    * @requireCredentials
    */
-  public function validateMultisiteInit(CommandData $commandData) {
-    $uri = $commandData->input()->getOption('site-uri');
+  public function validateCreate(CommandData $commandData) {
+    $host = $commandData->input()->getArgument('host');
 
-    if (!$uri) {
-      return new CommandError('Sitenow: you must supply the site URI via the --site-uri option.');
+    if (parse_url($host, PHP_URL_SCHEME) == NULL) {
+      $uri = "https://{$host}";
     }
     else {
-      if (parse_url($uri, PHP_URL_SCHEME) == NULL) {
-        $uri = "https://{$uri}";
-      }
-
-      if ($parsed = parse_url($uri)) {
-        if (isset($parsed['path'])) {
-          return new CommandError('Sitenow: Subdirectory sites are not supported.');
-        }
-
-        $commandData->input()->setOption('site-uri', $uri);
-        $commandData->input()->setOption('site-dir', $parsed['host']);
-        $id = Multisite::getIdentifier($uri);
-        $commandData->input()->setOption('remote-alias', "{$id}.prod");
-        $this->getConfig()->set('drupal.db.database', $parsed['host']);
-
-      }
-      else {
-        return new CommandError('Cannot parse URI for validation.');
-      }
+      return new CommandError('Only pass the multisite host, i.e. the URI without the protocol.');
     }
 
-    if (!$commandData->input()->getOption('no-interaction')) {
-      return new CommandError("You must specify the --no-interaction option.");
+    if ($parsed = parse_url($uri)) {
+      if (isset($parsed['path'])) {
+        return new CommandError('Sitenow: Subdirectory sites are not supported.');
+      }
+    }
+    else {
+      return new CommandError('Cannot parse URI for validation.');
     }
   }
 
   /**
-   * This will be called after the `recipes:multisite:init` command is executed.
+   * Create multisite code, cloud database and domains.
    *
-   * @hook post-command recipes:multisite:init
+   * @command sitenow:multisite:create
+   *
+   * @aliases smc
+   *
+   * @arg $host
+   *   The multisite URI host. Will be used as the site directory.
+   *
+   * @arg $requester
+   *   The HawkID of the original requester. Will be granted webmaster access.
+   *
+   * @throws \Exception
    */
-  public function postMultisiteInit($result, CommandData $commandData) {
-    $uri = $commandData->input()->getOption('site-uri');
-    $dir = $commandData->input()->getOption('site-dir');
-
-    $db = Multisite::getDatabase($dir);
-    $id = Multisite::getIdentifier($uri);
+  public function create($host, $requester) {
+    $db = Multisite::getDatabase($host);
+    $id = Multisite::getIdentifier("https://{$host}");
     $dev = Multisite::getInternalDomains($id)['dev'];
     $test = Multisite::getInternalDomains($id)['test'];
     $prod = Multisite::getInternalDomains($id)['prod'];
 
     $root = $this->getConfigValue('repo.root');
 
+    $this->getConfig()->set('drupal.db.database', $db);
+    $this->input()->setInteractive(FALSE);
+
+    $this->invokeCommand('recipes:multisite:init', [
+      '--site-uri' => "https://{$host}",
+      '--site-dir' => $host,
+      '--remote-alias' => "{$id}.prod",
+    ]);
+
     // Remove some files that we probably don't need.
     $files = [
-      "{$root}/docroot/sites/{$dir}/default.services.yml",
-      "{$root}/docroot/sites/{$dir}/services.yml",
-      "{$root}/drush/sites/{$dir}.site.yml",
+      "{$root}/docroot/sites/{$host}/default.services.yml",
+      "{$root}/docroot/sites/{$host}/services.yml",
+      "{$root}/drush/sites/{$host}.site.yml",
     ];
 
     foreach ($files as $file) {
@@ -262,29 +259,30 @@ EOD;
     // Re-generate the Drush alias so it is more useful.
     $app = $this->getConfig()->get('project.prefix');
     $default = Yaml::parse(file_get_contents("{$root}/drush/sites/{$app}.site.yml"));
-    $default['local']['uri'] = $dir;
+    $default['local']['uri'] = $host;
     $default['dev']['uri'] = $dev;
     $default['test']['uri'] = $test;
-    $default['prod']['uri'] = $dir;
+    $default['prod']['uri'] = $host;
 
     file_put_contents("{$root}/drush/sites/{$id}.site.yml", Yaml::dump($default, 10, 2));
     $this->say("Updated <comment>{$id}.site.yml</comment> Drush alias file with <info>local, dev, test and prod</info> aliases.");
 
     // Overwrite the multisite blt.yml file.
-    $blt = Yaml::parse(file_get_contents("{$root}/docroot/sites/{$dir}/blt.yml"));
+    $blt = Yaml::parse(file_get_contents("{$root}/docroot/sites/{$host}/blt.yml"));
     $blt['project']['machine_name'] = $id;
+    $blt['project']['requester'] = $requester;
     $blt['drupal']['db']['database'] = $db;
     $blt['drush']['aliases']['local'] = 'self';
-    file_put_contents("{$root}/docroot/sites/{$dir}/blt.yml", Yaml::dump($blt, 10, 2));
-    $this->say("Overwrote <comment>docroot/sites/{$dir}/blt.yml</comment> file with standardized names.");
+    file_put_contents("{$root}/docroot/sites/{$host}/blt.yml", Yaml::dump($blt, 10, 2));
+    $this->say("Overwrote <comment>docroot/sites/{$host}/blt.yml</comment> file with standardized names.");
 
     // Write sites.php data.
     $data = <<<EOD
 
-// Directory aliases for {$dir}.
-\$sites['{$dev}'] = '{$dir}';
-\$sites['{$test}'] = '{$dir}';
-\$sites['{$prod}'] = '{$dir}';
+// Directory aliases for {$host}.
+\$sites['{$dev}'] = '{$host}';
+\$sites['{$test}'] = '{$host}';
+\$sites['{$prod}'] = '{$host}';
 
 EOD;
 
@@ -292,7 +290,7 @@ EOD;
     $this->say('Added default <comment>sites.php</comment> entries.');
 
     // Remove the new local settings file - it has the wrong database name.
-    $file = "{$root}/docroot/sites/{$dir}/settings/local.settings.php";
+    $file = "{$root}/docroot/sites/{$host}/settings/local.settings.php";
 
     if (file_exists($file)) {
       unlink($file);
@@ -302,37 +300,30 @@ EOD;
 
     // Create the config directory with a file to commit.
     $this->taskFilesystemStack()
-      ->mkdir("{$root}/config/{$dir}")
-      ->touch("{$root}/config/{$dir}/.gitkeep")
+      ->mkdir("{$root}/config/{$host}")
+      ->touch("{$root}/config/{$host}/.gitkeep")
       ->run();
 
     $this->taskGit()
       ->dir($this->getConfigValue("repo.root"))
       ->add('docroot/sites/sites.php')
-      ->commit("Add sites.php entries for {$dir}")
-      ->add("docroot/sites/{$dir}")
-      ->commit("Initialize multisite {$dir} directory")
+      ->commit("Add sites.php entries for {$host}")
+      ->add("docroot/sites/{$host}")
+      ->commit("Initialize multisite {$host} directory")
       ->add("drush/sites/{$id}.site.yml")
-      ->commit("Create Drush aliases for {$dir}")
-      ->add("config/{$dir}")
-      ->commit("Create config directory for {$dir}")
+      ->commit("Create Drush aliases for {$host}")
+      ->add("config/{$host}")
+      ->commit("Create config directory for {$host}")
       ->interactive(FALSE)
       ->printOutput(FALSE)
       ->printMetadata(FALSE)
       ->run();
 
-    $this->say("Committed site <comment>{$dir}</comment> code.");
+    $this->say("Committed site <comment>{$host}</comment> code.");
 
-    $connector = new Connector([
-      'key' => $this->getConfigValue('credentials.acquia.key'),
-      'secret' => $this->getConfigValue('credentials.acquia.secret'),
-    ]);
-
-    $cloud = Client::factory($connector);
-
+    /** @var \AcquiaCloudApi\CloudApi\Client $cloud */
     /** @var \AcquiaCloudApi\Response\ApplicationResponse $application */
-    $application = $cloud->application($this->getConfigValue('cloud.appId'));
-
+    list($cloud, $application) = $this->getAcquiaCloudApi();
     $cloud->databaseCreate($application->uuid, $db);
     $this->say("Created <comment>{$db}</comment> cloud database.");
 
@@ -342,7 +333,6 @@ EOD;
       'Push this branch and merge via a pull request.',
       'Coordinate a new release and deploy to the test and prod environments.',
       'Add the multisite domains to environments as needed.',
-      'Add the webmaster account(s) to the production site.',
     ];
 
     $this->io()->listing($steps);
@@ -413,6 +403,30 @@ EOD;
     file_put_contents("{$root}/docroot/sites/sites.local.php", "<?php\n");
     $this->getContainer()->get('executor')->killProcessByPort('8888');
     $this->yell('The sites.local.php file has been emptied. Runserver has been stopped.');
+  }
+
+  /**
+   * Return new ConnectorInterface and ApplicationResponse for this application.
+   *
+   * @return array
+   *   Array of ConnectorInterface and ApplicationResponse variables.
+   */
+  protected function getAcquiaCloudApi() {
+    $connector = new Connector([
+      'key' => $this->getConfigValue('credentials.acquia.key'),
+      'secret' => $this->getConfigValue('credentials.acquia.secret'),
+    ]);
+
+    /** @var \AcquiaCloudApi\CloudApi\Client $cloud */
+    $cloud = Client::factory($connector);
+
+    /** @var \AcquiaCloudApi\Response\ApplicationResponse $application */
+    $application = $cloud->application($this->getConfigValue('cloud.appId'));
+
+    return [
+      $cloud,
+      $application,
+    ];
   }
 
 }
