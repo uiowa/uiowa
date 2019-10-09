@@ -1,29 +1,28 @@
-# Files with duplicate filenames will all be imported,
-# but all will copy from the same source.
-# This also leads to fewer files being migrated than exist in file_managed,
-# and that are listed in drush migrate-status.
+uuid: f5632ae2-1383-4cb0-b8e5-59980d2722fc
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: v57jMEA0TIzfYtFETlEhMAoDurmW5WHuzvA9xU2mxwU
 id: d7_file
-label: Files
+class: null
+field_plugin_method: null
+cck_plugin_method: null
 migration_tags:
-  - Drupal 7
+  - 'Drupal 7'
   - Content
   - Files
 migration_group: sitenow_migrate
-
+label: Files
 source:
   plugin: files
   constants:
-    # Need to update this according to the site being migrated.
-    SOURCE_BASE_PATH: 'http://brainworkshop.sites.uiowa.edu/sites/brainworkshop.sites.uiowa.edu/files/'
+    SOURCE_BASE_PATH: ''
     DRUPAL_FILE_DIRECTORY: 'public://images/'
-
-destination:
-  plugin: 'entity:file'
-
 process:
   filename:
-      plugin: get
-      source: filename
+    plugin: get
+    source: filename
   source_full_path:
     -
       plugin: concat
@@ -51,7 +50,9 @@ process:
   status: status
   created: timestamp
   changed: timestamp
-  # Likely not importing users--set to 0 for anonymous.
   uid:
     plugin: default_value
     default_value: 0
+destination:
+  plugin: 'entity:file'
+migration_dependencies: null

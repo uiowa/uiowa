@@ -1,18 +1,19 @@
+uuid: 6824ae20-f401-46a7-b32e-e730b0dfda26
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: GtmLagHokb6lu7WLF-E-oQ6R3Lv00iev2XbVmwnpnKM
 id: d7_person
-label: Basic person migration from Drupal 7
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
 migration_group: sitenow_migrate
-
+label: 'Basic person migration from Drupal 7'
 source:
   plugin: people
-
-destination:
-  plugin: entity:node
-  type: person
-
 process:
-  # Leave these out, since we're not migrating to a fresh install.
-  # nid: nid
-  # vid: vid
   langcode:
     plugin: static_map
     bypass: true
@@ -23,7 +24,6 @@ process:
   type:
     plugin: default_value
     default_value: person
-# Likely not importing users--set to 0 for anonymous.
   uid:
     plugin: default_value
     default_value: 0
@@ -32,23 +32,18 @@ process:
   changed: changed
   promote: promote
   sticky: sticky
-  langcode:
-    plugin: static_map
-    bypass: true
-    source: language
-    map:
-      und: en
   moderation_state: moderation_state
   field_image: person_mid
   field_person_bio: field_person_bio_value
-  # field_person_credential: 
   field_person_email: field_person_email_email
   field_person_first_name: field_people_first_name_value
   field_person_last_name: field_people_last_name_value
   field_person_phone: field_person_phone_value
   field_person_position: field_person_position_value
   field_teaser: field_person_bio_summary
-
+destination:
+  plugin: 'entity:node'
+  type: person
 migration_dependencies:
   required:
     - d7_file
