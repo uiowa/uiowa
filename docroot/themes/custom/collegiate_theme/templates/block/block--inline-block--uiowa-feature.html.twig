@@ -43,7 +43,6 @@ set classes = [
     {{ title_prefix }}
     {{ title_suffix }}
     {{ attach_library('collegiate_theme/feature-block') }}
-    {{ attach_library('collegiate_theme/responsive-bg') }}
     {% embed "@feature-block/feature-block--basic.twig" with {
       "feature_classes": attributes['class'],
       "feature_banner_preview_image": file_url(content.field_uiowa_feature_image[0]['#media'].image.entity.uri.value | image_style('medium')),
