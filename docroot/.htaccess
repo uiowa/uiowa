@@ -80,6 +80,10 @@ AddEncoding gzip svgz
   RewriteCond %{HTTP:X-Forwarded-Proto} !https
   RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
+  # Redirect veterans.org.uiowa.edu to veterans.uiowa.edu/uiva.
+  RewriteCond %{HTTP_HOST} veterans.org.uiowa.edu [NC]
+  RewriteRule ^ https://veterans.uiowa.edu/uiva%{REQUEST_URI} [L,R=301]
+
   # Set "protossl" to "s" if we were accessed via https://.  This is used later
   # if you enable "www." stripping or enforcement, in order to ensure that
   # you don't bounce between http and https.
