@@ -69,6 +69,15 @@ AddEncoding gzip svgz
 <IfModule mod_rewrite.c>
   RewriteEngine on
 
+  # Redirect http(s)://www.domain.com to https://domain.com.
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^(.*)$ https://%1%{REQUEST_URI} [L,R=301]
+
+  # Redirect all traffic from HTTP to HTTPS.
+  RewriteCond %{HTTPS} off
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
   # Set "protossl" to "s" if we were accessed via https://.  This is used later
   # if you enable "www." stripping or enforcement, in order to ensure that
   # you don't bounce between http and https.
@@ -94,16 +103,6 @@ AddEncoding gzip svgz
   # directories from your webroot or otherwise protect them from being
   # downloaded.
   RewriteRule "/\.|^\.(?!well-known/)" - [F]
-
-  # Redirecting http://www.domain.com and https://www.domain.com
-  # to https://domain.com.
-  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
-  RewriteRule ^(.*)$ https://%1%{REQUEST_URI} [L,R=301]
-
-  # Redirect all traffic from HTTP to HTTPS.
-  RewriteCond %{HTTPS} off
-  RewriteCond %{HTTP:X-Forwarded-Proto} !https
-  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
   # If your site can be accessed both with and without the 'www.' prefix, you
   # can use one of the following settings to redirect users to your preferred
