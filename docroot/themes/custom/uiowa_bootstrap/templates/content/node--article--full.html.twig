@@ -109,7 +109,21 @@
       {% else %}
           {{ content.article_created_date }}
       {% endif %}
-          </div>
-      {{ content|without('field_image', 'article_author', 'article_created_date', 'field_image_caption') }}
+      {% if content.field_article_source_org.0 or content.field_article_source_link.0 %}
+        {% trans %}<div class="field__label"><strong>Originally published{% endtrans %}
+        {% if content.field_article_source_org.0 %}
+          {% trans %}by: </strong></div> {% endtrans %}
+          {% if content.field_article_source_link.0 %}
+            <div class="field__items"><a href="{{ content.field_article_source_link.0['#url'] }}">{{ content.field_article_source_org.0 }}</a></div>
+          {% else %}
+            <div class="field__items">{{ content.field_article_source_org.0 }}</div>
+          {% endif %}
+        {% else %}
+          {% trans %}on: </strong></div>{% endtrans %}
+          <div class="field__items"><a href="{{ content.field_article_source_link.0['#url'] }}">{{ content.field_article_source_link.0['#url'] }}</a></div>
+        {% endif %}
+      {% endif %}
+      </div>
+      {{ content|without('field_image', 'article_author', 'article_created_date', 'field_image_caption', 'field_article_source_org', 'field_article_source_link') }}
   </div>
 </article>

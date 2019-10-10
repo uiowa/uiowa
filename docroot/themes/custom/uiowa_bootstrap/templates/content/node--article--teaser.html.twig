@@ -91,7 +91,20 @@
         </h3>
       {% endif %}
       {{ title_suffix }}
-
+      {% if content.field_article_source_org.0 or content.field_article_source_link.0 %}
+      {% trans %}<div class="field__label"><strong>Originally published{% endtrans %}
+      {% if content.field_article_source_org.0 %}
+        {% trans %}by: </strong></div> {% endtrans %}
+        {% if content.field_article_source_link.0 %}
+          <div class="field__items"><a href="{{ content.field_article_source_link.0['#url'] }}">{{ content.field_article_source_org.0 }}</a></div>
+        {% else %}
+          <div class="field__items">{{ content.field_article_source_org.0 }}</div>
+        {% endif %}
+      {% else %}
+        {% trans %}on: </strong></div>{% endtrans %}
+        <div class="field__items"><a href="{{ content.field_article_source_link.0['#url'] }}">{{ content.field_article_source_link.0['#url'] }}</a></div>
+      {% endif %}
+    {% endif %}
       {{ content|without('node_image', 'links') }}
   </div>
     {% if content.node_image %}
