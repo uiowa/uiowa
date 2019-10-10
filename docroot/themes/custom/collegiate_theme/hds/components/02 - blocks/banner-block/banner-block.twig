@@ -3,13 +3,22 @@
     <div class="banner {{ banner_classes }}" {% if banner_bg_image %} style="background-image: url('{% spaceless %}{{ banner_bg_image }}{% endspaceless %}'); background-size: cover; background-position: center" {% endif %}>
     {% endif %}
   {% endblock %}
+
   {% if banner_image %}
     <img class="banner__image" src="{{ banner_image }}"/>
   {% endif %}
   <div class="banner__container">
-    {% if banner_title is not empty %}
-      <h3 class="banner__title">{{ banner_title }}</h3>
-    {% endif %}
+
+    {% block heading %}
+      {% if banner_title is not empty %}
+        {% include "@heading" with {
+          "heading_level" : 'h3',
+          "heading_class" : 'banner__title',
+          "heading" : banner_title
+        } %}
+      {% endif %}
+    {% endblock %}
+
     {% if banner_summary is not empty %}
       <p class="banner__summary">{{ banner_summary }}</p>
     {% endif %}

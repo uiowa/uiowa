@@ -6,13 +6,14 @@
 
     {% for item in news.items %}
       {% include "@news-block--advanced" with {
-        "news_card_image": item.card_image,
-        "news_card_tag": item.card_tag,
-        "news_card_title": item.card_title,
-        "news_card_text": item.card_text,
-        "news_card_date": item.card_date,
-        "news_card_link_url": item.card_link_url,
-        "news_card_link_title": item.card_link_title
+        "news_classes": 'news-card__row',
+        "news_card_image": item.news_card_image,
+        "news_card_tag": item.news_card_tag,
+        "news_card_title": item.news_card_title,
+        "news_card_text": item.news_card_text,
+        "news_card_date": item.news_card_date,
+        "news_card_link_url": item.news_card_link_url,
+        "news_card_link_title": item.news_card_link_title
       } %}
 
       {% set news_card_position = news_card_position + 1 %}

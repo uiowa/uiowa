@@ -6,9 +6,18 @@
   {% endblock %}
   <div class="news-card__body">
     <span class="news-card__label">{{ news_card_tag }}</span>
-    <h2 class="news-card__title">
-      <a href="{{ news-card_link_url }}">{{ news_card_title }}</a>
-    </h2>
+
+{% block heading %}
+    {% if news_card_title is not empty %}
+        {% include "@heading" with {
+            "heading_level" : 'h2',
+            "heading_class" : 'news-card__title',
+            "heading_url" : news_card_link_url,
+            "heading" : news_card_title
+        } %}
+    {% endif %}
+{% endblock %}
+
     <button id="news-card__button{{ news_card_position }}" class="news-card__bttn toggle-bttn" aria-expanded="false">
       <span class="element-invisible">Details</span></button>
     <div class="news-card__details">

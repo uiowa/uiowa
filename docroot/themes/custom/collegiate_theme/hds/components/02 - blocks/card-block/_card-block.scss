@@ -1,21 +1,26 @@
 .card {
   position: relative;
+  text-decoration: none;
+  cursor: pointer;
   transition: transform .35s, z-index .5s;
   @include flexbox;
   @include flex-direction($value: column);
   @include flex($fg: 1, $fs: 1, $fb: 0%);
 
-&__row {
-  @include margin($right: $sm, $bottom: 0, $left: $sm);
+  &__row {
+    @include breakpoint(sm) {
+      @include margin($right: $sm, $bottom: 0, $left: $sm);
 
-   &:first-of-type {
-     @include margin($left: 0);
-   }
+      &:first-of-type {
+        @include margin($left: 0);
+      }
 
-   &:last-of-type {
-     @include margin($right: 0);
-   }
-}
+      &:last-of-type {
+        @include margin($right: 0);
+      }
+    }
+  }
+
   &__wrapper {
     @include breakpoint(sm) {
       @include flexbox;
@@ -34,7 +39,9 @@
 
   &__title {
     font-size: $h6-font-size;
+    font-weight: $font-weight-medium-bold;
     @include margin($top: $sm, $bottom: $sm);
+
     a {
       text-decoration: none;
       color: $secondary;
@@ -47,6 +54,7 @@
 
   &__text {
     @include margin($top: $sm, $bottom: $sm);
+    color: $secondary;
   }
 
   &__link {
@@ -59,6 +67,7 @@
 
   &__details {
     @include element-invisible;
+
     .is-open & {
       clear: both;
       @include element-invisible-off;
@@ -82,13 +91,14 @@
   height: 30px;
   padding: 0;
   cursor: pointer;
-  transition: background .25s,border .25s,color .25s,transform .25s;
+  transition: background .25s, border .25s, color .25s, transform .25s;
   border: none;
   border: 1px solid $secondary;
   border-radius: 50%;
   background: $white;
 
   @include margin($right: $sm);
+
   .is-open & {
     background: $secondary;
   }
@@ -98,6 +108,7 @@
     content: "\f141";
     color: $secondary;
     @include fas();
+
     .is-open & {
       content: "\f00d";
       color: $white;

@@ -3,12 +3,12 @@
   overflow: hidden;
   @include flex($fg: 1, $fs: 1, $fb: 0%);
     @include breakpoint(sm) {
-      min-height: 350px;
+      min-height: 400px;
     }
 
   &__container {
     position: relative;
-    padding: $xlg;
+    @include padding($top: $xlg, $right: $xlg, $bottom: $xlg, $left: $md);
     @include margin($top: $sm, $right: $xlg, $bottom: 0, $left: $xlg);
     @include breakpoint(sm) {
       width: 50%;

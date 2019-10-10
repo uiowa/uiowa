@@ -3,18 +3,28 @@
     <a href="{{ feature_link }}" tabindex="0" aria-expanded="{{ firstitem }}" class="feature feature__{{ counter }} {{ feature_classes }}" {% if feature_banner_image %} style="background-image: url('{% spaceless %}{{ feature_banner_image }}{% endspaceless %}'); background-size: cover; background-position: center" {% endif %}>
   {% endif %}
 {% endblock %}
-<div class="feature__wrapper">
-  <div class="feature__content">
-    <div class="feature__bracket">
-      <h2 class="feature__heading">{{ feature_title }}</h2>
-      <hr class="feature__hr">
-      <p class="feature__subheading">{{ feature_sub }}</p>
+  <div class="feature__wrapper">
+    <div class="feature__content">
+      <div class="feature__bracket">
+
+        {% block heading %}
+          {% if feature_title is not empty %}
+            {% include "@heading" with {
+              "heading_level" : 'h2',
+              "heading_class" : 'feature__heading',
+              "heading" : feature_title
+            } %}
+          {% endif %}
+        {% endblock %}
+
+        <hr class="feature__hr">
+        <p class="feature__subheading">{{ feature_sub }}</p>
+      </div>
+    </div>
+    <div class="feature__teaser">
+      <p class="feature__teaser-heading">{{ feature_title }}
+        <i aria-hidden="true" class="fas fa-plus"></i>
+      </p>
     </div>
   </div>
-  <div class="feature__teaser">
-    <h3 class="feature__teaser-heading">{{ feature_title }}
-      <i aria-hidden="true" class="fas fa-plus"></i>
-    </h3>
-  </div>
-</div>
 </a>

@@ -4,15 +4,28 @@ dependencies:
   config:
     - block_content.type.uiowa_card
     - field.storage.block_content.field_uiowa_card_title
+  module:
+    - heading
 id: block_content.uiowa_card.field_uiowa_card_title
 field_name: field_uiowa_card_title
 entity_type: block_content
 bundle: uiowa_card
 label: Title
 description: ''
-required: false
+required: true
 translatable: false
-default_value: {  }
+default_value:
+  -
+    size: h2
+    text: ''
 default_value_callback: ''
-settings: {  }
-field_type: string
+settings:
+  label: Heading
+  allowed_sizes:
+    h2: h2
+    h3: h3
+    h4: h4
+    h5: h5
+    h6: h6
+    h1: 0
+field_type: heading

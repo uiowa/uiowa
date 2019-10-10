@@ -1,10 +1,10 @@
 {% if block_type == 'basic' %}
 
   <div class="card__wrapper">
-<hr />
 
     {% for item in card.items | slice(0, 2) %}
       {% include "@card-block--basic" with {
+        "card_classes": 'card__row',
         "card_image": item.card_image,
         "card_link_url": item.card_link_url,
         "card_title": item.card_title,

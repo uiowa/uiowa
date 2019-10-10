@@ -4,6 +4,7 @@
 
     {% for item in stat.items | slice(0, 3) %}
       {% include "@stat-block--basic" with {
+        "stat_classes": 'stat__row',
         "stat_image": item.stat_image,
         "stat_title": item.stat_title,
         "stat_summary": item.stat_summary
@@ -20,6 +21,7 @@
 
     {% for item in stat.items | slice(0, 4) %}
       {% include "@stat-block--basic" with {
+        "stat_classes": 'stat__row',
         "stat_image": item.stat_image,
         "stat_title": item.stat_title,
         "stat_summary": item.stat_summary
