@@ -3,22 +3,24 @@ title: "Content Blocks"
 has_children: true
 nav_order: 6
 ---
-# Content Blocks
+# ATTENTION: We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation/content-blocks)
 
-Content blocks are currently available on the [Basic Page](../page/index.md) content type.
+## Content Blocks
 
-## Actions
+Content blocks are currently available on the [Basic Page](http://sitenow.uiowa.edu/documentation/content-blocks) content type.
+
+### Actions
 
 Each content block comes with actions which let you edit, remove or duplicate the content block.
 
 Duplicating a content block will attempt to make a copy of everything within it, even other content blocks.
 
-## Reorder
+### Reorder
 Content blocks can be reordered using the handle off to the left.
 
 **Note**: You cannot drag an item to another level of nesting.
 
-## Sections
+### Sections
 
 Sections are top-level content blocks that wrap around and contain other content blocks.
 
@@ -40,7 +42,7 @@ By default, basic pages load with an initial section and text area content block
 - Articles
 - Featured Content
 
-## Settings
+### Settings
 
 Each content block has additional settings tucked away. These are all optional and set with defaults. Some settings differ based on the type of content block.
 

@@ -3,11 +3,13 @@ title: "WYSIWYG (What-You-See-Is-What-You-Get) Text Editor"
 has_children: false
 nav_order: 7
 ---
-# WYSIWYG (What-You-See-Is-What-You-Get) Text Editor
+# ATTENTION: We're moving our Documentation to our [SiteNow Website](https://sitenow.uiowa.edu/documentation/wysiwyg)
+
+## WYSIWYG (What-You-See-Is-What-You-Get) Text Editor
 
 The What-You-See-Is-What-You-Get (WYSIWYG) text editor gives you the ability to format your content and add links/media. This text editor is available on most text areas around the site.
 
-## Basic Formatting
+### Basic Formatting
 
 With the WYSIWYG text editor, it is easy to style your text with the bold, italic, strike-through, superscript, subscript options.
 
@@ -25,13 +27,13 @@ You can quickly remove all formatting from highlighted text using the "Remove Fo
 
 ![remove format](assets/images/remove-format.png) 
 
-### Styles
+#### Styles
 
 Using the "Block Styles" drop-down, you can add paragraph styles within your content. The paragraph style will be applied to the current line/paragraph. Hit Enter/Return to break out and return to to the normal format.
 
 ![style](assets/images/styles.png)
 
-### Headings
+#### Headings
 
 Using the "Paragraph Format" drop-down, you can add headings within your content. The heading will be applied to the current line/paragraph. Hit Enter/Return to break out and return to the normal format.
 
@@ -39,13 +41,13 @@ Using the "Paragraph Format" drop-down, you can add headings within your content
 
 It is important for accessibility and usability that headings are used sequentially and not for style purposes. 
 
-### Alignment
+#### Alignment
 
 There are three options for text alignment. Left, center and right. Text is left-aligned by default. The alignment will continue until the next line break similar to headings.
 
 ![left align](assets/images/left.png) ![center align](assets/images/center.png) ![right align](assets/images/right.png) 
 
-### Lists
+#### Lists
 
 There are two types of lists you can create. Unordered (bullet points) and ordered (numbered).
 
@@ -61,7 +63,7 @@ Additionally you can increase and decrease the indentation of the list.
 
 To break out of the list and continue with other content, press Return/Enter twice.
 
-## Links
+### Links
 
 Links to internal or external paths can be added with the link button. A separate configuration window will load.
 
@@ -73,30 +75,30 @@ Links can also be removed easily with the "Unlink" button.
 
 ![remove link](assets/images/a-remove.png) 
 
-### Checking for broken links
+#### Checking for broken links
 
 Free online tools that can check your website for broken links and links that redirect:
 
 - [validator.w3.org](https://validator.w3.org/checklink) (to check more than one page, check the box "Check linked documents recursively" and enter a number in the "recursion depth" field)
 - [brokenlinkcheck.com](http://www.brokenlinkcheck.com/broken-links.php)
 
-### URL
+#### URL
 
 Add the link's connecting URL. Start typing to find content.
 
-### Title
+#### Title
 
 Add a name that populates the title attribute of the link, usually shown as a small tooltip on hover.
 
-### Upload A File
+#### Upload A File
 
 Allows you to add a file that doesn't already exist on the site. Insert a name and browse to find a file from your computer.
 
-### Advanced
+#### Advanced
 
 Provides additional, though optional, configuration for the link. Configurations such as, CSS classes, ID, open in a new window button, and Relation (rel).
 
-### Buttons
+#### Buttons
 
 To quick add a button style to a link create a link and under Add Link > Advanced > CSS classes, select one of the given styles.
 
@@ -104,17 +106,17 @@ To quick add a button style to a link create a link and under Add Link > Advance
 
 List of CSS classes to add to the link, separated by spaces. Alternatively, add one or more of these predefined *button* styles: (Primary, Secondary, Success, Info, Warning, Danger, Small, Large, Full-Width).
 
-#### ID
+##### ID
 
 Allows linking to this content using a *URL fragment*. Must be unique.
 
-## Blockquotes
+#### Blockquotes
 
 A blockquote element defines a section of the webpage that is quoted from another source. The blockquote visually indicates that the text is a quote.
 
 ![blockquote](assets/images/blockquote.png)
 
-## Tables
+### Tables
 
 A table is a structured set of data made up of of rows and columns (tabular data). A separate configuration window will load.
 
@@ -126,7 +128,7 @@ You can set initial row and column counts, designate the headers for the table a
 
 After initializing the table, you can enter data and/or right-click on the table to add additional rows/columns or edit table properties.
 
-## Media (Images)
+### Media (Images)
 
 The "Media Entity Embed" (Image) button allows you to add new or existing images to your content. A separate configuration window will load.
 
@@ -142,7 +144,7 @@ After saving the entity, another window will load allowing you to change the siz
 
 You can read more about media images and files within the [Media section of our documentation](../media/index.md).
 
-## Media (Remote Video)
+### Media (Remote Video)
 
 The "Media Entity Embed" (Remote Video) button allows you to add remote videos to your content. A separate configuration window will load.
 
@@ -152,7 +154,7 @@ After saving entity, another window will load allowing you to change the display
 
 You can read more about media remote videos within the [Media section of our documentation](../media/index.md).
 
-## Editor Options
+### Editor Options
 
 There are several other buttons available within the WYSIWYG text editor that allow you to control aspects of the editor window itself.
 

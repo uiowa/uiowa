@@ -3,14 +3,15 @@ title: "Social Media Embed"
 has_children: false
 nav_order: 20
 ---
+# ATTENTION: We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation/media/social-media-embed)
 
-# Social Media Embed
+## Social Media Embed
 
 Social media (ie Facebook, Twitter, and Instagram posts), can be added to your site.
 
 You can add them directly to your site as you create content through fields and [WYSIWYG](../wysiwyg/index.md) text editors.
 
-# Facebook
+## Facebook
 
 ### **How to make sure Facebook post is public**
 1. Go to your post you would like to embed
@@ -38,7 +39,7 @@ You can add them directly to your site as you create content through fields and 
 6. Save
 7. Note: while in the editing view of your node, you will only see a summary of the post‘Posted by: Name on Date’
 
-# Twitter
+## Twitter
 
 ### **How to make sure account is **NOT** private**
 1. Login to your Twitter profile
@@ -60,7 +61,7 @@ You can add them directly to your site as you create content through fields and 
 8. You can add a caption that would appear on the bottom of the post you embed
 9. Save
 
-# Instagram
+## Instagram
 
 ### **How to make sure account is **NOT** private**
 1. Login to your Instagram profile

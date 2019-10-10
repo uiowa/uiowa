@@ -1,7 +1,10 @@
 ---
 title: "Home"
+redirect: http://sitenow.uiowa.edu/documentation
 ---
-# SiteNow Documentation
+# ATTENTION: We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation)
+
+## SiteNow Documentation
 
 The purpose of this site is to provide site owner/editor documentation for the University of Iowa Drupal 8 based sites.
 

@@ -4,8 +4,9 @@ has_children: false
 parent: "Media"
 nav_order: 8
 ---
+# ATTENTION: We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation/media/images-and-files)
 
-# Images and Files
+## Images and Files
 
 By default, images, background images and document files can be added to your site.
 
@@ -57,12 +58,12 @@ The largest is 2000x2000px scaled and cropped. We reccomend a center focal point
 
 Displays the image as uploaded to the site but will have a max width of the container element it resides in. This is also the only way to display animated .gif files.
 
-# Media (Remote Videos)
+## Media (Remote Videos)
 
 By default, remote videos can be added to your site.
 
 You can either add them directly to your site by going to Content > Media (/admin/content/media), or as you create content through fields and [WYSIWYG](../wysiwyg/index.md) text editors.
 
-# Using Existing Media
+## Using Existing Media
 
 For media file fields and the [WYSIWYG](../wysiwyg/index.md) text areas (link for documents, entity media embed for images), you will be able to search for and select a media file.

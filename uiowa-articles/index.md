@@ -3,36 +3,38 @@ title: "SiteNow Articles"
 has_children: false
 nav_order: 4
 ---
-# SiteNow Articles
+# ATTENTION: We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation/sitenow-articles)
+
+## SiteNow Articles
 
 Go to Basic Site Settings via Configuration > SiteNow Articles (/admin/config/system/uiowa-articles)
 
 On this page you can customize the display of articles on the site.
 
-## Settings
+### Settings
 
-### Enable articles listing
+#### Enable articles listing
 
 If checked, an articles listing will disaply at the configurable path below.
 
-### Articles title
+#### Articles title
 
 The titles for the articles listing. Defaults to *News*.
 
-### Articles path
+#### Articles path
 
 The base path for the articles listing. Defaults to *news*.
 
 *Warning*:The RSS feed path is controlled by this setting. {articles path}/feed
 
-### Header Content
+#### Header Content
 
 Here you can enter any content that is displayed above the articles listing. Click *Save configuration* to save.
 
-### Display monthly archive
+#### Display monthly archive
 
 If checked, a monthly archive listing will display.
 
-### Show RSS Feed icon
+#### Show RSS Feed icon
 
 If checked, a linked RSS icon will be displayed.

@@ -3,12 +3,13 @@ title: "Configuring Google Analytics"
 has_children: false
 nav_order: 14
 ---
+# ATTENTION: We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation/configuring-google-analytics)
 
-# Configuring Google Analytics
+## Configuring Google Analytics
 
 *Note:* Webmaster role required.
 
-## Site Analytics
+### Site Analytics
 
 Google Analytics is a free website traffic and marketing effectiveness service.
 

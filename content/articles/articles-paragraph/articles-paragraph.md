@@ -4,9 +4,11 @@ has_children: false
 parent: "Articles"
 nav_order: 2
 ---
-# Articles Paragraph
+# ATTENTION: We're moving our Documentation to our [SiteNow Website](https://sitenow.uiowa.edu/documentation/content-blocks/articles-paragraph)
 
-## If you want to list all of your articles on a page:
+## Articles Paragraph
+
+### If you want to list all of your articles on a page:
 1. Add a ‘Section’
 2. Add the ‘Articles’ paragraph
 3. Leave the ‘Filter articles by reference’ empty
@@ -15,9 +17,9 @@ nav_order: 2
 6. Provide a ‘Path’ if you wish to provide a specific URL to where the ‘More’ link shall take the user
 7. In the ‘Article Listing Settings’ provide the width and style settings you prefer
 
-## If you want to list articles related to a specific topic or ‘Tag’:
+### If you want to list articles related to a specific topic or ‘Tag’:
 
-### Tags
+#### Tags
 Structure -> Tags -> List Terms -> Add term
 
 Add terms that you would like to use to group similar articles 

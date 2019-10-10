@@ -3,13 +3,15 @@ title: "User Management and Roles"
 has_children: false
 nav_order: 10
 ---
-# User Management and Roles
+# ATTENTION: We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation/user-management-and-roles)
+
+## User Management and Roles
 
 When you login to your site, you will be assigned a role. The default roles are editor, publisher, and webmaster. Editors are mostly responsible for content management. Publishers have additional developer settings, and Webmasters have elevated permissions to handle more administrative tasks, like managing users.
 
 To see an overview of the people with access to the site, go to People (/admin/people).
 
-## Adding Users
+### Adding Users
 
 *Note:* Webmaster role required.
 
@@ -19,7 +21,7 @@ From here, enter the HawkID of the person you would like to add to the site. You
 
 Set their status to active (default), and select the role(s) you would like the user to have. Click Save.
 
-## Managing Existing Users
+### Managing Existing Users
 
 *Note:* Webmaster role required.
 
@@ -27,21 +29,21 @@ From the people overview page you can edit one or more existing users at a time.
 
 When canceling an account, options will be presented about how to handle site content that user may have created. The option you select may have unintended consequences. When in doubt, but you need to keep the user from logging into your site, just change their status to blocked.
 
-## User Roles
+### User Roles
 
 While Webmasters have additional permissions above Publishers, both roles have the same permissions in terms of Content Moderation.
 
-### Editors
+#### Editors
   * Create new content
   * Move content from Draft to Review
   * View all own content
   * View content which is Published
-### Publishers (and Webmasters)
+#### Publishers (and Webmasters)
   * Create new content
   * Move content from Draft to Review
   * Move content from Review to Published
   * Move content from Published to Archived
   * Move content from Archived to Published
   * View all content
-### Non-Users
+#### Non-Users
   * View content which is Published

@@ -3,8 +3,10 @@ title: "Featured Content"
 has_children: false
 nav_order: 21
 ---
-# Featured Content
-Featured Content includes content types: [Basic Page](../content/basic-pages/basic-pages.md), [Person](../content/person/person.md) and [Article](../content/articles/articles.md)
+# ATTENTION: We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation/content-blocks/featured-content-paragraph)
+
+## Featured Content
+Featured Content includes content types: [Basic Page](http://sitenow.uiowa.edu/documentation/basic-page-content-type), [Person](http://sitenow.uiowa.edu/documentation/person-content-type) and [Article](http://sitenow.uiowa.edu/documentation/article-content-type)
 
 1. Add content (whether it is a basic page, person or article)
 2. Edit the page you wish to display the featured content

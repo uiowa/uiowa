@@ -4,7 +4,9 @@ has_children: false
 parent: "Webforms"
 nav_order: 2
 ---
-# Webforms
+# ATTENTION: We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation/webforms)
+
+## Webforms
 
 A webform is a form or questionnaire that is accessible to users. Submission results and statistics are recorded and accessible to privileged users.
 
@@ -14,7 +16,7 @@ Go to Webforms via Structure > Webforms (/admin/structure/webform)
 
 On this page you can create new Webforms or view previous ones.
 
-## How to create a webform
+### How to create a webform
 
 1. At the top of the page click *Structure, Webforms, Add Webform.* 
 2. Enter the title of the webform in the Title field and optionally provide additional information about the form or submission process in the Body field. By default, content entered in the Body field will display above the fields of the webform.
@@ -65,7 +67,7 @@ On this page you can create new Webforms or view previous ones.
 7. To remove a field from the webform, select the drop-down list arrow icon that displays under the *Operations* column in the *Build* section of the *Webforms* page.
 8. Click the *Save elements* button at the bottom of the page to save your changes.
 
-## How to edit a webform
+### How to edit a webform
 
 1. Login to your website and navigate to the webform that you want to edit.
 2. **To change the *Title* or *Body* of the webform**, click the *Edit* tab under the *operations* column. Make your changes and then click the *Save* button at the bottom of the page.
@@ -81,4 +83,4 @@ For more information about additional webform configuration options, including:
 - how to provide a custom confirmation message upon successful form submission
 - how to close a webform (to prevent additional submissions)
   
-Please refer to the [Advanced webform configuration](https://docs.sitenow.uiowa.edu/webforms/advanced-webform-configuration/advanced-webform-configuration.html) page.
+Please refer to the [Advanced webform configuration](http://sitenow.uiowa.edu/documentation/webforms/advanced-webform-configuration) page.

@@ -3,7 +3,9 @@ title: "Known Issues"
 has_children: false
 nav_order: 17
 ---
-# Known Issues
+# ATTENTION: We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/known-issues)
+
+## Known Issues
 
 - There are issues with embedding content within the [WYSIWYG text editor](../wysiwyg/index.md) with certain versions of Chrome. We recommend using another browser if you encounter any of the following:
   - After embedding a file into the content area, you can't type or advance the cursor from the file focus.

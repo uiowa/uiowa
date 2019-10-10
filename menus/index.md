@@ -3,7 +3,9 @@ title: "Managing Menus"
 has_children: false
 nav_order: 9
 ---
-# Managing Menus
+# ATTENTION: We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation/managing-menus)
+
+## Managing Menus
 
 All menus can be managed by going to the menus overview page (admin/structure/menu).
 
@@ -27,6 +29,6 @@ With the right permissions, for each existing menu item you can:
 - **Enable/Disable** - This will show/hide the menu link in the given menu.
 - **Reorder** - You can change the order of menu items within the given menu.
 
-## Social Media Menu
+### Social Media Menu
 
 Within this menu is an icon picker. Clicking on the FontAwesome Icon bar will open a large selection of icons to pick from.

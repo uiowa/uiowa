@@ -4,7 +4,9 @@ has_children: false
 parent: "Articles"
 nav_order: 2
 ---
-# Article Content
+# ATTENTION: We're moving our Documentation to our [SiteNow Website](https://sitenow.uiowa.edu/documentation/article-content-type)
+
+## Article Content
 
 Use *articles* for time-sensitive content like news, press releases or blog posts.
 
