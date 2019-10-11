@@ -12,7 +12,6 @@ use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
 use Grasmash\YamlExpander\Expander;
 use Robo\Contract\VerbosityThresholdInterface;
-use Symfony\Component\Console\Input\Input;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
@@ -95,9 +94,6 @@ class MultisiteCommands extends BltTasks {
    *
    * @aliases uis uisite
    *
-   * @param \Symfony\Component\Console\Input\InputInterface $input
-   * @param array $options
-   *
    * @throws \Acquia\Blt\Robo\Exceptions\BltException
    */
   public function generate(InputInterface $input, array $options = [
@@ -111,7 +107,7 @@ class MultisiteCommands extends BltTasks {
   ]) {
 
     $this->say("This will generate a new site in the docroot/sites directory.");
-    
+
     // 1. Get the production domain.
     $domain = $this->getNewSiteDomain($options);
 
