@@ -13,6 +13,7 @@ use Consolidation\AnnotatedCommand\CommandError;
 use Grasmash\YamlExpander\Expander;
 use Robo\Contract\VerbosityThresholdInterface;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
 
 define('LOCAL_BASE_DOMAIN', 'local.site');
@@ -53,7 +54,7 @@ class MultisiteCommands extends BltTasks {
   }
 
   /**
-   * Require the --site-uri option so it can be used in postMultisiteInit.
+   * Check that Acquia Cloud credentials are set.
    *
    * @hook validate uiowa:multisite
    */
@@ -95,11 +96,17 @@ class MultisiteCommands extends BltTasks {
    *
    * @throws \Acquia\Blt\Robo\Exceptions\BltException
    */
-  public function generate(InputInterface $input) {
+  public function generate(InputInterface $input, array $options = [
+    'site-dir' => InputOption::VALUE_OPTIONAL,
+    'site-uri' => InputOption::VALUE_OPTIONAL,
+    'machine-name' => InputOption::VALUE_OPTIONAL,
+    'remote-alias' => InputOption::VALUE_OPTIONAL,
+    'install-profile' => InputOption::VALUE_OPTIONAL,
+    'account-mail' => InputOption::VALUE_OPTIONAL,
+    'pretend' => InputOption::VALUE_OPTIONAL,
+  ]) {
 
     $this->say("This will generate a new site in the docroot/sites directory.");
-
-    $options = $input->getOptions();
 
     // 1. Get the production domain.
     $domain = $this->getNewSiteDomain($options);
@@ -178,7 +185,7 @@ class MultisiteCommands extends BltTasks {
   /**
    * This will be called after the `uiowa:multisite` command is executed.
    *
-   * @hook post-command uiowa:multisite
+   * @hook post-command uiowa:multisite1
    *
    * @throws \Acquia\Blt\Robo\Exceptions\BltException
    * @throws \Robo\Exception\TaskException
