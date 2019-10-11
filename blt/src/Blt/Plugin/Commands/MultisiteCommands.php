@@ -111,11 +111,7 @@ class MultisiteCommands extends BltTasks {
   ]) {
 
     $this->say("This will generate a new site in the docroot/sites directory.");
-
-    $options = $input->getOptions();
-
-    var_dump($options);
-
+    
     // 1. Get the production domain.
     $domain = $this->getNewSiteDomain($options);
 
