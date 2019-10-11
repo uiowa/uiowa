@@ -2,14 +2,28 @@ local:
   root: '${env.cwd}/docroot'
   uri: gradcogscilang.uiowa.local.site
 dev:
-  uri: gradcogscilang.dev.drupal.uiowa.edu
+  uri: https://gradcogscilang.dev.drupal.uiowa.edu
   host: staging-15039.prod.hosting.acquia.com
   options: {  }
   paths:
     dump-dir: /mnt/tmp
   root: /var/www/html/uiowa01.dev/docroot
   user: uiowa01.dev
+prod_temp:
+  uri: https://gradcogscilang.prod.drupal.uiowa.edu
+  host: web-33201.prod.hosting.acquia.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+  root: /var/www/html/uiowa01.prod/docroot
+  user: uiowa01.prod
 prod:
   uri: cogscilang.grad.uiowa.edu
+  host: web-33201.prod.hosting.acquia.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+  root: /var/www/html/uiowa01.prod/docroot
+  user: uiowa01.prod
 test:
   uri: gradcogscilang.stage.drupal.uiowa.edu
