@@ -795,10 +795,11 @@ EOD;
       $default = [];
     }
 
-    $default['local']['uri'] = $domains['local'];
-    $default['prod']['uri'] = $site_dir;
-    $default['test']['uri'] = $domains['test'];
-    $default['dev']['uri'] = $domains['dev'];
+    $https_prefix = 'https://';
+    $default['local']['uri'] = $https_prefix . $domains['local'];
+    $default['prod']['uri'] = $https_prefix . $site_dir;
+    $default['test']['uri'] = $https_prefix . $domains['test'];
+    $default['dev']['uri'] = $https_prefix . $domains['dev'];
 
     file_put_contents($to_filename, Yaml::dump($default, 10, 2));
     $this->say("Updated <comment>{$machine_name}.site.yml</comment> Drush alias file with <info>local, dev, test and prod</info> aliases.");
