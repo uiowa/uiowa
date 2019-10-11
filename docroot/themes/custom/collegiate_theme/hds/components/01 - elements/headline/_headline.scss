@@ -1,15 +1,25 @@
 .bold-headline {
-  @include bracket();
   width: intrinsic;
   width: -moz-max-content;
   width: -webkit-max-content;
-  @include margin($right: auto, $bottom: $xlg, $left: auto);
   letter-spacing: .04em;
   text-transform: uppercase;
   font-family: $font-family-caps-light;
   font-weight: $font-weight-medium-bold;
   font-size: $h3-font-size;
+  @include bracket();
+  @include padding($top: $md, $right: $md, $bottom: $sm, $left: $md);
+  @include margin($right: auto, $bottom: $xlg, $left: auto);
   &.bold-headline--negative {
     color: $white;
   }
+}
+
+.bold-headline--positive {
+  @extend .bold-headline;
+}
+
+.bold-headline--negative {
+  color: $white;
+  @extend .bold-headline;
 }

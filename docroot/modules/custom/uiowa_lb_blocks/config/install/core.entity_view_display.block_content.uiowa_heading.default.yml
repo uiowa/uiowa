@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_heading
+    - field.field.block_content.uiowa_heading.field_uiowa_heading_title
+  module:
+    - heading
+id: block_content.uiowa_heading.default
+targetEntityType: block_content
+bundle: uiowa_heading
+mode: default
+content:
+  field_uiowa_heading_title:
+    weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: heading
+    region: content
+hidden: {  }

@@ -1,7 +1,7 @@
 <{{ heading_level }} class="{{ heading_class }}">
-{% if heading_url %}
-  <a href="{{ heading_url }}">{{ heading }}</a>
-{% else %}
+  {% if heading_url %}
+    <a href="{{ heading_url }}">{{ heading }}</a>
+  {% else %}
     {{ heading }}
-{% endif %}
+  {% endif %}
 </{{ heading_level }}>
