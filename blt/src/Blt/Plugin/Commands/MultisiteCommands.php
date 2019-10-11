@@ -185,7 +185,7 @@ class MultisiteCommands extends BltTasks {
   /**
    * This will be called after the `uiowa:multisite` command is executed.
    *
-   * @hook post-command uiowa:multisite1
+   * @hook post-command uiowa:multisite
    *
    * @throws \Acquia\Blt\Robo\Exceptions\BltException
    * @throws \Robo\Exception\TaskException
@@ -221,7 +221,7 @@ class MultisiteCommands extends BltTasks {
     $vm_changed = $this->checkDirty('box/config.yml');
 
     if ($git_updates = $this->confirm("Would you like to commit and push updates to the git repo?", TRUE)) {
-      $branch = "initialize-{$machine_name}";
+      $branch = "initialize_{$machine_name}";
       $gitTask = $this->taskGit()
         ->dir($this->getConfigValue("repo.root"))
         ->exec("git checkout -b {$branch}")
