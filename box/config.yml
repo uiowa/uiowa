@@ -15,12 +15,12 @@ drupal_composer_install_dir: /var/www/uiowa01
 drupal_core_path: /var/www/uiowa01/docroot
 ssh_home: /var/www/uiowa01
 apache_vhosts_ssl:
-  - servername: "{{ drupal_domain }}"
-    documentroot: "{{ drupal_core_path }}"
-    certificate_file: "/etc/ssl/certs/ssl-cert-snakeoil.pem"
-    certificate_key_file: "/etc/ssl/private/ssl-cert-snakeoil.key"
-    extra_parameters: |
-        ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000{{ drupal_core_path }}"
+  -
+    servername: '{{ drupal_domain }}'
+    documentroot: '{{ drupal_core_path }}'
+    certificate_file: /etc/ssl/certs/ssl-cert-snakeoil.pem
+    certificate_key_file: /etc/ssl/private/ssl-cert-snakeoil.key
+    extra_parameters: "ProxyPassMatch ^/(.*\\.php(/.*)?)$ \"fcgi://127.0.0.1:9000{{ drupal_core_path }}\"\n"
 apache_vhosts:
   -
     servername: '{{ drupal_domain }}'
@@ -50,6 +50,10 @@ apache_vhosts:
     servername: gradcogscilang.uiowa.local.site
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: graduipda.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
 mysql_databases:
   -
     name: drupal
@@ -65,6 +69,10 @@ mysql_databases:
     collation: utf8_general_ci
   -
     name: cogscilang_grad_uiowa_edu
+    encoding: utf8
+    collation: utf8_general_ci
+  -
+    name: uipda_grad_uiowa_edu
     encoding: utf8
     collation: utf8_general_ci
 mysql_users:
