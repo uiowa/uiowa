@@ -185,9 +185,6 @@ EOD;
    * Validate sitenow:multisite:create command.
    *
    * @hook validate sitenow:multisite:create
-   *
-   * @requireFeatureBranch
-   * @requireCredentials
    */
   public function validateCreate(CommandData $commandData) {
     $host = $commandData->input()->getArgument('host');
@@ -221,6 +218,9 @@ EOD;
    *
    * @arg $requester
    *   The HawkID of the original requester. Will be granted webmaster access.
+   *
+   * @requireFeatureBranch
+   * @requireCredentials
    *
    * @throws \Exception
    */
