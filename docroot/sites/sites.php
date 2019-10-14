@@ -278,3 +278,8 @@ $sites['labcogaresearch.prod.drupal.uiowa.edu'] = 'cogaresearch.lab.uiowa.edu';
 $sites['mauihelp.dev.drupal.uiowa.edu'] = 'help.maui.uiowa.edu';
 $sites['mauihelp.stage.drupal.uiowa.edu'] = 'help.maui.uiowa.edu';
 $sites['mauihelp.prod.drupal.uiowa.edu'] = 'help.maui.uiowa.edu';
+
+// Directory aliases for icred.org.uiowa.edu.
+$sites['orgicred.dev.drupal.uiowa.edu'] = 'icred.org.uiowa.edu';
+$sites['orgicred.stage.drupal.uiowa.edu'] = 'icred.org.uiowa.edu';
+$sites['orgicred.prod.drupal.uiowa.edu'] = 'icred.org.uiowa.edu';
