@@ -29,7 +29,7 @@ function uiowa_lb_blocks_form_alter(&$form, $form_state, $form_id) {
         ],
       ],
     ];
-     $form['layout_builder_style']['#states'] = [
+    $form['layout_builder_style']['#states'] = [
       'visible' => [
         ':input[name="layout_builder_block_override"]' => [
           'checked' => TRUE,
