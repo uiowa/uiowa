@@ -120,6 +120,7 @@ class LockupController extends ControllerBase {
     $horizontal_center = 144;
     $p_line = 8;
     $s_line = 6;
+    $s_count = 0;
     $s_reduce = 0;
     $s_offset = 0;
     $p_offset = 1;
@@ -171,7 +172,7 @@ class LockupController extends ControllerBase {
         $stacked_sub_y = 148.33;
         $horizontal_sum_y = $horizontal_sum_y + 6.85;
         $p_offset = 1;
-        $s_offset = 12;
+        $s_offset = 11.5;
         break;
 
       case 2:
@@ -185,7 +186,7 @@ class LockupController extends ControllerBase {
         $stacked_sub_y = 168.23;
         $horizontal_sum_y = $horizontal_sum_y + 20.55;
         $p_offset = 3;
-        $s_offset = 30;
+        $s_offset = 31.5;
         break;
 
     }
@@ -303,11 +304,11 @@ class LockupController extends ControllerBase {
         $combined_half = $combined / 2;
 
         // Border. Height based on primary and secondary combined height.
-        if ($horizontal_sum_y < 22) {
+        if ($combined - $p_offset - $s_reduce <= 22) {
           $border_height = 30;
         }
         else {
-          $border_height = $horizontal_sum_y + 12;
+          $border_height = $combined + 8;
         }
         $border_y = $border_height / 2;
         $lockup->addRect([
