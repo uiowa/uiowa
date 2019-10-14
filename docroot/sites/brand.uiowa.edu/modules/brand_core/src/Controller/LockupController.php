@@ -121,6 +121,7 @@ class LockupController extends ControllerBase {
     $p_line = 8;
     $s_line = 6;
     $s_reduce = 0;
+    $s_offset = 0;
     $p_offset = 1;
 
     $horizontal_sum_y = 0;
@@ -135,7 +136,7 @@ class LockupController extends ControllerBase {
         case 1:
           $horizontal_sum_y = $horizontal_sum_y + 5;
           $s_offset = $s_offset + 0;
-          $s_reduce = 0;
+          $s_reduce = 2;
           break;
 
         case 2:
