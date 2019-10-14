@@ -18,3 +18,15 @@ function sitenow_core_webform_element_alter(array &$element, FormStateInterface 
     ];
   }
 }
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function sitenow_core_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'block_view_alter'
+    && isset($implementations['sitenow_core'], $implementations['uiowa_auth'])) {
+    $group = $implementations['sitenow_core'];
+    unset($implementations['sitenow_core']);
+    $implementations['sitenow_core'] = $group;
+  }
+}
