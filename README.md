@@ -23,7 +23,6 @@ This project is based on BLT, an open-source project template and tool that enab
     git remote add acquia ACQUIA_REMOTE_URL
     ```
 
-
 ----
 # Setup Local Environment.
 1. Install [Drush Launcher](https://github.com/drush-ops/drush-launcher).
