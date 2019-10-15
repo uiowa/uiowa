@@ -5,6 +5,7 @@
  * Primary module hooks for sitenow_core module.
  */
 
+use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
@@ -17,4 +18,60 @@ function sitenow_core_webform_element_alter(array &$element, FormStateInterface 
       'validate',
     ];
   }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function sitenow_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id == 'webform_submission_request_a_site_paragraph_431_add_form'
+    || $form_id == 'webform_submission_request_a_site_add_form') {
+    $form['#attached']['library'][] = 'sitenow_core/better-request-form';
+  }
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function sitenow_core_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'block_view_alter'
+    && isset($implementations['sitenow_core'], $implementations['uiowa_auth'])) {
+    $group = $implementations['sitenow_core'];
+    unset($implementations['sitenow_core']);
+    $implementations['sitenow_core'] = $group;
+  }
+}
+
+/**
+ * Implements hook_block_view_BASE_BLOCK_ID_alter().
+ */
+function sitenow_core_block_view_user_login_block_alter(array &$build, BlockPluginInterface $block) {
+  $build['#pre_render'][] = '_sitenow_core_user_login_block_pre_render';
+}
+
+/**
+ * Pre-render callback for user_login_block.
+ *
+ * @param array $build
+ *   The block build render array.
+ *
+ * @return array
+ *   The render array.
+ *
+ * @see uiowa_auth_block_view_user_login_block_alter()
+ * @see sitenow_core_block_view_user_login_block_alter()
+ */
+function _sitenow_core_user_login_block_pre_render(array $build) {
+  $path = \Drupal::service('path.current')->getPath();
+
+  if ($path == '/node/26'
+    && isset($build['content']['hawkid'], $build['content']['hawkid']['link'])) {
+    $build['content']['hawkid']['link']['#url']->setOptions([
+      'query' => [
+        'destination' => $path,
+      ],
+    ]);
+  }
+
+  return $build;
 }

@@ -18,7 +18,10 @@ This project is based on BLT, an open-source project template and tool that enab
     $ git clone git@github.com:<account>/git@git.com/uiowa/uiowa.git
     ```
 7. Update your the configuration located in the `/blt/blt.yml` file to match your site's needs. See [configuration files](#important-configuration-files) for other important configuration files.
-
+8. Add the Acquia repository as a secondary remote. You can get the Acquia remote URL from the [Acquia Cloud interface](https://docs.acquia.com/acquia-cloud/develop/repository/git).
+    ```
+    git remote add acquia ACQUIA_REMOTE_URL
+    ```
 
 ----
 # Setup Local Environment.
@@ -102,13 +105,13 @@ credentials:
 ```
 ## Create Multisite
 To create a new multisite:
-1. Run the `blt recipes:multisite:init` (`rmi` for short) command with the `--site-uri` and `--no-interaction` options specified.
+1. Run the `blt sitenow:multisite:create` command (`smc` for short) on a feature branch created from master.
 2. Follow the directions the command prints to the terminal.
 3. If necessary, email Hostmaster with CNAME request template in ITS-web@uiowa.edu -> Drafts -> Email Templates -> SiteNow Templates.
 
 ## Delete Multisite
 To delete a multisite:
-1. Run the `blt sitenow:multisite:delete` (`smd` for short) command on a feature branch created from master.
+1. Run the `blt sitenow:multisite:delete` command (`smd` for short) on a feature branch created from master.
 2. Follow the directions the command prints to the terminal.
 3. Remove any related cron jobs from the Acquia Cloud interface.
 3. If necessary, email Hostmaster to remove the CNAME that is no longer in use.

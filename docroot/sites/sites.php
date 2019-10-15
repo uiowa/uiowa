@@ -258,3 +258,28 @@ $sites['lablogsdon.prod.drupal.uiowa.edu'] = 'logsdon.lab.uiowa.edu';
 $sites['studioelectronicmusic.dev.drupal.uiowa.edu'] = 'electronicmusic.studio.uiowa.edu';
 $sites['studioelectronicmusic.stage.drupal.uiowa.edu'] = 'electronicmusic.studio.uiowa.edu';
 $sites['studioelectronicmusic.prod.drupal.uiowa.edu'] = 'electronicmusic.studio.uiowa.edu';
+
+// Directory aliases for wu.lab.uiowa.edu.
+$sites['labwu.dev.drupal.uiowa.edu'] = 'wu.lab.uiowa.edu';
+$sites['labwu.stage.drupal.uiowa.edu'] = 'wu.lab.uiowa.edu';
+$sites['labwu.prod.drupal.uiowa.edu'] = 'wu.lab.uiowa.edu';
+
+// Directory aliases for gsab.org.uiowa.edu.
+$sites['orggsab.dev.drupal.uiowa.edu'] = 'gsab.org.uiowa.edu';
+$sites['orggsab.stage.drupal.uiowa.edu'] = 'gsab.org.uiowa.edu';
+$sites['orggsab.prod.drupal.uiowa.edu'] = 'gsab.org.uiowa.edu';
+
+// Directory aliases for cogaresearch.lab.uiowa.edu.
+$sites['labcogaresearch.dev.drupal.uiowa.edu'] = 'cogaresearch.lab.uiowa.edu';
+$sites['labcogaresearch.stage.drupal.uiowa.edu'] = 'cogaresearch.lab.uiowa.edu';
+$sites['labcogaresearch.prod.drupal.uiowa.edu'] = 'cogaresearch.lab.uiowa.edu';
+
+// Directory aliases for help.maui.uiowa.edu.
+$sites['mauihelp.dev.drupal.uiowa.edu'] = 'help.maui.uiowa.edu';
+$sites['mauihelp.stage.drupal.uiowa.edu'] = 'help.maui.uiowa.edu';
+$sites['mauihelp.prod.drupal.uiowa.edu'] = 'help.maui.uiowa.edu';
+
+// Directory aliases for icred.org.uiowa.edu.
+$sites['orgicred.dev.drupal.uiowa.edu'] = 'icred.org.uiowa.edu';
+$sites['orgicred.stage.drupal.uiowa.edu'] = 'icred.org.uiowa.edu';
+$sites['orgicred.prod.drupal.uiowa.edu'] = 'icred.org.uiowa.edu';
