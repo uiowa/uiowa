@@ -4,7 +4,7 @@ has_children: false
 parent: "Content"
 nav_order: 2
 ---
-# <span style=background-color:salmon>ATTENTION:</span> We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/person-content-type)
+# ATTENTION: We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/person-content-type)
 
 ## Person
 

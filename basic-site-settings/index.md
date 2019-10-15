@@ -3,7 +3,7 @@ title: "Basic Site Settings and Footer Configuration"
 has_children: false
 nav_order: 4
 ---
-# <span style=background-color:salmon>ATTENTION:</span> We're moving our Documentation to our [SiteNow Website](https://sitenow.uiowa.edu/documentation/content-blocks/articles-paragraph) We're moving our Documentation to our [SiteNow Website](https://sitenow.uiowa.edu/documentation/basic-site-settings-and-footer-configuration)
+# **ATTENTION**: We're moving our Documentation to our [SiteNow Website](https://sitenow.uiowa.edu/documentation/basic-site-settings-and-footer-configuration)
 
 ## Basic Site Settings and Footer Configuration
 

@@ -3,7 +3,7 @@ title: "Content Blocks"
 has_children: true
 nav_order: 6
 ---
-# <span style=background-color:salmon>ATTENTION:</span> We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation/content-blocks)
+# ATTENTION: We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation/content-blocks)
 
 ## Content Blocks
 

@@ -3,7 +3,7 @@ title: "Configuring Google Analytics"
 has_children: false
 nav_order: 14
 ---
-# <span style=background-color:salmon>ATTENTION:</span> We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation/configuring-google-analytics)
+# ATTENTION: We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation/configuring-google-analytics)
 
 ## Configuring Google Analytics
 

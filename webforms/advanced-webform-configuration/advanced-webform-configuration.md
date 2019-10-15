@@ -4,7 +4,7 @@ has_children: false
 parent: "Webforms"
 nav_order: 3
 ---
-# <span style=background-color:salmon>ATTENTION:</span> We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation/webforms)
+# ATTENTION: We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation/webforms)
 
 ## Advanced webform configuration
 

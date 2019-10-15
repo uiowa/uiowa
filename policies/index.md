@@ -3,7 +3,7 @@ title: "Policies"
 has_children: false
 nav_order: 18
 ---
-# <span style=background-color:salmon>ATTENTION:</span> We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/policies)
+# ATTENTION: We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/policies)
 
 ## Policies
 

@@ -3,7 +3,7 @@ title: "Getting Started"
 has_children: false
 nav_order: 1
 ---
-# <span style=background-color:salmon>ATTENTION:</span> We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation)
+# ATTENTION: We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation)
 
 ## Getting Started
 

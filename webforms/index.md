@@ -3,7 +3,7 @@ title: "Webforms"
 has_children: true
 nav_order: 13
 ---
-# <span style=background-color:salmon>ATTENTION:</span> We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation/webforms)
+# ATTENTION: We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation/webforms)
 
 ## Webform Management and Best Practices
 It is crucial to safely handle collected data from webforms. The following information explains the best practices on the type of information (protected data) that should not be collected.

@@ -3,7 +3,7 @@ title: "Social Media Embed"
 has_children: false
 nav_order: 20
 ---
-# <span style=background-color:salmon>ATTENTION:</span> We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation/media/social-media-embed)
+# ATTENTION: We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation/media/social-media-embed)
 
 ## Social Media Embed
 

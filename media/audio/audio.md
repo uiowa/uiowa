@@ -4,7 +4,7 @@ has_children: false
 parent: "Media"
 nav_order: 8
 ---
-# <span style=background-color:salmon>ATTENTION:</span> We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation/media/audio)
+# ATTENTION: We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation/media/audio)
 
 ## Audio
 
