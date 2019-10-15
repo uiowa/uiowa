@@ -3,7 +3,7 @@ title: "Search Engine Optimization (SEO)"
 has_children: false
 nav_order: 12
 ---
-# ATTENTION: We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation/search-engine-optimization)
+# <span style=background-color:salmon>ATTENTION:</span> We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation/search-engine-optimization)
 
 ## Search Engine Optimization (SEO)
 

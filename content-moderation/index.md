@@ -3,7 +3,7 @@ title: "Content Moderation"
 has_children: false
 nav_order: 11
 ---
-# ATTENTION: We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation/content-moderation-and-workflow)
+# <span style=background-color:salmon>ATTENTION:</span> We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation/content-moderation-and-workflow)
 
 ## Content Moderation and Workflow
 

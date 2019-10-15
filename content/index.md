@@ -3,7 +3,7 @@ title: "Content"
 has_children: true
 nav_order: 2
 ---
-# ATTENTION: We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation)
+# <span style=background-color:salmon>ATTENTION:</span> We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation)
 
 ## Adding Content
 

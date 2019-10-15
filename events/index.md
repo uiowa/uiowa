@@ -4,7 +4,7 @@ has_children: false
 parent: 'Content Blocks'
 nav_order: 1
 ---
-# ATTENTION: We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation/content-blocks/uiowa-events)
+# <span style=background-color:salmon>ATTENTION:</span> We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation/content-blocks/uiowa-events)
 
 ## University of Iowa Events
 

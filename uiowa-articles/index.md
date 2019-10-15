@@ -2,8 +2,9 @@
 title: "SiteNow Articles"
 has_children: false
 nav_order: 4
+redirect: http://sitenow.uiowa.edu/documentation/sitenow-articles
 ---
-# ATTENTION: We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation/sitenow-articles)
+# <span style=background-color:salmon>ATTENTION:</span> We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation/sitenow-articles)
 
 ## SiteNow Articles
 

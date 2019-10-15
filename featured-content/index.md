@@ -3,7 +3,7 @@ title: "Featured Content"
 has_children: false
 nav_order: 21
 ---
-# ATTENTION: We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation/content-blocks/featured-content-paragraph)
+# <span style=background-color:salmon>ATTENTION:</span> We're moving our Documentation to our [SiteNow Website](http://sitenow.uiowa.edu/documentation/content-blocks/featured-content-paragraph)
 
 ## Featured Content
 Featured Content includes content types: [Basic Page](http://sitenow.uiowa.edu/documentation/basic-page-content-type), [Person](http://sitenow.uiowa.edu/documentation/person-content-type) and [Article](http://sitenow.uiowa.edu/documentation/article-content-type)
