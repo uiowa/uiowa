@@ -518,7 +518,7 @@ function sitenow_preprocess_page(&$variables) {
       switch ($type) {
         case 'page':
         case 'article':
-          if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
+          if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()  && $node->preview_view_mode !== 'teaser') {
             $image = $node->get('field_image')->view('sitenow_16_9');
             $variables['node_image'] = $image;
             $variables['header_attributes']->addClass('has-bg-img');
