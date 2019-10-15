@@ -190,12 +190,12 @@ handlers:
     handler_id: site_created_email
     status: true
     conditions: {  }
-    weight: -46
+    weight: -45
     settings:
       states: {  }
       to_mail: '[webform_submission:values:email:raw]'
       to_options: {  }
-      cc_mail: ''
+      cc_mail: its-web@uiowa.edu
       cc_options: {  }
       bcc_mail: ''
       bcc_options: {  }
@@ -217,51 +217,18 @@ handlers:
       sender_mail: ''
       sender_name: ''
       theme_name: ''
-  hostmaster_email:
-    id: email
-    label: 'Hostmaster Email'
-    handler_id: hostmaster_email
-    status: true
-    conditions: {  }
-    weight: -47
-    settings:
-      states: {  }
-      to_mail: hostmaster@uiowa.edu
-      to_options: {  }
-      cc_mail: '[current-user:mail]'
-      cc_options: {  }
-      bcc_mail: ''
-      bcc_options: {  }
-      from_mail: its-web@uiowa.edu
-      from_options: {  }
-      from_name: 'ITS SiteNow Team'
-      subject: 'SiteNow DNS Request'
-      body: "Hostmaster,<br />\r\n<br />\r\nWould you please create a CNAME for [webform_submission:values:url_host] pointing to acquia-dlb.its.uiowa.edu?<br />\r\n<br />\r\nThank you,<br />\r\nITS - Custom Solutions & Integrations - Web Services<br />\r\n[current-user:mail]"
-      excluded_elements: {  }
-      ignore_access: false
-      exclude_empty: true
-      exclude_empty_checkbox: false
-      html: true
-      attachments: false
-      twig: false
-      debug: false
-      reply_to: ''
-      return_path: ''
-      sender_mail: ''
-      sender_name: ''
-      theme_name: ''
   site_created_email_url_internal_production:
     id: email
     label: 'Site Created Email - URL internal production'
     handler_id: site_created_email_url_internal_production
     status: true
     conditions: {  }
-    weight: -45
+    weight: -44
     settings:
       states: {  }
       to_mail: _default
       to_options: {  }
-      cc_mail: ''
+      cc_mail: its-web@uiowa.edu
       cc_options: {  }
       bcc_mail: ''
       bcc_options: {  }
@@ -289,7 +256,7 @@ handlers:
     handler_id: confirmation_email
     status: true
     conditions: {  }
-    weight: -48
+    weight: -49
     settings:
       states:
         - completed
@@ -299,7 +266,7 @@ handlers:
       cc_options: {  }
       bcc_mail: ''
       bcc_options: {  }
-      from_mail: noreply@sitenow.uiowa.edu
+      from_mail: its-web@uiowa.edu
       from_options: {  }
       from_name: 'ITS - Custom Solutions & Integrations - Web Services'
       subject: 'SiteNow Request Confirmed'
@@ -323,7 +290,7 @@ handlers:
     handler_id: form_submission_email
     status: true
     conditions: {  }
-    weight: -49
+    weight: -50
     settings:
       states:
         - completed
@@ -340,6 +307,105 @@ handlers:
       body: _default
       excluded_elements: {  }
       ignore_access: true
+      exclude_empty: true
+      exclude_empty_checkbox: false
+      html: true
+      attachments: false
+      twig: false
+      debug: false
+      reply_to: ''
+      return_path: ''
+      sender_mail: ''
+      sender_name: ''
+      theme_name: ''
+  hostmaster_email_pre_approved_url:
+    id: email
+    label: 'Hostmaster Email - Pre-approved URL'
+    handler_id: hostmaster_email_pre_approved_url
+    status: true
+    conditions: {  }
+    weight: -46
+    settings:
+      states: {  }
+      to_mail: hostmaster@uiowa.edu
+      to_options: {  }
+      cc_mail: its-web@uiowa.edu
+      cc_options: {  }
+      bcc_mail: ''
+      bcc_options: {  }
+      from_mail: its-web@uiowa.edu
+      from_options: {  }
+      from_name: 'ITS - Custom Solutions & Integrations - Web Services'
+      subject: 'SiteNow DNS Request'
+      body: "Hostmaster,<br />\r\n<br />\r\nWould you please create a CNAME for [webform_submission:values:url_host] pointing to acquia-dlb.its.uiowa.edu?<br />\r\n<br />\r\nThank you,<br />\r\nITS - Custom Solutions & Integrations - Web Services<br />\r\n[current-user:mail]"
+      excluded_elements: {  }
+      ignore_access: false
+      exclude_empty: true
+      exclude_empty_checkbox: false
+      html: true
+      attachments: false
+      twig: false
+      debug: false
+      reply_to: ''
+      return_path: ''
+      sender_mail: ''
+      sender_name: ''
+      theme_name: ''
+  hostmaster_email_top_level_url:
+    id: email
+    label: 'Hostmaster Email - Top level URL'
+    handler_id: hostmaster_email_top_level_url
+    status: true
+    conditions: {  }
+    weight: -47
+    settings:
+      states: {  }
+      to_mail: hostmaster@uiowa.edu
+      to_options: {  }
+      cc_mail: '[webform_submission:values:email:raw]'
+      cc_options: {  }
+      bcc_mail: ''
+      bcc_options: {  }
+      from_mail: its-web@uiowa.edu
+      from_options: {  }
+      from_name: _default
+      subject: 'Top Level Domain Request'
+      body: "Hostmaster - [webform_submission:values:email] has requested the top level domain [webform_submission:values:url_host] for department [webform_submission:values:department]. Please advise.<br />\r\n<br />\r\nRegards,<br />\r\nITS - Custom Solutions &amp; Integrations - Web Services<br />\r\n[current-user:mail]"
+      excluded_elements: {  }
+      ignore_access: false
+      exclude_empty: true
+      exclude_empty_checkbox: false
+      html: true
+      attachments: false
+      twig: false
+      debug: false
+      reply_to: ''
+      return_path: ''
+      sender_mail: ''
+      sender_name: ''
+      theme_name: ''
+  customer_email_url_adjusted:
+    id: email
+    label: 'Customer Email - URL adjusted'
+    handler_id: customer_email_url_adjusted
+    status: true
+    conditions: {  }
+    weight: -48
+    settings:
+      states: {  }
+      to_mail: '[webform_submission:values:email:raw]'
+      to_options: {  }
+      cc_mail: its-web@uiowa.edu
+      cc_options: {  }
+      bcc_mail: ''
+      bcc_options: {  }
+      from_mail: its-web@uiowa.edu
+      from_options: {  }
+      from_name: 'ITS - Custom Solutions & Integrations - Web Services'
+      subject: 'SiteNow Site Request'
+      body: "Hello,<br />\r\n&nbsp;<br />\r\nThe URL you requested has been adjusted to ahere to the University of Iowa <a href=\"https://itsecurity.uiowa.edu/domain-name-policy\">domain name policy</a>. The new URL is [webform_submission:values:uri].&nbsp;<br />\r\n&nbsp;&nbsp;<br />\r\nPlease reply to this email with your approval or if you would like to discuss other URL options.<br />\r\n&nbsp;<br />\r\nRegards,<br />\r\nITS - Custom Solutions &amp; Integrations - Web Services<br />\r\n&nbsp;"
+      excluded_elements: {  }
+      ignore_access: false
       exclude_empty: true
       exclude_empty_checkbox: false
       html: true
