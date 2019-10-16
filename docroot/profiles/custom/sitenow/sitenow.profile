@@ -481,6 +481,7 @@ function sitenow_preprocess_page_title(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
     $node = \Drupal::routeMatch()->getParameter('node');
+    $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
     if ($node instanceof NodeInterface) {
       if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
         $publish_options = $node->get('field_publish_options')->getValue();
@@ -499,6 +500,7 @@ function sitenow_preprocess_page(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
     $node = \Drupal::routeMatch()->getParameter('node');
+    $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
     if ($node instanceof NodeInterface) {
       $variables['header_attributes'] = new Attribute();
       if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
@@ -516,7 +518,7 @@ function sitenow_preprocess_page(&$variables) {
       switch ($type) {
         case 'page':
         case 'article':
-          if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
+          if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()  && $node->preview_view_mode !== 'teaser') {
             $image = $node->get('field_image')->view('sitenow_16_9');
             $variables['node_image'] = $image;
             $variables['header_attributes']->addClass('has-bg-img');
