@@ -283,3 +283,8 @@ $sites['mauihelp.prod.drupal.uiowa.edu'] = 'help.maui.uiowa.edu';
 $sites['orgicred.dev.drupal.uiowa.edu'] = 'icred.org.uiowa.edu';
 $sites['orgicred.stage.drupal.uiowa.edu'] = 'icred.org.uiowa.edu';
 $sites['orgicred.prod.drupal.uiowa.edu'] = 'icred.org.uiowa.edu';
+
+// Directory aliases for wics.org.uiowa.edu.
+$sites['orgwics.dev.drupal.uiowa.edu'] = 'wics.org.uiowa.edu';
+$sites['orgwics.stage.drupal.uiowa.edu'] = 'wics.org.uiowa.edu';
+$sites['orgwics.prod.drupal.uiowa.edu'] = 'wics.org.uiowa.edu';
