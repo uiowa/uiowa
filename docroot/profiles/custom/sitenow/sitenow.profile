@@ -19,6 +19,20 @@ use Drupal\media\Entity\Media;
 use Drupal\file\Entity\File;
 
 /**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_preprocess_html(&$variables) {
+  $meta_web_author = [
+    '#tag' => 'meta',
+    '#attributes' => [
+      'name' => 'web-author',
+      'content' => 'SiteNow v2 (https://sitenow.uiowa.edu)',
+    ],
+  ];
+  $variables['page']['#attached']['html_head'][] = [$meta_web_author, 'web-author'];
+}
+
+/**
  * Implements hook_toolbar_alter().
  */
 function sitenow_toolbar_alter(&$items) {
