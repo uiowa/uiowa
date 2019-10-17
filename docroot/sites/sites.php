@@ -268,3 +268,28 @@ $sites['labwu.prod.drupal.uiowa.edu'] = 'wu.lab.uiowa.edu';
 $sites['orggsab.dev.drupal.uiowa.edu'] = 'gsab.org.uiowa.edu';
 $sites['orggsab.stage.drupal.uiowa.edu'] = 'gsab.org.uiowa.edu';
 $sites['orggsab.prod.drupal.uiowa.edu'] = 'gsab.org.uiowa.edu';
+
+// Directory aliases for cogaresearch.lab.uiowa.edu.
+$sites['labcogaresearch.dev.drupal.uiowa.edu'] = 'cogaresearch.lab.uiowa.edu';
+$sites['labcogaresearch.stage.drupal.uiowa.edu'] = 'cogaresearch.lab.uiowa.edu';
+$sites['labcogaresearch.prod.drupal.uiowa.edu'] = 'cogaresearch.lab.uiowa.edu';
+
+// Directory aliases for help.maui.uiowa.edu.
+$sites['mauihelp.dev.drupal.uiowa.edu'] = 'help.maui.uiowa.edu';
+$sites['mauihelp.stage.drupal.uiowa.edu'] = 'help.maui.uiowa.edu';
+$sites['mauihelp.prod.drupal.uiowa.edu'] = 'help.maui.uiowa.edu';
+
+// Directory aliases for icred.org.uiowa.edu.
+$sites['orgicred.dev.drupal.uiowa.edu'] = 'icred.org.uiowa.edu';
+$sites['orgicred.stage.drupal.uiowa.edu'] = 'icred.org.uiowa.edu';
+$sites['orgicred.prod.drupal.uiowa.edu'] = 'icred.org.uiowa.edu';
+
+// Directory aliases for wics.org.uiowa.edu.
+$sites['orgwics.dev.drupal.uiowa.edu'] = 'wics.org.uiowa.edu';
+$sites['orgwics.stage.drupal.uiowa.edu'] = 'wics.org.uiowa.edu';
+$sites['orgwics.prod.drupal.uiowa.edu'] = 'wics.org.uiowa.edu';
+
+// Directory aliases for sem.sites.uiowa.edu.
+$sites['sitessem.dev.drupal.uiowa.edu'] = 'sem.sites.uiowa.edu';
+$sites['sitessem.stage.drupal.uiowa.edu'] = 'sem.sites.uiowa.edu';
+$sites['sitessem.prod.drupal.uiowa.edu'] = 'sem.sites.uiowa.edu';
