@@ -34,6 +34,8 @@ class LockupController extends ControllerBase {
       }
 
       $path = $node->getTitle();
+
+      // Create the different lockup versions.
       $lockup_stacked_black = LockupController::generateLockup($node, '#000000', "#000000", 'stacked');
       $lockup_stacked_black_file = $path . ' LockupStacked-BLACK.svg';
       fwrite(fopen(file_directory_temp() . '/' . $lockup_stacked_black_file, 'w'), $lockup_stacked_black);
@@ -126,6 +128,7 @@ class LockupController extends ControllerBase {
     $s_offset = 0;
     $p_offset = 1;
 
+    // Sub unit generation.
     if (!empty($node->field_lockup_sub_unit->value)) {
       $p_offset = $p_offset + 5.5;
       $s_txt = $node->field_lockup_sub_unit->value;
