@@ -288,3 +288,8 @@ $sites['orgicred.prod.drupal.uiowa.edu'] = 'icred.org.uiowa.edu';
 $sites['orgwics.dev.drupal.uiowa.edu'] = 'wics.org.uiowa.edu';
 $sites['orgwics.stage.drupal.uiowa.edu'] = 'wics.org.uiowa.edu';
 $sites['orgwics.prod.drupal.uiowa.edu'] = 'wics.org.uiowa.edu';
+
+// Directory aliases for sem.sites.uiowa.edu.
+$sites['sitessem.dev.drupal.uiowa.edu'] = 'sem.sites.uiowa.edu';
+$sites['sitessem.stage.drupal.uiowa.edu'] = 'sem.sites.uiowa.edu';
+$sites['sitessem.prod.drupal.uiowa.edu'] = 'sem.sites.uiowa.edu';
