@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: sem.sites.uiowa.edu
+    protocol: https
+  machine_name: sitessem
+  human_name: sem.sites.uiowa.edu
+  requester: sfiddelk
+drush:
+  aliases:
+    local: self
+    remote: sitessem.prod
+drupal:
+  db:
+    database: sem_sites_uiowa_edu
+    host: localhost
+    user: root
+    password: null
