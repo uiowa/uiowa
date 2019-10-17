@@ -116,6 +116,7 @@ class LockupController extends ControllerBase {
 
     $lockup = new BrandSVG();
 
+    // Bunch of variables to use later.
     $stacked_center = 216;
     $horizontal_center = 144;
     $p_line = 8;
@@ -125,8 +126,6 @@ class LockupController extends ControllerBase {
     $s_offset = 0;
     $p_offset = 1;
 
-    $horizontal_sum_y = 0;
-
     if (!empty($node->field_lockup_sub_unit->value)) {
       $p_offset = $p_offset + 5.5;
       $s_txt = $node->field_lockup_sub_unit->value;
@@ -135,19 +134,16 @@ class LockupController extends ControllerBase {
       $s_offset = 0;
       switch ($s_count) {
         case 1:
-          $horizontal_sum_y = $horizontal_sum_y + 5;
           $s_offset = $s_offset + 0;
           $s_reduce = 2;
           break;
 
         case 2:
-          $horizontal_sum_y = $horizontal_sum_y + 10;
           $s_offset = $s_offset + 4;
           $s_reduce = 1;
           break;
 
         case 3:
-          $horizontal_sum_y = $horizontal_sum_y + 15;
           $s_offset = $s_offset + 9;
           $s_reduce = 1;
           break;
@@ -170,21 +166,18 @@ class LockupController extends ControllerBase {
     switch ($p_count) {
       case 1:
         $stacked_sub_y = 148.33;
-        $horizontal_sum_y = $horizontal_sum_y + 6.85;
         $p_offset = 1;
         $s_offset = 11.5;
         break;
 
       case 2:
         $stacked_sub_y = 158.28;
-        $horizontal_sum_y = $horizontal_sum_y + 13.7;
         $p_offset = 2;
         $s_offset = 21.5;
         break;
 
       case 3:
         $stacked_sub_y = 168.23;
-        $horizontal_sum_y = $horizontal_sum_y + 20.55;
         $p_offset = 3;
         $s_offset = 31.5;
         break;
@@ -292,6 +285,7 @@ class LockupController extends ControllerBase {
 
       case 'horizontal':
         LockupController::addHorizontalLogo($lockup, $iowa_color);
+        // Silly math that made sense at the time...
         $po = $p_line * $p_count;
         $so = $s_line * $s_count;
         if (!empty($s_txt)) {
@@ -303,47 +297,41 @@ class LockupController extends ControllerBase {
         $combined = $po + $so + $ps_break;
         $combined_half = $combined / 2;
 
-        // Border. Height based on primary and secondary combined height.
-        if ($combined - $p_offset - $s_reduce <= 22) {
-          $border_height = 30;
-        }
-        else {
-          $border_height = $combined + 8;
-        }
-        $border_y = $border_height / 2;
-        $lockup->addRect([
-          'x' => 206.77,
-          'y' => $horizontal_center - $border_y,
-          'width' => 0.8,
-          'height' => $border_height,
-          'style' => 'fill:' . $text_color,
-        ]);
+        // Used later to find last line position.
+        $y_positions = [];
+
         // Primary Line 1.
+        $p1y = $horizontal_center - $combined_half - $p_offset + $s_reduce;
+        $y_positions[] = $p1y;
         $lockup->addText(html_entity_decode(
           $p_explode[0],
           ENT_QUOTES | ENT_XML1,
           'UTF-8'),
           255.126 - 42,
-          $horizontal_center - $combined_half - $p_offset + $s_reduce
+          $p1y
         );
         // Primary Line 2.
         if (isset($p_explode[1])) {
+          $p2y = $horizontal_center - $combined_half - $p_offset + $s_reduce + 10;
+          $y_positions[] = $p2y;
           $lockup->addText(html_entity_decode(
             $p_explode[1],
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             255.126 - 42,
-            $horizontal_center - $combined_half - $p_offset + $s_reduce + 10
+            $p2y
           );
         }
         // Primary Line 3.
         if (isset($p_explode[2])) {
+          $p3y = $horizontal_center - $combined_half - $p_offset + $s_reduce + 20;
+          $y_positions[] = $p3y;
           $lockup->addText(html_entity_decode(
             $p_explode[2],
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             255.126 - 42,
-            $horizontal_center - $combined_half - $p_offset + $s_reduce + 20
+            $p3y
           );
         }
 
@@ -351,34 +339,61 @@ class LockupController extends ControllerBase {
         $lockup->setLineHeight(7.5);
 
         if (isset($s_explode[0])) {
+          $s1y = $horizontal_center - $combined_half - $p_offset + $s_reduce + $s_offset;
+          $y_positions[] = $s1y;
           $lockup->addText(html_entity_decode(
             $s_explode[0],
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             255.126 - 42,
-            $horizontal_center - $combined_half - $p_offset + $s_reduce + $s_offset
+            $s1y
           );
         }
 
         if (isset($s_explode[1])) {
+          $s2y = $horizontal_center - $combined_half - $p_offset + $s_reduce + $s_offset + 7.5;
+          $y_positions[] = $s2y;
           $lockup->addText(html_entity_decode(
             $s_explode[1],
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             255.126 - 42,
-            $horizontal_center - $combined_half - $p_offset + $s_reduce + $s_offset + 7.5
+            $s2y
           );
         }
 
         if (isset($s_explode[2])) {
+          $s3y = $horizontal_center - $combined_half - $p_offset + $s_reduce + $s_offset + 15;
+          $y_positions[] = $s3y;
           $lockup->addText(html_entity_decode(
             $s_explode[2],
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             255.126 - 42,
-            $horizontal_center - $combined_half - $p_offset + $s_reduce + $s_offset + 15
+            $s3y
           );
         }
+
+        // Calculate border based on top and furthest bottom y values.
+        $bottom_y = max($y_positions);
+        $border_height = intval($bottom_y - $p1y);
+        // Account for primary/sub spacing and 4 top and bottom.
+        if (isset($s_txt)) {
+          $border_height = $border_height + 12;
+        }
+        else {
+          $border_height = $border_height + 8;
+        }
+        $border_half = $border_height / 2;
+
+        // Draw border.
+        $lockup->addRect([
+          'x' => 206.77,
+          'y' => $horizontal_center - $border_half,
+          'width' => 0.8,
+          'height' => $border_height,
+          'style' => 'fill:' . $text_color,
+        ]);
         break;
 
     }
