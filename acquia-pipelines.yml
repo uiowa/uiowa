@@ -17,7 +17,7 @@ events:
             script:
               - composer validate --no-check-all --ansi
               - composer install --ansi
-              - source ${BLT_DIR}/scripts/pipelines/setup_env
+#              - source ${BLT_DIR}/scripts/pipelines/setup_env
               - nvm install 10
               - npm install --global yarn
         - validate:
