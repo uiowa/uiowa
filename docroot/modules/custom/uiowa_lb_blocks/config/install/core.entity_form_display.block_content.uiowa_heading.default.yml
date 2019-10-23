@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_heading
+    - field.field.block_content.uiowa_heading.field_uiowa_heading_subheading
     - field.field.block_content.uiowa_heading.field_uiowa_heading_title
   module:
     - heading
@@ -11,6 +12,14 @@ targetEntityType: block_content
 bundle: uiowa_heading
 mode: default
 content:
+  field_uiowa_heading_subheading:
+    weight: 28
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_uiowa_heading_title:
     weight: 27
     settings: {  }

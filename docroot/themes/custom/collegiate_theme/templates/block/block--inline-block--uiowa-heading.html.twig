@@ -34,11 +34,8 @@ set classes = [
 ]
 %}
 
-
-
 {% if attributes.hasClass('js-layout-builder-block') %}
-{% set remove_classes = ['bold-headline--positive'] %}
-  <div{{ attributes.removeClass(remove_classes) }}>
+  <div class="js-layout-builder-block layout-builder-block contextual-region ui-sortable-handle">
   {% endif %}
   {% block content %}
 
@@ -47,11 +44,10 @@ set classes = [
     {{ attach_library('collegiate_theme/headline') }}
 
       {% embed "@headline/headline.twig" with {
-        "headline_level" : content.field_uiowa_heading_title[0]['#size'],
-        "headline_type" :  attributes.class,
-        "headline_title" : content.field_uiowa_heading_title[0]['#text']
+        "headline_level": content.field_uiowa_heading_title[0]['#size'],
+        "headline_type": attributes.class,
+        "headline_title": content.field_uiowa_heading_title[0]['#text']
       } %}
-
       {% endembed %}
 
   {% endblock %}
