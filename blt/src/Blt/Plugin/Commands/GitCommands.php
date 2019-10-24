@@ -61,4 +61,28 @@ class GitCommands extends BltTasks {
     }
   }
 
+  /**
+   * Write the branch SHA or tag to the profile info file.
+   *
+   * @hook post-command artifact:build
+   */
+  public function writeProfileVersion() {
+    $event = getenv('PIPELINE_WEBHOOK_EVENT');
+    $path = getenv('PIPELINE_VCS_PATH');
+    $sha = getenv('PIPELINE_GIT_HEAD_REF');
+
+    if ($event == 'TAG_PUSH') {
+      $version = $path;
+    }
+    elseif ($event == 'BRANCH_PUSH') {
+      $version = "{$path}-{$sha}";
+    }
+
+    if (isset($version)) {
+      $root = $this->getConfigValue("repo.root");
+      $data = "\nversion: '{$version}'";
+      file_put_contents("{$root}/docroot/profiles/custom/sitenow/sitenow.info.yml", $data, FILE_APPEND);
+    }
+  }
+
 }
