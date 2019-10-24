@@ -88,6 +88,9 @@ class GitCommands extends BltTasks {
       file_put_contents($file, $data, FILE_APPEND);
       $this->logger->info("Appended Git version {$version} to {$file}.");
     }
+    else {
+      $this->logger->warning("Unable to write Git version.");
+    }
   }
 
 }
