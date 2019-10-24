@@ -79,9 +79,10 @@ class GitCommands extends BltTasks {
     }
 
     if (isset($version)) {
-      $artifact = $this->getConfigValue('deploy.dir');
+      $file = $this->getConfigValue('deploy.dir') . '/docroot/profiles/custom/sitenow/sitenow.info.yml';
       $data = "\nversion: '{$version}'";
-      file_put_contents("{$artifact}/docroot/profiles/custom/sitenow/sitenow.info.yml", $data, FILE_APPEND);
+      file_put_contents($file, $data, FILE_APPEND);
+      $this->logger->info("Appended Git version {$version} to {$file}.");
     }
   }
 
