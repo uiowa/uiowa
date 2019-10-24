@@ -78,18 +78,15 @@ class GitCommands extends BltTasks {
       $version = "{$path}-{$sha}";
     }
 
+    $file = $this->getConfigValue('deploy.dir') . '/docroot/profiles/custom/sitenow/sitenow.info.yml';
+
     if (isset($version)) {
-      $file = $this->getConfigValue('deploy.dir') . '/docroot/profiles/custom/sitenow/sitenow.info.yml';
       $data = "version: '{$version}'";
-      $contents = file_get_contents($file);
-      $this->logger->info($contents);
       file_put_contents($file, $data, FILE_APPEND);
       $this->logger->info("Appended Git version {$version} to {$file}.");
-      $contents = file_get_contents($file);
-      $this->logger->info($contents);
     }
     else {
-      $this->logger->warning("Unable to write Git version.");
+      $this->logger->warning("Unable to append Git version to {$file}.");
     }
   }
 
