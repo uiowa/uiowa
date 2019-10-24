@@ -293,3 +293,8 @@ $sites['orgwics.prod.drupal.uiowa.edu'] = 'wics.org.uiowa.edu';
 $sites['sitessem.dev.drupal.uiowa.edu'] = 'sem.sites.uiowa.edu';
 $sites['sitessem.stage.drupal.uiowa.edu'] = 'sem.sites.uiowa.edu';
 $sites['sitessem.prod.drupal.uiowa.edu'] = 'sem.sites.uiowa.edu';
+
+// Directory aliases for planning-and-development.fo.uiowa.edu.
+$sites['foplanning-and-development.dev.drupal.uiowa.edu'] = 'planning-and-development.fo.uiowa.edu';
+$sites['foplanning-and-development.stage.drupal.uiowa.edu'] = 'planning-and-development.fo.uiowa.edu';
+$sites['foplanning-and-development.prod.drupal.uiowa.edu'] = 'planning-and-development.fo.uiowa.edu';
