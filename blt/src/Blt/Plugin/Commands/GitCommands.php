@@ -80,7 +80,7 @@ class GitCommands extends BltTasks {
 
     if (isset($version)) {
       $file = $this->getConfigValue('deploy.dir') . '/docroot/profiles/custom/sitenow/sitenow.info.yml';
-      $data = "\nversion: '{$version}'";
+      $data = "version: '{$version}'";
       file_put_contents($file, $data, FILE_APPEND);
       $this->logger->info("Appended Git version {$version} to {$file}.");
     }
