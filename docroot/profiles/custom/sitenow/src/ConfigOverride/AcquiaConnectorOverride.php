@@ -53,7 +53,7 @@ class AcquiaConnectorOverride implements ConfigFactoryOverrideInterface {
       }
 
       $overrides['acquia_connector.settings']['spi']['use_cron'] = $use_cron;
-      $overrides['acquia_connector.settings']['site_name'] = $site_name;
+      $overrides['acquia_connector.settings']['spi']['site_name'] = $site_name;
       $overrides['acquia_connector.settings']['hide_signup_messages'] = TRUE;
     }
 
