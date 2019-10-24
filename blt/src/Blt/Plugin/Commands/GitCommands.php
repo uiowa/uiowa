@@ -71,6 +71,10 @@ class GitCommands extends BltTasks {
     $path = getenv('PIPELINE_VCS_PATH');
     $sha = getenv('PIPELINE_GIT_HEAD_REF');
 
+    $this->logger->debug("Post artifact:build event: {$event}.");
+    $this->logger->debug("Post artifact:build path: {$path}.");
+    $this->logger->debug("Post artifact:build sha: {$sha}.");
+
     if ($event == 'TAG_PUSH') {
       $version = $path;
     }
