@@ -74,7 +74,7 @@ class GitCommands extends BltTasks {
     if ($event == 'TAG_PUSH') {
       $version = $path;
     }
-    elseif ($event == 'BRANCH_PUSH') {
+    elseif ($event == 'BRANCH_PUSH' || $event == 'PULL_REQUEST') {
       $version = "{$path}-{$sha}";
     }
 
