@@ -1,11 +1,11 @@
 <?php
 
-use Drupal\Core\Form\FormStateInterface;
-
 /**
  * @file
  * Contains uiowa_lb_blocks.module.
  */
+
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Implements hook_form_alter().
@@ -23,7 +23,11 @@ function uiowa_lb_blocks_form_alter(&$form, FormStateInterface $form_state, $for
 
   // Loop through layout builder style settings.
   // @todo Get this list dynamically.
-  foreach (['layout_builder_style_margin', 'layout_builder_style_heading', 'layout_builder_style'] as $lbs) {
+  foreach ([
+    'layout_builder_style_margin',
+     'layout_builder_style_heading',
+     'layout_builder_style'
+  ] as $lbs) {
     if (isset($form[$lbs])) {
 
       if ($form_id == 'layout_builder_update_block') {
