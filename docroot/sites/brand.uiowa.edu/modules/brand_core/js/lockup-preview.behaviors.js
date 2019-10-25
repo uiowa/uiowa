@@ -12,6 +12,8 @@
             */
             var primaryUnit = $("#edit-field-lockup-primary-unit-0-value");
             var subUnit = $("#edit-field-lockup-sub-unit-0-value");
+            var primaryUnitStacked = $("#edit-field-lockup-p-unit-stacked-0-value");
+            var subUnitStacked = $("#edit-field-lockup-s-unit-stacked-0-value");
             var primaryUnitPreviousText = primaryUnit.val();
             var subUnitPreviousText = subUnit.val();
             var primaryValueText;
@@ -36,15 +38,21 @@
             // Add warning HTML.
             warningHTML();
 
-            // Show preview and inject content based on existing input or live input for both the Primary Unit and Sub Unit.
+            // Show preview and inject content based on existing input or live input for 
+            // both the Primary Unit and Sub Unit, Horizontal and Stacked.
             if (primaryUnit.val() !== "") {
-                $(".lockup-stacked .primary-unit").text(primaryUnit.val());
                 $(".lockup-horizontal .primary-unit").text(primaryUnit.val());
             }
 
             if (subUnit.val() !== "") {
-                $(".lockup-stacked .sub-unit").text(subUnit.val());
                 $(".lockup-horizontal .sub-unit").text(subUnit.val());
+            }
+            if (primaryUnitStacked.val() !== "") {
+                $(".lockup-stacked .primary-unit").text(primaryUnit.val());
+            }
+
+            if (subUnitStacked.val() !== "") {
+                $(".lockup-stacked .sub-unit").text(subUnit.val());
             }
 
             // Do preliminary placement of the divider for the stacked lockup.
@@ -62,6 +70,8 @@
             // When either the Primary unit or sub unit are edited, process the input.
             primaryUnit.on("input", function (event) { processInput($(this), event); });
             subUnit.on("input", function (event) { processInput($(this), event); });
+            primaryUnitStacked.on("input", function (event) { processInput($(this), event); });
+            subUnitStacked.on("input", function (event) { processInput($(this), event); });
 
             // Set the submit button text whenever the user changes the 'Save as' option.
             $('#edit-moderation-state-0-state').change(function(){
@@ -248,20 +258,39 @@
 
                 var cursorSelectionStart = textarea[0].selectionStart;
                 var cursorSelectionEnd = textarea[0].selectionEnd;
+                var unit;
+                var orientation;
+                var unitSelector = selector.attr('id').split('-').splice(3,selector.attr('id').split('-').length-5).join('-');
+                
+                // Set the unit.
+                if(unitSelector[0] == 'p') { unit = 'primary'; }
+                else if(unitSelector[0] == 's') { unit = 'sub'; }
 
-                var primaryValueTextObj = textareaSanitize(textarea, text, numberOfLines, 'primary', event.originalEvent.inputType);
-                primaryValueText = primaryValueTextObj.text
-                primaryPreviewText  = previewSanitize(primaryValueText);
+                // Set either Horizontal or Stacked.
+                if(unitSelector.split('-')[unitSelector.split('-').length-1] == 'unit') { orientation = 'horizontal'; }
+                else if(unitSelector.split('-')[unitSelector.split('-').length-1] == 'stacked') { orientation = 'stacked'; }
+                
 
-                textarea.val(primaryValueText);
-                $(".lockup-stacked .primary-unit").text(primaryPreviewText);
-                $(".lockup-horizontal .primary-unit").text(primaryPreviewText);
+
+                var ValueObj = textareaSanitize(textarea, text, numberOfLines, unit, event.originalEvent.inputType);
+                ValueText = ValueObj.text
+                var PreviewText  = previewSanitize(ValueText);
+
+                textarea.val(ValueText);
+                $(".lockup-" + orientation + " ." + unit + "-unit").text(PreviewText);
+
+                if(unit == 'primary') {
+                    primaryPreviewText = PreviewText;
+                }
+                else if(unit == 'sub') {
+                    secondaryPreviewText = PreviewText;
+                }
 
                 // Resets cursor position.             
                 setSelectionRange(
                     textarea[0],
-                    cursorSelectionStart + primaryValueTextObj.selectionOffset,
-                    cursorSelectionEnd + primaryValueTextObj.selectionOffset
+                    cursorSelectionStart + ValueObj.selectionOffset,
+                    cursorSelectionEnd + ValueObj.selectionOffset
                 );
 
                 // Set the divider line width.
