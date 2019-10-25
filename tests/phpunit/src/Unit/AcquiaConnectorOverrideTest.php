@@ -44,16 +44,14 @@ class AcquiaConnectorOverrideTest extends UnitTestCase {
    *
    * @dataProvider providerConfigByEnv
    */
-  public function testConfigByEnv($env, $use_cron, $host) {
+  public function testConfigByEnv($host) {
     $this->request->expects($this->any())
       ->method('getHost')
       ->will($this->returnValue($host));
 
     $sut = new AcquiaConnectorOverride($this->requestStack);
-    putenv('AH_PRODUCTION=' . $env);
 
     $overrides = $sut->loadOverrides(['acquia_connector.settings']);
-    $this->assertEquals($overrides['acquia_connector.settings']['spi']['use_cron'], $use_cron);
     $this->assertEquals($overrides['acquia_connector.settings']['spi']['site_name'], $host);
     $this->assertEquals($overrides['acquia_connector.settings']['hide_signup_messages'], TRUE);
   }
@@ -64,18 +62,12 @@ class AcquiaConnectorOverrideTest extends UnitTestCase {
   public function providerConfigByEnv() {
     return [
       [
-        NULL,
-        FALSE,
         'www.foo.com',
       ],
       [
-        NULL,
-        FALSE,
         'foo.io',
       ],
       [
-        1,
-        TRUE,
         'baz.bar.foo.com',
       ],
     ];
