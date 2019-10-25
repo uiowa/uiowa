@@ -27,6 +27,14 @@ function sitenow_core_form_alter(&$form, FormStateInterface $form_state, $form_i
   if ($form_id == 'webform_submission_request_a_site_paragraph_431_add_form'
     || $form_id == 'webform_submission_request_a_site_add_form') {
     $form['#attached']['library'][] = 'sitenow_core/better-request-form';
+
+    $roles = \Drupal::currentUser()->getRoles();
+
+    if (!in_array('administrator', $roles)) {
+      $elements = WebformFormHelper::flattenElements($form['elements']);
+      $elements['hawkid']['#disabled'] = TRUE;
+      $elements['email']['#disabled'] = TRUE;
+    }
   }
 }
 
