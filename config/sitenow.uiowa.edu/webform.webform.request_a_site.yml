@@ -12,7 +12,7 @@ id: request_a_site
 title: 'Request a Site'
 description: 'SiteNow site request form.'
 category: ''
-elements: "hawkid:\n  '#type': textfield\n  '#title': HawkID\n  '#description': 'Your HawkID will be granted webmaster access to the site.'\n  '#readonly': true\n  '#default_value': '[current-user:name]'\n  '#required': true\nemail:\n  '#type': email\n  '#title': Email\n  '#description': 'Your email address will be used for all communications related to this request.'\n  '#readonly': true\n  '#default_value': '[current-user:mail]'\n  '#required': true\ndepartment_organization:\n  '#type': textfield\n  '#title': Department/organization\n  '#description': 'The department or organization this site belongs to.'\n  '#required': true\nrequest_type:\n  '#type': radios\n  '#title': 'Request type'\n  '#options':\n    New: 'New -- This is a new SiteNow site.'\n    Existing: 'Existing -- I have an existing site.'\n    Consultation: 'Consultation -- I would like a consultation regarding another option.'\n  '#required': true\nurl_pattern:\n  '#type': select\n  '#title': 'URL Pattern'\n  '#description': 'The * character indicates the part of the URL you can customize.&nbsp;'\n  '#help_title': Help\n  '#help': 'The URL must not contain more subdomains than indicated by the pattern. For example, https://foo.org.uiowa.edu is valid but https://foo.bar.org.uiowa.edu is invalid.'\n  '#options':\n    '*.conference.uiowa.edu': '*.conference.uiowa.edu'\n    '*.org.uiowa.edu': '*.org.uiowa.edu'\n    '*.lab.uiowa.edu': '*.lab.uiowa.edu'\n    '*.course.uiowa.edu': '*.course.uiowa.edu'\n    '*.studio.uiowa.edu': '*.studio.uiowa.edu'\n    '*.sites.uiowa.edu': '*.sites.uiowa.edu'\n  '#required': true\n  '#states':\n    visible:\n      ':input[name=\"request_type\"]':\n        value: New\nuri:\n  '#type': url\n  '#title': URL\n  '#description': 'The site URL.'\n  '#help_title': Help\n  '#help': 'URL stands for Uniform Resource Locator and is&nbsp;commonly used to reference web pages. It typically starts with http:// or https://.'\n  '#required': true\n  '#states':\n    visible:\n      ':input[name=\"request_type\"]':\n        '!value': Consultation\nadditional_comments_or_questions:\n  '#type': textarea\n  '#title': 'Comments or questions'\n  '#states':\n    required:\n      ':input[name=\"request_type\"]':\n        value: Consultation\nactions:\n  '#type': webform_actions\n  '#title': 'Submit button(s)'\n  '#submit__attributes':\n    class:\n      - 'btn btn-primary'\nurl_host:\n  '#type': hidden\n  '#title': 'URL host'\nurl_internal_production:\n  '#type': hidden\n  '#title': 'URL internal production'\nmarkup:\n  '#type': webform_markup\n  '#private': true\n  '#display_on': view\n  '#markup': 'blt sitenow:multisite:create [webform_submission:values:uri] [webform_submission:values:hawkid]'"
+elements: "hawkid:\n  '#type': textfield\n  '#title': HawkID\n  '#description': 'Your HawkID will be granted webmaster access to the site.'\n  '#required': true\n  '#default_value': '[current-user:name]'\nemail:\n  '#type': email\n  '#title': Email\n  '#description': 'Your email address will be used for all communications related to this request.'\n  '#required': true\n  '#default_value': '[current-user:mail]'\ndepartment_organization:\n  '#type': textfield\n  '#title': Department/organization\n  '#description': 'The department or organization this site belongs to.'\n  '#required': true\nrequest_type:\n  '#type': radios\n  '#title': 'Request type'\n  '#options':\n    New: 'New -- This is a new SiteNow site.'\n    Existing: 'Existing -- I have an existing site.'\n    Consultation: 'Consultation -- I would like a consultation regarding another option.'\n  '#required': true\nurl_pattern:\n  '#type': select\n  '#title': 'URL Pattern'\n  '#description': 'The * character indicates the part of the URL you can customize.&nbsp;'\n  '#help_title': Help\n  '#help': 'The URL must not contain more subdomains than indicated by the pattern. For example, https://foo.org.uiowa.edu is valid but https://foo.bar.org.uiowa.edu is invalid.'\n  '#options':\n    '*.conference.uiowa.edu': '*.conference.uiowa.edu'\n    '*.org.uiowa.edu': '*.org.uiowa.edu'\n    '*.lab.uiowa.edu': '*.lab.uiowa.edu'\n    '*.course.uiowa.edu': '*.course.uiowa.edu'\n    '*.studio.uiowa.edu': '*.studio.uiowa.edu'\n    '*.sites.uiowa.edu': '*.sites.uiowa.edu'\n  '#required': true\n  '#states':\n    visible:\n      ':input[name=\"request_type\"]':\n        value: New\nuri:\n  '#type': url\n  '#title': URL\n  '#description': 'The site URL.'\n  '#help_title': Help\n  '#help': 'URL stands for Uniform Resource Locator and is&nbsp;commonly used to reference web pages. It typically starts with http:// or https://.'\n  '#required': true\n  '#states':\n    visible:\n      ':input[name=\"request_type\"]':\n        '!value': Consultation\nadditional_comments_or_questions:\n  '#type': textarea\n  '#title': 'Comments or questions'\n  '#states':\n    required:\n      ':input[name=\"request_type\"]':\n        value: Consultation\nactions:\n  '#type': webform_actions\n  '#title': 'Submit button(s)'\n  '#submit__attributes':\n    class:\n      - 'btn btn-primary'\nurl_host:\n  '#type': hidden\n  '#title': 'URL host'\nurl_internal_production:\n  '#type': hidden\n  '#title': 'URL internal production'\nmarkup:\n  '#type': webform_markup\n  '#private': true\n  '#display_on': view\n  '#markup': 'blt sitenow:multisite:create [webform_submission:values:uri] [webform_submission:values:hawkid]'"
 css: ''
 javascript: ''
 settings:
@@ -195,9 +195,9 @@ handlers:
       states: {  }
       to_mail: '[webform_submission:values:email:raw]'
       to_options: {  }
-      cc_mail: its-web@uiowa.edu
+      cc_mail: ''
       cc_options: {  }
-      bcc_mail: ''
+      bcc_mail: its-web@uiowa.edu
       bcc_options: {  }
       from_mail: its-web@uiowa.edu
       from_options: {  }
@@ -228,9 +228,9 @@ handlers:
       states: {  }
       to_mail: _default
       to_options: {  }
-      cc_mail: its-web@uiowa.edu
+      cc_mail: ''
       cc_options: {  }
-      bcc_mail: ''
+      bcc_mail: its-web@uiowa.edu
       bcc_options: {  }
       from_mail: its-web@uiowa.edu
       from_options: {  }
@@ -264,7 +264,7 @@ handlers:
       to_options: {  }
       cc_mail: ''
       cc_options: {  }
-      bcc_mail: ''
+      bcc_mail: its-web@uiowa.edu
       bcc_options: {  }
       from_mail: its-web@uiowa.edu
       from_options: {  }
@@ -329,15 +329,15 @@ handlers:
       states: {  }
       to_mail: hostmaster@uiowa.edu
       to_options: {  }
-      cc_mail: its-web@uiowa.edu
+      cc_mail: ''
       cc_options: {  }
-      bcc_mail: ''
+      bcc_mail: its-web@uiowa.edu
       bcc_options: {  }
       from_mail: its-web@uiowa.edu
       from_options: {  }
       from_name: 'ITS - Custom Solutions & Integrations - Web Services'
       subject: 'SiteNow DNS Request'
-      body: "Hostmaster,<br />\r\n<br />\r\nWould you please create a CNAME for [webform_submission:values:url_host] pointing to acquia-dlb.its.uiowa.edu?<br />\r\n<br />\r\nThank you,<br />\r\nITS - Custom Solutions & Integrations - Web Services<br />\r\n[current-user:mail]"
+      body: "Hostmaster,<br />\r\n<br />\r\nWould you please create a CNAME for [webform_submission:values:url_host] pointing to acquia-dlb.its.uiowa.edu?<br />\r\n<br />\r\nThank you,<br />\r\n[current-user:mail]<br />\r\nITS - Custom Solutions &amp; Integrations - Web Services"
       excluded_elements: {  }
       ignore_access: false
       exclude_empty: true
@@ -364,13 +364,13 @@ handlers:
       to_options: {  }
       cc_mail: '[webform_submission:values:email:raw]'
       cc_options: {  }
-      bcc_mail: ''
+      bcc_mail: its-web@uiowa.edu
       bcc_options: {  }
       from_mail: its-web@uiowa.edu
       from_options: {  }
       from_name: 'ITS - Custom Solutions & Integrations - Web Services'
       subject: 'Top Level Domain Request'
-      body: "Hostmaster - [webform_submission:values:email] has requested the top level domain [webform_submission:values:url_host] for department [webform_submission:values:department_organization]. Please advise.<br />\r\n<br />\r\nRegards,<br />\r\nITS - Custom Solutions &amp; Integrations - Web Services<br />\r\n[current-user:mail]"
+      body: "Hostmaster - [webform_submission:values:email] has requested the top level domain [webform_submission:values:url_host] for department [webform_submission:values:department_organization]. Please advise.<br />\r\n<br />\r\nRegards,<br />\r\n[current-user:mail]<br />\r\nITS - Custom Solutions &amp; Integrations - Web Services"
       excluded_elements: {  }
       ignore_access: false
       exclude_empty: true
@@ -395,9 +395,9 @@ handlers:
       states: {  }
       to_mail: '[webform_submission:values:email:raw]'
       to_options: {  }
-      cc_mail: its-web@uiowa.edu
+      cc_mail: ''
       cc_options: {  }
-      bcc_mail: ''
+      bcc_mail: its-web@uiowa.edu
       bcc_options: {  }
       from_mail: its-web@uiowa.edu
       from_options: {  }
