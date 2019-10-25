@@ -38,6 +38,15 @@ function sitenow_core_form_alter(&$form, FormStateInterface $form_state, $form_i
       $elements['hawkid']['#disabled'] = TRUE;
       $elements['email']['#disabled'] = TRUE;
     }
+    else {
+      \Drupal::messenger()->addMessage('The HawkID and email fields have been enabled for administrators. You may edit those values.');
+    }
+  }
+
+  if ($form_id == 'webform_submission_resend') {
+    if (\Drupal::currentUser()->id() == 1) {
+      \Drupal::messenger()->addWarning('Do not send emails as user 1. Log in using your HawkID so emails are signed properly.');
+    }
   }
 }
 
