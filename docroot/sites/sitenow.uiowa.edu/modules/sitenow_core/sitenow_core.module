@@ -7,16 +7,19 @@
 
 use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\webform\Utility\WebformFormHelper;
 
 /**
  * Implements hook_webform_element_alter().
  */
 function sitenow_core_webform_element_alter(array &$element, FormStateInterface $form_state, array $context) {
-  if (isset($element['#webform_id']) && $element['#webform_id'] === 'request_a_site--uri') {
-    $element['#element_validate'][] = [
-      'Drupal\sitenow_core\Validate\RequestASiteUriConstraint',
-      'validate',
-    ];
+  if (isset($element['#webform_id'])) {
+    if ($element['#webform_id'] === 'request_a_site--uri') {
+      $element['#element_validate'][] = [
+        'Drupal\sitenow_core\Validate\RequestASiteUriConstraint',
+        'validate',
+      ];
+    }
   }
 }
 
