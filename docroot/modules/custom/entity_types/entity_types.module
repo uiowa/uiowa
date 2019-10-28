@@ -5,6 +5,8 @@
  * Provides basic entity types for standard sites.
  */
 
+use Drupal\block\Entity\Block;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 
 /**
@@ -53,4 +55,70 @@ function entity_types_help($route_name, RouteMatchInterface $route_match) {
  */
 function entity_types_page_attachments(array &$attachments) {
   $attachments['#attached']['library'][] = 'entity_types/entity_types_styling';
+}
+
+function entity_types_form_entity_view_display_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['actions']['submit']['#submit'][] = 'entity_types_form_entity_view_display_edit_form_submit';
+}
+
+function entity_types_form_layout_builder_disable_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['#submit'][] = 'entity_types_form_entity_view_display_edit_form_submit';
+}
+
+function entity_types_form_entity_view_display_edit_form_submit(array $form, FormStateInterface $form_state) {
+  $form_id = $form['#form_id'];
+  $enabled = 0;
+
+  if ($form_id === 'entity_view_display_edit_form') {
+    $enabled = $form_state->getValue(['layout', 'enabled']);
+
+    // If this is the entity_view_display_edit_form and
+    // $enabled = 0, we return early because there
+    // is an additional form submission that happens when
+    // you confirm that layout builder should be disabled
+    // and this submit handler will be triggered by that.
+    // Also return early if the value of $enabled hasn't
+    // changed.
+    if ($enabled === 0 || $enabled !== $form['layout']['enabled']) {
+      return;
+    }
+  }
+
+  module_load_install('entity_types');
+
+  $entity_type = $form['#entity_type'];
+  $bundle = $form['#bundle'];
+  $default_theme = \Drupal::config('system.theme')->get('default');
+
+  entity_types_layout_builder_block_visibility_helper([
+    $default_theme . "_page_title",
+    $default_theme . "_breadcrumbs"
+  ], $enabled, $entity_type, $bundle);
+
+  // Load page title and breadcrumb blocks for the current theme.
+//  $blocks = Block::loadMultiple([
+//    $default_theme . "_page_title",
+//    $default_theme . "_breadcrumbs"
+//  ]);
+//
+//  foreach ($blocks as $block) {
+//    $visibility = $block->getVisibility();
+//    $that = 'this';
+//
+//    // If $enabled = 1, include $entity and $bundle in visibility restrictions
+//    if ($enabled == 1) {
+//      if (empty($visibility['entity_bundle:node'])) {
+//        $visibility['entity_bundle:' . $entity_type]['bundles'] = [];
+//      }
+//      $visibility['entity_bundle:' . $entity_type]['bundles'][$bundle] = $bundle;
+//      $visibility['entity_bundle:' . $entity_type]['negate'] = true;
+//    }
+//    else {
+//      if (isset($visibility['entity_bundle:' . $entity_type]) && isset($visibility['entity_bundle:' . $entity_type]['bundles']) && isset($visibility['entity_bundle:' . $entity_type]['bundles'][$bundle])) {
+//        unset($visibility['entity_bundle:' . $entity_type]['bundles'][$bundle]);
+//      }
+//    }
+//    $block->setVisibilityConfig('entity_bundle:node', $visibility['entity_bundle:node']);
+//    $block->save();
+//  }
 }
