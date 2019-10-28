@@ -1,14 +1,24 @@
-<div class="card card__{{ card_position }} {{ card_classes }}">
-  {% block card_img %}
-    {% if card_image %}
-      <img class="card__img" src="{{ card_image }}" alt="Alt Text">
-    {% endif %}
-  {% endblock %}
-  <div class="card__body">
-    <h2 class="card__title">
-      <a href="{{ card_link_url }}">{{ card_title }}</a>
-    </h2>
-    <p class="card__text">{{ card_text }}</p>
+<a href="{{ card_link_url }}" class="card card__{{ card_position }} {{ card_classes }}">
+  <div class="card card__{{ card_position }} {{ card_classes }}">
+    {% block card_img %}
+      {% if card_image %}
+        <img class="card__img" src="{{ card_image }}" alt="Alt Text">
+      {% endif %}
+    {% endblock %}
+    <div class="card__body">
+
+      {% block heading %}
+        {% if card_title is not empty %}
+          {% include "@heading" with {
+            "heading_level" : 'h2',
+            "heading_class" : 'card__title',
+            "heading" : card_title
+          } %}
+        {% endif %}
+      {% endblock %}
+
+      <p class="card__text">{{ card_text }}</p>
+    </div>
+    <div class="bttn bttn--primary bttn--full">{{ card_link_title }}</div>
   </div>
-  <a class="bttn bttn--primary bttn--full" href="{{ card_link_url }}">{{ card_link_title }}</a>
-</div>
+</a>

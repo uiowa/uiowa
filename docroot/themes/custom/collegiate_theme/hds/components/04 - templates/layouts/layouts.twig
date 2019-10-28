@@ -63,8 +63,10 @@
 
 <hr class="spacing" />
 
-{% include '@bold-headline' with {
-  "bold_headline": 'Bold Hawkeye Headline Here'
+{% include '@headline' with {
+  "headline_level": 'h2',
+  "headline_title": 'Bold Hawkeye Headline Here',
+  "headline_type": 'bold-headline bold-headline--positive'
 } %}
 
 <div class="layout-container">
@@ -101,17 +103,19 @@
 
 <hr class="spacing" />
 
-{% include '@bold-headline' with {
-  "bold_headline": 'News and Features'
+{% include '@headline' with {
+  "headline_level": 'h2',
+  "headline_title": 'News and Features',
+  "headline_type": 'bold-headline bold-headline--positive'
 } %}
 
 <div class="layout-container">
   {% include "@news-block" with {
-    "card_image": item.card_image,
-    "card_link_url": item.card_link_url,
-    "card_title": item.card_title,
-    "card_text": item.card_text,
-    "card_link_title": item.card_link_title,
+    "news_card_image": item.news_card_image,
+    "news_card_link_url": item.news_card_link_url,
+    "news_card_title": item.news_card_title,
+    "news_card_text": item.news_card_text,
+    "news_card_link_title": item.news_card_link_title,
     "block_type": 'advanced'
   } %}
 
@@ -123,8 +127,10 @@
 
 <hr class="spacing" />
 
-{% include '@bold-headline' with {
-  "bold_headline": 'Rotating Highlight Area'
+{% include '@headline' with {
+  "headline_level": 'h2',
+  "headline_title": 'Rotating Highlight Area',
+  "headline_type": 'bold-headline bold-headline--positive'
 } %}
 
 <div class="layout-container">

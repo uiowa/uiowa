@@ -11,6 +11,7 @@ dependencies:
     - field.field.block_content.uiowa_noteworthy.field_uiowa_noteworthy_title
   module:
     - entity_browser
+    - heading
     - link
 id: block_content.uiowa_noteworthy.default
 targetEntityType: block_content
@@ -18,7 +19,7 @@ bundle: uiowa_noteworthy
 mode: default
 content:
   field_uiowa_noteworthy_excerpt:
-    weight: 30
+    weight: 3
     settings:
       rows: 5
       placeholder: ''
@@ -27,7 +28,7 @@ content:
     region: content
   field_uiowa_noteworthy_image:
     type: entity_browser_entity_reference
-    weight: 31
+    weight: 5
     settings:
       entity_browser: media_browser
       field_widget_display: rendered_entity
@@ -41,7 +42,7 @@ content:
     region: content
     third_party_settings: {  }
   field_uiowa_noteworthy_link:
-    weight: 27
+    weight: 4
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -49,7 +50,7 @@ content:
     type: link_default
     region: content
   field_uiowa_noteworthy_sub:
-    weight: 29
+    weight: 2
     settings:
       size: 60
       placeholder: ''
@@ -57,16 +58,14 @@ content:
     type: string_textfield
     region: content
   field_uiowa_noteworthy_title:
-    weight: 26
-    settings:
-      size: 60
-      placeholder: ''
+    weight: 1
+    settings: {  }
     third_party_settings: {  }
-    type: string_textfield
+    type: heading
     region: content
   info:
     type: string_textfield
-    weight: -5
+    weight: 0
     region: content
     settings:
       size: 60

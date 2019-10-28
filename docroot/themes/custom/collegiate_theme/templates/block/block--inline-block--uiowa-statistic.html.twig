@@ -49,11 +49,19 @@ https://www.drupal.org/node/2367463
   {{ title_suffix }}
   {% embed "@stat-block/stat-block--basic.twig" with {
     "stat_classes": attributes['class'],
-    "stat_preview_image": file_url(content.field_uiowa_statistic_image[0]['#media'].image.entity.uri.value | image_style('medium')),
+    "stat_preview_image": file_url(content.field_uiowa_statistic_image[0]['#media'].image.entity.uri.value | image_style('large')),
     "stat_image": drupal_image(content.field_uiowa_statistic_image[0]['#media'].image.entity.uri.value, 'uiowa_lb_blocks',  { class: 'card__img', alt: content.field_uiowa_statistic_image[0]['#media'].image.alt }, responsive=true),
-    "stat_title": content.field_uiowa_statistic_title,
     "stat_summary": content.field_uiowa_statistic_excerpt,
   } %}
+
+    {% block heading %}
+      {% include "@heading/heading.twig" with {
+        "heading_level" : content.field_uiowa_statistic_title[0]['#size'],
+        "heading_class" : 'stat__title',
+        "heading" : content.field_uiowa_statistic_title[0]['#text']
+      } %}
+    {% endblock %}
+
     {% block stat_bg %}
       {% if attributes.hasClass('js-layout-builder-block') %}
         <div class="stat {{ stat_classes }}" {% if stat_preview_image %} style="background-image: url('{% spaceless %}{{ stat_preview_image }}{% endspaceless %}'); background-size: cover; background-position: center" {% endif %}>

@@ -8,6 +8,7 @@ dependencies:
     - field.field.block_content.uiowa_feature.field_uiowa_feature_sub
     - field.field.block_content.uiowa_feature.field_uiowa_feature_title
   module:
+    - heading
     - link
 id: block_content.uiowa_feature.default
 targetEntityType: block_content
@@ -44,11 +45,10 @@ content:
     type: string
     region: content
   field_uiowa_feature_title:
-    weight: 0
+    weight: 4
     label: above
-    settings:
-      link_to_entity: false
+    settings: {  }
     third_party_settings: {  }
-    type: string
+    type: heading
     region: content
 hidden: {  }

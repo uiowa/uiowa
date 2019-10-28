@@ -1,8 +1,9 @@
 <div class="portrait__bg">
 
   {% if not attributes is defined %}
-    {% include '@bold-headline' with {
-			"bold_headline": 'Social Profiles',
+    {% include '@headline' with {
+      "headline_level": 'h2',
+			"headline_title": 'Social Profiles',
 			"headline_type": 'bold-headline--negative'
     } %}
   {% endif %}

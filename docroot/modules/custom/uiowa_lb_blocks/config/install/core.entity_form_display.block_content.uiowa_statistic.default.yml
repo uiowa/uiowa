@@ -9,13 +9,14 @@ dependencies:
     - field.field.block_content.uiowa_statistic.field_uiowa_statistic_title
   module:
     - entity_browser
+    - heading
 id: block_content.uiowa_statistic.default
 targetEntityType: block_content
 bundle: uiowa_statistic
 mode: default
 content:
   field_uiowa_statistic_excerpt:
-    weight: 27
+    weight: 2
     settings:
       rows: 5
       placeholder: ''
@@ -24,7 +25,7 @@ content:
     region: content
   field_uiowa_statistic_image:
     type: entity_browser_entity_reference
-    weight: 28
+    weight: 3
     settings:
       entity_browser: media_browser
       field_widget_display: rendered_entity
@@ -38,16 +39,14 @@ content:
     region: content
     third_party_settings: {  }
   field_uiowa_statistic_title:
-    weight: 26
-    settings:
-      size: 60
-      placeholder: ''
+    weight: 1
+    settings: {  }
     third_party_settings: {  }
-    type: string_textfield
+    type: heading
     region: content
   info:
     type: string_textfield
-    weight: -5
+    weight: 0
     region: content
     settings:
       size: 60

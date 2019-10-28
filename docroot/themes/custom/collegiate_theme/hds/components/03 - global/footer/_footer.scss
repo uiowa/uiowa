@@ -33,9 +33,10 @@
 
   &__column {
     @extend %no-ul-list;
+    @include margin($bottom: $md);
     @include breakpoint(sm) {
       @include flex($fg: 1, $fs: 1, $fb: 0);
-      @include margin($right: $xlg);
+      @include margin($right: $xlg, $bottom: 0);
     }
     &:last-child {
       @include margin($right: 0);
