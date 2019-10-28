@@ -5,7 +5,6 @@
  * Provides basic entity types for standard sites.
  */
 
-use Drupal\block\Entity\Block;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 
@@ -57,14 +56,23 @@ function entity_types_page_attachments(array &$attachments) {
   $attachments['#attached']['library'][] = 'entity_types/entity_types_styling';
 }
 
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
 function entity_types_form_entity_view_display_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['actions']['submit']['#submit'][] = 'entity_types_form_entity_view_display_edit_form_submit';
 }
 
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
 function entity_types_form_layout_builder_disable_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['#submit'][] = 'entity_types_form_entity_view_display_edit_form_submit';
 }
 
+/**
+ * Submit handler for when layout builder is enabled/disabled.
+ */
 function entity_types_form_entity_view_display_edit_form_submit(array $form, FormStateInterface $form_state) {
   $form_id = $form['#form_id'];
   $enabled = 0;
@@ -84,6 +92,7 @@ function entity_types_form_entity_view_display_edit_form_submit(array $form, For
     }
   }
 
+  // Load the install file.
   module_load_install('entity_types');
 
   $entity_type = $form['#entity_type'];
@@ -92,33 +101,6 @@ function entity_types_form_entity_view_display_edit_form_submit(array $form, For
 
   entity_types_layout_builder_block_visibility_helper([
     $default_theme . "_page_title",
-    $default_theme . "_breadcrumbs"
+    $default_theme . "_breadcrumbs",
   ], $enabled, $entity_type, $bundle);
-
-  // Load page title and breadcrumb blocks for the current theme.
-//  $blocks = Block::loadMultiple([
-//    $default_theme . "_page_title",
-//    $default_theme . "_breadcrumbs"
-//  ]);
-//
-//  foreach ($blocks as $block) {
-//    $visibility = $block->getVisibility();
-//    $that = 'this';
-//
-//    // If $enabled = 1, include $entity and $bundle in visibility restrictions
-//    if ($enabled == 1) {
-//      if (empty($visibility['entity_bundle:node'])) {
-//        $visibility['entity_bundle:' . $entity_type]['bundles'] = [];
-//      }
-//      $visibility['entity_bundle:' . $entity_type]['bundles'][$bundle] = $bundle;
-//      $visibility['entity_bundle:' . $entity_type]['negate'] = true;
-//    }
-//    else {
-//      if (isset($visibility['entity_bundle:' . $entity_type]) && isset($visibility['entity_bundle:' . $entity_type]['bundles']) && isset($visibility['entity_bundle:' . $entity_type]['bundles'][$bundle])) {
-//        unset($visibility['entity_bundle:' . $entity_type]['bundles'][$bundle]);
-//      }
-//    }
-//    $block->setVisibilityConfig('entity_bundle:node', $visibility['entity_bundle:node']);
-//    $block->save();
-//  }
 }
