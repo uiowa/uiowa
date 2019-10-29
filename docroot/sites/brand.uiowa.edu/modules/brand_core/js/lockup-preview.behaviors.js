@@ -10,16 +10,32 @@
             Initialize necessary values for later use by this javascript file.
             ----------------------------------------------------------------------
             */
+
+            // The input fields.
             var primaryUnit = $("#edit-field-lockup-primary-unit-0-value");
             var subUnit = $("#edit-field-lockup-sub-unit-0-value");
             var primaryUnitStacked = $("#edit-field-lockup-p-unit-stacked-0-value");
             var subUnitStacked = $("#edit-field-lockup-s-unit-stacked-0-value");
+
+            // The initial loaded values that they have, if any,
+            // And then the stored value from the last stroke of the keyboard.
             var primaryUnitPreviousText = primaryUnit.val();
             var subUnitPreviousText = subUnit.val();
+            var primaryUnitStackedPreviousText = primaryUnitStacked.val();
+            var subUnitStackedPreviousText = subUnitStacked.val();
+
+            // Reserved for later calculations of the input field text.
             var primaryValueText;
-            var primaryPreviewText;
             var secondaryValueText;
+            var primaryStackedValueText;
+            var secondaryStackedValueText;
+
+            // Reserved for later calculations of the preview text.
+            var primaryPreviewText;
             var secondaryPreviewText;
+            var primaryStackedPreviewText;
+            var secondaryStackedPreviewText;
+
             var Timer = 0;
 
             // The maximum number of rows that the textareas are allowed to have.
@@ -48,11 +64,11 @@
                 $(".lockup-horizontal .sub-unit").text(subUnit.val());
             }
             if (primaryUnitStacked.val() !== "") {
-                $(".lockup-stacked .primary-unit").text(primaryUnit.val());
+                $(".lockup-stacked .primary-unit").text(primaryUnitStacked.val());
             }
 
             if (subUnitStacked.val() !== "") {
-                $(".lockup-stacked .sub-unit").text(subUnit.val());
+                $(".lockup-stacked .sub-unit").text(subUnitStacked.val());
             }
 
             // Do preliminary placement of the divider for the stacked lockup.
@@ -108,6 +124,10 @@
 
             // Create a hidden element that is used for measuring and setting the width of the dividing line.
             function calcDivider() {
+                // Get dimensions of the block iowa SVG.
+                var blockIowa = $('img.block-iowa');
+                var blockIowaDims = { width : blockIowa.width(), height : blockIowa.height() };
+
                 // Create the element to measure for stacked divider.
                 if (!$('#primary-first-line-measure-stacked').length) {
                     $('.layout-region-node-main').append('<div id="primary-first-line-measure-stacked"></div>');
@@ -120,13 +140,18 @@
 
                 //grab the first line of the Primary unit text and put it in the measurer.
                 $('#primary-first-line-measure-stacked').text($('.lockup-stacked .lockup-content-inner .primary-unit').text().split('\n')[0]);
-                let divWidth = $('#primary-first-line-measure-stacked').outerWidth();
+                let divWidth = Math.max($('#primary-first-line-measure-stacked').outerWidth() - 58, blockIowaDims.width);
                 let divPos = ($('.lockup-stacked .lockup-content').outerWidth()/2) - (divWidth/2);
 
                 $('#stacked-divider').css({
-                    "width": divWidth - 21,
-                    "left": divPos + 10
+                    "width": divWidth + 8,
+                    "left": divPos - 4
                 });
+            }
+
+            // A shortened console log for swifter typing.
+            function cl(any) {
+                console.log(any);
             }
 
             // Replace Dumb quotes with Smart Quotes.
@@ -142,7 +167,11 @@
 
             // Determine if the input is valid.
             function isInputValid() {
-                if (primaryValueText === primaryPreviewText && secondaryValueText === secondaryPreviewText) {
+                if (primaryValueText === primaryPreviewText                  &&
+                    secondaryValueText === secondaryPreviewText              &&
+                    primaryStackedValueText === primaryStackedPreviewText    &&
+                    secondaryStackedValueText === secondaryStackedPreviewText
+                ) {
                     if (Timer) {
                         clearTimeout(Timer);
                     }
@@ -175,6 +204,13 @@
                 var modText = string;
                 var prevLines = [];
 
+                // Determine orientation.
+                var selectorID = selector.attr('id');
+                var orientation = selectorID.split('-')[selectorID.split('-').length-3];
+                if(orientation == 'unit') {
+                    orientation = 'horizontal';
+                }
+
                 // Limits newlines.
                 if (nLines > maxRows) {
                     var toRemove = nLines-maxRows;
@@ -191,11 +227,19 @@
                 switch (unit) {
                     case 'primary':
                         maxChars = primaryMaxChars;
-                        prevLines = primaryUnitPreviousText.split('\n');
+                        if (orientation == 'horizontal') {
+                            prevLines = primaryUnitPreviousText.split('\n');
+                        }else if (orientation == 'stacked') {
+                            prevLines = primaryUnitStackedPreviousText.split('\n');
+                        }
                         break;
                     case 'sub':
                         maxChars = subMaxChars;
-                        prevLines = subUnitPreviousText.split('\n');
+                        if (orientation == 'horizontal') {
+                            prevLines = subUnitPreviousText.split('\n');
+                        }else if (orientation == 'stacked') {
+                            prevLines = subUnitPreviousText.split('\n');
+                        }
                         break;
                 }
 
@@ -224,19 +268,37 @@
                     }
                 }
                         
+                // Detects proper place to put the previous lines and then returns a crafted object.
                 switch (unit) {
                     case 'primary':
-                        primaryUnitPreviousText = lines.join('\n');
-                        return {
-                            text: primaryUnitPreviousText,
-                            selectionOffset: cursorMod
-                        };
+                        if (orientation == 'horizontal') {
+                            primaryUnitPreviousText = lines.join('\n');
+                            return {
+                                text: primaryUnitPreviousText,
+                                selectionOffset: cursorMod
+                            };
+                        }else if (orientation == 'stacked') {
+                            primaryUnitStackedPreviousText = lines.join('\n');
+                            return {
+                                text: primaryUnitStackedPreviousText,
+                                selectionOffset: cursorMod
+                            };
+                        }
                     case 'sub':
-                        subUnitPreviousText = lines.join('\n');
-                        return {
-                            text: subUnitPreviousText,
-                            selectionOffset: cursorMod
-                        };
+                        
+                        if (orientation == 'horizontal') {
+                            subUnitPreviousText = lines.join('\n');
+                            return {
+                                text: subUnitPreviousText,
+                                selectionOffset: cursorMod
+                            };
+                        }else if (orientation == 'stacked') {
+                            subUnitStackedPreviousText = lines.join('\n');
+                            return {
+                                text: subUnitStackedPreviousText,
+                                selectionOffset: cursorMod
+                            };
+                        }
                 }
             }
             
@@ -258,6 +320,8 @@
 
                 var cursorSelectionStart = textarea[0].selectionStart;
                 var cursorSelectionEnd = textarea[0].selectionEnd;
+
+                // Declare variables and get them ready to be crafted.
                 var unit;
                 var orientation;
                 var unitSelector = selector.attr('id').split('-').splice(3,selector.attr('id').split('-').length-5).join('-');
@@ -271,20 +335,46 @@
                 else if(unitSelector.split('-')[unitSelector.split('-').length-1] == 'stacked') { orientation = 'stacked'; }
                 
 
-
+                // Sanitize text area, and set the preview text.
                 var ValueObj = textareaSanitize(textarea, text, numberOfLines, unit, event.originalEvent.inputType);
-                ValueText = ValueObj.text
+                var ValueText = ValueObj.text
                 var PreviewText  = previewSanitize(ValueText);
 
+                // After sanitizing and reformatting the text,
+                // reset the text in the input box and put the preview text in the preview areas.
                 textarea.val(ValueText);
                 $(".lockup-" + orientation + " ." + unit + "-unit").text(PreviewText);
 
+                // Determine where to put different data, and then put it there.
+                cl([unit, orientation]);
+                cl(ValueObj);
                 if(unit == 'primary') {
-                    primaryPreviewText = PreviewText;
+                    if (orientation == 'horizontal') {
+                        primaryPreviewText = PreviewText;
+                        primaryValueText   = ValueText;
+                    }
+                    else if (orientation == 'stacked') {
+                        primaryStackedPreviewText = PreviewText;
+                        primaryStackedValueText   = ValueText;
+
+                    }
                 }
                 else if(unit == 'sub') {
-                    secondaryPreviewText = PreviewText;
+                    if (orientation == 'horizontal') {
+                        secondaryPreviewText = PreviewText;
+                        secondaryValueText   = ValueText;
+                    }
+                    else if (orientation == 'stacked') {
+                        secondaryStackedPreviewText = PreviewText;
+                        secondaryStackedValueText   = ValueText;
+                    }
                 }
+                cl([
+                    [primaryValueText, primaryPreviewText],
+                    [secondaryValueText, secondaryPreviewText],
+                    [primaryStackedValueText, primaryStackedPreviewText],
+                    [secondaryStackedValueText, secondaryStackedPreviewText]
+                ]);
 
                 // Resets cursor position.             
                 setSelectionRange(
