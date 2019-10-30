@@ -304,7 +304,7 @@ handlers:
       from_options: {  }
       from_name: 'ITS - Custom Solutions & Integrations - Web Services'
       subject: 'SiteNow Request'
-      body: _default
+      body: "Submitted on [webform_submission:created]<br />\r\nSubmitted by: [webform_submission:user]<br />\r\nSubmission URL: [webform_submission:url]<br />\r\nSubmitted values are:<br />\r\n[webform_submission:values]"
       excluded_elements: {  }
       ignore_access: true
       exclude_empty: true
