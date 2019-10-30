@@ -42,18 +42,21 @@ function entity_types_uninstall() {
  * Toggles block visibility based on whether
  * layout builder is enabled or disabled.
  */
-function entity_types_layout_builder_block_visibility_helper($block_ids, $lb_enabled, $entity_type, $bundle = NULL) {
+function entity_types_layout_builder_block_visibility_helper($block_ids, $enabling, $bundle, $entity_type = 'node') {
   $default_theme = \Drupal::config('system.theme')->get('default');
+
+  foreach ($block_ids as $k => $block_id) {
+    $block_ids[$k] = $default_theme . '_' . $block_id;
+  }
 
   // Load page title and breadcrumb blocks for the current theme.
   $blocks = Block::loadMultiple($block_ids);
 
   foreach ($blocks as $block) {
     $visibility = $block->getVisibility();
-    $that = 'this';
 
     // If $lb_enabled = 1, include $entity and $bundle in visibility restrictions.
-    if ($lb_enabled == 1) {
+    if ($enabling == 1) {
       if (empty($visibility['entity_bundle:node'])) {
         $visibility['entity_bundle:' . $entity_type]['bundles'] = [];
       }
@@ -65,7 +68,9 @@ function entity_types_layout_builder_block_visibility_helper($block_ids, $lb_ena
         unset($visibility['entity_bundle:' . $entity_type]['bundles'][$bundle]);
       }
     }
-    $block->setVisibilityConfig('entity_bundle:node', $visibility['entity_bundle:node']);
-    $block->save();
+    if (isset($visibility['entity_bundle:node'])) {
+      $block->setVisibilityConfig('entity_bundle:node', $visibility['entity_bundle:node']);
+      $block->save();
+    }
   }
 }
