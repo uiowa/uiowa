@@ -4,3 +4,31 @@
  * @file
  * Installation functions for Entity Types Pages module.
  */
+
+use Drupal\block\Entity\Block;
+
+/**
+ * Implementation of hook_install().
+ */
+function entity_types_page_modules_installed(array $modules) {
+  $profile = \Drupal::installProfile();
+
+  if (isset($profile)) {
+    // Only run if we have enabled the profile.
+    if (in_array($profile, $modules)) {
+      // Enable block visibility restrictions.
+      entity_types_layout_builder_block_visibility_helper(1, 'page');
+    }
+  }
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function entity_types_page_uninstall() {
+  echo 'Running entity_types_page_uninstall()';
+  module_load_install('entity_types');
+
+  // Disable block visibility restrictions.
+  entity_types_layout_builder_block_visibility_helper(0, 'page');
+}

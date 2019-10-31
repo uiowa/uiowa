@@ -92,10 +92,7 @@ function entity_types_form_entity_view_display_edit_form_submit(array $form, For
   // Load the install file.
   module_load_install('entity_types');
 
-  entity_types_layout_builder_block_visibility_helper([
-    "page_title",
-    "breadcrumbs",
-  ], $enabled, $bundle, $entity_type);
+  entity_types_layout_builder_block_visibility_helper($enabled, $bundle);
 }
 
 function entity_types_layout_builder_disable_form_submit(array $form, FormStateInterface $form_state) {
@@ -109,9 +106,6 @@ function entity_types_layout_builder_disable_form_submit(array $form, FormStateI
     module_load_install('entity_types');
 
     // Enabling is always 0 in this case.
-    entity_types_layout_builder_block_visibility_helper([
-      "page_title",
-      "breadcrumbs",
-    ], 0, $bundle);
+    entity_types_layout_builder_block_visibility_helper(0, $bundle);
   }
 }

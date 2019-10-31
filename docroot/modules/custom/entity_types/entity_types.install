@@ -7,6 +7,8 @@
 
 use Drupal\block\Entity\Block;
 
+define('ENTITY_TYPES_LB_INLINE_BLOCK_IDS', ['page_title', 'breadcrumbs']);
+
 /**
  * Implements hook_install().
  */
@@ -42,7 +44,7 @@ function entity_types_uninstall() {
  * Toggles block visibility based on whether
  * layout builder is enabled or disabled.
  */
-function entity_types_layout_builder_block_visibility_helper($block_ids, $enabling, $bundle, $entity_type = 'node') {
+function entity_types_layout_builder_block_visibility_helper($enabling, $bundle, $block_ids = ENTITY_TYPES_LB_INLINE_BLOCK_IDS, $entity_type = 'node') {
   $default_theme = \Drupal::config('system.theme')->get('default');
 
   foreach ($block_ids as $k => $block_id) {
@@ -54,12 +56,14 @@ function entity_types_layout_builder_block_visibility_helper($block_ids, $enabli
 
   foreach ($blocks as $block) {
     $visibility = $block->getVisibility();
+    if (empty($visibility['entity_bundle:node'])) {
+      $visibility['entity_bundle:' . $entity_type]['bundles'] = [];
+    }
 
-    // If $lb_enabled = 1, include $entity and $bundle in visibility restrictions.
+    // If $enabling we are enabling layout builder
+    // on this entity/bundle, set block visibility
+    // restrictions for that combo on these blocks.
     if ($enabling == 1) {
-      if (empty($visibility['entity_bundle:node'])) {
-        $visibility['entity_bundle:' . $entity_type]['bundles'] = [];
-      }
       $visibility['entity_bundle:' . $entity_type]['bundles'][$bundle] = $bundle;
       $visibility['entity_bundle:' . $entity_type]['negate'] = TRUE;
     }
