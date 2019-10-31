@@ -34,6 +34,8 @@ class LockupController extends ControllerBase {
       }
 
       $path = $node->getTitle();
+
+      // Create the different lockup versions.
       $lockup_stacked_black = LockupController::generateLockup($node, '#000000', "#000000", 'stacked');
       $lockup_stacked_black_file = $path . ' LockupStacked-BLACK.svg';
       fwrite(fopen(file_directory_temp() . '/' . $lockup_stacked_black_file, 'w'), $lockup_stacked_black);
@@ -79,12 +81,13 @@ class LockupController extends ControllerBase {
 
       $zip->close();
 
-      header('Content-type: application/x-zip-compressed');
+      header('Content-type: application/zip');
       header("Content-disposition: attachment; filename=" . $path . "-Lockup.zip");
       readfile(\Drupal::service('file_system')->realpath($zip_filename));
 
       ob_clean();
       flush();
+      ob_end_flush();
       readfile($zip_filename);
       unlink($zip_filename);
       unlink(file_directory_temp() . '/' . $lockup_stacked_black_file);
@@ -94,10 +97,7 @@ class LockupController extends ControllerBase {
       unlink(file_directory_temp() . '/' . $lockup_horizontal_rgb_file);
       unlink(file_directory_temp() . '/' . $lockup_horizontal_reversed_file);
 
-      $response = [
-        '#markup' => $this->t('Download should begin shortly.'),
-      ];
-      return $response;
+      exit();
 
     }
     else {
@@ -118,219 +118,285 @@ class LockupController extends ControllerBase {
 
     $lockup = new BrandSVG();
 
-    $svg_center = 216;
-    $horizontal_combined_y = 0;
-    $total_lines = 0;
+    // Bunch of variables to use later.
+    $stacked_center = 216;
+    $horizontal_center = 144;
+    $p_line = 8;
+    $s_line = 6;
+    $s_count = 0;
+    $s_reduce = 0;
+    $s_offset = 0;
+    $p_offset = 1;
 
+    // Sub unit generation.
     if (!empty($node->field_lockup_sub_unit->value)) {
-      $sub_text = $node->field_lockup_sub_unit->value;
-      $sub_explode = explode(PHP_EOL, $sub_text);
-      $sub_count = count($sub_explode);
-      $total_lines = $total_lines + $sub_count;
-      switch ($sub_count) {
+      $p_offset = $p_offset + 5.5;
+      $s_txt = $node->field_lockup_sub_unit->value;
+      $s_explode = explode(PHP_EOL, $s_txt);
+      $s_count = count($s_explode);
+      $s_offset = 0;
+      switch ($s_count) {
         case 1:
-          $horizontal_combined_y = $horizontal_combined_y + 3;
+          $s_offset = $s_offset + 0;
+          $s_reduce = 2;
           break;
 
         case 2:
-          $horizontal_combined_y = $horizontal_combined_y + 6;
+          $s_offset = $s_offset + 4;
+          $s_reduce = 1;
           break;
 
         case 3:
-          $horizontal_combined_y = $horizontal_combined_y + 9;
+          $s_offset = $s_offset + 9;
+          $s_reduce = 1;
           break;
 
       }
       $lockup->setFont($regular, 6, $text_color);
-      $sub_dimensions = $lockup->textDimensions($sub_text);
-      foreach ($sub_explode as $line) {
+      $s_lines = [];
+      $s_height = 0;
+      foreach ($s_explode as $key => $line) {
         str_replace('\r', '', $line);
-        $sublines[] = $lockup->textDimensions($line);
+        $s_lines[$key] = $lockup->textDimensions($line);
+        $s_height = $s_height + $s_lines[$key][1];
       }
     }
 
     // Unit name generation.
-    $primary_text = $node->field_lockup_primary_unit->value;
-    $primary_explode = explode(PHP_EOL, $primary_text);
-    $primary_count = count($primary_explode);
-    $total_lines = $total_lines + $primary_count;
-    switch ($primary_count) {
+    $p_txt = $node->field_lockup_primary_unit->value;
+    $p_explode = explode(PHP_EOL, $p_txt);
+    $p_count = count($p_explode);
+    switch ($p_count) {
       case 1:
-        $stacked_sub_y = 150.33;
-        $horizontal_combined_y = $horizontal_combined_y + 0;
+        $stacked_sub_y = 148.33;
+        $p_offset = 1;
+        $s_offset = 11.5;
         break;
 
       case 2:
-        $stacked_sub_y = 160.28;
-        $horizontal_combined_y = $horizontal_combined_y + 5;
+        $stacked_sub_y = 158.28;
+        $p_offset = 2;
+        $s_offset = 21.5;
         break;
 
       case 3:
-        $stacked_sub_y = 170.23;
-        $horizontal_combined_y = $horizontal_combined_y + 10;
+        $stacked_sub_y = 168.23;
+        $p_offset = 3;
+        $s_offset = 31.5;
         break;
 
     }
     $lockup->setFont($bold, 8, $text_color);
     $lockup->setLineHeight(9.6);
-    $lockup->setLetterSpacing(.01);
 
-    $primary_lines = [];
-    foreach ($primary_explode as $key => $line) {
-      $primary_explode[$key] = preg_replace('~[[:cntrl:]]~', '', $line);
-      $primary_lines[] = $lockup->textDimensions($line);
+    $p_lines = [];
+    $p_height = 0;
+    foreach ($p_explode as $key => $line) {
+      $p_explode[$key] = preg_replace('~[[:cntrl:]]~', '', $line);
+      $p_lines[$key] = $lockup->textDimensions($line);
+      $p_height = $p_height + $p_lines[$key][1];
     }
 
-    $primary_dimensions = $lockup->textDimensions($primary_explode[0]);
-    $primary_width = $primary_dimensions[0];
-    $primary_center = $primary_width / 2;
-    if (isset($sub_dimensions)) {
-      $horizontal_height = $primary_dimensions[1] + $sub_dimensions[1];
-      $total_height = $total_lines * $horizontal_height;
-    }
-    else {
-      $horizontal_height = $primary_dimensions[1];
-      $total_height = $total_lines * $horizontal_height;
-
-    }
-
-    $horizontal_middle = $horizontal_height / 2;
-    $total_height = $total_height + 7.6;
-    $total_middle = $total_height / 2;
+    $p1_dimensions = $lockup->textDimensions($p_explode[0]);
+    $p_width = $p1_dimensions[0];
+    $p_center = $p_width / 2;
 
     switch ($type) {
       case 'stacked':
         LockupController::addStackedLogo($lockup, $iowa_color);
         // Border. Width based on primary width.
+        if ($p_width < 80) {
+          $border_width = 80;
+        }
+        else {
+          $border_width = $p_width + 8;
+        }
+        $border_x = $border_width / 2;
         $lockup->addRect([
-          'x' => $svg_center - $primary_center - 3.52 - .282,
-          'y' => '133.22',
-          'width' => $primary_width + 7.50 - 0.37 + .474,
+          'x' => $stacked_center - $border_x,
+          'y' => '132.72',
+          'width' => $border_width,
           'height' => '0.8',
           'style' => 'fill:' . $text_color,
         ]);
         // Primary Line 1.
         $lockup->addText(html_entity_decode(
-          $primary_explode[0],
+          $p_explode[0],
           ENT_QUOTES | ENT_XML1,
           'UTF-8'),
-          $svg_center - $primary_center,
-          142.9 - 1 - ($primary_lines[0][1] / 2)
+          $stacked_center - $p_center,
+          141.4 - ($p_lines[0][1] / 2)
         );
         // Primary Line 2.
-        $p2_center = $primary_lines[1][0] / 2;
-        $lockup->addText(html_entity_decode(
-          $primary_explode[1],
-          ENT_QUOTES | ENT_XML1,
-          'UTF-8'),
-          $svg_center - $p2_center,
-          152.36 - 1 - ($primary_lines[1][1] / 2)
-        );
+        if (isset($p_lines[1])) {
+          $p2_center = $p_lines[1][0] / 2;
+          $lockup->addText(html_entity_decode(
+            $p_explode[1],
+            ENT_QUOTES | ENT_XML1,
+            'UTF-8'),
+            $stacked_center - $p2_center,
+            150.56 - ($p_lines[1][1] / 2)
+          );
+        }
         // Primary Line 3.
-        $p3_center = $primary_lines[2][0] / 2;
-        $lockup->addText(html_entity_decode(
-          $primary_explode[2],
-          ENT_QUOTES | ENT_XML1,
-          'UTF-8'),
-          $svg_center - $p3_center,
-          161.82 - 1 - ($primary_lines[2][1] / 2)
-        );
+        if (isset($p_lines[2])) {
+          $p3_center = $p_lines[2][0] / 2;
+          $lockup->addText(html_entity_decode(
+            $p_explode[2],
+            ENT_QUOTES | ENT_XML1,
+            'UTF-8'),
+            $stacked_center - $p3_center,
+            160 - ($p_lines[2][1] / 2)
+          );
+        }
 
         $lockup->setFont($regular, 6, $text_color);
         $lockup->setLineHeight(7.5);
-        $lockup->setLetterSpacing(0.02);
 
-        $s1_center = $sublines[0][0] / 2;
-        $lockup->addText(html_entity_decode(
-          $sub_explode[0],
-          ENT_QUOTES | ENT_XML1,
-          'UTF-8'),
-          $svg_center - $s1_center,
-          $stacked_sub_y - 2
-        );
+        if (isset($s_lines[0])) {
+          $s1_center = $s_lines[0][0] / 2;
+          $lockup->addText(html_entity_decode(
+            $s_explode[0],
+            ENT_QUOTES | ENT_XML1,
+            'UTF-8'),
+            $stacked_center - $s1_center,
+            $stacked_sub_y
+          );
+        }
 
-        $s2_center = $sublines[1][0] / 2;
-        $lockup->addText(html_entity_decode(
-          $sub_explode[1],
-          ENT_QUOTES | ENT_XML1,
-          'UTF-8'),
-          $svg_center - $s2_center,
-          $stacked_sub_y + 7.57 - 2
-        );
-
-        $s3_center = $sublines[2][0] / 2;
-        $lockup->addText(html_entity_decode(
-          $sub_explode[2],
-          ENT_QUOTES | ENT_XML1,
-          'UTF-8'),
-          $svg_center - $s3_center,
-          $stacked_sub_y + 15.43 - 2
-        );
+        if (isset($s_lines[1])) {
+          $s2_center = $s_lines[1][0] / 2;
+          $lockup->addText(html_entity_decode(
+            $s_explode[1],
+            ENT_QUOTES | ENT_XML1,
+            'UTF-8'),
+            $stacked_center - $s2_center,
+            $stacked_sub_y + 7.57
+          );
+        }
+        if (isset($s_lines[2])) {
+          $s3_center = $s_lines[2][0] / 2;
+          $lockup->addText(html_entity_decode(
+            $s_explode[2],
+            ENT_QUOTES | ENT_XML1,
+            'UTF-8'),
+            $stacked_center - $s3_center,
+            $stacked_sub_y + 15.43
+          );
+        }
         break;
 
       case 'horizontal':
         LockupController::addHorizontalLogo($lockup, $iowa_color);
-        // Border. Height based on primary and secondary combined height.
-        $lockup->addRect([
-          'x' => 206.77,
-          'y' => 144 - $total_middle + 11,
-          'width' => 0.8,
-          'height' => $total_height - 19,
-          'style' => 'fill:' . $text_color,
-        ]);
+        // Silly math that made sense at the time...
+        $po = $p_line * $p_count;
+        $so = $s_line * $s_count;
+        if (!empty($s_txt)) {
+          $ps_break = 7.5;
+        }
+        else {
+          $ps_break = 0;
+        }
+        $combined = $po + $so + $ps_break;
+        $combined_half = $combined / 2;
+
+        // Used later to find last line position.
+        $y_positions = [];
 
         // Primary Line 1.
+        $p1y = $horizontal_center - $combined_half - $p_offset + $s_reduce;
+        $y_positions[] = $p1y;
         $lockup->addText(html_entity_decode(
-          $primary_explode[0],
+          $p_explode[0],
           ENT_QUOTES | ENT_XML1,
           'UTF-8'),
           255.126 - 42,
-          144 - $horizontal_middle - $horizontal_combined_y + 1
+          $p1y
         );
         // Primary Line 2.
-        $lockup->addText(html_entity_decode(
-          $primary_explode[1],
-          ENT_QUOTES | ENT_XML1,
-          'UTF-8'),
-          255.126 - 42,
-          144 - $horizontal_middle - $horizontal_combined_y + 10.5
-        );
+        if (isset($p_explode[1])) {
+          $p2y = $horizontal_center - $combined_half - $p_offset + $s_reduce + 10;
+          $y_positions[] = $p2y;
+          $lockup->addText(html_entity_decode(
+            $p_explode[1],
+            ENT_QUOTES | ENT_XML1,
+            'UTF-8'),
+            255.126 - 42,
+            $p2y
+          );
+        }
         // Primary Line 3.
-        $lockup->addText(html_entity_decode(
-          $primary_explode[2],
-          ENT_QUOTES | ENT_XML1,
-          'UTF-8'),
-          255.126 - 42,
-          144 - $horizontal_middle - $horizontal_combined_y + 20.5
-        );
+        if (isset($p_explode[2])) {
+          $p3y = $horizontal_center - $combined_half - $p_offset + $s_reduce + 20;
+          $y_positions[] = $p3y;
+          $lockup->addText(html_entity_decode(
+            $p_explode[2],
+            ENT_QUOTES | ENT_XML1,
+            'UTF-8'),
+            255.126 - 42,
+            $p3y
+          );
+        }
 
         $lockup->setFont($regular, 6, $text_color);
         $lockup->setLineHeight(7.5);
-        $lockup->setLetterSpacing(0.02);
 
-        $lockup->addText(html_entity_decode(
-          $sub_explode[0],
-          ENT_QUOTES | ENT_XML1,
-          'UTF-8'),
-          255.126 - 42,
-          144 - $horizontal_middle - $horizontal_combined_y + 22
-        );
+        if (isset($s_explode[0])) {
+          $s1y = $horizontal_center - $combined_half - $p_offset + $s_reduce + $s_offset;
+          $y_positions[] = $s1y;
+          $lockup->addText(html_entity_decode(
+            $s_explode[0],
+            ENT_QUOTES | ENT_XML1,
+            'UTF-8'),
+            255.126 - 42,
+            $s1y
+          );
+        }
 
-        $lockup->addText(html_entity_decode(
-          $sub_explode[1],
-          ENT_QUOTES | ENT_XML1,
-          'UTF-8'),
-          255.126 - 42,
-          144 - $horizontal_middle - $horizontal_combined_y + 29.57
-        );
+        if (isset($s_explode[1])) {
+          $s2y = $horizontal_center - $combined_half - $p_offset + $s_reduce + $s_offset + 7.5;
+          $y_positions[] = $s2y;
+          $lockup->addText(html_entity_decode(
+            $s_explode[1],
+            ENT_QUOTES | ENT_XML1,
+            'UTF-8'),
+            255.126 - 42,
+            $s2y
+          );
+        }
 
-        $lockup->addText(html_entity_decode(
-          $sub_explode[2],
-          ENT_QUOTES | ENT_XML1,
-          'UTF-8'),
-          255.126 - 42,
-          144 - $horizontal_middle - $horizontal_combined_y + 37.14
-        );
+        if (isset($s_explode[2])) {
+          $s3y = $horizontal_center - $combined_half - $p_offset + $s_reduce + $s_offset + 15;
+          $y_positions[] = $s3y;
+          $lockup->addText(html_entity_decode(
+            $s_explode[2],
+            ENT_QUOTES | ENT_XML1,
+            'UTF-8'),
+            255.126 - 42,
+            $s3y
+          );
+        }
+
+        // Calculate border based on top and furthest bottom y values.
+        $bottom_y = max($y_positions);
+        $border_height = intval($bottom_y - $p1y);
+        // Account for primary/sub spacing and 4 top and bottom.
+        if (isset($s_txt)) {
+          $border_height = $border_height + 12;
+        }
+        else {
+          $border_height = $border_height + 8;
+        }
+        $border_half = $border_height / 2;
+
+        // Draw border.
+        $lockup->addRect([
+          'x' => 206.77,
+          'y' => $horizontal_center - $border_half,
+          'width' => 0.8,
+          'height' => $border_height,
+          'style' => 'fill:' . $text_color,
+        ]);
         break;
 
     }

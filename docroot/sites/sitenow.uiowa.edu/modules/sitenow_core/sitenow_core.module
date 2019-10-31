@@ -5,16 +5,102 @@
  * Primary module hooks for sitenow_core module.
  */
 
+use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\webform\Utility\WebformFormHelper;
 
 /**
  * Implements hook_webform_element_alter().
  */
 function sitenow_core_webform_element_alter(array &$element, FormStateInterface $form_state, array $context) {
-  if (isset($element['#webform_id']) && $element['#webform_id'] === 'request_a_site--uri') {
-    $element['#element_validate'][] = [
-      'Drupal\sitenow_core\Validate\RequestASiteUriConstraint',
-      'validate',
-    ];
+  if (isset($element['#webform_id'])) {
+    if ($element['#webform_id'] === 'request_a_site--uri') {
+      $element['#element_validate'][] = [
+        'Drupal\sitenow_core\Validate\RequestASiteUriConstraint',
+        'validate',
+      ];
+    }
   }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function sitenow_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id == 'webform_submission_request_a_site_paragraph_431_add_form'
+    || $form_id == 'webform_submission_request_a_site_add_form') {
+    $form['#attached']['library'][] = 'sitenow_core/better-request-form';
+
+    $roles = \Drupal::currentUser()->getRoles();
+
+    if (!in_array('administrator', $roles)) {
+      $elements = WebformFormHelper::flattenElements($form['elements']);
+      $elements['hawkid']['#disabled'] = TRUE;
+      $elements['email']['#disabled'] = TRUE;
+    }
+    else {
+      \Drupal::messenger()->addMessage('The HawkID and email fields have been enabled for administrators. You may edit those values.');
+    }
+  }
+
+  if ($form_id == 'webform_submission_resend') {
+    if (\Drupal::currentUser()->id() == 1) {
+      \Drupal::messenger()->addWarning('Do not send emails as user 1. Log in using your HawkID so emails are signed properly.');
+    }
+  }
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function sitenow_core_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'block_view_alter'
+    && isset($implementations['sitenow_core'], $implementations['uiowa_auth'])) {
+    $group = $implementations['sitenow_core'];
+    unset($implementations['sitenow_core']);
+    $implementations['sitenow_core'] = $group;
+  }
+}
+
+/**
+ * Implements hook_block_view_BASE_BLOCK_ID_alter().
+ */
+function sitenow_core_block_view_user_login_block_alter(array &$build, BlockPluginInterface $block) {
+  $build['#pre_render'][] = '_sitenow_core_user_login_block_pre_render';
+}
+
+/**
+ * Pre-render callback for user_login_block.
+ *
+ * @param array $build
+ *   The block build render array.
+ *
+ * @return array
+ *   The render array.
+ *
+ * @see uiowa_auth_block_view_user_login_block_alter()
+ * @see sitenow_core_block_view_user_login_block_alter()
+ */
+function _sitenow_core_user_login_block_pre_render(array $build) {
+  $path = \Drupal::service('path.current')->getPath();
+
+  if ($path == '/node/26'
+    && isset($build['content']['hawkid'], $build['content']['hawkid']['link'])) {
+    $build['content']['hawkid']['message'] = [
+      '#prefix' => '<div class="alert alert-info">',
+      '#suffix' => '</div>',
+      '#markup' => t('The SiteNow service is restricted to current
+       University of Iowa members. You must log in first to access the request
+       form. Click the link below to be redirected to the secure HawkID login
+       page.'),
+    ];
+
+    $build['content']['hawkid']['link']['#url']->setOptions([
+      'query' => [
+        'destination' => $path,
+      ],
+    ]);
+  }
+
+  return $build;
 }
