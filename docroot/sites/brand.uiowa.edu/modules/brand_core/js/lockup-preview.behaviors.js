@@ -125,7 +125,7 @@
             // Create a hidden element that is used for measuring and setting the width of the dividing line.
             function calcDivider() {
                 // Get dimensions of the block iowa SVG.
-                var blockIowa = $('img.block-iowa');
+                var blockIowa = $('.lockup-stacked img.block-iowa');
                 var blockIowaDims = { width : blockIowa.width(), height : blockIowa.height() };
 
                 // Create the element to measure for stacked divider.
@@ -133,16 +133,33 @@
                     $('.layout-region-node-main').append('<div id="primary-first-line-measure-stacked"></div>');
                 }
 
+                // Create the horizontal divider.
+                if (!$('#horizontal-divider').length) {
+                    $('.lockup-horizontal .lockup-content-inner').before('<div id="horizontal-divider"></div>');
+                }
+
                 // Create the stacked divider.
                 if (!$('#stacked-divider').length) {
                     $('.lockup-stacked .lockup-content-inner').before('<div id="stacked-divider"></div>');
                 }
 
-                //grab the first line of the Primary unit text and put it in the measurer.
-                $('#primary-first-line-measure-stacked').text($('.lockup-stacked .lockup-content-inner .primary-unit').text().split('\n')[0]);
-                let divWidth = Math.max($('#primary-first-line-measure-stacked').outerWidth() - 58, blockIowaDims.width);
-                let divPos = ($('.lockup-stacked .lockup-content').outerWidth()/2) - (divWidth/2);
+                // Set values for horizontal divider line.
+                var divHeight = Math.floor(Math.max($('.lockup-horizontal .lockup-content-inner').innerHeight() - 17, blockIowaDims.height));
+                var divTop;
+                (divHeight > blockIowaDims.height) ? divTop = 4 : divTop = -8;
 
+                //grab the first line of the Stacked Primary unit text and put it in the measurer.
+                $('#primary-first-line-measure-stacked').text($('.lockup-stacked .lockup-content-inner .primary-unit').text().split('\n')[0]);
+                var divWidth = Math.max($('#primary-first-line-measure-stacked').outerWidth() - 58, blockIowaDims.width);
+                var divPos = ($('.lockup-stacked .lockup-content').outerWidth()/2) - (divWidth/2);
+
+                // Set the horizontal divider dimensions.
+                $('#horizontal-divider').css({
+                    "height": divHeight + 8 + 'px',
+                    "top": divTop
+                });
+
+                // Set the stacked divider dimensions.
                 $('#stacked-divider').css({
                     "width": divWidth + 8,
                     "left": divPos - 4
