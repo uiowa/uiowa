@@ -318,3 +318,8 @@ $sites['orgpac.prod.drupal.uiowa.edu'] = 'pac.org.uiowa.edu';
 $sites['labschultz.dev.drupal.uiowa.edu'] = 'schultz.lab.uiowa.edu';
 $sites['labschultz.stage.drupal.uiowa.edu'] = 'schultz.lab.uiowa.edu';
 $sites['labschultz.prod.drupal.uiowa.edu'] = 'schultz.lab.uiowa.edu';
+
+// Directory aliases for coleresearchgroup.lab.uiowa.edu.
+$sites['labcoleresearchgroup.dev.drupal.uiowa.edu'] = 'coleresearchgroup.lab.uiowa.edu';
+$sites['labcoleresearchgroup.stage.drupal.uiowa.edu'] = 'coleresearchgroup.lab.uiowa.edu';
+$sites['labcoleresearchgroup.prod.drupal.uiowa.edu'] = 'coleresearchgroup.lab.uiowa.edu';
