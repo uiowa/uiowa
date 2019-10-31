@@ -346,8 +346,6 @@
                 $(".lockup-" + orientation + " ." + unit + "-unit").text(PreviewText);
 
                 // Determine where to put different data, and then put it there.
-                cl([unit, orientation]);
-                cl(ValueObj);
                 if(unit == 'primary') {
                     if (orientation == 'horizontal') {
                         primaryPreviewText = PreviewText;
@@ -369,12 +367,6 @@
                         secondaryStackedValueText   = ValueText;
                     }
                 }
-                cl([
-                    [primaryValueText, primaryPreviewText],
-                    [secondaryValueText, secondaryPreviewText],
-                    [primaryStackedValueText, primaryStackedPreviewText],
-                    [secondaryStackedValueText, secondaryStackedPreviewText]
-                ]);
 
                 // Resets cursor position.             
                 setSelectionRange(
