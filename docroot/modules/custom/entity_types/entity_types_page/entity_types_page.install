@@ -5,10 +5,8 @@
  * Installation functions for Entity Types Pages module.
  */
 
-use Drupal\block\Entity\Block;
-
 /**
- * Implementation of hook_install().
+ * Implements hook_modules_installed().
  */
 function entity_types_page_modules_installed(array $modules) {
   $profile = \Drupal::installProfile();
@@ -23,7 +21,7 @@ function entity_types_page_modules_installed(array $modules) {
 }
 
 /**
- * Implementation of hook_uninstall().
+ * Implements hook_uninstall().
  */
 function entity_types_page_uninstall() {
   echo 'Running entity_types_page_uninstall()';

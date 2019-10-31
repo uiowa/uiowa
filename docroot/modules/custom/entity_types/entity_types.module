@@ -71,7 +71,7 @@ function entity_types_form_layout_builder_disable_form_alter(&$form, FormStateIn
 }
 
 /**
- * Submit handler for when layout builder is enabled/disabled.
+ * Submit handler for when layout builder is enabled.
  */
 function entity_types_form_entity_view_display_edit_form_submit(array $form, FormStateInterface $form_state) {
   $enabled = $form_state->getValue(['layout', 'enabled']);
@@ -95,8 +95,10 @@ function entity_types_form_entity_view_display_edit_form_submit(array $form, For
   entity_types_layout_builder_block_visibility_helper($enabled, $bundle);
 }
 
+/**
+ * Submit handler for when layout builder is disabled.
+ */
 function entity_types_layout_builder_disable_form_submit(array $form, FormStateInterface $form_state) {
-  $entity_type = 'node';
   $bundle = \Drupal::routeMatch()->getParameter('node_type');
 
   // Only proceed if we have a bundle.
