@@ -1,0 +1,31 @@
+{
+  "name": "hawkeye",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "clean": "rm -rf assets hds && mkdir -p assets/webfonts",
+    "hds-copy-fonts": "cp -r ../../../../node_modules/@uiowa/hds/assets/webfonts/ assets/webfonts/",
+    "hds-copy-components": "cp -r ../../../../node_modules/@uiowa/hds/components/ components",
+    "hds-copy-sass": "cp -r ../../../../node_modules/@uiowa/hds/assets/scss/ scss/hds",
+    "hds-copy": "run-p hds-copy-fonts hds-copy-components hds-copy-sass",
+    "posthds-copy": "rm components/_preview.twig",
+    "sass-compile": "node-sass --output-style compressed scss -o assets/css --importer ../../../../node_modules/node-sass-glob-importer/dist/cli.js",
+    "sass-watch": "node-sass -w --output-style compressed scss -o assets/css --importer ../../../../node_modules/node-sass-glob-importer/dist/cli.js",
+    "es6-compile": "babel es6 --out-dir assets/js --minified",
+    "es6-watch": "babel es6 --watch --out-dir assets/js --minified",
+    "prebuild": "run-s clean hds-copy",
+    "build": "run-p sass-compile es6-compile",
+    "livereload": "livereload assets",
+    "watch": "run-p sass-watch es6-watch"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.6.4",
+    "@babel/core": "^7.6.4",
+    "@babel/preset-env": "^7.6.3",
+    "@uiowa/hds": "https://github.com/uiowa/hds.git",
+    "livereload": "^0.7.0",
+    "node-sass": "^4.9.3",
+    "node-sass-glob-importer": "^5.3.2",
+    "npm-run-all": "^4.1.3"
+  }
+}

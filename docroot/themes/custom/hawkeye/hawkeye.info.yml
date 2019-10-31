@@ -1,0 +1,50 @@
+name: Hawkeye
+type: theme
+base theme: classy
+description: The SiteNow implementation of the Hawkeye Design System.
+package: SiteNow
+core: 8.x
+core_version_requirement: ^8 || ^9
+stylesheets-remove:
+  - modules/uiowa/uiowa_bar/css/uiowa-bar.css
+libraries-override:
+  classy/base: false
+libraries:
+  - hawkeye/global
+regions:
+  header: 'Header'
+  primary_menu: 'Primary menu'
+  secondary_menu: 'Secondary menu'
+  page_top: 'Page top'
+  page_bottom: 'Page bottom'
+  featured: 'Featured'
+  breadcrumb: 'Breadcrumb'
+  content: 'Content'
+  sidebar_first: 'Sidebar first'
+  sidebar_second: 'Sidebar second'
+  footer: 'Footer'
+component-libraries:
+  site-name:
+    paths:
+      - hds/components/03 - global/site-name
+  heading:
+    paths:
+      - hds/components/01 - elements/heading
+  headline:
+    paths:
+      - hds/components/01 - elements/headline
+  banner:
+    paths:
+      - hds/components/02 - blocks/banner-block
+  feature-block:
+    paths:
+      - hds/components/02 - blocks/feature-block
+  news-block:
+    paths:
+      - hds/components/02 - blocks/news-block
+  card-block:
+    paths:
+      - hds/components/02 - blocks/card-block
+  stat-block:
+    paths:
+      - hds/components/02 - blocks/stat-block
