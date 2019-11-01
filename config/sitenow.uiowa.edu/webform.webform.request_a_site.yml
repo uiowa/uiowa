@@ -193,13 +193,13 @@ handlers:
     weight: -45
     settings:
       states: {  }
-      to_mail: '[webform_submission:values:email:raw]'
+      to_mail: '[webform_submission:values:email], [site:mail]'
       to_options: {  }
       cc_mail: ''
       cc_options: {  }
-      bcc_mail: its-web@uiowa.edu
+      bcc_mail: ''
       bcc_options: {  }
-      from_mail: its-web@uiowa.edu
+      from_mail: _default
       from_options: {  }
       from_name: 'ITS - Custom Solutions & Integrations - Web Services'
       subject: 'SiteNow Site Created'
@@ -226,13 +226,13 @@ handlers:
     weight: -44
     settings:
       states: {  }
-      to_mail: _default
+      to_mail: '[webform_submission:values:email],[site:mail]'
       to_options: {  }
       cc_mail: ''
       cc_options: {  }
-      bcc_mail: its-web@uiowa.edu
+      bcc_mail: ''
       bcc_options: {  }
-      from_mail: its-web@uiowa.edu
+      from_mail: _default
       from_options: {  }
       from_name: 'ITS - Custom Solutions & Integrations - Web Services'
       subject: 'SiteNow Site Created'
@@ -294,13 +294,13 @@ handlers:
     settings:
       states:
         - completed
-      to_mail: its-web@uiowa.edu
+      to_mail: _default
       to_options: {  }
       cc_mail: ''
       cc_options: {  }
       bcc_mail: ''
       bcc_options: {  }
-      from_mail: its-web@uiowa.edu
+      from_mail: _default
       from_options: {  }
       from_name: 'ITS - Custom Solutions & Integrations - Web Services'
       subject: 'SiteNow Request'
@@ -327,13 +327,13 @@ handlers:
     weight: -46
     settings:
       states: {  }
-      to_mail: hostmaster@uiowa.edu
+      to_mail: 'hostmaster@uiowa.edu,[site:mail]'
       to_options: {  }
       cc_mail: ''
       cc_options: {  }
-      bcc_mail: its-web@uiowa.edu
+      bcc_mail: ''
       bcc_options: {  }
-      from_mail: its-web@uiowa.edu
+      from_mail: _default
       from_options: {  }
       from_name: 'ITS - Custom Solutions & Integrations - Web Services'
       subject: 'SiteNow DNS Request'
@@ -360,13 +360,13 @@ handlers:
     weight: -47
     settings:
       states: {  }
-      to_mail: hostmaster@uiowa.edu
+      to_mail: 'hostmaster@uiowa.edu,[webform_submission:values:email],[site:mail]'
       to_options: {  }
-      cc_mail: '[webform_submission:values:email:raw]'
+      cc_mail: ''
       cc_options: {  }
-      bcc_mail: its-web@uiowa.edu
+      bcc_mail: ''
       bcc_options: {  }
-      from_mail: its-web@uiowa.edu
+      from_mail: _default
       from_options: {  }
       from_name: 'ITS - Custom Solutions & Integrations - Web Services'
       subject: 'Top Level Domain Request'
@@ -393,13 +393,13 @@ handlers:
     weight: -48
     settings:
       states: {  }
-      to_mail: '[webform_submission:values:email:raw]'
+      to_mail: '[webform_submission:values:email], [site:mail]'
       to_options: {  }
       cc_mail: ''
       cc_options: {  }
-      bcc_mail: its-web@uiowa.edu
+      bcc_mail: ''
       bcc_options: {  }
-      from_mail: its-web@uiowa.edu
+      from_mail: _default
       from_options: {  }
       from_name: 'ITS - Custom Solutions & Integrations - Web Services'
       subject: 'SiteNow Site Request'
