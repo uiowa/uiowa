@@ -56,6 +56,8 @@ function entity_types_layout_builder_block_visibility_helper($enabling, $bundle,
 
   foreach ($blocks as $block) {
     $visibility = $block->getVisibility();
+    /** @var \Drupal\Core\Condition\ConditionPluginCollection $visibilityC */
+    $visibilityC = $block->getVisibilityConditions();
     if (empty($visibility['entity_bundle:node'])) {
       $visibility['entity_bundle:' . $entity_type]['bundles'] = [];
     }
