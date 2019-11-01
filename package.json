@@ -6,7 +6,13 @@
   "author": "ITS Web Services",
   "license": "MIT",
   "private": true,
-  "workspaces": [
-    "docroot/themes/custom/hawkeye"
-  ]
+  "workspaces": {
+    "packages": [
+      "docroot/themes/custom/hawkeye"
+    ],
+    "nohoist": [
+      "**/hds",
+      "**/node-sass-glob-importer"
+    ]
+  }
 }
