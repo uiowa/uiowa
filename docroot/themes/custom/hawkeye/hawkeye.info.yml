@@ -4,6 +4,8 @@ base theme: classy
 description: The SiteNow implementation of the Hawkeye Design System.
 package: SiteNow
 core: 8.x
+dependencies:
+  - components
 core_version_requirement: ^8 || ^9
 stylesheets-remove:
   - modules/uiowa/uiowa_bar/css/uiowa-bar.css
@@ -26,25 +28,25 @@ regions:
 component-libraries:
   site-name:
     paths:
-      - hds/components/03 - global/site-name
+      - assets/components/03 - global/site-name
   heading:
     paths:
-      - hds/components/01 - elements/heading
+      - assets/components/01 - elements/heading
   headline:
     paths:
-      - hds/components/01 - elements/headline
+      - assets/components/01 - elements/headline
   banner:
     paths:
-      - hds/components/02 - blocks/banner-block
+      - assets/components/02 - blocks/banner-block
   feature-block:
     paths:
-      - hds/components/02 - blocks/feature-block
+      - assets/components/02 - blocks/feature-block
   news-block:
     paths:
-      - hds/components/02 - blocks/news-block
+      - assets/components/02 - blocks/news-block
   card-block:
     paths:
-      - hds/components/02 - blocks/card-block
+      - assets/components/02 - blocks/card-block
   stat-block:
     paths:
-      - hds/components/02 - blocks/stat-block
+      - assets/components/02 - blocks/stat-block
