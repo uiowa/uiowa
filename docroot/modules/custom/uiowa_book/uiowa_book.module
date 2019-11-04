@@ -1,0 +1,92 @@
+<?php
+
+/**
+ * @file
+ * Provides updated book structure for the University of Iowa Book module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function uiowa_book_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.uiowa_book':
+      $filepath = dirname(__FILE__) . '/README.md';
+      if (file_exists($filepath)) {
+        $readme = file_get_contents($filepath);
+      }
+      else {
+        $filepath = dirname(__FILE__) . '/README.txt';
+        if (file_exists($filepath)) {
+          $readme = file_get_contents($filepath);
+        }
+      }
+      if (!isset($readme)) {
+        return NULL;
+      }
+
+      /* @var \Drupal\Core\Extension\ModuleHandler $moduleHandler*/
+      $moduleHandler = \Drupal::service('module_handler');
+      if ($moduleHandler->moduleExists('markdown')) {
+        $filters = $moduleHandler->invoke('markdown', 'filter_info');
+        $info = $filters['filter_markdown'];
+
+        if (function_exists($info['process callback'])) {
+          $output = $info['process callback']($readme, NULL);
+        }
+        else {
+          $output = '<pre>' . $readme . '</pre>';
+        }
+      }
+      else {
+        $output = '<pre>' . $readme . '</pre>';
+      }
+
+      return $output;
+  }
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function uiowa_book_page_attachments(array &$attachments) {
+  $attachments['#attached']['library'][] = 'uiowa_book/uiowa_book_styling';
+}
+
+/**
+ * Implements hook_theme().
+ */
+function uiowa_book_theme($existing, $type, $theme, $path) {
+  return [
+    'field__node__book_amended_date__book' => [
+      'render element' => 'content',
+      'base hook' => 'field',
+      'template' => 'field--node--book-amended-date--book',
+      'path' => $path . '/templates',
+    ],
+    'field__node__book_owner__book' => [
+      'render element' => 'content',
+      'base hook' => 'field',
+      'template' => 'field--node--book-owner--book',
+      'path' => $path . '/templates',
+    ],
+    'field__node__book_tags__book' => [
+      'render element' => 'content',
+      'base hook' => 'field',
+      'template' => 'field--node--book-tags--book',
+      'path' => $path . '/templates',
+    ],
+    'book_navigation__uiowa_book' => [
+      'base hook' => 'book',
+      'template' => 'book-navigation--uiowa-book',
+      'path' => $path . '/templates',
+    ],
+    'book_tree__uiowa_book' => [
+      'base hook' => 'book',
+      'template' => 'book-tree--uiowa-book',
+      'path' => $path . '/templates',
+    ],
+  ];
+}
