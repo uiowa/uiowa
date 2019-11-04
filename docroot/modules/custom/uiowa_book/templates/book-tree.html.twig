@@ -37,8 +37,7 @@
       <ul>
     {% endif %}
     {% for item in items %}
-      <li{{ item.attributes }}><div>HELLO WORLD!</div>
-
+      <li{{ item.attributes }}>
         {{ link(item.title, item.url) }}
         {% if item.below %}
           {{ book_tree.book_links(item.below, attributes, menu_level + 1) }}
