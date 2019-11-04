@@ -78,15 +78,23 @@ function uiowa_book_theme($existing, $type, $theme, $path) {
       'template' => 'field--node--book-tags--book',
       'path' => $path . '/templates',
     ],
-    'book_navigation__uiowa_book' => [
-      'base hook' => 'book',
-      'template' => 'book-navigation--uiowa-book',
-      'path' => $path . '/templates',
-    ],
-    'book_tree__uiowa_book' => [
-      'base hook' => 'book',
-      'template' => 'book-tree--uiowa-book',
-      'path' => $path . '/templates',
-    ],
+//    'book_navigation__uiowa_book' => [
+//      'base hook' => 'book',
+//      'template' => 'book-navigation--uiowa-book',
+//      'path' => $path . '/templates',
+//    ],
+//    'book_tree__uiowa_book' => [
+//      'base hook' => 'book',
+//      'template' => 'book-tree--uiowa-book',
+//      'path' => $path . '/templates',
+//    ],
   ];
+}
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function uiowa_book_theme_registry_alter(&$theme_registry) {
+  $theme_registry['book_navigation']['path'] = drupal_get_path('module', 'uiowa_book') . '/templates';
+  $theme_registry['book_tree']['path'] = drupal_get_path('module', 'uiowa_book') . '/templates';
 }
