@@ -693,7 +693,7 @@ function sitenow_page_attachments(array &$attachments) {
  */
 function sitenow_toolbar() {
 
-  $url = Url::fromUri('//sitenow.uiowa.edu/documentation');
+  $url = Url::fromUri('//sitenow.uiowa.edu/node/36');
 
   $items = [];
   $items['support'] = [
