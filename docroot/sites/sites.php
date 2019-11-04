@@ -323,3 +323,8 @@ $sites['labcoleresearchgroup.prod.drupal.uiowa.edu'] = 'coleresearchgroup.lab.ui
 $sites['sitesjrg.dev.drupal.uiowa.edu'] = 'jrg.sites.uiowa.edu';
 $sites['sitesjrg.stage.drupal.uiowa.edu'] = 'jrg.sites.uiowa.edu';
 $sites['sitesjrg.prod.drupal.uiowa.edu'] = 'jrg.sites.uiowa.edu';
+
+// Directory aliases for hbrl-neurosurgery.lab.uiowa.edu.
+$sites['labhbrl-neurosurgery.dev.drupal.uiowa.edu'] = 'hbrl-neurosurgery.lab.uiowa.edu';
+$sites['labhbrl-neurosurgery.stage.drupal.uiowa.edu'] = 'hbrl-neurosurgery.lab.uiowa.edu';
+$sites['labhbrl-neurosurgery.prod.drupal.uiowa.edu'] = 'hbrl-neurosurgery.lab.uiowa.edu';
