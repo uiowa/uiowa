@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d52703d09025fa0b6ed4bb0a3adfafbd",
+    "content-hash": "fda593540a23b5c3816762a37eaec675",
     "packages": [
         {
             "name": "acquia/blt",
@@ -269,12 +269,12 @@
             "version": "v1.8.7",
             "source": {
                 "type": "git",
-                "url": "https://github.com/harvesthq/chosen-package.git",
+                "url": "git@github.com:harvesthq/bower-chosen.git",
                 "reference": "ad86732b668627c131e61ee8f0e6e9ed52e4db8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/harvesthq/chosen-package/zipball/ad86732b668627c131e61ee8f0e6e9ed52e4db8d",
+                "url": "https://api.github.com/repos/harvesthq/bower-chosen/zipball/ad86732b668627c131e61ee8f0e6e9ed52e4db8d",
                 "reference": "ad86732b668627c131e61ee8f0e6e9ed52e4db8d"
             },
             "type": "bower-asset",
@@ -3059,6 +3059,76 @@
                 "irc": "irc://irc.freenode.org/drupal-contribute"
             },
             "time": "2018-09-26T16:48:09+00:00"
+        },
+        {
+            "name": "drupal/config_inspector",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/config_inspector.git",
+                "reference": "8.x-1.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/config_inspector-8.x-1.0.zip",
+                "reference": "8.x-1.0",
+                "shasum": "dc92ceb8fd3e289f9e5c058692346e4b9ef3fa74"
+            },
+            "require": {
+                "drupal/core": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0",
+                    "datestamp": "1569419586",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                },
+                "drush": {
+                    "services": {
+                        "drush.services.yml": "^9"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Gábor Hojtsy",
+                    "homepage": "https://www.drupal.org/user/4166"
+                },
+                {
+                    "name": "Jose Reyero",
+                    "homepage": "https://www.drupal.org/user/4299"
+                },
+                {
+                    "name": "aspilicious",
+                    "homepage": "https://www.drupal.org/user/172527"
+                },
+                {
+                    "name": "ilchovuchkov",
+                    "homepage": "https://www.drupal.org/user/3568458"
+                },
+                {
+                    "name": "vijaycs85",
+                    "homepage": "https://www.drupal.org/user/93488"
+                }
+            ],
+            "description": "Provides a configuration data and structure inspector tool",
+            "homepage": "https://drupal.org/project/config_inspector",
+            "support": {
+                "source": "https://cgit.drupalcode.org/config_inspector",
+                "issues": "https://drupal.org/project/issues/config_inspector",
+                "irc": "irc://irc.freenode.org/drupal-contribute"
+            }
         },
         {
             "name": "drupal/config_split",
@@ -12152,15 +12222,15 @@
         },
         {
             "name": "uiowa/uiowa_footer",
-            "version": "1.0.0-alpha4",
+            "version": "1.0.0-alpha5",
             "source": {
                 "type": "git",
                 "url": "git@github.com:uiowa/uiowa_footer",
-                "reference": "ec0fdbf1b061c3bcbecc8b107c90fb9768773e7a"
+                "reference": "4c0ac8fe042ff0877afa086fc48270058b98d682"
             },
             "type": "drupal-custom-module",
             "description": "Configuration and block implementation for common footer.",
-            "time": "2019-09-11T15:11:50+00:00"
+            "time": "2019-11-04T21:17:51+00:00"
         },
         {
             "name": "webflo/drupal-finder",
@@ -13339,76 +13409,6 @@
                 "instantiate"
             ],
             "time": "2019-03-17T17:37:11+00:00"
-        },
-        {
-            "name": "drupal/config_inspector",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/config_inspector.git",
-                "reference": "8.x-1.0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/config_inspector-8.x-1.0.zip",
-                "reference": "8.x-1.0",
-                "shasum": "dc92ceb8fd3e289f9e5c058692346e4b9ef3fa74"
-            },
-            "require": {
-                "drupal/core": "*"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-1.0",
-                    "datestamp": "1569419586",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                },
-                "drush": {
-                    "services": {
-                        "drush.services.yml": "^9"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Gábor Hojtsy",
-                    "homepage": "https://www.drupal.org/user/4166"
-                },
-                {
-                    "name": "Jose Reyero",
-                    "homepage": "https://www.drupal.org/user/4299"
-                },
-                {
-                    "name": "aspilicious",
-                    "homepage": "https://www.drupal.org/user/172527"
-                },
-                {
-                    "name": "ilchovuchkov",
-                    "homepage": "https://www.drupal.org/user/3568458"
-                },
-                {
-                    "name": "vijaycs85",
-                    "homepage": "https://www.drupal.org/user/93488"
-                }
-            ],
-            "description": "Provides a configuration data and structure inspector tool",
-            "homepage": "https://drupal.org/project/config_inspector",
-            "support": {
-                "source": "https://cgit.drupalcode.org/config_inspector",
-                "issues": "https://drupal.org/project/issues/config_inspector",
-                "irc": "irc://irc.freenode.org/drupal-contribute"
-            }
         },
         {
             "name": "drupal/drupal-driver",
@@ -15644,8 +15644,7 @@
         "drupal/purge": 10,
         "drupal/rabbit_hole": 10,
         "drupal/stage_file_proxy": 10,
-        "drupal/swiftmailer": 10,
-        "drupal/config_inspector": 10
+        "drupal/swiftmailer": 10
     },
     "prefer-stable": true,
     "prefer-lowest": false,
