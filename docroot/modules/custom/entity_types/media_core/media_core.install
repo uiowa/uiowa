@@ -14,7 +14,9 @@ function media_core_install() {
   user_role_grant_permissions('anonymous', ['view media']);
   user_role_grant_permissions('authenticated', ['view media']);
 
+  // Set the rich_text filter to be shown at the top of lists.
   $filter = FilterFormat::load('rich_text');
   $filter->set('weight', -10);
+  // @todo Does this exception need to be handled?
   $filter->save();
 }
