@@ -51,6 +51,18 @@ function collegiate_theme_preprocess_page(&$variables) {
   $variables['collegiate_theme_header_alignment_settings'] = theme_get_setting('collegiate_theme_header_alignment_settings');
   $variables['collegiate_theme_header_color_settings'] = theme_get_setting('collegiate_theme_header_color_settings');
   $variables['collegiate_theme_container_settings'] = theme_get_setting('collegiate_theme_container_settings');
+
+  // Set a variable for whether layout builder is enabled.
+  $variables['layout_builder_enabled'] = false;
+  if (!empty($variables['node'])) {
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $variables['node'];
+
+    // @todo Is there a better way to have a soft dependency on a class?
+    if (class_exists('\Drupal\layout_builder_custom\LayoutBuilderHelper')) {
+      $variables['layout_builder_enabled'] = \Drupal::classResolver('\Drupal\layout_builder_custom\LayoutBuilderHelper')->layoutBuilderEnabled($node);
+    }
+  }
 }
 
 /**
