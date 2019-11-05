@@ -53,7 +53,7 @@ function collegiate_theme_preprocess_page(&$variables) {
   $variables['collegiate_theme_container_settings'] = theme_get_setting('collegiate_theme_container_settings');
 
   // Set a variable for whether layout builder is enabled.
-  $variables['layout_builder_enabled'] = false;
+  $variables['layout_builder_enabled'] = FALSE;
   if (!empty($variables['node'])) {
     /** @var \Drupal\node\NodeInterface $node */
     $node = $variables['node'];
