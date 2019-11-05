@@ -16,7 +16,9 @@ function hawkeye_preprocess_html(&$variables) {
  * Implements hook_preprocess_HOOK() for page.html.twig.
  */
 function hawkeye_preprocess_page(&$variables) {
-
+  $config = \Drupal::config('system.site');
+  $variables['site_name'] = $config->get('name');
+  $variables['site_slogan'] = $config->get('slogan');
 }
 
 /**
