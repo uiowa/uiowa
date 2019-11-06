@@ -5,6 +5,7 @@
  * Contains sitenow_card.module.
  */
 
+use Drupal\image\Entity\ImageStyle;
 use Drupal\media\Entity\Media;
 use Drupal\file\Entity\File;
 use Drupal\Core\Template\Attribute;
@@ -46,19 +47,9 @@ function sitenow_card_preprocess_paragraph__card(&$variables) {
         $file = File::load($media_field['target_id']);
         $uri = $file->getFileUri();
         $alt = ($media_field['alt'] ? $media_field['alt'] : '');
-        $image = [
-          '#theme' => 'image_style',
-          '#width' => NULL,
-          '#height' => NULL,
-          '#style_name' => 'sitenow_card',
-          '#uri' => $uri,
-          '#alt' => $alt,
-          '#weight' => -1,
-          '#attributes' => [
-            'class' => 'card-img-top',
-          ],
-        ];
-        $variables["content"]['card_image'] = $image;
+        $image_style = ImageStyle::load('sitenow_card')->buildUrl($uri);
+        $variables['content']['card_image_style'] = $image_style;
+        $variables['content']['card_image_alt'] = $alt;
       }
     }
   }

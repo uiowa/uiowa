@@ -43,7 +43,7 @@
 
     {% embed "@card-block/card-block--basic.twig" with {
       "card_classes": attributes['class'],
-      "card_image": file_url(content.field_card_image['#items'].entity.uri.value),
+      "card_image": file_url(content.card_image_style),
       "card_text": content.field_card_body,
       "card_link_url": content.field_card_link[0]['#url'],
       "card_link_title": content.field_card_link[0]['#title'],
