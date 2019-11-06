@@ -54,14 +54,15 @@
             // Add warning HTML.
             warningHTML();
 
-            // Show preview and inject content based on existing input or live input for 
+            // Show preview and inject content based on existing input or live input for
             // both the Primary Unit and Sub Unit, Horizontal and Stacked.
             if (primaryUnit.val() !== "") {
                 $(".lockup-horizontal .primary-unit").text(primaryUnit.val());
             }
 
             if (subUnit.val() !== "") {
-                $(".lockup-horizontal .sub-unit").text(subUnit.val());
+                $(".lockup-horizontal .sub-unit").text(subUnit.val()).css({"margin-top": "7px"});
+                $(".lockup-horizontal .lockup-content").css({"margin-top": "7px"});
             }
             if (primaryUnitStacked.val() !== "") {
                 $(".lockup-stacked .primary-unit").text(primaryUnitStacked.val());
@@ -150,13 +151,12 @@
 
                 //grab the first line of the Stacked Primary unit text and put it in the measurer.
                 $('#primary-first-line-measure-stacked').text($('.lockup-stacked .lockup-content-inner .primary-unit').text().split('\n')[0]);
-                var divWidth = Math.max($('#primary-first-line-measure-stacked').outerWidth() - 58, blockIowaDims.width);
+                var divWidth = Math.max($('#primary-first-line-measure-stacked').outerWidth() - 13, blockIowaDims.width);
                 var divPos = ($('.lockup-stacked .lockup-content').outerWidth()/2) - (divWidth/2);
 
                 // Set the horizontal divider dimensions.
                 $('#horizontal-divider').css({
-                    "height": divHeight + 8 + 'px',
-                    "top": divTop
+                    "height": divHeight + 8 + "px"
                 });
 
                 // Set the stacked divider dimensions.
@@ -260,12 +260,12 @@
                         break;
                 }
 
-                /*  This is a little complicated, but it is essentially taking in to account whether the 
+                /*  This is a little complicated, but it is essentially taking in to account whether the
                     user pastes or types something in to the box. Upon paste it needs to be trimmed, but
-                    we dont want to simply trim things when it comes to typing, because that causes some 
+                    we dont want to simply trim things when it comes to typing, because that causes some
                     odd interactions. we store the previous lines of the current textbox so that we can
                     just take that instead of any new characters as to not cause confusion for the user.
-                    The UX is better if they feel like they just cant add any more characters than if the 
+                    The UX is better if they feel like they just cant add any more characters than if the
                     stuff they are writing is pushing other text off the end of the line to be trimmed.
                 */
                var lines = modText.split('\n');
@@ -284,7 +284,7 @@
                         }
                     }
                 }
-                        
+
                 // Detects proper place to put the previous lines and then returns a crafted object.
                 switch (unit) {
                     case 'primary':
@@ -302,7 +302,7 @@
                             };
                         }
                     case 'sub':
-                        
+
                         if (orientation == 'horizontal') {
                             subUnitPreviousText = lines.join('\n');
                             return {
@@ -318,7 +318,7 @@
                         }
                 }
             }
-            
+
             // Sanitizes text for the Preview.
             function previewSanitize(text) {
                 var sanitizedText;
@@ -342,7 +342,7 @@
                 var unit;
                 var orientation;
                 var unitSelector = selector.attr('id').split('-').splice(3,selector.attr('id').split('-').length-5).join('-');
-                
+
                 // Set the unit.
                 if(unitSelector[0] == 'p') { unit = 'primary'; }
                 else if(unitSelector[0] == 's') { unit = 'sub'; }
@@ -350,7 +350,7 @@
                 // Set either Horizontal or Stacked.
                 if(unitSelector.split('-')[unitSelector.split('-').length-1] == 'unit') { orientation = 'horizontal'; }
                 else if(unitSelector.split('-')[unitSelector.split('-').length-1] == 'stacked') { orientation = 'stacked'; }
-                
+
 
                 // Sanitize text area, and set the preview text.
                 var ValueObj = textareaSanitize(textarea, text, numberOfLines, unit, event.originalEvent.inputType);
@@ -377,6 +377,14 @@
                 else if(unit == 'sub') {
                     if (orientation == 'horizontal') {
                         secondaryPreviewText = PreviewText;
+                        if (PreviewText !='') {
+                          $(".lockup-horizontal .sub-unit").css({"margin-top": "7px"});
+                          $(".lockup-horizontal .lockup-content").css({"margin-top": "7px"});
+                        }
+                        else {
+                          $(".lockup-horizontal .sub-unit").css({"margin-top": "0px"});
+                          $(".lockup-horizontal .lockup-content").css({"margin-top": "7px"});
+                        }
                         secondaryValueText   = ValueText;
                     }
                     else if (orientation == 'stacked') {
@@ -385,7 +393,7 @@
                     }
                 }
 
-                // Resets cursor position.             
+                // Resets cursor position.
                 setSelectionRange(
                     textarea[0],
                     cursorSelectionStart + ValueObj.selectionOffset,
