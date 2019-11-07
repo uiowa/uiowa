@@ -1,0 +1,101 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.article.body
+    - field.field.node.article.article_attachments
+    - field.field.node.article.article_author
+    - field.field.node.article.article_date
+    - field.field.node.article.article_image
+    - field.field.node.article.article_link
+    - field.field.node.article.article_location
+    - field.field.node.article.article_tags
+    - image.style.article_image
+    - node.type.article
+  module:
+    - datetime
+    - file
+    - link
+    - media
+    - text
+    - user
+id: node.article.default
+targetEntityType: node
+bundle: article
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 5
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  article_attachments:
+    weight: 7
+    label: above
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    type: file_default
+    region: content
+  article_author:
+    weight: 4
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  article_date:
+    weight: 2
+    label: inline
+    settings:
+      timezone_override: America/Chicago
+      format_type: 12hr_long_date
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  article_image:
+    weight: 1
+    label: hidden
+    settings:
+      image_style: article_image
+      image_link: ''
+    third_party_settings: {  }
+    type: media_thumbnail
+    region: content
+  article_link:
+    weight: 6
+    label: inline
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  article_location:
+    weight: 3
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  article_tags:
+    weight: 8
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+hidden: {  }

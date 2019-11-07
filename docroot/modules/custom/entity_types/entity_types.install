@@ -22,15 +22,15 @@ function entity_types_install() {
  */
 function entity_types_uninstall() {
   $storage_handler = \Drupal::entityTypeManager()->getStorage('node');
+  $entities = $storage_handler->loadByProperties(['type' => 'article']);
+  $storage_handler->delete($entities);
+
+  $storage_handler = \Drupal::entityTypeManager()->getStorage('node');
   $entities = $storage_handler->loadByProperties(['type' => 'event']);
   $storage_handler->delete($entities);
 
   $storage_handler = \Drupal::entityTypeManager()->getStorage('node');
-  $entities = $storage_handler->loadByProperties(['type' => 'news']);
-  $storage_handler->delete($entities);
-
-  $storage_handler = \Drupal::entityTypeManager()->getStorage('node');
-  $entities = $storage_handler->loadByProperties(['type' => 'people']);
+  $entities = $storage_handler->loadByProperties(['type' => 'person']);
   $storage_handler->delete($entities);
 
   $storage_handler = \Drupal::entityTypeManager()->getStorage('node');
