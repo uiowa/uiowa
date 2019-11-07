@@ -3,7 +3,7 @@
         <div class="sitenow-event-content">
 
             <h3 class="sitenow-event-title"><a href="{{ event.url }}">
-                {% if event.canceled == true %}[CANCELED] {% endif %}
+                {% if event.canceled == TRUE %}[CANCELED] {% endif %}
                 {{ event.title }}
               </a></h3>
             <p class="date-string">{{ event.date_string }}</p>
