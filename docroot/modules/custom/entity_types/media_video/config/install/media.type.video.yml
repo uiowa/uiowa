@@ -1,14 +1,13 @@
 langcode: en
 status: true
-dependencies:
-  module:
-    - video_embed_media
+dependencies: {  }
 id: video
 label: Video
-description: 'A video hosted by YouTube, Vimeo, or some other provider.'
-source: video_embed_field
+description: 'A locally hosted video file.'
+source: video_file
 queue_thumbnail_downloads: false
-new_revision: false
+new_revision: true
 source_configuration:
-  source_field: field_media_video_embed_field
-field_map: {  }
+  source_field: field_media_video_file
+field_map:
+  name: name

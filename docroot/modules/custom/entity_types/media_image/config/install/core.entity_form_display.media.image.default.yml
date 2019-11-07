@@ -2,7 +2,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.media.image.field_media_in_library
     - field.field.media.image.image
     - image.style.thumbnail
     - media.type.image
@@ -14,13 +13,6 @@ targetEntityType: media
 bundle: image
 mode: default
 content:
-  field_media_in_library:
-    type: boolean_checkbox
-    weight: 4
-    settings:
-      display_label: true
-    third_party_settings: {  }
-    region: content
   image:
     type: image_image
     weight: 0

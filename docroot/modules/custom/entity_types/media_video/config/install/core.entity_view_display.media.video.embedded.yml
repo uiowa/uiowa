@@ -3,30 +3,31 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.media.embedded
-    - field.field.media.video.field_media_in_library
-    - field.field.media.video.field_media_video_embed_field
+    - field.field.media.video.field_media_video_file
     - media.type.video
   module:
-    - video_embed_field
+    - file
 id: media.video.embedded
 targetEntityType: media
 bundle: video
 mode: embedded
 content:
-  field_media_video_embed_field:
-    type: video_embed_field_video
-    weight: 2
-    label: hidden
+  field_media_video_file:
+    type: file_video
+    weight: 0
+    label: visually_hidden
     settings:
-      responsive: true
-      width: 854
+      muted: false
+      width: 640
       height: 480
-      autoplay: true
+      controls: true
+      autoplay: false
+      loop: false
+      multiple_file_display_type: tags
     third_party_settings: {  }
     region: content
 hidden:
   created: true
-  field_media_in_library: true
   name: true
   thumbnail: true
   uid: true
