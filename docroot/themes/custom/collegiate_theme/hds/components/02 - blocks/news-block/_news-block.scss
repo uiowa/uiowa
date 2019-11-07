@@ -56,14 +56,18 @@
 
   &__link {
     text-decoration: none;
-    letter-spacing: .05rem;
+    letter-spacing: .06rem;
     text-transform: uppercase;
     color: $secondary;
     font-weight: $font-weight-light;
+      &:after {
+        content: "\f0da";
+        @include padding($left: $sm);
+        @include fas();
+      }
   }
 
   &__details {
-    @include element-invisible;
 
     .is-open & {
       clear: both;

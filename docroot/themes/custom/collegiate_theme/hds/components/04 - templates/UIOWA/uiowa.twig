@@ -50,7 +50,7 @@
   "feature_link": item.feature_link,
   "feature_title": item.feature_title,
   "feature_sub": item.feature_sub,
-  "block_type": 'advanced',
+  "block_type": 'basic',
   "feature_state": 'feature__container-expanded'
 } %}
 
@@ -122,11 +122,8 @@
 
 <hr class="spacing" />
 
-{% include '@portraits-block' %}
-
-<hr class="spacing" />
-
 {% include '@headline' with {
+  "headline_level": 'h2',
   "headline_title": 'Rotating Highlight Area',
   "headline_type": 'bold-headline bold-headline--positive'
 } %}

@@ -1,15 +1,11 @@
 .bold-headline {
-  width: intrinsic;
-  width: -moz-max-content;
-  width: -webkit-max-content;
   letter-spacing: .04em;
   text-transform: uppercase;
+  text-align: center;
   font-family: $font-family-caps-light;
   font-weight: $font-weight-medium-bold;
   font-size: $h3-font-size;
-  @include bracket();
-  @include padding($top: $md, $right: $md, $bottom: $sm, $left: $md);
-  @include margin($right: auto, $bottom: $xlg, $left: auto);
+  @include padding($top: $md, $right: 0, $bottom: $sm, $left: 0);
   &.bold-headline--negative {
     color: $white;
   }
@@ -22,4 +18,20 @@
 .bold-headline--negative {
   color: $white;
   @extend .bold-headline;
+}
+
+h2.bold-headline {
+  font-size: $h3-font-size;
+}
+
+h3.bold-headline {
+  font-size: $h4-font-size;
+}
+
+h4.bold-headline {
+  font-size: $h5-font-size;
+}
+
+h5.bold-headline {
+  font-size: $h6-font-size;
 }

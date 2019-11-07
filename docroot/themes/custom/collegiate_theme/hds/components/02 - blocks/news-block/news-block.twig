@@ -5,7 +5,7 @@
     {% set news_card_position = 0 %}
 
     {% for item in news.items %}
-      {% include "@news-block--advanced" with {
+      {% include "@news-block--basic" with {
         "news_classes": 'news-card__row',
         "news_card_image": item.news_card_image,
         "news_card_tag": item.news_card_tag,

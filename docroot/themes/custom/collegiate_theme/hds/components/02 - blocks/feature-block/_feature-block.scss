@@ -20,7 +20,6 @@
       align-content: stretch;
       align-items: stretch;
       flex-direction: row;
-     // flex-wrap: nowrap;
       justify-content: flex-start;
     }
 
@@ -49,7 +48,7 @@
     bottom: 0;
     transition: opacity .3s linear;
     opacity: 0;
-    @include padding($top: $xlg, $right: $xlg, $bottom: $sm, $left: $xlg);
+    @include padding($top: $xlg, $right: $xlg, $bottom: $xlg, $left: $xlg);
   }
 
   &__hr {
@@ -60,7 +59,8 @@
 
   &__bracket {
     z-index: 1;
-    @include bracket();
+    position: relative;
+    //@include bracket();
     //width: 500px;
   }
 
@@ -179,10 +179,6 @@
 
 .feature__container:hover>.feature,
 .feature__container:focus-within>.feature {
- /* @include breakpoint(sm) {
-    @include flex(1, 1, 0%);
-  }
-*/
   .feature__content {
     opacity: 0;
   }
@@ -191,15 +187,6 @@
     opacity: 1;
   }
 }
-
-.feature__container-expanded:hover>.feature,
-.feature__container-expanded:focus-within>.feature {
-  @include breakpoint(sm) {
-    flex: unset;
-    flex-grow: 0;
-  }
-}
-
 
 .feature__container:hover>.feature:hover,
 .feature__container:focus-within>.feature:focus {
@@ -212,143 +199,19 @@
   }
 }
 
+// hover expand
+/*
 .feature__container-expanded:hover>.feature:hover,
 .feature__container-expanded:focus-within>.feature:focus {
   flex-grow: 1;
 }
-
-
-
-// Video
-
-.feature__container.feature__one-col {
-  video {
-    width: 100%;
-  }
-}
-
-.video-btn {
-  position: absolute;
-  z-index: 1;
-  top: 20px;
-  left: 15px;
-  width: 50px;
-  height: 50px;
-  padding: $sm;
-  cursor: pointer;
-  color: $white;
-  border: none;
-  background: none;
-  font-size: $h4-font-size;
-
-  &:before {
-    content: "\f28b";
-    @include fas();
-  }
-
-  &__play:before {
-    content: "\f144";
-  }
-}
-
-.video-btn:hover {
-  color: $secondary;
-}
-
-.video__container {
-  position: relative;
-}
-
-// Accordion Stack
-
-.feature__container.image-stack {
+*/
+/*
+.feature__container-expanded:hover>.feature,
+.feature__container-expanded:focus-within>.feature {
   @include breakpoint(sm) {
-    flex-direction: column;
-    flex-wrap: wrap;
-    height: 100vh;
+    flex: unset;
+    flex-grow: 0;
   }
 }
-
-.image-stack {
-  .feature:nth-child(1) {
-    @include breakpoint(sm) {
-      flex: 0 0 70%;
-      width: unset;
-      &:hover {
-        flex: 1 1 auto;
-      }
-    }
-  }
-
-  .feature:nth-child(2),
-  .feature:nth-child(3) {
-    @include breakpoint(sm) {
-      flex: 0 0 15%;
-      width: unset;
-    }
-  }
-
-  .feature:last-child {
-    .feature__teaser {
-      border-bottom: none;
-    }
-  }
-
-  .feature__teaser {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    border-bottom: 1px solid $secondary;
-    background: rgba(255, 255, 255, 0.8);
-  }
-
-  .feature__teaser-heading {
-    color: $secondary;
-  }
-
-  .feature__teaser-heading i.fa-plus::before {
-    color: $secondary;
-    border: 1px solid $secondary;
-  }
-}
-
-.feature__container.image-stack.feature__three-col:hover>.feature:hover,
-.feature__container.image-stack.feature__three-col:focus-within>.feature:focus {
-  @include breakpoint(sm) {
-    width: 100vw;
-  }
-
-  .feature__content {
-    opacity: 1;
-  }
-
-  .feature__teaser {
-    opacity: 0;
-  }
-}
-
-
-.feature__container.image-stack:hover>.feature:nth-child(1),
-.feature__container.image-stack:focus-within>.feature:nth-child(1),
-.feature__container.image-stack:hover>.feature:nth-child(2),
-.feature__container.image-stack:focus-within>.feature:nth-child(2),
-.feature__container.image-stack:hover>.feature:nth-child(3),
-.feature__container.image-stack:focus-within>.feature:nth-child(3) {
-  @include breakpoint(sm) {
-    flex: 0 0 15%;
-    width: 100vw;
-    transition: all 0.3s ease;
-  }
-}
-
-.feature__container.image-stack:hover>.feature:nth-child(1):hover,
-.feature__container.image-stack:focus-within>.feature:nth-child(1):focus,
-.feature__container.image-stack:hover>.feature:nth-child(2):hover,
-.feature__container.image-stack:focus-within>.feature:nth-child(2):focus,
-.feature__container.image-stack:hover>.feature:nth-child(3):hover,
-.feature__container.image-stack:focus-within>.feature:nth-child(3):focus {
-  @include breakpoint(sm) {
-    flex: 0 0 70%;
-    transition: all 0.3s ease;
-  }
-}
+*/
