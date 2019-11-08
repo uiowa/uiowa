@@ -32,6 +32,17 @@
 .lockup-stacked {
   text-align: center;
 }
+#stacked-divider {
+  content: '';
+  height: 5px;
+  transform: scaleY(0.5);
+  top: 2px;
+  background-color: #000;
+  position: absolute;
+  /* These will be edited. */
+  width: 258px;
+  left: 234px;
+}
 .lockup-stacked .lockup-content {
   color: #000;
   display: table;
@@ -52,6 +63,10 @@
 .lockup-stacked .sub-unit {
   overflow: hidden;
 }
+.lockup-horizontal {
+  display: flex;
+  margin-top: 4px;
+}
 #horizontal-divider {
   content: '';
   width: 5px;
@@ -61,21 +76,6 @@
   min-height: 85px;
   top: -4px;
   left: 2px;
-}
-#stacked-divider {
-  content: '';
-  height: 5px;
-  transform: scaleY(0.5);
-  top: 2px;
-  background-color: #000;
-  position: absolute;
-  /* These will be edited. */
-  width: 258px;
-  left: 234px;
-}
-.lockup-horizontal {
-  display: flex;
-  margin-top: 4px;
 }
 .lockup-horizontal .lockup-content {
   color: #000;
