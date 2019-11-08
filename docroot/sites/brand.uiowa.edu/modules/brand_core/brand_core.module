@@ -50,6 +50,8 @@ function brand_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       $form['field_lockup_org']['#group'] = 'node_fields';
       $form['field_lockup_primary_unit']['#group'] = 'node_fields';
       $form['field_lockup_sub_unit']['#group'] = 'node_fields';
+      $form['field_lockup_p_unit_stacked']['#group'] = 'node_fields';
+      $form['field_lockup_s_unit_stacked']['#group'] = 'node_fields';
 
       $form_object = $form_state->getFormObject();
       $nid = $form_object->getEntity()->id();
