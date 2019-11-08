@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - uiowa_book
+  module:
+    - node
+id: book_page
+label: 'Book page'
+type: 'canonical_entities:node'
+pattern: '[node:book:parents:join-path]/[node:title]'
+selection_criteria:
+  baedc0f6-0809-4640-8e07-8c4f630ca42e:
+    id: node_type
+    bundles:
+      book: book
+    negate: false
+    context_mapping:
+      node: node
+    uuid: baedc0f6-0809-4640-8e07-8c4f630ca42e
+selection_logic: and
+weight: -5
+relationships: {  }
