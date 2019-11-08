@@ -17,10 +17,13 @@
 }
 #lockup-preview .block-iowa {
   max-width: 250px;
+  width: 250px;
+  min-height: 73px;
   flex: 250px 0 0;
 }
 #lockup-preview .lockup-horizontal .block-iowa {
   margin-top: 4px;
+  margin: auto;
 }
 .lockup-horizontal,
 .lockup-stacked {
@@ -28,6 +31,17 @@
 }
 .lockup-stacked {
   text-align: center;
+}
+#stacked-divider {
+  content: '';
+  height: 5px;
+  transform: scaleY(0.5);
+  top: 2px;
+  background-color: #000;
+  position: absolute;
+  /* These will be edited. */
+  width: 258px;
+  left: 234px;
 }
 .lockup-stacked .lockup-content {
   color: #000;
@@ -49,28 +63,19 @@
 .lockup-stacked .sub-unit {
   overflow: hidden;
 }
-#horizontal-divider {
-  content: '';
-  width: 2.5px;
-  background-color: #000;
-  position: absolute;
-  min-height: 81px;
-  top: 0;
-  left: 2px;
-}
-#stacked-divider {
-  content: '';
-  height: 2.5px;
-  top: 2px;
-  background-color: #000;
-  position: absolute;
-  /* These will be edited. */
-  width: 0px;
-  left: 0px;
-}
 .lockup-horizontal {
   display: flex;
   margin-top: 4px;
+}
+#horizontal-divider {
+  content: '';
+  width: 5px;
+  transform: scaleX(0.5);
+  background-color: #000;
+  position: absolute;
+  min-height: 85px;
+  top: -4px;
+  left: 2px;
 }
 .lockup-horizontal .lockup-content {
   color: #000;
@@ -78,11 +83,13 @@
   margin-left: 18px;
   padding-left: 22px;
   display: table;
+  min-height: 73px;
   height: 100%;
 }
 .lockup-horizontal .lockup-content .lockup-content-inner {
   display: table-cell;
   vertical-align: middle;
+  padding-top: 4px;
   padding-bottom: 7px;
 }
 .lockup-horizontal .primary-unit {
@@ -96,8 +103,13 @@
 .sub-unit {
   -webkit-font-smoothing: subpixel-antialiased;
   font-smoothing: subpixel-antialiased;
+  text-rendering: optimizeLegibility;
+  speak: none;
+  font-style: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
   width: 700px;
-  font-weight: 700;
   overflow-x: scroll;
   height: auto;
   white-space: pre-wrap;
@@ -106,10 +118,12 @@
 .primary-unit {
   font-size: 28px;
   line-height: 1.1;
+  font-weight: 700;
 }
 .sub-unit {
   font-size: 21px;
   line-height: 1.2;
+  font-weight: 400;
 }
 .field--name-field-lockup-primary-unit textarea,
 .field--name-field-lockup-sub-unit textarea,
