@@ -54,7 +54,6 @@
     {% set page_classes = ['page__container'] %}
 {% endif %}
 
-
 {% if collegiate_theme_header_color_settings == 'site-header--secondary' %}
     {% set navbar_classes = ['navbar--secondary'] %}
 {% else %}
@@ -71,7 +70,7 @@
     {% set node_classes = ['content__full'] %}
 {% endif %}
 
-<header class="header site-header {{ collegiate_theme_header_color_settings }} {{ collegiate_theme_header_alignment_settings }}">
+<header class="header site-header {% if site_slogan is empty %}slogan__disabled{% endif %} {{ collegiate_theme_header_color_settings }} {{ collegiate_theme_header_alignment_settings }}">
 <div {{ attributes.addClass(header_classes) }}>
 
     {{ attach_library('collegiate_theme/site-name') }}
