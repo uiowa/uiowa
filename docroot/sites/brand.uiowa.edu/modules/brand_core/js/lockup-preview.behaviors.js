@@ -62,7 +62,6 @@
 
             if (subUnit.val() !== "") {
                 $(".lockup-horizontal .sub-unit").text(subUnit.val()).css({"margin-top": "7px"});
-                $(".lockup-horizontal .lockup-content").css({"margin-top": "7px"});
             }
             if (primaryUnitStacked.val() !== "") {
                 $(".lockup-stacked .primary-unit").text(primaryUnitStacked.val());
@@ -149,14 +148,15 @@
                 var divTop;
                 (divHeight > blockIowaDims.height) ? divTop = 4 : divTop = -8;
 
-                //grab the first line of the Stacked Primary unit text and put it in the measurer.
+                // Grab the first line of the Stacked Primary unit text and put it in the measurer.
                 $('#primary-first-line-measure-stacked').text($('.lockup-stacked .lockup-content-inner .primary-unit').text().split('\n')[0]);
                 var divWidth = Math.max($('#primary-first-line-measure-stacked').outerWidth() - 13, blockIowaDims.width);
                 var divPos = ($('.lockup-stacked .lockup-content').outerWidth()/2) - (divWidth/2);
 
                 // Set the horizontal divider dimensions.
                 $('#horizontal-divider').css({
-                    "height": divHeight + 8 + "px"
+                    "height": divHeight + 8 + "px",
+                    "top": divTop
                 });
 
                 // Set the stacked divider dimensions.
@@ -379,11 +379,9 @@
                         secondaryPreviewText = PreviewText;
                         if (PreviewText !='') {
                           $(".lockup-horizontal .sub-unit").css({"margin-top": "7px"});
-                          $(".lockup-horizontal .lockup-content").css({"margin-top": "7px"});
                         }
                         else {
                           $(".lockup-horizontal .sub-unit").css({"margin-top": "0px"});
-                          $(".lockup-horizontal .lockup-content").css({"margin-top": "7px"});
                         }
                         secondaryValueText   = ValueText;
                     }

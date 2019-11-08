@@ -17,10 +17,13 @@
 }
 #lockup-preview .block-iowa {
   max-width: 250px;
+  width: 250px;
+  min-height: 73px;
   flex: 250px 0 0;
 }
 #lockup-preview .lockup-horizontal .block-iowa {
   margin-top: 4px;
+  margin: auto;
 }
 .lockup-horizontal,
 .lockup-stacked {
@@ -51,22 +54,24 @@
 }
 #horizontal-divider {
   content: '';
-  width: 2.5px;
+  width: 5px;
+  transform: scaleX(0.5);
   background-color: #000;
   position: absolute;
-  min-height: 81px;
-  top: 0;
+  min-height: 85px;
+  top: -4px;
   left: 2px;
 }
 #stacked-divider {
   content: '';
-  height: 2.5px;
+  height: 5px;
+  transform: scaleY(0.5);
   top: 2px;
   background-color: #000;
   position: absolute;
   /* These will be edited. */
-  width: 0px;
-  left: 0px;
+  width: 258px;
+  left: 234px;
 }
 .lockup-horizontal {
   display: flex;
@@ -78,11 +83,13 @@
   margin-left: 18px;
   padding-left: 22px;
   display: table;
+  min-height: 73px;
   height: 100%;
 }
 .lockup-horizontal .lockup-content .lockup-content-inner {
   display: table-cell;
   vertical-align: middle;
+  padding-top: 4px;
   padding-bottom: 7px;
 }
 .lockup-horizontal .primary-unit {
