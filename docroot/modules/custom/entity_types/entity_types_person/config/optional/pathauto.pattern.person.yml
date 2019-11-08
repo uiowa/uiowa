@@ -3,22 +3,22 @@ status: true
 dependencies:
   enforced:
     module:
-      - entity_types_page
+      - entity_types_person
   module:
     - node
-id: page
-label: 'Basic page'
+id: person
+label: 'Person'
 type: 'canonical_entities:node'
-pattern: '[node:title]'
+pattern: 'people/[node:person_first_name]-[node:person_last_name]'
 selection_criteria:
-  00e43b31-d51e-4793-bd28-952604955d73:
+  f55f80ee-9aaf-4539-924f-c2d10cdf1d8c:
     id: node_type
     bundles:
-      page: page
+      person: person
     negate: false
     context_mapping:
       node: node
-    uuid: 00e43b31-d51e-4793-bd28-952604955d73
+    uuid: f55f80ee-9aaf-4539-924f-c2d10cdf1d8c
 selection_logic: and
 weight: -5
 relationships: {  }
