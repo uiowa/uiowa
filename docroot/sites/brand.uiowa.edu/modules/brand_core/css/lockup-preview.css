@@ -41,17 +41,27 @@
   padding: 0 13px;
 }
 .lockup-stacked .primary-unit {
-  margin-top: 17px;
   display: inline-block;
   margin-bottom: 4px;
-  letter-spacing: -0.9px;
+  margin-top: 21px;
+  overflow: hidden;
 }
 .lockup-stacked .sub-unit {
-  letter-spacing: -1px;
+  overflow: hidden;
+}
+#horizontal-divider {
+  content: '';
+  width: 2.5px;
+  background-color: #000;
+  position: absolute;
+  min-height: 81px;
+  top: 0;
+  left: 2px;
 }
 #stacked-divider {
   content: '';
-  height: 3px;
+  height: 2.5px;
+  top: 2px;
   background-color: #000;
   position: absolute;
   /* These will be edited. */
@@ -60,14 +70,15 @@
 }
 .lockup-horizontal {
   display: flex;
+  margin-top: 4px;
 }
 .lockup-horizontal .lockup-content {
   color: #000;
-  border-left: 3px solid;
-  margin-top: 13px;
+  position: relative;
   margin-left: 18px;
-  padding-left: 19px;
+  padding-left: 22px;
   display: table;
+  height: 100%;
 }
 .lockup-horizontal .lockup-content .lockup-content-inner {
   display: table-cell;
@@ -75,11 +86,11 @@
   padding-bottom: 7px;
 }
 .lockup-horizontal .primary-unit {
-  letter-spacing: -0.5px;
-  margin-bottom: 7px;
+  overflow: hidden;
 }
 .lockup-horizontal .sub-unit {
-  letter-spacing: -0.7px;
+  /*margin-top: 7px;*/
+  overflow: hidden;
 }
 .primary-unit,
 .sub-unit {
@@ -94,19 +105,19 @@
 }
 .primary-unit {
   font-size: 28px;
-  line-height: 1.18;
+  line-height: 1.1;
 }
 .sub-unit {
   font-size: 21px;
-  line-height: 1.25;
-  letter-spacing: 0.3px;
+  line-height: 1.2;
 }
 .field--name-field-lockup-primary-unit textarea,
-.field--name-field-lockup-sub-unit textarea {
+.field--name-field-lockup-sub-unit textarea,
+.field--name-field-lockup-p-unit-stacked textarea,
+.field--name-field-lockup-s-unit-stacked textarea {
   resize: none;
   white-space: pre;
   overflow-wrap: normal;
-  overflow-x: scroll;
 }
 #edit-submit:disabled:hover {
   background-color: #ededed;
