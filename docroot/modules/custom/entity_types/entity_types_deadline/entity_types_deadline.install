@@ -8,7 +8,7 @@
 /**
  * Implements hook_install().
  */
-function entity_types_deadlines_install() {
+function entity_types_deadline_install() {
   $config = Drupal::configFactory()->getEditable('system.image.gd');
   $config->set('jpeg_quality', '100')->save();
 }
@@ -16,7 +16,7 @@ function entity_types_deadlines_install() {
 /**
  * Implements hook_uninstall().
  */
-function entity_types_deadlines_uninstall() {
+function entity_types_deadline_uninstall() {
   $storage_handler = \Drupal::entityTypeManager()->getStorage('node');
   $entities = $storage_handler->loadByProperties(['type' => 'deadline']);
   $storage_handler->delete($entities);

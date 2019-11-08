@@ -10,9 +10,9 @@ use Drupal\Core\Routing\RouteMatchInterface;
 /**
  * Implements hook_help().
  */
-function entity_types_deadlines_help($route_name, RouteMatchInterface $route_match) {
+function entity_types_deadline_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
-    case 'help.page.entity_types_deadlines':
+    case 'help.page.entity_types_deadline':
       $filepath = dirname(__FILE__) . '/README.md';
       if (file_exists($filepath)) {
         $readme = file_get_contents($filepath);
@@ -51,28 +51,28 @@ function entity_types_deadlines_help($route_name, RouteMatchInterface $route_mat
 /**
  * Implements hook_page_attachments().
  */
-function entity_types_deadlines_page_attachments(array &$attachments) {
-  $attachments['#attached']['library'][] = 'entity_types_deadlines/entity_types_deadlines_styling';
+function entity_types_deadline_page_attachments(array &$attachments) {
+  $attachments['#attached']['library'][] = 'entity_types_deadline/entity_types_deadline_styling';
 }
 
 /**
  * Implements hook_theme().
  */
-function entity_types_deadlines_theme(array $variables) {
+function entity_types_deadline_theme(array $variables) {
   $theme = [];
 
   $theme['node__deadlines'] = [
     'render element' => 'content',
     'base hook' => 'node',
     'template' => 'node--deadline',
-    'path' => drupal_get_path('module', 'entity_types_deadlines') . '/templates',
+    'path' => drupal_get_path('module', 'entity_types_deadline') . '/templates',
   ];
 
   $theme['node__deadlines__teaser'] = [
     'render element' => 'content',
     'base hook' => 'node',
     'template' => 'node--deadline--teaser',
-    'path' => drupal_get_path('module', 'entity_types_deadlines') . '/templates',
+    'path' => drupal_get_path('module', 'entity_types_deadline') . '/templates',
   ];
 
   return $theme;
