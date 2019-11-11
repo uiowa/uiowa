@@ -41,13 +41,12 @@
     <js-placeholder token="{{ placeholder_token }}">
   </head>
   <body{{ attributes.addClass(body_classes) }}>
-    {#
-      Keyboard navigation/accessibility link to main content section in
-      page.html.twig.
-    #}
-    <a href="#main-content" class="visually-hidden focusable skip-link">
-      {{ 'Skip to main content'|t }}
+
+<div class="skip-link-region" role="region" aria-label="skip-link">
+    <a href="#main-content" class="visually-hidden focusable skip-link" role="link" aria-label="skip to main content">
+        {{ 'Skip to main content'|t }}
     </a>
+</div>
 
 {% set uiowa_attribute = create_attribute() %}
 
