@@ -39,21 +39,7 @@ class AcquiaConnectorOverride implements ConfigFactoryOverrideInterface {
       $request = $this->requestStack->getCurrentRequest();
       $site_name = $request->getHost();
 
-      // Disable subscription data for non-production environments. SPI data
-      // will still be collected and it can be assessed for non-production
-      // environments using the Drush commands included with the
-      // acquia_connector module.
-      $is_prod = getenv('AH_PRODUCTION');
-
-      if ($is_prod) {
-        $use_cron = TRUE;
-      }
-      else {
-        $use_cron = FALSE;
-      }
-
-      $overrides['acquia_connector.settings']['spi']['use_cron'] = $use_cron;
-      $overrides['acquia_connector.settings']['site_name'] = $site_name;
+      $overrides['acquia_connector.settings']['spi']['site_name'] = $site_name;
       $overrides['acquia_connector.settings']['hide_signup_messages'] = TRUE;
     }
 

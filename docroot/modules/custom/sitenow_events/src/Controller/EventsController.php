@@ -34,10 +34,16 @@ class EventsController extends ControllerBase {
         throw new NotFoundHttpException();
       }
       else {
+        if ($events['events'][0]['canceled'] == TRUE) {
+          $title = '[CANCELED] ' . $events['events'][0]['title'];
+        }
+        else {
+          $title = $events['events'][0]['title'];
+        }
         $build = [
           '#theme' => 'sitenow_events_single_event',
           '#data' => $events['events'],
-          '#title' => $events['events'][0]['title'],
+          '#title' => $title,
         ];
 
         return $build;

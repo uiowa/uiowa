@@ -4,6 +4,7 @@ namespace Drupal\brand_core\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\brand_core\BrandSVG;
+use Drupal\Component\Utility\Html;
 
 /**
  * Generates Lockup.
@@ -34,6 +35,7 @@ class LockupController extends ControllerBase {
       }
 
       $path = $node->getTitle();
+      $name = Html::cleanCssIdentifier($path);
 
       // Create the different lockup versions.
       $lockup_stacked_black = LockupController::generateLockup($node, '#000000', "#000000", 'stacked');
@@ -81,14 +83,12 @@ class LockupController extends ControllerBase {
 
       $zip->close();
 
-      header('Content-type: application/zip');
-      header("Content-disposition: attachment; filename=" . $path . "-Lockup.zip");
+      header('Content-Type: application/zip');
+      header('Content-disposition: attachment; filename=' . $name . '-Lockup.zip');
+      header('Content-Length: ' . filesize($zip_filename));
+      ob_end_flush();
       readfile(\Drupal::service('file_system')->realpath($zip_filename));
 
-      ob_clean();
-      flush();
-      ob_end_flush();
-      readfile($zip_filename);
       unlink($zip_filename);
       unlink(file_directory_temp() . '/' . $lockup_stacked_black_file);
       unlink(file_directory_temp() . '/' . $lockup_stacked_rgb_file);
@@ -128,81 +128,81 @@ class LockupController extends ControllerBase {
     $s_offset = 0;
     $p_offset = 1;
 
-    // Sub unit generation.
-    if (!empty($node->field_lockup_sub_unit->value)) {
-      $p_offset = $p_offset + 5.5;
-      $s_txt = $node->field_lockup_sub_unit->value;
-      $s_explode = explode(PHP_EOL, $s_txt);
-      $s_count = count($s_explode);
-      $s_offset = 0;
-      switch ($s_count) {
-        case 1:
-          $s_offset = $s_offset + 0;
-          $s_reduce = 2;
-          break;
-
-        case 2:
-          $s_offset = $s_offset + 4;
-          $s_reduce = 1;
-          break;
-
-        case 3:
-          $s_offset = $s_offset + 9;
-          $s_reduce = 1;
-          break;
-
-      }
-      $lockup->setFont($regular, 6, $text_color);
-      $s_lines = [];
-      $s_height = 0;
-      foreach ($s_explode as $key => $line) {
-        str_replace('\r', '', $line);
-        $s_lines[$key] = $lockup->textDimensions($line);
-        $s_height = $s_height + $s_lines[$key][1];
-      }
-    }
-
-    // Unit name generation.
-    $p_txt = $node->field_lockup_primary_unit->value;
-    $p_explode = explode(PHP_EOL, $p_txt);
-    $p_count = count($p_explode);
-    switch ($p_count) {
-      case 1:
-        $stacked_sub_y = 148.33;
-        $p_offset = 1;
-        $s_offset = 11.5;
-        break;
-
-      case 2:
-        $stacked_sub_y = 158.28;
-        $p_offset = 2;
-        $s_offset = 21.5;
-        break;
-
-      case 3:
-        $stacked_sub_y = 168.23;
-        $p_offset = 3;
-        $s_offset = 31.5;
-        break;
-
-    }
-    $lockup->setFont($bold, 8, $text_color);
-    $lockup->setLineHeight(9.6);
-
-    $p_lines = [];
-    $p_height = 0;
-    foreach ($p_explode as $key => $line) {
-      $p_explode[$key] = preg_replace('~[[:cntrl:]]~', '', $line);
-      $p_lines[$key] = $lockup->textDimensions($line);
-      $p_height = $p_height + $p_lines[$key][1];
-    }
-
-    $p1_dimensions = $lockup->textDimensions($p_explode[0]);
-    $p_width = $p1_dimensions[0];
-    $p_center = $p_width / 2;
-
     switch ($type) {
       case 'stacked':
+        // Sub unit generation.
+        if (!empty($node->field_lockup_s_unit_stacked->value)) {
+          $p_offset = $p_offset + 5.5;
+          $s_txt = $node->field_lockup_s_unit_stacked->value;
+          $s_explode = explode(PHP_EOL, $s_txt);
+          $s_count = count($s_explode);
+          $s_offset = 0;
+          switch ($s_count) {
+            case 1:
+              $s_offset = $s_offset + 0;
+              $s_reduce = 2;
+              break;
+
+            case 2:
+              $s_offset = $s_offset + 4;
+              $s_reduce = 1;
+              break;
+
+            case 3:
+              $s_offset = $s_offset + 9;
+              $s_reduce = 1;
+              break;
+
+          }
+          $lockup->setFont($regular, 6, $text_color);
+          $s_lines = [];
+          $s_height = 0;
+          foreach ($s_explode as $key => $line) {
+            str_replace('\r', '', $line);
+            $s_lines[$key] = $lockup->textDimensions($line);
+            $s_height = $s_height + $s_lines[$key][1];
+          }
+        }
+
+        // Unit name generation.
+        $p_txt = $node->field_lockup_p_unit_stacked->value;
+        $p_explode = explode(PHP_EOL, $p_txt);
+        $p_count = count($p_explode);
+        switch ($p_count) {
+          case 1:
+            $stacked_sub_y = 148.33;
+            $p_offset = 1;
+            $s_offset = 11.5;
+            break;
+
+          case 2:
+            $stacked_sub_y = 158.28;
+            $p_offset = 2;
+            $s_offset = 21.5;
+            break;
+
+          case 3:
+            $stacked_sub_y = 168.23;
+            $p_offset = 3;
+            $s_offset = 31.5;
+            break;
+
+        }
+        $lockup->setFont($bold, 8, $text_color);
+        $lockup->setLineHeight(9.6);
+
+        $p_lines = [];
+        $p_height = 0;
+        foreach ($p_explode as $key => $line) {
+          $p_explode[$key] = preg_replace('~[[:cntrl:]]~', '', $line);
+          $p_lines[$key] = $lockup->textDimensions($line);
+          $p_height = $p_height + $p_lines[$key][1];
+        }
+
+        $p1_dimensions = $lockup->textDimensions($p_explode[0]);
+        $p_width = $p1_dimensions[0];
+        $p_center = $p_width / 2;
+
         LockupController::addStackedLogo($lockup, $iowa_color);
         // Border. Width based on primary width.
         if ($p_width < 80) {
@@ -287,6 +287,79 @@ class LockupController extends ControllerBase {
         break;
 
       case 'horizontal':
+        // Sub unit generation.
+        if (!empty($node->field_lockup_sub_unit->value)) {
+          $p_offset = $p_offset + 5.5;
+          $s_txt = $node->field_lockup_sub_unit->value;
+          $s_explode = explode(PHP_EOL, $s_txt);
+          $s_count = count($s_explode);
+          $s_offset = 0;
+          switch ($s_count) {
+            case 1:
+              $s_offset = $s_offset + 0;
+              $s_reduce = 2;
+              break;
+
+            case 2:
+              $s_offset = $s_offset + 4;
+              $s_reduce = 1;
+              break;
+
+            case 3:
+              $s_offset = $s_offset + 9;
+              $s_reduce = 1;
+              break;
+
+          }
+          $lockup->setFont($regular, 6, $text_color);
+          $s_lines = [];
+          $s_height = 0;
+          foreach ($s_explode as $key => $line) {
+            str_replace('\r', '', $line);
+            $s_lines[$key] = $lockup->textDimensions($line);
+            $s_height = $s_height + $s_lines[$key][1];
+          }
+        }
+
+        // Unit name generation.
+        $p_txt = $node->field_lockup_primary_unit->value;
+        $p_explode = explode(PHP_EOL, $p_txt);
+        $p_count = count($p_explode);
+        switch ($p_count) {
+          case 1:
+            $stacked_sub_y = 148.33;
+            $p_offset = 1;
+            $s_offset = 11.5;
+            break;
+
+          case 2:
+            $stacked_sub_y = 158.28;
+            $p_offset = 2;
+            $s_offset = 21.5;
+            break;
+
+          case 3:
+            $stacked_sub_y = 168.23;
+            $p_offset = 3;
+            $s_offset = 31.5;
+            break;
+
+        }
+        $lockup->setFont($bold, 8, $text_color);
+        $lockup->setLineHeight(9.6);
+
+        $p_lines = [];
+        $p_height = 0;
+        foreach ($p_explode as $key => $line) {
+          $p_explode[$key] = preg_replace('~[[:cntrl:]]~', '', $line);
+          $p_lines[$key] = $lockup->textDimensions($line);
+          $p_height = $p_height + $p_lines[$key][1];
+        }
+
+        $p1_dimensions = $lockup->textDimensions($p_explode[0]);
+        $p_width = $p1_dimensions[0];
+        $p_center = $p_width / 2;
+
         LockupController::addHorizontalLogo($lockup, $iowa_color);
         // Silly math that made sense at the time...
         $po = $p_line * $p_count;

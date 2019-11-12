@@ -946,7 +946,7 @@ display:
           group_type: group
           admin_label: ''
           label: Edit
-          exclude: false
+          exclude: true
           alter:
             alter_text: false
             text: ''
@@ -1066,8 +1066,8 @@ display:
           label: 'Moderation state'
           exclude: false
           alter:
-            alter_text: false
-            text: ''
+            alter_text: true
+            text: '{{ moderation_state }} {{ edit_node }}'
             make_link: false
             path: ''
             absolute: false

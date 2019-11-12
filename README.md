@@ -38,17 +38,17 @@ This project is based on BLT, an open-source project template and tool that enab
    brew link php@7.2
    ```
    Follow the instructions to get PHP7.2 in your $PATH.
-   
+
    You may also want to increase some key PHP resources. Homebrew should have installed PHP at:
    `/usr/local/etc/php/`
-   
+
    edit the php.ini file within the version of PHP you are using. Consider increasing the following defaults:
-   
+
    - memory_limit = 256M
    - max_input_vars = 3000
-   
+
    Save the file.
-   
+
 5. Install MariaDB.
    ```
    brew install mariadb
@@ -70,16 +70,16 @@ This project is based on BLT, an open-source project template and tool that enab
     ```
     $ drush -l mysite rs --dns
     ```
-    
-Visit the site in your browser by navigating to http://localhost:8888. 
 
-The `drush/Commands/PolicyCommands.php` file will overwrite the 
+Visit the site in your browser by navigating to http://localhost:8888.
+
+The `drush/Commands/PolicyCommands.php` file will overwrite the
 `sites.local.php` file to route the correct site when running `drush rs`. It is
-possible to serve multiple sites from different runserver commands with two 
-different ports. You'll need to manually edit the `sites.local.php` file in 
+possible to serve multiple sites from different runserver commands with two
+different ports. You'll need to manually edit the `sites.local.php` file in
 that scenario.
 
-Once the server is running and the multisite is routed, you can log in by 
+Once the server is running and the multisite is routed, you can log in by
 changing directory to `docroot/sites/mysite` and running `drush uli`. Note that
 this only works when the sites.php/local.sites.php file is routing the multisite.
 
@@ -165,7 +165,32 @@ Place a breakpoint and Start listening for PHP Debug Connections. Visit your sit
 Use [SequelPro](https://www.sequelpro.com/) to manage your local databases. You
 can connect via localhost using the credentials set when installing MariaDB.
 
----
+## Updating Dependencies
+Before starting updates, make sure your local environment is on a feature branch
+created from the latest version of master and synced with production by running
+`blt dsa`. Also make sure your are running the same version of PHP as in
+production.
+
+Drupal core requires the following specific command to update dev dependencies
+properly: `composer update drupal/core webflo/drupal-core-require-dev --with-dependencies`.
+You can run `composer update` after that to update all other dependencies. The
+output from Composer commands can be used as the long text for commit messages.
+
+Certain scaffold files should be resolved/removed afterwards. The redirects in
+the `docroot/.htaccess` file need to be re-implemented and the `docroot/robots.txt`
+should be removed. Different updates may require difference procedures. For
+example, BLT may download default config files that we don't use like `docroot/sites/default/default.services.yml`.
+
+To ensure configuration is exported correctly, run database updates and export
+using our BLT command:
+```
+blt sitenow:multisite:execute updb
+blt sitenow:multisite:execute config:export
+```
+
+Add and commit the config changes and then run another `blt dsa` to check for
+any further config discrepancies. If there are none, proceed with code
+deployment as per usual.
 
 # Resources
 
@@ -176,6 +201,8 @@ $ blt
 
 Most of the BLT commands referenced above have shorthand aliases. Check the
 output of `blt` for details.
+
+You can also run blt commands on a remote, but you must run them using the path and from the app root. `./vendor/bin/blt sitenow:multisite:execute cr`
 
 ## Working With a BLT Project
 

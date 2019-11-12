@@ -7,16 +7,19 @@
 
 use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\webform\Utility\WebformFormHelper;
 
 /**
  * Implements hook_webform_element_alter().
  */
 function sitenow_core_webform_element_alter(array &$element, FormStateInterface $form_state, array $context) {
-  if (isset($element['#webform_id']) && $element['#webform_id'] === 'request_a_site--uri') {
-    $element['#element_validate'][] = [
-      'Drupal\sitenow_core\Validate\RequestASiteUriConstraint',
-      'validate',
-    ];
+  if (isset($element['#webform_id'])) {
+    if ($element['#webform_id'] === 'request_a_site--uri') {
+      $element['#element_validate'][] = [
+        'Drupal\sitenow_core\Validate\RequestASiteUriConstraint',
+        'validate',
+      ];
+    }
   }
 }
 
@@ -27,6 +30,23 @@ function sitenow_core_form_alter(&$form, FormStateInterface $form_state, $form_i
   if ($form_id == 'webform_submission_request_a_site_paragraph_431_add_form'
     || $form_id == 'webform_submission_request_a_site_add_form') {
     $form['#attached']['library'][] = 'sitenow_core/better-request-form';
+
+    $roles = \Drupal::currentUser()->getRoles();
+
+    if (!in_array('administrator', $roles)) {
+      $elements = WebformFormHelper::flattenElements($form['elements']);
+      $elements['hawkid']['#disabled'] = TRUE;
+      $elements['email']['#disabled'] = TRUE;
+    }
+    else {
+      \Drupal::messenger()->addMessage('The HawkID and email fields have been enabled for administrators. You may edit those values.');
+    }
+  }
+
+  if ($form_id == 'webform_submission_resend') {
+    if (\Drupal::currentUser()->id() == 1) {
+      \Drupal::messenger()->addWarning('Do not send emails as user 1. Log in using your HawkID so emails are signed properly.');
+    }
   }
 }
 
@@ -66,6 +86,15 @@ function _sitenow_core_user_login_block_pre_render(array $build) {
 
   if ($path == '/node/26'
     && isset($build['content']['hawkid'], $build['content']['hawkid']['link'])) {
+    $build['content']['hawkid']['message'] = [
+      '#prefix' => '<div class="alert alert-info">',
+      '#suffix' => '</div>',
+      '#markup' => t('The SiteNow service is restricted to current
+       University of Iowa members. You must log in first to access the request
+       form. Click the link below to be redirected to the secure HawkID login
+       page.'),
+    ];
+
     $build['content']['hawkid']['link']['#url']->setOptions([
       'query' => [
         'destination' => $path,

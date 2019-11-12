@@ -28,7 +28,7 @@ class RequestASiteUriConstraint {
 
     foreach (['port', 'user', 'pass', 'path', 'query', 'fragment'] as $invalid) {
       if (isset($url[$invalid])) {
-        $formState->setError(
+        return $formState->setError(
           $element,
           t('URL @value must not contain a @invalid.', [
             '@value' => $value,
@@ -41,7 +41,7 @@ class RequestASiteUriConstraint {
     // Validate the URL pattern if this is a new site.
     if ($formState->getValue('request_type') == 'New') {
       if ($url['scheme'] == 'http') {
-        $formState->setError(
+        return $formState->setError(
           $element,
           t('URL @value must begin with https:// scheme.', [
             '@value' => $value,
@@ -57,7 +57,7 @@ class RequestASiteUriConstraint {
       $parts = explode('.', $url['host']);
 
       if (count($parts) != 4) {
-        $formState->setError(
+        return $formState->setError(
           $element,
           t('URL @value must match the URL pattern *.@pattern.', [
             '@value' => $value,
@@ -75,7 +75,7 @@ class RequestASiteUriConstraint {
       ]);
 
       if ($match != $pattern) {
-        $formState->setError(
+        return $formState->setError(
           $element,
           t('URL @value must match the URL pattern *.@pattern.', [
             '@value' => $value,
@@ -87,7 +87,7 @@ class RequestASiteUriConstraint {
 
     // Validate that the URI does not already exist.
     if (file_exists(DRUPAL_ROOT . '/sites/' . $url['host'])) {
-      $formState->setError(
+      return $formState->setError(
         $element,
         t('URL @value already exists. Please choose another.', [
           '@value' => $value,
