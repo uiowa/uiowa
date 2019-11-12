@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: help.maui.uiowa.edu
+    protocol: https
+  machine_name: mauihelp
+  human_name: help.maui.uiowa.edu
+  requester: wevanson
+drush:
+  aliases:
+    local: self
+    remote: mauihelp.prod
+drupal:
+  db:
+    database: help_maui_uiowa_edu
+    host: localhost
+    user: root
+    password: null
