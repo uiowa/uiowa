@@ -515,6 +515,23 @@ function sitenow_preprocess_page(&$variables) {
   if (!$admin_context->isAdminRoute()) {
     $node = \Drupal::routeMatch()->getParameter('node');
     $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
+    if (isset($node)) {
+      // Get moderation state of node
+      $revision_id = $node->getRevisionId();
+      $revision = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($revision_id);
+      $moderation_state = $revision->get('moderation_state')->getString();
+      switch ($moderation_state) {
+        case 'archived':
+          drupal_set_message(t("This content has been archived."), 'warning');
+          break;
+        case 'review':
+          drupal_set_message(t("This content is in review."), 'warning');
+        case 'draft':
+          drupal_set_message(t("This content is currently in a draft state."), 'warning');
+        case 'published':
+        default:
+      }
+    }
     if ($node instanceof NodeInterface) {
       $variables['header_attributes'] = new Attribute();
       if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
