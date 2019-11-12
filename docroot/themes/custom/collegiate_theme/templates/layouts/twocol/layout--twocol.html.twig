@@ -13,6 +13,12 @@
  */
 #}
 
+{%
+  set classes = [
+    'layout__container',
+  ]
+%}
+
 {% if content.first %}
 
     <section{{ attributes.addClass(classes) }}>

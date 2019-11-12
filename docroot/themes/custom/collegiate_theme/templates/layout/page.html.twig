@@ -54,7 +54,6 @@
     {% set page_classes = ['page__container'] %}
 {% endif %}
 
-
 {% if collegiate_theme_header_color_settings == 'site-header--secondary' %}
     {% set navbar_classes = ['navbar--secondary'] %}
 {% else %}
@@ -64,14 +63,14 @@
 {% set node_attributes = create_attribute() %}
 
 {% if collegiate_theme_container_settings == 'page__container' %}
-    {% set node_classes = ['page'] %}
+    {% set node_classes = ['content__container'] %}
 {% elseif collegiate_theme_container_settings == 'page__container--mixed' %}
-    {% set node_classes = ['page'] %}
+    {% set node_classes = ['content__mixed'] %}
 {% else %}
-    {% set node_classes = ['page__full'] %}
+    {% set node_classes = ['content__full'] %}
 {% endif %}
 
-<header class="header site-header {{ collegiate_theme_header_color_settings }} {{ collegiate_theme_header_alignment_settings }}">
+<header class="header site-header {% if site_slogan is empty %}slogan__disabled{% endif %} {{ collegiate_theme_header_color_settings }} {{ collegiate_theme_header_alignment_settings }}">
 <div {{ attributes.addClass(header_classes) }}>
 
     {{ attach_library('collegiate_theme/site-name') }}
@@ -84,34 +83,38 @@
     } %}
 
     {% set heading_id = attributes.id ~ '-menu'|clean_id %}
-    <nav role="navigation" aria-labelledby="{{ heading_id }}"
+    <nav role="navigation" aria-label="main navigation"
 {{ attributes.addClass(navbar_classes, 'header__container', 'navbar--main', 'block-menu')|without('role', 'aria-labelledby') }}>
-      {# Label. If not displayed, we still provide it for screen readers. #}
-      {% if not configuration.label_display %}
-      {% set title_attributes = title_attributes.addClass('visually-hidden') %}
-      {% endif %}
-      {{ title_prefix }}
-      <h2{{ title_attributes.setAttribute('id', heading_id) }}>
-        {{ configuration.label }}</h2>
-        {{ title_suffix }}
         {{ page.primary_menu }}
     </nav>
   </div>
   {# /.container#}
 </header>
 
-
-
-<div class="{{ collegiate_theme_container_settings }}">
-
-  {{ page.secondary_menu }}
-  {{ page.breadcrumb }}
-  {{ page.highlighted }}
-  {{ page.help }}
-
-</div>
-
+{% if layout_builder_enabled == TRUE %}
 <div {{ node_attributes.addClass(node_classes) }}>
+    <main role="main">
+        <a id="main-content" tabindex="-1"></a>
+        {# link is in html.html.twig #}
+        {{ page.content }}
+        {# /.layout-content #}
+
+        {% if page.sidebar_first %}
+            <aside class="layout-sidebar-first" role="complementary">
+                {{ page.sidebar_first }}
+            </aside>
+        {% endif %}
+
+        {% if page.sidebar_second %}
+            <aside class="layout-sidebar-second" role="complementary">
+                {{ page.sidebar_second }}
+            </aside>
+        {% endif %}
+
+    </main>
+</div>
+{% else %}
+    <div {{ node_attributes.addClass(collegiate_theme_container_settings) }}>
   <main role="main">
     <a id="main-content" tabindex="-1"></a>
     {# link is in html.html.twig #}
@@ -132,6 +135,10 @@
 
   </main>
   </div>
+{% endif %}
+
+
+
   {% if page.footer %}
   <footer role="contentinfo">
   <div class="{{ collegiate_theme_container_settings }}">
@@ -141,4 +148,4 @@
   {% endif %}
 
 </div>
-{# /.layout-container-fluid #}
+{# / #}

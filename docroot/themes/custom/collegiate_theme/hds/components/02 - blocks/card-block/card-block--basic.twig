@@ -1,5 +1,4 @@
 <a href="{{ card_link_url }}" class="card card__{{ card_position }} {{ card_classes }}">
-  <div class="card card__{{ card_position }} {{ card_classes }}">
     {% block card_img %}
       {% if card_image %}
         <img class="card__img" src="{{ card_image }}" alt="Alt Text">
@@ -20,5 +19,4 @@
       <p class="card__text">{{ card_text }}</p>
     </div>
     <div class="bttn bttn--primary bttn--full">{{ card_link_title }}</div>
-  </div>
 </a>

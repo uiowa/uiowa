@@ -5,32 +5,69 @@
 @import url('https://use.fontawesome.com/releases/v5.8.2/css/all.css');
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900&display=swap');
 
-.section-margin {
-  &__top {
-    margin-top: $md;
 
-    &.page__container {
-      margin-top: $md;
+.layout__region {
+  .feature,
+  .banner {
+    flex-basis: 100%;
+    .section-column__row & {
+      flex-basis: unset;
     }
   }
+}
 
-  &__bottom {
-    margin-bottom: $md;
+.layout__region.section-column__row .feature,
+.layout__region.section-column__row .banner {
+  -ms-flex-preferred-size: unset;
+  flex-basis: unset;
+}
 
-    &.page__container {
-      margin-bottom: $md;
-    }
-  }
+// Admin only styles
+.toolbar-menu {
+  font-size: unset;
 }
 
 .layout--fourcol,
 .layout--threecol,
 .layout--twocol,
 .layout--onecol {
-  margin-bottom: $md;
+  .block-system-breadcrumb-block,
+  .block-field-blocknodepagetitle,
+  .block-field-blocknodepagebody {
+    flex-basis: 100%;
+  }
+}
 
+.content__container {
+.layout__container {
+  @extend %container;
+  &.page__container--full {
+    max-width: 100%;
+    margin-right: 0;
+    margin-left: 0;
+  }
+}
+}
+
+// default gutter spacing
+
+.layout--fourcol,
+.layout--threecol,
+.layout--twocol,
+.layout--onecol {
+  //margin-bottom: $gutter;
+  &.layout__container {
+    margin-bottom: $gutter;
+  }
+&.page__container,
+&.page__container--mixed {
+  margin-bottom: $gutter;
+}
   &.section-margin__removed {
     margin-bottom: 0;
+  }
+  &.section-margin__top {
+    margin-top: $gutter;
   }
 
   &.section-margin__removed.section-margin__bottom {
@@ -38,10 +75,11 @@
   }
 }
 
+
 .layout--onecol,
 .layout--onecol-flex {
-  &.page__container {
-    margin-bottom: $md;
+  &.page__container,  {
+    margin-bottom: $gutter;
   }
 
   &.page__container.section-margin__removed {
@@ -89,37 +127,27 @@
   }
 }
 
-.layout__region {
+.layout-builder-disabled .page__container {
+  padding-top: $gutter;
+  padding-bottom: $gutter;
+}
 
-  .feature,
-  .banner {
-    flex-basis: 100%;
 
-    .section-column__row & {
-      flex-basis: unset;
+.section-margin {
+  &__top {
+    margin-top: $md;
+
+    &.page__container {
+      margin-top: $md;
     }
   }
-}
 
-.layout__region.section-column__row .feature,
-.layout__region.section-column__row .banner {
-  -ms-flex-preferred-size: unset;
-  flex-basis: unset;
-}
+  &__bottom {
+    margin-bottom: $md;
 
-// Admin only styles
-.toolbar-menu {
-  font-size: unset;
-}
-
-.layout--fourcol,
-.layout--threecol,
-.layout--twocol,
-.layout--onecol {
-  .block-system-breadcrumb-block,
-  .block-field-blocknodepagetitle,
-  .block-field-blocknodepagebody {
-    flex-basis: 100%;
+    &.page__container {
+      margin-bottom: $md;
+    }
   }
 }
 

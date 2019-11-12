@@ -3,6 +3,7 @@
   text-decoration: none;
   cursor: pointer;
   transition: transform .35s, z-index .5s;
+  border: 1px solid rgba(0, 0, 0, 0.125);
   @include flexbox;
   @include flex-direction($value: column);
   @include flex($fg: 1, $fs: 1, $fb: 0%);
@@ -29,13 +30,12 @@
 
   &__img {
     align-self: start;
-    @include margin($bottom: $md);
   }
 
-  &__label {
-    letter-spacing: .09rem;
-    text-transform: uppercase;
+  &__body {
+    padding: $gutter;
   }
+
 
   &__title {
     font-size: $h6-font-size;
@@ -48,41 +48,15 @@
     }
   }
 
-  &__date {
-    font-weight: $font-weight-bold;
-  }
-
   &__text {
     @include margin($top: $sm, $bottom: $sm);
     color: $secondary;
   }
-
-  &__link {
-    text-decoration: none;
-    letter-spacing: .05rem;
-    text-transform: uppercase;
-    color: $secondary;
-    font-weight: $font-weight-light;
-  }
-
-  &__details {
-    @include element-invisible;
-
-    .is-open & {
-      clear: both;
-      @include element-invisible-off;
-      @include padding($top: $sm, $bottom: $sm);
-    }
-  }
-
-  &.is-open {
-    padding: $md;
-    transform: translateY(-10px) scale(1.01);
-    background: $light;
-    box-shadow: 3px 5px 5px 0 rgba(13, 23, 33, 0.1);
-  }
 }
 
+
+
+/*
 .card__bttn {
   position: relative;
   display: block;
@@ -115,3 +89,4 @@
     }
   }
 }
+*/
