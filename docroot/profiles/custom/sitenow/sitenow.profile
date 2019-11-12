@@ -516,7 +516,7 @@ function sitenow_preprocess_page(&$variables) {
     $node = \Drupal::routeMatch()->getParameter('node');
     $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
     if (isset($node)) {
-      // Get moderation state of node
+      // Get moderation state of node.
       $revision_id = $node->getRevisionId();
       $revision = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($revision_id);
       $moderation_state = $revision->get('moderation_state')->getString();
@@ -524,10 +524,15 @@ function sitenow_preprocess_page(&$variables) {
         case 'archived':
           drupal_set_message(t("This content has been archived."), 'warning');
           break;
+
         case 'review':
           drupal_set_message(t("This content is in review."), 'warning');
+          break;
+
         case 'draft':
           drupal_set_message(t("This content is currently in a draft state."), 'warning');
+          break;
+
         case 'published':
         default:
       }
