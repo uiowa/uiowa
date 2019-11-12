@@ -333,3 +333,8 @@ $sites['labhbrl-neurosurgery.prod.drupal.uiowa.edu'] = 'hbrl-neurosurgery.lab.ui
 $sites['centerforconferenceshrandbusiness.dev.drupal.uiowa.edu'] = 'hrandbusiness.centerforconferences.uiowa.edu';
 $sites['centerforconferenceshrandbusiness.stage.drupal.uiowa.edu'] = 'hrandbusiness.centerforconferences.uiowa.edu';
 $sites['centerforconferenceshrandbusiness.prod.drupal.uiowa.edu'] = 'hrandbusiness.centerforconferences.uiowa.edu';
+
+// Directory aliases for familyphysician.centerforconferences.uiowa.edu.
+$sites['centerforconferencesfamilyphysician.dev.drupal.uiowa.edu'] = 'familyphysician.centerforconferences.uiowa.edu';
+$sites['centerforconferencesfamilyphysician.stage.drupal.uiowa.edu'] = 'familyphysician.centerforconferences.uiowa.edu';
+$sites['centerforconferencesfamilyphysician.prod.drupal.uiowa.edu'] = 'familyphysician.centerforconferences.uiowa.edu';
