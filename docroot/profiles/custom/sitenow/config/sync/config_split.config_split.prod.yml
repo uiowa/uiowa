@@ -1,12 +1,20 @@
 uuid: 64c20d66-41ad-4836-9a1f-bb16f7b214bd
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - config_split_ignore
+third_party_settings:
+  config_split_ignore:
+    entities:
+      - google_analytics.settings
+      - acquia_connector.settings
 id: prod
 label: Prod
 description: ''
 folder: ../config/envs/prod
 module:
+  google_analytics: 0
   robotstxt: 0
   acquia_connector: 0
   acquia_purge: 0
