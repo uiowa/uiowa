@@ -51,5 +51,7 @@
 
 <div {{ attributes.addClass(classes) }}>
   <div class="carousel-image">{{ content.field_carousel_image_image }}</div>
+  {% if (content.field_carousel_image_caption[0] is not empty) %}
   <div class="carousel-caption">{{ content.field_carousel_image_caption }}</div>
+  {% endif %}
 </div>
