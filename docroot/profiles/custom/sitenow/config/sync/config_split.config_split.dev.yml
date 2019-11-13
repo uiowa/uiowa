@@ -1,7 +1,13 @@
 uuid: 24505fa3-842b-4de3-b044-3e11dc3ea8a3
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - config_split_ignore
+third_party_settings:
+  config_split_ignore:
+    entities:
+      - acquia_connector.settings
 id: dev
 label: Dev
 description: ''
