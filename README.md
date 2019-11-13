@@ -202,6 +202,8 @@ $ blt
 Most of the BLT commands referenced above have shorthand aliases. Check the
 output of `blt` for details.
 
+You can also run blt commands on a remote, but you must run them using the path and from the app root. `./vendor/bin/blt sitenow:multisite:execute cr`
+
 ## Working With a BLT Project
 
 BLT projects are designed to instill software development best practices (including git workflows).
