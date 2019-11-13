@@ -328,3 +328,8 @@ $sites['sitesjrg.prod.drupal.uiowa.edu'] = 'jrg.sites.uiowa.edu';
 $sites['labhbrl-neurosurgery.dev.drupal.uiowa.edu'] = 'hbrl-neurosurgery.lab.uiowa.edu';
 $sites['labhbrl-neurosurgery.stage.drupal.uiowa.edu'] = 'hbrl-neurosurgery.lab.uiowa.edu';
 $sites['labhbrl-neurosurgery.prod.drupal.uiowa.edu'] = 'hbrl-neurosurgery.lab.uiowa.edu';
+
+// Directory aliases for midwestdnarepair.centerforconferences.uiowa.edu.
+$sites['centerforconferencesmidwestdnarepair.dev.drupal.uiowa.edu'] = 'midwestdnarepair.centerforconferences.uiowa.edu';
+$sites['centerforconferencesmidwestdnarepair.stage.drupal.uiowa.edu'] = 'midwestdnarepair.centerforconferences.uiowa.edu';
+$sites['centerforconferencesmidwestdnarepair.prod.drupal.uiowa.edu'] = 'midwestdnarepair.centerforconferences.uiowa.edu';
