@@ -1,0 +1,82 @@
+uuid: 21934e57-97e8-4c75-a124-22e27992acf3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.statistic.field_stat_caption
+    - field.field.paragraph.statistic.field_stat_image
+    - field.field.paragraph.statistic.field_stat_link
+    - field.field.paragraph.statistic.field_stat_statistic
+    - field.field.paragraph.statistic.field_uip_classes
+    - field.field.paragraph.statistic.field_uip_colwidth
+    - field.field.paragraph.statistic.field_uip_id
+    - paragraphs.paragraphs_type.statistic
+  module:
+    - field_group
+    - link
+    - text
+third_party_settings:
+  field_group:
+    group_stat_caption:
+      children:
+        - field_stat_statistic
+        - field_stat_caption
+        - field_stat_link
+      parent_name: ''
+      weight: 20
+      format_type: html_element
+      format_settings:
+        label: 'Statistic Caption'
+        element: div
+        show_label: false
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: ''
+      label: 'Statistic Caption'
+id: paragraph.statistic.default
+targetEntityType: paragraph
+bundle: statistic
+mode: default
+content:
+  field_stat_caption:
+    weight: 2
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_stat_image:
+    type: entity_reference_entity_view
+    weight: 0
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
+  field_stat_link:
+    weight: 3
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  field_stat_statistic:
+    weight: 1
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+hidden:
+  field_uip_classes: true
+  field_uip_colwidth: true
+  field_uip_id: true
