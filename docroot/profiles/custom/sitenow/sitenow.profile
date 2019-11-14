@@ -522,15 +522,15 @@ function sitenow_preprocess_page(&$variables) {
       $moderation_state = $revision->get('moderation_state')->getString();
       switch ($moderation_state) {
         case 'archived':
-          drupal_set_message(t("This content has been archived."), 'warning');
+          \Drupal::messenger()->addMessage("This content has been archived.");
           break;
 
         case 'review':
-          drupal_set_message(t("This content is in review."), 'warning');
+          \Drupal::messenger()->addMessage("This content is in review.");
           break;
 
         case 'draft':
-          drupal_set_message(t("This content is currently in a draft state."), 'warning');
+          \Drupal::messenger()->addMessage("This content is currently in a draft state.");
           break;
 
         case 'published':
