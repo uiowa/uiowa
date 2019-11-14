@@ -116,15 +116,6 @@ To delete a multisite:
 3. Remove any related cron jobs from the Acquia Cloud interface.
 3. If necessary, email Hostmaster to remove the CNAME that is no longer in use.
 
-## Site Split
-Please see config/README.md first.
-
-To register a configuration split for a multisite, create the split locally in the UI and export to the site split directory.
-`drush config-split:export mysitesplit`
-
-Deploy the code changes to each environment per the normal process and import the configuration from the split manually.
-`drush @mysite.dev config:import --source ../config/www.mysite.uiowa.edu --partial`
-
 ## XDebug
 
 `pecl install xdebug`
