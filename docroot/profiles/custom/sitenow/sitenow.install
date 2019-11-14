@@ -6,6 +6,7 @@
  * @see: https://www.drupal.org/project/drupal/issues/2982052
  */
 
+use Drupal\Core\Config\FileStorage;
 use Drupal\user\Entity\User;
 
 /**
@@ -107,4 +108,18 @@ function sitenow_update_8009() {
   Drupal::keyValue('system.schema')->delete('uiowa_seo');
   Drupal::keyValue('system.schema')->set('sitenow_seo', $schema);
   drupal_flush_all_caches();
+}
+
+/**
+ * Import config_ignore and split settings so GA is handled correctly.
+ */
+function sitenow_update_8010() {
+  $config_path = DRUPAL_ROOT . '/profiles/custom/sitenow/config/sync/';
+  $source = new FileStorage($config_path);
+
+  $config_storage = \Drupal::service('config.storage');
+  $config_storage->write('config_ignore.settings', $source->read('config_ignore.settings'));
+  $config_storage->write('config_split.config_split.prod', $source->read('config_split.config_split.prod'));
+  $config_storage->write('config_split.config_split.stage', $source->read('config_split.config_split.stage'));
+  $config_storage->write('config_split.config_split.dev', $source->read('config_split.config_split.dev'));
 }
