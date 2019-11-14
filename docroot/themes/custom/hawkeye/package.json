@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "clean": "rm -rf assets hds && mkdir -p assets/webfonts assets/components",
-    "hds-copy-fonts": "cp -r node_modules/@uiowa/hds/assets/webfonts/ assets/webfonts/",
-    "hds-copy-components": "cp -r node_modules/@uiowa/hds/components/ assets/components/",
+    "clean": "rm -rf assets && mkdir -p assets/webfonts assets/components",
+    "hds-copy-fonts": "cp -r node_modules/@uiowa/hds/assets/webfonts assets/",
+    "hds-copy-components": "cp -r node_modules/@uiowa/hds/components assets/",
     "hds-copy": "ls -l && run-p hds-copy-fonts hds-copy-components",
     "posthds-copy": "rm assets/components/_preview.twig && find assets/components/ -type f -name '*.scss' -delete && find assets/components/ -type f -name '*.config.yml' -delete",
     "sass-compile": "node-sass --output-style expanded scss -o assets/css --importer node_modules/node-sass-glob-importer/dist/cli.js",
