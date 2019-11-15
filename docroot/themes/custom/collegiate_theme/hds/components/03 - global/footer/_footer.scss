@@ -3,7 +3,8 @@
   background: $secondary;
   background: url("../images/footerbg.jpg");
   background-size: cover;
-  @include padding($top: $xxlg, $right: 0, $bottom: $xxlg, $left: 0);
+  @include padding($top: $md, $right: 0, $bottom: 0, $left: 0);
+
   &::before {
     position: absolute;
     top: 0;
@@ -21,77 +22,121 @@
 
   &__container {
     @extend %container;
-  }
-
-  &__columns {
-     @include breakpoint(sm) {
-       @include flexbox;
-     }
-    @extend %container;
-    @include margin($bottom: $xxlg);
-  }
-
-  &__column {
-    @extend %no-ul-list;
-    @include margin($bottom: $md);
-    @include breakpoint(sm) {
-      @include flex($fg: 1, $fs: 1, $fb: 0);
-      @include margin($right: $xlg, $bottom: 0);
+    padding: 0 $gutter;
+    @include breakpoint(container) {
+      padding: 0;
     }
-    &:last-child {
-      @include margin($right: 0);
+  }
+
+  &__container--flex {
+    @include breakpoint(sm) {
+      @include flexbox;
+    }
+  }
+
+  &__links {
+    @include margin($top: $xlg, $right: 0, $bottom: $lg);
+    .menu {
+      margin: 0;
+      @include breakpoint(sm) {
+        @include flexbox;
+      }
+
+      li {
+        @extend %no-ul-list;
+      }
+
+      a {
+        font-weight: $font-weight-bold;
+        text-decoration: none;
+        color: white;
+      }
+
+      ul {
+        margin: 0;
+
+        li {
+          @extend %no-ul-list;
+          margin-top: $md;
+
+          a {
+            font-weight: $font-weight-light;
+          }
+        }
+      }
+    }
+  }
+
+  &__links--nav {
+    margin-top: $md;
+    margin-bottom: $md;
+    @include breakpoint(sm) {
+      display: flex;
+      flex: 0 0 20%;
+    }
+  }
+
+  &__links--bttn {
+    .menu li {
+      @include margin($bottom: $md);
+      @include breakpoint(sm) {
+        @include flex($fg: 1, $fs: 1, $fb: 0);
+        @include margin($right: $xlg, $bottom: 0);
+      }
+
+      &:last-child {
+        @include margin($right: 0);
+      }
     }
   }
 
   &__logo {
-    @include margin($top: $lg, $right: 0, $bottom: $lg);
-    width: 50%;
+    width: 40%;
+    @include margin($top: 0, $right: 0, $bottom: $lg);
+    @include breakpoint(sm) {
+      width: 30%;
+    }
   }
 
-  &__icons {
-    @include margin($top: $xlg, $right: 0, $bottom: $md);
+  &__links--icon {
     a {
       text-decoration: none;
+      color: #fff;
     }
+
     i {
       color: #fff;
       font-size: $h4-font-size;
       @include margin($right: $md);
     }
+
+    ul,
+    li {
+      @extend %no-ul-list;
+    }
   }
 }
 
-
-
-.block--lockup {
-  @include breakpoint(sm) {
-    width: 40%;
-  }
-  @include margin($bottom: $md);
-}
-
-.uiowa-footer--default {
-  z-index: 1;
-  @include breakpoint(sm) {
-    width: 40%;
-  }
-}
 
 
 .socket {
   padding: $md;
   text-align: center;
   background: $primary;
+
   &__menu {
     @extend %no-ul-list;
+
     li {
       display: inline;
       border-right: 1px solid #000;
       @include padding($top: 0, $right: $sm, $left: $sm);
+
       &:last-child {
         border-right: none;
         @include padding($right: 0);
       }
+
       a {
         text-decoration: none;
         color: $secondary;

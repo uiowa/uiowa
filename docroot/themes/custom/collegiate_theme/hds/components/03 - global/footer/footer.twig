@@ -1,84 +1,86 @@
 <footer class="footer">
   <div class="footer__container">
 
-    <ul class="footer__columns">
+    <div class="footer__links footer__links--bttn">
 
-      <li class="footer__column">
-        <a href="https://www.example.com"
-          class="bttn bttn--full bttn--outline bttn--secondary__light">
-          <i class="fas fa-info-circle"></i> Request Info</a>
-      </li>
+      <ul class="menu">
+        {% for item in link_bttn.items | slice(0, 4) %}
+          {% include "@footer--links-bttn" with {
+            "link_bttn_url": item.link_bttn_url,
+            "link_bttn_class": item.link_bttn_class,
+            "link_bttn_icon": item.link_bttn_icon,
+            "link_bttn_title": item.link_bttn_title,
+          } %}
+        {% endfor %}
+      </ul>
 
-      <li class="footer__column">
-        <a href="https://www.example.com"
-          class="bttn bttn--full bttn--outline bttn--secondary__light">
-          <i class="fas fa-map-marker-alt"></i>
-          Visit</a>
-      </li>
+    </div>
+  </div>
 
-      <li class="footer__column">
-        <a href="https://www.example.com"
-          class="bttn bttn--full bttn--outline bttn--secondary__light">
-          <i class="fas fa-pencil-alt"></i>
-          Apply</a>
-      </li>
-
-      <li class="footer__column">
-        <a href="https://www.example.com"
-          class="bttn bttn--full bttn--outline bttn--secondary__light">
-          <i class="fas fa-folder"></i>
-          Jobs</a>
-      </li>
-
-    </ul>
+  <div class="footer__container footer__container--flex">
 
     <div class="uiowa-footer--default">
 
-        <a href="https://hr.uiowa.edu"><img class="footer__logo" src="{{ footer_logo }}"
-            alt="Logo for University of Iowa University Human Resources">
-        </a>
+      <a href="https://hr.uiowa.edu"><img class="footer__logo" src="{{ footer_logo }}" alt="Logo for University of Iowa">
+      </a>
 
       <div class="block--additional-info">
         <p>Iowa City, Iowa 52242<br>
           319-335-3500</p>
       </div>
 
-      <div class="footer__icons">
-
-        <a href="/">
-          <i class="fab fa-facebook-square" aria-hidden="true"></i>
-          <span class="element-invisible">Facebook</span></a>
-
-        <a href="/">
-          <i class="fab fa-twitter-square" aria-hidden="true"></i>
-          <span class="element-invisible">Twitter</span></a>
-
-        <a href="/">
-          <i class="fab fa-instagram" aria-hidden="true"></i>
-          <span class="element-invisible">Instagram</span></a>
-
-        <a href="/">
-          <i class="fab fa-snapchat" aria-hidden="true"></i>
-          <span class="element-invisible">Snapchat</span></a>
-
-        <a href="/">
-          <i class="fab fa-youtube" aria-hidden="true"></i>
-          <span class="element-invisible">Youtube</span></a>
-
+      <div class="footer__links footer__links--icon">
+        <ul class="menu">
+          {% for item in link_icon.items | slice(0, 5) %}
+            {% include "@footer--links-icon" with {
+              "link_icon_url": item.link_icon_url,
+              "link_icon_class": item.link_icon_class,
+              "link_icon_title": item.link_icon_title
+            } %}
+          {% endfor %}
+        </ul>
       </div>
-
     </div>
+
+    <div class="footer__links footer__links--nav">
+      <nav role="navigation">
+
+        <ul class="menu">
+          {% for link in links_nav.links %}
+            {% include "@footer--links-nav" with {
+              "link_nav_url": item.link_nav_url,
+              "link_nav_title": item.link_nav_title
+            } %}
+          {% endfor %}
+        </ul>
+
+      </nav>
+    </div>
+
+    <div class="footer__links footer__links--nav">
+      <nav role="navigation">
+        <ul class="menu">
+          {% for link in links_nav.links %}
+            {% include "@footer--links-nav" with {
+              "link_nav_url": item.link_nav_url,
+              "link_nav_title": item.link_nav_title
+            } %}
+          {% endfor %}
+        </ul>
+      </nav>
+    </div>
+
   </div>
 </footer>
 
 <div class="socket">
   <ul class="socket__menu">
     <li>© 2019 The University of Iowa</li>
-    <li><a
-        href="http://www.uiowa.edu/homepage/online-privacy-information">Privacy
-        Notice</a></li>
-    <li><a
-        href="http://opsmanual.uiowa.edu/community-policies/nondiscrimination-statement">Nondiscrimination
-        Statement</a></li>
+    <li>
+      <a href="http://www.uiowa.edu/homepage/online-privacy-information">Privacy Notice</a>
+    </li>
+    <li>
+      <a href="http://opsmanual.uiowa.edu/community-policies/nondiscrimination-statement">Nondiscrimination Statement</a>
+    </li>
   </ul>
 </div>

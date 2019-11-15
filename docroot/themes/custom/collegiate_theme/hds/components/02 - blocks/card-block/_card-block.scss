@@ -1,7 +1,6 @@
 .card {
   position: relative;
   text-decoration: none;
-  cursor: pointer;
   transition: transform .35s, z-index .5s;
   border: 1px solid rgba(0, 0, 0, 0.125);
   @include flexbox;
@@ -34,13 +33,14 @@
 
   &__body {
     padding: $gutter;
+    color: $secondary;
+    @include margin($top: $sm, $bottom: $sm);
   }
-
 
   &__title {
     font-size: $h6-font-size;
     font-weight: $font-weight-medium-bold;
-    @include margin($top: $sm, $bottom: $sm);
+    @include margin($top: 0, $bottom: $sm);
 
     a {
       text-decoration: none;
@@ -49,8 +49,8 @@
   }
 
   &__text {
-    @include margin($top: $sm, $bottom: $sm);
-    color: $secondary;
+    //@include margin($top: $sm, $bottom: $sm);
+    //color: $secondary;
   }
 }
 
