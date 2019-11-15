@@ -520,21 +520,14 @@ function sitenow_preprocess_page(&$variables) {
       $revision_id = $node->getRevisionId();
       $revision = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($revision_id);
       $moderation_state = $revision->get('moderation_state')->getString();
-      switch ($moderation_state) {
-        case 'archived':
-          \Drupal::messenger()->addMessage("This content has been archived.");
-          break;
-
-        case 'review':
-          \Drupal::messenger()->addMessage("This content is in review.");
-          break;
-
-        case 'draft':
-          \Drupal::messenger()->addMessage("This content is currently in a draft state.");
-          break;
-
-        case 'published':
-        default:
+      $status = $revision->get('status')->value;
+      if ($status == 0) {
+        $pre_vowel = (in_array($moderation_state[0], ['a', 'e', 'i', 'o', 'u']) ? 'n' : '');
+        $warning_text = t('This content is currently in a@pre_vowel <em>"@moderation_state"</em> state.', [
+          '@pre_vowel' => $pre_vowel,
+          '@moderation_state' => $moderation_state,
+        ]);
+        \Drupal::messenger()->addWarning($warning_text);
       }
     }
     if ($node instanceof NodeInterface) {
