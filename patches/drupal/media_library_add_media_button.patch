@@ -1,11 +1,11 @@
-diff --git a/core/modules/media_library/src/Plugin/Field/FieldWidget/MediaLibraryWidget.php b/modules/media_library/src/Plugin/Field/FieldWidget/MediaLibraryWidget.php
-index 3cd05e1082..28c01dc7c5 100644
+diff --git a/core/modules/media_library/src/Plugin/Field/FieldWidget/MediaLibraryWidget.php b/core/modules/media_library/src/Plugin/Field/FieldWidget/MediaLibraryWidget.php
+index 5234c88d90..acdd8b19a9 100644
 --- a/core/modules/media_library/src/Plugin/Field/FieldWidget/MediaLibraryWidget.php
 +++ b/core/modules/media_library/src/Plugin/Field/FieldWidget/MediaLibraryWidget.php
-@@ -482,7 +482,7 @@ class MediaLibraryWidget extends WidgetBase implements ContainerFactoryPluginInt
+@@ -478,7 +478,7 @@ class MediaLibraryWidget extends WidgetBase implements ContainerFactoryPluginInt
  
      // Add a button that will load the Media library in a modal using AJAX.
-     $element['media_library_open_button'] = [
+     $element['open_button'] = [
 -      '#type' => 'submit',
 +      '#type' => 'button',
        '#value' => $this->t('Add media'),
