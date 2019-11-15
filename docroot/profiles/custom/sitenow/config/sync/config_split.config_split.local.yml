@@ -1,7 +1,14 @@
 uuid: 5799b1bf-d146-4c65-9250-cdcc9d51add3
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - config_split_ignore
+third_party_settings:
+  config_split_ignore:
+    entities:
+      - 'migrate_plus.migration.*'
+      - migrate_plus.migration_group.sitenow_migrate
 id: local
 label: Local
 description: ''
@@ -10,7 +17,11 @@ module:
   config_inspector: 0
   devel: 0
   field_ui: 0
+  migrate: 0
+  migrate_plus: 0
+  migrate_tools: 0
   reroute_email: 0
+  sitenow_migrate: 0
   stage_file_proxy: 0
   views_ui: 0
 theme: {  }
