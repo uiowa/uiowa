@@ -2,6 +2,7 @@
 
 namespace Drush\Commands;
 
+use Drush\Drush;
 use Consolidation\AnnotatedCommand\AnnotationData;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\OutputFormatters\StructuredData\PropertyList;
