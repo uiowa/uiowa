@@ -343,3 +343,8 @@ $sites['centerforconferencesfamilyphysician.prod.drupal.uiowa.edu'] = 'familyphy
 $sites['centerforconferencesmidwestdnarepair.dev.drupal.uiowa.edu'] = 'midwestdnarepair.centerforconferences.uiowa.edu';
 $sites['centerforconferencesmidwestdnarepair.stage.drupal.uiowa.edu'] = 'midwestdnarepair.centerforconferences.uiowa.edu';
 $sites['centerforconferencesmidwestdnarepair.prod.drupal.uiowa.edu'] = 'midwestdnarepair.centerforconferences.uiowa.edu';
+
+// Directory aliases for vanallenprobes.centerforconferences.uiowa.edu.
+$sites['centerforconferencesvanallenprobes.dev.drupal.uiowa.edu'] = 'vanallenprobes.centerforconferences.uiowa.edu';
+$sites['centerforconferencesvanallenprobes.stage.drupal.uiowa.edu'] = 'vanallenprobes.centerforconferences.uiowa.edu';
+$sites['centerforconferencesvanallenprobes.prod.drupal.uiowa.edu'] = 'vanallenprobes.centerforconferences.uiowa.edu';
