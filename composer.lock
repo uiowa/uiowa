@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "87446478d428aa0d9a722319d1cca707",
+    "content-hash": "78a116ba97ab1f0f537536d45b1b5b32",
     "packages": [
         {
             "name": "acquia/blt",
@@ -6142,6 +6142,10 @@
                     "services": {
                         "drush.services.yml": "^9"
                     }
+                },
+                "patches_applied": {
+                    "Error on saving content type revision settings": "https://www.drupal.org/files/issues/2019-10-08/3078433-5.patch",
+                    "Missing group by in NodeRevisionDelete->getCandidatesRevisions()": "https://www.drupal.org/files/issues/2019-09-18/node_revision_delete-fix_candidate_nodes_group_by-3082021-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
