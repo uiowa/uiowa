@@ -49,7 +49,7 @@ EOD;
   /**
    * Add database size to status command output.
    *
-   * @param \Consolidation\OutputFormatters\StructuredData\PropertyList $result
+   * @param mixed $result
    *   The command result.
    * @param \Consolidation\AnnotatedCommand\CommandData $commandData
    *   The command data.
@@ -59,7 +59,7 @@ EOD;
    * @return result
    *   The altered command result.
    */
-  public function alterStatus(PropertyList $result, CommandData $commandData) {
+  public function alterStatus($result, CommandData $commandData) {
     if ($result['bootstrap'] == 'Successful') {
       $db = $result['db-name'];
       $selfRecord = $this->siteAliasManager()->getSelf();
