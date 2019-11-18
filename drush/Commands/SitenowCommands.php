@@ -68,7 +68,7 @@ EOD;
       $process = $this->processManager()->drush($selfRecord, 'sql:query', $args, $options);
       $process->mustRun();
       $output = trim($process->getOutput());
-      $result['db-size'] = $output . "MB";
+      $result['db-size'] = $output . " MB";
       return $result;
     }
   }
