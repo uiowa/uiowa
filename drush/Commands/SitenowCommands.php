@@ -2,6 +2,7 @@
 
 namespace Drush\Commands;
 
+use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
 use Drush\Drush;
 use Consolidation\AnnotatedCommand\AnnotationData;
 use Consolidation\AnnotatedCommand\CommandData;
@@ -111,6 +112,60 @@ EOD;
 
       $process->run($process->showRealtime());
     }
+  }
+
+  /**
+   * Show tables larger than the input size.
+   *
+   * @param int $size
+   *   The size in megabytes of table to filter on. Defaults to 1 MB.
+   * @param mixed $options
+   *   The command options.
+   *
+   * @command sitenow:sql:tables
+   *
+   * @aliases sst
+   *
+   * @field-labels
+   *   table: Table
+   *   size: Size
+   *
+   * @return \Consolidation\OutputFormatters\StructuredData\RowsOfFields
+   *   Tables in RowsOfFields output formatter.
+   */
+  public function sqlTables($size = 1, $options = ['format' => 'table']) {
+    $size = $size * 1024 * 1024;
+    $selfRecord = $this->siteAliasManager()->getSelf();
+    $args = ["SELECT table_name AS \"Tables\", ROUND(((data_length + index_length) / 1024 / 1024), 2) \"Size in MB\" FROM information_schema.TABLES WHERE table_schema = DATABASE() AND (data_length + index_length) > $size ORDER BY (data_length + index_length) DESC;"];
+    $options = ['yes' => TRUE];
+    $process = $this->processManager()->drush($selfRecord, 'sql:query', $args, $options);
+    $process->mustRun();
+    $output = $process->getOutput();
+
+    $rows = [];
+
+    $output = explode(PHP_EOL, $output);
+    foreach ($output as $line) {
+      if (!empty($line)) {
+        list($table, $table_size) = explode("\t", $line);
+
+        $rows[] = [
+          'table' => $table,
+          'size' => $table_size . ' MB',
+        ];
+      }
+    }
+
+    $data = new RowsOfFields($rows);
+    $data->addRendererFunction(function ($key, $cellData) {
+      if ($key == 'first') {
+        return "<comment>$cellData</>";
+      }
+
+      return $cellData;
+    });
+
+    return $data;
   }
 
 }
