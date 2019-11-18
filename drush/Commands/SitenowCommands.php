@@ -5,7 +5,6 @@ namespace Drush\Commands;
 use Drush\Drush;
 use Consolidation\AnnotatedCommand\AnnotationData;
 use Consolidation\AnnotatedCommand\CommandData;
-use Consolidation\OutputFormatters\StructuredData\PropertyList;
 use Consolidation\SiteAlias\SiteAliasManagerAwareInterface;
 use Consolidation\SiteAlias\SiteAliasManagerAwareTrait;
 use Symfony\Component\Console\Input\InputInterface;
