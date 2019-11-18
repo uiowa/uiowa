@@ -87,4 +87,31 @@ EOD;
     $input->setOption('fields', $defaults);
   }
 
+  /**
+   * Invoke BLT update command after sql:sync.
+   *
+   * @param mixed $result
+   *   The command result.
+   * @param \Consolidation\AnnotatedCommand\CommandData $commandData
+   *   The command data.
+   *
+   * @hook post-command sql:sync
+   */
+  public function postSqlSync($result, CommandData $commandData) {
+    $env = getenv('AH_SITE_ENVIRONMENT');
+
+    if ($env) {
+      $record = $this->siteAliasManager()->getAlias($commandData->input()->getArgument('target'));
+      $root = Drush::bootstrapManager()->getComposerRoot();
+
+      $process = $this->processManager()->process([
+        './vendor/bin/blt',
+        'drupal:update',
+        '--site=' . $record->uri(),
+      ], $root);
+
+      $process->run($process->showRealtime());
+    }
+  }
+
 }
