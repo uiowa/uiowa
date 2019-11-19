@@ -1,7 +1,13 @@
 uuid: 63afcf81-ae42-4120-a084-6418ba578ce6
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - config_split_ignore
+third_party_settings:
+  config_split_ignore:
+    entities:
+      - acquia_connector.settings
 id: stage
 label: Stage
 description: ''
