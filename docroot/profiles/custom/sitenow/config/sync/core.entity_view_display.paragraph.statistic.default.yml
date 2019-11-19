@@ -3,10 +3,10 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.statistic.field_stat_caption
     - field.field.paragraph.statistic.field_stat_image
     - field.field.paragraph.statistic.field_stat_link
-    - field.field.paragraph.statistic.field_stat_statistic
+    - field.field.paragraph.statistic.field_stat_summary
+    - field.field.paragraph.statistic.field_stat_title
     - field.field.paragraph.statistic.field_uip_classes
     - field.field.paragraph.statistic.field_uip_colwidth
     - field.field.paragraph.statistic.field_uip_id
@@ -19,8 +19,8 @@ third_party_settings:
   field_group:
     group_stat_caption:
       children:
-        - field_stat_statistic
-        - field_stat_caption
+        - field_stat_title
+        - field_stat_summary
         - field_stat_link
       parent_name: ''
       weight: 20
@@ -41,13 +41,6 @@ targetEntityType: paragraph
 bundle: statistic
 mode: default
 content:
-  field_stat_caption:
-    weight: 2
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
-    region: content
   field_stat_image:
     type: entity_reference_entity_view
     weight: 0
@@ -58,7 +51,7 @@ content:
     third_party_settings: {  }
     region: content
   field_stat_link:
-    weight: 3
+    weight: 23
     label: hidden
     settings:
       trim_length: 80
@@ -69,8 +62,15 @@ content:
     third_party_settings: {  }
     type: link
     region: content
-  field_stat_statistic:
-    weight: 1
+  field_stat_summary:
+    weight: 22
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_stat_title:
+    weight: 21
     label: hidden
     settings: {  }
     third_party_settings: {  }

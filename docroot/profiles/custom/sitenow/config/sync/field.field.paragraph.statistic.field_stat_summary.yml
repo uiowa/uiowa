@@ -1,27 +1,27 @@
-uuid: 67bb40fc-f03c-40c0-88f2-f6a6bdb69a56
+uuid: 47100031-62fe-47b1-9ce5-ea8d49f30e80
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.paragraph.field_stat_statistic
+    - field.storage.paragraph.field_stat_summary
     - paragraphs.paragraphs_type.statistic
   module:
     - allowed_formats
     - text
 third_party_settings:
   allowed_formats:
-    minimal: '0'
+    minimal: minimal
     filtered_html: '0'
     plain_text: '0'
-id: paragraph.statistic.field_stat_statistic
-field_name: field_stat_statistic
+id: paragraph.statistic.field_stat_summary
+field_name: field_stat_summary
 entity_type: paragraph
 bundle: statistic
-label: Statistic
+label: Summary
 description: ''
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings: {  }
-field_type: text
+field_type: text_long
