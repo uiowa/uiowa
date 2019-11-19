@@ -5,7 +5,7 @@ brand.uiowa.edu
 Overview
 ---
 
-Primary website for University of Iowa Human Resources.
+Primary website for the University of Iowa Brand Guide.
 
 Primary Developer
 ---
