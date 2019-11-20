@@ -123,3 +123,13 @@ function sitenow_update_8010() {
   $config_storage->write('config_split.config_split.stage', $source->read('config_split.config_split.stage'));
   $config_storage->write('config_split.config_split.dev', $source->read('config_split.config_split.dev'));
 }
+
+/**
+ * Back up google_analytics.settings into ga_backup state variable.
+ */
+function sitenow_update_8011() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('google_analytics.settings');
+  $backup = $config->get();
+  Drupal::state()->set('ga_backup', $backup);
+}
