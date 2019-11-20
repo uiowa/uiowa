@@ -358,3 +358,8 @@ $sites['labmicrovascularphys.prod.drupal.uiowa.edu'] = 'microvascularphys.lab.ui
 $sites['studiouibass.dev.drupal.uiowa.edu'] = 'uibass.studio.uiowa.edu';
 $sites['studiouibass.stage.drupal.uiowa.edu'] = 'uibass.studio.uiowa.edu';
 $sites['studiouibass.prod.drupal.uiowa.edu'] = 'uibass.studio.uiowa.edu';
+
+// Directory aliases for molcellcog.org.
+$sites['org-molcellcog.dev.drupal.uiowa.edu'] = 'molcellcog.org';
+$sites['org-molcellcog.stage.drupal.uiowa.edu'] = 'molcellcog.org';
+$sites['org-molcellcog.prod.drupal.uiowa.edu'] = 'molcellcog.org';
