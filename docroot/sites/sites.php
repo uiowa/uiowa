@@ -349,11 +349,6 @@ $sites['centerforconferencesvanallenprobes.dev.drupal.uiowa.edu'] = 'vanallenpro
 $sites['centerforconferencesvanallenprobes.stage.drupal.uiowa.edu'] = 'vanallenprobes.centerforconferences.uiowa.edu';
 $sites['centerforconferencesvanallenprobes.prod.drupal.uiowa.edu'] = 'vanallenprobes.centerforconferences.uiowa.edu';
 
-// Directory aliases for uibass.studio.uiowa.edu.
-$sites['studiouibass.dev.drupal.uiowa.edu'] = 'uibass.studio.uiowa.edu';
-$sites['studiouibass.stage.drupal.uiowa.edu'] = 'uibass.studio.uiowa.edu';
-$sites['studiouibass.prod.drupal.uiowa.edu'] = 'uibass.studio.uiowa.edu';
-
 // Directory aliases for microvascularphys.lab.uiowa.edu.
 $sites['labmicrovascularphys.dev.drupal.uiowa.edu'] = 'microvascularphys.lab.uiowa.edu';
 $sites['labmicrovascularphys.stage.drupal.uiowa.edu'] = 'microvascularphys.lab.uiowa.edu';
