@@ -1,7 +1,7 @@
 /*
- * @file
- * Provides the layout styles for three-column layout section.
- */
+* @file
+* Provides the layout styles for three-column layout section.
+*/
 
 
 @media screen and (min-width: 40em) {
@@ -19,20 +19,46 @@
     flex: 0 1 24.25%;
   }
 
+  .layout--threecol--50-25-25.section-margin__removed>.layout__region--second,
+  .layout--threecol--50-25-25.section-margin__removed>.layout__region--third {
+    flex: 0 1 25%;
+  }
+
+  .layout--threecol--50-25-25>.layout__region--first {
+    margin-right: .625rem;
+  }
+
+  .layout--threecol--50-25-25.section-margin__removed>.layout__region--first {
+    margin-right: 0;
+  }
+
   .layout--threecol--50-25-25>.layout__region--second {
-    margin: 0 1.25rem;
+    margin: 0 .625rem;
   }
 
   .layout--threecol--50-25-25.section-margin__removed>.layout__region--second {
     margin: 0;
   }
 
+  .layout--threecol--50-25-25>.layout__region--third {
+    margin-left: .625rem;
+  }
+
+  .layout--threecol--50-25-25.section-margin__removed>.layout__region--third {
+    margin-left: 0;
+  }
+
+
+  .layout--threecol--50-25-25.section-margin__removed>.layout__region--second {
+    margin: 0;
+  }
+
   .layout--threecol--50-25-25.section-margin__removed>.layout__region--first {
-    flex: 0 1 51%;
+    flex: 0 1 50%;
   }
 
   .layout--threecol--50-25-25>.layout__region--first {
-    flex: 0 1 49.5%;
+    flex: 0 1 50%;
   }
 
   .layout--threecol--33-34-33>.layout__region--first,
@@ -47,24 +73,45 @@
     flex: 0 1 33.3%;
   }
 
-  .layout--threecol--33-34-33>.layout__region--second {
-    margin: 0 1.25rem;
+  .layout--threecol--33-34-33>.layout__region--first {
+    margin-right: .625rem;
   }
 
-  .layout--threecol--33-34-33.section-margin__removed>.layout__region--second {
+  .layout--threecol--33-34-33>.layout__region--second {
+    margin: 0 .625rem;
+  }
+
+  .layout--threecol--33-34-33>.layout__region--third {
+    margin-left: .625rem;
+  }
+
+  .layout--threecol--33-34-33.section-margin__removed>.layout__region {
     margin: 0;
   }
 
   .layout--threecol--25-25-50>.layout__region--first,
   .layout--threecol--25-25-50>.layout__region--second {
-    flex: 0 1 24.25%;
+    flex: 0 1 24%;
+  }
+
+  .layout--threecol--25-25-50.section-margin__removed>.layout__region--first,
+  .layout--threecol--25-25-50.section-margin__removed>.layout__region--second {
+    flex: 0 1 25%;
+  }
+
+  .layout--threecol--25-25-50>.layout__region--first {
+    margin-right: .625rem;
   }
 
   .layout--threecol--25-25-50>.layout__region--second {
-    margin: 0 1.25rem;
+    margin: 0 .625rem;
   }
 
-  .layout--threecol--25-25-50.section-margin__removed>.layout__region--second {
+  .layout--threecol--25-25-50>.layout__region--third {
+    margin-left: .625rem;
+  }
+
+  .layout--threecol--25-25-50.section-margin__removed>.layout__region {
     margin: 0;
   }
 
@@ -73,7 +120,7 @@
   }
 
   .layout--threecol--25-25-50.section-margin__removed>.layout__region--third {
-    flex: 0 1 51%;
+    flex: 0 1 50%;
   }
 
   .layout--threecol--25-50-25>.layout__region--first,
@@ -81,13 +128,30 @@
     flex: 0 1 24.25%;
   }
 
+  .layout--threecol--25-50-25.section-margin__removed>.layout__region--first,
+  .layout--threecol--25-50-25.section-margin__removed>.layout__region--third {
+    flex: 0 1 25%;
+
+    margin: 0;
+  }
+
+  .layout--threecol--25-50-25>.layout__region--first {
+    margin-right: .625rem;
+  }
+
   .layout--threecol--25-50-25>.layout__region--second {
     flex: 0 1 49.75%;
-    margin: 0 1.25rem;
+
+    margin: 0 .625rem;
+  }
+
+  .layout--threecol--25-50-25>.layout__region--third {
+    margin-left: .625rem;
   }
 
   .layout--threecol--25-50-25.section-margin__removed>.layout__region--second {
+    flex: 0 1 50%;
+
     margin: 0;
-    flex: 0 1 51%;
   }
 }
