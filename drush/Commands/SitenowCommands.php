@@ -133,8 +133,8 @@ EOD;
    * @return \Consolidation\OutputFormatters\StructuredData\RowsOfFields
    *   Tables in RowsOfFields output formatter.
    */
-  public function sqlTables($size = 1, $options = ['format' => 'table']) {
-    $size = $size * 1024 * 1024;
+  public function sqlTables(int $size = 1, $options = ['format' => 'table']) {
+    $size = $this->input()->getArgument('size') * 1024 * 1024;
     $selfRecord = $this->siteAliasManager()->getSelf();
     $args = ["SELECT table_name AS \"Tables\", ROUND(((data_length + index_length) / 1024 / 1024), 2) \"Size in MB\" FROM information_schema.TABLES WHERE table_schema = DATABASE() AND (data_length + index_length) > $size ORDER BY (data_length + index_length) DESC;"];
     $options = ['yes' => TRUE];

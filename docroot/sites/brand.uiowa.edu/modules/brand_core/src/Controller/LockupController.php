@@ -452,6 +452,9 @@ class LockupController extends ControllerBase {
         else {
           $border_height = $border_height + 8;
         }
+        if ($border_height < 30) {
+          $border_height = 30;
+        }
         $border_half = $border_height / 2;
 
         // Draw border.
