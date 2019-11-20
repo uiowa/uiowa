@@ -125,11 +125,8 @@ function sitenow_update_8010() {
 }
 
 /**
- * Back up google_analytics.settings into ga_backup state variable.
+ * Deleted.
  */
 function sitenow_update_8011() {
-  $config_factory = \Drupal::configFactory();
-  $config = $config_factory->getEditable('google_analytics.settings');
-  $backup = $config->get();
-  Drupal::state()->set('ga_backup', $backup);
+
 }
