@@ -1,0 +1,25 @@
+uuid: 33445823-813d-41af-97b6-2577462401e3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_taxonomy_term
+    - node.type.page
+id: node.page.field_taxonomy_term
+field_name: field_taxonomy_term
+entity_type: node
+bundle: page
+label: 'Taxonomy Term'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: views
+  handler_settings:
+    view:
+      view_name: taxonomy_browser_view
+      display_name: entity_reference_taxonomy
+      arguments: {  }
+field_type: entity_reference

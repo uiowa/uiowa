@@ -1,0 +1,42 @@
+uuid: 9362cf2a-2100-4ca4-a3a2-937734e5f8b7
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.taxonomy_browser_view
+  module:
+    - entity_browser_entity_form
+    - views
+name: taxonomy_browser
+label: 'Taxonomy Browser'
+display: iframe
+display_configuration:
+  width: '650'
+  height: '500'
+  link_text: 'Select entities'
+  auto_open: true
+selection_display: no_display
+selection_display_configuration: {  }
+widget_selector: tabs
+widget_selector_configuration: {  }
+widgets:
+  30339320-2f79-44f1-b8d2-23e8be81d65b:
+    settings:
+      view: taxonomy_browser_view
+      view_display: entity_browser_taxonomy
+      submit_text: 'Select entities'
+      auto_select: false
+    uuid: 30339320-2f79-44f1-b8d2-23e8be81d65b
+    weight: 1
+    label: 'Existing Taxonomy Terms'
+    id: view
+  53020ef2-e54b-4661-9d96-d6dca402106f:
+    settings:
+      entity_type: taxonomy_term
+      bundle: tags
+      form_mode: default
+      submit_text: 'Save entity'
+    uuid: 53020ef2-e54b-4661-9d96-d6dca402106f
+    weight: 2
+    label: 'Add a new Tag'
+    id: entity_form

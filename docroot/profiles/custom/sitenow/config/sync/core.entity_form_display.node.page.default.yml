@@ -8,13 +8,15 @@ dependencies:
     - field.field.node.page.field_meta_tags
     - field.field.node.page.field_page_content_block
     - field.field.node.page.field_publish_options
-    - field.field.node.page.field_reference
+    - field.field.node.page.field_taxonomy_term
     - field.field.node.page.field_teaser
     - node.type.page
     - workflows.workflow.editorial
   module:
     - content_moderation
     - media_library
+    - entity_browser_entity_form
+    - inline_entity_form
     - metatag
     - paragraphs
     - path
@@ -67,15 +69,24 @@ content:
     third_party_settings: {  }
     type: options_buttons
     region: content
-  field_reference:
+  field_taxonomy_term:
+    type: inline_entity_form_complex
     weight: 12
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete_tags
     region: content
+    settings:
+      form_mode: default
+      override_labels: true
+      label_singular: 'Taxonomy Term or a new Tag'
+      label_plural: 'Taxonomy Terms or a new Tag'
+      allow_existing: true
+      match_operator: CONTAINS
+      collapsible: false
+      collapsed: false
+      allow_new: false
+      allow_duplicate: false
+    third_party_settings:
+      entity_browser_entity_form:
+        entity_browser_id: taxonomy_browser
   field_teaser:
     weight: 1
     settings:
