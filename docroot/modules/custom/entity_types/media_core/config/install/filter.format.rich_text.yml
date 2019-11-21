@@ -1,9 +1,11 @@
 langcode: en
 status: true
 dependencies:
+  config:
+    - core.entity_view_mode.media.embedded
+    - core.entity_view_mode.media.full
   module:
     - editor
-    - entity_embed
 name: 'Rich text'
 format: rich_text
 weight: 1
@@ -32,19 +34,13 @@ filters:
     status: true
     weight: -45
     settings: {  }
-  entity_embed:
-    id: entity_embed
-    provider: entity_embed
-    status: true
-    weight: -49
-    settings: {  }
   filter_html:
     id: filter_html
     provider: filter
     status: true
     weight: -50
     settings:
-      allowed_html: '<a href hreflang> <em> <strong> <cite> <blockquote cite> <code> <ul type> <ol start type> <li> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <s> <sup> <sub> <img src alt data-entity-type data-entity-uuid data-align data-caption> <table> <caption> <tbody> <thead> <tfoot> <th> <td> <tr> <hr> <p> <br> <h1> <pre> <drupal-entity data-* title alt>'
+      allowed_html: '<a href hreflang> <em> <strong> <cite> <blockquote cite> <code> <ul type> <ol start type> <li> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <s> <sup> <sub> <img src alt data-entity-type data-entity-uuid data-align data-caption> <table> <caption> <tbody> <thead> <tfoot> <th> <td> <tr> <hr> <p> <br> <h1> <pre> <drupal-entity data-* title alt> <drupal-media data-entity-type data-entity-uuid>'
       filter_html_help: true
       filter_html_nofollow: false
   filter_autop:
@@ -72,3 +68,19 @@ filters:
     weight: -42
     settings:
       filter_url_length: 72
+  media_embed:
+    id: media_embed
+    provider: media
+    status: true
+    weight: 100
+    settings:
+      default_view_mode: default
+      allowed_media_types:
+        document: document
+        image: image
+        remote_video: remote_video
+        video: video
+      allowed_view_modes:
+        default: default
+        embedded: embedded
+        full: full

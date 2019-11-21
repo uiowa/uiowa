@@ -12,15 +12,13 @@ targetEntityType: media
 bundle: remote_video
 mode: embedded
 content:
-  field_media_video_embed_field:
-    type: video_embed_field_video
-    weight: 2
+  field_media_oembed_video:
+    type: oembed
+    weight: 0
     label: hidden
     settings:
-      responsive: true
-      width: 854
-      height: 480
-      autoplay: true
+      max_width: 0
+      max_height: 0
     third_party_settings: {  }
     region: content
 hidden:
