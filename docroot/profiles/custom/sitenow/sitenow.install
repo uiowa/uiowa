@@ -130,3 +130,25 @@ function sitenow_update_8010() {
 function sitenow_update_8011() {
 
 }
+
+/**
+ * Update acquia_connector settings.
+ */
+function sitenow_update_8012() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('acquia_connector.settings');
+
+  if (empty($config->get())) {
+    $config_path = DRUPAL_ROOT . '/profiles/custom/sitenow/config/sync/';
+    $source = new FileStorage($config_path);
+
+    $config_storage = \Drupal::service('config.storage');
+    $config_storage->write('acquia_connector.settings', $source->read('acquia_connector.settings'));
+  }
+  else {
+    $config
+      ->set('cron_interval', 180)
+      ->set('hide_signup_messages', 1)
+      ->save();
+  }
+}
