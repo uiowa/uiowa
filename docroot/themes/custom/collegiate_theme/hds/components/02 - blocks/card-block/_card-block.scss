@@ -70,19 +70,15 @@
   border: 1px solid $secondary;
   border-radius: 50%;
   background: $white;
-
   @include margin($right: $sm);
-
   .is-open & {
     background: $secondary;
   }
-
   &:before {
     padding: $xsm;
     content: "\f141";
     color: $secondary;
     @include fas();
-
     .is-open & {
       content: "\f00d";
       color: $white;

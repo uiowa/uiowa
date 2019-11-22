@@ -106,6 +106,12 @@
     }
   }
 
+  @else if $class==container {
+    @media (min-width: 84.375em) {
+      @content;
+    }
+  }
+
   @else {
     @warn "Breakpoint mixin supports: xs, sm, md, lg";
   }

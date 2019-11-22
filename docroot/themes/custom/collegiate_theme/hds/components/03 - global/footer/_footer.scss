@@ -4,6 +4,7 @@
   background: url("../images/footerbg.jpg");
   background-size: cover;
   @include padding($top: $xxlg, $right: 0, $bottom: $xxlg, $left: 0);
+
   &::before {
     position: absolute;
     top: 0;
@@ -24,9 +25,10 @@
   }
 
   &__columns {
-     @include breakpoint(sm) {
-       @include flexbox;
-     }
+    @include breakpoint(sm) {
+      @include flexbox;
+    }
+
     @extend %container;
     @include margin($bottom: $xxlg);
   }
@@ -34,10 +36,12 @@
   &__column {
     @extend %no-ul-list;
     @include margin($bottom: $md);
+
     @include breakpoint(sm) {
       @include flex($fg: 1, $fs: 1, $fb: 0);
       @include margin($right: $xlg, $bottom: 0);
     }
+
     &:last-child {
       @include margin($right: 0);
     }
@@ -50,9 +54,11 @@
 
   &__icons {
     @include margin($top: $xlg, $right: 0, $bottom: $md);
+
     a {
       text-decoration: none;
     }
+
     i {
       color: #fff;
       font-size: $h4-font-size;
@@ -67,11 +73,13 @@
   @include breakpoint(sm) {
     width: 40%;
   }
+
   @include margin($bottom: $md);
 }
 
 .uiowa-footer--default {
   z-index: 1;
+
   @include breakpoint(sm) {
     width: 40%;
   }
@@ -82,16 +90,20 @@
   padding: $md;
   text-align: center;
   background: $primary;
+
   &__menu {
     @extend %no-ul-list;
+
     li {
       display: inline;
       border-right: 1px solid #000;
       @include padding($top: 0, $right: $sm, $left: $sm);
+
       &:last-child {
         border-right: none;
         @include padding($right: 0);
       }
+
       a {
         text-decoration: none;
         color: $secondary;
