@@ -12,6 +12,7 @@ use Drupal\Core\Link;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\user\Entity\User;
 use Drupal\views\ViewExecutable;
@@ -393,6 +394,27 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         $form["properties"]["markup"]["message_id"]['#access'] = FALSE;
       }
       break;
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function sitenow_form_revision_overview_form_alter(&$form, FormStateInterface $form_state, $form_id)
+{
+  if (isset($form['nid'], $form['nid']['#value'])) {
+    $node = Node::load($form['nid']['#value']);
+
+    if ($node) {
+      $type = $node->getType();
+      $config = \Drupal::config("node.type.{$type}");
+
+      if ($nrd = $config->get('third_party_settings.node_revision_delete')) {
+        \Drupal::messenger()->addWarning(t('There is a @limit revision limit for this content type. The oldest revisions in excess of @limit are deleted during system background processes.', [
+          '@limit' => $nrd['minimum_revisions_to_keep'],
+        ]));
+      }
+    }
   }
 }
 
