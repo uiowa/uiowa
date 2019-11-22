@@ -1,0 +1,38 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - image.style.collegiate_theme_image_1200_x_800
+    - image.style.collegiate_theme_image_2000_x_1300
+    - image.style.collegiate_theme_image_560_x_373
+    - image.style.collegiate_theme_image_990_x_660
+id: collegiate_theme
+label: 'Collegiate Theme'
+image_style_mappings:
+  -
+    breakpoint_id: collegiate_theme.extra_large
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: collegiate_theme_image_2000_x_1300
+  -
+    breakpoint_id: collegiate_theme.large
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: collegiate_theme_image_1200_x_800
+  -
+    breakpoint_id: collegiate_theme.medium
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: collegiate_theme_image_990_x_660
+  -
+    breakpoint_id: collegiate_theme.small
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: collegiate_theme_image_560_x_373
+  -
+    breakpoint_id: collegiate_theme.extra_small
+    multiplier: 1x
+    image_mapping_type: image_style
+    image_mapping: collegiate_theme_image_560_x_373
+breakpoint_group: collegiate_theme
+fallback_image_style: collegiate_theme_image_560_x_373
