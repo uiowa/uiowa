@@ -3,7 +3,7 @@
   background: $secondary;
   background: url("../images/footerbg.jpg");
   background-size: cover;
-  @include padding($top: $xxlg, $right: 0, $bottom: $xxlg, $left: 0);
+  @include padding($top: $md, $right: 0, $bottom: 0, $left: 0);
 
   &::before {
     position: absolute;
@@ -22,41 +22,86 @@
 
   &__container {
     @extend %container;
+    padding: 0 $gutter;
+    @include breakpoint(container) {
+      padding: 0;
+    }
   }
 
-  &__columns {
+  &__container--flex {
     @include breakpoint(sm) {
       @include flexbox;
     }
-
-    @extend %container;
-    @include margin($bottom: $xxlg);
   }
 
-  &__column {
-    @extend %no-ul-list;
-    @include margin($bottom: $md);
+  &__links {
+    @include margin($top: $xlg, $right: 0, $bottom: $lg);
+    .menu {
+      margin: 0;
+      @include breakpoint(sm) {
+        @include flexbox;
+      }
 
-    @include breakpoint(sm) {
-      @include flex($fg: 1, $fs: 1, $fb: 0);
-      @include margin($right: $xlg, $bottom: 0);
+      li {
+        @extend %no-ul-list;
+      }
+
+      a {
+        font-weight: $font-weight-bold;
+        text-decoration: none;
+        color: white;
+      }
+
+      ul {
+        margin: 0;
+
+        li {
+          @extend %no-ul-list;
+          margin-top: $md;
+
+          a {
+            font-weight: $font-weight-light;
+          }
+        }
+      }
     }
+  }
 
-    &:last-child {
-      @include margin($right: 0);
+  &__links--nav {
+    margin-top: $md;
+    margin-bottom: $md;
+    @include breakpoint(sm) {
+      display: flex;
+      flex: 0 0 20%;
+    }
+  }
+
+  &__links--bttn {
+    .menu li {
+      @include margin($bottom: $md);
+      @include breakpoint(sm) {
+        @include flex($fg: 1, $fs: 1, $fb: 0);
+        @include margin($right: $xlg, $bottom: 0);
+      }
+
+      &:last-child {
+        @include margin($right: 0);
+      }
     }
   }
 
   &__logo {
-    @include margin($top: $lg, $right: 0, $bottom: $lg);
-    width: 50%;
+    width: 40%;
+    @include margin($top: 0, $right: 0, $bottom: $lg);
+    @include breakpoint(sm) {
+      width: 30%;
+    }
   }
 
-  &__icons {
-    @include margin($top: $xlg, $right: 0, $bottom: $md);
-
+  &__links--icon {
     a {
       text-decoration: none;
+      color: #fff;
     }
 
     i {
@@ -64,26 +109,14 @@
       font-size: $h4-font-size;
       @include margin($right: $md);
     }
+
+    ul,
+    li {
+      @extend %no-ul-list;
+    }
   }
 }
 
-
-
-.block--lockup {
-  @include breakpoint(sm) {
-    width: 40%;
-  }
-
-  @include margin($bottom: $md);
-}
-
-.uiowa-footer--default {
-  z-index: 1;
-
-  @include breakpoint(sm) {
-    width: 40%;
-  }
-}
 
 
 .socket {
