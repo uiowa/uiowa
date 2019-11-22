@@ -1,9 +1,0 @@
-<li>
-  <a href="#">{{ link.link_nav_text }}</a>
-  <ul>
-    {% for child in link.links %}
-      <li class="usa-nav__submenu-item">
-        <a href="{{ child.link_nav_url }}">{{ child.link_nav_text }}</a>
-      {% endfor %}
-  </ul>
-</li>

@@ -1,31 +1,22 @@
-{% block card_wrapper_start %}
-  <div class="card card__{{ card_position }} {{ card_classes }}">
-  {% endblock %}
-  {% block card_img %}
-    {% if card_image %}
-      <img class="card__img" src="{{ card_image }}" alt="Alt Text">
-    {% endif %}
-  {% endblock %}
-  <div class="card__body">
-
-    {% block heading %}
-      {% if card_title is not empty %}
-        {% include "@heading" with {
-          "heading_level" : 'h2',
-          "heading_class" : 'card__title',
-          "heading" : card_title
-        } %}
+<a href="{{ card_link_url }}" class="card card__{{ card_position }} {{ card_classes }}">
+    {% block card_img %}
+      {% if card_image %}
+        <img class="card__img" src="{{ card_image }}" alt="Alt Text">
       {% endif %}
     {% endblock %}
+    <div class="card__body">
 
-    {% block card_content %}
-      {{ card_text }}
-    {% endblock %}
+      {% block heading %}
+        {% if card_title is not empty %}
+          {% include "@heading" with {
+            "heading_level" : 'h2',
+            "heading_class" : 'card__title',
+            "heading" : card_title
+          } %}
+        {% endif %}
+      {% endblock %}
 
-  </div>
-  {% if card_link_url is not empty %}
+      <p class="card__text">{{ card_text }}</p>
+    </div>
     <div class="bttn bttn--primary bttn--full">{{ card_link_title }}</div>
-  {% endif %}
-  {% block card_wrapper_end %}
-  </div>
-{% endblock %}
+</a>

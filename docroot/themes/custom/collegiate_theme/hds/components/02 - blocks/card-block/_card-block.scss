@@ -1,6 +1,7 @@
 .card {
   position: relative;
   text-decoration: none;
+  cursor: pointer;
   transition: transform .35s, z-index .5s;
   border: 1px solid rgba(0, 0, 0, 0.125);
   @include flexbox;
@@ -33,14 +34,13 @@
 
   &__body {
     padding: $gutter;
-    color: $secondary;
-    @include margin($top: $sm, $bottom: $sm);
   }
+
 
   &__title {
     font-size: $h6-font-size;
     font-weight: $font-weight-medium-bold;
-    @include margin($top: 0, $bottom: $sm);
+    @include margin($top: $sm, $bottom: $sm);
 
     a {
       text-decoration: none;
@@ -49,8 +49,8 @@
   }
 
   &__text {
-    //@include margin($top: $sm, $bottom: $sm);
-    //color: $secondary;
+    @include margin($top: $sm, $bottom: $sm);
+    color: $secondary;
   }
 }
 
@@ -70,19 +70,15 @@
   border: 1px solid $secondary;
   border-radius: 50%;
   background: $white;
-
   @include margin($right: $sm);
-
   .is-open & {
     background: $secondary;
   }
-
   &:before {
     padding: $xsm;
     content: "\f141";
     color: $secondary;
     @include fas();
-
     .is-open & {
       content: "\f00d";
       color: $white;
