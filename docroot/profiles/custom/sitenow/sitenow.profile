@@ -400,8 +400,7 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function sitenow_form_revision_overview_form_alter(&$form, FormStateInterface $form_state, $form_id)
-{
+function sitenow_form_revision_overview_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   if (isset($form['nid'], $form['nid']['#value'])) {
     $node = Node::load($form['nid']['#value']);
 
