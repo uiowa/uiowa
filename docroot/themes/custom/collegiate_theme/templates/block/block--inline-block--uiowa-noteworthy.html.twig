@@ -56,12 +56,14 @@ set classes = [
       } %}
 
         {% block heading %}
-          {% include "@heading/heading.twig" with {
-            "heading_level" : content.field_uiowa_noteworthy_title[0]['#size'],
-            "heading_class" : 'news-card__title',
-            "heading_url" : content.field_uiowa_noteworthy_link[0]['#url'],
-            "heading" : content.field_uiowa_noteworthy_title[0]['#text']
-          } %}
+          {% if content.field_uiowa_noteworthy_title[0]['#text'] is not empty %}
+            {% include "@heading/heading.twig" with {
+              "heading_level" : content.field_uiowa_noteworthy_title[0]['#size'],
+              "heading_class" : 'news-card__title',
+              "heading_url" : content.field_uiowa_noteworthy_link[0]['#url'],
+              "heading" : content.field_uiowa_noteworthy_title[0]['#text']
+            } %}
+          {% endif %}
         {% endblock %}
 
         {% block news_card_img %}

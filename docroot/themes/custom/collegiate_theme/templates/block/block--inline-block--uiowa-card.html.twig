@@ -37,13 +37,14 @@ set classes = [
 {% if attributes.hasClass('js-layout-builder-block') %}
   <div{{ attributes.addclass(classes) }}>
   {% endif %}
+
   {% block content %}
 
     {{ title_prefix }}
     {{ title_suffix }}
     {{ attach_library('collegiate_theme/card-block') }}
 
-      {% embed "@card-block/card-block--basic.twig" with {
+    {% embed "@card-block/card-block--basic.twig" with {
         "card_classes": attributes['class'],
         "card_image": drupal_image(content.field_uiowa_card_image[0]['#media'].image.entity.uri.value, 'uiowa_lb_blocks',  { class: 'card__img', alt: content.field_uiowa_card_image[0]['#media'].image.alt }, responsive=true),
         "card_text": content.field_uiowa_card_excerpt,
@@ -52,20 +53,40 @@ set classes = [
         "card_position": elements['#weight']
       } %}
 
-      {% block heading %}
-          {% include "@heading/heading.twig" with {
-            "heading_level" : content.field_uiowa_card_title[0]['#size'],
-            "heading_class" : 'card__title',
-            "heading" : content.field_uiowa_card_title[0]['#text']
-          } %}
+      {% block card_wrapper_start %}
+        {% if content.field_uiowa_card_link[0]['#url'] is not empty %}
+          <a href="{{ card_link_url }}" class="card card__{{ card_position }} {{ card_classes }}">
+          {% else %}
+            <div class="card card__{{ card_position }} {{ card_classes }}">
+            {% endif %}
+          {% endblock %}
+
+          {% block heading %}
+            {% if content.field_uiowa_card_title[0]['#text'] is not empty %}
+              {% include "@heading/heading.twig" with {
+                "heading_level" : content.field_uiowa_card_title[0]['#size'],
+                "heading_class" : 'card__title',
+                "heading" : content.field_uiowa_card_title[0]['#text']
+              } %}
+            {% endif %}
+          {% endblock %}
+
+          {% block card_img %}
+            {{ card_image }}
+          {% endblock %}
+
+          {% block card_wrapper_end %}
+            {% if content.field_uiowa_card_link[0]['#url'] is not empty %}
+            </a>
+          {% else %}
+          </div>
+        {% endif %}
       {% endblock %}
 
-        {% block card_img %}
-          {{ card_image }}
-        {% endblock %}
-      {% endembed %}
+    {% endembed %}
 
   {% endblock %}
+
   {% if attributes.hasClass('js-layout-builder-block') %}
   </div>
 {% endif %}

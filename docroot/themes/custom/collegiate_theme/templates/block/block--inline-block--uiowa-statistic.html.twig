@@ -55,11 +55,13 @@ https://www.drupal.org/node/2367463
   } %}
 
     {% block heading %}
-      {% include "@heading/heading.twig" with {
-        "heading_level" : content.field_uiowa_statistic_title[0]['#size'],
-        "heading_class" : 'stat__title',
-        "heading" : content.field_uiowa_statistic_title[0]['#text']
-      } %}
+      {% if content.field_uiowa_statistic_title[0]['#text'] is not empty %}
+        {% include "@heading/heading.twig" with {
+          "heading_level" : content.field_uiowa_statistic_title[0]['#size'],
+          "heading_class" : 'stat__title',
+          "heading" : content.field_uiowa_statistic_title[0]['#text']
+        } %}
+      {% endif %}
     {% endblock %}
 
     {% block stat_bg %}
