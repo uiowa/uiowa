@@ -75,6 +75,20 @@ display:
             offset_label: Offset
           quantity: 9
       sorts:
+        sticky:
+          id: sticky
+          table: node_field_data
+          field: sticky
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: false
+          expose:
+            label: ''
+          entity_type: node
+          entity_field: sticky
+          plugin_id: standard
         created:
           id: created
           table: node_field_data
@@ -270,7 +284,8 @@ display:
     display_title: Block
     position: 2
     display_options:
-      display_extenders: {  }
+      display_extenders:
+        metatag_display_extender: {  }
       title: 'Monthly Archive'
       defaults:
         title: false
@@ -278,6 +293,7 @@ display:
         pager: false
         header: false
         empty: false
+        sorts: false
       arguments:
         created_year_month:
           id: created_year_month
@@ -333,6 +349,36 @@ display:
       block_hide_empty: true
       block_description: 'Articles Monthly Archive'
       enabled: true
+      sorts:
+        sticky:
+          id: sticky
+          table: node_field_data
+          field: sticky
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: false
+          expose:
+            label: ''
+          entity_type: node
+          entity_field: sticky
+          plugin_id: standard
+        created:
+          id: created
+          table: node_field_data
+          field: created
+          order: DESC
+          plugin_id: date
+          relationship: none
+          group_type: group
+          admin_label: ''
+          exposed: false
+          expose:
+            label: ''
+          granularity: second
+          entity_type: node
+          entity_field: created
     cache_metadata:
       max-age: -1
       contexts:
@@ -744,11 +790,28 @@ display:
           plugin_id: entity_link
       defaults:
         fields: false
+        sorts: false
       style:
         type: rss
         options:
           grouping: {  }
           description: ''
+      sorts:
+        created:
+          id: created
+          table: node_field_data
+          field: created
+          order: DESC
+          plugin_id: date
+          relationship: none
+          group_type: group
+          admin_label: ''
+          exposed: false
+          expose:
+            label: ''
+          granularity: second
+          entity_type: node
+          entity_field: created
     cache_metadata:
       max-age: -1
       contexts:
@@ -790,6 +853,37 @@ display:
           plugin_id: view
       defaults:
         footer: false
+        sorts: false
+      sorts:
+        sticky:
+          id: sticky
+          table: node_field_data
+          field: sticky
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: false
+          expose:
+            label: ''
+          entity_type: node
+          entity_field: sticky
+          plugin_id: standard
+        created:
+          id: created
+          table: node_field_data
+          field: created
+          order: DESC
+          plugin_id: date
+          relationship: none
+          group_type: group
+          admin_label: ''
+          exposed: false
+          expose:
+            label: ''
+          granularity: second
+          entity_type: node
+          entity_field: created
     cache_metadata:
       contexts:
         - 'languages:language_interface'
