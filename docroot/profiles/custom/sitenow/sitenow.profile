@@ -12,6 +12,7 @@ use Drupal\Core\Link;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\user\Entity\User;
 use Drupal\views\ViewExecutable;
@@ -399,6 +400,26 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 /**
  * Implements hook_form_FORM_ID_alter().
  */
+function sitenow_form_revision_overview_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (isset($form['nid'], $form['nid']['#value'])) {
+    $node = Node::load($form['nid']['#value']);
+
+    if ($node) {
+      $type = $node->getType();
+      $config = \Drupal::config("node.type.{$type}");
+
+      if ($nrd = $config->get('third_party_settings.node_revision_delete')) {
+        \Drupal::messenger()->addWarning(t('There is a @limit revision limit for this content type. The oldest revisions in excess of @limit are deleted during system background processes.', [
+          '@limit' => $nrd['minimum_revisions_to_keep'],
+        ]));
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
 function sitenow_form_system_site_information_settings_alter(&$form, FormStateInterface $form_state, $form_id) {
   $config = \Drupal::config('uiowa_footer.settings');
   $menus = menu_ui_get_menus();
@@ -514,7 +535,6 @@ function sitenow_preprocess_page(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
     $node = \Drupal::routeMatch()->getParameter('node');
-    $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
     if (isset($node)) {
       // Get moderation state of node.
       $revision_id = $node->getRevisionId();
@@ -530,6 +550,7 @@ function sitenow_preprocess_page(&$variables) {
         \Drupal::messenger()->addWarning($warning_text);
       }
     }
+    $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
     if ($node instanceof NodeInterface) {
       $variables['header_attributes'] = new Attribute();
       if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
