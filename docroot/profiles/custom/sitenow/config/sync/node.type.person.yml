@@ -4,10 +4,15 @@ status: true
 dependencies:
   module:
     - menu_ui
+    - node_revision_delete
 third_party_settings:
   menu_ui:
     available_menus: {  }
     parent: ''
+  node_revision_delete:
+    minimum_revisions_to_keep: 10
+    minimum_age_to_delete: 0
+    when_to_delete: 0
 name: Person
 type: person
 description: 'Use <em>person</em> to create individual profiles of people. This is <strong>not</strong> used to give users access to your site.'
