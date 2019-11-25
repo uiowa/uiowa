@@ -1,0 +1,31 @@
+uuid: b02c668e-f52a-4856-a086-19cae82bcca7
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.references
+  module:
+    - views
+name: taxonomy_browser
+label: 'Taxonomy Browser'
+display: iframe
+display_configuration:
+  width: 100%
+  height: '350'
+  link_text: 'Select entities'
+  auto_open: false
+selection_display: no_display
+selection_display_configuration: {  }
+widget_selector: tabs
+widget_selector_configuration: {  }
+widgets:
+  05d81994-76f6-44b3-847c-e3819e097b17:
+    settings:
+      view: references
+      view_display: entity_browser_1
+      submit_text: 'Select entities'
+      auto_select: false
+    uuid: 05d81994-76f6-44b3-847c-e3819e097b17
+    weight: 1
+    label: 'Existing Taxonomy Terms'
+    id: view

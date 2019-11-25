@@ -1,0 +1,23 @@
+uuid: 376871c0-adf9-4b36-a748-34c23f0ddeee
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.taxonomy_term.minimal
+    - taxonomy.vocabulary.tags
+id: taxonomy_term.tags.minimal
+targetEntityType: taxonomy_term
+bundle: tags
+mode: minimal
+content:
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  description: true
+  path: true

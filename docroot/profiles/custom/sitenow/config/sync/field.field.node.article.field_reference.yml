@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.storage.node.field_reference
     - node.type.article
+    - taxonomy.vocabulary.tags
 id: node.article.field_reference
 field_name: field_reference
 entity_type: node
@@ -16,10 +17,13 @@ translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: views
+  handler: 'default:taxonomy_term'
   handler_settings:
-    view:
-      view_name: references
-      display_name: entity_reference_name_vocab
-      arguments: {  }
+    target_bundles:
+      tags: tags
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: ''
 field_type: entity_reference
