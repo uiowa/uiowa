@@ -45,7 +45,7 @@ set classes = [
     {{ attach_library('collegiate_theme/feature-block') }}
     {{ attach_library('collegiate_theme/responsive-bg') }}
     {% embed "@feature-block/feature-block--basic.twig" with {
-      "feature_classes": attributes['class'],
+      "feature_classes": attributes.addclass(classes),
       "feature_banner_preview_image": file_url(content.field_uiowa_feature_image[0]['#media'].image.entity.uri.value | image_style('large')),
       "feature_banner_image": drupal_image(content.field_uiowa_feature_image[0]['#media'].image.entity.uri.value, 'uiowa_lb_blocks',  { class: 'card__img', alt: content.field_uiowa_feature_image[0]['#media'].image.alt }, responsive=true),
       "feature_title": content.field_uiowa_feature_title[0]['#text'],

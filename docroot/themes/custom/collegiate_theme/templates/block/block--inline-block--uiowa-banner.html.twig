@@ -48,7 +48,7 @@ https://www.drupal.org/node/2367463
     {{ title_prefix }}
     {{ title_suffix }}
     {% embed "@banner/banner-block.twig" with {
-      "banner_classes": attributes['class'],
+      "banner_classes": attributes.addclass(classes),
       "banner_bg_preview_image": file_url(content.field_uiowa_banner_image[0]['#media'].image.entity.uri.value | image_style('large')),
       "banner_bg_image": drupal_image(content.field_uiowa_banner_image[0]['#media'].image.entity.uri.value, 'uiowa_lb_blocks',  { class: 'card__img', alt: content.field_banner_card_image[0]['#media'].image.alt }, responsive=true),
       "banner_summary": content.field_uiowa_banner_excerpt,
