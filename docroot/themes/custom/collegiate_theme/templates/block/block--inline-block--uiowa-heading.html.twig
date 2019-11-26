@@ -42,13 +42,14 @@ set classes = [
     {{ title_prefix }}
     {{ title_suffix }}
     {{ attach_library('collegiate_theme/headline') }}
-
-      {% embed "@headline/headline.twig" with {
-        "headline_level": content.field_uiowa_heading_title[0]['#size'],
-        "headline_type": attributes.class,
-        "headline_title": content.field_uiowa_heading_title[0]['#text']
-      } %}
-      {% endembed %}
+      {% if content.field_uiowa_heading_title[0]['#text'] is not empty %}
+        {% embed "@headline/headline.twig" with {
+          "headline_level": content.field_uiowa_heading_title[0]['#size'],
+          "headline_type": attributes.class,
+          "headline_title": content.field_uiowa_heading_title[0]['#text']
+        } %}
+        {% endembed %}
+      {% endif %}
 
   {% endblock %}
   {% if attributes.hasClass('js-layout-builder-block') %}

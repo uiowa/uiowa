@@ -54,11 +54,13 @@ set classes = [
     } %}
 
       {% block heading %}
+       {% if content.field_uiowa_feature_title[0]['#text'] is not empty %}
         {% include "@heading/heading.twig" with {
           "heading_level" : content.field_uiowa_feature_title[0]['#size'],
           "heading_class" : 'feature__heading',
           "heading" : content.field_uiowa_feature_title[0]['#text']
         } %}
+        {% endif %}
       {% endblock %}
 
       {% block feature_bg %}

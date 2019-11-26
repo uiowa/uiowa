@@ -57,11 +57,13 @@ https://www.drupal.org/node/2367463
     } %}
 
       {% block heading %}
+        {% if content.field_uiowa_banner_title[0]['#text'] is not empty %}
           {% include "@heading/heading.twig" with {
             "heading_level" : content.field_uiowa_banner_title[0]['#size'],
             "heading_class" : 'banner__title',
             "heading" : content.field_uiowa_banner_title[0]['#text']
           } %}
+          {% endif %}
       {% endblock %}
 
       {% block banner_bg %}
