@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1d28ac94cafb6f567cf629234aced2aa",
+    "content-hash": "3ff2a543ae39af041a4620614cc11eb1",
     "packages": [
         {
             "name": "acquia/blt",
@@ -13900,12 +13900,12 @@
             "time": "2019-10-18T11:57:16+00:00"
         },
         {
-            "name": "uiowa/collegiate_basic",
-            "version": "dev-feature_drupal_8_8_x",
-            "dist": {
-                "type": "path",
-                "url": "docroot/profiles/custom/collegiate_basic",
-                "reference": "68bbda7b28695bc922cd7b5b5dbe8c4e4ee45c59"
+            "name": "uiowa/collegiate",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:uiowa/collegiate_profile",
+                "reference": "b6c144b4cc2bbf9977d495f1dfc56d1063e7b557"
             },
             "require": {
                 "composer/installers": "^1.6",
@@ -13923,7 +13923,8 @@
                 "drupal/redirect": "^1.4"
             },
             "type": "drupal-profile",
-            "description": "UIowa Collegiate profile."
+            "description": "UIowa Collegiate profile.",
+            "time": "2019-11-26T17:45:54+00:00"
         },
         {
             "name": "uiowa/uiowa_auth",
@@ -14577,94 +14578,6 @@
                 "testing"
             ],
             "time": "2016-07-01T14:16:52+00:00"
-        },
-        {
-            "name": "uiowa/collegiate",
-            "version": "dev-feature_drupal_8_8_x",
-            "dist": {
-                "type": "path",
-                "url": "docroot/profiles/custom/collegiate",
-                "reference": "d487568416754ab75111178b1b815b5a2e7ce591"
-            },
-            "require": {
-                "cweagans/composer-patches": "^1.6.4",
-                "drupal-composer/drupal-scaffold": "^2.0.0",
-                "drupal/adminimal_theme": "^1.5",
-                "drupal/components": "^1.0",
-                "drupal/editor_advanced_link": "^1.4",
-                "drupal/noreqnewpass": "^1.1",
-                "drupal/redirect": "^1.4",
-                "ext-dom": "*",
-                "oomphinc/composer-installers-extender": "^1.1"
-            },
-            "require-dev": {
-                "drupal/drupal-extension": "^3.4",
-                "drupal/facets": "^1.2",
-                "drupal/media_entity_generic": "1.x-dev",
-                "drupal/schema_metatag": "^1.3",
-                "drush/drush": "^9.7",
-                "webflo/drupal-core-require-dev": "*"
-            },
-            "type": "drupal-profile",
-            "extra": {
-                "enable-patching": true,
-                "installer-paths": {
-                    "docroot/core": [
-                        "type:drupal-core"
-                    ],
-                    "docroot/libraries/{$name}": [
-                        "type:drupal-library",
-                        "type:bower-asset",
-                        "type:npm-asset"
-                    ],
-                    "docroot/modules/contrib/{$name}": [
-                        "type:drupal-module"
-                    ],
-                    "docroot/profiles/contrib/{$name}": [
-                        "type:drupal-profile"
-                    ],
-                    "docroot/themes/contrib/{$name}": [
-                        "type:drupal-theme"
-                    ]
-                },
-                "installer-types": [
-                    "bower-asset",
-                    "npm-asset"
-                ],
-                "patchLevel": {
-                    "drupal/core": "-p2"
-                }
-            },
-            "scripts": {
-                "post-install-cmd": [
-                    "@composer drupal-scaffold"
-                ],
-                "post-update-cmd": [
-                    "@composer push"
-                ],
-                "drupal-scaffold": [
-                    "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
-                ],
-                "enable-asset-packagist": [
-                    "Acquia\\Lightning\\Composer\\AssetPackagist::execute"
-                ],
-                "nuke": [
-                    "rm -r -f docroot vendor"
-                ],
-                "package": [
-                    "Acquia\\Lightning\\Composer\\Package::execute"
-                ],
-                "pull": [
-                    "cp -R -f ./docroot/profiles/contrib/lightning/* ."
-                ],
-                "verify-patched-constraints": [
-                    "Acquia\\Lightning\\Composer\\PatchedConstraint::execute"
-                ]
-            },
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "description": "UIowa collegiate install profile."
         }
     ],
     "aliases": [],
