@@ -90,4 +90,26 @@ class GitCommands extends BltTasks {
     }
   }
 
+  /**
+   * Copy SiteNow Drush commands into the build artifact before it is committed.
+   *
+   * Since drush/Commands/ is listed in the upstream deploy-exclude.txt file,
+   * any hard-coded commands (ex. PolicyCommands.php) will not be committed to
+   * the build artifact. Rather than override that file and lose upstream
+   * changes, we can copy our Drush commands via a post-command hook.
+   *
+   * @hook post-command artifact:build
+   */
+  public function copyDrushCommands() {
+    $root = $this->getConfigValue('repo.root');
+    $deploy_dir = $this->getConfigValue('deploy.dir');
+
+    $this->taskFilesystemStack()
+      ->stopOnFail()
+      ->copy("{$root}/drush/Commands/SitenowCommands.php", "{$deploy_dir}/drush/Commands/SitenowCommands.php")
+      ->run();
+
+    $this->logger->info('Copied SiteNow Drush commands to deploy directory.');
+  }
+
 }
