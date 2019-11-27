@@ -667,6 +667,17 @@ function sitenow_form_menu_link_content_form_alter(array &$form, FormStateInterf
 }
 
 /**
+ * Implements hook_inline_entity_form_reference_form_alter().
+ */
+function sitenow_inline_entity_form_reference_form_alter(&$reference_form, &$form_state) {
+  // Prevent non-entity-browser select/save for field_reference.
+  if (isset($reference_form["entity_browser"]["#entity_browser"]) && $reference_form["entity_browser"]["#entity_browser"] == 'taxonomy_browser') {
+    // If clickable, node edit form will reload wiping out unsaved changes.
+    $reference_form["actions"]["ief_reference_save"]["#attributes"]['disabled'] = TRUE;
+  }
+}
+
+/**
  * Custom validation function for sitenow_form_menu_link_content_form_alter.
  */
 function sitenow_form_menu_link_content_form_submit(array &$form, FormStateInterface $form_state) {
