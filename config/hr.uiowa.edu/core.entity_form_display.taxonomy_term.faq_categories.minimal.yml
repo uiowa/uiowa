@@ -1,0 +1,23 @@
+uuid: ce6b1b0e-9352-4e67-bf0a-edf91ead5521
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.taxonomy_term.minimal
+    - taxonomy.vocabulary.faq_categories
+id: taxonomy_term.faq_categories.minimal
+targetEntityType: taxonomy_term
+bundle: faq_categories
+mode: minimal
+content:
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  description: true
+  path: true

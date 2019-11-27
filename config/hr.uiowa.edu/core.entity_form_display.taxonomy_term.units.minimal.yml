@@ -1,0 +1,35 @@
+uuid: 7b9f3894-fc2a-4e75-a570-6ba10ac57e08
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.taxonomy_term.minimal
+    - field.field.taxonomy_term.units.field_unit_campus_address
+    - field.field.taxonomy_term.units.field_unit_email
+    - field.field.taxonomy_term.units.field_unit_fax
+    - field.field.taxonomy_term.units.field_unit_hours
+    - field.field.taxonomy_term.units.field_unit_mailing_address
+    - field.field.taxonomy_term.units.field_unit_phone
+    - taxonomy.vocabulary.units
+id: taxonomy_term.units.minimal
+targetEntityType: taxonomy_term
+bundle: units
+mode: minimal
+content:
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  description: true
+  field_unit_campus_address: true
+  field_unit_email: true
+  field_unit_fax: true
+  field_unit_hours: true
+  field_unit_mailing_address: true
+  field_unit_phone: true
+  path: true
