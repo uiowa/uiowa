@@ -6,6 +6,8 @@ dependencies:
     - core.entity_form_mode.node.minimal
     - field.field.node.article.body
     - field.field.node.article.field_article_author
+    - field.field.node.article.field_article_source_link
+    - field.field.node.article.field_article_source_org
     - field.field.node.article.field_image
     - field.field.node.article.field_image_caption
     - field.field.node.article.field_meta_tags
@@ -17,6 +19,7 @@ dependencies:
     - content_moderation
     - entity_browser_entity_form
     - inline_entity_form
+    - link
     - media_library
     - metatag
     - path
@@ -59,6 +62,22 @@ content:
     third_party_settings:
       entity_browser_entity_form:
         entity_browser_id: _none
+  field_article_source_link:
+    weight: 26
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+    region: content
+  field_article_source_org:
+    weight: 27
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_image:
     type: media_library_widget
     weight: 3
