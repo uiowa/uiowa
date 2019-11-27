@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_form_mode.taxonomy_term.minimal
     - field.field.node.page.body
     - field.field.node.page.field_image
     - field.field.node.page.field_meta_tags
@@ -15,6 +16,8 @@ dependencies:
     - workflows.workflow.editorial
   module:
     - content_moderation
+    - entity_browser_entity_form
+    - inline_entity_form
     - metatag
     - paragraphs
     - path
@@ -65,11 +68,20 @@ content:
   field_reference:
     weight: 12
     settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete_tags
+      form_mode: minimal
+      override_labels: true
+      label_singular: Reference
+      label_plural: References
+      allow_new: true
+      allow_existing: true
+      match_operator: STARTS_WITH
+      collapsible: false
+      collapsed: false
+      allow_duplicate: false
+    third_party_settings:
+      entity_browser_entity_form:
+        entity_browser_id: taxonomy_browser
+    type: inline_entity_form_complex
     region: content
   field_related_content:
     weight: 11
