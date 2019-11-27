@@ -368,3 +368,8 @@ $sites['org-molcellcog.prod.drupal.uiowa.edu'] = 'molcellcog.org';
 $sites['itaccessibility.dev.drupal.uiowa.edu'] = 'itaccessibility.uiowa.edu';
 $sites['itaccessibility.stage.drupal.uiowa.edu'] = 'itaccessibility.uiowa.edu';
 $sites['itaccessibility.prod.drupal.uiowa.edu'] = 'itaccessibility.uiowa.edu';
+
+// Directory aliases for vanotterloo.lab.uiowa.edu.
+$sites['labvanotterloo.dev.drupal.uiowa.edu'] = 'vanotterloo.lab.uiowa.edu';
+$sites['labvanotterloo.stage.drupal.uiowa.edu'] = 'vanotterloo.lab.uiowa.edu';
+$sites['labvanotterloo.prod.drupal.uiowa.edu'] = 'vanotterloo.lab.uiowa.edu';
