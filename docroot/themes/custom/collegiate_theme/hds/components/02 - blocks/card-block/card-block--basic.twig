@@ -1,11 +1,13 @@
 {% block card_wrapper_start %}
   <div class="card card__{{ card_position }} {{ card_classes }}">
   {% endblock %}
+
   {% block card_img %}
     {% if card_image %}
       <img class="card__img" src="{{ card_image }}" alt="Alt Text">
     {% endif %}
   {% endblock %}
+
   <div class="card__body">
 
     {% block heading %}
@@ -24,8 +26,9 @@
 
   </div>
   {% if card_link_url is not empty %}
-    <div class="bttn bttn--primary bttn--full">{{ card_link_title }}</div>
+    <a class="bttn bttn--primary bttn--full" href="{{ card_link_url }}">{{ card_link_title }}</a>
   {% endif %}
+
   {% block card_wrapper_end %}
   </div>
 {% endblock %}

@@ -26,35 +26,16 @@
  */
 #}
 
-{%
-set classes = [
-'block',
-'block-' ~ configuration.provider|clean_class,
-'block-' ~ plugin_id|clean_class,
-]
-%}
-
-{#
-https://www.drupal.org/project/drupal/issues/3051103
-https://www.drupal.org/node/2367463
-#}
-{% if attributes.hasClass('js-layout-builder-block') %}
-  <div{{ attributes.addclass(classes) }}>
-  {% endif %}
-
 {% block content %}
   {{ attach_library('collegiate_theme/stat-block') }}
-  {{ attach_library('collegiate_theme/responsive-bg') }}
-  {{ title_prefix }}
-  {{ title_suffix }}
+
   {% embed "@stat-block/stat-block--basic.twig" with {
-    "stat_classes": attributes.addclass(classes),
-    "stat_preview_image": file_url(content.field_uiowa_statistic_image[0]['#media'].image.entity.uri.value | image_style('large')),
-    "stat_image": drupal_image(content.field_uiowa_statistic_image[0]['#media'].image.entity.uri.value, 'uiowa_lb_blocks',  { class: 'card__img', alt: content.field_uiowa_statistic_image[0]['#media'].image.alt }, responsive=true),
+    "stat_image": file_url(content.field_uiowa_statistic_image[0]['#media'].image.entity.uri.value | image_style('uiowa_lb_block_image_2000_x_1300')),
     "stat_summary": content.field_uiowa_statistic_excerpt,
   } %}
 
     {% block heading %}
+      {{ title_prefix }}
       {% if content.field_uiowa_statistic_title[0]['#text'] is not empty %}
         {% include "@heading/heading.twig" with {
           "heading_level" : content.field_uiowa_statistic_title[0]['#size'],
@@ -62,19 +43,11 @@ https://www.drupal.org/node/2367463
           "heading" : content.field_uiowa_statistic_title[0]['#text']
         } %}
       {% endif %}
+      {{ title_suffix }}
     {% endblock %}
 
-    {% block stat_bg %}
-      {% if attributes.hasClass('js-layout-builder-block') %}
-        <div class="stat {{ stat_classes }}" {% if stat_preview_image %} style="background-image: url('{% spaceless %}{{ stat_preview_image }}{% endspaceless %}'); background-size: cover; background-position: center" {% endif %}>
-        {% else %}
-          <div class="stat {{ stat_classes }}" data-responsive-background-image="true">
-            {{ stat_image }}
-          {% endif %}
-        {% endblock %}
-      {% endembed %}
-    {% endblock %}
-
-  {% if attributes.hasClass('js-layout-builder-block') %}
-  </div>
-{% endif %}
+    {% block stat_wrapper_start %}
+        <div class="stat {{ stat_classes }} {{ attributes ? attributes.class }}" {{ attributes ? attributes|without('class') }} {% if stat_image %} style="background-image: url('{% spaceless %}{{ stat_image }}{% endspaceless %}'); background-size: cover; background-position: center" {% endif %}>
+      {% endblock %}
+    {% endembed %}
+  {% endblock %}

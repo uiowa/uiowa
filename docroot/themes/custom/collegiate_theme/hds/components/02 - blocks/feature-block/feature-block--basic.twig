@@ -1,6 +1,6 @@
-{% block feature_bg %}
+{% block feature_wrapper_start %}
   {% if feature_banner_image %}
-    <a href="{{ feature_link }}" tabindex="0" aria-expanded="{{ firstitem }}" class="feature feature__{{ counter }} {{ feature_classes }}" {% if feature_banner_image %} style="background-image: url('{% spaceless %}{{ feature_banner_image }}{% endspaceless %}'); background-size: cover; background-position: center" {% endif %}>
+    <div tabindex="0" aria-expanded="{{ firstitem }}" class="feature feature__{{ counter }} {{ feature_classes }}" {% if feature_banner_image %} style="background-image: url('{% spaceless %}{{ feature_banner_image }}{% endspaceless %}'); background-size: cover; background-position: center" {% endif %}>
   {% endif %}
 {% endblock %}
   <div class="feature__wrapper">
@@ -27,4 +27,4 @@
       </p>
     </div>
   </div>
-</a>
+</div>
