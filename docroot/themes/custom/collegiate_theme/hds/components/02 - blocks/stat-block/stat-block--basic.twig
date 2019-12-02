@@ -1,4 +1,4 @@
-{% block stat_bg %}
+{% block stat_wrapper_start %}
   {% if stat_image %}
     <div class="stat {{ stat_classes }}" {% if stat_image %} style="background-image: url('{% spaceless %}{{ stat_image }}{% endspaceless %}'); background-size: cover; background-position: center" {% endif %}>
     {% endif %}

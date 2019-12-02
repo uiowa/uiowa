@@ -26,14 +26,14 @@
  */
 #}
 
-{% if attributes.hasClass('js-layout-builder-block') %}
+
   <div{{ attributes.addclass('block-spacer-separator') }}>
-  {% endif %}
+
   {% block content %}
     {{ title_prefix }}
     {{ title_suffix }}
     <hr class="block-inline-blockuiowa-spacer-separator"/>
   {% endblock %}
-  {% if attributes.hasClass('js-layout-builder-block') %}
+
   </div>
-{% endif %}
+

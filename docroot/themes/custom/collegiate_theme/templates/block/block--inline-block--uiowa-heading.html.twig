@@ -26,32 +26,19 @@
 */
 #}
 
-{%
-set classes = [
-'block',
-'block-' ~ configuration.provider|clean_class,
-'block-' ~ plugin_id|clean_class,
-]
-%}
+{% block content %}
+  <div class="{{ attributes ? attributes.class }}" {{ attributes ? attributes|without('class') }}>
 
-{% if attributes.hasClass('js-layout-builder-block') %}
-  <div class="js-layout-builder-block layout-builder-block contextual-region ui-sortable-handle">
-  {% endif %}
-  {% block content %}
-
-    {{ title_prefix }}
-    {{ title_suffix }}
     {{ attach_library('collegiate_theme/headline') }}
-      {% if content.field_uiowa_heading_title[0]['#text'] is not empty %}
-        {% embed "@headline/headline.twig" with {
-          "headline_level": content.field_uiowa_heading_title[0]['#size'],
-          "headline_type": attributes.class,
-          "headline_title": content.field_uiowa_heading_title[0]['#text']
-        } %}
-        {% endembed %}
-      {% endif %}
-
-  {% endblock %}
-  {% if attributes.hasClass('js-layout-builder-block') %}
+    {{ title_prefix }}
+    {% if content.field_uiowa_heading_title[0]['#text'] is not empty %}
+    {% set attributes = attributes.removeClass('js-layout-builder-block') %}
+      {% embed "@headline/headline.twig" with {
+        "headline_level" : content.field_uiowa_heading_title[0]['#size'],
+        "headline_type" : attributes.class,
+        "headline_title" : content.field_uiowa_heading_title[0]['#text']
+      } %}{% endembed %}
+      {{ title_suffix }}
+    {% endif %}
   </div>
-{% endif %}
+{% endblock %}
