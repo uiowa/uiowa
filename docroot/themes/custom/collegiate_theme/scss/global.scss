@@ -6,35 +6,7 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900&display=swap');
 
 
-.layout__region {
-
-  .feature,
-  .banner {
-    flex-basis: 100%;
-
-    .section-column__row & {
-      flex-basis: unset;
-    }
-  }
-}
-
-.layout__region.section-column__row .feature,
-.layout__region.section-column__row .banner {
-  -ms-flex-preferred-size: unset;
-  flex-basis: unset;
-}
-
-// Admin only styles
-
-.toolbar-menu {
-  font-size: unset;
-}
-
-.layout--fourcol,
-.layout--threecol,
-.layout--twocol,
-.layout--onecol {
-
+.layout__container {
   .block-system-breadcrumb-block,
   .block-field-blocknodepagetitle,
   .block-field-blocknodepagebody {
@@ -47,82 +19,72 @@
 .content__container {
   .layout__container {
     margin-right: $gutter;
+    margin-bottom: $gutter;
     margin-left: $gutter;
 
     @include breakpoint(container) {
-      max-width: 84.375em;
-      margin: 0 auto;
       position: relative;
+      max-width: 84.375em;
+      margin: 0 auto $gutter;
+    }
+
+    // layout builder styles padding classes
+
+    &.section-padding {
+      @include breakpoint(sm) {
+        &__top {
+          padding-top: $md;
+        }
+
+        &__right {
+          padding-right: $md;
+        }
+
+        &__bottom {
+          padding-bottom: $md;
+        }
+
+        &__left {
+          padding-left: $md;
+        }
+      }
+    }
+
+    // layout builder styles margin classes
+    &.section-margin {
+      &__top {
+        margin-top: $md;
+
+        &.page__container {
+          margin-top: $md;
+        }
+      }
+
+      &__bottom {
+        margin-bottom: $md;
+
+        &.page__container {
+          margin-bottom: $md;
+        }
+      }
+    }
+
+    &.section-margin__removed {
+      margin-top: 0;
+      margin-bottom: 0;
     }
 
     &.page__container--full {
       max-width: 100%;
-      margin-left: $gutter;
       margin-right: $gutter;
+      margin-left: $gutter;
     }
 
     &.page__container--edge {
       max-width: 100%;
-      margin-left: 0;
       margin-right: 0;
+      margin-left: 0;
     }
-  }
-}
-
-// admin styles
-
-.content__container .layout-builder__section {
-  .layout__container {
-    margin: 0;
-
-     @include breakpoint(container) {
-       max-width: 84.375em;
-       margin: 0 auto;
-       position: relative;
-     }
-
-}
-}
-
-.content__container {
-
-  .block-local-tasks-block,
-  .block-help-block,
-  .form-actions,
-  .layout-builder__message,
-  .form-type-vertical-tabs {
-    margin-left: $gutter;
-    margin-right: $gutter;
-        @include breakpoint(container) {
-          max-width: 84.375em;
-          margin: 0 auto;
-          position: relative;
-        }
-  }
-}
-
-
-.layout-builder {
-  margin: $gutter 0;
-}
-
-.vertical-tabs__menu-item {
-  border: none;
-}
-
-.vertical-tabs {
-  margin: $gutter 0;
-  .form-type-checkbox {
-    margin: $gutter 0;
-  }
-}
-
-.vertical-tabs__menu {
-  list-style: none;
-  margin: 0;
-  border: none;
-  li {
-    list-style-type: none;
   }
 }
 
@@ -140,30 +102,63 @@
 // default left/right gutter spacing for full width settings without layout builder
 
 .page__container--full .region-content {
-  margin-left: $gutter;
   margin-right: $gutter;
+  margin-left: $gutter;
 }
 
 // default left/right gutter spacing for full width settings w/ layout builder enabled
 
-.content__full {
-.block-local-tasks-block,
-.block-help-block,
-.form-actions,
-.layout-builder__message {
-  margin-left: $gutter;
+.content__full .layout__container,
+.content__mixed .layout__container {
   margin-right: $gutter;
-}
-}
-
-
-.content__full .layout__container {
+  margin-bottom: $gutter;
   margin-left: $gutter;
-  margin-right: $gutter;
+
+  // layout builder styles padding classes
+
+  &.section-padding {
+    @include breakpoint(sm) {
+      &__top {
+        padding-top: $md;
+      }
+
+      &__right {
+        padding-right: $md;
+      }
+
+      &__bottom {
+        padding-bottom: $md;
+      }
+
+      &__left {
+        padding-left: $md;
+      }
+    }
+  }
+
+  // layout builder styles margin classes
+
+  &.section-margin {
+    &__top {
+      margin-top: $md;
+
+      &.page__container {
+        margin-top: $md;
+      }
+    }
+
+    &__bottom {
+      margin-bottom: $md;
+
+      &.page__container {
+        margin-bottom: $md;
+      }
+    }
+  }
 
   &.page__container--edge {
-    margin-left: 0;
     margin-right: 0;
+    margin-left: 0;
   }
 
   &.page__container {
@@ -171,110 +166,25 @@
   }
 
   &.section-margin__removed {
-    margin-left: 0;
-    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
   }
+
 }
 
 // settings if page container full or edge is selected on section
 
 .page__container--full.layout__container {
-  margin-left: $gutter;
   margin-right: $gutter;
+  margin-left: $gutter;
 
   &.page__container--edge {
-    margin-left: 0;
     margin-right: 0;
+    margin-left: 0;
   }
 }
 
-
-// default gutter spacing for layouts
-
-.layout--fourcol,
-.layout--threecol,
-.layout--twocol,
-.layout--onecol {
-  &.layout__container {
-    margin-bottom: $gutter;
-  }
-
-  &.page__container,
-  &.page__container--mixed {
-    margin-bottom: $gutter;
-  }
-
-  &.section-margin__removed {
-    margin-bottom: 0;
-  }
-
-  &.section-margin__top {
-    margin-top: $gutter;
-  }
-
-  &.section-margin__removed.section-margin__bottom {
-    margin-bottom: $md;
-  }
-}
-
-
-.layout--onecol,
-.layout--onecol-flex {
-
-  &.page__container {
-    margin-bottom: $gutter;
-  }
-
-  &.page__container.section-margin__removed {
-    margin-bottom: 0;
-  }
-}
-
-
-
-// Layout Builder Styles margin/padding classes
-
-// Sections
-
-.section-padding {
-  @include breakpoint(sm) {
-    &__top {
-      padding-top: $md;
-    }
-
-    &__right {
-      padding-right: $md;
-    }
-
-    &__bottom {
-      padding-bottom: $md;
-    }
-
-    &__left {
-      padding-left: $md;
-    }
-  }
-}
-
-.section-margin {
-  &__top {
-    margin-top: $md;
-
-    &.page__container {
-      margin-top: $md;
-    }
-  }
-
-  &__bottom {
-    margin-bottom: $md;
-
-    &.page__container {
-      margin-bottom: $md;
-    }
-  }
-}
-
-// Blocks
+// Block Margins
 
 .block-margin {
   @include breakpoint(sm) {
@@ -295,5 +205,3 @@
     }
   }
 }
-
-
