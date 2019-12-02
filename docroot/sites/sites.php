@@ -373,3 +373,8 @@ $sites['itaccessibility.prod.drupal.uiowa.edu'] = 'itaccessibility.uiowa.edu';
 $sites['labvanotterloo.dev.drupal.uiowa.edu'] = 'vanotterloo.lab.uiowa.edu';
 $sites['labvanotterloo.stage.drupal.uiowa.edu'] = 'vanotterloo.lab.uiowa.edu';
 $sites['labvanotterloo.prod.drupal.uiowa.edu'] = 'vanotterloo.lab.uiowa.edu';
+
+// Directory aliases for lalumiere.lab.uiowa.edu.
+$sites['lablalumiere.dev.drupal.uiowa.edu'] = 'lalumiere.lab.uiowa.edu';
+$sites['lablalumiere.stage.drupal.uiowa.edu'] = 'lalumiere.lab.uiowa.edu';
+$sites['lablalumiere.prod.drupal.uiowa.edu'] = 'lalumiere.lab.uiowa.edu';
