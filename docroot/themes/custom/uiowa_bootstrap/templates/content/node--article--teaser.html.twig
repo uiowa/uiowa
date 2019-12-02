@@ -87,25 +87,18 @@
       {{ title_prefix }}
       {% if not page %}
         <h3{{ title_attributes }}>
-          <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+          {% if '1' in  content.field_article_source_link_direct.0 %}
+            <a href="{{ node.field_article_source_link.0.uri }}" rel="bookmark">{{ label }}</a>
+          {% else %}
+            <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+          {% endif %}
         </h3>
       {% endif %}
       {{ title_suffix }}
-      {% if content.field_article_source_org.0 or content.field_article_source_link.0 %}
-      {% trans %}<div class="field__label"><strong>Originally published{% endtrans %}
-      {% if content.field_article_source_org.0 %}
-        {% trans %}by: </strong></div> {% endtrans %}
-        {% if content.field_article_source_link.0 %}
-          <div class="field__items"><a href="{{ content.field_article_source_link.0['#url'] }}">{{ content.field_article_source_org.0 }}</a></div>
-        {% else %}
-          <div class="field__items">{{ content.field_article_source_org.0 }}</div>
-        {% endif %}
-      {% else %}
-        {% trans %}on: </strong></div>{% endtrans %}
-        <div class="field__items"><a href="{{ content.field_article_source_link.0['#url'] }}">{{ content.field_article_source_link.0['#url'] }}</a></div>
-      {% endif %}
-    {% endif %}
-      {{ content|without('node_image', 'links') }}
+      <div class="article-meta">
+      {{ content.article_created_date }}{{ content.article_author }}{{ content.field_article_source_org }}{{ content.field_article_source_link }}
+      </div>
+      {{ content|without('node_image', 'links', 'article_created_date', 'article_author', 'field_article_source_org', 'field_article_source_link', 'field_article_source_link_direct') }}
   </div>
     {% if content.node_image %}
         <figure class="content-image">

@@ -1,0 +1,23 @@
+uuid: 7e539b31-f487-43c5-95c8-1567d04721cc
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_article_source_link_direct
+    - node.type.article
+id: node.article.field_article_source_link_direct
+field_name: field_article_source_link_direct
+entity_type: node
+bundle: article
+label: 'Link directly to source'
+description: 'If checked, teaser displays of this content will link directly to the source instead of the article on this site.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

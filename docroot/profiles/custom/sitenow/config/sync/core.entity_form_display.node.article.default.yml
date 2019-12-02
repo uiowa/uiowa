@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.article.body
     - field.field.node.article.field_article_author
     - field.field.node.article.field_article_source_link
+    - field.field.node.article.field_article_source_link_direct
     - field.field.node.article.field_article_source_org
     - field.field.node.article.field_image
     - field.field.node.article.field_image_caption
@@ -63,15 +64,22 @@ content:
       entity_browser_entity_form:
         entity_browser_id: _none
   field_article_source_link:
-    weight: 26
+    weight: 17
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
     region: content
+  field_article_source_link_direct:
+    weight: 26
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
   field_article_source_org:
-    weight: 27
+    weight: 16
     settings:
       size: 60
       placeholder: ''
@@ -82,7 +90,8 @@ content:
     type: media_library_widget
     weight: 3
     region: content
-    settings: {  }
+    settings:
+      media_types: {  }
     third_party_settings: {  }
   field_image_caption:
     type: string_textfield
