@@ -87,7 +87,7 @@
       {{ title_prefix }}
       {% if not page %}
         <h3{{ title_attributes }}>
-          {% if '1' in  content.field_article_source_link_direct.0 %}
+          {% if '1' in  content.field_article_source_link_direct.0 and node.field_article_source_link.0.uri %}
             <a href="{{ node.field_article_source_link.0.uri }}" rel="bookmark">{{ label }}</a>
           {% else %}
             <a href="{{ url }}" rel="bookmark">{{ label }}</a>
