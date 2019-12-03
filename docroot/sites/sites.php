@@ -378,3 +378,8 @@ $sites['labvanotterloo.prod.drupal.uiowa.edu'] = 'vanotterloo.lab.uiowa.edu';
 $sites['lablalumiere.dev.drupal.uiowa.edu'] = 'lalumiere.lab.uiowa.edu';
 $sites['lablalumiere.stage.drupal.uiowa.edu'] = 'lalumiere.lab.uiowa.edu';
 $sites['lablalumiere.prod.drupal.uiowa.edu'] = 'lalumiere.lab.uiowa.edu';
+
+// Directory aliases for human-auditory-neuroscience-group.lab.uiowa.edu.
+$sites['labhuman-auditory-neuroscience-group.dev.drupal.uiowa.edu'] = 'human-auditory-neuroscience-group.lab.uiowa.edu';
+$sites['labhuman-auditory-neuroscience-group.stage.drupal.uiowa.edu'] = 'human-auditory-neuroscience-group.lab.uiowa.edu';
+$sites['labhuman-auditory-neuroscience-group.prod.drupal.uiowa.edu'] = 'human-auditory-neuroscience-group.lab.uiowa.edu';
