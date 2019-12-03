@@ -71,7 +71,8 @@
 
 // admin styles for responsive layout sections for container
 
-.content__container .layout-builder__section {
+.content__container .layout-builder__section,
+.content__mixed .layout-builder__section {
   .layout__container {
     margin: 0;
 
@@ -97,16 +98,23 @@
 
 // admin styles for responsive layout sections for full width or mixed settings
 
-.content__full .layout-builder__section,
-.content__mixed .layout-builder__section {
+.content__full .layout-builder__section {
   .layout__container {
     margin: 0;
+    &.page__container {
+        @include breakpoint(container) {
+          position: relative;
+          max-width: 84.375em;
+          margin: 0 auto;
+        }
+      }
   }
 }
 
 // admin styles for container setting local drupal admin blocks
 
-.content__container {
+.content__container,
+.content__mixed {
   .block-local-tasks-block,
   .block-help-block,
   .form-actions,
@@ -157,8 +165,7 @@
 
 // admin styles for full-width and mixed setting for local drupal admin blocks
 
-.content__full,
-.content__mixed {
+.content__full {
   .block-local-tasks-block,
   .block-help-block,
   .form-actions,
