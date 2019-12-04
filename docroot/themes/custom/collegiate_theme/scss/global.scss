@@ -6,35 +6,7 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900&display=swap');
 
 
-.layout__region {
-
-  .feature,
-  .banner {
-    flex-basis: 100%;
-
-    .section-column__row & {
-      flex-basis: unset;
-    }
-  }
-}
-
-.layout__region.section-column__row .feature,
-.layout__region.section-column__row .banner {
-  -ms-flex-preferred-size: unset;
-  flex-basis: unset;
-}
-
-// Admin only styles
-
-.toolbar-menu {
-  font-size: unset;
-}
-
-.layout--fourcol,
-.layout--threecol,
-.layout--twocol,
-.layout--onecol {
-
+.layout__container {
   .block-system-breadcrumb-block,
   .block-field-blocknodepagetitle,
   .block-field-blocknodepagebody {
@@ -42,29 +14,87 @@
   }
 }
 
+.layout--onecol {
+  .feature,
+  .banner {
+    flex-basis: 100%;
+    .section-column__row & {
+      flex-basis: unset;
+    }
+  }
+}
+
 // default spacing for layout builder pages with container set in theme settings
 
-.content__container {
+.content__container,
+.content__mixed {
   .layout__container {
     margin-right: $gutter;
+    margin-bottom: $gutter;
     margin-left: $gutter;
 
     @include breakpoint(container) {
-      max-width: 84.375em;
-      margin: 0 auto;
       position: relative;
+      max-width: 84.375em;
+      margin: 0 auto $gutter;
+    }
+
+    // layout builder styles padding classes
+
+    &.section-padding {
+      @include breakpoint(sm) {
+        &__top {
+          padding-top: $md;
+        }
+
+        &__right {
+          padding-right: $md;
+        }
+
+        &__bottom {
+          padding-bottom: $md;
+        }
+
+        &__left {
+          padding-left: $md;
+        }
+      }
+    }
+
+    // layout builder styles margin classes
+    &.section-margin {
+      &__top {
+        margin-top: $md;
+
+        &.page__container {
+          margin-top: $md;
+        }
+      }
+
+      &__bottom {
+        margin-bottom: $md;
+
+        &.page__container {
+          margin-bottom: $md;
+        }
+      }
+    }
+
+    &.section-margin__removed {
+      margin-top: 0;
+      margin-bottom: 0;
     }
 
     &.page__container--full {
       max-width: 100%;
-      margin-left: $gutter;
       margin-right: $gutter;
+      margin-left: $gutter;
     }
 
     &.page__container--edge {
       max-width: 100%;
-      margin-left: 0;
       margin-right: 0;
+      margin-left: 0;
     }
   }
 }
@@ -74,7 +104,6 @@
 
 .layout-builder-disabled .page__container {
   margin: $gutter;
-
   @include breakpoint(container) {
     margin: $gutter auto;
   }
@@ -83,19 +112,62 @@
 // default left/right gutter spacing for full width settings without layout builder
 
 .page__container--full .region-content {
-  margin-left: $gutter;
   margin-right: $gutter;
+  margin-left: $gutter;
 }
 
 // default left/right gutter spacing for full width settings w/ layout builder enabled
 
-.content__full .layout__container {
-  margin-left: $gutter;
+.content__full .layout__container  {
   margin-right: $gutter;
+  margin-bottom: $gutter;
+  margin-left: $gutter;
+
+  // layout builder styles padding classes
+
+  &.section-padding {
+    @include breakpoint(sm) {
+      &__top {
+        padding-top: $md;
+      }
+
+      &__right {
+        padding-right: $md;
+      }
+
+      &__bottom {
+        padding-bottom: $md;
+      }
+
+      &__left {
+        padding-left: $md;
+      }
+    }
+  }
+
+  // layout builder styles margin classes
+
+  &.section-margin {
+    &__top {
+      margin-top: $md;
+
+      &.page__container {
+        margin-top: $md;
+      }
+    }
+
+    &__bottom {
+      margin-bottom: $md;
+
+      &.page__container {
+        margin-bottom: $md;
+      }
+    }
+  }
 
   &.page__container--edge {
-    margin-left: 0;
     margin-right: 0;
+    margin-left: 0;
   }
 
   &.page__container {
@@ -103,110 +175,25 @@
   }
 
   &.section-margin__removed {
-    margin-left: 0;
-    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
   }
+
 }
 
 // settings if page container full or edge is selected on section
 
 .page__container--full.layout__container {
-  margin-left: $gutter;
   margin-right: $gutter;
+  margin-left: $gutter;
 
   &.page__container--edge {
-    margin-left: 0;
     margin-right: 0;
+    margin-left: 0;
   }
 }
 
-
-// default gutter spacing for layouts
-
-.layout--fourcol,
-.layout--threecol,
-.layout--twocol,
-.layout--onecol {
-  &.layout__container {
-    margin-bottom: $gutter;
-  }
-
-  &.page__container,
-  &.page__container--mixed {
-    margin-bottom: $gutter;
-  }
-
-  &.section-margin__removed {
-    margin-bottom: 0;
-  }
-
-  &.section-margin__top {
-    margin-top: $gutter;
-  }
-
-  &.section-margin__removed.section-margin__bottom {
-    margin-bottom: $md;
-  }
-}
-
-
-.layout--onecol,
-.layout--onecol-flex {
-
-  &.page__container {
-    margin-bottom: $gutter;
-  }
-
-  &.page__container.section-margin__removed {
-    margin-bottom: 0;
-  }
-}
-
-
-
-// Layout Builder Styles margin/padding classes
-
-// Sections
-
-.section-padding {
-  @include breakpoint(sm) {
-    &__top {
-      padding-top: $md;
-    }
-
-    &__right {
-      padding-right: $md;
-    }
-
-    &__bottom {
-      padding-bottom: $md;
-    }
-
-    &__left {
-      padding-left: $md;
-    }
-  }
-}
-
-.section-margin {
-  &__top {
-    margin-top: $md;
-
-    &.page__container {
-      margin-top: $md;
-    }
-  }
-
-  &__bottom {
-    margin-bottom: $md;
-
-    &.page__container {
-      margin-bottom: $md;
-    }
-  }
-}
-
-// Blocks
+// Block Margins
 
 .block-margin {
   @include breakpoint(sm) {
@@ -227,31 +214,3 @@
     }
   }
 }
-<<<<<<< HEAD
-=======
-
-.layout-builder-disabled .page__container {
-  padding-top: $gutter;
-  padding-bottom: $gutter;
-}
-
-
-.section-margin {
-  &__top {
-    margin-top: $md;
-
-    &.page__container {
-      margin-top: $md;
-    }
-  }
-
-  &__bottom {
-    margin-bottom: $md;
-
-    &.page__container {
-      margin-bottom: $md;
-    }
-  }
-}
-
->>>>>>> parent of 2e7ca43... Initial work on issues #201, #200, and #210.

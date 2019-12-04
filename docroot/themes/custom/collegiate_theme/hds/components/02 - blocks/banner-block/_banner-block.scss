@@ -1,6 +1,5 @@
 .banner {
   position: relative;
-  overflow: hidden;
   @include flex($fg: 1, $fs: 1, $fb: 0%);
     @include breakpoint(sm) {
       min-height: 400px;
@@ -9,10 +8,10 @@
   &__container {
     position: relative;
     @include padding($top: $xlg, $right: $xlg, $bottom: $xlg, $left: $md);
-    @include margin($top: $sm, $right: $xlg, $bottom: 0, $left: $xlg);
+    @include margin($top: 0, $right: $xlg, $bottom: 0, $left: $xlg);
     @include breakpoint(sm) {
       width: 50%;
-      @include margin($top: $xlg);
+      @include margin($top: 0, $right: $xlg, $bottom: 0, $left: $xlg);
     }
   }
 

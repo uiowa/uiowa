@@ -43,6 +43,10 @@
  */
 #}
 
+{% if logged_in %}
+    {{ attach_library('collegiate_theme/admin') }}
+{% endif %}
+
 {% if collegiate_theme_container_settings == 'page__container' %}
     {% set header_classes = ['header__container'] %}
     {% set page_classes = ['page__container'] %}
