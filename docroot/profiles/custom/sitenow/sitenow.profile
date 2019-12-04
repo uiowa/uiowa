@@ -5,6 +5,7 @@
  * Profile code.
  */
 
+use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -499,6 +500,7 @@ function publish_options_allowed_values(FieldStorageConfig $definition, ContentE
   switch ($bundle) {
     case 'page':
       $options['title_hidden'] = 'Visually hide title';
+      $options['breadcrumbs_hidden'] = 'Visually hide breadcrumbs';
       $options['no_sidebars'] = 'Remove sidebar regions';
       break;
   }
@@ -510,9 +512,9 @@ function publish_options_allowed_values(FieldStorageConfig $definition, ContentE
 }
 
 /**
- * Implements hook_preprocess_HOOK().
+ * Implements hook_block_view_alter().
  */
-function sitenow_preprocess_page_title(&$variables) {
+function sitenow_block_view_alter(array &$build, BlockPluginInterface $block) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
     $node = \Drupal::routeMatch()->getParameter('node');
@@ -520,8 +522,19 @@ function sitenow_preprocess_page_title(&$variables) {
     if ($node instanceof NodeInterface) {
       if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
         $publish_options = $node->get('field_publish_options')->getValue();
-        if (array_search('title_hidden', array_column($publish_options, 'value')) !== FALSE) {
-          $variables["title_attributes"]['class'][] = 'sr-only';
+        switch ($build["#plugin_id"]) {
+          case 'page_title_block':
+            if (array_search('title_hidden', array_column($publish_options, 'value')) !== FALSE) {
+              $build['#attributes']['class'][] = 'sr-only';
+            }
+            break;
+
+          case 'system_breadcrumb_block':
+            if (array_search('breadcrumbs_hidden', array_column($publish_options, 'value')) !== FALSE) {
+              $build['#attributes']['class'][] = 'sr-only';
+            }
+            break;
+
         }
       }
     }
