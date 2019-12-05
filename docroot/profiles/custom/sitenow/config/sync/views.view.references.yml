@@ -298,6 +298,7 @@ display:
         filters: false
         filter_groups: false
         arguments: false
+        empty: false
       row:
         type: fields
         options:
@@ -636,6 +637,18 @@ display:
           entity_type: taxonomy_term
           entity_field: vid
           plugin_id: vocabulary_vid
+      empty:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content: 'There are currently no existing taxonomy terms.'
+          plugin_id: text_custom
     cache_metadata:
       max-age: -1
       contexts:
