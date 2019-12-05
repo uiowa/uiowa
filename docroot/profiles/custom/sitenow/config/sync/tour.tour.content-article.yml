@@ -165,11 +165,38 @@ tips:
       data-id: edit-field-article-author
     body: '<p>You can choose whether you wish to add a new or existing author. If you don''t see an author you created, make sure the author is published.</p>'
     location: bottom
+  organization:
+    id: organization
+    plugin: text
+    label: 'Organization'
+    weight: 17
+    attributes:
+      data-id: edit-field-article-source-org-0-value
+    body: '<p>The Organization associated with this content.<p>When populated with data, the content will appear as plain text in the byline for the teaser view (Default /News page that displays the visible Articles) and on the full view of the selected Article</p>'
+    location: bottom
+  source-link:
+    id: source-link
+    plugin: text
+    label: 'Source Link'
+    weight: 18
+    attributes:
+      data-id: edit-field-article-source-link-0-uri
+    body: '<p>Includes a link to the original source for this content.</p><p>If Organization is not populated, the linked URL address will be added to the byline of the teaser and full view of the Article.</p>'
+    location: top
+  link-to-source:
+    id: link-to-source
+    plugin: text
+    label: 'Link directly to source'
+    weight: 19
+    attributes:
+      data-id: edit-field-article-source-link-0-uri
+    body: '<p>If the Source Link is populated, there will be an option to link directly to source. If checked, teaser displays of this content will link directly to the Source Link instead of the full view of the article. The article title path will be replaced with the source link URL.</p><p>This can be used to reference an article from an outside source on your SiteNow Article’s page (defaults to /News)</p>'
+    location: bottom
   page-actions:
     id: page-actions
     plugin: text
     label: Publish/Save/Preview
-    weight: 17
+    weight: 20
     attributes:
       data-id: edit-moderation-state-0-state
     body: '<p>You can save, preview and publish the page here.</p><p>Content automatically saves as a draft which will not be visible to site visitors. Site visitors will only see content marked as published.</p>'
@@ -178,5 +205,5 @@ tips:
     id: next-step
     plugin: text
     label: 'That''s It!'
-    weight: 18
+    weight: 21
     body: '<p>Thanks for sticking with us.</p><p>As you are using the site, look for the tour icon which designates a tour is available on that page, otherwise, <a href="//sitenow.uiowa.edu/node/36" >view our documentation</a> for more information.</p>'
