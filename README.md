@@ -193,7 +193,7 @@ deployment as per usual.
 
 # Resources
 
-Additional [BLT documentation](http://blt.readthedocs.io) may be useful. You may also access a list of BLT commands by running this:
+Additional [BLT documentation](https://docs.acquia.com/blt/) may be useful. You may also access a list of BLT commands by running this:
 ```
 $ blt
 ```
@@ -207,17 +207,7 @@ You can also run blt commands on a remote, but you must run them using the path 
 
 BLT projects are designed to instill software development best practices (including git workflows).
 
-Our BLT Developer documentation includes an [example workflow](http://blt.readthedocs.io/en/latest/readme/dev-workflow/#workflow-example-local-development).
-
-### Important Configuration Files
-
-BLT uses a number of configuration (`.yml` or `.json`) files to define and customize behaviors. Some examples of these are:
-
-* `blt/blt.yml` (formerly blt/project.yml prior to BLT 9.x)
-* `blt/local.blt.yml` (local only specific blt configuration)
-* `box/config.yml` (if using Drupal VM)
-* `drush/sites` (contains Drush aliases for this project)
-* `composer.json` (includes required components, including Drupal Modules, for this project)
+Our BLT Developer documentation includes an [example workflow](https://docs.acquia.com/blt/developer/dev-workflow/#workflow-example-local-development).
 
 ## Resources
 
