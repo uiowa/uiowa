@@ -87,12 +87,18 @@
       {{ title_prefix }}
       {% if not page %}
         <h3{{ title_attributes }}>
-          <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+          {% if '1' in  content.field_article_source_link_direct.0 and node.field_article_source_link.0.uri %}
+            <a href="{{ node.field_article_source_link.0.uri }}" rel="bookmark">{{ label }}</a>
+          {% else %}
+            <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+          {% endif %}
         </h3>
       {% endif %}
       {{ title_suffix }}
-
-      {{ content|without('node_image', 'links') }}
+      <div class="article-meta">
+      {{ content.article_created_date }}{{ content.article_author }}{{ content.field_article_source_org }}{{ content.field_article_source_link }}
+      </div>
+      {{ content|without('node_image', 'links', 'article_created_date', 'article_author', 'field_article_source_org', 'field_article_source_link', 'field_article_source_link_direct') }}
   </div>
     {% if content.node_image %}
         <figure class="content-image">

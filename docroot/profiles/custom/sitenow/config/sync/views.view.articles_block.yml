@@ -152,6 +152,20 @@ display:
           entity_field: type
           plugin_id: bundle
       sorts:
+        sticky:
+          id: sticky
+          table: node_field_data
+          field: sticky
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: false
+          expose:
+            label: ''
+          entity_type: node
+          entity_field: sticky
+          plugin_id: standard
         created:
           id: created
           table: node_field_data
