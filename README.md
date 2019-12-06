@@ -94,13 +94,13 @@ each multisite. For example, to configure stage file proxy:
 $config['stage_file_proxy.settings']['origin'] = 'https://mysite.com';
 $config['stage_file_proxy.settings']['hotlink'] = TRUE;
 ```
-## [Local BLT Configuration](#local-config)
-Make sure you have an [Acquia Cloud key and secret](https://docs.acquia.com/acquia-cloud/develop/api/auth/) saved in the `blt/local.blt.yml` file.
+## Local BLT Configuration
+Make sure you have an [Acquia Cloud key and secret](https://docs.acquia.com/acquia-cloud/develop/api/auth/) saved in the `blt/local.blt.yml` file. This file is ignored by Git. Be sure you do not accidentally commit your credentials to the `blt/blt.yml` file which is tracked in Git. Do not share your key or secret with anyone.
 ```
 credentials:
   acquia:
-    key: Put new key here
-    secret: Put new secret here
+    key: foo
+    secret: bar
 ```
 
 Set the multisites that you want BLT to sync by default:
