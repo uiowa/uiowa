@@ -4,7 +4,7 @@ An application for deploying sites on the uiowa01 container.
 
 # Getting Started
 
-This project is based on BLT, an open-source project template and tool that enables building, testing, and deploying Drupal installations following Acquia Professional Services best practices. While this is one of many methodologies, it is our recommended methodology. 
+This project is based on BLT, an open-source project template and tool that enables building, testing, and deploying Drupal installations following Acquia Professional Services best practices. While this is one of many methodologies, it is our recommended methodology.
 
 1. Review the [Required / Recommended Skills](http://blt.readthedocs.io/en/latest/readme/skills) for working with a BLT project.
 2. Ensure that your computer meets the minimum installation requirements (and then install the required applications). See the [System Requirements](http://blt.readthedocs.io/en/latest/INSTALL/#system-requirements).
@@ -120,9 +120,9 @@ The `key` and `secret` values can be created by visiting this page: https://clou
     ```
 5. When your feature is ready to be tested, push it to Github. Please note that you are pushing to a branch of the same name as what you created locally.
     ```console
-    git push - origin feature_add_new_content_type
+    git push -u origin feature_add_new_content_type
     ```
-6. Create a Pull Request for your feature branch. When you push it to Github via the command line, you may see a message like this: 
+6. Create a Pull Request for your feature branch. When you push it to Github via the command line, you may see a message like this:
     ```console
     remote: Create a pull request for 'feature_add_new_content_type' on GitHub by visiting:
     remote:      https://github.com/uiowa/uiowa01/pull/new/feature_add_new_content_type
@@ -137,12 +137,12 @@ The `key` and `secret` values can be created by visiting this page: https://clou
 
 ---
 
-# Resources 
+# Resources
 
 Additional [BLT documentation](https://docs.acquia.com/blt/) may be useful. You may also access a list of BLT commands by running this:
 ```
 $ blt
-``` 
+```
 
 Note the following properties of this project:
 * Primary development branch: _master_
