@@ -6,8 +6,8 @@ The base application on Acquia Cloud hosting the Sitenow platform.
 
 This project is based on BLT, an open-source project template and tool that enables building, testing, and deploying Drupal installations following Acquia Professional Services best practices. While this is one of many methodologies, it is our recommended methodology.
 
-1. Review the [Required / Recommended Skills](http://blt.readthedocs.io/en/latest/readme/skills) for working with a BLT project.
-2. Ensure that your computer meets the minimum installation requirements (and then install the required applications). See the [System Requirements](http://blt.readthedocs.io/en/latest/INSTALL/#system-requirements).
+1. Review the [Required / Recommended Skills](https://docs.acquia.com/blt/developer/skills/) for working with a BLT project.
+2. Ensure that your computer meets the minimum installation requirements (and then install the required applications). See the [System Requirements](https://docs.acquia.com/blt/install/#general-requirements).
 3. Request access to organization that owns the project repo in GitHub (if needed).
 4. Request access to the Acquia Cloud Environment for your project (if needed).
 5. Setup a SSH key that can be used for GitHub and the Acquia Cloud (you CAN use the same key).
