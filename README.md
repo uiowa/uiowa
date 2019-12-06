@@ -17,8 +17,7 @@ This project is based on BLT, an open-source project template and tool that enab
     ```
     $ git clone git@github.com:<account>/git@git.com/uiowa/uiowa.git
     ```
-7. Update your the configuration located in the `/blt/blt.yml` file to match your site's needs. See [configuration files](#important-configuration-files) for other important configuration files.
-8. Add the Acquia repository as a secondary remote. You can get the Acquia remote URL from the [Acquia Cloud interface](https://docs.acquia.com/acquia-cloud/develop/repository/git).
+7. Add the Acquia repository as a secondary remote. You can get the Acquia remote URL from the [Acquia Cloud interface](https://docs.acquia.com/acquia-cloud/develop/repository/git).
     ```
     git remote add acquia ACQUIA_REMOTE_URL
     ```
@@ -95,14 +94,23 @@ each multisite. For example, to configure stage file proxy:
 $config['stage_file_proxy.settings']['origin'] = 'https://mysite.com';
 $config['stage_file_proxy.settings']['hotlink'] = TRUE;
 ```
-
-Make sure you have an Acquia Cloud key and secret key saved in the `blt/local.blt.yml` file.
+## [Local BLT Configuration](#local-config)
+Make sure you have an [Acquia Cloud key and secret](https://docs.acquia.com/acquia-cloud/develop/api/auth/) saved in the `blt/local.blt.yml` file.
 ```
 credentials:
   acquia:
     key: Put new key here
     secret: Put new secret here
 ```
+
+Set the multisites that you want BLT to sync by default:
+```
+multisites:
+  - default
+  - bar.uiowa.edu
+  - foo.uiowa.edu
+```
+
 ## Create Multisite
 To create a new multisite:
 1. Run the `blt sitenow:multisite:create` command (`smc` for short) on a feature branch created from master.
