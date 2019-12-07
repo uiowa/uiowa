@@ -2,8 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.media.embedded
-    - core.entity_view_mode.media.full
+    - core.entity_view_mode.media.full__16_9
   module:
     - editor
     - media
@@ -75,13 +74,11 @@ filters:
     status: true
     weight: 100
     settings:
-      default_view_mode: default
+      default_view_mode: full__16_9
       allowed_media_types:
         document: document
         image: image
         remote_video: remote_video
         video: video
       allowed_view_modes:
-        default: default
-        embedded: embedded
-        full: full
+        full__16_9: full__16_9
