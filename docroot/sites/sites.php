@@ -393,3 +393,8 @@ $sites['orgstemoutreach.prod.drupal.uiowa.edu'] = 'stemoutreach.org.uiowa.edu';
 $sites['sitesstonewall50.dev.drupal.uiowa.edu'] = 'stonewall50.sites.uiowa.edu';
 $sites['sitesstonewall50.stage.drupal.uiowa.edu'] = 'stonewall50.sites.uiowa.edu';
 $sites['sitesstonewall50.prod.drupal.uiowa.edu'] = 'stonewall50.sites.uiowa.edu';
+
+// Directory aliases for buchholz.lab.uiowa.edu.
+$sites['labbuchholz.dev.drupal.uiowa.edu'] = 'buchholz.lab.uiowa.edu';
+$sites['labbuchholz.stage.drupal.uiowa.edu'] = 'buchholz.lab.uiowa.edu';
+$sites['labbuchholz.prod.drupal.uiowa.edu'] = 'buchholz.lab.uiowa.edu';
