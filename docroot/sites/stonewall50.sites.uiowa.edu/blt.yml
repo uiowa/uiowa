@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: stonewall50.sites.uiowa.edu
+    protocol: https
+  machine_name: sitesstonewall50
+  human_name: stonewall50.sites.uiowa.edu
+  requester: kraver
+drush:
+  aliases:
+    local: self
+    remote: sitesstonewall50.prod
+drupal:
+  db:
+    database: stonewall50_sites_uiowa_edu
+    host: localhost
+    user: root
+    password: null
