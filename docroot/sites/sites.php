@@ -408,3 +408,8 @@ $sites['hawkeyemarchingband.prod.drupal.uiowa.edu'] = 'hawkeyemarchingband.uiowa
 $sites['bands.dev.drupal.uiowa.edu'] = 'bands.uiowa.edu';
 $sites['bands.stage.drupal.uiowa.edu'] = 'bands.uiowa.edu';
 $sites['bands.prod.drupal.uiowa.edu'] = 'bands.uiowa.edu';
+
+// Directory aliases for ismc.uiowa.edu.
+$sites['ismc.dev.drupal.uiowa.edu'] = 'ismc.uiowa.edu';
+$sites['ismc.stage.drupal.uiowa.edu'] = 'ismc.uiowa.edu';
+$sites['ismc.prod.drupal.uiowa.edu'] = 'ismc.uiowa.edu';
