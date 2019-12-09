@@ -398,3 +398,18 @@ $sites['sitesstonewall50.prod.drupal.uiowa.edu'] = 'stonewall50.sites.uiowa.edu'
 $sites['labbuchholz.dev.drupal.uiowa.edu'] = 'buchholz.lab.uiowa.edu';
 $sites['labbuchholz.stage.drupal.uiowa.edu'] = 'buchholz.lab.uiowa.edu';
 $sites['labbuchholz.prod.drupal.uiowa.edu'] = 'buchholz.lab.uiowa.edu';
+
+// Directory aliases for hawkeyemarchingband.uiowa.edu.
+$sites['hawkeyemarchingband.dev.drupal.uiowa.edu'] = 'hawkeyemarchingband.uiowa.edu';
+$sites['hawkeyemarchingband.stage.drupal.uiowa.edu'] = 'hawkeyemarchingband.uiowa.edu';
+$sites['hawkeyemarchingband.prod.drupal.uiowa.edu'] = 'hawkeyemarchingband.uiowa.edu';
+
+// Directory aliases for bands.uiowa.edu.
+$sites['bands.dev.drupal.uiowa.edu'] = 'bands.uiowa.edu';
+$sites['bands.stage.drupal.uiowa.edu'] = 'bands.uiowa.edu';
+$sites['bands.prod.drupal.uiowa.edu'] = 'bands.uiowa.edu';
+
+// Directory aliases for ismc.uiowa.edu.
+$sites['ismc.dev.drupal.uiowa.edu'] = 'ismc.uiowa.edu';
+$sites['ismc.stage.drupal.uiowa.edu'] = 'ismc.uiowa.edu';
+$sites['ismc.prod.drupal.uiowa.edu'] = 'ismc.uiowa.edu';
