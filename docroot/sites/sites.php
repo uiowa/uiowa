@@ -354,11 +354,6 @@ $sites['labmicrovascularphys.dev.drupal.uiowa.edu'] = 'microvascularphys.lab.uio
 $sites['labmicrovascularphys.stage.drupal.uiowa.edu'] = 'microvascularphys.lab.uiowa.edu';
 $sites['labmicrovascularphys.prod.drupal.uiowa.edu'] = 'microvascularphys.lab.uiowa.edu';
 
-// Directory aliases for uibass.studio.uiowa.edu.
-$sites['studiouibass.dev.drupal.uiowa.edu'] = 'uibass.studio.uiowa.edu';
-$sites['studiouibass.stage.drupal.uiowa.edu'] = 'uibass.studio.uiowa.edu';
-$sites['studiouibass.prod.drupal.uiowa.edu'] = 'uibass.studio.uiowa.edu';
-
 // Directory aliases for molcellcog.org.
 $sites['org-molcellcog.dev.drupal.uiowa.edu'] = 'molcellcog.org';
 $sites['org-molcellcog.stage.drupal.uiowa.edu'] = 'molcellcog.org';
@@ -378,3 +373,28 @@ $sites['labvanotterloo.prod.drupal.uiowa.edu'] = 'vanotterloo.lab.uiowa.edu';
 $sites['lablalumiere.dev.drupal.uiowa.edu'] = 'lalumiere.lab.uiowa.edu';
 $sites['lablalumiere.stage.drupal.uiowa.edu'] = 'lalumiere.lab.uiowa.edu';
 $sites['lablalumiere.prod.drupal.uiowa.edu'] = 'lalumiere.lab.uiowa.edu';
+
+// Directory aliases for doublebass.studio.uiowa.edu.
+$sites['studiodoublebass.dev.drupal.uiowa.edu'] = 'doublebass.studio.uiowa.edu';
+$sites['studiodoublebass.stage.drupal.uiowa.edu'] = 'doublebass.studio.uiowa.edu';
+$sites['studiodoublebass.prod.drupal.uiowa.edu'] = 'doublebass.studio.uiowa.edu';
+
+// Directory aliases for human-auditory-neuroscience-group.lab.uiowa.edu.
+$sites['labhuman-auditory-neuroscience-group.dev.drupal.uiowa.edu'] = 'human-auditory-neuroscience-group.lab.uiowa.edu';
+$sites['labhuman-auditory-neuroscience-group.stage.drupal.uiowa.edu'] = 'human-auditory-neuroscience-group.lab.uiowa.edu';
+$sites['labhuman-auditory-neuroscience-group.prod.drupal.uiowa.edu'] = 'human-auditory-neuroscience-group.lab.uiowa.edu';
+
+// Directory aliases for stemoutreach.org.uiowa.edu.
+$sites['orgstemoutreach.dev.drupal.uiowa.edu'] = 'stemoutreach.org.uiowa.edu';
+$sites['orgstemoutreach.stage.drupal.uiowa.edu'] = 'stemoutreach.org.uiowa.edu';
+$sites['orgstemoutreach.prod.drupal.uiowa.edu'] = 'stemoutreach.org.uiowa.edu';
+
+// Directory aliases for stonewall50.sites.uiowa.edu.
+$sites['sitesstonewall50.dev.drupal.uiowa.edu'] = 'stonewall50.sites.uiowa.edu';
+$sites['sitesstonewall50.stage.drupal.uiowa.edu'] = 'stonewall50.sites.uiowa.edu';
+$sites['sitesstonewall50.prod.drupal.uiowa.edu'] = 'stonewall50.sites.uiowa.edu';
+
+// Directory aliases for buchholz.lab.uiowa.edu.
+$sites['labbuchholz.dev.drupal.uiowa.edu'] = 'buchholz.lab.uiowa.edu';
+$sites['labbuchholz.stage.drupal.uiowa.edu'] = 'buchholz.lab.uiowa.edu';
+$sites['labbuchholz.prod.drupal.uiowa.edu'] = 'buchholz.lab.uiowa.edu';

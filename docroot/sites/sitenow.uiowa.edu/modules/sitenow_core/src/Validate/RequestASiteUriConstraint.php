@@ -28,13 +28,18 @@ class RequestASiteUriConstraint {
 
     foreach (['port', 'user', 'pass', 'path', 'query', 'fragment'] as $invalid) {
       if (isset($url[$invalid])) {
+        $extra = '';
+        if ($invalid == 'path' && $formState->getValue('request_type') == 'Existing') {
+          $extra = 'Sub-directory sites are no longer allowed.';
+        }
         return $formState->setError(
           $element,
-          t('URL @value must not contain a @invalid.', [
+          t('URL @value must not contain a @invalid. @extra', [
             '@value' => $value,
             '@invalid' => $invalid,
+            '@extra' => $extra,
           ])
-        );
+        );;
       }
     }
 
