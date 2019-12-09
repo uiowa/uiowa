@@ -388,3 +388,13 @@ $sites['labhuman-auditory-neuroscience-group.prod.drupal.uiowa.edu'] = 'human-au
 $sites['orgstemoutreach.dev.drupal.uiowa.edu'] = 'stemoutreach.org.uiowa.edu';
 $sites['orgstemoutreach.stage.drupal.uiowa.edu'] = 'stemoutreach.org.uiowa.edu';
 $sites['orgstemoutreach.prod.drupal.uiowa.edu'] = 'stemoutreach.org.uiowa.edu';
+
+// Directory aliases for stonewall50.sites.uiowa.edu.
+$sites['sitesstonewall50.dev.drupal.uiowa.edu'] = 'stonewall50.sites.uiowa.edu';
+$sites['sitesstonewall50.stage.drupal.uiowa.edu'] = 'stonewall50.sites.uiowa.edu';
+$sites['sitesstonewall50.prod.drupal.uiowa.edu'] = 'stonewall50.sites.uiowa.edu';
+
+// Directory aliases for buchholz.lab.uiowa.edu.
+$sites['labbuchholz.dev.drupal.uiowa.edu'] = 'buchholz.lab.uiowa.edu';
+$sites['labbuchholz.stage.drupal.uiowa.edu'] = 'buchholz.lab.uiowa.edu';
+$sites['labbuchholz.prod.drupal.uiowa.edu'] = 'buchholz.lab.uiowa.edu';
