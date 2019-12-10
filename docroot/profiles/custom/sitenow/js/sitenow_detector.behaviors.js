@@ -1,11 +1,11 @@
 /**
  * @file
- * Chosen.
+ * Sitenow Detector.
  */
 (function ($, Drupal) {
     Drupal.behaviors.sitenowDetector = {
       attach: function (context) {
-        $('meta[content="SiteNow v2 (https://sitenow.uiowa.edu)"]', context).once('sitenowDetector').each(function () {
+        $(document, context).once('sitenowDetector').each(function () {
           // I've broken this up so it is easy to change.
           // This is the first line of the log.
           var sitenow_message_line_1 = "This is a Sitenow v2 Site";
