@@ -84,7 +84,7 @@ class EventsSettingsForm extends ConfigFormBase {
     $form['global'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Site-wide settings'),
-      '#description' => $this->t('These settings affect all University of Iowa event lists and single instances.'),
+      '#description' => $this->t('These settings affect all event lists and single instances.'),
     ];
 
     $form['global']['sitenow_events_event_link'] = [
