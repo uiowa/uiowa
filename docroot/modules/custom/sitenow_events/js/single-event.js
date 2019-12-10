@@ -22,8 +22,8 @@
             if (self.attr(attr) == attr1) {
               self.attr(attr, attr2);
             }
-else {
-self.attr(attr, attr1);
+            else {
+              self.attr(attr, attr1);
             }
           });
         };
@@ -35,8 +35,8 @@ self.attr(attr, attr1);
             if (self.text() == text1) {
               self.text(text2);
             }
-else {
-self.text(text1);
+            else {
+              self.text(text1);
             }
           });
         };
