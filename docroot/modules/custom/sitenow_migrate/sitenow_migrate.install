@@ -16,7 +16,10 @@ function sitenow_migrate_uninstall() {
   $files = file_scan_directory($module_path, '/migrate_plus/');
   if ($files) {
     foreach ($files as $file) {
-      drush_print('...' . $file->name);
+      \Drupal::logger('sitenow_migrate')->notice(t('Deleted file @file.', [
+        '@file' => $file,
+      ]));
+
       \Drupal::configFactory()->getEditable($file->name)->delete();
     }
   }

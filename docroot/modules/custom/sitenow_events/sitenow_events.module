@@ -8,6 +8,7 @@
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\Component\Utility\Xss;
+use GuzzleHttp\Exception\RequestException;
 
 /**
  * Set dynamic allowed values for the alignment field.
@@ -88,7 +89,7 @@ function _sitenow_events_get_filter_options() {
         ->get($endpoint, ['headers' => ['Accept' => 'text/plain']]);
       $data = (string) $response->getBody();
       if (empty($data)) {
-        drupal_set_message(t('Empty response.'));
+        \Drupal::messenger()->addError(t('Empty response.'));
       }
       else {
         $results = json_decode($data, TRUE);

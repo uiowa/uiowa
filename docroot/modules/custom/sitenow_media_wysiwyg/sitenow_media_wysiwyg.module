@@ -34,7 +34,7 @@ function sitenow_media_wysiwyg_form_entity_embed_dialog_alter(&$form, FormStateI
   elseif (isset($input, $input['editor_object'], $input['editor_object']['data-entity-type'], $input['editor_object']['data-entity-uuid'])) {
     $entity_type = $input['editor_object']['data-entity-type'];
     $uuid = $input['editor_object']['data-entity-uuid'];
-    $entity = \Drupal::entityManager()->loadEntityByUuid($entity_type, $uuid);
+    $entity = \Drupal::service('entity.repository')->loadEntityByUuid($entity_type, $uuid);
   }
   if (isset($entity, $entity_type) && $entity_type == 'media') {
     $bundle = $entity->bundle();
