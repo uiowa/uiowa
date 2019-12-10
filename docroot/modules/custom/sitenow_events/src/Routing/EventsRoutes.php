@@ -18,7 +18,7 @@ class EventsRoutes {
   public function routes() {
     $routes = [];
 
-    $path = \Drupal::config('sitenow_events.settings')->get('sitenow_events.single_event_path')?: 'event';
+    $path = \Drupal::config('sitenow_events.settings')->get('sitenow_events.single_event_path') ?: 'event';
 
     $routes['sitenow_events.single_controller.' . $path] = new Route(
       $path . '/{event_id}/{event_instance}',
