@@ -2,13 +2,58 @@
 
 namespace Drupal\sitenow_events\Form;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Path\AliasStorage;
+use Drupal\pathauto\AliasCleanerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Configure UIowa Events settings for this site.
  */
 class EventsSettingsForm extends ConfigFormBase {
+
+  /**
+   * The alias cleaner.
+   *
+   * @var \Drupal\pathauto\AliasCleanerInterface
+   */
+  protected $aliasCleaner;
+
+  /**
+   * The alias checker.
+   *
+   * @var \Drupal\Core\Path\AliasStorage
+   */
+  protected $aliasStorage;
+
+  /**
+   * The Constructor.
+   *
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The config factory.
+   * @param \Drupal\pathauto\AliasCleanerInterface $pathauto_alias_cleaner
+   *   The alias cleaner.
+   * @param \Drupal\Core\Path\AliasStorage $aliasStorage
+   *   The alias checker.
+   */
+  public function __construct(ConfigFactoryInterface $config_factory, AliasCleanerInterface $pathauto_alias_cleaner, AliasStorage $aliasStorage) {
+    parent::__construct($config_factory);
+    $this->aliasCleaner = $pathauto_alias_cleaner;
+    $this->aliasStorage = $aliasStorage;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('config.factory'),
+      $container->get('pathauto.alias_cleaner'),
+      $container->get('path.alias_storage')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -71,8 +116,8 @@ class EventsSettingsForm extends ConfigFormBase {
     // Check if path already exists.
     $path = $form_state->getValue('sitenow_events_single_event_path');
     // Clean up path first.
-    $path = \Drupal::service('pathauto.alias_cleaner')->cleanString($path);
-    $path_exists = \Drupal::service('path.alias_storage')->aliasExists('/' . $path, 'en');
+    $path = $this->aliasCleaner->cleanString($path);
+    $path_exists = $this->aliasStorage->aliasExists('/' . $path, 'en');
     if ($path_exists) {
       $form_state->setErrorByName('path', $this->t('This path is already in-use.'));
     }
@@ -86,7 +131,7 @@ class EventsSettingsForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $path = $form_state->getValue('sitenow_events_single_event_path');
     // Clean path.
-    $path = \Drupal::service('pathauto.alias_cleaner')->cleanString($path);
+    $path = $this->aliasCleaner->cleanString($path);
 
     $this->config('sitenow_events.settings')
       ->set('sitenow_events.event_link', $form_state->getValue('sitenow_events_event_link'))
