@@ -3,6 +3,7 @@
 namespace Drupal\sitenow_migrate\EventSubscriber;
 
 use Drupal\migrate\Event\MigrateEvents;
+use Drupal\node\Entity\Node;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Drupal\paragraphs\Entity\Paragraph;
 
@@ -50,7 +51,10 @@ class PostRowSaveEvent implements EventSubscriberInterface {
       case 'd7_article':
       case 'd7_person':
         $nids = $event->getDestinationIdValues();
-        $node = entity_load('node', $nids[0]);
+
+        /** @var Drupal\node\Entity\Node $node */
+        $node = Node::load($nids[0]);
+
         if ($node->getType() == 'article') {
           $node->body->format = 'filtered_html';
         }
@@ -119,7 +123,9 @@ class PostRowSaveEvent implements EventSubscriberInterface {
     $newContent = $row->getSourceProperty('body_value');
 
     // Load our newly created node and get the default content block.
-    $node = entity_load('node', $nids[0]);
+    /** @var Drupal\node\Entity\Node $node */
+    $node = Node::load($nids[0]);
+
     $section_target = end($node->get('field_page_content_block')->getValue());
     $section = Paragraph::load($section_target['target_id']);
 

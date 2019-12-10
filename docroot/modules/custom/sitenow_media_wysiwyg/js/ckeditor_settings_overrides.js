@@ -1,5 +1,8 @@
-CKEDITOR.on( 'dialogDefinition', function( ev )
-{
+/**
+ * @file
+ */
+
+CKEDITOR.on('dialogDefinition', function (ev) {
     var dialogName = ev.data.name;
     var dialogDefinition = ev.data.definition;
 
