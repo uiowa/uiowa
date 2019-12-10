@@ -10,7 +10,7 @@ use Drupal\pathauto\AliasCleanerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Configure UIowa Events settings for this site.
+ * Configure events settings for this site.
  */
 class EventsSettingsForm extends ConfigFormBase {
 
