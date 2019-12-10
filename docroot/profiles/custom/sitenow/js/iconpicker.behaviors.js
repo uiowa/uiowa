@@ -2,6 +2,7 @@
  * @file
  * Chosen.
  */
+
 (function ($, Drupal) {
   Drupal.behaviors.iconpicker = {
     attach: function (context) {
