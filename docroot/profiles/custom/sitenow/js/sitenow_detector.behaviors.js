@@ -30,7 +30,7 @@
             font-family: 'Helvetica Neue','Arial',sans-serif;\
             font-weight: 400;\
           ";
-          
+
           // This prints the message.
           console.log("%c" + sitenow_message_line_1 + "\n%c " + sitenow_message_line_2 + " ", sitenow_message_style_1, sitenow_message_style_2);
         });
