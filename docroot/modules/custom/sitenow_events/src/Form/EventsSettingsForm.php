@@ -33,7 +33,7 @@ class EventsSettingsForm extends ConfigFormBase {
 
     $form['markup'] = [
       '#type' => 'markup',
-      '#markup' => $this->t('<p>These settings let you configure the University of Iowa Events module.</p>'),
+      '#markup' => $this->t('<p>These settings let you configure the SiteNow Events module.</p>'),
     ];
 
     $form['global'] = [

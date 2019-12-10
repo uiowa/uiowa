@@ -2,13 +2,41 @@
 
 namespace Drupal\sitenow_events\Controller;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Returns responses for University of Iowa Events Single routes.
  */
 class EventsController extends ControllerBase {
+
+  /**
+   * Config.
+   *
+   * @var \Drupal\Core\Config\ImmutableConfig
+   */
+  protected $configFactory;
+
+  /**
+   * EventsController constructor.
+   *
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
+   *   The config factory.
+   */
+  public function __construct(ConfigFactoryInterface $configFactory) {
+    $this->configFactory = $configFactory->get('sitenow_events.settings');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('config.factory')
+    );
+  }
 
   /**
    * Builds the response.
@@ -23,8 +51,7 @@ class EventsController extends ControllerBase {
    */
   public function build($event_id, $event_instance) {
     // If the configuration is to link out, make all event pages 404.
-    $sitenow_events_config = \Drupal::config('sitenow_events.settings');
-    if ($sitenow_events_config->get('sitenow_events.event_link') == 'event-link-external') {
+    if ($this->configFactory->get('sitenow_events.event_link') == 'event-link-external') {
       throw new NotFoundHttpException();
     }
     else {
