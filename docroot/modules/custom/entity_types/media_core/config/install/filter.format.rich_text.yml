@@ -2,7 +2,8 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.media.full__16_9
+    - core.entity_view_mode.media.full__widescreen
+    - core.entity_view_mode.media.large__widescreen
   module:
     - editor
     - media
@@ -74,11 +75,22 @@ filters:
     status: true
     weight: 100
     settings:
-      default_view_mode: full__16_9
+      default_view_mode: full__widescreen
       allowed_media_types:
         document: document
         image: image
         remote_video: remote_video
         video: video
       allowed_view_modes:
-        full__16_9: full__16_9
+        full__no_crop: full__no_crop
+        full__square: full__square
+        full__widescreen: full__widescreen
+        large__no_crop: large__no_crop
+        large__square: large__square
+        large__widescreen: large__widescreen
+        medium__no_crop: medium__no_crop
+        medium__square: medium__square
+        medium__widescreen: medium__widescreen
+        small__no_crop: small__no_crop
+        small__square: small__square
+        small__widescreen: small__widescreen
