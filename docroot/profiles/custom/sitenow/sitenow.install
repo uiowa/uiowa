@@ -152,3 +152,10 @@ function sitenow_update_8012() {
       ->save();
   }
 }
+
+/**
+ * Clear all caches for uiowa_auth legacy redirects to take effect.
+ */
+function sitenow_update_8013() {
+  drupal_flush_all_caches();
+}
