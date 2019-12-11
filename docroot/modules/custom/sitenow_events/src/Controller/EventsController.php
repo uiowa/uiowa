@@ -8,14 +8,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * Returns responses for University of Iowa Events Single routes.
+ * Returns responses for single event routes.
  */
 class EventsController extends ControllerBase {
 
   /**
-   * Config.
+   * The Config.
    *
-   * @var \Drupal\Core\Config\ImmutableConfig
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
   protected $configFactory;
 
