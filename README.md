@@ -61,11 +61,23 @@ This project is based on BLT, an open-source project template and tool that enab
     ```
     $ composer install
     ```
-8. Sync all multisites.
+8. Setup a local.blt.yml file
+    
+    There is an example version you can copy and modify in the blt directory. Add your Acquia credentials (key/secret) along with the following to get started:
+    ```
+    multisites:
+      - default
+      - 'sitenow.uiowa.edu'
+    ```
+9. Install BLT in case you didn't understand that part from the "Getting Started" section.
+    ```
+    ./vendor/bin/blt blt:init:shell-alias -y
+    ```
+10. Sync all multisites. Hopefully you have designated just a few sites to start with in Step 8 or it will probably error out based on the number of sites we now have.
     ```
     blt drupal:sync:all-sites
     ```
-9. Start the built-in PHP server.
+11. Start the built-in PHP server.
     ```
     $ drush -l mysite rs --dns
     ```
