@@ -2,14 +2,83 @@
 
 namespace Drupal\sitenow_people\Form;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Path\AliasStorage;
+use Drupal\pathauto\AliasCleanerInterface;
+use Drupal\pathauto\PathautoGenerator;
 use Drupal\views\Entity\View;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Configure SiteNow People settings for this site.
  */
 class SettingsForm extends ConfigFormBase {
+
+  /**
+   * The alias cleaner.
+   *
+   * @var \Drupal\pathauto\AliasCleanerInterface
+   */
+  protected $aliasCleaner;
+
+  /**
+   * The alias checker.
+   *
+   * @var \Drupal\Core\Path\AliasStorage
+   */
+  protected $aliasStorage;
+
+  /**
+   * The EntityTypeManager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManager
+   */
+  protected $entityTypeManager;
+
+  /**
+   * The PathautoGenerator service.
+   *
+   * @var \Drupal\pathauto\PathautoGenerator
+   */
+  protected $pathAutoGenerator;
+
+  /**
+   * The Constructor.
+   *
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The config factory.
+   * @param \Drupal\pathauto\AliasCleanerInterface $pathauto_alias_cleaner
+   *   The alias cleaner.
+   * @param \Drupal\Core\Path\AliasStorage $aliasStorage
+   *   The alias checker.
+   * @param \Drupal\Core\Entity\EntityTypeManager $entityTypeManager
+   *   The EntityTypeManager service.
+   * @param \Drupal\pathauto\PathautoGenerator $pathAutoGenerator
+   *   The PathautoGenerator service.
+   */
+  public function __construct(ConfigFactoryInterface $config_factory, AliasCleanerInterface $pathauto_alias_cleaner, AliasStorage $aliasStorage, EntityTypeManager $entityTypeManager, PathautoGenerator $pathAutoGenerator) {
+    parent::__construct($config_factory);
+    $this->aliasCleaner = $pathauto_alias_cleaner;
+    $this->aliasStorage = $aliasStorage;
+    $this->entityTypeManager = $entityTypeManager;
+    $this->pathAutoGenerator = $pathAutoGenerator;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('config.factory'),
+      $container->get('pathauto.alias_cleaner'),
+      $container->get('path.alias_storage'),
+      $container->get('entity_type.manager'),
+      $container->get('pathauto.generator')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -114,8 +183,8 @@ class SettingsForm extends ConfigFormBase {
     // Check if path already exists.
     $path = $form_state->getValue('sitenow_people_path');
     // Clean up path first.
-    $path = \Drupal::service('pathauto.alias_cleaner')->cleanString($path);
-    $path_exists = \Drupal::service('path.alias_storage')->aliasExists('/' . $path, 'en');
+    $path = $this->aliasCleaner->cleanString($path);
+    $path_exists = $this->aliasStorage->aliasExists('/' . $path, 'en');
     if ($path_exists) {
       $form_state->setErrorByName('path', $this->t('This path is already in-use.'));
     }
@@ -135,7 +204,7 @@ class SettingsForm extends ConfigFormBase {
     $sort = $form_state->getValue('sitenow_people_sort');
 
     // Clean path.
-    $path = \Drupal::service('pathauto.alias_cleaner')->cleanString($path);
+    $path = $this->aliasCleaner->cleanString($path);
 
     // Load people listing view.
     $view = View::load('people');
@@ -170,16 +239,13 @@ class SettingsForm extends ConfigFormBase {
     $view->save();
 
     // Update person path pattern.
-    $config_factory = \Drupal::configFactory();
-    $config_factory->getEditable('pathauto.pattern.person')->set('pattern', $path . '/[node:title]')->save();
+    $this->config('pathauto.pattern.person')->set('pattern', $path . '/[node:title]')->save();
 
     // Load and update person node path aliases.
-    $entities = [];
-    $result = \Drupal::entityQuery('node')->condition('type', 'person')->execute();
-    $entity_storage = \Drupal::entityTypeManager()->getStorage('node');
-    $entities = array_merge($entities, $entity_storage->loadMultiple($result));
+    $entities = $this->entityTypeManager->getStorage('node')->loadByProperties(['type' => 'person']);
+
     foreach ($entities as $entity) {
-      \Drupal::service('pathauto.generator')->updateEntityAlias($entity, 'update');
+      $this->pathAutoGenerator->updateEntityAlias($entity, 'update');
     }
 
     parent::submitForm($form, $form_state);
