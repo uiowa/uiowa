@@ -3,7 +3,8 @@
 namespace Drush\Commands;
 
 use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
-use Drush\Drush;
+use Consolidation\SiteProcess\ProcessManagerAwareInterface;
+use Consolidation\SiteProcess\ProcessManagerAwareTrait;
 use Consolidation\AnnotatedCommand\AnnotationData;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\SiteAlias\SiteAliasManagerAwareInterface;
@@ -13,8 +14,9 @@ use Symfony\Component\Console\Input\InputInterface;
 /**
  * General policy commands and hooks for the application.
  */
-class SitenowCommands extends DrushCommands implements SiteAliasManagerAwareInterface {
+class SitenowCommands extends DrushCommands implements SiteAliasManagerAwareInterface, ProcessManagerAwareInterface {
   use SiteAliasManagerAwareTrait;
+  use ProcessManagerAwareTrait;
 
   /**
    * Overwrite the sites.local.php file prior to starting the server.
@@ -88,7 +90,7 @@ EOD;
   }
 
   /**
-   * Invoke BLT update command after sql:sync.
+   * Invoke BLT update command after sql:sync for remote targets only.
    *
    * @param mixed $result
    *   The command result.
@@ -96,20 +98,28 @@ EOD;
    *   The command data.
    *
    * @hook post-command sql:sync
+   *
+   * @throws \Exception
    */
   public function postSqlSync($result, CommandData $commandData) {
-    $env = getenv('AH_SITE_ENVIRONMENT');
+    $record = $this->siteAliasManager()->getAlias($commandData->input()->getArgument('target'));
 
-    if ($env) {
-      $record = $this->siteAliasManager()->getAlias($commandData->input()->getArgument('target'));
-      $root = Drush::bootstrapManager()->getComposerRoot();
+    if ($record->isRemote()) {
+      $process = $this->processManager()->drush($record, 'cache:rebuild');
+      $process->run($process->showRealtime());
 
-      $process = $this->processManager()->process([
-        './vendor/bin/blt',
-        'drupal:update',
-        '--site=' . $record->uri(),
-      ], $root);
+      $process = $this->processManager()->siteProcess(
+        $record,
+        [
+          './vendor/bin/blt',
+          'drupal:update'
+        ],
+        [
+          'site' => $record->uri(),
+        ]
+      );
 
+      $process->setWorkingDirectory($record->root() . '/..');
       $process->run($process->showRealtime());
     }
   }
