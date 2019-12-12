@@ -112,7 +112,7 @@ EOD;
         $record,
         [
           './vendor/bin/blt',
-          'drupal:update'
+          'drupal:update',
         ],
         [
           'site' => $record->uri(),
