@@ -91,7 +91,10 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   protected function getEditableConfigNames() {
-    return ['sitenow_people.settings'];
+    return [
+      'sitenow_people.settings',
+      'pathauto.pattern.person',
+    ];
   }
 
   /**
