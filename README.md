@@ -69,7 +69,7 @@ This project is based on BLT, an open-source project template and tool that enab
       - default
       - 'sitenow.uiowa.edu'
     ```
-9. Install BLT in case you didn't understand that part from the "Getting Started" section.
+9. [Install BLT](https://docs.acquia.com/blt/developer/onboarding/) in case you didn't find it in the getting started section.
     ```
     ./vendor/bin/blt blt:init:shell-alias -y
     ```
