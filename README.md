@@ -61,11 +61,19 @@ This project is based on BLT, an open-source project template and tool that enab
     ```
     $ composer install
     ```
-8. Sync all multisites.
+8. Setup a local.blt.yml file
+    
+    See "[Local BLT Configuration](#local-blt-configuration)" below for more information.
+    
+9. [Install BLT](https://docs.acquia.com/blt/developer/onboarding/) in case you didn't find it in the getting started section.
+    ```
+    ./vendor/bin/blt blt:init:shell-alias -y
+    ```
+10. Sync all multisites. Hopefully you have designated just a few sites to start with in Step 8 or it will probably error out based on the number of sites we now have.
     ```
     blt drupal:sync:all-sites
     ```
-9. Start the built-in PHP server.
+11. Start the built-in PHP server.
     ```
     $ drush -l mysite rs --dns
     ```
