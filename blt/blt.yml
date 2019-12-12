@@ -27,7 +27,6 @@ disable-targets:
     toggle:
       modules: true
   tests:
-    yaml: { lint: { files: true } }
     behat:
       run: true
     drupal:
@@ -37,6 +36,10 @@ disable-targets:
 tests:
   phpunit:
     - config: '${repo.root}'
+validate:
+  deprecation:
+    modules: true
+    themes: true
 cloud:
   appId: 6bcc006f-9a0e-425e-aba0-198585dd2b56
 drupal:

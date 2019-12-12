@@ -383,3 +383,38 @@ $sites['studiodoublebass.prod.drupal.uiowa.edu'] = 'doublebass.studio.uiowa.edu'
 $sites['labhuman-auditory-neuroscience-group.dev.drupal.uiowa.edu'] = 'human-auditory-neuroscience-group.lab.uiowa.edu';
 $sites['labhuman-auditory-neuroscience-group.stage.drupal.uiowa.edu'] = 'human-auditory-neuroscience-group.lab.uiowa.edu';
 $sites['labhuman-auditory-neuroscience-group.prod.drupal.uiowa.edu'] = 'human-auditory-neuroscience-group.lab.uiowa.edu';
+
+// Directory aliases for stemoutreach.org.uiowa.edu.
+$sites['orgstemoutreach.dev.drupal.uiowa.edu'] = 'stemoutreach.org.uiowa.edu';
+$sites['orgstemoutreach.stage.drupal.uiowa.edu'] = 'stemoutreach.org.uiowa.edu';
+$sites['orgstemoutreach.prod.drupal.uiowa.edu'] = 'stemoutreach.org.uiowa.edu';
+
+// Directory aliases for stonewall50.sites.uiowa.edu.
+$sites['sitesstonewall50.dev.drupal.uiowa.edu'] = 'stonewall50.sites.uiowa.edu';
+$sites['sitesstonewall50.stage.drupal.uiowa.edu'] = 'stonewall50.sites.uiowa.edu';
+$sites['sitesstonewall50.prod.drupal.uiowa.edu'] = 'stonewall50.sites.uiowa.edu';
+
+// Directory aliases for buchholz.lab.uiowa.edu.
+$sites['labbuchholz.dev.drupal.uiowa.edu'] = 'buchholz.lab.uiowa.edu';
+$sites['labbuchholz.stage.drupal.uiowa.edu'] = 'buchholz.lab.uiowa.edu';
+$sites['labbuchholz.prod.drupal.uiowa.edu'] = 'buchholz.lab.uiowa.edu';
+
+// Directory aliases for hawkeyemarchingband.uiowa.edu.
+$sites['hawkeyemarchingband.dev.drupal.uiowa.edu'] = 'hawkeyemarchingband.uiowa.edu';
+$sites['hawkeyemarchingband.stage.drupal.uiowa.edu'] = 'hawkeyemarchingband.uiowa.edu';
+$sites['hawkeyemarchingband.prod.drupal.uiowa.edu'] = 'hawkeyemarchingband.uiowa.edu';
+
+// Directory aliases for bands.uiowa.edu.
+$sites['bands.dev.drupal.uiowa.edu'] = 'bands.uiowa.edu';
+$sites['bands.stage.drupal.uiowa.edu'] = 'bands.uiowa.edu';
+$sites['bands.prod.drupal.uiowa.edu'] = 'bands.uiowa.edu';
+
+// Directory aliases for ismc.uiowa.edu.
+$sites['ismc.dev.drupal.uiowa.edu'] = 'ismc.uiowa.edu';
+$sites['ismc.stage.drupal.uiowa.edu'] = 'ismc.uiowa.edu';
+$sites['ismc.prod.drupal.uiowa.edu'] = 'ismc.uiowa.edu';
+
+// Directory aliases for emeritus-faculty.uiowa.edu.
+$sites['emeritus-faculty.dev.drupal.uiowa.edu'] = 'emeritus-faculty.uiowa.edu';
+$sites['emeritus-faculty.stage.drupal.uiowa.edu'] = 'emeritus-faculty.uiowa.edu';
+$sites['emeritus-faculty.prod.drupal.uiowa.edu'] = 'emeritus-faculty.uiowa.edu';

@@ -6,8 +6,8 @@ The base application on Acquia Cloud hosting the Sitenow platform.
 
 This project is based on BLT, an open-source project template and tool that enables building, testing, and deploying Drupal installations following Acquia Professional Services best practices. While this is one of many methodologies, it is our recommended methodology.
 
-1. Review the [Required / Recommended Skills](http://blt.readthedocs.io/en/latest/readme/skills) for working with a BLT project.
-2. Ensure that your computer meets the minimum installation requirements (and then install the required applications). See the [System Requirements](http://blt.readthedocs.io/en/latest/INSTALL/#system-requirements).
+1. Review the [Required / Recommended Skills](https://docs.acquia.com/blt/developer/skills/) for working with a BLT project.
+2. Ensure that your computer meets the minimum installation requirements (and then install the required applications). See the [System Requirements](https://docs.acquia.com/blt/install/#general-requirements).
 3. Request access to organization that owns the project repo in GitHub (if needed).
 4. Request access to the Acquia Cloud Environment for your project (if needed).
 5. Setup a SSH key that can be used for GitHub and the Acquia Cloud (you CAN use the same key).
@@ -17,8 +17,7 @@ This project is based on BLT, an open-source project template and tool that enab
     ```
     $ git clone git@github.com:<account>/git@git.com/uiowa/uiowa.git
     ```
-7. Update your the configuration located in the `/blt/blt.yml` file to match your site's needs. See [configuration files](#important-configuration-files) for other important configuration files.
-8. Add the Acquia repository as a secondary remote. You can get the Acquia remote URL from the [Acquia Cloud interface](https://docs.acquia.com/acquia-cloud/develop/repository/git).
+7. Add the Acquia repository as a secondary remote. You can get the Acquia remote URL from the [Acquia Cloud interface](https://docs.acquia.com/acquia-cloud/develop/repository/git).
     ```
     git remote add acquia ACQUIA_REMOTE_URL
     ```
@@ -62,11 +61,19 @@ This project is based on BLT, an open-source project template and tool that enab
     ```
     $ composer install
     ```
-8. Sync all multisites.
+8. Setup a local.blt.yml file
+    
+    See "[Local BLT Configuration](#local-blt-configuration)" below for more information.
+    
+9. [Install BLT](https://docs.acquia.com/blt/developer/onboarding/) in case you didn't find it in the getting started section.
+    ```
+    ./vendor/bin/blt blt:init:shell-alias -y
+    ```
+10. Sync all multisites. Hopefully you have designated just a few sites to start with in Step 8 or it will probably error out based on the number of sites we now have.
     ```
     blt drupal:sync:all-sites
     ```
-9. Start the built-in PHP server.
+11. Start the built-in PHP server.
     ```
     $ drush -l mysite rs --dns
     ```
@@ -95,14 +102,23 @@ each multisite. For example, to configure stage file proxy:
 $config['stage_file_proxy.settings']['origin'] = 'https://mysite.com';
 $config['stage_file_proxy.settings']['hotlink'] = TRUE;
 ```
-
-Make sure you have an Acquia Cloud key and secret key saved in the `blt/local.blt.yml` file.
+## Local BLT Configuration
+Make sure you have an [Acquia Cloud key and secret](https://docs.acquia.com/acquia-cloud/develop/api/auth/) saved in the `blt/local.blt.yml` file. This file is ignored by Git. Be sure you do not accidentally commit your credentials to the `blt/blt.yml` file which is tracked in Git. Do not share your key or secret with anyone.
 ```
 credentials:
   acquia:
-    key: Put new key here
-    secret: Put new secret here
+    key: foo
+    secret: bar
 ```
+
+Set the multisites that you want BLT to sync by default:
+```
+multisites:
+  - default
+  - bar.uiowa.edu
+  - foo.uiowa.edu
+```
+
 ## Create Multisite
 To create a new multisite:
 1. Run the `blt sitenow:multisite:create` command (`smc` for short) on a feature branch created from master.
@@ -185,7 +201,7 @@ deployment as per usual.
 
 # Resources
 
-Additional [BLT documentation](http://blt.readthedocs.io) may be useful. You may also access a list of BLT commands by running this:
+Additional [BLT documentation](https://docs.acquia.com/blt/) may be useful. You may also access a list of BLT commands by running this:
 ```
 $ blt
 ```
@@ -199,17 +215,7 @@ You can also run blt commands on a remote, but you must run them using the path 
 
 BLT projects are designed to instill software development best practices (including git workflows).
 
-Our BLT Developer documentation includes an [example workflow](http://blt.readthedocs.io/en/latest/readme/dev-workflow/#workflow-example-local-development).
-
-### Important Configuration Files
-
-BLT uses a number of configuration (`.yml` or `.json`) files to define and customize behaviors. Some examples of these are:
-
-* `blt/blt.yml` (formerly blt/project.yml prior to BLT 9.x)
-* `blt/local.blt.yml` (local only specific blt configuration)
-* `box/config.yml` (if using Drupal VM)
-* `drush/sites` (contains Drush aliases for this project)
-* `composer.json` (includes required components, including Drupal Modules, for this project)
+Our BLT Developer documentation includes an [example workflow](https://docs.acquia.com/blt/developer/dev-workflow/#workflow-example-local-development).
 
 ## Resources
 

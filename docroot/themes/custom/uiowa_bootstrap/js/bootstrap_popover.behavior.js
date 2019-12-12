@@ -6,7 +6,7 @@
 (function ($) {
   // Bootstrap popover.
   Drupal.behaviors.bootstrap_popover = {
-    attach: function(context, setting) {
+    attach: function (context, setting) {
       if ($.fn.popover) {
         $("[data-toggle='popover']").popover();
       }

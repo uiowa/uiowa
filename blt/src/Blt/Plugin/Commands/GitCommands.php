@@ -3,11 +3,42 @@
 namespace Sitenow\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
+use Consolidation\AnnotatedCommand\CommandData;
+use Consolidation\AnnotatedCommand\CommandError;
 
 /**
  * Defines commands in the Sitenow namespace.
  */
 class GitCommands extends BltTasks {
+
+  /**
+   * Validate clean command.
+   *
+   * @hook validate sitenow:git:clean
+   */
+  public function validateClean(CommandData $commandData) {
+    $result = $this->taskExecStack()
+      ->exec('git remote')
+      ->stopOnFail()
+      ->silent(TRUE)
+      ->run();
+
+    $output = $result->getMessage();
+    $remotes = explode(PHP_EOL, $output);
+
+    if (!in_array('acquia', $remotes)) {
+      return new CommandError('You must add a remote named acquia pointing to the Acquia Git repository. Check the README for details.');
+    }
+
+    $result = $this->taskExecStack()
+      ->exec('git ls-remote acquia')
+      ->stopOnFail()
+      ->run();
+
+    if (!$result->wasSuccessful()) {
+      return new CommandError('Error connecting to acquia remote. Double check permissions and SSH key.');
+    }
+  }
 
   /**
    * Delete all remote branches except master and develop from Acquia remote.

@@ -2,6 +2,7 @@
  * @file
  * Chosen.
  */
+
 (function ($, Drupal) {
   Drupal.behaviors.selectChosen = {
     attach: function (context, setting) {
