@@ -63,12 +63,8 @@ This project is based on BLT, an open-source project template and tool that enab
     ```
 8. Setup a local.blt.yml file
     
-    There is an example version you can copy and modify in the blt directory. Add your Acquia credentials (key/secret) along with the following to get started:
-    ```
-    multisites:
-      - default
-      - 'sitenow.uiowa.edu'
-    ```
+    See "[Local BLT Configuration](#local-blt-configuration)" below for more information.
+    
 9. [Install BLT](https://docs.acquia.com/blt/developer/onboarding/) in case you didn't find it in the getting started section.
     ```
     ./vendor/bin/blt blt:init:shell-alias -y
