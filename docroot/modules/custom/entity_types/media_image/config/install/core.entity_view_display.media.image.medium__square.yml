@@ -2,23 +2,28 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.media.thumbnail
+    - core.entity_view_mode.media.medium__square
     - field.field.media.image.image
-    - image.style.medium
     - media.type.image
+    - responsive_image.styles.medium__square
   module:
-    - image
-id: media.image.thumbnail
+    - layout_builder
+    - responsive_image
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: false
+id: media.image.medium__square
 targetEntityType: media
 bundle: image
-mode: thumbnail
+mode: medium__square
 content:
   image:
-    type: image
+    type: responsive_image
     weight: 0
     label: hidden
     settings:
-      image_style: medium
+      responsive_image_style: medium__square
       image_link: ''
     third_party_settings: {  }
     region: content

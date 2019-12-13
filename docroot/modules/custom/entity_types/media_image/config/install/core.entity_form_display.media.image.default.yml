@@ -7,7 +7,7 @@ dependencies:
     - media.type.image
   module:
     - image
-third_party_settings: {  }
+    - path
 id: media.image.default
 targetEntityType: media
 bundle: image
@@ -29,6 +29,19 @@ content:
       placeholder: ''
     third_party_settings: {  }
     region: content
+  path:
+    type: path
+    weight: 30
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 100
+    region: content
+    third_party_settings: {  }
 hidden:
   created: true
   uid: true
