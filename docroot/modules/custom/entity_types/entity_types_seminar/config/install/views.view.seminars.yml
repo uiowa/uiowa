@@ -669,7 +669,7 @@ display:
           creator_field: uid
           date_field: created
           guid_field_options:
-            guid_field: view_node
+            guid_field: nothing
             guid_field_is_permalink: true
       path: seminars.xml
       displays:
@@ -751,85 +751,15 @@ display:
           entity_type: node
           entity_field: title
           plugin_id: field
-        seminar_date:
-          id: seminar_date
-          table: node__seminar_date
-          field: seminar_date
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: true
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: true
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: false
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: date_recur_basic_formatter
-          settings:
-            format_type: 12hr_long_date
-            occurrence_format_type: 12hr_long_date
-            same_end_date_format_type: 12hr_time
-            separator: '-'
-            timezone_override: ''
-            interpreter: ''
-            show_next: 1
-            count_per_item: true
-          group_column: entity_id
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          plugin_id: field
         seminar_date_value:
           id: seminar_date_value
           table: date_recur__node__seminar_date
           field: seminar_date_value
           relationship: seminar_date_occurrences
-          group_type: count
+          group_type: group
           admin_label: ''
           label: ''
-          exclude: true
+          exclude: false
           alter:
             alter_text: false
             text: ''
@@ -869,67 +799,10 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          set_precision: false
-          precision: 0
-          decimal: .
-          separator: ''
-          format_plural: 0
-          format_plural_string: !!binary MQNAY291bnQ=
-          prefix: ''
-          suffix: ''
-          date_format: small
+          date_format: 12hr_long_date
           custom_date_format: ''
           timezone: ''
           plugin_id: date_recur_date
-        nothing:
-          id: nothing
-          table: views
-          field: nothing
-          relationship: none
-          group_type: group
-          admin_label: '+Additional Dates'
-          label: ''
-          exclude: false
-          alter:
-            alter_text: true
-            text: "{% set additional_dates = seminar_date_value|trim - 1 %}\r\n{% if additional_dates > 0 %}\r\n+{{ additional_dates }} more date(s)\r\n{% endif %}"
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: true
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: views-field-additional-dates
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: false
-          plugin_id: custom
         seminar_location:
           id: seminar_location
           table: node__seminar_location
@@ -962,7 +835,7 @@ display:
             more_link: false
             more_link_text: ''
             more_link_path: ''
-            strip_tags: false
+            strip_tags: true
             trim: false
             preserve_tags: ''
             html: false
@@ -973,7 +846,7 @@ display:
           element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
-          element_default_classes: true
+          element_default_classes: false
           empty: ''
           hide_empty: false
           empty_zero: false
@@ -1246,12 +1119,111 @@ display:
           field: nothing
           relationship: none
           group_type: group
-          admin_label: Description
+          admin_label: 'Custom: Description'
           label: ''
           exclude: false
           alter:
             alter_text: true
-            text: '<div>Date: {{ seminar_date }}{{ nothing }}</div><div>Location: {{ seminar_location }}</div><div>{{ body }}</div>'
+            text: '<div>Date: {{ seminar_date_value }}</div><div>Location: {{ seminar_location }}</div><div>{{ body }}</div>'
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: false
+          plugin_id: custom
+        counter:
+          id: counter
+          table: views
+          field: counter
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          counter_start: 1
+          plugin_id: counter
+        nothing:
+          id: nothing
+          table: views
+          field: nothing
+          relationship: none
+          group_type: group
+          admin_label: 'Custom: GUID'
+          label: ''
+          exclude: true
+          alter:
+            alter_text: true
+            text: '{{ view_node }}#{{ counter }}'
             make_link: false
             path: ''
             absolute: false
@@ -1292,7 +1264,9 @@ display:
       defaults:
         fields: false
         empty: false
+        group_by: false
       empty: {  }
+      group_by: false
     cache_metadata:
       max-age: -1
       contexts:
@@ -1302,7 +1276,6 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.node.body'
-        - 'config:field.storage.node.seminar_date'
         - 'config:field.storage.node.seminar_location'
   page_seminars:
     display_plugin: page
