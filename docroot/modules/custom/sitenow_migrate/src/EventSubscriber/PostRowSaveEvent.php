@@ -88,7 +88,7 @@ class PostRowSaveEvent implements EventSubscriberInterface {
    */
   public function makeEntity($row, $fids) {
     /** @var \Drupal\file\FileInterface $file */
-    $file = $this->entityManager->getStorage('file')->load($fids[0]);
+    $file = $this->entityTypeManager->getStorage('file')->load($fids[0]);
 
     if ($file) {
       $fileType = explode('/', $file->getMimeType())[0];
