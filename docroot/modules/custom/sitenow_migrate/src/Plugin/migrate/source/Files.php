@@ -76,7 +76,7 @@ class Files extends SqlBase {
   }
 
   /**
-   * Prepare Row used for altering source data prior to its insertion into the destination.
+   * Prepare row used for altering source data prior to its insertion.
    */
   public function prepareRow(Row $row) {
     /* Can do extra preparation work here,

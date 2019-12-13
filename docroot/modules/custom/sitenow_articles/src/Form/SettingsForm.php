@@ -2,14 +2,83 @@
 
 namespace Drupal\sitenow_articles\Form;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Path\AliasStorage;
+use Drupal\pathauto\AliasCleanerInterface;
+use Drupal\pathauto\PathautoGenerator;
 use Drupal\views\Entity\View;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Configure UIowa Articles settings for this site.
  */
 class SettingsForm extends ConfigFormBase {
+
+  /**
+   * The alias cleaner.
+   *
+   * @var \Drupal\pathauto\AliasCleanerInterface
+   */
+  protected $aliasCleaner;
+
+  /**
+   * The alias checker.
+   *
+   * @var \Drupal\Core\Path\AliasStorage
+   */
+  protected $aliasStorage;
+
+  /**
+   * The EntityTypeManager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManager
+   */
+  protected $entityTypeManager;
+
+  /**
+   * The PathautoGenerator service.
+   *
+   * @var \Drupal\pathauto\PathautoGenerator
+   */
+  protected $pathAutoGenerator;
+
+  /**
+   * The Constructor.
+   *
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The config factory.
+   * @param \Drupal\pathauto\AliasCleanerInterface $pathauto_alias_cleaner
+   *   The alias cleaner.
+   * @param \Drupal\Core\Path\AliasStorage $aliasStorage
+   *   The alias checker.
+   * @param \Drupal\Core\Entity\EntityTypeManager $entityTypeManager
+   *   The EntityTypeManager service.
+   * @param \Drupal\pathauto\PathautoGenerator $pathAutoGenerator
+   *   The PathautoGenerator service.
+   */
+  public function __construct(ConfigFactoryInterface $config_factory, AliasCleanerInterface $pathauto_alias_cleaner, AliasStorage $aliasStorage, EntityTypeManager $entityTypeManager, PathautoGenerator $pathAutoGenerator) {
+    parent::__construct($config_factory);
+    $this->aliasCleaner = $pathauto_alias_cleaner;
+    $this->aliasStorage = $aliasStorage;
+    $this->entityTypeManager = $entityTypeManager;
+    $this->pathAutoGenerator = $pathAutoGenerator;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('config.factory'),
+      $container->get('pathauto.alias_cleaner'),
+      $container->get('path.alias_storage'),
+      $container->get('entity_type.manager'),
+      $container->get('pathauto.generator')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -22,7 +91,10 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   protected function getEditableConfigNames() {
-    return ['sitenow_articles.settings'];
+    return [
+      'sitenow_articles.settings',
+      'pathauto.pattern.article',
+    ];
   }
 
   /**
@@ -34,6 +106,7 @@ class SettingsForm extends ConfigFormBase {
     $display =& $view->getDisplay('page_articles');
     $archive =& $view->getDisplay('block_articles_archive');
     $feed =& $view->getDisplay('feed_articles');
+
     if ($feed["display_options"]["displays"]["page_articles"] == 'page_articles') {
       $show_feed = 1;
     }
@@ -64,6 +137,7 @@ class SettingsForm extends ConfigFormBase {
       '#title' => 'Settings',
       '#collapsible' => FALSE,
     ];
+
     $form['global']['sitenow_articles_status'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Enable articles listing'),
@@ -71,6 +145,7 @@ class SettingsForm extends ConfigFormBase {
       '#description' => $this->t('If checked, an articles listing will display at the configurable path below.'),
       '#size' => 60,
     ];
+
     $form['global']['sitenow_articles_title'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Articles title'),
@@ -78,6 +153,7 @@ class SettingsForm extends ConfigFormBase {
       '#default_value' => $default['display_options']['title'],
       '#required' => TRUE,
     ];
+
     $form['global']['sitenow_articles_path'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Articles path'),
@@ -85,6 +161,7 @@ class SettingsForm extends ConfigFormBase {
       '#default_value' => $display['display_options']['path'],
       '#required' => TRUE,
     ];
+
     $form['global']['sitenow_articles_header_content'] = [
       '#type' => 'text_format',
       '#format' => 'filtered_html',
@@ -92,6 +169,7 @@ class SettingsForm extends ConfigFormBase {
       '#description' => $this->t('Enter any content that is displayed above the articles listing.'),
       '#default_value' => $default["display_options"]["header"]["area"]["content"]["value"],
     ];
+
     $form['global']['sitenow_articles_archive'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Display monthly archive'),
@@ -99,6 +177,7 @@ class SettingsForm extends ConfigFormBase {
       '#description' => $this->t('If checked, a monthly archive listing will display.'),
       '#size' => 60,
     ];
+
     $form['global']['sitenow_articles_feed'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Show RSS Feed icon'),
@@ -106,11 +185,12 @@ class SettingsForm extends ConfigFormBase {
       '#description' => $this->t('If checked, a linked RSS icon will be displayed.'),
       '#size' => 60,
     ];
+
     if ($view->get('status') == FALSE) {
-      $error_text = $this->t('Related functionality has been turned off. Please contact an administrator.');
-      \Drupal::messenger()->addError($error_text);
+      $this->messenger()->addError($this->t('Related functionality has been turned off. Please contact an administrator.'));
       $form['#disabled'] = TRUE;
     }
+
     return $form;
   }
 
@@ -120,9 +200,11 @@ class SettingsForm extends ConfigFormBase {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // Check if path already exists.
     $path = $form_state->getValue('sitenow_articles_path');
+
     // Clean up path first.
-    $path = \Drupal::service('pathauto.alias_cleaner')->cleanString($path);
-    $path_exists = \Drupal::service('path.alias_storage')->aliasExists('/' . $path, 'en');
+    $path = $this->aliasCleaner->cleanString($path);
+    $path_exists = $this->aliasStorage->aliasExists('/' . $path, 'en');
+
     if ($path_exists) {
       $form_state->setErrorByName('path', $this->t('This path is already in-use.'));
     }
@@ -143,7 +225,7 @@ class SettingsForm extends ConfigFormBase {
     $show_archive = $form_state->getValue('sitenow_articles_archive');;
 
     // Clean path.
-    $path = \Drupal::service('pathauto.alias_cleaner')->cleanString($path);
+    $path = $this->aliasCleaner->cleanString($path);
 
     // Load article listing view.
     $view = View::load('articles');
@@ -151,6 +233,7 @@ class SettingsForm extends ConfigFormBase {
     $feed =& $view->getDisplay('feed_articles');
     $archive =& $view->getDisplay('block_articles_archive');
     $default =& $view->getDisplay('default');
+
     // Enable/Disable view display.
     if ($status == 1) {
       $display["display_options"]["enabled"] = TRUE;
@@ -158,9 +241,11 @@ class SettingsForm extends ConfigFormBase {
     else {
       $display["display_options"]["enabled"] = FALSE;
     }
+
     // Set title.
     $default["display_options"]["title"] = $title;
     $feed["display_options"]["title"] = $title;
+
     // Set validated and clean path.
     $display['display_options']['path'] = $path;
     $feed['display_options']['path'] = $path . '/feed';
@@ -187,16 +272,13 @@ class SettingsForm extends ConfigFormBase {
     $view->save();
 
     // Update article path pattern.
-    $config_factory = \Drupal::configFactory();
-    $config_factory->getEditable('pathauto.pattern.article')->set('pattern', $path . '/[node:created:custom:Y]/[node:created:custom:m]/[node:title]')->save();
+    $this->config('pathauto.pattern.article')->set('pattern', $path . '/[node:created:custom:Y]/[node:created:custom:m]/[node:title]')->save();
 
     // Load and update article node path aliases.
-    $entities = [];
-    $result = \Drupal::entityQuery('node')->condition('type', 'article')->execute();
-    $entity_storage = \Drupal::entityTypeManager()->getStorage('node');
-    $entities = array_merge($entities, $entity_storage->loadMultiple($result));
+    $entities = $this->entityTypeManager->getStorage('node')->loadByProperties(['type' => 'article']);
+
     foreach ($entities as $entity) {
-      \Drupal::service('pathauto.generator')->updateEntityAlias($entity, 'update');
+      $this->pathAutoGenerator->updateEntityAlias($entity, 'update');
     }
 
     parent::submitForm($form, $form_state);
