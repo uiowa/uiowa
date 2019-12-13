@@ -104,7 +104,7 @@ class Articles extends SqlBase {
   }
 
   /**
-   * Prepare Row used for altering source data prior to its insertion into the destination.
+   * Prepare row used for altering source data prior to its insertion.
    */
   public function prepareRow(Row $row) {
     // Determine if the content should be published or not.

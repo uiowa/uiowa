@@ -38,24 +38,24 @@ class People extends SqlBase {
 
   /**
    * {@inheritdoc}
+   *
+   * We are not pulling in the CV at this time--new person node does not have
+   * this. Department is dependent on the department taxonomy, which is not
+   * migrated currently. Type is dependent on the person type taxonomy, which
+   * is not migrated currently.
    */
   public function query() {
     $query = $this->select('node', 'n');
     $query->leftJoin('field_data_field_people_first_name', 'fn', 'n.nid = fn.entity_id');
     $query->leftJoin('field_data_field_people_last_name', 'ln', 'n.nid = ln.entity_id');
     $query->leftJoin('field_data_field_person_bio', 'b', 'n.nid = b.entity_id');
-    // We are not pulling in the CV at this time--new person node does not have this.
-    // $query->join('field_data_field_person_cv', 'cv', 'n.nid = cv.entity_id');
-    // Department is dependent on the department taxonomy, which is not migrated currently.
-    // $query->join('field_data_field_person_department', 'd', 'n.nid = d.entity_id');.
     $query->leftJoin('field_data_field_person_email', 'em', 'n.nid = em.entity_id');
     $query->leftJoin('field_data_field_person_image', 'im', 'n.nid = im.entity_id');
     $query->leftJoin('field_data_field_person_office', 'o', 'n.nid = o.entity_id');
     $query->leftJoin('field_data_field_person_phone', 'ph', 'n.nid = ph.entity_id');
     $query->leftJoin('field_data_field_person_position', 'pos', 'n.nid = pos.entity_id');
-    // Type is dependent on the person type taxonomy, which is not migrated currently.
-    // $query->join('field_data_field_person_type', 't', 'n.nid = t.entity_id');.
     $query->leftJoin('field_data_field_person_website', 'w', 'n.nid = w.entity_id');
+
     $query = $query->fields('n', [
       'nid',
       'title',
@@ -95,6 +95,7 @@ class People extends SqlBase {
         'field_person_website_url',
       ])
       ->condition('n.type', 'people');
+
     return $query;
   }
 
@@ -122,6 +123,7 @@ class People extends SqlBase {
       'field_person_position_value' => $this->t('Person position (open text field)'),
       'field_person_website_url' => $this->t('Person website URL (open text field'),
     ];
+
     return $fields;
   }
 
@@ -138,7 +140,7 @@ class People extends SqlBase {
   }
 
   /**
-   * Prepare Row used for altering source data prior to its insertion into the destination.
+   * Prepare row used for altering source data prior to insertion.
    */
   public function prepareRow(Row $row) {
     // Determine if the content should be published or not.
@@ -191,6 +193,7 @@ class People extends SqlBase {
       $new_summary = preg_replace("|<.*?>|", '', $new_summary);
       $row->setSourceProperty('field_person_bio_summary', $new_summary);
     }
+
     // Call the parent prepareRow.
     return parent::prepareRow($row);
   }
@@ -207,6 +210,7 @@ class People extends SqlBase {
     $result = $query->fields('fmi', ['entity_id'])
       ->condition('f.filename', $filename)
       ->execute();
+
     return $result->fetchAssoc();
   }
 
@@ -217,6 +221,7 @@ class People extends SqlBase {
     $query = $this->select('file_managed', 'f')
       ->fields('f', ['filename'])
       ->condition('f.fid', $fid);
+
     $results = $query->execute();
     return $results->fetchAssoc();
   }
