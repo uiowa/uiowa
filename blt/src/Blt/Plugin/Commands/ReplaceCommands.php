@@ -4,8 +4,6 @@ namespace Sitenow\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\YamlMunge;
-use Acquia\Blt\Robo\Exceptions\BltException;
-use Robo\Exception\TaskException;
 
 /**
  * BLT override commands.
@@ -36,7 +34,7 @@ class ReplaceCommands extends BltTasks {
         $uri = $this->getConfig()->get('site');
 
         if (empty($uri)) {
-          throw new BltException('Cannot determine site directory for installation.');
+          throw new \Exception('Cannot determine site directory for installation.');
         }
 
         $uid = uniqid('admin_');
@@ -65,7 +63,7 @@ class ReplaceCommands extends BltTasks {
           ->run();
 
         if (!$result->wasSuccessful()) {
-          throw new TaskException($this, "Site install task failed for {$uri}.");
+          throw new \Exception("Site install task failed for {$uri}.");
         }
 
         $root = $this->getConfigValue('repo.root');
@@ -84,7 +82,7 @@ class ReplaceCommands extends BltTasks {
             ->run();
 
           if (!$result->wasSuccessful()) {
-            throw new TaskException($this, "Webmaster task failed for {$uri}.");
+            throw new \Exception("Webmaster task failed for {$uri}.");
           }
         }
       }
