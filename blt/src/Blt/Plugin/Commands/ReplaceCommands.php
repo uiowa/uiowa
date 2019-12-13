@@ -35,6 +35,10 @@ class ReplaceCommands extends BltTasks {
         $this->logger->warning("Drupal not installed for <comment>$multisite</comment>. Installing from configuration in sitenow profile....");
         $uri = $this->getConfig()->get('site');
 
+        if (empty($uri)) {
+          throw new BltException('Cannot determine site directory for installation.');
+        }
+
         $uid = uniqid('admin_');
 
         $this->taskDrush()
