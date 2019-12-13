@@ -4,6 +4,8 @@ namespace Sitenow\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\YamlMunge;
+use Acquia\Blt\Robo\Exceptions\BltException;
+use Robo\Exception\TaskException;
 
 /**
  * BLT override commands.
