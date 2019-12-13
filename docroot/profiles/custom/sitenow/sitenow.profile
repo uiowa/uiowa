@@ -31,6 +31,7 @@ function sitenow_preprocess_html(&$variables) {
     ],
   ];
   $variables['page']['#attached']['html_head'][] = [$meta_web_author, 'web-author'];
+  $variables['page']['#attached']['library'][] = 'sitenow/global-scripts';
 }
 
 /**
