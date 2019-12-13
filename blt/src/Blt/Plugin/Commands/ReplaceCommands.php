@@ -41,8 +41,8 @@ class ReplaceCommands extends BltTasks {
 
         $uid = uniqid('admin_');
 
-        $this->taskDrush()
-          ->stopOnFail()
+        $result = $this->taskDrush()
+          ->stopOnFail(TRUE)
           ->drush('site:install')
           ->arg('sitenow')
           ->options([
@@ -51,21 +51,11 @@ class ReplaceCommands extends BltTasks {
             'account-name' => $uid,
             'account-mail' => base64_decode('aXRzLXdlYkB1aW93YS5lZHU='),
           ])
-          ->run();
-
-        // Post-install tasks.
-        // @see: https://www.drupal.org/project/drupal/issues/2982052
-        $this->taskDrush()
-          ->stopOnFail()
           ->drush('user:role:add')
           ->args([
             'administrator',
             $uid,
           ])
-          ->run();
-
-        $this->taskDrush()
-          ->stopOnFail()
           ->drush('config:set')
           ->args([
             'system.site',
@@ -74,25 +64,28 @@ class ReplaceCommands extends BltTasks {
           ])
           ->run();
 
+        if (!$result->wasSuccessful()) {
+          throw new TaskException($this, "Site install task failed for {$uri}.");
+        }
+
         $root = $this->getConfigValue('repo.root');
         $yaml = YamlMunge::parseFile("{$root}/docroot/sites/{$multisite}/blt.yml");
 
-        if (isset($yaml['project'], $yaml['project']['requester'])
-          && !empty($yaml['project']['requester'])) {
-          $this->taskDrush()
-            ->stopOnFail()
+        if (isset($yaml['project'], $yaml['project']['requester']) && !empty($yaml['project']['requester'])) {
+          $result = $this->taskDrush()
+            ->stopOnFail(FALSE)
             ->drush('user:create')
             ->args([$yaml['project']['requester']])
-            ->run();
-
-          $this->taskDrush()
-            ->stopOnFail()
             ->drush('user:role:add')
             ->args([
               'webmaster',
               $yaml['project']['requester'],
             ])
             ->run();
+
+          if (!$result->wasSuccessful()) {
+            throw new TaskException($this, "Webmaster task failed for {$uri}.");
+          }
         }
       }
     }
