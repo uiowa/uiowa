@@ -100,7 +100,7 @@ class PostRowSaveEvent implements EventSubscriberInterface {
           $meta = $row->getSourceProperty('meta');
 
           /** @var \Drupal\Media\MediaInterface $media */
-          $media = $this->entityTypeManagerManager->getStorage('media')->create([
+          $media = $this->entityTypeManager->getStorage('media')->create([
             'bundle' => 'image',
             'field_media_image' => [
               'target_id' => $fids[0],
