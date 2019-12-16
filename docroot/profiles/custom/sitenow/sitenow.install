@@ -159,3 +159,56 @@ function sitenow_update_8012() {
 function sitenow_update_8013() {
   drupal_flush_all_caches();
 }
+
+/**
+ * Move all tags values to field_tags.
+ */
+function sitenow_update_8014(&$sandbox) {
+  if (!isset($sandbox['total'])) {
+    $query = \Drupal::entityQuery('node')
+      ->condition('field_reference', NULL, 'IS NOT NULL')
+      ->execute();
+    $sandbox['total'] = count($query);
+    $sandbox['current'] = 0;
+
+    if (empty($sandbox['total'])) {
+      $sandbox['#finished'] = 1;
+      return;
+    }
+  }
+
+  $nodes_per_batch = 25;
+  $query = \Drupal::entityQuery('node')
+    ->condition('field_reference', NULL, 'IS NOT NULL')
+    ->range($sandbox['current'], $nodes_per_batch)
+    ->execute();
+  if (empty($query)) {
+    $sandbox['#finished'] = 1;
+    return;
+  }
+
+  foreach($query as $nid) {
+    $node = \Drupal\node\Entity\Node::load($nid);
+    $terms = $node->get('field_reference')->getValue();
+    $tags = [];
+    foreach($terms as $tid) {
+      $term = \Drupal\taxonomy\Entity\Term::load($tid['target_id']);
+      $bundle = $term->bundle();
+      if ($bundle == 'tags') {
+        $tags[] = $tid['target_id'];
+      }
+    }
+    $node->set('field_tags', $tags);
+    $node->save();
+    $sandbox['current']++;
+  }
+
+  \Drupal::messenger()
+    ->addMessage($sandbox['current'] . ' nodes processed.');
+
+  if ($sandbox['current'] >= $sandbox['total']) {
+    $sandbox['#finished'] = 1;
+  } else {
+    $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+  }
+}
