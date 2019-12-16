@@ -1,19 +1,19 @@
-uuid: c6cdf35a-aed0-4ba4-bc14-dbfa4d6a59f9
+uuid: f186efbd-34ac-44a8-b29d-f684f91777a5
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.paragraph.field_reference
-    - paragraphs.paragraphs_type.articles
+    - field.storage.node.field_tags
+    - node.type.page
     - taxonomy.vocabulary.tags
-id: paragraph.articles.field_reference
-field_name: field_reference
-entity_type: paragraph
-bundle: articles
-label: 'Filter articles by tag'
-description: ''
+id: node.page.field_tags
+field_name: field_tags
+entity_type: node
+bundle: page
+label: Tags
+description: 'Enter a comma-separated list.'
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
@@ -24,6 +24,6 @@ settings:
     sort:
       field: name
       direction: asc
-    auto_create: false
+    auto_create: true
     auto_create_bundle: ''
 field_type: entity_reference
