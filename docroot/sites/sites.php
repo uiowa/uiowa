@@ -90,3 +90,10 @@ $sites['iowasuperfund.stage.drupal.uiowa.edu'] = 'iowasuperfund.uiowa.edu';
 $sites['iowasuperfund.prod.drupal.uiowa.edu'] = 'iowasuperfund.uiowa.edu';
 $sites['iowasuperfund.uiowa.edu'] = 'iowasuperfund.uiowa.edu';
 
+// Directory aliases for policy.clas.uiowa.edu.
+$sites['claspolicy.uiowa.local.site'] = 'policy.clas.uiowa.edu';
+$sites['claspolicy.dev.drupal.uiowa.edu'] = 'policy.clas.uiowa.edu';
+$sites['claspolicy.stage.drupal.uiowa.edu'] = 'policy.clas.uiowa.edu';
+$sites['claspolicy.prod.drupal.uiowa.edu'] = 'policy.clas.uiowa.edu';
+$sites['policy.clas.uiowa.edu'] = 'policy.clas.uiowa.edu';
+
