@@ -105,7 +105,7 @@ class LayoutBuilderActive extends ConditionPluginBase implements ContainerFactor
     $node = $this->routeMatch->getParameter('node');
 
     if ($node) {
-      $show = $this->isLayoutCompatibleEntity($node);
+      $show = !$this->isLayoutCompatibleEntity($node);
     }
 
     // Handle negation.
