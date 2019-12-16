@@ -120,14 +120,7 @@
   .form-actions,
   .layout-builder__message,
   .form-type-vertical-tabs {
-    margin-right: $gutter;
-    margin-left: $gutter;
-
-    @include breakpoint(container) {
-      position: relative;
-      max-width: 84.375em;
-      margin: 0 auto;
-    }
+    @extend %container;
   }
 }
 

@@ -107,7 +107,7 @@
   }
 
   @else if $class==container {
-    @media (min-width: 84.375em) {
+    @media (min-width: 81.875em) {
       @content;
     }
   }
@@ -192,18 +192,21 @@
   }
 }
 
-%container {
-  max-width: 84.375em;
+%container  {
+  margin: 0 $gutter;
+  position: relative;
+     @include breakpoint(container) {
+       max-width: 81.875em;
+       margin: 0 auto;
+     }
+}
+/*
+@mixin container {
+  max-width: 81.875em
   margin: 0 auto;
   position: relative;
-  //@include padding($top: 0, $right: $lg, $bottom: 0, $left: $lg);
-  /*@include breakpoint(sm) {
-    padding: 0;
-  }
-  */
 }
-
-
+*/
 /*
 %shadow {
   box-shadow: 0 0 2px 0 rgba($med-gray, 1);
