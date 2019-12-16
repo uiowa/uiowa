@@ -31,6 +31,7 @@ function sitenow_preprocess_html(&$variables) {
     ],
   ];
   $variables['page']['#attached']['html_head'][] = [$meta_web_author, 'web-author'];
+  $variables['page']['#attached']['library'][] = 'sitenow/global-scripts';
 }
 
 /**
@@ -394,6 +395,19 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         $form["properties"]["markup"]["message_id"]['#access'] = FALSE;
       }
       break;
+  }
+  // Temporary restriction for field_tags on Page and Article CT's.
+  switch ($form_id) {
+    case 'node_page_edit_form':
+    case 'node_page_form':
+    case 'node_article_edit_form':
+    case 'node_article_form':
+    
+    if (isset($form['field_tags'])) {
+      $form['field_tags']['#access'] = false;
+    }
+
+    break;
   }
 }
 

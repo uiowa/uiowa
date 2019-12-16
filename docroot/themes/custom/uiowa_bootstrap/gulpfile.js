@@ -1,4 +1,8 @@
-// Include gulp.
+/**
+ * @file
+ * Include gulp.
+ */
+
 var gulp = require('gulp');
 var config = require('./config.json');
 
@@ -11,7 +15,7 @@ var glob = require('gulp-sass-glob');
 var sourcemaps = require('gulp-sourcemaps');
 
 // CSS.
-gulp.task('css', function() {
+gulp.task('css', function () {
   return gulp.src(config.css.src)
     .pipe(glob())
     .pipe(plumber({
@@ -21,7 +25,7 @@ gulp.task('css', function() {
           subtitle: "Failure!",
           message:  "Error: <%= error.message %>",
           sound:    "Beep"
-        }) (error);
+        })(error);
         this.emit('end');
       }}))
     .pipe(sourcemaps.init())
@@ -35,8 +39,8 @@ gulp.task('css', function() {
     .pipe(gulp.dest(config.css.dest));
 });
 
-// JS
-gulp.task('js', function() {
+// JS.
+gulp.task('js', function () {
   return gulp.src(config.js.src)
     .pipe(sourcemaps.init())
     .pipe(plumber({
@@ -46,17 +50,17 @@ gulp.task('js', function() {
           subtitle: "Failure!",
           message:  "Error: <%= error.message %>",
           sound:    "Beep"
-        }) (error);
+        })(error);
         this.emit('end');
       }}))
     .pipe(gulp.dest(config.js.dest));
 });
 
-// Static Server + Watch
-gulp.task('serve', ['css', 'js'], function() {
+// Static Server + Watch.
+gulp.task('serve', ['css', 'js'], function () {
   gulp.watch(config.css.src, ['css']);
   gulp.watch(config.js.src, ['js']);
 });
 
-// Default Task
+// Default Task.
 gulp.task('default', ['serve']);
