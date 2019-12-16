@@ -221,4 +221,3 @@ Our BLT Developer documentation includes an [example workflow](https://docs.acqu
 
 * GitHub - https://github.com/uiowa/uiowa
 * Acquia Cloud subscription - https://cloud.acquia.com/app/develop/applications/6bcc006f-9a0e-425e-aba0-198585dd2b56
-End
