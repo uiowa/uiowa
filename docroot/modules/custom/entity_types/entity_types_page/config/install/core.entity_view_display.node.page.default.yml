@@ -8,15 +8,29 @@ dependencies:
     - layout_builder
     - text
     - user
+id: node.page.default
+targetEntityType: node
+bundle: page
+mode: default
 third_party_settings:
   layout_builder:
     allow_custom: true
     enabled: true
     sections:
-      -
-        layout_id: layout_onecol
+      - layout_id: layout_onecol
         layout_settings: {  }
         components:
+          8a8d495a-6910-4c9b-99a6-126836579b86:
+            uuid: 8a8d495a-6910-4c9b-99a6-126836579b86
+            region: content
+            configuration:
+              id: system_breadcrumb_block
+              label: Breadcrumbs
+              provider: system
+              label_display: '0'
+              context_mapping: {  }
+            additional: {  }
+            weight: 0
           4d79e741-a62a-4949-9bd9-566c102f9a3c:
             uuid: 4d79e741-a62a-4949-9bd9-566c102f9a3c
             region: content
@@ -35,20 +49,8 @@ third_party_settings:
                 entity: layout_builder.entity
             additional: {  }
             weight: 1
-          8a8d495a-6910-4c9b-99a6-126836579b86:
-            uuid: 8a8d495a-6910-4c9b-99a6-126836579b86
-            region: content
-            configuration:
-              id: system_breadcrumb_block
-              label: Breadcrumbs
-              provider: system
-              label_display: '0'
-              context_mapping: {  }
-            additional: {  }
-            weight: 0
         third_party_settings: {  }
-      -
-        layout_id: layout_onecol
+      - layout_id: layout_onecol
         layout_settings: {  }
         components:
           eece7031-5478-448d-bf0c-2a58a8f3a77e:
@@ -85,10 +87,6 @@ third_party_settings:
         - layout_twocol
         - layout_threecol
         - layout_fourcol
-id: node.page.default
-targetEntityType: node
-bundle: page
-mode: default
 content:
   body:
     label: hidden
