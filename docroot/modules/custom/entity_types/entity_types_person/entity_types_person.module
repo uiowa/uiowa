@@ -59,29 +59,6 @@ function entity_types_person_page_attachments(array &$attachments) {
 }
 
 /**
- * Implements hook_theme().
- */
-function entity_types_person_theme(array $variables) {
-  $theme = [];
-
-  $theme['node__person'] = [
-    'render element' => 'content',
-    'base hook' => 'node',
-    'template' => 'node--person',
-    'path' => drupal_get_path('module', 'entity_types_person') . '/templates',
-  ];
-
-  $theme['node__person__teaser'] = [
-    'render element' => 'content',
-    'base hook' => 'node',
-    'template' => 'node--person--teaser',
-    'path' => drupal_get_path('module', 'entity_types_person') . '/templates',
-  ];
-
-  return $theme;
-}
-
-/**
  * Implements hook_form_FORM_ID_alter().
  */
 function entity_types_person_form_node_form_alter(&$form, FormStateInterface &$form_state, $form_id) {
