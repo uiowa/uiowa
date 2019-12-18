@@ -192,35 +192,14 @@
   }
 }
 
-%container {
-  max-width: 84.375em;
-  margin: 0 auto;
+%container  {
+  margin: 0 $gutter;
   position: relative;
-  //@include padding($top: 0, $right: $lg, $bottom: 0, $left: $lg);
-  /*@include breakpoint(sm) {
-    padding: 0;
-  }
-  */
+     @include breakpoint(container) {
+       max-width: 81.875em;
+       margin: 0 auto;
+     }
 }
-
-
-/*
-%shadow {
-  box-shadow: 0 0 2px 0 rgba($med-gray, 1);
-}
-
-%shadow-none {
-  box-shadow: none;
-}
-
-%blocked-style {
-  border: 1px solid $white;
-  padding: 12px;
-  border-radius: 5px;
-  background: $off-white;
-  @extend %shadow;
-}
-*/
 
 // Font Smoothing ///////////////
 %font-smoothing-on {
