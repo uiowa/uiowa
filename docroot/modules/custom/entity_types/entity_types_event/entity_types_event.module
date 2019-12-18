@@ -54,26 +54,3 @@ function entity_types_event_help($route_name, RouteMatchInterface $route_match) 
 function entity_types_event_page_attachments(array &$attachments) {
   $attachments['#attached']['library'][] = 'entity_types_event/entity_types_event_styling';
 }
-
-/**
- * Implements hook_theme().
- */
-function entity_types_event_theme(array $variables) {
-  $theme = [];
-
-  $theme['node__event'] = [
-    'render element' => 'content',
-    'base hook' => 'node',
-    'template' => 'node--event',
-    'path' => drupal_get_path('module', 'entity_types_event') . '/templates',
-  ];
-
-  $theme['node__event__teaser'] = [
-    'render element' => 'content',
-    'base hook' => 'node',
-    'template' => 'node--event--teaser',
-    'path' => drupal_get_path('module', 'entity_types_event') . '/templates',
-  ];
-
-  return $theme;
-}

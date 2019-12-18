@@ -54,26 +54,3 @@ function entity_types_article_help($route_name, RouteMatchInterface $route_match
 function entity_types_article_page_attachments(array &$attachments) {
   $attachments['#attached']['library'][] = 'entity_types_article/entity_types_article_styling';
 }
-
-/**
- * Implements hook_theme().
- */
-function entity_types_article_theme(array $variables) {
-  $theme = [];
-
-  $theme['node__article'] = [
-    'render element' => 'content',
-    'base hook' => 'node',
-    'template' => 'node--article',
-    'path' => drupal_get_path('module', 'entity_types_article') . '/templates',
-  ];
-
-  $theme['node__article__teaser'] = [
-    'render element' => 'content',
-    'base hook' => 'node',
-    'template' => 'node--article--teaser',
-    'path' => drupal_get_path('module', 'entity_types_article') . '/templates',
-  ];
-
-  return $theme;
-}
