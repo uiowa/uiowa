@@ -164,6 +164,7 @@ function sitenow_update_8013() {
  * Move all tags values to field_tags.
  */
 function sitenow_update_8014(&$sandbox) {
+  // Process all nodes that have a filled field_reference.
   if (!isset($sandbox['total'])) {
     $query = \Drupal::entityQuery('node')
       ->condition('field_reference', NULL, 'IS NOT NULL')
@@ -176,11 +177,11 @@ function sitenow_update_8014(&$sandbox) {
       return;
     }
   }
-
+  // Loop through the same nodes in batches.
   $nodes_per_batch = 25;
   $query = \Drupal::entityQuery('node')
     ->condition('field_reference', NULL, 'IS NOT NULL')
-    ->range($sandbox['current'], $nodes_per_batch)
+    ->range($sandbox['current'], $sandbox['current'] + $nodes_per_batch)
     ->execute();
   if (empty($query)) {
     $sandbox['#finished'] = 1;
@@ -189,17 +190,31 @@ function sitenow_update_8014(&$sandbox) {
 
   foreach($query as $nid) {
     $node = \Drupal\node\Entity\Node::load($nid);
+    // Get and load taxonomy values from field_reference.
     $terms = $node->get('field_reference')->getValue();
     $tags = [];
+    $other_terms = [];
     foreach($terms as $tid) {
       $term = \Drupal\taxonomy\Entity\Term::load($tid['target_id']);
       $bundle = $term->bundle();
+      // Split values into tags and others.
       if ($bundle == 'tags') {
         $tags[] = $tid['target_id'];
       }
+      else {
+        $other_terms[] = $tid['target_id'];
+      }
     }
-    $node->set('field_tags', $tags);
-    $node->save();
+    // Only save if something is changing.
+    if (!empty($tags)) {
+      // Save field_reference with any remaining terms. Should be hr.uiowa.edu only.
+      $node->set('field_reference', $other_terms);
+      // Move the tags to field_tags.
+      $node->set('field_tags', $tags);
+      // Set revision message and save.
+      $node->setRevisionLogMessage('Automated Save: Moved terms.');
+      $node->save();
+    }
     $sandbox['current']++;
   }
 
