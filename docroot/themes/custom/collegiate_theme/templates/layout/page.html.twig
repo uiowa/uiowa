@@ -88,7 +88,7 @@
 
     {% set heading_id = attributes.id ~ '-menu'|clean_id %}
     <nav role="navigation" aria-label="main navigation"
-{{ attributes.addClass(navbar_classes, 'header__container', 'navbar--main', 'block-menu')|without('role', 'aria-labelledby') }}>
+{{ attributes.addClass(navbar_classes, 'navbar--main', 'block-menu').removeClass('header__container')|without('role', 'aria-labelledby') }}>
         {{ page.primary_menu }}
     </nav>
   </div>
