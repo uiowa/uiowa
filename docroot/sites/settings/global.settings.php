@@ -5,6 +5,7 @@
  * Global settings for every multisite.
  */
 
+use Drupal\Core\Installer\InstallerKernel;
 use Sitenow\Multisite;
 
 /**
@@ -40,7 +41,7 @@ if (isset($config_directories['vcs'])) {
 }
 
 // Require site installs through the CLI.
-if (drupal_installation_attempted() && php_sapi_name() != 'cli') {
+if (InstallerKernel::installationAttempted() && php_sapi_name() != 'cli') {
   exit;
 }
 
