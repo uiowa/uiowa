@@ -22,7 +22,7 @@
             font-family: 'Helvetica Neue','Arial',sans-serif;\
             font-weight: 200;\
             background-color: rgba(255,255,255,1);\
-            padding: 10px;\
+            padding: 10px 10px 0px 10px;\
             display: block;\
             border-radius: 3px 3px 0px 0px;\
           ";
@@ -34,7 +34,7 @@
             font-family: 'Helvetica Neue','Arial',sans-serif;\
             font-weight: 400;\
             background-color: rgba(255,255,255,1);\
-            padding: 10px;\
+            padding: 0px 10px 10px 10px;\
             display: block;\
             border-radius: 0px 0px 3px 3px;\
           ";
