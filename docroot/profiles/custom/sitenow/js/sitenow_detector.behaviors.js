@@ -21,8 +21,10 @@
             font-size: 1.5rem;\
             font-family: 'Helvetica Neue','Arial',sans-serif;\
             font-weight: 200;\
-            background-color: rgba(255,255,255,0.75);\
+            background-color: rgba(255,255,255,1);\
             padding: 10px;\
+            display: block;\
+            border-radius: 3px 3px 0px 0px;\
           ";
 
           // This styles the second line of the log.
@@ -31,8 +33,10 @@
             font-size: 1rem;\
             font-family: 'Helvetica Neue','Arial',sans-serif;\
             font-weight: 400;\
-            background-color: rgba(255,255,255,0.75);\
+            background-color: rgba(255,255,255,1);\
             padding: 10px;\
+            display: block;\
+            border-radius: 0px 0px 3px 3px;\
           ";
 
           // This prints the message.
