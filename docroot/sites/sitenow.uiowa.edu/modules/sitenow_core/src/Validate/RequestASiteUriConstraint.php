@@ -26,6 +26,20 @@ class RequestASiteUriConstraint {
 
     $url = parse_url($value);
 
+    // Set Error if URL contains www.
+    // if(preg_match('/www\./', $url['host'])) {
+    //   return $formState->setError(
+    //     $element,
+    //     t('URL @value must not contain "www"', [
+    //       '@value' => $value,
+    //     ])
+    //   );;
+    // }
+    return $formState->setError(
+      $element,
+      t($url['host'])
+    );;
+
     foreach (['port', 'user', 'pass', 'path', 'query', 'fragment'] as $invalid) {
       if (isset($url[$invalid])) {
         $extra = '';
