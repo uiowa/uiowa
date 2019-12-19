@@ -22,9 +22,11 @@
             font-family: 'Helvetica Neue','Arial',sans-serif;\
             font-weight: 200;\
             background-color: rgba(255,255,255,1);\
-            padding: 10px 10px 0px 10px;\
-            display: block;\
-            border-radius: 3px 3px 0px 0px;\
+            padding: 10px 10px 10px 10px;\
+            position: relative;\
+            z-index: 100;\
+            border-radius: 3px;\
+            margin-top: 20px;\
           ";
 
           // This styles the second line of the log.
@@ -34,13 +36,15 @@
             font-family: 'Helvetica Neue','Arial',sans-serif;\
             font-weight: 400;\
             background-color: rgba(255,255,255,1);\
-            padding: 0px 10px 10px 10px;\
-            display: block;\
-            border-radius: 0px 0px 3px 3px;\
+            padding: 10px 10px 10px 10px;\
+            margin: -14px 0px 20px 0px;\
+            position: relative;\
+            z-index: 99;\
+            border-radius: 3px;\
           ";
 
           // This prints the message.
-          console.log("%c" + sitenow_message_line_1 + "%c\n%c" + sitenow_message_line_2, sitenow_message_style_1, 'padding:0px;', sitenow_message_style_2);
+          console.log("%c" + sitenow_message_line_1 + "%c\n%c " + sitenow_message_line_2, sitenow_message_style_1, 'padding:0px;', sitenow_message_style_2);
         });
       }
     };
