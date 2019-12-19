@@ -32,7 +32,7 @@ if ($site_dir != 'default') {
  * This HAS to come after the above database snippet to override correctly.
  */
 $blt_override_config_directories = FALSE;
-$config_directories[CONFIG_SYNC_DIRECTORY] = DRUPAL_ROOT . '/profiles/custom/sitenow/config/sync';
+$settings['config_sync_directory'] = DRUPAL_ROOT . '/profiles/custom/sitenow/config/sync';
 
 // Unset the VCS config directory so cim/cex default to sync.
 if (isset($config_directories['vcs'])) {
