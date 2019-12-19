@@ -21,6 +21,8 @@
             font-size: 1.5rem;\
             font-family: 'Helvetica Neue','Arial',sans-serif;\
             font-weight: 200;\
+            background-color: rgba(255,255,255,0.75);\
+            padding: 10px;\
           ";
 
           // This styles the second line of the log.
@@ -29,10 +31,12 @@
             font-size: 1rem;\
             font-family: 'Helvetica Neue','Arial',sans-serif;\
             font-weight: 400;\
+            background-color: rgba(255,255,255,0.75);\
+            padding: 10px;\
           ";
 
           // This prints the message.
-          console.log("%c" + sitenow_message_line_1 + "\n%c " + sitenow_message_line_2 + " ", sitenow_message_style_1, sitenow_message_style_2);
+          console.log("%c" + sitenow_message_line_1 + "%c\n%c" + sitenow_message_line_2, sitenow_message_style_1, 'padding:0px;', sitenow_message_style_2);
         });
       }
     };
