@@ -12,12 +12,8 @@ use Drupal\Core\Entity\EntityDisplayRepositoryInterface;
  */
 function uiowa_book_install() {
   // Alter the core.entity_form_display.node.book.default.yml file.
-  /* Use the following for Drupal 8.8.0+:
-   *
-   * \Drupal::service('entity_display.repository')
-   * ->getFormDisplay('node', 'book', 'default')
-   */
-  entity_get_form_display('node', 'book', 'default')
+  \Drupal::service('entity_display.repository')
+    ->getFormDisplay('node', 'book', 'default')
     ->setComponent('body', [
       'type' => 'text_textarea_with_summary',
       'weight' => 7,
@@ -41,12 +37,8 @@ function uiowa_book_install() {
     ->save();
 
   // Alter the core.entity_view_display.node.book.default.yml file.
-  /* Use the following for Drupal 8.8.0+:
-   *
-   * \Drupal::service('entity_display.repository')
-   * ->getViewDisplay('node', 'book', 'default')
-   */
-  entity_get_display('node', 'book', 'default')
+  \Drupal::service('entity_display.repository')
+    ->getViewDisplay('node', 'book', 'default')
     ->setComponent('body', [
       'label' => 'hidden',
       'type' => 'text_default',
@@ -78,12 +70,8 @@ function uiowa_book_install() {
     ->save();
 
   // Alter the core.entity_view_display.node.book.teaser.yml file.
-  /* Use the following for Drupal 8.8.0+:
-   *
-   * \Drupal::service('entity_display.repository')
-   * ->getViewDisplay('node', 'book', 'teaser')
-   */
-  entity_get_display('node', 'book', 'teaser')
+  \Drupal::service('entity_display.repository')
+    ->getViewDisplay('node', 'book', 'teaser')
     ->removeComponent('book_amended_date')
     ->removeComponent('book_owner')
     ->removeComponent('book_tags')
