@@ -5,7 +5,10 @@
   &--full {
  @include breakpoint(sm) {
    @include flexbox;
-   @include padding($top: 0, $right: $lg, $bottom: 0, $left: $lg);
+   @include padding($top: 0, $right: $gutter, $bottom: 0, $left: $gutter);
+   .site-header__left & {
+     display: block;
+   }
   }
 }
   @include breakpoint(sm) {
@@ -38,3 +41,4 @@ header {
 .black {
   background: $blk;
 }
+
