@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: bands.uiowa.edu
+    protocol: https
+  machine_name: bands
+  human_name: bands.uiowa.edu
+  requester: ewbush
+drush:
+  aliases:
+    local: self
+    remote: bands.prod
+drupal:
+  db:
+    database: bands_uiowa_edu
+    host: localhost
+    user: root
+    password: null

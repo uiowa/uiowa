@@ -7,7 +7,6 @@ use AcquiaCloudApi\CloudApi\Client;
 use AcquiaCloudApi\CloudApi\Connector;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
-use Drush\Exceptions\UserAbortException;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 use Sitenow\Multisite;
@@ -110,7 +109,7 @@ class MultisiteCommands extends BltTasks {
 
     $this->printArrayAsTable($properties);
     if (!$this->confirm("The cloud properties above will be deleted. Are you sure?", FALSE)) {
-      throw new UserAbortException();
+      throw new \Exception('Aborted.');
     }
     else {
       /** @var \AcquiaCloudApi\CloudApi\Client $cloud */

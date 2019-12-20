@@ -8,6 +8,7 @@
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\Component\Utility\Xss;
+use GuzzleHttp\Exception\RequestException;
 
 /**
  * Set dynamic allowed values for the alignment field.
@@ -88,7 +89,7 @@ function _sitenow_events_get_filter_options() {
         ->get($endpoint, ['headers' => ['Accept' => 'text/plain']]);
       $data = (string) $response->getBody();
       if (empty($data)) {
-        drupal_set_message(t('Empty response.'));
+        \Drupal::messenger()->addError(t('Empty response.'));
       }
       else {
         $results = json_decode($data, TRUE);
@@ -221,7 +222,8 @@ function sitenow_events_load(array $params = ['display_id' => 'events'], array $
     // If cache is not set to TRUE.
     if ($cache !== FALSE) {
       // Create a cache item set to 15 minutes.
-      \Drupal::cache('uievents')->set($endpoint, $events, REQUEST_TIME + (60 * 15));
+      $request_time = \Drupal::time()->getRequestTime();
+      \Drupal::cache('uievents')->set($endpoint, $events, $request_time + (60 * 15));
     }
   }
   // Return an array of events with optional params.

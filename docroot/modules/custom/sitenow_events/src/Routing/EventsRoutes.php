@@ -2,12 +2,41 @@
 
 namespace Drupal\sitenow_events\Routing;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Route;
 
 /**
  * Defines a dynamic path based off of the redirect uri variable.
  */
-class EventsRoutes {
+class EventsRoutes implements ContainerInjectionInterface {
+
+  /**
+   * The Config.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $config;
+
+  /**
+   * Class constructor.
+   *
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The config factory interface service.
+   */
+  public function __construct(ConfigFactoryInterface $config_factory) {
+    $this->config = $config_factory->get('sitenow_events.settings');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('config.factory')
+    );
+  }
 
   /**
    * Returns an array of route objects.
@@ -18,7 +47,7 @@ class EventsRoutes {
   public function routes() {
     $routes = [];
 
-    $path = \Drupal::config('sitenow_events.settings')->get('sitenow_events.single_event_path')?: 'event';
+    $path = $this->config->get('sitenow_events.single_event_path') ?: 'event';
 
     $routes['sitenow_events.single_controller.' . $path] = new Route(
       $path . '/{event_id}/{event_instance}',

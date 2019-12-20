@@ -1,4 +1,3 @@
-uuid: 916bac9e-3d2b-4d5c-862f-6cf053ba01f1
 langcode: en
 status: open
 dependencies: {  }
@@ -12,7 +11,7 @@ id: request_a_site
 title: 'Request a Site'
 description: 'SiteNow site request form.'
 category: ''
-elements: "hawkid:\n  '#type': textfield\n  '#title': HawkID\n  '#description': 'Your HawkID will be granted webmaster access to the site.'\n  '#required': true\n  '#default_value': '[current-user:name]'\nemail:\n  '#type': email\n  '#title': Email\n  '#description': 'Your email address will be used for all communications related to this request.'\n  '#required': true\n  '#default_value': '[current-user:mail]'\ndepartment_organization:\n  '#type': textfield\n  '#title': Department/organization\n  '#description': 'The department or organization this site belongs to.'\n  '#required': true\nrequest_type:\n  '#type': radios\n  '#title': 'Request type'\n  '#description': '<a href=\"/node/31#sub-directory\">Sub-directory websites</a> (uiowa.edu/<em>sitename</em>) are no longer allowed so please select either New or Consultation.'\n  '#options':\n    New: 'New -- This is a new SiteNow site.'\n    Existing: 'Existing -- I have an existing site. (Not a sub-directory website)'\n    Consultation: 'Consultation -- I would like a consultation regarding another option.'\n  '#required': true\nurl_pattern:\n  '#type': select\n  '#title': 'URL Pattern'\n  '#description': 'The * character indicates the part of the URL you can customize.&nbsp;'\n  '#help_title': Help\n  '#help': 'The URL must not contain more subdomains than indicated by the pattern. For example, https://foo.org.uiowa.edu is valid but https://foo.bar.org.uiowa.edu is invalid.'\n  '#options':\n    '*.conference.uiowa.edu': '*.conference.uiowa.edu'\n    '*.org.uiowa.edu': '*.org.uiowa.edu'\n    '*.lab.uiowa.edu': '*.lab.uiowa.edu'\n    '*.course.uiowa.edu': '*.course.uiowa.edu'\n    '*.studio.uiowa.edu': '*.studio.uiowa.edu'\n    '*.sites.uiowa.edu': '*.sites.uiowa.edu'\n  '#required': true\n  '#states':\n    visible:\n      ':input[name=\"request_type\"]':\n        value: New\nuri:\n  '#type': url\n  '#title': URL\n  '#description': 'The site URL.'\n  '#help_title': Help\n  '#help': 'URL stands for Uniform Resource Locator and is&nbsp;commonly used to reference web pages. It typically starts with http:// or https://.'\n  '#required': true\n  '#states':\n    visible:\n      - ':input[name=\"request_type\"]':\n          value: New\n      - or\n      - ':input[name=\"request_type\"]':\n          value: Existing\nadditional_comments_or_questions:\n  '#type': textarea\n  '#title': 'Comments or questions'\n  '#states':\n    required:\n      ':input[name=\"request_type\"]':\n        value: Consultation\nactions:\n  '#type': webform_actions\n  '#title': 'Submit button(s)'\n  '#submit__attributes':\n    class:\n      - 'btn btn-primary'\nurl_host:\n  '#type': hidden\n  '#title': 'URL host'\nurl_internal_production:\n  '#type': hidden\n  '#title': 'URL internal production'\nmarkup:\n  '#type': webform_markup\n  '#private': true\n  '#display_on': view\n  '#markup': 'blt sitenow:multisite:create [webform_submission:values:url_host] [webform_submission:values:hawkid]'"
+elements: "hawkid:\n  '#type': textfield\n  '#title': HawkID\n  '#description': 'Your HawkID will be granted webmaster access to the site.'\n  '#required': true\n  '#default_value': '[current-user:name]'\nemail:\n  '#type': email\n  '#title': Email\n  '#description': 'Your email address will be used for all communications related to this request.'\n  '#required': true\n  '#default_value': '[current-user:mail]'\ndepartment_organization:\n  '#type': textfield\n  '#title': Department/organization\n  '#description': 'The department or organization this site belongs to.'\n  '#required': true\nrequest_type:\n  '#type': radios\n  '#title': 'Domain type'\n  '#description': |\n    <blockquote>See our <a href=\"/node/31\">policies page</a> for more information regarding domains.</blockquote>\n    \n    <blockquote><strong>Note: </strong>All requested URLs must adhere to the <a href=\"https://itsecurity.uiowa.edu/domain-name-policy\">University of Iowa domain name policy</a>.</blockquote>\n  '#options':\n    New: 'New pre-approved domain -- I want a new pre-approved domain. University of Iowa Hostmaster has pre-approved the following domains for use with the SiteNow service: *.conference.uiowa.edu, *.lab.uiowa.edu, *.org.uiowa.edu, *.studio.uiowa.edu, *.course.uiowa.edu, *.sites.uiowa.edu'\n    Existing: 'Existing domain -- I want to keep my existing domain. Sub-directory websites (uiowa.edu/sitename) are no longer allowed.'\n    Approval: 'Seek approval for alternative domain -- I would like to seek approval from UI Hostmaster for a different domain.'\n  '#options_description_display': help\nurl_pattern:\n  '#type': select\n  '#title': 'URL Pattern'\n  '#description': 'The * character indicates the part of the URL you can customize.&nbsp;'\n  '#help_title': Help\n  '#help': 'The URL must not contain more subdomains than indicated by the pattern. For example, https://foo.org.uiowa.edu is valid but https://foo.bar.org.uiowa.edu is invalid.'\n  '#options':\n    '*.conference.uiowa.edu': '*.conference.uiowa.edu'\n    '*.org.uiowa.edu': '*.org.uiowa.edu'\n    '*.lab.uiowa.edu': '*.lab.uiowa.edu'\n    '*.course.uiowa.edu': '*.course.uiowa.edu'\n    '*.studio.uiowa.edu': '*.studio.uiowa.edu'\n    '*.sites.uiowa.edu': '*.sites.uiowa.edu'\n  '#required': true\n  '#states':\n    visible:\n      ':input[name=\"request_type\"]':\n        value: New\nuri:\n  '#type': url\n  '#title': URL\n  '#description': 'The site URL.'\n  '#help_title': Help\n  '#help': 'URL stands for Uniform Resource Locator and is&nbsp;commonly used to reference web pages. It typically starts with http:// or https://.'\n  '#required': true\n  '#states':\n    visible:\n      - ':input[name=\"request_type\"]':\n          value: New\n      - or\n      - ':input[name=\"request_type\"]':\n          value: Existing\n      - or\n      - ':input[name=\"request_type\"]':\n          value: Approval\nadditional_comments_or_questions:\n  '#type': textarea\n  '#title': 'Comments or questions'\n  '#description': 'Enter any questions or comments you have regarding this site request.'\n  '#states':\n    required:\n      ':input[name=\"request_type\"]':\n        value: Approval\nactions:\n  '#type': webform_actions\n  '#title': 'Submit button(s)'\n  '#submit__attributes':\n    class:\n      - 'btn btn-primary'\nurl_host:\n  '#type': hidden\n  '#title': 'URL host'\nurl_internal_production:\n  '#type': hidden\n  '#title': 'URL internal production'\nmarkup:\n  '#type': webform_markup\n  '#private': true\n  '#display_on': view\n  '#markup': 'blt sitenow:multisite:create [webform_submission:values:url_host] [webform_submission:values:hawkid]'"
 css: ''
 javascript: ''
 settings:
@@ -80,6 +79,7 @@ settings:
   wizard_progress_pages: false
   wizard_progress_percentage: false
   wizard_progress_link: false
+  wizard_progress_states: false
   wizard_start_label: ''
   wizard_preview_link: false
   wizard_confirmation: true
@@ -127,6 +127,7 @@ settings:
   purge_days: null
   results_disabled: false
   results_disabled_ignore: false
+  token_view: false
   token_update: false
 access:
   create:
@@ -217,6 +218,7 @@ handlers:
       sender_mail: ''
       sender_name: ''
       theme_name: ''
+      parameters: {  }
   site_created_email_url_internal_production:
     id: email
     label: 'Site Created Email - URL internal production'
@@ -250,6 +252,7 @@ handlers:
       sender_mail: ''
       sender_name: ''
       theme_name: ''
+      parameters: {  }
   confirmation_email:
     id: email
     label: 'Confirmation Email'
@@ -284,6 +287,7 @@ handlers:
       sender_mail: ''
       sender_name: ''
       theme_name: ''
+      parameters: {  }
   form_submission_email:
     id: email
     label: 'Form Submission Email'
@@ -318,6 +322,7 @@ handlers:
       sender_mail: ''
       sender_name: ''
       theme_name: ''
+      parameters: {  }
   hostmaster_email_pre_approved_url:
     id: email
     label: 'Hostmaster Email - Pre-approved URL'
@@ -351,6 +356,7 @@ handlers:
       sender_mail: ''
       sender_name: ''
       theme_name: ''
+      parameters: {  }
   hostmaster_email_top_level_url:
     id: email
     label: 'Hostmaster Email - Top level URL'
@@ -384,6 +390,7 @@ handlers:
       sender_mail: ''
       sender_name: ''
       theme_name: ''
+      parameters: {  }
   customer_email_url_adjusted:
     id: email
     label: 'Customer Email - URL adjusted'
@@ -417,3 +424,5 @@ handlers:
       sender_mail: ''
       sender_name: ''
       theme_name: ''
+      parameters: {  }
+uuid: 916bac9e-3d2b-4d5c-862f-6cf053ba01f1

@@ -21,7 +21,10 @@ class MigrateSettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   protected function getEditableConfigNames() {
-    return ['migrate_plus.migration_group.sitenow_migrate', 'migrate_plus.migration.d7_file'];
+    return [
+      'migrate_plus.migration_group.sitenow_migrate',
+      'migrate_plus.migration.d7_file',
+    ];
   }
 
   /**
@@ -50,6 +53,7 @@ class MigrateSettingsForm extends ConfigFormBase {
       '#default_value' => $migrate_group_sitenow_migrate_config->get('shared_configuration.source.database.database'),
       '#required' => TRUE,
     ];
+
     $form['files'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('File Settings'),
@@ -70,21 +74,15 @@ class MigrateSettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-
-    parent::validateForm($form, $form_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    \Drupal::configFactory()->getEditable('migrate_plus.migration_group.sitenow_migrate')
+    $this->config('migrate_plus.migration_group.sitenow_migrate')
       ->set('shared_configuration.source.database.database', $form_state->getValue('sitenow_migrate_database_name'))
       ->save();
-    \Drupal::configFactory()->getEditable('migrate_plus.migration.d7_file')
+
+    $this->config('migrate_plus.migration.d7_file')
       ->set('source.constants.SOURCE_BASE_PATH', $form_state->getValue('sitenow_migrate_file_path'))
       ->save();
+
     parent::submitForm($form, $form_state);
   }
 

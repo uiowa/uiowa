@@ -86,8 +86,8 @@ class Pages extends SqlBase {
       'tnid' => $this->t('Translation ID'),
       'translate' => $this->t('Page being translated?'),
       'body_value' => $this->t('The actual body text being migrated'),
-      'body_summary' => $this->t('The page\'s summary test'),
-      'body_format' => $this->t('The body text field\'s formatting'),
+      'body_summary' => $this->t("The page's summary test"),
+      'body_format' => $this->t("The body text field's formatting"),
     ];
     return $fields;
   }
@@ -105,7 +105,7 @@ class Pages extends SqlBase {
   }
 
   /**
-   * Prepare Row used for altering source data prior to its insertion into the destination.
+   * Prepare row used for altering source data prior to its insertion.
    */
   public function prepareRow(Row $row) {
     // Determine if the content should be published or not.
