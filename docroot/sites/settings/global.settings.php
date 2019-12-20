@@ -5,6 +5,7 @@
  * Global settings for every multisite.
  */
 
+use Drupal\Core\Installer\InstallerKernel;
 use Sitenow\Multisite;
 
 /**
@@ -32,7 +33,7 @@ if ($site_dir != 'default') {
  * This HAS to come after the above database snippet to override correctly.
  */
 $blt_override_config_directories = FALSE;
-$config_directories[CONFIG_SYNC_DIRECTORY] = DRUPAL_ROOT . '/profiles/custom/sitenow/config/sync';
+$settings['config_sync_directory'] = DRUPAL_ROOT . '/profiles/custom/sitenow/config/sync';
 
 // Unset the VCS config directory so cim/cex default to sync.
 if (isset($config_directories['vcs'])) {
@@ -40,7 +41,7 @@ if (isset($config_directories['vcs'])) {
 }
 
 // Require site installs through the CLI.
-if (drupal_installation_attempted() && php_sapi_name() != 'cli') {
+if (InstallerKernel::installationAttempted() && php_sapi_name() != 'cli') {
   exit;
 }
 

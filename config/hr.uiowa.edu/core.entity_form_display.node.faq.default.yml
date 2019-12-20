@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.faq.field_faq_categories
     - field.field.node.faq.field_faq_content
     - node.type.faq
+    - workflows.workflow.editorial
   module:
     - content_moderation
     - path
@@ -83,6 +84,7 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     region: content
     third_party_settings: {  }
   url_redirects:
