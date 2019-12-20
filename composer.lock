@@ -2394,24 +2394,26 @@
         },
         {
             "name": "drupal/acquia_connector",
-            "version": "1.17.0",
+            "version": "1.18.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/acquia_connector.git",
-                "reference": "8.x-1.17"
+                "reference": "8.x-1.18"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/acquia_connector-8.x-1.17.zip",
-                "reference": "8.x-1.17",
-                "shasum": "3d9e5421d55a4fe01cf013a7dc504c3b1ee27715"
+                "url": "https://ftp.drupal.org/files/projects/acquia_connector-8.x-1.18.zip",
+                "reference": "8.x-1.18",
+                "shasum": "a35fbc16f534311218a132e466afca9e703e5121"
             },
             "require": {
-                "drupal/core": "~8.0",
+                "drupal/core": "^8.7",
                 "php": "^7.1"
             },
             "require-dev": {
-                "drupal/search_api_solr": "*",
+                "acquia/coding-standards": "^0.4.1",
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
+                "drupal/search_api_solr": "~1.0",
                 "drush/drush": "~9.0"
             },
             "type": "drupal-module",
@@ -2421,8 +2423,8 @@
                     "dev-8.x-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.17",
-                    "datestamp": "1576181672",
+                    "version": "8.x-1.18",
+                    "datestamp": "1576808592",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -2432,7 +2434,8 @@
                     "services": {
                         "drush.services.yml": "^9"
                     }
-                }
+                },
+                "phpcodesniffer-search-depth": 4
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
