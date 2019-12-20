@@ -41,9 +41,10 @@
         "sort-packages": true
     },
     "require": {
-        "acquia/blt": "^10.5",
+        "acquia/blt": "^11.0.0",
         "acquia/memcache-settings": "*",
         "bower-asset/chosen": "^1.8",
+        "drupal-composer/drupal-scaffold": "^2.5.4",
         "drupal/acquia_connector": "^1.5.0",
         "drupal/acquia_purge": "^1.0-beta3",
         "drupal/address": "^1.4",
@@ -56,7 +57,7 @@
         "drupal/config_inspector": "^1.0",
         "drupal/config_split": "^1.4",
         "drupal/config_split_ignore": "^1.4",
-        "drupal/core": "^8.7",
+        "drupal/core": "^8.8",
         "drupal/cshs": "^1.0@beta",
         "drupal/default_content": "^1.0@alpha",
         "drupal/devel": "^2.1",
@@ -102,7 +103,7 @@
         "drupal/simple_sitemap": "^2.12",
         "drupal/simplei": "^1.1",
         "drupal/smart_trim": "^1.1",
-        "drupal/stage_file_proxy": "^1.0@beta",
+        "drupal/stage_file_proxy": "1.0-rc2",
         "drupal/superfish": "^1.2",
         "drupal/swiftmailer": "^1.0@beta",
         "drupal/webform": "^5.2",
@@ -119,8 +120,8 @@
         "zaporylie/composer-drupal-optimizations": "^1.1"
     },
     "require-dev": {
-        "acquia/blt-require-dev": "^10.0.0-alpha1",
-        "webflo/drupal-core-require-dev": "^8.7"
+        "acquia/blt-require-dev": "11.x-dev",
+        "webflo/drupal-core-require-dev": "^8.8"
     },
     "extra": {
         "enable-patching": true,
@@ -129,10 +130,6 @@
             "drupal/core": "-p2"
         },
         "patches": {
-            "drupal/node_revision_delete": {
-                "Error on saving content type revision settings": "https://www.drupal.org/files/issues/2019-10-08/3078433-5.patch",
-                "Missing group by in NodeRevisionDelete->getCandidatesRevisions()": "https://www.drupal.org/files/issues/2019-09-18/node_revision_delete-fix_candidate_nodes_group_by-3082021-2.patch"
-            },
             "drupal/entity_reference_revisions": {
                 "Implement a Drush command to clean obsolete composite entities": "https://www.drupal.org/files/issues/2019-11-07/err-drush-command.patch"
             },
@@ -158,7 +155,6 @@
             "drupal/core": {
                 "The Media library doesn't modify the 'media' view if installed in a profile": "https://www.drupal.org/files/issues/2019-05-12/2992056.patch",
                 "Site extensions don't get rediscovered after drush cr": "https://www.drupal.org/files/issues/2018-07-11/specify_sitepath_cache_rebuild_extension_discovery-2985199-3.patch",
-                "View output is not used for entityreference options": "https://www.drupal.org/files/issues/2019-08-08/drupal-use_view_output_for_entityreference_options-2174633-323.patch",
                 "Allow alter oembed providers": "https://www.drupal.org/files/issues/2019-05-15/drupal-allow_alter_oembed_providers-3008119-4.patch"
             }
         },

@@ -77,7 +77,7 @@ EOD;
 
     $needle = <<<EOD
 \$blt_override_config_directories = FALSE;
-\$config_directories[CONFIG_SYNC_DIRECTORY] = DRUPAL_ROOT . '/profiles/custom/sitenow/config/sync';
+\$settings['config_sync_directory'] = DRUPAL_ROOT . '/profiles/custom/sitenow/config/sync';
 EOD;
 
     $this->assertContains($needle, $haystack);
@@ -91,7 +91,7 @@ EOD;
     $this->assertContains($needle, $haystack);
 
     $needle = <<<EOD
-if (drupal_installation_attempted() && php_sapi_name() != 'cli') {
+if (InstallerKernel::installationAttempted() && php_sapi_name() != 'cli') {
   exit;
 }
 EOD;
