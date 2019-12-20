@@ -62,6 +62,10 @@ apache_vhosts:
     servername: claspolicy.uiowa.local.site
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: icsa.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
 mysql_databases:
   -
     name: drupal
@@ -89,6 +93,10 @@ mysql_databases:
     collation: utf8_general_ci
   -
     name: policy_clas_uiowa_edu
+    encoding: utf8
+    collation: utf8_general_ci
+  -
+    name: icsa_uiowa_edu
     encoding: utf8
     collation: utf8_general_ci
 mysql_users:
