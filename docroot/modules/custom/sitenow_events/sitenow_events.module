@@ -222,7 +222,8 @@ function sitenow_events_load(array $params = ['display_id' => 'events'], array $
     // If cache is not set to TRUE.
     if ($cache !== FALSE) {
       // Create a cache item set to 15 minutes.
-      \Drupal::cache('uievents')->set($endpoint, $events, REQUEST_TIME + (60 * 15));
+      $request_time = \Drupal::time()->getRequestTime();
+      \Drupal::cache('uievents')->set($endpoint, $events, $request_time + (60 * 15));
     }
   }
   // Return an array of events with optional params.

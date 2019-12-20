@@ -1,6 +1,6 @@
 # uiowa
 
-The base application on Acquia Cloud hosting the Sitenow platform.
+The base application on Acquia Cloud for the University of Iowa.
 
 # Getting Started
 
