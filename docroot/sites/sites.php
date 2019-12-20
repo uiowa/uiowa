@@ -97,3 +97,10 @@ $sites['claspolicy.stage.drupal.uiowa.edu'] = 'policy.clas.uiowa.edu';
 $sites['claspolicy.prod.drupal.uiowa.edu'] = 'policy.clas.uiowa.edu';
 $sites['policy.clas.uiowa.edu'] = 'policy.clas.uiowa.edu';
 
+// Directory aliases for icsa.uiowa.edu.
+$sites['icsa.uiowa.local.site'] = 'icsa.uiowa.edu';
+$sites['icsa.dev.drupal.uiowa.edu'] = 'icsa.uiowa.edu';
+$sites['icsa.stage.drupal.uiowa.edu'] = 'icsa.uiowa.edu';
+$sites['icsa.prod.drupal.uiowa.edu'] = 'icsa.uiowa.edu';
+$sites['icsa.uiowa.edu'] = 'icsa.uiowa.edu';
+
