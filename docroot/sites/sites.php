@@ -433,3 +433,8 @@ $sites['labmichaelson.prod.drupal.uiowa.edu'] = 'michaelson.lab.uiowa.edu';
 $sites['labkardon.dev.drupal.uiowa.edu'] = 'kardon.lab.uiowa.edu';
 $sites['labkardon.stage.drupal.uiowa.edu'] = 'kardon.lab.uiowa.edu';
 $sites['labkardon.prod.drupal.uiowa.edu'] = 'kardon.lab.uiowa.edu';
+
+// Directory aliases for celebrationofexcellence.sites.uiowa.edu.
+$sites['sitescelebrationofexcellence.dev.drupal.uiowa.edu'] = 'celebrationofexcellence.sites.uiowa.edu';
+$sites['sitescelebrationofexcellence.stage.drupal.uiowa.edu'] = 'celebrationofexcellence.sites.uiowa.edu';
+$sites['sitescelebrationofexcellence.prod.drupal.uiowa.edu'] = 'celebrationofexcellence.sites.uiowa.edu';
