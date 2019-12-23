@@ -1,20 +1,14 @@
-## Description
-
-
-## Related Issue
-
+# Description
 Resolves #
 
-## Approval Checklist
-
-- [ ] Add appropriate PR labels for visibility.
-  - _Help Wanted, Has DB Updates, Sitenow/Collegiate, WIP, Docs, Provision, Deprovision, Blocked, etc._
-- [ ] Dependencies/Sites have properly been updated
+# Checklist
+- [ ] Add appropriate PR labels.
+- [ ] Request approval from multiple developers across units.
+- [ ] Dependencies have been properly updated.
   - https://github.com/uiowa/uiowa#updating-dependencies
-- [ ] Site config splits have been accounted for
-  - Go to https://github.com/uiowa/uiowa/find/master to look for sites that have split files in this PR.
-- [ ] Custom Sites Audit
-  - Test PR locally with custom sites that might be affected by these changes.
-  - Consult website README.md files in order to understand what/why/how the site is custom and how it relates to this PR.
-- [ ] New Custom Site README.md is included
-  - If a website is going custom, document using a template similar to https://github.com/uiowa/uiowa/blob/master/docroot/sites/hr.uiowa.edu/README.md
+- [ ] Site config splits have been accounted for.
+  - Go to https://github.com/uiowa/uiowa/find/master to find split config entities affected by this PR.
+- [ ] Test PR locally with default site.
+- [ ] Test PR locally with custom site that might be affected by these changes.
+- [ ] Update documentation.
+  - Document changes introduced by this PR in application, profile or site README.
