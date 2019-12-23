@@ -144,17 +144,13 @@ install ok: channel://pecl.php.net/xdebug-2.7.2
 Extension xdebug enabled in php.ini
 ```
 
-You may need to change the path if you get an error when running a simple PHP
-command like `php --ini`.
+The xdebug installer added the `zend_extension="xdebug.so”` line to the top of the actual `php.ini`, file. We need to remove that, so navigate to `/usr/local/etc/php/7.2php.ini` file and remove that line and any others pertaining to xdebug.
 
-Open your php.ini file (should be located at: /usr/local/etc/php/7.2/php.ini). Confirm there is a line like:
-`zend_extension="xdebug.so"`
-
-Ideally this should be at the bottom of the file near the other extensions' config. Ultimately, your php.ini should have the following:
+Next, create a file in the `/usr/local/etc/php/7.2/conf.d` folder named `xdebug.ini`. In this file, place these lines:
 
 ```
-[xdebug]
-zend_extension="xdebug.so"
+;XDebug
+zend_extension="/usr/local/Cellar/php@7.2/7.2.18/pecl/20170718/xdebug.so"
 xdebug.remote_enable=1
 xdebug.remote_log=/tmp/xdebug
 ```
