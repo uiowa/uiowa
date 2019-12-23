@@ -443,3 +443,8 @@ $sites['sitescelebrationofexcellence.prod.drupal.uiowa.edu'] = 'celebrationofexc
 $sites['sitesequityimplemented.dev.drupal.uiowa.edu'] = 'equityimplemented.sites.uiowa.edu';
 $sites['sitesequityimplemented.stage.drupal.uiowa.edu'] = 'equityimplemented.sites.uiowa.edu';
 $sites['sitesequityimplemented.prod.drupal.uiowa.edu'] = 'equityimplemented.sites.uiowa.edu';
+
+// Directory aliases for cnm.org.uiowa.edu.
+$sites['orgcnm.dev.drupal.uiowa.edu'] = 'cnm.org.uiowa.edu';
+$sites['orgcnm.stage.drupal.uiowa.edu'] = 'cnm.org.uiowa.edu';
+$sites['orgcnm.prod.drupal.uiowa.edu'] = 'cnm.org.uiowa.edu';
