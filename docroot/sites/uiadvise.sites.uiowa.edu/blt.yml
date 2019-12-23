@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: uiadvise.sites.uiowa.edu
+    protocol: https
+  machine_name: sitesuiadvise
+  human_name: uiadvise.sites.uiowa.edu
+  requester: pcox
+drush:
+  aliases:
+    local: self
+    remote: sitesuiadvise.prod
+drupal:
+  db:
+    database: uiadvise_sites_uiowa_edu
+    host: localhost
+    user: root
+    password: null
