@@ -171,6 +171,7 @@ function sitenow_update_8014(&$sandbox) {
       ->execute();
     $sandbox['total'] = count($query);
     $sandbox['current'] = 0;
+    $sandbox['query'] = $query;
 
     if (empty($sandbox['total'])) {
       $sandbox['#finished'] = 1;
@@ -179,16 +180,13 @@ function sitenow_update_8014(&$sandbox) {
   }
   // Loop through the same nodes in batches.
   $nodes_per_batch = 25;
-  $query = \Drupal::entityQuery('node')
-    ->condition('field_reference', NULL, 'IS NOT NULL')
-    ->range($sandbox['current'], $sandbox['current'] + $nodes_per_batch)
-    ->execute();
-  if (empty($query)) {
+  $batch = array_slice($sandbox['query'], $sandbox['current'], $sandbox['current'] + $nodes_per_batch);
+  if (empty($batch)) {
     $sandbox['#finished'] = 1;
     return;
   }
 
-  foreach($query as $nid) {
+  foreach($batch as $nid) {
     $node = \Drupal\node\Entity\Node::load($nid);
     // Get and load taxonomy values from field_reference.
     $terms = $node->get('field_reference')->getValue();
