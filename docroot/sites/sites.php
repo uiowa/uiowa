@@ -453,3 +453,8 @@ $sites['orgcnm.prod.drupal.uiowa.edu'] = 'cnm.org.uiowa.edu';
 $sites['sitesuiadvise.dev.drupal.uiowa.edu'] = 'uiadvise.sites.uiowa.edu';
 $sites['sitesuiadvise.stage.drupal.uiowa.edu'] = 'uiadvise.sites.uiowa.edu';
 $sites['sitesuiadvise.prod.drupal.uiowa.edu'] = 'uiadvise.sites.uiowa.edu';
+
+// Directory aliases for ilg.course.uiowa.edu.
+$sites['courseilg.dev.drupal.uiowa.edu'] = 'ilg.course.uiowa.edu';
+$sites['courseilg.stage.drupal.uiowa.edu'] = 'ilg.course.uiowa.edu';
+$sites['courseilg.prod.drupal.uiowa.edu'] = 'ilg.course.uiowa.edu';
