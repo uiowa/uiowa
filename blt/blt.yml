@@ -55,3 +55,10 @@ validate:
       - drupal_image
     filters:
       - image_style
+command-hooks:
+  frontend-reqs:
+    dir: ${docroot}
+    command: '. $NVM_DIR/nvm.sh && nvm install && yarn install'
+  frontend-assets:
+    dir: ${docroot}
+    command: '. $NVM_DIR/nvm.sh && nvm use && yarn workspaces run gulp'
