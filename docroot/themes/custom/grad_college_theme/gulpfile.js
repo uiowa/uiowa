@@ -1,4 +1,8 @@
-// Include gulp.
+/**
+ * @file
+ * Include gulp.
+ */
+
 const { src, dest, parallel, series, watch } = require('gulp');
 const config = require('./config.json');
 
@@ -18,12 +22,12 @@ var paths = {
   scss: './scss/'
 };
 
-// SCSS bundled into CSS task
+// SCSS bundled into CSS task.
 function css() {
   return src(config.css.src)
     .pipe(sourcemaps.init())
     .pipe(glob())
-    // Stay live and reload on error
+    // Stay live and reload on error.
     .pipe(plumber({
       handleError: function (err) {
         console.log(err);
@@ -35,18 +39,18 @@ function css() {
       includePaths: config.css.includePaths
     }).on('error', function (err) {
       console.log(err.message);
-      // sass.logError
+      // sass.logError.
       this.emit('end');
     }))
     .pipe(prefix(['last 2 versions', '> 1%', 'ie 9', 'ie 10'], {
       cascade: true
     }))
-    //.pipe(minifyCSS())
+    // .pipe(minifyCSS())
     .pipe(sourcemaps.write('./'))
     .pipe(dest(config.css.dest));
 }
 
-// BrowserSync
+// BrowserSync.
 function browserSync() {
   browsersync({
     /*server: {
@@ -58,21 +62,21 @@ function browserSync() {
   });
 }
 
-// BrowserSync reload
+// BrowserSync reload.
 function browserReload() {
   return browsersync.reload;
 }
 
-// Watch files
+// Watch files.
 function watchFiles() {
-  // Watch SCSS changes
+  // Watch SCSS changes.
   watch(paths.scss + '**/*.scss', parallel(css))
     .on('change', browserReload());
 }
 
 const watching = parallel(watchFiles, browserSync);
 
-//exports.js = js;
+// exports.js = js;.
 exports.css = css;
 exports.default = parallel(css);
 exports.watch = watching;
