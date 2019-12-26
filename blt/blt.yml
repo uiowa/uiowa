@@ -51,5 +51,12 @@ validate:
       - drupal_image
     filters:
       - image_style
+command-hooks:
+  frontend-reqs:
+    dir: ${docroot}
+    command: '. $NVM_DIR/nvm.sh && nvm install && yarn install'
+  frontend-assets:
+    dir: ${docroot}
+    command: '. $NVM_DIR/nvm.sh && nvm use && yarn workspaces run gulp'
 cloud:
   appId: 21a2a0ab-b4ed-4ecf-8bd4-9266c70f5ef1

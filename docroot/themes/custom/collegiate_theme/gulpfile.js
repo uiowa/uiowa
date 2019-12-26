@@ -19,13 +19,13 @@ var paths = {
 };
 
 function copy() {
-  return src(['./node_modules/@uiowa/hds/**/*.scss', './node_modules/@uiowa/hds/**/*.js', './node_modules/@uiowa/hds/**/*.twig'
+  return src(['../../../../node_modules/@uiowa/hds/**/*.scss', '../../../../node_modules/@uiowa/hds/**/*.js', '../../../../node_modules/@uiowa/hds/**/*.twig'
   ])
     .pipe(dest('./hds/'));
 }
 
 function fontCopy() {
-  return src(['./node_modules/@uiowa/hds/assets/**/*.woff', './node_modules/@uiowa/hds/assets/**/*.woff2'])
+  return src(['../../../../node_modules/@uiowa/hds/assets/**/*.woff', '../../../../node_modules/@uiowa/hds/assets/**/*.woff2'])
     .pipe(dest('./assets/'));
 }
 
@@ -86,5 +86,5 @@ const watching = parallel(watchFiles, browserSync);
 //exports.js = js;
 exports.copy = parallel(copy, fontCopy);
 exports.css = css;
-exports.default = parallel(css);
+exports.default = parallel(fontCopy, series(copy, css));
 exports.watch = watching;
