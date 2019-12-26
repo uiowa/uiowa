@@ -27,7 +27,7 @@ class RequestASiteUriConstraint {
     $url = parse_url($value);
 
     // Set Error if URL contains www.
-    if (stristr($url['host'], 'www')) {
+    if (stristr($url['host'], 'www.')) {
       return $formState->setError(
         $element,
         t('URL must not contain www.', [
