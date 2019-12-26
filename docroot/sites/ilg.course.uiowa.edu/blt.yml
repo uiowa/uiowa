@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: ilg.course.uiowa.edu
+    protocol: https
+  machine_name: courseilg
+  human_name: ilg.course.uiowa.edu
+  requester: aprince
+drush:
+  aliases:
+    local: self
+    remote: courseilg.prod
+drupal:
+  db:
+    database: ilg_course_uiowa_edu
+    host: localhost
+    user: root
+    password: null
