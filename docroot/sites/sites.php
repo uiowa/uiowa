@@ -468,3 +468,8 @@ $sites['orguiobl.prod.drupal.uiowa.edu'] = 'uiobl.org.uiowa.edu';
 $sites['pinyin.dev.drupal.uiowa.edu'] = 'pinyin.uiowa.edu';
 $sites['pinyin.stage.drupal.uiowa.edu'] = 'pinyin.uiowa.edu';
 $sites['pinyin.prod.drupal.uiowa.edu'] = 'pinyin.uiowa.edu';
+
+// Directory aliases for uigearup.uiowa.edu.
+$sites['uigearup.dev.drupal.uiowa.edu'] = 'uigearup.uiowa.edu';
+$sites['uigearup.stage.drupal.uiowa.edu'] = 'uigearup.uiowa.edu';
+$sites['uigearup.prod.drupal.uiowa.edu'] = 'uigearup.uiowa.edu';
