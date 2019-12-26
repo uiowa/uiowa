@@ -6,8 +6,9 @@ use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\YamlMunge;
 use Acquia\Blt\Robo\Common\YamlWriter;
 use Acquia\Blt\Robo\Exceptions\BltException;
-use AcquiaCloudApi\CloudApi\Client;
-use AcquiaCloudApi\CloudApi\Connector;
+use AcquiaCloudApi\Connector\Client;
+use AcquiaCloudApi\Connector\Connector;
+use AcquiaCloudApi\Endpoints\Databases;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
 use Grasmash\YamlExpander\Expander;
@@ -897,16 +898,18 @@ EOD;
    *   The database name.
    */
   protected function createRemoteDatabase($db_name) {
+
+    $appUuid = $this->getConfigValue('cloud.appId');
     $connector = new Connector([
       'key' => $this->getConfigValue('credentials.acquia.key'),
       'secret' => $this->getConfigValue('credentials.acquia.secret'),
     ]);
 
-    $cloud = Client::factory($connector);
+    $client = Client::factory($connector);
 
-    $application = $cloud->application($this->getConfigValue('cloud.appId'));
+    $databases = new Databases($client);
 
-    $dbs = $cloud->databases($this->getConfigValue('cloud.appId'));
+    $dbs = $databases->getAll($appUuid);
 
     $db_exists = FALSE;
 
@@ -917,7 +920,7 @@ EOD;
     }
 
     if (!$db_exists) {
-      $cloud->databaseCreate($application->uuid, $db_name);
+      $databases->create($appUuid, $db_name);
       $this->say("Created <comment>{$db_name}</comment> database on Acquia Cloud.");
     }
     else {
