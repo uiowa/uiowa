@@ -11,6 +11,7 @@ dependencies:
     - paragraphs.paragraphs_type.carousel
     - paragraphs.paragraphs_type.events
     - paragraphs.paragraphs_type.featured_content
+    - paragraphs.paragraphs_type.image_gallery
     - paragraphs.paragraphs_type.section
     - paragraphs.paragraphs_type.text
     - paragraphs.paragraphs_type.webform
@@ -40,6 +41,7 @@ settings:
       featured_content: featured_content
       carousel: carousel
       webform: webform
+      image_gallery: image_gallery
     target_bundles_drag_drop:
       section:
         weight: 3
@@ -77,4 +79,7 @@ settings:
       carousel_image:
         weight: 19
         enabled: false
+      image_gallery:
+        enabled: true
+        weight: 23
 field_type: entity_reference_revisions

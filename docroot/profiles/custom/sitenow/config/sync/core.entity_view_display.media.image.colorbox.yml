@@ -1,8 +1,9 @@
-uuid: e3005801-8c9a-48b7-9152-f3f50381343d
+uuid: 4e41e115-7659-4d71-b2d1-4620f8eed319
 langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.media.colorbox
     - field.field.media.image.field_media_image
     - image.style.thumbnail
     - media.type.image
@@ -10,10 +11,10 @@ dependencies:
     - colorbox
 _core:
   default_config_hash: qxh_4kI5XZJ_t8OOI3OEqnRP5iL5WaD7cCfGRLbmPjw
-id: media.image.default
+id: media.image.colorbox
 targetEntityType: media
 bundle: image
-mode: default
+mode: colorbox
 content:
   field_media_image:
     type: colorbox
@@ -24,7 +25,7 @@ content:
       colorbox_node_style: thumbnail
       colorbox_node_style_first: ''
       colorbox_image_style: ''
-      colorbox_gallery: post
+      colorbox_gallery: field_post
       colorbox_gallery_custom: ''
       colorbox_caption: title
       colorbox_caption_custom: ''
