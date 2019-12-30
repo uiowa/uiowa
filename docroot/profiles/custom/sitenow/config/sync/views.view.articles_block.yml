@@ -202,13 +202,13 @@ display:
             format: filtered_html
           plugin_id: text
       relationships:
-        field_reference:
-          id: field_reference
-          table: node__field_reference
-          field: field_reference
+        field_tags:
+          id: field_tags
+          table: node__field_tags
+          field: field_tags
           relationship: none
           group_type: group
-          admin_label: 'field_reference: Taxonomy term'
+          admin_label: 'field_tags: Taxonomy term'
           required: false
           plugin_id: standard
       arguments:
@@ -216,7 +216,7 @@ display:
           id: tid
           table: taxonomy_term_field_data
           field: tid
-          relationship: field_reference
+          relationship: field_tags
           group_type: group
           admin_label: ''
           default_action: ignore
