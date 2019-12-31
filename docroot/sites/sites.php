@@ -473,3 +473,8 @@ $sites['pinyin.prod.drupal.uiowa.edu'] = 'pinyin.uiowa.edu';
 $sites['uigearup.dev.drupal.uiowa.edu'] = 'uigearup.uiowa.edu';
 $sites['uigearup.stage.drupal.uiowa.edu'] = 'uigearup.uiowa.edu';
 $sites['uigearup.prod.drupal.uiowa.edu'] = 'uigearup.uiowa.edu';
+
+// Directory aliases for climatecollective.uiowa.edu.
+$sites['climatecollective.dev.drupal.uiowa.edu'] = 'climatecollective.uiowa.edu';
+$sites['climatecollective.stage.drupal.uiowa.edu'] = 'climatecollective.uiowa.edu';
+$sites['climatecollective.prod.drupal.uiowa.edu'] = 'climatecollective.uiowa.edu';
