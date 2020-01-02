@@ -45,11 +45,10 @@ function hr_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
     case 'node_page_form':
     case 'node_article_edit_form':
     case 'node_article_form':
-
       if (isset($form['field_reference'])) {
-        $form['field_reference']['#access'] = true;
+        // Set field_reference to node_reference group.
+        $form['field_reference']['#group'] = 'node_relations';
       }
-
       break;
   }
 }
