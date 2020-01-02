@@ -5,21 +5,25 @@ dependencies:
   config:
     - field.storage.node.field_reference
     - node.type.article
+    - taxonomy.vocabulary.units
 id: node.article.field_reference
 field_name: field_reference
 entity_type: node
 bundle: article
-label: References
-description: 'Link this content to one or more existing terms within this site. Separate each reference by a comma. <a href="/admin/structure/taxonomy">Click here to create new terms</a>.'
+label: Units
+description: 'Link this content to one or more existing units within this site. Separate each reference by a comma.'
 required: false
 translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: views
+  handler: 'default:taxonomy_term'
   handler_settings:
-    view:
-      view_name: references
-      display_name: entity_reference_name_vocab
-      arguments: {  }
+    target_bundles:
+      units: units
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
 field_type: entity_reference
