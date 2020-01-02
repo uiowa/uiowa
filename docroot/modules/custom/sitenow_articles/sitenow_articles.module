@@ -314,9 +314,9 @@ function sitenow_articles_preprocess_paragraph(&$variables) {
         $view = Views::getView('articles_block');
         $view->setDisplay('block_articles');
 
-        if ($paragraph->hasField('field_tags') && !$paragraph->get('field_tags')->isEmpty()) {
-          $tids = $paragraph->get('field_tags')->getValue();
-          // Clean array of classes selected.
+        if ($paragraph->hasField('field_reference') && !$paragraph->get('field_reference')->isEmpty()) {
+          $tids = $paragraph->get('field_reference')->getValue();
+          // Clean array of tids selected.
           $tids = array_column($tids, 'target_id');
         }
         else {
