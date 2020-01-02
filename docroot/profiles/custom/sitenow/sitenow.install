@@ -159,3 +159,69 @@ function sitenow_update_8012() {
 function sitenow_update_8013() {
   drupal_flush_all_caches();
 }
+
+/**
+ * Move all tags values to field_tags.
+ */
+function sitenow_update_8014(&$sandbox) {
+  // Process all nodes that have a filled field_reference.
+  if (!isset($sandbox['total'])) {
+    $query = \Drupal::entityQuery('node')
+      ->condition('field_reference', NULL, 'IS NOT NULL')
+      ->execute();
+    $sandbox['total'] = count($query);
+    $sandbox['current'] = 0;
+    $sandbox['query'] = $query;
+
+    if (empty($sandbox['total'])) {
+      $sandbox['#finished'] = 1;
+      return;
+    }
+  }
+  // Loop through the same nodes in batches.
+  $nodes_per_batch = 25;
+  $batch = array_slice($sandbox['query'], $sandbox['current'], $sandbox['current'] + $nodes_per_batch);
+  if (empty($batch)) {
+    $sandbox['#finished'] = 1;
+    return;
+  }
+
+  foreach($batch as $nid) {
+    $node = \Drupal\node\Entity\Node::load($nid);
+    // Get and load taxonomy values from field_reference.
+    $terms = $node->get('field_reference')->getValue();
+    $tags = [];
+    $other_terms = [];
+    foreach($terms as $tid) {
+      $term = \Drupal\taxonomy\Entity\Term::load($tid['target_id']);
+      $bundle = $term->bundle();
+      // Split values into tags and others.
+      if ($bundle == 'tags') {
+        $tags[] = $tid['target_id'];
+      }
+      else {
+        $other_terms[] = $tid['target_id'];
+      }
+    }
+    // Only save if something is changing.
+    if (!empty($tags)) {
+      // Save field_reference with any remaining terms. Should be hr.uiowa.edu only.
+      $node->set('field_reference', $other_terms);
+      // Move the tags to field_tags.
+      $node->set('field_tags', $tags);
+      // Set revision message and save.
+      $node->setRevisionLogMessage('Automated Save: Moved terms.');
+      $node->save();
+    }
+    $sandbox['current']++;
+  }
+
+  \Drupal::messenger()
+    ->addMessage($sandbox['current'] . ' nodes processed.');
+
+  if ($sandbox['current'] >= $sandbox['total']) {
+    $sandbox['#finished'] = 1;
+  } else {
+    $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+  }
+}

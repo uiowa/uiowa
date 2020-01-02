@@ -316,7 +316,7 @@ function sitenow_articles_preprocess_paragraph(&$variables) {
 
         if ($paragraph->hasField('field_reference') && !$paragraph->get('field_reference')->isEmpty()) {
           $tids = $paragraph->get('field_reference')->getValue();
-          // Clean array of classes selected.
+          // Clean array of tids selected.
           $tids = array_column($tids, 'target_id');
         }
         else {

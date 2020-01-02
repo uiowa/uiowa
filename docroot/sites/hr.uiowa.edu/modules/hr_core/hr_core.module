@@ -40,6 +40,18 @@ function hr_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
       break;
 
   }
+  switch ($form_id) {
+    case 'node_page_edit_form':
+    case 'node_page_form':
+    case 'node_article_edit_form':
+    case 'node_article_form':
+
+      if (isset($form['field_reference'])) {
+        $form['field_reference']['#access'] = true;
+      }
+
+      break;
+  }
 }
 
 /**
