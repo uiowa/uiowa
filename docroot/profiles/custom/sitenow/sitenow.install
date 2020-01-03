@@ -227,7 +227,9 @@ function sitenow_update_8014(&$sandbox) {
 }
 
 
-//test: fix missing people
+/**
+ * Re-save all person nodes.
+ */
 function sitenow_update_8015(&$sandbox) {
   // Process all nodes that have a filled person.
   if (!isset($sandbox['total'])) {
@@ -253,6 +255,7 @@ function sitenow_update_8015(&$sandbox) {
 
   foreach($batch as $nid) {
     $node = \Drupal\node\Entity\Node::load($nid);
+    $node->set('field_person_hide', FALSE);
     // Set revision message and save.
     $node->setRevisionLogMessage('Automated save');
     $node->save();
