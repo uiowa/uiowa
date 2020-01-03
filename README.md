@@ -1,6 +1,10 @@
 # uiowa
 
+<<<<<<< HEAD
 The base application on Acquia Cloud.
+=======
+The base application on Acquia Cloud for the University of Iowa.
+>>>>>>> master
 
 # Getting Started
 
@@ -116,8 +120,12 @@ Our BLT Developer documentation includes an [example workflow](https://docs.acqu
 ## Resources
 
 * GitHub - https://github.com/uiowa/uiowa
+<<<<<<< HEAD
 * Acquia Cloud
   * uiowa
     * https://cloud.acquia.com/app/develop/applications/6bcc006f-9a0e-425e-aba0-198585dd2b56
   * uiowa01
     * https://cloud.acquia.com/app/develop/applications/21a2a0ab-b4ed-4ecf-8bd4-9266c70f5ef1
+=======
+* Acquia Cloud subscription - https://cloud.acquia.com/app/develop/applications/6bcc006f-9a0e-425e-aba0-198585dd2b56
+>>>>>>> master
