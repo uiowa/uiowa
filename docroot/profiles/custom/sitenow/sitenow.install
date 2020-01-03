@@ -229,7 +229,7 @@ function sitenow_update_8014(&$sandbox) {
 
 //test: fix missing people
 function sitenow_update_8015(&$sandbox) {
-  // Process all nodes that have a filled field_reference.
+  // Process all nodes that have a filled person.
   if (!isset($sandbox['total'])) {
     $query = \Drupal::entityQuery('node')
       ->condition('type','person', NULL, 'IS NOT NULL')
@@ -253,7 +253,7 @@ function sitenow_update_8015(&$sandbox) {
 
   foreach($batch as $nid) {
     $node = \Drupal\node\Entity\Node::load($nid);
-    // Get and load taxonomy values from field_reference.
+    // Get and load taxonomy values from person.
     $terms = $node->get('type', 'person')->getValue();
     $tags = [];
     $other_terms = [];
@@ -270,7 +270,7 @@ function sitenow_update_8015(&$sandbox) {
     }
     // Only save if something is changing.
     if (!empty($tags)) {
-      // Save field_reference with any remaining terms. Should be hr.uiowa.edu only.
+      // Save person with any remaining terms. Should be hr.uiowa.edu only.
       $node->set('type', 'person');
       // Move the tags to field_tags.
       //$node->set('field_tags', $tags);
