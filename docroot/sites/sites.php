@@ -488,3 +488,8 @@ $sites['labkuehn.prod.drupal.uiowa.edu'] = 'kuehn.lab.uiowa.edu';
 $sites['cnm.dev.drupal.uiowa.edu'] = 'cnm.uiowa.edu';
 $sites['cnm.stage.drupal.uiowa.edu'] = 'cnm.uiowa.edu';
 $sites['cnm.prod.drupal.uiowa.edu'] = 'cnm.uiowa.edu';
+
+// Directory aliases for research2.education.uiowa.edu.
+$sites['educationresearch2.dev.drupal.uiowa.edu'] = 'research2.education.uiowa.edu';
+$sites['educationresearch2.stage.drupal.uiowa.edu'] = 'research2.education.uiowa.edu';
+$sites['educationresearch2.prod.drupal.uiowa.edu'] = 'research2.education.uiowa.edu';
