@@ -494,3 +494,8 @@ $sites['theming.uiowa.local.site'] = 'theming.uiowa.edu';
 $sites['theming.dev.drupal.uiowa.edu'] = 'theming.uiowa.edu';
 $sites['theming.stage.drupal.uiowa.edu'] = 'theming.uiowa.edu';
 $sites['theming.prod.drupal.uiowa.edu'] = 'theming.uiowa.edu';
+
+// Directory aliases for research2.education.uiowa.edu.
+$sites['educationresearch2.dev.drupal.uiowa.edu'] = 'research2.education.uiowa.edu';
+$sites['educationresearch2.stage.drupal.uiowa.edu'] = 'research2.education.uiowa.edu';
+$sites['educationresearch2.prod.drupal.uiowa.edu'] = 'research2.education.uiowa.edu';
