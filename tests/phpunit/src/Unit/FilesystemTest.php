@@ -60,24 +60,7 @@ EOD;
     $haystack = file_get_contents($file);
 
     $needle = <<<EOD
-if (\$site_dir != 'default') {
-  \$db = Multisite::getDatabase(\$site_dir);
-
-  if (file_exists('/var/www/site-php')) {
-    require "/var/www/site-php/uiowa/{\$db}-settings.inc";
-  }
-}
-EOD;
-
-    $this->assertContains($needle, $haystack);
-
-    // Test that the DB include comes before the BLT config override.
-    $before_blt = stristr($haystack, '$blt_override_config_directories = FALSE;', TRUE);
-    $this->assertContains($needle, $before_blt);
-
-    $needle = <<<EOD
 \$blt_override_config_directories = FALSE;
-\$settings['config_sync_directory'] = DRUPAL_ROOT . '/profiles/custom/sitenow/config/sync';
 EOD;
 
     $this->assertContains($needle, $haystack);
