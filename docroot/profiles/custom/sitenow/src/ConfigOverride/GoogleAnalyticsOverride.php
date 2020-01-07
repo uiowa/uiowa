@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\sitenow_seo\ConfigOverrides;
+namespace Drupal\sitenow\ConfigOverride;
 
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Config\ConfigFactoryOverrideInterface;

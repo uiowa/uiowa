@@ -8,7 +8,7 @@ use Symfony\Component\Yaml\Yaml;
 use Sitenow\Multisite;
 
 /**
- * Basic file system tests.
+ * Basic file system tests for application integrity.
  *
  * @group unit
  */
