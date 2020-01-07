@@ -1,6 +1,6 @@
 <?php
 
-namespace Sitenow\Tests\PHPUnit\Kernel;
+namespace Drupal\Tests\sitenow\Kernel;
 
 use Drupal\Core\Config\FileStorage;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
