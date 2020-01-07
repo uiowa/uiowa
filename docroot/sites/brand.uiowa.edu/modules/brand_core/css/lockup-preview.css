@@ -1,13 +1,32 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
-
-.layout-region-node-main,
-.layout-region-node-footer {
-  float: right;
-  padding-right: 0;
-  padding-left: 2rem;
+@media (min-width: 992px) {
+  .layout-region-node-main,
+  .layout-region-node-footer,
+  .lockup-preview-wrapper {
+    float: right;
+    padding-right: 0;
+    padding-left: 2rem;
+    width: 60%;
+  }
+  .layout-region-node-secondary, .lockup-form-wrapper {
+    float: left;
+    width: 40%;
+  }
 }
-.layout-region-node-secondary {
-  float: left;
+
+details.form-wrapper {
+  border-color: #EDECEB;
+  margin-bottom: 0;
+}
+details summary {
+  background-color: #EDECEB;
+  font-weight: bold;
+  padding: 0.5em;
+}
+@media (min-width: 576px) {
+  .node-lockup-form .form-inline .form-control {
+    width: 100%;
+  }
 }
 #lockup-preview {
   display: flex;
