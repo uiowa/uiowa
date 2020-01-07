@@ -459,11 +459,6 @@ $sites['courseilg.dev.drupal.uiowa.edu'] = 'ilg.course.uiowa.edu';
 $sites['courseilg.stage.drupal.uiowa.edu'] = 'ilg.course.uiowa.edu';
 $sites['courseilg.prod.drupal.uiowa.edu'] = 'ilg.course.uiowa.edu';
 
-// Directory aliases for uiobl.org.uiowa.edu.
-$sites['orguiobl.dev.drupal.uiowa.edu'] = 'uiobl.org.uiowa.edu';
-$sites['orguiobl.stage.drupal.uiowa.edu'] = 'uiobl.org.uiowa.edu';
-$sites['orguiobl.prod.drupal.uiowa.edu'] = 'uiobl.org.uiowa.edu';
-
 // Directory aliases for pinyin.uiowa.edu.
 $sites['pinyin.dev.drupal.uiowa.edu'] = 'pinyin.uiowa.edu';
 $sites['pinyin.stage.drupal.uiowa.edu'] = 'pinyin.uiowa.edu';
