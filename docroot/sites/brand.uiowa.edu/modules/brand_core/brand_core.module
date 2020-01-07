@@ -16,6 +16,21 @@ use Drupal\Core\Url;
 use Drupal\user\Entity\User;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\brand_core\Controller\LockupController;
+use Drupal\Core\Block\BlockPluginInterface;
+
+/**
+ * Implements hook_block_view_alter().
+ *
+ * @param array $build
+ * @param \Drupal\Core\Block\BlockPluginInterface $block
+ */
+//function brand_core_block_view_alter(array &$build, BlockPluginInterface $block) {
+//  switch ($build["#plugin_id"]) {
+//    case 'system_breadcrumb_block':
+//      $build['#attributes']['class'][] = 'sr-only';
+//      break;
+//  }
+//}
 
 /**
  * Implements hook_form_alter().
