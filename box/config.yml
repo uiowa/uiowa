@@ -133,6 +133,7 @@ solr_version: 4.5.1
 post_provision_scripts:
   - ../../../acquia/blt/scripts/drupal-vm/configure-solr.sh
   - ../../../acquia/blt/scripts/drupal-vm/post-provision.php
+post_provision_tasks_dir:
+  - ../../../../scripts/nvm.yml
 nodejs_npm_global_packages:
-  - nvm
   - yarn
