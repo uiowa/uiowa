@@ -16,7 +16,46 @@ use Drupal\Core\Url;
 use Drupal\user\Entity\User;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\brand_core\Controller\LockupController;
-use Drupal\Core\Block\BlockPluginInterface;
+
+/**
+ * Implements hook_page_attachments().
+ */
+function brand_core_page_attachments(&$page) {
+  $active_theme = \Drupal::service('theme.manager')->getActiveTheme()->getName();
+  $default_theme = \Drupal::config('system.theme')->get('default');
+  if ($active_theme === $default_theme) {
+    $page['#attached']['library'][] = 'uiowa_bar/uiowa-bar';
+  }
+
+}
+
+/**
+ * Implements hook_page_top().
+ */
+function brand_core_page_top(&$page_top) {
+  $active_theme = \Drupal::service('theme.manager')->getActiveTheme()->getName();
+  $default_theme = \Drupal::config('system.theme')->get('default');
+  if ($active_theme === $default_theme) {
+    $search_form = \Drupal::formBuilder()->getForm('Drupal\uiowa_bar\Form\SearchForm');
+    $page_top['uiowa_bar'] = [
+      '#theme' => 'uiowa_bar',
+      '#search_form' => $search_form,
+    ];
+  }
+}
+
+/**
+ * Implements hook_page_bottom().
+ */
+function brand_core_page_bottom(array &$page_bottom) {
+  $active_theme = \Drupal::service('theme.manager')->getActiveTheme()->getName();
+  $default_theme = \Drupal::config('system.theme')->get('default');
+  if ($active_theme === $default_theme) {
+    $page_bottom['uiowa_footer'] = [
+      '#theme' => 'uiowa_footer',
+    ];
+  }
+}
 
 /**
  * Implements hook_block_view_alter().
@@ -100,6 +139,13 @@ function brand_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       $form['field_lockup_sub_unit']['#group'] = 'step_two';
       $form['field_lockup_p_unit_stacked']['#group'] = 'step_three';
       $form['field_lockup_s_unit_stacked']['#group'] = 'step_three';
+
+      // Simplify revision info for lockup form.
+      $form['revision_information']['#type'] = 'container';
+      $form['revision_log']['widget'][0]['value']['#title'] = FieldFilteredMarkup::create('Submission notes');
+
+      // Shouldn't be needed for this content type.
+      $form['path']['#access'] = FALSE;
 
       $form_object = $form_state->getFormObject();
       $nid = $form_object->getEntity()->id();

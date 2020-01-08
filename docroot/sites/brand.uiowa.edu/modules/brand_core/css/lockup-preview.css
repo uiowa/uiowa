@@ -1,16 +1,31 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+.page-header .container, .block-system-main-block {
+  max-width: 100%;
+  padding-right: 20px;
+  padding-left: 20px;
+  margin-right: auto;
+  margin-left: auto;
+}
+@media (min-width: 1200px) {
+  .region-content>div.block-system-main-block {
+    max-width: 100%;
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
 @media (min-width: 992px) {
   .layout-region-node-main,
   .layout-region-node-footer,
   .lockup-preview-wrapper {
-    float: right;
-    padding-right: 0;
-    padding-left: 2rem;
-    width: 60%;
+    -ms-flex-order: 1;
+    order: 1;
+    flex: auto 1 0;
+    margin: 0 2rem;
   }
   .layout-region-node-secondary, .lockup-form-wrapper {
-    float: left;
-    width: 40%;
+    width: 500px;
+    flex: 500px 0 1;
   }
 }
 
@@ -22,6 +37,9 @@ details summary {
   background-color: #EDECEB;
   font-weight: bold;
   padding: 0.5em;
+}
+.entity-content-form-revision-information {
+  margin-top: 1rem;
 }
 @media (min-width: 576px) {
   .node-lockup-form .form-inline .form-control {
@@ -201,3 +219,10 @@ details summary {
   white-space: pre-wrap;
   font-family: 'Roboto', sans-serif;
 }
+
+.node-lockup-form {
+  display: -ms-flexbox;      /* TWEENER - IE 10 */
+  display: -webkit-flex;     /* NEW - Chrome */
+  display: flex;
+}
+
