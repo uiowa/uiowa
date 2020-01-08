@@ -256,7 +256,6 @@ function sitenow_update_8015(&$sandbox) {
   foreach($batch as $nid) {
     $node = \Drupal\node\Entity\Node::load($nid);
     if (is_null($node->get('field_person_hide')->value)) {
-      //$node->get('field_person_hide')->value;
       $node->set('field_person_hide', FALSE);
       // Set revision message and save.
       $node->setRevisionLogMessage('Automated save');
