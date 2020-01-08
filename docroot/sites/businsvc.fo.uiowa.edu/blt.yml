@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: businsvc.fo.uiowa.edu
+    protocol: https
+  machine_name: fobusinsvc
+  human_name: businsvc.fo.uiowa.edu
+  requester: dagwang
+drush:
+  aliases:
+    local: self
+    remote: fobusinsvc.prod
+drupal:
+  db:
+    database: businsvc_fo_uiowa_edu
+    host: localhost
+    user: root
+    password: null
