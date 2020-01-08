@@ -493,3 +493,18 @@ $sites['educationresearch2.prod.drupal.uiowa.edu'] = 'research2.education.uiowa.
 $sites['uiobl.dev.drupal.uiowa.edu'] = 'uiobl.uiowa.edu';
 $sites['uiobl.stage.drupal.uiowa.edu'] = 'uiobl.uiowa.edu';
 $sites['uiobl.prod.drupal.uiowa.edu'] = 'uiobl.uiowa.edu';
+
+// Directory aliases for businsvc.fo.uiowa.edu.
+$sites['fobusinsvc.dev.drupal.uiowa.edu'] = 'businsvc.fo.uiowa.edu';
+$sites['fobusinsvc.stage.drupal.uiowa.edu'] = 'businsvc.fo.uiowa.edu';
+$sites['fobusinsvc.prod.drupal.uiowa.edu'] = 'businsvc.fo.uiowa.edu';
+
+// Directory aliases for ighn.international.uiowa.edu.
+$sites['internationalighn.dev.drupal.uiowa.edu'] = 'ighn.international.uiowa.edu';
+$sites['internationalighn.stage.drupal.uiowa.edu'] = 'ighn.international.uiowa.edu';
+$sites['internationalighn.prod.drupal.uiowa.edu'] = 'ighn.international.uiowa.edu';
+
+// Directory aliases for ICRU.research.uiowa.edu.
+$sites['researchICRU.dev.drupal.uiowa.edu'] = 'ICRU.research.uiowa.edu';
+$sites['researchICRU.stage.drupal.uiowa.edu'] = 'ICRU.research.uiowa.edu';
+$sites['researchICRU.prod.drupal.uiowa.edu'] = 'ICRU.research.uiowa.edu';
