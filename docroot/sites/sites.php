@@ -503,3 +503,8 @@ $sites['fobusinsvc.prod.drupal.uiowa.edu'] = 'businsvc.fo.uiowa.edu';
 $sites['internationalighn.dev.drupal.uiowa.edu'] = 'ighn.international.uiowa.edu';
 $sites['internationalighn.stage.drupal.uiowa.edu'] = 'ighn.international.uiowa.edu';
 $sites['internationalighn.prod.drupal.uiowa.edu'] = 'ighn.international.uiowa.edu';
+
+// Directory aliases for ICRU.research.uiowa.edu.
+$sites['researchICRU.dev.drupal.uiowa.edu'] = 'ICRU.research.uiowa.edu';
+$sites['researchICRU.stage.drupal.uiowa.edu'] = 'ICRU.research.uiowa.edu';
+$sites['researchICRU.prod.drupal.uiowa.edu'] = 'ICRU.research.uiowa.edu';
