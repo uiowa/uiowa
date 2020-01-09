@@ -147,7 +147,8 @@ EOD;
         // Profile specific tests.
         switch ($yaml['project']['profile']['name']) {
           case 'sitenow':
-            $this->assertFileExists("{$path}/settings/includes.settings.php");
+            $file = "{$path}/settings/includes.settings.php";
+            $this->assertFileExists($file);
 
             $needle = <<<EOD
 \$additionalSettingsFiles = [
