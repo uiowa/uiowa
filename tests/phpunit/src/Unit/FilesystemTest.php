@@ -109,12 +109,25 @@ EOD;
       if ($site != 'default') {
         $id = Multisite::getIdentifier("https://{$site}");
 
-        $blt = Yaml::parse(file_get_contents("{$path}/blt.yml"));
-        $this->assertEquals($site, $blt['project']['local']['hostname']);
-        $this->assertEquals($site, $blt['project']['human_name']);
-        $this->assertEquals($id, $blt['project']['machine_name']);
-        $this->assertEquals('https', $blt['project']['local']['protocol']);
-        $this->assertEquals('self', $blt['drush']['aliases']['local']);
+        $yaml = Yaml::parse(file_get_contents("{$path}/blt.yml"));
+        $db = $yaml['drupal']['db']['database'];
+
+        $this->assertEquals($site, $yaml['project']['local']['hostname']);
+        $this->assertEquals($site, $yaml['project']['human_name']);
+        $this->assertEquals($id, $yaml['project']['machine_name']);
+        $this->assertEquals('https', $yaml['project']['local']['protocol']);
+        $this->assertEquals('self', $yaml['drush']['aliases']['local']);
+
+        $needle = <<<EOD
+if (file_exists('/var/www/site-php')) {
+  require '/var/www/site-php/uiowa/{$db}-settings.inc';
+}
+EOD;
+
+        $file = "{$path}/settings.php";
+        $this->assertFileExists($file);
+        $haystack = file_get_contents($file);
+        $this->assertContains($needle, $haystack);
       }
     }
   }
