@@ -128,6 +128,29 @@ EOD;
         $this->assertFileExists($file);
         $haystack = file_get_contents($file);
         $this->assertContains($needle, $haystack);
+
+        // Profile specific tests.
+        switch ($yaml['project']['profile']['name']) {
+          case 'sitenow':
+            $this->assertFileExists("{$path}/settings/includes.settings.php");
+
+            $needle = <<<EOD
+\$additionalSettingsFiles = [
+  DRUPAL_ROOT . "/sites/settings/sitenow.settings.php"
+];
+
+foreach (\$additionalSettingsFiles as \$settingsFile) {
+  if (file_exists(\$settingsFile)) {
+    require \$settingsFile;
+  }
+}
+EOD;
+
+            $haystack = file_get_contents($file);
+            $this->assertContains($needle, $haystack);
+
+            break;
+        }
       }
     }
   }
