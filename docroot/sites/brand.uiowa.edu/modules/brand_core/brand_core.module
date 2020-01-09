@@ -200,12 +200,12 @@ function _brand_core_lockup_submit(array $form, FormStateInterface $form_state) 
       $status_text = t('Lockup submitted for approval.');
       break;
 
-//    case 'published':
-//      // Generate Lockup Files if approved/published.
-//      $nid = $entity->id();
-//      $lockup_controller = new LockupController();
-//      $lockup_controller->generate($nid);
-//      break;
+    case 'published':
+      // Generate Lockup Files if approved/published.
+      $nid = $entity->id();
+      $lockup_controller = new LockupController();
+      $lockup_controller->generate($nid);
+      break;
   }
   if (!empty($status_text)) {
     $url = Url::fromRoute('view.lockups.page_lockups');
