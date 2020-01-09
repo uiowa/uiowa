@@ -69,7 +69,7 @@ class ReplaceCommands extends BltTasks {
         $root = $this->getConfigValue('repo.root');
         $yaml = YamlMunge::parseFile("{$root}/docroot/sites/{$multisite}/blt.yml");
 
-        if (isset($yaml['project'], $yaml['project']['requester']) && !empty($yaml['project']['requester'])) {
+        if (isset($yaml['uiowa']['sitenow']['requester']) && !empty($yaml['uiowa']['sitenow']['requester'])) {
           $result = $this->taskDrush()
             ->stopOnFail(FALSE)
             ->drush('user:create')
