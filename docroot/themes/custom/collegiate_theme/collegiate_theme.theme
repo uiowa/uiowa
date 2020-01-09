@@ -93,9 +93,6 @@ function collegiate_theme_form_alter(&$form, $form_state, $form_id) {
   if (strpos($form_id, 'search_block_form') !== FALSE) {
     $form['#attributes']['class'][] = 'hds-content hds-search';
   }
-  if (strpos($form_id, 'search_form') !== FALSE) {
-    $form['#attributes']['class'][] = 'hds-content hds-search';
-  }
 }
 
 
