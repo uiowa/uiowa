@@ -83,6 +83,21 @@ EOD;
   }
 
   /**
+   * Test sitenow specific settings exist.
+   */
+  public function testSitenowGlobalSettings() {
+    $file = $this->root . '/sites/settings/sitenow.settings.php';
+    $this->assertFileExists($file);
+    $haystack = file_get_contents($file);
+
+    $needle = <<<EOD
+\$settings['config_sync_directory'] = DRUPAL_ROOT . '/profiles/custom/sitenow/config/sync';
+EOD;
+
+    $this->assertContains($needle, $haystack);
+  }
+
+  /**
    * Test that multisite files exist and that BLT config is set correctly.
    */
   public function testMultisiteFiles() {
