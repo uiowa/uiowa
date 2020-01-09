@@ -80,6 +80,16 @@ function collegiate_theme_preprocess_block(&$variables) {
 }
 
 /**
+ *
+ */
+function collegiate_theme_preprocess_form(&$variables) {
+  // Add class to your specific form
+  if ($variables['attributes']['id'] == 'search-block-form') {
+    $variables['attributes']['class'][] = 'hds-content hds-search ';
+  }
+}
+
+/**
  * Implements hook_form_alter().
  */
 function collegiate_theme_form_alter(&$form, $form_state, $form_id) {
@@ -89,9 +99,6 @@ function collegiate_theme_form_alter(&$form, $form_state, $form_id) {
   }
   if (strpos($form_id, 'uiowa_bar_search_form') !== FALSE) {
     $form['#attributes']['class'][] = 'hds-content hds-content__search';
-  }
-  if (strpos($form_id, 'search_block_form') !== FALSE) {
-    $form['#attributes']['class'][] = 'hds-content hds-search';
   }
 }
 
