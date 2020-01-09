@@ -1,20 +1,19 @@
 <?php
 
-namespace Sitenow\Blt\Plugin\Commands;
+namespace Uiowa\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Annotations\Update;
 use Acquia\Blt\Robo\Common\YamlMunge;
 use Doctrine\Common\Annotations\AnnotationReader;
-use Robo\Contract\VerbosityThresholdInterface;
-use Sitenow\Multisite;
+use Uiowa\Multisite;
 
 /**
  * Define update commands.
  *
  * @Annotation
  */
-class SitenowUpdateCommands extends BltTasks {
+class UpdateCommands extends BltTasks {
 
   /**
    * Execute SiteNow updates.
@@ -23,9 +22,9 @@ class SitenowUpdateCommands extends BltTasks {
    */
   public function sitenowUpdate() {
     $schema = $this->getSitenowSchemaVersion();
-    $reflection = new \ReflectionClass(SitenowUpdateCommands::class);
+    $reflection = new \ReflectionClass(UpdateCommands::class);
     $methods = array_filter($reflection->getMethods(), function ($v) {
-      return $v->name != 'sitenowUpdate' && $v->class == SitenowUpdateCommands::class;
+      return $v->name != 'sitenowUpdate' && $v->class == UpdateCommands::class;
     });
 
     $reader = new AnnotationReader();
@@ -107,11 +106,12 @@ if (file_exists('/var/www/site-php')) {
 }
 
 require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
+
 EOD;
 
-      $result = $this->taskWriteToFile("{$root}/docroot/sites/{$site}/settings.php")
-        ->replace($search, $replace)
-        ->setVerbosityThreshold(VerbosityThresholdInterface::VERBOSITY_VERBOSE)
+      $result = $this->taskReplaceInFile("{$root}/docroot/sites/{$site}/settings.php")
+        ->from($search)
+        ->to($replace)
         ->run();
 
       if (!$result->wasSuccessful()) {

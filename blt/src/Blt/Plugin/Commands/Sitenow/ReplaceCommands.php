@@ -1,6 +1,6 @@
 <?php
 
-namespace Sitenow\Blt\Plugin\Commands;
+namespace Uiowa\Blt\Plugin\Commands\Sitenow;
 
 use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\YamlMunge;
