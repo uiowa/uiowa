@@ -27,9 +27,7 @@ function collegiate_theme_form_system_theme_settings_alter(&$form, FormStateInte
     '#title' => t('Header Alignment'),
     '#description' => t('Select an option'),
     '#options' => [
-      'site-header__default' => t('Site name left, Nav right (default)'),
-      'site-header__center' => t('Site name center, Nav center'),
-      'site-header__left' => t('Site name left, Nav left'),
+      'site-header__left' => t('Menu left (default)'),
     ],
     '#default_value' => theme_get_setting('collegiate_theme_header_alignment_settings'),
   ];
