@@ -5,7 +5,7 @@ namespace Drupal\Tests\sitenow\Unit;
 use Drupal\Tests\UnitTestCase;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
-use Sitenow\Multisite;
+use Uiowa\Multisite;
 
 /**
  * Basic file system tests for application integrity.
@@ -83,7 +83,7 @@ EOD;
   }
 
   /**
-   * Test that multisitefiles exist and that BLT config is set correctly.
+   * Test that multisite files exist and that BLT config is set correctly.
    */
   public function testMultisiteFiles() {
     $finder = new Finder();
