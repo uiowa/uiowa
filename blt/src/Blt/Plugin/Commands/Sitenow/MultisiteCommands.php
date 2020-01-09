@@ -227,6 +227,23 @@ EOD;
       '--remote-alias' => "{$id}.prod",
     ]);
 
+    $result = $this->taskReplaceInFile("{$root}/docroot/sites/{$host}/settings.php")
+      ->from('require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";' . "\n")
+      ->to(<<<EOD
+if (file_exists('/var/www/site-php')) {
+  require '/var/www/site-php/uiowa/{$db}-settings.inc';
+}
+
+require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
+
+EOD
+)
+      ->run();
+
+    if (!$result->wasSuccessful()) {
+      throw new \Exception("Unable to set database include for site {$host}.");
+    }
+
     // Remove some files that we probably don't need.
     $files = [
       "{$root}/docroot/sites/{$host}/default.services.yml",
