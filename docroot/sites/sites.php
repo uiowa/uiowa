@@ -513,3 +513,8 @@ $sites['researchICRU.prod.drupal.uiowa.edu'] = 'ICRU.research.uiowa.edu';
 $sites['orgconflictmanagement.dev.drupal.uiowa.edu'] = 'conflictmanagement.org.uiowa.edu';
 $sites['orgconflictmanagement.stage.drupal.uiowa.edu'] = 'conflictmanagement.org.uiowa.edu';
 $sites['orgconflictmanagement.prod.drupal.uiowa.edu'] = 'conflictmanagement.org.uiowa.edu';
+
+// Directory aliases for designcenter.uiowa.edu.
+$sites['designcenter.dev.drupal.uiowa.edu'] = 'designcenter.uiowa.edu';
+$sites['designcenter.stage.drupal.uiowa.edu'] = 'designcenter.uiowa.edu';
+$sites['designcenter.prod.drupal.uiowa.edu'] = 'designcenter.uiowa.edu';
