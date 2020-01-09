@@ -174,6 +174,9 @@ EOD;
   public function validateCreate(CommandData $commandData) {
     $host = $commandData->input()->getArgument('host');
 
+    // Lowercase the host, just in case.
+    $commandData->input()->setArgument('host', strtolower($host));
+
     if (parse_url($host, PHP_URL_SCHEME) == NULL) {
       $uri = "https://{$host}";
     }
