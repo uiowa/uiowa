@@ -118,7 +118,7 @@ class Multisite {
       ->in("{$root}/docroot/sites/")
       ->directories()
       ->depth('< 1')
-      ->exclude(['default', 'g', 'settings'])
+      ->exclude(['g', 'settings'])
       ->sortByName();
 
     $sites = [];
