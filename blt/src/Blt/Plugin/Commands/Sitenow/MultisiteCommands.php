@@ -353,9 +353,19 @@ EOD;
 
     $this->say("Committed site <comment>{$host}</comment> code.");
 
+    $applications = $this->getConfigValue('uiowa.applications');
+    $choices = [];
+
+    foreach ($applications as $app => $attr) {
+      $choices[$app] = $attr['id'];
+    }
+
+    $choice = $this->askChoice('Which cloud application should be used?', $choices);
+
     /** @var \AcquiaCloudApi\CloudApi\Client $cloud */
     /** @var \AcquiaCloudApi\Response\ApplicationResponse $application */
-    list($cloud, $application) = $this->getAcquiaCloudApi();
+    list($cloud, $application) = $this->getAcquiaCloudApi($applications[$choice]['id']);
+
     $cloud->databaseCreate($application->uuid, $db);
     $this->say("Created <comment>{$db}</comment> cloud database.");
 
@@ -440,10 +450,13 @@ EOD;
   /**
    * Return new ConnectorInterface and ApplicationResponse for this application.
    *
+   * @param string $id
+   *   The Acquia Cloud application ID.
+   *
    * @return array
    *   Array of ConnectorInterface and ApplicationResponse variables.
    */
-  protected function getAcquiaCloudApi() {
+  protected function getAcquiaCloudApi($id) {
     $connector = new Connector([
       'key' => $this->getConfigValue('credentials.acquia.key'),
       'secret' => $this->getConfigValue('credentials.acquia.secret'),
@@ -453,7 +466,7 @@ EOD;
     $cloud = Client::factory($connector);
 
     /** @var \AcquiaCloudApi\Response\ApplicationResponse $application */
-    $application = $cloud->application($this->getConfigValue('cloud.appId'));
+    $application = $cloud->application($id);
 
     return [
       $cloud,
