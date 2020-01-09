@@ -116,10 +116,6 @@ EOD;
         $this->assertEquals('https', $blt['project']['local']['protocol']);
         $this->assertEquals('self', $blt['drush']['aliases']['local']);
         $this->assertEquals("{$id}.prod", $blt['drush']['aliases']['remote']);
-
-        $db = str_replace('.', '_', $site);
-        $db = str_replace('-', '_', $db);
-        $this->assertEquals($db, $blt['drupal']['db']['database']);
       }
     }
   }
