@@ -16,15 +16,15 @@ use Uiowa\Multisite;
 class UpdateCommands extends BltTasks {
 
   /**
-   * Execute SiteNow updates.
+   * Execute uiowa application updates.
    *
-   * @command sitenow:update
+   * @command uiowa:update
    */
-  public function sitenowUpdate() {
-    $schema = $this->getSitenowSchemaVersion();
+  public function uiowaUpdate() {
+    $schema = $this->getSchemaVersion();
     $reflection = new \ReflectionClass(UpdateCommands::class);
     $methods = array_filter($reflection->getMethods(), function ($v) {
-      return $v->name != 'sitenowUpdate' && $v->class == UpdateCommands::class;
+      return $v->name != 'uiowaUpdate' && $v->class == UpdateCommands::class;
     });
 
     $reader = new AnnotationReader();
@@ -61,8 +61,8 @@ class UpdateCommands extends BltTasks {
    * @return string
    *   The current schema version or 1000 if none is set.
    */
-  protected function getSitenowSchemaVersion() {
-    $file = $this->getConfigValue('repo.root') . '/blt/.sitenow_schema_version';
+  protected function getSchemaVersion() {
+    $file = $this->getConfigValue('repo.root') . '/blt/.uiowa_schema_version';
 
     if (file_exists($file)) {
       return file_get_contents($file);
@@ -78,8 +78,8 @@ class UpdateCommands extends BltTasks {
    * @param int $version
    *   The version number to write to the schema file.
    */
-  protected function setSitenowSchemaVersion($version) {
-    $file = $this->getConfigValue('repo.root') . '/blt/.sitenow_schema_version';
+  protected function setSchemaVersion($version) {
+    $file = $this->getConfigValue('repo.root') . '/blt/.uiowa_schema_version';
     file_put_contents($file, $version);
   }
 
@@ -119,7 +119,7 @@ EOD;
       }
     }
 
-    $this->setSitenowSchemaVersion(1001);
+    $this->setSchemaVersion(1001);
   }
 
 }
