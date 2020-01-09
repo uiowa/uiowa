@@ -1,0 +1,47 @@
+{#
+/**
+ * @file
+ * Theme override for a 'form' element.
+ *
+ * Available variables
+ * - attributes: A list of HTML attributes for the wrapper element.
+ * - children: The child elements of the form.
+ *
+ * @see template_preprocess_form()
+ */
+#}
+<form{{ attributes }}>
+  <div class="lockup-preview-wrapper">
+    <h2>Live Preview</h2>
+    <div id="lockup-preview">
+      <h3>Horizontal lockup</h3>
+      <p class="small">Follow directions in step 2 of the form.</p>
+      <div class="lockup-horizontal">
+        <img class="block-iowa" src="/{{ element['#module_path'] }}/images/iowa.svg">
+        <div class="lockup-content">
+          <div class="lockup-content-inner">
+            <div class="primary-unit"></div>
+            <div class="sub-unit"></div>
+          </div>
+        </div>
+      </div>
+      <h3>Stacked lockup</h3>
+      <p class="small">Follow directions in step 3 of the form.</p>
+      <div class="lockup-stacked">
+        <img class="block-iowa" src="/{{ element['#module_path'] }}/images/iowa.svg">
+        <div class="lockup-content">
+          <div class="lockup-content-inner">
+            <div class="primary-unit"></div>
+            <div class="sub-unit"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <p><em>Disclaimer: This preview is for illustrative purposes only and is not an exact representation of final product.</em></p>
+  </div>
+  <div class="lockup-form-wrapper">
+    <p>Follow the steps below to create your lockup. A preview of your lockup will generate automatically once approved.</p>
+    {{ children }}
+  </div>
+</form>
