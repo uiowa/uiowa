@@ -115,7 +115,6 @@ EOD;
         $this->assertEquals($id, $blt['project']['machine_name']);
         $this->assertEquals('https', $blt['project']['local']['protocol']);
         $this->assertEquals('self', $blt['drush']['aliases']['local']);
-        $this->assertEquals("{$id}.prod", $blt['drush']['aliases']['remote']);
       }
     }
   }
