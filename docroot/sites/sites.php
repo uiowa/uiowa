@@ -459,11 +459,6 @@ $sites['courseilg.dev.drupal.uiowa.edu'] = 'ilg.course.uiowa.edu';
 $sites['courseilg.stage.drupal.uiowa.edu'] = 'ilg.course.uiowa.edu';
 $sites['courseilg.prod.drupal.uiowa.edu'] = 'ilg.course.uiowa.edu';
 
-// Directory aliases for uiobl.org.uiowa.edu.
-$sites['orguiobl.dev.drupal.uiowa.edu'] = 'uiobl.org.uiowa.edu';
-$sites['orguiobl.stage.drupal.uiowa.edu'] = 'uiobl.org.uiowa.edu';
-$sites['orguiobl.prod.drupal.uiowa.edu'] = 'uiobl.org.uiowa.edu';
-
 // Directory aliases for pinyin.uiowa.edu.
 $sites['pinyin.dev.drupal.uiowa.edu'] = 'pinyin.uiowa.edu';
 $sites['pinyin.stage.drupal.uiowa.edu'] = 'pinyin.uiowa.edu';
@@ -499,3 +494,23 @@ $sites['theming.prod.drupal.uiowa.edu'] = 'theming.uiowa.edu';
 $sites['educationresearch2.dev.drupal.uiowa.edu'] = 'research2.education.uiowa.edu';
 $sites['educationresearch2.stage.drupal.uiowa.edu'] = 'research2.education.uiowa.edu';
 $sites['educationresearch2.prod.drupal.uiowa.edu'] = 'research2.education.uiowa.edu';
+
+// Directory aliases for uiobl.uiowa.edu.
+$sites['uiobl.dev.drupal.uiowa.edu'] = 'uiobl.uiowa.edu';
+$sites['uiobl.stage.drupal.uiowa.edu'] = 'uiobl.uiowa.edu';
+$sites['uiobl.prod.drupal.uiowa.edu'] = 'uiobl.uiowa.edu';
+
+// Directory aliases for businsvc.fo.uiowa.edu.
+$sites['fobusinsvc.dev.drupal.uiowa.edu'] = 'businsvc.fo.uiowa.edu';
+$sites['fobusinsvc.stage.drupal.uiowa.edu'] = 'businsvc.fo.uiowa.edu';
+$sites['fobusinsvc.prod.drupal.uiowa.edu'] = 'businsvc.fo.uiowa.edu';
+
+// Directory aliases for ighn.international.uiowa.edu.
+$sites['internationalighn.dev.drupal.uiowa.edu'] = 'ighn.international.uiowa.edu';
+$sites['internationalighn.stage.drupal.uiowa.edu'] = 'ighn.international.uiowa.edu';
+$sites['internationalighn.prod.drupal.uiowa.edu'] = 'ighn.international.uiowa.edu';
+
+// Directory aliases for ICRU.research.uiowa.edu.
+$sites['researchICRU.dev.drupal.uiowa.edu'] = 'ICRU.research.uiowa.edu';
+$sites['researchICRU.stage.drupal.uiowa.edu'] = 'ICRU.research.uiowa.edu';
+$sites['researchICRU.prod.drupal.uiowa.edu'] = 'ICRU.research.uiowa.edu';
