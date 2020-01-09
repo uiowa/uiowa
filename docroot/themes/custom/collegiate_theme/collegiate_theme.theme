@@ -90,4 +90,16 @@ function collegiate_theme_form_alter(&$form, $form_state, $form_id) {
   if (strpos($form_id, 'uiowa_bar_search_form') !== FALSE) {
     $form['#attributes']['class'][] = 'hds-content hds-content__search';
   }
+  if (strpos($form_id, 'search_block_form') !== FALSE) {
+    $form['#attributes']['class'][] = 'hds-content hds-search';
+  }
+}
+
+
+function collegiate_theme_form_views_exposed_form_alter(&$form, $form_state, $form_id) {
+  $view_ids = ['book_toc', 'book_search'];
+  $view = $form_state->getStorage('view');
+  if ($form_id == 'views_exposed_form' && in_array($view['view']->id(), $view_ids)) {
+    $form['#attributes']['class'][] = 'hds-content hds-search';
+  }
 }
