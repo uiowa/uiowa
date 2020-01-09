@@ -4,6 +4,8 @@ project:
     protocol: https
   machine_name: staff-council
   human_name: staff-council.uiowa.edu
+  profile:
+    name: sitenow
 drupal:
   db:
     database: staff_council_uiowa_edu
@@ -14,3 +16,16 @@ drush:
   aliases:
     local: self
     remote: staff-council.prod
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true
+sync:
+  commands:
+    - 'blt:init:settings'
+    - 'drupal:sync:db'
+    - 'drupal:update'
+    - 'sitenow:multisite:noop'
+    - 'sitenow:multisite:noop'

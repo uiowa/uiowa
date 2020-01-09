@@ -4,7 +4,8 @@ project:
     protocol: https
   machine_name: org-molcellcog
   human_name: molcellcog.org
-  requester: mdeneve
+  profile:
+    name: sitenow
 drush:
   aliases:
     local: self
@@ -15,3 +16,19 @@ drupal:
     host: localhost
     user: root
     password: null
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true
+sync:
+  commands:
+    - 'blt:init:settings'
+    - 'drupal:sync:db'
+    - 'drupal:update'
+    - 'sitenow:multisite:noop'
+    - 'sitenow:multisite:noop'
+uiowa:
+  sitenow:
+    requester: mdeneve
