@@ -508,3 +508,8 @@ $sites['internationalighn.prod.drupal.uiowa.edu'] = 'ighn.international.uiowa.ed
 $sites['researchICRU.dev.drupal.uiowa.edu'] = 'ICRU.research.uiowa.edu';
 $sites['researchICRU.stage.drupal.uiowa.edu'] = 'ICRU.research.uiowa.edu';
 $sites['researchICRU.prod.drupal.uiowa.edu'] = 'ICRU.research.uiowa.edu';
+
+// Directory aliases for TheMACLab.lab.uiowa.edu.
+$sites['labTheMACLab.dev.drupal.uiowa.edu'] = 'TheMACLab.lab.uiowa.edu';
+$sites['labTheMACLab.stage.drupal.uiowa.edu'] = 'TheMACLab.lab.uiowa.edu';
+$sites['labTheMACLab.prod.drupal.uiowa.edu'] = 'TheMACLab.lab.uiowa.edu';
