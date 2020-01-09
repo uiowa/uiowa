@@ -7,7 +7,6 @@ use AcquiaCloudApi\CloudApi\Client;
 use AcquiaCloudApi\CloudApi\Connector;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 use Sitenow\Multisite;
 
@@ -72,21 +71,8 @@ class MultisiteCommands extends BltTasks {
    * @requireCredentials
    */
   public function delete() {
-    $root = $this->getConfigValue("repo.root");
-
-    $finder = new Finder();
-
-    $dirs = $finder
-      ->in("{$root}/docroot/sites/")
-      ->directories()
-      ->depth('< 1')
-      ->exclude(['default', 'g', 'settings'])
-      ->sortByName();
-
-    $sites = [];
-    foreach ($dirs->getIterator() as $dir) {
-      $sites[] = $dir->getRelativePathname();
-    }
+    $root = $this->getConfigValue('repo.root');
+    $sites = Multisite::getAllSites($root);
 
     $dir = $this->askChoice('Select which site to delete.', $sites);
     $db = Multisite::getDatabase($dir);
