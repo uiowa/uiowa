@@ -10,6 +10,7 @@
  */
 
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Link;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Field\FieldFilteredMarkup;
 use Drupal\Core\Url;
@@ -18,12 +19,55 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\brand_core\Controller\LockupController;
 
 /**
+ * Implements hook_page_attachments().
+ */
+function brand_core_page_attachments(&$page) {
+  $active_theme = \Drupal::service('theme.manager')->getActiveTheme()->getName();
+  $default_theme = \Drupal::config('system.theme')->get('default');
+  if ($active_theme === $default_theme) {
+    $page['#attached']['library'][] = 'uiowa_bar/uiowa-bar';
+  }
+
+}
+
+/**
+ * Implements hook_page_top().
+ */
+function brand_core_page_top(&$page_top) {
+  $active_theme = \Drupal::service('theme.manager')->getActiveTheme()->getName();
+  $default_theme = \Drupal::config('system.theme')->get('default');
+  if ($active_theme === $default_theme) {
+    $search_form = \Drupal::formBuilder()->getForm('Drupal\uiowa_bar\Form\SearchForm');
+    $page_top['uiowa_bar'] = [
+      '#theme' => 'uiowa_bar',
+      '#search_form' => $search_form,
+    ];
+  }
+}
+
+/**
+ * Implements hook_page_bottom().
+ */
+function brand_core_page_bottom(array &$page_bottom) {
+  $active_theme = \Drupal::service('theme.manager')->getActiveTheme()->getName();
+  $default_theme = \Drupal::config('system.theme')->get('default');
+  if ($active_theme === $default_theme) {
+    $page_bottom['uiowa_footer'] = [
+      '#theme' => 'uiowa_footer',
+    ];
+  }
+}
+
+/**
  * Implements hook_form_alter().
  */
 function brand_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
     case 'node_lockup_edit_form':
     case 'node_lockup_form':
+
+      $form['advanced']['#type'] = 'container';
+      $form['advanced']['#accordion'] = TRUE;
       // Attach lockup preview libraries.
       $form['#attached']['library'][] = 'brand_core/lockup-preview';
 
@@ -31,10 +75,10 @@ function brand_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       $module_handler = Drupal::service('module_handler');
       $form["#module_path"] = $module_handler->getModule('brand_core')->getPath();
 
-      // Create node_fields group in the advanced container.
-      $form['node_fields'] = [
+      // Create groups in the advanced container.
+      $form['step_one'] = [
         '#type' => 'details',
-        '#title' => 'Lockup Details',
+        '#title' => 'Step 1: Name Your Lockup',
         '#group' => 'advanced',
         '#attributes' => [
           'class' => ['node-form-fields'],
@@ -46,14 +90,49 @@ function brand_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
         '#optional' => FALSE,
         '#open' => TRUE,
       ];
-      // Set fields to node_fields group.
-      $form['title']['#group'] = 'node_fields';
+      $form['step_two'] = [
+        '#type' => 'details',
+        '#title' => 'Step 2: Create your horizontal lockup',
+        '#group' => 'advanced',
+        '#attributes' => [
+          'class' => ['node-form-fields'],
+        ],
+        '#attached' => [
+          'library' => ['node/drupal.node'],
+        ],
+        '#weight' => -99,
+        '#optional' => FALSE,
+        '#open' => FALSE,
+      ];
+      $form['step_three'] = [
+        '#type' => 'details',
+        '#title' => 'Step 3: Create your stacked lockup',
+        '#group' => 'advanced',
+        '#attributes' => [
+          'class' => ['node-form-fields'],
+        ],
+        '#attached' => [
+          'library' => ['node/drupal.node'],
+        ],
+        '#weight' => -99,
+        '#optional' => FALSE,
+        '#open' => FALSE,
+      ];
+      // Set fields to groups.
+      $form['title']['#group'] = 'step_one';
       $form['title']['widget'][0]['value']['#description'] = FieldFilteredMarkup::create('Used for naming SVG files and lockup node identification.');
-      $form['field_lockup_org']['#group'] = 'node_fields';
-      $form['field_lockup_primary_unit']['#group'] = 'node_fields';
-      $form['field_lockup_sub_unit']['#group'] = 'node_fields';
-      $form['field_lockup_p_unit_stacked']['#group'] = 'node_fields';
-      $form['field_lockup_s_unit_stacked']['#group'] = 'node_fields';
+      $form['field_lockup_org']['#group'] = 'step_one';
+      $form['field_lockup_primary_unit']['#group'] = 'step_two';
+      $form['field_lockup_sub_unit']['#group'] = 'step_two';
+      $form['field_lockup_p_unit_stacked']['#group'] = 'step_three';
+      $form['field_lockup_s_unit_stacked']['#group'] = 'step_three';
+
+      // Simplify revision info for lockup form.
+      $form['revision_information']['#type'] = 'container';
+      $form['revision_log']['widget'][0]['value']['#title'] = FieldFilteredMarkup::create('Submission notes');
+
+      // Shouldn't be needed for this content type.
+      $form['path']['#access'] = FALSE;
 
       $form_object = $form_state->getFormObject();
       $nid = $form_object->getEntity()->id();
@@ -121,12 +200,12 @@ function _brand_core_lockup_submit(array $form, FormStateInterface $form_state) 
       $status_text = t('Lockup submitted for approval.');
       break;
 
-    case 'published':
-      // Generate Lockup Files if approved/published.
-      $nid = $entity->id();
-      $lockup_controller = new LockupController();
-      $lockup_controller->generate($nid);
-      break;
+//    case 'published':
+//      // Generate Lockup Files if approved/published.
+//      $nid = $entity->id();
+//      $lockup_controller = new LockupController();
+//      $lockup_controller->generate($nid);
+//      break;
   }
   if (!empty($status_text)) {
     $url = Url::fromRoute('view.lockups.page_lockups');
@@ -140,9 +219,9 @@ function _brand_core_lockup_submit(array $form, FormStateInterface $form_state) 
  */
 function brand_core_theme_suggestions_alter(array &$suggestions, array $variables, $hook) {
   // Suggest a template with placeholder lockup preview markup.
-  if (isset($variables['form'])) {
-    if ($variables["form"]["#form_id"] == 'node_lockup_form' || $variables['form']['#form_id'] == 'node_lockup_edit_form') {
-      $suggestions[] = 'node_edit_form__lockup';
+  if ($hook == 'form') {
+    if ($variables["element"]["#form_id"] == 'node_lockup_form' || $variables["element"]['#form_id'] == 'node_lockup_edit_form') {
+      $suggestions[] = 'form__lockup';
     }
   }
 }
@@ -152,8 +231,8 @@ function brand_core_theme_suggestions_alter(array &$suggestions, array $variable
  */
 function brand_core_theme($existing, $type, $theme, $path) {
   return [
-    'node_edit_form__lockup' => [
-      'template' => 'node-edit-form--lockup',
+    'form__lockup' => [
+      'template' => 'form--lockup',
       'base hook' => 'form',
     ],
     'node__lockup__full' => [
@@ -161,6 +240,23 @@ function brand_core_theme($existing, $type, $theme, $path) {
       'base hook' => 'node',
     ],
   ];
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function brand_core_preprocess_page(&$variables) {
+  $current_roles = \Drupal::currentUser()->getRoles();
+  // For collaborator/authenticated, display logout message since they can't see toolbar.
+  if (in_array('collaborator', $current_roles) && count($current_roles) <= 2) {
+    $url = Url::fromRoute('user.logout');
+    $logout = Link::fromTextAndUrl(t('logout'), $url)
+      ->toString();
+    $message_text = t('You are current logged in. Click here to @logout.', [
+      '@logout' => $logout,
+    ]);
+    \Drupal::messenger()->addStatus($message_text);
+  }
 }
 
 /**
@@ -187,9 +283,9 @@ function brand_core_preprocess_node(&$variables) {
                 '#markup' => '<div class="my-2"><a class="btn btn-primary" href="' . $alias . '/download">Download <span class="fas fa-cloud-download-alt"></span></a></div>',
                 '#weight' => 999,
               ];
+              $variables['content']['stacked'] = ['#markup' => file_create_url($lockup_dir . $nid . '/' . $name . '-LockupStacked-BLACK.svg')];
+              $variables['content']['horizontal'] = ['#markup' => file_create_url($lockup_dir . $nid . '/' . $name . '-LockupHorizontal-BLACK.svg')];
             }
-            $variables['content']['stacked'] = ['#markup' => file_create_url($lockup_dir . $nid . '/' . $name . '-LockupStacked-BLACK.svg')];
-            $variables['content']['horizontal'] = ['#markup' => file_create_url($lockup_dir . $nid . '/' . $name . '-LockupHorizontal-BLACK.svg')];
             break;
         }
         break;
@@ -285,5 +381,24 @@ function brand_core_mail($key, &$message, $params) {
       }
       $message['body'][] = t('@login', ['@login' => $params['login']], $options);
       break;
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ */
+function brand_core_node_update(Drupal\Core\Entity\EntityInterface $entity) {
+  $type = $entity->bundle();
+  if ($type == 'lockup') {
+    $state = $entity->get('moderation_state')->value;
+    switch ($state) {
+      case 'published':
+        // Generate Lockup Files if approved/published.
+        $nid = $entity->id();
+        $lockup_controller = new LockupController();
+        $lockup_controller->generate($nid);
+        break;
+
+    }
   }
 }
