@@ -4,3 +4,7 @@ services:
     arguments: [ '@entity_type.manager' ]
     tags:
       - { name: 'event_subscriber' }
+  post_migration_subscriber:
+    class: Drupal\sitenow_migrate\EventSubscriber\PostMigrationSubscriber'
+    tags:
+      - { name: 'event_subscriber' }

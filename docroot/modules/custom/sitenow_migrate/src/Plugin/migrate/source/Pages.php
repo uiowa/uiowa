@@ -213,4 +213,37 @@ class Pages extends SqlBase {
     return implode(" ", $parts);
   }
 
+  /**
+   * Find and mark any internal links for post-migration updating.
+   */
+  public function findInternalLinks($content, $link_aliases) {
+    preg_match_all('|href="/(.*?)"|i',
+      $content,
+      $matches);
+    foreach ($maches as $match) {
+      preg_match('|node/(.*)|i', $match[1], $node_id);
+      if (isset($node_id)) {
+        $link_aliases[$node_id] = 1;
+      } else {
+        $link_aliases[$match[1]] = 1;
+      }
+    }
+    return $link_aliases;
+  }
+
+  public function updateInternalLinks($link_aliases) {
+    $connection = \Drupal::database();
+    $result = $connection->select('migrate_map_d7_page', 'mm')
+    ->fields('mm', ['sourceid1', 'destid1'])
+    ->execute();
+    
+    foreach ($link_aliases as $original_link => $new_link) {
+      if (is_numeric($original_link)) {
+        // Need mapping of old nid to new nid.
+        
+      } else {
+        // Need to check old alias, and if it matches new alias pattern.
+      }
+    }
+  }
 }
