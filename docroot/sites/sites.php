@@ -508,3 +508,13 @@ $sites['internationalighn.prod.drupal.uiowa.edu'] = 'ighn.international.uiowa.ed
 $sites['researchICRU.dev.drupal.uiowa.edu'] = 'ICRU.research.uiowa.edu';
 $sites['researchICRU.stage.drupal.uiowa.edu'] = 'ICRU.research.uiowa.edu';
 $sites['researchICRU.prod.drupal.uiowa.edu'] = 'ICRU.research.uiowa.edu';
+
+// Directory aliases for conflictmanagement.org.uiowa.edu.
+$sites['orgconflictmanagement.dev.drupal.uiowa.edu'] = 'conflictmanagement.org.uiowa.edu';
+$sites['orgconflictmanagement.stage.drupal.uiowa.edu'] = 'conflictmanagement.org.uiowa.edu';
+$sites['orgconflictmanagement.prod.drupal.uiowa.edu'] = 'conflictmanagement.org.uiowa.edu';
+
+// Directory aliases for designcenter.uiowa.edu.
+$sites['designcenter.dev.drupal.uiowa.edu'] = 'designcenter.uiowa.edu';
+$sites['designcenter.stage.drupal.uiowa.edu'] = 'designcenter.uiowa.edu';
+$sites['designcenter.prod.drupal.uiowa.edu'] = 'designcenter.uiowa.edu';
