@@ -770,7 +770,7 @@ $settings['entity_update_batch_size'] = 50;
 # }
 
 if (file_exists('/var/www/site-php')) {
-  require '/var/www/site-php/uiowa/ICRU_research_uiowa_edu-settings.inc';
+  require '/var/www/site-php/uiowa/conflictmanagement_org_uiowa_edu-settings.inc';
 }
 
 require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
