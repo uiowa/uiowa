@@ -1,0 +1,35 @@
+project:
+  local:
+    hostname: kuehn.lab.uiowa.edu
+    protocol: https
+  machine_name: labkuehn
+  human_name: kuehn.lab.uiowa.edu
+  profile:
+    name: sitenow
+drush:
+  aliases:
+    local: self
+    remote: labkuehn.prod
+drupal:
+  db:
+    database: kuehn_lab_uiowa_edu
+    host: localhost
+    user: root
+    password: null
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true
+sync:
+  commands:
+    - 'blt:init:settings'
+    - 'drupal:sync:db'
+    - 'drupal:update'
+    - 'sitenow:multisite:noop'
+    - 'sitenow:multisite:noop'
+uiowa:
+  profiles:
+    sitenow:
+      requester: brettjohnson

@@ -1,6 +1,8 @@
 <?php
 
-namespace Sitenow;
+namespace Uiowa;
+
+use Symfony\Component\Finder\Finder;
 
 /**
  * Multisite class.
@@ -98,6 +100,33 @@ class Multisite {
       'test' => "{$id}.stage.drupal.uiowa.edu",
       'prod' => "{$id}.prod.drupal.uiowa.edu",
     ];
+  }
+
+  /**
+   * Find all multisites in the application root.
+   *
+   * @param string $root
+   *   The root of the application to find multisites in.
+   *
+   * @return array
+   *   An array of sites.
+   */
+  public static function getAllSites($root) {
+    $finder = new Finder();
+
+    $dirs = $finder
+      ->in("{$root}/docroot/sites/")
+      ->directories()
+      ->depth('< 1')
+      ->exclude(['g', 'settings'])
+      ->sortByName();
+
+    $sites = [];
+    foreach ($dirs->getIterator() as $dir) {
+      $sites[] = $dir->getRelativePathname();
+    }
+
+    return $sites;
   }
 
 }
