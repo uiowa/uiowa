@@ -4,6 +4,8 @@ project:
     protocol: https
   machine_name: dentistrycallctr
   human_name: callctr.dentistry.uiowa.edu
+  profile:
+    name: sitenow
 drush:
   aliases:
     local: self
@@ -14,3 +16,16 @@ drupal:
     host: localhost
     user: root
     password: null
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true
+sync:
+  commands:
+    - 'blt:init:settings'
+    - 'drupal:sync:db'
+    - 'drupal:update'
+    - 'sitenow:multisite:noop'
+    - 'sitenow:multisite:noop'
