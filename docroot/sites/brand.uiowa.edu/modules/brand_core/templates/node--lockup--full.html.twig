@@ -102,19 +102,11 @@
   {% endif %}
 
   <div{{ content_attributes.addClass('node__content') }}>
-    {% if content.stacked or content.horizontal %}
-    <div class="row">
-      {% if content.stacked %}
-      <div class="col-md">
-        <img src="{{ content.stacked }}" alt="stacked lockup example">
-      </div>
-      {% endif %}
-      {% if content.horizontal %}
-      <div class="col-md">
-        <img src="{{ content.horizontal }}" alt="horizontal lockup example">
-      </div>
-      {% endif %}
-    </div>
+    {% if content.stacked %}
+      <img src="{{ content.stacked }}" alt="stacked lockup example">
+    {% endif %}
+    {% if content.horizontal %}
+      <img src="{{ content.horizontal }}" alt="horizontal lockup example">
     {% endif %}
     {{ content|without('stacked', 'horizontal') }}
   </div>
