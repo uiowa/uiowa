@@ -302,9 +302,9 @@ EOD
     // Overwrite the multisite blt.yml file.
     $blt = Yaml::parse(file_get_contents("{$root}/docroot/sites/{$host}/blt.yml"));
     $blt['project']['machine_name'] = $id;
-    $blt['project']['requester'] = $requester;
     $blt['drupal']['db']['database'] = $db;
     $blt['drush']['aliases']['local'] = 'self';
+    $blt['uiowa']['profiles']['sitenow']['requester'] = $requester;
     file_put_contents("{$root}/docroot/sites/{$host}/blt.yml", Yaml::dump($blt, 10, 2));
     $this->say("Overwrote <comment>docroot/sites/{$host}/blt.yml</comment> file with standardized names.");
 
