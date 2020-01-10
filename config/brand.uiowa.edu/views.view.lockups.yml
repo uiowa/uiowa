@@ -4,10 +4,12 @@ status: true
 dependencies:
   config:
     - node.type.lockup
+    - taxonomy.vocabulary.orgs
     - workflows.workflow.lockup
   module:
     - content_moderation
     - node
+    - taxonomy
     - user
 id: lockups
 label: Lockups
@@ -770,11 +772,66 @@ display:
           entity_type: node
           entity_field: type
           plugin_id: bundle
+        field_lockup_org_target_id:
+          id: field_lockup_org_target_id
+          table: node__field_lockup_org
+          field: field_lockup_org_target_id
+          relationship: nid
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_lockup_org_target_id_op
+            label: Organization
+            description: ''
+            use_operator: false
+            operator: field_lockup_org_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_lockup_org_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              collaborator: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: select
+          limit: true
+          vid: orgs
+          hierarchy: false
+          error_message: true
+          parent: 0
+          level_labels: ''
+          force_deepest: false
+          plugin_id: taxonomy_index_tid
         moderation_state:
           id: moderation_state
           table: node_field_revision
           field: moderation_state
-          relationship: none
+          relationship: nid
           group_type: group
           admin_label: ''
           operator: in
@@ -792,6 +849,8 @@ display:
             description: ''
             use_operator: false
             operator: moderation_state_op
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: moderation_state
             required: false
             remember: false
@@ -799,13 +858,13 @@ display:
             remember_roles:
               authenticated: authenticated
               anonymous: '0'
+              collaborator: '0'
+              viewer: '0'
               editor: '0'
               publisher: '0'
               webmaster: '0'
               administrator: '0'
             reduce: true
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -861,6 +920,7 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
@@ -1296,6 +1356,7 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
