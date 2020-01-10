@@ -3,7 +3,6 @@
 namespace Uiowa\Blt\Plugin\Commands\Sitenow;
 
 use Acquia\Blt\Robo\BltTasks;
-use Acquia\Blt\Robo\Common\YamlMunge;
 
 /**
  * BLT override commands.
@@ -66,18 +65,15 @@ class ReplaceCommands extends BltTasks {
           throw new \Exception("Site install task failed for {$uri}.");
         }
 
-        $root = $this->getConfigValue('repo.root');
-        $yaml = YamlMunge::parseFile("{$root}/docroot/sites/{$multisite}/blt.yml");
-
-        if (isset($yaml['uiowa']['sitenow']['requester']) && !empty($yaml['uiowa']['sitenow']['requester'])) {
+        if ($requester = $this->getConfigValue('uiowa.profiles.sitenow.requester')) {
           $result = $this->taskDrush()
             ->stopOnFail(FALSE)
             ->drush('user:create')
-            ->args([$yaml['project']['requester']])
+            ->args($requester)
             ->drush('user:role:add')
             ->args([
               'webmaster',
-              $yaml['project']['requester'],
+              $requester,
             ])
             ->run();
 
@@ -95,14 +91,11 @@ class ReplaceCommands extends BltTasks {
    * @hook replace-command artifact:ac-hooks:post-db-copy
    */
   public function replacePostDbCopy($site, $target_env, $db_name, $source_env) {
-    $root = $this->getConfigValue('repo.root');
-
     foreach ($this->getConfigValue('multisites') as $multisite) {
-      // Parse each multisite blt.yml file to get the correct database.
-      $yaml = YamlMunge::parseFile("{$root}/docroot/sites/{$multisite}/blt.yml");
+      $db = $this->getConfigValue('drupal.db.database');
 
       // Trigger drupal:update for this site.
-      if ($db_name == $yaml['drupal']['db']['database']) {
+      if ($db_name == $db) {
         $this->say("Deploying updates to <comment>{$multisite}</comment>...");
         $this->switchSiteContext($multisite);
         $this->taskDrush()->drush('cache:rebuild')->run();
