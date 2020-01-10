@@ -1,6 +1,6 @@
 # uiowa
 
-The base application on Acquia Cloud hosting the Sitenow platform.
+The base application on Acquia Cloud for the University of Iowa.
 
 # Getting Started
 
@@ -17,92 +17,13 @@ This project is based on BLT, an open-source project template and tool that enab
     ```
     $ git clone git@github.com:<account>/git@git.com/uiowa/uiowa.git
     ```
-7. Add the Acquia repository as a secondary remote. You can get the Acquia remote URL from the [Acquia Cloud interface](https://docs.acquia.com/acquia-cloud/develop/repository/git).
+7. Add all Pipelines-connected Acquia repositories as another remote. You can get the Acquia remote URL from the [Acquia Cloud interface](https://docs.acquia.com/acquia-cloud/develop/repository/git).
     ```
-    git remote add acquia ACQUIA_REMOTE_URL
+    git remote add NAME ACQUIA_REMOTE_URL
     ```
-
 ----
-# Setup Local Environment.
-1. Install [Drush Launcher](https://github.com/drush-ops/drush-launcher).
-    - Ensure that there are no other Drush versions in your $PATH in `~/.bashrc` or `~.bash_profile`.
-2. Install [Homebrew](https://brew.sh/).
-3. Install [NVM](https://github.com/nvm-sh/nvm#installation-and-update) and then Yarn, globally.
-  ```
-  npm install --global yarn
-  ```
-4. Install PHP 7.2 via Homebrew.
-   ```
-   brew install php@7.2
-   brew link php@7.2
-   ```
-   Follow the instructions to get PHP7.2 in your $PATH.
-
-   You may also want to increase some key PHP resources. Homebrew should have installed PHP at:
-   `/usr/local/etc/php/`
-
-   edit the php.ini file within the version of PHP you are using. Consider increasing the following defaults:
-
-   - memory_limit = 256M
-   - max_input_vars = 3000
-
-   Save the file.
-
-5. Install MariaDB.
-   ```
-   brew install mariadb
-   ```
-   Keep the username `root` with no password.
-6. Start MariaDB.
-   ```
-   brew services start mariadb
-   ```
-7. Install Composer dependencies.
-    ```
-    $ composer install
-    ```
-8. Setup a local.blt.yml file
-    
-    See "[Local BLT Configuration](#local-blt-configuration)" below for more information.
-    
-9. [Install BLT](https://docs.acquia.com/blt/developer/onboarding/) in case you didn't find it in the getting started section.
-    ```
-    ./vendor/bin/blt blt:init:shell-alias -y
-    ```
-10. Sync all multisites. Hopefully you have designated just a few sites to start with in Step 8 or it will probably error out based on the number of sites we now have.
-    ```
-    blt drupal:sync:all-sites
-    ```
-11. Start the built-in PHP server.
-    ```
-    $ drush -l mysite rs --dns
-    ```
-
-Visit the site in your browser by navigating to http://localhost:8888.
-
-The `drush/Commands/PolicyCommands.php` file will overwrite the
-`sites.local.php` file to route the correct site when running `drush rs`. It is
-possible to serve multiple sites from different runserver commands with two
-different ports. You'll need to manually edit the `sites.local.php` file in
-that scenario.
-
-Once the server is running and the multisite is routed, you can log in by
-changing directory to `docroot/sites/mysite` and running `drush uli`. Note that
-this only works when the sites.php/local.sites.php file is routing the multisite.
-
-The `drupal:sync:all-sites` command will generate settings files only if they
-do not exist. If you want to re-generate all multisite local settings files,
-you can run `rm -f docroot/sites/*/settings/local.settings.php` beforehand.
-
-The `blt frontend` command will setup the theme and compile the theme's assets along with any other subthemes within the uiowa repo. Note `blt drupal:sync:all-sites` should complete this step. Check to make sure.
-
-Local configuration overrides can be set in the local.settings.php file for
-each multisite. For example, to configure stage file proxy:
-```
-$config['stage_file_proxy.settings']['origin'] = 'https://mysite.com';
-$config['stage_file_proxy.settings']['hotlink'] = TRUE;
-```
-## Local BLT Configuration
+# Local Environment
+### BLT Configuration
 Make sure you have an [Acquia Cloud key and secret](https://docs.acquia.com/acquia-cloud/develop/api/auth/) saved in the `blt/local.blt.yml` file. This file is ignored by Git. Be sure you do not accidentally commit your credentials to the `blt/blt.yml` file which is tracked in Git. Do not share your key or secret with anyone.
 ```
 credentials:
@@ -119,58 +40,31 @@ multisites:
   - foo.uiowa.edu
 ```
 
-## Create Multisite
-To create a new multisite:
-1. Run the `blt sitenow:multisite:create` command (`smc` for short) on a feature branch created from master.
-2. Follow the directions the command prints to the terminal.
-3. If necessary, email Hostmaster with CNAME request template in ITS-web@uiowa.edu -> Drafts -> Email Templates -> SiteNow Templates.
+### Common Tasks
+The `drupal:sync:all-sites` command will generate settings files only if they
+do not exist. If you want to re-generate all multisite local settings files,
+you can run `rm -f docroot/sites/*/settings/local.settings.php` beforehand.
 
-## Delete Multisite
-To delete a multisite:
-1. Run the `blt sitenow:multisite:delete` command (`smd` for short) on a feature branch created from master.
-2. Follow the directions the command prints to the terminal.
-3. Remove any related cron jobs from the Acquia Cloud interface.
-3. If necessary, email Hostmaster to remove the CNAME that is no longer in use.
+The `blt frontend` command will install and compile frontend assets.
 
-## XDebug
-
-`pecl install xdebug`
-
-Take note of where the extension is installed by viewing the output of the above command:
+Local configuration overrides can be set in the local.settings.php file for
+each multisite. For example, to configure stage file proxy:
 ```
-Build process completed successfully
-Installing '/usr/local/Cellar/php@7.2/7.2.18/pecl/20170718/xdebug.so'
-install ok: channel://pecl.php.net/xdebug-2.7.2
-Extension xdebug enabled in php.ini
+$config['stage_file_proxy.settings']['origin'] = 'https://mysite.com';
+$config['stage_file_proxy.settings']['hotlink'] = TRUE;
 ```
 
-You may need to change the path if you get an error when running a simple PHP
-command like `php --ini`.
+## SiteNow
+Please see the [SiteNow README](docroot/profiles/custom/sitenow/README.md) for
+addtional local development instructions.
 
-Open your php.ini file (should be located at: /usr/local/etc/php/7.2/php.ini). Confirm there is a line like:
-`zend_extension="xdebug.so"`
-
-Ideally this should be at the bottom of the file near the other extensions' config. Ultimately, your php.ini should have the following:
-
-```
-[xdebug]
-zend_extension="xdebug.so"
-xdebug.remote_enable=1
-xdebug.remote_log=/tmp/xdebug
-```
-
-Make sure you IDE is configured to use the same PHP executable. In PHPStorm this is located under Preferences > PHP > CLI Interpeter. Click the dots to configure the location.
-
-If using PHPStorm make sure your .bash_profile has the line and source it `source ~/.bash_profile`:
-`export XDEBUG_CONFIG="idekey=PHPSTORM"`
-
-Restart your server and clear the site's cache.
-
-Place a breakpoint and Start listening for PHP Debug Connections. Visit your site where your breakpoint should trigger and accept the incoming connection.
+## Provisioning/Deprovisioning
+### SiteNow
+Please see the [SiteNow README](docroot/profiles/custom/sitenow/README.md) for
+provisioning/deprovisioning instructions.
 
 ## Databases
-Use [SequelPro](https://www.sequelpro.com/) to manage your local databases. You
-can connect via localhost using the credentials set when installing MariaDB.
+Use [SequelPro](https://www.sequelpro.com/) as a GUI for your local databases.
 
 ## Updating Dependencies
 Before starting updates, make sure your local environment is on a feature branch
@@ -180,20 +74,22 @@ production.
 
 Drupal core requires the following specific command to update dev dependencies
 properly: `composer update drupal/core webflo/drupal-core-require-dev --with-dependencies`.
-You can run `composer update` after that to update all other dependencies. The
-output from Composer commands can be used as the long text for commit messages.
+You can run `composer update package/name` after that to update additional
+dependencies. The output from the Composer commands can be used as the long text
+for commit messages. Ideally, each package update would be one commit to the
+composer.lock file.
 
 Certain scaffold files should be resolved/removed afterwards. The redirects in
 the `docroot/.htaccess` file need to be re-implemented and the `docroot/robots.txt`
 should be removed. Different updates may require difference procedures. For
 example, BLT may download default config files that we don't use like `docroot/sites/default/default.services.yml`.
 
-To ensure configuration is exported correctly, run database updates and export
-using our BLT command:
-```
-blt sitenow:multisite:execute updb
-blt sitenow:multisite:execute config:export
-```
+Configuration tracked in the repository will need to be exported before deployment.
+This varies by the profile used.
+
+### SiteNow
+Please see the [SiteNow README](docroot/profiles/custom/sitenow/README.md) for
+additional dependency update instructions.
 
 Add and commit the config changes and then run another `blt dsa` to check for
 any further config discrepancies. If there are none, proceed with code
@@ -209,7 +105,7 @@ $ blt
 Most of the BLT commands referenced above have shorthand aliases. Check the
 output of `blt` for details.
 
-You can also run blt commands on a remote, but you must run them using the path and from the app root. `./vendor/bin/blt sitenow:multisite:execute cr`
+You can also run blt commands on a remote, but you must run them using the path and from the app root. `./vendor/bin/blt my:blt:command foo`
 
 ## Working With a BLT Project
 
@@ -220,4 +116,8 @@ Our BLT Developer documentation includes an [example workflow](https://docs.acqu
 ## Resources
 
 * GitHub - https://github.com/uiowa/uiowa
-* Acquia Cloud subscription - https://cloud.acquia.com/app/develop/applications/6bcc006f-9a0e-425e-aba0-198585dd2b56
+* Acquia Cloud
+  * uiowa
+    * https://cloud.acquia.com/app/develop/applications/6bcc006f-9a0e-425e-aba0-198585dd2b56
+  * uiowa01
+    * https://cloud.acquia.com/app/develop/applications/21a2a0ab-b4ed-4ecf-8bd4-9266c70f5ef1

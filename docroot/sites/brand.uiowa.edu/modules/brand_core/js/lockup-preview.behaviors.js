@@ -427,7 +427,7 @@
                         $("#edit-submit").prop('value', 'Save draft');
                         break;
                     case 'review':
-                        $("#edit-submit").prop('value', 'Submit for approval');
+                        $("#edit-submit").prop('value', 'Submit lockup for approval');
                         break;
                     default:
                         $("#edit-submit").prop('value', 'Save');

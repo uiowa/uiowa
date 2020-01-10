@@ -322,6 +322,29 @@ fields:
       settings:
         show_header: 1
         markdown: drupal_html_to_text
+    field_article_source_link:
+      type: link_field_diff_builder
+      settings:
+        compare_title: 0
+        compare_uri: 1
+        show_header: 1
+        markdown: drupal_html_to_text
+    field_article_source_link_direct:
+      type: core_field_diff_builder
+      settings:
+        show_header: 1
+        markdown: drupal_html_to_text
+    field_article_source_org:
+      type: core_field_diff_builder
+      settings:
+        show_header: 1
+        markdown: drupal_html_to_text
+    field_tags:
+      type: entity_reference_field_diff_builder
+      settings:
+        compare_entity_reference: 1
+        show_header: 1
+        markdown: drupal_html_to_text
   taxonomy_term:
     langcode:
       type: core_field_diff_builder
@@ -670,5 +693,23 @@ fields:
         show_header: 1
         markdown: drupal_html_to_text
     field_webform:
+      type: hidden
+      settings: {  }
+  path_alias:
+    langcode:
+      type: core_field_diff_builder
+      settings:
+        show_header: 1
+        markdown: drupal_html_to_text
+    path:
+      type: hidden
+      settings: {  }
+    alias:
+      type: hidden
+      settings: {  }
+    status:
+      type: hidden
+      settings: {  }
+    revision_default:
       type: hidden
       settings: {  }

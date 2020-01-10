@@ -16,7 +16,6 @@ description: ''
 tag: ''
 base_table: node_field_data
 base_field: nid
-core: 8.x
 display:
   default:
     display_plugin: default
@@ -141,6 +140,8 @@ display:
           id: status
           expose:
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
           group: 1
         type:
           id: type
@@ -151,6 +152,9 @@ display:
           entity_type: node
           entity_field: type
           plugin_id: bundle
+          expose:
+            operator_limit_selection: false
+            operator_list: {  }
       sorts:
         sticky:
           id: sticky
@@ -198,13 +202,13 @@ display:
             format: filtered_html
           plugin_id: text
       relationships:
-        field_reference:
-          id: field_reference
-          table: node__field_reference
-          field: field_reference
+        field_tags:
+          id: field_tags
+          table: node__field_tags
+          field: field_tags
           relationship: none
           group_type: group
-          admin_label: 'field_reference: Taxonomy term'
+          admin_label: 'field_tags: Taxonomy term'
           required: false
           plugin_id: standard
       arguments:
@@ -212,7 +216,7 @@ display:
           id: tid
           table: taxonomy_term_field_data
           field: tid
-          relationship: field_reference
+          relationship: field_tags
           group_type: group
           admin_label: ''
           default_action: ignore

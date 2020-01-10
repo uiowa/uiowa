@@ -332,7 +332,7 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
           $form['field_image_caption']['#group'] = 'node_image';
         }
       }
-      if (isset($form['field_reference'])) {
+      if (isset($form['field_tags'])) {
         // Create node_relations group in the advanced container.
         $form['node_relations'] = [
           '#type' => 'details',
@@ -348,8 +348,8 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
           '#optional' => TRUE,
           '#open' => FALSE,
         ];
-        // Set field_reference to node_reference group.
-        $form['field_reference']['#group'] = 'node_relations';
+        // Set field_tags to node_reference group.
+        $form['field_tags']['#group'] = 'node_relations';
       }
       if (isset($form['field_publish_options'])) {
         // Place field in advanced options group.
@@ -369,7 +369,7 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
             '#optional' => TRUE,
             '#open' => FALSE,
           ];
-          // Set field_reference to node_reference group.
+          // Set field_publish_options to node_publish group.
           $form['field_publish_options']['#group'] = 'node_publish';
           // Hide label. Redundant with group label.
           $form['field_publish_options']['widget']['#title_display'] = 'invisible';
@@ -395,19 +395,6 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         $form["properties"]["markup"]["message_id"]['#access'] = FALSE;
       }
       break;
-  }
-  // Temporary restriction for field_tags on Page and Article CT's.
-  switch ($form_id) {
-    case 'node_page_edit_form':
-    case 'node_page_form':
-    case 'node_article_edit_form':
-    case 'node_article_form':
-    
-    if (isset($form['field_tags'])) {
-      $form['field_tags']['#access'] = false;
-    }
-
-    break;
   }
 }
 

@@ -12,7 +12,6 @@ dependencies:
     - field.field.node.article.field_image
     - field.field.node.article.field_image_caption
     - field.field.node.article.field_meta_tags
-    - field.field.node.article.field_reference
     - field.field.node.article.field_tags
     - field.field.node.article.field_teaser
     - node.type.article
@@ -39,6 +38,7 @@ content:
       rows: 9
       summary_rows: 3
       placeholder: ''
+      show_summary: false
     third_party_settings: {  }
   created:
     type: datetime_timestamp
@@ -108,21 +108,13 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_reference:
-    type: entity_reference_autocomplete_tags
-    weight: 5
-    region: content
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
   field_tags:
     weight: 10
     settings:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
     type: entity_reference_autocomplete_tags
     region: content
@@ -182,6 +174,7 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     region: content
     third_party_settings: {  }
   url_redirects:
