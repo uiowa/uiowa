@@ -1,8 +1,12 @@
+/**
+ * @file
+ */
+
 (function ($, Drupal) {
     Drupal.behaviors.buttonStyle = {
         attach: function (context, settings) {
             $('.editor-link-dialog', context).once('button-style-attach').each(function () {
-                $(".button-style").click(function() {
+                $(".button-style").click(function () {
                     var $class = $(".form-item-attributes-class input");
                     var $button = $(this).data("btn-type");
                     var $classes = $class.val().split(" ");

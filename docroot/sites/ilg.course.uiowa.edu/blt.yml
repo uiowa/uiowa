@@ -1,0 +1,35 @@
+project:
+  local:
+    hostname: ilg.course.uiowa.edu
+    protocol: https
+  machine_name: courseilg
+  human_name: ilg.course.uiowa.edu
+  profile:
+    name: sitenow
+drush:
+  aliases:
+    local: self
+    remote: courseilg.prod
+drupal:
+  db:
+    database: ilg_course_uiowa_edu
+    host: localhost
+    user: root
+    password: null
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true
+sync:
+  commands:
+    - 'blt:init:settings'
+    - 'drupal:sync:db'
+    - 'drupal:update'
+    - 'sitenow:multisite:noop'
+    - 'sitenow:multisite:noop'
+uiowa:
+  profiles:
+    sitenow:
+      requester: aprince

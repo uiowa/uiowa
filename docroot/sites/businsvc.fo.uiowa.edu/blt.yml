@@ -1,0 +1,35 @@
+project:
+  local:
+    hostname: businsvc.fo.uiowa.edu
+    protocol: https
+  machine_name: fobusinsvc
+  human_name: businsvc.fo.uiowa.edu
+  profile:
+    name: sitenow
+drush:
+  aliases:
+    local: self
+    remote: fobusinsvc.prod
+drupal:
+  db:
+    database: businsvc_fo_uiowa_edu
+    host: localhost
+    user: root
+    password: null
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true
+sync:
+  commands:
+    - 'blt:init:settings'
+    - 'drupal:sync:db'
+    - 'drupal:update'
+    - 'sitenow:multisite:noop'
+    - 'sitenow:multisite:noop'
+uiowa:
+  profiles:
+    sitenow:
+      requester: dagwang

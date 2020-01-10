@@ -26,13 +26,28 @@ class RequestASiteUriConstraint {
 
     $url = parse_url($value);
 
+    // Set Error if URL contains www.
+    if (stristr($url['host'], 'www.')) {
+      return $formState->setError(
+        $element,
+        t('URL must not contain www.', [
+          '@value' => $value,
+        ])
+      );
+    }
+
     foreach (['port', 'user', 'pass', 'path', 'query', 'fragment'] as $invalid) {
       if (isset($url[$invalid])) {
+        $extra = '';
+        if ($invalid == 'path' && $formState->getValue('request_type') == 'Existing') {
+          $extra = 'URL must not contain a path.';
+        }
         return $formState->setError(
           $element,
-          t('URL @value must not contain a @invalid.', [
+          t('URL @value must not contain a @invalid. @extra', [
             '@value' => $value,
             '@invalid' => $invalid,
+            '@extra' => $extra,
           ])
         );
       }
@@ -52,7 +67,7 @@ class RequestASiteUriConstraint {
       $pattern = $formState->getValue('url_pattern');
       $pattern = explode('*.', $pattern)[1];
 
-      // The host should contain exactly 4 parts,=. Subdomains of approved URL
+      // The host should contain exactly 4 parts. Subdomains of approved URL
       // patterns are not allowed, e.g. foo.bar.sites.uiowa.edu is invalid.
       $parts = explode('.', $url['host']);
 

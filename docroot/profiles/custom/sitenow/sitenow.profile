@@ -12,6 +12,7 @@ use Drupal\Core\Link;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\user\Entity\User;
 use Drupal\views\ViewExecutable;
@@ -30,6 +31,7 @@ function sitenow_preprocess_html(&$variables) {
     ],
   ];
   $variables['page']['#attached']['html_head'][] = [$meta_web_author, 'web-author'];
+  $variables['page']['#attached']['library'][] = 'sitenow/global-scripts';
 }
 
 /**
@@ -330,7 +332,7 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
           $form['field_image_caption']['#group'] = 'node_image';
         }
       }
-      if (isset($form['field_reference'])) {
+      if (isset($form['field_tags'])) {
         // Create node_relations group in the advanced container.
         $form['node_relations'] = [
           '#type' => 'details',
@@ -346,8 +348,8 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
           '#optional' => TRUE,
           '#open' => FALSE,
         ];
-        // Set field_reference to node_reference group.
-        $form['field_reference']['#group'] = 'node_relations';
+        // Set field_tags to node_reference group.
+        $form['field_tags']['#group'] = 'node_relations';
       }
       if (isset($form['field_publish_options'])) {
         // Place field in advanced options group.
@@ -367,7 +369,7 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
             '#optional' => TRUE,
             '#open' => FALSE,
           ];
-          // Set field_reference to node_reference group.
+          // Set field_publish_options to node_publish group.
           $form['field_publish_options']['#group'] = 'node_publish';
           // Hide label. Redundant with group label.
           $form['field_publish_options']['widget']['#title_display'] = 'invisible';
@@ -393,6 +395,26 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         $form["properties"]["markup"]["message_id"]['#access'] = FALSE;
       }
       break;
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function sitenow_form_revision_overview_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (isset($form['nid'], $form['nid']['#value'])) {
+    $node = Node::load($form['nid']['#value']);
+
+    if ($node) {
+      $type = $node->getType();
+      $config = \Drupal::config("node.type.{$type}");
+
+      if ($nrd = $config->get('third_party_settings.node_revision_delete')) {
+        \Drupal::messenger()->addWarning(t('There is a @limit revision limit for this content type. The oldest revisions in excess of @limit are deleted during system background processes.', [
+          '@limit' => $nrd['minimum_revisions_to_keep'],
+        ]));
+      }
+    }
   }
 }
 
@@ -514,6 +536,21 @@ function sitenow_preprocess_page(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
     $node = \Drupal::routeMatch()->getParameter('node');
+    if (isset($node)) {
+      // Get moderation state of node.
+      $revision_id = $node->getRevisionId();
+      $revision = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($revision_id);
+      $moderation_state = $revision->get('moderation_state')->getString();
+      $status = $revision->get('status')->value;
+      if ($status == 0) {
+        $pre_vowel = (in_array($moderation_state[0], ['a', 'e', 'i', 'o', 'u']) ? 'n' : '');
+        $warning_text = t('This content is currently in a@pre_vowel <em>"@moderation_state"</em> state.', [
+          '@pre_vowel' => $pre_vowel,
+          '@moderation_state' => $moderation_state,
+        ]);
+        \Drupal::messenger()->addWarning($warning_text);
+      }
+    }
     $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
     if ($node instanceof NodeInterface) {
       $variables['header_attributes'] = new Attribute();
