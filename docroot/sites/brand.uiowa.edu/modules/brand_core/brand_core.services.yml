@@ -1,3 +1,7 @@
 services:
   brand_core.brand_svg:
     class: Drupal\brand_core\BrandSVG
+  theme.negotiator.previewer:
+    class: Drupal\brand_core\Theme\LockupForm
+    tags:
+      - { name: theme_negotiator, priority: 10 }

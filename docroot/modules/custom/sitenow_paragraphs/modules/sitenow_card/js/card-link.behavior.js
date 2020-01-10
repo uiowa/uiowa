@@ -2,6 +2,7 @@
  * @file
  * Link card.
  */
+
 (function ($, Drupal) {
   Drupal.behaviors.cardLink = {
     attach: function (context, setting) {
@@ -12,9 +13,9 @@
                   window.location = $(this).attr('data-href');
                 }
             })
-            .hover(function() {
+            .hover(function () {
               $(this).css("background-color", "#EDECEB");
-            }, function() {
+            }, function () {
               $(this).css("background-color", "");
             })
       });

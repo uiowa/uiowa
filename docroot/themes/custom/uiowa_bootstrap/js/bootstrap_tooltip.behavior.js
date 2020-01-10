@@ -6,7 +6,7 @@
 (function ($) {
   // Bootstrap tooltip.
   Drupal.behaviors.bootstrap_tooltip = {
-    attach: function(context, setting) {
+    attach: function (context, setting) {
       if ($.fn.tooltip) {
         $("[data-toggle='tooltip']").tooltip();
       }

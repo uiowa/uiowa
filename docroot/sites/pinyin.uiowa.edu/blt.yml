@@ -1,0 +1,35 @@
+project:
+  local:
+    hostname: pinyin.uiowa.edu
+    protocol: https
+  machine_name: pinyin
+  human_name: pinyin.uiowa.edu
+  profile:
+    name: sitenow
+drush:
+  aliases:
+    local: self
+    remote: pinyin.prod
+drupal:
+  db:
+    database: pinyin_uiowa_edu
+    host: localhost
+    user: root
+    password: null
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true
+sync:
+  commands:
+    - 'blt:init:settings'
+    - 'drupal:sync:db'
+    - 'drupal:update'
+    - 'sitenow:multisite:noop'
+    - 'sitenow:multisite:noop'
+uiowa:
+  profiles:
+    sitenow:
+      requester: heshen

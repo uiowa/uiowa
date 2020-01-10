@@ -1,15 +1,6 @@
 project:
   prefix: uiowa
-  human_name: 'The sitenow platform on the uiowa application.'
-  profile:
-    name: sitenow
-  local:
-    uri: 'localhost:8888'
-cm:
-  core:
-    dirs:
-      sync:
-        path: 'profiles/custom/sitenow/config/sync'
+  human_name: 'The base application on Acquia Cloud for the University of Iowa.'
 git:
   default_branch: master
   remotes:
@@ -21,13 +12,12 @@ deploy:
 drush:
   aliases:
     ci: self
-  default_alias: '${drush.aliases.local}'
+  default_alias: self
 disable-targets:
   drupal:
     toggle:
       modules: true
   tests:
-    yaml: { lint: { files: true } }
     behat:
       run: true
     drupal:
@@ -37,25 +27,25 @@ disable-targets:
 tests:
   phpunit:
     - config: '${repo.root}'
-cloud:
-  appId: 6bcc006f-9a0e-425e-aba0-198585dd2b56
 drupal:
   db:
     host: localhost
     database: null
     username: root
     password: null
-sync:
-  commands:
-    - blt:init:settings
-    - drupal:sync:db
-    - drupal:update
-    - sitenow:multisite:noop
-    - sitenow:multisite:noop
 command-hooks:
   frontend-reqs:
     dir: ${docroot}
     command: '. $NVM_DIR/nvm.sh && nvm install && yarn install'
   frontend-assets:
     dir: ${docroot}
-    command: '. $NVM_DIR/nvm.sh && nvm use && yarn workspaces run build'
+    command: '. $NVM_DIR/nvm.sh && nvm use && yarn workspaces run gulp'
+uiowa:
+  applications:
+    uiowa:
+      id: 6bcc006f-9a0e-425e-aba0-198585dd2b56
+    uiowa01:
+      id: 21a2a0ab-b4ed-4ecf-8bd4-9266c70f5ef1
+  profiles:
+    - sitenow
+    - collegiate
