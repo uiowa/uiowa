@@ -17,68 +17,75 @@ class ReplaceCommands extends BltTasks {
    * @hook replace-command artifact:update:drupal:all-sites
    */
   public function replaceDrupalUpdateAll() {
-    // Disable alias since we are targeting specific uri.
+    // Disable alias since we are targeting a specific URI.
     $this->config->set('drush.alias', '');
 
     foreach ($this->getConfigValue('multisites') as $multisite) {
       $this->switchSiteContext($multisite);
 
-      if ($this->getInspector()->isDrupalInstalled()) {
-        $this->say("Deploying updates to <comment>$multisite</comment>...");
-        $this->invokeCommand('drupal:update');
-        $this->say("Finished deploying updates to $multisite.");
-      }
-      else {
-        $this->logger->warning("Drupal not installed for <comment>$multisite</comment>. Installing from configuration in sitenow profile....");
-        $uri = $this->getConfig()->get('site');
+      $db = $this->getConfigValue('drupal.db.database');
 
-        if (empty($uri)) {
-          throw new \Exception('Cannot determine site directory for installation.');
+      // Check for database include on this application.
+      // @todo: Check for and write AH environment var.
+      // @todo: Build local override control.
+      if (file_exists("/var/www/site-php/uiowa/{$db}-settings.inc")) {
+        if ($this->getInspector()->isDrupalInstalled()) {
+          $this->say("Deploying updates to <comment>$multisite</comment>...");
+          $this->invokeCommand('drupal:update');
+          $this->say("Finished deploying updates to $multisite.");
         }
+        else {
+          $this->logger->warning("Drupal not installed for <comment>$multisite</comment>. Installing from configuration in sitenow profile....");
+          $uri = $this->getConfig()->get('site');
 
-        $uid = uniqid('admin_');
+          if (empty($uri)) {
+            throw new \Exception('Cannot determine site directory for installation.');
+          }
 
-        $result = $this->taskDrush()
-          ->stopOnFail(TRUE)
-          ->drush('site:install')
-          ->arg('sitenow')
-          ->options([
-            'sites-subdir' => $uri,
-            'existing-config' => NULL,
-            'account-name' => $uid,
-            'account-mail' => base64_decode('aXRzLXdlYkB1aW93YS5lZHU='),
-          ])
-          ->drush('user:role:add')
-          ->args([
-            'administrator',
-            $uid,
-          ])
-          ->drush('config:set')
-          ->args([
-            'system.site',
-            'name',
-            $uri,
-          ])
-          ->run();
+          $uid = uniqid('admin_');
 
-        if (!$result->wasSuccessful()) {
-          throw new \Exception("Site install task failed for {$uri}.");
-        }
-
-        if ($requester = $this->getConfigValue('uiowa.profiles.sitenow.requester')) {
           $result = $this->taskDrush()
-            ->stopOnFail(FALSE)
-            ->drush('user:create')
-            ->args($requester)
+            ->stopOnFail(TRUE)
+            ->drush('site:install')
+            ->arg('sitenow')
+            ->options([
+              'sites-subdir' => $uri,
+              'existing-config' => NULL,
+              'account-name' => $uid,
+              'account-mail' => base64_decode('aXRzLXdlYkB1aW93YS5lZHU='),
+            ])
             ->drush('user:role:add')
             ->args([
-              'webmaster',
-              $requester,
+              'administrator',
+              $uid,
+            ])
+            ->drush('config:set')
+            ->args([
+              'system.site',
+              'name',
+              $uri,
             ])
             ->run();
 
           if (!$result->wasSuccessful()) {
-            throw new \Exception("Webmaster task failed for {$uri}.");
+            throw new \Exception("Site install task failed for {$uri}.");
+          }
+
+          if ($requester = $this->getConfigValue('uiowa.profiles.sitenow.requester')) {
+            $result = $this->taskDrush()
+              ->stopOnFail(FALSE)
+              ->drush('user:create')
+              ->args($requester)
+              ->drush('user:role:add')
+              ->args([
+                'webmaster',
+                $requester,
+              ])
+              ->run();
+
+            if (!$result->wasSuccessful()) {
+              throw new \Exception("Webmaster task failed for {$uri}.");
+            }
           }
         }
       }
