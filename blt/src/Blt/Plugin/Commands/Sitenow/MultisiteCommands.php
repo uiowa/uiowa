@@ -214,6 +214,23 @@ EOD;
    */
   public function create($host, $requester) {
     $db = Multisite::getDatabase($host);
+
+    $applications = $this->getConfigValue('uiowa.applications');
+    $choices = [];
+
+    foreach ($applications as $app => $attr) {
+      $choices[$app] = $attr['id'];
+    }
+
+    $choice = $this->askChoice('Which cloud application should be used?', $choices);
+
+    /** @var \AcquiaCloudApi\CloudApi\Client $cloud */
+    /** @var \AcquiaCloudApi\Response\ApplicationResponse $application */
+    list($cloud, $application) = $this->getAcquiaCloudApi($applications[$choice]['id']);
+
+    $cloud->databaseCreate($application->uuid, $db);
+    $this->say("Created <comment>{$db}</comment> cloud database on {$choice}.");
+
     $id = Multisite::getIdentifier("https://{$host}");
     $dev = Multisite::getInternalDomains($id)['dev'];
     $test = Multisite::getInternalDomains($id)['test'];
@@ -352,23 +369,6 @@ EOD;
       ->run();
 
     $this->say("Committed site <comment>{$host}</comment> code.");
-
-    $applications = $this->getConfigValue('uiowa.applications');
-    $choices = [];
-
-    foreach ($applications as $app => $attr) {
-      $choices[$app] = $attr['id'];
-    }
-
-    $choice = $this->askChoice('Which cloud application should be used?', $choices);
-
-    /** @var \AcquiaCloudApi\CloudApi\Client $cloud */
-    /** @var \AcquiaCloudApi\Response\ApplicationResponse $application */
-    list($cloud, $application) = $this->getAcquiaCloudApi($applications[$choice]['id']);
-
-    $cloud->databaseCreate($application->uuid, $db);
-    $this->say("Created <comment>{$db}</comment> cloud database.");
-
     $this->say("Continue initializing additional multisites or follow the next steps below.");
 
     $steps = [
