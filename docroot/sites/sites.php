@@ -529,3 +529,8 @@ $sites['researchicru.prod.drupal.uiowa.edu'] = 'icru.research.uiowa.edu';
 $sites['labthemaclab.dev.drupal.uiowa.edu'] = 'themaclab.lab.uiowa.edu';
 $sites['labthemaclab.stage.drupal.uiowa.edu'] = 'themaclab.lab.uiowa.edu';
 $sites['labthemaclab.prod.drupal.uiowa.edu'] = 'themaclab.lab.uiowa.edu';
+
+// Directory aliases for ombudsperson.org.uiowa.edu.
+$sites['orgombudsperson.dev.drupal.uiowa.edu'] = 'ombudsperson.org.uiowa.edu';
+$sites['orgombudsperson.stage.drupal.uiowa.edu'] = 'ombudsperson.org.uiowa.edu';
+$sites['orgombudsperson.prod.drupal.uiowa.edu'] = 'ombudsperson.org.uiowa.edu';
