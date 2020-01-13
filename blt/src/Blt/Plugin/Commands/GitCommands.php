@@ -151,39 +151,41 @@ class GitCommands extends BltTasks {
    * Get remotes with an Acquia URI host.
    *
    * @return array
+   *   An array of Acquia hosted remote names.
+   *
    * @throws \Robo\Exception\TaskException
    */
   protected function getAcquiaRemotes() {
-  $result = $this->taskExecStack()
-    ->exec('git remote')
-    ->stopOnFail()
-    ->silent(TRUE)
-    ->run();
-
-  $output = $result->getMessage();
-  $remotes = explode(PHP_EOL, $output);
-  $origin = array_search('origin', $remotes);
-  unset($remotes[$origin]);
-
-  $acquia = [];
-
-  foreach ($remotes as $remote) {
     $result = $this->taskExecStack()
-      ->exec("git remote get-url {$remote}")
+      ->exec('git remote')
       ->stopOnFail()
       ->silent(TRUE)
       ->run();
 
     $output = $result->getMessage();
-    $url = stristr($output, ':', TRUE);
-    $url = parse_url("https://{$url}");
+    $remotes = explode(PHP_EOL, $output);
+    $origin = array_search('origin', $remotes);
+    unset($remotes[$origin]);
 
-    if (stristr($url['host'], 'prod.hosting.acquia.com')) {
-      $acquia[] = $remote;
+    $acquia = [];
+
+    foreach ($remotes as $remote) {
+      $result = $this->taskExecStack()
+        ->exec("git remote get-url {$remote}")
+        ->stopOnFail()
+        ->silent(TRUE)
+        ->run();
+
+      $output = $result->getMessage();
+      $url = stristr($output, ':', TRUE);
+      $url = parse_url("https://{$url}");
+
+      if (stristr($url['host'], 'prod.hosting.acquia.com')) {
+        $acquia[] = $remote;
+      }
     }
-  }
 
-  return $acquia;
-}
+    return $acquia;
+  }
 
 }
