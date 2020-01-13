@@ -14,6 +14,10 @@
             "type": "composer",
             "url": "https://asset-packagist.org"
         },
+        "collegiate": {
+            "type": "path",
+            "url": "docroot/profiles/custom/collegiate"
+        },
         "uiowa_bar": {
             "type": "git",
             "url": "git@github.com:uiowa/uiowa_bar"
@@ -115,7 +119,7 @@
         "richardbporter/drush-users-commands": "^2.0",
         "typhonius/acquia-php-sdk-v2": "^1.0",
         "uiowa/uiowa_auth": "^1.0",
-        "uiowa/uiowa_bar": "^1.0",
+        "uiowa/uiowa_bar": "dev-feature_bar_updates",
         "uiowa/uiowa_footer": "^1.0",
         "zaporylie/composer-drupal-optimizations": "^1.1"
     },
@@ -156,7 +160,11 @@
             "drupal/core": {
                 "The Media library doesn't modify the 'media' view if installed in a profile": "https://www.drupal.org/files/issues/2019-05-12/2992056.patch",
                 "Site extensions don't get rediscovered after drush cr": "https://www.drupal.org/files/issues/2018-07-11/specify_sitepath_cache_rebuild_extension_discovery-2985199-3.patch",
-                "Allow alter oembed providers": "https://www.drupal.org/files/issues/2019-05-15/drupal-allow_alter_oembed_providers-3008119-4.patch"
+                "Allow alter oembed providers": "https://www.drupal.org/files/issues/2019-05-15/drupal-allow_alter_oembed_providers-3008119-4.patch",
+                "Form blocks rendered inside layout builder break save": "https://www.drupal.org/files/issues/2019-12-28/layout-builder-save-issue-3045171-120.patch"
+            },
+            "drupal/layout_builder_styles": {
+                "Section Dependency": "https://www.drupal.org/files/issues/2019-08-23/layout_builder_styles-3062261-%2310.patch"
             }
         },
         "installer-types": [

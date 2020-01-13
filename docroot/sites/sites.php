@@ -524,3 +524,45 @@ $sites['designcenter.prod.drupal.uiowa.edu'] = 'designcenter.uiowa.edu';
 $sites['researchicru.dev.drupal.uiowa.edu'] = 'icru.research.uiowa.edu';
 $sites['researchicru.stage.drupal.uiowa.edu'] = 'icru.research.uiowa.edu';
 $sites['researchicru.prod.drupal.uiowa.edu'] = 'icru.research.uiowa.edu';
+
+// Directory aliases for clas.uiowa.edu.
+$sites['clas.uiowa.local.site'] = 'clas';
+$sites['clas.uiowa.lndo.site'] = 'clas';
+$sites['clas-d8.dev.drupal.uiowa.edu'] = 'clas';
+$sites['clas.prod.drupal.uiowa.edu'] = 'clas';
+$sites['clas.uiowa.edu'] = 'clas';
+
+// Directory aliases for cogscilang.grad.uiowa.edu.
+$sites['gradcogscilang.uiowa.local.site'] = 'cogscilang.grad.uiowa.edu';
+$sites['gradcogscilang.dev.drupal.uiowa.edu'] = 'cogscilang.grad.uiowa.edu';
+$sites['gradcogscilang.stage.drupal.uiowa.edu'] = 'cogscilang.grad.uiowa.edu';
+$sites['gradcogscilang.prod.drupal.uiowa.edu'] = 'cogscilang.grad.uiowa.edu';
+$sites['cogscilang.grad.uiowa.edu'] = 'cogscilang.grad.uiowa.edu';
+
+// Directory aliases for uipda.grad.uiowa.edu.
+$sites['graduipda.uiowa.local.site'] = 'uipda.grad.uiowa.edu';
+$sites['graduipda.dev.drupal.uiowa.edu'] = 'uipda.grad.uiowa.edu';
+$sites['graduipda.stage.drupal.uiowa.edu'] = 'uipda.grad.uiowa.edu';
+$sites['graduipda.prod.drupal.uiowa.edu'] = 'uipda.grad.uiowa.edu';
+$sites['uipda.grad.uiowa.edu'] = 'uipda.grad.uiowa.edu';
+
+// Directory aliases for iowasuperfund.uiowa.edu.
+$sites['iowasuperfund.uiowa.local.site'] = 'iowasuperfund.uiowa.edu';
+$sites['iowasuperfund.dev.drupal.uiowa.edu'] = 'iowasuperfund.uiowa.edu';
+$sites['iowasuperfund.stage.drupal.uiowa.edu'] = 'iowasuperfund.uiowa.edu';
+$sites['iowasuperfund.prod.drupal.uiowa.edu'] = 'iowasuperfund.uiowa.edu';
+$sites['iowasuperfund.uiowa.edu'] = 'iowasuperfund.uiowa.edu';
+
+// Directory aliases for policy.clas.uiowa.edu.
+$sites['claspolicy.uiowa.local.site'] = 'policy.clas.uiowa.edu';
+$sites['claspolicy.dev.drupal.uiowa.edu'] = 'policy.clas.uiowa.edu';
+$sites['claspolicy.stage.drupal.uiowa.edu'] = 'policy.clas.uiowa.edu';
+$sites['claspolicy.prod.drupal.uiowa.edu'] = 'policy.clas.uiowa.edu';
+$sites['policy.clas.uiowa.edu'] = 'policy.clas.uiowa.edu';
+
+// Directory aliases for icsa.uiowa.edu.
+$sites['icsa.uiowa.local.site'] = 'icsa.uiowa.edu';
+$sites['icsa.dev.drupal.uiowa.edu'] = 'icsa.uiowa.edu';
+$sites['icsa.stage.drupal.uiowa.edu'] = 'icsa.uiowa.edu';
+$sites['icsa.prod.drupal.uiowa.edu'] = 'icsa.uiowa.edu';
+$sites['icsa.uiowa.edu'] = 'icsa.uiowa.edu';
