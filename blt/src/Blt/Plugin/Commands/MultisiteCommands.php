@@ -1,6 +1,6 @@
 <?php
 
-namespace Example\Blt\Plugin\Commands;
+namespace Collegiate\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\YamlMunge;
@@ -25,35 +25,7 @@ define('DEFAULT_INSTALL_PROFILE', 'collegiate');
  * Adds commands in the uiowa:* space.
  */
 class MultisiteCommands extends BltTasks {
-
-  /**
-   * Execute a Drush command against all multisites.
-   *
-   * @param string $cmd
-   *   The simple Drush command to execute, e.g. 'cron' or 'cache:rebuild'. No
-   *    support for options or arguments at this time.
-   *
-   * @command uiowa:multisite:drush
-   *
-   * @aliases umd uimultidrush
-   *
-   * @throws \Exception
-   */
-  public function execute($cmd) {
-    if (!$this->confirm("You will execute 'drush {$cmd}' on all multisites. Are you sure?", TRUE)) {
-      throw new \Exception('Aborted.');
-    }
-    else {
-      foreach ($this->getConfigValue('multisites') as $multisite) {
-        $this->switchSiteContext($multisite);
-
-        $this->taskDrush()
-          ->drush($cmd)
-          ->run();
-      }
-    }
-  }
-
+  
   /**
    * Check that Acquia Cloud credentials are set.
    *
