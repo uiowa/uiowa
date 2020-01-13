@@ -8,27 +8,37 @@
   margin-left: auto;
 }
 @media (min-width: 1200px) {
+  .node-lockup-form, .node-lockup-edit-form {
+    display: -ms-flexbox; /* TWEENER - IE 10 */
+    display: -webkit-flex; /* NEW - Chrome */
+    display: flex;
+  }
+}
+@media (min-width: 1200px) {
   .region-content>div.block-system-main-block {
     max-width: 100%;
     padding-right: 0;
     padding-left: 0;
   }
 }
-@media (min-width: 992px) {
+@media (min-width: 1200px) {
   .layout-region-node-main,
   .layout-region-node-footer,
   .lockup-preview-wrapper {
     -ms-flex-order: 1;
     order: 1;
-    flex: auto 1 0;
-    margin: 0 2rem;
+    margin-left: 1.5rem;
   }
   .layout-region-node-secondary, .lockup-form-wrapper {
-    width: 500px;
+    min-width: 320px;
     flex: 500px 0 1;
   }
 }
-
+@media (min-width: 576px) {
+  .node-lockup-form .form-inline .form-control {
+    width: 100%;
+  }
+}
 details.form-wrapper {
   border-color: #EDECEB;
   margin-bottom: 0;
@@ -41,11 +51,12 @@ details summary {
 .entity-content-form-revision-information {
   margin-top: 1rem;
 }
-@media (min-width: 576px) {
-  .node-lockup-form .form-inline .form-control {
-    width: 100%;
-  }
+#edit-submit:disabled:hover {
+  background-color: #ededed;
+  border-color: #d4d4d4;
 }
+
+/* Lockup Preview */
 #lockup-preview {
   display: flex;
   flex-direction: column;
@@ -170,10 +181,8 @@ details summary {
   white-space: pre;
   overflow-wrap: normal;
 }
-#edit-submit:disabled:hover {
-  background-color: #ededed;
-  border-color: #d4d4d4;
-}
+
+/* Validation Error Box */
 #valid-text-lockup-warning.warning-hidden {
   display: none;
 }
@@ -198,13 +207,13 @@ details summary {
   border: 2px solid #fafafa;
   color: #fafafa;
   margin-right: 15px;
-  height: 19px;
+  height: 39px;
   width: auto;
   border-radius: 500px;
   padding: 8px 14px;
 }
 #valid-text-lockup-warning .warning-body {
-  padding: 0px 30px 20px 15px;
+  padding: 20px 30px 20px 15px;
 }
 #primary-first-line-measure-stacked {
   position: absolute;
@@ -218,11 +227,5 @@ details summary {
   line-height: 1.25;
   white-space: pre-wrap;
   font-family: 'Roboto', sans-serif;
-}
-
-.node-lockup-form, .node-lockup-edit-form {
-  display: -ms-flexbox;      /* TWEENER - IE 10 */
-  display: -webkit-flex;     /* NEW - Chrome */
-  display: flex;
 }
 
