@@ -25,11 +25,11 @@ define('DEFAULT_INSTALL_PROFILE', 'collegiate');
  * Adds commands in the uiowa:* space.
  */
 class MultisiteCommands extends BltTasks {
-  
+
   /**
    * Check that Acquia Cloud credentials are set.
    *
-   * @hook validate uiowa:multisite
+   * @hook validate collegiate:multisite
    */
   public function validateMultisite(CommandData $commandData) {
     $creds = [
@@ -55,7 +55,7 @@ class MultisiteCommands extends BltTasks {
   /**
    * Generates a new multisite.
    *
-   * @command uiowa:multisite
+   * @command collegiate:multisite
    *
    * @option string $site-dir
    * @option string $site-uri
@@ -65,7 +65,7 @@ class MultisiteCommands extends BltTasks {
    * @option string $account-mail
    * @option string $pretend
    *
-   * @aliases uis uisite
+   * @aliases cms csite
    *
    * @throws \Acquia\Blt\Robo\Exceptions\BltException
    */
@@ -141,11 +141,11 @@ class MultisiteCommands extends BltTasks {
   /**
    * Removes a multisite from the application.
    *
-   * @command uiowa:multisite:remove
+   * @command collegiate:multisite:remove
    *
    * @option string $site-dir
    *
-   * @aliases uir uiremove
+   * @aliases cmsr csremove
    */
   public function remove(InputInterface $input) {
     if ($this->confirm('Are you sure that you want to remove this site? This action cannot be undone.')) {
@@ -156,9 +156,9 @@ class MultisiteCommands extends BltTasks {
   }
 
   /**
-   * This will be called after the `uiowa:multisite` command is executed.
+   * This will be called after the `collegiate:multisite` command is executed.
    *
-   * @hook post-command uiowa:multisite
+   * @hook post-command collegiate:multisite
    *
    * @throws \Acquia\Blt\Robo\Exceptions\BltException
    * @throws \Robo\Exception\TaskException
@@ -423,13 +423,13 @@ class MultisiteCommands extends BltTasks {
   /**
    * Create the local settings.php file.
    *
-   * @command uiowa:settings:local
+   * @command collegiate:settings:local
    *
    * @param1 string $domain
    *
    * @input string $domain
    *
-   * @aliases uils
+   * @aliases csl
    *
    * @throws \Acquia\Blt\Robo\Exceptions\BltException
    */
