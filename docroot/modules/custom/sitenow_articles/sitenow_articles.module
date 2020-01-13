@@ -367,7 +367,7 @@ function sitenow_articles_preprocess_paragraph(&$variables) {
             if (!empty($more_path = $paragraph->get('field_articles_more_path')->getValue())) {
               $url = Url::fromUri($more_path[0]['uri']);
             }
-            else if ($view->getDisplay('page_articles')['display_options']['enabled'] == TRUE) {
+            elseif ($view->getDisplay('page_articles')['display_options']['enabled'] == TRUE) {
               $url = Url::fromRoute('view.articles.page_articles');
             }
             if (isset($url)) {
