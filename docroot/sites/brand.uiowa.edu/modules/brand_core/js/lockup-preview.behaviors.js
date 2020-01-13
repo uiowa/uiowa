@@ -464,7 +464,7 @@
                         </div>\
                     </div>\
                 ';
-                $('.layout-region-node-main').append(warningHTML);
+                $('.lockup-preview-wrapper').append(warningHTML);
             }
 
             // Remove spaces and dashes from sides of lines.
