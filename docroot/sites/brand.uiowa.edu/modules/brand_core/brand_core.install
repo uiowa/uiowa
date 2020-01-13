@@ -79,6 +79,7 @@ function brand_core_update_8002(&$sandbox) {
     $sandbox['query'] = $query;
 
     if (empty($sandbox['total'])) {
+      drupal_flush_all_caches();
       $sandbox['#finished'] = 1;
       return;
     }
@@ -87,6 +88,7 @@ function brand_core_update_8002(&$sandbox) {
   $nodes_per_batch = 25;
   $batch = array_slice($sandbox['query'], $sandbox['current'], $sandbox['current'] + $nodes_per_batch);
   if (empty($batch)) {
+    drupal_flush_all_caches();
     $sandbox['#finished'] = 1;
     return;
   }
@@ -106,6 +108,7 @@ function brand_core_update_8002(&$sandbox) {
     ->addMessage($sandbox['current'] . ' nodes processed.');
 
   if ($sandbox['current'] >= $sandbox['total']) {
+    drupal_flush_all_caches();
     $sandbox['#finished'] = 1;
   } else {
     $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
