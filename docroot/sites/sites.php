@@ -524,3 +524,8 @@ $sites['designcenter.prod.drupal.uiowa.edu'] = 'designcenter.uiowa.edu';
 $sites['researchicru.dev.drupal.uiowa.edu'] = 'icru.research.uiowa.edu';
 $sites['researchicru.stage.drupal.uiowa.edu'] = 'icru.research.uiowa.edu';
 $sites['researchicru.prod.drupal.uiowa.edu'] = 'icru.research.uiowa.edu';
+
+// Directory aliases for themaclab.lab.uiowa.edu.
+$sites['labthemaclab.dev.drupal.uiowa.edu'] = 'themaclab.lab.uiowa.edu';
+$sites['labthemaclab.stage.drupal.uiowa.edu'] = 'themaclab.lab.uiowa.edu';
+$sites['labthemaclab.prod.drupal.uiowa.edu'] = 'themaclab.lab.uiowa.edu';
