@@ -17,26 +17,21 @@ class GitCommands extends BltTasks {
    * @hook validate sitenow:git:clean
    */
   public function validateClean(CommandData $commandData) {
-    $result = $this->taskExecStack()
-      ->exec('git remote')
-      ->stopOnFail()
-      ->silent(TRUE)
-      ->run();
+    $remotes = $this->getAcquiaRemotes();
 
-    $output = $result->getMessage();
-    $remotes = explode(PHP_EOL, $output);
-
-    if (!in_array('acquia', $remotes)) {
-      return new CommandError('You must add a remote named acquia pointing to the Acquia Git repository. Check the README for details.');
+    if (empty($remotes)) {
+      return new CommandError('You must add a remote named acquia-NAME pointing to an Acquia Git repository. Check the README for details.');
     }
 
-    $result = $this->taskExecStack()
-      ->exec('git ls-remote acquia')
-      ->stopOnFail()
-      ->run();
+    foreach ($remotes as $remote) {
+      $result = $this->taskExecStack()
+        ->exec("git ls-remote {$remote}")
+        ->stopOnFail()
+        ->run();
 
-    if (!$result->wasSuccessful()) {
-      return new CommandError('Error connecting to acquia remote. Double check permissions and SSH key.');
+      if (!$result->wasSuccessful()) {
+        return new CommandError("Error connecting to Acquia remote {$remote}. Double check permissions and SSH key.");
+      }
     }
   }
 
@@ -48,14 +43,7 @@ class GitCommands extends BltTasks {
    * @aliases sgc
    */
   public function clean() {
-    $result = $this->taskExecStack()
-      ->exec('git ls-remote --heads acquia')
-      ->stopOnFail()
-      ->silent(TRUE)
-      ->run();
-
-    $output = $result->getMessage();
-    $heads = explode(PHP_EOL, $output);
+    $remotes = $this->getAcquiaRemotes();
 
     $keep = [
       'refs/heads/master',
@@ -65,25 +53,41 @@ class GitCommands extends BltTasks {
 
     $delete = [];
 
-    foreach ($heads as $head) {
-      list($sha, $ref) = explode("\t", $head);
+    foreach ($remotes as $remote) {
+      $delete[$remote] = [];
 
-      if (!in_array($ref, $keep)) {
-        $delete[$sha] = $ref;
+      $result = $this->taskExecStack()
+        ->exec("git ls-remote --heads {$remote}")
+        ->stopOnFail()
+        ->silent(TRUE)
+        ->run();
+
+      $output = $result->getMessage();
+      $heads = explode(PHP_EOL, $output);
+
+      foreach ($heads as $head) {
+        list($sha, $ref) = explode("\t", $head);
+        $sha = substr($sha, 0, 8);
+
+        if (!in_array($ref, $keep)) {
+          $delete[$remote][$sha] = $ref;
+        }
       }
+
+      $this->printArrayAsTable($delete[$remote], ['SHA', 'Ref']);
     }
 
     if (!empty($delete)) {
-      $this->printArrayAsTable($delete, ['SHA', 'Ref']);
-
-      if (!$this->confirm('You will delete all the branches above from the Acquia remote. Are you sure?')) {
+      if (!$this->confirm('You will delete the branches in the tables above from the Acquia remotes. Are you sure?')) {
         throw new \Exception('Aborted.');
       }
       else {
-        foreach ($delete as $ref) {
-          $this->taskExecStack()
-            ->exec("git push --delete acquia {$ref}")
-            ->run();
+        foreach ($delete as $remote => $data) {
+          foreach ($data as $sha => $ref) {
+            $this->taskExecStack()
+              ->exec("git push --delete {$remote} {$ref}")
+              ->run();
+          }
         }
       }
     }
@@ -142,5 +146,44 @@ class GitCommands extends BltTasks {
 
     $this->logger->info('Copied SiteNow Drush commands to deploy directory.');
   }
+
+  /**
+   * Get remotes with an Acquia URI host.
+   *
+   * @return array
+   * @throws \Robo\Exception\TaskException
+   */
+  protected function getAcquiaRemotes() {
+  $result = $this->taskExecStack()
+    ->exec('git remote')
+    ->stopOnFail()
+    ->silent(TRUE)
+    ->run();
+
+  $output = $result->getMessage();
+  $remotes = explode(PHP_EOL, $output);
+  $origin = array_search('origin', $remotes);
+  unset($remotes[$origin]);
+
+  $acquia = [];
+
+  foreach ($remotes as $remote) {
+    $result = $this->taskExecStack()
+      ->exec("git remote get-url {$remote}")
+      ->stopOnFail()
+      ->silent(TRUE)
+      ->run();
+
+    $output = $result->getMessage();
+    $url = stristr($output, ':', TRUE);
+    $url = parse_url("https://{$url}");
+
+    if (stristr($url['host'], 'prod.hosting.acquia.com')) {
+      $acquia[] = $remote;
+    }
+  }
+
+  return $acquia;
+}
 
 }
