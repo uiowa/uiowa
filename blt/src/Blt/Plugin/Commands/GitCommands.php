@@ -7,7 +7,7 @@ use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
 
 /**
- * Defines commands in the Sitenow namespace.
+ * Git commands.
  */
 class GitCommands extends BltTasks {
 
@@ -20,7 +20,7 @@ class GitCommands extends BltTasks {
     $remotes = $this->getAcquiaRemotes();
 
     if (empty($remotes)) {
-      return new CommandError('You must add a remote named acquia-NAME pointing to an Acquia Git repository. Check the README for details.');
+      return new CommandError('You must add a remote pointing to an Acquia Git repository. Check the README for details.');
     }
 
     foreach ($remotes as $remote) {
