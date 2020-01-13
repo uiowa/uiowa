@@ -1,6 +1,6 @@
 <?php
 
-namespace Collegiate\Blt\Plugin\Commands;
+namespace Uiowa\Blt\Plugin\Commands\Collegiate;
 
 use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\YamlMunge;
