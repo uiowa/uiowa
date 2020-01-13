@@ -1,7 +1,12 @@
 <?php
 
 /**
- * Implements hook_modules_installed().=
+ * @file
+ * Profile functions.
+ */
+
+/**
+ * Implements hook_modules_installed().
  */
 function collegiate_modules_installed(array $modules) {
   // Don't do anything during config sync.
