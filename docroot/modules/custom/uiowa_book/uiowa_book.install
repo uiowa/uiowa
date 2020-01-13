@@ -1,0 +1,79 @@
+<?php
+
+/**
+ * @file
+ * Installation of the book structure for the University of Iowa Book module.
+ */
+
+use Drupal\Core\Entity\EntityDisplayRepositoryInterface;
+
+/**
+ * Implements hook_install().
+ */
+function uiowa_book_install() {
+  // Alter the core.entity_form_display.node.book.default.yml file.
+  \Drupal::service('entity_display.repository')
+    ->getFormDisplay('node', 'book', 'default')
+    ->setComponent('body', [
+      'type' => 'text_textarea_with_summary',
+      'weight' => 7,
+    ])
+    ->setComponent('book_amended_date', [
+      'type' => 'datetime_default',
+      'weight' => 6,
+    ])
+    ->setComponent('book_owner', [
+      'type' => 'string_textfield',
+      'weight' => 8,
+    ])
+    ->setComponent('book_tags', [
+      'type' => 'entity_reference_autocomplete',
+      'settings' => ['match_operator' => 'CONTAINS'],
+      'weight' => 9,
+    ])
+    ->setComponent('path', [
+      'weight' => 5,
+    ])
+    ->save();
+
+  // Alter the core.entity_view_display.node.book.default.yml file.
+  \Drupal::service('entity_display.repository')
+    ->getViewDisplay('node', 'book', 'default')
+    ->setComponent('body', [
+      'label' => 'hidden',
+      'type' => 'text_default',
+      'weight' => 2,
+      'region' => 'content',
+    ])
+    ->setComponent('book_amended_date', [
+      'label' => 'visually_hidden',
+      'type' => 'datetime_default',
+      'settings' => ['timezone_override' => '', 'format_type' => 'month_year'],
+      'weight' => 1,
+      'region' => 'content',
+    ])
+    ->setComponent('book_owner', [
+      'label' => 'visually_hidden',
+      'type' => 'string',
+      'settings' => ['link_to_entity' => FALSE],
+      'weight' => 0,
+      'region' => 'content',
+    ])
+    ->setComponent('book_tags', [
+      'label' => 'above',
+      'type' => 'entity_reference_label',
+      'settings' => ['link' => TRUE],
+      'weight' => 3,
+      'region' => 'content',
+    ])
+    ->removeComponent('links')
+    ->save();
+
+  // Alter the core.entity_view_display.node.book.teaser.yml file.
+  \Drupal::service('entity_display.repository')
+    ->getViewDisplay('node', 'book', 'teaser')
+    ->removeComponent('book_amended_date')
+    ->removeComponent('book_owner')
+    ->removeComponent('book_tags')
+    ->save();
+}
