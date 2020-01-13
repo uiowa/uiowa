@@ -36,7 +36,7 @@ class GitCommands extends BltTasks {
   }
 
   /**
-   * Delete all remote branches except master and develop from Acquia remote.
+   * Delete all artifact branches except master/develop from Acquia remotes.
    *
    * @command uiowa:git:clean
    *
@@ -97,7 +97,7 @@ class GitCommands extends BltTasks {
   }
 
   /**
-   * Write the branch SHA or tag to the profile info file.
+   * Write the branch SHA or tag to the profile info files.
    *
    * @hook post-command artifact:build
    */
