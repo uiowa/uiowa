@@ -172,6 +172,7 @@ EOD;
    * @hook validate sitenow:multisite:create
    */
   public function validateCreate(CommandData $commandData) {
+    $root = $this->getConfigValue('repo.root');
     $host = $commandData->input()->getArgument('host');
 
     // Lowercase the host, just in case.
@@ -191,6 +192,10 @@ EOD;
     }
     else {
       return new CommandError('Cannot parse URI for validation.');
+    }
+
+    if (file_exists("{$root}/docroot/sites/{$host}")) {
+      return new CommandError("Site {$host} already exists.");
     }
   }
 
