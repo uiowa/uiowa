@@ -8,7 +8,7 @@ use AcquiaCloudApi\CloudApi\Connector;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
 use Symfony\Component\Yaml\Yaml;
-use Sitenow\Multisite;
+use Uiowa\Multisite;
 
 /**
  * Defines commands in the Sitenow namespace.
