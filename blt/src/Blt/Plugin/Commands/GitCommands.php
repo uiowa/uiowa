@@ -14,7 +14,7 @@ class GitCommands extends BltTasks {
   /**
    * Validate clean command.
    *
-   * @hook validate sitenow:git:clean
+   * @hook validate uiowa:git:clean
    */
   public function validateClean(CommandData $commandData) {
     $remotes = $this->getAcquiaRemotes();
@@ -38,7 +38,7 @@ class GitCommands extends BltTasks {
   /**
    * Delete all remote branches except master and develop from Acquia remote.
    *
-   * @command sitenow:git:clean
+   * @command uiowa:git:clean
    *
    * @aliases sgc
    */
