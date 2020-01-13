@@ -1,6 +1,6 @@
 <?php
 
-namespace Uiowa\Blt\Plugin\Commands\Sitenow;
+namespace Uiowa\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
 use Consolidation\AnnotatedCommand\CommandData;
