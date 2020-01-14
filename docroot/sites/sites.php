@@ -566,3 +566,18 @@ $sites['icsa.dev.drupal.uiowa.edu'] = 'icsa.uiowa.edu';
 $sites['icsa.stage.drupal.uiowa.edu'] = 'icsa.uiowa.edu';
 $sites['icsa.prod.drupal.uiowa.edu'] = 'icsa.uiowa.edu';
 $sites['icsa.uiowa.edu'] = 'icsa.uiowa.edu';
+
+// Directory aliases for themaclab.lab.uiowa.edu.
+$sites['labthemaclab.dev.drupal.uiowa.edu'] = 'themaclab.lab.uiowa.edu';
+$sites['labthemaclab.stage.drupal.uiowa.edu'] = 'themaclab.lab.uiowa.edu';
+$sites['labthemaclab.prod.drupal.uiowa.edu'] = 'themaclab.lab.uiowa.edu';
+
+// Directory aliases for ombudsperson.org.uiowa.edu.
+$sites['orgombudsperson.dev.drupal.uiowa.edu'] = 'ombudsperson.org.uiowa.edu';
+$sites['orgombudsperson.stage.drupal.uiowa.edu'] = 'ombudsperson.org.uiowa.edu';
+$sites['orgombudsperson.prod.drupal.uiowa.edu'] = 'ombudsperson.org.uiowa.edu';
+
+// Directory aliases for cd2h.org.
+$sites['org-cd2h.dev.drupal.uiowa.edu'] = 'cd2h.org';
+$sites['org-cd2h.stage.drupal.uiowa.edu'] = 'cd2h.org';
+$sites['org-cd2h.prod.drupal.uiowa.edu'] = 'cd2h.org';
