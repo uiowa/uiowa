@@ -442,8 +442,8 @@ EOD;
    */
   public function validateCredentials() {
     $credentials = [
-      'credentials.acquia.key',
-      'credentials.acquia.secret',
+      'uiowa.credentials.acquia.key',
+      'uiowa.credentials.acquia.secret',
     ];
 
     foreach ($credentials as $cred) {
