@@ -108,6 +108,7 @@ class ReplaceCommands extends BltTasks {
    */
   public function replacePostDbCopy($site, $target_env, $db_name, $source_env) {
     foreach ($this->getConfigValue('multisites') as $multisite) {
+      $this->switchSiteContext($multisite);
       $profile = $this->getConfigValue('project.profile.name');
 
       switch ($profile) {
