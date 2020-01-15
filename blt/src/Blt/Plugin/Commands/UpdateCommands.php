@@ -220,15 +220,20 @@ EOD;
     $sites = Multisite::getAllSites($root);
 
     foreach ($sites as $site) {
-      $file = "{$root}/docroot/sites/{$site}/blt.yml";
-      $yaml = YamlMunge::parseFile($file);
+      $yaml = YamlMunge::parseFile("{$root}/docroot/sites/{$site}/blt.yml");
 
       unset($yaml['drupal']['db']['host']);
       unset($yaml['drupal']['db']['user']);
       unset($yaml['drupal']['db']['password']);
 
       file_put_contents("{$root}/docroot/sites/{$site}/blt.yml", Yaml::dump($yaml, 10, 2));
+
+      $this->taskFilesystemStack()
+        ->remove("{$root}/docroot/sites/{$site}/settings/local.settings.php")
+        ->run();
     }
+
+    $this->invokeCommand('bis');
 
     $this->setSchemaVersion(1004);
   }
