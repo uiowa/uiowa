@@ -116,13 +116,13 @@ class LockupController extends ControllerBase {
 
     // Bunch of variables to use later.
     $stacked_center = 200;
-    $stacked_start = 51.609;
+    $stacked_start = 45.058;
     $horizontal_center = 50.462;
     $horizontal_start = 130.5;
-    // Horizontal Primary Text Correction.
-    $hptc = 7.469;
-    // Horizontal Sub Text Correction.
-    $hstc = 5.602;
+    // Primary Text Correction.
+    $ptc = 7.469;
+    // Sub Text Correction.
+    $stc = 5.602;
     // Horizontal Rule Correction.
     $hrc = 10.841;
 
@@ -167,8 +167,8 @@ class LockupController extends ControllerBase {
         LockupController::addStackedLogo($lockup, $iowa_color);
 
         // Border. Width based on primary 1 width.
-        if ($p_lines[0][0] < 80) {
-          $border_width = 80;
+        if ($p_lines[0][0] < 81.791) {
+          $border_width = 81.791;
         }
         else {
           $border_width = $p_lines[0][0] + 8;
@@ -177,7 +177,7 @@ class LockupController extends ControllerBase {
           'x' => $stacked_center - ($border_width / 2),
           'y' => '35.16',
           'width' => $border_width,
-          'height' => '0.8',
+          'height' => '0.733',
           'style' => 'fill:' . $text_color,
         ]);
 
@@ -187,7 +187,7 @@ class LockupController extends ControllerBase {
           ENT_QUOTES | ENT_XML1,
           'UTF-8'),
           $stacked_center - ($p_lines[0][0] / 2),
-          $stacked_start + $text['p1y']
+          $stacked_start - $ptc + $text['p1y']
         );
         // Primary Line 2.
         if (isset($p_lines[1])) {
@@ -196,7 +196,7 @@ class LockupController extends ControllerBase {
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $stacked_center - ($p_lines[1][0] / 2),
-            $stacked_start + $text['p2y']
+            $stacked_start - $ptc + $text['p2y']
           );
         }
         // Primary Line 3.
@@ -206,7 +206,7 @@ class LockupController extends ControllerBase {
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $stacked_center - ($p_lines[2][0] / 2),
-            $stacked_start + $text['p3y']
+            $stacked_start - $ptc + $text['p3y']
           );
         }
 
@@ -219,7 +219,7 @@ class LockupController extends ControllerBase {
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $stacked_center - ($s_lines[0][0] / 2),
-            $stacked_start + $text['s1y']
+            $stacked_start - $stc + $text['s1y']
           );
         }
 
@@ -229,7 +229,7 @@ class LockupController extends ControllerBase {
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $stacked_center - ($s_lines[1][0] / 2),
-            $stacked_start + $text['s2y']
+            $stacked_start - $stc + $text['s2y']
           );
         }
         if (isset($s_lines[2])) {
@@ -238,7 +238,7 @@ class LockupController extends ControllerBase {
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $stacked_center - ($s_lines[2][0] / 2),
-            $stacked_start + $text['s3y']
+            $stacked_start - $stc + $text['s3y']
           );
         }
         break;
@@ -288,7 +288,7 @@ class LockupController extends ControllerBase {
           ENT_QUOTES | ENT_XML1,
           'UTF-8'),
           $horizontal_start,
-          $horizontal_center - $hptc + $text['p1y']
+          $horizontal_center - $ptc + $text['p1y']
         );
         // Primary Line 2.
         if (isset($p_explode[1])) {
@@ -297,7 +297,7 @@ class LockupController extends ControllerBase {
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $horizontal_start,
-            $horizontal_center - $hptc + $text['p2y']
+            $horizontal_center - $ptc + $text['p2y']
           );
         }
         // Primary Line 3.
@@ -307,7 +307,7 @@ class LockupController extends ControllerBase {
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $horizontal_start,
-            $horizontal_center - $hptc + $text['p3y']
+            $horizontal_center - $ptc + $text['p3y']
           );
         }
 
@@ -320,7 +320,7 @@ class LockupController extends ControllerBase {
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $horizontal_start,
-            $horizontal_center - $hstc + $text['s1y']
+            $horizontal_center - $stc + $text['s1y']
           );
         }
 
@@ -330,7 +330,7 @@ class LockupController extends ControllerBase {
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $horizontal_start,
-            $horizontal_center - $hstc + $text['s2y']
+            $horizontal_center - $stc + $text['s2y']
           );
         }
 
@@ -340,20 +340,20 @@ class LockupController extends ControllerBase {
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $horizontal_start,
-            $horizontal_center - $hstc + $text['s3y']
+            $horizontal_center - $stc + $text['s3y']
           );
         }
 
         $border_height = $text['total_height'] + 8 - $hrc;
-        if ($border_height < 30) {
-          $border_height = 30;
+        if ($border_height < 29.369) {
+          $border_height = 29.369;
         }
 
         // Draw border.
         $lockup->addRect([
           'x' => 124.625,
           'y' => $horizontal_center - ($border_height / 2),
-          'width' => 0.8,
+          'width' => 0.733,
           'height' => $border_height,
           'style' => 'fill:' . $text_color,
         ]);
