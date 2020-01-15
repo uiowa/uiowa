@@ -107,19 +107,18 @@ class LockupController extends ControllerBase {
     // Load all of the needed assets to create the graphics.
     $bold = drupal_get_path('module', 'brand_core') . '/fonts/RobotoBold.svg';
     $regular = drupal_get_path('module', 'brand_core') . '/fonts/RobotoRegular.svg';
-    $primary_size = 8;
-    $primary_line_height = 0;
-    $sub_size = 6;
-    $sub_line_height = 7.5;
-
-    $s_count = 0;
+    $psize = 8;
+    $pline_height = 0;
+    $ssize = 6;
+    $sline_height = 7.5;
 
     $lockup = new BrandSVG();
 
     // Bunch of variables to use later.
     $stacked_center = 200;
+    $stacked_start = 51.609;
     $horizontal_center = 50.462;
-    $horizontal_text_start = 130.5;
+    $horizontal_start = 130.5;
     // Horizontal Primary Text Correction.
     $hptc = 7.469;
     // Horizontal Sub Text Correction.
@@ -131,12 +130,13 @@ class LockupController extends ControllerBase {
       case 'stacked':
         // Sub unit generation.
         $s_data = [];
+        $s_data['count'] = 0;
         if (!empty($node->field_lockup_s_unit_stacked->value)) {
           $s_txt = $node->field_lockup_s_unit_stacked->value;
           $s_explode = explode(PHP_EOL, $s_txt);
           $s_count = count($s_explode);
-          $lockup->setFont($regular, $sub_size, $text_color);
-          $lockup->setLineHeight($sub_line_height);
+          $lockup->setFont($regular, $ssize, $text_color);
+          $lockup->setLineHeight($sline_height);
           $s_lines = [];
           foreach ($s_explode as $key => $line) {
             preg_replace('~[[:cntrl:]]~', '', $line);
@@ -151,8 +151,8 @@ class LockupController extends ControllerBase {
         $p_txt = $node->field_lockup_p_unit_stacked->value;
         $p_explode = explode(PHP_EOL, $p_txt);
         $p_count = count($p_explode);
-        $lockup->setFont($bold, $primary_size, $text_color);
-        $lockup->setLineHeight($primary_line_height);
+        $lockup->setFont($bold, $psize, $text_color);
+        $lockup->setLineHeight($pline_height);
         $p_lines = [];
         foreach ($p_explode as $key => $line) {
           preg_replace('~[[:cntrl:]]~', '', $line);
@@ -166,28 +166,28 @@ class LockupController extends ControllerBase {
 
         LockupController::addStackedLogo($lockup, $iowa_color);
 
-        // Border. Width based on primary width.
-//        if ($p_width < 80) {
-//          $border_width = 80;
-//        }
-//        else {
-//          $border_width = $p_width + 8;
-//        }
-//        $border_x = $border_width / 2;
-//        $lockup->addRect([
-//          'x' => $stacked_center - $border_x,
-//          'y' => '35.16',
-//          'width' => $border_width,
-//          'height' => '0.8',
-//          'style' => 'fill:' . $text_color,
-//        ]);
+        // Border. Width based on primary 1 width.
+        if ($p_lines[0][0] < 80) {
+          $border_width = 80;
+        }
+        else {
+          $border_width = $p_lines[0][0] + 8;
+        }
+        $lockup->addRect([
+          'x' => $stacked_center - ($border_width / 2),
+          'y' => '35.16',
+          'width' => $border_width,
+          'height' => '0.8',
+          'style' => 'fill:' . $text_color,
+        ]);
+
         // Primary Line 1.
         $lockup->addText(html_entity_decode(
           $p_explode[0],
           ENT_QUOTES | ENT_XML1,
           'UTF-8'),
           $stacked_center - ($p_lines[0][0] / 2),
-          42.64
+          $stacked_start + $text['p1y']
         );
         // Primary Line 2.
         if (isset($p_lines[1])) {
@@ -196,7 +196,7 @@ class LockupController extends ControllerBase {
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $stacked_center - ($p_lines[1][0] / 2),
-            42.64
+            $stacked_start + $text['p2y']
           );
         }
         // Primary Line 3.
@@ -206,12 +206,12 @@ class LockupController extends ControllerBase {
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $stacked_center - ($p_lines[2][0] / 2),
-            42.64
+            $stacked_start + $text['p3y']
           );
         }
 
-        $lockup->setFont($regular, $sub_size, $text_color);
-        $lockup->setLineHeight($sub_line_height);
+        $lockup->setFont($regular, $ssize, $text_color);
+        $lockup->setLineHeight($sline_height);
 
         if (isset($s_lines[0])) {
           $lockup->addText(html_entity_decode(
@@ -219,7 +219,7 @@ class LockupController extends ControllerBase {
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $stacked_center - ($s_lines[0][0] / 2),
-            42.64
+            $stacked_start + $text['s1y']
           );
         }
 
@@ -229,7 +229,7 @@ class LockupController extends ControllerBase {
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $stacked_center - ($s_lines[1][0] / 2),
-            42.64
+            $stacked_start + $text['s2y']
           );
         }
         if (isset($s_lines[2])) {
@@ -238,7 +238,7 @@ class LockupController extends ControllerBase {
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $stacked_center - ($s_lines[2][0] / 2),
-            42.64
+            $stacked_start + $text['s3y']
           );
         }
         break;
@@ -246,12 +246,13 @@ class LockupController extends ControllerBase {
       case 'horizontal':
         // Sub unit generation.
         $s_data = [];
+        $s_data['count'] = 0;
         if (!empty($node->field_lockup_sub_unit->value)) {
           $s_txt = $node->field_lockup_sub_unit->value;
           $s_explode = explode(PHP_EOL, $s_txt);
           $s_count = count($s_explode);
-          $lockup->setFont($regular, $sub_size, $text_color);
-          $lockup->setLineHeight($sub_line_height);
+          $lockup->setFont($regular, $ssize, $text_color);
+          $lockup->setLineHeight($sline_height);
           $s_lines = [];
           foreach ($s_explode as $key => $line) {
             preg_replace('~[[:cntrl:]]~', '', $line);
@@ -266,8 +267,8 @@ class LockupController extends ControllerBase {
         $p_txt = $node->field_lockup_primary_unit->value;
         $p_explode = explode(PHP_EOL, $p_txt);
         $p_count = count($p_explode);
-        $lockup->setFont($bold, $primary_size, $text_color);
-        $lockup->setLineHeight($primary_line_height);
+        $lockup->setFont($bold, $psize, $text_color);
+        $lockup->setLineHeight($pline_height);
         $p_lines = [];
         foreach ($p_explode as $key => $line) {
           preg_replace('~[[:cntrl:]]~', '', $line);
@@ -286,7 +287,7 @@ class LockupController extends ControllerBase {
           $p_explode[0],
           ENT_QUOTES | ENT_XML1,
           'UTF-8'),
-          $horizontal_text_start,
+          $horizontal_start,
           $horizontal_center - $hptc + $text['p1y']
         );
         // Primary Line 2.
@@ -295,7 +296,7 @@ class LockupController extends ControllerBase {
             $p_explode[1],
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
-            $horizontal_text_start,
+            $horizontal_start,
             $horizontal_center - $hptc + $text['p2y']
           );
         }
@@ -305,20 +306,20 @@ class LockupController extends ControllerBase {
             $p_explode[2],
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
-            $horizontal_text_start,
+            $horizontal_start,
             $horizontal_center - $hptc + $text['p3y']
           );
         }
 
-        $lockup->setFont($regular, $sub_size, $text_color);
-        $lockup->setLineHeight($sub_line_height);
+        $lockup->setFont($regular, $ssize, $text_color);
+        $lockup->setLineHeight($sline_height);
 
         if (isset($s_explode[0])) {
           $lockup->addText(html_entity_decode(
             $s_explode[0],
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
-            $horizontal_text_start,
+            $horizontal_start,
             $horizontal_center - $hstc + $text['s1y']
           );
         }
@@ -328,7 +329,7 @@ class LockupController extends ControllerBase {
             $s_explode[1],
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
-            $horizontal_text_start,
+            $horizontal_start,
             $horizontal_center - $hstc + $text['s2y']
           );
         }
@@ -338,7 +339,7 @@ class LockupController extends ControllerBase {
             $s_explode[2],
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
-            $horizontal_text_start,
+            $horizontal_start,
             $horizontal_center - $hstc + $text['s3y']
           );
         }
@@ -455,6 +456,7 @@ class LockupController extends ControllerBase {
         // Positions.
         $text['p1y'] = $half_p1h - $text['offset'];
         $text['p2y'] = $half_p1h + $pmb + $p_data['lines'][1][1]  - $text['offset'];
+        $text['s1y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $psg + $s_data['lines'][0][1] - $text['offset'];
         $text['s2y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $psg + $s_data['lines'][0][1] + $smb + $s_data['lines'][1][1] - $text['offset'];
         break;
 
