@@ -4,7 +4,7 @@
  * SiteNow global settings.
  *
  * Note that this file is NOT included for every sites but rather from
- * individual sites through their own
+ * individual SiteNow sites through their own include chain.
  */
 
 // Set the sync directory to the profile.
