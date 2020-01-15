@@ -207,4 +207,30 @@ EOD;
     $this->setSchemaVersion(1003);
   }
 
+  /**
+   * Update 1004.
+   *
+   * @Update(
+   *   version = "1004",
+   *   description = "Revert multisite database configuration to BLT defaults for VM."
+   * )
+   */
+  protected function update1004() {
+    $root = $this->getConfigValue('repo.root');
+    $sites = Multisite::getAllSites($root);
+
+    foreach ($sites as $site) {
+      $file = "{$root}/docroot/sites/{$site}/blt.yml";
+      $yaml = YamlMunge::parseFile($file);
+
+      unset($yaml['drupal']['db']['host']);
+      unset($yaml['drupal']['db']['user']);
+      unset($yaml['drupal']['db']['password']);
+
+     file_put_contents("{$root}/docroot/sites/{$site}/blt.yml", Yaml::dump($yaml, 10, 2));
+    }
+
+    $this->setSchemaVersion(1004);
+  }
+
 }
