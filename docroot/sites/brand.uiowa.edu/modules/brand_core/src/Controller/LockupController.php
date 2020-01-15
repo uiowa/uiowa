@@ -109,20 +109,26 @@ class LockupController extends ControllerBase {
     $regular = drupal_get_path('module', 'brand_core') . '/fonts/RobotoRegular.svg';
     $psize = 8;
     $pline_height = 0;
+    $pletter_spacing = 0; // 0.03
     $ssize = 6;
     $sline_height = 7.5;
+    $sletter_spacing = 0;
 
     $lockup = new BrandSVG();
 
     // Bunch of variables to use later.
     $stacked_center = 200;
-    $stacked_start = 45.058;
+    $stacked_start = 40.058;
     $horizontal_center = 50.462;
     $horizontal_start = 130.5;
-    // Primary Text Correction.
-    $ptc = 7.469;
-    // Sub Text Correction.
-    $stc = 5.602;
+    // Horizontal Primary Text Correction.
+    $hptc = 6.469;
+    // Horizontal Sub Text Correction.
+    $hstc = 4.602;
+    // Stacked Sub Text Correction.
+    $sstc = 5.635;
+    // Stacked Primary Text Correction.
+    $sptc = 7.635;
     // Horizontal Rule Correction.
     $hrc = 10.841;
 
@@ -137,6 +143,7 @@ class LockupController extends ControllerBase {
           $s_count = count($s_explode);
           $lockup->setFont($regular, $ssize, $text_color);
           $lockup->setLineHeight($sline_height);
+          $lockup->setLetterSpacing($sletter_spacing);
           $s_lines = [];
           foreach ($s_explode as $key => $line) {
             preg_replace('~[[:cntrl:]]~', '', $line);
@@ -153,6 +160,7 @@ class LockupController extends ControllerBase {
         $p_count = count($p_explode);
         $lockup->setFont($bold, $psize, $text_color);
         $lockup->setLineHeight($pline_height);
+        $lockup->setLetterSpacing($pletter_spacing);
         $p_lines = [];
         foreach ($p_explode as $key => $line) {
           preg_replace('~[[:cntrl:]]~', '', $line);
@@ -187,7 +195,7 @@ class LockupController extends ControllerBase {
           ENT_QUOTES | ENT_XML1,
           'UTF-8'),
           $stacked_center - ($p_lines[0][0] / 2),
-          $stacked_start - $ptc + $text['p1y']
+          $stacked_start + $text['p1y']
         );
         // Primary Line 2.
         if (isset($p_lines[1])) {
@@ -196,7 +204,7 @@ class LockupController extends ControllerBase {
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $stacked_center - ($p_lines[1][0] / 2),
-            $stacked_start - $ptc + $text['p2y']
+            $stacked_start + $text['p2y']
           );
         }
         // Primary Line 3.
@@ -206,12 +214,13 @@ class LockupController extends ControllerBase {
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $stacked_center - ($p_lines[2][0] / 2),
-            $stacked_start - $ptc + $text['p3y']
+            $stacked_start + $text['p3y']
           );
         }
 
         $lockup->setFont($regular, $ssize, $text_color);
         $lockup->setLineHeight($sline_height);
+        $lockup->setLetterSpacing($sletter_spacing);
 
         if (isset($s_lines[0])) {
           $lockup->addText(html_entity_decode(
@@ -219,7 +228,7 @@ class LockupController extends ControllerBase {
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $stacked_center - ($s_lines[0][0] / 2),
-            $stacked_start - $stc + $text['s1y']
+            $stacked_start + $text['s1y']
           );
         }
 
@@ -229,7 +238,7 @@ class LockupController extends ControllerBase {
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $stacked_center - ($s_lines[1][0] / 2),
-            $stacked_start - $stc + $text['s2y']
+            $stacked_start + $text['s2y']
           );
         }
         if (isset($s_lines[2])) {
@@ -238,7 +247,7 @@ class LockupController extends ControllerBase {
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $stacked_center - ($s_lines[2][0] / 2),
-            $stacked_start - $stc + $text['s3y']
+            $stacked_start + $text['s3y']
           );
         }
         break;
@@ -253,6 +262,7 @@ class LockupController extends ControllerBase {
           $s_count = count($s_explode);
           $lockup->setFont($regular, $ssize, $text_color);
           $lockup->setLineHeight($sline_height);
+          $lockup->setLetterSpacing($sletter_spacing);
           $s_lines = [];
           foreach ($s_explode as $key => $line) {
             preg_replace('~[[:cntrl:]]~', '', $line);
@@ -269,6 +279,7 @@ class LockupController extends ControllerBase {
         $p_count = count($p_explode);
         $lockup->setFont($bold, $psize, $text_color);
         $lockup->setLineHeight($pline_height);
+        $lockup->setLetterSpacing($pletter_spacing);
         $p_lines = [];
         foreach ($p_explode as $key => $line) {
           preg_replace('~[[:cntrl:]]~', '', $line);
@@ -288,7 +299,7 @@ class LockupController extends ControllerBase {
           ENT_QUOTES | ENT_XML1,
           'UTF-8'),
           $horizontal_start,
-          $horizontal_center - $ptc + $text['p1y']
+          $horizontal_center - $hptc + $text['p1y'] - $text['offset']
         );
         // Primary Line 2.
         if (isset($p_explode[1])) {
@@ -297,7 +308,7 @@ class LockupController extends ControllerBase {
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $horizontal_start,
-            $horizontal_center - $ptc + $text['p2y']
+            $horizontal_center - $hptc + $text['p2y'] - $text['offset']
           );
         }
         // Primary Line 3.
@@ -307,12 +318,13 @@ class LockupController extends ControllerBase {
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $horizontal_start,
-            $horizontal_center - $ptc + $text['p3y']
+            $horizontal_center - $hptc + $text['p3y'] - $text['offset']
           );
         }
 
         $lockup->setFont($regular, $ssize, $text_color);
         $lockup->setLineHeight($sline_height);
+        $lockup->setLetterSpacing($sletter_spacing);
 
         if (isset($s_explode[0])) {
           $lockup->addText(html_entity_decode(
@@ -320,7 +332,7 @@ class LockupController extends ControllerBase {
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $horizontal_start,
-            $horizontal_center - $stc + $text['s1y']
+            $horizontal_center - $hstc + $text['s1y'] - $text['offset']
           );
         }
 
@@ -330,7 +342,7 @@ class LockupController extends ControllerBase {
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $horizontal_start,
-            $horizontal_center - $stc + $text['s2y']
+            $horizontal_center - $hstc + $text['s2y'] - $text['offset']
           );
         }
 
@@ -340,7 +352,7 @@ class LockupController extends ControllerBase {
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $horizontal_start,
-            $horizontal_center - $stc + $text['s3y']
+            $horizontal_center - $hstc + $text['s3y'] - $text['offset']
           );
         }
 
@@ -352,7 +364,7 @@ class LockupController extends ControllerBase {
         // Draw border.
         $lockup->addRect([
           'x' => 124.625,
-          'y' => $horizontal_center - ($border_height / 2),
+          'y' => $horizontal_center - ($border_height / 2) - .5,
           'width' => 0.733,
           'height' => $border_height,
           'style' => 'fill:' . $text_color,
@@ -375,7 +387,7 @@ class LockupController extends ControllerBase {
     // Primary Margin Bottom.
     $pmb = 0;
     // Primary/Sub Gap.
-    $psg = 3.3;
+    $psg = 3; //3.3
     // Sub Margin Bottom.
     $smb = 0;
     $text = [];
@@ -395,8 +407,8 @@ class LockupController extends ControllerBase {
         // Overall Offset.
         $text['offset'] = $text['total_height'] / 2;
         // Positions.
-        $text['p1y'] = $half_p1h - $text['offset'];
-        $text['s1y'] = $half_p1h + $psg + $s_data['lines'][0][1] - $text['offset'];
+        $text['p1y'] = $half_p1h;
+        $text['s1y'] = $half_p1h + $psg + $s_data['lines'][0][1];
         break;
 
       case 'p1s2':
@@ -406,9 +418,9 @@ class LockupController extends ControllerBase {
         // Overall Offset.
         $text['offset'] = $text['total_height'] / 2;
         // Positions.
-        $text['p1y'] = $half_p1h - $text['offset'];
-        $text['s1y'] = $half_p1h + $psg + $s_data['lines'][0][1] - $text['offset'];
-        $text['s2y'] = $half_p1h + $psg + $s_data['lines'][0][1] + $smb + $s_data['lines'][1][1] - $text['offset'];
+        $text['p1y'] = $half_p1h;
+        $text['s1y'] = $half_p1h + $psg + $s_data['lines'][0][1];
+        $text['s2y'] = $half_p1h + $psg + $s_data['lines'][0][1] + $smb + $s_data['lines'][1][1];
         break;
 
       case 'p1s3':
@@ -418,10 +430,10 @@ class LockupController extends ControllerBase {
         // Overall Offset.
         $text['offset'] = $text['total_height'] / 2;
         // Positions.
-        $text['p1y'] = $half_p1h - $text['offset'];
-        $text['s1y'] = $half_p1h + $psg + $s_data['lines'][0][1] - $text['offset'];
-        $text['s2y'] = $half_p1h + $psg + $s_data['lines'][0][1] + $smb + $s_data['lines'][1][1] - $text['offset'];
-        $text['s3y'] = $half_p1h + $psg + $s_data['lines'][0][1] + $smb + $s_data['lines'][1][1] + $smb + $s_data['lines'][2][1] - $text['offset'];
+        $text['p1y'] = $half_p1h;
+        $text['s1y'] = $half_p1h + $psg + $s_data['lines'][0][1];
+        $text['s2y'] = $half_p1h + $psg + $s_data['lines'][0][1] + $smb + $s_data['lines'][1][1];
+        $text['s3y'] = $half_p1h + $psg + $s_data['lines'][0][1] + $smb + $s_data['lines'][1][1] + $smb + $s_data['lines'][2][1];
         break;
 
       case 'p2s0':
@@ -431,8 +443,8 @@ class LockupController extends ControllerBase {
         // Overall Offset.
         $text['offset'] = $text['total_height'] / 2;
         // Positions.
-        $text['p1y'] = $half_p1h - $text['offset'];
-        $text['p2y'] = $half_p1h + $pmb + $p_data['lines'][1][1]  - $text['offset'];
+        $text['p1y'] = $half_p1h;
+        $text['p2y'] = $half_p1h + $pmb + $p_data['lines'][1][1] ;
         break;
 
       case 'p2s1':
@@ -442,9 +454,9 @@ class LockupController extends ControllerBase {
         // Overall Offset.
         $text['offset'] = $text['total_height'] / 2;
         // Positions.
-        $text['p1y'] = $half_p1h - $text['offset'];
-        $text['p2y'] = $half_p1h + $pmb + $p_data['lines'][1][1]  - $text['offset'];
-        $text['s1y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $psg + $s_data['lines'][0][1] - $text['offset'];
+        $text['p1y'] = $half_p1h;
+        $text['p2y'] = $half_p1h + $pmb + $p_data['lines'][1][1] ;
+        $text['s1y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $psg + $s_data['lines'][0][1];
         break;
 
       case 'p2s2':
@@ -454,10 +466,10 @@ class LockupController extends ControllerBase {
         // Overall Offset.
         $text['offset'] = $text['total_height'] / 2;
         // Positions.
-        $text['p1y'] = $half_p1h - $text['offset'];
-        $text['p2y'] = $half_p1h + $pmb + $p_data['lines'][1][1]  - $text['offset'];
-        $text['s1y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $psg + $s_data['lines'][0][1] - $text['offset'];
-        $text['s2y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $psg + $s_data['lines'][0][1] + $smb + $s_data['lines'][1][1] - $text['offset'];
+        $text['p1y'] = $half_p1h;
+        $text['p2y'] = $half_p1h + $pmb + $p_data['lines'][1][1] ;
+        $text['s1y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $psg + $s_data['lines'][0][1];
+        $text['s2y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $psg + $s_data['lines'][0][1] + $smb + $s_data['lines'][1][1];
         break;
 
       case 'p2s3':
@@ -467,11 +479,11 @@ class LockupController extends ControllerBase {
         // Overall Offset.
         $text['offset'] = $text['total_height'] / 2;
         // Positions.
-        $text['p1y'] = $half_p1h - $text['offset'];
-        $text['p2y'] = $half_p1h + $pmb + $p_data['lines'][1][1]  - $text['offset'];
-        $text['s1y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $psg + $s_data['lines'][0][1] - $text['offset'];
-        $text['s2y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $psg + $s_data['lines'][0][1] + $smb + $s_data['lines'][1][1] - $text['offset'];
-        $text['s3y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $psg + $s_data['lines'][0][1] + $smb + $s_data['lines'][1][1] + $smb + $s_data['lines'][2][1] - $text['offset'];
+        $text['p1y'] = $half_p1h;
+        $text['p2y'] = $half_p1h + $pmb + $p_data['lines'][1][1] ;
+        $text['s1y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $psg + $s_data['lines'][0][1];
+        $text['s2y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $psg + $s_data['lines'][0][1] + $smb + $s_data['lines'][1][1];
+        $text['s3y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $psg + $s_data['lines'][0][1] + $smb + $s_data['lines'][1][1] + $smb + $s_data['lines'][2][1];
         break;
 
       case 'p3s0':
@@ -481,9 +493,9 @@ class LockupController extends ControllerBase {
         // Overall Offset.
         $text['offset'] = $text['total_height'] / 2;
         // Positions.
-        $text['p1y'] = $half_p1h - $text['offset'];
-        $text['p2y'] = $half_p1h + $pmb + $p_data['lines'][1][1]  - $text['offset'];
-        $text['p3y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $pmb + $p_data['lines'][2][1] - $text['offset'];
+        $text['p1y'] = $half_p1h;
+        $text['p2y'] = $half_p1h + $pmb + $p_data['lines'][1][1] ;
+        $text['p3y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $pmb + $p_data['lines'][2][1];
         break;
 
       case 'p3s1':
@@ -493,10 +505,10 @@ class LockupController extends ControllerBase {
         // Overall Offset.
         $text['offset'] = $text['total_height'] / 2;
         // Positions.
-        $text['p1y'] = $half_p1h - $text['offset'];
-        $text['p2y'] = $half_p1h + $pmb + $p_data['lines'][1][1]  - $text['offset'];
-        $text['p3y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $pmb + $p_data['lines'][2][1] - $text['offset'];
-        $text['s1y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $pmb + $p_data['lines'][2][1] + $psg + $s_data['lines'][0][1] - $text['offset'];
+        $text['p1y'] = $half_p1h;
+        $text['p2y'] = $half_p1h + $pmb + $p_data['lines'][1][1] ;
+        $text['p3y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $pmb + $p_data['lines'][2][1];
+        $text['s1y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $pmb + $p_data['lines'][2][1] + $psg + $s_data['lines'][0][1];
         break;
 
       case 'p3s2':
@@ -506,11 +518,11 @@ class LockupController extends ControllerBase {
         // Overall Offset.
         $text['offset'] = $text['total_height'] / 2;
         // Positions.
-        $text['p1y'] = $half_p1h - $text['offset'];
-        $text['p2y'] = $half_p1h + $pmb + $p_data['lines'][1][1]  - $text['offset'];
-        $text['p3y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $pmb + $p_data['lines'][2][1] - $text['offset'];
-        $text['s1y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $pmb + $p_data['lines'][2][1] + $psg + $s_data['lines'][0][1] - $text['offset'];
-        $text['s2y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $pmb + $p_data['lines'][2][1] + $psg + $s_data['lines'][0][1]+ $smb + $s_data['lines'][1][1] - $text['offset'];
+        $text['p1y'] = $half_p1h;
+        $text['p2y'] = $half_p1h + $pmb + $p_data['lines'][1][1] ;
+        $text['p3y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $pmb + $p_data['lines'][2][1];
+        $text['s1y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $pmb + $p_data['lines'][2][1] + $psg + $s_data['lines'][0][1];
+        $text['s2y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $pmb + $p_data['lines'][2][1] + $psg + $s_data['lines'][0][1]+ $smb + $s_data['lines'][1][1];
         break;
 
       case 'p3s3':
@@ -520,12 +532,12 @@ class LockupController extends ControllerBase {
         // Overall Offset.
         $text['offset'] = $text['total_height'] / 2;
         // Positions.
-        $text['p1y'] = $half_p1h - $text['offset'];
-        $text['p2y'] = $half_p1h + $pmb + $p_data['lines'][1][1]  - $text['offset'];
-        $text['p3y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $pmb + $p_data['lines'][2][1] - $text['offset'];
-        $text['s1y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $pmb + $p_data['lines'][2][1] + $psg + $s_data['lines'][0][1] - $text['offset'];
-        $text['s2y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $pmb + $p_data['lines'][2][1] + $psg + $s_data['lines'][0][1]+ $smb + $s_data['lines'][1][1] - $text['offset'];
-        $text['s3y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $pmb + $p_data['lines'][2][1] + $psg + $s_data['lines'][0][1]+ $smb + $s_data['lines'][1][1] + $smb + $s_data['lines'][2][1] - $text['offset'];
+        $text['p1y'] = $half_p1h;
+        $text['p2y'] = $half_p1h + $pmb + $p_data['lines'][1][1] ;
+        $text['p3y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $pmb + $p_data['lines'][2][1];
+        $text['s1y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $pmb + $p_data['lines'][2][1] + $psg + $s_data['lines'][0][1];
+        $text['s2y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $pmb + $p_data['lines'][2][1] + $psg + $s_data['lines'][0][1]+ $smb + $s_data['lines'][1][1];
+        $text['s3y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $pmb + $p_data['lines'][2][1] + $psg + $s_data['lines'][0][1]+ $smb + $s_data['lines'][1][1] + $smb + $s_data['lines'][2][1];
         break;
     }
 
