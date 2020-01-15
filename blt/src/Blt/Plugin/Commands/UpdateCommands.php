@@ -227,7 +227,7 @@ EOD;
       unset($yaml['drupal']['db']['user']);
       unset($yaml['drupal']['db']['password']);
 
-     file_put_contents("{$root}/docroot/sites/{$site}/blt.yml", Yaml::dump($yaml, 10, 2));
+      file_put_contents("{$root}/docroot/sites/{$site}/blt.yml", Yaml::dump($yaml, 10, 2));
     }
 
     $this->setSchemaVersion(1004);
