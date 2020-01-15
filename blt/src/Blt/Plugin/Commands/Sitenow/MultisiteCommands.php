@@ -386,24 +386,6 @@ EOD;
   }
 
   /**
-   * Unset the routed multisite so Drush/BLT does not bootstrap it.
-   *
-   * @hook pre-command drupal:sync:all-sites
-   */
-  public function preSyncAllSites(CommandData $commandData) {
-    $this->killServer();
-  }
-
-  /**
-   * Unset the routed multisite so Drush/BLT does not bootstrap it.
-   *
-   * @hook pre-command drupal:sync
-   */
-  public function preSync(CommandData $commandData) {
-    $this->killServer();
-  }
-
-  /**
    * Validate that the command is being run on a feature branch.
    *
    * @hook validate @requireFeatureBranch
@@ -440,16 +422,6 @@ EOD;
         return new CommandError("You must set {$cred} in your {$this->getConfigValue('repo.root')}/blt/local.blt.yml file. DO NOT commit these anywhere in the repository!");
       }
     }
-  }
-
-  /**
-   * Overwrite the sites.php file with no routed multisite.
-   */
-  protected function killServer() {
-    $root = $this->getConfigValue('repo.root');
-    file_put_contents("{$root}/docroot/sites/sites.local.php", "<?php\n");
-    $this->getContainer()->get('executor')->killProcessByPort('8888');
-    $this->yell('The sites.local.php file has been emptied. Runserver has been stopped.');
   }
 
   /**
