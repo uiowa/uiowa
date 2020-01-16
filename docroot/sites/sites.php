@@ -549,3 +549,8 @@ $sites['labcfclincore.prod.drupal.uiowa.edu'] = 'cfclincore.lab.uiowa.edu';
 $sites['fosurplus.dev.drupal.uiowa.edu'] = 'surplus.fo.uiowa.edu';
 $sites['fosurplus.stage.drupal.uiowa.edu'] = 'surplus.fo.uiowa.edu';
 $sites['fosurplus.prod.drupal.uiowa.edu'] = 'surplus.fo.uiowa.edu';
+
+// Directory aliases for businessmanager.fo.uiowa.edu.
+$sites['fobusinessmanager.dev.drupal.uiowa.edu'] = 'businessmanager.fo.uiowa.edu';
+$sites['fobusinessmanager.stage.drupal.uiowa.edu'] = 'businessmanager.fo.uiowa.edu';
+$sites['fobusinessmanager.prod.drupal.uiowa.edu'] = 'businessmanager.fo.uiowa.edu';
