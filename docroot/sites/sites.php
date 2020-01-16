@@ -574,3 +574,8 @@ $sites['folaundry.prod.drupal.uiowa.edu'] = 'laundry.fo.uiowa.edu';
 $sites['fogeneralstores.dev.drupal.uiowa.edu'] = 'generalstores.fo.uiowa.edu';
 $sites['fogeneralstores.stage.drupal.uiowa.edu'] = 'generalstores.fo.uiowa.edu';
 $sites['fogeneralstores.prod.drupal.uiowa.edu'] = 'generalstores.fo.uiowa.edu';
+
+// Directory aliases for fbis.fo.uiowa.edu.
+$sites['fofbis.dev.drupal.uiowa.edu'] = 'fbis.fo.uiowa.edu';
+$sites['fofbis.stage.drupal.uiowa.edu'] = 'fbis.fo.uiowa.edu';
+$sites['fofbis.prod.drupal.uiowa.edu'] = 'fbis.fo.uiowa.edu';
