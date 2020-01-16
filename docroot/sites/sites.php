@@ -579,3 +579,8 @@ $sites['fogeneralstores.prod.drupal.uiowa.edu'] = 'generalstores.fo.uiowa.edu';
 $sites['fofbis.dev.drupal.uiowa.edu'] = 'fbis.fo.uiowa.edu';
 $sites['fofbis.stage.drupal.uiowa.edu'] = 'fbis.fo.uiowa.edu';
 $sites['fofbis.prod.drupal.uiowa.edu'] = 'fbis.fo.uiowa.edu';
+
+// Directory aliases for riskmanagement.fo.uiowa.edu.
+$sites['foriskmanagement.dev.drupal.uiowa.edu'] = 'riskmanagement.fo.uiowa.edu';
+$sites['foriskmanagement.stage.drupal.uiowa.edu'] = 'riskmanagement.fo.uiowa.edu';
+$sites['foriskmanagement.prod.drupal.uiowa.edu'] = 'riskmanagement.fo.uiowa.edu';
