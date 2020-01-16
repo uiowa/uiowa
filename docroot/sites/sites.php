@@ -554,3 +554,8 @@ $sites['fosurplus.prod.drupal.uiowa.edu'] = 'surplus.fo.uiowa.edu';
 $sites['fobusinessmanager.dev.drupal.uiowa.edu'] = 'businessmanager.fo.uiowa.edu';
 $sites['fobusinessmanager.stage.drupal.uiowa.edu'] = 'businessmanager.fo.uiowa.edu';
 $sites['fobusinessmanager.prod.drupal.uiowa.edu'] = 'businessmanager.fo.uiowa.edu';
+
+// Directory aliases for eforms.uiowa.edu.
+$sites['eforms.dev.drupal.uiowa.edu'] = 'eforms.uiowa.edu';
+$sites['eforms.stage.drupal.uiowa.edu'] = 'eforms.uiowa.edu';
+$sites['eforms.prod.drupal.uiowa.edu'] = 'eforms.uiowa.edu';
