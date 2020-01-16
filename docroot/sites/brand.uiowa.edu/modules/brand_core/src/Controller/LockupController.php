@@ -146,6 +146,7 @@ class LockupController extends ControllerBase {
           $lockup->setLetterSpacing($sletter_spacing);
           $s_lines = [];
           foreach ($s_explode as $key => $line) {
+            str_replace('\r', '', $line);
             preg_replace('~[[:cntrl:]]~', '', $line);
             $s_explode[$key] = $line;
             $s_lines[$key] = $lockup->textDimensions($line);
@@ -163,6 +164,7 @@ class LockupController extends ControllerBase {
         $lockup->setLetterSpacing($pletter_spacing);
         $p_lines = [];
         foreach ($p_explode as $key => $line) {
+          str_replace('\r', '', $line);
           preg_replace('~[[:cntrl:]]~', '', $line);
           $p_explode[$key] = $line;
           $p_lines[$key] = $lockup->textDimensions($line);
@@ -265,6 +267,7 @@ class LockupController extends ControllerBase {
           $lockup->setLetterSpacing($sletter_spacing);
           $s_lines = [];
           foreach ($s_explode as $key => $line) {
+            str_replace('\r', '', $line);
             preg_replace('~[[:cntrl:]]~', '', $line);
             $s_explode[$key] = $line;
             $s_lines[$key] = $lockup->textDimensions($line);
@@ -282,6 +285,7 @@ class LockupController extends ControllerBase {
         $lockup->setLetterSpacing($pletter_spacing);
         $p_lines = [];
         foreach ($p_explode as $key => $line) {
+          str_replace('\r', '', $line);
           preg_replace('~[[:cntrl:]]~', '', $line);
           $p_explode[$key] = $line;
           $p_lines[$key] = $lockup->textDimensions($line);
@@ -374,6 +378,17 @@ class LockupController extends ControllerBase {
     }
 
     $lockup->addAttribute('viewBox', '0 0 400 100');
+    $lockup->addAttribute('role', 'img');
+    $aria_label = 'The University of Iowa';
+    foreach($p_explode as $line) {
+      $aria_label .= ' ' . $line;
+    }
+    if (isset($s_explode)) {
+      foreach ($s_explode as $line) {
+        $aria_label .= ' ' . $line;
+      }
+    }
+    $lockup->addAttribute('aria-label', $aria_label);
 
     return $lockup->asXML();
   }
