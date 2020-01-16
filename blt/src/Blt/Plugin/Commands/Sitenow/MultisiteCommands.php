@@ -463,8 +463,8 @@ EOD;
    */
   protected function getAcquiaCloudApi($id) {
     $connector = new Connector([
-      'key' => $this->getConfigValue('credentials.acquia.key'),
-      'secret' => $this->getConfigValue('credentials.acquia.secret'),
+      'key' => $this->getConfigValue('uiowa.credentials.acquia.key'),
+      'secret' => $this->getConfigValue('uiowa.credentials.acquia.secret'),
     ]);
 
     /** @var \AcquiaCloudApi\CloudApi\Client $cloud */
