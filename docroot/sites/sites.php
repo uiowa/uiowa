@@ -564,3 +564,8 @@ $sites['eforms.prod.drupal.uiowa.edu'] = 'eforms.uiowa.edu';
 $sites['foap-purchasing.dev.drupal.uiowa.edu'] = 'ap-purchasing.fo.uiowa.edu';
 $sites['foap-purchasing.stage.drupal.uiowa.edu'] = 'ap-purchasing.fo.uiowa.edu';
 $sites['foap-purchasing.prod.drupal.uiowa.edu'] = 'ap-purchasing.fo.uiowa.edu';
+
+// Directory aliases for laundry.fo.uiowa.edu.
+$sites['folaundry.dev.drupal.uiowa.edu'] = 'laundry.fo.uiowa.edu';
+$sites['folaundry.stage.drupal.uiowa.edu'] = 'laundry.fo.uiowa.edu';
+$sites['folaundry.prod.drupal.uiowa.edu'] = 'laundry.fo.uiowa.edu';
