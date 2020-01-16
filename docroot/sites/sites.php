@@ -544,3 +544,8 @@ $sites['org-cd2h.prod.drupal.uiowa.edu'] = 'cd2h.org';
 $sites['labcfclincore.dev.drupal.uiowa.edu'] = 'cfclincore.lab.uiowa.edu';
 $sites['labcfclincore.stage.drupal.uiowa.edu'] = 'cfclincore.lab.uiowa.edu';
 $sites['labcfclincore.prod.drupal.uiowa.edu'] = 'cfclincore.lab.uiowa.edu';
+
+// Directory aliases for surplus.fo.uiowa.edu.
+$sites['fosurplus.dev.drupal.uiowa.edu'] = 'surplus.fo.uiowa.edu';
+$sites['fosurplus.stage.drupal.uiowa.edu'] = 'surplus.fo.uiowa.edu';
+$sites['fosurplus.prod.drupal.uiowa.edu'] = 'surplus.fo.uiowa.edu';
