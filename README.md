@@ -57,7 +57,7 @@ $config['stage_file_proxy.settings']['hotlink'] = TRUE;
 
 ## SiteNow
 Please see the [SiteNow README](docroot/profiles/custom/sitenow/README.md) for
-addtional local development instructions.
+additional local development instructions.
 
 ## Provisioning/Deprovisioning
 ### SiteNow
