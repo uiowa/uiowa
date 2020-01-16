@@ -109,26 +109,26 @@ class LockupController extends ControllerBase {
     $regular = drupal_get_path('module', 'brand_core') . '/fonts/RobotoRegular.svg';
     $psize = 8;
     $pline_height = 0;
-    $pletter_spacing = 0; // 0.03
+    $pletter_spacing = 0;//0.033;
     $ssize = 6;
     $sline_height = 7.5;
-    $sletter_spacing = 0;
+    $sletter_spacing = 0;//0.021;
 
     $lockup = new BrandSVG();
 
     // Bunch of variables to use later.
     $stacked_center = 200;
-    $stacked_start = 40.058;
-    $horizontal_center = 50.462;
-    $horizontal_start = 130.5;
+    $stacked_start = 40;
+    $horizontal_center = 50;
+    $horizontal_start = 130.447;
     // Horizontal Primary Text Correction.
-    $hptc = 6.469;
+    $hptc = 6.291;
     // Horizontal Sub Text Correction.
     $hstc = 4.602;
     // Stacked Sub Text Correction.
     $sstc = 5.635;
     // Stacked Primary Text Correction.
-    $sptc = 7.635;
+    $sptc = 7.376;
     // Horizontal Rule Correction.
     $hrc = 10.841;
 
@@ -195,7 +195,7 @@ class LockupController extends ControllerBase {
           ENT_QUOTES | ENT_XML1,
           'UTF-8'),
           $stacked_center - ($p_lines[0][0] / 2),
-          $stacked_start + $text['p1y']
+          $stacked_start - $sptc + $text['p1y']
         );
         // Primary Line 2.
         if (isset($p_lines[1])) {
@@ -204,7 +204,7 @@ class LockupController extends ControllerBase {
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $stacked_center - ($p_lines[1][0] / 2),
-            $stacked_start + $text['p2y']
+            $stacked_start - $sptc + $text['p2y']
           );
         }
         // Primary Line 3.
@@ -214,7 +214,7 @@ class LockupController extends ControllerBase {
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $stacked_center - ($p_lines[2][0] / 2),
-            $stacked_start + $text['p3y']
+            $stacked_start - $sptc + $text['p3y']
           );
         }
 
@@ -228,7 +228,7 @@ class LockupController extends ControllerBase {
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $stacked_center - ($s_lines[0][0] / 2),
-            $stacked_start + $text['s1y']
+            $stacked_start - $sstc + $text['s1y']
           );
         }
 
@@ -238,7 +238,7 @@ class LockupController extends ControllerBase {
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $stacked_center - ($s_lines[1][0] / 2),
-            $stacked_start + $text['s2y']
+            $stacked_start - $sstc + $text['s2y']
           );
         }
         if (isset($s_lines[2])) {
@@ -247,7 +247,7 @@ class LockupController extends ControllerBase {
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $stacked_center - ($s_lines[2][0] / 2),
-            $stacked_start + $text['s3y']
+            $stacked_start - $sstc + $text['s3y']
           );
         }
         break;
@@ -356,7 +356,7 @@ class LockupController extends ControllerBase {
           );
         }
 
-        $border_height = $text['total_height'] + 8 - $hrc;
+        $border_height = $text['total_height'] + 8;
         if ($border_height < 29.369) {
           $border_height = 29.369;
         }
@@ -364,7 +364,7 @@ class LockupController extends ControllerBase {
         // Draw border.
         $lockup->addRect([
           'x' => 124.625,
-          'y' => $horizontal_center - ($border_height / 2) - .5,
+          'y' => $horizontal_center - ($border_height / 2),
           'width' => 0.733,
           'height' => $border_height,
           'style' => 'fill:' . $text_color,
@@ -396,8 +396,8 @@ class LockupController extends ControllerBase {
       case 'p1s0':
         // 1 Primary, 0 Sub.
         $text['total_height'] = $p_data['lines'][0][1];
-        $text['offset'] = 0;
-        $text['p1y'] = 0;
+        $text['offset'] = $text['total_height'] / 2;
+        $text['p1y'] = $half_p1h;
         break;
 
       case 'p1s1':
@@ -444,7 +444,7 @@ class LockupController extends ControllerBase {
         $text['offset'] = $text['total_height'] / 2;
         // Positions.
         $text['p1y'] = $half_p1h;
-        $text['p2y'] = $half_p1h + $pmb + $p_data['lines'][1][1] ;
+        $text['p2y'] = $half_p1h + $pmb + $p_data['lines'][1][1];
         break;
 
       case 'p2s1':
