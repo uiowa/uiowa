@@ -594,3 +594,23 @@ $sites['foenterpriseriskmanagement.prod.drupal.uiowa.edu'] = 'enterpriseriskmana
 $sites['focompliance.dev.drupal.uiowa.edu'] = 'compliance.fo.uiowa.edu';
 $sites['focompliance.stage.drupal.uiowa.edu'] = 'compliance.fo.uiowa.edu';
 $sites['focompliance.prod.drupal.uiowa.edu'] = 'compliance.fo.uiowa.edu';
+
+// Directory aliases for voice-academy.uiowa.edu.
+$sites['voice-academy.dev.drupal.uiowa.edu'] = 'voice-academy.uiowa.edu';
+$sites['voice-academy.stage.drupal.uiowa.edu'] = 'voice-academy.uiowa.edu';
+$sites['voice-academy.prod.drupal.uiowa.edu'] = 'voice-academy.uiowa.edu';
+
+// Directory aliases for talbert.lab.uiowa.edu.
+$sites['labtalbert.dev.drupal.uiowa.edu'] = 'talbert.lab.uiowa.edu';
+$sites['labtalbert.stage.drupal.uiowa.edu'] = 'talbert.lab.uiowa.edu';
+$sites['labtalbert.prod.drupal.uiowa.edu'] = 'talbert.lab.uiowa.edu';
+
+// Directory aliases for university-shared-services.fo.uiowa.edu.
+$sites['founiversity-shared-services.dev.drupal.uiowa.edu'] = 'university-shared-services.fo.uiowa.edu';
+$sites['founiversity-shared-services.stage.drupal.uiowa.edu'] = 'university-shared-services.fo.uiowa.edu';
+$sites['founiversity-shared-services.prod.drupal.uiowa.edu'] = 'university-shared-services.fo.uiowa.edu';
+
+// Directory aliases for sustainabilitycommittee.uiowa.edu.
+$sites['sustainabilitycommittee.dev.drupal.uiowa.edu'] = 'sustainabilitycommittee.uiowa.edu';
+$sites['sustainabilitycommittee.stage.drupal.uiowa.edu'] = 'sustainabilitycommittee.uiowa.edu';
+$sites['sustainabilitycommittee.prod.drupal.uiowa.edu'] = 'sustainabilitycommittee.uiowa.edu';
