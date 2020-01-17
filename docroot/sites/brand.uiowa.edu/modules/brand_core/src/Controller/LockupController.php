@@ -111,8 +111,8 @@ class LockupController extends ControllerBase {
     $lockup = new BrandSVG();
 
     // Bunch of variables to use later.
-    $stacked_center = 216;
-    $horizontal_center = 144;
+    $stacked_center = 200;
+    $horizontal_center = 50.462;
     $p_line = 8;
     $s_line = 6;
     $s_count = 0;
@@ -162,19 +162,19 @@ class LockupController extends ControllerBase {
         $p_count = count($p_explode);
         switch ($p_count) {
           case 1:
-            $stacked_sub_y = 148.33;
+            $stacked_sub_y = 49.57;
             $p_offset = 1;
             $s_offset = 11.5;
             break;
 
           case 2:
-            $stacked_sub_y = 158.28;
+            $stacked_sub_y = 59.52;
             $p_offset = 2;
             $s_offset = 21.5;
             break;
 
           case 3:
-            $stacked_sub_y = 168.23;
+            $stacked_sub_y = 69.47;
             $p_offset = 3;
             $s_offset = 31.5;
             break;
@@ -206,7 +206,7 @@ class LockupController extends ControllerBase {
         $border_x = $border_width / 2;
         $lockup->addRect([
           'x' => $stacked_center - $border_x,
-          'y' => '132.72',
+          'y' => '35.16',
           'width' => $border_width,
           'height' => '0.8',
           'style' => 'fill:' . $text_color,
@@ -217,7 +217,7 @@ class LockupController extends ControllerBase {
           ENT_QUOTES | ENT_XML1,
           'UTF-8'),
           $stacked_center - $p_center,
-          141.4 - ($p_lines[0][1] / 2)
+          42.64 - ($p_lines[0][1] / 2)
         );
         // Primary Line 2.
         if (isset($p_lines[1])) {
@@ -227,7 +227,7 @@ class LockupController extends ControllerBase {
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $stacked_center - $p2_center,
-            150.56 - ($p_lines[1][1] / 2)
+            51.8 - ($p_lines[1][1] / 2)
           );
         }
         // Primary Line 3.
@@ -238,7 +238,7 @@ class LockupController extends ControllerBase {
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $stacked_center - $p3_center,
-            160 - ($p_lines[2][1] / 2)
+            61.24 - ($p_lines[2][1] / 2)
           );
         }
 
@@ -375,7 +375,7 @@ class LockupController extends ControllerBase {
           $p_explode[0],
           ENT_QUOTES | ENT_XML1,
           'UTF-8'),
-          255.126 - 42,
+          173 - 42,
           $p1y
         );
         // Primary Line 2.
@@ -386,7 +386,7 @@ class LockupController extends ControllerBase {
             $p_explode[1],
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
-            255.126 - 42,
+            173 - 42,
             $p2y
           );
         }
@@ -398,7 +398,7 @@ class LockupController extends ControllerBase {
             $p_explode[2],
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
-            255.126 - 42,
+            173 - 42,
             $p3y
           );
         }
@@ -413,7 +413,7 @@ class LockupController extends ControllerBase {
             $s_explode[0],
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
-            255.126 - 42,
+            173 - 42,
             $s1y
           );
         }
@@ -425,7 +425,7 @@ class LockupController extends ControllerBase {
             $s_explode[1],
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
-            255.126 - 42,
+            173 - 42,
             $s2y
           );
         }
@@ -437,7 +437,7 @@ class LockupController extends ControllerBase {
             $s_explode[2],
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
-            255.126 - 42,
+            173 - 42,
             $s3y
           );
         }
@@ -459,7 +459,7 @@ class LockupController extends ControllerBase {
 
         // Draw border.
         $lockup->addRect([
-          'x' => 206.77,
+          'x' => 124.625,
           'y' => $horizontal_center - $border_half,
           'width' => 0.8,
           'height' => $border_height,
@@ -469,7 +469,7 @@ class LockupController extends ControllerBase {
 
     }
 
-    $lockup->addAttribute('viewBox', '0 0 432 288');
+    $lockup->addAttribute('viewBox', '0 0 400 100');
 
     return $lockup->asXML();
   }
@@ -478,20 +478,20 @@ class LockupController extends ControllerBase {
    * Add Stacked Logo.
    */
   public function addStackedLogo($svg, $iowa_color) {
-    $svg->addPath('M189,111.1h-1.72v12.42H189V128h-9.49v-4.5h1.72V111.1h-1.72v-4.47H189Z', ["fill" => $iowa_color]);
-    $svg->addPath('M201.65,128h-6.88c-2.49,0-4.13-1.63-4.13-4.32V110.94a4,4,0,0,1,3.68-4.3,3.38,3.38,0,0,1,.45,0h6.88a4,4,0,0,1,4.14,3.86,3.38,3.38,0,0,1,0,.45V123.7a4,4,0,0,1-3.69,4.29A3.2,3.2,0,0,1,201.65,128Zm-1.94-4.5V111.1h-3v12.42Z', ["fill" => $iowa_color]);
-    $svg->addPath('M208.17,111.1h-1.51v-4.47h9v4.47H214l1.54,10.29,3.2-14.76h4.56l3.42,14.76L228,111.1h-1.57v-4.47h8.87v4.47h-1.48L231.07,128h-7.24L221,115.41,218.16,128h-7Z', ["fill" => $iowa_color]);
-    $svg->addPath('M233.19,123.52h1.63l3.24-16.89h9.71l3.2,16.89h1.51V128h-7.24l-.68-5.21H241l-.64,5.21h-7.12Zm11-4.62-1.39-8.63-1.41,8.63Z', ["fill" => $iowa_color]);
+    $svg->addPath('M172.51,13.23h-1.73V25.69h1.73v4.54H163V25.69h1.73V13.23H163V8.77h9.51Z', ["fill" => $iowa_color]);
+    $svg->addPath('M185.29,30.23H178.4c-2.5,0-4.14-1.64-4.14-4.33V13.09a4,4,0,0,1,3.66-4.31,3.85,3.85,0,0,1,.48,0h6.89c2.5,0,4.13,1.67,4.13,4.32V25.87a4,4,0,0,1-3.62,4.35A4.34,4.34,0,0,1,185.29,30.23Zm-2-4.51V13.23h-3V25.69Z', ["fill" => $iowa_color]);
+    $svg->addPath('M192.13,13.24h-1.52V8.78h9v4.46h-1.7l1.55,10.31,3.21-14.79h4.57l3.43,14.79,1.25-10.31h-1.57V8.78h8.89v4.46h-1.48l-2.69,17h-7.25L205,17.58l-2.88,12.66h-7Z', ["fill" => $iowa_color]);
+    $svg->addPath('M217.67,25.69h1.63l3.25-16.92h9.72l3.21,16.92H237v4.54h-7.26L229.06,25h-3.61l-.65,5.22h-7.13Zm11-4.63-1.39-8.65-1.42,8.65Z', ["fill" => $iowa_color]);
   }
 
   /**
    * Add Horizontal Logo.
    */
   public function addHorizontalLogo($svg, $iowa_color) {
-    $svg->addPath('M138,137.77h-1.72V150.2H138v4.49h-9.49V150.2h1.73V137.77h-1.73V133.3H138Z', ["fill" => $iowa_color]);
-    $svg->addPath('M150.64,154.69h-6.87c-2.5,0-4.13-1.63-4.13-4.31V137.62a4,4,0,0,1,4.13-4.32h6.87a4,4,0,0,1,4.13,4.32v12.76A4,4,0,0,1,150.64,154.69Zm-1.94-4.49V137.77h-3V150.2Z', ["fill" => $iowa_color]);
-    $svg->addPath('M157.16,137.77h-1.51V133.3h9v4.47H163l1.54,10.3,3.2-14.77h4.56l3.43,14.77,1.23-10.3h-1.57V133.3h8.87v4.47h-1.48l-2.68,16.92h-7.24L170,142.09l-2.86,12.6h-7Z', ["fill" => $iowa_color]);
-    $svg->addPath('M182.18,150.2h1.63l3.24-16.9h9.71l3.2,16.9h1.51v4.49h-7.24l-.68-5.2H190l-.65,5.2h-7.12Zm11-4.63-1.39-8.63-1.41,8.63Z', ["fill" => $iowa_color]);
+    $svg->addPath('M54.9,43.73H53.17V56.19H54.9v4.54H45.39V56.19h1.73V43.73H45.39V39.27H54.9Z', ["fill" => $iowa_color]);
+    $svg->addPath('M67.68,60.73H60.79c-2.5,0-4.14-1.64-4.14-4.33V43.59a4,4,0,0,1,3.66-4.31,3.85,3.85,0,0,1,.48,0h6.89c2.5,0,4.13,1.67,4.13,4.32V56.37a4,4,0,0,1-3.62,4.35A4.34,4.34,0,0,1,67.68,60.73Zm-2-4.51V43.73h-3V56.19Z', ["fill" => $iowa_color]);
+    $svg->addPath('M74.52,43.74H73V39.28h9v4.46H80.3l1.55,10.31,3.21-14.79h4.57l3.43,14.79,1.25-10.31H92.74V39.28h8.89v4.46h-1.48l-2.69,17H90.21L87.4,48.08,84.52,60.74h-7Z', ["fill" => $iowa_color]);
+    $svg->addPath('M100.06,56.19h1.63l3.25-16.92h9.72l3.21,16.92h1.52v4.54h-7.26l-.68-5.22h-3.61l-.65,5.22h-7.13Zm11-4.63-1.39-8.65-1.42,8.65Z', ["fill" => $iowa_color]);
   }
 
   /**

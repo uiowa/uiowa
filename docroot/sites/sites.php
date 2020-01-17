@@ -524,3 +524,73 @@ $sites['designcenter.prod.drupal.uiowa.edu'] = 'designcenter.uiowa.edu';
 $sites['researchicru.dev.drupal.uiowa.edu'] = 'icru.research.uiowa.edu';
 $sites['researchicru.stage.drupal.uiowa.edu'] = 'icru.research.uiowa.edu';
 $sites['researchicru.prod.drupal.uiowa.edu'] = 'icru.research.uiowa.edu';
+
+// Directory aliases for themaclab.lab.uiowa.edu.
+$sites['labthemaclab.dev.drupal.uiowa.edu'] = 'themaclab.lab.uiowa.edu';
+$sites['labthemaclab.stage.drupal.uiowa.edu'] = 'themaclab.lab.uiowa.edu';
+$sites['labthemaclab.prod.drupal.uiowa.edu'] = 'themaclab.lab.uiowa.edu';
+
+// Directory aliases for ombudsperson.org.uiowa.edu.
+$sites['orgombudsperson.dev.drupal.uiowa.edu'] = 'ombudsperson.org.uiowa.edu';
+$sites['orgombudsperson.stage.drupal.uiowa.edu'] = 'ombudsperson.org.uiowa.edu';
+$sites['orgombudsperson.prod.drupal.uiowa.edu'] = 'ombudsperson.org.uiowa.edu';
+
+// Directory aliases for cd2h.org.
+$sites['org-cd2h.dev.drupal.uiowa.edu'] = 'cd2h.org';
+$sites['org-cd2h.stage.drupal.uiowa.edu'] = 'cd2h.org';
+$sites['org-cd2h.prod.drupal.uiowa.edu'] = 'cd2h.org';
+
+// Directory aliases for cfclincore.lab.uiowa.edu.
+$sites['labcfclincore.dev.drupal.uiowa.edu'] = 'cfclincore.lab.uiowa.edu';
+$sites['labcfclincore.stage.drupal.uiowa.edu'] = 'cfclincore.lab.uiowa.edu';
+$sites['labcfclincore.prod.drupal.uiowa.edu'] = 'cfclincore.lab.uiowa.edu';
+
+// Directory aliases for surplus.fo.uiowa.edu.
+$sites['fosurplus.dev.drupal.uiowa.edu'] = 'surplus.fo.uiowa.edu';
+$sites['fosurplus.stage.drupal.uiowa.edu'] = 'surplus.fo.uiowa.edu';
+$sites['fosurplus.prod.drupal.uiowa.edu'] = 'surplus.fo.uiowa.edu';
+
+// Directory aliases for businessmanager.fo.uiowa.edu.
+$sites['fobusinessmanager.dev.drupal.uiowa.edu'] = 'businessmanager.fo.uiowa.edu';
+$sites['fobusinessmanager.stage.drupal.uiowa.edu'] = 'businessmanager.fo.uiowa.edu';
+$sites['fobusinessmanager.prod.drupal.uiowa.edu'] = 'businessmanager.fo.uiowa.edu';
+
+// Directory aliases for eforms.uiowa.edu.
+$sites['eforms.dev.drupal.uiowa.edu'] = 'eforms.uiowa.edu';
+$sites['eforms.stage.drupal.uiowa.edu'] = 'eforms.uiowa.edu';
+$sites['eforms.prod.drupal.uiowa.edu'] = 'eforms.uiowa.edu';
+
+// Directory aliases for ap-purchasing.fo.uiowa.edu.
+$sites['foap-purchasing.dev.drupal.uiowa.edu'] = 'ap-purchasing.fo.uiowa.edu';
+$sites['foap-purchasing.stage.drupal.uiowa.edu'] = 'ap-purchasing.fo.uiowa.edu';
+$sites['foap-purchasing.prod.drupal.uiowa.edu'] = 'ap-purchasing.fo.uiowa.edu';
+
+// Directory aliases for laundry.fo.uiowa.edu.
+$sites['folaundry.dev.drupal.uiowa.edu'] = 'laundry.fo.uiowa.edu';
+$sites['folaundry.stage.drupal.uiowa.edu'] = 'laundry.fo.uiowa.edu';
+$sites['folaundry.prod.drupal.uiowa.edu'] = 'laundry.fo.uiowa.edu';
+
+// Directory aliases for generalstores.fo.uiowa.edu.
+$sites['fogeneralstores.dev.drupal.uiowa.edu'] = 'generalstores.fo.uiowa.edu';
+$sites['fogeneralstores.stage.drupal.uiowa.edu'] = 'generalstores.fo.uiowa.edu';
+$sites['fogeneralstores.prod.drupal.uiowa.edu'] = 'generalstores.fo.uiowa.edu';
+
+// Directory aliases for fbis.fo.uiowa.edu.
+$sites['fofbis.dev.drupal.uiowa.edu'] = 'fbis.fo.uiowa.edu';
+$sites['fofbis.stage.drupal.uiowa.edu'] = 'fbis.fo.uiowa.edu';
+$sites['fofbis.prod.drupal.uiowa.edu'] = 'fbis.fo.uiowa.edu';
+
+// Directory aliases for riskmanagement.fo.uiowa.edu.
+$sites['foriskmanagement.dev.drupal.uiowa.edu'] = 'riskmanagement.fo.uiowa.edu';
+$sites['foriskmanagement.stage.drupal.uiowa.edu'] = 'riskmanagement.fo.uiowa.edu';
+$sites['foriskmanagement.prod.drupal.uiowa.edu'] = 'riskmanagement.fo.uiowa.edu';
+
+// Directory aliases for enterpriseriskmanagement.fo.uiowa.edu.
+$sites['foenterpriseriskmanagement.dev.drupal.uiowa.edu'] = 'enterpriseriskmanagement.fo.uiowa.edu';
+$sites['foenterpriseriskmanagement.stage.drupal.uiowa.edu'] = 'enterpriseriskmanagement.fo.uiowa.edu';
+$sites['foenterpriseriskmanagement.prod.drupal.uiowa.edu'] = 'enterpriseriskmanagement.fo.uiowa.edu';
+
+// Directory aliases for compliance.fo.uiowa.edu.
+$sites['focompliance.dev.drupal.uiowa.edu'] = 'compliance.fo.uiowa.edu';
+$sites['focompliance.stage.drupal.uiowa.edu'] = 'compliance.fo.uiowa.edu';
+$sites['focompliance.prod.drupal.uiowa.edu'] = 'compliance.fo.uiowa.edu';

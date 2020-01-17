@@ -8,7 +8,7 @@ use AcquiaCloudApi\CloudApi\Connector;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
 use Symfony\Component\Yaml\Yaml;
-use Sitenow\Multisite;
+use Uiowa\Multisite;
 
 /**
  * Defines commands in the Sitenow namespace.
@@ -172,6 +172,7 @@ EOD;
    * @hook validate sitenow:multisite:create
    */
   public function validateCreate(CommandData $commandData) {
+    $root = $this->getConfigValue('repo.root');
     $host = $commandData->input()->getArgument('host');
 
     // Lowercase the host, just in case.
@@ -191,6 +192,10 @@ EOD;
     }
     else {
       return new CommandError('Cannot parse URI for validation.');
+    }
+
+    if (file_exists("{$root}/docroot/sites/{$host}")) {
+      return new CommandError("Site {$host} already exists.");
     }
   }
 
@@ -214,6 +219,23 @@ EOD;
    */
   public function create($host, $requester) {
     $db = Multisite::getDatabase($host);
+
+    $applications = $this->getConfigValue('uiowa.applications');
+    $choices = [];
+
+    foreach ($applications as $app => $attr) {
+      $choices[$app] = $attr['id'];
+    }
+
+    $choice = $this->askChoice('Which cloud application should be used?', $choices);
+
+    /** @var \AcquiaCloudApi\CloudApi\Client $cloud */
+    /** @var \AcquiaCloudApi\Response\ApplicationResponse $application */
+    list($cloud, $application) = $this->getAcquiaCloudApi($applications[$choice]['id']);
+
+    $cloud->databaseCreate($application->uuid, $db);
+    $this->say("Created <comment>{$db}</comment> cloud database on {$choice}.");
+
     $id = Multisite::getIdentifier("https://{$host}");
     $dev = Multisite::getInternalDomains($id)['dev'];
     $test = Multisite::getInternalDomains($id)['test'];
@@ -352,23 +374,6 @@ EOD;
       ->run();
 
     $this->say("Committed site <comment>{$host}</comment> code.");
-
-    $applications = $this->getConfigValue('uiowa.applications');
-    $choices = [];
-
-    foreach ($applications as $app => $attr) {
-      $choices[$app] = $attr['id'];
-    }
-
-    $choice = $this->askChoice('Which cloud application should be used?', $choices);
-
-    /** @var \AcquiaCloudApi\CloudApi\Client $cloud */
-    /** @var \AcquiaCloudApi\Response\ApplicationResponse $application */
-    list($cloud, $application) = $this->getAcquiaCloudApi($applications[$choice]['id']);
-
-    $cloud->databaseCreate($application->uuid, $db);
-    $this->say("Created <comment>{$db}</comment> cloud database.");
-
     $this->say("Continue initializing additional multisites or follow the next steps below.");
 
     $steps = [
@@ -426,8 +431,8 @@ EOD;
    */
   public function validateCredentials() {
     $credentials = [
-      'credentials.acquia.key',
-      'credentials.acquia.secret',
+      'uiowa.credentials.acquia.key',
+      'uiowa.credentials.acquia.secret',
     ];
 
     foreach ($credentials as $cred) {
@@ -458,8 +463,8 @@ EOD;
    */
   protected function getAcquiaCloudApi($id) {
     $connector = new Connector([
-      'key' => $this->getConfigValue('credentials.acquia.key'),
-      'secret' => $this->getConfigValue('credentials.acquia.secret'),
+      'key' => $this->getConfigValue('uiowa.credentials.acquia.key'),
+      'secret' => $this->getConfigValue('uiowa.credentials.acquia.secret'),
     ]);
 
     /** @var \AcquiaCloudApi\CloudApi\Client $cloud */
