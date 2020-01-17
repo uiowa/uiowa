@@ -604,3 +604,8 @@ $sites['voice-academy.prod.drupal.uiowa.edu'] = 'voice-academy.uiowa.edu';
 $sites['labtalbert.dev.drupal.uiowa.edu'] = 'talbert.lab.uiowa.edu';
 $sites['labtalbert.stage.drupal.uiowa.edu'] = 'talbert.lab.uiowa.edu';
 $sites['labtalbert.prod.drupal.uiowa.edu'] = 'talbert.lab.uiowa.edu';
+
+// Directory aliases for university-shared-services.fo.uiowa.edu.
+$sites['founiversity-shared-services.dev.drupal.uiowa.edu'] = 'university-shared-services.fo.uiowa.edu';
+$sites['founiversity-shared-services.stage.drupal.uiowa.edu'] = 'university-shared-services.fo.uiowa.edu';
+$sites['founiversity-shared-services.prod.drupal.uiowa.edu'] = 'university-shared-services.fo.uiowa.edu';
