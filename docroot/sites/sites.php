@@ -614,3 +614,8 @@ $sites['founiversity-shared-services.prod.drupal.uiowa.edu'] = 'university-share
 $sites['sustainabilitycommittee.dev.drupal.uiowa.edu'] = 'sustainabilitycommittee.uiowa.edu';
 $sites['sustainabilitycommittee.stage.drupal.uiowa.edu'] = 'sustainabilitycommittee.uiowa.edu';
 $sites['sustainabilitycommittee.prod.drupal.uiowa.edu'] = 'sustainabilitycommittee.uiowa.edu';
+
+// Directory aliases for matfab.research.uiowa.edu.
+$sites['researchmatfab.dev.drupal.uiowa.edu'] = 'matfab.research.uiowa.edu';
+$sites['researchmatfab.stage.drupal.uiowa.edu'] = 'matfab.research.uiowa.edu';
+$sites['researchmatfab.prod.drupal.uiowa.edu'] = 'matfab.research.uiowa.edu';
