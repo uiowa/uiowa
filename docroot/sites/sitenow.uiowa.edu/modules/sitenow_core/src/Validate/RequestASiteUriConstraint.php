@@ -3,7 +3,7 @@
 namespace Drupal\sitenow_core\Validate;
 
 use Drupal\Core\Form\FormStateInterface;
-use Sitenow\Multisite;
+use Uiowa\Multisite;
 
 /**
  * Request a site webform URL field callable.
