@@ -594,3 +594,8 @@ $sites['foenterpriseriskmanagement.prod.drupal.uiowa.edu'] = 'enterpriseriskmana
 $sites['focompliance.dev.drupal.uiowa.edu'] = 'compliance.fo.uiowa.edu';
 $sites['focompliance.stage.drupal.uiowa.edu'] = 'compliance.fo.uiowa.edu';
 $sites['focompliance.prod.drupal.uiowa.edu'] = 'compliance.fo.uiowa.edu';
+
+// Directory aliases for voice-academy.uiowa.edu.
+$sites['voice-academy.dev.drupal.uiowa.edu'] = 'voice-academy.uiowa.edu';
+$sites['voice-academy.stage.drupal.uiowa.edu'] = 'voice-academy.uiowa.edu';
+$sites['voice-academy.prod.drupal.uiowa.edu'] = 'voice-academy.uiowa.edu';
