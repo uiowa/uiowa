@@ -779,7 +779,7 @@ $settings['entity_update_backup'] = TRUE;
 # }
 
 if (file_exists('/var/www/site-php')) {
-  require '/var/www/site-php/uiowa/uipda_grad_uiowa_edu-settings.inc';
+  require '/var/www/site-php/uiowa01/uipda_grad_uiowa_edu-settings.inc';
 }
 
 require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
