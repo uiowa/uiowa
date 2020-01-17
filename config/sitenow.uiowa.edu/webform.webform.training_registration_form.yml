@@ -9,10 +9,10 @@ uid: 1
 template: false
 archive: false
 id: training_registration_form
-title: 'Register for SiteNow v2 Website Basics Training'
+title: 'SiteNow v2 Training'
 description: 'SiteNow Training Webform'
 category: ''
-elements: "training_form_markup:\n  '#type': webform_markup\n  '#display_on': both\n  '#markup': |\n    <strong>When:</strong> Wednesday, January 29, 2020 from 9:30 - 11:30<br />\n    &nbsp;\n    \ntraining_form_markup_where:\n  '#type': webform_markup\n  '#display_on': both\n  '#markup': |\n    <strong>Where:</strong> UCC 2523 Training Room<br />\n    &nbsp;\n    \ntraining_form_space:\n  '#type': webform_message\n  '#display_on': both\n  '#message_type': warning\n  '#message_message': '<strong>*Space is limited</strong>'\ntraining_form_name:\n  '#type': textfield\n  '#title': Name\n  '#required': true\ntraining_form_hawkid:\n  '#type': textfield\n  '#title': HawkID\ntraining_form_email:\n  '#type': webform_email_confirm\n  '#title': Email\n  '#required': true\ntraining_form_department:\n  '#type': textfield\n  '#title': Department\ntraining_form_site_url:\n  '#type': url\n  '#title': 'Site URL'\n  '#description': 'URL of site you currently support'\n  '#required': true\n"
+elements: "training_form_name:\n  '#type': textfield\n  '#title': Name\n  '#title_display': inline\n  '#required': true\ntraining_form_hawkid:\n  '#type': textfield\n  '#title': HawkID\n  '#title_display': inline\n  '#required': true\nrequest_form_email:\n  '#type': email\n  '#title': Email\n  '#title_display': inline\n  '#required': true\ntraining_form_site_url:\n  '#type': url\n  '#title': 'Site URL'\n  '#description': 'SiteNow V2 site URL'\n  '#title_display': inline\n  '#required': true"
 css: ''
 javascript: ''
 settings:
@@ -43,7 +43,7 @@ settings:
   form_disable_autocomplete: false
   form_novalidate: false
   form_disable_inline_errors: false
-  form_required: false
+  form_required: true
   form_unsaved: true
   form_disable_back: false
   form_submit_back: false
@@ -57,7 +57,9 @@ settings:
   submission_label: ''
   submission_log: false
   submission_views: {  }
-  submission_views_replace: {  }
+  submission_views_replace:
+    webform_routes: {  }
+    node_routes: {  }
   submission_user_columns: {  }
   submission_user_duplicate: false
   submission_access_denied: default
@@ -101,7 +103,7 @@ settings:
   draft_pending_multiple_message: ''
   confirmation_type: page
   confirmation_title: 'Training Registration Form Submitted'
-  confirmation_message: "Thank you for registering for our SiteNow v2 Website Basics Training! We will see you in the UCC 2523 Training Room Wednesday, January 29, 2020 from 9:30 - 11:30.<br />\n&nbsp;\n"
+  confirmation_message: "Hello,<br />\r\n<br />\r\nThanks for registering for the SiteNow v2 Website Basics Training on Wednesday, January 29, 2020 from 9:30 - 11:30 in UCC 2523 Training Room.<br />\r\n<br />\r\nThis is a hands-on training so we encourage you to utilize the computers provided in the training room or bring your own device. As space is limited, If you cannot make it, we ask that you let us know 24 hours prior to the training so we can give the spot to someone on the waitlist.<br />\r\n<br />\r\nWe look forward to seeing you there.<br />\r\n<br />\r\nITS Web Services"
   confirmation_url: ''
   confirmation_attributes: {  }
   confirmation_back: true
@@ -110,7 +112,7 @@ settings:
   confirmation_exclude_query: false
   confirmation_exclude_token: false
   confirmation_update: false
-  limit_total: null
+  limit_total: 16
   limit_total_interval: null
   limit_total_message: ''
   limit_total_unique: false
