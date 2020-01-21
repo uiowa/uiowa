@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.ighn_person.field_ighn_person_biography
     - field.field.node.ighn_person.field_ighn_person_first_name
     - field.field.node.ighn_person.field_ighn_person_focus_areas
     - field.field.node.ighn_person.field_ighn_person_global_regions
@@ -14,6 +15,7 @@ dependencies:
     - content_moderation
     - media_library
     - path
+    - text
 id: node.ighn_person.default
 targetEntityType: node
 bundle: ighn_person
@@ -25,6 +27,14 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_ighn_person_biography:
+    weight: 127
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
   field_ighn_person_first_name:
     weight: 121
     settings:
