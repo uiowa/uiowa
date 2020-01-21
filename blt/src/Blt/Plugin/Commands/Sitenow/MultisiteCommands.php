@@ -78,7 +78,7 @@ class MultisiteCommands extends BltTasks {
     $sites = Multisite::getAllSites($root);
 
     $dir = $this->askChoice('Select which site to delete.', $sites);
-    $db = Multisite::getDatabase($dir);
+    $db = Multisite::getInitialDatabaseName($dir);
     $id = Multisite::getIdentifier("https://{$dir}");
     $dev = Multisite::getInternalDomains($id)['dev'];
     $test = Multisite::getInternalDomains($id)['test'];
@@ -228,7 +228,7 @@ EOD;
    * @throws \Exception
    */
   public function create($host, $requester) {
-    $db = Multisite::getDatabase($host);
+    $db = Multisite::getInitialDatabaseName($host);
 
     $applications = $this->getConfigValue('uiowa.applications');
     $choices = [];

@@ -22,11 +22,12 @@ class Multisite {
    *
    * @return string
    *   The AC database name.
+   *
+   * @throws \Exception
    */
-  public static function getDatabase($dir) {
-    // @todo: Access BLT project prefix.
+  public static function getInitialDatabaseName($dir) {
     if ($dir == 'default') {
-      $db = 'uiowa';
+      throw new \Exception('The default site does not follow database naming conventions. Configure manually.');
     }
     else {
       $db = str_replace('.', '_', $dir);
