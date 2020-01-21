@@ -1,0 +1,29 @@
+uuid: 73a74cb5-4c3c-419d-8d43-4bf1886cb86a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_ighn_person_language
+    - node.type.ighn_person
+    - taxonomy.vocabulary.ighn_language_expertise
+id: node.ighn_person.field_ighn_person_language
+field_name: field_ighn_person_language
+entity_type: node
+bundle: ighn_person
+label: 'Language Expertise'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      ighn_language_expertise: ighn_language_expertise
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
