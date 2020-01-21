@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.ighn_person.field_ighn_person_biography
+    - field.field.node.ighn_person.field_ighn_person_credentials
     - field.field.node.ighn_person.field_ighn_person_first_name
     - field.field.node.ighn_person.field_ighn_person_focus_areas
     - field.field.node.ighn_person.field_ighn_person_global_regions
@@ -34,6 +35,14 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
+    region: content
+  field_ighn_person_credentials:
+    weight: 128
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
     region: content
   field_ighn_person_first_name:
     weight: 121
