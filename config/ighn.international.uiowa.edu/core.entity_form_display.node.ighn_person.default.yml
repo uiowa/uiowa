@@ -12,6 +12,7 @@ dependencies:
     - field.field.node.ighn_person.field_ighn_person_image
     - field.field.node.ighn_person.field_ighn_person_language
     - field.field.node.ighn_person.field_ighn_person_last_name
+    - field.field.node.ighn_person.field_ighn_person_position_title
     - node.type.ighn_person
   module:
     - content_moderation
@@ -101,6 +102,14 @@ content:
     region: content
   field_ighn_person_last_name:
     weight: 122
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_ighn_person_position_title:
+    weight: 130
     settings:
       size: 60
       placeholder: ''
