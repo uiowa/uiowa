@@ -1,0 +1,30 @@
+uuid: 5d838865-3bd9-4993-8886-7a2fb6a8ee5c
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_feature
+    - field.storage.block_content.field_uiowa_feature_image
+    - media.type.image
+_core:
+  default_config_hash: Gjsm97egv8S9N_TQFc102erCOZHhtm_VhhKD-ikfVaY
+id: block_content.uiowa_feature.field_uiowa_feature_image
+field_name: field_uiowa_feature_image
+entity_type: block_content
+bundle: uiowa_feature
+label: Image
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
