@@ -1,0 +1,136 @@
+uuid: 9f820485-8066-4ea4-9e70-f1d8bec2cc6a
+langcode: en
+status: true
+dependencies:
+  module:
+    - lightning_core
+id: config_sync.module.lightning_core
+snapshotSet: config_sync
+extensionType: module
+extensionName: lightning_core
+items:
+  -
+    collection: ''
+    name: core.date_format.long_12h
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      id: long_12h
+      label: 'Long (12-hour)'
+      locked: false
+      pattern: 'F j, Y \a\t g:i A'
+  -
+    collection: ''
+    name: core.entity_view_display.user.user.compact
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - core.entity_view_mode.user.compact
+          - field.field.user.user.user_picture
+          - image.style.thumbnail
+        module:
+          - image
+          - user
+      id: user.user.compact
+      targetEntityType: user
+      bundle: user
+      mode: compact
+      content:
+        name:
+          type: string
+          weight: 1
+          region: content
+          settings:
+            link_to_entity: true
+          third_party_settings: {  }
+          label: hidden
+        user_picture:
+          type: image
+          weight: 0
+          region: content
+          settings:
+            image_style: thumbnail
+            image_link: content
+          third_party_settings: {  }
+          label: hidden
+      hidden:
+        member_for: true
+  -
+    collection: ''
+    name: field.field.user.user.user_picture
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - field.storage.user.user_picture
+        module:
+          - image
+          - user
+      id: user.user.user_picture
+      field_name: user_picture
+      entity_type: user
+      bundle: user
+      label: Picture
+      description: 'Your virtual face or picture.'
+      required: false
+      translatable: true
+      default_value: {  }
+      default_value_callback: ''
+      settings:
+        file_extensions: 'png gif jpg jpeg'
+        file_directory: 'pictures/[date:custom:Y]-[date:custom:m]'
+        max_filesize: ''
+        alt_field: false
+        title_field: false
+        max_resolution: ''
+        min_resolution: ''
+        default_image:
+          uuid: null
+          alt: ''
+          title: ''
+          width: null
+          height: null
+        alt_field_required: false
+        title_field_required: false
+        handler: 'default:file'
+        handler_settings: {  }
+      field_type: image
+  -
+    collection: ''
+    name: field.storage.user.user_picture
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - file
+          - image
+          - user
+      id: user.user_picture
+      field_name: user_picture
+      entity_type: user
+      type: image
+      settings:
+        uri_scheme: public
+        default_image:
+          uuid: null
+          alt: ''
+          title: ''
+          width: null
+          height: null
+        target_type: file
+        display_field: false
+        display_default: false
+      module: image
+      locked: false
+      cardinality: 1
+      translatable: true
+      indexes:
+        target_id:
+          - target_id
+      persist_with_no_fields: false
+      custom_storage: false
