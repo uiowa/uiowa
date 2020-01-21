@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.ighn_person.field_ighn_person_biography
     - field.field.node.ighn_person.field_ighn_person_credentials
+    - field.field.node.ighn_person.field_ighn_person_cv_link
     - field.field.node.ighn_person.field_ighn_person_first_name
     - field.field.node.ighn_person.field_ighn_person_focus_areas
     - field.field.node.ighn_person.field_ighn_person_global_regions
@@ -14,6 +15,7 @@ dependencies:
     - node.type.ighn_person
   module:
     - content_moderation
+    - link
     - media_library
     - path
     - text
@@ -43,6 +45,14 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  field_ighn_person_cv_link:
+    weight: 129
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
     region: content
   field_ighn_person_first_name:
     weight: 121
