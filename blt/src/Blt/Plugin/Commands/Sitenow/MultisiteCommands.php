@@ -78,7 +78,13 @@ class MultisiteCommands extends BltTasks {
     $sites = Multisite::getAllSites($root);
 
     $dir = $this->askChoice('Select which site to delete.', $sites);
-    $db = Multisite::getInitialDatabaseName($dir);
+
+    // Load the database name from configuration since that can change from the
+    // initial database name but has to match what is in the settings.php file.
+    // @see: FileSystemTests.php.
+    $this->switchSiteContext($dir);
+    $db = $this->getConfigValue('drupal.db.database');
+
     $id = Multisite::getIdentifier("https://{$dir}");
     $dev = Multisite::getInternalDomains($id)['dev'];
     $test = Multisite::getInternalDomains($id)['test'];
