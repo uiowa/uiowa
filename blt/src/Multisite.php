@@ -27,7 +27,7 @@ class Multisite {
    */
   public static function getInitialDatabaseName($dir) {
     if ($dir == 'default') {
-      throw new \Exception('The default site does not follow database naming conventions. Configure manually.');
+      throw new \Exception('The default site is configured automatically by BLT.');
     }
     else {
       $db = str_replace('.', '_', $dir);
