@@ -3,7 +3,7 @@
 # @see https://github.com/geerlingguy/drupal-vm/blob/master/default.config.yml
 
 # Update the hostname to the local development environment hostname.
-vagrant_hostname: uiowa.local.site
+vagrant_hostname: 'uiowa.local.site'
 vagrant_machine_name: uiowa
 
 # Set the IP address so it doesn't conflict with other Drupal VM instances.
@@ -365,21 +365,21 @@ apache_vhosts:
   - servername: labyangs.uiowa.local.site
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-- servername: gradcogscilang.uiowa.local.site
-  documentroot: '{{ drupal_core_path }}'
-  extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-- servername: graduipda.uiowa.local.site
-  documentroot: '{{ drupal_core_path }}'
-  extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-- servername: iowasuperfund.uiowa.local.site
-  documentroot: '{{ drupal_core_path }}'
-  extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-- servername: claspolicy.uiowa.local.site
-  documentroot: '{{ drupal_core_path }}'
-  extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-- servername: icsa.uiowa.local.site
-  documentroot: '{{ drupal_core_path }}'
-  extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  - servername: gradcogscilang.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  - servername: graduipda.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  - servername: iowasuperfund.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  - servername: claspolicy.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  - servername: icsa.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
 
 #  - servername: "local.second-drupal-site.com"
 #    documentroot: "{{ drupal_core_path }}"
