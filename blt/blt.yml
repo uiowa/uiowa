@@ -27,6 +27,12 @@ disable-targets:
 tests:
   phpunit:
     - config: '${repo.root}'
+validate:
+  twig:
+    functions:
+      - drupal_image
+    filters:
+      - image_style
 drupal:
   db:
     host: localhost

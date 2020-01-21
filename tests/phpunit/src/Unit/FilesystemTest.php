@@ -134,9 +134,7 @@ EOD;
         $this->assertEquals('self', $yaml['drush']['aliases']['local']);
 
         $needle = <<<EOD
-if (file_exists('/var/www/site-php')) {
-  require '/var/www/site-php/uiowa/{$db}-settings.inc';
-}
+{$db}-settings.inc';
 EOD;
 
         $file = "{$path}/settings.php";

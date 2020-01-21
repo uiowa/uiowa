@@ -1,0 +1,30 @@
+uuid: fa0da483-889d-4a48-a46e-24c667d7beee
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_card
+    - field.storage.block_content.field_uiowa_card_image
+    - media.type.image
+_core:
+  default_config_hash: WtKMrF1s4_O3lTTQhQ1Yhv6Gl4eerpV3X5zp9ub4uDI
+id: block_content.uiowa_card.field_uiowa_card_image
+field_name: field_uiowa_card_image
+entity_type: block_content
+bundle: uiowa_card
+label: Image
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
