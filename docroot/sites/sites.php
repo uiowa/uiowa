@@ -7,11 +7,6 @@
  * @see example.sites.php
  */
 
-// Require local sites.php if available.
-if (file_exists(__DIR__ . '/sites.local.php')) {
-  require __DIR__ . '/sites.local.php';
-}
-
 // Directory aliases for the default site.
 $sites['demo.dev.drupal.uiowa.edu'] = 'default';
 $sites['demo.stage.drupal.uiowa.edu'] = 'default';
