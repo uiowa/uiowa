@@ -30,7 +30,6 @@ drupal_composer_install_dir: "/var/www/uiowa"
 drupal_core_path: "/var/www/uiowa/docroot"
 ssh_home: /var/www/uiowa
 
-# Multisite installations should configure additional domains here.
 apache_vhosts_ssl:
   - servername: "{{ drupal_domain }}"
     documentroot: "{{ drupal_core_path }}"
@@ -38,6 +37,7 @@ apache_vhosts_ssl:
     certificate_key_file: "/etc/ssl/private/ssl-cert-snakeoil.key"
     extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
+# Multisite installations should configure additional domains here.
 apache_vhosts:
   # Drupal VM's default domain, evaluating to whatever `vagrant_hostname` is set to (drupalvm.dev by default).
   - servername: "{{ drupal_domain }}"
