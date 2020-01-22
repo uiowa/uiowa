@@ -31,6 +31,13 @@ drupal_core_path: "/var/www/uiowa/docroot"
 ssh_home: /var/www/uiowa
 
 # Multisite installations should configure additional domains here.
+apache_vhosts_ssl:
+  - servername: "{{ drupal_domain }}"
+    documentroot: "{{ drupal_core_path }}"
+    certificate_file: "/etc/ssl/certs/ssl-cert-snakeoil.pem"
+    certificate_key_file: "/etc/ssl/private/ssl-cert-snakeoil.key"
+    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
+
 apache_vhosts:
   # Drupal VM's default domain, evaluating to whatever `vagrant_hostname` is set to (drupalvm.dev by default).
   - servername: "{{ drupal_domain }}"
@@ -42,11 +49,6 @@ apache_vhosts:
     serveralias: "www.dashboard.{{ drupal_domain }}"
     documentroot: "/var/www/dashboard"
     extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
-  - servername: '{{ drupal_domain }}'
-    documentroot: '{{ drupal_core_path }}'
-    certificate_file: /etc/ssl/certs/ssl-cert-snakeoil.pem
-    certificate_key_file: /etc/ssl/private/ssl-cert-snakeoil.key
-    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
   - servername: 'adminer.{{ drupal_domain }}'
     serveralias: 'www.adminer.{{ drupal_domain }}'
     documentroot: '{{ adminer_install_dir }}'
