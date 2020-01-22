@@ -60,7 +60,7 @@ content:
     region: content
   field_ighn_person_focus_areas:
     weight: 5
-    label: inline
+    label: visually_hidden
     settings:
       link: true
     third_party_settings: {  }
@@ -68,7 +68,7 @@ content:
     region: content
   field_ighn_person_global_regions:
     weight: 6
-    label: inline
+    label: visually_hidden
     settings:
       link: true
     third_party_settings: {  }
@@ -85,7 +85,7 @@ content:
     region: content
   field_ighn_person_language:
     weight: 7
-    label: inline
+    label: visually_hidden
     settings:
       link: true
     third_party_settings: {  }
@@ -101,15 +101,11 @@ content:
     region: content
   field_ighn_person_position_title:
     weight: 4
-    label: inline
+    label: visually_hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
     region: content
-  links:
-    weight: 10
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-hidden: {  }
+hidden:
+  links: true

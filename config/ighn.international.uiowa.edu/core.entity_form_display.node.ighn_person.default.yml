@@ -25,14 +25,8 @@ targetEntityType: node
 bundle: ighn_person
 mode: default
 content:
-  created:
-    type: datetime_timestamp
-    weight: 2
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   field_ighn_person_biography:
-    weight: 15
+    weight: 6
     settings:
       rows: 5
       placeholder: ''
@@ -40,7 +34,7 @@ content:
     type: text_textarea
     region: content
   field_ighn_person_credentials:
-    weight: 16
+    weight: 7
     settings:
       size: 60
       placeholder: ''
@@ -48,7 +42,7 @@ content:
     type: string_textfield
     region: content
   field_ighn_person_cv_link:
-    weight: 17
+    weight: 8
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -56,7 +50,7 @@ content:
     type: link_default
     region: content
   field_ighn_person_first_name:
-    weight: 10
+    weight: 1
     settings:
       size: 60
       placeholder: ''
@@ -64,44 +58,44 @@ content:
     type: string_textfield
     region: content
   field_ighn_person_focus_areas:
-    weight: 12
+    weight: 3
     settings:
       match_operator: CONTAINS
       match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: entity_reference_autocomplete_tags
     region: content
   field_ighn_person_global_regions:
-    weight: 13
+    weight: 4
     settings:
       match_operator: CONTAINS
       match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: entity_reference_autocomplete_tags
     region: content
   field_ighn_person_image:
     type: media_library_widget
-    weight: 9
+    weight: 0
     settings:
       media_types: {  }
     third_party_settings: {  }
     region: content
   field_ighn_person_language:
-    weight: 14
+    weight: 5
     settings:
       match_operator: CONTAINS
       match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: entity_reference_autocomplete_tags
     region: content
   field_ighn_person_last_name:
-    weight: 11
+    weight: 2
     settings:
       size: 60
       placeholder: ''
@@ -109,7 +103,7 @@ content:
     type: string_textfield
     region: content
   field_ighn_person_position_title:
-    weight: 18
+    weight: 9
     settings:
       size: 60
       placeholder: ''
@@ -118,58 +112,31 @@ content:
     region: content
   moderation_state:
     type: moderation_state_default
-    weight: 7
+    weight: 12
     settings: {  }
     region: content
     third_party_settings: {  }
   path:
     type: path
-    weight: 5
+    weight: 10
     region: content
     settings: {  }
-    third_party_settings: {  }
-  promote:
-    type: boolean_checkbox
-    settings:
-      display_label: true
-    weight: 3
-    region: content
     third_party_settings: {  }
   status:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 8
-    region: content
-    third_party_settings: {  }
-  sticky:
-    type: boolean_checkbox
-    settings:
-      display_label: true
-    weight: 4
-    region: content
-    third_party_settings: {  }
-  title:
-    type: string_textfield
-    weight: 0
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  uid:
-    type: entity_reference_autocomplete
-    weight: 1
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-      match_limit: 10
+    weight: 13
     region: content
     third_party_settings: {  }
   url_redirects:
-    weight: 6
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  created: true
+  promote: true
+  sticky: true
+  title: true
+  uid: true
