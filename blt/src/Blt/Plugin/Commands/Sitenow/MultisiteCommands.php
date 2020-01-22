@@ -78,7 +78,13 @@ class MultisiteCommands extends BltTasks {
     $sites = Multisite::getAllSites($root);
 
     $dir = $this->askChoice('Select which site to delete.', $sites);
-    $db = Multisite::getDatabase($dir);
+
+    // Load the database name from configuration since that can change from the
+    // initial database name but has to match what is in the settings.php file.
+    // @see: FileSystemTests.php.
+    $this->switchSiteContext($dir);
+    $db = $this->getConfigValue('drupal.db.database');
+
     $id = Multisite::getIdentifier("https://{$dir}");
     $dev = Multisite::getInternalDomains($id)['dev'];
     $test = Multisite::getInternalDomains($id)['test'];
@@ -159,13 +165,10 @@ EOD;
       $this->taskGit()
         ->dir($root)
         ->add('docroot/sites/sites.php')
-        ->commit("Deleted sites.php entries for {$dir}")
         ->add("docroot/sites/{$dir}/")
-        ->commit("Deleted multisite {$dir} directory")
         ->add("drush/sites/{$id}.site.yml")
-        ->commit("Deleted Drush aliases for {$dir}")
         ->add("config/{$dir}/")
-        ->commit("Deleted config directory for {$dir}")
+        ->commit("Delete {$dir} multisite")
         ->interactive(FALSE)
         ->printOutput(FALSE)
         ->printMetadata(FALSE)
@@ -228,7 +231,7 @@ EOD;
    * @throws \Exception
    */
   public function create($host, $requester) {
-    $db = Multisite::getDatabase($host);
+    $db = Multisite::getInitialDatabaseName($host);
 
     $applications = $this->getConfigValue('uiowa.applications');
     $choices = [];
@@ -266,8 +269,10 @@ EOD;
     $result = $this->taskReplaceInFile("{$root}/docroot/sites/{$host}/settings.php")
       ->from('require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";' . "\n")
       ->to(<<<EOD
+\$ah_group = getenv('AH_SITE_GROUP');
+
 if (file_exists('/var/www/site-php')) {
-  require '/var/www/site-php/uiowa/{$db}-settings.inc';
+  require "/var/www/site-php/{\$ah_group}/{$db}-settings.inc";
 }
 
 require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
@@ -372,13 +377,10 @@ EOD;
     $this->taskGit()
       ->dir($this->getConfigValue("repo.root"))
       ->add('docroot/sites/sites.php')
-      ->commit("Add sites.php entries for {$host}")
       ->add("docroot/sites/{$host}")
-      ->commit("Initialize multisite {$host} directory")
       ->add("drush/sites/{$id}.site.yml")
-      ->commit("Create Drush aliases for {$host}")
       ->add("config/{$host}")
-      ->commit("Create config directory for {$host}")
+      ->commit("Initialize {$host} multisite")
       ->interactive(FALSE)
       ->printOutput(FALSE)
       ->printMetadata(FALSE)
