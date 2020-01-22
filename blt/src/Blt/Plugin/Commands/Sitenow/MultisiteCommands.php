@@ -272,8 +272,10 @@ EOD;
     $result = $this->taskReplaceInFile("{$root}/docroot/sites/{$host}/settings.php")
       ->from('require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";' . "\n")
       ->to(<<<EOD
+\$ah_group = getenv('AH_SITE_GROUP');
+
 if (file_exists('/var/www/site-php')) {
-  require '/var/www/site-php/uiowa/{$db}-settings.inc';
+  require "/var/www/site-php/{\$ah_group}/{$db}-settings.inc";
 }
 
 require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
