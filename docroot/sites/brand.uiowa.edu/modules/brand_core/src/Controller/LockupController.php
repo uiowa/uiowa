@@ -119,7 +119,7 @@ class LockupController extends ControllerBase {
     // Bunch of variables to use later.
     $stacked_center = 200;
     $stacked_start = 39.352;
-    $horizontal_center = 50 + 0.473;
+    $horizontal_center = 50.473;
     $horizontal_start = 130.447;
     // Primary Text Correction.
     $ptc = 6.647;
@@ -355,8 +355,7 @@ class LockupController extends ControllerBase {
             $horizontal_center - $stc + $text['s3y'] - $text['offset'] + $text['correction']
           );
         }
-
-        $border_height = $text['total_height'] + 4;
+        $border_height = $text['total_height'];
         if ($border_height < 29.369) {
           $border_height = 29.369;
         }
