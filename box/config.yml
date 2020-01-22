@@ -12,103 +12,594 @@ vagrant_ip: 192.168.184.241
 # Use Ubuntu 16.04 LTS to match Acquia Cloud environments.
 vagrant_box: geerlingguy/drupal-vm
 workspace: /root
-
-# Set drupal_site_name to the project's human-readable name.
-drupal_site_name: "uiowa.local.site"
+drupal_site_name: uiowa.local.site
 
 # Provide the path to the project root to Vagrant.
 vagrant_synced_folders:
-  # Set the local_path for the first synced folder to `.`.
-  - local_path: .
+  -
+    local_path: .
     # Set the destination to the Acquia Cloud subscription machine name.
     destination: /var/www/uiowa
     type: nfs
 
 drupal_build_composer_project: false
 drupal_composer_path: false
-drupal_composer_install_dir: "/var/www/uiowa"
-drupal_core_path: "/var/www/uiowa/docroot"
+drupal_composer_install_dir: /var/www/uiowa
+drupal_core_path: /var/www/uiowa/docroot
 ssh_home: /var/www/uiowa
 
 apache_vhosts_ssl:
-  - servername: "{{ drupal_domain }}"
-    documentroot: "{{ drupal_core_path }}"
-    certificate_file: "/etc/ssl/certs/ssl-cert-snakeoil.pem"
-    certificate_key_file: "/etc/ssl/private/ssl-cert-snakeoil.key"
-    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
+  -
+    servername: '{{ drupal_domain }}'
+    documentroot: '{{ drupal_core_path }}'
+    certificate_file: /etc/ssl/certs/ssl-cert-snakeoil.pem
+    certificate_key_file: /etc/ssl/private/ssl-cert-snakeoil.key
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
 
 # Multisite installations should configure additional domains here.
 apache_vhosts:
-  # Drupal VM's default domain, evaluating to whatever `vagrant_hostname` is set to (drupalvm.dev by default).
-  - servername: "{{ drupal_domain }}"
-    serveralias: "www.{{ drupal_domain }}"
-    documentroot: "{{ drupal_core_path }}"
-    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
-  # Domain for the Drupal VM Dashboard
-  - servername: "dashboard.{{ drupal_domain }}"
-    serveralias: "www.dashboard.{{ drupal_domain }}"
-    documentroot: "/var/www/dashboard"
-    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
-  - servername: 'adminer.{{ drupal_domain }}'
+  -
+    servername: '{{ drupal_domain }}'
+    serveralias: 'www.{{ drupal_domain }}'
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: 'dashboard.{{ drupal_domain }}'
+    serveralias: 'www.dashboard.{{ drupal_domain }}'
+    documentroot: /var/www/dashboard
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: 'adminer.{{ drupal_domain }}'
     serveralias: 'www.adminer.{{ drupal_domain }}'
     documentroot: '{{ adminer_install_dir }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-  - servername: theming.uiowa.local.site
+  -
+    servername: accreditation.uiowa.local.site
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-  - servername: gradcogscilang.uiowa.local.site
+  -
+    servername: advisingcouncil.uiowa.local.site
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-  - servername: graduipda.uiowa.local.site
+  -
+    servername: orgalphachisigma-alphatheta.uiowa.local.site
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-  - servername: iowasuperfund.uiowa.local.site
+  -
+    servername: foap-purchasing.uiowa.local.site
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-  - servername: claspolicy.uiowa.local.site
+  -
+    servername: assessment.uiowa.local.site
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-  - servername: icsa.uiowa.local.site
+  -
+    servername: centerforconferencesautismcenter.uiowa.local.site
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-
-#  - servername: "local.second-drupal-site.com"
-#    documentroot: "{{ drupal_core_path }}"
-#    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
+  -
+    servername: bands.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: billing.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: engineeringbiomost.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: engineeringbme.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: brand.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: labbuchholz.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: fobusinessmanager.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: fobusinsvc.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: dentistrycallctr.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: careers.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: engineeringcbig.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: org-cd2h.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: sitescelebrationofexcellence.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: labcfclincore.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: classrooms.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: climatecollective.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: orgcnm.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: cnm.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: labcogaresearch.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: gradcogscilang.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: labcoleresearchgroup.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: focompliance.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: orgconflictmanagement.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: orgcot.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: default-.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: dentistry.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: designcenter.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: diversity.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: studiodoublebass.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: eforms.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: studioelectronicmusic.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: emeritus-faculty.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: foenterpriseriskmanagement.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: sitesequityimplemented.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: engineeringetc.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: faculty-senate.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: centerforconferencesfamilyphysician.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: fofbis.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: fogeneralstores.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: sitesgis.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: orggsab.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: hawkeyemarchingband.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: labhbrl-neurosurgery.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: siteshealth-research-network.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: mauihelp.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: siteshonorary-degrees.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: honors.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: hr.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: centerforconferenceshrandbusiness.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: labhuman-auditory-neuroscience-group.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: orgicred.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: researchicru.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: icsa.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: internationalighn.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: courseilg.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: conferenceiniworkshop.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: international.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: iowasuperfund.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: ismc.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: itaccessibility.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: iti.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: sitesjrg.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: labkardon.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: labkroska.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: labkuehn.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: lablalumiere.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: folaundry.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: law.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: lablogsdon.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: courselooc.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: researchmatfab.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: labmerlino.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: labmeyerholz.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: labmichaelson.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: labmicrovascularphys.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: centerforconferencesmidwestdnarepair.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: mnh.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: org-molcellcog.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: orgmootcourt.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: labmultilingualsyntax.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: oldcap.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: orgombudsperson.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: orgpac.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: pentacrestmuseums.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: pinyin.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: foplanning-and-development.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: claspolicy.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: foprintmail.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: protostudios.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: sitesqulat.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: registrar.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: educationresearch2.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: foriskmanagement.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: labschultz.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: sitessem.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: seru.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: shl.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: sitenow.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: staff-council.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: orgstemoutreach.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: sitesstonewall50.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: fosurplus.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: sustainabilitycommittee.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: labtalbert.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: labthemaclab.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: theming.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: sitesuiadvise.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: uigearup.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: uiobl.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: graduipda.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: orguira.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: uiservicecenter.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: uiventures.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: founiversity-shared-services.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: centerforconferencesvanallenprobes.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: labvanotterloo.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: veterans.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: voice-academy.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: orgwics.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: labwu.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: labyangs.uiowa.local.site
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
 
 # Multisite installations should configure additional databases here.
 # It's recommended to prefix database names with 'drupal'. Otherwise,
 # you'll need to add additional users in the 'mysql_users' section.
 mysql_databases:
-  - name: drupal
+  -
+    name: drupal
     encoding: utf8
     collation: utf8_general_ci
-#  - name: drupal_two
-#    encoding: utf8
-#    collation: utf8_general_ci
-  - name: theming_uiowa_edu
+  -
+    name: theming_uiowa_edu
     encoding: utf8
     collation: utf8_general_ci
-  - name: cogscilang_grad_uiowa_edu
+  -
+    name: cogscilang_grad_uiowa_edu
     encoding: utf8
     collation: utf8_general_ci
-  - name: uipda_grad_uiowa_edu
+  -
+    name: uipda_grad_uiowa_edu
     encoding: utf8
     collation: utf8_general_ci
-  - name: iowasuperfund_uiowa_edu
+  -
+    name: iowasuperfund_uiowa_edu
     encoding: utf8
     collation: utf8_general_ci
-  - name: policy_clas_uiowa_edu
+  -
+    name: policy_clas_uiowa_edu
     encoding: utf8
     collation: utf8_general_ci
-  - name: icsa_uiowa_edu
+  -
+    name: icsa_uiowa_edu
     encoding: utf8
     collation: utf8_general_ci
 mysql_users:
-  - name: drupal
-    host: "%"
+  -
+    name: drupal
+    host: '%'
     password: drupal
-    priv: "*.*:ALL"
+    priv: '*.*:ALL'
 
 # Set this to 'false' if you don't need to install drupal (using the drupal_*
 # settings below), but instead copy down a database (e.g., using drush sql-sync).
@@ -117,30 +608,35 @@ drupal_install_site: false
 # Drupal VM automatically creates a drush alias file in your ~/.drush folder if
 # this variable is 'true'.
 configure_drush_aliases: false
-
-extra_packages: [patchutils, sqlite]
-installed_extras: [adminer, selenium, drush, mailhog, memcached, nodejs, solr, xdebug]
-
-# PHP 7.2.
-php_version: "7.2"
+extra_packages:
+  - patchutils
+  - sqlite
+installed_extras:
+  - adminer
+  - selenium
+  - drush
+  - mailhog
+  - memcached
+  - nodejs
+  - solr
+  - xdebug
+php_version: '7.2'
 php_packages_extra:
-  - "php{{ php_version }}-bz2"
-  - "php{{ php_version }}-imagick"
+  - 'php{{ php_version }}-bz2'
+  - 'php{{ php_version }}-imagick'
   - imagemagick
 
 # XDebug configuration.
 php_xdebug_version: 2.7.1
 # Change this value to 1 in order to enable xdebug by default.
 php_xdebug_default_enable: 0
-php_xdebug_cli_disable: yes
-php_xdebug_remote_port: "9000"
-php_memory_limit: "512M"
-
-# Acquia Search defaults to 4.5.1.
-solr_version: "4.5.1"
+php_xdebug_cli_disable: 'yes'
+php_xdebug_remote_port: '9000'
+php_memory_limit: 512M
+solr_version: 4.5.1
 
 post_provision_scripts:
-  - "../../../acquia/blt/scripts/drupal-vm/configure-solr.sh"
-  - "../../../acquia/blt/scripts/drupal-vm/post-provision.php"
+  - ../../../acquia/blt/scripts/drupal-vm/configure-solr.sh
+  - ../../../acquia/blt/scripts/drupal-vm/post-provision.php
 nodejs_npm_global_packages:
   - yarn

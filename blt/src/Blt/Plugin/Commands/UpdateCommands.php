@@ -234,5 +234,35 @@ EOD;
     $this->setSchemaVersion(1004);
   }
 
+  /**
+   * Update 1005.
+   *
+   * @Update(
+   *   version = "1005",
+   *   description = "Set VM vhosts for each multisite."
+   * )
+   */
+  protected function update1005() {
+    $root = $this->getConfigValue('repo.root');
+    $sites = Multisite::getAllSites($root);
+    $file = $this->getConfigValue('vm.config');
+
+    $writer = new YamlWriter($file);
+    $vm_config = $writer->getContents();
+
+    foreach ($sites as $site) {
+      $id = Multisite::getIdentifier("https://{$site}");
+
+      $vm_config['apache_vhosts'][] = [
+        'servername' => "{$id}.uiowa.local.site",
+        'documentroot' => $vm_config['apache_vhosts'][0]['documentroot'],
+        'extra_parameters' => $vm_config['apache_vhosts'][0]['extra_parameters'],
+      ];
+    }
+
+    $writer->write($vm_config);
+
+    $this->setSchemaVersion(1005);
+  }
 
 }
