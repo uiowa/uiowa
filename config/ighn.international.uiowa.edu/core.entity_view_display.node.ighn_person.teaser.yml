@@ -16,25 +16,101 @@ dependencies:
     - field.field.node.ighn_person.field_ighn_person_position_title
     - node.type.ighn_person
   module:
+    - link
+    - text
     - user
 id: node.ighn_person.teaser
 targetEntityType: node
 bundle: ighn_person
 mode: teaser
 content:
-  links:
-    weight: 100
+  field_ighn_person_biography:
+    type: text_default
+    weight: 8
+    region: content
+    label: visually_hidden
     settings: {  }
     third_party_settings: {  }
+  field_ighn_person_credentials:
+    type: string
+    weight: 3
     region: content
-hidden:
-  field_ighn_person_biography: true
-  field_ighn_person_credentials: true
-  field_ighn_person_cv_link: true
-  field_ighn_person_first_name: true
-  field_ighn_person_focus_areas: true
-  field_ighn_person_global_regions: true
-  field_ighn_person_image: true
-  field_ighn_person_language: true
-  field_ighn_person_last_name: true
-  field_ighn_person_position_title: true
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_ighn_person_cv_link:
+    type: link
+    weight: 9
+    region: content
+    label: visually_hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+  field_ighn_person_first_name:
+    type: string
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_ighn_person_focus_areas:
+    type: entity_reference_label
+    weight: 5
+    region: content
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_ighn_person_global_regions:
+    type: entity_reference_label
+    weight: 7
+    region: content
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_ighn_person_image:
+    type: entity_reference_entity_view
+    weight: 0
+    region: content
+    label: visually_hidden
+    settings:
+      view_mode: image_medium
+      link: false
+    third_party_settings: {  }
+  field_ighn_person_language:
+    type: entity_reference_label
+    weight: 6
+    region: content
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_ighn_person_last_name:
+    type: string
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_ighn_person_position_title:
+    type: string
+    weight: 4
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  links:
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }
