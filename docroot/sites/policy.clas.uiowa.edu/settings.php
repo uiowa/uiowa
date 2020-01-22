@@ -781,7 +781,7 @@ $settings['entity_update_backup'] = TRUE;
 $ah_group = getenv('AH_SITE_GROUP');
 
 if (file_exists('/var/www/site-php')) {
-  require "/var/www/site-php/{$ah_group}01/policy_clas_uiowa_edu-settings.inc";
+  require "/var/www/site-php/{$ah_group}/policy_clas_uiowa_edu-settings.inc";
 }
 
 require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
