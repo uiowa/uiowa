@@ -40,7 +40,7 @@ class GitCommands extends BltTasks {
    *
    * @command uiowa:git:clean
    *
-   * @aliases sgc
+   * @aliases ugc
    */
   public function clean() {
     $remotes = $this->getAcquiaRemotes();
