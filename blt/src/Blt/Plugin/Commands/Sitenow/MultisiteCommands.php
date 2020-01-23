@@ -86,6 +86,7 @@ class MultisiteCommands extends BltTasks {
     $db = $this->getConfigValue('drupal.db.database');
 
     $id = Multisite::getIdentifier("https://{$dir}");
+    $local = Multisite::getInternalDomains($id)['local'];
     $dev = Multisite::getInternalDomains($id)['dev'];
     $test = Multisite::getInternalDomains($id)['test'];
     $prod = Multisite::getInternalDomains($id)['prod'];
@@ -219,38 +220,44 @@ EOD;
    *
    * @aliases smc
    *
-   * @arg $host
+   * @param $host
    *   The multisite URI host. Will be used as the site directory.
    *
-   * @arg $requester
+   * @param $requester
    *   The HawkID of the original requester. Will be granted webmaster access.
+   *
+   * @param $options
+   *   An option that takes multiple values.
+   *
+   * @option simulate
+   *   Simulate database creation and Git operations.
    *
    * @requireFeatureBranch
    * @requireCredentials
    *
    * @throws \Exception
    */
-  public function create($host, $requester) {
+  public function create($host, $requester, $options = ['simulate' => false]) {
     $db = Multisite::getInitialDatabaseName($host);
-
     $applications = $this->getConfigValue('uiowa.applications');
-    $choices = [];
-
-    foreach ($applications as $app => $attr) {
-      $choices[$app] = $attr['id'];
-    }
-
-    $choice = $this->askChoice('Which cloud application should be used?', $choices);
+    $app = $this->askChoice('Which cloud application should be used?', array_keys($applications));
 
     /** @var \AcquiaCloudApi\Connector\Client $client */
     $client = $this->getAcquiaCloudApiClient();
 
     /** @var \AcquiaCloudApi\Endpoints\Databases $databases */
     $databases = new Databases($client);
-    $databases->create($applications[$choice]['id'], $db);
-    $this->say("Created <comment>{$db}</comment> cloud database on {$choice}.");
+
+    if (!$options['simulate']) {
+      $databases->create($applications[$app]['id'], $db);
+      $this->say("Created <comment>{$db}</comment> cloud database on {$app}.");
+    }
+    else {
+      $this->logger->warning('Simulate option specified. Skipping database creation.');
+    }
 
     $id = Multisite::getIdentifier("https://{$host}");
+    $local = Multisite::getInternalDomains($id)['local'];
     $dev = Multisite::getInternalDomains($id)['dev'];
     $test = Multisite::getInternalDomains($id)['test'];
     $prod = Multisite::getInternalDomains($id)['prod'];
@@ -285,7 +292,9 @@ EOD
       throw new \Exception("Unable to set database include for site {$host}.");
     }
 
-    file_put_contents("{$root}/docroot/sites/{$host}/settings/includes.settings.php", <<<EOD
+    // Copy the default settings include to documented name.
+    $this->taskWriteToFile("{$root}/docroot/sites/{$host}/settings/includes.settings.php")
+      ->text(<<<EOD
 <?php
 
 /**
@@ -310,62 +319,69 @@ foreach (\$additionalSettingsFiles as \$settingsFile) {
 }
 
 EOD
-    );
+    )
+    ->run();
 
-    // Remove some files that we probably don't need.
+    // Remove some files that we don't need or will be regenerated below.
     $files = [
+      "{$root}/drush/sites/default.site.yml",
       "{$root}/docroot/sites/{$host}/default.services.yml",
       "{$root}/docroot/sites/{$host}/services.yml",
       "{$root}/drush/sites/{$host}.site.yml",
+      "{$root}/docroot/sites/{$host}/settings/local.settings.php",
     ];
 
-    foreach ($files as $file) {
-      if (file_exists($file)) {
-        unlink($file);
-        $this->logger->debug("Deleted {$file}.");
-      }
-    }
+    $this->taskFilesystemStack()
+      ->remove($files)
+      ->run();
 
     // Re-generate the Drush alias so it is more useful.
-    $app = $this->getConfig()->get('project.prefix');
     $default = Yaml::parse(file_get_contents("{$root}/drush/sites/{$app}.site.yml"));
-    $default['local']['uri'] = $host;
+    $default['local']['uri'] = $local;
     $default['dev']['uri'] = $dev;
     $default['test']['uri'] = $test;
     $default['prod']['uri'] = $host;
 
-    file_put_contents("{$root}/drush/sites/{$id}.site.yml", Yaml::dump($default, 10, 2));
+    $this->taskWriteToFile("{$root}/drush/sites/{$id}.site.yml")
+      ->text(Yaml::dump($default, 10, 2))
+      ->run();
+
     $this->say("Updated <comment>{$id}.site.yml</comment> Drush alias file with <info>local, dev, test and prod</info> aliases.");
 
     // Overwrite the multisite blt.yml file.
     $blt = Yaml::parse(file_get_contents("{$root}/docroot/sites/{$host}/blt.yml"));
     $blt['project']['machine_name'] = $id;
+    $blt['project']['local']['hostname'] = $local;
     $blt['drupal']['db']['database'] = $db;
     $blt['drush']['aliases']['local'] = 'self';
     $blt['uiowa']['profiles']['sitenow']['requester'] = $requester;
-    file_put_contents("{$root}/docroot/sites/{$host}/blt.yml", Yaml::dump($blt, 10, 2));
+
+    $this->taskWriteToFile("{$root}/docroot/sites/{$host}/blt.yml")
+      ->text(Yaml::dump($blt, 10, 2))
+      ->run();
+
     $this->say("Overwrote <comment>docroot/sites/{$host}/blt.yml</comment> file with standardized names.");
 
-    // Write sites.php data.
+    // Write sites.php data. Note that we exclude production URI since it will
+    // route automatically.
     $data = <<<EOD
 
 // Directory aliases for {$host}.
+\$sites['{$local}'] = '{$host}';
 \$sites['{$dev}'] = '{$host}';
 \$sites['{$test}'] = '{$host}';
 \$sites['{$prod}'] = '{$host}';
 
 EOD;
 
-    file_put_contents($root . '/docroot/sites/sites.php', $data, FILE_APPEND);
+    $this->taskWriteToFile("{$root}/docroot/sites/sites.php")
+      ->text($data)
+      ->append()
+      ->run();
+
     $this->say('Added default <comment>sites.php</comment> entries.');
 
-    // Remove the new local settings file - it has the wrong database name.
-    $file = "{$root}/docroot/sites/{$host}/settings/local.settings.php";
-
-    if (file_exists($file)) {
-      unlink($file);
-    }
-
+    // Regenerate the local settings file - it had the wrong database name.
     $this->invokeCommand('blt:init:settings');
 
     // Create the config directory with a file to commit.
@@ -438,10 +454,7 @@ EOD;
   }
 
   /**
-   * Return new ConnectorInterface and ApplicationResponse for this application.
-   *
-   * @param string $id
-   *   The Acquia Cloud application ID.
+   * Return new Client for interacting with Acquia Cloud API.
    *
    * @return \AcquiaCloudApi\Connector\Client
    *   ConnectorInterface client.
