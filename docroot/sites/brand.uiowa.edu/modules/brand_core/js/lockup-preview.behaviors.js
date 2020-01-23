@@ -130,7 +130,7 @@
 
                 // Create the element to measure for stacked divider.
                 if (!$('#primary-first-line-measure-stacked').length) {
-                    $('.layout-region-node-main').append('<div id="primary-first-line-measure-stacked"></div>');
+                    $('#lockup-preview').append('<div id="primary-first-line-measure-stacked"></div>');
                 }
 
                 // Create the horizontal divider.
@@ -148,8 +148,8 @@
                 var divTop;
                 (divHeight > blockIowaDims.height) ? divTop = 4 : divTop = -8;
 
-                // Grab the first line of the Stacked Primary unit text and put it in the measurer.
-                $('#primary-first-line-measure-stacked').text($('.lockup-stacked .lockup-content-inner .primary-unit').text().split('\n')[0]);
+                // Grab the text from Primary Unit to calculate width of divider.
+                $('#primary-first-line-measure-stacked').text($('.lockup-stacked .lockup-content .lockup-content-inner .primary-unit').text());
                 var divWidth = Math.max($('#primary-first-line-measure-stacked').outerWidth() - 13, blockIowaDims.width);
                 var divPos = ($('.lockup-stacked .lockup-content').outerWidth()/2) - (divWidth/2);
 
