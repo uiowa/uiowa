@@ -265,4 +265,34 @@ EOD;
     $this->setSchemaVersion(1005);
   }
 
+  /**
+   * Update 1006.
+   *
+   * @Update(
+   *   version = "1006",
+   *   description = "Set local hostname for multisites and regenerate settings."
+   * )
+   */
+  protected function update1006() {
+    $root = $this->getConfigValue('repo.root');
+    $sites = Multisite::getAllSites($root);
+
+    foreach ($sites as $site) {
+      $file = "{$root}/docroot/sites/{$site}/blt.yml";
+      $id = Multisite::getIdentifier("https://{$site}");
+      $yaml = YamlMunge::parseFile($file);
+      $yaml['project']['local']['hostname'] = "{$id}.local.drupal.uiowa.edu";
+      file_put_contents("{$root}/docroot/sites/{$site}/blt.yml", Yaml::dump($yaml, 10, 2));
+
+      $file = "{$root}/docroot/sites/{$site}/local.drush.yml";
+
+      $this->taskFilesystemStack()
+        ->remove($file)
+        ->run();
+    }
+
+    $this->invokeCommand('bis');
+    $this->setSchemaVersion(1006);
+  }
+
 }
