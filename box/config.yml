@@ -614,19 +614,20 @@ drupal_install_site: false
 # Drupal VM automatically creates a drush alias file in your ~/.drush folder if
 # this variable is 'true'.
 configure_drush_aliases: false
+
 extra_packages:
   - patchutils
   - sqlite
+
 installed_extras:
-  - adminer
-  - selenium
-  - drush
   - mailhog
   - memcached
   - nodejs
   - solr
   - xdebug
+
 php_version: '7.2'
+
 php_packages_extra:
   - 'php{{ php_version }}-bz2'
   - 'php{{ php_version }}-imagick'
