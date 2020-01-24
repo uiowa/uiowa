@@ -163,6 +163,7 @@ class MultisiteCommands extends BltTasks {
         ->from(<<<EOD
 
 // Directory aliases for {$dir}.
+\$sites['{$local}'] = '{$dir}';
 \$sites['{$dev}'] = '{$dir}';
 \$sites['{$test}'] = '{$dir}';
 \$sites['{$prod}'] = '{$dir}';
@@ -176,7 +177,7 @@ EOD
       $this->taskReplaceInFile("{$root}/box/config.yml")
         ->from(<<<EOD
 -
-    servername: labyangs.local.drupal.uiowa.edu
+    servername: {$local}
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
 EOD
