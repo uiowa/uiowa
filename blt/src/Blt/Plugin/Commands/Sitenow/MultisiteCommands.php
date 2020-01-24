@@ -419,7 +419,9 @@ EOD;
     $this->say('Added default <comment>sites.php</comment> entries.');
 
     // Regenerate the local settings file - it had the wrong database name.
-    $this->invokeCommand('blt:init:settings');
+    $this->invokeCommand('blt:init:settings', [
+      '--site' => $host
+    ]);
 
     // Create the config directory with a file to commit.
     $this->taskFilesystemStack()
