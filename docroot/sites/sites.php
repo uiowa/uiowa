@@ -768,15 +768,3 @@ $sites['centerforconferencesautismcenter.local.drupal.uiowa.edu'] = 'autismcente
 $sites['centerforconferencesautismcenter.dev.drupal.uiowa.edu'] = 'autismcenter.centerforconferences.uiowa.edu';
 $sites['centerforconferencesautismcenter.stage.drupal.uiowa.edu'] = 'autismcenter.centerforconferences.uiowa.edu';
 $sites['centerforconferencesautismcenter.prod.drupal.uiowa.edu'] = 'autismcenter.centerforconferences.uiowa.edu';
-
-// Directory aliases for demo.sitenow.uiowa.edu.
-$sites['sitenowdemo.local.drupal.uiowa.edu'] = 'demo.sitenow.uiowa.edu';
-$sites['sitenowdemo.dev.drupal.uiowa.edu'] = 'demo.sitenow.uiowa.edu';
-$sites['sitenowdemo.stage.drupal.uiowa.edu'] = 'demo.sitenow.uiowa.edu';
-$sites['sitenowdemo.prod.drupal.uiowa.edu'] = 'demo.sitenow.uiowa.edu';
-
-// Directory aliases for demo.sitenow.uiowa.edu.
-$sites['sitenowdemo.local.drupal.uiowa.edu'] = 'demo.sitenow.uiowa.edu';
-$sites['sitenowdemo.dev.drupal.uiowa.edu'] = 'demo.sitenow.uiowa.edu';
-$sites['sitenowdemo.stage.drupal.uiowa.edu'] = 'demo.sitenow.uiowa.edu';
-$sites['sitenowdemo.prod.drupal.uiowa.edu'] = 'demo.sitenow.uiowa.edu';
