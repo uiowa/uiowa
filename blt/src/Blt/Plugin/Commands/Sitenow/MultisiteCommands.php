@@ -253,7 +253,7 @@ EOD;
       $this->say("Created <comment>{$db}</comment> cloud database on {$app}.");
     }
     else {
-      $this->logger->warning('Simulate option specified. Skipping database creation.');
+      $this->logger->warning('Skipping database creation.');
     }
 
     $id = Multisite::getIdentifier("https://{$host}");
