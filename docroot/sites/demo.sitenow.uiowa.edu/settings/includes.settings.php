@@ -44,7 +44,6 @@ $additionalSettingsFiles = [
 
 foreach ($additionalSettingsFiles as $settingsFile) {
   if (file_exists($settingsFile)) {
-    // phpcs:ignore
     require $settingsFile;
   }
 }

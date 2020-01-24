@@ -325,10 +325,10 @@ EOD
       throw new \Exception("Unable to set database include for site {$host}.");
     }
 
-    // Copy the default settings include to documented name.
+    // Copy the default settings include and add sitenow global settings.
     $this->taskFilesystemStack()
       ->copy(
-        "{$root}/docroot/sites/default/settings/default.includes.settings.php",
+        "{$root}/docroot/sites/{$host}/settings/default.includes.settings.php",
         "{$root}/docroot/sites/{$host}/settings/includes.settings.php"
       )
       ->run();
