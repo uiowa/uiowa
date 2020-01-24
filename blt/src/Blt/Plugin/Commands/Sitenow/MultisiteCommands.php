@@ -248,7 +248,7 @@ EOD;
     /** @var \AcquiaCloudApi\Endpoints\Databases $databases */
     $databases = new Databases($client);
 
-    if (!$options['simulate'] || $options['no-db']) {
+    if (!$options['simulate'] && !$options['no-db']) {
       $databases->create($applications[$app]['id'], $db);
       $this->say("Created <comment>{$db}</comment> cloud database on {$app}.");
     }
