@@ -40,8 +40,8 @@ class MigratePostImportEvent implements EventSubscriberInterface {
     $this->d8_aliases = $this->fetchAliases();
     // Of the form "https://base_url_path.org/"
     $this->base_path = \Drupal::urlGenerator()->generateFromRoute('<front>', [], ['absolute' => TRUE]);
-    // Drop the "https://" for convenient use later.
-    $this->base_path = substr($this->base_path, 7);
+    // Drop the "https://" and ending "/" for convenience later.
+    $this->base_path = substr($this->base_path, 7, -1);
   }
 
   /**
@@ -141,11 +141,11 @@ private function linkReplace($match) {
   ]));
 
   // Check if it's a relative link.
-  if (substr($old_link, 0) === '/') {
+  if (substr($old_link, 0, 1) == '/') {
     $link_parts = explode('/', $old_link);
 
     // Old node/# formatted links just need the updated mapping.
-    if ($link_parts[1] === 'node') {
+    if ($link_parts[1] == 'node') {
       $new_link = '<a href="/node/' . $this->source_to_dest_ids[$link_parts[2]] . '"';
     } else {
       // If it wasn't in node/# format, we need to use the alias to get the correct mapping.
@@ -159,7 +159,16 @@ private function linkReplace($match) {
     return $new_link;
   } else {
     // We have an absolute link--need to check if it references this site or is external.
-    
+    $pattern = '|(https://)+(www.)+' . $this->base_path . '/(.*?)|';
+    if (preg_match($pattern, $old_link, $match)) {
+      $d7_nid = $this->d7_aliases[$match[3]];
+      $new_link = '<a href="/node/' . $this->source_to_dest_ids[$d7_nid] . '"';
+      \Drupal::logger('sitenow_migrate')->notice(t('New link found... @new_link', [
+        '@new_link' => $new_link,
+      ]));
+  
+      return $new_link;
+    }
   }
 
   // No matches were found--return the unchanged original.
@@ -178,7 +187,7 @@ private function linkReplace($match) {
     $query->join('paragraph__field_text_body', 'p', 'p.entity_id = s.field_section_content_block_target_id');
     $query->fields('n', ['entity_id'])
       ->condition($query->orConditionGroup()
-        ->condition('p.field_text_body_value', "%<a href=\"@BASE_URL%", 'LIKE')
+        ->condition('p.field_text_body_value', $this->base_path, 'LIKE')
         ->condition('p.field_text_body_value', "%<a href%node/%", 'LIKE')
       );
     $result = $query->execute();
@@ -188,7 +197,7 @@ private function linkReplace($match) {
     $query = $connection->select('node__body', 'nb')
       ->fields('nb', ['entity_id'])
       ->condition($query->orConditionGroup()
-        ->condition('nb.body_value', "%<a href=\"@BASE_URL%", 'LIKE')
+        ->condition('nb.body_value', $this->base_path, 'LIKE')
         ->condition('nb.body_value', "%<a href%node/%", 'LIKE')
       );
     $result = $query->execute();
