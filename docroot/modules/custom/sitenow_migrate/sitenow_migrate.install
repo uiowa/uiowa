@@ -10,7 +10,7 @@
 
 /**
  * Implements hook_uninstall().
- */
+ *
 function sitenow_migrate_uninstall() {
   $module_path = DRUPAL_ROOT . base_path() . drupal_get_path('module', 'sitenow_migrate') . '/config/install';
   $files = \Drupal::service('file_system')->scanDirectory($module_path, '/migrate_plus/');
@@ -25,3 +25,4 @@ function sitenow_migrate_uninstall() {
   }
   return TRUE;
 }
+*/
