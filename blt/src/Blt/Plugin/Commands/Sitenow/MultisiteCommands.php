@@ -64,6 +64,12 @@ class MultisiteCommands extends BltTasks {
   /**
    * Deletes multisite code, database and domains.
    *
+   * @param array $options
+   *   Array of options.
+   *
+   * @option simulate
+   *   Simulate cloud operations and file system tasks.
+   *
    * @command sitenow:multisite:delete
    *
    * @aliases smd
@@ -73,7 +79,7 @@ class MultisiteCommands extends BltTasks {
    * @requireFeatureBranch
    * @requireCredentials
    */
-  public function delete() {
+  public function delete(array $options = ['simulate' => FALSE]) {
     $root = $this->getConfigValue('repo.root');
     $sites = Multisite::getAllSites($root);
 
@@ -108,36 +114,41 @@ class MultisiteCommands extends BltTasks {
       throw new \Exception('Aborted.');
     }
     else {
-      /** @var \AcquiaCloudApi\Connector\Client $client */
-      $client = $this->getAcquiaCloudApiClient();
+      if (!$options['simulate']) {
+        /** @var \AcquiaCloudApi\Connector\Client $client */
+        $client = $this->getAcquiaCloudApiClient();
 
-      foreach ($this->getConfigValue('uiowa.applications') as $app => $attrs) {
-        /** @var \AcquiaCloudApi\Endpoints\Databases $databases */
-        $databases = new Databases($client);
+        foreach ($this->getConfigValue('uiowa.applications') as $app => $attrs) {
+          /** @var \AcquiaCloudApi\Endpoints\Databases $databases */
+          $databases = new Databases($client);
 
-        // Find the application that hosts the database.
-        foreach ($databases->getAll($attrs['id']) as $database) {
-          if ($database->name == $db) {
-            $databases->delete($attrs['id'], $db);
-            $this->say("Deleted <comment>{$db}</comment> cloud database on <comment>{$app}</comment> application.");
+          // Find the application that hosts the database.
+          foreach ($databases->getAll($attrs['id']) as $database) {
+            if ($database->name == $db) {
+              $databases->delete($attrs['id'], $db);
+              $this->say("Deleted <comment>{$db}</comment> cloud database on <comment>{$app}</comment> application.");
 
-            /** @var \AcquiaCloudApi\Endpoints\Environments $environments */
-            $environments = new Environments($client);
+              /** @var \AcquiaCloudApi\Endpoints\Environments $environments */
+              $environments = new Environments($client);
 
-            foreach ($environments->getAll($attrs['id']) as $environment) {
-              if ($intersect = array_intersect($properties['domains'], $environment->domains)) {
-                $domains = new Domains($client);
+              foreach ($environments->getAll($attrs['id']) as $environment) {
+                if ($intersect = array_intersect($properties['domains'], $environment->domains)) {
+                  $domains = new Domains($client);
 
-                foreach ($intersect as $domain) {
-                  $domains->delete($environment->uuid, $domain);
-                  $this->say("Deleted <comment>{$domain}</comment> domain on {$app} application.");
+                  foreach ($intersect as $domain) {
+                    $domains->delete($environment->uuid, $domain);
+                    $this->say("Deleted <comment>{$domain}</comment> domain on {$app} application.");
+                  }
                 }
               }
-            }
 
-            break 2;
+              break 2;
+            }
           }
         }
+      }
+      else {
+        $this->logger->warning('Skipping cloud operations.');
       }
 
       // Delete the site code.
@@ -148,20 +159,18 @@ class MultisiteCommands extends BltTasks {
         ->run();
 
       // Remove the directory aliases from sites.php.
-      $contents = file_get_contents("{$root}/docroot/sites/sites.php");
-
-      // Remove sites.php data.
-      $data = <<<EOD
+      $this->taskReplaceInFile("{$root}/docroot/sites/sites.php")
+        ->from(<<<EOD
 
 // Directory aliases for {$dir}.
 \$sites['{$dev}'] = '{$dir}';
 \$sites['{$test}'] = '{$dir}';
 \$sites['{$prod}'] = '{$dir}';
 
-EOD;
-
-      $contents = str_replace($data, '', $contents);
-      file_put_contents("{$root}/docroot/sites/sites.php", $contents);
+EOD
+        )
+        ->to('')
+        ->run();
 
       $this->taskGit()
         ->dir($root)
