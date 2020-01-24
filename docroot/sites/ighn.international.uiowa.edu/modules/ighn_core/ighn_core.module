@@ -16,17 +16,7 @@ use Drupal\views\Views;
 /**
  * Implements hook_module_implements_alter().
  */
-function ighn_core_module_implements_alter(&$implementations, $hook) {
-  $hooks_to_order = [
-    'form_alter',
-  ];
 
-  if (in_array($hook, $hooks_to_order)) {
-    $group = $implementations['ighn_core'];
-    unset($implementations['ighn_core']);
-    $implementations['ighn_core'] = $group;
-  }
-}
 
 /**
  * Implements hook_theme().
