@@ -429,6 +429,7 @@ EOD;
 
     $this->taskGit()
       ->dir($root)
+      ->add('box/config.yml')
       ->add('docroot/sites/sites.php')
       ->add("docroot/sites/{$host}")
       ->add("drush/sites/{$id}.site.yml")
