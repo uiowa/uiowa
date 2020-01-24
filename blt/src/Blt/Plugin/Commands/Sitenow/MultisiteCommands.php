@@ -172,8 +172,21 @@ EOD
         ->to('')
         ->run();
 
+      // Remove vhost.
+      $this->taskReplaceInFile("{$root}/box/config.yml")
+        ->from(<<<EOD
+-
+    servername: labyangs.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+EOD
+        )
+        ->to('')
+        ->run();
+
       $this->taskGit()
         ->dir($root)
+        ->add('box/config.yml')
         ->add('docroot/sites/sites.php')
         ->add("docroot/sites/{$dir}/")
         ->add("drush/sites/{$id}.site.yml")
@@ -414,7 +427,7 @@ EOD;
       ->run();
 
     $this->taskGit()
-      ->dir($this->getConfigValue("repo.root"))
+      ->dir($root)
       ->add('docroot/sites/sites.php')
       ->add("docroot/sites/{$host}")
       ->add("drush/sites/{$id}.site.yml")
