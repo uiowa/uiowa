@@ -216,28 +216,28 @@ EOD;
   /**
    * Create multisite code, cloud database and domains.
    *
-   * @command sitenow:multisite:create
-   *
-   * @aliases smc
-   *
-   * @param $host
+   * @param string $host
    *   The multisite URI host. Will be used as the site directory.
-   *
-   * @param $requester
+   * @param string $requester
    *   The HawkID of the original requester. Will be granted webmaster access.
-   *
-   * @param $options
+   * @param array $options
    *   An option that takes multiple values.
    *
    * @option simulate
-   *   Simulate database creation and Git operations.
+   *   Simulate database creation and filesystem operations.
+   * @option no-db
+   *   Do not create a cloud database.
+   *
+   * @command sitenow:multisite:create
+   *
+   * @aliases smc
    *
    * @requireFeatureBranch
    * @requireCredentials
    *
    * @throws \Exception
    */
-  public function create($host, $requester, $options = ['simulate' => false]) {
+  public function create($host, $requester, array $options = ['simulate' => FALSE, 'no-db' => FALSE]) {
     $db = Multisite::getInitialDatabaseName($host);
     $applications = $this->getConfigValue('uiowa.applications');
     $app = $this->askChoice('Which cloud application should be used?', array_keys($applications));
@@ -248,7 +248,7 @@ EOD;
     /** @var \AcquiaCloudApi\Endpoints\Databases $databases */
     $databases = new Databases($client);
 
-    if (!$options['simulate']) {
+    if (!$options['simulate'] || $options['no-db']) {
       $databases->create($applications[$app]['id'], $db);
       $this->say("Created <comment>{$db}</comment> cloud database on {$app}.");
     }
@@ -320,7 +320,7 @@ foreach (\$additionalSettingsFiles as \$settingsFile) {
 
 EOD
     )
-    ->run();
+      ->run();
 
     // Remove some files that we don't need or will be regenerated below.
     $files = [
