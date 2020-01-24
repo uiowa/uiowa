@@ -403,6 +403,10 @@ EOD;
     $this->say('Added default <comment>sites.php</comment> entries.');
 
     // Regenerate the local settings file - it had the wrong database name.
+    $this->getConfig()->set('multisites', [
+      $host
+    ]);
+
     $this->invokeCommand('blt:init:settings', [
       '--site' => $host,
     ]);
