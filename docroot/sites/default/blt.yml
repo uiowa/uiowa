@@ -1,28 +1,15 @@
 project:
   profile:
-    name: sitenow
+    name: standard
   local:
-    hostname: default-.local.drupal.uiowa.edu
+    hostname: local.drupal.uiowa.edu
     protocol: https
-  machine_name: demo
-  human_name: demo.prod.drupal.uiowa.edu
+  machine_name: default
+  human_name: uiowa
 drush:
   aliases:
     local: self
-    remote: demo.prod
+    remote: uiowa.prod
 drupal:
   db:
     database: uiowa
-cm:
-  core:
-    dirs:
-      sync:
-        path: profiles/custom/sitenow/config/sync
-    install_from_config: true
-sync:
-  commands:
-    - 'blt:init:settings'
-    - 'drupal:sync:db'
-    - 'drupal:update'
-    - 'sitenow:multisite:noop'
-    - 'sitenow:multisite:noop'
