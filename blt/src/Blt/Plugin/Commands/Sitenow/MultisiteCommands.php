@@ -273,6 +273,16 @@ EOD;
       '--remote-alias' => "{$id}.prod",
     ]);
 
+    // BLT RMI uses the site-dir option for the vhost. Replace with local.
+    $result = $this->taskReplaceInFile("{$root}/box/config.yml")
+      ->from("servername: {$host}")
+      ->to("servername: {$local}")
+      ->run();
+
+    if (!$result->wasSuccessful()) {
+      throw new \Exception("Unable to replace DrupalVM vhost for {$host}.");
+    }
+
     $result = $this->taskReplaceInFile("{$root}/docroot/sites/{$host}/settings.php")
       ->from('require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";' . "\n")
       ->to(<<<EOD
@@ -293,7 +303,7 @@ EOD
     }
 
     // Copy the default settings include to documented name.
-    $this->taskWriteToFile("{$root}/docroot/sites/{$host}/settings/includes.settings.php")
+    $result = $this->taskWriteToFile("{$root}/docroot/sites/{$host}/settings/includes.settings.php")
       ->text(<<<EOD
 <?php
 
@@ -321,6 +331,10 @@ foreach (\$additionalSettingsFiles as \$settingsFile) {
 EOD
     )
       ->run();
+
+    if (!$result->wasSuccessful()) {
+      throw new \Exception("Unable to set settings include for site {$host}.");
+    }
 
     // Remove some files that we don't need or will be regenerated below.
     $files = [
