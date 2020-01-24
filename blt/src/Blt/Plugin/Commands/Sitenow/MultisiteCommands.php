@@ -370,6 +370,7 @@ EOD
 
     // Overwrite the multisite blt.yml file.
     $blt = Yaml::parse(file_get_contents("{$root}/docroot/sites/{$host}/blt.yml"));
+    $blt['project']['profile']['name'] = 'sitenow';
     $blt['project']['machine_name'] = $id;
     $blt['project']['local']['hostname'] = $local;
     $blt['drupal']['db']['database'] = $db;
@@ -382,8 +383,8 @@ EOD
 
     $this->say("Overwrote <comment>docroot/sites/{$host}/blt.yml</comment> file with standardized names.");
 
-    // Write sites.php data. Note that we exclude production URI since it will
-    // route automatically.
+    // Write sites.php data. Note that we exclude the production URI since it
+    // will route automatically.
     $data = <<<EOD
 
 // Directory aliases for {$host}.
