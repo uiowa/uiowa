@@ -110,7 +110,7 @@ class Multisite {
   }
 
   /**
-   * Find all multisites in the application root.
+   * Find all multisites in the application root, excluding default.
    *
    * @param string $root
    *   The root of the application to find multisites in.
@@ -125,7 +125,7 @@ class Multisite {
       ->in("{$root}/docroot/sites/")
       ->directories()
       ->depth('< 1')
-      ->exclude(['g', 'settings'])
+      ->exclude(['default', 'g', 'settings'])
       ->sortByName();
 
     $sites = [];
