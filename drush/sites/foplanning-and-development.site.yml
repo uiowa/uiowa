@@ -1,6 +1,10 @@
 local:
-  uri: planning-and-development.fo.uiowa.edu
-  root: '${env.cwd}/docroot'
+  root: /var/www/uiowa/docroot
+  uri: foplanning-and-development.local.drupal.uiowa.edu
+  host: local.drupal.uiowa.edu
+  user: vagrant
+  ssh:
+    options: '-o StrictHostKeyChecking=no -o PasswordAuthentication=no -i $HOME/.vagrant.d/insecure_private_key'
 dev:
   uri: foplanning-and-development.dev.drupal.uiowa.edu
   host: uiowadev.ssh.prod.acquia-sites.com

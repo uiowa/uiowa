@@ -295,4 +295,49 @@ EOD;
     $this->setSchemaVersion(1006);
   }
 
+  /**
+   * Update 1007.
+   *
+   * @Update(
+   *   version = "1007",
+   *   description = "Add local Drush aliases for existing sites."
+   * )
+   */
+  protected function update1007() {
+    $root = $this->getConfigValue('repo.root');
+    $sites = Multisite::getAllSites($root);
+
+    $uiowa_01 = [
+      'uipda.grad.uiowa.edu',
+      'policy.clas.uiowa.edu',
+      'iowasuperfund.uiowa.edu',
+      'icsa.uiowa.edu',
+      'cogscilang.grad.uiowa.edu',
+      'theming.uiowa.edu',
+    ];
+
+    foreach ($sites as $site) {
+      $id = Multisite::getIdentifier("https://{$site}");
+      $file = "{$root}/drush/sites/{$id}.site.yml";
+
+      if (in_array($site, $uiowa_01)) {
+        $app = 'uiowa01';
+
+      }
+      else {
+        $app = 'uiowa';
+      }
+
+      $yaml = YamlMunge::parseFile("{$root}/drush/sites/{$app}.site.yml");
+      $yaml['local']['uri'] = Multisite::getInternalDomains($id)['local'];
+      $yaml['dev']['uri'] = Multisite::getInternalDomains($id)['dev'];
+      $yaml['test']['uri'] = Multisite::getInternalDomains($id)['test'];
+      $yaml['prod']['uri'] = $site;
+
+      file_put_contents($file, Yaml::dump($yaml, 10, 2));
+    }
+
+    $this->setSchemaVersion(1007);
+  }
+
 }

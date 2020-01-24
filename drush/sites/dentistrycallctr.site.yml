@@ -1,24 +1,31 @@
 local:
-  uri: callctr.dentistry.uiowa.edu
-  root: '${env.cwd}/docroot'
+  root: /var/www/uiowa/docroot
+  uri: dentistrycallctr.local.drupal.uiowa.edu
+  host: local.drupal.uiowa.edu
+  user: vagrant
+  ssh:
+    options: '-o StrictHostKeyChecking=no -o PasswordAuthentication=no -i $HOME/.vagrant.d/insecure_private_key'
 dev:
   uri: dentistrycallctr.dev.drupal.uiowa.edu
   host: uiowadev.ssh.prod.acquia-sites.com
   options: {  }
-  paths: { dump-dir: /mnt/tmp }
+  paths:
+    dump-dir: /mnt/tmp
   root: /var/www/html/uiowa.dev/docroot
   user: uiowa.dev
 prod:
   uri: callctr.dentistry.uiowa.edu
   host: uiowa.ssh.prod.acquia-sites.com
   options: {  }
-  paths: { dump-dir: /mnt/tmp }
+  paths:
+    dump-dir: /mnt/tmp
   root: /var/www/html/uiowa.prod/docroot
   user: uiowa.prod
 test:
   uri: dentistrycallctr.stage.drupal.uiowa.edu
   host: uiowastg.ssh.prod.acquia-sites.com
   options: {  }
-  paths: { dump-dir: /mnt/tmp }
+  paths:
+    dump-dir: /mnt/tmp
   root: /var/www/html/uiowa.test/docroot
   user: uiowa.test

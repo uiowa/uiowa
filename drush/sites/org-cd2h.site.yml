@@ -1,6 +1,10 @@
 local:
-  uri: cd2h.org
-  root: '${env.cwd}/docroot'
+  root: /var/www/uiowa/docroot
+  uri: org-cd2h.local.drupal.uiowa.edu
+  host: local.drupal.uiowa.edu
+  user: vagrant
+  ssh:
+    options: '-o StrictHostKeyChecking=no -o PasswordAuthentication=no -i $HOME/.vagrant.d/insecure_private_key'
 dev:
   uri: org-cd2h.dev.drupal.uiowa.edu
   host: uiowadev.ssh.prod.acquia-sites.com
