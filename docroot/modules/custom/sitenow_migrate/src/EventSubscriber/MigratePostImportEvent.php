@@ -38,7 +38,10 @@ class MigratePostImportEvent implements EventSubscriberInterface {
     $this->source_to_dest_ids = $this->fetchMapping();
     $this->d7_aliases = $this->fetchAliases(True);
     $this->d8_aliases = $this->fetchAliases();
+    // Of the form "https://base_url_path.org/"
     $this->base_path = \Drupal::urlGenerator()->generateFromRoute('<front>', [], ['absolute' => TRUE]);
+    // Drop the "https://" for convenient use later.
+    $this->base_path = substr($this->base_path, 7);
   }
 
   /**
@@ -108,10 +111,6 @@ class MigratePostImportEvent implements EventSubscriberInterface {
 
       }
 
-      $pattern = '|<a href="(.*?)"|i';
-      \Drupal::logger('sitenow_migrate')->notice(t('Original content... @old_link', [
-        '@old_link' => $content,
-      ]));
       $content = preg_replace_callback('|<a href="(.*?)"|i', [$this, 'linkReplace'], $content);
 
       // Depending on content type, need to set it differently.
@@ -140,15 +139,29 @@ private function linkReplace($match) {
   \Drupal::logger('sitenow_migrate')->notice(t('Old link found... @old_link', [
     '@old_link' => $old_link,
   ]));
-  $link_parts = explode('/', $old_link);
-  // Old node/# formatted links just need the updated mapping.
-  if ($link_parts[0] == 'node' || $link_parts[1] == 'node') {
-    $new_link = '/node/' . $this->source_to_dest_ids[$link_parts[2]];
+
+  // Check if it's a relative link.
+  if (substr($old_link, 0) === '/') {
+    $link_parts = explode('/', $old_link);
+
+    // Old node/# formatted links just need the updated mapping.
+    if ($link_parts[1] === 'node') {
+      $new_link = '<a href="/node/' . $this->source_to_dest_ids[$link_parts[2]] . '"';
+    } else {
+      // If it wasn't in node/# format, we need to use the alias to get the correct mapping.
+      $d7_nid = $this->d7_aliases[$old_link];
+      $new_link = '<a href="/node/' . $this->source_to_dest_ids[$d7_nid] . '"';      
+    }
     \Drupal::logger('sitenow_migrate')->notice(t('New link found... @new_link', [
       '@new_link' => $new_link,
     ]));
-    return '<a href="' . $new_link . '"';
+
+    return $new_link;
+  } else {
+    // We have an absolute link--need to check if it references this site or is external.
+    
   }
+
   // No matches were found--return the unchanged original.
   return $match;
 }
@@ -171,7 +184,15 @@ private function linkReplace($match) {
     $result = $query->execute();
     $candidates = array_merge($candidates, $result->fetchCol());
 
-    // Now check for possible link breaks in standard body fields.
+    // Now check for possible link breaks in standard body fields (articles and people content types).
+    $query = $connection->select('node__body', 'nb')
+      ->fields('nb', ['entity_id'])
+      ->condition($query->orConditionGroup()
+        ->condition('nb.body_value', "%<a href=\"@BASE_URL%", 'LIKE')
+        ->condition('nb.body_value', "%<a href%node/%", 'LIKE')
+      );
+    $result = $query->execute();
+    $candidates = array_merge($candidates, $result->fetchCol());
     
     foreach ($candidates as $candidate) {
       \Drupal::logger('sitenow_migrate')->notice(t('Possible broken link found in node @candidate', [
@@ -203,10 +224,11 @@ private function linkReplace($match) {
     }
 
     $aliases = [];
+    // Pull out the nids and create our nid=>alias, alias=>nid indexer.
     foreach ($result as $row) {
-      $source_path = ($DRUPAL_7) ? 'source' : 'path';
-      preg_match("|node/(.*?)|", $source_path, $match);
-      $nid = $match[1];
+      $source_path = ($DRUPAL_7) ? $row->source : $row->path;
+      preg_match("|\d+|", $source_path, $match);
+      $nid = $match[0];
       $aliases[$nid] = $row->alias;
       $aliases[$row->alias] = $nid;
     }
@@ -215,7 +237,7 @@ private function linkReplace($match) {
   }
 
   /**
-   * Query the migration map to get a D7-nid => D8-nid indexted array.
+   * Query the migration map to get a D7-nid => D8-nid indexed array.
    */
   private function fetchMapping() {
     $connection = \Drupal::database();
@@ -228,10 +250,6 @@ private function linkReplace($match) {
     $source_to_dest_ids = [];
     foreach ($result as $row) {
       $source_to_dest_ids[$row->sourceid1] = $row->destid1;
-      \Drupal::logger('sitenow_migrate')->notice(t('Mapping found from source @source to destination @destination', [
-        '@source' =>$row->sourceid1,
-        '@destination' => $row->destid1,
-      ]));
     }
     return $source_to_dest_ids;
   }
