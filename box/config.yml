@@ -635,9 +635,10 @@ php_packages_extra:
 
 # XDebug configuration.
 php_xdebug_version: 2.7.1
+
 # Change this value to 1 in order to enable xdebug by default.
-php_xdebug_default_enable: 0
-php_xdebug_cli_disable: 'yes'
+php_xdebug_default_enable: 1
+php_xdebug_cli_disable: 'no'
 php_xdebug_remote_port: '9000'
 php_memory_limit: 512M
 solr_version: 4.5.1
@@ -645,5 +646,6 @@ solr_version: 4.5.1
 post_provision_scripts:
   - ../../../acquia/blt/scripts/drupal-vm/configure-solr.sh
   - ../../../acquia/blt/scripts/drupal-vm/post-provision.php
+
 nodejs_npm_global_packages:
   - yarn
