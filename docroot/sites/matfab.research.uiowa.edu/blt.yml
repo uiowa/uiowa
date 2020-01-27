@@ -1,0 +1,26 @@
+project:
+  profile:
+    name: sitenow
+  local:
+    hostname: researchmatfab.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: researchmatfab
+  human_name: matfab.research.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: researchmatfab.prod
+drupal:
+  db:
+    database: matfab_research_uiowa_edu
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true
+
+uiowa:
+  profiles:
+    sitenow:
+      requester: makyea

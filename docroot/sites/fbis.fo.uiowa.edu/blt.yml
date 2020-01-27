@@ -1,0 +1,26 @@
+project:
+  profile:
+    name: sitenow
+  local:
+    hostname: fofbis.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: fofbis
+  human_name: fbis.fo.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: fofbis.prod
+drupal:
+  db:
+    database: fbis_fo_uiowa_edu
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true
+
+uiowa:
+  profiles:
+    sitenow:
+      requester: dagwang
