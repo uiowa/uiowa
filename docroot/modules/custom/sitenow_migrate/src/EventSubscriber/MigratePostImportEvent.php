@@ -149,11 +149,12 @@ private function linkReplace($match) {
     if ($link_parts[1] == 'node') {
       // Take the node id, but don't grab the trailing ".
       $old_nid = substr($link_parts[2], 0, -1);
-      $new_link = '<a href="/node/' . $this->source_to_dest_ids[$old_nid] . '"';
+      // If we don't have the correct mapping, return the original link.
+      $new_link = (isset($this->source_to_dest_ids[$old_nid])) ? '<a href="/node/' . $this->source_to_dest_ids[$old_nid] . '"' : $match[0];
     } else {
-      // If it wasn't in node/# format, we need to use the alias (w/out the trailing ") to get the correct mapping.
-      $d7_nid = $this->d7_aliases[substr($old_link, 0, -1)];
-      $new_link = '<a href="/node/' . $this->source_to_dest_ids[$d7_nid] . '"';      
+      // If it wasn't in node/# format, we need to use the alias (w/out preceding "/ or the trailing ") to get the correct mapping.
+      $d7_nid = $this->d7_aliases[substr($old_link, 2, -1)];
+      $new_link = (isset($this->source_to_dest_ids[$d7_nid])) ? '<a href="/node/' . $this->source_to_dest_ids[$d7_nid] . '"' : $match[0];      
     }
     \Drupal::logger('sitenow_migrate')->notice(t('New link found... @new_link', [
       '@new_link' => $new_link,
@@ -165,7 +166,7 @@ private function linkReplace($match) {
     $pattern = '|"(https?://)?(www.)?' . $this->base_path . '/(.*?)"|';
     if (preg_match($pattern, $old_link, $match)) {
       $d7_nid = $this->d7_aliases[$match[3]];
-      $new_link = '<a href="/node/' . $this->source_to_dest_ids[$d7_nid] . '"';
+      $new_link = (isset($this->source_to_dest_ids[$d7_nid])) ? '<a href="/node/' . $this->source_to_dest_ids[$d7_nid] . '"' : $match[0];
       \Drupal::logger('sitenow_migrate')->notice(t('New link found... @new_link', [
         '@new_link' => $new_link,
       ]));
@@ -175,7 +176,7 @@ private function linkReplace($match) {
   }
 
   // No matches were found--return the unchanged original.
-  return $match;
+  return $match[0];
 }
 
 /**
