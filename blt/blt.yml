@@ -44,6 +44,13 @@ command-hooks:
   frontend-assets:
     dir: ${docroot}
     command: 'yarn workspaces run gulp'
+sync:
+  commands:
+    - 'blt:init:settings'
+    - 'drupal:sync:db'
+    - 'drupal:update'
+    - 'uiowa:multisite:noop'
+    - 'uiowa:multisite:noop'
 uiowa:
   applications:
     uiowa:
