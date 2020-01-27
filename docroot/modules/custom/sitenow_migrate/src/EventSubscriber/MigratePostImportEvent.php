@@ -35,13 +35,11 @@ class MigratePostImportEvent implements EventSubscriberInterface {
    */
   public function __construct(EntityTypeManager $entityTypeManager) {
     $this->entityTypeManager = $entityTypeManager;
-    $this->source_to_dest_ids = $this->fetchMapping();
-    $this->d7_aliases = $this->fetchAliases(True);
-    $this->d8_aliases = $this->fetchAliases();
-    // Of the form "https://base_url_path.org/"
-    $this->base_path = \Drupal::urlGenerator()->generateFromRoute('<front>', [], ['absolute' => TRUE]);
+    // Of the form "https://base_url_path.org/"; but this doesn't work if the base path is going to be different.
+    // $this->base_path = \Drupal::urlGenerator()->generateFromRoute('<front>', [], ['absolute' => TRUE]);
     // Drop the "https://" and ending "/" for convenience later.
-    $this->base_path = substr($this->base_path, 7, -1);
+    // $this->base_path = substr($this->base_path, 7, -1);
+    $this->base_path = 'acm.org.uiowa.edu';
   }
 
   /**
@@ -64,6 +62,9 @@ class MigratePostImportEvent implements EventSubscriberInterface {
     switch ($migration->id()) {
 
       case 'd7_page':
+        $this->source_to_dest_ids = $this->fetchMapping();
+        $this->d7_aliases = $this->fetchAliases(True);
+        $this->d8_aliases = $this->fetchAliases();
         \Drupal::logger('sitenow_migrate')->notice(t('Checking for possible broken links'));
         $candidates = $this->checkForPossibleLinkBreaks();
         $this->updateInternalLinks($candidates);
@@ -159,7 +160,7 @@ private function linkReplace($match) {
     return $new_link;
   } else {
     // We have an absolute link--need to check if it references this site or is external.
-    $pattern = '|(https://)+(www.)+' . $this->base_path . '/(.*?)|';
+    $pattern = '|(https://)?(www.)?' . $this->base_path . '/(.*?)|';
     if (preg_match($pattern, $old_link, $match)) {
       $d7_nid = $this->d7_aliases[$match[3]];
       $new_link = '<a href="/node/' . $this->source_to_dest_ids[$d7_nid] . '"';
@@ -186,20 +187,22 @@ private function linkReplace($match) {
     $query->join('paragraph__field_section_content_block', 's', 's.entity_id = n.field_page_content_block_target_id');
     $query->join('paragraph__field_text_body', 'p', 'p.entity_id = s.field_section_content_block_target_id');
     $query->fields('n', ['entity_id'])
-      ->condition($query->orConditionGroup()
-        ->condition('p.field_text_body_value', $this->base_path, 'LIKE')
-        ->condition('p.field_text_body_value', "%<a href%node/%", 'LIKE')
-      );
+      // ->condition($query->orConditionGroup()
+        // ->condition('p.field_text_body_value', '%' . $this->base_path . '%', 'LIKE')
+        // ->condition('p.field_text_body_value', '%<a href="/node/%"%', 'LIKE')
+      ->condition('p.field_text_body_value', '<a href ?= ?[\'"](.*?)(/?node/(\d+))?(' . $this->base_path . ')?', 'REGEXP');
+      // );
     $result = $query->execute();
     $candidates = array_merge($candidates, $result->fetchCol());
 
     // Now check for possible link breaks in standard body fields (articles and people content types).
     $query = $connection->select('node__body', 'nb')
       ->fields('nb', ['entity_id'])
-      ->condition($query->orConditionGroup()
-        ->condition('nb.body_value', $this->base_path, 'LIKE')
-        ->condition('nb.body_value', "%<a href%node/%", 'LIKE')
-      );
+      // ->condition($query->orConditionGroup()
+        // ->condition('nb.body_value', $this->base_path, 'LIKE')
+        // ->condition('nb.body_value', "%<a href%node/%", 'LIKE')
+      // );
+      ->condition('nb.body_value', '<a href ?= ?[\'"](.*?)(/?node/(\d+))?(' . $this->base_path . ')?', 'REGEXP');
     $result = $query->execute();
     $candidates = array_merge($candidates, $result->fetchCol());
     
