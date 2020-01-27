@@ -1,6 +1,6 @@
 project:
   local:
-    hostname: pentacrestmuseums.uiowa.edu
+    hostname: pentacrestmuseums.local.drupal.uiowa.edu
     protocol: https
   machine_name: pentacrestmuseums
   human_name: pentacrestmuseums.uiowa.edu
@@ -13,19 +13,10 @@ drush:
 drupal:
   db:
     database: pentacrestmuseums_uiowa_edu
-    host: localhost
-    user: root
-    password: null
 cm:
   core:
     dirs:
       sync:
         path: profiles/custom/sitenow/config/sync
     install_from_config: true
-sync:
-  commands:
-    - 'blt:init:settings'
-    - 'drupal:sync:db'
-    - 'drupal:update'
-    - 'sitenow:multisite:noop'
-    - 'sitenow:multisite:noop'
+

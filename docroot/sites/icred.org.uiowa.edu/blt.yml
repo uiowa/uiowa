@@ -1,6 +1,6 @@
 project:
   local:
-    hostname: icred.org.uiowa.edu
+    hostname: orgicred.local.drupal.uiowa.edu
     protocol: https
   machine_name: orgicred
   human_name: icred.org.uiowa.edu
@@ -13,22 +13,13 @@ drush:
 drupal:
   db:
     database: icred_org_uiowa_edu
-    host: localhost
-    user: root
-    password: null
 cm:
   core:
     dirs:
       sync:
         path: profiles/custom/sitenow/config/sync
     install_from_config: true
-sync:
-  commands:
-    - 'blt:init:settings'
-    - 'drupal:sync:db'
-    - 'drupal:update'
-    - 'sitenow:multisite:noop'
-    - 'sitenow:multisite:noop'
+
 uiowa:
   profiles:
     sitenow:
