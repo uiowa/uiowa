@@ -112,7 +112,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
 
       }
 
-      $content = preg_replace_callback('|<a href="(.*?)"|i', [$this, 'linkReplace'], $content);
+      $content = preg_replace_callback('|<a href=(".*?")|i', [$this, 'linkReplace'], $content);
 
       // Depending on content type, need to set it differently.
       switch ($node->getType()) {
@@ -142,15 +142,17 @@ private function linkReplace($match) {
   ]));
 
   // Check if it's a relative link.
-  if (substr($old_link, 0, 1) == '/') {
+  if (substr($old_link, 1, 1) == '/') {
     $link_parts = explode('/', $old_link);
 
     // Old node/# formatted links just need the updated mapping.
     if ($link_parts[1] == 'node') {
-      $new_link = '<a href="/node/' . $this->source_to_dest_ids[$link_parts[2]] . '"';
+      // Take the node id, but don't grab the trailing ".
+      $old_nid = substr($link_parts[2], 0, -1);
+      $new_link = '<a href="/node/' . $this->source_to_dest_ids[$old_nid] . '"';
     } else {
-      // If it wasn't in node/# format, we need to use the alias to get the correct mapping.
-      $d7_nid = $this->d7_aliases[$old_link];
+      // If it wasn't in node/# format, we need to use the alias (w/out the trailing ") to get the correct mapping.
+      $d7_nid = $this->d7_aliases[substr($old_link, 0, -1)];
       $new_link = '<a href="/node/' . $this->source_to_dest_ids[$d7_nid] . '"';      
     }
     \Drupal::logger('sitenow_migrate')->notice(t('New link found... @new_link', [
@@ -160,7 +162,7 @@ private function linkReplace($match) {
     return $new_link;
   } else {
     // We have an absolute link--need to check if it references this site or is external.
-    $pattern = '|(https://)?(www.)?' . $this->base_path . '/(.*?)|';
+    $pattern = '|"(https?://)?(www.)?' . $this->base_path . '/(.*?)"|';
     if (preg_match($pattern, $old_link, $match)) {
       $d7_nid = $this->d7_aliases[$match[3]];
       $new_link = '<a href="/node/' . $this->source_to_dest_ids[$d7_nid] . '"';
