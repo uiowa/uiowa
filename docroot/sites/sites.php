@@ -671,3 +671,8 @@ $sites['centerforconferencesautismcenter.prod.drupal.uiowa.edu'] = 'autismcenter
 $sites['orguibio.dev.drupal.uiowa.edu'] = 'uibio.org.uiowa.edu';
 $sites['orguibio.stage.drupal.uiowa.edu'] = 'uibio.org.uiowa.edu';
 $sites['orguibio.prod.drupal.uiowa.edu'] = 'uibio.org.uiowa.edu';
+
+// Directory aliases for cmdd.lab.uiowa.edu.
+$sites['labcmdd.dev.drupal.uiowa.edu'] = 'cmdd.lab.uiowa.edu';
+$sites['labcmdd.stage.drupal.uiowa.edu'] = 'cmdd.lab.uiowa.edu';
+$sites['labcmdd.prod.drupal.uiowa.edu'] = 'cmdd.lab.uiowa.edu';
