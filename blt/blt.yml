@@ -40,10 +40,10 @@ validate:
 command-hooks:
   frontend-reqs:
     dir: ${docroot}
-    command: '. $NVM_DIR/nvm.sh && nvm install && yarn install'
+    command: 'yarn install'
   frontend-assets:
     dir: ${docroot}
-    command: '. $NVM_DIR/nvm.sh && nvm use && yarn workspaces run gulp'
+    command: 'yarn workspaces run gulp'
 uiowa:
   applications:
     uiowa:
