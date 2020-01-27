@@ -1,0 +1,31 @@
+local:
+  root: /var/www/uiowa/docroot
+  uri: 'https://centerforconferencesautismcenter.local.drupal.uiowa.edu'
+  host: local.drupal.uiowa.edu
+  user: vagrant
+  ssh:
+    options: '-o StrictHostKeyChecking=no -o PasswordAuthentication=no -i $HOME/.vagrant.d/insecure_private_key'
+dev:
+  uri: 'https://centerforconferencesautismcenter.dev.drupal.uiowa.edu'
+  host: uiowadev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+  root: /var/www/html/uiowa.dev/docroot
+  user: uiowa.dev
+prod:
+  uri: 'https://autismcenter.centerforconferences.uiowa.edu'
+  host: uiowa.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+  root: /var/www/html/uiowa.prod/docroot
+  user: uiowa.prod
+test:
+  uri: 'https://centerforconferencesautismcenter.stage.drupal.uiowa.edu'
+  host: uiowastg.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+  root: /var/www/html/uiowa.test/docroot
+  user: uiowa.test

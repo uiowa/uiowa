@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: iowasuperfund.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: iowasuperfund
+  human_name: iowasuperfund.uiowa.edu
+  profile:
+    name: collegiate
+drush:
+  aliases:
+    local: self
+    remote: iowasuperfund.prod
+drupal:
+  db:
+    database: iowasuperfund_uiowa_edu

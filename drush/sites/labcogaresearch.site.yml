@@ -1,8 +1,12 @@
 local:
-  uri: cogaresearch.lab.uiowa.edu
-  root: '${env.cwd}/docroot'
+  root: /var/www/uiowa/docroot
+  uri: 'https://labcogaresearch.local.drupal.uiowa.edu'
+  host: local.drupal.uiowa.edu
+  user: vagrant
+  ssh:
+    options: '-o StrictHostKeyChecking=no -o PasswordAuthentication=no -i $HOME/.vagrant.d/insecure_private_key'
 dev:
-  uri: labcogaresearch.dev.drupal.uiowa.edu
+  uri: 'https://labcogaresearch.dev.drupal.uiowa.edu'
   host: uiowadev.ssh.prod.acquia-sites.com
   options: {  }
   paths:
@@ -10,7 +14,7 @@ dev:
   root: /var/www/html/uiowa.dev/docroot
   user: uiowa.dev
 prod:
-  uri: cogaresearch.lab.uiowa.edu
+  uri: 'https://cogaresearch.lab.uiowa.edu'
   host: uiowa.ssh.prod.acquia-sites.com
   options: {  }
   paths:
@@ -18,7 +22,7 @@ prod:
   root: /var/www/html/uiowa.prod/docroot
   user: uiowa.prod
 test:
-  uri: labcogaresearch.stage.drupal.uiowa.edu
+  uri: 'https://labcogaresearch.stage.drupal.uiowa.edu'
   host: uiowastg.ssh.prod.acquia-sites.com
   options: {  }
   paths:

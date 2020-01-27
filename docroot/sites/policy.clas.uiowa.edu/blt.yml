@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: claspolicy.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: claspolicy
+  human_name: policy.clas.uiowa.edu
+  profile:
+    name: collegiate
+drush:
+  aliases:
+    local: self
+    remote: claspolicy.prod
+drupal:
+  db:
+    database: policy_clas_uiowa_edu

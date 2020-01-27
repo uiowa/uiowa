@@ -1,6 +1,6 @@
 project:
   local:
-    hostname: iti.uiowa.edu
+    hostname: iti.local.drupal.uiowa.edu
     protocol: https
   machine_name: iti
   human_name: iti.uiowa.edu
@@ -13,19 +13,10 @@ drush:
 drupal:
   db:
     database: iti_uiowa_edu
-    host: localhost
-    user: root
-    password: null
 cm:
   core:
     dirs:
       sync:
         path: profiles/custom/sitenow/config/sync
     install_from_config: true
-sync:
-  commands:
-    - 'blt:init:settings'
-    - 'drupal:sync:db'
-    - 'drupal:update'
-    - 'sitenow:multisite:noop'
-    - 'sitenow:multisite:noop'
+

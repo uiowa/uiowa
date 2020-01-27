@@ -1,24 +1,28 @@
 local:
-  uri: default
-  root: '${env.cwd}/docroot'
+  root: /var/www/uiowa/docroot
+  uri: local.drupal.uiowa.edu
+  host: local.drupal.uiowa.edu
+  user: vagrant
+  ssh:
+    options: '-o StrictHostKeyChecking=no -o PasswordAuthentication=no -i $HOME/.vagrant.d/insecure_private_key'
 dev:
-    uri: uiowadev.prod.acquia-sites.com
-    host: uiowadev.ssh.prod.acquia-sites.com
-    options: {  }
-    paths: { dump-dir: /mnt/tmp }
-    root: /var/www/html/uiowa.dev/docroot
-    user: uiowa.dev
+  uri: uiowadev.prod.acquia-sites.com
+  host: uiowadev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths: { dump-dir: /mnt/tmp }
+  root: /var/www/html/uiowa.dev/docroot
+  user: uiowa.dev
 prod:
-    uri: uiowa.prod.acquia-sites.com
-    host: uiowa.ssh.prod.acquia-sites.com
-    options: {  }
-    paths: { dump-dir: /mnt/tmp }
-    root: /var/www/html/uiowa.prod/docroot
-    user: uiowa.prod
+  uri: uiowa.prod.acquia-sites.com
+  host: uiowa.ssh.prod.acquia-sites.com
+  options: {  }
+  paths: { dump-dir: /mnt/tmp }
+  root: /var/www/html/uiowa.prod/docroot
+  user: uiowa.prod
 test:
-    uri: uiowastg.prod.acquia-sites.com
-    host: uiowastg.ssh.prod.acquia-sites.com
-    options: {  }
-    paths: { dump-dir: /mnt/tmp }
-    root: /var/www/html/uiowa.test/docroot
-    user: uiowa.test
+  uri: uiowastg.prod.acquia-sites.com
+  host: uiowastg.ssh.prod.acquia-sites.com
+  options: {  }
+  paths: { dump-dir: /mnt/tmp }
+  root: /var/www/html/uiowa.test/docroot
+  user: uiowa.test

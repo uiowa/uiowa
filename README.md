@@ -23,13 +23,18 @@ This project is based on BLT, an open-source project template and tool that enab
     ```
 ----
 # Local Environment
+Follow the [BLT docs](https://docs.acquia.com/blt/install/local-development/) to get started wit [DrupalVM](https://www.drupalvm.com/). **Note** that there is currently an issue with Vagrant 2.2.6 and the latest version of VirtualBox. Download [VirtualBox 6.0](https://www.virtualbox.org/wiki/Download_Old_Builds_6_0) instead.
+
+All BLT commands should be run on the VM. You can SSH into the VM using `vagrant ssh`. See the [Vagrant docs](https://www.vagrantup.com/docs/cli/) for basic CLI usage.
+
 ### BLT Configuration
 Make sure you have an [Acquia Cloud key and secret](https://docs.acquia.com/acquia-cloud/develop/api/auth/) saved in the `blt/local.blt.yml` file. This file is ignored by Git. Be sure you do not accidentally commit your credentials to the `blt/blt.yml` file which is tracked in Git. Do not share your key or secret with anyone.
 ```
-credentials:
-  acquia:
-    key: foo
-    secret: bar
+uiowa:
+  credentials:
+    acquia:
+      key: foo
+      secret: bar
 ```
 
 Set the multisites that you want BLT to sync by default:
@@ -41,71 +46,41 @@ multisites:
 ```
 
 ### Common Tasks
-The `drupal:sync:all-sites` command will generate settings files only if they
-do not exist. If you want to re-generate all multisite local settings files,
-you can run `rm -f docroot/sites/*/settings/local.settings.php` beforehand.
+The `drupal:sync:all-sites` command will generate settings files _only_ if they do not exist. If you want to re-generate all multisite local settings files, you can run `rm -f docroot/sites/*/settings/local.settings.php` beforehand.
 
 The `blt frontend` command will install and compile frontend assets.
 
-Local configuration overrides can be set in the local.settings.php file for
-each multisite. For example, to configure stage file proxy:
+Local configuration overrides can be set in the local.settings.php file for each multisite. For example, to configure stage file proxy:
 ```
 $config['stage_file_proxy.settings']['origin'] = 'https://mysite.com';
 $config['stage_file_proxy.settings']['hotlink'] = TRUE;
 ```
 
-## SiteNow
-Please see the [SiteNow README](docroot/profiles/custom/sitenow/README.md) for
-addtional local development instructions.
-
-## Provisioning/Deprovisioning
+## Multisite Management
 ### SiteNow
-Please see the [SiteNow README](docroot/profiles/custom/sitenow/README.md) for
-provisioning/deprovisioning instructions.
-
-## Databases
-Use [SequelPro](https://www.sequelpro.com/) as a GUI for your local databases.
+Please see the [SiteNow README](docroot/profiles/custom/sitenow/README.md) for provisioning and deprovisioning instructions.
 
 ## Updating Dependencies
-Before starting updates, make sure your local environment is on a feature branch
-created from the latest version of master and synced with production by running
-`blt dsa`. Also make sure your are running the same version of PHP as in
-production.
+Before starting updates, make sure your local environment is on a feature branch created from the latest version of master and synced with production by running `blt dsa`.
 
-Drupal core requires the following specific command to update dev dependencies
-properly: `composer update drupal/core webflo/drupal-core-require-dev --with-dependencies`.
-You can run `composer update package/name` after that to update additional
-dependencies. The output from the Composer commands can be used as the long text
-for commit messages. Ideally, each package update would be one commit to the
-composer.lock file.
+Drupal core requires the following specific command to update dev dependencies properly: `composer update drupal/core webflo/drupal-core-require-dev --with-dependencies`. You can run `composer update package/name` after that to update additional dependencies. The output from the Composer commands can be used as the long text for commit messages. Ideally, each package update would be one commit to the composer.lock file.
 
-Certain scaffold files should be resolved/removed afterwards. The redirects in
-the `docroot/.htaccess` file need to be re-implemented and the `docroot/robots.txt`
-should be removed. Different updates may require difference procedures. For
-example, BLT may download default config files that we don't use like `docroot/sites/default/default.services.yml`.
+Certain scaffold files should be resolved/removed afterwards. The redirects in the `docroot/.htaccess` file need to be re-implemented and the `docroot/robots.txt` should be removed. Different updates may require difference procedures. For example, BLT may download default config files that we don't use like `docroot/sites/default/default.services.yml`.
 
-Configuration tracked in the repository will need to be exported before deployment.
-This varies by the profile used.
+Configuration tracked in the repository will need to be exported before deployment. To ensure configuration is exported correctly, manually sync a site from production using Drush. Then run database updates and export any configuration changes. Add and commit the config changes and then run another `blt dsa` to check for any further config discrepancies. If there are none, proceed with code deployment as per usual.
 
-### SiteNow
-Please see the [SiteNow README](docroot/profiles/custom/sitenow/README.md) for
-additional dependency update instructions.
-
-Add and commit the config changes and then run another `blt dsa` to check for
-any further config discrepancies. If there are none, proceed with code
-deployment as per usual.
+## Databases
+Use [SequelPro](https://www.sequelpro.com/) to [connect to DrupalVM](http://docs.drupalvm.com/en/latest/configurations/databases-mysql/#connect-using-sequel-pro-or-a-similar-client).
 
 # Resources
-
 Additional [BLT documentation](https://docs.acquia.com/blt/) may be useful. You may also access a list of BLT commands by running this:
 ```
 $ blt
 ```
 
-Most of the BLT commands referenced above have shorthand aliases. Check the
-output of `blt` for details.
+Most of the BLT commands referenced above have shorthand aliases. Check the output of `blt` for details.
 
-You can also run blt commands on a remote, but you must run them using the path and from the app root. `./vendor/bin/blt my:blt:command foo`
+You can also run blt commands on an Acquia Cloud environment, but you must run them using the path and from the app root. `./vendor/bin/blt my:blt:command foo`
 
 ## Working With a BLT Project
 

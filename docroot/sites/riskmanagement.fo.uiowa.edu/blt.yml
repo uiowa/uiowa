@@ -1,0 +1,26 @@
+project:
+  profile:
+    name: sitenow
+  local:
+    hostname: foriskmanagement.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: foriskmanagement
+  human_name: riskmanagement.fo.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: foriskmanagement.prod
+drupal:
+  db:
+    database: riskmanagement_fo_uiowa_edu
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true
+
+uiowa:
+  profiles:
+    sitenow:
+      requester: dagwang

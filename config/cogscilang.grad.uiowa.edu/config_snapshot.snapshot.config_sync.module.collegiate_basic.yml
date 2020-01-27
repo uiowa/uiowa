@@ -1,0 +1,1276 @@
+uuid: a51ab6df-2024-4245-b29d-8313e25ce351
+langcode: en
+status: true
+dependencies:
+  module:
+    - collegiate_basic
+id: config_sync.module.collegiate_basic
+snapshotSet: config_sync
+extensionType: module
+extensionName: collegiate_basic
+items:
+  -
+    collection: ''
+    name: acquia_connector.settings
+    data:
+      subscription_data:
+        active: false
+      subscription_name: ''
+      debug: false
+      cron_interval: 30
+      cron_interval_override: 0
+      banner_service: 'https://insight.acquia.com/system/acquia-banner'
+      hide_signup_messages: 0
+      spi:
+        server: 'https://nspi.acquia.com'
+        ssl_override: false
+        ssl_verify: true
+        def_vars: {  }
+        def_waived_vars: {  }
+        def_timestamp: 0
+        new_optional_data: 1
+        admin_priv: 1
+        send_node_user: 1
+        send_watchdog: 1
+        module_diff_data: 1
+        use_cron: 1
+        dynamic_banner: 0
+        set_variables_override: 0
+        set_variables_automatic:
+          - acquia_spi_set_variables_automatic
+          - error_level
+          - preprocess_js
+          - page_cache_maximum_age
+          - block_cache
+          - preprocess_css
+          - page_compression
+          - image_allow_insecure_derivatives
+          - googleanalytics_cache
+          - acquia_spi_send_node_user
+          - acquia_spi_admin_priv
+          - acquia_spi_module_diff_data
+          - acquia_spi_send_watchdog
+          - acquia_spi_use_cron
+        ignored_set_variables: {  }
+        saved_variables:
+          variables: {  }
+          time: 0
+        cron_interval: 28800
+      mapping:
+        acquia_spi_send_node_user:
+          - acquia_connector.settings
+          - spi
+          - send_node_user
+        acquia_spi_admin_priv:
+          - acquia_connector.settings
+          - spi
+          - admin_priv
+        acquia_spi_module_diff_data:
+          - acquia_connector.settings
+          - spi
+          - module_diff_data
+        acquia_spi_send_watchdog:
+          - acquia_connector.settings
+          - spi
+          - send_watchdog
+        acquia_spi_use_cron:
+          - acquia_connector.settings
+          - spi
+          - use_cron
+        cache_backends: {  }
+        cache_default_class:
+          - cache_classes
+          - cache
+        cache_inc: {  }
+        cron_safe_threshold:
+          - system.cron
+          - threshold
+          - autorun
+        googleanalytics_cache: {  }
+        error_level:
+          - system.logging
+          - error_level
+        preprocess_js:
+          - system.performance
+          - js
+          - preprocess
+        page_cache_maximum_age:
+          - system.performance
+          - cache
+          - page
+          - max_age
+        block_cache: {  }
+        preprocess_css:
+          - system.performance
+          - css
+          - preprocess
+        page_compression:
+          - system.performance
+          - response
+          - gzip
+        cron_last:
+          - state
+          - system.cron_last
+        clean_url: {  }
+        redirect_global_clean: {  }
+        theme_zen_settings: {  }
+        site_offline:
+          - state
+          - system.maintenance_mode
+        site_name:
+          - system.site
+          - name
+        user_register:
+          - user.settings
+          - register
+        user_signatures:
+          - user.settings
+          - signatures
+        user_admin_role:
+          - user.settings
+          - admin_role
+        user_email_verification:
+          - user.settings
+          - verify_mail
+        user_cancel_method:
+          - user.settings
+          - cancel_method
+        filter_fallback_format:
+          - filter.settings
+          - fallback_format
+        dblog_row_limit:
+          - dblog.settings
+          - row_limit
+        date_default_timezone:
+          - system.date
+          - timezone
+          - default
+        file_default_scheme:
+          - system.file
+          - default_scheme
+        install_profile:
+          - settings
+          - install_profile
+        maintenance_mode:
+          - state
+          - system.maintenance_mode
+        update_last_check:
+          - state
+          - update.last_check
+        site_default_country:
+          - system.date
+          - country
+          - default
+        acquia_spi_saved_variables:
+          - acquia_connector.settings
+          - spi
+          - saved_variables
+        acquia_spi_set_variables_automatic:
+          - acquia_connector.settings
+          - spi
+          - set_variables_automatic
+        acquia_spi_ignored_set_variables:
+          - acquia_connector.settings
+          - spi
+          - ignored_set_variables
+        acquia_spi_set_variables_override:
+          - acquia_connector.settings
+          - spi
+          - set_variables_override
+        fast_404:
+          - system.performance
+          - fast_404
+          - enabled
+        allow_insecure_uploads:
+          - system.file
+          - allow_insecure_uploads
+        http_response_debug_cacheability_headers:
+          - container_parameter
+          - http.response.debug_cacheability_headers
+  -
+    collection: ''
+    name: administerusersbyrole.settings
+    data:
+      roles:
+        authenticated: safe
+        editor: safe
+        webmaster: safe
+        administrator: unsafe
+  -
+    collection: ''
+    name: automated_cron.settings
+    data:
+      interval: 10800
+  -
+    collection: ''
+    name: block.block.collegiate_theme_branding
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - system
+        theme:
+          - collegiate_theme
+      id: collegiate_theme_branding
+      theme: collegiate_theme
+      region: header
+      weight: 0
+      provider: null
+      plugin: system_branding_block
+      settings:
+        id: system_branding_block
+        label: 'Site branding'
+        provider: system
+        label_display: '0'
+        use_site_logo: true
+        use_site_name: true
+        use_site_slogan: true
+      visibility: {  }
+  -
+    collection: ''
+    name: block.block.collegiate_theme_breadcrumbs
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - system
+        theme:
+          - collegiate_theme
+      id: collegiate_theme_breadcrumbs
+      theme: collegiate_theme
+      region: breadcrumb
+      weight: 0
+      provider: null
+      plugin: system_breadcrumb_block
+      settings:
+        id: system_breadcrumb_block
+        label: Breadcrumbs
+        provider: system
+        label_display: '0'
+      visibility: {  }
+  -
+    collection: ''
+    name: block.block.collegiate_theme_content
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - system
+        theme:
+          - collegiate_theme
+      id: collegiate_theme_content
+      theme: collegiate_theme
+      region: content
+      weight: 0
+      provider: null
+      plugin: system_main_block
+      settings:
+        id: system_main_block
+        label: 'Main page content'
+        provider: system
+        label_display: '0'
+      visibility: {  }
+  -
+    collection: ''
+    name: block.block.collegiate_theme_footer
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - system.menu.footer
+        module:
+          - system
+        theme:
+          - collegiate_theme
+      id: collegiate_theme_footer
+      theme: collegiate_theme
+      region: footer_fifth
+      weight: 0
+      provider: null
+      plugin: 'system_menu_block:footer'
+      settings:
+        id: 'system_menu_block:footer'
+        label: 'Footer menu'
+        provider: system
+        label_display: '0'
+        level: 1
+        depth: 0
+      visibility: {  }
+  -
+    collection: ''
+    name: block.block.collegiate_theme_help
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - help
+        theme:
+          - collegiate_theme
+      id: collegiate_theme_help
+      theme: collegiate_theme
+      region: content
+      weight: -30
+      provider: null
+      plugin: help_block
+      settings:
+        id: help_block
+        label: Help
+        provider: help
+        label_display: '0'
+      visibility: {  }
+  -
+    collection: ''
+    name: block.block.collegiate_theme_local_actions
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        theme:
+          - collegiate_theme
+      id: collegiate_theme_local_actions
+      theme: collegiate_theme
+      region: content
+      weight: -20
+      provider: null
+      plugin: local_actions_block
+      settings:
+        id: local_actions_block
+        label: 'Primary admin actions'
+        provider: core
+        label_display: '0'
+      visibility: {  }
+  -
+    collection: ''
+    name: block.block.collegiate_theme_local_tasks
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        theme:
+          - collegiate_theme
+      id: collegiate_theme_local_tasks
+      theme: collegiate_theme
+      region: content
+      weight: -40
+      provider: null
+      plugin: local_tasks_block
+      settings:
+        id: local_tasks_block
+        label: Tabs
+        provider: core
+        label_display: '0'
+        primary: true
+        secondary: true
+      visibility: {  }
+  -
+    collection: ''
+    name: block.block.collegiate_theme_main_menu
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - system.menu.main
+        module:
+          - system
+        theme:
+          - collegiate_theme
+      id: collegiate_theme_main_menu
+      theme: collegiate_theme
+      region: primary_menu
+      weight: 0
+      provider: null
+      plugin: 'system_menu_block:main'
+      settings:
+        id: 'system_menu_block:main'
+        label: 'Main navigation'
+        provider: system
+        label_display: '0'
+        level: 1
+        depth: 1
+      visibility: {  }
+  -
+    collection: ''
+    name: block.block.collegiate_theme_messages
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - system
+        theme:
+          - collegiate_theme
+      id: collegiate_theme_messages
+      theme: collegiate_theme
+      region: highlighted
+      weight: 0
+      provider: null
+      plugin: system_messages_block
+      settings:
+        id: system_messages_block
+        label: 'Status messages'
+        provider: system
+        label_display: '0'
+      visibility: {  }
+  -
+    collection: ''
+    name: block.block.collegiate_theme_page_title
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        theme:
+          - collegiate_theme
+      id: collegiate_theme_page_title
+      theme: collegiate_theme
+      region: content
+      weight: -50
+      provider: null
+      plugin: page_title_block
+      settings:
+        id: page_title_block
+        label: 'Page title'
+        provider: core
+        label_display: '0'
+      visibility: {  }
+  -
+    collection: ''
+    name: block_content.type.basic
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      id: basic
+      label: 'Basic block'
+      revision: 0
+      description: 'A basic block contains a title and a body.'
+  -
+    collection: ''
+    name: core.entity_form_display.block_content.basic.default
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - block_content.type.basic
+          - field.field.block_content.basic.body
+        module:
+          - text
+      id: block_content.basic.default
+      targetEntityType: block_content
+      bundle: basic
+      mode: default
+      content:
+        body:
+          type: text_textarea_with_summary
+          weight: -4
+          region: content
+          settings:
+            rows: 9
+            summary_rows: 3
+            placeholder: ''
+          third_party_settings: {  }
+        info:
+          type: string_textfield
+          weight: -5
+          region: content
+          settings:
+            size: 60
+            placeholder: ''
+          third_party_settings: {  }
+      hidden: {  }
+  -
+    collection: ''
+    name: core.entity_form_display.user.user.default
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - field.field.user.user.user_picture
+          - image.style.thumbnail
+        module:
+          - image
+          - user
+      id: user.user.default
+      targetEntityType: user
+      bundle: user
+      mode: default
+      content:
+        account:
+          weight: -10
+          region: content
+        contact:
+          weight: 5
+          region: content
+        language:
+          weight: 0
+          region: content
+        timezone:
+          weight: 6
+          region: content
+        user_picture:
+          type: image_image
+          settings:
+            progress_indicator: throbber
+            preview_image_style: thumbnail
+          third_party_settings: {  }
+          weight: -1
+          region: content
+      hidden: {  }
+  -
+    collection: ''
+    name: core.entity_view_display.block_content.basic.default
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - block_content.type.basic
+          - field.field.block_content.basic.body
+        module:
+          - text
+      id: block_content.basic.default
+      targetEntityType: block_content
+      bundle: basic
+      mode: default
+      content:
+        body:
+          label: hidden
+          type: text_default
+          weight: 0
+          region: content
+          settings: {  }
+          third_party_settings: {  }
+      hidden: {  }
+  -
+    collection: ''
+    name: core.entity_view_display.user.user.compact
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - core.entity_view_mode.user.compact
+          - field.field.user.user.user_picture
+          - image.style.thumbnail
+        module:
+          - image
+          - user
+      id: user.user.compact
+      targetEntityType: user
+      bundle: user
+      mode: compact
+      content:
+        user_picture:
+          type: image
+          weight: 0
+          region: content
+          settings:
+            image_style: thumbnail
+            image_link: content
+          third_party_settings: {  }
+          label: hidden
+      hidden:
+        member_for: true
+  -
+    collection: ''
+    name: core.entity_view_display.user.user.default
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - field.field.user.user.user_picture
+          - image.style.thumbnail
+        module:
+          - image
+          - user
+      id: user.user.default
+      targetEntityType: user
+      bundle: user
+      mode: default
+      content:
+        member_for:
+          weight: 5
+          region: content
+        user_picture:
+          type: image
+          weight: 0
+          region: content
+          settings:
+            image_style: thumbnail
+            image_link: content
+          third_party_settings: {  }
+          label: hidden
+      hidden: {  }
+  -
+    collection: ''
+    name: editor.editor.filtered_html
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - filter.format.filtered_html
+        module:
+          - ckeditor
+      format: filtered_html
+      editor: ckeditor
+      settings:
+        toolbar:
+          rows:
+            -
+              -
+                name: Formatting
+                items:
+                  - Bold
+                  - Italic
+                  - Strike
+                  - JustifyLeft
+                  - JustifyCenter
+                  - JustifyRight
+                  - Superscript
+                  - Subscript
+                  - RemoveFormat
+                  - SpecialChar
+              -
+                name: Lists
+                items:
+                  - BulletedList
+                  - NumberedList
+                  - Outdent
+                  - Indent
+              -
+                name: Links
+                items:
+                  - DrupalLink
+                  - DrupalUnlink
+              -
+                name: Media
+                items:
+                  - Table
+                  - media_entity_embed
+              -
+                name: Format
+                items:
+                  - Format
+              -
+                name: Tools
+                items:
+                  - Source
+                  - ShowBlocks
+                  - Undo
+                  - Redo
+                  - HorizontalRule
+                  - Maximize
+        plugins:
+          stylescombo:
+            styles: ''
+          drupallink:
+            linkit_enabled: true
+            linkit_profile: default
+          language:
+            language_list: un
+      image_upload:
+        status: false
+        scheme: public
+        directory: inline-images
+        max_size: ''
+        max_dimensions:
+          width: null
+          height: null
+  -
+    collection: ''
+    name: editor.editor.full_html
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - filter.format.full_html
+        module:
+          - ckeditor
+      format: full_html
+      editor: ckeditor
+      settings:
+        toolbar:
+          rows:
+            -
+              -
+                name: Formatting
+                items:
+                  - Bold
+                  - Italic
+                  - Strike
+                  - Superscript
+                  - Subscript
+                  - '-'
+                  - RemoveFormat
+              -
+                name: Linking
+                items:
+                  - DrupalLink
+                  - DrupalUnlink
+              -
+                name: Lists
+                items:
+                  - BulletedList
+                  - NumberedList
+              -
+                name: Media
+                items:
+                  - Blockquote
+                  - DrupalImage
+                  - Table
+                  - HorizontalRule
+              -
+                name: 'Block Formatting'
+                items:
+                  - Format
+              -
+                name: Tools
+                items:
+                  - ShowBlocks
+                  - Source
+        plugins:
+          stylescombo:
+            styles: ''
+      image_upload:
+        status: true
+        scheme: public
+        directory: inline-images
+        max_size: ''
+        max_dimensions:
+          width: 0
+          height: 0
+  -
+    collection: ''
+    name: field.field.block_content.basic.body
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - block_content.type.basic
+          - field.storage.block_content.body
+        module:
+          - text
+      id: block_content.basic.body
+      field_name: body
+      entity_type: block_content
+      bundle: basic
+      label: Body
+      description: ''
+      required: false
+      translatable: true
+      default_value: {  }
+      default_value_callback: ''
+      settings:
+        display_summary: false
+      field_type: text_with_summary
+  -
+    collection: ''
+    name: field.field.user.user.user_picture
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - field.storage.user.user_picture
+        module:
+          - image
+          - user
+      id: user.user.user_picture
+      field_name: user_picture
+      entity_type: user
+      bundle: user
+      label: Picture
+      description: 'Your virtual face or picture.'
+      required: false
+      translatable: true
+      default_value: {  }
+      default_value_callback: ''
+      settings:
+        file_extensions: 'png gif jpg jpeg'
+        file_directory: 'pictures/[date:custom:Y]-[date:custom:m]'
+        max_filesize: ''
+        alt_field: false
+        title_field: false
+        max_resolution: ''
+        min_resolution: ''
+        default_image:
+          uuid: null
+          alt: ''
+          title: ''
+          width: null
+          height: null
+        alt_field_required: false
+        title_field_required: false
+        handler: 'default:file'
+        handler_settings: {  }
+      field_type: image
+  -
+    collection: ''
+    name: field.storage.user.user_picture
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - file
+          - image
+          - user
+      id: user.user_picture
+      field_name: user_picture
+      entity_type: user
+      type: image
+      settings:
+        uri_scheme: public
+        default_image:
+          uuid: null
+          alt: ''
+          title: ''
+          width: null
+          height: null
+        target_type: file
+        display_field: false
+        display_default: false
+      module: image
+      locked: false
+      cardinality: 1
+      translatable: true
+      indexes:
+        target_id:
+          - target_id
+      persist_with_no_fields: false
+      custom_storage: false
+  -
+    collection: ''
+    name: filter.format.filtered_html
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - editor
+          - entity_embed
+          - linkit
+      name: 'Filtered HTML'
+      format: filtered_html
+      weight: 0
+      filters:
+        editor_file_reference:
+          id: editor_file_reference
+          provider: editor
+          status: true
+          weight: -44
+          settings: {  }
+        filter_align:
+          id: filter_align
+          provider: filter
+          status: true
+          weight: -47
+          settings: {  }
+        filter_autop:
+          id: filter_autop
+          provider: filter
+          status: false
+          weight: -42
+          settings: {  }
+        filter_caption:
+          id: filter_caption
+          provider: filter
+          status: true
+          weight: -46
+          settings: {  }
+        filter_html:
+          id: filter_html
+          provider: filter
+          status: true
+          weight: -49
+          settings:
+            allowed_html: '<a href hreflang title class id target rel data-*> <em> <strong> <cite> <blockquote cite> <code> <ul type> <ol start type> <li> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <s> <sup> <sub> <p class="text-align-*"> <div class="text-align-*"><hr> <table> <caption> <tbody> <thead> <tfoot> <th> <td> <tr> <drupal-entity data-* title alt> <br><mark>'
+            filter_html_help: true
+            filter_html_nofollow: false
+        filter_htmlcorrector:
+          id: filter_htmlcorrector
+          provider: filter
+          status: true
+          weight: -45
+          settings: {  }
+        filter_html_escape:
+          id: filter_html_escape
+          provider: filter
+          status: false
+          weight: -43
+          settings: {  }
+        filter_html_image_secure:
+          id: filter_html_image_secure
+          provider: filter
+          status: false
+          weight: -40
+          settings: {  }
+        filter_url:
+          id: filter_url
+          provider: filter
+          status: false
+          weight: -41
+          settings:
+            filter_url_length: 72
+        entity_embed:
+          id: entity_embed
+          provider: entity_embed
+          status: true
+          weight: -48
+          settings: {  }
+        linkit:
+          id: linkit
+          provider: linkit
+          status: true
+          weight: -50
+          settings:
+            title: true
+  -
+    collection: ''
+    name: filter.format.full_html
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - editor
+      name: 'Full HTML'
+      format: full_html
+      weight: 1
+      roles:
+        - administrator
+      filters:
+        filter_align:
+          id: filter_align
+          provider: filter
+          status: true
+          weight: 8
+          settings: {  }
+        filter_caption:
+          id: filter_caption
+          provider: filter
+          status: true
+          weight: 9
+          settings: {  }
+        filter_htmlcorrector:
+          id: filter_htmlcorrector
+          provider: filter
+          status: true
+          weight: 10
+          settings: {  }
+        editor_file_reference:
+          id: editor_file_reference
+          provider: editor
+          status: true
+          weight: 11
+          settings: {  }
+  -
+    collection: ''
+    name: filter.format.plain_text
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      name: 'Plain text'
+      format: plain_text
+      weight: 10
+      filters:
+        filter_html_escape:
+          id: filter_html_escape
+          provider: filter
+          status: true
+          weight: -10
+          settings: {  }
+        filter_url:
+          id: filter_url
+          provider: filter
+          status: true
+          weight: 0
+          settings:
+            filter_url_length: 72
+        filter_autop:
+          id: filter_autop
+          provider: filter
+          status: true
+          weight: 0
+          settings: {  }
+  -
+    collection: ''
+    name: filter.format.restricted_html
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      name: 'Restricted HTML'
+      format: restricted_html
+      weight: 0
+      roles:
+        - anonymous
+      filters:
+        filter_html:
+          id: filter_html
+          provider: filter
+          status: true
+          weight: -10
+          settings:
+            allowed_html: '<a href hreflang> <em> <strong> <cite> <blockquote cite> <code> <ul type> <ol start type> <li> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id>'
+            filter_html_help: true
+            filter_html_nofollow: false
+        filter_autop:
+          id: filter_autop
+          provider: filter
+          status: true
+          weight: 0
+          settings: {  }
+        filter_url:
+          id: filter_url
+          provider: filter
+          status: true
+          weight: 0
+          settings:
+            filter_url_length: 72
+  -
+    collection: ''
+    name: rdf.mapping.taxonomy_term.tags
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - taxonomy.vocabulary.tags
+        module:
+          - taxonomy
+      id: taxonomy_term.tags
+      targetEntityType: taxonomy_term
+      bundle: tags
+      types:
+        - 'schema:Thing'
+      fieldMappings:
+        name:
+          properties:
+            - 'schema:name'
+        description:
+          properties:
+            - 'schema:description'
+  -
+    collection: ''
+    name: system.cron
+    data:
+      threshold:
+        requirements_warning: 172800
+        requirements_error: 1209600
+      logging: 1
+  -
+    collection: ''
+    name: system.theme
+    data:
+      admin: adminimal_theme
+      default: collegiate_theme
+  -
+    collection: ''
+    name: taxonomy.vocabulary.tags
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      name: Tags
+      vid: tags
+      description: 'Use tags to group articles on similar topics into categories.'
+      hierarchy: 0
+      weight: 0
+  -
+    collection: ''
+    name: user.role.administrator
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      id: administrator
+      label: Administrator
+      weight: 3
+      is_admin: true
+      permissions: {  }
+  -
+    collection: ''
+    name: user.role.anonymous
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      id: anonymous
+      label: 'Anonymous user'
+      weight: 0
+      is_admin: false
+      permissions:
+        - 'access content'
+        - 'view media'
+  -
+    collection: ''
+    name: user.role.authenticated
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      id: authenticated
+      label: 'Authenticated user'
+      weight: 1
+      is_admin: false
+      permissions:
+        - 'access content'
+        - 'access shortcuts'
+        - 'view media'
+  -
+    collection: ''
+    name: user.role.editor
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      id: editor
+      label: Editor
+      weight: 1
+      is_admin: false
+      permissions:
+        - 'access administration pages'
+        - 'access content overview'
+        - 'access file_link_browser entity browser pages'
+        - 'access files overview'
+        - 'access media overview'
+        - 'access media_entity_browser entity browser pages'
+        - 'access media_wysiwyg_browser entity browser pages'
+        - 'access metatag tag advanced__canonical_url'
+        - 'access metatag tag advanced__image_src'
+        - 'access metatag tag advanced__news_keywords'
+        - 'access metatag tag advanced__original_source'
+        - 'access metatag tag advanced__shortlink'
+        - 'access metatag tag basic__description'
+        - 'access toolbar'
+        - 'access tour'
+        - 'access users overview'
+        - 'administer main menu items'
+        - 'create file media'
+        - 'create image media'
+        - 'create image_background media'
+        - 'create page content'
+        - 'create terms in tags'
+        - 'delete any file media'
+        - 'delete any image media'
+        - 'delete any image_background media'
+        - 'delete any page content'
+        - 'delete own file media'
+        - 'delete own image media'
+        - 'delete own image_background media'
+        - 'delete own page content'
+        - 'delete page revisions'
+        - 'edit any file media'
+        - 'edit any image media'
+        - 'edit any image_background media'
+        - 'edit any page content'
+        - 'edit own file media'
+        - 'edit own image media'
+        - 'edit own image_background media'
+        - 'edit own page content'
+        - 'edit terms in tags'
+        - 'enter page revision log entry'
+        - 'override page published option'
+        - 'revert page revisions'
+        - 'use text format filtered_html'
+        - 'view media'
+        - 'view own unpublished content'
+        - 'view page revisions'
+        - 'view the administration theme'
+        - 'view users by role'
+  -
+    collection: ''
+    name: user.role.webmaster
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      id: webmaster
+      label: Webmaster
+      weight: 2
+      is_admin: false
+      permissions:
+        - 'access administration pages'
+        - 'access content overview'
+        - 'access file_link_browser entity browser pages'
+        - 'access files overview'
+        - 'access media overview'
+        - 'access media_entity_browser entity browser pages'
+        - 'access media_wysiwyg_browser entity browser pages'
+        - 'access metatag tag advanced__canonical_url'
+        - 'access metatag tag advanced__image_src'
+        - 'access metatag tag advanced__news_keywords'
+        - 'access metatag tag advanced__original_source'
+        - 'access metatag tag advanced__shortlink'
+        - 'access metatag tag basic__description'
+        - 'access taxonomy overview'
+        - 'access toolbar'
+        - 'access tour'
+        - 'access users overview'
+        - 'administer basic site settings'
+        - 'administer footer menu items'
+        - 'administer footer-second menu items'
+        - 'administer google analytics'
+        - 'administer main menu items'
+        - 'administer meta tags'
+        - 'administer redirects'
+        - 'administer social menu items'
+        - 'administer uiowa events'
+        - 'administer uiowa_bar configuration'
+        - 'allow empty user mail'
+        - 'assign editor role'
+        - 'assign roles'
+        - 'assign webmaster role'
+        - 'cancel users by role'
+        - 'create file media'
+        - 'create image media'
+        - 'create image_background media'
+        - 'create page content'
+        - 'create terms in tags'
+        - 'create url aliases'
+        - 'create users'
+        - 'delete any file media'
+        - 'delete any image media'
+        - 'delete any image_background media'
+        - 'delete any page content'
+        - 'delete own file media'
+        - 'delete own image media'
+        - 'delete own image_background media'
+        - 'delete own page content'
+        - 'delete page revisions'
+        - 'delete terms in tags'
+        - 'edit any file media'
+        - 'edit any image media'
+        - 'edit any image_background media'
+        - 'edit any page content'
+        - 'edit own file media'
+        - 'edit own image media'
+        - 'edit own image_background media'
+        - 'edit own page content'
+        - 'edit terms in tags'
+        - 'edit users by role'
+        - 'enter page revision log entry'
+        - 'override page authored by option'
+        - 'override page published option'
+        - 'revert page revisions'
+        - 'role-assign users by role'
+        - 'select account cancellation method'
+        - 'use text format filtered_html'
+        - 'view media'
+        - 'view own unpublished content'
+        - 'view page revisions'
+        - 'view the administration theme'
+        - 'view users by role'

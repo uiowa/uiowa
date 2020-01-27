@@ -1,0 +1,6 @@
+services:
+  views_tree.tree:
+    class: \Drupal\views_tree\TreeHelper
+    arguments: ['@views_tree.views_tree_values']
+  views_tree.views_tree_values:
+    class: \Drupal\views_tree\ViewsResultTreeValues
