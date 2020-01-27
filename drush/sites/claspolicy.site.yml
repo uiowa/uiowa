@@ -1,12 +1,12 @@
 local:
   root: /var/www/uiowa/docroot
-  uri: claspolicy.local.drupal.uiowa.edu
+  uri: 'https://claspolicy.local.drupal.uiowa.edu'
   host: local.drupal.uiowa.edu
   user: vagrant
   ssh:
     options: '-o StrictHostKeyChecking=no -o PasswordAuthentication=no -i $HOME/.vagrant.d/insecure_private_key'
 dev:
-  uri: claspolicy.dev.drupal.uiowa.edu
+  uri: 'https://claspolicy.dev.drupal.uiowa.edu'
   host: uiowa01dev.ssh.prod.acquia-sites.com
   options: {  }
   paths:
@@ -14,7 +14,7 @@ dev:
   root: /var/www/html/uiowa01.dev/docroot
   user: uiowa01.dev
 prod:
-  uri: policy.clas.uiowa.edu
+  uri: 'https://policy.clas.uiowa.edu'
   host: uiowa01.ssh.prod.acquia-sites.com
   options: {  }
   paths:
@@ -22,7 +22,7 @@ prod:
   root: /var/www/html/uiowa01.prod/docroot
   user: uiowa01.prod
 test:
-  uri: claspolicy.stage.drupal.uiowa.edu
+  uri: 'https://claspolicy.stage.drupal.uiowa.edu'
   host: uiowa01stg.ssh.prod.acquia-sites.com
   options: {  }
   paths:

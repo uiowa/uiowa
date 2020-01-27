@@ -1,12 +1,12 @@
 local:
   root: /var/www/uiowa/docroot
-  uri: sitessem.local.drupal.uiowa.edu
+  uri: 'https://sitessem.local.drupal.uiowa.edu'
   host: local.drupal.uiowa.edu
   user: vagrant
   ssh:
     options: '-o StrictHostKeyChecking=no -o PasswordAuthentication=no -i $HOME/.vagrant.d/insecure_private_key'
 dev:
-  uri: sitessem.dev.drupal.uiowa.edu
+  uri: 'https://sitessem.dev.drupal.uiowa.edu'
   host: uiowadev.ssh.prod.acquia-sites.com
   options: {  }
   paths:
@@ -14,7 +14,7 @@ dev:
   root: /var/www/html/uiowa.dev/docroot
   user: uiowa.dev
 prod:
-  uri: sem.sites.uiowa.edu
+  uri: 'https://sem.sites.uiowa.edu'
   host: uiowa.ssh.prod.acquia-sites.com
   options: {  }
   paths:
@@ -22,7 +22,7 @@ prod:
   root: /var/www/html/uiowa.prod/docroot
   user: uiowa.prod
 test:
-  uri: sitessem.stage.drupal.uiowa.edu
+  uri: 'https://sitessem.stage.drupal.uiowa.edu'
   host: uiowastg.ssh.prod.acquia-sites.com
   options: {  }
   paths:
