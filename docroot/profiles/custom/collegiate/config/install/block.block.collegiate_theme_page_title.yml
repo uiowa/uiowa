@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - layout_builder_custom
+  theme:
+    - collegiate_theme
+id: collegiate_theme_page_title
+theme: collegiate_theme
+region: content
+weight: -50
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  provider: core
+  label_display: '0'
+visibility:
+  layout_builder_active:
+    id: layout_builder_active
+    enabled: 1
+    negate: false
+    context_mapping: {  }

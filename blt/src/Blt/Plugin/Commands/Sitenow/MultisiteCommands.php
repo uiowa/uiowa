@@ -3,8 +3,11 @@
 namespace Uiowa\Blt\Plugin\Commands\Sitenow;
 
 use Acquia\Blt\Robo\BltTasks;
-use AcquiaCloudApi\CloudApi\Client;
-use AcquiaCloudApi\CloudApi\Connector;
+use AcquiaCloudApi\Connector\Client;
+use AcquiaCloudApi\Connector\Connector;
+use AcquiaCloudApi\Endpoints\Databases;
+use AcquiaCloudApi\Endpoints\Domains;
+use AcquiaCloudApi\Endpoints\Environments;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
 use Symfony\Component\Yaml\Yaml;
@@ -75,7 +78,13 @@ class MultisiteCommands extends BltTasks {
     $sites = Multisite::getAllSites($root);
 
     $dir = $this->askChoice('Select which site to delete.', $sites);
-    $db = Multisite::getDatabase($dir);
+
+    // Load the database name from configuration since that can change from the
+    // initial database name but has to match what is in the settings.php file.
+    // @see: FileSystemTests.php.
+    $this->switchSiteContext($dir);
+    $db = $this->getConfigValue('drupal.db.database');
+
     $id = Multisite::getIdentifier("https://{$dir}");
     $dev = Multisite::getInternalDomains($id)['dev'];
     $test = Multisite::getInternalDomains($id)['test'];
@@ -98,27 +107,34 @@ class MultisiteCommands extends BltTasks {
       throw new \Exception('Aborted.');
     }
     else {
-      /** @var \AcquiaCloudApi\CloudApi\Client $cloud */
-      /** @var \AcquiaCloudApi\Response\ApplicationResponse $application */
-      list($cloud, $application) = $this->getAcquiaCloudApi();
+      /** @var \AcquiaCloudApi\Connector\Client $client */
+      $client = $this->getAcquiaCloudApiClient();
 
-      /** @var \AcquiaCloudApi\Response\DatabasesResponse $databases */
-      $databases = $cloud->databases($application->uuid);
+      foreach ($this->getConfigValue('uiowa.applications') as $app => $attrs) {
+        /** @var \AcquiaCloudApi\Endpoints\Databases $databases */
+        $databases = new Databases($client);
 
-      /** @var \AcquiaCloudApi\Response\DatabaseResponse $database */
-      foreach ($databases as $database) {
-        if ($database->name == $db) {
-          $cloud->databaseDelete($application->uuid, $db);
-          $this->say("Deleted <comment>{$db}</comment> cloud database.");
-        }
-      }
+        // Find the application that hosts the database.
+        foreach ($databases->getAll($attrs['id']) as $database) {
+          if ($database->name == $db) {
+            $databases->delete($attrs['id'], $db);
+            $this->say("Deleted <comment>{$db}</comment> cloud database on <comment>{$app}</comment> application.");
 
-      /** @var \AcquiaCloudApi\Response\EnvironmentResponse $environment */
-      foreach ($cloud->environments($application->uuid) as $environment) {
-        if ($intersect = array_intersect($properties['domains'], $environment->domains)) {
-          foreach ($intersect as $domain) {
-            $cloud->deleteDomain($environment->uuid, $domain);
-            $this->say("Deleted <comment>{$domain}</comment> cloud domain.");
+            /** @var \AcquiaCloudApi\Endpoints\Environments $environments */
+            $environments = new Environments($client);
+
+            foreach ($environments->getAll($attrs['id']) as $environment) {
+              if ($intersect = array_intersect($properties['domains'], $environment->domains)) {
+                $domains = new Domains($client);
+
+                foreach ($intersect as $domain) {
+                  $domains->delete($environment->uuid, $domain);
+                  $this->say("Deleted <comment>{$domain}</comment> domain on {$app} application.");
+                }
+              }
+            }
+
+            break 2;
           }
         }
       }
@@ -149,13 +165,10 @@ EOD;
       $this->taskGit()
         ->dir($root)
         ->add('docroot/sites/sites.php')
-        ->commit("Deleted sites.php entries for {$dir}")
         ->add("docroot/sites/{$dir}/")
-        ->commit("Deleted multisite {$dir} directory")
         ->add("drush/sites/{$id}.site.yml")
-        ->commit("Deleted Drush aliases for {$dir}")
         ->add("config/{$dir}/")
-        ->commit("Deleted config directory for {$dir}")
+        ->commit("Delete {$dir} multisite")
         ->interactive(FALSE)
         ->printOutput(FALSE)
         ->printMetadata(FALSE)
@@ -218,7 +231,7 @@ EOD;
    * @throws \Exception
    */
   public function create($host, $requester) {
-    $db = Multisite::getDatabase($host);
+    $db = Multisite::getInitialDatabaseName($host);
 
     $applications = $this->getConfigValue('uiowa.applications');
     $choices = [];
@@ -229,11 +242,12 @@ EOD;
 
     $choice = $this->askChoice('Which cloud application should be used?', $choices);
 
-    /** @var \AcquiaCloudApi\CloudApi\Client $cloud */
-    /** @var \AcquiaCloudApi\Response\ApplicationResponse $application */
-    list($cloud, $application) = $this->getAcquiaCloudApi($applications[$choice]['id']);
+    /** @var \AcquiaCloudApi\Connector\Client $client */
+    $client = $this->getAcquiaCloudApiClient();
 
-    $cloud->databaseCreate($application->uuid, $db);
+    /** @var \AcquiaCloudApi\Endpoints\Databases $databases */
+    $databases = new Databases($client);
+    $databases->create($applications[$choice]['id'], $db);
     $this->say("Created <comment>{$db}</comment> cloud database on {$choice}.");
 
     $id = Multisite::getIdentifier("https://{$host}");
@@ -255,8 +269,10 @@ EOD;
     $result = $this->taskReplaceInFile("{$root}/docroot/sites/{$host}/settings.php")
       ->from('require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";' . "\n")
       ->to(<<<EOD
+\$ah_group = getenv('AH_SITE_GROUP');
+
 if (file_exists('/var/www/site-php')) {
-  require '/var/www/site-php/uiowa/{$db}-settings.inc';
+  require "/var/www/site-php/{\$ah_group}/{$db}-settings.inc";
 }
 
 require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
@@ -361,13 +377,10 @@ EOD;
     $this->taskGit()
       ->dir($this->getConfigValue("repo.root"))
       ->add('docroot/sites/sites.php')
-      ->commit("Add sites.php entries for {$host}")
       ->add("docroot/sites/{$host}")
-      ->commit("Initialize multisite {$host} directory")
       ->add("drush/sites/{$id}.site.yml")
-      ->commit("Create Drush aliases for {$host}")
       ->add("config/{$host}")
-      ->commit("Create config directory for {$host}")
+      ->commit("Initialize {$host} multisite")
       ->interactive(FALSE)
       ->printOutput(FALSE)
       ->printMetadata(FALSE)
@@ -453,30 +466,21 @@ EOD;
   }
 
   /**
-   * Return new ConnectorInterface and ApplicationResponse for this application.
+   * Return new ConnectorInterface for Acquia Cloud API v2 interactions.
    *
-   * @param string $id
-   *   The Acquia Cloud application ID.
-   *
-   * @return array
-   *   Array of ConnectorInterface and ApplicationResponse variables.
+   * @return \AcquiaCloudApi\Connector\Client
+   *   ConnectorInterface client.
    */
-  protected function getAcquiaCloudApi($id) {
+  protected function getAcquiaCloudApiClient() {
     $connector = new Connector([
       'key' => $this->getConfigValue('uiowa.credentials.acquia.key'),
       'secret' => $this->getConfigValue('uiowa.credentials.acquia.secret'),
     ]);
 
-    /** @var \AcquiaCloudApi\CloudApi\Client $cloud */
-    $cloud = Client::factory($connector);
+    /** @var \AcquiaCloudApi\Connector\Client $client */
+    $client = Client::factory($connector);
 
-    /** @var \AcquiaCloudApi\Response\ApplicationResponse $application */
-    $application = $cloud->application($id);
-
-    return [
-      $cloud,
-      $application,
-    ];
+    return $client;
   }
 
 }

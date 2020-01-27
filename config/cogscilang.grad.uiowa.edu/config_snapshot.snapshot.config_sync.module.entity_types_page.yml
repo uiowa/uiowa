@@ -1,0 +1,347 @@
+uuid: db0d10a5-ff5e-4f0e-9344-cbeac43096d1
+langcode: en
+status: true
+dependencies:
+  module:
+    - entity_types_page
+id: config_sync.module.entity_types_page
+snapshotSet: config_sync
+extensionType: module
+extensionName: entity_types_page
+items:
+  -
+    collection: ''
+    name: core.base_field_override.node.page.promote
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - node.type.page
+      id: node.page.promote
+      field_name: promote
+      entity_type: node
+      bundle: page
+      label: 'Promoted to front page'
+      description: ''
+      required: false
+      translatable: true
+      default_value:
+        -
+          value: 0
+      default_value_callback: ''
+      settings:
+        on_label: 'On'
+        off_label: 'Off'
+      field_type: boolean
+  -
+    collection: ''
+    name: core.entity_form_display.node.page.default
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - field.field.node.page.body
+          - node.type.page
+        module:
+          - path
+          - text
+      id: node.page.default
+      targetEntityType: node
+      bundle: page
+      mode: default
+      content:
+        body:
+          type: text_textarea_with_summary
+          weight: 1
+          region: content
+          settings:
+            rows: 9
+            summary_rows: 3
+            placeholder: ''
+          third_party_settings: {  }
+        created:
+          type: datetime_timestamp
+          weight: 10
+          region: content
+          settings: {  }
+          third_party_settings: {  }
+        path:
+          type: path
+          weight: 6
+          region: content
+          settings: {  }
+          third_party_settings: {  }
+        promote:
+          type: boolean_checkbox
+          settings:
+            display_label: true
+          weight: 4
+          region: content
+          third_party_settings: {  }
+        status:
+          type: boolean_checkbox
+          settings:
+            display_label: true
+          weight: 7
+          region: content
+          third_party_settings: {  }
+        sticky:
+          type: boolean_checkbox
+          settings:
+            display_label: true
+          weight: 5
+          region: content
+          third_party_settings: {  }
+        title:
+          type: string_textfield
+          weight: 0
+          region: content
+          settings:
+            size: 60
+            placeholder: ''
+          third_party_settings: {  }
+        uid:
+          type: entity_reference_autocomplete
+          weight: 2
+          region: content
+          settings:
+            match_operator: CONTAINS
+            size: 60
+            placeholder: ''
+          third_party_settings: {  }
+      hidden: {  }
+  -
+    collection: ''
+    name: core.entity_view_display.node.page.default
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - field.field.node.page.body
+          - node.type.page
+        module:
+          - layout_builder
+          - text
+          - user
+      third_party_settings:
+        layout_builder:
+          allow_custom: true
+          enabled: true
+          sections:
+            -
+              layout_id: layout_onecol
+              layout_settings: {  }
+              components:
+                eece7031-5478-448d-bf0c-2a58a8f3a77e:
+                  uuid: eece7031-5478-448d-bf0c-2a58a8f3a77e
+                  region: content
+                  configuration:
+                    label_display: '0'
+                    context_mapping:
+                      entity: layout_builder.entity
+                    id: 'extra_field_block:node:page:links'
+                  additional: {  }
+                  weight: 0
+                a1d1b5c4-e9c0-4117-aa69-95747061ebbc:
+                  uuid: a1d1b5c4-e9c0-4117-aa69-95747061ebbc
+                  region: content
+                  configuration:
+                    label_display: '0'
+                    context_mapping:
+                      entity: layout_builder.entity
+                    id: 'field_block:node:page:body'
+                    formatter:
+                      label: hidden
+                      type: text_default
+                      settings: {  }
+                      third_party_settings: {  }
+                  additional: {  }
+                  weight: 1
+              third_party_settings: {  }
+      id: node.page.default
+      targetEntityType: node
+      bundle: page
+      mode: default
+      content:
+        body:
+          label: hidden
+          type: text_default
+          weight: 1
+          region: content
+          settings: {  }
+          third_party_settings: {  }
+        links:
+          weight: 0
+          region: content
+          settings: {  }
+          third_party_settings: {  }
+      hidden: {  }
+  -
+    collection: ''
+    name: core.entity_view_display.node.page.teaser
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - core.entity_view_mode.node.teaser
+          - field.field.node.page.body
+          - node.type.page
+        module:
+          - text
+          - user
+      id: node.page.teaser
+      targetEntityType: node
+      bundle: page
+      mode: teaser
+      content:
+        body:
+          label: hidden
+          type: text_summary_or_trimmed
+          weight: 101
+          region: content
+          settings:
+            trim_length: 600
+          third_party_settings: {  }
+        links:
+          weight: 100
+          region: content
+      hidden: {  }
+  -
+    collection: ''
+    name: field.field.node.page.body
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - field.storage.node.body
+          - node.type.page
+        module:
+          - text
+      id: node.page.body
+      field_name: body
+      entity_type: node
+      bundle: page
+      label: Body
+      description: ''
+      required: false
+      translatable: true
+      default_value: {  }
+      default_value_callback: ''
+      settings:
+        display_summary: true
+      field_type: text_with_summary
+  -
+    collection: ''
+    name: field.field.node.page.layout_builder__layout
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - field.storage.node.layout_builder__layout
+          - node.type.page
+        module:
+          - layout_builder
+      id: node.page.layout_builder__layout
+      field_name: layout_builder__layout
+      entity_type: node
+      bundle: page
+      label: Layout
+      description: ''
+      required: false
+      translatable: false
+      default_value: {  }
+      default_value_callback: ''
+      settings: {  }
+      field_type: layout_section
+  -
+    collection: ''
+    name: node.type.page
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        enforced:
+          module:
+            - entity_types
+      name: 'Basic page'
+      type: page
+      description: 'Use <em>basic pages</em> for your static content, such as an ''About us'' page.'
+      help: ''
+      new_revision: true
+      preview_mode: 1
+      display_submitted: false
+  -
+    collection: ''
+    name: pathauto.pattern.page
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - node
+      id: page
+      label: 'Basic page'
+      type: 'canonical_entities:node'
+      pattern: '[node:title]'
+      selection_criteria:
+        00e43b31-d51e-4793-bd28-952604955d73:
+          id: node_type
+          bundles:
+            page: page
+          negate: false
+          context_mapping:
+            node: node
+          uuid: 00e43b31-d51e-4793-bd28-952604955d73
+      selection_logic: and
+      weight: -5
+      relationships: {  }
+  -
+    collection: ''
+    name: rdf.mapping.node.page
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - node.type.page
+        module:
+          - node
+      id: node.page
+      targetEntityType: node
+      bundle: page
+      types:
+        - 'schema:WebPage'
+      fieldMappings:
+        title:
+          properties:
+            - 'schema:name'
+        created:
+          properties:
+            - 'schema:dateCreated'
+          datatype_callback:
+            callable: 'Drupal\rdf\CommonDataConverter::dateIso8601Value'
+        changed:
+          properties:
+            - 'schema:dateModified'
+          datatype_callback:
+            callable: 'Drupal\rdf\CommonDataConverter::dateIso8601Value'
+        body:
+          properties:
+            - 'schema:text'
+        uid:
+          properties:
+            - 'schema:author'
+          mapping_type: rel
+        comment_count:
+          properties:
+            - 'schema:interactionCount'
+          datatype_callback:
+            callable: 'Drupal\rdf\SchemaOrgDataConverter::interactionCount'
+            arguments:
+              interaction_type: UserComments
