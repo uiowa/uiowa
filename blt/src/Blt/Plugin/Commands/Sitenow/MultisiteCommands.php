@@ -19,21 +19,6 @@ use Uiowa\Multisite;
 class MultisiteCommands extends BltTasks {
 
   /**
-   * A no-op command.
-   *
-   * This is called in sync.commands to override the frontend step.
-   *
-   * @see: https://github.com/acquia/blt/issues/3697
-   *
-   * @command sitenow:multisite:noop
-   *
-   * @aliases smn
-   */
-  public function noop() {
-
-  }
-
-  /**
    * Execute a Drush command against all multisites.
    *
    * @param string $cmd
@@ -64,6 +49,12 @@ class MultisiteCommands extends BltTasks {
   /**
    * Deletes multisite code, database and domains.
    *
+   * @param array $options
+   *   Array of options.
+   *
+   * @option simulate
+   *   Simulate cloud operations and file system tasks.
+   *
    * @command sitenow:multisite:delete
    *
    * @aliases smd
@@ -73,7 +64,7 @@ class MultisiteCommands extends BltTasks {
    * @requireFeatureBranch
    * @requireCredentials
    */
-  public function delete() {
+  public function delete(array $options = ['simulate' => FALSE]) {
     $root = $this->getConfigValue('repo.root');
     $sites = Multisite::getAllSites($root);
 
@@ -86,6 +77,7 @@ class MultisiteCommands extends BltTasks {
     $db = $this->getConfigValue('drupal.db.database');
 
     $id = Multisite::getIdentifier("https://{$dir}");
+    $local = Multisite::getInternalDomains($id)['local'];
     $dev = Multisite::getInternalDomains($id)['dev'];
     $test = Multisite::getInternalDomains($id)['test'];
     $prod = Multisite::getInternalDomains($id)['prod'];
@@ -107,36 +99,41 @@ class MultisiteCommands extends BltTasks {
       throw new \Exception('Aborted.');
     }
     else {
-      /** @var \AcquiaCloudApi\Connector\Client $client */
-      $client = $this->getAcquiaCloudApiClient();
+      if (!$options['simulate']) {
+        /** @var \AcquiaCloudApi\Connector\Client $client */
+        $client = $this->getAcquiaCloudApiClient();
 
-      foreach ($this->getConfigValue('uiowa.applications') as $app => $attrs) {
-        /** @var \AcquiaCloudApi\Endpoints\Databases $databases */
-        $databases = new Databases($client);
+        foreach ($this->getConfigValue('uiowa.applications') as $app => $attrs) {
+          /** @var \AcquiaCloudApi\Endpoints\Databases $databases */
+          $databases = new Databases($client);
 
-        // Find the application that hosts the database.
-        foreach ($databases->getAll($attrs['id']) as $database) {
-          if ($database->name == $db) {
-            $databases->delete($attrs['id'], $db);
-            $this->say("Deleted <comment>{$db}</comment> cloud database on <comment>{$app}</comment> application.");
+          // Find the application that hosts the database.
+          foreach ($databases->getAll($attrs['id']) as $database) {
+            if ($database->name == $db) {
+              $databases->delete($attrs['id'], $db);
+              $this->say("Deleted <comment>{$db}</comment> cloud database on <comment>{$app}</comment> application.");
 
-            /** @var \AcquiaCloudApi\Endpoints\Environments $environments */
-            $environments = new Environments($client);
+              /** @var \AcquiaCloudApi\Endpoints\Environments $environments */
+              $environments = new Environments($client);
 
-            foreach ($environments->getAll($attrs['id']) as $environment) {
-              if ($intersect = array_intersect($properties['domains'], $environment->domains)) {
-                $domains = new Domains($client);
+              foreach ($environments->getAll($attrs['id']) as $environment) {
+                if ($intersect = array_intersect($properties['domains'], $environment->domains)) {
+                  $domains = new Domains($client);
 
-                foreach ($intersect as $domain) {
-                  $domains->delete($environment->uuid, $domain);
-                  $this->say("Deleted <comment>{$domain}</comment> domain on {$app} application.");
+                  foreach ($intersect as $domain) {
+                    $domains->delete($environment->uuid, $domain);
+                    $this->say("Deleted <comment>{$domain}</comment> domain on {$app} application.");
+                  }
                 }
               }
-            }
 
-            break 2;
+              break 2;
+            }
           }
         }
+      }
+      else {
+        $this->logger->warning('Skipping cloud operations.');
       }
 
       // Delete the site code.
@@ -147,23 +144,35 @@ class MultisiteCommands extends BltTasks {
         ->run();
 
       // Remove the directory aliases from sites.php.
-      $contents = file_get_contents("{$root}/docroot/sites/sites.php");
-
-      // Remove sites.php data.
-      $data = <<<EOD
+      $this->taskReplaceInFile("{$root}/docroot/sites/sites.php")
+        ->from(<<<EOD
 
 // Directory aliases for {$dir}.
+\$sites['{$local}'] = '{$dir}';
 \$sites['{$dev}'] = '{$dir}';
 \$sites['{$test}'] = '{$dir}';
 \$sites['{$prod}'] = '{$dir}';
 
-EOD;
+EOD
+        )
+        ->to('')
+        ->run();
 
-      $contents = str_replace($data, '', $contents);
-      file_put_contents("{$root}/docroot/sites/sites.php", $contents);
+      // Remove vhost.
+      $this->taskReplaceInFile("{$root}/box/config.yml")
+        ->from(<<<EOD
+-
+    servername: {$local}
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+EOD
+        )
+        ->to('')
+        ->run();
 
       $this->taskGit()
         ->dir($root)
+        ->add('box/config.yml')
         ->add('docroot/sites/sites.php')
         ->add("docroot/sites/{$dir}/")
         ->add("drush/sites/{$id}.site.yml")
@@ -215,42 +224,48 @@ EOD;
   /**
    * Create multisite code, cloud database and domains.
    *
+   * @param string $host
+   *   The multisite URI host. Will be used as the site directory.
+   * @param string $requester
+   *   The HawkID of the original requester. Will be granted webmaster access.
+   * @param array $options
+   *   An option that takes multiple values.
+   *
+   * @option simulate
+   *   Simulate database creation and filesystem operations.
+   * @option no-db
+   *   Do not create a cloud database.
+   *
    * @command sitenow:multisite:create
    *
    * @aliases smc
-   *
-   * @arg $host
-   *   The multisite URI host. Will be used as the site directory.
-   *
-   * @arg $requester
-   *   The HawkID of the original requester. Will be granted webmaster access.
    *
    * @requireFeatureBranch
    * @requireCredentials
    *
    * @throws \Exception
    */
-  public function create($host, $requester) {
+  public function create($host, $requester, array $options = ['simulate' => FALSE, 'no-db' => FALSE]) {
     $db = Multisite::getInitialDatabaseName($host);
-
     $applications = $this->getConfigValue('uiowa.applications');
-    $choices = [];
-
-    foreach ($applications as $app => $attr) {
-      $choices[$app] = $attr['id'];
-    }
-
-    $choice = $this->askChoice('Which cloud application should be used?', $choices);
+    $app = $this->askChoice('Which cloud application should be used?', array_keys($applications));
 
     /** @var \AcquiaCloudApi\Connector\Client $client */
     $client = $this->getAcquiaCloudApiClient();
 
     /** @var \AcquiaCloudApi\Endpoints\Databases $databases */
     $databases = new Databases($client);
-    $databases->create($applications[$choice]['id'], $db);
-    $this->say("Created <comment>{$db}</comment> cloud database on {$choice}.");
+
+    if (!$options['simulate'] && !$options['no-db']) {
+      $databases->create($applications[$app]['id'], $db);
+      $this->say("Created <comment>{$db}</comment> cloud database on {$app}.");
+    }
+    else {
+      $this->logger->warning('Skipping database creation.');
+    }
 
     $id = Multisite::getIdentifier("https://{$host}");
+    $local = Multisite::getInternalDomains($id)['local'];
     $dev = Multisite::getInternalDomains($id)['dev'];
     $test = Multisite::getInternalDomains($id)['test'];
     $prod = Multisite::getInternalDomains($id)['prod'];
@@ -265,6 +280,16 @@ EOD;
       '--site-dir' => $host,
       '--remote-alias' => "{$id}.prod",
     ]);
+
+    // BLT RMI uses the site-dir option for the vhost. Replace with local.
+    $result = $this->taskReplaceInFile("{$root}/box/config.yml")
+      ->from("servername: {$host}")
+      ->to("servername: {$local}")
+      ->run();
+
+    if (!$result->wasSuccessful()) {
+      throw new \Exception("Unable to replace DrupalVM vhost for {$host}.");
+    }
 
     $result = $this->taskReplaceInFile("{$root}/docroot/sites/{$host}/settings.php")
       ->from('require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";' . "\n")
@@ -285,88 +310,91 @@ EOD
       throw new \Exception("Unable to set database include for site {$host}.");
     }
 
-    file_put_contents("{$root}/docroot/sites/{$host}/settings/includes.settings.php", <<<EOD
-<?php
+    // Copy the default settings include and add sitenow global settings.
+    $this->taskFilesystemStack()
+      ->copy(
+        "{$root}/docroot/sites/{$host}/settings/default.includes.settings.php",
+        "{$root}/docroot/sites/{$host}/settings/includes.settings.php"
+      )
+      ->run();
 
-/**
- * @file
- * Generated by BLT. A central aggregation point for adding settings files.
- */
+    $result = $this->taskReplaceInFile("{$root}/docroot/sites/{$host}/settings/includes.settings.php")
+      ->from('// e.g,( DRUPAL_ROOT . "/sites/$site_dir/settings/foo.settings.php" )')
+      ->to('DRUPAL_ROOT . "/sites/settings/sitenow.settings.php"')
+      ->run();
 
-/**
- * Add settings using full file location and name.
- *
- * It is recommended that you use the DRUPAL_ROOT and \$site_dir components to
- * provide full pathing to the file in a dynamic manner.
- */
-\$additionalSettingsFiles = [
-  DRUPAL_ROOT . "/sites/settings/sitenow.settings.php"
-];
+    if (!$result->wasSuccessful()) {
+      throw new \Exception("Unable to set settings include for site {$host}.");
+    }
 
-foreach (\$additionalSettingsFiles as \$settingsFile) {
-  if (file_exists(\$settingsFile)) {
-    require \$settingsFile;
-  }
-}
-
-EOD
-    );
-
-    // Remove some files that we probably don't need.
+    // Remove some files that we don't need or will be regenerated below.
     $files = [
+      "{$root}/drush/sites/default.site.yml",
       "{$root}/docroot/sites/{$host}/default.services.yml",
       "{$root}/docroot/sites/{$host}/services.yml",
       "{$root}/drush/sites/{$host}.site.yml",
+      "{$root}/docroot/sites/{$host}/settings/local.settings.php",
     ];
 
-    foreach ($files as $file) {
-      if (file_exists($file)) {
-        unlink($file);
-        $this->logger->debug("Deleted {$file}.");
-      }
-    }
+    $this->taskFilesystemStack()
+      ->remove($files)
+      ->run();
 
     // Re-generate the Drush alias so it is more useful.
-    $app = $this->getConfig()->get('project.prefix');
     $default = Yaml::parse(file_get_contents("{$root}/drush/sites/{$app}.site.yml"));
-    $default['local']['uri'] = $host;
+    $default['local']['uri'] = $local;
     $default['dev']['uri'] = $dev;
     $default['test']['uri'] = $test;
     $default['prod']['uri'] = $host;
 
-    file_put_contents("{$root}/drush/sites/{$id}.site.yml", Yaml::dump($default, 10, 2));
+    $this->taskWriteToFile("{$root}/drush/sites/{$id}.site.yml")
+      ->text(Yaml::dump($default, 10, 2))
+      ->run();
+
     $this->say("Updated <comment>{$id}.site.yml</comment> Drush alias file with <info>local, dev, test and prod</info> aliases.");
 
     // Overwrite the multisite blt.yml file.
     $blt = Yaml::parse(file_get_contents("{$root}/docroot/sites/{$host}/blt.yml"));
+    $blt['project']['profile']['name'] = 'sitenow';
     $blt['project']['machine_name'] = $id;
+    $blt['project']['local']['hostname'] = $local;
     $blt['drupal']['db']['database'] = $db;
     $blt['drush']['aliases']['local'] = 'self';
     $blt['uiowa']['profiles']['sitenow']['requester'] = $requester;
-    file_put_contents("{$root}/docroot/sites/{$host}/blt.yml", Yaml::dump($blt, 10, 2));
+
+    $this->taskWriteToFile("{$root}/docroot/sites/{$host}/blt.yml")
+      ->text(Yaml::dump($blt, 10, 2))
+      ->run();
+
     $this->say("Overwrote <comment>docroot/sites/{$host}/blt.yml</comment> file with standardized names.");
 
-    // Write sites.php data.
+    // Write sites.php data. Note that we exclude the production URI since it
+    // will route automatically.
     $data = <<<EOD
 
 // Directory aliases for {$host}.
+\$sites['{$local}'] = '{$host}';
 \$sites['{$dev}'] = '{$host}';
 \$sites['{$test}'] = '{$host}';
 \$sites['{$prod}'] = '{$host}';
 
 EOD;
 
-    file_put_contents($root . '/docroot/sites/sites.php', $data, FILE_APPEND);
+    $this->taskWriteToFile("{$root}/docroot/sites/sites.php")
+      ->text($data)
+      ->append()
+      ->run();
+
     $this->say('Added default <comment>sites.php</comment> entries.');
 
-    // Remove the new local settings file - it has the wrong database name.
-    $file = "{$root}/docroot/sites/{$host}/settings/local.settings.php";
+    // Regenerate the local settings file - it had the wrong database name.
+    $this->getConfig()->set('multisites', [
+      $host
+    ]);
 
-    if (file_exists($file)) {
-      unlink($file);
-    }
-
-    $this->invokeCommand('blt:init:settings');
+    $this->invokeCommand('blt:init:settings', [
+      '--site' => $host,
+    ]);
 
     // Create the config directory with a file to commit.
     $this->taskFilesystemStack()
@@ -375,7 +403,8 @@ EOD;
       ->run();
 
     $this->taskGit()
-      ->dir($this->getConfigValue("repo.root"))
+      ->dir($root)
+      ->add('box/config.yml')
       ->add('docroot/sites/sites.php')
       ->add("docroot/sites/{$host}")
       ->add("drush/sites/{$id}.site.yml")
@@ -396,24 +425,6 @@ EOD;
     ];
 
     $this->io()->listing($steps);
-  }
-
-  /**
-   * Unset the routed multisite so Drush/BLT does not bootstrap it.
-   *
-   * @hook pre-command drupal:sync:all-sites
-   */
-  public function preSyncAllSites(CommandData $commandData) {
-    $this->killServer();
-  }
-
-  /**
-   * Unset the routed multisite so Drush/BLT does not bootstrap it.
-   *
-   * @hook pre-command drupal:sync
-   */
-  public function preSync(CommandData $commandData) {
-    $this->killServer();
   }
 
   /**
@@ -456,17 +467,7 @@ EOD;
   }
 
   /**
-   * Overwrite the sites.php file with no routed multisite.
-   */
-  protected function killServer() {
-    $root = $this->getConfigValue('repo.root');
-    file_put_contents("{$root}/docroot/sites/sites.local.php", "<?php\n");
-    $this->getContainer()->get('executor')->killProcessByPort('8888');
-    $this->yell('The sites.local.php file has been emptied. Runserver has been stopped.');
-  }
-
-  /**
-   * Return new ConnectorInterface for Acquia Cloud API v2 interactions.
+   * Return new Client for interacting with Acquia Cloud API.
    *
    * @return \AcquiaCloudApi\Connector\Client
    *   ConnectorInterface client.

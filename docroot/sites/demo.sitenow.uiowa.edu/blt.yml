@@ -1,0 +1,19 @@
+project:
+  profile:
+    name: sitenow
+  local:
+    hostname: sitenowdemo.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: sitenowdemo
+  human_name: demo.sitenow.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitenowdemo.prod
+drupal:
+  db:
+    database: demo_sitenow_uiowa_edu
+uiowa:
+  profiles:
+    sitenow:
+      requester: rbporter

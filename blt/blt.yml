@@ -1,6 +1,9 @@
 project:
   prefix: uiowa
   human_name: 'The base application on Acquia Cloud for the University of Iowa.'
+  local:
+    hostname: local.drupal.uiowa.edu
+    protocol: https
 git:
   default_branch: master
   remotes:
@@ -34,19 +37,20 @@ validate:
       - drupal_image
     filters:
       - image_style
-drupal:
-  db:
-    host: localhost
-    database: null
-    username: root
-    password: null
 command-hooks:
   frontend-reqs:
     dir: ${docroot}
-    command: '. $NVM_DIR/nvm.sh && nvm install && yarn install'
+    command: 'yarn install'
   frontend-assets:
     dir: ${docroot}
-    command: '. $NVM_DIR/nvm.sh && nvm use && yarn workspaces run gulp'
+    command: 'yarn workspaces run gulp'
+sync:
+  commands:
+    - 'blt:init:settings'
+    - 'drupal:sync:db'
+    - 'drupal:update'
+    - 'uiowa:multisite:noop'
+    - 'uiowa:multisite:noop'
 uiowa:
   applications:
     uiowa:

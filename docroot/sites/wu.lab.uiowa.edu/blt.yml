@@ -1,6 +1,6 @@
 project:
   local:
-    hostname: wu.lab.uiowa.edu
+    hostname: labwu.local.drupal.uiowa.edu
     protocol: https
   machine_name: labwu
   human_name: wu.lab.uiowa.edu
@@ -13,19 +13,10 @@ drush:
 drupal:
   db:
     database: wu_lab_uiowa_edu
-    host: localhost
-    user: root
-    password: null
 cm:
   core:
     dirs:
       sync:
         path: profiles/custom/sitenow/config/sync
     install_from_config: true
-sync:
-  commands:
-    - 'blt:init:settings'
-    - 'drupal:sync:db'
-    - 'drupal:update'
-    - 'sitenow:multisite:noop'
-    - 'sitenow:multisite:noop'
+
