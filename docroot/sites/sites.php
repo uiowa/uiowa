@@ -676,3 +676,8 @@ $sites['orguibio.prod.drupal.uiowa.edu'] = 'uibio.org.uiowa.edu';
 $sites['labcmdd.dev.drupal.uiowa.edu'] = 'cmdd.lab.uiowa.edu';
 $sites['labcmdd.stage.drupal.uiowa.edu'] = 'cmdd.lab.uiowa.edu';
 $sites['labcmdd.prod.drupal.uiowa.edu'] = 'cmdd.lab.uiowa.edu';
+
+// Directory aliases for stocktaken.org.uiowa.edu.
+$sites['orgstocktaken.dev.drupal.uiowa.edu'] = 'stocktaken.org.uiowa.edu';
+$sites['orgstocktaken.stage.drupal.uiowa.edu'] = 'stocktaken.org.uiowa.edu';
+$sites['orgstocktaken.prod.drupal.uiowa.edu'] = 'stocktaken.org.uiowa.edu';
