@@ -352,7 +352,6 @@ EOD;
     $root = $this->getConfigValue('repo.root');
     $sites = Multisite::getAllSites($root);
 
-
     $uiowa_01 = [
       'uipda.grad.uiowa.edu',
       'policy.clas.uiowa.edu',
