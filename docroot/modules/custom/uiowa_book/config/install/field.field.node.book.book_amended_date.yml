@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.book_amended_date
+    - node.type.book
+  module:
+    - datetime
+id: node.book.book_amended_date
+field_name: book_amended_date
+entity_type: node
+bundle: book
+label: 'Amended Date'
+description: 'Enter the most recent date the entry was amended. This will display as MM/YYYY for end-users.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

@@ -1,0 +1,35 @@
+project:
+  profile:
+    name: sitenow
+  local:
+    hostname: cfclincore.lab.uiowa.edu
+    protocol: https
+  machine_name: labcfclincore
+  human_name: cfclincore.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labcfclincore.prod
+drupal:
+  db:
+    database: cfclincore_lab_uiowa_edu
+    host: localhost
+    user: root
+    password: null
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true
+sync:
+  commands:
+    - 'blt:init:settings'
+    - 'drupal:sync:db'
+    - 'drupal:update'
+    - 'sitenow:multisite:noop'
+    - 'sitenow:multisite:noop'
+uiowa:
+  profiles:
+    sitenow:
+      requester: sbsngh

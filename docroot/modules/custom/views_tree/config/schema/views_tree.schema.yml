@@ -1,0 +1,32 @@
+# Schema for the Views Tree module.
+
+views.style.tree:
+  type: views_style
+  label: 'Views Tree'
+  mapping:
+    type:
+      type: string
+      label: 'List type'
+    main_field:
+      type: string
+      label: 'Main field'
+    parent_field:
+      type: string
+      label: 'Parent field'
+    collapsible_tree:
+      type: string
+      label: 'Collapsible list'
+
+views.style.tree_table:
+  type: views_style
+  label: 'Views Tree (table)'
+  mapping:
+    main_field:
+      type: string
+      label: 'Main field'
+    parent_field:
+      type: string
+      label: 'Parent field'
+    display_hierarchy_column:
+      type: string
+      label: 'Column in which to represent the hierarchy'

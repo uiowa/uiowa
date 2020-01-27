@@ -1,0 +1,393 @@
+uuid: 6994d5a5-aa37-48e6-9b45-6ac2e07782cc
+langcode: en
+status: true
+dependencies:
+  module:
+    - lightning_media
+id: config_sync.module.lightning_media
+snapshotSet: config_sync
+extensionType: module
+extensionName: lightning_media
+items:
+  -
+    collection: ''
+    name: core.entity_form_mode.media.media_browser
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - media
+      id: media.media_browser
+      label: 'Media browser'
+      targetEntityType: media
+      cache: true
+  -
+    collection: ''
+    name: core.entity_view_mode.media.embedded
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - media
+      id: media.embedded
+      label: Embedded
+      targetEntityType: media
+      cache: true
+  -
+    collection: ''
+    name: core.entity_view_mode.media.thumbnail
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - media
+      third_party_settings:
+        lightning_core:
+          description: ''
+      id: media.thumbnail
+      label: Thumbnail
+      targetEntityType: media
+      cache: true
+  -
+    collection: ''
+    name: editor.editor.rich_text
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - filter.format.rich_text
+        module:
+          - ckeditor
+      format: rich_text
+      editor: ckeditor
+      settings:
+        toolbar:
+          rows:
+            -
+              -
+                name: Formatting
+                items:
+                  - Bold
+                  - Italic
+                  - Strike
+                  - Superscript
+                  - Subscript
+                  - '-'
+                  - RemoveFormat
+              -
+                name: Linking
+                items:
+                  - DrupalLink
+                  - DrupalUnlink
+              -
+                name: Lists
+                items:
+                  - BulletedList
+                  - NumberedList
+              -
+                name: Media
+                items:
+                  - Blockquote
+                  - Table
+                  - HorizontalRule
+                  - media_browser
+              -
+                name: 'Block Formatting'
+                items:
+                  - Format
+              -
+                name: Tools
+                items:
+                  - ShowBlocks
+                  - Source
+        plugins:
+          language:
+            language_list: un
+          stylescombo:
+            styles: ''
+      image_upload:
+        status: true
+        scheme: public
+        directory: inline-images
+        max_size: ''
+        max_dimensions:
+          width: null
+          height: null
+  -
+    collection: ''
+    name: embed.button.media_browser
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - entity_embed
+          - media
+      label: 'Media browser'
+      id: media_browser
+      type_id: entity
+      type_settings:
+        entity_type: media
+        bundles: {  }
+        display_plugins:
+          - 'entity_reference:entity_reference_entity_view'
+          - media_image
+        entity_browser: ckeditor_media_browser
+        entity_browser_settings:
+          display_review: false
+      icon_uuid: null
+  -
+    collection: ''
+    name: entity_browser.browser.ckeditor_media_browser
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      name: ckeditor_media_browser
+      label: 'Media browser (CKEditor)'
+      display: iframe
+      display_configuration:
+        width: 100%
+        height: '640'
+        link_text: 'Select entities'
+        auto_open: true
+      selection_display: no_display
+      selection_display_configuration: {  }
+      widget_selector: tabs
+      widget_selector_configuration: {  }
+      widgets:
+        8b142f33-59d1-47b1-9e3a-4ae85d8376fa:
+          settings:
+            submit_text: Place
+            form_mode: media_browser
+          uuid: 8b142f33-59d1-47b1-9e3a-4ae85d8376fa
+          weight: -8
+          label: 'Create embed'
+          id: embed_code
+        044d2af7-314b-4830-8b6d-64896bbb861e:
+          settings:
+            submit_text: Place
+            form_mode: media_browser
+          uuid: 044d2af7-314b-4830-8b6d-64896bbb861e
+          weight: -9
+          label: Upload
+          id: file_upload
+  -
+    collection: ''
+    name: entity_browser.browser.media_browser
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      name: media_browser
+      label: 'Media browser'
+      display: modal
+      display_configuration:
+        width: ''
+        height: ''
+        link_text: 'Add media'
+        auto_open: false
+      selection_display: no_display
+      selection_display_configuration: {  }
+      widget_selector: tabs
+      widget_selector_configuration: {  }
+      widgets:
+        8b142f33-59d1-47b1-9e3a-4ae85d8376fa:
+          settings:
+            submit_text: Place
+            form_mode: media_browser
+          uuid: 8b142f33-59d1-47b1-9e3a-4ae85d8376fa
+          weight: -8
+          label: 'Create embed'
+          id: embed_code
+        044d2af7-314b-4830-8b6d-64896bbb861e:
+          settings:
+            submit_text: Place
+            form_mode: media_browser
+          uuid: 044d2af7-314b-4830-8b6d-64896bbb861e
+          weight: -9
+          label: Upload
+          id: file_upload
+  -
+    collection: ''
+    name: field.storage.media.embed_code
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - media
+      id: media.embed_code
+      field_name: embed_code
+      entity_type: media
+      type: string_long
+      settings:
+        case_sensitive: false
+      module: core
+      locked: false
+      cardinality: 1
+      translatable: true
+      indexes: {  }
+      persist_with_no_fields: false
+      custom_storage: false
+  -
+    collection: ''
+    name: field.storage.media.field_media_in_library
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - media
+      id: media.field_media_in_library
+      field_name: field_media_in_library
+      entity_type: media
+      type: boolean
+      settings: {  }
+      module: core
+      locked: false
+      cardinality: 1
+      translatable: true
+      indexes: {  }
+      persist_with_no_fields: false
+      custom_storage: false
+  -
+    collection: ''
+    name: field.storage.media.image
+    data:
+      langcode: und
+      status: true
+      dependencies:
+        module:
+          - file
+          - image
+          - media
+      id: media.image
+      field_name: image
+      entity_type: media
+      type: image
+      settings:
+        uri_scheme: public
+        default_image:
+          uuid: null
+          alt: ''
+          title: ''
+          width: null
+          height: null
+        target_type: file
+        display_field: false
+        display_default: false
+      module: image
+      locked: false
+      cardinality: 1
+      translatable: true
+      indexes: {  }
+      persist_with_no_fields: false
+      custom_storage: false
+  -
+    collection: ''
+    name: filter.format.rich_text
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - editor
+          - entity_embed
+      name: 'Rich text'
+      format: rich_text
+      weight: 1
+      filters:
+        filter_align:
+          id: filter_align
+          provider: filter
+          status: true
+          weight: -48
+          settings: {  }
+        filter_caption:
+          id: filter_caption
+          provider: filter
+          status: true
+          weight: -47
+          settings: {  }
+        filter_htmlcorrector:
+          id: filter_htmlcorrector
+          provider: filter
+          status: true
+          weight: -46
+          settings: {  }
+        editor_file_reference:
+          id: editor_file_reference
+          provider: editor
+          status: true
+          weight: -45
+          settings: {  }
+        entity_embed:
+          id: entity_embed
+          provider: entity_embed
+          status: true
+          weight: -49
+          settings: {  }
+        filter_html:
+          id: filter_html
+          provider: filter
+          status: true
+          weight: -50
+          settings:
+            allowed_html: '<a href hreflang> <em> <strong> <cite> <blockquote cite> <code> <ul type> <ol start type> <li> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <s> <sup> <sub> <img src alt data-entity-type data-entity-uuid data-align data-caption> <table> <caption> <tbody> <thead> <tfoot> <th> <td> <tr> <hr> <p> <br> <h1> <pre> <drupal-entity data-* title alt>'
+            filter_html_help: true
+            filter_html_nofollow: false
+        filter_autop:
+          id: filter_autop
+          provider: filter
+          status: false
+          weight: -43
+          settings: {  }
+        filter_html_escape:
+          id: filter_html_escape
+          provider: filter
+          status: false
+          weight: -44
+          settings: {  }
+        filter_html_image_secure:
+          id: filter_html_image_secure
+          provider: filter
+          status: false
+          weight: -41
+          settings: {  }
+        filter_url:
+          id: filter_url
+          provider: filter
+          status: false
+          weight: -42
+          settings:
+            filter_url_length: 72
+  -
+    collection: ''
+    name: lightning_media.settings
+    data:
+      entity_embed:
+        choose_display: false
+      entity_browser:
+        override_widget: true
+  -
+    collection: ''
+    name: pathauto.pattern.media
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - media
+      id: media
+      label: Media
+      type: 'canonical_entities:media'
+      pattern: 'media/[media:bundle:target_id]/[media:mid]'
+      selection_criteria: {  }
+      selection_logic: and
+      weight: -5
+      relationships: {  }

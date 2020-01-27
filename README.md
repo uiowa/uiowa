@@ -26,10 +26,11 @@ This project is based on BLT, an open-source project template and tool that enab
 ### BLT Configuration
 Make sure you have an [Acquia Cloud key and secret](https://docs.acquia.com/acquia-cloud/develop/api/auth/) saved in the `blt/local.blt.yml` file. This file is ignored by Git. Be sure you do not accidentally commit your credentials to the `blt/blt.yml` file which is tracked in Git. Do not share your key or secret with anyone.
 ```
-credentials:
-  acquia:
-    key: foo
-    secret: bar
+uiowa:
+  credentials:
+    acquia:
+      key: foo
+      secret: bar
 ```
 
 Set the multisites that you want BLT to sync by default:
@@ -56,7 +57,7 @@ $config['stage_file_proxy.settings']['hotlink'] = TRUE;
 
 ## SiteNow
 Please see the [SiteNow README](docroot/profiles/custom/sitenow/README.md) for
-addtional local development instructions.
+additional local development instructions.
 
 ## Provisioning/Deprovisioning
 ### SiteNow
