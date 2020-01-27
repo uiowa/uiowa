@@ -1,12 +1,14 @@
 <?php
 
-
 namespace Uiowa\Blt\Plugin\Commands;
-
 
 use Acquia\Blt\Robo\BltTasks;
 
+/**
+ * Global multisite commands.
+ */
 class MultisiteCommands extends BltTasks {
+
   /**
    * A no-op command.
    *
@@ -24,4 +26,5 @@ class MultisiteCommands extends BltTasks {
   public function noop() {
 
   }
+
 }
