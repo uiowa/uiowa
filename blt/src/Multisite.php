@@ -47,43 +47,48 @@ class Multisite {
    *
    * @return string
    *   The ID.
+   *
+   * @throws \Exception
    */
   public static function getIdentifier($uri) {
-    $parsed = parse_url($uri);
+    if ($parsed = parse_url($uri)) {
+      if (substr($parsed['host'], -9) === 'uiowa.edu') {
+        // Don't use the suffix if the host equals uiowa.edu.
+        $id = substr($parsed['host'], 0, -10);
 
-    if (substr($parsed['host'], -9) === 'uiowa.edu') {
-      // Don't use the suffix if the host equals uiowa.edu.
-      $id = substr($parsed['host'], 0, -10);
+        // Reverse the subdomains.
+        $parts = array_reverse(explode('.', $id));
 
-      // Reverse the subdomains.
-      $parts = array_reverse(explode('.', $id));
-
-      // Unset the www subdomain - considered the same site.
-      $key = array_search('www', $parts);
-      if ($key !== FALSE) {
-        unset($parts[$key]);
+        // Unset the www subdomain - considered the same site.
+        $key = array_search('www', $parts);
+        if ($key !== FALSE) {
+          unset($parts[$key]);
+        }
+        $id = implode('', $parts);
       }
-      $id = implode('', $parts);
+      else {
+        // This site has a non-uiowa.edu TLD.
+        $parts = explode('.', $parsed['host']);
+
+        // Unset the www subdomain - considered the same site.
+        $key = array_search('www', $parts);
+        if ($key !== FALSE) {
+          unset($parts[$key]);
+        }
+
+        // Pop off the suffix to be used later as a prefix.
+        $extension = array_pop($parts);
+
+        // Reverse the subdomains.
+        $parts = array_reverse($parts);
+        $id = $extension . '-' . implode('', $parts);
+      }
+
+      return $id;
     }
     else {
-      // This site has a non-uiowa.edu TLD.
-      $parts = explode('.', $parsed['host']);
-
-      // Unset the www subdomain - considered the same site.
-      $key = array_search('www', $parts);
-      if ($key !== FALSE) {
-        unset($parts[$key]);
-      }
-
-      // Pop off the suffix to be used later as a prefix.
-      $extension = array_pop($parts);
-
-      // Reverse the subdomains.
-      $parts = array_reverse($parts);
-      $id = $extension . '-' . implode('', $parts);
+      throw new \Exception("Unable to parse URL {$uri}.");
     }
-
-    return $id;
   }
 
   /**
@@ -97,6 +102,7 @@ class Multisite {
    */
   public static function getInternalDomains($id) {
     return [
+      'local' => "{$id}.local.drupal.uiowa.edu",
       'dev' => "{$id}.dev.drupal.uiowa.edu",
       'test' => "{$id}.stage.drupal.uiowa.edu",
       'prod' => "{$id}.prod.drupal.uiowa.edu",
@@ -104,7 +110,7 @@ class Multisite {
   }
 
   /**
-   * Find all multisites in the application root.
+   * Find all multisites in the application root, excluding default.
    *
    * @param string $root
    *   The root of the application to find multisites in.
@@ -119,7 +125,7 @@ class Multisite {
       ->in("{$root}/docroot/sites/")
       ->directories()
       ->depth('< 1')
-      ->exclude(['g', 'settings'])
+      ->exclude(['default', 'g', 'settings'])
       ->sortByName();
 
     $sites = [];

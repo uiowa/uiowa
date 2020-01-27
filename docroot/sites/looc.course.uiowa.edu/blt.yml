@@ -1,6 +1,6 @@
 project:
   local:
-    hostname: looc.course.uiowa.edu
+    hostname: courselooc.local.drupal.uiowa.edu
     protocol: https
   machine_name: courselooc
   human_name: looc.course.uiowa.edu
@@ -13,19 +13,10 @@ drush:
 drupal:
   db:
     database: looc_course_uiowa_edu
-    host: localhost
-    user: root
-    password: null
 cm:
   core:
     dirs:
       sync:
         path: profiles/custom/sitenow/config/sync
     install_from_config: true
-sync:
-  commands:
-    - 'blt:init:settings'
-    - 'drupal:sync:db'
-    - 'drupal:update'
-    - 'sitenow:multisite:noop'
-    - 'sitenow:multisite:noop'
+
