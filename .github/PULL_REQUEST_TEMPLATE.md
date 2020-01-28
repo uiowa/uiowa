@@ -1,14 +1,12 @@
-# Description
-Resolves #
+<!--- Explain the problem briefly. Remember to use [GitHub keywords](https://help.github.com/en/github/managing-your-work-on-github/closing-issues-using-keywords) if this PR fixes an existing issue. Be sure to remove any sensitive information from log messages, console output, etc. This includes but is not limited to usernames, passwords, server paths, ssh keys, etc. -->
 
-# Checklist
-- [ ] Add appropriate PR labels.
-- [ ] Request approval from multiple developers across units.
-- [ ] Dependencies have been properly updated.
+<!--- Also remember to:
+- Add the appropriate PR labels.
+- Request approval from multiple developers across units.
+- Ensure that dependencies have been properly updated, if applicable.
   - https://github.com/uiowa/uiowa#updating-dependencies
-- [ ] Site config splits have been accounted for.
-  - Go to https://github.com/uiowa/uiowa/find/master to find split config entities affected by this PR.
-- [ ] Test PR locally with default site.
-- [ ] Test PR locally with custom site that might be affected by these changes.
-- [ ] Update documentation.
-  - Document changes introduced by this PR in application, profile or site README.
+- Ensure that site config splits have been accounted for, if applicable.
+  - Go to https://github.com/uiowa/uiowa/find/master to find split config entities potentially affected by this PR.
+- Test the PR locally with multiple sites.
+- Update documentation.
+-->
