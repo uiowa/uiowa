@@ -268,6 +268,7 @@ EOD
    */
   public function create($host, $profile, array $options = [
     'simulate' => FALSE,
+    'no-commit' => FALSE,
     'no-db' => FALSE,
     'requester' => InputOption::VALUE_OPTIONAL
   ]) {
@@ -281,7 +282,7 @@ EOD
     /** @var \AcquiaCloudApi\Endpoints\Databases $databases */
     $databases = new Databases($client);
 
-    if (!$options['simulate'] && !$options['no-db']) {
+    if (!$options['simulate'] && !$options['no-db'] && !$this->checkIfRemoteDatabaseExists($app, $databases, $db)) {
       $databases->create($applications[$app]['id'], $db);
       $this->say("Created <comment>{$db}</comment> cloud database on {$app}.");
     }
@@ -435,25 +436,32 @@ EOD;
       ->touch("{$root}/config/{$host}/.gitkeep")
       ->run();
 
-    $this->taskGit()
-      ->dir($root)
-      ->add('box/config.yml')
-      ->add('docroot/sites/sites.php')
-      ->add("docroot/sites/{$host}")
-      ->add("drush/sites/{$id}.site.yml")
-      ->add("config/{$host}")
-      ->commit("Initialize {$host} multisite")
-      ->interactive(FALSE)
-      ->printOutput(FALSE)
-      ->printMetadata(FALSE)
-      ->run();
+    // Initialize next steps.
+    $steps = [];
+
+    if (!$options['no-commit']) {
+      $this->taskGit()
+        ->dir($root)
+        ->add('box/config.yml')
+        ->add('docroot/sites/sites.php')
+        ->add("docroot/sites/{$host}")
+        ->add("drush/sites/{$id}.site.yml")
+        ->add("config/{$host}")
+        ->commit("Initialize {$host} multisite")
+        ->interactive(FALSE)
+        ->printOutput(FALSE)
+        ->printMetadata(FALSE)
+        ->run();
+      $steps += [
+        'Push this branch and merge via a pull request.',
+        'Coordinate a new release and deploy to the test and prod environments.',
+      ];
+    }
 
     $this->say("Committed site <comment>{$host}</comment> code.");
     $this->say("Continue initializing additional multisites or follow the next steps below.");
 
-    $steps = [
-      'Push this branch and merge via a pull request.',
-      'Coordinate a new release and deploy to the test and prod environments.',
+    $steps += [
       'Add the multisite domains to environments as needed.',
     ];
 
@@ -515,6 +523,24 @@ EOD;
     $client = Client::factory($connector);
 
     return $client;
+  }
+
+  /**
+   * Check if database already exists on the remote server.
+   */
+  protected function checkIfRemoteDatabaseExists($appId, Databases $databases, $db_name) {
+    $dbs = $databases->getAll($appId);
+
+    $db_exists = FALSE;
+
+    foreach ($dbs->getArrayCopy() as $db) {
+      if ($db->name === $db_name) {
+        $db_exists = TRUE;
+        break;
+      }
+    }
+
+    return $db_exists;
   }
 
 }
