@@ -252,6 +252,8 @@ EOD
    *
    * @option simulate
    *   Simulate database creation and filesystem operations.
+   * @option no-commit
+   *   Do not create a git commit.
    * @option no-db
    *   Do not create a cloud database.
    * @option requester
