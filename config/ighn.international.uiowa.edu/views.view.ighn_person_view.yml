@@ -67,11 +67,16 @@ display:
           items_per_page: 0
           offset: 0
       style:
-        type: default
+        type: grid
         options:
           grouping: {  }
-          row_class: ''
-          default_row_class: true
+          columns: 2
+          automatic_width: true
+          alignment: horizontal
+          col_class_default: true
+          col_class_custom: ''
+          row_class_default: true
+          row_class_custom: ''
       row:
         type: fields
         options:
@@ -120,7 +125,7 @@ display:
             preserve_tags: ''
             html: false
           element_type: ''
-          element_class: ''
+          element_class: ighn-person-image
           element_label_type: ''
           element_label_class: ''
           element_label_colon: false
@@ -183,7 +188,7 @@ display:
             preserve_tags: ''
             html: false
           element_type: strong
-          element_class: ''
+          element_class: ighn-person-first-name
           element_label_type: ''
           element_label_class: ''
           element_label_colon: false
@@ -246,7 +251,7 @@ display:
             preserve_tags: ''
             html: false
           element_type: strong
-          element_class: ''
+          element_class: ighn-person-last-name
           element_label_type: ''
           element_label_class: ''
           element_label_colon: false
@@ -435,7 +440,7 @@ display:
             preserve_tags: ''
             html: false
           element_type: ''
-          element_class: ''
+          element_class: ighn-person-position
           element_label_type: ''
           element_label_class: ''
           element_label_colon: false
@@ -498,9 +503,9 @@ display:
             preserve_tags: ''
             html: false
           element_type: ''
-          element_class: ''
+          element_class: ighn-person-primary-focus-area
           element_label_type: strong
-          element_label_class: ''
+          element_label_class: ighn-person-primary-focus-area
           element_label_colon: true
           element_wrapper_type: aside
           element_wrapper_class: ''
@@ -561,7 +566,7 @@ display:
             preserve_tags: ''
             html: false
           element_type: ''
-          element_class: ''
+          element_class: ighn-person-regions-of-focus
           element_label_type: strong
           element_label_class: ''
           element_label_colon: true
@@ -624,7 +629,7 @@ display:
             preserve_tags: ''
             html: false
           element_type: ''
-          element_class: ''
+          element_class: ighn-person-languages
           element_label_type: strong
           element_label_class: ''
           element_label_colon: true
@@ -687,7 +692,7 @@ display:
             preserve_tags: ''
             html: false
           element_type: ''
-          element_class: ''
+          element_class: ighn-person-cv-link
           element_label_type: ''
           element_label_class: ''
           element_label_colon: false
@@ -754,7 +759,7 @@ display:
             preserve_tags: ''
             html: false
           element_type: ''
-          element_class: ''
+          element_class: ighn-person-bio
           element_label_type: ''
           element_label_class: ''
           element_label_colon: false
@@ -813,7 +818,7 @@ display:
           group_type: group
           admin_label: ''
           operator: or
-          value: null
+          value: {  }
           group: 1
           exposed: true
           expose:
@@ -850,7 +855,7 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           reduce_duplicates: false
-          type: cshs
+          type: select
           limit: true
           vid: ighn_primary_focus_areas
           hierarchy: true
