@@ -63,24 +63,26 @@ class MultisiteCommands extends BltTasks {
           ->run();
       }
     }
-  }/**
- * Deletes multisite code, database and domains.
- *
- * @param array $options
- *   Array of options.
- *
- * @option simulate
- *   Simulate cloud operations and file system tasks.
- *
- * @command uiowa:multisite:delete
- *
- * @aliases smd
- *
- * @throws \Exception
- *
- * @requireFeatureBranch
- * @requireCredentials
- */
+  }
+
+  /**
+   * Deletes multisite code, database and domains.
+   *
+   * @param array $options
+   *   Array of options.
+   *
+   * @option simulate
+   *   Simulate cloud operations and file system tasks.
+   *
+   * @command uiowa:multisite:delete
+   *
+   * @aliases smd
+   *
+   * @throws \Exception
+   *
+   * @requireFeatureBranch
+   * @requireCredentials
+   */
   public function delete(array $options = ['simulate' => FALSE]) {
     $root = $this->getConfigValue('repo.root');
     $sites = Multisite::getAllSites($root);
@@ -264,7 +266,11 @@ EOD
    *
    * @throws \Exception
    */
-  public function create($host, $profile, array $options = ['simulate' => FALSE, 'no-db' => FALSE, 'requester' => InputOption::VALUE_OPTIONAL]) {
+  public function create($host, $profile, array $options = [
+    'simulate' => FALSE,
+    'no-db' => FALSE,
+    'requester' => InputOption::VALUE_OPTIONAL
+  ]) {
     $db = Multisite::getInitialDatabaseName($host);
     $applications = $this->getConfigValue('uiowa.applications');
     $app = $this->askChoice('Which cloud application should be used?', array_keys($applications));
