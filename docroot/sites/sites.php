@@ -792,3 +792,9 @@ $sites['labtheranostics.local.drupal.uiowa.edu'] = 'theranostics.lab.uiowa.edu';
 $sites['labtheranostics.dev.drupal.uiowa.edu'] = 'theranostics.lab.uiowa.edu';
 $sites['labtheranostics.stage.drupal.uiowa.edu'] = 'theranostics.lab.uiowa.edu';
 $sites['labtheranostics.prod.drupal.uiowa.edu'] = 'theranostics.lab.uiowa.edu';
+
+// Directory aliases for cda.org.uiowa.edu.
+$sites['orgcda.local.drupal.uiowa.edu'] = 'cda.org.uiowa.edu';
+$sites['orgcda.dev.drupal.uiowa.edu'] = 'cda.org.uiowa.edu';
+$sites['orgcda.stage.drupal.uiowa.edu'] = 'cda.org.uiowa.edu';
+$sites['orgcda.prod.drupal.uiowa.edu'] = 'cda.org.uiowa.edu';
