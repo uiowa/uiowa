@@ -35,11 +35,21 @@ class MigratePostImportEvent implements EventSubscriberInterface {
    */
   public function __construct(EntityTypeManager $entityTypeManager) {
     $this->entityTypeManager = $entityTypeManager;
-    // Of the form "https://base_url_path.org/"; but this doesn't work if the base path is going to be different.
-    // $this->base_path = \Drupal::urlGenerator()->generateFromRoute('<front>', [], ['absolute' => TRUE]);
-    // Drop the "https://" and ending "/" for convenience later.
-    // $this->base_path = substr($this->base_path, 7, -1);
-    $this->base_path = 'acm.org.uiowa.edu';
+    // Switch to the D7 database.
+    \Drupal\Core\Database\Database::setActiveConnection('drupal_7');
+    $connection = \Drupal\Core\Database\Database::getConnection();
+    $query = $connection->select('variable', 'v');
+    $query->fields('v', ['value'])
+      ->condition('v.name', 'file_public_path', '=');
+    $result = $query->execute();
+    // Switch back to the D8 database.
+    \Drupal\Core\Database\Database::setActiveConnection();
+    // Strip base path out of the public filepath, because we can't (easily) access the settings file.
+    $this->base_path = $result->explode('/', fetchField())[1];
+    // If it's a subdomain site, replace '.' with '/'.
+    if (substr($this->base_path, 0, 10) == 'uiowa.edu.') {
+      substr_replace($this->base_path, '/', 9, 1);
+    }
   }
 
   /**
