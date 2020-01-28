@@ -126,4 +126,5 @@ class MultisiteCommands extends BltTasks {
 
     return $install_site;
   }
+
 }
