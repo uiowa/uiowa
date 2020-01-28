@@ -786,3 +786,9 @@ $sites['orguibio.local.drupal.uiowa.edu'] = 'uibio.org.uiowa.edu';
 $sites['orguibio.dev.drupal.uiowa.edu'] = 'uibio.org.uiowa.edu';
 $sites['orguibio.stage.drupal.uiowa.edu'] = 'uibio.org.uiowa.edu';
 $sites['orguibio.prod.drupal.uiowa.edu'] = 'uibio.org.uiowa.edu';
+
+// Directory aliases for theranostics.lab.uiowa.edu.
+$sites['labtheranostics.local.drupal.uiowa.edu'] = 'theranostics.lab.uiowa.edu';
+$sites['labtheranostics.dev.drupal.uiowa.edu'] = 'theranostics.lab.uiowa.edu';
+$sites['labtheranostics.stage.drupal.uiowa.edu'] = 'theranostics.lab.uiowa.edu';
+$sites['labtheranostics.prod.drupal.uiowa.edu'] = 'theranostics.lab.uiowa.edu';
