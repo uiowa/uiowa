@@ -10,6 +10,7 @@ use AcquiaCloudApi\Endpoints\Domains;
 use AcquiaCloudApi\Endpoints\Environments;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
 use Uiowa\Multisite;
 
@@ -205,9 +206,9 @@ EOD
   }
 
   /**
-   * Validate sitenow:multisite:create command.
+   * Validate uiowa:multisite:create command.
    *
-   * @hook validate sitenow:multisite:create
+   * @hook validate uiowa:multisite:create
    */
   public function validateCreate(CommandData $commandData) {
     $root = $this->getConfigValue('repo.root');
@@ -225,7 +226,7 @@ EOD
 
     if ($parsed = parse_url($uri)) {
       if (isset($parsed['path'])) {
-        return new CommandError('Sitenow: Subdirectory sites are not supported.');
+        return new CommandError('Subdirectory sites are not supported.');
       }
     }
     else {
@@ -242,8 +243,8 @@ EOD
    *
    * @param string $host
    *   The multisite URI host. Will be used as the site directory.
-   * @param string $requester
-   *   The HawkID of the original requester. Will be granted webmaster access.
+   * @param string $profile
+   *   The profile that will be used when creating the site.
    * @param array $options
    *   An option that takes multiple values.
    *
@@ -251,8 +252,10 @@ EOD
    *   Simulate database creation and filesystem operations.
    * @option no-db
    *   Do not create a cloud database.
+   * @option requester
+   *   The HawkID of the original requester. Will be granted webmaster access.
    *
-   * @command sitenow:multisite:create
+   * @command uiowa:multisite:create
    *
    * @aliases smc
    *
@@ -261,7 +264,7 @@ EOD
    *
    * @throws \Exception
    */
-  public function create($host, $requester, array $options = ['simulate' => FALSE, 'no-db' => FALSE]) {
+  public function create($host, $profile, array $options = ['simulate' => FALSE, 'no-db' => FALSE, 'requester' => InputOption::VALUE_OPTIONAL]) {
     $db = Multisite::getInitialDatabaseName($host);
     $applications = $this->getConfigValue('uiowa.applications');
     $app = $this->askChoice('Which cloud application should be used?', array_keys($applications));
@@ -326,7 +329,7 @@ EOD
       throw new \Exception("Unable to set database include for site {$host}.");
     }
 
-    // Copy the default settings include and add sitenow global settings.
+    // Copy the default settings include file.
     $this->taskFilesystemStack()
       ->copy(
         "{$root}/docroot/sites/{$host}/settings/default.includes.settings.php",
@@ -334,13 +337,17 @@ EOD
       )
       ->run();
 
-    $result = $this->taskReplaceInFile("{$root}/docroot/sites/{$host}/settings/includes.settings.php")
-      ->from('// e.g,( DRUPAL_ROOT . "/sites/$site_dir/settings/foo.settings.php" )')
-      ->to('DRUPAL_ROOT . "/sites/settings/sitenow.settings.php"')
-      ->run();
+    // If using the sitenow profile, include profile-specific settings file.
+    // @todo Generalize this to add include for any '$profile.settings.php' file that exists?
+    if ($profile === 'sitenow') {
+      $result = $this->taskReplaceInFile("{$root}/docroot/sites/{$host}/settings/includes.settings.php")
+        ->from('// e.g,( DRUPAL_ROOT . "/sites/$site_dir/settings/foo.settings.php" )')
+        ->to('DRUPAL_ROOT . "/sites/settings/sitenow.settings.php"')
+        ->run();
 
-    if (!$result->wasSuccessful()) {
-      throw new \Exception("Unable to set settings include for site {$host}.");
+      if (!$result->wasSuccessful()) {
+        throw new \Exception("Unable to set settings include for site {$host}.");
+      }
     }
 
     // Remove some files that we don't need or will be regenerated below.
@@ -371,12 +378,16 @@ EOD
 
     // Overwrite the multisite blt.yml file.
     $blt = Yaml::parse(file_get_contents("{$root}/docroot/sites/{$host}/blt.yml"));
-    $blt['project']['profile']['name'] = 'sitenow';
+    $blt['project']['profile']['name'] = $profile;
     $blt['project']['machine_name'] = $id;
     $blt['project']['local']['hostname'] = $local;
     $blt['drupal']['db']['database'] = $db;
     $blt['drush']['aliases']['local'] = 'self';
-    $blt['uiowa']['profiles']['sitenow']['requester'] = $requester;
+
+    // @todo Should we remove the constraint to allow adding to any profile?
+    if (isset($options['requester']) && $profile === 'sitenow') {
+      $blt['uiowa']['profiles'][$profile]['requester'] = $options['requester'];
+    }
 
     $this->taskWriteToFile("{$root}/docroot/sites/{$host}/blt.yml")
       ->text(Yaml::dump($blt, 10, 2))
