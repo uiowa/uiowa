@@ -46,7 +46,7 @@ class MultisiteCommands extends BltTasks {
    *
    * @command uiowa:multisite:execute
    *
-   * @aliases sme
+   * @aliases ume
    *
    * @throws \Exception
    */
@@ -76,7 +76,7 @@ class MultisiteCommands extends BltTasks {
    *
    * @command uiowa:multisite:delete
    *
-   * @aliases smd
+   * @aliases umd
    *
    * @throws \Exception
    *
@@ -259,7 +259,7 @@ EOD
    *
    * @command uiowa:multisite:create
    *
-   * @aliases smc
+   * @aliases umc
    *
    * @requireFeatureBranch
    * @requireCredentials
