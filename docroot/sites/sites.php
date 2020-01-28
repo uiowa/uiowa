@@ -768,9 +768,3 @@ $sites['sitenowdemo.local.drupal.uiowa.edu'] = 'demo.sitenow.uiowa.edu';
 $sites['sitenowdemo.dev.drupal.uiowa.edu'] = 'demo.sitenow.uiowa.edu';
 $sites['sitenowdemo.stage.drupal.uiowa.edu'] = 'demo.sitenow.uiowa.edu';
 $sites['sitenowdemo.prod.drupal.uiowa.edu'] = 'demo.sitenow.uiowa.edu';
-
-// Directory aliases for test45.uiowa.edu.
-$sites['test45.local.drupal.uiowa.edu'] = 'test45.uiowa.edu';
-$sites['test45.dev.drupal.uiowa.edu'] = 'test45.uiowa.edu';
-$sites['test45.stage.drupal.uiowa.edu'] = 'test45.uiowa.edu';
-$sites['test45.prod.drupal.uiowa.edu'] = 'test45.uiowa.edu';
