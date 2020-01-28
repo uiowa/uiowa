@@ -3,9 +3,14 @@
 namespace Uiowa\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
+use AcquiaCloudApi\Connector\Client;
+use AcquiaCloudApi\Connector\Connector;
 use AcquiaCloudApi\Endpoints\Databases;
 use AcquiaCloudApi\Endpoints\Domains;
 use AcquiaCloudApi\Endpoints\Environments;
+use Consolidation\AnnotatedCommand\CommandData;
+use Consolidation\AnnotatedCommand\CommandError;
+use Symfony\Component\Yaml\Yaml;
 use Uiowa\Multisite;
 
 /**
@@ -197,6 +202,302 @@ EOD
       $this->say("Committed deletion of site <comment>{$dir}</comment> code.");
       $this->say("Continue deleting additional multisites or push this branch and merge via a pull request. Immediate production release not necessary.");
     }
+  }
+
+  /**
+   * Validate sitenow:multisite:create command.
+   *
+   * @hook validate sitenow:multisite:create
+   */
+  public function validateCreate(CommandData $commandData) {
+    $root = $this->getConfigValue('repo.root');
+    $host = $commandData->input()->getArgument('host');
+
+    // Lowercase the host, just in case.
+    $commandData->input()->setArgument('host', strtolower($host));
+
+    if (parse_url($host, PHP_URL_SCHEME) == NULL) {
+      $uri = "https://{$host}";
+    }
+    else {
+      return new CommandError('Only pass the multisite host, i.e. the URI without the protocol.');
+    }
+
+    if ($parsed = parse_url($uri)) {
+      if (isset($parsed['path'])) {
+        return new CommandError('Sitenow: Subdirectory sites are not supported.');
+      }
+    }
+    else {
+      return new CommandError('Cannot parse URI for validation.');
+    }
+
+    if (file_exists("{$root}/docroot/sites/{$host}")) {
+      return new CommandError("Site {$host} already exists.");
+    }
+  }
+
+  /**
+   * Create multisite code, cloud database and domains.
+   *
+   * @param string $host
+   *   The multisite URI host. Will be used as the site directory.
+   * @param string $requester
+   *   The HawkID of the original requester. Will be granted webmaster access.
+   * @param array $options
+   *   An option that takes multiple values.
+   *
+   * @option simulate
+   *   Simulate database creation and filesystem operations.
+   * @option no-db
+   *   Do not create a cloud database.
+   *
+   * @command sitenow:multisite:create
+   *
+   * @aliases smc
+   *
+   * @requireFeatureBranch
+   * @requireCredentials
+   *
+   * @throws \Exception
+   */
+  public function create($host, $requester, array $options = ['simulate' => FALSE, 'no-db' => FALSE]) {
+    $db = Multisite::getInitialDatabaseName($host);
+    $applications = $this->getConfigValue('uiowa.applications');
+    $app = $this->askChoice('Which cloud application should be used?', array_keys($applications));
+
+    /** @var \AcquiaCloudApi\Connector\Client $client */
+    $client = $this->getAcquiaCloudApiClient();
+
+    /** @var \AcquiaCloudApi\Endpoints\Databases $databases */
+    $databases = new Databases($client);
+
+    if (!$options['simulate'] && !$options['no-db']) {
+      $databases->create($applications[$app]['id'], $db);
+      $this->say("Created <comment>{$db}</comment> cloud database on {$app}.");
+    }
+    else {
+      $this->logger->warning('Skipping database creation.');
+    }
+
+    $id = Multisite::getIdentifier("https://{$host}");
+    $local = Multisite::getInternalDomains($id)['local'];
+    $dev = Multisite::getInternalDomains($id)['dev'];
+    $test = Multisite::getInternalDomains($id)['test'];
+    $prod = Multisite::getInternalDomains($id)['prod'];
+
+    $root = $this->getConfigValue('repo.root');
+
+    $this->getConfig()->set('drupal.db.database', $db);
+    $this->input()->setInteractive(FALSE);
+
+    $this->invokeCommand('recipes:multisite:init', [
+      '--site-uri' => "https://{$host}",
+      '--site-dir' => $host,
+      '--remote-alias' => "{$id}.prod",
+    ]);
+
+    // BLT RMI uses the site-dir option for the vhost. Replace with local.
+    $result = $this->taskReplaceInFile("{$root}/box/config.yml")
+      ->from("servername: {$host}")
+      ->to("servername: {$local}")
+      ->run();
+
+    if (!$result->wasSuccessful()) {
+      throw new \Exception("Unable to replace DrupalVM vhost for {$host}.");
+    }
+
+    $result = $this->taskReplaceInFile("{$root}/docroot/sites/{$host}/settings.php")
+      ->from('require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";' . "\n")
+      ->to(<<<EOD
+\$ah_group = getenv('AH_SITE_GROUP');
+
+if (file_exists('/var/www/site-php')) {
+  require "/var/www/site-php/{\$ah_group}/{$db}-settings.inc";
+}
+
+require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
+
+EOD
+      )
+      ->run();
+
+    if (!$result->wasSuccessful()) {
+      throw new \Exception("Unable to set database include for site {$host}.");
+    }
+
+    // Copy the default settings include and add sitenow global settings.
+    $this->taskFilesystemStack()
+      ->copy(
+        "{$root}/docroot/sites/{$host}/settings/default.includes.settings.php",
+        "{$root}/docroot/sites/{$host}/settings/includes.settings.php"
+      )
+      ->run();
+
+    $result = $this->taskReplaceInFile("{$root}/docroot/sites/{$host}/settings/includes.settings.php")
+      ->from('// e.g,( DRUPAL_ROOT . "/sites/$site_dir/settings/foo.settings.php" )')
+      ->to('DRUPAL_ROOT . "/sites/settings/sitenow.settings.php"')
+      ->run();
+
+    if (!$result->wasSuccessful()) {
+      throw new \Exception("Unable to set settings include for site {$host}.");
+    }
+
+    // Remove some files that we don't need or will be regenerated below.
+    $files = [
+      "{$root}/drush/sites/default.site.yml",
+      "{$root}/docroot/sites/{$host}/default.services.yml",
+      "{$root}/docroot/sites/{$host}/services.yml",
+      "{$root}/drush/sites/{$host}.site.yml",
+      "{$root}/docroot/sites/{$host}/settings/local.settings.php",
+    ];
+
+    $this->taskFilesystemStack()
+      ->remove($files)
+      ->run();
+
+    // Re-generate the Drush alias so it is more useful.
+    $default = Yaml::parse(file_get_contents("{$root}/drush/sites/{$app}.site.yml"));
+    $default['local']['uri'] = $local;
+    $default['dev']['uri'] = $dev;
+    $default['test']['uri'] = $test;
+    $default['prod']['uri'] = $host;
+
+    $this->taskWriteToFile("{$root}/drush/sites/{$id}.site.yml")
+      ->text(Yaml::dump($default, 10, 2))
+      ->run();
+
+    $this->say("Updated <comment>{$id}.site.yml</comment> Drush alias file with <info>local, dev, test and prod</info> aliases.");
+
+    // Overwrite the multisite blt.yml file.
+    $blt = Yaml::parse(file_get_contents("{$root}/docroot/sites/{$host}/blt.yml"));
+    $blt['project']['profile']['name'] = 'sitenow';
+    $blt['project']['machine_name'] = $id;
+    $blt['project']['local']['hostname'] = $local;
+    $blt['drupal']['db']['database'] = $db;
+    $blt['drush']['aliases']['local'] = 'self';
+    $blt['uiowa']['profiles']['sitenow']['requester'] = $requester;
+
+    $this->taskWriteToFile("{$root}/docroot/sites/{$host}/blt.yml")
+      ->text(Yaml::dump($blt, 10, 2))
+      ->run();
+
+    $this->say("Overwrote <comment>docroot/sites/{$host}/blt.yml</comment> file with standardized names.");
+
+    // Write sites.php data. Note that we exclude the production URI since it
+    // will route automatically.
+    $data = <<<EOD
+
+// Directory aliases for {$host}.
+\$sites['{$local}'] = '{$host}';
+\$sites['{$dev}'] = '{$host}';
+\$sites['{$test}'] = '{$host}';
+\$sites['{$prod}'] = '{$host}';
+
+EOD;
+
+    $this->taskWriteToFile("{$root}/docroot/sites/sites.php")
+      ->text($data)
+      ->append()
+      ->run();
+
+    $this->say('Added default <comment>sites.php</comment> entries.');
+
+    // Regenerate the local settings file - it had the wrong database name.
+    $this->getConfig()->set('multisites', [
+      $host
+    ]);
+
+    $this->invokeCommand('blt:init:settings', [
+      '--site' => $host,
+    ]);
+
+    // Create the config directory with a file to commit.
+    $this->taskFilesystemStack()
+      ->mkdir("{$root}/config/{$host}")
+      ->touch("{$root}/config/{$host}/.gitkeep")
+      ->run();
+
+    $this->taskGit()
+      ->dir($root)
+      ->add('box/config.yml')
+      ->add('docroot/sites/sites.php')
+      ->add("docroot/sites/{$host}")
+      ->add("drush/sites/{$id}.site.yml")
+      ->add("config/{$host}")
+      ->commit("Initialize {$host} multisite")
+      ->interactive(FALSE)
+      ->printOutput(FALSE)
+      ->printMetadata(FALSE)
+      ->run();
+
+    $this->say("Committed site <comment>{$host}</comment> code.");
+    $this->say("Continue initializing additional multisites or follow the next steps below.");
+
+    $steps = [
+      'Push this branch and merge via a pull request.',
+      'Coordinate a new release and deploy to the test and prod environments.',
+      'Add the multisite domains to environments as needed.',
+    ];
+
+    $this->io()->listing($steps);
+  }
+
+  /**
+   * Validate that the command is being run on a feature branch.
+   *
+   * @hook validate @requireFeatureBranch
+   */
+  public function validateFeatureBranch() {
+    $result = $this->taskGit()
+      ->dir($this->getConfigValue("repo.root"))
+      ->exec('git rev-parse --abbrev-ref HEAD')
+      ->interactive(FALSE)
+      ->printOutput(FALSE)
+      ->printMetadata(FALSE)
+      ->run();
+
+    $branch = $result->getMessage();
+
+    if ($branch == 'master' || $branch == 'develop') {
+      return new CommandError('You must run this command on a feature branch created off master.');
+    }
+  }
+
+  /**
+   * Validate necessary credentials are set.
+   *
+   * @hook validate @requireCredentials
+   */
+  public function validateCredentials() {
+    $credentials = [
+      'uiowa.credentials.acquia.key',
+      'uiowa.credentials.acquia.secret',
+    ];
+
+    foreach ($credentials as $cred) {
+      if (!$this->getConfigValue($cred)) {
+        return new CommandError("You must set {$cred} in your {$this->getConfigValue('repo.root')}/blt/local.blt.yml file. DO NOT commit these anywhere in the repository!");
+      }
+    }
+  }
+
+  /**
+   * Return new Client for interacting with Acquia Cloud API.
+   *
+   * @return \AcquiaCloudApi\Connector\Client
+   *   ConnectorInterface client.
+   */
+  protected function getAcquiaCloudApiClient() {
+    $connector = new Connector([
+      'key' => $this->getConfigValue('uiowa.credentials.acquia.key'),
+      'secret' => $this->getConfigValue('uiowa.credentials.acquia.secret'),
+    ]);
+
+    /** @var \AcquiaCloudApi\Connector\Client $client */
+    $client = Client::factory($connector);
+
+    return $client;
   }
 
 }
