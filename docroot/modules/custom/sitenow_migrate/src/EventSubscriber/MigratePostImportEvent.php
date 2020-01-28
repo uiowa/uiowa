@@ -45,7 +45,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
     // Switch back to the D8 database.
     \Drupal\Core\Database\Database::setActiveConnection();
     // Strip base path out of the public filepath, because we can't (easily) access the settings file.
-    $this->base_path = $result->explode('/', fetchField())[1];
+    $this->base_path = explode('/', $result->fetchField())[1];
     // If it's a subdomain site, replace '.' with '/'.
     if (substr($this->base_path, 0, 10) == 'uiowa.edu.') {
       substr_replace($this->base_path, '/', 9, 1);
