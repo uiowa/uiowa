@@ -768,3 +768,9 @@ $sites['sitenowdemo.local.drupal.uiowa.edu'] = 'demo.sitenow.uiowa.edu';
 $sites['sitenowdemo.dev.drupal.uiowa.edu'] = 'demo.sitenow.uiowa.edu';
 $sites['sitenowdemo.stage.drupal.uiowa.edu'] = 'demo.sitenow.uiowa.edu';
 $sites['sitenowdemo.prod.drupal.uiowa.edu'] = 'demo.sitenow.uiowa.edu';
+
+// Directory aliases for cmdd.lab.uiowa.edu.
+$sites['labcmdd.local.drupal.uiowa.edu'] = 'cmdd.lab.uiowa.edu';
+$sites['labcmdd.dev.drupal.uiowa.edu'] = 'cmdd.lab.uiowa.edu';
+$sites['labcmdd.stage.drupal.uiowa.edu'] = 'cmdd.lab.uiowa.edu';
+$sites['labcmdd.prod.drupal.uiowa.edu'] = 'cmdd.lab.uiowa.edu';
