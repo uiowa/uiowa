@@ -63,9 +63,9 @@ Please see the [SiteNow README](docroot/profiles/custom/sitenow/README.md) for p
 ### Creating Sites
 To add a new site to the project, run the following command:
 ```
-blt umc example.uiowa.edu sitenow
+blt umc example.uiowa.edu profile
 ```
-Replace `example.uiowa.edu` with the URI of the site you are creating. Replace `sitenow` with the name of the profile you are creating the site with, if it is not the SiteNow profile.
+Replace `example.uiowa.edu` with the URI of the site you are creating. Replace `profile` with the name of the profile you are creating the site with, for example `collegiate` or `sitenow`.
 
 The following options can also be passed in:
 * `--requester=hawkid` - This is a required field when using the SiteNow profile. Use the hawkid of the person who requested the site.
