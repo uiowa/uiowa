@@ -1,0 +1,19 @@
+project:
+  profile:
+    name: sitenow
+  local:
+    hostname: orguibio.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: orguibio
+  human_name: uibio.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orguibio.prod
+drupal:
+  db:
+    database: uibio_org_uiowa_edu
+uiowa:
+  profiles:
+    sitenow:
+      requester: jmiller81
