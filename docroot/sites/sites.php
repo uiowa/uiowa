@@ -804,3 +804,9 @@ $sites['gradinformatics.local.drupal.uiowa.edu'] = 'informatics.grad.uiowa.edu';
 $sites['gradinformatics.dev.drupal.uiowa.edu'] = 'informatics.grad.uiowa.edu';
 $sites['gradinformatics.stage.drupal.uiowa.edu'] = 'informatics.grad.uiowa.edu';
 $sites['gradinformatics.prod.drupal.uiowa.edu'] = 'informatics.grad.uiowa.edu';
+
+// Directory aliases for iowaresearch.lab.uiowa.edu.
+$sites['labiowaresearch.local.drupal.uiowa.edu'] = 'iowaresearch.lab.uiowa.edu';
+$sites['labiowaresearch.dev.drupal.uiowa.edu'] = 'iowaresearch.lab.uiowa.edu';
+$sites['labiowaresearch.stage.drupal.uiowa.edu'] = 'iowaresearch.lab.uiowa.edu';
+$sites['labiowaresearch.prod.drupal.uiowa.edu'] = 'iowaresearch.lab.uiowa.edu';
