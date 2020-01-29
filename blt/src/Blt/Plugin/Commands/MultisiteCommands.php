@@ -347,17 +347,14 @@ EOD
       )
       ->run();
 
-    // If using the sitenow profile, include profile-specific settings file.
-    // @todo Generalize this to add include for any '$profile.settings.php' file that exists?
-    if ($profile === 'sitenow') {
-      $result = $this->taskReplaceInFile("{$root}/docroot/sites/{$host}/settings/includes.settings.php")
-        ->from('// e.g,( DRUPAL_ROOT . "/sites/$site_dir/settings/foo.settings.php" )')
-        ->to('DRUPAL_ROOT . "/sites/settings/sitenow.settings.php"')
-        ->run();
+    // Include profile-specific settings file.
+    $result = $this->taskReplaceInFile("{$root}/docroot/sites/{$host}/settings/includes.settings.php")
+      ->from('// e.g,( DRUPAL_ROOT . "/sites/$site_dir/settings/foo.settings.php" )')
+      ->to("DRUPAL_ROOT . \"/sites/settings/{$profile}.settings.php\"")
+      ->run();
 
-      if (!$result->wasSuccessful()) {
-        throw new \Exception("Unable to set settings include for site {$host}.");
-      }
+    if (!$result->wasSuccessful()) {
+      throw new \Exception("Unable to set settings include for site {$host}.");
     }
 
     // Remove some files that we don't need or will be regenerated below.
@@ -394,8 +391,8 @@ EOD
     $blt['drupal']['db']['database'] = $db;
     $blt['drush']['aliases']['local'] = 'self';
 
-    // @todo Should we remove the constraint to allow adding to any profile?
-    if (isset($options['requester']) && $profile === 'sitenow') {
+    // If requester option is set, add it to the site's BLT settings.
+    if (isset($options['requester'])) {
       $blt['uiowa']['profiles'][$profile]['requester'] = $options['requester'];
     }
 
