@@ -72,28 +72,22 @@ class ReplaceCommands extends BltTasks {
               throw new \Exception("Site install task failed for {$uri}.");
             }
 
-            switch ($profile) {
-              case 'sitenow':
+            // If a requester was added, add them as a webmaster for the site.
+            if ($requester = $this->getConfigValue('uiowa.profiles.sitenow.requester')) {
+              $result = $this->taskDrush()
+                ->stopOnFail(FALSE)
+                ->drush('user:create')
+                ->args($requester)
+                ->drush('user:role:add')
+                ->args([
+                  'webmaster',
+                  $requester,
+                ])
+                ->run();
 
-                // @todo Should this be generalized to be available to all profiles?
-                if ($requester = $this->getConfigValue('uiowa.profiles.sitenow.requester')) {
-                  $result = $this->taskDrush()
-                    ->stopOnFail(FALSE)
-                    ->drush('user:create')
-                    ->args($requester)
-                    ->drush('user:role:add')
-                    ->args([
-                      'webmaster',
-                      $requester,
-                    ])
-                    ->run();
-
-                  if (!$result->wasSuccessful()) {
-                    throw new \Exception("Webmaster task failed for {$uri}.");
-                  }
-                }
-
-                break;
+              if (!$result->wasSuccessful()) {
+                throw new \Exception("Webmaster task failed for {$uri}.");
+              }
             }
           }
         }
@@ -112,24 +106,18 @@ class ReplaceCommands extends BltTasks {
   public function replacePostDbCopy($site, $target_env, $db_name, $source_env) {
     foreach ($this->getConfigValue('multisites') as $multisite) {
       $this->switchSiteContext($multisite);
-      $profile = $this->getConfigValue('project.profile.name');
 
-      switch ($profile) {
-        case 'sitenow':
-          $db = $this->getConfigValue('drupal.db.database');
+      $db = $this->getConfigValue('drupal.db.database');
 
-          // Trigger drupal:update for this site.
-          if ($db_name == $db) {
-            $this->say("Deploying updates to <comment>{$multisite}</comment>...");
-            $this->switchSiteContext($multisite);
-            $this->taskDrush()->drush('cache:rebuild')->run();
-            $this->invokeCommand('drupal:update');
-            $this->say("Finished deploying updates to {$multisite}.");
+      // Trigger drupal:update for this site.
+      if ($db_name == $db) {
+        $this->say("Deploying updates to <comment>{$multisite}</comment>...");
+        $this->switchSiteContext($multisite);
+        $this->taskDrush()->drush('cache:rebuild')->run();
+        $this->invokeCommand('drupal:update');
+        $this->say("Finished deploying updates to {$multisite}.");
 
-            break;
-          }
-
-          break;
+        break;
       }
     }
   }
