@@ -1,10 +1,11 @@
 project:
   local:
-    hostname: uigearup.uiowa.edu
+    hostname: uigearup.local.drupal.uiowa.edu
     protocol: https
   machine_name: uigearup
   human_name: uigearup.uiowa.edu
-  requester: lamba
+  profile:
+    name: sitenow
 drush:
   aliases:
     local: self
@@ -12,6 +13,14 @@ drush:
 drupal:
   db:
     database: uigearup_uiowa_edu
-    host: localhost
-    user: root
-    password: null
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true
+
+uiowa:
+  profiles:
+    sitenow:
+      requester: lamba

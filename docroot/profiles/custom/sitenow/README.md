@@ -1,20 +1,20 @@
 # sitenow
-Configuration for ITS Drupal sites.
+The installation profile for ITS-managed Drupal sites. Sites provisioned with
+the sitenow profile will be configured to share their sync configuration
+directory with the profile.
 
 ## Install via Drush
 `drush site:install sitenow --existing-config`
 
-## Dependencies
-Add new dependencies by running `composer require vendor/package --no-update` in the
-path/to/sitenow directory. This will update the composer.json file appropriately and prevent
-dependencies from being installed in the current directory, which is undesired.
+## Provision
+To create a new multisite:
+1. Run the `blt sitenow:multisite:create` command (`smc` for short) on a feature branch created from master.
+2. Follow the directions the command prints to the terminal.
+3. If necessary, email Hostmaster with CNAME request.
 
-## Testing Pull Requests
-Run `composer require uiowa/sitenow:dev-branch-name` from the root of the application. This will update the composer.json and composer.lock files to require this feature branch. This is undesired in the master branch but can be useful for deploying PRs to develop or stage. Leave the changes uncommitted locally. When done testing, reset the composer.* changes and re-install dependencies:
-
-```
-git checkout -f -- composer.*
-composer install
-```
-
-Foo bar
+## Deprovision
+To delete a multisite:
+1. Run the `blt sitenow:multisite:delete` command (`smd` for short) on a feature branch created from master.
+2. Follow the directions the command prints to the terminal.
+3. Remove any site-specific cron jobs from the Acquia Cloud interface.
+3. If necessary, email Hostmaster to remove the CNAME that is no longer in use.

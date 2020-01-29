@@ -1,6 +1,8 @@
 project:
+  profile:
+    name: sitenow
   local:
-    hostname: hr.uiowa.edu
+    hostname: hr.local.drupal.uiowa.edu
     protocol: https
   machine_name: hr
   human_name: hr.uiowa.edu
@@ -11,6 +13,10 @@ drush:
 drupal:
   db:
     database: hr_uiowa_edu
-    host: localhost
-    user: root
-    password: null
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true
+

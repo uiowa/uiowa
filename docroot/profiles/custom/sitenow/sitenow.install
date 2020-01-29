@@ -7,6 +7,8 @@
  */
 
 use Drupal\Core\Config\FileStorage;
+use Drupal\node\Entity\Node;
+use Drupal\taxonomy\Entity\Term;
 use Drupal\user\Entity\User;
 
 /**
@@ -186,14 +188,14 @@ function sitenow_update_8014(&$sandbox) {
     return;
   }
 
-  foreach($batch as $nid) {
-    $node = \Drupal\node\Entity\Node::load($nid);
+  foreach ($batch as $nid) {
+    $node = Node::load($nid);
     // Get and load taxonomy values from field_reference.
     $terms = $node->get('field_reference')->getValue();
     $tags = [];
     $other_terms = [];
-    foreach($terms as $tid) {
-      $term = \Drupal\taxonomy\Entity\Term::load($tid['target_id']);
+    foreach ($terms as $tid) {
+      $term = Term::load($tid['target_id']);
       $bundle = $term->bundle();
       // Split values into tags and others.
       if ($bundle == 'tags') {
@@ -221,11 +223,11 @@ function sitenow_update_8014(&$sandbox) {
 
   if ($sandbox['current'] >= $sandbox['total']) {
     $sandbox['#finished'] = 1;
-  } else {
+  }
+  else {
     $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
   }
 }
-
 
 /**
  * Re-save all person nodes.
@@ -234,7 +236,7 @@ function sitenow_update_8015(&$sandbox) {
   // Process all nodes that have a filled person.
   if (!isset($sandbox['total'])) {
     $query = \Drupal::entityQuery('node')
-      ->condition('type','person')
+      ->condition('type', 'person')
       ->execute();
     $sandbox['total'] = count($query);
     $sandbox['current'] = 0;
@@ -253,8 +255,8 @@ function sitenow_update_8015(&$sandbox) {
     return;
   }
 
-  foreach($batch as $nid) {
-    $node = \Drupal\node\Entity\Node::load($nid);
+  foreach ($batch as $nid) {
+    $node = Node::load($nid);
     if (is_null($node->get('field_person_hide')->value)) {
       $node->set('field_person_hide', FALSE);
       // Set revision message and save.
@@ -269,7 +271,8 @@ function sitenow_update_8015(&$sandbox) {
 
   if ($sandbox['current'] >= $sandbox['total']) {
     $sandbox['#finished'] = 1;
-  } else {
+  }
+  else {
     $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
   }
 }

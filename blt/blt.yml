@@ -1,21 +1,16 @@
 project:
   prefix: uiowa
-  human_name: 'The sitenow platform on the uiowa application.'
-  profile:
-    name: sitenow
+  human_name: 'The base application on Acquia Cloud for the University of Iowa.'
   local:
-    uri: 'localhost:8888'
-cm:
-  core:
-    dirs:
-      sync:
-        path: 'profiles/custom/sitenow/config/sync'
+    hostname: local.drupal.uiowa.edu
+    protocol: https
 git:
   default_branch: master
   remotes:
     - 'git@github.com:uiowa/uiowa.git'
   hooks:
     commit-msg: false
+    pre-push: false
 deploy:
   tag_source: true
 drush:
@@ -37,28 +32,31 @@ tests:
   phpunit:
     - config: '${repo.root}'
 validate:
-  deprecation:
-    modules: true
-    themes: true
-cloud:
-  appId: 6bcc006f-9a0e-425e-aba0-198585dd2b56
-drupal:
-  db:
-    host: localhost
-    database: null
-    username: root
-    password: null
-sync:
-  commands:
-    - blt:init:settings
-    - drupal:sync:db
-    - drupal:update
-    - sitenow:multisite:noop
-    - sitenow:multisite:noop
+  twig:
+    functions:
+      - drupal_image
+    filters:
+      - image_style
 command-hooks:
   frontend-reqs:
     dir: ${docroot}
-    command: '. $NVM_DIR/nvm.sh && nvm install && yarn install'
+    command: 'yarn install'
   frontend-assets:
     dir: ${docroot}
-    command: '. $NVM_DIR/nvm.sh && nvm use && yarn workspaces run gulp'
+    command: 'yarn workspaces run gulp'
+sync:
+  commands:
+    - 'blt:init:settings'
+    - 'drupal:sync:db'
+    - 'drupal:update'
+    - 'uiowa:multisite:noop'
+    - 'uiowa:multisite:noop'
+uiowa:
+  applications:
+    uiowa:
+      id: 6bcc006f-9a0e-425e-aba0-198585dd2b56
+    uiowa01:
+      id: 21a2a0ab-b4ed-4ecf-8bd4-9266c70f5ef1
+  profiles:
+    - sitenow
+    - collegiate

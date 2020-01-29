@@ -1,9 +1,11 @@
 project:
   local:
-    hostname: honorary-degrees.sites.uiowa.edu
+    hostname: siteshonorary-degrees.local.drupal.uiowa.edu
     protocol: https
   machine_name: siteshonorary-degrees
   human_name: honorary-degrees.sites.uiowa.edu
+  profile:
+    name: sitenow
 drush:
   aliases:
     local: self
@@ -11,6 +13,10 @@ drush:
 drupal:
   db:
     database: honorary_degrees_sites_uiowa_edu
-    host: localhost
-    user: root
-    password: null
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true
+

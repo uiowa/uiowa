@@ -1,16 +1,22 @@
 project:
   local:
-    hostname: staff-council.uiowa.edu
+    hostname: staff-council.local.drupal.uiowa.edu
     protocol: https
   machine_name: staff-council
   human_name: staff-council.uiowa.edu
+  profile:
+    name: sitenow
 drupal:
   db:
     database: staff_council_uiowa_edu
-    host: localhost
-    user: root
-    password: null
 drush:
   aliases:
     local: self
     remote: staff-council.prod
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true
+

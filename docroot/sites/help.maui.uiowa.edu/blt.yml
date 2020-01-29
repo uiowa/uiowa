@@ -1,10 +1,11 @@
 project:
   local:
-    hostname: help.maui.uiowa.edu
+    hostname: mauihelp.local.drupal.uiowa.edu
     protocol: https
   machine_name: mauihelp
   human_name: help.maui.uiowa.edu
-  requester: wevanson
+  profile:
+    name: sitenow
 drush:
   aliases:
     local: self
@@ -12,6 +13,14 @@ drush:
 drupal:
   db:
     database: help_maui_uiowa_edu
-    host: localhost
-    user: root
-    password: null
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true
+
+uiowa:
+  profiles:
+    sitenow:
+      requester: wevanson

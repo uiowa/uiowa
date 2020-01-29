@@ -1,9 +1,11 @@
 project:
   local:
-    hostname: cot.org.uiowa.edu
+    hostname: orgcot.local.drupal.uiowa.edu
     protocol: https
   machine_name: orgcot
   human_name: cot.org.uiowa.edu
+  profile:
+    name: sitenow
 drush:
   aliases:
     local: self
@@ -11,6 +13,10 @@ drush:
 drupal:
   db:
     database: cot_org_uiowa_edu
-    host: localhost
-    user: root
-    password: null
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true
+

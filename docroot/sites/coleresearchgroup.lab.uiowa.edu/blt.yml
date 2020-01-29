@@ -1,10 +1,11 @@
 project:
   local:
-    hostname: coleresearchgroup.lab.uiowa.edu
+    hostname: labcoleresearchgroup.local.drupal.uiowa.edu
     protocol: https
   machine_name: labcoleresearchgroup
   human_name: coleresearchgroup.lab.uiowa.edu
-  requester: nestates
+  profile:
+    name: sitenow
 drush:
   aliases:
     local: self
@@ -12,6 +13,14 @@ drush:
 drupal:
   db:
     database: coleresearchgroup_lab_uiowa_edu
-    host: localhost
-    user: root
-    password: null
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true
+
+uiowa:
+  profiles:
+    sitenow:
+      requester: nestates

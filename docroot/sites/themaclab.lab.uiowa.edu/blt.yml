@@ -1,0 +1,26 @@
+project:
+  profile:
+    name: sitenow
+  local:
+    hostname: labthemaclab.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labthemaclab
+  human_name: themaclab.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labthemaclab.prod
+drupal:
+  db:
+    database: themaclab_lab_uiowa_edu
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true
+
+uiowa:
+  profiles:
+    sitenow:
+      requester: krisrooff

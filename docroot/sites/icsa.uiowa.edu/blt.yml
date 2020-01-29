@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: icsa.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: icsa
+  human_name: icsa.uiowa.edu
+  profile:
+    name: collegiate
+drush:
+  aliases:
+    local: self
+    remote: icsa.prod
+drupal:
+  db:
+    database: icsa_uiowa_edu
