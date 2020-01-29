@@ -127,6 +127,9 @@ EOD;
       $site = $dir->getRelativePathname();
       $path = $dir->getRealPath();
 
+      // Output the site to the console to identify test failures.
+      fwrite(STDERR, $site . PHP_EOL);
+
       $this->assertFileExists("{$path}/blt.yml");
       $this->assertFileExists("{$path}/default.local.drush.yml");
       $this->assertFileExists("{$path}/default.settings.php");
@@ -183,6 +186,9 @@ EOD;
             $haystack = file_get_contents($file);
             $this->assertContains($needle, $haystack);
 
+            $yaml = YamlMunge::parseFile("{$path}/blt.yml");
+            $this->assertEquals('profiles/custom/sitenow/config/sync', $yaml['cm']['core']['dirs']['sync']['path']);
+            $this->assertEquals(TRUE, $yaml['cm']['core']['install_from_config']);
             break;
         }
       }
