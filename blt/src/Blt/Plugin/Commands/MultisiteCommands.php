@@ -423,7 +423,7 @@ EOD;
 
     // Regenerate the local settings file - it had the wrong database name.
     $this->getConfig()->set('multisites', [
-      $host
+      $host,
     ]);
 
     $this->invokeCommand('blt:init:settings', [
