@@ -272,7 +272,7 @@ EOD
     'simulate' => FALSE,
     'no-commit' => FALSE,
     'no-db' => FALSE,
-    'requester' => InputOption::VALUE_OPTIONAL
+    'requester' => InputOption::VALUE_REQUIRED,
   ]) {
     $db = Multisite::getInitialDatabaseName($host);
     $applications = $this->getConfigValue('uiowa.applications');
