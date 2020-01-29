@@ -235,8 +235,17 @@ EOD
       return new CommandError('Cannot parse URI for validation.');
     }
 
+    // RMI does this but we run it with no interaction.
     if (file_exists("{$root}/docroot/sites/{$host}")) {
       return new CommandError("Site {$host} already exists.");
+    }
+
+    $profiles = $this->getConfig()->get('uiowa.profiles');
+    $profile = $commandData->input()->getArgument('profile');
+
+    if (!in_array($profile, $profiles)) {
+      $profiles = implode(', ', $profiles);
+      return new CommandError("Invalid profile {$profile}. Must be one of {$profiles}.");
     }
   }
 
