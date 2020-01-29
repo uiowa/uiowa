@@ -277,6 +277,7 @@ EOD
     $db = Multisite::getInitialDatabaseName($host);
     $applications = $this->getConfigValue('uiowa.applications');
     $app = $this->askChoice('Which cloud application should be used?', array_keys($applications));
+    $appId = $applications[$app]['id'];
 
     /** @var \AcquiaCloudApi\Connector\Client $client */
     $client = $this->getAcquiaCloudApiClient();
@@ -284,8 +285,8 @@ EOD
     /** @var \AcquiaCloudApi\Endpoints\Databases $databases */
     $databases = new Databases($client);
 
-    if (!$options['simulate'] && !$options['no-db'] && !$this->checkIfRemoteDatabaseExists($app, $databases, $db)) {
-      $databases->create($applications[$app]['id'], $db);
+    if (!$options['simulate'] && !$options['no-db'] && !$this->checkIfRemoteDatabaseExists($appId, $databases, $db)) {
+      $databases->create($appId, $db);
       $this->say("Created <comment>{$db}</comment> cloud database on {$app}.");
     }
     else {
