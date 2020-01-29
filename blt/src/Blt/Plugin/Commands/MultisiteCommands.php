@@ -272,7 +272,7 @@ EOD
     'simulate' => FALSE,
     'no-commit' => FALSE,
     'no-db' => FALSE,
-    'requester' => InputOption::VALUE_OPTIONAL
+    'requester' => InputOption::VALUE_OPTIONAL,
   ]) {
     $db = Multisite::getInitialDatabaseName($host);
     $applications = $this->getConfigValue('uiowa.applications');
@@ -426,7 +426,7 @@ EOD;
 
     // Regenerate the local settings file - it had the wrong database name.
     $this->getConfig()->set('multisites', [
-      $host
+      $host,
     ]);
 
     $this->invokeCommand('blt:init:settings', [
