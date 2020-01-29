@@ -399,6 +399,14 @@ EOD
       $blt['uiowa']['profiles'][$profile]['requester'] = $options['requester'];
     }
 
+    // Set the BLT config to install from config for the sitenow profile.
+    // @todo: Abstract this into a profile-sync option?
+    if ($profile == 'sitenow') {
+      $blt['cm']['core']['dirs']['sync']['path'] = "profiles/custom/{$profile}/config/sync";
+      $blt['cm']['core']['install_from_config'] = TRUE;
+
+    }
+
     $this->taskWriteToFile("{$root}/docroot/sites/{$host}/blt.yml")
       ->text(Yaml::dump($blt, 10, 2))
       ->run();
