@@ -798,3 +798,9 @@ $sites['orgcda.local.drupal.uiowa.edu'] = 'cda.org.uiowa.edu';
 $sites['orgcda.dev.drupal.uiowa.edu'] = 'cda.org.uiowa.edu';
 $sites['orgcda.stage.drupal.uiowa.edu'] = 'cda.org.uiowa.edu';
 $sites['orgcda.prod.drupal.uiowa.edu'] = 'cda.org.uiowa.edu';
+
+// Directory aliases for informatics.grad.uiowa.edu.
+$sites['gradinformatics.local.drupal.uiowa.edu'] = 'informatics.grad.uiowa.edu';
+$sites['gradinformatics.dev.drupal.uiowa.edu'] = 'informatics.grad.uiowa.edu';
+$sites['gradinformatics.stage.drupal.uiowa.edu'] = 'informatics.grad.uiowa.edu';
+$sites['gradinformatics.prod.drupal.uiowa.edu'] = 'informatics.grad.uiowa.edu';
