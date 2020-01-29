@@ -29,50 +29,53 @@ class ReplaceCommands extends BltTasks {
         $app = EnvironmentDetector::getAhGroup();
 
         if (file_exists("/var/www/site-php/{$app}/{$db}-settings.inc")) {
-          switch ($profile) {
-            case 'sitenow':
-              if ($this->getInspector()->isDrupalInstalled()) {
-                $this->say("Deploying updates to <comment>$multisite</comment>...");
-                $this->invokeCommand('drupal:update');
-                $this->say("Finished deploying updates to $multisite.");
-              }
-              else {
-                $this->logger->warning("Drupal not installed for <comment>$multisite</comment>. Installing from configuration in sitenow profile....");
-                $uri = $this->getConfig()->get('site');
 
-                if (empty($uri)) {
-                  throw new \Exception('Cannot determine site directory for installation.');
-                }
+          if ($this->getInspector()->isDrupalInstalled()) {
+            $this->say("Deploying updates to <comment>$multisite</comment>...");
+            $this->invokeCommand('drupal:update');
+            $this->say("Finished deploying updates to $multisite.");
+          }
+          else {
+            $this->logger->warning("Drupal not installed for <comment>$multisite</comment>. Installing from configuration in sitenow profile....");
+            $uri = $this->getConfig()->get('site');
 
-                $uid = uniqid('admin_');
+            if (empty($uri)) {
+              throw new \Exception('Cannot determine site directory for installation.');
+            }
 
-                $result = $this->taskDrush()
-                  ->stopOnFail(TRUE)
-                  ->drush('site:install')
-                  ->arg('sitenow')
-                  ->options([
-                    'sites-subdir' => $uri,
-                    'existing-config' => NULL,
-                    'account-name' => $uid,
-                    'account-mail' => base64_decode('aXRzLXdlYkB1aW93YS5lZHU='),
-                  ])
-                  ->drush('user:role:add')
-                  ->args([
-                    'administrator',
-                    $uid,
-                  ])
-                  ->drush('config:set')
-                  ->args([
-                    'system.site',
-                    'name',
-                    $uri,
-                  ])
-                  ->run();
+            $uid = uniqid('admin_');
 
-                if (!$result->wasSuccessful()) {
-                  throw new \Exception("Site install task failed for {$uri}.");
-                }
+            $result = $this->taskDrush()
+              ->stopOnFail(TRUE)
+              ->drush('site:install')
+              ->arg($profile)
+              ->options([
+                'sites-subdir' => $uri,
+                'existing-config' => NULL,
+                'account-name' => $uid,
+                'account-mail' => base64_decode('aXRzLXdlYkB1aW93YS5lZHU='),
+              ])
+              ->drush('user:role:add')
+              ->args([
+                'administrator',
+                $uid,
+              ])
+              ->drush('config:set')
+              ->args([
+                'system.site',
+                'name',
+                $uri,
+              ])
+              ->run();
 
+            if (!$result->wasSuccessful()) {
+              throw new \Exception("Site install task failed for {$uri}.");
+            }
+
+            switch ($profile) {
+              case 'sitenow':
+
+                // @todo Should this be generalized to be available to all profiles?
                 if ($requester = $this->getConfigValue('uiowa.profiles.sitenow.requester')) {
                   $result = $this->taskDrush()
                     ->stopOnFail(FALSE)
@@ -89,9 +92,9 @@ class ReplaceCommands extends BltTasks {
                     throw new \Exception("Webmaster task failed for {$uri}.");
                   }
                 }
-              }
 
-              break;
+                break;
+            }
           }
         }
         else {
