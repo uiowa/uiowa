@@ -45,16 +45,22 @@ class ReplaceCommands extends BltTasks {
 
             $uid = uniqid('admin_');
 
+            $site_install_options = [
+              'sites-subdir' => $uri,
+              'account-name' => $uid,
+              'account-mail' => base64_decode('aXRzLXdlYkB1aW93YS5lZHU='),
+            ];
+
+            // If this is the sitenow profile, set the existing-config option.
+            if ($profile === 'sitenow') {
+              $site_install_options['existing-config'] = NULL;
+            }
+
             $result = $this->taskDrush()
               ->stopOnFail(TRUE)
               ->drush('site:install')
               ->arg($profile)
-              ->options([
-                'sites-subdir' => $uri,
-                'existing-config' => NULL,
-                'account-name' => $uid,
-                'account-mail' => base64_decode('aXRzLXdlYkB1aW93YS5lZHU='),
-              ])
+              ->options($site_install_options)
               ->drush('user:role:add')
               ->args([
                 'administrator',
