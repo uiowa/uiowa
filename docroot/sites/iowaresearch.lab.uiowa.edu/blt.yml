@@ -2,21 +2,21 @@ project:
   profile:
     name: sitenow
   local:
-    hostname: sitenowdemo.local.drupal.uiowa.edu
+    hostname: labiowaresearch.local.drupal.uiowa.edu
     protocol: https
-  machine_name: sitenowdemo
-  human_name: demo.sitenow.uiowa.edu
+  machine_name: labiowaresearch
+  human_name: iowaresearch.lab.uiowa.edu
 drush:
   aliases:
     local: self
-    remote: sitenowdemo.prod
+    remote: labiowaresearch.prod
 drupal:
   db:
-    database: demo_sitenow_uiowa_edu
+    database: iowaresearch_lab_uiowa_edu
 uiowa:
   profiles:
     sitenow:
-      requester: rbporter
+      requester: strommerl
 cm:
   core:
     dirs:

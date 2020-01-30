@@ -90,7 +90,7 @@ class UpdateCommands extends BltTasks {
    *
    * @Update(
    *   version = "1001",
-   *   description = "Write database include to settings.php for every multisite."
+   *   description = "Write database include to settings.php for multisites."
    * )
    */
   protected function update1001() {
@@ -129,7 +129,7 @@ EOD;
    *
    * @Update(
    *   version = "1002",
-   *   description = "Update multisite blt.yml files to localize sitenow config."
+   *   description = "Update multisite blt files to localize sitenow config."
    * )
    */
   protected function update1002() {
@@ -213,7 +213,7 @@ EOD;
    *
    * @Update(
    *   version = "1004",
-   *   description = "Revert multisite database configuration to BLT defaults for VM."
+   *   description = "Revert multisite DB configuration to BLT defaults for VM."
    * )
    */
   protected function update1004() {
@@ -270,7 +270,7 @@ EOD;
    *
    * @Update(
    *   version = "1006",
-   *   description = "Set local hostname for multisites and regenerate settings."
+   *   description = "Set local host for multisites and regenerate settings."
    * )
    */
   protected function update1006() {
