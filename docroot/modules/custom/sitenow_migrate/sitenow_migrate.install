@@ -11,18 +11,18 @@
 /**
  * Implements hook_uninstall().
  *
-function sitenow_migrate_uninstall() {
-  $module_path = DRUPAL_ROOT . base_path() . drupal_get_path('module', 'sitenow_migrate') . '/config/install';
-  $files = \Drupal::service('file_system')->scanDirectory($module_path, '/migrate_plus/');
-  if ($files) {
-    foreach ($files as $file) {
-      \Drupal::logger('sitenow_migrate')->notice(t('Deleted file @file.', [
-        '@file' => $file,
-      ]));
-
-      \Drupal::configFactory()->getEditable($file->name)->delete();
-    }
-  }
-  return TRUE;
-}
-*/
+ * Function sitenow_migrate_uninstall() {
+ * $module_path = DRUPAL_ROOT . base_path() . drupal_get_path('module', 'sitenow_migrate') . '/config/install';
+ * $files = \Drupal::service('file_system')->scanDirectory($module_path, '/migrate_plus/');
+ * if ($files) {
+ * foreach ($files as $file) {
+ * \Drupal::logger('sitenow_migrate')->notice(t('Deleted file @file.', [
+ * '@file' => $file,
+ * ]));
+ *
+ * \Drupal::configFactory()->getEditable($file->name)->delete();
+ * }
+ * }
+ * return TRUE;
+ * }
+ */

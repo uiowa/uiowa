@@ -2,6 +2,7 @@
 
 namespace Drupal\sitenow_migrate\EventSubscriber;
 
+use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\migrate\Event\MigrateEvents;
 use Drupal\migrate\Event\MigrateImportEvent;
@@ -36,14 +37,14 @@ class MigratePostImportEvent implements EventSubscriberInterface {
   public function __construct(EntityTypeManager $entityTypeManager) {
     $this->entityTypeManager = $entityTypeManager;
     // Switch to the D7 database.
-    \Drupal\Core\Database\Database::setActiveConnection('drupal_7');
-    $connection = \Drupal\Core\Database\Database::getConnection();
+    Database::setActiveConnection('drupal_7');
+    $connection = Database::getConnection();
     $query = $connection->select('variable', 'v');
     $query->fields('v', ['value'])
       ->condition('v.name', 'file_public_path', '=');
     $result = $query->execute();
     // Switch back to the D8 database.
-    \Drupal\Core\Database\Database::setActiveConnection();
+    Database::setActiveConnection();
     // Strip base path out of the public filepath, because we can't (easily) access the settings file.
     $this->base_path = explode('/', $result->fetchField())[1];
     // If it's a subdomain site, replace '.' with '/'.
@@ -54,7 +55,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
 
   /**
    * Get subscribed events.
-   * 
+   *
    * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
@@ -73,7 +74,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
 
       case 'd7_page':
         $this->source_to_dest_ids = $this->fetchMapping();
-        $this->d7_aliases = $this->fetchAliases(True);
+        $this->d7_aliases = $this->fetchAliases(TRUE);
         $this->d8_aliases = $this->fetchAliases();
         \Drupal::logger('sitenow_migrate')->notice(t('Checking for possible broken links'));
         $candidates = $this->checkForPossibleLinkBreaks();
@@ -84,9 +85,9 @@ class MigratePostImportEvent implements EventSubscriberInterface {
     }
   }
 
-/**
- * Update aliases from D7 to newly created D8 references.
- */
+  /**
+   * Update aliases from D7 to newly created D8 references.
+   */
   private function updateInternalLinks($candidates) {
 
     // Each candidate is an nid of a page suspected to contain a broken link.
@@ -128,7 +129,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
       switch ($node->getType()) {
         case 'page':
           $paragraph->set('field_text_body', [
-            'value' => $content
+            'value' => $content,
           ]);
           $paragraph->save();
           break;
@@ -142,56 +143,58 @@ class MigratePostImportEvent implements EventSubscriberInterface {
     }
   }
 
-/**
- * Regex callback for updating links broken by the migration.
- */
-private function linkReplace($match) {
-  $old_link = $match[1];
-  \Drupal::logger('sitenow_migrate')->notice(t('Old link found... @old_link', [
-    '@old_link' => $old_link,
-  ]));
-
-  // Check if it's a relative link.
-  if (substr($old_link, 1, 1) == '/') {
-    $link_parts = explode('/', $old_link);
-
-    // Old node/# formatted links just need the updated mapping.
-    if ($link_parts[1] == 'node') {
-      // Take the node id, but don't grab the trailing ".
-      $old_nid = substr($link_parts[2], 0, -1);
-      // If we don't have the correct mapping, return the original link.
-      $new_link = (isset($this->source_to_dest_ids[$old_nid])) ? '<a href="/node/' . $this->source_to_dest_ids[$old_nid] . '"' : $match[0];
-    } else {
-      // If it wasn't in node/# format, we need to use the alias (w/out preceding "/ or the trailing ") to get the correct mapping.
-      $d7_nid = $this->d7_aliases[substr($old_link, 2, -1)];
-      $new_link = (isset($this->source_to_dest_ids[$d7_nid])) ? '<a href="/node/' . $this->source_to_dest_ids[$d7_nid] . '"' : $match[0];      
-    }
-    \Drupal::logger('sitenow_migrate')->notice(t('New link found... @new_link', [
-      '@new_link' => $new_link,
+  /**
+   * Regex callback for updating links broken by the migration.
+   */
+  private function linkReplace($match) {
+    $old_link = $match[1];
+    \Drupal::logger('sitenow_migrate')->notice(t('Old link found... @old_link', [
+      '@old_link' => $old_link,
     ]));
 
-    return $new_link;
-  } else {
-    // We have an absolute link--need to check if it references this site or is external.
-    $pattern = '|"(https?://)?(www.)?' . $this->base_path . '/(.*?)"|';
-    if (preg_match($pattern, $old_link, $match)) {
-      $d7_nid = $this->d7_aliases[$match[3]];
-      $new_link = (isset($this->source_to_dest_ids[$d7_nid])) ? '<a href="/node/' . $this->source_to_dest_ids[$d7_nid] . '"' : $match[0];
+    // Check if it's a relative link.
+    if (substr($old_link, 1, 1) == '/') {
+      $link_parts = explode('/', $old_link);
+
+      // Old node/# formatted links just need the updated mapping.
+      if ($link_parts[1] == 'node') {
+        // Take the node id, but don't grab the trailing ".
+        $old_nid = substr($link_parts[2], 0, -1);
+        // If we don't have the correct mapping, return the original link.
+        $new_link = (isset($this->source_to_dest_ids[$old_nid])) ? '<a href="/node/' . $this->source_to_dest_ids[$old_nid] . '"' : $match[0];
+      }
+      else {
+        // If it wasn't in node/# format, we need to use the alias (w/out preceding "/ or the trailing ") to get the correct mapping.
+        $d7_nid = $this->d7_aliases[substr($old_link, 2, -1)];
+        $new_link = (isset($this->source_to_dest_ids[$d7_nid])) ? '<a href="/node/' . $this->source_to_dest_ids[$d7_nid] . '"' : $match[0];
+      }
       \Drupal::logger('sitenow_migrate')->notice(t('New link found... @new_link', [
         '@new_link' => $new_link,
       ]));
-  
+
       return $new_link;
     }
+    else {
+      // We have an absolute link--need to check if it references this site or is external.
+      $pattern = '|"(https?://)?(www.)?' . $this->base_path . '/(.*?)"|';
+      if (preg_match($pattern, $old_link, $match)) {
+        $d7_nid = $this->d7_aliases[$match[3]];
+        $new_link = (isset($this->source_to_dest_ids[$d7_nid])) ? '<a href="/node/' . $this->source_to_dest_ids[$d7_nid] . '"' : $match[0];
+        \Drupal::logger('sitenow_migrate')->notice(t('New link found... @new_link', [
+          '@new_link' => $new_link,
+        ]));
+
+        return $new_link;
+      }
+    }
+
+    // No matches were found--return the unchanged original.
+    return $match[0];
   }
 
-  // No matches were found--return the unchanged original.
-  return $match[0];
-}
-
-/**
- * Query for a list of nodes which may contain newly broken links as a result of the migration.
- */
+  /**
+   * Query for a list of nodes which may contain newly broken links as a result of the migration.
+   */
   private function checkForPossibleLinkBreaks() {
     $candidates = [];
     // Check for possible link breaks in paragraph fields within pages.
@@ -204,7 +207,7 @@ private function linkReplace($match) {
         // ->condition('p.field_text_body_value', '%' . $this->base_path . '%', 'LIKE')
         // ->condition('p.field_text_body_value', '%<a href="/node/%"%', 'LIKE')
       ->condition('p.field_text_body_value', '<a href ?= ?[\'"](.*?)(/?node/(\d+))?(' . $this->base_path . ')?', 'REGEXP');
-      // );
+    // );
     $result = $query->execute();
     $candidates = array_merge($candidates, $result->fetchCol());
 
@@ -218,10 +221,10 @@ private function linkReplace($match) {
       ->condition('nb.body_value', '<a href ?= ?[\'"](.*?)(/?node/(\d+))?(' . $this->base_path . ')?', 'REGEXP');
     $result = $query->execute();
     $candidates = array_merge($candidates, $result->fetchCol());
-    
+
     foreach ($candidates as $candidate) {
       \Drupal::logger('sitenow_migrate')->notice(t('Possible broken link found in node @candidate', [
-        '@candidate' =>$candidate,
+        '@candidate' => $candidate,
       ]));
     }
 
@@ -231,17 +234,18 @@ private function linkReplace($match) {
   /**
    * Retreive D8 or D7 aliases in an indexed array of nid => alias and alias => nid.
    */
-  private function fetchAliases($DRUPAL_7 = False) {
+  private function fetchAliases($DRUPAL_7 = FALSE) {
     if ($DRUPAL_7) {
       // Switch to the D7 database.
-      \Drupal\Core\Database\Database::setActiveConnection('drupal_7');
-      $connection = \Drupal\Core\Database\Database::getConnection();
+      Database::setActiveConnection('drupal_7');
+      $connection = Database::getConnection();
       $query = $connection->select('url_alias', 'ua');
       $query->fields('ua', ['source', 'alias']);
       $result = $query->execute();
       // Switch back to the D8 database.
-      \Drupal\Core\Database\Database::setActiveConnection();
-    } else {
+      Database::setActiveConnection();
+    }
+    else {
       $connection = \Drupal::database();
       $query = $connection->select('path_alias', 'pa');
       $query->fields('pa', ['path', 'alias']);
@@ -278,4 +282,5 @@ private function linkReplace($match) {
     }
     return $source_to_dest_ids;
   }
+
 }
