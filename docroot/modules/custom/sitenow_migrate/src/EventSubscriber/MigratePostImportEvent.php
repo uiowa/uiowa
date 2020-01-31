@@ -22,11 +22,25 @@ class MigratePostImportEvent implements EventSubscriberInterface {
    */
   protected $entityTypeManager;
 
-  protected $source_to_dest_ids;
-  protected $d7_aliases;
-  protected $d8_aliases;
+  /**
+   * Indexed array for tracking source nids to destination nids.
+   */
+  protected $sourceToDestIds;
 
-  protected $base_path;
+  /**
+   * Array for converting between D7 nids and their associated aliases.
+   */
+  protected $d7Aliases;
+
+  /**
+   * Array for converting between D8 nids and their associated aliases.
+   */
+  protected $d8Aliases;
+
+  /**
+   * Base path of the source website for checking absolute URLs.
+   */
+  protected $basePath;
 
   /**
    * MigratePostImportEvent constructor.
@@ -46,10 +60,10 @@ class MigratePostImportEvent implements EventSubscriberInterface {
     // Switch back to the D8 database.
     Database::setActiveConnection();
     // Strip base path out of the public filepath, because we can't (easily) access the settings file.
-    $this->base_path = explode('/', $result->fetchField())[1];
+    $this->basePath = explode('/', $result->fetchField())[1];
     // If it's a subdomain site, replace '.' with '/'.
-    if (substr($this->base_path, 0, 10) == 'uiowa.edu.') {
-      substr_replace($this->base_path, '/', 9, 1);
+    if (substr($this->basePath, 0, 10) == 'uiowa.edu.') {
+      substr_replace($this->basePath, '/', 9, 1);
     }
   }
 
@@ -74,8 +88,8 @@ class MigratePostImportEvent implements EventSubscriberInterface {
 
       case 'd7_page':
         $this->source_to_dest_ids = $this->fetchMapping();
-        $this->d7_aliases = $this->fetchAliases(TRUE);
-        $this->d8_aliases = $this->fetchAliases();
+        $this->d7Aliases = $this->fetchAliases(TRUE);
+        $this->d8Aliases = $this->fetchAliases();
         \Drupal::logger('sitenow_migrate')->notice(t('Checking for possible broken links'));
         $candidates = $this->checkForPossibleLinkBreaks();
         $this->updateInternalLinks($candidates);
@@ -165,7 +179,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
       }
       else {
         // If it wasn't in node/# format, we need to use the alias (w/out preceding "/ or the trailing ") to get the correct mapping.
-        $d7_nid = $this->d7_aliases[substr($old_link, 2, -1)];
+        $d7_nid = $this->d7Aliases[substr($old_link, 2, -1)];
         $new_link = (isset($this->source_to_dest_ids[$d7_nid])) ? '<a href="/node/' . $this->source_to_dest_ids[$d7_nid] . '"' : $match[0];
       }
       \Drupal::logger('sitenow_migrate')->notice(t('New link found... @new_link', [
@@ -176,9 +190,9 @@ class MigratePostImportEvent implements EventSubscriberInterface {
     }
     else {
       // We have an absolute link--need to check if it references this site or is external.
-      $pattern = '|"(https?://)?(www.)?' . $this->base_path . '/(.*?)"|';
+      $pattern = '|"(https?://)?(www.)?' . $this->basePath . '/(.*?)"|';
       if (preg_match($pattern, $old_link, $match)) {
-        $d7_nid = $this->d7_aliases[$match[3]];
+        $d7_nid = $this->d7Aliases[$match[3]];
         $new_link = (isset($this->source_to_dest_ids[$d7_nid])) ? '<a href="/node/' . $this->source_to_dest_ids[$d7_nid] . '"' : $match[0];
         \Drupal::logger('sitenow_migrate')->notice(t('New link found... @new_link', [
           '@new_link' => $new_link,
@@ -204,9 +218,9 @@ class MigratePostImportEvent implements EventSubscriberInterface {
     $query->join('paragraph__field_text_body', 'p', 'p.entity_id = s.field_section_content_block_target_id');
     $query->fields('n', ['entity_id'])
       // ->condition($query->orConditionGroup()
-        // ->condition('p.field_text_body_value', '%' . $this->base_path . '%', 'LIKE')
+        // ->condition('p.field_text_body_value', '%' . $this->basePath . '%', 'LIKE')
         // ->condition('p.field_text_body_value', '%<a href="/node/%"%', 'LIKE')
-      ->condition('p.field_text_body_value', '<a href ?= ?[\'"](.*?)(/?node/(\d+))?(' . $this->base_path . ')?', 'REGEXP');
+      ->condition('p.field_text_body_value', '<a href ?= ?[\'"](.*?)(/?node/(\d+))?(' . $this->basePath . ')?', 'REGEXP');
     // );
     $result = $query->execute();
     $candidates = array_merge($candidates, $result->fetchCol());
@@ -215,10 +229,10 @@ class MigratePostImportEvent implements EventSubscriberInterface {
     $query = $connection->select('node__body', 'nb')
       ->fields('nb', ['entity_id'])
       // ->condition($query->orConditionGroup()
-        // ->condition('nb.body_value', $this->base_path, 'LIKE')
+        // ->condition('nb.body_value', $this->basePath, 'LIKE')
         // ->condition('nb.body_value', "%<a href%node/%", 'LIKE')
       // );
-      ->condition('nb.body_value', '<a href ?= ?[\'"](.*?)(/?node/(\d+))?(' . $this->base_path . ')?', 'REGEXP');
+      ->condition('nb.body_value', '<a href ?= ?[\'"](.*?)(/?node/(\d+))?(' . $this->basePath . ')?', 'REGEXP');
     $result = $query->execute();
     $candidates = array_merge($candidates, $result->fetchCol());
 
@@ -234,8 +248,8 @@ class MigratePostImportEvent implements EventSubscriberInterface {
   /**
    * Retreive D8 or D7 aliases in an indexed array of nid => alias and alias => nid.
    */
-  private function fetchAliases($DRUPAL_7 = FALSE) {
-    if ($DRUPAL_7) {
+  private function fetchAliases($drupal7 = FALSE) {
+    if ($drupal7) {
       // Switch to the D7 database.
       Database::setActiveConnection('drupal_7');
       $connection = Database::getConnection();
@@ -255,7 +269,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
     $aliases = [];
     // Pull out the nids and create our nid=>alias, alias=>nid indexer.
     foreach ($result as $row) {
-      $source_path = ($DRUPAL_7) ? $row->source : $row->path;
+      $source_path = ($drupal7) ? $row->source : $row->path;
       preg_match("|\d+|", $source_path, $match);
       $nid = $match[0];
       $aliases[$nid] = $row->alias;
@@ -276,11 +290,11 @@ class MigratePostImportEvent implements EventSubscriberInterface {
       ->fields('mma', ['sourceid1', 'destid1']);
     $result = $sub_result1->union($sub_result2)
       ->execute();
-    $source_to_dest_ids = [];
+    $sourceToDestIds = [];
     foreach ($result as $row) {
-      $source_to_dest_ids[$row->sourceid1] = $row->destid1;
+      $sourceToDestIds[$row->sourceid1] = $row->destid1;
     }
-    return $source_to_dest_ids;
+    return $sourceToDestIds;
   }
 
 }
