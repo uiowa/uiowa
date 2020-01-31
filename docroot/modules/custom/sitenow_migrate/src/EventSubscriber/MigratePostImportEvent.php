@@ -67,7 +67,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
     $result = $query->execute();
     // Switch back to the D8 database.
     Database::setActiveConnection();
-    // Strip base path out of the public filepath, because we can't (easily) access the settings file.
+    // Get path from public filepath; we don't have the settings file.
     $this->basePath = explode('/', $result->fetchField())[1];
     // If it's a subdomain site, replace '.' with '/'.
     if (substr($this->basePath, 0, 10) == 'uiowa.edu.') {
@@ -98,7 +98,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
         $this->source_to_dest_ids = $this->fetchMapping();
         $this->d7Aliases = $this->fetchAliases(TRUE);
         $this->d8Aliases = $this->fetchAliases();
-        \Drupal::logger('sitenow_migrate')->notice(t('Checking for possible broken links'));
+        \Drupal::logger('sitenow_migrate')->notice($this->t('Checking for possible broken links'));
         $candidates = $this->checkForPossibleLinkBreaks();
         $this->updateInternalLinks($candidates);
       case 'd7_file':
