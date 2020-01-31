@@ -24,21 +24,29 @@ class MigratePostImportEvent implements EventSubscriberInterface {
 
   /**
    * Indexed array for tracking source nids to destination nids.
+   * 
+   * @var array
    */
   protected $sourceToDestIds;
 
   /**
    * Array for converting between D7 nids and their associated aliases.
+   * 
+   * @var array
    */
   protected $d7Aliases;
 
   /**
    * Array for converting between D8 nids and their associated aliases.
+   * 
+   * @var array
    */
   protected $d8Aliases;
 
   /**
    * Base path of the source website for checking absolute URLs.
+   * 
+   * @var string
    */
   protected $basePath;
 
