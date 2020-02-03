@@ -840,3 +840,9 @@ $sites['intermediatechinesereader.local.drupal.uiowa.edu'] = 'intermediatechines
 $sites['intermediatechinesereader.dev.drupal.uiowa.edu'] = 'intermediatechinesereader.uiowa.edu';
 $sites['intermediatechinesereader.stage.drupal.uiowa.edu'] = 'intermediatechinesereader.uiowa.edu';
 $sites['intermediatechinesereader.prod.drupal.uiowa.edu'] = 'intermediatechinesereader.uiowa.edu';
+
+// Directory aliases for crisp.org.uiowa.edu.
+$sites['orgcrisp.local.drupal.uiowa.edu'] = 'crisp.org.uiowa.edu';
+$sites['orgcrisp.dev.drupal.uiowa.edu'] = 'crisp.org.uiowa.edu';
+$sites['orgcrisp.stage.drupal.uiowa.edu'] = 'crisp.org.uiowa.edu';
+$sites['orgcrisp.prod.drupal.uiowa.edu'] = 'crisp.org.uiowa.edu';
