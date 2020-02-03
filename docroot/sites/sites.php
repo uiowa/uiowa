@@ -828,3 +828,9 @@ $sites['orgaudit.local.drupal.uiowa.edu'] = 'audit.org.uiowa.edu';
 $sites['orgaudit.dev.drupal.uiowa.edu'] = 'audit.org.uiowa.edu';
 $sites['orgaudit.stage.drupal.uiowa.edu'] = 'audit.org.uiowa.edu';
 $sites['orgaudit.prod.drupal.uiowa.edu'] = 'audit.org.uiowa.edu';
+
+// Directory aliases for ui-lsamp.sites.uiowa.edu.
+$sites['sitesui-lsamp.local.drupal.uiowa.edu'] = 'ui-lsamp.sites.uiowa.edu';
+$sites['sitesui-lsamp.dev.drupal.uiowa.edu'] = 'ui-lsamp.sites.uiowa.edu';
+$sites['sitesui-lsamp.stage.drupal.uiowa.edu'] = 'ui-lsamp.sites.uiowa.edu';
+$sites['sitesui-lsamp.prod.drupal.uiowa.edu'] = 'ui-lsamp.sites.uiowa.edu';
