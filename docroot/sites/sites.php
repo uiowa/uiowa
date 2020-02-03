@@ -816,3 +816,9 @@ $sites['cognitivecontrol.local.drupal.uiowa.edu'] = 'cognitivecontrol.uiowa.edu'
 $sites['cognitivecontrol.dev.drupal.uiowa.edu'] = 'cognitivecontrol.uiowa.edu';
 $sites['cognitivecontrol.stage.drupal.uiowa.edu'] = 'cognitivecontrol.uiowa.edu';
 $sites['cognitivecontrol.prod.drupal.uiowa.edu'] = 'cognitivecontrol.uiowa.edu';
+
+// Directory aliases for computational-psychiatry-symposium.uiowa.edu.
+$sites['computational-psychiatry-symposium.local.drupal.uiowa.edu'] = 'computational-psychiatry-symposium.uiowa.edu';
+$sites['computational-psychiatry-symposium.dev.drupal.uiowa.edu'] = 'computational-psychiatry-symposium.uiowa.edu';
+$sites['computational-psychiatry-symposium.stage.drupal.uiowa.edu'] = 'computational-psychiatry-symposium.uiowa.edu';
+$sites['computational-psychiatry-symposium.prod.drupal.uiowa.edu'] = 'computational-psychiatry-symposium.uiowa.edu';
