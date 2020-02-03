@@ -4,7 +4,8 @@ dist: xenial
 # Adjust the version of PHP to match your production environment.
 # Making this version number greater than the production environment can have unintended consequences
 # including a non-functional prod environment.
-php: '7.2'
+php:
+  - '7.2'
 
 env:
   global:
@@ -15,21 +16,18 @@ cache:
   directories:
     - '$HOME/.composer/cache'
     - '$HOME/.drush/cache'
-  # Cache front end dependencies to dramatically improve build time.
-  # - 'docroot/themes/custom/mytheme/node_modules'
-  # - 'docroot/themes/custom/mytheme/bower_components'
 
 services:
 - mysql
 
 addons:
   ssh_known_hosts:
-    - svn-14671.prod.hosting.acquia.com
-    - svn-29892.prod.hosting.acquia.com
+    - 'svn-14671.prod.hosting.acquia.com'
+    - 'svn-29892.prod.hosting.acquia.com'
   chrome: stable
 
 # @see https://docs.travis-ci.com/user/notifications
- notifications:
+# notifications:
 #   - hipchat: [api token]@[room id or name]
 #   - slack: '<account>:<token>#[channel]'
 
