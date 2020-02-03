@@ -1,0 +1,25 @@
+project:
+  profile:
+    name: sitenow
+  local:
+    hostname: horn.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: horn
+  human_name: horn.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: horn.prod
+drupal:
+  db:
+    database: horn_uiowa_edu
+uiowa:
+  profiles:
+    sitenow:
+      requester: jagrell
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true

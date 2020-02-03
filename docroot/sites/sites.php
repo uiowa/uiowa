@@ -864,3 +864,9 @@ $sites['labiowaresearch.local.drupal.uiowa.edu'] = 'iowaresearch.lab.uiowa.edu';
 $sites['labiowaresearch.dev.drupal.uiowa.edu'] = 'iowaresearch.lab.uiowa.edu';
 $sites['labiowaresearch.stage.drupal.uiowa.edu'] = 'iowaresearch.lab.uiowa.edu';
 $sites['labiowaresearch.prod.drupal.uiowa.edu'] = 'iowaresearch.lab.uiowa.edu';
+
+// Directory aliases for horn.uiowa.edu.
+$sites['horn.local.drupal.uiowa.edu'] = 'horn.uiowa.edu';
+$sites['horn.dev.drupal.uiowa.edu'] = 'horn.uiowa.edu';
+$sites['horn.stage.drupal.uiowa.edu'] = 'horn.uiowa.edu';
+$sites['horn.prod.drupal.uiowa.edu'] = 'horn.uiowa.edu';
