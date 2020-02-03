@@ -846,3 +846,9 @@ $sites['orgcrisp.local.drupal.uiowa.edu'] = 'crisp.org.uiowa.edu';
 $sites['orgcrisp.dev.drupal.uiowa.edu'] = 'crisp.org.uiowa.edu';
 $sites['orgcrisp.stage.drupal.uiowa.edu'] = 'crisp.org.uiowa.edu';
 $sites['orgcrisp.prod.drupal.uiowa.edu'] = 'crisp.org.uiowa.edu';
+
+// Directory aliases for ui-lsamp.sites.uiowa.edu.
+$sites['sitesui-lsamp.local.drupal.uiowa.edu'] = 'ui-lsamp.sites.uiowa.edu';
+$sites['sitesui-lsamp.dev.drupal.uiowa.edu'] = 'ui-lsamp.sites.uiowa.edu';
+$sites['sitesui-lsamp.stage.drupal.uiowa.edu'] = 'ui-lsamp.sites.uiowa.edu';
+$sites['sitesui-lsamp.prod.drupal.uiowa.edu'] = 'ui-lsamp.sites.uiowa.edu';
