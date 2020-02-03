@@ -858,3 +858,9 @@ $sites['sitesmuseumstudies.local.drupal.uiowa.edu'] = 'museumstudies.sites.uiowa
 $sites['sitesmuseumstudies.dev.drupal.uiowa.edu'] = 'museumstudies.sites.uiowa.edu';
 $sites['sitesmuseumstudies.stage.drupal.uiowa.edu'] = 'museumstudies.sites.uiowa.edu';
 $sites['sitesmuseumstudies.prod.drupal.uiowa.edu'] = 'museumstudies.sites.uiowa.edu';
+
+// Directory aliases for iowaresearch.lab.uiowa.edu.
+$sites['labiowaresearch.local.drupal.uiowa.edu'] = 'iowaresearch.lab.uiowa.edu';
+$sites['labiowaresearch.dev.drupal.uiowa.edu'] = 'iowaresearch.lab.uiowa.edu';
+$sites['labiowaresearch.stage.drupal.uiowa.edu'] = 'iowaresearch.lab.uiowa.edu';
+$sites['labiowaresearch.prod.drupal.uiowa.edu'] = 'iowaresearch.lab.uiowa.edu';
