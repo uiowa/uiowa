@@ -816,3 +816,9 @@ $sites['orgwise.local.drupal.uiowa.edu'] = 'wise.org.uiowa.edu';
 $sites['orgwise.dev.drupal.uiowa.edu'] = 'wise.org.uiowa.edu';
 $sites['orgwise.stage.drupal.uiowa.edu'] = 'wise.org.uiowa.edu';
 $sites['orgwise.prod.drupal.uiowa.edu'] = 'wise.org.uiowa.edu';
+
+// Directory aliases for cognitivecontrol.psychology.uiowa.edu.
+$sites['psychologycognitivecontrol.local.drupal.uiowa.edu'] = 'cognitivecontrol.psychology.uiowa.edu';
+$sites['psychologycognitivecontrol.dev.drupal.uiowa.edu'] = 'cognitivecontrol.psychology.uiowa.edu';
+$sites['psychologycognitivecontrol.stage.drupal.uiowa.edu'] = 'cognitivecontrol.psychology.uiowa.edu';
+$sites['psychologycognitivecontrol.prod.drupal.uiowa.edu'] = 'cognitivecontrol.psychology.uiowa.edu';
