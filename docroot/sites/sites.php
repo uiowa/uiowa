@@ -870,3 +870,9 @@ $sites['horn.local.drupal.uiowa.edu'] = 'horn.uiowa.edu';
 $sites['horn.dev.drupal.uiowa.edu'] = 'horn.uiowa.edu';
 $sites['horn.stage.drupal.uiowa.edu'] = 'horn.uiowa.edu';
 $sites['horn.prod.drupal.uiowa.edu'] = 'horn.uiowa.edu';
+
+// Directory aliases for assist.org.uiowa.edu.
+$sites['orgassist.local.drupal.uiowa.edu'] = 'assist.org.uiowa.edu';
+$sites['orgassist.dev.drupal.uiowa.edu'] = 'assist.org.uiowa.edu';
+$sites['orgassist.stage.drupal.uiowa.edu'] = 'assist.org.uiowa.edu';
+$sites['orgassist.prod.drupal.uiowa.edu'] = 'assist.org.uiowa.edu';
