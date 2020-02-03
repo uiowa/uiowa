@@ -17,40 +17,36 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
 
   $form['uids_base_settings'] = [
     '#type'         => 'details',
-    '#title'        => t('Header Settings'),
+    '#title'        => t('Header settings'),
     '#description'  => t('Configure Color, Site Name and Navigation Alignment'),
     '#weight' => -1000,
     '#open' => TRUE,
   ];
-  $form['uids_base_settings']['uids_base_header_alignment_settings'] = [
+  $form['uids_base_settings']['header_type'] = [
     '#type' => 'select',
-    '#title' => t('Header Alignment'),
+    '#title' => t('Header Type'),
     '#description' => t('Select an option'),
     '#options' => [
-      'site-header__left' => t('Menu left (default)'),
+      'header--primary' => t('IOWA'),
+      'header--secondary' => t('College'),
+      'header--tertiary' => t('Department'),
     ],
-    '#default_value' => theme_get_setting('uids_base_header_alignment_settings'),
+    '#default_value' => theme_get_setting('header_type'),
   ];
-  $form['uids_base_settings']['uids_base_header_color_settings'] = [
+  $form['uids_base_settings']['header_nav'] = [
     '#type' => 'select',
-    '#title' => t('Header Color'),
+    '#title' => t('Header navigation style'),
     '#description' => t('Select an option'),
     '#options' => [
-      'site-header--secondary' => t('Black Background, White Text (default)'),
-      'site-header--primary' => t('Gold Background, Black Text'),
-      'site-header--tertiary' => t('White Background, Black Text'),
+      'nav--toggle' => t('Toggle navigation'),
+      'nav--horizontal' => t('Horizontal navigation'),
     ],
-    '#default_value' => theme_get_setting('uids_base_header_color_settings'),
+    '#default_value' => theme_get_setting('header_nav'),
   ];
-  $form['uids_base_settings']['uids_base_container_settings'] = [
-    '#type' => 'select',
-    '#title' => t('Container Settings'),
+  $form['uids_base_settings']['header_sticky'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Sticky header'),
     '#description' => t('Select an option'),
-    '#options' => [
-      'page__container' => t('Container (default)'),
-      'page__container--full' => t('Full Width'),
-      'page__container--mixed' => t('Full Width (Header Only)'),
-    ],
-    '#default_value' => theme_get_setting('uids_base_container_settings'),
+      '#default_value' => theme_get_setting('header_sticky'),
   ];
 }
