@@ -810,3 +810,9 @@ $sites['labiowaresearch.local.drupal.uiowa.edu'] = 'iowaresearch.lab.uiowa.edu';
 $sites['labiowaresearch.dev.drupal.uiowa.edu'] = 'iowaresearch.lab.uiowa.edu';
 $sites['labiowaresearch.stage.drupal.uiowa.edu'] = 'iowaresearch.lab.uiowa.edu';
 $sites['labiowaresearch.prod.drupal.uiowa.edu'] = 'iowaresearch.lab.uiowa.edu';
+
+// Directory aliases for wise.org.uiowa.edu.
+$sites['orgwise.local.drupal.uiowa.edu'] = 'wise.org.uiowa.edu';
+$sites['orgwise.dev.drupal.uiowa.edu'] = 'wise.org.uiowa.edu';
+$sites['orgwise.stage.drupal.uiowa.edu'] = 'wise.org.uiowa.edu';
+$sites['orgwise.prod.drupal.uiowa.edu'] = 'wise.org.uiowa.edu';
