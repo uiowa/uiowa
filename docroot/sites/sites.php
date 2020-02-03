@@ -811,12 +811,6 @@ $sites['labiowaresearch.dev.drupal.uiowa.edu'] = 'iowaresearch.lab.uiowa.edu';
 $sites['labiowaresearch.stage.drupal.uiowa.edu'] = 'iowaresearch.lab.uiowa.edu';
 $sites['labiowaresearch.prod.drupal.uiowa.edu'] = 'iowaresearch.lab.uiowa.edu';
 
-// Directory aliases for cognitivecontrol.uiowa.edu.
-$sites['cognitivecontrol.local.drupal.uiowa.edu'] = 'cognitivecontrol.uiowa.edu';
-$sites['cognitivecontrol.dev.drupal.uiowa.edu'] = 'cognitivecontrol.uiowa.edu';
-$sites['cognitivecontrol.stage.drupal.uiowa.edu'] = 'cognitivecontrol.uiowa.edu';
-$sites['cognitivecontrol.prod.drupal.uiowa.edu'] = 'cognitivecontrol.uiowa.edu';
-
 // Directory aliases for computational-psychiatry-symposium.uiowa.edu.
 $sites['computational-psychiatry-symposium.local.drupal.uiowa.edu'] = 'computational-psychiatry-symposium.uiowa.edu';
 $sites['computational-psychiatry-symposium.dev.drupal.uiowa.edu'] = 'computational-psychiatry-symposium.uiowa.edu';
