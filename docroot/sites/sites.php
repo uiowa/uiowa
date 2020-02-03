@@ -840,3 +840,9 @@ $sites['sitesmuseumstudies.local.drupal.uiowa.edu'] = 'museumstudies.sites.uiowa
 $sites['sitesmuseumstudies.dev.drupal.uiowa.edu'] = 'museumstudies.sites.uiowa.edu';
 $sites['sitesmuseumstudies.stage.drupal.uiowa.edu'] = 'museumstudies.sites.uiowa.edu';
 $sites['sitesmuseumstudies.prod.drupal.uiowa.edu'] = 'museumstudies.sites.uiowa.edu';
+
+// Directory aliases for assist.org.uiowa.edu.
+$sites['orgassist.local.drupal.uiowa.edu'] = 'assist.org.uiowa.edu';
+$sites['orgassist.dev.drupal.uiowa.edu'] = 'assist.org.uiowa.edu';
+$sites['orgassist.stage.drupal.uiowa.edu'] = 'assist.org.uiowa.edu';
+$sites['orgassist.prod.drupal.uiowa.edu'] = 'assist.org.uiowa.edu';
