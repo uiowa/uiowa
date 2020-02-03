@@ -198,9 +198,9 @@ class MigratePostImportEvent implements EventSubscriberInterface {
     }
     else {
       // We have an absolute link--need to check if it references this site or is external.
-      $pattern = '|"(https?://)?(www.)?' . $this->basePath . '/(.*?)"|';
+      $pattern = '|"(https?://)?(www.)?(' . $this->basePath . ')/(.*?)"|';
       if (preg_match($pattern, $old_link, $match)) {
-        $d7_nid = $this->d7Aliases[$match[3]];
+        $d7_nid = $this->d7Aliases[$match[4]];
         $new_link = (isset($this->source_to_dest_ids[$d7_nid])) ? '<a href="/node/' . $this->source_to_dest_ids[$d7_nid] . '"' : $match[0];
         \Drupal::logger('sitenow_migrate')->notice($this->t('New link found... @new_link', [
           '@new_link' => $new_link,
@@ -211,7 +211,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
     }
 
     // No matches were found--return the unchanged original.
-    return $match[0];
+    return $match;
   }
 
   /**
