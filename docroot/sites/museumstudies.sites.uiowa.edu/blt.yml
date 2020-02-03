@@ -1,0 +1,25 @@
+project:
+  profile:
+    name: sitenow
+  local:
+    hostname: sitesmuseumstudies.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: sitesmuseumstudies
+  human_name: museumstudies.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesmuseumstudies.prod
+drupal:
+  db:
+    database: museumstudies_sites_uiowa_edu
+uiowa:
+  profiles:
+    sitenow:
+      requester: hlung
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true

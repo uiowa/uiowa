@@ -852,3 +852,9 @@ $sites['sitesui-lsamp.local.drupal.uiowa.edu'] = 'ui-lsamp.sites.uiowa.edu';
 $sites['sitesui-lsamp.dev.drupal.uiowa.edu'] = 'ui-lsamp.sites.uiowa.edu';
 $sites['sitesui-lsamp.stage.drupal.uiowa.edu'] = 'ui-lsamp.sites.uiowa.edu';
 $sites['sitesui-lsamp.prod.drupal.uiowa.edu'] = 'ui-lsamp.sites.uiowa.edu';
+
+// Directory aliases for museumstudies.sites.uiowa.edu.
+$sites['sitesmuseumstudies.local.drupal.uiowa.edu'] = 'museumstudies.sites.uiowa.edu';
+$sites['sitesmuseumstudies.dev.drupal.uiowa.edu'] = 'museumstudies.sites.uiowa.edu';
+$sites['sitesmuseumstudies.stage.drupal.uiowa.edu'] = 'museumstudies.sites.uiowa.edu';
+$sites['sitesmuseumstudies.prod.drupal.uiowa.edu'] = 'museumstudies.sites.uiowa.edu';
