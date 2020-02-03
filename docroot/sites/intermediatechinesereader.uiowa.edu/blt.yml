@@ -1,0 +1,25 @@
+project:
+  profile:
+    name: sitenow
+  local:
+    hostname: intermediatechinesereader.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: intermediatechinesereader
+  human_name: intermediatechinesereader.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: intermediatechinesereader.prod
+drupal:
+  db:
+    database: intermediatechinesereader_uiowa_edu
+uiowa:
+  profiles:
+    sitenow:
+      requester: strommerl
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true
