@@ -4,7 +4,7 @@ dist: xenial
 # Adjust the version of PHP to match your production environment.
 # Making this version number greater than the production environment can have unintended consequences
 # including a non-functional prod environment.
-php: "7.2"
+php: '7.2'
 
 env:
   global:
@@ -13,11 +13,11 @@ env:
 
 cache:
   directories:
-    - "$HOME/.composer/cache"
-    - "$HOME/.drush/cache"
+    - '$HOME/.composer/cache'
+    - '$HOME/.drush/cache'
   # Cache front end dependencies to dramatically improve build time.
-  # - "docroot/themes/custom/mytheme/node_modules"
-  # - "docroot/themes/custom/mytheme/bower_components"
+  # - 'docroot/themes/custom/mytheme/node_modules'
+  # - 'docroot/themes/custom/mytheme/bower_components'
 
 services:
 - mysql
@@ -55,19 +55,19 @@ script:
 
 deploy:
    - provider: script
-     script: "${BLT_DIR}/scripts/travis/deploy_branch"
+     script: '${BLT_DIR}/scripts/travis/deploy_branch'
      skip_cleanup: true
      on:
        branch: develop
        php: 7.2
    - provider: script
-     script: "${BLT_DIR}/scripts/travis/deploy_branch"
+     script: '${BLT_DIR}/scripts/travis/deploy_branch'
      skip_cleanup: true
      on:
        branch: master
        php: 7.2
    - provider: script
-     script: "${BLT_DIR}/scripts/travis/deploy_tag"
+     script: '${BLT_DIR}/scripts/travis/deploy_tag'
      skip_cleanup: true
      on:
        tags: true
