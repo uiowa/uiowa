@@ -27,6 +27,12 @@
     ]
   %}
   <div{{ row.attributes.addClass(row_classes) }}>
-    {{- row.content -}}
+    <div{{ content_attributes.addClass('view__content') }}>
+      <div class="row">
+        <div class="col-md-6">
+          {{- row.content -}}
+        </div>
+      </div>
+    </div>       
   </div>
 {% endfor %}
