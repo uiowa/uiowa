@@ -822,3 +822,9 @@ $sites['computational-psychiatry-symposium.local.drupal.uiowa.edu'] = 'computati
 $sites['computational-psychiatry-symposium.dev.drupal.uiowa.edu'] = 'computational-psychiatry-symposium.uiowa.edu';
 $sites['computational-psychiatry-symposium.stage.drupal.uiowa.edu'] = 'computational-psychiatry-symposium.uiowa.edu';
 $sites['computational-psychiatry-symposium.prod.drupal.uiowa.edu'] = 'computational-psychiatry-symposium.uiowa.edu';
+
+// Directory aliases for wise.org.uiowa.edu.
+$sites['orgwise.local.drupal.uiowa.edu'] = 'wise.org.uiowa.edu';
+$sites['orgwise.dev.drupal.uiowa.edu'] = 'wise.org.uiowa.edu';
+$sites['orgwise.stage.drupal.uiowa.edu'] = 'wise.org.uiowa.edu';
+$sites['orgwise.prod.drupal.uiowa.edu'] = 'wise.org.uiowa.edu';
