@@ -27,7 +27,7 @@
 #}
 
 {% block content %}
-  {{ attach_library('collegiate_theme/stat-block') }}
+  {{ attach_library('uids_base/stat-block') }}
 
   {% embed "@stat-block/stat-block--basic.twig" with {
     "stat_image": file_url(content.field_uiowa_statistic_image[0]['#media'].image.entity.uri.value | image_style('uiowa_lb_block_image_2000_x_1300')),

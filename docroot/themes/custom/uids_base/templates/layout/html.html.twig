@@ -50,9 +50,9 @@
 
 {% set uiowa_attribute = create_attribute() %}
 
-{% if collegiate_theme_container_settings == 'page__container' %}
+{% if layout_container == 'page__container' %}
     {% set header_classes = ['uiowa__container'] %}
-{% elseif collegiate_theme_container_settings == 'page__container--full' %}
+{% elseif layout_container == 'page__container--full' %}
     {% set header_classes = ['uiowa__container--full'] %}
 {% else %}
     {% set header_classes = ['uiowa__container--full'] %}

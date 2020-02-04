@@ -47,10 +47,10 @@
     {{ attach_library('uids_base/admin') }}
 {% endif %}
 
-{% if collegiate_theme_container_settings == 'page__container' %}
+{% if layout_container == 'page__container' %}
     {% set header_classes = ['header__container'] %}
     {% set page_classes = ['page__container'] %}
-{% elseif collegiate_theme_container_settings == 'page__container--full' %}
+{% elseif layout_container == 'page__container--full' %}
     {% set header_classes = ['header__container--full'] %}
     {% set page_classes = ['page__container--full'] %}
 {% else %}
@@ -58,23 +58,17 @@
     {% set page_classes = ['page__container'] %}
 {% endif %}
 
-{% if collegiate_theme_header_color_settings == 'site-header--secondary' %}
-    {% set navbar_classes = ['navbar--secondary'] %}
-{% else %}
-    {% set navbar_classes = ['navbar--primary'] %}
-{% endif %}
-
 {% set node_attributes = create_attribute() %}
 
-{% if collegiate_theme_container_settings == 'page__container' %}
+{% if layout_container == 'page__container' %}
     {% set node_classes = ['content__container'] %}
-{% elseif collegiate_theme_container_settings == 'page__container--mixed' %}
+{% elseif layout_container == 'page__container--mixed' %}
     {% set node_classes = ['content__mixed'] %}
 {% else %}
     {% set node_classes = ['content__full'] %}
 {% endif %}
 
-<header class="header site-header {% if site_slogan is empty %}slogan__disabled{% endif %} {{ collegiate_theme_header_color_settings }} {{ collegiate_theme_header_alignment_settings }}">
+<header class="header site-header {% if site_slogan is empty %}slogan__disabled{% endif %}">
 <div {{ attributes.addClass(header_classes) }}>
 
     {{ attach_library('uids_base/site-name') }}
@@ -119,7 +113,7 @@
     </main>
 </div>
 {% else %}
-    <div {{ node_attributes.addClass(collegiate_theme_container_settings) }}>
+    <div {{ node_attributes.addClass(layout_container) }}>
   <main role="main">
     <a id="main-content" tabindex="-1"></a>
     {# link is in html.html.twig #}
@@ -146,7 +140,7 @@
 
   {% if page.footer %}
   <footer role="contentinfo">
-  <div class="{{ collegiate_theme_container_settings }}">
+  <div class="{{ layout_container }}">
     {{ page.footer }}
     </div>
   </footer>

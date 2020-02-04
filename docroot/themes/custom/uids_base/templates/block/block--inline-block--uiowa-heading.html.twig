@@ -29,7 +29,7 @@
 {% block content %}
   <div class="{{ attributes ? attributes.class }}" {{ attributes ? attributes|without('class') }}>
 
-    {{ attach_library('collegiate_theme/headline') }}
+    {{ attach_library('uids_base/headline') }}
     {{ title_prefix }}
     {% if content.field_uiowa_heading_title[0]['#text'] is not empty %}
     {% set attributes = attributes.removeClass('js-layout-builder-block') %}

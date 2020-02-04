@@ -12,7 +12,7 @@ use Drupal\Component\Utility\Html;
  */
 function uids_base_preprocess_html(&$variables) {
   // Load theme settings.
-  $variables['uids_base_container_settings'] = theme_get_setting('uids_base_container_settings');
+  $variables['layout_container'] = theme_get_setting('layout.container');
   // Body classes for sidebars.
   if (isset($variables['page']['sidebar_first']) && isset($variables['page']['sidebar_second'])) {
     $variables['attributes']['class'][] = Html::cleanCssIdentifier('layout-page-sidebars-both');

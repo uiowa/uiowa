@@ -27,7 +27,7 @@
 #}
 
 {% block content %}
-  {{ attach_library('collegiate_theme/banner') }}
+  {{ attach_library('uids_base/banner') }}
 
   {% embed "@banner/banner-block.twig" with {
     "banner_bg_image": file_url(content.field_uiowa_banner_image[0]['#media'].image.entity.uri.value | image_style('uiowa_lb_block_image_2000_x_1300')),
