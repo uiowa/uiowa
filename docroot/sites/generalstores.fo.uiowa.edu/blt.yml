@@ -2,7 +2,7 @@ project:
   profile:
     name: sitenow
   local:
-    hostname: generalstores.fo.uiowa.edu
+    hostname: fogeneralstores.local.drupal.uiowa.edu
     protocol: https
   machine_name: fogeneralstores
   human_name: generalstores.fo.uiowa.edu
@@ -13,22 +13,13 @@ drush:
 drupal:
   db:
     database: generalstores_fo_uiowa_edu
-    host: localhost
-    user: root
-    password: null
 cm:
   core:
     dirs:
       sync:
         path: profiles/custom/sitenow/config/sync
     install_from_config: true
-sync:
-  commands:
-    - 'blt:init:settings'
-    - 'drupal:sync:db'
-    - 'drupal:update'
-    - 'sitenow:multisite:noop'
-    - 'sitenow:multisite:noop'
+
 uiowa:
   profiles:
     sitenow:

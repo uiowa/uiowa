@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\sitenow\Unit;
 
+use Acquia\Blt\Robo\Common\YamlMunge;
 use Drupal\Tests\UnitTestCase;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
@@ -13,6 +14,17 @@ use Uiowa\Multisite;
  * @group unit
  */
 class FilesystemTest extends UnitTestCase {
+
+  /**
+   * Each app should have a Drush alias.
+   */
+  public function testAppDrushAliasesExist() {
+    $config = YamlMunge::parseFile($this->root . '/../blt/blt.yml');
+
+    foreach ($config['uiowa']['applications'] as $application => $attrs) {
+      $this->assertFileExists($this->root . "/../drush/sites/{$application}.site.yml");
+    }
+  }
 
   /**
    * Test that the robots.txt file does not exist.
@@ -38,11 +50,13 @@ class FilesystemTest extends UnitTestCase {
     foreach ($dirs->getIterator() as $dir) {
       $site = $dir->getRelativePathname();
       $id = Multisite::getIdentifier("https://{$site}");
+      $local = Multisite::getInternalDomains($id)['local'];
       $dev = Multisite::getInternalDomains($id)['dev'];
       $test = Multisite::getInternalDomains($id)['test'];
       $prod = Multisite::getInternalDomains($id)['prod'];
 
       $needle = <<<EOD
+\$sites['$local'] = '$site';
 \$sites['$dev'] = '$site';
 \$sites['$test'] = '$site';
 \$sites['$prod'] = '$site';
@@ -113,6 +127,9 @@ EOD;
       $site = $dir->getRelativePathname();
       $path = $dir->getRealPath();
 
+      // Output the site to the console to identify test failures.
+      fwrite(STDERR, $site . PHP_EOL);
+
       $this->assertFileExists("{$path}/blt.yml");
       $this->assertFileExists("{$path}/default.local.drush.yml");
       $this->assertFileExists("{$path}/default.settings.php");
@@ -123,18 +140,24 @@ EOD;
       // The default site does not follow the same naming conventions.
       if ($site != 'default') {
         $id = Multisite::getIdentifier("https://{$site}");
-
+        $local = Multisite::getInternalDomains($id)['local'];
         $yaml = Yaml::parse(file_get_contents("{$path}/blt.yml"));
         $db = $yaml['drupal']['db']['database'];
 
-        $this->assertEquals($site, $yaml['project']['local']['hostname']);
+        $this->assertEquals($local, $yaml['project']['local']['hostname']);
         $this->assertEquals($site, $yaml['project']['human_name']);
         $this->assertEquals($id, $yaml['project']['machine_name']);
         $this->assertEquals('https', $yaml['project']['local']['protocol']);
         $this->assertEquals('self', $yaml['drush']['aliases']['local']);
 
         $needle = <<<EOD
-{$db}-settings.inc';
+\$ah_group = getenv('AH_SITE_GROUP');
+
+if (file_exists('/var/www/site-php')) {
+  require "/var/www/site-php/{\$ah_group}/{$db}-settings.inc";
+}
+
+require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
 EOD;
 
         $file = "{$path}/settings.php";
@@ -163,6 +186,9 @@ EOD;
             $haystack = file_get_contents($file);
             $this->assertContains($needle, $haystack);
 
+            $yaml = YamlMunge::parseFile("{$path}/blt.yml");
+            $this->assertEquals('profiles/custom/sitenow/config/sync', $yaml['cm']['core']['dirs']['sync']['path']);
+            $this->assertEquals(TRUE, $yaml['cm']['core']['install_from_config']);
             break;
         }
       }

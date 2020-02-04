@@ -1,6 +1,6 @@
 project:
   local:
-    hostname: vanallenprobes.centerforconferences.uiowa.edu
+    hostname: centerforconferencesvanallenprobes.local.drupal.uiowa.edu
     protocol: https
   machine_name: centerforconferencesvanallenprobes
   human_name: vanallenprobes.centerforconferences.uiowa.edu
@@ -13,22 +13,13 @@ drush:
 drupal:
   db:
     database: vanallenprobes_centerforconferences_uiowa_edu
-    host: localhost
-    user: root
-    password: null
 cm:
   core:
     dirs:
       sync:
         path: profiles/custom/sitenow/config/sync
     install_from_config: true
-sync:
-  commands:
-    - 'blt:init:settings'
-    - 'drupal:sync:db'
-    - 'drupal:update'
-    - 'sitenow:multisite:noop'
-    - 'sitenow:multisite:noop'
+
 uiowa:
   profiles:
     sitenow:

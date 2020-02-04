@@ -1,0 +1,25 @@
+project:
+  profile:
+    name: sitenow
+  local:
+    hostname: labcmdd.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labcmdd
+  human_name: cmdd.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labcmdd.prod
+drupal:
+  db:
+    database: cmdd_lab_uiowa_edu
+uiowa:
+  profiles:
+    sitenow:
+      requester: clmchenr
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true
