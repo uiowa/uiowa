@@ -48,9 +48,9 @@ function uids_base_preprocess_page(&$variables) {
   $config = \Drupal::config('system.site');
   $variables['site_name'] = $config->get('name');
   $variables['site_slogan'] = $config->get('slogan');
-  $variables['uids_base_header_alignment_settings'] = theme_get_setting('uids_base_header_alignment_settings');
-  $variables['uids_base_header_color_settings'] = theme_get_setting('uids_base_header_color_settings');
-  $variables['uids_base_container_settings'] = theme_get_setting('uids_base_container_settings');
+  $variables['header_type'] = theme_get_setting('header_type');
+  $variables['header_nav'] = theme_get_setting('header_nav');
+  $variables['header_sticky'] = theme_get_setting('header_sticky');
 
   // Set a variable for whether layout builder is enabled.
   $variables['layout_builder_enabled'] = FALSE;

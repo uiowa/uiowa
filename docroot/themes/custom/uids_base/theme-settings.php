@@ -18,7 +18,7 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
   $form['uids_base_settings'] = [
     '#type'         => 'details',
     '#title'        => t('Header settings'),
-    '#description'  => t('Configure Color, Site Name and Navigation Alignment'),
+    '#description'  => t('Configure the overall type of header, the style of navigation to be used, and whether or not the header is sticky.'),
     '#weight' => -1000,
     '#open' => TRUE,
   ];
@@ -47,6 +47,6 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     '#type' => 'checkbox',
     '#title' => t('Sticky header'),
     '#description' => t('Select an option'),
-      '#default_value' => theme_get_setting('header_sticky'),
+    '#default_value' => theme_get_setting('header_sticky'),
   ];
 }
