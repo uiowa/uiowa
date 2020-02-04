@@ -50,7 +50,7 @@ install:
   - source ${BLT_DIR}/scripts/travis/setup_project
 
 script:
-  - blt setup --define drush.alias='${drush.aliases.ci}' --no-interaction --ansi --verbose
+  - ./vendor/bin/blt setup --define drush.alias='${drush.aliases.ci}' --no-interaction --ansi --verbose
   - source ${BLT_DIR}/scripts/travis/run_tests
   - source ${BLT_DIR}/scripts/travis/simulate_deploy
 
