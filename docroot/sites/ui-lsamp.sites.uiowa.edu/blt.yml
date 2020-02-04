@@ -1,0 +1,25 @@
+project:
+  profile:
+    name: sitenow
+  local:
+    hostname: sitesui-lsamp.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: sitesui-lsamp
+  human_name: ui-lsamp.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesui-lsamp.prod
+drupal:
+  db:
+    database: ui_lsamp_sites_uiowa_edu
+uiowa:
+  profiles:
+    sitenow:
+      requester: ladamsphillips
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true
