@@ -48,9 +48,10 @@ function uids_base_preprocess_page(&$variables) {
   $config = \Drupal::config('system.site');
   $variables['site_name'] = $config->get('name');
   $variables['site_slogan'] = $config->get('slogan');
-  $variables['header_type'] = theme_get_setting('header_type');
-  $variables['header_nav'] = theme_get_setting('header_nav');
-  $variables['header_sticky'] = theme_get_setting('header_sticky');
+  $variables['header_type'] = theme_get_setting('header.type');
+  $variables['header_nav'] = theme_get_setting('header.nav_style');
+  $variables['header_sticky'] = theme_get_setting('header.sticky');
+  $variables['layout_container'] = theme_get_setting('layout.container');
 
   // Set a variable for whether layout builder is enabled.
   $variables['layout_builder_enabled'] = FALSE;
@@ -76,7 +77,7 @@ function uids_base_preprocess_node(&$variables) {
  * Implements hook_preprocess_HOOK() for block.html.twig.
  */
 function uids_base_preprocess_block(&$variables) {
-  $variables['uids_base_container_settings'] = theme_get_setting('uids_base_container_settings');
+  $variables['uids_base_container_settings'] = theme_get_setting('layout.container');
 }
 
 /**
