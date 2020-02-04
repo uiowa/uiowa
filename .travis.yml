@@ -42,17 +42,15 @@ before_install:
   - chmod 600 $HOME/.ssh/id_rsa
   - phpenv config-rm xdebug.ini
   - composer self-update
-  # Exit build early if only documentation was changed in a Pull Request.
-  - source ${BLT_DIR}/scripts/travis/exit_early
 
 install:
+  - composer install
+  - source ${BLT_DIR}/scripts/travis/exit_early
   - source ${BLT_DIR}/scripts/travis/setup_environment
   - source ${BLT_DIR}/scripts/travis/setup_project
-  - composer install
 
 script:
-  # Uncomment these lines to test database updates using live content.
-  # - blt drupal:sync:default:site
+  - blt setup --define drush.alias='${drush.aliases.ci}' --no-interaction --ansi --verbose
   - source ${BLT_DIR}/scripts/travis/run_tests
   - source ${BLT_DIR}/scripts/travis/simulate_deploy
 
