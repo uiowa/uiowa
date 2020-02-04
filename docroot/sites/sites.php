@@ -810,3 +810,39 @@ $sites['labiowaresearch.local.drupal.uiowa.edu'] = 'iowaresearch.lab.uiowa.edu';
 $sites['labiowaresearch.dev.drupal.uiowa.edu'] = 'iowaresearch.lab.uiowa.edu';
 $sites['labiowaresearch.stage.drupal.uiowa.edu'] = 'iowaresearch.lab.uiowa.edu';
 $sites['labiowaresearch.prod.drupal.uiowa.edu'] = 'iowaresearch.lab.uiowa.edu';
+
+// Directory aliases for wise.org.uiowa.edu.
+$sites['orgwise.local.drupal.uiowa.edu'] = 'wise.org.uiowa.edu';
+$sites['orgwise.dev.drupal.uiowa.edu'] = 'wise.org.uiowa.edu';
+$sites['orgwise.stage.drupal.uiowa.edu'] = 'wise.org.uiowa.edu';
+$sites['orgwise.prod.drupal.uiowa.edu'] = 'wise.org.uiowa.edu';
+
+// Directory aliases for cognitivecontrol.psychology.uiowa.edu.
+$sites['psychologycognitivecontrol.local.drupal.uiowa.edu'] = 'cognitivecontrol.psychology.uiowa.edu';
+$sites['psychologycognitivecontrol.dev.drupal.uiowa.edu'] = 'cognitivecontrol.psychology.uiowa.edu';
+$sites['psychologycognitivecontrol.stage.drupal.uiowa.edu'] = 'cognitivecontrol.psychology.uiowa.edu';
+$sites['psychologycognitivecontrol.prod.drupal.uiowa.edu'] = 'cognitivecontrol.psychology.uiowa.edu';
+
+// Directory aliases for audit.org.uiowa.edu.
+$sites['orgaudit.local.drupal.uiowa.edu'] = 'audit.org.uiowa.edu';
+$sites['orgaudit.dev.drupal.uiowa.edu'] = 'audit.org.uiowa.edu';
+$sites['orgaudit.stage.drupal.uiowa.edu'] = 'audit.org.uiowa.edu';
+$sites['orgaudit.prod.drupal.uiowa.edu'] = 'audit.org.uiowa.edu';
+
+// Directory aliases for ui-lsamp.sites.uiowa.edu.
+$sites['sitesui-lsamp.local.drupal.uiowa.edu'] = 'ui-lsamp.sites.uiowa.edu';
+$sites['sitesui-lsamp.dev.drupal.uiowa.edu'] = 'ui-lsamp.sites.uiowa.edu';
+$sites['sitesui-lsamp.stage.drupal.uiowa.edu'] = 'ui-lsamp.sites.uiowa.edu';
+$sites['sitesui-lsamp.prod.drupal.uiowa.edu'] = 'ui-lsamp.sites.uiowa.edu';
+
+// Directory aliases for museumstudies.sites.uiowa.edu.
+$sites['sitesmuseumstudies.local.drupal.uiowa.edu'] = 'museumstudies.sites.uiowa.edu';
+$sites['sitesmuseumstudies.dev.drupal.uiowa.edu'] = 'museumstudies.sites.uiowa.edu';
+$sites['sitesmuseumstudies.stage.drupal.uiowa.edu'] = 'museumstudies.sites.uiowa.edu';
+$sites['sitesmuseumstudies.prod.drupal.uiowa.edu'] = 'museumstudies.sites.uiowa.edu';
+
+// Directory aliases for assist.org.uiowa.edu.
+$sites['orgassist.local.drupal.uiowa.edu'] = 'assist.org.uiowa.edu';
+$sites['orgassist.dev.drupal.uiowa.edu'] = 'assist.org.uiowa.edu';
+$sites['orgassist.stage.drupal.uiowa.edu'] = 'assist.org.uiowa.edu';
+$sites['orgassist.prod.drupal.uiowa.edu'] = 'assist.org.uiowa.edu';
