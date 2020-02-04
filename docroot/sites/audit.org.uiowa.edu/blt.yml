@@ -1,0 +1,25 @@
+project:
+  profile:
+    name: sitenow
+  local:
+    hostname: orgaudit.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: orgaudit
+  human_name: audit.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgaudit.prod
+drupal:
+  db:
+    database: audit_org_uiowa_edu
+uiowa:
+  profiles:
+    sitenow:
+      requester: rjmller
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true
