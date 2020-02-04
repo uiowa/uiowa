@@ -15,14 +15,14 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     return;
   }
 
-  $form['uids_base_settings'] = [
+  $form['header_settings'] = [
     '#type'         => 'details',
     '#title'        => t('Header settings'),
     '#description'  => t('Configure the overall type of header, the style of navigation to be used, and whether or not the header is sticky.'),
     '#weight' => -1000,
     '#open' => TRUE,
   ];
-  $form['uids_base_settings']['header_type'] = [
+  $form['header_settings']['type'] = [
     '#type' => 'select',
     '#title' => t('Header Type'),
     '#description' => t('Select an option'),
@@ -31,9 +31,9 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
       'header--secondary' => t('College'),
       'header--tertiary' => t('Department'),
     ],
-    '#default_value' => theme_get_setting('header_type'),
+    '#default_value' => theme_get_setting('header.type'),
   ];
-  $form['uids_base_settings']['header_nav'] = [
+  $form['header_settings']['nav_style'] = [
     '#type' => 'select',
     '#title' => t('Header navigation style'),
     '#description' => t('Select an option'),
@@ -41,12 +41,33 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
       'nav--toggle' => t('Toggle navigation'),
       'nav--horizontal' => t('Horizontal navigation'),
     ],
-    '#default_value' => theme_get_setting('header_nav'),
+    '#default_value' => theme_get_setting('header.nav_style'),
   ];
-  $form['uids_base_settings']['header_sticky'] = [
+  $form['header_settings']['sticky'] = [
     '#type' => 'checkbox',
     '#title' => t('Sticky header'),
     '#description' => t('Select an option'),
-    '#default_value' => theme_get_setting('header_sticky'),
+    '#default_value' => theme_get_setting('header.sticky'),
   ];
+  $form['layout_settings'] = [
+    '#type' => 'details',
+    '#title' => t('Layout options'),
+    '#description' => t('Choose different layout options.'),
+    '#weight' => -999,
+    '#open' => TRUE,
+  ];
+  $form['layout_settings']['container'] = [
+    '#type' => 'select',
+    '#title' => t('Container Settings'),
+    '#description' => t('Select an option'),
+    '#options' => [
+      'page__container' => t('Container (default)'),
+      'page__container--full' => t('Full Width'),
+      'page__container--mixed' => t('Full Width (Header Only)'),
+    ],
+    '#default_value' => theme_get_setting('layout.container'),
+  ];
+
+  $form['theme_settings']['#open'] = FALSE;
+  $form['favicon']['#open'] = TRUE;
 }

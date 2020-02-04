@@ -44,7 +44,7 @@
 #}
 
 {% if logged_in %}
-    {{ attach_library('collegiate_theme/admin') }}
+    {{ attach_library('uids_base/admin') }}
 {% endif %}
 
 {% if collegiate_theme_container_settings == 'page__container' %}
@@ -77,7 +77,7 @@
 <header class="header site-header {% if site_slogan is empty %}slogan__disabled{% endif %} {{ collegiate_theme_header_color_settings }} {{ collegiate_theme_header_alignment_settings }}">
 <div {{ attributes.addClass(header_classes) }}>
 
-    {{ attach_library('collegiate_theme/site-name') }}
+    {{ attach_library('uids_base/site-name') }}
     {% include "@site-name/site-name.twig" with {
         site_logo: site_logo,
         site_title: 'Home'|t,
