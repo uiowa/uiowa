@@ -42,13 +42,13 @@ before_install:
   - chmod 600 $HOME/.ssh/id_rsa
   - phpenv config-rm xdebug.ini
   - composer self-update
-  - composer install
   # Exit build early if only documentation was changed in a Pull Request.
   - source ${BLT_DIR}/scripts/travis/exit_early
 
 install:
   - source ${BLT_DIR}/scripts/travis/setup_environment
   - source ${BLT_DIR}/scripts/travis/setup_project
+  - composer install
 
 script:
   # Uncomment these lines to test database updates using live content.
