@@ -217,7 +217,7 @@ class GitCommands extends BltTasks {
       }
 
       YamlMunge::writeFile("{$root}/docroot/sites/default/{$env}.blt.yml", $config);
-      $this->logger->info("Wrote {$env}.blt.yml file to default site directory.");
+      $this->say("Wrote {$env}.blt.yml file to default site directory.");
     }
 
   }
