@@ -113,7 +113,7 @@
 
             {% elseif header_type == 'header--tertiary' %}
 
-                {{ attach_library('uids_base/site-name') }}
+                {{ attach_library('uids_base/site-slogan') }}
                 {% include '@uids/03 - global/site-slogan/site-slogan.twig' with {"site_slogan": site_slogan} %}
                 {% include '@uids/03 - global/menus/top/top.twig' %}
 
@@ -133,6 +133,7 @@
         <div class="site_name--wrapper {{ header_nav }}">
             <div class="page__container">
 
+                {{ attach_library('uids_base/site-name') }}
                 {% include '@uids/03 - global/site-name/site-name.twig' with {
                     site_name: site_name
                 } %}
