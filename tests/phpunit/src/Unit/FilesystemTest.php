@@ -74,7 +74,15 @@ EOD;
     $haystack = file_get_contents($file);
 
     $needle = <<<EOD
+\$config_initializer = new ConfigInitializer(\$repo_root, new ArgvInput());
+\$config_initializer->setSite(\$site_dir);
+\$blt_config = \$config_initializer->initialize();
+
 \$blt_override_config_directories = FALSE;
+
+if (\$blt_sync_path = \$blt_config->get('cm.core.dirs.sync.path')) {
+  \$settings['config_sync_directory'] = DRUPAL_ROOT . '/' . \$blt_sync_path;
+}
 EOD;
 
     $this->assertContains($needle, $haystack);
@@ -91,21 +99,6 @@ EOD;
 if (InstallerKernel::installationAttempted() && php_sapi_name() != 'cli') {
   exit;
 }
-EOD;
-
-    $this->assertContains($needle, $haystack);
-  }
-
-  /**
-   * Test sitenow specific settings exist.
-   */
-  public function testSitenowGlobalSettings() {
-    $file = $this->root . '/sites/settings/sitenow.settings.php';
-    $this->assertFileExists($file);
-    $haystack = file_get_contents($file);
-
-    $needle = <<<EOD
-\$settings['config_sync_directory'] = DRUPAL_ROOT . '/profiles/custom/sitenow/config/sync';
 EOD;
 
     $this->assertContains($needle, $haystack);

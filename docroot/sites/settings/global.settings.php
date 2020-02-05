@@ -14,20 +14,20 @@ if (InstallerKernel::installationAttempted() && php_sapi_name() != 'cli') {
   exit;
 }
 
-// Initialize new config object to access BLT config. Similar to ACSF.
-// @see: blt.settings.php
+/**
+ * Set sync directory based on BLT configuration.
+ *
+ * This allows sites to set their own sync directory instead of BLT hard-
+ * coding the default site config directory. This uses a similar method to
+ * access BLT configuration as ACSF in blt.settings.php.
+ *
+ * @see: acquia/blt/blt.settings.php
+ * @see: acquia/blt/config.settings.php
+ */
 $config_initializer = new ConfigInitializer($repo_root, new ArgvInput());
 $config_initializer->setSite($site_dir);
 $blt_config = $config_initializer->initialize();
 
-/**
- * Set BLT to not override the config directories.
- *
- * This allows sites to set their own config directories instead of BLT hard-
- * coding the default site config directory.
- *
- * @see: acquia/blt/config.settings.php
- */
 $blt_override_config_directories = FALSE;
 
 if ($blt_sync_path = $blt_config->get('cm.core.dirs.sync.path')) {
