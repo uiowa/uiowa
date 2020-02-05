@@ -75,12 +75,14 @@
     <div class="uiowa-bar">
         <div class="page__container">
 
+            {% if not branding_legacy %}
             {{ attach_library('uids_base/logo') }}
             {% include '@uids/03 - global/logo/logo.twig' with {
                 logo_color: 'logo-icon--secondary',
                 logo_classes: 'logo-icon--tab',
                 logo_path_2: uiowa_logo_path,
             } %}
+            {% endif %}
 
             {% if header_type == 'header--primary' %}
 
@@ -112,8 +114,8 @@
             {% elseif header_type == 'header--tertiary' %}
 
                 {{ attach_library('uids_base/site-name') }}
-                {% include '@site-slogan/site-slogan.twig' with {"site_slogan": site_slogan} %}
-                {% include '@menus/top/top.twig' %}
+                {% include '@uids/03 - global/site-slogan/site-slogan.twig' with {"site_slogan": site_slogan} %}
+                {% include '@uids/03 - global/menus/top/top.twig' %}
 
             {% endif %}
 

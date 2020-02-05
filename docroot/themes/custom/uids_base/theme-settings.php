@@ -47,7 +47,7 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
   $form['header']['sticky'] = [
     '#type' => 'checkbox',
     '#title' => t('Sticky header'),
-    '#description' => t('Select an option'),
+    '#description' => t('A sticky header will continue to be available as the user scrolls down the page. It will hide on scroll down and show when the user starts to scroll up.'),
     '#default_value' => theme_get_setting('header.sticky'),
   ];
   $form['layout'] = [
@@ -68,6 +68,15 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
       'page__container--mixed' => t('Full Width (Header Only)'),
     ],
     '#default_value' => theme_get_setting('layout.container'),
+  ];
+  $form['branding'] = [
+    '#tree' => TRUE,
+  ];
+  $form['branding']['legacy'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Use legacy UIowa bar'),
+    '#description' => t('The UIowa bar that was used prior to Spring 2020 redesign will be shown.'),
+    '#default_value' => theme_get_setting('branding.legacy'),
   ];
 
   $form['theme_settings']['#open'] = FALSE;
