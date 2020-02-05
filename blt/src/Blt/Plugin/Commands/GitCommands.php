@@ -203,6 +203,9 @@ class GitCommands extends BltTasks {
    * @hook pre-command setup
    */
   public function preSetup() {
+    $profile = getenv('BLT_PROFILE');
+    $this->say("Profile: {$profile}");
+
     if ($profile = getenv('BLT_PROFILE')) {
       $env = EnvironmentDetector::isCiEnv() ? 'ci' : 'local';
 
