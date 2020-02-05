@@ -23,13 +23,20 @@ var paths = {
 };
 
 function copy() {
-  return src(['../../../../node_modules/@uiowa/uids/**/*.scss', '../../../../node_modules/@uiowa/uids/**/*.js', '../../../../node_modules/@uiowa/uids/**/*.twig'
+  return src([
+    '../../../../node_modules/@uiowa/uids/**/*.scss',
+    '../../../../node_modules/@uiowa/uids/**/*.js',
+    '../../../../node_modules/@uiowa/uids/**/*.twig',
+    '../../../../node_modules/@uiowa/uids/**/images/*'
   ])
     .pipe(dest('./uids/'));
 }
 
 function fontCopy() {
-  return src(['../../../../node_modules/@uiowa/uids/assets/**/*.woff', '../../../../node_modules/@uiowa/uids/assets/**/*.woff2'])
+  return src([
+    '../../../../node_modules/@uiowa/uids/assets/**/*.woff',
+    '../../../../node_modules/@uiowa/uids/assets/**/*.woff2'
+  ])
     .pipe(dest('./assets/'));
 }
 
