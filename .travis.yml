@@ -52,6 +52,7 @@ install:
   - source ${BLT_DIR}/scripts/travis/setup_project
 
 script:
+  - php -r "echo(getenv('BLT_PROFILE'));"
   - source ${BLT_DIR}/scripts/travis/run_tests
 #  - source ${BLT_DIR}/scripts/travis/simulate_deploy
 
