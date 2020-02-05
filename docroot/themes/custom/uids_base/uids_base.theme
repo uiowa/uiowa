@@ -62,7 +62,7 @@ function uids_base_preprocess_page(&$variables) {
 
   $moduleHandler = \Drupal::service('module_handler');
   // @todo Change this to uiowa_search if that gets split out.
-  if ($moduleHandler->moduleExists('uiowa_bar')){
+  if ($moduleHandler->moduleExists('uiowa_bar')) {
     $variables['uiowa_search_form'] = \Drupal::formBuilder()->getForm('Drupal\uiowa_bar\Form\SearchForm');
   }
 
