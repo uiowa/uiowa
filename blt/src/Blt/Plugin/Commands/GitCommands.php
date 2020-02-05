@@ -3,6 +3,8 @@
 namespace Uiowa\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
+use Acquia\Blt\Robo\Common\EnvironmentDetector;
+use Acquia\Blt\Robo\Common\YamlMunge;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
 
@@ -190,6 +192,33 @@ class GitCommands extends BltTasks {
     }
 
     return $acquia;
+  }
+
+  /**
+   * Write git-ignored CI config to default site before setup runs.
+   *
+   * This allows CI to test multiple install profiles using the default site
+   * which is not used.
+   *
+   * @hook pre-command setup
+   */
+  public function preSetup() {
+    if ($profile = getenv('BLT_PROFILE')) {
+      $env = EnvironmentDetector::isCiEnv() ? 'ci' : 'local';
+
+      $root = $this->getConfigValue('repo.root');
+      $config = [];
+      $config['project']['profile']['name'] = $profile;
+
+      $data = $this->getConfigValue('uiowa.profiles')[$profile];
+
+      foreach ($data['default_config'] as $name => $value) {
+        $config[$name] = $value;
+      }
+
+      YamlMunge::writeFile("{$root}/docroot/sites/default/{$env}.blt.yml", $config);
+    }
+
   }
 
 }
