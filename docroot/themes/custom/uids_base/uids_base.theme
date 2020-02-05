@@ -86,7 +86,7 @@ function uids_base_preprocess_block(&$variables) {
 function uids_base_preprocess_form(&$variables) {
   // Add class to your specific form.
   if ($variables['attributes']['id'] == 'search-block-form') {
-    $variables['attributes']['class'][] = 'hds-content hds-search ';
+    $variables['attributes']['class'][] = 'uids-content uids-search ';
   }
 }
 
@@ -95,11 +95,11 @@ function uids_base_preprocess_form(&$variables) {
  */
 function uids_base_form_alter(&$form, $form_state, $form_id) {
   if (strpos($form_id, 'node_page_layout_builder_form') !== FALSE) {
-    $form['actions']['#attributes']['class'][] = 'hds-content';
-    $form['layout_builder_message']['#attributes']['class'][] = 'hds-content';
+    $form['actions']['#attributes']['class'][] = 'uids-content';
+    $form['layout_builder_message']['#attributes']['class'][] = 'uids-content';
   }
   if (strpos($form_id, 'uiowa_bar_search_form') !== FALSE) {
-    $form['#attributes']['class'][] = 'hds-content hds-content__search';
+    $form['#attributes']['class'][] = 'uids-content uids-content__search';
   }
 }
 
@@ -110,6 +110,6 @@ function uids_base_form_views_exposed_form_alter(&$form, $form_state, $form_id) 
   $view_ids = ['book_toc', 'book_search'];
   $view = $form_state->getStorage('view');
   if ($form_id == 'views_exposed_form' && in_array($view['view']->id(), $view_ids)) {
-    $form['#attributes']['class'][] = 'hds-content hds-search';
+    $form['#attributes']['class'][] = 'uids-content uids-search';
   }
 }
