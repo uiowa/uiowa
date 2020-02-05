@@ -53,6 +53,13 @@ function uids_base_preprocess_page(&$variables) {
   $variables['header_nav'] = theme_get_setting('header.nav_style');
   $variables['header_sticky'] = theme_get_setting('header.sticky');
   $variables['layout_container'] = theme_get_setting('layout.container');
+  $variables['uiowa_search_form'] = FALSE;
+
+  $moduleHandler = \Drupal::service('module_handler');
+  // @todo Change this to uiowa_search if that gets split out.
+  if ($moduleHandler->moduleExists('uiowa_bar')){
+    $variables['uiowa_search_form'] = \Drupal::formBuilder()->getForm('Drupal\uiowa_bar\Form\SearchForm');
+  }
 
   // Set a variable for whether layout builder is enabled.
   $variables['layout_builder_enabled'] = FALSE;
