@@ -1,0 +1,25 @@
+project:
+  profile:
+    name: sitenow
+  local:
+    hostname: labtheranostics.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labtheranostics
+  human_name: theranostics.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labtheranostics.prod
+drupal:
+  db:
+    database: theranostics_lab_uiowa_edu
+uiowa:
+  profiles:
+    sitenow:
+      requester: jenkinsn
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true
