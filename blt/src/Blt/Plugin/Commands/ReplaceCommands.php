@@ -144,13 +144,14 @@ class ReplaceCommands extends BltTasks {
       ]);
 
       foreach ($this->getConfigValue('uiowa.profiles') as $profile => $data) {
-        $this->say("Testing {$profile} profile on site <comment>{$data['ci_site']}</comment>.");
-        if ($this->getConfigValue('drush.alias')) {
-          $this->say("Using drush alias <comment>@{$this->getConfigValue('drush.alias')}</comment>");
-        }
+        $this->say("Installing {$profile} profile on site <comment>{$data['ci_site']}</comment>.");
+
+        // Disable alias since we are targeting a specific URI.
+        $this->config->set('drush.alias', '');
 
         $this->switchSiteContext($data['ci_site']);
         $this->invokeCommand('drupal:install');
+        $this->switchSiteContext('default');
       }
 
       $this->invokeCommand('blt:init:shell-alias');
