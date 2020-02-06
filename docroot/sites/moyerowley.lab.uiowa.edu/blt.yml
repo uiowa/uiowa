@@ -1,0 +1,25 @@
+project:
+  profile:
+    name: sitenow
+  local:
+    hostname: labmoyerowley.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labmoyerowley
+  human_name: moyerowley.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labmoyerowley.prod
+drupal:
+  db:
+    database: moyerowley_lab_uiowa_edu
+uiowa:
+  profiles:
+    sitenow:
+      requester: moyerowleyw
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true

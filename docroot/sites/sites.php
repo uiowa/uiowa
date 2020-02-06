@@ -864,3 +864,15 @@ $sites['labmiles.local.drupal.uiowa.edu'] = 'miles.lab.uiowa.edu';
 $sites['labmiles.dev.drupal.uiowa.edu'] = 'miles.lab.uiowa.edu';
 $sites['labmiles.stage.drupal.uiowa.edu'] = 'miles.lab.uiowa.edu';
 $sites['labmiles.prod.drupal.uiowa.edu'] = 'miles.lab.uiowa.edu';
+
+// Directory aliases for moyerowley.lab.uiowa.edu.
+$sites['labmoyerowley.local.drupal.uiowa.edu'] = 'moyerowley.lab.uiowa.edu';
+$sites['labmoyerowley.dev.drupal.uiowa.edu'] = 'moyerowley.lab.uiowa.edu';
+$sites['labmoyerowley.stage.drupal.uiowa.edu'] = 'moyerowley.lab.uiowa.edu';
+$sites['labmoyerowley.prod.drupal.uiowa.edu'] = 'moyerowley.lab.uiowa.edu';
+
+// Directory aliases for advising.uiowa.edu.
+$sites['advising.local.drupal.uiowa.edu'] = 'advising.uiowa.edu';
+$sites['advising.dev.drupal.uiowa.edu'] = 'advising.uiowa.edu';
+$sites['advising.stage.drupal.uiowa.edu'] = 'advising.uiowa.edu';
+$sites['advising.prod.drupal.uiowa.edu'] = 'advising.uiowa.edu';
