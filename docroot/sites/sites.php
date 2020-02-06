@@ -858,3 +858,9 @@ $sites['coepe.local.drupal.uiowa.edu'] = 'coepe.uiowa.edu';
 $sites['coepe.dev.drupal.uiowa.edu'] = 'coepe.uiowa.edu';
 $sites['coepe.stage.drupal.uiowa.edu'] = 'coepe.uiowa.edu';
 $sites['coepe.prod.drupal.uiowa.edu'] = 'coepe.uiowa.edu';
+
+// Directory aliases for miles.lab.uiowa.edu.
+$sites['labmiles.local.drupal.uiowa.edu'] = 'miles.lab.uiowa.edu';
+$sites['labmiles.dev.drupal.uiowa.edu'] = 'miles.lab.uiowa.edu';
+$sites['labmiles.stage.drupal.uiowa.edu'] = 'miles.lab.uiowa.edu';
+$sites['labmiles.prod.drupal.uiowa.edu'] = 'miles.lab.uiowa.edu';
