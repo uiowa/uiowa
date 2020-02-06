@@ -19,7 +19,7 @@ class GitCommands extends BltTasks {
    * @hook validate uiowa:git:clean
    */
   public function validateClean(CommandData $commandData) {
-    $remotes = $this->getAcquiaRemotes();
+    $remotes = $this->getConfigValue('git.remotes');
 
     if (empty($remotes)) {
       return new CommandError('You must add a remote pointing to an Acquia Git repository. Check the README for details.');
@@ -45,7 +45,7 @@ class GitCommands extends BltTasks {
    * @aliases ugc
    */
   public function clean() {
-    $remotes = $this->getAcquiaRemotes();
+    $remotes = $this->getConfigValue('git.remotes');
 
     $keep = [
       'refs/heads/master',
@@ -151,47 +151,6 @@ class GitCommands extends BltTasks {
       ->run();
 
     $this->logger->info('Copied SiteNow Drush commands to deploy directory.');
-  }
-
-  /**
-   * Get remotes with an Acquia URI host.
-   *
-   * @return array
-   *   An array of Acquia hosted remote names.
-   *
-   * @throws \Robo\Exception\TaskException
-   */
-  protected function getAcquiaRemotes() {
-    $result = $this->taskExecStack()
-      ->exec('git remote')
-      ->stopOnFail()
-      ->silent(TRUE)
-      ->run();
-
-    $output = $result->getMessage();
-    $remotes = explode(PHP_EOL, $output);
-    $origin = array_search('origin', $remotes);
-    unset($remotes[$origin]);
-
-    $acquia = [];
-
-    foreach ($remotes as $remote) {
-      $result = $this->taskExecStack()
-        ->exec("git remote get-url {$remote}")
-        ->stopOnFail()
-        ->silent(TRUE)
-        ->run();
-
-      $output = $result->getMessage();
-      $url = stristr($output, ':', TRUE);
-      $url = parse_url("https://{$url}");
-
-      if (stristr($url['host'], 'prod.hosting.acquia.com')) {
-        $acquia[] = $remote;
-      }
-    }
-
-    return $acquia;
   }
 
   /**
