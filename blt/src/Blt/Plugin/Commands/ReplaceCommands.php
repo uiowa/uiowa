@@ -128,4 +128,46 @@ class ReplaceCommands extends BltTasks {
     }
   }
 
+  /**
+   * Replace blt setup command.
+   *
+   * This allows CI to test multiple install profiles using the default site
+   * which is not used.
+   *
+   * @hook replace-command setup
+   */
+  public function replaceSetup() {
+    if (EnvironmentDetector::isCiEnv()) {
+      $this->invokeCommands([
+        'source:build',
+        'drupal:deployment-identifier:init',
+      ]);
+
+      foreach ($this->getConfigValue('uiowa.profiles') as $profile => $data) {
+        $this->say("Testing {$profile} profile on site <comment>{$data['ci_site']}</comment>.");
+        if ($this->getConfigValue('drush.alias')) {
+          $this->say("Using drush alias <comment>@{$this->getConfigValue('drush.alias')}</comment>");
+        }
+
+        $this->switchSiteContext($data['ci_site']);
+        $this->invokeCommand('drupal:install');
+      }
+
+      $this->invokeCommand('blt:init:shell-alias');
+    }
+    else {
+      $this->say("Setting up local environment for site <comment>{$this->getConfigValue('site')}</comment>.");
+      if ($this->getConfigValue('drush.alias')) {
+        $this->say("Using drush alias <comment>@{$this->getConfigValue('drush.alias')}</comment>");
+      }
+
+      $this->invokeCommands([
+        'source:build',
+        'drupal:deployment-identifier:init',
+        'drupal:install',
+        'drupal:toggle:modules',
+      ]);
+    }
+  }
+
 }
