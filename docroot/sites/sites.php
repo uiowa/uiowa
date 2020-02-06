@@ -876,3 +876,21 @@ $sites['advising.local.drupal.uiowa.edu'] = 'advising.uiowa.edu';
 $sites['advising.dev.drupal.uiowa.edu'] = 'advising.uiowa.edu';
 $sites['advising.stage.drupal.uiowa.edu'] = 'advising.uiowa.edu';
 $sites['advising.prod.drupal.uiowa.edu'] = 'advising.uiowa.edu';
+
+// Directory aliases for adsforruralamerica.uiowa.edu.
+$sites['adsforruralamerica.local.drupal.uiowa.edu'] = 'adsforruralamerica.uiowa.edu';
+$sites['adsforruralamerica.dev.drupal.uiowa.edu'] = 'adsforruralamerica.uiowa.edu';
+$sites['adsforruralamerica.stage.drupal.uiowa.edu'] = 'adsforruralamerica.uiowa.edu';
+$sites['adsforruralamerica.prod.drupal.uiowa.edu'] = 'adsforruralamerica.uiowa.edu';
+
+// Directory aliases for idrs2020.org.
+$sites['org-idrs2020.local.drupal.uiowa.edu'] = 'idrs2020.org';
+$sites['org-idrs2020.dev.drupal.uiowa.edu'] = 'idrs2020.org';
+$sites['org-idrs2020.stage.drupal.uiowa.edu'] = 'idrs2020.org';
+$sites['org-idrs2020.prod.drupal.uiowa.edu'] = 'idrs2020.org';
+
+// Directory aliases for horn.studio.uiowa.edu.
+$sites['studiohorn.local.drupal.uiowa.edu'] = 'horn.studio.uiowa.edu';
+$sites['studiohorn.dev.drupal.uiowa.edu'] = 'horn.studio.uiowa.edu';
+$sites['studiohorn.stage.drupal.uiowa.edu'] = 'horn.studio.uiowa.edu';
+$sites['studiohorn.prod.drupal.uiowa.edu'] = 'horn.studio.uiowa.edu';
