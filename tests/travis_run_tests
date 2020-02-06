@@ -6,7 +6,8 @@
 set -ev
 
 blt validate:all --no-interaction
-blt setup --define drush.alias='${drush.aliases.ci}' --no-interaction --verbose
+blt setup --define drush.alias='${drush.aliases.ci}' --environment=ci.sitenow  --no-interaction --verbose
+blt setup --define drush.alias='${drush.aliases.ci}' --environment=ci.collegiate  --no-interaction --verbose
 blt tests:all --define drush.alias='${drush.aliases.ci}' --define tests.run-server=true --no-interaction --verbose
 
 set +ev

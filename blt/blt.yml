@@ -61,11 +61,5 @@ uiowa:
     uiowa01:
       id: 21a2a0ab-b4ed-4ecf-8bd4-9266c70f5ef1
   profiles:
-    sitenow:
-      default_config:
-        cm.core.install_from_config: true
-        cm.core.dirs.sync.path: profiles/custom/sitenow/config/sync/
-    collegiate:
-      default_config:
-        cm.core.install_from_config: false
-        cm.core.dirs.sync.path: ${cm.core.path}/${site}
+    - sitenow
+    - collegiate
