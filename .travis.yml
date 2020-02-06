@@ -21,7 +21,9 @@ cache:
     - "$TRAVIS_BUILD_DIR/node_modules/"
 
 services:
-- mysql
+  - mysql
+  - memcached
+
 
 addons:
   ssh_known_hosts:
