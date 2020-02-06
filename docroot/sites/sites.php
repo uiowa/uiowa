@@ -852,3 +852,9 @@ $sites['psychiatrycomputational-symposium.local.drupal.uiowa.edu'] = 'computatio
 $sites['psychiatrycomputational-symposium.dev.drupal.uiowa.edu'] = 'computational-symposium.psychiatry.uiowa.edu';
 $sites['psychiatrycomputational-symposium.stage.drupal.uiowa.edu'] = 'computational-symposium.psychiatry.uiowa.edu';
 $sites['psychiatrycomputational-symposium.prod.drupal.uiowa.edu'] = 'computational-symposium.psychiatry.uiowa.edu';
+
+// Directory aliases for coepe.uiowa.edu.
+$sites['coepe.local.drupal.uiowa.edu'] = 'coepe.uiowa.edu';
+$sites['coepe.dev.drupal.uiowa.edu'] = 'coepe.uiowa.edu';
+$sites['coepe.stage.drupal.uiowa.edu'] = 'coepe.uiowa.edu';
+$sites['coepe.prod.drupal.uiowa.edu'] = 'coepe.uiowa.edu';
