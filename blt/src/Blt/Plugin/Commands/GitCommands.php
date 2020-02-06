@@ -193,4 +193,5 @@ class GitCommands extends BltTasks {
 
     return $acquia;
   }
+
 }
