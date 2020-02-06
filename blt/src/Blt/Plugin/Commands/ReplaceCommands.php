@@ -134,7 +134,6 @@ class ReplaceCommands extends BltTasks {
    * This allows CI to test multiple install profiles using the default site
    * which is not used.
    *
-   *
    */
   public function replaceSetup() {
     if (EnvironmentDetector::isCiEnv()) {
