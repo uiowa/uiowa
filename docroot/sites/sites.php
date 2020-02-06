@@ -882,3 +882,9 @@ $sites['adsforruralamerica.local.drupal.uiowa.edu'] = 'adsforruralamerica.uiowa.
 $sites['adsforruralamerica.dev.drupal.uiowa.edu'] = 'adsforruralamerica.uiowa.edu';
 $sites['adsforruralamerica.stage.drupal.uiowa.edu'] = 'adsforruralamerica.uiowa.edu';
 $sites['adsforruralamerica.prod.drupal.uiowa.edu'] = 'adsforruralamerica.uiowa.edu';
+
+// Directory aliases for idrs2020.org.
+$sites['org-idrs2020.local.drupal.uiowa.edu'] = 'idrs2020.org';
+$sites['org-idrs2020.dev.drupal.uiowa.edu'] = 'idrs2020.org';
+$sites['org-idrs2020.stage.drupal.uiowa.edu'] = 'idrs2020.org';
+$sites['org-idrs2020.prod.drupal.uiowa.edu'] = 'idrs2020.org';
