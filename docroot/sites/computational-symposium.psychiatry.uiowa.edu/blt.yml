@@ -1,0 +1,25 @@
+project:
+  profile:
+    name: sitenow
+  local:
+    hostname: psychiatrycomputational-symposium.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: psychiatrycomputational-symposium
+  human_name: computational-symposium.psychiatry.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: psychiatrycomputational-symposium.prod
+drupal:
+  db:
+    database: computational_symposium_psychiatry_uiowa_edu
+uiowa:
+  profiles:
+    sitenow:
+      requester: kzear
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true
