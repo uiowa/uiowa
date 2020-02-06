@@ -876,3 +876,9 @@ $sites['advising.local.drupal.uiowa.edu'] = 'advising.uiowa.edu';
 $sites['advising.dev.drupal.uiowa.edu'] = 'advising.uiowa.edu';
 $sites['advising.stage.drupal.uiowa.edu'] = 'advising.uiowa.edu';
 $sites['advising.prod.drupal.uiowa.edu'] = 'advising.uiowa.edu';
+
+// Directory aliases for adsforruralamerica.uiowa.edu.
+$sites['adsforruralamerica.local.drupal.uiowa.edu'] = 'adsforruralamerica.uiowa.edu';
+$sites['adsforruralamerica.dev.drupal.uiowa.edu'] = 'adsforruralamerica.uiowa.edu';
+$sites['adsforruralamerica.stage.drupal.uiowa.edu'] = 'adsforruralamerica.uiowa.edu';
+$sites['adsforruralamerica.prod.drupal.uiowa.edu'] = 'adsforruralamerica.uiowa.edu';
