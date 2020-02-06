@@ -846,3 +846,21 @@ $sites['orgassist.local.drupal.uiowa.edu'] = 'assist.org.uiowa.edu';
 $sites['orgassist.dev.drupal.uiowa.edu'] = 'assist.org.uiowa.edu';
 $sites['orgassist.stage.drupal.uiowa.edu'] = 'assist.org.uiowa.edu';
 $sites['orgassist.prod.drupal.uiowa.edu'] = 'assist.org.uiowa.edu';
+
+// Directory aliases for computational-symposium.psychiatry.uiowa.edu.
+$sites['psychiatrycomputational-symposium.local.drupal.uiowa.edu'] = 'computational-symposium.psychiatry.uiowa.edu';
+$sites['psychiatrycomputational-symposium.dev.drupal.uiowa.edu'] = 'computational-symposium.psychiatry.uiowa.edu';
+$sites['psychiatrycomputational-symposium.stage.drupal.uiowa.edu'] = 'computational-symposium.psychiatry.uiowa.edu';
+$sites['psychiatrycomputational-symposium.prod.drupal.uiowa.edu'] = 'computational-symposium.psychiatry.uiowa.edu';
+
+// Directory aliases for coepe.uiowa.edu.
+$sites['coepe.local.drupal.uiowa.edu'] = 'coepe.uiowa.edu';
+$sites['coepe.dev.drupal.uiowa.edu'] = 'coepe.uiowa.edu';
+$sites['coepe.stage.drupal.uiowa.edu'] = 'coepe.uiowa.edu';
+$sites['coepe.prod.drupal.uiowa.edu'] = 'coepe.uiowa.edu';
+
+// Directory aliases for miles.lab.uiowa.edu.
+$sites['labmiles.local.drupal.uiowa.edu'] = 'miles.lab.uiowa.edu';
+$sites['labmiles.dev.drupal.uiowa.edu'] = 'miles.lab.uiowa.edu';
+$sites['labmiles.stage.drupal.uiowa.edu'] = 'miles.lab.uiowa.edu';
+$sites['labmiles.prod.drupal.uiowa.edu'] = 'miles.lab.uiowa.edu';

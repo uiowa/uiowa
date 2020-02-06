@@ -1,0 +1,25 @@
+project:
+  profile:
+    name: sitenow
+  local:
+    hostname: coepe.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: coepe
+  human_name: coepe.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: coepe.prod
+drupal:
+  db:
+    database: coepe_uiowa_edu
+uiowa:
+  profiles:
+    sitenow:
+      requester: eoka
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true
