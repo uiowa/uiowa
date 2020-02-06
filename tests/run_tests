@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# Ordinarily we'd use set -e here but that breaks travis_wait, so we use return
+# pattern below.
+
+set -ev
+
+blt validate:all --no-interaction
+blt setup --define drush.alias='${drush.aliases.ci}' --no-interaction --verbose
+blt tests:all --define drush.alias='${drush.aliases.ci}' --define tests.run-server=true --no-interaction --verbose
+
+set +ev

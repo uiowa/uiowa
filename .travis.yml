@@ -49,7 +49,7 @@ install:
   - source ${BLT_DIR}/scripts/travis/setup_project
 
 script:
-  - export $BLT_PROFILE && source ${BLT_DIR}/scripts/travis/run_tests
+  - source ${TRAVIS_BUILD_DIR}/tests/run_tests
 #  - source ${BLT_DIR}/scripts/travis/simulate_deploy
 
 deploy:
