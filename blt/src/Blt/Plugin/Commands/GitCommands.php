@@ -194,7 +194,7 @@ class GitCommands extends BltTasks {
     return $acquia;
   }
 
-   /**
+  /**
    * Write git-ignored CI config to default site before setup runs.
    *
    * This allows CI to test multiple install profiles using the default site
@@ -221,4 +221,5 @@ class GitCommands extends BltTasks {
     }
 
   }
+
 }
