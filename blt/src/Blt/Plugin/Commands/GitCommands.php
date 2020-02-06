@@ -21,10 +21,6 @@ class GitCommands extends BltTasks {
   public function validateClean(CommandData $commandData) {
     $remotes = $this->getConfigValue('git.remotes');
 
-    if (empty($remotes)) {
-      return new CommandError('You must add a remote pointing to an Acquia Git repository. Check the README for details.');
-    }
-
     foreach ($remotes as $remote) {
       $result = $this->taskExecStack()
         ->exec("git ls-remote {$remote}")
