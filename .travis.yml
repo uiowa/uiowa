@@ -10,6 +10,9 @@ env:
   global:
     - COMPOSER_BIN=$TRAVIS_BUILD_DIR/vendor/bin
     - BLT_DIR=$TRAVIS_BUILD_DIR/vendor/acquia/blt
+  matrix:
+    - TRAVIS_PROFILE=sitenow
+    - TRAVIS_PROFILE=collegiate
 
 cache:
   directories:
@@ -49,7 +52,7 @@ install:
   - source ${BLT_DIR}/scripts/travis/setup_project
 
 script:
-  - source ${TRAVIS_BUILD_DIR}/tests/run_tests
+  - source ${TRAVIS_BUILD_DIR}/tests/travis_run_tests
 #  - source ${BLT_DIR}/scripts/travis/simulate_deploy
 
 deploy:
