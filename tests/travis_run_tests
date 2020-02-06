@@ -6,11 +6,7 @@
 set -ev
 
 blt validate:all --no-interaction
-
-# Profile setup.
-blt setup -D drush.alias='${drush.aliases.ci}' -D project.profile.name=sitenow -D cm.core.install_from_config=true -D cm.core.dirs.sync.path='profiles/custom/sitenow/config/sync/' --no-interaction --verbose
-blt setup -D drush.alias='${drush.aliases.ci}' -D project.profile.name=collegiate -D cm.core.install_from_config=false -D cm.core.dirs.sync.path='${cm.core.path}/${site}' --no-interaction --verbose
-
+blt setup -D drush.alias='${drush.aliases.ci}' --no-interaction --verbose
 blt tests:all --define drush.alias='${drush.aliases.ci}' --define tests.run-server=true --no-interaction --verbose
 
 set +ev

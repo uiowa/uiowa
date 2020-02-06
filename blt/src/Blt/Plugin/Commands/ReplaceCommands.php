@@ -148,8 +148,7 @@ class ReplaceCommands extends BltTasks {
         $this->config->set('drush.alias', '');
 
         $this->switchSiteContext($data['ci_site']);
-        $this->invokeCommand('drupal:install', ['--site' => $data['ci_site']]);
-        $this->switchSiteContext('default');
+        $this->invokeCommand('drupal:install');
       }
 
       $this->invokeCommand('blt:init:shell-alias');
