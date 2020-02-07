@@ -6,6 +6,7 @@
  */
 
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Menu\MenuTreeParameters;
 
 /**
  * Implements hook_preprocess_HOOK() for html.html.twig.
@@ -59,7 +60,6 @@ function uids_base_preprocess_page(&$variables) {
   $variables['layout_container'] = theme_get_setting('layout.container');
   $variables['branding_legacy'] = theme_get_setting('branding.legacy');
   $variables['uiowa_search_form'] = FALSE;
-
 
   $top_menu = theme_get_setting('header.top_menu');
   $top_menu_links = uids_base_generate_menu_markup($top_menu);
@@ -147,7 +147,7 @@ function uids_base_form_views_exposed_form_alter(&$form, $form_state, $form_id) 
  *   The markup of the menu tree or NULL if there are no menu links to display.
  */
 function uids_base_generate_menu_markup($menu_name) {
-  $parameters = new \Drupal\Core\Menu\MenuTreeParameters();
+  $parameters = new MenuTreeParameters();
   $parameters->onlyEnabledLinks();
   $parameters->setMaxDepth(1);
   $menu_tree_service = \Drupal::service('menu.link_tree');
