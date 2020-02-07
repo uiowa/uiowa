@@ -310,8 +310,6 @@ EOD
     $prod = Multisite::getInternalDomains($id)['prod'];
 
     $root = $this->getConfigValue('repo.root');
-
-    $this->getConfig()->set('drupal.db.database', $db);
     $this->input()->setInteractive(FALSE);
 
     $this->invokeCommand('recipes:multisite:init', [
@@ -409,7 +407,11 @@ EOD
       ->text(Yaml::dump($blt, 10, 2))
       ->run();
 
-    $this->say("Overwrote <comment>docroot/sites/{$host}/blt.yml</comment> file with standardized names.");
+    // Switch site context before expanding file properties.
+    $this->switchSiteContext($host);
+    $this->getConfig()->expandFileProperties("{$root}/docroot/sites/{$host}/blt.yml");
+
+    $this->say("Wrote <comment>docroot/sites/{$host}/blt.yml</comment> file.");
 
     // Write sites.php data. Note that we exclude the production URI since it
     // will route automatically.
