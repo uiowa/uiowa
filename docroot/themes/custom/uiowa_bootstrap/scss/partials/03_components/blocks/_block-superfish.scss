@@ -51,7 +51,7 @@ $accordion-items-bg: $gray-600;
     overflow: visible;
 
     li {
-      a {
+      a, span {
         @extend .font-smoothing-on;
         padding: 1.2rem;
         color: $sf-color;
@@ -75,11 +75,12 @@ $accordion-items-bg: $gray-600;
     }
 
     // Top level menu items.
-    a.sf-depth-1 {
+    a.sf-depth-1, span.sf-depth-1 {
 
     }
 
-    > li > a.sf-depth-1.menuparent {
+    > li > a.sf-depth-1.menuparent,
+    > li > span.sf-depth-1.menuparent {
       position: relative;
       padding-right: $anchor-padding-width * 2;
 
@@ -102,7 +103,7 @@ $accordion-items-bg: $gray-600;
       @extend .font-smoothing-on;
       @include box-shadow(0px 0px 3px rgba(0,0,0,0.3));
 
-      li a {
+      li a, li span {
         color: #fff;
         white-space: normal;
         word-break: break-word;
@@ -128,11 +129,12 @@ $accordion-items-bg: $gray-600;
       box-shadow: 0px -3px 0px $yellow inset;
     }
 
-    a.sf-depth-1 {
+    a.sf-depth-1, span.sf-depth-1 {
       padding: $anchor-padding-height $anchor-padding-width;
+      display: block;
     }
 
-    a.sf-depth-1.menuparent {
+    a.sf-depth-1.menuparent, span.sf-depth-1.menuparent {
 
       &.active {
         background: transparent;
@@ -177,11 +179,11 @@ $accordion-items-bg: $gray-600;
         }
       }
 
-      a.sf-depth-1.menuparent:before {
+      a.sf-depth-1.menuparent:before, span.sf-depth-1.menuparent:before {
         color: #fff;
       }
 
-      a {
+      a, span {
         border-bottom: 1px solid rgba(0,0,0,0.2);
         border-top: 1px solid rgba(255, 255, 255, 0.05);
 

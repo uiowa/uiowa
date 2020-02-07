@@ -1,0 +1,25 @@
+project:
+  profile:
+    name: sitenow
+  local:
+    hostname: adsforruralamerica.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: adsforruralamerica
+  human_name: adsforruralamerica.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: adsforruralamerica.prod
+drupal:
+  db:
+    database: adsforruralamerica_uiowa_edu
+uiowa:
+  profiles:
+    sitenow:
+      requester: scable
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true
