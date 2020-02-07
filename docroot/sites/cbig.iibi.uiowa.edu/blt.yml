@@ -1,0 +1,21 @@
+project:
+  profile:
+    name: sitenow
+  local:
+    hostname: iibicbig.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: iibicbig
+  human_name: cbig.iibi.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: iibicbig.prod
+drupal:
+  db:
+    database: cbig_iibi_uiowa_edu
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true
