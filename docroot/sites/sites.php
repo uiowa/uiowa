@@ -912,3 +912,9 @@ $sites['orgcrisp.local.drupal.uiowa.edu'] = 'crisp.org.uiowa.edu';
 $sites['orgcrisp.dev.drupal.uiowa.edu'] = 'crisp.org.uiowa.edu';
 $sites['orgcrisp.stage.drupal.uiowa.edu'] = 'crisp.org.uiowa.edu';
 $sites['orgcrisp.prod.drupal.uiowa.edu'] = 'crisp.org.uiowa.edu';
+
+// Directory aliases for cbig.iibi.uiowa.edu.
+$sites['iibicbig.local.drupal.uiowa.edu'] = 'cbig.iibi.uiowa.edu';
+$sites['iibicbig.dev.drupal.uiowa.edu'] = 'cbig.iibi.uiowa.edu';
+$sites['iibicbig.stage.drupal.uiowa.edu'] = 'cbig.iibi.uiowa.edu';
+$sites['iibicbig.prod.drupal.uiowa.edu'] = 'cbig.iibi.uiowa.edu';
