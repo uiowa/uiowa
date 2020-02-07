@@ -53,7 +53,7 @@ class Multisite {
   public static function getIdentifier($uri) {
     if ($parsed = parse_url($uri)) {
 
-      // Special case for uiowa.edu
+      // Special case for uiowa.edu.
       if ($parsed['host'] === 'uiowa.edu') {
         $id = 'uiowa';
       }
