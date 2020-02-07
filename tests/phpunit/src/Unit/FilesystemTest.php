@@ -158,15 +158,15 @@ EOD;
         $haystack = file_get_contents($file);
         $this->assertContains($needle, $haystack);
 
-        // Profile specific tests.
-        switch ($yaml['project']['profile']['name']) {
-          case 'sitenow':
-            $file = "{$path}/settings/includes.settings.php";
-            $this->assertFileExists($file);
+        // Profile config tests.
+        $profile = $yaml['project']['profile']['name'];
+        $site_config = YamlMunge::parseFile("{$path}/blt.yml");
 
-            $needle = <<<EOD
+        $file = "{$path}/settings/includes.settings.php";
+
+        $needle = <<<EOD
 \$additionalSettingsFiles = [
-  DRUPAL_ROOT . "/sites/settings/sitenow.settings.php"
+  DRUPAL_ROOT . "/sites/settings/{$profile}.settings.php"
 ];
 
 foreach (\$additionalSettingsFiles as \$settingsFile) {
@@ -176,20 +176,11 @@ foreach (\$additionalSettingsFiles as \$settingsFile) {
 }
 EOD;
 
-            $haystack = file_get_contents($file);
-            $this->assertContains($needle, $haystack);
+        $haystack = file_get_contents($file);
+        $this->assertContains($needle, $haystack);
 
-            $yaml = YamlMunge::parseFile("{$path}/blt.yml");
-            $this->assertEquals('profiles/custom/sitenow/config/sync', $yaml['cm']['core']['dirs']['sync']['path']);
-            $this->assertEquals(TRUE, $yaml['cm']['core']['install_from_config']);
-            break;
-
-          case 'collegiate':
-            $yaml = YamlMunge::parseFile("{$path}/blt.yml");
-            $this->assertEquals("../config/{$site}", $yaml['cm']['core']['dirs']['sync']['path']);
-            $this->assertEquals(FALSE, $yaml['cm']['core']['install_from_config']);
-            break;
-        }
+        $this->assertNotEmpty($site_config['cm']['core']['dirs']['sync']['path']);
+        $this->assertNotEquals('/', substr($site_config['cm']['core']['dirs']['sync']['path'], 0, 1));
       }
     }
   }
