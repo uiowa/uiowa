@@ -6,7 +6,7 @@ local:
   ssh:
     options: '-o StrictHostKeyChecking=no -o PasswordAuthentication=no -i $HOME/.vagrant.d/insecure_private_key'
 dev:
-  uri: .dev.drupal.uiowa.edu
+  uri: uiowa.dev.drupal.uiowa.edu
   host: uiowa01dev.ssh.prod.acquia-sites.com
   options: {  }
   paths:
@@ -21,8 +21,16 @@ prod:
     dump-dir: /mnt/tmp
   root: /var/www/html/uiowa01.prod/docroot
   user: uiowa01.prod
+altprod:
+  uri: uiowa.prod.drupal.uiowa.edu
+  host: uiowa01.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+  root: /var/www/html/uiowa01.prod/docroot
+  user: uiowa01.prod
 test:
-  uri: .stage.drupal.uiowa.edu
+  uri: uiowa.stage.drupal.uiowa.edu
   host: uiowa01stg.ssh.prod.acquia-sites.com
   options: {  }
   paths:
