@@ -179,6 +179,7 @@ EOD;
         $haystack = file_get_contents($file);
         $this->assertContains($needle, $haystack);
 
+        // @todo: Expand properties from profile defaults.
         $this->assertNotEmpty($site_config['cm']['core']['dirs']['sync']['path']);
         $this->assertNotEquals('/', substr($site_config['cm']['core']['dirs']['sync']['path'], 0, 1));
       }
