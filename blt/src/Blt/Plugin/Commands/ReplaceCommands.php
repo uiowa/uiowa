@@ -131,8 +131,7 @@ class ReplaceCommands extends BltTasks {
   /**
    * Replace blt setup command.
    *
-   * This allows CI to test multiple install profiles using the default site
-   * which is not used.
+   * This allows CI to test multiple install profiles using the site specified.
    *
    * @hook replace-command setup
    */
