@@ -98,18 +98,17 @@ class GitCommands extends BltTasks {
    * @hook post-command artifact:build
    */
   public function writeProfileVersion() {
-    $event = getenv('PIPELINE_WEBHOOK_EVENT');
-    $path = getenv('PIPELINE_VCS_PATH');
-    $sha = getenv('PIPELINE_GIT_HEAD_REF');
+    $tag = getenv('TRAVIS_TAG');
+    $sha = getenv('TRAVIS_COMMIT');
 
-    if ($event == 'TAG_PUSH') {
-      $version = $path;
+    if (!empty($tag)) {
+      $version = $tag;
     }
-    elseif ($event == 'BRANCH_PUSH' || $event == 'PULL_REQUEST') {
-      $version = "{$path}-{$sha}";
+    else {
+      $version = $sha;
     }
 
-    $profiles = $this->getConfigValue('uiowa.profiles');
+    $profiles = array_keys($this->getConfigValue('uiowa.profiles'));
 
     foreach ($profiles as $profile) {
       $file = $this->getConfigValue('deploy.dir') . "/docroot/profiles/custom/{$profile}/{$profile}.info.yml";
