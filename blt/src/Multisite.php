@@ -56,11 +56,6 @@ class Multisite {
         // Don't use the suffix if the host equals uiowa.edu.
         $id = substr($parsed['host'], 0, -10);
 
-        // Special case for uiowa.edu
-        if ($id === '') {
-          $id = 'uiowa';
-        }
-
         // Reverse the subdomains.
         $parts = array_reverse(explode('.', $id));
 
