@@ -183,6 +183,12 @@ EOD;
             $this->assertEquals('profiles/custom/sitenow/config/sync', $yaml['cm']['core']['dirs']['sync']['path']);
             $this->assertEquals(TRUE, $yaml['cm']['core']['install_from_config']);
             break;
+
+          case 'collegiate':
+            $yaml = YamlMunge::parseFile("{$path}/blt.yml");
+            $this->assertEquals("../config/{$site}", $yaml['cm']['core']['dirs']['sync']['path']);
+            $this->assertEquals(FALSE, $yaml['cm']['core']['install_from_config']);
+            break;
         }
       }
     }
