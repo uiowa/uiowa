@@ -47,14 +47,20 @@
     {{ attach_library('uids_base/admin') }}
 {% endif %}
 
+{# @todo Add sticky classes #}
+{% set header_classes = [
+    header_type,
+    header_nav,
+] %}
+
 {% if layout_container == 'page__container' %}
-    {% set header_classes = ['header__container'] %}
+{#    {% set header_classes = ['header__container'] %}#}
     {% set page_classes = ['page__container'] %}
 {% elseif layout_container == 'page__container--full' %}
-    {% set header_classes = ['header__container--full'] %}
+{#    {% set header_classes = ['header__container--full'] %}#}
     {% set page_classes = ['page__container--full'] %}
 {% else %}
-    {% set header_classes = ['header__container--full'] %}
+{#    {% set header_classes = ['header__container--full'] %}#}
     {% set page_classes = ['page__container'] %}
 {% endif %}
 
@@ -68,9 +74,11 @@
     {% set node_classes = ['content__full'] %}
 {% endif %}
 
+
+
 {# Header #}
 {{ attach_library('uids_base/header') }}
-<header class="{{ header_type }} {{ header_nav }} {{ header_sticky }}">
+<header{{ attributes.addClass(header_classes) }}>
 
     <div class="uiowa-bar">
         <div class="page__container">
@@ -86,7 +94,9 @@
 
             {% if header_type == 'header--primary' %}
 
-                {% include '@uids/03 - global/menus/top/top.twig' %}
+{#                {% if header_top_menu != 'none' %}#}
+{#                    {{ header_top_menu }}#}
+{#                {% endif %}#}
 
                 {% if uiowa_search_form %}
                     {% include '@uids_base/global/search-toggle.html.twig' with {
@@ -114,15 +124,22 @@
             {% elseif header_type == 'header--tertiary' %}
 
                 {{ attach_library('uids_base/site-slogan') }}
-                {% include '@uids/03 - global/site-slogan/site-slogan.twig' with {"site_slogan": site_slogan} %}
-                {% include '@uids/03 - global/menus/top/top.twig' %}
+                {% include '@uids/03 - global/site-slogan/site-slogan.twig' with {"site_slogan": site_name} %}
+
+{#                {% if header_top_menu != 'none' %}#}
+{#                    {{ header_top_menu }}#}
+{#                {% endif %}#}
 
             {% endif %}
 
-            {% if not (header_type == 'header--tertiary') and (header_nav == 'header--toggle') %}
-                {% include '@menus/off-canvas/off-canvas.twig' with {
-
-                } %}
+            {% if not (header_type == 'header--tertiary') and (header_nav == 'nav--toggle') %}
+                {{ attach_library('uids_base/off-canvas') }}
+                <div class="o-canvas__group">
+                    <div class="o-canvas__wrapper">
+                        {% include '@uids/03 - global/menus/off-canvas/off-canvas--bttn.twig' %}
+                        {# @todo Include off canvas menu. #}
+                    </div>
+                </div>
             {% endif %}
 
         </div>
@@ -135,7 +152,7 @@
 
                 {{ attach_library('uids_base/site-name') }}
                 {% include '@uids/03 - global/site-name/site-name.twig' with {
-                    site_name: site_name
+                    site_name: site_slogan
                 } %}
 
                 {% if uiowa_search_form %}
@@ -143,9 +160,14 @@
                         search_form: uiowa_search_form
                     } %}
                 {% endif %}
-
-                {% if header_nav == 'header--toggle' %}
-                    {% include '@uids/03 - global/menus/off-canvas/off-canvas.twig' %}
+                {% if header_nav == 'nav--toggle' %}
+                    {{ attach_library('uids_base/off-canvas') }}
+                    <div class="o-canvas__group">
+                        <div class="o-canvas__wrapper">
+                            {% include '@uids/03 - global/menus/off-canvas/off-canvas--bttn.twig' %}
+                            {# @todo Include off canvas menu. #}
+                        </div>
+                    </div>
                 {% endif %}
             </div>
         </div>

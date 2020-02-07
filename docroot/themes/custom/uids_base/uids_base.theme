@@ -60,10 +60,20 @@ function uids_base_preprocess_page(&$variables) {
   $variables['branding_legacy'] = theme_get_setting('branding.legacy');
   $variables['uiowa_search_form'] = FALSE;
 
+
+  $top_menu = theme_get_setting('header.top_menu');
+  $top_menu_links = uids_base_generate_menu_markup($top_menu);
+  $variables['header_top_menu'] = $top_menu_links;
+
   $moduleHandler = \Drupal::service('module_handler');
+
   // @todo Change this to uiowa_search if that gets split out.
   if ($moduleHandler->moduleExists('uiowa_bar')) {
     $variables['uiowa_search_form'] = \Drupal::formBuilder()->getForm('Drupal\uiowa_bar\Form\SearchForm');
+  }
+
+  if ($variables['branding_legacy']) {
+    $variables['#attached']['library'][] = 'uids_base/legacy';
   }
 
   // Set a variable for whether layout builder is enabled.
@@ -124,5 +134,37 @@ function uids_base_form_views_exposed_form_alter(&$form, $form_state, $form_id) 
   $view = $form_state->getStorage('view');
   if ($form_id == 'views_exposed_form' && in_array($view['view']->id(), $view_ids)) {
     $form['#attributes']['class'][] = 'uids-content uids-search';
+  }
+}
+
+/**
+ * Generate markup for a menu.
+ *
+ * @param string $menu_name
+ *   The machine name of a menu.
+ *
+ * @return string
+ *   The markup of the menu tree or NULL if there are no menu links to display.
+ */
+function uids_base_generate_menu_markup($menu_name) {
+  $parameters = new \Drupal\Core\Menu\MenuTreeParameters();
+  $parameters->onlyEnabledLinks();
+  $parameters->setMaxDepth(1);
+  $menu_tree_service = \Drupal::service('menu.link_tree');
+  $tree = $menu_tree_service->load($menu_name, $parameters);
+
+  $manipulators = [
+    ['callable' => 'menu.default_tree_manipulators:checkNodeAccess'],
+    ['callable' => 'menu.default_tree_manipulators:checkAccess'],
+    ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
+  ];
+
+  $tree = $menu_tree_service->transform($tree, $manipulators);
+
+  if (!empty($tree)) {
+    return $menu_tree_service->build($tree);
+  }
+  else {
+    return NULL;
   }
 }
