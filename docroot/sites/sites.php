@@ -900,3 +900,9 @@ $sites['uiowa.local.drupal.uiowa.edu'] = 'uiowa.edu';
 $sites['uiowa.dev.drupal.uiowa.edu'] = 'uiowa.edu';
 $sites['uiowa.stage.drupal.uiowa.edu'] = 'uiowa.edu';
 $sites['uiowa.prod.drupal.uiowa.edu'] = 'uiowa.edu';
+
+// Directory aliases for irbr.org.uiowa.edu.
+$sites['orgirbr.local.drupal.uiowa.edu'] = 'irbr.org.uiowa.edu';
+$sites['orgirbr.dev.drupal.uiowa.edu'] = 'irbr.org.uiowa.edu';
+$sites['orgirbr.stage.drupal.uiowa.edu'] = 'irbr.org.uiowa.edu';
+$sites['orgirbr.prod.drupal.uiowa.edu'] = 'irbr.org.uiowa.edu';
