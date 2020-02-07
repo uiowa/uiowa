@@ -56,6 +56,8 @@ sync:
     - 'drupal:update'
     - 'uiowa:multisite:noop'
     - 'uiowa:multisite:noop'
+
+# Custom configuration.
 uiowa:
   applications:
     uiowa:
@@ -67,6 +69,3 @@ uiowa:
       ci_site: demo.sitenow.uiowa.edu
     collegiate:
       ci_site: theming.uiowa.edu
-      default_config:
-        cm.core.install_from_config: false
-        cm.core.dirs.sync.path: ${cm.core.path}/${site}
