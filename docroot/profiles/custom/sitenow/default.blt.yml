@@ -1,0 +1,15 @@
+# Default BLT configuration for sites using this profile. This file is not read
+# by BLT - these values are written to site blt.yml files when created with
+# the blt uiowa:multisite:create command.
+project:
+  profile:
+    name: sitenow
+drush:
+  aliases:
+    local: self
+cm:
+  core:
+    install_from_config: true
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync/

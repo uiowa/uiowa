@@ -3,6 +3,7 @@
 namespace Uiowa\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
+use Acquia\Blt\Robo\Common\YamlMunge;
 use AcquiaCloudApi\Connector\Client;
 use AcquiaCloudApi\Connector\Connector;
 use AcquiaCloudApi\Endpoints\Databases;
@@ -380,37 +381,28 @@ EOD
       ->run();
 
     // Re-generate the Drush alias so it is more useful.
-    $default = Yaml::parse(file_get_contents("{$root}/drush/sites/{$app}.site.yml"));
-    $default['local']['uri'] = $local;
-    $default['dev']['uri'] = $dev;
-    $default['test']['uri'] = $test;
-    $default['prod']['uri'] = $host;
+    $drush_alias = YamlMunge::parseFile("{$root}/drush/sites/{$app}.site.yml");
+    $drush_alias['local']['uri'] = $local;
+    $drush_alias['dev']['uri'] = $dev;
+    $drush_alias['test']['uri'] = $test;
+    $drush_alias['prod']['uri'] = $host;
 
     $this->taskWriteToFile("{$root}/drush/sites/{$id}.site.yml")
-      ->text(Yaml::dump($default, 10, 2))
+      ->text(Yaml::dump($drush_alias, 10, 2))
       ->run();
 
     $this->say("Updated <comment>{$id}.site.yml</comment> Drush alias file with <info>local, dev, test and prod</info> aliases.");
 
-    // Overwrite the multisite blt.yml file.
-    $blt = Yaml::parse(file_get_contents("{$root}/docroot/sites/{$host}/blt.yml"));
-    $blt['project']['profile']['name'] = $profile;
+    // Overwrite the multisite blt.yml file. Note that the profile defaults
+    // are passed second so that config takes precedence.
+    $blt = YamlMunge::mungeFiles("{$root}/docroot/sites/{$host}/blt.yml", "{$root}/docroot/profiles/custom/{$profile}/default.blt.yml");
     $blt['project']['machine_name'] = $id;
     $blt['project']['local']['hostname'] = $local;
     $blt['drupal']['db']['database'] = $db;
-    $blt['drush']['aliases']['local'] = 'self';
 
     // If requester option is set, add it to the site's BLT settings.
     if (isset($options['requester'])) {
       $blt['uiowa']['profiles'][$profile]['requester'] = $options['requester'];
-    }
-
-    // Set the BLT config to install from config for the sitenow profile.
-    // @todo: Abstract this into a profile-sync option?
-    if ($profile == 'sitenow') {
-      $blt['cm']['core']['dirs']['sync']['path'] = "profiles/custom/{$profile}/config/sync";
-      $blt['cm']['core']['install_from_config'] = TRUE;
-
     }
 
     $this->taskWriteToFile("{$root}/docroot/sites/{$host}/blt.yml")
