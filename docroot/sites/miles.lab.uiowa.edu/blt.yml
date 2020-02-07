@@ -1,0 +1,25 @@
+project:
+  profile:
+    name: sitenow
+  local:
+    hostname: labmiles.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labmiles
+  human_name: miles.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labmiles.prod
+drupal:
+  db:
+    database: miles_lab_uiowa_edu
+uiowa:
+  profiles:
+    sitenow:
+      requester: gmccrory
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true

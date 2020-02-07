@@ -1,0 +1,20 @@
+project:
+  profile:
+    name: collegiate
+  local:
+    hostname: uiowa.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: uiowa
+  human_name: uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: .prod
+drupal:
+  db:
+    database: uiowa_edu
+cm:
+  core:
+    dirs:
+      sync:
+        path: ${cm.core.path}/${site}
