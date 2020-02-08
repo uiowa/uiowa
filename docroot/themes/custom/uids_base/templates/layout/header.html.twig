@@ -1,91 +1,41 @@
 {{ attach_library('uids_base/header') }}
-<header class="{{ header_type }} {{ header_nav }} {{ header_sticky }}">
+<header{{ attributes.addClass(header_classes) }}>
 
     <div class="uiowa-bar">
         <div class="page__container">
 
-            {% if not branding_legacy %}
-                {{ attach_library('uids_base/logo') }}
-                {% include '@uids/03 - global/logo/logo.twig' with {
-                    logo_color: 'logo-icon--secondary',
-                    logo_classes: 'logo-icon--tab',
-                    logo_path_2: uiowa_logo_path,
-                } %}
-            {% endif %}
+            {% block logo %}
 
-            {% if header_type == 'header--primary' %}
-
-                {% include '@uids/03 - global/menus/top/top.twig' %}
-
-                {% if uiowa_search_form %}
-                    {% include '@uids_base/global/search-toggle.html.twig' with {
-                        search_form: uiowa_search_form
+                {% if not branding_legacy %}
+                    {{ attach_library('uids_base/logo') }}
+                    {% include '@uids/03 - global/logo/logo.twig' with {
+                        logo_color: 'logo-icon--secondary',
+                        logo_classes: 'logo-icon--tab',
+                        logo_path_2: uiowa_logo_path,
                     } %}
                 {% endif %}
 
-            {% elseif header_type == 'header--secondary' %}
+            {% endblock %}
 
-                {{ attach_library('uids_base/site-name') }}
-                {% include '@uids/03 - global/site-name/site-name.twig' with {
-                    site_name: site_name
-                } %}
-
-                {% if page.header_search %}
-                    {{ page.header_search }}
-                {% endif %}
-
-                {% if uiowa_search_form %}
-                    {% include '@uids_base/global/search-toggle.html.twig' with {
-                        search_form: uiowa_search_form
-                    } %}
-                {% endif %}
-
-            {% elseif header_type == 'header--tertiary' %}
-
-                {{ attach_library('uids_base/site-slogan') }}
-                {% include '@uids/03 - global/site-slogan/site-slogan.twig' with {"site_slogan": site_slogan} %}
-                {% include '@uids/03 - global/menus/top/top.twig' %}
-
-            {% endif %}
-
-            {% if not (header_type == 'header--tertiary') and (header_nav == 'header--toggle') %}
-                {% include '@menus/off-canvas/off-canvas.twig' with {
-
-                } %}
-            {% endif %}
-
+            {% block uiowa_bar %}
+                {# UIowa bar content #}
+            {% endblock %}
         </div>
     </div>
 
-    {% if header_type == 'header--tertiary' %}
-
-        <div class="site_name--wrapper {{ header_nav }}">
-            <div class="page__container">
-
-                {{ attach_library('uids_base/site-name') }}
-                {% include '@uids/03 - global/site-name/site-name.twig' with {
-                    site_name: site_name
-                } %}
-
-                {% if uiowa_search_form %}
-                    {% include '@uids_base/global/search-toggle.html.twig' with {
-                        search_form: uiowa_search_form
-                    } %}
-                {% endif %}
-
-                {% if header_nav == 'header--toggle' %}
-                    {% include '@uids/03 - global/menus/off-canvas/off-canvas.twig' %}
-                {% endif %}
-            </div>
-        </div>
-
-    {% endif %}
+    {% block tertiary_content %}
+        {# Tertiary content #}
+    {% endblock %}
 </header>
 
-{% if header_nav == 'header--horizontal' %}
-    <nav class="menu-horizontal {{ header_type }} ">
+{% block horizontal_nav %}
+
+{% if header_nav == 'nav--horizontal' %}
+    <nav class="menu-horizontal {{ header_type }}">
         <div class="page__container">
-            {% include '@uids/03 - global/menus/superfish/superfish.twig' %}
+            {{ page.primary_menu }}
         </div>
     </nav>
 {% endif %}
+
+{% endblock %}

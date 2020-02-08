@@ -75,129 +75,13 @@
 {% endif %}
 
 
-{#
- @todo Refactor header section into multiple template files.
-#}
-{# Header #}
-{{ attach_library('uids_base/header') }}
-<header{{ attributes.addClass(header_classes) }}>
-
-    <div class="uiowa-bar">
-        <div class="page__container">
-
-            {% if not branding_legacy %}
-            {{ attach_library('uids_base/logo') }}
-            {% include '@uids/03 - global/logo/logo.twig' with {
-                logo_color: 'logo-icon--secondary',
-                logo_classes: 'logo-icon--tab',
-                logo_path_2: uiowa_logo_path,
-            } %}
-            {% endif %}
-
-            {% if header_type == 'header--primary' %}
-
-                {% if header_top_menu != 'none' %}
-                    {{ header_top_menu }}
-                {% endif %}
-
-                {% if uiowa_search_form %}
-                    {% include '@uids_base/global/search-toggle.html.twig' with {
-                        search_form: uiowa_search_form
-                    } %}
-                {% endif %}
-
-            {% elseif header_type == 'header--secondary' %}
-
-                {{ attach_library('uids_base/site-name') }}
-                {% include '@uids/03 - global/site-name/site-name.twig' with {
-                    site_name: site_name
-                } %}
-
-                {% if page.header_search %}
-                    {{ page.header_search }}
-                {% endif %}
-
-                {% if uiowa_search_form %}
-                    {% include '@uids_base/global/search-toggle.html.twig' with {
-                        search_form: uiowa_search_form
-                    } %}
-                {% endif %}
-
-            {% elseif header_type == 'header--tertiary' %}
-
-                {{ attach_library('uids_base/site-slogan') }}
-                {% include '@uids/03 - global/site-slogan/site-slogan.twig' with {"site_slogan": site_name} %}
-
-                {% if header_top_menu != 'none' %}
-                    {{ header_top_menu }}
-                {% endif %}
-
-            {% endif %}
-
-            {% if not (header_type == 'header--tertiary') and (header_nav == 'nav--toggle') %}
-
-                {# Off-Canvas menu #}
-                {{ attach_library('uids_base/off-canvas') }}
-                <div class="o-canvas__group">
-                    <div class="o-canvas__wrapper">
-                        {% include '@uids/03 - global/menus/off-canvas/off-canvas--bttn.twig' %}
-                        {% embed '@uids_base/global/off-canvas--drawer.html.twig' %}
-                            {% block drawer %}
-                                {{ page.primary_menu }}
-                            {% endblock %}
-                        {% endembed %}
-                    </div>
-                </div>
-            {% endif %}
-
-        </div>
-    </div>
-
-    {% if header_type == 'header--tertiary' %}
-
-        <div class="site_name--wrapper {{ header_nav }}">
-            <div class="page__container">
-
-                {{ attach_library('uids_base/site-name') }}
-                {% include '@uids/03 - global/site-name/site-name.twig' with {
-                    site_name: site_slogan
-                } %}
-
-                {% if uiowa_search_form %}
-                    {% include '@uids_base/global/search-toggle.html.twig' with {
-                        search_form: uiowa_search_form
-                    } %}
-                {% endif %}
-                {% if page.primary_menu %}
-                {% if header_nav == 'nav--toggle' %}
-
-                    {# Off-Canvas menu #}
-                    {{ attach_library('uids_base/off-canvas') }}
-                    <div class="o-canvas__group">
-                        <div class="o-canvas__wrapper">
-                            {% include '@uids/03 - global/menus/off-canvas/off-canvas--bttn.twig' %}
-                            {% embed '@uids_base/global/off-canvas--drawer.html.twig' %}
-                                {% block drawer %}
-                                    {{ page.primary_menu }}
-                                {% endblock %}
-                            {% endembed %}
-                        </div>
-                    </div>
-                {% endif %}
-                {% endif %}
-            </div>
-        </div>
-
-    {% endif %}
-</header>
-{% if header_nav == 'nav--horizontal' %}
-    <nav class="menu-horizontal {{ header_type }} ">
-        <div class="page__container">
-            {{ page.primary_menu }}
-        </div>
-    </nav>
+{% if header_type == 'header--primary' %}
+    {% include '@uids_base/layout/header--primary.html.twig'  %}
+{% elseif header_type == 'header--secondary' %}
+    {% include '@uids_base/layout/header--secondary.html.twig' %}
+{% elseif header_type == 'header--tertiary' %}
+    {% include '@uids_base/layout/header--tertiary.html.twig'  %}
 {% endif %}
-{# /Header #}
 
 {% if layout_builder_enabled == TRUE %}
 <div {{ node_attributes.addClass(node_classes) }}>
