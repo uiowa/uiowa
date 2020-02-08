@@ -2,8 +2,8 @@
 
 {% block uiowa_bar %}
 
-    {% if action_links != 'none' %}
-        {{ actions_links }}
+    {% if page.action_menu %}
+        {{ page.action_menu }}
     {% endif %}
 
     {% if uiowa_search_form %}
@@ -25,11 +25,5 @@
                 {% endembed %}
             </div>
         </div>
-    {% endif %}
-{% endblock %}
-
-{% block action_menu %}
-    {% if header_top_menu != 'none' %}
-        {{ header_top_menu }}
     {% endif %}
 {% endblock %}

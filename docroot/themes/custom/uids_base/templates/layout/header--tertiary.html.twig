@@ -4,8 +4,8 @@
     {{ attach_library('uids_base/site-slogan') }}
     {% include '@uids/03 - global/site-slogan/site-slogan.twig' with { "site_slogan": site_name } %}
 
-    {% if header_top_menu != 'none' %}
-        {{ header_top_menu }}
+    {% if page.action_menu %}
+        {{ page.action_menu }}
     {% endif %}
 {% endblock %}
 
