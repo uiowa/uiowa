@@ -11,10 +11,6 @@ use Drupal\Core\Form\FormStateInterface;
  * Implements hook_form_FORM_ID_alter().
  */
 function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $form_state) {
-  if (isset($form_id)) {
-    return;
-  }
-
   // Menus.
   $menus = ['none' => 'None'];
   $menus = array_merge($menus, menu_ui_get_menus());
