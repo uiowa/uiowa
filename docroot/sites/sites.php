@@ -918,3 +918,9 @@ $sites['iibicbig.local.drupal.uiowa.edu'] = 'cbig.iibi.uiowa.edu';
 $sites['iibicbig.dev.drupal.uiowa.edu'] = 'cbig.iibi.uiowa.edu';
 $sites['iibicbig.stage.drupal.uiowa.edu'] = 'cbig.iibi.uiowa.edu';
 $sites['iibicbig.prod.drupal.uiowa.edu'] = 'cbig.iibi.uiowa.edu';
+
+// Directory aliases for nightatthesciencelabs.conference.uiowa.edu.
+$sites['conferencenightatthesciencelabs.local.drupal.uiowa.edu'] = 'nightatthesciencelabs.conference.uiowa.edu';
+$sites['conferencenightatthesciencelabs.dev.drupal.uiowa.edu'] = 'nightatthesciencelabs.conference.uiowa.edu';
+$sites['conferencenightatthesciencelabs.stage.drupal.uiowa.edu'] = 'nightatthesciencelabs.conference.uiowa.edu';
+$sites['conferencenightatthesciencelabs.prod.drupal.uiowa.edu'] = 'nightatthesciencelabs.conference.uiowa.edu';
