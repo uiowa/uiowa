@@ -11,10 +11,6 @@ use Drupal\Core\Form\FormStateInterface;
  * Implements hook_form_FORM_ID_alter().
  */
 function collegiate_theme_form_system_theme_settings_alter(&$form, FormStateInterface $form_state) {
-  if (isset($form_id)) {
-    return;
-  }
-
   $form['collegiate_theme_settings'] = [
     '#type'         => 'details',
     '#title'        => t('Header Settings'),

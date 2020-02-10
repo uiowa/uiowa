@@ -3,6 +3,7 @@
 namespace Uiowa\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
+use Acquia\Blt\Robo\Common\YamlMunge;
 use AcquiaCloudApi\Connector\Client;
 use AcquiaCloudApi\Connector\Connector;
 use AcquiaCloudApi\Endpoints\Databases;
@@ -240,7 +241,7 @@ EOD
       return new CommandError("Site {$host} already exists.");
     }
 
-    $profiles = $this->getConfig()->get('uiowa.profiles');
+    $profiles = array_keys($this->getConfig()->get('uiowa.profiles'));
     $profile = $commandData->input()->getArgument('profile');
 
     if (!in_array($profile, $profiles)) {
@@ -309,8 +310,6 @@ EOD
     $prod = Multisite::getInternalDomains($id)['prod'];
 
     $root = $this->getConfigValue('repo.root');
-
-    $this->getConfig()->set('drupal.db.database', $db);
     $this->input()->setInteractive(FALSE);
 
     $this->invokeCommand('recipes:multisite:init', [
@@ -386,44 +385,39 @@ EOD
       ->run();
 
     // Re-generate the Drush alias so it is more useful.
-    $default = Yaml::parse(file_get_contents("{$root}/drush/sites/{$app}.site.yml"));
-    $default['local']['uri'] = $local;
-    $default['dev']['uri'] = $dev;
-    $default['test']['uri'] = $test;
-    $default['prod']['uri'] = $host;
+    $drush_alias = YamlMunge::parseFile("{$root}/drush/sites/{$app}.site.yml");
+    $drush_alias['local']['uri'] = $local;
+    $drush_alias['dev']['uri'] = $dev;
+    $drush_alias['test']['uri'] = $test;
+    $drush_alias['prod']['uri'] = $host;
 
     $this->taskWriteToFile("{$root}/drush/sites/{$id}.site.yml")
-      ->text(Yaml::dump($default, 10, 2))
+      ->text(Yaml::dump($drush_alias, 10, 2))
       ->run();
 
     $this->say("Updated <comment>{$id}.site.yml</comment> Drush alias file with <info>local, dev, test and prod</info> aliases.");
 
-    // Overwrite the multisite blt.yml file.
-    $blt = Yaml::parse(file_get_contents("{$root}/docroot/sites/{$host}/blt.yml"));
-    $blt['project']['profile']['name'] = $profile;
+    // Overwrite the multisite blt.yml file. Note that the profile defaults
+    // are passed second so that config takes precedence.
+    $blt = YamlMunge::mungeFiles("{$root}/docroot/sites/{$host}/blt.yml", "{$root}/docroot/profiles/custom/{$profile}/default.blt.yml");
     $blt['project']['machine_name'] = $id;
     $blt['project']['local']['hostname'] = $local;
     $blt['drupal']['db']['database'] = $db;
-    $blt['drush']['aliases']['local'] = 'self';
 
     // If requester option is set, add it to the site's BLT settings.
     if (isset($options['requester'])) {
       $blt['uiowa']['profiles'][$profile]['requester'] = $options['requester'];
     }
 
-    // Set the BLT config to install from config for the sitenow profile.
-    // @todo: Abstract this into a profile-sync option?
-    if ($profile == 'sitenow') {
-      $blt['cm']['core']['dirs']['sync']['path'] = "profiles/custom/{$profile}/config/sync";
-      $blt['cm']['core']['install_from_config'] = TRUE;
-
-    }
-
     $this->taskWriteToFile("{$root}/docroot/sites/{$host}/blt.yml")
       ->text(Yaml::dump($blt, 10, 2))
       ->run();
 
-    $this->say("Overwrote <comment>docroot/sites/{$host}/blt.yml</comment> file with standardized names.");
+    // Switch site context before expanding file properties.
+    $this->switchSiteContext($host);
+    $this->getConfig()->expandFileProperties("{$root}/docroot/sites/{$host}/blt.yml");
+
+    $this->say("Wrote <comment>docroot/sites/{$host}/blt.yml</comment> file.");
 
     // Write sites.php data. Note that we exclude the production URI since it
     // will route automatically.

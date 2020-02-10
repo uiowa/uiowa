@@ -1,0 +1,153 @@
+<?php
+
+/**
+ * @file
+ * Functions to support theming in the uids_base theme.
+ */
+
+use Drupal\Component\Utility\Html;
+use Drupal\Core\Menu\MenuTreeParameters;
+
+/**
+ * Implements hook_preprocess_HOOK() for html.html.twig.
+ */
+function uids_base_preprocess_html(&$variables) {
+  // Load theme settings.
+  $variables['layout_container'] = theme_get_setting('layout.container');
+  // Body classes for sidebars.
+  if (isset($variables['page']['sidebar_first']) && isset($variables['page']['sidebar_second'])) {
+    $variables['attributes']['class'][] = Html::cleanCssIdentifier('layout-page-sidebars-both');
+  }
+  elseif (isset($variables['page']['sidebar_first'])) {
+    $variables['attributes']['class'][] = Html::cleanCssIdentifier('layout-page-sidebars-first');
+  }
+  elseif (isset($variables['page']['sidebar_second'])) {
+    $variables['attributes']['class'][] = Html::cleanCssIdentifier('layout-page-sidebars-second');
+  }
+  else {
+    $variables['attributes']['class'][] = Html::cleanCssIdentifier('layout-page-sidebars-none');
+  }
+  $legacy = (bool) theme_get_setting('branding.legacy');
+  if (!$legacy) {
+    unset($variables['page_top']['uiowa_bar']);
+  }
+
+  // Set a variable for whether layout builder is enabled.
+  $variables['layout_builder_enabled'] = FALSE;
+
+  $node = \Drupal::routeMatch()->getParameter('node');
+
+  if ($node) {
+    // @todo Is there a better way to have a soft dependency on a class?
+    if (class_exists('\Drupal\layout_builder_custom\LayoutBuilderHelper')) {
+      $variables['layout_builder_enabled'] = \Drupal::classResolver('\Drupal\layout_builder_custom\LayoutBuilderHelper')->layoutBuilderEnabled($node);
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for page.html.twig.
+ */
+function uids_base_preprocess_page(&$variables) {
+  // Load the site name out of configuration.
+  $config = \Drupal::config('system.site');
+  $variables['site_name'] = $config->get('name');
+  $variables['site_slogan'] = $config->get('slogan');
+  $variables['uiowa_logo_path'] = '/' . drupal_get_path('theme', 'uids_base') . '/uids/assets/images/uiowa-secondary.svg#logo';
+  $variables['header_type'] = theme_get_setting('header.type');
+  $variables['header_nav'] = theme_get_setting('header.nav_style');
+  $variables['header_sticky'] = theme_get_setting('header.sticky');
+  $variables['layout_container'] = theme_get_setting('layout.container');
+  $variables['branding_legacy'] = theme_get_setting('branding.legacy');
+  $variables['uiowa_search_form'] = FALSE;
+
+  // Get search form.
+  // @todo Add check to see if search is enabled.
+  $moduleHandler = \Drupal::service('module_handler');
+
+  // @todo Change this to uiowa_search if that gets split out.
+  if ($moduleHandler->moduleExists('uiowa_bar')) {
+    $variables['uiowa_search_form'] = \Drupal::formBuilder()->getForm('Drupal\uiowa_bar\Form\SearchForm');
+  }
+
+  // If the legacy option is enabled, attach the associated library.
+  if ($variables['branding_legacy']) {
+    $variables['#attached']['library'][] = 'uids_base/legacy';
+  }
+
+  // Set a variable for whether layout builder is enabled.
+  $variables['layout_builder_enabled'] = FALSE;
+  if (!empty($variables['node'])) {
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $variables['node'];
+
+    // @todo Is there a better way to have a soft dependency on a class?
+    if (class_exists('\Drupal\layout_builder_custom\LayoutBuilderHelper')) {
+      $variables['layout_builder_enabled'] = \Drupal::classResolver('\Drupal\layout_builder_custom\LayoutBuilderHelper')->layoutBuilderEnabled($node);
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for node.html.twig.
+ */
+function uids_base_preprocess_node(&$variables) {
+
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for block.html.twig.
+ */
+function uids_base_preprocess_block(&$variables) {
+  $variables['uids_base_container_settings'] = theme_get_setting('layout.container');
+}
+
+/**
+ * Implements theme_preprocess_form.
+ */
+function uids_base_preprocess_form(&$variables) {
+  // Add class to your specific form.
+  if ($variables['attributes']['id'] == 'search-block-form') {
+    // @todo Update these classes to 'uids-*' when that change is made in UIDS.
+    $variables['attributes']['class'][] = 'hds-content hds-search ';
+  }
+
+  if ($variables['element']['#form_id'] === 'uiowa_bar_search_form') {
+
+  }
+}
+
+/**
+ * Implements theme_preprocess_form_element.
+ */
+function uids_base_preprocess_form_element(&$variables) {
+  if ($variables['element']['#name'] === 'search-terms') {
+    // @todo Set to custom template.
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function uids_base_form_alter(&$form, $form_state, $form_id) {
+  if (strpos($form_id, 'node_page_layout_builder_form') !== FALSE) {
+    $form['actions']['#attributes']['class'][] = 'uids-content';
+    $form['layout_builder_message']['#attributes']['class'][] = 'uids-content';
+  }
+  if (strpos($form_id, 'uiowa_bar_search_form') !== FALSE) {
+    // @todo Update these classes to 'uids-*' when that change is made in UIDS.
+    $form['#attributes']['class'][] = 'hds-content hds-content__search';
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function uids_base_form_views_exposed_form_alter(&$form, $form_state, $form_id) {
+  $view_ids = ['book_toc', 'book_search'];
+  $view = $form_state->getStorage('view');
+  if ($form_id == 'views_exposed_form' && in_array($view['view']->id(), $view_ids)) {
+    // @todo Update these classes to 'uids-*' when that change is made in UIDS.
+    $form['#attributes']['class'][] = 'hds-content hds-search';
+  }
+}
