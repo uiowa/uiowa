@@ -36,7 +36,7 @@ class ReplaceCommands extends BltTasks {
             $this->say("Finished deploying updates to $multisite.");
           }
           else {
-            $this->logger->warning("Drupal not installed for <comment>$multisite</comment>. Installing from configuration in sitenow profile....");
+            $this->logger->warning("Drupal not installed for <comment>$multisite</comment>. Installing...");
             $uri = $this->getConfig()->get('site');
 
             if (empty($uri)) {
@@ -125,6 +125,47 @@ class ReplaceCommands extends BltTasks {
 
         break;
       }
+    }
+  }
+
+  /**
+   * Replace blt setup command.
+   *
+   * This allows CI to test multiple install profiles using the site specified.
+   *
+   * @hook replace-command setup
+   */
+  public function replaceSetup() {
+    if (EnvironmentDetector::isCiEnv()) {
+      $this->invokeCommands([
+        'source:build',
+        'drupal:deployment-identifier:init',
+      ]);
+
+      foreach ($this->getConfigValue('uiowa.profiles') as $profile => $data) {
+        $this->say("Installing {$profile} profile on site <comment>{$data['ci_site']}</comment>.");
+
+        // Disable alias since we are targeting a specific URI.
+        $this->config->set('drush.alias', '');
+
+        $this->switchSiteContext($data['ci_site']);
+        $this->invokeCommand('drupal:install');
+      }
+
+      $this->invokeCommand('blt:init:shell-alias');
+    }
+    else {
+      $this->say("Setting up local environment for site <comment>{$this->getConfigValue('site')}</comment>.");
+      if ($this->getConfigValue('drush.alias')) {
+        $this->say("Using drush alias <comment>@{$this->getConfigValue('drush.alias')}</comment>");
+      }
+
+      $this->invokeCommands([
+        'source:build',
+        'drupal:deployment-identifier:init',
+        'drupal:install',
+        'drupal:toggle:modules',
+      ]);
     }
   }
 
