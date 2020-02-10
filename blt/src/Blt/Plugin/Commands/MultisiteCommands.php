@@ -283,7 +283,7 @@ EOD
     'no-db' => FALSE,
     'requester' => InputOption::VALUE_REQUIRED,
   ]) {
-    $db = Multisite::getInitialDatabaseName($host);
+    $db = Multisite::getDatabaseName($host);
     $applications = $this->getConfigValue('uiowa.applications');
     $app = $this->askChoice('Which cloud application should be used?', array_keys($applications));
     $appId = $applications[$app]['id'];
