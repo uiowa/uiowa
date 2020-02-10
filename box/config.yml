@@ -661,6 +661,10 @@ apache_vhosts:
     servername: iibicbig.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: conferencenightatthesciencelabs.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
 
 
 
@@ -715,7 +719,7 @@ php_xdebug_version: 2.7.1
 
 # Change this value to 1 in order to enable xdebug by default.
 php_xdebug_default_enable: 1
-php_xdebug_cli_disable: 'no'
+php_xdebug_cli_disable: no
 php_xdebug_remote_autostart: 1
 php_memory_limit: 512M
 solr_version: 4.5.1
