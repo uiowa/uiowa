@@ -436,4 +436,29 @@ EOD;
     $this->setSchemaVersion(1010);
   }
 
+  /**
+   * Update 1011.
+   *
+   * @Update(
+   *   version = "1011",
+   *   description = "Update drush aliases to remove local host and user."
+   * )
+   */
+  protected function update1011() {
+    $root = $this->getConfigValue('repo.root');
+    $sites = Multisite::getAllSites($root);
+
+    foreach ($sites as $site) {
+      $id = Multisite::getIdentifier("https://{$site}");
+      $file = "{$root}/drush/sites/{$id}.site.yml";
+
+      $yaml = YamlMunge::parseFile($file);
+      unset($yaml['local']['host']);
+      unset($yaml['local']['user']);
+      file_put_contents($file, Yaml::dump($yaml, 10, 2));
+    }
+
+    $this->setSchemaVersion(1011);
+  }
+
 }
