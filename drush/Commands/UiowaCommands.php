@@ -104,7 +104,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
    *
    * @command uiowa:sql:tables
    *
-   * @aliases sst
+   * @aliases ust
    *
    * @field-labels
    *   table: Table
