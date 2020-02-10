@@ -924,3 +924,9 @@ $sites['conferencenightatthesciencelabs.local.drupal.uiowa.edu'] = 'nightatthesc
 $sites['conferencenightatthesciencelabs.dev.drupal.uiowa.edu'] = 'nightatthesciencelabs.conference.uiowa.edu';
 $sites['conferencenightatthesciencelabs.stage.drupal.uiowa.edu'] = 'nightatthesciencelabs.conference.uiowa.edu';
 $sites['conferencenightatthesciencelabs.prod.drupal.uiowa.edu'] = 'nightatthesciencelabs.conference.uiowa.edu';
+
+// Directory aliases for dasblatt.sites.uiowa.edu.
+$sites['sitesdasblatt.local.drupal.uiowa.edu'] = 'dasblatt.sites.uiowa.edu';
+$sites['sitesdasblatt.dev.drupal.uiowa.edu'] = 'dasblatt.sites.uiowa.edu';
+$sites['sitesdasblatt.stage.drupal.uiowa.edu'] = 'dasblatt.sites.uiowa.edu';
+$sites['sitesdasblatt.prod.drupal.uiowa.edu'] = 'dasblatt.sites.uiowa.edu';
