@@ -23,7 +23,11 @@ var paths = {
 };
 
 function copy() {
-  return src(['../../../../node_modules/@uiowa/hds/**/*.scss', '../../../../node_modules/@uiowa/hds/**/*.js', '../../../../node_modules/@uiowa/hds/**/*.twig'
+  return src([
+    '../../../../node_modules/@uiowa/hds/**/*.scss',
+    '../../../../node_modules/@uiowa/hds/**/*.js',
+    '../../../../node_modules/@uiowa/hds/**/*.twig',
+    '!../../../../node_modules/@uiowa/hds/components/03 - global/menus/off-canvas/**' // @todo: remove this eventually.
   ])
     .pipe(dest('./hds/'));
 }
