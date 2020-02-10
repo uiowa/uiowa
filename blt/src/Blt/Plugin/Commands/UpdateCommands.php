@@ -385,4 +385,27 @@ EOD;
     $this->setSchemaVersion(1008);
   }
 
+  /**
+   * Update 1009.
+   *
+   * @Update(
+   *   version = "1009",
+   *   description = "Update drush aliases to remove local SSH options."
+   * )
+   */
+  protected function update1009() {
+    $root = $this->getConfigValue('repo.root');
+    $sites = Multisite::getAllSites($root);
+
+    foreach ($sites as $site) {
+      $id = Multisite::getIdentifier("https://{$site}");
+      $file = "{$root}/drush/sites/{$id}.site.yml";
+
+      $yaml = YamlMunge::parseFile($file);
+      unset($yaml['local']['ssh']);
+      file_put_contents($file, Yaml::dump($yaml, 10, 2));
+    }
+
+    $this->setSchemaVersion(1009);
+  }
 }
