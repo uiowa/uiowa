@@ -1,0 +1,90 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Automatic Entity Labels.
+ */
+
+/**
+ * Implements hook_update_N().
+ */
+function auto_entitylabel_update_8001() {
+  $config = \Drupal::configFactory()->getEditable('auto_entitylabel.settings');
+  foreach (['submit', 'form_build_id', 'form_token', 'form_id', 'op'] as $key) {
+    if ($config->get($key)) {
+      $config->clear($key);
+    }
+  }
+  $config->save();
+}
+
+/**
+ * Split a single configuration into separate configs.
+ */
+function auto_entitylabel_update_8201() {
+  /** @var \Drupal\Core\Entity\EntityTypeManager $entity_manager */
+  $entity_manager = \Drupal::entityTypeManager();
+
+  /** @var \Drupal\Core\Config\Config $config */
+  $old_config = \Drupal::configFactory()
+    ->getEditable('auto_entitylabel.settings');
+  $raw = $old_config->getRawData();
+
+  $entity_types = [];
+  /** @var \Drupal\Core\Config\Entity\ConfigEntityType $entity_type */
+  foreach ($entity_manager->getDefinitions() as $entity_type_id => $entity_type) {
+    if ($entity_type->getLinkTemplate('auto-label')) {
+      $entity_types[] = $entity_type_id;
+    }
+  }
+
+  $setting_keys = ['status', 'pattern', 'php', 'escape'];
+
+  $new_configs = [];
+  foreach ($raw as $key => $value) {
+    foreach ($entity_types as $type_id) {
+      if (strpos($key, $type_id) === 0) {
+
+        $key = substr($key, strlen($type_id) + 1);
+
+        foreach ($setting_keys as $setting) {
+          if (strpos($key, $setting) == strlen($key) - strlen($setting)) {
+            $bundle = substr($key, 0, strlen($key) - strlen($setting) - 1);
+            $new_configs[$type_id][$bundle][$setting] = $value;
+          }
+        }
+
+        continue;
+      }
+    }
+  }
+
+  /** @var \Drupal\Core\Config\ConfigFactory $config_interface */
+  $config_interface = \Drupal::service('config.factory');
+
+  foreach ($new_configs as $type => $type_configs) {
+    $prefix = $entity_manager->getStorage($type)
+      ->getEntityType()
+      ->getConfigPrefix();
+
+    $type = $entity_manager->getStorage($type)->getEntityType()->getProvider();
+
+    foreach ($type_configs as $bundle => $settings) {
+      $config_name = "auto_entitylabel.settings.$type.$bundle";
+      $config = $config_interface->getEditable($config_name);
+
+      $config->setData($settings);
+      $config->set('dependencies', ['config' => ["$prefix.$bundle"]]);
+
+      $config->save();
+    }
+  }
+  $old_config->delete();
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function auto_entitylabel_uninstall() {
+  \Drupal::configFactory()->getEditable('auto_entitylabel.settings')->delete();
+}
