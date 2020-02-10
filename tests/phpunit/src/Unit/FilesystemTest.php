@@ -137,6 +137,8 @@ EOD;
         $yaml = Yaml::parse(file_get_contents("{$path}/blt.yml"));
         $db = $yaml['drupal']['db']['database'];
 
+        $this->assertEquals(Multisite::getDatabaseName($site), $db);
+
         $this->assertEquals($local, $yaml['project']['local']['hostname']);
         $this->assertEquals($site, $yaml['project']['human_name']);
         $this->assertEquals($id, $yaml['project']['machine_name']);

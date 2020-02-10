@@ -14,7 +14,7 @@ use Symfony\Component\Console\Input\InputInterface;
 /**
  * General policy commands and hooks for the application.
  */
-class SitenowCommands extends DrushCommands implements SiteAliasManagerAwareInterface, ProcessManagerAwareInterface {
+class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterface, ProcessManagerAwareInterface {
   use SiteAliasManagerAwareTrait;
   use ProcessManagerAwareTrait;
 
@@ -102,9 +102,9 @@ class SitenowCommands extends DrushCommands implements SiteAliasManagerAwareInte
    * @param mixed $options
    *   The command options.
    *
-   * @command sitenow:sql:tables
+   * @command uiowa:sql:tables
    *
-   * @aliases sst
+   * @aliases ust
    *
    * @field-labels
    *   table: Table
