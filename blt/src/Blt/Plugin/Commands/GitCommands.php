@@ -18,11 +18,7 @@ class GitCommands extends BltTasks {
    * @hook validate uiowa:git:clean
    */
   public function validateClean(CommandData $commandData) {
-    $remotes = $this->getAcquiaRemotes();
-
-    if (empty($remotes)) {
-      return new CommandError('You must add a remote pointing to an Acquia Git repository. Check the README for details.');
-    }
+    $remotes = $this->getConfigValue('git.remotes');
 
     foreach ($remotes as $remote) {
       $result = $this->taskExecStack()
@@ -44,12 +40,15 @@ class GitCommands extends BltTasks {
    * @aliases ugc
    */
   public function clean() {
-    $remotes = $this->getAcquiaRemotes();
+    $remotes = $this->getConfigValue('git.remotes');
 
+    // We never want to delete the two main artifact branches. The master branch
+    // cannot be deleted, even though it is not used, because it is the default
+    // Acquia remote branch.
     $keep = [
       'refs/heads/master',
-      'refs/heads/pipelines-build-master',
-      'refs/heads/pipelines-build-develop',
+      'refs/heads/master-build',
+      'refs/heads/develop-build',
     ];
 
     $delete = [];
@@ -103,18 +102,17 @@ class GitCommands extends BltTasks {
    * @hook post-command artifact:build
    */
   public function writeProfileVersion() {
-    $event = getenv('PIPELINE_WEBHOOK_EVENT');
-    $path = getenv('PIPELINE_VCS_PATH');
-    $sha = getenv('PIPELINE_GIT_HEAD_REF');
+    $tag = getenv('TRAVIS_TAG');
+    $sha = getenv('TRAVIS_COMMIT');
 
-    if ($event == 'TAG_PUSH') {
-      $version = $path;
+    if (!empty($tag)) {
+      $version = $tag;
     }
-    elseif ($event == 'BRANCH_PUSH' || $event == 'PULL_REQUEST') {
-      $version = "{$path}-{$sha}";
+    else {
+      $version = $sha;
     }
 
-    $profiles = $this->getConfigValue('uiowa.profiles');
+    $profiles = array_keys($this->getConfigValue('uiowa.profiles'));
 
     foreach ($profiles as $profile) {
       $file = $this->getConfigValue('deploy.dir') . "/docroot/profiles/custom/{$profile}/{$profile}.info.yml";
@@ -164,47 +162,6 @@ class GitCommands extends BltTasks {
 
       $this->say("Copied {$name} Drush commands to deploy directory.");
     }
-  }
-
-  /**
-   * Get remotes with an Acquia URI host.
-   *
-   * @return array
-   *   An array of Acquia hosted remote names.
-   *
-   * @throws \Robo\Exception\TaskException
-   */
-  protected function getAcquiaRemotes() {
-    $result = $this->taskExecStack()
-      ->exec('git remote')
-      ->stopOnFail()
-      ->silent(TRUE)
-      ->run();
-
-    $output = $result->getMessage();
-    $remotes = explode(PHP_EOL, $output);
-    $origin = array_search('origin', $remotes);
-    unset($remotes[$origin]);
-
-    $acquia = [];
-
-    foreach ($remotes as $remote) {
-      $result = $this->taskExecStack()
-        ->exec("git remote get-url {$remote}")
-        ->stopOnFail()
-        ->silent(TRUE)
-        ->run();
-
-      $output = $result->getMessage();
-      $url = stristr($output, ':', TRUE);
-      $url = parse_url("https://{$url}");
-
-      if (stristr($url['host'], 'prod.hosting.acquia.com')) {
-        $acquia[] = $remote;
-      }
-    }
-
-    return $acquia;
   }
 
 }

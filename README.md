@@ -17,10 +17,6 @@ This project is based on BLT, an open-source project template and tool that enab
     ```
     $ git clone git@github.com:<account>/git@git.com/uiowa/uiowa.git
     ```
-7. Add all Pipelines-connected Acquia repositories as another remote. You can get the Acquia remote URL from the [Acquia Cloud interface](https://docs.acquia.com/acquia-cloud/develop/repository/git).
-    ```
-    git remote add NAME ACQUIA_REMOTE_URL
-    ```
 ----
 # Local Environment
 Follow the [BLT docs](https://docs.acquia.com/blt/install/local-development/) to get started wit [DrupalVM](https://www.drupalvm.com/). **Note** that there is currently an issue with Vagrant 2.2.6 and the latest version of VirtualBox. Download [VirtualBox 6.0](https://www.virtualbox.org/wiki/Download_Old_Builds_6_0) instead.
