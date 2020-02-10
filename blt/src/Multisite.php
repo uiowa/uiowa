@@ -25,7 +25,7 @@ class Multisite {
    *
    * @throws \Exception
    */
-  public static function getInitialDatabaseName($dir) {
+  public static function getDatabaseName($dir) {
     if ($dir == 'default') {
       throw new \Exception('The default site is configured automatically by BLT.');
     }
