@@ -329,6 +329,12 @@ EOD
       throw new \Exception("Unable to replace DrupalVM vhost for {$host}.");
     }
 
+    // BLT RMI quotes this string after rewriting the YAML.
+    $this->taskReplaceInFile("{$root}/box/config.yml")
+      ->from("php_xdebug_cli_disable: 'no'")
+      ->to("php_xdebug_cli_disable: no")
+      ->run();
+
     $result = $this->taskReplaceInFile("{$root}/docroot/sites/{$host}/settings.php")
       ->from('require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";' . "\n")
       ->to(<<<EOD
