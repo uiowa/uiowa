@@ -36,7 +36,7 @@ class ReplaceCommands extends BltTasks {
             $this->say("Finished deploying updates to $multisite.");
           }
           else {
-            $this->logger->warning("Drupal not installed for <comment>$multisite</comment>. Installing from configuration in sitenow profile....");
+            $this->logger->warning("Drupal not installed for <comment>$multisite</comment>. Installing...");
             $uri = $this->getConfig()->get('site');
 
             if (empty($uri)) {
