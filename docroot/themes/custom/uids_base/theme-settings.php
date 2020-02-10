@@ -44,13 +44,6 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     ],
     '#default_value' => theme_get_setting('header.nav_style'),
   ];
-  $form['header']['top_menu'] = [
-    '#type' => 'select',
-    '#title' => t('Top links menu'),
-    '#description' => t('Select the menu to use for links in the top level of the UIowa header.'),
-    '#options' => $menus,
-    '#default_value' => theme_get_setting('header.top_menu'),
-  ];
   $form['header']['sticky'] = [
     '#type' => 'checkbox',
     '#title' => t('Sticky header'),

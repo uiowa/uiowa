@@ -13,17 +13,6 @@
     {% endif %}
 
     {% if header_nav == 'nav--toggle' %}
-        {# @todo Replace with include #}
-        {{ attach_library('uids_base/off-canvas') }}
-        <div class="o-canvas__group">
-            <div class="o-canvas__wrapper">
-                {% include '@uids/03 - global/menus/off-canvas/off-canvas--bttn.twig' %}
-                {% embed '@uids_base/global/off-canvas--drawer.html.twig' %}
-                    {% block drawer %}
-                        {{ page.primary_menu }}
-                    {% endblock %}
-                {% endembed %}
-            </div>
-        </div>
+        {% include '@uids_base/navigation/off-canvas.html.twig' %}
     {% endif %}
 {% endblock %}

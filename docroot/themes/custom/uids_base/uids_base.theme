@@ -61,10 +61,8 @@ function uids_base_preprocess_page(&$variables) {
   $variables['branding_legacy'] = theme_get_setting('branding.legacy');
   $variables['uiowa_search_form'] = FALSE;
 
-  $top_menu = theme_get_setting('header.top_menu');
-  $top_menu_links = uids_base_generate_menu_markup($top_menu);
-  $variables['header_top_menu'] = $top_menu_links;
-
+  // Get search form.
+  // @todo Add check to see if search is enabled.
   $moduleHandler = \Drupal::service('module_handler');
 
   // @todo Change this to uiowa_search if that gets split out.
@@ -72,6 +70,7 @@ function uids_base_preprocess_page(&$variables) {
     $variables['uiowa_search_form'] = \Drupal::formBuilder()->getForm('Drupal\uiowa_bar\Form\SearchForm');
   }
 
+  // If the legacy option is enabled, attach the associated library.
   if ($variables['branding_legacy']) {
     $variables['#attached']['library'][] = 'uids_base/legacy';
   }
@@ -109,7 +108,21 @@ function uids_base_preprocess_block(&$variables) {
 function uids_base_preprocess_form(&$variables) {
   // Add class to your specific form.
   if ($variables['attributes']['id'] == 'search-block-form') {
-    $variables['attributes']['class'][] = 'uids-content uids-search ';
+    // @todo Update these classes to 'uids-*' when that change is made in UIDS.
+    $variables['attributes']['class'][] = 'hds-content hds-search ';
+  }
+
+  if ($variables['element']['#form_id'] === 'uiowa_bar_search_form') {
+
+  }
+}
+
+/**
+ * Implements theme_preprocess_form_element.
+ */
+function uids_base_preprocess_form_element(&$variables) {
+  if ($variables['element']['#name'] === 'search-terms') {
+    // @todo Set to custom template.
   }
 }
 
@@ -122,7 +135,8 @@ function uids_base_form_alter(&$form, $form_state, $form_id) {
     $form['layout_builder_message']['#attributes']['class'][] = 'uids-content';
   }
   if (strpos($form_id, 'uiowa_bar_search_form') !== FALSE) {
-    $form['#attributes']['class'][] = 'uids-content uids-content__search';
+    // @todo Update these classes to 'uids-*' when that change is made in UIDS.
+    $form['#attributes']['class'][] = 'hds-content hds-content__search';
   }
 }
 
@@ -133,38 +147,7 @@ function uids_base_form_views_exposed_form_alter(&$form, $form_state, $form_id) 
   $view_ids = ['book_toc', 'book_search'];
   $view = $form_state->getStorage('view');
   if ($form_id == 'views_exposed_form' && in_array($view['view']->id(), $view_ids)) {
-    $form['#attributes']['class'][] = 'uids-content uids-search';
-  }
-}
-
-/**
- * Generate markup for a menu.
- *
- * @param string $menu_name
- *   The machine name of a menu.
- *
- * @return string
- *   The markup of the menu tree or NULL if there are no menu links to display.
- */
-function uids_base_generate_menu_markup($menu_name) {
-  $parameters = new MenuTreeParameters();
-  $parameters->onlyEnabledLinks();
-  $parameters->setMaxDepth(1);
-  $menu_tree_service = \Drupal::service('menu.link_tree');
-  $tree = $menu_tree_service->load($menu_name, $parameters);
-
-  $manipulators = [
-    ['callable' => 'menu.default_tree_manipulators:checkNodeAccess'],
-    ['callable' => 'menu.default_tree_manipulators:checkAccess'],
-    ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
-  ];
-
-  $tree = $menu_tree_service->transform($tree, $manipulators);
-
-  if (!empty($tree)) {
-    return $menu_tree_service->build($tree);
-  }
-  else {
-    return NULL;
+    // @todo Update these classes to 'uids-*' when that change is made in UIDS.
+    $form['#attributes']['class'][] = 'hds-content hds-search';
   }
 }
