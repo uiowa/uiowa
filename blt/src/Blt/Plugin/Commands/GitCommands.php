@@ -5,6 +5,7 @@ namespace Uiowa\Blt\Plugin\Commands;
 use Acquia\Blt\Robo\BltTasks;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
+use Symfony\Component\Finder\Finder;
 
 /**
  * Git commands.
@@ -128,7 +129,7 @@ class GitCommands extends BltTasks {
   }
 
   /**
-   * Copy SiteNow Drush commands into the build artifact before it is committed.
+   * Copy global Drush commands into the build artifact before it is committed.
    *
    * Since drush/Commands/ is listed in the upstream deploy-exclude.txt file,
    * any hard-coded commands (ex. PolicyCommands.php) will not be committed to
@@ -141,12 +142,26 @@ class GitCommands extends BltTasks {
     $root = $this->getConfigValue('repo.root');
     $deploy_dir = $this->getConfigValue('deploy.dir');
 
-    $this->taskFilesystemStack()
-      ->stopOnFail()
-      ->copy("{$root}/drush/Commands/SitenowCommands.php", "{$deploy_dir}/drush/Commands/SitenowCommands.php")
-      ->run();
+    $finder = new Finder();
 
-    $this->logger->info('Copied SiteNow Drush commands to deploy directory.');
+    $files = $finder
+      ->in("{$root}/drush/Commands/")
+      ->files()
+      ->depth('< 1')
+      ->exclude(['contrib'])
+      ->name('*Commands.php')
+      ->sortByName();
+
+    foreach ($files->getIterator() as $file) {
+      $name = $file->getRelativePathname();
+
+      $this->taskFilesystemStack()
+        ->stopOnFail()
+        ->copy("{$root}/drush/Commands/{$name}", "{$deploy_dir}/drush/Commands/{$name}")
+        ->run();
+
+      $this->say("Copied {$name} Drush commands to deploy directory.");
+    }
   }
 
 }
