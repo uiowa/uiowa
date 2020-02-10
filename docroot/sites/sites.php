@@ -900,3 +900,27 @@ $sites['uiowa.local.drupal.uiowa.edu'] = 'uiowa.edu';
 $sites['uiowa.dev.drupal.uiowa.edu'] = 'uiowa.edu';
 $sites['uiowa.stage.drupal.uiowa.edu'] = 'uiowa.edu';
 $sites['uiowa.prod.drupal.uiowa.edu'] = 'uiowa.edu';
+
+// Directory aliases for irbr.org.uiowa.edu.
+$sites['orgirbr.local.drupal.uiowa.edu'] = 'irbr.org.uiowa.edu';
+$sites['orgirbr.dev.drupal.uiowa.edu'] = 'irbr.org.uiowa.edu';
+$sites['orgirbr.stage.drupal.uiowa.edu'] = 'irbr.org.uiowa.edu';
+$sites['orgirbr.prod.drupal.uiowa.edu'] = 'irbr.org.uiowa.edu';
+
+// Directory aliases for crisp.org.uiowa.edu.
+$sites['orgcrisp.local.drupal.uiowa.edu'] = 'crisp.org.uiowa.edu';
+$sites['orgcrisp.dev.drupal.uiowa.edu'] = 'crisp.org.uiowa.edu';
+$sites['orgcrisp.stage.drupal.uiowa.edu'] = 'crisp.org.uiowa.edu';
+$sites['orgcrisp.prod.drupal.uiowa.edu'] = 'crisp.org.uiowa.edu';
+
+// Directory aliases for cbig.iibi.uiowa.edu.
+$sites['iibicbig.local.drupal.uiowa.edu'] = 'cbig.iibi.uiowa.edu';
+$sites['iibicbig.dev.drupal.uiowa.edu'] = 'cbig.iibi.uiowa.edu';
+$sites['iibicbig.stage.drupal.uiowa.edu'] = 'cbig.iibi.uiowa.edu';
+$sites['iibicbig.prod.drupal.uiowa.edu'] = 'cbig.iibi.uiowa.edu';
+
+// Directory aliases for nightatthesciencelabs.conference.uiowa.edu.
+$sites['conferencenightatthesciencelabs.local.drupal.uiowa.edu'] = 'nightatthesciencelabs.conference.uiowa.edu';
+$sites['conferencenightatthesciencelabs.dev.drupal.uiowa.edu'] = 'nightatthesciencelabs.conference.uiowa.edu';
+$sites['conferencenightatthesciencelabs.stage.drupal.uiowa.edu'] = 'nightatthesciencelabs.conference.uiowa.edu';
+$sites['conferencenightatthesciencelabs.prod.drupal.uiowa.edu'] = 'nightatthesciencelabs.conference.uiowa.edu';
