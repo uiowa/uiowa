@@ -108,7 +108,7 @@ class GitCommands extends BltTasks {
     if (!empty($tag)) {
       $version = $tag;
     }
-    else {
+    elseif (!empty($sha)) {
       $version = $sha;
     }
 
