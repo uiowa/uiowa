@@ -100,9 +100,16 @@ class GitCommands extends BltTasks {
   /**
    * Write an unannotated Git tag version string to custom asset info files.
    *
-   * @hook post-command artifact:build
+   * This command should not be executed directly. It is called after the
+   * build artifact is created to write info versions dynamically.
+   *
+   * @see: blt/blt.yml
+   *
+   * @command uiowa:git:version
+   *
+   * @hidden
    */
-  public function writeGitVersion() {
+  public function version() {
     $result = $this->taskGit()
       ->dir($this->getConfigValue('repo.root'))
       ->exec('describe --tags')
