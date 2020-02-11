@@ -120,10 +120,10 @@ class GitCommands extends BltTasks {
       if (isset($version)) {
         $data = "version: '{$version}'";
         file_put_contents($file, $data, FILE_APPEND);
-        $this->logger->info("Appended Git version {$version} to {$file}.");
+        $this->say("Appended Git version {$version} to {$file}.");
       }
       else {
-        $this->logger->warning("Unable to append Git version to {$file}.");
+        $this->say("Unable to append Git version to {$file}.");
       }
     }
   }
