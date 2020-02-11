@@ -1,16 +1,15 @@
-uuid: 7176d920-61d1-489e-890d-a23fb3080f3f
+uuid: 6ac6f7dd-b761-4613-9ec8-4bf29bfa4e88
 langcode: en
 status: true
 dependencies:
   config:
     - field.field.media.document.field_document
-    - field.field.media.document.field_media_in_library
     - media.type.document
   module:
     - file
     - path
 _core:
-  default_config_hash: xFJUl0MccoGPEv1eb_I_XnxzjqvZ8M5HA1G3PBtv9IE
+  default_config_hash: 8BTPUL0QmtQ77f7HmJosBDUnx6oWfJXFHuYgAqk0JNs
 id: media.document.default
 targetEntityType: media
 bundle: document
@@ -22,13 +21,6 @@ content:
       progress_indicator: throbber
     third_party_settings: {  }
     type: file_generic
-    region: content
-  field_media_in_library:
-    type: boolean_checkbox
-    settings:
-      display_label: true
-    weight: 3
-    third_party_settings: {  }
     region: content
   name:
     type: string_textfield

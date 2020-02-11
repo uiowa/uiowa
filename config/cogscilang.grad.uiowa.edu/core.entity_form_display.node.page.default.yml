@@ -1,10 +1,9 @@
-uuid: 1659f942-0187-4d9d-a8b8-21ee71a7dfec
+uuid: ba5aab8e-a824-4546-a13e-0270915798ce
 langcode: en
 status: true
 dependencies:
   config:
     - field.field.node.page.body
-    - field.field.node.page.layout_builder__layout
     - node.type.page
   module:
     - path
@@ -74,6 +73,11 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
-hidden:
-  layout_builder__layout: true
+  url_redirects:
+    weight: 50
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden: {  }
