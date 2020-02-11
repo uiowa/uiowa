@@ -3,6 +3,7 @@
 namespace Uiowa\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
+use Acquia\Blt\Robo\Common\YamlMunge;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
 use Symfony\Component\Finder\Finder;
@@ -97,33 +98,53 @@ class GitCommands extends BltTasks {
   }
 
   /**
-   * Write the branch SHA or tag to the profile info files.
+   * Write an unannotated Git tag version string to custom asset info files.
    *
    * @hook post-command artifact:build
    */
-  public function writeProfileVersion() {
-    $tag = getenv('TRAVIS_TAG');
-    $sha = getenv('TRAVIS_COMMIT');
+  public function writeGitVersion() {
+    $result = $this->taskGit()
+      ->dir($this->getConfigValue('repo.root'))
+      ->exec('describe --tags')
+      ->stopOnFail(FALSE)
+      ->silent(TRUE)
+      ->run();
 
-    if (!empty($tag)) {
-      $version = $tag;
+    if (!$result->wasSuccessful()) {
+      $this->logger->warning("Unable to determine Git version for info files.");
     }
-    elseif (!empty($sha)) {
-      $version = $sha;
-    }
+    else {
+      $deploy = $this->getConfigValue('deploy.dir');
+      $version = $result->getMessage();
 
-    $profiles = array_keys($this->getConfigValue('uiowa.profiles'));
+      $finder = new Finder();
+      $files = $finder
+        ->files()
+        ->in([
+          "{$deploy}/docroot/profiles/custom/",
+          "{$deploy}/docroot/themes/custom/",
+          "{$deploy}/docroot/modules/custom/",
+        ])
+        ->depth('< 2')
+        ->name('*.info.yml')
+        ->sortByName();
 
-    foreach ($profiles as $profile) {
-      $file = $this->getConfigValue('deploy.dir') . "/docroot/profiles/custom/{$profile}/{$profile}.info.yml";
+      foreach ($files->getIterator() as $file) {
+        if (file_exists($file)) {
+          $yaml = YamlMunge::parseFile($file);
 
-      if (isset($version)) {
-        $data = "version: '{$version}'";
-        file_put_contents($file, $data, FILE_APPEND);
-        $this->say("Appended Git version {$version} to {$file}.");
-      }
-      else {
-        $this->say("Unable to append Git version to {$file}.");
+          if (!isset($yaml['version'])) {
+            $yaml['version'] = $version;
+            YamlMunge::writeFile($file, $yaml);
+            $this->logger->notice("Wrote Git version {$version} to {$file}.");
+          }
+          else {
+            $this->logger->warning("File {$file} already contains version.");
+          }
+        }
+        else {
+          $this->logger->warning("Unable to write Git version to non-existent file {$file}.");
+        }
       }
     }
   }
