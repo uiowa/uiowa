@@ -1,25 +1,25 @@
 local:
-  uri: kroska.lab.uiowa.edu
-  root: '${env.cwd}/docroot'
+  root: /var/www/uiowa/docroot
+  uri: 'https://labkroska.local.drupal.uiowa.edu'
 dev:
-  uri: labkroska.dev.drupal.uiowa.edu
-  host: staging-15039.prod.hosting.acquia.com
+  uri: 'https://labkroska.dev.drupal.uiowa.edu'
+  host: uiowadev.ssh.prod.acquia-sites.com
   options: {  }
   paths:
     dump-dir: /mnt/tmp
   root: /var/www/html/uiowa.dev/docroot
   user: uiowa.dev
 prod:
-  uri: kroska.lab.uiowa.edu
-  host: web-33201.prod.hosting.acquia.com
+  uri: 'https://kroska.lab.uiowa.edu'
+  host: uiowa.ssh.prod.acquia-sites.com
   options: {  }
   paths:
     dump-dir: /mnt/tmp
   root: /var/www/html/uiowa.prod/docroot
   user: uiowa.prod
 test:
-  uri: labkroska.stage.drupal.uiowa.edu
-  host: staging-15039.prod.hosting.acquia.com
+  uri: 'https://labkroska.stage.drupal.uiowa.edu'
+  host: uiowastg.ssh.prod.acquia-sites.com
   options: {  }
   paths:
     dump-dir: /mnt/tmp

@@ -1,6 +1,6 @@
 project:
   local:
-    hostname: research2.education.uiowa.edu
+    hostname: educationresearch2.local.drupal.uiowa.edu
     protocol: https
   machine_name: educationresearch2
   human_name: research2.education.uiowa.edu
@@ -13,22 +13,13 @@ drush:
 drupal:
   db:
     database: research2_education_uiowa_edu
-    host: localhost
-    user: root
-    password: null
 cm:
   core:
     dirs:
       sync:
         path: profiles/custom/sitenow/config/sync
     install_from_config: true
-sync:
-  commands:
-    - 'blt:init:settings'
-    - 'drupal:sync:db'
-    - 'drupal:update'
-    - 'sitenow:multisite:noop'
-    - 'sitenow:multisite:noop'
+
 uiowa:
   profiles:
     sitenow:

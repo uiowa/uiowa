@@ -1,0 +1,25 @@
+project:
+  profile:
+    name: sitenow
+  local:
+    hostname: psychologycognitivecontrol.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: psychologycognitivecontrol
+  human_name: cognitivecontrol.psychology.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: psychologycognitivecontrol.prod
+drupal:
+  db:
+    database: cognitivecontrol_psychology_uiowa_edu
+uiowa:
+  profiles:
+    sitenow:
+      requester: jrwessel
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true

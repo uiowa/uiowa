@@ -1,8 +1,8 @@
 local:
-  uri: uiobl.uiowa.edu
-  root: '${env.cwd}/docroot'
+  root: /var/www/uiowa/docroot
+  uri: 'https://uiobl.local.drupal.uiowa.edu'
 dev:
-  uri: uiobl.dev.drupal.uiowa.edu
+  uri: 'https://uiobl.dev.drupal.uiowa.edu'
   host: uiowadev.ssh.prod.acquia-sites.com
   options: {  }
   paths:
@@ -10,7 +10,7 @@ dev:
   root: /var/www/html/uiowa.dev/docroot
   user: uiowa.dev
 prod:
-  uri: uiobl.uiowa.edu
+  uri: 'https://uiobl.uiowa.edu'
   host: uiowa.ssh.prod.acquia-sites.com
   options: {  }
   paths:
@@ -18,7 +18,7 @@ prod:
   root: /var/www/html/uiowa.prod/docroot
   user: uiowa.prod
 test:
-  uri: uiobl.stage.drupal.uiowa.edu
+  uri: 'https://uiobl.stage.drupal.uiowa.edu'
   host: uiowastg.ssh.prod.acquia-sites.com
   options: {  }
   paths:

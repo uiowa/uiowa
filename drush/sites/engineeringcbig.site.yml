@@ -1,8 +1,8 @@
 local:
-  uri: cbig.engineering.uiowa.edu
-  root: '${env.cwd}/docroot'
+  root: /var/www/uiowa/docroot
+  uri: 'https://engineeringcbig.local.drupal.uiowa.edu'
 dev:
-  uri: engineeringcbig.dev.drupal.uiowa.edu
+  uri: 'https://engineeringcbig.dev.drupal.uiowa.edu'
   host: uiowadev.ssh.prod.acquia-sites.com
   options: {  }
   paths:
@@ -10,7 +10,7 @@ dev:
   root: /var/www/html/uiowa.dev/docroot
   user: uiowa.dev
 prod:
-  uri: cbig.engineering.uiowa.edu
+  uri: 'https://cbig.engineering.uiowa.edu'
   host: uiowa.ssh.prod.acquia-sites.com
   options: {  }
   paths:
@@ -18,7 +18,7 @@ prod:
   root: /var/www/html/uiowa.prod/docroot
   user: uiowa.prod
 test:
-  uri: engineeringcbig.stage.drupal.uiowa.edu
+  uri: 'https://engineeringcbig.stage.drupal.uiowa.edu'
   host: uiowastg.ssh.prod.acquia-sites.com
   options: {  }
   paths:

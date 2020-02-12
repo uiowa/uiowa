@@ -1,6 +1,6 @@
 project:
   local:
-    hostname: theming.uiowa.edu
+    hostname: theming.local.drupal.uiowa.edu
     protocol: https
   machine_name: theming
   human_name: theming.uiowa.edu
@@ -13,3 +13,9 @@ drush:
 drupal:
   db:
     database: theming_uiowa_edu
+cm:
+  core:
+    install_from_config: false
+    dirs:
+      sync:
+        path: '../config/theming.uiowa.edu'

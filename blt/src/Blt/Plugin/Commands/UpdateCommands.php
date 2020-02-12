@@ -4,6 +4,7 @@ namespace Uiowa\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Annotations\Update;
+use Acquia\Blt\Robo\Common\YamlWriter;
 use Acquia\Blt\Robo\Common\YamlMunge;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Symfony\Component\Yaml\Yaml;
@@ -89,7 +90,7 @@ class UpdateCommands extends BltTasks {
    *
    * @Update(
    *   version = "1001",
-   *   description = "Write database include to settings.php for every multisite."
+   *   description = "Write database include to settings.php for multisites."
    * )
    */
   protected function update1001() {
@@ -128,7 +129,7 @@ EOD;
    *
    * @Update(
    *   version = "1002",
-   *   description = "Update multisite blt.yml files to localize sitenow config."
+   *   description = "Update multisite blt files to localize sitenow config."
    * )
    */
   protected function update1002() {
@@ -205,6 +206,259 @@ EOD;
     }
 
     $this->setSchemaVersion(1003);
+  }
+
+  /**
+   * Update 1004.
+   *
+   * @Update(
+   *   version = "1004",
+   *   description = "Revert multisite DB configuration to BLT defaults for VM."
+   * )
+   */
+  protected function update1004() {
+    $root = $this->getConfigValue('repo.root');
+    $sites = Multisite::getAllSites($root);
+
+    foreach ($sites as $site) {
+      $file = "{$root}/docroot/sites/{$site}/blt.yml";
+      $yaml = YamlMunge::parseFile($file);
+
+      unset($yaml['drupal']['db']['host']);
+      unset($yaml['drupal']['db']['user']);
+      unset($yaml['drupal']['db']['password']);
+
+      file_put_contents("{$root}/docroot/sites/{$site}/blt.yml", Yaml::dump($yaml, 10, 2));
+    }
+
+    $this->setSchemaVersion(1004);
+  }
+
+  /**
+   * Update 1005.
+   *
+   * @Update(
+   *   version = "1005",
+   *   description = "Set VM vhosts for each multisite."
+   * )
+   */
+  protected function update1005() {
+    $root = $this->getConfigValue('repo.root');
+    $sites = Multisite::getAllSites($root);
+    $file = $this->getConfigValue('vm.config');
+
+    $writer = new YamlWriter($file);
+    $vm_config = $writer->getContents();
+
+    foreach ($sites as $site) {
+      $id = Multisite::getIdentifier("https://{$site}");
+
+      $vm_config['apache_vhosts'][] = [
+        'servername' => "{$id}.uiowa.local.site",
+        'documentroot' => $vm_config['apache_vhosts'][0]['documentroot'],
+        'extra_parameters' => $vm_config['apache_vhosts'][0]['extra_parameters'],
+      ];
+    }
+
+    $writer->write($vm_config);
+
+    $this->setSchemaVersion(1005);
+  }
+
+  /**
+   * Update 1006.
+   *
+   * @Update(
+   *   version = "1006",
+   *   description = "Set local host for multisites and regenerate settings."
+   * )
+   */
+  protected function update1006() {
+    $root = $this->getConfigValue('repo.root');
+    $sites = Multisite::getAllSites($root);
+
+    foreach ($sites as $site) {
+      $file = "{$root}/docroot/sites/{$site}/blt.yml";
+      $id = Multisite::getIdentifier("https://{$site}");
+      $yaml = YamlMunge::parseFile($file);
+      $yaml['project']['local']['hostname'] = "{$id}.local.drupal.uiowa.edu";
+      file_put_contents("{$root}/docroot/sites/{$site}/blt.yml", Yaml::dump($yaml, 10, 2));
+
+      $file = "{$root}/docroot/sites/{$site}/local.drush.yml";
+
+      $this->taskFilesystemStack()
+        ->remove($file)
+        ->run();
+    }
+
+    $this->invokeCommand('bis');
+    $this->setSchemaVersion(1006);
+  }
+
+  /**
+   * Update 1007.
+   *
+   * @Update(
+   *   version = "1007",
+   *   description = "Add local Drush aliases for existing sites."
+   * )
+   */
+  protected function update1007() {
+    $root = $this->getConfigValue('repo.root');
+    $sites = Multisite::getAllSites($root);
+
+    $uiowa_01 = [
+      'uipda.grad.uiowa.edu',
+      'policy.clas.uiowa.edu',
+      'iowasuperfund.uiowa.edu',
+      'icsa.uiowa.edu',
+      'cogscilang.grad.uiowa.edu',
+      'theming.uiowa.edu',
+    ];
+
+    foreach ($sites as $site) {
+      $id = Multisite::getIdentifier("https://{$site}");
+      $file = "{$root}/drush/sites/{$id}.site.yml";
+
+      if (in_array($site, $uiowa_01)) {
+        $app = 'uiowa01';
+
+      }
+      else {
+        $app = 'uiowa';
+      }
+
+      $yaml = YamlMunge::parseFile("{$root}/drush/sites/{$app}.site.yml");
+      $yaml['local']['uri'] = Multisite::getInternalDomains($id)['local'];
+      $yaml['dev']['uri'] = Multisite::getInternalDomains($id)['dev'];
+      $yaml['test']['uri'] = Multisite::getInternalDomains($id)['test'];
+      $yaml['prod']['uri'] = $site;
+
+      file_put_contents($file, Yaml::dump($yaml, 10, 2));
+    }
+
+    $this->setSchemaVersion(1007);
+  }
+
+  /**
+   * Update 1008.
+   *
+   * @Update(
+   *   version = "1008",
+   *   description = "Update drush aliases to use https:// in *.uri key."
+   * )
+   */
+  protected function update1008() {
+    $root = $this->getConfigValue('repo.root');
+    $sites = Multisite::getAllSites($root);
+
+    $uiowa_01 = [
+      'uipda.grad.uiowa.edu',
+      'policy.clas.uiowa.edu',
+      'iowasuperfund.uiowa.edu',
+      'icsa.uiowa.edu',
+      'cogscilang.grad.uiowa.edu',
+      'theming.uiowa.edu',
+    ];
+
+    foreach ($sites as $site) {
+      $id = Multisite::getIdentifier("https://{$site}");
+      $file = "{$root}/drush/sites/{$id}.site.yml";
+
+      if (in_array($site, $uiowa_01)) {
+        $app = 'uiowa01';
+
+      }
+      else {
+        $app = 'uiowa';
+      }
+
+      $yaml = YamlMunge::parseFile("{$root}/drush/sites/{$app}.site.yml");
+      $yaml['local']['uri'] = 'https://' . Multisite::getInternalDomains($id)['local'];
+      $yaml['dev']['uri'] = 'https://' . Multisite::getInternalDomains($id)['dev'];
+      $yaml['test']['uri'] = 'https://' . Multisite::getInternalDomains($id)['test'];
+      $yaml['prod']['uri'] = 'https://' . $site;
+
+      file_put_contents($file, Yaml::dump($yaml, 10, 2));
+    }
+
+    $this->setSchemaVersion(1008);
+  }
+
+  /**
+   * Update 1009.
+   *
+   * @Update(
+   *   version = "1009",
+   *   description = "Update collegiate blt.yml config with profile defaults."
+   * )
+   */
+  protected function update1009() {
+    $root = $this->getConfigValue('repo.root');
+    $sites = Multisite::getAllSites($root);
+
+    foreach ($sites as $site) {
+      $this->switchSiteContext($site);
+      $profile = $this->getConfigValue('project.profile.name');
+
+      if ($profile == 'collegiate') {
+        $file = "{$root}/docroot/sites/{$site}/blt.yml";
+        $yaml = YamlMunge::mungeFiles($file, "{$root}/docroot/profiles/custom/collegiate/default.blt.yml");
+        file_put_contents($file, Yaml::dump($yaml, 10, 2));
+        $this->getConfig()->expandFileProperties($file);
+      }
+    }
+
+    $this->setSchemaVersion(1009);
+  }
+
+  /**
+   * Update 1010.
+   *
+   * @Update(
+   *   version = "1010",
+   *   description = "Update drush aliases to remove local SSH options."
+   * )
+   */
+  protected function update1010() {
+    $root = $this->getConfigValue('repo.root');
+    $sites = Multisite::getAllSites($root);
+
+    foreach ($sites as $site) {
+      $id = Multisite::getIdentifier("https://{$site}");
+      $file = "{$root}/drush/sites/{$id}.site.yml";
+
+      $yaml = YamlMunge::parseFile($file);
+      unset($yaml['local']['ssh']);
+      file_put_contents($file, Yaml::dump($yaml, 10, 2));
+    }
+
+    $this->setSchemaVersion(1010);
+  }
+
+  /**
+   * Update 1011.
+   *
+   * @Update(
+   *   version = "1011",
+   *   description = "Update drush aliases to remove local host and user."
+   * )
+   */
+  protected function update1011() {
+    $root = $this->getConfigValue('repo.root');
+    $sites = Multisite::getAllSites($root);
+
+    foreach ($sites as $site) {
+      $id = Multisite::getIdentifier("https://{$site}");
+      $file = "{$root}/drush/sites/{$id}.site.yml";
+
+      $yaml = YamlMunge::parseFile($file);
+      unset($yaml['local']['host']);
+      unset($yaml['local']['user']);
+      file_put_contents($file, Yaml::dump($yaml, 10, 2));
+    }
+
+    $this->setSchemaVersion(1011);
   }
 
 }

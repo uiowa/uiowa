@@ -1,8 +1,8 @@
 local:
-  uri: doublebass.studio.uiowa.edu
-  root: '${env.cwd}/docroot'
+  root: /var/www/uiowa/docroot
+  uri: 'https://studiodoublebass.local.drupal.uiowa.edu'
 dev:
-  uri: studiodoublebass.dev.drupal.uiowa.edu
+  uri: 'https://studiodoublebass.dev.drupal.uiowa.edu'
   host: uiowadev.ssh.prod.acquia-sites.com
   options: {  }
   paths:
@@ -10,7 +10,7 @@ dev:
   root: /var/www/html/uiowa.dev/docroot
   user: uiowa.dev
 prod:
-  uri: doublebass.studio.uiowa.edu
+  uri: 'https://doublebass.studio.uiowa.edu'
   host: uiowa.ssh.prod.acquia-sites.com
   options: {  }
   paths:
@@ -18,7 +18,7 @@ prod:
   root: /var/www/html/uiowa.prod/docroot
   user: uiowa.prod
 test:
-  uri: studiodoublebass.stage.drupal.uiowa.edu
+  uri: 'https://studiodoublebass.stage.drupal.uiowa.edu'
   host: uiowastg.ssh.prod.acquia-sites.com
   options: {  }
   paths:

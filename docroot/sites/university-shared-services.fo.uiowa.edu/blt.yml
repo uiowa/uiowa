@@ -2,7 +2,7 @@ project:
   profile:
     name: sitenow
   local:
-    hostname: university-shared-services.fo.uiowa.edu
+    hostname: founiversity-shared-services.local.drupal.uiowa.edu
     protocol: https
   machine_name: founiversity-shared-services
   human_name: university-shared-services.fo.uiowa.edu
@@ -13,22 +13,13 @@ drush:
 drupal:
   db:
     database: university_shared_services_fo_uiowa_edu
-    host: localhost
-    user: root
-    password: null
 cm:
   core:
     dirs:
       sync:
         path: profiles/custom/sitenow/config/sync
     install_from_config: true
-sync:
-  commands:
-    - 'blt:init:settings'
-    - 'drupal:sync:db'
-    - 'drupal:update'
-    - 'sitenow:multisite:noop'
-    - 'sitenow:multisite:noop'
+
 uiowa:
   profiles:
     sitenow:

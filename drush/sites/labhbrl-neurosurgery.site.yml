@@ -1,8 +1,8 @@
 local:
-  uri: hbrl-neurosurgery.lab.uiowa.edu
-  root: '${env.cwd}/docroot'
+  root: /var/www/uiowa/docroot
+  uri: 'https://labhbrl-neurosurgery.local.drupal.uiowa.edu'
 dev:
-  uri: labhbrl-neurosurgery.dev.drupal.uiowa.edu
+  uri: 'https://labhbrl-neurosurgery.dev.drupal.uiowa.edu'
   host: uiowadev.ssh.prod.acquia-sites.com
   options: {  }
   paths:
@@ -10,7 +10,7 @@ dev:
   root: /var/www/html/uiowa.dev/docroot
   user: uiowa.dev
 prod:
-  uri: hbrl-neurosurgery.lab.uiowa.edu
+  uri: 'https://hbrl-neurosurgery.lab.uiowa.edu'
   host: uiowa.ssh.prod.acquia-sites.com
   options: {  }
   paths:
@@ -18,7 +18,7 @@ prod:
   root: /var/www/html/uiowa.prod/docroot
   user: uiowa.prod
 test:
-  uri: labhbrl-neurosurgery.stage.drupal.uiowa.edu
+  uri: 'https://labhbrl-neurosurgery.stage.drupal.uiowa.edu'
   host: uiowastg.ssh.prod.acquia-sites.com
   options: {  }
   paths:

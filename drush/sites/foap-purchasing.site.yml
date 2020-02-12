@@ -1,8 +1,8 @@
 local:
-  uri: ap-purchasing.fo.uiowa.edu
-  root: '${env.cwd}/docroot'
+  root: /var/www/uiowa/docroot
+  uri: 'https://foap-purchasing.local.drupal.uiowa.edu'
 dev:
-  uri: foap-purchasing.dev.drupal.uiowa.edu
+  uri: 'https://foap-purchasing.dev.drupal.uiowa.edu'
   host: uiowadev.ssh.prod.acquia-sites.com
   options: {  }
   paths:
@@ -10,7 +10,7 @@ dev:
   root: /var/www/html/uiowa.dev/docroot
   user: uiowa.dev
 prod:
-  uri: ap-purchasing.fo.uiowa.edu
+  uri: 'https://ap-purchasing.fo.uiowa.edu'
   host: uiowa.ssh.prod.acquia-sites.com
   options: {  }
   paths:
@@ -18,7 +18,7 @@ prod:
   root: /var/www/html/uiowa.prod/docroot
   user: uiowa.prod
 test:
-  uri: foap-purchasing.stage.drupal.uiowa.edu
+  uri: 'https://foap-purchasing.stage.drupal.uiowa.edu'
   host: uiowastg.ssh.prod.acquia-sites.com
   options: {  }
   paths:

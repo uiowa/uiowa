@@ -1,6 +1,6 @@
 project:
   local:
-    hostname: iowasuperfund.uiowa.edu
+    hostname: iowasuperfund.local.drupal.uiowa.edu
     protocol: https
   machine_name: iowasuperfund
   human_name: iowasuperfund.uiowa.edu
@@ -13,3 +13,9 @@ drush:
 drupal:
   db:
     database: iowasuperfund_uiowa_edu
+cm:
+  core:
+    install_from_config: false
+    dirs:
+      sync:
+        path: '../config/iowasuperfund.uiowa.edu'

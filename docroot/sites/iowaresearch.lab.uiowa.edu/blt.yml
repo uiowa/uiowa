@@ -1,0 +1,25 @@
+project:
+  profile:
+    name: sitenow
+  local:
+    hostname: labiowaresearch.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labiowaresearch
+  human_name: iowaresearch.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labiowaresearch.prod
+drupal:
+  db:
+    database: iowaresearch_lab_uiowa_edu
+uiowa:
+  profiles:
+    sitenow:
+      requester: strommerl
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true

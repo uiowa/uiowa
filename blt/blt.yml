@@ -1,12 +1,21 @@
 project:
   prefix: uiowa
   human_name: 'The base application on Acquia Cloud for the University of Iowa.'
+  local:
+    hostname: local.drupal.uiowa.edu
+    protocol: https
+  profile:
+    name: standard
+setup:
+  strategy: install
 git:
   default_branch: master
   remotes:
-    - 'git@github.com:uiowa/uiowa.git'
+    - 'uiowa@svn-14671.prod.hosting.acquia.com:uiowa.git'
+    - 'uiowa01@svn-29892.prod.hosting.acquia.com:uiowa01.git'
   hooks:
     commit-msg: false
+    pre-commit: false
 deploy:
   tag_source: true
 drush:
@@ -33,19 +42,25 @@ validate:
       - drupal_image
     filters:
       - image_style
-drupal:
-  db:
-    host: localhost
-    database: null
-    username: root
-    password: null
 command-hooks:
   frontend-reqs:
     dir: ${docroot}
-    command: '. $NVM_DIR/nvm.sh && nvm install && yarn install'
+    command: 'yarn install'
   frontend-assets:
     dir: ${docroot}
-    command: '. $NVM_DIR/nvm.sh && nvm use && yarn workspaces run gulp'
+    command: 'yarn workspaces run gulp'
+  post-deploy-build:
+    dir: ${repo.root}
+    command: './vendor/bin/blt uiowa:git:version'
+sync:
+  commands:
+    - 'blt:init:settings'
+    - 'drupal:sync:db'
+    - 'drupal:update'
+    - 'uiowa:multisite:noop'
+    - 'uiowa:multisite:noop'
+
+# Custom configuration.
 uiowa:
   applications:
     uiowa:
@@ -53,5 +68,7 @@ uiowa:
     uiowa01:
       id: 21a2a0ab-b4ed-4ecf-8bd4-9266c70f5ef1
   profiles:
-    - sitenow
-    - collegiate
+    sitenow:
+      ci_site: demo.sitenow.uiowa.edu
+    collegiate:
+      ci_site: uiowa.edu

@@ -1,9 +1,9 @@
 local:
-  uri: 'https://claspolicy.uiowa.local.site'
-  root: '${env.cwd}/docroot'
+  root: /var/www/uiowa/docroot
+  uri: 'https://claspolicy.local.drupal.uiowa.edu'
 dev:
   uri: 'https://claspolicy.dev.drupal.uiowa.edu'
-  host: staging-15039.prod.hosting.acquia.com
+  host: uiowa01dev.ssh.prod.acquia-sites.com
   options: {  }
   paths:
     dump-dir: /mnt/tmp
@@ -11,7 +11,7 @@ dev:
   user: uiowa01.dev
 prod:
   uri: 'https://policy.clas.uiowa.edu'
-  host: web-33201.prod.hosting.acquia.com
+  host: uiowa01.ssh.prod.acquia-sites.com
   options: {  }
   paths:
     dump-dir: /mnt/tmp
@@ -19,7 +19,7 @@ prod:
   user: uiowa01.prod
 test:
   uri: 'https://claspolicy.stage.drupal.uiowa.edu'
-  host: staging-15039.prod.hosting.acquia.com
+  host: uiowa01stg.ssh.prod.acquia-sites.com
   options: {  }
   paths:
     dump-dir: /mnt/tmp

@@ -1,0 +1,54 @@
+name: UIDS Base
+type: theme
+base theme: classy
+description: UIDS (UIowa Design System) base theme
+package: Custom
+core: 8.x
+screenshot: screenshot.png
+stylesheets-remove:
+  - modules/custom/uiowa_bar/css/uiowa-bar.css
+libraries-override:
+  classy/base: false
+libraries:
+  - uids_base/global-styling
+  - uids_base/layouts
+regions:
+  header: 'Header'
+  action_menu: 'Action menu'
+  primary_menu: 'Primary menu'
+  secondary_menu: 'Secondary menu'
+  header_search: 'Header search'
+  page_top: 'Page top'
+  page_bottom: 'Page bottom'
+  featured: 'Featured'
+  breadcrumb: 'Breadcrumb'
+  content: 'Content'
+  sidebar_first: 'Sidebar first'
+  sidebar_second: 'Sidebar second'
+  footer: 'Footer'
+# Components
+component-libraries:
+  uids:
+    paths:
+      - uids/components
+  heading:
+    paths:
+      - uids/components/01 - elements/heading
+  headline:
+    paths:
+      - uids/components/01 - elements/headline
+  banner:
+    paths:
+      - uids/components/02 - blocks/banner-block
+  feature-block:
+    paths:
+      - uids/components/02 - blocks/feature-block
+  news-block:
+    paths:
+      - uids/components/02 - blocks/news-block
+  card-block:
+    paths:
+      - uids/components/02 - blocks/card-block
+  stat-block:
+    paths:
+      - uids/components/02 - blocks/stat-block

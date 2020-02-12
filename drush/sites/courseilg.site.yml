@@ -1,8 +1,8 @@
 local:
-  uri: ilg.course.uiowa.edu
-  root: '${env.cwd}/docroot'
+  root: /var/www/uiowa/docroot
+  uri: 'https://courseilg.local.drupal.uiowa.edu'
 dev:
-  uri: courseilg.dev.drupal.uiowa.edu
+  uri: 'https://courseilg.dev.drupal.uiowa.edu'
   host: uiowadev.ssh.prod.acquia-sites.com
   options: {  }
   paths:
@@ -10,7 +10,7 @@ dev:
   root: /var/www/html/uiowa.dev/docroot
   user: uiowa.dev
 prod:
-  uri: ilg.course.uiowa.edu
+  uri: 'https://ilg.course.uiowa.edu'
   host: uiowa.ssh.prod.acquia-sites.com
   options: {  }
   paths:
@@ -18,7 +18,7 @@ prod:
   root: /var/www/html/uiowa.prod/docroot
   user: uiowa.prod
 test:
-  uri: courseilg.stage.drupal.uiowa.edu
+  uri: 'https://courseilg.stage.drupal.uiowa.edu'
   host: uiowastg.ssh.prod.acquia-sites.com
   options: {  }
   paths:
