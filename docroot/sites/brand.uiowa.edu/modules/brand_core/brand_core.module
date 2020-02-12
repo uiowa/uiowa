@@ -76,7 +76,7 @@ function brand_core_preprocess_page(&$variables) {
     if ($user->hasPermission('use lockup transition publish') == TRUE) {
       // Print  message informing user to use lockup moderation.
       $url = Url::fromRoute('view.lockup_moderation.page_overview');
-      $lockup_moderation = Link::fromTextAndUrl(t('Lockup Moderation'), $url)
+      $lockup_moderation = Link::fromTextAndUrl(t('Lockup moderation'), $url)
         ->toString();
       $message_text = t('View all lockups: @lockup_moderation', [
         '@lockup_moderation' => $lockup_moderation,
@@ -106,7 +106,7 @@ function brand_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       // Create groups in the advanced container.
       $form['step_one'] = [
         '#type' => 'details',
-        '#title' => 'Step 1: Name Your Lockup',
+        '#title' => 'Step 1: Name your lockup',
         '#group' => 'advanced',
         '#attributes' => [
           'class' => ['node-form-fields'],
@@ -198,7 +198,7 @@ function brand_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
         // Render log entries in the revision_information group.
         $form['node_logs'] = [
           '#type' => 'details',
-          '#title' => 'Latest Revisions',
+          '#title' => 'Latest revisions',
           '#group' => 'revision_information',
           '#weight' => 26,
           '#optional' => FALSE,
@@ -408,6 +408,22 @@ function brand_core_node_update(Drupal\Core\Entity\EntityInterface $entity) {
         $nid = $entity->id();
         $lockup_controller = new LockupController();
         $lockup_controller->generate($nid);
+        if (\Drupal::moduleHandler()->moduleExists('purge')) {
+          $purgeInvalidationFactory = \Drupal::service('purge.invalidation.factory');
+          $purgeQueuers = \Drupal::service('purge.queuers');
+          $purgeQueue = \Drupal::service('purge.queue');
+
+          drupal_flush_all_caches();
+
+          $queuer = $purgeQueuers->get('coretags');
+          $host = \Drupal::request()->getSchemeAndHttpHost();
+          $invalidations = [
+            $purgeInvalidationFactory->get('wildcardurl', $host . '/sites/brand.uiowa.edu/files/lockups/' . $nid . '/*'),
+            $purgeInvalidationFactory->get('url', $host . '/lockup/' . $nid),
+          ];
+
+          $purgeQueue->add($queuer, $invalidations);
+        }
         break;
 
     }
