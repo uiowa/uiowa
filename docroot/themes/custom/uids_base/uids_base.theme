@@ -27,8 +27,15 @@ function uids_base_preprocess_html(&$variables) {
     $variables['attributes']['class'][] = Html::cleanCssIdentifier('layout-page-sidebars-none');
   }
   $legacy = (bool) theme_get_setting('branding.legacy');
-  if (!$legacy) {
-    unset($variables['page_top']['uiowa_bar']);
+
+  // If uiowa_bar module is enabled, part or all of it needs to be
+  // unset in favor of the branding elements contained in this theme.
+  if (\Drupal::service('module_handler')->moduleExists('uiowa_bar')) {
+    if (!$legacy) {
+      unset($variables['page_top']['uiowa_bar']);
+    } else {
+      unset($variables['page_top']['uiowa_bar']['#search_form']);
+    }
   }
 
   // Set a variable for whether layout builder is enabled.
@@ -60,12 +67,9 @@ function uids_base_preprocess_page(&$variables) {
   $variables['branding_legacy'] = theme_get_setting('branding.legacy');
   $variables['uiowa_search_form'] = FALSE;
 
-  // Get search form.
-  // @todo Add check to see if search is enabled.
-  $moduleHandler = \Drupal::service('module_handler');
-
-  // @todo Change this to uiowa_search if that gets split out.
-  if ($moduleHandler->moduleExists('uiowa_bar')) {
+  // Add a variable for the search form.
+  // @todo Check for uiowa_search and get the form from there, if possible.
+  if (\Drupal::service('module_handler')->moduleExists('uiowa_bar')) {
     $variables['uiowa_search_form'] = \Drupal::formBuilder()->getForm('Drupal\uiowa_bar\Form\SearchForm');
   }
 
