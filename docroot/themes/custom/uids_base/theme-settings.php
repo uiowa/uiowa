@@ -89,7 +89,7 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
  */
 function uids_base_form_system_theme_settings_submit(&$form, FormStateInterface $form_state) {
 
-  $nav_style = $form_state->getValue(array('header', 'nav_style'));
+  $nav_style = $form_state->getValue(['header', 'nav_style']);
 
   $ids = \Drupal::entityQuery('block')
     ->condition('plugin', 'superfish:main')
