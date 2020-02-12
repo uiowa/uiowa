@@ -167,3 +167,23 @@
     margin-left: $gutter;
   }
 }
+
+// admin styles for off-canvas menu
+
+.o-canvas__drawer {
+  height: calc(100% - 119px);
+
+  @include breakpoint(menu) {
+    padding: 40px 35px;
+    max-width: 560px;
+  }
+
+  .o-canvas--open & {
+    top: 179px;
+    height: calc(100% - 119px);
+
+    @include breakpoint(menu) {
+      top: 119px;
+    }
+  }
+}
