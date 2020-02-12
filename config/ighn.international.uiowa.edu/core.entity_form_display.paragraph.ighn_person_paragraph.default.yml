@@ -1,0 +1,21 @@
+uuid: 38a4fe1a-cf95-46e5-9251-b2d69431b5e5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.ighn_person_paragraph.field_ighn_person_content
+    - paragraphs.paragraphs_type.ighn_person_paragraph
+id: paragraph.ighn_person_paragraph.default
+targetEntityType: paragraph
+bundle: ighn_person_paragraph
+mode: default
+content:
+  field_ighn_person_content:
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+hidden:
+  created: true
+  status: true
