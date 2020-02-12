@@ -30,8 +30,9 @@
 
 {% block horizontal_nav %}
 
-{% if header_nav == 'nav--horizontal' %}
-    <nav class="menu-horizontal {{ header_type }}">
+{% if header_nav in ['horizontal', 'mega'] %}
+    {# @todo Convert to template use attributes to add classes. #}
+    <nav class="menu-horizontal nav--{{ header_type }}">
         <div class="page__container">
             {{ page.primary_menu }}
         </div>
