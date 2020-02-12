@@ -669,6 +669,14 @@ apache_vhosts:
     servername: sitesdasblatt.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: sitesfric.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: educationaccel.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
 
 
 
@@ -717,6 +725,7 @@ php_packages_extra:
   - 'php{{ php_version }}-bz2'
   - 'php{{ php_version }}-imagick'
   - imagemagick
+  - 'php{{ php_version }}-zip'
 
 # XDebug configuration.
 php_xdebug_version: 2.7.1

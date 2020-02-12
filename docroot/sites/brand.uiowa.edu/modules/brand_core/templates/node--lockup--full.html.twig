@@ -103,10 +103,10 @@
 
   <div{{ content_attributes.addClass('node__content') }}>
     {% if content.stacked %}
-      <img src="{{ content.stacked }}" alt="stacked lockup example">
+      <img src="{{ content.stacked }}?{{ date().timestamp }}" alt="stacked lockup example">
     {% endif %}
     {% if content.horizontal %}
-      <img src="{{ content.horizontal }}" alt="horizontal lockup example">
+      <img src="{{ content.horizontal }}?{{ date().timestamp }}" alt="horizontal lockup example">
     {% endif %}
     {{ content|without('stacked', 'horizontal') }}
   </div>
