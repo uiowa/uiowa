@@ -33,7 +33,8 @@ function uids_base_preprocess_html(&$variables) {
   if (\Drupal::service('module_handler')->moduleExists('uiowa_bar')) {
     if (!$legacy) {
       unset($variables['page_top']['uiowa_bar']);
-    } else {
+    }
+    else {
       unset($variables['page_top']['uiowa_bar']['#search_form']);
     }
   }
