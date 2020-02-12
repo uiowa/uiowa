@@ -27,15 +27,8 @@ third_party_settings:
     group_ighn_person:
       children:
         - field_ighn_person_image
-        - field_ighn_person_first_name
-        - field_ighn_person_last_name
-        - field_ighn_person_credentials
-        - field_ighn_primary_college
-        - field_ighn_person_department
-        - field_ighn_person_position_title
-        - field_ighn_person_focus_areas
-        - field_ighn_person_language
-        - field_ighn_person_global_regions
+        - group_ighn_main_info_group
+        - group_ighn
         - field_ighn_person_biography
         - field_ighn_person_cv_link
       parent_name: ''
@@ -46,6 +39,45 @@ third_party_settings:
         classes: ''
         description: ''
       label: 'IGHN Person'
+    group_ighn:
+      children:
+        - field_ighn_person_focus_areas
+        - field_ighn_person_language
+        - field_ighn_person_global_regions
+      parent_name: group_ighn_person
+      weight: 9
+      format_type: html_element
+      format_settings:
+        id: ighn-person-field-groups
+        classes: ''
+        element: div
+        show_label: false
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+      label: 'IGHN Person Field Groups'
+    group_ighn_main_info_group:
+      children:
+        - field_ighn_person_first_name
+        - field_ighn_person_last_name
+        - field_ighn_person_credentials
+        - field_ighn_primary_college
+        - field_ighn_person_department
+        - field_ighn_person_position_title
+      parent_name: group_ighn_person
+      weight: 2
+      format_type: html_element
+      format_settings:
+        id: ighn-person-main-info
+        classes: ''
+        element: div
+        show_label: false
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+      label: 'IGHN Main Info Group'
 id: node.ighn_person.teaser
 targetEntityType: node
 bundle: ighn_person
@@ -53,14 +85,14 @@ mode: teaser
 content:
   field_ighn_person_biography:
     type: text_default
-    weight: 11
+    weight: 10
     region: content
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
   field_ighn_person_credentials:
     type: string
-    weight: 4
+    weight: 5
     region: content
     label: visually_hidden
     settings:
@@ -68,7 +100,7 @@ content:
     third_party_settings: {  }
   field_ighn_person_cv_link:
     type: link
-    weight: 12
+    weight: 11
     region: content
     label: visually_hidden
     settings:
@@ -80,7 +112,7 @@ content:
     third_party_settings: {  }
   field_ighn_person_department:
     type: entity_reference_label
-    weight: 6
+    weight: 7
     region: content
     label: visually_hidden
     settings:
@@ -88,7 +120,7 @@ content:
     third_party_settings: {  }
   field_ighn_person_first_name:
     type: string
-    weight: 2
+    weight: 3
     region: content
     label: visually_hidden
     settings:
@@ -96,7 +128,7 @@ content:
     third_party_settings: {  }
   field_ighn_person_focus_areas:
     type: entity_reference_label
-    weight: 8
+    weight: 9
     region: content
     label: visually_hidden
     settings:
@@ -104,7 +136,7 @@ content:
     third_party_settings: {  }
   field_ighn_person_global_regions:
     type: entity_reference_label
-    weight: 10
+    weight: 11
     region: content
     label: visually_hidden
     settings:
@@ -116,12 +148,12 @@ content:
     region: content
     label: visually_hidden
     settings:
-      view_mode: image_small
+      view_mode: default
       link: false
     third_party_settings: {  }
   field_ighn_person_language:
     type: entity_reference_label
-    weight: 9
+    weight: 10
     region: content
     label: visually_hidden
     settings:
@@ -129,7 +161,7 @@ content:
     third_party_settings: {  }
   field_ighn_person_last_name:
     type: string
-    weight: 3
+    weight: 4
     region: content
     label: visually_hidden
     settings:
@@ -137,7 +169,7 @@ content:
     third_party_settings: {  }
   field_ighn_person_position_title:
     type: string
-    weight: 7
+    weight: 8
     region: content
     label: visually_hidden
     settings:
@@ -145,7 +177,7 @@ content:
     third_party_settings: {  }
   field_ighn_primary_college:
     type: entity_reference_label
-    weight: 5
+    weight: 6
     region: content
     label: visually_hidden
     settings:

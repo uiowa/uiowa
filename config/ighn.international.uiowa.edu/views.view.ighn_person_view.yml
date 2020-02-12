@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.node.teaser
     - field.storage.node.field_ighn_person_biography
     - field.storage.node.field_ighn_person_credentials
     - field.storage.node.field_ighn_person_cv_link
@@ -79,15 +80,10 @@ display:
           row_class_default: false
           row_class_custom: 'views-row row clearfix'
       row:
-        type: fields
+        type: 'entity:node'
         options:
-          default_field_elements: true
-          inline:
-            field_ighn_person_first_name: field_ighn_person_first_name
-            field_ighn_person_last_name: field_ighn_person_last_name
-            field_ighn_person_credentials: field_ighn_person_credentials
-          separator: ''
-          hide_empty: false
+          relationship: none
+          view_mode: teaser
       fields:
         field_ighn_person_image:
           id: field_ighn_person_image
@@ -941,7 +937,7 @@ display:
           exposed: true
           expose:
             operator_id: title_op
-            label: Title
+            label: Search
             description: ''
             use_operator: false
             operator: title_op

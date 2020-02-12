@@ -10,6 +10,17 @@
 use Drupal\Core\Entity\EntityInterface;
 
 /**
+ * Implements hook_page_attachments().
+ */
+function ighn_core_page_attachments(array &$attachments) {
+  // Attach css file on admin pages.
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    $attachments['#attached']['library'][] = 'ighn_core/ighn-overrides';
+  }
+}
+
+/**
  * Implements hook_theme for IGHN Person CT and IGHN Person View().
  */
 function ighn_core_theme($existing, $type, $theme, $path) {
