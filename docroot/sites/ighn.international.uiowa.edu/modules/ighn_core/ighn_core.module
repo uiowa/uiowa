@@ -1,0 +1,34 @@
+
+
+<?php
+
+/**
+ * @file
+ * Contains ighn_core.module.
+ */
+
+use Drupal\Component\Utility\Html;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\media\Entity\Media;
+use Drupal\file\Entity\File;
+use Drupal\views\Views;
+
+/**
+ * Implements hook_theme for IGHN Person CT and IGHN Person View().
+ */
+function ighn_core_theme($existing, $type, $theme, $path) {
+    return [
+      'node__ighn_person__teaser' => [
+        'template' => 'node--ighn-person--teaser',
+        'base hook' => 'node',
+      ],
+      'node__ighn_person__full' => [
+        'template' => 'node--ighn-person--full',
+        'base hook' => 'node',
+      ],
+      'views_view_unformatted__ighn_person_view' => [
+          'template' => 'views-view-unformatted--ighn-person-view',
+          'base hook' => 'views',
+      ],
+    ];
+  }
