@@ -930,3 +930,9 @@ $sites['sitesdasblatt.local.drupal.uiowa.edu'] = 'dasblatt.sites.uiowa.edu';
 $sites['sitesdasblatt.dev.drupal.uiowa.edu'] = 'dasblatt.sites.uiowa.edu';
 $sites['sitesdasblatt.stage.drupal.uiowa.edu'] = 'dasblatt.sites.uiowa.edu';
 $sites['sitesdasblatt.prod.drupal.uiowa.edu'] = 'dasblatt.sites.uiowa.edu';
+
+// Directory aliases for fric.sites.uiowa.edu.
+$sites['sitesfric.local.drupal.uiowa.edu'] = 'fric.sites.uiowa.edu';
+$sites['sitesfric.dev.drupal.uiowa.edu'] = 'fric.sites.uiowa.edu';
+$sites['sitesfric.stage.drupal.uiowa.edu'] = 'fric.sites.uiowa.edu';
+$sites['sitesfric.prod.drupal.uiowa.edu'] = 'fric.sites.uiowa.edu';
