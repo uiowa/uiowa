@@ -1,0 +1,25 @@
+project:
+  profile:
+    name: sitenow
+  local:
+    hostname: sitesdasblatt.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: sitesdasblatt
+  human_name: dasblatt.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesdasblatt.prod
+drupal:
+  db:
+    database: dasblatt_sites_uiowa_edu
+uiowa:
+  profiles:
+    sitenow:
+      requester: cfrances
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true
