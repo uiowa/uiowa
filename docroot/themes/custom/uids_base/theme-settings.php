@@ -5,15 +5,13 @@
  * Settings file for the theme.
  */
 
+use Drupal\block\Entity\Block;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Implements hook_form_FORM_ID_alter().
  */
 function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $form_state) {
-  // Menus.
-  $menus = ['none' => 'None'];
-  $menus = array_merge($menus, menu_ui_get_menus());
 
   $form['header'] = [
     '#type'         => 'details',
@@ -39,8 +37,9 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     '#title' => t('Header navigation style'),
     '#description' => t('Select an option'),
     '#options' => [
-      'nav--toggle' => t('Toggle navigation'),
-      'nav--horizontal' => t('Horizontal navigation'),
+      'toggle' => t('Toggle navigation'),
+      'horizontal' => t('Horizontal navigation'),
+      'mega' => t('Mega menu navigation')
     ],
     '#default_value' => theme_get_setting('header.nav_style'),
   ];
@@ -81,4 +80,28 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
 
   $form['theme_settings']['#open'] = FALSE;
   $form['favicon']['#open'] = TRUE;
+
+  $form['#submit'][] = 'uids_base_form_system_theme_settings_submit';
+}
+
+/**
+ * Test theme form settings submission handler.
+ */
+function uids_base_form_system_theme_settings_submit(&$form, FormStateInterface $form_state) {
+
+  $nav_style = $form_state->getValue(array('header', 'nav_style'));
+
+  $ids = \Drupal::entityQuery('block')
+    ->condition('plugin', 'superfish:main')
+    ->execute();
+
+  foreach ($ids as $id) {
+    $status = 0;
+    $block = Block::load($id);
+    if (strpos($id, $nav_style) !== FALSE) {
+      $status = 1;
+    }
+    $block->setStatus($status);
+    $block->save();
+  }
 }
