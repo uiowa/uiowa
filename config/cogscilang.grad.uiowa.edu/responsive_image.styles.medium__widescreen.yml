@@ -1,0 +1,31 @@
+uuid: 1e47d5c1-23e7-4f57-a29e-d6f840f6dc89
+langcode: en
+status: true
+dependencies:
+  config:
+    - image.style.widescreen__1024_x_576
+    - image.style.widescreen__1312_x_738
+    - image.style.widescreen__1920_x_1080
+    - image.style.widescreen__2592_x_1458
+    - image.style.widescreen__384_x_216
+    - image.style.widescreen__768_x_432
+_core:
+  default_config_hash: 6DXTMMFpKeL0Ke1ANUDXwi0osDC77KD5be6cMcH889I
+id: medium__widescreen
+label: 'Medium - Widescreen'
+image_style_mappings:
+  -
+    breakpoint_id: responsive_image.viewport_sizing
+    multiplier: 1x
+    image_mapping_type: sizes
+    image_mapping:
+      sizes: '(min-width: 1024px) calc(33.33vw - 5em), (min-width: 768px) calc(50vw - 3.75em), 100vw'
+      sizes_image_styles:
+        - widescreen__1024_x_576
+        - widescreen__1312_x_738
+        - widescreen__1920_x_1080
+        - widescreen__2592_x_1458
+        - widescreen__384_x_216
+        - widescreen__768_x_432
+breakpoint_group: responsive_image
+fallback_image_style: widescreen__768_x_432

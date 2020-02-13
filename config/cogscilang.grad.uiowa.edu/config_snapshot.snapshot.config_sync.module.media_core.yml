@@ -1,0 +1,1108 @@
+uuid: e63955b6-4b09-4fda-941f-dc85c6716ba9
+langcode: en
+status: true
+dependencies:
+  module:
+    - media_core
+id: config_sync.module.media_core
+snapshotSet: config_sync
+extensionType: module
+extensionName: media_core
+items:
+  -
+    collection: ''
+    name: core.entity_view_mode.media.embedded
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - media
+      id: media.embedded
+      label: Embedded
+      targetEntityType: media
+      cache: true
+  -
+    collection: ''
+    name: core.entity_view_mode.media.full__no_crop
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - media
+      id: media.full__no_crop
+      label: 'Full - No crop'
+      targetEntityType: media
+      cache: true
+  -
+    collection: ''
+    name: core.entity_view_mode.media.full__square
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - media
+      id: media.full__square
+      label: 'Full - Square'
+      targetEntityType: media
+      cache: true
+  -
+    collection: ''
+    name: core.entity_view_mode.media.full__widescreen
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - media
+      id: media.full__widescreen
+      label: 'Full - Widescreen'
+      targetEntityType: media
+      cache: true
+  -
+    collection: ''
+    name: core.entity_view_mode.media.large__no_crop
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - media
+      id: media.large__no_crop
+      label: 'Large - No crop'
+      targetEntityType: media
+      cache: true
+  -
+    collection: ''
+    name: core.entity_view_mode.media.large__square
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - media
+      id: media.large__square
+      label: 'Large - Square'
+      targetEntityType: media
+      cache: true
+  -
+    collection: ''
+    name: core.entity_view_mode.media.large__widescreen
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - media
+      id: media.large__widescreen
+      label: 'Large - Widescreen'
+      targetEntityType: media
+      cache: true
+  -
+    collection: ''
+    name: core.entity_view_mode.media.medium__no_crop
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - media
+      id: media.medium__no_crop
+      label: 'Medium - No crop'
+      targetEntityType: media
+      cache: true
+  -
+    collection: ''
+    name: core.entity_view_mode.media.medium__square
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - media
+      id: media.medium__square
+      label: 'Medium - Square'
+      targetEntityType: media
+      cache: true
+  -
+    collection: ''
+    name: core.entity_view_mode.media.medium__widescreen
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - media
+      id: media.medium__widescreen
+      label: 'Medium - Widescreen'
+      targetEntityType: media
+      cache: true
+  -
+    collection: ''
+    name: core.entity_view_mode.media.small__no_crop
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - media
+      id: media.small__no_crop
+      label: 'Small - No crop'
+      targetEntityType: media
+      cache: true
+  -
+    collection: ''
+    name: core.entity_view_mode.media.small__square
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - media
+      id: media.small__square
+      label: 'Small - Square'
+      targetEntityType: media
+      cache: true
+  -
+    collection: ''
+    name: core.entity_view_mode.media.small__widescreen
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - media
+      id: media.small__widescreen
+      label: 'Small - Widescreen'
+      targetEntityType: media
+      cache: true
+  -
+    collection: ''
+    name: core.entity_view_mode.media.thumbnail
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - media
+      id: media.thumbnail
+      label: Thumbnail
+      targetEntityType: media
+      cache: true
+  -
+    collection: ''
+    name: editor.editor.rich_text
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - filter.format.rich_text
+        module:
+          - ckeditor
+      format: rich_text
+      editor: ckeditor
+      settings:
+        toolbar:
+          rows:
+            -
+              -
+                name: Formatting
+                items:
+                  - Bold
+                  - Italic
+                  - Strike
+                  - Superscript
+                  - Subscript
+                  - '-'
+                  - RemoveFormat
+              -
+                name: Linking
+                items:
+                  - DrupalLink
+                  - DrupalUnlink
+              -
+                name: Lists
+                items:
+                  - BulletedList
+                  - NumberedList
+              -
+                name: Media
+                items:
+                  - DrupalMediaLibrary
+                  - Blockquote
+                  - Table
+                  - HorizontalRule
+              -
+                name: 'Block Formatting'
+                items:
+                  - Format
+              -
+                name: Tools
+                items:
+                  - ShowBlocks
+                  - Source
+        plugins:
+          language:
+            language_list: un
+          stylescombo:
+            styles: ''
+      image_upload:
+        status: true
+        scheme: public
+        directory: inline-images
+        max_size: ''
+        max_dimensions:
+          width: null
+          height: null
+  -
+    collection: ''
+    name: filter.format.rich_text
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - core.entity_view_mode.media.full__widescreen
+          - core.entity_view_mode.media.large__widescreen
+        module:
+          - editor
+          - media
+      name: 'Rich text'
+      format: rich_text
+      weight: -10
+      filters:
+        filter_align:
+          id: filter_align
+          provider: filter
+          status: true
+          weight: -48
+          settings: {  }
+        filter_caption:
+          id: filter_caption
+          provider: filter
+          status: true
+          weight: -47
+          settings: {  }
+        filter_htmlcorrector:
+          id: filter_htmlcorrector
+          provider: filter
+          status: true
+          weight: -46
+          settings: {  }
+        editor_file_reference:
+          id: editor_file_reference
+          provider: editor
+          status: true
+          weight: -45
+          settings: {  }
+        filter_html:
+          id: filter_html
+          provider: filter
+          status: true
+          weight: -50
+          settings:
+            allowed_html: '<a href hreflang> <em> <strong> <cite> <blockquote cite> <code> <ul type> <ol start type> <li> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <s> <sup> <sub> <img src alt data-entity-type data-entity-uuid data-align data-caption> <table> <caption> <tbody> <thead> <tfoot> <th> <td> <tr> <hr> <p> <br> <h1> <pre> <drupal-entity data-* title alt> <drupal-media data-entity-type data-entity-uuid data-align data-caption data-view-mode title alt>'
+            filter_html_help: true
+            filter_html_nofollow: false
+        filter_autop:
+          id: filter_autop
+          provider: filter
+          status: false
+          weight: -43
+          settings: {  }
+        filter_html_escape:
+          id: filter_html_escape
+          provider: filter
+          status: false
+          weight: -44
+          settings: {  }
+        filter_html_image_secure:
+          id: filter_html_image_secure
+          provider: filter
+          status: false
+          weight: -41
+          settings: {  }
+        filter_url:
+          id: filter_url
+          provider: filter
+          status: false
+          weight: -42
+          settings:
+            filter_url_length: 72
+        media_embed:
+          id: media_embed
+          provider: media
+          status: true
+          weight: 100
+          settings:
+            default_view_mode: full__widescreen
+            allowed_media_types:
+              document: document
+              image: image
+              remote_video: remote_video
+              video: video
+            allowed_view_modes:
+              full__no_crop: full__no_crop
+              full__square: full__square
+              full__widescreen: full__widescreen
+              large__no_crop: large__no_crop
+              large__square: large__square
+              large__widescreen: large__widescreen
+              medium__no_crop: medium__no_crop
+              medium__square: medium__square
+              medium__widescreen: medium__widescreen
+              small__no_crop: small__no_crop
+              small__square: small__square
+              small__widescreen: small__widescreen
+  -
+    collection: ''
+    name: image.style.no_crop__1024w
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      name: no_crop__1024w
+      label: 'No crop (1024w)'
+      effects:
+        36780809-0a6a-41f2-8469-fb2d6a0568fa:
+          uuid: 36780809-0a6a-41f2-8469-fb2d6a0568fa
+          id: image_scale
+          weight: 1
+          data:
+            width: 1024
+            height: null
+            upscale: true
+  -
+    collection: ''
+    name: image.style.no_crop__1312w
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      name: no_crop__1312w
+      label: 'No crop (1312w)'
+      effects:
+        1b3a7604-f253-4cd4-8c4b-863db2b3eba9:
+          uuid: 1b3a7604-f253-4cd4-8c4b-863db2b3eba9
+          id: image_scale
+          weight: 1
+          data:
+            width: 1312
+            height: null
+            upscale: true
+  -
+    collection: ''
+    name: image.style.no_crop__1920w
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      name: no_crop__1920w
+      label: 'No crop (1920w)'
+      effects:
+        3a47ada7-acd1-4040-a724-522084f090a9:
+          uuid: 3a47ada7-acd1-4040-a724-522084f090a9
+          id: image_scale
+          weight: 1
+          data:
+            width: 1920
+            height: null
+            upscale: true
+  -
+    collection: ''
+    name: image.style.no_crop__2592w
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      name: no_crop__2592w
+      label: 'No crop (2592w)'
+      effects:
+        21d865c6-e1c0-4ee5-82d3-b4524b4267e2:
+          uuid: 21d865c6-e1c0-4ee5-82d3-b4524b4267e2
+          id: image_scale
+          weight: 1
+          data:
+            width: 2592
+            height: null
+            upscale: true
+  -
+    collection: ''
+    name: image.style.no_crop__384w
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      name: no_crop__384w
+      label: 'No crop (384w)'
+      effects:
+        93cc348c-4dc0-4aca-aabf-5b875debfa20:
+          uuid: 93cc348c-4dc0-4aca-aabf-5b875debfa20
+          id: image_scale
+          weight: 1
+          data:
+            width: 384
+            height: null
+            upscale: true
+  -
+    collection: ''
+    name: image.style.no_crop__768w
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      name: no_crop__768w
+      label: 'No crop (768w)'
+      effects:
+        e35f32ce-bc84-4fa6-88a5-d1139e6b6906:
+          uuid: e35f32ce-bc84-4fa6-88a5-d1139e6b6906
+          id: image_scale
+          weight: 1
+          data:
+            width: 768
+            height: null
+            upscale: true
+  -
+    collection: ''
+    name: image.style.square__1024_x_1024
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - focal_point
+      name: square__1024_x_1024
+      label: 'Square (1024 x 1024)'
+      effects:
+        8fc49002-9d6d-4bd1-a34a-4cc10491d0c1:
+          uuid: 8fc49002-9d6d-4bd1-a34a-4cc10491d0c1
+          id: focal_point_scale_and_crop
+          weight: 1
+          data:
+            width: 1024
+            height: 1024
+            crop_type: focal_point
+  -
+    collection: ''
+    name: image.style.square__1312_x_1312
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - focal_point
+      name: square__1312_x_1312
+      label: 'Square (1312 x 1312)'
+      effects:
+        3f3138ce-8216-4b94-8b94-e5f1dd0bb120:
+          uuid: 3f3138ce-8216-4b94-8b94-e5f1dd0bb120
+          id: focal_point_scale_and_crop
+          weight: 1
+          data:
+            width: 1312
+            height: 1312
+            crop_type: focal_point
+  -
+    collection: ''
+    name: image.style.square__1920_x_1920
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - focal_point
+      name: square__1920_x_1920
+      label: 'Square (1920 x 1920)'
+      effects:
+        2ec19f28-2368-443b-854b-0d43a09cafff:
+          uuid: 2ec19f28-2368-443b-854b-0d43a09cafff
+          id: focal_point_scale_and_crop
+          weight: 1
+          data:
+            width: 1920
+            height: 1920
+            crop_type: focal_point
+  -
+    collection: ''
+    name: image.style.square__2592_x_2592
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - focal_point
+      name: square__2592_x_2592
+      label: 'Square (2592 x 2592)'
+      effects:
+        130dfc25-e157-4ded-94ea-ca5adfb2fa88:
+          uuid: 130dfc25-e157-4ded-94ea-ca5adfb2fa88
+          id: focal_point_scale_and_crop
+          weight: 1
+          data:
+            width: 2592
+            height: 2592
+            crop_type: focal_point
+  -
+    collection: ''
+    name: image.style.square__384_x_384
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - focal_point
+      name: square__384_x_384
+      label: 'Square (384 x 384)'
+      effects:
+        393b0268-e8ff-47ed-ae21-b99ba666e36d:
+          uuid: 393b0268-e8ff-47ed-ae21-b99ba666e36d
+          id: focal_point_scale_and_crop
+          weight: 1
+          data:
+            width: 384
+            height: 384
+            crop_type: focal_point
+  -
+    collection: ''
+    name: image.style.square__768_x_768
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - focal_point
+      name: square__768_x_768
+      label: 'Square (768 x 768)'
+      effects:
+        c27b2a0f-ac9f-4220-8883-358d64639f4a:
+          uuid: c27b2a0f-ac9f-4220-8883-358d64639f4a
+          id: focal_point_scale_and_crop
+          weight: 1
+          data:
+            width: 768
+            height: 768
+            crop_type: focal_point
+  -
+    collection: ''
+    name: image.style.widescreen__1024_x_576
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - focal_point
+      name: widescreen__1024_x_576
+      label: 'Widescreen (1024 x 576)'
+      effects:
+        01f11a49-cea7-41e6-9d99-64ba8f07b92b:
+          uuid: 01f11a49-cea7-41e6-9d99-64ba8f07b92b
+          id: focal_point_scale_and_crop
+          weight: 1
+          data:
+            width: 1024
+            height: 576
+            crop_type: focal_point
+  -
+    collection: ''
+    name: image.style.widescreen__1312_x_738
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - focal_point
+      name: widescreen__1312_x_738
+      label: 'Widescreen (1312 x 738)'
+      effects:
+        77f284a5-6035-4969-b4aa-6071b824f711:
+          uuid: 77f284a5-6035-4969-b4aa-6071b824f711
+          id: focal_point_scale_and_crop
+          weight: 1
+          data:
+            width: 1312
+            height: 738
+            crop_type: focal_point
+  -
+    collection: ''
+    name: image.style.widescreen__1920_x_1080
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - focal_point
+      name: widescreen__1920_x_1080
+      label: 'Widescreen (1920 x 1080)'
+      effects:
+        88ff3934-b91f-4273-add8-088d11e83ae7:
+          uuid: 88ff3934-b91f-4273-add8-088d11e83ae7
+          id: focal_point_scale_and_crop
+          weight: 1
+          data:
+            width: 1920
+            height: 1080
+            crop_type: focal_point
+  -
+    collection: ''
+    name: image.style.widescreen__2592_x_1458
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - focal_point
+      name: widescreen__2592_x_1458
+      label: 'Widescreen (2592 x 1458)'
+      effects:
+        b36cef6b-3ba8-485a-a6c9-1406e23009ee:
+          uuid: b36cef6b-3ba8-485a-a6c9-1406e23009ee
+          id: focal_point_scale_and_crop
+          weight: 1
+          data:
+            width: 2592
+            height: 1458
+            crop_type: focal_point
+  -
+    collection: ''
+    name: image.style.widescreen__384_x_216
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - focal_point
+      name: widescreen__384_x_216
+      label: 'Widescreen (384 x 216)'
+      effects:
+        c43de710-cb23-4077-b67f-0e657f733d49:
+          uuid: c43de710-cb23-4077-b67f-0e657f733d49
+          id: focal_point_scale_and_crop
+          weight: 1
+          data:
+            width: 384
+            height: 216
+            crop_type: focal_point
+  -
+    collection: ''
+    name: image.style.widescreen__768_x_432
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - focal_point
+      name: widescreen__768_x_432
+      label: 'Widescreen (768 x 432)'
+      effects:
+        11c74bad-daf1-4ce3-9869-a98c4ac2aae4:
+          uuid: 11c74bad-daf1-4ce3-9869-a98c4ac2aae4
+          id: focal_point_scale_and_crop
+          weight: 1
+          data:
+            width: 768
+            height: 432
+            crop_type: focal_point
+  -
+    collection: ''
+    name: pathauto.pattern.media
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - media
+      id: media
+      label: Media
+      type: 'canonical_entities:media'
+      pattern: 'media/[media:bundle:target_id]/[media:mid]'
+      selection_criteria: {  }
+      selection_logic: and
+      weight: -5
+      relationships: {  }
+  -
+    collection: ''
+    name: responsive_image.styles.full__no_crop
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - image.style.no_crop__1024w
+          - image.style.no_crop__1312w
+          - image.style.no_crop__1920w
+          - image.style.no_crop__2592w
+          - image.style.no_crop__384w
+          - image.style.no_crop__768w
+      id: full__no_crop
+      label: 'Full - No crop'
+      image_style_mappings:
+        -
+          breakpoint_id: responsive_image.viewport_sizing
+          multiplier: 1x
+          image_mapping_type: sizes
+          image_mapping:
+            sizes: '(min-width:1310px) 1310px, 100vw'
+            sizes_image_styles:
+              - no_crop__1024w
+              - no_crop__1312w
+              - no_crop__1920w
+              - no_crop__2592w
+              - no_crop__384w
+              - no_crop__768w
+      breakpoint_group: responsive_image
+      fallback_image_style: no_crop__1024w
+  -
+    collection: ''
+    name: responsive_image.styles.full__square
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - image.style.square__1024_x_1024
+          - image.style.square__1312_x_1312
+          - image.style.square__1920_x_1920
+          - image.style.square__2592_x_2592
+          - image.style.square__384_x_384
+          - image.style.square__768_x_768
+      id: full__square
+      label: 'Full - Square'
+      image_style_mappings:
+        -
+          breakpoint_id: responsive_image.viewport_sizing
+          multiplier: 1x
+          image_mapping_type: sizes
+          image_mapping:
+            sizes: '(min-width:1310px) 1310px, 100vw'
+            sizes_image_styles:
+              - square__1024_x_1024
+              - square__1312_x_1312
+              - square__1920_x_1920
+              - square__2592_x_2592
+              - square__384_x_384
+              - square__768_x_768
+      breakpoint_group: responsive_image
+      fallback_image_style: square__1024_x_1024
+  -
+    collection: ''
+    name: responsive_image.styles.full__widescreen
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - image.style.widescreen__1024_x_576
+          - image.style.widescreen__1312_x_738
+          - image.style.widescreen__1920_x_1080
+          - image.style.widescreen__2592_x_1458
+          - image.style.widescreen__384_x_216
+          - image.style.widescreen__768_x_432
+      id: full__widescreen
+      label: 'Full - Widescreen'
+      image_style_mappings:
+        -
+          breakpoint_id: responsive_image.viewport_sizing
+          multiplier: 1x
+          image_mapping_type: sizes
+          image_mapping:
+            sizes: '(min-width:1310px) 1310px, 100vw'
+            sizes_image_styles:
+              - widescreen__1024_x_576
+              - widescreen__1312_x_738
+              - widescreen__1920_x_1080
+              - widescreen__2592_x_1458
+              - widescreen__384_x_216
+              - widescreen__768_x_432
+      breakpoint_group: responsive_image
+      fallback_image_style: widescreen__1024_x_576
+  -
+    collection: ''
+    name: responsive_image.styles.large__no_crop
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - image.style.no_crop__1024w
+          - image.style.no_crop__1312w
+          - image.style.no_crop__1920w
+          - image.style.no_crop__2592w
+          - image.style.no_crop__384w
+          - image.style.no_crop__768w
+      id: large__no_crop
+      label: 'Large - No crop'
+      image_style_mappings:
+        -
+          breakpoint_id: responsive_image.viewport_sizing
+          multiplier: 1x
+          image_mapping_type: sizes
+          image_mapping:
+            sizes: '(min-width: 768px) calc(50vw - 3.75em), 100vw'
+            sizes_image_styles:
+              - no_crop__1024w
+              - no_crop__1312w
+              - no_crop__1920w
+              - no_crop__2592w
+              - no_crop__384w
+              - no_crop__768w
+      breakpoint_group: responsive_image
+      fallback_image_style: no_crop__768w
+  -
+    collection: ''
+    name: responsive_image.styles.large__square
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - image.style.square__1024_x_1024
+          - image.style.square__1312_x_1312
+          - image.style.square__1920_x_1920
+          - image.style.square__2592_x_2592
+          - image.style.square__384_x_384
+          - image.style.square__768_x_768
+      id: large__square
+      label: 'Large - Square'
+      image_style_mappings:
+        -
+          breakpoint_id: responsive_image.viewport_sizing
+          multiplier: 1x
+          image_mapping_type: sizes
+          image_mapping:
+            sizes: '(min-width: 768px) calc(50vw - 3.75em), 100vw'
+            sizes_image_styles:
+              - square__1024_x_1024
+              - square__1312_x_1312
+              - square__1920_x_1920
+              - square__2592_x_2592
+              - square__384_x_384
+              - square__768_x_768
+      breakpoint_group: responsive_image
+      fallback_image_style: square__768_x_768
+  -
+    collection: ''
+    name: responsive_image.styles.large__widescreen
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - image.style.widescreen__1024_x_576
+          - image.style.widescreen__1312_x_738
+          - image.style.widescreen__1920_x_1080
+          - image.style.widescreen__2592_x_1458
+          - image.style.widescreen__384_x_216
+          - image.style.widescreen__768_x_432
+      id: large__widescreen
+      label: 'Large - Widescreen'
+      image_style_mappings:
+        -
+          breakpoint_id: responsive_image.viewport_sizing
+          multiplier: 1x
+          image_mapping_type: sizes
+          image_mapping:
+            sizes: '(min-width: 768px) calc(50vw - 3.75em), 100vw'
+            sizes_image_styles:
+              - widescreen__1024_x_576
+              - widescreen__1312_x_738
+              - widescreen__1920_x_1080
+              - widescreen__2592_x_1458
+              - widescreen__384_x_216
+              - widescreen__768_x_432
+      breakpoint_group: responsive_image
+      fallback_image_style: widescreen__768_x_432
+  -
+    collection: ''
+    name: responsive_image.styles.medium__no_crop
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - image.style.no_crop__1024w
+          - image.style.no_crop__1312w
+          - image.style.no_crop__1920w
+          - image.style.no_crop__2592w
+          - image.style.no_crop__384w
+          - image.style.no_crop__768w
+      id: medium__no_crop
+      label: 'Medium - No crop'
+      image_style_mappings:
+        -
+          breakpoint_id: responsive_image.viewport_sizing
+          multiplier: 1x
+          image_mapping_type: sizes
+          image_mapping:
+            sizes: '(min-width: 1024px) calc(33.33vw - 5em), (min-width: 768px) calc(50vw - 3.75em), 100vw'
+            sizes_image_styles:
+              - no_crop__1024w
+              - no_crop__1312w
+              - no_crop__1920w
+              - no_crop__2592w
+              - no_crop__384w
+              - no_crop__768w
+      breakpoint_group: responsive_image
+      fallback_image_style: no_crop__768w
+  -
+    collection: ''
+    name: responsive_image.styles.medium__square
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - image.style.square__1024_x_1024
+          - image.style.square__1312_x_1312
+          - image.style.square__1920_x_1920
+          - image.style.square__2592_x_2592
+          - image.style.square__384_x_384
+          - image.style.square__768_x_768
+      id: medium__square
+      label: 'Medium - Square'
+      image_style_mappings:
+        -
+          breakpoint_id: responsive_image.viewport_sizing
+          multiplier: 1x
+          image_mapping_type: sizes
+          image_mapping:
+            sizes: '(min-width: 1024px) calc(33.33vw - 5em), (min-width: 768px) calc(50vw - 3.75em), 100vw'
+            sizes_image_styles:
+              - square__1024_x_1024
+              - square__1312_x_1312
+              - square__1920_x_1920
+              - square__2592_x_2592
+              - square__384_x_384
+              - square__768_x_768
+      breakpoint_group: responsive_image
+      fallback_image_style: square__768_x_768
+  -
+    collection: ''
+    name: responsive_image.styles.medium__widescreen
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - image.style.widescreen__1024_x_576
+          - image.style.widescreen__1312_x_738
+          - image.style.widescreen__1920_x_1080
+          - image.style.widescreen__2592_x_1458
+          - image.style.widescreen__384_x_216
+          - image.style.widescreen__768_x_432
+      id: medium__widescreen
+      label: 'Medium - Widescreen'
+      image_style_mappings:
+        -
+          breakpoint_id: responsive_image.viewport_sizing
+          multiplier: 1x
+          image_mapping_type: sizes
+          image_mapping:
+            sizes: '(min-width: 1024px) calc(33.33vw - 5em), (min-width: 768px) calc(50vw - 3.75em), 100vw'
+            sizes_image_styles:
+              - widescreen__1024_x_576
+              - widescreen__1312_x_738
+              - widescreen__1920_x_1080
+              - widescreen__2592_x_1458
+              - widescreen__384_x_216
+              - widescreen__768_x_432
+      breakpoint_group: responsive_image
+      fallback_image_style: widescreen__768_x_432
+  -
+    collection: ''
+    name: responsive_image.styles.small__no_crop
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - image.style.no_crop__1024w
+          - image.style.no_crop__1312w
+          - image.style.no_crop__1920w
+          - image.style.no_crop__2592w
+          - image.style.no_crop__384w
+          - image.style.no_crop__768w
+      id: small__no_crop
+      label: 'Small - No crop'
+      image_style_mappings:
+        -
+          breakpoint_id: responsive_image.viewport_sizing
+          multiplier: 1x
+          image_mapping_type: sizes
+          image_mapping:
+            sizes: '(min-width: 1024px) calc(25vw - 5em), (min-width: 768px) calc(50vw - 3.75em), 100vw'
+            sizes_image_styles:
+              - no_crop__1024w
+              - no_crop__1312w
+              - no_crop__1920w
+              - no_crop__2592w
+              - no_crop__384w
+              - no_crop__768w
+      breakpoint_group: responsive_image
+      fallback_image_style: no_crop__768w
+  -
+    collection: ''
+    name: responsive_image.styles.small__square
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - image.style.square__1024_x_1024
+          - image.style.square__1312_x_1312
+          - image.style.square__1920_x_1920
+          - image.style.square__2592_x_2592
+          - image.style.square__384_x_384
+          - image.style.square__768_x_768
+      id: small__square
+      label: 'Small - Square'
+      image_style_mappings:
+        -
+          breakpoint_id: responsive_image.viewport_sizing
+          multiplier: 1x
+          image_mapping_type: sizes
+          image_mapping:
+            sizes: '(min-width: 1024px) calc(25vw - 5em), (min-width: 768px) calc(50vw - 3.75em), 100vw'
+            sizes_image_styles:
+              - square__1024_x_1024
+              - square__1312_x_1312
+              - square__1920_x_1920
+              - square__2592_x_2592
+              - square__384_x_384
+              - square__768_x_768
+      breakpoint_group: responsive_image
+      fallback_image_style: square__768_x_768
+  -
+    collection: ''
+    name: responsive_image.styles.small__widescreen
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        config:
+          - image.style.widescreen__1024_x_576
+          - image.style.widescreen__1312_x_738
+          - image.style.widescreen__1920_x_1080
+          - image.style.widescreen__2592_x_1458
+          - image.style.widescreen__384_x_216
+          - image.style.widescreen__768_x_432
+      id: small__widescreen
+      label: 'Small - Widescreen'
+      image_style_mappings:
+        -
+          breakpoint_id: responsive_image.viewport_sizing
+          multiplier: 1x
+          image_mapping_type: sizes
+          image_mapping:
+            sizes: '(min-width: 1024px) calc(25vw - 5em), (min-width: 768px) calc(50vw - 3.75em), 100vw'
+            sizes_image_styles:
+              - widescreen__1024_x_576
+              - widescreen__1312_x_738
+              - widescreen__1920_x_1080
+              - widescreen__2592_x_1458
+              - widescreen__384_x_216
+              - widescreen__768_x_432
+      breakpoint_group: responsive_image
+      fallback_image_style: widescreen__768_x_432

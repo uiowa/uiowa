@@ -1,11 +1,11 @@
-uuid: d074d1ef-cf7b-4f3d-a6f7-0821ba6ca502
+uuid: dea3e44d-c8f6-4054-a212-c2e050a931d1
 langcode: en
 status: true
 dependencies:
   module:
     - user
 _core:
-  default_config_hash: o_8fSWHZOVIbydZACGsSX09DtuJhqkRmNOzcVj-4bQI
+  default_config_hash: nCa1oy25w2fh-nk_iQ7IJFQwQIcKxrV_5EQW2y8dzPc
 id: who_s_new
 label: 'Who''s new'
 module: user
@@ -13,7 +13,6 @@ description: 'Shows a list of the newest user accounts on the site.'
 tag: default
 base_table: users_field_data
 base_field: uid
-core: 8.x
 display:
   default:
     display_plugin: default
@@ -98,6 +97,8 @@ display:
           id: status
           expose:
             operator: '0'
+            operator_limit_selection: false
+            operator_list: {  }
           group: 1
           plugin_id: boolean
           entity_type: user
@@ -129,6 +130,8 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''

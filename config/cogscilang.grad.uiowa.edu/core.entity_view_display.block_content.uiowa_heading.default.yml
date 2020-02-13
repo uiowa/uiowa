@@ -1,0 +1,33 @@
+uuid: 51a6e6ce-9a30-4b35-bd54-87529b1a61b0
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_heading
+    - field.field.block_content.uiowa_heading.field_uiowa_heading_subheading
+    - field.field.block_content.uiowa_heading.field_uiowa_heading_title
+  module:
+    - heading
+_core:
+  default_config_hash: lBU3IO2QX-ac9wS9gi8hHFTFgZgnB6hbVJp394nehSo
+id: block_content.uiowa_heading.default
+targetEntityType: block_content
+bundle: uiowa_heading
+mode: default
+content:
+  field_uiowa_heading_subheading:
+    weight: 2
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_uiowa_heading_title:
+    weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: heading
+    region: content
+hidden: {  }
