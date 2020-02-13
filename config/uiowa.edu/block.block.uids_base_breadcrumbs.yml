@@ -1,0 +1,28 @@
+uuid: c1dae10e-d30a-43c5-bf91-963117c9988b
+langcode: en
+status: true
+dependencies:
+  module:
+    - layout_builder_custom
+    - system
+  theme:
+    - uids_base
+_core:
+  default_config_hash: 0iE255q6mKxBVcoEJuMKgszodvHaIhZsMeOHpwKmzVs
+id: uids_base_breadcrumbs
+theme: uids_base
+region: breadcrumb
+weight: 0
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  provider: system
+  label_display: '0'
+visibility:
+  layout_builder_active:
+    id: layout_builder_active
+    enabled: 1
+    negate: false
+    context_mapping: {  }
