@@ -337,12 +337,6 @@ $sites['foplanning-and-development.dev.drupal.uiowa.edu'] = 'planning-and-develo
 $sites['foplanning-and-development.stage.drupal.uiowa.edu'] = 'planning-and-development.fo.uiowa.edu';
 $sites['foplanning-and-development.prod.drupal.uiowa.edu'] = 'planning-and-development.fo.uiowa.edu';
 
-// Directory aliases for advisingcouncil.uiowa.edu.
-$sites['advisingcouncil.local.drupal.uiowa.edu'] = 'advisingcouncil.uiowa.edu';
-$sites['advisingcouncil.dev.drupal.uiowa.edu'] = 'advisingcouncil.uiowa.edu';
-$sites['advisingcouncil.stage.drupal.uiowa.edu'] = 'advisingcouncil.uiowa.edu';
-$sites['advisingcouncil.prod.drupal.uiowa.edu'] = 'advisingcouncil.uiowa.edu';
-
 // Directory aliases for uira.org.uiowa.edu.
 $sites['orguira.local.drupal.uiowa.edu'] = 'uira.org.uiowa.edu';
 $sites['orguira.dev.drupal.uiowa.edu'] = 'uira.org.uiowa.edu';
