@@ -23,6 +23,10 @@ Follow the [BLT docs](https://docs.acquia.com/blt/install/local-development/) to
 
 All BLT commands should be run on the VM. You can SSH into the VM using `vagrant ssh`. See the [Vagrant docs](https://www.vagrantup.com/docs/cli/) for basic CLI usage.
 
+If you have troubles with an error on DrupalVM related to /tmp/xdebug.log, https://github.com/geerlingguy/drupal-vm/issues/1813
+
+**TLDR;** Run `sudo chmod 766 /tmp/xdebug.log` in the VM.
+
 ### BLT Configuration
 Make sure you have an [Acquia Cloud key and secret](https://docs.acquia.com/acquia-cloud/develop/api/auth/) saved in the `blt/local.blt.yml` file. This file is ignored by Git. Be sure you do not accidentally commit your credentials to the `blt/blt.yml` file which is tracked in Git. Do not share your key or secret with anyone.
 ```
