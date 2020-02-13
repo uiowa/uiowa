@@ -39,7 +39,7 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     '#options' => [
       'toggle' => t('Toggle navigation'),
       'horizontal' => t('Horizontal navigation'),
-      'mega' => t('Mega menu navigation')
+      'mega' => t('Mega menu navigation'),
     ],
     '#default_value' => theme_get_setting('header.nav_style'),
   ];

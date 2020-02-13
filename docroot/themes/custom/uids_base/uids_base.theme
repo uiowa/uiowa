@@ -69,8 +69,11 @@ function uids_base_preprocess_page(&$variables) {
   $variables['uiowa_search_form'] = FALSE;
 
   // Add a variable for the search form.
-  // @todo Check for uiowa_search and get the form from there, if possible.
-  if (\Drupal::service('module_handler')->moduleExists('uiowa_bar')) {
+  // @todo Test with uiowa_search enabled.
+  if (\Drupal::service('module_handler')->moduleExists('uiowa_search')) {
+    $variables['uiowa_search_form'] = \Drupal::formBuilder()->getForm('Drupal\uiowa_search\Form\SearchForm');
+  }
+  elseif (\Drupal::service('module_handler')->moduleExists('uiowa_bar')) {
     $variables['uiowa_search_form'] = \Drupal::formBuilder()->getForm('Drupal\uiowa_bar\Form\SearchForm');
   }
 
@@ -142,7 +145,6 @@ function uids_base_preprocess_form(&$variables) {
  */
 function uids_base_preprocess_input(&$variables) {
   if ($variables['element']['#name'] === 'search-terms') {
-    // @todo Set to custom template.
     $variables['attributes']['class'] = [];
   }
 }
@@ -156,6 +158,10 @@ function uids_base_form_alter(&$form, $form_state, $form_id) {
     $form['layout_builder_message']['#attributes']['class'][] = 'uids-content';
   }
   if (strpos($form_id, 'uiowa_bar_search_form') !== FALSE) {
+    // @todo Update these classes to 'uids-*' when that change is made in UIDS.
+    $form['#attributes']['class'][] = 'hds-content hds-search';
+  }
+  if (strpos($form_id, 'uiowa_search_form') !== FALSE) {
     // @todo Update these classes to 'uids-*' when that change is made in UIDS.
     $form['#attributes']['class'][] = 'hds-content hds-search';
   }
