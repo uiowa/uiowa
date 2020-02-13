@@ -461,4 +461,32 @@ EOD;
     $this->setSchemaVersion(1011);
   }
 
+  /**
+   * Update 1012.
+   *
+   * @Update(
+   *   version = "1012",
+   *   description = "Update collegiate sites cm.stragety to core-only."
+   * )
+   */
+  protected function update1012() {
+    $root = $this->getConfigValue('repo.root');
+    $sites = Multisite::getAllSites($root);
+
+    foreach ($sites as $site) {
+      $this->switchSiteContext($site);
+      $profile = $this->getConfigValue('project.profile.name');
+      $strategy = $this->getConfigValue('cm.strategy');
+
+      if ($profile == 'collegiate' && $strategy != 'core-only') {
+        $file = "{$root}/docroot/sites/{$site}/blt.yml";
+        $yaml = YamlMunge::parseFile($file);
+        $yaml['cm']['strategy'] = 'core-only';
+        file_put_contents($file, Yaml::dump($yaml, 10, 2));
+      }
+    }
+
+    $this->setSchemaVersion(1012);
+  }
+
 }

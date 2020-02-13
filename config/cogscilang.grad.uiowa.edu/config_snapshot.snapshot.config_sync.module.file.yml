@@ -1,4 +1,4 @@
-uuid: 6b312815-002a-43ab-8356-2ade8a00f8db
+uuid: 6bc05ac4-cfae-489b-a8e6-94aea653bc5f
 langcode: en
 status: true
 dependencies:
@@ -36,7 +36,6 @@ items:
       tag: default
       base_table: file_managed
       base_field: fid
-      core: 8.x
       display:
         default:
           display_plugin: default
@@ -620,6 +619,8 @@ items:
                     authenticated: authenticated
                     anonymous: '0'
                     administrator: '0'
+                  operator_limit_selection: false
+                  operator_list: {  }
                 is_grouped: false
                 group_info:
                   label: ''
@@ -660,6 +661,8 @@ items:
                     authenticated: authenticated
                     anonymous: '0'
                     administrator: '0'
+                  operator_limit_selection: false
+                  operator_list: {  }
                 is_grouped: false
                 group_info:
                   label: ''
@@ -701,6 +704,8 @@ items:
                     anonymous: '0'
                     administrator: '0'
                   reduce: false
+                  operator_limit_selection: false
+                  operator_list: {  }
                 is_grouped: false
                 group_info:
                   label: ''
@@ -748,7 +753,7 @@ items:
               - url
               - url.query_args
               - user.permissions
-            max-age: 0
+            max-age: -1
             tags: {  }
         page_1:
           display_plugin: page
@@ -785,7 +790,7 @@ items:
               - url
               - url.query_args
               - user.permissions
-            max-age: 0
+            max-age: -1
             tags: {  }
         page_2:
           display_plugin: page
@@ -1142,5 +1147,5 @@ items:
               - url
               - url.query_args
               - user.permissions
-            max-age: 0
+            max-age: -1
             tags: {  }

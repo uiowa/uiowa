@@ -1,4 +1,4 @@
-uuid: c220d21f-82b4-442c-b60d-77b3ddf4eeb0
+uuid: edbe54f0-72a1-4f9f-8348-fbd40076ea61
 langcode: en
 status: false
 dependencies:
@@ -8,7 +8,7 @@ dependencies:
     - node
     - user
 _core:
-  default_config_hash: _12Vkw1VGBz_s0_W_LLVCrBPpioNSnB6zcd1lUAQubM
+  default_config_hash: Z1Lg95xnf11BTHIugkzple_pdxZdECiqLRcrLVo3bcw
 id: glossary
 label: Glossary
 module: node
@@ -16,7 +16,6 @@ description: 'All content, by letter.'
 tag: default
 base_table: node_field_data
 base_field: nid
-core: '8'
 display:
   default:
     id: default
@@ -336,6 +335,8 @@ display:
             remember_roles:
               authenticated: authenticated
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -360,7 +361,7 @@ display:
         - url.query_args
         - 'user.node_grants:view'
         - user.permissions
-      max-age: 0
+      max-age: -1
       tags: {  }
   attachment_1:
     id: attachment_1
@@ -428,7 +429,7 @@ display:
         - url.query_args
         - 'user.node_grants:view'
         - user.permissions
-      max-age: 0
+      max-age: -1
       tags: {  }
   page_1:
     id: page_1
@@ -455,5 +456,5 @@ display:
         - url.query_args
         - 'user.node_grants:view'
         - user.permissions
-      max-age: 0
+      max-age: -1
       tags: {  }

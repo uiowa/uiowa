@@ -1,16 +1,15 @@
-uuid: 26cd999f-a4d6-44bd-84c3-b189be12f336
+uuid: 9db61844-44d7-4111-b5b8-bbfa051ce222
 langcode: en
 status: true
 dependencies:
   config:
     - core.entity_view_mode.media.embedded
     - field.field.media.document.field_document
-    - field.field.media.document.field_media_in_library
     - media.type.document
   module:
     - file
 _core:
-  default_config_hash: qwXr3yVUHU3LwMQ1n9mTyDj2s7sUqpNtasS-nSu86rE
+  default_config_hash: E-4ADL6kIBXirvxE4xe8D3EfgQFu6K4uwZH9aCzoR0o
 id: media.document.embedded
 targetEntityType: media
 bundle: document
@@ -25,7 +24,6 @@ content:
     region: content
 hidden:
   created: true
-  field_media_in_library: true
   name: true
   thumbnail: true
   uid: true
