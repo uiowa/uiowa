@@ -1,13 +1,14 @@
 #ighn-person-group .fieldset-wrapper {
   border: 1px #ccc solid;
-  max-width: 33.33%;
+  max-width: 100%;
   position: relative;
   
 }
-article.contextual-region.node.node--type-ighn-person.node--promoted.node--view-mode-teaser {
-  border: 1px #ccc solid;
+article.contextual-region.node.node--type-ighn-person.node--promoted.node--view-mode-teaser  {
   width: 100%;
-  margin: 1%;
+}
+article.contextual-region.node.node--type-ighn-person.node--promoted.node--view-mode-teaser .node__content .node__content {
+  width: 110%;
 }
 
 .field--name-field-ighn-person-first-name, .field--name-field-ighn-person-last-name, .field--name-field-ighn-person-credentials {
@@ -18,11 +19,19 @@ article.contextual-region.node.node--type-ighn-person.node--promoted.node--view-
 
 .field.field--name-field-ighn-person-language.field--type-entity-reference.field--label-visually_hidden .field__items .field__item, .field.field--name-field-ighn-person-focus-areas.field--type-entity-reference.field--label-visually_hidden .field__items .field__item, .field.field--name-field-ighn-person-global-regions.field--type-entity-reference.field--label-visually_hidden .field__items .field__item {
   display: inline-flex;
+  padding: 1%;
 }
 
-#ighn-person-group legend {
+#ighn-person-group legend, span.h5.field.field--name-title.field--type-string.field--label-hidden {
   display: none;
 }
+.field--name-field-ighn-person-biography.field--type-text-long.field--label-visually_hidden, .field.field--name-field-ighn-person-cv-link.field--type-link.field--label-visually_hidden {
+  padding: 1%;
+}
+.ighn-person.contextual-region.view.view-ighn-person-view.view-id-ighn_person_view.view-display-id-ighn_person {
+  border: 3px #ccc solid;
+}
+
 #ighn-person-main-info {
   background: rgb(236, 236, 236);
   left: 0;
@@ -37,4 +46,8 @@ article.contextual-region.node.node--type-ighn-person.node--promoted.node--view-
   -ms-transition: all 0.3s;
   -o-transition: all 0.3s;
   transition: all 0.3s;
+}
+
+.col-md-10{
+  max-width: 33% !important;
 }
