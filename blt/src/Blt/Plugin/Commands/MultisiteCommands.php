@@ -33,6 +33,8 @@ class MultisiteCommands extends BltTasks {
    * @command uiowa:multisite:noop
    *
    * @aliases umn
+   *
+   * @hidden
    */
   public function noop() {
 
