@@ -1,4 +1,4 @@
-uuid: d02a93d8-1220-4425-9166-14ed07936afc
+uuid: 08f19b20-19bf-4ca9-b21e-9fded71a8df1
 langcode: en
 status: true
 dependencies:
@@ -6,7 +6,7 @@ dependencies:
     - file
     - user
 _core:
-  default_config_hash: rRWxAX-IQkJ5viACQRovRkC784EyCl9493GU_G23n2Q
+  default_config_hash: gLmoA0yjvlXfMRp9ihOhRKSSQQlbdLdvpDkbVwkYPrg
 id: files
 label: Files
 module: file
@@ -14,7 +14,6 @@ description: 'Find and manage files.'
 tag: default
 base_table: file_managed
 base_field: fid
-core: 8.x
 display:
   default:
     display_plugin: default
@@ -598,6 +597,8 @@ display:
               authenticated: authenticated
               anonymous: '0'
               administrator: '0'
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -638,6 +639,8 @@ display:
               authenticated: authenticated
               anonymous: '0'
               administrator: '0'
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -679,6 +682,8 @@ display:
               anonymous: '0'
               administrator: '0'
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -726,7 +731,7 @@ display:
         - url
         - url.query_args
         - user.permissions
-      max-age: 0
+      max-age: -1
       tags: {  }
   page_1:
     display_plugin: page
@@ -763,7 +768,7 @@ display:
         - url
         - url.query_args
         - user.permissions
-      max-age: 0
+      max-age: -1
       tags: {  }
   page_2:
     display_plugin: page
@@ -1120,5 +1125,5 @@ display:
         - url
         - url.query_args
         - user.permissions
-      max-age: 0
+      max-age: -1
       tags: {  }

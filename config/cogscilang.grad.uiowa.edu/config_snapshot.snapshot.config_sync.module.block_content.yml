@@ -1,4 +1,4 @@
-uuid: 4c4bfea4-e5f0-4756-bf61-9f38e6a20d2f
+uuid: 0e0a1c8d-d181-4ed9-a40b-10e772c878d5
 langcode: en
 status: true
 dependencies:
@@ -61,7 +61,6 @@ items:
       tag: default
       base_table: block_content_field_data
       base_field: id
-      core: 8.x
       display:
         default:
           display_plugin: default
@@ -425,6 +424,8 @@ items:
                     authenticated: authenticated
                     anonymous: '0'
                     administrator: '0'
+                  operator_limit_selection: false
+                  operator_list: {  }
                 is_grouped: false
                 group_info:
                   label: ''
@@ -466,6 +467,8 @@ items:
                     anonymous: '0'
                     administrator: '0'
                   reduce: false
+                  operator_limit_selection: false
+                  operator_list: {  }
                 is_grouped: false
                 group_info:
                   label: ''
@@ -504,6 +507,8 @@ items:
                   multiple: false
                   remember_roles:
                     authenticated: authenticated
+                  operator_limit_selection: false
+                  operator_list: {  }
                 is_grouped: false
                 group_info:
                   label: ''
@@ -556,7 +561,7 @@ items:
               - url
               - url.query_args
               - user.permissions
-            max-age: 0
+            max-age: -1
             tags: {  }
         page_1:
           display_plugin: page
@@ -581,5 +586,5 @@ items:
               - url
               - url.query_args
               - user.permissions
-            max-age: 0
+            max-age: -1
             tags: {  }
