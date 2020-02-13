@@ -169,12 +169,6 @@ $sites['registrar.dev.drupal.uiowa.edu'] = 'registrar.uiowa.edu';
 $sites['registrar.stage.drupal.uiowa.edu'] = 'registrar.uiowa.edu';
 $sites['registrar.prod.drupal.uiowa.edu'] = 'registrar.uiowa.edu';
 
-// Directory aliases for cbig.engineering.uiowa.edu.
-$sites['engineeringcbig.local.drupal.uiowa.edu'] = 'cbig.engineering.uiowa.edu';
-$sites['engineeringcbig.dev.drupal.uiowa.edu'] = 'cbig.engineering.uiowa.edu';
-$sites['engineeringcbig.stage.drupal.uiowa.edu'] = 'cbig.engineering.uiowa.edu';
-$sites['engineeringcbig.prod.drupal.uiowa.edu'] = 'cbig.engineering.uiowa.edu';
-
 // Directory aliases for looc.course.uiowa.edu.
 $sites['courselooc.local.drupal.uiowa.edu'] = 'looc.course.uiowa.edu';
 $sites['courselooc.dev.drupal.uiowa.edu'] = 'looc.course.uiowa.edu';
@@ -336,12 +330,6 @@ $sites['foplanning-and-development.local.drupal.uiowa.edu'] = 'planning-and-deve
 $sites['foplanning-and-development.dev.drupal.uiowa.edu'] = 'planning-and-development.fo.uiowa.edu';
 $sites['foplanning-and-development.stage.drupal.uiowa.edu'] = 'planning-and-development.fo.uiowa.edu';
 $sites['foplanning-and-development.prod.drupal.uiowa.edu'] = 'planning-and-development.fo.uiowa.edu';
-
-// Directory aliases for advisingcouncil.uiowa.edu.
-$sites['advisingcouncil.local.drupal.uiowa.edu'] = 'advisingcouncil.uiowa.edu';
-$sites['advisingcouncil.dev.drupal.uiowa.edu'] = 'advisingcouncil.uiowa.edu';
-$sites['advisingcouncil.stage.drupal.uiowa.edu'] = 'advisingcouncil.uiowa.edu';
-$sites['advisingcouncil.prod.drupal.uiowa.edu'] = 'advisingcouncil.uiowa.edu';
 
 // Directory aliases for uira.org.uiowa.edu.
 $sites['orguira.local.drupal.uiowa.edu'] = 'uira.org.uiowa.edu';
@@ -942,3 +930,9 @@ $sites['educationaccel.local.drupal.uiowa.edu'] = 'accel.education.uiowa.edu';
 $sites['educationaccel.dev.drupal.uiowa.edu'] = 'accel.education.uiowa.edu';
 $sites['educationaccel.stage.drupal.uiowa.edu'] = 'accel.education.uiowa.edu';
 $sites['educationaccel.prod.drupal.uiowa.edu'] = 'accel.education.uiowa.edu';
+
+// Directory aliases for trans-resources.org.uiowa.edu.
+$sites['orgtrans-resources.local.drupal.uiowa.edu'] = 'trans-resources.org.uiowa.edu';
+$sites['orgtrans-resources.dev.drupal.uiowa.edu'] = 'trans-resources.org.uiowa.edu';
+$sites['orgtrans-resources.stage.drupal.uiowa.edu'] = 'trans-resources.org.uiowa.edu';
+$sites['orgtrans-resources.prod.drupal.uiowa.edu'] = 'trans-resources.org.uiowa.edu';
