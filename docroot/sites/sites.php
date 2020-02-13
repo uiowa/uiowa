@@ -930,3 +930,9 @@ $sites['educationaccel.local.drupal.uiowa.edu'] = 'accel.education.uiowa.edu';
 $sites['educationaccel.dev.drupal.uiowa.edu'] = 'accel.education.uiowa.edu';
 $sites['educationaccel.stage.drupal.uiowa.edu'] = 'accel.education.uiowa.edu';
 $sites['educationaccel.prod.drupal.uiowa.edu'] = 'accel.education.uiowa.edu';
+
+// Directory aliases for trans-resources.org.uiowa.edu.
+$sites['orgtrans-resources.local.drupal.uiowa.edu'] = 'trans-resources.org.uiowa.edu';
+$sites['orgtrans-resources.dev.drupal.uiowa.edu'] = 'trans-resources.org.uiowa.edu';
+$sites['orgtrans-resources.stage.drupal.uiowa.edu'] = 'trans-resources.org.uiowa.edu';
+$sites['orgtrans-resources.prod.drupal.uiowa.edu'] = 'trans-resources.org.uiowa.edu';
