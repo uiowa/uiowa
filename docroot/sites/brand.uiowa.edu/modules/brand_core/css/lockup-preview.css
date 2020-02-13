@@ -186,10 +186,10 @@ details summary {
 }
 
 /* Validation Error Box */
-#valid-text-lockup-warning.warning-hidden {
+#valid-text-lockup-warning.warning-hidden, #required-warning.warning-hidden {
   display: none;
 }
-#valid-text-lockup-warning {
+#valid-text-lockup-warning, #required-warning {
   display: block;
   background-color: #ffe6e6;
   border-radius: 0px 0px 2px 2px;
@@ -197,7 +197,10 @@ details summary {
   margin-top: 10px;
   margin-bottom: 20px;
 }
-#valid-text-lockup-warning h3 {
+#required-warning {
+  width: 100%;
+}
+#valid-text-lockup-warning h3, #required-warning h3 {
   padding: 10px 30px 10px 15px;
   display: flex;
   margin-top: 0px;
@@ -206,7 +209,7 @@ details summary {
   color: #fafafa;
   margin-bottom: 0px;
 }
-#valid-text-lockup-warning svg {
+#valid-text-lockup-warning svg, #required-warning svg {
   border: 2px solid #fafafa;
   color: #fafafa;
   margin-right: 15px;
@@ -215,7 +218,7 @@ details summary {
   border-radius: 500px;
   padding: 8px 14px;
 }
-#valid-text-lockup-warning .warning-body {
+#valid-text-lockup-warning .warning-body, #required-warning .warning-body {
   padding: 20px 30px 20px 15px;
 }
 #primary-first-line-measure-stacked {
