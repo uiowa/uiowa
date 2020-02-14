@@ -16,6 +16,7 @@ drupal_site_name: local.drupal.uiowa.edu
 
 # Provide the path to the project root to Vagrant.
 vagrant_synced_folders:
+
   -
     local_path: .
     # Set the destination to the Acquia Cloud subscription machine name.
@@ -29,6 +30,7 @@ drupal_core_path: /var/www/uiowa/docroot
 ssh_home: /var/www/uiowa
 
 apache_vhosts_ssl:
+
   -
     servername: '{{ drupal_domain }}'
     documentroot: '{{ drupal_core_path }}'
@@ -57,7 +59,6 @@ apache_vhosts:
     servername: accreditation.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-  
   -
     servername: orgalphachisigma-alphatheta.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
@@ -114,7 +115,6 @@ apache_vhosts:
     servername: careers.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-  
   -
     servername: org-cd2h.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
@@ -673,6 +673,10 @@ apache_vhosts:
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
   -
     servername: orgtrans-resources.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: sitesintermediatechinesereader.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
 

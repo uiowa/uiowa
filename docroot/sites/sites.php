@@ -936,3 +936,9 @@ $sites['orgtrans-resources.local.drupal.uiowa.edu'] = 'trans-resources.org.uiowa
 $sites['orgtrans-resources.dev.drupal.uiowa.edu'] = 'trans-resources.org.uiowa.edu';
 $sites['orgtrans-resources.stage.drupal.uiowa.edu'] = 'trans-resources.org.uiowa.edu';
 $sites['orgtrans-resources.prod.drupal.uiowa.edu'] = 'trans-resources.org.uiowa.edu';
+
+// Directory aliases for intermediatechinesereader.sites.uiowa.edu.
+$sites['sitesintermediatechinesereader.local.drupal.uiowa.edu'] = 'intermediatechinesereader.sites.uiowa.edu';
+$sites['sitesintermediatechinesereader.dev.drupal.uiowa.edu'] = 'intermediatechinesereader.sites.uiowa.edu';
+$sites['sitesintermediatechinesereader.stage.drupal.uiowa.edu'] = 'intermediatechinesereader.sites.uiowa.edu';
+$sites['sitesintermediatechinesereader.prod.drupal.uiowa.edu'] = 'intermediatechinesereader.sites.uiowa.edu';
