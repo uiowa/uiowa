@@ -4,10 +4,9 @@ status: true
 dependencies:
   config:
     - field.field.media.image.field_media_image
-    - image.style.thumbnail
     - media.type.image
   module:
-    - colorbox
+    - image
 _core:
   default_config_hash: qxh_4kI5XZJ_t8OOI3OEqnRP5iL5WaD7cCfGRLbmPjw
 id: media.image.default
@@ -16,18 +15,13 @@ bundle: image
 mode: default
 content:
   field_media_image:
-    type: colorbox
+    type: image
     weight: 0
     region: content
     label: hidden
     settings:
-      colorbox_node_style: thumbnail
-      colorbox_node_style_first: ''
-      colorbox_image_style: ''
-      colorbox_gallery: post
-      colorbox_gallery_custom: ''
-      colorbox_caption: title
-      colorbox_caption_custom: ''
+      image_style: ''
+      image_link: ''
     third_party_settings: {  }
 hidden:
   created: true
