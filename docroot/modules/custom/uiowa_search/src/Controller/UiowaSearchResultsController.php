@@ -3,11 +3,8 @@
 namespace Drupal\uiowa_search\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\Datetime\DateFormatterInterface;
-use Drupal\Core\Link;
 use Drupal\Core\Url;
-use Drupal\Component\Utility\UrlHelper;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Returns responses for Uiowa Search routes.
@@ -21,10 +18,16 @@ class UiowaSearchResultsController extends ControllerBase {
 
   /**
    * Builds the response.
+   *
+   * @param Symfony\Component\HttpFoundation\Request $request
+   *   The request.
+   *
+   * @return array
+   *   The render array for the search results page.
    */
-  public function build() {
-    $config = \Drupal::config('uiowa_search.settings')->get('uiowa_search');
-    $search_terms = \Drupal::request()->get('search');
+  public function build(Request $request) {
+    $config = $this->config('uiowa_search.settings')->get('uiowa_search');
+    $search_terms = $request->get('search');
     $search_params = [
       'q' => $search_terms,
       'client' => 'our_frontend',
@@ -38,10 +41,9 @@ class UiowaSearchResultsController extends ControllerBase {
       'ud' => '1',
       'site' => 'default_collection',
     ];
-    $params = UrlHelper::buildQuery($search_params);
     $build['search'] = [
       '#type' => 'link',
-      '#title' => t('Search all University of Iowa for @terms', ['@terms' => $search_terms]),
+      '#title' => $this->t('Search all University of Iowa for @terms', ['@terms' => $search_terms]),
       '#url' => Url::fromUri('https://search.uiowa.edu/search', ['query' => $search_params]),
       '#attributes' => [
         'target' => '_blank',

@@ -25,7 +25,7 @@ class SearchForm extends FormBase {
     $form = [];
     $form['search-terms'] = [
       '#type' => 'textfield',
-      '#title' => t('Search'),
+      '#title' => $this->t('Search'),
       '#label_attributes' => [
         'class' => [
           'sr-only',
@@ -39,10 +39,10 @@ class SearchForm extends FormBase {
     ];
     $form['submit-search'] = [
       '#type' => 'submit',
-      '#value' => t('Search'),
+      '#value' => $this->t('Search'),
       '#name' => 'btnG',
     ];
-    $form['#action'] = $GLOBALS['base_url'] . '/google-search';
+    $form['#action'] = $GLOBALS['base_url'] . '/uiowa-search';
     // Use core search CSS in addition to this module's css.
     // (keep it general in case core search is enabled).
     $form['#attributes']['class'][] = 'uiowa-search--search-form';
