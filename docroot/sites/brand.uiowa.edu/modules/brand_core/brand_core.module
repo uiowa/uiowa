@@ -408,20 +408,20 @@ function brand_core_node_update(Drupal\Core\Entity\EntityInterface $entity) {
         $nid = $entity->id();
         $lockup_controller = new LockupController();
         $lockup_controller->generate($nid);
+
+        // Try to get away with just clearing the render cache to fetch updated svgs.
+        \Drupal::service('cache.render')->invalidateAll();
+
+        // If available (not Local), try to clear the varnish cache for the files.
         if (\Drupal::moduleHandler()->moduleExists('purge')) {
           $purgeInvalidationFactory = \Drupal::service('purge.invalidation.factory');
           $purgeQueuers = \Drupal::service('purge.queuers');
           $purgeQueue = \Drupal::service('purge.queue');
-
-          drupal_flush_all_caches();
-
           $queuer = $purgeQueuers->get('coretags');
           $host = \Drupal::request()->getSchemeAndHttpHost();
           $invalidations = [
             $purgeInvalidationFactory->get('wildcardurl', $host . '/sites/brand.uiowa.edu/files/lockups/' . $nid . '/*'),
-            $purgeInvalidationFactory->get('url', $host . '/lockup/' . $nid),
           ];
-
           $purgeQueue->add($queuer, $invalidations);
         }
         break;
