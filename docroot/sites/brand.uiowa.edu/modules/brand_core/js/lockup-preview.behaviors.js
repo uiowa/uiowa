@@ -110,18 +110,23 @@
             $('#edit-actions').append(emptyRequired);
           }
 
-            $("#edit-submit").click(function(){
-              $('#required-warning').addClass('warning-hidden');
-              if (
-                $('#edit-title-0-value').val() === "" ||
-                $('#edit-field-lockup-org-0-target-id').val() === "" ||
-                primaryUnit.val() === "" ||
-                primaryUnitStacked.val() === ""
-              ) {
-                $('#required-warning').removeClass('warning-hidden');
-                Drupal.announce('Required fields are empty.');
-              }
-            });
+          $('#edit-submit').click(function(){
+            $('#required-warning').addClass('warning-hidden');
+            if (
+              $('#edit-title-0-value').val() === "" ||
+              $('#edit-field-lockup-org-0-target-id').val() === "" ||
+              primaryUnit.val() === "" ||
+              primaryUnitStacked.val() === ""
+            ) {
+              $('#required-warning').removeClass('warning-hidden');
+              Drupal.announce('Required fields are empty.');
+            }
+          })
+          $('#edit-submit').keypress(function(e){
+            if(e.which === 13){
+              $('#edit-submit').click();
+            }
+          });
 
             /*
             ----------------------------------------------------------------------
