@@ -26,12 +26,13 @@ function uids_base_preprocess_html(&$variables) {
   else {
     $variables['attributes']['class'][] = Html::cleanCssIdentifier('layout-page-sidebars-none');
   }
-  $legacy = (bool) theme_get_setting('branding.legacy');
+
+  $variables['branding_legacy'] = (bool) theme_get_setting('branding.legacy');
 
   // If uiowa_bar module is enabled, part or all of it needs to be
   // unset in favor of the branding elements contained in this theme.
   if (\Drupal::service('module_handler')->moduleExists('uiowa_bar')) {
-    if (!$legacy) {
+    if (!$variables['branding_legacy']) {
       unset($variables['page_top']['uiowa_bar']);
     }
     else {
