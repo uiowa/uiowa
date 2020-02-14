@@ -942,3 +942,9 @@ $sites['sitesintermediatechinesereader.local.drupal.uiowa.edu'] = 'intermediatec
 $sites['sitesintermediatechinesereader.dev.drupal.uiowa.edu'] = 'intermediatechinesereader.sites.uiowa.edu';
 $sites['sitesintermediatechinesereader.stage.drupal.uiowa.edu'] = 'intermediatechinesereader.sites.uiowa.edu';
 $sites['sitesintermediatechinesereader.prod.drupal.uiowa.edu'] = 'intermediatechinesereader.sites.uiowa.edu';
+
+// Directory aliases for uwc.org.uiowa.edu.
+$sites['orguwc.local.drupal.uiowa.edu'] = 'uwc.org.uiowa.edu';
+$sites['orguwc.dev.drupal.uiowa.edu'] = 'uwc.org.uiowa.edu';
+$sites['orguwc.stage.drupal.uiowa.edu'] = 'uwc.org.uiowa.edu';
+$sites['orguwc.prod.drupal.uiowa.edu'] = 'uwc.org.uiowa.edu';
