@@ -4,15 +4,31 @@
   flex-flow: wrap;
   align-items: stretch;
 }
-
-#ighn-person-group {
+.ighn-person .views-row {
+  margin-bottom: 2%;
+}
+.col-md-4 {
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+.ighn-person.view.view-ighn-person-view {
+  border: 3px #ccc solid;
+  margin-bottom: 2%;
+}
+.node--view-mode-teaser .ighn_node__content {
   border: 1px #ccc solid;
-  max-width: 100%;
-  position: relative;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   border-radius: 5px;
   display: inline-block;
-  margin: 3%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+#ighn-person-group {
+
+  max-width: 280px;
+  min-width: 280px;
+  position: relative;
+
+
+  display: inline-block;
 }
 
 #ighn-person-group:hover {
@@ -91,7 +107,9 @@ article.contextual-region.node.node--type-ighn-person.node--promoted.node--view-
   border: 3px #ccc solid;
   width: fit-content;
 }
-
+.navbar--main .navbar-brand {
+  width: 90%;
+}
 #ighn-person-main-info {
   background: rgb(236, 236, 236);
   left: 0;
@@ -106,7 +124,7 @@ article.contextual-region.node.node--type-ighn-person.node--promoted.node--view-
   transition: all 0.3s;
 }
 
-.col-md-10{
+.ighn-person .col-md-10{
   max-width: 33% !important;
 }
 .ighn-person .field-label {
@@ -121,20 +139,6 @@ article.contextual-region.node.node--type-ighn-person.node--promoted.node--view-
   -webkit-font-smoothing: antialiased;
 }
 
-/* Step 2: Reference Individual Icons */
-/* .field.field--name-field-ighn-person-language::before {
-  font-family: "Font Awesome 5 Free";
-  font-weight: 900;
-  content: "\f007";
-}
-
-/* Note: Make sure to include the correct weight and unicode value for the icon */
-/* .field.field--name-field-ighn-person-focus-areas::before {
-  font-family: "Font Awesome 5 Free";
-  font-weight: 400;
-  content: "\f1ea";
-} */ 
-
 .field.field--name-field-ighn-primary-college::before {
   font-family: "Font Awesome 5 Free";
   font-weight: 800;
@@ -145,10 +149,3 @@ article.contextual-region.node.node--type-ighn-person.node--promoted.node--view-
   display: inline-flex;
   width: 100%;
 }
-
-/* .field.field--name-field-ighn-person-global-regions::before {
-  font-family: "Font Awesome 5 Free";
-  font-weight: 800;
-  content: "\f0ac";
-  margin-right: 2%;
-} */
