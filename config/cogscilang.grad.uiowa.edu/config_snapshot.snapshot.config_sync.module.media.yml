@@ -1,4 +1,4 @@
-uuid: 1b610578-ac39-4183-9dff-9ae3bdbcdd7a
+uuid: 6cbd45ac-6376-40bf-a1e7-6bc35551077a
 langcode: en
 status: true
 dependencies:
@@ -93,6 +93,8 @@ items:
       langcode: en
       status: true
       dependencies:
+        config:
+          - image.style.thumbnail
         module:
           - image
           - media
@@ -100,11 +102,10 @@ items:
       id: media
       label: Media
       module: views
-      description: ''
+      description: 'Find and manage media.'
       tag: ''
       base_table: media_field_data
       base_field: mid
-      core: 8.x
       display:
         default:
           display_plugin: default
@@ -731,6 +732,8 @@ items:
                     authenticated: authenticated
                     anonymous: '0'
                     administrator: '0'
+                  operator_limit_selection: false
+                  operator_list: {  }
                 is_grouped: false
                 group_info:
                   label: ''
@@ -772,6 +775,8 @@ items:
                     anonymous: '0'
                     administrator: '0'
                   reduce: false
+                  operator_limit_selection: false
+                  operator_list: {  }
                 is_grouped: false
                 group_info:
                   label: ''
@@ -810,6 +815,8 @@ items:
                   multiple: false
                   remember_roles:
                     authenticated: authenticated
+                  operator_limit_selection: false
+                  operator_list: {  }
                 is_grouped: true
                 group_info:
                   label: 'Published status'
@@ -833,6 +840,45 @@ items:
                 plugin_id: boolean
                 entity_type: media
                 entity_field: status
+              status_extra:
+                id: status_extra
+                table: media_field_data
+                field: status_extra
+                relationship: none
+                group_type: group
+                admin_label: ''
+                operator: '='
+                value: ''
+                group: 1
+                exposed: false
+                expose:
+                  operator_id: ''
+                  label: ''
+                  description: ''
+                  use_operator: false
+                  operator: ''
+                  operator_limit_selection: false
+                  operator_list: {  }
+                  identifier: ''
+                  required: false
+                  remember: false
+                  multiple: false
+                  remember_roles:
+                    authenticated: authenticated
+                is_grouped: false
+                group_info:
+                  label: ''
+                  description: ''
+                  identifier: ''
+                  optional: true
+                  widget: select
+                  multiple: false
+                  remember: false
+                  default_group: All
+                  default_group_multiple: {  }
+                  group_items: {  }
+                entity_type: media
+                plugin_id: media_status
               langcode:
                 id: langcode
                 table: media_field_data
@@ -859,6 +905,8 @@ items:
                     anonymous: '0'
                     administrator: '0'
                   reduce: false
+                  operator_limit_selection: false
+                  operator_list: {  }
                 is_grouped: false
                 group_info:
                   label: ''
@@ -915,6 +963,7 @@ items:
               - 'languages:language_interface'
               - url
               - url.query_args
+              - user
               - user.permissions
             tags: {  }
         media_page_list:
@@ -942,5 +991,6 @@ items:
               - 'languages:language_interface'
               - url
               - url.query_args
+              - user
               - user.permissions
             tags: {  }

@@ -1,4 +1,4 @@
-uuid: db0d10a5-ff5e-4f0e-9344-cbeac43096d1
+uuid: 525f5d16-7ba6-449f-b6bd-746829bdcf0f
 langcode: en
 status: true
 dependencies:
@@ -124,13 +124,52 @@ items:
           - node.type.page
         module:
           - layout_builder
+          - layout_builder_restrictions
           - text
           - user
+      id: node.page.default
+      targetEntityType: node
+      bundle: page
+      mode: default
       third_party_settings:
         layout_builder:
           allow_custom: true
           enabled: true
           sections:
+            -
+              layout_id: layout_onecol
+              layout_settings: {  }
+              components:
+                8a8d495a-6910-4c9b-99a6-126836579b86:
+                  uuid: 8a8d495a-6910-4c9b-99a6-126836579b86
+                  region: content
+                  configuration:
+                    id: system_breadcrumb_block
+                    label: Breadcrumbs
+                    provider: system
+                    label_display: '0'
+                    context_mapping: {  }
+                  additional: {  }
+                  weight: 0
+                4d79e741-a62a-4949-9bd9-566c102f9a3c:
+                  uuid: 4d79e741-a62a-4949-9bd9-566c102f9a3c
+                  region: content
+                  configuration:
+                    id: 'field_block:node:page:title'
+                    label: Title
+                    provider: layout_builder
+                    label_display: '0'
+                    formatter:
+                      label: visually_hidden
+                      type: string
+                      settings:
+                        link_to_entity: false
+                      third_party_settings: {  }
+                    context_mapping:
+                      entity: layout_builder.entity
+                  additional: {  }
+                  weight: 1
+              third_party_settings: {  }
             -
               layout_id: layout_onecol
               layout_settings: {  }
@@ -161,10 +200,14 @@ items:
                   additional: {  }
                   weight: 1
               third_party_settings: {  }
-      id: node.page.default
-      targetEntityType: node
-      bundle: page
-      mode: default
+        layout_builder_restrictions:
+          entity_view_mode_restriction:
+            allowed_blocks: {  }
+            allowed_layouts:
+              - layout_onecol
+              - layout_twocol
+              - layout_threecol
+              - layout_fourcol
       content:
         body:
           label: hidden
@@ -234,6 +277,7 @@ items:
       default_value_callback: ''
       settings:
         display_summary: true
+        required_summary: false
       field_type: text_with_summary
   -
     collection: ''
@@ -283,6 +327,9 @@ items:
       langcode: en
       status: true
       dependencies:
+        enforced:
+          module:
+            - entity_types_page
         module:
           - node
       id: page
