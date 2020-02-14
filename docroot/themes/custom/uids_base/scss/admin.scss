@@ -100,13 +100,14 @@
 .content__full .layout-builder__section {
   .layout__container {
     margin: 0;
+
     &.page__container {
-        @include breakpoint(container) {
-          position: relative;
-          max-width: 84.375em;
-          margin: 0 auto;
-        }
+      @include breakpoint(container) {
+        position: relative;
+        max-width: 84.375em;
+        margin: 0 auto;
       }
+    }
   }
 }
 
@@ -114,6 +115,7 @@
 
 .content__container,
 .content__mixed {
+
   .block-local-tasks-block,
   .block-help-block,
   .form-actions,
@@ -139,6 +141,7 @@
 
   .vertical-tabs {
     margin: $gutter 0;
+
     .form-type-checkbox {
       margin: $gutter 0;
     }
@@ -158,6 +161,7 @@
 // admin styles for full-width and mixed setting for local drupal admin blocks
 
 .content__full {
+
   .block-local-tasks-block,
   .block-help-block,
   .form-actions,
@@ -186,22 +190,124 @@ body.toolbar-vertical.toolbar-tray-open {
   }
 }
 
+.js-off-canvas-dialog-open {
+  .search-button {
+    right: 310px;
+  }
+}
+
+.js-off-canvas-dialog-open.search-is-open .search-overlay .hds-search {
+  width: 63%;
+}
+
 // admin styles for off-canvas menu
 
 .o-canvas__drawer {
-  height: calc(100% - 119px);
+  .o-canvas__wrapper & {
+    top: 179px;
 
-  @include breakpoint(menu) {
-    padding: 40px 35px;
-    max-width: 560px;
+    @include breakpoint(menu) {
+      top: 119px;
+
+      .toolbar-vertical & {
+        top: 119px;
+        height: calc(100% - 119px);
+      }
+
+      .header--tertiary & {
+        top: 179px;
+
+        .toolbar-horizontal & {
+          top: 179px !important;
+        }
+
+        .toolbar-vertical & {
+          top: 179px;
+        }
+      }
+    }
   }
 
   .o-canvas--open & {
     top: 179px;
-    height: calc(100% - 119px);
+    height: calc(100% - 179px);
 
     @include breakpoint(menu) {
       top: 119px;
+      height: calc(100% - 119px);
+
+      .toolbar-tray-open & {
+        top: 159px;
+        height: calc(100% - 159px);
+      }
+
+      .toolbar-vertical.toolbar-tray-open & {
+        top: 119px;
+        height: calc(100% - 119px);
+      }
+
+      .header--tertiary & {
+        top: 179px;
+        height: calc(100% - 179px);
+
+        .toolbar-horizontal.toolbar-tray-open & {
+          top: 219px !important;
+          height: calc(100% - 219px);
+        }
+
+        .toolbar-vertical.toolbar-tray-open & {
+          top: 179px;
+          height: calc(100% - 179px);
+        }
+      }
     }
   }
 }
+
+.header--tertiary .o-canvas--open .o-canvas__drawer {
+  top: 239px;
+}
+
+
+.layout-builder-disabled {
+  &.toolbar-horizontal {
+    padding-top: 19px !important;
+
+    @include breakpoint(container) {
+      padding-top: 39px !important;
+    }
+
+    &.toolbar-tray-open {
+      padding-top: 59px !important;
+
+      @include breakpoint(container) {
+        padding-top: 79px !important;
+      }
+    }
+  }
+
+  &.toolbar-vertical {
+    padding-top: 19px !important;
+
+    &.toolbar-tray-open {
+      padding-top: 19px !important;
+    }
+  }
+
+  &.toolbar-fixed.toolbar-vertical {
+    padding-top: 19px !important;
+
+    @include breakpoint(container) {
+      padding-top: 39px !important;
+    }
+
+    &.toolbar-tray-open {
+      padding-top: 19px !important;
+
+      @include breakpoint(container) {
+        padding-top: 39px !important;
+      }
+    }
+  }
+}
+
