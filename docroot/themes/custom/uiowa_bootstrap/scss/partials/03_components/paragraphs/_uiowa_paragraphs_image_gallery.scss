@@ -1,0 +1,48 @@
+.paragraph--type--image-gallery {
+  .field--name-field-image {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    height: 100vw;
+
+    &:hover{
+      img {
+        opacity:0.28;
+      }
+    }
+
+    &>.field__item {
+      position: relative;
+      width: 33.33%; // 3 column
+
+      // Each flex item
+      .field--name-field-media-image>a.colorbox {
+        display: inline-block;
+        img {
+          width: 100%;
+          display: block;
+          transition: all .8s;
+        }
+
+        .title {
+          position: absolute;
+          top: 48%;
+          left: 0;
+          width: 100%;
+          padding: 0 3%;
+          font-size: 30px;
+          text-shadow: 0 0 8px rgba(0, 0, 0, 0.42);
+        }
+
+        &:hover {
+          img {
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+}
