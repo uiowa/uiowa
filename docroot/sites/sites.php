@@ -936,3 +936,9 @@ $sites['orgtrans-resources.local.drupal.uiowa.edu'] = 'trans-resources.org.uiowa
 $sites['orgtrans-resources.dev.drupal.uiowa.edu'] = 'trans-resources.org.uiowa.edu';
 $sites['orgtrans-resources.stage.drupal.uiowa.edu'] = 'trans-resources.org.uiowa.edu';
 $sites['orgtrans-resources.prod.drupal.uiowa.edu'] = 'trans-resources.org.uiowa.edu';
+
+// Directory aliases for uwc.org.uiowa.edu.
+$sites['orguwc.local.drupal.uiowa.edu'] = 'uwc.org.uiowa.edu';
+$sites['orguwc.dev.drupal.uiowa.edu'] = 'uwc.org.uiowa.edu';
+$sites['orguwc.stage.drupal.uiowa.edu'] = 'uwc.org.uiowa.edu';
+$sites['orguwc.prod.drupal.uiowa.edu'] = 'uwc.org.uiowa.edu';
