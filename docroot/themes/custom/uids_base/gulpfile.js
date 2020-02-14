@@ -49,7 +49,7 @@ function css() {
     .pipe(plumber({
       handleError: function (err) {
         console.log(err);
-        this.emit('end');
+        process.exit(1);
       }
     }))
     .pipe(sass({
