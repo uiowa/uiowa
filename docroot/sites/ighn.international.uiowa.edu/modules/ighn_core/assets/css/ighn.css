@@ -1,22 +1,28 @@
-#ighn-person-group .fieldset-wrapper {
+.ighn-person .view-wrapper .view-content {
+  display: flex;
+  justify-content: space-between;
+  flex-flow: wrap;
+  align-items: stretch;
+}
+
+#ighn-person-group {
   border: 1px #ccc solid;
   max-width: 100%;
   position: relative;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   border-radius: 5px;
-}
-#ighn-person-group {
-  padding-right: 0px !important;
+  display: inline-block;
+  margin: 3%;
 }
 
-#ighn-person-group .fieldset-wrapper:hover {
+#ighn-person-group:hover {
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
-.region-content {
+.ighn-person .region-content {
   padding-left: 0 !important;
   padding-right: 0 !important;
 }
-img {
+.ighn-person img {
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -34,6 +40,9 @@ img {
   font-size: 15px;
   display: flex;
 }
+.field.field--name-field-ighn-primary-college {
+  font-weight: 550;
+}
 .field.field--name-field-ighn-person-department {
   margin-left: 8%;
   margin-top: 1%;
@@ -46,27 +55,30 @@ img {
 }
 
 article.contextual-region.node.node--type-ighn-person.node--promoted.node--view-mode-teaser  {
-  width: 350px;
+  width: 300px;
 }
-article.contextual-region.node.node--type-ighn-person.node--promoted.node--view-mode-teaser .node__content .node__content {
-  width: 110%;
+article.contextual-region.node.node--type-ighn-person.node--promoted.node--view-mode-teaser .ighn_node__content {
+  width: 100%;
 }
-
+.node--view-mode-teaser .ighn_node__content {
+  margin-right: 0 !important;
+}
 .field--name-field-ighn-person-first-name, .field--name-field-ighn-person-last-name, .field--name-field-ighn-person-credentials {
   display: inline-flex;
   font-weight: 700;
   font-size: 1.2em;
   line-height: 1.4em;
 }
-.field--name-field-ighn-person-language {
+.field--name-field-ighn-person-language, .field.field--name-field-ighn-person-global-regions {
   width: 50%;
+  margin: 2% 0%;
 }
 .field.field--name-field-ighn-person-language .field__items .field__item, .field.field--name-field-ighn-person-focus-areas .field__items .field__item, .field.field--name-field-ighn-person-global-regions .field__items .field__item {
   display: inline-flex;
   padding: 2%;
 }
 .field.field--name-field-ighn-person-language .field__label, .field.field--name-field-ighn-person-focus-areas .field__label, .field.field--name-field-ighn-person-global-regions .field__label {
-  margin-left: 1%;
+  margin-left: 2%;
   display: flex;
 }
 #ighn-person-group legend, span.h5.field.field--name-title.field--type-string.field--label-hidden {
@@ -77,6 +89,7 @@ article.contextual-region.node.node--type-ighn-person.node--promoted.node--view-
 }
 .ighn-person.contextual-region.view.view-ighn-person-view.view-id-ighn_person_view.view-display-id-ighn_person {
   border: 3px #ccc solid;
+  width: fit-content;
 }
 
 #ighn-person-main-info {
@@ -96,7 +109,7 @@ article.contextual-region.node.node--type-ighn-person.node--promoted.node--view-
 .col-md-10{
   max-width: 33% !important;
 }
-.field-label {
+.ighn-person .field-label {
   margin-left: 20%;
 }
 /* Step 1: Common Properties: All required to make icons render reliably */

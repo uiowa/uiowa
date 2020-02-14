@@ -82,7 +82,7 @@
 %}
 {{ attach_library('classy/node') }}
 <article{{ attributes.addClass(classes) }}>
-    <div{{ content_attributes.addClass('node__content') }}>
+
         {{ title_prefix }}
         {% if not page %}
             <h3{{ title_attributes }}>
@@ -91,9 +91,9 @@
         {% endif %}
         {{ title_suffix }}
 
-        <div{{ content_attributes.addClass('node__content') }}>
-            <div class="row">
-                <div class="col-md-6 col-lg-3">
+        <div{{ content_attributes.addClass('ighn_node__content') }}>
+            <div class="ighn-person-row">
+                <div class="ighn-person-col">
                     {% if content.field_ighn_person_image %}
                         <figure class="content-image">
                             {{ content.field_ighn_person_image }}
@@ -113,16 +113,15 @@
                     {% endif %}
 
                     {% if content.field_ighn_person_language %}
-                    <i class="fas fa-globe"></i>
-                    <div class="col-md-6 col-lg-3">
-                        {{ content.field_ighn_person_language }}
-                    </div>
-                    {% endif %}
 
+                        {{ content.field_ighn_person_language }}
+
+                    {% endif %}
+                    {{ content|without('links') }}
                 </div>
             </div>
 
-            {{ content|without('links') }}
+
         </div>
-    </div>
+
 </article>
