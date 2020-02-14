@@ -1,11 +1,13 @@
-{{ attach_library('uids_base/search') }}
 {{ attach_library('uids_base/search-toggle') }}
+{{ attach_library('uids_base/search') }}
 
 <div class="search-wrapper">
 
     <div class="search-overlay" aria-expanded="false" aria-label="search tools for this site">
         {{ search_form }}
-        {# @todo Add search quick links #}
+        {% if page.search_menu %}
+            {{ page.search_menu }}
+        {% endif %}
     </div>
 
     {% include '@uids/03 - global/search-toggle/search-toggle--bttn.twig' %}
