@@ -99,6 +99,26 @@
                             {{ content.field_ighn_person_image }}
                         </figure>
                     {% endif %}
+
+                    {% if content.field_ighn_person_first_name %}
+                        {{ content.field_ighn_person_first_name }}
+                    {% endif %}
+
+                    {% if content.field_ighn_person_last_name %}
+                        {{ content.field_ighn_person_last_name }}
+                    {% endif %}
+
+                    {% if content.field_ighn_person_credentials %}
+                        {{ content.field_ighn_person_credentials }}
+                    {% endif %}
+
+                    {% if content.field_ighn_person_language %}
+                    <i class="fas fa-globe"></i>
+                    <div class="col-md-6 col-lg-3">
+                        {{ content.field_ighn_person_language }}
+                    </div>
+                    {% endif %}
+
                 </div>
             </div>
 

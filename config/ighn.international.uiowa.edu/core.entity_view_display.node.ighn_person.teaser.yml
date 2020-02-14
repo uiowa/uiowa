@@ -42,8 +42,7 @@ third_party_settings:
     group_ighn:
       children:
         - field_ighn_person_focus_areas
-        - field_ighn_person_language
-        - field_ighn_person_global_regions
+        - group_test
       parent_name: group_ighn_person
       weight: 9
       format_type: html_element
@@ -78,6 +77,24 @@ third_party_settings:
         effect: none
         speed: fast
       label: 'IGHN Main Info Group'
+    group_test:
+      children:
+        - field_ighn_person_language
+        - field_ighn_person_global_regions
+      parent_name: group_ighn
+      weight: 20
+      format_type: html_element
+      format_settings:
+        label: 'Hover icon'
+        element: div
+        show_label: false
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+        id: hover-icon-group
+        classes: ''
+      label: 'Hover icon'
 id: node.ighn_person.teaser
 targetEntityType: node
 bundle: ighn_person
