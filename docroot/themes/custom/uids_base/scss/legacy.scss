@@ -1,3 +1,61 @@
-.uiowa-bar__title {
-  margin: 20px 0 0 0;
+@import "../uids/assets/scss/_variables.scss";
+@import "../uids/assets/scss/_utilities.scss";
+
+.toolbar-horizontal {
+  .o-canvas--open .o-canvas__drawer {
+    top: 172px;
+  }
+}
+
+.toolbar-tray-open.toolbar-horizontal {
+  .o-canvas--open .o-canvas__drawer {
+    top: 212px;
+  }
+}
+
+.toolbar-vertical.toolbar-tray-open .o-canvas--open .o-canvas__drawer {
+  top: 172px;
+  height: calc(100% - 172px);
+}
+
+.toolbar-vertical .o-canvas__wrapper .o-canvas__drawer {
+  top: 172px;
+  height: calc(100% - 119px);
+}
+
+.o-canvas__wrapper .o-canvas__drawer {
+  top: 193px;
+  height: calc(100% - 193px);
+
+  @include breakpoint(menu) {
+    top: 133px;
+    height: calc(100% - 133px);
+  }
+}
+
+.layout-builder-disabled .uiowa-bar .page__container {
+  margin: 0;
+  margin-right: 0px;
+  margin-left: 0px;
+
+  @include breakpoint(container) {
+    margin: 0 auto;
+  }
+}
+
+.search-is-open .header--secondary .search-wrapper {
+  align-items: flex-end;
+  flex-direction: column;
+}
+
+.header--secondary .uiowa-bar__title {
+  width: 70%;
+  margin: 0;
+  padding: 5px 20px 0 20px;
+  text-align: left;
+
+  @include breakpoint(container) {
+    margin: 20px 0 0 0;
+    padding: 0;
+  }
 }
