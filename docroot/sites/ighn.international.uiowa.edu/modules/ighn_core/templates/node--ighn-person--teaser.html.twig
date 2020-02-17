@@ -94,29 +94,21 @@
         <div{{ content_attributes.addClass('ighn_node__content') }}>
             <div class="ighn-person-row">
                 <div class="ighn-person-col">
-                    {% if content.field_ighn_person_image %}
-                        <figure class="content-image">
-                            {{ content.field_ighn_person_image }}
-                        </figure>
-                    {% endif %}
 
-                    {% if content.field_ighn_person_first_name %}
-                        {{ content.field_ighn_person_first_name }}
-                    {% endif %}
 
-                    {% if content.field_ighn_person_last_name %}
-                        {{ content.field_ighn_person_last_name }}
-                    {% endif %}
+                        {{ content.field_ighn_person_image }}
 
-                    {% if content.field_ighn_person_credentials %}
-                        {{ content.field_ighn_person_credentials }}
-                    {% endif %}
 
-                    {% if content.field_ighn_person_language %}
+                    {{ content.field_ighn_person_first_name }}
 
-                        {{ content.field_ighn_person_language }}
+                    {{ content.field_ighn_person_last_name }}
 
-                    {% endif %}
+                    {{ content.field_ighn_person_credentials }}
+
+                    {{ content.field_ighn_person_language }}
+
+                    {{ content.field_ighn_person_biography }}
+
                     {{ content|without('links') }}
                 </div>
             </div>

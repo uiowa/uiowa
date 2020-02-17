@@ -29,6 +29,7 @@ third_party_settings:
         - field_ighn_person_image
         - group_ighn_main_info_group
         - group_ighn
+        - field_ighn_person_bio
         - field_ighn_person_biography
         - field_ighn_person_cv_link
       parent_name: ''
@@ -50,7 +51,7 @@ third_party_settings:
         - field_ighn_person_focus_areas
         - group_test
       parent_name: group_ighn_person
-      weight: 9
+      weight: 3
       format_type: html_element
       format_settings:
         id: ighn-person-field-groups
@@ -108,7 +109,7 @@ mode: teaser
 content:
   field_ighn_person_biography:
     type: text_default
-    weight: 10
+    weight: 5
     region: content
     label: visually_hidden
     settings: {  }
@@ -123,7 +124,7 @@ content:
     third_party_settings: {  }
   field_ighn_person_cv_link:
     type: link
-    weight: 11
+    weight: 6
     region: content
     label: visually_hidden
     settings:

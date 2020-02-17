@@ -22,12 +22,9 @@
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
 #ighn-person-group {
-
-  max-width: 280px;
-  min-width: 280px;
+  max-width: 275px;
+  min-width: 275px;
   position: relative;
-
-
   display: inline-block;
 }
 
@@ -39,9 +36,6 @@
   padding-right: 0 !important;
 }
 .ighn-person img {
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover;
   border-top-left-radius: 0.25rem;
   border-top-right-radius: 0.25rem;
   filter: contrast(70%);
@@ -51,6 +45,7 @@
   display: block;
   min-height: 275px;
   max-height: 275px;
+  object-fit: cover;
 }
 .field.field--name-field-ighn-person-department, .field.field--name-field-ighn-primary-college {
   font-size: 15px;
@@ -73,9 +68,9 @@
 article.contextual-region.node.node--type-ighn-person.node--promoted.node--view-mode-teaser  {
   width: 300px;
 }
-article.contextual-region.node.node--type-ighn-person.node--promoted.node--view-mode-teaser .ighn_node__content {
+/* article.contextual-region.node.node--type-ighn-person.node--promoted.node--view-mode-teaser .ighn_node__content {
   width: 100%;
-}
+} */
 .node--view-mode-teaser .ighn_node__content {
   margin-right: 0 !important;
 }
@@ -141,10 +136,10 @@ article.contextual-region.node.node--type-ighn-person.node--promoted.node--view-
 }
 
 .field.field--name-field-ighn-person-cv-link {
-  background: #ccc;
+  background: rgb(236, 236, 236);
   border-radius: 10px;
   padding: 2%;
-  width: 35%;
+  width: 45%;
   margin: 5%;
   font-size: 95%;
   text-align: center;
@@ -156,7 +151,6 @@ article.contextual-region.node.node--type-ighn-person.node--promoted.node--view-
   color: black;
   text-decoration: underline;
 }
-
 .field.field--name-field-ighn-person-cv-link .field__item::after {
   font-family: "Font Awesome 5 Free";
   font-weight: 900;
@@ -178,4 +172,10 @@ article.contextual-region.node.node--type-ighn-person.node--promoted.node--view-
 #hover-icon-group {
   display: inline-flex;
   width: 100%;
+}
+select#edit-focus-area-filter::before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 800;
+  content: "\f66f";
+  margin-right: 2%;
 }
