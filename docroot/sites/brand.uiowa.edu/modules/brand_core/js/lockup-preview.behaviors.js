@@ -72,7 +72,7 @@
                 $(".lockup-stacked .sub-unit").text(subUnitStacked.val());
             }
 
-            // Do preliminary placement of the divider for the stacked lockup.
+            // Do preliminary placement of the divider.
             calcDivider();
 
             // Set the submit button text based on the 'Save as' option.
@@ -178,20 +178,20 @@
                 }
 
                 // Set values for horizontal divider line.
-                var divHeight = Math.floor(Math.max($('.lockup-horizontal .lockup-content-inner').innerHeight() - 17, blockIowaDims.height));
+                var divHeight = Math.floor(Math.max($('.lockup-horizontal .lockup-content-inner').innerHeight() -14, blockIowaDims.height));
                 var divTop;
-                (divHeight > blockIowaDims.height) ? divTop = 4 : divTop = -8;
+                (divHeight > blockIowaDims.height) ? divTop = 4 : divTop = -3;
+
+                // Set the horizontal divider dimensions.
+                $('#horizontal-divider').css({
+                    "height": divHeight,
+                    "top": divTop
+                });
 
                 // Grab the text from Primary Unit to calculate width of divider.
                 $('#primary-first-line-measure-stacked').text($('.lockup-stacked .lockup-content .lockup-content-inner .primary-unit').text());
                 var divWidth = Math.max($('#primary-first-line-measure-stacked').outerWidth() - 21, blockIowaDims.width + 6);
                 var divPos = ($('.lockup-stacked .lockup-content').outerWidth()/2) - (divWidth/2);
-
-                // Set the horizontal divider dimensions.
-                $('#horizontal-divider').css({
-                    "height": divHeight + 8 + "px",
-                    "top": divTop
-                });
 
                 // Set the stacked divider dimensions.
                 $('#stacked-divider').css({
