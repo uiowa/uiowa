@@ -184,7 +184,7 @@
 
                 // Grab the text from Primary Unit to calculate width of divider.
                 $('#primary-first-line-measure-stacked').text($('.lockup-stacked .lockup-content .lockup-content-inner .primary-unit').text());
-                var divWidth = Math.max($('#primary-first-line-measure-stacked').outerWidth() - 13, blockIowaDims.width);
+                var divWidth = Math.max($('#primary-first-line-measure-stacked').outerWidth() - 21, blockIowaDims.width + 6);
                 var divPos = ($('.lockup-stacked .lockup-content').outerWidth()/2) - (divWidth/2);
 
                 // Set the horizontal divider dimensions.
@@ -195,8 +195,8 @@
 
                 // Set the stacked divider dimensions.
                 $('#stacked-divider').css({
-                    "width": divWidth + 8,
-                    "left": divPos - 4
+                    "width": divWidth,
+                    "left": divPos
                 });
             }
 
