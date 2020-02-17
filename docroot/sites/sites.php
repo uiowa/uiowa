@@ -936,3 +936,33 @@ $sites['orgtrans-resources.local.drupal.uiowa.edu'] = 'trans-resources.org.uiowa
 $sites['orgtrans-resources.dev.drupal.uiowa.edu'] = 'trans-resources.org.uiowa.edu';
 $sites['orgtrans-resources.stage.drupal.uiowa.edu'] = 'trans-resources.org.uiowa.edu';
 $sites['orgtrans-resources.prod.drupal.uiowa.edu'] = 'trans-resources.org.uiowa.edu';
+
+// Directory aliases for uwc.org.uiowa.edu.
+$sites['orguwc.local.drupal.uiowa.edu'] = 'uwc.org.uiowa.edu';
+$sites['orguwc.dev.drupal.uiowa.edu'] = 'uwc.org.uiowa.edu';
+$sites['orguwc.stage.drupal.uiowa.edu'] = 'uwc.org.uiowa.edu';
+$sites['orguwc.prod.drupal.uiowa.edu'] = 'uwc.org.uiowa.edu';
+
+// Directory aliases for intermediatechinesereader.sites.uiowa.edu.
+$sites['sitesintermediatechinesereader.local.drupal.uiowa.edu'] = 'intermediatechinesereader.sites.uiowa.edu';
+$sites['sitesintermediatechinesereader.dev.drupal.uiowa.edu'] = 'intermediatechinesereader.sites.uiowa.edu';
+$sites['sitesintermediatechinesereader.stage.drupal.uiowa.edu'] = 'intermediatechinesereader.sites.uiowa.edu';
+$sites['sitesintermediatechinesereader.prod.drupal.uiowa.edu'] = 'intermediatechinesereader.sites.uiowa.edu';
+
+// Directory aliases for pad.org.uiowa.edu.
+$sites['orgpad.local.drupal.uiowa.edu'] = 'pad.org.uiowa.edu';
+$sites['orgpad.dev.drupal.uiowa.edu'] = 'pad.org.uiowa.edu';
+$sites['orgpad.stage.drupal.uiowa.edu'] = 'pad.org.uiowa.edu';
+$sites['orgpad.prod.drupal.uiowa.edu'] = 'pad.org.uiowa.edu';
+
+// Directory aliases for paleorepository.sites.uiowa.edu.
+$sites['sitespaleorepository.local.drupal.uiowa.edu'] = 'paleorepository.sites.uiowa.edu';
+$sites['sitespaleorepository.dev.drupal.uiowa.edu'] = 'paleorepository.sites.uiowa.edu';
+$sites['sitespaleorepository.stage.drupal.uiowa.edu'] = 'paleorepository.sites.uiowa.edu';
+$sites['sitespaleorepository.prod.drupal.uiowa.edu'] = 'paleorepository.sites.uiowa.edu';
+
+// Directory aliases for researchcollections.sites.uiowa.edu.
+$sites['sitesresearchcollections.local.drupal.uiowa.edu'] = 'researchcollections.sites.uiowa.edu';
+$sites['sitesresearchcollections.dev.drupal.uiowa.edu'] = 'researchcollections.sites.uiowa.edu';
+$sites['sitesresearchcollections.stage.drupal.uiowa.edu'] = 'researchcollections.sites.uiowa.edu';
+$sites['sitesresearchcollections.prod.drupal.uiowa.edu'] = 'researchcollections.sites.uiowa.edu';
