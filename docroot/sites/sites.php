@@ -966,3 +966,9 @@ $sites['sitesresearchcollections.local.drupal.uiowa.edu'] = 'researchcollections
 $sites['sitesresearchcollections.dev.drupal.uiowa.edu'] = 'researchcollections.sites.uiowa.edu';
 $sites['sitesresearchcollections.stage.drupal.uiowa.edu'] = 'researchcollections.sites.uiowa.edu';
 $sites['sitesresearchcollections.prod.drupal.uiowa.edu'] = 'researchcollections.sites.uiowa.edu';
+
+// Directory aliases for sbirt.uiowa.edu.
+$sites['sbirt.local.drupal.uiowa.edu'] = 'sbirt.uiowa.edu';
+$sites['sbirt.dev.drupal.uiowa.edu'] = 'sbirt.uiowa.edu';
+$sites['sbirt.stage.drupal.uiowa.edu'] = 'sbirt.uiowa.edu';
+$sites['sbirt.prod.drupal.uiowa.edu'] = 'sbirt.uiowa.edu';
