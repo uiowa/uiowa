@@ -129,15 +129,7 @@
   </div>
 {% endif %}
 
-
-
-  {% if page.footer %}
-  <footer role="contentinfo">
-  <div class="{{ layout_container }}">
-    {{ page.footer }}
-    </div>
-  </footer>
-  {% endif %}
+    {% include '@uids_base/layout/footer.html.twig'  %}
 
 </div>
 {# / #}
