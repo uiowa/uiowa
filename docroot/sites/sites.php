@@ -954,3 +954,15 @@ $sites['orgpad.local.drupal.uiowa.edu'] = 'pad.org.uiowa.edu';
 $sites['orgpad.dev.drupal.uiowa.edu'] = 'pad.org.uiowa.edu';
 $sites['orgpad.stage.drupal.uiowa.edu'] = 'pad.org.uiowa.edu';
 $sites['orgpad.prod.drupal.uiowa.edu'] = 'pad.org.uiowa.edu';
+
+// Directory aliases for paleorepository.sites.uiowa.edu.
+$sites['sitespaleorepository.local.drupal.uiowa.edu'] = 'paleorepository.sites.uiowa.edu';
+$sites['sitespaleorepository.dev.drupal.uiowa.edu'] = 'paleorepository.sites.uiowa.edu';
+$sites['sitespaleorepository.stage.drupal.uiowa.edu'] = 'paleorepository.sites.uiowa.edu';
+$sites['sitespaleorepository.prod.drupal.uiowa.edu'] = 'paleorepository.sites.uiowa.edu';
+
+// Directory aliases for researchcollections.sites.uiowa.edu.
+$sites['sitesresearchcollections.local.drupal.uiowa.edu'] = 'researchcollections.sites.uiowa.edu';
+$sites['sitesresearchcollections.dev.drupal.uiowa.edu'] = 'researchcollections.sites.uiowa.edu';
+$sites['sitesresearchcollections.stage.drupal.uiowa.edu'] = 'researchcollections.sites.uiowa.edu';
+$sites['sitesresearchcollections.prod.drupal.uiowa.edu'] = 'researchcollections.sites.uiowa.edu';

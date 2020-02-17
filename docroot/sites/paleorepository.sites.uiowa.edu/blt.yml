@@ -1,0 +1,25 @@
+project:
+  local:
+    hostname: sitespaleorepository.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: sitespaleorepository
+  human_name: paleorepository.sites.uiowa.edu
+  profile:
+    name: sitenow
+drush:
+  aliases:
+    local: self
+    remote: sitespaleorepository.prod
+drupal:
+  db:
+    database: paleorepository_sites_uiowa_edu
+cm:
+  core:
+    install_from_config: true
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+uiowa:
+  profiles:
+    sitenow:
+      requester: tadrain
