@@ -178,9 +178,9 @@
                 }
 
                 // Set values for horizontal divider line.
-                var divHeight = Math.floor(Math.max($('.lockup-horizontal .lockup-content-inner').innerHeight() -14, blockIowaDims.height));
+                var divHeight = Math.floor(Math.max($('.lockup-horizontal .lockup-content-inner').innerHeight() - 8, blockIowaDims.height + 8));
                 var divTop;
-                (divHeight > blockIowaDims.height) ? divTop = 4 : divTop = -3;
+                (divHeight > blockIowaDims.height + 8) ? divTop = 4 : divTop = -4;
 
                 // Set the horizontal divider dimensions.
                 $('#horizontal-divider').css({
@@ -190,7 +190,7 @@
 
                 // Grab the text from Primary Unit to calculate width of divider.
                 $('#primary-first-line-measure-stacked').text($('.lockup-stacked .lockup-content .lockup-content-inner .primary-unit').text());
-                var divWidth = Math.max($('#primary-first-line-measure-stacked').outerWidth() - 21, blockIowaDims.width + 6);
+                var divWidth = Math.max($('#primary-first-line-measure-stacked').outerWidth() - 14, blockIowaDims.width + 6);
                 var divPos = ($('.lockup-stacked .lockup-content').outerWidth()/2) - (divWidth/2);
 
                 // Set the stacked divider dimensions.
