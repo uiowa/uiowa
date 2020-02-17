@@ -7,6 +7,7 @@
 
 
 .layout__container {
+
   .block-system-breadcrumb-block,
   .block-field-blocknodepagetitle,
   .block-field-blocknodepagebody,
@@ -16,9 +17,11 @@
 }
 
 .layout--onecol {
+
   .feature,
   .banner {
     flex-basis: 100%;
+
     .section-column__row & {
       flex-basis: unset;
     }
@@ -29,6 +32,7 @@
 
 .layout-builder-disabled .page__container {
   margin: $gutter;
+
   @include breakpoint(container) {
     margin: 0 auto;
   }
@@ -36,6 +40,7 @@
 
 .layout-builder-disabled .uiowa-bar .page__container {
   margin-top: 0;
+
   @include breakpoint(container) {
     margin: 0 auto;
   }
@@ -50,7 +55,7 @@
 
 // default left/right gutter spacing for full width settings w/ layout builder enabled
 
-.content__full .layout__container  {
+.content__full .layout__container {
   margin-right: $gutter;
   margin-bottom: $gutter;
   margin-left: $gutter;
@@ -215,4 +220,10 @@
       margin-left: $md;
     }
   }
+}
+
+// mobile search
+
+.search-button[aria-expanded="true"] {
+  margin-left: auto;
 }

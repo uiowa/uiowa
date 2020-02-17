@@ -172,21 +172,32 @@
   }
 }
 
+
+@media (min-width: 84.375em) {
+  .toolbar-vertical.toolbar-tray-open.search-is-open .search-overlay .hds-search {
+    width: 60%;
+  }
+}
+
+
+@media (min-width: 855px) {
+  .toolbar-vertical.toolbar-tray-open.search-is-open .search-overlay .hds-search {
+    width: 60%;
+  }
+}
+
 // admin styles for search toggle
 body.toolbar-vertical.toolbar-tray-open {
   .search-button {
-
     @include breakpoint(container) {
       right: 294px;
     }
   }
 
   .search-is-open .search-overlay .hds-search {
-
     @include breakpoint(container) {
       margin-right: 209px;
     }
-
   }
 }
 
@@ -267,47 +278,3 @@ body.toolbar-vertical.toolbar-tray-open {
 .header--tertiary .o-canvas--open .o-canvas__drawer {
   top: 239px;
 }
-
-
-.layout-builder-disabled {
-  &.toolbar-horizontal {
-    padding-top: 19px !important;
-
-    @include breakpoint(container) {
-      padding-top: 39px !important;
-    }
-
-    &.toolbar-tray-open {
-      padding-top: 59px !important;
-
-      @include breakpoint(container) {
-        padding-top: 79px !important;
-      }
-    }
-  }
-
-  &.toolbar-vertical {
-    padding-top: 19px !important;
-
-    &.toolbar-tray-open {
-      padding-top: 19px !important;
-    }
-  }
-
-  &.toolbar-fixed.toolbar-vertical {
-    padding-top: 19px !important;
-
-    @include breakpoint(container) {
-      padding-top: 39px !important;
-    }
-
-    &.toolbar-tray-open {
-      padding-top: 19px !important;
-
-      @include breakpoint(container) {
-        padding-top: 39px !important;
-      }
-    }
-  }
-}
-

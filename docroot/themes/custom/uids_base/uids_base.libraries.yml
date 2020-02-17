@@ -22,7 +22,6 @@ global-styling:
       assets/css/components/elements/tabs/tabs.css: {}
       assets/css/components/elements/video/video.css: {}
       assets/css/components/elements/search/search.css: {}
-      assets/css/components/global/search-toggle/search-toggle.css: {}
       assets/css/components/global/branding/branding.css: {}
       assets/css/components/global/header/header.css: {}
       assets/css/components/global/footer/footer.css: {}
@@ -52,6 +51,9 @@ site-slogan:
     component:
       assets/css/components/global/site-slogan/site-slogan.css: { preprocess: false }
 search-toggle:
+  css:
+    component:
+      assets/css/components/global/search-toggle/search-toggle.css: { weight: 200, preprocess: false }
   js:
     uids/components/03 - global/search-toggle/search-toggle.js: { preprocss: false }
 off-canvas:
@@ -107,11 +109,11 @@ responsive-bg:
 admin:
   css:
     component:
-      assets/css/admin.css: { preprocess: false }
+      assets/css/admin.css: { weight: 200 }
 legacy:
   css:
     component:
-      assets/css/legacy.css: { preprocess: false }
+      assets/css/legacy.css: { weight: 200 }
 
 # CSS libraries for Layout plugins.
 onecol:
