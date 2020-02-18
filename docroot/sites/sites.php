@@ -978,3 +978,9 @@ $sites['sitesfallgiving.local.drupal.uiowa.edu'] = 'fallgiving.sites.uiowa.edu';
 $sites['sitesfallgiving.dev.drupal.uiowa.edu'] = 'fallgiving.sites.uiowa.edu';
 $sites['sitesfallgiving.stage.drupal.uiowa.edu'] = 'fallgiving.sites.uiowa.edu';
 $sites['sitesfallgiving.prod.drupal.uiowa.edu'] = 'fallgiving.sites.uiowa.edu';
+
+// Directory aliases for statefair.sites.uiowa.edu.
+$sites['sitesstatefair.local.drupal.uiowa.edu'] = 'statefair.sites.uiowa.edu';
+$sites['sitesstatefair.dev.drupal.uiowa.edu'] = 'statefair.sites.uiowa.edu';
+$sites['sitesstatefair.stage.drupal.uiowa.edu'] = 'statefair.sites.uiowa.edu';
+$sites['sitesstatefair.prod.drupal.uiowa.edu'] = 'statefair.sites.uiowa.edu';
