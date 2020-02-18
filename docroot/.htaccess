@@ -84,7 +84,7 @@ AddEncoding gzip svgz
   RewriteCond %{HTTP_HOST} veterans.org.uiowa.edu [NC]
   RewriteRule ^ https://veterans.uiowa.edu/uiva%{REQUEST_URI} [L,R=301]
 
-  # Rrdirect iconsortium.subst-abuse.uiowa.edu to icsa.uiowa.edu
+  # Redirect iconsortium.subst-abuse.uiowa.edu to icsa.uiowa.edu
   RewriteCond %{HTTP_HOST} iconsortium\.subst-abuse\.uiowa\.edu$ [NC]
   RewriteRule ^ https://icsa.uiowa.edu/ [L,R=301]
 
