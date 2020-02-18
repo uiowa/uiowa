@@ -26,7 +26,7 @@ gulp.task('css', function () {
           message:  "Error: <%= error.message %>",
           sound:    "Beep"
         })(error);
-        this.emit('end');
+        process.exit(1);
       }}))
     .pipe(sourcemaps.init())
     .pipe(sass({
@@ -51,7 +51,7 @@ gulp.task('js', function () {
           message:  "Error: <%= error.message %>",
           sound:    "Beep"
         })(error);
-        this.emit('end');
+        process.exit(1);
       }}))
     .pipe(gulp.dest(config.js.dest));
 });

@@ -1,0 +1,27 @@
+uuid: 380e4a90-313b-4c26-99e7-fd59f8358c76
+langcode: en
+status: true
+dependencies:
+  module:
+    - layout_builder_custom
+  theme:
+    - collegiate_theme
+_core:
+  default_config_hash: DBdzSX0-0va6jVI5YzV8cfNzOtykz5MnTw6mzuBHw0Y
+id: collegiate_theme_page_title
+theme: collegiate_theme
+region: content
+weight: -50
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  provider: core
+  label_display: '0'
+visibility:
+  layout_builder_active:
+    id: layout_builder_active
+    enabled: 1
+    negate: false
+    context_mapping: {  }

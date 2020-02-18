@@ -385,4 +385,108 @@ EOD;
     $this->setSchemaVersion(1008);
   }
 
+  /**
+   * Update 1009.
+   *
+   * @Update(
+   *   version = "1009",
+   *   description = "Update collegiate blt.yml config with profile defaults."
+   * )
+   */
+  protected function update1009() {
+    $root = $this->getConfigValue('repo.root');
+    $sites = Multisite::getAllSites($root);
+
+    foreach ($sites as $site) {
+      $this->switchSiteContext($site);
+      $profile = $this->getConfigValue('project.profile.name');
+
+      if ($profile == 'collegiate') {
+        $file = "{$root}/docroot/sites/{$site}/blt.yml";
+        $yaml = YamlMunge::mungeFiles($file, "{$root}/docroot/profiles/custom/collegiate/default.blt.yml");
+        file_put_contents($file, Yaml::dump($yaml, 10, 2));
+        $this->getConfig()->expandFileProperties($file);
+      }
+    }
+
+    $this->setSchemaVersion(1009);
+  }
+
+  /**
+   * Update 1010.
+   *
+   * @Update(
+   *   version = "1010",
+   *   description = "Update drush aliases to remove local SSH options."
+   * )
+   */
+  protected function update1010() {
+    $root = $this->getConfigValue('repo.root');
+    $sites = Multisite::getAllSites($root);
+
+    foreach ($sites as $site) {
+      $id = Multisite::getIdentifier("https://{$site}");
+      $file = "{$root}/drush/sites/{$id}.site.yml";
+
+      $yaml = YamlMunge::parseFile($file);
+      unset($yaml['local']['ssh']);
+      file_put_contents($file, Yaml::dump($yaml, 10, 2));
+    }
+
+    $this->setSchemaVersion(1010);
+  }
+
+  /**
+   * Update 1011.
+   *
+   * @Update(
+   *   version = "1011",
+   *   description = "Update drush aliases to remove local host and user."
+   * )
+   */
+  protected function update1011() {
+    $root = $this->getConfigValue('repo.root');
+    $sites = Multisite::getAllSites($root);
+
+    foreach ($sites as $site) {
+      $id = Multisite::getIdentifier("https://{$site}");
+      $file = "{$root}/drush/sites/{$id}.site.yml";
+
+      $yaml = YamlMunge::parseFile($file);
+      unset($yaml['local']['host']);
+      unset($yaml['local']['user']);
+      file_put_contents($file, Yaml::dump($yaml, 10, 2));
+    }
+
+    $this->setSchemaVersion(1011);
+  }
+
+  /**
+   * Update 1012.
+   *
+   * @Update(
+   *   version = "1012",
+   *   description = "Update collegiate sites cm.stragety to core-only."
+   * )
+   */
+  protected function update1012() {
+    $root = $this->getConfigValue('repo.root');
+    $sites = Multisite::getAllSites($root);
+
+    foreach ($sites as $site) {
+      $this->switchSiteContext($site);
+      $profile = $this->getConfigValue('project.profile.name');
+      $strategy = $this->getConfigValue('cm.strategy');
+
+      if ($profile == 'collegiate' && $strategy != 'core-only') {
+        $file = "{$root}/docroot/sites/{$site}/blt.yml";
+        $yaml = YamlMunge::parseFile($file);
+        $yaml['cm']['strategy'] = 'core-only';
+        file_put_contents($file, Yaml::dump($yaml, 10, 2));
+      }
+    }
+
+    $this->setSchemaVersion(1012);
+  }
+
 }

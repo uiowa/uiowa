@@ -1,0 +1,25 @@
+project:
+  profile:
+    name: sitenow
+  local:
+    hostname: orgcrisp.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: orgcrisp
+  human_name: crisp.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgcrisp.prod
+drupal:
+  db:
+    database: crisp_org_uiowa_edu
+uiowa:
+  profiles:
+    sitenow:
+      requester: lovaglia
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true

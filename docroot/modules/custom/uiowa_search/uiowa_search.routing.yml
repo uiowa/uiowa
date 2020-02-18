@@ -1,0 +1,15 @@
+uiowa_search.search_results:
+  path: '/uiowa-search'
+  defaults:
+    _title: 'Search'
+    _controller: '\Drupal\uiowa_search\Controller\UiowaSearchResultsController::build'
+  requirements:
+    _permission: 'access content'
+
+uiowa_search.settings_form:
+  path: '/admin/config/system/uiowa-search'
+  defaults:
+    _title: 'University of Iowa Search'
+    _form: 'Drupal\uiowa_search\Form\SettingsForm'
+  requirements:
+    _permission: 'administer uiowa_search configuration'

@@ -25,7 +25,7 @@ class Multisite {
    *
    * @throws \Exception
    */
-  public static function getInitialDatabaseName($dir) {
+  public static function getDatabaseName($dir) {
     if ($dir == 'default') {
       throw new \Exception('The default site is configured automatically by BLT.');
     }
@@ -52,7 +52,12 @@ class Multisite {
    */
   public static function getIdentifier($uri) {
     if ($parsed = parse_url($uri)) {
-      if (substr($parsed['host'], -9) === 'uiowa.edu') {
+
+      // Special case for uiowa.edu.
+      if ($parsed['host'] === 'uiowa.edu') {
+        $id = 'uiowa';
+      }
+      elseif (substr($parsed['host'], -9) === 'uiowa.edu') {
         // Don't use the suffix if the host equals uiowa.edu.
         $id = substr($parsed['host'], 0, -10);
 

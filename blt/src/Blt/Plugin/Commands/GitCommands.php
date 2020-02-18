@@ -3,8 +3,10 @@
 namespace Uiowa\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
+use Acquia\Blt\Robo\Common\YamlMunge;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
+use Symfony\Component\Finder\Finder;
 
 /**
  * Git commands.
@@ -17,11 +19,7 @@ class GitCommands extends BltTasks {
    * @hook validate uiowa:git:clean
    */
   public function validateClean(CommandData $commandData) {
-    $remotes = $this->getAcquiaRemotes();
-
-    if (empty($remotes)) {
-      return new CommandError('You must add a remote pointing to an Acquia Git repository. Check the README for details.');
-    }
+    $remotes = $this->getConfigValue('git.remotes');
 
     foreach ($remotes as $remote) {
       $result = $this->taskExecStack()
@@ -43,12 +41,15 @@ class GitCommands extends BltTasks {
    * @aliases ugc
    */
   public function clean() {
-    $remotes = $this->getAcquiaRemotes();
+    $remotes = $this->getConfigValue('git.remotes');
 
+    // We never want to delete the two main artifact branches. The master branch
+    // cannot be deleted, even though it is not used, because it is the default
+    // Acquia remote branch.
     $keep = [
       'refs/heads/master',
-      'refs/heads/pipelines-build-master',
-      'refs/heads/pipelines-build-develop',
+      'refs/heads/master-build',
+      'refs/heads/develop-build',
     ];
 
     $delete = [];
@@ -97,40 +98,66 @@ class GitCommands extends BltTasks {
   }
 
   /**
-   * Write the branch SHA or tag to the profile info files.
+   * Write an unannotated Git tag version string to custom asset info files.
    *
-   * @hook post-command artifact:build
+   * This command should not be executed directly. It is called after the
+   * build artifact is created to write info versions dynamically.
+   *
+   * @see: blt/blt.yml
+   *
+   * @command uiowa:git:version
+   *
+   * @hidden
    */
-  public function writeProfileVersion() {
-    $event = getenv('PIPELINE_WEBHOOK_EVENT');
-    $path = getenv('PIPELINE_VCS_PATH');
-    $sha = getenv('PIPELINE_GIT_HEAD_REF');
+  public function version() {
+    $result = $this->taskGit()
+      ->dir($this->getConfigValue('repo.root'))
+      ->exec('describe --tags')
+      ->stopOnFail(FALSE)
+      ->silent(TRUE)
+      ->run();
 
-    if ($event == 'TAG_PUSH') {
-      $version = $path;
+    if (!$result->wasSuccessful()) {
+      $this->logger->warning("Unable to determine Git version for info files.");
     }
-    elseif ($event == 'BRANCH_PUSH' || $event == 'PULL_REQUEST') {
-      $version = "{$path}-{$sha}";
-    }
+    else {
+      $deploy = $this->getConfigValue('deploy.dir');
+      $version = $result->getMessage();
 
-    $profiles = $this->getConfigValue('uiowa.profiles');
+      $finder = new Finder();
+      $files = $finder
+        ->files()
+        ->in([
+          "{$deploy}/docroot/profiles/custom/",
+          "{$deploy}/docroot/themes/custom/",
+          "{$deploy}/docroot/modules/custom/",
+        ])
+        ->depth('< 2')
+        ->name('*.info.yml')
+        ->sortByName();
 
-    foreach ($profiles as $profile) {
-      $file = $this->getConfigValue('deploy.dir') . "/docroot/profiles/custom/{$profile}/{$profile}.info.yml";
+      foreach ($files->getIterator() as $file) {
+        if (file_exists($file)) {
+          $yaml = YamlMunge::parseFile($file);
 
-      if (isset($version)) {
-        $data = "version: '{$version}'";
-        file_put_contents($file, $data, FILE_APPEND);
-        $this->logger->info("Appended Git version {$version} to {$file}.");
-      }
-      else {
-        $this->logger->warning("Unable to append Git version to {$file}.");
+          if (!isset($yaml['version'])) {
+            $yaml['version'] = $version;
+            YamlMunge::writeFile($file, $yaml);
+            $this->logger->notice("Wrote Git version {$version} to {$file}.");
+          }
+          else {
+            $this->logger->warning("File {$file} already contains version.");
+          }
+        }
+        else {
+          $this->logger->warning("Unable to write Git version to non-existent file {$file}.");
+        }
       }
     }
   }
 
   /**
-   * Copy SiteNow Drush commands into the build artifact before it is committed.
+   * Copy global Drush commands into the build artifact before it is committed.
    *
    * Since drush/Commands/ is listed in the upstream deploy-exclude.txt file,
    * any hard-coded commands (ex. PolicyCommands.php) will not be committed to
@@ -143,53 +170,26 @@ class GitCommands extends BltTasks {
     $root = $this->getConfigValue('repo.root');
     $deploy_dir = $this->getConfigValue('deploy.dir');
 
-    $this->taskFilesystemStack()
-      ->stopOnFail()
-      ->copy("{$root}/drush/Commands/SitenowCommands.php", "{$deploy_dir}/drush/Commands/SitenowCommands.php")
-      ->run();
+    $finder = new Finder();
 
-    $this->logger->info('Copied SiteNow Drush commands to deploy directory.');
-  }
+    $files = $finder
+      ->in("{$root}/drush/Commands/")
+      ->files()
+      ->depth('< 1')
+      ->exclude(['contrib'])
+      ->name('*Commands.php')
+      ->sortByName();
 
-  /**
-   * Get remotes with an Acquia URI host.
-   *
-   * @return array
-   *   An array of Acquia hosted remote names.
-   *
-   * @throws \Robo\Exception\TaskException
-   */
-  protected function getAcquiaRemotes() {
-    $result = $this->taskExecStack()
-      ->exec('git remote')
-      ->stopOnFail()
-      ->silent(TRUE)
-      ->run();
+    foreach ($files->getIterator() as $file) {
+      $name = $file->getRelativePathname();
 
-    $output = $result->getMessage();
-    $remotes = explode(PHP_EOL, $output);
-    $origin = array_search('origin', $remotes);
-    unset($remotes[$origin]);
-
-    $acquia = [];
-
-    foreach ($remotes as $remote) {
-      $result = $this->taskExecStack()
-        ->exec("git remote get-url {$remote}")
+      $this->taskFilesystemStack()
         ->stopOnFail()
-        ->silent(TRUE)
+        ->copy("{$root}/drush/Commands/{$name}", "{$deploy_dir}/drush/Commands/{$name}")
         ->run();
 
-      $output = $result->getMessage();
-      $url = stristr($output, ':', TRUE);
-      $url = parse_url("https://{$url}");
-
-      if (stristr($url['host'], 'prod.hosting.acquia.com')) {
-        $acquia[] = $remote;
-      }
+      $this->say("Copied {$name} Drush commands to deploy directory.");
     }
-
-    return $acquia;
   }
 
 }

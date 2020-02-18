@@ -1,4 +1,4 @@
-uuid: 44eefe03-a452-48c0-9e36-cfe4aae0d806
+uuid: b78788af-9b09-469c-a7c2-0bd150fd939a
 langcode: en
 status: true
 dependencies:
@@ -67,11 +67,56 @@ items:
       pattern: 'g:ia'
   -
     collection: ''
+    name: core.date_format.long_date
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        enforced:
+          module:
+            - entity_types
+      id: long_date
+      label: 'Long date'
+      locked: false
+      pattern: 'F j, Y'
+  -
+    collection: ''
+    name: core.date_format.rss_format
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        enforced:
+          module:
+            - entity_types
+      id: rss_format
+      label: 'RSS format'
+      locked: false
+      pattern: r
+  -
+    collection: ''
+    name: core.date_format.short_date
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        enforced:
+          module:
+            - entity_types
+      id: short_date
+      label: 'Short date'
+      locked: false
+      pattern: m/d/Y
+  -
+    collection: ''
     name: field.storage.node.layout_builder__layout
     data:
       langcode: en
       status: true
       dependencies:
+        enforced:
+          module:
+            - entity_types
         module:
           - layout_builder
           - node

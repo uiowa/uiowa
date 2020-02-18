@@ -1,0 +1,84 @@
+@import "assets/scss/_variables.scss";
+@import "assets/scss/_utilities.scss";
+//@import "components/03 - global/branding-bar/uiowa-apply/_uiowa-apply.scss";
+//@import "components/03 - global/branding-bar/uiowa-links/_uiowa-links.scss";
+//@import "components/03 - global/branding-bar/uiowa-search/_uiowa-search.scss";
+//@import "components/03 - global/branding-bar/uiowa-bar/_uiowa-bar.scss";
+//@import "components/03 - global/branding-bar/uiowa-search/_uiowa-search.scss";
+
+
+// apply uids styles to uiowa_bar search form
+
+.uids-content {
+  &.uids-content__search {
+    display: flex;
+    justify-content: flex-start;
+    height: $lg;
+    @include margin($left: $xlg);
+
+    .form-item,
+    .form-actions {
+      margin: 0;
+    }
+
+    input[type="text"] {
+      margin: 0;
+      height: $lg;
+      border-radius: 0;
+      border: none;
+    }
+
+    input[type="submit"] {
+      height: $lg;
+      margin-left: -4px;
+      background: #343a40;
+      color: #fff;
+      font-size: $small-font-size;
+      @include padding($top: $xsm-sm, $bottom: $xsm-sm);
+    }
+  }
+}
+
+// additional styles for uiowa_bar
+
+#uiowa-search {
+  display: flex;
+}
+
+.uiowa-bar--navbar--links {
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  li {
+    display: inline-flex;
+    @include margin($right: $xlg);
+    &:last-child {
+      margin: 0;
+    }
+    a {
+      text-decoration: none;
+    }
+  }
+}
+
+// styles for html.html.twig
+
+.uiowa__container {
+  background: $secondary;
+  @include padding($top: $sm, $bottom: $sm);
+  .uiowa-bar--wrapper {
+    @extend %container;
+    padding: 0;
+    background: $secondary;
+  }
+}
+
+.uiowa__container--full {
+  @include padding($top: $sm, $right: $gutter, $bottom: $sm, $left: $gutter);
+  background: $secondary;
+  .uiowa-bar--wrapper {
+    padding: 0;
+    background: $secondary;
+  }
+}

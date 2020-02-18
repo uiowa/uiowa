@@ -1,0 +1,280 @@
+@import "../uids/assets/scss/_variables.scss";
+@import "../uids/assets/scss/_utilities.scss";
+@import "../uids/assets/scss/_fonts.scss";
+@import url('https://use.fontawesome.com/releases/v5.8.2/css/all.css');
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900&display=swap');
+
+
+// Admin only styles
+
+.toolbar-menu {
+  font-size: unset;
+}
+
+// Layout Builder Editor Styles
+
+.contextual .trigger {
+  position: relative !important;
+}
+
+.layout-builder__region {
+  width: 100%;
+}
+
+.layout-builder-block {
+  padding: 0;
+  cursor: move;
+}
+
+.stat.layout-builder-block {
+  padding: 5rem;
+}
+
+
+.layout-builder__add-block {
+  padding: 1.5em;
+}
+
+
+.layout__container {
+
+  .layout-builder-block,
+  .layout-builder__add-block {
+    flex-basis: 100%;
+  }
+
+  &.section-column__row {
+
+    .layout-builder-block,
+    .layout-builder__add-block {
+      flex: 1 1 0%;
+      flex-basis: unset;
+    }
+  }
+}
+
+.feature__container .layout__region .layout-builder__region {
+  display: flex;
+  align-content: stretch;
+  align-items: stretch;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+}
+
+#drupal-off-canvas select[multiple] option {
+  color: #000;
+  background: #fff;
+  font-family: "Lucida Grande", "Lucida Sans Unicode", "liberation sans", sans-serif;
+}
+
+// admin styles for responsive layout sections for container
+
+.content__container .layout-builder__section,
+.content__mixed .layout-builder__section {
+  .layout__container {
+    margin: 0;
+
+    @include breakpoint(container) {
+      position: relative;
+      max-width: 84.375em;
+      margin: 0 auto;
+    }
+
+    &.page__container--full {
+      max-width: 100%;
+      margin-right: 0;
+      margin-left: 0;
+    }
+
+    &.page__container--edge {
+      max-width: 100%;
+      margin-right: 0;
+      margin-left: 0;
+    }
+  }
+}
+
+// admin styles for responsive layout sections for full width or mixed settings
+
+.content__full .layout-builder__section {
+  .layout__container {
+    margin: 0;
+
+    &.page__container {
+      @include breakpoint(container) {
+        position: relative;
+        max-width: 84.375em;
+        margin: 0 auto;
+      }
+    }
+  }
+}
+
+// admin styles for container setting local drupal admin blocks
+
+.content__container,
+.content__mixed {
+
+  .block-local-tasks-block,
+  .block-help-block,
+  .form-actions,
+  .layout-builder__message,
+  .form-type-vertical-tabs {
+    @extend %container;
+  }
+}
+
+// admin styles layout builder container reset
+
+.layout-builder {
+  margin: $gutter 0;
+  padding: $gutter;
+}
+
+// admin styles adjust vertical tabs at bottom of edit screen
+
+.layout-builder-enabled {
+  .vertical-tabs__menu-item {
+    border: none;
+  }
+
+  .vertical-tabs {
+    margin: $gutter 0;
+
+    .form-type-checkbox {
+      margin: $gutter 0;
+    }
+  }
+
+  .vertical-tabs__menu {
+    margin: 0;
+    list-style: none;
+    border: none;
+
+    li {
+      list-style-type: none;
+    }
+  }
+}
+
+// admin styles for full-width and mixed setting for local drupal admin blocks
+
+.content__full {
+
+  .block-local-tasks-block,
+  .block-help-block,
+  .form-actions,
+  .layout-builder__message,
+  .form-type-vertical-tabs {
+    margin-right: $gutter;
+    margin-left: $gutter;
+  }
+}
+
+
+@media (min-width: 84.375em) {
+  .toolbar-vertical.toolbar-tray-open.search-is-open .search-overlay .hds-search {
+    width: 60%;
+  }
+}
+
+
+@media (min-width: 855px) {
+  .toolbar-vertical.toolbar-tray-open.search-is-open .search-overlay .hds-search {
+    width: 60%;
+  }
+}
+
+// admin styles for search toggle
+body.toolbar-vertical.toolbar-tray-open {
+  .search-button {
+    @include breakpoint(container) {
+      right: 294px;
+    }
+  }
+
+  .search-is-open .search-overlay .hds-search {
+    @include breakpoint(container) {
+      margin-right: 209px;
+    }
+  }
+}
+
+.js-off-canvas-dialog-open {
+  .search-button {
+    right: 310px;
+  }
+}
+
+.js-off-canvas-dialog-open.search-is-open .search-overlay .hds-search {
+  width: 63%;
+}
+
+// admin styles for off-canvas menu
+
+.o-canvas__drawer {
+  .o-canvas__wrapper & {
+    top: 179px;
+
+    @include breakpoint(menu) {
+      top: 119px;
+
+      .toolbar-vertical & {
+        top: 119px;
+        height: calc(100% - 119px);
+      }
+
+      .header--tertiary & {
+        top: 179px;
+
+        .toolbar-horizontal & {
+          top: 179px !important;
+        }
+
+        .toolbar-vertical & {
+          top: 179px;
+        }
+      }
+    }
+  }
+
+  .o-canvas--open & {
+    top: 179px;
+    height: calc(100% - 179px);
+
+    @include breakpoint(menu) {
+      top: 119px;
+      height: calc(100% - 119px);
+
+      .toolbar-tray-open & {
+        top: 159px;
+        height: calc(100% - 159px);
+      }
+
+      .toolbar-vertical.toolbar-tray-open & {
+        top: 119px;
+        height: calc(100% - 119px);
+      }
+
+      .header--tertiary & {
+        top: 179px;
+        height: calc(100% - 179px);
+
+        .toolbar-horizontal.toolbar-tray-open & {
+          top: 219px !important;
+          height: calc(100% - 219px);
+        }
+
+        .toolbar-vertical.toolbar-tray-open & {
+          top: 179px;
+          height: calc(100% - 179px);
+        }
+      }
+    }
+  }
+}
+
+.header--tertiary .o-canvas--open .o-canvas__drawer {
+  top: 239px;
+}
