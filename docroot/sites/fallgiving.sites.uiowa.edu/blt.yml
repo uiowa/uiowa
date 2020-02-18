@@ -1,0 +1,25 @@
+project:
+  local:
+    hostname: sitesfallgiving.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: sitesfallgiving
+  human_name: fallgiving.sites.uiowa.edu
+  profile:
+    name: sitenow
+drush:
+  aliases:
+    local: self
+    remote: sitesfallgiving.prod
+drupal:
+  db:
+    database: fallgiving_sites_uiowa_edu
+cm:
+  core:
+    install_from_config: true
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+uiowa:
+  profiles:
+    sitenow:
+      requester: mjoneill
