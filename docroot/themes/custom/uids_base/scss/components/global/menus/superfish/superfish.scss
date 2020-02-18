@@ -1,3 +1,137 @@
 @import "assets/scss/_variables.scss";
 @import "assets/scss/_utilities.scss";
 @import "components/03 - global/menus/superfish/_superfish.scss";
+
+
+.block-superfish .sf-style-none ul,
+.block-superfish .menu ul,
+.region-primary-menu .sf-style-none ul,
+.region-primary-menu .menu ul {
+  background: black!important;
+}
+
+.menu-horizontal.nav--header--primary,
+.menu-horizontal.nav--header--secondary {
+  border-bottom: 1px solid #ccc;
+}
+
+
+.sf-multicolumn {
+  //height: 100px;
+  width: 955px!important;
+  //top: 50px;
+
+  &:before,
+  &:after {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: calc(50vw - 280px);
+    left: calc(-50vw + 290px);
+    background: #f1f1f1;
+    box-shadow: 0 4px 2px -2px gainsboro;
+  }
+
+  &:after {
+    left: auto;
+    right: calc(-50vw + 290px);
+  }
+}
+
+ul.sf-menu.sf-horizontal li a {
+  position: relative;
+  transition: background 0.8s ease-out;
+}
+
+ul.sf-menu.sf-horizontal li a:after {
+  background: #151515;
+}
+
+ul.sf-menu.sf-horizontal > li a:after{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  content: "";
+  -webkit-transition: 300ms;
+  transition: 300ms;
+}
+
+
+.block-superfish .menu ul.sf-multicolumn {
+  background: #f1f1f1!important;
+  transition: background-color 2s ease-in;
+}
+
+ul.sf-menu.sf-horizontal >li {
+  padding-bottom: 5px;
+}
+
+ul.sf-menu.sf-horiz-menu li li a  {
+  padding: .45rem 1rem;
+  font-size: .95rem;
+}
+
+
+ul.sf-menu.sf-horiz-menu ul  {
+  padding-top: $md !important;
+  padding-bottom: $md !important;
+}
+
+ul.sf-menu.sf-mega-menu li {
+  position: unset;
+}
+
+
+.block-superfish .menu ul.sf-multicolumn li a {
+  color: #333;
+      text-transform: uppercase;
+      letter-spacing: .02rem;
+  font-size: 1rem;
+  padding: $sm 0;
+  font-weight: 400;
+}
+
+ul.sf-multicolumn ol {
+display: flex;
+flex-wrap: wrap;
+width: 50%;
+padding: $md 0;
+li {
+  width: 50%;
+}
+}
+
+
+.block-superfish .menu ul.sf-multicolumn {
+  box-shadow: none;
+  box-shadow: 0 4px 2px -2px gainsboro;
+
+}
+
+
+
+ul.sf-menu.sf-horizontal>li>a.sf-depth-1.menuparent:before {
+  right: 2rem;
+  margin-top: -0.4rem;
+  font-size: .7rem;
+  line-height: 1.4;
+}
+
+ul.sf-menu.sf-horizontal>li.sfHover>a.sf-depth-1.menuparent:before {
+  content: "\f106";
+}
+
+
+ul.sf-menu.sf-horizontal>li:first-child>a.sf-depth-1.menuparent {
+  padding-left: 0;
+}
+
+ul.sf-menu.sf-horizontal>li>a.sf-depth-1.menuparent {
+  padding-right: 3.5rem;
+}
+
+ul.sf-menu.sf-horizontal {
+    margin-top: 10px;
+}
