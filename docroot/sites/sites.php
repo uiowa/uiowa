@@ -990,3 +990,9 @@ $sites['sitescritical-incident-plan.local.drupal.uiowa.edu'] = 'critical-inciden
 $sites['sitescritical-incident-plan.dev.drupal.uiowa.edu'] = 'critical-incident-plan.sites.uiowa.edu';
 $sites['sitescritical-incident-plan.stage.drupal.uiowa.edu'] = 'critical-incident-plan.sites.uiowa.edu';
 $sites['sitescritical-incident-plan.prod.drupal.uiowa.edu'] = 'critical-incident-plan.sites.uiowa.edu';
+
+// Directory aliases for mural-film.sites.uiowa.edu.
+$sites['sitesmural-film.local.drupal.uiowa.edu'] = 'mural-film.sites.uiowa.edu';
+$sites['sitesmural-film.dev.drupal.uiowa.edu'] = 'mural-film.sites.uiowa.edu';
+$sites['sitesmural-film.stage.drupal.uiowa.edu'] = 'mural-film.sites.uiowa.edu';
+$sites['sitesmural-film.prod.drupal.uiowa.edu'] = 'mural-film.sites.uiowa.edu';

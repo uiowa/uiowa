@@ -1,0 +1,25 @@
+project:
+  local:
+    hostname: sitesmural-film.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: sitesmural-film
+  human_name: mural-film.sites.uiowa.edu
+  profile:
+    name: sitenow
+drush:
+  aliases:
+    local: self
+    remote: sitesmural-film.prod
+drupal:
+  db:
+    database: mural_film_sites_uiowa_edu
+cm:
+  core:
+    install_from_config: true
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+uiowa:
+  profiles:
+    sitenow:
+      requester: mjoneill
