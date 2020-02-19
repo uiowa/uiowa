@@ -1014,3 +1014,9 @@ $sites['orgbmess.local.drupal.uiowa.edu'] = 'bmess.org.uiowa.edu';
 $sites['orgbmess.dev.drupal.uiowa.edu'] = 'bmess.org.uiowa.edu';
 $sites['orgbmess.stage.drupal.uiowa.edu'] = 'bmess.org.uiowa.edu';
 $sites['orgbmess.prod.drupal.uiowa.edu'] = 'bmess.org.uiowa.edu';
+
+// Directory aliases for grueter.lab.uiowa.edu.
+$sites['labgrueter.local.drupal.uiowa.edu'] = 'grueter.lab.uiowa.edu';
+$sites['labgrueter.dev.drupal.uiowa.edu'] = 'grueter.lab.uiowa.edu';
+$sites['labgrueter.stage.drupal.uiowa.edu'] = 'grueter.lab.uiowa.edu';
+$sites['labgrueter.prod.drupal.uiowa.edu'] = 'grueter.lab.uiowa.edu';
