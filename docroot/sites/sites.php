@@ -1008,3 +1008,9 @@ $sites['labauditoryresearch.local.drupal.uiowa.edu'] = 'auditoryresearch.lab.uio
 $sites['labauditoryresearch.dev.drupal.uiowa.edu'] = 'auditoryresearch.lab.uiowa.edu';
 $sites['labauditoryresearch.stage.drupal.uiowa.edu'] = 'auditoryresearch.lab.uiowa.edu';
 $sites['labauditoryresearch.prod.drupal.uiowa.edu'] = 'auditoryresearch.lab.uiowa.edu';
+
+// Directory aliases for bmess.org.uiowa.edu.
+$sites['orgbmess.local.drupal.uiowa.edu'] = 'bmess.org.uiowa.edu';
+$sites['orgbmess.dev.drupal.uiowa.edu'] = 'bmess.org.uiowa.edu';
+$sites['orgbmess.stage.drupal.uiowa.edu'] = 'bmess.org.uiowa.edu';
+$sites['orgbmess.prod.drupal.uiowa.edu'] = 'bmess.org.uiowa.edu';
