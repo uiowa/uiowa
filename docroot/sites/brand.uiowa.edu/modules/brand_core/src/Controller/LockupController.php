@@ -110,7 +110,7 @@ class LockupController extends ControllerBase {
     $bold = drupal_get_path('module', 'brand_core') . '/fonts/RobotoBold.svg';
     $regular = drupal_get_path('module', 'brand_core') . '/fonts/RobotoRegular.svg';
     $psize = 8;
-    $pline_height = 0;
+    $pline_height = 9.5;
     $pletter_spacing = 0;
     $ssize = 6;
     $sline_height = 7.5;
@@ -175,8 +175,8 @@ class LockupController extends ControllerBase {
         // Border. Width based on longest primary width.
         $lengths = array_combine(array_keys($p_lines), array_column($p_lines, 0));
         $max_length = max($lengths);
-        if ($max_length < 81.791) {
-          $border_width = 81.791;
+        if ($max_length < 74) {
+          $border_width = 82;
         }
         else {
           $border_width = $max_length + 8;
@@ -295,32 +295,41 @@ class LockupController extends ControllerBase {
 
         LockupController::addHorizontalLogo($lockup, $iowa_color);
 
+        // Used later to find last line position.
+        $y_positions = [];
+
         // Primary Line 1.
+        $p1y = $horizontal_center - $ptc + $text['p1y'] - $text['offset'] + $text['correction'];
+        $y_positions[] = $p1y;
         $lockup->addText(html_entity_decode(
           $p_explode[0],
           ENT_QUOTES | ENT_XML1,
           'UTF-8'),
           $horizontal_start,
-          $horizontal_center - $ptc + $text['p1y'] - $text['offset'] + $text['correction']
+          $p1y
         );
         // Primary Line 2.
         if (isset($p_explode[1])) {
+          $p2y = $horizontal_center - $ptc + $text['p2y'] - $text['offset'] + $text['correction'];
+          $y_positions[] = $p2y;
           $lockup->addText(html_entity_decode(
             $p_explode[1],
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $horizontal_start,
-            $horizontal_center - $ptc + $text['p2y'] - $text['offset'] + $text['correction']
+            $p2y
           );
         }
         // Primary Line 3.
         if (isset($p_explode[2])) {
+          $p3y = $horizontal_center - $ptc + $text['p3y'] - $text['offset'] + $text['correction'];
+          $y_positions[] = $p3y;
           $lockup->addText(html_entity_decode(
             $p_explode[2],
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $horizontal_start,
-            $horizontal_center - $ptc + $text['p3y'] - $text['offset'] + $text['correction']
+            $p3y
           );
         }
 
@@ -329,39 +338,55 @@ class LockupController extends ControllerBase {
         $lockup->setLetterSpacing($sletter_spacing);
 
         if (isset($s_explode[0])) {
+          $s1y = $horizontal_center - $stc + $text['s1y'] - $text['offset'] + $text['correction'];
+          $y_positions[] = $s1y;
           $lockup->addText(html_entity_decode(
             $s_explode[0],
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $horizontal_start,
-            $horizontal_center - $stc + $text['s1y'] - $text['offset'] + $text['correction']
+            $s1y
           );
         }
 
         if (isset($s_explode[1])) {
+          $s2y = $horizontal_center - $stc + $text['s2y'] - $text['offset'] + $text['correction'];
+          $y_positions[] = $s2y;
           $lockup->addText(html_entity_decode(
             $s_explode[1],
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $horizontal_start,
-            $horizontal_center - $stc + $text['s2y'] - $text['offset'] + $text['correction']
+            $s2y
           );
         }
 
         if (isset($s_explode[2])) {
+          $s3y = $horizontal_center - $stc + $text['s3y'] - $text['offset'] + $text['correction'];
+          $y_positions[] = $s3y;
           $lockup->addText(html_entity_decode(
             $s_explode[2],
             ENT_QUOTES | ENT_XML1,
             'UTF-8'),
             $horizontal_start,
-            $horizontal_center - $stc + $text['s3y'] - $text['offset'] + $text['correction']
+            $s3y
           );
         }
-        $border_height = $text['total_height'];
-        if ($border_height < 29.369) {
-          $border_height = 29.369;
-        }
+        $bottom_y = max($y_positions);
+        $y_diff = $bottom_y - $p1y;
 
+        if (isset($s_txt)) {
+          $border_height = $y_diff + 12;
+        }
+        else {
+          $border_height = $y_diff + 8;
+        }
+        if (isset($text['border_bonus'])) {
+          $border_height = $text['border_bonus'] + $border_height;
+        }
+        if ($border_height < 29.48) {
+          $border_height = 29.48;
+        }
         // Draw border.
         $lockup->addRect([
           'x' => 124.625,
@@ -512,8 +537,9 @@ class LockupController extends ControllerBase {
         // 3 Primary, 0 Sub.
         // Total Text Height.
         $text['total_height'] = $p_data['lines'][0][1] + $pmb + $p_data['lines'][1][1] + $pmb + $p_data['lines'][2][1];
+        $text['border_bonus'] = 6.26;
         // Overall Offset.
-        $text['correction'] = -0.466;
+        $text['correction'] = 0;
         $text['offset'] = $text['total_height'] / 2;
         // Positions.
         $text['p1y'] = $half_p1h;
