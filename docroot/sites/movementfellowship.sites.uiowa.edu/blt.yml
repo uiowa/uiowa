@@ -1,0 +1,25 @@
+project:
+  local:
+    hostname: sitesmovementfellowship.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: sitesmovementfellowship
+  human_name: movementfellowship.sites.uiowa.edu
+  profile:
+    name: sitenow
+drush:
+  aliases:
+    local: self
+    remote: sitesmovementfellowship.prod
+drupal:
+  db:
+    database: movementfellowship_sites_uiowa_edu
+cm:
+  core:
+    install_from_config: true
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+uiowa:
+  profiles:
+    sitenow:
+      requester: nnarayanan

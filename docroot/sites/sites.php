@@ -1032,3 +1032,9 @@ $sites['sitespostsecular-novel.local.drupal.uiowa.edu'] = 'postsecular-novel.sit
 $sites['sitespostsecular-novel.dev.drupal.uiowa.edu'] = 'postsecular-novel.sites.uiowa.edu';
 $sites['sitespostsecular-novel.stage.drupal.uiowa.edu'] = 'postsecular-novel.sites.uiowa.edu';
 $sites['sitespostsecular-novel.prod.drupal.uiowa.edu'] = 'postsecular-novel.sites.uiowa.edu';
+
+// Directory aliases for movementfellowship.sites.uiowa.edu.
+$sites['sitesmovementfellowship.local.drupal.uiowa.edu'] = 'movementfellowship.sites.uiowa.edu';
+$sites['sitesmovementfellowship.dev.drupal.uiowa.edu'] = 'movementfellowship.sites.uiowa.edu';
+$sites['sitesmovementfellowship.stage.drupal.uiowa.edu'] = 'movementfellowship.sites.uiowa.edu';
+$sites['sitesmovementfellowship.prod.drupal.uiowa.edu'] = 'movementfellowship.sites.uiowa.edu';
