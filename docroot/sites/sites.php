@@ -996,3 +996,21 @@ $sites['sitesmural-film.local.drupal.uiowa.edu'] = 'mural-film.sites.uiowa.edu';
 $sites['sitesmural-film.dev.drupal.uiowa.edu'] = 'mural-film.sites.uiowa.edu';
 $sites['sitesmural-film.stage.drupal.uiowa.edu'] = 'mural-film.sites.uiowa.edu';
 $sites['sitesmural-film.prod.drupal.uiowa.edu'] = 'mural-film.sites.uiowa.edu';
+
+// Directory aliases for lentz.lab.uiowa.edu.
+$sites['lablentz.local.drupal.uiowa.edu'] = 'lentz.lab.uiowa.edu';
+$sites['lablentz.dev.drupal.uiowa.edu'] = 'lentz.lab.uiowa.edu';
+$sites['lablentz.stage.drupal.uiowa.edu'] = 'lentz.lab.uiowa.edu';
+$sites['lablentz.prod.drupal.uiowa.edu'] = 'lentz.lab.uiowa.edu';
+
+// Directory aliases for auditoryresearch.lab.uiowa.edu.
+$sites['labauditoryresearch.local.drupal.uiowa.edu'] = 'auditoryresearch.lab.uiowa.edu';
+$sites['labauditoryresearch.dev.drupal.uiowa.edu'] = 'auditoryresearch.lab.uiowa.edu';
+$sites['labauditoryresearch.stage.drupal.uiowa.edu'] = 'auditoryresearch.lab.uiowa.edu';
+$sites['labauditoryresearch.prod.drupal.uiowa.edu'] = 'auditoryresearch.lab.uiowa.edu';
+
+// Directory aliases for bmess.org.uiowa.edu.
+$sites['orgbmess.local.drupal.uiowa.edu'] = 'bmess.org.uiowa.edu';
+$sites['orgbmess.dev.drupal.uiowa.edu'] = 'bmess.org.uiowa.edu';
+$sites['orgbmess.stage.drupal.uiowa.edu'] = 'bmess.org.uiowa.edu';
+$sites['orgbmess.prod.drupal.uiowa.edu'] = 'bmess.org.uiowa.edu';
