@@ -1,0 +1,25 @@
+project:
+  local:
+    hostname: orgbmess.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: orgbmess
+  human_name: bmess.org.uiowa.edu
+  profile:
+    name: sitenow
+drush:
+  aliases:
+    local: self
+    remote: orgbmess.prod
+drupal:
+  db:
+    database: bmess_org_uiowa_edu
+cm:
+  core:
+    install_from_config: true
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+uiowa:
+  profiles:
+    sitenow:
+      requester: lbauer3

@@ -1,0 +1,25 @@
+project:
+  local:
+    hostname: lablentz.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: lablentz
+  human_name: lentz.lab.uiowa.edu
+  profile:
+    name: sitenow
+drush:
+  aliases:
+    local: self
+    remote: lablentz.prod
+drupal:
+  db:
+    database: lentz_lab_uiowa_edu
+cm:
+  core:
+    install_from_config: true
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+uiowa:
+  profiles:
+    sitenow:
+      requester: strommerl
