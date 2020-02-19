@@ -1020,3 +1020,9 @@ $sites['labgrueter.local.drupal.uiowa.edu'] = 'grueter.lab.uiowa.edu';
 $sites['labgrueter.dev.drupal.uiowa.edu'] = 'grueter.lab.uiowa.edu';
 $sites['labgrueter.stage.drupal.uiowa.edu'] = 'grueter.lab.uiowa.edu';
 $sites['labgrueter.prod.drupal.uiowa.edu'] = 'grueter.lab.uiowa.edu';
+
+// Directory aliases for debate.uiowa.edu.
+$sites['debate.local.drupal.uiowa.edu'] = 'debate.uiowa.edu';
+$sites['debate.dev.drupal.uiowa.edu'] = 'debate.uiowa.edu';
+$sites['debate.stage.drupal.uiowa.edu'] = 'debate.uiowa.edu';
+$sites['debate.prod.drupal.uiowa.edu'] = 'debate.uiowa.edu';
