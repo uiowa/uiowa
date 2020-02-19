@@ -1,0 +1,25 @@
+project:
+  local:
+    hostname: sbirt.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: sbirt
+  human_name: sbirt.uiowa.edu
+  profile:
+    name: sitenow
+drush:
+  aliases:
+    local: self
+    remote: sbirt.prod
+drupal:
+  db:
+    database: sbirt_uiowa_edu
+cm:
+  core:
+    install_from_config: true
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+uiowa:
+  profiles:
+    sitenow:
+      requester: mkosobuc
