@@ -30,11 +30,12 @@
 
   {{ attach_library('uids_base/card-block') }}
 
-      {% embed "@card-block/card-block--basic.twig" with {
-        "card_image": drupal_image(content.field_uiowa_card_image[0]['#media'].image.entity.uri.value, 'uiowa_lb_blocks',  { class: 'card__img', alt: content.field_uiowa_card_image[0]['#media'].image.alt }, responsive=true),
+      {% embed "@uids/02 - blocks/card-block/card-block--basic.twig" with {
+        "card_image": drupal_image(content.field_uiowa_card_image[0]['#media'].image.entity.uri.value, 'medium__no_crop',  { class: 'card__img', alt: content.field_uiowa_card_image[0]['#media'].image.alt }, responsive=true),
         "card_text": content.field_uiowa_card_excerpt,
         "card_link_url": content.field_uiowa_card_link[0]['#url'],
         "card_link_title": content.field_uiowa_card_link[0]['#title'],
+        "card_author": content.field_uiowa_card_author,
         "card_position": elements['#weight']
       } %}
 
@@ -45,7 +46,7 @@
       {% block heading %}
         {{ title_prefix }}
         {% if content.field_uiowa_card_title[0]['#text'] is not empty %}
-          {% include "@heading/heading.twig" with {
+          {% include "@uids/01 - elements/heading/heading.twig" with {
             "heading_level" : content.field_uiowa_card_title[0]['#size'],
             "heading_class" : 'card__title',
             "heading" : content.field_uiowa_card_title[0]['#text']
