@@ -426,16 +426,15 @@ handlers:
       sender_name: ''
       theme_name: ''
       parameters: {  }
-  email:
+  site_created_email_url_migration_site:
     id: email
     label: 'Site Created Email - For future migration site'
-    handler_id: email
+    handler_id: site_created_email_url_migration_site
     status: true
     conditions: {  }
-    weight: 0
+    weight: 8
     settings:
-      states:
-        - completed
+      states: {  }
       to_mail: '[webform_submission:values:email],[site:mail]'
       to_options: {  }
       cc_mail: ''
