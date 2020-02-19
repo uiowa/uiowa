@@ -1014,3 +1014,9 @@ $sites['orgbmess.local.drupal.uiowa.edu'] = 'bmess.org.uiowa.edu';
 $sites['orgbmess.dev.drupal.uiowa.edu'] = 'bmess.org.uiowa.edu';
 $sites['orgbmess.stage.drupal.uiowa.edu'] = 'bmess.org.uiowa.edu';
 $sites['orgbmess.prod.drupal.uiowa.edu'] = 'bmess.org.uiowa.edu';
+
+// Directory aliases for debate.uiowa.edu.
+$sites['debate.local.drupal.uiowa.edu'] = 'debate.uiowa.edu';
+$sites['debate.dev.drupal.uiowa.edu'] = 'debate.uiowa.edu';
+$sites['debate.stage.drupal.uiowa.edu'] = 'debate.uiowa.edu';
+$sites['debate.prod.drupal.uiowa.edu'] = 'debate.uiowa.edu';
