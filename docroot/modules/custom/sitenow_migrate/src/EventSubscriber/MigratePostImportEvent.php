@@ -294,10 +294,12 @@ class MigratePostImportEvent implements EventSubscriberInterface {
     $connection = \Drupal::database();
     $sub_result1 = $connection->select('migrate_map_d7_page', 'mm')
       ->fields('mm', ['sourceid1', 'destid1']);
-    $sub_result2 = $connection->select('migrate_map_d7_article', 'mma')
-      ->fields('mma', ['sourceid1', 'destid1']);
-    $result = $sub_result1->union($sub_result2)
-      ->execute();
+    // Will need to be added back in after a migration check is added.
+    // $sub_result2 = $connection->select('migrate_map_d7_article', 'mma')
+    //   ->fields('mma', ['sourceid1', 'destid1']);
+    // $result = $sub_result1->union($sub_result2)
+    //   ->execute();
+    $result = $sub_result1->execute();
     $sourceToDestIds = [];
     foreach ($result as $row) {
       $sourceToDestIds[$row->sourceid1] = $row->destid1;
