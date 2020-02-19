@@ -1,21 +1,10 @@
-{% if header_type == 'primary' %}
-
-    <div role="region" class="footer-cta__wrapper">
-
-        <div class="footer-cta__container">
-
-            {% for item in link_bttn.items | slice(0, 3) %}
-                {% include "@footer--links-bttn" with {
-                    "link_bttn_url": item.link_bttn_url,
-                    "link_bttn_class": item.link_bttn_class,
-                    "link_bttn_icon": item.link_bttn_icon,
-                    "link_bttn_title": item.link_bttn_title,
-                } %}
-            {% endfor %}
-
-        </div>
+{# Pre-footer (Calls to action) #}
+{% if page.pre_footer %}
+  <div role="region" class="footer-cta__wrapper">
+    <div class="footer-cta__container">
+      {{ page.pre_footer }}
     </div>
-
+  </div>
 {% endif %}
 
 <footer class="footer">
@@ -41,59 +30,17 @@
                 <strong class="footer__site--slogan">{{ site_slogan }}</strong>
             {% endif %}
 
-            {% if header_type == 'primary' %}
-
-                <p>Iowa City, Iowa 52242<br>
-                    <a href="tel:319-335-3500">319-335-3500</a>
-                </p>
-
+            {% if page.footer_first %}
+                {{ page.footer_first }}
             {% endif %}
 
-            {% if header_type == 'tertiary' %}
-
-                <p>280 Boyd Law Building<br/>
-                    Melrose & Byington<br/>
-
-                    ​Iowa City, IA 52242<br/>
-
-                    <a href="tel:319-335-3500">319-335-9034</a><br/>
-
-                    <a href="mailto:law-webmaster@uiowa.edu">law-webmaster@uiowa.edu</a>
-                </p>
-
-            {% endif %}
-
-            <div class="footer__links footer__links--icon">
-                <ul class="menu">
-                    {% for item in link_icon.items | slice(0, 7) %}
-                        {% include "@footer--links-icon" with {
-                            "link_icon_url": item.link_icon_url,
-                            "link_icon_class": item.link_icon_class,
-                            "link_icon_title": item.link_icon_title
-                        } %}
-                    {% endfor %}
-                </ul>
-            </div>
-
-            <div class="socket">
-                <ul class="socket__menu">
-                    <li>© 2019 The University of Iowa</li>
-                    <li>
-                        <a href="http://www.uiowa.edu/homepage/online-privacy-information">Privacy Notice</a>
-                    </li>
-                    <li>
-                        <a href="http://opsmanual.uiowa.edu/community-policies/nondiscrimination-statement">Nondiscrimination Statement</a>
-                    </li>
-                </ul>
-            </div>
+            {% include '@uids/03 - global/footer/footer--socket-menu.twig' %}
 
         </div>
 
-        {% if page.footer %}
-
-        {{ page.footer }}
-
-        {% endif %}
+      {% if page.footer_second %}
+        {{ page.footer_second }}
+      {% endif %}
 
     </div>
 </footer>
