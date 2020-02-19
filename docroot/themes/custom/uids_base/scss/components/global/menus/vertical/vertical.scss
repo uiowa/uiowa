@@ -1,6 +1,6 @@
 @import "assets/scss/_variables.scss";
 @import "assets/scss/_utilities.scss";
-@import "components/03 - global/menus/vertical/_vertical.scss";
+//@import "components/03 - global/menus/vertical/_vertical.scss";
 
 .sf-accordion-toggle {
   display: none;
@@ -13,13 +13,13 @@
   width: 100% !important;
   overflow: hidden !important;
   display: block !important;
-
-  @include breakpoint(menu) {
-    position: absolute !important;
-    width: 85% !important;
-  }
 }
 
-.block-superfish-alt .sf-style-none>li.sf-expanded>a.sf-depth-1.menuparent:before {
-  content: "\f106";
+.header--primary.toggle {
+  .block-superfish {
+    display: block;
+  }
+  .region-primary-menu {
+    display: block;
+  }
 }
