@@ -1002,3 +1002,9 @@ $sites['lablentz.local.drupal.uiowa.edu'] = 'lentz.lab.uiowa.edu';
 $sites['lablentz.dev.drupal.uiowa.edu'] = 'lentz.lab.uiowa.edu';
 $sites['lablentz.stage.drupal.uiowa.edu'] = 'lentz.lab.uiowa.edu';
 $sites['lablentz.prod.drupal.uiowa.edu'] = 'lentz.lab.uiowa.edu';
+
+// Directory aliases for auditoryresearch.lab.uiowa.edu.
+$sites['labauditoryresearch.local.drupal.uiowa.edu'] = 'auditoryresearch.lab.uiowa.edu';
+$sites['labauditoryresearch.dev.drupal.uiowa.edu'] = 'auditoryresearch.lab.uiowa.edu';
+$sites['labauditoryresearch.stage.drupal.uiowa.edu'] = 'auditoryresearch.lab.uiowa.edu';
+$sites['labauditoryresearch.prod.drupal.uiowa.edu'] = 'auditoryresearch.lab.uiowa.edu';
