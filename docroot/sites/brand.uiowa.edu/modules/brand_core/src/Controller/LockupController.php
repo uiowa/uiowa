@@ -36,36 +36,38 @@ class LockupController extends ControllerBase {
         $file_system->prepareDirectory($dir, FileSystemInterface::CREATE_DIRECTORY);
       }
 
+      $tmp_dir = $file_system->getTempDirectory();
+
       // Create the different lockup versions.
       $lockup_stacked_black = LockupController::generateLockup($node, '#000000', "#000000", 'stacked');
       $lockup_stacked_black_file = $name . '-LockupStacked-BLACK.svg';
-      fwrite(fopen(file_directory_temp() . '/' . $lockup_stacked_black_file, 'w'), $lockup_stacked_black);
-      $file_system->copy(file_directory_temp() . '/' . $lockup_stacked_black_file, $directories['lockup'] . '/' . $lockup_stacked_black_file, FileSystemInterface::EXISTS_REPLACE);
+      fwrite(fopen($tmp_dir . '/' . $lockup_stacked_black_file, 'w'), $lockup_stacked_black);
+      $file_system->copy($tmp_dir . '/' . $lockup_stacked_black_file, $directories['lockup'] . '/' . $lockup_stacked_black_file, FileSystemInterface::EXISTS_REPLACE);
 
       $lockup_stacked_rgb = LockupController::generateLockup($node, '#FFCD00', "#000000", 'stacked');
       $lockup_stacked_rgb_file = $name . '-LockupStacked-RGB.svg';
-      fwrite(fopen(file_directory_temp() . '/' . $lockup_stacked_rgb_file, 'w'), $lockup_stacked_rgb);
-      $file_system->copy(file_directory_temp() . '/' . $lockup_stacked_rgb_file, $directories['lockup'] . '/' . $lockup_stacked_rgb_file, FileSystemInterface::EXISTS_REPLACE);
+      fwrite(fopen($tmp_dir . '/' . $lockup_stacked_rgb_file, 'w'), $lockup_stacked_rgb);
+      $file_system->copy($tmp_dir . '/' . $lockup_stacked_rgb_file, $directories['lockup'] . '/' . $lockup_stacked_rgb_file, FileSystemInterface::EXISTS_REPLACE);
 
       $lockup_stacked_reversed = LockupController::generateLockup($node, '#FFCD00', "#FFFFFF", 'stacked');
       $lockup_stacked_reversed_file = $name . '-LockupStacked-RGB-REVERSED.svg';
-      fwrite(fopen(file_directory_temp() . '/' . $lockup_stacked_reversed_file, 'w'), $lockup_stacked_reversed);
-      $file_system->copy(file_directory_temp() . '/' . $lockup_stacked_reversed_file, $directories['lockup'] . '/' . $lockup_stacked_reversed_file, FileSystemInterface::EXISTS_REPLACE);
+      fwrite(fopen($tmp_dir . '/' . $lockup_stacked_reversed_file, 'w'), $lockup_stacked_reversed);
+      $file_system->copy($tmp_dir . '/' . $lockup_stacked_reversed_file, $directories['lockup'] . '/' . $lockup_stacked_reversed_file, FileSystemInterface::EXISTS_REPLACE);
 
       $lockup_horizontal_black = LockupController::generateLockup($node, '#000000', "#000000", 'horizontal');
       $lockup_horizontal_black_file = $name . '-LockupHorizontal-BLACK.svg';
-      fwrite(fopen(file_directory_temp() . '/' . $lockup_horizontal_black_file, 'w'), $lockup_horizontal_black);
-      $file_system->copy(file_directory_temp() . '/' . $lockup_horizontal_black_file, $directories['lockup'] . '/' . $lockup_horizontal_black_file, FileSystemInterface::EXISTS_REPLACE);
+      fwrite(fopen($tmp_dir . '/' . $lockup_horizontal_black_file, 'w'), $lockup_horizontal_black);
+      $file_system->copy($tmp_dir . '/' . $lockup_horizontal_black_file, $directories['lockup'] . '/' . $lockup_horizontal_black_file, FileSystemInterface::EXISTS_REPLACE);
 
       $lockup_horizontal_rgb = LockupController::generateLockup($node, '#FFCD00', "#000000", 'horizontal');
       $lockup_horizontal_rgb_file = $name . '-LockupHorizontal-RGB.svg';
-      fwrite(fopen(file_directory_temp() . '/' . $lockup_horizontal_rgb_file, 'w'), $lockup_horizontal_rgb);
-      $file_system->copy(file_directory_temp() . '/' . $lockup_horizontal_rgb_file, $directories['lockup'] . '/' . $lockup_horizontal_rgb_file, FileSystemInterface::EXISTS_REPLACE);
+      fwrite(fopen($tmp_dir . '/' . $lockup_horizontal_rgb_file, 'w'), $lockup_horizontal_rgb);
+      $file_system->copy($tmp_dir . '/' . $lockup_horizontal_rgb_file, $directories['lockup'] . '/' . $lockup_horizontal_rgb_file, FileSystemInterface::EXISTS_REPLACE);
 
       $lockup_horizontal_reversed = LockupController::generateLockup($node, '#FFCD00', "#FFFFFF", 'horizontal');
       $lockup_horizontal_reversed_file = $name . '-LockupHorizontal-RGB-REVERSED.svg';
-      fwrite(fopen(file_directory_temp() . '/' . $lockup_horizontal_reversed_file, 'w'), $lockup_horizontal_reversed);
-      $file_system->copy(file_directory_temp() . '/' . $lockup_horizontal_reversed_file, $directories['lockup'] . '/' . $lockup_horizontal_reversed_file, FileSystemInterface::EXISTS_REPLACE);
+      fwrite(fopen($tmp_dir . '/' . $lockup_horizontal_reversed_file, 'w'), $lockup_horizontal_reversed);
+      $file_system->copy($tmp_dir . '/' . $lockup_horizontal_reversed_file, $directories['lockup'] . '/' . $lockup_horizontal_reversed_file, FileSystemInterface::EXISTS_REPLACE);
 
       $zip = new \ZipArchive();
 
@@ -75,12 +77,12 @@ class LockupController extends ControllerBase {
         exit("cannot open <$zip_filename>\n");
       }
 
-      $zip->addFile(file_directory_temp() . '/' . $lockup_stacked_black_file, $name . "-Lockup/" . $lockup_stacked_black_file);
-      $zip->addFile(file_directory_temp() . '/' . $lockup_stacked_rgb_file, $name . "-Lockup/" . $lockup_stacked_rgb_file);
-      $zip->addFile(file_directory_temp() . '/' . $lockup_stacked_reversed_file, $name . "-Lockup/" . $lockup_stacked_reversed_file);
-      $zip->addFile(file_directory_temp() . '/' . $lockup_horizontal_black_file, $name . "-Lockup/" . $lockup_horizontal_black_file);
-      $zip->addFile(file_directory_temp() . '/' . $lockup_horizontal_rgb_file, $name . "-Lockup/" . $lockup_horizontal_rgb_file);
-      $zip->addFile(file_directory_temp() . '/' . $lockup_horizontal_reversed_file, $name . "-Lockup/" . $lockup_horizontal_reversed_file);
+      $zip->addFile($tmp_dir . '/' . $lockup_stacked_black_file, $name . "-Lockup/" . $lockup_stacked_black_file);
+      $zip->addFile($tmp_dir . '/' . $lockup_stacked_rgb_file, $name . "-Lockup/" . $lockup_stacked_rgb_file);
+      $zip->addFile($tmp_dir . '/' . $lockup_stacked_reversed_file, $name . "-Lockup/" . $lockup_stacked_reversed_file);
+      $zip->addFile($tmp_dir . '/' . $lockup_horizontal_black_file, $name . "-Lockup/" . $lockup_horizontal_black_file);
+      $zip->addFile($tmp_dir . '/' . $lockup_horizontal_rgb_file, $name . "-Lockup/" . $lockup_horizontal_rgb_file);
+      $zip->addFile($tmp_dir . '/' . $lockup_horizontal_reversed_file, $name . "-Lockup/" . $lockup_horizontal_reversed_file);
 
       // Read the instructions.
       $instructions = drupal_get_path('module', 'brand_core') . '/lockup-instructions.docx';
@@ -90,12 +92,12 @@ class LockupController extends ControllerBase {
       $file_system->copy($zip_filename, $directories['lockup'] . '/' . $nid . '.zip', FileSystemInterface::EXISTS_REPLACE);
 
       unlink($zip_filename);
-      unlink(file_directory_temp() . '/' . $lockup_stacked_black_file);
-      unlink(file_directory_temp() . '/' . $lockup_stacked_rgb_file);
-      unlink(file_directory_temp() . '/' . $lockup_stacked_reversed_file);
-      unlink(file_directory_temp() . '/' . $lockup_horizontal_black_file);
-      unlink(file_directory_temp() . '/' . $lockup_horizontal_rgb_file);
-      unlink(file_directory_temp() . '/' . $lockup_horizontal_reversed_file);
+      unlink($tmp_dir . '/' . $lockup_stacked_black_file);
+      unlink($tmp_dir . '/' . $lockup_stacked_rgb_file);
+      unlink($tmp_dir . '/' . $lockup_stacked_reversed_file);
+      unlink($tmp_dir . '/' . $lockup_horizontal_black_file);
+      unlink($tmp_dir . '/' . $lockup_horizontal_rgb_file);
+      unlink($tmp_dir . '/' . $lockup_horizontal_reversed_file);
 
     }
   }
