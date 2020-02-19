@@ -1026,3 +1026,9 @@ $sites['debate.local.drupal.uiowa.edu'] = 'debate.uiowa.edu';
 $sites['debate.dev.drupal.uiowa.edu'] = 'debate.uiowa.edu';
 $sites['debate.stage.drupal.uiowa.edu'] = 'debate.uiowa.edu';
 $sites['debate.prod.drupal.uiowa.edu'] = 'debate.uiowa.edu';
+
+// Directory aliases for postsecular-novel.sites.uiowa.edu.
+$sites['sitespostsecular-novel.local.drupal.uiowa.edu'] = 'postsecular-novel.sites.uiowa.edu';
+$sites['sitespostsecular-novel.dev.drupal.uiowa.edu'] = 'postsecular-novel.sites.uiowa.edu';
+$sites['sitespostsecular-novel.stage.drupal.uiowa.edu'] = 'postsecular-novel.sites.uiowa.edu';
+$sites['sitespostsecular-novel.prod.drupal.uiowa.edu'] = 'postsecular-novel.sites.uiowa.edu';
