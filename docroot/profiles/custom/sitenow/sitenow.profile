@@ -653,7 +653,7 @@ function sitenow_form_menu_link_content_form_alter(array &$form, FormStateInterf
             'fa-iconpicker',
           ],
         ],
-        '#description' => t('Pick an icon to render after the menu item.'),
+        '#description' => t('Pick an icon to render after the menu item. To view the available FontAwesome icons, <a href="https://fontawesome.com/icons?d=gallery&m=free"> click here</a>'),
         '#attached' => [
           'library' => [
             'sitenow/fontawesome-iconpicker',
