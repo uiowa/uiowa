@@ -996,3 +996,9 @@ $sites['sitesmural-film.local.drupal.uiowa.edu'] = 'mural-film.sites.uiowa.edu';
 $sites['sitesmural-film.dev.drupal.uiowa.edu'] = 'mural-film.sites.uiowa.edu';
 $sites['sitesmural-film.stage.drupal.uiowa.edu'] = 'mural-film.sites.uiowa.edu';
 $sites['sitesmural-film.prod.drupal.uiowa.edu'] = 'mural-film.sites.uiowa.edu';
+
+// Directory aliases for lentz.lab.uiowa.edu.
+$sites['lablentz.local.drupal.uiowa.edu'] = 'lentz.lab.uiowa.edu';
+$sites['lablentz.dev.drupal.uiowa.edu'] = 'lentz.lab.uiowa.edu';
+$sites['lablentz.stage.drupal.uiowa.edu'] = 'lentz.lab.uiowa.edu';
+$sites['lablentz.prod.drupal.uiowa.edu'] = 'lentz.lab.uiowa.edu';
