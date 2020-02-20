@@ -930,3 +930,9 @@ $sites['sitesdasblatt.local.drupal.uiowa.edu'] = 'dasblatt.sites.uiowa.edu';
 $sites['sitesdasblatt.dev.drupal.uiowa.edu'] = 'dasblatt.sites.uiowa.edu';
 $sites['sitesdasblatt.stage.drupal.uiowa.edu'] = 'dasblatt.sites.uiowa.edu';
 $sites['sitesdasblatt.prod.drupal.uiowa.edu'] = 'dasblatt.sites.uiowa.edu';
+
+// Directory aliases for languagetech.lab.uiowa.edu.
+$sites['lablanguagetech.local.drupal.uiowa.edu'] = 'languagetech.lab.uiowa.edu';
+$sites['lablanguagetech.dev.drupal.uiowa.edu'] = 'languagetech.lab.uiowa.edu';
+$sites['lablanguagetech.stage.drupal.uiowa.edu'] = 'languagetech.lab.uiowa.edu';
+$sites['lablanguagetech.prod.drupal.uiowa.edu'] = 'languagetech.lab.uiowa.edu';
