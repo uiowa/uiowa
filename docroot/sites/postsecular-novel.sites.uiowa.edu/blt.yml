@@ -1,0 +1,25 @@
+project:
+  local:
+    hostname: sitespostsecular-novel.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: sitespostsecular-novel
+  human_name: postsecular-novel.sites.uiowa.edu
+  profile:
+    name: sitenow
+drush:
+  aliases:
+    local: self
+    remote: sitespostsecular-novel.prod
+drupal:
+  db:
+    database: postsecular_novel_sites_uiowa_edu
+cm:
+  core:
+    install_from_config: true
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+uiowa:
+  profiles:
+    sitenow:
+      requester: lbranch
