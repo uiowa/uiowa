@@ -1044,3 +1044,9 @@ $sites['org-geriatricpain.local.drupal.uiowa.edu'] = 'geriatricpain.org';
 $sites['org-geriatricpain.dev.drupal.uiowa.edu'] = 'geriatricpain.org';
 $sites['org-geriatricpain.stage.drupal.uiowa.edu'] = 'geriatricpain.org';
 $sites['org-geriatricpain.prod.drupal.uiowa.edu'] = 'geriatricpain.org';
+
+// Directory aliases for igec.uiowa.edu.
+$sites['igec.local.drupal.uiowa.edu'] = 'igec.uiowa.edu';
+$sites['igec.dev.drupal.uiowa.edu'] = 'igec.uiowa.edu';
+$sites['igec.stage.drupal.uiowa.edu'] = 'igec.uiowa.edu';
+$sites['igec.prod.drupal.uiowa.edu'] = 'igec.uiowa.edu';
