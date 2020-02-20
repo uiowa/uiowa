@@ -1038,3 +1038,9 @@ $sites['sitesmovementfellowship.local.drupal.uiowa.edu'] = 'movementfellowship.s
 $sites['sitesmovementfellowship.dev.drupal.uiowa.edu'] = 'movementfellowship.sites.uiowa.edu';
 $sites['sitesmovementfellowship.stage.drupal.uiowa.edu'] = 'movementfellowship.sites.uiowa.edu';
 $sites['sitesmovementfellowship.prod.drupal.uiowa.edu'] = 'movementfellowship.sites.uiowa.edu';
+
+// Directory aliases for geriatricpain.org.
+$sites['org-geriatricpain.local.drupal.uiowa.edu'] = 'geriatricpain.org';
+$sites['org-geriatricpain.dev.drupal.uiowa.edu'] = 'geriatricpain.org';
+$sites['org-geriatricpain.stage.drupal.uiowa.edu'] = 'geriatricpain.org';
+$sites['org-geriatricpain.prod.drupal.uiowa.edu'] = 'geriatricpain.org';
