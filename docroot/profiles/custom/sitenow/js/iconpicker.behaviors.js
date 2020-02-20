@@ -8,8 +8,8 @@
     attach: function (context) {
       $('.fa-iconpicker', context).once('iconpicker').each(function () {
         $(this).iconpicker({
-          inputSearch: true,
-          placement: 'rightBottom'
+          inputSearch: false,
+          placement: 'top'
         });
       });
     }
