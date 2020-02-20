@@ -1,5 +1,25 @@
 .paragraph--type--image-gallery {
   .field--name-field-image {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    .field__item {
+      flex: 220px 1 1;
+      img {
+        object-fit: cover;
+        height: 220px;
+        &:hover{
+          img {
+            opacity:0.28;
+          }
+        }
+      }
+    }
+  }
+}
+.paragraph--type--image-gallery.masonry {
+  .field--name-field-image {
+    display: block;
     column-count: 2;
     column-gap: 1rem;
     @include media-breakpoint-up(md) {
@@ -8,16 +28,14 @@
     @include media-breakpoint-up(lg) {
       column-count: 4;
     }
-
     .field__item {
+      flex: none;
       display: inline-block;
       margin: 0 0 0.5rem;
       width: 100%;
-
-      &:hover{
-        img {
-          opacity:0.28;
-        }
+      img {
+        object-fit: unset;
+        height: auto;
       }
     }
   }
