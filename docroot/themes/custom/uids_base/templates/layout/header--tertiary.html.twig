@@ -2,7 +2,7 @@
 
 {% block uiowa_bar %}
     {{ attach_library('uids_base/site-slogan') }}
-    {% include '@uids/03 - global/site-slogan/site-slogan.twig' with { "site_slogan": site_name } %}
+    {% include '@uids/03 - global/site-slogan/site-slogan.twig' with { "site_slogan": site_slogan } %}
 
     {% if page.action_menu %}
         {{ page.action_menu }}
@@ -15,7 +15,7 @@
 
             {{ attach_library('uids_base/site-name') }}
             {% include '@uids/03 - global/site-name/site-name.twig' with {
-                site_name: site_slogan
+                site_name: site_name
             } %}
 
             {% if uiowa_search_form %}

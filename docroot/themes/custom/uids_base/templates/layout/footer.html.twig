@@ -9,38 +9,48 @@
 
 <footer class="footer">
 
-    <div class="footer__container footer__container--flex">
+  <div class="footer__container footer__container--flex">
 
-        <div class="footer__links footer__links--contact">
+    <div class="footer__links footer__links--contact">
 
-            {% if not branding_legacy %}
-                {{ attach_library('uids_base/logo') }}
-                {% include '@uids/03 - global/logo/logo.twig' with {
-                    logo_color: 'logo-icon--secondary',
-                    logo_classes: 'logo-icon--tab',
-                    logo_path_2: uiowa_logo_path,
-                } %}
-            {% endif %}
-
-            {% if site_name %}
-                <h2 class="footer__site--name">{{ site_name }}</h2>
-            {% endif %}
-
-            {% if site_slogan %}
-                <strong class="footer__site--slogan">{{ site_slogan }}</strong>
-            {% endif %}
-
-            {% if page.footer_first %}
-                {{ page.footer_first }}
-            {% endif %}
-
-            {% include '@uids/03 - global/footer/footer--socket-menu.twig' %}
-
-        </div>
-
-      {% if page.footer_second %}
-        {{ page.footer_second }}
+      {% if not branding_legacy %}
+        {{ attach_library('uids_base/logo') }}
+        {% include '@uids/03 - global/logo/logo.twig' with {
+          logo_color: 'logo-icon--secondary',
+          logo_classes: 'logo-icon--tab',
+          logo_path_2: uiowa_logo_path,
+        } %}
       {% endif %}
 
+      {% block site_name %}
+        {% if site_name %}
+          {# @todo Remove header_type condition when uiowa sub-theme is functional. #}
+          {% if header_type != 'header--primary' %}
+            <h2 class="footer__site--name">{{ site_name }}</h2>
+          {% endif %}
+        {% endif %}
+      {% endblock %}
+
+      {% block site_slogan %}
+        {% if site_slogan %}
+          {# @todo Remove header_type condition when uiowa sub-theme is functional. #}
+          {% if header_type != 'header--primary' %}
+            <strong class="footer__site--slogan">{{ site_slogan }}</strong>
+          {% endif %}
+        {% endif %}
+      {% endblock %}
+
+      {% if page.footer_first %}
+        {{ page.footer_first }}
+      {% endif %}
+
+      {% include '@uids/03 - global/footer/footer--socket-menu.twig' %}
+
     </div>
+
+    {% if page.footer_second %}
+      {{ page.footer_second }}
+    {% endif %}
+
+  </div>
 </footer>
