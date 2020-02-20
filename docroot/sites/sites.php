@@ -1014,3 +1014,27 @@ $sites['orgbmess.local.drupal.uiowa.edu'] = 'bmess.org.uiowa.edu';
 $sites['orgbmess.dev.drupal.uiowa.edu'] = 'bmess.org.uiowa.edu';
 $sites['orgbmess.stage.drupal.uiowa.edu'] = 'bmess.org.uiowa.edu';
 $sites['orgbmess.prod.drupal.uiowa.edu'] = 'bmess.org.uiowa.edu';
+
+// Directory aliases for grueter.lab.uiowa.edu.
+$sites['labgrueter.local.drupal.uiowa.edu'] = 'grueter.lab.uiowa.edu';
+$sites['labgrueter.dev.drupal.uiowa.edu'] = 'grueter.lab.uiowa.edu';
+$sites['labgrueter.stage.drupal.uiowa.edu'] = 'grueter.lab.uiowa.edu';
+$sites['labgrueter.prod.drupal.uiowa.edu'] = 'grueter.lab.uiowa.edu';
+
+// Directory aliases for debate.uiowa.edu.
+$sites['debate.local.drupal.uiowa.edu'] = 'debate.uiowa.edu';
+$sites['debate.dev.drupal.uiowa.edu'] = 'debate.uiowa.edu';
+$sites['debate.stage.drupal.uiowa.edu'] = 'debate.uiowa.edu';
+$sites['debate.prod.drupal.uiowa.edu'] = 'debate.uiowa.edu';
+
+// Directory aliases for postsecular-novel.sites.uiowa.edu.
+$sites['sitespostsecular-novel.local.drupal.uiowa.edu'] = 'postsecular-novel.sites.uiowa.edu';
+$sites['sitespostsecular-novel.dev.drupal.uiowa.edu'] = 'postsecular-novel.sites.uiowa.edu';
+$sites['sitespostsecular-novel.stage.drupal.uiowa.edu'] = 'postsecular-novel.sites.uiowa.edu';
+$sites['sitespostsecular-novel.prod.drupal.uiowa.edu'] = 'postsecular-novel.sites.uiowa.edu';
+
+// Directory aliases for movementfellowship.sites.uiowa.edu.
+$sites['sitesmovementfellowship.local.drupal.uiowa.edu'] = 'movementfellowship.sites.uiowa.edu';
+$sites['sitesmovementfellowship.dev.drupal.uiowa.edu'] = 'movementfellowship.sites.uiowa.edu';
+$sites['sitesmovementfellowship.stage.drupal.uiowa.edu'] = 'movementfellowship.sites.uiowa.edu';
+$sites['sitesmovementfellowship.prod.drupal.uiowa.edu'] = 'movementfellowship.sites.uiowa.edu';

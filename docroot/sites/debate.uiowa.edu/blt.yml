@@ -1,0 +1,25 @@
+project:
+  local:
+    hostname: debate.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: debate
+  human_name: debate.uiowa.edu
+  profile:
+    name: sitenow
+drush:
+  aliases:
+    local: self
+    remote: debate.prod
+drupal:
+  db:
+    database: debate_uiowa_edu
+cm:
+  core:
+    install_from_config: true
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+uiowa:
+  profiles:
+    sitenow:
+      requester: pbellus
