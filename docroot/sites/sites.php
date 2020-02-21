@@ -1050,3 +1050,9 @@ $sites['igec.local.drupal.uiowa.edu'] = 'igec.uiowa.edu';
 $sites['igec.dev.drupal.uiowa.edu'] = 'igec.uiowa.edu';
 $sites['igec.stage.drupal.uiowa.edu'] = 'igec.uiowa.edu';
 $sites['igec.prod.drupal.uiowa.edu'] = 'igec.uiowa.edu';
+
+// Directory aliases for ippl.sites.uiowa.edu.
+$sites['sitesippl.local.drupal.uiowa.edu'] = 'ippl.sites.uiowa.edu';
+$sites['sitesippl.dev.drupal.uiowa.edu'] = 'ippl.sites.uiowa.edu';
+$sites['sitesippl.stage.drupal.uiowa.edu'] = 'ippl.sites.uiowa.edu';
+$sites['sitesippl.prod.drupal.uiowa.edu'] = 'ippl.sites.uiowa.edu';
