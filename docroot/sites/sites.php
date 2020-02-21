@@ -1038,3 +1038,33 @@ $sites['sitesmovementfellowship.local.drupal.uiowa.edu'] = 'movementfellowship.s
 $sites['sitesmovementfellowship.dev.drupal.uiowa.edu'] = 'movementfellowship.sites.uiowa.edu';
 $sites['sitesmovementfellowship.stage.drupal.uiowa.edu'] = 'movementfellowship.sites.uiowa.edu';
 $sites['sitesmovementfellowship.prod.drupal.uiowa.edu'] = 'movementfellowship.sites.uiowa.edu';
+
+// Directory aliases for geriatricpain.org.
+$sites['org-geriatricpain.local.drupal.uiowa.edu'] = 'geriatricpain.org';
+$sites['org-geriatricpain.dev.drupal.uiowa.edu'] = 'geriatricpain.org';
+$sites['org-geriatricpain.stage.drupal.uiowa.edu'] = 'geriatricpain.org';
+$sites['org-geriatricpain.prod.drupal.uiowa.edu'] = 'geriatricpain.org';
+
+// Directory aliases for igec.uiowa.edu.
+$sites['igec.local.drupal.uiowa.edu'] = 'igec.uiowa.edu';
+$sites['igec.dev.drupal.uiowa.edu'] = 'igec.uiowa.edu';
+$sites['igec.stage.drupal.uiowa.edu'] = 'igec.uiowa.edu';
+$sites['igec.prod.drupal.uiowa.edu'] = 'igec.uiowa.edu';
+
+// Directory aliases for ippl.sites.uiowa.edu.
+$sites['sitesippl.local.drupal.uiowa.edu'] = 'ippl.sites.uiowa.edu';
+$sites['sitesippl.dev.drupal.uiowa.edu'] = 'ippl.sites.uiowa.edu';
+$sites['sitesippl.stage.drupal.uiowa.edu'] = 'ippl.sites.uiowa.edu';
+$sites['sitesippl.prod.drupal.uiowa.edu'] = 'ippl.sites.uiowa.edu';
+
+// Directory aliases for wni.sites.uiowa.edu.
+$sites['siteswni.local.drupal.uiowa.edu'] = 'wni.sites.uiowa.edu';
+$sites['siteswni.dev.drupal.uiowa.edu'] = 'wni.sites.uiowa.edu';
+$sites['siteswni.stage.drupal.uiowa.edu'] = 'wni.sites.uiowa.edu';
+$sites['siteswni.prod.drupal.uiowa.edu'] = 'wni.sites.uiowa.edu';
+
+// Directory aliases for languagetech.lab.uiowa.edu.
+$sites['lablanguagetech.local.drupal.uiowa.edu'] = 'languagetech.lab.uiowa.edu';
+$sites['lablanguagetech.dev.drupal.uiowa.edu'] = 'languagetech.lab.uiowa.edu';
+$sites['lablanguagetech.stage.drupal.uiowa.edu'] = 'languagetech.lab.uiowa.edu';
+$sites['lablanguagetech.prod.drupal.uiowa.edu'] = 'languagetech.lab.uiowa.edu';
