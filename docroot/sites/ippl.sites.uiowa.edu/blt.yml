@@ -1,0 +1,25 @@
+project:
+  local:
+    hostname: sitesippl.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: sitesippl
+  human_name: ippl.sites.uiowa.edu
+  profile:
+    name: sitenow
+drush:
+  aliases:
+    local: self
+    remote: sitesippl.prod
+drupal:
+  db:
+    database: ippl_sites_uiowa_edu
+cm:
+  core:
+    install_from_config: true
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+uiowa:
+  profiles:
+    sitenow:
+      requester: dsuppmontgomerie
