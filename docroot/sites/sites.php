@@ -1056,3 +1056,9 @@ $sites['sitesippl.local.drupal.uiowa.edu'] = 'ippl.sites.uiowa.edu';
 $sites['sitesippl.dev.drupal.uiowa.edu'] = 'ippl.sites.uiowa.edu';
 $sites['sitesippl.stage.drupal.uiowa.edu'] = 'ippl.sites.uiowa.edu';
 $sites['sitesippl.prod.drupal.uiowa.edu'] = 'ippl.sites.uiowa.edu';
+
+// Directory aliases for wni.sites.uiowa.edu.
+$sites['siteswni.local.drupal.uiowa.edu'] = 'wni.sites.uiowa.edu';
+$sites['siteswni.dev.drupal.uiowa.edu'] = 'wni.sites.uiowa.edu';
+$sites['siteswni.stage.drupal.uiowa.edu'] = 'wni.sites.uiowa.edu';
+$sites['siteswni.prod.drupal.uiowa.edu'] = 'wni.sites.uiowa.edu';
