@@ -649,11 +649,12 @@ function sitenow_form_menu_link_content_form_alter(array &$form, FormStateInterf
         '#title' => t('FontAwesome Icon'),
         '#default_value' => !empty($menu_link_options['fa_icon']) ? $menu_link_options['fa_icon'] : '',
         '#attributes' => [
+          'autocomplete' => 'off',
           'class' => [
             'fa-iconpicker',
           ],
         ],
-        '#description' => t('Pick an icon to render after the menu item. To view the available FontAwesome icons, <a href="https://fontawesome.com/icons?d=gallery&m=free"> click here</a>'),
+        '#description' => t('Pick an icon to render after the menu item. To view the available FontAwesome icons, <a href="https://fontawesome.com/icons?d=gallery&m=free">click here</a>.'),
         '#attached' => [
           'library' => [
             'sitenow/fontawesome-iconpicker',
