@@ -1,0 +1,19 @@
+uuid: 6682abdf-33bf-4f8a-a5e8-8033b233bd69
+langcode: en
+status: true
+dependencies:
+  module:
+    - uiowa_auth
+id: config_sync.module.uiowa_auth
+snapshotSet: config_sync
+extensionType: module
+extensionName: uiowa_auth
+items:
+  -
+    collection: ''
+    name: uiowa_auth.settings
+    data:
+      role_mappings:
+        - 'administrator|urn:oid:2.5.4.31|CN=Grad-WebAdmin,OU=Groups,OU=Grad,OU=GraduateCollege,DC=iowa,DC=uiowa,DC=edu'
+        - 'administrator|urn:oid:2.5.4.31|CN=ITS-WebServices,OU=Groups,OU=ITS,DC=iowa,DC=uiowa,DC=edu'
+      legacy_redirect: false

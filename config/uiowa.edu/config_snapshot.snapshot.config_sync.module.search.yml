@@ -1,0 +1,35 @@
+uuid: a7a08057-725d-4a59-a999-736f67446b3d
+langcode: en
+status: true
+dependencies:
+  module:
+    - search
+id: config_sync.module.search
+snapshotSet: config_sync
+extensionType: module
+extensionName: search
+items:
+  -
+    collection: ''
+    name: search.settings
+    data:
+      and_or_limit: 7
+      default_page: node_search
+      index:
+        cron_limit: 100
+        overlap_cjk: true
+        minimum_word_size: 3
+        tag_weights:
+          h1: 25
+          h2: 18
+          h3: 15
+          h4: 14
+          h5: 9
+          h6: 6
+          u: 3
+          b: 3
+          i: 3
+          strong: 3
+          em: 3
+          a: 10
+      logging: false

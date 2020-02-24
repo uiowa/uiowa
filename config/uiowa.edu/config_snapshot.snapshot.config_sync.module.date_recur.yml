@@ -1,0 +1,27 @@
+uuid: 42233a4d-0805-4e04-9f7f-4842c0daab3f
+langcode: en
+status: true
+dependencies:
+  module:
+    - date_recur
+id: config_sync.module.date_recur
+snapshotSet: config_sync
+extensionType: module
+extensionName: date_recur
+items:
+  -
+    collection: ''
+    name: date_recur.interpreter.default_interpreter
+    data:
+      status: true
+      dependencies:
+        config:
+          - core.date_format.long
+      id: default_interpreter
+      label: 'Default Interpreter'
+      plugin: rl
+      settings:
+        show_start_date: true
+        show_until: true
+        date_format: long
+        show_infinite: true
