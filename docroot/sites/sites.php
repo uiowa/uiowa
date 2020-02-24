@@ -1068,3 +1068,9 @@ $sites['lablanguagetech.local.drupal.uiowa.edu'] = 'languagetech.lab.uiowa.edu';
 $sites['lablanguagetech.dev.drupal.uiowa.edu'] = 'languagetech.lab.uiowa.edu';
 $sites['lablanguagetech.stage.drupal.uiowa.edu'] = 'languagetech.lab.uiowa.edu';
 $sites['lablanguagetech.prod.drupal.uiowa.edu'] = 'languagetech.lab.uiowa.edu';
+
+// Directory aliases for indiancinema.sites.uiowa.edu.
+$sites['sitesindiancinema.local.drupal.uiowa.edu'] = 'indiancinema.sites.uiowa.edu';
+$sites['sitesindiancinema.dev.drupal.uiowa.edu'] = 'indiancinema.sites.uiowa.edu';
+$sites['sitesindiancinema.stage.drupal.uiowa.edu'] = 'indiancinema.sites.uiowa.edu';
+$sites['sitesindiancinema.prod.drupal.uiowa.edu'] = 'indiancinema.sites.uiowa.edu';
