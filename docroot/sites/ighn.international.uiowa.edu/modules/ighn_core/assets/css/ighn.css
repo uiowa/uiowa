@@ -33,12 +33,6 @@ fieldset.js-form-item.js-form-type-select.form-type-select.js-form-item-focus-ar
   display: inline-block;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
-#ighn-person-group {
-  max-width: 275px;
-  min-width: 275px;
-  position: relative;
-  display: inline-block;
-}
 
 #ighn-person-group:hover {
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
@@ -96,6 +90,21 @@ fieldset.js-form-item.js-form-type-select.form-type-select.js-form-item-focus-ar
   display: inline-flex;
   padding: 5px;
   font-size: 14px;
+  line-height: 18px;
+}
+@media only screen and (min-width: 1350px) {
+  #ighn-person-group {
+    max-width: 320px;
+    min-width: 320px;
+  }
+}
+@media only screen and (max-width: 1200px) {
+  #ighn-person-group {
+    max-width: 275px;
+    min-width: 275px;
+    position: relative;
+    display: inline-block;
+  }
 }
 .field.field--name-field-ighn-person-language .field__label, .field.field--name-field-ighn-person-focus-areas .field__label, .field.field--name-field-ighn-person-global-regions .field__label {
   margin-left: 5px;
@@ -106,7 +115,7 @@ fieldset.js-form-item.js-form-type-select.form-type-select.js-form-item-focus-ar
 }
 .field--name-field-ighn-person-biography.field--type-text-long.field--label-visually_hidden, .field.field--name-field-ighn-person-cv-link.field--type-link.field--label-visually_hidden {
   padding: 2%;
-  margin-bottom: 5px;
+  margin: 10px;
 }
 .ighn-person.contextual-region.view.view-ighn-person-view.view-id-ighn_person_view.view-display-id-ighn_person {
   border: 3px #ccc solid;
@@ -119,6 +128,7 @@ fieldset.js-form-item.js-form-type-select.form-type-select.js-form-item-focus-ar
   left: 0;
   width: 100%;
   padding: 10px 16px;
+  min-height: 125px;
   margin: 0;
   z-index: 10;
   -webkit-transition: all 0.3s;
