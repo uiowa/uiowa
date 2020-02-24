@@ -4,15 +4,18 @@ status: true
 dependencies:
   config:
     - field.field.node.page.body
+    - field.field.node.page.field_metatags
     - field.field.node.page.layout_builder__layout
     - node.type.page
   module:
     - layout_builder
     - layout_builder_restrictions
-    - layout_discovery
+    - metatag
     - system
     - text
     - user
+  theme:
+    - uids_base
 third_party_settings:
   layout_builder:
     allow_custom: true
@@ -52,6 +55,21 @@ third_party_settings:
                 entity: layout_builder.entity
             additional: {  }
             weight: 1
+          26c9f9d9-8edf-48ed-b2a2-0439fa36b580:
+            uuid: 26c9f9d9-8edf-48ed-b2a2-0439fa36b580
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:page:field_metatags'
+              formatter:
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+                type: metatag_empty_formatter
+            additional: {  }
+            weight: 2
         third_party_settings: {  }
       -
         layout_id: layout_onecol
@@ -106,6 +124,13 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_metatags:
+    weight: 2
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: metatag_empty_formatter
+    region: content
   links:
     weight: 0
     region: content

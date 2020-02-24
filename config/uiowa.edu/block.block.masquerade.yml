@@ -1,0 +1,26 @@
+uuid: bc1bf790-ed0e-475c-bed5-a7ed34dc316f
+langcode: en
+status: true
+dependencies:
+  module:
+    - masquerade
+    - system
+  theme:
+    - claro
+id: masquerade
+theme: claro
+region: content
+weight: -3
+provider: null
+plugin: masquerade
+settings:
+  id: masquerade
+  label: Masquerade
+  provider: masquerade
+  label_display: visible
+visibility:
+  request_path:
+    id: request_path
+    pages: /admin/people
+    negate: false
+    context_mapping: {  }
