@@ -9,7 +9,7 @@
       $('.fa-iconpicker', context).once('iconpicker').each(function () {
         $(this).iconpicker({
           inputSearch: true,
-          placement: 'top'
+          placement: 'bottom'
         });
       });
     }
