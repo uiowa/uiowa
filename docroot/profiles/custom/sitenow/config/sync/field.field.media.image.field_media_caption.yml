@@ -1,0 +1,28 @@
+uuid: df554bb7-f023-4ac8-99f0-d98b4cabaeb5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_media_caption
+    - media.type.image
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    minimal: minimal
+    filtered_html: '0'
+    full_html: '0'
+    plain_text: '0'
+id: media.image.field_media_caption
+field_name: field_media_caption
+entity_type: media
+bundle: image
+label: 'Global Caption'
+description: 'Provide a global caption for this image. Used on Photo Gallery images and Carousel Images if not overridden locally.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long
