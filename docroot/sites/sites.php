@@ -1074,3 +1074,9 @@ $sites['sitesindiancinema.local.drupal.uiowa.edu'] = 'indiancinema.sites.uiowa.e
 $sites['sitesindiancinema.dev.drupal.uiowa.edu'] = 'indiancinema.sites.uiowa.edu';
 $sites['sitesindiancinema.stage.drupal.uiowa.edu'] = 'indiancinema.sites.uiowa.edu';
 $sites['sitesindiancinema.prod.drupal.uiowa.edu'] = 'indiancinema.sites.uiowa.edu';
+
+// Directory aliases for latinxcouncil.uiowa.edu.
+$sites['latinxcouncil.local.drupal.uiowa.edu'] = 'latinxcouncil.uiowa.edu';
+$sites['latinxcouncil.dev.drupal.uiowa.edu'] = 'latinxcouncil.uiowa.edu';
+$sites['latinxcouncil.stage.drupal.uiowa.edu'] = 'latinxcouncil.uiowa.edu';
+$sites['latinxcouncil.prod.drupal.uiowa.edu'] = 'latinxcouncil.uiowa.edu';
