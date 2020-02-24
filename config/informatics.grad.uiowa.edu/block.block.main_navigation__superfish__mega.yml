@@ -1,31 +1,33 @@
-uuid: 1983009d-038b-45c5-af1d-7dfba659b1e7
+uuid: c21a4fa5-4def-42a1-a4aa-17c832591c69
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - system.menu.main
   module:
     - superfish
   theme:
-    - collegiate_theme
-id: mainnavigation
-theme: collegiate_theme
+    - uids_base
+_core:
+  default_config_hash: OVLMNkh9LbTDLAtFSMKEep7Se_UcPkmZ0YTkfgSHZtI
+id: main_navigation__superfish__mega
+theme: uids_base
 region: primary_menu
 weight: 0
 provider: null
 plugin: 'superfish:main'
 settings:
   id: 'superfish:main'
-  label: 'Main navigation'
+  label: 'Main navigation (mega)'
   provider: superfish
-  label_display: '0'
+  label_display: visible
   level: '1'
   depth: '0'
   expand_all_items: false
   menu_type: horizontal
   style: none
-  arrow: 0
-  shadow: 0
+  arrow: 1
+  shadow: 1
   speed: fast
   delay: '800'
   slide: vertical
