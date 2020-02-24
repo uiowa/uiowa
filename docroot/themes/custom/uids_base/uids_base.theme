@@ -41,6 +41,10 @@ function uids_base_preprocess_html(&$variables) {
     }
   }
 
+  if (\Drupal::service('module_handler')->moduleExists('uiowa_footer')) {
+    unset($variables['page_bottom']['uiowa_footer']);
+  }
+
   // Set a variable for whether layout builder is enabled.
   $variables['layout_builder_enabled'] = FALSE;
 
