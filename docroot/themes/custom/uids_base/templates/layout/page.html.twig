@@ -129,7 +129,9 @@
   </div>
 {% endif %}
 
-    {% include '@uids_base/layout/footer.html.twig'  %}
+{% block footer %}
+  {% include '@uids_base/layout/footer.html.twig'  %}
+{% endblock %}
 
 </div>
 {# / #}
