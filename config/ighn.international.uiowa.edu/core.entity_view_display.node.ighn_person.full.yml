@@ -1,0 +1,178 @@
+uuid: 39af9f5d-cd5c-4ece-b266-b04666e6b041
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.full
+    - field.field.node.ighn_person.field_ighn_person_biography
+    - field.field.node.ighn_person.field_ighn_person_credentials
+    - field.field.node.ighn_person.field_ighn_person_cv_link
+    - field.field.node.ighn_person.field_ighn_person_department
+    - field.field.node.ighn_person.field_ighn_person_first_name
+    - field.field.node.ighn_person.field_ighn_person_focus_areas
+    - field.field.node.ighn_person.field_ighn_person_global_regions
+    - field.field.node.ighn_person.field_ighn_person_image
+    - field.field.node.ighn_person.field_ighn_person_language
+    - field.field.node.ighn_person.field_ighn_person_last_name
+    - field.field.node.ighn_person.field_ighn_person_position_title
+    - field.field.node.ighn_person.field_ighn_person_profile_link
+    - field.field.node.ighn_person.field_ighn_primary_college
+    - node.type.ighn_person
+  module:
+    - field_group
+    - link
+    - text
+    - user
+third_party_settings:
+  field_group:
+    group_ighn_person:
+      children:
+        - field_ighn_person_image
+        - field_ighn_person_first_name
+        - field_ighn_person_last_name
+        - field_ighn_person_credentials
+        - field_ighn_primary_college
+        - field_ighn_person_department
+        - field_ighn_person_position_title
+        - field_ighn_person_focus_areas
+        - field_ighn_person_global_regions
+        - field_ighn_person_language
+        - field_ighn_person_cv_link
+        - field_ighn_person_biography
+      parent_name: ''
+      weight: 0
+      format_type: html_element
+      format_settings:
+        label: 'IGHN Person Group'
+        element: div
+        show_label: false
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ighn-person-group
+        classes: ''
+      label: 'IGHN Person Group'
+    group_ighn_person_field_groups:
+      children: {  }
+      parent_name: ''
+      weight: 20
+      format_type: html_element
+      format_settings:
+        id: ighn-person-field-groups
+        classes: ''
+        element: div
+        show_label: false
+        label_element: h3
+        attributes: ''
+        effect: none
+        speed: fast
+      label: 'IGHN Person Field Groups'
+id: node.ighn_person.full
+targetEntityType: node
+bundle: ighn_person
+mode: full
+content:
+  field_ighn_person_biography:
+    weight: 12
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_ighn_person_credentials:
+    weight: 4
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_ighn_person_cv_link:
+    weight: 11
+    label: visually_hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  field_ighn_person_department:
+    type: entity_reference_label
+    weight: 6
+    region: content
+    label: visually_hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_ighn_person_first_name:
+    weight: 2
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_ighn_person_focus_areas:
+    weight: 8
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_ighn_person_global_regions:
+    weight: 9
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_ighn_person_image:
+    type: entity_reference_entity_view
+    weight: 1
+    label: hidden
+    settings:
+      view_mode: image_small
+      link: false
+    third_party_settings: {  }
+    region: content
+  field_ighn_person_language:
+    weight: 10
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_ighn_person_last_name:
+    weight: 3
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_ighn_person_position_title:
+    weight: 7
+    label: visually_hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_ighn_primary_college:
+    weight: 5
+    label: visually_hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+hidden:
+  field_ighn_person_profile_link: true
+  links: true

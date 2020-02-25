@@ -1,0 +1,29 @@
+uuid: 3c02a353-c127-48b1-9d29-21d8e0507b75
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_ighn_person_focus_areas
+    - node.type.ighn_person
+    - taxonomy.vocabulary.ighn_primary_focus_areas
+id: node.ighn_person.field_ighn_person_focus_areas
+field_name: field_ighn_person_focus_areas
+entity_type: node
+bundle: ighn_person
+label: 'Primary Research Focus Areas'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      ighn_primary_focus_areas: ighn_primary_focus_areas
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference
