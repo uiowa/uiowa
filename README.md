@@ -15,7 +15,7 @@ This project is based on BLT, an open-source project template and tool that enab
     2. [Setup Acquia Cloud SSH Keys](https://docs.acquia.com/acquia-cloud/ssh/generate)
 6. Clone the repository. By default, Git names this "origin" on your local.
     ```
-    $ git clone git@github.com:<account>/git@git.com/uiowa/uiowa.git
+    $ git clone git@github.com:uiowa/uiowa
     ```
 ----
 # Local Environment
