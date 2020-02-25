@@ -15,6 +15,7 @@ dependencies:
     - field.field.node.ighn_person.field_ighn_person_language
     - field.field.node.ighn_person.field_ighn_person_last_name
     - field.field.node.ighn_person.field_ighn_person_position_title
+    - field.field.node.ighn_person.field_ighn_person_profile_link
     - field.field.node.ighn_person.field_ighn_primary_college
     - node.type.ighn_person
   module:
@@ -29,7 +30,6 @@ third_party_settings:
         - field_ighn_person_image
         - group_ighn_main_info_group
         - group_ighn
-        - field_ighn_person_bio
         - field_ighn_person_biography
         - field_ighn_person_cv_link
       parent_name: ''
@@ -208,4 +208,5 @@ content:
       link: false
     third_party_settings: {  }
 hidden:
+  field_ighn_person_profile_link: true
   links: true

@@ -14,6 +14,7 @@ dependencies:
     - field.field.node.ighn_person.field_ighn_person_language
     - field.field.node.ighn_person.field_ighn_person_last_name
     - field.field.node.ighn_person.field_ighn_person_position_title
+    - field.field.node.ighn_person.field_ighn_person_profile_link
     - field.field.node.ighn_person.field_ighn_primary_college
     - node.type.ighn_person
   module:
@@ -35,6 +36,7 @@ third_party_settings:
         - group_ighn_person_field_groups
         - field_ighn_person_cv_link
         - field_ighn_person_biography
+        - field_ighn_person_profile_link
       parent_name: ''
       weight: 0
       format_type: html_element
@@ -73,7 +75,7 @@ bundle: ighn_person
 mode: default
 content:
   field_ighn_person_biography:
-    weight: 13
+    weight: 10
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
@@ -88,7 +90,7 @@ content:
     type: string
     region: content
   field_ighn_person_cv_link:
-    weight: 12
+    weight: 9
     label: visually_hidden
     settings:
       trim_length: 80
@@ -163,6 +165,18 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
+  field_ighn_person_profile_link:
+    weight: 11
+    label: visually_hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
     region: content
   field_ighn_primary_college:
     weight: 5
