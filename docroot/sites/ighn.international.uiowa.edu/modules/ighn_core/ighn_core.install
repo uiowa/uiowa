@@ -1,0 +1,29 @@
+<?php
+
+/**
+ * @file
+ * Install tasks.
+ */
+
+use Drupal\taxonomy\Entity\Term;
+use Drupal\redirect\Entity\Redirect;
+use Drupal\Core\Config\FileStorage;
+
+/**
+ * Rename site config split to 'ighn' so it is imported correctly.
+ */
+function ighn_core_update_8001() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('config_split.config_split.site');
+
+  $config
+    ->set('id', 'ighn')
+    ->set('label', 'ighn')
+    ->set('description', 'The site config split.')
+    ->set('folder', '../config/ighn.international.uiowa.edu')
+    ->set('weight', 90)
+    ->setName('config_split.config_split.ighn')
+    ->save();
+
+  drupal_flush_all_caches();
+}

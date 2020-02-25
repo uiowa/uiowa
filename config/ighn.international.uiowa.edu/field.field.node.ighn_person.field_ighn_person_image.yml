@@ -1,0 +1,28 @@
+uuid: c49a317b-af6b-4ef8-8088-25a98ea3b34d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_ighn_person_image
+    - media.type.image
+    - node.type.ighn_person
+id: node.ighn_person.field_ighn_person_image
+field_name: field_ighn_person_image
+entity_type: node
+bundle: ighn_person
+label: Image
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
