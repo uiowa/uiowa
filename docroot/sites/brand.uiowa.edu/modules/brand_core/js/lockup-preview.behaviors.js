@@ -53,6 +53,7 @@
 
             // Add warning HTML.
             warningHTML();
+            requiredWarning();
 
             // Show preview and inject content based on existing input or live input for
             // both the Primary Unit and Sub Unit, Horizontal and Stacked.
@@ -71,7 +72,7 @@
                 $(".lockup-stacked .sub-unit").text(subUnitStacked.val());
             }
 
-            // Do preliminary placement of the divider for the stacked lockup.
+            // Do preliminary placement of the divider.
             calcDivider();
 
             // Set the submit button text based on the 'Save as' option.
@@ -90,9 +91,42 @@
             subUnitStacked.on("input", function (event) { processInput($(this), event); });
 
             // Set the submit button text whenever the user changes the 'Save as' option.
-            $('#edit-moderation-state-0-state').change(function(){
+            $("#edit-moderation-state-0-state").change(function(){
                 setSubmitButton($(this).val());
             });
+
+          // Add warning HTML.
+          function requiredWarning()  {
+            let emptyRequired = '\
+                    <div id="required-warning" class="warning-hidden">\
+                        <h3><i class="fas fa-exclamation"></i>Required fields are empty</h3>\
+                        <div class="warning-body">\
+                            <p>\
+                                Make sure you fill out all required fields within each step.\
+                            </p>\
+                        </div>\
+                    </div>\
+                ';
+            $('#edit-actions').append(emptyRequired);
+          }
+
+          $('#edit-submit').click(function(){
+            $('#required-warning').addClass('warning-hidden');
+            if (
+              $('#edit-title-0-value').val() === "" ||
+              $('#edit-field-lockup-org-0-target-id').val() === "" ||
+              primaryUnit.val() === "" ||
+              primaryUnitStacked.val() === ""
+            ) {
+              $('#required-warning').removeClass('warning-hidden');
+              Drupal.announce('Required fields are empty.');
+            }
+          })
+          $('#edit-submit').keypress(function(e){
+            if(e.which === 13){
+              $('#edit-submit').click();
+            }
+          });
 
             /*
             ----------------------------------------------------------------------
@@ -144,25 +178,25 @@
                 }
 
                 // Set values for horizontal divider line.
-                var divHeight = Math.floor(Math.max($('.lockup-horizontal .lockup-content-inner').innerHeight() - 17, blockIowaDims.height));
+                var divHeight = Math.floor(Math.max($('.lockup-horizontal .lockup-content-inner').innerHeight() - 8, blockIowaDims.height + 8));
                 var divTop;
-                (divHeight > blockIowaDims.height) ? divTop = 4 : divTop = -8;
-
-                // Grab the text from Primary Unit to calculate width of divider.
-                $('#primary-first-line-measure-stacked').text($('.lockup-stacked .lockup-content .lockup-content-inner .primary-unit').text());
-                var divWidth = Math.max($('#primary-first-line-measure-stacked').outerWidth() - 13, blockIowaDims.width);
-                var divPos = ($('.lockup-stacked .lockup-content').outerWidth()/2) - (divWidth/2);
+                (divHeight > blockIowaDims.height + 8) ? divTop = 4 : divTop = -4;
 
                 // Set the horizontal divider dimensions.
                 $('#horizontal-divider').css({
-                    "height": divHeight + 8 + "px",
+                    "height": divHeight,
                     "top": divTop
                 });
 
+                // Grab the text from Primary Unit to calculate width of divider.
+                $('#primary-first-line-measure-stacked').text($('.lockup-stacked .lockup-content .lockup-content-inner .primary-unit').text());
+                var divWidth = Math.max($('#primary-first-line-measure-stacked').outerWidth() - 14, blockIowaDims.width + 6);
+                var divPos = ($('.lockup-stacked .lockup-content').outerWidth()/2) - (divWidth/2);
+
                 // Set the stacked divider dimensions.
                 $('#stacked-divider').css({
-                    "width": divWidth + 8,
-                    "left": divPos - 4
+                    "width": divWidth,
+                    "left": divPos
                 });
             }
 
@@ -203,6 +237,7 @@
 
                     Timer = setTimeout(function() {
                         $('#valid-text-lockup-warning').removeClass('warning-hidden');
+                        Drupal.announce('Invalid imput.');
                         $('#edit-submit').prop('disabled', true);
                     }, 500);
                 }
@@ -452,14 +487,14 @@
                         <h3><i class="fas fa-exclamation"></i>Invalid text</h3>\
                         <div class="warning-body">\
                             <p>\
-                                Correct primary unit or sub unit fields to meet the following criteria:\
+                                Correct primary unit or subunit fields to meet the following criteria:\
                             </p>\
                             <ul>\
                                 <li>Only the following special characters are allowed:\
                                         <ul><li> : ; . , \\ \/ ( ) | \' \" \u2018 \u2019 \u201C \u201D ` - \u2012  \u2013  \u2014  \u2015</li></ul>\
                                 </li>\
                                 <li>No spaces are allowed at the beginning or end of lines.</li>\
-                                <li>No more than three lines of text each are allowed for primary and sub unit names.</li>\
+                                <li>No more than three lines of text each are allowed for primary and subunit names.</li>\
                             </ul>\
                         </div>\
                     </div>\

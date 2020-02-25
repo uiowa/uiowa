@@ -33,7 +33,7 @@ class SettingsForm extends ConfigFormBase {
 
     $form['markup'] = [
       '#type' => 'markup',
-      '#markup' => t('<p>These settings allows you to customize the top University of Iowa search box.</p>'),
+      '#markup' => $this->t('<p>These settings allows you to customize the top University of Iowa search box.</p>'),
     ];
     $form['display_search'] = [
       '#type' => 'checkbox',
@@ -42,28 +42,21 @@ class SettingsForm extends ConfigFormBase {
     ];
     $form['cse_engine_id'] = [
       '#type' => 'textfield',
-      '#title' => t('Search Engine ID'),
+      '#title' => $this->t('Search Engine ID'),
       '#default_value' => $config->get('uiowa_search.cse_engine_id'),
-      '#description' => t('Enter the CSE Engine ID. The default is 015014862498168032802:ben09oibdpm.'),
+      '#description' => $this->t('Enter the CSE Engine ID. The default is 015014862498168032802:ben09oibdpm.'),
       '#size' => 60,
       '#required' => TRUE,
     ];
     $form['cse_scope'] = [
       '#type' => 'checkbox',
-      '#title' => t('Limit Custom Search to this Site'),
+      '#title' => $this->t('Limit Custom Search to this Site'),
       '#default_value' => $config->get('uiowa_search.cse_scope'),
-      '#description' => t('If checked, the Google Custom Search will be scoped to this site only. If you are using a CSE ID that includes multiple sites in it, you will likely want to uncheck this.'),
+      '#description' => $this->t('If checked, the Google Custom Search will be scoped to this site only. If you are using a CSE ID that includes multiple sites in it, you will likely want to uncheck this.'),
       '#size' => 60,
     ];
 
     return $form;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    parent::validateForm($form, $form_state);
   }
 
   /**

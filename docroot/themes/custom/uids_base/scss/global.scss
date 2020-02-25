@@ -7,6 +7,7 @@
 
 
 .layout__container {
+
   .block-system-breadcrumb-block,
   .block-field-blocknodepagetitle,
   .block-field-blocknodepagebody,
@@ -16,9 +17,11 @@
 }
 
 .layout--onecol {
+
   .feature,
   .banner {
     flex-basis: 100%;
+
     .section-column__row & {
       flex-basis: unset;
     }
@@ -28,7 +31,16 @@
 // default spacing for pages without layout builder
 
 .layout-builder-disabled .page__container {
-  margin: $gutter;
+  margin: $mobile-width-gutter;
+
+  @include breakpoint(container) {
+    margin: 0 auto;
+  }
+}
+
+.layout-builder-disabled .uiowa-bar .page__container {
+  margin-top: 0;
+
   @include breakpoint(container) {
     margin: 0 auto;
   }
@@ -37,16 +49,22 @@
 // default left/right gutter spacing for full width settings without layout builder
 
 .page__container--full .region-content {
-  margin-right: $gutter;
-  margin-left: $gutter;
+ // margin-right: $gutter;
+  //margin-left: $gutter;
+    margin-right: $mobile-width-gutter;
+    margin-left: $mobile-width-gutter;
 }
 
 // default left/right gutter spacing for full width settings w/ layout builder enabled
 
-.content__full .layout__container  {
-  margin-right: $gutter;
-  margin-bottom: $gutter;
-  margin-left: $gutter;
+.content__full .layout__container {
+       margin-right: $mobile-width-gutter;
+       margin-left: $mobile-width-gutter;
+       margin-bottom: $mobile-width-gutter;
+
+  //margin-right: $gutter;
+  //margin-bottom: $gutter;
+  //margin-left: $gutter;
 
   // layout builder styles padding classes
 
@@ -110,8 +128,15 @@
 // settings if page container full or edge is selected on section
 
 .page__container--full.layout__container {
-  margin-right: $gutter;
-  margin-left: $gutter;
+ // margin-right: $gutter;
+ // margin-left: $gutter;
+       margin-right: $mobile-width-gutter;
+       margin-left: $mobile-width-gutter;
+
+       @include breakpoint(menu) {
+         margin-right: $desktop-width-gutter;
+         margin-left: $desktop-width-gutter;
+       }
 
   &.page__container--edge {
     margin-right: 0;
@@ -125,7 +150,7 @@
 .content__container,
 .content__mixed {
   .layout__container {
-    margin-bottom: $gutter;
+    margin-bottom: $mobile-width-gutter;
     @extend %container;
 
     // layout builder styles padding classes
@@ -176,8 +201,12 @@
 
     &.page__container--full {
       max-width: 100%;
-      margin-right: $gutter;
-      margin-left: $gutter;
+      margin-right: $mobile-width-gutter;
+      margin-left: $mobile-width-gutter;
+          @include breakpoint(menu) {
+             margin-right: $desktop-width-gutter;
+             margin-left: $desktop-width-gutter;
+          }
     }
 
     &.page__container--edge {
@@ -208,4 +237,10 @@
       margin-left: $md;
     }
   }
+}
+
+// mobile search
+
+.search-button[aria-expanded="true"] {
+  margin-left: auto;
 }

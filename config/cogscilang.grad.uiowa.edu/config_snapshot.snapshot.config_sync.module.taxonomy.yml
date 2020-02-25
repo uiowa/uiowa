@@ -1,4 +1,4 @@
-uuid: e64d5926-00f6-4213-9d84-6153b8e06d8e
+uuid: e2c01016-ade9-4c93-adea-70bcad764e7e
 langcode: en
 status: true
 dependencies:
@@ -22,6 +22,34 @@ items:
       label: 'Taxonomy term page'
       targetEntityType: taxonomy_term
       cache: true
+  -
+    collection: ''
+    name: system.action.taxonomy_term_publish_action
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - taxonomy
+      id: taxonomy_term_publish_action
+      label: 'Publish taxonomy term'
+      type: taxonomy_term
+      plugin: 'entity:publish_action:taxonomy_term'
+      configuration: {  }
+  -
+    collection: ''
+    name: system.action.taxonomy_term_unpublish_action
+    data:
+      langcode: en
+      status: true
+      dependencies:
+        module:
+          - taxonomy
+      id: taxonomy_term_unpublish_action
+      label: 'Unpublish taxonomy term'
+      type: taxonomy_term
+      plugin: 'entity:unpublish_action:taxonomy_term'
+      configuration: {  }
   -
     collection: ''
     name: taxonomy.settings
@@ -49,7 +77,6 @@ items:
       tag: default
       base_table: node_field_data
       base_field: nid
-      core: '8'
       display:
         default:
           id: default
@@ -194,6 +221,8 @@ items:
                   remember_roles:
                     authenticated: authenticated
                   reduce: false
+                  operator_limit_selection: false
+                  operator_list: {  }
                 is_grouped: false
                 group_info:
                   label: ''
@@ -232,6 +261,8 @@ items:
                   multiple: false
                   remember_roles:
                     authenticated: authenticated
+                  operator_limit_selection: false
+                  operator_list: {  }
                 is_grouped: false
                 group_info:
                   label: ''

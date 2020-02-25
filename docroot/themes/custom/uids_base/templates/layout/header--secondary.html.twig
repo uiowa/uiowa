@@ -6,7 +6,7 @@
         site_name: site_name
     } %}
 
-    {% if page.header_search %}
+    {% if page.search_menu %}
         {{ page.header_search }}
     {% endif %}
 
@@ -16,7 +16,7 @@
         } %}
     {% endif %}
 
-    {% if header_nav == 'nav--toggle' %}
+    {% if header_nav == 'toggle' %}
         {% include '@uids_base/navigation/off-canvas.html.twig' %}
     {% endif %}
 {% endblock %}

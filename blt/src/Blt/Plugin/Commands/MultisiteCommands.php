@@ -3,6 +3,7 @@
 namespace Uiowa\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
+use Acquia\Blt\Robo\Common\EnvironmentDetector;
 use Acquia\Blt\Robo\Common\YamlMunge;
 use AcquiaCloudApi\Connector\Client;
 use AcquiaCloudApi\Connector\Connector;
@@ -33,6 +34,8 @@ class MultisiteCommands extends BltTasks {
    * @command uiowa:multisite:noop
    *
    * @aliases umn
+   *
+   * @hidden
    */
   public function noop() {
 
@@ -58,6 +61,17 @@ class MultisiteCommands extends BltTasks {
     else {
       foreach ($this->getConfigValue('multisites') as $multisite) {
         $this->switchSiteContext($multisite);
+
+        // Skip sites whose database do not exist on the application in AH env.
+        if (EnvironmentDetector::isAhEnv()) {
+          $db = $this->getConfigValue('drupal.db.database');
+          $app = EnvironmentDetector::getAhGroup();
+
+          if (!file_exists("/var/www/site-php/{$app}/{$db}-settings.inc")) {
+            $this->say("Skipping {$multisite}. Database {$db} does not exist.");
+            continue;
+          }
+        }
 
         $this->taskDrush()
           ->drush($cmd)

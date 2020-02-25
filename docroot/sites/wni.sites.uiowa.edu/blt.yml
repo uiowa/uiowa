@@ -1,0 +1,25 @@
+project:
+  local:
+    hostname: siteswni.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: siteswni
+  human_name: wni.sites.uiowa.edu
+  profile:
+    name: sitenow
+drush:
+  aliases:
+    local: self
+    remote: siteswni.prod
+drupal:
+  db:
+    database: wni_sites_uiowa_edu
+cm:
+  core:
+    install_from_config: true
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+uiowa:
+  profiles:
+    sitenow:
+      requester: dsuppmontgomerie
