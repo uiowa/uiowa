@@ -59,13 +59,15 @@ class MultisiteCommands extends BltTasks {
       throw new \Exception('Aborted.');
     }
     else {
+      $app = EnvironmentDetector::getAhGroup() ?? 'uiowa';
+      $env = EnvironmentDetector::getAhEnv() ?? 'local';
+
       foreach ($this->getConfigValue('multisites') as $multisite) {
         $this->switchSiteContext($multisite);
 
         // Skip sites whose database do not exist on the application in AH env.
         if (EnvironmentDetector::isAhEnv()) {
           $db = $this->getConfigValue('drupal.db.database');
-          $app = EnvironmentDetector::getAhGroup();
 
           if (!file_exists("/var/www/site-php/{$app}/{$db}-settings.inc")) {
             $this->say("Skipping {$multisite}. Database {$db} does not exist.");
@@ -73,8 +75,13 @@ class MultisiteCommands extends BltTasks {
           }
         }
 
+        // Define a random Drush cache directory per process.
+        // @see: /acquia/blt/scripts/blt/drush/cache.php
+        $tmp = sys_get_temp_dir() . "/.drush/{$app}/{$env}/" . mt_rand(0, 32767);
+
         $this->taskDrush()
           ->drush($cmd)
+          ->option('define', "drush.paths.cache-directory={$tmp}")
           ->run();
       }
     }
