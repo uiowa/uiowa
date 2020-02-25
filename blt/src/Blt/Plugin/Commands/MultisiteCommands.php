@@ -75,7 +75,7 @@ class MultisiteCommands extends BltTasks {
           }
         }
 
-        /**
+        /*
          * Define a random temporary Drush cache directory per process.
          *
          * @see: https://github.com/acquia/blt/issues/2957
