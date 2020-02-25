@@ -1,0 +1,25 @@
+project:
+  profile:
+    name: sitenow
+  local:
+    hostname: orgirbr.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: orgirbr
+  human_name: irbr.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgirbr.prod
+drupal:
+  db:
+    database: irbr_org_uiowa_edu
+uiowa:
+  profiles:
+    sitenow:
+      requester: jcomeron
+cm:
+  core:
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true

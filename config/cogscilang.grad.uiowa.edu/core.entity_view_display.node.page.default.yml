@@ -1,4 +1,4 @@
-uuid: 5650732d-6ed6-42bc-a7d9-7a92919023b2
+uuid: 2c95495a-3fbc-4c41-905e-d871c50cc483
 langcode: en
 status: true
 dependencies:
@@ -8,46 +8,22 @@ dependencies:
     - node.type.page
   module:
     - layout_builder
-    - layout_discovery
+    - layout_builder_restrictions
+    - system
     - text
     - user
+  theme:
+    - collegiate_theme
 third_party_settings:
   layout_builder:
-    allow_custom: true
-    enabled: true
-    sections:
-      -
-        layout_id: layout_onecol
-        layout_settings: {  }
-        components:
-          eece7031-5478-448d-bf0c-2a58a8f3a77e:
-            uuid: eece7031-5478-448d-bf0c-2a58a8f3a77e
-            region: content
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'extra_field_block:node:page:links'
-            additional: {  }
-            weight: 0
-          a1d1b5c4-e9c0-4117-aa69-95747061ebbc:
-            uuid: a1d1b5c4-e9c0-4117-aa69-95747061ebbc
-            region: content
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:page:body'
-              formatter:
-                label: hidden
-                type: text_default
-                settings: {  }
-                third_party_settings: {  }
-            additional: {  }
-            weight: 1
-        third_party_settings: {  }
+    allow_custom: false
+    enabled: false
+  layout_builder_restrictions:
+    entity_view_mode_restriction:
+      allowed_blocks: {  }
+      allowed_layouts: {  }
 _core:
-  default_config_hash: FlIMOKHvaRSifiV9xUd9IxG0Gfcp5n75dn_UqSCeewU
+  default_config_hash: 5-px6KSIPJ-xQqB27daXORHZaPO-b9fIBWMmtfMqTqQ
 id: node.page.default
 targetEntityType: node
 bundle: page

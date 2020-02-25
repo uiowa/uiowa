@@ -1,4 +1,4 @@
-uuid: ee45f78d-7d64-43c0-affc-50cb34852943
+uuid: ddb0ed9d-040d-45bf-bf6c-ee8a193f7513
 langcode: en
 status: true
 dependencies:
@@ -248,7 +248,6 @@ items:
       tag: default
       base_table: node_field_data
       base_field: nid
-      core: '8'
       display:
         default:
           id: default
@@ -345,6 +344,8 @@ items:
                 group: 0
                 expose:
                   operator: '0'
+                  operator_limit_selection: false
+                  operator_list: {  }
                 plugin_id: boolean
                 entity_type: node
                 entity_field: status
@@ -373,6 +374,8 @@ items:
                   remember_roles:
                     authenticated: authenticated
                   reduce: false
+                  operator_limit_selection: false
+                  operator_list: {  }
                 is_grouped: false
                 group_info:
                   label: ''
@@ -490,7 +493,6 @@ items:
       tag: default
       base_table: node_field_data
       base_field: nid
-      core: 8.x
       display:
         default:
           display_options:
@@ -857,6 +859,8 @@ items:
                     authenticated: authenticated
                     anonymous: '0'
                     administrator: '0'
+                  operator_limit_selection: false
+                  operator_list: {  }
                 is_grouped: false
                 group_info:
                   label: ''
@@ -898,6 +902,8 @@ items:
                     anonymous: '0'
                     administrator: '0'
                   reduce: false
+                  operator_limit_selection: false
+                  operator_list: {  }
                 is_grouped: false
                 group_info:
                   label: ''
@@ -936,6 +942,8 @@ items:
                   multiple: false
                   remember_roles:
                     authenticated: authenticated
+                  operator_limit_selection: false
+                  operator_list: {  }
                 is_grouped: true
                 group_info:
                   label: 'Published status'
@@ -985,6 +993,8 @@ items:
                     anonymous: '0'
                     administrator: '0'
                   reduce: false
+                  operator_limit_selection: false
+                  operator_list: {  }
                 is_grouped: false
                 group_info:
                   label: ''
@@ -1009,6 +1019,9 @@ items:
                 plugin_id: node_status
                 group: 1
                 entity_type: node
+                expose:
+                  operator_limit_selection: false
+                  operator_list: {  }
             sorts: {  }
             title: Content
             empty:
@@ -1098,7 +1111,6 @@ items:
       tag: default
       base_table: node_field_data
       base_field: nid
-      core: 8.x
       display:
         default:
           display_plugin: default
@@ -1272,6 +1284,8 @@ items:
                   multiple: false
                   remember_roles:
                     authenticated: authenticated
+                  operator_limit_selection: false
+                  operator_list: {  }
                 is_grouped: false
                 group_info:
                   label: ''
@@ -1311,6 +1325,8 @@ items:
                   remember_roles:
                     authenticated: authenticated
                   reduce: false
+                  operator_limit_selection: false
+                  operator_list: {  }
                 is_grouped: false
                 group_info:
                   label: ''
@@ -1421,7 +1437,6 @@ items:
       tag: default
       base_table: node_field_data
       base_field: nid
-      core: 8.x
       display:
         default:
           display_options:
@@ -1492,6 +1507,8 @@ items:
                     authenticated: authenticated
                   required: false
                   use_operator: false
+                  operator_limit_selection: false
+                  operator_list: {  }
                 exposed: false
                 field: promote
                 group: 1
@@ -1519,6 +1536,8 @@ items:
               status:
                 expose:
                   operator: ''
+                  operator_limit_selection: false
+                  operator_list: {  }
                 field: status
                 group: 1
                 id: status
@@ -1552,6 +1571,8 @@ items:
                   remember_roles:
                     authenticated: authenticated
                   reduce: false
+                  operator_limit_selection: false
+                  operator_list: {  }
                 is_grouped: false
                 group_info:
                   label: ''
@@ -1726,7 +1747,6 @@ items:
       tag: default
       base_table: node_field_data
       base_field: nid
-      core: '8'
       display:
         default:
           id: default
@@ -2046,6 +2066,8 @@ items:
                   remember_roles:
                     authenticated: authenticated
                   reduce: false
+                  operator_limit_selection: false
+                  operator_list: {  }
                 is_grouped: false
                 group_info:
                   label: ''
@@ -2070,7 +2092,7 @@ items:
               - url.query_args
               - 'user.node_grants:view'
               - user.permissions
-            max-age: 0
+            max-age: -1
             tags: {  }
         attachment_1:
           id: attachment_1
@@ -2138,7 +2160,7 @@ items:
               - url.query_args
               - 'user.node_grants:view'
               - user.permissions
-            max-age: 0
+            max-age: -1
             tags: {  }
         page_1:
           id: page_1
@@ -2165,5 +2187,5 @@ items:
               - url.query_args
               - 'user.node_grants:view'
               - user.permissions
-            max-age: 0
+            max-age: -1
             tags: {  }

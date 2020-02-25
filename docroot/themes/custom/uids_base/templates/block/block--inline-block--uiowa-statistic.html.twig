@@ -1,0 +1,59 @@
+{#
+/**
+ * @file
+ * Theme override to display a block.
+ *
+ * Available variables:
+ * - plugin_id: The ID of the block implementation.
+ * - label: The configured label of the block if visible.
+ * - configuration: A list of the block's configuration values.
+ *   - label: The configured label for the block.
+ *   - label_display: The display settings for the label.
+ *   - provider: The module or other provider that provided this block plugin.
+ *   - Block plugin specific settings will also be stored here.
+ * - content: The content of this block.
+ * - attributes: array of HTML attributes populated by modules, intended to
+ *   be added to the main container tag of this template.
+ *   - id: A valid HTML ID and guaranteed unique.
+ * - title_attributes: Same as attributes, except applied to the main title
+ *   tag that appears in the template.
+ * - title_prefix: Additional output populated by modules, intended to be
+ *   displayed in front of the main title tag that appears in the template.
+ * - title_suffix: Additional output populated by modules, intended to be
+ *   displayed after the main title tag that appears in the template.
+ *
+ * @see template_preprocess_block()
+ */
+#}
+
+{% block content %}
+	{{ attach_library('uids_base/stat-block') }}
+
+	{% embed "@uids/02 - blocks/stat-block/stat-block--basic.twig" with {
+    "stat_summary": content.field_uiowa_statistic_excerpt,
+    "heading" : content.field_uiowa_statistic_title[0]['#text'],
+    "heading_prefix": content.field_uiowa_statistic_title_pre[0]['#text'],
+    "heading_suffix": content.field_uiowa_statistic_title_suf[0]['#text'],
+  } %}
+
+		{% block heading %}
+			{{ title_prefix }}
+			{% if content.field_uiowa_statistic_title[0]['#text'] is not empty %}
+				{% include "@uids/01 - elements/heading/heading.twig" with {
+          "heading_level" : content.field_uiowa_statistic_title[0]['#size'],
+          "heading_class" : 'stat__title',
+          "heading" : content.field_uiowa_statistic_title[0]['#text'],
+          "heading_prefix":content.field_uiowa_statistic_title_pre,
+          "heading_suffix": content.field_uiowa_statistic_title_suf,
+        } %}
+			{% endif %}
+			{{ title_suffix }}
+		{% endblock %}
+
+   {% block stat_wrapper_start %}
+        <div class="stat__grid {{ stat_classes }} {{ attributes ? attributes.class }}" {{ attributes ? attributes|without('class') }}>
+      {% endblock %}
+	{% endembed %}
+{% endblock %}
+
+

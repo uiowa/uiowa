@@ -23,7 +23,11 @@ var paths = {
 };
 
 function copy() {
-  return src(['../../../../node_modules/@uiowa/hds/**/*.scss', '../../../../node_modules/@uiowa/hds/**/*.js', '../../../../node_modules/@uiowa/hds/**/*.twig'
+  return src([
+    '../../../../node_modules/@uiowa/hds/**/*.scss',
+    '../../../../node_modules/@uiowa/hds/**/*.js',
+    '../../../../node_modules/@uiowa/hds/**/*.twig',
+    '!../../../../node_modules/@uiowa/hds/components/03 - global/menus/off-canvas/**' // @todo: remove this eventually.
   ])
     .pipe(dest('./hds/'));
 }
@@ -42,7 +46,7 @@ function css() {
     .pipe(plumber({
       handleError: function (err) {
         console.log(err);
-        this.emit('end');
+        process.exit(1);
       }
     }))
     .pipe(sass({
@@ -50,8 +54,7 @@ function css() {
         includePaths: config.css.includePaths
       }).on('error', function (err) {
         console.log(err.message);
-        // sass.logError.
-        this.emit('end');
+        process.exit(1);
       }))
     .pipe(prefix(['last 2 versions', '> 1%', 'ie 9', 'ie 10'], {
       cascade: true

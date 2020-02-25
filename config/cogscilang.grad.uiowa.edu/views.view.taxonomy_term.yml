@@ -1,4 +1,4 @@
-uuid: 3164807f-d6e9-458b-b47e-52c247be5ad0
+uuid: cd3f01f0-1068-4bfa-98c2-c8fa4f2e008b
 langcode: en
 status: true
 dependencies:
@@ -9,7 +9,7 @@ dependencies:
     - taxonomy
     - user
 _core:
-  default_config_hash: Gy5PaLdfFhtFSRqJxV-DBTF5AocKgNA2CsCNNEbvx4c
+  default_config_hash: uvMAn5Qf8Uni989mhr5KY4hx66xkSpP8nFYZMHgj7kY
 id: taxonomy_term
 label: 'Taxonomy term'
 module: taxonomy
@@ -17,7 +17,6 @@ description: 'Content belonging to a certain taxonomy term.'
 tag: default
 base_table: node_field_data
 base_field: nid
-core: '8'
 display:
   default:
     id: default
@@ -162,6 +161,8 @@ display:
             remember_roles:
               authenticated: authenticated
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -200,6 +201,8 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''

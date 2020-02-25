@@ -74,7 +74,15 @@ EOD;
     $haystack = file_get_contents($file);
 
     $needle = <<<EOD
+\$config_initializer = new ConfigInitializer(\$repo_root, new ArgvInput());
+\$config_initializer->setSite(\$site_dir);
+\$blt_config = \$config_initializer->initialize();
+
 \$blt_override_config_directories = FALSE;
+
+if (\$blt_sync_path = \$blt_config->get('cm.core.dirs.sync.path')) {
+  \$settings['config_sync_directory'] = DRUPAL_ROOT . '/' . \$blt_sync_path;
+}
 EOD;
 
     $this->assertContains($needle, $haystack);
@@ -91,21 +99,6 @@ EOD;
 if (InstallerKernel::installationAttempted() && php_sapi_name() != 'cli') {
   exit;
 }
-EOD;
-
-    $this->assertContains($needle, $haystack);
-  }
-
-  /**
-   * Test sitenow specific settings exist.
-   */
-  public function testSitenowGlobalSettings() {
-    $file = $this->root . '/sites/settings/sitenow.settings.php';
-    $this->assertFileExists($file);
-    $haystack = file_get_contents($file);
-
-    $needle = <<<EOD
-\$settings['config_sync_directory'] = DRUPAL_ROOT . '/profiles/custom/sitenow/config/sync';
 EOD;
 
     $this->assertContains($needle, $haystack);
@@ -144,6 +137,8 @@ EOD;
         $yaml = Yaml::parse(file_get_contents("{$path}/blt.yml"));
         $db = $yaml['drupal']['db']['database'];
 
+        $this->assertEquals(Multisite::getDatabaseName($site), $db);
+
         $this->assertEquals($local, $yaml['project']['local']['hostname']);
         $this->assertEquals($site, $yaml['project']['human_name']);
         $this->assertEquals($id, $yaml['project']['machine_name']);
@@ -165,15 +160,15 @@ EOD;
         $haystack = file_get_contents($file);
         $this->assertContains($needle, $haystack);
 
-        // Profile specific tests.
-        switch ($yaml['project']['profile']['name']) {
-          case 'sitenow':
-            $file = "{$path}/settings/includes.settings.php";
-            $this->assertFileExists($file);
+        // Profile config tests.
+        $profile = $yaml['project']['profile']['name'];
+        $site_config = YamlMunge::parseFile("{$path}/blt.yml");
 
-            $needle = <<<EOD
+        $file = "{$path}/settings/includes.settings.php";
+
+        $needle = <<<EOD
 \$additionalSettingsFiles = [
-  DRUPAL_ROOT . "/sites/settings/sitenow.settings.php"
+  DRUPAL_ROOT . "/sites/settings/{$profile}.settings.php"
 ];
 
 foreach (\$additionalSettingsFiles as \$settingsFile) {
@@ -183,14 +178,12 @@ foreach (\$additionalSettingsFiles as \$settingsFile) {
 }
 EOD;
 
-            $haystack = file_get_contents($file);
-            $this->assertContains($needle, $haystack);
+        $haystack = file_get_contents($file);
+        $this->assertContains($needle, $haystack);
 
-            $yaml = YamlMunge::parseFile("{$path}/blt.yml");
-            $this->assertEquals('profiles/custom/sitenow/config/sync', $yaml['cm']['core']['dirs']['sync']['path']);
-            $this->assertEquals(TRUE, $yaml['cm']['core']['install_from_config']);
-            break;
-        }
+        // @todo: Expand properties from profile defaults.
+        $this->assertNotEmpty($site_config['cm']['core']['dirs']['sync']['path']);
+        $this->assertNotEquals('/', substr($site_config['cm']['core']['dirs']['sync']['path'], 0, 1));
       }
     }
   }
