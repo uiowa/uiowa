@@ -1,0 +1,98 @@
+uuid: cfac93a9-86b4-44d0-9499-3d0b03f013d6
+langcode: en
+status: true
+dependencies:
+  module:
+    - metatag
+id: config_sync.module.metatag
+snapshotSet: config_sync
+extensionType: module
+extensionName: metatag
+items:
+  -
+    collection: ''
+    name: metatag.metatag_defaults.403
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      id: '403'
+      label: '403 access denied'
+      tags:
+        canonical_url: '[site:url]'
+        shortlink: '[site:url]'
+  -
+    collection: ''
+    name: metatag.metatag_defaults.404
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      id: '404'
+      label: '404 page not found'
+      tags:
+        canonical_url: '[site:url]'
+        shortlink: '[site:url]'
+  -
+    collection: ''
+    name: metatag.metatag_defaults.front
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      id: front
+      label: 'Front page'
+      tags:
+        canonical_url: '[site:url]'
+        shortlink: '[site:url]'
+  -
+    collection: ''
+    name: metatag.metatag_defaults.global
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      id: global
+      label: Global
+      tags:
+        canonical_url: '[current-page:url]'
+        title: '[current-page:title] | [site:name]'
+  -
+    collection: ''
+    name: metatag.metatag_defaults.node
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      id: node
+      label: Content
+      tags:
+        title: '[node:title] | [site:name]'
+        description: '[node:summary]'
+        canonical_url: '[node:url]'
+  -
+    collection: ''
+    name: metatag.metatag_defaults.taxonomy_term
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      id: taxonomy_term
+      label: 'Taxonomy term'
+      tags:
+        canonical_url: '[term:url]'
+        description: '[term:description]'
+        title: '[term:name] | [site:name]'
+  -
+    collection: ''
+    name: metatag.metatag_defaults.user
+    data:
+      langcode: en
+      status: true
+      dependencies: {  }
+      id: user
+      label: User
+      tags:
+        canonical_url: '[user:url]'
+        description: '[site:name]'
+        title: '[user:display-name] | [site:name]'
