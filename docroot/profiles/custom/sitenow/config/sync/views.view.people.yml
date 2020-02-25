@@ -1,6 +1,6 @@
 uuid: 4aba22ab-e2c2-4257-af53-0bda1d88033e
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
@@ -335,7 +335,7 @@ display:
       path: people
       display_extenders: {  }
       title: Staff
-      enabled: true
+      enabled: false
       footer: {  }
       defaults:
         footer: false
@@ -641,7 +641,10 @@ display:
       tags:
         - 'config:core.entity_view_display.node.article.default'
         - 'config:core.entity_view_display.node.article.teaser'
-        - 'config:core.entity_view_display.node.page.teaser'
+        - 'config:core.entity_view_display.node.ighn_person.default'
+        - 'config:core.entity_view_display.node.ighn_person.full'
+        - 'config:core.entity_view_display.node.ighn_person.teaser'
         - 'config:core.entity_view_display.node.page.default'
+        - 'config:core.entity_view_display.node.page.teaser'
         - 'config:core.entity_view_display.node.person.default'
         - 'config:core.entity_view_display.node.person.teaser'
