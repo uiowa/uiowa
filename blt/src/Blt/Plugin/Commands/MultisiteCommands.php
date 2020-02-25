@@ -76,12 +76,12 @@ class MultisiteCommands extends BltTasks {
         }
 
         /**
-         * Define a random Drush cache directory per process.
+         * Define a random temporary Drush cache directory per process.
          *
          * @see: https://github.com/acquia/blt/issues/2957
          * @see: /acquia/blt/scripts/blt/drush/cache.php
          **/
-        $tmp = sys_get_temp_dir() . "/.drush/{$app}/{$env}/" . md5($multisite);
+        $tmp = "/tmp/.drush/{$app}/{$env}/" . md5($multisite);
 
         $this->taskDrush()
           ->drush($cmd)
