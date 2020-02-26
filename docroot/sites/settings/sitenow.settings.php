@@ -7,12 +7,20 @@
  * from individual SiteNow sites through their own include chain.
  */
 
+use Acquia\Blt\Robo\Common\EnvironmentDetector;
+
 /**
- * Set the environment indicator colors.
+ * Environment specific SiteNow configuration.
  */
-$env = getenv('AH_SITE_ENVIRONMENT');
+$env = EnvironmentDetector::getAhEnv() ?? 'local';
 
 switch ($env) {
+  case 'local':
+    $settings['simple_environment_indicator'] = '#31873E local';
+    $config['config_split.config_split.sitenow_migrate']['status'] = TRUE;
+
+    break;
+
   case 'dev':
     $settings['simple_environment_indicator'] = '#4363d8 dev';
     break;
@@ -23,9 +31,5 @@ switch ($env) {
 
   case 'prod':
     $settings['simple_environment_indicator'] = '#e6194b prod';
-    break;
-
-  default:
-    $settings['simple_environment_indicator'] = '#31873E local';
     break;
 }
