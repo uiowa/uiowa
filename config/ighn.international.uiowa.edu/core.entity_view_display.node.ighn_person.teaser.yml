@@ -26,7 +26,6 @@ third_party_settings:
   field_group:
     group_ighn_person:
       children:
-        - field_ighn_person_image
         - group_ighn_main_info_group
         - group_ighn
         - field_ighn_person_biography
@@ -64,9 +63,6 @@ third_party_settings:
       label: 'IGHN Person Field Groups'
     group_ighn_main_info_group:
       children:
-        - field_ighn_person_first_name
-        - field_ighn_person_last_name
-        - field_ighn_person_credentials
         - field_ighn_primary_college
         - field_ighn_person_department
         - field_ighn_person_position_title
@@ -115,7 +111,7 @@ content:
     third_party_settings: {  }
   field_ighn_person_credentials:
     type: string
-    weight: 5
+    weight: 2
     region: content
     label: visually_hidden
     settings:
@@ -140,14 +136,6 @@ content:
     label: visually_hidden
     settings:
       link: false
-    third_party_settings: {  }
-  field_ighn_person_first_name:
-    type: string
-    weight: 3
-    region: content
-    label: visually_hidden
-    settings:
-      link_to_entity: false
     third_party_settings: {  }
   field_ighn_person_focus_areas:
     type: entity_reference_label
@@ -182,14 +170,6 @@ content:
     settings:
       link: false
     third_party_settings: {  }
-  field_ighn_person_last_name:
-    type: string
-    weight: 4
-    region: content
-    label: visually_hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
   field_ighn_person_position_title:
     type: string
     weight: 8
@@ -207,4 +187,6 @@ content:
       link: false
     third_party_settings: {  }
 hidden:
+  field_ighn_person_first_name: true
+  field_ighn_person_last_name: true
   links: true
