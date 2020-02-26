@@ -14,7 +14,6 @@ dependencies:
     - field.field.node.ighn_person.field_ighn_person_language
     - field.field.node.ighn_person.field_ighn_person_last_name
     - field.field.node.ighn_person.field_ighn_person_position_title
-    - field.field.node.ighn_person.field_ighn_person_profile_link
     - field.field.node.ighn_person.field_ighn_primary_college
     - node.type.ighn_person
   module:
@@ -165,18 +164,6 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
-    region: content
-  field_ighn_person_profile_link:
-    weight: 11
-    label: visually_hidden
-    settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
-    type: link
     region: content
   field_ighn_primary_college:
     weight: 5
