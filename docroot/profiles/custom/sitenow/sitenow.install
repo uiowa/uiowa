@@ -276,3 +276,15 @@ function sitenow_update_8015(&$sandbox) {
     $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
   }
 }
+
+/**
+ * Import new environment split config split.
+ */
+function sitenow_update_8016() {
+  $config_path = DRUPAL_ROOT . '/profiles/custom/sitenow/config/sync/';
+  $source = new FileStorage($config_path);
+
+  $config_storage = \Drupal::service('config.storage');
+  $config_storage->write('config_split.config_split.uiowa_environments', $source->read('config_split.config_split.uiowa_environments'));
+  drupal_flush_all_caches();
+}
