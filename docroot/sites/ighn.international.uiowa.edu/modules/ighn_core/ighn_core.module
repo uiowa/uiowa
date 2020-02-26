@@ -49,12 +49,13 @@ function ighn_core_theme($existing, $type, $theme, $path) {
  */
 function ighn_core_theme_suggestions_field_alter(array &$suggestions, array $variables) {
   switch ($variables["element"]["#field_name"]) {
+    case 'field_ighn_person_department':
+    case 'field_ighn_person_position_title':
+    case 'field_ighn_primary_college':
     case 'field_ighn_person_focus_areas':
     case 'field_ighn_person_global_regions':
     case 'field_ighn_person_language':
-//      if ($variables["element"]["#formatter"] == 'entity_reference_label') {
       $suggestions[] = 'field__comma_separated';
-//      }
       break;
   }
 }
