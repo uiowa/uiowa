@@ -62,6 +62,14 @@
        margin-left: $mobile-width-gutter;
        margin-bottom: $mobile-width-gutter;
 
+         &.page__container--extended {
+
+           @include breakpoint(container) {
+             max-width: 100em;
+             padding: 0 $lg;
+           }
+         }
+
   //margin-right: $gutter;
   //margin-bottom: $gutter;
   //margin-left: $gutter;
@@ -152,6 +160,13 @@
   .layout__container {
     margin-bottom: $mobile-width-gutter;
     @extend %container;
+
+    &.page__container--extended {
+       @include breakpoint(container) {
+         max-width: 100em;
+         padding: 0 $lg;
+       }
+    }
 
     // layout builder styles padding classes
 
