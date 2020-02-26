@@ -1,0 +1,29 @@
+uuid: 5d5689ea-0221-4ac3-afc9-6327a56b52e9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_ighn_primary_college
+    - node.type.ighn_person
+    - taxonomy.vocabulary.ighn_primary_college
+id: node.ighn_person.field_ighn_primary_college
+field_name: field_ighn_primary_college
+entity_type: node
+bundle: ighn_person
+label: 'Primary College'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      ighn_primary_college: ighn_primary_college
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference
