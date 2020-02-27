@@ -1098,3 +1098,9 @@ $sites['coronavirus.local.drupal.uiowa.edu'] = 'coronavirus.uiowa.edu';
 $sites['coronavirus.dev.drupal.uiowa.edu'] = 'coronavirus.uiowa.edu';
 $sites['coronavirus.stage.drupal.uiowa.edu'] = 'coronavirus.uiowa.edu';
 $sites['coronavirus.prod.drupal.uiowa.edu'] = 'coronavirus.uiowa.edu';
+
+// Directory aliases for liberalartsbeyondbars.sites.uiowa.edu.
+$sites['sitesliberalartsbeyondbars.local.drupal.uiowa.edu'] = 'liberalartsbeyondbars.sites.uiowa.edu';
+$sites['sitesliberalartsbeyondbars.dev.drupal.uiowa.edu'] = 'liberalartsbeyondbars.sites.uiowa.edu';
+$sites['sitesliberalartsbeyondbars.stage.drupal.uiowa.edu'] = 'liberalartsbeyondbars.sites.uiowa.edu';
+$sites['sitesliberalartsbeyondbars.prod.drupal.uiowa.edu'] = 'liberalartsbeyondbars.sites.uiowa.edu';
