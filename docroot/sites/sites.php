@@ -1080,3 +1080,9 @@ $sites['latinxcouncil.local.drupal.uiowa.edu'] = 'latinxcouncil.uiowa.edu';
 $sites['latinxcouncil.dev.drupal.uiowa.edu'] = 'latinxcouncil.uiowa.edu';
 $sites['latinxcouncil.stage.drupal.uiowa.edu'] = 'latinxcouncil.uiowa.edu';
 $sites['latinxcouncil.prod.drupal.uiowa.edu'] = 'latinxcouncil.uiowa.edu';
+
+// Directory aliases for datascience-workshop.uiowa.edu.
+$sites['datascience-workshop.local.drupal.uiowa.edu'] = 'datascience-workshop.uiowa.edu';
+$sites['datascience-workshop.dev.drupal.uiowa.edu'] = 'datascience-workshop.uiowa.edu';
+$sites['datascience-workshop.stage.drupal.uiowa.edu'] = 'datascience-workshop.uiowa.edu';
+$sites['datascience-workshop.prod.drupal.uiowa.edu'] = 'datascience-workshop.uiowa.edu';
