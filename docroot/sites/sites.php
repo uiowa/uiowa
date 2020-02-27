@@ -1086,3 +1086,9 @@ $sites['datascience-workshop.local.drupal.uiowa.edu'] = 'datascience-workshop.ui
 $sites['datascience-workshop.dev.drupal.uiowa.edu'] = 'datascience-workshop.uiowa.edu';
 $sites['datascience-workshop.stage.drupal.uiowa.edu'] = 'datascience-workshop.uiowa.edu';
 $sites['datascience-workshop.prod.drupal.uiowa.edu'] = 'datascience-workshop.uiowa.edu';
+
+// Directory aliases for legalclinic.org.uiowa.edu.
+$sites['orglegalclinic.local.drupal.uiowa.edu'] = 'legalclinic.org.uiowa.edu';
+$sites['orglegalclinic.dev.drupal.uiowa.edu'] = 'legalclinic.org.uiowa.edu';
+$sites['orglegalclinic.stage.drupal.uiowa.edu'] = 'legalclinic.org.uiowa.edu';
+$sites['orglegalclinic.prod.drupal.uiowa.edu'] = 'legalclinic.org.uiowa.edu';
