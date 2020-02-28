@@ -7,6 +7,8 @@ label: sitenow
 description: ''
 folder: ../config/profiles/sitenow
 module:
+  default_content: 0
+  fontawesome: 0
   sitenow_accordion: 0
   sitenow_articles: 0
   sitenow_blockquote: 0
@@ -20,12 +22,27 @@ module:
   sitenow_paragraphs: 0
   sitenow_people: 0
   sitenow_seo: 0
+  tour: 0
   paragraphs: 11
-theme:
-  adminimal_theme: 0
-  uiowa_bootstrap: 0
-blacklist: {  }
-graylist: {  }
+theme: {  }
+blacklist:
+  - config_ignore.settings
+  - core.entity_view_display.media.image.sitenow_16_9
+  - core.entity_view_mode.media.sitenow_16_9
+  - image.style.paragraph_preview
+  - image.style.sitenow_16_9_large
+  - image.style.sitenow_16_9_medium
+  - image.style.sitenow_16_9_small
+  - image.style.sitenow_16_9_xlarge
+  - image.style.sitenow_article
+  - image.style.sitenow_card
+  - image.style.sitenow_square_m
+  - node.type.article
+  - node.type.page
+  - node.type.person
+  - sitenow_events.settings
+graylist:
+  - system.theme
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 0
