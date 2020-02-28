@@ -2,8 +2,6 @@ language: php
 dist: xenial
 
 # Adjust the version of PHP to match your production environment.
-# Making this version number greater than the production environment can have unintended consequences
-# including a non-functional prod environment.
 php: "7.2"
 
 env:
@@ -35,8 +33,9 @@ before_install:
   - mv deploy_key $HOME/.ssh/id_rsa
   - chmod 600 $HOME/.ssh/id_rsa
   - phpenv config-rm xdebug.ini
-  - composer self-update
   - yes | pecl install memcache
+  - composer self-update
+  - composer global require hirak/prestissimo
 
 install:
   - nvm install 10
