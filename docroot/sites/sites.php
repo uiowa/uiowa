@@ -1104,3 +1104,9 @@ $sites['sitesliberalartsbeyondbars.local.drupal.uiowa.edu'] = 'liberalartsbeyond
 $sites['sitesliberalartsbeyondbars.dev.drupal.uiowa.edu'] = 'liberalartsbeyondbars.sites.uiowa.edu';
 $sites['sitesliberalartsbeyondbars.stage.drupal.uiowa.edu'] = 'liberalartsbeyondbars.sites.uiowa.edu';
 $sites['sitesliberalartsbeyondbars.prod.drupal.uiowa.edu'] = 'liberalartsbeyondbars.sites.uiowa.edu';
+
+// Directory aliases for homepagepoc.uiowa.edu.
+$sites['homepagepoc.local.drupal.uiowa.edu'] = 'homepagepoc.uiowa.edu';
+$sites['homepagepoc.dev.drupal.uiowa.edu'] = 'homepagepoc.uiowa.edu';
+$sites['homepagepoc.stage.drupal.uiowa.edu'] = 'homepagepoc.uiowa.edu';
+$sites['homepagepoc.prod.drupal.uiowa.edu'] = 'homepagepoc.uiowa.edu';
