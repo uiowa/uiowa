@@ -1,0 +1,109 @@
+uuid: f819a283-a5b8-4925-97a5-68b85e060ae5
+langcode: en
+status: true
+dependencies:
+  module:
+    - sitenow
+id: media
+label: 'Add Media'
+module: sitenow
+routes:
+  -
+    route_name: entity.media.add_form
+tips:
+  name:
+    id: name
+    plugin: text
+    label: 'Give it a name'
+    body: '<p>This provides an administrative name for the file. This is helpful when searching and selecting media items later on. This can be the same as the filename, but is independent.</p>'
+    weight: 0
+    attributes:
+      data-id: edit-name-wrapper
+    location: bottom
+  video:
+    id: video
+    plugin: text
+    label: 'Video URL'
+    body: '<p>Add the URL of the YouTube, Vimeo or University of Iowa (Kaltura/MediaSpace) video you wish to display. Make sure the account is public.</p>'
+    weight: 1
+    attributes:
+      data-id: edit-field-media-oembed-video-0-value
+  audio:
+    id: audio
+    plugin: text
+    label: 'Audio File'
+    body: '<p>Add the audio file you wish to embed into your site.</p>'
+    weight: 1
+    attributes:
+      data-id: edit-field-media-audio-file-0-upload
+  instagram:
+    id: instagram
+    plugin: text
+    label: 'Instagram URL'
+    body: '<p>Add the URL of the Instagram post you wish to display. Make sure the profile is public.</p>'
+    weight: 1
+    attributes:
+      data-id: edit-field-media-instagram-0-value
+  twitter:
+    id: twitter
+    plugin: text
+    label: 'Tweet URL'
+    body: '<p>Add the URL of the tweet you wish to display. Make sure the account is public!</p>'
+    weight: 1
+    attributes:
+      data-id: edit-field-media-twitter-0-value
+  facebook:
+    id: facebook
+    plugin: text
+    label: 'Facebook URL'
+    body: '<p>Add the URL of the Facebook post you wish to display. Make sure the post is public.</p>'
+    weight: 1
+    attributes:
+      data-class: form-item-field-media-facebook-0-value
+  upload:
+    id: upload
+    plugin: text
+    label: 'Upload the file'
+    body: '<p>Go ahead and select a file from you computer. The help text points out any restrictions regarding file size, type.</p>'
+    weight: 1
+    attributes:
+      data-class: form-type-managed-file
+    location: bottom
+  img-alt:
+    id: img-alt
+    plugin: text
+    label: 'Alternative Text'
+    body: '<p>It is important to provide alternative text for images to aid visually-impaired users.</p>'
+    weight: 4
+    attributes:
+      data-class: form-item-field-media-image-0-alt
+    location: right
+  img-thumbnail:
+    id: img-thumbnail
+    plugin: text
+    label: 'Select a focal point'
+    body: '<p>This is a rendered thumbnail of your uploaded image. There are areas of the site that will use this image and crop it to fit the space. Click on the focus area of the image. This helps to make sure that someone''s head isn''t chopped off during cropping.</p>'
+    weight: 5
+    attributes:
+      data-class: image-style-thumbnail
+    location: bottom
+  img-preview:
+    id: img-preview
+    plugin: text
+    label: 'Preview image'
+    body: '<p>You can preview the image with different image styles used on the site to make sure the focus you selected will work for the image.</p>'
+    weight: 6
+    attributes:
+      data-class: focal-point-preview-link
+  other:
+    id: other
+    plugin: text
+    label: 'Other settings'
+    body: '<p>There are other settings available to you, but they are all optional and set to the ideal default.</p><p>Site visitors will only see content marked as published.</p>'
+    weight: 7
+  next_step:
+    id: next_step
+    plugin: text
+    label: 'Where to next?'
+    body: '<p><a href="/node/add/page?tour=1" class="button button--primary">Page Content</a></p><p><a href="/media/add?tour=1" class="button button--primary">Media</a></p>'
+    weight: 8

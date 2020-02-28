@@ -1,0 +1,29 @@
+uuid: d9490b0d-2bc3-4207-90e6-c3d052266dd4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_card_image
+    - paragraphs.paragraphs_type.card
+_core:
+  default_config_hash: YCFztKCVf-jrOugiq13xsrbodUhRB3rO8Bn09ELWeFk
+id: paragraph.card.field_card_image
+field_name: field_card_image
+entity_type: paragraph
+bundle: card
+label: Image
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

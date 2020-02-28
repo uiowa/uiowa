@@ -1,0 +1,21 @@
+uuid: df7760a4-0f60-4949-8a19-977f17e43250
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_person_phone
+    - node.type.person
+  module:
+    - telephone
+id: node.person.field_person_phone
+field_name: field_person_phone
+entity_type: node
+bundle: person
+label: Phone
+description: 'Enter the phone number as it should be displayed. Example: 319-555-5555.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: telephone

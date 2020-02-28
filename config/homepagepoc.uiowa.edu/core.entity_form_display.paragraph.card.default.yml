@@ -1,0 +1,105 @@
+uuid: c503571c-cbbf-43d6-a53a-1f21903137e6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.card.field_card_body
+    - field.field.paragraph.card.field_card_image
+    - field.field.paragraph.card.field_card_link
+    - field.field.paragraph.card.field_card_subtitle
+    - field.field.paragraph.card.field_card_title
+    - field.field.paragraph.card.field_uip_classes
+    - field.field.paragraph.card.field_uip_colwidth
+    - field.field.paragraph.card.field_uip_id
+    - paragraphs.paragraphs_type.card
+  module:
+    - field_group
+    - link
+    - media_library
+    - text
+third_party_settings:
+  field_group:
+    group_uip_settings:
+      children:
+        - field_uip_colwidth
+        - field_uip_classes
+        - field_uip_id
+      parent_name: ''
+      weight: 5
+      format_type: details
+      format_settings:
+        label: 'Card Settings'
+        required_fields: true
+        id: ''
+        classes: ''
+        open: false
+      label: 'Card Settings'
+_core:
+  default_config_hash: QDi4Aus0the7rNrIaIkrnKFt3FI_5UEENZezHvxoNdw
+id: paragraph.card.default
+targetEntityType: paragraph
+bundle: card
+mode: default
+content:
+  field_card_body:
+    weight: 3
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_card_image:
+    type: media_library_widget
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_card_link:
+    weight: 4
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+    region: content
+  field_card_subtitle:
+    weight: 2
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_card_title:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_uip_classes:
+    weight: 6
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_uip_colwidth:
+    weight: 5
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_uip_id:
+    weight: 7
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden:
+  created: true
+  status: true
+  uid: true

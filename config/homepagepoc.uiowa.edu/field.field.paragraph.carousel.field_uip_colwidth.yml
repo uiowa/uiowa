@@ -1,0 +1,23 @@
+uuid: 347e9d94-db91-4fff-9975-96504f35f0c2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_uip_colwidth
+    - paragraphs.paragraphs_type.carousel
+  module:
+    - options
+id: paragraph.carousel.field_uip_colwidth
+field_name: field_uip_colwidth
+entity_type: paragraph
+bundle: carousel
+label: 'Column Width'
+description: 'Control the width of this content block within the parent section.'
+required: true
+translatable: true
+default_value:
+  -
+    value: col-md-12
+default_value_callback: ''
+settings: {  }
+field_type: list_string

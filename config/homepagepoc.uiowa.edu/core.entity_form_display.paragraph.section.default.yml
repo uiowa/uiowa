@@ -1,0 +1,114 @@
+uuid: 3b477956-a8af-4001-b6a4-6fed9590f1e3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.section.field_section_alignitems
+    - field.field.paragraph.section.field_section_container
+    - field.field.paragraph.section.field_section_content_block
+    - field.field.paragraph.section.field_section_image
+    - field.field.paragraph.section.field_section_justifycontent
+    - field.field.paragraph.section.field_section_title
+    - field.field.paragraph.section.field_uip_classes
+    - field.field.paragraph.section.field_uip_id
+    - paragraphs.paragraphs_type.section
+  module:
+    - field_group
+    - media_library
+    - paragraphs
+third_party_settings:
+  field_group:
+    group_uip_settings:
+      children:
+        - field_section_image
+        - field_section_container
+        - field_section_alignitems
+        - field_section_justifycontent
+        - field_uip_classes
+        - field_uip_id
+      parent_name: ''
+      weight: 2
+      format_type: details
+      format_settings:
+        label: 'Section Settings'
+        required_fields: true
+        id: ''
+        classes: ''
+        open: false
+      label: 'Section Settings'
+_core:
+  default_config_hash: 0OxPcbf3eE3vq2mVxfjnteaQeyx9Iwmnl4LmIkZLR1A
+id: paragraph.section.default
+targetEntityType: paragraph
+bundle: section
+mode: default
+content:
+  field_section_alignitems:
+    weight: 2
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_section_container:
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_section_content_block:
+    type: paragraphs
+    weight: 1
+    settings:
+      title: 'Content Block'
+      title_plural: 'Content Blocks'
+      edit_mode: closed
+      closed_mode: preview
+      autocollapse: all
+      closed_mode_threshold: 2
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: _none
+      features:
+        duplicate: duplicate
+        collapse_edit_all: '0'
+        add_above: '0'
+    third_party_settings: {  }
+    region: content
+  field_section_image:
+    type: media_library_widget
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_section_justifycontent:
+    weight: 3
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_section_title:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_uip_classes:
+    weight: 4
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_uip_id:
+    weight: 5
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden:
+  created: true
+  status: true
+  uid: true

@@ -1,0 +1,38 @@
+uuid: 65b37cb0-1a6a-4ae1-bc31-6cb01a88cfbd
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.preview
+    - field.field.paragraph.section.field_section_alignitems
+    - field.field.paragraph.section.field_section_container
+    - field.field.paragraph.section.field_section_content_block
+    - field.field.paragraph.section.field_section_image
+    - field.field.paragraph.section.field_section_title
+    - field.field.paragraph.section.field_uip_id
+    - paragraphs.paragraphs_type.section
+_core:
+  default_config_hash: 9juIrc6BHxidt-ogsOsqnBlr7ZywhnvAa5xFBW4jmuI
+id: paragraph.section.preview
+targetEntityType: paragraph
+bundle: section
+mode: preview
+content:
+  field_section_title:
+    type: string
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  field_section_alignitems: true
+  field_section_container: true
+  field_section_content_block: true
+  field_section_image: true
+  field_section_justifycontent: true
+  field_uip_attr: true
+  field_uip_classes: true
+  field_uip_content_conf: true
+  field_uip_id: true

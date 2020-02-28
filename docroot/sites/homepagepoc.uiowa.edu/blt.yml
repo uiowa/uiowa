@@ -15,7 +15,8 @@ drupal:
     database: homepagepoc_uiowa_edu
 cm:
   core:
-    install_from_config: true
+    install_from_config: false
     dirs:
       sync:
-        path: profiles/custom/sitenow/config/sync
+        path: ../config/homepagepoc.uiowa.edu
+  strategy: core-only

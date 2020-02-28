@@ -1,0 +1,32 @@
+uuid: ac98cffb-13d1-4990-b999-1b58a90e2410
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.media_library
+    - field.field.media.image_background.field_media_image_1
+    - image.style.medium
+    - media.type.image_background
+  module:
+    - image
+_core:
+  default_config_hash: n9GXPfO_hrzvyJ6l9hQNikc2U99MK50kAZTSQUUsuxc
+id: media.image_background.media_library
+targetEntityType: media
+bundle: image_background
+mode: media_library
+content:
+  field_media_image_1:
+    weight: 0
+    label: hidden
+    settings:
+      image_style: medium
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+    region: content
+hidden:
+  created: true
+  name: true
+  thumbnail: true
+  uid: true

@@ -1,0 +1,93 @@
+uuid: 094ef58c-2bb4-400c-b88e-5561e28b72aa
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.carousel.field_carousel_item
+    - field.field.paragraph.carousel.field_uip_classes
+    - field.field.paragraph.carousel.field_uip_colwidth
+    - field.field.paragraph.carousel.field_uip_display_title
+    - field.field.paragraph.carousel.field_uip_id
+    - field.field.paragraph.carousel.field_uip_title
+    - paragraphs.paragraphs_type.carousel
+  module:
+    - field_group
+    - paragraphs
+third_party_settings:
+  field_group:
+    group_carousel_settings:
+      children:
+        - field_uip_colwidth
+        - field_uip_classes
+        - field_uip_id
+      parent_name: ''
+      weight: 3
+      format_type: details
+      format_settings:
+        id: ''
+        classes: ''
+        open: false
+        required_fields: true
+      label: 'Carousel Settings'
+id: paragraph.carousel.default
+targetEntityType: paragraph
+bundle: carousel
+mode: default
+content:
+  field_carousel_item:
+    type: paragraphs
+    weight: 2
+    settings:
+      title: Carousel
+      title_plural: 'Carousel Items'
+      edit_mode: closed
+      closed_mode: preview
+      autocollapse: all
+      closed_mode_threshold: 1
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: carousel_image
+      features:
+        duplicate: duplicate
+        collapse_edit_all: '0'
+        add_above: '0'
+    third_party_settings: {  }
+    region: content
+  field_uip_classes:
+    weight: 5
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_uip_colwidth:
+    weight: 4
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_uip_display_title:
+    weight: 1
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_uip_id:
+    weight: 6
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_uip_title:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden:
+  created: true
+  status: true

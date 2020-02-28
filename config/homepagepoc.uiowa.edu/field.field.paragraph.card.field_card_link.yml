@@ -1,0 +1,23 @@
+uuid: a8dc6497-8e11-405b-9455-cf36ec8f599f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_card_link
+    - paragraphs.paragraphs_type.card
+  module:
+    - link
+id: paragraph.card.field_card_link
+field_name: field_card_link
+entity_type: paragraph
+bundle: card
+label: LInk
+description: 'Provide a URL to wrap the card.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 17
+  title: 2
+field_type: link

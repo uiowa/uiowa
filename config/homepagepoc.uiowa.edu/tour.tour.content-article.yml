@@ -1,0 +1,209 @@
+uuid: b501e3b9-6a98-4803-9db7-4c61148d3fd8
+langcode: en
+status: true
+dependencies:
+  module:
+    - sitenow
+id: content-article
+label: 'Adding Articles'
+module: sitenow
+routes:
+  -
+    route_name: node.add
+    route_params:
+      node_type: article
+tips:
+  article:
+    id: article
+    plugin: text
+    label: Article
+    weight: 0
+    attributes: {  }
+    body: '<p>On this tour, we''ll explain you the different parts of a page. Hang in there, there is a lot to touch on.</p><p>Lets get going!</p>'
+    location: top
+  title:
+    id: title
+    plugin: text
+    label: Title
+    weight: 1
+    attributes:
+      data-id: edit-title-wrapper
+    body: '<p>First off, give your article a title. This is a required field. Other required fields are marked with a red asterisk.</p>'
+    location: bottom
+  page-advanced:
+    id: article-advanced
+    plugin: text
+    label: Advanced
+    weight: 2
+    attributes:
+      data-id: edit-advanced
+    body: '<p>There are a lot of optional advanced settings for the page tucked away here. You will use this part when dealing with menu placement, URL path, custom SEO settings.</p><p>Click on the section titles to expand them and see what they offer.</p>'
+    location: left
+  article-teaser-text:
+    id: article-teaser-text
+    plugin: text
+    label: 'Article Summary'
+    weight: 3
+    attributes:
+      data-id: edit-node-teaser
+    body: '<p>One advanced setting to take note of is the Article Summary. Type a short summary of you content here. It will be used if there are any displays around the site that reference this content. By default, this is also used by search engines when they crawl and index your site.</p><p>To learn more about Search Engine Optimization (SEO) for your site, <a href="https://sitenow.uiowa.edu/node/81">view our documentation section about SEO</a>.</p>'
+    location: left
+  article-image-entity:
+    id: article-image-entity
+    plugin: text
+    label: 'Featured Image'
+    weight: 4
+    attributes:
+      data-id: edit-node-image
+    body: '<p>A featured image for the Article can be added. Select Browse media or Add media to add a picture from your computer or already existing media from the Media library.</p><p>Additionally, add a caption to give the user more information on the picture.</p>'
+    location: left
+  wysiwyg:
+    id: wysiwyg
+    plugin: text
+    label: 'Text Editor (WYSIWYG) Overview'
+    weight: 5
+    attributes:
+      data-class: field--widget-text-textarea
+    body: '<p>The What-You-See-Is-What-You-Get (WYSIWYG) text editor gives you the ability to format your content and add links/media. This editor is available on most text areas around the site.</p><p>For more details, <a href="https://sitenow.uiowa.edu/node/136">view our documentation section about the WYSIWYG</a>.</p>'
+    location: top
+  text-styles:
+    id: text-styles
+    plugin: text
+    label: 'Text Format'
+    weight: 6
+    attributes:
+      data-class: cke_button__bold
+    body: '<p>You can style your text with the bold, italic, strike-through options. These can be used in conjunction with each other or other buttons on the toolbar.</p>'
+    location: bottom
+  format:
+    id: format
+    plugin: text
+    label: 'Paragraph Format'
+    weight: 7
+    attributes:
+      data-class: cke_combo__format
+    body: '<p>Here you add headings to your content. It is important for accessibility/usability that headings are used sequentially and not for style purposes. The heading will be applied to the current line/paragraph. Hit Enter/Return to break out and return to the normal format.</p>'
+    location: bottom
+  align:
+    id: align
+    plugin: text
+    label: 'Text Alignment'
+    weight: 8
+    attributes:
+      data-class: cke_button__justifycenter
+    body: '<p>There are three options for text alignment. Left, center and right. Text is left-aligned by default. The alignment will continue until the next line break similar to headings.</p>'
+    location: bottom
+  lists:
+    id: lists
+    plugin: text
+    label: Lists
+    weight: 9
+    attributes:
+      data-class: cke_button__bold
+    body: '<p>There are two types of lists you can create. Unordered (bullet points) and ordered (numbered). To create a list, click on one of the list buttons. This will insert the first list item and you can start typing. For each additional item, press Return/Enter on your keyboard. If you want to add another line to the same list item, press Shift+Return/Enter. To break out of the list and continue with other content. Press Return/Enter twice.</p>'
+    location: bottom
+  remove-format:
+    id: remove-format
+    plugin: text
+    label: 'Remove Formatting'
+    weight: 10
+    attributes:
+      data-class: cke_button__removeformat
+    body: '<p>You can quickly remove all formatting from highlighted text using the Remove Format button.</p>'
+    location: bottom
+  links:
+    id: links
+    plugin: text
+    label: Links
+    weight: 11
+    attributes:
+      data-class: cke_button__drupallink
+    body: '<p>Links to internal or external paths can be added with the link button. A separate configuration window will load.</p><p>The ''<em>URL</em>'' field will attempt to find related content based on what is typed. If no suitable result is found and selected an normal link will be created.</p><p>''<em>Upload file</em>'' will allow you to add a file that doesn''t already exist on the site. ''<em>Advanced</em>'' provides additional, though optional, configuration for the link.</p><p>You can edit an existing link by placing the cursor on the link and clicking the link button.</p><p>This is covered in more detail in, <a href="https://sitenow.uiowa.edu/node/136">our WYSIWYG documentation section</a>.</p>'
+    location: bottom
+  unlink:
+    id: unlink
+    plugin: text
+    label: 'Remove Link'
+    weight: 12
+    attributes:
+      data-class: cke_button__drupalunlink
+    body: '<p>Links can also be removed easily with the Unlink button.</p>'
+    location: bottom
+  table:
+    id: table
+    plugin: text
+    label: Tables
+    weight: 13
+    attributes:
+      data-class: cke_button__table
+    body: '<p>A table is a structured set of data made up of of rows and columns (tabular data). A separate configuration window will load. You can set initial row and column counts, designate the headers for the table and provide a table caption.</p><p><strong>Note</strong>: Though not required, a caption is strongly recommended to provide an overall description of the data found in the table.</p><p>After initializing the table, you can enter data and/or right-click on the table to add additional rows/columns or edit table properties.</p>'
+    location: bottom
+  entity-embed:
+    id: entity-embed
+    plugin: text
+    label: 'Media Entity Embed'
+    weight: 14
+    attributes:
+      data-class: cke_button__media_entity_embed
+    body: '<p>This allows you to add new or existing images, videos from a URL, audio files, Tweets, Instagram and Facebook posts to your content. A separate configuration window will load. <a href=https://sitenow.uiowa.edu/node/141>Click here for media documentation</a>.</p>'
+    location: bottom
+  source:
+    id: source
+    plugin: text
+    label: 'View/Edit Source'
+    weight: 15
+    attributes:
+      data-class: cke_button__source
+    body: '<p>You can look under the hood at anytime to see the markup for the content.</p><p>If you know your stuff you can write your own HTML staying within the restrictions of the <a href=''/filter/tips''>filtered_html format</a>.</p><p>HTML that is not allowed will be stripped out before rendering to site visitors.</p>'
+    location: bottom
+  action-links:
+    id: action-links
+    plugin: text
+    label: 'Article Authors'
+    weight: 16
+    attributes:
+      data-id: edit-field-article-author
+    body: '<p>You can choose whether you wish to add a new or existing author. If you don''t see an author you created, make sure the author is published.</p>'
+    location: bottom
+  organization:
+    id: organization
+    plugin: text
+    label: Organization
+    weight: 17
+    attributes:
+      data-id: edit-field-article-source-org-0-value
+    body: '<p>The Organization associated with this content.</p><p>When populated with data, the content will appear as plain text in the byline for any teaser displays and on the full view of the selected Article</p>'
+    location: bottom
+  source-link:
+    id: source-link
+    plugin: text
+    label: 'Source Link'
+    weight: 18
+    attributes:
+      data-id: edit-field-article-source-link-0-uri
+    body: "<p>Includes a link to the original source for this content.</p><p>If Organization is not populated, the linked\_URL address will be added to the byline of any teaser displays as well as the full display of the Article.</p>"
+    location: top
+  link-to-source:
+    id: link-to-source
+    plugin: text
+    label: 'Link directly to source'
+    weight: 19
+    attributes:
+      data-id: edit-field-article-source-link-0-uri
+    body: '<p>If the Source Link is populated, there will be an option to link directly to source. If checked, teaser displays of this content will link directly to the Source Link instead of the full display of the article. The article title path will be replaced with the source link URL.</p><p>This can be used to reference an article from an outside source that then displays alongside other articles.</p>'
+    location: bottom
+  page-actions:
+    id: page-actions
+    plugin: text
+    label: Publish/Save/Preview
+    weight: 20
+    attributes:
+      data-id: edit-moderation-state-0-state
+    body: '<p>You can save, preview and publish the page here.</p><p>Content automatically saves as a draft which will not be visible to site visitors. Site visitors will only see content marked as published.</p>'
+    location: top
+  next-step:
+    id: next-step
+    plugin: text
+    label: 'That''s It!'
+    weight: 21
+    body: '<p>Thanks for sticking with us.</p><p>As you are using the site, look for the tour icon which designates a tour is available on that page, otherwise, <a href="//sitenow.uiowa.edu/node/36" >view our documentation</a> for more information.</p>'
