@@ -17,79 +17,23 @@ dependencies:
     - field.field.node.ighn_person.field_ighn_primary_college
     - node.type.ighn_person
   module:
-    - field_group
     - link
     - text
     - user
-third_party_settings:
-  field_group:
-    group_ighn_person:
-      children:
-        - field_ighn_person_image
-        - field_ighn_person_first_name
-        - field_ighn_person_last_name
-        - field_ighn_person_credentials
-        - field_ighn_primary_college
-        - field_ighn_person_department
-        - field_ighn_person_position_title
-        - group_ighn_person_field_groups
-        - field_ighn_person_cv_link
-        - field_ighn_person_biography
-        - field_ighn_person_profile_link
-      parent_name: ''
-      weight: 0
-      format_type: html_element
-      format_settings:
-        label: 'IGHN Person Group'
-        element: div
-        show_label: false
-        label_element: h3
-        attributes: ''
-        effect: none
-        speed: fast
-        id: ighn-person-group
-        classes: ''
-      label: 'IGHN Person Group'
-    group_ighn_person_field_groups:
-      children:
-        - field_ighn_person_focus_areas
-        - field_ighn_person_global_regions
-        - field_ighn_person_language
-      parent_name: group_ighn_person
-      weight: 8
-      format_type: html_element
-      format_settings:
-        id: ighn-person-field-groups
-        classes: ''
-        element: div
-        show_label: false
-        label_element: h3
-        attributes: ''
-        effect: none
-        speed: fast
-      label: 'IGHN Person Field Groups'
 id: node.ighn_person.default
 targetEntityType: node
 bundle: ighn_person
 mode: default
 content:
   field_ighn_person_biography:
-    weight: 10
+    weight: 5
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
-  field_ighn_person_credentials:
-    weight: 4
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
   field_ighn_person_cv_link:
-    weight: 9
+    weight: 8
     label: visually_hidden
     settings:
       trim_length: 80
@@ -101,23 +45,15 @@ content:
     type: link
     region: content
   field_ighn_person_department:
-    weight: 6
+    weight: 2
     label: visually_hidden
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
     region: content
-  field_ighn_person_first_name:
-    weight: 2
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
   field_ighn_person_focus_areas:
-    weight: 9
+    weight: 4
     label: inline
     settings:
       link: false
@@ -125,7 +61,7 @@ content:
     type: entity_reference_label
     region: content
   field_ighn_person_global_regions:
-    weight: 10
+    weight: 6
     label: inline
     settings:
       link: false
@@ -134,7 +70,7 @@ content:
     region: content
   field_ighn_person_image:
     type: entity_reference_entity_view
-    weight: 1
+    weight: 0
     label: hidden
     settings:
       view_mode: image_medium
@@ -142,23 +78,15 @@ content:
     third_party_settings: {  }
     region: content
   field_ighn_person_language:
-    weight: 11
+    weight: 7
     label: inline
     settings:
       link: false
     third_party_settings: {  }
     type: entity_reference_label
     region: content
-  field_ighn_person_last_name:
-    weight: 3
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
   field_ighn_person_position_title:
-    weight: 7
+    weight: 3
     label: visually_hidden
     settings:
       link_to_entity: false
@@ -166,7 +94,7 @@ content:
     type: string
     region: content
   field_ighn_primary_college:
-    weight: 5
+    weight: 1
     label: visually_hidden
     settings:
       link: true
@@ -174,4 +102,7 @@ content:
     type: entity_reference_label
     region: content
 hidden:
+  field_ighn_person_credentials: true
+  field_ighn_person_first_name: true
+  field_ighn_person_last_name: true
   links: true
