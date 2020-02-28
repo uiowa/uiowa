@@ -7,6 +7,8 @@
  * @see example.sites.php
  */
 
+$sites['default.local.drupal.uiowa.edu'] = 'default';
+
 // Directory aliases for hr.uiowa.edu.
 $sites['hr.local.drupal.uiowa.edu'] = 'hr.uiowa.edu';
 $sites['hr.dev.drupal.uiowa.edu'] = 'hr.uiowa.edu';
