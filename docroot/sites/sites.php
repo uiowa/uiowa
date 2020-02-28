@@ -1104,3 +1104,9 @@ $sites['sitesliberalartsbeyondbars.local.drupal.uiowa.edu'] = 'liberalartsbeyond
 $sites['sitesliberalartsbeyondbars.dev.drupal.uiowa.edu'] = 'liberalartsbeyondbars.sites.uiowa.edu';
 $sites['sitesliberalartsbeyondbars.stage.drupal.uiowa.edu'] = 'liberalartsbeyondbars.sites.uiowa.edu';
 $sites['sitesliberalartsbeyondbars.prod.drupal.uiowa.edu'] = 'liberalartsbeyondbars.sites.uiowa.edu';
+
+// Directory aliases for majorshadowuiowa.org.uiowa.edu.
+$sites['orgmajorshadowuiowa.local.drupal.uiowa.edu'] = 'majorshadowuiowa.org.uiowa.edu';
+$sites['orgmajorshadowuiowa.dev.drupal.uiowa.edu'] = 'majorshadowuiowa.org.uiowa.edu';
+$sites['orgmajorshadowuiowa.stage.drupal.uiowa.edu'] = 'majorshadowuiowa.org.uiowa.edu';
+$sites['orgmajorshadowuiowa.prod.drupal.uiowa.edu'] = 'majorshadowuiowa.org.uiowa.edu';
