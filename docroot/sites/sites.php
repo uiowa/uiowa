@@ -1080,3 +1080,27 @@ $sites['latinxcouncil.local.drupal.uiowa.edu'] = 'latinxcouncil.uiowa.edu';
 $sites['latinxcouncil.dev.drupal.uiowa.edu'] = 'latinxcouncil.uiowa.edu';
 $sites['latinxcouncil.stage.drupal.uiowa.edu'] = 'latinxcouncil.uiowa.edu';
 $sites['latinxcouncil.prod.drupal.uiowa.edu'] = 'latinxcouncil.uiowa.edu';
+
+// Directory aliases for datascience-workshop.uiowa.edu.
+$sites['datascience-workshop.local.drupal.uiowa.edu'] = 'datascience-workshop.uiowa.edu';
+$sites['datascience-workshop.dev.drupal.uiowa.edu'] = 'datascience-workshop.uiowa.edu';
+$sites['datascience-workshop.stage.drupal.uiowa.edu'] = 'datascience-workshop.uiowa.edu';
+$sites['datascience-workshop.prod.drupal.uiowa.edu'] = 'datascience-workshop.uiowa.edu';
+
+// Directory aliases for legalclinic.org.uiowa.edu.
+$sites['orglegalclinic.local.drupal.uiowa.edu'] = 'legalclinic.org.uiowa.edu';
+$sites['orglegalclinic.dev.drupal.uiowa.edu'] = 'legalclinic.org.uiowa.edu';
+$sites['orglegalclinic.stage.drupal.uiowa.edu'] = 'legalclinic.org.uiowa.edu';
+$sites['orglegalclinic.prod.drupal.uiowa.edu'] = 'legalclinic.org.uiowa.edu';
+
+// Directory aliases for coronavirus.uiowa.edu.
+$sites['coronavirus.local.drupal.uiowa.edu'] = 'coronavirus.uiowa.edu';
+$sites['coronavirus.dev.drupal.uiowa.edu'] = 'coronavirus.uiowa.edu';
+$sites['coronavirus.stage.drupal.uiowa.edu'] = 'coronavirus.uiowa.edu';
+$sites['coronavirus.prod.drupal.uiowa.edu'] = 'coronavirus.uiowa.edu';
+
+// Directory aliases for liberalartsbeyondbars.sites.uiowa.edu.
+$sites['sitesliberalartsbeyondbars.local.drupal.uiowa.edu'] = 'liberalartsbeyondbars.sites.uiowa.edu';
+$sites['sitesliberalartsbeyondbars.dev.drupal.uiowa.edu'] = 'liberalartsbeyondbars.sites.uiowa.edu';
+$sites['sitesliberalartsbeyondbars.stage.drupal.uiowa.edu'] = 'liberalartsbeyondbars.sites.uiowa.edu';
+$sites['sitesliberalartsbeyondbars.prod.drupal.uiowa.edu'] = 'liberalartsbeyondbars.sites.uiowa.edu';
