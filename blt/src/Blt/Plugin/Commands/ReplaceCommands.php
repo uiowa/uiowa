@@ -52,7 +52,7 @@ class ReplaceCommands extends BltTasks {
             ];
 
             // If this is the sitenow profile, set the existing-config option.
-            if ($profile === 'sitenow') {
+            if ($profile === 'sitenow' && $this->getConfigValue('cm.core.install_from_config') == TRUE) {
               $site_install_options['existing-config'] = NULL;
             }
 
