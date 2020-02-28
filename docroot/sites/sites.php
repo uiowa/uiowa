@@ -1110,3 +1110,9 @@ $sites['orgmajorshadowuiowa.local.drupal.uiowa.edu'] = 'majorshadowuiowa.org.uio
 $sites['orgmajorshadowuiowa.dev.drupal.uiowa.edu'] = 'majorshadowuiowa.org.uiowa.edu';
 $sites['orgmajorshadowuiowa.stage.drupal.uiowa.edu'] = 'majorshadowuiowa.org.uiowa.edu';
 $sites['orgmajorshadowuiowa.prod.drupal.uiowa.edu'] = 'majorshadowuiowa.org.uiowa.edu';
+
+// Directory aliases for phibetadelta.org.uiowa.edu.
+$sites['orgphibetadelta.local.drupal.uiowa.edu'] = 'phibetadelta.org.uiowa.edu';
+$sites['orgphibetadelta.dev.drupal.uiowa.edu'] = 'phibetadelta.org.uiowa.edu';
+$sites['orgphibetadelta.stage.drupal.uiowa.edu'] = 'phibetadelta.org.uiowa.edu';
+$sites['orgphibetadelta.prod.drupal.uiowa.edu'] = 'phibetadelta.org.uiowa.edu';
