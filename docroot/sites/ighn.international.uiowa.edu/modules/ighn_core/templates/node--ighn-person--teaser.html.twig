@@ -97,7 +97,15 @@
       {% endif %}
       {{ title_suffix }}
       <div{{ content_attributes.addClass('node__content') }}>
-        {{ content|without('node_image', 'field_ighn_person_image', 'field_ighn_person_credentials', 'links') }}
+        {{ content|without('node_image', 'field_ighn_person_image', 'field_ighn_person_credentials', 'field_ighn_person_biography', 'links') }}
+        <a class="btn btn-link btn-block btn-sm" data-toggle="collapse" href="#ighn-person-{{ node.id }}-bio" role="button" aria-expanded="false" aria-controls="ighn-person-{{ node.id }}-bio">
+          View {{ node.getTitle() }}'s Biography
+        </a>
+        <div class="collapse" id="ighn-person-{{ node.id }}-bio">
+          <div class="card card-body">
+            {{ content.field_ighn_person_biography }}
+          </div>
+        </div>
       </div>
     </div>
   </div>
