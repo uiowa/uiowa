@@ -236,41 +236,44 @@ function sitenow_paragraphs_theme_suggestions_field_alter(&$suggestions, $variab
 function uip_classes_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, &$cacheable) {
   $cacheable = FALSE;
   $options = [];
-  $bundle = $entity->bundle();
 
-  switch ($bundle) {
-    case 'section':
-      $options['bg-light'] = 'Light Gray Background';
-      $options['bg-dark'] = 'Dark Background';
-      $options['bg-yellow'] = 'Gold Background';
-      $options['pt-5'] = 'Extra Padding Top';
-      $options['pb-5'] = 'Extra Padding Bottom';
-      break;
+  if (method_exists($entity, 'bundle')) {
+    $bundle = $entity->bundle();
 
-    case 'text':
-    case 'webform':
-    case 'carousel_image':
-      $options['bg-light'] = 'Light Gray Background';
-      $options['bg-dark'] = 'Dark Background';
-      $options['bg-yellow'] = 'Gold Background';
-      $options['semi-transparent'] = 'Semi-Transparent Background';
-      break;
+    switch ($bundle) {
+      case 'section':
+        $options['bg-light'] = 'Light Gray Background';
+        $options['bg-dark'] = 'Dark Background';
+        $options['bg-yellow'] = 'Gold Background';
+        $options['pt-5'] = 'Extra Padding Top';
+        $options['pb-5'] = 'Extra Padding Bottom';
+        break;
 
-    case 'featured_content':
-      $options['hide-descriptions'] = 'Hide Summaries';
-      $options['hide-images'] = 'Hide Images';
-      $options['grid'] = 'Grid';
-      $options['masonry'] = 'Masonry';
-      break;
+      case 'text':
+      case 'webform':
+      case 'carousel_image':
+        $options['bg-light'] = 'Light Gray Background';
+        $options['bg-dark'] = 'Dark Background';
+        $options['bg-yellow'] = 'Gold Background';
+        $options['semi-transparent'] = 'Semi-Transparent Background';
+        break;
 
-    case 'carousel':
-      $options['carousel-fade'] = 'Crossfade';
-      break;
+      case 'featured_content':
+        $options['hide-descriptions'] = 'Hide Summaries';
+        $options['hide-images'] = 'Hide Images';
+        $options['grid'] = 'Grid';
+        $options['masonry'] = 'Masonry';
+        break;
 
+      case 'carousel':
+        $options['carousel-fade'] = 'Crossfade';
+        break;
+
+    }
+
+    // Allow modules to alter classes.
+    \Drupal::moduleHandler()->alter('uip_classes', $options, $entity, $bundle);
   }
-
-  // Allow modules to alter classes.
-  \Drupal::moduleHandler()->alter('uip_classes', $options, $entity, $bundle);
 
   return $options;
 }

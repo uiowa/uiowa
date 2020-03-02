@@ -16,7 +16,9 @@ function media_core_install() {
 
   // Set the rich_text filter to be shown at the top of lists.
   $filter = FilterFormat::load('rich_text');
-  $filter->set('weight', -10);
-  // @todo Does this exception need to be handled?
-  $filter->save();
+  if (!is_null($filter)) {
+    $filter->set('weight', -10);
+    // @todo Does this exception need to be handled?
+    $filter->save();
+  }
 }
