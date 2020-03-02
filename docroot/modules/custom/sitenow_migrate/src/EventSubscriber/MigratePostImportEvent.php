@@ -98,7 +98,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
         $this->source_to_dest_ids = $this->fetchMapping();
         $this->d7Aliases = $this->fetchAliases(TRUE);
         $this->d8Aliases = $this->fetchAliases();
-        \Drupal::logger('sitenow_migrate')->notice($this->t('Checking for possible broken links'));
+        \Drupal::logger('sitenow_migrate')->notice(t('Checking for possible broken links'));
         $candidates = $this->checkForPossibleLinkBreaks();
         $this->updateInternalLinks($candidates);
       case 'd7_file':
@@ -115,7 +115,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
     // Each candidate is an nid of a page suspected to contain a broken link.
     foreach ($candidates as $candidate) {
 
-      \Drupal::logger('sitenow_migrate')->notice($this->t('Checking node id @nid', [
+      \Drupal::logger('sitenow_migrate')->notice(t('Checking node id @nid', [
         '@nid' => $candidate,
       ]));
 
@@ -170,7 +170,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
    */
   private function linkReplace($match) {
     $old_link = $match[1];
-    \Drupal::logger('sitenow_migrate')->notice($this->t('Old link found... @old_link', [
+    \Drupal::logger('sitenow_migrate')->notice(t('Old link found... @old_link', [
       '@old_link' => $old_link,
     ]));
 
@@ -190,7 +190,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
         $d7_nid = $this->d7Aliases[substr($old_link, 2, -1)];
         $new_link = (isset($this->source_to_dest_ids[$d7_nid])) ? '<a href="/node/' . $this->source_to_dest_ids[$d7_nid] . '"' : $match[0];
       }
-      \Drupal::logger('sitenow_migrate')->notice($this->t('New link found... @new_link', [
+      \Drupal::logger('sitenow_migrate')->notice(t('New link found... @new_link', [
         '@new_link' => $new_link,
       ]));
 
@@ -201,8 +201,8 @@ class MigratePostImportEvent implements EventSubscriberInterface {
       $pattern = '|"(https?://)?(www.)?(' . $this->basePath . ')/(.*?)"|';
       if (preg_match($pattern, $old_link, $match)) {
         $d7_nid = $this->d7Aliases[$match[4]];
-        $new_link = (isset($this->source_to_dest_ids[$d7_nid])) ? '<a href="/node/' . $this->source_to_dest_ids[$d7_nid] . '"' : $match[0];
-        \Drupal::logger('sitenow_migrate')->notice($this->t('New link found... @new_link', [
+        $new_link = (isset($this->source_to_dest_ids[$d7_nid])) ? '<a href="/node/' . $this->source_to_dest_ids[$d7_nid] . '"' : '<a href="/' . $match[4] . '"';
+        \Drupal::logger('sitenow_migrate')->notice(t('New link found... @new_link', [
           '@new_link' => $new_link,
         ]));
 
@@ -225,27 +225,27 @@ class MigratePostImportEvent implements EventSubscriberInterface {
     $query->join('paragraph__field_section_content_block', 's', 's.entity_id = n.field_page_content_block_target_id');
     $query->join('paragraph__field_text_body', 'p', 'p.entity_id = s.field_section_content_block_target_id');
     $query->fields('n', ['entity_id'])
-      // ->condition($query->orConditionGroup()
-        // ->condition('p.field_text_body_value', '%' . $this->basePath . '%', 'LIKE')
-        // ->condition('p.field_text_body_value', '%<a href="/node/%"%', 'LIKE')
-      ->condition('p.field_text_body_value', '<a href ?= ?[\'"](.*?)(/?node/(\d+))?(' . $this->basePath . ')?', 'REGEXP');
-    // );
+      ->condition($query->orConditionGroup()
+        ->condition('p.field_text_body_value', '%' . $this->basePath . '%', 'LIKE')
+        ->condition('p.field_text_body_value', '%<a href="/node/%"%', 'LIKE')
+      // ->condition('p.field_text_body_value', '<a href ?= ?[\'"](.*?)(/?node/(\d+))?(' . $this->basePath . ')?', 'REGEXP');
+    );
     $result = $query->execute();
     $candidates = array_merge($candidates, $result->fetchCol());
 
     // Now check for possible link breaks in standard body fields (articles and people content types).
     $query = $connection->select('node__body', 'nb')
       ->fields('nb', ['entity_id'])
-      // ->condition($query->orConditionGroup()
-        // ->condition('nb.body_value', $this->basePath, 'LIKE')
-        // ->condition('nb.body_value', "%<a href%node/%", 'LIKE')
-      // );
-      ->condition('nb.body_value', '<a href ?= ?[\'"](.*?)(/?node/(\d+))?(' . $this->basePath . ')?', 'REGEXP');
+      ->condition($query->orConditionGroup()
+        ->condition('nb.body_value', $this->basePath, 'LIKE')
+        ->condition('nb.body_value', "%<a href%node/%", 'LIKE')
+      );
+      // ->condition('nb.body_value', '<a href ?= ?[\'"](.*?)(/?node/(\d+))?(' . $this->basePath . ')?', 'REGEXP');
     $result = $query->execute();
     $candidates = array_merge($candidates, $result->fetchCol());
 
     foreach ($candidates as $candidate) {
-      \Drupal::logger('sitenow_migrate')->notice($this->t('Possible broken link found in node @candidate', [
+      \Drupal::logger('sitenow_migrate')->notice(t('Possible broken link found in node @candidate', [
         '@candidate' => $candidate,
       ]));
     }
