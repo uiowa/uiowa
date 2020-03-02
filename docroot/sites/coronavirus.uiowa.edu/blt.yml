@@ -1,0 +1,25 @@
+project:
+  local:
+    hostname: coronavirus.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: coronavirus
+  human_name: coronavirus.uiowa.edu
+  profile:
+    name: sitenow
+drush:
+  aliases:
+    local: self
+    remote: coronavirus.prod
+drupal:
+  db:
+    database: coronavirus_uiowa_edu
+cm:
+  core:
+    install_from_config: true
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+uiowa:
+  profiles:
+    sitenow:
+      requester: mjoneill

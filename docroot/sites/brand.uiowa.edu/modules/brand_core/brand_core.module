@@ -218,6 +218,27 @@ function brand_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
 }
 
 /**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function brand_core_node_presave(Drupal\Core\Entity\EntityInterface $entity) {
+  $bundle = $entity->bundle();
+  if ($bundle == 'lockup') {
+    // Trim the right of values (extra, empty lines).
+    $fields = [
+      'field_lockup_primary_unit',
+      'field_lockup_sub_unit',
+      'field_lockup_p_unit_stacked',
+      'field_lockup_s_unit_stacked'
+    ];
+    foreach ($fields as $field) {
+      $value = $entity->get($field)->value;
+      $value = rtrim($value);
+      $entity->set($field, $value);
+    }
+  }
+}
+
+/**
  * Custom submit function for lockup.
  */
 function _brand_core_lockup_submit(array $form, FormStateInterface $form_state) {

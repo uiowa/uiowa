@@ -1,3 +1,244 @@
 @import "assets/scss/_variables.scss";
 @import "assets/scss/_utilities.scss";
 @import "components/03 - global/menus/superfish/_superfish.scss";
+
+.block-superfish .sf-style-none ul,
+.block-superfish .menu ul,
+.region-primary-menu .sf-style-none ul,
+.region-primary-menu .menu ul {
+
+  /*background: black !important;*/
+  @include breakpoint(menu) {
+    background: #f1f1f1 !important;
+  }
+}
+
+.menu-horizontal.nav--header--primary,
+.menu-horizontal.nav--header--secondary {
+  @include breakpoint(menu) {
+    border-bottom: 1px solid #ccc;
+  }
+}
+
+// mega menu
+
+.sf-multicolumn {
+  width: 955px !important;
+
+  &:before,
+  &:after {
+    position: absolute;
+    left: calc(-50vw + 290px);
+    width: calc(50vw - 280px);
+    height: 100%;
+    content: "";
+    background: #f1f1f1;
+    box-shadow: 0 4px 2px -2px gainsboro;
+  }
+
+  &:after {
+    right: calc(-50vw + 290px);
+    left: auto;
+  }
+}
+
+.block-superfish .menu ul.sf-multicolumn {
+  transition: background-color 2s ease-in;
+}
+
+ul.sf-menu.sf-mega-menu li {
+  position: unset;
+}
+
+.menu-horizontal .block-superfish .menu ul li a {
+  @include breakpoint(menu) {
+    color: #000;
+    font-family: 'Zilla Slab';
+    font-weight: 400;
+  }
+}
+
+.block-superfish .menu.sf-mega-menu ul li a {
+  padding: .325rem 0;
+  font-size: 1.2rem;
+}
+
+
+ul.sf-multicolumn ol {
+  display: flex;
+  flex-wrap: wrap;
+  width: 50%;
+  padding: $lg 0;
+
+  li {
+    width: 50%;
+  }
+}
+
+.block-superfish .menu ul.sf-multicolumn {
+  box-shadow: none;
+  box-shadow: 0 4px 2px -2px gainsboro;
+}
+
+// horizontal only
+
+ul.sf-menu.sf-horiz-menu li li a {
+  padding: .45rem 1rem;
+
+  @include breakpoint(menu) {
+    font-size: 1rem;
+  }
+}
+
+ul.sf-menu.sf-horiz-menu ul {
+  @include breakpoint(menu) {
+    padding-top: $sm !important;
+    padding-bottom: $md !important;
+  }
+}
+
+ul.sf-menu.sf-horiz li ul li a:hover {
+  color: $primary;
+}
+
+// both horizontal and mega menu
+
+ul.sf-menu.sf-horizontal>li>a,
+ul.sf-menu.sf-horizontal>li>.nolink {
+  position: relative;
+  transition: background 0.8s ease-out;
+}
+
+ul.sf-menu.sf-horizontal>li>a:after,
+ul.sf-menu.sf-horizontal>li>.nolink:after {
+  background: $primary;
+}
+
+ul.sf-menu.sf-horizontal>li a:after,
+ul.sf-menu.sf-horizontal>li .nolink:after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 5px;
+  content: "";
+  -webkit-transition: 300ms;
+  transition: 300ms;
+}
+
+ul.sf-menu.sf-horizontal>li>a.is-active {
+  //color: #666;
+}
+
+ul.sf-menu.sf-horizontal>li>a.is-active:after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: #0202021f;
+}
+
+ul.sf-menu.sf-horizontal>li.sfHover>a:after,
+ul.sf-menu.sf-horizontal>li:hover>a:after,
+ul.sf-menu.sf-horizontal>li.sfHover>.nolink:after,
+ul.sf-menu.sf-horizontal>li:hover>.nolink:after,
+ul.sf-menu.sf-horizontal>li:focus>a:focus:after,
+ul.sf-menu.sf-horizontal>li:focus>.nolink:focus:after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: #FFCD00;
+}
+
+ul.sf-menu.sf-horizontal li ul a:hover,
+ul.sf-menu.sf-horizontal li ul a:focus {
+  text-decoration: underline;
+}
+
+ul.sf-menu.sf-horizontal>li>.sf-depth-1.menuparent:before {
+  //right: 2.3rem;
+  margin-top: -0.4rem;
+  color: #999;
+  font-size: .7rem;
+  line-height: 1.4;
+}
+
+ul.sf-menu.sf-horizontal>li.sfHover>.sf-depth-1.menuparent:before {
+  content: "\f106";
+}
+
+ul.sf-menu.sf-horizontal>li:first-child>.sf-depth-1.menuparent {
+  padding-left: 0;
+}
+
+ul.sf-menu.sf-horizontal>li>.sf-depth-1.menuparent {
+  padding-right: 1.5rem;
+}
+
+.menu-horizontal.nav--header--secondary ul.sf-menu.sf-horizontal,
+.menu-horizontal.nav--header--primary ul.sf-menu.sf-horizontal {
+  margin-top: 10px;
+}
+
+.sf-accordion .sf-clone-parent a,
+.sf-accordion .sf-clone-parent .nolink {
+  font-size: 1.2rem !important;
+}
+
+.sf-accordion>li.sf-expanded>.sf-depth-1.menuparent:before {
+  content: "\f106";
+}
+
+.sf-accordion-toggle {
+  width: 100%;
+  height: 60px;
+  padding-top: 5px;
+  padding-left: 15px;
+  background: #f1f1f1;
+
+  a {
+    text-decoration: none;
+  }
+
+  span {
+    letter-spacing: .03rem;
+    text-transform: uppercase;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+}
+
+.menu-horizontal {
+
+  .page__container,
+  .page__container--mixed {
+    margin: 0;
+
+    @include breakpoint(menu) {
+      position: relative;
+      margin: 0 $gutter;
+    }
+
+    @include breakpoint(container) {
+      margin: 0 auto;
+    }
+  }
+}
+
+.menu-horizontal {
+  .sf-accordion.sf-menu {
+    padding: 0 $gutter;
+
+    &.sf-menu.sf-horiz-menu li li a {
+      padding: .45rem 0;
+    }
+
+    .sf-has-clone-parent {
+      background: #fff !important;
+
+    }
+  }
+}

@@ -1,0 +1,25 @@
+project:
+  local:
+    hostname: igec.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: igec
+  human_name: igec.uiowa.edu
+  profile:
+    name: sitenow
+drush:
+  aliases:
+    local: self
+    remote: igec.prod
+drupal:
+  db:
+    database: igec_uiowa_edu
+cm:
+  core:
+    install_from_config: true
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+uiowa:
+  profiles:
+    sitenow:
+      requester: bcurran

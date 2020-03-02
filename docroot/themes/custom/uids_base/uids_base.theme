@@ -5,6 +5,7 @@
  * Functions to support theming in the uids_base theme.
  */
 
+use Drupal\block\Entity\Block;
 use Drupal\Component\Utility\Html;
 
 /**
@@ -38,6 +39,10 @@ function uids_base_preprocess_html(&$variables) {
     else {
       unset($variables['page_top']['uiowa_bar']['#search_form']);
     }
+  }
+
+  if (\Drupal::service('module_handler')->moduleExists('uiowa_footer')) {
+    unset($variables['page_bottom']['uiowa_footer']);
   }
 
   // Set a variable for whether layout builder is enabled.
@@ -108,6 +113,16 @@ function uids_base_preprocess_node(&$variables) {
  */
 function uids_base_preprocess_block(&$variables) {
   $variables['uids_base_container_settings'] = theme_get_setting('layout.container');
+
+  // Add the region to the a block's available attributes.
+  if (isset($variables['elements']['#id'])) {
+    $region = Block::load($variables['elements']['#id'])->getRegion();
+
+    if ($region === 'footer_second' && $variables['base_plugin_id'] === 'system_menu_block') {
+      $variables['attributes']['class'][] = 'footer__links';
+      $variables['attributes']['class'][] = 'footer__links--nav';
+    }
+  }
 }
 
 /**

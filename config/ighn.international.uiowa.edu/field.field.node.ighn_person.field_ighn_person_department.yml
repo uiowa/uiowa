@@ -1,0 +1,29 @@
+uuid: 25ea320c-8cbc-4c34-879e-defce1dabe43
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_ighn_person_department
+    - node.type.ighn_person
+    - taxonomy.vocabulary.ighn_department
+id: node.ighn_person.field_ighn_person_department
+field_name: field_ighn_person_department
+entity_type: node
+bundle: ighn_person
+label: Department
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      ighn_department: ighn_department
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference
