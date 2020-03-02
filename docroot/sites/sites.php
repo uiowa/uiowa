@@ -1105,6 +1105,18 @@ $sites['sitesliberalartsbeyondbars.dev.drupal.uiowa.edu'] = 'liberalartsbeyondba
 $sites['sitesliberalartsbeyondbars.stage.drupal.uiowa.edu'] = 'liberalartsbeyondbars.sites.uiowa.edu';
 $sites['sitesliberalartsbeyondbars.prod.drupal.uiowa.edu'] = 'liberalartsbeyondbars.sites.uiowa.edu';
 
+// Directory aliases for majorshadowuiowa.org.uiowa.edu.
+$sites['orgmajorshadowuiowa.local.drupal.uiowa.edu'] = 'majorshadowuiowa.org.uiowa.edu';
+$sites['orgmajorshadowuiowa.dev.drupal.uiowa.edu'] = 'majorshadowuiowa.org.uiowa.edu';
+$sites['orgmajorshadowuiowa.stage.drupal.uiowa.edu'] = 'majorshadowuiowa.org.uiowa.edu';
+$sites['orgmajorshadowuiowa.prod.drupal.uiowa.edu'] = 'majorshadowuiowa.org.uiowa.edu';
+
+// Directory aliases for phibetadelta.org.uiowa.edu.
+$sites['orgphibetadelta.local.drupal.uiowa.edu'] = 'phibetadelta.org.uiowa.edu';
+$sites['orgphibetadelta.dev.drupal.uiowa.edu'] = 'phibetadelta.org.uiowa.edu';
+$sites['orgphibetadelta.stage.drupal.uiowa.edu'] = 'phibetadelta.org.uiowa.edu';
+$sites['orgphibetadelta.prod.drupal.uiowa.edu'] = 'phibetadelta.org.uiowa.edu';
+
 // Directory aliases for homepagepoc.uiowa.edu.
 $sites['homepagepoc.local.drupal.uiowa.edu'] = 'homepagepoc.uiowa.edu';
 $sites['homepagepoc.dev.drupal.uiowa.edu'] = 'homepagepoc.uiowa.edu';
