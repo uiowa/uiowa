@@ -759,18 +759,17 @@ display:
           admin_label: ''
           operator: in
           value:
-            editorial-draft: editorial-draft
-            editorial-review: editorial-review
             editorial-published: editorial-published
-            editorial-archived: editorial-archived
           group: 1
-          exposed: true
+          exposed: false
           expose:
             operator_id: moderation_state_op
             label: State
             description: ''
             use_operator: false
             operator: moderation_state_op
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: moderation_state
             required: false
             remember: false
@@ -784,8 +783,6 @@ display:
               webmaster: '0'
               administrator: '0'
             reduce: true
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
