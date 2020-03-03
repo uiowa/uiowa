@@ -1,0 +1,99 @@
+{#
+/**
+ * @file
+ * Theme override to display a block.
+ *
+ * Available variables:
+ * - plugin_id: The ID of the block implementation.
+ * - label: The configured label of the block if visible.
+ * - configuration: A list of the block's configuration values.
+ *   - label: The configured label for the block.
+ *   - label_display: The display settings for the label.
+ *   - provider: The module or other provider that provided this block plugin.
+ *   - Block plugin specific settings will also be stored here.
+ * - content: The content of this block.
+ * - attributes: array of HTML attributes populated by modules, intended to
+ *   be added to the main container tag of this template.
+ *   - id: A valid HTML ID and guaranteed unique.
+ * - title_attributes: Same as attributes, except applied to the main title
+ *   tag that appears in the template.
+ * - title_prefix: Additional output populated by modules, intended to be
+ *   displayed in front of the main title tag that appears in the template.
+ * - title_suffix: Additional output populated by modules, intended to be
+ *   displayed after the main title tag that appears in the template.
+ *
+ * @see template_preprocess_block()
+ */
+#}
+
+{{ attach_library('uids_base/hero-block') }}
+
+
+{% if elements['#layout_builder_style'][0] == 'hero__container-bottom' %}
+
+
+<section class="hero hero__bottom">
+
+<div class="hero__img">
+{{ content.field_uiowa_hero_image }}
+
+
+
+</div>
+
+	<div class="hero__container hero__container-bottom">
+		<div class="hero__content hero__content-bottom">
+			<h1 class="bold-headline--serif bold-headline">{{ drupal_title() }}</h1>
+			{{ drupal_entity('block', 'uids_base_breadcrumbs') }}
+		</div>
+	</div>
+
+</section>
+
+{% elseif elements['#layout_builder_style'][0] == 'hero__container-bottom-custom' %}
+
+
+	<section class="hero hero__bottom">
+		<div class="hero__container hero__container-bottom">
+			<div class="hero__content hero__content-bottom">
+
+
+	{% include "@uids/01 - elements/heading/heading.twig" with {
+            "heading_level" : content.field_uiowa_hero_title[0]['#size'],
+            "heading_class" : 'bold-headline--serif bold-headline',
+            "heading" : content.field_uiowa_hero_title[0]['#text']
+          } %}
+
+
+{{ content.field_uiowa_hero_excerpt }}
+
+
+
+
+			</div>
+		</div>
+
+
+{% elseif elements['#layout_builder_style'][0] == 'hero__container-center' %}
+
+
+  center
+
+
+{% elseif elements['#layout_builder_style'][0] == 'hero__container-center-custom' %}
+
+
+center
+
+
+{% else %}
+
+	no selection
+
+{% endif %}
+
+
+
+
+
+

@@ -28,7 +28,6 @@
 
 {% block content %}
   {{ attach_library('uids_base/banner') }}
-  {{ attach_library('uids_base/headline') }}
 
   {% embed "@uids/02 - blocks/banner-block/banner-block.twig" with {
     "banner_image": drupal_image(content.field_uiowa_banner_image[0]['#media'].image.entity.uri.value, 'large__widescreen',  { class: 'banner__img', alt: content.field_uiowa_banner_image[0]['#media'].image.alt }, responsive=true),

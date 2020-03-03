@@ -1,0 +1,49 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_hero
+    - field.field.block_content.uiowa_hero.field_uiowa_hero_excerpt
+    - field.field.block_content.uiowa_hero.field_uiowa_hero_image
+    - field.field.block_content.uiowa_hero.field_uiowa_hero_title
+    - image.style.thumbnail
+  module:
+    - heading
+    - image
+    - text
+id: block_content.uiowa_hero.default
+targetEntityType: block_content
+bundle: uiowa_hero
+mode: default
+content:
+  field_uiowa_hero_excerpt:
+    weight: 3
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_uiowa_hero_image:
+    weight: 1
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+    type: image_image
+    region: content
+  field_uiowa_hero_title:
+    weight: 2
+    settings: {  }
+    third_party_settings: {  }
+    type: heading
+    region: content
+  info:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }

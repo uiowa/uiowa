@@ -16,7 +16,6 @@
   set classes = [
     'layout',
     'layout--onecol',
-    'flex__wrapper',
     'layout__container',
     settings.extra_classes,
   ]
@@ -24,42 +23,10 @@
 
 {% if content.content %}
 
-{% if content['#settings'].layout_builder_styles_style.section_style_hero_left_aligned %}
-	<section class="hero hero__bottom">
-
-<div class="test">
-{{ drupal_entity('block', 'uids_base_breadcrumbs') }}
-{{ drupal_entity('block', 'uids_base_page_title') }}
-<h1>{{ drupal_title() }}</h1>
-
-
-
-</div>
-
-        {% if region_attributes.content.storage['data-region'] %}
-            <div {{ region_attributes.content.addClass('flex__wrapper') }}>
-            {% endif %}
-            <div class="rapper">
-            {{ content.content }}
-            </div>
-            {% if region_attributes.content.storage['data-region'] %}
-            </div>
-        {% endif %}
-
-    </section>
-
-
-
-{% elseif content['#settings'].layout_builder_styles_style.section_style_hero_center_aligned %}
-
-center
-
-{% else %}
-
 <section{{attributes.addClass(classes)}}>
 
 	{% if region_attributes.content.storage['data-region'] %}
-		<div {{ region_attributes.content.addClass('flex__wrapper') }}>
+		<div {{ region_attributes.content.addClass('flex__wra') }}>
 		{% endif %}
 		{{ content.content }}
 		{% if region_attributes.content.storage['data-region'] %}
@@ -70,4 +37,3 @@ center
 
 {% endif %}
 
-{% endif %}
