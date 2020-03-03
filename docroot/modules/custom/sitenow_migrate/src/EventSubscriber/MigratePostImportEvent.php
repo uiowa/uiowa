@@ -240,7 +240,8 @@ class MigratePostImportEvent implements EventSubscriberInterface {
         ->condition('nb.body_value', $this->basePath, 'LIKE')
         ->condition('nb.body_value', "%<a href%node/%", 'LIKE')
       );
-      // ->condition('nb.body_value', '<a href ?= ?[\'"](.*?)(/?node/(\d+))?(' . $this->basePath . ')?', 'REGEXP');
+
+    // ->condition('nb.body_value', '<a href ?= ?[\'"](.*?)(/?node/(\d+))?(' . $this->basePath . ')?', 'REGEXP');
     $result = $query->execute();
     $candidates = array_merge($candidates, $result->fetchCol());
 
@@ -298,9 +299,11 @@ class MigratePostImportEvent implements EventSubscriberInterface {
       $sub_result2 = $connection->select('migrate_map_d7_article', 'mma')
         ->fields('mma', ['sourceid1', 'destid1']);
       $result = $sub_result1->union($sub_result2);
-    } else {
+    }
+    else {
       $result = $sub_result1;
     }
+
     $result->execute();
     $sourceToDestIds = [];
     foreach ($result as $row) {
