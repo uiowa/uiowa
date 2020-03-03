@@ -6,6 +6,7 @@
 .block-superfish .menu ul,
 .region-primary-menu .sf-style-none ul,
 .region-primary-menu .menu ul {
+
   /*background: black !important;*/
   @include breakpoint(menu) {
     background: #f1f1f1 !important;
@@ -68,6 +69,7 @@ ul.sf-multicolumn ol {
   flex-wrap: wrap;
   width: 50%;
   padding: $lg 0;
+
   li {
     width: 50%;
   }
@@ -82,8 +84,9 @@ ul.sf-multicolumn ol {
 
 ul.sf-menu.sf-horiz-menu li li a {
   padding: .45rem 1rem;
+
   @include breakpoint(menu) {
-    font-size: .95rem;
+    font-size: 1rem;
   }
 }
 
@@ -100,16 +103,19 @@ ul.sf-menu.sf-horiz li ul li a:hover {
 
 // both horizontal and mega menu
 
-ul.sf-menu.sf-horizontal>li>a {
+ul.sf-menu.sf-horizontal>li>a,
+ul.sf-menu.sf-horizontal>li>.nolink {
   position: relative;
   transition: background 0.8s ease-out;
 }
 
-ul.sf-menu.sf-horizontal>li>a:after {
+ul.sf-menu.sf-horizontal>li>a:after,
+ul.sf-menu.sf-horizontal>li>.nolink:after {
   background: $primary;
 }
 
-ul.sf-menu.sf-horizontal>li a:after {
+ul.sf-menu.sf-horizontal>li a:after,
+ul.sf-menu.sf-horizontal>li .nolink:after {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -120,7 +126,25 @@ ul.sf-menu.sf-horizontal>li a:after {
   transition: 300ms;
 }
 
-ul.sf-menu.sf-horizontal li.sfHover>a:after {
+ul.sf-menu.sf-horizontal>li>a.is-active {
+  //color: #666;
+}
+
+ul.sf-menu.sf-horizontal>li>a.is-active:after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: #0202021f;
+}
+
+ul.sf-menu.sf-horizontal>li.sfHover>a:after,
+ul.sf-menu.sf-horizontal>li:hover>a:after,
+ul.sf-menu.sf-horizontal>li.sfHover>.nolink:after,
+ul.sf-menu.sf-horizontal>li:hover>.nolink:after,
+ul.sf-menu.sf-horizontal>li:focus>a:focus:after,
+ul.sf-menu.sf-horizontal>li:focus>.nolink:focus:after {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -129,24 +153,29 @@ ul.sf-menu.sf-horizontal li.sfHover>a:after {
   background: #FFCD00;
 }
 
-ul.sf-menu.sf-horizontal>li>a.sf-depth-1.menuparent:before {
-  right: 2.3rem;
+ul.sf-menu.sf-horizontal li ul a:hover,
+ul.sf-menu.sf-horizontal li ul a:focus {
+  text-decoration: underline;
+}
+
+ul.sf-menu.sf-horizontal>li>.sf-depth-1.menuparent:before {
+  //right: 2.3rem;
   margin-top: -0.4rem;
   color: #999;
   font-size: .7rem;
   line-height: 1.4;
 }
 
-ul.sf-menu.sf-horizontal>li.sfHover>a.sf-depth-1.menuparent:before {
+ul.sf-menu.sf-horizontal>li.sfHover>.sf-depth-1.menuparent:before {
   content: "\f106";
 }
 
-ul.sf-menu.sf-horizontal>li:first-child>a.sf-depth-1.menuparent {
+ul.sf-menu.sf-horizontal>li:first-child>.sf-depth-1.menuparent {
   padding-left: 0;
 }
 
-ul.sf-menu.sf-horizontal>li>a.sf-depth-1.menuparent {
-  padding-right: 3.5rem;
+ul.sf-menu.sf-horizontal>li>.sf-depth-1.menuparent {
+  padding-right: 1.5rem;
 }
 
 .menu-horizontal.nav--header--secondary ul.sf-menu.sf-horizontal,
@@ -154,11 +183,12 @@ ul.sf-menu.sf-horizontal>li>a.sf-depth-1.menuparent {
   margin-top: 10px;
 }
 
-.sf-accordion .sf-clone-parent a {
+.sf-accordion .sf-clone-parent a,
+.sf-accordion .sf-clone-parent .nolink {
   font-size: 1.2rem !important;
 }
 
-.sf-accordion>li.sf-expanded>a.sf-depth-1.menuparent:before {
+.sf-accordion>li.sf-expanded>.sf-depth-1.menuparent:before {
   content: "\f106";
 }
 
@@ -182,13 +212,16 @@ ul.sf-menu.sf-horizontal>li>a.sf-depth-1.menuparent {
 }
 
 .menu-horizontal {
+
   .page__container,
   .page__container--mixed {
     margin: 0;
+
     @include breakpoint(menu) {
       position: relative;
       margin: 0 $gutter;
     }
+
     @include breakpoint(container) {
       margin: 0 auto;
     }
@@ -198,9 +231,11 @@ ul.sf-menu.sf-horizontal>li>a.sf-depth-1.menuparent {
 .menu-horizontal {
   .sf-accordion.sf-menu {
     padding: 0 $gutter;
+
     &.sf-menu.sf-horiz-menu li li a {
       padding: .45rem 0;
     }
+
     .sf-has-clone-parent {
       background: #fff !important;
 
