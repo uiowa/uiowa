@@ -1,0 +1,33 @@
+uuid: ab71cea9-fc2a-4a3f-a2b7-26ce610e0e5d
+langcode: en
+status: true
+dependencies: {  }
+id: home_poc_uiowa_edu
+label: home-poc.uiowa.edu
+description: 'Site split.'
+folder: ../config/home-poc.uiowa.edu
+module:
+  components: 0
+  field_ui: 0
+  layout_builder: 0
+  layout_builder_restrictions: 0
+  layout_discovery: 0
+theme:
+  uids_base: 0
+  claro: 0
+blacklist: {  }
+graylist:
+  - block.block.mainnavigation
+  - config_split.config_split.home_poc_uiowa_edu
+  - core.entity_form_display.node.page.default
+  - core.entity_view_display.node.page.default
+  - core.entity_view_display.node.page.teaser
+  - field.field.node.page.layout_builder__layout
+  - field.storage.node.layout_builder__layout
+  - system.theme
+  - 'block.block.uids_base_*'
+  - 'block.block.main_navigation_superfish_*'
+  - 'block.block.claro_*'
+graylist_dependents: true
+graylist_skip_equal: true
+weight: 90
