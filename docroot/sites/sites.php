@@ -1117,12 +1117,6 @@ $sites['orgphibetadelta.dev.drupal.uiowa.edu'] = 'phibetadelta.org.uiowa.edu';
 $sites['orgphibetadelta.stage.drupal.uiowa.edu'] = 'phibetadelta.org.uiowa.edu';
 $sites['orgphibetadelta.prod.drupal.uiowa.edu'] = 'phibetadelta.org.uiowa.edu';
 
-// Directory aliases for home-poc.uiowa.edu.
-$sites['home-poc.local.drupal.uiowa.edu'] = 'home-poc.uiowa.edu';
-$sites['home-poc.dev.drupal.uiowa.edu'] = 'home-poc.uiowa.edu';
-$sites['home-poc.stage.drupal.uiowa.edu'] = 'home-poc.uiowa.edu';
-$sites['home-poc.prod.drupal.uiowa.edu'] = 'home-poc.uiowa.edu';
-
 // Directory aliases for uiowa-old.uiowa.edu.
 $sites['uiowa-old.local.drupal.uiowa.edu'] = 'uiowa-old.uiowa.edu';
 $sites['uiowa-old.dev.drupal.uiowa.edu'] = 'uiowa-old.uiowa.edu';
