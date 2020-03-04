@@ -28,72 +28,96 @@
 
 {{ attach_library('uids_base/hero-block') }}
 
+{% set video_field = content.field_uiowa_hero_video[0]['#media'].field_media_video_file.entity.uri.value %}
+{% set video_url = file_url(content.field_uiowa_hero_video[0]['#media'].field_media_video_file.entity.uri.value) %}
+{% set video_thumbnail = file_url(content.field_uiowa_hero_image[0]['#media'].image.entity.uri.value) %}
 
-{% if elements['#layout_builder_style'][0] == 'hero__container-bottom' %}
+{% if elements['#layout_builder_style'][0] == 'hero__container-center' %}
 
+	<section class="hero hero__center {{ attributes ? attributes.class }}" {{ attributes ? attributes|without('class') }}>
 
-<section class="hero hero__bottom">
+		{{ title_prefix }}
+		{{ title_suffix }}
 
-<div class="hero__img">
-{{ content.field_uiowa_hero_image }}
-
-
-
-</div>
-
-	<div class="hero__container hero__container-bottom">
-		<div class="hero__content hero__content-bottom">
-			<h1 class="bold-headline--serif bold-headline">{{ drupal_title() }}</h1>
-			{{ drupal_entity('block', 'uids_base_breadcrumbs') }}
+		<div class="hero__img">
+			{% if video_field is not empty %}
+				{{ attach_library('uids_base/hero-block-video') }}
+				<video class="hero__video" autoplay="autoplay" muted="muted" loop="loop" id="video-container" poster="{{ video_thumbnail }}">
+					<source src="{{ video_url }}" type="video/mp4">
+				</video>
+			{% else %}
+				{{ content.field_uiowa_hero_image }}
+			{% endif %}
 		</div>
-	</div>
 
-</section>
+		<div class="hero__container hero__container-center">
+			<div class="hero__content hero__content-center">
 
-{% elseif elements['#layout_builder_style'][0] == 'hero__container-bottom-custom' %}
-
-
-	<section class="hero hero__bottom">
-		<div class="hero__container hero__container-bottom">
-			<div class="hero__content hero__content-bottom">
-
-
-	{% include "@uids/01 - elements/heading/heading.twig" with {
+				{% if content.field_uiowa_hero_title[0]['#text'] is not empty %}
+					{% include "@uids/01 - elements/heading/heading.twig" with {
             "heading_level" : content.field_uiowa_hero_title[0]['#size'],
             "heading_class" : 'bold-headline--serif bold-headline',
             "heading" : content.field_uiowa_hero_title[0]['#text']
           } %}
+				{% endif %}
 
-
-{{ content.field_uiowa_hero_excerpt }}
-
-
-
+				{{ content.field_uiowa_hero_excerpt }}
 
 			</div>
 		</div>
 
+		{% if video_field is not empty %}
+			<div class="video-controls">
+				<button class="video-btn video-btn__pause" id="video-btn">
+					<span class="element-invisible">Pause</span>
+				</button>
+			</div>
+		{% endif %}
 
-{% elseif elements['#layout_builder_style'][0] == 'hero__container-center' %}
-
-
-  center
-
-
-{% elseif elements['#layout_builder_style'][0] == 'hero__container-center-custom' %}
-
-
-center
-
+	</section>
 
 {% else %}
 
-	no selection
+	<section class="hero hero__bottom {{ attributes ? attributes.class }}" {{ attributes ? attributes|without('class') }}>
+
+		{{ title_prefix }}
+		{{ title_suffix }}
+
+		<div class="hero__img">
+			{% if video_field is not empty %}
+				{{ attach_library('uids_base/hero-block-video') }}
+				<video class="hero__video" autoplay="autoplay" muted="muted" loop="loop" id="video-container" poster="{{ video_thumbnail }}">
+					<source src="{{ video_url }}" type="video/mp4">
+				</video>
+			{% else %}
+				{{ content.field_uiowa_hero_image }}
+			{% endif %}
+		</div>
+
+		<div class="hero__container hero__container-bottom">
+			<div class="hero__content hero__content-bottom">
+
+				{% if content.field_uiowa_hero_title[0]['#text'] is not empty %}
+					{% include "@uids/01 - elements/heading/heading.twig" with {
+            "heading_level" : content.field_uiowa_hero_title[0]['#size'],
+            "heading_class" : 'bold-headline--serif bold-headline',
+            "heading" : content.field_uiowa_hero_title[0]['#text']
+          } %}
+				{% endif %}
+
+				{{ content.field_uiowa_hero_excerpt }}
+
+			</div>
+		</div>
+
+		{% if video_field is not empty %}
+			<div class="video-controls">
+				<button class="video-btn video-btn__pause" id="video-btn">
+					<span class="element-invisible">Pause</span>
+				</button>
+			</div>
+		{% endif %}
+
+	</section>
 
 {% endif %}
-
-
-
-
-
-

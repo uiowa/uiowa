@@ -6,10 +6,10 @@ dependencies:
     - field.field.block_content.uiowa_hero.field_uiowa_hero_excerpt
     - field.field.block_content.uiowa_hero.field_uiowa_hero_image
     - field.field.block_content.uiowa_hero.field_uiowa_hero_title
-    - image.style.thumbnail
+    - field.field.block_content.uiowa_hero.field_uiowa_hero_video
   module:
     - heading
-    - image
+    - media_library
     - text
 id: block_content.uiowa_hero.default
 targetEntityType: block_content
@@ -25,18 +25,24 @@ content:
     type: text_textarea
     region: content
   field_uiowa_hero_image:
-    weight: 1
+    type: media_library_widget
+    weight: 26
     settings:
-      progress_indicator: throbber
-      preview_image_style: thumbnail
+      media_types: {  }
     third_party_settings: {  }
-    type: image_image
     region: content
   field_uiowa_hero_title:
     weight: 2
     settings: {  }
     third_party_settings: {  }
     type: heading
+    region: content
+  field_uiowa_hero_video:
+    type: media_library_widget
+    weight: 27
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
     region: content
   info:
     type: string_textfield

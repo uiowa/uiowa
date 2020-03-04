@@ -3,15 +3,15 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_hero
-    - field.storage.block_content.field_uiowa_hero_image
-    - media.type.image
-id: block_content.uiowa_hero.field_uiowa_hero_image
-field_name: field_uiowa_hero_image
+    - field.storage.block_content.field_uiowa_hero_video
+    - media.type.video
+id: block_content.uiowa_hero.field_uiowa_hero_video
+field_name: field_uiowa_hero_video
 entity_type: block_content
 bundle: uiowa_hero
-label: Image
+label: Video
 description: ''
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
@@ -19,9 +19,9 @@ settings:
   handler: 'default:media'
   handler_settings:
     target_bundles:
-      image: image
+      video: video
     sort:
       field: _none
     auto_create: false
-    auto_create_bundle: image
+    auto_create_bundle: ''
 field_type: entity_reference
