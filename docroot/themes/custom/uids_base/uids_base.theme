@@ -150,7 +150,7 @@ function uids_base_theme_suggestions_input_alter(&$suggestions, array $variables
  */
 function uids_base_preprocess_form(&$variables) {
   // Add class to your specific form.
-  if ($variables['attributes']['id'] == 'search-block-form') {
+  if (isset($variables['attributes']['id']) && $variables['attributes']['id'] == 'search-block-form') {
     // @todo Update these classes to 'uids-*' when that change is made in UIDS.
     $variables['attributes']['class'][] = 'hds-content hds-search ';
   }
@@ -160,7 +160,7 @@ function uids_base_preprocess_form(&$variables) {
  * Implements theme_preprocess_input().
  */
 function uids_base_preprocess_input(&$variables) {
-  if ($variables['element']['#name'] === 'search-terms') {
+  if (isset($variables['element']['#name']) && $variables['element']['#name'] === 'search-terms') {
     $variables['attributes']['class'] = [];
   }
 }
