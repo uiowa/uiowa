@@ -1122,3 +1122,9 @@ $sites['centerforconferencesuibtaa.local.drupal.uiowa.edu'] = 'uibtaa.centerforc
 $sites['centerforconferencesuibtaa.dev.drupal.uiowa.edu'] = 'uibtaa.centerforconferences.uiowa.edu';
 $sites['centerforconferencesuibtaa.stage.drupal.uiowa.edu'] = 'uibtaa.centerforconferences.uiowa.edu';
 $sites['centerforconferencesuibtaa.prod.drupal.uiowa.edu'] = 'uibtaa.centerforconferences.uiowa.edu';
+
+// Directory aliases for pediatriccardiology.centerforconferences.uiowa.edu.
+$sites['centerforconferencespediatriccardiology.local.drupal.uiowa.edu'] = 'pediatriccardiology.centerforconferences.uiowa.edu';
+$sites['centerforconferencespediatriccardiology.dev.drupal.uiowa.edu'] = 'pediatriccardiology.centerforconferences.uiowa.edu';
+$sites['centerforconferencespediatriccardiology.stage.drupal.uiowa.edu'] = 'pediatriccardiology.centerforconferences.uiowa.edu';
+$sites['centerforconferencespediatriccardiology.prod.drupal.uiowa.edu'] = 'pediatriccardiology.centerforconferences.uiowa.edu';
