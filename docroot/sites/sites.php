@@ -1116,3 +1116,9 @@ $sites['orgphibetadelta.local.drupal.uiowa.edu'] = 'phibetadelta.org.uiowa.edu';
 $sites['orgphibetadelta.dev.drupal.uiowa.edu'] = 'phibetadelta.org.uiowa.edu';
 $sites['orgphibetadelta.stage.drupal.uiowa.edu'] = 'phibetadelta.org.uiowa.edu';
 $sites['orgphibetadelta.prod.drupal.uiowa.edu'] = 'phibetadelta.org.uiowa.edu';
+
+// Directory aliases for uibtaa.centerforconferences.uiowa.edu.
+$sites['centerforconferencesuibtaa.local.drupal.uiowa.edu'] = 'uibtaa.centerforconferences.uiowa.edu';
+$sites['centerforconferencesuibtaa.dev.drupal.uiowa.edu'] = 'uibtaa.centerforconferences.uiowa.edu';
+$sites['centerforconferencesuibtaa.stage.drupal.uiowa.edu'] = 'uibtaa.centerforconferences.uiowa.edu';
+$sites['centerforconferencesuibtaa.prod.drupal.uiowa.edu'] = 'uibtaa.centerforconferences.uiowa.edu';
