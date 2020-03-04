@@ -1116,3 +1116,21 @@ $sites['orgphibetadelta.local.drupal.uiowa.edu'] = 'phibetadelta.org.uiowa.edu';
 $sites['orgphibetadelta.dev.drupal.uiowa.edu'] = 'phibetadelta.org.uiowa.edu';
 $sites['orgphibetadelta.stage.drupal.uiowa.edu'] = 'phibetadelta.org.uiowa.edu';
 $sites['orgphibetadelta.prod.drupal.uiowa.edu'] = 'phibetadelta.org.uiowa.edu';
+
+// Directory aliases for uibtaa.centerforconferences.uiowa.edu.
+$sites['centerforconferencesuibtaa.local.drupal.uiowa.edu'] = 'uibtaa.centerforconferences.uiowa.edu';
+$sites['centerforconferencesuibtaa.dev.drupal.uiowa.edu'] = 'uibtaa.centerforconferences.uiowa.edu';
+$sites['centerforconferencesuibtaa.stage.drupal.uiowa.edu'] = 'uibtaa.centerforconferences.uiowa.edu';
+$sites['centerforconferencesuibtaa.prod.drupal.uiowa.edu'] = 'uibtaa.centerforconferences.uiowa.edu';
+
+// Directory aliases for pediatriccardiology.centerforconferences.uiowa.edu.
+$sites['centerforconferencespediatriccardiology.local.drupal.uiowa.edu'] = 'pediatriccardiology.centerforconferences.uiowa.edu';
+$sites['centerforconferencespediatriccardiology.dev.drupal.uiowa.edu'] = 'pediatriccardiology.centerforconferences.uiowa.edu';
+$sites['centerforconferencespediatriccardiology.stage.drupal.uiowa.edu'] = 'pediatriccardiology.centerforconferences.uiowa.edu';
+$sites['centerforconferencespediatriccardiology.prod.drupal.uiowa.edu'] = 'pediatriccardiology.centerforconferences.uiowa.edu';
+
+// Directory aliases for africanamericancouncil.uiowa.edu.
+$sites['africanamericancouncil.local.drupal.uiowa.edu'] = 'africanamericancouncil.uiowa.edu';
+$sites['africanamericancouncil.dev.drupal.uiowa.edu'] = 'africanamericancouncil.uiowa.edu';
+$sites['africanamericancouncil.stage.drupal.uiowa.edu'] = 'africanamericancouncil.uiowa.edu';
+$sites['africanamericancouncil.prod.drupal.uiowa.edu'] = 'africanamericancouncil.uiowa.edu';
