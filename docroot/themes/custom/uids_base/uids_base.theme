@@ -140,7 +140,7 @@ function uids_base_theme_suggestions_form_element_alter(array &$suggestions, arr
 function uids_base_theme_suggestions_input_alter(&$suggestions, array $variables) {
   $element = $variables['element'];
 
-  if ($element['#name'] == 'btnG') {
+  if (isset($element['#name']) && $element['#name'] == 'btnG') {
     $suggestions[] = 'input__uiowa_search__' . $element['#type'];
   }
 }
