@@ -129,7 +129,7 @@ function uids_base_preprocess_block(&$variables) {
  * Implements hook_theme_suggestions_form_element_alter().
  */
 function uids_base_theme_suggestions_form_element_alter(array &$suggestions, array $variables) {
-  if ($variables['element']['#name'] === 'search-terms') {
+  if (isset($variables['element']['#name']) && $variables['element']['#name'] === 'search-terms') {
     $suggestions[] = $variables['theme_hook_original'] . '__uiowa_search__search_terms';
   }
 }

@@ -495,17 +495,21 @@ function _sitenow_prevent_front_delete_message($title) {
 function publish_options_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, &$cacheable) {
   $cacheable = FALSE;
   $options = [];
-  $bundle = $entity->bundle();
 
-  switch ($bundle) {
-    case 'page':
-      $options['title_hidden'] = 'Visually hide title';
-      $options['no_sidebars'] = 'Remove sidebar regions';
-      break;
+  if (method_exists($entity, 'bundle')) {
+    $bundle = $entity->bundle();
+
+    switch ($bundle) {
+      case 'page':
+        $options['title_hidden'] = 'Visually hide title';
+        $options['no_sidebars'] = 'Remove sidebar regions';
+        break;
+    }
+
+    // Allow modules to alter options.
+    \Drupal::moduleHandler()
+      ->alter('publish_options', $options, $entity, $bundle);
   }
-
-  // Allow modules to alter options.
-  \Drupal::moduleHandler()->alter('publish_options', $options, $entity, $bundle);
 
   return $options;
 }
