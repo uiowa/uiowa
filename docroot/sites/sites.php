@@ -1122,3 +1122,9 @@ $sites['home-poc.local.drupal.uiowa.edu'] = 'home-poc.uiowa.edu';
 $sites['home-poc.dev.drupal.uiowa.edu'] = 'home-poc.uiowa.edu';
 $sites['home-poc.stage.drupal.uiowa.edu'] = 'home-poc.uiowa.edu';
 $sites['home-poc.prod.drupal.uiowa.edu'] = 'home-poc.uiowa.edu';
+
+// Directory aliases for uiowa-old.uiowa.edu.
+$sites['uiowa-old.local.drupal.uiowa.edu'] = 'uiowa-old.uiowa.edu';
+$sites['uiowa-old.dev.drupal.uiowa.edu'] = 'uiowa-old.uiowa.edu';
+$sites['uiowa-old.stage.drupal.uiowa.edu'] = 'uiowa-old.uiowa.edu';
+$sites['uiowa-old.prod.drupal.uiowa.edu'] = 'uiowa-old.uiowa.edu';
