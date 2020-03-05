@@ -1134,3 +1134,9 @@ $sites['africanamericancouncil.local.drupal.uiowa.edu'] = 'africanamericancounci
 $sites['africanamericancouncil.dev.drupal.uiowa.edu'] = 'africanamericancouncil.uiowa.edu';
 $sites['africanamericancouncil.stage.drupal.uiowa.edu'] = 'africanamericancouncil.uiowa.edu';
 $sites['africanamericancouncil.prod.drupal.uiowa.edu'] = 'africanamericancouncil.uiowa.edu';
+
+// Directory aliases for uiowa-old.uiowa.edu.
+$sites['uiowa-old.local.drupal.uiowa.edu'] = 'uiowa-old.uiowa.edu';
+$sites['uiowa-old.dev.drupal.uiowa.edu'] = 'uiowa-old.uiowa.edu';
+$sites['uiowa-old.stage.drupal.uiowa.edu'] = 'uiowa-old.uiowa.edu';
+$sites['uiowa-old.prod.drupal.uiowa.edu'] = 'uiowa-old.uiowa.edu';

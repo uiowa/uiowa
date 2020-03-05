@@ -98,38 +98,42 @@ function sitenow_views_pre_render(ViewExecutable $view) {
  * Implements hook_form_FORM_ID_alter().
  */
 function sitenow_form_block_form_alter(&$form, FormStateInterface $form_state) {
-  // Get block config settings.
-  $settings = \Drupal::config('block.block.' . $form["id"]["#default_value"])->get('settings', FALSE);
-  // Set classes options.
-  $classes_options = ['' => 'None'];
-  // Allow other modules to modify block classes options.
-  \Drupal::moduleHandler()->alter('block_classes', $classes_options, $form, $form_state);
-  $form['settings']['block_styles'] = [
-    'style_details' => [
-      '#type' => 'details',
-      '#title' => t('Block Style Options'),
-      '#open' => TRUE,
-      'template' => [
-        '#type' => 'select',
-        '#title' => t('Select a block template'),
-        '#default_value' => $settings['block_template'] ?? '',
-        '#options' => [
-          '_none' => 'None',
-          'card' => 'Card',
+  $theme = \Drupal::config('system.theme')->get('default');
+
+  if (in_array($theme, ['uiowa_bootstrap', 'hr'])) {
+    // Get block config settings.
+    $settings = \Drupal::config('block.block.' . $form["id"]["#default_value"])->get('settings', FALSE);
+    // Set classes options.
+    $classes_options = ['' => 'None'];
+    // Allow other modules to modify block classes options.
+    \Drupal::moduleHandler()->alter('block_classes', $classes_options, $form, $form_state);
+    $form['settings']['block_styles'] = [
+      'style_details' => [
+        '#type' => 'details',
+        '#title' => t('Block Style Options'),
+        '#open' => TRUE,
+        'template' => [
+          '#type' => 'select',
+          '#title' => t('Select a block template'),
+          '#default_value' => $settings['block_template'] ?? '',
+          '#options' => [
+            '_none' => 'None',
+            'card' => 'Card',
+          ],
+        ],
+        'classes' => [
+          '#type' => 'select',
+          '#title' => t('Set classes'),
+          '#default_value' => $settings['block_classes'] ?? '',
+          '#options' => $classes_options,
+          '#multiple' => TRUE,
         ],
       ],
-      'classes' => [
-        '#type' => 'select',
-        '#title' => t('Set classes'),
-        '#default_value' => $settings['block_classes'] ?? '',
-        '#options' => $classes_options,
-        '#multiple' => TRUE,
-      ],
-    ],
-  ];
+    ];
 
-  // Add custom submit handler.
-  $form["actions"]["submit"]["#submit"][] = 'sitenow_block_form_submit';
+    // Add custom submit handler.
+    $form["actions"]["submit"]["#submit"][] = 'sitenow_block_form_submit';
+  }
 }
 
 /**
@@ -728,7 +732,9 @@ function sitenow_preprocess_field(&$variables) {
 function sitenow_page_attachments(array &$attachments) {
   // Attach css file on admin pages.
   $admin_context = \Drupal::service('router.admin_context');
-  if ($admin_context->isAdminRoute()) {
+  $admin_theme = \Drupal::config('system.theme')->get('admin');
+
+  if ($admin_context->isAdminRoute() && $admin_theme == 'adminimal_theme') {
     $attachments['#attached']['library'][] = 'sitenow/admin-overrides';
   }
 }

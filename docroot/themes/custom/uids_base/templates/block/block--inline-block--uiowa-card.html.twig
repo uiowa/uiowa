@@ -31,7 +31,6 @@
   {{ attach_library('uids_base/card-block') }}
 
       {% embed "@uids/02 - blocks/card-block/card-block--basic.twig" with {
-        "card_image": drupal_image(content.field_uiowa_card_image[0]['#media'].image.entity.uri.value, 'medium__no_crop',  { class: 'card__img', alt: content.field_uiowa_card_image[0]['#media'].image.alt }, responsive=true),
         "card_text": content.field_uiowa_card_excerpt,
         "card_link_url": content.field_uiowa_card_link[0]['#url'],
         "card_link_title": content.field_uiowa_card_link[0]['#title'],
@@ -56,7 +55,7 @@
       {% endblock %}
 
       {% block card_img %}
-        {{ card_image }}
+        {{ content.field_uiowa_card_image }}
       {% endblock %}
 
       {% block card_wrapper_end %}
