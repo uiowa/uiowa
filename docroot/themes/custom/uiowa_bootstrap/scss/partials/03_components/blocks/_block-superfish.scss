@@ -58,7 +58,9 @@ $accordion-items-bg: $gray-600;
         text-decoration: none;
         transition: background 0.3s ease-out;
         font-weight: 600;
-
+        cursor: pointer;
+      }
+      a {
         &:hover,
         &:focus {
           box-shadow: 0px -3px 0px $yellow inset;
@@ -107,6 +109,13 @@ $accordion-items-bg: $gray-600;
         color: #fff;
         white-space: normal;
         word-break: break-word;
+
+      }
+      li span {
+        color: $gray-500;
+        cursor: pointer;
+        display: block;
+        user-focus: all;
       }
     }
   }

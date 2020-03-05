@@ -119,7 +119,7 @@
               primaryUnitStacked.val() === ""
             ) {
               $('#required-warning').removeClass('warning-hidden');
-              Drupal.announce('Required fields are empty.');
+              Drupal.announce('Required fields are empty.', 'assertive');
             }
           })
           $('#edit-submit').keypress(function(e){
@@ -237,7 +237,7 @@
 
                     Timer = setTimeout(function() {
                         $('#valid-text-lockup-warning').removeClass('warning-hidden');
-                        Drupal.announce('Invalid imput.');
+                        Drupal.announce('Invalid imput.', 'assertive');
                         $('#edit-submit').prop('disabled', true);
                     }, 500);
                 }
