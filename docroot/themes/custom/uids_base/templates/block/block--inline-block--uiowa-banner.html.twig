@@ -38,9 +38,9 @@
   } %}
 
 {% block banner_image %}
-	{% if banner_image %}
+	{% if content.field_uiowa_banner_image|render is not empty %}
 		<div class="banner__image">
-			{{ banner_image }}
+			{{ content.field_uiowa_banner_image }}
 		</div>
 	{% endif %}
 {% endblock %}

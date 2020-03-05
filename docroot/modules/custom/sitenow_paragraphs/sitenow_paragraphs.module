@@ -302,9 +302,13 @@ function uip_colwidth_allowed_values(FieldStorageConfig $definition, ContentEnti
     'col-md-6' => 'Half',
     'col-md-12' => 'Full',
   ];
-  $bundle = $entity->bundle();
-  // Allow modules to alter classes.
-  \Drupal::moduleHandler()->alter('uip_colwidth', $options, $entity, $bundle);
+
+  if (method_exists($entity, 'bundle')) {
+    $bundle = $entity->bundle();
+    // Allow modules to alter classes.
+    \Drupal::moduleHandler()
+      ->alter('uip_colwidth', $options, $entity, $bundle);
+  }
 
   return $options;
 }
@@ -330,9 +334,13 @@ function section_container_allowed_values(FieldStorageConfig $definition, Conten
     'container' => 'Medium',
     'container-fluid' => 'Large',
   ];
-  $bundle = $entity->bundle();
-  // Allow modules to alter classes.
-  \Drupal::moduleHandler()->alter('section_container', $options, $entity, $bundle);
+
+  if (method_exists($entity, 'bundle')) {
+    $bundle = $entity->bundle();
+    // Allow modules to alter classes.
+    \Drupal::moduleHandler()
+      ->alter('section_container', $options, $entity, $bundle);
+  }
 
   return $options;
 }
@@ -359,9 +367,13 @@ function section_alignitems_allowed_values(FieldStorageConfig $definition, Conte
     'align-items-start' => 'Top',
     'align-items-end' => 'Bottom',
   ];
-  $bundle = $entity->bundle();
-  // Allow modules to alter classes.
-  \Drupal::moduleHandler()->alter('section_alignitems', $options, $entity, $bundle);
+
+  if (method_exists($entity, 'bundle')) {
+    $bundle = $entity->bundle();
+    // Allow modules to alter classes.
+    \Drupal::moduleHandler()
+      ->alter('section_alignitems', $options, $entity, $bundle);
+  }
 
   return $options;
 }
@@ -390,9 +402,13 @@ function section_justifycontent_allowed_values(FieldStorageConfig $definition, C
     'justify-content-around' => 'Space Around',
     'justify-content-between' => 'Space Between',
   ];
-  $bundle = $entity->bundle();
-  // Allow modules to alter classes.
-  \Drupal::moduleHandler()->alter('section_justifycontent', $options, $entity, $bundle);
+
+  if (method_exists($entity, 'bundle')) {
+    $bundle = $entity->bundle();
+    // Allow modules to alter classes.
+    \Drupal::moduleHandler()
+      ->alter('section_justifycontent', $options, $entity, $bundle);
+  }
 
   return $options;
 }
