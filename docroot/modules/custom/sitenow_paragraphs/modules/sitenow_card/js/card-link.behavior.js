@@ -10,7 +10,9 @@
         $('.card[data-href]')
             .on("keypress click", function (e) {
                 if (e.which === 13 || e.type === 'click') {
-                  window.location = $(this).attr('data-href');
+                  if (e.target.tagName !== 'A') {
+                    window.location = $(this).attr('data-href');
+                  }
                 }
             })
             .hover(function () {
