@@ -1146,3 +1146,9 @@ $sites['orgsdo.local.drupal.uiowa.edu'] = 'sdo.org.uiowa.edu';
 $sites['orgsdo.dev.drupal.uiowa.edu'] = 'sdo.org.uiowa.edu';
 $sites['orgsdo.stage.drupal.uiowa.edu'] = 'sdo.org.uiowa.edu';
 $sites['orgsdo.prod.drupal.uiowa.edu'] = 'sdo.org.uiowa.edu';
+
+// Directory aliases for jacobsoninstitute.org.
+$sites['org-jacobsoninstitute.local.drupal.uiowa.edu'] = 'jacobsoninstitute.org';
+$sites['org-jacobsoninstitute.dev.drupal.uiowa.edu'] = 'jacobsoninstitute.org';
+$sites['org-jacobsoninstitute.stage.drupal.uiowa.edu'] = 'jacobsoninstitute.org';
+$sites['org-jacobsoninstitute.prod.drupal.uiowa.edu'] = 'jacobsoninstitute.org';
