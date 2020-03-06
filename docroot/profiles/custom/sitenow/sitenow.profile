@@ -171,6 +171,29 @@ function sitenow_preprocess_block(&$variables) {
   if ($classes) {
     $variables["attributes"]["class"] = array_merge($variables["attributes"]["class"], $classes);
   }
+  switch ($variables["elements"]["#plugin_id"]) {
+    // Visually hide page title if page option is set.
+    case 'field_block:node:page:title':
+    case 'page_title_block':
+      $admin_context = \Drupal::service('router.admin_context');
+      if (!$admin_context->isAdminRoute()) {
+        $node = \Drupal::routeMatch()->getParameter('node');
+        $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
+        if ($node instanceof NodeInterface) {
+          if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
+            $publish_options = $node->get('field_publish_options')->getValue();
+            if (array_search('title_hidden', array_column($publish_options, 'value')) !== FALSE) {
+              // For uiowa_bootstrap/classy default.
+              $variables["title_attributes"]['class'][] = 'element-invisible';
+              // For uids_base.
+              $variables["attributes"]['class'][] = 'element-invisible';
+            }
+          }
+        }
+      }
+      break;
+
+  }
 }
 
 /**
@@ -516,25 +539,6 @@ function publish_options_allowed_values(FieldStorageConfig $definition, ContentE
   }
 
   return $options;
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
-function sitenow_preprocess_page_title(&$variables) {
-  $admin_context = \Drupal::service('router.admin_context');
-  if (!$admin_context->isAdminRoute()) {
-    $node = \Drupal::routeMatch()->getParameter('node');
-    $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
-    if ($node instanceof NodeInterface) {
-      if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
-        $publish_options = $node->get('field_publish_options')->getValue();
-        if (array_search('title_hidden', array_column($publish_options, 'value')) !== FALSE) {
-          $variables["title_attributes"]['class'][] = 'sr-only';
-        }
-      }
-    }
-  }
 }
 
 /**

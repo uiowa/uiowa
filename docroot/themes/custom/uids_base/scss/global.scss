@@ -260,6 +260,34 @@
   }
 }
 
+// Reveal hidden blocks in layout.
+.block.block-layout-builder.element-invisible {
+  @include element-invisible-off;
+  position: relative !important;
+  &:before {
+    content: "This block is set to be visually hidden";
+    display: block;
+    width: 100%;
+    height: auto;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    font-style: italic;
+    z-index: 1;
+  }
+  &:after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: #fff4f4; // Same as .node--unpublished.
+    opacity: 0.6;
+  }
+}
+
 // mobile search
 
 .search-button[aria-expanded="true"] {
