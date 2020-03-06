@@ -1,4 +1,4 @@
-uuid: ab6f152a-cffd-4b51-9e03-3a1c10a2d158
+uuid: 2ef7adf4-c72a-48ed-80f7-5ac4d0146d44
 langcode: en
 status: true
 dependencies:
@@ -7,7 +7,7 @@ dependencies:
   module:
     - ckeditor
 _core:
-  default_config_hash: rvfR4Sq2bZjGYHOXlQgqcjZaHEAUAV9KrUrHZogh7AI
+  default_config_hash: evKB8SoK0lat2aPC2lic5Q6fesi19-ObF3dMWC5j3ME
 format: filtered_html
 editor: ckeditor
 settings:
@@ -42,11 +42,14 @@ settings:
         -
           name: Media
           items:
+            - Blockquote
             - Table
+            - DrupalMediaLibrary
             - media_entity_embed
         -
           name: Format
           items:
+            - Styles
             - Format
         -
           name: Tools
@@ -59,7 +62,7 @@ settings:
             - Maximize
   plugins:
     stylescombo:
-      styles: ''
+      styles: "div.lead|Lead Paragraph\r\ndiv.alert.alert-success|Alert Success\r\ndiv.alert.alert-info|Alert Info\r\ndiv.alert.alert-warning|Alert Warning\r\ndiv.alert.alert-danger|Alert Danger"
     drupallink:
       linkit_enabled: true
       linkit_profile: default

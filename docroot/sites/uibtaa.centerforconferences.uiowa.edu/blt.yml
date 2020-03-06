@@ -1,0 +1,25 @@
+project:
+  local:
+    hostname: centerforconferencesuibtaa.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: centerforconferencesuibtaa
+  human_name: uibtaa.centerforconferences.uiowa.edu
+  profile:
+    name: sitenow
+drush:
+  aliases:
+    local: self
+    remote: centerforconferencesuibtaa.prod
+drupal:
+  db:
+    database: uibtaa_centerforconferences_uiowa_edu
+cm:
+  core:
+    install_from_config: true
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+uiowa:
+  profiles:
+    sitenow:
+      requester: lbaas

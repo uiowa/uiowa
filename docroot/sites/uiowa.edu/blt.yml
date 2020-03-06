@@ -1,22 +1,21 @@
 project:
-  profile:
-    name: collegiate
   local:
     hostname: uiowa.local.drupal.uiowa.edu
     protocol: https
   machine_name: uiowa
   human_name: uiowa.edu
+  profile:
+    name: sitenow
 drush:
   aliases:
     local: self
-    remote: home.dev
+    remote: home.test
 drupal:
   db:
     database: uiowa_edu
 cm:
   core:
-    install_from_config: false
+    install_from_config: true
     dirs:
       sync:
-        path: ../config/uiowa.edu
-  strategy: core-only
+        path: profiles/custom/sitenow/config/sync
