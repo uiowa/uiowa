@@ -88,43 +88,43 @@
 {% endif %}
 
 {% if layout_builder_enabled == TRUE %}
-<main role="main" {{ node_attributes.addClass(node_classes, header_sticky ? 'header--sticky' : 'header--not-sticky') }}>
+  <main role="main" {{ node_attributes.addClass(node_classes, header_sticky ? 'header--sticky' : 'header--not-sticky') }}>
 
-        <a id="main-content" tabindex="-1"></a>
-        {# link is in html.html.twig #}
-        {{ page.content }}
-        {# /.layout-content #}
-
-        {% if page.sidebar_first %}
-            <aside class="layout-sidebar-first" role="complementary">
-                {{ page.sidebar_first }}
-            </aside>
-        {% endif %}
-
-        {% if page.sidebar_second %}
-            <aside class="layout-sidebar-second" role="complementary">
-                {{ page.sidebar_second }}
-            </aside>
-        {% endif %}
-
-    </main>
-{% else %}
-    <main role="main" {{ node_attributes.addClass(layout_container, header_sticky ? 'header--sticky' : 'header--not-sticky') }}>
     <a id="main-content" tabindex="-1"></a>
     {# link is in html.html.twig #}
-      {{ page.content }}
+    {{ page.content }}
     {# /.layout-content #}
 
     {% if page.sidebar_first %}
-    <aside class="layout-sidebar-first" role="complementary">
-      {{ page.sidebar_first }}
-    </aside>
+      <aside class="layout-sidebar-first" role="complementary">
+        {{ page.sidebar_first }}
+      </aside>
     {% endif %}
 
     {% if page.sidebar_second %}
-    <aside class="layout-sidebar-second" role="complementary">
-      {{ page.sidebar_second }}
-    </aside>
+      <aside class="layout-sidebar-second" role="complementary">
+        {{ page.sidebar_second }}
+      </aside>
+    {% endif %}
+
+  </main>
+{% else %}
+  <main role="main" {{ node_attributes.addClass(layout_container, header_sticky ? 'header--sticky' : 'header--not-sticky') }}>
+    <a id="main-content" tabindex="-1"></a>
+    {# link is in html.html.twig #}
+    {{ page.content }}
+    {# /.layout-content #}
+
+    {% if page.sidebar_first %}
+      <aside class="layout-sidebar-first" role="complementary">
+        {{ page.sidebar_first }}
+      </aside>
+    {% endif %}
+
+    {% if page.sidebar_second %}
+      <aside class="layout-sidebar-second" role="complementary">
+        {{ page.sidebar_second }}
+      </aside>
     {% endif %}
 
   </main>
