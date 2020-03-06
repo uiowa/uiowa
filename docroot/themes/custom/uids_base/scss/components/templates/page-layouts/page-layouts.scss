@@ -15,13 +15,34 @@
 }
 
 .block-spacer-separator {
-   @include margin($top: $sm, $bottom: $sm);
-   flex-basis: 100%;
-   background: #ccc;
-   height: 23px;
+  @include margin($top: $sm, $bottom: $sm);
+  flex-basis: 100%;
+  background: #ccc;
+  height: 23px;
 }
 
 // layout_builder_styles full width override
 .page__container.page__container--full {
-    max-width: 100%;
+  max-width: 100%;
+}
+
+// sticky footer
+.dialog-off-canvas-main-canvas {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+
+  &.header--sticky {
+    transition: transform 0.4s, -webkit-transform 0.4s;
+    @include breakpoint(menu) {
+      margin-top: 80px;
+      .scroll-down & {
+        margin-top: 0;
+      }
+    }
+  }
 }

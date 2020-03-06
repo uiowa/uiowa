@@ -22,6 +22,7 @@
 .form-item-settings-label-display {
   margin: 15px 0;
 }
+
 .form-item-settings-admin-label {
   margin-bottom: 20px;
 }
@@ -302,4 +303,38 @@ body.toolbar-vertical.toolbar-tray-open {
 
 .header--tertiary .o-canvas--open .o-canvas__drawer {
   top: 239px;
+}
+
+
+// admin toolbar style for fixed header
+
+.toolbar-vertical {
+  header.header--sticky {
+    top: 40px;
+  }
+}
+
+.toolbar-horizontal.toolbar-tray-open {
+  header.header--sticky {
+    top: 40px;
+  }
+}
+
+.toolbar-horizontal.toolbar-tray-open {
+  header.header--sticky {
+    top: 80px;
+  }
+}
+
+.toolbar-horizontal,
+.toolbar-vertical {
+  .ui-dialog-off-canvas.ui-dialog-position-side {
+    top: 39px !important;
+  }
+}
+
+.toolbar-horizontal.toolbar-tray-open {
+  .ui-dialog-off-canvas.ui-dialog-position-side {
+    top: 69px !important;
+  }
 }

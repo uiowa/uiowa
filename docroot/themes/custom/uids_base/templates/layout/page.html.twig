@@ -51,7 +51,11 @@
 {% set header_classes = [
     header_type,
     header_nav,
+    header_sticky ? 'header--sticky' : 'header--not-sticky',
 ] %}
+
+
+
 
 {% if layout_container == 'page__container' %}
 {#    {% set header_classes = ['header__container'] %}#}
@@ -84,8 +88,8 @@
 {% endif %}
 
 {% if layout_builder_enabled == TRUE %}
-<div {{ node_attributes.addClass(node_classes) }}>
-    <main role="main">
+<main role="main" {{ node_attributes.addClass(node_classes, header_sticky ? 'header--sticky' : 'header--not-sticky') }}>
+
         <a id="main-content" tabindex="-1"></a>
         {# link is in html.html.twig #}
         {{ page.content }}
@@ -104,10 +108,8 @@
         {% endif %}
 
     </main>
-</div>
 {% else %}
-    <div {{ node_attributes.addClass(layout_container) }}>
-  <main role="main">
+    <main role="main" {{ node_attributes.addClass(layout_container, header_sticky ? 'header--sticky' : 'header--not-sticky') }}>
     <a id="main-content" tabindex="-1"></a>
     {# link is in html.html.twig #}
       {{ page.content }}
@@ -126,7 +128,6 @@
     {% endif %}
 
   </main>
-  </div>
 {% endif %}
 
 {% block footer %}
