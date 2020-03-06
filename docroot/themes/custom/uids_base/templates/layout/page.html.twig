@@ -51,8 +51,12 @@
 {% set header_classes = [
     header_type,
     header_nav,
+] %}
+
+{% set sticky_classes = [
     header_sticky ? 'header--sticky' : 'header--not-sticky',
 ] %}
+
 
 
 
@@ -88,7 +92,7 @@
 {% endif %}
 
 {% if layout_builder_enabled == TRUE %}
-  <main role="main" {{ node_attributes.addClass(node_classes, header_sticky ? 'header--sticky' : 'header--not-sticky') }}>
+  <main role="main" {{ node_attributes.addClass(node_classes, sticky_classes) }}>
 
     <a id="main-content" tabindex="-1"></a>
     {# link is in html.html.twig #}
@@ -109,7 +113,7 @@
 
   </main>
 {% else %}
-  <main role="main" {{ node_attributes.addClass(layout_container, header_sticky ? 'header--sticky' : 'header--not-sticky') }}>
+  <main role="main" {{ node_attributes.addClass(layout_container, sticky_classes) }}>
     <a id="main-content" tabindex="-1"></a>
     {# link is in html.html.twig #}
     {{ page.content }}
