@@ -1,0 +1,25 @@
+project:
+  local:
+    hostname: org-jacobsoninstitute.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: org-jacobsoninstitute
+  human_name: jacobsoninstitute.org
+  profile:
+    name: sitenow
+drush:
+  aliases:
+    local: self
+    remote: org-jacobsoninstitute.prod
+drupal:
+  db:
+    database: jacobsoninstitute_org
+cm:
+  core:
+    install_from_config: true
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+uiowa:
+  profiles:
+    sitenow:
+      requester: mjain

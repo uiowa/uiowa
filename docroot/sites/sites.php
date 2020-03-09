@@ -1134,3 +1134,21 @@ $sites['africanamericancouncil.local.drupal.uiowa.edu'] = 'africanamericancounci
 $sites['africanamericancouncil.dev.drupal.uiowa.edu'] = 'africanamericancouncil.uiowa.edu';
 $sites['africanamericancouncil.stage.drupal.uiowa.edu'] = 'africanamericancouncil.uiowa.edu';
 $sites['africanamericancouncil.prod.drupal.uiowa.edu'] = 'africanamericancouncil.uiowa.edu';
+
+// Directory aliases for uiowa-old.uiowa.edu.
+$sites['uiowa-old.local.drupal.uiowa.edu'] = 'uiowa-old.uiowa.edu';
+$sites['uiowa-old.dev.drupal.uiowa.edu'] = 'uiowa-old.uiowa.edu';
+$sites['uiowa-old.stage.drupal.uiowa.edu'] = 'uiowa-old.uiowa.edu';
+$sites['uiowa-old.prod.drupal.uiowa.edu'] = 'uiowa-old.uiowa.edu';
+
+// Directory aliases for sdo.org.uiowa.edu.
+$sites['orgsdo.local.drupal.uiowa.edu'] = 'sdo.org.uiowa.edu';
+$sites['orgsdo.dev.drupal.uiowa.edu'] = 'sdo.org.uiowa.edu';
+$sites['orgsdo.stage.drupal.uiowa.edu'] = 'sdo.org.uiowa.edu';
+$sites['orgsdo.prod.drupal.uiowa.edu'] = 'sdo.org.uiowa.edu';
+
+// Directory aliases for jacobsoninstitute.org.
+$sites['org-jacobsoninstitute.local.drupal.uiowa.edu'] = 'jacobsoninstitute.org';
+$sites['org-jacobsoninstitute.dev.drupal.uiowa.edu'] = 'jacobsoninstitute.org';
+$sites['org-jacobsoninstitute.stage.drupal.uiowa.edu'] = 'jacobsoninstitute.org';
+$sites['org-jacobsoninstitute.prod.drupal.uiowa.edu'] = 'jacobsoninstitute.org';
