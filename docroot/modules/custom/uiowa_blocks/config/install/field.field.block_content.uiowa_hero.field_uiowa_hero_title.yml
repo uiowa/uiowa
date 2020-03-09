@@ -2,30 +2,27 @@ langcode: en
 status: true
 dependencies:
   config:
-    - block_content.type.uiowa_heading
-    - field.storage.block_content.field_uiowa_heading_title
+    - block_content.type.uiowa_hero
+    - field.storage.block_content.field_uiowa_hero_title
   module:
     - heading
-id: block_content.uiowa_heading.field_uiowa_heading_title
-field_name: field_uiowa_heading_title
+id: block_content.uiowa_hero.field_uiowa_hero_title
+field_name: field_uiowa_hero_title
 entity_type: block_content
-bundle: uiowa_heading
+bundle: uiowa_hero
 label: Title
 description: ''
-required: true
+required: false
 translatable: false
-default_value:
-  -
-    size: h2
-    text: ''
+default_value: {  }
 default_value_callback: ''
 settings:
   label: Heading
   allowed_sizes:
+    h1: h1
     h2: h2
     h3: h3
     h4: h4
     h5: h5
     h6: h6
-    h1: 0
 field_type: heading
