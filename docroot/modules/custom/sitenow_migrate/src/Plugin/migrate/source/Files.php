@@ -110,7 +110,7 @@ class Files extends SqlBase {
       ->fields('t', [
         'field_file_image_title_text_value',
       ])
-      ->condition('f.fid', $row->fid)
+      ->condition('f.fid', $row->getSourceProperty('fid'))
       ->execute();
     return $result->fetchAssoc();
   }
