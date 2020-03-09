@@ -70,6 +70,8 @@ function uids_base_preprocess_page(&$variables) {
   $variables['header_type'] = theme_get_setting('header.type');
   $variables['header_nav'] = theme_get_setting('header.nav_style');
   $variables['header_sticky'] = theme_get_setting('header.sticky');
+  // @todo Should this not be hard-coded?
+  $variables['uiowa_url'] = ($variables['header_type'] === 'header--primary') ? \Drupal::request()->getSchemeAndHttpHost() : 'https://uiowa.edu';
   $variables['layout_container'] = theme_get_setting('layout.container');
   $variables['branding_legacy'] = theme_get_setting('branding.legacy');
   $variables['uiowa_search_form'] = FALSE;
