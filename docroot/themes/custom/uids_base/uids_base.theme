@@ -28,6 +28,9 @@ function uids_base_preprocess_html(&$variables) {
     $variables['attributes']['class'][] = Html::cleanCssIdentifier('layout-page-sidebars-none');
   }
 
+  $variables['header_sticky'] = theme_get_setting('header.sticky');
+  $variables['attributes']['class'][] = $variables['header_sticky'] ? 'header-sticky' : 'header-not-sticky';
+
   $variables['branding_legacy'] = (bool) theme_get_setting('branding.legacy');
 
   // If uiowa_bar module is enabled, part or all of it needs to be

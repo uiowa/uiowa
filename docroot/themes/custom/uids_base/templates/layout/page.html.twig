@@ -47,19 +47,10 @@
     {{ attach_library('uids_base/admin') }}
 {% endif %}
 
-{# @todo Add sticky classes #}
 {% set header_classes = [
     header_type,
     header_nav,
 ] %}
-
-{% set sticky_classes = [
-    header_sticky ? 'header--sticky' : 'header--not-sticky',
-] %}
-
-
-
-
 
 {% if layout_container == 'page__container' %}
 {#    {% set header_classes = ['header__container'] %}#}
@@ -92,7 +83,7 @@
 {% endif %}
 
 {% if layout_builder_enabled == TRUE %}
-  <main role="main" {{ node_attributes.addClass(node_classes, sticky_classes) }}>
+  <main role="main" {{ node_attributes.addClass(node_classes) }}>
 
     <a id="main-content" tabindex="-1"></a>
     {# link is in html.html.twig #}
