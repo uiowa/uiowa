@@ -3,14 +3,13 @@ status: true
 dependencies:
   module:
     - block_content
-id: block_content.field_uiowa_heading_subheading
-field_name: field_uiowa_heading_subheading
+    - media
+id: block_content.field_uiowa_hero_video
+field_name: field_uiowa_hero_video
 entity_type: block_content
-type: string
+type: entity_reference
 settings:
-  max_length: 255
-  is_ascii: false
-  case_sensitive: false
+  target_type: media
 module: core
 locked: false
 cardinality: 1

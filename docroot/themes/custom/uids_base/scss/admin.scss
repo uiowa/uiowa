@@ -22,6 +22,7 @@
 .form-item-settings-label-display {
   margin: 15px 0;
 }
+
 .form-item-settings-admin-label {
   margin-bottom: 20px;
 }
@@ -47,8 +48,12 @@
 }
 
 .layout-builder-block {
-  padding: 0;
+  //padding: 0;
   cursor: move;
+  background: transparent;
+  &.uids-component--gray {
+    background: $light;
+  }
 }
 
 .stat.layout-builder-block {
@@ -302,4 +307,56 @@ body.toolbar-vertical.toolbar-tray-open {
 
 .header--tertiary .o-canvas--open .o-canvas__drawer {
   top: 239px;
+}
+
+
+// grid 3x2
+
+.grid--3-2 .js-layout-builder-region>.layout-builder-block:nth-child(2) {
+  order: 1;
+}
+
+.grid--3-2 .js-layout-builder-region>.layout-builder-block:nth-child(3) {
+  order: 2;
+}
+
+.grid--3-2 .js-layout-builder-region>.layout-builder-block:nth-child(4) {
+  order: 4;
+
+  @include breakpoint(sm) {
+    order: 3;
+  }
+}
+
+.grid--3-2 .js-layout-builder-region>.layout-builder-block:nth-child(5) {
+  order: 3;
+
+  @include breakpoint(sm) {
+    order: 4;
+  }
+}
+
+.grid--3-2 .js-layout-builder-region>.layout-builder-block:nth-child(6) {
+  order: 5;
+}
+
+.grid--3-2 .js-layout-builder-region>.layout-builder-block:nth-child(7) {
+  order: 6;
+}
+
+
+.grid--3-2 .js-layout-builder-region {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(50%, 1fr));
+
+  @include breakpoint(sm) {
+    grid-template-columns: repeat(auto-fit, minmax(33.3%, 1fr));
+  }
+}
+
+
+// place grid add block at the end of grid
+
+.grid--3-2 .layout-builder__add-block {
+  order: 50;
 }
