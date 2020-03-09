@@ -37,13 +37,17 @@
 main {
   flex: 1;
 
-  &.header--sticky {
+  .header-sticky & {
     transition: transform 0.4s, -webkit-transform 0.4s;
+
     @include breakpoint(menu) {
       margin-top: 80px;
-      .scroll-down & {
-        margin-top: 0;
-      }
+    }
+  }
+
+  .header-sticky.scroll-down & {
+    @include breakpoint(menu) {
+      margin-top: 0px;
     }
   }
 }
