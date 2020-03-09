@@ -6,40 +6,13 @@
  */
 
 /**
- * Adds any additional settings files required by your application.
- *
- * To use, rename this file to be `includes.settings.php and
- * add file references to the `additionalSettingsFiles` array below.
- *
- * Files required into this file are included into the blt.settings.php file
- * prior to the inclusion of the local.settings.php file, so that that file may
- * override any variable set up the chain. Taken in total, the points at which
- * files are included into the base settings.php file are...
- *
- * settings.php
- *   |
- *   ---- blt.settings.php
- *          |
- *          ---- includes.settings.php
- *          |       |
- *          |       ---- foo.settings.php
- *          |       ---- bar.settings.php
- *          |       ---- ....
- *          |
- *          ---- local.settings.php
- *
- * If you want to add settings to every site defined in the codebase, you can do
- * so using the default.global.settings.php file in docroot/sites/settings.
- */
-
-/**
  * Add settings using full file location and name.
  *
  * It is recommended that you use the DRUPAL_ROOT and $site_dir components to
- * provide full paths in a dynamic manner.
+ * provide full pathing to the file in a dynamic manner.
  */
 $additionalSettingsFiles = [
-  DRUPAL_ROOT . "/sites/settings/collegiate.settings.php"
+  DRUPAL_ROOT . "/sites/settings/sitenow.settings.php"
 ];
 
 foreach ($additionalSettingsFiles as $settingsFile) {
