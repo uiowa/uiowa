@@ -23,5 +23,31 @@
 
 // layout_builder_styles full width override
 .page__container.page__container--full {
-    max-width: 100%;
+  max-width: 100%;
+}
+
+// sticky footer
+.dialog-off-canvas-main-canvas {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+// todo - add styles for College main content margins when sticky
+main {
+  flex: 1;
+
+  .header-sticky & {
+    transition: transform 0.4s, -webkit-transform 0.4s;
+
+    @include breakpoint(menu) {
+      margin-top: 80px;
+    }
+  }
+
+  .header-sticky.scroll-down & {
+    @include breakpoint(menu) {
+      margin-top: 0px;
+    }
+  }
 }

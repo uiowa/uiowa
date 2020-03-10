@@ -47,7 +47,6 @@
     {{ attach_library('uids_base/admin') }}
 {% endif %}
 
-{# @todo Add sticky classes #}
 {% set header_classes = [
     header_type,
     header_nav,
@@ -84,49 +83,46 @@
 {% endif %}
 
 {% if layout_builder_enabled == TRUE %}
-<div {{ node_attributes.addClass(node_classes) }}>
-    <main role="main">
-        <a id="main-content" tabindex="-1"></a>
-        {# link is in html.html.twig #}
-        {{ page.content }}
-        {# /.layout-content #}
+  <main role="main" {{ node_attributes.addClass(node_classes) }}>
 
-        {% if page.sidebar_first %}
-            <aside class="layout-sidebar-first" role="complementary">
-                {{ page.sidebar_first }}
-            </aside>
-        {% endif %}
-
-        {% if page.sidebar_second %}
-            <aside class="layout-sidebar-second" role="complementary">
-                {{ page.sidebar_second }}
-            </aside>
-        {% endif %}
-
-    </main>
-</div>
-{% else %}
-    <div {{ node_attributes.addClass(layout_container) }}>
-  <main role="main">
     <a id="main-content" tabindex="-1"></a>
     {# link is in html.html.twig #}
-      {{ page.content }}
+    {{ page.content }}
     {# /.layout-content #}
 
     {% if page.sidebar_first %}
-    <aside class="layout-sidebar-first" role="complementary">
-      {{ page.sidebar_first }}
-    </aside>
+      <aside class="layout-sidebar-first" role="complementary">
+        {{ page.sidebar_first }}
+      </aside>
     {% endif %}
 
     {% if page.sidebar_second %}
-    <aside class="layout-sidebar-second" role="complementary">
-      {{ page.sidebar_second }}
-    </aside>
+      <aside class="layout-sidebar-second" role="complementary">
+        {{ page.sidebar_second }}
+      </aside>
     {% endif %}
 
   </main>
-  </div>
+{% else %}
+  <main role="main" {{ node_attributes.addClass(layout_container, sticky_classes) }}>
+    <a id="main-content" tabindex="-1"></a>
+    {# link is in html.html.twig #}
+    {{ page.content }}
+    {# /.layout-content #}
+
+    {% if page.sidebar_first %}
+      <aside class="layout-sidebar-first" role="complementary">
+        {{ page.sidebar_first }}
+      </aside>
+    {% endif %}
+
+    {% if page.sidebar_second %}
+      <aside class="layout-sidebar-second" role="complementary">
+        {{ page.sidebar_second }}
+      </aside>
+    {% endif %}
+
+  </main>
 {% endif %}
 
 {% block footer %}

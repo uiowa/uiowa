@@ -310,6 +310,41 @@ body.toolbar-vertical.toolbar-tray-open {
 }
 
 
+// admin toolbar style for sticky header
+
+.header-sticky.toolbar-vertical {
+  header {
+    top: 40px;
+  }
+}
+
+.header-sticky.toolbar-horizontal {
+  header {
+    top: 40px;
+  }
+}
+
+.header-sticky.toolbar-horizontal.toolbar-tray-open {
+  header {
+    top: 80px;
+  }
+}
+
+.toolbar-horizontal,
+.toolbar-vertical {
+  .ui-dialog-off-canvas.ui-dialog-position-side {
+    top: 39px !important;
+  }
+}
+
+.toolbar-horizontal.toolbar-tray-open {
+  .ui-dialog-off-canvas.ui-dialog-position-side {
+    top: 69px !important;
+  }
+}
+
+// todo - add styles for College level toolbar settings
+
 // grid 3x2
 
 .grid--3-2 .js-layout-builder-region>.layout-builder-block:nth-child(2) {
