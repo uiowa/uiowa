@@ -116,7 +116,6 @@ class GitCommands extends BltTasks {
 
   /**
    * Write an unannotated Git tag version string to custom assets.
-   *
    */
   protected function writeGitVersion() {
     $result = $this->taskGit()
