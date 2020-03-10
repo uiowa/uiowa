@@ -98,18 +98,26 @@ class GitCommands extends BltTasks {
   }
 
   /**
-   * Write an unannotated Git tag version string to custom asset info files.
+   * Run post build tasks.
    *
    * This command should not be executed directly. It is called after the
-   * build artifact is created to write info versions dynamically.
+   * build artifact is created in blt.yml.
    *
    * @see: blt/blt.yml
    *
-   * @command uiowa:git:version
+   * @command uiowa:post:build
    *
    * @hidden
    */
-  public function version() {
+  public function postArtifactBuild() {
+    $this->writeGitVersion();
+    $this->copyDrushCommands();
+  }
+
+  /**
+   * Write an unannotated Git tag version string to custom assets.
+   */
+  protected function writeGitVersion() {
     $result = $this->taskGit()
       ->dir($this->getConfigValue('repo.root'))
       ->exec('describe --tags')
@@ -163,10 +171,8 @@ class GitCommands extends BltTasks {
    * any hard-coded commands (ex. PolicyCommands.php) will not be committed to
    * the build artifact. Rather than override that file and lose upstream
    * changes, we can copy our Drush commands via a post-command hook.
-   *
-   * @hook post-command artifact:build
    */
-  public function copyDrushCommands() {
+  protected function copyDrushCommands() {
     $root = $this->getConfigValue('repo.root');
     $deploy_dir = $this->getConfigValue('deploy.dir');
 
