@@ -1,4 +1,5 @@
 @import "../uids/assets/scss/_variables.scss";
+$imgpath: '../../uids/assets/images/';
 @import "../uids/assets/scss/_utilities.scss";
 @import "../uids/assets/scss/_fonts.scss";
 @import "../uids/assets/scss/_base.scss";
@@ -7,10 +8,10 @@
 
 
 .layout__container {
-
   .block-system-breadcrumb-block,
   .block-field-blocknodepagetitle,
   .block-field-blocknodepagebody,
+  .block-inline-blockuiowa-text-area,
   .block-views {
     flex-basis: 100%;
   }
@@ -80,6 +81,14 @@
     @include breakpoint(sm) {
       &__top {
         padding-top: $md;
+      }
+
+      &__top-extra {
+        padding-top: $desktop-width-gutter;
+      }
+
+      &__bottom-extra {
+        padding-bottom: $desktop-width-gutter;
       }
 
       &__right {
@@ -158,7 +167,7 @@
 .content__container,
 .content__mixed {
   .layout__container {
-    margin-bottom: $mobile-width-gutter;
+    margin-bottom: $desktop-width-gutter;
     @extend %container;
 
     &.page__container--extended {
@@ -174,6 +183,14 @@
       @include breakpoint(sm) {
         &__top {
           padding-top: $md;
+        }
+
+        &__top-extra {
+          padding-top: $desktop-width-gutter;
+        }
+
+        &__bottom-extra {
+          padding-bottom: $desktop-width-gutter;
         }
 
         &__right {
@@ -236,7 +253,7 @@
 
 .block-padding {
   &__all {
-    padding: $lg;
+    padding: $desktop-width-gutter;
   }
 }
 
@@ -257,6 +274,34 @@
     &__left {
       margin-left: $md;
     }
+  }
+}
+
+// Reveal hidden blocks in layout.
+.block.block-layout-builder.element-invisible {
+  @include element-invisible-off;
+  position: relative !important;
+  &:before {
+    content: "This block is set to be visually hidden";
+    display: block;
+    width: 100%;
+    height: auto;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    font-style: italic;
+    z-index: 1;
+  }
+  &:after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: #fff4f4; // Same as .node--unpublished.
+    opacity: 0.6;
   }
 }
 

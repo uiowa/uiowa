@@ -33,6 +33,10 @@
     'uids-content',
   ]
 %}
+
+{% set rendered_content = content|render %}
+
+
 <div{{ attributes.addClass(classes) }}>
   {{ title_prefix }}
   {% if label %}
