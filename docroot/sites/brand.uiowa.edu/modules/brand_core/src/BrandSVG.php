@@ -2,6 +2,8 @@
 
 namespace Drupal\brand_core;
 
+use EasySVG;
+
 /**
  * BrandSVG.
  */
