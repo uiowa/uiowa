@@ -51,7 +51,9 @@
 
 <div {{ attributes.addClass(classes) }}>
   <div class="carousel-image">{{ content.field_carousel_image_image }}</div>
-  {% if (content.field_carousel_image_caption[0] is not empty) %}
-  <div class="carousel-caption">{{ content.field_carousel_image_caption }}</div>
+  {% if content.field_carousel_image_caption[0] is not empty %}
+    <div class="carousel-caption">{{ content.field_carousel_image_caption }}</div>
+  {% elseif content.field_carousel_image_image[0]['#media'].field_media_caption.value|default %}
+    <div class="carousel-caption">{{ content.field_carousel_image_image[0]['#media'].field_media_caption.value|raw }}</div>
   {% endif %}
 </div>
