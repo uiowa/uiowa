@@ -40,6 +40,8 @@ validate:
   twig:
     functions:
       - drupal_image
+      - drupal_title
+      - drupal_entity
     filters:
       - image_style
 command-hooks:
@@ -51,7 +53,7 @@ command-hooks:
     command: 'yarn workspaces run gulp'
   post-deploy-build:
     dir: ${repo.root}
-    command: './vendor/bin/blt uiowa:git:version'
+    command: './vendor/bin/blt uiowa:post:build'
 sync:
   commands:
     - 'blt:init:settings'

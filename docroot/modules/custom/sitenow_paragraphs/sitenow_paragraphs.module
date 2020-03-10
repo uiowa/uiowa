@@ -137,6 +137,7 @@ function sitenow_paragraphs_preprocess_paragraph(&$variables) {
       case 'accordion_item':
       case 'blockquote':
       case 'card':
+      case 'image_gallery':
       case 'webform':
       case 'featured_content':
       case 'carousel':
@@ -267,6 +268,10 @@ function uip_classes_allowed_values(FieldStorageConfig $definition, ContentEntit
 
       case 'carousel':
         $options['carousel-fade'] = 'Crossfade';
+        break;
+
+      case 'image_gallery':
+        $options['masonry'] = 'Masonry';
         break;
 
     }

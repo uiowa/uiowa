@@ -3,10 +3,12 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.media.image.field_media_caption
     - field.field.media.image.field_media_image
     - media.type.image
   module:
     - image
+    - text
 _core:
   default_config_hash: qxh_4kI5XZJ_t8OOI3OEqnRP5iL5WaD7cCfGRLbmPjw
 id: media.image.default
@@ -14,6 +16,13 @@ targetEntityType: media
 bundle: image
 mode: default
 content:
+  field_media_caption:
+    weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
   field_media_image:
     type: image
     weight: 0

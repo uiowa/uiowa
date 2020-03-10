@@ -28,9 +28,9 @@
 
 {% block content %}
   {{ attach_library('uids_base/banner') }}
-  {{ attach_library('uids_base/headline') }}
 
   {% embed "@uids/02 - blocks/banner-block/banner-block.twig" with {
+    "banner_image": content.field_uiowa_banner_image,
     "banner_summary": content.field_uiowa_banner_excerpt,
     "banner_link_url": content.field_uiowa_banner_link[0]['#url'],
     "banner_link_title": content.field_uiowa_banner_link[0]['#title'],
