@@ -103,10 +103,8 @@ class MultisiteCommands extends BltTasks {
    * @command uiowa:multisite:install
    *
    * @aliases umi
-   *
    */
-  public function install()
-  {
+  public function install() {
     $app = EnvironmentDetector::getAhGroup() ?? 'uiowa';
 
     foreach ($this->getConfigValue('multisites') as $multisite) {
