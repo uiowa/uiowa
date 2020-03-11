@@ -795,10 +795,12 @@ function sitenow_editor_js_settings_alter(array &$settings) {
  * Helper function to determine if the current user is an admin.
  *
  * @param \Drupal\Core\Session\AccountProxyInterface $current_user
+ *   The current user account.
  *
  * @return bool
+ *   Boolean indicating whether or not current user is an admin.
  */
-function sitenow_is_user_admin(UserInterface $current_user) {
+function sitenow_is_user_admin(AccountProxyInterface $current_user) {
   if ($current_user->id() === 1 || in_array('administrator', $current_user->getRoles())) {
     return TRUE;
   }
