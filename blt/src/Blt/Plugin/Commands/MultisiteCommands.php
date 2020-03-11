@@ -5,6 +5,7 @@ namespace Uiowa\Blt\Plugin\Commands;
 use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\EnvironmentDetector;
 use Acquia\Blt\Robo\Common\YamlMunge;
+use Acquia\Blt\Robo\Exceptions\BltException;
 use AcquiaCloudApi\Connector\Client;
 use AcquiaCloudApi\Connector\Connector;
 use AcquiaCloudApi\Endpoints\Databases;
@@ -125,15 +126,18 @@ class MultisiteCommands extends BltTasks {
       if (!$this->getInspector()->isDrupalInstalled()) {
         $this->say("Drupal not installed for {$multisite}. Installing...");
 
-        $this->input()->setInteractive(FALSE);
-
-        $this->invokeCommand('drupal:install', [
-          '--site' => $multisite,
-        ]);
+        try {
+          $this->input()->setInteractive(FALSE);
+          $this->invokeCommand('drupal:install', [
+            '--site' => $multisite,
+          ]);
+        } catch (BltException $e) {
+          $this->sendNotification("Drupal installation FAILED for site {$multisite} in {$env} environment.");
+        }
 
         // If a requester was added, add them as a webmaster for the site.
         if ($requester = $this->getConfigValue("uiowa.profiles.{$profile}.requester")) {
-          $result = $this->taskDrush()
+          $this->taskDrush()
             ->stopOnFail(FALSE)
             ->drush('user:create')
             ->args($requester)
@@ -143,29 +147,9 @@ class MultisiteCommands extends BltTasks {
               $requester,
             ])
             ->run();
-
-          if (!$result->wasSuccessful()) {
-            throw new \Exception("Webmaster task failed for {$multisite}.");
-          }
         }
 
-        $webhook_url = getenv('SLACK_WEBHOOK_URL');
-
-        if ($webhook_url) {
-          $payload = [
-            'username' => 'Acquia Cloud',
-            'text' => "Drupal installation complete for site {$multisite} in {$env} environment.",
-            'icon_emoji' => ':acquia:',
-          ];
-
-          $data = "payload=" . json_encode($payload);
-          $ch = curl_init($webhook_url);
-          curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-          curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-          curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-          curl_exec($ch);
-          curl_close($ch);
-        }
+        $this->sendNotification("Drupal installation complete for site {$multisite} in {$env} environment.");
       }
       else {
         $this->say("Drupal already installed for {$multisite}. Skipping.");
@@ -667,4 +651,29 @@ EOD;
     return $db_exists;
   }
 
+  /**
+   * Send a Slack notification if the webhook environment variable exists.
+   *
+   * @param string $message
+   *   The message to send.
+   */
+  protected function sendNotification($message) {
+    $webhook_url = getenv('SLACK_WEBHOOK_URL');
+
+    if ($webhook_url) {
+      $payload = [
+        'username' => 'Acquia Cloud',
+        'text' => $message,
+        'icon_emoji' => ':acquia:',
+      ];
+
+      $data = "payload=" . json_encode($payload);
+      $ch = curl_init($webhook_url);
+      curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+      curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+      curl_exec($ch);
+      curl_close($ch);
+    }
+  }
 }
