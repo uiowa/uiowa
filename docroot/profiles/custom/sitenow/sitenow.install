@@ -276,3 +276,13 @@ function sitenow_update_8015(&$sandbox) {
     $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
   }
 }
+
+/**
+ * Remove administrator role from all existing user 1 accounts.
+ */
+function sitenow_update_8016() {
+  /** @var \Drupal\user\UserInterface $user */
+  $user = User::load(1);
+  $user->removeRole('administrator');
+  $user->save();
+}
