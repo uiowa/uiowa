@@ -15,6 +15,7 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\user\Entity\User;
+use Drupal\user\UserInterface;
 use Drupal\views\ViewExecutable;
 use Drupal\media\Entity\Media;
 use Drupal\file\Entity\File;
@@ -73,10 +74,8 @@ function sitenow_preprocess_select(&$variables) {
  */
 function sitenow_views_pre_render(ViewExecutable $view) {
   if ($view->id() == 'administerusersbyrole_people' && $view->current_display == 'page_1') {
-    $user_roles = \Drupal::currentUser()->getRoles();
-
     // Do not show administrator accounts to non-admins.
-    if (\Drupal::currentUser()->id() != 1 && !(in_array('administrator', $user_roles))) {
+    if (!sitenow_is_user_admin(\Drupal::currentUser())) {
       $non_admins = [];
 
       foreach ($view->result as $result) {
@@ -254,8 +253,7 @@ function sitenow_form_views_exposed_form_alter(&$form, FormStateInterface $form_
   $view = $form_state->get('view');
 
   if ($view && $view->id() == 'administerusersbyrole_people') {
-    $roles = \Drupal::currentUser()->getRoles();
-    if (!in_array('administrator', $roles)) {
+    if (!sitenow_is_user_admin(\Drupal::currentUser())) {
       unset($form['role']['#options']['administrator']);
     }
   }
@@ -265,9 +263,7 @@ function sitenow_form_views_exposed_form_alter(&$form, FormStateInterface $form_
  * Implements hook_form_FORM_ID_alter().
  */
 function sitenow_form_views_form_administerusersbyrole_people_page_1_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $roles = \Drupal::currentUser()->getRoles();
-
-  if (!in_array('administrator', $roles)) {
+  if (!sitenow_is_user_admin(\Drupal::currentUser())) {
     foreach ($form['header']['user_bulk_form']['action']['#options'] as $key => $option) {
       if (stristr($option, 'administrator')) {
         unset($form['header']['user_bulk_form']['action']['#options'][$key]);
@@ -792,5 +788,21 @@ function sitenow_editor_js_settings_alter(array &$settings) {
        * base_path() . drupal_get_path('module', 'fontawesome') . '/js/plugins/drupalfontawesome/plugin.es6.js';
        */
     }
+  }
+}
+
+/**
+ * Helper function to determine if the current user is an admin.
+ *
+ * @param \Drupal\Core\Session\AccountProxyInterface $current_user
+ *
+ * @return bool
+ */
+function sitenow_is_user_admin(UserInterface $current_user) {
+  if ($current_user->id() === 1 || in_array('administrator', $current_user->getRoles())) {
+    return TRUE;
+  }
+  else {
+    return FALSE;
   }
 }
