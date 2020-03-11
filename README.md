@@ -57,9 +57,6 @@ $config['stage_file_proxy.settings']['hotlink'] = TRUE;
 ```
 
 ## Multisite Management
-### SiteNow
-Please see the [SiteNow README](docroot/profiles/custom/sitenow/README.md) for provisioning and deprovisioning instructions.
-
 ### Creating Sites
 To add a new site to the project, run the following command:
 ```
