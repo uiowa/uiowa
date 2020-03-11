@@ -131,7 +131,8 @@ class MultisiteCommands extends BltTasks {
           $this->invokeCommand('drupal:install', [
             '--site' => $multisite,
           ]);
-        } catch (BltException $e) {
+        }
+        catch (BltException $e) {
           $this->sendNotification("Drupal installation FAILED for site {$multisite} in {$env} environment.");
         }
 
@@ -676,4 +677,5 @@ EOD;
       curl_close($ch);
     }
   }
+
 }
