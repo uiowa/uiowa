@@ -20,7 +20,6 @@ class ReplaceCommands extends BltTasks {
     $this->config->set('drush.alias', '');
 
     $app = EnvironmentDetector::getAhGroup() ?? 'uiowa';
-    $env = EnvironmentDetector::getAhEnv() ?? 'local';
 
     foreach ($this->getConfigValue('multisites') as $multisite) {
       $this->switchSiteContext($multisite);
