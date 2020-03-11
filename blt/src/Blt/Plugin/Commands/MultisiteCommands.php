@@ -133,7 +133,7 @@ class MultisiteCommands extends BltTasks {
           ]);
         }
         catch (BltException $e) {
-          $this->sendNotification("Drupal installation FAILED for site {$multisite} in {$env} environment.");
+          $this->sendNotification("Drupal installation FAILED for site {$multisite} in {$env} environment on {$app} application.");
         }
 
         // If a requester was added, add them as a webmaster for the site.
@@ -150,7 +150,7 @@ class MultisiteCommands extends BltTasks {
             ->run();
         }
 
-        $this->sendNotification("Drupal installation complete for site {$multisite} in {$env} environment.");
+        $this->sendNotification("Drupal installation complete for site {$multisite} in {$env} environment on {$app} application.");
       }
       else {
         $this->say("Drupal already installed for {$multisite}. Skipping.");
