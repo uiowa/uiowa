@@ -60,7 +60,7 @@ class MultisiteCommands extends BltTasks {
       throw new \Exception('Aborted.');
     }
     else {
-      $app = EnvironmentDetector::getAhGroup() ?? 'uiowa';
+      $app = EnvironmentDetector::getAhGroup() ?? 'local';
       $env = EnvironmentDetector::getAhEnv() ?? 'local';
 
       foreach ($this->getConfigValue('multisites') as $multisite) {
@@ -106,7 +106,7 @@ class MultisiteCommands extends BltTasks {
    * @aliases umi
    */
   public function install() {
-    $app = EnvironmentDetector::getAhGroup() ?? 'uiowa';
+    $app = EnvironmentDetector::getAhGroup() ?? 'local';
     $env = EnvironmentDetector::getAhEnv() ?? 'local';
 
     foreach ($this->getConfigValue('multisites') as $multisite) {
