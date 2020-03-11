@@ -801,7 +801,7 @@ function sitenow_editor_js_settings_alter(array &$settings) {
  *   Boolean indicating whether or not current user is an admin.
  */
 function sitenow_is_user_admin(AccountProxy $current_user) {
-  if ($current_user->id() === 1 || in_array('administrator', $current_user->getRoles())) {
+  if ($current_user->id() == 1 || in_array('administrator', $current_user->getRoles())) {
     return TRUE;
   }
   else {
