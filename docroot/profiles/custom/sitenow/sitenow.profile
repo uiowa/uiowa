@@ -9,13 +9,13 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Session\AccountProxy;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\user\Entity\User;
-use Drupal\user\UserInterface;
 use Drupal\views\ViewExecutable;
 use Drupal\media\Entity\Media;
 use Drupal\file\Entity\File;
@@ -794,13 +794,13 @@ function sitenow_editor_js_settings_alter(array &$settings) {
 /**
  * Helper function to determine if the current user is an admin.
  *
- * @param \Drupal\Core\Session\AccountProxyInterface $current_user
+ * @param \Drupal\Core\Session\AccountProxy $current_user
  *   The current user account.
  *
  * @return bool
  *   Boolean indicating whether or not current user is an admin.
  */
-function sitenow_is_user_admin(AccountProxyInterface $current_user) {
+function sitenow_is_user_admin(AccountProxy $current_user) {
   if ($current_user->id() === 1 || in_array('administrator', $current_user->getRoles())) {
     return TRUE;
   }
