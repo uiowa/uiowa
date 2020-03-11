@@ -107,8 +107,8 @@ class LockupController extends ControllerBase {
    */
   public function generateLockup($node, $iowa_color, $text_color, $type) {
     // Load all of the needed assets to create the graphics.
-    $bold = drupal_get_path('module', 'brand_core') . '/fonts/Iowa-RobotoBold-2020-3-3.svg';
-    $regular = drupal_get_path('module', 'brand_core') . '/fonts/Iowa-RobotoRegular-2020-3-3.svg';
+    $bold = drupal_get_path('module', 'brand_core') . '/fonts/Iowa-RobotoBold-2020-03.svg';
+    $regular = drupal_get_path('module', 'brand_core') . '/fonts/Iowa-RobotoRegular-2020-03.svg';
     $psize = 8;
     $pline_height = 9.5;
     $pletter_spacing = 0;
