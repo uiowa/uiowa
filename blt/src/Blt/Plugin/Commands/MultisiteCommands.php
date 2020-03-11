@@ -92,6 +92,71 @@ class MultisiteCommands extends BltTasks {
   }
 
   /**
+   * Install multisites that have empty databases.
+   *
+   * This command can be called manually or at regular intervals through a
+   * scheduled cron task. It invokes the BLT drupal:install command which
+   * handles passing arguments and options to Drush site:install.
+   *
+   * @see: Acquia\Blt\Robo\Commands\Drupal\InstallCommand
+   *
+   * @command uiowa:multisite:install
+   *
+   * @aliases umi
+   *
+   */
+  public function install()
+  {
+    $app = EnvironmentDetector::getAhGroup() ?? 'uiowa';
+
+    foreach ($this->getConfigValue('multisites') as $multisite) {
+      $this->switchSiteContext($multisite);
+      $profile = $this->getConfigValue('project.profile.name');
+
+      // Skip sites whose database do not exist on the application in AH env.
+      if (EnvironmentDetector::isAhEnv()) {
+        $db = $this->getConfigValue('drupal.db.database');
+
+        if (!file_exists("/var/www/site-php/{$app}/{$db}-settings.inc")) {
+          $this->say("Skipping {$multisite}. Database {$db} does not exist.");
+          continue;
+        }
+      }
+
+      if (!$this->getInspector()->isDrupalInstalled()) {
+        $this->say("Drupal not installed for {$multisite}. Installing...");
+
+        $this->input()->setInteractive(FALSE);
+
+        $this->invokeCommand('drupal:install', [
+          '--site' => $multisite,
+        ]);
+
+        // If a requester was added, add them as a webmaster for the site.
+        if ($requester = $this->getConfigValue("uiowa.profiles.{$profile}.requester")) {
+          $result = $this->taskDrush()
+            ->stopOnFail(FALSE)
+            ->drush('user:create')
+            ->args($requester)
+            ->drush('user:role:add')
+            ->args([
+              'webmaster',
+              $requester,
+            ])
+            ->run();
+
+          if (!$result->wasSuccessful()) {
+            throw new \Exception("Webmaster task failed for {$multisite}.");
+          }
+        }
+      }
+      else {
+        $this->say("Drupal already installed for {$multisite}. Skipping.");
+      }
+    }
+  }
+
+  /**
    * Deletes multisite code, database and domains.
    *
    * @param array $options
