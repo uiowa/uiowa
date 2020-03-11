@@ -106,6 +106,7 @@ class MultisiteCommands extends BltTasks {
    */
   public function install() {
     $app = EnvironmentDetector::getAhGroup() ?? 'uiowa';
+    $env = EnvironmentDetector::getAhEnv() ?? 'local';
 
     foreach ($this->getConfigValue('multisites') as $multisite) {
       $this->switchSiteContext($multisite);
@@ -146,6 +147,24 @@ class MultisiteCommands extends BltTasks {
           if (!$result->wasSuccessful()) {
             throw new \Exception("Webmaster task failed for {$multisite}.");
           }
+        }
+
+        $webhook_url = getenv('SLACK_WEBHOOK_URL');
+
+        if ($webhook_url) {
+          $payload = [
+            'username' => 'Acquia Cloud',
+            'text' => "Drupal installation complete for site {$multisite} in {$env} environment.",
+            'icon_emoji' => ':acquia:',
+          ];
+
+          $data = "payload=" . json_encode($payload);
+          $ch = curl_init($webhook_url);
+          curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+          curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+          curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+          curl_exec($ch);
+          curl_close($ch);
         }
       }
       else {
