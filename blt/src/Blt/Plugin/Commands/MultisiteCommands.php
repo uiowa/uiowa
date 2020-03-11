@@ -92,7 +92,7 @@ class MultisiteCommands extends BltTasks {
   }
 
   /**
-   * Install multisites that have empty databases.
+   * Invoke the BLT install process on multisites where Drupal is not installed.
    *
    * This command can be called manually or at regular intervals through a
    * scheduled cron task. It invokes the BLT drupal:install command which
