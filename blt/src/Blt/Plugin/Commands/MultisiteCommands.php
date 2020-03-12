@@ -95,23 +95,27 @@ class MultisiteCommands extends BltTasks {
   /**
    * Invoke the BLT install process on multisites where Drupal is not installed.
    *
-   * This command can be called manually or at regular intervals through a
-   * scheduled cron task. It invokes the BLT drupal:install command which
-   * handles passing arguments and options to Drush site:install.
-   *
-   * @see: Acquia\Blt\Robo\Commands\Drupal\InstallCommand
+   * @param array $options
+   *   Command options.
+   * @option dry-run
+   *   Report back the uninstalled sites but do not install.
    *
    * @command uiowa:multisite:install
    *
    * @aliases umi
+   *
+   * @throws \Exception
+   *
+   * @see: Acquia\Blt\Robo\Commands\Drupal\InstallCommand
    */
-  public function install() {
+  public function install(array $options = ['dry-run' => FALSE]) {
     $app = EnvironmentDetector::getAhGroup() ?? 'local';
     $env = EnvironmentDetector::getAhEnv() ?? 'local';
 
+    $uninstalled = [];
+
     foreach ($this->getConfigValue('multisites') as $multisite) {
       $this->switchSiteContext($multisite);
-      $profile = $this->getConfigValue('project.profile.name');
 
       // Skip sites whose database do not exist on the application in AH env.
       if (EnvironmentDetector::isAhEnv()) {
@@ -124,37 +128,53 @@ class MultisiteCommands extends BltTasks {
       }
 
       if (!$this->getInspector()->isDrupalInstalled()) {
-        $this->say("Drupal not installed for {$multisite}. Installing...");
-
-        try {
-          $this->input()->setInteractive(FALSE);
-          $this->invokeCommand('drupal:install', [
-            '--site' => $multisite,
-          ]);
-        }
-        catch (BltException $e) {
-          $this->sendNotification("Drupal installation FAILED for site {$multisite} in {$env} environment on {$app} application.");
-        }
-
-        // If a requester was added, add them as a webmaster for the site.
-        if ($requester = $this->getConfigValue("uiowa.profiles.{$profile}.requester")) {
-          $this->taskDrush()
-            ->stopOnFail(FALSE)
-            ->drush('user:create')
-            ->args($requester)
-            ->drush('user:role:add')
-            ->args([
-              'webmaster',
-              $requester,
-            ])
-            ->run();
-        }
-
-        $this->sendNotification("Drupal installation complete for site {$multisite} in {$env} environment on {$app} application.");
+        $uninstalled[] = $multisite;
       }
-      else {
-        $this->say("Drupal already installed for {$multisite}. Skipping.");
+    }
+
+    if (!empty($uninstalled)) {
+      $this->io()->listing($uninstalled);
+
+      if (!$options['dry-run']) {
+        if ($this->confirm('You will invoke the drupal:install command for the sites listed above. Are you sure?', TRUE)) {
+          foreach ($uninstalled as $multisite) {
+            $this->switchSiteContext($multisite);
+            $profile = $this->getConfigValue('project.profile.name');
+
+            try {
+              $this->input()->setInteractive(FALSE);
+              $this->invokeCommand('drupal:install', [
+                '--site' => $multisite,
+              ]);
+            }
+            catch (BltException $e) {
+              $this->sendNotification("Drupal installation FAILED for site {$multisite} in {$env} environment on {$app} application.");
+            }
+
+            // If a requester was added, add them as a webmaster for the site.
+            if ($requester = $this->getConfigValue("uiowa.profiles.{$profile}.requester")) {
+              $this->taskDrush()
+                ->stopOnFail(FALSE)
+                ->drush('user:create')
+                ->args($requester)
+                ->drush('user:role:add')
+                ->args([
+                  'webmaster',
+                  $requester,
+                ])
+                ->run();
+            }
+
+            $this->sendNotification("Drupal installation complete for site {$multisite} in {$env} environment on {$app} application.");
+          }
+        }
+        else {
+          throw new \Exception('Canceled.');
+        }
       }
+    }
+    else {
+      $this->say('There are no uninstalled sites.');
     }
   }
 
