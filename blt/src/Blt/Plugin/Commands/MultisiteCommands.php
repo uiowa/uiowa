@@ -173,6 +173,9 @@ class MultisiteCommands extends BltTasks {
         }
       }
     }
+    else {
+      $this->say('There are no uninstalled sites.');
+    }
   }
 
   /**
