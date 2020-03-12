@@ -95,9 +95,6 @@ class MultisiteCommands extends BltTasks {
   /**
    * Invoke the BLT install process on multisites where Drupal is not installed.
    *
-   * This command invokes the BLT drupal:install command which handles passing
-   * arguments and options to Drush site:install.
-   *
    * @param array $options
    *   Command options.
    * @option dry-run
