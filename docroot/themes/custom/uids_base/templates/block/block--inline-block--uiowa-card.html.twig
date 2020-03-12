@@ -54,6 +54,12 @@
         {{ title_suffix }}
       {% endblock %}
 
+      {% block card_author %}
+        {% if content.field_uiowa_card_author[0]['#context'].value is not empty %}
+          <div class="card__author">{{ content.field_uiowa_card_author }}</div>
+        {% endif %}
+      {% endblock %}
+
       {% block card_img %}
         {{ content.field_uiowa_card_image }}
       {% endblock %}
