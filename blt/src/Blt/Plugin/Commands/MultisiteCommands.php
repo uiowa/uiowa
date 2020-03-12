@@ -98,21 +98,20 @@ class MultisiteCommands extends BltTasks {
    * This command invokes the BLT drupal:install command which handles passing
    * arguments and options to Drush site:install.
    *
-   * @see: Acquia\Blt\Robo\Commands\Drupal\InstallCommand
-   *
-   * @command uiowa:multisite:install
-   *s
    * @param array $options
    *   Command options.
-   *
    * @option dry-run
    *   Report back the uninstalled sites but do not install.
+   *
+   * @command uiowa:multisite:install
    *
    * @aliases umi
    *
    * @throws \Exception
+   *
+   * @see: Acquia\Blt\Robo\Commands\Drupal\InstallCommand
    */
-  public function install($options = ['dry-run' => FALSE]) {
+  public function install(array $options = ['dry-run' => FALSE]) {
     $app = EnvironmentDetector::getAhGroup() ?? 'local';
     $env = EnvironmentDetector::getAhEnv() ?? 'local';
 
