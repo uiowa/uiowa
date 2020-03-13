@@ -152,7 +152,8 @@ class MultisiteCommands extends BltTasks {
               $this->sendNotification("Drupal installation FAILED for site {$multisite} in {$env} environment on {$app} application.");
             }
 
-            // This is the only thing that differentiates a site after install.
+            // The site name option used during drush site:install is
+            // overwritten if installed from existing configuration.
             $this->taskDrush()
               ->stopOnFail(FALSE)
               ->drush('config:set')
