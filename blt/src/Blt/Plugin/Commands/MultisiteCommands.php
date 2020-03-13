@@ -121,8 +121,9 @@ class MultisiteCommands extends BltTasks {
       if (EnvironmentDetector::isAhEnv()) {
         $db = $this->getConfigValue('drupal.db.database');
 
+        // Use logger here as opposed to say so the output is easily readable.
         if (!file_exists("/var/www/site-php/{$app}/{$db}-settings.inc")) {
-          $this->say("Skipping {$multisite}. Database {$db} does not exist.");
+          $this->logger->info("Skipping {$multisite}. Database {$db} does not exist.");
           continue;
         }
       }
