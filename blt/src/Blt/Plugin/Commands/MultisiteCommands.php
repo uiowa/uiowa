@@ -152,6 +152,17 @@ class MultisiteCommands extends BltTasks {
               $this->sendNotification("Drupal installation FAILED for site {$multisite} in {$env} environment on {$app} application.");
             }
 
+            // This is the only thing that differentiates a site after install.
+            $this->taskDrush()
+              ->stopOnFail(FALSE)
+              ->drush('config:set')
+              ->args([
+                'system.site',
+                'name',
+                $multisite,
+              ])
+              ->run();
+
             // If a requester was added, add them as a webmaster for the site.
             if ($requester = $this->getConfigValue("uiowa.profiles.{$profile}.requester")) {
               $this->taskDrush()
