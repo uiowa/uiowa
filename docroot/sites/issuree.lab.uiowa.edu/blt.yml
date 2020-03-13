@@ -1,0 +1,25 @@
+project:
+  local:
+    hostname: labissuree.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labissuree
+  human_name: issuree.lab.uiowa.edu
+  profile:
+    name: sitenow
+drush:
+  aliases:
+    local: self
+    remote: labissuree.prod
+drupal:
+  db:
+    database: issuree_lab_uiowa_edu
+cm:
+  core:
+    install_from_config: true
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+uiowa:
+  profiles:
+    sitenow:
+      requester: strommerl
