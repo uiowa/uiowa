@@ -1158,3 +1158,9 @@ $sites['orgnativeamericancouncil.local.drupal.uiowa.edu'] = 'nativeamericancounc
 $sites['orgnativeamericancouncil.dev.drupal.uiowa.edu'] = 'nativeamericancouncil.org.uiowa.edu';
 $sites['orgnativeamericancouncil.stage.drupal.uiowa.edu'] = 'nativeamericancouncil.org.uiowa.edu';
 $sites['orgnativeamericancouncil.prod.drupal.uiowa.edu'] = 'nativeamericancouncil.org.uiowa.edu';
+
+// Directory aliases for prairierestoration.course.uiowa.edu.
+$sites['courseprairierestoration.local.drupal.uiowa.edu'] = 'prairierestoration.course.uiowa.edu';
+$sites['courseprairierestoration.dev.drupal.uiowa.edu'] = 'prairierestoration.course.uiowa.edu';
+$sites['courseprairierestoration.stage.drupal.uiowa.edu'] = 'prairierestoration.course.uiowa.edu';
+$sites['courseprairierestoration.prod.drupal.uiowa.edu'] = 'prairierestoration.course.uiowa.edu';
