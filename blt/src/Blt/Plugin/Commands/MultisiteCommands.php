@@ -142,15 +142,14 @@ class MultisiteCommands extends BltTasks {
             $this->switchSiteContext($multisite);
             $profile = $this->getConfigValue('project.profile.name');
 
-            try {
-              $this->input()->setInteractive(FALSE);
-              $this->invokeCommand('drupal:install', [
-                '--site' => $multisite,
-              ]);
-            }
-            catch (BltException $e) {
-              $this->sendNotification("Drupal installation FAILED for site {$multisite} in {$env} environment on {$app} application.");
-            }
+            // Run this non-interactively so prompts are bypassed. Note that we
+            // can't reliably catch exceptions thrown here due to an issue with
+            // running drupal:install on AC.
+            // @see: https://github.com/acquia/blt/issues/4054
+            $this->input()->setInteractive(FALSE);
+            $this->invokeCommand('drupal:install', [
+              '--site' => $multisite,
+            ]);
 
             // The site name option used during drush site:install is
             // overwritten if installed from existing configuration.
