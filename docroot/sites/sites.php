@@ -1152,3 +1152,9 @@ $sites['org-jacobsoninstitute.local.drupal.uiowa.edu'] = 'jacobsoninstitute.org'
 $sites['org-jacobsoninstitute.dev.drupal.uiowa.edu'] = 'jacobsoninstitute.org';
 $sites['org-jacobsoninstitute.stage.drupal.uiowa.edu'] = 'jacobsoninstitute.org';
 $sites['org-jacobsoninstitute.prod.drupal.uiowa.edu'] = 'jacobsoninstitute.org';
+
+// Directory aliases for nativeamericancouncil.org.uiowa.edu.
+$sites['orgnativeamericancouncil.local.drupal.uiowa.edu'] = 'nativeamericancouncil.org.uiowa.edu';
+$sites['orgnativeamericancouncil.dev.drupal.uiowa.edu'] = 'nativeamericancouncil.org.uiowa.edu';
+$sites['orgnativeamericancouncil.stage.drupal.uiowa.edu'] = 'nativeamericancouncil.org.uiowa.edu';
+$sites['orgnativeamericancouncil.prod.drupal.uiowa.edu'] = 'nativeamericancouncil.org.uiowa.edu';
