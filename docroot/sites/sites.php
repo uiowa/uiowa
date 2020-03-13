@@ -1164,3 +1164,9 @@ $sites['courseprairierestoration.local.drupal.uiowa.edu'] = 'prairierestoration.
 $sites['courseprairierestoration.dev.drupal.uiowa.edu'] = 'prairierestoration.course.uiowa.edu';
 $sites['courseprairierestoration.stage.drupal.uiowa.edu'] = 'prairierestoration.course.uiowa.edu';
 $sites['courseprairierestoration.prod.drupal.uiowa.edu'] = 'prairierestoration.course.uiowa.edu';
+
+// Directory aliases for issuree.lab.uiowa.edu.
+$sites['labissuree.local.drupal.uiowa.edu'] = 'issuree.lab.uiowa.edu';
+$sites['labissuree.dev.drupal.uiowa.edu'] = 'issuree.lab.uiowa.edu';
+$sites['labissuree.stage.drupal.uiowa.edu'] = 'issuree.lab.uiowa.edu';
+$sites['labissuree.prod.drupal.uiowa.edu'] = 'issuree.lab.uiowa.edu';
