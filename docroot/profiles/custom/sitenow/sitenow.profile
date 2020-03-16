@@ -411,7 +411,7 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         $form["properties"]["element_attributes"]['#access'] = FALSE;
         $form["properties"]["label_attributes"]['#access'] = FALSE;
 
-        // Remove access to message close fields. Conflicts with Bootstrap alert close.
+        // Remove access to message close fields. Conflicts with BS alert close.
         $form["properties"]["markup"]["message_close"]['#access'] = FALSE;
         $form["properties"]["markup"]["message_close_effect"]['#access'] = FALSE;
         $form["properties"]["markup"]["message_storage"]['#access'] = FALSE;
@@ -776,17 +776,9 @@ function sitenow_toolbar() {
 function sitenow_editor_js_settings_alter(array &$settings) {
   foreach (array_keys($settings['editor']['formats']) as $text_format_id) {
     if ($settings['editor']['formats'][$text_format_id]['editor'] === 'ckeditor') {
-      // Adjust CKEditor settings to allow empty span tags for use with FontAwesome.
+      // Adjust CKEditor settings to allow empty span tags for use with FA..
       $settings['editor']['formats'][$text_format_id]['editorSettings']['customConfig'] =
         base_path() . drupal_get_path('profile', 'sitenow') . '/js/ckeditor_config.js';
-      /* The following will allow Fontawesome to display icons in the CKEditor preview,
-       * but collapsing an open text field will bypass the convertSVGtoTag, essentially
-       * removing itself from the source code.
-       * $settings['editor']['formats'][$text_format_id]['editorSettings']['customConfig'] =
-       * base_path() . drupal_get_path('module', 'fontawesome') . '/js/plugins/drupalfontawesome/plugin.js';
-       * $settings['editor']['formats'][$text_format_id]['editorSettings']['customConfig'] =
-       * base_path() . drupal_get_path('module', 'fontawesome') . '/js/plugins/drupalfontawesome/plugin.es6.js';
-       */
     }
   }
 }

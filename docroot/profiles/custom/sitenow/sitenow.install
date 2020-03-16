@@ -207,7 +207,7 @@ function sitenow_update_8014(&$sandbox) {
     }
     // Only save if something is changing.
     if (!empty($tags)) {
-      // Save field_reference with any remaining terms. Should be hr.uiowa.edu only.
+      // Save field_reference with any remaining terms.
       $node->set('field_reference', $other_terms);
       // Move the tags to field_tags.
       $node->set('field_tags', $tags);
