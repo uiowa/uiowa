@@ -26,7 +26,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
   /**
    * The logger service.
    *
-   * @var \Psr\Log\LoggerInterface $logger
+   * @var \Psr\Log\LoggerInterface
    */
   protected $logger;
 
