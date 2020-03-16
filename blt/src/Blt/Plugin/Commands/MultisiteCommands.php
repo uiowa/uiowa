@@ -112,7 +112,13 @@ class MultisiteCommands extends BltTasks {
    *
    * @see: Acquia\Blt\Robo\Commands\Drupal\InstallCommand
    */
-  public function install(array $options = ['envs' => ['local', 'prod'], 'dry-run' => FALSE]) {
+  public function install(array $options = [
+    'envs' => [
+      'local',
+      'prod',
+    ],
+    'dry-run' => FALSE,
+  ]) {
     $app = EnvironmentDetector::getAhGroup() ?? 'local';
     $env = EnvironmentDetector::getAhEnv() ?? 'local';
 
