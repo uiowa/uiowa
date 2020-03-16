@@ -147,7 +147,7 @@ class MultisiteCommands extends BltTasks {
       $this->io()->listing($uninstalled);
 
       if (!$options['dry-run']) {
-        if ($this->confirm('You will invoke the drupal:install command for the sites listed above. Are you sure?', TRUE)) {
+        if ($this->confirm('You will invoke the drupal:install command for the sites listed above. Are you sure?')) {
           foreach ($uninstalled as $multisite) {
             $this->switchSiteContext($multisite);
             $profile = $this->getConfigValue('project.profile.name');
