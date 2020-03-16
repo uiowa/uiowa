@@ -7,6 +7,7 @@
 
 use Drupal\block\Entity\Block;
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Url;
 
 /**
  * Implements hook_preprocess_HOOK() for html.html.twig.
@@ -86,6 +87,19 @@ function uids_base_preprocess_page(&$variables) {
   }
   elseif (\Drupal::service('module_handler')->moduleExists('uiowa_bar')) {
     $variables['uiowa_search_form'] = \Drupal::formBuilder()->getForm('Drupal\uiowa_bar\Form\SearchForm');
+  }
+
+  // The uiowa_auth module replaces local authentication with SAML SSO.
+  if (\Drupal::service('module_handler')->moduleExists('uiowa_auth')) {
+    if (!(\Drupal::currentUser()->isAuthenticated())) {
+      $login_url = Url::fromRoute('samlauth.saml_controller_login');
+
+      $variables['footer_login_link'] = [
+        '#type' => 'link',
+        '#title' => t('HawkID Login'),
+        '#url' => $login_url,
+      ];
+    }
   }
 
   // If the legacy option is enabled, attach the associated library.
