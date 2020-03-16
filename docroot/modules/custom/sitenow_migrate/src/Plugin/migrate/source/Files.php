@@ -79,16 +79,12 @@ class Files extends SqlBase {
    * Prepare row used for altering source data prior to its insertion.
    */
   public function prepareRow(Row $row) {
-    /* Can do extra preparation work here,
-     * possibly including the media entity creation heavylifting.
-     *
-     * Do we want to do a file cleanup?
-     * Can be done with the following.
-     * file_delete($file->id());
-     */
-
-    // Create filepath based on URI.
+    // Create source filepath based on URI.
     $row->setSourceProperty('uri', str_replace("public://", "", $row->getSourceProperty('uri')));
+
+    // Edit destination filepath to match media uploads.
+    $date = date('Y-m');
+    $row->setSourceProperty('destination_full_path', str_replace("_date_", $date, $row->getSourceProperty('destination_full_path')));
 
     $fileType = explode('/', $row->getSourceProperty('filemime'))[0];
     if ($fileType == 'image') {
