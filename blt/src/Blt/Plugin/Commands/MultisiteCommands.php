@@ -59,7 +59,7 @@ class MultisiteCommands extends BltTasks {
    *
    * @throws \Exception
    */
-  public function execute($cmd, $options = ['exclude' => []]) {
+  public function execute($cmd, array $options = ['exclude' => []]) {
     if (!$this->confirm("You will execute 'drush {$cmd}' on all multisites. Are you sure?", TRUE)) {
       throw new \Exception('Aborted.');
     }
