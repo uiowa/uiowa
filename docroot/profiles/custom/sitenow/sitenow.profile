@@ -411,7 +411,7 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         $form["properties"]["element_attributes"]['#access'] = FALSE;
         $form["properties"]["label_attributes"]['#access'] = FALSE;
 
-        // Remove access to message close fields. Conflicts with Bootstrap alert close.
+        // Remove access to message close fields. Conflicts with BS alert close.
         $form["properties"]["markup"]["message_close"]['#access'] = FALSE;
         $form["properties"]["markup"]["message_close_effect"]['#access'] = FALSE;
         $form["properties"]["markup"]["message_storage"]['#access'] = FALSE;
