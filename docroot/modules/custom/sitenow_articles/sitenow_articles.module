@@ -163,7 +163,8 @@ function sitenow_articles_preprocess_node(&$variables) {
           $variables["content"]["field_article_source_link"][0]["#title"] = $node->field_article_source_org->value;
           switch ($variables['view_mode']) {
             case 'teaser':
-              // Unset source link if directly linking out to prevent redundant links.
+              // Unset source link if directly linking out to prevent
+              // redundant links.
               if ($node->hasField('field_article_source_link_direct')) {
                 if ($node->field_article_source_link_direct->value == 1 && !$node->get('field_article_source_link')->isEmpty()) {
                   unset($variables["content"]["field_article_source_link"]);
