@@ -111,7 +111,7 @@ function sitenow_paragraphs_preprocess_paragraph(&$variables) {
         $classes[] = $v;
       });
       // For featured content only.
-      // Articles and Events hav similar functionality that could later be combined...
+      // Articles and Events have similar functionality that could be combined..
       if ($paragraph->bundle() == 'featured_content') {
         // Check for grid classes otherwise add list class.
         $display_options = [
