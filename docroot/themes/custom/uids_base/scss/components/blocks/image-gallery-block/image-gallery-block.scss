@@ -1,15 +1,16 @@
 @import "assets/scss/_variables.scss";
 @import "assets/scss/_utilities.scss";
-.block-inline-blockimage-gallery {
+.block-inline-blockuiowa-image-gallery .uiowa-image-gallery {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  margin-left: -$gutter / 2;
+  margin-right: -$gutter / 2;
   .media--view-mode-image-gallery {
-    //flex: 220px 1 1;
     display: table-cell;
-    flex: calc((220px - 2rem) - 2px) 1 0;
+    flex: 220px 1 1;
     margin: 10px; /* Fallback IE<8 */
-    margin: 1rem;
+    margin: $gutter / 2;
     a.colorbox {
       &:hover, &:focus {
         img {
@@ -24,27 +25,26 @@
   }
 }
 // Masonry
-//.block-inline-blockimage-gallery {
-//  display: block;
-//  column-count: 2;
-//  column-gap: 1rem;
-//  @include media-breakpoint-up(md) {
-//    column-count: 3;
-//  }
-//  @include media-breakpoint-up(lg) {
-//    column-count: 4;
-//  }
-//  .field__item {
-//    flex: none;
-//    display: inline-block;
-//    margin: 0 0 0.5rem;
-//    width: 100%;
-//    img {
-//      object-fit: unset;
-//      height: auto;
-//    }
-//  }
-//}
+.block-inline-blockuiowa-image-gallery.image-gallery--masonry .uiowa-image-gallery {
+  display: block;
+  column-count: 2;
+  column-gap: 0;
+  @include breakpoint(sm) {
+    column-count: 3;
+  }
+  @include breakpoint(md) {
+    column-count: 4;
+  }
+  .media--view-mode-image-gallery {
+    flex: none;
+    display: inline-block;
+    margin: $gutter / 2;
+    img {
+      object-fit: unset;
+      height: auto;
+    }
+  }
+}
 
 /**
  * Colorbox Core Style:
