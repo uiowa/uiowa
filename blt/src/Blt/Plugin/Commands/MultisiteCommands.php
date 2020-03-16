@@ -5,7 +5,6 @@ namespace Uiowa\Blt\Plugin\Commands;
 use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\EnvironmentDetector;
 use Acquia\Blt\Robo\Common\YamlMunge;
-use Acquia\Blt\Robo\Exceptions\BltException;
 use AcquiaCloudApi\Connector\Client;
 use AcquiaCloudApi\Connector\Connector;
 use AcquiaCloudApi\Endpoints\Databases;
@@ -97,6 +96,8 @@ class MultisiteCommands extends BltTasks {
    *
    * @param array $options
    *   Command options.
+   * @option envs
+   *   Array of allowed environments for installation to happen on.
    * @option dry-run
    *   Report back the uninstalled sites but do not install.
    *
@@ -106,11 +107,25 @@ class MultisiteCommands extends BltTasks {
    *
    * @throws \Exception
    *
+   * @return mixed
+   *   CommandError, list of uninstalled sites or the output from installation.
+   *
    * @see: Acquia\Blt\Robo\Commands\Drupal\InstallCommand
    */
-  public function install(array $options = ['dry-run' => FALSE]) {
+  public function install(array $options = [
+    'envs' => [
+      'local',
+      'prod',
+    ],
+    'dry-run' => FALSE,
+  ]) {
     $app = EnvironmentDetector::getAhGroup() ?? 'local';
     $env = EnvironmentDetector::getAhEnv() ?? 'local';
+
+    if (!in_array($env, $options['envs'])) {
+      $allowed = implode(', ', $options['envs']);
+      return new CommandError("Multisite installation not allowed on {$env} environment. Must be one of {$allowed}. Use option to override.");
+    }
 
     $uninstalled = [];
 
@@ -137,7 +152,7 @@ class MultisiteCommands extends BltTasks {
       $this->io()->listing($uninstalled);
 
       if (!$options['dry-run']) {
-        if ($this->confirm('You will invoke the drupal:install command for the sites listed above. Are you sure?', TRUE)) {
+        if ($this->confirm('You will invoke the drupal:install command for the sites listed above. Are you sure?')) {
           foreach ($uninstalled as $multisite) {
             $this->switchSiteContext($multisite);
             $profile = $this->getConfigValue('project.profile.name');
