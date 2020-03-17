@@ -463,12 +463,6 @@ $sites['bands.dev.drupal.uiowa.edu'] = 'bands.uiowa.edu';
 $sites['bands.stage.drupal.uiowa.edu'] = 'bands.uiowa.edu';
 $sites['bands.prod.drupal.uiowa.edu'] = 'bands.uiowa.edu';
 
-// Directory aliases for ismc.uiowa.edu.
-$sites['ismc.local.drupal.uiowa.edu'] = 'ismc.uiowa.edu';
-$sites['ismc.dev.drupal.uiowa.edu'] = 'ismc.uiowa.edu';
-$sites['ismc.stage.drupal.uiowa.edu'] = 'ismc.uiowa.edu';
-$sites['ismc.prod.drupal.uiowa.edu'] = 'ismc.uiowa.edu';
-
 // Directory aliases for emeritus-faculty.uiowa.edu.
 $sites['emeritus-faculty.local.drupal.uiowa.edu'] = 'emeritus-faculty.uiowa.edu';
 $sites['emeritus-faculty.dev.drupal.uiowa.edu'] = 'emeritus-faculty.uiowa.edu';
