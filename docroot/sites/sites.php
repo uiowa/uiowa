@@ -1176,3 +1176,9 @@ $sites['shlcovidtesting.local.drupal.uiowa.edu'] = 'covidtesting.shl.uiowa.edu';
 $sites['shlcovidtesting.dev.drupal.uiowa.edu'] = 'covidtesting.shl.uiowa.edu';
 $sites['shlcovidtesting.stage.drupal.uiowa.edu'] = 'covidtesting.shl.uiowa.edu';
 $sites['shlcovidtesting.prod.drupal.uiowa.edu'] = 'covidtesting.shl.uiowa.edu';
+
+// Directory aliases for lgbtq-council.org.uiowa.edu.
+$sites['orglgbtq-council.local.drupal.uiowa.edu'] = 'lgbtq-council.org.uiowa.edu';
+$sites['orglgbtq-council.dev.drupal.uiowa.edu'] = 'lgbtq-council.org.uiowa.edu';
+$sites['orglgbtq-council.stage.drupal.uiowa.edu'] = 'lgbtq-council.org.uiowa.edu';
+$sites['orglgbtq-council.prod.drupal.uiowa.edu'] = 'lgbtq-council.org.uiowa.edu';
