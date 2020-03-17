@@ -624,6 +624,7 @@ EOD;
     $this->say("Continue initializing additional multisites or follow the next steps below.");
 
     $steps += [
+      'Invoke the uiowa:multisite:install BLT command in the production environment on the appropriate application(s)',
       'Add the multisite domains to environments as needed.',
     ];
 
