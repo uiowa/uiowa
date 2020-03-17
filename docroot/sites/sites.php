@@ -469,12 +469,6 @@ $sites['emeritus-faculty.dev.drupal.uiowa.edu'] = 'emeritus-faculty.uiowa.edu';
 $sites['emeritus-faculty.stage.drupal.uiowa.edu'] = 'emeritus-faculty.uiowa.edu';
 $sites['emeritus-faculty.prod.drupal.uiowa.edu'] = 'emeritus-faculty.uiowa.edu';
 
-// Directory aliases for shl.uiowa.edu.
-$sites['shl.local.drupal.uiowa.edu'] = 'shl.uiowa.edu';
-$sites['shl.dev.drupal.uiowa.edu'] = 'shl.uiowa.edu';
-$sites['shl.stage.drupal.uiowa.edu'] = 'shl.uiowa.edu';
-$sites['shl.prod.drupal.uiowa.edu'] = 'shl.uiowa.edu';
-
 // Directory aliases for michaelson.lab.uiowa.edu.
 $sites['labmichaelson.local.drupal.uiowa.edu'] = 'michaelson.lab.uiowa.edu';
 $sites['labmichaelson.dev.drupal.uiowa.edu'] = 'michaelson.lab.uiowa.edu';
