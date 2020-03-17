@@ -83,6 +83,11 @@ class MigrateSettingsForm extends ConfigFormBase {
       ->set('source.constants.SOURCE_BASE_PATH', $form_state->getValue('sitenow_migrate_file_path'))
       ->save();
 
+    // Set the file directory to avoid the need for dynamic setting later during migration.
+    $this->config('migrate_plus.migration.d7_file')
+      ->set('source.constants.DRUPAL_FILE_DIRECTORY', 'public://' . date('Y-m'))
+      ->save();
+
     parent::submitForm($form, $form_state);
   }
 
