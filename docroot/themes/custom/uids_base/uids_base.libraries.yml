@@ -29,6 +29,7 @@ global-styling:
       assets/css/components/global/menus/superfish/superfish.css: {}
       assets/css/components/global/menus/user-menu/user-menu.css: {}
       assets/css/components/global/uiowa-bar/uiowa-bar.css: {}
+      assets/css/components/blocks/image-gallery-block/image-gallery-block.css: {}
       assets/css/components/templates/page-layouts/page-layouts.css: {}
     theme:
       assets/css/theme/print.min.css: { media: print }
@@ -86,6 +87,19 @@ card-block:
   css:
     component:
       assets/css/components/blocks/card-block/card-block.css: { preprocess: false }
+colorbox:
+  remote: http://github.com/jackmoore/colorbox
+  version: VERSION
+  license:
+    name: MIT
+    gpl-compatible: false
+  js:
+    colorbox/jquery.colorbox-min.js: { minified: true }
+    assets/js/colorbox_overrides.behavior.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - colorbox/init
 cta-block:
   css:
     component:

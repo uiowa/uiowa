@@ -47,6 +47,11 @@ class MultisiteCommands extends BltTasks {
    * @param string $cmd
    *   The simple Drush command to execute, e.g. 'cron' or 'cache:rebuild'. No
    *    support for options or arguments at this time.
+   * @param array $options
+   *   Array of options.
+   *
+   * @option exclude
+   *   Sites to exclude from command execution.
    *
    * @command uiowa:multisite:execute
    *
@@ -54,7 +59,7 @@ class MultisiteCommands extends BltTasks {
    *
    * @throws \Exception
    */
-  public function execute($cmd) {
+  public function execute($cmd, array $options = ['exclude' => []]) {
     if (!$this->confirm("You will execute 'drush {$cmd}' on all multisites. Are you sure?", TRUE)) {
       throw new \Exception('Aborted.');
     }
@@ -75,18 +80,19 @@ class MultisiteCommands extends BltTasks {
           }
         }
 
-        /*
-         * Define a random temporary Drush cache directory per process.
-         *
-         * @see: https://github.com/acquia/blt/issues/2957
-         * @see: /acquia/blt/scripts/blt/drush/cache.php
-         **/
-        $tmp = "/tmp/.drush/{$app}/{$env}/" . md5($multisite);
+        if (!in_array($multisite, $options['exclude'])) {
+          // Define a site-specific cache directory.
+          // @see: https://github.com/acquia/blt/issues/2957
+          $tmp = "/tmp/.drush/{$app}/{$env}/" . md5($multisite);
 
-        $this->taskDrush()
-          ->drush($cmd)
-          ->option('define', "drush.paths.cache-directory={$tmp}")
-          ->run();
+          $this->taskDrush()
+            ->drush($cmd)
+            ->option('define', "drush.paths.cache-directory={$tmp}")
+            ->run();
+        }
+        else {
+          $this->logger->info("Skipping excluded site {$multisite}.");
+        }
       }
     }
   }
