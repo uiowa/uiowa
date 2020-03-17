@@ -18,7 +18,7 @@ source:
   plugin: files
   constants:
     SOURCE_BASE_PATH: ''
-    DRUPAL_FILE_DIRECTORY: 'public://_date_'
+    DRUPAL_FILE_DIRECTORY: ''
 process:
   filename:
     plugin: get
@@ -35,6 +35,7 @@ process:
   destination_full_path:
     -
       plugin: concat
+      delimiter: /
       source:
         - constants/DRUPAL_FILE_DIRECTORY
         - filename

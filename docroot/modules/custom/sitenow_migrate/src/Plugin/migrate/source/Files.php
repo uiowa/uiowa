@@ -82,10 +82,6 @@ class Files extends SqlBase {
     // Create source filepath based on URI.
     $row->setSourceProperty('uri', str_replace("public://", "", $row->getSourceProperty('uri')));
 
-    // Edit destination filepath to match media uploads.
-    $date = date('Y-m');
-    $row->setSourceProperty('destination_full_path', str_replace("_date_", $date, $row->getSourceProperty('destination_full_path')));
-
     $fileType = explode('/', $row->getSourceProperty('filemime'))[0];
     if ($fileType == 'image') {
       $row->setSourceProperty('meta', $this->fetchMeta($row));
