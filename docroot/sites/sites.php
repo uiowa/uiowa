@@ -1170,3 +1170,9 @@ $sites['labissuree.local.drupal.uiowa.edu'] = 'issuree.lab.uiowa.edu';
 $sites['labissuree.dev.drupal.uiowa.edu'] = 'issuree.lab.uiowa.edu';
 $sites['labissuree.stage.drupal.uiowa.edu'] = 'issuree.lab.uiowa.edu';
 $sites['labissuree.prod.drupal.uiowa.edu'] = 'issuree.lab.uiowa.edu';
+
+// Directory aliases for covidtesting.shl.uiowa.edu.
+$sites['shlcovidtesting.local.drupal.uiowa.edu'] = 'covidtesting.shl.uiowa.edu';
+$sites['shlcovidtesting.dev.drupal.uiowa.edu'] = 'covidtesting.shl.uiowa.edu';
+$sites['shlcovidtesting.stage.drupal.uiowa.edu'] = 'covidtesting.shl.uiowa.edu';
+$sites['shlcovidtesting.prod.drupal.uiowa.edu'] = 'covidtesting.shl.uiowa.edu';
