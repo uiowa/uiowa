@@ -463,23 +463,11 @@ $sites['bands.dev.drupal.uiowa.edu'] = 'bands.uiowa.edu';
 $sites['bands.stage.drupal.uiowa.edu'] = 'bands.uiowa.edu';
 $sites['bands.prod.drupal.uiowa.edu'] = 'bands.uiowa.edu';
 
-// Directory aliases for ismc.uiowa.edu.
-$sites['ismc.local.drupal.uiowa.edu'] = 'ismc.uiowa.edu';
-$sites['ismc.dev.drupal.uiowa.edu'] = 'ismc.uiowa.edu';
-$sites['ismc.stage.drupal.uiowa.edu'] = 'ismc.uiowa.edu';
-$sites['ismc.prod.drupal.uiowa.edu'] = 'ismc.uiowa.edu';
-
 // Directory aliases for emeritus-faculty.uiowa.edu.
 $sites['emeritus-faculty.local.drupal.uiowa.edu'] = 'emeritus-faculty.uiowa.edu';
 $sites['emeritus-faculty.dev.drupal.uiowa.edu'] = 'emeritus-faculty.uiowa.edu';
 $sites['emeritus-faculty.stage.drupal.uiowa.edu'] = 'emeritus-faculty.uiowa.edu';
 $sites['emeritus-faculty.prod.drupal.uiowa.edu'] = 'emeritus-faculty.uiowa.edu';
-
-// Directory aliases for shl.uiowa.edu.
-$sites['shl.local.drupal.uiowa.edu'] = 'shl.uiowa.edu';
-$sites['shl.dev.drupal.uiowa.edu'] = 'shl.uiowa.edu';
-$sites['shl.stage.drupal.uiowa.edu'] = 'shl.uiowa.edu';
-$sites['shl.prod.drupal.uiowa.edu'] = 'shl.uiowa.edu';
 
 // Directory aliases for michaelson.lab.uiowa.edu.
 $sites['labmichaelson.local.drupal.uiowa.edu'] = 'michaelson.lab.uiowa.edu';
@@ -504,12 +492,6 @@ $sites['sitesequityimplemented.local.drupal.uiowa.edu'] = 'equityimplemented.sit
 $sites['sitesequityimplemented.dev.drupal.uiowa.edu'] = 'equityimplemented.sites.uiowa.edu';
 $sites['sitesequityimplemented.stage.drupal.uiowa.edu'] = 'equityimplemented.sites.uiowa.edu';
 $sites['sitesequityimplemented.prod.drupal.uiowa.edu'] = 'equityimplemented.sites.uiowa.edu';
-
-// Directory aliases for cnm.org.uiowa.edu.
-$sites['orgcnm.local.drupal.uiowa.edu'] = 'cnm.org.uiowa.edu';
-$sites['orgcnm.dev.drupal.uiowa.edu'] = 'cnm.org.uiowa.edu';
-$sites['orgcnm.stage.drupal.uiowa.edu'] = 'cnm.org.uiowa.edu';
-$sites['orgcnm.prod.drupal.uiowa.edu'] = 'cnm.org.uiowa.edu';
 
 // Directory aliases for uiadvise.sites.uiowa.edu.
 $sites['sitesuiadvise.local.drupal.uiowa.edu'] = 'uiadvise.sites.uiowa.edu';
