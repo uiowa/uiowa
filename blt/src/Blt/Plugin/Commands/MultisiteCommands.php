@@ -5,7 +5,6 @@ namespace Uiowa\Blt\Plugin\Commands;
 use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\EnvironmentDetector;
 use Acquia\Blt\Robo\Common\YamlMunge;
-use Acquia\Blt\Robo\Exceptions\BltException;
 use AcquiaCloudApi\Connector\Client;
 use AcquiaCloudApi\Connector\Connector;
 use AcquiaCloudApi\Endpoints\Databases;
@@ -48,6 +47,11 @@ class MultisiteCommands extends BltTasks {
    * @param string $cmd
    *   The simple Drush command to execute, e.g. 'cron' or 'cache:rebuild'. No
    *    support for options or arguments at this time.
+   * @param array $options
+   *   Array of options.
+   *
+   * @option exclude
+   *   Sites to exclude from command execution.
    *
    * @command uiowa:multisite:execute
    *
@@ -55,7 +59,7 @@ class MultisiteCommands extends BltTasks {
    *
    * @throws \Exception
    */
-  public function execute($cmd) {
+  public function execute($cmd, array $options = ['exclude' => []]) {
     if (!$this->confirm("You will execute 'drush {$cmd}' on all multisites. Are you sure?", TRUE)) {
       throw new \Exception('Aborted.');
     }
@@ -76,18 +80,19 @@ class MultisiteCommands extends BltTasks {
           }
         }
 
-        /*
-         * Define a random temporary Drush cache directory per process.
-         *
-         * @see: https://github.com/acquia/blt/issues/2957
-         * @see: /acquia/blt/scripts/blt/drush/cache.php
-         **/
-        $tmp = "/tmp/.drush/{$app}/{$env}/" . md5($multisite);
+        if (!in_array($multisite, $options['exclude'])) {
+          // Define a site-specific cache directory.
+          // @see: https://github.com/acquia/blt/issues/2957
+          $tmp = "/tmp/.drush/{$app}/{$env}/" . md5($multisite);
 
-        $this->taskDrush()
-          ->drush($cmd)
-          ->option('define', "drush.paths.cache-directory={$tmp}")
-          ->run();
+          $this->taskDrush()
+            ->drush($cmd)
+            ->option('define', "drush.paths.cache-directory={$tmp}")
+            ->run();
+        }
+        else {
+          $this->logger->info("Skipping excluded site {$multisite}.");
+        }
       }
     }
   }
@@ -97,6 +102,8 @@ class MultisiteCommands extends BltTasks {
    *
    * @param array $options
    *   Command options.
+   * @option envs
+   *   Array of allowed environments for installation to happen on.
    * @option dry-run
    *   Report back the uninstalled sites but do not install.
    *
@@ -106,11 +113,25 @@ class MultisiteCommands extends BltTasks {
    *
    * @throws \Exception
    *
+   * @return mixed
+   *   CommandError, list of uninstalled sites or the output from installation.
+   *
    * @see: Acquia\Blt\Robo\Commands\Drupal\InstallCommand
    */
-  public function install(array $options = ['dry-run' => FALSE]) {
+  public function install(array $options = [
+    'envs' => [
+      'local',
+      'prod',
+    ],
+    'dry-run' => FALSE,
+  ]) {
     $app = EnvironmentDetector::getAhGroup() ?? 'local';
     $env = EnvironmentDetector::getAhEnv() ?? 'local';
+
+    if (!in_array($env, $options['envs'])) {
+      $allowed = implode(', ', $options['envs']);
+      return new CommandError("Multisite installation not allowed on {$env} environment. Must be one of {$allowed}. Use option to override.");
+    }
 
     $uninstalled = [];
 
@@ -137,7 +158,7 @@ class MultisiteCommands extends BltTasks {
       $this->io()->listing($uninstalled);
 
       if (!$options['dry-run']) {
-        if ($this->confirm('You will invoke the drupal:install command for the sites listed above. Are you sure?', TRUE)) {
+        if ($this->confirm('You will invoke the drupal:install command for the sites listed above. Are you sure?')) {
           foreach ($uninstalled as $multisite) {
             $this->switchSiteContext($multisite);
             $profile = $this->getConfigValue('project.profile.name');
