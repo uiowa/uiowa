@@ -1,25 +1,24 @@
 project:
   local:
-    hostname: ismc.local.drupal.uiowa.edu
+    hostname: iowasummermusiccamps.local.drupal.uiowa.edu
     protocol: https
-  machine_name: ismc
-  human_name: ismc.uiowa.edu
+  machine_name: iowasummermusiccamps
+  human_name: iowasummermusiccamps.uiowa.edu
   profile:
     name: sitenow
 drush:
   aliases:
     local: self
-    remote: ismc.prod
+    remote: iowasummermusiccamps.prod
 drupal:
   db:
-    database: ismc_uiowa_edu
+    database: iowasummermusiccamps_uiowa_edu
 cm:
   core:
+    install_from_config: true
     dirs:
       sync:
         path: profiles/custom/sitenow/config/sync
-    install_from_config: true
-
 uiowa:
   profiles:
     sitenow:

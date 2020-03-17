@@ -1,25 +1,24 @@
 project:
   local:
-    hostname: shl.local.drupal.uiowa.edu
+    hostname: shlcovidtesting.local.drupal.uiowa.edu
     protocol: https
-  machine_name: shl
-  human_name: shl.uiowa.edu
+  machine_name: shlcovidtesting
+  human_name: covidtesting.shl.uiowa.edu
   profile:
     name: sitenow
 drush:
   aliases:
     local: self
-    remote: shl.prod
+    remote: shlcovidtesting.prod
 drupal:
   db:
-    database: shl_uiowa_edu
+    database: covidtesting_shl_uiowa_edu
 cm:
   core:
+    install_from_config: true
     dirs:
       sync:
         path: profiles/custom/sitenow/config/sync
-    install_from_config: true
-
 uiowa:
   profiles:
     sitenow:
