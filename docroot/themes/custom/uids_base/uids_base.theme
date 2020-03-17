@@ -123,7 +123,7 @@ function uids_base_preprocess_block(&$variables) {
   if (isset($variables['elements']['#id'])) {
     $region = Block::load($variables['elements']['#id'])->getRegion();
 
-    if ($region === 'footer_second' && $variables['base_plugin_id'] === 'system_menu_block') {
+    if ($region === 'footer_second' && in_array($variables['base_plugin_id'], ['system_menu_block', 'menu_block'])) {
       $variables['attributes']['class'][] = 'footer__links';
       $variables['attributes']['class'][] = 'footer__links--nav';
     }
