@@ -44,6 +44,14 @@
         {{ page.footer_first }}
       {% endif %}
 
+ {% if footer_login_link %}
+    <div class="uiowa-footer--login-link">
+{{ login_url }}
+
+      <p>{{ footer_login_link }}</p>
+    </div>
+  {% endif %}
+
       {% include '@uids/03 - global/footer/footer--socket-menu.twig' %}
 
     </div>
@@ -54,9 +62,4 @@
 
   </div>
 
-  {% if footer_login_link %}
-    <div class="uiowa-footer--login-link">
-      {{ footer_login_link }}
-    </div>
-  {% endif %}
 </footer>
