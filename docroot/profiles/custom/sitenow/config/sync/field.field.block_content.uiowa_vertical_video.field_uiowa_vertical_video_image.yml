@@ -1,0 +1,28 @@
+uuid: 7e1c5f90-aad2-4dce-880a-18fec31cfecf
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_vertical_video
+    - field.storage.block_content.field_uiowa_vertical_video_image
+    - media.type.image
+id: block_content.uiowa_vertical_video.field_uiowa_vertical_video_image
+field_name: field_uiowa_vertical_video_image
+entity_type: block_content
+bundle: uiowa_vertical_video
+label: 'Preview Image'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
