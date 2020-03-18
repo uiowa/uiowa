@@ -174,7 +174,8 @@ class MultisiteCommands extends BltTasks {
               $this->invokeCommand('drupal:install', [
                 '--site' => $multisite,
               ]);
-            } catch (BltException $e) {
+            }
+            catch (BltException $e) {
               $this->say('<comment>Note:</comment> file permission error on Acquia Cloud can be safely ignored.');
             }
 
