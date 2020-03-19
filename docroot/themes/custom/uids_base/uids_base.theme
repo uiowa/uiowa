@@ -148,11 +148,13 @@ function uids_base_preprocess_block(&$variables) {
       case 'external-quick-links':
         $variables['attributes']['class'][] = 'menu--group';
         break;
+
       case 'top-links':
         $variables['attributes']['class'][] = 'menu--top';
         $variables['attributes']['class'][] = 'uids-menu';
         break;
-      }
+
+    }
   }
 }
 
