@@ -312,6 +312,35 @@ body.toolbar-vertical.toolbar-tray-open {
 
 // admin toolbar style for sticky header
 
+.header-sticky.toolbar-horizontal,
+.header-sticky.toolbar-vertical {
+  @include breakpoint(menu) {
+    padding-top: 120px !important;
+  }
+}
+
+.header-sticky.scroll-down.toolbar-horizontal,
+.header-sticky.scroll-down.toolbar-vertical {
+  @include breakpoint(menu) {
+    padding-top: 80px !important;
+  }
+}
+
+
+.header-sticky.toolbar-horizontal.toolbar-tray-open {
+  @include breakpoint(menu) {
+    padding-top: 160px !important;
+  }
+}
+
+.header-sticky.toolbar-vertical.toolbar-tray-open {
+  @include breakpoint(menu) {
+    header {
+      padding-left: 15rem;
+    }
+  }
+}
+
 .header-sticky.toolbar-vertical {
   header {
     top: 40px;
