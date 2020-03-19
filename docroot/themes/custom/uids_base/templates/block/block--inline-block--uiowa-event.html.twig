@@ -1,0 +1,70 @@
+{#
+/**
+* @file
+* Theme override to display a block.
+*
+* Available variables:
+* - plugin_id: The ID of the block implementation.
+* - label: The configured label of the block if visible.
+* - configuration: A list of the block's configuration values.
+*   - label: The configured label for the block.
+*   - label_display: The display settings for the label.
+*   - provider: The module or other provider that provided this block plugin.
+*   - Block plugin specific settings will also be stored here.
+* - content: The content of this block.
+* - attributes: array of HTML attributes populated by modules, intended to
+*   be added to the main container tag of this template.
+*   - id: A valid HTML ID and guaranteed unique.
+* - title_attributes: Same as attributes, except applied to the main title
+*   tag that appears in the template.
+* - title_prefix: Additional output populated by modules, intended to be
+*   displayed in front of the main title tag that appears in the template.
+* - title_suffix: Additional output populated by modules, intended to be
+*   displayed after the main title tag that appears in the template.
+*
+* @see template_preprocess_block()
+*/
+#}
+
+{% set event_url = content.field_uiowa_event_link[0]['#url'] %}
+
+{% block content %}
+
+	{{ attach_library('uids_base/events-block') }}
+
+	<div class="events-card events-card__row {{ attributes ? attributes.class }}" {{ attributes ? attributes|without('class') }}>
+
+		{{ title_prefix }}
+		{{ title_suffix }}
+
+		{% block events_card_img %}
+			{% if content.field_uiowa_event_image %}
+				<div class="events-card__image">
+					{{ content.field_uiowa_event_image }}
+				</div>
+			{% endif %}
+		{% endblock %}
+		<div class="events-card__body">
+
+			{% include "@uids/01 - elements/heading/heading.twig" with {
+            "heading_level" : content.field_uiowa_event_title[0]['#size'],
+            "heading_class" : 'events-card__title',
+            "heading" : content.field_uiowa_event_title[0]['#text']
+          } %}
+
+			<div class="events-card__details">
+				<div class="events-card__date">
+					{{ content.field_uiowa_event_date }}</div>
+				<div class="events-card__label">
+					<i class="fas fa-map-marker-alt"></i>
+					{{ content.field_uiowa_event_location }}</div>
+			</div>
+
+			<a class="bttn bttn--outline bttn--tertiary bttn--sans-serif" href="{{ event_url }}">More
+				<i class="fas fa-arrow-right"></i>
+			</a>
+
+		</div>
+	</div>
+
+{% endblock %}
