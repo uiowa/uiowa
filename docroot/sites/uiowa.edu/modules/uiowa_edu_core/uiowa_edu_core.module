@@ -8,3 +8,13 @@
  * This file is no longer required in Drupal 8.
  * @see https://www.drupal.org/node/2217931
  */
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function uiowa_edu_core_form_taxonomy_term_a_z_list_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  // Change the label of the name field.
+  $form['name']['widget'][0]['value']['#title'] = t('Administrative Name');
+  // Add a description to the name field.
+  $form["name"]["widget"][0]["value"]["#description"] = 'The first character of the administrative name is used to filter the A-Z List.<br>Terms beginning with a number should be prefaced with a hash tag, example: <em>#2 Plus 2 Guaranteed Graduation Plan</em>.';
+}
