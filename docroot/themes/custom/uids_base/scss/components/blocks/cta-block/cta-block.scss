@@ -2,3 +2,14 @@
 @import "assets/scss/_utilities.scss";
 @import "components/02 - blocks/cta-block/_cta-block.scss";
 
+
+.layout__region--first,
+.layout__region--second,
+.layout__region--third,
+.layout__region--fourth {
+.cta__container>div {
+  @include breakpoint(container) {
+  margin: 1.05rem 0;
+  }
+}
+}
