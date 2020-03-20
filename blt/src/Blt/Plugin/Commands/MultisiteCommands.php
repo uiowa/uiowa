@@ -5,6 +5,7 @@ namespace Uiowa\Blt\Plugin\Commands;
 use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\EnvironmentDetector;
 use Acquia\Blt\Robo\Common\YamlMunge;
+use Acquia\Blt\Robo\Exceptions\BltException;
 use AcquiaCloudApi\Connector\Client;
 use AcquiaCloudApi\Connector\Connector;
 use AcquiaCloudApi\Endpoints\Databases;
@@ -163,14 +164,20 @@ class MultisiteCommands extends BltTasks {
             $this->switchSiteContext($multisite);
             $profile = $this->getConfigValue('project.profile.name');
 
-            // Run this non-interactively so prompts are bypassed. Note that we
-            // can't reliably catch exceptions thrown here due to an issue with
-            // running drupal:install on AC.
+            // Run this non-interactively so prompts are bypassed. Note that
+            // a file permission exception is thrown on AC so we have to
+            // catch that and proceed with the command.
             // @see: https://github.com/acquia/blt/issues/4054
             $this->input()->setInteractive(FALSE);
-            $this->invokeCommand('drupal:install', [
-              '--site' => $multisite,
-            ]);
+
+            try {
+              $this->invokeCommand('drupal:install', [
+                '--site' => $multisite,
+              ]);
+            }
+            catch (BltException $e) {
+              $this->say('<comment>Note:</comment> file permission error on Acquia Cloud can be safely ignored.');
+            }
 
             // The site name option used during drush site:install is
             // overwritten if installed from existing configuration.
