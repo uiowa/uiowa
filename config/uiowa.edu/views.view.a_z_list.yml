@@ -57,6 +57,13 @@ display:
         type: default
       row:
         type: fields
+        options:
+          default_field_elements: true
+          inline:
+            field_a_z_list_link: field_a_z_list_link
+            edit_taxonomy_term: edit_taxonomy_term
+          separator: ''
+          hide_empty: false
       fields:
         field_a_z_list_link:
           id: field_a_z_list_link
@@ -135,8 +142,8 @@ display:
           label: ''
           exclude: false
           alter:
-            alter_text: true
-            text: '-- {{ edit_taxonomy_term }}'
+            alter_text: false
+            text: ''
             make_link: false
             path: ''
             absolute: false
@@ -217,7 +224,7 @@ display:
           expose:
             label: ''
           plugin_id: standard
-      title: 'A-Z List'
+      title: 'A-Z Search'
       header: {  }
       footer: {  }
       empty: {  }
