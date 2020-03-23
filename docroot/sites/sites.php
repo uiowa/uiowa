@@ -1176,3 +1176,9 @@ $sites['courseoccsafety.local.drupal.uiowa.edu'] = 'occsafety.course.uiowa.edu';
 $sites['courseoccsafety.dev.drupal.uiowa.edu'] = 'occsafety.course.uiowa.edu';
 $sites['courseoccsafety.stage.drupal.uiowa.edu'] = 'occsafety.course.uiowa.edu';
 $sites['courseoccsafety.prod.drupal.uiowa.edu'] = 'occsafety.course.uiowa.edu';
+
+// Directory aliases for glam.org.uiowa.edu.
+$sites['orgglam.local.drupal.uiowa.edu'] = 'glam.org.uiowa.edu';
+$sites['orgglam.dev.drupal.uiowa.edu'] = 'glam.org.uiowa.edu';
+$sites['orgglam.stage.drupal.uiowa.edu'] = 'glam.org.uiowa.edu';
+$sites['orgglam.prod.drupal.uiowa.edu'] = 'glam.org.uiowa.edu';
