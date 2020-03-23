@@ -154,6 +154,10 @@ function uids_base_preprocess_block(&$variables) {
         $variables['attributes']['class'][] = 'uids-menu';
         break;
 
+      case 'search-links':
+        $variables['attributes']['class'][] = 'menu--quick-links';
+        break;
+
     }
   }
 }
