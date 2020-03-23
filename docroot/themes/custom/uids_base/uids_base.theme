@@ -206,6 +206,11 @@ function uids_base_preprocess_input(&$variables) {
  * Implements hook_form_alter().
  */
 function uids_base_form_alter(&$form, $form_state, $form_id) {
+  // Add 'uids-content' class to all forms.
+  $form['#attributes']['class'][] = 'uids-content';
+  // @todo Remove this when 'hds-content' class is no longer used.
+  $form['#attributes']['class'][] = 'hds-content';
+
   if (strpos($form_id, 'node_page_layout_builder_form') !== FALSE) {
     $form['actions']['#attributes']['class'][] = 'uids-content';
     $form['layout_builder_message']['#attributes']['class'][] = 'uids-content';
