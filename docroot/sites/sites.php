@@ -1170,3 +1170,9 @@ $sites['orghaa.local.drupal.uiowa.edu'] = 'haa.org.uiowa.edu';
 $sites['orghaa.dev.drupal.uiowa.edu'] = 'haa.org.uiowa.edu';
 $sites['orghaa.stage.drupal.uiowa.edu'] = 'haa.org.uiowa.edu';
 $sites['orghaa.prod.drupal.uiowa.edu'] = 'haa.org.uiowa.edu';
+
+// Directory aliases for occsafety.course.uiowa.edu.
+$sites['courseoccsafety.local.drupal.uiowa.edu'] = 'occsafety.course.uiowa.edu';
+$sites['courseoccsafety.dev.drupal.uiowa.edu'] = 'occsafety.course.uiowa.edu';
+$sites['courseoccsafety.stage.drupal.uiowa.edu'] = 'occsafety.course.uiowa.edu';
+$sites['courseoccsafety.prod.drupal.uiowa.edu'] = 'occsafety.course.uiowa.edu';
