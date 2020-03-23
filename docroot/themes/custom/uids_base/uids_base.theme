@@ -189,7 +189,7 @@ function uids_base_preprocess_form(&$variables) {
   // Add class to your specific form.
   if (isset($variables['attributes']['id']) && $variables['attributes']['id'] == 'search-block-form') {
     // @todo Update these classes to 'uids-*' when that change is made in UIDS.
-    $variables['attributes']['class'][] = 'hds-content hds-search ';
+    $variables['attributes']['class'][] = 'uids-content uids-search ';
   }
 }
 
@@ -212,11 +212,11 @@ function uids_base_form_alter(&$form, $form_state, $form_id) {
   }
   if (strpos($form_id, 'uiowa_bar_search_form') !== FALSE) {
     // @todo Update these classes to 'uids-*' when that change is made in UIDS.
-    $form['#attributes']['class'][] = 'hds-content hds-search';
+    $form['#attributes']['class'][] = 'uids-content uids-search';
   }
   if (strpos($form_id, 'uiowa_search_form') !== FALSE) {
     // @todo Update these classes to 'uids-*' when that change is made in UIDS.
-    $form['#attributes']['class'][] = 'hds-content hds-search';
+    $form['#attributes']['class'][] = 'uids-content uids-search';
   }
 }
 
@@ -228,6 +228,6 @@ function uids_base_form_views_exposed_form_alter(&$form, $form_state, $form_id) 
   $view = $form_state->getStorage('view');
   if ($form_id == 'views_exposed_form' && in_array($view['view']->id(), $view_ids)) {
     // @todo Update these classes to 'uids-*' when that change is made in UIDS.
-    $form['#attributes']['class'][] = 'hds-content hds-search';
+    $form['#attributes']['class'][] = 'uids-content uids-search';
   }
 }
