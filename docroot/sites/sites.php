@@ -1164,3 +1164,21 @@ $sites['iowasummermusiccamps.local.drupal.uiowa.edu'] = 'iowasummermusiccamps.ui
 $sites['iowasummermusiccamps.dev.drupal.uiowa.edu'] = 'iowasummermusiccamps.uiowa.edu';
 $sites['iowasummermusiccamps.stage.drupal.uiowa.edu'] = 'iowasummermusiccamps.uiowa.edu';
 $sites['iowasummermusiccamps.prod.drupal.uiowa.edu'] = 'iowasummermusiccamps.uiowa.edu';
+
+// Directory aliases for haa.org.uiowa.edu.
+$sites['orghaa.local.drupal.uiowa.edu'] = 'haa.org.uiowa.edu';
+$sites['orghaa.dev.drupal.uiowa.edu'] = 'haa.org.uiowa.edu';
+$sites['orghaa.stage.drupal.uiowa.edu'] = 'haa.org.uiowa.edu';
+$sites['orghaa.prod.drupal.uiowa.edu'] = 'haa.org.uiowa.edu';
+
+// Directory aliases for occsafety.course.uiowa.edu.
+$sites['courseoccsafety.local.drupal.uiowa.edu'] = 'occsafety.course.uiowa.edu';
+$sites['courseoccsafety.dev.drupal.uiowa.edu'] = 'occsafety.course.uiowa.edu';
+$sites['courseoccsafety.stage.drupal.uiowa.edu'] = 'occsafety.course.uiowa.edu';
+$sites['courseoccsafety.prod.drupal.uiowa.edu'] = 'occsafety.course.uiowa.edu';
+
+// Directory aliases for glam.org.uiowa.edu.
+$sites['orgglam.local.drupal.uiowa.edu'] = 'glam.org.uiowa.edu';
+$sites['orgglam.dev.drupal.uiowa.edu'] = 'glam.org.uiowa.edu';
+$sites['orgglam.stage.drupal.uiowa.edu'] = 'glam.org.uiowa.edu';
+$sites['orgglam.prod.drupal.uiowa.edu'] = 'glam.org.uiowa.edu';
