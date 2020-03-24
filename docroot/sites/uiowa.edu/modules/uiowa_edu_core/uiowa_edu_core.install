@@ -17,28 +17,28 @@ function uiowa_edu_core_install() {
 /**
  * Import a-z links from the current website.
  */
-//function uiowa_edu_core_update_8001(&$sandbox) {
-//  $path = drupal_get_path('module', 'uiowa_edu_core');
-//  $csv = array_map('str_getcsv', file($path . '/a-z/batch01.csv'));
-//  $header = FALSE;
-//
-//  if ($header === TRUE) {
-//    unset($csv[0]);
-//  }
-//
-//  foreach ($csv as $link) {
-//    $new_term = Term::create([
-//      'vid' => 'a_z_list',
-//      'name' => $link[0],
-//    ]);
-//    $new_term->set('field_a_z_list_link',  [
-//      'uri' => $link[2],
-//      'title' => $link[1],
-//    ]);
-//    $new_term->enforceIsNew();
-//    $new_term->save();
-//  }
-//}
+function uiowa_edu_core_update_8001(&$sandbox) {
+  $path = drupal_get_path('module', 'uiowa_edu_core');
+  $csv = array_map('str_getcsv', file($path . '/a-z/batch01.csv'));
+  $header = FALSE;
+
+  if ($header === TRUE) {
+    unset($csv[0]);
+  }
+
+  foreach ($csv as $link) {
+    $new_term = Term::create([
+      'vid' => 'a_z_list',
+      'name' => $link[0],
+    ]);
+    $new_term->set('field_a_z_list_link',  [
+      'uri' => $link[2],
+      'title' => $link[1],
+    ]);
+    $new_term->enforceIsNew();
+    $new_term->save();
+  }
+}
 
 /**
  * Implements hook_uninstall().
