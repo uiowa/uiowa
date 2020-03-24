@@ -1176,3 +1176,9 @@ $sites['iowasuperfund.local.drupal.uiowa.edu'] = 'iowasuperfund.uiowa.edu';
 $sites['iowasuperfund.dev.drupal.uiowa.edu'] = 'iowasuperfund.uiowa.edu';
 $sites['iowasuperfund.stage.drupal.uiowa.edu'] = 'iowasuperfund.uiowa.edu';
 $sites['iowasuperfund.prod.drupal.uiowa.edu'] = 'iowasuperfund.uiowa.edu';
+
+// Directory aliases for uipda.grad.uiowa.edu.
+$sites['graduipda.local.drupal.uiowa.edu'] = 'uipda.grad.uiowa.edu';
+$sites['graduipda.dev.drupal.uiowa.edu'] = 'uipda.grad.uiowa.edu';
+$sites['graduipda.stage.drupal.uiowa.edu'] = 'uipda.grad.uiowa.edu';
+$sites['graduipda.prod.drupal.uiowa.edu'] = 'uipda.grad.uiowa.edu';
