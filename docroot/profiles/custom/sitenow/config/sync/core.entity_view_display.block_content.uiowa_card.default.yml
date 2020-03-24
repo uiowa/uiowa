@@ -10,6 +10,7 @@ dependencies:
     - field.field.block_content.uiowa_card.field_uiowa_card_link
     - field.field.block_content.uiowa_card.field_uiowa_card_title
   module:
+    - blazy
     - heading
     - link
 _core:
@@ -35,12 +36,43 @@ content:
     type: basic_string
     region: content
   field_uiowa_card_image:
-    type: entity_reference_entity_view
+    type: blazy_media
     weight: 3
     label: above
     settings:
       view_mode: large__widescreen
-      link: false
+      link: ''
+      class: ''
+      id: ''
+      image: ''
+      overlay: ''
+      title: ''
+      vanilla: false
+      icon: ''
+      layout: ''
+      cache: 0
+      current_view_mode: ''
+      skin: ''
+      fx: ''
+      style: ''
+      background: false
+      box_caption: ''
+      box_caption_custom: ''
+      box_media_style: ''
+      caption: {  }
+      responsive_image_style: ''
+      box_style: ''
+      image_style: ''
+      media_switch: ''
+      ratio: ''
+      thumbnail_style: ''
+      _uri: ''
+      breakpoints: {  }
+      sizes: ''
+      grid_header: ''
+      grid: 0
+      grid_medium: 0
+      grid_small: 0
     third_party_settings: {  }
     region: content
   field_uiowa_card_link:

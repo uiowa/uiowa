@@ -5,6 +5,8 @@ dependencies:
   config:
     - block_content.type.uiowa_image_gallery
     - field.field.block_content.uiowa_image_gallery.field_uiowa_gallery_image
+  module:
+    - blazy
 id: block_content.uiowa_image_gallery.default
 targetEntityType: block_content
 bundle: uiowa_image_gallery
@@ -15,8 +17,39 @@ content:
     label: hidden
     settings:
       view_mode: image_gallery
-      link: false
+      link: ''
+      class: ''
+      id: ''
+      image: ''
+      overlay: ''
+      title: ''
+      vanilla: false
+      icon: ''
+      layout: ''
+      cache: 0
+      current_view_mode: ''
+      skin: ''
+      fx: ''
+      style: ''
+      background: false
+      box_caption: ''
+      box_caption_custom: ''
+      box_media_style: ''
+      caption: {  }
+      responsive_image_style: ''
+      box_style: ''
+      image_style: ''
+      media_switch: ''
+      ratio: ''
+      thumbnail_style: ''
+      _uri: ''
+      breakpoints: {  }
+      sizes: ''
+      grid_header: ''
+      grid: 0
+      grid_medium: 0
+      grid_small: 0
     third_party_settings: {  }
-    type: entity_reference_entity_view
+    type: blazy_media
     region: content
 hidden: {  }
