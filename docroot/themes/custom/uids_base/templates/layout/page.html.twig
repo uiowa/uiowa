@@ -82,16 +82,16 @@
     {% include '@uids_base/layout/header--tertiary.html.twig'  %}
 {% endif %}
 
+{% if page.alert %}
+	<div role="region" class="uids-component--alert">
+		<div class="page__container">
+			{{ page.alert }}
+		</div>
+	</div>
+{% endif %}
+
 {% if layout_builder_enabled == TRUE %}
   <main role="main" {{ node_attributes.addClass(node_classes) }}>
-
-    {% if page.alert %}
-      <div role="region" class="uids-component--alert">
-        <div class="page__container">
-          {{ page.alert }}
-        </div>
-      </div>
-    {% endif %}
 
     <a id="main-content" tabindex="-1"></a>
     {# link is in html.html.twig #}
@@ -115,14 +115,6 @@
   <main role="main" {{ node_attributes.addClass(layout_container, sticky_classes) }}>
     <a id="main-content" tabindex="-1"></a>
     {# link is in html.html.twig #}
-
-    {% if page.alert %}
-      <div role="region" class="uids-component--alert">
-        <div class="page__container">
-          {{ page.alert }}
-        </div>
-      </div>
-    {% endif %}
 
     {{ page.content }}
     {# /.layout-content #}
