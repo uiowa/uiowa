@@ -1170,3 +1170,9 @@ $sites['orgglam.local.drupal.uiowa.edu'] = 'glam.org.uiowa.edu';
 $sites['orgglam.dev.drupal.uiowa.edu'] = 'glam.org.uiowa.edu';
 $sites['orgglam.stage.drupal.uiowa.edu'] = 'glam.org.uiowa.edu';
 $sites['orgglam.prod.drupal.uiowa.edu'] = 'glam.org.uiowa.edu';
+
+// Directory aliases for iowasuperfund.uiowa.edu.
+$sites['iowasuperfund.local.drupal.uiowa.edu'] = 'iowasuperfund.uiowa.edu';
+$sites['iowasuperfund.dev.drupal.uiowa.edu'] = 'iowasuperfund.uiowa.edu';
+$sites['iowasuperfund.stage.drupal.uiowa.edu'] = 'iowasuperfund.uiowa.edu';
+$sites['iowasuperfund.prod.drupal.uiowa.edu'] = 'iowasuperfund.uiowa.edu';

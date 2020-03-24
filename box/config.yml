@@ -63,10 +63,12 @@ apache_vhosts:
     servername: accreditation.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+
   -
     servername: orgalphachisigma-alphatheta.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+
   -
     servername: foap-purchasing.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
@@ -299,7 +301,6 @@ apache_vhosts:
     servername: international.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-  
   -
     servername: itaccessibility.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
@@ -496,7 +497,6 @@ apache_vhosts:
     servername: uiobl.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-  
   -
     servername: orguira.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
@@ -835,6 +835,10 @@ apache_vhosts:
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
   -
     servername: orgglam.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: iowasuperfund.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
 

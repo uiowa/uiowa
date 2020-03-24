@@ -1,0 +1,25 @@
+project:
+  local:
+    hostname: iowasuperfund.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: iowasuperfund
+  human_name: iowasuperfund.uiowa.edu
+  profile:
+    name: sitenow
+drush:
+  aliases:
+    local: self
+    remote: iowasuperfund.prod
+drupal:
+  db:
+    database: iowasuperfund_uiowa_edu
+cm:
+  core:
+    install_from_config: true
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+uiowa:
+  profiles:
+    sitenow:
+      requester: dapurdy
