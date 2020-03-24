@@ -45,6 +45,26 @@
 }
 
 @media (min-width: 40em) and (max-width: 68.125em) {
+  .layout--fourcol {
+    flex-wrap: wrap;
+  }
+  .layout--fourcol>.layout__region {
+    flex: 0 1 46.50%;
+    margin-bottom: 3rem;
+  }
+  .layout--fourcol>.layout__region--second {
+    margin-left: 6%;
+    margin-right:0;
+  }
+
+  .layout--fourcol>.layout__region--third {
+    margin-left: 0;
+    margin-right: 6%;
+  }
+}
+
+
+@media (min-width: 40em) and (max-width: 68.125em) {
   .layout--fourcol.grid--1-3 {
     flex-wrap: wrap;
   }

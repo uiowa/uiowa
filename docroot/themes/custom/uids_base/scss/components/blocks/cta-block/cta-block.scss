@@ -7,19 +7,33 @@
 .layout__region--second,
 .layout__region--third,
 .layout__region--fourth {
-.cta__container>div {
-  @include breakpoint(container) {
-  margin: 1.05rem 0;
+  .cta__container>div {
+    @include breakpoint(sm) {
+      margin: 1.05rem 0;
+    }
   }
-}
+
+  .cta__container {
+    .cta__title {
+      //margin-left: 1.05rem;
+    }
+
+    .cta__content {
+      //margin-left: 1.05rem;
+    }
+
+    .cta__link {
+      //margin-right: 1.05rem;
+    }
+  }
 }
 
 // ie11
 @media all and (-ms-high-contrast: none),
 (-ms-high-contrast: active) {
- .cta__container>div {
-   @include breakpoint(container) {
-     margin: 1.05rem 0;
-   }
- }
+  .cta__container>div {
+    @include breakpoint(container) {
+      margin: 1.05rem 0;
+    }
+  }
 }
