@@ -6,12 +6,19 @@ $imgpath: '../../uids/assets/images/';
 @import url('https://use.fontawesome.com/releases/v5.8.2/css/all.css');
 
 .layout__container {
+  .block-inline-blockuiowa-text-area {
+    //width: 100%;
+    //flex: 1 0 auto;
+    flex-basis: 100%;
+    ;
+  }
+
   .block-system-breadcrumb-block,
   .block-field-blocknodepagetitle,
   .block-field-blocknodepagebody,
   .block-inline-blockuiowa-text-area,
   .block-views {
-    flex-basis: 100%;
+    //flex-basis: 100%;
   }
 }
 
@@ -49,26 +56,26 @@ $imgpath: '../../uids/assets/images/';
 // default left/right gutter spacing for full width settings without layout builder
 
 .page__container--full .region-content {
- // margin-right: $gutter;
+  // margin-right: $gutter;
   //margin-left: $gutter;
-    margin-right: $mobile-width-gutter;
-    margin-left: $mobile-width-gutter;
+  margin-right: $mobile-width-gutter;
+  margin-left: $mobile-width-gutter;
 }
 
 // default left/right gutter spacing for full width settings w/ layout builder enabled
 
 .content__full .layout__container {
-       margin-right: $mobile-width-gutter;
-       margin-left: $mobile-width-gutter;
-       margin-bottom: $mobile-width-gutter;
+  margin-right: $mobile-width-gutter;
+  margin-left: $mobile-width-gutter;
+  margin-bottom: $mobile-width-gutter;
 
-         &.page__container--extended {
+  &.page__container--extended {
 
-           @include breakpoint(container) {
-             max-width: 100em;
-             padding: 0 $lg;
-           }
-         }
+    @include breakpoint(container) {
+      max-width: 100em;
+      padding: 0 $lg;
+    }
+  }
 
   //margin-right: $gutter;
   //margin-bottom: $gutter;
@@ -91,15 +98,15 @@ $imgpath: '../../uids/assets/images/';
       }
 
       &__right {
-        padding-right: $md;
+        padding-right: $desktop-width-gutter;
       }
 
       &__bottom {
-        padding-bottom: $md;
+        padding-bottom: $desktop-width-gutter;
       }
 
       &__left {
-        padding-left: $md;
+        padding-left: $desktop-width-gutter;
       }
     }
   }
@@ -144,15 +151,15 @@ $imgpath: '../../uids/assets/images/';
 // settings if page container full or edge is selected on section
 
 .page__container--full.layout__container {
- // margin-right: $gutter;
- // margin-left: $gutter;
-       margin-right: $mobile-width-gutter;
-       margin-left: $mobile-width-gutter;
+  // margin-right: $gutter;
+  // margin-left: $gutter;
+  margin-right: $mobile-width-gutter;
+  margin-left: $mobile-width-gutter;
 
-       @include breakpoint(menu) {
-         margin-right: $desktop-width-gutter;
-         margin-left: $desktop-width-gutter;
-       }
+  @include breakpoint(menu) {
+    margin-right: $desktop-width-gutter;
+    margin-left: $desktop-width-gutter;
+  }
 
   &.page__container--edge {
     margin-right: 0;
@@ -170,10 +177,10 @@ $imgpath: '../../uids/assets/images/';
     @extend %container;
 
     &.page__container--extended {
-       @include breakpoint(container) {
-         max-width: 100em;
-         padding: 0 $lg;
-       }
+      @include breakpoint(container) {
+        max-width: 100em;
+        padding: 0 $lg;
+      }
     }
 
     // layout builder styles padding classes
@@ -181,7 +188,7 @@ $imgpath: '../../uids/assets/images/';
     &.section-padding {
       @include breakpoint(sm) {
         &__top {
-          padding-top: $md;
+          padding-top: $desktop-width-gutter;
         }
 
         &__top-extra {
@@ -193,15 +200,15 @@ $imgpath: '../../uids/assets/images/';
         }
 
         &__right {
-          padding-right: $md;
+          padding-right: $desktop-width-gutter;
         }
 
         &__bottom {
-          padding-bottom: $md;
+          padding-bottom: $desktop-width-gutter;
         }
 
         &__left {
-          padding-left: $md;
+          padding-left: $desktop-width-gutter;
         }
       }
     }
@@ -234,10 +241,11 @@ $imgpath: '../../uids/assets/images/';
       max-width: 100%;
       margin-right: $mobile-width-gutter;
       margin-left: $mobile-width-gutter;
-          @include breakpoint(menu) {
-             margin-right: $desktop-width-gutter;
-             margin-left: $desktop-width-gutter;
-          }
+
+      @include breakpoint(menu) {
+        margin-right: $desktop-width-gutter;
+        margin-left: $desktop-width-gutter;
+      }
     }
 
     &.page__container--edge {
@@ -280,6 +288,7 @@ $imgpath: '../../uids/assets/images/';
 .node-page-layout-builder-form .block.block-layout-builder.element-invisible {
   @include element-invisible-off;
   position: relative !important;
+
   &:before {
     content: "This block is set to be visually hidden";
     display: block;
@@ -291,6 +300,7 @@ $imgpath: '../../uids/assets/images/';
     font-style: italic;
     z-index: 1;
   }
+
   &:after {
     content: "";
     display: block;
@@ -308,4 +318,18 @@ $imgpath: '../../uids/assets/images/';
 
 .search-button[aria-expanded="true"] {
   margin-left: auto;
+}
+
+// skip link
+
+.skip-link-region {
+  text-align: center;
+  background: #f1f1f1;
+  display: block;
+
+  a {
+    color: blue;
+    padding: 10px;
+    display: block;
+  }
 }
