@@ -44,99 +44,76 @@
 #}
 
 {% if logged_in %}
-    {{ attach_library('uids_base/admin') }}
+  {{ attach_library('uids_base/admin') }}
 {% endif %}
 
 {% set header_classes = [
-    header_type,
-    header_nav,
+  header_type,
+  header_nav,
 ] %}
-
-{% if layout_container == 'page__container' %}
-{#    {% set header_classes = ['header__container'] %}#}
-    {% set page_classes = ['page__container'] %}
-{% elseif layout_container == 'page__container--full' %}
-{#    {% set header_classes = ['header__container--full'] %}#}
-    {% set page_classes = ['page__container--full'] %}
-{% else %}
-{#    {% set header_classes = ['header__container--full'] %}#}
-    {% set page_classes = ['page__container'] %}
-{% endif %}
 
 {% set node_attributes = create_attribute() %}
 
-{% if layout_container == 'page__container' %}
-    {% set node_classes = ['content__container'] %}
-{% elseif layout_container == 'page__container--mixed' %}
-    {% set node_classes = ['content__mixed'] %}
+{% set content_classes = [] %}
+
+{% if layout_builder_enabled == TRUE %}
+  {# Set layout builder UI classes #}
+  {% if layout_container == 'page__container' %}
+    {% set content_classes = content_classes|merge(['content__container']) %}
+  {% elseif layout_container == 'page__container--mixed' %}
+    {% set content_classes = content_classes|merge(['content__mixed']) %}
+  {% else %}
+    {% set content_classes = content_classes|merge(['content__full']) %}
+  {% endif %}
 {% else %}
-    {% set node_classes = ['content__full'] %}
+  {# Use classes defined in theme and add sticky classes #}
+  {% set content_classes = content_classes|merge([layout_container]) %}
+  {% if sticky_classes %}
+    {% set content_classes = content_classes|merge(sticky_classes) %}
+  {% endif %}
 {% endif %}
 
-
 {% if header_type == 'header--primary' %}
-    {% include '@uids_base/layout/header--primary.html.twig'  %}
+  {% include '@uids_base/layout/header--primary.html.twig'  %}
 {% elseif header_type == 'header--secondary' %}
-    {% include '@uids_base/layout/header--secondary.html.twig' %}
+  {% include '@uids_base/layout/header--secondary.html.twig' %}
 {% elseif header_type == 'header--tertiary' %}
-    {% include '@uids_base/layout/header--tertiary.html.twig'  %}
+  {% include '@uids_base/layout/header--tertiary.html.twig'  %}
 {% endif %}
 
 {% if page.alert %}
-	<div role="region" class="uids-component--alert">
-		<div class="page__container">
-			{{ page.alert }}
-		</div>
-	</div>
+  <div role="region" class="uids-component--alert">
+    <div class="page__container">
+      {{ page.alert }}
+    </div>
+  </div>
 {% endif %}
 
-{% if layout_builder_enabled == TRUE %}
-  <main role="main" {{ node_attributes.addClass(node_classes) }}>
+<main role="main" {{ node_attributes.addClass(content_classes) }}>
 
-    <a id="main-content" tabindex="-1"></a>
-    {# link is in html.html.twig #}
-    {{ page.content }}
-    {# /.layout-content #}
+  {% if page.breadcrumb %}
+    {{ page.breadcrumb }}
+  {% endif %}
 
-    {% if page.sidebar_first %}
-      <aside class="layout-sidebar-first" role="complementary">
-        {{ page.sidebar_first }}
-      </aside>
-    {% endif %}
+  <a id="main-content" tabindex="-1"></a>
+  {# link is in html.html.twig #}
+  {{ page.content }}
+  {# /.layout-content #}
 
-    {% if page.sidebar_second %}
-      <aside class="layout-sidebar-second" role="complementary">
-        {{ page.sidebar_second }}
-      </aside>
-    {% endif %}
+  {% if page.sidebar_first %}
+    <aside class="layout-sidebar-first" role="complementary">
+      {{ page.sidebar_first }}
+    </aside>
+  {% endif %}
 
-  </main>
-{% else %}
-  <main role="main" {{ node_attributes.addClass(layout_container, sticky_classes) }}>
-    <a id="main-content" tabindex="-1"></a>
-    {# link is in html.html.twig #}
+  {% if page.sidebar_second %}
+    <aside class="layout-sidebar-second" role="complementary">
+      {{ page.sidebar_second }}
+    </aside>
+  {% endif %}
 
-    {{ page.content }}
-    {# /.layout-content #}
-
-    {% if page.sidebar_first %}
-      <aside class="layout-sidebar-first" role="complementary">
-        {{ page.sidebar_first }}
-      </aside>
-    {% endif %}
-
-    {% if page.sidebar_second %}
-      <aside class="layout-sidebar-second" role="complementary">
-        {{ page.sidebar_second }}
-      </aside>
-    {% endif %}
-
-  </main>
-{% endif %}
+</main>
 
 {% block footer %}
   {% include '@uids_base/layout/footer.html.twig'  %}
 {% endblock %}
-
-</div>
-{# / #}
