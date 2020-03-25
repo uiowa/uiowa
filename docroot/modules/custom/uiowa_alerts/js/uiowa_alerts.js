@@ -3,10 +3,13 @@
  * Fetch University of Iowa alerts.
  */
 
-(function($) {
+(function ($, Drupal, drupalSettings) {
+
+  'use strict';
+
   Drupal.uiowaAlertsGetAlerts = function() {
     $.ajax({
-      url: Drupal.settings.uiowaAlerts.alertSource,
+      url: drupalSettings.uiowaAlerts.alertSource,
       dataType: "jsonp",
       success: function( response ) {
         if (response.uihphawkalert.length === 0 ) {

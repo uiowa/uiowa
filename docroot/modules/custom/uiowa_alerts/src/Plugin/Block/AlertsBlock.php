@@ -18,9 +18,10 @@ class AlertsBlock extends BlockBase {
    * {@inheritdoc}
    */
   public function build() {
-    $no_alerts_message = trim(variable_get('uiowa_alerts_no_alerts_message', ''));
-    $filtered_message = filter_xss($no_alerts_message, $allowed_tags = array('a', 'p', 'div', 'em', 'strong'));
-    $source = variable_get('uiowa_alerts_source', 'json_production');
+    \Drupal::config('example.settings')->get('test_content_types');
+    $no_alerts_message = trim(\Drupal::config('uiowa_alerts.settings')->get('no_alerts_message'));
+    $filtered_message = check_markup($no_alerts_message, 'minimal');
+    $source = \Drupal::config('uiowa_alerts.settings')->get('source', 'json_production');
     switch ($source) {
       case 'json_production':
         $source_url = 'https://emergency.uiowa.edu/api/active.json';
@@ -42,7 +43,7 @@ class AlertsBlock extends BlockBase {
             'noAlertsMessage' => $filtered_message,
           ],
         ],
-      ]
+      ],
     ];
   }
 
@@ -52,4 +53,5 @@ class AlertsBlock extends BlockBase {
   public function getCacheMaxAge() {
     return 0;
   }
+
 }

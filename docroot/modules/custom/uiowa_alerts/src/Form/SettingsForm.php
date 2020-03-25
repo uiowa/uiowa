@@ -37,10 +37,10 @@ class SettingsForm extends ConfigFormBase {
       '#required' => TRUE,
       '#default_value' => $config->get('uiowa_alerts.source'),
       '#options' => [
-        'json_test' => 'Test: https://emergency.stage.drupal.uiowa.edu/api/active.json',
-        'json_production' => 'Production: https://emergency.uiowa.edu/api/active.json',
+        'json_test' => $this->t('Test: https://emergency.stage.drupal.uiowa.edu/api/active.json'),
+        'json_production' => $this->t('Production: https://emergency.uiowa.edu/api/active.json'),
       ],
-      '#description' => t('Select the alert source.'),
+      '#description' => $this->t('Select the alert source.'),
     ];
 
     $form['no_alerts_message'] = [
@@ -52,13 +52,6 @@ class SettingsForm extends ConfigFormBase {
     ];
 
     return $form;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    parent::validateForm($form, $form_state);
   }
 
   /**
