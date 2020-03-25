@@ -8,15 +8,17 @@
   'use strict';
 
   Drupal.uiowaAlertsGetAlerts = function() {
+    console.log('the function was at least triggered');
     $.ajax({
       url: drupalSettings.uiowaAlerts.alertSource,
       dataType: "jsonp",
       success: function( response ) {
+        console.log('got to response.');
         if (response.uihphawkalert.length === 0 ) {
-          var noAlertMessage = Drupal.settings.uiowaAlerts.noAlertsMessage;
+          var noAlertMessage = drupalSettings.uiowaAlerts.noAlertsMessage;
           if (!(noAlertMessage.length === 0)) {
             var noAlertContent = '<div class="hawk-alert alert alert-success" role="alert"><div class="hawk-alert-message">' + noAlertMessage + '</div></div>';
-            $("#block-uiowa-alerts-alerts .uiowa-alerts-wrapper").html(noAlertContent);
+            $(".block-uiowa-alerts-block .uiowa-alerts-wrapper").html(noAlertContent);
           }
         } else {
           var allAlerts = '';
@@ -28,7 +30,7 @@
             var alertContent = '<div class="hawk-alert alert alert-danger" role="alert"><div class="hawk-alert-message">' + alertHeading + alertBody + alertMoreInfo + '</div></div>';
             allAlerts += alertContent;
           });
-          $("#block-uiowa-alerts-alerts .uiowa-alerts-wrapper").html(allAlerts);
+          $(".block-uiowa-alerts-block .uiowa-alerts-wrapper").html(allAlerts);
         }
       }
     });
@@ -37,7 +39,7 @@
   // Attach uiowaAlertsGetAlerts behavior.
   Drupal.behaviors.uiowaAlerts = {
     attach: function(context, settings) {
-      $('#block-uiowa-alerts-alerts', context).once('uiowaAlertsGetAlerts', function() {
+      $(".block-uiowa-alerts-block", context).once('uiowaAlertsGetAlerts').each(function() {
         // Get alerts on page load.
         Drupal.uiowaAlertsGetAlerts();
         // Check for changes every 30 seconds.
@@ -45,5 +47,4 @@
       });
     }
   };
-
-})(jQuery);
+})(jQuery, Drupal, drupalSettings);
