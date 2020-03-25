@@ -109,10 +109,10 @@ class MigratePostImportEvent implements EventSubscriberInterface {
     switch ($migration->id()) {
 
       case 'd7_page':
-        $this->source_to_dest_ids = $this->fetchMapping();
+        $this->sourceToDestIds = $this->fetchMapping();
         $this->d7Aliases = $this->fetchAliases(TRUE);
         $this->d8Aliases = $this->fetchAliases();
-        $this->logger('sitenow_migrate')->notice($this->t('Checking for possible broken links'));
+        \Drupal::logger('sitenow_migrate')->notice(t('Checking for possible broken links'));
         $candidates = $this->checkForPossibleLinkBreaks();
         $this->updateInternalLinks($candidates);
       case 'd7_file':
@@ -129,7 +129,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
     // Each candidate is an nid of a page suspected to contain a broken link.
     foreach ($candidates as $candidate) {
 
-      $this->logger->notice($this->t('Checking node id @nid', [
+      \Drupal::logger('sitenow_migrate')->notice(t('Checking node id @nid', [
         '@nid' => $candidate,
       ]));
 
@@ -160,7 +160,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
 
       }
 
-      $content = preg_replace_callback('|<a href=(".*?")|i', [$this, 'linkReplace'], $content);
+      $content = preg_replace_callback('|<a href="(.*?)">|i', [$this, 'linkReplace'], $content);
 
       // Depending on content type, need to set it differently.
       switch ($node->getType()) {
@@ -185,41 +185,62 @@ class MigratePostImportEvent implements EventSubscriberInterface {
    */
   private function linkReplace($match) {
     $old_link = $match[1];
-    $this->logger->notice($this->t('Old link found... @old_link', [
+    \Drupal::logger('sitenow_migrate')->notice(t('Old link found... @old_link', [
       '@old_link' => $old_link,
     ]));
 
+    // Check if there's an anchor link involved. Offset 1 space; if it's an anchor link only, we can skip it then.
+    if (strpos($old_link, '#', 1)) {
+      $split_anchor = explode('#', $old_link);
+      $suffix = $split_anchor[1];
+      $old_link = $split_anchor[0];
+    } else {
+      $suffix = '';
+    }
+
     // Check if it's a relative link.
-    if (substr($old_link, 1, 1) == '/') {
+    if (substr($old_link, 0, 1) == '/' || substr($old_link, 0, 4) == 'node') {
       $link_parts = explode('/', $old_link);
 
+      $link_found = FALSE;
       // Old node/# formatted links just need the updated mapping.
-      if ($link_parts[1] == 'node') {
-        // Take the node id, but don't grab the trailing ".
-        $old_nid = substr($link_parts[2], 0, -1);
-        // If we don't have the correct mapping, return the original link.
-        $new_link = (isset($this->source_to_dest_ids[$old_nid])) ? '<a href="/node/' . $this->source_to_dest_ids[$old_nid] . '"' : $match[0];
+      for ($i = 0; $i < count($link_parts) - 1; $i++) {
+        if ($link_parts[$i] == 'node') {
+          // Take the node id.
+          $old_nid = $link_parts[$i + 1];
+          $new_nid = $this->sourceToDestIds[$old_nid];
+          \Drupal::logger('sitenow_migrate')->notice(t('Old nid... @old_nid', [
+            '@old_nid' => $old_nid,
+          ]));
+          \Drupal::logger('sitenow_migrate')->notice(t('New nid... @new_nid', [
+            '@new_nid' => $new_nid,
+          ]));
+          // If we don't have the correct mapping, return the original link.
+          $link_found = isset($this->sourceToDestIds[$old_nid]);
+          $new_link = ($link_found) ? '<a href="/node/' . $this->sourceToDestIds[$old_nid] . '"' : $match[0];
+        break;
+        }
       }
-      else {
+      if (!$link_found) {
         // If it wasn't in node/# format, we need to use the alias
-        // (w/out preceding "/ or the trailing ") to get the correct mapping.
-        $d7_nid = $this->d7Aliases[substr($old_link, 2, -1)];
-        $new_link = (isset($this->source_to_dest_ids[$d7_nid])) ? '<a href="/node/' . $this->source_to_dest_ids[$d7_nid] . '"' : $match[0];
+        // (w/out preceding /) to get the correct mapping.
+        $d7_nid = $this->d7Aliases[$old_link];
+        $new_link = (isset($this->sourceToDestIds[$d7_nid])) ? '<a href="/node/' . $this->sourceToDestIds[$d7_nid] . '"' : $match[0];
       }
-      $this->logger->notice($this->t('New link found... @new_link', [
-        '@new_link' => $new_link,
+      \Drupal::logger('sitenow_migrate')->notice(t('New link found from /node/ path... @new_link', [
+        '@new_link' => $new_link . $suffix,
       ]));
 
-      return $new_link;
+      return $new_link . $suffix;
     }
     else {
       // We have an absolute link--need to check if it references this
       // site or is external.
       $pattern = '|"(https?://)?(www.)?(' . $this->basePath . ')/(.*?)"|';
-      if (preg_match($pattern, $old_link, $match)) {
-        $d7_nid = $this->d7Aliases[$match[4]];
-        $new_link = (isset($this->source_to_dest_ids[$d7_nid])) ? '<a href="/node/' . $this->source_to_dest_ids[$d7_nid] . '"' : '<a href="/' . $match[4] . '"';
-        $this->logger->notice($this->t('New link found... @new_link', [
+      if (preg_match($pattern, $old_link, $abs_match)) {
+        $d7_nid = $this->d7Aliases[$abs_match[4]];
+        $new_link = (isset($this->sourceToDestIds[$d7_nid])) ? '<a href="/node/' . $this->sourceToDestIds[$d7_nid] . '"' : '<a href="/' . $abs_match[4] . '"';
+        \Drupal::logger('sitenow_migrate')->notice(t('New link found from absolute path... @new_link', [
           '@new_link' => $new_link,
         ]));
 
@@ -228,7 +249,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
     }
 
     // No matches were found--return the unchanged original.
-    return $match;
+    return $match[0];
   }
 
   /**
@@ -262,7 +283,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
     $candidates = array_merge($candidates, $result->fetchCol());
 
     foreach ($candidates as $candidate) {
-      $this->logger->notice($this->t('Possible broken link found in node @candidate', [
+      \Drupal::logger('sitenow_migrate')->notice(t('Possible broken link found in node @candidate', [
         '@candidate' => $candidate,
       ]));
     }
@@ -314,13 +335,13 @@ class MigratePostImportEvent implements EventSubscriberInterface {
     if ($connection->schema()->tableExists('migrate_map_d7_article')) {
       $sub_result2 = $connection->select('migrate_map_d7_article', 'mma')
         ->fields('mma', ['sourceid1', 'destid1']);
-      $result = $sub_result1->union($sub_result2);
+      $unioned = $sub_result1->union($sub_result2);
     }
     else {
-      $result = $sub_result1;
+      $unioned = $sub_result1;
     }
 
-    $result->execute();
+    $result = $unioned->execute();
     $sourceToDestIds = [];
     foreach ($result as $row) {
       $sourceToDestIds[$row->sourceid1] = $row->destid1;
