@@ -19,9 +19,9 @@ class AlertsBlock extends BlockBase {
    */
   public function build() {
     $config = \Drupal::config('uiowa_alerts.settings');
-    $no_alerts_message = trim($config->get('uiowa_alerts.no_alerts_message'));
+    $no_alerts_message = trim($config->get('no_alerts_message'));
     $filtered_message = check_markup($no_alerts_message, 'minimal');
-    $source = $config->get('uiowa_alerts.source');
+    $source = $config->get('source');
     switch ($source) {
       case 'json_production':
         $source_url = 'https://emergency.uiowa.edu/api/active.json';

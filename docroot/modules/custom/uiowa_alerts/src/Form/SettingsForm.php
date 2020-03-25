@@ -35,7 +35,7 @@ class SettingsForm extends ConfigFormBase {
       '#type' => 'radios',
       '#title' => $this->t('Alert feed source'),
       '#required' => TRUE,
-      '#default_value' => $config->get('uiowa_alerts.source'),
+      '#default_value' => $config->get('source'),
       '#options' => [
         'json_test' => $this->t('Test: https://emergency.stage.drupal.uiowa.edu/api/active.json'),
         'json_production' => $this->t('Production: https://emergency.uiowa.edu/api/active.json'),
@@ -47,8 +47,11 @@ class SettingsForm extends ConfigFormBase {
       '#type' => 'text_format',
       '#title' => $this->t('No alerts message'),
       '#format' => 'minimal',
-      '#default_value' => $config->get('uiowa_alerts.no_alerts_messsage'),
-      '#description' => $this->t('Optionally provide a message to be displayed when there are no active alerts. Allowed HTML tags: a, p, div, em, strong.'),
+      '#allowed_formats' => [
+        'minimal',
+      ],
+      '#default_value' => $config->get('no_alerts_message'),
+      '#description' => $this->t('Optionally provide a message to be displayed when there are no active alerts.'),
     ];
 
     return $form;
@@ -58,9 +61,10 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    $test = $form_state->getValue(['no_alerts_message', 'value']);
     $this->config('uiowa_alerts.settings')
-      ->set('uiowa_alerts.source', $form_state->getValue('source'))
-      ->set('uiowa_alerts.no_alerts_message', $form_state->getValue('no_alerts_message'))
+      ->set('source', $form_state->getValue('source'))
+      ->set('no_alerts_message', $form_state->getValue(['no_alerts_message', 'value']))
       ->save();
     parent::submitForm($form, $form_state);
 
