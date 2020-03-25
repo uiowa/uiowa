@@ -10,7 +10,6 @@ $imgpath: '../../uids/assets/images/';
     //width: 100%;
     //flex: 1 0 auto;
     flex-basis: 100%;
-    ;
   }
 
   .block-system-breadcrumb-block,
@@ -19,6 +18,14 @@ $imgpath: '../../uids/assets/images/';
   .block-inline-blockuiowa-text-area,
   .block-views {
     //flex-basis: 100%;
+  }
+}
+
+// ie11
+@media all and (-ms-high-contrast: none),
+(-ms-high-contrast: active) {
+  .layout__container .block-inline-blockuiowa-text-area {
+    flex-basis: unset;
   }
 }
 
