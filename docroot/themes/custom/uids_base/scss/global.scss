@@ -376,7 +376,6 @@ $imgpath: '../../uids/assets/images/';
     flex-wrap: wrap;
 
     span {
-      flex: 1;
       border: 1px solid $grey-light;
       display: block;
       text-align: center;
@@ -385,6 +384,7 @@ $imgpath: '../../uids/assets/images/';
       @include breakpoint(container) {
         border-right: none;
         margin: 0;
+        flex: 1;
       }
 
       a {
