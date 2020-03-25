@@ -8,12 +8,10 @@
   'use strict';
 
   Drupal.uiowaAlertsGetAlerts = function() {
-    console.log('the function was at least triggered');
     $.ajax({
       url: drupalSettings.uiowaAlerts.alertSource,
       dataType: "jsonp",
       success: function( response ) {
-        console.log('got to response.');
         if (response.uihphawkalert.length === 0 ) {
           var noAlertMessage = drupalSettings.uiowaAlerts.noAlertsMessage;
           if (!(noAlertMessage.length === 0)) {
