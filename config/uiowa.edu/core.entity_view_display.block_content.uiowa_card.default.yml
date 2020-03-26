@@ -1,0 +1,102 @@
+uuid: 2b595e1a-4cb3-410d-9928-7663f05d90c9
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_card
+    - field.field.block_content.uiowa_card.field_uiowa_card_author
+    - field.field.block_content.uiowa_card.field_uiowa_card_excerpt
+    - field.field.block_content.uiowa_card.field_uiowa_card_image
+    - field.field.block_content.uiowa_card.field_uiowa_card_link
+    - field.field.block_content.uiowa_card.field_uiowa_card_title
+    - image.style.widescreen__768_x_432
+    - responsive_image.styles.large__widescreen
+  module:
+    - blazy
+    - heading
+    - link
+_core:
+  default_config_hash: FVCsCd-0IpApFOBsBVnax1xAb3UO94cIAtksGnBVygE
+id: block_content.uiowa_card.default
+targetEntityType: block_content
+bundle: uiowa_card
+mode: default
+content:
+  field_uiowa_card_author:
+    weight: 4
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_uiowa_card_excerpt:
+    weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_uiowa_card_image:
+    type: blazy_media
+    weight: 3
+    label: above
+    settings:
+      image_style: widescreen__768_x_432
+      responsive_image_style: large__widescreen
+      media_switch: ''
+      box_style: ''
+      thumbnail_style: ''
+      box_media_style: ''
+      ratio: ''
+      box_caption: ''
+      view_mode: large__widescreen
+      box_caption_custom: ''
+      current_view_mode: default
+      background: false
+      caption:
+        field_media_caption: '0'
+        title: '0'
+        alt: '0'
+      class: ''
+      id: ''
+      image: ''
+      link: ''
+      overlay: ''
+      title: ''
+      vanilla: false
+      icon: ''
+      layout: ''
+      cache: 0
+      skin: ''
+      fx: ''
+      style: ''
+      _uri: ''
+      breakpoints: {  }
+      sizes: ''
+      grid_header: ''
+      grid: 0
+      grid_medium: 0
+      grid_small: 0
+    third_party_settings: {  }
+    region: content
+  field_uiowa_card_link:
+    weight: 2
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  field_uiowa_card_title:
+    weight: 0
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: heading
+    region: content
+hidden: {  }

@@ -1,0 +1,103 @@
+uuid: 7ccbed92-a0f2-459a-9e99-c83e6f34e822
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_event
+    - field.field.block_content.uiowa_event.field_uiowa_event_date
+    - field.field.block_content.uiowa_event.field_uiowa_event_image
+    - field.field.block_content.uiowa_event.field_uiowa_event_link
+    - field.field.block_content.uiowa_event.field_uiowa_event_location
+    - field.field.block_content.uiowa_event.field_uiowa_event_title
+    - image.style.square__768_x_768
+    - responsive_image.styles.small__square
+  module:
+    - blazy
+    - datetime
+    - heading
+    - link
+id: block_content.uiowa_event.default
+targetEntityType: block_content
+bundle: uiowa_event
+mode: default
+content:
+  field_uiowa_event_date:
+    weight: 4
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  field_uiowa_event_image:
+    type: blazy_media
+    weight: 3
+    label: above
+    settings:
+      image_style: square__768_x_768
+      responsive_image_style: small__square
+      media_switch: ''
+      box_style: ''
+      thumbnail_style: ''
+      box_media_style: ''
+      ratio: ''
+      box_caption: ''
+      view_mode: small__square
+      box_caption_custom: ''
+      current_view_mode: default
+      background: false
+      caption:
+        field_media_caption: '0'
+        title: '0'
+        alt: '0'
+      class: ''
+      id: ''
+      image: ''
+      link: ''
+      overlay: ''
+      title: ''
+      vanilla: false
+      icon: ''
+      layout: ''
+      cache: 0
+      skin: ''
+      fx: ''
+      style: ''
+      _uri: ''
+      breakpoints: {  }
+      sizes: ''
+      grid_header: ''
+      grid: 0
+      grid_medium: 0
+      grid_small: 0
+    third_party_settings: {  }
+    region: content
+  field_uiowa_event_link:
+    weight: 5
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  field_uiowa_event_location:
+    weight: 2
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_uiowa_event_title:
+    weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: heading
+    region: content
+hidden: {  }
