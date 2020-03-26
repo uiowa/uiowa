@@ -47,12 +47,29 @@
   width: 100%;
 }
 
+.layout--fourcol>.layout__region.js-layout-builder-region {
+  display: block !important;
+}
+
+.layout--threecol >.layout__region.js-layout-builder-region {
+  display: block !important;
+}
+
+
+
 .layout-builder-block {
   //padding: 0;
   cursor: move;
   background: transparent;
+
   &.uids-component--gray {
     background: $light;
+  }
+  &.uids-component--black {
+    background: $secondary;
+  }
+  &.uids-component--gold {
+    background: $primary;
   }
 }
 
@@ -107,7 +124,7 @@
 
     @include breakpoint(container) {
       position: relative;
-      max-width: 84.375em;
+      max-width: 81.875em;
       margin: 0 auto;
     }
 
@@ -150,7 +167,8 @@
   .block-help-block,
   .form-actions,
   .layout-builder__message,
-  .form-type-vertical-tabs {
+  .form-type-vertical-tabs,
+  #edit-moderation-state-0 {
     @extend %container;
   }
 }
