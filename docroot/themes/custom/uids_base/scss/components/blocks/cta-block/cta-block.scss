@@ -7,6 +7,12 @@
 .layout__region--second,
 .layout__region--third,
 .layout__region--fourth {
+  .uids-component--brain-black .cta__container>div {
+    @include breakpoint(sm) {
+      margin: .5rem 0;
+    }
+  }
+
   .cta__container>div {
     @include breakpoint(sm) {
       margin: 1.05rem 0;
