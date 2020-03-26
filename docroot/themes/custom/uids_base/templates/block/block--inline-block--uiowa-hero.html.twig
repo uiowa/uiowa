@@ -26,8 +26,6 @@
  */
 #}
 
-{{ attach_library('uids_base/hero-block') }}
-
 {% set video_field = content.field_uiowa_hero_video[0]['#media'].field_media_video_file.entity.uri.value %}
 {% set video_url = file_url(content.field_uiowa_hero_video[0]['#media'].field_media_video_file.entity.uri.value) %}
 {% set video_thumbnail = file_url(content.field_uiowa_hero_image[0]['#media'].field_media_image.entity.uri.value) %}
@@ -39,12 +37,11 @@
 	{% set vertical_align = 'center' %}
 {% endif %}
 
-<section class="hero hero__{{ vertical_align }} {{ attributes ? attributes.class }}" {{ attributes ? attributes|without('class') }}>
+{% embed "@uids_base/block/hero.html.twig" with {
+	hero_alignment: vertical_align
+} %}
 
-	{{ title_prefix }}
-	{{ title_suffix }}
-
-	<div class="hero__img">
+	{% block hero_image %}
 		{% if video_field is not empty %}
 			{{ attach_library('uids_base/hero-block-video') }}
 			<video class="hero__video" autoplay="autoplay" muted="muted" loop="loop" id="video-container" poster="{{ video_thumbnail }}">
@@ -53,30 +50,30 @@
 		{% else %}
 			{{ content.field_uiowa_hero_image }}
 		{% endif %}
-	</div>
+	{% endblock %}
 
-	<div class="hero__container hero__container-{{ vertical_align }}">
-		<div class="hero__content hero__content-{{ vertical_align }}">
+	{% block hero_content %}
 
-			{% if content.field_uiowa_hero_title[0]['#text'] is not empty %}
-				{% include "@uids_base/global/heading.html.twig" with {
-					"heading_level" : content.field_uiowa_hero_title[0]['#size'],
-					"heading_class" : 'bold-headline--serif bold-headline',
-					"heading" : content.field_uiowa_hero_title[0]['#text']
-				} %}
-			{% endif %}
+		{% if content.field_uiowa_hero_title[0]['#text'] is not empty %}
+			{% include "@uids_base/global/heading.html.twig" with {
+				"heading_level" : content.field_uiowa_hero_title[0]['#size'],
+				"heading_class" : 'bold-headline--serif bold-headline',
+				"heading" : content.field_uiowa_hero_title[0]['#text']
+			} %}
+		{% endif %}
 
-			{{ content.field_uiowa_hero_excerpt }}
+		{{ content.field_uiowa_hero_excerpt }}
 
-		</div>
-	</div>
+	{% endblock %}
 
 	{% if video_field is not empty %}
-		<div class="video-controls">
-			<button class="video-btn video-btn__pause" id="video-btn">
-				<span class="element-invisible">Pause</span>
-			</button>
-		</div>
+		{% block hero_footer %}
+			<div class="video-controls">
+				<button class="video-btn video-btn__pause" id="video-btn">
+					<span class="element-invisible">Pause</span>
+				</button>
+			</div>
+		{% endblock %}
 	{% endif %}
 
-</section>
+{% endembed %}

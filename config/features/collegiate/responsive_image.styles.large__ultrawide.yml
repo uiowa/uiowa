@@ -1,0 +1,31 @@
+uuid: 42a7dc5b-b68a-468f-9cdf-d0e1a502d840
+langcode: en
+status: true
+dependencies:
+  config:
+    - image.style.ultrawide__1024_x_439
+    - image.style.ultrawide__1312_x_562
+    - image.style.ultrawide__1920_x_823
+    - image.style.ultrawide__2592_x_1111
+    - image.style.ultrawide__384_x_165
+    - image.style.ultrawide__768_x_329
+_core:
+  default_config_hash: If-swfAY97ONSEKeWGAhaZXWc3KXGkFF4ZDqi_2HKts
+id: large__ultrawide
+label: 'Large - Ultrawide'
+image_style_mappings:
+  -
+    breakpoint_id: responsive_image.viewport_sizing
+    multiplier: 1x
+    image_mapping_type: sizes
+    image_mapping:
+      sizes: '(min-width: 768px) calc(50vw - 3.75em), 100vw'
+      sizes_image_styles:
+        - ultrawide__1024_x_439
+        - ultrawide__1312_x_562
+        - ultrawide__1920_x_823
+        - ultrawide__2592_x_1111
+        - ultrawide__384_x_165
+        - ultrawide__768_x_329
+breakpoint_group: responsive_image
+fallback_image_style: ultrawide__768_x_329
