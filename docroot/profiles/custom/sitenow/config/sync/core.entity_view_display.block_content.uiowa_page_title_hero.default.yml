@@ -5,6 +5,8 @@ dependencies:
   config:
     - block_content.type.uiowa_page_title_hero
     - field.field.block_content.uiowa_page_title_hero.field_uiowa_page_title_hero_img
+    - image.style.ultrawide__768_x_329
+    - responsive_image.styles.full__ultrawide
   module:
     - blazy
 _core:
@@ -19,32 +21,35 @@ content:
     weight: 1
     label: visually_hidden
     settings:
+      image_style: ultrawide__768_x_329
+      responsive_image_style: full__ultrawide
+      media_switch: ''
+      box_style: ''
+      thumbnail_style: ''
+      box_media_style: ''
+      ratio: ''
+      box_caption: ''
       view_mode: full__ultrawide
-      link: ''
+      box_caption_custom: ''
+      current_view_mode: default
+      background: false
+      caption:
+        field_media_caption: '0'
+        title: '0'
+        alt: '0'
       class: ''
       id: ''
       image: ''
+      link: ''
       overlay: ''
       title: ''
       vanilla: false
       icon: ''
       layout: ''
       cache: 0
-      current_view_mode: ''
       skin: ''
       fx: ''
       style: ''
-      background: false
-      box_caption: ''
-      box_caption_custom: ''
-      box_media_style: ''
-      caption: {  }
-      responsive_image_style: ''
-      box_style: ''
-      image_style: ''
-      media_switch: ''
-      ratio: ''
-      thumbnail_style: ''
       _uri: ''
       breakpoints: {  }
       sizes: ''
