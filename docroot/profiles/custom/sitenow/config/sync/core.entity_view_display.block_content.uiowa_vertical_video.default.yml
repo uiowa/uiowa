@@ -9,8 +9,6 @@ dependencies:
     - field.field.block_content.uiowa_vertical_video.field_uiowa_vertical_video_image
     - field.field.block_content.uiowa_vertical_video.field_uiowa_vertical_video_sub
     - field.field.block_content.uiowa_vertical_video.field_uiowa_vertical_video_title
-  module:
-    - blazy
 id: block_content.uiowa_vertical_video.default
 targetEntityType: block_content
 bundle: uiowa_vertical_video
@@ -35,43 +33,12 @@ content:
     third_party_settings: {  }
     region: content
   field_uiowa_vertical_video_image:
-    type: blazy_media
+    type: entity_reference_entity_view
     weight: 5
     label: above
     settings:
       view_mode: default
-      link: ''
-      class: ''
-      id: ''
-      image: ''
-      overlay: ''
-      title: ''
-      vanilla: false
-      icon: ''
-      layout: ''
-      cache: 0
-      current_view_mode: ''
-      skin: ''
-      fx: ''
-      style: ''
-      background: false
-      box_caption: ''
-      box_caption_custom: ''
-      box_media_style: ''
-      caption: {  }
-      responsive_image_style: ''
-      box_style: ''
-      image_style: ''
-      media_switch: ''
-      ratio: ''
-      thumbnail_style: ''
-      _uri: ''
-      breakpoints: {  }
-      sizes: ''
-      grid_header: ''
-      grid: 0
-      grid_medium: 0
-      grid_small: 0
+      link: false
     third_party_settings: {  }
     region: content
   field_uiowa_vertical_video_sub:
