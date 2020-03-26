@@ -390,11 +390,13 @@ $imgpath: '../../uids/assets/images/';
       a {
         display: block;
         text-decoration: none;
-        color: $med-gray;
+        color: #4F4F4F;
         line-height: 1;
         @include padding($top: $md, $right: $md, $bottom: $md, $left: $md);
 
-        &:hover {
+        &:hover,
+        &:focus,
+        &.is-active {
           background: $light;
         }
       }
