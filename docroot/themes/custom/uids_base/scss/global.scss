@@ -10,7 +10,6 @@ $imgpath: '../../uids/assets/images/';
     //width: 100%;
     //flex: 1 0 auto;
     flex-basis: 100%;
-    ;
   }
 
   .block-system-breadcrumb-block,
@@ -19,6 +18,14 @@ $imgpath: '../../uids/assets/images/';
   .block-inline-blockuiowa-text-area,
   .block-views {
     //flex-basis: 100%;
+  }
+}
+
+// ie11
+@media all and (-ms-high-contrast: none),
+(-ms-high-contrast: active) {
+  .layout__container .block-inline-blockuiowa-text-area {
+    flex-basis: unset;
   }
 }
 
@@ -331,5 +338,76 @@ $imgpath: '../../uids/assets/images/';
     color: blue;
     padding: 10px;
     display: block;
+  }
+}
+
+
+// todo move back to uids as toc style also create tag style for term edit
+
+.view-a-z-list {
+  .views-row {
+    margin-bottom: $md;
+    font-size: 1.3rem;
+    border-bottom: 1px solid $light;
+    padding: $sm 0;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    a {
+      text-decoration: none;
+      font-weight: $font-weight-light;
+      color: $secondary;
+
+      &:hover,
+      &:focus {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+
+.view-display-id-attachment_a_z_list {
+  >div {
+    @include flexbox;
+    @include margin($top: $lg, $left: 0, $bottom: $xlg);
+    flex-wrap: wrap;
+
+    span {
+      border: 1px solid $grey-light;
+      display: block;
+      text-align: center;
+      margin: 0 $sm $sm 0;
+
+      @include breakpoint(container) {
+        border-right: none;
+        margin: 0;
+        flex: 1;
+      }
+
+      a {
+        display: block;
+        text-decoration: none;
+        color: #4F4F4F;
+        line-height: 1;
+        @include padding($top: $md, $right: $md, $bottom: $md, $left: $md);
+
+        &:hover,
+        &:focus,
+        &.is-active {
+          background: $light;
+        }
+      }
+
+      &:last-child {
+        a {
+          @include breakpoint(container) {
+            border-right: 1px solid $grey-light;
+          }
+        }
+      }
+    }
   }
 }
