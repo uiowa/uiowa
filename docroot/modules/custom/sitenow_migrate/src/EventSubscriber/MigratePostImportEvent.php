@@ -194,7 +194,8 @@ class MigratePostImportEvent implements EventSubscriberInterface {
       $split_anchor = explode('#', $old_link);
       $suffix = $split_anchor[1];
       $old_link = $split_anchor[0];
-    } else {
+    }
+    else {
       $suffix = '';
     }
 
@@ -218,7 +219,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
           // If we don't have the correct mapping, return the original link.
           $link_found = isset($this->sourceToDestIds[$old_nid]);
           $new_link = ($link_found) ? '<a href="/node/' . $this->sourceToDestIds[$old_nid] . '"' : $match[0];
-        break;
+          break;
         }
       }
       if (!$link_found) {
