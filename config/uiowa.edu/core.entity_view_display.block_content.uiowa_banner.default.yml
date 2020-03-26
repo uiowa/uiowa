@@ -1,0 +1,93 @@
+uuid: dc91a235-1a02-45fb-b07a-41007682e2e7
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_banner
+    - field.field.block_content.uiowa_banner.field_uiowa_banner_excerpt
+    - field.field.block_content.uiowa_banner.field_uiowa_banner_image
+    - field.field.block_content.uiowa_banner.field_uiowa_banner_link
+    - field.field.block_content.uiowa_banner.field_uiowa_banner_title
+    - image.style.ultrawide__768_x_329
+    - responsive_image.styles.full__ultrawide
+  module:
+    - blazy
+    - heading
+    - link
+_core:
+  default_config_hash: 5cU2pM6Q8108-XrxiZHFX7siyd1EU6j8EISTK3o6FOY
+id: block_content.uiowa_banner.default
+targetEntityType: block_content
+bundle: uiowa_banner
+mode: default
+content:
+  field_uiowa_banner_excerpt:
+    weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_uiowa_banner_image:
+    type: blazy_media
+    weight: 3
+    label: above
+    settings:
+      image_style: ultrawide__768_x_329
+      responsive_image_style: full__ultrawide
+      media_switch: ''
+      box_style: ''
+      thumbnail_style: ''
+      box_media_style: ''
+      ratio: ''
+      box_caption: ''
+      view_mode: full__ultrawide
+      box_caption_custom: ''
+      current_view_mode: default
+      background: false
+      caption:
+        field_media_caption: '0'
+        title: '0'
+        alt: '0'
+      class: ''
+      id: ''
+      image: ''
+      link: ''
+      overlay: ''
+      title: ''
+      vanilla: false
+      icon: ''
+      layout: ''
+      cache: 0
+      skin: ''
+      fx: ''
+      style: ''
+      _uri: ''
+      breakpoints: {  }
+      sizes: ''
+      grid_header: ''
+      grid: 0
+      grid_medium: 0
+      grid_small: 0
+    third_party_settings: {  }
+    region: content
+  field_uiowa_banner_link:
+    weight: 2
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  field_uiowa_banner_title:
+    weight: 0
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: heading
+    region: content
+hidden: {  }
