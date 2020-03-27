@@ -544,7 +544,8 @@ function sitenow_preprocess_page(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
     $node = \Drupal::routeMatch()->getParameter('node');
-    if (isset($node)) {
+    $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
+    if ($node instanceof NodeInterface) {
       // Get moderation state of node.
       $revision_id = $node->getRevisionId();
       $revision = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($revision_id);
@@ -558,9 +559,6 @@ function sitenow_preprocess_page(&$variables) {
         ]);
         \Drupal::messenger()->addWarning($warning_text);
       }
-    }
-    $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
-    if ($node instanceof NodeInterface) {
       $variables['header_attributes'] = new Attribute();
       if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
         $publish_options = $node->get('field_publish_options')->getValue();
