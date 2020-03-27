@@ -33,8 +33,14 @@
 {# @todo Replace this with adding classes to <section> via attributes. #}
 {% if elements['#layout_builder_style'][0] == 'hero__container-bottom' %}
 	{% set vertical_align = 'bottom' %}
+{% elseif  elements['#layout_builder_style'][0] == 'hero__container-grid' %}
+	{% set vertical_align = 'grid' %}
 {% else %}
 	{% set vertical_align = 'center' %}
+{% endif %}
+
+{% if video_field %}
+	{% set video_classes = 'video' %}
 {% endif %}
 
 {% embed "@uids_base/block/hero.html.twig" with {
@@ -68,7 +74,7 @@
 
 	{% if video_field is not empty %}
 		{% block hero_footer %}
-			<div class="video-controls">
+			<div class="video-controls {{ video_classes }}">
 				<button class="video-btn video-btn__pause" id="video-btn">
 					<span class="element-invisible">Pause</span>
 				</button>
