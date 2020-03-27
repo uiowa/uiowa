@@ -19,7 +19,7 @@ This project is based on BLT, an open-source project template and tool that enab
     ```
 ----
 # Local Environment
-Follow the [BLT docs](https://docs.acquia.com/blt/install/local-development/) to get started wit [DrupalVM](https://www.drupalvm.com/). **Note** that there is currently an issue with Vagrant 2.2.6 and the latest version of VirtualBox. Download [VirtualBox 6.0](https://www.virtualbox.org/wiki/Download_Old_Builds_6_0) instead.
+Follow the [BLT docs](https://docs.acquia.com/blt/install/local-development/) to get started wit [DrupalVM](https://www.drupalvm.com/).
 
 All BLT commands should be run on the VM. You can SSH into the VM using `vagrant ssh`. See the [Vagrant docs](https://www.vagrantup.com/docs/cli/) for basic CLI usage.
 
