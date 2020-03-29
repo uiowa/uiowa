@@ -73,6 +73,7 @@ apache_vhosts:
     servername: foap-purchasing.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+
   -
     servername: assessment.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
@@ -561,7 +562,6 @@ apache_vhosts:
     servername: orgcda.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-  
   -
     servername: labiowaresearch.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
@@ -848,6 +848,10 @@ apache_vhosts:
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
   -
     servername: gradcogscilang-temp.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: gradinformatics.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
 
