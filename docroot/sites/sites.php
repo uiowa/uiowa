@@ -757,12 +757,6 @@ $sites['orgcda.dev.drupal.uiowa.edu'] = 'cda.org.uiowa.edu';
 $sites['orgcda.stage.drupal.uiowa.edu'] = 'cda.org.uiowa.edu';
 $sites['orgcda.prod.drupal.uiowa.edu'] = 'cda.org.uiowa.edu';
 
-// Directory aliases for informatics.grad.uiowa.edu.
-$sites['gradinformatics.local.drupal.uiowa.edu'] = 'informatics.grad.uiowa.edu';
-$sites['gradinformatics.dev.drupal.uiowa.edu'] = 'informatics.grad.uiowa.edu';
-$sites['gradinformatics.stage.drupal.uiowa.edu'] = 'informatics.grad.uiowa.edu';
-$sites['gradinformatics.prod.drupal.uiowa.edu'] = 'informatics.grad.uiowa.edu';
-
 // Directory aliases for iowaresearch.lab.uiowa.edu.
 $sites['labiowaresearch.local.drupal.uiowa.edu'] = 'iowaresearch.lab.uiowa.edu';
 $sites['labiowaresearch.dev.drupal.uiowa.edu'] = 'iowaresearch.lab.uiowa.edu';
