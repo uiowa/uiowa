@@ -1,15 +1,16 @@
-uuid: 3171b162-2682-437d-90d0-b940c5e42ceb
+uuid: f3f1bb39-6846-4291-9a82-1e3c576ccd9f
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.media.large__no_crop
+    - core.entity_view_mode.media.small__widescreen
     - field.field.media.image.field_media_caption
     - field.field.media.image.field_media_image
     - media.type.image
-    - responsive_image.styles.large__no_crop
+    - responsive_image.styles.small__widescreen
   module:
     - layout_builder
+    - lazy
     - responsive_image
     - text
 third_party_settings:
@@ -18,10 +19,10 @@ third_party_settings:
     enabled: false
 _core:
   default_config_hash: qxh_4kI5XZJ_t8OOI3OEqnRP5iL5WaD7cCfGRLbmPjw
-id: media.image.large__no_crop
+id: media.image.small__widescreen
 targetEntityType: media
 bundle: image
-mode: large__no_crop
+mode: small__widescreen
 content:
   field_media_caption:
     weight: 1
@@ -36,9 +37,11 @@ content:
     region: content
     label: hidden
     settings:
-      responsive_image_style: large__no_crop
+      responsive_image_style: small__widescreen
       image_link: ''
-    third_party_settings: {  }
+    third_party_settings:
+      lazy:
+        lazy_image: '1'
 hidden:
   created: true
   name: true

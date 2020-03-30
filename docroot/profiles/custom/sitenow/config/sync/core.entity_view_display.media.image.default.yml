@@ -8,6 +8,7 @@ dependencies:
     - media.type.image
   module:
     - image
+    - lazy
     - text
 _core:
   default_config_hash: qxh_4kI5XZJ_t8OOI3OEqnRP5iL5WaD7cCfGRLbmPjw
@@ -31,7 +32,9 @@ content:
     settings:
       image_style: ''
       image_link: ''
-    third_party_settings: {  }
+    third_party_settings:
+      lazy:
+        lazy_image: '1'
 hidden:
   created: true
   name: true

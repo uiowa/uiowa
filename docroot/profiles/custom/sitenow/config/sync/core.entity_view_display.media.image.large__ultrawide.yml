@@ -10,6 +10,7 @@ dependencies:
     - responsive_image.styles.large__ultrawide
   module:
     - layout_builder
+    - lazy
     - responsive_image
     - text
 third_party_settings:
@@ -38,7 +39,9 @@ content:
     settings:
       responsive_image_style: large__ultrawide
       image_link: ''
-    third_party_settings: {  }
+    third_party_settings:
+      lazy:
+        lazy_image: '1'
 hidden:
   created: true
   name: true
