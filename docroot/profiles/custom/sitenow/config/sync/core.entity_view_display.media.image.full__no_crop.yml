@@ -12,7 +12,6 @@ dependencies:
     - layout_builder
     - lazy
     - responsive_image
-    - text
 third_party_settings:
   layout_builder:
     allow_custom: false
@@ -24,13 +23,6 @@ targetEntityType: media
 bundle: image
 mode: full__no_crop
 content:
-  field_media_caption:
-    weight: 1
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
-    region: content
   field_media_image:
     type: responsive_image
     weight: 0
@@ -44,6 +36,7 @@ content:
         lazy_image: '1'
 hidden:
   created: true
+  field_media_caption: true
   name: true
   thumbnail: true
   uid: true
