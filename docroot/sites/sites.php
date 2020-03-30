@@ -1224,3 +1224,9 @@ $sites['gradgss.local.drupal.uiowa.edu'] = 'gss.grad.uiowa.edu';
 $sites['gradgss.dev.drupal.uiowa.edu'] = 'gss.grad.uiowa.edu';
 $sites['gradgss.stage.drupal.uiowa.edu'] = 'gss.grad.uiowa.edu';
 $sites['gradgss.prod.drupal.uiowa.edu'] = 'gss.grad.uiowa.edu';
+
+// Directory aliases for slis.uiowa.edu.
+$sites['slis.local.drupal.uiowa.edu'] = 'slis.uiowa.edu';
+$sites['slis.dev.drupal.uiowa.edu'] = 'slis.uiowa.edu';
+$sites['slis.stage.drupal.uiowa.edu'] = 'slis.uiowa.edu';
+$sites['slis.prod.drupal.uiowa.edu'] = 'slis.uiowa.edu';
