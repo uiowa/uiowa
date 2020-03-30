@@ -1194,3 +1194,9 @@ $sites['gradinformatics.local.drupal.uiowa.edu'] = 'informatics.grad.uiowa.edu';
 $sites['gradinformatics.dev.drupal.uiowa.edu'] = 'informatics.grad.uiowa.edu';
 $sites['gradinformatics.stage.drupal.uiowa.edu'] = 'informatics.grad.uiowa.edu';
 $sites['gradinformatics.prod.drupal.uiowa.edu'] = 'informatics.grad.uiowa.edu';
+
+// Directory aliases for immuno.grad.uiowa.edu.
+$sites['gradimmuno.local.drupal.uiowa.edu'] = 'immuno.grad.uiowa.edu';
+$sites['gradimmuno.dev.drupal.uiowa.edu'] = 'immuno.grad.uiowa.edu';
+$sites['gradimmuno.stage.drupal.uiowa.edu'] = 'immuno.grad.uiowa.edu';
+$sites['gradimmuno.prod.drupal.uiowa.edu'] = 'immuno.grad.uiowa.edu';
