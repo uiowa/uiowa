@@ -9,6 +9,7 @@ dependencies:
     - media.type.image
     - responsive_image.styles.sitenow_16_9
   module:
+    - lazy
     - responsive_image
 _core:
   default_config_hash: qxh_4kI5XZJ_t8OOI3OEqnRP5iL5WaD7cCfGRLbmPjw
@@ -25,7 +26,9 @@ content:
     settings:
       responsive_image_style: sitenow_16_9
       image_link: ''
-    third_party_settings: {  }
+    third_party_settings:
+      lazy:
+        lazy_image: '1'
 hidden:
   created: true
   field_media_caption: true
