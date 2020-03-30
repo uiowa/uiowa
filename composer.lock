@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "301aac84bb14e8fa345886c7e95705cb",
+    "content-hash": "07bf06c395b455243f090a7efb3dca87",
     "packages": [
         {
             "name": "acquia/blt",
@@ -215,6 +215,24 @@
             "type": "bower-asset",
             "license": [
                 "https://github.com/harvesthq/chosen/blob/master/LICENSE.md"
+            ]
+        },
+        {
+            "name": "bower-asset/lazysizes",
+            "version": "5.2.0",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:aFarkas/lazysizes.git",
+                "reference": "a2f37ec2371bff523ea8b94800682e4ec3596b9b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/aFarkas/lazysizes/zipball/a2f37ec2371bff523ea8b94800682e4ec3596b9b",
+                "reference": "a2f37ec2371bff523ea8b94800682e4ec3596b9b"
+            },
+            "type": "bower-asset",
+            "license": [
+                "MIT"
             ]
         },
         {
@@ -6085,6 +6103,67 @@
             "homepage": "https://www.drupal.org/project/layout_builder_styles",
             "support": {
                 "source": "https://git.drupalcode.org/project/layout_builder_styles"
+            }
+        },
+        {
+            "name": "drupal/lazy",
+            "version": "3.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/lazy.git",
+                "reference": "8.x-3.4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/lazy-8.x-3.4.zip",
+                "reference": "8.x-3.4",
+                "shasum": "39cb14fc3bb848a5f05ee5ebf3c8d76a62b65b1b"
+            },
+            "require": {
+                "drupal/core": "^8.8",
+                "ext-json": "*"
+            },
+            "suggest": {
+                "bower-asset/lazysizes": "Lazysizes is a required library for the Lazy module. Must be installed to '/libraries/lazysizes' folder."
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-3.x": "3.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-3.4",
+                    "datestamp": "1583380205",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Osman Gormus",
+                    "homepage": "https://www.drupal.org/u/osman",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "This module enables lazy-loading images and iframes via text-filters and image-fields. Requires lazysizes library.",
+            "homepage": "https://www.drupal.org/project/lazy",
+            "keywords": [
+                "Drupal",
+                "Lazy-load",
+                "bLazy",
+                "lazy",
+                "lazyload",
+                "performance"
+            ],
+            "support": {
+                "source": "https://git.drupalcode.org/project/lazy",
+                "issues": "https://www.drupal.org/project/issues/lazy"
             }
         },
         {

@@ -10,6 +10,7 @@ dependencies:
     - media.type.image
   module:
     - colorbox
+    - lazy
 _core:
   default_config_hash: qxh_4kI5XZJ_t8OOI3OEqnRP5iL5WaD7cCfGRLbmPjw
 id: media.image.image_gallery
@@ -30,7 +31,9 @@ content:
       colorbox_gallery_custom: ''
       colorbox_caption: custom
       colorbox_caption_custom: '[media:field_media_caption]'
-    third_party_settings: {  }
+    third_party_settings:
+      lazy:
+        lazy_image: '1'
 hidden:
   created: true
   field_media_caption: true
