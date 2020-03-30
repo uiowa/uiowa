@@ -54,9 +54,9 @@ apache_vhosts:
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
 
   -
-    servername: 'adminer.{{ drupal_domain }}'
-    serveralias: 'www.adminer.{{ drupal_domain }}'
-    documentroot: '{{ adminer_install_dir }}'
+    servername: 'pimpmylog.{{ drupal_domain }}'
+    serveralias: 'www.pimpmylog.{{ drupal_domain }}'
+    documentroot: '{{ pimpmylog_install_dir }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
 
   -
@@ -914,6 +914,7 @@ extra_packages:
 
 installed_extras:
   - mailhog
+  - pimpmylog
   - memcached
   - nodejs
   - solr
