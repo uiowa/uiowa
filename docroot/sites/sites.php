@@ -1212,3 +1212,9 @@ $sites['gradneuroscience.local.drupal.uiowa.edu'] = 'neuroscience.grad.uiowa.edu
 $sites['gradneuroscience.dev.drupal.uiowa.edu'] = 'neuroscience.grad.uiowa.edu';
 $sites['gradneuroscience.stage.drupal.uiowa.edu'] = 'neuroscience.grad.uiowa.edu';
 $sites['gradneuroscience.prod.drupal.uiowa.edu'] = 'neuroscience.grad.uiowa.edu';
+
+// Directory aliases for genetics.grad.uiowa.edu.
+$sites['gradgenetics.local.drupal.uiowa.edu'] = 'genetics.grad.uiowa.edu';
+$sites['gradgenetics.dev.drupal.uiowa.edu'] = 'genetics.grad.uiowa.edu';
+$sites['gradgenetics.stage.drupal.uiowa.edu'] = 'genetics.grad.uiowa.edu';
+$sites['gradgenetics.prod.drupal.uiowa.edu'] = 'genetics.grad.uiowa.edu';
