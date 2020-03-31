@@ -1,0 +1,30 @@
+uuid: 23f64f5f-3d3f-4e2a-91eb-b29824b7005b
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_page_title_hero
+    - field.storage.block_content.field_uiowa_page_title_hero_img
+    - media.type.image
+_core:
+  default_config_hash: 2zTib9ZiHz1QCMNtBqaVNV4dLLsdNCsyBwRcn40RjOA
+id: block_content.uiowa_page_title_hero.field_uiowa_page_title_hero_img
+field_name: field_uiowa_page_title_hero_img
+entity_type: block_content
+bundle: uiowa_page_title_hero
+label: Image
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

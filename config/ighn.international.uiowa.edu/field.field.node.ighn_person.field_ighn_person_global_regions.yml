@@ -1,0 +1,29 @@
+uuid: 27c95f71-a8d0-4ebe-948d-82e709e91c04
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_ighn_person_global_regions
+    - node.type.ighn_person
+    - taxonomy.vocabulary.ighn_global_regions
+id: node.ighn_person.field_ighn_person_global_regions
+field_name: field_ighn_person_global_regions
+entity_type: node
+bundle: ighn_person
+label: 'Regions of Focus'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      ighn_global_regions: ighn_global_regions
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

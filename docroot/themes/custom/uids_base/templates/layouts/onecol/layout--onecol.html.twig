@@ -16,8 +16,6 @@
   set classes = [
     'layout',
     'layout--onecol',
-    'flex__wrapper',
-    'feature__container',
     'layout__container',
     settings.extra_classes,
   ]
@@ -25,15 +23,17 @@
 
 {% if content.content %}
 
-    <section{{ attributes.addClass(classes) }}>
+<section{{attributes.addClass(classes)}}>
 
-        {% if region_attributes.content.storage['data-region'] %}
-            <div {{ region_attributes.content.addClass('flex__wrapper') }}>
-            {% endif %}
-            {{ content.content }}
-            {% if region_attributes.content.storage['data-region'] %}
-            </div>
-        {% endif %}
+	{% if region_attributes.content.storage['data-region'] %}
+		<div {{ region_attributes.content.addClass('flex__wra') }}>
+		{% endif %}
+		{{ content.content }}
+		{% if region_attributes.content.storage['data-region'] %}
+		</div>
+	{% endif %}
 
-    </section>
+</section>
+
 {% endif %}
+

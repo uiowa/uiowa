@@ -9,12 +9,14 @@ stylesheets-remove:
   - modules/custom/uiowa_bar/css/uiowa-bar.css
 libraries-override:
   classy/base: false
+  colorbox/colorbox: uids_base/colorbox
 libraries:
   - uids_base/global-styling
   - uids_base/layouts
 regions:
   page_top: 'Page top'
   header: 'Header'
+  alert: 'Alert'
   action_menu: 'Action menu'
   primary_menu: 'Primary menu'
   secondary_menu: 'Secondary menu'
@@ -36,9 +38,6 @@ component-libraries:
   heading:
     paths:
       - uids/components/01 - elements/heading
-  headline:
-    paths:
-      - uids/components/01 - elements/headline
   banner:
     paths:
       - uids/components/02 - blocks/banner-block

@@ -203,7 +203,7 @@ class Pages extends SqlBase {
     $parts = [
       '<drupal-entity',
       'data-embed-button="media_entity_embed"',
-      'data-entity-embed-display="view_mode:media.image_medium"',
+      'data-entity-embed-display="view_mode:media.full"',
       'data-entity-embed-display-settings=""',
       'data-entity-type="media"',
       'data-entity-uuid="' . $uuid . '"',

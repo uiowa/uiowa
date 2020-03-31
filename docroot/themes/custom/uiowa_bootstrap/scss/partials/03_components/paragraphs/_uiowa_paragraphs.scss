@@ -143,3 +143,12 @@
     color: initial;
   }
 }
+// Breaks in Internet Explorer!
+//.paragraph--type--card {
+//  display: flex;
+//}
+.paragraph--type--card {
+  .card-body {
+    min-height: 1px;
+  }
+}

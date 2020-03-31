@@ -36,6 +36,16 @@ class RequestASiteUriConstraint {
       );
     }
 
+    // Set Error if URL contains an uppercase letter.
+    if (preg_match('/[A-Z]/', $url['host'])) {
+      return $formState->setError(
+        $element,
+        t('URL @value must be lowercase.', [
+          '@value' => $value,
+        ])
+      );
+    }
+
     foreach (['port', 'user', 'pass', 'path', 'query', 'fragment'] as $invalid) {
       if (isset($url[$invalid])) {
         $extra = '';

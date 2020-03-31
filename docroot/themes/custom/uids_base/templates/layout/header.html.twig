@@ -1,4 +1,9 @@
 {{ attach_library('uids_base/header') }}
+{% if header_sticky %}
+{{ attach_library('uids_base/header-sticky') }}
+{% endif %}
+
+
 <header{{ attributes.addClass(header_classes) }}>
 
     <div class="uiowa-bar">
@@ -9,9 +14,11 @@
                 {% if not branding_legacy %}
                     {{ attach_library('uids_base/logo') }}
                     {% include '@uids/03 - global/logo/logo.twig' with {
+                        path: uiowa_url,
                         logo_color: 'logo-icon--secondary',
                         logo_classes: 'logo-icon--tab',
-                        logo_path_2: uiowa_logo_path,
+                        logo_path: uiowa_logo_path,
+                        logo_path_png: uiowa_logo_path_png,
                     } %}
                 {% endif %}
 

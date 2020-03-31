@@ -9,6 +9,7 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Session\AccountProxy;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
@@ -73,10 +74,8 @@ function sitenow_preprocess_select(&$variables) {
  */
 function sitenow_views_pre_render(ViewExecutable $view) {
   if ($view->id() == 'administerusersbyrole_people' && $view->current_display == 'page_1') {
-    $user_roles = \Drupal::currentUser()->getRoles();
-
     // Do not show administrator accounts to non-admins.
-    if (\Drupal::currentUser()->id() != 1 && !(in_array('administrator', $user_roles))) {
+    if (!sitenow_is_user_admin(\Drupal::currentUser())) {
       $non_admins = [];
 
       foreach ($view->result as $result) {
@@ -98,38 +97,42 @@ function sitenow_views_pre_render(ViewExecutable $view) {
  * Implements hook_form_FORM_ID_alter().
  */
 function sitenow_form_block_form_alter(&$form, FormStateInterface $form_state) {
-  // Get block config settings.
-  $settings = \Drupal::config('block.block.' . $form["id"]["#default_value"])->get('settings', FALSE);
-  // Set classes options.
-  $classes_options = ['' => 'None'];
-  // Allow other modules to modify block classes options.
-  \Drupal::moduleHandler()->alter('block_classes', $classes_options, $form, $form_state);
-  $form['settings']['block_styles'] = [
-    'style_details' => [
-      '#type' => 'details',
-      '#title' => t('Block Style Options'),
-      '#open' => TRUE,
-      'template' => [
-        '#type' => 'select',
-        '#title' => t('Select a block template'),
-        '#default_value' => $settings['block_template'] ?? '',
-        '#options' => [
-          '_none' => 'None',
-          'card' => 'Card',
+  $theme = \Drupal::config('system.theme')->get('default');
+
+  if (in_array($theme, ['uiowa_bootstrap', 'hr'])) {
+    // Get block config settings.
+    $settings = \Drupal::config('block.block.' . $form["id"]["#default_value"])->get('settings', FALSE);
+    // Set classes options.
+    $classes_options = ['' => 'None'];
+    // Allow other modules to modify block classes options.
+    \Drupal::moduleHandler()->alter('block_classes', $classes_options, $form, $form_state);
+    $form['settings']['block_styles'] = [
+      'style_details' => [
+        '#type' => 'details',
+        '#title' => t('Block Style Options'),
+        '#open' => TRUE,
+        'template' => [
+          '#type' => 'select',
+          '#title' => t('Select a block template'),
+          '#default_value' => $settings['block_template'] ?? '',
+          '#options' => [
+            '_none' => 'None',
+            'card' => 'Card',
+          ],
+        ],
+        'classes' => [
+          '#type' => 'select',
+          '#title' => t('Set classes'),
+          '#default_value' => $settings['block_classes'] ?? '',
+          '#options' => $classes_options,
+          '#multiple' => TRUE,
         ],
       ],
-      'classes' => [
-        '#type' => 'select',
-        '#title' => t('Set classes'),
-        '#default_value' => $settings['block_classes'] ?? '',
-        '#options' => $classes_options,
-        '#multiple' => TRUE,
-      ],
-    ],
-  ];
+    ];
 
-  // Add custom submit handler.
-  $form["actions"]["submit"]["#submit"][] = 'sitenow_block_form_submit';
+    // Add custom submit handler.
+    $form["actions"]["submit"]["#submit"][] = 'sitenow_block_form_submit';
+  }
 }
 
 /**
@@ -166,6 +169,29 @@ function sitenow_preprocess_block(&$variables) {
   $classes = $variables["elements"]["#configuration"]["block_classes"] ?? FALSE;
   if ($classes) {
     $variables["attributes"]["class"] = array_merge($variables["attributes"]["class"], $classes);
+  }
+  switch ($variables["elements"]["#plugin_id"]) {
+    // Visually hide page title if page option is set.
+    case 'field_block:node:page:title':
+    case 'page_title_block':
+      $admin_context = \Drupal::service('router.admin_context');
+      if (!$admin_context->isAdminRoute()) {
+        $node = \Drupal::routeMatch()->getParameter('node');
+        $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
+        if ($node instanceof NodeInterface) {
+          if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
+            $publish_options = $node->get('field_publish_options')->getValue();
+            if (array_search('title_hidden', array_column($publish_options, 'value')) !== FALSE) {
+              // For uiowa_bootstrap/classy default.
+              $variables["title_attributes"]['class'][] = 'element-invisible';
+              // For uids_base.
+              $variables["attributes"]['class'][] = 'element-invisible';
+            }
+          }
+        }
+      }
+      break;
+
   }
 }
 
@@ -227,8 +253,7 @@ function sitenow_form_views_exposed_form_alter(&$form, FormStateInterface $form_
   $view = $form_state->get('view');
 
   if ($view && $view->id() == 'administerusersbyrole_people') {
-    $roles = \Drupal::currentUser()->getRoles();
-    if (!in_array('administrator', $roles)) {
+    if (!sitenow_is_user_admin(\Drupal::currentUser())) {
       unset($form['role']['#options']['administrator']);
     }
   }
@@ -238,9 +263,7 @@ function sitenow_form_views_exposed_form_alter(&$form, FormStateInterface $form_
  * Implements hook_form_FORM_ID_alter().
  */
 function sitenow_form_views_form_administerusersbyrole_people_page_1_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $roles = \Drupal::currentUser()->getRoles();
-
-  if (!in_array('administrator', $roles)) {
+  if (!sitenow_is_user_admin(\Drupal::currentUser())) {
     foreach ($form['header']['user_bulk_form']['action']['#options'] as $key => $option) {
       if (stristr($option, 'administrator')) {
         unset($form['header']['user_bulk_form']['action']['#options'][$key]);
@@ -388,7 +411,7 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         $form["properties"]["element_attributes"]['#access'] = FALSE;
         $form["properties"]["label_attributes"]['#access'] = FALSE;
 
-        // Remove access to message close fields. Conflicts with Bootstrap alert close.
+        // Remove access to message close fields. Conflicts with BS alert close.
         $form["properties"]["markup"]["message_close"]['#access'] = FALSE;
         $form["properties"]["markup"]["message_close_effect"]['#access'] = FALSE;
         $form["properties"]["markup"]["message_storage"]['#access'] = FALSE;
@@ -495,38 +518,23 @@ function _sitenow_prevent_front_delete_message($title) {
 function publish_options_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, &$cacheable) {
   $cacheable = FALSE;
   $options = [];
-  $bundle = $entity->bundle();
 
-  switch ($bundle) {
-    case 'page':
-      $options['title_hidden'] = 'Visually hide title';
-      $options['no_sidebars'] = 'Remove sidebar regions';
-      break;
+  if (method_exists($entity, 'bundle')) {
+    $bundle = $entity->bundle();
+
+    switch ($bundle) {
+      case 'page':
+        $options['title_hidden'] = 'Visually hide title';
+        $options['no_sidebars'] = 'Remove sidebar regions';
+        break;
+    }
+
+    // Allow modules to alter options.
+    \Drupal::moduleHandler()
+      ->alter('publish_options', $options, $entity, $bundle);
   }
-
-  // Allow modules to alter options.
-  \Drupal::moduleHandler()->alter('publish_options', $options, $entity, $bundle);
 
   return $options;
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
-function sitenow_preprocess_page_title(&$variables) {
-  $admin_context = \Drupal::service('router.admin_context');
-  if (!$admin_context->isAdminRoute()) {
-    $node = \Drupal::routeMatch()->getParameter('node');
-    $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
-    if ($node instanceof NodeInterface) {
-      if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
-        $publish_options = $node->get('field_publish_options')->getValue();
-        if (array_search('title_hidden', array_column($publish_options, 'value')) !== FALSE) {
-          $variables["title_attributes"]['class'][] = 'sr-only';
-        }
-      }
-    }
-  }
 }
 
 /**
@@ -536,7 +544,8 @@ function sitenow_preprocess_page(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
     $node = \Drupal::routeMatch()->getParameter('node');
-    if (isset($node)) {
+    $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
+    if ($node instanceof NodeInterface) {
       // Get moderation state of node.
       $revision_id = $node->getRevisionId();
       $revision = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($revision_id);
@@ -550,9 +559,6 @@ function sitenow_preprocess_page(&$variables) {
         ]);
         \Drupal::messenger()->addWarning($warning_text);
       }
-    }
-    $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
-    if ($node instanceof NodeInterface) {
       $variables['header_attributes'] = new Attribute();
       if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
         $publish_options = $node->get('field_publish_options')->getValue();
@@ -654,7 +660,7 @@ function sitenow_form_menu_link_content_form_alter(array &$form, FormStateInterf
             'fa-iconpicker',
           ],
         ],
-        '#description' => t('Pick an icon to render after the menu item. To view the available FontAwesome icons, <a href="https://fontawesome.com/icons?d=gallery&m=free">click here</a>.'),
+        '#description' => t('Pick an icon to represent this link by clicking on this field. To see a list of available icons and their class names, <a href="https://fontawesome.com/icons?d=gallery&m=free">visit the FontAwesome website</a>.'),
         '#attached' => [
           'library' => [
             'sitenow/fontawesome-iconpicker',
@@ -692,6 +698,9 @@ function sitenow_form_menu_link_content_form_submit(array &$form, FormStateInter
  * Implements hook_link_alter().
  */
 function sitenow_link_alter(&$variables) {
+  if ($variables['url']->isRouted() && $variables['url']->getRouteName() === '<nolink>') {
+    $variables['options']['attributes']['tabindex'] = '0';
+  }
   if (!empty($variables['options']['fa_icon'])) {
     $variables['options']['attributes']['class'][] = 'fa-icon';
 
@@ -721,7 +730,9 @@ function sitenow_preprocess_field(&$variables) {
 function sitenow_page_attachments(array &$attachments) {
   // Attach css file on admin pages.
   $admin_context = \Drupal::service('router.admin_context');
-  if ($admin_context->isAdminRoute()) {
+  $admin_theme = \Drupal::config('system.theme')->get('admin');
+
+  if ($admin_context->isAdminRoute() && $admin_theme == 'adminimal_theme') {
     $attachments['#attached']['library'][] = 'sitenow/admin-overrides';
   }
 }
@@ -763,17 +774,27 @@ function sitenow_toolbar() {
 function sitenow_editor_js_settings_alter(array &$settings) {
   foreach (array_keys($settings['editor']['formats']) as $text_format_id) {
     if ($settings['editor']['formats'][$text_format_id]['editor'] === 'ckeditor') {
-      // Adjust CKEditor settings to allow empty span tags for use with FontAwesome.
+      // Adjust CKEditor settings to allow empty span tags for use with FA..
       $settings['editor']['formats'][$text_format_id]['editorSettings']['customConfig'] =
         base_path() . drupal_get_path('profile', 'sitenow') . '/js/ckeditor_config.js';
-      /* The following will allow Fontawesome to display icons in the CKEditor preview,
-       * but collapsing an open text field will bypass the convertSVGtoTag, essentially
-       * removing itself from the source code.
-       * $settings['editor']['formats'][$text_format_id]['editorSettings']['customConfig'] =
-       * base_path() . drupal_get_path('module', 'fontawesome') . '/js/plugins/drupalfontawesome/plugin.js';
-       * $settings['editor']['formats'][$text_format_id]['editorSettings']['customConfig'] =
-       * base_path() . drupal_get_path('module', 'fontawesome') . '/js/plugins/drupalfontawesome/plugin.es6.js';
-       */
     }
+  }
+}
+
+/**
+ * Helper function to determine if the current user is an admin.
+ *
+ * @param \Drupal\Core\Session\AccountProxy $current_user
+ *   The current user account.
+ *
+ * @return bool
+ *   Boolean indicating whether or not current user is an admin.
+ */
+function sitenow_is_user_admin(AccountProxy $current_user) {
+  if ($current_user->id() == 1 || in_array('administrator', $current_user->getRoles())) {
+    return TRUE;
+  }
+  else {
+    return FALSE;
   }
 }

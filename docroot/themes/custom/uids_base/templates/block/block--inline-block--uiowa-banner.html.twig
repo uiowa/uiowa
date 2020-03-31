@@ -28,10 +28,9 @@
 
 {% block content %}
   {{ attach_library('uids_base/banner') }}
-  {{ attach_library('uids_base/headline') }}
 
   {% embed "@uids/02 - blocks/banner-block/banner-block.twig" with {
-    "banner_image": drupal_image(content.field_uiowa_banner_image[0]['#media'].image.entity.uri.value, 'large__widescreen',  { class: 'banner__img', alt: content.field_uiowa_banner_image[0]['#media'].image.alt }, responsive=true),
+    "banner_image": content.field_uiowa_banner_image,
     "banner_summary": content.field_uiowa_banner_excerpt,
     "banner_link_url": content.field_uiowa_banner_link[0]['#url'],
     "banner_link_title": content.field_uiowa_banner_link[0]['#title'],
@@ -39,9 +38,9 @@
   } %}
 
 {% block banner_image %}
-	{% if banner_image %}
+	{% if content.field_uiowa_banner_image|render is not empty %}
 		<div class="banner__image">
-			{{ banner_image }}
+			{{ content.field_uiowa_banner_image }}
 		</div>
 	{% endif %}
 {% endblock %}

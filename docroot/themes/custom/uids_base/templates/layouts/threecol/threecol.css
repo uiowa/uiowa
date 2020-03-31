@@ -12,6 +12,7 @@
 
   .layout--threecol>.layout__region {
     flex: 0 1 100%;
+    display: flex;
   }
 
   .layout--threecol--50-25-25>.layout__region--second,
@@ -153,5 +154,26 @@
     flex: 0 1 50%;
 
     margin: 0;
+  }
+}
+
+
+@media (min-width: 40em) and (max-width: 58.125em) {
+  .layout--threecol {
+    flex-wrap: wrap;
+  }
+
+  .layout--threecol>.layout__region {
+    margin-right: 0;
+    margin-left: 0;
+    flex-basis: 100%;
+  }
+
+  .layout--threecol>.layout__region .card {
+    margin-bottom: 3rem;
+  }
+
+  .layout--threecol>.layout__region img {
+    width: 100%;
   }
 }

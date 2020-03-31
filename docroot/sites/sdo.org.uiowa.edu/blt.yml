@@ -1,0 +1,25 @@
+project:
+  local:
+    hostname: orgsdo.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: orgsdo
+  human_name: sdo.org.uiowa.edu
+  profile:
+    name: sitenow
+drush:
+  aliases:
+    local: self
+    remote: orgsdo.prod
+drupal:
+  db:
+    database: sdo_org_uiowa_edu
+cm:
+  core:
+    install_from_config: true
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+uiowa:
+  profiles:
+    sitenow:
+      requester: ygao79

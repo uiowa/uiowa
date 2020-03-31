@@ -19,86 +19,22 @@ class ReplaceCommands extends BltTasks {
     // Disable alias since we are targeting a specific URI.
     $this->config->set('drush.alias', '');
 
+    $app = EnvironmentDetector::getAhGroup() ?? 'local';
+
     foreach ($this->getConfigValue('multisites') as $multisite) {
       $this->switchSiteContext($multisite);
-      $profile = $this->getConfigValue('project.profile.name');
       $db = $this->getConfigValue('drupal.db.database');
 
       // Check for database include on this application.
-      if (EnvironmentDetector::isAhEnv() || EnvironmentDetector::isLocalEnv()) {
-        $app = EnvironmentDetector::getAhGroup();
-
-        if (file_exists("/var/www/site-php/{$app}/{$db}-settings.inc")) {
-
-          if ($this->getInspector()->isDrupalInstalled()) {
-            $this->say("Deploying updates to <comment>$multisite</comment>...");
-            $this->invokeCommand('drupal:update');
-            $this->say("Finished deploying updates to $multisite.");
-          }
-          else {
-            $this->logger->warning("Drupal not installed for <comment>$multisite</comment>. Installing...");
-            $uri = $this->getConfig()->get('site');
-
-            if (empty($uri)) {
-              throw new \Exception('Cannot determine site directory for installation.');
-            }
-
-            $uid = uniqid('admin_');
-
-            $site_install_options = [
-              'sites-subdir' => $uri,
-              'account-name' => $uid,
-              'account-mail' => base64_decode('aXRzLXdlYkB1aW93YS5lZHU='),
-            ];
-
-            // If this is the sitenow profile, set the existing-config option.
-            if ($profile === 'sitenow') {
-              $site_install_options['existing-config'] = NULL;
-            }
-
-            $result = $this->taskDrush()
-              ->stopOnFail(TRUE)
-              ->drush('site:install')
-              ->arg($profile)
-              ->options($site_install_options)
-              ->drush('user:role:add')
-              ->args([
-                'administrator',
-                $uid,
-              ])
-              ->drush('config:set')
-              ->args([
-                'system.site',
-                'name',
-                $uri,
-              ])
-              ->run();
-
-            if (!$result->wasSuccessful()) {
-              throw new \Exception("Site install task failed for {$uri}.");
-            }
-
-            // If a requester was added, add them as a webmaster for the site.
-            if ($requester = $this->getConfigValue('uiowa.profiles.sitenow.requester')) {
-              $result = $this->taskDrush()
-                ->stopOnFail(FALSE)
-                ->drush('user:create')
-                ->args($requester)
-                ->drush('user:role:add')
-                ->args([
-                  'webmaster',
-                  $requester,
-                ])
-                ->run();
-
-              if (!$result->wasSuccessful()) {
-                throw new \Exception("Webmaster task failed for {$uri}.");
-              }
-            }
-          }
-        }
-        else {
-          $this->say("Skipping $multisite. Database {$db} does not exist.");
+      if (EnvironmentDetector::isAhEnv() && !file_exists("/var/www/site-php/{$app}/{$db}-settings.inc")) {
+        $this->say("Skipping $multisite on AH environment. Database {$db} does not exist.");
+        continue;
+      }
+      else {
+        if ($this->getInspector()->isDrupalInstalled()) {
+          $this->say("Deploying updates to <comment>$multisite</comment>...");
+          $this->invokeCommand('drupal:update');
+          $this->say("Finished deploying updates to $multisite.");
         }
       }
     }

@@ -5,6 +5,7 @@ namespace Uiowa\Blt\Plugin\Commands;
 use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\EnvironmentDetector;
 use Acquia\Blt\Robo\Common\YamlMunge;
+use Acquia\Blt\Robo\Exceptions\BltException;
 use AcquiaCloudApi\Connector\Client;
 use AcquiaCloudApi\Connector\Connector;
 use AcquiaCloudApi\Endpoints\Databases;
@@ -47,6 +48,11 @@ class MultisiteCommands extends BltTasks {
    * @param string $cmd
    *   The simple Drush command to execute, e.g. 'cron' or 'cache:rebuild'. No
    *    support for options or arguments at this time.
+   * @param array $options
+   *   Array of options.
+   *
+   * @option exclude
+   *   Sites to exclude from command execution.
    *
    * @command uiowa:multisite:execute
    *
@@ -54,18 +60,20 @@ class MultisiteCommands extends BltTasks {
    *
    * @throws \Exception
    */
-  public function execute($cmd) {
+  public function execute($cmd, array $options = ['exclude' => []]) {
     if (!$this->confirm("You will execute 'drush {$cmd}' on all multisites. Are you sure?", TRUE)) {
       throw new \Exception('Aborted.');
     }
     else {
+      $app = EnvironmentDetector::getAhGroup() ?? 'local';
+      $env = EnvironmentDetector::getAhEnv() ?? 'local';
+
       foreach ($this->getConfigValue('multisites') as $multisite) {
         $this->switchSiteContext($multisite);
 
         // Skip sites whose database do not exist on the application in AH env.
         if (EnvironmentDetector::isAhEnv()) {
           $db = $this->getConfigValue('drupal.db.database');
-          $app = EnvironmentDetector::getAhGroup();
 
           if (!file_exists("/var/www/site-php/{$app}/{$db}-settings.inc")) {
             $this->say("Skipping {$multisite}. Database {$db} does not exist.");
@@ -73,10 +81,140 @@ class MultisiteCommands extends BltTasks {
           }
         }
 
-        $this->taskDrush()
-          ->drush($cmd)
-          ->run();
+        if (!in_array($multisite, $options['exclude'])) {
+          // Define a site-specific cache directory.
+          // @see: https://github.com/acquia/blt/issues/2957
+          $tmp = "/tmp/.drush/{$app}/{$env}/" . md5($multisite);
+
+          $this->taskDrush()
+            ->drush($cmd)
+            ->option('define', "drush.paths.cache-directory={$tmp}")
+            ->run();
+        }
+        else {
+          $this->logger->info("Skipping excluded site {$multisite}.");
+        }
       }
+    }
+  }
+
+  /**
+   * Invoke the BLT install process on multisites where Drupal is not installed.
+   *
+   * @param array $options
+   *   Command options.
+   * @option envs
+   *   Array of allowed environments for installation to happen on.
+   * @option dry-run
+   *   Report back the uninstalled sites but do not install.
+   *
+   * @command uiowa:multisite:install
+   *
+   * @aliases umi
+   *
+   * @throws \Exception
+   *
+   * @return mixed
+   *   CommandError, list of uninstalled sites or the output from installation.
+   *
+   * @see: Acquia\Blt\Robo\Commands\Drupal\InstallCommand
+   */
+  public function install(array $options = [
+    'envs' => [
+      'local',
+      'prod',
+    ],
+    'dry-run' => FALSE,
+  ]) {
+    $app = EnvironmentDetector::getAhGroup() ?? 'local';
+    $env = EnvironmentDetector::getAhEnv() ?? 'local';
+
+    if (!in_array($env, $options['envs'])) {
+      $allowed = implode(', ', $options['envs']);
+      return new CommandError("Multisite installation not allowed on {$env} environment. Must be one of {$allowed}. Use option to override.");
+    }
+
+    $uninstalled = [];
+
+    foreach ($this->getConfigValue('multisites') as $multisite) {
+      $this->switchSiteContext($multisite);
+
+      // Skip sites whose database do not exist on the application in AH env.
+      if (EnvironmentDetector::isAhEnv()) {
+        $db = $this->getConfigValue('drupal.db.database');
+
+        // Use logger here as opposed to say so the output is easily readable.
+        if (!file_exists("/var/www/site-php/{$app}/{$db}-settings.inc")) {
+          $this->logger->info("Skipping {$multisite}. Database {$db} does not exist.");
+          continue;
+        }
+      }
+
+      if (!$this->getInspector()->isDrupalInstalled()) {
+        $uninstalled[] = $multisite;
+      }
+    }
+
+    if (!empty($uninstalled)) {
+      $this->io()->listing($uninstalled);
+
+      if (!$options['dry-run']) {
+        if ($this->confirm('You will invoke the drupal:install command for the sites listed above. Are you sure?')) {
+          foreach ($uninstalled as $multisite) {
+            $this->switchSiteContext($multisite);
+            $profile = $this->getConfigValue('project.profile.name');
+
+            // Run this non-interactively so prompts are bypassed. Note that
+            // a file permission exception is thrown on AC so we have to
+            // catch that and proceed with the command.
+            // @see: https://github.com/acquia/blt/issues/4054
+            $this->input()->setInteractive(FALSE);
+
+            try {
+              $this->invokeCommand('drupal:install', [
+                '--site' => $multisite,
+              ]);
+            }
+            catch (BltException $e) {
+              $this->say('<comment>Note:</comment> file permission error on Acquia Cloud can be safely ignored.');
+            }
+
+            // The site name option used during drush site:install is
+            // overwritten if installed from existing configuration.
+            $this->taskDrush()
+              ->stopOnFail(FALSE)
+              ->drush('config:set')
+              ->args([
+                'system.site',
+                'name',
+                $multisite,
+              ])
+              ->run();
+
+            // If a requester was added, add them as a webmaster for the site.
+            if ($requester = $this->getConfigValue("uiowa.profiles.{$profile}.requester")) {
+              $this->taskDrush()
+                ->stopOnFail(FALSE)
+                ->drush('user:create')
+                ->args($requester)
+                ->drush('user:role:add')
+                ->args([
+                  'webmaster',
+                  $requester,
+                ])
+                ->run();
+            }
+
+            $this->sendNotification("Drupal installation complete for site {$multisite} in {$env} environment on {$app} application.");
+          }
+        }
+        else {
+          throw new \Exception('Canceled.');
+        }
+      }
+    }
+    else {
+      $this->say('There are no uninstalled sites.');
     }
   }
 
@@ -493,6 +631,7 @@ EOD;
     $this->say("Continue initializing additional multisites or follow the next steps below.");
 
     $steps += [
+      'Invoke the uiowa:multisite:install BLT command in the production environment on the appropriate application(s)',
       'Add the multisite domains to environments as needed.',
     ];
 
@@ -572,6 +711,32 @@ EOD;
     }
 
     return $db_exists;
+  }
+
+  /**
+   * Send a Slack notification if the webhook environment variable exists.
+   *
+   * @param string $message
+   *   The message to send.
+   */
+  protected function sendNotification($message) {
+    $webhook_url = getenv('SLACK_WEBHOOK_URL');
+
+    if ($webhook_url) {
+      $payload = [
+        'username' => 'Acquia Cloud',
+        'text' => $message,
+        'icon_emoji' => ':acquia:',
+      ];
+
+      $data = "payload=" . json_encode($payload);
+      $ch = curl_init($webhook_url);
+      curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+      curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+      curl_exec($ch);
+      curl_close($ch);
+    }
   }
 
 }

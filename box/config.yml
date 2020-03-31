@@ -40,29 +40,35 @@ apache_vhosts_ssl:
 
 # Multisite installations should configure additional domains here.
 apache_vhosts:
+
   -
     servername: '{{ drupal_domain }}'
     serveralias: 'www.{{ drupal_domain }}'
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+
   -
     servername: 'dashboard.{{ drupal_domain }}'
     serveralias: 'www.dashboard.{{ drupal_domain }}'
     documentroot: /var/www/dashboard
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+
   -
-    servername: 'adminer.{{ drupal_domain }}'
-    serveralias: 'www.adminer.{{ drupal_domain }}'
-    documentroot: '{{ adminer_install_dir }}'
+    servername: 'pimpmylog.{{ drupal_domain }}'
+    serveralias: 'www.pimpmylog.{{ drupal_domain }}'
+    documentroot: '{{ pimpmylog_install_dir }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+
   -
     servername: accreditation.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+
   -
     servername: orgalphachisigma-alphatheta.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+
   -
     servername: foap-purchasing.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
@@ -133,10 +139,6 @@ apache_vhosts:
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
   -
     servername: climatecollective.local.drupal.uiowa.edu
-    documentroot: '{{ drupal_core_path }}'
-    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-  -
-    servername: orgcnm.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
   -
@@ -300,14 +302,6 @@ apache_vhosts:
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
   -
-    servername: iowasuperfund.local.drupal.uiowa.edu
-    documentroot: '{{ drupal_core_path }}'
-    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-  -
-    servername: ismc.local.drupal.uiowa.edu
-    documentroot: '{{ drupal_core_path }}'
-    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-  -
     servername: itaccessibility.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
@@ -456,10 +450,6 @@ apache_vhosts:
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
   -
-    servername: shl.local.drupal.uiowa.edu
-    documentroot: '{{ drupal_core_path }}'
-    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-  -
     servername: sitenow.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
@@ -505,10 +495,6 @@ apache_vhosts:
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
   -
     servername: uiobl.local.drupal.uiowa.edu
-    documentroot: '{{ drupal_core_path }}'
-    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-  -
-    servername: graduipda.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
   -
@@ -771,7 +757,102 @@ apache_vhosts:
     servername: latinxcouncil.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-
+  -
+    servername: datascience-workshop.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: orglegalclinic.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: coronavirus.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: sitesliberalartsbeyondbars.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: orgmajorshadowuiowa.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: orgphibetadelta.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: centerforconferencesuibtaa.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: centerforconferencespediatriccardiology.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: africanamericancouncil.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: orgsdo.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: org-jacobsoninstitute.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: orgnativeamericancouncil.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: courseprairierestoration.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: labissuree.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: shlcovidtesting.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: orglgbtq-council.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: iowasummermusiccamps.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: orghaa.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: courseoccsafety.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: orgglam.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: iowasuperfund.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: graduipda.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: gradinformatics-temp.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: gradcogscilang-temp.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
 
 
 
@@ -808,6 +889,7 @@ extra_packages:
 
 installed_extras:
   - mailhog
+  - pimpmylog
   - memcached
   - nodejs
   - solr

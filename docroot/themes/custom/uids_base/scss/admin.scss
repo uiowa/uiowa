@@ -5,6 +5,32 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900&display=swap');
 
 
+// lb claro styles
+
+#drupal-off-canvas label {
+  color: #fff;
+}
+
+#drupal-off-canvas .description {
+  margin: 10px 0 20px;
+}
+
+#drupal-off-canvas form {
+  color: #fff;
+}
+
+.form-item-settings-label-display {
+  margin: 15px 0;
+}
+
+.form-item-settings-admin-label {
+  margin-bottom: 20px;
+}
+
+.messages--error {
+  display: none;
+}
+
 // Admin only styles
 
 .toolbar-menu {
@@ -21,9 +47,31 @@
   width: 100%;
 }
 
+.layout--fourcol>.layout__region.js-layout-builder-region {
+  display: block !important;
+}
+
+.layout--threecol >.layout__region.js-layout-builder-region {
+  display: block !important;
+}
+
+
+
 .layout-builder-block {
-  padding: 0;
+  //padding: 0;
   cursor: move;
+  background: transparent;
+
+  &.uids-component--gray {
+    background: $light;
+  }
+  &.uids-component--black,
+  &.uids-component--brain-black {
+    background: $secondary;
+  }
+  &.uids-component--gold {
+    background: $primary;
+  }
 }
 
 .stat.layout-builder-block {
@@ -77,7 +125,7 @@
 
     @include breakpoint(container) {
       position: relative;
-      max-width: 84.375em;
+      max-width: 81.875em;
       margin: 0 auto;
     }
 
@@ -120,7 +168,8 @@
   .block-help-block,
   .form-actions,
   .layout-builder__message,
-  .form-type-vertical-tabs {
+  .form-type-vertical-tabs,
+  #edit-moderation-state-0 {
     @extend %container;
   }
 }
@@ -277,4 +326,120 @@ body.toolbar-vertical.toolbar-tray-open {
 
 .header--tertiary .o-canvas--open .o-canvas__drawer {
   top: 239px;
+}
+
+
+// admin toolbar style for sticky header
+
+.header-sticky.toolbar-horizontal,
+.header-sticky.toolbar-vertical {
+  @include breakpoint(menu) {
+    padding-top: 120px !important;
+  }
+}
+
+.header-sticky.scroll-down.toolbar-horizontal,
+.header-sticky.scroll-down.toolbar-vertical {
+  @include breakpoint(menu) {
+    padding-top: 80px !important;
+  }
+}
+
+
+.header-sticky.toolbar-horizontal.toolbar-tray-open {
+  @include breakpoint(menu) {
+    padding-top: 160px !important;
+  }
+}
+
+.header-sticky.toolbar-vertical.toolbar-tray-open {
+  @include breakpoint(menu) {
+    header {
+      padding-left: 15rem;
+    }
+  }
+}
+
+.header-sticky.toolbar-vertical {
+  header {
+    top: 40px;
+  }
+}
+
+.header-sticky.toolbar-horizontal {
+  header {
+    top: 40px;
+  }
+}
+
+.header-sticky.toolbar-horizontal.toolbar-tray-open {
+  header {
+    top: 80px;
+  }
+}
+
+.toolbar-horizontal,
+.toolbar-vertical {
+  .ui-dialog-off-canvas.ui-dialog-position-side {
+    top: 39px !important;
+  }
+}
+
+.toolbar-horizontal.toolbar-tray-open {
+  .ui-dialog-off-canvas.ui-dialog-position-side {
+    top: 69px !important;
+  }
+}
+
+// todo - add styles for College level toolbar settings
+
+// grid 3x2
+
+.grid--3-2 .js-layout-builder-region>.layout-builder-block:nth-child(2) {
+  order: 1;
+}
+
+.grid--3-2 .js-layout-builder-region>.layout-builder-block:nth-child(3) {
+  order: 2;
+}
+
+.grid--3-2 .js-layout-builder-region>.layout-builder-block:nth-child(4) {
+  order: 4;
+
+  @include breakpoint(sm) {
+    order: 3;
+  }
+}
+
+.grid--3-2 .js-layout-builder-region>.layout-builder-block:nth-child(5) {
+  order: 3;
+
+  @include breakpoint(sm) {
+    order: 4;
+  }
+}
+
+.grid--3-2 .js-layout-builder-region>.layout-builder-block:nth-child(6) {
+  order: 5;
+}
+
+.grid--3-2 .js-layout-builder-region>.layout-builder-block:nth-child(7) {
+  order: 6;
+}
+
+
+.grid--3-2 .js-layout-builder-region {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(50%, 1fr));
+
+  @include breakpoint(sm) {
+    grid-template-columns: repeat(auto-fit, minmax(33.3%, 1fr));
+  }
+}
+
+
+// place grid add block at the end of grid
+
+.grid--3-2 .layout-builder__add-block {
+  order: 50;
 }

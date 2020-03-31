@@ -5,7 +5,7 @@ project:
   machine_name: iowasuperfund
   human_name: iowasuperfund.uiowa.edu
   profile:
-    name: collegiate
+    name: sitenow
 drush:
   aliases:
     local: self
@@ -15,8 +15,11 @@ drupal:
     database: iowasuperfund_uiowa_edu
 cm:
   core:
-    install_from_config: false
+    install_from_config: true
     dirs:
       sync:
-        path: ../config/iowasuperfund.uiowa.edu
-  strategy: none
+        path: profiles/custom/sitenow/config/sync
+uiowa:
+  profiles:
+    sitenow:
+      requester: dapurdy

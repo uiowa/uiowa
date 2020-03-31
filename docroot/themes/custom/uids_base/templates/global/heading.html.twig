@@ -1,0 +1,15 @@
+<{{ heading_level }} class="{{ heading_class }}">
+{% if heading_url %}
+<a href="{{ heading_url }}">
+  {% endif %}
+  {% if heading_prefix %}
+    <span class="heading__prefix">{{ heading_prefix }}</span>
+  {% endif %}
+  <span class="heading__heading">{{ heading }}</span>
+  {% if heading_suffix %}
+    <span class="heading__suffix">{{ heading_suffix }}</span>
+  {% endif %}
+  {% if heading_url %}
+</a>
+{% endif %}
+</{{ heading_level }}>

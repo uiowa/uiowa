@@ -1,0 +1,173 @@
+
+
+<?php
+
+/**
+ * @file
+ * Contains ighn_core.module.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Template\Attribute;
+use Drupal\Core\Url;
+use Drupal\file\Entity\File;
+use Drupal\media\Entity\Media;
+
+/**
+ * Implements hook_page_attachments().
+ */
+function ighn_core_page_attachments(array &$attachments) {
+  // Attach css file on admin pages.
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    $attachments['#attached']['library'][] = 'ighn_core/ighn-overrides';
+  }
+}
+
+/**
+ * Implements hook_theme for IGHN Person CT and IGHN Person View().
+ */
+function ighn_core_theme($existing, $type, $theme, $path) {
+  return [
+    'node__ighn_person__teaser' => [
+      'template' => 'node--ighn-person--teaser',
+      'base hook' => 'node',
+    ],
+    'node__ighn_person__full' => [
+      'template' => 'node--ighn-person--full',
+      'base hook' => 'node',
+    ],
+    'views_view__ighn_person_view' => [
+      'template' => 'views-view--ighn-person-view',
+      'base hook' => 'views',
+    ],
+    'field__comma_separated' => [
+      'template' => 'field--comma-separated',
+      'base hook' => 'field',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function ighn_core_theme_suggestions_field_alter(array &$suggestions, array $variables) {
+  switch ($variables["element"]["#field_name"]) {
+    case 'field_ighn_person_department':
+    case 'field_ighn_person_position_title':
+    case 'field_ighn_primary_college':
+    case 'field_ighn_person_focus_areas':
+    case 'field_ighn_person_global_regions':
+    case 'field_ighn_person_language':
+      $suggestions[] = 'field__comma_separated';
+      break;
+  }
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function ighn_core_entity_presave(EntityInterface $entity) {
+  switch ($entity->bundle()) {
+    case 'ighn_person':
+      // Setting the title with the first/last name values.
+      $output = $entity->get('field_ighn_person_first_name')->value . " " . $entity->get('field_ighn_person_last_name')->value;
+      $entity->setTitle($output);
+      break;
+
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function ighn_core_preprocess_page_title(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    $route_name = \Drupal::routeMatch()->getRouteName();
+    if ($route_name == 'entity.node.canonical') {
+      $node = \Drupal::routeMatch()->getParameter('node');
+    }
+    elseif ($route_name == 'entity.node.preview') {
+      $node = \Drupal::routeMatch()->getParameter('node_preview');
+    }
+    if (isset($node)) {
+      switch ($node->getType()) {
+        case 'ighn_person':
+          if ($node->hasField('field_ighn_person_credentials') && !$node->get('field_ighn_person_credentials')
+              ->isEmpty()) {
+            $variables['subtitle'] = $node->field_ighn_person_credentials->value;
+          }
+          break;
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function ighn_core_preprocess_node(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+
+    $node = $variables["node"];
+    switch ($node->getType()) {
+      case 'ighn_person':
+        $image_field = $node->get('field_ighn_person_image');
+        if (!$image_field->isEmpty()) {
+          $image = $image_field->first()->getValue();
+          $media = Media::load($image['target_id']);
+          if ($media) {
+            $media_field = $media->get('field_media_image')
+              ->first()
+              ->getValue();
+            $file = File::load($media_field['target_id']);
+            $uri = $file->getFileUri();
+            $alt = ($media_field['alt'] ? $media_field['alt'] : '');
+            $image = [
+              '#theme' => 'image_style',
+              '#width' => NULL,
+              '#height' => NULL,
+              '#style_name' => 'sitenow_square_m',
+              '#uri' => $uri,
+              '#alt' => $alt,
+              '#weight' => -1,
+              '#attributes' => [
+                'class' => 'content-image',
+              ],
+            ];
+            $variables["content"]['node_image'] = $image;
+          }
+        }
+        switch ($variables["view_mode"]) {
+          case 'teaser':
+            // Create new card attributes.
+            $variables['card_attributes'] = new Attribute();
+            // Add css if applicable.
+            $variables['#attached']['library'][] = 'sitenow_card/default';
+            // Add card link behavior for links.
+            $link_field = $node->get('field_ighn_person_cv_link');
+            if (!$link_field->isEmpty()) {
+              $link = $link_field->first()->getValue();
+              $url = Url::fromUri($link['uri'], ['alias' => TRUE])->toString();
+              $variables['card_attributes']['data-href'] = $url;
+              $variables['card_attributes']['tabindex'] = '0';
+              $variables['card_attributes']['role'] = 'link';
+              $variables['card_attributes']['aria-label'] = $link['title'];
+              $variables['card_attributes']['name'] = $link['title'];
+              $variables['card_attributes']['title'] = $link['title'];
+              $variables['#attached']['library'][] = 'sitenow_card/card-link-js';
+            }
+            if (isset($variables['content']['field_ighn_person_cv_link'], $variables['content']['field_ighn_person_cv_link'][0])) {
+              $variables['content']['field_ighn_person_cv_link'][0]['#options']['attributes']['class'][] = 'card-link';
+              $variables['content']['field_ighn_person_cv_link'][0]['#options']['attributes']['class'][] = 'js-card-link';
+            }
+            break;
+
+        }
+        break;
+
+    }
+  }
+}

@@ -1,0 +1,25 @@
+project:
+  local:
+    hostname: africanamericancouncil.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: africanamericancouncil
+  human_name: africanamericancouncil.uiowa.edu
+  profile:
+    name: sitenow
+drush:
+  aliases:
+    local: self
+    remote: africanamericancouncil.prod
+drupal:
+  db:
+    database: africanamericancouncil_uiowa_edu
+cm:
+  core:
+    install_from_config: true
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+uiowa:
+  profiles:
+    sitenow:
+      requester: harrisss

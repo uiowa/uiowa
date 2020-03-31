@@ -9,7 +9,6 @@ global-styling:
     component:
       assets/css/components/elements/breadcrumbs/breadcrumbs.css: {}
       assets/css/components/elements/blockquote/blockquote.css: {}
-      assets/css/components/elements/bold-headline/bold-headline.css: {}
       assets/css/components/elements/buttons/buttons.css: {}
       assets/css/components/elements/footer/footer.css: {}
       assets/css/components/elements/forms/forms.css: {}
@@ -22,14 +21,18 @@ global-styling:
       assets/css/components/elements/tables/tables.css: {}
       assets/css/components/elements/table/table.css: {}
       assets/css/components/elements/tabs/tabs.css: {}
-      assets/css/components/elements/video/video.css: {}
       assets/css/components/elements/search/search.css: {}
       assets/css/components/global/branding/branding.css: {}
       assets/css/components/global/header/header.css: {}
       assets/css/components/global/footer/footer.css: {}
+      assets/css/components/global/menus/group/group.css: {}
       assets/css/components/global/menus/superfish/superfish.css: {}
+      assets/css/components/global/menus/main-menu/main-menu.css: {}
       assets/css/components/global/menus/user-menu/user-menu.css: {}
+      assets/css/components/global/menus/top/top.css: {}
+      assets/css/components/global/menus/quick/quick.css: {}
       assets/css/components/global/uiowa-bar/uiowa-bar.css: {}
+      assets/css/components/blocks/image-gallery-block/image-gallery-block.css: {}
       assets/css/components/templates/page-layouts/page-layouts.css: {}
     theme:
       assets/css/theme/print.min.css: { media: print }
@@ -60,20 +63,38 @@ off-canvas:
       assets/css/components/global/menus/off-canvas/off-canvas.css: { preprocess: false }
   js:
     uids/components/03 - global/menus/off-canvas/off-canvas.js: { preprocss: false }
+header-sticky:
+  js:
+    uids/components/03 - global/header/header.js: { preprocss: false }
 banner:
   css:
     component:
       assets/css/components/blocks/banner-block/banner-block.css: { preprocess: false }
-headline:
+video:
   css:
     component:
-      assets/css/components/elements/headline/headline.css: { preprocess: false }
-feature-block:
+      assets/css/components/elements/video/video.css: { preprocess: false }
+hero-block:
   css:
     component:
-      assets/css/components/blocks/feature-block/feature-block.css: { preprocess: false }
+      assets/css/components/blocks/hero-block/hero-block.css: { preprocess: false }
+events-block:
+  css:
+    component:
+      assets/css/components/blocks/events-block/events-block.css: { preprocess: false }
+hero-block-video:
   js:
-    uids/components/02 - blocks/feature-block/feature-block.js: { preprocess: false }
+    uids/components/02 - blocks/hero-block/hero-block.js: { preprocess: false }
+portraits-block:
+  css:
+    component:
+      assets/css/components/blocks/portraits-block/portraits-block.css: { preprocess: false }
+  js:
+    uids/components/02 - blocks/portraits-block/portraits-block.js: { preprocess: false }
+highlight:
+  css:
+    component:
+      assets/css/components/elements/highlight/highlight.css: { preprocess: false }
 news-block:
   css:
     component:
@@ -84,6 +105,23 @@ card-block:
   css:
     component:
       assets/css/components/blocks/card-block/card-block.css: { preprocess: false }
+colorbox:
+  remote: http://github.com/jackmoore/colorbox
+  version: VERSION
+  license:
+    name: MIT
+    gpl-compatible: false
+  js:
+    colorbox/jquery.colorbox-min.js: { minified: true }
+    assets/js/colorbox_overrides.behavior.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - colorbox/init
+cta-block:
+  css:
+    component:
+      assets/css/components/blocks/cta-block/cta-block.css: { preprocess: false }
 stat-block:
   css:
     component:

@@ -107,8 +107,8 @@ class LockupController extends ControllerBase {
    */
   public function generateLockup($node, $iowa_color, $text_color, $type) {
     // Load all of the needed assets to create the graphics.
-    $bold = drupal_get_path('module', 'brand_core') . '/fonts/RobotoBold.svg';
-    $regular = drupal_get_path('module', 'brand_core') . '/fonts/RobotoRegular.svg';
+    $bold = drupal_get_path('module', 'brand_core') . '/fonts/Iowa-RobotoBold-2020-03.svg';
+    $regular = drupal_get_path('module', 'brand_core') . '/fonts/Iowa-RobotoRegular-2020-03.svg';
     $psize = 8;
     $pline_height = 9.5;
     $pletter_spacing = 0;
@@ -140,6 +140,7 @@ class LockupController extends ControllerBase {
           $lockup->setFont($regular, $ssize, $text_color);
           $lockup->setLineHeight($sline_height);
           $lockup->setLetterSpacing($sletter_spacing);
+          $lockup->setUseKerning(true);
           $s_lines = [];
           foreach ($s_explode as $key => $line) {
             str_replace('\r', '', $line);
@@ -158,6 +159,7 @@ class LockupController extends ControllerBase {
         $lockup->setFont($bold, $psize, $text_color);
         $lockup->setLineHeight($pline_height);
         $lockup->setLetterSpacing($pletter_spacing);
+        $lockup->setUseKerning(true);
         $p_lines = [];
         foreach ($p_explode as $key => $line) {
           str_replace('\r', '', $line);
@@ -221,6 +223,7 @@ class LockupController extends ControllerBase {
         $lockup->setFont($regular, $ssize, $text_color);
         $lockup->setLineHeight($sline_height);
         $lockup->setLetterSpacing($sletter_spacing);
+        $lockup->setUseKerning(true);
 
         if (isset($s_lines[0])) {
           $lockup->addText(html_entity_decode(
@@ -263,6 +266,7 @@ class LockupController extends ControllerBase {
           $lockup->setFont($regular, $ssize, $text_color);
           $lockup->setLineHeight($sline_height);
           $lockup->setLetterSpacing($sletter_spacing);
+          $lockup->setUseKerning(true);
           $s_lines = [];
           foreach ($s_explode as $key => $line) {
             str_replace('\r', '', $line);
@@ -281,6 +285,7 @@ class LockupController extends ControllerBase {
         $lockup->setFont($bold, $psize, $text_color);
         $lockup->setLineHeight($pline_height);
         $lockup->setLetterSpacing($pletter_spacing);
+        $lockup->setUseKerning(true);
         $p_lines = [];
         foreach ($p_explode as $key => $line) {
           str_replace('\r', '', $line);
@@ -336,6 +341,7 @@ class LockupController extends ControllerBase {
         $lockup->setFont($regular, $ssize, $text_color);
         $lockup->setLineHeight($sline_height);
         $lockup->setLetterSpacing($sletter_spacing);
+        $lockup->setUseKerning(true);
 
         if (isset($s_explode[0])) {
           $s1y = $horizontal_center - $stc + $text['s1y'] - $text['offset'] + $text['correction'];

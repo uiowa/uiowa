@@ -111,7 +111,7 @@ function sitenow_paragraphs_preprocess_paragraph(&$variables) {
         $classes[] = $v;
       });
       // For featured content only.
-      // Articles and Events hav similar functionality that could later be combined...
+      // Articles and Events have similar functionality that could be combined.
       if ($paragraph->bundle() == 'featured_content') {
         // Check for grid classes otherwise add list class.
         $display_options = [
@@ -137,6 +137,7 @@ function sitenow_paragraphs_preprocess_paragraph(&$variables) {
       case 'accordion_item':
       case 'blockquote':
       case 'card':
+      case 'image_gallery':
       case 'webform':
       case 'featured_content':
       case 'carousel':
@@ -236,41 +237,48 @@ function sitenow_paragraphs_theme_suggestions_field_alter(&$suggestions, $variab
 function uip_classes_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, &$cacheable) {
   $cacheable = FALSE;
   $options = [];
-  $bundle = $entity->bundle();
 
-  switch ($bundle) {
-    case 'section':
-      $options['bg-light'] = 'Light Gray Background';
-      $options['bg-dark'] = 'Dark Background';
-      $options['bg-yellow'] = 'Gold Background';
-      $options['pt-5'] = 'Extra Padding Top';
-      $options['pb-5'] = 'Extra Padding Bottom';
-      break;
+  if (method_exists($entity, 'bundle')) {
+    $bundle = $entity->bundle();
 
-    case 'text':
-    case 'webform':
-    case 'carousel_image':
-      $options['bg-light'] = 'Light Gray Background';
-      $options['bg-dark'] = 'Dark Background';
-      $options['bg-yellow'] = 'Gold Background';
-      $options['semi-transparent'] = 'Semi-Transparent Background';
-      break;
+    switch ($bundle) {
+      case 'section':
+        $options['bg-light'] = 'Light Gray Background';
+        $options['bg-dark'] = 'Dark Background';
+        $options['bg-yellow'] = 'Gold Background';
+        $options['pt-5'] = 'Extra Padding Top';
+        $options['pb-5'] = 'Extra Padding Bottom';
+        break;
 
-    case 'featured_content':
-      $options['hide-descriptions'] = 'Hide Summaries';
-      $options['hide-images'] = 'Hide Images';
-      $options['grid'] = 'Grid';
-      $options['masonry'] = 'Masonry';
-      break;
+      case 'text':
+      case 'webform':
+      case 'carousel_image':
+        $options['bg-light'] = 'Light Gray Background';
+        $options['bg-dark'] = 'Dark Background';
+        $options['bg-yellow'] = 'Gold Background';
+        $options['semi-transparent'] = 'Semi-Transparent Background';
+        break;
 
-    case 'carousel':
-      $options['carousel-fade'] = 'Crossfade';
-      break;
+      case 'featured_content':
+        $options['hide-descriptions'] = 'Hide Summaries';
+        $options['hide-images'] = 'Hide Images';
+        $options['grid'] = 'Grid';
+        $options['masonry'] = 'Masonry';
+        break;
 
+      case 'carousel':
+        $options['carousel-fade'] = 'Crossfade';
+        break;
+
+      case 'image_gallery':
+        $options['masonry'] = 'Masonry';
+        break;
+
+    }
+
+    // Allow modules to alter classes.
+    \Drupal::moduleHandler()->alter('uip_classes', $options, $entity, $bundle);
   }
-
-  // Allow modules to alter classes.
-  \Drupal::moduleHandler()->alter('uip_classes', $options, $entity, $bundle);
 
   return $options;
 }
@@ -299,9 +307,13 @@ function uip_colwidth_allowed_values(FieldStorageConfig $definition, ContentEnti
     'col-md-6' => 'Half',
     'col-md-12' => 'Full',
   ];
-  $bundle = $entity->bundle();
-  // Allow modules to alter classes.
-  \Drupal::moduleHandler()->alter('uip_colwidth', $options, $entity, $bundle);
+
+  if (method_exists($entity, 'bundle')) {
+    $bundle = $entity->bundle();
+    // Allow modules to alter classes.
+    \Drupal::moduleHandler()
+      ->alter('uip_colwidth', $options, $entity, $bundle);
+  }
 
   return $options;
 }
@@ -327,9 +339,13 @@ function section_container_allowed_values(FieldStorageConfig $definition, Conten
     'container' => 'Medium',
     'container-fluid' => 'Large',
   ];
-  $bundle = $entity->bundle();
-  // Allow modules to alter classes.
-  \Drupal::moduleHandler()->alter('section_container', $options, $entity, $bundle);
+
+  if (method_exists($entity, 'bundle')) {
+    $bundle = $entity->bundle();
+    // Allow modules to alter classes.
+    \Drupal::moduleHandler()
+      ->alter('section_container', $options, $entity, $bundle);
+  }
 
   return $options;
 }
@@ -355,10 +371,15 @@ function section_alignitems_allowed_values(FieldStorageConfig $definition, Conte
     'align-items-center' => 'Middle',
     'align-items-start' => 'Top',
     'align-items-end' => 'Bottom',
+    'align-items-none' => 'None',
   ];
-  $bundle = $entity->bundle();
-  // Allow modules to alter classes.
-  \Drupal::moduleHandler()->alter('section_alignitems', $options, $entity, $bundle);
+
+  if (method_exists($entity, 'bundle')) {
+    $bundle = $entity->bundle();
+    // Allow modules to alter classes.
+    \Drupal::moduleHandler()
+      ->alter('section_alignitems', $options, $entity, $bundle);
+  }
 
   return $options;
 }
@@ -387,9 +408,13 @@ function section_justifycontent_allowed_values(FieldStorageConfig $definition, C
     'justify-content-around' => 'Space Around',
     'justify-content-between' => 'Space Between',
   ];
-  $bundle = $entity->bundle();
-  // Allow modules to alter classes.
-  \Drupal::moduleHandler()->alter('section_justifycontent', $options, $entity, $bundle);
+
+  if (method_exists($entity, 'bundle')) {
+    $bundle = $entity->bundle();
+    // Allow modules to alter classes.
+    \Drupal::moduleHandler()
+      ->alter('section_justifycontent', $options, $entity, $bundle);
+  }
 
   return $options;
 }
