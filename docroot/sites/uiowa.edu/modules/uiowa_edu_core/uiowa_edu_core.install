@@ -6,6 +6,7 @@
  */
 
 use Drupal\taxonomy\Entity\Term;
+use Drupal\Core\Config\FileStorage;
 
 /**
  * Implements hook_install().
@@ -38,6 +39,25 @@ function uiowa_edu_core_update_8001(&$sandbox) {
     $new_term->enforceIsNew();
     $new_term->save();
   }
+}
+
+/**
+ * Import config_ignore and split settings for collegiate split.
+ */
+function uiowa_edu_core_update_8002() {
+  $config_path = DRUPAL_ROOT . '/profiles/custom/sitenow/config/sync/';
+  $source = new FileStorage($config_path);
+
+  $config_storage = \Drupal::service('config.storage');
+  $config_storage->write('config_ignore.settings', $source->read('config_ignore.settings'));
+  $config_storage->write('config_split.config_split.collegiate', $source->read('config_split.config_split.collegiate'));
+
+  $config_factory = \Drupal::configFactory()->getEditable('config_split.config_split.collegiate');
+  $config_factory
+    ->set('status', TRUE)
+    ->save();
+
+  drupal_flush_all_caches();
 }
 
 /**
