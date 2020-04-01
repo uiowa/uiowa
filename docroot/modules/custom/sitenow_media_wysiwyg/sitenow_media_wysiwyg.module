@@ -12,7 +12,10 @@ use Drupal\file\FileInterface;
  * Implements hook_preprocess_page().
  */
 function sitenow_media_wysiwyg_preprocess_page(&$variables) {
-  $variables['#attached']['library'][] = 'sitenow_media_wysiwyg/ckeditor_settings_overrides';
+  // @todo: Scope this to all WYSIWYG-enabled form elements.
+  if ($variables['is_admin']) {
+    $variables['#attached']['library'][] = 'sitenow_media_wysiwyg/ckeditor_settings_overrides';
+  }
 }
 
 /**
