@@ -1,18 +1,18 @@
 project:
   local:
-    hostname: gradinformatics.local.drupal.uiowa.edu
+    hostname: gradgss.local.drupal.uiowa.edu
     protocol: https
-  machine_name: gradinformatics
-  human_name: informatics.grad.uiowa.edu
+  machine_name: gradgss
+  human_name: gss.grad.uiowa.edu
   profile:
     name: sitenow
 drush:
   aliases:
     local: self
-    remote: gradinformatics.prod
+    remote: gradgss.prod
 drupal:
   db:
-    database: informatics_grad_uiowa_edu
+    database: gss_grad_uiowa_edu
 cm:
   core:
     install_from_config: true
