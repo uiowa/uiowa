@@ -84,7 +84,7 @@ class MultisiteCommands extends BltTasks {
         if (!in_array($multisite, $options['exclude'])) {
           // Define a site-specific cache directory.
           // @see: https://github.com/acquia/blt/issues/2957
-          $tmp = "/tmp/.drush/{$app}/{$env}/" . md5($multisite);
+          $tmp = "/tmp/.drush-cache-{$app}/{$env}/" . md5($multisite);
 
           $this->taskDrush()
             ->drush($cmd)
