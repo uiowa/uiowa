@@ -8,13 +8,16 @@
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\FileInterface;
 
+
 /**
- * Implements hook_preprocess_page().
+ * Implements hook_editor_js_settings_alter().
  */
-function sitenow_media_wysiwyg_preprocess_page(&$variables) {
-  // @todo: Scope this to all WYSIWYG-enabled form elements.
-  if ($variables['is_admin']) {
-    $variables['#attached']['library'][] = 'sitenow_media_wysiwyg/ckeditor_settings_overrides';
+function sitenow_media_wysiwyg_editor_js_settings_alter(array &$settings) {
+  foreach (array_keys($settings['editor']['formats']) as $text_format_id) {
+    if ($settings['editor']['formats'][$text_format_id]['editor'] === 'ckeditor') {
+      $settings['editor']['formats'][$text_format_id]['editorSettings']['customConfig'] =
+        base_path() . drupal_get_path('module', 'sitenow_media_wysiwyg') . '/js/ckeditor_config.js';
+    }
   }
 }
 
@@ -65,7 +68,7 @@ function sitenow_media_wysiwyg_form_editor_link_dialog_alter(&$form, FormStateIn
   ];
   $form['#attached']['library'][] = 'sitenow_media_wysiwyg/button_style';
   $form['attributes']['class']['#description'] = $form['attributes']['class']['#description'] . " Alternatively, add one or more of these predefined <em>button</em> styles: <small>
-<a href='#' data-btn-type='btn-primary' class='button-style'>Primary</a>, 
+<a href='#' data-btn-type='btn-primary' class='button-style'>Primary</a>,
 <a href='#' data-btn-type='btn-secondary' class='button-style'>Secondary</a>,
 <a href='#' data-btn-type='btn-success' class='button-style'>Success</a>,
 <a href='#' data-btn-type='btn-info' class='button-style'>Info</a>,
