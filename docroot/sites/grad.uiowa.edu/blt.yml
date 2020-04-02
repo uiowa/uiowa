@@ -1,0 +1,21 @@
+project:
+  local:
+    hostname: grad.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: grad
+  human_name: grad.uiowa.edu
+  profile:
+    name: sitenow
+drush:
+  aliases:
+    local: self
+    remote: grad.prod
+drupal:
+  db:
+    database: grad_uiowa_edu
+cm:
+  core:
+    install_from_config: true
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync

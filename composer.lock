@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5d8a5780eb1e95aed0dc76e655651638",
+    "content-hash": "c440c213fd56f1bb0fb53533a5c308fb",
     "packages": [
         {
             "name": "acquia/blt",
@@ -215,6 +215,39 @@
             "type": "bower-asset",
             "license": [
                 "https://github.com/harvesthq/chosen/blob/master/LICENSE.md"
+            ]
+        },
+        {
+            "name": "bower-asset/fontawesome",
+            "version": "5.13.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FortAwesome/Font-Awesome.git",
+                "reference": "4e6402443679e0a9d12c7401ac8783ef4646657f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FortAwesome/Font-Awesome/zipball/4e6402443679e0a9d12c7401ac8783ef4646657f",
+                "reference": "4e6402443679e0a9d12c7401ac8783ef4646657f"
+            },
+            "type": "bower-asset"
+        },
+        {
+            "name": "bower-asset/lazysizes",
+            "version": "5.2.0",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:aFarkas/lazysizes.git",
+                "reference": "a2f37ec2371bff523ea8b94800682e4ec3596b9b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/aFarkas/lazysizes/zipball/a2f37ec2371bff523ea8b94800682e4ec3596b9b",
+                "reference": "a2f37ec2371bff523ea8b94800682e4ec3596b9b"
+            },
+            "type": "bower-asset",
+            "license": [
+                "MIT"
             ]
         },
         {
@@ -2842,6 +2875,53 @@
             }
         },
         {
+            "name": "drupal/big_pipe_sessionless",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/big_pipe_sessionless.git",
+                "reference": "8.x-1.2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/big_pipe_sessionless-8.x-1.2.zip",
+                "reference": "8.x-1.2",
+                "shasum": "ed5c409e2bec252256d6c77cdb001cb00bb6cbef"
+            },
+            "require": {
+                "drupal/core": "^8.3.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.2",
+                    "datestamp": "1524046435",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Wim Leers",
+                    "homepage": "https://www.drupal.org/user/99777"
+                }
+            ],
+            "description": "Accelerates Page Cache misses using the BigPipe technique.",
+            "homepage": "https://www.drupal.org/project/big_pipe_sessionless",
+            "support": {
+                "source": "https://git.drupalcode.org/project/big_pipe_sessionless"
+            }
+        },
+        {
             "name": "drupal/coder",
             "version": "8.3.7",
             "source": {
@@ -4939,6 +5019,9 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
+                },
+                "patches_applied": {
+                    "Logs flooded with warning messages Invalid display settings encountered": "https://www.drupal.org/files/issues/2019-12-11/3077225-10.reduce-invalid-config-logs.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5662,9 +5745,6 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
-                },
-                "patches_applied": {
-                    "Better spam protection through field weight": "https://www.drupal.org/files/issues/2019-08-08/honeypot_field_weight_2811189-18.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -6035,6 +6115,67 @@
             "homepage": "https://www.drupal.org/project/layout_builder_styles",
             "support": {
                 "source": "https://git.drupalcode.org/project/layout_builder_styles"
+            }
+        },
+        {
+            "name": "drupal/lazy",
+            "version": "3.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/lazy.git",
+                "reference": "8.x-3.4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/lazy-8.x-3.4.zip",
+                "reference": "8.x-3.4",
+                "shasum": "39cb14fc3bb848a5f05ee5ebf3c8d76a62b65b1b"
+            },
+            "require": {
+                "drupal/core": "^8.8",
+                "ext-json": "*"
+            },
+            "suggest": {
+                "bower-asset/lazysizes": "Lazysizes is a required library for the Lazy module. Must be installed to '/libraries/lazysizes' folder."
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-3.x": "3.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-3.4",
+                    "datestamp": "1583380205",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Osman Gormus",
+                    "homepage": "https://www.drupal.org/u/osman",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "This module enables lazy-loading images and iframes via text-filters and image-fields. Requires lazysizes library.",
+            "homepage": "https://www.drupal.org/project/lazy",
+            "keywords": [
+                "Drupal",
+                "Lazy-load",
+                "bLazy",
+                "lazy",
+                "lazyload",
+                "performance"
+            ],
+            "support": {
+                "source": "https://git.drupalcode.org/project/lazy",
+                "issues": "https://www.drupal.org/project/issues/lazy"
             }
         },
         {

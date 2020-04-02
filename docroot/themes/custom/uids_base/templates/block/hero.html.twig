@@ -1,6 +1,6 @@
 {{ attach_library('uids_base/hero-block') }}
 
-<section class="hero hero__{{ hero_alignment }} {{ attributes ? attributes.class }}" {{ attributes ? attributes|without('class') }}>
+<div class="hero hero__{{ hero_alignment }} {{ attributes ? attributes.class }}" {{ attributes ? attributes|without('class') }}>
 	{{ title_prefix }}
 	{{ title_suffix }}
 	<div class="hero__img">
@@ -15,4 +15,4 @@
 	</div>
 	{% block hero_footer %}
 	{% endblock hero_footer %}
-</section>
+</div>

@@ -159,7 +159,6 @@ ul.sf-menu.sf-horizontal li ul a:focus {
 }
 
 ul.sf-menu.sf-horizontal>li>.sf-depth-1.menuparent:before {
-  //right: 2.3rem;
   margin-top: -0.4rem;
   color: #999;
   font-size: .7rem;
@@ -240,5 +239,24 @@ ul.sf-menu.sf-horizontal>li>.sf-depth-1.menuparent {
       background: #fff !important;
 
     }
+  }
+}
+
+ul.sf-accordion ul:focus-within {
+  position: static !important;
+  clip: auto;
+  height: auto !important;
+  width: auto !important;
+}
+
+.block-superfish .menu li a,
+.block-superfish .menu li .nolink {
+  &.is-active {
+    text-decoration: underline;
+  }
+
+  &:focus,
+  &:hover {
+    text-decoration: underline;
   }
 }

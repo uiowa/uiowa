@@ -7,51 +7,20 @@ label: uiowa.edu
 description: 'uiowa.edu site split.'
 folder: ../config/uiowa.edu
 module:
-  lb_direct_add: 0
-  media_core: 0
   media_library_theme_reset: 0
-  twig_tweak: 0
   uiowa_alerts: 0
   uiowa_edu_core: 0
 theme: {  }
 blacklist: {  }
 graylist:
-  - block.block.mainnavigation
   - block.block.uids_base_alertsblock
   - config_split.config_split.uiowa_edu
-  - core.entity_form_display.node.page.default
   - core.entity_form_display.taxonomy_term.a_z_list.default
-  - core.entity_view_display.node.page.default
-  - core.entity_view_display.node.page.teaser
   - core.entity_view_display.taxonomy_term.a_z_list.default
-  - core.entity_view_mode.media.embedded
-  - core.entity_view_mode.media.thumbnail
-  - editor.editor.filtered_html
-  - editor.editor.full_html
-  - field.field.node.page.layout_builder__layout
   - field.field.taxonomy_term.a_z_list.field_a_z_list_link
-  - field.storage.block_content.body
-  - field.storage.node.layout_builder__layout
   - field.storage.taxonomy_term.field_a_z_list_link
-  - filter.format.filtered_html
-  - filter.format.full_html
-  - filter.format.minimal
-  - node.type.page
-  - pathauto.pattern.media
-  - system.theme
   - taxonomy.vocabulary.a_z_list
-  - user.role.editor
-  - user.role.publisher
-  - user.role.webmaster
   - views.view.a_z_list
-  - 'image.style.no_crop__*'
-  - 'image.style.square__*'
-  - 'image.style.ultrawide__*'
-  - 'image.style.widescreen__*'
-  - 'responsive_image.styles.full__*'
-  - 'responsive_image.styles.large__*'
-  - 'responsive_image.styles.medium__*'
-  - 'responsive_image.styles.small__*'
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 90
