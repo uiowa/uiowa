@@ -82,11 +82,7 @@
 {% endif %}
 
 {% if page.alert %}
-  <div role="region" class="uids-component--alert">
-    <div class="page__container">
-      {{ page.alert }}
-    </div>
-  </div>
+  {{ page.alert }}
 {% endif %}
 
 <main role="main" {{ node_attributes.addClass(content_classes) }}>
