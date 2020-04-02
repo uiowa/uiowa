@@ -1,0 +1,5 @@
+services:
+  uiowa_core.route_subscriber:
+    class: 'Drupal\uiowa_core\Routing\UiowaCoreRouteSubscriber'
+    tags:
+      - { name: event_subscriber }

@@ -1,0 +1,15 @@
+# Extend the system.site configuration
+system.site:
+  mapping:
+    # Whether this site is part of a larger organization.
+    has_parent:
+      type: integer
+      label: 'This site has a parent organization.'
+    # A collection of information about the parent site.
+    parent_site:
+      type: mapping
+      mapping:
+        label:
+          type: label
+        canonical_uri:
+          type: uri
