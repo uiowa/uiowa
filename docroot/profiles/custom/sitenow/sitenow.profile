@@ -769,19 +769,6 @@ function sitenow_toolbar() {
 }
 
 /**
- * Implements hook_editor_js_settings_alter().
- */
-function sitenow_editor_js_settings_alter(array &$settings) {
-  foreach (array_keys($settings['editor']['formats']) as $text_format_id) {
-    if ($settings['editor']['formats'][$text_format_id]['editor'] === 'ckeditor') {
-      // Adjust CKEditor settings to allow empty span tags for use with FA..
-      $settings['editor']['formats'][$text_format_id]['editorSettings']['customConfig'] =
-        base_path() . drupal_get_path('profile', 'sitenow') . '/js/ckeditor_config.js';
-    }
-  }
-}
-
-/**
  * Helper function to determine if the current user is an admin.
  *
  * @param \Drupal\Core\Session\AccountProxy $current_user
