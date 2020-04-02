@@ -10,6 +10,7 @@
  */
 
 use Drupal\views\ViewExecutable;
+use Drupal\Core\Render\BubbleableMetadata;
 
 /**
  * Implements hook_form_BASE_FORM_ID_alter().
@@ -36,4 +37,52 @@ function uiowa_edu_core_views_pre_render(ViewExecutable $view) {
       $route->setDefault('_title', $title);
     }
   }
+}
+
+/**
+ * Implements hook_token_info().
+ */
+function uiowa_edu_core_token_info() {
+  // Define uiowa.edu specific tokens.
+  $type = [
+    'name' => t('uiowa'),
+    'description' => t('Custom tokens for uiowa.edu'),
+  ];
+  // Longer Metatag SameAs than field allows.
+  $uiowa['uiowa_metatag_sameas'] = [
+    'name' => t('UIowa SameAs'),
+    'description' => t('uiowa.edu specific sameas values'),
+  ];
+  return [
+    'types' => ['uiowa' => $type],
+    'tokens' => ['uiowa' => $uiowa],
+  ];
+}
+
+/**
+ * Implements hook_tokens().
+ */
+function uiowa_edu_core_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
+  $replacements = [];
+
+  if ($type == 'uiowa') {
+    foreach ($tokens as $name => $original) {
+      switch ($name) {
+        // Longer Metatag SameAs than field allows.
+        case 'uiowa_metatag_sameas':
+          $uiowa_sameas = 'https://en.wikipedia.org/wiki/University_of_Iowa,https://goo.gl/maps/vLD8h94JdRB2,https://www.facebook.com/universityofiowa,https://www.twitter.com/uiowa,https://www.instagram.com/uiowa,https://snapchat.com/add/uiowa,https://www.linkedin.com/school/university-of-iowa/,https://www.pinterest.com/uiowa,https://www.youtube.com/user/universityofiowa';
+          if ($uiowa_sameas) {
+            $replacements[$original] = $uiowa_sameas;
+          }
+          else {
+            // Blank if nothing.
+            $replacements[$original] = '';
+          }
+          break;
+
+      }
+    }
+  }
+
+  return $replacements;
 }
