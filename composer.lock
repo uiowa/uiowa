@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "687c90a00ea5c1eee7c8dbe0a88b10b7",
+    "content-hash": "c440c213fd56f1bb0fb53533a5c308fb",
     "packages": [
         {
             "name": "acquia/blt",
@@ -7447,7 +7447,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.10",
-                    "datestamp": "1581850829",
+                    "datestamp": "1572617586",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -7730,20 +7730,14 @@
         },
         {
             "name": "drupal/redirect",
-            "version": "1.5.0",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/redirect.git",
-                "reference": "8.x-1.5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/redirect-8.x-1.5.zip",
-                "reference": "8.x-1.5",
-                "shasum": "7940acfb28bd802235d159f1c7a9a58e89dd3d15"
+                "reference": "2416cc7bfbceb62d2419be40c201a5e03675a245"
             },
             "require": {
-                "drupal/core": "^8.7.7 || ^9"
+                "drupal/core": "^8.8 || ^9"
             },
             "type": "drupal-module",
             "extra": {
@@ -7751,12 +7745,15 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.5",
-                    "datestamp": "1576656784",
+                    "version": "8.x-1.4+7-dev",
+                    "datestamp": "1576656480",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "Match redirect": "https://www.drupal.org/files/issues/2019-07-02/redirect-wildcard-support-2831605-22.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -7781,7 +7778,8 @@
             "homepage": "https://www.drupal.org/project/redirect",
             "support": {
                 "source": "https://git.drupalcode.org/project/redirect"
-            }
+            },
+            "time": "2020-03-12T22:37:37+00:00"
         },
         {
             "name": "drupal/reroute_email",
@@ -18094,6 +18092,7 @@
         "drupal/node_revision_delete": 10,
         "drupal/purge": 10,
         "drupal/rabbit_hole": 10,
+        "drupal/redirect": 20,
         "drupal/swiftmailer": 10,
         "drupal/views_ical": 15,
         "kartsims/easysvg": 20,
@@ -18102,6 +18101,5 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
-    "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "platform-dev": []
 }
