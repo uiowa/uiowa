@@ -42,18 +42,16 @@
 {% set label = 'heading' ~ id %}
 {% set id = 'pid' ~ id %}
 
-<div class="card">
-  <div class="card-header" id="{{ label }}">
-    <h3 class="mb-0 h5">
-      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#{{ id }}" aria-expanded="false" aria-controls="{{ id }}">
-        {{ content.field_accordion_item_title }}
-      </button>
-    </h3>
-  </div>
 
-  <div id="{{ id }}" class="collapse" aria-labelledby="{{ label }}" data-parent="#{{ accordion_parent }}">
-    <div class="card-body">
+<h2 class="uids-accordion__heading">
+	<button class="uids-accordion__button" role="tab" aria-selected="false" aria-expanded="false" aria-controls="{{ id }}">
+
+{{ content.field_accordion_item_title }}
+<i aria-hidden="true" focusable="false" class="fas fa-chevron-up"></i>
+
+      </button>
+    </h2>
+
+<div id="{{ accordion.id_prefix }}{{ id }} {{ item.id }} " class="uids-accordion__content" aria-labelledby="{{ label }}" data-parent="#{{ accordion_parent }}">
       {{ content.field_accordion_item_body }}
     </div>
-  </div>
-</div>
