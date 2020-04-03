@@ -20,6 +20,6 @@ curl -X POST "https://api.newrelic.com/v2/applications/$NEWRELIC_APP_ID/deployme
     \"revision\": \"$deployedtag\",
     \"changelog\": \"$deployedtag deployed to $site.$targetenv\",
     \"description\": \"$deployedtag deployed to $site.$targetenv\",
-    \"user\": \"no-reply@acquia.com\"
+    \"user\": \"noreply@acquia.com\"
   }
 }"
