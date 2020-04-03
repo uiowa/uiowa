@@ -11,8 +11,8 @@ repotype=$6     # The version control system your site is using; "git" or "svn".
 
 
 #https://docs.newrelic.com/docs/apm/new-relic-apm/maintenance/recording-deployments#post-deployment
-curl -X POST "https://api.newrelic.com/v2/applications/$NEWRELIC_APPID/deployments.json" \
-     -H "X-Api-Key:$NEWRELIC_APIKEY" -i \
+curl -X POST "https://api.newrelic.com/v2/applications/$NEWRELIC_APP_ID/deployments.json" \
+     -H "X-Api-Key:$NEWRELIC_API_KEY" -i \
      -H "Content-Type: application/json" \
      -d \
 "{
@@ -20,6 +20,6 @@ curl -X POST "https://api.newrelic.com/v2/applications/$NEWRELIC_APPID/deploymen
     \"revision\": \"$deployedtag\",
     \"changelog\": \"$deployedtag deployed to $site.$targetenv\",
     \"description\": \"$deployedtag deployed to $site.$targetenv\",
-    \"user\": \"$NEWRELIC_USER\"
+    \"user\": \"no-reply@acquia.com\"
   }
 }"
