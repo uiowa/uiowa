@@ -46,15 +46,23 @@
 ] %}
 
 {% block paragraph %}
-<div{{ attributes.addclass(classes) }}>
-  <div{{ card_attributes.addClass('card') }}>
-    {{ content.card_image }}
 
-    <div class="card-body">
-      {{ content.field_card_title }}
-      {{ content.field_card_subtitle }}
-      {{ content.field_card_body }}
-    </div>
-  </div>
-</div>
+  {# @todo Is there a link option for this paragraph type? #}
+  {# @todo Is there a way to determine the weight? #}
+  {% embed "@uids_base/uids/blocks/card.html.twig" with {
+    "card_image": content.card_image,
+    "card_text": content.field_card_body,
+    "card_subtitle": content.field_card_subtitle,
+  } %}
+
+    {% block heading %}
+      {% if content.field_card_title[0]['#text'] is not empty %}
+        {# @todo How to add heading level? #}
+        {% include "@uids_base/uids/global/heading" with {
+          "heading_class" : 'card__title',
+          "heading" : content.field_card_title[0]['#text']
+        } %}
+      {% endif %}
+    {% endblock %}
+  {% endembed %}
 {% endblock paragraph %}

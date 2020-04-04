@@ -1,0 +1,47 @@
+<div class="card card__{{ card_position }} {{ card_classes }} {{ attributes ? attributes.class }}" {{ attributes ? attributes|without('class') }}>
+
+  {% block card_img %}
+    {% if card_image %}
+      <div class="media">
+        <img class="card__img" src="{{ card_image }}" alt="Alt Text">
+      </div>
+    {% endif %}
+  {% endblock %}
+
+  <div class="card__body">
+
+    {{ title_prefix }}
+    {% block heading %}
+      {% if card_title is not empty %}
+        {% include "@uids_base/uids/global/heading" with {
+          "heading_level" : 'h2',
+          "heading_class" : 'card__title',
+          "heading" : card_title
+        } %}
+      {% endif %}
+    {% endblock %}
+    {{ title_suffix }}
+
+    {% block subheading %}
+      {% if card_subtitle is not empty %}
+        {{ card_subtitle }}
+      {% endif %}
+    {% endblock %}
+
+    {% block card_author %}
+      {% if card_author %}
+        <div class="card__author">{{ card_author }}</div>
+      {% endif %}
+    {% endblock %}
+
+    {% block card_content %}
+      <p>{{ card_text }}</p>
+    {% endblock %}
+
+    {% if card_link_url is not empty %}
+      <a class="bttn bttn--outline bttn--tertiary bttn--sans-serif" href="{{ card_link_url }}">{{ card_link_title }} <i class="fas fa-arrow-right"></i></a>
+    {% endif %}
+
+  </div>
+
+</div>
