@@ -1,3 +1,5 @@
+{{ attach_library('uids_base/card-block') }}
+
 <div class="card card__{{ card_position }} {{ card_classes }} {{ attributes ? attributes.class }}" {{ attributes ? attributes|without('class') }}>
 
   {% block card_img %}
