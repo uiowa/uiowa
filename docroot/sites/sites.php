@@ -1236,3 +1236,9 @@ $sites['siteslivingwellstudy.local.drupal.uiowa.edu'] = 'livingwellstudy.sites.u
 $sites['siteslivingwellstudy.dev.drupal.uiowa.edu'] = 'livingwellstudy.sites.uiowa.edu';
 $sites['siteslivingwellstudy.stage.drupal.uiowa.edu'] = 'livingwellstudy.sites.uiowa.edu';
 $sites['siteslivingwellstudy.prod.drupal.uiowa.edu'] = 'livingwellstudy.sites.uiowa.edu';
+
+// Directory aliases for anthropology.uiowa.edu.
+$sites['anthropology.local.drupal.uiowa.edu'] = 'anthropology.uiowa.edu';
+$sites['anthropology.dev.drupal.uiowa.edu'] = 'anthropology.uiowa.edu';
+$sites['anthropology.stage.drupal.uiowa.edu'] = 'anthropology.uiowa.edu';
+$sites['anthropology.prod.drupal.uiowa.edu'] = 'anthropology.uiowa.edu';
