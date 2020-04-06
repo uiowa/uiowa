@@ -50,3 +50,11 @@ if (isset($config_directories['vcs'])) {
  * Note: This setting does not apply to installation and update pages.
  */
 $settings['maintenance_theme'] = 'seven';
+
+// Set recommended New Relic configuration.
+// @see: https://docs.acquia.com/acquia-cloud/monitor/apm/#recommended-configuration-settings
+ini_set('newrelic.loglevel', 'error');
+
+if (extension_loaded('newrelic') && isset($AH_SITE_NAME, $AH_SITE_ENVIRONMENT)) {
+  newrelic_set_appname("{$site_dir};{$AH_SITE_NAME}.{$AH_SITE_ENVIRONMENT}", '', 'true');
+}
