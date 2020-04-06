@@ -793,12 +793,6 @@ $sites['sitesmuseumstudies.dev.drupal.uiowa.edu'] = 'museumstudies.sites.uiowa.e
 $sites['sitesmuseumstudies.stage.drupal.uiowa.edu'] = 'museumstudies.sites.uiowa.edu';
 $sites['sitesmuseumstudies.prod.drupal.uiowa.edu'] = 'museumstudies.sites.uiowa.edu';
 
-// Directory aliases for assist.org.uiowa.edu.
-$sites['orgassist.local.drupal.uiowa.edu'] = 'assist.org.uiowa.edu';
-$sites['orgassist.dev.drupal.uiowa.edu'] = 'assist.org.uiowa.edu';
-$sites['orgassist.stage.drupal.uiowa.edu'] = 'assist.org.uiowa.edu';
-$sites['orgassist.prod.drupal.uiowa.edu'] = 'assist.org.uiowa.edu';
-
 // Directory aliases for computational-symposium.psychiatry.uiowa.edu.
 $sites['psychiatrycomputational-symposium.local.drupal.uiowa.edu'] = 'computational-symposium.psychiatry.uiowa.edu';
 $sites['psychiatrycomputational-symposium.dev.drupal.uiowa.edu'] = 'computational-symposium.psychiatry.uiowa.edu';
