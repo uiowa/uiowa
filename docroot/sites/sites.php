@@ -1236,3 +1236,9 @@ $sites['slis.local.drupal.uiowa.edu'] = 'slis.uiowa.edu';
 $sites['slis.dev.drupal.uiowa.edu'] = 'slis.uiowa.edu';
 $sites['slis.stage.drupal.uiowa.edu'] = 'slis.uiowa.edu';
 $sites['slis.prod.drupal.uiowa.edu'] = 'slis.uiowa.edu';
+
+// Directory aliases for livingwellstudy.sites.uiowa.edu.
+$sites['siteslivingwellstudy.local.drupal.uiowa.edu'] = 'livingwellstudy.sites.uiowa.edu';
+$sites['siteslivingwellstudy.dev.drupal.uiowa.edu'] = 'livingwellstudy.sites.uiowa.edu';
+$sites['siteslivingwellstudy.stage.drupal.uiowa.edu'] = 'livingwellstudy.sites.uiowa.edu';
+$sites['siteslivingwellstudy.prod.drupal.uiowa.edu'] = 'livingwellstudy.sites.uiowa.edu';
