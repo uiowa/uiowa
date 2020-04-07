@@ -228,7 +228,7 @@ class Articles extends SqlBase {
   private function getFid($original_fid) {
     $connection = \Drupal::database();
     $query = $connection->select('migrate_map_d7_file', 'mm');
-    $query->join('media__field_media_image', 'fmi', 'mm.sourceid1 = fmi.field_media_image_target_id');
+    $query->join('media__field_media_image', 'fmi', 'mm.destid1 = fmi.field_media_image_target_id');
     $result = $query->fields('fmi', ['entity_id'])
       ->condition('mm.sourceid1', $original_fid)
       ->execute();
