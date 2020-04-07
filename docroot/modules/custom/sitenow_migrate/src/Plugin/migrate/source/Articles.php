@@ -123,10 +123,10 @@ class Articles extends SqlBase {
     }
 
     // Check if an image was attached, and if so, update with new fid.
-    $original_fid = $row->getSourceProperty('field_data_field_image');
-    if (isset($original_fid)) {
-      $row->setSourceProperty('field_data_field_image', $this->getMid($original_fid));
-    }
+    // $original_fid = $row->getSourceProperty('field_image_fid');
+    // if (isset($original_fid)) {
+      // $row->setSourceProperty('field_image_fid', $this->getMid($original_fid));
+    // }
 
     // Search for D7 inline embeds and replace with D8 inline entities.
     $content = $row->getSourceProperty('field_article_body_value');
