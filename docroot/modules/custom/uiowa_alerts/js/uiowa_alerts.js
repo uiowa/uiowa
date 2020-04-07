@@ -10,7 +10,7 @@
   Drupal.uiowaAlertsGetAlerts = function() {
     $.ajax({
       url: drupalSettings.uiowaAlerts.alertSource,
-      dataType: "jsonp",
+      dataType: "json",
       success: function( response ) {
         if (response.uihphawkalert.length === 0 ) {
           var noAlertMessage = drupalSettings.uiowaAlerts.noAlertsMessage;
@@ -40,6 +40,7 @@
       $(".block-uiowa-alerts-block", context).once('uiowaAlertsGetAlerts').each(function() {
         // Get alerts on page load.
         Drupal.uiowaAlertsGetAlerts();
+
         // Check for changes every 30 seconds.
         var timer = setInterval(Drupal.uiowaAlertsGetAlerts, 30000);
       });
