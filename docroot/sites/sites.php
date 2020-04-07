@@ -1236,3 +1236,15 @@ $sites['siteslivingwellstudy.local.drupal.uiowa.edu'] = 'livingwellstudy.sites.u
 $sites['siteslivingwellstudy.dev.drupal.uiowa.edu'] = 'livingwellstudy.sites.uiowa.edu';
 $sites['siteslivingwellstudy.stage.drupal.uiowa.edu'] = 'livingwellstudy.sites.uiowa.edu';
 $sites['siteslivingwellstudy.prod.drupal.uiowa.edu'] = 'livingwellstudy.sites.uiowa.edu';
+
+// Directory aliases for anthropology.uiowa.edu.
+$sites['anthropology.local.drupal.uiowa.edu'] = 'anthropology.uiowa.edu';
+$sites['anthropology.dev.drupal.uiowa.edu'] = 'anthropology.uiowa.edu';
+$sites['anthropology.stage.drupal.uiowa.edu'] = 'anthropology.uiowa.edu';
+$sites['anthropology.prod.drupal.uiowa.edu'] = 'anthropology.uiowa.edu';
+
+// Directory aliases for virtualdance.studio.uiowa.edu.
+$sites['studiovirtualdance.local.drupal.uiowa.edu'] = 'virtualdance.studio.uiowa.edu';
+$sites['studiovirtualdance.dev.drupal.uiowa.edu'] = 'virtualdance.studio.uiowa.edu';
+$sites['studiovirtualdance.stage.drupal.uiowa.edu'] = 'virtualdance.studio.uiowa.edu';
+$sites['studiovirtualdance.prod.drupal.uiowa.edu'] = 'virtualdance.studio.uiowa.edu';
