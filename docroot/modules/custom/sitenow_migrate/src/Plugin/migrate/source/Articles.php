@@ -222,6 +222,9 @@ class Articles extends SqlBase {
     return implode(" ", $parts);
   }
 
+  /**
+   * Fetch the media id based on the original site's fid.
+   */
   private function getFid($original_fid) {
     $connection = \Drupal::database();
     $query = $connection->select('migrate_map_d7_file', 'mm');
