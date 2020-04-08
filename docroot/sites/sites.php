@@ -1248,3 +1248,9 @@ $sites['studiovirtualdance.local.drupal.uiowa.edu'] = 'virtualdance.studio.uiowa
 $sites['studiovirtualdance.dev.drupal.uiowa.edu'] = 'virtualdance.studio.uiowa.edu';
 $sites['studiovirtualdance.stage.drupal.uiowa.edu'] = 'virtualdance.studio.uiowa.edu';
 $sites['studiovirtualdance.prod.drupal.uiowa.edu'] = 'virtualdance.studio.uiowa.edu';
+
+// Directory aliases for daackhirsch.lab.uiowa.edu.
+$sites['labdaackhirsch.local.drupal.uiowa.edu'] = 'daackhirsch.lab.uiowa.edu';
+$sites['labdaackhirsch.dev.drupal.uiowa.edu'] = 'daackhirsch.lab.uiowa.edu';
+$sites['labdaackhirsch.stage.drupal.uiowa.edu'] = 'daackhirsch.lab.uiowa.edu';
+$sites['labdaackhirsch.prod.drupal.uiowa.edu'] = 'daackhirsch.lab.uiowa.edu';
