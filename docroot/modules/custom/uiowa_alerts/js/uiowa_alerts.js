@@ -9,7 +9,7 @@
 
   Drupal.uiowaAlertsGetAlerts = function() {
     $.ajax({
-      url: drupalSettings.uiowaAlerts.alertSource,
+      url: drupalSettings.uiowaAlerts.source,
       dataType: "json",
       success: function( response ) {
         if (response.uihphawkalert.length === 0 ) {
