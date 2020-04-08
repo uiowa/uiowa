@@ -58,24 +58,37 @@ class AlertsBlock extends BlockBase implements ContainerFactoryPluginInterface {
    */
   public function build() {
     $config = $this->config->get('uiowa_alerts.settings');
-    $message = trim($config->get('message'));
-    $filtered_message = check_markup($message, 'minimal');
-    $source = $config->get('source');
 
-    return [
-      '#markup' => '<div class="uiowa-alerts-wrapper"></div>',
-      '#attached' => [
+    $block = [
+      '#markup' => '',
+      '#prefix' => '<div class="uiowa-alerts-wrapper">',
+      '#suffix' => '</div>',
+    ];
+
+    if ($config->get('hawk_alert_display')) {
+      $source = $config->get('hawk_alert_source');
+
+      $block['#attached'] = [
         'library' => [
           'uiowa_alerts/uiowa-alerts',
         ],
         'drupalSettings' => [
           'uiowaAlerts' => [
             'source' => $source,
-            'message' => $filtered_message,
           ],
         ],
-      ],
-    ];
+      ];
+    }
+
+    if ($config->get('custom_alert_display')) {
+      $message = trim($config->get('custom_alert_message'));
+      $filtered_message = check_markup($message, 'minimal');
+      $level = $config->get('custom_alert_level');
+
+      $block['#markup'] = $filtered_message;
+    }
+
+    return $block;
   }
 
   /**
