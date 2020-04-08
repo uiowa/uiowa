@@ -61,7 +61,6 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $test = $form_state->getValue(['no_alerts_message', 'value']);
     $this->config('uiowa_alerts.settings')
       ->set('source', $form_state->getValue('source'))
       ->set('no_alerts_message', $form_state->getValue(['no_alerts_message', 'value']))
