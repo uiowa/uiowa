@@ -48,7 +48,7 @@ class SettingsForm extends ConfigFormBase {
       '#default_value' => $config->get('custom_alert_display'),
       '#description' => $this->t('Check to display a custom alert at the top of every page.'),
       '#attributes' => [
-        'name' => 'custom-alert-display',
+        'name' => 'custom_alert_display',
       ],
       '#return_value' => TRUE,
     ];
@@ -68,10 +68,10 @@ class SettingsForm extends ConfigFormBase {
       ]),
       '#states' => [
         'visible' => [
-          ':input[name="custom-alert-display"]' => ['checked' => TRUE],
+          ':input[name="custom_alert_display"]' => ['checked' => TRUE],
         ],
         'required' => [
-          ':input[name="custom-alert-display"]' => ['checked' => TRUE],
+          ':input[name="custom_alert_display"]' => ['checked' => TRUE],
         ],
       ],
     ];
@@ -88,7 +88,7 @@ class SettingsForm extends ConfigFormBase {
       '#description' => $this->t('The message to be displayed.'),
       '#states' => [
         'visible' => [
-          ':input[name="custom-alert-display"]' => ['checked' => TRUE],
+          ':input[name="custom_alert_display"]' => ['checked' => TRUE],
         ],
       ],
     ];
@@ -106,6 +106,7 @@ class SettingsForm extends ConfigFormBase {
       ->set('custom_alert_level', $form_state->getValue('custom_alert_level'))
       ->set('custom_alert_message', $form_state->getValue(['custom_alert_message', 'value']))
       ->save();
+
     parent::submitForm($form, $form_state);
   }
 
