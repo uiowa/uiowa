@@ -4,6 +4,8 @@ namespace Drupal\uiowa_alerts\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a block of alerts.
@@ -13,7 +15,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
  *   admin_label = @Translation("Alerts block"),
  * )
  */
-class AlertsBlock extends BlockBase {
+class AlertsBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
    * The config service.
