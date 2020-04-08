@@ -58,19 +58,10 @@ class AlertsBlock extends BlockBase implements ContainerFactoryPluginInterface {
    */
   public function build() {
     $config = $this->config->get('uiowa_alerts.settings');
-    $no_alerts_message = trim($config->get('no_alerts_message'));
-    $filtered_message = check_markup($no_alerts_message, 'minimal');
+    $message = trim($config->get('message'));
+    $filtered_message = check_markup($message, 'minimal');
     $source = $config->get('source');
 
-    switch ($source) {
-      case 'json_production':
-        $source_url = 'https://emergency.uiowa.edu/api/active.json';
-        break;
-
-      case 'json_test':
-        $source_url = 'https://emergency.stage.drupal.uiowa.edu/api/active.json';
-        break;
-    }
     return [
       '#markup' => '<div class="uiowa-alerts-wrapper"></div>',
       '#attached' => [
@@ -79,8 +70,8 @@ class AlertsBlock extends BlockBase implements ContainerFactoryPluginInterface {
         ],
         'drupalSettings' => [
           'uiowaAlerts' => [
-            'alertSource' => $source_url,
-            'noAlertsMessage' => $filtered_message,
+            'source' => $source,
+            'message' => $filtered_message,
           ],
         ],
       ],
