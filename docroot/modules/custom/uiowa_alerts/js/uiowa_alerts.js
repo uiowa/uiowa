@@ -21,7 +21,7 @@
         } else {
           var allAlerts = '';
           $.each(response.uihphawkalert, function (i, item) {
-            var alertDate = '<span class="hawk-alert-date">' + moment.unix(item.hawkalert.date).format('MM-DD-YYYY h:mm a') + '</span>';
+            var alertDate = '<span class="hawk-alert-date">' + moment.unix(item.hawkalert.date).format('MMMM D, YYYY - H:mma') + '</span>';
             var alertHeading = '<span class="hawk-alert-heading"><span class="hawk-alert-label">Hawk Alert</span> ' + alertDate + '</span> ';
             var alertBody = '<span class="hawk-alert-body">' + item.hawkalert.alert + '</span>';
             var alertMoreInfo = ' <a class="hawk-alert-link alert-link" href=https://' + item.hawkalert.more_info_link + '>Visit ' + item.hawkalert.more_info_link + ' for more information.</a>'
