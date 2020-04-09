@@ -9,6 +9,20 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\google_tag\Entity\Container;
 
 /**
+ * Implements hook_page_attachments().
+ */
+function uiowa_core_page_attachments(&$page) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    // Load Google Tag in PROD.
+    $env = getenv('AH_PRODUCTION');
+    if ($env == 1) {
+      $page['#attached']['library'][] = 'uiowa_core/gtag';
+    }
+  }
+}
+
+/**
  * Implements hook_form_alter().
  */
 function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
