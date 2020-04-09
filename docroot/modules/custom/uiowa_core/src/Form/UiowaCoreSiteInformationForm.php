@@ -27,6 +27,17 @@ class UiowaCoreSiteInformationForm extends SiteInformationForm {
       '#description' => $this->t('Show additional options for setting the parent organization website. Note: this setting is not necessary to show that a site is part of the University of Iowa.'),
     ];
 
+    $form['site_information']['parent'] = [
+      '#type' => 'container',
+      '#states' => [
+        'visible' => [
+          ':input[name="has_parent"]' => [
+            'checked' => TRUE,
+          ],
+        ],
+      ]
+    ];
+
     $form['site_information']['parent']['site_parent_label'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Title'),
@@ -51,6 +62,7 @@ class UiowaCoreSiteInformationForm extends SiteInformationForm {
     // Now we need to save the new description to the
     // system.site.description configuration.
     $this->config('system.site')
+      ->set('has_parent', $form_state->getValue('has_parent'))
       ->set('parent.label', $form_state->getValue('site_parent_label'))
       ->set('parent.canonical_uri', $form_state->getValue('site_parent_canonical_uri'))
       // Make sure to save the configuration.
