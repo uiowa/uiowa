@@ -1,0 +1,34 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Uiowa Core module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\google_tag\Entity\Container;
+
+/**
+ * Implements hook_form_alter().
+ */
+function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    case 'google_tag_container':
+      $uiowa_core_gtag = \Drupal::config('uiowa_core.settings')->get('uiowa_core.gtag');
+      if ($uiowa_core_gtag == '0') {
+        \Drupal::messenger()
+          ->addWarning(t('Local Google Tag Manager container snippets are are currently blocked from being inserted on this website. Please contact the ITS HelpDesk about enabling this functionality.'));
+      }
+      break;
+  }
+}
+
+/**
+ * {@inheritdoc}
+ */
+function uiowa_core_google_tag_insert_alter(&$satisfied, Container $container) {
+  $uiowa_core_gtag = \Drupal::config('uiowa_core.settings')->get('uiowa_core.gtag');
+  if ($uiowa_core_gtag == '0') {
+    $satisfied = FALSE;
+  }
+}
