@@ -1,0 +1,25 @@
+project:
+  local:
+    hostname: labxie.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labxie
+  human_name: xie.lab.uiowa.edu
+  profile:
+    name: sitenow
+drush:
+  aliases:
+    local: self
+    remote: labxie.prod
+drupal:
+  db:
+    database: xie_lab_uiowa_edu
+cm:
+  core:
+    install_from_config: true
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+uiowa:
+  profiles:
+    sitenow:
+      requester: yxie37
