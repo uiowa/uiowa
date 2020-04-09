@@ -59,22 +59,31 @@ class AlertsBlock extends BlockBase implements ContainerFactoryPluginInterface {
   public function build() {
     $config = $this->config->get('uiowa_alerts.settings');
 
-    $block = [
-      '#markup' => '',
-      '#prefix' => '<div class="uiowa-alerts-wrapper">',
-      '#suffix' => '</div>',
+    $build = [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => [
+          'uiowa-alerts-wrapper',
+        ],
+      ],
     ];
 
     if ($config->get('hawk_alert_display')) {
       $source = $config->get('hawk_alert_source');
 
-      $block['#attached'] = [
-        'library' => [
-          'uiowa_alerts/uiowa-alerts',
+      $build['hawk_alerts'] = [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => 'hawk-alerts-wrapper',
         ],
-        'drupalSettings' => [
-          'uiowaAlerts' => [
-            'source' => $source,
+        '#attached' => [
+          'library' => [
+            'uiowa_alerts/uiowa-alerts',
+          ],
+          'drupalSettings' => [
+            'uiowaAlerts' => [
+              'source' => $source,
+            ],
           ],
         ],
       ];
@@ -85,10 +94,29 @@ class AlertsBlock extends BlockBase implements ContainerFactoryPluginInterface {
       $filtered_message = check_markup($message, 'minimal');
       $level = $config->get('custom_alert_level');
 
-      $block['#markup'] = $filtered_message;
+      $build['custom_alert'] = [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => [
+            'custom-alert-wrapper',
+          ],
+        ],
+        'message' => [
+          '#type' => 'container',
+          '#attributes' => [
+            'class' => [
+              'alert',
+              "alert-{$level}",
+            ],
+          ],
+          'message' => [
+            '#markup' => $filtered_message,
+          ],
+        ],
+      ];
     }
 
-    return $block;
+    return $build;
   }
 
   /**

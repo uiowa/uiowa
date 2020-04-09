@@ -23,7 +23,7 @@
           allAlerts += alertContent;
         });
 
-        $(".block-uiowa-alerts-block .uiowa-alerts-wrapper").html(allAlerts);
+        $('.hawk-alerts-wrapper').html(allAlerts);
       }
     });
   };
@@ -31,7 +31,7 @@
   // Attach uiowaAlertsGetAlerts behavior.
   Drupal.behaviors.uiowaAlerts = {
     attach: function(context, settings) {
-      $(".block-uiowa-alerts-block", context).once('uiowaAlertsGetAlerts').each(function() {
+      $('.block-uiowa-alerts-block', context).once('uiowaAlertsGetAlerts').each(function() {
         // Get alerts on page load.
         Drupal.uiowaAlertsGetAlerts();
 
