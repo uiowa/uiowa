@@ -1,3 +1,8 @@
+{% set header_classes = [
+    header_type,
+    header_nav,
+] %}
+
 {{ attach_library('uids_base/header') }}
 {% if header_sticky %}
 {{ attach_library('uids_base/header-sticky') }}
