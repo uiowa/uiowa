@@ -5,12 +5,14 @@ dependencies:
   config:
     - block_content.type.uiowa_event
     - field.field.block_content.uiowa_event.field_uiowa_event_date
+    - field.field.block_content.uiowa_event.field_uiowa_event_icon
     - field.field.block_content.uiowa_event.field_uiowa_event_image
     - field.field.block_content.uiowa_event.field_uiowa_event_link
     - field.field.block_content.uiowa_event.field_uiowa_event_location
     - field.field.block_content.uiowa_event.field_uiowa_event_title
   module:
     - datetime
+    - fontawesome
     - heading
     - link
 id: block_content.uiowa_event.default
@@ -26,6 +28,14 @@ content:
       timezone_override: ''
     third_party_settings: {  }
     type: datetime_default
+    region: content
+  field_uiowa_event_icon:
+    weight: 6
+    label: above
+    settings:
+      layers: false
+    third_party_settings: {  }
+    type: fontawesome_icon_formatter
     region: content
   field_uiowa_event_image:
     type: entity_reference_entity_view
