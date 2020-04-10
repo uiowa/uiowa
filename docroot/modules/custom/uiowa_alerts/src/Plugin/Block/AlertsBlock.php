@@ -110,7 +110,13 @@ class AlertsBlock extends BlockBase implements ContainerFactoryPluginInterface {
             ],
           ],
           'message' => [
-            '#markup' => $filtered_message,
+            '#type' => 'container',
+            '#attributes' => [
+              'class' => 'hawk-alert-message',
+            ],
+            'filtered' => [
+              '#markup' => $filtered_message,
+            ],
           ],
         ],
       ];
