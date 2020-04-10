@@ -3,5 +3,8 @@ services:
     class: 'Drupal\uiowa_core\Routing\UiowaCoreRouteSubscriber'
     tags:
       - { name: event_subscriber }
-  uiowa_core.helpers:
-    class: 'Drupal\uiowa_core\Services\Helpers'
+  uiowa_core.access_checker:
+    class: Drupal\uiowa_core\Access\UiowaCoreAccess
+    arguments: ['@current_user']
+    tags:
+      - {name: access_check, applies_to: _uiowa_core_access_check}

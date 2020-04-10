@@ -14,8 +14,6 @@ class UiowaCoreRouteSubscriber extends RouteSubscriberBase {
    * {@inheritdoc}
    */
   protected function alterRoutes(RouteCollection $collection) {
-    $uiowa_core_helpers = \Drupal::service('uiowa_core.helpers');
-    $is_admin = $uiowa_core_helpers->isAdmin(\Drupal::currentUser());
     // Change form for the system.site_information_settings route
     // to Drupal\describe_site\Form\DescribeSiteSiteInformationForm
     // First, we need to act only on the system.site_information_settings route.
@@ -25,9 +23,7 @@ class UiowaCoreRouteSubscriber extends RouteSubscriberBase {
     }
     // Block route for non-admins.
     if ($route = $collection->get('google_tag.settings_form')) {
-      if (!$is_admin) {
-        $route->setRequirement('_access', 'FALSE');
-      }
+      $route->setRequirement('_uiowa_core_access_check', 'TRUE');
     }
   }
 
