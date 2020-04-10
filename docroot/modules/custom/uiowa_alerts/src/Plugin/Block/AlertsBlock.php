@@ -125,11 +125,4 @@ class AlertsBlock extends BlockBase implements ContainerFactoryPluginInterface {
     return $build;
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function getCacheMaxAge() {
-    return 0;
-  }
-
 }
