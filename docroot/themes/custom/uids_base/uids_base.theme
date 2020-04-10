@@ -81,6 +81,12 @@ function uids_base_preprocess_page(&$variables) {
   $variables['branding_legacy'] = theme_get_setting('branding.legacy');
   $variables['uiowa_search_form'] = FALSE;
 
+  // Add variables for organization name and URL if they exist.
+  if (\Drupal::service('module_handler')->moduleExists('uiowa_core')) {
+    // If there is a parent organization.
+    // Organization name + URL.
+  }
+
   // Add a variable for the search form.
   // @todo Test with uiowa_search enabled.
   if (\Drupal::service('module_handler')->moduleExists('uiowa_search')) {
