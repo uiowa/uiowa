@@ -38,33 +38,58 @@ class UiowaCoreSiteInformationForm extends SiteInformationForm {
       ]
     ];
 
-    $form['site_information']['parent']['site_parent_label'] = [
+    $form['site_information']['parent']['site_parent_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Title'),
-      '#default_value' => $site_config->get('parent.label'),
+      '#default_value' => $site_config->get('parent.name'),
       '#description' => $this->t('The official name of the parent organization.'),
+      '#states' => [
+        'required' => [
+          ':input[name="has_parent"]' => [
+            'checked' => TRUE,
+          ],
+        ],
+      ],
     ];
 
-    $form['site_information']['parent']['site_parent_canonical_uri'] = [
+    $form['site_information']['parent']['site_parent_url'] = [
       '#type' => 'url',
       '#title' => $this->t('URL'),
-      '#default_value' => $site_config->get('parent.canonical_uri'),
+      '#default_value' => $site_config->get('parent.url'),
       '#description' => $this->t('URL of parent site.'),
+      '#states' => [
+        'required' => [
+          ':input[name="has_parent"]' => [
+            'checked' => TRUE,
+          ],
+        ],
+      ],
     ];
 
     return $form;
+  }
+
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    $has_parent = $form_state->getValue('has_parent');
+    if (!$has_parent) {
+      // @todo Should these values be removed or just not used?
+      $form_state
+        // @todo Should these be set to NULL or ''?
+        ->setValueForElement($form['site_information']['parent']['site_parent_name'], NULL)
+        ->setValueForElement($form['site_information']['parent']['site_parent_url'], NULL);
+    }
+    parent::validateForm($form, $form_state);
   }
 
   /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    // Now we need to save the new description to the
-    // system.site.description configuration.
+    // Save additional site information config.
     $this->config('system.site')
       ->set('has_parent', $form_state->getValue('has_parent'))
-      ->set('parent.label', $form_state->getValue('site_parent_label'))
-      ->set('parent.canonical_uri', $form_state->getValue('site_parent_canonical_uri'))
+      ->set('parent.name', $form_state->getValue('site_parent_name'))
+      ->set('parent.url', $form_state->getValue('site_parent_url'))
       // Make sure to save the configuration.
       ->save();
 

@@ -80,12 +80,10 @@ function uids_base_preprocess_page(&$variables) {
   $variables['layout_container'] = theme_get_setting('layout.container');
   $variables['branding_legacy'] = theme_get_setting('branding.legacy');
   $variables['uiowa_search_form'] = FALSE;
-
-  // Add variables for organization name and URL if they exist.
-  if (\Drupal::service('module_handler')->moduleExists('uiowa_core')) {
-    // If there is a parent organization.
-    // Organization name + URL.
-  }
+  // These values will be populated automatically if uiowa_core is enabled.
+  $variables['site_has_parent'] = $config->get('has_parent');
+  $variables['site_parent_name'] = $config->get('parent.name');
+  $variables['site_parent_url'] = $config->get('parent.url');
 
   // Add a variable for the search form.
   // @todo Test with uiowa_search enabled.
