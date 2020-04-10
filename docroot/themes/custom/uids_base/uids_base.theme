@@ -80,11 +80,7 @@ function uids_base_preprocess_page(&$variables) {
   $variables['uiowa_logo_path'] = '/' . drupal_get_path('theme', 'uids_base') . '/uids/assets/images/uiowa-secondary.svg#logo';
   $variables['uiowa_logo_path_png'] = '/' . drupal_get_path('theme', 'uids_base') . '/uids/assets/images/uiowa-primary.png';
 
-  $variables['header_type'] = theme_get_setting('header.type');
-
-  // @todo Replace this check with a hidden theme setting that
-  //   identifies the homepage specifically.
-  if ($variables['header_type'] === 'header--primary') {
+  if (\Drupal::service('site.path') === 'sites/uiowa.edu') {
     $variables['header_type'] = 'header--primary';
     $variables['site_type'] = 'homepage';
   }
