@@ -2,6 +2,7 @@
 
 namespace Drupal\uiowa_alerts\Plugin\Block;
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -123,6 +124,17 @@ class AlertsBlock extends BlockBase implements ContainerFactoryPluginInterface {
     }
 
     return $build;
+  }
+
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheTags() {
+    return Cache::mergeTags(
+      parent::getCacheTags(),
+      $this->config->get('uiowa_alerts.settings')->getCacheTags()
+    );
   }
 
 }
