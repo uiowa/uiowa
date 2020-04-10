@@ -1248,3 +1248,21 @@ $sites['studiovirtualdance.local.drupal.uiowa.edu'] = 'virtualdance.studio.uiowa
 $sites['studiovirtualdance.dev.drupal.uiowa.edu'] = 'virtualdance.studio.uiowa.edu';
 $sites['studiovirtualdance.stage.drupal.uiowa.edu'] = 'virtualdance.studio.uiowa.edu';
 $sites['studiovirtualdance.prod.drupal.uiowa.edu'] = 'virtualdance.studio.uiowa.edu';
+
+// Directory aliases for daackhirsch.lab.uiowa.edu.
+$sites['labdaackhirsch.local.drupal.uiowa.edu'] = 'daackhirsch.lab.uiowa.edu';
+$sites['labdaackhirsch.dev.drupal.uiowa.edu'] = 'daackhirsch.lab.uiowa.edu';
+$sites['labdaackhirsch.stage.drupal.uiowa.edu'] = 'daackhirsch.lab.uiowa.edu';
+$sites['labdaackhirsch.prod.drupal.uiowa.edu'] = 'daackhirsch.lab.uiowa.edu';
+
+// Directory aliases for xie.lab.uiowa.edu.
+$sites['labxie.local.drupal.uiowa.edu'] = 'xie.lab.uiowa.edu';
+$sites['labxie.dev.drupal.uiowa.edu'] = 'xie.lab.uiowa.edu';
+$sites['labxie.stage.drupal.uiowa.edu'] = 'xie.lab.uiowa.edu';
+$sites['labxie.prod.drupal.uiowa.edu'] = 'xie.lab.uiowa.edu';
+
+// Directory aliases for dwllcdishesanddips.sites.uiowa.edu.
+$sites['sitesdwllcdishesanddips.local.drupal.uiowa.edu'] = 'dwllcdishesanddips.sites.uiowa.edu';
+$sites['sitesdwllcdishesanddips.dev.drupal.uiowa.edu'] = 'dwllcdishesanddips.sites.uiowa.edu';
+$sites['sitesdwllcdishesanddips.stage.drupal.uiowa.edu'] = 'dwllcdishesanddips.sites.uiowa.edu';
+$sites['sitesdwllcdishesanddips.prod.drupal.uiowa.edu'] = 'dwllcdishesanddips.sites.uiowa.edu';

@@ -27,6 +27,8 @@
 #}
 
 {% set event_url = content.field_uiowa_event_link[0]['#url'] %}
+{% set event_location = content.field_uiowa_event_location[0]['#context']['value'] %}
+
 
 {% block content %}
 
@@ -49,20 +51,23 @@
 			{% include "@uids/01 - elements/heading/heading.twig" with {
             "heading_level" : content.field_uiowa_event_title[0]['#size'],
             "heading_class" : 'events-card__title',
-            "heading" : content.field_uiowa_event_title[0]['#text']
+            "heading" : content.field_uiowa_event_title[0]['#text'],
+						"heading_url" : event_url,
           } %}
 
 			<div class="events-card__details">
 				<div class="events-card__date">
-					{{ content.field_uiowa_event_date }}</div>
-				<div class="events-card__label">
-					<i class="fas fa-map-marker-alt"></i>
-					{{ content.field_uiowa_event_location }}</div>
-			</div>
+					{{ content.field_uiowa_event_date }}
+				</div>
 
-			<a class="bttn bttn--outline bttn--tertiary bttn--sans-serif" href="{{ event_url }}">More
-				<i class="fas fa-arrow-right"></i>
-			</a>
+					{% if event_location is not empty %}
+				<div class="events-card__label">
+				  {{ content.field_uiowa_event_icon }}
+					{{ content.field_uiowa_event_location }}
+				</div>
+					{% endif %}
+
+			</div>
 
 		</div>
 	</div>
