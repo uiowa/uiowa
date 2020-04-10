@@ -55,9 +55,11 @@
   } %}
 
     {# @todo Is there a better way to set card--enclosed? #}
-    {% block card_wrapper %}
+{% block card_wrapper %}
+    <div{{ attributes.addclass(classes) }}>
       {% set add_classes = ['card','card--enclosed'] %}
-      <div {{ attributes.addclass(add_classes) }}>
+      {# @todo remove bootstrap classes more efficiently #}
+        <div {{ attributes.addclass(add_classes).removeclass(classes).removeClass(['col-md', 'col-md-3', 'col-md-4', 'col-md-6', 'col-md-12']) }}>
       {% endblock %}
 
       {% block heading %}
@@ -71,4 +73,5 @@
         {% endif %}
       {% endblock %}
     {% endembed %}
+    </div>
   {% endblock paragraph %}
