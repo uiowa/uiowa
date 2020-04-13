@@ -21,17 +21,6 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     '#open' => TRUE,
     '#tree' => TRUE,
   ];
-  $form['header']['type'] = [
-    '#type' => 'select',
-    '#title' => t('Header Type'),
-    '#description' => t('Select an option'),
-    '#options' => [
-      'header--primary' => t('IOWA'),
-      'header--secondary' => t('College'),
-      'header--tertiary' => t('Department'),
-    ],
-    '#default_value' => theme_get_setting('header.type'),
-  ];
   $form['header']['nav_style'] = [
     '#type' => 'select',
     '#title' => t('Header navigation style'),

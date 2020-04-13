@@ -70,9 +70,28 @@ function uids_base_preprocess_page(&$variables) {
   $config = \Drupal::config('system.site');
   $variables['site_name'] = $config->get('name');
   $variables['site_slogan'] = $config->get('slogan');
+
+  // These values will be populated automatically if uiowa_core is enabled.
+  $variables['site_has_parent'] = $config->get('has_parent');
+  $variables['site_parent_name'] = $config->get('parent.name');
+  $variables['site_parent_url'] = $config->get('parent.url');
+
+  // Add variables for the image and path of the UIOWA block logo.
   $variables['uiowa_logo_path'] = '/' . drupal_get_path('theme', 'uids_base') . '/uids/assets/images/uiowa-secondary.svg#logo';
   $variables['uiowa_logo_path_png'] = '/' . drupal_get_path('theme', 'uids_base') . '/uids/assets/images/uiowa-primary.png';
-  $variables['header_type'] = theme_get_setting('header.type');
+
+  if (\Drupal::service('site.path') === 'sites/uiowa.edu') {
+    $variables['header_type'] = 'header--primary';
+    $variables['site_type'] = 'homepage';
+  }
+  elseif ($variables['site_has_parent']) {
+    $variables['header_type'] = 'header--tertiary';
+    $variables['site_type'] = 'child';
+  }
+  else {
+    $variables['header_type'] = 'header--secondary';
+    $variables['site_type'] = 'parent';
+  }
   $variables['header_nav'] = theme_get_setting('header.nav_style');
   $variables['header_sticky'] = theme_get_setting('header.sticky');
   // @todo Should this not be hard-coded?
@@ -80,10 +99,6 @@ function uids_base_preprocess_page(&$variables) {
   $variables['layout_container'] = theme_get_setting('layout.container');
   $variables['branding_legacy'] = theme_get_setting('branding.legacy');
   $variables['uiowa_search_form'] = FALSE;
-  // These values will be populated automatically if uiowa_core is enabled.
-  $variables['site_has_parent'] = $config->get('has_parent');
-  $variables['site_parent_name'] = $config->get('parent.name');
-  $variables['site_parent_url'] = $config->get('parent.url');
 
   // Add a variable for the search form.
   // @todo Test with uiowa_search enabled.
