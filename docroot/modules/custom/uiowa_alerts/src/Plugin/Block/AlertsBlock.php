@@ -102,7 +102,7 @@ class AlertsBlock extends BlockBase implements ContainerFactoryPluginInterface {
             'custom-alert-wrapper',
           ],
         ],
-        'message' => [
+        'alert_wrapper' => [
           '#type' => 'container',
           '#attributes' => [
             'class' => [
@@ -110,12 +110,12 @@ class AlertsBlock extends BlockBase implements ContainerFactoryPluginInterface {
               "alert-{$level}",
             ],
           ],
-          'message' => [
+          'message_wrapper' => [
             '#type' => 'container',
             '#attributes' => [
               'class' => 'hawk-alert-message',
             ],
-            'filtered' => [
+            'message' => [
               '#markup' => $filtered_message,
             ],
           ],
