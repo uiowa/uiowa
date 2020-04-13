@@ -1,0 +1,35 @@
+{{ attach_library('uids_base/banner') }}
+
+<div class="banner {{ attributes ? attributes.class }}" {{ attributes ? attributes|without('class') }}>
+
+  {% block banner_image %}
+    {% if banner_image %}
+      <div class="banner__image">
+        {{ banner_image }}
+      </div>
+    {% endif %}
+  {% endblock %}
+
+  <div class="banner__container">
+    <div class="banner__content">
+      {% block heading %}
+        {% if banner_title is not empty %}
+          {% include '@uids_base/uids/heading' with {
+            'heading_level' : 'h3',
+            'heading_class' : 'bold-headline--serif bold-headline',
+            'heading' : banner_title
+          } %}
+        {% endif %}
+      {% endblock %}
+
+      {% if banner_summary is not empty %}
+        <p class="banner__summary">{{ banner_summary }}</p>
+      {% endif %}
+      {% if banner_link_url is not empty %}
+        <a href="{{ banner_link_url }}" class="{{ bttn_class }}">{{ banner_link_title }}
+          <i class="fas fa-arrow-right"></i>
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</div>

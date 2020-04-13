@@ -18,7 +18,7 @@
     {{ title_prefix }}
     {% block heading %}
       {% if card_title is not empty %}
-        {% include "@uids_base/uids/global/heading" with {
+        {% include "@uids_base/uids/heading" with {
           "heading_level" : 'h2',
           "heading_class" : 'card__title',
           "heading" : card_title

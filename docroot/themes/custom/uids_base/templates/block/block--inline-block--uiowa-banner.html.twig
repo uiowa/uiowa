@@ -27,28 +27,14 @@
 #}
 
 {% block content %}
-  {{ attach_library('uids_base/banner') }}
 
-  {% embed "@uids/02 - blocks/banner-block/banner-block.twig" with {
+  {% embed "@uids_base/uids/banner.html.twig" with {
     "banner_image": content.field_uiowa_banner_image,
     "banner_summary": content.field_uiowa_banner_excerpt,
     "banner_link_url": content.field_uiowa_banner_link[0]['#url'],
     "banner_link_title": content.field_uiowa_banner_link[0]['#title'],
     "bttn_class": 'bttn bttn--primary bttn--caps',
   } %}
-
-{% block banner_image %}
-	{% if content.field_uiowa_banner_image|render is not empty %}
-		<div class="banner__image">
-			{{ content.field_uiowa_banner_image }}
-		</div>
-	{% endif %}
-{% endblock %}
-
-
-    {% block banner_wrapper_start %}
-        <div class="banner {{ attributes ? attributes.class }}" {{ attributes ? attributes|without('class') }}>
-    {% endblock %}
 
     {% block heading %}
       {{ title_prefix }}
