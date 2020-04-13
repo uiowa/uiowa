@@ -38,7 +38,7 @@
 
                 messages.add(alert, {
                   id: id,
-                  type: 'error'
+                  type: 'warning'
                 });
               });
             }
