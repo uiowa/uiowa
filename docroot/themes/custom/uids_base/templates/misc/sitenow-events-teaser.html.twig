@@ -1,14 +1,30 @@
-<div class="sitenow-event-teaser">
-    <div class="sitenow-event">
-        <div class="sitenow-event-content">
-
-            <h3 class="sitenow-event-title"><a href="{{ event.url }}">
-                {% if event.canceled == TRUE %}[CANCELED] {% endif %}
-                {{ event.title }}
-              </a></h3>
-            <p class="date-string">{{ event.date_string }}</p>
-            <p class="sitenow-event-description">{{ event.description_text }}</p>
-        </div>
-        {{ event.image }}
+{{ attach_library('uids_base/events-block') }}
+<div class="events-card events-card__row">
+  {% if event.image %}
+    <div class="events-card__image">
+      {{ event.image }}
     </div>
-</div>
+  {% endif %}
+
+  <div class="events-card__body">
+
+    <h3 class="events-card__title">
+      <a href="{{ event.url }}">
+        {% if event.canceled == TRUE %}[CANCELED]
+        {% endif %}
+        {{ event.title }}
+      </a>
+    </h3>
+
+    <div class="events-card__details">
+      <div class="events-card__date">
+        {{ event.date_string }}
+      </div>
+
+      {% if event_location is not empty %}
+        <div class="events-card__label">
+          {{ event.description_text }}
+        </div>
+      {% endif %}
+    </div>
+  </div>
