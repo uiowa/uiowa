@@ -27,12 +27,12 @@ $dark: #343a40;
   background-color: rgba(52, 58, 64, 0.8) !important;
   color: #fff;
 }
-
+/*
 .hide-descriptions,
 .hide-images {
   display: none;
 }
-
+*/
 p {
   margin-top: 0;
 }
@@ -5197,7 +5197,7 @@ div[role=article].node--type-page.node--view-mode-teaser {
 
 .node--view-mode-teaser {
   flex-wrap: wrap-reverse;
-  align-items: flex-end;
+  //align-items: flex-end;
 
   @include breakpoint(xsm) {
     $featured-img-size-xs: 80px;
@@ -5883,7 +5883,7 @@ figure.caption .embedded-entity+figcaption {
   div[role=article].node--view-mode-teaser {
     @include card;
     margin-bottom: ($desktop-width-gutter / 2);
-    ////flex-direction: column-reverse;
+    flex-direction: column-reverse;
 
     figure img {
       @include card-img-top;
@@ -5914,7 +5914,7 @@ figure.caption .embedded-entity+figcaption {
   article.node--view-mode-teaser,
   div[role=article].node--view-mode-teaser {
     display: flex;
-    ////flex-direction: column-reverse;
+    flex-direction: column-reverse;
 
     figure img {
       @include card-img-top;
@@ -6579,7 +6579,7 @@ figure.caption .embedded-entity+figcaption {
   div[role=article].node--type-article {
     @include card;
     margin-bottom: ($desktop-width-gutter / 2);
-    ////flex-direction: column-reverse;
+    flex-direction: column-reverse;
   }
 
   figure img {
@@ -6609,7 +6609,7 @@ figure.caption .embedded-entity+figcaption {
   article.node--type-article,
   div[role=article].node--type-article {
     display: flex;
-    ////flex-direction: column-reverse;
+    flex-direction: column-reverse;
   }
 
   figure img {
@@ -6761,7 +6761,7 @@ figure.caption .embedded-entity+figcaption {
   .sitenow-event {
     @include card;
     margin-bottom: ($desktop-width-gutter / 2);
-    //flex-direction: column-reverse;
+    flex-direction: column-reverse;
   }
 
   .sitenow-event-teaser {
@@ -6795,7 +6795,7 @@ figure.caption .embedded-entity+figcaption {
 
   .sitenow-event {
     display: flex;
-    //flex-direction: column-reverse;
+    flex-direction: column-reverse;
   }
 
   img {
