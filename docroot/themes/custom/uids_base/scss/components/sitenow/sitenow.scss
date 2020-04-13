@@ -23,6 +23,7 @@ $dark: #343a40;
 
 // classes
 
+
 .bg-dark.semi-transparent {
   background-color: rgba(52, 58, 64, 0.8) !important;
   color: #fff;
@@ -121,10 +122,9 @@ p {
 @mixin list-group-item {
   position: relative;
   display: block;
-  padding: .75rem 1.25rem;
-  margin-bottom: -1px;
+  padding: 1.5rem 0;
   background-color: #fff;
-  border: 1px solid rgba(0, 0, 0, .125);
+  border-bottom: 1px solid rgba(0, 0, 0, .125);
 }
 
 @mixin list-group-flush {
@@ -184,7 +184,7 @@ p {
   margin: 1.25rem 0;
   color: #666;
   font-family: "Zilla Slab", serif;
-  font-size: .9rem;
+  font-size: 1.1rem;
   font-weight: 700;
   font-style: italic;
 }
@@ -5195,7 +5195,9 @@ div[role=article].node--type-page.node--view-mode-teaser {
 
 // node view teaser
 
+
 .node--view-mode-teaser {
+  /*
   flex-wrap: wrap-reverse;
   //align-items: flex-end;
 
@@ -5247,7 +5249,7 @@ div[role=article].node--type-page.node--view-mode-teaser {
   .node__content {
     flex-basis: calc(100% - #{$featured-img-size-md} - 2rem);
   }
-
+*/
   // Styles for the masonry display.
   .masonry & {
     figure {
@@ -5375,11 +5377,13 @@ figure.caption.align-right .embedded-entity+figcaption {
 
 .view-display-id-page_articles .view-display-id-block_articles_archive {
   @include card;
+  padding: 1.5rem;
 
   .view-header {
     @include card-header;
     @extend .h6;
     margin-bottom: 0;
+    padding: 0;
   }
 
   .view-content {
@@ -5395,17 +5399,18 @@ figure.caption.align-right .embedded-entity+figcaption {
 
       li {
         margin: 0;
+        //list-style-type: none;
       }
 
       li a {
-        @include list-group-item;
-        @include list-group-item-action;
+        //@include list-group-item;
+        //@include list-group-item-action;
         border-radius: 0;
         background-color: transparent;
 
         &:hover,
         &:focus {
-          background-color: $primary;
+          //text-decoration: underline;
         }
       }
 
@@ -5442,11 +5447,11 @@ figure.caption.align-right .embedded-entity+figcaption {
   }
 
   .view-content:first-child .views-row:first-child {
-    border-top: 1px solid $light;
+    //border-top: 1px solid $light;
   }
 
   .view-content:last-child .views-row:last-child {
-    border-bottom: 1px solid $light;
+    //border-bottom: 1px solid $light;
   }
 
   .view-empty {
@@ -5491,11 +5496,11 @@ figure.caption.align-right .embedded-entity+figcaption {
   }
 
   .view-content:first-child .views-row:first-child {
-    border-top: 1px solid $light;
+    //border-top: 1px solid $light;
   }
 
   .view-content:last-child .views-row:last-child {
-    border-bottom: 1px solid $light;
+    border-bottom: none;
   }
 }
 
@@ -5867,7 +5872,7 @@ figure.caption .embedded-entity+figcaption {
     @include media-body;
   }
 }
-
+/*
 .paragraph--type--featured-content.grid {
   .field--name-field-featured-content {
     @include row;
@@ -5881,9 +5886,9 @@ figure.caption .embedded-entity+figcaption {
 
   article.node--view-mode-teaser,
   div[role=article].node--view-mode-teaser {
-    @include card;
+    //@include card;
     margin-bottom: ($desktop-width-gutter / 2);
-    flex-direction: column-reverse;
+    //flex-direction: column-reverse;
 
     figure img {
       @include card-img-top;
@@ -5932,7 +5937,7 @@ figure.caption .embedded-entity+figcaption {
     }
   }
 }
-
+*/
 .paragraph--type--featured-content.hide-images {
   figure img {
     display: none;
@@ -6547,11 +6552,11 @@ figure.caption .embedded-entity+figcaption {
   }
 
   .view-content:first-child .views-row:first-child {
-    border-top: 1px solid $light;
+    //border-top: 1px solid $light;
   }
 
   .view-content:last-child .views-row:last-child {
-    border-bottom: 1px solid $light;
+    border-bottom: none;
   }
 
   article.node--type-article,
@@ -6564,6 +6569,19 @@ figure.caption .embedded-entity+figcaption {
   }
 }
 
+.paragraph--type--articles.grid {
+  .view-content {
+    @include row;
+  }
+
+  .views-row {
+    @include col-sm-6;
+    @include col-md-4;
+    @include col-base;
+    margin-bottom: 1.5rem;
+  }
+}
+/*
 .paragraph--type--articles.grid {
   .view-content {
     @include row;
@@ -6596,7 +6614,7 @@ figure.caption .embedded-entity+figcaption {
     @include card-title;
   }
 }
-
+*/
 .paragraph--type--articles.masonry {
   .view-content {
     @include card-columns;
