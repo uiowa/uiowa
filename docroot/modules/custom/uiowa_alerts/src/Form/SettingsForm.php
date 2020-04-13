@@ -57,7 +57,6 @@ class SettingsForm extends ConfigFormBase {
       '#type' => 'select',
       '#title' => $this->t('Custom Alert Level'),
       '#options' => [
-        'success' => $this->t('Success'),
         'info' => $this->t('Info'),
         'warning' => $this->t('Warning'),
         'danger' => $this->t('Danger'),
