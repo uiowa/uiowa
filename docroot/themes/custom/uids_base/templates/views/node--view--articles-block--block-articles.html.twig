@@ -32,7 +32,7 @@
     {% block card_img %}
       {% if card_image is not empty %}
         {% if content.node_image %}
-          <figure class="card__img">
+          <figure class="media">
             {{ content.node_image }}
           </figure>
         {% endif %}
@@ -59,6 +59,9 @@
 
     {% block card_content %}
       {{ content|without('node_image', 'links', 'article_created_date', 'article_author', 'field_article_source_org', 'field_article_source_link', 'field_article_source_link_direct') }}
+    {% endblock %}
+
+    {% block card_bttn %}
     {% endblock %}
 
   {% endembed %}
