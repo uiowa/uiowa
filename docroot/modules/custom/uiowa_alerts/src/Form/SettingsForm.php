@@ -84,7 +84,7 @@ class SettingsForm extends ConfigFormBase {
         'minimal',
       ],
       '#default_value' => $config->get('custom_alert_message'),
-      '#description' => $this->t('The message to be displayed.'),
+      '#description' => $this->t('The message to be displayed. The first heading in the message will have an associated icon based on the alert level.'),
       '#states' => [
         'visible' => [
           ':input[name="custom_alert_display"]' => ['checked' => TRUE],
