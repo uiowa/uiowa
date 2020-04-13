@@ -10,7 +10,8 @@
  */
 function uiowa_alerts_update_8001() {
   $config = \Drupal::configFactory()->getEditable('uiowa_alerts.settings');
-  $config->clear('hawk_alert_source')
-    ->clear('no_results_message')
+  $config
+    ->clear('source')
+    ->clear('no_alerts_message')
     ->save();
 }
