@@ -12,18 +12,32 @@
       url: drupalSettings.uiowaAlerts.source,
       dataType: "json",
       success: function( response ) {
-        var allAlerts = '';
+        const messages = new Drupal.Message($('.hawk-alerts-wrapper')[0]);
+        messages.clear();
 
         $.each(response.uihphawkalert, function (i, item) {
-          var alertDate = '<span class="hawk-alert-date">' + moment.unix(item.hawkalert.date).format('MMMM D, YYYY - h:mma') + '</span>';
-          var alertHeading = '<span class="hawk-alert-heading"><span class="hawk-alert-label">Hawk Alert</span> ' + alertDate + '</span> ';
-          var alertBody = '<span class="hawk-alert-body">' + item.hawkalert.alert + '</span>';
-          var alertMoreInfo = ' <a class="hawk-alert-link alert-link" href=https://' + item.hawkalert.more_info_link + '>Visit ' + item.hawkalert.more_info_link + ' for more information.</a>'
-          var alertContent = '<div class="hawk-alert alert alert-danger" role="alert"><div class="hawk-alert-message">' + alertHeading + alertBody + alertMoreInfo + '</div></div>';
-          allAlerts += alertContent;
-        });
+          let id = 'hawk-alert-' + item.hawkalert.date;
 
-        $('.hawk-alerts-wrapper').html(allAlerts);
+
+          const alert = `
+<div class="hawk-alert alert alert-danger">
+  <div class="hawk-alert-message">
+      <span class="hawk-alert-heading">
+          <span class="hawk-alert-label">Hawk Alert</span>
+          <span class="hawk-alert-date">${moment.unix(item.hawkalert.date).format('MMMM D, YYYY - h:mma')}</span>
+      </span>
+      <span class="hawk-alert-body">${item.hawkalert.alert}</span>
+      <a class="hawk-alert-link alert-link" href=https://${item.hawkalert.more_info_link}>Visit ${item.hawkalert.more_info_link} for more information.</a>
+  </div>
+</div>
+          `;
+
+          messages.add(alert, {
+            id: id,
+            type: 'error'
+          });
+
+        });
       }
     });
   };
