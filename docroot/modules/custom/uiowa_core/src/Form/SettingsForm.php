@@ -49,13 +49,6 @@ class SettingsForm extends ConfigFormBase {
       '#description' => $this->t('If checked, and Google Tag Manager containers are configured, container snippets will be inserted and loaded on the website.'),
       '#size' => 60,
     ];
-    if (!sitenow_is_user_admin(\Drupal::currentUser())) {
-      $form['gtag']['uiowa_core_gtag']['#access'] = FALSE;
-      $form['gtag']['markup'] = [
-        '#type' => 'markup',
-        '#markup' => t('<p><em>Only administrators can control whether the Google Tag Functionality is enabled/disabled.</em></p>'),
-      ];
-    }
 
     return $form;
   }
