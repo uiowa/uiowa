@@ -5,6 +5,7 @@
  * Global settings for every multisite.
  */
 
+use Acquia\Blt\Robo\Common\EnvironmentDetector;
 use Acquia\Blt\Robo\Config\ConfigInitializer;
 use Drupal\Core\Installer\InstallerKernel;
 use Symfony\Component\Console\Input\ArgvInput;
@@ -50,3 +51,13 @@ if (isset($config_directories['vcs'])) {
  * Note: This setting does not apply to installation and update pages.
  */
 $settings['maintenance_theme'] = 'seven';
+
+// Set recommended New Relic configuration.
+// @see: https://docs.acquia.com/acquia-cloud/monitor/apm/#recommended-configuration-settings
+ini_set('newrelic.loglevel', 'error');
+
+if (extension_loaded('newrelic')) {
+  $ah_group = EnvironmentDetector::getAhGroup();
+  $ah_env = EnvironmentDetector::getAhEnv();
+  newrelic_set_appname("{$site_dir};{$ah_group}.{$ah_env}", '', 'true');
+}

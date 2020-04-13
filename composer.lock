@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c440c213fd56f1bb0fb53533a5c308fb",
+    "content-hash": "7a0e9a02c685750ec81c6ed2a653b644",
     "packages": [
         {
             "name": "acquia/blt",
@@ -222,7 +222,7 @@
             "version": "5.13.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/FortAwesome/Font-Awesome.git",
+                "url": "git@github.com:FortAwesome/Font-Awesome.git",
                 "reference": "4e6402443679e0a9d12c7401ac8783ef4646657f"
             },
             "dist": {
@@ -8008,6 +8008,9 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
+                },
+                "patches_applied": {
+                    "Webpage > SearchAction missing target": "https://www.drupal.org/files/issues/2020-02-17/3055278-7.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -8821,6 +8824,59 @@
                 "docs": "https://www.drupal.org/docs/8/modules/webform",
                 "forum": "https://drupal.stackexchange.com/questions/tagged/webform"
             }
+        },
+        {
+            "name": "drupal/webp",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/webp.git",
+                "reference": "c2dc259c8ad40fc80ba3d709eeb62249d4c28a93"
+            },
+            "require": {
+                "drupal/core": "*",
+                "ext-gd": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-beta2+13-dev",
+                    "datestamp": "1574070184",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Bart Vanhoutte",
+                    "homepage": "https://www.drupal.org/user/1133754",
+                    "email": "bart@croquemonsieur.be",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "alexmoreno",
+                    "homepage": "https://www.drupal.org/user/145609"
+                }
+            ],
+            "description": "Generates WebP copies of image style derivatives.",
+            "homepage": "https://www.drupal.org/project/webp",
+            "keywords": [
+                "Drupal"
+            ],
+            "support": {
+                "source": "http://cgit.drupalcode.org/webp",
+                "issues": "https://www.drupal.org/project/issues/webp"
+            },
+            "time": "2019-11-26T09:05:34+00:00"
         },
         {
             "name": "drupal/workbench_email",
@@ -9876,6 +9932,7 @@
                     "email": "jakub.onderka@gmail.com"
                 }
             ],
+            "abandoned": "php-parallel-lint/php-console-color",
             "time": "2018-09-29T17:23:10+00:00"
         },
         {
@@ -9922,6 +9979,7 @@
                 }
             ],
             "description": "Highlight PHP code in terminal",
+            "abandoned": "php-parallel-lint/php-console-highlighter",
             "time": "2018-09-29T18:48:56+00:00"
         },
         {
@@ -18095,6 +18153,7 @@
         "drupal/redirect": 20,
         "drupal/swiftmailer": 10,
         "drupal/views_ical": 15,
+        "drupal/webp": 20,
         "kartsims/easysvg": 20,
         "acquia/blt-require-dev": 20
     },
