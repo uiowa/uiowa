@@ -72,37 +72,57 @@
 #}
 {%
   set classes = [
-    'node',
-    'node--type-' ~ node.bundle|clean_class,
-    node.isPromoted() ? 'node--promoted',
-    node.isSticky() ? 'node--sticky',
-    not node.isPublished() ? 'node--unpublished',
-    view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
-    'media'
-  ]
+  'node',
+  'node--type-' ~ node.bundle|clean_class,
+  node.isPromoted() ? 'node--promoted',
+  node.isSticky() ? 'node--sticky',
+  not node.isPublished() ? 'node--unpublished',
+  view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+  'media',
+  'card',
+]
 %}
+
+{% set attributes = attributes.addClass(classes) %}
+
+{% if '1' in  content.field_article_source_link_direct.0 and node.field_article_source_link.0.uri %}
+  {% set node_link = node.field_article_source_link.0.uri %}
+{% else %}
+  {% set node_link = url %}
+{% endif %}
 {{ attach_library('classy/node') }}
-<article{{ attributes.addClass(classes) }}>
-  <div{{ content_attributes.addClass('node__content media-body') }}>
-      {{ title_prefix }}
-      {% if not page %}
-        <h3{{ title_attributes }}>
-          {% if '1' in  content.field_article_source_link_direct.0 and node.field_article_source_link.0.uri %}
-            <a href="{{ node.field_article_source_link.0.uri }}" rel="bookmark">{{ label }}</a>
-          {% else %}
-            <a href="{{ url }}" rel="bookmark">{{ label }}</a>
-          {% endif %}
-        </h3>
+
+  {% embed '@uids_base/uids/blocks/card.html.twig' with {
+    'card_image': content.node_image,
+    'card_link_url': node_link,
+    'card_link_title': node_link,
+  } %}
+
+    {# @todo Add content_attributes.addClass('node__content media-body') #}
+
+    {% block heading %}
+      {% if label and not page %}
+        {% include '@uids_base/uids/heading.html.twig' with {
+          'heading_level' : 'h3',
+          'heading_class' : 'card__title',
+          'heading' : label,
+          'heading_url' : node_link,
+          'heading_aria' : 'desc-a-card',
+          'heading_attributes': title_attributes,
+        } %}
+
       {% endif %}
-      {{ title_suffix }}
-      <div class="article-meta">
+    {% endblock %}
+
+    {%  block card_author %}
       {{ content.article_created_date }}{{ content.article_author }}{{ content.field_article_source_org }}{{ content.field_article_source_link }}
-      </div>
+    {% endblock %}
+
+    {% block card_content %}
       {{ content|without('node_image', 'links', 'article_created_date', 'article_author', 'field_article_source_org', 'field_article_source_link', 'field_article_source_link_direct') }}
-  </div>
-    {% if content.node_image %}
-        <figure class="content-image">
-            {{ content.node_image }}
-        </figure>
-    {% endif %}
-</article>
+    {% endblock %}
+
+    {% block card_bttn %}
+    {% endblock %}
+
+  {% endembed %}

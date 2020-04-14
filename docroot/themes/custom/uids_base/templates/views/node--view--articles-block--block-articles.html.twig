@@ -8,7 +8,6 @@
   view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
   'media',
   'card',
-  'card--enclosed',
 ]
 %}
 
@@ -28,16 +27,6 @@
   } %}
 
     {# @todo Add content_attributes.addClass('node__content media-body') #}
-
-    {% block card_img %}
-      {% if card_image is not empty %}
-        {% if content.node_image %}
-          <figure class="media">
-            {{ content.node_image }}
-          </figure>
-        {% endif %}
-      {% endif %}
-    {% endblock %}
 
     {% block heading %}
       {% if label and not page %}
