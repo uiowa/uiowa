@@ -85,24 +85,32 @@
 
 {% set attributes = attributes.addClass(classes) %}
 
-{% if '1' in  content.field_article_source_link_direct.0 and node.field_article_source_link.0.uri %}
-  {% set node_link = node.field_article_source_link.0.uri %}
+{% if '1' in content.field_article_source_link_direct.0 and node.field_article_source_link.0. uri %}
+  {% set node_link = node.field_article_source_link.0. uri %}
 {% else %}
   {% set node_link = url %}
 {% endif %}
 {{ attach_library('classy/node') }}
 
-  {% embed '@uids_base/uids/blocks/card.html.twig' with {
-    'card_image': content.node_image,
-    'card_link_url': node_link,
-    'card_link_title': node_link,
-  } %}
+{% embed '@uids_base/uids/blocks/card.html.twig' with {
+  'card_image' : content.node_image,
+  'card_link_url' : node_link,
+  'card_link_title' : node_link
+} %}
 
-    {# @todo Add content_attributes.addClass('node__content media-body') #}
+  {% block card_img %}
+    {% if card_image is not empty %}
+      <div class="media">
+        {{ content.node_image }}
+      </div>
+    {% endif %}
+  {% endblock %}
 
-    {% block heading %}
-      {% if label and not page %}
-        {% include '@uids_base/uids/heading.html.twig' with {
+  {# @todo Add content_attributes.addClass('node__content media-body') #}
+
+  {% block heading %}
+    {% if label and not page %}
+      {% include '@uids_base/uids/heading.html.twig' with {
           'heading_level' : 'h3',
           'heading_class' : 'card__title',
           'heading' : label,
@@ -111,18 +119,17 @@
           'heading_attributes': title_attributes,
         } %}
 
-      {% endif %}
-    {% endblock %}
+    {% endif %}
+  {% endblock %}
 
-    {%  block card_author %}
-      {{ content.article_created_date }}{{ content.article_author }}{{ content.field_article_source_org }}{{ content.field_article_source_link }}
-    {% endblock %}
+  {% block card_author %}
+    {{ content.article_created_date }}{{ content.article_author }}{{ content.field_article_source_org }}{{ content.field_article_source_link }}
+  {% endblock %}
 
-    {% block card_content %}
-      {{ content|without('node_image', 'links', 'article_created_date', 'article_author', 'field_article_source_org', 'field_article_source_link', 'field_article_source_link_direct') }}
-    {% endblock %}
+  {% block card_content %}
+    {{ content|without('node_image', 'links', 'article_created_date', 'article_author', 'field_article_source_org', 'field_article_source_link', 'field_article_source_link_direct') }}
+  {% endblock %}
 
-    {% block card_bttn %}
-    {% endblock %}
+  {% block card_bttn %}{% endblock %}
 
-  {% endembed %}
+{% endembed %}
