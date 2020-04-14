@@ -13,17 +13,20 @@
       $('.block-uiowa-alerts-block', context).once('uiowaAlertsGetAlerts').each(function() {
         const messages = new Drupal.Message($('.hawk-alerts-wrapper')[0]);
 
-        const getAlerts = function() {
-          messages.clear();
-
+        const updateAlerts = function() {
+          // Get the alerts feed and track IDs as "new" alerts.
           $.ajax({
             url: drupalSettings.uiowaAlerts.source,
             dataType: "json",
             success: function( response ) {
+              let new_alerts = [];
+
               $.each(response.uihphawkalert, function (i, item) {
                 let id = 'hawk-alert-' + item.hawkalert.date;
+                new_alerts.push(id);
 
-                let alert = `
+                if (!messages.select(id)) {
+                  let alert = `
 <div class="hawk-alert alert alert-danger">
 <div class="hawk-alert-message">
     <span class="hawk-alert-heading">
@@ -36,20 +39,36 @@
 </div>
         `;
 
-                messages.add(alert, {
-                  id: id,
-                  type: 'warning'
-                });
+                  messages.add(alert, {
+                    id: id,
+                    type: 'warning'
+                  });
+                }
               });
+
+              let existing_alerts = [];
+
+              // Get the existing alerts on the page and track IDs.
+              document.querySelectorAll('.hawk-alerts-wrapper .messages').forEach( function (existing_alert) {
+                existing_alerts.push(existing_alert.getAttribute('data-drupal-message-id'));
+              });
+
+              // Return any existing alerts that are not in the feed anymore.
+              let difference = existing_alerts.filter(x => !new_alerts.includes(x));
+
+              // Remove any closed alerts.
+              difference.forEach(function(closed) {
+                messages.remove(closed);
+              })
             }
           });
         };
 
         // Get alerts on page load.
-        getAlerts(messages);
+        updateAlerts(messages);
 
         // Check for changes every 30 seconds.
-        setInterval(getAlerts, 30000, messages);
+        setInterval(updateAlerts, 30000, messages);
       });
     }
   };
