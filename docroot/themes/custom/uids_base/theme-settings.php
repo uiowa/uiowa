@@ -113,12 +113,18 @@ function uids_base_form_system_theme_settings_submit(&$form, FormStateInterface 
     ->execute();
 
   foreach ($ids as $id) {
+    // Skip 'mainnavigation' block.
+    if (strpos($id, 'superfish') === FALSE) {
+      continue;
+    }
     $status = 0;
     $block = Block::load($id);
     if (strpos($id, $nav_style) !== FALSE) {
       $status = 1;
     }
-    $block->setStatus($status);
-    $block->save();
+    if ($block->status() != $status) {
+      $block->setStatus($status);
+      $block->save();
+    }
   }
 }
