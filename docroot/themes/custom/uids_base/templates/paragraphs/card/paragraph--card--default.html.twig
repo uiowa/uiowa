@@ -69,7 +69,7 @@
         {% endblock %}
 
         {% block heading %}
-          {% if card_title is not empty %}
+          {% if content.field_card_title.isEmpty() %}
             {# @todo How to add heading level? #}
             {% include "@uids_base/uids/heading.html.twig" with {
               "heading_level" : 'h4',
