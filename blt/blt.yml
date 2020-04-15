@@ -47,7 +47,7 @@ validate:
 command-hooks:
   frontend-reqs:
     dir: ${docroot}
-    command: 'yarn install'
+    command: 'yarn install --production --ignore-optional --non-interactive'
   frontend-assets:
     dir: ${docroot}
     command: 'yarn workspaces run build'
