@@ -29,8 +29,13 @@ function uids_base_preprocess_html(&$variables) {
     $variables['attributes']['class'][] = Html::cleanCssIdentifier('layout-page-sidebars-none');
   }
 
-  $variables['header_sticky'] = theme_get_setting('header.sticky');
-  $variables['attributes']['class'][] = $variables['header_sticky'] ? 'header-sticky' : 'header-not-sticky';
+  $sticky_class = 'header-not-sticky';
+  // Only set to sticky if it is set and nav_style is 'toggle'.
+  if (theme_get_setting('header.nav_style') === 'toggle' && theme_get_setting('header.sticky')) {
+    $sticky_class = 'header-sticky';
+  }
+
+  $variables['attributes']['class'][] = $sticky_class;
 
   $variables['branding_legacy'] = (bool) theme_get_setting('branding.legacy');
 
