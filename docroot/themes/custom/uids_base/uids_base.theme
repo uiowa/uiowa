@@ -80,20 +80,30 @@ function uids_base_preprocess_page(&$variables) {
   $variables['uiowa_logo_path'] = '/' . drupal_get_path('theme', 'uids_base') . '/uids/assets/images/uiowa-secondary.svg#logo';
   $variables['uiowa_logo_path_png'] = '/' . drupal_get_path('theme', 'uids_base') . '/uids/assets/images/uiowa-primary.png';
 
-  if (\Drupal::service('site.path') === 'sites/uiowa.edu') {
-    $variables['header_type'] = 'header--primary';
-    $variables['site_type'] = 'homepage';
-  }
-  elseif ($variables['site_has_parent']) {
-    $variables['header_type'] = 'header--tertiary';
-    $variables['site_type'] = 'child';
-  }
-  else {
-    $variables['header_type'] = 'header--secondary';
-    $variables['site_type'] = 'parent';
-  }
+  $variables['header_type'] = theme_get_setting('header.type');
   $variables['header_nav'] = theme_get_setting('header.nav_style');
   $variables['header_sticky'] = theme_get_setting('header.sticky');
+  $variables['header_classes'] = [];
+
+  // The site has a parent, so we are overriding the header type.
+  if ($variables['site_has_parent']) {
+    $variables['header_type'] = 'below';
+  }
+
+  // This is the homepage.
+  if (\Drupal::service('site.path') === 'sites/uiowa.edu') {
+    $variables['header_classes'][] = 'header--primary';
+    $variables['header_type'] = 'homepage';
+  }
+  // Display the site name below the IOWA bar.
+  elseif ($variables['header_type'] === 'below') {
+    $variables['header_classes'][] = 'header--tertiary';
+  }
+  // Displays the site name inline with the IOWA bar.
+  else {
+    $variables['header_classes'][] = 'header--secondary';
+  }
+
   // @todo Should this not be hard-coded?
   $variables['uiowa_url'] = ($variables['header_type'] === 'header--primary') ? \Drupal::request()->getSchemeAndHttpHost() : 'https://uiowa.edu';
   $variables['layout_container'] = theme_get_setting('layout.container');
