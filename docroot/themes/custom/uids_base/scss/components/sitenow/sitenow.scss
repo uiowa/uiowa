@@ -14,6 +14,9 @@ html {
   box-sizing: inherit;
 }
 
+.field--label-inline .field__label::after {
+  content: ":";
+}
 
 // UIDS
 
@@ -47,6 +50,9 @@ $dark: #343a40;
   h5,
   h6 {
     color: #fff;
+    &.card__title {
+      color: $secondary;
+    }
   }
 }
 
@@ -70,10 +76,15 @@ $dark: #343a40;
 @mixin list-group-item {
   position: relative;
   display: block;
-  //padding: 1.5rem 0;
+  padding: 0 0 $gutter;
   margin-bottom: 1.5rem;
   background-color: #fff;
-  //border-bottom: 1px solid rgba(0, 0, 0, .125);
+  border-bottom: 1px solid rgba(0, 0, 0, .125);
+
+  &:first-child {
+    border-top: 1px solid rgba(0, 0, 0, .125);
+    padding-top: $gutter;
+  }
 }
 
 @mixin list-group-flush {
@@ -97,6 +108,14 @@ $dark: #343a40;
 }
 
 // Card extends
+
+@mixin card--enclosed {
+  border: 1px solid rgba(0, 0, 0, 0.125);
+
+  .card__body {
+    padding: 0 2rem 2rem 2rem;
+  }
+}
 
 @mixin card-header {
   margin: 0 0 1.05rem;
@@ -125,6 +144,7 @@ $dark: #343a40;
   margin-bottom: 1.5rem;
   font-size: 1rem;
   line-height: 2;
+  flex: 1;
   padding: 0 2rem 2rem 2rem;
 }
 
@@ -154,11 +174,25 @@ $dark: #343a40;
   min-height: 1px;
 }
 
+@mixin card-paragraph {
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  line-height: 2;
+}
+
 @mixin card-columns {
   column-count: 3;
   column-gap: 1.25rem;
   orphans: 1;
   widows: 1;
+}
+
+@mixin card-media {
+  @include breakpoint(sm) {
+    flex: 0 0 35%;
+    max-width: 35%;
+    margin-left: $gutter;
+  }
 }
 
 // classes
@@ -195,6 +229,7 @@ p {
 // Grid
 
 .page-node-type-page.layout-builder-disabled main.page__container {
+
   .region-breadcrumb,
   .block-page-title-block,
   .block-local-tasks-block,
@@ -216,6 +251,7 @@ p {
 }
 
 @media (min-width: 1200px) {
+
   .container,
   .container-sm,
   .container-md,
@@ -282,8 +318,8 @@ p {
 
 
 .col-12 {
-   flex: 0 0 100%;
-   max-width: 100%;
+  flex: 0 0 100%;
+  max-width: 100%;
 }
 
 .order-first {
@@ -333,22 +369,20 @@ p {
 }
 
 @media (min-width: 1200px) {
+  .col-xl-3 {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
 
-.col-xl-3 {
-  flex: 0 0 25%;
-  max-width: 25%;
-}
+  .col-xl-9 {
+    flex: 0 0 75%;
+    max-width: 75%;
+  }
 
-.col-xl-9 {
-  flex: 0 0 75%;
-  max-width: 75%;
-}
-
-.col-xl-12 {
-  flex: 0 0 100%;
-  max-width: 100%;
-}
-
+  .col-xl-12 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
 }
 
 .justify-content-start {
@@ -528,16 +562,43 @@ div[role=article].node--type-article {
     margin: $gutter 0;
     display: block;
     @include card-subtitle;
+    font-size: 1.2rem;
+    margin-bottom: .5rem;
+
+    .page-node-type-article & {
+      color: $secondary;
+    }
+  }
+
+  .field--name-field-teaser {
+    @include card-paragraph;
+    margin: 1.25rem 0 0;
+  }
+
+  .field--name-body {
+    margin: $desktop-width-gutter 0;
   }
 
   .article-meta {
 
     .field__items {
       padding-right: 0;
+      display: inline-block;
     }
 
     .field--name-field-article-author {
       display: inline-block;
+      font-family: $font-family-serif;
+      font-size: 1.2rem;
+
+      a {
+        text-decoration: none;
+
+        &:hover,
+        &:focus {
+          text-decoration: underline;
+        }
+      }
 
       &:after {
         display: inline-block;
@@ -546,10 +607,11 @@ div[role=article].node--type-article {
       .field__label {
         font-weight: normal;
         padding-right: 0.25em;
+        display: inline;
 
         &:before {
-          content: '| ';
-          color: $grey;
+          //content: '| ';
+          //color: $grey;
         }
       }
     }
@@ -557,6 +619,17 @@ div[role=article].node--type-article {
     .field--name-field-article-source-org,
     .field--name-field-article-source-link {
       display: inline-block;
+      font-family: $font-family-serif;
+      font-size: 1.2rem;
+
+      a {
+        text-decoration: none;
+
+        &:hover,
+        &:focus {
+          text-decoration: underline;
+        }
+      }
 
       &:before {
         content: '- ';
@@ -573,7 +646,8 @@ div[role=article].node--type-article {
 article.node--type-article.node--view-mode-full,
 div[role=article].node--type-article.node--view-mode-full {
   .field--name-field-image-caption {
-    margin-bottom: 1rem;
+    margin: 1rem 0 3rem 0;
+    color: #666;
   }
 
   .article-meta {
@@ -626,6 +700,7 @@ div[role=article].node--type-page.node--view-mode-teaser {
 
 
 .node--view-mode-teaser {
+
   /*
   flex-wrap: wrap-reverse;
   //align-items: flex-end;
@@ -857,6 +932,32 @@ figure.caption.align-right .embedded-entity+figcaption {
   display: flex;
   flex-wrap: wrap;
 
+  .card {
+    flex-direction: row-reverse;
+  }
+
+  .card__body {
+    flex: 1;
+  }
+
+  .card__title {
+    @include breakpoint(sm) {
+      padding: 0;
+    }
+  }
+
+
+  .media {
+    @include card-media;
+  }
+
+  .card__body {
+    @include breakpoint(sm) {
+      flex: 1;
+      padding-left: 0;
+    }
+  }
+
 
   .view-header {
     @include bootstrap-container;
@@ -890,8 +991,15 @@ figure.caption.align-right .embedded-entity+figcaption {
   }
 
   .view-footer {
-    flex: 0 0 25%;
-    max-width: 25%;
+    flex: 0 0 100%;
+    max-width: 100%;
+
+    @include breakpoint(sm) {
+      flex: 0 0 25%;
+      max-width: 25%;
+      margin-left: $desktop-width-gutter;
+    }
+
     //@include col-base;
 
     .view-wrapper {
@@ -1105,9 +1213,12 @@ mark {
 
 // lead
 
+
 .lead {
   margin-top: 0;
   margin-bottom: 1rem;
+  font-size: 1.25rem;
+  font-weight: 300;
 }
 
 // forms
@@ -1305,6 +1416,7 @@ figure.caption .embedded-entity+figcaption {
     @include media-body;
   }
 }
+
 /*
 .paragraph--type--featured-content.grid {
   .field--name-field-featured-content {
@@ -1970,7 +2082,7 @@ figure.caption .embedded-entity+figcaption {
   }
 
   .more-link {
-    margin-top: $gutter;
+    margin-bottom: $gutter;
   }
 }
 
@@ -1978,6 +2090,20 @@ figure.caption .embedded-entity+figcaption {
   .view-content {
     @include list-group;
     @include list-group-flush;
+  }
+
+  .media {
+    @include card-media;
+  }
+
+  .card__body {
+    flex: 1;
+  }
+
+  .card__title {
+    @include breakpoint(sm) {
+      padding: 0;
+    }
   }
 
   .views-row {
@@ -1995,6 +2121,7 @@ figure.caption .embedded-entity+figcaption {
   article.node--type-article,
   div[role=article].node--type-article {
     display: flex;
+    flex-direction: row-reverse;
   }
 
   .node__content {
@@ -2009,12 +2136,26 @@ figure.caption .embedded-entity+figcaption {
   }
 
   .views-row {
-    flex: 0 0 33.333333%;
-    max-width: 33.333333%;
-    //@include col-base;
-    margin-bottom: 1.5rem;
+    flex: 0 0 31.222222%;
+    max-width: 31.222222%;
+    margin-bottom: $desktop-width-gutter;
+    display: flex;
+    margin: 0 $gutter $desktop-width-gutter $gutter;
+
+    &:nth-child(3n+1) {
+      margin-left: 0;
+    }
+
+    &:nth-child(3n+3) {
+      margin-right: 0;
+    }
+  }
+
+  .card {
+    @include card--enclosed;
   }
 }
+
 /*
 .paragraph--type--articles.grid {
   .view-content {
@@ -2051,17 +2192,22 @@ figure.caption .embedded-entity+figcaption {
 */
 .paragraph--type--articles.masonry {
   .view-content {
-    @include card-columns;
+    //@include card-columns;
+    column-count: 3;
+    column-gap: 1.25rem;
+    orphans: 1;
   }
 
   .views-row {
-    @include card;
+    @include card--enclosed;
+    display: inline-block;
+    width: 100%;
+    margin-bottom: $gutter;
   }
 
   article.node--type-article,
   div[role=article].node--type-article {
     display: flex;
-    flex-direction: column-reverse;
   }
 
   figure img {
@@ -2398,7 +2544,7 @@ figure.caption .embedded-entity+figcaption {
   display: flex;
   overflow: hidden;
   padding-bottom: 0;
-  padding-top: 0;
+  padding-top: 3rem;
   margin-bottom: 0;
 
   &:first-child {
@@ -2409,7 +2555,7 @@ figure.caption .embedded-entity+figcaption {
   &.bg-dark,
   &.bg-yellow {
     padding-top: $desktop-width-gutter;
-    margin-bottom: $desktop-width-gutter;
+    margin-bottom: 0;
 
     &:last-child {
       margin-bottom: 0;
@@ -2444,12 +2590,12 @@ figure.caption .embedded-entity+figcaption {
 
   .align-right.embedded-entity,
   .align-right .embedded-entity {
-    margin-left: 1rem;
+    margin-left: $gutter;
   }
 
   .align-left.embedded-entity,
   .align-left .embedded-entity {
-    margin-right: 1rem;
+    margin-right: $gutter;
   }
 
 }

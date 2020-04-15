@@ -78,7 +78,6 @@
   node.isSticky() ? 'node--sticky',
   not node.isPublished() ? 'node--unpublished',
   view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
-  'media',
   'card',
 ]
 %}
@@ -123,7 +122,9 @@
   {% endblock %}
 
   {% block card_author %}
+  <div class="article-meta">
     {{ content.article_created_date }}{{ content.article_author }}{{ content.field_article_source_org }}{{ content.field_article_source_link }}
+  </div>
   {% endblock %}
 
   {% block card_content %}

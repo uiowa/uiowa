@@ -348,7 +348,7 @@ $imgpath: '../../uids/assets/images';
 .view-display-id-attachment_a_z_list {
   >div {
     @include flexbox;
-    @include margin($top: $lg, $left: 0, $bottom: $xlg);
+    @include margin($top: 0, $left: 0, $bottom: $xlg);
     flex-wrap: wrap;
 
     span {
@@ -387,6 +387,14 @@ $imgpath: '../../uids/assets/images';
     }
   }
 }
+
+.views-element-container {
+  @include margin($top: $lg);
+  .views-element-container {
+    margin-top: inherit;
+  }
+}
+
 
 // todo remomve
 .uids-component--alert {
