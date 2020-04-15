@@ -26,7 +26,15 @@
  */
 #}
 
-{% block content %}
+{% set block_banner = {
+  'banner_image': content.field_uiowa_banner_image,
+  'banner_summary': content.field_uiowa_banner_excerpt,
+  'link': {
+    'link_url': content.field_uiowa_banner_link[0]['#url'],
+    'link_text': content.field_uiowa_banner_link[0]['#title'],
+    'link_class': ['bttn', 'bttn--primary', 'bttn--caps']
+  }
+} %}
 
   {% embed "@uids_base/uids/banner.html.twig" with {
     "banner_image": content.field_uiowa_banner_image,
@@ -49,4 +57,3 @@
     {% endblock %}
 
   {% endembed %}
-{% endblock %}

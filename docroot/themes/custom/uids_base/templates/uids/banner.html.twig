@@ -1,5 +1,7 @@
 {{ attach_library('uids_base/banner') }}
 
+{%  %}
+
 <div class="banner {{ attributes ? attributes.class }}" {{ attributes ? attributes|without('class') }}>
 
   {% block banner_image %}
@@ -25,11 +27,16 @@
       {% if banner_summary is not empty %}
         <p class="banner__summary">{{ banner_summary }}</p>
       {% endif %}
-      {% if banner_link_url is not empty %}
-        <a href="{{ banner_link_url }}" class="{{ bttn_class }}">{{ banner_link_title }}
-          <i class="fas fa-arrow-right"></i>
-        </a>
+
+      {% if link %}
+      {% set link.icon_class = link.icon_class ?: 'fas fa-arrow-right' %}
+        {% include "@uids_base/uids/link.twig" with link %}
       {% endif %}
+{#      {% if banner_link_url is not empty %}#}
+{#        <a href="{{ banner_link_url }}" class="{{ bttn_class }}">{{ banner_link_title }}#}
+{#          <i class="fas fa-arrow-right"></i>#}
+{#        </a>#}
+{#      {% endif %}#}
     </div>
   </div>
 </div>
