@@ -4,37 +4,41 @@
  #
  # Available properties of the link object:
  # * url
- # * class
+ # * classes
  # * icon_class
  # * text
  #
  # @todo Add 'target' property.
  #}
-{% set link_attributes = link_attributes ?: create_attribute() %}
-{% set link_class = link_class ?: [] %}
+{% set attributes = attributes ?: create_attribute() %}
+{% set link_classes = link_classes ?: [] %}
 
-{% if link.url %}
-<a href="{{ link.url }}"{{ link_attributes.addClass(link_class) }}>
+{% if link_url %}
+<a href="{{ link_url }}"{{ attributes.addClass(link_classes) }}>
   {% else %}
   <span class="nolink">
 {% endif %}
 
     {% block link_content %}
 
-      {% if link.icon_class %}
-        <i class="{{ link.icon_class }}"></i>
+      {# @todo Allow icon placement before text. #}
+      {% if link_text_invisible %}
         <span class="element-invisible">
       {% endif %}
 
-      {{ link.text }}
+      {{ link_text }}
 
-      {% if link.icon_class %}
+      {% if link_text_invisible %}
         </span>
+      {% endif %}
+
+      {% if link_icon_class %}
+        <i class="{{ link_icon_class }}"></i>
       {% endif %}
 
     {% endblock %}
 
-{% if not link.url %}
+    {% if not link_url %}
 </span>
   {% else %}
 </a>

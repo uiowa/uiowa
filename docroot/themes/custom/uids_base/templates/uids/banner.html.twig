@@ -1,8 +1,8 @@
 {{ attach_library('uids_base/banner') }}
+{% set attributes = attributes ?: create_attribute() %}
+{% set banner_classes = attributes.class|merge(['banner']) %}
 
-{%  %}
-
-<div class="banner {{ attributes ? attributes.class }}" {{ attributes ? attributes|without('class') }}>
+<div{{ attributes.addClass(banner_classes) }}>
 
   {% block banner_image %}
     {% if banner_image %}
@@ -16,7 +16,7 @@
     <div class="banner__content">
       {% block heading %}
         {% if banner_title is not empty %}
-          {% include '@uids_base/uids/heading' with {
+          {% include '@uids_base/uids/heading.html.twig' with {
             'heading_level' : 'h3',
             'heading_class' : 'bold-headline--serif bold-headline',
             'heading' : banner_title
@@ -28,15 +28,12 @@
         <p class="banner__summary">{{ banner_summary }}</p>
       {% endif %}
 
-      {% if link %}
-      {% set link.icon_class = link.icon_class ?: 'fas fa-arrow-right' %}
-        {% include "@uids_base/uids/link.twig" with link %}
+      {% if not link.link_url.isEmpty() %}
+        {% set link = link|merge({
+          'link_icon_class': 'fas fa-arrow-right',
+        }) %}
+        {% include '@uids_base/uids/link.html.twig' with link only %}
       {% endif %}
-{#      {% if banner_link_url is not empty %}#}
-{#        <a href="{{ banner_link_url }}" class="{{ bttn_class }}">{{ banner_link_title }}#}
-{#          <i class="fas fa-arrow-right"></i>#}
-{#        </a>#}
-{#      {% endif %}#}
     </div>
   </div>
 </div>
