@@ -1,3 +1,15 @@
+admin-overrides:
+  css:
+    theme:
+      css/admin-overrides.css: {}
+
+global-scripts:
+  js:
+    js/sitenow_detector.behaviors.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+
 chosen:
   css:
     theme:
@@ -8,10 +20,11 @@ chosen:
   dependencies:
     - core/jquery
     - core/jquery.once
-admin-overrides:
-  css:
-    theme:
-      css/admin-overrides.css: {}
+
+moment:
+  js:
+    /libraries/moment/min/moment.min.js: {}
+
 fontawesome-iconpicker:
   css:
     theme:
@@ -21,9 +34,3 @@ fontawesome-iconpicker:
     js/iconpicker.behaviors.js: {}
   dependencies:
     - core/jquery
-global-scripts:
-  js:
-    js/sitenow_detector.behaviors.js: {}
-  dependencies:
-    - core/jquery
-    - core/jquery.once

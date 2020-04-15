@@ -7,4 +7,4 @@ Every 30 seconds, the module checks the alert feed provided by https://emergency
 
 Enable the module as usual.
 
-Configure the feed source and optionally provide a message to display when there are no active alerts at admin/config/user-interface/uiowa-alerts.
+Configure the module at admin/config/user-interface/uiowa-alerts.
