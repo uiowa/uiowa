@@ -4102,7 +4102,8 @@
                     "The Media library doesn't modify the 'media' view if installed in a profile": "https://www.drupal.org/files/issues/2019-05-12/2992056.patch",
                     "Site extensions don't get rediscovered after drush cr": "https://www.drupal.org/files/issues/2018-07-11/specify_sitepath_cache_rebuild_extension_discovery-2985199-3.patch",
                     "Allow alter oembed providers": "https://www.drupal.org/files/issues/2019-05-15/drupal-allow_alter_oembed_providers-3008119-4.patch",
-                    "Form blocks rendered inside layout builder break save": "https://www.drupal.org/files/issues/2020-02-04/layout-builder-save-issue-3045171-140.patch"
+                    "Form blocks rendered inside layout builder break save": "https://www.drupal.org/files/issues/2020-02-04/layout-builder-save-issue-3045171-140.patch",
+                    "save edits to media embeds": "https://www.drupal.org/files/issues/2019-12-19/3102249-fix-media-ckeditor-snapshop.patch"
                 }
             },
             "autoload": {
@@ -7800,7 +7801,7 @@
                     }
                 },
                 "patches_applied": {
-                    "Match redirect": "https://www.drupal.org/files/issues/2019-07-02/redirect-wildcard-support-2831605-22.patch"
+                    "Match redirect": "https://www.drupal.org/files/issues/2020-04-13/redirect-n2831605-31.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -11191,6 +11192,18 @@
             "dist": {
                 "type": "tar",
                 "url": "https://registry.npmjs.org/jquery-collapse/-/jquery-collapse-1.1.2.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/moment",
+            "version": "2.24.0",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/moment/-/moment-2.24.0.tgz"
             },
             "type": "npm-asset",
             "license": [
@@ -18207,5 +18220,6 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }
