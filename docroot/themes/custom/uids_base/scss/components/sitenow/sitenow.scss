@@ -159,7 +159,6 @@ $dark: #343a40;
 
 @mixin card {
   position: relative;
-  display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   margin-bottom: 1.6rem;
@@ -1217,7 +1216,7 @@ mark {
 .lead {
   margin-top: 0;
   margin-bottom: 1rem;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 300;
 }
 
@@ -1231,13 +1230,17 @@ input.btn {
 
 // Classes
 
+figure.caption {
+  display: block;
+}
+
 figure.caption .embedded-entity+figcaption {
   font-size: 90%;
   color: #737373;
 }
 
 .caption>figcaption {
-  display: table-caption;
+  display: block;
   max-width: none;
   caption-side: bottom;
 }
@@ -2599,12 +2602,6 @@ figure.caption .embedded-entity+figcaption {
   }
 
 }
-
-.embedded-entity {
-  max-width: 100%;
-  margin-bottom: 0.5rem;
-}
-
 
 // Btn
 
