@@ -1,6 +1,6 @@
 {{ attach_library('uids_base/banner') }}
 {% set attributes = attributes ?: create_attribute() %}
-{% set banner_classes = attributes.class|merge(['banner']) %}
+{% set banner_classes = ['banner'] %}
 
 <div{{ attributes.addClass(banner_classes) }}>
 
@@ -16,11 +16,13 @@
     <div class="banner__content">
       {% block heading %}
         {% if banner_title is not empty %}
-          {% include '@uids_base/uids/heading.html.twig' with {
-            'heading_level' : 'h3',
-            'heading_class' : 'bold-headline--serif bold-headline',
-            'heading' : banner_title
+          {# @todo Determine if it is better to programatically set level and class via preprocess. #}
+          {% set banner_heading = {
+            'heading_level': heading_level ?: 'h3',
+            'heading_class' : heading_class ?: 'bold-headline--serif bold-headline',
+            'heading' : banner_title,
           } %}
+          {% include '@uids_base/uids/heading.html.twig' with banner_heading only %}
         {% endif %}
       {% endblock %}
 
