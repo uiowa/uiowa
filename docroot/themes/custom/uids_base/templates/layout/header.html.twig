@@ -1,8 +1,11 @@
+{% set header_classes = header_classes|merge([
+    header_nav,
+]) %}
+
 {{ attach_library('uids_base/header') }}
 {% if header_sticky %}
 {{ attach_library('uids_base/header-sticky') }}
 {% endif %}
-
 
 <header{{ attributes.addClass(header_classes) }}>
 
