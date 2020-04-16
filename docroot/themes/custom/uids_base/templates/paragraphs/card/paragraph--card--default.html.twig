@@ -60,9 +60,9 @@
   {% embed '@uids_base/uids/blocks/card.html.twig' with paragraph_card only %}
 
     {% block card_img %}
-      {% if card_image is not empty %}
+      {% if not card_image.isEmpty() %}
         <div class="media">
-          {{ content.card_image }}
+          {{ card_image }}
         </div>
       {% endif %}
     {% endblock %}
