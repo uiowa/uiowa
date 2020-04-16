@@ -7,7 +7,11 @@
   {% if heading_prefix %}
     <span class="heading__prefix">{{ heading_prefix }}</span>
   {% endif %}
-  <span class="heading__heading">{{ heading }}</span>
+  <span class="heading__heading">
+    {% block heading_content %}
+    {{ heading }}
+    {% endblock heading_content %}
+  </span>
   {% if heading_suffix %}
     <span class="heading__suffix">{{ heading_suffix }}</span>
   {% endif %}

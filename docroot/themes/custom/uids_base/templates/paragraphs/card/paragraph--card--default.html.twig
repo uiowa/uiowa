@@ -52,7 +52,7 @@
   'card_image': content.card_image,
   'card_text': content.field_card_body,
   'card_subtitle': content.field_card_subtitle,
-  'card_title': content.field_card_title[0]['#text'],
+  'card_title': content.field_card_title,
   'heading_level': 'h4',
 } %}
 
@@ -60,12 +60,16 @@
   {% embed '@uids_base/uids/blocks/card.html.twig' with paragraph_card only %}
 
     {% block card_img %}
-      {% if not card_image.isEmpty() %}
+      {% if card_image is not empty %}
         <div class="media">
           {{ card_image }}
         </div>
       {% endif %}
     {% endblock %}
+
+    {% block heading %}
+      {{ card_title }}
+    {% endblock heading %}
 
     {% block card_content %}
       {{ card_text }}

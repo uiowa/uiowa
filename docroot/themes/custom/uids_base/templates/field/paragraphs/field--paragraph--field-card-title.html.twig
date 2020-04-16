@@ -43,37 +43,52 @@
   'field--name-' ~ field_name|clean_class,
   'field--type-' ~ field_type|clean_class,
   'field--label-' ~ label_display,
-  'card-title',
+  'card__title',
   'h4'
 ] %}
-{% set title_classes = [
-  'field__label',
-  label_display == 'visually_hidden' ? 'visually-hidden',
-] %}
+{#{% set title_classes = [#}
+{#  'field__label',#}
+{#  label_display == 'visually_hidden' ? 'visually-hidden',#}
+{#] %}#}
 
-{% if label_hidden %}
-  {% if multiple %}
-    <div{{ attributes.addClass(classes, 'field__items') }}>
-      {% for item in items %}
-        {{ item.content }}
-      {% endfor %}
-    </div>
-  {% else %}
+{#{% if label_hidden %}#}
+{#  {% if multiple %}#}
+{#    <div{{ attributes.addClass(classes, 'field__items') }}>#}
+{#      {% for item in items %}#}
+{#        {{ item.content }}#}
+{#      {% endfor %}#}
+{#    </div>#}
+{#  {% else %}#}
+{#    {% for item in items %}#}
+{#      {{ item.content }}#}
+{#    {% endfor %}#}
+{#  {% endif %}#}
+{#{% else %}#}
+{#  <div{{ attributes.addClass(classes) }}>#}
+{#    <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>#}
+{#    {% if multiple %}#}
+{#    <div class="field__items">#}
+{#      {% endif %}#}
+{#      {% for item in items %}#}
+{#        {{ item.content }}#}
+{#      {% endfor %}#}
+{#      {% if multiple %}#}
+{#    </div>#}
+{#    {% endif %}#}
+{#  </div>#}
+{#{% endif %}#}
+
+{% set paragraph_card_heading = {
+  'heading_level': 'h4',
+  'heading_class': classes,
+  'items': items,
+} %}
+
+{% embed '@uids_base/uids/heading.html.twig' with paragraph_card_heading only %}
+
+  {% block heading_content %}
     {% for item in items %}
       {{ item.content }}
     {% endfor %}
-  {% endif %}
-{% else %}
-  <div{{ attributes.addClass(classes) }}>
-    <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
-    {% if multiple %}
-    <div class="field__items">
-      {% endif %}
-      {% for item in items %}
-        {{ item.content }}
-      {% endfor %}
-      {% if multiple %}
-    </div>
-    {% endif %}
-  </div>
-{% endif %}
+  {% endblock %}
+{% endembed %}

@@ -19,7 +19,8 @@
 
     {{ title_prefix }}
     {% block heading %}
-      {% if card_title is not empty %}
+      card: {{ dump(card_title) }}
+      {% if card_title %}
         {# @todo Determine if it is better to programatically set level and class via preprocess. #}
         {% set card_heading = {
           'heading_level' : haeding_level ?: 'h2',
