@@ -19,7 +19,6 @@
 
     {{ title_prefix }}
     {% block heading %}
-      card: {{ dump(card_title) }}
       {% if card_title %}
         {# @todo Determine if it is better to programatically set level and class via preprocess. #}
         {% set card_heading = {
