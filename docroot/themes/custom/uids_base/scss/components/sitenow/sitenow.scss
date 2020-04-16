@@ -610,6 +610,20 @@ div[role=article].node--type-article {
         display: inline-block;
       }
 
+      .field__items {
+        .field__item {
+          display: inline;
+          &:not(:first-child) {
+            padding-left: $sm;
+             &:before {
+               content: '| ';
+               color: $grey;
+               padding-right: $sm;
+             }
+          }
+        }
+      }
+
       .field__label {
         font-weight: normal;
         padding-right: 0.25em;
