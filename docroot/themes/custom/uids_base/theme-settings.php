@@ -38,7 +38,7 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     $form['header']['type']['#disabled'] = TRUE;
     $form['header']['type']['#default_value'] = 'below';
     $form['header']['type']['#description'] = t('This option is disabled because a parent organization was set on the <a href=":site-settings-page">site settings page</a>. When you have a parent organization, your site name will <em>always</em> display on the line below. You will need to remove the parent organization information to select another option.', [
-      ':site-settings-page' => Url::fromUri('internal:/admin/config/system/site-information')->toString(),
+      ':site-settings-page' => Url::fromRoute('system.site_information_settings')->toString(),
     ]);
   }
   $form['header']['nav_style'] = [
