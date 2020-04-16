@@ -69,7 +69,7 @@ function css() {
 // Watch files.
 function watchFiles() {
   // Watch SCSS changes.
-  watch(paths.scss + '**/*.scss', { usePolling: true}, parallel(css, copy));
+  watch(paths.scss + '**/*.scss', { usePolling: true }, parallel(css, copy));
 }
 
 exports.copy = parallel(copy, fontCopy);
