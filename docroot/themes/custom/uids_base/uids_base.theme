@@ -100,13 +100,21 @@ function uids_base_preprocess_page(&$variables) {
     $variables['header_classes'][] = 'header--primary';
     $variables['header_type'] = 'homepage';
   }
-  // Display the site name below the IOWA bar.
-  elseif ($variables['header_type'] === 'below') {
-    $variables['header_classes'][] = 'header--tertiary';
-  }
-  // Displays the site name inline with the IOWA bar.
   else {
-    $variables['header_classes'][] = 'header--secondary';
+    switch ($variables['header_type']) {
+      case 'below':
+      // @todo Remove this when config is updated for all sites.
+      case 'header--tertiary':
+        $variables['header_classes'][] = 'header--tertiary';
+        $variables['header_type'] = 'below';
+        break;
+      case 'inline':
+      // @todo Remove this when config is updated for all sites.
+      case 'header--secondary':
+        $variables['header_classes'][] = 'header--secondary';
+        $variables['header_type'] = 'inline';
+        break;
+    }
   }
 
   // @todo Should this not be hard-coded?
