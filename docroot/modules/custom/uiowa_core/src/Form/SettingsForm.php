@@ -33,7 +33,7 @@ class SettingsForm extends ConfigFormBase {
 
     $form['markup'] = [
       '#type' => 'markup',
-      '#markup' => t('<p>These settings allow you to configure certain aspects of this website.</p>'),
+      '#markup' => $this->t('<p>These settings allow you to configure certain aspects of this website.</p>'),
     ];
 
     $form['gtag'] = [

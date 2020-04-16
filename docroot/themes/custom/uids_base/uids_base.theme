@@ -103,14 +103,15 @@ function uids_base_preprocess_page(&$variables) {
   else {
     switch ($variables['header_type']) {
       case 'below':
-      // @todo Remove this when config is updated for all sites.
       case 'header--tertiary':
+        // @todo Remove this when config is updated for all sites.
         $variables['header_classes'][] = 'header--tertiary';
         $variables['header_type'] = 'below';
         break;
+
       case 'inline':
-      // @todo Remove this when config is updated for all sites.
       case 'header--secondary':
+        // @todo Remove this when config is updated for all sites.
         $variables['header_classes'][] = 'header--secondary';
         $variables['header_type'] = 'inline';
         break;
