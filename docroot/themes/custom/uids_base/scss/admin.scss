@@ -269,10 +269,13 @@
 
 // unstyle message for layout builder edit screen
 
-.messages--status {
+.layout-builder__message--overrides .messages--status {
   border: none;
   background-color: #fff;
   box-shadow: none;
+  background-image: none;
+  text-align: center;
+  padding: 0;
 }
 
 // admin styles layout builder container reset
@@ -1107,6 +1110,7 @@ only screen and (min-resolution: 1.5dppx) {
 div[aria-label="Layout Builder tools"] {
   @include breakpoint(menu) {
     display: flex;
+    justify-content: center;
   }
 
   >* {
