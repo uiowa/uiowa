@@ -1,0 +1,39 @@
+{% extends '@uids_base/layout/header.html.twig' %}
+
+{% block uiowa_bar %}
+  {{ attach_library('uids_base/site-slogan') }}
+
+  {% if site_has_parent %}
+    {% include '@uids_base/uids/site-parent.html.twig' with {
+      'parent_name': site_parent_name,
+      'parent_url': site_parent_url,
+    } %}
+  {% endif %}
+
+  {% if page.action_menu %}
+    {{ page.action_menu }}
+  {% endif %}
+{% endblock %}
+
+{% block tertiary_content %}
+  <div class="site_name--wrapper {{ header_nav }}">
+    <div class="page__container">
+
+      {{ attach_library('uids_base/site-name') }}
+      {% include '@uids_base/uids/site-name.html.twig' with {
+        site_name: site_name
+      } %}
+
+      {% if uiowa_search_form %}
+        {% include '@uids_base/uids/global/search-toggle.html.twig' with {
+          search_form: uiowa_search_form
+        } %}
+      {% endif %}
+      {% if page.primary_menu %}
+        {% if header_nav == 'toggle' %}
+          {% include '@uids_base/navigation/off-canvas.html.twig' %}
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

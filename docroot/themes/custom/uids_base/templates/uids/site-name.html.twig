@@ -1,0 +1,10 @@
+{% if site_name %}
+	<h1 class="uiowa-bar__title">
+		{% if site_url %}
+			<a href="{{ site_url }}">
+			{% endif %}
+			{{ site_name }}</h1>
+		{% if site_url %}
+		</a>
+	{% endif %}
+{% endif %}
