@@ -1,4 +1,3 @@
-subscription_data: null
 active: false
 subscription_name: ''
 debug: false
@@ -10,10 +9,7 @@ spi:
   server: 'https://nspi.acquia.com'
   ssl_override: false
   ssl_verify: true
-  def_vars: {  }
   def_waived_vars: {  }
-  def_timestamp: 0
-  new_optional_data: 1
   admin_priv: 1
   send_node_user: 1
   send_watchdog: 1
@@ -39,6 +35,9 @@ spi:
     variables: {  }
     time: 0
   cron_interval: 28800
+  site_environment: prod
+  env_detection_enabled: true
+  site_uuid: cd979c28-6ab2-44f1-8fed-851ef5313d1d
 mapping:
   acquia_spi_send_node_user:
     - acquia_connector.settings
