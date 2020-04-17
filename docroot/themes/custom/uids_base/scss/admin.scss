@@ -262,8 +262,23 @@
   .form-actions,
   .layout-builder__message,
   .form-type-vertical-tabs,
-  #edit-moderation-state-0 {
+  #edit-moderation-state-0,
+  .layout-builder-revert-overrides,
+  .layout-builder-discard-changes {
     @extend %container;
+  }
+}
+
+.layout-builder-revert-overrides,
+.layout-builder-discard-changes {
+  padding-top: 50px;
+
+  input {
+    margin-top: 20px;
+  }
+
+  a {
+    color: $secondary;
   }
 }
 
@@ -276,6 +291,8 @@
   background-image: none;
   text-align: center;
   padding: 0;
+  color: $secondary;
+  font-weight: $font-weight-light;
 }
 
 // admin styles layout builder container reset
@@ -1099,12 +1116,17 @@ only screen and (min-resolution: 1.5dppx) {
 
 // layout page buttons
 
-.button {
+.layout-builder-form .button {
   background: #f1f1f1;
+  font-family: $font-family-sans-serif;
+  font-weight: $font-weight-bold;
+  font-size: 1rem !important;
+  border-radius: 4px;
 }
 
-.button--primary {
-  background: #FFCD00;
+.layout-builder-form .button--primary {
+  color: #fff !important;
+  background: #0035b0 !important;
 }
 
 div[aria-label="Layout Builder tools"] {
@@ -1114,7 +1136,7 @@ div[aria-label="Layout Builder tools"] {
   }
 
   >* {
-    margin-right: 10px;
+    margin-right: 15px;
   }
 
   #edit-preview-toggle {
@@ -1123,17 +1145,29 @@ div[aria-label="Layout Builder tools"] {
 }
 
 div[data-drupal-selector="edit-moderation-state-0"] {
-  display: flex;
+  label {
+    font-weight: $font-weight-light;
+    padding-bottom: 8px;
+  }
+
+  @include breakpoint(menu) {
+    display: flex;
+    justify-content: center;
+  }
 
   #edit-moderation-state-0-current {
     @include breakpoint(menu) {
       flex: 0 0 10%;
     }
+
+    label {
+      margin-bottom: 18px;
+    }
   }
 
   .form-item-moderation-state-0-state {
     @include breakpoint(menu) {
-      flex: 0 0 90%;
+      flex: 0 0 40%;
     }
   }
 }
