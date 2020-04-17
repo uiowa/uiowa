@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4445130b5ebc7d3ece91192a2d6f7be4",
+    "content-hash": "56b178a2beac65702dd0c96650e66f50",
     "packages": [
         {
             "name": "acquia/blt",
@@ -3337,11 +3337,17 @@
         },
         {
             "name": "drupal/config_ignore",
-            "version": "dev-2.x",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/config_ignore.git",
-                "reference": "760312572e1b8a8b392994240ba73bbec19b954f"
+                "reference": "8.x-2.2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/config_ignore-8.x-2.2.zip",
+                "reference": "8.x-2.2",
+                "shasum": "18af5772087b90dd4b83c2c6e292d8ea2f8834e0"
             },
             "require": {
                 "drupal/config_filter": "1.*",
@@ -3353,11 +3359,11 @@
                     "dev-2.x": "2.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-2.1+9-dev",
-                    "datestamp": "1575758886",
+                    "version": "8.x-2.2",
+                    "datestamp": "1576528386",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
                     }
                 },
                 "patches_applied": {
@@ -3391,8 +3397,7 @@
                 "source": "http://cgit.drupalcode.org/config_ignore",
                 "issues": "http://drupal.org/project/config_ignore",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
-            },
-            "time": "2019-12-07T22:43:13+00:00"
+            }
         },
         {
             "name": "drupal/config_inspector",
@@ -18191,7 +18196,6 @@
     "stability-flags": {
         "drupal/better_normalizers": 10,
         "drupal/config_actions_provider": 5,
-        "drupal/config_ignore": 20,
         "drupal/config_sync": 10,
         "drupal/cshs": 10,
         "drupal/default_content": 15,
