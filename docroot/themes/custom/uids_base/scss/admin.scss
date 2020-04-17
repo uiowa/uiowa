@@ -36,6 +36,7 @@
 
 .layout-builder-enabled .vertical-tabs {
   border: none;
+  display: none;
 }
 
 .layout-builder__link--remove {
@@ -58,6 +59,10 @@
 .layout-builder__section {
   margin-bottom: 1.5em;
   outline: 2px dotted #e6ecf8;
+}
+
+.layout-builder {
+  border: 3px solid #dff1ff;
 }
 
 .layout-builder__link {
@@ -261,6 +266,14 @@
   #edit-moderation-state-0 {
     @extend %container;
   }
+}
+
+// unstyle message for layout builder edit screen
+
+.messages--status {
+  border: none;
+  background-color: #fff;
+  box-shadow: none;
 }
 
 // admin styles layout builder container reset
@@ -1082,10 +1095,46 @@ only screen and (min-resolution: 1.5dppx) {
   display: none;
 }
 
+// layout page buttons
+
 .button {
   background: #f1f1f1;
 }
 
 .button--primary {
   background: #FFCD00;
+}
+
+div[aria-label="Layout Builder tools"] {
+  @include breakpoint(menu) {
+    display: flex;
+  }
+
+  >* {
+    margin-right: 10px;
+  }
+
+  #edit-preview-toggle {
+    margin-left: 20px;
+  }
+}
+
+div[data-drupal-selector="edit-moderation-state-0"] {
+  display: flex;
+
+  #edit-moderation-state-0-current {
+    @include breakpoint(menu) {
+      flex: 0 0 10%;
+    }
+  }
+
+  .form-item-moderation-state-0-state {
+    @include breakpoint(menu) {
+      flex: 0 0 90%;
+    }
+  }
+}
+
+#drupal-off-canvas form {
+  padding-top: 10px;
 }
