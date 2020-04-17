@@ -81,19 +81,18 @@
 ]
 %}
 
-{% if '1' in content.field_article_source_link_direct.0 and node.field_article_source_link.0. uri %}
-  {% set node_link = node.field_article_source_link.0. uri %}
+{% if '1' in content.field_article_source_link_direct.0 and node.field_article_source_link.0.uri %}
+  {% set node_link = node.field_article_source_link.0.uri %}
 {% else %}
   {% set node_link = url %}
 {% endif %}
+
 {{ attach_library('classy/node') }}
 
 {% set article_card = {
   'attributes': attributes.addClass(classes),
   'card_image' : content.node_image,
   'card_title': label,
-  'card_link_url' : node_link,
-  'card_link_title' : node_link,
   'content': content,
   'heading_level' : 'h3',
   'heading_class' : 'card__title',
@@ -121,9 +120,9 @@
           'heading_level' : 'h3',
           'heading_class' : 'card__title',
           'heading' : card_title,
-          'heading_url' : node_link,
+          'heading_url' : heading_url,
           'heading_aria' : 'desc-a-card',
-          'heading_attributes': title_attributes,
+          'attributes': title_attributes,
         } only %}
     {% endif %}
   {% endblock %}

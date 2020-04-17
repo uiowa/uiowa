@@ -1,22 +1,23 @@
 {% extends '@uids_base/layout/header.html.twig' %}
 
 {% block uiowa_bar %}
-    {{ attach_library('uids_base/site-name') }}
-    {% include '@uids/03 - global/site-name/site-name.twig' with {
-        site_name: site_name
+  {{ attach_library('uids_base/site-name') }}
+  {% include '@uids_base/uids/site-name.html.twig' with {
+    'site_name': site_name,
+    'site_url': path('<front>'),
+  } %}
+
+  {% if page.search_menu %}
+    {{ page.header_search }}
+  {% endif %}
+
+  {% if uiowa_search_form %}
+    {% include '@uids_base/uids/global/search-toggle.html.twig' with {
+      search_form: uiowa_search_form
     } %}
+  {% endif %}
 
-    {% if page.search_menu %}
-        {{ page.header_search }}
-    {% endif %}
-
-    {% if uiowa_search_form %}
-        {% include '@uids_base/uids/global/search-toggle.html.twig' with {
-            search_form: uiowa_search_form
-        } %}
-    {% endif %}
-
-    {% if header_nav == 'toggle' %}
-        {% include '@uids_base/navigation/off-canvas.html.twig' %}
-    {% endif %}
+  {% if header_nav == 'toggle' %}
+    {% include '@uids_base/navigation/off-canvas.html.twig' %}
+  {% endif %}
 {% endblock %}
