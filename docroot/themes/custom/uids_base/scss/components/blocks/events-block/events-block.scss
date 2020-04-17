@@ -1,3 +1,28 @@
 @import "assets/scss/_variables.scss";
 @import "assets/scss/_utilities.scss";
 @import "components/02 - blocks/events-block/_events-block.scss";
+
+
+@include breakpoint(sm) {
+  .fontawesome-icons {
+    display: inline-block;
+    width: 17px;
+    height: 17px;
+  }
+
+  .events-card__row .svg-inline--fa {
+    margin-left: -10px;
+  }
+}
+
+@include breakpoint(container) {
+  .fontawesome-icons {
+    display: unset;
+    width: auto;
+    height: auto;
+  }
+
+  .events-card__row .svg-inline--fa {
+    margin-left: -20px;
+  }
+}
