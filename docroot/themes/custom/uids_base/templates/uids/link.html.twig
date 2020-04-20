@@ -1,0 +1,45 @@
+{#
+ # Renders an <a> tag if a url is provided or a
+ # <span> if the url is not present.
+ #
+ # Available properties of the link object:
+ # * url
+ # * classes
+ # * icon_class
+ # * text
+ #
+ # @todo Add 'target' property.
+ #}
+{% set attributes = attributes ?: create_attribute() %}
+{% set link_classes = link_classes ?: [] %}
+
+{% if link_url %}
+<a href="{{ link_url }}"{{ attributes.addClass(link_classes) }}>
+  {% else %}
+  <span class="nolink">
+{% endif %}
+
+    {% block link_content %}
+
+      {# @todo Allow icon placement before text. #}
+      {% if link_text_invisible %}
+        <span class="element-invisible">
+      {% endif %}
+
+      {{ link_text }}
+
+      {% if link_text_invisible %}
+        </span>
+      {% endif %}
+
+      {% if link_icon_class %}
+        <i class="{{ link_icon_class }}"></i>
+      {% endif %}
+
+    {% endblock %}
+
+    {% if not link_url %}
+</span>
+  {% else %}
+</a>
+{% endif %}
