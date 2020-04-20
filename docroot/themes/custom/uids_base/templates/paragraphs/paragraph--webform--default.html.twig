@@ -46,6 +46,8 @@
     not paragraph.isPublished() ? 'paragraph--unpublished'
   ]
 %}
+{{ attach_library('uids_base/paragraphs-webform') }}
+{{ attach_library('uids_base/webforms') }}
 {% block paragraph %}
   <div{{ attributes.addClass(classes) }}>
     {% if display_title %}
