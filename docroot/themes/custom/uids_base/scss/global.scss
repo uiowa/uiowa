@@ -43,7 +43,13 @@ $imgpath: '../../uids/assets/images';
 
 // default spacing for pages without layout builder
 
-.layout-builder-disabled .page__container {
+// SiteNow Paragraphs Page
+.page-node-type-page.layout-builder-disabled main.page__container {
+  max-width: 100%;
+  margin: 0;
+}
+
+.layout-builder-disabled main.page__container {
   margin: $mobile-width-gutter;
 
   @include breakpoint(container) {
@@ -342,7 +348,7 @@ $imgpath: '../../uids/assets/images';
 .view-display-id-attachment_a_z_list {
   >div {
     @include flexbox;
-    @include margin($top: $lg, $left: 0, $bottom: $xlg);
+    @include margin($top: 0, $left: 0, $bottom: $xlg);
     flex-wrap: wrap;
 
     span {
@@ -381,6 +387,14 @@ $imgpath: '../../uids/assets/images';
     }
   }
 }
+
+.views-element-container {
+  @include margin($top: $lg);
+  .views-element-container {
+    margin-top: inherit;
+  }
+}
+
 
 // todo remomve
 .uids-component--alert {
