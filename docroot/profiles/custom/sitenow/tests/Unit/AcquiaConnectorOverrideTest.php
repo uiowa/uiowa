@@ -53,7 +53,6 @@ class AcquiaConnectorOverrideTest extends UnitTestCase {
 
     $overrides = $sut->loadOverrides(['acquia_connector.settings']);
     $this->assertEquals($overrides['acquia_connector.settings']['spi']['site_name'], $host);
-    $this->assertEquals($overrides['acquia_connector.settings']['hide_signup_messages'], TRUE);
   }
 
   /**

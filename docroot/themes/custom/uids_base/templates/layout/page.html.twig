@@ -47,11 +47,6 @@
   {{ attach_library('uids_base/admin') }}
 {% endif %}
 
-{% set header_classes = [
-  header_type,
-  header_nav,
-] %}
-
 {% set node_attributes = create_attribute() %}
 
 {% set content_classes = [] %}
@@ -66,6 +61,7 @@
     {% set content_classes = content_classes|merge(['content__full']) %}
   {% endif %}
 {% else %}
+  {{ attach_library('uids_base/sitenow') }}
   {# Use classes defined in theme and add sticky classes #}
   {% set content_classes = content_classes|merge([layout_container]) %}
   {% if sticky_classes %}
@@ -73,13 +69,7 @@
   {% endif %}
 {% endif %}
 
-{% if header_type == 'header--primary' %}
-  {% include '@uids_base/layout/header--primary.html.twig'  %}
-{% elseif header_type == 'header--secondary' %}
-  {% include '@uids_base/layout/header--secondary.html.twig' %}
-{% elseif header_type == 'header--tertiary' %}
-  {% include '@uids_base/layout/header--tertiary.html.twig'  %}
-{% endif %}
+{% include '@uids_base/layout/header--' ~ header_type ~ '.html.twig' %}
 
 {% if page.alert %}
   {{ page.alert }}

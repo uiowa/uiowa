@@ -8,9 +8,7 @@
 {% endif %}
 
 <footer class="footer">
-
   <div class="footer__container footer__container--flex">
-
     <div class="footer__links footer__links--contact">
 
       {% if not branding_legacy %}
@@ -26,7 +24,7 @@
       {% block site_name %}
         {% if site_name %}
           {# @todo Remove header_type condition when uiowa sub-theme is functional. #}
-          {% if header_type != 'header--primary' %}
+          {% if header_type != 'homepage' %}
             <h2 class="footer__site--name">{{ site_name }}</h2>
           {% endif %}
         {% endif %}
@@ -35,7 +33,7 @@
       {% block site_slogan %}
         {% if site_slogan %}
           {# @todo Remove header_type condition when uiowa sub-theme is functional. #}
-          {% if header_type != 'header--primary' %}
+          {% if header_type != 'homepage' %}
             <strong class="footer__site--slogan">{{ site_slogan }}</strong>
           {% endif %}
         {% endif %}

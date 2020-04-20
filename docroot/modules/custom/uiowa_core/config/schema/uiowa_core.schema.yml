@@ -1,0 +1,17 @@
+# Extend the system.site configuration
+system.site.uiowa:
+  type: mapping
+  label: 'Additional setting for system.site.'
+  mapping:
+    # Whether this site is part of a larger organization.
+    has_parent:
+      type: integer
+      label: 'This site has a parent organization.'
+    # A collection of information about the parent site.
+    parent:
+      type: mapping
+      mapping:
+        name:
+          type: label
+        url:
+          type: uri

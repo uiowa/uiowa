@@ -164,6 +164,15 @@ class MultisiteCommands extends BltTasks {
             $this->switchSiteContext($multisite);
             $profile = $this->getConfigValue('project.profile.name');
 
+            // Clear the cache first to prevent random errors on install.
+            // We use exec here to always return 0 since the command can fail
+            // and cause confusion with the error message output.
+            $this->taskExecStack()
+              ->interactive(FALSE)
+              ->silent(TRUE)
+              ->exec("./vendor/bin/drush -l {$multisite} cache:rebuild || true")
+              ->run();
+
             // Run this non-interactively so prompts are bypassed. Note that
             // a file permission exception is thrown on AC so we have to
             // catch that and proceed with the command.

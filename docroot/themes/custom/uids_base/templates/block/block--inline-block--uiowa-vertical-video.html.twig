@@ -43,7 +43,7 @@
 				<button class="vidbttn">
 					<span id="label">Play</span>
 				</button>
-			<video class="player" preload="none"  poster="{{ video_thumbnail }}">
+			<video class="player" preload="metadata"  poster="{{ video_thumbnail }}">
 				<source src="{{ video_url }}" type="video/mp4">
 				<track label="English" kind="subtitles" srclang="en" src="{{ video_caption_url }}" default="default"/>
 				<p>Video is not Supporting</p>
