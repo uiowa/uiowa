@@ -21,7 +21,8 @@
 
       {{ attach_library('uids_base/site-name') }}
       {% include '@uids_base/uids/site-name.html.twig' with {
-        site_name: site_name
+        'site_name': site_name,
+        'site_url': path('<front>'),
       } %}
 
       {% if uiowa_search_form %}

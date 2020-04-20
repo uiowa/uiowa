@@ -26,41 +26,25 @@
  */
 #}
 
-{% block content %}
-  {{ attach_library('uids_base/banner') }}
+{% set block_banner = {
+  'banner_image': content.field_uiowa_banner_image,
+  'banner_summary': content.field_uiowa_banner_excerpt,
+  'attributes': attributes,
+  'banner_title': content.field_uiowa_banner_title[0]['#text'],
+  'heading_level': content.field_uiowa_banner_title[0]['#size'],
+  'link': {
+    'link_url': content.field_uiowa_banner_link[0]['#url'],
+    'link_text': content.field_uiowa_banner_link[0]['#title'],
+    'link_classes': ['bttn', 'bttn--primary', 'bttn--caps'],
+  }
+} %}
 
-  {% embed "@uids/02 - blocks/banner-block/banner-block.twig" with {
-    "banner_image": content.field_uiowa_banner_image,
-    "banner_summary": content.field_uiowa_banner_excerpt,
-    "banner_link_url": content.field_uiowa_banner_link[0]['#url'],
-    "banner_link_title": content.field_uiowa_banner_link[0]['#title'],
-    "bttn_class": 'bttn bttn--primary bttn--caps',
-  } %}
+{% embed '@uids_base/uids/banner.html.twig' with block_banner only %}
 
-{% block banner_image %}
-	{% if content.field_uiowa_banner_image|render is not empty %}
-		<div class="banner__image">
-			{{ content.field_uiowa_banner_image }}
-		</div>
-	{% endif %}
-{% endblock %}
+{#  {% block heading %}#}
+{#    {{ title_prefix }}#}
+{#    {{ parent() }}#}
+{#    {{ title_suffix }}#}
+{#  {% endblock %}#}
 
-
-    {% block banner_wrapper_start %}
-        <div class="banner {{ attributes ? attributes.class }}" {{ attributes ? attributes|without('class') }}>
-    {% endblock %}
-
-    {% block heading %}
-      {{ title_prefix }}
-      {% if content.field_uiowa_banner_title[0]['#text'] is not empty %}
-        {% include "@uids/01 - elements/heading/heading.twig" with {
-          "heading_level" : content.field_uiowa_banner_title[0]['#size'],
-          "heading_class" : 'bold-headline--serif bold-headline',
-          "heading" : content.field_uiowa_banner_title[0]['#text']
-        } %}
-      {% endif %}
-      {{ title_suffix }}
-    {% endblock %}
-
-  {% endembed %}
-{% endblock %}
+{% endembed %}
