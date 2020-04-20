@@ -1,0 +1,25 @@
+project:
+  local:
+    hostname: advisingcenter.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: advisingcenter
+  human_name: advisingcenter.uiowa.edu
+  profile:
+    name: sitenow
+drush:
+  aliases:
+    local: self
+    remote: advisingcenter.prod
+drupal:
+  db:
+    database: advisingcenter_uiowa_edu
+cm:
+  core:
+    install_from_config: true
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+uiowa:
+  profiles:
+    sitenow:
+      requester: pcox

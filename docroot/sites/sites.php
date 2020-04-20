@@ -1284,3 +1284,9 @@ $sites['claspolicy.local.drupal.uiowa.edu'] = 'policy.clas.uiowa.edu';
 $sites['claspolicy.dev.drupal.uiowa.edu'] = 'policy.clas.uiowa.edu';
 $sites['claspolicy.stage.drupal.uiowa.edu'] = 'policy.clas.uiowa.edu';
 $sites['claspolicy.prod.drupal.uiowa.edu'] = 'policy.clas.uiowa.edu';
+
+// Directory aliases for advisingcenter.uiowa.edu.
+$sites['advisingcenter.local.drupal.uiowa.edu'] = 'advisingcenter.uiowa.edu';
+$sites['advisingcenter.dev.drupal.uiowa.edu'] = 'advisingcenter.uiowa.edu';
+$sites['advisingcenter.stage.drupal.uiowa.edu'] = 'advisingcenter.uiowa.edu';
+$sites['advisingcenter.prod.drupal.uiowa.edu'] = 'advisingcenter.uiowa.edu';

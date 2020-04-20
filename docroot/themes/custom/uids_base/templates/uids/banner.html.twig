@@ -1,0 +1,41 @@
+{{ attach_library('uids_base/banner') }}
+{% set attributes = attributes ?: create_attribute() %}
+{% set banner_classes = ['banner'] %}
+
+<div{{ attributes.addClass(banner_classes) }}>
+
+  {% block banner_image %}
+    {% if banner_image %}
+      <div class="banner__image">
+        {{ banner_image }}
+      </div>
+    {% endif %}
+  {% endblock %}
+
+  <div class="banner__container">
+    <div class="banner__content">
+      {% block heading %}
+        {% if banner_title is not empty %}
+          {# @todo Determine if it is better to programatically set level and class via preprocess. #}
+          {% set banner_heading = {
+            'heading_level': heading_level ?: 'h3',
+            'heading_class' : heading_class ?: 'bold-headline--serif bold-headline',
+            'heading' : banner_title,
+          } %}
+          {% include '@uids_base/uids/heading.html.twig' with banner_heading only %}
+        {% endif %}
+      {% endblock %}
+
+      {% if banner_summary is not empty %}
+        <p class="banner__summary">{{ banner_summary }}</p>
+      {% endif %}
+
+      {% if not link.link_url.isEmpty() %}
+        {% set link = link|merge({
+          'link_icon_class': 'fas fa-arrow-right',
+        }) %}
+        {% include '@uids_base/uids/link.html.twig' with link only %}
+      {% endif %}
+    </div>
+  </div>
+</div>
