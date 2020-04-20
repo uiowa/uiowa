@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4445130b5ebc7d3ece91192a2d6f7be4",
+    "content-hash": "5ede39c037b5d8f0929a54ce230862e4",
     "packages": [
         {
             "name": "acquia/blt",
@@ -3337,11 +3337,17 @@
         },
         {
             "name": "drupal/config_ignore",
-            "version": "dev-2.x",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/config_ignore.git",
-                "reference": "760312572e1b8a8b392994240ba73bbec19b954f"
+                "reference": "8.x-2.2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/config_ignore-8.x-2.2.zip",
+                "reference": "8.x-2.2",
+                "shasum": "18af5772087b90dd4b83c2c6e292d8ea2f8834e0"
             },
             "require": {
                 "drupal/config_filter": "1.*",
@@ -3353,11 +3359,11 @@
                     "dev-2.x": "2.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-2.1+9-dev",
-                    "datestamp": "1575758886",
+                    "version": "8.x-2.2",
+                    "datestamp": "1576528386",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
                     }
                 },
                 "patches_applied": {
@@ -3391,8 +3397,7 @@
                 "source": "http://cgit.drupalcode.org/config_ignore",
                 "issues": "http://drupal.org/project/config_ignore",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
-            },
-            "time": "2019-12-07T22:43:13+00:00"
+            }
         },
         {
             "name": "drupal/config_inspector",
@@ -4902,11 +4907,17 @@
         },
         {
             "name": "drupal/entity_browser",
-            "version": "dev-2.x",
+            "version": "2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/entity_browser.git",
-                "reference": "ba0e6033cd3a9e1bcae63941e7bdec33c7285bc3"
+                "reference": "8.x-2.4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/entity_browser-8.x-2.4.zip",
+                "reference": "8.x-2.4",
+                "shasum": "28dd5eb28284ff218ad3aed2414817e9fa5b7bb9"
             },
             "require": {
                 "drupal/core": "^8.7.7 || ^9"
@@ -4921,15 +4932,12 @@
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-2.x": "2.x-dev"
-                },
                 "drupal": {
-                    "version": "8.x-2.2+15-dev",
-                    "datestamp": "1576405098",
+                    "version": "8.x-2.4",
+                    "datestamp": "1579563787",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
                     }
                 }
             },
@@ -4984,8 +4992,7 @@
                 "source": "https://git.drupalcode.org/project/entity_browser",
                 "issues": "https://www.drupal.org/project/issues/entity_browser",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
-            },
-            "time": "2019-12-15T22:59:46+00:00"
+            }
         },
         {
             "name": "drupal/entity_embed",
@@ -6391,14 +6398,20 @@
         },
         {
             "name": "drupal/masquerade",
-            "version": "dev-2.x",
+            "version": "2.0.0-beta3",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/masquerade.git",
-                "reference": "2011b21"
+                "reference": "8.x-2.0-beta3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/masquerade-8.x-2.0-beta3.zip",
+                "reference": "8.x-2.0-beta3",
+                "shasum": "125c53931a0658b4ef9f66abb696db7c98d43985"
             },
             "require": {
-                "drupal/core": "^8.5.0"
+                "drupal/core": "^8.7.7 || ^9"
             },
             "type": "drupal-module",
             "extra": {
@@ -6406,8 +6419,8 @@
                     "dev-2.x": "2.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-2.0-beta2+7-dev",
-                    "datestamp": "1549226281",
+                    "version": "8.x-2.0-beta3",
+                    "datestamp": "1579041783",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -6416,7 +6429,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -6455,8 +6468,7 @@
                 "source": "https://git.drupal.org/project/masquerade.git",
                 "issues": "https://www.drupal.org/project/issues/masquerade",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
-            },
-            "time": "2019-02-03T20:34:18+00:00"
+            }
         },
         {
             "name": "drupal/media_entity_facebook",
@@ -18191,18 +18203,16 @@
     "stability-flags": {
         "drupal/better_normalizers": 10,
         "drupal/config_actions_provider": 5,
-        "drupal/config_ignore": 20,
         "drupal/config_sync": 10,
         "drupal/cshs": 10,
         "drupal/default_content": 15,
         "drupal/diff": 5,
-        "drupal/entity_browser": 20,
         "drupal/entity_embed": 5,
         "drupal/entity_usage": 15,
         "drupal/inline_entity_form": 5,
         "drupal/layout_builder_styles": 10,
         "drupal/lb_direct_add": 20,
-        "drupal/masquerade": 20,
+        "drupal/masquerade": 10,
         "drupal/media_entity_facebook": 15,
         "drupal/menu_block": 20,
         "drupal/menu_link_weight": 10,
