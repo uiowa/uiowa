@@ -36,15 +36,17 @@
     'link_url': content.field_uiowa_banner_link[0]['#url'],
     'link_text': content.field_uiowa_banner_link[0]['#title'],
     'link_classes': ['bttn', 'bttn--primary', 'bttn--caps'],
-  }
+  },
+  'title_prefix': title_prefix,
+  'title_suffix': title_suffix,
 } %}
 
 {% embed '@uids_base/uids/banner.html.twig' with block_banner only %}
 
-{#  {% block heading %}#}
-{#    {{ title_prefix }}#}
-{#    {{ parent() }}#}
-{#    {{ title_suffix }}#}
-{#  {% endblock %}#}
+  {% block banner_image %}
+  {{ parent() }}
+  {{ title_prefix }}
+  {{ title_suffix }}
+  {% endblock banner_image %}
 
 {% endembed %}

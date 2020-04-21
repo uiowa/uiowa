@@ -30,7 +30,7 @@
         <p class="banner__summary">{{ banner_summary }}</p>
       {% endif %}
 
-      {% if not link.link_url.isEmpty() %}
+      {% if link and link.link_url is not empty %}
         {% set link = link|merge({
           'link_icon_class': 'fas fa-arrow-right',
         }) %}
