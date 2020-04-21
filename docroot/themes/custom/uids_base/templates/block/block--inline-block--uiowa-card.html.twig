@@ -26,8 +26,6 @@
 */
 #}
 
-{% block content %}
-
   {% embed '@uids_base/uids/blocks/card.html.twig' with {
     'card_image': content.field_uiowa_card_image,
     'card_text': content.field_uiowa_card_excerpt,
@@ -81,7 +79,4 @@
       {% endif %}
     {% endblock %}
 
-
   {% endembed %}
-
-{% endblock %}
