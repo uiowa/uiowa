@@ -116,8 +116,8 @@ function sitenow_form_block_form_alter(&$form, FormStateInterface $form_state) {
           '#title' => t('Select a block template'),
           '#default_value' => $settings['block_template'] ?? '',
           '#options' => [
-            '_none' => 'None',
-            'card' => 'Card',
+            '_none' => t('None'),
+            'card' => t('Card'),
           ],
         ],
         'classes' => [
