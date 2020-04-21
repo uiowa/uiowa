@@ -895,12 +895,6 @@ $sites['sitesintermediatechinesereader.dev.drupal.uiowa.edu'] = 'intermediatechi
 $sites['sitesintermediatechinesereader.stage.drupal.uiowa.edu'] = 'intermediatechinesereader.sites.uiowa.edu';
 $sites['sitesintermediatechinesereader.prod.drupal.uiowa.edu'] = 'intermediatechinesereader.sites.uiowa.edu';
 
-// Directory aliases for pad.org.uiowa.edu.
-$sites['orgpad.local.drupal.uiowa.edu'] = 'pad.org.uiowa.edu';
-$sites['orgpad.dev.drupal.uiowa.edu'] = 'pad.org.uiowa.edu';
-$sites['orgpad.stage.drupal.uiowa.edu'] = 'pad.org.uiowa.edu';
-$sites['orgpad.prod.drupal.uiowa.edu'] = 'pad.org.uiowa.edu';
-
 // Directory aliases for paleorepository.sites.uiowa.edu.
 $sites['sitespaleorepository.local.drupal.uiowa.edu'] = 'paleorepository.sites.uiowa.edu';
 $sites['sitespaleorepository.dev.drupal.uiowa.edu'] = 'paleorepository.sites.uiowa.edu';
