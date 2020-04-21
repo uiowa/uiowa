@@ -1,3 +1,12 @@
+# Check to see if there's an SSH agent running with keys.
+`ssh-add -l`
+
+if not $?.success?
+  puts 'Your SSH agent does not currently contain any keys (or is stopped.)'
+  puts 'Please start it and add your SSH key to continue.'
+  exit 1
+end
+
 # The absolute path to the root directory of the project. Both Drupal VM and
 # the config file need to be contained within this path.
 ENV['DRUPALVM_PROJECT_ROOT'] = "#{__dir__}"
