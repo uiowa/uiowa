@@ -293,9 +293,11 @@
   padding: 0;
   color: $secondary;
   font-weight: $font-weight-light;
+
   a {
     color: #0036b1;
   }
+
   .close {
     padding: 0;
   }
@@ -1187,8 +1189,6 @@ div[data-drupal-selector="edit-moderation-state-0"] {
 
 .dropbutton-multiple .dropbutton .dropbutton-action>* {
   margin-right: 0;
-  color: #0035b0;
-  text-decoration: none;
   color: #0036b1;
   font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
   font-weight: bold;
@@ -1196,9 +1196,15 @@ div[data-drupal-selector="edit-moderation-state-0"] {
 
 .js .dropbutton {
   min-height: 3rem;
-  height: auto!important;
+  height: auto !important;
 }
 
 ul.dropbutton li {
   line-height: 2.5;
+  a {
+    &:hover,
+    &:focus {
+      text-decoration: none;
+    }
+  }
 }
