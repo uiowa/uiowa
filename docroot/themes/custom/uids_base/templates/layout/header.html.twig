@@ -6,7 +6,6 @@
 {% if header_sticky %}
   {{ attach_library('uids_base/header-sticky') }}
 {% endif %}
-
 <header{{ attributes.addClass(header_classes) }}>
 
   <div class="uiowa-bar">
@@ -37,11 +36,13 @@
 
 {% block horizontal_nav %}
   {% if header_nav in ['horizontal', 'mega'] %}
+    {% set nav_attributes = create_attribute() %}
     {% set nav_classes = [
       'menu-horizontal',
-      'nav--' ~ header_type,
-    ] %}
-    <nav class="{{ nav_classes }}">
+      'nav--' ~ header_nav,
+    ]|merge(header_classes) %}
+
+    <nav{{ nav_attributes.addClass(nav_classes) }}>
       <div class="page__container">
         {{ page.primary_menu }}
       </div>
