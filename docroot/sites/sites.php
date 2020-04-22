@@ -433,12 +433,6 @@ $sites['labhuman-auditory-neuroscience-group.dev.drupal.uiowa.edu'] = 'human-aud
 $sites['labhuman-auditory-neuroscience-group.stage.drupal.uiowa.edu'] = 'human-auditory-neuroscience-group.lab.uiowa.edu';
 $sites['labhuman-auditory-neuroscience-group.prod.drupal.uiowa.edu'] = 'human-auditory-neuroscience-group.lab.uiowa.edu';
 
-// Directory aliases for stemoutreach.org.uiowa.edu.
-$sites['orgstemoutreach.local.drupal.uiowa.edu'] = 'stemoutreach.org.uiowa.edu';
-$sites['orgstemoutreach.dev.drupal.uiowa.edu'] = 'stemoutreach.org.uiowa.edu';
-$sites['orgstemoutreach.stage.drupal.uiowa.edu'] = 'stemoutreach.org.uiowa.edu';
-$sites['orgstemoutreach.prod.drupal.uiowa.edu'] = 'stemoutreach.org.uiowa.edu';
-
 // Directory aliases for stonewall50.sites.uiowa.edu.
 $sites['sitesstonewall50.local.drupal.uiowa.edu'] = 'stonewall50.sites.uiowa.edu';
 $sites['sitesstonewall50.dev.drupal.uiowa.edu'] = 'stonewall50.sites.uiowa.edu';
@@ -900,12 +894,6 @@ $sites['sitesintermediatechinesereader.local.drupal.uiowa.edu'] = 'intermediatec
 $sites['sitesintermediatechinesereader.dev.drupal.uiowa.edu'] = 'intermediatechinesereader.sites.uiowa.edu';
 $sites['sitesintermediatechinesereader.stage.drupal.uiowa.edu'] = 'intermediatechinesereader.sites.uiowa.edu';
 $sites['sitesintermediatechinesereader.prod.drupal.uiowa.edu'] = 'intermediatechinesereader.sites.uiowa.edu';
-
-// Directory aliases for pad.org.uiowa.edu.
-$sites['orgpad.local.drupal.uiowa.edu'] = 'pad.org.uiowa.edu';
-$sites['orgpad.dev.drupal.uiowa.edu'] = 'pad.org.uiowa.edu';
-$sites['orgpad.stage.drupal.uiowa.edu'] = 'pad.org.uiowa.edu';
-$sites['orgpad.prod.drupal.uiowa.edu'] = 'pad.org.uiowa.edu';
 
 // Directory aliases for paleorepository.sites.uiowa.edu.
 $sites['sitespaleorepository.local.drupal.uiowa.edu'] = 'paleorepository.sites.uiowa.edu';
