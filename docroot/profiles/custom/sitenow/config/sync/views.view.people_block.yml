@@ -56,19 +56,19 @@ display:
           offset: 0
           id: 0
           total_pages: null
-          expose:
-            items_per_page: false
-            items_per_page_label: 'Items per page'
-            items_per_page_options: '5, 10, 25, 50'
-            items_per_page_options_all: false
-            items_per_page_options_all_label: '- All -'
-            offset: false
-            offset_label: Offset
           tags:
             previous: '‹ Previous'
             next: 'Next ›'
             first: '« First'
             last: 'Last »'
+          expose:
+            items_per_page: true
+            items_per_page_label: 'Items per page'
+            items_per_page_options: '9'
+            items_per_page_options_all: false
+            items_per_page_options_all_label: '- All -'
+            offset: false
+            offset_label: Offset
           quantity: 9
       style:
         type: default
@@ -151,6 +151,20 @@ display:
             operator_limit_selection: false
             operator_list: {  }
       sorts:
+        sticky:
+          id: sticky
+          table: node_field_data
+          field: sticky
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: false
+          expose:
+            label: ''
+          entity_type: node
+          entity_field: sticky
+          plugin_id: standard
         created:
           id: created
           table: node_field_data
@@ -166,20 +180,6 @@ display:
           expose:
             label: ''
           granularity: second
-        sticky:
-          id: sticky
-          table: node_field_data
-          field: sticky
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: DESC
-          exposed: false
-          expose:
-            label: ''
-          entity_type: node
-          entity_field: sticky
-          plugin_id: standard
       title: None
       header: {  }
       footer: {  }
@@ -195,7 +195,7 @@ display:
           tokenize: false
           content:
             value: 'There are currently no results to display.'
-            format: minimal
+            format: filtered_html
           plugin_id: text
       relationships:
         field_tags:
@@ -245,7 +245,7 @@ display:
             operation: view
             multiple: 1
             access: false
-          break_phrase: false
+          break_phrase: true
           not: false
           entity_type: taxonomy_term
           entity_field: tid
