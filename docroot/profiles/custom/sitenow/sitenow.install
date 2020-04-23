@@ -286,3 +286,32 @@ function sitenow_update_8016() {
   $user->removeRole('administrator');
   $user->save();
 }
+
+/**
+ * Add default version of contact info block to every site.
+ */
+function sitenow_update_8017() {
+  if (NULL === $block = \Drupal::service('entity.repository')->loadEntityByUuid('block_content', '0c0c1f36-3804-48b0-b384-6284eed8c67e')) {
+    $block_value = <<<EOD
+<p>Iowa City, Iowa 52242<br />
+<a href="tel:319-335-3500"><span class="fas fa-phone"></span> 319-335-3500</a></p>
+EOD;
+    $block = \Drupal::entityTypeManager()
+      ->getStorage('block_content')
+      ->create([
+        'type' => 'uiowa_text_area',
+        'uuid' => '0c0c1f36-3804-48b0-b384-6284eed8c67e',
+        'info' => [
+          'value' => 'Footer Contact Info',
+          'lang' => 'en',
+        ],
+        'field_uiowa_text_area' => [
+          'value' => $block_value,
+          'format' => 'filtered_html',
+          'processed' => '<p>Iowa City, Iowa 52242<br /><a href="tel:319-335-3500"><span class="fas fa-phone"></span> 319-335-3500</a></p>',
+        ],
+      ]);
+
+    $block->save();
+  }
+}
