@@ -258,6 +258,7 @@ ul.sf-accordion ul:focus-within {
   &:focus,
   &:hover {
     text-decoration: underline;
+    cursor: pointer;
   }
 }
 
@@ -268,7 +269,9 @@ ul.sf-accordion ul:focus-within {
 }
 
 .menu-horizontal.header--secondary {
-  margin-top: 5px;
+  @include breakpoint(menu) {
+    margin-top: 5px;
+  }
 }
 
 
