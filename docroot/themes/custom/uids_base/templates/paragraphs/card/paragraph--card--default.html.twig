@@ -53,7 +53,7 @@
   'card_text': content.field_card_body,
   'card_subtitle': content.field_card_subtitle,
   'card_title': content.field_card_title,
-  'heading_level': 'h4',
+  'heading_url': content.field_card_link[0]['#url'],
 } %}
 
 <div{{ attributes.addclass(classes) }}>
@@ -68,7 +68,15 @@
     {% endblock %}
 
     {% block heading %}
-      {{ card_title }}
+      {% if card_title and not page %}
+        {% include '@uids_base/uids/heading.html.twig' with {
+          'heading_level' : 'h3',
+          'heading_class' : 'card__title',
+          'heading' : card_title,
+          'heading_url' : heading_url,
+          'heading_aria' : 'desc-a-card',
+        } only %}
+      {% endif %}
     {% endblock heading %}
 
     {% block card_content %}
