@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.paragraph.people.field_people_more
     - field.field.paragraph.people.field_people_more_path
+    - field.field.paragraph.people.field_people_sort
     - field.field.paragraph.people.field_reference
     - field.field.paragraph.people.field_uip_classes
     - field.field.paragraph.people.field_uip_colwidth
@@ -52,6 +53,12 @@ content:
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
+    region: content
+  field_people_sort:
+    weight: 7
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
     region: content
   field_reference:
     weight: 2
