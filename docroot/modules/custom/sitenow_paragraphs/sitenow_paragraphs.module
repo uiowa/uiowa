@@ -260,7 +260,6 @@ function uip_classes_allowed_values(FieldStorageConfig $definition, ContentEntit
         break;
 
       case 'featured_content':
-      case 'people':
         $options['hide-descriptions'] = 'Hide Summaries';
         $options['hide-images'] = 'Hide Images';
         $options['grid'] = 'Grid';
@@ -274,7 +273,7 @@ function uip_classes_allowed_values(FieldStorageConfig $definition, ContentEntit
       case 'image_gallery':
         $options['masonry'] = 'Masonry';
         break;
-        
+
     }
 
     // Allow modules to alter classes.

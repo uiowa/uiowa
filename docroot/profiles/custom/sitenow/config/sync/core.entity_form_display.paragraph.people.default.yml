@@ -6,6 +6,7 @@ dependencies:
     - field.field.paragraph.people.field_people_more
     - field.field.paragraph.people.field_people_more_path
     - field.field.paragraph.people.field_reference
+    - field.field.paragraph.people.field_uip_classes
     - field.field.paragraph.people.field_uip_colwidth
     - field.field.paragraph.people.field_uip_display_title
     - field.field.paragraph.people.field_uip_id
@@ -21,9 +22,10 @@ third_party_settings:
     group_uip_settings:
       children:
         - field_uip_colwidth
+        - field_uip_classes
         - field_uip_id
       parent_name: ''
-      weight: 7
+      weight: 8
       format_type: details
       format_settings:
         id: ''
@@ -61,8 +63,14 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete_tags
     region: content
+  field_uip_classes:
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
   field_uip_colwidth:
-    weight: 7
+    weight: 9
     settings: {  }
     third_party_settings: {  }
     type: options_select
@@ -75,7 +83,7 @@ content:
     type: boolean_checkbox
     region: content
   field_uip_id:
-    weight: 8
+    weight: 11
     settings:
       size: 60
       placeholder: ''
