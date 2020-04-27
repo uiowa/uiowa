@@ -1278,3 +1278,9 @@ $sites['advisingcenter.local.drupal.uiowa.edu'] = 'advisingcenter.uiowa.edu';
 $sites['advisingcenter.dev.drupal.uiowa.edu'] = 'advisingcenter.uiowa.edu';
 $sites['advisingcenter.stage.drupal.uiowa.edu'] = 'advisingcenter.uiowa.edu';
 $sites['advisingcenter.prod.drupal.uiowa.edu'] = 'advisingcenter.uiowa.edu';
+
+// Directory aliases for baran.lab.uiowa.edu.
+$sites['labbaran.local.drupal.uiowa.edu'] = 'baran.lab.uiowa.edu';
+$sites['labbaran.dev.drupal.uiowa.edu'] = 'baran.lab.uiowa.edu';
+$sites['labbaran.stage.drupal.uiowa.edu'] = 'baran.lab.uiowa.edu';
+$sites['labbaran.prod.drupal.uiowa.edu'] = 'baran.lab.uiowa.edu';
