@@ -1284,3 +1284,9 @@ $sites['labbaran.local.drupal.uiowa.edu'] = 'baran.lab.uiowa.edu';
 $sites['labbaran.dev.drupal.uiowa.edu'] = 'baran.lab.uiowa.edu';
 $sites['labbaran.stage.drupal.uiowa.edu'] = 'baran.lab.uiowa.edu';
 $sites['labbaran.prod.drupal.uiowa.edu'] = 'baran.lab.uiowa.edu';
+
+// Directory aliases for cio.uiowa.edu.
+$sites['cio.local.drupal.uiowa.edu'] = 'cio.uiowa.edu';
+$sites['cio.dev.drupal.uiowa.edu'] = 'cio.uiowa.edu';
+$sites['cio.stage.drupal.uiowa.edu'] = 'cio.uiowa.edu';
+$sites['cio.prod.drupal.uiowa.edu'] = 'cio.uiowa.edu';
