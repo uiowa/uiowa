@@ -83,10 +83,12 @@ apache_vhosts:
     servername: centerforconferencesautismcenter.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+
   -
     servername: bands.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+
   -
     servername: billing.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
@@ -455,7 +457,6 @@ apache_vhosts:
     servername: staff-council.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-  
   -
     servername: sitesstonewall50.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
@@ -656,7 +657,6 @@ apache_vhosts:
     servername: sitesintermediatechinesereader.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-  
   -
     servername: sitespaleorepository.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
@@ -911,6 +911,14 @@ apache_vhosts:
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
   -
     servername: advisingcenter.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: labbaran.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: cio.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
 
