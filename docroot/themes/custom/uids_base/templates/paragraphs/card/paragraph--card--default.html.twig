@@ -80,6 +80,7 @@
       'card_subtitle': content.field_card_subtitle,
       'card_title': content.field_card_title,
       'heading_url': content.field_card_link[0]['#url'],
+      'paragraph': paragraph,
     } %}
 
     {% embed '@uids_base/uids/card.html.twig' with paragraph_card only %}
@@ -93,7 +94,7 @@
       {% endblock %}
 
       {% block heading %}
-        {% if card_title and not page %}
+        {% if not paragraph.field_card_title.isEmpty() %}
           {% include '@uids_base/uids/heading.html.twig' with {
             'heading_level' : 'h3',
             'heading_class' : 'card__title',
