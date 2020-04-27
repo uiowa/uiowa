@@ -82,7 +82,7 @@
       'heading_url': content.field_card_link[0]['#url'],
     } %}
 
-    {% embed '@uids_base/uids/blocks/card.html.twig' with paragraph_card only %}
+    {% embed '@uids_base/uids/card.html.twig' with paragraph_card only %}
 
       {% block card_img %}
         {% if card_image is not empty %}
