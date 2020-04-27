@@ -246,6 +246,17 @@ function sitenow_people_uip_classes_alter(&$options, $entity, $bundle) {
 }
 
 /**
+ * Implements hook_views_pre_render().	 * Implements hook_uip_classes_alter().
+ */	
+function sitenow_people_views_pre_render(ViewExecutable $view) {	
+  // Add <th> label for Draggable Views, otherwise it is flagged
+  // for accessibility.	    case 'people':
+  if ($view->id() == "people" && $view->current_display == 'page_people_table') {
+    $view->field["draggableviews"]->options["label"] = 'Sort Control';
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK().
  */
 function sitenow_people_preprocess_paragraph(&$variables) {
