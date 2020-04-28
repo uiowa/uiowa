@@ -734,7 +734,7 @@ function sitenow_page_attachments(array &$attachments) {
   $admin_context = \Drupal::service('router.admin_context');
   $admin_theme = \Drupal::config('system.theme')->get('admin');
 
-  if ($admin_context->isAdminRoute() && $admin_theme == 'adminimal_theme') {
+  if ($admin_context->isAdminRoute() && $admin_theme == 'claro') {
     $attachments['#attached']['library'][] = 'sitenow/admin-overrides';
   }
 }
