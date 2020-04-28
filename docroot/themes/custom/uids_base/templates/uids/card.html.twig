@@ -18,7 +18,7 @@
       {% if card_title %}
         {# @todo Determine if it is better to programatically set level and class via preprocess. #}
         {% set card_heading = {
-          'heading_level' : haeding_level ?: 'h2',
+          'heading_level' : heading_level ?: 'h2',
           'heading_class' : heading_class ?: 'card__title',
           'heading' : card_title,
           'heading_url': card_link_url
