@@ -20,6 +20,8 @@
     view_mode ? 'media--view-mode-' ~ view_mode|clean_class,
   ]
 %}
+{{ attach_library('uids_base/embedded-entity') }}
+{{ attach_library('uids_base/media-type-image') }}
 <div{{ attributes.addClass(classes) }}>
   {{ title_suffix.contextual_links }}
   {% if content %}
