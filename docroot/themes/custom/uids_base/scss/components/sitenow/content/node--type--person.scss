@@ -1,0 +1,41 @@
+@import "uids/assets/scss/_variables.scss";
+@import "uids/assets/scss/_utilities.scss";
+
+article.node--type-person.node--view-mode-full,
+div[role=article].node--type-person.node--view-mode-full {
+  .content-image img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+article.node--type-person.node--view-mode-teaser,
+div[role=article].node--type-person.node--view-mode-teaser {
+  .content-image img {
+    height: auto;
+  }
+
+  h3 a {
+    display: inline-block;
+  }
+
+  .field--name-title {
+    display: block;
+  }
+}
+
+.grid.paragraph--type--featured,
+.masonry.paragraph--type--featured {
+
+  article.node--type-person.node--view-mode-teaser,
+  div[role=article].node--type-person.node--view-mode-teaser {
+    .content-image {
+      margin-left: 0;
+    }
+
+    .content-image img {
+      margin-left: 0 !important;
+      max-width: 100%;
+    }
+  }
+}

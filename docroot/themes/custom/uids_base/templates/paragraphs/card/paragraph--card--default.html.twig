@@ -47,33 +47,70 @@
 
 {% set card_attributes = create_attribute() %}
 
-{% set paragraph_card = {
-  'attributes': card_attributes.addClass(['card--enclosed']),
-  'card_image': content.card_image,
-  'card_text': content.field_card_body,
-  'card_subtitle': content.field_card_subtitle,
-  'card_title': content.field_card_title,
-  'heading_level': 'h4',
-} %}
+{% set test = content.field_card_title.isEmpty() %}
 
-<div{{ attributes.addclass(classes) }} data-observe-resizes>
-  {% embed '@uids_base/uids/blocks/card.html.twig' with paragraph_card only %}
+{% set no_body = (paragraph.field_card_title.isEmpty()) and (paragraph.field_card_subtitle.isEmpty()) and (paragraph.field_card_body.isEmpty()) %}
+<div{{ attributes.addclass(classes) }}>
 
-    {% block card_img %}
-      {% if card_image is not empty %}
-        <div class="media">
+  {% if no_body %}
+{#
+      sitenow_card includes the ability to have just an image and a link.
+      This isn't considered a card in UIDS, so in that case we just output
+      an image wrapped in a link.
+#}
+    {% set paragraph_card_link = {
+      'link_url': content.field_card_link[0]['#url'],
+      'link_class': 'media',
+      'card_image': content.card_image,
+    } %}
+    {% embed '@uids_base/uids/link.html.twig' with paragraph_card_link only %}
+      {% block link_content %}
+        {% if card_image is not empty %}
           {{ card_image }}
-        </div>
-      {% endif %}
-    {% endblock %}
+        {% endif %}
+      {% endblock %}
+    {% endembed %}
 
-    {% block heading %}
-      {{ card_title }}
-    {% endblock heading %}
+  {% else %}
+    {# This is a card and can be handled as such. #}
+    {% set paragraph_card = {
+      'attributes': card_attributes.addClass(['card--enclosed']),
+      'card_image': content.card_image,
+      'card_text': content.field_card_body,
+      'card_subtitle': content.field_card_subtitle,
+      'card_title': content.field_card_title,
+      'heading_url': content.field_card_link[0]['#url'],
+      'paragraph': paragraph,
+    } %}
 
-    {% block card_content %}
-      {{ card_text }}
-    {% endblock %}
+    {% embed '@uids_base/uids/card.html.twig' with paragraph_card only %}
 
-  {% endembed %}
+      {% block card_img %}
+        {% if card_image is not empty %}
+          <div class="media">
+            {{ card_image }}
+          </div>
+        {% endif %}
+      {% endblock %}
+
+      {% block heading %}
+        {% if not paragraph.field_card_title.isEmpty() %}
+          {% include '@uids_base/uids/heading.html.twig' with {
+            'heading_level' : 'h2',
+            'heading_class' : 'card__title',
+            'heading' : card_title,
+            'heading_url' : heading_url,
+            'heading_aria' : 'desc-a-card',
+          } only %}
+        {% endif %}
+      {% endblock heading %}
+
+      {% block card_content %}
+        {% if card_text is not empty %}
+        {{ card_text }}
+        {% endif %}
+      {% endblock %}
+
+    {% endembed %}
+  {% endif %}
 </div>

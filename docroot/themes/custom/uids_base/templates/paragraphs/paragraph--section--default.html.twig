@@ -47,6 +47,8 @@
     not paragraph.isPublished() ? 'paragraph--unpublished'
   ]
 %}
+{{ attach_library('uids_base/paragraphs') }}
+{{ attach_library('uids_base/paragraphs-text') }}
 {% block paragraph %}
   <div{{ attributes.addClass(classes) }}>
     {% block content %}
