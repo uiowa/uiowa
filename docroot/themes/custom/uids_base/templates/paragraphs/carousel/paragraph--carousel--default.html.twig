@@ -47,6 +47,7 @@
     not paragraph.isPublished() ? 'paragraph--unpublished',
   ]
 %}
+{{ attach_library('uids_base/paragraphs-carousel') }}
 {% block paragraph %}
   <div{{ attributes.addClass(classes) }}>
     {% if display_title %}
