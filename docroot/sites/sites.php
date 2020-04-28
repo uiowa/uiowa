@@ -1290,3 +1290,9 @@ $sites['cio.local.drupal.uiowa.edu'] = 'cio.uiowa.edu';
 $sites['cio.dev.drupal.uiowa.edu'] = 'cio.uiowa.edu';
 $sites['cio.stage.drupal.uiowa.edu'] = 'cio.uiowa.edu';
 $sites['cio.prod.drupal.uiowa.edu'] = 'cio.uiowa.edu';
+
+// Directory aliases for covidresponse.research.uiowa.edu.
+$sites['researchcovidresponse.local.drupal.uiowa.edu'] = 'covidresponse.research.uiowa.edu';
+$sites['researchcovidresponse.dev.drupal.uiowa.edu'] = 'covidresponse.research.uiowa.edu';
+$sites['researchcovidresponse.stage.drupal.uiowa.edu'] = 'covidresponse.research.uiowa.edu';
+$sites['researchcovidresponse.prod.drupal.uiowa.edu'] = 'covidresponse.research.uiowa.edu';
