@@ -16,8 +16,6 @@ use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
-use Drupal\user\Entity\User;
-use Drupal\views\ViewExecutable;
 use Drupal\media\Entity\Media;
 use Drupal\file\Entity\File;
 
