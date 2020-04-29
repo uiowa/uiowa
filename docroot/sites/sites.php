@@ -1290,3 +1290,9 @@ $sites['cio.local.drupal.uiowa.edu'] = 'cio.uiowa.edu';
 $sites['cio.dev.drupal.uiowa.edu'] = 'cio.uiowa.edu';
 $sites['cio.stage.drupal.uiowa.edu'] = 'cio.uiowa.edu';
 $sites['cio.prod.drupal.uiowa.edu'] = 'cio.uiowa.edu';
+
+// Directory aliases for icsa-temp.uiowa.edu.
+$sites['icsa-temp.local.drupal.uiowa.edu'] = 'icsa-temp.uiowa.edu';
+$sites['icsa-temp.dev.drupal.uiowa.edu'] = 'icsa-temp.uiowa.edu';
+$sites['icsa-temp.stage.drupal.uiowa.edu'] = 'icsa-temp.uiowa.edu';
+$sites['icsa-temp.prod.drupal.uiowa.edu'] = 'icsa-temp.uiowa.edu';
