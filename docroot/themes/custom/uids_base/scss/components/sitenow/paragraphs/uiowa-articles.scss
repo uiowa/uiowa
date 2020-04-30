@@ -21,6 +21,9 @@
 
   .media {
     @include card-media-horizontal-right;
+    @include breakpoint(sm) {
+    margin-top: $lg;
+    }
   }
 
   .card__body {
@@ -58,24 +61,43 @@
 
 .paragraph--type--articles.grid {
   .view-content {
+    @include breakpoint(menu) {
     display: flex;
     flex-wrap: wrap;
+    }
   }
 
   .views-row {
+    @include breakpoint(sm) {
+    margin-bottom: $mobile-width-gutter;
+    }
+     @include breakpoint(menu) {
+       flex: 0 0 47%;
+       max-width: 47%;
+       margin-bottom: $desktop-width-gutter;
+        &:nth-child(2n+1) {
+          margin-right: $desktop-width-gutter;
+        }
+     }
+
+    @include breakpoint(container) {
     flex: 0 0 31.222222%;
     max-width: 31.222222%;
-    margin-bottom: $desktop-width-gutter;
-    display: flex;
     margin: 0 $gutter $desktop-width-gutter $gutter;
+     &:nth-child(2n+1) {
+       margin-right: $gutter;
+     }
+        &:nth-child(3n+1) {
+            margin-left: 0;
+        }
 
-    &:nth-child(3n+1) {
-      margin-left: 0;
+        &:nth-child(3n+3) {
+            margin-right: 0;
+
+        }
     }
 
-    &:nth-child(3n+3) {
-      margin-right: 0;
-    }
+    display: flex;
   }
 
   .card {
@@ -120,9 +142,11 @@
 .paragraph--type--articles.masonry {
   .view-content {
     //@include card-columns;
+    @include breakpoint(sm) {
     column-count: 3;
     column-gap: 1.25rem;
     orphans: 1;
+    }
   }
 
   .views-row {
