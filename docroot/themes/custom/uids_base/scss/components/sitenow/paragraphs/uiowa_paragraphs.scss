@@ -197,8 +197,15 @@
   }
 }
 
+.card__author + .field--name-field-card-body {
+  margin-top: $md;
+}
 
-
+.field--name-field-card-body {
+  p + p {
+    margin-top: $md;
+  }
+}
 
 // paragraphs
 
@@ -220,7 +227,7 @@
   overflow: hidden;
   padding-bottom: 0;
   @include breakpoint(sm) {
-    padding-top: 3rem;
+    padding-top: 1.5rem;
   }
   margin-bottom: 0;
 
