@@ -67,7 +67,7 @@ ul.sf-menu.sf-mega-menu li {
 ul.sf-multicolumn ol {
   display: flex;
   flex-wrap: wrap;
-  width: 50%;
+  width: 70%;
   padding: $lg 0;
 
   li {
@@ -159,7 +159,6 @@ ul.sf-menu.sf-horizontal li ul a:focus {
 }
 
 ul.sf-menu.sf-horizontal>li>.sf-depth-1.menuparent:before {
-  //right: 2.3rem;
   margin-top: -0.4rem;
   color: #999;
   font-size: .7rem;
@@ -240,5 +239,49 @@ ul.sf-menu.sf-horizontal>li>.sf-depth-1.menuparent {
       background: #fff !important;
 
     }
+  }
+}
+
+ul.sf-accordion ul:focus-within {
+  position: static !important;
+  clip: auto;
+  height: auto !important;
+  width: auto !important;
+}
+
+.block-superfish .menu li a,
+.block-superfish .menu li .nolink {
+  &.is-active {
+    text-decoration: underline;
+  }
+
+  &:focus,
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
+
+// Todo move back to UIDS
+.menu-horizontal {
+  border-bottom: 1px solid #e6e5e5;
+}
+
+.menu-horizontal.header--secondary {
+  @include breakpoint(menu) {
+    margin-top: 5px;
+  }
+}
+
+
+.header--tertiary .site_name--wrapper {
+  border-bottom: 1px solid #e6e5e5;
+}
+
+@media (min-width: 855px) {
+  .menu-horizontal.nav--header--primary,
+  .menu-horizontal.nav--header--secondary {
+    border-bottom: 1px solid #e6e5e5;
   }
 }

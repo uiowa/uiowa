@@ -544,23 +544,23 @@ function sitenow_preprocess_page(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
     $node = \Drupal::routeMatch()->getParameter('node');
-    if (isset($node)) {
-      // Get moderation state of node.
-      $revision_id = $node->getRevisionId();
-      $revision = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($revision_id);
-      $moderation_state = $revision->get('moderation_state')->getString();
-      $status = $revision->get('status')->value;
-      if ($status == 0) {
-        $pre_vowel = (in_array($moderation_state[0], ['a', 'e', 'i', 'o', 'u']) ? 'n' : '');
-        $warning_text = t('This content is currently in a@pre_vowel <em>"@moderation_state"</em> state.', [
-          '@pre_vowel' => $pre_vowel,
-          '@moderation_state' => $moderation_state,
-        ]);
-        \Drupal::messenger()->addWarning($warning_text);
-      }
-    }
     $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
     if ($node instanceof NodeInterface) {
+      // Get moderation state of node.
+      $revision_id = $node->getRevisionId();
+      if ($revision_id) {
+        $revision = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($revision_id);
+        $moderation_state = $revision->get('moderation_state')->getString();
+        $status = $revision->get('status')->value;
+        if ($status == 0) {
+          $pre_vowel = (in_array($moderation_state[0], ['a', 'e', 'i', 'o', 'u']) ? 'n' : '');
+          $warning_text = t('This content is currently in a@pre_vowel <em>"@moderation_state"</em> state.', [
+            '@pre_vowel' => $pre_vowel,
+            '@moderation_state' => $moderation_state,
+          ]);
+          \Drupal::messenger()->addWarning($warning_text);
+        }
+      }
       $variables['header_attributes'] = new Attribute();
       if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
         $publish_options = $node->get('field_publish_options')->getValue();
@@ -662,7 +662,7 @@ function sitenow_form_menu_link_content_form_alter(array &$form, FormStateInterf
             'fa-iconpicker',
           ],
         ],
-        '#description' => t('Pick an icon to render after the menu item. To view the available FontAwesome icons, <a href="https://fontawesome.com/icons?d=gallery&m=free">click here</a>.'),
+        '#description' => t('Pick an icon to represent this link by clicking on this field. To see a list of available icons and their class names, <a href="https://fontawesome.com/icons?d=gallery&m=free">visit the FontAwesome website</a>.'),
         '#attached' => [
           'library' => [
             'sitenow/fontawesome-iconpicker',
@@ -768,19 +768,6 @@ function sitenow_toolbar() {
   ];
 
   return $items;
-}
-
-/**
- * Implements hook_editor_js_settings_alter().
- */
-function sitenow_editor_js_settings_alter(array &$settings) {
-  foreach (array_keys($settings['editor']['formats']) as $text_format_id) {
-    if ($settings['editor']['formats'][$text_format_id]['editor'] === 'ckeditor') {
-      // Adjust CKEditor settings to allow empty span tags for use with FA..
-      $settings['editor']['formats'][$text_format_id]['editorSettings']['customConfig'] =
-        base_path() . drupal_get_path('profile', 'sitenow') . '/js/ckeditor_config.js';
-    }
-  }
 }
 
 /**

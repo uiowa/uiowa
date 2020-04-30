@@ -25,19 +25,16 @@
  * @see template_preprocess_block()
  */
 #}
+{% embed "@uids_base/uids/blocks/hero.html.twig" with {
+	hero_alignment: 'bottom',
+} %}
 
-{{ attach_library('uids_base/hero-block') }}
-
-<section class="hero hero__bottom {{ attributes ? attributes.class }}" {{ attributes ? attributes|without('class') }}>
-	{{ title_prefix }}
-	{{ title_suffix }}
-	<div class="hero__img">
+	{% block hero_image %}
 		{{ content.field_uiowa_page_title_hero_img }}
-	</div>
-	<div class="hero__container hero__container-bottom">
-		<div class="hero__content hero__content-bottom">
-					{{ drupal_entity('block', 'uids_base_breadcrumbs') }}
-			<h1 class="bold-headline--serif bold-headline">{{ drupal_title() }}</h1>
-		</div>
-	</div>
-</section>
+	{% endblock %}
+	{% block hero_content %}
+		{{ breadcrumb }}
+		<h1 class="bold-headline--serif bold-headline">{{ drupal_title() }}</h1>
+	{% endblock %}
+
+{% endembed %}

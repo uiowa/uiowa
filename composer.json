@@ -60,6 +60,8 @@
         "acquia/blt": "^11.0.1",
         "acquia/memcache-settings": "*",
         "bower-asset/chosen": "^1.8",
+        "bower-asset/fontawesome": "^5.13",
+        "bower-asset/lazysizes": "^5.2",
         "drupal-composer/drupal-scaffold": "^2.5.4",
         "drupal/acquia_connector": "^1.5.0",
         "drupal/acquia_purge": "^1.0",
@@ -68,10 +70,11 @@
         "drupal/administerusersbyrole": "3.0-alpha2",
         "drupal/allowed_formats": "^1.1",
         "drupal/better_normalizers": "^1.0@beta",
+        "drupal/big_pipe_sessionless": "^1.2",
         "drupal/colorbox": "^1.4",
         "drupal/components": "^1.0",
         "drupal/config_actions_provider": "^1.0@RC",
-        "drupal/config_ignore": "2.x-dev",
+        "drupal/config_ignore": "^2.2.0",
         "drupal/config_inspector": "^1.0",
         "drupal/config_split": "^1.4",
         "drupal/config_sync": "^2.0@beta",
@@ -83,26 +86,29 @@
         "drupal/diff": "^1.0@RC",
         "drupal/draggableviews": "^1.2",
         "drupal/editor_advanced_link": "^1.4",
-        "drupal/entity_browser": "2.x-dev",
+        "drupal/entity_browser": "^2.4.0",
         "drupal/entity_embed": "^1.0@RC",
         "drupal/entity_reference_revisions": "^1.5",
+        "drupal/entity_reference_unpublished": "^1.1",
         "drupal/entity_usage": "^2.0@alpha",
         "drupal/features": "^3.8",
         "drupal/field_group": "^1.0",
         "drupal/focal_point": "^1.2",
         "drupal/fontawesome": "^2.9",
         "drupal/google_analytics": "^2.2",
+        "drupal/google_tag": "^1.3",
         "drupal/heading": "^1.4",
         "drupal/honeypot": "^1.30",
         "drupal/imagecache_external": "^1.0",
         "drupal/imagemagick": "^2.3",
         "drupal/inline_entity_form": "^1.0@RC",
-        "drupal/layout_builder_restrictions": "^2.2",
+        "drupal/layout_builder_restrictions": "^2.6",
         "drupal/layout_builder_styles": "^1.0@beta",
+        "drupal/lazy": "^3.4",
         "drupal/lb_direct_add": "1.x-dev",
         "drupal/linkit": "^5.0",
         "drupal/mailsystem": "^4.1",
-        "drupal/masquerade": "2.x-dev#2011b21",
+        "drupal/masquerade": "^2.0@beta",
         "drupal/media_entity_facebook": "^2.0@alpha",
         "drupal/media_entity_instagram": "^2.0",
         "drupal/media_entity_twitter": "^2.1",
@@ -122,7 +128,7 @@
         "drupal/pathauto": "^1.6",
         "drupal/purge": "^3.0@beta",
         "drupal/rabbit_hole": "^1.0@beta",
-        "drupal/redirect": "^1.4",
+        "drupal/redirect": "1.x-dev",
         "drupal/reroute_email": "^1.1",
         "drupal/robotstxt": "^1.2",
         "drupal/schema_metatag": "^1.2",
@@ -136,12 +142,14 @@
         "drupal/twig_tweak": "^2.4",
         "drupal/views_ical": "^1.0@alpha",
         "drupal/webform": "^5.2",
+        "drupal/webp": "1.x-dev",
         "drupal/workbench_email": "^1.2",
         "drush/drush": "^9.6.3",
         "jackmoore/colorbox": "^1.6",
         "kartsims/easysvg": "dev-master",
         "npm-asset/fontawesome-iconpicker": "^3.2",
         "npm-asset/jquery-collapse": "^1.1",
+        "npm-asset/moment": "^2.24",
         "richardbporter/drush-users-commands": "^2.0",
         "uiowa/uiowa_auth": "^1.0",
         "uiowa/uiowa_bar": "^1.0.0",
@@ -172,6 +180,9 @@
             "drupal/metatag": {
                 "Allow each tag to have its own permission": "https://www.drupal.org/files/issues/metatag-n2782797-16.patch"
             },
+            "drupal/schema_metatag": {
+                "Webpage > SearchAction missing target": "https://www.drupal.org/files/issues/2020-02-17/3055278-7.patch"
+            },
             "drupal/administerusersbyrole": {
                 "Undefined index: id": "https://www.drupal.org/files/issues/2018-11-01/undefined-index-3010662-4.patch"
             },
@@ -188,13 +199,21 @@
                 "The Media library doesn't modify the 'media' view if installed in a profile": "https://www.drupal.org/files/issues/2019-05-12/2992056.patch",
                 "Site extensions don't get rediscovered after drush cr": "https://www.drupal.org/files/issues/2018-07-11/specify_sitepath_cache_rebuild_extension_discovery-2985199-3.patch",
                 "Allow alter oembed providers": "https://www.drupal.org/files/issues/2019-05-15/drupal-allow_alter_oembed_providers-3008119-4.patch",
-                "Form blocks rendered inside layout builder break save": "https://www.drupal.org/files/issues/2020-02-04/layout-builder-save-issue-3045171-140.patch"
+                "Form blocks rendered inside layout builder break save": "https://www.drupal.org/files/issues/2020-02-04/layout-builder-save-issue-3045171-140.patch",
+                "save edits to media embeds": "https://www.drupal.org/files/issues/2019-12-19/3102249-fix-media-ckeditor-snapshop.patch",
+                "add img dimensions": "https://www.drupal.org/files/issues/2019-11-19/responsive_image-provide_dimensions_for_image_tag-3095126-4.patch"
             },
             "drupal/layout_builder_styles": {
                 "Section Dependency": "https://www.drupal.org/files/issues/2019-08-23/layout_builder_styles-3062261-%2310.patch"
             },
-            "drupal/honeypot": {
-                "Better spam protection through field weight":"https://www.drupal.org/files/issues/2019-08-08/honeypot_field_weight_2811189-18.patch"
+            "drupal/redirect": {
+                "Match redirect": "https://www.drupal.org/files/issues/2020-04-13/redirect-n2831605-31.patch"
+            },
+            "drupal/entity_embed": {
+                "Logs flooded with warning messages Invalid display settings encountered": "https://www.drupal.org/files/issues/2019-12-11/3077225-10.reduce-invalid-config-logs.patch"
+            },
+            "drupal/webp": {
+                "Module does not support image generation for images with UPPERCASED extension": "https://www.drupal.org/files/issues/2019-12-20/module_does_not_support_image_generation_for_images_with_UPPERCASED_extension-3101989-4.patch"
             }
         },
         "installer-types": [

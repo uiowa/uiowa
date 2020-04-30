@@ -19,13 +19,19 @@ This project is based on BLT, an open-source project template and tool that enab
     ```
 ----
 # Local Environment
-Follow the [BLT docs](https://docs.acquia.com/blt/install/local-development/) to get started wit [DrupalVM](https://www.drupalvm.com/). **Note** that there is currently an issue with Vagrant 2.2.6 and the latest version of VirtualBox. Download [VirtualBox 6.0](https://www.virtualbox.org/wiki/Download_Old_Builds_6_0) instead.
+Follow the [BLT docs](https://docs.acquia.com/blt/install/local-development/) to get started wit [DrupalVM](https://www.drupalvm.com/).
 
 All BLT commands should be run on the VM. You can SSH into the VM using `vagrant ssh`. See the [Vagrant docs](https://www.vagrantup.com/docs/cli/) for basic CLI usage.
 
 If you have troubles with an error on DrupalVM related to /tmp/xdebug.log, https://github.com/geerlingguy/drupal-vm/issues/1813
 
 **TLDR;** Run `sudo chmod 766 /tmp/xdebug.log` in the VM.
+
+## Databases
+Use [SequelPro](https://www.sequelpro.com/) to [connect to DrupalVM](http://docs.drupalvm.com/en/latest/configurations/databases-mysql/#connect-using-sequel-pro-or-a-similar-client).
+
+## Logging
+As long as a site has a local settings file, it should be configured to show all warnings and errors to the screen. Other log messages, like watchdog, can be viewed by tailing the syslog: `sudo tail -f /var/log/syslog | grep drupal`. [PimpMyLog](http://docs.drupalvm.com/en/latest/extras/pimpmylog/) is also available at https://pimpmylog.local.drupal.uiowa.edu but requires more configuration to work with syslog.
 
 ### BLT Configuration
 Make sure you have an [Acquia Cloud key and secret](https://docs.acquia.com/acquia-cloud/develop/api/auth/) saved in the `blt/local.blt.yml` file. This file is ignored by Git. Be sure you do not accidentally commit your credentials to the `blt/blt.yml` file which is tracked in Git. Do not share your key or secret with anyone.
@@ -78,9 +84,6 @@ Drupal core requires the following specific command to update dev dependencies p
 Certain scaffold files should be resolved/removed afterwards. The redirects in the `docroot/.htaccess` file need to be re-implemented and the `docroot/robots.txt` should be removed. Different updates may require difference procedures. For example, BLT may download default config files that we don't use like `docroot/sites/default/default.services.yml`.
 
 Configuration tracked in the repository will need to be exported before deployment. To ensure configuration is exported correctly, manually sync a site from production using Drush. Then run database updates and export any configuration changes. Add and commit the config changes and then run another `blt dsa` to check for any further config discrepancies. If there are none, proceed with code deployment as per usual.
-
-## Databases
-Use [SequelPro](https://www.sequelpro.com/) to [connect to DrupalVM](http://docs.drupalvm.com/en/latest/configurations/databases-mysql/#connect-using-sequel-pro-or-a-similar-client).
 
 # Resources
 Additional [BLT documentation](https://docs.acquia.com/blt/) may be useful. You may also access a list of BLT commands by running this:

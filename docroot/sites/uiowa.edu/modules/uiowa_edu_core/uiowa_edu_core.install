@@ -5,7 +5,9 @@
  * Install, update and uninstall functions for the uiowa.edu Core module.
  */
 
+use Drupal\Core\Config\FileStorage;
 use Drupal\taxonomy\Entity\Term;
+use Drupal\redirect\Entity\Redirect;
 
 /**
  * Implements hook_install().
@@ -37,6 +39,50 @@ function uiowa_edu_core_update_8001(&$sandbox) {
     ]);
     $new_term->enforceIsNew();
     $new_term->save();
+  }
+}
+
+/**
+ * First batch of redirects.
+ */
+function uiowa_edu_core_update_8002() {
+
+  $path = drupal_get_path('module', 'uiowa_edu_core');
+  $csv = array_map('str_getcsv', file($path . '/redirects/redirects01.csv'));
+  $header = FALSE;
+
+  if ($header === TRUE) {
+    unset($csv[0]);
+  }
+
+  foreach ($csv as $redirect) {
+    $source_path = $redirect[0];
+    $redirect_path = $redirect[1];
+    $existing = \Drupal::service('redirect.repository')->findBySourcePath($source_path);
+    if (empty($existing)) {
+      Redirect::create([
+        'redirect_source' => $source_path,
+        'redirect_redirect' => $redirect_path,
+        'language' => 'en',
+        'status_code' => '301',
+      ])->save();
+    }
+  }
+}
+
+/**
+ * Import the newly enabled and config-ignored uiowa_alerts settings.
+ */
+function uiowa_edu_core_update_8003() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uiowa_alerts.settings');
+
+  if (empty($config->get())) {
+    $config_path = DRUPAL_ROOT . '/modules/custom/uiowa_alerts/config/install/';
+    $source = new FileStorage($config_path);
+
+    $config_storage = \Drupal::service('config.storage');
+    $config_storage->write('uiowa_alerts.settings', $source->read('uiowa_alerts.settings'));
   }
 }
 
