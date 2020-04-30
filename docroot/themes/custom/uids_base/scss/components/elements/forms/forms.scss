@@ -12,7 +12,16 @@
 .uids-content .description {
   font-style: normal;
 }
-.views-exposed-form {
+.views-exposed-form.uids-content:not(.uids-search) {
+  .form--inline {
+    align-items: flex-start;
+  }
+  .form-item, .form-actions {
+    margin-right: 1em;
+  }
+  .form-actions {
+    margin-top: 2.5em;
+  }
   .button {
     @extend %bttn--secondary;
     border: 0;
