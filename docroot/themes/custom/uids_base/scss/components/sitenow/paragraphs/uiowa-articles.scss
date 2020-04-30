@@ -3,6 +3,9 @@
 
 
 .paragraph--type--articles {
+  &.hide-images .media {
+    display: none;
+  }
   .field--name-title {
     display: block;
     @include h5;
@@ -24,6 +27,7 @@
     @include breakpoint(sm) {
     margin-top: $lg;
     }
+
   }
 
   .card__body {
