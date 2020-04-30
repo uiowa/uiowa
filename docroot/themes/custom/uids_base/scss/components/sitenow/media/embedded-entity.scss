@@ -3,10 +3,15 @@
 
 .embedded-entity {
   max-width: 100%;
-  margin-bottom: $lg;
+  margin-bottom: 0;
   figure & {
     margin-bottom: 0;
   }
+}
+
+
+.embedded-entity + p {
+  margin-top: $md;
 }
 
 .embedded-entity.align-center {
