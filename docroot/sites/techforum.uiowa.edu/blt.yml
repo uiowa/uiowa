@@ -1,0 +1,25 @@
+project:
+  local:
+    hostname: techforum.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: techforum
+  human_name: techforum.uiowa.edu
+  profile:
+    name: sitenow
+drush:
+  aliases:
+    local: self
+    remote: techforum.prod
+drupal:
+  db:
+    database: techforum_uiowa_edu
+cm:
+  core:
+    install_from_config: true
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+uiowa:
+  profiles:
+    sitenow:
+      requester: nmriehl
