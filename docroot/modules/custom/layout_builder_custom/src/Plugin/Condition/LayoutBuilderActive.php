@@ -7,6 +7,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\layout_builder\LayoutEntityHelperTrait;
+use Drupal\node\NodeInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -104,7 +105,7 @@ class LayoutBuilderActive extends ConditionPluginBase implements ContainerFactor
     // entities and this covers that case.
     $node = $this->routeMatch->getParameter('node');
 
-    if ($node) {
+    if ($node instanceof NodeInterface) {
       $show = !$this->isLayoutCompatibleEntity($node);
     }
 
