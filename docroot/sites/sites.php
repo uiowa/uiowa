@@ -1314,3 +1314,9 @@ $sites['iwp.local.drupal.uiowa.edu'] = 'iwp.uiowa.edu';
 $sites['iwp.dev.drupal.uiowa.edu'] = 'iwp.uiowa.edu';
 $sites['iwp.stage.drupal.uiowa.edu'] = 'iwp.uiowa.edu';
 $sites['iwp.prod.drupal.uiowa.edu'] = 'iwp.uiowa.edu';
+
+// Directory aliases for uipress.uiowa.edu.
+$sites['uipress.local.drupal.uiowa.edu'] = 'uipress.uiowa.edu';
+$sites['uipress.dev.drupal.uiowa.edu'] = 'uipress.uiowa.edu';
+$sites['uipress.stage.drupal.uiowa.edu'] = 'uipress.uiowa.edu';
+$sites['uipress.prod.drupal.uiowa.edu'] = 'uipress.uiowa.edu';
