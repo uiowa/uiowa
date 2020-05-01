@@ -6,11 +6,23 @@ id: icsa_uiowa_edu
 label: icsa.uiowa.edu
 description: 'Site split.'
 folder: ../config/icsa.uiowa.edu
-module: {  }
+module:
+  datetime_range: 0
 theme: {  }
 blacklist: {  }
 graylist:
   - config_split.config_split.icsa_uiowa_edu
+  - core.date_format.medium_date
+  - field.storage.node.field_project_category
+  - field.storage.node.field_project_date
+  - field.storage.node.field_project_finished
+  - field.storage.node.field_project_reports
+  - node.type.project
+  - system.menu.about
+  - system.menu.projects
+  - system.menu.reports
+  - system.menu.resources
+  - system.menu.services
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 90
