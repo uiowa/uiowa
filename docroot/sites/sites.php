@@ -1302,3 +1302,9 @@ $sites['researchcovidresponse.local.drupal.uiowa.edu'] = 'covidresponse.research
 $sites['researchcovidresponse.dev.drupal.uiowa.edu'] = 'covidresponse.research.uiowa.edu';
 $sites['researchcovidresponse.stage.drupal.uiowa.edu'] = 'covidresponse.research.uiowa.edu';
 $sites['researchcovidresponse.prod.drupal.uiowa.edu'] = 'covidresponse.research.uiowa.edu';
+
+// Directory aliases for iwp.uiowa.edu.
+$sites['iwp.local.drupal.uiowa.edu'] = 'iwp.uiowa.edu';
+$sites['iwp.dev.drupal.uiowa.edu'] = 'iwp.uiowa.edu';
+$sites['iwp.stage.drupal.uiowa.edu'] = 'iwp.uiowa.edu';
+$sites['iwp.prod.drupal.uiowa.edu'] = 'iwp.uiowa.edu';
