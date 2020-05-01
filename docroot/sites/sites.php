@@ -1303,6 +1303,12 @@ $sites['researchcovidresponse.dev.drupal.uiowa.edu'] = 'covidresponse.research.u
 $sites['researchcovidresponse.stage.drupal.uiowa.edu'] = 'covidresponse.research.uiowa.edu';
 $sites['researchcovidresponse.prod.drupal.uiowa.edu'] = 'covidresponse.research.uiowa.edu';
 
+// Directory aliases for techforum.uiowa.edu.
+$sites['techforum.local.drupal.uiowa.edu'] = 'techforum.uiowa.edu';
+$sites['techforum.dev.drupal.uiowa.edu'] = 'techforum.uiowa.edu';
+$sites['techforum.stage.drupal.uiowa.edu'] = 'techforum.uiowa.edu';
+$sites['techforum.prod.drupal.uiowa.edu'] = 'techforum.uiowa.edu';
+
 // Directory aliases for iwp.uiowa.edu.
 $sites['iwp.local.drupal.uiowa.edu'] = 'iwp.uiowa.edu';
 $sites['iwp.dev.drupal.uiowa.edu'] = 'iwp.uiowa.edu';
