@@ -190,8 +190,34 @@ ul.sf-menu.sf-horizontal>li>.sf-depth-1.menuparent {
   @include element-invisible;
 }
 
-.sf-accordion>li.sf-expanded>.sf-depth-1.menuparent:before {
+.sf-accordion li.sf-expanded .sf-depth-1.menuparent:before {
   content: "\f106";
+  font-size: 1.4rem;
+}
+
+.sf-accordion li.sf-expanded li.sf-depth-2.menuparent .sf-depth-2.menuparent:before {
+  position: absolute;
+  top: 50%;
+  right: .3125rem;
+  margin-top: -0.4rem;
+  color: inherit;
+  font-size: 1rem;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  line-height: 1;
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  content: "\f0d7";
+  color: $secondary;
+}
+
+.sf-accordion li.sf-expanded li.sf-depth-2.menuparent.sf-expanded .sf-depth-2.menuparent:before {
+  content: "\f0d8";
+  // font-size: 1.4rem;
 }
 
 .sf-accordion-toggle {
@@ -257,6 +283,7 @@ ul.sf-accordion ul:focus-within {
   &.is-active {
     text-decoration: underline;
   }
+
   &.is-active.menuparent {
     text-decoration: none;
   }
@@ -270,9 +297,34 @@ ul.sf-accordion ul:focus-within {
 
 .block-superfish .menu.sf-accordion li a.is-active.menuparent,
 .block-superfish .menu.sf-accordion li .nolink.is-active.menuparent {
+  //.block-superfish .menu.sf-accordion li.active-trail.menuparent .menuparent
   text-decoration: underline;
 }
 
+/*
+.block-superfish .menu.sf-accordion li ul a.is-active,
+.block-superfish .menu.sf-accordion li ul .nolink.is-active {
+  padding-left: 30px;
+  border-left: 1px solid #ccc;
+  &:after {
+    left: 0;
+    top: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: transparent;
+    border-left-color: #ccc;
+    border-width: 10px;
+    margin-top: -10px;
+  }
+}
+*/
+
+
+/*
 ul.sf-menu.sf-accordion .active-trail.menuparent .menuparent:before {
   content: "\f13a";
   font-size: 1.5rem;
@@ -284,7 +336,40 @@ ul.sf-menu.sf-accordion .active-trail.menuparent .menuparent:before {
 ul.sf-menu.sf-accordion .active-trail.menuparent.sf-expanded .menuparent:before {
   content: "\f139";
 }
+*/
 
+
+ul.sf-menu.sf-accordion .active-trail.menuparent.sf-depth-1>.menuparent:after {
+  left: 0;
+  top: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-color: transparent;
+  border-left-color: $primary;
+  border-width: 10px;
+  margin-top: -10px;
+}
+
+
+ul.sf-menu.sf-accordion .active-trail.menuparent.sf-depth-1>.menuparent {
+  padding-left: 30px;
+}
+
+.block-superfish .menu.sf-accordion li a.is-active.menuparent,
+.block-superfish .menu.sf-accordion li .nolink.is-active.menuparent {
+  //text-decoration: underline;
+}
+
+.menu.sf-accordion ul li.sf-depth-2.menuparent ul {
+  padding-left: 30px;
+  a {
+    color: $secondary;
+  }
+}
 
 // Todo move back to UIDS
 .menu-horizontal {
@@ -303,6 +388,7 @@ ul.sf-menu.sf-accordion .active-trail.menuparent.sf-expanded .menuparent:before 
 }
 
 @media (min-width: 855px) {
+
   .menu-horizontal.nav--header--primary,
   .menu-horizontal.nav--header--secondary {
     border-bottom: 1px solid #e6e5e5;
