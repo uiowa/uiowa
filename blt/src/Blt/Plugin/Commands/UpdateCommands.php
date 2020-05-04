@@ -519,4 +519,5 @@ EOD;
 
     $this->setSchemaVersion(1013);
   }
+
 }
