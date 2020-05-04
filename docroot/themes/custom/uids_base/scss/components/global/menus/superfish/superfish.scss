@@ -71,8 +71,25 @@ ul.sf-multicolumn ol {
 
   li {
     width: 50%;
+
+    .sf-multicolumn-column ol {
+      @include element-invisible;
+    }
   }
 }
+
+ul.sf-menu.sf-mega-menu li.sf-multicolumn-column:nth-child(1):nth-last-child(7),
+ul.sf-menu.sf-mega-menu li.sf-multicolumn-column:nth-child(2):nth-last-child(6),
+ul.sf-menu.sf-mega-menu li.sf-multicolumn-column:nth-child(3):nth-last-child(5),
+ul.sf-menu.sf-mega-menu li.sf-multicolumn-column:nth-child(4):nth-last-child(4),
+ul.sf-menu.sf-mega-menu li.sf-multicolumn-column:nth-child(5):nth-last-child(3),
+ul.sf-menu.sf-mega-menu li.sf-multicolumn-column:nth-child(6):nth-last-child(2),
+ul.sf-menu.sf-mega-menu li.sf-multicolumn-column:nth-child(7):nth-last-child(1) {
+  @include breakpoint(menu) {
+    width: 50%;
+  }
+}
+
 
 .block-superfish .menu ul.sf-multicolumn {
   box-shadow: none;
@@ -81,8 +98,10 @@ ul.sf-multicolumn ol {
 
 // horizontal only
 
-ul.sf-menu.sf-horiz-menu li li a {
+ul.sf-menu.sf-horiz-menu li li a,
+ul.sf-menu.sf-horiz-menu li li span {
   padding: .45rem 1rem;
+  font-weight: 400;
 
   @include breakpoint(menu) {
     font-size: 1rem;
@@ -129,13 +148,18 @@ ul.sf-menu.sf-horizontal>li>a.is-active {
   //color: #666;
 }
 
-ul.sf-menu.sf-horizontal>li>a.is-active:after {
+ul.sf-menu.sf-horizontal>li>a.is-active:after,
+ul.sf-menu.sf-horizontal>li.active-trail>.sf-depth-1.menuparent:after {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
   height: 5px;
   background: #0202021f;
+}
+
+ul.sf-menu.sf-horizontal>li.active-trail>.sf-depth-1.menuparent:hover:after {
+  background: $primary;
 }
 
 ul.sf-menu.sf-horizontal>li.sfHover>a:after,
@@ -195,7 +219,8 @@ ul.sf-menu.sf-horizontal>li>.sf-depth-1.menuparent {
   font-size: 1.4rem;
 }
 
-.sf-accordion li.sf-expanded li.sf-depth-2.menuparent .sf-depth-2.menuparent:before {
+.sf-accordion li.sf-expanded li.sf-depth-2.menuparent .sf-depth-2.menuparent:before,
+.sf-horizontal li.sfHover li.sf-depth-2.menuparent .sf-depth-2.menuparent:before {
   position: absolute;
   top: 50%;
   right: .3125rem;
@@ -211,8 +236,22 @@ ul.sf-menu.sf-horizontal>li>.sf-depth-1.menuparent {
   line-height: 1;
   font-family: "Font Awesome 5 Free";
   font-weight: 900;
-  content: "\f0d7";
   color: $secondary;
+}
+
+.sf-horizontal li.sfHover li.sf-depth-2.menuparent .sf-depth-2.menuparent:before {
+  content: "\f105";
+  padding-right: $md;
+}
+
+.sf-horizontal.sf-mega-menu li.sfHover li.sf-depth-2.menuparent .sf-depth-2.menuparent:before {
+  content: "";
+  padding-right: 0;
+}
+
+
+.sf-accordion li.sf-expanded li.sf-depth-2.menuparent .sf-depth-2.menuparent:before {
+  content: "\f0d7";
 }
 
 .sf-accordion li.sf-expanded li.sf-depth-2.menuparent.sf-expanded .sf-depth-2.menuparent:before {
@@ -281,8 +320,13 @@ ul.sf-accordion ul:focus-within {
 .block-superfish .menu li a,
 .block-superfish .menu li .nolink {
   &.is-active {
+    //text-decoration: underline;
+  }
+
+  >.is-active {
     text-decoration: underline;
   }
+
 
   &.is-active.menuparent {
     text-decoration: none;
@@ -292,6 +336,12 @@ ul.sf-accordion ul:focus-within {
   &:hover {
     text-decoration: underline;
     cursor: pointer;
+  }
+}
+
+.block-superfish .menu li.active-trail.menuparent ul {
+  .is-active {
+    text-decoration: underline;
   }
 }
 
@@ -366,6 +416,7 @@ ul.sf-menu.sf-accordion .active-trail.menuparent.sf-depth-1>.menuparent {
 
 .menu.sf-accordion ul li.sf-depth-2.menuparent ul {
   padding-left: 30px;
+
   a {
     color: $secondary;
   }
@@ -393,4 +444,12 @@ ul.sf-menu.sf-accordion .active-trail.menuparent.sf-depth-1>.menuparent {
   .menu-horizontal.nav--header--secondary {
     border-bottom: 1px solid #e6e5e5;
   }
+}
+
+
+
+.block-superfish .menu li span {
+  font-weight: 600;
+  display: block;
+  padding: .5rem 0;
 }
