@@ -1,0 +1,30 @@
+uuid: e024f8f3-2546-4465-a04a-1615e3da083a
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_project_category
+field_name: field_project_category
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: 'Treatment Projects'
+      label: 'Treatment Projects'
+    -
+      value: 'Prevention Projects'
+      label: 'Prevention Projects'
+    -
+      value: 'Other Projects'
+      label: 'Other Projects'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
