@@ -6,6 +6,7 @@
  */
 
 use Drupal\block\Entity\Block;
+use Drupal\block_content\BlockContentInterface;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
@@ -174,6 +175,24 @@ function uids_base_preprocess_node(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK() for field.html.twig.
+ */
+function uids_base_preprocess_field(&$variables) {
+
+  $element = $variables['element'];
+  if (isset($element['#field_name'])) {
+    if ($element['#field_name'] == 'field_uiowa_collection_items') {
+      foreach ($variables['items'] as $key => &$item) {
+        // Add the block description as a label.
+        /** @var BlockContentInterface $block */
+        $block = $item['content']['#block_content'];
+        $item['label'] = $block->label();
+      }
+    }
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK() for block.html.twig.
  */
 function uids_base_preprocess_block(&$variables) {
@@ -230,6 +249,15 @@ function uids_base_preprocess_paragraph__card(&$variables) {
       unset($variables['#attached']['library'][$key]);
     }
   }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function uids_base_theme_suggestions_field_alter(array &$suggestions, array $variables) {
+
+  $element = $variables['element'];
+  $suggestions[] = 'field__' . $element['#entity_type'] . '__' . $element['#field_name'] . '__' . $element['#bundle'] . '__' . $element['#view_mode'];
 }
 
 /**
