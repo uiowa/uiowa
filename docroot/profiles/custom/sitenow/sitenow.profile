@@ -590,58 +590,6 @@ function sitenow_preprocess_page(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_HOOK().
- */
-function sitenow_preprocess_node(&$variables) {
-  $admin_context = \Drupal::service('router.admin_context');
-  if (!$admin_context->isAdminRoute()) {
-
-    $node = $variables["node"];
-    $type = $node->getType();
-    switch ($type) {
-      case 'page':
-      case 'article':
-      case 'person':
-        switch ($variables['view_mode']) {
-          case 'teaser':
-            $style = 'sitenow_card';
-            if ($type == 'person') {
-              $style = 'sitenow_square_m';
-            }
-            $image_field = $node->get('field_image');
-            if (!$image_field->isEmpty()) {
-              $image = $image_field->first()->getValue();
-              $media = Media::load($image['target_id']);
-              if ($media) {
-                $media_field = $media->get('field_media_image')
-                  ->first()
-                  ->getValue();
-                $file = File::load($media_field['target_id']);
-                $uri = $file->getFileUri();
-                $alt = ($media_field['alt'] ? $media_field['alt'] : '');
-                $image = [
-                  '#theme' => 'image_style',
-                  '#width' => NULL,
-                  '#height' => NULL,
-                  '#style_name' => $style,
-                  '#uri' => $uri,
-                  '#alt' => $alt,
-                  '#weight' => -1,
-                  '#attributes' => [
-                    'class' => 'node-image',
-                  ],
-                ];
-                $variables["content"]['node_image'] = $image;
-              }
-            }
-            break;
-        }
-        break;
-    }
-  }
-}
-
-/**
  * Implements hook_form_BASE_FORM_ID_alter() for menu_link_content_form.
  */
 function sitenow_form_menu_link_content_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
