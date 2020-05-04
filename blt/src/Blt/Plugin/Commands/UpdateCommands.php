@@ -492,4 +492,31 @@ EOD;
     $this->setSchemaVersion(1012);
   }
 
+  /**
+   * Update 1013.
+   *
+   * @Update(
+   *   version = "1013",
+   *   description = "Update drush aliases to set files rsync target."
+   * )
+   */
+  protected function update1013() {
+    $root = $this->getConfigValue('repo.root');
+    $sites = Multisite::getAllSites($root);
+
+    foreach ($sites as $site) {
+      $id = Multisite::getIdentifier("https://{$site}");
+      $file = "{$root}/drush/sites/{$id}.site.yml";
+
+      $yaml = YamlMunge::parseFile($file);
+
+      foreach (['local', 'dev', 'test', 'prod'] as $env) {
+        $yaml[$env]['paths']['files'] = "sites/{$site}/files";
+      }
+
+      file_put_contents($file, Yaml::dump($yaml, 10, 2));
+    }
+
+    $this->setSchemaVersion(1013);
+  }
 }
