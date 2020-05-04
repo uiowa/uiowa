@@ -2,8 +2,8 @@
 
 .page-header .container, .block-system-main-block {
   max-width: 100%;
-  padding-right: 20px;
-  padding-left: 20px;
+  padding-right: 0;
+  padding-left: 0;
   margin-right: auto;
   margin-left: auto;
 }
@@ -47,6 +47,7 @@ details summary {
   background-color: #EDECEB;
   font-weight: bold;
   padding: 0.5em;
+  margin-bottom: 0.5em;
 }
 .entity-content-form-revision-information {
   margin-top: 1rem;
@@ -55,7 +56,10 @@ details summary {
   background-color: #ededed;
   border-color: #d4d4d4;
 }
-
+/* Submit Button */
+#edit-submit {
+  width: 100%;
+}
 /* Lockup Preview */
 #lockup-preview {
   display: flex;
@@ -240,4 +244,9 @@ details summary {
 #edit-moderation-state-0  .form-item-moderation-state-0-current,
 #edit-moderation-state-0  .form-item-moderation-state-0-state {
   flex: none;
+}
+/* Page Title */
+.page-title {
+  margin-bottom: .3em;
+  margin-top: 0;
 }
