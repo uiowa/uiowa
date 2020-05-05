@@ -55,6 +55,9 @@ function uids_base_preprocess_html(&$variables) {
     unset($variables['page_bottom']['uiowa_footer']);
   }
 
+  // Get header type for setting sticky padding for tertiary header.
+  $variables['header_type'] = theme_get_setting('header.type');
+
   // Set a variable for whether layout builder is enabled.
   $variables['layout_builder_enabled'] = FALSE;
 
