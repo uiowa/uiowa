@@ -197,8 +197,17 @@
   }
 }
 
+// Card spacing
 
+.card__author + .field--name-field-card-body {
+  margin-top: $md;
+}
 
+.field--name-field-card-body {
+  p + p {
+    margin-top: $md;
+  }
+}
 
 // paragraphs
 
@@ -208,7 +217,9 @@
   }
 
   &.paragraph--type--card {
-    margin-bottom: 3rem;
+    @include breakpoint(sm) {
+      margin-bottom: 2.5rem;
+    }
   }
 }
 
@@ -217,11 +228,13 @@
   display: flex;
   overflow: hidden;
   padding-bottom: 0;
-  padding-top: 3rem;
+  @include breakpoint(sm) {
+    padding-top: 1.5rem;
+  }
   margin-bottom: 0;
 
-  &:first-child {
-    padding-top: 1.5rem;
+  &.has-section-image {
+    padding-top: 0;
   }
 
   &.bg-light,
@@ -235,6 +248,7 @@
     }
   }
 }
+
 
 .col-md-12.paragraph--type--text {
   //padding-top: $desktop-width-gutter;
