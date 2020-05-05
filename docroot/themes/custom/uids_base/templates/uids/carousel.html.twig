@@ -1,0 +1,9 @@
+{{ attach_library('uids_base/carousel') }}
+<div class="uids-carousel" role="tablist">
+  {% for key, item in carousel_items %}
+    {# @todo How to set the h tag correctly? #}
+    <div class="uids-carousel__content">
+      {{ item.content }}
+    </div>
+  {% endfor %}
+</div>

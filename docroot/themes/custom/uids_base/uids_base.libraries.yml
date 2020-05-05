@@ -59,19 +59,28 @@ off-canvas:
       assets/css/components/global/menus/off-canvas/off-canvas.css: { preprocess: false }
   js:
     uids/components/03 - global/menus/off-canvas/off-canvas.js: { preprocess: false  }
-accordions:
+header-sticky:
+  js:
+    uids/components/03 - global/header/header.js: { preprocess: false  }
+accordion:
   css:
     component:
       assets/css/components/elements/accordions/accordions.css: { preprocess: false }
   js:
     uids/components/01 - elements/accordions/accordions.js: { preprocess: false  }
-header-sticky:
-  js:
-    uids/components/03 - global/header/header.js: { preprocess: false  }
 banner:
   css:
     component:
       assets/css/components/blocks/banner-block/banner-block.css: { preprocess: false }
+carousel:
+  css:
+    theme:
+      /libraries/slick-carousel/slick/slick.scss: {}
+      /libraries/slick-carousel/slick//slick-theme.scss: {}
+  #      css.custom.css: {}
+  js:
+    /libraries/slick-carousel/slick/slick.min.js: { minified.true }
+    assets/js/slick.behavior.js: {}
 video:
   css:
     component:

@@ -52,9 +52,9 @@
 ]
 %}
 
-{% set block_accordion = {
-  'accordion_items': items,
+{% set block_carousel = {
+  'carousel_items': items,
   'classes':  classes
 }%}
 
-{{ include ('@uids_base/uids/accordion.html.twig', block_accordion, with_context = false) }}
+{{ include ('@uids_base/uids/carousel.html.twig', block_carousel, with_context = false) }}

@@ -1,0 +1,24 @@
+{{ attach_library('uids_base/accordion') }}
+<div class="uids-accordion
+  {# @todo Implement accordion_variant #}
+  {% if accordion.variant %} uids-accordion--{{ accordion.variant }}{% endif %}"
+     role="tablist"
+     aria-multiselectable="single"
+>
+  {% for key, item in accordion_items %}
+    {# @todo How to set the h tag correctly? #}
+    <h2 class="uids-accordion__heading">
+      <button class="uids-accordion__button"
+              role="tab"
+              aria-selected="{{ key == 0 | default('false') }}"
+              aria-expanded="{{ key == 0 | default('false') }}"
+      >
+        {{ item.label }}
+        <i aria-hidden="true" focusable="false" class="fas fa-chevron-up"></i>
+      </button>
+    </h2>
+    <div class="uids-accordion__content">
+      {{ item.content }}
+    </div>
+  {% endfor %}
+</div>
