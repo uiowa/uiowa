@@ -1,3 +1,16 @@
 @import "assets/scss/_variables.scss";
 @import "assets/scss/_utilities.scss";
 @import "components/01 - elements/alerts/_alerts.scss";
+
+
+// Alert adjustments for pages without layout builder
+.region-content .alert {
+  .layout-builder-disabled & {
+    border: 1px solid;
+    margin: $md 0;
+  }
+  .page-node-type-page.layout-builder-disabled & {
+    border-right: none;
+    border-left: none;
+  }
+}
