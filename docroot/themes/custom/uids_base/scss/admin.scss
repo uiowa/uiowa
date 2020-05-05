@@ -467,6 +467,11 @@ body.toolbar-vertical.toolbar-tray-open {
   @include breakpoint(menu) {
     padding-top: 120px !important;
   }
+  &.below {
+     @include breakpoint(menu) {
+       padding-top: 160px !important;
+     }
+  }
 }
 
 .header-sticky.scroll-down.toolbar-horizontal,
@@ -480,6 +485,11 @@ body.toolbar-vertical.toolbar-tray-open {
 .header-sticky.toolbar-horizontal.toolbar-tray-open {
   @include breakpoint(menu) {
     padding-top: 160px !important;
+  }
+  &.below {
+    @include breakpoint(menu) {
+      padding-top: 210px !important;
+    }
   }
 }
 
