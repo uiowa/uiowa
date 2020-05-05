@@ -3,7 +3,18 @@
 
 .embedded-entity {
   max-width: 100%;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0;
+  figure & {
+    margin-bottom: 0;
+  }
+  figcaption {
+    margin-top: $sm;
+  }
+}
+
+
+.embedded-entity + p {
+  margin-top: $md;
 }
 
 .embedded-entity.align-center {

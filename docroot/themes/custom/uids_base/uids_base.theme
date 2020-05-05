@@ -55,6 +55,9 @@ function uids_base_preprocess_html(&$variables) {
     unset($variables['page_bottom']['uiowa_footer']);
   }
 
+  // Get header type for setting sticky padding for tertiary header.
+  $variables['header_type'] = theme_get_setting('header.type');
+
   // Set a variable for whether layout builder is enabled.
   $variables['layout_builder_enabled'] = FALSE;
 
@@ -300,9 +303,14 @@ function uids_base_form_alter(&$form, $form_state, $form_id) {
  * Implements hook_form_FORM_ID_alter().
  */
 function uids_base_form_views_exposed_form_alter(&$form, $form_state, $form_id) {
+  // For all views with exposed filters.
+  if ($form_id == 'views_exposed_form') {
+    $form['#attributes']['class'][] = 'uids-content';
+  }
+  // For these views specifically.
   $view_ids = ['book_toc', 'book_search'];
   $view = $form_state->getStorage('view');
   if ($form_id == 'views_exposed_form' && in_array($view['view']->id(), $view_ids)) {
-    $form['#attributes']['class'][] = 'uids-content uids-search';
+    $form['#attributes']['class'][] = 'uids-search';
   }
 }
