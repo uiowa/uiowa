@@ -22,6 +22,9 @@
 
   .media {
     @include card-media-horizontal-right;
+    @include breakpoint(sm) {
+    margin-top: $lg;
+    }
   }
 
   .card__body {
@@ -46,6 +49,11 @@
   }
 
   .views-row {
+    /*
+    @include breakpoint(sm) {
+      border-bottom: none;
+    }
+    */
     @include list-group-item;
   }
 

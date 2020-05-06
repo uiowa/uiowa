@@ -37,37 +37,64 @@
  * @see template_preprocess_field()
  */
 #}
-{%
-  set classes = [
-    'field',
-    'field--name-' ~ field_name|clean_class,
-    'field--type-' ~ field_type|clean_class,
-    'field--label-' ~ label_display,
-  ]
-%}
-{%
-  set title_classes = [
-    'field__label',
-    label_display == 'visually_hidden' ? 'visually-hidden',
-  ]
-%}
+{% set classes = [
+  'field',
+  'field--name-' ~ field_name|clean_class,
+  'field--type-' ~ field_type|clean_class,
+  'field--label-' ~ label_display,
+] %}
+{% set title_classes = [
+  'field__label',
+  label_display == 'visually_hidden' ? 'visually-hidden',
+] %}
 
-{% if label_hidden %}
-  {% if multiple %}
+{% if entity_type == 'block_content' %}
+
+  {% if label_hidden %}
+    {% if multiple %}
       {% for item in items %}
         {{ item.content }}
       {% endfor %}
+    {% else %}
+      {% for item in items %}
+        {{ item.content }}
+      {% endfor %}
+    {% endif %}
   {% else %}
+    {% if multiple %}{% endif %}
     {% for item in items %}
       {{ item.content }}
     {% endfor %}
+    {% if multiple %}{% endif %}
   {% endif %}
+
 {% else %}
+
+  {% if label_hidden %}
     {% if multiple %}
+      <div{{attributes.addClass(classes,'field__items')}}>
+        {% for item in items %}
+          <div{{item.attributes.addClass('field__item')}}>{{ item.content }}</div>
+        {% endfor %}
+      </div>
+    {% else %}
+      {% for item in items %}
+        <div{{attributes.addClass(classes,'field__item')}}>{{ item.content }}</div>
+      {% endfor %}
     {% endif %}
-    {% for item in items %}
-      {{ item.content }}
-    {% endfor %}
-    {% if multiple %}
-    {% endif %}
+  {% else %}
+    <div{{attributes.addClass(classes)}}>
+      <div{{title_attributes.addclass(title_classes)}}>{{ label }}</div>
+      {% if multiple %}
+        <div class="field__items">
+        {% endif %}
+        {% for item in items %}
+          <div{{item.attributes.addClass('field__item')}}>{{ item.content }}</div>
+        {% endfor %}
+        {% if multiple %}
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+
 {% endif %}

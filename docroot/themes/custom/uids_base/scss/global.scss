@@ -3,7 +3,7 @@ $imgpath: '../../uids/assets/images';
 @import "../uids/assets/scss/_utilities.scss";
 @import "../uids/assets/scss/_fonts.scss";
 @import "../uids/assets/scss/_base.scss";
-@import url('https://use.fontawesome.com/releases/v5.8.2/css/all.css');
+
 
 .layout__container {
   .block-inline-blockuiowa-text-area {
@@ -27,6 +27,22 @@ $imgpath: '../../uids/assets/images';
   .layout__container .block-inline-blockuiowa-text-area {
     flex-basis: auto;
   }
+  .o-canvas__group {
+    -ms-flex-preferred-size: auto!important;
+    flex-basis: auto!important;
+  }
+  .logo-icon--tab {
+    height: 100px!important;
+  }
+  .logo-icon {
+    height: auto!important;
+  }
+  .card__body {
+    flex: auto!important;
+  }
+  #superfish-main-accordion {
+    position: relative!important;
+  }
 }
 
 .layout--onecol {
@@ -48,9 +64,14 @@ $imgpath: '../../uids/assets/images';
   max-width: 100%;
   margin: 0;
 }
+.path-node.layout-builder-disabled:not(.page-node-type-page) {
+  .node--view-mode-full {
+    margin-bottom: $lg;
+  }
+}
 
 .layout-builder-disabled main.page__container {
-  margin: $mobile-width-gutter;
+  margin: 0 $mobile-width-gutter $mobile-width-gutter;
 
   @include breakpoint(container) {
     margin: 0 auto;
