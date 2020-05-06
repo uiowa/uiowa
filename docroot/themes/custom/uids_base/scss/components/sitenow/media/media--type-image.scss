@@ -1,0 +1,40 @@
+@import "uids/assets/scss/_variables.scss";
+@import "uids/assets/scss/_utilities.scss";
+
+// Media alignment
+
+@media (min-width: 576px) {
+
+  .align-right.embedded-entity,
+  .align-right .embedded-entity {
+    margin-left: $gutter;
+  }
+
+  .align-left.embedded-entity,
+  .align-left .embedded-entity {
+    margin-right: $gutter;
+  }
+
+}
+
+
+.align-center {
+  text-align: center;
+}
+
+.embedded-entity.align-center {
+
+  .media--type-image,
+  .field--name-field-media-image {
+    margin: 0 auto;
+  }
+}
+
+.field--name-field-media-image {
+  min-width: 1px;
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}

@@ -1,0 +1,30 @@
+@import "uids/assets/scss/_variables.scss";
+@import "uids/assets/scss/_utilities.scss";
+
+.paragraph--type--webform {
+  padding-top: $desktop-width-gutter/2;
+  padding-bottom: $desktop-width-gutter/2;
+}
+
+.paragraph--type--webform.bg-yellow,
+.paragraph--type--webform.bg-light {
+  color: $dark-gray;
+
+  a:not(.btn):not(.alert-link) {
+    color: $secondary;
+    text-decoration: underline;
+
+    &:hover,
+    &:focus {
+      text-decoration: none;
+    }
+  }
+}
+
+.paragraph--type--webform.bg-dark {
+  color: $white;
+
+  a:not(.btn):not(.alert-link) {
+    color: $primary;
+  }
+}

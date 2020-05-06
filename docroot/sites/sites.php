@@ -1290,3 +1290,33 @@ $sites['cio.local.drupal.uiowa.edu'] = 'cio.uiowa.edu';
 $sites['cio.dev.drupal.uiowa.edu'] = 'cio.uiowa.edu';
 $sites['cio.stage.drupal.uiowa.edu'] = 'cio.uiowa.edu';
 $sites['cio.prod.drupal.uiowa.edu'] = 'cio.uiowa.edu';
+
+// Directory aliases for icsa-temp.uiowa.edu.
+$sites['icsa-temp.local.drupal.uiowa.edu'] = 'icsa-temp.uiowa.edu';
+$sites['icsa-temp.dev.drupal.uiowa.edu'] = 'icsa-temp.uiowa.edu';
+$sites['icsa-temp.stage.drupal.uiowa.edu'] = 'icsa-temp.uiowa.edu';
+$sites['icsa-temp.prod.drupal.uiowa.edu'] = 'icsa-temp.uiowa.edu';
+
+// Directory aliases for covidresponse.research.uiowa.edu.
+$sites['researchcovidresponse.local.drupal.uiowa.edu'] = 'covidresponse.research.uiowa.edu';
+$sites['researchcovidresponse.dev.drupal.uiowa.edu'] = 'covidresponse.research.uiowa.edu';
+$sites['researchcovidresponse.stage.drupal.uiowa.edu'] = 'covidresponse.research.uiowa.edu';
+$sites['researchcovidresponse.prod.drupal.uiowa.edu'] = 'covidresponse.research.uiowa.edu';
+
+// Directory aliases for techforum.uiowa.edu.
+$sites['techforum.local.drupal.uiowa.edu'] = 'techforum.uiowa.edu';
+$sites['techforum.dev.drupal.uiowa.edu'] = 'techforum.uiowa.edu';
+$sites['techforum.stage.drupal.uiowa.edu'] = 'techforum.uiowa.edu';
+$sites['techforum.prod.drupal.uiowa.edu'] = 'techforum.uiowa.edu';
+
+// Directory aliases for iwp.uiowa.edu.
+$sites['iwp.local.drupal.uiowa.edu'] = 'iwp.uiowa.edu';
+$sites['iwp.dev.drupal.uiowa.edu'] = 'iwp.uiowa.edu';
+$sites['iwp.stage.drupal.uiowa.edu'] = 'iwp.uiowa.edu';
+$sites['iwp.prod.drupal.uiowa.edu'] = 'iwp.uiowa.edu';
+
+// Directory aliases for uipress.uiowa.edu.
+$sites['uipress.local.drupal.uiowa.edu'] = 'uipress.uiowa.edu';
+$sites['uipress.dev.drupal.uiowa.edu'] = 'uipress.uiowa.edu';
+$sites['uipress.stage.drupal.uiowa.edu'] = 'uipress.uiowa.edu';
+$sites['uipress.prod.drupal.uiowa.edu'] = 'uipress.uiowa.edu';
