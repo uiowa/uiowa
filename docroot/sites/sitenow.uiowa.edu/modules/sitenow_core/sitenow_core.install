@@ -1,0 +1,17 @@
+<?php
+/**
+ * Install tasks.
+ */
+
+use Drupal\Core\Config\FileStorage;
+
+/**
+ * Import default config_ignore.settings to avoid deleting webforms.
+ */
+function sitenow_core_update_8001() {
+  $config_path = DRUPAL_ROOT . '/profiles/custom/sitenow/config/sync/';
+  $source = new FileStorage($config_path);
+  $config_storage = \Drupal::service('config.storage');
+  $config_storage->write('config_ignore.settings', $source->read('config_ignore.settings'));
+  drupal_flush_all_caches();
+}
