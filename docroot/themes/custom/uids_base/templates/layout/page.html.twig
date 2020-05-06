@@ -76,6 +76,8 @@
   {{ page.alert }}
 {% endif %}
 
+{{ page.content.messages }}
+
 <main role="main" {{ node_attributes.addClass(content_classes) }}>
 
   <a id="main-content" tabindex="-1"></a>
@@ -114,7 +116,6 @@
 
   {{ page.content.uids_base_local_tasks }}
   {{ page.content.uids_base_local_actions }}
-  {{ page.content.messages }}
   {{ page.content.uids_base_content }}
 
   {# /.layout-content #}
