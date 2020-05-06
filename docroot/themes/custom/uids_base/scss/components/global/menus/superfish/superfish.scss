@@ -2,12 +2,9 @@
 @import "assets/scss/_utilities.scss";
 @import "components/03 - global/menus/superfish/_superfish.scss";
 
-.block-superfish .sf-style-none ul,
-.block-superfish .menu ul,
-.region-primary-menu .sf-style-none ul,
-.region-primary-menu .menu ul {
+.block-superfish .sf-menu.sf-horiz-menu ul,
+.block-superfish .sf-menu.sf-mega-menu ul {
 
-  /*background: black !important;*/
   @include breakpoint(menu) {
     background: #f1f1f1 !important;
   }
@@ -57,7 +54,9 @@ ul.sf-menu.sf-mega-menu li {
   }
 }
 
-.block-superfish .menu.sf-mega-menu ul li a {
+.block-superfish .menu.sf-mega-menu ul li a,
+.block-superfish .menu.sf-mega-menu ul li span,
+.block-superfish .menu.sf-mega-menu ul li .nolink {
   padding: .325rem 0;
   font-size: 1.2rem;
 }
@@ -78,40 +77,52 @@ ul.sf-multicolumn ol {
   }
 }
 
+// Override superfish mega menu widths
 ul.sf-menu.sf-mega-menu li.sf-multicolumn-column:nth-child(1):nth-last-child(7),
 ul.sf-menu.sf-mega-menu li.sf-multicolumn-column:nth-child(2):nth-last-child(6),
 ul.sf-menu.sf-mega-menu li.sf-multicolumn-column:nth-child(3):nth-last-child(5),
 ul.sf-menu.sf-mega-menu li.sf-multicolumn-column:nth-child(4):nth-last-child(4),
 ul.sf-menu.sf-mega-menu li.sf-multicolumn-column:nth-child(5):nth-last-child(3),
 ul.sf-menu.sf-mega-menu li.sf-multicolumn-column:nth-child(6):nth-last-child(2),
-ul.sf-menu.sf-mega-menu li.sf-multicolumn-column:nth-child(7):nth-last-child(1) {
+ul.sf-menu.sf-mega-menu li.sf-multicolumn-column:nth-child(7):nth-last-child(1),
+ul.sf-menu.sf-mega-menu li.sf-multicolumn-column:nth-child(1):nth-last-child(6),
+ul.sf-menu.sf-mega-menu li.sf-multicolumn-column:nth-child(2):nth-last-child(5),
+ul.sf-menu.sf-mega-menu li.sf-multicolumn-column:nth-child(3):nth-last-child(4),
+ul.sf-menu.sf-mega-menu li.sf-multicolumn-column:nth-child(4):nth-last-child(3),
+ul.sf-menu.sf-mega-menu li.sf-multicolumn-column:nth-child(5):nth-last-child(2),
+ul.sf-menu.sf-mega-menu li.sf-multicolumn-column:nth-child(6):nth-last-child(1) {
   @include breakpoint(menu) {
     width: 50%;
   }
 }
 
-
 .block-superfish .menu ul.sf-multicolumn {
-  box-shadow: none;
-  box-shadow: 0 4px 2px -2px gainsboro;
+  a:hover {
+    text-decoration: underline;
+  }
 }
 
 // horizontal only
 
 ul.sf-menu.sf-horiz-menu li li a,
-ul.sf-menu.sf-horiz-menu li li span {
-  padding: .45rem 1rem;
+ul.sf-menu.sf-horiz-menu li li span,
+ul.sf-menu.sf-horiz-menu li li .nolink {
   font-weight: 400;
 
   @include breakpoint(menu) {
     font-size: 1rem;
+    padding: .45rem 1rem;
+
+    &:hover {
+      background: #e1e1e1;
+    }
   }
 }
 
 ul.sf-menu.sf-horiz-menu ul {
   @include breakpoint(menu) {
-    padding-top: $sm !important;
-    padding-bottom: $md !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
   }
 }
 
@@ -144,10 +155,6 @@ ul.sf-menu.sf-horizontal>li .nolink:after {
   transition: 300ms;
 }
 
-ul.sf-menu.sf-horizontal>li>a.is-active {
-  //color: #666;
-}
-
 ul.sf-menu.sf-horizontal>li>a.is-active:after,
 ul.sf-menu.sf-horizontal>li.active-trail>.sf-depth-1.menuparent:after {
   position: absolute;
@@ -155,7 +162,7 @@ ul.sf-menu.sf-horizontal>li.active-trail>.sf-depth-1.menuparent:after {
   left: 0;
   width: 100%;
   height: 5px;
-  background: #0202021f;
+  background: #e1e1e1;
 }
 
 ul.sf-menu.sf-horizontal>li.active-trail>.sf-depth-1.menuparent:hover:after {
@@ -176,7 +183,6 @@ ul.sf-menu.sf-horizontal>li:focus>.nolink:focus:after {
   background: #FFCD00;
 }
 
-ul.sf-menu.sf-horizontal li ul a:hover,
 ul.sf-menu.sf-horizontal li ul a:focus {
   text-decoration: underline;
 }
@@ -215,8 +221,7 @@ ul.sf-menu.sf-horizontal>li>.sf-depth-1.menuparent {
 }
 
 .sf-accordion li.sf-expanded .sf-depth-1.menuparent:before {
-  content: "\f106";
-  font-size: 1.4rem;
+  content: "\f077";
 }
 
 .sf-accordion li.sf-expanded li.sf-depth-2.menuparent .sf-depth-2.menuparent:before,
@@ -256,7 +261,6 @@ ul.sf-menu.sf-horizontal>li>.sf-depth-1.menuparent {
 
 .sf-accordion li.sf-expanded li.sf-depth-2.menuparent.sf-expanded .sf-depth-2.menuparent:before {
   content: "\f0d8";
-  // font-size: 1.4rem;
 }
 
 .sf-accordion-toggle {
@@ -319,9 +323,6 @@ ul.sf-accordion ul:focus-within {
 
 .block-superfish .menu li a,
 .block-superfish .menu li .nolink {
-  &.is-active {
-    //text-decoration: underline;
-  }
 
   >.is-active {
     text-decoration: underline;
@@ -332,86 +333,73 @@ ul.sf-accordion ul:focus-within {
     text-decoration: none;
   }
 
-  &:focus,
-  &:hover {
+  &:focus {
     text-decoration: underline;
+    cursor: pointer;
+  }
+
+  &:hover {
     cursor: pointer;
   }
 }
 
-.block-superfish .menu li.active-trail.menuparent ul {
-  .is-active {
+.block-superfish .menu.sf-accordion li li a,
+.block-superfish .menu.sf-accordion li li .nolink {
+  &:hover {
     text-decoration: underline;
   }
 }
 
-.block-superfish .menu.sf-accordion li a.is-active.menuparent,
-.block-superfish .menu.sf-accordion li .nolink.is-active.menuparent {
-  //.block-superfish .menu.sf-accordion li.active-trail.menuparent .menuparent
-  text-decoration: underline;
-}
+.block-superfish .menu.sf-horiz-menu li.active-trail.menuparent ul {
+  &:hover {
+    background: #e1e1e1;
+  }
 
-/*
-.block-superfish .menu.sf-accordion li ul a.is-active,
-.block-superfish .menu.sf-accordion li ul .nolink.is-active {
-  padding-left: 30px;
-  border-left: 1px solid #ccc;
-  &:after {
-    left: 0;
-    top: 50%;
-    border: solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none;
-    border-color: transparent;
-    border-left-color: #ccc;
-    border-width: 10px;
-    margin-top: -10px;
+  .is-active {
+    background: #e1e1e1;
   }
 }
-*/
 
+.block-superfish .menu.sf-mega-menu li.active-trail.menuparent ul {
+  &:hover {
+    background: #ccc;
+  }
 
-/*
-ul.sf-menu.sf-accordion .active-trail.menuparent .menuparent:before {
-  content: "\f13a";
-  font-size: 1.5rem;
-  margin-top: -0.9rem;
-  margin-right: -5px;
-  color: #999;
+  .is-active {
+    &:before {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 80%;
+      height: 4px;
+      background-color: #ccc;
+      transform-origin: center;
+      transform: translate(0, 0) scaleX(1);
+    }
+  }
 }
 
-ul.sf-menu.sf-accordion .active-trail.menuparent.sf-expanded .menuparent:before {
-  content: "\f139";
+.block-superfish .menu.sf-accordion li a,
+.block-superfish .menu.sf-accordion li .nolink {
+  line-height: 1.3;
 }
-*/
 
+.menu.sf-accordion ul li a.is-active {
+  color: $secondary;
+}
 
-ul.sf-menu.sf-accordion .active-trail.menuparent.sf-depth-1>.menuparent:after {
-  left: 0;
-  top: 50%;
-  border: solid transparent;
-  content: " ";
-  height: 0;
-  width: 0;
+ul.sf-menu.sf-accordion .active-trail.menuparent.sf-depth-1>.menuparent:after,
+ul.sf-menu.sf-accordion .active-trail.sf-no-children.sf-depth-1>.is-active:after {
+  content: '';
   position: absolute;
-  pointer-events: none;
-  border-color: transparent;
-  border-left-color: $primary;
-  border-width: 10px;
-  margin-top: -10px;
-}
-
-
-ul.sf-menu.sf-accordion .active-trail.menuparent.sf-depth-1>.menuparent {
-  padding-left: 30px;
-}
-
-.block-superfish .menu.sf-accordion li a.is-active.menuparent,
-.block-superfish .menu.sf-accordion li .nolink.is-active.menuparent {
-  //text-decoration: underline;
+  left: 0;
+  bottom: 6px;
+  width: 60%;
+  height: 4px;
+  background-color: #FFCD00;
+  transform-origin: center;
+  transform: translate(-50%, 0) scaleX(1);
 }
 
 .menu.sf-accordion ul li.sf-depth-2.menuparent ul {
@@ -433,23 +421,28 @@ ul.sf-menu.sf-accordion .active-trail.menuparent.sf-depth-1>.menuparent {
   }
 }
 
-
 .header--tertiary .site_name--wrapper {
   border-bottom: 1px solid #e6e5e5;
 }
 
 @media (min-width: 855px) {
-
   .menu-horizontal.nav--header--primary,
   .menu-horizontal.nav--header--secondary {
     border-bottom: 1px solid #e6e5e5;
   }
 }
 
-
-
-.block-superfish .menu li span {
+.block-superfish .menu.sf-accordion li span {
   font-weight: 600;
   display: block;
-  padding: .5rem 0;
+}
+
+.block-superfish .menu.sf-mega-menu li li span {
+  font-weight: 400;
+}
+
+.menu.sf-accordion>li>a,
+.menu.sf-accordion>li>.nolink,
+.menu.sf-accordion>li>span {
+  padding: .9rem 0;
 }
