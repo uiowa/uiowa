@@ -81,28 +81,7 @@
   <a id="main-content" tabindex="-1"></a>
   {# link is in html.html.twig #}
 
-  {% if node_image %}
-
-    {% embed "@uids_base/uids/blocks/hero.html.twig" with {
-      hero_alignment : 'bottom'
-    } %}
-
-      {% block hero_image %}
-        {{ node_image }}
-      {% endblock %}
-
-      {% block hero_content %}
-
-        {% if page.breadcrumb %}
-          {{ page.breadcrumb }}
-        {% endif %}
-
-        <h1 class="bold-headline--serif bold-headline">{{ node.label }}</h1>
-
-      {% endblock %}
-    {% endembed %}
-
-  {% else %}
+  {% if not node_image %}
 
     {% if page.breadcrumb %}
       {{ page.breadcrumb }}
