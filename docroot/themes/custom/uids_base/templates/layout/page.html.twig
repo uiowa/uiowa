@@ -42,8 +42,6 @@
  * @see html.html.twig
  */
 #}
-{% set featured_image =  file_url(node_image[0]['#media'].field_media_image.entity.uri.value)%}
-
 {% if logged_in %}
   {{ attach_library('uids_base/admin') }}
 {% endif %}
@@ -90,7 +88,7 @@
     } %}
 
       {% block hero_image %}
-        <img src="{{ featured_image }}"/>
+        {{ node_image }}
       {% endblock %}
 
       {% block hero_content %}
