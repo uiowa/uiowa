@@ -547,10 +547,16 @@ EOD
 
     // Re-generate the Drush alias so it is more useful.
     $drush_alias = YamlMunge::parseFile("{$root}/drush/sites/{$app}.site.yml");
+    $files_path = "sites/{$host}/files";
+
     $drush_alias['local']['uri'] = $local;
     $drush_alias['dev']['uri'] = $dev;
     $drush_alias['test']['uri'] = $test;
     $drush_alias['prod']['uri'] = $host;
+
+    foreach (['local', 'dev', 'test', 'prod'] as $env) {
+      $drush_alias[$env]['paths']['files'] = $files_path;
+    }
 
     $this->taskWriteToFile("{$root}/drush/sites/{$id}.site.yml")
       ->text(Yaml::dump($drush_alias, 10, 2))
