@@ -5,18 +5,17 @@ project:
   machine_name: gradcogscilang
   human_name: cogscilang.grad.uiowa.edu
   profile:
-    name: collegiate
+    name: sitenow
 drush:
   aliases:
     local: self
-    remote: gradcogscilang.prod
+    remote: gradcogscilang-temp.prod
 drupal:
   db:
     database: cogscilang_grad_uiowa_edu
 cm:
-  strategy: none
   core:
-    install_from_config: false
     dirs:
       sync:
-        path: '../config/cogscilang.grad.uiowa.edu'
+        path: profiles/custom/sitenow/config/sync
+    install_from_config: true
