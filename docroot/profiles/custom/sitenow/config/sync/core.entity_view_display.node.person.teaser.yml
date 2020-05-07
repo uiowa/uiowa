@@ -24,6 +24,15 @@ targetEntityType: node
 bundle: person
 mode: teaser
 content:
+  field_image:
+    type: entity_reference_entity_view
+    weight: 6
+    region: content
+    label: hidden
+    settings:
+      view_mode: large__square
+      link: false
+    third_party_settings: {  }
   field_person_credential:
     type: string
     weight: 0
@@ -69,7 +78,6 @@ content:
     third_party_settings: {  }
 hidden:
   content_moderation_control: true
-  field_image: true
   field_person_bio: true
   field_person_first_name: true
   field_person_hide: true
