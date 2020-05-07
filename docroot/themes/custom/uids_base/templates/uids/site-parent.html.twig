@@ -1,0 +1,12 @@
+{% if parent_name %}
+  {# @todo Remove 'uiowa-bar__slogan' class when UIDS is updated to use 'uiowa-bar__parent-site'. #}
+  <div class="uiowa-bar__slogan uiowa-bar__parent-site">
+    {% if parent_url %}
+    <a href="{{ parent_url }}">
+      {% endif %}
+      {{ parent_name }}
+      {% if parent_url %}
+    </a>
+    {% endif %}
+  </div>
+{% endif %}

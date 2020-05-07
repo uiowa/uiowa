@@ -6,7 +6,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Path\AliasStorage;
+use Drupal\path_alias\AliasRepositoryInterface;
 use Drupal\pathauto\AliasCleanerInterface;
 use Drupal\pathauto\PathautoGenerator;
 use Drupal\views\Entity\View;
@@ -27,9 +27,9 @@ class SettingsForm extends ConfigFormBase {
   /**
    * The alias checker.
    *
-   * @var \Drupal\Core\Path\AliasStorage
+   * @var \Drupal\path_alias\AliasRepositoryInterface
    */
-  protected $aliasStorage;
+  protected $aliasRepository;
 
   /**
    * The EntityTypeManager service.
@@ -52,17 +52,17 @@ class SettingsForm extends ConfigFormBase {
    *   The config factory.
    * @param \Drupal\pathauto\AliasCleanerInterface $pathauto_alias_cleaner
    *   The alias cleaner.
-   * @param \Drupal\Core\Path\AliasStorage $aliasStorage
+   * @param \Drupal\path_alias\AliasRepositoryInterface $aliasRepository
    *   The alias checker.
    * @param \Drupal\Core\Entity\EntityTypeManager $entityTypeManager
    *   The EntityTypeManager service.
    * @param \Drupal\pathauto\PathautoGenerator $pathAutoGenerator
    *   The PathautoGenerator service.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, AliasCleanerInterface $pathauto_alias_cleaner, AliasStorage $aliasStorage, EntityTypeManager $entityTypeManager, PathautoGenerator $pathAutoGenerator) {
+  public function __construct(ConfigFactoryInterface $config_factory, AliasCleanerInterface $pathauto_alias_cleaner, AliasRepositoryInterface $aliasRepository, EntityTypeManager $entityTypeManager, PathautoGenerator $pathAutoGenerator) {
     parent::__construct($config_factory);
     $this->aliasCleaner = $pathauto_alias_cleaner;
-    $this->aliasStorage = $aliasStorage;
+    $this->aliasRepository = $aliasRepository;
     $this->entityTypeManager = $entityTypeManager;
     $this->pathAutoGenerator = $pathAutoGenerator;
   }
@@ -74,7 +74,7 @@ class SettingsForm extends ConfigFormBase {
     return new static(
       $container->get('config.factory'),
       $container->get('pathauto.alias_cleaner'),
-      $container->get('path.alias_storage'),
+      $container->get('path_alias.repository'),
       $container->get('entity_type.manager'),
       $container->get('pathauto.generator')
     );
@@ -203,7 +203,7 @@ class SettingsForm extends ConfigFormBase {
 
     // Clean up path first.
     $path = $this->aliasCleaner->cleanString($path);
-    $path_exists = $this->aliasStorage->aliasExists('/' . $path, 'en');
+    $path_exists = $this->aliasRepository->lookupByAlias('/' . $path, 'en');
 
     if ($path_exists) {
       $form_state->setErrorByName('path', $this->t('This path is already in-use.'));

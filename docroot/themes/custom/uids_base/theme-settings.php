@@ -7,31 +7,40 @@
 
 use Drupal\block\Entity\Block;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 
 /**
  * Implements hook_form_FORM_ID_alter().
  */
 function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $form_state) {
 
+  $config = \Drupal::config('system.site');
+  $has_parent = $config->get('has_parent') ?: 0;
   $form['header'] = [
-    '#type'         => 'details',
-    '#title'        => t('Header settings'),
-    '#description'  => t('Configure the overall type of header, the style of navigation to be used, and whether or not the header is sticky.'),
+    '#type' => 'details',
+    '#title' => t('IOWA bar settings'),
+    '#description' => t('Configure the overall type of header, the style of navigation to be used, and whether or not the header is sticky.'),
     '#weight' => -1000,
     '#open' => TRUE,
     '#tree' => TRUE,
   ];
   $form['header']['type'] = [
     '#type' => 'select',
-    '#title' => t('Header Type'),
+    '#title' => t('Site name display'),
     '#description' => t('Select an option'),
     '#options' => [
-      'header--primary' => t('IOWA'),
-      'header--secondary' => t('College'),
-      'header--tertiary' => t('Department'),
+      'inline' => t('Display inline with the IOWA bar'),
+      'below' => t('Display below the IOWA bar'),
     ],
     '#default_value' => theme_get_setting('header.type'),
   ];
+  if ($has_parent) {
+    $form['header']['type']['#disabled'] = TRUE;
+    $form['header']['type']['#default_value'] = 'below';
+    $form['header']['type']['#description'] = t('This option is disabled because a parent organization was set on the <a href=":site-settings-page">site settings page</a>. When you have a parent organization, your site name will <em>always</em> display on the line below. You will need to remove the parent organization information to select another option.', [
+      ':site-settings-page' => Url::fromRoute('system.site_information_settings')->toString(),
+    ]);
+  }
   $form['header']['nav_style'] = [
     '#type' => 'select',
     '#title' => t('Header navigation style'),
@@ -48,6 +57,13 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     '#title' => t('Sticky header'),
     '#description' => t('A sticky header will continue to be available as the user scrolls down the page. It will hide on scroll down and show when the user starts to scroll up.'),
     '#default_value' => theme_get_setting('header.sticky'),
+    '#states' => [
+      'visible' => [
+        ':input[name="header[nav_style]"]' => [
+          'value' => 'toggle',
+        ],
+      ],
+    ],
   ];
   $form['layout'] = [
     '#type' => 'details',
@@ -96,12 +112,18 @@ function uids_base_form_system_theme_settings_submit(&$form, FormStateInterface 
     ->execute();
 
   foreach ($ids as $id) {
+    // Skip 'mainnavigation' block.
+    if (strpos($id, 'superfish') === FALSE) {
+      continue;
+    }
     $status = 0;
     $block = Block::load($id);
     if (strpos($id, $nav_style) !== FALSE) {
       $status = 1;
     }
-    $block->setStatus($status);
-    $block->save();
+    if ($block->status() != $status) {
+      $block->setStatus($status);
+      $block->save();
+    }
   }
 }

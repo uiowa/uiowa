@@ -1,0 +1,23 @@
+uuid: e9ff26c6-6168-402e-8291-6dfc5b5bff3e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_project_finished
+    - node.type.project
+id: node.project.field_project_finished
+field_name: field_project_finished
+entity_type: node
+bundle: project
+label: Finished
+description: 'Placing a checkbox in this field signifies that the project has been completed and will show on the Finished Projects page.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: '1'
+  off_label: '0'
+field_type: boolean

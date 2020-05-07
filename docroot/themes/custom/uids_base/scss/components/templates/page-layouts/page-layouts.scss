@@ -43,10 +43,9 @@ main {
   @include breakpoint(menu) {
     padding-top: 80px;
   }
-}
-
-.header-sticky.scroll-down {
-  @include breakpoint(menu) {
-    padding-top: 0px;
+  &.below {
+    @include breakpoint(menu) {
+      padding-top: 130px;
+    }
   }
 }

@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * @file
+ * Install tasks.
+ */
+
+/**
+ * Delete old config items.
+ */
+function uiowa_alerts_update_8001() {
+  $config = \Drupal::configFactory()->getEditable('uiowa_alerts.settings');
+  $config
+    ->delete('source')
+    ->delete('no_alerts_message')
+    ->save();
+}

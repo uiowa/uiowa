@@ -67,7 +67,7 @@ ul.sf-menu.sf-mega-menu li {
 ul.sf-multicolumn ol {
   display: flex;
   flex-wrap: wrap;
-  width: 50%;
+  width: 70%;
   padding: $lg 0;
 
   li {
@@ -258,5 +258,30 @@ ul.sf-accordion ul:focus-within {
   &:focus,
   &:hover {
     text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
+
+// Todo move back to UIDS
+.menu-horizontal {
+  border-bottom: 1px solid #e6e5e5;
+}
+
+.menu-horizontal.header--secondary {
+  @include breakpoint(menu) {
+    margin-top: 5px;
+  }
+}
+
+
+.header--tertiary .site_name--wrapper {
+  border-bottom: 1px solid #e6e5e5;
+}
+
+@media (min-width: 855px) {
+  .menu-horizontal.nav--header--primary,
+  .menu-horizontal.nav--header--secondary {
+    border-bottom: 1px solid #e6e5e5;
   }
 }
