@@ -471,3 +471,22 @@ ul.sf-menu.sf-accordion .active-trail.sf-no-children.sf-depth-1>.is-active {
   position: unset;
   padding-right: 0;
 }
+
+
+.block-superfish .menu>li>.sf-depth-1.menuparent:before {
+  position: absolute;
+  top: 50%;
+  right: 30px;
+}
+
+// ie11
+@media all and (-ms-high-contrast: none),
+(-ms-high-contrast: active) {
+  .block-superfish .menu.sf-accordion>li>.sf-depth-1.menuparent:before {
+    right: -30px;
+  }
+
+  .block-superfish .menu.sf-horizontal>li>.sf-depth-1.menuparent:before {
+    right: 0;
+  }
+}
