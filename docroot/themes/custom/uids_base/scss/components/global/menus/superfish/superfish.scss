@@ -44,7 +44,9 @@
 }
 
 ul.sf-menu.sf-mega-menu li {
-  position: unset;
+  @include breakpoint(menu) {
+    position: unset;
+  }
 }
 
 .menu-horizontal .block-superfish .menu ul li a {
@@ -337,6 +339,7 @@ ul.sf-accordion ul:focus-within {
   &:focus {
     text-decoration: underline;
     cursor: pointer;
+    outline: none;
   }
 
   &:hover {
@@ -357,7 +360,9 @@ ul.sf-accordion ul:focus-within {
   }
 
   .is-active {
-    background: #e1e1e1;
+    @include breakpoint(menu) {
+      background: #e1e1e1;
+    }
   }
 }
 
@@ -368,15 +373,17 @@ ul.sf-accordion ul:focus-within {
 
   .is-active {
     &:before {
-      content: '';
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 60%;
-      height: 4px;
-      background-color: #e1e1e1;
-      transform-origin: center;
-      transform: translate(0, 0) scaleX(1);
+      @include breakpoint(menu) {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 60%;
+        height: 4px;
+        background-color: #e1e1e1;
+        transform-origin: center;
+        transform: translate(0, 0) scaleX(1);
+      }
     }
   }
 }
@@ -391,16 +398,7 @@ ul.sf-accordion ul:focus-within {
 }
 
 ul.sf-menu.sf-accordion .active-trail.menuparent.sf-depth-1>.menuparent,
-ul.sf-menu.sf-accordion .active-trail.sf-no-children.sf-depth-1>.is-active  {
- /* content: '';
-  position: absolute;
-  left: 0;
-  bottom: 6px;
-  width: 100%;
-  height: 4px;
-  background-color: #FFCD00;
-  transform-origin: center;
-  transform: translate(0, 0) scaleX(1);*/
+ul.sf-menu.sf-accordion .active-trail.sf-no-children.sf-depth-1>.is-active {
   border-bottom: 4px solid $primary;
   padding-bottom: .3rem;
   margin-bottom: .6rem;
@@ -430,13 +428,14 @@ ul.sf-menu.sf-accordion .active-trail.sf-no-children.sf-depth-1>.is-active  {
 }
 
 @media (min-width: 855px) {
+
   .menu-horizontal.nav--header--primary,
   .menu-horizontal.nav--header--secondary {
     border-bottom: 1px solid #e6e5e5;
   }
 }
 
-.block-superfish .menu.sf-accordion li > span {
+.block-superfish .menu.sf-accordion li>span {
   font-weight: 600;
   display: inline-block;
 }
@@ -455,18 +454,20 @@ ul.sf-menu.sf-accordion .active-trail.sf-no-children.sf-depth-1>.is-active  {
   display: inline-block;
 }
 
-.menu.sf-accordion>li>a::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 100%;
-    height: 100%;
+.menu.sf-accordion>li>a::after,
+.menu.sf-accordion>li>span::after,
+.menu.sf-accordion>li>.nolink::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .block-superfish .menu.sf-accordion>li>.sf-depth-1.menuparent {
-    position: unset;
-    padding-right: 0;
+  position: unset;
+  padding-right: 0;
 }
