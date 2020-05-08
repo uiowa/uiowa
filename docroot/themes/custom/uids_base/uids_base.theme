@@ -254,6 +254,21 @@ function uids_base_preprocess_paragraph__card(&$variables) {
 }
 
 /**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function uids_base_theme_suggestions_block_alter(array &$suggestions, array $variables) {
+  $test = 'thing';
+  if(isset($variables['elements']['content']['#block_content']) && $variables['elements']['content']['#block_content'] instanceof \Drupal\block_content\BlockContentInterface) {
+    $block = $variables['elements']['content']['#block_content'];
+
+    $bundle = $block->bundle();
+    if($bundle == 'uiowa_banner') {
+      $suggestions[] = 'block__pre_footer_contact_block';
+    }
+  }
+}
+
+/**
  * Implements hook_theme_suggestions_HOOK().
  */
 function uids_base_theme_suggestions_field_alter(array &$suggestions, array $variables) {
