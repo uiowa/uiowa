@@ -22,8 +22,9 @@
     "node-sass": "^4.14.0"
   },
   "scripts": {
+    "prebuild": "mkdir -p assets/css/critical",
     "build": "gulp --production",
-    "postbuild": "critical https://uiowa.stage.drupal.uiowa.edu/contact --base assets/css/ > assets/css/critical.css",
+    "postbuild": "critical https://uiowa.stage.drupal.uiowa.edu/about-iowa --base assets/css/ > assets/css/critical/default-critical.css",
     "copy": "gulp copy",
     "watch": "gulp watch --development"
   }
