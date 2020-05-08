@@ -7,7 +7,6 @@ dependencies:
     - field.storage.node.field_project_date
     - node.type.project
     - system.menu.main
-    - system.menu.projects
   module:
     - datetime_range
     - node
@@ -72,6 +71,13 @@ display:
           class: ''
       row:
         type: fields
+        options:
+          default_field_elements: true
+          inline:
+            title: title
+            field_project_date: field_project_date
+          separator: ''
+          hide_empty: false
       fields:
         title:
           id: title
@@ -293,9 +299,9 @@ display:
         type: normal
         title: Projects
         description: ''
-        expanded: false
+        expanded: true
         parent: ''
-        weight: 0
+        weight: -48
         context: '0'
         menu_name: main
       display_description: ''
@@ -322,10 +328,10 @@ display:
         title: 'Finished Projects'
         description: ''
         expanded: false
-        parent: ''
+        parent: 'views_view:views.projects.page_projects'
         weight: 0
         context: '0'
-        menu_name: projects
+        menu_name: main
       display_description: ''
       filters:
         status:

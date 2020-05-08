@@ -42,7 +42,7 @@
 {% set label = 'heading' ~ id %}
 {% set id = 'pid' ~ id %}
 
-<div class="card">
+<div {{ attributes.addClass(['card']) }}>
   <div class="card-header" id="{{ label }}">
     <h3 class="mb-0 h5">
       <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#{{ id }}" aria-expanded="false" aria-controls="{{ id }}">

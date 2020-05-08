@@ -91,7 +91,7 @@
 {{ attach_library('uids_base/node-type-article') }}
 {% set article_card = {
   'attributes': attributes.addClass(classes),
-  'card_image' : content.node_image,
+  'card_image' : content.field_image,
   'card_title': label,
   'content': content,
   'heading_url' : node_link,
@@ -103,7 +103,7 @@
   {% block card_img %}
     {% if card_image is not empty %}
       <div class="media">
-        {{ content.node_image }}
+        {{ card_image }}
       </div>
     {% endif %}
   {% endblock %}
@@ -130,7 +130,7 @@
   {% endblock %}
 
   {% block card_content %}
-    {{ content|without('node_image', 'links', 'article_created_date', 'article_author', 'field_article_source_org', 'field_article_source_link', 'field_article_source_link_direct') }}
+    {{ content|without('field_image', 'links', 'article_created_date', 'article_author', 'field_article_source_org', 'field_article_source_link', 'field_article_source_link_direct') }}
   {% endblock %}
 
   {% block card_bttn %}{% endblock %}

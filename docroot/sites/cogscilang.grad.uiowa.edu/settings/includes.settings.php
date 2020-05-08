@@ -39,7 +39,7 @@
  * provide full paths in a dynamic manner.
  */
 $additionalSettingsFiles = [
-  DRUPAL_ROOT . "/sites/settings/collegiate.settings.php"
+  DRUPAL_ROOT . "/sites/settings/sitenow.settings.php"
 ];
 
 foreach ($additionalSettingsFiles as $settingsFile) {
