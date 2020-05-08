@@ -23,6 +23,7 @@
   },
   "scripts": {
     "build": "gulp --production",
+    "postbuild": "critical https://uiowa.stage.drupal.uiowa.edu/contact --base assets/css/ > assets/css/critical.css",
     "copy": "gulp copy",
     "watch": "gulp watch --development"
   }
