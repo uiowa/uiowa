@@ -1326,3 +1326,9 @@ $sites['labmorl.local.drupal.uiowa.edu'] = 'morl.lab.uiowa.edu';
 $sites['labmorl.dev.drupal.uiowa.edu'] = 'morl.lab.uiowa.edu';
 $sites['labmorl.stage.drupal.uiowa.edu'] = 'morl.lab.uiowa.edu';
 $sites['labmorl.prod.drupal.uiowa.edu'] = 'morl.lab.uiowa.edu';
+
+// Directory aliases for philosophylyceum.org.uiowa.edu.
+$sites['orgphilosophylyceum.local.drupal.uiowa.edu'] = 'philosophylyceum.org.uiowa.edu';
+$sites['orgphilosophylyceum.dev.drupal.uiowa.edu'] = 'philosophylyceum.org.uiowa.edu';
+$sites['orgphilosophylyceum.stage.drupal.uiowa.edu'] = 'philosophylyceum.org.uiowa.edu';
+$sites['orgphilosophylyceum.prod.drupal.uiowa.edu'] = 'philosophylyceum.org.uiowa.edu';
