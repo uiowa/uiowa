@@ -1,3 +1,18 @@
 @import "assets/scss/_variables.scss";
 @import "assets/scss/_utilities.scss";
 @import "components/02 - blocks/card-block/_card-block.scss";
+
+// ie11
+@media all and (-ms-high-contrast: none),
+(-ms-high-contrast: active) {
+.card .media {
+  flex-shrink: 0;
+  width: 100%;
+  min-height: 1px;
+}
+ .card .media img {
+    flex-shrink: 0;
+    width: 100%;
+    min-height: 1px;
+  }
+}
