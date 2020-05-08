@@ -93,6 +93,7 @@ apache_vhosts:
     servername: billing.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+
   -
     servername: engineeringbiomost.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
@@ -657,7 +658,6 @@ apache_vhosts:
     servername: sitesintermediatechinesereader.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-
   -
     servername: sitespaleorepository.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
@@ -940,6 +940,10 @@ apache_vhosts:
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
   -
     servername: uipress.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: labmorl.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
 
