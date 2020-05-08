@@ -1320,3 +1320,9 @@ $sites['uipress.local.drupal.uiowa.edu'] = 'uipress.uiowa.edu';
 $sites['uipress.dev.drupal.uiowa.edu'] = 'uipress.uiowa.edu';
 $sites['uipress.stage.drupal.uiowa.edu'] = 'uipress.uiowa.edu';
 $sites['uipress.prod.drupal.uiowa.edu'] = 'uipress.uiowa.edu';
+
+// Directory aliases for morl.lab.uiowa.edu.
+$sites['labmorl.local.drupal.uiowa.edu'] = 'morl.lab.uiowa.edu';
+$sites['labmorl.dev.drupal.uiowa.edu'] = 'morl.lab.uiowa.edu';
+$sites['labmorl.stage.drupal.uiowa.edu'] = 'morl.lab.uiowa.edu';
+$sites['labmorl.prod.drupal.uiowa.edu'] = 'morl.lab.uiowa.edu';
