@@ -102,6 +102,9 @@ function hr_core_theme_suggestions_paragraph_alter(&$suggestions, $variables) {
           if ($result) {
             $suggestions[] = 'paragraph__card__title_overlay';
           }
+          if (in_array('card--img-icon', $classes)) {
+            $suggestions[] = 'paragraph__card__icon';
+          }
         }
         break;
 
