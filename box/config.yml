@@ -155,10 +155,6 @@ apache_vhosts:
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
   -
-    servername: gradcogscilang.local.drupal.uiowa.edu
-    documentroot: '{{ drupal_core_path }}'
-    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-  -
     servername: labcoleresearchgroup.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
@@ -944,6 +940,13 @@ apache_vhosts:
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
   -
     servername: labmorl.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  - servername: orgphilosophylyceum.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: gradcogscilang.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
 
