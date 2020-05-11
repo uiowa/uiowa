@@ -94,7 +94,7 @@
     {% block hero_image %}
       {{ content.field_image }}
 
-      {% if not(media_caption) %}
+      {% if not media_caption %}
         {% if image_caption is not empty %}
           <div class="caption-wrapper">
             {{ content.field_image_caption }}
@@ -133,7 +133,7 @@
     </footer>
   {% endif %}
 
-  <div{{ content_attributes.addClass('node__content') }}>
+  <div{{ content_attributes.addClass('node__content')}}>
     <div class="article-meta">
 
       {{ content.article_created_date }}{{ content.article_author }}{{ content.field_article_source_org }}{{ content.field_article_source_link }}
