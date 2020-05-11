@@ -173,7 +173,7 @@ function uids_base_preprocess_page(&$variables) {
         case 'page':
         case 'article':
           if ($node->hasField('field_image') && !$node->get('field_image')
-              ->isEmpty() && $node->preview_view_mode !== 'teaser') {
+            ->isEmpty() && $node->preview_view_mode !== 'teaser') {
             $variables['has_node_image'] = TRUE;
           }
           break;
