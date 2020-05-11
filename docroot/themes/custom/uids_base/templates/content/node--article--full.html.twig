@@ -110,11 +110,11 @@
   {% endembed %}
 {% endif %}
 
-<article{{attributes.addClass(classes)}}>
+<article{{ attributes.addClass(classes) }}>
 
   {{ title_prefix }}
   {% if not page %}
-    <h2{{title_attributes}}>
+    <h2{{ title_attributes }}>
       <a href="{{ url }}" rel="bookmark">{{ label }}</a>
     </h2>
   {% endif %}
@@ -123,7 +123,7 @@
   {% if display_submitted %}
     <footer class="node__meta">
       {{ author_picture }}
-      <div{{author_attributes.addClass('node__submitted')}}>
+      <div{{ author_attributes.addClass('node__submitted') }}>
         {% trans %}Submitted by
         {{ author_name }}
         on
@@ -133,7 +133,7 @@
     </footer>
   {% endif %}
 
-  <div{{content_attributes.addClass('node__content')}}>
+  <div{{ content_attributes.addClass('node__content') }}>
     <div class="article-meta">
 
       {{ content.article_created_date }}{{ content.article_author }}{{ content.field_article_source_org }}{{ content.field_article_source_link }}
