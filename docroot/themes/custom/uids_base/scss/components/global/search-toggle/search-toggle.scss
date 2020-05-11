@@ -17,7 +17,6 @@ $search-img-path: '../../../../../uids/assets/images/search-01.svg';
 #search-results .gsc-control-cse {
   padding: 1em 0;
   border: 0;
-  line-height: 1.5px;
   font-family: $font-family-sans-serif;
 }
 #search-results .gsc-search-box {
@@ -36,9 +35,6 @@ $search-img-path: '../../../../../uids/assets/images/search-01.svg';
 #search-results .gsc-input .gsc-input-box {
   border-radius: 0px;
 }
-#search-results .gsc-result-info-container {
-  padding: 0;
-}
 #search-results .gsc-orderby-container {
   padding-right: 0;
 }
@@ -50,19 +46,21 @@ $search-img-path: '../../../../../uids/assets/images/search-01.svg';
 #search-results .gsc-thumbnail {
   display: none;
 }
-#search-results .gs-title, .gs-snippet {
+#search-results .gsc-result-info-container, #search-results .gsc-thumbnail-inside, #search-results .gsc-url-top, #search-results .gsc-url-bottom, #search-results .gsc-table-result {
+  padding: 0;
+}
+#search-results .gs-title, #search-results .gs-snippet {
   font-family: $font-family-sans-serif !important;
 }
-#search-results .gs-title a {
-  color: $link-color;
+#search-results .gs-result .gs-title, #search-results .gs-result .gs-title a, #search-results .gs-title b {
+  color: $blk;
   font-size: 30px;
+  line-height: 1.2;
+  text-decoration: none;
 }
-/* Google Custom Search highlights matching words in bold, toggle that */
-#search-results .gs-title b, #search-results .gs-snippet b {
-  font-weight: normal;
-}
-#search-results .gs-snippet {
+#search-results .gs-snippet, #search-results .gs-snippet b {
   font-size: 18px;
+  line-height: 1.7;
 }
 #search-results .gs-no-results-result .gs-snippet, #search-results .gs-error-result .gs-snippet {
   border: 2px solid #FFCD00;
@@ -82,12 +80,10 @@ $search-img-path: '../../../../../uids/assets/images/search-01.svg';
 #search-results .gsc-webResult .gsc-result {
   border-bottom: 0;
 }
-#search-results .gs-result .gs-title {
-  color: $blk;
-}
-#search-results .gsc-url-top .gs-visibleUrl {
+#search-results .gsc-url-top .gs-visibleUrl, #search-results .gsc-url-bottom .gs-visibleUrl {
   color: $link-color;
   font-size: 25px;
+  line-height: 1.2;
 }
 #search-results .gcsc-find-more-on-google {
   color: $link-color;
