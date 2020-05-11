@@ -12,3 +12,87 @@ $search-img-path: '../../../../../uids/assets/images/search-01.svg';
 .search-overlay .uids-search [type="submit"]::before {
   background-image: url($search-img-path);
 }
+
+/* Google Custom Search Engine Results */
+#search-results .gsc-control-cse {
+  padding: 1em 0;
+  border: 0;
+  line-height: 1.5px;
+  font-family: $font-family-sans-serif;
+}
+#search-results .gsc-search-box {
+  padding: 20px;
+  background-color: #f1f1f1;
+}
+#search-results .gsst_a .gscb_a {
+  color: #ccc;
+}
+#search-results .gsst_a:hover .gscb_a, #search-results .gsst_a:focus .gscb_a {
+  color: $blk;
+}
+#search-results .gsc-input {
+  padding-left: 0;
+}
+#search-results .gsc-input .gsc-input-box {
+  border-radius: 0px;
+}
+#search-results .gsc-result-info-container {
+  padding: 0;
+}
+#search-results .gsc-orderby-container {
+  padding-right: 0;
+}
+/* Do no display the count of search results */
+#search-results .gsc-result-info {
+  display: none;
+}
+/* Hide the thumbnail images in search results */
+#search-results .gsc-thumbnail {
+  display: none;
+}
+#search-results .gs-title, .gs-snippet {
+  font-family: $font-family-sans-serif !important;
+}
+#search-results .gs-title a {
+  color: $link-color;
+  font-size: 30px;
+}
+/* Google Custom Search highlights matching words in bold, toggle that */
+#search-results .gs-title b, #search-results .gs-snippet b {
+  font-weight: normal;
+}
+#search-results .gs-snippet {
+  font-size: 18px;
+}
+#search-results .gs-no-results-result .gs-snippet, #search-results .gs-error-result .gs-snippet {
+  border: 2px solid #FFCD00;
+  background-color: #fffae6;
+}
+#search-results button.gsc-search-button {
+  @extend %bttn;
+  background-color: #ccc;
+  border-radius: 0;
+  padding-right: 2.5rem;
+}
+#search-results .gsc-search-button-v2 svg {
+  fill: $blk;
+  width: 18px;
+  height: 18px;
+}
+#search-results .gsc-webResult .gsc-result {
+  border-bottom: 0;
+}
+#search-results .gs-result .gs-title {
+  color: $blk;
+}
+#search-results .gsc-url-top .gs-visibleUrl {
+  color: $link-color;
+  font-size: 25px;
+}
+#search-results .gcsc-find-more-on-google {
+  color: $link-color;
+  text-decoration: underline;
+}
+#search-results .gcsc-find-more-on-google-magnifier {
+  fill: $link-color;
+}
