@@ -86,7 +86,7 @@
     {% embed '@uids_base/uids/card.html.twig' with paragraph_card only %}
 
       {% block card_img %}
-         {% if not paragraph.field_card_image.isEmpty() %}
+        {% if not paragraph.field_card_image.isEmpty() %}
           <div class="card__media">
             {{ card_image }}
           </div>
