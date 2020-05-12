@@ -3,7 +3,7 @@
 
 
 .paragraph--type--articles {
-  &.hide-images .media {
+  &.hide-images .card__media {
     display: none;
   }
   .field--name-title {
@@ -22,7 +22,7 @@
     @include list-group-flush;
   }
 
-  .media {
+  .card__media {
     @include card-media-horizontal-right;
     @include breakpoint(sm) {
     margin-top: $lg;
