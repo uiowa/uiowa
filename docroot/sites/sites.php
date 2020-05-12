@@ -1153,12 +1153,6 @@ $sites['gradinformatics-temp.dev.drupal.uiowa.edu'] = 'informatics-temp.grad.uio
 $sites['gradinformatics-temp.stage.drupal.uiowa.edu'] = 'informatics-temp.grad.uiowa.edu';
 $sites['gradinformatics-temp.prod.drupal.uiowa.edu'] = 'informatics-temp.grad.uiowa.edu';
 
-// Directory aliases for cogscilang-temp.grad.uiowa.edu.
-$sites['gradcogscilang-temp.local.drupal.uiowa.edu'] = 'cogscilang-temp.grad.uiowa.edu';
-$sites['gradcogscilang-temp.dev.drupal.uiowa.edu'] = 'cogscilang-temp.grad.uiowa.edu';
-$sites['gradcogscilang-temp.stage.drupal.uiowa.edu'] = 'cogscilang-temp.grad.uiowa.edu';
-$sites['gradcogscilang-temp.prod.drupal.uiowa.edu'] = 'cogscilang-temp.grad.uiowa.edu';
-
 // Directory aliases for ogallala.research.uiowa.edu.
 $sites['researchogallala.local.drupal.uiowa.edu'] = 'ogallala.research.uiowa.edu';
 $sites['researchogallala.dev.drupal.uiowa.edu'] = 'ogallala.research.uiowa.edu';

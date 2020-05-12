@@ -31,23 +31,23 @@ html {
 // variables
 
 // classes
-
+/*
 .media--view-mode-edgy {
   width: 100%;
   img {
     width: 100%;
   }
 }
-
+*/
 .bg-dark.semi-transparent {
   background-color: rgba(52, 58, 64, 0.8) !important;
   color: #fff;
 }
-
+/*
 p {
   margin-top: 0;
 }
-
+*/
 .bg-light {
   @include bg-light;
 }
@@ -55,6 +55,12 @@ p {
 .bg-dark>* {
   color: #fff;
 }
+
+.bg-dark .bg-light  *,
+.bg-dark .bg-yellow * {
+  color: $secondary!important;
+}
+
 
 .text-light {
   @include text-light

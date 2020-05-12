@@ -1,0 +1,26 @@
+{% block banner_wrapper_start %}
+  {% if banner_bg_image %}
+      <div class="banner" {% if banner_bg_image %} style="background-image: url('{% spaceless %}{{ banner_bg_image }}{% endspaceless %}'); background-size: cover; background-position: center" {% endif %}>
+    {% endif %}
+  {% endblock %}
+
+  <div class="banner__container">
+
+    {% block heading %}
+      {% if banner_title is not empty %}
+        {% include "@heading" with {
+          "heading_level" : 'h3',
+          "heading_class" : 'banner__title',
+          "heading" : banner_title
+        } %}
+      {% endif %}
+    {% endblock %}
+
+    {% if banner_summary is not empty %}
+      <p class="banner__summary">{{ banner_summary }}</p>
+    {% endif %}
+    {% if banner_link_url is not empty %}
+      <a href="{{ banner_link_url }}" class="bttn bttn--tertiary">{{ banner_link_title }}</a>
+    {% endif %}
+  </div>
+</div>
