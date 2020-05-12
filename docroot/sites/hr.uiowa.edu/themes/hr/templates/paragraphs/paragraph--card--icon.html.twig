@@ -45,20 +45,16 @@
   not paragraph.isPublished() ? 'paragraph--unpublished'
 ] %}
 
+{% block paragraph %}
 <div{{ attributes.addclass(classes) }}>
   <div{{ card_attributes.addClass('card') }}>
-    <div class="position-relative">
-      {{ content.field_card_image }}
-      <div class="card-img-overlay d-flex">
-        {{ content.field_card_title }}
-      </div>
+    {{ content.card_image }}
+
+    <div class="card-body">
+      {{ content.field_card_title }}
+      {{ content.field_card_subtitle }}
+      {{ content.field_card_body }}
     </div>
-    {% if content.field_card_subtitle|render or content.field_card_body|render %}
-      <div class="card-body">
-        {{ content.field_card_subtitle }}
-        {{ content.field_card_body }}
-      </div>
-    {% endif %}
   </div>
 </div>
-
+{% endblock paragraph %}
