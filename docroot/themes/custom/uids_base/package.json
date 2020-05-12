@@ -24,7 +24,7 @@
   "scripts": {
     "prebuild": "mkdir -p assets/css/critical",
     "build": "gulp --production",
-    "postbuild": "critical https://uiowa.stage.drupal.uiowa.edu --include '.uiowa-bar .page__container' > assets/css/critical/default-critical.css",
+    "postbuild": "critical https://uiowa.stage.drupal.uiowa.edu --include '.uiowa-bar .page__container' --include '.header--primary .search-wrapper' > assets/css/critical/default-critical.css",
     "copy": "gulp copy",
     "watch": "gulp watch --development"
   }
