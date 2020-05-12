@@ -1,0 +1,59 @@
+@import "uids/assets/scss/_variables.scss";
+@import "uids/assets/scss/_utilities.scss";
+
+.embedded-entity {
+  max-width: 100%;
+  margin-bottom: 0;
+  figure & {
+    margin-bottom: 0;
+  }
+  figcaption {
+    margin-top: $sm;
+  }
+}
+
+
+.embedded-entity + p {
+  margin-top: $md!important;
+}
+
+.embedded-entity.align-center {
+  .field--name-field-media-oembed-video {
+    margin: 0 auto;
+  }
+}
+
+.align-left.embedded-entity,
+.align-left .embedded-entity {
+  float: none;
+  @include breakpoint(sm) {
+    margin-right: 1rem;
+    float: left;
+  }
+}
+
+.align-right.embedded-entity,
+.align-right .embedded-entity {
+  float: none;
+  @include breakpoint(sm) {
+    margin-left: 1rem;
+    float: right;
+  }
+}
+
+figure.caption .embedded-entity+figcaption {
+  font-size: 90%;
+  color: $grey;
+  margin-top: $sm;
+  margin-bottom: $sm;
+}
+
+figure.caption.align-right .embedded-entity+figcaption {
+  text-align: right;
+}
+
+.alert {
+  figure.caption .embedded-entity+figcaption {
+    color: $grey;
+  }
+}

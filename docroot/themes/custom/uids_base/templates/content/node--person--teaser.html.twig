@@ -82,6 +82,7 @@
 ]
 %}
 {{ attach_library('classy/node') }}
+{{ attach_library('uids_base/node-type-person') }}
 <article{{ attributes.addClass(classes) }}>
   <div{{ content_attributes.addClass('node__content media-body') }}>
     {{ title_prefix }}
@@ -92,11 +93,11 @@
     {% endif %}
     {{ title_suffix }}
 
-    {{ content|without('node_image', 'field_image', 'field_person_credential', 'links') }}
+    {{ content|without('field_image', 'field_image', 'field_person_credential', 'links') }}
   </div>
-  {% if content.node_image %}
+  {% if content.field_image %}
     <figure class="content-image">
-      {{ content.node_image }}
+      {{ content.field_image }}
     </figure>
   {% endif %}
 </article>

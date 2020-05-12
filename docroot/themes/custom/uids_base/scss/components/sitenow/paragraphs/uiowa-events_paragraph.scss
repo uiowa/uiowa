@@ -1,0 +1,190 @@
+@import "uids/assets/scss/_variables.scss";
+@import "uids/assets/scss/_utilities.scss";
+
+.paragraph--type--events {
+  .sitenow-event-title {
+    @include h5;
+  }
+
+  .more-link {
+    margin-top: $desktop-width-gutter;
+  }
+}
+
+.paragraph--type--events.list {
+  .uiowa-events {
+    @include list-group;
+    @include list-group-flush;
+  }
+
+  .sitenow-event-teaser {
+    @include list-group-item;
+  }
+
+  .sitenow-event {
+    display: flex;
+    flex-wrap: wrap-reverse;
+    align-items: flex-end;
+  }
+
+  @include breakpoint(xsm) {
+    $featured-img-size-xs: 80px;
+
+    img {
+      flex-basis: $featured-img-size-xs;
+      margin-left: 0;
+      max-width: $featured-img-size-xs;
+    }
+
+    .sitenow-event-content {
+      flex: 1;
+      margin-right: 2rem;
+      flex-basis: calc(100% - #{$featured-img-size-xs} - 2rem);
+    }
+  }
+
+  @include breakpoint(sm) {
+    $featured-img-size-sm: 150px;
+
+    img {
+      flex-basis: $featured-img-size-sm;
+      max-width: $featured-img-size-sm;
+    }
+
+    .sitenow-event-content {
+      flex-basis: calc(100% - #{$featured-img-size-sm} - 2rem);
+    }
+  }
+
+  @include breakpoint(md) {
+    $featured-img-size-md: 220px;
+
+    img {
+      flex-basis: $featured-img-size-md;
+      max-width: $featured-img-size-md;
+    }
+
+    .sitenow-event-content {
+      flex-basis: calc(100% - #{$featured-img-size-md} - 2rem);
+    }
+  }
+
+  .sitenow-event-content {
+    @include media-body;
+  }
+}
+
+.paragraph--type--events.grid {
+  .uiowa-events {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .sitenow-event {
+    @include card;
+    margin-bottom: ($desktop-width-gutter / 2);
+    flex-direction: column-reverse;
+  }
+
+  .sitenow-event-teaser {
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+    //@include col-base;
+  }
+
+  img {
+    @include card-img-top;
+  }
+
+  .sitenow-event-content {
+    @include card-body;
+  }
+
+  .sitenow-event-content .sitenow-event-title {
+    @include card-title;
+  }
+}
+
+.paragraph--type--events.masonry {
+  .uiowa-events {
+    @include card-columns;
+  }
+
+  .sitenow-event-teaser {
+    @include card;
+
+  }
+
+  .sitenow-event {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  img {
+    @include card-img-top;
+  }
+
+  .sitenow-event-content {
+    @include card-body;
+  }
+
+  .sitenow-event-content .sitenow-event-title {
+    @include card-title;
+  }
+}
+
+.paragraph--type--events.hide-images {
+  img {
+    display: none;
+  }
+}
+
+.paragraph--type--events.hide-descriptions {
+  .sitenow-event-description {
+    display: none;
+  }
+}
+
+.sitenow-event-single {
+  @include fullwidth-container;
+  margin-bottom: 2rem;
+}
+
+.paragraph--type--section.bg-dark {
+  .paragraph--type--events.list {
+    .sitenow-event-teaser {
+      background-color: $dark;
+      color: $light;
+
+      a {
+        color: $primary;
+      }
+    }
+  }
+}
+
+.paragraph--type--section.bg-light {
+  .paragraph--type--events.list {
+    .sitenow-event-teaser {
+      background-color: $light;
+    }
+  }
+}
+
+.paragraph--type--section.bg-yellow {
+  .paragraph--type--events.list {
+    .sitenow-event-teaser {
+      background-color: $primary;
+
+      a {
+        color: $secondary;
+        text-decoration: underline;
+
+        &:hover,
+        &:focus {
+          text-decoration: none;
+        }
+      }
+    }
+  }
+}

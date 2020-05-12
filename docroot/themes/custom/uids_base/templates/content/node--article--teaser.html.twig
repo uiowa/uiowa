@@ -88,26 +88,22 @@
 {% endif %}
 
 {{ attach_library('classy/node') }}
-
+{{ attach_library('uids_base/node-type-article') }}
 {% set article_card = {
   'attributes': attributes.addClass(classes),
-  'card_image' : content.node_image,
+  'card_image' : content.field_image,
   'card_title': label,
   'content': content,
-  'heading_level' : 'h3',
-  'heading_class' : 'card__title',
-  'heading' : label,
   'heading_url' : node_link,
-  'heading_aria' : 'desc-a-card',
   'heading_attributes': title_attributes,
 } %}
 
-{% embed '@uids_base/uids/blocks/card.html.twig' with article_card only %}
+{% embed '@uids_base/uids/card.html.twig' with article_card only %}
 
   {% block card_img %}
     {% if card_image is not empty %}
-      <div class="media">
-        {{ content.node_image }}
+      <div class="card__media">
+        {{ card_image }}
       </div>
     {% endif %}
   {% endblock %}
@@ -122,7 +118,7 @@
           'heading' : card_title,
           'heading_url' : heading_url,
           'heading_aria' : 'desc-a-card',
-          'attributes': title_attributes,
+          'attributes': heading_attributes,
         } only %}
     {% endif %}
   {% endblock %}
@@ -134,7 +130,7 @@
   {% endblock %}
 
   {% block card_content %}
-    {{ content|without('node_image', 'links', 'article_created_date', 'article_author', 'field_article_source_org', 'field_article_source_link', 'field_article_source_link_direct') }}
+    {{ content|without('field_image', 'links', 'article_created_date', 'article_author', 'field_article_source_org', 'field_article_source_link', 'field_article_source_link_direct') }}
   {% endblock %}
 
   {% block card_bttn %}{% endblock %}

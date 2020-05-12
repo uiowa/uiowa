@@ -83,9 +83,9 @@
 {{ attach_library('classy/node') }}
 <article{{ attributes.addClass(classes) }}>
   <div{{ card_attributes.addClass('card') }}>
-    {% if content.node_image %}
+    {% if content.field_ighn_person_image %}
       <figure class="content-image">
-        {{ content.node_image }}
+        {{ content.field_ighn_person_image }}
       </figure>
     {% endif %}
     <div class="card-body">
@@ -97,7 +97,7 @@
       {% endif %}
       {{ title_suffix }}
       <div{{ content_attributes.addClass('node__content') }}>
-        {{ content|without('node_image', 'field_ighn_person_image', 'field_ighn_person_credentials', 'field_ighn_person_biography', 'links') }}
+        {{ content|without('field_ighn_person_image', 'field_ighn_person_credentials', 'field_ighn_person_biography', 'links') }}
       </div>
     </div>
     {% if content.field_ighn_person_biography.0 %}

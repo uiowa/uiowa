@@ -28,8 +28,25 @@ third_party_settings:
       -
         layout_id: layout_onecol
         layout_settings:
-          label: ''
+          label: Header
         components:
+          c7595474-3e54-4dca-bc2e-e0467930b660:
+            uuid: c7595474-3e54-4dca-bc2e-e0467930b660
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:page:field_image'
+              formatter:
+                type: entity_reference_entity_view
+                label: visually_hidden
+                settings:
+                  view_mode: sitenow_16_9
+                  link: false
+                third_party_settings: {  }
+            additional: {  }
+            weight: 0
           8a8d495a-6910-4c9b-99a6-126836579b86:
             uuid: 8a8d495a-6910-4c9b-99a6-126836579b86
             region: content
@@ -40,7 +57,7 @@ third_party_settings:
               label_display: '0'
               context_mapping: {  }
             additional: {  }
-            weight: 0
+            weight: 1
           4d79e741-a62a-4949-9bd9-566c102f9a3c:
             uuid: 4d79e741-a62a-4949-9bd9-566c102f9a3c
             region: content
@@ -58,7 +75,7 @@ third_party_settings:
               context_mapping:
                 entity: layout_builder.entity
             additional: {  }
-            weight: 1
+            weight: 2
           8b20f28b-4c81-4ebd-a261-cbf1c6e41635:
             uuid: 8b20f28b-4c81-4ebd-a261-cbf1c6e41635
             region: content
@@ -68,12 +85,12 @@ third_party_settings:
                 entity: layout_builder.entity
               id: 'extra_field_block:node:page:content_moderation_control'
             additional: {  }
-            weight: 8
+            weight: 3
         third_party_settings: {  }
       -
         layout_id: layout_onecol
         layout_settings:
-          label: ''
+          label: 'Main content'
         components:
           eece7031-5478-448d-bf0c-2a58a8f3a77e:
             uuid: eece7031-5478-448d-bf0c-2a58a8f3a77e
@@ -109,6 +126,31 @@ third_party_settings:
         - layout_twocol
         - layout_threecol
         - layout_fourcol
+      whitelisted_blocks:
+        'Chaos Tools': {  }
+        Devel: {  }
+        User: {  }
+        core:
+          - page_title_block
+      blacklisted_blocks:
+        Webform:
+          - webform_submission_limit_block
+    allowed_block_categories:
+      - 'Chaos Tools'
+      - 'Content fields'
+      - 'Custom block types'
+      - 'Custom blocks'
+      - Devel
+      - Forms
+      - 'Inline blocks'
+      - 'Lists (Views)'
+      - Menus
+      - Superfish
+      - System
+      - 'University of Iowa Alerts'
+      - User
+      - Webform
+      - core
 _core:
   default_config_hash: 0AcX0F0voV5TKB6_GPZxJpAfbKCnDU7er_5TWcqIgSw
 id: node.page.default

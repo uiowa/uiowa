@@ -33,6 +33,6 @@ class LockupForm implements ThemeNegotiatorInterface {
    * @inheritDoc
    */
   public function determineActiveTheme(RouteMatchInterface $route_match) {
-    return 'uiowa_bootstrap';
+    return 'uids_base';
   }
 }
