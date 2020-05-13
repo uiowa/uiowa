@@ -84,7 +84,7 @@ class MultisiteCommands extends BltTasks {
         if (!in_array($multisite, $options['exclude'])) {
           // Define a site-specific cache directory.
           // @see: https://github.com/acquia/blt/issues/2957
-          $tmp = "/tmp/.drush/{$app}/{$env}/" . md5($multisite);
+          $tmp = "/tmp/.drush-cache-{$app}/{$env}/" . md5($multisite);
 
           $this->taskDrush()
             ->drush($cmd)
@@ -163,6 +163,15 @@ class MultisiteCommands extends BltTasks {
           foreach ($uninstalled as $multisite) {
             $this->switchSiteContext($multisite);
             $profile = $this->getConfigValue('project.profile.name');
+
+            // Clear the cache first to prevent random errors on install.
+            // We use exec here to always return 0 since the command can fail
+            // and cause confusion with the error message output.
+            $this->taskExecStack()
+              ->interactive(FALSE)
+              ->silent(TRUE)
+              ->exec("./vendor/bin/drush -l {$multisite} cache:rebuild || true")
+              ->run();
 
             // Run this non-interactively so prompts are bypassed. Note that
             // a file permission exception is thrown on AC so we have to
@@ -349,7 +358,7 @@ EOD
         ->add("docroot/sites/{$dir}/")
         ->add("drush/sites/{$id}.site.yml")
         ->add("config/{$dir}/")
-        ->commit("Delete {$dir} multisite")
+        ->commit("Delete {$dir} multisite on {$app}")
         ->interactive(FALSE)
         ->printOutput(FALSE)
         ->printMetadata(FALSE)
@@ -538,10 +547,16 @@ EOD
 
     // Re-generate the Drush alias so it is more useful.
     $drush_alias = YamlMunge::parseFile("{$root}/drush/sites/{$app}.site.yml");
+    $files_path = "sites/{$host}/files";
+
     $drush_alias['local']['uri'] = $local;
     $drush_alias['dev']['uri'] = $dev;
     $drush_alias['test']['uri'] = $test;
     $drush_alias['prod']['uri'] = $host;
+
+    foreach (['local', 'dev', 'test', 'prod'] as $env) {
+      $drush_alias[$env]['paths']['files'] = $files_path;
+    }
 
     $this->taskWriteToFile("{$root}/drush/sites/{$id}.site.yml")
       ->text(Yaml::dump($drush_alias, 10, 2))
@@ -616,7 +631,7 @@ EOD;
         ->add("docroot/sites/{$host}")
         ->add("drush/sites/{$id}.site.yml")
         ->add("config/{$host}")
-        ->commit("Initialize {$host} multisite")
+        ->commit("Initialize {$host} multisite on {$app}")
         ->interactive(FALSE)
         ->printOutput(FALSE)
         ->printMetadata(FALSE)

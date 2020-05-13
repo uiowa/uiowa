@@ -1,0 +1,25 @@
+project:
+  local:
+    hostname: labmorl.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labmorl
+  human_name: morl.lab.uiowa.edu
+  profile:
+    name: sitenow
+drush:
+  aliases:
+    local: self
+    remote: labmorl.prod
+drupal:
+  db:
+    database: morl_lab_uiowa_edu
+cm:
+  core:
+    install_from_config: true
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+uiowa:
+  profiles:
+    sitenow:
+      requester: jhendon

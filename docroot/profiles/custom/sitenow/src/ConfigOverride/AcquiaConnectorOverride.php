@@ -40,7 +40,6 @@ class AcquiaConnectorOverride implements ConfigFactoryOverrideInterface {
       $site_name = $request->getHost();
 
       $overrides['acquia_connector.settings']['spi']['site_name'] = $site_name;
-      $overrides['acquia_connector.settings']['hide_signup_messages'] = TRUE;
     }
 
     return $overrides;

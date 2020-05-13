@@ -107,7 +107,7 @@
                         </div>\
                     </div>\
                 ';
-            $('#edit-actions').append(emptyRequired);
+            $('#edit-actions').once().append(emptyRequired);
           }
 
           $('#edit-submit').click(function(){

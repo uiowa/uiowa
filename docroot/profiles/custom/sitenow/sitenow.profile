@@ -6,6 +6,7 @@
  */
 
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
@@ -15,8 +16,6 @@ use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
-use Drupal\user\Entity\User;
-use Drupal\views\ViewExecutable;
 use Drupal\media\Entity\Media;
 use Drupal\file\Entity\File;
 
@@ -70,26 +69,33 @@ function sitenow_preprocess_select(&$variables) {
 }
 
 /**
- * Implements hook_views_pre_render().
+ * Implements hook_module_implements_alter().
  */
-function sitenow_views_pre_render(ViewExecutable $view) {
-  if ($view->id() == 'administerusersbyrole_people' && $view->current_display == 'page_1') {
-    // Do not show administrator accounts to non-admins.
-    if (!sitenow_is_user_admin(\Drupal::currentUser())) {
-      $non_admins = [];
+function sitenow_module_implements_alter(&$implementations, $hook) {
+  // Unset administerusersbyrole query alter which over-filters the people page.
+  // @todo: Refactor this to move sitenow last and then alter the altered query.
+  if ($hook == 'query_alter' && isset($implementations['administerusersbyrole'])) {
+    unset($implementations['administerusersbyrole']);
+  }
+}
 
-      foreach ($view->result as $result) {
-        if ($result) {
-          $user = User::load($result->uid);
+/**
+ * Implements hook_query_TAG_alter().
+ *
+ * Override the administerusersbyrole query alter to only exclude admins.
+ */
+function sitenow_query_administerusersbyrole_edit_access_alter(AlterableInterface $query) {
+  if (!sitenow_is_user_admin(\Drupal::currentUser())) {
+    // Exclude the root user.
+    $query->condition('users_field_data.uid', 1, '<>');
 
-          if ($user->hasRole('administrator') === FALSE) {
-            $non_admins[] = $result;
-          }
-        }
-      }
+    // Get a list of uids with the administrator role.
+    $subquery = \Drupal::database()->select('user__roles', 'ur2');
+    $subquery->fields('ur2', ['entity_id']);
+    $subquery->condition('ur2.roles_target_id', 'administrator');
 
-      $view->result = $non_admins;
-    }
+    // Exclude those uids from the result list.
+    $query->condition('users_field_data.uid', $subquery, 'NOT IN');
   }
 }
 
@@ -116,8 +122,8 @@ function sitenow_form_block_form_alter(&$form, FormStateInterface $form_state) {
           '#title' => t('Select a block template'),
           '#default_value' => $settings['block_template'] ?? '',
           '#options' => [
-            '_none' => 'None',
-            'card' => 'Card',
+            '_none' => t('None'),
+            'card' => t('Card'),
           ],
         ],
         'classes' => [
@@ -548,16 +554,18 @@ function sitenow_preprocess_page(&$variables) {
     if ($node instanceof NodeInterface) {
       // Get moderation state of node.
       $revision_id = $node->getRevisionId();
-      $revision = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($revision_id);
-      $moderation_state = $revision->get('moderation_state')->getString();
-      $status = $revision->get('status')->value;
-      if ($status == 0) {
-        $pre_vowel = (in_array($moderation_state[0], ['a', 'e', 'i', 'o', 'u']) ? 'n' : '');
-        $warning_text = t('This content is currently in a@pre_vowel <em>"@moderation_state"</em> state.', [
-          '@pre_vowel' => $pre_vowel,
-          '@moderation_state' => $moderation_state,
-        ]);
-        \Drupal::messenger()->addWarning($warning_text);
+      if ($revision_id) {
+        $revision = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($revision_id);
+        $moderation_state = $revision->get('moderation_state')->getString();
+        $status = $revision->get('status')->value;
+        if ($status == 0) {
+          $pre_vowel = (in_array($moderation_state[0], ['a', 'e', 'i', 'o', 'u']) ? 'n' : '');
+          $warning_text = t('This content is currently in a@pre_vowel <em>"@moderation_state"</em> state.', [
+            '@pre_vowel' => $pre_vowel,
+            '@moderation_state' => $moderation_state,
+          ]);
+          \Drupal::messenger()->addWarning($warning_text);
+        }
       }
       $variables['header_attributes'] = new Attribute();
       if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
@@ -571,70 +579,6 @@ function sitenow_preprocess_page(&$variables) {
           $variables['header_attributes']->addClass('title-hidden');
         }
       }
-      $type = $node->getType();
-      switch ($type) {
-        case 'page':
-        case 'article':
-          if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()  && $node->preview_view_mode !== 'teaser') {
-            $image = $node->get('field_image')->view('sitenow_16_9');
-            $variables['node_image'] = $image;
-            $variables['header_attributes']->addClass('has-bg-img');
-          }
-          break;
-
-      }
-    }
-  }
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
-function sitenow_preprocess_node(&$variables) {
-  $admin_context = \Drupal::service('router.admin_context');
-  if (!$admin_context->isAdminRoute()) {
-
-    $node = $variables["node"];
-    $type = $node->getType();
-    switch ($type) {
-      case 'page':
-      case 'article':
-      case 'person':
-        switch ($variables['view_mode']) {
-          case 'teaser':
-            $style = 'sitenow_card';
-            if ($type == 'person') {
-              $style = 'sitenow_square_m';
-            }
-            $image_field = $node->get('field_image');
-            if (!$image_field->isEmpty()) {
-              $image = $image_field->first()->getValue();
-              $media = Media::load($image['target_id']);
-              if ($media) {
-                $media_field = $media->get('field_media_image')
-                  ->first()
-                  ->getValue();
-                $file = File::load($media_field['target_id']);
-                $uri = $file->getFileUri();
-                $alt = ($media_field['alt'] ? $media_field['alt'] : '');
-                $image = [
-                  '#theme' => 'image_style',
-                  '#width' => NULL,
-                  '#height' => NULL,
-                  '#style_name' => $style,
-                  '#uri' => $uri,
-                  '#alt' => $alt,
-                  '#weight' => -1,
-                  '#attributes' => [
-                    'class' => 'node-image',
-                  ],
-                ];
-                $variables["content"]['node_image'] = $image;
-              }
-            }
-            break;
-        }
-        break;
     }
   }
 }
@@ -732,7 +676,7 @@ function sitenow_page_attachments(array &$attachments) {
   $admin_context = \Drupal::service('router.admin_context');
   $admin_theme = \Drupal::config('system.theme')->get('admin');
 
-  if ($admin_context->isAdminRoute() && $admin_theme == 'adminimal_theme') {
+  if ($admin_context->isAdminRoute() && $admin_theme == 'claro') {
     $attachments['#attached']['library'][] = 'sitenow/admin-overrides';
   }
 }
@@ -766,19 +710,6 @@ function sitenow_toolbar() {
   ];
 
   return $items;
-}
-
-/**
- * Implements hook_editor_js_settings_alter().
- */
-function sitenow_editor_js_settings_alter(array &$settings) {
-  foreach (array_keys($settings['editor']['formats']) as $text_format_id) {
-    if ($settings['editor']['formats'][$text_format_id]['editor'] === 'ckeditor') {
-      // Adjust CKEditor settings to allow empty span tags for use with FA..
-      $settings['editor']['formats'][$text_format_id]['editorSettings']['customConfig'] =
-        base_path() . drupal_get_path('profile', 'sitenow') . '/js/ckeditor_config.js';
-    }
-  }
 }
 
 /**

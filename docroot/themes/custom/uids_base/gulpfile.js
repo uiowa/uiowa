@@ -12,7 +12,7 @@ const plumber = require('gulp-plumber');
 const prefix = require('gulp-autoprefixer');
 const glob = require('gulp-sass-glob');
 const sourcemaps = require('gulp-sourcemaps');
-const browsersync = require('browser-sync');
+const mode = require('gulp-mode')();
 
 /*
  * Directories here
@@ -43,7 +43,7 @@ function fontCopy() {
 // SCSS bundled into CSS task.
 function css() {
   return src(config.css.src)
-    .pipe(sourcemaps.init())
+    .pipe((mode.development(sourcemaps.init())))
     .pipe(glob())
     // Stay live and reload on error.
     .pipe(plumber({
@@ -62,39 +62,17 @@ function css() {
     .pipe(prefix(['last 2 versions', '> 1%', 'ie 9', 'ie 10'], {
       cascade: true
     }))
-    // .pipe(minifyCSS())
-    .pipe(sourcemaps.write('./'))
+    .pipe((mode.development(sourcemaps.write('./'))))
     .pipe(dest(config.css.dest));
-}
-
-// BrowserSync.
-function browserSync() {
-  browsersync({
-    // server: {
-    // baseDir: paths.build
-    // },.
-    notify: false,
-    browser: "google chrome",
-    proxy: "https://clas.local.drupal.uiowa.edu/"
-  });
-}
-
-// BrowserSync reload.
-function browserReload() {
-  return browsersync.reload;
 }
 
 // Watch files.
 function watchFiles() {
   // Watch SCSS changes.
-  watch(paths.scss + '**/*.scss', parallel(css, copy))
-    .on('change', browserReload());
+  watch(paths.scss + '**/*.scss', { usePolling: true }, parallel(css, copy));
 }
 
-const watching = parallel(watchFiles, browserSync);
-
-// exports.js = js;.
 exports.copy = parallel(copy, fontCopy);
 exports.css = css;
 exports.default = parallel(fontCopy, series(copy, css));
-exports.watch = watching;
+exports.watch = watchFiles;

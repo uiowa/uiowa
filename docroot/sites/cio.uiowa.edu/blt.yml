@@ -1,0 +1,25 @@
+project:
+  local:
+    hostname: cio.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: cio
+  human_name: cio.uiowa.edu
+  profile:
+    name: sitenow
+drush:
+  aliases:
+    local: self
+    remote: cio.prod
+drupal:
+  db:
+    database: cio_uiowa_edu
+cm:
+  core:
+    install_from_config: true
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+uiowa:
+  profiles:
+    sitenow:
+      requester: nmriehl

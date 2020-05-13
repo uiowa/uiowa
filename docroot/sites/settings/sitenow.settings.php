@@ -14,18 +14,18 @@ $env = getenv('AH_SITE_ENVIRONMENT');
 
 switch ($env) {
   case 'dev':
-    $settings['simple_environment_indicator'] = '#4363d8 dev';
+    $settings['simple_environment_indicator'] = '#00558C dev';
     break;
 
   case 'test':
-    $settings['simple_environment_indicator'] = '#C3561A test';
+    $settings['simple_environment_indicator'] = '#BD472A test';
     break;
 
   case 'prod':
-    $settings['simple_environment_indicator'] = '#e6194b prod';
+    $settings['simple_environment_indicator'] = '#63666A prod';
     break;
 
   default:
-    $settings['simple_environment_indicator'] = '#31873E local';
+    $settings['simple_environment_indicator'] = '#00664F local';
     break;
 }

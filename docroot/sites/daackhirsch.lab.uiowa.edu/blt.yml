@@ -1,0 +1,25 @@
+project:
+  local:
+    hostname: labdaackhirsch.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labdaackhirsch
+  human_name: daackhirsch.lab.uiowa.edu
+  profile:
+    name: sitenow
+drush:
+  aliases:
+    local: self
+    remote: labdaackhirsch.prod
+drupal:
+  db:
+    database: daackhirsch_lab_uiowa_edu
+cm:
+  core:
+    install_from_config: true
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+uiowa:
+  profiles:
+    sitenow:
+      requester: sdaackhi

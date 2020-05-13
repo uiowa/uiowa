@@ -42,15 +42,9 @@
  * @see html.html.twig
  */
 #}
-
 {% if logged_in %}
   {{ attach_library('uids_base/admin') }}
 {% endif %}
-
-{% set header_classes = [
-  header_type,
-  header_nav,
-] %}
 
 {% set node_attributes = create_attribute() %}
 
@@ -66,6 +60,7 @@
     {% set content_classes = content_classes|merge(['content__full']) %}
   {% endif %}
 {% else %}
+  {{ attach_library('uids_base/sitenow') }}
   {# Use classes defined in theme and add sticky classes #}
   {% set content_classes = content_classes|merge([layout_container]) %}
   {% if sticky_classes %}
@@ -73,31 +68,29 @@
   {% endif %}
 {% endif %}
 
-{% if header_type == 'header--primary' %}
-  {% include '@uids_base/layout/header--primary.html.twig'  %}
-{% elseif header_type == 'header--secondary' %}
-  {% include '@uids_base/layout/header--secondary.html.twig' %}
-{% elseif header_type == 'header--tertiary' %}
-  {% include '@uids_base/layout/header--tertiary.html.twig'  %}
-{% endif %}
+{% include '@uids_base/layout/header--' ~ header_type ~ '.html.twig' %}
 
 {% if page.alert %}
-  <div role="region" class="uids-component--alert">
-    <div class="page__container">
-      {{ page.alert }}
-    </div>
-  </div>
+  {{ page.alert }}
 {% endif %}
 
 <main role="main" {{ node_attributes.addClass(content_classes) }}>
 
-  {% if page.breadcrumb %}
-    {{ page.breadcrumb }}
-  {% endif %}
-
   <a id="main-content" tabindex="-1"></a>
   {# link is in html.html.twig #}
-  {{ page.content }}
+
+  {% if not has_node_image %}
+
+    {% if page.breadcrumb %}
+      {{ page.breadcrumb }}
+    {% endif %}
+
+    {{ page.content.uids_base_page_title }}
+
+  {% endif %}
+
+  {{ page.content|without('uids_base_page_title') }}
+
   {# /.layout-content #}
 
   {% if page.sidebar_first %}
@@ -115,5 +108,5 @@
 </main>
 
 {% block footer %}
-  {% include '@uids_base/layout/footer.html.twig'  %}
+  {% include '@uids_base/layout/footer.html.twig' %}
 {% endblock %}

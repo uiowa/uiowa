@@ -6,10 +6,15 @@
   "author": "ITS Web Services",
   "license": "MIT",
   "private": true,
-  "workspaces": [
-    "docroot/themes/custom/collegiate_theme",
-    "docroot/themes/custom/uids_base",
-    "docroot/themes/custom/uiowa_bootstrap",
-    "docroot/sites/*/themes/*"
-  ]
+  "workspaces": {
+    "packages": [
+      "docroot/themes/custom/uids_base",
+      "docroot/themes/custom/uiowa_bootstrap",
+      "docroot/sites/*/themes/*",
+      "docroot/modules/custom/uiowa_alerts"
+    ],
+    "nohoist": [
+      "**/node-sass-glob-importer"
+    ]
+  }
 }

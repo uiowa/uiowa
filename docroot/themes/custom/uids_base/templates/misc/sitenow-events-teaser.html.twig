@@ -1,0 +1,31 @@
+{{ attach_library('uids_base/events-block') }}
+<div class="events-card events-card__row">
+  {% if event.image %}
+    <div class="events-card__image">
+      {{ event.image }}
+    </div>
+  {% endif %}
+
+  <div class="events-card__body">
+
+    <h3 class="events-card__title">
+      <a href="{{ event.url }}">
+        {% if event.canceled == TRUE %}[CANCELED]
+        {% endif %}
+        {{ event.title }}
+      </a>
+    </h3>
+
+    <div class="events-card__details">
+      <div class="events-card__date">
+        {{ event.date_string }}
+      </div>
+
+      {% if event_location is not empty %}
+        <div class="events-card__label">
+          {{ event.description_text }}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>

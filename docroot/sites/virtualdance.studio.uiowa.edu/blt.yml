@@ -1,0 +1,25 @@
+project:
+  local:
+    hostname: studiovirtualdance.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: studiovirtualdance
+  human_name: virtualdance.studio.uiowa.edu
+  profile:
+    name: sitenow
+drush:
+  aliases:
+    local: self
+    remote: studiovirtualdance.prod
+drupal:
+  db:
+    database: virtualdance_studio_uiowa_edu
+cm:
+  core:
+    install_from_config: true
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+uiowa:
+  profiles:
+    sitenow:
+      requester: amjennings

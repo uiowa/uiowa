@@ -1,13 +1,13 @@
 uiowa-alerts:
   version: 1.x
+  css:
+    theme:
+      assets/css/uiowa_alerts.css: {}
   js:
-    js/moment.min.js: {}
-    js/uiowa_alerts.js: {}
-#  css:
-#    base:
-#      css/uiowa-alerts.css: {}
+    assets/js/uiowa_alerts.js: {}
   dependencies:
-    - core/jquery
+    - sitenow/moment
+    - fontawesome/webfonts
     - core/jquery.once
     - core/drupalSettings
-    - core/drupal
+    - core/drupal.message

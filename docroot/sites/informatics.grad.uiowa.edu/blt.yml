@@ -1,11 +1,11 @@
 project:
-  profile:
-    name: collegiate
   local:
     hostname: gradinformatics.local.drupal.uiowa.edu
     protocol: https
   machine_name: gradinformatics
   human_name: informatics.grad.uiowa.edu
+  profile:
+    name: sitenow
 drush:
   aliases:
     local: self
@@ -15,8 +15,7 @@ drupal:
     database: informatics_grad_uiowa_edu
 cm:
   core:
-    install_from_config: false
+    install_from_config: true
     dirs:
       sync:
-        path: ../config/informatics.grad.uiowa.edu
-  strategy: none
+        path: profiles/custom/sitenow/config/sync
