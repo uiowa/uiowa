@@ -9,13 +9,13 @@ project:
 drush:
   aliases:
     local: self
-    remote: gradcogscilang-temp.prod
+    remote: gradcogscilang.prod
 drupal:
   db:
     database: cogscilang_grad_uiowa_edu
 cm:
   core:
+    install_from_config: true
     dirs:
       sync:
         path: profiles/custom/sitenow/config/sync
-    install_from_config: true
