@@ -341,7 +341,14 @@ $imgpath: '../../uids/assets/images';
 
 // todo move back to uids as toc style also create tag style for term edit
 
-.view-a-z-list {
+.view-a-z-list,
+.view-book-a-z-list,
+.view-book-search,
+.view-book-whats-new {
+  .view-header {
+    margin-bottom: $md;
+  }
+
   .views-row {
     margin-bottom: $md;
     font-size: 1.3rem;
@@ -365,8 +372,34 @@ $imgpath: '../../uids/assets/images';
   }
 }
 
+.view-book-toc {
+  span {
+    margin-bottom: $md;
+    font-size: 1.3rem;
+    padding: $sm 0;
 
-.view-display-id-attachment_a_z_list {
+    a {
+      text-decoration: none;
+      font-weight: $font-weight-light;
+      color: $secondary;
+    }
+  }
+
+  ul li {
+    list-style: inherit;
+  }
+}
+
+.view-book-toc .views-field-book-owner,
+.view-book-whats-new .views-field-book-amended-date {
+  font-size: small;
+  font-weight: $font-weight-light;
+  color: $text-muted;
+  margin-left: $sm-md;
+}
+
+.view-display-id-attachment_a_z_list,
+.view-display-id-attachment_book_a_z_list {
   >div {
     @include flexbox;
     @include margin($top: 0, $left: 0, $bottom: $xlg);
