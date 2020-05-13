@@ -300,7 +300,7 @@ display:
           expose:
             label: ''
           plugin_id: search_api
-      title: ''
+      title: Search
       header:
         result:
           id: result
@@ -324,8 +324,8 @@ display:
           empty: true
           tokenize: false
           content:
-            value: 'No results found for your search. Please try another term or group of terms using the field above.'
-            format: basic_html
+            value: 'No results found for your search. Please try your search again using a different term or group of terms.'
+            format: filtered_html
           plugin_id: text
       relationships: {  }
       arguments: {  }
@@ -341,15 +341,18 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - 'user.node_grants:view'
       tags:
         - 'config:field.storage.node.body'
+        - 'config:search_api.index.book_content_and_tags'
   page_book_search:
     display_plugin: page
     id: page_book_search
     display_title: Page
     position: 1
     display_options:
-      display_extenders: {  }
+      display_extenders:
+        metatag_display_extender: {  }
       path: search
       exposed_block: true
     cache_metadata:
@@ -359,5 +362,7 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - 'user.node_grants:view'
       tags:
         - 'config:field.storage.node.body'
+        - 'config:search_api.index.book_content_and_tags'
