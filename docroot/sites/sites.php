@@ -1332,3 +1332,9 @@ $sites['sitesuiugf.local.drupal.uiowa.edu'] = 'uiugf.sites.uiowa.edu';
 $sites['sitesuiugf.dev.drupal.uiowa.edu'] = 'uiugf.sites.uiowa.edu';
 $sites['sitesuiugf.stage.drupal.uiowa.edu'] = 'uiugf.sites.uiowa.edu';
 $sites['sitesuiugf.prod.drupal.uiowa.edu'] = 'uiugf.sites.uiowa.edu';
+
+// Directory aliases for distance.uiowa.edu.
+$sites['distance.local.drupal.uiowa.edu'] = 'distance.uiowa.edu';
+$sites['distance.dev.drupal.uiowa.edu'] = 'distance.uiowa.edu';
+$sites['distance.stage.drupal.uiowa.edu'] = 'distance.uiowa.edu';
+$sites['distance.prod.drupal.uiowa.edu'] = 'distance.uiowa.edu';
