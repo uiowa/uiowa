@@ -1,0 +1,18 @@
+{% block stat_wrapper_start %}
+  {% if stat_image %}
+    <div class="stat {{ stat_classes }}" {% if stat_image %} style="background-image: url('{% spaceless %}{{ stat_image }}{% endspaceless %}'); background-size: cover; background-position: center" {% endif %}>
+    {% endif %}
+  {% endblock %}
+
+  {% block heading %}
+    {% if stat_title is not empty %}
+      {% include "@heading" with {
+        "heading_level" : 'h2',
+        "heading_class" : 'stat__title',
+        "heading" : stat_title
+      } %}
+    {% endif %}
+  {% endblock %}
+
+  <p class="stat__description">{{ stat_summary }}</p>
+</div>
