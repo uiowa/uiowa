@@ -42,7 +42,6 @@
  * @see html.html.twig
  */
 #}
-
 {% if logged_in %}
   {{ attach_library('uids_base/admin') }}
 {% endif %}
@@ -77,13 +76,21 @@
 
 <main role="main" {{ node_attributes.addClass(content_classes) }}>
 
-  {% if page.breadcrumb %}
-    {{ page.breadcrumb }}
-  {% endif %}
-
   <a id="main-content" tabindex="-1"></a>
   {# link is in html.html.twig #}
-  {{ page.content }}
+
+  {% if not has_node_image %}
+
+    {% if page.breadcrumb %}
+      {{ page.breadcrumb }}
+    {% endif %}
+
+    {{ page.content.uids_base_page_title }}
+
+  {% endif %}
+
+  {{ page.content|without('uids_base_page_title') }}
+
   {# /.layout-content #}
 
   {% if page.sidebar_first %}
@@ -101,5 +108,5 @@
 </main>
 
 {% block footer %}
-  {% include '@uids_base/layout/footer.html.twig'  %}
+  {% include '@uids_base/layout/footer.html.twig' %}
 {% endblock %}
