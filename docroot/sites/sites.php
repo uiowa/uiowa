@@ -1320,3 +1320,21 @@ $sites['gradcogscilang.local.drupal.uiowa.edu'] = 'cogscilang.grad.uiowa.edu';
 $sites['gradcogscilang.dev.drupal.uiowa.edu'] = 'cogscilang.grad.uiowa.edu';
 $sites['gradcogscilang.stage.drupal.uiowa.edu'] = 'cogscilang.grad.uiowa.edu';
 $sites['gradcogscilang.prod.drupal.uiowa.edu'] = 'cogscilang.grad.uiowa.edu';
+
+// Directory aliases for uiugf.sites.uiowa.edu.
+$sites['sitesuiugf.local.drupal.uiowa.edu'] = 'uiugf.sites.uiowa.edu';
+$sites['sitesuiugf.dev.drupal.uiowa.edu'] = 'uiugf.sites.uiowa.edu';
+$sites['sitesuiugf.stage.drupal.uiowa.edu'] = 'uiugf.sites.uiowa.edu';
+$sites['sitesuiugf.prod.drupal.uiowa.edu'] = 'uiugf.sites.uiowa.edu';
+
+// Directory aliases for distance.uiowa.edu.
+$sites['distance.local.drupal.uiowa.edu'] = 'distance.uiowa.edu';
+$sites['distance.dev.drupal.uiowa.edu'] = 'distance.uiowa.edu';
+$sites['distance.stage.drupal.uiowa.edu'] = 'distance.uiowa.edu';
+$sites['distance.prod.drupal.uiowa.edu'] = 'distance.uiowa.edu';
+
+// Directory aliases for uc.uiowa.edu.
+$sites['uc.local.drupal.uiowa.edu'] = 'uc.uiowa.edu';
+$sites['uc.dev.drupal.uiowa.edu'] = 'uc.uiowa.edu';
+$sites['uc.stage.drupal.uiowa.edu'] = 'uc.uiowa.edu';
+$sites['uc.prod.drupal.uiowa.edu'] = 'uc.uiowa.edu';

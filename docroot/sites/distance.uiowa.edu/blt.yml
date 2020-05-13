@@ -1,0 +1,25 @@
+project:
+  local:
+    hostname: distance.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: distance
+  human_name: distance.uiowa.edu
+  profile:
+    name: sitenow
+drush:
+  aliases:
+    local: self
+    remote: distance.prod
+drupal:
+  db:
+    database: distance_uiowa_edu
+cm:
+  core:
+    install_from_config: true
+    dirs:
+      sync:
+        path: profiles/custom/sitenow/config/sync
+uiowa:
+  profiles:
+    sitenow:
+      requester: tripple
