@@ -52,12 +52,15 @@ p {
   @include bg-light;
 }
 
-.bg-dark>* {
+.bg-dark>*,
+.bg-black>* {
   color: #fff;
 }
 
 .bg-dark .bg-light  *,
-.bg-dark .bg-yellow * {
+.bg-dark .bg-yellow *,
+.bg-black .bg-light *,
+.bg-black .bg-yellow * {
   color: $secondary!important;
 }
 
@@ -68,6 +71,10 @@ p {
 
 .bg-dark {
   @include bg-dark;
+}
+
+.bg-black {
+  @include bg-black;
 }
 
 .bg-yellow {
