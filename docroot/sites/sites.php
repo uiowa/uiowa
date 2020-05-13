@@ -1338,3 +1338,9 @@ $sites['distance.local.drupal.uiowa.edu'] = 'distance.uiowa.edu';
 $sites['distance.dev.drupal.uiowa.edu'] = 'distance.uiowa.edu';
 $sites['distance.stage.drupal.uiowa.edu'] = 'distance.uiowa.edu';
 $sites['distance.prod.drupal.uiowa.edu'] = 'distance.uiowa.edu';
+
+// Directory aliases for uc.uiowa.edu.
+$sites['uc.local.drupal.uiowa.edu'] = 'uc.uiowa.edu';
+$sites['uc.dev.drupal.uiowa.edu'] = 'uc.uiowa.edu';
+$sites['uc.stage.drupal.uiowa.edu'] = 'uc.uiowa.edu';
+$sites['uc.prod.drupal.uiowa.edu'] = 'uc.uiowa.edu';
