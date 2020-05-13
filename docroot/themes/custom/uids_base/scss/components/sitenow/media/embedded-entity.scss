@@ -4,17 +4,19 @@
 .embedded-entity {
   max-width: 100%;
   margin-bottom: 0;
+
   figure & {
     margin-bottom: 0;
   }
+
   figcaption {
     margin-top: $sm;
   }
 }
 
 
-.embedded-entity + p {
-  margin-top: $md!important;
+.embedded-entity+p {
+  margin-top: $md !important;
 }
 
 .embedded-entity.align-center {
@@ -23,20 +25,42 @@
   }
 }
 
+figure.caption {
+  display: table;
+  margin: 0;
+  margin-bottom: .5rem;
+
+  figcaption {
+    display: table-caption;
+    max-width: none;
+    caption-side: bottom;
+  }
+}
+
+.align-left,
+figure.align-left,
 .align-left.embedded-entity,
 .align-left .embedded-entity {
   float: none;
+  margin: 0;
+
   @include breakpoint(sm) {
     margin-right: 1rem;
+    margin-bottom: .5rem;
     float: left;
   }
 }
 
+.align-right,
+figure.align-right,
 .align-right.embedded-entity,
 .align-right .embedded-entity {
   float: none;
+  margin: 0;
+
   @include breakpoint(sm) {
     margin-left: 1rem;
+    margin-bottom: .5rem;
     float: right;
   }
 }
@@ -49,7 +73,9 @@ figure.caption .embedded-entity+figcaption {
 }
 
 figure.caption.align-right .embedded-entity+figcaption {
-  text-align: right;
+  @include breakpoint(sm) {
+    text-align: right;
+  }
 }
 
 .alert {
