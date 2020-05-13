@@ -223,6 +223,11 @@
   }
 }
 
+
+div.example2 p.special {
+  color: green;
+}
+
 .paragraph--type--section {
   position: relative;
   display: flex;
@@ -235,7 +240,7 @@
 
   margin-bottom: 0;
 
-  &:first-child, &.has-section-image {
+  &.has-section-image {
     padding-top: 0;
   }
 
@@ -251,6 +256,11 @@
   }
 }
 
+.field__item:first-child .paragraph--type--section {
+  @include breakpoint(sm) {
+    padding-top: 0;
+  }
+}
 
 .col-md-12.paragraph--type--text {
   //padding-top: $desktop-width-gutter;
