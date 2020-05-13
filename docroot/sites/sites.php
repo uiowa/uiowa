@@ -1326,3 +1326,9 @@ $sites['gradcogscilang.local.drupal.uiowa.edu'] = 'cogscilang.grad.uiowa.edu';
 $sites['gradcogscilang.dev.drupal.uiowa.edu'] = 'cogscilang.grad.uiowa.edu';
 $sites['gradcogscilang.stage.drupal.uiowa.edu'] = 'cogscilang.grad.uiowa.edu';
 $sites['gradcogscilang.prod.drupal.uiowa.edu'] = 'cogscilang.grad.uiowa.edu';
+
+// Directory aliases for uiugf.sites.uiowa.edu.
+$sites['sitesuiugf.local.drupal.uiowa.edu'] = 'uiugf.sites.uiowa.edu';
+$sites['sitesuiugf.dev.drupal.uiowa.edu'] = 'uiugf.sites.uiowa.edu';
+$sites['sitesuiugf.stage.drupal.uiowa.edu'] = 'uiugf.sites.uiowa.edu';
+$sites['sitesuiugf.prod.drupal.uiowa.edu'] = 'uiugf.sites.uiowa.edu';
