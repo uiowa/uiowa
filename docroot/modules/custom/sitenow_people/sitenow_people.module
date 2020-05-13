@@ -16,6 +16,7 @@ use Drupal\Core\Url;
 use Drupal\file\Entity\File;
 use Drupal\media\Entity\Media;
 use Drupal\views\ViewExecutable;
+use Drupal\Core\Render\Element;
 
 /**
  * Implements hook_form_alter().
@@ -27,6 +28,28 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
       if (isset($form['field_person_hide'])) {
         // Set field_person_hide to options group (promotion options).
         $form['field_person_hide']['#group'] = 'options';
+      }
+
+      // @todo Pull list of terms for person type.
+      $vid = 'person_types';
+      $term_data = [];
+      /** @var \Drupal\taxonomy\Entity\Vocabulary $terms */
+      $terms =\Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree($vid);
+//      foreach ($terms as $term) {
+//        $term_data[$term->name] = $term->tid;
+//      }
+      // @todo Loop through fields and match term name against substring of field name
+      foreach (Element::children($form) as $field_name) {
+        foreach ($terms as $term) {
+          if (strpos($field_name, $term->name) !== FALSE) {
+            // @todo Add '#states' to matching fields to show when tid is selected in field_person_type
+            $form[$field_name]['#states']['visible'][] = [
+              ':input[name="field_person_type[]"]' => [
+                'value' => $term->id,
+              ],
+            ];
+          }
+        }
       }
       break;
   }
