@@ -8,6 +8,9 @@
 use Drupal\Component\Assertion\Handle;
 
 $db_name = '${drupal.db.database}';
+if (isset($_acsf_site_name)) {
+  $db_name .= '_' . $_acsf_site_name;
+}
 
 /**
  * Database configuration.
