@@ -9,7 +9,11 @@
  # * blockquote_content
  #
  #}
-<blockquote {{ blockquote_attributes.setAttribute('cite', blockquote_cite_url) }}">
+{% if blockquote_cite_url is not empty %}
+  {% set blockquote_attributes = blockquote_attributes.setAttribute('cite', blockquote_cite_url) %}
+{% endif %}
+
+<blockquote {{ blockquote_attributes }}">
 {{ blockquote_content }}
     {% if blockquote_footer is not empty or (blockquote_cite is not empty) %}
       <footer>
