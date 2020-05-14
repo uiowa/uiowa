@@ -1,0 +1,28 @@
+{#
+ # Renders a <blockquote> with footer, citation and attributes if available.
+ #
+ # Available properties of the blockquote object:
+ # * blockquote_attributes
+ # * blockquote_cite
+ # * blockquote_cite_url
+ # * blockquote_footer
+ # * blockquote_content
+ #
+ #}
+{% if blockquote_cite_url is not empty %}
+  {% set blockquote_attributes = blockquote_attributes.setAttribute('cite', blockquote_cite_url) %}
+{% endif %}
+
+<blockquote {{ blockquote_attributes }}>
+{{ blockquote_content }}
+    {% if blockquote_footer is not empty or (blockquote_cite is not empty) %}
+      <footer>
+        {% if blockquote_footer is not empty %}
+          {{ blockquote_footer }}
+        {% endif %}
+        {% if blockquote_cite is not empty %}
+          <cite>{{ blockquote_cite }}</cite>
+        {% endif %}
+      </footer>
+    {% endif %}
+</blockquote>
