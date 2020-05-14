@@ -1332,3 +1332,9 @@ $sites['uc.local.drupal.uiowa.edu'] = 'uc.uiowa.edu';
 $sites['uc.dev.drupal.uiowa.edu'] = 'uc.uiowa.edu';
 $sites['uc.stage.drupal.uiowa.edu'] = 'uc.uiowa.edu';
 $sites['uc.prod.drupal.uiowa.edu'] = 'uc.uiowa.edu';
+
+// Directory aliases for itcommunities.uiowa.edu.
+$sites['itcommunities.local.drupal.uiowa.edu'] = 'itcommunities.uiowa.edu';
+$sites['itcommunities.dev.drupal.uiowa.edu'] = 'itcommunities.uiowa.edu';
+$sites['itcommunities.stage.drupal.uiowa.edu'] = 'itcommunities.uiowa.edu';
+$sites['itcommunities.prod.drupal.uiowa.edu'] = 'itcommunities.uiowa.edu';
