@@ -9,16 +9,16 @@
  # * blockquote_content
  #
  #}
-
-{% if (blockquote_cite_url is not empty) %}
-  <blockquote {{ blockquote_attributes }} cite="{{ blockquote_cite_url }}">
-{% else %}
-  <blockquote {{ blockquote_attributes }}>
-{% endif %}
-    {{ blockquote_content }}
+<blockquote {{ blockquote_attributes.setAttribute('cite', blockquote_cite_url) }}">
+{{ blockquote_content }}
     {% if blockquote_footer is not empty or (blockquote_cite is not empty) %}
-      <footer>{{ blockquote_footer }} <cite>{{ blockquote_cite }}</cite></footer>
-    {% elseif blockquote_footer is not empty %}
-      <footer>{{ blockquote_footer }}</footer>
+      <footer>
+        {% if blockquote_footer is not empty %}
+          {{ blockquote_footer }}
+        {% endif %}
+        {% if blockquote_cite is not empty %}
+          <cite>{{ blockquote_cite }}</cite>
+        {% endif %}
+      </footer>
     {% endif %}
-  </blockquote>
+</blockquote>
