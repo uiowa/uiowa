@@ -5,7 +5,7 @@ project:
   machine_name: icsa
   human_name: icsa.uiowa.edu
   profile:
-    name: collegiate
+    name: sitenow
 drush:
   aliases:
     local: self
@@ -15,8 +15,7 @@ drupal:
     database: icsa_uiowa_edu
 cm:
   core:
-    install_from_config: false
+    install_from_config: true
     dirs:
       sync:
-        path: ../config/icsa.uiowa.edu
-  strategy: none
+        path: profiles/custom/sitenow/config/sync
