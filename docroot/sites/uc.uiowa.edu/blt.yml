@@ -1,21 +1,25 @@
 project:
   local:
-    hostname: icsa.local.drupal.uiowa.edu
+    hostname: uc.local.drupal.uiowa.edu
     protocol: https
-  machine_name: icsa
-  human_name: icsa.uiowa.edu
+  machine_name: uc
+  human_name: uc.uiowa.edu
   profile:
     name: sitenow
 drush:
   aliases:
     local: self
-    remote: icsa.prod
+    remote: uc.prod
 drupal:
   db:
-    database: icsa_uiowa_edu
+    database: uc_uiowa_edu
 cm:
   core:
     install_from_config: true
     dirs:
       sync:
         path: profiles/custom/sitenow/config/sync
+uiowa:
+  profiles:
+    sitenow:
+      requester: tripple
