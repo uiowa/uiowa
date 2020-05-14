@@ -52,7 +52,7 @@
   'blockquote_content': content.field_blockquote_content,
   'blockquote_footer': content.field_blockquote_footer,
   'blockquote_cite': content.field_blockquote_cite,
-  'blockquote_cite_url': content.field_blockquote_cite[0]['#url'],
+  'blockquote_cite_url': paragraph.field_blockquote_cite.0.uri,
 } %}
 
 <div{{ attributes.addclass(classes) }}>
