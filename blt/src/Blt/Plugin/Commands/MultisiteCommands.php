@@ -564,9 +564,8 @@ EOD
 
     $this->say("Updated <comment>{$id}.site.yml</comment> Drush alias file with <info>local, dev, test and prod</info> aliases.");
 
-    // Overwrite the multisite blt.yml file. Note that the profile defaults
-    // are passed second so that config takes precedence.
-    $blt = YamlMunge::mungeFiles("{$root}/docroot/sites/{$host}/blt.yml", "{$root}/docroot/profiles/custom/{$profile}/default.blt.yml");
+    // Overwrite the multisite blt.yml file.
+    $blt = YamlMunge::parseFile("{$root}/docroot/sites/{$host}/blt.yml");
     $blt['project']['machine_name'] = $id;
     $blt['project']['local']['hostname'] = $local;
     $blt['drupal']['db']['database'] = $db;
