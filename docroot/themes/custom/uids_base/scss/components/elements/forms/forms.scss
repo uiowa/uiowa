@@ -187,4 +187,23 @@
     margin-left: -0.4rem;
     padding: 0 0.4rem;
   }
+
+  .webform-scale {
+    .webform-scale-options {
+      input {
+        transition: all 0.3s ease-in-out;
+        transition-property: border-color, background-color;
+      }
+
+      input:checked + label {
+        border-color: $primary;
+        background-color: rgba($primary, 0.2);
+      }
+    }
+    
+    
+    label {
+      line-height: 1.7em;
+    }
+  }
 }
