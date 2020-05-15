@@ -65,8 +65,8 @@ class MultisiteCommands extends BltTasks {
       throw new \Exception('Aborted.');
     }
     else {
-      $app = EnvironmentDetector::getAhGroup() ?? 'local';
-      $env = EnvironmentDetector::getAhEnv() ?? 'local';
+      $app = EnvironmentDetector::getAhGroup() ? EnvironmentDetector::getAhGroup() : 'local';
+      $env = EnvironmentDetector::getAhEnv() ? EnvironmentDetector::getAhEnv() : 'local';
 
       foreach ($this->getConfigValue('multisites') as $multisite) {
         $this->switchSiteContext($multisite);
@@ -126,8 +126,8 @@ class MultisiteCommands extends BltTasks {
     ],
     'dry-run' => FALSE,
   ]) {
-    $app = EnvironmentDetector::getAhGroup() ?? 'local';
-    $env = EnvironmentDetector::getAhEnv() ?? 'local';
+    $app = EnvironmentDetector::getAhGroup() ? EnvironmentDetector::getAhGroup() : 'local';
+    $env = EnvironmentDetector::getAhEnv() ? EnvironmentDetector::getAhEnv() : 'local';
 
     if (!in_array($env, $options['envs'])) {
       $allowed = implode(', ', $options['envs']);
