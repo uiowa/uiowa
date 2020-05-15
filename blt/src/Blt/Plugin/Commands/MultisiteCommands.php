@@ -68,6 +68,8 @@ class MultisiteCommands extends BltTasks {
       $app = EnvironmentDetector::getAhGroup() ? EnvironmentDetector::getAhGroup() : 'local';
       $env = EnvironmentDetector::getAhEnv() ? EnvironmentDetector::getAhEnv() : 'local';
 
+      $this->sendNotification("Command 'drush {$cmd}' started on {$app} {$env}.");
+
       foreach ($this->getConfigValue('multisites') as $multisite) {
         $this->switchSiteContext($multisite);
 
@@ -95,6 +97,8 @@ class MultisiteCommands extends BltTasks {
           $this->logger->info("Skipping excluded site {$multisite}.");
         }
       }
+
+      $this->sendNotification("Command 'drush {$cmd}' finished on {$app} {$env}.");
     }
   }
 
@@ -751,6 +755,9 @@ EOD;
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
       curl_exec($ch);
       curl_close($ch);
+    }
+    else {
+      $this->logger->warning("Slack webhook URL not configured. Cannot send message: {$message}");
     }
   }
 
