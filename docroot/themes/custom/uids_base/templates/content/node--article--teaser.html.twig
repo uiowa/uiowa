@@ -101,7 +101,7 @@
 {% embed '@uids_base/uids/card.html.twig' with article_card only %}
 
   {% block card_img %}
-    {% if card_image is not empty %}
+    {% if content.field_image[0]['#media'] is not empty %}
       <div class="card__media">
         {{ card_image }}
       </div>
