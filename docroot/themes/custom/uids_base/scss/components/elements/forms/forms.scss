@@ -1,0 +1,190 @@
+@import "assets/scss/_variables.scss";
+@import "assets/scss/_utilities.scss";
+@import "components/01 - elements/forms/_forms.scss";
+
+.button {
+  @extend %bttn;
+  text-transform: uppercase;
+  font-family: $font-family-caps-bold;
+  border: 1px solid #FFCD00;
+}
+.uids-content .help-text,
+.uids-content .description {
+  font-style: normal;
+}
+.views-exposed-form.uids-content:not(.uids-search) {
+  padding: 5px 19px;
+  .form--inline {
+    align-items: flex-start;
+  }
+  .form-item, .form-actions {
+    margin-right: 1em;
+  }
+  .form-actions {
+    margin-top: 2.5em;
+  }
+  .button {
+    @extend %bttn--secondary;
+    border: 0;
+    padding-top: 13px;
+    padding-bottom: 13px;
+  }
+}
+
+.webform-submission-form {
+  .form-item {
+    padding: 0rem 0rem;
+  }
+
+  .webform-multiple-table {
+    margin-bottom: 10px;
+
+    thead th {
+      border-top: none;
+      padding: 0px;
+    }
+
+    tr.draggable {
+      position: relative;
+
+      .webform-multiple-table--handle {
+        padding: 0rem 0.75rem;
+
+        .tabledrag-handle {
+          margin: 0rem;
+          height: 16px;
+          width: 100%;
+          display: flex;
+          justify-content: center;
+
+          .handle {
+            background-position: 0rem;
+            width: 16px;
+            height: 16px;
+            padding: 0rem;
+            margin: 0rem;
+          }
+        }
+
+        & + td {
+          padding-left: 0rem;
+
+          fieldset {
+            margin-bottom: 0rem;
+          }
+
+          input {
+            margin: 0;
+          }
+        }
+      }
+
+      td.webform-multiple-table--weight {
+        vertical-align: middle;
+
+        .form-group {
+          margin-bottom: 0px;
+        }
+      }
+
+      .webform-multiple-table--operations {
+        width: 16px;
+        padding: 0rem 1rem 0rem 0rem;
+
+        .form-control {
+          display: inline-block;
+          margin-bottom: -3px;
+          border: none;
+          width: 18px;
+          height: 18px;
+        }
+      }
+
+      &.drag {
+        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+      }
+    }
+  }
+
+  .webform-multiple-add {
+    display: flex;
+
+    .button {
+      @extend %bttn--primary;
+    }
+
+    div[class*="-add-more-items"] {
+      display: flex;
+      margin:0;
+
+      input {
+        height: unset;
+        width: unset;
+        margin: 0 1rem;
+      }
+    }
+
+    .form-control {
+      width: unset;
+
+      &.form-number {
+        display: inline-block;
+      }
+    }
+
+    .field-suffix {
+      display: inline-block;
+      color: lighten(#000, 40%);
+      line-height: 1.4;
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .btn-primary {
+    &:focus {
+      background-color: var(--primary);
+    }
+
+    &:hover {
+      background-color: #000;
+    }
+  }
+
+  .tabledrag-toggle-weight {
+    font-size: inherit;
+    color: lighten(#000, 40%);
+    padding: 1rem;
+  }
+
+  .tabledrag-toggle-weight-wrapper {
+    justify-content: flex-end;
+  }
+
+  .webform-multiple-table--weight .webform-multiple-sort-weight {
+    width: 4em;
+  }
+
+  .webform-multiple-table--operations input[type="image"] {
+    border: none;
+  }
+
+  .description {
+    margin: 0.5rem 0;
+
+    .webform-element-more {
+      margin-top: 0.3rem;
+    }
+  }
+
+  .fieldgroup {
+    padding: 0.75rem;
+  }
+
+  .fieldgroup legend {
+    margin-bottom: .625rem;
+    margin-left: -0.4rem;
+    padding: 0 0.4rem;
+  }
+}
