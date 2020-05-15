@@ -76,6 +76,15 @@ The following options can also be passed in:
 * `--no-commit` - Do not create a new commit in git.
 * `--simulate` - Only runs the commands associated with `blt recipes:multisite:init`.
 
+### Overriding Configuration
+Please note this approach is not yet tested nor recommended.
+
+If an individual site wants to export ALL of its configuration and manage it going forward, an [include setting](https://docs.acquia.com/blt/install/next-steps/#adding-settings-to-settings-php) with the following should accomplish that:
+```
+$blt_override_config_directories = FALSE;
+$settings['config_sync_directory'] = DRUPAL_ROOT . '/config/' . $site_dir;
+```
+
 ## Updating Dependencies
 Before starting updates, make sure your local environment is on a feature branch created from the latest version of master and synced with production by running `blt dsa`.
 
