@@ -522,16 +522,6 @@ EOD
       )
       ->run();
 
-    // Include profile-specific settings file.
-    $result = $this->taskReplaceInFile("{$root}/docroot/sites/{$host}/settings/includes.settings.php")
-      ->from('// e.g,( DRUPAL_ROOT . "/sites/$site_dir/settings/foo.settings.php" )')
-      ->to("DRUPAL_ROOT . \"/sites/settings/{$profile}.settings.php\"")
-      ->run();
-
-    if (!$result->wasSuccessful()) {
-      throw new \Exception("Unable to set settings include for site {$host}.");
-    }
-
     // Remove some files that we don't need or will be regenerated below.
     $files = [
       "{$root}/drush/sites/default.site.yml",
