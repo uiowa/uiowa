@@ -7,6 +7,12 @@
  * @see example.sites.php
  */
 
+// Directory aliases for demo.sitenow.uiowa.edu.
+$sites['sitenowdemo.local.drupal.uiowa.edu'] = 'default';
+$sites['sitenowdemo.dev.drupal.uiowa.edu'] = 'default';
+$sites['sitenowdemo.stage.drupal.uiowa.edu'] = 'default';
+$sites['sitenowdemo.prod.drupal.uiowa.edu'] = 'default';
+
 // Directory aliases for hr.uiowa.edu.
 $sites['hr.local.drupal.uiowa.edu'] = 'hr.uiowa.edu';
 $sites['hr.dev.drupal.uiowa.edu'] = 'hr.uiowa.edu';
@@ -696,12 +702,6 @@ $sites['centerforconferencesautismcenter.local.drupal.uiowa.edu'] = 'autismcente
 $sites['centerforconferencesautismcenter.dev.drupal.uiowa.edu'] = 'autismcenter.centerforconferences.uiowa.edu';
 $sites['centerforconferencesautismcenter.stage.drupal.uiowa.edu'] = 'autismcenter.centerforconferences.uiowa.edu';
 $sites['centerforconferencesautismcenter.prod.drupal.uiowa.edu'] = 'autismcenter.centerforconferences.uiowa.edu';
-
-// Directory aliases for demo.sitenow.uiowa.edu.
-$sites['sitenowdemo.local.drupal.uiowa.edu'] = 'demo.sitenow.uiowa.edu';
-$sites['sitenowdemo.dev.drupal.uiowa.edu'] = 'demo.sitenow.uiowa.edu';
-$sites['sitenowdemo.stage.drupal.uiowa.edu'] = 'demo.sitenow.uiowa.edu';
-$sites['sitenowdemo.prod.drupal.uiowa.edu'] = 'demo.sitenow.uiowa.edu';
 
 // Directory aliases for cmdd.lab.uiowa.edu.
 $sites['labcmdd.local.drupal.uiowa.edu'] = 'cmdd.lab.uiowa.edu';
