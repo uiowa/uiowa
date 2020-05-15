@@ -48,7 +48,7 @@ class ReplaceCommands extends BltTasks {
       }
     }
 
-    // If a multisite encountered a handled exception, throw one here so the
+    // If a multisite encountered a handled exception, throw one here so that
     // we return 1 and mark the job as a failure.
     if ($multisite_exception) {
       throw new \Exception('Error deploying updates. Check the log output for more information.');
