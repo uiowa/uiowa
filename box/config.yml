@@ -474,10 +474,7 @@ apache_vhosts:
     servername: labthemaclab.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-  -
-    servername: theming.local.drupal.uiowa.edu
-    documentroot: '{{ drupal_core_path }}'
-    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  
   -
     servername: sitesuiadvise.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'

@@ -529,12 +529,6 @@ $sites['cnm.dev.drupal.uiowa.edu'] = 'cnm.uiowa.edu';
 $sites['cnm.stage.drupal.uiowa.edu'] = 'cnm.uiowa.edu';
 $sites['cnm.prod.drupal.uiowa.edu'] = 'cnm.uiowa.edu';
 
-// Directory aliases for theming.uiowa.edu.
-$sites['theming.local.drupal.uiowa.edu'] = 'theming.uiowa.edu';
-$sites['theming.dev.drupal.uiowa.edu'] = 'theming.uiowa.edu';
-$sites['theming.stage.drupal.uiowa.edu'] = 'theming.uiowa.edu';
-$sites['theming.prod.drupal.uiowa.edu'] = 'theming.uiowa.edu';
-
 // Directory aliases for research2.education.uiowa.edu.
 $sites['educationresearch2.local.drupal.uiowa.edu'] = 'research2.education.uiowa.edu';
 $sites['educationresearch2.dev.drupal.uiowa.edu'] = 'research2.education.uiowa.edu';
