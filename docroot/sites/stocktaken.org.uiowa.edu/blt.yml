@@ -1,6 +1,4 @@
 project:
-  profile:
-    name: sitenow
   local:
     hostname: orgstocktaken.local.drupal.uiowa.edu
     protocol: https
@@ -14,12 +12,4 @@ drupal:
   db:
     database: stocktaken_org_uiowa_edu
 uiowa:
-  profiles:
-    sitenow:
-      requester: agoedkn
-cm:
-  core:
-    dirs:
-      sync:
-        path: profiles/custom/sitenow/config/sync
-    install_from_config: true
+  requester: agoedkn

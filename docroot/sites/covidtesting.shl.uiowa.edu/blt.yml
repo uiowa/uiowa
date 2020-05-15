@@ -4,8 +4,6 @@ project:
     protocol: https
   machine_name: shlcovidtesting
   human_name: covidtesting.shl.uiowa.edu
-  profile:
-    name: sitenow
 drush:
   aliases:
     local: self
@@ -13,13 +11,5 @@ drush:
 drupal:
   db:
     database: covidtesting_shl_uiowa_edu
-cm:
-  core:
-    install_from_config: true
-    dirs:
-      sync:
-        path: profiles/custom/sitenow/config/sync
 uiowa:
-  profiles:
-    sitenow:
-      requester: makyea
+  requester: makyea

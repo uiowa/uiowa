@@ -519,5 +519,37 @@ EOD;
 
     $this->setSchemaVersion(1013);
   }
+  /**
+   * Update 1014.
+   *
+   * @Update(
+   *   version = "1014",
+   *   description = "Update all multisites to use default BLT configuration."
+   * )
+   */
+  protected function update1014() {
+    $root = $this->getConfigValue('repo.root');
+    $sites = Multisite::getAllSites($root);
+
+    foreach ($sites as $site) {
+      $id = Multisite::getIdentifier("https://{$site}");
+      $file = "{$root}/docroot/sites/{$site}/blt.yml";
+
+      $yaml = YamlMunge::parseFile($file);
+      $profile = $yaml['project']['profile']['name'];
+      unset($yaml['project']['profile']);
+      unset($yaml['cm']);
+
+      if (isset($yaml['uiowa'])) {
+        $yaml['uiowa']['requester'] = $yaml['uiowa']['profiles'][$profile]['requester'];
+        unset($yaml['uiowa']['profiles']);
+      }
+
+      file_put_contents($file, Yaml::dump($yaml, 10, 2));
+    }
+
+    $this->setSchemaVersion(1014);
+  }
+
 
 }

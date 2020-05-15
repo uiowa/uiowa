@@ -1,6 +1,4 @@
 project:
-  profile:
-    name: sitenow
   local:
     hostname: sustainabilitycommittee.local.drupal.uiowa.edu
     protocol: https
@@ -13,14 +11,5 @@ drush:
 drupal:
   db:
     database: sustainabilitycommittee_uiowa_edu
-cm:
-  core:
-    dirs:
-      sync:
-        path: profiles/custom/sitenow/config/sync
-    install_from_config: true
-
 uiowa:
-  profiles:
-    sitenow:
-      requester: mbiger
+  requester: mbiger
