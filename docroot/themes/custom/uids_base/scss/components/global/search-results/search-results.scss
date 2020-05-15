@@ -8,7 +8,7 @@
   font-family: $font-family-sans-serif;
 }
 #search-results .gsc-search-box {
-  padding: 20px;
+  padding: 0 0 0 15px;
   background-color: #f1f1f1;
 }
 #search-results .gsst_a .gscb_a {
@@ -45,7 +45,7 @@
 }
 #search-results .gs-result .gs-title, #search-results .gs-result .gs-title a, #search-results .gs-title b {
   color: $blk;
-  font-size: 30px;
+  font-size: 28px;
   line-height: 1.2;
   text-decoration: none;
 }
@@ -62,6 +62,9 @@
   background-color: #ccc;
   border-radius: 0;
   padding-right: 2.5rem;
+  padding-top: 1.3rem;
+  padding-bottom: 1.3rem;
+  border: 1px solid #ccc;
 }
 #search-results .gsc-search-button-v2 svg {
   fill: $blk;
@@ -71,10 +74,16 @@
 #search-results .gsc-webResult .gsc-result {
   border-bottom: 0;
 }
+#search-results .gsc-webResult .gsc-result {
+  padding: 0 0 35px 0;
+}
+#search-results .gsc-search-box-tools .gsc-search-box .gsc-input {
+  padding-right: 0;
+}
 #search-results .gsc-url-top .gs-visibleUrl, #search-results .gsc-url-bottom .gs-visibleUrl {
   color: $link-color;
   font-size: 25px;
-  line-height: 1.2;
+  line-height: 1.5;
 }
 #search-results .gcsc-find-more-on-google {
   color: $link-color;
@@ -96,7 +105,7 @@
     position: relative;
     float: left;
     font-size: 16px;
-    @include padding($top: $md, $right: $md, $bottom: $md, $left: $md);
+    @include padding($top: $md, $right: 1.35rem, $bottom: $md, $left: 1.35rem);
     line-height: 1;
     text-decoration: none;
     color: #4F4F4F;
