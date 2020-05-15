@@ -20,7 +20,7 @@ class ReplaceCommands extends BltTasks {
     // Disable alias since we are targeting a specific URI.
     $this->config->set('drush.alias', '');
 
-    $app = EnvironmentDetector::getAhGroup() ?? 'local';
+    $app = EnvironmentDetector::getAhGroup() ? EnvironmentDetector::getAhGroup() : 'local';
     $multisite_exception = FALSE;
 
     foreach ($this->getConfigValue('multisites') as $multisite) {
