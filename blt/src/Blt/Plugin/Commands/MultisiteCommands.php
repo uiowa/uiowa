@@ -162,7 +162,6 @@ class MultisiteCommands extends BltTasks {
         if ($this->confirm('You will invoke the drupal:install command for the sites listed above. Are you sure?')) {
           foreach ($uninstalled as $multisite) {
             $this->switchSiteContext($multisite);
-            $profile = $this->getConfigValue('project.profile.name');
 
             // Clear the cache first to prevent random errors on install.
             // We use exec here to always return 0 since the command can fail
@@ -402,7 +401,7 @@ EOD
       return new CommandError("Site {$host} already exists.");
     }
 
-    $profiles = array_keys($this->getConfig()->get('uiowa.profiles'));
+    $profiles = $this->getConfig()->get('uiowa.profiles');
     $profile = $commandData->input()->getArgument('profile');
 
     if (!in_array($profile, $profiles)) {
@@ -416,8 +415,6 @@ EOD
    *
    * @param string $host
    *   The multisite URI host. Will be used as the site directory.
-   * @param string $profile
-   *   The profile that will be used when creating the site.
    * @param array $options
    *   An option that takes multiple values.
    *
@@ -439,7 +436,7 @@ EOD
    *
    * @throws \Exception
    */
-  public function create($host, $profile, array $options = [
+  public function create($host, array $options = [
     'simulate' => FALSE,
     'no-commit' => FALSE,
     'no-db' => FALSE,
@@ -562,7 +559,7 @@ EOD
 
     // If requester option is set, add it to the site's BLT settings.
     if (isset($options['requester'])) {
-      $blt['uiowa']['profiles'][$profile]['requester'] = $options['requester'];
+      $blt['uiowa']['requester'] = $options['requester'];
     }
 
     $this->taskWriteToFile("{$root}/docroot/sites/{$host}/blt.yml")
