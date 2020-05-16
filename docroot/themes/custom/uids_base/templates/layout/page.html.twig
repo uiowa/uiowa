@@ -47,7 +47,8 @@
 {% endif %}
 
 {% set node_attributes = create_attribute() %}
-
+{% set content_attributes = create_attribute() %}
+{% set sidebar_attributes = create_attribute() %}
 {% set content_classes = [] %}
 
 {% if layout_builder_enabled == TRUE %}
@@ -66,6 +67,13 @@
   {% if sticky_classes %}
     {% set content_classes = content_classes|merge(sticky_classes) %}
   {% endif %}
+{% endif %}
+
+{% if page.sidebar_first is defined and page.sidebar_first|render|striptags|trim  %}
+	{% set sidebar_first = true %}
+{% endif %}
+{% if page.sidebar_second is defined and page.sidebar_second|render|striptags|trim  %}
+	{% set sidebar_second = true %}
 {% endif %}
 
 {% include '@uids_base/layout/header--' ~ header_type ~ '.html.twig' %}
@@ -89,21 +97,29 @@
 
   {% endif %}
 
+  {% if (sidebar_first or sidebar_second) %}
+    <div class="has-sidebar">
+  {% endif %}
+
   {{ page.content|without('uids_base_page_title') }}
 
   {# /.layout-content #}
 
-  {% if page.sidebar_first %}
-    <aside class="layout-sidebar-first" role="complementary">
+  {% if sidebar_first %}
+    <div{{sidebar_attributes.addClass(sidebar_classes,'layout-sidebar-first','order-first').setAttribute('role','region').setAttribute('aria-label','primarysidebar')}}>
       {{ page.sidebar_first }}
-    </aside>
+    </div>
   {% endif %}
 
-  {% if page.sidebar_second %}
-    <aside class="layout-sidebar-second" role="complementary">
+  {% if sidebar_second %}
+    <div{{sidebar_attributes.addClass(sidebar_classes,'layout-sidebar-second','order-last').setAttribute('role','region').setAttribute('aria-label','secondarysidebar')}}>
       {{ page.sidebar_second }}
-    </aside>
+    </div>
   {% endif %}
+
+  {% if (sidebar_first or sidebar_second) %}
+	  </div>
+	{% endif %}
 
 </main>
 
