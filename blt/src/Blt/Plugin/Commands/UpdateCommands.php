@@ -519,6 +519,7 @@ EOD;
 
     $this->setSchemaVersion(1013);
   }
+
   /**
    * Update 1014.
    *
@@ -550,6 +551,5 @@ EOD;
 
     $this->setSchemaVersion(1014);
   }
-
 
 }
