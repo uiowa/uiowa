@@ -4,6 +4,7 @@ namespace Uiowa\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\EnvironmentDetector;
+use Acquia\Blt\Robo\Exceptions\BltException;
 
 /**
  * BLT override commands.
@@ -19,7 +20,8 @@ class ReplaceCommands extends BltTasks {
     // Disable alias since we are targeting a specific URI.
     $this->config->set('drush.alias', '');
 
-    $app = EnvironmentDetector::getAhGroup() ?? 'local';
+    $app = EnvironmentDetector::getAhGroup() ? EnvironmentDetector::getAhGroup() : 'local';
+    $multisite_exception = FALSE;
 
     foreach ($this->getConfigValue('multisites') as $multisite) {
       $this->switchSiteContext($multisite);
@@ -27,16 +29,29 @@ class ReplaceCommands extends BltTasks {
 
       // Check for database include on this application.
       if (EnvironmentDetector::isAhEnv() && !file_exists("/var/www/site-php/{$app}/{$db}-settings.inc")) {
-        $this->say("Skipping $multisite on AH environment. Database {$db} does not exist.");
+        $this->say("Skipping {$multisite} on AH environment. Database {$db} does not exist.");
         continue;
       }
       else {
         if ($this->getInspector()->isDrupalInstalled()) {
-          $this->say("Deploying updates to <comment>$multisite</comment>...");
-          $this->invokeCommand('drupal:update');
-          $this->say("Finished deploying updates to $multisite.");
+          $this->say("Deploying updates to <comment>{$multisite}</comment>...");
+
+          try {
+            $this->invokeCommand('drupal:update');
+            $this->say("Finished deploying updates to {$multisite}.");
+          }
+          catch (BltException $e) {
+            $this->logger->error("Failed deploying updates to {$multisite}.");
+            $multisite_exception = TRUE;
+          }
         }
       }
+    }
+
+    // If a multisite encountered a handled exception, throw one here so that
+    // we return 1 and mark the job as a failure.
+    if ($multisite_exception) {
+      throw new \Exception('Error deploying updates. Check the log output for more information.');
     }
   }
 
