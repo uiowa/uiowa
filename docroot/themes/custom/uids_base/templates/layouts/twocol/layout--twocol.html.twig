@@ -21,31 +21,38 @@
 
 {% if content.first %}
 
-    <div{{ attributes.addClass(classes) }}>
+  <div{{ attributes.addClass(classes) }}>
+    {% if attributes.hasClass('page__container--edge-container') %}
+      <div class="edge-container">
+      {% endif %}
 
-        <div class="layout__region layout__region--first flex__wrapper">
+      <div class="layout__region layout__region--first flex__wrapper">
 
-            {% if region_attributes.first.storage['data-region'] %}
-                {{ attach_library('uids_base/admin') }}
-                <div {{ region_attributes.first.addClass('flex__wrapper') }}>
-                {% endif %}
-                {{ content.first }}
-                {% if region_attributes.first.storage['data-region'] %}
-                </div>
-            {% endif %}
+        {% if region_attributes.first.storage['data-region'] %}
+          {{ attach_library('uids_base/admin') }}
+          <div {{ region_attributes.first.addClass('flex__wrapper') }}>
+          {% endif %}
+          {{ content.first }}
+          {% if region_attributes.first.storage['data-region'] %}
+          </div>
+        {% endif %}
 
-        </div>
+      </div>
 
-        <div class="layout__region layout__region--second flex__wrapper">
+      <div class="layout__region layout__region--second flex__wrapper">
 
-            {% if region_attributes.second.storage['data-region'] %}
-                <div {{ region_attributes.second.addClass('flex__wrapper') }}>
-                {% endif %}
-                {{ content.second }}
-                {% if region_attributes.second.storage['data-region'] %}
-                </div>
-            {% endif %}
-        </div>
+        {% if region_attributes.second.storage['data-region'] %}
+          <div {{ region_attributes.second.addClass('flex__wrapper') }}>
+          {% endif %}
+          {{ content.second }}
+          {% if region_attributes.second.storage['data-region'] %}
+          </div>
+        {% endif %}
+      </div>
 
-    </div>
+      {% if attributes.hasClass('page__container--edge-container') %}
+      </div>
+    {% endif %}
+
+  </div>
 {% endif %}

@@ -23,17 +23,25 @@
 
 {% if content.content %}
 
-<div{{attributes.addClass(classes)}}>
+  <div{{attributes.addClass(classes)}}>
+    {% if attributes.hasClass('page__container--edge-container') %}
+      <div class="edge-container">
+      {% endif %}
 
-	{% if region_attributes.content.storage['data-region'] %}
-		<div {{ region_attributes.content.addClass('flex__wra') }}>
-		{% endif %}
-		{{ content.content }}
-		{% if region_attributes.content.storage['data-region'] %}
-		</div>
-	{% endif %}
+      {% if region_attributes.content.storage['data-region'] %}
+        <div {{ region_attributes.content.addClass('flex__wra') }}>
+        {% endif %}
+        {{ content.content }}
+        {% if region_attributes.content.storage['data-region'] %}
+        </div>
+      {% endif %}
 
+      {% if attributes.hasClass('page__container--edge-container') %}
+      </div>
+    {% endif %}
+    {% if attributes.hasClass('page__container--edge-container') %}
+    </div>
+  {% endif %}
 </div>
 
 {% endif %}
-
