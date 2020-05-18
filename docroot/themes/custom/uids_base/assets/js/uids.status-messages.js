@@ -6,7 +6,7 @@
 (function ($, Drupal) {
   'use strict';
   /**
-   * Behavior description.
+   * Close any dismissible alerts on button click.
    */
   Drupal.behaviors.uidsStatusMessages = {
     attach: function (context, settings) {
