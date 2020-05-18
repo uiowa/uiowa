@@ -4,8 +4,6 @@ project:
     protocol: https
   machine_name: educationresearch2
   human_name: research2.education.uiowa.edu
-  profile:
-    name: sitenow
 drush:
   aliases:
     local: self
@@ -13,14 +11,5 @@ drush:
 drupal:
   db:
     database: research2_education_uiowa_edu
-cm:
-  core:
-    dirs:
-      sync:
-        path: profiles/custom/sitenow/config/sync
-    install_from_config: true
-
 uiowa:
-  profiles:
-    sitenow:
-      requester: jfinley
+  requester: jfinley

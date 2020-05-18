@@ -162,7 +162,6 @@ class MultisiteCommands extends BltTasks {
         if ($this->confirm('You will invoke the drupal:install command for the sites listed above. Are you sure?')) {
           foreach ($uninstalled as $multisite) {
             $this->switchSiteContext($multisite);
-            $profile = $this->getConfigValue('project.profile.name');
 
             // Clear the cache first to prevent random errors on install.
             // We use exec here to always return 0 since the command can fail
@@ -201,7 +200,7 @@ class MultisiteCommands extends BltTasks {
               ->run();
 
             // If a requester was added, add them as a webmaster for the site.
-            if ($requester = $this->getConfigValue("uiowa.profiles.{$profile}.requester")) {
+            if ($requester = $this->getConfigValue("uiowa.requester")) {
               $this->taskDrush()
                 ->stopOnFail(FALSE)
                 ->drush('user:create')
@@ -401,14 +400,6 @@ EOD
     if (file_exists("{$root}/docroot/sites/{$host}")) {
       return new CommandError("Site {$host} already exists.");
     }
-
-    $profiles = array_keys($this->getConfig()->get('uiowa.profiles'));
-    $profile = $commandData->input()->getArgument('profile');
-
-    if (!in_array($profile, $profiles)) {
-      $profiles = implode(', ', $profiles);
-      return new CommandError("Invalid profile {$profile}. Must be one of {$profiles}.");
-    }
   }
 
   /**
@@ -416,8 +407,6 @@ EOD
    *
    * @param string $host
    *   The multisite URI host. Will be used as the site directory.
-   * @param string $profile
-   *   The profile that will be used when creating the site.
    * @param array $options
    *   An option that takes multiple values.
    *
@@ -439,7 +428,7 @@ EOD
    *
    * @throws \Exception
    */
-  public function create($host, $profile, array $options = [
+  public function create($host, array $options = [
     'simulate' => FALSE,
     'no-commit' => FALSE,
     'no-db' => FALSE,
@@ -522,16 +511,6 @@ EOD
       )
       ->run();
 
-    // Include profile-specific settings file.
-    $result = $this->taskReplaceInFile("{$root}/docroot/sites/{$host}/settings/includes.settings.php")
-      ->from('// e.g,( DRUPAL_ROOT . "/sites/$site_dir/settings/foo.settings.php" )')
-      ->to("DRUPAL_ROOT . \"/sites/settings/{$profile}.settings.php\"")
-      ->run();
-
-    if (!$result->wasSuccessful()) {
-      throw new \Exception("Unable to set settings include for site {$host}.");
-    }
-
     // Remove some files that we don't need or will be regenerated below.
     $files = [
       "{$root}/drush/sites/default.site.yml",
@@ -564,16 +543,15 @@ EOD
 
     $this->say("Updated <comment>{$id}.site.yml</comment> Drush alias file with <info>local, dev, test and prod</info> aliases.");
 
-    // Overwrite the multisite blt.yml file. Note that the profile defaults
-    // are passed second so that config takes precedence.
-    $blt = YamlMunge::mungeFiles("{$root}/docroot/sites/{$host}/blt.yml", "{$root}/docroot/profiles/custom/{$profile}/default.blt.yml");
+    // Overwrite the multisite blt.yml file.
+    $blt = YamlMunge::parseFile("{$root}/docroot/sites/{$host}/blt.yml");
     $blt['project']['machine_name'] = $id;
     $blt['project']['local']['hostname'] = $local;
     $blt['drupal']['db']['database'] = $db;
 
     // If requester option is set, add it to the site's BLT settings.
     if (isset($options['requester'])) {
-      $blt['uiowa']['profiles'][$profile]['requester'] = $options['requester'];
+      $blt['uiowa']['requester'] = $options['requester'];
     }
 
     $this->taskWriteToFile("{$root}/docroot/sites/{$host}/blt.yml")
