@@ -552,6 +552,7 @@ EOD
     $blt['project']['machine_name'] = $id;
     $blt['project']['local']['hostname'] = $local;
     $blt['drupal']['db']['database'] = $db;
+    $blt['drush']['aliases']['local'] = 'self';
 
     // If requester option is set, add it to the site's BLT settings.
     if (isset($options['requester'])) {
