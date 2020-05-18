@@ -507,14 +507,6 @@ EOD
       throw new \Exception("Unable to set database include for site {$host}.");
     }
 
-    // Copy the default settings include file.
-    $this->taskFilesystemStack()
-      ->copy(
-        "{$root}/docroot/sites/{$host}/settings/default.includes.settings.php",
-        "{$root}/docroot/sites/{$host}/settings/includes.settings.php"
-      )
-      ->run();
-
     // Remove some files that we don't need or will be regenerated below.
     $files = [
       "{$root}/docroot/sites/{$host}/default.services.yml",
