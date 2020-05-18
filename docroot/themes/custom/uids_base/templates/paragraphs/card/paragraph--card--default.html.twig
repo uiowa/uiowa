@@ -61,7 +61,7 @@
     {% set paragraph_card_link = {
       'link_url': content.field_card_link[0]['#url'],
       'link_class': 'media',
-      'card_image': content.card_image,
+      'card_image': content.field_card_image,
     } %}
     {% embed '@uids_base/uids/link.html.twig' with paragraph_card_link only %}
       {% block link_content %}
@@ -75,7 +75,7 @@
     {# This is a card and can be handled as such. #}
     {% set paragraph_card = {
       'attributes': card_attributes.addClass(['card--enclosed']),
-      'card_image': content.card_image,
+      'card_image': content.field_card_image,
       'card_text': content.field_card_body,
       'card_subtitle': content.field_card_subtitle,
       'card_title': content.field_card_title,
@@ -86,8 +86,8 @@
     {% embed '@uids_base/uids/card.html.twig' with paragraph_card only %}
 
       {% block card_img %}
-        {% if card_image is not empty %}
-          <div class="media">
+        {% if not paragraph.field_card_image.isEmpty() %}
+          <div class="card__media">
             {{ card_image }}
           </div>
         {% endif %}

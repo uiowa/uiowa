@@ -6,6 +6,8 @@
  */
 
 use Drupal\node\NodeInterface;
+use Drupal\file\Entity\File;
+use Drupal\media\Entity\Media;
 
 /**
  * Implements hook_theme_suggestions_HOOK_alter().
@@ -73,14 +75,38 @@ function hr_preprocess_paragraph__card(&$variables) {
   $paragraph = $variables['paragraph'];
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
-    if (isset($variables["content"]['card_image'])) {
+    if (isset($variables["content"]['field_card_image'])) {
       if ($paragraph->hasField('field_uip_classes') && !$paragraph->get('field_uip_classes')->isEmpty()) {
         $values = $paragraph->get('field_uip_classes')->getValue();
         if (array_search('card--img-icon', array_column($values, 'value')) !== FALSE) {
-          $variables["content"]["card_image"]["#style_name"] = 'uiowa_card_icon';
-          $variables['content']['card_image']['#theme_wrappers'] = [
-            'container' => ['#attributes' => ['class' => ['card--img-icon-wrapper']]],
-          ];
+          // Render card image.
+          $image_field = $paragraph->get('field_card_image');
+          if (!$image_field->isEmpty()) {
+            $image = $image_field->first()->getValue();
+            $media = Media::load($image['target_id']);
+            if ($media) {
+              $media_field = $media->get('field_media_image')
+                ->first()
+                ->getValue();
+              $file = File::load($media_field['target_id']);
+              $uri = $file->getFileUri();
+              $alt = ($media_field['alt'] ? $media_field['alt'] : '');
+              $image = [
+                '#theme' => 'image_style',
+                '#width' => NULL,
+                '#height' => NULL,
+                '#style_name' => 'uiowa_card_icon',
+                '#uri' => $uri,
+                '#alt' => $alt,
+                '#weight' => -1,
+              ];
+              $variables["content"]['card_image'] = $image;
+              $variables['content']['card_image']['#theme_wrappers'] = [
+                'container' => ['#attributes' => ['class' => ['card--img-icon-wrapper']]],
+              ];
+              unset($variables["content"]['field_card_image']);
+            }
+          }
         }
       }
     }

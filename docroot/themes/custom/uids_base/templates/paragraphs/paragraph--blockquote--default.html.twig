@@ -44,21 +44,17 @@
     view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
     not paragraph.isPublished() ? 'paragraph--unpublished'
 ] %}
-{% block paragraph %}
-    <div{{ attributes.addClass(classes) }}>
-        {% block content %}
-            {% if (content.field_blockquote_cite[0] is not empty) %}
-            <blockquote {{ blockquote_attributes }} cite="{{ content.field_blockquote_cite[0]['#url'] }}">
-            {% else %}
-            <blockquote {{ blockquote_attributes }}>
-            {% endif %}
-                {{ content.field_blockquote_content }}
-                {% if content.field_blockquote_footer[0] is not empty or (content.field_blockquote_cite[0] is not empty) %}
-                    <footer>{{ content.field_blockquote_footer }} <cite>{{ content.field_blockquote_cite }}</cite></footer>
-                {% elseif content.field_blockquote_footer[0] is not empty %}
-                    <footer>{{ content.field_blockquote_footer }}</footer>
-                {% endif %}
-            </blockquote>
-        {% endblock %}
-    </div>
-{% endblock paragraph %}
+
+{% set blockquote_attributes = create_attribute() %}
+
+{% set paragraph_blockquote = {
+  'blockquote_attributes': blockquote_attributes.addClass(['blockquote']),
+  'blockquote_content': content.field_blockquote_content,
+  'blockquote_footer': content.field_blockquote_footer,
+  'blockquote_cite': content.field_blockquote_cite,
+  'blockquote_cite_url': paragraph.field_blockquote_cite.0.uri,
+} %}
+
+<div{{ attributes.addclass(classes) }}>
+  {% embed '@uids_base/uids/blockquote.html.twig' with paragraph_blockquote only %}{% endembed %}
+</div>
