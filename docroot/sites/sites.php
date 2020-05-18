@@ -1339,3 +1339,9 @@ $sites['africanamericanstudies.local.drupal.uiowa.edu'] = 'africanamericanstudie
 $sites['africanamericanstudies.dev.drupal.uiowa.edu'] = 'africanamericanstudies.uiowa.edu';
 $sites['africanamericanstudies.stage.drupal.uiowa.edu'] = 'africanamericanstudies.uiowa.edu';
 $sites['africanamericanstudies.prod.drupal.uiowa.edu'] = 'africanamericanstudies.uiowa.edu';
+
+// Directory aliases for americanstudies.uiowa.edu.
+$sites['americanstudies.local.drupal.uiowa.edu'] = 'americanstudies.uiowa.edu';
+$sites['americanstudies.dev.drupal.uiowa.edu'] = 'americanstudies.uiowa.edu';
+$sites['americanstudies.stage.drupal.uiowa.edu'] = 'americanstudies.uiowa.edu';
+$sites['americanstudies.prod.drupal.uiowa.edu'] = 'americanstudies.uiowa.edu';
