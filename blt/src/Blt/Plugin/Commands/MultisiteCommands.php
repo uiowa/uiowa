@@ -517,7 +517,6 @@ EOD
 
     // Remove some files that we don't need or will be regenerated below.
     $files = [
-      "{$root}/drush/sites/default.site.yml",
       "{$root}/docroot/sites/{$host}/default.services.yml",
       "{$root}/docroot/sites/{$host}/services.yml",
       "{$root}/drush/sites/{$host}.site.yml",
@@ -526,6 +525,12 @@ EOD
 
     $this->taskFilesystemStack()
       ->remove($files)
+      ->run();
+
+    // Discard changes to the default Drush alias.
+    $this->taskGit()
+      ->dir($root)
+      ->exec('git checkout -f drush/sites/default.site.yml')
       ->run();
 
     // Re-generate the Drush alias so it is more useful.
