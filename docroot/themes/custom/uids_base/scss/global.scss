@@ -273,12 +273,16 @@ $imgpath: '../../uids/assets/images';
 
     &.page__container--full {
       max-width: 100%;
-      margin-right: $mobile-width-gutter;
-      margin-left: $mobile-width-gutter;
+      padding-right: $mobile-width-gutter;
+      padding-left: $mobile-width-gutter;
+      margin-right: 0;
+      margin-left: 0;
 
       @include breakpoint(menu) {
-        margin-right: $desktop-width-gutter;
-        margin-left: $desktop-width-gutter;
+        padding-right: $desktop-width-gutter;
+        padding-left: $desktop-width-gutter;
+        margin-right: 0;
+        margin-left: 0;
       }
     }
 
