@@ -1,6 +1,4 @@
 project:
-  profile:
-    name: sitenow
   local:
     hostname: sitesmuseumstudies.local.drupal.uiowa.edu
     protocol: https
@@ -14,12 +12,4 @@ drupal:
   db:
     database: museumstudies_sites_uiowa_edu
 uiowa:
-  profiles:
-    sitenow:
-      requester: hlung
-cm:
-  core:
-    dirs:
-      sync:
-        path: profiles/custom/sitenow/config/sync
-    install_from_config: true
+  requester: hlung

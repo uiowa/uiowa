@@ -4,8 +4,6 @@ project:
     protocol: https
   machine_name: labhbrl-neurosurgery
   human_name: hbrl-neurosurgery.lab.uiowa.edu
-  profile:
-    name: sitenow
 drush:
   aliases:
     local: self
@@ -13,14 +11,5 @@ drush:
 drupal:
   db:
     database: hbrl_neurosurgery_lab_uiowa_edu
-cm:
-  core:
-    dirs:
-      sync:
-        path: profiles/custom/sitenow/config/sync
-    install_from_config: true
-
 uiowa:
-  profiles:
-    sitenow:
-      requester: rjwoods
+  requester: rjwoods

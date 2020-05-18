@@ -4,8 +4,6 @@ project:
     protocol: https
   machine_name: distance
   human_name: distance.uiowa.edu
-  profile:
-    name: sitenow
 drush:
   aliases:
     local: self
@@ -13,13 +11,5 @@ drush:
 drupal:
   db:
     database: distance_uiowa_edu
-cm:
-  core:
-    install_from_config: true
-    dirs:
-      sync:
-        path: profiles/custom/sitenow/config/sync
 uiowa:
-  profiles:
-    sitenow:
-      requester: tripple
+  requester: tripple
