@@ -1,6 +1,4 @@
 project:
-  profile:
-    name: sitenow
   local:
     hostname: org-idrs2020.local.drupal.uiowa.edu
     protocol: https
@@ -14,12 +12,4 @@ drupal:
   db:
     database: idrs2020_org
 uiowa:
-  profiles:
-    sitenow:
-      requester: kflinn
-cm:
-  core:
-    dirs:
-      sync:
-        path: profiles/custom/sitenow/config/sync
-    install_from_config: true
+  requester: kflinn

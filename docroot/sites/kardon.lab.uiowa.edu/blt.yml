@@ -4,8 +4,6 @@ project:
     protocol: https
   machine_name: labkardon
   human_name: kardon.lab.uiowa.edu
-  profile:
-    name: sitenow
 drush:
   aliases:
     local: self
@@ -13,14 +11,5 @@ drush:
 drupal:
   db:
     database: kardon_lab_uiowa_edu
-cm:
-  core:
-    dirs:
-      sync:
-        path: profiles/custom/sitenow/config/sync
-    install_from_config: true
-
 uiowa:
-  profiles:
-    sitenow:
-      requester: brettjohnson
+  requester: brettjohnson
