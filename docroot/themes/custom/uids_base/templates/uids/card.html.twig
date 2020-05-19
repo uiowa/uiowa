@@ -2,6 +2,9 @@
 {% set attributes = attributes ?: create_attribute() %}
 {% set card_classes = ['card'] %}
 
+{# Set default card_id if one wasn't provided. #}
+{% set card_id = card_id ?: 'uids-card'|clean_id %}
+
 {% set link_element, show_button = false, false %}
 {% if card_link_url is not empty %}
   {% if card_title is not empty %}
