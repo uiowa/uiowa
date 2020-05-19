@@ -1357,3 +1357,9 @@ $sites['itpmo.local.drupal.uiowa.edu'] = 'itpmo.uiowa.edu';
 $sites['itpmo.dev.drupal.uiowa.edu'] = 'itpmo.uiowa.edu';
 $sites['itpmo.stage.drupal.uiowa.edu'] = 'itpmo.uiowa.edu';
 $sites['itpmo.prod.drupal.uiowa.edu'] = 'itpmo.uiowa.edu';
+
+// Directory aliases for cifra.lab.uiowa.edu.
+$sites['labcifra.local.drupal.uiowa.edu'] = 'cifra.lab.uiowa.edu';
+$sites['labcifra.dev.drupal.uiowa.edu'] = 'cifra.lab.uiowa.edu';
+$sites['labcifra.stage.drupal.uiowa.edu'] = 'cifra.lab.uiowa.edu';
+$sites['labcifra.prod.drupal.uiowa.edu'] = 'cifra.lab.uiowa.edu';
