@@ -68,7 +68,7 @@ class MultisiteCommands extends BltTasks {
       $app = EnvironmentDetector::getAhGroup() ? EnvironmentDetector::getAhGroup() : 'local';
       $env = EnvironmentDetector::getAhEnv() ? EnvironmentDetector::getAhEnv() : 'local';
 
-      $this->sendNotification("Command 'drush {$cmd}' started on {$app} {$env}.");
+      $this->sendNotification("Command 'drush {$cmd}' started in {$env} environment on the {$app} application.");
 
       foreach ($this->getConfigValue('multisites') as $multisite) {
         $this->switchSiteContext($multisite);
@@ -98,7 +98,7 @@ class MultisiteCommands extends BltTasks {
         }
       }
 
-      $this->sendNotification("Command 'drush {$cmd}' finished on {$app} {$env}.");
+      $this->sendNotification("Command 'drush {$cmd}' finished in {$env} environment on the {$app} application.");
     }
   }
 
@@ -507,17 +507,8 @@ EOD
       throw new \Exception("Unable to set database include for site {$host}.");
     }
 
-    // Copy the default settings include file.
-    $this->taskFilesystemStack()
-      ->copy(
-        "{$root}/docroot/sites/{$host}/settings/default.includes.settings.php",
-        "{$root}/docroot/sites/{$host}/settings/includes.settings.php"
-      )
-      ->run();
-
     // Remove some files that we don't need or will be regenerated below.
     $files = [
-      "{$root}/drush/sites/default.site.yml",
       "{$root}/docroot/sites/{$host}/default.services.yml",
       "{$root}/docroot/sites/{$host}/services.yml",
       "{$root}/drush/sites/{$host}.site.yml",
@@ -526,6 +517,12 @@ EOD
 
     $this->taskFilesystemStack()
       ->remove($files)
+      ->run();
+
+    // Discard changes to the default Drush alias.
+    $this->taskGit()
+      ->dir($root)
+      ->exec('git checkout -f drush/sites/default.site.yml')
       ->run();
 
     // Re-generate the Drush alias so it is more useful.
@@ -552,6 +549,7 @@ EOD
     $blt['project']['machine_name'] = $id;
     $blt['project']['local']['hostname'] = $local;
     $blt['drupal']['db']['database'] = $db;
+    $blt['drush']['aliases']['local'] = 'self';
 
     // If requester option is set, add it to the site's BLT settings.
     if (isset($options['requester'])) {
