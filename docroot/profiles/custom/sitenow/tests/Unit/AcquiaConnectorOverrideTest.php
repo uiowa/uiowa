@@ -6,7 +6,7 @@ use Drupal\Tests\UnitTestCase;
 use Drupal\sitenow\ConfigOverride\AcquiaConnectorOverride;
 
 /**
- * Test description.
+ * AC config override test.
  *
  * @group unit
  */

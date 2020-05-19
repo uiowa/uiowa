@@ -56,8 +56,8 @@ class PermissionsTest extends EntityKernelTestBase {
    * Test editor permissions.
    */
   public function testEditorPermissions() {
-    $path = drupal_get_path('profile', 'sitenow');
-    $sync = new FileStorage($path . '/config/sync');
+    $path = $this->getDrupalRoot();
+    $sync = new FileStorage($path . '/../config/default');
     $data = $sync->read('user.role.editor');
 
     $permissions = array_flip($data['permissions']);
@@ -72,8 +72,8 @@ class PermissionsTest extends EntityKernelTestBase {
    * Test webmaster permissions.
    */
   public function testWebmasterPermission() {
-    $path = drupal_get_path('profile', 'sitenow');
-    $sync = new FileStorage($path . '/config/sync');
+    $path = $this->getDrupalRoot();
+    $sync = new FileStorage($path . '/../config/default');
     $data = $sync->read('user.role.webmaster');
 
     $permissions = array_flip($data['permissions']);
