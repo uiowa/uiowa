@@ -53,11 +53,11 @@
 <div{{ attributes.addclass(classes) }}>
 
   {% if no_body %}
-{#
-      sitenow_card includes the ability to have just an image and a link.
-      This isn't considered a card in UIDS, so in that case we just output
-      an image wrapped in a link.
-#}
+    {#
+          sitenow_card includes the ability to have just an image and a link.
+          This isn't considered a card in UIDS, so in that case we just output
+          an image wrapped in a link.
+    #}
     {% set paragraph_card_link = {
       'link_url': content.field_card_link[0]['#url'],
       'link_class': 'media',
@@ -78,7 +78,8 @@
       'card_image': content.field_card_image,
       'card_text': content.field_card_body,
       'card_subtitle': content.field_card_subtitle,
-      'card_title': content.field_card_title,
+      'card_title': content.field_card_title|render,
+      'card_link_url': content.field_card_link[0]['#url'],
       'heading_url': content.field_card_link[0]['#url'],
       'paragraph': paragraph,
     } %}
@@ -88,7 +89,13 @@
       {% block card_img %}
         {% if not paragraph.field_card_image.isEmpty() %}
           <div class="card__media">
-            {{ card_image }}
+            {% if link_element == 'image' %}
+            <a href="{{ card_link_url }}" aria-describedby="desc-a-card">
+              {% endif %}
+              {{ card_image }}
+              {% if link_element == 'image' %}
+            </a>
+            {% endif %}
           </div>
         {% endif %}
       {% endblock %}
@@ -107,7 +114,7 @@
 
       {% block card_content %}
         {% if card_text is not empty %}
-        {{ card_text }}
+          {{ card_text }}
         {% endif %}
       {% endblock %}
 

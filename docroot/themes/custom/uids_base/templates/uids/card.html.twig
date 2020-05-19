@@ -1,13 +1,42 @@
-{{ attach_library('uids_base/card-block') }}
+{{ attach_library('uids_base/card') }}
 {% set attributes = attributes ?: create_attribute() %}
 {% set card_classes = ['card'] %}
+
+{% set link_element, show_button = false, false %}
+{% if card_link_url is not empty %}
+  {% if card_title is not empty %}
+    {# Title is set, use it as the linking element.  #}
+    {% set link_element = 'title' %}
+    {# If we also have link text, then we'll show a psuedo-button. #}
+    {% if card_link_title is not empty %}
+      {% set show_button = true %}
+    {% endif %}
+  {% elseif card_link_title is not empty %}
+    {# Title is not set, but there is link text, so use that instead. #}
+    {% set link_element = 'button' %}
+    {# Show an actual link button. #}
+    {% set show_button = true %}
+  {% elseif card_image is not empty %}
+    {# If the image exists, use that as the linking element. #}
+    {% set link_element = 'image' %}
+  {% else %}
+    {# Nothing else to use, so wrap the whole card. #}
+    {% set link_element = 'card' %}
+  {% endif %}
+{% endif %}
 
 <div{{ attributes.addclass(card_classes) }}>
   {% block card_img %}
     {% if card_image is not empty %}
       {# @todo Add image template #}
       <div class="card__media">
-        <img class="card__img" src="{{ card_image }}" alt="Alt Text">
+        {% if link_element == 'image' %}
+        <a href="{{ card_link_url }}">
+          {% endif %}
+          <img class="card__img" src="{{ card_image }}" alt="Alt Text">
+          {% if link_element == 'image' %}
+        </a>
+        {% endif %}
       </div>
     {% endif %}
   {% endblock %}
@@ -18,10 +47,11 @@
       {% if card_title %}
         {# @todo Determine if it is better to programatically set level and class via preprocess. #}
         {% set card_heading = {
-          'heading_level' : heading_level ?: 'h2',
-          'heading_class' : heading_class ?: 'card__title',
-          'heading' : card_title,
-          'heading_url': card_link_url
+          'heading_level': heading_level ?: 'h2',
+          'heading_class': heading_class ?: 'card__title',
+          'heading': card_title,
+          'heading_url': card_link_url,
+          'heading_aria': card_aria,
         } %}
         {% include '@uids_base/uids/heading.html.twig' with card_heading only %}
       {% endif %}
@@ -46,13 +76,20 @@
       {% endif %}
     {% endblock %}
 
-    {% block card_bttn %}
-      {% if card_link_url is not empty %}
-        {# @todo Replace with link or button template. #}
-        <a class="bttn bttn--outline bttn--tertiary bttn--sans-serif" href="{{ card_link_url }}">{{ card_link_title }}
-          <i class="fas fa-arrow-right"></i>
-        </a>
-      {% endif %}
-    {% endblock %}
+    {% if card_link_url is not empty and show_button %}
+      {% block card_bttn %}
+        {% if link_element == 'button' %}
+          <a class="bttn bttn--outline bttn--tertiary bttn--sans-serif bttn--full" href="{{ card_link_url }}">
+            {{ card_link_title }}
+            <i class="fas fa-arrow-right"></i>
+          </a>
+        {% else %}
+          <div aria-hidden="true" class="bttn bttn--outline bttn--tertiary bttn--sans-serif"{% if card_aria %} id="{{ card_aria }}"{% endif %}>
+            {{ card_link_title }}
+            <i class="fas fa-arrow-right"></i>
+          </div>
+        {% endif %}
+      {% endblock %}
+    {% endif %}
   </div>
 </div>
