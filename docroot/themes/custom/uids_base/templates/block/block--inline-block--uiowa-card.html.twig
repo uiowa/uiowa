@@ -43,12 +43,13 @@
 
     {% block heading %}
       {% if content.field_uiowa_card_title[0]['#text'] is not empty %}
+        {% set card_link_id = content.field_uiowa_card_title[0]['#text']|clean_id %}
         {% include '@uids_base/uids/heading.html.twig' with {
           'heading_level' : content.field_uiowa_card_title[0]['#size'],
           'heading_class' : 'card__title',
           'heading' : content.field_uiowa_card_title[0]['#text'],
           'heading_url' : content.field_uiowa_card_link[0]['#url'],
-          'heading_aria' : 'desc-a-card'
+          'heading_aria' : card_link_id,
         } only %}
       {% endif %}
     {% endblock %}
@@ -63,7 +64,7 @@
 
     {% block card_bttn %}
       {% if (content.field_uiowa_card_link[0]['#title'] is not empty) and (content.field_uiowa_card_link[0]['#url'] is not empty) and (content.field_uiowa_card_title[0]['#text'] is not empty) %}
-        <div aria-hidden="true" id="desc-a-card" class="bttn bttn--outline bttn--tertiary bttn--sans-serif">
+        <div aria-hidden="true" id="{{ card_link_id }}" class="bttn bttn--outline bttn--tertiary bttn--sans-serif">
           {{ content.field_uiowa_card_link[0]['#title'] }}
           <i class="fas fa-arrow-right"></i>
         </div>
