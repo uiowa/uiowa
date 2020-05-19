@@ -32,7 +32,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
    *   The altered command result.
    */
   public function alterStatus($result, CommandData $commandData) {
-    if ($result['bootstrap'] == 'Successful') {
+    if (isset($result['bootstrap']) && $result['bootstrap'] == 'Successful') {
       $db = $result['db-name'];
       $selfRecord = $this->siteAliasManager()->getSelf();
       $args = ["SELECT SUM(ROUND(((data_length + index_length) / 1024 / 1024), 2)) AS \"Size\" FROM information_schema.TABLES WHERE table_schema = \"$db\";"];

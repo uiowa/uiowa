@@ -4,8 +4,6 @@ project:
     protocol: https
   machine_name: uiowa
   human_name: uiowa.edu
-  profile:
-    name: sitenow
 drush:
   aliases:
     local: self
@@ -13,9 +11,3 @@ drush:
 drupal:
   db:
     database: uiowa_edu
-cm:
-  core:
-    install_from_config: true
-    dirs:
-      sync:
-        path: profiles/custom/sitenow/config/sync
