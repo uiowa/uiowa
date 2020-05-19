@@ -1333,3 +1333,21 @@ $sites['itcommunities.local.drupal.uiowa.edu'] = 'itcommunities.uiowa.edu';
 $sites['itcommunities.dev.drupal.uiowa.edu'] = 'itcommunities.uiowa.edu';
 $sites['itcommunities.stage.drupal.uiowa.edu'] = 'itcommunities.uiowa.edu';
 $sites['itcommunities.prod.drupal.uiowa.edu'] = 'itcommunities.uiowa.edu';
+
+// Directory aliases for africanamericanstudies.uiowa.edu.
+$sites['africanamericanstudies.local.drupal.uiowa.edu'] = 'africanamericanstudies.uiowa.edu';
+$sites['africanamericanstudies.dev.drupal.uiowa.edu'] = 'africanamericanstudies.uiowa.edu';
+$sites['africanamericanstudies.stage.drupal.uiowa.edu'] = 'africanamericanstudies.uiowa.edu';
+$sites['africanamericanstudies.prod.drupal.uiowa.edu'] = 'africanamericanstudies.uiowa.edu';
+
+// Directory aliases for americanstudies.uiowa.edu.
+$sites['americanstudies.local.drupal.uiowa.edu'] = 'americanstudies.uiowa.edu';
+$sites['americanstudies.dev.drupal.uiowa.edu'] = 'americanstudies.uiowa.edu';
+$sites['americanstudies.stage.drupal.uiowa.edu'] = 'americanstudies.uiowa.edu';
+$sites['americanstudies.prod.drupal.uiowa.edu'] = 'americanstudies.uiowa.edu';
+
+// Directory aliases for nativeamericanstudies.uiowa.edu.
+$sites['nativeamericanstudies.local.drupal.uiowa.edu'] = 'nativeamericanstudies.uiowa.edu';
+$sites['nativeamericanstudies.dev.drupal.uiowa.edu'] = 'nativeamericanstudies.uiowa.edu';
+$sites['nativeamericanstudies.stage.drupal.uiowa.edu'] = 'nativeamericanstudies.uiowa.edu';
+$sites['nativeamericanstudies.prod.drupal.uiowa.edu'] = 'nativeamericanstudies.uiowa.edu';
