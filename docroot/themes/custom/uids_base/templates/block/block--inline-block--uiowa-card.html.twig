@@ -36,7 +36,9 @@
   } %}
 
     {% block card_img %}
-      {{ content.field_uiowa_card_image }}
+      <div class="card__media">
+        {{ content.field_uiowa_card_image }}
+      </div>
     {% endblock %}
 
     {% block heading %}
