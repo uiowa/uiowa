@@ -164,6 +164,9 @@ class MultisiteCommands extends BltTasks {
 
       if (!$options['dry-run']) {
         if ($this->confirm('You will invoke the drupal:install command for the sites listed above. Are you sure?')) {
+          $uninstalled_list = implode(', ', $uninstalled);
+          $this->sendNotification("Command 'uiowa:multisite:install' STARTED for {$uninstalled_list} on {$app} {$env}.");
+
           foreach ($uninstalled as $multisite) {
             $this->switchSiteContext($multisite);
 
@@ -216,9 +219,9 @@ class MultisiteCommands extends BltTasks {
                 ])
                 ->run();
             }
-
-            $this->sendNotification("Drupal installation complete for site {$multisite} in {$env} environment on {$app} application.");
           }
+
+          $this->sendNotification("Command 'uiowa:multisite:install' FINISHED for {$uninstalled_list} on {$app} {$env}.");
         }
         else {
           throw new \Exception('Canceled.');
