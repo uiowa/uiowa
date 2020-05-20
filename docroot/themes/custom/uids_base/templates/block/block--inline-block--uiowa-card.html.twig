@@ -40,12 +40,5 @@
   'title_prefix': title_prefix,
   'title_suffix': title_suffix,
 } %}
-{% embed '@uids_base/uids/card.html.twig' with block_card only %}
 
-  {% block card_img %}
-    <div class="card__media">
-      {{ card_image }}
-    </div>
-  {% endblock %}
-
-{% endembed %}
+{% embed '@uids_base/uids/card.html.twig' with block_card only %}{% endembed %}

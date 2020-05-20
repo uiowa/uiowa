@@ -41,7 +41,7 @@
         {% if link_element == 'image' %}
         <a href="{{ card_link_url }}">
           {% endif %}
-          <img class="card__img" src="{{ card_image }}" alt="Alt Text">
+          {{ card_image }}
           {% if link_element == 'image' %}
         </a>
         {% endif %}
