@@ -28,7 +28,7 @@
 
 {% set block_card = {
   'attributes': attributes,
-  'card_image': content.field_uiowa_card_image,
+  'card_image': content.field_uiowa_card_image|render,
   'card_text': content.field_uiowa_card_excerpt,
   'card_link_url': content.field_uiowa_card_link[0]['#url'],
   'card_link_title': content.field_uiowa_card_link[0]['#title']|render,
