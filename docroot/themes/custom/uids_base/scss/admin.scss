@@ -137,7 +137,7 @@
   width: 100%;
 }
 
-.layout--fourcol .lb__container >.layout__region.js-layout-builder-region {
+.layout--fourcol .lb__container>.layout__region.js-layout-builder-region {
   display: block !important;
 }
 
@@ -222,17 +222,17 @@
     }
   }
 
-    .layout__container.page__container--full .lb__container {
-      max-width: 100%;
-      margin-right: 0;
-      margin-left: 0;
-    }
+  .layout__container.page__container--full .lb__container {
+    max-width: 100%;
+    margin-right: 0;
+    margin-left: 0;
+  }
 
-    .layout__container.page__container--edge .lb__container {
-      max-width: 100%;
-      margin-right: 0;
-      margin-left: 0;
-    }
+  .layout__container.page__container--edge .lb__container {
+    max-width: 100%;
+    margin-right: 0;
+    margin-left: 0;
+  }
 
 }
 
@@ -242,13 +242,14 @@
   .layout__container .lb__container {
     margin: 0;
   }
-    .layout__container .page__container .lb__container {
-      @include breakpoint(container) {
-        position: relative;
-        max-width: 84.375em;
-        margin: 0 auto;
-      }
+
+  .layout__container .page__container .lb__container {
+    @include breakpoint(container) {
+      position: relative;
+      max-width: 84.375em;
+      margin: 0 auto;
     }
+  }
 
 }
 
@@ -469,10 +470,11 @@ body.toolbar-vertical.toolbar-tray-open {
   @include breakpoint(menu) {
     padding-top: 120px !important;
   }
+
   &.below {
-     @include breakpoint(menu) {
-       padding-top: 160px !important;
-     }
+    @include breakpoint(menu) {
+      padding-top: 160px !important;
+    }
   }
 }
 
@@ -488,6 +490,7 @@ body.toolbar-vertical.toolbar-tray-open {
   @include breakpoint(menu) {
     padding-top: 160px !important;
   }
+
   &.below {
     @include breakpoint(menu) {
       padding-top: 210px !important;
@@ -1211,7 +1214,9 @@ div[data-drupal-selector="edit-moderation-state-0"] {
 
 ul.dropbutton li {
   line-height: 2.5;
+
   a {
+
     &:hover,
     &:focus {
       text-decoration: none;
