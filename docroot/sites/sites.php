@@ -1351,3 +1351,15 @@ $sites['nativeamericanstudies.local.drupal.uiowa.edu'] = 'nativeamericanstudies.
 $sites['nativeamericanstudies.dev.drupal.uiowa.edu'] = 'nativeamericanstudies.uiowa.edu';
 $sites['nativeamericanstudies.stage.drupal.uiowa.edu'] = 'nativeamericanstudies.uiowa.edu';
 $sites['nativeamericanstudies.prod.drupal.uiowa.edu'] = 'nativeamericanstudies.uiowa.edu';
+
+// Directory aliases for itpmo.uiowa.edu.
+$sites['itpmo.local.drupal.uiowa.edu'] = 'itpmo.uiowa.edu';
+$sites['itpmo.dev.drupal.uiowa.edu'] = 'itpmo.uiowa.edu';
+$sites['itpmo.stage.drupal.uiowa.edu'] = 'itpmo.uiowa.edu';
+$sites['itpmo.prod.drupal.uiowa.edu'] = 'itpmo.uiowa.edu';
+
+// Directory aliases for cifra.lab.uiowa.edu.
+$sites['labcifra.local.drupal.uiowa.edu'] = 'cifra.lab.uiowa.edu';
+$sites['labcifra.dev.drupal.uiowa.edu'] = 'cifra.lab.uiowa.edu';
+$sites['labcifra.stage.drupal.uiowa.edu'] = 'cifra.lab.uiowa.edu';
+$sites['labcifra.prod.drupal.uiowa.edu'] = 'cifra.lab.uiowa.edu';
