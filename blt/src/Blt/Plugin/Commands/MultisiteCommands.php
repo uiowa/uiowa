@@ -68,7 +68,7 @@ class MultisiteCommands extends BltTasks {
       $app = EnvironmentDetector::getAhGroup() ? EnvironmentDetector::getAhGroup() : 'local';
       $env = EnvironmentDetector::getAhEnv() ? EnvironmentDetector::getAhEnv() : 'local';
 
-      $this->sendNotification("Command 'drush {$cmd}' started in {$env} environment on the {$app} application.");
+      $this->sendNotification("Command 'drush {$cmd}' STARTED on {$app} {$env}.");
 
       foreach ($this->getConfigValue('multisites') as $multisite) {
         $this->switchSiteContext($multisite);
@@ -98,7 +98,7 @@ class MultisiteCommands extends BltTasks {
         }
       }
 
-      $this->sendNotification("Command 'drush {$cmd}' finished in {$env} environment on the {$app} application.");
+      $this->sendNotification("Command 'drush {$cmd}' FINISHED on {$app} {$env}.");
     }
   }
 
