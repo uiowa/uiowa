@@ -715,9 +715,10 @@ EOD;
    *   The message to send.
    */
   protected function sendNotification($message) {
+    $env = EnvironmentDetector::getAhEnv() ? EnvironmentDetector::getAhEnv() : 'local';
     $webhook_url = getenv('SLACK_WEBHOOK_URL');
 
-    if ($webhook_url) {
+    if ($webhook_url && $env == 'prod' || $env == 'local') {
       $payload = [
         'username' => 'Acquia Cloud',
         'text' => $message,
