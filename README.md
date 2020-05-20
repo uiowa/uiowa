@@ -66,15 +66,24 @@ $config['stage_file_proxy.settings']['hotlink'] = TRUE;
 ### Creating Sites
 To add a new site to the project, run the following command:
 ```
-blt umc example.uiowa.edu profile
+blt umc example.uiowa.edu
 ```
-Replace `example.uiowa.edu` with the URI of the site you are creating. Replace `profile` with the name of the profile you are creating the site with, for example `collegiate` or `sitenow`.
+Replace `example.uiowa.edu` with the URI of the site you are creating.
 
 The following options can also be passed in:
-* `--requester=hawkid` - This is a required field when using the SiteNow profile. Use the hawkid of the person who requested the site.
+* `--requester=hawkid` - Use the hawkid of the person who requested the site. Will be given webmaster access when installed.
 * `--no-db` - Do not create remote databases.
 * `--no-commit` - Do not create a new commit in git.
 * `--simulate` - Only runs the commands associated with `blt recipes:multisite:init`.
+
+### Overriding Configuration
+Please note this approach is not yet tested nor recommended.
+
+If an individual site wants to export ALL of its configuration and manage it going forward, an [include setting](https://docs.acquia.com/blt/install/next-steps/#adding-settings-to-settings-php) with the following should accomplish that:
+```
+$blt_override_config_directories = FALSE;
+$settings['config_sync_directory'] = DRUPAL_ROOT . '/config/' . $site_dir;
+```
 
 ## Updating Dependencies
 Before starting updates, make sure your local environment is on a feature branch created from the latest version of master and synced with production by running `blt dsa`.

@@ -6,7 +6,7 @@ use Drupal\sitenow\ConfigOverride\SimpleSitemapOverride;
 use Drupal\Tests\UnitTestCase;
 
 /**
- * Test description.
+ * Simple sitemap config override test.
  *
  * @group unit
  */

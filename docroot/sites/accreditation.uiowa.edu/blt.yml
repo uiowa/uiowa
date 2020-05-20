@@ -4,8 +4,6 @@ project:
     protocol: https
   machine_name: accreditation
   human_name: accreditation.uiowa.edu
-  profile:
-    name: sitenow
 drush:
   aliases:
     local: self
@@ -13,10 +11,3 @@ drush:
 drupal:
   db:
     database: accreditation_uiowa_edu
-cm:
-  core:
-    dirs:
-      sync:
-        path: profiles/custom/sitenow/config/sync
-    install_from_config: true
-

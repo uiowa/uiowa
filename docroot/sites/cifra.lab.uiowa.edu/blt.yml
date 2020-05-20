@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labcifra.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labcifra
+  human_name: cifra.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labcifra.prod
+drupal:
+  db:
+    database: cifra_lab_uiowa_edu
+uiowa:
+  requester: ccifra
