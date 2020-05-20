@@ -23,8 +23,8 @@
 
 {% if content.content %}
 
-  <div{{attributes.addClass(classes)}}>
-      <div class="lb__container">
+  <div{{ attributes.addClass(classes) }}>
+    <div class="lb__container">
 
       {% if region_attributes.content.storage['data-region'] %}
         <div {{ region_attributes.content.addClass('flex__wra') }}>
@@ -38,7 +38,7 @@
       </div>
     {% endif %}
 
-    </div>
+  </div>
 </div>
 
 {% endif %}

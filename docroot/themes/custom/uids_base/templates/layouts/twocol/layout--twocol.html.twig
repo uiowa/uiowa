@@ -13,16 +13,12 @@
  */
 #}
 
-{%
-  set classes = [
-    'layout__container',
-  ]
-%}
+{% set classes = ['layout__container'] %}
 
 {% if content.first %}
 
   <div{{ attributes.addClass(classes) }}>
-      <div class="lb__container">
+    <div class="lb__container">
 
       <div class="layout__region layout__region--first flex__wrapper">
 
@@ -48,7 +44,7 @@
         {% endif %}
       </div>
 
-      </div>
+    </div>
 
   </div>
 {% endif %}
