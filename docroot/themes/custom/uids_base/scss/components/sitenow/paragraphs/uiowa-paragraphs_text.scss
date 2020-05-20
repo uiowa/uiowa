@@ -10,7 +10,7 @@
 .paragraph--type--text.bg-light {
   color: $dark-gray;
 
-  a:not(.btn):not(.alert-link) {
+  a:not(.btn):not(.bttn) {
     color: $secondary;
     text-decoration: underline;
 
@@ -21,10 +21,14 @@
   }
 }
 
-.paragraph--type--text.bg-dark {
+.paragraph--type--text.bg-dark,
+.paragraph--type--text.bg-black {
   color: $white;
 
-  a:not(.btn):not(.alert-link) {
+  a:not(.btn):not(.bttn) {
     color: $primary;
+  }
+  .alert a {
+    color: $secondary !important;
   }
 }
