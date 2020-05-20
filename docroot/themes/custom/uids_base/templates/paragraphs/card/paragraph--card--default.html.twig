@@ -53,11 +53,11 @@
 <div{{ attributes.addclass(classes) }}>
 
   {% if no_body %}
-{#
-      sitenow_card includes the ability to have just an image and a link.
-      This isn't considered a card in UIDS, so in that case we just output
-      an image wrapped in a link.
-#}
+    {#
+          sitenow_card includes the ability to have just an image and a link.
+          This isn't considered a card in UIDS, so in that case we just output
+          an image wrapped in a link.
+    #}
     {% set paragraph_card_link = {
       'link_url': content.field_card_link[0]['#url'],
       'link_class': 'media',
@@ -75,39 +75,21 @@
     {# This is a card and can be handled as such. #}
     {% set paragraph_card = {
       'attributes': card_attributes.addClass(['card--enclosed']),
-      'card_image': content.field_card_image,
+      'card_image': content.field_card_image|render,
       'card_text': content.field_card_body,
       'card_subtitle': content.field_card_subtitle,
-      'card_title': content.field_card_title,
-      'heading_url': content.field_card_link[0]['#url'],
+      'card_title': content.field_card_title|render,
+      'card_link_url': content.field_card_link[0]['#url'],
+      'heading_level': 'h2',
       'paragraph': paragraph,
     } %}
 
     {% embed '@uids_base/uids/card.html.twig' with paragraph_card only %}
 
-      {% block card_img %}
-        {% if not paragraph.field_card_image.isEmpty() %}
-          <div class="card__media">
-            {{ card_image }}
-          </div>
-        {% endif %}
-      {% endblock %}
-
-      {% block heading %}
-        {% if not paragraph.field_card_title.isEmpty() %}
-          {% include '@uids_base/uids/heading.html.twig' with {
-            'heading_level' : 'h2',
-            'heading_class' : 'card__title',
-            'heading' : card_title,
-            'heading_url' : heading_url,
-            'heading_aria' : 'desc-a-card',
-          } only %}
-        {% endif %}
-      {% endblock heading %}
-
+      {# We override this because the text is formatted already. #}
       {% block card_content %}
         {% if card_text is not empty %}
-        {{ card_text }}
+          {{ card_text }}
         {% endif %}
       {% endblock %}
 

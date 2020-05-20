@@ -68,7 +68,7 @@ class MultisiteCommands extends BltTasks {
       $app = EnvironmentDetector::getAhGroup() ? EnvironmentDetector::getAhGroup() : 'local';
       $env = EnvironmentDetector::getAhEnv() ? EnvironmentDetector::getAhEnv() : 'local';
 
-      $this->sendNotification("Command 'drush {$cmd}' started in {$env} environment on the {$app} application.");
+      $this->sendNotification("Command 'drush {$cmd}' STARTED on {$app} {$env}.");
 
       foreach ($this->getConfigValue('multisites') as $multisite) {
         $this->switchSiteContext($multisite);
@@ -98,7 +98,7 @@ class MultisiteCommands extends BltTasks {
         }
       }
 
-      $this->sendNotification("Command 'drush {$cmd}' finished in {$env} environment on the {$app} application.");
+      $this->sendNotification("Command 'drush {$cmd}' FINISHED on {$app} {$env}.");
     }
   }
 
@@ -164,6 +164,9 @@ class MultisiteCommands extends BltTasks {
 
       if (!$options['dry-run']) {
         if ($this->confirm('You will invoke the drupal:install command for the sites listed above. Are you sure?')) {
+          $uninstalled_list = implode(', ', $uninstalled);
+          $this->sendNotification("Command 'uiowa:multisite:install' STARTED for {$uninstalled_list} on {$app} {$env}.");
+
           foreach ($uninstalled as $multisite) {
             $this->switchSiteContext($multisite);
 
@@ -216,9 +219,9 @@ class MultisiteCommands extends BltTasks {
                 ])
                 ->run();
             }
-
-            $this->sendNotification("Drupal installation complete for site {$multisite} in {$env} environment on {$app} application.");
           }
+
+          $this->sendNotification("Command 'uiowa:multisite:install' FINISHED for {$uninstalled_list} on {$app} {$env}.");
         }
         else {
           throw new \Exception('Canceled.');
@@ -715,9 +718,10 @@ EOD;
    *   The message to send.
    */
   protected function sendNotification($message) {
+    $env = EnvironmentDetector::getAhEnv() ? EnvironmentDetector::getAhEnv() : 'local';
     $webhook_url = getenv('SLACK_WEBHOOK_URL');
 
-    if ($webhook_url) {
+    if ($webhook_url && $env == 'prod' || $env == 'local') {
       $payload = [
         'username' => 'Acquia Cloud',
         'text' => $message,
