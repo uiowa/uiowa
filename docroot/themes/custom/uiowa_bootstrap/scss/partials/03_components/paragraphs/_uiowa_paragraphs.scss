@@ -15,8 +15,11 @@
     background-color: $black;
     color: $white;
 
-    a:not(.btn):not(.alert-link) {
+    a:not(.btn) {
       color: $yellow;
+    }
+    .alert a {
+      color: $gray-900 !important;
     }
 
     &.semi-transparent {
@@ -37,6 +40,10 @@
       }
     }
   }
+  .bg-light .field--name-field-uip-title,
+  .bg-yellow .field--name-field-uip-title {
+    color: $gray-900;
+  }
 }
 .paragraph--type--section.has-section-image.bg-dark,
 .paragraph--type--section.bg-dark {
@@ -45,8 +52,11 @@
   .paragraph--type--webform {
     background-color: $dark;
     color: $white;
-    a:not(.btn):not(.alert-link) {
+    a:not(.btn) {
       color: $yellow;
+    }
+    .alert a {
+      color: $gray-900 !important;
     }
     &.semi-transparent {
       background-color: rgba(52, 58, 64, 0.8) !important;
@@ -62,6 +72,10 @@
       }
     }
   }
+  .bg-light .field--name-field-uip-title,
+  .bg-yellow .field--name-field-uip-title {
+    color: $gray-900;
+  }
 }
 .paragraph--type--section.has-section-image.bg-yellow,
 .paragraph--type--section.bg-yellow {
@@ -72,12 +86,15 @@
     &.semi-transparent {
       background-color: rgba(255, 205, 0, 0.8) !important;
     }
-    a:not(.btn):not(.alert-link) {
+    a:not(.btn) {
       color: $black;
       text-decoration: underline;
       &:hover, &:focus {
         text-decoration: none;
       }
+    }
+    .alert a {
+      color: $gray-900 !important;
     }
     blockquote, blockquote p {
       border-color: $gray-900;
@@ -192,10 +209,6 @@
     color: initial;
   }
 }
-// Breaks in Internet Explorer!
-//.paragraph--type--card {
-//  display: flex;
-//}
 .paragraph--type--card {
   .card-body {
     min-height: 1px;
