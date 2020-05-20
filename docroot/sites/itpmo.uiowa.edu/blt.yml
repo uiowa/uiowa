@@ -1,0 +1,13 @@
+project:
+  local:
+    hostname: itpmo.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: itpmo
+  human_name: itpmo.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: itpmo.prod
+drupal:
+  db:
+    database: itpmo_uiowa_edu
