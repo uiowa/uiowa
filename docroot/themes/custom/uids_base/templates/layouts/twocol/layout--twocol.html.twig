@@ -22,9 +22,7 @@
 {% if content.first %}
 
   <div{{ attributes.addClass(classes) }}>
-    {% if attributes.hasClass('page__container--edge-container') %}
-      <div class="edge-container">
-      {% endif %}
+      <div class="lb__container">
 
       <div class="layout__region layout__region--first flex__wrapper">
 
@@ -50,9 +48,7 @@
         {% endif %}
       </div>
 
-      {% if attributes.hasClass('page__container--edge-container') %}
       </div>
-    {% endif %}
 
   </div>
 {% endif %}

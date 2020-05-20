@@ -132,15 +132,16 @@
   position: relative !important;
 }
 
-.layout-builder__region {
+.layout-builder__region,
+.layout-builder__region .lb__container {
   width: 100%;
 }
 
-.layout--fourcol>.layout__region.js-layout-builder-region {
+.layout--fourcol .lb__container >.layout__region.js-layout-builder-region {
   display: block !important;
 }
 
-.layout--threecol>.layout__region.js-layout-builder-region {
+.layout--threecol .lb__container>.layout__region.js-layout-builder-region {
   display: block !important;
 }
 
@@ -175,7 +176,7 @@
 }
 
 
-.layout__container {
+.layout__container .lb__container {
 
   .layout-builder-block,
   .layout-builder__add-block {
@@ -211,7 +212,7 @@
 
 .content__container .layout-builder__section,
 .content__mixed .layout-builder__section {
-  .layout__container {
+  .layout__container .lb__container {
     margin: 0;
 
     @include breakpoint(container) {
@@ -219,35 +220,36 @@
       max-width: 81.875em;
       margin: 0 auto;
     }
-
-    &.page__container--full {
-      max-width: 100%;
-      margin-right: 0;
-      margin-left: 0;
-    }
-
-    &.page__container--edge {
-      max-width: 100%;
-      margin-right: 0;
-      margin-left: 0;
-    }
   }
+
+    .layout__container.page__container--full .lb__container {
+      max-width: 100%;
+      margin-right: 0;
+      margin-left: 0;
+    }
+
+    .layout__container.page__container--edge .lb__container {
+      max-width: 100%;
+      margin-right: 0;
+      margin-left: 0;
+    }
+
 }
 
 // admin styles for responsive layout sections for full width or mixed settings
 
 .content__full .layout-builder__section {
-  .layout__container {
+  .layout__container .lb__container {
     margin: 0;
-
-    &.page__container {
+  }
+    .layout__container .page__container .lb__container {
       @include breakpoint(container) {
         position: relative;
         max-width: 84.375em;
         margin: 0 auto;
       }
     }
-  }
+
 }
 
 // admin styles for container setting local drupal admin blocks

@@ -104,7 +104,7 @@ $imgpath: '../../uids/assets/images';
 
 // default left/right gutter spacing for full width settings w/ layout builder enabled
 
-.content__full .layout__container {
+.content__full .layout__container  {
   margin-right: $mobile-width-gutter;
   margin-left: $mobile-width-gutter;
   margin-bottom: $mobile-width-gutter;
@@ -190,7 +190,7 @@ $imgpath: '../../uids/assets/images';
 
 // settings if page container full or edge is selected on section
 
-.page__container--full.layout__container {
+.page__container--full.layout__container .lb__container {
   // margin-right: $gutter;
   // margin-left: $gutter;
   margin-right: $mobile-width-gutter;
@@ -212,20 +212,27 @@ $imgpath: '../../uids/assets/images';
 
 .content__container,
 .content__mixed {
-  .layout__container {
-    margin-bottom: $desktop-width-gutter;
-    @extend %container;
 
-    &.page__container--extended {
+  .layout__container {
+     margin-bottom: $desktop-width-gutter;
+  }
+
+  .lb__container {
+    @extend %container;
+  }
+
+    .page__container--extended {
+      .lb__container {
       @include breakpoint(container) {
         max-width: 100em;
         padding: 0 $lg;
       }
     }
+    }
 
     // layout builder styles padding classes
 
-    &.section-padding {
+    .section-padding {
       @include breakpoint(sm) {
         &__top {
           padding-top: $desktop-width-gutter;
@@ -254,30 +261,38 @@ $imgpath: '../../uids/assets/images';
     }
 
     // layout builder styles margin classes
-    &.section-margin {
-      &__top {
+    .section-margin__top {
         margin-top: $md;
+    }
 
-        &.page__container {
+   .section-margin__top.page__container {
+
           margin-top: $md;
-        }
+
       }
 
-      &__bottom {
+       .section-margin__bottom {
+
         margin-bottom: $md;
 
-        &.page__container {
-          margin-bottom: $md;
-        }
-      }
-    }
+       }
 
-    &.section-margin__removed {
+         .section-margin__bottom.page__container {
+
+          margin-bottom: $md;
+
+        }
+
+
+
+    .section-margin__removed {
       margin-top: 0;
       margin-bottom: 0;
+
     }
 
-    &.page__container--full {
+    .page__container--full {
+      .lb__container {
       max-width: 100%;
       padding-right: $mobile-width-gutter;
       padding-left: $mobile-width-gutter;
@@ -291,13 +306,18 @@ $imgpath: '../../uids/assets/images';
         margin-left: 0;
       }
     }
+    }
 
-    &.page__container--edge {
+    .page__container--edge {
+      .lb__container {
       max-width: 100%;
       margin-right: 0;
       margin-left: 0;
     }
   }
+
+
+
 }
 
 // Block Margins / Padding
@@ -327,28 +347,6 @@ $imgpath: '../../uids/assets/images';
     }
   }
 }
-
-
-// Full width background color with fixed container
-
-.page__container--edge.page__container--edge-container .edge-container {
-  @extend %container;
-}
-
-.content__container .layout__container.page__container--extended.page__container--edge-container,
-.content__mixed .layout__container.page__container--extended.page__container--edge-container {
-  max-width: 100%;
-
-  .edge-container {
-    @include breakpoint(container) {
-      max-width: 100em;
-      margin: 0 auto;
-      padding: 0 1.875rem;
-    }
-  }
-}
-
-
 
 // mobile search
 

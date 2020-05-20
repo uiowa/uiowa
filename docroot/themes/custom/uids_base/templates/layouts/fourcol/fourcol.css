@@ -6,12 +6,10 @@
 
 
 @media screen and (min-width: 40em) {
-  .layout--fourcol {
+  .layout--fourcol,
+  .layout--fourcol .lb__container {
     display: flex;
-  }
-
-  .layout--fourcol .edge-container {
-    display: flex;
+    flex-basis: 100%;
   }
 
   .layout--fourcol .layout__region {
@@ -49,19 +47,19 @@
 }
 
 @media (min-width: 40em) and (max-width: 68.125em) {
-  .layout--fourcol {
+  .layout--fourcol,
+  .layout--fourcol .lb__container {
     flex-wrap: wrap;
   }
-  .layout--fourcol .edge-container {
-    flex-wrap: wrap;
-  }
+
   .layout--fourcol .layout__region {
     flex: 0 1 46.50%;
     margin-bottom: 3rem;
   }
+
   .layout--fourcol .layout__region--second {
     margin-left: 6%;
-    margin-right:0;
+    margin-right: 0;
   }
 
   .layout--fourcol .layout__region--third {
@@ -73,12 +71,12 @@
 
 @media (min-width: 40em) and (max-width: 84.375em) {
   .layout--fourcol.grid--1-3,
-  .layout--fourcol.grid--1-3 .edge-container {
+  .layout--fourcol.grid--1-3 .lb__container {
     flex-wrap: wrap;
   }
 
   .layout--fourcol.grid--1-3 .layout__region,
-  .layout--fourcol.grid--1-3.section-margin__removed  .layout__region {
+  .layout--fourcol.grid--1-3.section-margin__removed .layout__region {
     flex: 0 1 31.3%;
     margin-bottom: 3rem;
   }

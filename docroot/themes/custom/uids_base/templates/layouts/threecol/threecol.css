@@ -7,8 +7,9 @@
 @media screen and (min-width: 40em) {
 
   .layout--threecol,
-  .layout--threecol .edge-container {
+  .layout--threecol .lb__container {
     display: flex;
+    flex-basis: 100%;
   }
 
   .layout--threecol .layout__region {
@@ -161,7 +162,7 @@
 
 @media (min-width: 40em) and (max-width: 58.125em) {
   .layout--threecol,
-  .layout--threecol .edge-container {
+  .layout--threecol .lb__container {
     flex-wrap: wrap;
   }
 
@@ -175,7 +176,4 @@
     margin-bottom: 3rem;
   }
 
-  .layout--threecol .layout__region img {
-    width: 100%;
-  }
 }
