@@ -11,5 +11,5 @@ One thing the documentation does not cover is disabling a feature split. To disa
 - Enable = activate + config import
 - Disable = deactivate + config import
 
-You may have to delete any existing entities that the feature split created. The `drush entity:delete` can help with that.
+You may have to delete any existing entities that the feature split created. The `drush entity:delete` command can help with that.
 
