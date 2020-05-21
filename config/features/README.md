@@ -8,8 +8,8 @@ https://docs.acquia.com/blt/developer/config-split/#feature-split for more detai
 ## Disabling a Feature Split
 One thing the documentation does not cover is disabling a feature split. To disable or uninstall a feature split, deactivate it in the Config Split interface and then import configuration again.
 
-Enable = activate + config import
-Disable = deactivate + config import
+- Enable = activate + config import
+- Disable = deactivate + config import
 
 You may have to delete any existing entities that the feature split created. The `drush entity:delete` can help with that.
 
