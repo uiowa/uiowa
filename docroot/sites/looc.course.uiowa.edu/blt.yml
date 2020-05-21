@@ -4,8 +4,6 @@ project:
     protocol: https
   machine_name: courselooc
   human_name: looc.course.uiowa.edu
-  profile:
-    name: sitenow
 drush:
   aliases:
     local: self
@@ -13,10 +11,3 @@ drush:
 drupal:
   db:
     database: looc_course_uiowa_edu
-cm:
-  core:
-    dirs:
-      sync:
-        path: profiles/custom/sitenow/config/sync
-    install_from_config: true
-

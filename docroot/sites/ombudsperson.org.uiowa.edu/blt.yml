@@ -1,6 +1,4 @@
 project:
-  profile:
-    name: sitenow
   local:
     hostname: orgombudsperson.local.drupal.uiowa.edu
     protocol: https
@@ -13,14 +11,5 @@ drush:
 drupal:
   db:
     database: ombudsperson_org_uiowa_edu
-cm:
-  core:
-    dirs:
-      sync:
-        path: profiles/custom/sitenow/config/sync
-    install_from_config: true
-
 uiowa:
-  profiles:
-    sitenow:
-      requester: cjoyce
+  requester: cjoyce
