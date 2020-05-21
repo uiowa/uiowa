@@ -132,6 +132,10 @@ $imgpath: '../../uids/assets/images';
   // layout builder styles padding classes
 
   &.section-padding {
+    &__top-extra {
+      padding-top: $desktop-width-gutter;
+    }
+
     @include breakpoint(sm) {
       &__top {
         padding-top: $md;
@@ -157,6 +161,7 @@ $imgpath: '../../uids/assets/images';
         padding-left: $desktop-width-gutter;
       }
     }
+
   }
 
   // layout builder styles margin classes
@@ -241,6 +246,10 @@ $imgpath: '../../uids/assets/images';
   // layout builder styles padding classes
 
   .section-padding {
+    &__top-extra {
+      padding-top: $mobile-width-gutter;
+    }
+
     @include breakpoint(sm) {
       &__top {
         padding-top: $desktop-width-gutter;
