@@ -1363,3 +1363,9 @@ $sites['labcifra.local.drupal.uiowa.edu'] = 'cifra.lab.uiowa.edu';
 $sites['labcifra.dev.drupal.uiowa.edu'] = 'cifra.lab.uiowa.edu';
 $sites['labcifra.stage.drupal.uiowa.edu'] = 'cifra.lab.uiowa.edu';
 $sites['labcifra.prod.drupal.uiowa.edu'] = 'cifra.lab.uiowa.edu';
+
+// Directory aliases for wilken.lab.uiowa.edu.
+$sites['labwilken.local.drupal.uiowa.edu'] = 'wilken.lab.uiowa.edu';
+$sites['labwilken.dev.drupal.uiowa.edu'] = 'wilken.lab.uiowa.edu';
+$sites['labwilken.stage.drupal.uiowa.edu'] = 'wilken.lab.uiowa.edu';
+$sites['labwilken.prod.drupal.uiowa.edu'] = 'wilken.lab.uiowa.edu';
