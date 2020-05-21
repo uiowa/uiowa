@@ -68,7 +68,7 @@ class MultisiteCommands extends BltTasks {
       $app = EnvironmentDetector::getAhGroup() ? EnvironmentDetector::getAhGroup() : 'local';
       $env = EnvironmentDetector::getAhEnv() ? EnvironmentDetector::getAhEnv() : 'local';
 
-      $this->sendNotification("Command 'drush {$cmd}' STARTED on {$app} {$env}.");
+      $this->sendNotification("Command `drush {$cmd}` *started* on {$app} {$env}.");
 
       foreach ($this->getConfigValue('multisites') as $multisite) {
         $this->switchSiteContext($multisite);
@@ -98,7 +98,7 @@ class MultisiteCommands extends BltTasks {
         }
       }
 
-      $this->sendNotification("Command 'drush {$cmd}' FINISHED on {$app} {$env}.");
+      $this->sendNotification("Command `drush {$cmd}` *finished* on {$app} {$env}.");
     }
   }
 
@@ -165,7 +165,7 @@ class MultisiteCommands extends BltTasks {
       if (!$options['dry-run']) {
         if ($this->confirm('You will invoke the drupal:install command for the sites listed above. Are you sure?')) {
           $uninstalled_list = implode(', ', $uninstalled);
-          $this->sendNotification("Command 'uiowa:multisite:install' STARTED for {$uninstalled_list} on {$app} {$env}.");
+          $this->sendNotification("Command `uiowa:multisite:install` *started* for {$uninstalled_list} on {$app} {$env}.");
 
           foreach ($uninstalled as $multisite) {
             $this->switchSiteContext($multisite);
@@ -221,7 +221,7 @@ class MultisiteCommands extends BltTasks {
             }
           }
 
-          $this->sendNotification("Command 'uiowa:multisite:install' FINISHED for {$uninstalled_list} on {$app} {$env}.");
+          $this->sendNotification("Command `uiowa:multisite:install` *finished* for {$uninstalled_list} on {$app} {$env}.");
         }
         else {
           throw new \Exception('Canceled.');
