@@ -207,8 +207,12 @@ $imgpath: '../../uids/assets/images';
 .content__container,
 .content__mixed {
   .layout__container {
-    margin-bottom: $desktop-width-gutter;
+    margin-bottom: $mobile-width-gutter;
     @extend %container;
+
+    @include breakpoint(sm) {
+      margin-bottom: $desktop-width-gutter;
+    }
 
     &.page__container--extended {
       @include breakpoint(container) {
