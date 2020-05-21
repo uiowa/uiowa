@@ -52,12 +52,15 @@ p {
   @include bg-light;
 }
 
-.bg-dark>* {
+.bg-dark>*,
+.bg-black>* {
   color: #fff;
 }
 
-.bg-dark .bg-light  *,
-.bg-dark .bg-yellow * {
+.bg-dark .bg-light  *:not(.btn):not(.bttn),
+.bg-dark .bg-yellow *:not(.btn):not(.bttn),
+.bg-black .bg-light *:not(.btn):not(.bttn),
+.bg-black .bg-yellow *:not(.btn):not(.bttn) {
   color: $secondary!important;
 }
 
@@ -68,6 +71,10 @@ p {
 
 .bg-dark {
   @include bg-dark;
+}
+
+.bg-black {
+  @include bg-black;
 }
 
 .bg-yellow {
@@ -441,13 +448,13 @@ figure.caption .embedded-entity+figcaption {
   padding: 1rem 2rem;
 }
 
-.btn-secondary {
+.btn-secondary, .btn-success, .btn-danger, .btn-info, .btn-warning, .btn-link {
   @extend %bttn--secondary;
   border: 1px solid $secondary;
   @extend %bttn--focus;
 }
 
-.btn-primary {
+.btn-primary, .button--primary {
   @extend %bttn--primary;
   border: 1px solid $primary;
   @extend %bttn--focus;
