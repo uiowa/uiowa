@@ -22,6 +22,8 @@ $imgpath: '../../uids/assets/images';
 }
 
 // ie11
+
+
 @media all and (-ms-high-contrast: none),
 (-ms-high-contrast: active) {
   .layout__container .block-inline-blockuiowa-text-area {
@@ -64,6 +66,14 @@ $imgpath: '../../uids/assets/images';
     .section-column__row & {
       flex-basis: unset;
     }
+  }
+}
+
+@media all and (min-width: 0px) and (max-width: 855px) and (-ms-high-contrast: none),
+(-ms-high-contrast: active) {
+  .o-canvas__group {
+    -ms-flex-preferred-size: 100% !important;
+    flex-basis: 100% !important;
   }
 }
 
@@ -218,6 +228,10 @@ $imgpath: '../../uids/assets/images';
     margin-right: 0;
     margin-left: 0;
   }
+}
+
+.page__container.layout__container {
+  max-width: 100%;
 }
 
 
