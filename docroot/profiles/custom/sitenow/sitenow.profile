@@ -421,6 +421,10 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         $form['properties']['markup']['message_storage']['#access'] = FALSE;
         $form['properties']['markup']['message_id']['#access'] = FALSE;
 
+        // Remove access to change allowed file upload extensions.
+        if (isset($form['properties']['file'])) {
+          $form['properties']['file']['file_extensions']['#access'] = FALSE;
+        }
       }
       break;
   }
