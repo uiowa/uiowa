@@ -80,6 +80,10 @@ AddEncoding gzip svgz
   RewriteCond %{HTTP:X-Forwarded-Proto} !https
   RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
+  # Redirect legacy stories site for the homepage.
+  RewriteCond %{HTTP_HOST} ^uiowa.edu$
+  RewriteRule ^stories(.*)$  https://stories.uiowa.edu$1 [R,L]
+
   # Redirect veterans.org.uiowa.edu to veterans.uiowa.edu/uiva.
   RewriteCond %{HTTP_HOST} veterans.org.uiowa.edu [NC]
   RewriteRule ^ https://veterans.uiowa.edu/uiva%{REQUEST_URI} [L,R=301]

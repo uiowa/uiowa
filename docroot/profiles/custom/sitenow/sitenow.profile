@@ -409,17 +409,22 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
       break;
 
     case 'webform_ui_element_form':
-      if (\Drupal::currentUser()->hasPermission('administer webforms') === FALSE) {
+      if (!sitenow_is_user_admin(\Drupal::currentUser())) {
         // Remove access to wrapper, element, label attributes.
-        $form["properties"]["wrapper_attributes"]['#access'] = FALSE;
-        $form["properties"]["element_attributes"]['#access'] = FALSE;
-        $form["properties"]["label_attributes"]['#access'] = FALSE;
+        $form['properties']['wrapper_attributes']['#access'] = FALSE;
+        $form['properties']['element_attributes']['#access'] = FALSE;
+        $form['properties']['label_attributes']['#access'] = FALSE;
 
         // Remove access to message close fields. Conflicts with BS alert close.
-        $form["properties"]["markup"]["message_close"]['#access'] = FALSE;
-        $form["properties"]["markup"]["message_close_effect"]['#access'] = FALSE;
-        $form["properties"]["markup"]["message_storage"]['#access'] = FALSE;
-        $form["properties"]["markup"]["message_id"]['#access'] = FALSE;
+        $form['properties']['markup']['message_close']['#access'] = FALSE;
+        $form['properties']['markup']['message_close_effect']['#access'] = FALSE;
+        $form['properties']['markup']['message_storage']['#access'] = FALSE;
+        $form['properties']['markup']['message_id']['#access'] = FALSE;
+
+        // Remove access to change allowed file upload extensions.
+        if (isset($form['properties']['file'])) {
+          $form['properties']['file']['file_extensions']['#access'] = FALSE;
+        }
       }
       break;
   }
