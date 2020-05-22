@@ -16,3 +16,20 @@ $search-img-path: '../../../../../uids/assets/images/search-01.svg';
     background-image: url($search-img-path);
   }
 }
+
+
+.search-overlay .uids-search {
+  margin-top: 19px;
+  @include breakpoint(menu) {
+    margin-top: 18px;
+  }
+}
+
+
+.header--tertiary .search-overlay .uids-search,
+.header--secondary .search-overlay .uids-search {
+  margin-top: 14px;
+  @include breakpoint(menu) {
+    margin-top: 18px;
+  }
+}
