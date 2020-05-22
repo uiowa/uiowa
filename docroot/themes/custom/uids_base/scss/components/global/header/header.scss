@@ -8,3 +8,17 @@
   }
 }
 
+
+
+.header--secondary.mega .page__container,
+.header--secondary.horizontal .page__container,
+.header--secondary.header--horizontal .page__container,
+.header--tertiary.horizontal .page__container,
+.header--tertiary.mega .page__container,
+.header--tertiary.header--horizontal .page__container {
+  position: unset;
+  @include breakpoint(menu) {
+    position: relative;
+  }
+}
+
