@@ -133,13 +133,12 @@ element:
   default_description_display: ''
   default_more_title: More
   default_section_title_tag: h2
+  default_algolia_places_app_id: ''
+  default_algolia_places_api_key: ''
   default_empty_option: true
   default_empty_option_required: ''
   default_empty_option_optional: ''
-  default_algolia_places_app_id: ''
-  default_algolia_places_api_key: ''
   excluded_elements:
-    captcha: captcha
     color: color
     container: container
     entity_autocomplete: entity_autocomplete
@@ -159,8 +158,6 @@ element:
     value: value
     webform_address: webform_address
     webform_audio_file: webform_audio_file
-    webform_buttons: webform_buttons
-    webform_buttons_other: webform_buttons_other
     webform_codemirror: webform_codemirror
     webform_computed_token: webform_computed_token
     webform_computed_twig: webform_computed_twig
@@ -185,29 +182,25 @@ element:
     webform_telephone: webform_telephone
     webform_term_checkboxes: webform_term_checkboxes
     webform_term_select: webform_term_select
-    webform_toggle: webform_toggle
-    webform_toggles: webform_toggles
     webform_video_file: webform_video_file
-  default_icheck: ''
-  default_google_maps_api_key: ''
 html_editor:
+  tidy: true
   disabled: false
   element_format: ''
   mail_format: ''
-  tidy: true
   make_unused_managed_files_temporary: true
 file:
+  make_unused_managed_files_temporary: true
+  delete_temporary_managed_files: true
   file_public: false
   file_private_redirect: true
   file_private_redirect_message: 'Please login to access the uploaded file.'
-  default_max_filesize: ''
-  default_managed_file_extensions: 'gif jpg png bmp eps tif pict psd txt rtf html odf pdf doc docx ppt pptx xls xlsx xml avi mov mp3 ogg wav bz2 dmg gz jar rar sit svg tar zip'
+  default_max_filesize: '50 MB'
+  default_managed_file_extensions: 'gif jpg png bmp eps tif pict psd txt rtf html odf pdf doc docx ppt pptx xls xlsx avi mov mp3 ogg wav bz2 gz sit svg tar zip'
   default_audio_file_extensions: 'mp3 ogg wav'
   default_document_file_extensions: 'txt rtf pdf doc docx odt ppt pptx odp xls xlsx ods'
   default_image_file_extensions: 'gif jpg png'
   default_video_file_extensions: 'avi mov mp4 ogg wav webm'
-  make_unused_managed_files_temporary: true
-  delete_temporary_managed_files: true
 format: {  }
 mail:
   default_to_mail: '[site:mail]'
