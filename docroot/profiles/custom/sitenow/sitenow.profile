@@ -409,7 +409,7 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
       break;
 
     case 'webform_ui_element_form':
-      if (\Drupal::currentUser()->hasPermission('administer webforms') === FALSE) {
+      if (!sitenow_is_user_admin(\Drupal::currentUser())) {
         // Remove access to wrapper, element, label attributes.
         $form["properties"]["wrapper_attributes"]['#access'] = FALSE;
         $form["properties"]["element_attributes"]['#access'] = FALSE;
