@@ -24,34 +24,25 @@ var paths = {
 
 function copy() {
   return src([
-    '../../../../node_modules/@uiowa/uids/**/*.scss',
-    '../../../../node_modules/@uiowa/uids/**/*.js',
-    '../../../../node_modules/@uiowa/uids/**/*.twig',
-    '../../../../node_modules/@uiowa/uids/**/images/*'
+    '../../../../node_modules/@uiowa/uids/src/**/*.scss',
+    '../../../../node_modules/@uiowa/uids/src/**/*.js',
+    '../../../../node_modules/@uiowa/uids/src/**/*.{jpg,png,svg}',
+    '../../../../node_modules/@uiowa/uids/src/**/*.{woff,woff2}',
   ])
     .pipe(dest('./uids/'));
 }
 
-function fontCopy() {
-  return src([
-    '../../../../node_modules/@uiowa/uids/assets/**/*.woff',
-    '../../../../node_modules/@uiowa/uids/assets/**/*.woff2'
-  ])
-    .pipe(dest('./assets/'));
-}
+// function fontCopy() {
+//   return src([
+//   ])
+//     .pipe(dest('./assets/'));
+// }
 
 // SCSS bundled into CSS task.
 function css() {
   return src(config.css.src)
     .pipe((mode.development(sourcemaps.init())))
     .pipe(glob())
-    // Stay live and reload on error.
-    .pipe(plumber({
-      handleError: function (err) {
-        console.log(err);
-        process.exit(1);
-      }
-    }))
     .pipe(sass({
         outputStyle: 'compressed',
         includePaths: config.css.includePaths
@@ -72,7 +63,7 @@ function watchFiles() {
   watch(paths.scss + '**/*.scss', { usePolling: true }, parallel(css, copy));
 }
 
-exports.copy = parallel(copy, fontCopy);
+exports.copy = copy;
 exports.css = css;
-exports.default = parallel(fontCopy, series(copy, css));
+exports.default = series(copy, css);
 exports.watch = watchFiles;
