@@ -81,12 +81,6 @@ class MigratePreRollbackEvent implements EventSubscriberInterface {
       ->fields('mm', ['destid1']);
     $fids = $query->execute()->fetchCol();
 
-    foreach ($fids as $fid) {
-      \Drupal::logger('sitenow_migrate')->notice(t('FID found... @fid', [
-        '@fid' => $fid,
-      ]));
-    }
-
     // Grab our image media entities that reference files to be removed.
     $query1 = $connection->select('media__field_media_image', 'm_image')
       ->fields('m_image', ['entity_id'])
@@ -97,14 +91,10 @@ class MigratePreRollbackEvent implements EventSubscriberInterface {
       ->condition('m_file.field_media_file_target_id', $fids, 'in');
     $results = $query1->execute()->fetchCol();
     $results = array_merge($results, $query2->execute()->fetchCol());
-    foreach ($results as $result) {
-      \Drupal::logger('sitenow_migrate')->notice(t('MID found... @mid', [
-        '@mid' => $mid,
-      ]));
-    }
 
-    $mediaEntities = $this->entityTypeManager->getStorage('media')->load($results);
-    $this->entityTypeManager->getStorage('media')->delete($mediaEntities);
+    $entityManager = $this->entityTypeManager->getStorage('media');
+    $mediaEntities = $entityManager->loadMultiple($results);
+    $entityManager->delete($mediaEntities);
   }
 
 }
