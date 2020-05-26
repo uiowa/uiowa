@@ -75,13 +75,13 @@ class MigratePreRollbackEvent implements EventSubscriberInterface {
    * Remove associated media entities prior to file removal.
    */
   public function removeMediaEntities() {
-    // Get our destination file ids
+    // Get our destination file ids.
     $connection = Database::getConnection();
     $query = $connection->select('migrate_map_d7_file', 'mm')
       ->fields('mm', ['destid1']);
     $fids = $query->execute()->fetchCol();
 
-    foreach($fids as $fid) {
+    foreach ($fids as $fid) {
       \Drupal::logger('sitenow_migrate')->notice(t('FID found... @fid', [
         '@fid' => $fid,
       ]));
@@ -97,7 +97,7 @@ class MigratePreRollbackEvent implements EventSubscriberInterface {
       ->condition('m_file.field_media_file_target_id', $fids, 'in');
     $results = $query1->execute()->fetchCol();
     $results = array_merge($results, $query2->execute()->fetchCol());
-    foreach($results as $result) {
+    foreach ($results as $result) {
       \Drupal::logger('sitenow_migrate')->notice(t('MID found... @mid', [
         '@mid' => $mid,
       ]));
