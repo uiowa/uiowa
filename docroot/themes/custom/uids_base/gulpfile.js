@@ -4,12 +4,13 @@
  */
 
 const { src, dest, parallel, series, watch } = require('gulp');
-const config = require('./config.json');
 
 // Include plugins.
 const sass = require('gulp-sass');
-const plumber = require('gulp-plumber');
-const prefix = require('gulp-autoprefixer');
+const del = require ('del');
+const postcss = require('gulp-postcss');
+const autoprefixer = require('autoprefixer');
+const cssnano = require('cssnano')
 const glob = require('gulp-sass-glob');
 const sourcemaps = require('gulp-sourcemaps');
 const mode = require('gulp-mode')();
@@ -17,53 +18,58 @@ const mode = require('gulp-mode')();
 /*
  * Directories here
  */
-var paths = {
-  build: './assets/',
-  scss: './scss/'
+const paths = {
+  src: `${__dirname}/scss/**/*.scss`,
+  dest: `${__dirname}/assets/css`
 };
 
-function copy() {
-  return src([
-    '../../../../node_modules/@uiowa/uids/src/**/*.scss',
-    '../../../../node_modules/@uiowa/uids/src/**/*.js',
-    '../../../../node_modules/@uiowa/uids/src/**/*.{jpg,png,svg}',
-    '../../../../node_modules/@uiowa/uids/src/**/*.{woff,woff2}',
-  ])
-    .pipe(dest('./uids/'));
+const uids = {
+  src: '../../../../node_modules/@uiowa/uids/src',
+  dest: `${__dirname}/uids/`,
 }
 
-// function fontCopy() {
-//   return src([
-//   ])
-//     .pipe(dest('./assets/'));
-// }
+// Clean
+function clean() {
+  return del(`${uids.dest}/**/*`);
+}
+
+function copyUids() {
+  console.log('src: ' , uids.src);
+  console.log('dest: ' , uids.dest);
+  return src([
+    `${uids.src}/**/*.scss`,
+    `${uids.src}/**/*.js`,
+    `${uids.src}/**/*.{jpg,png,svg}`,
+    `${uids.src}/**/*.{woff,woff2}`,
+  ])
+    .pipe(dest(`${uids.dest}`));
+}
 
 // SCSS bundled into CSS task.
 function css() {
-  return src(config.css.src)
+  return src(`${paths.src}`)
     .pipe((mode.development(sourcemaps.init())))
     .pipe(glob())
     .pipe(sass({
-        outputStyle: 'compressed',
-        includePaths: config.css.includePaths
-      }).on('error', function (err) {
-        console.log(err.message);
-        process.exit(1);
-      }))
-    .pipe(prefix(['last 2 versions', '> 1%', 'ie 9', 'ie 10'], {
-      cascade: true
-    }))
+        includePaths: [
+          "./node_modules",
+          "./uids/",
+        ]
+      }).on('error', sass.logError))
+    .pipe(postcss([ autoprefixer(), cssnano()]))
     .pipe((mode.development(sourcemaps.write('./'))))
-    .pipe(dest(config.css.dest));
+    .pipe(dest(`${paths.dest}`));
 }
 
 // Watch files.
 function watchFiles() {
-  // Watch SCSS changes.
-  watch(paths.scss + '**/*.scss', { usePolling: true }, parallel(css, copy));
+  watch(paths.src, compile);
+  // @todo Watch other changes?
 }
 
-exports.copy = copy;
+const compile = series(clean, copyUids, css);
+
+exports.copy = copyUids;
 exports.css = css;
-exports.default = series(copy, css);
+exports.default = compile;
 exports.watch = watchFiles;
