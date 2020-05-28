@@ -1379,3 +1379,9 @@ $sites['sitesteachabc.local.drupal.uiowa.edu'] = 'teachabc.sites.uiowa.edu';
 $sites['sitesteachabc.dev.drupal.uiowa.edu'] = 'teachabc.sites.uiowa.edu';
 $sites['sitesteachabc.stage.drupal.uiowa.edu'] = 'teachabc.sites.uiowa.edu';
 $sites['sitesteachabc.prod.drupal.uiowa.edu'] = 'teachabc.sites.uiowa.edu';
+
+// Directory aliases for writinguniversity.org.
+$sites['org-writinguniversity.local.drupal.uiowa.edu'] = 'writinguniversity.org';
+$sites['org-writinguniversity.dev.drupal.uiowa.edu'] = 'writinguniversity.org';
+$sites['org-writinguniversity.stage.drupal.uiowa.edu'] = 'writinguniversity.org';
+$sites['org-writinguniversity.prod.drupal.uiowa.edu'] = 'writinguniversity.org';
