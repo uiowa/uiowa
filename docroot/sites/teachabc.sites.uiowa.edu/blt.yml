@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: sitesteachabc.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: sitesteachabc
+  human_name: teachabc.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesteachabc.prod
+drupal:
+  db:
+    database: teachabc_sites_uiowa_edu
+uiowa:
+  requester: icurto

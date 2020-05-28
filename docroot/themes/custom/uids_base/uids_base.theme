@@ -144,7 +144,7 @@ function uids_base_preprocess_page(&$variables) {
 
       $variables['footer_login_link'] = [
         '#type' => 'link',
-        '#title' => t('HawkID Login'),
+        '#title' => t('Admin Login'),
         '#url' => $login_url,
       ];
     }
@@ -180,6 +180,13 @@ function uids_base_preprocess_page(&$variables) {
 
       }
     }
+  }
+  $current_route = \Drupal::routeMatch();
+  $route_name = $current_route->getRouteName();
+  switch ($route_name) {
+    case 'uiowa_bar.search_results':
+      $variables['#attached']['library'][] = 'uids_base/search-results';
+      break;
   }
 }
 

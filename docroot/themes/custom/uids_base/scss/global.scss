@@ -22,27 +22,39 @@ $imgpath: '../../uids/assets/images';
 }
 
 // ie11
+
+
 @media all and (-ms-high-contrast: none),
 (-ms-high-contrast: active) {
   .layout__container .block-inline-blockuiowa-text-area {
     flex-basis: auto;
   }
+
   .o-canvas__group {
-    -ms-flex-preferred-size: auto!important;
-    flex-basis: auto!important;
+    -ms-flex-preferred-size: auto !important;
+    flex-basis: auto !important;
   }
+
   .logo-icon--tab {
-    height: 100px!important;
+    height: 100px !important;
   }
+
   .logo-icon {
-    height: auto!important;
+    height: auto !important;
   }
+
   .card__body {
-    flex: auto!important;
+    flex: auto !important;
   }
+
   #superfish-main-accordion {
-    position: relative!important;
+    position: relative !important;
   }
+}
+
+.layout--twocol.layout,
+.layout--twocol.layout .lb__container {
+  flex-basis: 100%;
 }
 
 .layout--onecol {
@@ -57,6 +69,14 @@ $imgpath: '../../uids/assets/images';
   }
 }
 
+@media all and (min-width: 0px) and (max-width: 855px) and (-ms-high-contrast: none),
+(-ms-high-contrast: active) {
+  .o-canvas__group {
+    -ms-flex-preferred-size: 100% !important;
+    flex-basis: 100% !important;
+  }
+}
+
 // default spacing for pages without layout builder
 
 // SiteNow Paragraphs Page
@@ -64,6 +84,7 @@ $imgpath: '../../uids/assets/images';
   max-width: 100%;
   margin: 0;
 }
+
 .path-node.layout-builder-disabled:not(.page-node-type-page) {
   .node--view-mode-full {
     margin-bottom: $lg;
@@ -98,26 +119,33 @@ $imgpath: '../../uids/assets/images';
 
 // default left/right gutter spacing for full width settings w/ layout builder enabled
 
+.content__full .layout__container.page__container--extended {
+  .lb__container {
+    @include breakpoint(container) {
+      max-width: 100em;
+      padding: 0 $lg;
+      margin: 0 auto;
+    }
+  }
+}
+
 .content__full .layout__container {
   margin-right: $mobile-width-gutter;
   margin-left: $mobile-width-gutter;
   margin-bottom: $mobile-width-gutter;
 
-  &.page__container--extended {
-
-    @include breakpoint(container) {
-      max-width: 100em;
-      padding: 0 $lg;
-    }
+  &.page__container--full {
+    margin-right: 0;
+    margin-left: 0;
   }
-
-  //margin-right: $gutter;
-  //margin-bottom: $gutter;
-  //margin-left: $gutter;
 
   // layout builder styles padding classes
 
   &.section-padding {
+    &__top-extra {
+      padding-top: $desktop-width-gutter;
+    }
+
     @include breakpoint(sm) {
       &__top {
         padding-top: $md;
@@ -143,6 +171,7 @@ $imgpath: '../../uids/assets/images';
         padding-left: $desktop-width-gutter;
       }
     }
+
   }
 
   // layout builder styles margin classes
@@ -184,7 +213,7 @@ $imgpath: '../../uids/assets/images';
 
 // settings if page container full or edge is selected on section
 
-.page__container--full.layout__container {
+.page__container--full.layout__container .lb__container {
   // margin-right: $gutter;
   // margin-left: $gutter;
   margin-right: $mobile-width-gutter;
@@ -201,93 +230,125 @@ $imgpath: '../../uids/assets/images';
   }
 }
 
+.page__container.layout__container {
+  max-width: 100%;
+}
+
 
 // default spacing for layout builder pages with container set in theme settings
 
 .content__container,
 .content__mixed {
+
   .layout__container {
     margin-bottom: $desktop-width-gutter;
-    @extend %container;
+  }
 
-    &.page__container--extended {
+  .lb__container {
+    @extend %container;
+  }
+
+  .page__container--extended {
+    .lb__container {
       @include breakpoint(container) {
         max-width: 100em;
         padding: 0 $lg;
       }
     }
+  }
 
-    // layout builder styles padding classes
+  // layout builder styles padding classes
 
-    &.section-padding {
-      @include breakpoint(sm) {
-        &__top {
-          padding-top: $desktop-width-gutter;
-        }
-
-        &__top-extra {
-          padding-top: $desktop-width-gutter;
-        }
-
-        &__bottom-extra {
-          padding-bottom: $desktop-width-gutter;
-        }
-
-        &__right {
-          padding-right: $desktop-width-gutter;
-        }
-
-        &__bottom {
-          padding-bottom: $desktop-width-gutter;
-        }
-
-        &__left {
-          padding-left: $desktop-width-gutter;
-        }
-      }
+  .section-padding {
+    &__top-extra {
+      padding-top: $mobile-width-gutter;
     }
 
-    // layout builder styles margin classes
-    &.section-margin {
+    @include breakpoint(sm) {
       &__top {
-        margin-top: $md;
+        padding-top: $desktop-width-gutter;
+      }
 
-        &.page__container {
-          margin-top: $md;
-        }
+      &__top-extra {
+        padding-top: $desktop-width-gutter;
+      }
+
+      &__bottom-extra {
+        padding-bottom: $desktop-width-gutter;
+      }
+
+      &__right {
+        padding-right: $desktop-width-gutter;
       }
 
       &__bottom {
-        margin-bottom: $md;
+        padding-bottom: $desktop-width-gutter;
+      }
 
-        &.page__container {
-          margin-bottom: $md;
-        }
+      &__left {
+        padding-left: $desktop-width-gutter;
       }
     }
+  }
 
-    &.section-margin__removed {
-      margin-top: 0;
-      margin-bottom: 0;
-    }
+  // layout builder styles margin classes
+  .section-margin__top {
+    margin-top: $md;
+  }
 
-    &.page__container--full {
+  .section-margin__top.page__container {
+
+    margin-top: $md;
+
+  }
+
+  .section-margin__bottom {
+
+    margin-bottom: $md;
+
+  }
+
+  .section-margin__bottom.page__container {
+
+    margin-bottom: $md;
+
+  }
+
+
+
+  .section-margin__removed {
+    margin-top: 0;
+    margin-bottom: 0;
+
+  }
+
+  .page__container--full {
+    .lb__container {
       max-width: 100%;
-      margin-right: $mobile-width-gutter;
-      margin-left: $mobile-width-gutter;
+      padding-right: $mobile-width-gutter;
+      padding-left: $mobile-width-gutter;
+      margin-right: 0;
+      margin-left: 0;
 
       @include breakpoint(menu) {
-        margin-right: $desktop-width-gutter;
-        margin-left: $desktop-width-gutter;
+        padding-right: $desktop-width-gutter;
+        padding-left: $desktop-width-gutter;
+        margin-right: 0;
+        margin-left: 0;
       }
     }
+  }
 
-    &.page__container--edge {
+  .page__container--edge {
+    .lb__container {
       max-width: 100%;
       margin-right: 0;
       margin-left: 0;
     }
   }
+
+
+
 }
 
 // Block Margins / Padding
@@ -444,6 +505,7 @@ $imgpath: '../../uids/assets/images';
 
 .views-element-container {
   @include margin($top: $lg);
+
   .views-element-container {
     margin-top: inherit;
   }

@@ -4,8 +4,6 @@ project:
     protocol: https
   machine_name: labhuman-auditory-neuroscience-group
   human_name: human-auditory-neuroscience-group.lab.uiowa.edu
-  profile:
-    name: sitenow
 drush:
   aliases:
     local: self
@@ -13,14 +11,5 @@ drush:
 drupal:
   db:
     database: human_auditory_neuroscience_group_lab_uiowa_edu
-cm:
-  core:
-    dirs:
-      sync:
-        path: profiles/custom/sitenow/config/sync
-    install_from_config: true
-
 uiowa:
-  profiles:
-    sitenow:
-      requester: ostrem
+  requester: ostrem
