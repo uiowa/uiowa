@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: org-writinguniversity.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: org-writinguniversity
+  human_name: writinguniversity.org
+drush:
+  aliases:
+    local: self
+    remote: org-writinguniversity.prod
+drupal:
+  db:
+    database: writinguniversity_org
+uiowa:
+  requester: lhaldema
