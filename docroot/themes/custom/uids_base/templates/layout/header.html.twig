@@ -6,8 +6,7 @@
 {% if header_sticky %}
   {{ attach_library('uids_base/header-sticky') }}
 {% endif %}
-<header{{ attributes.addClass(header_classes) }}>
-
+<header data-uids-header {{ attributes.addClass(header_classes) }}>
   <div class="uiowa-bar">
     <div class="page__container">
       {% block logo %}
