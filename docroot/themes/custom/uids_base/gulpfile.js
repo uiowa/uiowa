@@ -34,8 +34,6 @@ function clean() {
 }
 
 function copyUids() {
-  console.log('src: ' , uids.src);
-  console.log('dest: ' , uids.dest);
   return src([
     `${uids.src}/**/*.scss`,
     `${uids.src}/**/*.js`,
