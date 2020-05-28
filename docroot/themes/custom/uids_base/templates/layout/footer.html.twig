@@ -13,7 +13,7 @@
 
       {% if not branding_legacy %}
         {{ attach_library('uids_base/logo') }}
-        {% include '@uids/03 - global/logo/logo.twig' with {
+        {% include '@uids_base/uids/logo.twig' with {
           logo_color: 'logo-icon--secondary',
           logo_classes: 'logo-icon--tab',
           logo_path_2: uiowa_logo_path,
@@ -52,7 +52,7 @@
     </div>
   {% endif %}
 
-      {% include '@uids/03 - global/footer/footer--socket-menu.twig' %}
+      {% include '@uids_base/uids/footer--socket-menu.twig' %}
 
     </div>
 

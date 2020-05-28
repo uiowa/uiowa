@@ -12,7 +12,7 @@
       {% block logo %}
         {% if not branding_legacy %}
           {{ attach_library('uids_base/logo') }}
-          {% include '@uids/03 - global/logo/logo.twig' with {
+          {% include '@uids_base/uids/logo.twig' with {
             path: uiowa_url,
             logo_color: 'logo-icon--secondary',
             logo_classes: 'logo-icon--tab',
