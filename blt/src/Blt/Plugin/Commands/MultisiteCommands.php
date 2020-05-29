@@ -515,6 +515,7 @@ EOD
     $table->render();
 
     $app = $this->askChoice('Which cloud application should be used?', array_keys($applications));
+    $this->say("Selected <comment>{$app}</comment> application.");
     $app_id = $applications[$app]['id'];
 
     if (!$options['simulate'] && !$options['no-db']) {
