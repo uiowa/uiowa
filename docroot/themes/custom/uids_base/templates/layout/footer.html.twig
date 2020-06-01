@@ -11,15 +11,13 @@
   <div class="footer__container footer__container--flex">
     <div class="footer__links footer__links--contact">
 
-      {% if not branding_legacy %}
-        {{ attach_library('uids_base/logo') }}
-        {% include '@uids_base/uids/logo.twig' with {
-          logo_color: 'logo-icon--secondary',
-          logo_classes: 'logo-icon--tab',
-          logo_path_2: uiowa_logo_path,
-          logo_path_png: uiowa_logo_path_png,
-        } %}
-      {% endif %}
+      {{ attach_library('uids_base/logo') }}
+      {% include '@uids_base/uids/logo.twig' with {
+        logo_color: 'logo-icon--secondary',
+        logo_classes: 'logo-icon--tab',
+        logo_path_2: uiowa_logo_path,
+        logo_path_png: uiowa_logo_path_png,
+      } %}
 
       {% block site_name %}
         {% if site_name %}
@@ -44,13 +42,13 @@
         {{ page.footer_first }}
       {% endif %}
 
- {% if footer_login_link %}
-    <div class="uiowa-footer--login-link">
-{{ login_url }}
+      {% if footer_login_link %}
+        <div class="uiowa-footer--login-link">
+          {{ login_url }}
 
-      <p>{{ footer_login_link }}</p>
-    </div>
-  {% endif %}
+          <p>{{ footer_login_link }}</p>
+        </div>
+      {% endif %}
 
       {% include '@uids_base/uids/footer--socket-menu.twig' %}
 

@@ -10,16 +10,14 @@
   <div class="uiowa-bar">
     <div class="page__container">
       {% block logo %}
-        {% if not branding_legacy %}
-          {{ attach_library('uids_base/logo') }}
-          {% include '@uids_base/uids/logo.twig' with {
-            path: uiowa_url,
-            logo_color: 'logo-icon--secondary',
-            logo_classes: 'logo-icon--tab',
-            logo_path: uiowa_logo_path,
-            logo_path_png: uiowa_logo_path_png,
-          } %}
-        {% endif %}
+        {{ attach_library('uids_base/logo') }}
+        {% include '@uids_base/uids/logo.twig' with {
+          path: uiowa_url,
+          logo_color: 'logo-icon--secondary',
+          logo_classes: 'logo-icon--tab',
+          logo_path: uiowa_logo_path,
+          logo_path_png: uiowa_logo_path_png,
+        } %}
       {% endblock %}
 
       {% block uiowa_bar %}

@@ -38,17 +38,9 @@ function uids_base_preprocess_html(&$variables) {
 
   $variables['attributes']['class'][] = $sticky_class;
 
-  $variables['branding_legacy'] = (bool) theme_get_setting('branding.legacy');
-
-  // If uiowa_bar module is enabled, part or all of it needs to be
-  // unset in favor of the branding elements contained in this theme.
+  // @todo Remove uiowa_bar module in favor of uiowa_search.
   if (\Drupal::service('module_handler')->moduleExists('uiowa_bar')) {
-    if (!$variables['branding_legacy']) {
-      unset($variables['page_top']['uiowa_bar']);
-    }
-    else {
-      unset($variables['page_top']['uiowa_bar']['#search_form']);
-    }
+    unset($variables['page_top']['uiowa_bar']);
   }
 
   if (\Drupal::service('module_handler')->moduleExists('uiowa_footer')) {
@@ -125,7 +117,6 @@ function uids_base_preprocess_page(&$variables) {
   // @todo Should this not be hard-coded?
   $variables['uiowa_url'] = ($variables['header_type'] === 'header--primary') ? \Drupal::request()->getSchemeAndHttpHost() : 'https://uiowa.edu';
   $variables['layout_container'] = theme_get_setting('layout.container');
-  $variables['branding_legacy'] = theme_get_setting('branding.legacy');
   $variables['uiowa_search_form'] = FALSE;
 
   // Add a variable for the search form.
@@ -148,11 +139,6 @@ function uids_base_preprocess_page(&$variables) {
         '#url' => $login_url,
       ];
     }
-  }
-
-  // If the legacy option is enabled, attach the associated library.
-  if ($variables['branding_legacy']) {
-    $variables['#attached']['library'][] = 'uids_base/legacy';
   }
 
   $variables['has_node_image'] = FALSE;
