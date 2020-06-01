@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: physicstracers.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: physicstracers
+  human_name: tracers.physics.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: physicstracers.prod
+drupal:
+  db:
+    database: tracers_physics_uiowa_edu
+uiowa:
+  requester: dgcrawfo
