@@ -91,10 +91,13 @@ function uids_base_preprocess_page(&$variables) {
     $variables['header_type'] = 'below';
   }
 
+  $variables['uiowa_url'] = 'https://uiowa.edu';
+
   // This is the homepage.
   if (\Drupal::service('site.path') === 'sites/uiowa.edu') {
     $variables['header_classes'][] = 'header--primary';
     $variables['header_type'] = 'homepage';
+    $variables['uiowa_url'] = \Drupal::request()->getSchemeAndHttpHost();
   }
   else {
     switch ($variables['header_type']) {
@@ -114,8 +117,6 @@ function uids_base_preprocess_page(&$variables) {
     }
   }
 
-  // @todo Should this not be hard-coded?
-  $variables['uiowa_url'] = ($variables['header_type'] === 'header--primary') ? \Drupal::request()->getSchemeAndHttpHost() : 'https://uiowa.edu';
   $variables['layout_container'] = theme_get_setting('layout.container');
   $variables['uiowa_search_form'] = FALSE;
 
