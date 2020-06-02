@@ -30,8 +30,10 @@
     <div class="lb__container has-{{ has_uids_menu }}">
 
       {% if has_featured_image is empty %}
+      <div class="container">
         {{ breadrumbs }}
         <h1 class="bold-headline--serif bold-headline">{{ drupal_title() }}</h1>
+        </div>
       {% endif %}
 
       {{ content.content }}
