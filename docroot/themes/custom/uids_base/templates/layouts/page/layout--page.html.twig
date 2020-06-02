@@ -1,0 +1,41 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a one column layout.
+ *
+ * Available variables:
+ * - content: The content for this layout.
+ * - attributes: HTML attributes for the layout <div>.
+ *
+ * @ingroup themeable
+ * @see https://www.drupal.org/docs/8/api/layout-api/how-to-register-layouts
+ * @see https://v4-alpha.getbootstrap.com/layout/grid/
+ */
+#}
+{%
+  set classes = [
+    'layout',
+    'layout--onecol',
+    'layout__container',
+    settings.extra_classes,
+  ]
+%}
+
+{% if content.content %}
+
+  <div{{ attributes.addClass(classes) }}>
+    <div class="lb__container">
+
+{% if content.content['8be51334-4e07-4621-bddf-6b9942b862e2']['content']['0'] %}
+
+{% else %}
+{{ breadrumbs }}
+<h1 class="bold-headline--serif bold-headline">{{ drupal_title() }}</h1>
+{% endif %}
+
+{{ content.content }}
+
+  </div>
+</div>
+
+{% endif %}
