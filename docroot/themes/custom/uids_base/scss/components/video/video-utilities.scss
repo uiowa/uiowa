@@ -1,0 +1,37 @@
+@import "assets/scss/_variables.scss";
+@import "assets/scss/_utilities.scss";
+@import "components/video/video-utilities/_video-utilities.scss";
+
+.media--type-remote-video {
+  @extend .embed-responsive;
+  @extend .embed-responsive-16by9;
+}
+
+.media--type-remote-video.media--view-mode-small__ultrawide,
+.media--type-remote-video.media--view-mode-medium__ultrawide,
+.media--type-remote-video.media--view-mode-large__ultrawide,
+.media--type-remote-video.media--view-mode-full__ultrawide {
+  @extend .embed-responsive-21by9;
+}
+
+.media--type-remote-video.media--view-mode-small__widescreen,
+.media--type-remote-video.media--view-mode-medium__widescreen,
+.media--type-remote-video.media--view-mode-large__widescreen,
+.media--type-remote-video.media--view-mode-full__widescreen {
+  @extend .embed-responsive-16by9;
+}
+
+.media--type-remote-video.media--view-mode-small__square,
+.media--type-remote-video.media--view-mode-medium__square,
+.media--type-remote-video.media--view-mode-large__square,
+.media--type-remote-video.media--view-mode-full__square {
+  @extend .embed-responsive-4by3;
+}
+
+.media--type-remote-video.media--view-mode-default,
+.media--type-remote-video.media--view-mode-small__no-crop,
+.media--type-remote-video.media--view-mode-medium__no-crop,
+.media--type-remote-video.media--view-mode-large__no-crop,
+.media--type-remote-video.media--view-mode-full__no-crop {
+  @extend .embed-responsive-16by9;
+}
