@@ -463,15 +463,17 @@ EOD
     $table->setHeaders(['Application', 'DBs', 'SANs', 'SAN Match']);
     $rows = [];
 
-    // Search for a SANs match if the host is a double subdomain.
+    // Search for a SANs match.
+    // If the host is a double subdomain, search for the parent.
     // Ex. foo.bar.uiowa.edu -> search for bar.uiowa.edu.
     $host_parts = explode('.', $host, 2);
     $sans_search = $host_parts[1];
 
-    // If the host is one subdomain off uiowa.edu, search for the second.
-    // Ex. foo.uiowa.edu -> search for foo.
+    // If the host is one subdomain off uiowa.edu, search for it instead.
+    // This mostly just checks to see if the domain already exists in a cert.
+    // Ex. foo.uiowa.edu -> search for foo.uiowa.edu.
     if ($host_parts[1] == 'uiowa.edu') {
-      $sans_search = $host_parts[0];
+      $sans_search = $host;
     }
 
     // If the host is one subdomain off a TLD, do not search.
