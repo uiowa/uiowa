@@ -8,9 +8,10 @@
 
         const video = document.getElementById("video-container");
         const btn = document.getElementById("video-btn");
+        const heroVideoCookie = $.cookie('herovideo');
 
         // Check herovideo cookie to see if user paused video previously.
-        if (readCookie('herovideo') == 'paused') {
+        if (heroVideoCookie === 'paused') {
           video.pause();
           btn.innerHTML = "<span class='element-invisible'>" + "Play" + "</span>";
           btn.classList.remove("video-btn__pause");
@@ -21,10 +22,12 @@
         if (document.getElementById("video-container")) {
           document.getElementById('video-btn').onclick = function() {
             if (video.paused) {
-              createCookie('herovideo', 'paused', 30);
+              // Create cookie.
+              $.cookie('herovideo', 'paused', { expires: 7 });
             }
             else {
-              eraseCookie('herovideo');
+              // Remove a cookie.
+              $.removeCookie('herovideo');
             }
           }
         }
