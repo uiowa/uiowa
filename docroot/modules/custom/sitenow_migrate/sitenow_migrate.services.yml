@@ -12,3 +12,8 @@ services:
     arguments: [ '@entity_type.manager', '@logger.channel.sitenow_migrate' ]
     tags:
       - { name: 'event_subscriber' }
+  pre_rollback_subscriber:
+    class: 'Drupal\sitenow_migrate\EventSubscriber\MigratePreRollbackEvent'
+    arguments: [ '@entity_type.manager', '@logger.channel.sitenow_migrate' ]
+    tags:
+      - { name: 'event_subscriber' }
