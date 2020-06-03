@@ -12,6 +12,7 @@
 
         // Check herovideo cookie to see if user paused video previously.
         if (heroVideoCookie === 'paused') {
+          video.removeAttribute('autoplay');
           video.pause();
           btn.innerHTML = "<span class='element-invisible'>" + "Play" + "</span>";
           btn.classList.remove("video-btn__pause");
