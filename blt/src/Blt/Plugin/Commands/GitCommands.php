@@ -55,8 +55,6 @@ class GitCommands extends BltTasks {
     $delete = [];
 
     foreach ($remotes as $remote) {
-      $delete[$remote] = [];
-
       $result = $this->taskExecStack()
         ->exec("git ls-remote --heads {$remote}")
         ->stopOnFail()
@@ -75,7 +73,9 @@ class GitCommands extends BltTasks {
         }
       }
 
-      $this->printArrayAsTable($delete[$remote], ['SHA', 'Ref']);
+      if (!empty($delete[$remote])) {
+        $this->printArrayAsTable($delete[$remote], ['SHA', 'Ref']);
+      }
     }
 
     if (!empty($delete)) {
