@@ -1385,3 +1385,15 @@ $sites['org-writinguniversity.local.drupal.uiowa.edu'] = 'writinguniversity.org'
 $sites['org-writinguniversity.dev.drupal.uiowa.edu'] = 'writinguniversity.org';
 $sites['org-writinguniversity.stage.drupal.uiowa.edu'] = 'writinguniversity.org';
 $sites['org-writinguniversity.prod.drupal.uiowa.edu'] = 'writinguniversity.org';
+
+// Directory aliases for tracers.physics.uiowa.edu.
+$sites['physicstracers.local.drupal.uiowa.edu'] = 'tracers.physics.uiowa.edu';
+$sites['physicstracers.dev.drupal.uiowa.edu'] = 'tracers.physics.uiowa.edu';
+$sites['physicstracers.stage.drupal.uiowa.edu'] = 'tracers.physics.uiowa.edu';
+$sites['physicstracers.prod.drupal.uiowa.edu'] = 'tracers.physics.uiowa.edu';
+
+// Directory aliases for csi.its.uiowa.edu.
+$sites['itscsi.local.drupal.uiowa.edu'] = 'csi.its.uiowa.edu';
+$sites['itscsi.dev.drupal.uiowa.edu'] = 'csi.its.uiowa.edu';
+$sites['itscsi.stage.drupal.uiowa.edu'] = 'csi.its.uiowa.edu';
+$sites['itscsi.prod.drupal.uiowa.edu'] = 'csi.its.uiowa.edu';
