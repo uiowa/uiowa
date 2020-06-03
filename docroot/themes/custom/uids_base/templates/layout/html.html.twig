@@ -59,15 +59,9 @@
     {% set header_classes = ['uiowa__container--full'] %}
 {% endif %}
 
-{% if branding_legacy %}
-<div {{ uiowa_attribute.addClass(header_classes) }}>
-  {% endif %}
-  {{ page_top }}
-  {% if branding_legacy %}
-</div>
-{% endif %}
-    {{ page }}
+{{ page_top }}
+{{ page }}
 <div {{ uiowa_attribute.addClass(header_classes) }}>{{ page_bottom }}</div>
-    <js-bottom-placeholder token="{{ placeholder_token }}">
+<js-bottom-placeholder token="{{ placeholder_token }}">
   </body>
 </html>
