@@ -23,7 +23,7 @@
           document.getElementById('video-btn').onclick = function() {
             if (video.paused) {
               // Create cookie.
-              $.cookie('herovideo', 'paused', { expires: 7 });
+              $.cookie('herovideo', 'paused', { expires: 30 });
             }
             else {
               // Remove a cookie.
