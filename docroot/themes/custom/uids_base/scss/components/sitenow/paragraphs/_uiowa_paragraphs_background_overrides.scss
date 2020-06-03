@@ -6,7 +6,8 @@
         .paragraph--type--text,
         .paragraph--type--webform,
         .paragraph--type--articles,
-        .paragraph--type--accordion {
+        .paragraph--type--accordion,
+        .paragraph--type--events {
             background-color: $brand-cool-gray;
             color: $white;
 
@@ -91,7 +92,8 @@
         .paragraph--type--text,
         .paragraph--type--webform,
         .paragraph--type--articles,
-        .paragraph--type--accordion {
+        .paragraph--type--accordion,
+        .paragraph--type--events {
             background-color: $secondary;
             color: $white;
 
@@ -177,7 +179,8 @@
         .paragraph--type--text,
         .paragraph--type--webform
         .paragraph--type--articles,
-        .paragraph--type--accordion {
+        .paragraph--type--accordion,
+        .paragraph--type--events {
             background-color: $light;
 
             &.semi-transparent {
@@ -243,8 +246,15 @@
         .paragraph--type--text,
         .paragraph--type--webform
         .paragraph--type--articles,
-        .paragraph--type--accordion {
+        .paragraph--type--accordion,
+        .paragraph--type--events {
             background-color: $primary;
+
+            a.btn {
+                @extend %bttn--secondary;
+                border: 1px solid $secondary;
+                @extend %bttn--focus;
+            }
 
             &.semi-transparent {
                 background-color: rgba(255, 205, 0, 0.8) !important;
@@ -300,10 +310,6 @@
                     background-color: lighten($secondary, 20%);
                 }
             }   
-            
-            .more-link .btn-primary {
-                // @extend .bttn--secondary;
-            }
         }
 
         .paragraph--type--accordion {
