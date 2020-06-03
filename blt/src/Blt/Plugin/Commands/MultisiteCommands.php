@@ -445,7 +445,7 @@ EOD
   ]) {
     $db = Multisite::getDatabaseName($host);
     $applications = $this->getConfigValue('uiowa.applications');
-    $this->say('<comment>Note:</comment> Multisites should be grouped on applications by domain to limit the SANs in SSL certificates. Otherwise, the application with the least amount of databases should be used.');
+    $this->say('<comment>Note:</comment> Multisites should be grouped on applications by domain since SSL certificates are limited to ~100 SANs. Otherwise, the application with the least amount of databases should be used.');
 
     /** @var \AcquiaCloudApi\Connector\Client $client */
     $client = $this->getAcquiaCloudApiClient();
