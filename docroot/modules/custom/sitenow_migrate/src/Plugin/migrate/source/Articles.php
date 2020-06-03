@@ -42,6 +42,7 @@ class Articles extends SqlBase {
   public function query() {
     $query = $this->select('field_data_field_article_body', 'b');
     $query->join('node', 'n', 'n.nid = b.entity_id');
+    $query->join('field_data_field_image', 'i', 'n.nid = i.entity_id');
     $query = $query->fields('b', [
       'entity_type',
       'bundle',
@@ -54,6 +55,9 @@ class Articles extends SqlBase {
       'field_article_body_summary',
       'field_article_body_format',
     ])
+      ->fields('i', [
+        'field_image_fid',
+      ])
       ->fields('n', [
         'title',
         'created',
@@ -116,6 +120,12 @@ class Articles extends SqlBase {
 
       default:
         $row->setSourceProperty('moderation_state', 'draft');
+    }
+
+    // Check if an image was attached, and if so, update with new fid.
+    $original_fid = $row->getSourceProperty('field_image_fid');
+    if (isset($original_fid)) {
+      $row->setSourceProperty('field_image_fid', $this->getFid($original_fid));
     }
 
     // Search for D7 inline embeds and replace with D8 inline entities.
@@ -202,7 +212,7 @@ class Articles extends SqlBase {
     $parts = [
       '<drupal-entity',
       'data-embed-button="media_entity_embed"',
-      'data-entity-embed-display="view_mode:media.image_medium"',
+      'data-entity-embed-display="view_mode:media.full"',
       'data-entity-embed-display-settings=""',
       'data-entity-type="media"',
       'data-entity-uuid="' . $uuid . '"',
@@ -210,6 +220,20 @@ class Articles extends SqlBase {
       '</drupal-entity>',
     ];
     return implode(" ", $parts);
+  }
+
+  /**
+   * Fetch the media id based on the original site's fid.
+   */
+  private function getFid($original_fid) {
+    $connection = \Drupal::database();
+    $query = $connection->select('migrate_map_d7_file', 'mm');
+    $query->join('media__field_media_image', 'fmi', 'mm.destid1 = fmi.field_media_image_target_id');
+    $result = $query->fields('fmi', ['entity_id'])
+      ->condition('mm.sourceid1', $original_fid)
+      ->execute();
+    $new_fid = $result->fetchField();
+    return $new_fid;
   }
 
 }
