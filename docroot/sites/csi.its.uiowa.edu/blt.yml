@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: itscsi.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: itscsi
+  human_name: csi.its.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: itscsi.prod
+drupal:
+  db:
+    database: csi_its_uiowa_edu
+uiowa:
+  requester: vweisskopf
