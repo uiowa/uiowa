@@ -74,3 +74,20 @@
         }
     }
 }
+
+// IE 10/11 Fixes.
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  .node--view-mode-teaser {
+    .grid &, .masonry & {
+      // Fixes image overflow.
+      figure {
+        flex-basis: 220px;
+        align-self: stretch;
+      }
+      // Fixes overflow.
+      .node__content {
+        width: 100%;
+      }
+    }
+  }
+}
