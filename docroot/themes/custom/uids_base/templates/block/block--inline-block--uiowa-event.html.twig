@@ -32,7 +32,7 @@
 
 {% block content %}
 
-	{{ attach_library('uids_base/events-block') }}
+	{{ attach_library('uids_base/event') }}
 
 	<div class="events-card events-card__row {{ attributes ? attributes.class }}" {{ attributes ? attributes|without('class') }}>
 
@@ -48,7 +48,7 @@
 		{% endblock %}
 		<div class="events-card__body">
 
-			{% include "@uids/01 - elements/heading/heading.twig" with {
+			{% include "@uids_base/uids/heading.html.twig" with {
             "heading_level" : content.field_uiowa_event_title[0]['#size'],
             "heading_class" : 'events-card__title',
             "heading" : content.field_uiowa_event_title[0]['#text'],

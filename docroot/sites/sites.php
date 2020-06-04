@@ -1266,12 +1266,6 @@ $sites['cio.dev.drupal.uiowa.edu'] = 'cio.uiowa.edu';
 $sites['cio.stage.drupal.uiowa.edu'] = 'cio.uiowa.edu';
 $sites['cio.prod.drupal.uiowa.edu'] = 'cio.uiowa.edu';
 
-// Directory aliases for icsa-temp.uiowa.edu.
-$sites['icsa-temp.local.drupal.uiowa.edu'] = 'icsa-temp.uiowa.edu';
-$sites['icsa-temp.dev.drupal.uiowa.edu'] = 'icsa-temp.uiowa.edu';
-$sites['icsa-temp.stage.drupal.uiowa.edu'] = 'icsa-temp.uiowa.edu';
-$sites['icsa-temp.prod.drupal.uiowa.edu'] = 'icsa-temp.uiowa.edu';
-
 // Directory aliases for covidresponse.research.uiowa.edu.
 $sites['researchcovidresponse.local.drupal.uiowa.edu'] = 'covidresponse.research.uiowa.edu';
 $sites['researchcovidresponse.dev.drupal.uiowa.edu'] = 'covidresponse.research.uiowa.edu';
@@ -1379,3 +1373,21 @@ $sites['sitesteachabc.local.drupal.uiowa.edu'] = 'teachabc.sites.uiowa.edu';
 $sites['sitesteachabc.dev.drupal.uiowa.edu'] = 'teachabc.sites.uiowa.edu';
 $sites['sitesteachabc.stage.drupal.uiowa.edu'] = 'teachabc.sites.uiowa.edu';
 $sites['sitesteachabc.prod.drupal.uiowa.edu'] = 'teachabc.sites.uiowa.edu';
+
+// Directory aliases for writinguniversity.org.
+$sites['org-writinguniversity.local.drupal.uiowa.edu'] = 'writinguniversity.org';
+$sites['org-writinguniversity.dev.drupal.uiowa.edu'] = 'writinguniversity.org';
+$sites['org-writinguniversity.stage.drupal.uiowa.edu'] = 'writinguniversity.org';
+$sites['org-writinguniversity.prod.drupal.uiowa.edu'] = 'writinguniversity.org';
+
+// Directory aliases for tracers.physics.uiowa.edu.
+$sites['physicstracers.local.drupal.uiowa.edu'] = 'tracers.physics.uiowa.edu';
+$sites['physicstracers.dev.drupal.uiowa.edu'] = 'tracers.physics.uiowa.edu';
+$sites['physicstracers.stage.drupal.uiowa.edu'] = 'tracers.physics.uiowa.edu';
+$sites['physicstracers.prod.drupal.uiowa.edu'] = 'tracers.physics.uiowa.edu';
+
+// Directory aliases for csi.its.uiowa.edu.
+$sites['itscsi.local.drupal.uiowa.edu'] = 'csi.its.uiowa.edu';
+$sites['itscsi.dev.drupal.uiowa.edu'] = 'csi.its.uiowa.edu';
+$sites['itscsi.stage.drupal.uiowa.edu'] = 'csi.its.uiowa.edu';
+$sites['itscsi.prod.drupal.uiowa.edu'] = 'csi.its.uiowa.edu';
