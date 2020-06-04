@@ -1,0 +1,21 @@
+@import "assets/scss/_variables.scss";
+@import "assets/scss/_utilities.scss";
+@import "components/menus/quick/_quick.scss";
+
+.menu--quick-links {
+  .contextual {
+    display: none;
+  }
+  li:first-child a:before {
+    content: "\f02e";
+    @include fas();
+    padding-right: $md;
+    color: $grey;
+  }
+  li:nth-child(2) a:before {
+    content: "\f007";
+    @include fas();
+    padding-right: $md;
+    color: $grey;
+  }
+}
