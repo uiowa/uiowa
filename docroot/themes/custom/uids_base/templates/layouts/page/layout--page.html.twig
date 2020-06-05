@@ -21,13 +21,14 @@
     'layout--onecol',
     'layout__container',
     settings.extra_classes,
+    has_uids_menu ? 'uids-menu-enabled' : 'uids-menu-disabled',
   ]
 %}
 {{ attach_library('uids_base/sitenow') }}
 
 {% if content.content %}
   <div{{attributes.addClass(classes)}}>
-    <div class="lb__container has-{{ has_uids_menu }}">
+    <div class="lb__container">
 
       {% if has_featured_image is empty %}
       <div class="container container--title">
