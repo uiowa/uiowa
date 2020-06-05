@@ -20,15 +20,15 @@
         }
 
         // Create/erase herovideo cookie.
-        if (document.getElementById("video-container")) {
-          document.getElementById('video-btn').onclick = function() {
+        if (video) {
+          btn.onclick = function() {
             if (video.paused) {
-              // Create cookie.
-              $.cookie('herovideo', 'paused', { expires: 30 });
+              // Per request, create cookie that expires in 99 years.
+              $.cookie('herovideo', 'paused', { expires: 36135, path: '/' });
             }
             else {
               // Remove a cookie.
-              $.removeCookie('herovideo');
+              $.removeCookie('herovideo', { path: '/' });
             }
           }
         }
