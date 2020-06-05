@@ -36,8 +36,7 @@ class FilesystemTest extends UnitTestCase {
    * Test sites.php entries exist.
    */
   public function testDirectoryAliasesExist() {
-   $sites = Multisite::getAllSites($this->root . '/..');
-
+    $sites = Multisite::getAllSites($this->root . '/..');
     $haystack = file_get_contents($this->root . '/sites/sites.php');
 
     foreach ($sites as $site) {
@@ -86,7 +85,7 @@ EOD;
    * Test that multisite files exist and that BLT config is set correctly.
    */
   public function testMultisiteFiles() {
-   $sites = Multisite::getAllSites($this->root . '/..');
+    $sites = Multisite::getAllSites($this->root . '/..');
 
     foreach ($sites as $site) {
       $path = "docroot/sites/{$site}";
