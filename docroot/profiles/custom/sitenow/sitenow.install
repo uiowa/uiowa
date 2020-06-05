@@ -10,6 +10,7 @@ use Drupal\Core\Config\FileStorage;
 use Drupal\node\Entity\Node;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\user\Entity\User;
+use Drupal\Core\Menu\MenuTreeParameters;
 
 /**
  * Update some uiowa_footer settings which are ignored.
@@ -314,4 +315,14 @@ EOD;
 
     $block->save();
   }
+}
+
+function sitenow_update_8018() {
+  $menuTree = \Drupal::menuTree();
+  $parameters = new MenuTreeParameters();
+  // Load both our original footers and the new footers.
+  $oldFooterPrimary = $menuTree->load('footer', $parameters);
+  $oldFooterSecondary = $menuTree->load('footer-second', $parameters);
+  $newFooterPrimary = $menuTree->load('footer-primary', $parameters);
+  $newFooterSecondary = $menuTree->load('footer-secondary', $parameters);
 }
