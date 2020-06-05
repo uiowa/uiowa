@@ -195,10 +195,10 @@ function uids_base_preprocess_field(&$variables) {
   $variables['page_featured_image'] = $variables['field_name'] == 'field_image';
 
   if (isset($variables['page_featured_image'])) {
-      $block_manager = \Drupal::service('plugin.manager.block');
-      $config = [];
-      $plugin_block = $block_manager->createInstance('system_breadcrumb_block', $config);
-      $variables['breadcrumb'] = $plugin_block->build();
+    $block_manager = \Drupal::service('plugin.manager.block');
+    $config = [];
+    $plugin_block = $block_manager->createInstance('system_breadcrumb_block', $config);
+    $variables['breadcrumb'] = $plugin_block->build();
   }
 }
 
