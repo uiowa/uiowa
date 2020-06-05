@@ -1409,3 +1409,9 @@ $sites['labperlman.local.drupal.uiowa.edu'] = 'perlman.lab.uiowa.edu';
 $sites['labperlman.dev.drupal.uiowa.edu'] = 'perlman.lab.uiowa.edu';
 $sites['labperlman.stage.drupal.uiowa.edu'] = 'perlman.lab.uiowa.edu';
 $sites['labperlman.prod.drupal.uiowa.edu'] = 'perlman.lab.uiowa.edu';
+
+// Directory aliases for kennelty.lab.uiowa.edu.
+$sites['labkennelty.local.drupal.uiowa.edu'] = 'kennelty.lab.uiowa.edu';
+$sites['labkennelty.dev.drupal.uiowa.edu'] = 'kennelty.lab.uiowa.edu';
+$sites['labkennelty.stage.drupal.uiowa.edu'] = 'kennelty.lab.uiowa.edu';
+$sites['labkennelty.prod.drupal.uiowa.edu'] = 'kennelty.lab.uiowa.edu';
