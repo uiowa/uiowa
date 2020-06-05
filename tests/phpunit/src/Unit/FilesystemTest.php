@@ -4,7 +4,6 @@ namespace Drupal\Tests\sitenow\Unit;
 
 use Acquia\Blt\Robo\Common\YamlMunge;
 use Drupal\Tests\UnitTestCase;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 use Uiowa\Multisite;
 
@@ -37,18 +36,11 @@ class FilesystemTest extends UnitTestCase {
    * Test sites.php entries exist.
    */
   public function testDirectoryAliasesExist() {
-    $finder = new Finder();
-    $dirs = $finder
-      ->in($this->root . '/sites/')
-      ->directories()
-      ->depth('< 1')
-      ->exclude(['default', 'g', 'settings'])
-      ->sortByName();
+   $sites = Multisite::getAllSites($this->root . '/..');
 
     $haystack = file_get_contents($this->root . '/sites/sites.php');
 
-    foreach ($dirs->getIterator() as $dir) {
-      $site = $dir->getRelativePathname();
+    foreach ($sites as $site) {
       $id = Multisite::getIdentifier("https://{$site}");
       $local = Multisite::getInternalDomains($id)['local'];
       $dev = Multisite::getInternalDomains($id)['dev'];
