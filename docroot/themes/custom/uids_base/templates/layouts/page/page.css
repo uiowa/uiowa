@@ -7,11 +7,16 @@
   width: 100%;
 }
 
-.container.container--title {
+.container.container--title,
+.sidebar-invisible.uids-menu-enabled .container.container--title {
   padding-right: 1.25rem;
   padding-left: 1.25rem;
-  margin-bottom: 3rem;
 }
+
+.sidebar-invisible.uids-menu-enabled .container.container--title {
+  margin-bottom: 0;
+}
+
 
 .title-invisible .container.container--title {
   position: absolute !important;
@@ -23,4 +28,15 @@
 
 .uids-menu-enabled .container.container--title {
   padding: 0;
+  margin-bottom: 1.5rem;
+}
+
+.uids-menu-disabled .container.container--title {
+  margin-bottom: 1.5rem;
+}
+
+
+.content__container .layout__container.uids-menu-disabled,
+.content__mixed .layout__container.uids-menu-disabled {
+  margin-bottom: 0;
 }
