@@ -518,12 +518,16 @@ EOD
     if ($sans_match) {
       $app = $sans_match;
     }
-    if (!$sans_match) {
+    else {
       $this->logger->error("No SSL coverage found on any application for {$host}. Be sure to install new SSL certificate before launching site.");
       $app = $this->askChoice('Which cloud application should be used?', array_keys($applications));
     }
 
-    $this->say("Selected <comment>{$app}</comment> application.");
+    if (!$this->confirm("Selected {$app} application. Proceed?")) {
+      throw new \Exception('Aborted.');
+    }
+
+    // Get the UUID for the selected application.
     $app_id = $applications[$app]['id'];
 
     if (!$options['simulate'] && !$options['no-db']) {
