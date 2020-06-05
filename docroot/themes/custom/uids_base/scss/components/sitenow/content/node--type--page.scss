@@ -26,41 +26,18 @@ div[role=article].node--type-page.node--view-mode-teaser {
   flex-basis: 200%;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
+  margin-bottom: $gutter;
+}
+
+.has-uids-menu .main--secondary--vertical {
+  @include breakpoint(menu) {
+    flex: 0 1 24.25%;
+  }
 }
 
 .has-uids-menu .block-field-blocknodepagefield-page-content-block {
   @include breakpoint(menu) {
-  flex: 1;
+   flex: 0 1 74.75%;
   }
 }
 
-
-/*
-
-.page-node-type-page .hero {
-
-  margin-left: calc(0% - 50vw);
-}
-
-.page-node-type-page article {
-      margin-left: calc(-35% - 0vw);
-      width: 100%;
-}
-
-.has-sidebar {
-  .hero__container {
-
-    margin-left: calc(19% - 0vw);
-
-  }
-
-  .layout-sidebar-first {
-    @include breakpoint(container) {
-             margin-top: calc(90% - 0vw);
-             margin-left: calc(38% - 0vw);
-             width: 30%;
-    }
-  }
-}
-
-*/
