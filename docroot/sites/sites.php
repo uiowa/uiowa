@@ -1391,3 +1391,9 @@ $sites['itscsi.local.drupal.uiowa.edu'] = 'csi.its.uiowa.edu';
 $sites['itscsi.dev.drupal.uiowa.edu'] = 'csi.its.uiowa.edu';
 $sites['itscsi.stage.drupal.uiowa.edu'] = 'csi.its.uiowa.edu';
 $sites['itscsi.prod.drupal.uiowa.edu'] = 'csi.its.uiowa.edu';
+
+// Directory aliases for yahr.lab.uiowa.edu.
+$sites['labyahr.local.drupal.uiowa.edu'] = 'yahr.lab.uiowa.edu';
+$sites['labyahr.dev.drupal.uiowa.edu'] = 'yahr.lab.uiowa.edu';
+$sites['labyahr.stage.drupal.uiowa.edu'] = 'yahr.lab.uiowa.edu';
+$sites['labyahr.prod.drupal.uiowa.edu'] = 'yahr.lab.uiowa.edu';
