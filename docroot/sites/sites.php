@@ -1415,3 +1415,9 @@ $sites['labkennelty.local.drupal.uiowa.edu'] = 'kennelty.lab.uiowa.edu';
 $sites['labkennelty.dev.drupal.uiowa.edu'] = 'kennelty.lab.uiowa.edu';
 $sites['labkennelty.stage.drupal.uiowa.edu'] = 'kennelty.lab.uiowa.edu';
 $sites['labkennelty.prod.drupal.uiowa.edu'] = 'kennelty.lab.uiowa.edu';
+
+// Directory aliases for weber.lab.uiowa.edu.
+$sites['labweber.local.drupal.uiowa.edu'] = 'weber.lab.uiowa.edu';
+$sites['labweber.dev.drupal.uiowa.edu'] = 'weber.lab.uiowa.edu';
+$sites['labweber.stage.drupal.uiowa.edu'] = 'weber.lab.uiowa.edu';
+$sites['labweber.prod.drupal.uiowa.edu'] = 'weber.lab.uiowa.edu';

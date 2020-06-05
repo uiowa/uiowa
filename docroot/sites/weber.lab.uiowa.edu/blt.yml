@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labweber.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labweber
+  human_name: weber.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labweber.prod
+drupal:
+  db:
+    database: weber_lab_uiowa_edu
+uiowa:
+  requester: marweber
