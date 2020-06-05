@@ -515,14 +515,16 @@ EOD
     $table->setRows($rows);
     $table->render();
 
+    // If we found an SSL match, select that app. Otherwise, log error and ask.
     if ($sans_match) {
       $app = $sans_match;
     }
     else {
-      $this->logger->error("No SSL coverage found on any application for {$host}. Be sure to install new SSL certificate before launching site.");
+      $this->logger->error("No SSL coverage found on any application for {$host}. Be sure to install new SSL certificate before updating DNS.");
       $app = $this->askChoice('Which cloud application should be used?', array_keys($applications));
     }
 
+    // Get confirmation before executing.
     if (!$this->confirm("Selected {$app} application. Proceed?")) {
       throw new \Exception('Aborted.');
     }
