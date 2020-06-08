@@ -341,9 +341,14 @@ function sitenow_update_8018() {
     }
   }
 
+  // Delete old menus.
   $menuController = \Drupal::entityTypeManager()->getStorage('menu');
-
   $toDelete = ['footer', 'footer-second'];
   $oldMenus = $menuController->loadMultiple($toDelete);
   $menuController->delete($oldMenus);
+
+  // @todo remove this files from config sync, else they are re-added.
+  $configController = \Drupal::configFactory();
+  $configController->getEditable('system.menu.footer')->delete();
+  $configController->getEditable('system.menu.footer-second')->delete();
 }
