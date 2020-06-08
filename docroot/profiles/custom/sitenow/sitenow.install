@@ -347,11 +347,6 @@ function sitenow_update_8018() {
   $oldMenus = $menuController->loadMultiple($toDelete);
   $menuController->delete($oldMenus);
 
-  // @todo remove this files from config sync, else they are re-added.
-  $configController = \Drupal::configFactory();
-  $configController->getEditable('system.menu.footer')->delete();
-  $configController->getEditable('system.menu.footer-second')->delete();
-
   // Update footer menu config settings.
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('uiowa_footer.settings');
