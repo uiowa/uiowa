@@ -351,4 +351,13 @@ function sitenow_update_8018() {
   $configController = \Drupal::configFactory();
   $configController->getEditable('system.menu.footer')->delete();
   $configController->getEditable('system.menu.footer-second')->delete();
+
+  // Update footer menu config settings.
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uiowa_footer.settings');
+
+  $config
+    ->set('custom_menu', 'footer-primary')
+    ->set('custom_menu_2', 'footer-secondary')
+    ->save();
 }
