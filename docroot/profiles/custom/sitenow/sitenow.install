@@ -10,8 +10,8 @@ use Drupal\Core\Config\FileStorage;
 use Drupal\node\Entity\Node;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\user\Entity\User;
-use Drupal\Core\Menu\MenuTreeParameters;
-use Drupal\menu_link_content\Entity\MenuLinkContent;
+// use Drupal\Core\Menu\MenuTreeParameters;
+// use Drupal\menu_link_content\Entity\MenuLinkContent;
 
 /**
  * Update some uiowa_footer settings which are ignored.
@@ -322,29 +322,30 @@ EOD;
  * Move SiteNow footer menus to the UIDS footer naming scheme.
  */
 function sitenow_update_8018() {
-  $menuTree = \Drupal::menuTree();
-  $params = new MenuTreeParameters();
+  $linkController = \Drupal::entityTypeManager()->getStorage('menu_link_content');
+  $primaryMids = \Drupal::entityQuery('menu_link_content')
+    ->condition('menu_name', 'footer')
+    ->execute();
+  $secondaryMids = \Drupal::entityQuery('menu_link_content')
+  ->condition('menu_name', 'footer-second')
+  ->execute();
 
-  // Load both our original footers and the new footers.
-  $oldFooterPrimary = $menuTree->load('footer', $params);
-  $oldFooterSecondary = $menuTree->load('footer-second', $params);
-  $footers = [
-    'footer-primary' => $oldFooterPrimary,
-    'footer-secondary' => $oldFooterSecondary,
+  $menuMids = [
+    'footer-primary' => $primaryMids,
+    'footer-secondary' => $secondaryMids,
   ];
 
-  foreach ($footers as $newFooter => $oldFooter) {
-    foreach ($oldFooter as $menuElement) {
-      $link = $menuElement->link;
-      $nid = $link->getRouteParameters()['node'];
-      $newMenuLink = MenuLinkContent::create([
-        'title' => $link->getTitle(),
-        'description' => $link->getDescription(),
-        'enabled' => $link->isEnabled(),
-        'link' => ['uri' => 'internal:/node/' . $nid],
-        'menu_name' => $newFooter,
-      ]);
-      $newMenuLink->save();
+  foreach ($menuMids as $menuName => $mids) {
+    $linkEntities = $linkController->loadMultiple($mids);
+    foreach ($linkEntities as $link) {
+      $link->set('menu_name', $menuName);
+      $link->save();
     }
   }
+
+  $menuController = \Drupal::entityTypeManager()->getStorage('menu');
+
+  $toDelete = ['footer', 'footer-second'];
+  $oldMenus = $menuController->loadMultiple($toDelete);
+  $menuController->delete($oldMenus);
 }
