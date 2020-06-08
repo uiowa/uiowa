@@ -10,8 +10,6 @@ use Drupal\Core\Config\FileStorage;
 use Drupal\node\Entity\Node;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\user\Entity\User;
-// use Drupal\Core\Menu\MenuTreeParameters;
-// use Drupal\menu_link_content\Entity\MenuLinkContent;
 
 /**
  * Update some uiowa_footer settings which are ignored.
@@ -327,8 +325,8 @@ function sitenow_update_8018() {
     ->condition('menu_name', 'footer')
     ->execute();
   $secondaryMids = \Drupal::entityQuery('menu_link_content')
-  ->condition('menu_name', 'footer-second')
-  ->execute();
+    ->condition('menu_name', 'footer-second')
+    ->execute();
 
   $menuMids = [
     'footer-primary' => $primaryMids,
