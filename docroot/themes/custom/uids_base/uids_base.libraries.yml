@@ -125,6 +125,14 @@ colorbox:
     - core/jquery
     - core/jquery.once
     - colorbox/init
+slick:  
+  css: 
+    theme: 
+      /libraries/slick-carousel/slick/slick.css: {} 
+  js: 
+    /libraries/slick-carousel/slick/slick.min.js: {} 
+  dependencies:
+    - core/jquery 
 cta:
   css:
     component:
@@ -155,6 +163,10 @@ paragraphs-carousel:
   css:
     component:
       assets/css/components/sitenow/paragraphs/carousel.css: { preprocess: false }
+  js:
+      assets/js/carousel.js: { preprocess: false  }
+  dependencies:
+    - uids_base/slick
 paragraphs-featured-content:
   css:
     component:

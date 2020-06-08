@@ -49,7 +49,7 @@
 %}
 {{ attach_library('uids_base/paragraphs-carousel') }}
 {% block paragraph %}
-  <div{{ attributes.addClass(classes) }}>
+  <div data-carousel='carousel' {{ attributes.addClass(classes) }}>
     {% if display_title %}
         {{ content.field_uip_title }}
     {% else %}
