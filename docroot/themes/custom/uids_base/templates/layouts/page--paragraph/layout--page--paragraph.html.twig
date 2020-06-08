@@ -25,9 +25,19 @@
 ]
 %}
 {{ attach_library('uids_base/sitenow') }}
+{{ attach_library('uids_base/paragraph-page') }}
 
 {% if content.sidebar or content.content %}
   <div{{attributes.addClass(classes)}}>
+{{ content.content['8be51334-4e07-4621-bddf-6b9942b862e2']['content'] }}
+
+{% if has_featured_image is empty %}
+	<div class="container container--title">
+		{{ breadcrumb }}
+		<h1 class="bold-headline--serif bold-headline">{{ drupal_title() }}</h1>
+	</div>
+{% endif %}
+
     <div class="lb__container">
       {% if content.sidebar %}
         <div class="layout__region layout__region--sidebar">
@@ -49,7 +59,7 @@
           {{ attach_library('uids_base/admin') }}
           <div {{ region_attributes.content.addClass('flex__wrapper') }}>
           {% endif %}
-          {{ content.content }}
+          {{ content.content|without('8be51334-4e07-4621-bddf-6b9942b862e2') }}
           {% if region_attributes.content.storage['data-region'] %}
           </div>
         {% endif %}
