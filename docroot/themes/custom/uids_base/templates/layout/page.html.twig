@@ -80,6 +80,13 @@
   <a id="main-content" tabindex="-1"></a>
   {# link is in html.html.twig #}
 
+  {% if not has_node_image %}
+    {% if page.breadcrumb %}
+      {{ page.breadcrumb }}
+    {% endif %}
+    {{ page.content.uids_base_page_title }}
+  {% endif %}
+
   {{ page.content|without('uids_base_page_title') }}
 
   {# /.layout-content #}
