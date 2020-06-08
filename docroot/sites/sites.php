@@ -1421,3 +1421,9 @@ $sites['labweber.local.drupal.uiowa.edu'] = 'weber.lab.uiowa.edu';
 $sites['labweber.dev.drupal.uiowa.edu'] = 'weber.lab.uiowa.edu';
 $sites['labweber.stage.drupal.uiowa.edu'] = 'weber.lab.uiowa.edu';
 $sites['labweber.prod.drupal.uiowa.edu'] = 'weber.lab.uiowa.edu';
+
+// Directory aliases for emfisis.sites.uiowa.edu.
+$sites['sitesemfisis.local.drupal.uiowa.edu'] = 'emfisis.sites.uiowa.edu';
+$sites['sitesemfisis.dev.drupal.uiowa.edu'] = 'emfisis.sites.uiowa.edu';
+$sites['sitesemfisis.stage.drupal.uiowa.edu'] = 'emfisis.sites.uiowa.edu';
+$sites['sitesemfisis.prod.drupal.uiowa.edu'] = 'emfisis.sites.uiowa.edu';
