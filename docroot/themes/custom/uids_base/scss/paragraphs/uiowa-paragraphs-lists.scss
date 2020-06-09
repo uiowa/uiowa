@@ -269,11 +269,20 @@
 
 
 // Background Colors
-.paragraph--type--section.bg-dark {
+.paragraph--type--section.bg-dark,
+.paragraph--type--section.bg-black {
   .paragraph--type--articles.list {
+
+    .field--name-field-teaser,
+    .article-created-date {
+      color: #fff;
+    }
+
+    .card,
     .views-row {
-      @include bg-dark;
+      background-color: transparent !important;
       @include text-light;
+
 
       a {
         color: $primary;
@@ -282,7 +291,8 @@
   }
 }
 
-.paragraph--type--section.bg-dark {
+.paragraph--type--section.bg-dark,
+.paragraph--type--section.bg-black {
   .paragraph--type--events.list {
 
     .card__author,
@@ -291,7 +301,7 @@
     }
 
     .card {
-      @include bg-dark;
+      background-color: transparent !important;
       @include text-light;
 
       a {
