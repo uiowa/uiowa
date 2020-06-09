@@ -460,11 +460,11 @@ EOD
     $certificates = new SslCertificates($client);
 
     $table = new Table($this->output);
-    $table->setHeaders(['Application', 'DBs', 'SANs', 'SAN Match']);
+    $table->setHeaders(['Application', 'DBs', 'SANs', 'SSL Coverage']);
     $rows = [];
 
-    // Search for a SANs match. The app name will be used as the default choice.
-    $sans_match = NULL;
+    // Assume no SSL coverage. Set to the application name if coverage found.
+    $ssl_coverage_application = NULL;
 
     // Explode by domain and limit to two parts. Search for wildcard coverage.
     // Ex. foo.bar.uiowa.edu -> search for *.bar.uiowa.edu.
@@ -499,7 +499,7 @@ EOD
                 foreach ($cert->domains as $domain) {
                   if ($domain == $sans_search) {
                     $row[] = $domain;
-                    $sans_match = $name;
+                    $ssl_coverage_application = $name;
                     break;
                   }
                 }
@@ -516,8 +516,8 @@ EOD
     $table->render();
 
     // If we found an SSL match, select that app. Otherwise, log error and ask.
-    if ($sans_match) {
-      $app = $sans_match;
+    if ($ssl_coverage_application) {
+      $app = $ssl_coverage_application;
     }
     else {
       $this->logger->error("No SSL coverage found on any application for {$host}. Be sure to install new SSL certificate before updating DNS.");
