@@ -463,8 +463,8 @@ EOD
     $table->setHeaders(['Application', 'DBs', 'SANs', 'SSL Coverage']);
     $rows = [];
 
-    // Assume no SSL coverage. Set to the application name if coverage found.
-    $ssl_coverage_application = NULL;
+    // A boolean to track whether any application covers this domain.
+    $has_ssl_coverage = FALSE;
 
     // Explode by domain and limit to two parts. Search for wildcard coverage.
     // Ex. foo.bar.uiowa.edu -> search for *.bar.uiowa.edu.
@@ -499,7 +499,7 @@ EOD
                 foreach ($cert->domains as $domain) {
                   if ($domain == $sans_search) {
                     $row[] = $domain;
-                    $ssl_coverage_application = $name;
+                    $has_ssl_coverage = TRUE;
                     break;
                   }
                 }
@@ -515,14 +515,12 @@ EOD
     $table->setRows($rows);
     $table->render();
 
-    // If we found an SSL match, select that app. Otherwise, log error and ask.
-    if ($ssl_coverage_application) {
-      $app = $ssl_coverage_application;
-    }
-    else {
+    // If we did not find any SSL coverage, log an error.
+    if (!$has_ssl_coverage) {
       $this->logger->error("No SSL coverage found on any application for {$host}. Be sure to install new SSL certificate before updating DNS.");
-      $app = $this->askChoice('Which cloud application should be used?', array_keys($applications));
     }
+
+    $app = $this->askChoice('Which cloud application should be used?', array_keys($applications));
 
     // Get confirmation before executing.
     if (!$this->confirm("Selected {$app} application. Proceed?")) {
