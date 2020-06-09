@@ -4,8 +4,6 @@ project:
     protocol: https
   machine_name: courseilg
   human_name: ilg.course.uiowa.edu
-  profile:
-    name: sitenow
 drush:
   aliases:
     local: self
@@ -13,14 +11,5 @@ drush:
 drupal:
   db:
     database: ilg_course_uiowa_edu
-cm:
-  core:
-    dirs:
-      sync:
-        path: profiles/custom/sitenow/config/sync
-    install_from_config: true
-
 uiowa:
-  profiles:
-    sitenow:
-      requester: aprince
+  requester: aprince

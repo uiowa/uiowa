@@ -315,3 +315,16 @@ EOD;
     $block->save();
   }
 }
+
+/**
+ * Force regeneration of twig cache.
+ */
+function sitenow_update_8018() {
+  /** @var \Drupal\Core\Theme\ActiveTheme $active_theme */
+  $active_theme = \Drupal::service('theme.manager')->getActiveTheme();
+
+  // Limit to just sites running uids_base.
+  if ($active_theme->getName() === 'uids_base') {
+    \Drupal::service('twig')->invalidate();
+  }
+}

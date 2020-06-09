@@ -95,38 +95,41 @@
                 setSubmitButton($(this).val());
             });
 
-          // Add warning HTML.
-          function requiredWarning()  {
-            let emptyRequired = '\
-                    <div id="required-warning" class="warning-hidden">\
-                        <h3><i class="fas fa-exclamation"></i>Required fields are empty</h3>\
-                        <div class="warning-body">\
-                            <p>\
-                                Make sure you fill out all required fields within each step.\
-                            </p>\
+            // Add warning HTML.
+            function requiredWarning()  {
+                let emptyRequired = '\
+                        <div id="required-warning" class="warning-hidden">\
+                            <h3><i class="fas fa-exclamation"></i>Required fields are empty</h3>\
+                            <div class="warning-body">\
+                                <p>\
+                                    Make sure you fill out all required fields within each step.\
+                                </p>\
+                            </div>\
                         </div>\
-                    </div>\
-                ';
-            $('#edit-actions').once().append(emptyRequired);
-          }
+                    ';
+                $('#edit-actions').once().append(emptyRequired);
+            }
 
-          $('#edit-submit').click(function(){
-            $('#required-warning').addClass('warning-hidden');
-            if (
-              $('#edit-title-0-value').val() === "" ||
-              $('#edit-field-lockup-org-0-target-id').val() === "" ||
-              primaryUnit.val() === "" ||
-              primaryUnitStacked.val() === ""
-            ) {
-              $('#required-warning').removeClass('warning-hidden');
-              Drupal.announce('Required fields are empty.', 'assertive');
-            }
-          })
-          $('#edit-submit').keypress(function(e){
-            if(e.which === 13){
-              $('#edit-submit').click();
-            }
-          });
+            // Add a warning in case any required fields are empty
+            $('#edit-submit').click(function(){
+                $('#required-warning').addClass('warning-hidden');
+                if (
+                    $('#edit-title-0-value').val() === "" ||
+                    $('#edit-field-lockup-org-0-target-id').val() === "" ||
+                    primaryUnit.val() === "" ||
+                    primaryUnitStacked.val() === ""
+                ) {
+                    $('#required-warning').removeClass('warning-hidden');
+                    Drupal.announce('Required fields are empty.', 'assertive');
+                }
+            })
+
+            // Add ability to press enter on submit button for keyboard users.
+            $('#edit-submit').keypress(function(e){
+                if(e.which === 13){
+                    $('#edit-submit').click();
+                }
+            });
 
             /*
             ----------------------------------------------------------------------
@@ -209,11 +212,11 @@
             // Help from here: https://stackoverflow.com/questions/14890681/dumb-quotes-into-smart-quotes-javascript-issue.
             function dumbQuotes(string) {
                 return string.replace(/'\b/g, "\u2018")     // Opening singles
-                    .replace(/\b'/g, "\u2019")     // Closing singles
-                    .replace(/"\b/g, "\u201c")     // Opening doubles
-                    .replace(/\b"/g, "\u201d")     // Closing doubles
-                    .replace(/--/g,  "\u2014")     // em-dashes
-                    .replace(/\b\u2018\b/g,  "'");
+                             .replace(/\b'/g, "\u2019")     // Closing singles
+                             .replace(/"\b/g, "\u201c")     // Opening doubles
+                             .replace(/\b"/g, "\u201d")     // Closing doubles
+                             .replace(/--/g,  "\u2014")     // em-dashes
+                             .replace(/\b\u2018\b/g,  "'");
             }
 
             // Determine if the input is valid.
@@ -274,7 +277,7 @@
                     modText = modText.reverse().join('');
                 }
 
-                // Limits characters.
+                // Sets the character limit and the previous lines.
                 var maxChars = 1000000;
                 switch (unit) {
                     case 'primary':
@@ -306,6 +309,7 @@
                var lines = modText.split('\n');
                var cursorMod = 0;
 
+               // This is where the characters actually get hard capped.
                 if (eventType === 'insertFromPaste') {
                     for (var i = 0; i < lines.length; i++) {
                         lines[i] = lines[i].substring(0, maxChars);
@@ -314,8 +318,17 @@
                 else {
                     for (var i = 0; i < lines.length; i++) {
                         if(lines[i].length > maxChars) {
-                            lines[i] = prevLines[i];
-                            cursorMod = -1;
+
+                            // If it is a backspace or delete, concatenate lines.
+                            if (eventType == 'deleteContentBackward' || eventType == 'deleteContentForward') {
+                                lines[i] = lines[i].substring(0, maxChars);
+                            }
+
+                            // Else, just deny the next character.
+                            else {
+                                lines[i] = prevLines[i];
+                                cursorMod = -1;
+                            }
                         }
                     }
                 }
@@ -329,7 +342,7 @@
                                 text: primaryUnitPreviousText,
                                 selectionOffset: cursorMod
                             };
-                        }else if (orientation == 'stacked') {
+                        } else if (orientation == 'stacked') {
                             primaryUnitStackedPreviousText = lines.join('\n');
                             return {
                                 text: primaryUnitStackedPreviousText,

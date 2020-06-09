@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: sitesuiugf.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: sitesuiugf
+  human_name: uiugf.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesuiugf.prod
+drupal:
+  db:
+    database: uiugf_sites_uiowa_edu
+uiowa:
+  requester: kdauplai

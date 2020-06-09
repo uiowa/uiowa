@@ -74,20 +74,6 @@ EOD;
     $haystack = file_get_contents($file);
 
     $needle = <<<EOD
-\$config_initializer = new ConfigInitializer(\$repo_root, new ArgvInput());
-\$config_initializer->setSite(\$site_dir);
-\$blt_config = \$config_initializer->initialize();
-
-\$blt_override_config_directories = FALSE;
-
-if (\$blt_sync_path = \$blt_config->get('cm.core.dirs.sync.path')) {
-  \$settings['config_sync_directory'] = DRUPAL_ROOT . '/' . \$blt_sync_path;
-}
-EOD;
-
-    $this->assertContains($needle, $haystack);
-
-    $needle = <<<EOD
 if (isset(\$config_directories['vcs'])) {
   unset(\$config_directories['vcs']);
 }
@@ -159,31 +145,6 @@ EOD;
         $this->assertFileExists($file);
         $haystack = file_get_contents($file);
         $this->assertContains($needle, $haystack);
-
-        // Profile config tests.
-        $profile = $yaml['project']['profile']['name'];
-        $site_config = YamlMunge::parseFile("{$path}/blt.yml");
-
-        $file = "{$path}/settings/includes.settings.php";
-
-        $needle = <<<EOD
-\$additionalSettingsFiles = [
-  DRUPAL_ROOT . "/sites/settings/{$profile}.settings.php"
-];
-
-foreach (\$additionalSettingsFiles as \$settingsFile) {
-  if (file_exists(\$settingsFile)) {
-    require \$settingsFile;
-  }
-}
-EOD;
-
-        $haystack = file_get_contents($file);
-        $this->assertContains($needle, $haystack);
-
-        // @todo: Expand properties from profile defaults.
-        $this->assertNotEmpty($site_config['cm']['core']['dirs']['sync']['path']);
-        $this->assertNotEquals('/', substr($site_config['cm']['core']['dirs']['sync']['path'], 0, 1));
       }
     }
   }

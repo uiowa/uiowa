@@ -11,8 +11,10 @@ use AcquiaCloudApi\Connector\Connector;
 use AcquiaCloudApi\Endpoints\Databases;
 use AcquiaCloudApi\Endpoints\Domains;
 use AcquiaCloudApi\Endpoints\Environments;
+use AcquiaCloudApi\Endpoints\SslCertificates;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
 use Uiowa\Multisite;
@@ -65,8 +67,10 @@ class MultisiteCommands extends BltTasks {
       throw new \Exception('Aborted.');
     }
     else {
-      $app = EnvironmentDetector::getAhGroup() ?? 'local';
-      $env = EnvironmentDetector::getAhEnv() ?? 'local';
+      $app = EnvironmentDetector::getAhGroup() ? EnvironmentDetector::getAhGroup() : 'local';
+      $env = EnvironmentDetector::getAhEnv() ? EnvironmentDetector::getAhEnv() : 'local';
+
+      $this->sendNotification("Command `drush {$cmd}` *started* on {$app} {$env}.");
 
       foreach ($this->getConfigValue('multisites') as $multisite) {
         $this->switchSiteContext($multisite);
@@ -95,6 +99,8 @@ class MultisiteCommands extends BltTasks {
           $this->logger->info("Skipping excluded site {$multisite}.");
         }
       }
+
+      $this->sendNotification("Command `drush {$cmd}` *finished* on {$app} {$env}.");
     }
   }
 
@@ -126,8 +132,8 @@ class MultisiteCommands extends BltTasks {
     ],
     'dry-run' => FALSE,
   ]) {
-    $app = EnvironmentDetector::getAhGroup() ?? 'local';
-    $env = EnvironmentDetector::getAhEnv() ?? 'local';
+    $app = EnvironmentDetector::getAhGroup() ? EnvironmentDetector::getAhGroup() : 'local';
+    $env = EnvironmentDetector::getAhEnv() ? EnvironmentDetector::getAhEnv() : 'local';
 
     if (!in_array($env, $options['envs'])) {
       $allowed = implode(', ', $options['envs']);
@@ -160,9 +166,11 @@ class MultisiteCommands extends BltTasks {
 
       if (!$options['dry-run']) {
         if ($this->confirm('You will invoke the drupal:install command for the sites listed above. Are you sure?')) {
+          $uninstalled_list = implode(', ', $uninstalled);
+          $this->sendNotification("Command `uiowa:multisite:install` *started* for {$uninstalled_list} on {$app} {$env}.");
+
           foreach ($uninstalled as $multisite) {
             $this->switchSiteContext($multisite);
-            $profile = $this->getConfigValue('project.profile.name');
 
             // Clear the cache first to prevent random errors on install.
             // We use exec here to always return 0 since the command can fail
@@ -201,7 +209,7 @@ class MultisiteCommands extends BltTasks {
               ->run();
 
             // If a requester was added, add them as a webmaster for the site.
-            if ($requester = $this->getConfigValue("uiowa.profiles.{$profile}.requester")) {
+            if ($requester = $this->getConfigValue("uiowa.requester")) {
               $this->taskDrush()
                 ->stopOnFail(FALSE)
                 ->drush('user:create')
@@ -213,9 +221,9 @@ class MultisiteCommands extends BltTasks {
                 ])
                 ->run();
             }
-
-            $this->sendNotification("Drupal installation complete for site {$multisite} in {$env} environment on {$app} application.");
           }
+
+          $this->sendNotification("Command `uiowa:multisite:install` *finished* for {$uninstalled_list} on {$app} {$env}.");
         }
         else {
           throw new \Exception('Canceled.');
@@ -401,14 +409,6 @@ EOD
     if (file_exists("{$root}/docroot/sites/{$host}")) {
       return new CommandError("Site {$host} already exists.");
     }
-
-    $profiles = array_keys($this->getConfig()->get('uiowa.profiles'));
-    $profile = $commandData->input()->getArgument('profile');
-
-    if (!in_array($profile, $profiles)) {
-      $profiles = implode(', ', $profiles);
-      return new CommandError("Invalid profile {$profile}. Must be one of {$profiles}.");
-    }
   }
 
   /**
@@ -416,8 +416,6 @@ EOD
    *
    * @param string $host
    *   The multisite URI host. Will be used as the site directory.
-   * @param string $profile
-   *   The profile that will be used when creating the site.
    * @param array $options
    *   An option that takes multiple values.
    *
@@ -439,7 +437,7 @@ EOD
    *
    * @throws \Exception
    */
-  public function create($host, $profile, array $options = [
+  public function create($host, array $options = [
     'simulate' => FALSE,
     'no-commit' => FALSE,
     'no-db' => FALSE,
@@ -447,8 +445,7 @@ EOD
   ]) {
     $db = Multisite::getDatabaseName($host);
     $applications = $this->getConfigValue('uiowa.applications');
-    $app = $this->askChoice('Which cloud application should be used?', array_keys($applications));
-    $appId = $applications[$app]['id'];
+    $this->say('<comment>Note:</comment> Multisites should be grouped on applications by domain since SSL certificates are limited to ~100 SANs. Otherwise, the application with the least amount of databases should be used.');
 
     /** @var \AcquiaCloudApi\Connector\Client $client */
     $client = $this->getAcquiaCloudApiClient();
@@ -456,8 +453,75 @@ EOD
     /** @var \AcquiaCloudApi\Endpoints\Databases $databases */
     $databases = new Databases($client);
 
-    if (!$options['simulate'] && !$options['no-db'] && !$this->checkIfRemoteDatabaseExists($appId, $databases, $db)) {
-      $databases->create($appId, $db);
+    /** @var \AcquiaCloudApi\Endpoints\Environments $environments */
+    $environments = new Environments($client);
+
+    /** @var \AcquiaCloudApi\Endpoints\SslCertificates $certificates */
+    $certificates = new SslCertificates($client);
+
+    $table = new Table($this->output);
+    $table->setHeaders(['Application', 'DBs', 'SANs', 'SAN Match']);
+    $rows = [];
+
+    // Search for a SANs match.
+    // If the host is a double subdomain, search for the parent.
+    // Ex. foo.bar.uiowa.edu -> search for bar.uiowa.edu.
+    $host_parts = explode('.', $host, 2);
+    $sans_search = $host_parts[1];
+
+    // If the host is one subdomain off uiowa.edu, search for it instead.
+    // This mostly just checks to see if the domain already exists in a cert.
+    // Ex. foo.uiowa.edu -> search for foo.uiowa.edu.
+    if ($host_parts[1] == 'uiowa.edu') {
+      $sans_search = $host;
+    }
+
+    // If the host is one subdomain off a TLD, do not search.
+    // Ex. foo.com -> FALSE.
+    if (!stristr($host_parts[1], '.')) {
+      $sans_search = FALSE;
+    }
+
+    foreach ($applications as $name => $meta) {
+      $row = [];
+      $row[] = $name;
+      $row[] = count($databases->getAll($meta['id']));
+
+      $envs = $environments->getAll($meta['id']);
+
+      foreach ($envs as $env) {
+        if ($env->name == 'prod') {
+          $certs = $certificates->getAll($env->uuid);
+
+          foreach ($certs as $cert) {
+            if ($cert->flags->active == TRUE) {
+              $row[] = count($cert->domains);
+
+              if ($sans_search) {
+                foreach ($cert->domains as $domain) {
+                  if (stristr($domain, $sans_search)) {
+                    $row[] = $domain;
+                    break;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      $rows[] = $row;
+    }
+
+    $table->setRows($rows);
+    $table->render();
+
+    $app = $this->askChoice('Which cloud application should be used?', array_keys($applications));
+    $this->say("Selected <comment>{$app}</comment> application.");
+    $app_id = $applications[$app]['id'];
+
+    if (!$options['simulate'] && !$options['no-db']) {
+      $databases->create($app_id, $db);
       $this->say("Created <comment>{$db}</comment> cloud database on {$app}.");
     }
     else {
@@ -514,27 +578,8 @@ EOD
       throw new \Exception("Unable to set database include for site {$host}.");
     }
 
-    // Copy the default settings include file.
-    $this->taskFilesystemStack()
-      ->copy(
-        "{$root}/docroot/sites/{$host}/settings/default.includes.settings.php",
-        "{$root}/docroot/sites/{$host}/settings/includes.settings.php"
-      )
-      ->run();
-
-    // Include profile-specific settings file.
-    $result = $this->taskReplaceInFile("{$root}/docroot/sites/{$host}/settings/includes.settings.php")
-      ->from('// e.g,( DRUPAL_ROOT . "/sites/$site_dir/settings/foo.settings.php" )')
-      ->to("DRUPAL_ROOT . \"/sites/settings/{$profile}.settings.php\"")
-      ->run();
-
-    if (!$result->wasSuccessful()) {
-      throw new \Exception("Unable to set settings include for site {$host}.");
-    }
-
     // Remove some files that we don't need or will be regenerated below.
     $files = [
-      "{$root}/drush/sites/default.site.yml",
       "{$root}/docroot/sites/{$host}/default.services.yml",
       "{$root}/docroot/sites/{$host}/services.yml",
       "{$root}/drush/sites/{$host}.site.yml",
@@ -543,6 +588,12 @@ EOD
 
     $this->taskFilesystemStack()
       ->remove($files)
+      ->run();
+
+    // Discard changes to the default Drush alias.
+    $this->taskGit()
+      ->dir($root)
+      ->exec('git checkout -f drush/sites/default.site.yml')
       ->run();
 
     // Re-generate the Drush alias so it is more useful.
@@ -564,16 +615,16 @@ EOD
 
     $this->say("Updated <comment>{$id}.site.yml</comment> Drush alias file with <info>local, dev, test and prod</info> aliases.");
 
-    // Overwrite the multisite blt.yml file. Note that the profile defaults
-    // are passed second so that config takes precedence.
-    $blt = YamlMunge::mungeFiles("{$root}/docroot/sites/{$host}/blt.yml", "{$root}/docroot/profiles/custom/{$profile}/default.blt.yml");
+    // Overwrite the multisite blt.yml file.
+    $blt = YamlMunge::parseFile("{$root}/docroot/sites/{$host}/blt.yml");
     $blt['project']['machine_name'] = $id;
     $blt['project']['local']['hostname'] = $local;
     $blt['drupal']['db']['database'] = $db;
+    $blt['drush']['aliases']['local'] = 'self';
 
     // If requester option is set, add it to the site's BLT settings.
     if (isset($options['requester'])) {
-      $blt['uiowa']['profiles'][$profile]['requester'] = $options['requester'];
+      $blt['uiowa']['requester'] = $options['requester'];
     }
 
     $this->taskWriteToFile("{$root}/docroot/sites/{$host}/blt.yml")
@@ -646,7 +697,8 @@ EOD;
     $this->say("Continue initializing additional multisites or follow the next steps below.");
 
     $steps += [
-      'Invoke the uiowa:multisite:install BLT command in the production environment on the appropriate application(s)',
+      'Deploy a release to production as per usual.',
+      'Once deployed, invoke the uiowa:multisite:install BLT command in the production environment on the appropriate application(s)',
       'Add the multisite domains to environments as needed.',
     ];
 
@@ -711,33 +763,16 @@ EOD;
   }
 
   /**
-   * Check if database already exists on the remote server.
-   */
-  protected function checkIfRemoteDatabaseExists($appId, Databases $databases, $db_name) {
-    $dbs = $databases->getAll($appId);
-
-    $db_exists = FALSE;
-
-    foreach ($dbs->getArrayCopy() as $db) {
-      if ($db->name === $db_name) {
-        $db_exists = TRUE;
-        break;
-      }
-    }
-
-    return $db_exists;
-  }
-
-  /**
    * Send a Slack notification if the webhook environment variable exists.
    *
    * @param string $message
    *   The message to send.
    */
   protected function sendNotification($message) {
+    $env = EnvironmentDetector::getAhEnv() ? EnvironmentDetector::getAhEnv() : 'local';
     $webhook_url = getenv('SLACK_WEBHOOK_URL');
 
-    if ($webhook_url) {
+    if ($webhook_url && $env == 'prod' || $env == 'local') {
       $payload = [
         'username' => 'Acquia Cloud',
         'text' => $message,
@@ -751,6 +786,9 @@ EOD;
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
       curl_exec($ch);
       curl_close($ch);
+    }
+    else {
+      $this->logger->warning("Slack webhook URL not configured. Cannot send message: {$message}");
     }
   }
 

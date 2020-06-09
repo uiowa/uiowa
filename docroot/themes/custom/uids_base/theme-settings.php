@@ -84,15 +84,6 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     ],
     '#default_value' => theme_get_setting('layout.container'),
   ];
-  $form['branding'] = [
-    '#tree' => TRUE,
-  ];
-  $form['branding']['legacy'] = [
-    '#type' => 'checkbox',
-    '#title' => t('Use legacy UIowa bar'),
-    '#description' => t('The UIowa bar that was used prior to Spring 2020 redesign will be shown.'),
-    '#default_value' => theme_get_setting('branding.legacy'),
-  ];
 
   $form['theme_settings']['#open'] = FALSE;
   $form['favicon']['#open'] = TRUE;

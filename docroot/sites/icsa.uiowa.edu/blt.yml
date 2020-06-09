@@ -4,8 +4,6 @@ project:
     protocol: https
   machine_name: icsa
   human_name: icsa.uiowa.edu
-  profile:
-    name: collegiate
 drush:
   aliases:
     local: self
@@ -13,10 +11,3 @@ drush:
 drupal:
   db:
     database: icsa_uiowa_edu
-cm:
-  core:
-    install_from_config: false
-    dirs:
-      sync:
-        path: ../config/icsa.uiowa.edu
-  strategy: none

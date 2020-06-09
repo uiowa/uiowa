@@ -66,24 +66,40 @@ $config['stage_file_proxy.settings']['hotlink'] = TRUE;
 ### Creating Sites
 To add a new site to the project, run the following command:
 ```
-blt umc example.uiowa.edu profile
+blt umc example.uiowa.edu
 ```
-Replace `example.uiowa.edu` with the URI of the site you are creating. Replace `profile` with the name of the profile you are creating the site with, for example `collegiate` or `sitenow`.
+Replace `example.uiowa.edu` with the URI of the site you are creating.
 
 The following options can also be passed in:
-* `--requester=hawkid` - This is a required field when using the SiteNow profile. Use the hawkid of the person who requested the site.
+* `--requester=hawkid` - Use the hawkid of the person who requested the site. Will be given webmaster access when installed.
 * `--no-db` - Do not create remote databases.
 * `--no-commit` - Do not create a new commit in git.
 * `--simulate` - Only runs the commands associated with `blt recipes:multisite:init`.
 
-## Updating Dependencies
+### Overriding Configuration
+Please note this approach is not yet tested nor recommended.
+
+If an individual site wants to export ALL of its configuration and manage it going forward, an [include setting](https://docs.acquia.com/blt/install/next-steps/#adding-settings-to-settings-php) with the following should accomplish that:
+```
+$blt_override_config_directories = FALSE;
+$settings['config_sync_directory'] = DRUPAL_ROOT . '/config/' . $site_dir;
+```
+
+# Updating Dependencies
 Before starting updates, make sure your local environment is on a feature branch created from the latest version of master and synced with production by running `blt dsa`.
 
-Drupal core requires the following specific command to update dev dependencies properly: `composer update drupal/core webflo/drupal-core-require-dev --with-dependencies`. You can run `composer update package/name` after that to update additional dependencies. The output from the Composer commands can be used as the long text for commit messages. Ideally, each package update would be one commit to the composer.lock file.
+Drupal core requires the following specific command to update dev dependencies properly: `composer update drupal/core --with-dependencies`. You can run `composer update package/name` after that to update additional dependencies. The output from the Composer commands can be used as the long text for commit messages. Ideally, each package update would be one commit to the composer.lock file.
 
 Certain scaffold files should be resolved/removed afterwards. The redirects in the `docroot/.htaccess` file need to be re-implemented and the `docroot/robots.txt` should be removed. Different updates may require difference procedures. For example, BLT may download default config files that we don't use like `docroot/sites/default/default.services.yml`.
 
 Configuration tracked in the repository will need to be exported before deployment. To ensure configuration is exported correctly, manually sync a site from production using Drush. Then run database updates and export any configuration changes. Add and commit the config changes and then run another `blt dsa` to check for any further config discrepancies. If there are none, proceed with code deployment as per usual.
+
+# Redirects
+Redirects can be added to the docroot/.htaccess file. The .htaccess file be will deployed to all applications, regardless of the domain. Therefore, creating per-site redirects using the Redirect module is preferred.
+
+Note that too many .htaccess redirects can incur a performance hit. See the [Acquia redirect documentation](https://docs.acquia.com/acquia-cloud/manage/htaccess/) for more information and examples.
+
+Redirects in .htaccess should only exist for six months. Check the commit history of that file using a command similar to: `git log --before="6 months ago" --grep="redirect" -- docroot/.htaccess`.
 
 # Resources
 Additional [BLT documentation](https://docs.acquia.com/blt/) may be useful. You may also access a list of BLT commands by running this:

@@ -26,9 +26,11 @@
  */
 #}
 
-{{ attach_library('uids_base/portraits-block') }}
+{{ attach_library('uids_base/vertical-video') }}
 {{ attach_library('uids_base/highlight') }}
 
+{% set video_id = content.field_uiowa_vertical_video[0]['#media'].id %}
+{% set video_title = content.field_uiowa_vertical_video_title[0] %}
 {% set video_field = content.field_uiowa_vertical_video[0]['#media'].field_media_video_file.entity.uri.value %}
 {% set video_url = file_url(content.field_uiowa_vertical_video[0]['#media'].field_media_video_file.entity.uri.value) %}
 {% set video_thumbnail = file_url(content.field_uiowa_vertical_video_image[0]['#media'].field_media_image.entity.uri.value) %}
@@ -40,8 +42,12 @@
 	<div class="portrait__item">
 		<div class="embed-responsive embed-responsive-9by16">
 			{% if video_field is not empty %}
-				<button class="vidbttn">
-					<span id="label">Play</span>
+        {% if video_title is not empty %}
+        <button class="vidbttn" aria-label="Play {{ video_title }} video">
+          {% else %}
+				<button class="vidbttn" aria-label="play video-{{ video_id }}">
+        {% endif %}
+					<span>Play</span>
 				</button>
 			<video class="player" preload="metadata"  poster="{{ video_thumbnail }}">
 				<source src="{{ video_url }}" type="video/mp4">
@@ -50,10 +56,10 @@
 			</video>
 			{% endif %}
 		</div>
-		{% if content.field_uiowa_vertical_video_title is not empty %}
+		{% if video_title is not empty %}
 			<div class="highlight__wrapper">
 				<h3 class="highlight__title">
-					<span class="heading__heading">{{ content.field_uiowa_vertical_video_title }}</span>
+					<span class="heading__heading">{{ video_title }}</span>
 				</h3>
 				<div class="highlight__sub">
 					<span>{{ content.field_uiowa_vertical_video_sub }}</span>
