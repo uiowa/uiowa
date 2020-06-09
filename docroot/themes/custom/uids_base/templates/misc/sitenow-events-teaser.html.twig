@@ -1,11 +1,11 @@
 {%
   set classes = [
-  'card--horizontal',
+  'card--display'
 ]
 %}
 
 {{ attach_library('classy/node') }}
-{{ attach_library('uids_base/node-type-article') }}
+{{ attach_library('uids_base/paragraphs-card-variants') }}
 
 {% set paragraph_card = {
   'attributes': attributes.addClass(classes),
