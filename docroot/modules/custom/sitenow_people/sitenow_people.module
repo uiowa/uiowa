@@ -355,12 +355,20 @@ function sitenow_people_preprocess_paragraph(&$variables) {
             if (!empty($more_path = $paragraph->get('field_people_more_path')->getValue())) {
               $url = Url::fromUri($more_path[0]['uri']);
             }
-            elseif ($view->getDisplay('page_people_sfl')['display_options']['enabled'] == TRUE) {
-              $url = Url::fromRoute('view.people.page_people_sfl');
+
+            // Check to see if other displays are enabled before setting more link.
+            $displays = [
+              'page_people_sfl',
+              'page_people_slf',
+              'page_people_table'
+            ];
+            foreach ($displays as $display) {
+              if ($view->getDisplay($display)['display_options']['enabled'] == TRUE) {
+                $url = Url::fromRoute('view.people.' . $display);
+                break;
+              }
             }
-            elseif ($view->getDisplay('page_people_slf')['display_options']['enabled'] == TRUE) {
-              $url = Url::fromRoute('view.people.page_people_slf');
-            }
+
             if (isset($url)) {
               $variables['more']['btn'] = [
                 '#type' => 'link',
