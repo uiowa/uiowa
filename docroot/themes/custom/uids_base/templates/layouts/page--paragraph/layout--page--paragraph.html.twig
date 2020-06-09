@@ -33,7 +33,7 @@
     {% if has_featured_image is empty %}
       <div class="container container--title">
         {{ breadcrumb }}
-        {{ content.content['da61d3c7-3bf8-4625-9e51-4f882d516426']['content'] }}
+        <h1 class="bold-headline--serif bold-headline">{{ drupal_title() }}</h1>
       </div>
     {% endif %}
 
@@ -57,7 +57,7 @@
             {{ attach_library('uids_base/admin') }}
             <div {{ region_attributes.content.addClass('flex__wrapper') }}>
             {% endif %}
-            {{ content.content|without('8be51334-4e07-4621-bddf-6b9942b862e2', 'da61d3c7-3bf8-4625-9e51-4f882d516426') }}
+            {{ content.content|without('8be51334-4e07-4621-bddf-6b9942b862e2') }}
             {% if region_attributes.content.storage['data-region'] %}
             </div>
           {% endif %}
@@ -65,4 +65,5 @@
       {% endif %}
     </div>
   </div>
+
 {% endif %}
