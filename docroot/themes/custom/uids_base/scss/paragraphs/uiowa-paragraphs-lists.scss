@@ -32,6 +32,7 @@
 
   .card__media {
     @include card-media-horizontal-right;
+
     @include breakpoint(sm) {
       margin-top: $lg;
     }
@@ -56,11 +57,12 @@
 
 // Articles List
 .paragraph--type--articles.list,
-.view-display-id-page_articles  {
+.view-display-id-page_articles {
   .view-content {
     @include list-group;
     @include list-group-flush;
   }
+
   .views-row {
     @include list-group-item;
   }
@@ -191,6 +193,7 @@
 // Masonry Articles
 .paragraph--type--articles.masonry {
   .view-content {
+
     //@include card-columns;
     @include breakpoint(sm) {
       column-count: 3;
@@ -198,12 +201,14 @@
       orphans: 1;
     }
   }
+
   .views-row {
     @include card-enclosed;
     display: inline-block;
     width: 100%;
     margin-bottom: $gutter;
   }
+
   .node--type-article {
     display: flex;
   }
@@ -232,6 +237,7 @@
       orphans: 1;
     }
   }
+
   .card {
     @include card-enclosed;
     display: inline-block;
@@ -276,6 +282,26 @@
   }
 }
 
+.paragraph--type--section.bg-dark {
+  .paragraph--type--events.list {
+
+    .card__author,
+    p {
+      color: #fff;
+    }
+
+    .card {
+      @include bg-dark;
+      @include text-light;
+
+      a {
+        color: $primary;
+      }
+    }
+  }
+}
+
+
 .paragraph--type--section.bg-light {
   .paragraph--type--articles.list {
     .views-row {
@@ -284,9 +310,38 @@
   }
 }
 
+.paragraph--type--section.bg-light {
+  .paragraph--type--events.list {
+    .card {
+      @include bg-light;
+    }
+  }
+}
+
+
+
 .paragraph--type--section.bg-yellow {
   .paragraph--type--articles.list {
     .views-row {
+      @include bg-yellow;
+
+      a {
+        color: $secondary;
+        text-decoration: underline;
+
+        &:hover,
+        &:focus {
+          text-decoration: none;
+        }
+      }
+    }
+  }
+}
+
+
+.paragraph--type--section.bg-yellow {
+  .paragraph--type--events.list {
+    .card {
       @include bg-yellow;
 
       a {
