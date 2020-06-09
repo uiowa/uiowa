@@ -1,33 +1,28 @@
-{{ attach_library('uids_base/events-block') }}
-{{ attach_library('uids_base/paragraphs-events') }}
 
-<div class="events-card events-card__row">
-  {% if event.image %}
-    <div class="events-card__image">
-      {{ event.image }}
-    </div>
-  {% endif %}
+{{ attach_library('classy/node') }}
+{{ attach_library('uids_base/node-type-article') }}
 
-  <div class="events-card__body">
 
-    <h3 class="events-card__title">
-      <a href="{{ event.url }}">
-        {% if event.canceled == TRUE %}[CANCELED]
-        {% endif %}
-        {{ event.title }}
-      </a>
-    </h3>
 
-    <div class="events-card__details">
-      <div class="events-card__date">
-        {{ event.date_string }}
-      </div>
 
-      {% if event_location is not empty %}
-        <div class="events-card__label">
-          {{ event.description_text }}
-        </div>
-      {% endif %}
-    </div>
-  </div>
-</div>
+{% set paragraph_card = {
+      'card_classes': atrributes.addClass(['card--horizontal']),
+      'card_image': event.image|render,
+      'card_text': event.description_text,
+      'card_author': event.date_string,
+      'card_title': event.title|render,
+      'card_link_url': event.url,
+      'heading_level': 'h3',
+    } %}
+
+{% embed '@uids_base/uids/card.html.twig' with paragraph_card only %}
+{% block card_img %}
+
+		{# @todo Add image template #}
+		<div class="card__media">
+			{{ event.image }}
+		</div>
+
+{% endblock %}
+
+{% endembed %}
