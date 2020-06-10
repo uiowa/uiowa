@@ -1427,3 +1427,9 @@ $sites['physicsemfisis.local.drupal.uiowa.edu'] = 'emfisis.physics.uiowa.edu';
 $sites['physicsemfisis.dev.drupal.uiowa.edu'] = 'emfisis.physics.uiowa.edu';
 $sites['physicsemfisis.stage.drupal.uiowa.edu'] = 'emfisis.physics.uiowa.edu';
 $sites['physicsemfisis.prod.drupal.uiowa.edu'] = 'emfisis.physics.uiowa.edu';
+
+// Directory aliases for sppa.uiowa.edu.
+$sites['sppa.local.drupal.uiowa.edu'] = 'sppa.uiowa.edu';
+$sites['sppa.dev.drupal.uiowa.edu'] = 'sppa.uiowa.edu';
+$sites['sppa.stage.drupal.uiowa.edu'] = 'sppa.uiowa.edu';
+$sites['sppa.prod.drupal.uiowa.edu'] = 'sppa.uiowa.edu';
