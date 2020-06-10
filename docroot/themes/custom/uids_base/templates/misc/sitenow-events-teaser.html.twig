@@ -1,13 +1,13 @@
 {%
   set classes = [
-  'card--display'
+  'card--list'
 ]
 %}
 
 {{ attach_library('classy/node') }}
 {{ attach_library('uids_base/paragraphs-lists') }}
 
-{% set paragraph_card = {
+{% set events_card = {
   'attributes': attributes.addClass(classes),
   'card_image': event.image | render,
   'card_text': event.description_text,
@@ -17,7 +17,7 @@
   'heading_level': 'h3'
 } %}
 
-{% embed '@uids_base/uids/card.html.twig' with paragraph_card only %}
+{% embed '@uids_base/uids/card.html.twig' with events_card only %}
 	{% block card_img %}
 		{% if card_image is not empty %}
 			<div class="card__media">
