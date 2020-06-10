@@ -4,7 +4,6 @@ namespace Drupal\Tests\sitenow\Unit;
 
 use Acquia\Blt\Robo\Common\YamlMunge;
 use Drupal\Tests\UnitTestCase;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 use Uiowa\Multisite;
 
@@ -37,18 +36,10 @@ class FilesystemTest extends UnitTestCase {
    * Test sites.php entries exist.
    */
   public function testDirectoryAliasesExist() {
-    $finder = new Finder();
-    $dirs = $finder
-      ->in($this->root . '/sites/')
-      ->directories()
-      ->depth('< 1')
-      ->exclude(['default', 'g', 'settings'])
-      ->sortByName();
-
+    $sites = Multisite::getAllSites($this->root . '/..');
     $haystack = file_get_contents($this->root . '/sites/sites.php');
 
-    foreach ($dirs->getIterator() as $dir) {
-      $site = $dir->getRelativePathname();
+    foreach ($sites as $site) {
       $id = Multisite::getIdentifier("https://{$site}");
       $local = Multisite::getInternalDomains($id)['local'];
       $dev = Multisite::getInternalDomains($id)['dev'];
@@ -94,17 +85,10 @@ EOD;
    * Test that multisite files exist and that BLT config is set correctly.
    */
   public function testMultisiteFiles() {
-    $finder = new Finder();
-    $dirs = $finder
-      ->in($this->root . '/sites/')
-      ->directories()
-      ->depth('< 1')
-      ->exclude(['g', 'settings'])
-      ->sortByName();
+    $sites = Multisite::getAllSites($this->root . '/..');
 
-    foreach ($dirs->getIterator() as $dir) {
-      $site = $dir->getRelativePathname();
-      $path = $dir->getRealPath();
+    foreach ($sites as $site) {
+      $path = "docroot/sites/{$site}";
 
       // Output the site to the console to identify test failures.
       fwrite(STDERR, $site . PHP_EOL);
@@ -116,22 +100,21 @@ EOD;
       $this->assertFileExists("{$path}/settings/default.includes.settings.php");
       $this->assertFileExists("{$path}/settings/default.local.settings.php");
 
-      // The default site does not follow the same naming conventions.
-      if ($site != 'default') {
-        $id = Multisite::getIdentifier("https://{$site}");
-        $local = Multisite::getInternalDomains($id)['local'];
-        $yaml = Yaml::parse(file_get_contents("{$path}/blt.yml"));
-        $db = $yaml['drupal']['db']['database'];
+      $id = Multisite::getIdentifier("//{$site}");
+      $local = Multisite::getInternalDomains($id)['local'];
 
-        $this->assertEquals(Multisite::getDatabaseName($site), $db);
+      // Test BLT config.
+      $yaml = Yaml::parse(file_get_contents("{$path}/blt.yml"));
+      $db = $yaml['drupal']['db']['database'];
 
-        $this->assertEquals($local, $yaml['project']['local']['hostname']);
-        $this->assertEquals($site, $yaml['project']['human_name']);
-        $this->assertEquals($id, $yaml['project']['machine_name']);
-        $this->assertEquals('https', $yaml['project']['local']['protocol']);
-        $this->assertEquals('self', $yaml['drush']['aliases']['local']);
+      $this->assertEquals(Multisite::getDatabaseName($site), $db);
+      $this->assertEquals($local, $yaml['project']['local']['hostname']);
+      $this->assertEquals($site, $yaml['project']['human_name']);
+      $this->assertEquals($id, $yaml['project']['machine_name']);
+      $this->assertEquals('https', $yaml['project']['local']['protocol']);
+      $this->assertEquals('self', $yaml['drush']['aliases']['local']);
 
-        $needle = <<<EOD
+      $needle = <<<EOD
 \$ah_group = getenv('AH_SITE_GROUP');
 
 if (file_exists('/var/www/site-php')) {
@@ -141,10 +124,17 @@ if (file_exists('/var/www/site-php')) {
 require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
 EOD;
 
-        $file = "{$path}/settings.php";
-        $this->assertFileExists($file);
-        $haystack = file_get_contents($file);
-        $this->assertContains($needle, $haystack);
+      $file = "{$path}/settings.php";
+      $this->assertFileExists($file);
+      $haystack = file_get_contents($file);
+      $this->assertContains($needle, $haystack);
+
+      // Test Drush aliases.
+      $yaml = Yaml::parseFile($this->root . "/../drush/sites/{$id}.site.yml");
+      $expected_files_path = "sites/{$site}/files";
+
+      foreach (['local', 'dev', 'test', 'prod'] as $env) {
+        $this->assertEquals($expected_files_path, $yaml[$env]['paths']['files']);
       }
     }
   }
