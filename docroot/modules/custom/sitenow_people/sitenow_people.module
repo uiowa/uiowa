@@ -69,7 +69,7 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
         }
       }
 
-      // if it exists, change the 'Link text' field to say 'Label' on
+      // If it exists, change the 'Link text' field to say 'Label' on
       // the website field, because that makes more sense in this context.
       if (isset($form['field_person_website'])) {
         foreach (Element::children($form['field_person_website']['widget']) as $k) {
