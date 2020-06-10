@@ -460,26 +460,24 @@ EOD
     $certificates = new SslCertificates($client);
 
     $table = new Table($this->output);
-    $table->setHeaders(['Application', 'DBs', 'SANs', 'SAN Match']);
+    $table->setHeaders(['Application', 'DBs', 'SANs', 'SSL Coverage']);
     $rows = [];
 
-    // Search for a SANs match.
-    // If the host is a double subdomain, search for the parent.
-    // Ex. foo.bar.uiowa.edu -> search for bar.uiowa.edu.
+    // A boolean to track whether any application covers this domain.
+    $has_ssl_coverage = FALSE;
+
+    // Explode by domain and limit to two parts. Search for wildcard coverage.
+    // Ex. foo.bar.uiowa.edu -> search for *.bar.uiowa.edu.
+    // Ex. foo.bar.baz.uiowa.edu -> search for *.bar.baz.uiowa.edu.
     $host_parts = explode('.', $host, 2);
-    $sans_search = $host_parts[1];
+    $sans_search = '*.' . $host_parts[1];
 
-    // If the host is one subdomain off uiowa.edu, search for it instead.
-    // This mostly just checks to see if the domain already exists in a cert.
+    // If the host is one subdomain off uiowa.edu or a vanity domain,
+    // search for the host instead.
     // Ex. foo.uiowa.edu -> search for foo.uiowa.edu.
-    if ($host_parts[1] == 'uiowa.edu') {
+    // Ex. foo.com -> search for foo.com.
+    if ($host_parts[1] == 'uiowa.edu' || !stristr($host_parts[1], '.')) {
       $sans_search = $host;
-    }
-
-    // If the host is one subdomain off a TLD, do not search.
-    // Ex. foo.com -> FALSE.
-    if (!stristr($host_parts[1], '.')) {
-      $sans_search = FALSE;
     }
 
     foreach ($applications as $name => $meta) {
@@ -499,8 +497,9 @@ EOD
 
               if ($sans_search) {
                 foreach ($cert->domains as $domain) {
-                  if (stristr($domain, $sans_search)) {
+                  if ($domain == $sans_search) {
                     $row[] = $domain;
+                    $has_ssl_coverage = TRUE;
                     break;
                   }
                 }
@@ -516,8 +515,19 @@ EOD
     $table->setRows($rows);
     $table->render();
 
+    // If we did not find any SSL coverage, log an error.
+    if (!$has_ssl_coverage) {
+      $this->logger->error("No SSL coverage found on any application for {$host}. Be sure to install new SSL certificate before updating DNS.");
+    }
+
     $app = $this->askChoice('Which cloud application should be used?', array_keys($applications));
-    $this->say("Selected <comment>{$app}</comment> application.");
+
+    // Get confirmation before executing.
+    if (!$this->confirm("Selected {$app} application. Proceed?")) {
+      throw new \Exception('Aborted.');
+    }
+
+    // Get the UUID for the selected application.
     $app_id = $applications[$app]['id'];
 
     if (!$options['simulate'] && !$options['no-db']) {
