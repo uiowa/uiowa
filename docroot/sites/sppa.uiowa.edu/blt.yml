@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: sppa.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: sppa
+  human_name: sppa.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sppa.prod
+drupal:
+  db:
+    database: sppa_uiowa_edu
+uiowa:
+  requester: jabell
