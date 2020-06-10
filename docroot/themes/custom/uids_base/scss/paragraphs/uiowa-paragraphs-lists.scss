@@ -272,24 +272,43 @@
 .paragraph--type--section.bg-dark,
 .paragraph--type--section.bg-black {
   .paragraph--type--articles.list {
-
     .field--name-field-teaser,
     .article-created-date {
       color: #fff;
     }
-
     .card,
     .views-row {
       background-color: transparent !important;
       @include text-light;
+    }
+  }
+}
 
+.paragraph--type--section.bg-black {
+  .paragraph--type--articles.list {
 
+    .card,
+    .views-row {
       a {
         color: $primary;
       }
     }
   }
 }
+
+.paragraph--type--section.bg-dark {
+  .paragraph--type--articles.list {
+
+    .card,
+    .views-row {
+      a {
+        color: #fff;
+      }
+    }
+  }
+}
+
+
 
 .paragraph--type--section.bg-dark,
 .paragraph--type--section.bg-black {
@@ -303,13 +322,31 @@
     .card {
       background-color: transparent !important;
       @include text-light;
+    }
+  }
+}
 
+.paragraph--type--section.bg-black {
+  .paragraph--type--events.list {
+    .card {
       a {
         color: $primary;
       }
     }
   }
 }
+
+
+.paragraph--type--section.bg-dark {
+  .paragraph--type--events.list {
+    .card {
+      a {
+        color: #fff;
+      }
+    }
+  }
+}
+
 
 
 .paragraph--type--section.bg-light {
@@ -328,10 +365,30 @@
   }
 }
 
+.paragraph--type--section.bg-yellow {
+  .paragraph--type--events.list .card {
+    @include breakpoint(menu) {
+      border-bottom: 1px solid #666;
+    }
+  }
 
+  .card__author {
+    color: $secondary;
+  }
+
+  .more-link {
+    .btn-primary {
+      color: #fff;
+      background: $secondary;
+    }
+  }
+}
 
 .paragraph--type--section.bg-yellow {
   .paragraph--type--articles.list {
+    .card {
+      @include bg-yellow;
+    }
     .views-row {
       @include bg-yellow;
 
