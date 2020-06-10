@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - system.menu.footer
+    - system.menu.footer-primary
   module:
     - menu_block
   theme:
@@ -13,9 +13,9 @@ theme: hr
 region: sidebar_first
 weight: 0
 provider: null
-plugin: 'menu_block:footer'
+plugin: 'menu_block:footer-primary'
 settings:
-  id: 'menu_block:footer'
+  id: 'menu_block:footer-primary'
   label: 'In this section'
   provider: menu_block
   label_display: visible
@@ -24,8 +24,8 @@ settings:
   level: 2
   depth: 0
   expand: 0
-  parent: 'footer:'
-  suggestion: footer
+  parent: 'footer-primary:'
+  suggestion: footer_primary
   block_template: card
   block_classes: {  }
 visibility: {  }
