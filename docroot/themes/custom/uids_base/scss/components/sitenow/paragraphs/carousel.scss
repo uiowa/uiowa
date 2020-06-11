@@ -27,6 +27,11 @@
 }
 
 .paragraph--type--carousel {
+
+  .slick-slide {
+    position: relative;
+  }
+  
   .carousel-caption {
     padding: 1.25rem;
     overflow-y: auto;
@@ -34,11 +39,8 @@
     background-color: $dark;
     color: $white;
     position: absolute;
+    bottom: 3rem;
     right: 15%;
-    @media screen and (max-width: 1400px){
-      top: calc((0.5578 * 100vw) - 163.89px);
-    }
-    top: 617px;
     left: 15%;
     text-align: center;
   }
