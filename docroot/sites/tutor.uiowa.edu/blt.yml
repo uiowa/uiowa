@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: tutor.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: tutor
+  human_name: tutor.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: tutor.prod
+drupal:
+  db:
+    database: tutor_uiowa_edu
+uiowa:
+  requester: jdombrock
