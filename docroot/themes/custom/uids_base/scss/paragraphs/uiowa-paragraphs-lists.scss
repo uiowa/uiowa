@@ -3,7 +3,8 @@
 
 
 .paragraph--type--articles,
-.paragraph--type--events {
+.paragraph--type--events,
+.paragraph--type--people {
   &.hide-images .card__media {
     display: none;
   }
@@ -28,6 +29,7 @@
 // Shared Articles and Events Lists
 .paragraph--type--articles.list,
 .paragraph--type--events.list,
+.paragraph--type--people.list,
 .view-display-id-page_articles {
 
   .card__media {
@@ -57,10 +59,12 @@
 
 // Articles List
 .paragraph--type--articles.list,
+.paragraph--type--people.list,
 .view-display-id-page_articles {
   .view-content {
     @include list-group;
     @include list-group-flush;
+    margin-top: $gutter;
   }
 
   .views-row {
@@ -90,8 +94,10 @@
 }
 
 // Articles Grid
-.paragraph--type--articles.grid {
+.paragraph--type--articles.grid,
+.paragraph--type--people.grid {
   .view-content {
+    margin-top: $gutter;
     @include breakpoint(menu) {
       display: flex;
       flex-wrap: wrap;
@@ -191,9 +197,10 @@
 
 
 // Masonry Articles
-.paragraph--type--articles.masonry {
+.paragraph--type--articles.masonry,
+.paragraph--type--people.masonry {
   .view-content {
-
+    margin-top: $gutter;
     //@include card-columns;
     @include breakpoint(sm) {
       column-count: 3;
@@ -255,7 +262,8 @@
 }
 
 // Hide Descriptions
-.paragraph--type--articles.hide-descriptions {
+.paragraph--type--articles.hide-descriptions,
+.paragraph--type--people.hide-descriptions {
   .field--name-field-teaser {
     display: none;
   }
@@ -271,11 +279,21 @@
 // Background Colors
 .paragraph--type--section.bg-dark,
 .paragraph--type--section.bg-black {
-  .paragraph--type--articles.list {
+  .paragraph--type--articles.list,
+  .paragraph--type--people.list
+   {
     .field--name-field-teaser,
-    .article-created-date {
+    .article-created-date,
+    .field__item,
+    .field__label {
       color: #fff;
     }
+    .views-row {
+      border-bottom: 1px solid #ffffff21;
+      &:first-child {
+        border-top: 1px solid #ffffff21;
+    }
+  }
     .card,
     .views-row {
       background-color: transparent !important;
@@ -285,7 +303,8 @@
 }
 
 .paragraph--type--section.bg-black {
-  .paragraph--type--articles.list {
+  .paragraph--type--articles.list,
+  .paragraph--type--people.list {
 
     .card,
     .views-row {
@@ -297,10 +316,11 @@
 }
 
 .paragraph--type--section.bg-dark {
-  .paragraph--type--articles.list {
+  .paragraph--type--articles.list,
+  .paragraph--type--people.list {
 
     .card,
-    .views-row {
+    .views-row,  {
       a {
         color: #fff;
       }
@@ -312,7 +332,8 @@
 
 .paragraph--type--section.bg-dark,
 .paragraph--type--section.bg-black {
-  .paragraph--type--events.list {
+  .paragraph--type--events.list,
+  .paragraph--type--people.list {
 
     .card__author,
     p {
@@ -385,7 +406,8 @@
 }
 
 .paragraph--type--section.bg-yellow {
-  .paragraph--type--articles.list {
+  .paragraph--type--articles.list,
+   .paragraph--type--people.list {
     .card {
       @include bg-yellow;
     }
