@@ -1433,3 +1433,9 @@ $sites['sppa.local.drupal.uiowa.edu'] = 'sppa.uiowa.edu';
 $sites['sppa.dev.drupal.uiowa.edu'] = 'sppa.uiowa.edu';
 $sites['sppa.stage.drupal.uiowa.edu'] = 'sppa.uiowa.edu';
 $sites['sppa.prod.drupal.uiowa.edu'] = 'sppa.uiowa.edu';
+
+// Directory aliases for tutor.uiowa.edu.
+$sites['tutor.local.drupal.uiowa.edu'] = 'tutor.uiowa.edu';
+$sites['tutor.dev.drupal.uiowa.edu'] = 'tutor.uiowa.edu';
+$sites['tutor.stage.drupal.uiowa.edu'] = 'tutor.uiowa.edu';
+$sites['tutor.prod.drupal.uiowa.edu'] = 'tutor.uiowa.edu';
