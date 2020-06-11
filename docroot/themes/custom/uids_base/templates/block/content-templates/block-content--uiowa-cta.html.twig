@@ -29,7 +29,6 @@
 {% block elements %}
 
   {{ attach_library('uids_base/cta') }}
-{{ kint() }}
 	{% block cta_container_start %}
 		<div class="cta__wrapper {{ attributes ? attributes.class }}" {{ attributes ? attributes|without('class') }}>
 			{{ title_prefix }}
