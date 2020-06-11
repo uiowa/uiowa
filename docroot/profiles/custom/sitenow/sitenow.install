@@ -362,15 +362,15 @@ function sitenow_update_8019() {
 
   // Update footer menu config settings.
   $config_factory = \Drupal::configFactory();
-  $configMenu = $config_factory->getEditable('uiowa_footer.settings');
-  $configMenu
+  $config = $config_factory->getEditable('uiowa_footer.settings');
+  $config
     ->set('custom_menu', 'footer-primary')
     ->set('custom_menu_2', 'footer-secondary')
     ->save();
 
   // Update footer menu access perms.
-  $configPerms = $config_factory->getEditable('user.role.webmaster');
-  $perms = $configPerms->get('permissions');
+  $config = $config_factory->getEditable('user.role.webmaster');
+  $perms = $config->get('permissions');
   $permUpdates = [
     'administer footer menu items' => 'administer footer-primary menu items',
     'administer footer-second menu items' => 'administer footer-secondary menu items',
@@ -380,13 +380,13 @@ function sitenow_update_8019() {
       $perms[$index] = $newPerm;
     }
   }
-  $configPerms
+  $config
     ->set('permissions', $perms)
     ->save();
 
   // Update basic page available menus.
-  $configBasicPage = $config_factory->getEditable('node.type.page');
-  $menus = $configBasicPage->get('third_party_settings.menu_ui.available_menus');
+  $config = $config_factory->getEditable('node.type.page');
+  $menus = $config->get('third_party_settings.menu_ui.available_menus');
   $menuUpdates = [
     'footer' => 'footer-primary',
     'footer-second' => 'footer-secondary',
@@ -396,14 +396,29 @@ function sitenow_update_8019() {
       $menus[$index] = $newMenu;
     }
   }
-  $configBasicPage
+  $config
     ->set('third_party_settings.menu_ui.available_menus', $menus)
     ->save();
 
-  // Remove footer and footer-second from breadcrumb config
-  $configBread = $config_factory->getEditable('menu_breadcrumb.settings');
-  $configBread
+  // Remove footer and footer-second from breadcrumb config.
+  $config = $config_factory->getEditable('menu_breadcrumb.settings');
+  $config
     ->clear('menu_breadcrumb_menus.footer')
     ->clear('menu_breadcrumb_menus.footer-second')
+    ->save();
+
+  // Update tours.
+  $config = $config_factory->getEditable('tour.tour.menus');
+  $footerTip = $config->get('tips.menus.body');
+
+  $config
+    ->set('tips.menus.body', $footerTip)
+    ->save();
+
+  $config = $config_factory->getEditable('tour.tour.site-settings');
+  $footerLinkText = $config->get('tips.footer-links.body');
+
+  $config
+    ->set('tips.footer-links.body')
     ->save();
 }
