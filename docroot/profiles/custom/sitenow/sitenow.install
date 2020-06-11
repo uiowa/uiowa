@@ -362,10 +362,25 @@ function sitenow_update_8019() {
 
   // Update footer menu config settings.
   $config_factory = \Drupal::configFactory();
-  $config = $config_factory->getEditable('uiowa_footer.settings');
-
-  $config
+  $configMenu = $config_factory->getEditable('uiowa_footer.settings');
+  $configMenu
     ->set('custom_menu', 'footer-primary')
     ->set('custom_menu_2', 'footer-secondary')
+    ->save();
+
+  // Update footer menu access perms.
+  $configPerms = $config_factory->getEditable('user.role.webmaster');
+  $perms = $configPerms->get('permissions');
+  $permUpdates = [
+    'administer footer menu items' => 'administer footer-primary menu items',
+    'administer footer-second menu items' => 'administer footer-secondary menu items',
+  ];
+  foreach ($permUpdates as $oldPerm => $newPerm) {
+    if (($index = array_search($oldPerm, $perms))) {
+      $perms[$index] = $newPerm;
+    }
+  }
+  $configPerms
+    ->set('permissions', $perms)
     ->save();
 }
