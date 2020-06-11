@@ -7,6 +7,9 @@
 // Allow empty spans for FontAwesome icons.
 CKEDITOR.dtd.$removeEmpty['span'] = false;
 
+// Update default body text font to UIDS typeface.
+CKEDITOR.addCss( 'body { font-family: Roboto,sans-serif } ' );
+
 // Remove table and cell properties that can make them unusable/inaccessible.
 CKEDITOR.on('dialogDefinition', function (ev) {
   var dialogName = ev.data.name;
