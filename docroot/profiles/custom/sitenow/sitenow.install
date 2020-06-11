@@ -399,4 +399,11 @@ function sitenow_update_8019() {
   $configBasicPage
     ->set('third_party_settings.menu_ui.available_menus', $menus)
     ->save();
+
+  // Remove footer and footer-second from breadcrumb config
+  $configBread = $config_factory->getEditable('menu_breadcrumb.settings');
+  $configBread
+    ->clear('menu_breadcrumb_menus.footer')
+    ->clear('menu_breadcrumb_menus.footer-second')
+    ->save();
 }
