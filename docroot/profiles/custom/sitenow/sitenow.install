@@ -383,4 +383,20 @@ function sitenow_update_8019() {
   $configPerms
     ->set('permissions', $perms)
     ->save();
+
+  // Update basic page available menus.
+  $configBasicPage = $config_factory->getEditable('node.type.page');
+  $menus = $configBasicPage->get('third_party_settings.menu_ui.available_menus');
+  $menuUpdates = [
+    'footer' => 'footer-primary',
+    'footer-second' => 'footer-secondary',
+  ];
+  foreach ($menuUpdates as $oldMenu => $newMenu) {
+    if (($index = array_search($oldMenu, $menus))) {
+      $menus[$index] = $newMenu;
+    }
+  }
+  $configBasicPage
+    ->set('third_party_settings.menu_ui.available_menus', $menus)
+    ->save();
 }
