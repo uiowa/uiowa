@@ -26,6 +26,9 @@
   }
 }
 
+
+.field--name-field-featured-content.list {}
+
 // Shared Articles and Events Lists
 .paragraph--type--articles.list,
 .paragraph--type--events.list,
@@ -56,6 +59,67 @@
     flex-direction: row-reverse;
   }
 }
+
+// Featured content list
+.paragraph--type--featured-content.list {
+
+  .card__media,
+  .content-image {
+    @include card-media-horizontal-right;
+
+    @include breakpoint(sm) {
+      margin-top: $lg;
+    }
+  }
+}
+
+.paragraph--type--featured-content {
+  figure {
+    margin: 0;
+  }
+
+  .media-body h3 {
+    @include card-header;
+  }
+
+  .node--view-mode-teaser.media {
+    @include card;
+  }
+
+  .field--name-field-teaser {
+    @include card-paragraph
+  }
+
+  .media-body {
+    @include card-body;
+  }
+
+
+  .card__body {
+    flex: 1;
+  }
+
+  .card__title {
+    @include breakpoint(sm) {
+      padding: 0;
+    }
+  }
+
+  .node--view-mode-teaser.media {
+    flex-direction: inherit;
+  }
+
+  .node--type-article,
+  .card--list {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+}
+
+
+
+
+
 
 // Articles List
 .paragraph--type--articles.list,
@@ -92,6 +156,64 @@
     }
   }
 }
+
+
+// Feature Content Grid
+
+.paragraph--type--featured-content.grid {
+  .field--name-field-featured-content {
+    margin-top: $gutter;
+
+    @include breakpoint(menu) {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
+
+  .featured-content-item {
+    @include breakpoint(sm) {
+      margin-bottom: $mobile-width-gutter;
+    }
+
+    @include breakpoint(menu) {
+      flex: 0 0 47%;
+      max-width: 47%;
+      margin-bottom: $desktop-width-gutter;
+
+      &:nth-child(2n+1) {
+        margin-right: $desktop-width-gutter;
+      }
+    }
+
+    @include breakpoint(container) {
+      flex: 0 0 31.222222%;
+      max-width: 31.222222%;
+      margin: 0 $gutter $desktop-width-gutter $gutter;
+
+      &:nth-child(2n+1) {
+        margin-right: $gutter;
+      }
+
+      &:nth-child(3n+1) {
+        margin-left: 0;
+      }
+
+      &:nth-child(3n+3) {
+        margin-right: 0;
+      }
+    }
+
+    display: flex;
+  }
+
+  .card,
+  .node--view-mode-teaser.media {
+    @include card-enclosed;
+    display: block;
+
+  }
+}
+
 
 // Articles Grid
 .paragraph--type--articles.grid,
