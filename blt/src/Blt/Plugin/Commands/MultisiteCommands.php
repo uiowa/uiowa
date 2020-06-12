@@ -58,7 +58,8 @@ class MultisiteCommands extends BltTasks {
   public function cron() {
     if (!$this->confirm("You will execute cron on all multisites. Are you sure?", TRUE)) {
       throw new \Exception('Aborted.');
-    } else {
+    }
+    else {
       $app = EnvironmentDetector::getAhGroup() ? EnvironmentDetector::getAhGroup() : 'local';
       $env = EnvironmentDetector::getAhEnv() ? EnvironmentDetector::getAhEnv() : 'local';
       $verify = ($app == 'local') ? FALSE : TRUE;
