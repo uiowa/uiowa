@@ -11,8 +11,10 @@ use AcquiaCloudApi\Connector\Connector;
 use AcquiaCloudApi\Endpoints\Databases;
 use AcquiaCloudApi\Endpoints\Domains;
 use AcquiaCloudApi\Endpoints\Environments;
+use AcquiaCloudApi\Endpoints\SslCertificates;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
 use Uiowa\Multisite;
@@ -443,8 +445,7 @@ EOD
   ]) {
     $db = Multisite::getDatabaseName($host);
     $applications = $this->getConfigValue('uiowa.applications');
-    $app = $this->askChoice('Which cloud application should be used?', array_keys($applications));
-    $appId = $applications[$app]['id'];
+    $this->say('<comment>Note:</comment> Multisites should be grouped on applications by domain since SSL certificates are limited to ~100 SANs. Otherwise, the application with the least amount of databases should be used.');
 
     /** @var \AcquiaCloudApi\Connector\Client $client */
     $client = $this->getAcquiaCloudApiClient();
@@ -452,8 +453,85 @@ EOD
     /** @var \AcquiaCloudApi\Endpoints\Databases $databases */
     $databases = new Databases($client);
 
-    if (!$options['simulate'] && !$options['no-db'] && !$this->checkIfRemoteDatabaseExists($appId, $databases, $db)) {
-      $databases->create($appId, $db);
+    /** @var \AcquiaCloudApi\Endpoints\Environments $environments */
+    $environments = new Environments($client);
+
+    /** @var \AcquiaCloudApi\Endpoints\SslCertificates $certificates */
+    $certificates = new SslCertificates($client);
+
+    $table = new Table($this->output);
+    $table->setHeaders(['Application', 'DBs', 'SANs', 'SSL Coverage']);
+    $rows = [];
+
+    // A boolean to track whether any application covers this domain.
+    $has_ssl_coverage = FALSE;
+
+    // Explode by domain and limit to two parts. Search for wildcard coverage.
+    // Ex. foo.bar.uiowa.edu -> search for *.bar.uiowa.edu.
+    // Ex. foo.bar.baz.uiowa.edu -> search for *.bar.baz.uiowa.edu.
+    $host_parts = explode('.', $host, 2);
+    $sans_search = '*.' . $host_parts[1];
+
+    // If the host is one subdomain off uiowa.edu or a vanity domain,
+    // search for the host instead.
+    // Ex. foo.uiowa.edu -> search for foo.uiowa.edu.
+    // Ex. foo.com -> search for foo.com.
+    if ($host_parts[1] == 'uiowa.edu' || !stristr($host_parts[1], '.')) {
+      $sans_search = $host;
+    }
+
+    foreach ($applications as $name => $meta) {
+      $row = [];
+      $row[] = $name;
+      $row[] = count($databases->getAll($meta['id']));
+
+      $envs = $environments->getAll($meta['id']);
+
+      foreach ($envs as $env) {
+        if ($env->name == 'prod') {
+          $certs = $certificates->getAll($env->uuid);
+
+          foreach ($certs as $cert) {
+            if ($cert->flags->active == TRUE) {
+              $row[] = count($cert->domains);
+
+              if ($sans_search) {
+                foreach ($cert->domains as $domain) {
+                  if ($domain == $sans_search) {
+                    $row[] = $domain;
+                    $has_ssl_coverage = TRUE;
+                    break;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      $rows[] = $row;
+    }
+
+    $table->setRows($rows);
+    $table->render();
+
+    // If we did not find any SSL coverage, log an error.
+    if (!$has_ssl_coverage) {
+      $this->logger->error("No SSL coverage found on any application for {$host}. Be sure to install new SSL certificate before updating DNS.");
+    }
+
+    $app = $this->askChoice('Which cloud application should be used?', array_keys($applications));
+
+    // Get confirmation before executing.
+    if (!$this->confirm("Selected {$app} application. Proceed?")) {
+      throw new \Exception('Aborted.');
+    }
+
+    // Get the UUID for the selected application.
+    $app_id = $applications[$app]['id'];
+
+    if (!$options['simulate'] && !$options['no-db']) {
+      $databases->create($app_id, $db);
       $this->say("Created <comment>{$db}</comment> cloud database on {$app}.");
     }
     else {
@@ -629,7 +707,8 @@ EOD;
     $this->say("Continue initializing additional multisites or follow the next steps below.");
 
     $steps += [
-      'Invoke the uiowa:multisite:install BLT command in the production environment on the appropriate application(s)',
+      'Deploy a release to production as per usual.',
+      'Once deployed, invoke the uiowa:multisite:install BLT command in the production environment on the appropriate application(s)',
       'Add the multisite domains to environments as needed.',
     ];
 
@@ -691,24 +770,6 @@ EOD;
     $client = Client::factory($connector);
 
     return $client;
-  }
-
-  /**
-   * Check if database already exists on the remote server.
-   */
-  protected function checkIfRemoteDatabaseExists($appId, Databases $databases, $db_name) {
-    $dbs = $databases->getAll($appId);
-
-    $db_exists = FALSE;
-
-    foreach ($dbs->getArrayCopy() as $db) {
-      if ($db->name === $db_name) {
-        $db_exists = TRUE;
-        break;
-      }
-    }
-
-    return $db_exists;
   }
 
   /**

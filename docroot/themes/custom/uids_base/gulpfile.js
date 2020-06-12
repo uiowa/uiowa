@@ -20,7 +20,7 @@ const mode = require('gulp-mode')();
  */
 const paths = {
   src: `${__dirname}/scss/**/*.scss`,
-  dest: `${__dirname}/assets/css`
+  dest: `${__dirname}/assets`
 };
 
 const uids = {
@@ -30,7 +30,10 @@ const uids = {
 
 // Clean
 function clean() {
-  return del(`${uids.dest}/**/*`);
+  return del([
+    `${paths.dest}/css/**`,
+    `${uids.dest}/**/*`,
+  ]);
 }
 
 function copyUids() {
@@ -41,6 +44,11 @@ function copyUids() {
     `${uids.src}/**/*.{woff,woff2}`,
   ])
     .pipe(dest(`${uids.dest}`));
+}
+
+function fontCopy() {
+  return src([`${uids.src}/assets/fonts/*.{woff,woff2}`])
+    .pipe(dest('./assets/fonts'));
 }
 
 // SCSS bundled into CSS task.
@@ -56,7 +64,7 @@ function css() {
       }).on('error', sass.logError))
     .pipe(postcss([ autoprefixer(), cssnano()]))
     .pipe((mode.development(sourcemaps.write('./'))))
-    .pipe(dest(`${paths.dest}`));
+    .pipe(dest(`${paths.dest}/css`));
 }
 
 // Watch files.
@@ -65,9 +73,10 @@ function watchFiles() {
   // @todo Watch other changes?
 }
 
-const compile = series(clean, copyUids, css);
+const copy = parallel(copyUids, fontCopy);
+const compile = series(clean, copy, css);
 
-exports.copy = copyUids;
+exports.copy = copy;
 exports.css = css;
 exports.default = compile;
 exports.watch = watchFiles;
