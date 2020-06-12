@@ -74,6 +74,11 @@ class MultisiteCommands extends BltTasks {
           continue;
         }
 
+        // Skip sites that are not installed since we cannot retrieve state.
+        if (!$this->getInspector()->isDrupalInstalled()) {
+          continue;
+        }
+
         // Define a site-specific cache directory.
         // @see: https://github.com/drush-ops/drush/pull/4345
         $tmp = "/tmp/.drush-cache-{$app}/{$env}/{$multisite}";
