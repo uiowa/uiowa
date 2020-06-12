@@ -409,16 +409,20 @@ function sitenow_update_8019() {
 
   // Update tours links to footer-primary and footer-secondary.
   $config = $config_factory->getEditable('tour.tour.menus');
-  $footerTip = $config->get('tips.menus.body');
-  $footerTip = str_replace('footer?tour', 'footer-primary?tour', $footerTip);
-  $footerTip = str_replace('footer-second?tour', 'footer-secondary?tour', $footerTip);
+  $footerTip = '<p>Depending on your role within the site, there are currently four available menus for this site:' .
+    '</p><p><a href="/admin/structure/menu/manage/main?tour" class="button button--primary">Main Navigation</a></p>' .
+    '<p><a href="/admin/structure/menu/manage/social?tour" class="button button--primary">Social Media</a></p>' .
+    '<p><a href="/admin/structure/menu/manage/footer-primary?tour" class="button button--primary">Footer Primary</a></p>' .
+    '<p><a href="/admin/structure/menu/manage/footer-secondary?tour" class="button button--primary">Footer Secondary</a></p>';
   $config
     ->set('tips.menus.body', $footerTip)
     ->save();
   $config = $config_factory->getEditable('tour.tour.site-settings');
-  $footerLinkText = $config->get('tips.footer-links.body');
-  $footerLinkText = str_replace('footer?tour', 'footer-primary?tour', $footerTip);
-  $footerLinkText = str_replace('footer-second?tour', 'footer-secondary?tour', $footerTip);
+  $footerLinkText = '<p>The footer region also provides three separate menus for social media links' .
+    ' and for other custom footer links. You can add/manage links for those by clicking one of the following:' .
+    ' <a href="/admin/structure/menu/manage/social?tour">Social Media</a>,' .
+    ' <a href="/admin/structure/menu/manage/footer-primary?tour">Footer Primary</a>,' .
+    ' <a href="/admin/structure/menu/manage/footer-secondary?tour">Footer Secondary</a></p>';
   $config
     ->set('tips.footer-links.body', $footerLinkText)
     ->save();
