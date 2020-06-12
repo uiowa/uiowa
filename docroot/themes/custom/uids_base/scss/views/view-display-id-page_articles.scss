@@ -1,0 +1,44 @@
+@import "uids/assets/scss/_variables.scss";
+@import "uids/assets/scss/_utilities.scss";
+
+.view-display-id-page_articles {
+  display: flex;
+  flex-wrap: wrap;
+
+  .view-content {
+    flex: 1 0 0;
+  }
+
+  .view-empty {
+    flex: 0 0 75%;
+    max-width: 75%;
+  }
+
+  .view-footer {
+    flex: 0 0 100%;
+    max-width: 100%;
+
+    @include breakpoint(sm) {
+      flex: 0 0 25%;
+      max-width: 25%;
+      margin-left: $desktop-width-gutter;
+    }
+
+    .view-wrapper {
+      display: block;
+      margin: 0;
+    }
+  }
+
+  .pager {
+    flex: 0 0 100%;
+    max-width: 100%;
+    order: 1;
+  }
+
+  .feed-icons {
+    flex: 0 0 100%;
+    max-width: 100%;
+    order: 2;
+  }
+}
