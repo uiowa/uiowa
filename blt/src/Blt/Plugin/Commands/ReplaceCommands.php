@@ -35,6 +35,20 @@ class ReplaceCommands extends BltTasks {
       }
       else {
         if ($this->getInspector()->isDrupalInstalled()) {
+
+          // Invalidate the Twig cache if on AH env. This happens automatically
+          // for the default site but not multisites. We don't need to pass
+          // the multisite URI here since we switch site context above.
+          // @see: https://support.acquia.com/hc/en-us/articles/360005167754-Drupal-8-Twig-cache
+          $script = '/var/www/site-scripts/invalidate-twig-cache.php';
+
+          if (file_exists($script)) {
+            $this->taskDrush()
+              ->drush('php:script')
+              ->arg($script)
+              ->run();
+          }
+
           $this->say("Deploying updates to <comment>{$multisite}</comment>...");
 
           try {
