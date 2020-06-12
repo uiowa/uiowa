@@ -14,6 +14,7 @@ use AcquiaCloudApi\Endpoints\Environments;
 use AcquiaCloudApi\Endpoints\SslCertificates;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
+use GuzzleHttp\Client as GuzzleClient;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
@@ -42,6 +43,61 @@ class MultisiteCommands extends BltTasks {
    */
   public function noop() {
 
+  }
+
+  /**
+   * Run cron via a request to the site's cron URL.
+   *
+   * We use this approach to avoid Drush cache clear collisions as well as to
+   * provide more visibility into cron task warnings and errors in the logs.
+   *
+   * @command uiowa:multisite:cron
+   *
+   * @aliases umcron
+   */
+  public function cron() {
+    if (!$this->confirm("You will execute cron on all multisites. Are you sure?", TRUE)) {
+      throw new \Exception('Aborted.');
+    } else {
+      $app = EnvironmentDetector::getAhGroup() ? EnvironmentDetector::getAhGroup() : 'local';
+      $env = EnvironmentDetector::getAhEnv() ? EnvironmentDetector::getAhEnv() : 'local';
+      $verify = ($app == 'local') ? FALSE : TRUE;
+
+      foreach ($this->getConfigValue('multisites') as $multisite) {
+        $this->switchSiteContext($multisite);
+
+        // Skip sites whose database do not exist on the application in AH env.
+        if (EnvironmentDetector::isAhEnv()) {
+          $db = $this->getConfigValue('drupal.db.database');
+
+          if (!file_exists("/var/www/site-php/{$app}/{$db}-settings.inc")) {
+            $this->say("Skipping {$multisite}. Database {$db} does not exist.");
+            continue;
+          }
+        }
+
+        // Define a site-specific cache directory.
+        // @see: https://github.com/drush-ops/drush/pull/4345
+        $tmp = "/tmp/.drush-cache-{$app}/{$env}/{$multisite}";
+
+        $result = $this->taskDrush()
+          ->drush('state:get')
+          ->arg('system.cron_key')
+          ->option('define', "drush.paths.cache-directory={$tmp}")
+          ->run();
+
+        $cron_key = trim($result->getMessage());
+
+        $id = Multisite::getIdentifier("//{$multisite}");
+        $domain = Multisite::getInternalDomains($id)[$env];
+
+        $client = new GuzzleClient([
+          'verify' => $verify,
+        ]);
+
+        $client->get("https://{$domain}/cron/{$cron_key}");
+      }
+    }
   }
 
   /**
