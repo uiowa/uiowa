@@ -38,6 +38,10 @@ class ReplaceCommands extends BltTasks {
           $this->say("Deploying updates to <comment>{$multisite}</comment>...");
 
           try {
+            // Define a site-specific cache directory. For some reason, putenv
+            // did not work here. This would not be necessary if Drush
+            // supported per-site config file loading.
+            // @see: https://github.com/drush-ops/drush/pull/4345
             $_ENV['DRUSH_PATHS_CACHE_DIRECTORY'] = "/tmp/.drush-cache-{$app}/{$env}/{$multisite}";
             $this->invokeCommand('drupal:update');
             $this->say("Finished deploying updates to {$multisite}.");
