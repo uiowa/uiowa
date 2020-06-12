@@ -24,7 +24,6 @@ repo_root="/var/www/html/$site.$target_env"
 export PATH=$repo_root/vendor/bin:$PATH
 cd $repo_root
 
-export DRUSH_PATHS_CACHE_DIRECTORY=/tmp/.drush-cache-${site}/${target_env}
 blt artifact:ac-hooks:post-code-deploy $site $target_env $source_branch $deployed_tag $repo_url $repo_type --environment=$target_env -v --no-interaction -D drush.ansi=false
 
 set +v
