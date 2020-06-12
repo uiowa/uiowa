@@ -66,15 +66,12 @@ class MultisiteCommands extends BltTasks {
 
       foreach ($this->getConfigValue('multisites') as $multisite) {
         $this->switchSiteContext($multisite);
+        $db = $this->getConfigValue('drupal.db.database');
 
         // Skip sites whose database do not exist on the application in AH env.
-        if (EnvironmentDetector::isAhEnv()) {
-          $db = $this->getConfigValue('drupal.db.database');
-
-          if (!file_exists("/var/www/site-php/{$app}/{$db}-settings.inc")) {
-            $this->say("Skipping {$multisite}. Database {$db} does not exist.");
-            continue;
-          }
+        if (EnvironmentDetector::isAhEnv() && !file_exists("/var/www/site-php/{$app}/{$db}-settings.inc")) {
+          $this->say("Skipping {$multisite}. Database {$db} does not exist.");
+          continue;
         }
 
         // Define a site-specific cache directory.
@@ -131,15 +128,12 @@ class MultisiteCommands extends BltTasks {
 
       foreach ($this->getConfigValue('multisites') as $multisite) {
         $this->switchSiteContext($multisite);
+        $db = $this->getConfigValue('drupal.db.database');
 
         // Skip sites whose database do not exist on the application in AH env.
-        if (EnvironmentDetector::isAhEnv()) {
-          $db = $this->getConfigValue('drupal.db.database');
-
-          if (!file_exists("/var/www/site-php/{$app}/{$db}-settings.inc")) {
-            $this->say("Skipping {$multisite}. Database {$db} does not exist.");
-            continue;
-          }
+        if (EnvironmentDetector::isAhEnv() && !file_exists("/var/www/site-php/{$app}/{$db}-settings.inc")) {
+          $this->say("Skipping {$multisite}. Database {$db} does not exist.");
+          continue;
         }
 
         if (!in_array($multisite, $options['exclude'])) {
@@ -201,16 +195,12 @@ class MultisiteCommands extends BltTasks {
 
     foreach ($this->getConfigValue('multisites') as $multisite) {
       $this->switchSiteContext($multisite);
+      $db = $this->getConfigValue('drupal.db.database');
 
       // Skip sites whose database do not exist on the application in AH env.
-      if (EnvironmentDetector::isAhEnv()) {
-        $db = $this->getConfigValue('drupal.db.database');
-
-        // Use logger here as opposed to say so the output is easily readable.
-        if (!file_exists("/var/www/site-php/{$app}/{$db}-settings.inc")) {
-          $this->logger->info("Skipping {$multisite}. Database {$db} does not exist.");
-          continue;
-        }
+      if (EnvironmentDetector::isAhEnv() && !file_exists("/var/www/site-php/{$app}/{$db}-settings.inc")) {
+        $this->logger->info("Skipping {$multisite}. Database {$db} does not exist.");
+        continue;
       }
 
       if (!$this->getInspector()->isDrupalInstalled()) {
