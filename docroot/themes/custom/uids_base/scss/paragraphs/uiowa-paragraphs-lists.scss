@@ -1,7 +1,6 @@
 @import "uids/assets/scss/_variables.scss";
 @import "uids/assets/scss/_utilities.scss";
 
-
 .paragraph--type--articles,
 .paragraph--type--events,
 .paragraph--type--people {
@@ -27,13 +26,12 @@
 }
 
 
-.field--name-field-featured-content.list {}
-
 // Shared Articles and Events Lists
 .paragraph--type--articles.list,
 .paragraph--type--events.list,
 .paragraph--type--people.list,
-.view-display-id-page_articles {
+.view-display-id-page_articles,
+.view-id-people {
 
   .card__media {
     @include card-media-horizontal-right;
@@ -62,6 +60,14 @@
 
 // Featured content list
 .paragraph--type--featured-content.list {
+  .field--name-field-featured-content {
+    @include list-group;
+    @include list-group-flush;
+  }
+
+  .featured-content-item {
+    // @include list-group-item;
+  }
 
   .card__media,
   .content-image {
@@ -74,6 +80,10 @@
 }
 
 .paragraph--type--featured-content {
+  @include breakpoint(sm) {
+    margin-top: $lg;
+  }
+
   figure {
     margin: 0;
   }
@@ -87,7 +97,7 @@
   }
 
   .field--name-field-teaser {
-    @include card-paragraph
+    @include card-paragraph margin-top: $gutter;
   }
 
   .media-body {
@@ -135,9 +145,6 @@
     @include list-group-item;
   }
 
-  .view-content:first-child .views-row:first-child {
-    //border-top: 1px solid $light;
-  }
 
   .view-content:last-child .views-row:last-child {
     border-bottom: none;
@@ -157,6 +164,25 @@
   }
 }
 
+// People Table
+.view-id-people {
+
+  table td,
+  table th {
+    padding: 0;
+  }
+
+  tr {
+    @include breakpoint(sm) {
+      border-bottom: 1px solid #ccc;
+    }
+
+  }
+
+  .card__media {
+    margin-bottom: $gutter;
+  }
+}
 
 // Feature Content Grid
 
@@ -501,6 +527,47 @@
 }
 
 
+.paragraph--type--section.bg-dark,
+.paragraph--type--section.bg-black {
+  .paragraph--type--featured-content.list {
+
+    .article-created-date,
+    .card__author,
+    .field {
+      color: #fff;
+    }
+
+
+    .card,
+    .featured-content-item,
+    .node--view-mode-teaser.media {
+      background-color: transparent !important;
+      @include text-light;
+    }
+  }
+}
+
+.paragraph--type--section.bg-dark {
+  .paragraph--type--featured-content.list {
+
+    .field a,
+    h3 a {
+      color: #fff;
+    }
+  }
+}
+
+
+.paragraph--type--section.bg-black {
+  .paragraph--type--featured-content.list {
+
+    .field a,
+    .h5.field,
+    h3 a {
+      color: $primary;
+    }
+  }
+}
 
 .paragraph--type--section.bg-light {
   .paragraph--type--articles.list {
@@ -510,10 +577,17 @@
       @include bg-light;
     }
   }
-}
 
-.paragraph--type--section.bg-light {
   .paragraph--type--events.list {
+    .card {
+      @include bg-light;
+    }
+  }
+
+  .paragraph--type--featured-content {
+
+    .featured-content-item,
+    .node--view-mode-teaser,
     .card {
       @include bg-light;
     }
