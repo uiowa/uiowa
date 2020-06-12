@@ -35,6 +35,7 @@ class ReplaceCommands extends BltTasks {
       }
       else {
         if ($this->getInspector()->isDrupalInstalled()) {
+          $this->say("Deploying updates to <comment>{$multisite}</comment>...");
 
           // Invalidate the Twig cache if on AH env. This happens automatically
           // for the default site but not multisites. We don't need to pass
@@ -48,8 +49,6 @@ class ReplaceCommands extends BltTasks {
               ->arg($script)
               ->run();
           }
-
-          $this->say("Deploying updates to <comment>{$multisite}</comment>...");
 
           try {
             // Define a site-specific cache directory. For some reason, putenv
