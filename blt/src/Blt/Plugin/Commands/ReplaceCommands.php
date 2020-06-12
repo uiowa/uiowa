@@ -21,6 +21,7 @@ class ReplaceCommands extends BltTasks {
     $this->config->set('drush.alias', '');
 
     $app = EnvironmentDetector::getAhGroup() ? EnvironmentDetector::getAhGroup() : 'local';
+    $env = EnvironmentDetector::getAhEnv() ? EnvironmentDetector::getAhEnv() : 'local';
     $multisite_exception = FALSE;
 
     foreach ($this->getConfigValue('multisites') as $multisite) {
@@ -37,6 +38,7 @@ class ReplaceCommands extends BltTasks {
           $this->say("Deploying updates to <comment>{$multisite}</comment>...");
 
           try {
+            $_ENV['DRUSH_PATHS_CACHE_DIRECTORY'] = "/tmp/.drush-cache-{$app}/{$env}/{$multisite}";
             $this->invokeCommand('drupal:update');
             $this->say("Finished deploying updates to {$multisite}.");
           }
