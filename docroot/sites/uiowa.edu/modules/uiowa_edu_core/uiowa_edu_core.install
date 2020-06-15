@@ -9,6 +9,7 @@ use Drupal\Core\Config\FileStorage;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\redirect\Entity\Redirect;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\field\Entity\FieldConfig;
 
 /**
  * Implements hook_install().
@@ -126,11 +127,13 @@ function uiowa_edu_core_update_8004() {
         ->fields('t')
         ->execute()
         ->fetchAll();
-      $revision_rows = $database
-        ->select($revision_table, 'r')
-        ->fields('r')
-        ->execute()
-        ->fetchAll();
+      if ($database->schema()->tableExists($revision_table)) {
+        $revision_rows = $database
+          ->select($revision_table, 'r')
+          ->fields('r')
+          ->execute()
+          ->fetchAll();
+      }
     }
 
     $new_fields = array();
