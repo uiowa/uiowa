@@ -5,8 +5,7 @@
  * Contains lb_enhancements.module.
  */
 
-use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
-use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
@@ -57,9 +56,9 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
  * Adds a pre-render callback which allows changing the block content before
  * rendering.
  */
-function layout_builder_custom_block_view_alter(array &$build, \Drupal\Core\Block\BlockPluginInterface $block) {
+function layout_builder_custom_block_view_alter(array &$build, BlockPluginInterface $block) {
   $test = 'thing';
-//  $build['#pre_render'][] = '_layout_builder_custom_block_content_multiple_pre_render';
+  // $build['#pre_render'][] = '_layout_builder_custom_block_content_multiple_pre_render';
 }
 
 /**
@@ -70,11 +69,11 @@ function layout_builder_custom_block_view_alter(array &$build, \Drupal\Core\Bloc
 function _layout_builder_custom_block_content_multiple_pre_render(array $build) {
   $user_links = &$build['content']['user_links'];
   $items = &$user_links['#items'];
-  $items['username-reminder'] = \Drupal::l(t('Look up your username'), new Url('username_reminder.reminder', array(), array(
-    'attributes' => array(
+  $items['username-reminder'] = \Drupal::l(t('Look up your username'), new Url('username_reminder.reminder', [], [
+    'attributes' => [
       'title' => t('Look up your username.'),
-      'class' => array('username-reminder'),
-    ),
-  )));
+      'class' => ['username-reminder'],
+    ],
+  ]));
   return $build;
 }
