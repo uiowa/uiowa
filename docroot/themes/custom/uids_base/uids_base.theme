@@ -5,7 +5,6 @@
  * Functions to support theming in the uids_base theme.
  */
 
-use Drupal\block_content\BlockContentInterface;
 use Drupal\block\Entity\Block;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Url;
@@ -265,21 +264,6 @@ function uids_base_preprocess_paragraph__card(&$variables) {
     // If the sitenow card link js file has been added, remove it.
     if ($key = array_search('sitenow_card/card-link-js', $variables['#attached']['library'])) {
       unset($variables['#attached']['library'][$key]);
-    }
-  }
-}
-
-/**
- * Implements hook_theme_suggestions_HOOK_alter().
- */
-function uids_base_theme_suggestions_block_alter(array &$suggestions, array $variables) {
-  $test = 'thing';
-  if (isset($variables['elements']['content']['#block_content']) && $variables['elements']['content']['#block_content'] instanceof BlockContentInterface) {
-    $block = $variables['elements']['content']['#block_content'];
-
-    $bundle = $block->bundle();
-    if ($bundle == 'uiowa_banner') {
-      $suggestions[] = 'block__pre_footer_contact_block';
     }
   }
 }
