@@ -159,7 +159,7 @@ function uiowa_edu_core_update_8004() {
       'max_length' => 255,
     ];
 
-    // field_purge_batch(250);
+    field_purge_batch(250);
 
     $new_field_storage = FieldStorageConfig::create($new_field_storage);
     $new_field_storage->original = $new_field_storage;
