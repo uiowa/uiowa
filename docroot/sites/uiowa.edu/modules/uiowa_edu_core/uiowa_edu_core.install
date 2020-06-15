@@ -127,15 +127,19 @@ function uiowa_edu_core_update_8004() {
         ->fields('t')
         ->execute()
         ->fetchAll();
-      // Truncate table instead of deleting rows--needed to maintain block context connections.
-      db_truncate($table)->execute();
+      // Truncate table instead of deleting--needed to maintain block context connections.
+      $database
+        ->truncate($table)
+        ->execute();
       if ($database->schema()->tableExists($revision_table)) {
         $revision_rows = $database
           ->select($revision_table, 'r')
           ->fields('r')
           ->execute()
           ->fetchAll();
-        db_truncate($revision_table)->execute();
+        $database
+          ->truncate($revision_table)
+          ->execute();
       }
     }
 
@@ -165,12 +169,49 @@ function uiowa_edu_core_update_8004() {
     //   $new_field->save();
     // }
 
-    $field_storage
-      ->set('type', 'text')
-      ->set('settings', [
+    // $field_storage
+    //   ->set('type', 'text')
+    //   ->set('settings', [
+    //   'max_length' => 255,
+    //   ])
+    //   ->save();
+
+    // $field_storage_configs = \Drupal::entityTypeManager()
+    //   ->getStorage('field_storage_config')
+    //   ->loadByProperties([
+    //     'field_name' => $field_name,
+    //   ]);
+
+    // foreach ($field_storage_configs as $field_storage_config) {
+    //   $new_field_storage_config = $field_storage_config->toArray();
+    //   $new_field_storage_config['type'] = 'text';
+    // }
+
+    $new_fields = array();
+    foreach ($field_storage->getBundles() as $bundle => $label) {
+      $old_field = FieldConfig::loadByName($entity_type, $bundle, $field_name);
+      $new_field = $old_field->toArray();
+      $new_field['field_type'] = 'text';
+      $new_fields[] = $new_field;
+      $old_field->delete();
+    }
+
+    $new_field_storage = $field_storage->toArray();
+    $new_field_storage['type'] = 'text';
+    $new_field_storage['module'] = 'text';
+    $new_field_storage['settings'] = [
       'max_length' => 255,
-      ])
+    ];
+
+    field_purge_batch(250);
+
+    FieldStorageConfig::create($new_field_storage)
       ->save();
+    
+    foreach ($new_fields as $new_field) {
+      $new_field = FieldConfig::create($new_field);
+      $new_field->save();
+    }
 
     if (!is_null($rows)) {
       foreach ($rows as $row) {
