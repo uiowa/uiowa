@@ -2,30 +2,23 @@
   border-radius: 0;
   border: 0;
   a {
-    @extend .alert-link;
+    color: $gray-900;
+    font-weight: 700;
+    text-decoration: underline;
+    &:hover, &:focus {
+      text-decoration: none;
+    }
   }
 }
 .alert-success {
   border-left: 6px solid $success;
-  a {
-    color: $gray-900;
-  }
 }
 .alert-warning {
   border-left: 6px solid $warning;
-  a {
-    color: $gray-900;
-  }
 }
 .alert-danger {
   border-left: 6px solid $danger;
-  a {
-    color: $gray-900;
-  }
 }
 .alert-info {
   border-left: 6px solid $info;
-  a {
-    color: $gray-900;
-  }
 }

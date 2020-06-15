@@ -18,3 +18,8 @@ services:
     arguments: [ '@request_stack' ]
     tags:
       - { name: config.factory.override }
+  sitenow.robotstxt_override:
+    class: Drupal\sitenow\ConfigOverride\RobotstxtOverride
+    arguments: [ '@request_stack' ]
+    tags:
+      - { name: config.factory.override }

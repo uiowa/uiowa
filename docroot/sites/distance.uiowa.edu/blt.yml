@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: distance.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: distance
+  human_name: distance.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: distance.prod
+drupal:
+  db:
+    database: distance_uiowa_edu
+uiowa:
+  requester: tripple

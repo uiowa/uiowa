@@ -6,73 +6,81 @@ global-styling:
       assets/css/global.css: {}
       /libraries/fontawesome/css/all.min.css: {}
     layout:
-      assets/css/components/templates/page-layouts/page-layouts.css: {}
+      assets/css/components/page-layouts.css: {}
     component:
-      assets/css/components/elements/breadcrumbs/breadcrumbs.css: {}
-      assets/css/components/elements/blockquote/blockquote.css: {}
-      assets/css/components/elements/buttons/buttons.css: {}
-      assets/css/components/elements/forms/forms.css: {}
-      assets/css/components/elements/headings/headings.css: {}
-      assets/css/components/elements/lists/lists.css: {}
-      assets/css/components/elements/alerts/alerts.css: {}
-      assets/css/components/elements/pagination/pagination.css: {}
-      assets/css/components/elements/paragraph/paragraph.css: {}
-      assets/css/components/elements/tables/tables.css: {}
-      assets/css/components/elements/tabs/tabs.css: {}
-      assets/css/components/elements/search/search.css: {}
-      assets/css/components/global/branding/branding.css: {}
-      assets/css/components/global/header/header.css: {}
-      assets/css/components/global/footer/footer.css: {}
-      assets/css/components/global/menus/group/group.css: {}
-      assets/css/components/global/menus/superfish/superfish.css: {}
-      assets/css/components/global/menus/main-menu/main-menu.css: {}
-      assets/css/components/global/menus/user-menu/user-menu.css: {}
-      assets/css/components/global/menus/top/top.css: {}
-      assets/css/components/global/menus/quick/quick.css: {}
-      assets/css/components/global/uiowa-bar/uiowa-bar.css: {}
-      assets/css/components/blocks/image-gallery-block/image-gallery-block.css: {}
+      assets/css/components/breadcrumbs.css: {}
+      assets/css/components/colors.css: {}
+      assets/css/components/blockquote.css: {}
+      assets/css/components/button.css: {}
+      assets/css/components/form/forms.css: {}
+      assets/css/components/typography/headings.css: {}
+      assets/css/components/typography/lists.css: {}
+      assets/css/components/alert.css: {}
+      assets/css/components/pagination.css: {}
+      assets/css/components/typography/paragraph.css: {}
+      assets/css/components/tables.css: {}
+      assets/css/components/tabs.css: {}
+      assets/css/components/form/search.css: {}
+      assets/css/components/iowa-bar.css: {}
+      assets/css/components/header.css: {}
+      assets/css/components/footer.css: {}
+      assets/css/components/menus/group.css: {}
+      assets/css/components/menus/superfish.css: {}
+      assets/css/components/menus/main-menu.css: {}
+      assets/css/components/menus/user-menu.css: {}
+      assets/css/components/menus/top.css: {}
+      assets/css/components/menus/quick.css: {}
+      assets/css/components/uiowa-bar.css: {}
+      assets/css/components/image-gallery-block.css: {}
     theme:
       assets/css/theme/print.css: { media: print }
   dependencies:
     - core/jquery
     - core/jquery.once
+status-messages:
+  js:
+    assets/js/uids.status-messages.js: { preprocess: false }
 logo:
   css:
     component:
-      assets/css/components/global/logo/logo.css: { preprocess: false }
+      assets/css/components/logo.css: { preprocess: false }
 site-name:
   css:
     component:
-      assets/css/components/global/site-name/site-name.css: { preprocess: false }
+      assets/css/components/site-name.css: { preprocess: false }
 site-slogan:
   css:
     component:
-      assets/css/components/global/site-slogan/site-slogan.css: { preprocess: false }
+      assets/css/components/site-slogan.css: { preprocess: false }
 search-toggle:
   css:
     component:
-      assets/css/components/global/search-toggle/search-toggle.css: { weight: 200, preprocess: false }
+      assets/css/components/search-toggle.css: { weight: 200, preprocess: false }
   js:
-    uids/components/03 - global/search-toggle/search-toggle.js: { preprocess: false  }
+    uids/components/search-toggle/search-toggle.js: { preprocess: false  }
+search-results:
+  css:
+    component:
+      assets/css/components/search-results.css: { preprocess: false }
 off-canvas:
   css:
     component:
-      assets/css/components/global/menus/off-canvas/off-canvas.css: { preprocess: false }
+      assets/css/components/menus/off-canvas.css: { preprocess: false }
   js:
-    uids/components/03 - global/menus/off-canvas/off-canvas.js: { preprocess: false  }
-header-sticky:
-  js:
-    uids/components/03 - global/header/header.js: { preprocess: false  }
+    uids/components/menus/off-canvas/off-canvas.js: { preprocess: false  }
 accordion:
   css:
     component:
-      assets/css/components/elements/accordions/accordions.css: { preprocess: false }
+      assets/css/components/accordion.css: { preprocess: false }
   js:
-    uids/components/01 - elements/accordions/accordions.js: { preprocess: false  }
+    uids/components/accordion/accordion.js: { preprocess: false  }
+header-sticky:
+  js:
+    uids/components/header/header.js: { preprocess: false  }
 banner:
   css:
     component:
-      assets/css/components/blocks/banner-block/banner-block.css: { preprocess: false }
+      assets/css/components/banner.css: { preprocess: false }
 carousel:
   css:
     theme:
@@ -85,40 +93,39 @@ carousel:
 video:
   css:
     component:
-      assets/css/components/elements/video/video.css: { preprocess: false }
-hero-block:
+      assets/css/components/video/video-utilities.css: { preprocess: false }
+hero:
   css:
     component:
-      assets/css/components/blocks/hero-block/hero-block.css: { preprocess: false }
-events-block:
+      assets/css/components/hero.css: { preprocess: false }
+event:
   css:
     component:
-      assets/css/components/blocks/events-block/events-block.css: { preprocess: false }
+      assets/css/components/event.css: { preprocess: false }
 hero-block-video:
   js:
-    uids/components/02 - blocks/hero-block/hero-block.js: { preprocess: false }
-portraits-block:
+    uids/components/hero/hero.js: { preprocess: false }
+    assets/js/hero-video-cookie.js: { preprocess: false }
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/jquery.cookie
+vertical-video:
   css:
     component:
-      assets/css/components/blocks/portraits-block/portraits-block.css: { preprocess: false }
+      assets/css/components/video/vertical.css: { preprocess: false }
   js:
-    uids/components/02 - blocks/portraits-block/portraits-block.js: { preprocess: false }
+    uids/components/video/vertical/vertical.js: { preprocess: false }
 highlight:
   css:
     component:
-      assets/css/components/elements/highlight/highlight.css: { preprocess: false }
-news-block:
+      assets/css/components/highlight.css: { preprocess: false }
+card:
   css:
     component:
-      assets/css/components/blocks/news-block/news-block.css: { preprocess: false }
+      assets/css/components/card.css: { preprocess: false }
   js:
-    uids/components/02 - blocks/news-block/news-block.js: { preprocess: false }
-card-block:
-  css:
-    component:
-      assets/css/components/blocks/card-block/card-block.css: { preprocess: false }
-  js:
-    uids/components/02 - blocks/card-block/card-block.js: { preprocess: false }
+    uids/components/card/card.js: { preprocess: false }
 colorbox:
   remote: http://github.com/jackmoore/colorbox
   version: VERSION
@@ -132,130 +139,116 @@ colorbox:
     - core/jquery
     - core/jquery.once
     - colorbox/init
-cta-block:
+cta:
   css:
     component:
-      assets/css/components/blocks/cta-block/cta-block.css: { preprocess: false }
-stat-block:
+      assets/css/components/cta.css: { preprocess: false }
+stat:
   css:
     component:
-      assets/css/components/blocks/stat-block/stat-block.css: { preprocess: false }
+      assets/css/components/stat.css: { preprocess: false }
   js:
-    uids/components/02 - blocks/stat-block/stat-block.js: { preprocess: false }
+    uids/components/stat/stat.js: { preprocess: false }
 main-menu:
   css:
     component:
-      assets/css/components/global/menus/main-menu/main-menu.css: { preprocess: false }
+      assets/css/components/menus/main-menu.css: { preprocess: false }
 mega-menu:
   css:
     component:
-      assets/css/components/global/menus/mega-menu/mega-menu.css: { preprocess: false }
+      assets/css/components/menus/mega-menu.css: { preprocess: false }
 vertical:
   css:
     component:
-      assets/css/components/global/menus/vertical/vertical.css: { preprocess: false }
-responsive-bg:
-  css:
-    component:
-      assets/css/components/elements/bg-images/bg-images.css: { preprocess: false }
-  js:
-    uids/components/01 - elements/bg-images/bg-images.js: { preprocess: false }
+      assets/css/components/menus/vertical.css: { preprocess: false }
 sitenow:
   css:
     component:
-      assets/css/components/sitenow/sitenow.css: { weight: -800, preprocess: false }
+      assets/css/sitenow.css: { weight: -800, preprocess: false }
+paragraphs-lists:
+  css:
+    component:
+      assets/css/paragraphs/uiowa-paragraphs-lists.css: { preprocess: false }
 paragraphs-carousel:
   css:
     component:
-      assets/css/components/sitenow/paragraphs/carousel.css: { preprocess: false }
+      assets/css/paragraphs/carousel.css: { preprocess: false }
 paragraphs-featured-content:
   css:
     component:
-      assets/css/components/sitenow/paragraphs/featured-content.css: { preprocess: false }
+      assets/css/paragraphs/featured-content.css: { preprocess: false }
 paragraphs-image-gallery:
   css:
     component:
-      assets/css/components/sitenow/paragraphs/uiowa_paragraphs_image_gallery.css: { preprocess: false }
+      assets/css/paragraphs/uiowa_paragraphs_image_gallery.css: { preprocess: false }
 paragraphs:
   css:
     component:
-      assets/css/components/sitenow/paragraphs/uiowa_paragraphs.css: { preprocess: false }
-paragraphs-articles:
-  css:
-    component:
-      assets/css/components/sitenow/paragraphs/uiowa-articles.css: { preprocess: false }
-paragraphs-events:
-  css:
-    component:
-      assets/css/components/sitenow/paragraphs/uiowa-events_paragraph.css: { preprocess: false }
+      assets/css/paragraphs/uiowa_paragraphs.css: { preprocess: false }
 paragraphs-text:
   css:
     component:
-      assets/css/components/sitenow/paragraphs/uiowa-paragraphs_text.css: { preprocess: false }
+      assets/css/paragraphs/uiowa-paragraphs_text.css: { preprocess: false }
 paragraphs-webform:
   css:
     component:
-      assets/css/components/sitenow/paragraphs/uiowa-paragraphs-webform.css: { preprocess: false }
+      assets/css/paragraphs/uiowa-paragraphs-webform.css: { preprocess: false }
 view-articles-archive:
   css:
     component:
-      assets/css/components/sitenow/views/view-display-id-block_articles_archive.css: { preprocess: false }
+      assets/css/views/view-display-id-block_articles_archive.css: { preprocess: false }
 view-page-articles:
   css:
     component:
-      assets/css/components/sitenow/views/view-display-id-page_articles.css: { preprocess: false }
+      assets/css/views/view-display-id-page_articles.css: { preprocess: false }
 view-display-people:
   css:
     component:
-      assets/css/components/sitenow/views/view-display-id-people.css: { preprocess: false }
+      assets/css/views/view-display-id-people.css: { preprocess: false }
 view-taxonomy-term:
   css:
     component:
-      assets/css/components/sitenow/views/view-taxonomy-term.css: { preprocess: false }
+      assets/css/views/view-taxonomy-term.css: { preprocess: false }
 views:
   css:
     component:
-      assets/css/components/sitenow/views/views.css: { preprocess: false }
+      assets/css/views/views.css: { preprocess: false }
 webforms:
   css:
     component:
-      assets/css/components/sitenow/webforms/webforms.css: { preprocess: false }
+      assets/css/webforms/webforms.css: { preprocess: false }
 embedded-entity:
   css:
     component:
-      assets/css/components/sitenow/media/embedded-entity.css: { preprocess: false }
+      assets/css/media/embedded-entity.css: { preprocess: false }
 media-type-image:
   css:
     component:
-      assets/css/components/sitenow/media/media--type-image.css: { preprocess: false }
+      assets/css/media/media--type-image.css: { preprocess: false }
 field-uip-title:
   css:
     component:
-      assets/css/components/sitenow/fields/field--name-field-uip-title.css: { preprocess: false }
+      assets/css/fields/field--name-field-uip-title.css: { preprocess: false }
 node-type-article:
   css:
     component:
-      assets/css/components/sitenow/content/node--type--article.css: { preprocess: false }
+      assets/css/content/node--type--article.css: { preprocess: false }
 node-type-page:
   css:
     component:
-      assets/css/components/sitenow/content/node--type--page.css: { preprocess: false }
+      assets/css/content/node--type--page.css: { preprocess: false }
 node-type-person:
   css:
     component:
-      assets/css/components/sitenow/content/node--type--person.css: { preprocess: false }
+      assets/css/content/node--type--person.css: { preprocess: false }
 node-view-teaser:
   css:
     component:
-      assets/css/components/sitenow/content/node--view-mode-teaser.css: { preprocess: false }
+      assets/css/content/node--view-mode-teaser.css: { preprocess: false }
 admin:
   css:
     component:
       assets/css/admin.css: { weight: 200 }
-legacy:
-  css:
-    component:
-      assets/css/legacy.css: { weight: 200 }
 
 # CSS libraries for Layout plugins.
 onecol:

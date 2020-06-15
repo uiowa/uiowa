@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: uc.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: uc
+  human_name: uc.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: uc.prod
+drupal:
+  db:
+    database: uc_uiowa_edu
+uiowa:
+  requester: tripple

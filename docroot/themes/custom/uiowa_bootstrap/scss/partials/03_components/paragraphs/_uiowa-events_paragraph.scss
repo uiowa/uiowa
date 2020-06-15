@@ -22,16 +22,16 @@
 
   @include media-breakpoint-up(xs) {
       $featured-img-size-xs: 80px;
-  
+
       img {
         flex-basis: $featured-img-size-xs;
         margin-left: 0;
         max-width: $featured-img-size-xs;
       }
-  
+
       .sitenow-event-content {
         @extend .media-body;
-  
+
         margin-right: 2rem;
         flex-basis: calc(100% - #{$featured-img-size-xs} - 2rem);
       }
@@ -126,7 +126,18 @@
   @extend .container;
   margin-bottom: 2rem;
 }
+.paragraph--type--section.bg-black {
+  .paragraph--type--events.list {
+    .sitenow-event-teaser {
+      background-color: $black;
+      color: $light;
 
+      a {
+        color: $yellow;
+      }
+    }
+  }
+}
 .paragraph--type--section.bg-dark {
   .paragraph--type--events.list {
     .sitenow-event-teaser {

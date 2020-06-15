@@ -4,7 +4,6 @@ namespace Drupal\Tests\sitenow\Unit;
 
 use Acquia\Blt\Robo\Common\YamlMunge;
 use Drupal\Tests\UnitTestCase;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 use Uiowa\Multisite;
 
@@ -37,18 +36,10 @@ class FilesystemTest extends UnitTestCase {
    * Test sites.php entries exist.
    */
   public function testDirectoryAliasesExist() {
-    $finder = new Finder();
-    $dirs = $finder
-      ->in($this->root . '/sites/')
-      ->directories()
-      ->depth('< 1')
-      ->exclude(['default', 'g', 'settings'])
-      ->sortByName();
-
+    $sites = Multisite::getAllSites($this->root . '/..');
     $haystack = file_get_contents($this->root . '/sites/sites.php');
 
-    foreach ($dirs->getIterator() as $dir) {
-      $site = $dir->getRelativePathname();
+    foreach ($sites as $site) {
       $id = Multisite::getIdentifier("https://{$site}");
       $local = Multisite::getInternalDomains($id)['local'];
       $dev = Multisite::getInternalDomains($id)['dev'];
@@ -74,20 +65,6 @@ EOD;
     $haystack = file_get_contents($file);
 
     $needle = <<<EOD
-\$config_initializer = new ConfigInitializer(\$repo_root, new ArgvInput());
-\$config_initializer->setSite(\$site_dir);
-\$blt_config = \$config_initializer->initialize();
-
-\$blt_override_config_directories = FALSE;
-
-if (\$blt_sync_path = \$blt_config->get('cm.core.dirs.sync.path')) {
-  \$settings['config_sync_directory'] = DRUPAL_ROOT . '/' . \$blt_sync_path;
-}
-EOD;
-
-    $this->assertContains($needle, $haystack);
-
-    $needle = <<<EOD
 if (isset(\$config_directories['vcs'])) {
   unset(\$config_directories['vcs']);
 }
@@ -108,17 +85,10 @@ EOD;
    * Test that multisite files exist and that BLT config is set correctly.
    */
   public function testMultisiteFiles() {
-    $finder = new Finder();
-    $dirs = $finder
-      ->in($this->root . '/sites/')
-      ->directories()
-      ->depth('< 1')
-      ->exclude(['g', 'settings'])
-      ->sortByName();
+    $sites = Multisite::getAllSites($this->root . '/..');
 
-    foreach ($dirs->getIterator() as $dir) {
-      $site = $dir->getRelativePathname();
-      $path = $dir->getRealPath();
+    foreach ($sites as $site) {
+      $path = "docroot/sites/{$site}";
 
       // Output the site to the console to identify test failures.
       fwrite(STDERR, $site . PHP_EOL);
@@ -130,22 +100,21 @@ EOD;
       $this->assertFileExists("{$path}/settings/default.includes.settings.php");
       $this->assertFileExists("{$path}/settings/default.local.settings.php");
 
-      // The default site does not follow the same naming conventions.
-      if ($site != 'default') {
-        $id = Multisite::getIdentifier("https://{$site}");
-        $local = Multisite::getInternalDomains($id)['local'];
-        $yaml = Yaml::parse(file_get_contents("{$path}/blt.yml"));
-        $db = $yaml['drupal']['db']['database'];
+      $id = Multisite::getIdentifier("//{$site}");
+      $local = Multisite::getInternalDomains($id)['local'];
 
-        $this->assertEquals(Multisite::getDatabaseName($site), $db);
+      // Test BLT config.
+      $yaml = Yaml::parse(file_get_contents("{$path}/blt.yml"));
+      $db = $yaml['drupal']['db']['database'];
 
-        $this->assertEquals($local, $yaml['project']['local']['hostname']);
-        $this->assertEquals($site, $yaml['project']['human_name']);
-        $this->assertEquals($id, $yaml['project']['machine_name']);
-        $this->assertEquals('https', $yaml['project']['local']['protocol']);
-        $this->assertEquals('self', $yaml['drush']['aliases']['local']);
+      $this->assertEquals(Multisite::getDatabaseName($site), $db);
+      $this->assertEquals($local, $yaml['project']['local']['hostname']);
+      $this->assertEquals($site, $yaml['project']['human_name']);
+      $this->assertEquals($id, $yaml['project']['machine_name']);
+      $this->assertEquals('https', $yaml['project']['local']['protocol']);
+      $this->assertEquals('self', $yaml['drush']['aliases']['local']);
 
-        $needle = <<<EOD
+      $needle = <<<EOD
 \$ah_group = getenv('AH_SITE_GROUP');
 
 if (file_exists('/var/www/site-php')) {
@@ -155,35 +124,17 @@ if (file_exists('/var/www/site-php')) {
 require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
 EOD;
 
-        $file = "{$path}/settings.php";
-        $this->assertFileExists($file);
-        $haystack = file_get_contents($file);
-        $this->assertContains($needle, $haystack);
+      $file = "{$path}/settings.php";
+      $this->assertFileExists($file);
+      $haystack = file_get_contents($file);
+      $this->assertContains($needle, $haystack);
 
-        // Profile config tests.
-        $profile = $yaml['project']['profile']['name'];
-        $site_config = YamlMunge::parseFile("{$path}/blt.yml");
+      // Test Drush aliases.
+      $yaml = Yaml::parseFile($this->root . "/../drush/sites/{$id}.site.yml");
+      $expected_files_path = "sites/{$site}/files";
 
-        $file = "{$path}/settings/includes.settings.php";
-
-        $needle = <<<EOD
-\$additionalSettingsFiles = [
-  DRUPAL_ROOT . "/sites/settings/{$profile}.settings.php"
-];
-
-foreach (\$additionalSettingsFiles as \$settingsFile) {
-  if (file_exists(\$settingsFile)) {
-    require \$settingsFile;
-  }
-}
-EOD;
-
-        $haystack = file_get_contents($file);
-        $this->assertContains($needle, $haystack);
-
-        // @todo: Expand properties from profile defaults.
-        $this->assertNotEmpty($site_config['cm']['core']['dirs']['sync']['path']);
-        $this->assertNotEquals('/', substr($site_config['cm']['core']['dirs']['sync']['path'], 0, 1));
+      foreach (['local', 'dev', 'test', 'prod'] as $env) {
+        $this->assertEquals($expected_files_path, $yaml[$env]['paths']['files']);
       }
     }
   }

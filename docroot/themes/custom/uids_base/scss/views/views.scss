@@ -1,0 +1,43 @@
+@import "uids/assets/scss/_variables.scss";
+@import "uids/assets/scss/_utilities.scss";
+
+.views-exposed-form {
+  min-height: 20px;
+  padding: 19px;
+  margin-bottom: 20px;
+  background-color: $light;
+  border: 1px solid $grey;
+  border-radius: 4px;
+
+  .form--inline {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    flex-wrap: wrap;
+  }
+
+  .js-form-item {
+    flex: auto 1 1;
+  }
+
+  .form-group {
+    margin: 0 1rem 1rem 1rem;
+  }
+}
+
+.bg-dark, .bg-black {
+  .pager__item.pager__item--ellipsis {
+    color: #5d5656;
+  }
+  .pager__item a {
+    color: $primary;
+  }
+}
+.bg-yellow {
+  .pager__item a {
+    color: $secondary;
+  }
+  .pager__item.is-active a {
+    color: white;
+  }
+}

@@ -1,13 +1,13 @@
 project:
   local:
-    hostname: local.drupal.uiowa.edu
+    hostname: default.local.drupal.uiowa.edu
     protocol: https
   machine_name: default
-  human_name: uiowa
+  human_name: default
 drush:
   aliases:
     local: self
-    remote: uiowa.prod
+    remote: default.prod
 drupal:
   db:
-    database: uiowa
+    database: default
