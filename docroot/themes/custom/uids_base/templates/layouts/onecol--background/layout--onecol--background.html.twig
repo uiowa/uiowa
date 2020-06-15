@@ -12,31 +12,31 @@
  * @see https://v4-alpha.getbootstrap.com/layout/grid/
  */
 #}
-{% set background = content.background|render %}
+{% set background = content.background | render %}
+
 {%
   set classes = [
-  'layout',
-  'layout--onecol',
-  'layout__container',
-  settings.extra_classes,
+  'layout--onecol--bg'
 ]
 %}
 
 {% if background %}
 
   {% embed "@uids_base/uids/blocks/hero.html.twig" with {
-    hero_alignment: 'bottom',
+    hero_alignment : 'bottom',
+    'attributes' : attributes.addClass(classes)
   } %}
-
     {% block hero_image %}
       {{ content.background }}
     {% endblock %}
     {% block hero_content %}
       {{ content.content }}
     {% endblock %}
-
   {% endembed %}
 
 {% else %}
-  {% embed '@uids_base/layouts/onecol/layout--onecol.html.twig' %}{% endembed %}
+  {% embed '@uids_base/layouts/onecol/layout--onecol.html.twig' with {
+    'attributes': attributes.addClass(classes),
+}%}{% endembed %}
+
 {% endif %}
