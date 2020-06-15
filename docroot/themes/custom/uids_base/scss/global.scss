@@ -65,9 +65,38 @@ $imgpath: '../../uids/assets/images';
     margin: 20px 0 0 0;
   }
 
+
   .card__body {
     flex: auto !important;
   }
+
+  .card.card--horizontal .card__body {
+    flex: 1 !important;
+    flex-direction: column;
+  }
+
+  .card.card--horizontal>* {
+    flex-direction: unset;
+    display: block !important;
+  }
+
+  .paragraph--type--articles.list .card__body,
+  .paragraph--type--people.list .card__body,
+  .paragraph--type--events.list .card__body,
+  .view-display-id-page_articles .card__body,
+  .paragraph--type--featured-content.list .card__body,
+  .view-display-id-page_articles .view-content {
+    flex: 1 !important;
+  }
+
+
+  .paragraph--type--articles.list .view-content,
+  .paragraph--type--people.list .view-content,
+  .view-display-id-page_articles .view-content,
+  .paragraph--type--featured-content.list .field--name-field-featured-content {
+    display: block !important;
+  }
+
 
   #superfish-main-accordion {
     position: relative !important;
