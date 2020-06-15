@@ -1,9 +1,11 @@
 {{ attach_library('uids_base/carousel') }}
-<div class="uids-carousel" role="tablist">
-  {% for key, item in carousel_items %}
-    {# @todo How to set the h tag correctly? #}
-    <div class="uids-carousel__content">
-      {{ item.content }}
-    </div>
-  {% endfor %}
+<div data-carousel="carousel" {{ attributes }}>
+  {% block carousel_items %}
+    {% for key, item in carousel_items %}
+      {# @todo How to set the h tag correctly? #}
+      <div class="carousel slide" data-ride="carousel" data-interval="false">
+        {{ item.content }}
+      </div>
+    {% endfor %}
+  {% endblock %}
 </div>

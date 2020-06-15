@@ -83,13 +83,12 @@ banner:
       assets/css/components/banner.css: { preprocess: false }
 carousel:
   css:
-    theme:
-      /libraries/slick-carousel/slick/slick.scss: {}
-      /libraries/slick-carousel/slick//slick-theme.scss: {}
-  #      css.custom.css: {}
+    component:
+      assets/css/components/carousel.css: { preprocess: false }
   js:
-    /libraries/slick-carousel/slick/slick.min.js: { minified.true }
     assets/js/slick.behavior.js: {}
+  dependencies:
+    - uids_base/slick
 video:
   css:
     component:
@@ -249,6 +248,17 @@ admin:
   css:
     component:
       assets/css/admin.css: { weight: 200 }
+
+# Third-party libraries
+slick:
+  css:
+    theme:
+      /libraries/slick-carousel/slick/slick.css: { preprocess: false }
+      /libraries/slick-carousel/slick/slick-theme.css: { preprocess: false }
+  js:
+    /libraries/slick-carousel/slick/slick.min.js: { minified.true }
+  dependencies:
+    - core/jquery
 
 # CSS libraries for Layout plugins.
 onecol:
