@@ -690,7 +690,8 @@
 }
 
 .paragraph--type--section.bg-yellow {
-  .paragraph--type--articles.list {
+  .paragraph--type--articles.list,
+  .paragraph--type--featured-content.list {
     .article-created-date {
       color: $secondary;
     }
@@ -700,8 +701,10 @@
 .paragraph--type--section.bg-yellow {
 
   .paragraph--type--articles.list,
-  .paragraph--type--people.list {
-    .card {
+  .paragraph--type--people.list,
+  .paragraph--type--featured-content.list {
+    .card,
+    .node--view-mode-teaser {
       @include bg-yellow;
     }
 
