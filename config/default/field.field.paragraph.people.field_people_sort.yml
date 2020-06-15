@@ -1,0 +1,23 @@
+uuid: ad9a326d-c460-48e0-a88b-b841a2b3ed7c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_people_sort
+    - paragraphs.paragraphs_type.people
+  module:
+    - options
+id: paragraph.people.field_people_sort
+field_name: field_people_sort
+entity_type: paragraph
+bundle: people
+label: Sort
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: block_people_slf
+default_value_callback: ''
+settings: {  }
+field_type: list_string

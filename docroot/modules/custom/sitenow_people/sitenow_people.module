@@ -14,6 +14,9 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\views\ViewExecutable;
+use Drupal\Component\Utility\Html;
+use Drupal\views\Views;
+use Drupal\views\Entity\View;
 use Drupal\Core\Render\Element;
 
 /**
@@ -230,6 +233,20 @@ function sitenow_people_preprocess_field(&$variables) {
 }
 
 /**
+ * Implements hook_uip_classes_alter().
+ */
+function sitenow_people_uip_classes_alter(&$options, $entity, $bundle) {
+  switch ($bundle) {
+    case 'people':
+      $options['hide-descriptions'] = 'Hide Biographies';
+      $options['hide-images'] = 'Hide Images';
+      $options['grid'] = 'Grid';
+      $options['masonry'] = 'Masonry';
+      break;
+  }
+}
+
+/**
  * Implements hook_views_pre_render().
  */
 function sitenow_people_views_pre_render(ViewExecutable $view) {
@@ -237,5 +254,181 @@ function sitenow_people_views_pre_render(ViewExecutable $view) {
   // for accessibility.
   if ($view->id() == "people" && $view->current_display == 'page_people_table') {
     $view->field["draggableviews"]->options["label"] = 'Sort Control';
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_people_preprocess_paragraph(&$variables) {
+  $paragraph = $variables['paragraph'];
+  switch ($paragraph->bundle()) {
+    case 'people':
+      $admin_context = \Drupal::service('router.admin_context');
+      if (!$admin_context->isAdminRoute()) {
+
+        // Display title if it exists.
+        if ($paragraph->hasField('field_uip_display_title')) {
+          if ($paragraph->field_uip_display_title->value == 1) {
+            $variables['display_title'] = TRUE;
+          }
+        }
+
+        if ($paragraph->hasField('field_uip_classes') && !$paragraph->get('field_uip_classes')->isEmpty()) {
+          $classes = $paragraph->get('field_uip_classes')->getValue();
+          // Clean array of classes selected.
+          $classes = array_column($classes, 'value');
+          // Check for grid classes otherwise add list class.
+          $display_options = [
+            'grid',
+            'masonry',
+          ];
+          $result = array_intersect($display_options, $classes);
+          if (!$result) {
+            $variables['attributes']['class'][] = 'list';
+          }
+        }
+        else {
+          $variables['attributes']['class'][] = 'list';
+        }
+        // Get field_uip_colwidth value.
+        if ($paragraph->hasField('field_uip_colwidth')) {
+          $variables['attributes']['class'][] = $paragraph->field_uip_colwidth->value;
+        }
+        // Get field_uip_id value.
+        if ($paragraph->hasField('field_uip_id')) {
+          $variables['attributes']['id'][] = Html::getUniqueId($paragraph->field_uip_id->value);
+        }
+
+        if ($paragraph->hasField('field_people_sort') && !$paragraph->get('field_people_sort')->isEmpty()) {
+          if ($paragraph->field_people_sort->value == 'block_people_slf') {
+            $view = Views::getView('people_block');
+            $view->setDisplay('block_people_slf');
+          }
+          elseif ($paragraph->field_people_sort->value == 'block_people_sfl') {
+            $view = Views::getView('people_block');
+            $view->setDisplay('block_people_sfl');
+          }
+        }
+
+        if ($paragraph->hasField('field_reference') && !$paragraph->get('field_reference')->isEmpty()) {
+          $tids = $paragraph->get('field_reference')->getValue();
+          // Clean array of tids selected.
+          $tids = array_column($tids, 'target_id');
+        }
+        else {
+          $tids = ['all'];
+        }
+        // Contextual relationship filter.
+        $args = implode('+', $tids);
+        $view->setArguments([$args]);
+
+        if ($paragraph->hasField('field_uip_items') && !$paragraph->get('field_uip_items')->isEmpty()) {
+          $items = $paragraph->field_uip_items->value;
+          $view->setItemsPerPage($items);
+          $view->setExposedInput([
+            'items_per_page' => $items,
+          ]);
+        }
+        $pager_type = 'some';
+        // Show pager if it exists and is set.
+        if ($paragraph->hasField('field_uip_pager')) {
+          if ($paragraph->field_uip_pager->value == 1) {
+            $pager_type = 'full';
+          }
+        }
+
+        $pager = $view->display_handler->getOption('pager');
+        // IF show pager, change pager_type to 'full'.
+        $pager['type'] = $pager_type;
+        $view->display_handler->setOption('pager', $pager);
+
+        $view->preExecute();
+        $view->execute();
+        $variables['content']['view'] = $view->render();
+
+        // If we have more link checked and link provided, pass it.
+        if ($paragraph->hasField('field_people_more')) {
+          $more = ($paragraph->field_people_more->value == 1) ? TRUE : FALSE;
+          if ($more == TRUE) {
+            $variables['more'] = [
+              '#type' => 'container',
+              '#attributes' => [
+                'class' => 'more-link',
+              ],
+            ];
+
+            $view = View::load('people');
+            $default =& $view->getDisplay('default');
+
+            if (!empty($more_path = $paragraph->get('field_people_more_path')->getValue())) {
+              $url = Url::fromUri($more_path[0]['uri']);
+            }
+
+            // Check to see if other displays are enabled before setting more link.
+            $displays = [
+              'page_people_sfl',
+              'page_people_slf',
+              'page_people_table',
+            ];
+            foreach ($displays as $display) {
+              if ($view->getDisplay($display)['display_options']['enabled'] == TRUE) {
+                $url = Url::fromRoute('view.people.' . $display);
+                break;
+              }
+            }
+
+            if (isset($url)) {
+              $variables['more']['btn'] = [
+                '#type' => 'link',
+                '#title' => 'View more ' . strtolower($default['display_options']['title']),
+                '#url' => $url,
+                '#attributes' => [
+                  'class' => ['btn', 'btn-primary'],
+                ],
+              ];
+            }
+          }
+        }
+      }
+
+      break;
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $view = $form_state->get('view');
+  if ($view->id() == 'people_block') {
+    if ($view->current_display == 'block_people_sfl' || $view->current_display == 'block_people_slf') {
+      $exposed_input = $view->getExposedInput();
+      if (isset($exposed_input["items_per_page"])) {
+        $form["items_per_page"]["#options"] = [$exposed_input["items_per_page"] => $exposed_input["items_per_page"]];
+        $form["#attributes"]["class"][] = 'hidden';
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ */
+function sitenow_people_field_widget_paragraphs_form_alter(&$element, &$form_state, $context) {
+  if ($element["#paragraph_type"] == 'people') {
+    if (!empty($element['subform']['field_people_more'])) {
+      $parents_array = $element['subform']['#parents'];
+      $parents = array_shift($parents_array) . '[' . implode('][', $parents_array) . ']';
+      if (!empty($element['subform']['field_people_more_path'])) {
+        $element['subform']['field_people_more_path']['#states'] = [
+          'visible' => [
+            ':input[name="' . $parents . '[field_people_more][value]"]' => [
+              'checked' => TRUE,
+            ],
+          ],
+        ];
+      }
+    }
   }
 }

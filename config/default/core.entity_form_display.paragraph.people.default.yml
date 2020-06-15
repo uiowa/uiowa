@@ -1,0 +1,125 @@
+uuid: 9d0a1058-d822-4117-bf46-5992140134ad
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.people.field_people_more
+    - field.field.paragraph.people.field_people_more_path
+    - field.field.paragraph.people.field_people_sort
+    - field.field.paragraph.people.field_reference
+    - field.field.paragraph.people.field_uip_classes
+    - field.field.paragraph.people.field_uip_colwidth
+    - field.field.paragraph.people.field_uip_display_title
+    - field.field.paragraph.people.field_uip_id
+    - field.field.paragraph.people.field_uip_items
+    - field.field.paragraph.people.field_uip_pager
+    - field.field.paragraph.people.field_uip_title
+    - paragraphs.paragraphs_type.people
+  module:
+    - field_group
+    - link
+third_party_settings:
+  field_group:
+    group_uip_settings:
+      children:
+        - field_uip_colwidth
+        - field_uip_classes
+        - field_uip_id
+      parent_name: ''
+      weight: 8
+      format_type: details
+      format_settings:
+        id: ''
+        classes: ''
+        open: false
+        required_fields: true
+      label: 'People listing settings'
+      region: content
+id: paragraph.people.default
+targetEntityType: paragraph
+bundle: people
+mode: default
+content:
+  field_people_more:
+    weight: 5
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_people_more_path:
+    weight: 6
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+    region: content
+  field_people_sort:
+    weight: 7
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_reference:
+    weight: 2
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete_tags
+    region: content
+  field_uip_classes:
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_uip_colwidth:
+    weight: 9
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_uip_display_title:
+    weight: 1
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_uip_id:
+    weight: 11
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_uip_items:
+    weight: 3
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_uip_pager:
+    weight: 4
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_uip_title:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden:
+  created: true
+  status: true

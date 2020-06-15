@@ -23,6 +23,7 @@
     a:not(.btn):not(.bttn):not(.button) {
       color: $primary;
     }
+
     .alert a {
       color: $secondary !important;
     }
@@ -80,6 +81,7 @@
         text-decoration: none;
       }
     }
+
     .alert a {
       color: $secondary !important;
     }
@@ -314,4 +316,27 @@ div.example2 p.special {
   width: 100%;
   object-fit: cover;
   object-position: center;
+}
+
+// Set margin for first paragraph section below page title if using bg color
+.block-page-title-block+.region-content .field__item:first-child .paragraph--type--section {
+
+  &.bg-light:first-child,
+  &.bg-dark:first-child,
+  &.bg-black:first-child,
+  &.bg-yellow:first-child,
+    {
+    margin-top: $gutter;
+  }
+}
+
+.block-page-title-block.element-invisible+.region-content .field__item:first-child .paragraph--type--section {
+
+  &.bg-light:first-child,
+  &.bg-dark:first-child,
+  &.bg-black:first-child,
+  &.bg-yellow:first-child,
+    {
+    margin-top: 0;
+  }
 }
