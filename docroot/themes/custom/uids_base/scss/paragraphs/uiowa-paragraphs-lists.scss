@@ -742,3 +742,23 @@
     }
   }
 }
+
+
+
+@media all and (-ms-high-contrast: none),
+(-ms-high-contrast: active) {
+  .paragraph--type--articles.list .card__body,
+  .paragraph--type--people.list .card__body,
+  .paragraph--type--events.list .card__body,
+  .view-display-id-page_articles .card__body,
+  .paragraph--type--featured-content.list .card__body,
+  .view-display-id-page_articles .view-content {
+    flex: 1 !important;
+  }
+  .paragraph--type--articles.list .view-content,
+  .paragraph--type--people.list .view-content,
+  .view-display-id-page_articles .view-content,
+  .paragraph--type--featured-content.list .field--name-field-featured-content {
+    display: block !important;
+  }
+}
