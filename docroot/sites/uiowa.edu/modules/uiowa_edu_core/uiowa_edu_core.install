@@ -165,10 +165,12 @@ function uiowa_edu_core_update_8004() {
     //   $new_field->save();
     // }
 
-    $field_storage->set('type', 'text');
-    $field_storage->set('settings', [
+    $field_storage
+      ->set('type', 'text')
+      ->set('settings', [
       'max_length' => 255,
-    ]);
+      ])
+      ->save();
 
     if (!is_null($rows)) {
       foreach ($rows as $row) {
