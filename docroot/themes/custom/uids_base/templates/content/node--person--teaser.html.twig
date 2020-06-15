@@ -70,34 +70,25 @@
  *   in different view modes.
  */
 #}
+
 {%
   set classes = [
-  'node',
-  'node--type-' ~ node.bundle|clean_class,
-  node.isPromoted() ? 'node--promoted',
-  node.isSticky() ? 'node--sticky',
-  not node.isPublished() ? 'node--unpublished',
-  view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
-  'media',
+  'card--list'
 ]
 %}
-{{ attach_library('classy/node') }}
-{{ attach_library('uids_base/node-type-person') }}
-<article{{ attributes.addClass(classes) }}>
-  <div{{ content_attributes.addClass('node__content media-body') }}>
-    {{ title_prefix }}
-    {% if not page %}
-      <h3{{ title_attributes }}>
-        <a href="{{ url }}" rel="bookmark">{{ label }}</a>{% if content.field_person_credential %} <small class="subtitle h6">{{ content.field_person_credential.0 }}</small>{% endif %}
-      </h3>
-    {% endif %}
-    {{ title_suffix }}
 
-    {{ content|without('field_image', 'field_image', 'field_person_credential', 'links') }}
-  </div>
-  {% if content.field_image %}
-    <figure class="content-image">
-      {{ content.field_image }}
-    </figure>
-  {% endif %}
-</article>
+{{ attach_library('classy/node') }}
+{{ attach_library('uids_base/paragraphs-lists') }}
+{{ attach_library('uids_base/node-type-person') }}
+
+{% set person_card = {
+  'attributes': attributes.addClass(classes),
+  'card_image': content.field_image | render,
+  'card_text': content|without('field_image', 'field_image', 'field_person_credential', 'links'),
+  'card_author': content.field_person_credential.0,
+  'card_title': label | render,
+  'card_link_url': url,
+  'heading_level': 'h3'
+} %}
+
+{% embed '@uids_base/uids/card.html.twig' with person_card only %}{% endembed %}

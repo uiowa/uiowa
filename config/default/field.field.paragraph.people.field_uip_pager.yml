@@ -1,0 +1,23 @@
+uuid: 0ac51519-0dc4-4f35-99d0-da5844e8b899
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_uip_pager
+    - paragraphs.paragraphs_type.people
+id: paragraph.people.field_uip_pager
+field_name: field_uip_pager
+entity_type: paragraph
+bundle: people
+label: 'Show pager'
+description: 'Depending on the number of results and the number of items, this will display a pager.'
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean
