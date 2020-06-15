@@ -112,7 +112,8 @@
   }
 
   .field--name-field-teaser {
-    @include card-paragraph margin-top: $gutter;
+    @include card-paragraph;
+    margin-top: $gutter;
   }
 
   .media-body {
@@ -197,6 +198,11 @@
   table td,
   table th {
     padding: 0;
+  }
+
+  .field--name-field-teaser {
+    @include card-paragraph;
+    margin-top: $gutter;
   }
 
   tr {
@@ -645,6 +651,7 @@
 }
 
 .paragraph--type--section.bg-light {
+
   .paragraph--type--articles.list,
   .paragraph--type--people.list {
 
@@ -690,6 +697,7 @@
 }
 
 .paragraph--type--section.bg-yellow {
+
   .paragraph--type--articles.list,
   .paragraph--type--featured-content.list {
     .article-created-date {
@@ -703,6 +711,7 @@
   .paragraph--type--articles.list,
   .paragraph--type--people.list,
   .paragraph--type--featured-content.list {
+
     .card,
     .node--view-mode-teaser {
       @include bg-yellow;
