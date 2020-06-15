@@ -96,7 +96,10 @@
     <footer class="node__meta">
       {{ author_picture }}
       <div{{ author_attributes.addClass('node__submitted') }}>
-        {% trans %}Submitted by {{ author_name }} on {{ date }}{% endtrans %}
+        {% trans %}Submitted by
+        {{ author_name }}
+        on
+        {{ date }}{% endtrans %}
         {{ metadata }}
       </div>
     </footer>
@@ -116,6 +119,7 @@
             {% endif %}
           </figure>
         {% endif %}
+
         {{ content|without('field_image', 'field_person_bio', 'content_moderation_control') }}
       </div>
       <div class="col-md-6 col-lg-9 person-content">
