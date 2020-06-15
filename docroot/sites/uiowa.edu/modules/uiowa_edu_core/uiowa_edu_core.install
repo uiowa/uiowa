@@ -87,6 +87,101 @@ function uiowa_edu_core_update_8003() {
 }
 
 /**
+ * Update several fields from plain text to formatted text.
+ */
+function uiowa_edu_core_update_8004() {
+
+  $fields = [
+    'field_uiowa_banner_excerpt' => [
+      'table' => 'block_content__field_uiowa_banner_excerpt',
+      'revision_table' => 'block_content_revision__field_uiowa_banner_excerpt',
+      'format_col' => 'field_uiowa_banner_excerpt_format',
+    ],
+    'field_uiowa_card_excerpt' => [
+      'table' => 'block_content__field_uiowa_card_excerpt',
+      'revision_table' => 'block_content_revision__field_uiowa_card_excerpt',
+      'format_col' => 'field_uiowa_card_excerpt_format',
+    ],
+  ];
+
+  $database = \Drupal::database();
+
+  foreach ($fields as $field_name => $field) {
+    $table = $field['table'];
+    $revision_table = $field['revision_table'];
+    $entity_type = 'block_content';
+
+    $field_storage = FieldStorageConfig::loadByName($entity_type, $field_name);
+    if (is_null($field_storage)) {
+      continue;
+    }
+
+    // Fetch data currently stored in these fields.
+    $rows = NULL;
+    $revision_rows = NULL;
+    if ($database->schema()->tableExists($table)) {
+      $rows = $database
+        ->select($table, 't')
+        ->fields('t')
+        ->execute()
+        ->fetchAll();
+      $revision_rows = $database
+        ->select($revision_table, 'r')
+        ->fields('r')
+        ->execute()
+        ->fetchAll();
+    }
+
+    $new_fields = array();
+    foreach ($field_storage->getBundles() as $bundle => $label) {
+      $old_field = FieldConfig::loadByName($entity_type, $bundle, $field_name);
+      $new_field = $old_field->toArray();
+      $new_field['field_type'] = 'text';
+      $new_fields[] = $new_field;
+      $old_field->delete();
+    }
+
+    $new_field_storage = $field_storage->toArray();
+    $new_field_storage['type'] = 'text';
+    $new_field_storage['module'] = 'text';
+    $new_field_storage['settings'] = [
+      'max_length' => 255,
+    ];
+
+    field_purge_batch(250);
+
+    FieldStorageConfig::create($new_field_storage)
+      ->save();
+    
+    foreach ($new_fields as $new_field) {
+      $new_field = FieldConfig::create($new_field);
+      $new_field->save();
+    }
+
+    if (!is_null($rows)) {
+      foreach ($rows as $row) {
+        $row = (array) $row;
+        $row[$field['format_col']] = 'filtered_html';
+        $database
+          ->insert($table)
+          ->fields($row)
+          ->execute();
+      }
+    }
+    if (!is_null($revision_rows)) {
+      foreach ($revision_rows as $row) {
+        $row = (array) $row;
+        $row[$field['format_col']] = 'filtered_html';
+        $database
+          ->insert($revision_table)
+          ->fields($row)
+          ->execute();
+      }
+    }
+  }
+}
+
+/**
  * Implements hook_uninstall().
  */
 function uiowa_edu_core_uninstall() {
