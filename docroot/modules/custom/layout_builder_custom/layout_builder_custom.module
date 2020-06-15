@@ -49,31 +49,3 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
     'label' => $label,
   ];
 }
-
-/**
- * Implements hook_block_view_BASE_BLOCK_ID_alter().
- *
- * Adds a pre-render callback which allows changing the block content before
- * rendering.
- */
-function layout_builder_custom_block_view_alter(array &$build, BlockPluginInterface $block) {
-  $test = 'thing';
-  // $build['#pre_render'][] = '_layout_builder_custom_block_content_multiple_pre_render';
-}
-
-/**
- * Pre-render callback for block user_login_block.
- *
- * Adds a link to the username reminder page.
- */
-function _layout_builder_custom_block_content_multiple_pre_render(array $build) {
-  $user_links = &$build['content']['user_links'];
-  $items = &$user_links['#items'];
-  $items['username-reminder'] = \Drupal::l(t('Look up your username'), new Url('username_reminder.reminder', [], [
-    'attributes' => [
-      'title' => t('Look up your username.'),
-      'class' => ['username-reminder'],
-    ],
-  ]));
-  return $build;
-}
