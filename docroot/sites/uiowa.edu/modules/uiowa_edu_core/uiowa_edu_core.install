@@ -143,14 +143,14 @@ function uiowa_edu_core_update_8004() {
       }
     }
 
-    $new_fields = array();
-    foreach ($field_storage->getBundles() as $bundle => $label) {
-      $old_field = FieldConfig::loadByName($entity_type, $bundle, $field_name);
-      $new_field = $old_field->toArray();
-      $new_field['field_type'] = 'text';
-      $new_fields[] = $new_field;
-      // $old_field->delete();
-    }
+    // $new_fields = array();
+    // foreach ($field_storage->getBundles() as $bundle => $label) {
+    //   $old_field = FieldConfig::loadByName($entity_type, $bundle, $field_name);
+    //   $new_field = $old_field->toArray();
+    //   $new_field['field_type'] = 'text';
+    //   $new_fields[] = $new_field;
+    //   // $old_field->delete();
+    // }
 
     $new_field_storage = $field_storage->toArray();
     $new_field_storage['type'] = 'text';
@@ -169,7 +169,7 @@ function uiowa_edu_core_update_8004() {
     if (!is_null($rows)) {
       foreach ($rows as $row) {
         $row = (array) $row;
-        $row[$field['format_col']] = 'filtered_html';
+        // $row[$field['format_col']] = 'filtered_html';
         $database
           ->insert($table)
           ->fields($row)
@@ -179,7 +179,7 @@ function uiowa_edu_core_update_8004() {
     if (!is_null($revision_rows)) {
       foreach ($revision_rows as $row) {
         $row = (array) $row;
-        $row[$field['format_col']] = 'filtered_html';
+        // $row[$field['format_col']] = 'filtered_html';
         $database
           ->insert($revision_table)
           ->fields($row)
