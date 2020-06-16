@@ -380,8 +380,8 @@ function sitenow_update_8019() {
       }
     }
 
-    $new_fields = array();
-    $weights = array();
+    $new_fields = []];
+    $weights = []];
     foreach ($field_storage->getBundles() as $bundle => $label) {
       $old_field = FieldConfig::loadByName($entity_type, $bundle, $field_name);
       $new_field = $old_field->toArray();
@@ -409,7 +409,7 @@ function sitenow_update_8019() {
     $new_field_storage['settings'] = [];
     // Deleting at the field_storage level takes care of the bundles as well.
     $field_storage->delete();
-  
+
     // Need to purge in order for new field to be created after deleting the old.
     field_purge_batch(100);
 
@@ -418,7 +418,7 @@ function sitenow_update_8019() {
     $new_field_storage->save();
 
     // Create our new fields to match the field storages.
-    foreach($new_fields as $new_field) {
+    foreach ($new_fields as $new_field) {
       $new_field_config = FieldConfig::create($new_field);
       $new_field_config->save();
     }
@@ -449,7 +449,7 @@ function sitenow_update_8019() {
     foreach ($weights as $display_mode => $view_modes) {
       foreach ($view_modes as $view_mode => $weight) {
         if ($weight) {
-          $display = \Drupal::entityTypeManager()
+          \Drupal::entityTypeManager()
             ->getStorage($display_mode)
             ->load($view_mode)
             ->setComponent($field_name, [
