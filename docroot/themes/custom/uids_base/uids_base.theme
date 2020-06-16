@@ -197,6 +197,25 @@ function uids_base_preprocess_node(&$variables) {
 function uids_base_preprocess_field(&$variables) {
   $variables['page_featured_image'] = $variables['field_name'] == 'field_image';
 
+  // Set the caption if this is 'field_image'.
+  // If the global caption
+  if ($variables['field_name'] === 'field_image') {
+    $caption = NULL;
+    if (isset($variables['element'][0]) && isset($variables['element'][0]['#media'])) {
+      /** @var \Drupal\media\Entity\Media $media */
+      $media = $variables['element'][0]['#media'];
+      if ($media && $media->hasField('field_media_caption')) {
+        $caption = $media->get('field_media_caption')->getValue();
+      }
+    }
+    /** @var \Drupal\node\NodeInterface $node */
+    if (!$caption && (NULL !== $node = $variables['element']['#object']) && $node->hasField('field_image_caption')) {
+      $caption = $node->get('field_image_caption')->getValue();
+    }
+
+    $variables['caption'] = $caption;
+  }
+
   if (isset($variables['page_featured_image'])) {
     $block_manager = \Drupal::service('plugin.manager.block');
     $config = [];
