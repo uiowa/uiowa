@@ -12,8 +12,8 @@ div[role=article].node--type-page.node--view-mode-teaser {
   }
 }
 
-.content__container .page__container--edge.uids-menu-enabled .lb__container,
-.content__mixed .page__container--edge.uids-menu-enabled .lb__container {
+.content__container .page__container--edge.layout--has-sidebar .lb__container,
+.content__mixed .page__container--edge.layout--has-sidebar .lb__container {
   display: flex;
   flex-wrap: wrap;
   @extend %container;
@@ -25,19 +25,19 @@ div[role=article].node--type-page.node--view-mode-teaser {
 }
 
 
-.content__container .page__container--edge.uids-menu-enabled.sidebar-invisible .lb__container,
-.content__mixed .page__container--edge.uids-menu-enabled.sidebar-invisible .lb__container {
+.content__container .page__container--edge.layout--has-sidebar.sidebar-invisible .lb__container,
+.content__mixed .page__container--edge.layout--has-sidebar.sidebar-invisible .lb__container {
   max-width: 100%;
 }
 
-.content__container .layout__container.uids-menu-disabled,
-.content__container .layout__container.uids-menu-enabled.sidebar-invisible,
-.content__mixed .layout__container.uids-menu-disabled,
-.content__mixed .layout__container.uids-menu-enabled.sidebar-invisible {
+.content__container .layout__container.layout--no-sidebar,
+.content__container .layout__container.layout--has-sidebar.sidebar-invisible,
+.content__mixed .layout__container.layout--no-sidebar,
+.content__mixed .layout__container.layout--has-sidebar.sidebar-invisible {
   margin-bottom: 0;
 }
 
-.uids-menu-enabled {
+.layout--has-sidebar {
   .layout__region--sidebar {
     @include breakpoint(menu) {
       flex: 0 1 24.25%;
@@ -58,7 +58,7 @@ div[role=article].node--type-page.node--view-mode-teaser {
   }
 }
 
-.uids-menu-enabled .layout__region--main {
+.layout--has-sidebar .layout__region--main {
   @include breakpoint(menu) {
     flex: 0 1 71.75%;
   }
