@@ -1,0 +1,7 @@
+{% embed '@uids_base/uids/image-caption.html.twig' %}
+  {% block caption %}
+    {% for item in items %}
+      {{ item.content }}
+    {% endfor %}
+  {% endblock %}
+{% endembed %}
