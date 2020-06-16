@@ -127,44 +127,54 @@ function uiowa_edu_core_update_8004() {
         ->fields('t')
         ->execute()
         ->fetchAll();
-      // Truncate table instead of deleting--needed to maintain block context connections.
-      $database
-        ->truncate($table)
-        ->execute();
       if ($database->schema()->tableExists($revision_table)) {
         $revision_rows = $database
           ->select($revision_table, 'r')
           ->fields('r')
           ->execute()
           ->fetchAll();
-        $database
-          ->truncate($revision_table)
-          ->execute();
+
       }
     }
 
-    // $new_fields = array();
-    // foreach ($field_storage->getBundles() as $bundle => $label) {
-    //   $old_field = FieldConfig::loadByName($entity_type, $bundle, $field_name);
-    //   $new_field = $old_field->toArray();
-    //   $new_field['field_type'] = 'text';
-    //   $new_fields[] = $new_field;
-    //   // $old_field->delete();
-    // }
+    $new_fields = array();
+    foreach ($field_storage->getBundles() as $bundle => $label) {
+      $old_field = FieldConfig::loadByName($entity_type, $bundle, $field_name);
+      $new_field = $old_field->toArray();
+      $new_field['field_type'] = 'text_long';
+      $new_field['settings'] = [];
+      $new_fields[] = $new_field;
+    }
 
     $new_field_storage = $field_storage->toArray();
-    $new_field_storage['type'] = 'text';
-    // $new_field_storage['module'] = 'text';
-    $new_field_storage['settings'] = [
-      'max_length' => 255,
-    ];
+    $new_field_storage['type'] = 'text_long';
+    $new_field_storage['settings'] = [];
+  
+    // Truncate tables instead of deleting--needed to maintain block context connections.
+    if ($database->schema()->tableExists($table)) {
+      $database
+        ->truncate($table)
+        ->execute();
+    }
+    if ($database->schema()->tableExists($revision_table)) {
+      $database
+        ->truncate($revision_table)
+        ->execute();
+    }
 
-    // field_purge_batch(250);
+    // This will break context connections, despite truncate above, but will allow new field.
+    $field_storage->delete();
+  
+    // Need to purge in order for new field to be created, if we delete the old.
+    field_purge_batch(100);
 
     $new_field_storage = FieldStorageConfig::create($new_field_storage);
-    $new_field_storage->original = $new_field_storage;
-    $new_field_storage->enforceIsNew(FALSE);
     $new_field_storage->save();
+
+    foreach($new_fields as $new_field) {
+      $new_field_config = FieldConfig::create($new_field);
+      $new_field_config->save();
+    }
 
     if (!is_null($rows)) {
       foreach ($rows as $row) {
