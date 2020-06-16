@@ -167,6 +167,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
         case 'page':
           $paragraph->set('field_text_body', [
             'value' => $content,
+            'format' => 'filtered_html'
           ]);
           $paragraph->save();
           break;
