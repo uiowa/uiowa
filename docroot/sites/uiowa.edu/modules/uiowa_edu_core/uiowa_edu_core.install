@@ -149,23 +149,10 @@ function uiowa_edu_core_update_8004() {
     $new_field_storage = $field_storage->toArray();
     $new_field_storage['type'] = 'text_long';
     $new_field_storage['settings'] = [];
-  
-    // Truncate tables instead of deleting--needed to maintain block context connections.
-    // if ($database->schema()->tableExists($table)) {
-    //   $database
-    //     ->truncate($table)
-    //     ->execute();
-    // }
-    // if ($database->schema()->tableExists($revision_table)) {
-    //   $database
-    //     ->truncate($revision_table)
-    //     ->execute();
-    // }
 
-    // This will break context connections, despite truncate above, but will allow new field.
     $field_storage->delete();
   
-    // Need to purge in order for new field to be created, if we delete the old.
+    // Need to purge in order for new field to be created, after deleting the old.
     field_purge_batch(100);
 
     $new_field_storage = FieldStorageConfig::create($new_field_storage);
