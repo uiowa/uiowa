@@ -108,6 +108,6 @@
   {% endif %}
 
   <div{{ content_attributes.addClass('node__content') }}>
-    {{ content|without('field_image',  'field_image_caption') }}
+    {{ content|without('field_image', 'article_author', 'article_created_date', 'field_image_caption', 'field_article_source_org', 'field_article_source_link') }}
   </div>
 </article>
