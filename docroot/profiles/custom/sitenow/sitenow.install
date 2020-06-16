@@ -380,8 +380,8 @@ function sitenow_update_8019() {
       }
     }
 
-    $new_fields = []];
-    $weights = []];
+    $new_fields = [];
+    $weights = [];
     foreach ($field_storage->getBundles() as $bundle => $label) {
       $old_field = FieldConfig::loadByName($entity_type, $bundle, $field_name);
       $new_field = $old_field->toArray();
