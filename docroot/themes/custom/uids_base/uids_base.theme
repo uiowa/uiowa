@@ -198,7 +198,7 @@ function uids_base_preprocess_field(&$variables) {
   $variables['page_featured_image'] = $variables['field_name'] == 'field_image';
 
   // Set the caption if this is 'field_image'.
-  // If the global caption
+  // If the global caption.
   if ($variables['field_name'] === 'field_image') {
     $caption = NULL;
     if (isset($variables['element'][0]) && isset($variables['element'][0]['#media'])) {
