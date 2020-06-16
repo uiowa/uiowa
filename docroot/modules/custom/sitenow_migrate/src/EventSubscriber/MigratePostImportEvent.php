@@ -35,7 +35,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
 
   /**
    * The database connection.
-   * 
+   *
    * @var \Drupal\Core\Database\Connection
    */
   protected $connection;
