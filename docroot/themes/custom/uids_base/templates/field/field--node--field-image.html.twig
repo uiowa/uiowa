@@ -52,7 +52,7 @@
   {{ item.content }}
 {% endfor %}
 {# @todo Caption should be per image. #}
-{% if caption %}
+{% if caption|render %}
   <div class="caption-wrapper">
     {{ caption }}
   </div>
