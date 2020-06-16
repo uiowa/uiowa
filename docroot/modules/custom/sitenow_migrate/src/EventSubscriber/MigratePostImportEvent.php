@@ -112,7 +112,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
         $this->sourceToDestIds = $this->fetchMapping();
         $this->d7Aliases = $this->fetchAliases(TRUE);
         $this->d8Aliases = $this->fetchAliases();
-        \Drupal::logger('sitenow_migrate')->notice(t('Checking for possible broken links'));
+        $this->logger->notice($this->t('Checking for possible broken links'));
         $candidates = $this->checkForPossibleLinkBreaks();
         $this->updateInternalLinks($candidates);
       case 'd7_file':
@@ -129,7 +129,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
     // Each candidate is an nid of a page suspected to contain a broken link.
     foreach ($candidates as $candidate) {
 
-      \Drupal::logger('sitenow_migrate')->notice(t('Checking node id @nid', [
+      $this->logger->notice($this->t('Checking node id @nid', [
         '@nid' => $candidate,
       ]));
 
@@ -186,7 +186,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
    */
   private function linkReplace($match) {
     $old_link = $match[1];
-    \Drupal::logger('sitenow_migrate')->notice(t('Old link found... @old_link', [
+    $this->logger->notice($this->t('Old link found... @old_link', [
       '@old_link' => $old_link,
     ]));
 
@@ -211,10 +211,10 @@ class MigratePostImportEvent implements EventSubscriberInterface {
           // Take the node id.
           $old_nid = $link_parts[$i + 1];
           $new_nid = $this->sourceToDestIds[$old_nid];
-          \Drupal::logger('sitenow_migrate')->notice(t('Old nid... @old_nid', [
+          $this->logger->notice($this->t('Old nid... @old_nid', [
             '@old_nid' => $old_nid,
           ]));
-          \Drupal::logger('sitenow_migrate')->notice(t('New nid... @new_nid', [
+          $this->logger->notice($this->t('New nid... @new_nid', [
             '@new_nid' => $new_nid,
           ]));
           // If we don't have the correct mapping, return the original link.
@@ -229,7 +229,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
         $d7_nid = $this->d7Aliases[$old_link];
         $new_link = (isset($this->sourceToDestIds[$d7_nid])) ? '<a href="/node/' . $this->sourceToDestIds[$d7_nid] . '"' : $match[0];
       }
-      \Drupal::logger('sitenow_migrate')->notice(t('New link found from /node/ path... @new_link', [
+      $this->logger->notice($this->t('New link found from /node/ path... @new_link', [
         '@new_link' => $new_link . $suffix,
       ]));
 
@@ -242,7 +242,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
       if (preg_match($pattern, $old_link, $abs_match)) {
         $d7_nid = $this->d7Aliases[$abs_match[4]];
         $new_link = (isset($this->sourceToDestIds[$d7_nid])) ? '<a href="/node/' . $this->sourceToDestIds[$d7_nid] . '"' : '<a href="/' . $abs_match[4] . '"';
-        \Drupal::logger('sitenow_migrate')->notice(t('New link found from absolute path... @new_link', [
+        $this->logger->notice($this->t('New link found from absolute path... @new_link', [
           '@new_link' => $new_link,
         ]));
 
@@ -285,7 +285,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
     $candidates = array_merge($candidates, $result->fetchCol());
 
     foreach ($candidates as $candidate) {
-      \Drupal::logger('sitenow_migrate')->notice(t('Possible broken link found in node @candidate', [
+      $this->logger->notice($this->t('Possible broken link found in node @candidate', [
         '@candidate' => $candidate,
       ]));
     }
