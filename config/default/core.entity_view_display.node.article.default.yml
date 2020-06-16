@@ -108,7 +108,7 @@ third_party_settings:
                 entity: layout_builder.entity
               id: 'extra_field_block:node:article:article_created_date'
             additional: {  }
-            weight: 3
+            weight: 4
           1ff4f36b-9a8d-48bd-abbd-abefa66014f1:
             uuid: 1ff4f36b-9a8d-48bd-abbd-abefa66014f1
             region: content
@@ -124,7 +124,7 @@ third_party_settings:
                 third_party_settings: {  }
                 type: string
             additional: {  }
-            weight: 4
+            weight: 6
           8c17705e-7015-4555-bee3-1d482b839802:
             uuid: 8c17705e-7015-4555-bee3-1d482b839802
             region: content
@@ -144,7 +144,7 @@ third_party_settings:
                 third_party_settings: {  }
                 type: link
             additional: {  }
-            weight: 5
+            weight: 7
           e11264d2-f469-41f9-ae04-db2ce33883fa:
             uuid: e11264d2-f469-41f9-ae04-db2ce33883fa
             region: content
@@ -159,7 +159,7 @@ third_party_settings:
                 third_party_settings: {  }
                 type: text_default
             additional: {  }
-            weight: 6
+            weight: 8
           6dea8df6-16b2-47ef-b6fd-c8a1b9922758:
             uuid: 6dea8df6-16b2-47ef-b6fd-c8a1b9922758
             region: content
@@ -169,7 +169,26 @@ third_party_settings:
                 entity: layout_builder.entity
               id: 'extra_field_block:node:article:links'
             additional: {  }
-            weight: 7
+            weight: 9
+          a0aa4574-dd5c-460d-befb-8eebabd8b817:
+            uuid: a0aa4574-dd5c-460d-befb-8eebabd8b817
+            region: content
+            configuration:
+              id: 'field_block:node:article:field_article_author'
+              label: 'Article Authors'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: inline
+                type: entity_reference_label
+                settings:
+                  link: true
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 5
         third_party_settings: {  }
   layout_builder_restrictions:
     allowed_block_categories: {  }
