@@ -149,11 +149,11 @@ function uiowa_edu_core_update_8004() {
       $new_field['settings'] = [];
       $new_fields[] = $new_field;
       foreach (array_keys($view_modes) as $view_mode) {
-        $entity_view = $entity_type . '.' . $bundle . '.' . $view_mode;
+        $entity_view = $entity_type . '.' . $bundle . '.' . 'default';//$view_mode;
         $view_display = \Drupal::entityTypeManager()
           ->getStorage('entity_view_display')
           ->load($entity_view)
-          ->getComponents($field_name);
+          ->getComponent($field_name);
         $weights['entity_view_display'][$entity_view] = $view_display['weight'];
       }
       $form_display = \Drupal::entityTypeManager()
