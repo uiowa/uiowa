@@ -26,6 +26,10 @@ html {
   font-weight: bold;
 }
 
+.field--label-inline>* {
+  display: inline;
+}
+
 // UIDS
 
 // variables
@@ -43,6 +47,7 @@ html {
   background-color: rgba(52, 58, 64, 0.8) !important;
   color: #fff;
 }
+
 /*
 p {
   margin-top: 0;
@@ -57,11 +62,11 @@ p {
   color: #fff;
 }
 
-.bg-dark .bg-light  *:not(.btn):not(.bttn),
+.bg-dark .bg-light *:not(.btn):not(.bttn),
 .bg-dark .bg-yellow *:not(.btn):not(.bttn),
 .bg-black .bg-light *:not(.btn):not(.bttn),
 .bg-black .bg-yellow *:not(.btn):not(.bttn) {
-  color: $secondary!important;
+  color: $secondary !important;
 }
 
 
@@ -196,49 +201,67 @@ p {
 }
 
 
-@media (min-width: 850px) {
-  .col-md {
+
+.col-md {
+  @include breakpoint(menu) {
     @include flex(1, 0, 0);
     max-width: 100%;
   }
+}
 
-  .col-md-3 {
+.col-md-3 {
+  @include breakpoint(menu) {
     flex: 0 0 25%;
     max-width: 25%;
   }
+}
 
-  .col-md-4 {
+.col-md-4 {
+  @include breakpoint(menu) {
     flex: 0 0 33.333333%;
     max-width: 33.333333%;
   }
+}
 
-  .col-md-6 {
+.col-md-6 {
+  @include breakpoint(menu) {
     flex: 0 0 50%;
     max-width: 50%;
   }
+}
 
-  .col-md-12 {
+.col-md-12 {
+  @include breakpoint(menu) {
     flex: 0 0 100%;
     max-width: 100%;
   }
 }
 
-@media (min-width: 1200px) {
-  .col-xl-3 {
+
+
+
+
+.col-xl-3 {
+  @include breakpoint(lg) {
     flex: 0 0 25%;
     max-width: 25%;
   }
+}
 
-  .col-xl-9 {
+.col-xl-9 {
+  @include breakpoint(lg) {
     flex: 0 0 75%;
     max-width: 75%;
   }
+}
 
-  .col-xl-12 {
+.col-xl-12 {
+  @include breakpoint(lg) {
     flex: 0 0 100%;
     max-width: 100%;
   }
 }
+
 
 .justify-content-start {
   -ms-flex-pack: start !important;
@@ -448,13 +471,19 @@ figure.caption .embedded-entity+figcaption {
   padding: 1rem 2rem;
 }
 
-.btn-secondary, .btn-success, .btn-danger, .btn-info, .btn-warning, .btn-link {
+.btn-secondary,
+.btn-success,
+.btn-danger,
+.btn-info,
+.btn-warning,
+.btn-link {
   @extend %bttn--secondary;
   border: 1px solid $secondary;
   @extend %bttn--focus;
 }
 
-.btn-primary, .button--primary {
+.btn-primary,
+.button--primary {
   @extend %bttn--primary;
   border: 1px solid $primary;
   @extend %bttn--focus;

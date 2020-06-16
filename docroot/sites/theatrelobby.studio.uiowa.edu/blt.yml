@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: studiotheatrelobby.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: studiotheatrelobby
+  human_name: theatrelobby.studio.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: studiotheatrelobby.prod
+drupal:
+  db:
+    database: theatrelobby_studio_uiowa_edu
+uiowa:
+  requester: khellige
