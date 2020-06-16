@@ -151,16 +151,16 @@ function uiowa_edu_core_update_8004() {
     $new_field_storage['settings'] = [];
   
     // Truncate tables instead of deleting--needed to maintain block context connections.
-    if ($database->schema()->tableExists($table)) {
-      $database
-        ->truncate($table)
-        ->execute();
-    }
-    if ($database->schema()->tableExists($revision_table)) {
-      $database
-        ->truncate($revision_table)
-        ->execute();
-    }
+    // if ($database->schema()->tableExists($table)) {
+    //   $database
+    //     ->truncate($table)
+    //     ->execute();
+    // }
+    // if ($database->schema()->tableExists($revision_table)) {
+    //   $database
+    //     ->truncate($revision_table)
+    //     ->execute();
+    // }
 
     // This will break context connections, despite truncate above, but will allow new field.
     $field_storage->delete();
@@ -179,7 +179,7 @@ function uiowa_edu_core_update_8004() {
     if (!is_null($rows)) {
       foreach ($rows as $row) {
         $row = (array) $row;
-        // $row[$field['format_col']] = 'filtered_html';
+        $row[$field['format_col']] = 'filtered_html';
         $database
           ->insert($table)
           ->fields($row)
@@ -189,7 +189,7 @@ function uiowa_edu_core_update_8004() {
     if (!is_null($revision_rows)) {
       foreach ($revision_rows as $row) {
         $row = (array) $row;
-        // $row[$field['format_col']] = 'filtered_html';
+        $row[$field['format_col']] = 'filtered_html';
         $database
           ->insert($revision_table)
           ->fields($row)
