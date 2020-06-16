@@ -108,10 +108,6 @@
   {% endif %}
 
   <div{{ content_attributes.addClass('node__content') }}>
-    <div class="article-meta">
-
-      {{ content.article_created_date }}{{ content.article_author }}{{ content.field_article_source_org }}{{ content.field_article_source_link }}
-    </div>
-    {{ content|without('field_image', 'article_author', 'article_created_date', 'field_image_caption', 'field_article_source_org', 'field_article_source_link') }}
+    {{ content|without('field_image',  'field_image_caption') }}
   </div>
 </article>
