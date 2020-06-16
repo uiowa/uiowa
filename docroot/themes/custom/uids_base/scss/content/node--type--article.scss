@@ -23,59 +23,55 @@ div[role=article].node--type-article {
     margin: $desktop-width-gutter 0;
   }
 
-  .article-meta {
+  .field--name-field-article-author {
+
+    margin: 1rem 0;
+
+    .field__label {
+      display: inline;
+    }
 
     .field__items {
       padding-right: 0;
       display: inline-block;
     }
 
-    .field--name-field-article-author {
-      display: inline-block;
-      font-family: $font-family-serif;
-      font-size: 1.2rem;
+    display: inline-block;
+    font-family: $font-family-serif;
+    font-size: 1.2rem;
 
-      a {
-        text-decoration: none;
+    a {
+      text-decoration: none;
 
-        &:hover,
-        &:focus {
-          text-decoration: underline;
-        }
-      }
-
-      &:after {
-        display: inline-block;
-      }
-
-      .field__items {
-        .field__item {
-          display: inline;
-
-          &:not(:first-child) {
-            padding-left: $sm;
-
-            &:before {
-              content: '| ';
-              color: $grey;
-              padding-right: $sm;
-            }
-          }
-        }
-      }
-
-      .field__label {
-        font-weight: normal;
-        padding-right: 0.25em;
-        display: inline;
-
-        &:before {
-          //content: '| ';
-          //color: $grey;
-        }
+      &:hover,
+      &:focus {
+        text-decoration: underline;
       }
     }
 
+    &:after {
+      display: inline-block;
+    }
+
+    .field__items {
+      .field__item {
+        display: inline;
+
+        &:not(:first-child) {
+          padding-left: $sm;
+
+          &:before {
+            content: '| ';
+            color: $grey;
+            padding-right: $sm;
+          }
+        }
+      }
+    }
+  }
+
+// Remove
+  .article-meta {
     .field--name-field-article-source-org,
     .field--name-field-article-source-link {
       display: inline-block;
