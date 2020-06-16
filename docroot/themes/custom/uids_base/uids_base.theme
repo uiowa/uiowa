@@ -220,6 +220,9 @@ function uids_base_preprocess_field(&$variables) {
     if ($caption->count()) {
       $caption = $caption->view();
     }
+    else {
+      $caption = NULL;
+    }
 
     $variables['caption'] = $caption;
   }
