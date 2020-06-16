@@ -15,6 +15,7 @@ use AcquiaCloudApi\Endpoints\SslCertificates;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
 use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
@@ -98,7 +99,13 @@ class MultisiteCommands extends BltTasks {
           'verify' => $verify,
         ]);
 
-        $client->get("https://{$domain}/cron/{$cron_key}");
+        try {
+          $client->get("https://{$domain}/cron/{$cron_key}");
+        }
+        catch (RequestException $e) {
+          $message = $e->getMessage();
+          $this->logger->error("Cannot start cron for site {$multisite}: {$message}.");
+        }
       }
     }
   }
