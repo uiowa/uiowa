@@ -97,26 +97,27 @@ class MultisiteCommands extends BltTasks {
         // Don't verify self-signed SSL certificate in the local environment.
         $client = new GuzzleClient([
           'verify' => ($app == 'local') ? FALSE : TRUE,
-          'http_errors' => FALSE,
         ]);
 
-        // First attempt to hit cron using the production domain, then fall
-        // back to the internal production domain if unsuccessful. Notice we
-        // first pass the multisite directory and not the domain above.
-        if ($env == 'prod') {
-          $response = $client->get("https://{$multisite}/cron/{$cron_key}");
-          $status = $response->getStatusCode();
+        try {
+          $client->get("https://{$domain}/cron/{$cron_key}");
+        }
+        catch (RequestException $e) {
+          if ($env == 'prod') {
+            try {
+              $client->get("https://{$multisite}/cron/{$cron_key}");
+            }
+            catch (RequestException $e) {
+              $message = $e->getMessage();
+              $this->logger->error("Cannot run cron for site {$multisite}: {$message}.");
+            }
+          }
+          else {
+            $message = $e->getMessage();
+            $this->logger->error("Cannot run cron for site {$domain}: {$message}.");
+          }
         }
 
-        if ($env != 'prod' || isset($status) && $status >= 400) {
-          $response = $client->get("https://{$domain}/cron/{$cron_key}");
-          $status = $response->getStatusCode();
-        }
-
-        if (isset($response, $status) && $status >= 400) {
-          $reason = $response->getReasonPhrase();
-          $this->logger->error("Cannot run cron for site {$multisite}: {$reason}.");
-        }
       }
     }
   }
