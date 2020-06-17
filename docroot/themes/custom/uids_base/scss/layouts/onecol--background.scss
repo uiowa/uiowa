@@ -21,11 +21,28 @@
 }
 
 .content__container .layout__container.layout--onecol--background,
-.content__mixed .layout__container.layout--onecol--background,
-.hero.layout--onecol--background {
+.content__mixed .layout__container.layout--onecol--background {
   margin-bottom: $gutter;
 }
 
-.hero.sidebar-invisible.layout--onecol--background {
+.content__container .layout__container.layout--onecol--background.title-invisible,
+.content__mixed .layout__container.layout--onecol--background.title-invisible {
   margin-bottom: 0;
+}
+
+
+.content__container .layout__container.layout--has-sidebar,
+.content__mixed .layout__container.layout--has-sidebar {
+  margin-top: $gutter;
+}
+
+.content__container .layout__container.layout--has-sidebar.sidebar-invisible,
+.content__mixed .layout__container.layout--has-sidebar.sidebar-invisible {
+  margin-top: 0;
+}
+
+.title-invisible {
+  .block-system-breadcrumb-block {
+    @include element-invisible;
+  }
 }
