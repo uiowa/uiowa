@@ -24,7 +24,15 @@ class ReplaceCommands extends BltTasks {
     $env = EnvironmentDetector::getAhEnv() ? EnvironmentDetector::getAhEnv() : 'local';
     $multisite_exception = FALSE;
 
-    foreach ($this->getConfigValue('multisites') as $multisite) {
+    // Unshift uiowa.edu to the beginning so it runs first.
+    $multisites = $this->getConfigValue('multisites');
+
+    if ($key = array_search('uiowa.edu', $multisites)) {
+      unset($multisites[$key]);
+      array_unshift($multisites, 'uiowa.edu');
+    }
+
+    foreach ($multisites as $multisite) {
       $this->switchSiteContext($multisite);
       $db = $this->getConfigValue('drupal.db.database');
 
