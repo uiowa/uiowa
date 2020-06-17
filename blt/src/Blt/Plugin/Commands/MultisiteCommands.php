@@ -14,6 +14,8 @@ use AcquiaCloudApi\Endpoints\Environments;
 use AcquiaCloudApi\Endpoints\SslCertificates;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
+use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
@@ -42,6 +44,81 @@ class MultisiteCommands extends BltTasks {
    */
   public function noop() {
 
+  }
+
+  /**
+   * Run cron via a request to the site's cron URL.
+   *
+   * We use this approach to avoid Drush cache clear collisions as well as to
+   * provide more visibility into cron task warnings and errors in the logs.
+   *
+   * @command uiowa:multisite:cron
+   *
+   * @aliases umcron
+   */
+  public function cron() {
+    if (!$this->confirm("You will execute cron on all multisites. Are you sure?", TRUE)) {
+      throw new \Exception('Aborted.');
+    }
+    else {
+      $app = EnvironmentDetector::getAhGroup() ? EnvironmentDetector::getAhGroup() : 'local';
+      $env = EnvironmentDetector::getAhEnv() ? EnvironmentDetector::getAhEnv() : 'local';
+
+      foreach ($this->getConfigValue('multisites') as $multisite) {
+        $this->switchSiteContext($multisite);
+        $db = $this->getConfigValue('drupal.db.database');
+
+        // Skip sites whose database do not exist on the application in AH env.
+        if (EnvironmentDetector::isAhEnv() && !file_exists("/var/www/site-php/{$app}/{$db}-settings.inc")) {
+          $this->say("Skipping {$multisite}. Database {$db} does not exist.");
+          continue;
+        }
+
+        // Skip sites that are not installed since we cannot retrieve state.
+        if (!$this->getInspector()->isDrupalInstalled()) {
+          continue;
+        }
+
+        // Define a site-specific cache directory.
+        // @see: https://github.com/drush-ops/drush/pull/4345
+        $tmp = "/tmp/.drush-cache-{$app}/{$env}/{$multisite}";
+
+        $result = $this->taskDrush()
+          ->drush('state:get')
+          ->arg('system.cron_key')
+          ->option('define', "drush.paths.cache-directory={$tmp}")
+          ->run();
+
+        $cron_key = trim($result->getMessage());
+
+        $id = Multisite::getIdentifier("//{$multisite}");
+        $domain = Multisite::getInternalDomains($id)[$env];
+
+        // Don't verify self-signed SSL certificate in the local environment.
+        $client = new GuzzleClient([
+          'verify' => ($app == 'local') ? FALSE : TRUE,
+          'http_errors' => FALSE,
+        ]);
+
+        // First attempt to hit cron using the production domain, then fall
+        // back to the internal production domain if unsuccessful. Notice we
+        // first pass the multisite directory and not the domain above.
+        if ($env == 'prod') {
+          $response = $client->get("https://{$multisite}/cron/{$cron_key}");
+          $status = $response->getStatusCode();
+        }
+
+        if ($env != 'prod' || isset($status) && $status >= 400) {
+          $response = $client->get("https://{$domain}/cron/{$cron_key}");
+          $status = $response->getStatusCode();
+        }
+
+        if (isset($response, $status) && $status >= 400) {
+          $reason = $response->getReasonPhrase();
+          $this->logger->error("Cannot run cron for site {$multisite}: {$reason}.");
+        }
+      }
+    }
   }
 
   /**
@@ -74,21 +151,18 @@ class MultisiteCommands extends BltTasks {
 
       foreach ($this->getConfigValue('multisites') as $multisite) {
         $this->switchSiteContext($multisite);
+        $db = $this->getConfigValue('drupal.db.database');
 
         // Skip sites whose database do not exist on the application in AH env.
-        if (EnvironmentDetector::isAhEnv()) {
-          $db = $this->getConfigValue('drupal.db.database');
-
-          if (!file_exists("/var/www/site-php/{$app}/{$db}-settings.inc")) {
-            $this->say("Skipping {$multisite}. Database {$db} does not exist.");
-            continue;
-          }
+        if (EnvironmentDetector::isAhEnv() && !file_exists("/var/www/site-php/{$app}/{$db}-settings.inc")) {
+          $this->say("Skipping {$multisite}. Database {$db} does not exist.");
+          continue;
         }
 
         if (!in_array($multisite, $options['exclude'])) {
           // Define a site-specific cache directory.
-          // @see: https://github.com/acquia/blt/issues/2957
-          $tmp = "/tmp/.drush-cache-{$app}/{$env}/" . md5($multisite);
+          // @see: https://github.com/drush-ops/drush/pull/4345
+          $tmp = "/tmp/.drush-cache-{$app}/{$env}/{$multisite}";
 
           $this->taskDrush()
             ->drush($cmd)
@@ -144,16 +218,12 @@ class MultisiteCommands extends BltTasks {
 
     foreach ($this->getConfigValue('multisites') as $multisite) {
       $this->switchSiteContext($multisite);
+      $db = $this->getConfigValue('drupal.db.database');
 
       // Skip sites whose database do not exist on the application in AH env.
-      if (EnvironmentDetector::isAhEnv()) {
-        $db = $this->getConfigValue('drupal.db.database');
-
-        // Use logger here as opposed to say so the output is easily readable.
-        if (!file_exists("/var/www/site-php/{$app}/{$db}-settings.inc")) {
-          $this->logger->info("Skipping {$multisite}. Database {$db} does not exist.");
-          continue;
-        }
+      if (EnvironmentDetector::isAhEnv() && !file_exists("/var/www/site-php/{$app}/{$db}-settings.inc")) {
+        $this->logger->info("Skipping {$multisite}. Database {$db} does not exist.");
+        continue;
       }
 
       if (!$this->getInspector()->isDrupalInstalled()) {
