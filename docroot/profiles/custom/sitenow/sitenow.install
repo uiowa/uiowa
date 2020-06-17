@@ -410,7 +410,7 @@ function sitenow_update_8019() {
     // Deleting at the field_storage level takes care of the bundles as well.
     $field_storage->delete();
 
-    // Need to purge in order for new field to be created after deleting the old.
+    // Purge in order for new field to be created after deleting the old.
     field_purge_batch(100);
 
     // Save our new, updated field storage.
