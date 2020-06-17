@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1a71530a1f8d4f6510dcee101a1e323f",
+    "content-hash": "d5dd20080652cdbff50ed70739eb56df",
     "packages": [
         {
             "name": "acquia/blt",
@@ -222,7 +222,7 @@
             "version": "5.13.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/FortAwesome/Font-Awesome.git",
+                "url": "git@github.com:FortAwesome/Font-Awesome.git",
                 "reference": "4e6402443679e0a9d12c7401ac8783ef4646657f"
             },
             "dist": {
@@ -2462,10 +2462,6 @@
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev",
-                    "dev-8.x-1.x": "1.x-dev"
-                },
                 "drupal": {
                     "version": "8.x-1.21",
                     "datestamp": "1585163393",
@@ -2473,6 +2469,9 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
+                },
+                "branch-alias": {
+                    "dev-8.x-1.x": "1.x-dev"
                 },
                 "drush": {
                     "services": {
@@ -2511,10 +2510,6 @@
                     "homepage": "https://www.drupal.org/user/128652"
                 },
                 {
-                    "name": "dmitrii",
-                    "homepage": "https://www.drupal.org/user/411965"
-                },
-                {
                     "name": "grasmash",
                     "homepage": "https://www.drupal.org/user/455714"
                 },
@@ -2523,8 +2518,20 @@
                     "homepage": "https://www.drupal.org/user/736644"
                 },
                 {
+                    "name": "japerry",
+                    "homepage": "https://www.drupal.org/user/45640"
+                },
+                {
+                    "name": "jmoreira",
+                    "homepage": "https://www.drupal.org/user/2374486"
+                },
+                {
                     "name": "kolafson",
                     "homepage": "https://www.drupal.org/user/822402"
+                },
+                {
+                    "name": "nerdstein",
+                    "homepage": "https://www.drupal.org/user/1557710"
                 },
                 {
                     "name": "vlad.pavlovic",
@@ -2539,32 +2546,35 @@
         },
         {
             "name": "drupal/acquia_purge",
-            "version": "1.0.0",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/acquia_purge.git",
-                "reference": "8.x-1.0"
+                "reference": "8.x-1.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/acquia_purge-8.x-1.0.zip",
-                "reference": "8.x-1.0",
-                "shasum": "9c4b9c5afa8d8bc7c3b7e49ce77cd5756aed800e"
+                "url": "https://ftp.drupal.org/files/projects/acquia_purge-8.x-1.1.zip",
+                "reference": "8.x-1.1",
+                "shasum": "6e4b819262f5ed82fa1bfd533cd7a35b70242e9b"
             },
             "require": {
-                "drupal/core": "~8.0",
-                "drupal/purge": "*",
-                "drupal/purge_drush": "*"
+                "drupal/core": "^8.8.6 || ^9",
+                "drupal/purge": "^3.0.0",
+                "php": ">=7.2"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.0",
-                    "datestamp": "1559138877",
+                    "version": "8.x-1.1",
+                    "datestamp": "1590768773",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
+                },
+                "branch-alias": {
+                    "dev-8.x-1.x": "1.x-dev"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -2573,8 +2583,8 @@
             ],
             "authors": [
                 {
-                    "name": "acquia",
-                    "homepage": "https://www.drupal.org/user/1231722"
+                    "name": "Acquia",
+                    "homepage": "http://www.acquia.com"
                 },
                 {
                     "name": "anavarre",
@@ -5369,29 +5379,29 @@
         },
         {
             "name": "drupal/inline_entity_form",
-            "version": "1.0.0-rc3",
+            "version": "1.0.0-rc6",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/inline_entity_form.git",
-                "reference": "8.x-1.0-rc3"
+                "reference": "8.x-1.0-rc6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/inline_entity_form-8.x-1.0-rc3.zip",
-                "reference": "8.x-1.0-rc3",
-                "shasum": "f0508db2d64133e2df0af24e7fc914cbb5492211"
+                "url": "https://ftp.drupal.org/files/projects/inline_entity_form-8.x-1.0-rc6.zip",
+                "reference": "8.x-1.0-rc6",
+                "shasum": "9f7508f4cb88d5e7869c81b20b44d89bc1689fad"
             },
             "require": {
                 "drupal/core": "^8.7.7 || ^9"
             },
             "require-dev": {
-                "drupal/entity_reference_revisions": "*"
+                "drupal/entity_reference_revisions": "^1.0"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.0-rc3",
-                    "datestamp": "1581640483",
+                    "version": "8.x-1.0-rc6",
+                    "datestamp": "1589280847",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "RC releases are not covered by Drupal security advisories."
@@ -5400,7 +5410,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -6315,17 +6325,17 @@
         },
         {
             "name": "drupal/menu_breadcrumb",
-            "version": "1.12.0",
+            "version": "1.13.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/menu_breadcrumb.git",
-                "reference": "8.x-1.12"
+                "reference": "8.x-1.13"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/menu_breadcrumb-8.x-1.12.zip",
-                "reference": "8.x-1.12",
-                "shasum": "661512d420697e83242c7134cc945258fd531ee0"
+                "url": "https://ftp.drupal.org/files/projects/menu_breadcrumb-8.x-1.13.zip",
+                "reference": "8.x-1.13",
+                "shasum": "6f19a3db4c88e1d6d3cc8937844e02f0abbe69f1"
             },
             "require": {
                 "drupal/core": "^8 || ^9"
@@ -6333,8 +6343,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.12",
-                    "datestamp": "1582220805",
+                    "version": "8.x-1.13",
+                    "datestamp": "1591033168",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -6844,9 +6854,6 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
-                },
-                "patches_applied": {
-                    "Use claro button small": "https://www.drupal.org/files/issues/2020-03-03/claro-small-buttons-3111075-10.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -7003,54 +7010,6 @@
                 }
             ],
             "description": "Provides a generic external cache invalidation API and queue service.",
-            "homepage": "https://www.drupal.org/project/purge",
-            "support": {
-                "source": "https://git.drupalcode.org/project/purge"
-            }
-        },
-        {
-            "name": "drupal/purge_drush",
-            "version": "3.0.0-beta9",
-            "require": {
-                "drupal/core": "~8.0",
-                "drupal/purge": "self.version",
-                "php": ">=5.6.0"
-            },
-            "type": "metapackage",
-            "extra": {
-                "drupal": {
-                    "version": "8.x-3.0-beta9",
-                    "datestamp": "1570540105",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Beta releases are not covered by Drupal security advisories."
-                    }
-                },
-                "drush": {
-                    "services": {
-                        "drush.services.yml": "^9"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-only"
-            ],
-            "authors": [
-                {
-                    "name": "Niels van Mourik",
-                    "homepage": "http://www.nielsvm.org"
-                },
-                {
-                    "name": "djbobbydrake",
-                    "homepage": "https://www.drupal.org/user/336378"
-                },
-                {
-                    "name": "nielsvm",
-                    "homepage": "https://www.drupal.org/user/163285"
-                }
-            ],
-            "description": "Administrative Drush commands for Purge.",
             "homepage": "https://www.drupal.org/project/purge",
             "support": {
                 "source": "https://git.drupalcode.org/project/purge"
