@@ -21,6 +21,7 @@ class ReplaceCommands extends BltTasks {
     $this->config->set('drush.alias', '');
 
     $app = EnvironmentDetector::getAhGroup() ? EnvironmentDetector::getAhGroup() : 'local';
+    $env = EnvironmentDetector::getAhEnv() ? EnvironmentDetector::getAhEnv() : 'local';
     $multisite_exception = FALSE;
 
     foreach ($this->getConfigValue('multisites') as $multisite) {
@@ -36,7 +37,25 @@ class ReplaceCommands extends BltTasks {
         if ($this->getInspector()->isDrupalInstalled()) {
           $this->say("Deploying updates to <comment>{$multisite}</comment>...");
 
+          // Invalidate the Twig cache if on AH env. This happens automatically
+          // for the default site but not multisites. We don't need to pass
+          // the multisite URI here since we switch site context above.
+          // @see: https://support.acquia.com/hc/en-us/articles/360005167754-Drupal-8-Twig-cache
+          $script = '/var/www/site-scripts/invalidate-twig-cache.php';
+
+          if (file_exists($script)) {
+            $this->taskDrush()
+              ->drush('php:script')
+              ->arg($script)
+              ->run();
+          }
+
           try {
+            // Define a site-specific cache directory. For some reason, putenv
+            // did not work here. This would not be necessary if Drush
+            // supported per-site config file loading.
+            // @see: https://github.com/drush-ops/drush/pull/4345
+            $_ENV['DRUSH_PATHS_CACHE_DIRECTORY'] = "/tmp/.drush-cache-{$app}/{$env}/{$multisite}";
             $this->invokeCommand('drupal:update');
             $this->say("Finished deploying updates to {$multisite}.");
           }
