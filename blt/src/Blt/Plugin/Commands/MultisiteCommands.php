@@ -114,8 +114,8 @@ class MultisiteCommands extends BltTasks {
         }
 
         if (isset($response, $status) && $status >= 400) {
-          $message = $response->getBody();
-          $this->logger->error("Cannot run cron for site {$multisite}: {$message}.");
+          $reason = $response->getReasonPhrase();
+          $this->logger->error("Cannot run cron for site {$multisite}: {$reason}.");
         }
       }
     }
