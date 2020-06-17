@@ -63,7 +63,6 @@ class MultisiteCommands extends BltTasks {
     else {
       $app = EnvironmentDetector::getAhGroup() ? EnvironmentDetector::getAhGroup() : 'local';
       $env = EnvironmentDetector::getAhEnv() ? EnvironmentDetector::getAhEnv() : 'local';
-      $verify = ($app == 'local') ? FALSE : TRUE;
 
       foreach ($this->getConfigValue('multisites') as $multisite) {
         $this->switchSiteContext($multisite);
@@ -95,16 +94,28 @@ class MultisiteCommands extends BltTasks {
         $id = Multisite::getIdentifier("//{$multisite}");
         $domain = Multisite::getInternalDomains($id)[$env];
 
+        // Don't verify self-signed SSL certificate in the local environment.
         $client = new GuzzleClient([
-          'verify' => $verify,
+          'verify' => ($app == 'local') ? FALSE : TRUE,
+          'http_errors' => FALSE,
         ]);
 
-        try {
-          $client->get("https://{$domain}/cron/{$cron_key}");
+        // First attempt to hit cron using the production domain, then fall
+        // back to the internal production domain if unsuccessful. Notice we
+        // first pass the multisite directory and not the domain above.
+        if ($env == 'prod') {
+          $response = $client->get("https://{$multisite}/cron/{$cron_key}");
+          $status = $response->getStatusCode();
         }
-        catch (RequestException $e) {
-          $message = $e->getMessage();
-          $this->logger->error("Cannot start cron for site {$multisite}: {$message}.");
+
+        if ($env != 'prod' || isset($status) && $status >= 400) {
+          $response = $client->get("https://{$domain}/cron/{$cron_key}");
+          $status = $response->getStatusCode();
+        }
+
+        if (isset($response, $status) && $status >= 400) {
+          $message = $response->getBody();
+          $this->logger->error("Cannot run cron for site {$multisite}: {$message}.");
         }
       }
     }
