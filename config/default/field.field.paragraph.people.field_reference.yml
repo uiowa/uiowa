@@ -1,0 +1,29 @@
+uuid: 0c9236e9-f7ce-40c3-b480-add7232678d4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_reference
+    - paragraphs.paragraphs_type.people
+    - taxonomy.vocabulary.tags
+id: paragraph.people.field_reference
+field_name: field_reference
+entity_type: paragraph
+bundle: people
+label: 'Filter people by tag'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      tags: tags
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

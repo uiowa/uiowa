@@ -1,0 +1,25 @@
+uuid: 2a593617-e43a-4355-9d89-b530ad260a0a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_uip_items
+    - paragraphs.paragraphs_type.people
+id: paragraph.people.field_uip_items
+field_name: field_uip_items
+entity_type: paragraph
+bundle: people
+label: 'Items to display'
+description: 'Enter 0 for no limit.'
+required: true
+translatable: true
+default_value:
+  -
+    value: 10
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer
