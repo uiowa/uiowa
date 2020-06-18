@@ -74,15 +74,12 @@
   {{ page.primary_menu }}
 </nav>
 
-{% if page.header|render|striptags|trim %}
-  <header role="banner" {{ header_attributes }}>
-    {{ node_image }}
-    <div class="page-header">
-      <div class="container">
-        {{ page.header }}
-      </div>
+{% if page.header %}
+  <div class="page-header">
+    <div class="container">
+      {{ page.header }}
     </div>
-  </header>
+  </div>
 {% endif %}
 
 <main{{ main_attributes.addClass(main_classes, 'main', 'container-fluid').setAttribute('role', 'main') }}>
