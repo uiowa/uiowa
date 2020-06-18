@@ -26,29 +26,6 @@ function uiowa_bootstrap_preprocess_page(&$variables) {
       }
     }
   }
-
-  $admin_context = \Drupal::service('router.admin_context');
-  if (!$admin_context->isAdminRoute()) {
-    if (!empty($variables['node'])) {
-      /** @var \Drupal\node\NodeInterface $node */
-      $node = $variables['node'];
-      if ($node instanceof NodeInterface) {
-        $type = $node->getType();
-        switch ($type) {
-          case 'page':
-          case 'article':
-//            if ($node->hasField('field_image') && !$node->get('field_image')
-//              ->isEmpty() && $node->preview_view_mode !== 'teaser') {
-//              $image = $node->get('field_image')->view('sitenow_16_9');
-//              $variables['node_image'] = $image;
-//              $variables['header_attributes']->addClass('has-bg-img');
-//            }
-            break;
-
-        }
-      }
-    }
-  }
 }
 
 /**
