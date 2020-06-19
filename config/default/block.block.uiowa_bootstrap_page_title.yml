@@ -2,6 +2,8 @@ uuid: ce1216ba-4931-4980-9884-10215c1ba8bb
 langcode: en
 status: true
 dependencies:
+  module:
+    - layout_builder_custom
   theme:
     - uiowa_bootstrap
 _core:
@@ -17,4 +19,11 @@ settings:
   label: 'Page title'
   provider: core
   label_display: '0'
-visibility: {  }
+  block_template: _none
+  block_classes: {  }
+visibility:
+  layout_builder_active:
+    id: layout_builder_active
+    enabled: 1
+    negate: false
+    context_mapping: {  }

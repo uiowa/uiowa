@@ -53,6 +53,7 @@
   {% set sidebar_second = true %}
 {% endif %}
 
+{% if layout_builder_enabled == FALSE %}
 {% if (sidebar_first and sidebar_second) %}
   {% set content_classes = ['col-xl-6'] %}
   {% set sidebar_classes = ['col-xl-3'] %}
@@ -65,6 +66,17 @@
   {% set content_classes = ['col-xl-12'] %}
   {% set main_classes = ['has-no-sidebars'] %}
 {% endif %}
+{% else %}
+{% if (sidebar_first and sidebar_second) %}
+	{% set main_classes = ['has-both-sidebars'] %}
+{% elseif (sidebar_first or sidebar_second) %}
+	{% set main_classes = ['has-one-sidebar'] %}
+{% else %}
+	{% set content_classes = ['col-xl-12'] %}
+	{% set main_classes = ['has-no-sidebars'] %}
+{% endif %}
+{% endif %}
+
 
 <nav class="navbar navbar--main navbar-expand-lg navbar-light bg-light justify-content-between" role="navigation" aria-label="Site branding and main navigation">
   <div class="navbar-brand">
@@ -74,15 +86,12 @@
   {{ page.primary_menu }}
 </nav>
 
-{% if page.header|render|striptags|trim %}
-  <header role="banner" {{ header_attributes }}>
-    {{ node_image }}
-    <div class="page-header">
-      <div class="container">
-        {{ page.header }}
-      </div>
+{% if page.header %}
+  <div class="page-header">
+    <div class="container">
+      {{ page.header }}
     </div>
-  </header>
+  </div>
 {% endif %}
 
 <main{{ main_attributes.addClass(main_classes, 'main', 'container-fluid').setAttribute('role', 'main') }}>
@@ -93,17 +102,21 @@
       {{ page.content }}
     </div>{# /.layout-content #}
 
-    {% if sidebar_first %}
-      <div{{ sidebar_attributes.addClass(sidebar_classes, 'layout-sidebar-first', 'order-first').setAttribute('role', 'region').setAttribute('aria-label', 'primary sidebar') }}>
-        {{ page.sidebar_first }}
-      </div>
-    {% endif %}
 
-    {% if sidebar_second %}
-      <div{{ sidebar_attributes.addClass(sidebar_classes, 'layout-sidebar-second', 'order-last').setAttribute('role', 'region').setAttribute('aria-label', 'secondary sidebar') }}>
-        {{ page.sidebar_second }}
-      </div>
-    {% endif %}
+{% if layout_builder_enabled == FALSE %}
+{% if sidebar_first %}
+	<div{{sidebar_attributes.addClass(sidebar_classes,'layout-sidebar-first','order-first').setAttribute('role','region').setAttribute('aria-label','primarysidebar')}}>
+		{{ page.sidebar_first }}
+	</div>
+{% endif %}
+
+{% if sidebar_second %}
+	<div{{sidebar_attributes.addClass(sidebar_classes,'layout-sidebar-second','order-last').setAttribute('role','region').setAttribute('aria-label','secondarysidebar')}}>
+		{{ page.sidebar_second }}
+	</div>
+{% endif %}
+{% endif %}
+
   </div>
 </main>
 
@@ -114,5 +127,3 @@
     </div>
   </footer>
 {% endif %}
-
-

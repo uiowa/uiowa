@@ -37,21 +37,12 @@
  * @see template_preprocess_field()
  */
 #}
-{%
-  set classes = [
-    'field',
-    'field--name-' ~ field_name|clean_class,
-    'field--type-' ~ field_type|clean_class,
-    'field--label-' ~ label_display,
-  ]
-%}
-{%
-  set title_classes = [
-    'field__label',
-    label_display == 'visually_hidden' ? 'visually-hidden',
-  ]
-%}
 
 {% for item in items %}
   {{ item.content }}
 {% endfor %}
+{# @todo Should caption should be per image? #}
+{% if caption|render %}
+    {{ caption }}
+{% endif %}
+
