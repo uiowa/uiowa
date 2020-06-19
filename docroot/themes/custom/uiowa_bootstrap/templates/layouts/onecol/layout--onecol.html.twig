@@ -25,19 +25,7 @@
 
   <div{{ attributes.addClass(classes) }}>
     <div class="lb__container">
-
-      {% if region_attributes.content.storage['data-region'] %}
-        <div {{ region_attributes.content.addClass('flex__wra') }}>
-        {% endif %}
         {{ content.content }}
-        {% if region_attributes.content.storage['data-region'] %}
-        </div>
-      {% endif %}
-
-      {% if attributes.hasClass('page__container--edge-container') %}
-      </div>
-    {% endif %}
-
   </div>
 </div>
 

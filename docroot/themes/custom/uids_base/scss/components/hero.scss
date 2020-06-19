@@ -7,39 +7,13 @@
 }
 
 .hero {
-  .caption-wrapper,
-  .field--name-field-media-caption {
-    color: #fff;
-    z-index: 3;
-    position: absolute;
-    padding-top: 50px 100px;
-    bottom: 0;
-    background: #333333e0;
-    padding: 20px;
-    width: 100%;
-    visibility: hidden;
-    opacity: 0;
-    transition: visibility 0s linear 0.33s,opacity 0.33s linear;
-
-    div, p {
-      line-height: 1.2;
-      margin: 0 auto;
-      font-size: 1rem;
-      max-width: 81.375rem;
-      color: #fff;
-    }
-  }
-}
-
-.hero {
   .field__label {
     @include element-invisible;
   }
 }
 
 .hero:hover {
-  .caption-wrapper,
-  .field--name-field-media-caption {
+  .caption-wrapper {
     visibility: visible;
     opacity: 1;
     transition-delay: 0s;
