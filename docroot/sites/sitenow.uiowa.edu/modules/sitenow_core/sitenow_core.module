@@ -98,7 +98,7 @@ function _sitenow_core_user_login_block_pre_render(array $build) {
     ]);
 
     $build['content']['hawkid']['message'] = [
-      '#prefix' => '<div class="alert alert-info">',
+      '#prefix' => '<div class="alert alert-warning">',
       '#suffix' => '</div>',
       '#markup' => t('The SiteNow service is restricted to current
        University of Iowa members. You must <a href="@link">log in</a> first to access the request
