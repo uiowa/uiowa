@@ -353,13 +353,15 @@ function sitenow_update_8019() {
     ->getActiveFieldStorageDefinitions('block_content');
   foreach ($fields as $field_name => &$field) {
     $field_definition = $storage_definitions[$field_name];
-    $field['table'] = $table_mapping->getDedicatedDataTableName($field_definition);
-    $field['revision_table'] = $table_mapping->getDedicatedRevisionTableName($field_definition);
+    if ($field_definition) {
+      $field['table'] = $table_mapping->getDedicatedDataTableName($field_definition);
+      $field['revision_table'] = $table_mapping->getDedicatedRevisionTableName($field_definition);
+    }
   }
 
   $database = \Drupal::database();
 
-  foreach ($fields as $field_name => $field) {
+  foreach ($fields as $field_name => &$field) {
     $table = $field['table'];
     $revision_table = $field['revision_table'];
     $entity_type = 'block_content';
