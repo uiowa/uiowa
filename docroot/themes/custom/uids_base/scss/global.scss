@@ -39,18 +39,75 @@ $imgpath: '../../uids/assets/images';
     height: 100px !important;
   }
 
-  .logo-icon {
+  .header--primary .logo-icon,
+  .header--secondary .logo-icon {
     height: auto !important;
   }
 
+  .header--tertiary .logo-icon {
+    height: 30px !important;
+  }
+
+  .header--tertiary .bttn--drawer {
+    top: 0 !important;
+  }
+
+  .search-is-open .header--tertiary .logo-icon--tab {
+    display: block !important;
+  }
+
+  .header--tertiary .uiowa-bar .page__container {
+    justify-content: flex-start !important;
+  }
+
+  .header--tertiary .uiowa-bar__slogan {
+    align-items: flex-start;
+    margin: 20px 0 0 0;
+  }
+
+
   .card__body {
     flex: auto !important;
+  }
+
+  .card.card--horizontal .card__body {
+    flex: 1 !important;
+    flex-direction: column;
+  }
+
+  .card.card--horizontal>* {
+    flex-direction: unset;
+    display: block !important;
+  }
+
+  .paragraph--type--articles.list .card__body,
+  .paragraph--type--people.list .card__body,
+  .paragraph--type--events.list .card__body,
+  .view-display-id-page_articles .card__body,
+  .paragraph--type--featured-content.list .card__body,
+  .view-id-people .card__body,
+  .view-display-id-page_articles .view-content {
+    flex: 1 !important;
+  }
+
+
+  .paragraph--type--articles.list .view-content,
+  .paragraph--type--people.list .view-content,
+  .view-display-id-page_articles .view-content,
+  .paragraph--type--featured-content.list .field--name-field-featured-content {
+    display: block !important;
+  }
+
+  .view-id-people .card--list,
+  .view-id-people .node--type-article {
+    display: flex !important;
   }
 
   #superfish-main-accordion {
     position: relative !important;
   }
 }
+
 
 .layout--twocol.layout,
 .layout--twocol.layout .lb__container {
@@ -81,7 +138,7 @@ $imgpath: '../../uids/assets/images';
 
 // Neither Paragraphs or Layout Builder.
 body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled main.page__container {
-  margin-bottom : 1.25rem;
+  margin-bottom: 1.25rem;
 }
 
 // SiteNow Paragraphs Page
