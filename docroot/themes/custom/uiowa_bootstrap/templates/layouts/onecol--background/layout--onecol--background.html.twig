@@ -16,18 +16,18 @@
 
 {%
   set classes = [
-  'layout--onecol--background'
+  'layout--onecol--background',
+  settings.extra_classes,
+  background ? 'has-bg-img' : 'has-no-bg-img',
 ]
 %}
 
-<header role="banner" class="has-bg-img">
-
+<header role="banner" {{attributes.addClass(classes)}}>
   {% if background %}
-  <div class="field field--name-field-image">
-    {{ content.background }}
-  </div>
+    <div class="field field--name-field-image">
+      {{ content.background }}
+    </div>
   {% endif %}
-
   <div class="page-header">
     <div class="container">
       {{ content.content }}
