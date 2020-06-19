@@ -260,7 +260,7 @@ div.example2 p.special {
   &.bg-dark,
   &.bg-black,
   &.bg-yellow {
-    padding-top: $desktop-width-gutter;
+    //padding-top: $desktop-width-gutter;
     margin-bottom: 0;
 
     &:last-child {
@@ -318,25 +318,58 @@ div.example2 p.special {
   object-position: center;
 }
 
-// Set margin for first paragraph section below page title if using bg color
-.block-page-title-block+.region-content .field__item:first-child .paragraph--type--section {
+// Set margin/padding for first paragraph section below page title if using bg color
+.layout--page--paragraph .block-field-blocknodepagefield-page-content-block .field__item:first-child .paragraph--type--section {
 
   &.bg-light:first-child,
   &.bg-dark:first-child,
   &.bg-black:first-child,
-  &.bg-yellow:first-child,
-    {
+  &.bg-yellow:first-child {
     margin-top: $gutter;
+    padding-top: $gutter;
   }
 }
 
-.block-page-title-block.element-invisible+.region-content .field__item:first-child .paragraph--type--section {
+.layout--page--paragraph.title-invisible .block-field-blocknodepagefield-page-content-block .field__item:first-child .paragraph--type--section {
 
   &.bg-light:first-child,
   &.bg-dark:first-child,
   &.bg-black:first-child,
-  &.bg-yellow:first-child,
-    {
+  &.bg-yellow:first-child {
     margin-top: 0;
+    padding-top: $gutter;
+  }
+}
+
+.layout--onecol--background+.layout--page--paragraph .block-field-blocknodepagefield-page-content-block .field__item:first-child .paragraph--type--section {
+
+  &.bg-light:first-child,
+  &.bg-dark:first-child,
+  &.bg-black:first-child,
+  &.bg-yellow:first-child {
+    margin-top: 0;
+    padding-top: $gutter;
+  }
+}
+
+.layout--onecol--no--background+.layout--page--paragraph .block-field-blocknodepagefield-page-content-block .field__item:first-child .paragraph--type--section {
+
+  &.bg-light:first-child,
+  &.bg-dark:first-child,
+  &.bg-black:first-child,
+  &.bg-yellow:first-child {
+    margin-top: $gutter;
+    padding-top: $gutter;
+  }
+}
+
+.layout--onecol--no--background.title-invisible +.layout--page--paragraph .block-field-blocknodepagefield-page-content-block .field__item:first-child .paragraph--type--section {
+
+  &.bg-light:first-child,
+  &.bg-dark:first-child,
+  &.bg-black:first-child,
+  &.bg-yellow:first-child {
+    margin-top: 0;
+    padding-top: $gutter;
   }
 }

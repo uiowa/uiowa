@@ -36,7 +36,7 @@
 
 {% else %}
   {% embed '@uids_base/layouts/onecol/layout--onecol.html.twig' with {
-    'attributes': attributes.addClass(classes),
+    'attributes': attributes.addClass(classes, 'layout--onecol--no--background'),
 }%}{% endembed %}
 
 {% endif %}
