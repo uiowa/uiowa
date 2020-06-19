@@ -1238,3 +1238,26 @@ ul.dropbutton li {
     }
   }
 }
+
+.node-preview-container {
+  position: relative;
+  margin-bottom: 1em;
+  padding: $md 0;
+  border-bottom: 2px solid $warning;
+  background: $warning-light;
+
+  form {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    .js-hide {
+      display: none;
+    }
+  }
+  .node-preview-backlink {
+    @extend %bttn;
+    @extend %bttn--primary;
+    @extend %bttn--focus;
+    font-family: $font-family-caps-bold;
+  }
+}

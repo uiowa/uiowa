@@ -1,0 +1,27 @@
+uuid: 82afb7cd-1c42-413b-baa7-b9a991cbc2ea
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.field_people_sort
+field_name: field_people_sort
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: block_people_slf
+      label: Sticky/Last/First
+    -
+      value: block_people_sfl
+      label: Sticky/First/Last
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

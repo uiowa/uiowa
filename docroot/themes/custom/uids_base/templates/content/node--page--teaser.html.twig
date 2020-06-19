@@ -84,20 +84,20 @@
 {{ attach_library('classy/node') }}
 {{ attach_library('uids_base/node-type-page') }}
 <article{{ attributes.addClass(classes) }}>
-    <div{{ content_attributes.addClass('node__content media-body') }}>
-        {{ title_prefix }}
-        {% if not page %}
-            <h3{{ title_attributes }}>
-                <a href="{{ url }}" rel="bookmark">{{ label }}</a>
-            </h3>
-        {% endif %}
-        {{ title_suffix }}
-
-        {{ content|without('field_image', 'links') }}
-    </div>
-    {% if content.field_image %}
-        <figure class="content-image">
-            {{ content.field_image }}
-        </figure>
+  {% if content.field_image %}
+    <figure class="content-image">
+      {{ content.field_image }}
+    </figure>
+  {% endif %}
+  <div{{ content_attributes.addClass('node__content media-body') }}>
+    {{ title_prefix }}
+    {% if not page %}
+      <h3{{ title_attributes }}>
+        <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+      </h3>
     {% endif %}
+    {{ title_suffix }}
+
+    {{ content|without('field_image', 'links') }}
+  </div>
 </article>
