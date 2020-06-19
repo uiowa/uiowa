@@ -331,7 +331,7 @@ function sitenow_update_8018() {
 }
 
 /**
- * Prepare uiowa_bootstrap sites with a horizontal nav default in uids_base.
+ * Prepare uiowa_bootstrap sites with default theme settings for uids_base.
  */
 function sitenow_update_8019() {
   /** @var \Drupal\Core\Theme\ActiveTheme $active_theme */
@@ -339,14 +339,19 @@ function sitenow_update_8019() {
 
   // Limit to just sites running uids_base.
   if ($active_theme->getName() === 'uiowa_bootstrap') {
+    $nav_style = 'horizontal';
+
+    $system_config = \Drupal::config('system.site');
+    $has_parent = $system_config->get('has_parent') ?: 0;
+
     $config_factory = \Drupal::configFactory();
     $config = $config_factory->getEditable('uids_base.settings');
 
-    $config
-      ->set('header.nav_style', 'horizontal')
-      ->save();
-
-    $nav_style = 'horizontal';
+    if (!$has_parent) {
+      $config->set('header.type', 'inline');
+    }
+    $config->set('header.nav_style', $nav_style);
+    $config->save();
 
     $ids = \Drupal::entityQuery('block')
       ->condition('plugin', 'superfish:main')
