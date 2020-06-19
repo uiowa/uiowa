@@ -41,7 +41,7 @@ function sitenow_toolbar_alter(&$items) {
   }
 
   if (isset($items['tour'])) {
-    $items['tour']['#attached']['library'][] = 'seven/tour-styling';
+    $items['tour']['#attached']['library'][] = 'claro/tour-styling';
   }
 }
 
