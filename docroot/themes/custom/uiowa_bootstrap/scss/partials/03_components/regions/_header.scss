@@ -36,7 +36,6 @@ header.has-bg-img:not(.title-hidden) {
     @include media-breakpoint-up(sm) {
       position: absolute;
       max-height: 100%;
-      overflow-y: scroll;
       background-color: rgba(0,0,0,0.75);
     }
   }
@@ -46,4 +45,8 @@ header.has-bg-img:not(.title-hidden) {
       font-size: 2.5rem;
     }
   }
+}
+
+.title-invisible .page-header {
+  display: none;
 }
