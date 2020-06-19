@@ -86,20 +86,26 @@ function _sitenow_core_user_login_block_pre_render(array $build) {
 
   if ($path == '/node/26'
     && isset($build['content']['hawkid'], $build['content']['hawkid']['link'])) {
-    $build['content']['hawkid']['message'] = [
-      '#prefix' => '<div class="alert alert-info">',
-      '#suffix' => '</div>',
-      '#markup' => t('The SiteNow service is restricted to current
-       University of Iowa members. You must log in first to access the request
-       form. Click the link below to be redirected to the secure HawkID login
-       page.'),
-    ];
+    /** @var \Drupal\Core\Url $url */
+    $url = $build['content']['hawkid']['link']['#url'];
 
-    $build['content']['hawkid']['link']['#url']->setOptions([
+    unset($build['content']['hawkid']['link']);
+
+    $url->setOptions([
       'query' => [
         'destination' => $path,
       ],
     ]);
+
+    $build['content']['hawkid']['message'] = [
+      '#prefix' => '<div class="alert alert-info">',
+      '#suffix' => '</div>',
+      '#markup' => t('The SiteNow service is restricted to current
+       University of Iowa members. You must <a href="@link">log in</a> first to access the request
+       form.', [
+         '@link' => $url->toString()
+      ]),
+    ];
   }
 
   return $build;
