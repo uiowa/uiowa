@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   module:
+    - layout_builder_custom
     - system
   theme:
     - uiowa_bootstrap
@@ -19,4 +20,11 @@ settings:
   label: Breadcrumbs
   provider: system
   label_display: '0'
-visibility: {  }
+  block_template: _none
+  block_classes: {  }
+visibility:
+  layout_builder_active:
+    id: layout_builder_active
+    enabled: 1
+    negate: false
+    context_mapping: {  }

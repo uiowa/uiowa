@@ -4,4 +4,10 @@ main {
     padding-bottom: ($grid-gutter-width / 2);
     @extend .container;
   }
+  .layout-builder-enabled & {
+    &.has-one-sidebar {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+  }
 }
