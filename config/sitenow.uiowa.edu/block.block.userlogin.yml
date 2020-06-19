@@ -1,4 +1,4 @@
-uuid: c0e6c42c-f889-4683-aecc-93ceed1ff7f0
+uuid: 4b0c6fa7-7c87-4a55-8936-b4566c0dfb00
 langcode: en
 status: true
 dependencies:
@@ -6,20 +6,18 @@ dependencies:
     - system
     - user
   theme:
-    - uiowa_bootstrap
+    - uids_base
 id: userlogin
-theme: uiowa_bootstrap
+theme: uids_base
 region: content
-weight: -2
+weight: -7
 provider: null
 plugin: user_login_block
 settings:
   id: user_login_block
   label: 'User login'
   provider: user
-  label_display: '0'
-  block_template: card
-  block_classes: {  }
+  label_display: visible
 visibility:
   request_path:
     id: request_path
