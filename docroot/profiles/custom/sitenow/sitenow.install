@@ -6,6 +6,7 @@
  * @see: https://www.drupal.org/project/drupal/issues/2982052
  */
 
+use Drupal\block\Entity\Block;
 use Drupal\Core\Config\FileStorage;
 use Drupal\node\Entity\Node;
 use Drupal\taxonomy\Entity\Term;
@@ -326,5 +327,45 @@ function sitenow_update_8018() {
   // Limit to just sites running uids_base.
   if ($active_theme->getName() === 'uids_base') {
     \Drupal::service('twig')->invalidate();
+  }
+}
+
+/**
+ * Prepare uiowa_bootstrap sites with a horizontal nav default in uids_base.
+ */
+function sitenow_update_8019() {
+  /** @var \Drupal\Core\Theme\ActiveTheme $active_theme */
+  $active_theme = \Drupal::service('theme.manager')->getActiveTheme();
+
+  // Limit to just sites running uids_base.
+  if ($active_theme->getName() === 'uiowa_bootstrap') {
+    $config_factory = \Drupal::configFactory();
+    $config = $config_factory->getEditable('uids_base.settings');
+
+    $config
+      ->set('header.nav_style', 'horizontal')
+      ->save();
+
+    $nav_style = 'horizontal';
+
+    $ids = \Drupal::entityQuery('block')
+      ->condition('plugin', 'superfish:main')
+      ->execute();
+
+    foreach ($ids as $id) {
+      // Skip 'mainnavigation' block.
+      if (strpos($id, 'superfish') === FALSE) {
+        continue;
+      }
+      $status = 0;
+      $block = Block::load($id);
+      if (strpos($id, $nav_style) !== FALSE) {
+        $status = 1;
+      }
+      if ($block->status() != $status) {
+        $block->setStatus($status);
+        $block->save();
+      }
+    }
   }
 }
