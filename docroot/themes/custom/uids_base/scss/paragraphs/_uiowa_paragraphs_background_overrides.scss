@@ -48,19 +48,23 @@
             }
 
             .pager {
-                .is-active {
-                    a {
-                        background-color: lighten($secondary, 20%);
+                .pager__item {
+                    &.is-active {
+                        &>a {
+                            color: $white;
+                            background-color: lighten($secondary, 20%);
 
-                        &:hover {
-                            background-color: lighten($secondary, 10%);
-                            cursor: pointer;
-                        }
-                    } 
-                }
+                            &:hover {
+                                background-color: lighten($secondary, 10%);
+                                cursor: pointer;
+                            }
+                        } 
+                    }
 
-                a:hover {
-                    background-color: lighten($secondary, 10%);
+                    &>a:hover {
+                        background-color: lighten($secondary, 10%);
+                        color: $white;
+                    }
                 }
             }         
         }
@@ -135,19 +139,23 @@
             }
 
             .pager {
-                .is-active {
-                    a {
-                        background-color: lighten($secondary, 20%);
+                .pager__item {
+                    &.is-active {
+                        &>a {
+                            color: $white;
+                            background-color: lighten($secondary, 20%);
 
-                        &:hover {
-                            background-color: lighten($secondary, 10%);
-                            cursor: pointer;
+                            &:hover {
+                                background-color: lighten($secondary, 10%);
+                                cursor: pointer;
+                            }
                         }
                     }
-                }
 
-                a:hover {
-                    background-color: lighten($secondary, 10%);
+                    &>a:hover {
+                        background-color: lighten($secondary, 10%);
+                        color: $white;
+                    }
                 }
             }         
         }
@@ -177,7 +185,7 @@
     &.bg-light {
         .paragraph--type--blockquote,
         .paragraph--type--text,
-        .paragraph--type--webform
+        .paragraph--type--webform,
         .paragraph--type--articles,
         .paragraph--type--accordion,
         .paragraph--type--events {
@@ -202,20 +210,22 @@
             }
 
             .pager {
-                .is-active {
-                    a {
-                        background-color: darken($light, 20%);
-                        color: $secondary;
+                .pager__item {
+                    &.is-active {
+                        &>a {
+                            background-color: darken($light, 20%);
+                            color: $secondary;
 
-                        &:hover {
-                            background-color: darken($light, 40%);
-                            cursor: pointer;
-                        }
-                    }  
-                }
+                            &:hover {
+                                background-color: darken($light, 40%);
+                                cursor: pointer;
+                            }
+                        }  
+                    }
 
-                a:hover {
-                    background-color: darken($light, 40%);
+                    &>a:hover {
+                        background-color: darken($light, 40%);
+                    }
                 }
             }         
         }
@@ -244,7 +254,7 @@
     &.bg-yellow {
         .paragraph--type--blockquote,
         .paragraph--type--text,
-        .paragraph--type--webform
+        .paragraph--type--webform,
         .paragraph--type--articles,
         .paragraph--type--accordion,
         .paragraph--type--events {
@@ -293,22 +303,24 @@
             }
 
             .pager {
-                .is-active {
-                    a {
-                        background-color: $secondary;
-                        color: $white;
-
-                        &:hover {
-                            background-color: lighten($secondary, 20%);
+                .pager__item {
+                    &.is-active {
+                        &>a {
+                            background-color: $secondary;
                             color: $white;
-                            cursor: pointer;
-                        }
-                    }  
-                }
 
-                a:hover {
-                    background-color: lighten($secondary, 20%);
-                    color: $white;
+                            &:hover {
+                                background-color: lighten($secondary, 20%);
+                                color: $white;
+                                cursor: pointer;
+                            }
+                        }  
+                    }
+
+                    &>a:hover {
+                        background-color: lighten($secondary, 20%);
+                        color: $white;
+                    }
                 }
             }   
         }
