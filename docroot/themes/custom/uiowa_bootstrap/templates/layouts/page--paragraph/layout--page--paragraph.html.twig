@@ -13,7 +13,7 @@
  */
 #}
 
-{% set sidebar = content.sidebar|render %}
+{% set sidebar = content.sidebar | render %}
 
 {%
   set classes = [
@@ -24,43 +24,31 @@
   sidebar ? 'layout--has-sidebar' : 'layout--no-sidebar',
 ]
 %}
-{{ attach_library('uids_base/sitenow') }}
+
 {{ attach_library('uids_base/fields') }}
-{{ attach_library('uids_base/paragraph-page') }}
 
 {% if sidebar or content.content %}
-  <div{{attributes.addClass(classes)}}>
-    <div class="lb__container">
-      {% if sidebar %}
-        <div class="layout__region layout__region--sidebar">
-<div  class="block-menu-block card">
+	<div{{attributes.addClass(classes)}}>
+		<div class="lb__container">
+			{% if sidebar %}
+				<div class="layout__region layout__region--sidebar">
+					<div class="block-menu-block card">
+						<div class="card-header">
+							<div class="h6 mb-0">In this section</div>
+						</div>
+						<div class="card-body">
+							{{ sidebar }}
+						</div>
+					</div>
+				</div>
+			{% endif %}
 
-	<div class="card-header">
-		<div class="h6 mb-0">In this section</div>
+			{% if content.content %}
+				<div class="layout__region layout__region--main">
+					{{ content.content }}
+				</div>
+			{% endif %}
+		</div>
 	</div>
-
-	<div class="card-body">
-
-            {{ sidebar }}
-            </div>
-            </div>
-
-        </div>
-      {% endif %}
-
-      {% if content.content %}
-        <div class="layout__region layout__region--main">
-          {% if region_attributes.content.storage['data-region'] %}
-          {{ attach_library('uids_base/admin') }}
-          <div {{ region_attributes.content.addClass('flex__wrapper') }}>
-            {% endif %}
-            {{ content.content }}
-            {% if region_attributes.content.storage['data-region'] %}
-          </div>
-          {% endif %}
-        </div>
-      {% endif %}
-    </div>
-  </div>
 
 {% endif %}

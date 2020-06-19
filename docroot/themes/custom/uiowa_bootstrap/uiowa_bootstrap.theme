@@ -9,6 +9,23 @@ use Drupal\Core\Template\Attribute;
 use Drupal\node\NodeInterface;
 
 /**
+ * Implements hook_preprocess_HOOK() for html.html.twig.
+ */
+function uiowa_bootstrap_preprocess_html(&$variables) {
+  // Set a variable for whether layout builder is enabled.
+  $variables['layout_builder_enabled'] = FALSE;
+
+  $node = \Drupal::routeMatch()->getParameter('node');
+
+  if ($node instanceof NodeInterface) {
+    // @todo Is there a better way to have a soft dependency on a class?
+    if (class_exists('\Drupal\layout_builder_custom\LayoutBuilderHelper')) {
+      $variables['layout_builder_enabled'] = \Drupal::classResolver('\Drupal\layout_builder_custom\LayoutBuilderHelper')->layoutBuilderEnabled($node);
+    }
+  }
+}
+
+/**
  * Implements hook_preprocess_page().
  */
 function uiowa_bootstrap_preprocess_page(&$variables) {
