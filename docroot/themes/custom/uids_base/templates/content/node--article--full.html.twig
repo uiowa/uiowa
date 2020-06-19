@@ -80,35 +80,9 @@
     view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
   ]
 %}
-{% set media_caption = content.field_image[0]['#media'].field_media_caption.0 %}
-{% set image_caption = content.field_image_caption[0]['#context'].value %}
 
 {{ attach_library('classy/node') }}
 {{ attach_library('uids_base/node-type-article') }}
-
-{% if content.field_image[0]['#media'] is not empty %}
-  {% embed "@uids_base/uids/blocks/hero.html.twig" with {
-    hero_alignment : 'bottom'
-  } %}
-
-    {% block hero_image %}
-      {{ content.field_image }}
-
-      {% if not media_caption %}
-        {% if image_caption is not empty %}
-          <div class="caption-wrapper">
-            {{ content.field_image_caption }}
-          </div>
-        {% endif %}
-      {% endif %}
-    {% endblock %}
-
-    {% block hero_content %}
-      {{ breadcrumb }}
-      <h1 class="bold-headline--serif bold-headline">{{ node.label }}</h1>
-    {% endblock %}
-  {% endembed %}
-{% endif %}
 
 <article{{ attributes.addClass(classes) }}>
 
@@ -134,10 +108,6 @@
   {% endif %}
 
   <div{{ content_attributes.addClass('node__content') }}>
-    <div class="article-meta">
-
-      {{ content.article_created_date }}{{ content.article_author }}{{ content.field_article_source_org }}{{ content.field_article_source_link }}
-    </div>
     {{ content|without('field_image', 'article_author', 'article_created_date', 'field_image_caption', 'field_article_source_org', 'field_article_source_link') }}
   </div>
 </article>
