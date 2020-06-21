@@ -15,7 +15,7 @@
 
 {% set classes = ['layout__container'] %}
 
-{% if content.first %}
+{% if content.first or content.second %}
 
   <div{{ attributes.addClass(classes) }}>
     <div class="lb__container">

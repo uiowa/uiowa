@@ -26,29 +26,14 @@ third_party_settings:
     enabled: true
     sections:
       -
-        layout_id: layout_onecol
+        layout_id: layout_header
         layout_settings:
           label: Header
+          layout_builder_styles_style:
+            section_margin_edge_to_edge: section_margin_edge_to_edge
         components:
-          c7595474-3e54-4dca-bc2e-e0467930b660:
-            uuid: c7595474-3e54-4dca-bc2e-e0467930b660
-            region: content
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:page:field_image'
-              formatter:
-                type: entity_reference_entity_view
-                label: visually_hidden
-                settings:
-                  view_mode: sitenow_16_9
-                  link: false
-                third_party_settings: {  }
-            additional: {  }
-            weight: 0
-          8a8d495a-6910-4c9b-99a6-126836579b86:
-            uuid: 8a8d495a-6910-4c9b-99a6-126836579b86
+          40b768ff-6e34-4257-9398-d83430b061e8:
+            uuid: 40b768ff-6e34-4257-9398-d83430b061e8
             region: content
             configuration:
               id: system_breadcrumb_block
@@ -57,9 +42,9 @@ third_party_settings:
               label_display: '0'
               context_mapping: {  }
             additional: {  }
-            weight: 1
-          4d79e741-a62a-4949-9bd9-566c102f9a3c:
-            uuid: 4d79e741-a62a-4949-9bd9-566c102f9a3c
+            weight: 0
+          56a58312-d93e-4d32-84a0-39b2a2fc89fb:
+            uuid: 56a58312-d93e-4d32-84a0-39b2a2fc89fb
             region: content
             configuration:
               id: 'field_block:node:page:title'
@@ -74,10 +59,36 @@ third_party_settings:
                 third_party_settings: {  }
               context_mapping:
                 entity: layout_builder.entity
+                view_mode: view_mode
             additional: {  }
-            weight: 2
-          8b20f28b-4c81-4ebd-a261-cbf1c6e41635:
-            uuid: 8b20f28b-4c81-4ebd-a261-cbf1c6e41635
+            weight: 1
+          b444f835-62e1-4e31-b433-22fe88ef3372:
+            uuid: b444f835-62e1-4e31-b433-22fe88ef3372
+            region: background
+            configuration:
+              id: 'field_block:node:page:field_image'
+              label: 'Featured Image'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: visually_hidden
+                type: entity_reference_entity_view
+                settings:
+                  view_mode: full__ultrawide
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 0
+        third_party_settings: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: 'Main content'
+        components:
+          051b1326-800c-40ca-b518-98ce13ca4e6f:
+            uuid: 051b1326-800c-40ca-b518-98ce13ca4e6f
             region: content
             configuration:
               label_display: '0'
@@ -85,13 +96,7 @@ third_party_settings:
                 entity: layout_builder.entity
               id: 'extra_field_block:node:page:content_moderation_control'
             additional: {  }
-            weight: 3
-        third_party_settings: {  }
-      -
-        layout_id: layout_onecol
-        layout_settings:
-          label: 'Main content'
-        components:
+            weight: -1
           eece7031-5478-448d-bf0c-2a58a8f3a77e:
             uuid: eece7031-5478-448d-bf0c-2a58a8f3a77e
             region: content
@@ -126,6 +131,7 @@ third_party_settings:
         - layout_twocol
         - layout_threecol
         - layout_fourcol
+        - layout_header
       whitelisted_blocks:
         'Chaos Tools': {  }
         Devel: {  }
@@ -176,7 +182,7 @@ content:
     region: content
     label: visually_hidden
     settings:
-      view_mode: sitenow_16_9
+      view_mode: full__ultrawide
       link: false
     third_party_settings: {  }
   links:
