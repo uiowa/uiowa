@@ -328,3 +328,26 @@ function sitenow_update_8018() {
     \Drupal::service('twig')->invalidate();
   }
 }
+
+/**
+ * Move quick links into top links to prepare for uids_base.
+ */
+function sitenow_update_8019() {
+  $config = \Drupal::configFactory()
+    ->get('uiowa_bar.settings');
+  $links = [
+    'link_1' => [
+      'title' => $config->get('uiowa_bar.link_1_title'),
+      'url' => $config->get('uiowa_bar.link_1_url'),
+    ],
+    'link_2' => [
+      'title' => $config->get('uiowa_bar.link_2_title'),
+      'url' => $config->get('uiowa_bar.link_2_url'),
+    ],
+  ];
+  foreach ($links as $link) {
+    if ($link['title']) {
+      // Do some things.
+    }
+  }
+}
