@@ -348,7 +348,7 @@ function sitenow_update_8019() {
   ];
 
   foreach ($links as $link) {
-    if ($link['title']) {
+    if ($link['title'] && $link['url']) {
       MenuLinkContent::create([
         'title' => $link['title'],
         'link' => ['uri' => $link['url']],
