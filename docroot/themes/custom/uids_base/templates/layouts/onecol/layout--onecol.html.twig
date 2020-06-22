@@ -23,7 +23,8 @@
 {{ attach_library('uids_base/fields') }}
 {% if content.content %}
 
-  <div{{ attributes.addClass(classes) }}>
+<div {{ attributes.addClass(classes).removeClass('layout--onecol--background') }}>
+
     <div class="lb__container">
 
       {% if region_attributes.content.storage['data-region'] %}
