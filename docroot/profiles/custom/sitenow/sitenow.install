@@ -349,8 +349,6 @@ function sitenow_update_8019() {
 
   foreach ($links as $link) {
     if ($link['title']) {
-      // Do some things.
-      // Create a menu link entity here $linkEntity
       MenuLinkContent::create([
         'title' => $link['title'],
         'link' => ['uri' => $link['url']],
