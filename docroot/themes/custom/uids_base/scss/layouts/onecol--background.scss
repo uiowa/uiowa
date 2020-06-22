@@ -1,0 +1,51 @@
+@import "uids/assets/scss/_variables.scss";
+@import "uids/assets/scss/_utilities.scss";
+
+.layout--onecol .layout__region {
+  width: 100%;
+}
+
+/*
+ * @todo Move this to a more appropriate location
+ */
+.layout--onecol--background .hero__img .layout-builder__add-block {
+  position: absolute;
+  top: 10px;
+  right: 25px;
+  z-index: 2;
+}
+
+.content__container .layout--onecol--background .lb__container,
+.content__mixed .layout--onecol--background .lb__container,
+.content__container .layout--onecol--no--background .lb__container,
+.content__mixed .layout--onecol--no--background .lb__container {
+  @extend %container;
+}
+
+.content__container .layout__container.layout--onecol--background,
+.content__mixed .layout__container.layout--onecol--background,
+.content__container .layout__container.layout--onecol--no--background,
+.content__mixed .layout__container.layout--onecol--no--background {
+  margin-bottom: 0;
+}
+
+.content__container .layout__container.layout--onecol--background.title-invisible,
+.content__mixed .layout__container.layout--onecol--background.title-invisible {
+  margin-bottom: 0;
+}
+
+.content__container .layout__container.layout--has-sidebar,
+.content__mixed .layout__container.layout--has-sidebar {
+  margin-top: $gutter;
+}
+
+.content__container .layout__container.layout--has-sidebar.sidebar-invisible,
+.content__mixed .layout__container.layout--has-sidebar.sidebar-invisible {
+  margin-top: 0;
+}
+
+.title-invisible {
+  .block-system-breadcrumb-block {
+    @include element-invisible;
+  }
+}

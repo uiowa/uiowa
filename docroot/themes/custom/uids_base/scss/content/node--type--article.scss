@@ -7,7 +7,6 @@ div[role=article].node--type-article {
   .article-created-date {
     display: block;
     @include card-subtitle;
-    margin-bottom: .5rem;
 
     .page-node-type-article & {
       color: $secondary;
@@ -20,85 +19,131 @@ div[role=article].node--type-article {
   }
 
   .field--name-body {
-    margin: $desktop-width-gutter 0;
+    margin: $gutter 0;
   }
 
-  .article-meta {
+  .field--name-field-article-author {
+    .field__label {
+      display: inline;
+      margin-right: $xsm;
+    }
 
     .field__items {
       padding-right: 0;
       display: inline-block;
     }
 
-    .field--name-field-article-author {
-      display: inline-block;
-      font-family: $font-family-serif;
-      font-size: 1.2rem;
+    display: inline-block;
+    font-family: $font-family-serif;
+    font-size: 1.2rem;
 
-      a {
-        text-decoration: none;
+    a {
+      text-decoration: none;
 
-        &:hover,
-        &:focus {
-          text-decoration: underline;
-        }
-      }
-
-      &:after {
-        display: inline-block;
-      }
-
-      .field__items {
-        .field__item {
-          display: inline;
-
-          &:not(:first-child) {
-            padding-left: $sm;
-
-            &:before {
-              content: '| ';
-              color: $grey;
-              padding-right: $sm;
-            }
-          }
-        }
-      }
-
-      .field__label {
-        font-weight: normal;
-        padding-right: 0.25em;
-        display: inline;
-
-        &:before {
-          //content: '| ';
-          //color: $grey;
-        }
+      &:hover,
+      &:focus {
+        text-decoration: underline;
       }
     }
 
-    .field--name-field-article-source-org,
-    .field--name-field-article-source-link {
+    &:after {
       display: inline-block;
-      font-family: $font-family-serif;
-      font-size: 1.2rem;
+    }
 
-      a {
-        text-decoration: none;
+    .field__items {
+      .field__item {
+        display: inline;
 
-        &:hover,
-        &:focus {
-          text-decoration: underline;
+        &:not(:first-child) {
+          padding-left: $xsm;
+
+          &:before {
+            content: '| ';
+            color: $grey;
+            padding-right: $xsm;
+          }
         }
       }
+    }
+  }
 
-      &:before {
-        content: '- ';
-        color: $grey;
-      }
+  // Remove
+  .field--name-field-article-source-org {
+    display: inline-block;
+    font-family: $font-family-serif;
+    font-size: 1.2rem;
 
-      &:after {
-        display: inline-block;
+    a {
+      text-decoration: none;
+
+      &:hover,
+      &:focus {
+        text-decoration: underline;
       }
+    }
+
+    &:after {
+      display: inline-block;
+    }
+  }
+
+
+  .block-field-blocknodearticlefield-article-source-org,
+  .block-field-blocknodearticlefield-article-source-link,
+  .block-field-blocknodearticlefield-article-author {
+    display: inline;
+  }
+
+  .field--name-field-article-source-link {
+    display: inline-block;
+    font-family: $font-family-serif;
+    font-size: 1.2rem;
+
+    .link-item {
+      display: inline-block;
+    }
+
+    a {
+      text-decoration: none;
+
+      &:hover,
+      &:focus {
+        text-decoration: underline;
+      }
+    }
+
+    &:after {
+      display: inline-block;
+    }
+  }
+}
+
+
+.field--name-field-article-author+.field--name-field-article-source-link {
+  &:before {
+    content: '- ';
+    color: $grey;
+    margin: 0 $xsm;
+  }
+}
+
+
+article.node--type-article {
+  .block-extra-field-blocknodearticlearticle-created-date {
+    margin: $gutter 0 $sm;
+  }
+
+  .block-field-blocknodearticlefield-article-source-org+.block-field-blocknodearticlefield-article-source-link:before {
+    content: "| ";
+    color: #737373;
+    margin: 0 .325rem;
+  }
+
+  .block-field-blocknodearticlefield-article-author+.block-field-blocknodearticlefield-article-source-org {
+    &:before {
+      content: '- ';
+      color: $grey;
+      margin: 0 $xsm;
     }
   }
 }
@@ -143,10 +188,10 @@ div[role=article].node--type-article.node--view-mode-teaser {
 }
 
 // Hero
-
 .page-node-type-article .hero {
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
+  margin-bottom: $gutter;
   box-sizing: border-box;
   -webkit-transform: translateX(calc(50vw - 50%));
   transform: translateX(calc(50vw - 50%));
