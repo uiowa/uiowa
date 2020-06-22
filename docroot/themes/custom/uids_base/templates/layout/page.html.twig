@@ -74,37 +74,19 @@
   {{ page.alert }}
 {% endif %}
 
+
 <main role="main" {{ node_attributes.addClass(content_classes) }}>
 
   <a id="main-content" tabindex="-1"></a>
   {# link is in html.html.twig #}
 
-  {% if not has_node_image %}
-
-    {% if page.breadcrumb %}
-      {{ page.breadcrumb }}
-    {% endif %}
-
-    {{ page.content.uids_base_page_title }}
-
+  {% if page.breadcrumb %}
+    {{ page.breadcrumb }}
   {% endif %}
 
-  {{ page.content|without('uids_base_page_title') }}
+  {{ page.content }}
 
   {# /.layout-content #}
-
-  {% if page.sidebar_first %}
-    <aside class="layout-sidebar-first" role="complementary">
-      {{ page.sidebar_first }}
-    </aside>
-  {% endif %}
-
-  {% if page.sidebar_second %}
-    <aside class="layout-sidebar-second" role="complementary">
-      {{ page.sidebar_second }}
-    </aside>
-  {% endif %}
-
 </main>
 
 {% block footer %}
