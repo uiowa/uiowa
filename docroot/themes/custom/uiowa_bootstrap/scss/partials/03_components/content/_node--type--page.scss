@@ -6,3 +6,110 @@ article.node--type-page.node--view-mode-teaser {
     display: block;
   }
 }
+
+
+// Page Paragraph
+
+
+.page__container--edge.layout--has-sidebar .lb__container,
+.page__container--edge.layout--has-sidebar .lb__container {
+  margin: 0 1.25rem;
+  position: relative
+}
+
+@media (min-width:84.375em) {
+ .page__container--edge.layout--has-sidebar .lb__container,
+.page__container--edge.layout--has-sidebar .lb__container {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+}
+
+.layout--onecol .layout__region {
+  display: flex;
+  flex-wrap: wrap
+}
+
+.container.container--title,
+.sidebar-invisible.layout--has-sidebar .container.container--title {
+  padding-right: 1.25rem;
+  padding-left: 1.25rem
+}
+
+.sidebar-invisible.layout--has-sidebar .container.container--title {
+  margin-bottom: 0
+}
+
+.title-invisible .container.container--title {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px)
+}
+
+.layout--has-sidebar .container.container--title {
+  padding: 0;
+  margin-bottom: 1.5rem
+}
+
+.layout--no-sidebar .container.container--title {
+  margin-bottom: 1.5rem
+}
+
+ .page__container--edge.layout--has-sidebar .lb__container,
+ .page__container--edge.layout--has-sidebar .lb__container {
+  display: flex;
+  flex-wrap: wrap
+}
+
+.page__container--edge.layout--has-sidebar.sidebar-invisible .lb__container,
+.page__container--edge.layout--has-sidebar.sidebar-invisible .lb__container {
+  max-width: 100%
+}
+
+.layout__container.layout--has-sidebar.sidebar-invisible,
+ .layout__container.layout--no-sidebar,
+ .layout__container.layout--has-sidebar.sidebar-invisible,
+.layout__container.layout--no-sidebar {
+  margin-bottom: 0
+}
+
+@media (min-width:855px) {
+  .layout--has-sidebar .layout__region--sidebar {
+    flex: 0 1 24.25%;
+    margin-right: 3%
+  }
+}
+
+.layout--has-sidebar.sidebar-invisible .layout__region--sidebar {
+  display: none
+}
+
+@media (min-width:855px) {
+  .layout--has-sidebar.sidebar-invisible .layout__region--main {
+    flex: 0 1 100%
+  }
+}
+
+@media (min-width:855px) {
+  .layout--has-sidebar .layout__region--main {
+    flex: 0 1 71.75%
+  }
+}
+
+header.has-bg-img {
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  box-sizing: border-box;
+  transform: translateX(calc(50vw - 50%))
+}
+
+.layout--has-sidebar {
+  padding-top: 20px;
+  &.sidebar-invisible {
+    padding-top: 0;
+  }
+}
