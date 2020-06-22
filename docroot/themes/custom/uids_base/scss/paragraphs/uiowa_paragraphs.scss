@@ -1,5 +1,6 @@
 @import "uids/assets/scss/_variables.scss";
 @import "uids/assets/scss/_utilities.scss";
+@import "_uiowa_paragraphs_background_overrides.scss";
 
 .paragraph--type--section.has-section-image {
 
@@ -8,55 +9,6 @@
   .paragraph--type--webform {
     padding: 1.25rem;
     background-color: $white;
-  }
-}
-
-.paragraph--type--section.has-section-image.bg-black,
-.paragraph--type--section.bg-black {
-
-  .paragraph--type--blockquote,
-  .paragraph--type--text,
-  .paragraph--type--webform {
-    background-color: $secondary;
-    color: $white;
-
-    a:not(.btn):not(.bttn):not(.button) {
-      color: $primary;
-    }
-
-    .alert a {
-      color: $secondary !important;
-    }
-
-    &.semi-transparent {
-      background-color: rgba(21, 21, 21, 0.8) !important;
-    }
-  }
-}
-
-
-
-.paragraph--type--section.has-section-image.bg-dark,
-.paragraph--type--section.bg-dark {
-
-  .paragraph--type--blockquote,
-  .paragraph--type--text,
-  .paragraph--type--webform {
-    background-color: $brand-cool-gray;
-    color: $white;
-
-    a:not(.btn):not(.bttn):not(.button) {
-      color: $primary;
-    }
-
-    .alert a {
-      color: $secondary !important;
-    }
-
-    &.semi-transparent {
-      background-color: rgba(52, 58, 64, 0.8) !important;
-    }
-
   }
 }
 
@@ -85,21 +37,6 @@
     .alert a {
       color: $secondary !important;
     }
-  }
-}
-
-.paragraph--type--section.has-section-image.bg-light,
-.paragraph--type--section.bg-light {
-
-  .paragraph--type--blockquote,
-  .paragraph--type--text,
-  .paragraph--type--webform {
-    background-color: $light;
-
-    &.semi-transparent {
-      background-color: rgba(248, 249, 250, 0.8) !important;
-    }
-
   }
 }
 
@@ -324,7 +261,7 @@ div.example2 p.special {
   &.bg-light:first-child,
   &.bg-dark:first-child,
   &.bg-black:first-child,
-  &.bg-yellow:first-child,
+  &.bg-yellow:first-child
     {
     margin-top: $gutter;
   }
@@ -335,7 +272,7 @@ div.example2 p.special {
   &.bg-light:first-child,
   &.bg-dark:first-child,
   &.bg-black:first-child,
-  &.bg-yellow:first-child,
+  &.bg-yellow:first-child
     {
     margin-top: 0;
   }

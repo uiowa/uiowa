@@ -1,0 +1,348 @@
+.paragraph--type--section.has-section-image,
+.paragraph--type--section {
+
+    &.bg-dark {
+        .paragraph--type--blockquote,
+        .paragraph--type--text,
+        .paragraph--type--webform,
+        .paragraph--type--articles,
+        .paragraph--type--accordion,
+        .paragraph--type--events {
+            background-color: $brand-cool-gray;
+            color: $white;
+
+            a:not(.btn):not(.bttn):not(.button) {
+                color: $primary;
+            }
+
+            .alert a {
+                color: $secondary !important;
+            }
+
+            &.semi-transparent {
+                background-color: rgba(52, 58, 64, 0.8) !important;
+            }
+        }
+
+        .paragraph--type--articles {
+            &.list {
+                .views-row {
+                    padding: 0 1.25rem;
+
+                    .article-created-date {
+                        color: $white;
+                    }
+
+                    a {
+                        color: $primary;
+                    }
+
+                    .card__body {
+                        color: $white;
+                    }
+
+                    .card {
+                        background-color: $brand-cool-gray;
+                    }
+                }
+            }
+
+            .pager {
+                .pager__item {
+                    &.is-active {
+                        &>a {
+                            color: $white;
+                            background-color: lighten($secondary, 20%);
+
+                            &:hover {
+                                background-color: lighten($secondary, 10%);
+                                cursor: pointer;
+                            }
+                        } 
+                    }
+
+                    &>a:hover {
+                        background-color: lighten($secondary, 10%);
+                        color: $white;
+                    }
+                }
+            }         
+        }
+
+
+        .paragraph--type--accordion {
+            h2 {
+                color: $secondary;
+            }
+
+            .uids-accordion__content {
+                background-color: $white;
+            }
+        }
+
+        .paragraph--type--featured-content {
+            .featured-content-item {
+                padding: .75rem 1.25rem;
+
+                &:first-child {
+                    padding-top: 0.75rem;
+                }
+            }
+        }
+    }
+
+    &.bg-black {
+        .paragraph--type--blockquote,
+        .paragraph--type--text,
+        .paragraph--type--webform,
+        .paragraph--type--articles,
+        .paragraph--type--accordion,
+        .paragraph--type--events {
+            background-color: $secondary;
+            color: $white;
+
+            a:not(.btn):not(.bttn):not(.button) {
+                color: $primary;
+            }
+
+            .alert a {
+                color: $secondary !important;
+            }
+
+            &.semi-transparent {
+                background-color: rgba(21, 21, 21, 0.8) !important;
+            }
+        }
+
+        .paragraph--type--articles {
+            &.list {
+                .views-row {
+                    background-color: $secondary;
+                    padding: 0 1.25rem;
+
+                    .article-created-date {
+                        color: $white;
+                    }
+
+                    a {
+                        color: $primary;
+                    }
+
+                    .card__body {
+                        color: $white;
+                    }
+
+                    .card {
+                        background-color: $secondary;
+                    }
+                }
+            }
+
+            .pager {
+                .pager__item {
+                    &.is-active {
+                        &>a {
+                            color: $white;
+                            background-color: lighten($secondary, 20%);
+
+                            &:hover {
+                                background-color: lighten($secondary, 10%);
+                                cursor: pointer;
+                            }
+                        }
+                    }
+
+                    &>a:hover {
+                        background-color: lighten($secondary, 10%);
+                        color: $white;
+                    }
+                }
+            }         
+        }
+
+
+        .paragraph--type--accordion {
+            h2 {
+                color: $secondary;
+            }
+
+            .uids-accordion__content {
+                background-color: $light;
+            }
+        }
+
+        .paragraph--type--featured-content {
+            .featured-content-item {
+                padding: .75rem 1.25rem;
+
+                &:first-child {
+                    padding-top: 0.75rem;
+                }
+            }
+        }
+    }
+
+    &.bg-light {
+        .paragraph--type--blockquote,
+        .paragraph--type--text,
+        .paragraph--type--webform,
+        .paragraph--type--articles,
+        .paragraph--type--accordion,
+        .paragraph--type--events {
+            background-color: $light;
+
+            &.semi-transparent {
+                background-color: rgba(248, 249, 250, 0.8) !important;
+            }
+
+        }
+
+        .paragraph--type--articles {
+            &.list {
+                .views-row {
+                    background-color: $light;
+                    padding: 0 1.25rem;
+
+                    .card {
+                        background-color: $light;
+                    }
+                }
+            }
+
+            .pager {
+                .pager__item {
+                    &.is-active {
+                        &>a {
+                            background-color: darken($light, 20%);
+                            color: $secondary;
+
+                            &:hover {
+                                background-color: darken($light, 40%);
+                                cursor: pointer;
+                            }
+                        }  
+                    }
+
+                    &>a:hover {
+                        background-color: darken($light, 40%);
+                    }
+                }
+            }         
+        }
+
+        .paragraph--type--accordion {
+            h2 {
+                color: $secondary;
+            }
+
+            .uids-accordion__content {
+                background-color: $white;
+            }
+        }
+
+        .paragraph--type--featured-content {
+            .featured-content-item {
+                padding: .75rem 1.25rem;
+
+                &:first-child {
+                    padding-top: 0.75rem;
+                }
+            }
+        }
+    }
+
+    &.bg-yellow {
+        .paragraph--type--blockquote,
+        .paragraph--type--text,
+        .paragraph--type--webform,
+        .paragraph--type--articles,
+        .paragraph--type--accordion,
+        .paragraph--type--events {
+            background-color: $primary;
+
+            a.btn {
+                @extend %bttn--secondary;
+                border: 1px solid $secondary;
+                @extend %bttn--focus;
+            }
+
+            &.semi-transparent {
+                background-color: rgba(255, 205, 0, 0.8) !important;
+            }
+
+            a:not(.btn):not(.bttn):not(.button) {
+                color: $secondary;
+                text-decoration: underline;
+
+                &:hover,
+                &:focus {
+                    text-decoration: none;
+                }
+            }
+
+            .alert a {
+                color: $secondary !important;
+            }
+
+        }
+
+        .paragraph--type--articles {
+            &.list {
+                .views-row {
+                    background-color: $primary;
+                    padding: 0 1.25rem;
+
+                    .card {
+                        background-color: $primary;
+                    }
+
+                    .article-created-date {
+                        color: $secondary;
+                    }
+                }
+            }
+
+            .pager {
+                .pager__item {
+                    &.is-active {
+                        &>a {
+                            background-color: $secondary;
+                            color: $white;
+
+                            &:hover {
+                                background-color: lighten($secondary, 20%);
+                                color: $white;
+                                cursor: pointer;
+                            }
+                        }  
+                    }
+
+                    &>a:hover {
+                        background-color: lighten($secondary, 20%);
+                        color: $white;
+                    }
+                }
+            }   
+        }
+
+        .paragraph--type--accordion {
+            h2 {
+                color: $secondary;
+            }
+
+            .uids-accordion__content {
+                background-color: $white;
+            }
+        }
+
+        .paragraph--type--featured-content {
+            .featured-content-item {
+                padding: .75rem 1.25rem;
+
+                &:first-child {
+                    padding-top: 0.75rem;
+                }
+            }
+        }
+    }
+}
