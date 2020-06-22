@@ -10,6 +10,7 @@ use Drupal\Core\Config\FileStorage;
 use Drupal\node\Entity\Node;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\user\Entity\User;
+use Drupal\menu_link_content\Entity\MenuLinkContent;
 
 /**
  * Update some uiowa_footer settings which are ignored.
@@ -345,9 +346,18 @@ function sitenow_update_8019() {
       'url' => $config->get('uiowa_bar.link_2_url'),
     ],
   ];
+
   foreach ($links as $link) {
     if ($link['title']) {
       // Do some things.
+      // Create a menu link entity here $linkEntity
+      MenuLinkContent::create([
+        'title' => $link['title'],
+        'link' => ['uri' => $link['url']],
+        'menu_name' => 'top-links',
+        'status' => TRUE,
+      ])
+        ->save();
     }
   }
 }
