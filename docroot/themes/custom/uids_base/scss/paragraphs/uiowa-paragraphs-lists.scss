@@ -66,6 +66,10 @@
   .card--list {
     display: flex;
     flex-direction: row-reverse;
+
+    &:last-child {
+      border-bottom: none;
+    }
   }
 }
 
@@ -171,11 +175,10 @@
 
   .views-row {
     @include list-group-item;
-  }
 
-
-  .view-content:last-child .views-row:last-child {
-    border-bottom: none;
+    &:last-child {
+      border-bottom: none;
+    }
   }
 
   .node__content {

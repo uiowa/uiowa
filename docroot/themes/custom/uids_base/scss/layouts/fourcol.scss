@@ -1,9 +1,5 @@
-/*
- * @file
- * Provides the layout styles for four-column layout section.
- */
-
-
+@import "uids/assets/scss/_variables.scss";
+@import "uids/assets/scss/_utilities.scss";
 
 @media screen and (min-width: 40em) {
 
@@ -109,4 +105,11 @@
     margin-left: 3%;
     margin-right: 3%;
   }
+}
+
+.layout--onecol--no--background+.layout--fourcol .block-field-blocknodepagebody,
+.layout--onecol--background+.layout--fourcol .block-field-blocknodepagebody,
+.layout--onecol--no--background+.layout--fourcol .block-inline-blockuiowa-text-area,
+.layout--onecol--background+.layout--fourcol .block-inline-blockuiowa-text-area {
+  margin-top: $gutter;
 }
