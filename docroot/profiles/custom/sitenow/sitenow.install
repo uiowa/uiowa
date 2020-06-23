@@ -473,3 +473,19 @@ function sitenow_update_8020() {
     }
   }
 }
+
+/**
+ * Import alert settings if they do not already exist since they are ignored.
+ */
+function sitenow_update_8021() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uiowa_alerts.settings');
+
+  if (empty($config->get())) {
+    $config_path = DRUPAL_ROOT . '/../config/default';
+    $source = new FileStorage($config_path);
+
+    $config_storage = \Drupal::service('config.storage');
+    $config_storage->write('uiowa_alerts.settings', $source->read('uiowa_alerts.settings'));
+  }
+}
