@@ -17,9 +17,23 @@ dependencies:
     - field.field.node.ighn_person.field_ighn_primary_college
     - node.type.ighn_person
   module:
+    - field_group
     - link
     - text
     - user
+third_party_settings:
+  field_group:
+    group_ighn_person_group:
+      children: {  }
+      parent_name: ''
+      weight: 20
+      format_type: fieldset
+      region: hidden
+      format_settings:
+        id: ighn-person-group
+        classes: ''
+        description: ''
+      label: 'IGHN Person Group'
 id: node.ighn_person.default
 targetEntityType: node
 bundle: ighn_person
