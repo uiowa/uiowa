@@ -1,0 +1,28 @@
+uuid: 37dbc3ce-ddb5-41ce-88d5-04e3ed99255e
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_banner
+    - block_content.type.uiowa_slider
+    - field.storage.block_content.field_uiowa_slider_slides
+id: block_content.uiowa_slider.field_uiowa_slider_slides
+field_name: field_uiowa_slider_slides
+entity_type: block_content
+bundle: uiowa_slider
+label: Slides
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: inline_entity_form
+  handler_settings:
+    target_bundles:
+      uiowa_banner: uiowa_banner
+    sort:
+      field: _none
+    auto_create: 0
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,0 +1,39 @@
+uuid: 6d963c95-cda2-451d-bddd-cf5bc89c7bce
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_panel
+    - field.field.block_content.uiowa_panel.field_uiowa_panel_title
+    - field.field.block_content.uiowa_panel.field_uiowa_panel_content
+  module:
+    - heading
+    - text
+id: block_content.uiowa_panel.default
+targetEntityType: block_content
+bundle: uiowa_panel
+mode: default
+content:
+  field_uiowa_panel_content:
+    weight: 27
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_uiowa_panel_title:
+    weight: 26
+    settings: {  }
+    third_party_settings: {  }
+    type: heading
+    region: content
+  info:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }

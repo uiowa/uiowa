@@ -1,28 +1,29 @@
-uuid: a46307fe-d29d-4c5d-8cc4-33d5ee2097a4
+uuid: 305d132f-9b34-4f29-a3bc-69f5fad2e667
 langcode: en
 status: true
 dependencies:
   config:
-    - block_content.type.collection
-    - field.field.block_content.collection.field_uiowa_collection_items
+    - block_content.type.uiowa_slider
+    - field.field.block_content.uiowa_slider.field_uiowa_slider_slides
   module:
     - entity_browser_entity_form
     - inline_entity_form
-id: block_content.collection.default
+id: block_content.uiowa_slider.default
 targetEntityType: block_content
-bundle: collection
+bundle: uiowa_slider
 mode: default
 content:
-  field_uiowa_collection_items:
-    weight: 1
+  field_uiowa_slider_slides:
+    weight: 26
     settings:
       form_mode: default
+      revision: true
       label_singular: ''
       label_plural: ''
+      collapsible: true
       allow_new: true
       match_operator: CONTAINS
       override_labels: false
-      collapsible: false
       collapsed: false
       allow_existing: false
       allow_duplicate: false
@@ -33,7 +34,7 @@ content:
     region: content
   info:
     type: string_textfield
-    weight: 0
+    weight: -5
     region: content
     settings:
       size: 60

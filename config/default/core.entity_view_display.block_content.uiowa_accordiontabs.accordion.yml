@@ -1,0 +1,29 @@
+uuid: a6a5a1c0-8f2d-4029-8815-11360e262c89
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_accordiontabs
+    - core.entity_view_mode.block_content.accordion
+    - field.field.block_content.uiowa_accordiontabs.field_uiowa_accoridontabs_panels
+  module:
+    - layout_builder
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: false
+id: block_content.uiowa_accordiontabs.accordion
+targetEntityType: block_content
+bundle: uiowa_accordiontabs
+mode: accordion
+content:
+  field_uiowa_accoridontabs_panels:
+    weight: 0
+    label: hidden
+    settings:
+      link: true
+      view_mode: default
+    third_party_settings: {  }
+    type: entity_reference_entity_view
+    region: content
+hidden: {  }
