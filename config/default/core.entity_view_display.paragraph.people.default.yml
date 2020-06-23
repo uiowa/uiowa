@@ -1,0 +1,41 @@
+uuid: 9fa037c2-530e-4917-9ea2-c3a98fa7976b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.people.field_people_more
+    - field.field.paragraph.people.field_people_more_path
+    - field.field.paragraph.people.field_people_sort
+    - field.field.paragraph.people.field_reference
+    - field.field.paragraph.people.field_uip_classes
+    - field.field.paragraph.people.field_uip_colwidth
+    - field.field.paragraph.people.field_uip_display_title
+    - field.field.paragraph.people.field_uip_id
+    - field.field.paragraph.people.field_uip_items
+    - field.field.paragraph.people.field_uip_pager
+    - field.field.paragraph.people.field_uip_title
+    - paragraphs.paragraphs_type.people
+id: paragraph.people.default
+targetEntityType: paragraph
+bundle: people
+mode: default
+content:
+  field_uip_title:
+    type: string
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  field_people_more: true
+  field_people_more_path: true
+  field_people_sort: true
+  field_reference: true
+  field_uip_classes: true
+  field_uip_colwidth: true
+  field_uip_display_title: true
+  field_uip_id: true
+  field_uip_items: true
+  field_uip_pager: true

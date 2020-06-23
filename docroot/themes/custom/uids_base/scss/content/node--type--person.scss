@@ -39,3 +39,67 @@ div[role=article].node--type-person.node--view-mode-teaser {
     }
   }
 }
+
+// Person Content
+.person-content {
+  &.col-md-6 {
+    padding: 0;
+    margin-top: $gutter;
+
+    @include breakpoint(menu) {
+      flex: 0 0 67%;
+      max-width: 67%;
+      margin-top: 0;
+    }
+  }
+}
+
+// Subtitle
+  .subtitle {
+    @include card-subtitle;
+    display: block;
+    font-size: 1.6rem;
+  }
+
+// Person Meta
+.person-meta {
+  &.col-md-6 {
+    padding: 0;
+
+    @include breakpoint(menu) {
+      padding-right: $desktop-width-gutter;
+      flex: 0 0 33%;
+    }
+  }
+
+  .field--label-inline {
+    margin-bottom: .7rem;
+  }
+
+  figure {
+    margin: 0;
+  }
+
+  .h5.field--name-field-person-position {
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+}
+
+// paragraph teaser
+.paragraph--type--people {
+  p {
+    display: none;
+  }
+
+  .h6 {
+    margin-top: .7rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .field--name-field-person-position {}
+
+  .field--name-field-teaser {
+    margin-top: $gutter;
+  }
+}

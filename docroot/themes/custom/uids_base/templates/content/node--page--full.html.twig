@@ -83,22 +83,6 @@
 {{ attach_library('classy/node') }}
 {{ attach_library('uids_base/node-type-page') }}
 
-{% if content.field_image[0]['#media'] is not empty %}
-	{% embed "@uids_base/uids/blocks/hero.html.twig" with {
-    hero_alignment : 'bottom'
-  } %}
-
-		{% block hero_image %}
-			{{ content.field_image }}
-		{% endblock %}
-
-		{% block hero_content %}
-			{{ breadcrumb }}
-			<h1 class="bold-headline--serif bold-headline">{{ node.label }}</h1>
-		{% endblock %}
-	{% endembed %}
-{% endif %}
-
 <article{{ attributes.addClass(classes) }}>
 
   {{ title_prefix }}

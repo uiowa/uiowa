@@ -1,0 +1,42 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a one column layout.
+ *
+ * Available variables:
+ * - content: The content for this layout.
+ * - attributes: HTML attributes for the layout <div>.
+ *
+ * @ingroup themeable
+ * @see https://www.drupal.org/docs/8/api/layout-api/how-to-register-layouts
+ * @see https://v4-alpha.getbootstrap.com/layout/grid/
+ */
+#}
+{% set background = content.background | render %}
+
+{%
+  set classes = [
+  'layout--onecol--background'
+]
+%}
+
+{% if background %}
+
+  {% embed "@uids_base/uids/blocks/hero.html.twig" with {
+    hero_alignment : 'bottom',
+    'attributes' : attributes.addClass(classes)
+  } %}
+    {% block hero_image %}
+      {{ content.background }}
+    {% endblock %}
+    {% block hero_content %}
+      {{ content.content }}
+    {% endblock %}
+  {% endembed %}
+
+{% else %}
+  {% embed '@uids_base/layouts/onecol/layout--onecol.html.twig' with {
+    'attributes': attributes.addClass(classes, 'layout--onecol--no--background'),
+}%}{% endembed %}
+
+{% endif %}
