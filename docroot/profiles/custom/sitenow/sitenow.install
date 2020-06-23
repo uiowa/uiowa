@@ -335,11 +335,22 @@ function sitenow_update_8018() {
 function sitenow_update_8019() {
   $config = \Drupal::configFactory()
     ->get('uiowa_footer.settings');
-  $additional_info = [
-    'title' => $config->get('additional_info.title'),
-    'content' => $config->get('additional_info.content'),
-  ];
-  if ($additional_info['title'] || $additional_info['content']) {
-    // Do some things.
+  $title = $config->get('additional_info.title');
+  $content = $config->get('additional_info.content');
+  if ($title) {
+    $content['value'] = '<h2>' . $title . '</h2>' . $content['value'];
+  }
+  if ($content) {
+    $block = \Drupal::entityTypeManager()
+      ->getStorage('block_content')
+      ->create([
+        'type' => 'uiowa_text_area',
+        'info' => [
+          'value' => 'Footer Additional Info',
+          'lang' => 'en',
+        ],
+        'field_uiowa_text_area' => $content,
+      ]);
+    $block->save();
   }
 }
