@@ -1,5 +1,5 @@
 layout_onecol:
-  label: 'One Column'
+  label: 'One column'
   path: templates/layouts/onecol/layout--onecol
   template: templates/layouts/onecol/layout--onecol
   library: uids_base/onecol
@@ -12,7 +12,7 @@ layout_onecol:
       label: Content
 
 layout_twocol:
-  label: 'Two Column'
+  label: 'Two column'
   path: templates/layouts/twocol/layout--twocol
   template: layout--twocol
   library: uids_base/twocol
@@ -47,7 +47,7 @@ layout_threecol:
       label: Third
 
 layout_fourcol:
-  label: 'Four Column'
+  label: 'Four column'
   path: templates/layouts/fourcol/fourcol
   template: layout--fourcol
   library: uids_base/fourcol
@@ -64,3 +64,33 @@ layout_fourcol:
       label: Third
     fourth:
       label: Fourth
+
+layout_header:
+  label: 'Header layout with background media'
+  path: templates/layouts/onecol--background
+  template: layout--onecol--background
+  library: uids_base/onecol--background
+  category: 'Columns: 1'
+  default_region: content
+  icon_map:
+    - [content]
+  regions:
+    content:
+      label: Content
+    background:
+      label: Background
+
+layout_page:
+  label: 'Paragraph page w/'
+  path: templates/layouts/page--paragraph
+  template: layout--page--paragraph
+  library: uids_base/page--paragraph
+  category: 'Columns: 2'
+  default_region: content
+  icon_map:
+    - [sidebar, content]
+  regions:
+    sidebar:
+      label: Sidebar
+    content:
+      label: Content
