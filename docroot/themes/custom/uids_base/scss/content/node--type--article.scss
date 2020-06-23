@@ -23,9 +23,6 @@ div[role=article].node--type-article {
   }
 
   .field--name-field-article-author {
-
-    margin: 1rem 0;
-
     .field__label {
       display: inline;
       margin-right: $xsm;
@@ -85,12 +82,6 @@ div[role=article].node--type-article {
       }
     }
 
-    &:before {
-      content: '- ';
-      color: $grey;
-      margin: 0 $xsm;
-    }
-
     &:after {
       display: inline-block;
     }
@@ -121,18 +112,41 @@ div[role=article].node--type-article {
       }
     }
 
-    &:before {
-      content: '| ';
-      color: $grey;
-      margin: 0 $xsm;
-    }
-
     &:after {
       display: inline-block;
     }
   }
 }
 
+
+.field--name-field-article-author+.field--name-field-article-source-link {
+  &:before {
+    content: '- ';
+    color: $grey;
+    margin: 0 $xsm;
+  }
+}
+
+
+article.node--type-article {
+  .block-extra-field-blocknodearticlearticle-created-date {
+    margin: $gutter 0 $sm;
+  }
+
+  .block-field-blocknodearticlefield-article-source-org+.block-field-blocknodearticlefield-article-source-link:before {
+    content: "| ";
+    color: #737373;
+    margin: 0 .325rem;
+  }
+
+  .block-field-blocknodearticlefield-article-author+.block-field-blocknodearticlefield-article-source-org {
+    &:before {
+      content: '- ';
+      color: $grey;
+      margin: 0 $xsm;
+    }
+  }
+}
 
 article.node--type-article.node--view-mode-full,
 div[role=article].node--type-article.node--view-mode-full {

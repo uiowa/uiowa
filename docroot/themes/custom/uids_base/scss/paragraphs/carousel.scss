@@ -2,13 +2,15 @@
 @import "uids/assets/scss/_utilities.scss";
 
 // Full-width.
-.container-fluid.field--name-field-section-content-block {
-  .col-md-12.paragraph--type--carousel {
+.field--name-field-section-content-block {
+  .col-md-12.div[data-carousel="carousel"] {
     padding: 0;
   }
 
-  .paragraph--type--carousel {
-    .paragraph--type--carousel-image {
+  .div[data-carousel="carousel"] {
+    .carousel-item {
+      margin-bottom: 0;
+
       .field--name-field-media-image {
         width: 100%;
         height: auto;
@@ -24,13 +26,104 @@
   }
 }
 
-.paragraph--type--carousel {
+div[data-carousel="carousel"] {
+
+  .slick-slide {
+    position: relative;
+  }
+
   .carousel-caption {
     padding: 1.25rem;
-    overflow-y: scroll;
-    max-height: 95%;
+    overflow-y: auto;
+    max-height: 7rem;
     background-color: $dark;
     color: $white;
+    position: absolute;
+    bottom: 3rem;
+    right: 15%;
+    left: 15%;
+    text-align: center;
+  }
+
+  .slick-dots {
+    margin-bottom: calc(1.5rem - .15rem);
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    justify-content: center;
+
+    li {
+      list-style: none;
+      height: 0.3rem;
+      margin: 0 0.2rem;
+
+      button {
+        height: 0.3rem;
+        width: 3rem;
+        padding: 0;
+        text-indent: -9999px;
+        border: none;
+        background-color: rgba(255,255,255,0.6);
+        box-shadow: 0px 0px 30px 2px #727272;
+        transition: background-color 0.3s ease-in-out;
+
+        &:focus {
+          outline: none;
+          background-color: $primary;
+        }
+      }
+
+      &.slick-active button {
+        background-color: $primary;
+      }
+    }
+  }
+
+  .slick-arrow {
+    top: 0;
+    height: 100%;
+    z-index: 10;
+    position: absolute;
+    border: none;
+    background-color: transparent;
+    color: transparent;
+    outline: none;
+
+    &:before {
+      position: absolute;
+      @include fas();
+      color: rgba(255,255,255,0.6);
+      font-size: 3rem;
+      text-shadow: 0px 0px 20px #727272;
+      transition: color 0.3s ease-in-out;
+    }
+
+    &:hover,
+    &:active,
+    &:focus {
+      &:before {
+        color: rgba(255,255,255,0.9);
+      }
+    }
+
+    &.slick-prev {
+      left: 0;
+      padding: 0 5rem 0 1rem;
+
+      &:before {
+        content: '\f053';
+      }
+    }
+
+    &.slick-next {
+      right: 0;
+      padding: 0 1rem 0 5rem;
+
+      &:before {
+        content: '\f054';
+      }
+    }
   }
 }
 

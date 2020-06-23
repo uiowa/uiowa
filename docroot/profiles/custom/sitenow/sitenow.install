@@ -6,6 +6,7 @@
  * @see: https://www.drupal.org/project/drupal/issues/2982052
  */
 
+use Drupal\block\Entity\Block;
 use Drupal\Core\Config\FileStorage;
 use Drupal\node\Entity\Node;
 use Drupal\taxonomy\Entity\Term;
@@ -326,5 +327,149 @@ function sitenow_update_8018() {
   // Limit to just sites running uids_base.
   if ($active_theme->getName() === 'uids_base') {
     \Drupal::service('twig')->invalidate();
+  }
+}
+
+/**
+ * Prepare uiowa_bootstrap sites with default theme settings for uids_base.
+ */
+function sitenow_update_8019() {
+  $linkController = \Drupal::entityTypeManager()->getStorage('menu_link_content');
+  $primaryMids = \Drupal::entityQuery('menu_link_content')
+    ->condition('menu_name', 'footer')
+    ->execute();
+  $secondaryMids = \Drupal::entityQuery('menu_link_content')
+    ->condition('menu_name', 'footer-second')
+    ->execute();
+
+  $menuMids = [
+    'footer-primary' => $primaryMids,
+    'footer-secondary' => $secondaryMids,
+  ];
+
+  foreach ($menuMids as $menuName => $mids) {
+    $linkEntities = $linkController->loadMultiple($mids);
+    foreach ($linkEntities as $link) {
+      $link->set('menu_name', $menuName);
+      $link->save();
+    }
+  }
+
+  // Delete old menus.
+  $menuController = \Drupal::entityTypeManager()->getStorage('menu');
+  $toDelete = ['footer', 'footer-second'];
+  $oldMenus = $menuController->loadMultiple($toDelete);
+  $menuController->delete($oldMenus);
+
+  // Update footer menu config settings.
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uiowa_footer.settings');
+  $config
+    ->set('custom_menu', 'footer-primary')
+    ->set('custom_menu_2', 'footer-secondary')
+    ->save();
+
+  // Update footer menu access perms.
+  $config = $config_factory->getEditable('user.role.webmaster');
+  $perms = $config->get('permissions');
+  $permUpdates = [
+    'administer footer menu items' => 'administer footer-primary menu items',
+    'administer footer-second menu items' => 'administer footer-secondary menu items',
+  ];
+  foreach ($permUpdates as $oldPerm => $newPerm) {
+    if (($index = array_search($oldPerm, $perms))) {
+      $perms[$index] = $newPerm;
+    }
+  }
+  $config
+    ->set('permissions', $perms)
+    ->save();
+
+  // Update basic page available menus.
+  $config = $config_factory->getEditable('node.type.page');
+  $menus = $config->get('third_party_settings.menu_ui.available_menus');
+  $menuUpdates = [
+    'footer' => 'footer-primary',
+    'footer-second' => 'footer-secondary',
+  ];
+  foreach ($menuUpdates as $oldMenu => $newMenu) {
+    if (($index = array_search($oldMenu, $menus))) {
+      $menus[$index] = $newMenu;
+    }
+  }
+  $config
+    ->set('third_party_settings.menu_ui.available_menus', $menus)
+    ->save();
+
+  // Remove footer and footer-second from breadcrumb config.
+  $config = $config_factory->getEditable('menu_breadcrumb.settings');
+  $config
+    ->clear('menu_breadcrumb_menus.footer')
+    ->clear('menu_breadcrumb_menus.footer-second')
+    ->save();
+
+  // Update tours links to footer-primary and footer-secondary.
+  $config = $config_factory->getEditable('tour.tour.menus');
+  $footerTip = '<p>Depending on your role within the site, there are currently four available menus for this site:' .
+    '</p><p><a href="/admin/structure/menu/manage/main?tour" class="button button--primary">Main Navigation</a></p>' .
+    '<p><a href="/admin/structure/menu/manage/social?tour" class="button button--primary">Social Media</a></p>' .
+    '<p><a href="/admin/structure/menu/manage/footer-primary?tour" class="button button--primary">Footer Primary</a></p>' .
+    '<p><a href="/admin/structure/menu/manage/footer-secondary?tour" class="button button--primary">Footer Secondary</a></p>';
+  $config
+    ->set('tips.menus.body', $footerTip)
+    ->save();
+  $config = $config_factory->getEditable('tour.tour.site-settings');
+  $footerLinkText = '<p>The footer region also provides three separate menus for social media links' .
+    ' and for other custom footer links. You can add/manage links for those by clicking one of the following:' .
+    ' <a href="/admin/structure/menu/manage/social?tour">Social Media</a>,' .
+    ' <a href="/admin/structure/menu/manage/footer-primary?tour">Footer Primary</a>,' .
+    ' <a href="/admin/structure/menu/manage/footer-secondary?tour">Footer Secondary</a></p>';
+  $config
+    ->set('tips.footer-links.body', $footerLinkText)
+    ->save();
+}
+
+/**
+ * Prepare uiowa_bootstrap sites with a horizontal nav default in uids_base.
+ */
+function sitenow_update_8020() {
+  /** @var \Drupal\Core\Theme\ActiveTheme $active_theme */
+  $active_theme = \Drupal::service('theme.manager')->getActiveTheme();
+
+  // Limit to just sites running uids_base.
+  if ($active_theme->getName() === 'uiowa_bootstrap') {
+    $nav_style = 'horizontal';
+
+    $system_config = \Drupal::config('system.site');
+    $has_parent = $system_config->get('has_parent') ?: 0;
+
+    $config_factory = \Drupal::configFactory();
+    $config = $config_factory->getEditable('uids_base.settings');
+
+    if (!$has_parent) {
+      $config->set('header.type', 'inline');
+    }
+    $config->set('header.nav_style', $nav_style);
+    $config->save();
+
+    $ids = \Drupal::entityQuery('block')
+      ->condition('plugin', 'superfish:main')
+      ->execute();
+
+    foreach ($ids as $id) {
+      // Skip 'mainnavigation' block.
+      if (strpos($id, 'superfish') === FALSE) {
+        continue;
+      }
+      $status = 0;
+      $block = Block::load($id);
+      if (strpos($id, $nav_style) !== FALSE) {
+        $status = 1;
+      }
+      if ($block->status() != $status) {
+        $block->setStatus($status);
+        $block->save();
+      }
+    }
   }
 }
