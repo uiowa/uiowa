@@ -328,3 +328,18 @@ function sitenow_update_8018() {
     \Drupal::service('twig')->invalidate();
   }
 }
+
+/**
+ * Move Additional Info content into a new footer block for uids_base.
+ */
+function sitenow_update_8019() {
+  $config = \Drupal::configFactory()
+    ->get('uiowa_footer.settings');
+  $additional_info = [
+    'title' => $config->get('additional_info.title'),
+    'content' => $config->get('additional_info.content'),
+  ];
+  if ($additional_info['title'] || $additional_info['content']) {
+    // Do some things.
+  }
+}
