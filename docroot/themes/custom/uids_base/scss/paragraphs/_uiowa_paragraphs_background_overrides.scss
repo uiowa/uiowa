@@ -1,3 +1,98 @@
+// @todo remove  bttn mixins
+
+@mixin bttn {
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  line-height: 1.4;
+  font-size: 1.25rem;
+  padding: 1rem 2rem 1rem;
+
+  i,
+  svg {
+    margin-left: $sm;
+    color: $primary;
+  }
+}
+
+@mixin bttn--focus {
+  &:after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 100%;
+    height: 4px;
+    background-color: $primary;
+    transform-origin: center;
+    transform: translate(-50%, 0) scaleX(0);
+    transition: transform 0.3s ease-in-out;
+  }
+
+  &:focus {
+    text-decoration: underline;
+  }
+
+  &:hover::after,
+  &:focus::after {
+    transform: translate(-50%, 0) scaleX(1);
+  }
+}
+
+@mixin bttn--primary {
+  color: $secondary;
+  background: $primary;
+
+  i,
+  svg,
+  span {
+    color: $white;
+  }
+}
+
+@mixin bttn--secondary {
+  color: $white;
+  background: $secondary;
+}
+
+@mixin bttn--secondary__light {
+  color: $white;
+}
+
+@mixin bttn--tertiary {
+  color: $secondary;
+  background: white;
+}
+
+@mixin bttn--transparent {
+  background: transparent;
+}
+
+@mixin bttn--full {
+  display: flex;
+}
+
+@mixin bttn--outline {
+  border: 1px solid $primary;
+
+  i,
+  span {
+    color: $primary;
+  }
+
+  svg {
+    color: $primary;
+  }
+}
+
+// end button mixins
+
 .bg-yellow,
 .bg-yellow.has-section-image {
     &.paragraph--type--carousel-image,
@@ -11,20 +106,20 @@
         background-color: $primary;
 
         a.btn-primary {
-            @extend %bttn--secondary;
+            @include bttn--secondary;
             border: 1px solid $secondary;
-            @extend %bttn--focus;
-                
+            @include bttn--focus;
+
             &:after {
                 background-color: $primary;
             }
         }
 
         a.btn:not(.btn-primary) {
-            @extend %bttn--secondary;
+            @include bttn--secondary;
             border: 1px solid $secondary;
-            @extend %bttn--focus;
-                
+            @include bttn--focus;
+
             &:after {
                 background-color: $primary;
             }
@@ -95,7 +190,7 @@
                             color: $white;
                             cursor: pointer;
                         }
-                    }  
+                    }
                 }
 
                 &>a:hover {
@@ -103,7 +198,7 @@
                     color: $white;
                 }
             }
-        }   
+        }
     }
 
     &.paragraph--type--featured-content {
@@ -205,20 +300,20 @@
         }
 
         a.btn-primary {
-            @extend %bttn--primary;
+            @include bttn--primary;
             border: 1px solid $primary;
-            @extend %bttn--focus;
-                
+            @include bttn--focus;
+
             &:after {
                 background-color: $secondary;
             }
         }
 
         a.btn:not(.btn-primary) {
-            @extend %bttn--primary;
+            @include bttn--primary;
             border: 1px solid $primary;
-            @extend %bttn--focus;
-                
+            @include bttn--focus;
+
             &:after {
                 background-color: $secondary;
             }
@@ -294,7 +389,7 @@
                     color: $white;
                 }
             }
-        }         
+        }
     }
 
     &.paragraph--type--articles.list,
@@ -362,19 +457,19 @@
         }
 
         a.btn-primary {
-            @extend %bttn--primary;
+            @include bttn--primary;
             border: 1px solid $primary;
-            @extend %bttn--focus;
-                
+            @include bttn--focus;
+
             &:after {
                 background-color: $secondary;
             }
         }
 
         a.btn:not(.btn-primary) {
-            @extend %bttn--secondary;
+            @include bttn--secondary;
             border: 1px solid $secondary;
-            @extend %bttn--focus;
+            @include bttn--focus;
         }
 
         label {
@@ -430,7 +525,7 @@
                             background-color: lighten($secondary, 10%);
                             cursor: pointer;
                         }
-                    } 
+                    }
                 }
 
                 &>a:hover {
@@ -438,7 +533,7 @@
                     color: $white;
                 }
             }
-        }         
+        }
     }
 
     &.paragraph--type--articles.list,
@@ -497,19 +592,19 @@
         }
 
         a.btn-primary {
-            @extend %bttn--primary;
+            @include bttn--primary;
             border: 1px solid $primary;
-            @extend %bttn--focus;
-                
+            @include bttn--focus;
+
             &:after {
                 background-color: $secondary;
             }
         }
 
         a.btn:not(.btn-primary) {
-            @extend %bttn--secondary;
+            @include bttn--secondary;
             border: 1px solid $secondary;
-            @extend %bttn--focus;
+            @include bttn--focus;
         }
 
         label {
@@ -554,14 +649,14 @@
                             background-color: darken($light, 40%);
                             cursor: pointer;
                         }
-                    }  
+                    }
                 }
 
                 &>a:hover {
                     background-color: darken($light, 40%);
                 }
             }
-        }         
+        }
     }
 
     &.paragraph--type--featured-content {
