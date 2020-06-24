@@ -592,7 +592,7 @@ function sitenow_preprocess_node(&$variables) {
           'e',
           'i',
           'o',
-          'u'
+          'u',
         ]) ? 'n' : '');
         $warning_text = t('This content is currently in a@pre_vowel @moderation_state state.', [
           '@pre_vowel' => $pre_vowel,
