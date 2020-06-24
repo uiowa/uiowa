@@ -1,0 +1,74 @@
+{#
+/**
+* @file
+* Theme override to display a block.
+*
+* Available variables:
+* - plugin_id: The ID of the block implementation.
+* - label: The configured label of the block if visible.
+* - configuration: A list of the block's configuration values.
+*   - label: The configured label for the block.
+*   - label_display: The display settings for the label.
+*   - provider: The module or other provider that provided this block plugin.
+*   - Block plugin specific settings will also be stored here.
+* - elements: The elements of this block.
+* - attributes: array of HTML attributes populated by modules, intended to
+*   be added to the main container tag of this template.
+*   - id: A valid HTML ID and guaranteed unique.
+* - title_attributes: Same as attributes, except applied to the main title
+*   tag that appears in the template.
+* - title_prefix: Additional output populated by modules, intended to be
+*   displayed in front of the main title tag that appears in the template.
+* - title_suffix: Additional output populated by modules, intended to be
+*   displayed after the main title tag that appears in the template.
+*
+* @see template_preprocess_block()
+*/
+#}
+
+{% block elements %}
+
+  {{ attach_library('uids_base/cta') }}
+	{% block cta_container_start %}
+		<div class="cta__wrapper {{ attributes ? attributes.class }}" {{ attributes ? attributes|without('class') }}>
+			{{ title_prefix }}
+			{{ title_suffix }}
+
+			<div class="cta__container">
+			{% endblock %}
+
+			{% block heading %}
+				{% if elements.field_uiowa_cta_title[0]['#text'] is not empty %}
+					<div class="cta__title">
+					{% include '@uids_base/uids/heading.html.twig' with {
+            "heading_level" : elements.field_uiowa_cta_title[0]['#size'],
+            "heading_class" : 'bold-headline bold-headline--caps',
+            "heading" : elements.field_uiowa_cta_title[0]['#text']
+          } %}
+					</div>
+				{% endif %}
+			{% endblock %}
+
+			{% block cta_elements %}
+				{% if elements.field_uiowa_cta_summary[0] is not empty %}
+					<div class="cta__elements">
+						<p class="cta__summary">{{ elements.field_uiowa_cta_summary }}</p>
+					</div>
+				{% endif %}
+			{% endblock %}
+
+			{% block cta_link %}
+				{% if elements.field_uiowa_cta_link[0]['#url'] is not empty %}
+					<div class="cta__link">
+						<a href="{{ elements.field_uiowa_cta_link[0]['#url'] }}" class="bttn bttn--primary bttn--caps">{{ elements.field_uiowa_cta_link[0]['#title'] }}
+							<i class="fas fa-arrow-right"></i>
+						</a>
+					</div>
+				{% endif %}
+			{% endblock %}
+
+		</div>
+	</div>
+
+{% endblock %}
+
