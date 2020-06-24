@@ -1,5 +1,6 @@
 .bg-yellow,
 .bg-yellow.has-section-image {
+    &.paragraph--type--carousel-image,
     &.paragraph--type--section,
     &.paragraph--type--blockquote,
     &.paragraph--type--text,
@@ -47,6 +48,23 @@
             color: $secondary !important;
         }
 
+        label {
+            color: $secondary;
+        }
+    }
+
+    &.paragraph--type--carousel-image .carousel-caption {
+        color: $secondary;
+
+        blockquote p {
+            color: $secondary;
+        }
+    }
+
+    &.paragraph--type--webform {
+        label {
+            color: $secondary;
+        }
     }
 
     &.paragraph--type--articles {
@@ -171,6 +189,7 @@
 
 .bg-black,
 .bg-black.has-section-image  {
+    &.paragraph--type--carousel-image,
     &.paragraph--type--section,
     &.paragraph--type--blockquote,
     &.paragraph--type--text,
@@ -211,6 +230,24 @@
 
         &.semi-transparent {
             background-color: rgba(21, 21, 21, 0.8) !important;
+        }
+
+        label {
+            color: $white;
+        }
+    }
+
+    &.paragraph--type--carousel-image .carousel-caption {
+        color: $white;
+
+        blockquote p {
+            color: $white;
+        }
+    }
+
+    &.paragraph--type--webform {
+        label {
+            color: $white;
         }
     }
 
@@ -301,6 +338,7 @@
 
 .bg-dark,
 .bg-dark.has-section-image {
+    &.paragraph--type--carousel-image,
     &.paragraph--type--section,
     &.paragraph--type--blockquote,
     &.paragraph--type--text,
@@ -337,6 +375,24 @@
             @extend %bttn--secondary;
             border: 1px solid $secondary;
             @extend %bttn--focus;
+        }
+
+        label {
+            color: $white;
+        }
+    }
+
+    &.paragraph--type--carousel-image .carousel-caption {
+        color: $white;
+
+        blockquote p {
+            color: $white;
+        }
+    }
+
+    &.paragraph--type--webform {
+        label {
+            color: $white;
         }
     }
 
@@ -426,6 +482,7 @@
 
 .bg-light,
 .bg-light.has-section-image {
+    &.paragraph--type--carousel-image,
     &.paragraph--type--section,
     &.paragraph--type--blockquote,
     &.paragraph--type--text,
@@ -453,6 +510,24 @@
             @extend %bttn--secondary;
             border: 1px solid $secondary;
             @extend %bttn--focus;
+        }
+
+        label {
+            color: $secondary;
+        }
+    }
+
+    &.paragraph--type--carousel-image .carousel-caption {
+        color: $secondary;
+
+        blockquote p {
+            color: $secondary;
+        }
+    }
+
+    &.paragraph--type--webform {
+        label {
+            color: $secondary;
         }
     }
 
