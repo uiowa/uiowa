@@ -489,3 +489,33 @@ function sitenow_update_8021() {
     $config_storage->write('uiowa_alerts.settings', $source->read('uiowa_alerts.settings'));
   }
 }
+
+/**
+ * Move quick links into top links to prepare for uids_base.
+ */
+function sitenow_update_8022() {
+  $config = \Drupal::configFactory()
+    ->get('uiowa_bar.settings');
+  $links = [
+    'link_1' => [
+      'title' => $config->get('uiowa_bar.link_1_title'),
+      'url' => $config->get('uiowa_bar.link_1_url'),
+    ],
+    'link_2' => [
+      'title' => $config->get('uiowa_bar.link_2_title'),
+      'url' => $config->get('uiowa_bar.link_2_url'),
+    ],
+  ];
+
+  foreach ($links as $link) {
+    if ($link['title'] && $link['url']) {
+      MenuLinkContent::create([
+        'title' => $link['title'],
+        'link' => ['uri' => $link['url']],
+        'menu_name' => 'top-links',
+        'status' => TRUE,
+      ])
+        ->save();
+    }
+  }
+}
