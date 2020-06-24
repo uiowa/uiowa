@@ -94,7 +94,9 @@
 // end button mixins
 
 .bg-yellow,
-.bg-yellow.has-section-image {
+.bg-yellow.has-section-image,
+.paragraph .bg-yellow,
+.paragraph .bg-yellow.has-section-image  {
     &.paragraph--type--carousel-image,
     &.paragraph--type--section,
     &.paragraph--type--blockquote,
@@ -148,7 +150,7 @@
         }
     }
 
-    &.paragraph--type--carousel-image .carousel-caption {
+    &.paragraph--type--carousel-image .carousel-caption{
         color: $secondary;
 
         blockquote p {
@@ -156,13 +158,35 @@
         }
     }
 
-    &.paragraph--type--webform {
-        label {
-            color: $secondary;
+    .paragraph--type--carousel-image:not(.bg-yellow):not(.bg-light):not(.bg-dark):not(.bg-black){
+        a:not(.btn):not(.bttn):not(.button) {
+            color: $primary;
+        }
+
+        blockquote p {
+            color: $white;
         }
     }
 
-    &.paragraph--type--articles {
+    &.paragraph--type--webform,
+    .paragraph--type--webform {
+        label {
+            color: $secondary;
+        }
+        
+        input.webform-button--submit {
+            @include bttn--secondary;
+            border: 1px solid $secondary;
+            @include bttn--focus;
+
+            &:after {
+                background-color: $primary;
+            }
+        }
+    }
+
+    &.paragraph--type--articles,
+    .paragraph--type--articles {
         &.list {
             .views-row {
                 background-color: $primary;
@@ -201,7 +225,8 @@
         }
     }
 
-    &.paragraph--type--featured-content {
+    &.paragraph--type--featured-content,
+    .paragraph--type--featured-content {
         .featured-content-item {
             padding: .75rem 1.25rem;
 
@@ -211,7 +236,8 @@
         }
     }
 
-    &.paragraph--type--events.list .card {
+    &.paragraph--type--events.list .card,
+    .paragraph--type--events.list .card {
         @include breakpoint(menu) {
             border-bottom: 1px solid #666;
         }
@@ -228,14 +254,17 @@
         }
     }
 
-    &.paragraph--type--events.list .card {
+    &.paragraph--type--events.list .card,
+    .paragraph--type--events.list .card {
         @include breakpoint(menu) {
             border-bottom: 1px solid #666;
         }
     }
 
     &.paragraph--type--articles.list,
-    &.paragraph--type--featured-content.list {
+    &.paragraph--type--featured-content.list,
+    .paragraph--type--articles.list,
+    .paragraph--type--featured-content.list {
         .article-created-date {
             color: $secondary;
         }
@@ -243,7 +272,10 @@
 
     &.paragraph--type--articles.list,
     &.paragraph--type--people.list,
-    &.paragraph--type--featured-content.list {
+    &.paragraph--type--featured-content.list,
+    .paragraph--type--articles.list,
+    .paragraph--type--people.list,
+    .paragraph--type--featured-content.list {
 
         .card,
         .node--view-mode-teaser {
@@ -283,7 +315,9 @@
 }
 
 .bg-black,
-.bg-black.has-section-image  {
+.bg-black.has-section-image,
+.paragraph .bg-black,
+.paragraph .bg-black.has-section-image  {
     &.paragraph--type--carousel-image,
     &.paragraph--type--section,
     &.paragraph--type--blockquote,
@@ -340,13 +374,15 @@
         }
     }
 
-    &.paragraph--type--webform {
+    &.paragraph--type--webform,
+    .paragraph--type--webform {
         label {
             color: $white;
         }
     }
 
-    &.paragraph--type--articles {
+    &.paragraph--type--articles,
+    .paragraph--type--articles {
         &.list {
             .views-row {
                 background-color: $secondary;
@@ -393,7 +429,9 @@
     }
 
     &.paragraph--type--articles.list,
-    &.paragraph--type--people.list {
+    &.paragraph--type--people.list,
+    .paragraph--type--articles.list,
+    .paragraph--type--people.list {
 
         .card,
         .views-row {
@@ -403,7 +441,8 @@
         }
     }
 
-    &.paragraph--type--featured-content {
+    &.paragraph--type--featured-content,
+    .paragraph--type--featured-content {
         .featured-content-item {
             padding: .75rem 1.25rem;
 
@@ -413,7 +452,8 @@
         }
     }
 
-    &.paragraph--type--events.list {
+    &.paragraph--type--events.list,
+    .paragraph--type--events.list {
         .card {
             a {
                 color: $primary;
@@ -421,7 +461,8 @@
         }
     }
 
-    &.paragraph--type--featured-content.list {
+    &.paragraph--type--featured-content.list,
+    .paragraph--type--featured-content.list {
 
         .field a,
         .h5.field,
@@ -432,7 +473,9 @@
 }
 
 .bg-dark,
-.bg-dark.has-section-image {
+.bg-dark.has-section-image,
+.paragraph .bg-dark,
+.paragraph .bg-dark.has-section-image {
     &.paragraph--type--carousel-image,
     &.paragraph--type--section,
     &.paragraph--type--blockquote,
@@ -485,13 +528,15 @@
         }
     }
 
-    &.paragraph--type--webform {
+    &.paragraph--type--webform,
+    .paragraph--type--webform {
         label {
             color: $white;
         }
     }
 
-    &.paragraph--type--articles {
+    &.paragraph--type--articles,
+    .paragraph--type--articles {
         &.list {
             .views-row {
                 padding: 0 1.25rem;
@@ -537,7 +582,9 @@
     }
 
     &.paragraph--type--articles.list,
-    &.paragraph--type--people.list {
+    &.paragraph--type--people.list,
+    .paragraph--type--articles.list,
+    .paragraph--type--people.list {
 
         .card,
         .views-row
@@ -548,7 +595,8 @@
         }
     }
 
-    &.paragraph--type--featured-content {
+    &.paragraph--type--featured-content,
+    .paragraph--type--featured-content {
         .featured-content-item {
             padding: .75rem 1.25rem;
 
@@ -558,7 +606,8 @@
         }
     }
 
-    &.paragraph--type--events.list {
+    &.paragraph--type--events.list,
+    .paragraph--type--events.list {
         .card {
             a {
                 color: #fff;
@@ -566,7 +615,8 @@
         }
     }
 
-    &.paragraph--type--featured-content.list {
+    &.paragraph--type--featured-content.list,
+    .paragraph--type--featured-content.list {
 
         .field a,
         h3 a {
@@ -576,7 +626,9 @@
 }
 
 .bg-light,
-.bg-light.has-section-image {
+.bg-light.has-section-image,
+.paragraph .bg-light,
+.paragraph .bg-light.has-section-image {
     &.paragraph--type--carousel-image,
     &.paragraph--type--section,
     &.paragraph--type--blockquote,
@@ -620,13 +672,15 @@
         }
     }
 
-    &.paragraph--type--webform {
+    &.paragraph--type--webform,
+    .paragraph--type--webform {
         label {
             color: $secondary;
         }
     }
 
-    &.paragraph--type--articles {
+    &.paragraph--type--articles,
+    .paragraph--type--articles {
         &.list {
             .views-row {
                 background-color: $light;
@@ -659,7 +713,8 @@
         }
     }
 
-    &.paragraph--type--featured-content {
+    &.paragraph--type--featured-content,
+    .paragraph--type--featured-content {
         .featured-content-item {
             padding: .75rem 1.25rem;
 
@@ -670,7 +725,9 @@
     }
 
     &.paragraph--type--articles.list,
-    &.paragraph--type--people.list {
+    &.paragraph--type--people.list,
+    .paragraph--type--articles.list,
+    .paragraph--type--people.list {
 
         .views-row,
         .card {
@@ -678,13 +735,15 @@
         }
     }
 
-    &.paragraph--type--events.list {
+    &.paragraph--type--events.list,
+    .paragraph--type--events.list {
         .card {
             @include bg-light;
         }
     }
 
-    &.paragraph--type--featured-content {
+    &.paragraph--type--featured-content,
+    .paragraph--type--featured-content {
 
         .featured-content-item,
         .node--view-mode-teaser,
