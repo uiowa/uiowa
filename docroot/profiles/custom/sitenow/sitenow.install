@@ -345,17 +345,5 @@ function sitenow_update_8019() {
       ->loadEntityByUuid('block_content', '0c0c1f36-3804-48b0-b384-6284eed8c67e');
     $block->set('field_uiowa_text_area', $content)
       ->save();
-    // $block = \Drupal::entityTypeManager()
-    //   ->getStorage('block_content')
-    //   ->create([
-    //     'type' => 'uiowa_text_area',
-    //     'uuid' => '4df1d95b-c2cf-40fa-8eb9-3d749db3bd75',
-    //     'info' => [
-    //       'value' => 'SiteNow Footer Additional Info',
-    //       'lang' => 'en',
-    //     ],
-    //     'field_uiowa_text_area' => $content,
-    //   ]);
-    // $block->save();
   }
 }
