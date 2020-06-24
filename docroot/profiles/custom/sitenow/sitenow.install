@@ -476,34 +476,34 @@ function sitenow_update_8019() {
 * Move Additional Info content into a new footer block for uids_base.
 */
 function sitenow_update_8020() {
- $config = \Drupal::configFactory()
-   ->get('uiowa_footer.settings');
- $title = $config->get('additional_info.title');
- $content = $config->get('additional_info.content');
- $site_title = \Drupal::configFactory()
-   ->get('system.site')
-   ->get('name');
- // If there is a title, check that it isn't just the site name repeated.
- if ($title && $title != $site_title) {
-   $content['value'] = '<h2>' . $title . '</h2>' . $content['value'];
- }
- // Only update if there is new content.
- if ($content) {
-   $text = $content['value'];
-   // Check/remove lone instances of the site title to avoid repetition.
-   $text = preg_replace("@(<[^<]+>)(" . $site_title . ")((<\/.*?>)|(<br />))@",
-     '',
-     $text);
-   // Check for a nonlinked phone number, and add additional formatting.
-   $text = preg_replace("|(?<!tel:) ?([0-9]{3}-[0-9]{3}-[0-9]{4})(?!<\/a>)|i",
-     '<p><a href="tel:$1"><span class="fas fa-phone"></span>$1</a></p>',
-     $text);
-   $text = FilterHtmlCorrector::process($text, 'en')
-     ->getProcessedText();
-   $content['value'] = $text;
-   $block = \Drupal::service('entity.repository')
-     ->loadEntityByUuid('block_content', '0c0c1f36-3804-48b0-b384-6284eed8c67e');
-   $block->set('field_uiowa_text_area', $content)
-     ->save();
- }
+  $config = \Drupal::configFactory()
+    ->get('uiowa_footer.settings');
+  $title = $config->get('additional_info.title');
+  $content = $config->get('additional_info.content');
+  $site_title = \Drupal::configFactory()
+    ->get('system.site')
+    ->get('name');
+  // If there is a title, check that it isn't just the site name repeated.
+  if ($title && $title != $site_title) {
+    $content['value'] = '<h2>' . $title . '</h2>' . $content['value'];
+  }
+  // Only update if there is new content.
+  if ($content) {
+    $text = $content['value'];
+    // Check/remove lone instances of the site title to avoid repetition.
+    $text = preg_replace("@(<[^<]+>)(" . $site_title . ")((<\/.*?>)|(<br />))@",
+      '',
+      $text);
+    // Check for a nonlinked phone number, and add additional formatting.
+    $text = preg_replace("|(?<!tel:) ?([0-9]{3}-[0-9]{3}-[0-9]{4})(?!<\/a>)|i",
+      '<p><a href="tel:$1"><span class="fas fa-phone"></span>$1</a></p>',
+      $text);
+    $text = FilterHtmlCorrector::process($text, 'en')
+      ->getProcessedText();
+    $content['value'] = $text;
+    $block = \Drupal::service('entity.repository')
+      ->loadEntityByUuid('block_content', '0c0c1f36-3804-48b0-b384-6284eed8c67e');
+    $block->set('field_uiowa_text_area', $content)
+      ->save();
+  }
 }
