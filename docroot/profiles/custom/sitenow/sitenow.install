@@ -491,7 +491,7 @@ function sitenow_update_8020() {
   if ($content) {
     $text = $content['value'];
     // Check/remove lone instances of the site title to avoid repetition.
-    $text = preg_replace("@(<[^<]+>)(" . $site_title . ")((<\/.*?>)|(<br />))@",
+    $text = preg_replace("@(<[^<]+>)(" . preg_quote($site_title, '@') . ")((<\/.*?>)|(<br />))@",
       '',
       $text);
     // Check for a nonlinked phone number, and add additional formatting.
