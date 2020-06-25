@@ -485,7 +485,7 @@ function sitenow_update_8020() {
     ->get('name');
   // If there is a title, check that it isn't just the site name repeated.
   if ($title && $title != $site_title) {
-    $content['value'] = '<h2 class="footer__site--name">' . $title . '</h2>' . $content['value'];
+    $content['value'] = '<h2>' . $title . '</h2>' . $content['value'];
   }
   // Only update if there is new content.
   if ($content) {
@@ -500,6 +500,8 @@ function sitenow_update_8020() {
       $text);
     $text = FilterHtmlCorrector::process($text, 'en')
       ->getProcessedText();
+    // Add styling class for any <h#> tags which do not have any class.
+    $text = preg_replace("|(<h[0-9])>|", '$1 class="footer__site--name">', $text);
     $content['value'] = $text;
     $block = \Drupal::service('entity.repository')
       ->loadEntityByUuid('block_content', '0c0c1f36-3804-48b0-b384-6284eed8c67e');
