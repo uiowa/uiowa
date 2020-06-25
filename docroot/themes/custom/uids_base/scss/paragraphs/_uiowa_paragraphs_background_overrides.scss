@@ -158,7 +158,7 @@
         }
     }
 
-    .paragraph--type--carousel-image:not(.bg-yellow):not(.bg-light):not(.bg-dark):not(.bg-black){
+    .paragraph--type--carousel-image:not(.bg-yellow):not(.bg-light):not(.bg-dark):not(.bg-black) {
         a:not(.btn):not(.bttn):not(.button) {
             color: $primary;
         }
@@ -700,6 +700,10 @@
         blockquote p {
             color: $secondary;
         }
+    }
+
+    .paragraph--type--carousel-image:not(.bg-yellow):not(.bg-light):not(.bg-dark):not(.bg-black) .carousel-caption a:not(.btn):not(.bttn):not(.button) {
+        color: $primary;
     }
 
     &.paragraph--type--webform,
