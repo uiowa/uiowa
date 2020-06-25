@@ -15,3 +15,26 @@ function uiowa_alerts_update_8001() {
     ->delete('no_alerts_message')
     ->save();
 }
+
+/**
+ * Migrate old config items to nested collection.
+ */
+function uiowa_alerts_update_8002() {
+  $changes = [
+    'hawk_alert_display' => 'hawk_alert.display',
+    'hawk_alert_source' => 'hawk_alert.source',
+    'custom_alert_display' => 'custom_alert.display',
+    'custom_alert_message' => 'custom_alert.message',
+    'custom_alert_level' => 'custom_alert.level',
+  ];
+
+  $config = \Drupal::configFactory()->getEditable('uiowa_alerts.settings');
+
+  foreach ($changes as $old => $new) {
+    $value = $config->get($old);
+    $config->set($new, $value);
+    $config->clear($old);
+  }
+
+  $config->save();
+}
