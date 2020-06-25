@@ -12,6 +12,8 @@ use Drupal\node\Entity\Node;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\user\Entity\User;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\field\Entity\FieldConfig;
 
 /**
  * Update some uiowa_footer settings which are ignored.
@@ -332,9 +334,149 @@ function sitenow_update_8018() {
 }
 
 /**
- * Prepare uiowa_bootstrap sites with default theme settings for uids_base.
+ * Update several fields from plain text to formatted minimal text.
  */
 function sitenow_update_8019() {
+
+  // Statically defining our fields to be updated. More can be added here.
+  $fields = [
+    'field_uiowa_banner_excerpt' => [
+      'format_col' => 'field_uiowa_banner_excerpt_format',
+    ],
+    'field_uiowa_card_excerpt' => [
+      'format_col' => 'field_uiowa_card_excerpt_format',
+    ],
+  ];
+  // Get the field and revision storage table names for each field.
+  $table_mapping = \Drupal::service('entity_type.manager')
+    ->getStorage('block_content')
+    ->getTableMapping();
+  $storage_definitions = \Drupal::service('entity_field.manager')
+    ->getActiveFieldStorageDefinitions('block_content');
+  foreach ($fields as $field_name => &$field) {
+    $field_definition = $storage_definitions[$field_name];
+    if ($field_definition) {
+      $field['table'] = $table_mapping->getDedicatedDataTableName($field_definition);
+      $field['revision_table'] = $table_mapping->getDedicatedRevisionTableName($field_definition);
+    }
+  }
+
+  $database = \Drupal::database();
+
+  foreach ($fields as $field_name => &$field) {
+    $table = $field['table'];
+    $revision_table = $field['revision_table'];
+    $entity_type = 'block_content';
+
+    $field_storage = FieldStorageConfig::loadByName($entity_type, $field_name);
+    if (is_null($field_storage)) {
+      continue;
+    }
+
+    // Fetch data currently stored in the field and save for later.
+    $rows = NULL;
+    $revision_rows = NULL;
+    if ($database->schema()->tableExists($table)) {
+      $rows = $database
+        ->select($table, 't')
+        ->fields('t')
+        ->execute()
+        ->fetchAll();
+      if ($database->schema()->tableExists($revision_table)) {
+        $revision_rows = $database
+          ->select($revision_table, 'r')
+          ->fields('r')
+          ->execute()
+          ->fetchAll();
+      }
+    }
+
+    $new_fields = [];
+    $weights = [];
+    foreach ($field_storage->getBundles() as $bundle => $label) {
+      $old_field = FieldConfig::loadByName($entity_type, $bundle, $field_name);
+      $new_field = $old_field->toArray();
+      $new_field['field_type'] = 'text_long';
+      $new_field['settings'] = [];
+      $new_fields[] = $new_field;
+      // Get the view display weights so we can re-set them later.
+      $entity_view = $entity_type . '.' . $bundle . '.default';
+      $view_display = \Drupal::entityTypeManager()
+        ->getStorage('entity_view_display')
+        ->load($entity_view)
+        ->getComponent($field_name);
+      $weights['entity_view_display'][$entity_view] = $view_display['weight'];
+      // Get the form display weights so we can re-set them later.
+      $form_display = \Drupal::entityTypeManager()
+        ->getStorage('entity_form_display')
+        ->load($entity_type . '.' . $bundle . '.default')
+        ->getComponent($field_name);
+      $weights['entity_form_display'][$entity_type . '.' . $bundle . '.default'] = $form_display['weight'];
+    }
+
+    // Store the old field settings and update to text_long.
+    $new_field_storage = $field_storage->toArray();
+    $new_field_storage['type'] = 'text_long';
+    $new_field_storage['settings'] = [];
+    // Deleting at the field_storage level takes care of the bundles as well.
+    $field_storage->delete();
+
+    // Purge in order for new field to be created after deleting the old.
+    field_purge_batch(100);
+
+    // Save our new, updated field storage.
+    $new_field_storage = FieldStorageConfig::create($new_field_storage);
+    $new_field_storage->save();
+
+    // Create our new fields to match the field storages.
+    foreach ($new_fields as $new_field) {
+      $new_field_config = FieldConfig::create($new_field);
+      $new_field_config->save();
+    }
+
+    // Replace into the new fields data we saved from the old fields.
+    if (!is_null($rows)) {
+      foreach ($rows as $row) {
+        $row = (array) $row;
+        $row[$field['format_col']] = 'minimal';
+        $database
+          ->insert($table)
+          ->fields($row)
+          ->execute();
+      }
+    }
+    if (!is_null($revision_rows)) {
+      foreach ($revision_rows as $row) {
+        $row = (array) $row;
+        $row[$field['format_col']] = 'minimal';
+        $database
+          ->insert($revision_table)
+          ->fields($row)
+          ->execute();
+      }
+    }
+
+    // Update the view and form display weights, which enables the new fields.
+    foreach ($weights as $display_mode => $view_modes) {
+      foreach ($view_modes as $view_mode => $weight) {
+        if ($weight) {
+          \Drupal::entityTypeManager()
+            ->getStorage($display_mode)
+            ->load($view_mode)
+            ->setComponent($field_name, [
+              'weight' => $weight,
+            ])
+            ->save();
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Prepare uiowa_bootstrap sites with default theme settings for uids_base.
+ */
+function sitenow_update_8020() {
   $linkController = \Drupal::entityTypeManager()->getStorage('menu_link_content');
   $primaryMids = \Drupal::entityQuery('menu_link_content')
     ->condition('menu_name', 'footer')
@@ -433,7 +575,7 @@ function sitenow_update_8019() {
 /**
  * Prepare uiowa_bootstrap sites with a horizontal nav default in uids_base.
  */
-function sitenow_update_8020() {
+function sitenow_update_8021() {
   /** @var \Drupal\Core\Theme\ActiveTheme $active_theme */
   $active_theme = \Drupal::service('theme.manager')->getActiveTheme();
 
@@ -478,7 +620,7 @@ function sitenow_update_8020() {
 /**
  * Import alert settings if they do not already exist since they are ignored.
  */
-function sitenow_update_8021() {
+function sitenow_update_8022() {
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('uiowa_alerts.settings');
 
@@ -494,7 +636,7 @@ function sitenow_update_8021() {
 /**
  * Move quick links into top links to prepare for uids_base.
  */
-function sitenow_update_8022() {
+function sitenow_update_8023() {
   $config = \Drupal::configFactory()
     ->get('uiowa_bar.settings');
   $links = [

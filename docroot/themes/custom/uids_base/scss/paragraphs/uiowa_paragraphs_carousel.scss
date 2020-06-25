@@ -28,6 +28,10 @@
 
 div[data-carousel="carousel"] {
 
+  .field--name-field-media-image img {
+    width: 100%;
+  }
+
   .slick-slide {
     position: relative;
   }
@@ -125,6 +129,10 @@ div[data-carousel="carousel"] {
       }
     }
   }
+
+  a {
+    color: $primary;
+  }
 }
 
 .paragraph--type--carousel-image.bg-dark {
@@ -220,4 +228,9 @@ div[data-carousel="carousel"] {
       color: $dark-gray;
     }
   }
+}
+
+.container-fluid {
+  min-height: 0;
+  min-width: 0;
 }
