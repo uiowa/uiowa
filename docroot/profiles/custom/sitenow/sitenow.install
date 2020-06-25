@@ -332,7 +332,7 @@ function sitenow_update_8018() {
 }
 
 /**
- * Update several fields from plain text to formatted text.
+ * Update several fields from plain text to formatted minimal text.
  */
 function sitenow_update_8019() {
 
@@ -436,7 +436,7 @@ function sitenow_update_8019() {
     if (!is_null($rows)) {
       foreach ($rows as $row) {
         $row = (array) $row;
-        $row[$field['format_col']] = 'filtered_html';
+        $row[$field['format_col']] = 'minimal';
         $database
           ->insert($table)
           ->fields($row)
@@ -446,7 +446,7 @@ function sitenow_update_8019() {
     if (!is_null($revision_rows)) {
       foreach ($revision_rows as $row) {
         $row = (array) $row;
-        $row[$field['format_col']] = 'filtered_html';
+        $row[$field['format_col']] = 'minimal';
         $database
           ->insert($revision_table)
           ->fields($row)
