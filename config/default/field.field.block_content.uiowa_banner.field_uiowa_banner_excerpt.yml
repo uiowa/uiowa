@@ -6,7 +6,14 @@ dependencies:
     - block_content.type.uiowa_banner
     - field.storage.block_content.field_uiowa_banner_excerpt
   module:
+    - allowed_formats
     - text
+third_party_settings:
+  allowed_formats:
+    minimal: minimal
+    plain_text: plain_text
+    filtered_html: '0'
+    full_html: '0'
 _core:
   default_config_hash: R12wgVOfQanvzxQM2QVSOwZE86dXdnY1K6gGkV-7KlE
 id: block_content.uiowa_banner.field_uiowa_banner_excerpt
