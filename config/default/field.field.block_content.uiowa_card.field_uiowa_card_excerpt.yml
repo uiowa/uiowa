@@ -6,7 +6,14 @@ dependencies:
     - block_content.type.uiowa_card
     - field.storage.block_content.field_uiowa_card_excerpt
   module:
+    - allowed_formats
     - text
+third_party_settings:
+  allowed_formats:
+    minimal: minimal
+    plain_text: plain_text
+    filtered_html: '0'
+    full_html: '0'
 _core:
   default_config_hash: d7-oWkJwADXKLY9QldFK28pif5n_srH-0UsqsZrZFrA
 id: block_content.uiowa_card.field_uiowa_card_excerpt
