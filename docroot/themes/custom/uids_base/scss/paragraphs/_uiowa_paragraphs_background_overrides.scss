@@ -174,10 +174,12 @@
             color: $secondary;
         }
         
-        input.webform-button--submit {
+        input[id^='edit-actions-submit'],
+        input#edit-actions-submit {
             @include bttn--secondary;
             border: 1px solid $secondary;
             @include bttn--focus;
+            color: $white !important;
 
             &:after {
                 background-color: $primary;
@@ -337,6 +339,7 @@
             @include bttn--primary;
             border: 1px solid $primary;
             @include bttn--focus;
+            color: $secondary !important;
 
             &:after {
                 background-color: $secondary;
@@ -378,6 +381,18 @@
     .paragraph--type--webform {
         label {
             color: $white;
+        }
+        
+        input[id^='edit-actions-submit'],
+        input#edit-actions-submit {
+            @include bttn--primary;
+            border: 1px solid $primary;
+            @include bttn--focus;
+            color: $secondary !important;
+
+            &:after {
+                background-color: $secondary;
+            }
         }
     }
 
@@ -488,7 +503,7 @@
         color: $white;
 
         a:not(.btn):not(.bttn):not(.button) {
-            color: $primary;
+            color: $white;
         }
 
         .alert a {
@@ -532,6 +547,18 @@
     .paragraph--type--webform {
         label {
             color: $white;
+        }
+        
+        input[id^='edit-actions-submit'],
+        input#edit-actions-submit {
+            @include bttn--primary;
+            border: 1px solid $primary;
+            @include bttn--focus;
+            color: $secondary !important;
+
+            &:after {
+                background-color: $secondary;
+            }
         }
     }
 
@@ -638,6 +665,10 @@
     &.paragraph--type--accordion,
     &.paragraph--type--events {
         background-color: $light;
+        
+        a:not(.btn):not(.bttn):not(.button) {
+            color: $secondary;
+        }
 
         &.semi-transparent {
             background-color: rgba(248, 249, 250, 0.8) !important;
@@ -676,6 +707,18 @@
     .paragraph--type--webform {
         label {
             color: $secondary;
+        }
+        
+        input[id^='edit-actions-submit'],
+        input#edit-actions-submit {
+            @include bttn--primary;
+            border: 1px solid $primary;
+            @include bttn--focus;
+            color: $secondary !important;
+
+            &:after {
+                background-color: $secondary;
+            }
         }
     }
 
