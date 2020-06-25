@@ -470,3 +470,13 @@ function sitenow_update_8019() {
     }
   }
 }
+
+/**
+ * Set new theme setting.
+ */
+function sitenow_update_8020() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uids_base.settings');
+  $config->set('header.top_links_limit', 2);
+  $config->save();
+}
