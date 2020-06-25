@@ -485,7 +485,7 @@ function sitenow_update_8020() {
     ->get('name');
   // If there is a title, check that it isn't just the site name repeated.
   if ($title && $title != $site_title) {
-    $content['value'] = '<h2>' . $title . '</h2>' . $content['value'];
+    $content['value'] = '<h2 class="footer__site--name">' . $title . '</h2>' . $content['value'];
   }
   // Only update if there is new content.
   if ($content) {
