@@ -1,20 +1,20 @@
 {% set header_classes = header_classes|merge([
+  'iowa-bar',
   header_nav,
 ]) %}
 
+{{ attach_library('uids_base/iowa-bar') }}
 {{ attach_library('uids_base/header') }}
 {% if header_sticky %}
   {{ attach_library('uids_base/header-sticky') }}
 {% endif %}
 <header data-uids-header {{ attributes.addClass(header_classes) }}>
-  <div class="uiowa-bar">
-    <div class="page__container">
+    <div class="iowa-bar__container">
       {% block logo %}
         {{ attach_library('uids_base/logo') }}
         {% include '@uids_base/uids/logo.twig' with {
           path: uiowa_url,
-          logo_color: 'logo-icon--secondary',
-          logo_classes: 'logo-icon--tab',
+          logo_classes: 'logo--tab',
           logo_path: uiowa_logo_path,
           logo_path_png: uiowa_logo_path_png,
         } %}
@@ -23,7 +23,6 @@
       {% block uiowa_bar %}
         {# UIowa bar content #}
       {% endblock %}
-    </div>
   </div>
 
   {% block tertiary_content %}

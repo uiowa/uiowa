@@ -1,3 +1,22 @@
 @import "assets/scss/_variables.scss";
 @import "assets/scss/_utilities.scss";
 @import "components/branding/iowa-bar/iowa-bar.scss";
+
+.slogan__disabled.site-header--secondary {
+  .header__brand {
+    padding-top: 0;
+  }
+}
+
+.iowa-bar--narrow.mega .page__container,
+.iowa-bar--narrow.horizontal .page__container,
+.iowa-bar--narrow.header--horizontal .page__container,
+.iowa-bar--full.horizontal .page__container,
+.iowa-bar--full.mega .page__container,
+.iowa-bar--full.header--horizontal .page__container {
+  position: unset;
+  @include breakpoint(menu) {
+    position: relative;
+  }
+}
+
