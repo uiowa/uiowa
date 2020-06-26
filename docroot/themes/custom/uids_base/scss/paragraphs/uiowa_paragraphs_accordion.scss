@@ -1,0 +1,39 @@
+@import "uids/assets/scss/_variables.scss";
+@import "uids/assets/scss/_utilities.scss";
+
+.paragraph--type--accordion {
+    .uids-accordion {
+        .uids-accordion__heading {
+            color: $secondary;
+        }
+
+        .uids-accordion__content {
+            background-color: $white;
+
+            blockquote {
+                color: $secondary;
+                border-color: $primary;
+            }
+
+            a:not(.btn):not(.bttn):not(.button) {
+                color: initial;
+            }
+
+            a.btn-primary {
+                @extend %bttn--primary;
+                border: 1px solid $primary;
+                @extend %bttn--focus;
+                
+                &:after {
+                    background-color: $secondary;
+                }
+            }
+
+            a.btn:not(.btn-primary) {
+                @extend %bttn--secondary;
+                border: 1px solid $secondary;
+                @extend %bttn--focus;
+            }
+        }
+    }
+}
