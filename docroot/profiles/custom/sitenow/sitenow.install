@@ -14,6 +14,7 @@ use Drupal\user\Entity\User;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\field\Entity\FieldConfig;
+use Drupal\filter\Plugin\Filter\FilterHtmlCorrector;
 
 /**
  * Update some uiowa_footer settings which are ignored.
@@ -660,5 +661,43 @@ function sitenow_update_8023() {
       ])
         ->save();
     }
+  }
+}
+
+/**
+ * Move Additional Info content into a new footer block for uids_base.
+ */
+function sitenow_update_8024() {
+  $config = \Drupal::configFactory()
+    ->get('uiowa_footer.settings');
+  $title = $config->get('additional_info.title');
+  $content = $config->get('additional_info.content');
+  $site_title = \Drupal::configFactory()
+    ->get('system.site')
+    ->get('name');
+  // If there is a title, check that it isn't just the site name repeated.
+  if ($title && $title != $site_title) {
+    $content['value'] = '<h2>' . $title . '</h2>' . $content['value'];
+  }
+  // Only update if there is new content.
+  if ($content) {
+    $text = $content['value'];
+    // Check/remove lone instances of the site title to avoid repetition.
+    $text = preg_replace("@(<[^<]+>)(" . preg_quote($site_title, '@') . ")((<\/.*?>)|(<br />))@",
+      '',
+      $text);
+    // Check for a nonlinked phone number, and add additional formatting.
+    $text = preg_replace("|(?<!tel:) ?([0-9]{3}-[0-9]{3}-[0-9]{4})(?!<\/a>)|i",
+      '<p><a href="tel:$1"><span class="fas fa-phone"></span>$1</a></p>',
+      $text);
+    $text = FilterHtmlCorrector::process($text, 'en')
+      ->getProcessedText();
+    // Add styling class for any <h#> tags which do not have any class.
+    $text = preg_replace("|(<h[0-9])>|", '$1 class="footer__site--name">', $text);
+    $content['value'] = $text;
+    $block = \Drupal::service('entity.repository')
+      ->loadEntityByUuid('block_content', '0c0c1f36-3804-48b0-b384-6284eed8c67e');
+    $block->set('field_uiowa_text_area', $content)
+      ->save();
   }
 }
