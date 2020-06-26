@@ -89,42 +89,30 @@
 
 {{ attach_library('classy/node') }}
 {{ attach_library('uids_base/node-type-article') }}
+{{ attach_library('uids_base/paragraphs-lists') }}
+
 {% set article_card = {
   'attributes': attributes.addClass(classes),
   'card_image' : content.field_image|render,
   'card_title': label,
   'content': content,
-  'heading_url' : node_link,
-  'heading_attributes': title_attributes,
+  'card_link_url': node_link,
 } %}
 
 {% embed '@uids_base/uids/card.html.twig' with article_card only %}
 
-  {# @todo Add content_attributes.addClass('node__content media-body') #}
+	{# @todo Add content_attributes.addClass('node__content media-body') #}
 
-  {% block heading %}
-    {% if card_title and not page %}
-      {% include '@uids_base/uids/heading.html.twig' with {
-          'heading_level' : 'h3',
-          'heading_class' : 'card__title',
-          'heading' : card_title,
-          'heading_url' : heading_url,
-          'heading_aria' : 'desc-a-card',
-          'attributes': heading_attributes,
-        } only %}
-    {% endif %}
-  {% endblock %}
+	{% block card_author %}
+		<div class="article-meta">
+			{{ content.article_created_date }}{{ content.article_author }}{{ content.field_article_source_org }}{{ content.field_article_source_link }}
+		</div>
+	{% endblock %}
 
-  {% block card_author %}
-  <div class="article-meta">
-    {{ content.article_created_date }}{{ content.article_author }}{{ content.field_article_source_org }}{{ content.field_article_source_link }}
-  </div>
-  {% endblock %}
+	{% block card_content %}
+		{{ content|without('field_image', 'links', 'article_created_date', 'article_author', 'field_article_source_org', 'field_article_source_link', 'field_article_source_link_direct') }}
+	{% endblock %}
 
-  {% block card_content %}
-    {{ content|without('field_image', 'links', 'article_created_date', 'article_author', 'field_article_source_org', 'field_article_source_link', 'field_article_source_link_direct') }}
-  {% endblock %}
-
-  {% block card_bttn %}{% endblock %}
+	{% block card_bttn %}{% endblock %}
 
 {% endembed %}
