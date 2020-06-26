@@ -66,10 +66,6 @@
   .card--list {
     display: flex;
     flex-direction: row-reverse;
-
-    &:last-child {
-      border-bottom: none;
-    }
   }
 }
 
@@ -191,6 +187,10 @@
   .card {
     @include breakpoint(sm) {
       border-bottom: 1px solid #ccc;
+
+      &:last-child {
+        border-bottom: none;
+      }
     }
   }
 }
