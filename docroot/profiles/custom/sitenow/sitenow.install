@@ -489,8 +489,7 @@ function sitenow_update_8021() {
     ->get('uiowa_footer.settings');
   $lockup_fids = $config->get('lockup.fid');
   $lockup_alts = $config->get('lockup.alt');
-  foreach ($lockup_fid as $index => $fid) {
-    /** @var \Drupal\file\FileInterface $file */
+  foreach ($lockup_fids as $index => $fid) {
     $file = \Drupal::entityTypeManager()
       ->getStorage('file')
       ->load($fid);
