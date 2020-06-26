@@ -495,8 +495,11 @@ function sitenow_update_8021() {
       ->getStorage('file')
       ->load($fid);
     if ($file) {
+      // Updated date of 2000/01/01 00:00:00.
+      $old_date = 946684800;
       // Grab the filename minus extension for the title.
       $title = explode('.', $file->getFilename())[0];
+      // Create a media entity, date it to appear at end of media list.
       $media = \Drupal::entityTypeManager()
         ->getStorage('media')
         ->create([
@@ -506,15 +509,13 @@ function sitenow_update_8021() {
             'alt' => $lockup_alt,
             'title' => $title,
           ],
+          'created' => $old_date,
+          'changed' => $old_date,
           'langcode' => 'en',
         ]);
       $media->setName($title);
       $media->setOwnerId(0);
       $media->save();
-      // Set updated date to 2000/01/01 00:00:00.
-      $old_date = 946684800;
-      $file->set('changed', $old_date)
-        ->save();
     }
   }
 }
