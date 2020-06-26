@@ -488,8 +488,9 @@ function sitenow_update_8021() {
   $config = \Drupal::configFactory()
     ->get('uiowa_footer.settings');
   $lockup_fids = $config->get('lockup.fid');
-  $lockup_alts = $config->get('lockup.alt');
-  foreach ($lockup_fids as $index => $fid) {
+  $lockup_alt = $config->get('lockup.alt');
+  // Lockup IDs are stored in an array format; alts are not.
+  foreach ($lockup_fids as $fid) {
     $file = \Drupal::entityTypeManager()
       ->getStorage('file')
       ->load($fid);
@@ -502,7 +503,7 @@ function sitenow_update_8021() {
           'bundle' => 'image',
           'field_media_image' => [
             'target_id' => $fid,
-            'alt' => $lockup_alts[$index],
+            'alt' => $lockup_alt,
             'title' => $title,
           ],
           'langcode' => 'en',
@@ -510,6 +511,10 @@ function sitenow_update_8021() {
       $media->setName($title);
       $media->setOwnerId(0);
       $media->save();
+      // Set updated date to 2000/01/01 00:00:00.
+      $old_date = 946684800;
+      $file->set('changed', $old_date)
+        ->save();
     }
   }
 }
