@@ -480,3 +480,37 @@ function sitenow_update_8020() {
   $config->set('header.top_links_limit', 2);
   $config->save();
 }
+
+/**
+ * Create brand lockup media entity.
+ */
+function sitenow_update_8021() {
+  $config = \Drupal::configFactory()
+    ->get('uiowa_footer.settings');
+  $lockup_fids = $config->get('lockup.fid');
+  $lockup_alts = $config->get('lockup.alt');
+  foreach ($lockup_fid as $index => $fid) {
+    /** @var \Drupal\file\FileInterface $file */
+    $file = \Drupal::entityTypeManager()
+      ->getStorage('file')
+      ->load($fid);
+    if ($file) {
+      // Grab the filename minus extension for the title.
+      $title = explode('.', $file->getFilename())[0];
+      $media = \Drupal::entityTypeManager()
+        ->getStorage('media')
+        ->create([
+          'bundle' => 'image',
+          'field_media_image' => [
+            'target_id' => $fid,
+            'alt' => $lockup_alts[$index],
+            'title' => $title,
+          ],
+          'langcode' => 'en',
+        ]);
+      $media->setName($title);
+      $media->setOwnerId(0);
+      $media->save();
+    }
+  }
+}
