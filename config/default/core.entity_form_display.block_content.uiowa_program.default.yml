@@ -1,0 +1,81 @@
+uuid: a6c6af00-b7e7-4e85-8c3c-e956ecff776d
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_program
+    - field.field.block_content.uiowa_program.field_uiowa_program_cta_excerpt
+    - field.field.block_content.uiowa_program.field_uiowa_program_cta_title
+    - field.field.block_content.uiowa_program.field_uiowa_program_description
+    - field.field.block_content.uiowa_program.field_uiowa_program_excerpt
+    - field.field.block_content.uiowa_program.field_uiowa_program_link
+    - field.field.block_content.uiowa_program.field_uiowa_program_subtitle
+    - field.field.block_content.uiowa_program.field_uiowa_program_title
+  module:
+    - heading
+    - link
+    - text
+id: block_content.uiowa_program.default
+targetEntityType: block_content
+bundle: uiowa_program
+mode: default
+content:
+  field_uiowa_program_cta_excerpt:
+    weight: 6
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_uiowa_program_cta_title:
+    weight: 5
+    settings: {  }
+    third_party_settings: {  }
+    type: heading
+    region: content
+  field_uiowa_program_description:
+    weight: 2
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_uiowa_program_excerpt:
+    weight: 4
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_uiowa_program_link:
+    weight: 7
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+    region: content
+  field_uiowa_program_subtitle:
+    weight: 3
+    settings: {  }
+    third_party_settings: {  }
+    type: heading
+    region: content
+  field_uiowa_program_title:
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    type: heading
+    region: content
+  info:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }

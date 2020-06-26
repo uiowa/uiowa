@@ -1,0 +1,77 @@
+uuid: 4ee8f3a8-5821-4183-8a19-86f08bfda50b
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_program
+    - field.field.block_content.uiowa_program.field_uiowa_program_cta_excerpt
+    - field.field.block_content.uiowa_program.field_uiowa_program_cta_title
+    - field.field.block_content.uiowa_program.field_uiowa_program_description
+    - field.field.block_content.uiowa_program.field_uiowa_program_excerpt
+    - field.field.block_content.uiowa_program.field_uiowa_program_link
+    - field.field.block_content.uiowa_program.field_uiowa_program_subtitle
+    - field.field.block_content.uiowa_program.field_uiowa_program_title
+  module:
+    - heading
+    - link
+    - text
+id: block_content.uiowa_program.default
+targetEntityType: block_content
+bundle: uiowa_program
+mode: default
+content:
+  field_uiowa_program_cta_excerpt:
+    weight: 5
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_uiowa_program_cta_title:
+    weight: 4
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: heading
+    region: content
+  field_uiowa_program_description:
+    weight: 1
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_uiowa_program_excerpt:
+    weight: 3
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_uiowa_program_link:
+    weight: 6
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link_separate
+    region: content
+  field_uiowa_program_subtitle:
+    weight: 2
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: heading
+    region: content
+  field_uiowa_program_title:
+    weight: 0
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: heading
+    region: content
+hidden: {  }

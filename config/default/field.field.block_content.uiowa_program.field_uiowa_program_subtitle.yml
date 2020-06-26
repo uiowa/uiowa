@@ -1,0 +1,32 @@
+uuid: 08fba8d6-220f-4c46-b6e0-39c0caad2e6b
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_program
+    - field.storage.block_content.field_uiowa_program_subtitle
+  module:
+    - heading
+id: block_content.uiowa_program.field_uiowa_program_subtitle
+field_name: field_uiowa_program_subtitle
+entity_type: block_content
+bundle: uiowa_program
+label: Subtitle
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    size: h3
+    text: ''
+default_value_callback: ''
+settings:
+  label: Heading
+  allowed_sizes:
+    h3: h3
+    h1: 0
+    h2: 0
+    h4: 0
+    h5: 0
+    h6: 0
+field_type: heading
