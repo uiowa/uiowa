@@ -130,6 +130,14 @@ colorbox:
     - core/jquery
     - core/jquery.once
     - colorbox/init
+slick:  
+  css: 
+    theme: 
+      /libraries/slick-carousel/slick/slick.css: {} 
+  js: 
+    /libraries/slick-carousel/slick/slick.min.js: {} 
+  dependencies:
+    - core/jquery 
 cta:
   css:
     component:
@@ -163,7 +171,15 @@ paragraphs-lists:
 paragraphs-carousel:
   css:
     component:
-      assets/css/paragraphs/carousel.css: { preprocess: false }
+      assets/css/paragraphs/uiowa_paragraphs_carousel.css: { preprocess: false }
+  js:
+      assets/js/carousel.js: { preprocess: false  }
+  dependencies:
+    - uids_base/slick
+paragraphs-featured-content:
+  css:
+    component:
+      assets/css/paragraphs/featured-content.css: { preprocess: false }
 paragraphs-image-gallery:
   css:
     component:
@@ -244,6 +260,7 @@ admin:
   css:
     component:
       assets/css/admin.css: { weight: 200 }
+      assets/css/components/badge.css: {}
 
 # CSS libraries for Layout plugins.
 onecol:
