@@ -185,7 +185,7 @@ div.example2 p.special {
 }
 
 .paragraph--type--text {
-  padding-top: $gutter;
+  //padding-top: $gutter;
   padding-bottom: $gutter;
 
   &.bg-light {
@@ -215,7 +215,16 @@ div.example2 p.special {
   object-position: center;
 }
 
-// Set margin/padding for first paragraph section below page title if using bg color
+// Set padding for first paragraph section
+.layout--page--paragraph .block-field-blocknodepagefield-page-content-block .field__item:first-child .paragraph--type--section {
+  padding-top: $gutter;
+
+  .paragraph--type--text {
+    padding-top: 0;
+  }
+}
+
+// Set margin for first paragraph section below page title if using bg color
 .layout--page--paragraph .block-field-blocknodepagefield-page-content-block .field__item:first-child .paragraph--type--section {
 
   &.bg-light:first-child,
@@ -223,7 +232,6 @@ div.example2 p.special {
   &.bg-black:first-child,
   &.bg-yellow:first-child {
     margin-top: $gutter;
-    padding-top: $gutter;
   }
 }
 
@@ -234,7 +242,6 @@ div.example2 p.special {
   &.bg-black:first-child,
   &.bg-yellow:first-child {
     margin-top: 0;
-    padding-top: $gutter;
   }
 }
 
@@ -245,7 +252,6 @@ div.example2 p.special {
   &.bg-black:first-child,
   &.bg-yellow:first-child {
     margin-top: 0;
-    padding-top: $gutter;
   }
 }
 
@@ -256,17 +262,15 @@ div.example2 p.special {
   &.bg-black:first-child,
   &.bg-yellow:first-child {
     margin-top: $gutter;
-    padding-top: $gutter;
   }
 }
 
 .layout--onecol--no--background.title-invisible+.layout--page--paragraph .block-field-blocknodepagefield-page-content-block .field__item:first-child .paragraph--type--section {
 
-  &.bg-light:first-child,
+  &.paragraph--type--text &.bg-light:first-child,
   &.bg-dark:first-child,
   &.bg-black:first-child,
   &.bg-yellow:first-child {
     margin-top: 0;
-    padding-top: $gutter;
   }
 }
