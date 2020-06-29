@@ -21,14 +21,14 @@
         {% if site_name %}
           {# @todo Remove header_type condition when uiowa sub-theme is functional. #}
           {% if header_type != 'homepage' %}
-            <h2 class="footer__site--name">{{ site_name }}</h2>
+            <h2 class="site-name">{{ site_name }}</h2>
           {% endif %}
         {% endif %}
       {% endblock %}
 
       {% block site_slogan %}
         {% if site_has_parent %}
-          <strong class="footer__site--slogan">
+          <strong class="parent-site-name">
             <a href="{{ site_parent_url }}">
               {{ site_parent_name }}
             </a>
