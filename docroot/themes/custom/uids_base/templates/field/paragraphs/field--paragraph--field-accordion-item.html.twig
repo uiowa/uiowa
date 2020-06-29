@@ -38,11 +38,9 @@
  */
 #}
 
-{#
-{{ 'accordion-' ~ parent_id }}
-#}
+{% set id = 'accordion-' ~ parent_id %}
 
-<div class="uids-accordion" role="tablist" aria-multiselectable="true" id="accordion-No1">
+<div class="uids-accordion" role="tablist" aria-multiselectable="true" id="#{{ id }}">
   {% for item in items %}
     {{ item }}
   {% endfor %}
