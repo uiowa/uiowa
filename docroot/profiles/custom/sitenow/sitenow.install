@@ -475,9 +475,19 @@ function sitenow_update_8019() {
 }
 
 /**
- * Prepare uiowa_bootstrap sites with default theme settings for uids_base.
+ * Set new theme setting.
  */
 function sitenow_update_8020() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uids_base.settings');
+  $config->set('header.top_links_limit', 2);
+  $config->save();
+}
+
+/**
+ * Prepare uiowa_bootstrap sites with default theme settings for uids_base.
+ */
+function sitenow_update_8021() {
   $linkController = \Drupal::entityTypeManager()->getStorage('menu_link_content');
   $primaryMids = \Drupal::entityQuery('menu_link_content')
     ->condition('menu_name', 'footer')
@@ -576,7 +586,7 @@ function sitenow_update_8020() {
 /**
  * Prepare uiowa_bootstrap sites with a horizontal nav default in uids_base.
  */
-function sitenow_update_8021() {
+function sitenow_update_8022() {
   /** @var \Drupal\Core\Theme\ActiveTheme $active_theme */
   $active_theme = \Drupal::service('theme.manager')->getActiveTheme();
 
@@ -621,7 +631,7 @@ function sitenow_update_8021() {
 /**
  * Import alert settings if they do not already exist since they are ignored.
  */
-function sitenow_update_8022() {
+function sitenow_update_8023() {
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('uiowa_alerts.settings');
 
@@ -637,7 +647,7 @@ function sitenow_update_8022() {
 /**
  * Move quick links into top links to prepare for uids_base.
  */
-function sitenow_update_8023() {
+function sitenow_update_8024() {
   $config = \Drupal::configFactory()
     ->get('uiowa_bar.settings');
   $links = [
@@ -667,7 +677,7 @@ function sitenow_update_8023() {
 /**
  * Move Additional Info content into a new footer block for uids_base.
  */
-function sitenow_update_8024() {
+function sitenow_update_8025() {
   $config = \Drupal::configFactory()
     ->get('uiowa_footer.settings');
   $title = $config->get('additional_info.title');

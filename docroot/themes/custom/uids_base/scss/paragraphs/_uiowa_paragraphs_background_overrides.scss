@@ -1,348 +1,861 @@
-.paragraph--type--section.has-section-image,
-.paragraph--type--section {
+// @todo remove  bttn mixins
 
-    &.bg-dark {
-        .paragraph--type--blockquote,
-        .paragraph--type--text,
-        .paragraph--type--webform,
-        .paragraph--type--articles,
-        .paragraph--type--accordion,
-        .paragraph--type--events {
-            background-color: $brand-cool-gray;
+@mixin bttn {
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  line-height: 1.4;
+  font-size: 1.25rem;
+  padding: 1rem 2rem 1rem;
+
+  i,
+  svg {
+    margin-left: $sm;
+    color: $primary;
+  }
+}
+
+@mixin bttn--focus {
+  &:after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 100%;
+    height: 4px;
+    background-color: $primary;
+    transform-origin: center;
+    transform: translate(-50%, 0) scaleX(0);
+    transition: transform 0.3s ease-in-out;
+  }
+
+  &:focus {
+    text-decoration: underline;
+  }
+
+  &:hover::after,
+  &:focus::after {
+    transform: translate(-50%, 0) scaleX(1);
+  }
+}
+
+@mixin bttn--primary {
+  color: $secondary;
+  background: $primary;
+
+  i,
+  svg,
+  span {
+    color: $white;
+  }
+}
+
+@mixin bttn--secondary {
+  color: $white;
+  background: $secondary;
+}
+
+@mixin bttn--secondary__light {
+  color: $white;
+}
+
+@mixin bttn--tertiary {
+  color: $secondary;
+  background: white;
+}
+
+@mixin bttn--transparent {
+  background: transparent;
+}
+
+@mixin bttn--full {
+  display: flex;
+}
+
+@mixin bttn--outline {
+  border: 1px solid $primary;
+
+  i,
+  span {
+    color: $primary;
+  }
+
+  svg {
+    color: $primary;
+  }
+}
+
+// end button mixins
+
+.bg-yellow,
+.bg-yellow.has-section-image,
+.paragraph .bg-yellow,
+.paragraph .bg-yellow.has-section-image  {
+    &.paragraph--type--carousel-image,
+    &.paragraph--type--section,
+    &.paragraph--type--blockquote,
+    &.paragraph--type--text,
+    &.paragraph--type--webform,
+    &.paragraph--type--articles,
+    &.paragraph--type--accordion,
+    &.paragraph--type--events {
+        background-color: $primary;
+
+        a.btn-primary {
+            @include bttn--secondary;
+            border: 1px solid $secondary;
+            @include bttn--focus;
+
+            &:after {
+                background-color: $primary;
+            }
+        }
+
+        a.btn:not(.btn-primary) {
+            @include bttn--secondary;
+            border: 1px solid $secondary;
+            @include bttn--focus;
+
+            &:after {
+                background-color: $primary;
+            }
+        }
+
+        &.semi-transparent {
+            background-color: rgba(255, 205, 0, 0.8) !important;
+        }
+
+        a:not(.btn):not(.bttn):not(.button) {
+            color: $secondary;
+            text-decoration: underline;
+
+            &:hover,
+            &:focus {
+                text-decoration: none;
+            }
+        }
+
+        .alert a {
+            color: $secondary !important;
+        }
+
+        label {
+            color: $secondary;
+        }
+    }
+
+    &.paragraph--type--carousel-image .carousel-caption{
+        color: $secondary;
+
+        blockquote p {
+            color: $secondary;
+        }
+    }
+
+    .paragraph--type--carousel-image:not(.bg-yellow):not(.bg-light):not(.bg-dark):not(.bg-black) {
+        a:not(.btn):not(.bttn):not(.button) {
+            color: $primary;
+        }
+
+        blockquote p {
             color: $white;
+        }
+    }
 
-            a:not(.btn):not(.bttn):not(.button) {
-                color: $primary;
-            }
-
-            .alert a {
-                color: $secondary !important;
-            }
-
-            &.semi-transparent {
-                background-color: rgba(52, 58, 64, 0.8) !important;
-            }
+    &.paragraph--type--webform,
+    .paragraph--type--webform {
+        label {
+            color: $secondary;
         }
 
-        .paragraph--type--articles {
-            &.list {
-                .views-row {
-                    padding: 0 1.25rem;
+        input[id^='edit-actions-submit'],
+        input#edit-actions-submit {
+            @include bttn--secondary;
+            border: 1px solid $secondary;
+            @include bttn--focus;
+            color: $white !important;
 
-                    .article-created-date {
-                        color: $white;
-                    }
-
-                    a {
-                        color: $primary;
-                    }
-
-                    .card__body {
-                        color: $white;
-                    }
-
-                    .card {
-                        background-color: $brand-cool-gray;
-                    }
-                }
-            }
-
-            .pager {
-                .pager__item {
-                    &.is-active {
-                        &>a {
-                            color: $white;
-                            background-color: lighten($secondary, 20%);
-
-                            &:hover {
-                                background-color: lighten($secondary, 10%);
-                                cursor: pointer;
-                            }
-                        } 
-                    }
-
-                    &>a:hover {
-                        background-color: lighten($secondary, 10%);
-                        color: $white;
-                    }
-                }
-            }         
-        }
-
-
-        .paragraph--type--accordion {
-            h2 {
-                color: $secondary;
-            }
-
-            .uids-accordion__content {
-                background-color: $white;
-            }
-        }
-
-        .paragraph--type--featured-content {
-            .featured-content-item {
-                padding: .75rem 1.25rem;
-
-                &:first-child {
-                    padding-top: 0.75rem;
-                }
+            &:after {
+                background-color: $primary;
             }
         }
     }
 
-    &.bg-black {
-        .paragraph--type--blockquote,
-        .paragraph--type--text,
-        .paragraph--type--webform,
-        .paragraph--type--articles,
-        .paragraph--type--accordion,
-        .paragraph--type--events {
-            background-color: $secondary;
-            color: $white;
+    &.paragraph--type--articles,
+    .paragraph--type--articles {
+        &.list {
+            .views-row {
+                background-color: $primary;
+                padding: 0 1.25rem;
 
-            a:not(.btn):not(.bttn):not(.button) {
-                color: $primary;
-            }
+                .card {
+                    background-color: $primary;
+                }
 
-            .alert a {
-                color: $secondary !important;
-            }
-
-            &.semi-transparent {
-                background-color: rgba(21, 21, 21, 0.8) !important;
+                .article-created-date {
+                    color: $secondary;
+                }
             }
         }
 
-        .paragraph--type--articles {
-            &.list {
-                .views-row {
-                    background-color: $secondary;
-                    padding: 0 1.25rem;
-
-                    .article-created-date {
-                        color: $white;
-                    }
-
-                    a {
-                        color: $primary;
-                    }
-
-                    .card__body {
-                        color: $white;
-                    }
-
-                    .card {
+        .pager {
+            .pager__item {
+                &.is-active {
+                    &>a {
                         background-color: $secondary;
-                    }
-                }
-            }
+                        color: $white;
 
-            .pager {
-                .pager__item {
-                    &.is-active {
-                        &>a {
-                            color: $white;
+                        &:hover {
                             background-color: lighten($secondary, 20%);
-
-                            &:hover {
-                                background-color: lighten($secondary, 10%);
-                                cursor: pointer;
-                            }
+                            color: $white;
+                            cursor: pointer;
                         }
                     }
-
-                    &>a:hover {
-                        background-color: lighten($secondary, 10%);
-                        color: $white;
-                    }
                 }
-            }         
-        }
 
-
-        .paragraph--type--accordion {
-            h2 {
-                color: $secondary;
-            }
-
-            .uids-accordion__content {
-                background-color: $light;
-            }
-        }
-
-        .paragraph--type--featured-content {
-            .featured-content-item {
-                padding: .75rem 1.25rem;
-
-                &:first-child {
-                    padding-top: 0.75rem;
+                &>a:hover {
+                    background-color: lighten($secondary, 20%);
+                    color: $white;
                 }
             }
         }
     }
 
-    &.bg-light {
-        .paragraph--type--blockquote,
-        .paragraph--type--text,
-        .paragraph--type--webform,
-        .paragraph--type--articles,
-        .paragraph--type--accordion,
-        .paragraph--type--events {
-            background-color: $light;
+    &.paragraph--type--featured-content,
+    .paragraph--type--featured-content {
+        .featured-content-item {
+            padding: .75rem 1.25rem;
 
-            &.semi-transparent {
-                background-color: rgba(248, 249, 250, 0.8) !important;
-            }
-
-        }
-
-        .paragraph--type--articles {
-            &.list {
-                .views-row {
-                    background-color: $light;
-                    padding: 0 1.25rem;
-
-                    .card {
-                        background-color: $light;
-                    }
-                }
-            }
-
-            .pager {
-                .pager__item {
-                    &.is-active {
-                        &>a {
-                            background-color: darken($light, 20%);
-                            color: $secondary;
-
-                            &:hover {
-                                background-color: darken($light, 40%);
-                                cursor: pointer;
-                            }
-                        }  
-                    }
-
-                    &>a:hover {
-                        background-color: darken($light, 40%);
-                    }
-                }
-            }         
-        }
-
-        .paragraph--type--accordion {
-            h2 {
-                color: $secondary;
-            }
-
-            .uids-accordion__content {
-                background-color: $white;
-            }
-        }
-
-        .paragraph--type--featured-content {
-            .featured-content-item {
-                padding: .75rem 1.25rem;
-
-                &:first-child {
-                    padding-top: 0.75rem;
-                }
+            &:first-child {
+                padding-top: 0.75rem;
             }
         }
     }
 
-    &.bg-yellow {
-        .paragraph--type--blockquote,
-        .paragraph--type--text,
-        .paragraph--type--webform,
-        .paragraph--type--articles,
-        .paragraph--type--accordion,
-        .paragraph--type--events {
-            background-color: $primary;
+    &.paragraph--type--events.list .card,
+    .paragraph--type--events.list .card {
+        @include breakpoint(menu) {
+            border-bottom: 1px solid #666;
+        }
+    }
 
-            a.btn {
-                @extend %bttn--secondary;
-                border: 1px solid $secondary;
-                @extend %bttn--focus;
-            }
+    .card__author {
+        color: $secondary;
+    }
 
-            &.semi-transparent {
-                background-color: rgba(255, 205, 0, 0.8) !important;
-            }
+    .more-link {
+        .btn-primary {
+            color: #fff;
+            background: $secondary;
+        }
+    }
 
-            a:not(.btn):not(.bttn):not(.button) {
+    &.paragraph--type--events.list .card,
+    .paragraph--type--events.list .card {
+        @include breakpoint(menu) {
+            border-bottom: 1px solid #666;
+        }
+    }
+
+    &.paragraph--type--articles.list,
+    &.paragraph--type--featured-content.list,
+    .paragraph--type--articles.list,
+    .paragraph--type--featured-content.list {
+        .article-created-date {
+            color: $secondary;
+        }
+    }
+
+    &.paragraph--type--articles.list,
+    &.paragraph--type--people.list,
+    &.paragraph--type--featured-content.list,
+    .paragraph--type--articles.list,
+    .paragraph--type--people.list,
+    .paragraph--type--featured-content.list {
+
+        .card,
+        .node--view-mode-teaser {
+            @include bg-yellow;
+        }
+
+        .views-row {
+            @include bg-yellow;
+
+            a {
                 color: $secondary;
                 text-decoration: underline;
 
                 &:hover,
                 &:focus {
-                    text-decoration: none;
+                text-decoration: none;
                 }
             }
-
-            .alert a {
-                color: $secondary !important;
-            }
-
         }
+    }
 
-        .paragraph--type--articles {
-            &.list {
-                .views-row {
-                    background-color: $primary;
-                    padding: 0 1.25rem;
+    .paragraph--type--events.list {
+        .card {
+            @include bg-yellow;
 
-                    .card {
-                        background-color: $primary;
-                    }
-
-                    .article-created-date {
-                        color: $secondary;
-                    }
-                }
-            }
-
-            .pager {
-                .pager__item {
-                    &.is-active {
-                        &>a {
-                            background-color: $secondary;
-                            color: $white;
-
-                            &:hover {
-                                background-color: lighten($secondary, 20%);
-                                color: $white;
-                                cursor: pointer;
-                            }
-                        }  
-                    }
-
-                    &>a:hover {
-                        background-color: lighten($secondary, 20%);
-                        color: $white;
-                    }
-                }
-            }   
-        }
-
-        .paragraph--type--accordion {
-            h2 {
+            a {
                 color: $secondary;
-            }
+                text-decoration: underline;
 
-            .uids-accordion__content {
-                background-color: $white;
+                &:hover,
+                &:focus {
+                text-decoration: none;
+                }
+            }
+        }
+    }
+}
+
+.bg-black,
+.bg-black.has-section-image,
+.paragraph .bg-black,
+.paragraph .bg-black.has-section-image  {
+    &.paragraph--type--carousel-image,
+    &.paragraph--type--section,
+    &.paragraph--type--blockquote,
+    &.paragraph--type--text,
+    &.paragraph--type--webform,
+    &.paragraph--type--articles,
+    &.paragraph--type--accordion,
+    &.paragraph--type--events {
+        background-color: $secondary;
+        color: $white;
+
+        a:not(.btn):not(.bttn):not(.button) {
+            color: $primary;
+        }
+
+        a.btn-primary {
+            @include bttn--primary;
+            border: 1px solid $primary;
+            @include bttn--focus;
+
+            &:after {
+                background-color: $secondary;
             }
         }
 
-        .paragraph--type--featured-content {
-            .featured-content-item {
-                padding: .75rem 1.25rem;
+        a.btn:not(.btn-primary) {
+            @include bttn--primary;
+            border: 1px solid $primary;
+            @include bttn--focus;
 
-                &:first-child {
-                    padding-top: 0.75rem;
+            &:after {
+                background-color: $secondary;
+            }
+        }
+
+        .alert a {
+            color: $secondary !important;
+        }
+
+        &.semi-transparent {
+            background-color: rgba(21, 21, 21, 0.8) !important;
+        }
+
+        label {
+            color: $white;
+        }
+    }
+
+    &.paragraph--type--carousel-image .carousel-caption {
+        color: $white;
+
+        blockquote p {
+            color: $white;
+        }
+    }
+
+    &.paragraph--type--webform,
+    .paragraph--type--webform {
+        label {
+            color: $white;
+        }
+
+        input[id^='edit-actions-submit'],
+        input#edit-actions-submit {
+            @include bttn--primary;
+            border: 1px solid $primary;
+            @include bttn--focus;
+            color: $secondary !important;
+
+            &:after {
+                background-color: $secondary;
+            }
+        }
+    }
+
+    &.paragraph--type--articles,
+    .paragraph--type--articles {
+        &.list {
+            .views-row {
+                background-color: $secondary;
+                padding: 0 1.25rem;
+
+                .article-created-date {
+                    color: $white;
+                }
+
+                a {
+                    color: $primary;
+                }
+
+                .card__body {
+                    color: $white;
+                }
+
+                .card {
+                    background-color: $secondary;
                 }
             }
+        }
+
+        .pager {
+            .pager__item {
+                &.is-active {
+                    &>a {
+                        color: $white;
+                        background-color: lighten($secondary, 20%);
+
+                        &:hover {
+                            background-color: lighten($secondary, 10%);
+                            cursor: pointer;
+                        }
+                    }
+                }
+
+                &>a:hover {
+                    background-color: lighten($secondary, 10%);
+                    color: $white;
+                }
+            }
+        }
+    }
+
+    &.paragraph--type--articles.list,
+    &.paragraph--type--people.list,
+    .paragraph--type--articles.list,
+    .paragraph--type--people.list {
+
+        .card,
+        .views-row {
+            a {
+                color: $primary;
+            }
+        }
+    }
+
+    &.paragraph--type--featured-content,
+    .paragraph--type--featured-content {
+        .featured-content-item {
+            padding: .75rem 1.25rem;
+
+            &:first-child {
+                padding-top: 0.75rem;
+            }
+        }
+    }
+
+    &.paragraph--type--events.list,
+    .paragraph--type--events.list {
+        .card {
+            a {
+                color: $primary;
+            }
+        }
+    }
+
+    &.paragraph--type--featured-content.list,
+    .paragraph--type--featured-content.list {
+
+        .field a,
+        .h5.field,
+        h3 a {
+            color: $primary;
+        }
+    }
+}
+
+.bg-dark,
+.bg-dark.has-section-image,
+.paragraph .bg-dark,
+.paragraph .bg-dark.has-section-image {
+    &.paragraph--type--carousel-image,
+    &.paragraph--type--section,
+    &.paragraph--type--blockquote,
+    &.paragraph--type--text,
+    &.paragraph--type--webform,
+    &.paragraph--type--articles,
+    &.paragraph--type--accordion,
+    &.paragraph--type--events {
+        background-color: $brand-cool-gray;
+        color: $white;
+
+        a:not(.btn):not(.bttn):not(.button) {
+            color: $white;
+        }
+
+        .alert a {
+            color: $secondary !important;
+        }
+
+        &.semi-transparent {
+            background-color: rgba(52, 58, 64, 0.8) !important;
+        }
+
+        a.btn-primary {
+            @include bttn--primary;
+            border: 1px solid $primary;
+            @include bttn--focus;
+
+            &:after {
+                background-color: $secondary;
+            }
+        }
+
+        a.btn:not(.btn-primary) {
+            @include bttn--secondary;
+            border: 1px solid $secondary;
+            @include bttn--focus;
+        }
+
+        label {
+            color: $white;
+        }
+    }
+
+    &.paragraph--type--carousel-image .carousel-caption {
+        color: $white;
+
+        blockquote p {
+            color: $white;
+        }
+    }
+
+    &.paragraph--type--webform,
+    .paragraph--type--webform {
+        label {
+            color: $white;
+        }
+
+        input[id^='edit-actions-submit'],
+        input#edit-actions-submit {
+            @include bttn--primary;
+            border: 1px solid $primary;
+            @include bttn--focus;
+            color: $secondary !important;
+
+            &:after {
+                background-color: $secondary;
+            }
+        }
+    }
+
+    &.paragraph--type--articles,
+    .paragraph--type--articles {
+        &.list {
+            .views-row {
+                padding: 0 1.25rem;
+
+                .article-created-date {
+                    color: $white;
+                }
+
+                a {
+                    color: $primary;
+                }
+
+                .card__body {
+                    color: $white;
+                }
+
+                .card {
+                    background-color: $brand-cool-gray;
+                }
+            }
+        }
+
+        .pager {
+            .pager__item {
+                &.is-active {
+                    &>a {
+                        color: $white;
+                        background-color: lighten($secondary, 20%);
+
+                        &:hover {
+                            background-color: lighten($secondary, 10%);
+                            cursor: pointer;
+                        }
+                    }
+                }
+
+                &>a:hover {
+                    background-color: lighten($secondary, 10%);
+                    color: $white;
+                }
+            }
+        }
+    }
+
+    &.paragraph--type--articles.list,
+    &.paragraph--type--people.list,
+    .paragraph--type--articles.list,
+    .paragraph--type--people.list {
+
+        .card,
+        .views-row
+        {
+            a {
+                color: #fff;
+            }
+        }
+    }
+
+    &.paragraph--type--featured-content,
+    .paragraph--type--featured-content {
+        .featured-content-item {
+            padding: .75rem 1.25rem;
+
+            &:first-child {
+                padding-top: 0.75rem;
+            }
+        }
+    }
+
+    &.paragraph--type--events.list,
+    .paragraph--type--events.list {
+        .card {
+            a {
+                color: #fff;
+            }
+        }
+    }
+
+    &.paragraph--type--featured-content.list,
+    .paragraph--type--featured-content.list {
+
+        .field a,
+        h3 a {
+            color: #fff;
+        }
+    }
+}
+
+.bg-light,
+.bg-light.has-section-image,
+.paragraph .bg-light,
+.paragraph .bg-light.has-section-image {
+    &.paragraph--type--carousel-image,
+    &.paragraph--type--section,
+    &.paragraph--type--blockquote,
+    &.paragraph--type--text,
+    &.paragraph--type--webform,
+    &.paragraph--type--articles,
+    &.paragraph--type--accordion,
+    &.paragraph--type--events {
+        background-color: $light;
+
+        a:not(.btn):not(.bttn):not(.button) {
+            color: $secondary;
+        }
+
+        &.semi-transparent {
+            background-color: rgba(248, 249, 250, 0.8) !important;
+        }
+
+        a.btn-primary {
+            @include bttn--primary;
+            border: 1px solid $primary;
+            @include bttn--focus;
+
+            &:after {
+                background-color: $secondary;
+            }
+        }
+
+        a.btn:not(.btn-primary) {
+            @include bttn--secondary;
+            border: 1px solid $secondary;
+            @include bttn--focus;
+        }
+
+        label {
+            color: $secondary;
+        }
+    }
+
+    &.paragraph--type--carousel-image .carousel-caption {
+        color: $secondary;
+
+        blockquote p {
+            color: $secondary;
+        }
+    }
+
+    .paragraph--type--carousel-image:not(.bg-yellow):not(.bg-light):not(.bg-dark):not(.bg-black) .carousel-caption a:not(.btn):not(.bttn):not(.button) {
+        color: $primary;
+    }
+
+    &.paragraph--type--webform,
+    .paragraph--type--webform {
+        label {
+            color: $secondary;
+        }
+
+        input[id^='edit-actions-submit'],
+        input#edit-actions-submit {
+            @include bttn--primary;
+            border: 1px solid $primary;
+            @include bttn--focus;
+            color: $secondary !important;
+
+            &:after {
+                background-color: $secondary;
+            }
+        }
+    }
+
+    &.paragraph--type--articles,
+    .paragraph--type--articles {
+        &.list {
+            .views-row {
+                background-color: $light;
+                padding: 0 1.25rem;
+
+                .card {
+                    background-color: $light;
+                }
+            }
+        }
+
+        .pager {
+            .pager__item {
+                &.is-active {
+                    &>a {
+                        background-color: darken($light, 20%);
+                        color: $secondary;
+
+                        &:hover {
+                            background-color: darken($light, 40%);
+                            cursor: pointer;
+                        }
+                    }
+                }
+
+                &>a:hover {
+                    background-color: darken($light, 40%);
+                }
+            }
+        }
+    }
+
+    &.paragraph--type--featured-content,
+    .paragraph--type--featured-content {
+        .featured-content-item {
+            padding: .75rem 1.25rem;
+
+            &:first-child {
+                padding-top: 0.75rem;
+            }
+        }
+    }
+
+    &.paragraph--type--articles.list,
+    &.paragraph--type--people.list,
+    .paragraph--type--articles.list,
+    .paragraph--type--people.list {
+
+        .views-row,
+        .card {
+            @include bg-light;
+        }
+    }
+
+    &.paragraph--type--events.list,
+    .paragraph--type--events.list {
+        .card {
+            @include bg-light;
+        }
+    }
+
+    &.paragraph--type--featured-content,
+    .paragraph--type--featured-content {
+
+        .featured-content-item,
+        .node--view-mode-teaser,
+        .card {
+            @include bg-light;
+        }
+    }
+}
+
+
+
+.paragraph.bg-dark,
+.paragraph.bg-black {
+    .paragraph--type--articles.list,
+    .paragraph--type--people.list {
+
+        .field--name-field-teaser,
+        .article-created-date,
+        .field__item,
+        .field__label {
+            color: #fff;
+        }
+
+        .views-row {
+            border-bottom: 1px solid #ffffff21;
+
+            &:first-child {
+                border-top: 1px solid #ffffff21;
+            }
+        }
+
+        .card,
+        .views-row {
+            background-color: transparent !important;
+            @include text-light;
+        }
+    }
+
+    .paragraph--type--events.list,
+    .paragraph--type--people.list {
+
+        .card__author,
+        p {
+            color: #fff;
+        }
+
+        .card {
+            background-color: transparent !important;
+            @include text-light;
+        }
+    }
+
+    .paragraph--type--featured-content.list {
+
+        .article-created-date,
+        .card__author,
+        .field {
+            color: #fff;
+        }
+
+
+        .card,
+        .featured-content-item,
+        .node--view-mode-teaser.media {
+            background-color: transparent !important;
+            @include text-light;
         }
     }
 }
