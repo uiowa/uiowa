@@ -1,9 +1,9 @@
 @import "assets/scss/_variables.scss";
 @import "assets/scss/_utilities.scss";
-@import "components/form/forms/_forms.scss";
+@import "components/form/forms/forms.scss";
 
 .button {
-  @extend %bttn;
+  @include bttn;
   text-transform: uppercase;
   font-family: $font-family-caps-bold;
   border: 1px solid #FFCD00;
@@ -24,7 +24,7 @@
     margin-top: 2.5em;
   }
   .button {
-    @extend %bttn--secondary;
+    @include bttn--secondary;
     border: 0;
     padding-top: 13px;
     padding-bottom: 13px;
