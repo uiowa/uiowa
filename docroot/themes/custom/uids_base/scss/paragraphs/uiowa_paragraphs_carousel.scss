@@ -34,6 +34,7 @@ div[data-carousel="carousel"] {
 
   .slick-slide {
     position: relative;
+    margin-bottom: 0;
   }
 
   .carousel-caption {
@@ -73,7 +74,7 @@ div[data-carousel="carousel"] {
         transition: background-color 0.3s ease-in-out;
 
         &:focus {
-          outline: none;
+          outline: auto;
           background-color: $primary;
         }
       }
@@ -108,6 +109,12 @@ div[data-carousel="carousel"] {
     &:focus {
       &:before {
         color: rgba(255,255,255,0.9);
+      }
+    }
+
+    &:focus {
+      &:before {
+        outline: auto;
       }
     }
 
