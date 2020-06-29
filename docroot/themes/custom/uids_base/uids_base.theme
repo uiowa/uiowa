@@ -5,6 +5,7 @@
  * Functions to support theming in the uids_base theme.
  */
 
+use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\block\Entity\Block;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Url;
@@ -328,8 +329,8 @@ function uids_base_preprocess_block_content(&$variables) {
   $block_content = $variables['elements']['#block_content'];
   /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem|null $re */
   $re = $block_content->_referringItem;
-  if ($re instanceof \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem) {
-    $variables['delta'] = null;
+  if ($re instanceof EntityReferenceItem) {
+    $variables['delta'] = NULL;
     $id = $variables['id'];
     /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $parent */
     $parent = $re->getParent();
