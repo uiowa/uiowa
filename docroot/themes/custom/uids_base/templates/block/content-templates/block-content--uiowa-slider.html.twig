@@ -15,27 +15,22 @@
  *   displayed in front of the main title tag that appears in the template.
  * - title_suffix: Additional output populated by modules, intended to be
  *   displayed after the main title tag that appears in the template.
- * - delta: The delta of the referenced item.
 
  * @see template_preprocess_block_content_template()
  *
  * @ingroup themeable
  */
 #}
-
-{% set block_slide = {
-  'attributes': attributes.addClass('banner--reversed'),
-  'slide_delta': delta,
-  'slide_expanded': delta == 0 ? true : false,
-  'slide_image': content.field_uiowa_banner_image,
-  'slide_summary': content.field_uiowa_banner_excerpt,
-  'slide_title': content.field_uiowa_banner_title[0]['#text'],
-  'heading_level': content.field_uiowa_banner_title[0]['#size'],
-  'link': {
-    'link_url': content.field_uiowa_banner_link[0]['#url'],
-    'link_text' : content.field_uiowa_banner_link[0]['#title'],
-    'link_classes': ['bttn', 'bttn--primary', 'bttn--caps'],
-  },
-} %}
-
-{% embed '@uids_base/uids/slider--slide.html.twig' with block_slide only %}{% endembed %}
+{%
+  set classes = [
+  'block-content',
+  'block-content--type-' ~ bundle|clean_class,
+  'block-content--' ~ id,
+  'block-content--view-mode-' ~ view_mode|clean_class,
+  'slider',
+]
+%}
+{{ attach_library('uids_base/slider') }}
+<div{{ attributes.addClass(classes) }}>
+  {{ content }}
+</div>

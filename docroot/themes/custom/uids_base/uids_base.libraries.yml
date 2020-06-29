@@ -37,6 +37,8 @@ global-styling:
   dependencies:
     - core/jquery
     - core/jquery.once
+
+# UIDS.
 status-messages:
   js:
     assets/js/uids.status-messages.js: { preprocess: false }
@@ -82,14 +84,14 @@ banner:
   css:
     component:
       assets/css/components/banner.css: { preprocess: false }
-carousel:
+slider:
   css:
     component:
-      assets/css/components/carousel.css: { preprocess: false }
+      assets/css/components/slider.css: { preprocess: false }
   js:
-    assets/js/slick.behavior.js: {}
+    uids/components/slider/slider.js: { preprocess: false }
   dependencies:
-    - uids_base/slick
+    - uids_base/banner
 video:
   css:
     component:
@@ -127,27 +129,7 @@ card:
       assets/css/paragraphs/uiowa-paragraphs-card.css: { preprocess: false }
   js:
     uids/components/card/card.js: { preprocess: false }
-colorbox:
-  remote: http://github.com/jackmoore/colorbox
-  version: VERSION
-  license:
-    name: MIT
-    gpl-compatible: false
-  js:
-    colorbox/jquery.colorbox-min.js: { minified: true }
-    assets/js/colorbox_overrides.behavior.js: {}
-  dependencies:
-    - core/jquery
-    - core/jquery.once
-    - colorbox/init
-slick:  
-  css: 
-    theme: 
-      /libraries/slick-carousel/slick/slick.css: {} 
-  js: 
-    /libraries/slick-carousel/slick/slick.min.js: {} 
-  dependencies:
-    - core/jquery 
+
 cta:
   css:
     component:
@@ -170,6 +152,8 @@ vertical:
   css:
     component:
       assets/css/components/menus/vertical.css: { preprocess: false }
+
+# SiteNow partials.
 sitenow:
   css:
     component:
@@ -272,14 +256,27 @@ admin:
       assets/css/admin.css: { weight: 200 }
       assets/css/components/badge.css: {}
 
-# Third-party libraries
+# Third-party libraries.
+colorbox:
+  remote: http://github.com/jackmoore/colorbox
+  version: VERSION
+  license:
+    name: MIT
+    gpl-compatible: false
+  js:
+    colorbox/jquery.colorbox-min.js: { minified: true }
+    assets/js/colorbox_overrides.behavior.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - colorbox/init
+
 slick:
   css:
     theme:
-      /libraries/slick-carousel/slick/slick.css: { preprocess: false }
-      /libraries/slick-carousel/slick/slick-theme.css: { preprocess: false }
+      /libraries/slick-carousel/slick/slick.css: {}
   js:
-    /libraries/slick-carousel/slick/slick.min.js: { minified.true }
+    /libraries/slick-carousel/slick/slick.min.js: {}
   dependencies:
     - core/jquery
 
