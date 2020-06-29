@@ -98,6 +98,25 @@ function sitenow_query_administerusersbyrole_edit_access_alter(AlterableInterfac
 }
 
 /**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function sitenow_form_menu_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+
+  if ($form["id"]["#default_value"] == 'top-links') {
+    $theme = \Drupal::config('system.theme')->get('default');
+    if (in_array($theme, ['uids_base'])) {
+      $limit = theme_get_setting('header.top_links_limit', 'uids_base');
+      if ($limit) {
+        $warning_text = t('Only the top @limit menu items will display.', [
+          '@limit' => $limit,
+        ]);
+        \Drupal::messenger()->addWarning($warning_text);
+      }
+    }
+  }
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function sitenow_form_block_form_alter(&$form, FormStateInterface $form_state) {
@@ -555,21 +574,6 @@ function sitenow_preprocess_page(&$variables) {
     $node = \Drupal::routeMatch()->getParameter('node');
     $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
     if ($node instanceof NodeInterface) {
-      // Get moderation state of node.
-      $revision_id = $node->getRevisionId();
-      if ($revision_id) {
-        $revision = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($revision_id);
-        $moderation_state = $revision->get('moderation_state')->getString();
-        $status = $revision->get('status')->value;
-        if ($status == 0) {
-          $pre_vowel = (in_array($moderation_state[0], ['a', 'e', 'i', 'o', 'u']) ? 'n' : '');
-          $warning_text = t('This content is currently in a@pre_vowel <em>"@moderation_state"</em> state.', [
-            '@pre_vowel' => $pre_vowel,
-            '@moderation_state' => $moderation_state,
-          ]);
-          \Drupal::messenger()->addWarning($warning_text);
-        }
-      }
       $variables['header_attributes'] = new Attribute();
       if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
         $publish_options = $node->get('field_publish_options')->getValue();
@@ -580,6 +584,53 @@ function sitenow_preprocess_page(&$variables) {
         }
         if (array_search('title_hidden', array_column($publish_options, 'value')) !== FALSE) {
           $variables['header_attributes']->addClass('title-hidden');
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_preprocess_node(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    $node = $variables["node"];
+    // Get moderation state of node.
+    $revision_id = $node->getRevisionId();
+    if ($revision_id) {
+      $revision = \Drupal::entityTypeManager()
+        ->getStorage('node')
+        ->loadRevision($revision_id);
+      $moderation_state = $revision->get('moderation_state')->getString();
+      $status = $revision->get('status')->value;
+      if ($status == 0) {
+        $pre_vowel = (in_array($moderation_state[0], [
+          'a',
+          'e',
+          'i',
+          'o',
+          'u',
+        ]) ? 'n' : '');
+        $warning_text = t('This content is currently in a@pre_vowel @moderation_state state.', [
+          '@pre_vowel' => $pre_vowel,
+          '@moderation_state' => $moderation_state,
+        ]);
+
+        switch ($variables['view_mode']) {
+          case 'teaser':
+            $variables["content"]['unpublished'] = [
+              '#type' => 'markup',
+              '#markup' => '<span class="badge badge--orange" aria-description="' . $warning_text . '">' . ucfirst($moderation_state) . '</span>',
+              '#weight' => 99,
+            ];
+            break;
+
+          case 'full':
+            \Drupal::messenger()->addWarning($warning_text);
+            break;
+
         }
       }
     }

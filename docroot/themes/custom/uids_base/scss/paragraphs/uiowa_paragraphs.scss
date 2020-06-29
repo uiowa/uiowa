@@ -1,5 +1,6 @@
 @import "uids/assets/scss/_variables.scss";
 @import "uids/assets/scss/_utilities.scss";
+@import "_uiowa_paragraphs_background_overrides.scss";
 
 .paragraph--type--section.has-section-image {
 
@@ -8,98 +9,6 @@
   .paragraph--type--webform {
     padding: 1.25rem;
     background-color: $white;
-  }
-}
-
-.paragraph--type--section.has-section-image.bg-black,
-.paragraph--type--section.bg-black {
-
-  .paragraph--type--blockquote,
-  .paragraph--type--text,
-  .paragraph--type--webform {
-    background-color: $secondary;
-    color: $white;
-
-    a:not(.btn):not(.bttn):not(.button) {
-      color: $primary;
-    }
-
-    .alert a {
-      color: $secondary !important;
-    }
-
-    &.semi-transparent {
-      background-color: rgba(21, 21, 21, 0.8) !important;
-    }
-  }
-}
-
-
-
-.paragraph--type--section.has-section-image.bg-dark,
-.paragraph--type--section.bg-dark {
-
-  .paragraph--type--blockquote,
-  .paragraph--type--text,
-  .paragraph--type--webform {
-    background-color: $brand-cool-gray;
-    color: $white;
-
-    a:not(.btn):not(.bttn):not(.button) {
-      color: $primary;
-    }
-
-    .alert a {
-      color: $secondary !important;
-    }
-
-    &.semi-transparent {
-      background-color: rgba(52, 58, 64, 0.8) !important;
-    }
-
-  }
-}
-
-.paragraph--type--section.has-section-image.bg-yellow,
-.paragraph--type--section.bg-yellow {
-
-  .paragraph--type--blockquote,
-  .paragraph--type--text,
-  .paragraph--type--webform {
-    background-color: $primary;
-
-    &.semi-transparent {
-      background-color: rgba(255, 205, 0, 0.8) !important;
-    }
-
-    a:not(.btn):not(.bttn):not(.button) {
-      color: $secondary;
-      text-decoration: underline;
-
-      &:hover,
-      &:focus {
-        text-decoration: none;
-      }
-    }
-
-    .alert a {
-      color: $secondary !important;
-    }
-  }
-}
-
-.paragraph--type--section.has-section-image.bg-light,
-.paragraph--type--section.bg-light {
-
-  .paragraph--type--blockquote,
-  .paragraph--type--text,
-  .paragraph--type--webform {
-    background-color: $light;
-
-    &.semi-transparent {
-      background-color: rgba(248, 249, 250, 0.8) !important;
-    }
-
   }
 }
 
@@ -260,7 +169,7 @@ div.example2 p.special {
   &.bg-dark,
   &.bg-black,
   &.bg-yellow {
-    padding-top: $desktop-width-gutter;
+    //padding-top: $desktop-width-gutter;
     margin-bottom: 0;
 
     &:last-child {
@@ -275,17 +184,6 @@ div.example2 p.special {
   }
 }
 
-.col-md-12.paragraph--type--text {
-  //padding-top: $desktop-width-gutter;
-
-  .bg-light &,
-  .bg-dark &,
-  .bg-black &,
-  .bg-yellow & {
-    padding-top: 0;
-  }
-}
-
 .paragraph--type--text {
   padding-top: $gutter;
   padding-bottom: $gutter;
@@ -293,7 +191,6 @@ div.example2 p.special {
   &.bg-light {
     padding: $desktop-width-gutter;
   }
-
 }
 
 .media--type-image-background.media--view-mode-edgy {
@@ -318,25 +215,58 @@ div.example2 p.special {
   object-position: center;
 }
 
-// Set margin for first paragraph section below page title if using bg color
-.block-page-title-block+.region-content .field__item:first-child .paragraph--type--section {
+// Set margin/padding for first paragraph section below page title if using bg color
+.layout--page--paragraph .block-field-blocknodepagefield-page-content-block .field__item:first-child .paragraph--type--section {
 
   &.bg-light:first-child,
   &.bg-dark:first-child,
   &.bg-black:first-child,
-  &.bg-yellow:first-child,
-    {
+  &.bg-yellow:first-child {
     margin-top: $gutter;
+    padding-top: $gutter;
   }
 }
 
-.block-page-title-block.element-invisible+.region-content .field__item:first-child .paragraph--type--section {
+.layout--page--paragraph.title-invisible .block-field-blocknodepagefield-page-content-block .field__item:first-child .paragraph--type--section {
 
   &.bg-light:first-child,
   &.bg-dark:first-child,
   &.bg-black:first-child,
-  &.bg-yellow:first-child,
-    {
+  &.bg-yellow:first-child {
     margin-top: 0;
+    padding-top: $gutter;
+  }
+}
+
+.layout--onecol--background+.layout--page--paragraph .block-field-blocknodepagefield-page-content-block .field__item:first-child .paragraph--type--section {
+
+  &.bg-light:first-child,
+  &.bg-dark:first-child,
+  &.bg-black:first-child,
+  &.bg-yellow:first-child {
+    margin-top: 0;
+    padding-top: $gutter;
+  }
+}
+
+.layout--onecol--no--background+.layout--page--paragraph .block-field-blocknodepagefield-page-content-block .field__item:first-child .paragraph--type--section {
+
+  &.bg-light:first-child,
+  &.bg-dark:first-child,
+  &.bg-black:first-child,
+  &.bg-yellow:first-child {
+    margin-top: $gutter;
+    padding-top: $gutter;
+  }
+}
+
+.layout--onecol--no--background.title-invisible+.layout--page--paragraph .block-field-blocknodepagefield-page-content-block .field__item:first-child .paragraph--type--section {
+
+  &.bg-light:first-child,
+  &.bg-dark:first-child,
+  &.bg-black:first-child,
+  &.bg-yellow:first-child {
+    margin-top: 0;
+    padding-top: $gutter;
   }
 }

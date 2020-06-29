@@ -1445,3 +1445,15 @@ $sites['studiotheatrelobby.local.drupal.uiowa.edu'] = 'theatrelobby.studio.uiowa
 $sites['studiotheatrelobby.dev.drupal.uiowa.edu'] = 'theatrelobby.studio.uiowa.edu';
 $sites['studiotheatrelobby.stage.drupal.uiowa.edu'] = 'theatrelobby.studio.uiowa.edu';
 $sites['studiotheatrelobby.prod.drupal.uiowa.edu'] = 'theatrelobby.studio.uiowa.edu';
+
+// Directory aliases for chinesereadingworld.sites.uiowa.edu.
+$sites['siteschinesereadingworld.local.drupal.uiowa.edu'] = 'chinesereadingworld.sites.uiowa.edu';
+$sites['siteschinesereadingworld.dev.drupal.uiowa.edu'] = 'chinesereadingworld.sites.uiowa.edu';
+$sites['siteschinesereadingworld.stage.drupal.uiowa.edu'] = 'chinesereadingworld.sites.uiowa.edu';
+$sites['siteschinesereadingworld.prod.drupal.uiowa.edu'] = 'chinesereadingworld.sites.uiowa.edu';
+
+// Directory aliases for baalrud.lab.uiowa.edu.
+$sites['labbaalrud.local.drupal.uiowa.edu'] = 'baalrud.lab.uiowa.edu';
+$sites['labbaalrud.dev.drupal.uiowa.edu'] = 'baalrud.lab.uiowa.edu';
+$sites['labbaalrud.stage.drupal.uiowa.edu'] = 'baalrud.lab.uiowa.edu';
+$sites['labbaalrud.prod.drupal.uiowa.edu'] = 'baalrud.lab.uiowa.edu';

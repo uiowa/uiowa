@@ -15,7 +15,20 @@
 }
 
 .small {
-  font-size: $sm!important;
-  line-height: $sm-md!important;
+  font-size: $sm !important;
+  line-height: $sm-md !important;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+a:not([href]) {
+  color: inherit;
+  text-decoration: none;
+}
+
+.cke_editable div,
+.text-formatted div,
+.block-content--type-uiowa-text-area div {
+  line-height: 1.7;
+  font-size: 1.2rem;
+  margin-bottom: 1.05rem;
 }
