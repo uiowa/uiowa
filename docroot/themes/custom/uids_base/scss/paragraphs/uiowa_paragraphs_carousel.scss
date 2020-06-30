@@ -34,6 +34,7 @@ div[data-carousel="carousel"] {
 
   .slick-slide {
     position: relative;
+    margin-bottom: 0;
   }
 
   .carousel-caption {
@@ -50,21 +51,24 @@ div[data-carousel="carousel"] {
   }
 
   .slick-dots {
-    margin-bottom: calc(1.5rem - .15rem);
+    margin: calc(1.5rem - .15rem) 0.2rem;
     display: flex;
     position: absolute;
     bottom: 0;
-    width: 100%;
+    width: calc(100% - 0.4rem);
     justify-content: center;
 
     li {
+      flex: 1 1;
+      max-width: 3rem;
       list-style: none;
       height: 0.3rem;
       margin: 0 0.2rem;
 
       button {
         height: 0.3rem;
-        width: 3rem;
+        max-width: 3rem;
+        width: 100%;
         padding: 0;
         text-indent: -9999px;
         border: none;
@@ -93,6 +97,9 @@ div[data-carousel="carousel"] {
     background-color: transparent;
     color: transparent;
     outline: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     &:before {
       position: absolute;
@@ -113,7 +120,7 @@ div[data-carousel="carousel"] {
 
     &.slick-prev {
       left: 0;
-      padding: 0 5rem 0 1rem;
+      padding: 0 0 0 1rem;
 
       &:before {
         content: '\f053';
@@ -122,7 +129,7 @@ div[data-carousel="carousel"] {
 
     &.slick-next {
       right: 0;
-      padding: 0 1rem 0 5rem;
+      padding: 0 1rem 0 0;
 
       &:before {
         content: '\f054';
