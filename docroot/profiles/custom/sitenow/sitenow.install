@@ -537,17 +537,16 @@ function sitenow_update_8021() {
       $media->delete();
       $media_manager->create($media_array)
         ->save();
+      // @todo Fix SiteNow(P) background image styling.
     }
-    // @todo Fix SiteNow(P) background image styling.
-    // @todo Remove entity.type, config, etc.
-
     // Set the section config to use image and not image_background.
     $section_config = \Drupal::configFactory()
       ->getEditable('field.field.paragraph.section.field_section_image');
     $section_config
       ->set('settings.handler_settings.target_bundles', [
-      'image' => 'image',
+        'image' => 'image',
       ])
       ->save();
+    // @todo Remove entity.type, config, etc.
   }
 }
