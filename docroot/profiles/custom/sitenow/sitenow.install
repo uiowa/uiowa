@@ -518,9 +518,8 @@ function sitenow_update_8021() {
           $row = (array) $row;
           $row['bundle'] = 'image';
           foreach ($column_suffixes as $suffix) {
-            $val = $row[$from_field . $suffix];
+            $row[$to_field . $suffix] = $row[$from_field . $suffix];
             unset($row[$from_field . $suffix]);
-            $row[$to_field . $suffix] = $val;
           }
           $database
             ->insert($to_table)
@@ -531,8 +530,13 @@ function sitenow_update_8021() {
     }
     foreach ($image_background_mids as $mid) {
       $media = $media_manager->load($mid);
+      $media_array = $media->toArray();
+      $media_array['bundle'] = 'image';
+      $media_array[$to_field] = $media_array[$from_field];
+      unset($media_array[$from_field]);
       // @todo object fields need to be updated, or create a new media entity.
-      $media->set('bundle', 'image')
+      $media->delete();
+      $media_manager->create($media_array)
         ->save();
     }
   }
