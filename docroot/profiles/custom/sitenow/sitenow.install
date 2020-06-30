@@ -492,16 +492,48 @@ function sitenow_update_8021() {
     ->execute()
     ->fetchCol();
   if ($image_background_mids) {
-    $fields = [
-      'from' => 'field_media_image_1',
-      'to' => 'field_media_image',
-    ];
-
     $media_manager = \Drupal::entityTypeManager()
       ->getStorage('media');
+    $from_field = 'field_media_image_1';
+    $to_field = 'field_media_image';
+    $table_prefixes = [
+      'media__',
+      'media_revision__',
+    ];
+    foreach ($table_prefixes as $prefix) {
+      $from_table = $prefix . $from_field;
+      $to_table = $prefix . $to_field;
+      if ($database->schema()->tableExists($from_table)) {
+        $rows = $database
+          ->select($from_table, 't')
+          ->fields('t')
+          ->execute()
+          ->fetchAll();
+      }
+      $column_suffixes = [
+        '_target_id', '_alt', '_title', '_width', '_height',
+      ];
+      if (!is_null($rows)) {
+        foreach ($rows as $row) {
+          $row = (array) $row;
+          $row['bundle'] = 'image';
+          foreach ($column_suffixes as $suffix) {
+            $val = $row[$from_field . $suffix];
+            unset($row[$from_field . $suffix]);
+            $row[$to_field . $suffix] = $val;
+          }
+          $database
+            ->insert($to_table)
+            ->fields($row)
+            ->execute();
+        }
+      }
+    }
     foreach ($image_background_mids as $mid) {
       $media = $media_manager->load($mid);
-
+      // @todo object fields need to be updated, or create a new media entity.
+      $media->set('bundle', 'image')
+        ->save();
     }
   }
 }
