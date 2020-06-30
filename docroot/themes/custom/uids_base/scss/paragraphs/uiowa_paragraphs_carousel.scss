@@ -88,6 +88,7 @@ div[data-carousel="carousel"] {
   .slick-arrow {
     top: 0;
     height: 100%;
+    width: 5rem;
     z-index: 10;
     position: absolute;
     border: none;
@@ -113,14 +114,12 @@ div[data-carousel="carousel"] {
     }
 
     &:focus {
-      &:before {
-        outline: auto;
-      }
+      outline: auto;
     }
 
     &.slick-prev {
       left: 0;
-      padding: 0 5rem 0 1rem;
+      padding: 0 1rem;
 
       &:before {
         content: '\f053';
@@ -129,7 +128,7 @@ div[data-carousel="carousel"] {
 
     &.slick-next {
       right: 0;
-      padding: 0 1rem 0 5rem;
+      padding: 0 1rem;
 
       &:before {
         content: '\f054';
