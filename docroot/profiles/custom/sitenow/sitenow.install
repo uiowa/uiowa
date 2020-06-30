@@ -534,10 +534,10 @@ function sitenow_update_8021() {
       $media_array['bundle'] = 'image';
       $media_array[$to_field] = $media_array[$from_field];
       unset($media_array[$from_field]);
-      // @todo object fields need to be updated, or create a new media entity.
       $media->delete();
       $media_manager->create($media_array)
         ->save();
     }
+    // @todo Fix SiteNow(P) background image styling.
   }
 }
