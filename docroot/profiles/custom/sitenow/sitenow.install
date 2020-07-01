@@ -711,3 +711,42 @@ function sitenow_update_8025() {
       ->save();
   }
 }
+
+/**
+ * Create brand lockup media entity.
+ */
+function sitenow_update_8026() {
+  $config = \Drupal::configFactory()
+    ->get('uiowa_footer.settings');
+  $lockup_fids = $config->get('lockup.fid');
+  $lockup_alt = $config->get('lockup.alt');
+  // Lockup IDs are stored in an array format; alts are not.
+  foreach ($lockup_fids as $fid) {
+    $file = \Drupal::entityTypeManager()
+      ->getStorage('file')
+      ->load($fid);
+    if ($file) {
+      // Updated date of 2000/01/01 00:00:00.
+      $old_date = 946684800;
+      // Grab the filename minus extension for the title.
+      $title = explode('.', $file->getFilename())[0];
+      // Create a media entity, date it to appear at end of media list.
+      $media = \Drupal::entityTypeManager()
+        ->getStorage('media')
+        ->create([
+          'bundle' => 'image',
+          'field_media_image' => [
+            'target_id' => $fid,
+            'alt' => $lockup_alt,
+            'title' => $title,
+          ],
+          'created' => $old_date,
+          'changed' => $old_date,
+          'langcode' => 'en',
+          'uid' => 1,
+        ]);
+      $media->setName($title);
+      $media->save();
+    }
+  }
+}
