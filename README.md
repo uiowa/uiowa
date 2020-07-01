@@ -86,7 +86,7 @@ $settings['config_sync_directory'] = DRUPAL_ROOT . '/config/' . $site_dir;
 ```
 
 # Updating Dependencies
-Before starting updates, make sure your local environment is on a feature branch created from the latest version of master and synced with production by running `blt dsa`.
+Before starting updates, make sure your local environment is on a feature branch created from the latest version of the default branch and synced with production by running `blt dsa`.
 
 Drupal core requires the following specific command to update dev dependencies properly: `composer update drupal/core --with-dependencies`. You can run `composer update package/name` after that to update additional dependencies. The output from the Composer commands can be used as the long text for commit messages. Ideally, each package update would be one commit to the composer.lock file.
 

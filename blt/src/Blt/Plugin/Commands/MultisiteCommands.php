@@ -802,8 +802,8 @@ EOD;
 
     $branch = $result->getMessage();
 
-    if ($branch == 'master' || $branch == 'develop') {
-      return new CommandError('You must run this command on a feature branch created off master.');
+    if ($branch == 'main' || $branch == 'develop') {
+      return new CommandError('You must run this command on a feature branch created from the default branch.');
     }
   }
 
