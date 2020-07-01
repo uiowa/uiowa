@@ -45,9 +45,9 @@ third_party_settings:
       label: 'IGHN Person Group'
     group_ighn_main_info_g:
       children:
+        - field_ighn_person_position_title
         - field_ighn_primary_college
         - field_ighn_person_department
-        - field_ighn_person_position_title
       parent_name: group_ighn_person_group
       weight: 5
       format_type: html_element
@@ -117,7 +117,7 @@ content:
     third_party_settings: {  }
   field_ighn_person_department:
     type: entity_reference_label
-    weight: 6
+    weight: 9
     region: content
     label: visually_hidden
     settings:
@@ -166,7 +166,7 @@ content:
     third_party_settings: {  }
   field_ighn_primary_college:
     type: entity_reference_label
-    weight: 5
+    weight: 8
     region: content
     label: visually_hidden
     settings:
