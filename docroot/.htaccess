@@ -69,6 +69,10 @@ AddEncoding gzip svgz
 <IfModule mod_rewrite.c>
   RewriteEngine on
 
+  # Return a 403 for autodiscover requests.
+  RewriteCond %{REQUEST_URI} /autodiscover/autodiscover.xml [NC]
+  RewriteRule ^ - [F,L]
+
   # Redirect http(s)://www.domain.com to https://domain.com.
   RewriteCond %{HTTP_HOST} !\.acquia-sites\.com [NC]
   RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
