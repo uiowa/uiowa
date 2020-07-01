@@ -18,24 +18,28 @@ $imgpath: '../../../../../uids/assets/images/';
   .menu li {
     display: inline-block;
   }
+
   .menu a {
     color: $white;
     display: block;
     //padding: 1rem 0.5rem 1rem 0;
     font-size: 1rem;
   }
+
   .menu a.fa-icon {
     //padding: 0.5rem;
     font-size: 1.8rem;
     margin-right: 1.05rem;
   }
+
   .menu a:hover,
   .menu a:focus {
     color: $primary;
   }
+
   .menu a.fa-icon .menu-link-title {
     border: 0;
-    clip: rect(0,0,0,0);
+    clip: rect(0, 0, 0, 0);
     height: 1px;
     margin: -1px;
     overflow: hidden;
@@ -43,5 +47,16 @@ $imgpath: '../../../../../uids/assets/images/';
     position: absolute;
     width: 1px;
     margin-right: 0.5rem;
+  }
+}
+
+.header--tertiary .footer .logo-icon--tab {
+  width: 150px;
+
+  @include breakpoint(menu) {
+    width: 185px;
+    height: auto;
+    padding: 0 40px 0 0;
+    margin: 0;
   }
 }
