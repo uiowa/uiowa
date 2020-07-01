@@ -1,0 +1,29 @@
+uuid: 34eae124-d761-4d3e-8188-294e1c28eaee
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_ighn_person
+    - node.type.ighn_person
+    - paragraphs.paragraphs_type.ighn_person_paragraph
+id: paragraph.ighn_person_paragraph.field_ighn_person
+field_name: field_ighn_person
+entity_type: paragraph
+bundle: ighn_person_paragraph
+label: 'IGHN Person'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      ighn_person: ighn_person
+    sort:
+      field: field_ighn_person_last_name
+      direction: DESC
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference
