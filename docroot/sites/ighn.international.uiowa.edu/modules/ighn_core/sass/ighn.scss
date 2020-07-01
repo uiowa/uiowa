@@ -1,6 +1,63 @@
 @import "../../../../../themes/custom/uids_base/uids/assets/scss/_variables.scss";
 @import "../../../../../themes/custom/uids_base/uids/assets/scss/_utilities.scss";
 
-.field--name-field-ighn-person-credentials {
-  @include card-subtitle;
+.ighn-person {
+  .view-content {
+    margin-top: $gutter;
+    @include breakpoint(menu) {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
+  .views-row {
+    display: flex;
+    @include breakpoint(sm) {
+      margin-bottom: $mobile-width-gutter;
+    }
+    @include breakpoint(menu) {
+      flex: 0 0 47%;
+      max-width: 47%;
+      margin-bottom: $desktop-width-gutter;
+      &:nth-child(2n+1) {
+        margin-right: $desktop-width-gutter;
+      }
+    }
+    @include breakpoint(container) {
+      flex: 0 0 31.222222%;
+      max-width: 31.222222%;
+      margin: 0 $gutter $desktop-width-gutter $gutter;
+
+      &:nth-child(2n+1) {
+        margin-right: $gutter;
+      }
+
+      &:nth-child(3n+1) {
+        margin-left: 0;
+      }
+
+      &:nth-child(3n+3) {
+        margin-right: 0;
+      }
+    }
+  }
+  .card--list.card {
+    @include card-enclosed;
+    .card__author, .card__title {
+      display: inline-flex;
+    }
+    .field--name-field-ighn-primary-college {
+      @include card-subtitle;
+    }
+    .field__label {
+      @include card-subtitle;
+      margin-top: 10px;
+      font-size: $h6-font-size;
+      .field__items {
+        margin: 10px 0px;
+      }
+    }
+    .field--name-field-ighn-person-biography {
+      margin-top: $md;
+    }
+  }
 }
