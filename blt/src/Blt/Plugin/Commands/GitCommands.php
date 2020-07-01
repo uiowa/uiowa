@@ -43,9 +43,8 @@ class GitCommands extends BltTasks {
   public function clean() {
     $remotes = $this->getConfigValue('git.remotes');
 
-    // We never want to delete the two main artifact branches. The master branch
-    // cannot be deleted, even though it is not used, because it is the default
-    // Acquia remote branch.
+    // We never want to delete the two main artifact branches. Additionally,
+    // we cannot delete the default Acquia remote branch.
     $keep = [
       'refs/heads/master',
       'refs/heads/main-build',
