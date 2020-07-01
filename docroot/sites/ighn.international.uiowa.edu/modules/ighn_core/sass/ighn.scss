@@ -1,72 +1,138 @@
 @import "../../../../../themes/custom/uids_base/uids/assets/scss/_variables.scss";
 @import "../../../../../themes/custom/uids_base/uids/assets/scss/_utilities.scss";
 
-.ighn-person, .node--type-ighn-person, .field--name-field-ighn-person {
-  .view-content {
-    margin-top: $gutter;
-    @include breakpoint(menu) {
-      display: flex;
-      flex-wrap: wrap;
+.field__label {
+  font-weight: bold;
+}
+.ighn-main-info, .ighn-person-field-groups {
+  margin-bottom: $gutter;
+}
+.field--name-field-ighn-primary-college {
+  font-weight: 700;
+}
+.field--name-field-ighn-person-department {
+  font-style: italic;
+}
+
+article.node--type-ighn-person.node--view-mode-full,
+div[role=article].node--type-ighn-person.node--view-mode-full {
+  .content-image img {
+    max-width: 100%;
+    height: auto;
+  }
+  .person-meta {
+    &.col-md-6 {
+      padding: 0;
+
+      @include breakpoint(menu) {
+        padding-right: $desktop-width-gutter;
+        flex: 0 0 33%;
+      }
+    }
+
+    .field--label-inline {
+      margin-bottom: .7rem;
+    }
+
+    figure {
+      margin: 0;
+    }
+
+    .h5.field--name-field-ighn-person-position-title {
+      margin-top: 0;
+      margin-bottom: 1rem;
     }
   }
-  .views-row {
-    display: flex;
-    @include breakpoint(sm) {
-      margin-bottom: $mobile-width-gutter;
-    }
-    @include breakpoint(menu) {
-      flex: 0 0 47%;
-      max-width: 47%;
-      margin-bottom: $desktop-width-gutter;
-      &:nth-child(2n+1) {
-        margin-right: $desktop-width-gutter;
-      }
-    }
-    @include breakpoint(container) {
-      flex: 0 0 31.222222%;
-      max-width: 31.222222%;
-      margin: 0 $gutter $desktop-width-gutter $gutter;
+  .person-content {
+    &.col-md-6 {
+      padding: 0;
+      margin-top: $gutter;
 
-      &:nth-child(2n+1) {
-        margin-right: $gutter;
+      @include breakpoint(menu) {
+        flex: 0 0 67%;
+        max-width: 67%;
+        margin-top: 0;
       }
-
-      &:nth-child(3n+1) {
-        margin-left: 0;
-      }
-
-      &:nth-child(3n+3) {
-        margin-right: 0;
-      }
-    }
-  }
-  .card--list.card {
-    @include card-enclosed;
-    .card__author, .card__title {
-      display: inline-flex;
-    }
-    .field--name-field-ighn-primary-college {
-      @include card-subtitle;
-    }
-    .field__label {
-      @include card-subtitle;
-      margin-top: 10px;
-      font-size: $h6-font-size;
-      .field__items {
-        margin: 10px 0px;
-      }
-    }
-    .field--name-field-ighn-person-biography {
-      margin-top: $md;
-    }
-    .field--name-field-ighn-person-cv-link {
-      display: none;
-    }
-    .field--name-field-ighn-person-department {
-      font-style: italic;
     }
   }
 }
-.field.field--name-field-ighn-person .card__media {
-  display: none;
+
+// Subtitle
+.subtitle {
+  @include card-subtitle;
+  display: block;
+  font-size: 1.6rem;
+}
+
+.views-element-container {
+  position: relative;
+
+  .view-display-id-ighn_person {
+
+    .view-content {
+      margin-top: $gutter;
+
+      @include breakpoint(sm) {
+        margin-top: $lg;
+      }
+
+      @include breakpoint(menu) {
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      figure {
+        margin: 0;
+
+        img {
+          margin-bottom: 0;
+        }
+      }
+
+      .views-row {
+        @include breakpoint(sm) {
+          margin-bottom: $mobile-width-gutter;
+        }
+
+        @include breakpoint(menu) {
+          flex: 0 0 47%;
+          max-width: 47%;
+          margin-bottom: $desktop-width-gutter;
+
+          &:nth-child(2n+1) {
+            margin-right: $desktop-width-gutter;
+          }
+        }
+
+        @include breakpoint(container) {
+          flex: 0 0 31.222222%;
+          max-width: 31.222222%;
+          margin: 0 $gutter $desktop-width-gutter $gutter;
+
+          &:nth-child(2n+1) {
+            margin-right: $gutter;
+          }
+
+          &:nth-child(3n+1) {
+            margin-left: 0;
+          }
+
+          &:nth-child(3n+3) {
+            margin-right: 0;
+          }
+        }
+
+        display: flex;
+
+        .card {
+          @include card-enclosed;
+          display: block;
+
+          .field--name-title {
+            display: block;
+          }
+        }
+      }
+    }
+  }
 }
