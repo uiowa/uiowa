@@ -81,7 +81,6 @@
 ]
 %}
 {{ attach_library('classy/node') }}
-{{ attach_library('uids_base/paragraphs-lists') }}
 {{ attach_library('uids_base/node-type-person') }}
 <article{{ attributes.addClass(classes) }}>
 
@@ -97,7 +96,10 @@
     <footer class="node__meta">
       {{ author_picture }}
       <div{{ author_attributes.addClass('node__submitted') }}>
-        {% trans %}Submitted by {{ author_name }} on {{ date }}{% endtrans %}
+        {% trans %}Submitted by
+          {{ author_name }}
+          on
+          {{ date }}{% endtrans %}
         {{ metadata }}
       </div>
     </footer>
@@ -106,13 +108,21 @@
   <div{{ content_attributes.addClass('node__content') }}>
     {{ content.content_moderation_control }}
     <div class="row">
-      <div class="col-md-8 col-lg-6 person-meta">
+      <div class="col-md-6 col-lg-3 person-meta">
         {% if content.field_ighn_person_image %}
-          <figure class="ighn-image">
+          <figure class="content-image">
             {{ content.field_ighn_person_image }}
+            {% if content.field_image_caption %}
+              <figcaption>
+                {{ label }}
+              </figcaption>
+            {% endif %}
           </figure>
         {% endif %}
+
         {{ content|without('field_ighn_person_image', 'field_ighn_person_biography', 'content_moderation_control') }}
+      </div>
+      <div class="col-md-6 col-lg-9 person-content">
         {{ content.field_ighn_person_biography }}
       </div>
     </div>
