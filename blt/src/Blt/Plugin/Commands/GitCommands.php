@@ -25,6 +25,7 @@ class GitCommands extends BltTasks {
       $result = $this->taskExecStack()
         ->exec("git ls-remote {$remote}")
         ->stopOnFail()
+        ->silent(TRUE)
         ->run();
 
       if (!$result->wasSuccessful()) {
