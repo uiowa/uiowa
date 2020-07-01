@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: engineeringviewbook.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: engineeringviewbook
+  human_name: viewbook.engineering.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: engineeringviewbook.prod
+drupal:
+  db:
+    database: viewbook_engineering_uiowa_edu
+uiowa:
+  requester: hboileau
