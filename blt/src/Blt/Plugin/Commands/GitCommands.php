@@ -34,7 +34,7 @@ class GitCommands extends BltTasks {
   }
 
   /**
-   * Delete all artifact branches except master/develop from Acquia remotes.
+   * Delete all artifact branches except develop/main from Acquia remotes.
    *
    * @command uiowa:git:clean
    *
@@ -48,7 +48,7 @@ class GitCommands extends BltTasks {
     // Acquia remote branch.
     $keep = [
       'refs/heads/master',
-      'refs/heads/master-build',
+      'refs/heads/main-build',
       'refs/heads/develop-build',
     ];
 
