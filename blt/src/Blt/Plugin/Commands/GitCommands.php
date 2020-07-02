@@ -5,8 +5,6 @@ namespace Uiowa\Blt\Plugin\Commands;
 use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\YamlMunge;
 use Composer\Semver\Semver;
-use Consolidation\AnnotatedCommand\CommandData;
-use Consolidation\AnnotatedCommand\CommandError;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -15,32 +13,13 @@ use Symfony\Component\Finder\Finder;
 class GitCommands extends BltTasks {
 
   /**
-   * Validate clean command.
-   *
-   * @hook validate uiowa:git:clean
-   */
-  public function validateClean(CommandData $commandData) {
-    $remotes = $this->getConfigValue('git.remotes');
-
-    foreach ($remotes as $remote) {
-      $result = $this->taskExecStack()
-        ->exec("git ls-remote {$remote}")
-        ->stopOnFail()
-        ->silent(TRUE)
-        ->run();
-
-      if (!$result->wasSuccessful()) {
-        return new CommandError("Error connecting to Acquia remote {$remote}. Double check permissions and SSH key.");
-      }
-    }
-  }
-
-  /**
    * Delete all artifact branches except develop/main from Acquia remotes.
    *
    * @command uiowa:git:clean
    *
    * @aliases ugc
+   *
+   * @requireRemoteAccess
    */
   public function clean() {
     // Keep the last five releases. In reality, reverting to anything beyond
