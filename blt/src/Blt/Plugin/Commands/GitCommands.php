@@ -4,6 +4,7 @@ namespace Uiowa\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\YamlMunge;
+use Composer\Semver\Semver;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
 use Symfony\Component\Finder\Finder;
@@ -42,21 +43,22 @@ class GitCommands extends BltTasks {
    * @aliases ugc
    */
   public function clean() {
-    $remotes = $this->getConfigValue('git.remotes');
+    // Keep the last five releases. In reality, reverting to anything beyond
+    // even the previous release is probably unfeasible.
+    $tags = $this->getOriginTagsAsArtifacts();
+    $keep = array_slice($tags, 0, 5);
 
     // We never want to delete the two main artifact branches. Additionally,
     // we cannot delete the default Acquia remote branch.
-    $keep = [
-      'refs/heads/master',
-      'refs/heads/main-build',
-      'refs/heads/develop-build',
-    ];
+    array_push($keep, 'refs/heads/master', 'refs/heads/main-build', 'refs/heads/develop-build');
+
+    $remotes = $this->getConfigValue('git.remotes');
 
     $delete = [];
 
     foreach ($remotes as $remote) {
       $result = $this->taskExecStack()
-        ->exec("git ls-remote --heads {$remote}")
+        ->exec("git ls-remote --heads --tags --refs {$remote}")
         ->stopOnFail()
         ->silent(TRUE)
         ->run();
@@ -79,7 +81,7 @@ class GitCommands extends BltTasks {
     }
 
     if (!empty($delete)) {
-      if (!$this->confirm('You will delete the branches in the tables above from the Acquia remotes. Are you sure?')) {
+      if (!$this->confirm('You will delete the references in the tables above from the Acquia remotes. Are you sure?')) {
         throw new \Exception('Aborted.');
       }
       else {
@@ -196,6 +198,42 @@ class GitCommands extends BltTasks {
 
       $this->say("Copied {$name} Drush commands to deploy directory.");
     }
+  }
+
+  /**
+   * Get the origin tags and return them as their corresponding artifacts.
+   *
+   * @return array
+   * @throws \Robo\Exception\TaskException
+   */
+  protected function getOriginTagsAsArtifacts() {
+    $result = $this->taskExecStack()
+      ->exec('git ls-remote --tags --refs origin')
+      ->stopOnFail()
+      ->silent(TRUE)
+      ->run();
+
+    $output = $result->getMessage();
+    $heads = explode(PHP_EOL, $output);
+    $tags = [];
+
+    // Get the semantic version of the tag as a string.
+    foreach ($heads as $head) {
+      $tag = explode("refs/tags/", $head)[1];
+      $tags[] = $tag;
+    }
+
+    // Sort the tags in reverse order, i.e. newest to oldest.
+    $tags = Semver::rsort($tags);
+
+    // Iterate each tag and append it as an artifact variant.
+    $artifacts = [];
+
+    foreach ($tags as $tag) {
+      $artifacts[] = "refs/tags/{$tag}-build";
+    }
+
+    return $artifacts;
   }
 
 }
