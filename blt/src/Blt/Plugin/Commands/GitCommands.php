@@ -204,6 +204,8 @@ class GitCommands extends BltTasks {
    * Get the origin tags and return them as their corresponding artifacts.
    *
    * @return array
+   *   Array of artifact tag references in the form of refs/tags/semver-build.
+   *
    * @throws \Robo\Exception\TaskException
    */
   protected function getOriginTagsAsArtifacts() {
