@@ -7,7 +7,7 @@ use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
 
 /**
- * This class should contain Robo hooks
+ * This class should contain hooks that are used in other commands.
  */
 class ValidateCommands extends BltTasks {
 
@@ -70,4 +70,5 @@ class ValidateCommands extends BltTasks {
       }
     }
   }
+
 }
