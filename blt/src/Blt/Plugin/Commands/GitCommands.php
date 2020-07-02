@@ -81,7 +81,7 @@ class GitCommands extends BltTasks {
     }
 
     if (!empty($delete)) {
-      if (!$this->confirm('You will delete the references in the tables above from the Acquia remotes. Are you sure?')) {
+      if (!$this->confirm('You will delete the artifacts in the tables above from the Acquia remotes. Are you sure?')) {
         throw new \Exception('Aborted.');
       }
       else {
@@ -95,7 +95,7 @@ class GitCommands extends BltTasks {
       }
     }
     else {
-      $this->yell('There are no branches to clean up!');
+      $this->yell('There are no artifacts to clean up!');
     }
   }
 
