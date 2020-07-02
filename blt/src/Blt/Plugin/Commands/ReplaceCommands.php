@@ -17,9 +17,6 @@ class ReplaceCommands extends BltTasks {
    * @hook replace-command artifact:update:drupal:all-sites
    */
   public function replaceDrupalUpdateAll() {
-    // @todo: Remove this if the htaccess change works.
-    return 0;
-
     // Disable alias since we are targeting a specific URI.
     $this->config->set('drush.alias', '');
 
