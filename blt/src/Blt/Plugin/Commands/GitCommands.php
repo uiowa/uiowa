@@ -128,8 +128,13 @@ class GitCommands extends BltTasks {
           $client->clearQuery();
 
           if ($prod) {
-            $endpoint = new Code($client);
-            $endpoint->switch($prod->id, $latest);
+            try {
+              $endpoint = new Code($client);
+              $endpoint->switch($prod->id, $latest);
+              $this->say("Code switch started successfully on {$name}.");
+            } catch (\Exception $e) {
+              $this->logger->error('Error attempting code switch: ' . $e->getMessage());
+            }
           }
         }
       }
