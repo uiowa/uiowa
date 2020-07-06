@@ -1,0 +1,29 @@
+uuid: e257c631-1f30-4c56-bff0-87a91f4e49f9
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.top-links
+  module:
+    - menu_block
+  theme:
+    - uids_base
+id: uids_base_toplinks
+theme: uids_base
+region: action_menu
+weight: 0
+provider: null
+plugin: 'menu_block:top-links'
+settings:
+  id: 'menu_block:top-links'
+  label: 'Top links'
+  provider: menu_block
+  label_display: '0'
+  follow: 0
+  follow_parent: '0'
+  level: 1
+  depth: 0
+  expand: 0
+  parent: 'top-links:'
+  suggestion: top_links
+visibility: {  }
