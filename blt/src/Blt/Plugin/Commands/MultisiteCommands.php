@@ -363,26 +363,26 @@ class MultisiteCommands extends BltTasks {
         /** @var \AcquiaCloudApi\Connector\Client $client */
         $client = $this->getAcquiaCloudApiClient();
 
-        foreach ($this->getConfigValue('uiowa.applications') as $app => $attrs) {
+        foreach ($this->getConfigValue('uiowa.applications') as $name => $uuid) {
           /** @var \AcquiaCloudApi\Endpoints\Databases $databases */
           $databases = new Databases($client);
 
           // Find the application that hosts the database.
-          foreach ($databases->getAll($attrs['id']) as $database) {
+          foreach ($databases->getAll($uuid) as $database) {
             if ($database->name == $db) {
-              $databases->delete($attrs['id'], $db);
-              $this->say("Deleted <comment>{$db}</comment> cloud database on <comment>{$app}</comment> application.");
+              $databases->delete($uuid, $db);
+              $this->say("Deleted <comment>{$db}</comment> cloud database on <comment>{$name}</comment> application.");
 
               /** @var \AcquiaCloudApi\Endpoints\Environments $environments */
               $environments = new Environments($client);
 
-              foreach ($environments->getAll($attrs['id']) as $environment) {
+              foreach ($environments->getAll($uuid) as $environment) {
                 if ($intersect = array_intersect($properties['domains'], $environment->domains)) {
                   $domains = new Domains($client);
 
                   foreach ($intersect as $domain) {
                     $domains->delete($environment->uuid, $domain);
-                    $this->say("Deleted <comment>{$domain}</comment> domain on {$app} application.");
+                    $this->say("Deleted <comment>{$domain}</comment> domain on {$name} application.");
                   }
                 }
               }
@@ -437,7 +437,7 @@ EOD
         ->add("docroot/sites/{$dir}/")
         ->add("drush/sites/{$id}.site.yml")
         ->add("config/{$dir}/")
-        ->commit("Delete {$dir} multisite on {$app}")
+        ->commit("Delete {$dir} multisite on {$name}")
         ->interactive(FALSE)
         ->printOutput(FALSE)
         ->printMetadata(FALSE)
@@ -551,12 +551,12 @@ EOD
       $sans_search = $host;
     }
 
-    foreach ($applications as $name => $meta) {
+    foreach ($applications as $name => $uuid) {
       $row = [];
       $row[] = $name;
-      $row[] = count($databases->getAll($meta['id']));
+      $row[] = count($databases->getAll($uuid));
 
-      $envs = $environments->getAll($meta['id']);
+      $envs = $environments->getAll($uuid);
 
       foreach ($envs as $env) {
         if ($env->name == 'prod') {
