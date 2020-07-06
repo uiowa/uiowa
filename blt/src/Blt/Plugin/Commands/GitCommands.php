@@ -132,7 +132,8 @@ class GitCommands extends BltTasks {
               $endpoint = new Code($client);
               $endpoint->switch($prod->id, $latest);
               $this->say("Code switch started successfully on {$name}.");
-            } catch (\Exception $e) {
+            }
+            catch (\Exception $e) {
               $this->logger->error('Error attempting code switch: ' . $e->getMessage());
             }
           }
