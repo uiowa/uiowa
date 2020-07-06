@@ -11,8 +11,8 @@ dependencies:
     - paragraphs.paragraphs_type.carousel
     - paragraphs.paragraphs_type.events
     - paragraphs.paragraphs_type.featured_content
-    - paragraphs.paragraphs_type.ighn_person_paragraph
     - paragraphs.paragraphs_type.image_gallery
+    - paragraphs.paragraphs_type.people
     - paragraphs.paragraphs_type.section
     - paragraphs.paragraphs_type.text
     - paragraphs.paragraphs_type.webform
@@ -43,7 +43,7 @@ settings:
       carousel: carousel
       webform: webform
       image_gallery: image_gallery
-      ighn_person_paragraph: ighn_person_paragraph
+      people: people
     target_bundles_drag_drop:
       section:
         weight: 3
@@ -85,9 +85,9 @@ settings:
         enabled: true
         weight: 23
       ighn_person_paragraph:
-        enabled: true
-        weight: 25
-      people:
         weight: 25
         enabled: false
+      people:
+        enabled: true
+        weight: 25
 field_type: entity_reference_revisions
