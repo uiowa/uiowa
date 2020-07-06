@@ -25,7 +25,6 @@
  * @see template_preprocess_block()
  */
 #}
-
 {% block content %}
 	{{ attach_library('uids_base/stat') }}
 
@@ -43,6 +42,7 @@
         {% include '@uids_base/uids/heading.html.twig' with {
           'heading_level' : content.field_uiowa_statistic_title[0]['#size'],
           'heading_class' : 'stat__title',
+          'attributes': attributes|without('class'),
           'heading' : content.field_uiowa_statistic_title[0]['#text'],
           'heading_prefix':content.field_uiowa_statistic_title_pre,
           'heading_suffix': content.field_uiowa_statistic_title_suf,
