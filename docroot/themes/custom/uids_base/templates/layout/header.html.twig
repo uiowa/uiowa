@@ -5,7 +5,7 @@
 
 {{ attach_library('uids_base/iowa-bar') }}
 {{ attach_library('uids_base/header') }}
-{% if header_sticky %}
+{% if header_nav == 'toggle' %}
   {{ attach_library('uids_base/header-sticky') }}
 {% endif %}
 <header data-uids-header {{ attributes.addClass(header_classes) }}>
