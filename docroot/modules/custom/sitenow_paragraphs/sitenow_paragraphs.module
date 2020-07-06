@@ -208,8 +208,12 @@ function sitenow_paragraphs_theme_suggestions_field_alter(&$suggestions, $variab
   if (!$admin_context->isAdminRoute()) {
     switch ($variables['element']['#field_name']) {
       case 'field_section_image':
-      case 'field_media_image':
         $suggestions[] = 'field__no_markup';
+        break;
+      case 'field_media_image':
+        if ($variables['element']['#view_mode'] === 'edgy') {
+          $suggestions[] = 'field__no_markup';
+        }
         break;
 
       case 'field_page_content_block':
