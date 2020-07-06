@@ -447,12 +447,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 // Section w/ color background padding
 
 .layout__container {
-  &.uids-component--gold, 
-  &.uids-component--black,
-  &.uids-component--gray, 
-  &.uids-component--brain,
-  &.uids-component--brain-reversed, 
-  &.uids-component--brain-black {
+  &[class*="uids-component--"] {
     padding-top: $lg;
     padding-bottom: $lg;
     margin-bottom: 0;
