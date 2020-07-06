@@ -4,6 +4,9 @@ namespace Uiowa\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\YamlMunge;
+use AcquiaCloudApi\Connector\Client;
+use AcquiaCloudApi\Connector\Connector;
+use AcquiaCloudApi\Endpoints\Code;
 use Composer\Semver\Semver;
 use Symfony\Component\Finder\Finder;
 
@@ -76,6 +79,62 @@ class GitCommands extends BltTasks {
     else {
       $this->yell('There are no artifacts to clean up!');
     }
+  }
+
+  /**
+   * Deploy the latest release to each remote production application.
+   *
+   * @command uiowa:git:deploy
+   *
+   * @aliases ugd
+   *
+   * @requireCredentials
+   */
+  public function deploy() {
+    $latest = $this->getOriginTagsAsArtifacts()[0];
+
+    // The API does not includes 'refs/' in code branches or tags.
+    $latest = str_replace('refs/', '', $latest);
+
+    $this->say("Latest release is {$latest}.");
+
+    $applications = $this->getConfigValue('uiowa.applications');
+
+    $connector = new Connector([
+      'key' => $this->getConfigValue('uiowa.credentials.acquia.key'),
+      'secret' => $this->getConfigValue('uiowa.credentials.acquia.secret'),
+    ]);
+
+    /** @var \AcquiaCloudApi\Connector\Client $client */
+    $client = Client::factory($connector);
+
+    $this->io()->listing(array_flip($applications));
+
+    if (!$this->confirm("You will deploy {$latest} to the production environment for the applications above. Are you sure?")) {
+      throw new \Exception('Aborted.');
+    }
+    else {
+      foreach ($applications as $name => $uuid) {
+        $client->addQuery('filter',  "name={$latest}");
+        $response = $client->request('GET', "/applications/{$uuid}/code");
+        $client->clearQuery();
+
+        if (empty($response)) {
+          $this->logger->error("Artifact {$latest} does not exist on {$name} application. Skipping.");
+        }
+        else {
+          $client->addQuery('filter',  "name=prod");
+          $prod = $client->request('GET', "/applications/{$uuid}/environments")[0];
+          $client->clearQuery();
+
+          if ($prod) {
+            $endpoint = new Code($client);
+            $endpoint->switch($prod->id, $latest);
+          }
+        }
+      }
+    }
+
   }
 
   /**
