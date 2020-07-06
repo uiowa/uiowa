@@ -115,7 +115,7 @@ class GitCommands extends BltTasks {
     }
     else {
       foreach ($applications as $name => $uuid) {
-        $client->addQuery('filter',  "name={$latest}");
+        $client->addQuery('filter', "name={$latest}");
         $response = $client->request('GET', "/applications/{$uuid}/code");
         $client->clearQuery();
 
@@ -123,7 +123,7 @@ class GitCommands extends BltTasks {
           $this->logger->error("Artifact {$latest} does not exist on {$name} application. Skipping.");
         }
         else {
-          $client->addQuery('filter',  "name=prod");
+          $client->addQuery('filter', "name=prod");
           $prod = $client->request('GET', "/applications/{$uuid}/environments")[0];
           $client->clearQuery();
 
