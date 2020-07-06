@@ -5,9 +5,15 @@
 
 {{ attach_library('uids_base/iowa-bar') }}
 {{ attach_library('uids_base/header') }}
+
 {% if header_nav == 'toggle' %}
-  {{ attach_library('uids_base/header-sticky') }}
+  {% if not logged_in %}
+    {{ attach_library('uids_base/header-sticky') }}
+  {% elseif logged_in and header_sticky %}
+    {{ attach_library('uids_base/header-sticky') }}
+  {% endif %}
 {% endif %}
+
 <header data-uids-header {{ attributes.addClass(header_classes) }}>
     <div class="iowa-bar__container">
       {% block logo %}
