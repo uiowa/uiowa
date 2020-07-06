@@ -996,7 +996,18 @@ display:
             label: ''
           plugin_id: standard
       title: Directory
-      header: {  }
+      header:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: 'Accessible h2 header'
+          empty: true
+          tokenize: false
+          content: '<h2>Directory of Iowa Global Health Network professionals</h2>'
+          plugin_id: text_custom
       footer: {  }
       empty:
         area:

@@ -1,6 +1,9 @@
 @import "../../../../../themes/custom/uids_base/uids/assets/scss/_variables.scss";
 @import "../../../../../themes/custom/uids_base/uids/assets/scss/_utilities.scss";
 
+.path-frontpage .page-title {
+  margin-top: $gutter;
+}
 .field__label {
   font-weight: bold;
 }
@@ -68,6 +71,9 @@ div[role=article].node--type-ighn-person.node--view-mode-full {
   position: relative;
 
   .view-display-id-ighn_person {
+    .view-header h2 {
+      @include element-invisible;
+    }
 
     .view-content {
       margin-top: $gutter;
