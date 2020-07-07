@@ -485,6 +485,8 @@ function sitenow_update_8020() {
  * Move SiteNow footer menus to the UIDS footer naming scheme.
  */
 function sitenow_update_8021() {
+  \Drupal::state()->set('system.maintenance_mode', TRUE);
+
   $linkController = \Drupal::entityTypeManager()->getStorage('menu_link_content');
 
   $primaryMids = \Drupal::entityQuery('menu_link_content')
@@ -592,4 +594,6 @@ function sitenow_update_8021() {
   $config
     ->set('tips.footer-links.body', $footerLinkText)
     ->save();
+
+  \Drupal::state()->set('system.maintenance_mode', FALSE);
 }
