@@ -98,22 +98,22 @@ function sitenow_query_administerusersbyrole_edit_access_alter(AlterableInterfac
 }
 
 /**
- * Implements hook_form_BASE_FORM_ID_alter().	
- */	
-function sitenow_form_menu_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {	
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function sitenow_form_menu_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
- if ($form["id"]["#default_value"] == 'top-links') {	
-   $theme = \Drupal::config('system.theme')->get('default');	
-   if (in_array($theme, ['uids_base'])) {	
-     $limit = theme_get_setting('header.top_links_limit', 'uids_base');	
-     if ($limit) {	
-       $warning_text = t('Only the top @limit menu items will display.', [	
-         '@limit' => $limit,	
-       ]);	
-       \Drupal::messenger()->addWarning($warning_text);	
-     }	
-   }	
- }	
+  if ($form["id"]["#default_value"] == 'top-links') {
+    $theme = \Drupal::config('system.theme')->get('default');
+    if (in_array($theme, ['uids_base'])) {
+      $limit = theme_get_setting('header.top_links_limit', 'uids_base');
+      if ($limit) {
+        $warning_text = t('Only the top @limit menu items will display.', [
+          '@limit' => $limit,
+        ]);
+        \Drupal::messenger()->addWarning($warning_text);
+      }
+    }
+  }
 }
 
 /**
