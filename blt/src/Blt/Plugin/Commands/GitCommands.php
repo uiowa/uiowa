@@ -169,7 +169,6 @@ class GitCommands extends BltTasks {
       ->dir($this->getConfigValue('deploy.dir'))
       ->exec('gc')
       ->stopOnFail(FALSE)
-      ->silent(TRUE)
       ->run();
 
     if (!$result->wasSuccessful()) {
