@@ -165,7 +165,7 @@ class GitCommands extends BltTasks {
    * Do some garbage collection in the build artifact before pushing.
    */
   protected function garbageCollection() {
-    $result = $this->taskGit()
+    $result = $this->taskGitStack()
       ->dir($this->getConfigValue('deploy.dir'))
       ->exec('prune')
       ->exec('gc')
