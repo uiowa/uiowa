@@ -480,3 +480,12 @@ function sitenow_update_8020() {
   $config->set('header.top_links_limit', 2);
   $config->save();
 }
+
+/**
+ * Prepare to remove uiowa_footer module.
+ */
+function sitenow_update_8021() {
+  $config_factory = \Drupal::configFactory()
+    ->getEditable('uiowa_footer.settings')
+    ->delete();
+}
