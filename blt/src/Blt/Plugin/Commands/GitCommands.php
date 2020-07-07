@@ -156,8 +156,25 @@ class GitCommands extends BltTasks {
    * @hidden
    */
   public function postArtifactBuild() {
+    $this->garbageCollection();
     $this->writeGitVersion();
     $this->copyDrushCommands();
+  }
+
+  /**
+   * Do some garbage collection in the build artifact before pushing.
+   */
+  protected function garbageCollection() {
+    $result = $this->taskGitStack()
+      ->dir($this->getConfigValue('deploy.dir'))
+      ->exec('prune')
+      ->exec('gc')
+      ->stopOnFail(FALSE)
+      ->run();
+
+    if (!$result->wasSuccessful()) {
+      $this->logger->warning("Unable to run garbage collection in the build artifact.");
+    }
   }
 
   /**
