@@ -167,8 +167,8 @@ class GitCommands extends BltTasks {
   protected function garbageCollection() {
     $result = $this->taskGit()
       ->dir($this->getConfigValue('deploy.dir'))
-      ->exec('gc')
       ->exec('prune')
+      ->exec('gc')
       ->stopOnFail(FALSE)
       ->run();
 
