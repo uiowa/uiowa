@@ -168,6 +168,7 @@ class GitCommands extends BltTasks {
     $result = $this->taskGit()
       ->dir($this->getConfigValue('deploy.dir'))
       ->exec('gc')
+      ->exec('prune')
       ->stopOnFail(FALSE)
       ->run();
 
