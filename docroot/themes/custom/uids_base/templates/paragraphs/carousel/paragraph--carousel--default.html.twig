@@ -49,7 +49,7 @@
 %}
 {{ attach_library('uids_base/paragraphs-carousel') }}
 {% block paragraph %}
-  <div{{ attributes.addClass(classes) }}>
+  <div data-carousel='carousel' {{ attributes.addClass(classes) }}>
     {% if display_title %}
         {{ content.field_uip_title }}
     {% else %}
@@ -57,25 +57,8 @@
     {% endif %}
     {% block content %}
       <div id="{{ id }}" class="carousel slide" data-ride="carousel" data-interval="false">
-        <ol class="carousel-indicators">
-          {% for i in 0..carousel_item_count %}
-            {% if i == 0 %}
-              <li data-target="#{{ id }}" data-slide-to="0" class="active"></li>
-            {% else %}
-              <li data-target="#{{ id }}" data-slide-to="{{ i }}"></li>
-            {% endif %}
-          {% endfor %}
-        </ol>
         {{ content|without('field_uip_title') }}
       </div>
-      <a class="carousel-control-prev" href="#{{ id }}" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-      </a>
-      <a class="carousel-control-next" href="#{{ id }}" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-      </a>
     {% endblock %}
   </div>
 {% endblock paragraph %}

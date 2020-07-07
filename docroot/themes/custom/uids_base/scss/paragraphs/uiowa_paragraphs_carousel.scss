@@ -1,0 +1,249 @@
+@import "uids/assets/scss/_variables.scss";
+@import "uids/assets/scss/_utilities.scss";
+
+// Full-width.
+.field--name-field-section-content-block {
+  .col-md-12.div[data-carousel="carousel"] {
+    padding: 0;
+  }
+
+  .div[data-carousel="carousel"] {
+    .carousel-item {
+      margin-bottom: 0;
+
+      .field--name-field-media-image {
+        width: 100%;
+        height: auto;
+
+        img {
+          width: 100%;
+          height: auto;
+          max-height: 900px;
+          object-fit: cover;
+        }
+      }
+    }
+  }
+}
+
+div[data-carousel="carousel"] {
+
+  .field--name-field-media-image img {
+    width: 100%;
+  }
+
+  .slick-slide {
+    position: relative;
+    margin-bottom: 0;
+  }
+
+  .carousel-caption {
+    padding: 1.25rem;
+    overflow-y: auto;
+    max-height: 7rem;
+    background-color: $dark;
+    color: $white;
+    position: absolute;
+    bottom: 3rem;
+    right: 15%;
+    left: 15%;
+    text-align: center;
+  }
+
+  .slick-dots {
+    z-index: 11;
+    margin: calc(1.5rem - .15rem) 0.2rem;
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    width: calc(100% - 0.4rem);
+    justify-content: center;
+
+    li {
+      flex: 1 1;
+      max-width: 3rem;
+      list-style: none;
+      height: 0.3rem;
+      margin: 0 0.2rem;
+
+      button {
+        height: 0.3rem;
+        max-width: 3rem;
+        width: 100%;
+        padding: 0;
+        text-indent: -9999px;
+        border: none;
+        background-color: rgba(255,255,255,0.6);
+        box-shadow: 0px 0px 30px 2px #727272;
+        transition: background-color 0.3s ease-in-out;
+
+        &:focus {
+          outline: auto;
+          background-color: $primary;
+        }
+      }
+
+      &.slick-active button {
+        background-color: $primary;
+      }
+    }
+  }
+
+  .slick-arrow {
+    top: 0;
+    height: 100%;
+    width: 5rem;
+    z-index: 10;
+    position: absolute;
+    border: none;
+    background-color: transparent;
+    color: transparent;
+    outline: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:before {
+      position: absolute;
+      @include fas();
+      color: rgba(255,255,255,0.6);
+      font-size: 3rem;
+      text-shadow: 0px 0px 20px #727272;
+      transition: color 0.3s ease-in-out;
+    }
+
+    &:hover,
+    &:active,
+    &:focus {
+      &:before {
+        color: rgba(255,255,255,0.9);
+      }
+    }
+
+    &:focus {
+      outline: auto;
+    }
+
+    &.slick-prev {
+      left: 0;
+      padding: 0 1rem;
+
+      &:before {
+        content: '\f053';
+      }
+    }
+
+    &.slick-next {
+      right: 0;
+      padding: 0 1rem;
+
+      &:before {
+        content: '\f054';
+      }
+    }
+  }
+
+  a {
+    color: $primary;
+  }
+}
+
+.paragraph--type--carousel-image.bg-dark {
+  .carousel-caption {
+    background-color: $dark;
+    color: $white;
+
+    a:not(.btn):not(.alert-link) {
+      color: $primary;
+    }
+
+    blockquote,
+    blockquote p {
+      border-color: $white;
+
+      &:before {
+        background-color: $white;
+        color: $dark;
+      }
+
+      footer {
+        color: $dark-gray;
+      }
+    }
+  }
+
+  &.semi-transparent {
+    .carousel-caption {
+      background-color: rgba(52, 58, 64, 0.8) !important;
+    }
+  }
+}
+
+.paragraph--type--carousel-image.bg-light {
+  .carousel-caption {
+    background-color: $light;
+    color: $dark-gray;
+
+    blockquote,
+    blockquote p {
+      border-color: $dark-gray;
+
+      &:before {
+        background-color: $dark-gray;
+        color: $white;
+      }
+
+      footer {
+        color: $dark-gray;
+      }
+    }
+  }
+
+  &.semi-transparent {
+    .carousel-caption {
+      background-color: rgba(248, 249, 250, 0.8) !important;
+    }
+  }
+}
+
+.paragraph--type--carousel-image.bg-yellow {
+  .carousel-caption {
+    background-color: $primary;
+
+    a:not(.btn):not(.alert-link) {
+      color: $secondary;
+      text-decoration: underline;
+
+      &:hover,
+      &:focus {
+        text-decoration: none;
+      }
+    }
+
+    blockquote,
+    blockquote p {
+      border-color: $dark-gray;
+
+      &:before {
+        background-color: $dark-gray;
+        color: $white;
+      }
+
+      footer {
+        color: $dark-gray;
+      }
+    }
+  }
+
+  &.semi-transparent {
+    .carousel-caption {
+      background-color: rgba(255, 205, 0, 0.8) !important;
+      color: $dark-gray;
+    }
+  }
+}
+
+.container-fluid {
+  min-height: 0;
+  min-width: 0;
+}

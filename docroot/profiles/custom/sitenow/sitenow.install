@@ -332,7 +332,7 @@ function sitenow_update_8018() {
 }
 
 /**
- * Update several fields from plain text to formatted text.
+ * Update several fields from plain text to formatted minimal text.
  */
 function sitenow_update_8019() {
 
@@ -436,7 +436,7 @@ function sitenow_update_8019() {
     if (!is_null($rows)) {
       foreach ($rows as $row) {
         $row = (array) $row;
-        $row[$field['format_col']] = 'filtered_html';
+        $row[$field['format_col']] = 'minimal';
         $database
           ->insert($table)
           ->fields($row)
@@ -446,7 +446,7 @@ function sitenow_update_8019() {
     if (!is_null($revision_rows)) {
       foreach ($revision_rows as $row) {
         $row = (array) $row;
-        $row[$field['format_col']] = 'filtered_html';
+        $row[$field['format_col']] = 'minimal';
         $database
           ->insert($revision_table)
           ->fields($row)
@@ -472,13 +472,25 @@ function sitenow_update_8019() {
 }
 
 /**
- * Move SiteNow footer menus to the UIDS footer naming scheme.
+ * Set new theme setting.
  */
 function sitenow_update_8020() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uids_base.settings');
+  $config->set('header.top_links_limit', 2);
+  $config->save();
+}
+
+/**
+ * Move SiteNow footer menus to the UIDS footer naming scheme.
+ */
+function sitenow_update_8021() {
   $linkController = \Drupal::entityTypeManager()->getStorage('menu_link_content');
+
   $primaryMids = \Drupal::entityQuery('menu_link_content')
     ->condition('menu_name', 'footer')
     ->execute();
+
   $secondaryMids = \Drupal::entityQuery('menu_link_content')
     ->condition('menu_name', 'footer-second')
     ->execute();
@@ -505,6 +517,7 @@ function sitenow_update_8020() {
   // Update footer menu config settings.
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('uiowa_footer.settings');
+
   $config
     ->set('custom_menu', 'footer-primary')
     ->set('custom_menu_2', 'footer-secondary')
@@ -513,15 +526,18 @@ function sitenow_update_8020() {
   // Update footer menu access perms.
   $config = $config_factory->getEditable('user.role.webmaster');
   $perms = $config->get('permissions');
+
   $permUpdates = [
     'administer footer menu items' => 'administer footer-primary menu items',
     'administer footer-second menu items' => 'administer footer-secondary menu items',
   ];
+
   foreach ($permUpdates as $oldPerm => $newPerm) {
     if (($index = array_search($oldPerm, $perms))) {
       $perms[$index] = $newPerm;
     }
   }
+
   $config
     ->set('permissions', $perms)
     ->save();
@@ -533,17 +549,20 @@ function sitenow_update_8020() {
     'footer' => 'footer-primary',
     'footer-second' => 'footer-secondary',
   ];
+
   foreach ($menuUpdates as $oldMenu => $newMenu) {
     if (($index = array_search($oldMenu, $menus))) {
       $menus[$index] = $newMenu;
     }
   }
+
   $config
     ->set('third_party_settings.menu_ui.available_menus', $menus)
     ->save();
 
   // Remove footer and footer-second from breadcrumb config.
   $config = $config_factory->getEditable('menu_breadcrumb.settings');
+
   $config
     ->clear('menu_breadcrumb_menus.footer')
     ->clear('menu_breadcrumb_menus.footer-second')
@@ -551,20 +570,25 @@ function sitenow_update_8020() {
 
   // Update tours links to footer-primary and footer-secondary.
   $config = $config_factory->getEditable('tour.tour.menus');
+
   $footerTip = '<p>Depending on your role within the site, there are currently four available menus for this site:' .
     '</p><p><a href="/admin/structure/menu/manage/main?tour" class="button button--primary">Main Navigation</a></p>' .
     '<p><a href="/admin/structure/menu/manage/social?tour" class="button button--primary">Social Media</a></p>' .
     '<p><a href="/admin/structure/menu/manage/footer-primary?tour" class="button button--primary">Footer Primary</a></p>' .
     '<p><a href="/admin/structure/menu/manage/footer-secondary?tour" class="button button--primary">Footer Secondary</a></p>';
+
   $config
     ->set('tips.menus.body', $footerTip)
     ->save();
+
   $config = $config_factory->getEditable('tour.tour.site-settings');
+
   $footerLinkText = '<p>The footer region also provides three separate menus for social media links' .
     ' and for other custom footer links. You can add/manage links for those by clicking one of the following:' .
     ' <a href="/admin/structure/menu/manage/social?tour">Social Media</a>,' .
     ' <a href="/admin/structure/menu/manage/footer-primary?tour">Footer Primary</a>,' .
     ' <a href="/admin/structure/menu/manage/footer-secondary?tour">Footer Secondary</a></p>';
+
   $config
     ->set('tips.footer-links.body', $footerLinkText)
     ->save();
