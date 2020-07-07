@@ -43,10 +43,6 @@ function uids_base_preprocess_html(&$variables) {
     unset($variables['page_top']['uiowa_bar']);
   }
 
-  if (\Drupal::service('module_handler')->moduleExists('uiowa_footer')) {
-    unset($variables['page_bottom']['uiowa_footer']);
-  }
-
   // Get header type for setting sticky padding for tertiary header.
   $variables['header_type'] = theme_get_setting('header.type');
 
