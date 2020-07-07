@@ -1463,3 +1463,9 @@ $sites['engineeringviewbook.local.drupal.uiowa.edu'] = 'viewbook.engineering.uio
 $sites['engineeringviewbook.dev.drupal.uiowa.edu'] = 'viewbook.engineering.uiowa.edu';
 $sites['engineeringviewbook.stage.drupal.uiowa.edu'] = 'viewbook.engineering.uiowa.edu';
 $sites['engineeringviewbook.prod.drupal.uiowa.edu'] = 'viewbook.engineering.uiowa.edu';
+
+// Directory aliases for lb-test.uiowa.edu.
+$sites['lb-test.local.drupal.uiowa.edu'] = 'lb-test.uiowa.edu';
+$sites['lb-test.dev.drupal.uiowa.edu'] = 'lb-test.uiowa.edu';
+$sites['lb-test.stage.drupal.uiowa.edu'] = 'lb-test.uiowa.edu';
+$sites['lb-test.prod.drupal.uiowa.edu'] = 'lb-test.uiowa.edu';

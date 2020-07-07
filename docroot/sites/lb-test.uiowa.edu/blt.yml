@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: lb-test.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: lb-test
+  human_name: lb-test.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lb-test.prod
+drupal:
+  db:
+    database: lb_test_uiowa_edu
+uiowa:
+  requester: gridgway
