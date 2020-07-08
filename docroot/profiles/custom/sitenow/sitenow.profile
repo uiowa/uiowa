@@ -479,10 +479,9 @@ function sitenow_form_system_site_information_settings_alter(&$form, FormStateIn
   $custom_menu_2 = 'footer-secondary';
   $custom_menu_3 = 'footer-tertiary';
 
-  $site_title = \Drupal::configFactory()
-    ->get('system.site')
-    ->get('name');
-  if ($site_title != "University Human Resources") {
+  $active_theme = \Drupal::service('theme.manager')->getActiveTheme();
+
+  if ($active_theme === "uids_base") {
     $form['uiowa_footer_menus'] = [
       '#type' => 'details',
       '#title' => t('Footer Menus'),
