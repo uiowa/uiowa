@@ -1499,3 +1499,9 @@ $sites['latinxstudies.local.drupal.uiowa.edu'] = 'latinxstudies.uiowa.edu';
 $sites['latinxstudies.dev.drupal.uiowa.edu'] = 'latinxstudies.uiowa.edu';
 $sites['latinxstudies.stage.drupal.uiowa.edu'] = 'latinxstudies.uiowa.edu';
 $sites['latinxstudies.prod.drupal.uiowa.edu'] = 'latinxstudies.uiowa.edu';
+
+// Directory aliases for interdisciplinaryprograms.uiowa.edu.
+$sites['interdisciplinaryprograms.local.drupal.uiowa.edu'] = 'interdisciplinaryprograms.uiowa.edu';
+$sites['interdisciplinaryprograms.dev.drupal.uiowa.edu'] = 'interdisciplinaryprograms.uiowa.edu';
+$sites['interdisciplinaryprograms.stage.drupal.uiowa.edu'] = 'interdisciplinaryprograms.uiowa.edu';
+$sites['interdisciplinaryprograms.prod.drupal.uiowa.edu'] = 'interdisciplinaryprograms.uiowa.edu';
