@@ -477,6 +477,7 @@ function sitenow_form_system_site_information_settings_alter(&$form, FormStateIn
   $social_media_menu = 'social';
   $custom_menu = 'footer-primary';
   $custom_menu_2 = 'footer-secondary';
+  $custom_menu_3 = 'footer-tertiary';
 
   $site_title = \Drupal::configFactory()
     ->get('system.site')
@@ -511,9 +512,19 @@ function sitenow_form_system_site_information_settings_alter(&$form, FormStateIn
       $menu_link = Url::fromRoute('entity.menu.edit_form', ['menu' => $custom_menu_2])->toString();
       $form['uiowa_footer_menus']['uiowa_footer_custom_menu_2_help'] = [
         '#type' => 'item',
-        '#markup' => t('Links in the right column are managed via the <a href="@menu_link">@menu_name menu</a>.', ['@menu_link' => $menu_link, '@menu_name' => $menus[$custom_menu_2]]),
+        '#markup' => t('Links in the middle column are managed via the <a href="@menu_link">@menu_name menu</a>.', ['@menu_link' => $menu_link, '@menu_name' => $menus[$custom_menu_2]]),
       ];
     }
+
+    $form['uiowa_footer_menus']['uiowa_footer_custom_menu_3']['#access'] = FALSE;
+    if (!empty($custom_menu_2) && $custom_menu_2 != 'none') {
+      $menu_link = Url::fromRoute('entity.menu.edit_form', ['menu' => $custom_menu_3])->toString();
+      $form['uiowa_footer_menus']['uiowa_footer_custom_menu_3_help'] = [
+        '#type' => 'item',
+        '#markup' => t('Links in the right column are managed via the <a href="@menu_link">@menu_name menu</a>.', ['@menu_link' => $menu_link, '@menu_name' => $menus[$custom_menu_3]]),
+      ];
+    }
+
     // Hide the site slogan field, as it's not used in uids_base theme.
     $form['site_information']['site_slogan']['#access'] = FALSE;
   }
