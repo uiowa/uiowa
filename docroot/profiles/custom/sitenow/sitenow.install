@@ -750,3 +750,16 @@ function sitenow_update_8026() {
     }
   }
 }
+
+/**
+ * Prepare to remove uiowa_footer module.
+ */
+function sitenow_update_8027() {
+  /** @var \Drupal\Core\Theme\ActiveTheme $active_theme */
+  $active_theme = \Drupal::service('theme.manager')->getActiveTheme();
+  if ($active_theme === "uids_base") {
+    $config_factory = \Drupal::configFactory()
+      ->getEditable('uiowa_footer.settings')
+      ->delete();
+  }
+}
