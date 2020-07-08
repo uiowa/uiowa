@@ -1475,3 +1475,9 @@ $sites['globalhealthstudies.local.drupal.uiowa.edu'] = 'globalhealthstudies.uiow
 $sites['globalhealthstudies.dev.drupal.uiowa.edu'] = 'globalhealthstudies.uiowa.edu';
 $sites['globalhealthstudies.stage.drupal.uiowa.edu'] = 'globalhealthstudies.uiowa.edu';
 $sites['globalhealthstudies.prod.drupal.uiowa.edu'] = 'globalhealthstudies.uiowa.edu';
+
+// Directory aliases for interdepartmentalstudies.uiowa.edu.
+$sites['interdepartmentalstudies.local.drupal.uiowa.edu'] = 'interdepartmentalstudies.uiowa.edu';
+$sites['interdepartmentalstudies.dev.drupal.uiowa.edu'] = 'interdepartmentalstudies.uiowa.edu';
+$sites['interdepartmentalstudies.stage.drupal.uiowa.edu'] = 'interdepartmentalstudies.uiowa.edu';
+$sites['interdepartmentalstudies.prod.drupal.uiowa.edu'] = 'interdepartmentalstudies.uiowa.edu';
