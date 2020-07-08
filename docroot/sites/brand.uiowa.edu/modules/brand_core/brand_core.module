@@ -18,46 +18,6 @@ use Drupal\user\Entity\User;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\brand_core\Controller\LockupController;
 
-/**
- * Implements hook_page_attachments().
- */
-function brand_core_page_attachments(&$page) {
-  $active_theme = \Drupal::service('theme.manager')->getActiveTheme()->getName();
-  $default_theme = \Drupal::config('system.theme')->get('default');
-  if ($active_theme === $default_theme) {
-    $page['#attached']['library'][] = 'uiowa_bar/uiowa-bar';
-  }
-
-}
-
-/**
- * Implements hook_page_top().
- */
-function brand_core_page_top(&$page_top) {
-  $active_theme = \Drupal::service('theme.manager')->getActiveTheme()->getName();
-  $default_theme = \Drupal::config('system.theme')->get('default');
-  if ($active_theme === $default_theme) {
-    $search_form = \Drupal::formBuilder()->getForm('Drupal\uiowa_bar\Form\SearchForm');
-    $page_top['uiowa_bar'] = [
-      '#theme' => 'uiowa_bar',
-      '#search_form' => $search_form,
-    ];
-  }
-}
-
-/**
- * Implements hook_page_bottom().
- */
-function brand_core_page_bottom(array &$page_bottom) {
-  $active_theme = \Drupal::service('theme.manager')->getActiveTheme()->getName();
-  $default_theme = \Drupal::config('system.theme')->get('default');
-  if ($active_theme === $default_theme) {
-    $page_bottom['uiowa_footer'] = [
-      '#theme' => 'uiowa_footer',
-    ];
-  }
-}
-
 function brand_core_toolbar_alter(&$items) {
   $items["administration"]['#attached']['library'][] = 'brand_core/toolbar-overrides';
   return $items;
