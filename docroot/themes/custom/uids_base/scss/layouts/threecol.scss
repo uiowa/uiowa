@@ -9,9 +9,19 @@
     flex-basis: 100%;
   }
 
-  .layout--threecol .layout__region {
-    flex: 0 1 100%;
-    display: flex;
+  .layout--threecol {
+    .layout__region {
+      flex: 0 1 100%;
+      display: flex;
+      flex-wrap: wrap;
+      align-content: unset;
+    }
+
+    &.section-alignment__start {
+      .layout__region {
+        align-content: start;
+      }
+    }
   }
 
   .layout--threecol--50-25-25 .layout__region--second,
@@ -158,6 +168,7 @@
 
 
 @media (min-width: 40em) and (max-width: 58.125em) {
+
   .layout--threecol,
   .layout--threecol .lb__container {
     flex-wrap: wrap;
