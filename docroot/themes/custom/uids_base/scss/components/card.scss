@@ -5,14 +5,23 @@
 // ie11
 @media all and (-ms-high-contrast: none),
 (-ms-high-contrast: active) {
-.card__body .media {
-  flex-shrink: 0;
-  width: 100%;
-  min-height: 1px;
-}
- .card__body .media img {
+  .card__body .media {
     flex-shrink: 0;
     width: 100%;
     min-height: 1px;
+  }
+
+  .card__body .media img {
+    flex-shrink: 0;
+    width: 100%;
+    min-height: 1px;
+  }
+}
+
+.layout--fourcol,
+.layout--threecol,
+.layout--twocol {
+  .card {
+    flex: 1 1 100%;
   }
 }
