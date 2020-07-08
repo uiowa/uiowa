@@ -1487,3 +1487,9 @@ $sites['internationalstudies.local.drupal.uiowa.edu'] = 'internationalstudies.ui
 $sites['internationalstudies.dev.drupal.uiowa.edu'] = 'internationalstudies.uiowa.edu';
 $sites['internationalstudies.stage.drupal.uiowa.edu'] = 'internationalstudies.uiowa.edu';
 $sites['internationalstudies.prod.drupal.uiowa.edu'] = 'internationalstudies.uiowa.edu';
+
+// Directory aliases for latinamericanstudies.uiowa.edu.
+$sites['latinamericanstudies.local.drupal.uiowa.edu'] = 'latinamericanstudies.uiowa.edu';
+$sites['latinamericanstudies.dev.drupal.uiowa.edu'] = 'latinamericanstudies.uiowa.edu';
+$sites['latinamericanstudies.stage.drupal.uiowa.edu'] = 'latinamericanstudies.uiowa.edu';
+$sites['latinamericanstudies.prod.drupal.uiowa.edu'] = 'latinamericanstudies.uiowa.edu';
