@@ -482,9 +482,126 @@ function sitenow_update_8020() {
 }
 
 /**
- * Migrate image_background to image and set image styles.
+ * Move SiteNow footer menus to the UIDS footer naming scheme.
  */
 function sitenow_update_8021() {
+  \Drupal::state()->set('system.maintenance_mode', TRUE);
+
+  $linkController = \Drupal::entityTypeManager()->getStorage('menu_link_content');
+
+  $primaryMids = \Drupal::entityQuery('menu_link_content')
+    ->condition('menu_name', 'footer')
+    ->execute();
+
+  $secondaryMids = \Drupal::entityQuery('menu_link_content')
+    ->condition('menu_name', 'footer-second')
+    ->execute();
+
+  $menuMids = [
+    'footer-primary' => $primaryMids,
+    'footer-secondary' => $secondaryMids,
+  ];
+
+  foreach ($menuMids as $menuName => $mids) {
+    $linkEntities = $linkController->loadMultiple($mids);
+    foreach ($linkEntities as $link) {
+      $link->set('menu_name', $menuName);
+      $link->save();
+    }
+  }
+
+  // Delete old menus.
+  $menuController = \Drupal::entityTypeManager()->getStorage('menu');
+  $toDelete = ['footer', 'footer-second'];
+  $oldMenus = $menuController->loadMultiple($toDelete);
+  $menuController->delete($oldMenus);
+
+  // Update footer menu config settings.
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uiowa_footer.settings');
+
+  $config
+    ->set('custom_menu', 'footer-primary')
+    ->set('custom_menu_2', 'footer-secondary')
+    ->save();
+
+  // Update footer menu access perms.
+  $config = $config_factory->getEditable('user.role.webmaster');
+  $perms = $config->get('permissions');
+
+  $permUpdates = [
+    'administer footer menu items' => 'administer footer-primary menu items',
+    'administer footer-second menu items' => 'administer footer-secondary menu items',
+  ];
+
+  foreach ($permUpdates as $oldPerm => $newPerm) {
+    if (($index = array_search($oldPerm, $perms))) {
+      $perms[$index] = $newPerm;
+    }
+  }
+
+  $config
+    ->set('permissions', $perms)
+    ->save();
+
+  // Update basic page available menus.
+  $config = $config_factory->getEditable('node.type.page');
+  $menus = $config->get('third_party_settings.menu_ui.available_menus');
+  $menuUpdates = [
+    'footer' => 'footer-primary',
+    'footer-second' => 'footer-secondary',
+  ];
+
+  foreach ($menuUpdates as $oldMenu => $newMenu) {
+    if (($index = array_search($oldMenu, $menus))) {
+      $menus[$index] = $newMenu;
+    }
+  }
+
+  $config
+    ->set('third_party_settings.menu_ui.available_menus', $menus)
+    ->save();
+
+  // Remove footer and footer-second from breadcrumb config.
+  $config = $config_factory->getEditable('menu_breadcrumb.settings');
+
+  $config
+    ->clear('menu_breadcrumb_menus.footer')
+    ->clear('menu_breadcrumb_menus.footer-second')
+    ->save();
+
+  // Update tours links to footer-primary and footer-secondary.
+  $config = $config_factory->getEditable('tour.tour.menus');
+
+  $footerTip = '<p>Depending on your role within the site, there are currently four available menus for this site:' .
+    '</p><p><a href="/admin/structure/menu/manage/main?tour" class="button button--primary">Main Navigation</a></p>' .
+    '<p><a href="/admin/structure/menu/manage/social?tour" class="button button--primary">Social Media</a></p>' .
+    '<p><a href="/admin/structure/menu/manage/footer-primary?tour" class="button button--primary">Footer Primary</a></p>' .
+    '<p><a href="/admin/structure/menu/manage/footer-secondary?tour" class="button button--primary">Footer Secondary</a></p>';
+
+  $config
+    ->set('tips.menus.body', $footerTip)
+    ->save();
+
+  $config = $config_factory->getEditable('tour.tour.site-settings');
+
+  $footerLinkText = '<p>The footer region also provides three separate menus for social media links' .
+    ' and for other custom footer links. You can add/manage links for those by clicking one of the following:' .
+    ' <a href="/admin/structure/menu/manage/social?tour">Social Media</a>,' .
+    ' <a href="/admin/structure/menu/manage/footer-primary?tour">Footer Primary</a>,' .
+    ' <a href="/admin/structure/menu/manage/footer-secondary?tour">Footer Secondary</a></p>';
+
+  $config
+    ->set('tips.footer-links.body', $footerLinkText)
+    ->save();
+
+  \Drupal::state()->set('system.maintenance_mode', FALSE);
+}
+
+/**
+ * Migrate image_background to image and set image styles.
+ */
+function sitenow_update_8022() {
   $database = \Drupal::database();
   $image_background_mids = $database->select('media', 'm')
     ->fields('m', ['mid'])
@@ -537,7 +654,6 @@ function sitenow_update_8021() {
       $media->delete();
       $media_manager->create($media_array)
         ->save();
-      // @todo Fix SiteNow(P) background image styling.
     }
     // Set the section config to use image and not image_background.
     $section_config = \Drupal::configFactory()
@@ -547,6 +663,5 @@ function sitenow_update_8021() {
         'image' => 'image',
       ])
       ->save();
-    // @todo Remove entity.type, config, etc.
   }
 }
