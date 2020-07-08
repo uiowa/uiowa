@@ -602,10 +602,10 @@ function sitenow_update_8021() {
  * Prepare to remove uiowa_footer module.
  */
 function sitenow_update_8022() {
-  $site_title = \Drupal::configFactory()
-    ->get('system.site')
-    ->get('name');
-  if ($site_title != "University Human Resources") {
+  $host = \Drupal::requestStack()
+    ->getCurrentRequest()
+    ->getHost();
+  if ($host != "hr.uiowa.edu") {
     $config_factory = \Drupal::configFactory()
       ->getEditable('uiowa_footer.settings')
       ->delete();
