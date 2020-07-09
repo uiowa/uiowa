@@ -47,4 +47,6 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
     'label_display' => $label_display,
     'label' => $label,
   ];
+
+  $form['#attached']['library'][] = 'layout_builder_custom/layout_builder_custom_SI_overrides';
 }
