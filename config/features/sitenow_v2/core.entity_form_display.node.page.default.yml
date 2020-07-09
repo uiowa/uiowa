@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.page.body
     - field.field.node.page.field_image
     - field.field.node.page.field_meta_tags
+    - field.field.node.page.field_page_content_block
     - field.field.node.page.field_publish_options
     - field.field.node.page.field_tags
     - field.field.node.page.field_teaser
@@ -16,6 +17,7 @@ dependencies:
     - content_moderation
     - media_library
     - metatag
+    - paragraphs
     - path
 id: node.page.default
 targetEntityType: node
@@ -40,6 +42,25 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: metatag_firehose
+    region: content
+  field_page_content_block:
+    type: paragraphs
+    weight: 2
+    settings:
+      title: Section
+      title_plural: Sections
+      edit_mode: closed
+      closed_mode: preview
+      autocollapse: all
+      closed_mode_threshold: 2
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: _none
+      features:
+        duplicate: duplicate
+        collapse_edit_all: '0'
+        add_above: '0'
+    third_party_settings: {  }
     region: content
   field_publish_options:
     weight: 14
