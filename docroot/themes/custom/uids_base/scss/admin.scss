@@ -1,6 +1,6 @@
-@import "../uids/assets/scss/_variables.scss";
-@import "../uids/assets/scss/_utilities.scss";
-@import "../uids/assets/scss/_fonts.scss";
+@import "assets/scss/_variables.scss";
+@import "assets/scss/_utilities.scss";
+@import "assets/scss/_local-fonts.scss";
 @import url('../../../../../core/themes/claro/css/components/dropbutton.css');
 // lb claro styles
 
@@ -152,16 +152,16 @@
   cursor: move;
   background: transparent;
 
-  &.uids-component--gray {
+  &.bg--gray {
     background: $light;
   }
 
-  &.uids-component--black,
-  &.uids-component--brain-black {
+  &.bg--black,
+  &.bg-pattern--brain-black {
     background: $secondary;
   }
 
-  &.uids-component--gold {
+  &.bg--gold {
     background: $primary;
   }
 }
@@ -408,7 +408,7 @@ body.toolbar-vertical.toolbar-tray-open {
         height: calc(100% - 119px);
       }
 
-      .header--tertiary & {
+      .iowa-bar--narrow & {
         top: 179px;
 
         .toolbar-horizontal & {
@@ -440,7 +440,7 @@ body.toolbar-vertical.toolbar-tray-open {
         height: calc(100% - 119px);
       }
 
-      .header--tertiary & {
+      .iowa-bar--narrow & {
         top: 179px;
         height: calc(100% - 179px);
 
@@ -458,7 +458,7 @@ body.toolbar-vertical.toolbar-tray-open {
   }
 }
 
-.header--tertiary .o-canvas--open .o-canvas__drawer {
+.iowa-bar--narrow .o-canvas--open .o-canvas__drawer {
   top: 239px;
 }
 
@@ -1255,9 +1255,9 @@ ul.dropbutton li {
     }
   }
   .node-preview-backlink {
-    @extend %bttn;
-    @extend %bttn--primary;
-    @extend %bttn--focus;
+    @include bttn;
+    @include bttn--primary;
+    @include bttn--focus;
     font-family: $font-family-caps-bold;
   }
 }
