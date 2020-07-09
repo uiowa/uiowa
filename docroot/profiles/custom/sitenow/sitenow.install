@@ -763,7 +763,7 @@ function sitenow_update_8027() {
       ->getEditable('system.theme')
       ->set('default', 'uids_base')
       ->save();
-    $config_factory = \Drupal::configFactory()
+    \Drupal::configFactory()
       ->getEditable('uiowa_footer.settings')
       ->delete();
   }
