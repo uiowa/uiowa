@@ -6,13 +6,18 @@ id: sitenow_v2
 label: 'SiteNow V2'
 description: 'Features related to Paragraph-based layout functionality.'
 folder: ../config/features/sitenow_v2
-module: {  }
+module:
+  sitenow_accordion: 0
+  sitenow_blockquote: 0
+  sitenow_card: 0
+  sitenow_carousel: 0
+  sitenow_paragraphs: 0
 theme: {  }
 blacklist: {  }
 graylist:
+  - paragraphs.settings
   - field.field.node.page.field_page_content_block
   - field.storage.node.field_page_content_block
-  - paragraphs.settings
   - 'core.entity_form_display.paragraph.*'
   - 'core.entity_view_display.paragraph.*'
   - 'core.entity_view_mode.paragraph.*'
