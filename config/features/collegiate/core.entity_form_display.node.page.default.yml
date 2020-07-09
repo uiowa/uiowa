@@ -6,7 +6,6 @@ dependencies:
     - field.field.node.page.body
     - field.field.node.page.field_image
     - field.field.node.page.field_meta_tags
-    - field.field.node.page.field_page_content_block
     - field.field.node.page.field_publish_options
     - field.field.node.page.field_tags
     - field.field.node.page.field_teaser
@@ -32,6 +31,7 @@ content:
       rows: 9
       summary_rows: 3
       placeholder: ''
+      show_summary: false
     third_party_settings: {  }
   created:
     type: datetime_timestamp
@@ -48,12 +48,13 @@ content:
     third_party_settings: {  }
   field_meta_tags:
     weight: 12
-    settings: {  }
+    settings:
+      sidebar: true
     third_party_settings: {  }
     type: metatag_firehose
     region: content
   field_publish_options:
-    weight: 14
+    weight: 13
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
@@ -69,7 +70,7 @@ content:
     type: entity_reference_autocomplete_tags
     region: content
   field_teaser:
-    weight: 1
+    weight: 2
     settings:
       rows: 5
       placeholder: ''
@@ -78,7 +79,7 @@ content:
     region: content
   moderation_state:
     type: moderation_state_default
-    weight: 15
+    weight: 14
     settings: {  }
     region: content
     third_party_settings: {  }
@@ -133,5 +134,4 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
-  field_page_content_block: true
   layout_builder__layout: true

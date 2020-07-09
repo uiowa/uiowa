@@ -6,7 +6,6 @@ dependencies:
     - field.field.node.page.body
     - field.field.node.page.field_image
     - field.field.node.page.field_meta_tags
-    - field.field.node.page.field_page_content_block
     - field.field.node.page.field_publish_options
     - field.field.node.page.field_tags
     - field.field.node.page.field_teaser
@@ -134,53 +133,11 @@ third_party_settings:
         - layout_header
       whitelisted_blocks:
         'Chaos Tools': {  }
-        'Custom blocks': {  }
         Devel: {  }
-        Forms: {  }
-        Menus: {  }
-        Superfish: {  }
         User: {  }
         core:
           - page_title_block
       blacklisted_blocks:
-        'Content fields':
-          - 'field_block:node:page:type'
-          - 'field_block:node:page:revision_default'
-          - 'field_block:node:page:default_langcode'
-          - 'field_block:node:page:nid'
-          - 'field_block:node:page:langcode'
-          - 'field_block:node:page:menu_link'
-          - 'field_block:node:page:moderation_state'
-          - 'field_block:node:page:field_publish_options'
-          - 'field_block:node:page:promote'
-          - 'field_block:node:page:status'
-          - 'field_block:node:page:revision_timestamp'
-          - 'field_block:node:page:vid'
-          - 'field_block:node:page:revision_log'
-          - 'field_block:node:page:revision_translation_affected'
-          - 'field_block:node:page:revision_uid'
-          - 'field_block:node:page:field_meta_tags'
-          - 'field_block:node:page:sticky'
-          - 'field_block:user:user:default_langcode'
-          - 'field_block:user:user:mail'
-          - 'field_block:user:user:init'
-          - 'field_block:user:user:langcode'
-          - 'field_block:user:user:access'
-          - 'field_block:user:user:login'
-          - 'extra_field_block:user:user:masquerade'
-          - 'extra_field_block:user:user:member_for'
-          - 'field_block:user:user:name'
-          - 'field_block:user:user:preferred_admin_langcode'
-          - 'field_block:user:user:preferred_langcode'
-          - 'field_block:user:user:roles'
-          - 'field_block:user:user:timezone'
-          - 'field_block:user:user:uid'
-          - 'field_block:user:user:status'
-        System:
-          - system_messages_block
-          - system_powered_by_block
-          - system_branding_block
-          - node_syndicate_block
         Webform:
           - webform_submission_limit_block
     allowed_block_categories:
@@ -195,6 +152,7 @@ third_party_settings:
       - Menus
       - Superfish
       - System
+      - 'University of Iowa Alerts'
       - User
       - Webform
       - core
@@ -233,7 +191,6 @@ content:
     third_party_settings: {  }
 hidden:
   field_meta_tags: true
-  field_page_content_block: true
   field_publish_options: true
   field_tags: true
   field_teaser: true
