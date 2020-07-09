@@ -485,9 +485,194 @@ function sitenow_update_8020() {
 }
 
 /**
- * Prepare uiowa_bootstrap sites with default theme settings for uids_base.
+ * Move SiteNow footer menus to the UIDS footer naming scheme.
  */
 function sitenow_update_8021() {
+  \Drupal::state()->set('system.maintenance_mode', TRUE);
+
+  $linkController = \Drupal::entityTypeManager()->getStorage('menu_link_content');
+
+  $primaryMids = \Drupal::entityQuery('menu_link_content')
+    ->condition('menu_name', 'footer')
+    ->execute();
+
+  $secondaryMids = \Drupal::entityQuery('menu_link_content')
+    ->condition('menu_name', 'footer-second')
+    ->execute();
+
+  $menuMids = [
+    'footer-primary' => $primaryMids,
+    'footer-secondary' => $secondaryMids,
+  ];
+
+  foreach ($menuMids as $menuName => $mids) {
+    $linkEntities = $linkController->loadMultiple($mids);
+    foreach ($linkEntities as $link) {
+      $link->set('menu_name', $menuName);
+      $link->save();
+    }
+  }
+
+  // Delete old menus.
+  $menuController = \Drupal::entityTypeManager()->getStorage('menu');
+  $toDelete = ['footer', 'footer-second'];
+  $oldMenus = $menuController->loadMultiple($toDelete);
+  $menuController->delete($oldMenus);
+
+  // Update footer menu config settings.
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uiowa_footer.settings');
+
+  $config
+    ->set('custom_menu', 'footer-primary')
+    ->set('custom_menu_2', 'footer-secondary')
+    ->save();
+
+  // Update footer menu access perms.
+  $config = $config_factory->getEditable('user.role.webmaster');
+  $perms = $config->get('permissions');
+
+  $permUpdates = [
+    'administer footer menu items' => 'administer footer-primary menu items',
+    'administer footer-second menu items' => 'administer footer-secondary menu items',
+  ];
+
+  foreach ($permUpdates as $oldPerm => $newPerm) {
+    if (($index = array_search($oldPerm, $perms))) {
+      $perms[$index] = $newPerm;
+    }
+  }
+
+  $config
+    ->set('permissions', $perms)
+    ->save();
+
+  // Update basic page available menus.
+  $config = $config_factory->getEditable('node.type.page');
+  $menus = $config->get('third_party_settings.menu_ui.available_menus');
+  $menuUpdates = [
+    'footer' => 'footer-primary',
+    'footer-second' => 'footer-secondary',
+  ];
+
+  foreach ($menuUpdates as $oldMenu => $newMenu) {
+    if (($index = array_search($oldMenu, $menus))) {
+      $menus[$index] = $newMenu;
+    }
+  }
+
+  $config
+    ->set('third_party_settings.menu_ui.available_menus', $menus)
+    ->save();
+
+  // Remove footer and footer-second from breadcrumb config.
+  $config = $config_factory->getEditable('menu_breadcrumb.settings');
+
+  $config
+    ->clear('menu_breadcrumb_menus.footer')
+    ->clear('menu_breadcrumb_menus.footer-second')
+    ->save();
+
+  // Update tours links to footer-primary and footer-secondary.
+  $config = $config_factory->getEditable('tour.tour.menus');
+
+  $footerTip = '<p>Depending on your role within the site, there are currently four available menus for this site:' .
+    '</p><p><a href="/admin/structure/menu/manage/main?tour" class="button button--primary">Main Navigation</a></p>' .
+    '<p><a href="/admin/structure/menu/manage/social?tour" class="button button--primary">Social Media</a></p>' .
+    '<p><a href="/admin/structure/menu/manage/footer-primary?tour" class="button button--primary">Footer Primary</a></p>' .
+    '<p><a href="/admin/structure/menu/manage/footer-secondary?tour" class="button button--primary">Footer Secondary</a></p>';
+
+  $config
+    ->set('tips.menus.body', $footerTip)
+    ->save();
+
+  $config = $config_factory->getEditable('tour.tour.site-settings');
+
+  $footerLinkText = '<p>The footer region also provides three separate menus for social media links' .
+    ' and for other custom footer links. You can add/manage links for those by clicking one of the following:' .
+    ' <a href="/admin/structure/menu/manage/social?tour">Social Media</a>,' .
+    ' <a href="/admin/structure/menu/manage/footer-primary?tour">Footer Primary</a>,' .
+    ' <a href="/admin/structure/menu/manage/footer-secondary?tour">Footer Secondary</a></p>';
+
+  $config
+    ->set('tips.footer-links.body', $footerLinkText)
+    ->save();
+
+  \Drupal::state()->set('system.maintenance_mode', FALSE);
+}
+
+/**
+ * Migrate image_background to image and set image styles.
+ */
+function sitenow_update_8022() {
+  $database = \Drupal::database();
+  $image_background_mids = $database->select('media', 'm')
+    ->fields('m', ['mid'])
+    ->condition('bundle', 'image_background', '=')
+    ->execute()
+    ->fetchCol();
+  if ($image_background_mids) {
+    $media_manager = \Drupal::entityTypeManager()
+      ->getStorage('media');
+    $from_field = 'field_media_image_1';
+    $to_field = 'field_media_image';
+    $table_prefixes = [
+      'media__',
+      'media_revision__',
+    ];
+    foreach ($table_prefixes as $prefix) {
+      $from_table = $prefix . $from_field;
+      $to_table = $prefix . $to_field;
+      if ($database->schema()->tableExists($from_table)) {
+        $rows = $database
+          ->select($from_table, 't')
+          ->fields('t')
+          ->execute()
+          ->fetchAll();
+      }
+      $column_suffixes = [
+        '_target_id', '_alt', '_title', '_width', '_height',
+      ];
+      if (!is_null($rows)) {
+        foreach ($rows as $row) {
+          $row = (array) $row;
+          $row['bundle'] = 'image';
+          foreach ($column_suffixes as $suffix) {
+            $row[$to_field . $suffix] = $row[$from_field . $suffix];
+            unset($row[$from_field . $suffix]);
+          }
+          $database
+            ->insert($to_table)
+            ->fields($row)
+            ->execute();
+        }
+      }
+    }
+    foreach ($image_background_mids as $mid) {
+      $media = $media_manager->load($mid);
+      $media_array = $media->toArray();
+      $media_array['bundle'] = 'image';
+      $media_array[$to_field] = $media_array[$from_field];
+      unset($media_array[$from_field]);
+      $media->delete();
+      $media_manager->create($media_array)
+        ->save();
+    }
+  }
+  // Set the section config to use image and not image_background.
+  $section_config = \Drupal::configFactory()
+    ->getEditable('field.field.paragraph.section.field_section_image');
+  $section_config
+    ->set('settings.handler_settings.target_bundles', [
+      'image' => 'image',
+    ])
+    ->save();
+}
+
+/**
+ * Prepare uiowa_bootstrap sites with default theme settings for uids_base.
+ */
+function sitenow_update_8023() {
   $linkController = \Drupal::entityTypeManager()->getStorage('menu_link_content');
   $primaryMids = \Drupal::entityQuery('menu_link_content')
     ->condition('menu_name', 'footer')
@@ -586,7 +771,7 @@ function sitenow_update_8021() {
 /**
  * Prepare uiowa_bootstrap sites with a horizontal nav default in uids_base.
  */
-function sitenow_update_8022() {
+function sitenow_update_8024() {
   /** @var \Drupal\Core\Theme\ActiveTheme $active_theme */
   $active_theme = \Drupal::service('theme.manager')->getActiveTheme();
 
@@ -631,7 +816,7 @@ function sitenow_update_8022() {
 /**
  * Import alert settings if they do not already exist since they are ignored.
  */
-function sitenow_update_8023() {
+function sitenow_update_8025() {
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('uiowa_alerts.settings');
 
@@ -647,7 +832,7 @@ function sitenow_update_8023() {
 /**
  * Move quick links into top links to prepare for uids_base.
  */
-function sitenow_update_8024() {
+function sitenow_update_8026() {
   $config = \Drupal::configFactory()
     ->get('uiowa_bar.settings');
   $links = [
@@ -677,7 +862,7 @@ function sitenow_update_8024() {
 /**
  * Move Additional Info content into a new footer block for uids_base.
  */
-function sitenow_update_8025() {
+function sitenow_update_8027() {
   $config = \Drupal::configFactory()
     ->get('uiowa_footer.settings');
   $title = $config->get('additional_info.title');
@@ -715,7 +900,7 @@ function sitenow_update_8025() {
 /**
  * Create brand lockup media entity.
  */
-function sitenow_update_8026() {
+function sitenow_update_8028() {
   $config = \Drupal::configFactory()
     ->get('uiowa_footer.settings');
   $lockup_fids = $config->get('lockup.fid');
@@ -754,7 +939,7 @@ function sitenow_update_8026() {
 /**
  * Prepare to remove uiowa_footer module.
  */
-function sitenow_update_8027() {
+function sitenow_update_8029() {
   $host = \Drupal::requestStack()
     ->getCurrentRequest()
     ->getHost();

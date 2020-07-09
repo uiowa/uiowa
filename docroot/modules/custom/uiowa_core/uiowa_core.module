@@ -36,6 +36,31 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
           ->addWarning(t('Local Google Tag Manager container snippets are are currently blocked from being inserted on this website. Please contact the ITS HelpDesk about enabling this functionality.'));
       }
       break;
+
+    // Add delete forms as the types of protected blocks changes.
+    case 'block_content_uiowa_text_area_delete_form':
+      // Get current block uuid.
+      $block = $form_state
+        ->getFormObject()
+        ->getEntity();
+      $uuid = $block->uuid();
+
+      // Get protected settings from uiowa_core.
+      $protected = \Drupal::config('uiowa_core.protected');
+      // If protected...
+      if ($protected->get('protect')) {
+        // Get uuids of protected blocks.
+        $protected_blocks = $protected->get('protected_blocks');
+        $uuids = array_keys($protected_blocks);
+
+        // See if current block matches any protected and prevent deletion.
+        if (in_array($uuid, $uuids)) {
+          \Drupal::messenger()->addWarning(t('This block is protected from deletion. Remove content from the block instead.'));
+          $form['actions']['submit']['#disabled'] = TRUE;
+        }
+      }
+      break;
+
   }
 }
 
