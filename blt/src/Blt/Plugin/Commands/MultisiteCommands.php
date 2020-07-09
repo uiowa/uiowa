@@ -599,7 +599,7 @@ EOD
     }
 
     // Get the UUID for the selected application.
-    $app_id = $applications[$app]['id'];
+    $app_id = $applications[$app];
 
     if (!$options['simulate'] && !$options['no-db']) {
       $databases->create($app_id, $db);

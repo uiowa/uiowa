@@ -655,13 +655,13 @@ function sitenow_update_8022() {
       $media_manager->create($media_array)
         ->save();
     }
-    // Set the section config to use image and not image_background.
-    $section_config = \Drupal::configFactory()
-      ->getEditable('field.field.paragraph.section.field_section_image');
-    $section_config
-      ->set('settings.handler_settings.target_bundles', [
-        'image' => 'image',
-      ])
-      ->save();
   }
+  // Set the section config to use image and not image_background.
+  $section_config = \Drupal::configFactory()
+    ->getEditable('field.field.paragraph.section.field_section_image');
+  $section_config
+    ->set('settings.handler_settings.target_bundles', [
+      'image' => 'image',
+    ])
+    ->save();
 }

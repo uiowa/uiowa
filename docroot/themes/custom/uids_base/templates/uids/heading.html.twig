@@ -1,3 +1,4 @@
+{% set heading_level = heading_level ?: 'h2' %}
 {% set attributes = attributes ?: create_attribute() %}
 {% set heading_class = heading_class ?: [] %}
 <{{ heading_level }}{{ attributes.addClass(heading_class) }}>
