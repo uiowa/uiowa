@@ -479,7 +479,9 @@ function sitenow_form_system_site_information_settings_alter(&$form, FormStateIn
   $custom_menu_2 = 'footer-secondary';
   $custom_menu_3 = 'footer-tertiary';
 
-  $active_theme = \Drupal::service('theme.manager')->getActiveTheme();
+  $active_theme = \Drupal::service('theme.manager')
+    ->getActiveTheme()
+    ->getName();
 
   if ($active_theme === "uids_base") {
     $form['uiowa_footer_menus'] = [
