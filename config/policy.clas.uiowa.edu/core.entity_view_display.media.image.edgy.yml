@@ -1,23 +1,23 @@
-uuid: a795b6a4-0146-4b2e-b41f-28e45d8ebe68
+uuid: 127e16b8-9193-4609-bc2e-40a38765d9e8
 langcode: en
 status: true
 dependencies:
   config:
     - core.entity_view_mode.media.edgy
-    - field.field.media.image_background.field_media_image_1
-    - media.type.image_background
+    - field.field.media.image.field_media_image
+    - media.type.image
     - responsive_image.styles.ui_edgy_no_crop
   module:
     - lazy
     - responsive_image
 _core:
   default_config_hash: HW52IsyizTd9psyOjhjteunTeM7jjttYXkwPB0YAbcU
-id: media.image_background.edgy
+id: media.image.edgy
 targetEntityType: media
-bundle: image_background
+bundle: image
 mode: edgy
 content:
-  field_media_image_1:
+  field_media_image:
     weight: 0
     label: hidden
     settings:
@@ -30,6 +30,8 @@ content:
     region: content
 hidden:
   created: true
+  field_media_caption: true
   name: true
+  search_api_excerpt: true
   thumbnail: true
   uid: true
