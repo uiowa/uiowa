@@ -759,6 +759,10 @@ function sitenow_update_8027() {
     ->getCurrentRequest()
     ->getHost();
   if ($host != "hr.uiowa.edu") {
+    \Drupal::configFactory()
+      ->getEditable('system.theme')
+      ->set('default', 'uids_base')
+      ->save();
     $config_factory = \Drupal::configFactory()
       ->getEditable('uiowa_footer.settings')
       ->delete();
