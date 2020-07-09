@@ -11,7 +11,6 @@ use Drupal\Core\Form\FormStateInterface;
  * Implements hook_form_alter().
  */
 function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-
   $form_ids = ['layout_builder_update_block', 'layout_builder_add_block'];
 
   // Only continue if this is one of the above forms.
@@ -47,6 +46,11 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
     'label_display' => $label_display,
     'label' => $label,
   ];
+}
 
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function layout_builder_custom_form_node_page_layout_builder_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['#attached']['library'][] = 'layout_builder_custom/layout_builder_custom_SI_overrides';
 }
