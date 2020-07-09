@@ -20,19 +20,19 @@
             }
 
             a.btn-primary {
-                @extend %bttn--primary;
+               @include bttn--primary;
                 border: 1px solid $primary;
-                @extend %bttn--focus;
-                
+               @include bttn--focus;
+
                 &:after {
                     background-color: $secondary;
                 }
             }
 
             a.btn:not(.btn-primary) {
-                @extend %bttn--secondary;
+               @include bttn--secondary;
                 border: 1px solid $secondary;
-                @extend %bttn--focus;
+               @include bttn--focus;
             }
         }
     }
