@@ -1,0 +1,21 @@
+{{ attach_library('uids_base/stat') }}
+{% set attributes = attributes ?: create_attribute() %}
+<div{{ attributes.addClass(stat_classes) }}>
+  {% block heading %}
+    <div>
+      {% if stat_title is not empty %}
+        {% include '@uids_base/uids/heading.html.twig' with {
+          'heading_level' : heading_level ?: 'h2',
+          'heading_class' : 'stat__title',
+          'heading' : stat_title,
+          'heading_prefix' : stat_prefix,
+          'heading_suffix' : stat_suffix,
+        } only %}
+      {% endif %}
+    </div>
+  {% endblock %}
+  {% if stat_summary is not empty %}
+    <p class="stat__description">{{ stat_summary }}</p>
+  {% endif %}
+</div>
+

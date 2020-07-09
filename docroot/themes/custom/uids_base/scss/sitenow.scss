@@ -1,7 +1,7 @@
 @import "uids/assets/scss/_variables.scss";
 @import "uids/assets/scss/_utilities.scss";
-@import "components/typography/headings/_headings.scss";
-@import "components/headline/_headline.scss";
+@import "components/typography/headings/headings.scss";
+@import "components/headline/headline.scss";
 
 html {
   box-sizing: border-box;
@@ -430,7 +430,7 @@ figure.caption .embedded-entity+figcaption {
 // Btn
 
 .btn {
-  @extend %bttn;
+  @include bttn;
   text-transform: uppercase;
   font-family: $font-family-caps-bold;
   padding: 1rem 2rem;
@@ -442,16 +442,16 @@ figure.caption .embedded-entity+figcaption {
 .btn-info,
 .btn-warning,
 .btn-link {
-  @extend %bttn--secondary;
+  @include bttn--secondary;
   border: 1px solid $secondary;
-  @extend %bttn--focus;
+  @include bttn--focus;
 }
 
 .btn-primary,
 .button--primary {
-  @extend %bttn--primary;
+  @include bttn--primary;
   border: 1px solid $primary;
-  @extend %bttn--focus;
+  @include bttn--focus;
 
   &:after {
     background-color: $secondary;
