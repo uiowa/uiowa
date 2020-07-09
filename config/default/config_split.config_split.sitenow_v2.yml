@@ -10,20 +10,12 @@ module: {  }
 theme: {  }
 blacklist: {  }
 graylist:
-  - paragraphs.paragraphs_type.accordion
-  - paragraphs.paragraphs_type.accordion_item
-  - paragraphs.paragraphs_type.articles
-  - paragraphs.paragraphs_type.blockquote
-  - paragraphs.paragraphs_type.card
-  - paragraphs.paragraphs_type.carousel
-  - paragraphs.paragraphs_type.carousel_image
-  - paragraphs.paragraphs_type.events
-  - paragraphs.paragraphs_type.featured_content
-  - paragraphs.paragraphs_type.image_gallery
-  - paragraphs.paragraphs_type.people
-  - paragraphs.paragraphs_type.section
-  - paragraphs.paragraphs_type.text
-  - paragraphs.paragraphs_type.webform
+  - paragraphs.settings
+  - 'core.entity_form_display.paragraph.*'
+  - 'core.entity_view_display.paragraph.*'
+  - 'core.entity_view_mode.paragraph.*'
+  - 'paragraphs.paragraphs_type.*'
+  - 'field.storage.paragraph.*'
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 80
