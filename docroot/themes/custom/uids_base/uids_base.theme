@@ -95,7 +95,7 @@ function uids_base_preprocess_page(&$variables) {
 
   // This is the homepage.
   if (\Drupal::service('site.path') === 'sites/uiowa.edu') {
-    $variables['header_classes'][] = 'header--primary';
+    $variables['header_classes'][] = 'iowa-bar--full';
     $variables['header_type'] = 'homepage';
     $variables['uiowa_url'] = \Drupal::request()->getSchemeAndHttpHost();
   }
@@ -104,14 +104,14 @@ function uids_base_preprocess_page(&$variables) {
       case 'below':
       case 'header--tertiary':
         // @todo Remove this when config is updated for all sites.
-        $variables['header_classes'][] = 'header--tertiary';
+        $variables['header_classes'][] = 'iowa-bar--narrow';
         $variables['header_type'] = 'below';
         break;
 
       case 'inline':
       case 'header--secondary':
         // @todo Remove this when config is updated for all sites.
-        $variables['header_classes'][] = 'header--secondary';
+        $variables['header_classes'][] = 'iowa-bar--full';
         $variables['header_type'] = 'inline';
         break;
     }
@@ -286,7 +286,7 @@ function uids_base_preprocess_block(&$variables) {
 
       case 'top-links':
         $variables['attributes']['class'][] = 'menu--top';
-        $variables['attributes']['class'][] = 'uids-menu';
+        $variables['attributes']['class'][] = 'nav';
         break;
 
       case 'search-links':

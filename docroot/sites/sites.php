@@ -1463,3 +1463,45 @@ $sites['engineeringviewbook.local.drupal.uiowa.edu'] = 'viewbook.engineering.uio
 $sites['engineeringviewbook.dev.drupal.uiowa.edu'] = 'viewbook.engineering.uiowa.edu';
 $sites['engineeringviewbook.stage.drupal.uiowa.edu'] = 'viewbook.engineering.uiowa.edu';
 $sites['engineeringviewbook.prod.drupal.uiowa.edu'] = 'viewbook.engineering.uiowa.edu';
+
+// Directory aliases for lb-test.uiowa.edu.
+$sites['lb-test.local.drupal.uiowa.edu'] = 'lb-test.uiowa.edu';
+$sites['lb-test.dev.drupal.uiowa.edu'] = 'lb-test.uiowa.edu';
+$sites['lb-test.stage.drupal.uiowa.edu'] = 'lb-test.uiowa.edu';
+$sites['lb-test.prod.drupal.uiowa.edu'] = 'lb-test.uiowa.edu';
+
+// Directory aliases for globalhealthstudies.uiowa.edu.
+$sites['globalhealthstudies.local.drupal.uiowa.edu'] = 'globalhealthstudies.uiowa.edu';
+$sites['globalhealthstudies.dev.drupal.uiowa.edu'] = 'globalhealthstudies.uiowa.edu';
+$sites['globalhealthstudies.stage.drupal.uiowa.edu'] = 'globalhealthstudies.uiowa.edu';
+$sites['globalhealthstudies.prod.drupal.uiowa.edu'] = 'globalhealthstudies.uiowa.edu';
+
+// Directory aliases for interdepartmentalstudies.uiowa.edu.
+$sites['interdepartmentalstudies.local.drupal.uiowa.edu'] = 'interdepartmentalstudies.uiowa.edu';
+$sites['interdepartmentalstudies.dev.drupal.uiowa.edu'] = 'interdepartmentalstudies.uiowa.edu';
+$sites['interdepartmentalstudies.stage.drupal.uiowa.edu'] = 'interdepartmentalstudies.uiowa.edu';
+$sites['interdepartmentalstudies.prod.drupal.uiowa.edu'] = 'interdepartmentalstudies.uiowa.edu';
+
+// Directory aliases for internationalstudies.uiowa.edu.
+$sites['internationalstudies.local.drupal.uiowa.edu'] = 'internationalstudies.uiowa.edu';
+$sites['internationalstudies.dev.drupal.uiowa.edu'] = 'internationalstudies.uiowa.edu';
+$sites['internationalstudies.stage.drupal.uiowa.edu'] = 'internationalstudies.uiowa.edu';
+$sites['internationalstudies.prod.drupal.uiowa.edu'] = 'internationalstudies.uiowa.edu';
+
+// Directory aliases for latinamericanstudies.uiowa.edu.
+$sites['latinamericanstudies.local.drupal.uiowa.edu'] = 'latinamericanstudies.uiowa.edu';
+$sites['latinamericanstudies.dev.drupal.uiowa.edu'] = 'latinamericanstudies.uiowa.edu';
+$sites['latinamericanstudies.stage.drupal.uiowa.edu'] = 'latinamericanstudies.uiowa.edu';
+$sites['latinamericanstudies.prod.drupal.uiowa.edu'] = 'latinamericanstudies.uiowa.edu';
+
+// Directory aliases for latinxstudies.uiowa.edu.
+$sites['latinxstudies.local.drupal.uiowa.edu'] = 'latinxstudies.uiowa.edu';
+$sites['latinxstudies.dev.drupal.uiowa.edu'] = 'latinxstudies.uiowa.edu';
+$sites['latinxstudies.stage.drupal.uiowa.edu'] = 'latinxstudies.uiowa.edu';
+$sites['latinxstudies.prod.drupal.uiowa.edu'] = 'latinxstudies.uiowa.edu';
+
+// Directory aliases for interdisciplinaryprograms.uiowa.edu.
+$sites['interdisciplinaryprograms.local.drupal.uiowa.edu'] = 'interdisciplinaryprograms.uiowa.edu';
+$sites['interdisciplinaryprograms.dev.drupal.uiowa.edu'] = 'interdisciplinaryprograms.uiowa.edu';
+$sites['interdisciplinaryprograms.stage.drupal.uiowa.edu'] = 'interdisciplinaryprograms.uiowa.edu';
+$sites['interdisciplinaryprograms.prod.drupal.uiowa.edu'] = 'interdisciplinaryprograms.uiowa.edu';
