@@ -22,3 +22,40 @@
     </div>
   {% endfor %}
 </div>
+
+{% if accordion.multiselectable == true %}
+  {% set accordion_type = 'multi' %}
+{% else %}
+  {% set accordion_type = 'single' %}
+{% endif %}
+
+<div class="accordion
+  {% if accordion.variant %} accordion--{{ variant }}{% endif %}"
+     role="tablist"
+     aria-multiselectable="{{ multiselectable }}"
+>
+  {% set item_number = 1 %}
+  {% for item in items %}
+    <!-- Use the accurate heading level to maintain the document outline -->
+    <h2 id="accordion-heading-{{ item_number }}"
+        class="accordion__heading"
+    >
+      <button class="accordion__button"
+              role="tab"
+              aria-selected="{{ item.expanded | default('false') }}"
+              aria-expanded="{{ item.expanded | default('false') }}"
+              aria-controls="{{ accordion_type }}-select-{{ item_number }}"
+      >
+        {{ item.title }}
+        <i aria-hidden="true" focusable="false" class="fas fa-chevron-up"></i>
+      </button>
+    </h2>
+    <div id="{{ accordion_type }}-select-{{ item_number }}"
+         aria-labelledby="accordion-heading-{{ item_number }}"
+         class="accordion__content"
+    >
+      {{ item.content }}
+    </div>
+    {% set item_number = item_number + 1 %}
+  {% endfor %}
+</div>
