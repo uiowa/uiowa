@@ -7,7 +7,6 @@
  */
 
 use Drupal\Core\Config\FileStorage;
-use Drupal\Core\Config\StorageComparer;
 use Drupal\node\Entity\Node;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\user\Entity\User;
@@ -15,7 +14,6 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\paragraphs\Entity\Paragraph;
-use Drupal\Core\Config\ConfigImporter;
 
 /**
  * Update some uiowa_footer settings which are ignored.
@@ -671,21 +669,24 @@ function sitenow_update_8022() {
 }
 
 /**
- * Enable sitenow_v2 split on non-collegiate sites
- * and remove paragraphs from collegiate sites.
+ * Transition existing sites to 'sitenow_v2' split.
+ *
+ * Update to add the 'sitenow_v2' split to all sites that
+ * currently don't have the 'collegiate' split enabled.
+ * Also removes all Paragraph entity instances from sites
+ * that have the 'collegiate' split enabled.
  */
 function sitenow_update_8023() {
 
   // @todo Possibly add checks for sites who have not updated
   //   content since the site was provisioned.
-
-  // @todo Import the sitenow_v2 config split manually.
   /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
   $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
   $collegiate_split = 'config_split:collegiate';
-  // If this is a collegiate site...
+  // This site has the 'collegiate' split enabled.
   if (isset($filters[$collegiate_split]) && $filters[$collegiate_split]['status']) {
-    // Delete all paragraph instances.
+    // Delete all paragraph instances to allow related
+    // config to be deleted.
     $ids = \Drupal::entityQuery('paragraph')->execute();
     foreach ($ids as $id) {
       $paragraph = Paragraph::load($id);
@@ -694,20 +695,27 @@ function sitenow_update_8023() {
       }
     }
   }
-  // This is not a collegiate site.
+  // This site does not have the 'collegiate' split enabled.
   else {
-    // @todo Enable sitenow_v2 config split.
+    // Write the 'sitenow_v2' split into active configuration.
     $config_path = DRUPAL_ROOT . '/../config/default';
     $source = new FileStorage($config_path);
     $config_storage = \Drupal::service('config.storage');
     $config_storage->write('config_split.config_split.sitenow_v2', $source->read('config_split.config_split.sitenow_v2'));
+
+    // Manually enable sitenow_v2 config split.
     $entity = \Drupal::entityTypeManager()->getStorage('config_split')->load('sitenow_v2');
     $entity->set('status', TRUE);
     $entity->save();
 
+    // Manually trigger the partial import of 'sitenow_v2' config.
     /* @var \Drush\Drupal\Commands\config\ConfigImportCommands $drush_import */
     $container = \Drupal::getContainer();
     $drush_import = $container->get('config.import.commands');
-    $drush_import->import(null, ['partial' => TRUE, 'source' => DRUPAL_ROOT . '/../config/features/sitenow_v2', 'diff' => FALSE]);
+    $drush_import->import(NULL, [
+      'partial' => TRUE,
+      'source' => DRUPAL_ROOT . '/../config/features/sitenow_v2',
+      'diff' => FALSE,
+    ]);
   }
 }
