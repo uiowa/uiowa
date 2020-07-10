@@ -61,7 +61,12 @@
 }
 
 .search-is-open .region-under-search:after {
-  margin-right: -50%;
+  transform: translateX(calc(49%));
+
+  @include breakpoint(container) {
+    margin-right: -50%;
+    transform: unset;
+  }
 }
 
 .search-is-open .region-under-search:before {
