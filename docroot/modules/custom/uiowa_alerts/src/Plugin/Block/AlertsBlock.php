@@ -69,8 +69,8 @@ class AlertsBlock extends BlockBase implements ContainerFactoryPluginInterface {
       ],
     ];
 
-    if ($config->get('hawk_alert_display')) {
-      $source = $config->get('hawk_alert_source');
+    if ($config->get('hawk_alert.display')) {
+      $source = $config->get('hawk_alert.source');
 
       $build['hawk_alerts'] = [
         '#type' => 'container',
@@ -90,10 +90,10 @@ class AlertsBlock extends BlockBase implements ContainerFactoryPluginInterface {
       ];
     }
 
-    if ($config->get('custom_alert_display')) {
-      $message = trim($config->get('custom_alert_message'));
+    if ($config->get('custom_alert.display')) {
+      $message = trim($config->get('custom_alert.message'));
       $filtered_message = check_markup($message, 'minimal');
-      $level = $config->get('custom_alert_level');
+      $level = $config->get('custom_alert.level');
 
       $build['custom_alert'] = [
         '#type' => 'container',
