@@ -24,7 +24,9 @@ Customizations
 - uiowa_bootstrap subtheme (hr) to mimic jobs.uiowa.edu
   - Custom regions to allow sidebar to start at the top of the content area.
 - Units taxonomy for internal organization and contact block displays.
-- Card Image Icon to handle icon images in cards. Could be replaced by SVG option later.
+- Card Image Icon option to handle icon images in cards.
+- Card Image Title Overlay options.
+- Featured image/caption output and style difference.
 - Frequently Asked Question content type, view, taxononmy, paragraph bundle to create reusable accordion items.
 - Related Content - Sidebar view block based on field_related_content (page).
 - Initial redirects import.
@@ -34,7 +36,6 @@ Misc Notes
 ---
 
 - uiowa703 DEV hosts a copy of their old website (Deprovision after 2020-07-31)
-- Self-managed Google Analytics
 - Google CSE instance exists but is not currently used
 - First SiteNow v2 custom website.
 
