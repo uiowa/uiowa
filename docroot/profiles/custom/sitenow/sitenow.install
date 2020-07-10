@@ -954,5 +954,13 @@ function sitenow_update_8029() {
     \Drupal::configFactory()
       ->getEditable('uiowa_footer.settings')
       ->delete();
+
+    $config_path = DRUPAL_ROOT . '/../config/default';
+    $source = new FileStorage($config_path);
+
+    $config_storage = \Drupal::service('config.storage');
+    $config_storage->write('responsive_image.styles.sitenow_16_9', $source->read('responsive_image.styles.sitenow_16_9'));
+    $config_storage->write('responsive_image.styles.ui_edgy_no_crop', $source->read('responsive_image.styles.ui_edgy_no_crop'));
+
   }
 }
