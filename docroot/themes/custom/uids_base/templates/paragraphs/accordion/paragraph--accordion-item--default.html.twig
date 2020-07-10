@@ -43,15 +43,13 @@
 {% set id = 'pid' ~ id %}
 
 
-<h2 {{ attributes.addClass(["uids-accordion__heading"]) }}>
-	<button class="uids-accordion__button" role="tab" aria-selected="false" aria-expanded="false" aria-controls="{{ id }}">
+<h2 {{ attributes.addClass(["accordion__heading"]) }} id="{{ label }}">
+  <button class="accordion__button" role="tab" aria-selected="false" aria-expanded="false" aria-controls="{{ id }}">
+    {{ content.field_accordion_item_title }}
+    <i aria-hidden="true" focusable="false" class="fas fa-chevron-up"></i>
+  </button>
+</h2>
 
-{{ content.field_accordion_item_title }}
-<i aria-hidden="true" focusable="false" class="fas fa-chevron-up"></i>
-
-      </button>
-    </h2>
-
-<div id="{{ accordion.id_prefix }}{{ id }} {{ item.id }} " class="uids-accordion__content" aria-labelledby="{{ label }}" data-parent="#{{ accordion_parent }}">
-      {{ content.field_accordion_item_body }}
-    </div>
+<div id="{{ accordion.id_prefix }}{{ id }}{{ item.id }}" class="accordion__content" aria-labelledby="{{ label }}" data-parent="#{{ accordion_parent }}">
+  {{ content.field_accordion_item_body }}
+</div>

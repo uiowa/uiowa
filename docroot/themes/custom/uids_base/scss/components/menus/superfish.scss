@@ -1,19 +1,298 @@
 @import "assets/scss/_variables.scss";
 @import "assets/scss/_utilities.scss";
-@import "components/menus/superfish/_superfish.scss";
+
+.sf-menu {
+  list-style-type: none;
+  padding: 0;
+  margin: 0
+}
+
+.sf-menu>li {
+  display: inline-block;
+  list-style-type: none;
+  margin: 0
+}
+
+.sf-menu {
+  font-size: 1rem
+}
+
+.sf-menu ul li {
+  font-size: 1rem
+}
+
+.block-superfish {
+  @include breakpoint(menu) {
+    display: flex;
+    margin-left: auto;
+  }
+}
+
+.block-superfish .block__title {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px)
+}
+
+.block-superfish #superfish-main-toggle {
+  position: relative;
+  top: 10px;
+  right: 0;
+  padding: .625rem .625rem .625rem 0;
+  color: $secondary;
+}
+
+.block-superfish #superfish-main-toggle:before {
+  content: "\f0c9";
+  font-size: 1.1rem;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  line-height: .8;
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  margin-right: 15px;
+  margin-top: 5px;
+  padding: 7px;
+  width: 25px;
+  height: 25px;
+}
+
+.block-superfish #superfish-main-toggle.sf-expanded:before {
+  content: "\f00d";
+  font-size: 1rem;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  color: #fff;
+  border-radius: 50%;
+  background: #999;
+}
+
+.block-superfish .menu li a,
+.block-superfish .menu li .nolink {
+  padding: 1.05rem;
+  text-decoration: none;
+  color: #151515;
+  font-weight: 600;
+
+  @include breakpoint(menu) {
+    padding: 1.05rem 1.5rem;
+  }
+}
+
+.block-superfish .menu li a:after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  content: "";
+  -webkit-transition: 300ms;
+  transition: 300ms
+}
+
+.block-superfish .menu>li>.sf-depth-1.menuparent {
+  position: relative;
+  padding-right: 2.5rem
+}
+
+.block-superfish .menu>li>.sf-depth-1.menuparent:before {
+  position: absolute;
+  top: 50%;
+  right: .3125rem;
+  margin-top: -0.4rem;
+  content: "\f078";
+  color: inherit;
+  font-size: 1rem;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  line-height: 1;
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900
+}
+
+.block-superfish .menu ul li a {
+  color: #fff
+}
+
+.block-superfish .sf-horizontal {
+  display: flex;
+  align-items: center;
+  margin-top: auto
+}
+
+.block-superfish .sf-horizontal li:hover>ul,
+.block-superfish .sf-horizontal li.sfHover>ul {
+  top: 0%
+}
+
+.block-superfish .sf-horizontal li.sf-depth-1:hover>ul,
+.block-superfish .sf-horizontal li.sf-depth-1.sfHover>ul {
+  top: 100%
+}
+
+.block-superfish .sf-horizontal a.sf-depth-1.menuparent.active {
+  background: transparent
+}
+
+.block-superfish .sf-with-ul {
+  display: flex;
+  align-items: center;
+  justify-content: space-between
+}
+
+.block-superfish .sf-with-ul:before {
+  -webkit-box-ordinal-group: 3;
+  -ms-flex-order: 2;
+  order: 2;
+  content: 1rem;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  line-height: 1;
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900
+}
+
+.block-superfish .sf-with-ul:only-child:before {
+  content: ''
+}
+
+.sf-menu,
+.region-primary-menu .menu {
+  list-style-type: none;
+  padding: 0;
+  margin: 0
+}
+
+.block-superfish-alt .block-title {
+  display: block;
+  text-transform: uppercase;
+  color: #666;
+  font-size: 23px;
+  font-weight: 300
+}
+
+.region-primary-menu {
+  margin-left: auto
+}
+
+.region-primary-menu {
+  @include breakpoint(menu) {
+    display: flex;
+    align-items: center
+  }
+}
+
+.sf-menu {
+  float: none;
+  font-size: 1rem
+}
+
+.sf-menu ul li {
+  font-size: 1.2rem
+}
+
+.block-superfish-alt .block__title,
+.region-primary-menu .block__title {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px)
+}
+
+.block-superfish-alt #superfish-main-toggle {
+  position: absolute;
+  top: 90px;
+  right: 0;
+  padding: .625rem;
+  color: #737373
+}
+
+.block-superfish-alt #superfish-main-toggle:before {
+  content: "\f0c9";
+  font-size: 1.875rem;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  line-height: 1;
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900
+}
+
+.block-superfish-alt #superfish-main-toggle.sf-expanded:before {
+  content: "\f00d";
+  font-size: 1.875rem;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  line-height: 1;
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900
+}
+
+.sf-accordion li .sf-depth-1 {
+  color: #151515;
+  background: #fff;
+  font-size: 1.6rem
+}
+
+.sf-accordion .sf-with-ul:only-child:before {
+  content: ''
+}
+
+.menu.sf-accordion li a,
+.menu.sf-accordion li .nolink {
+  padding: .6rem 0
+}
+
+.menu.sf-accordion ul {
+  -webkit-box-shadow: none;
+  box-shadow: none
+}
+
+.menu.sf-accordion ul li {
+  background: #fff
+}
+
+.menu.sf-accordion ul li a,
+.menu.sf-accordion ul li .nolink {
+  color: #666
+}
+
+///
+
 
 .block-superfish .sf-menu.sf-horiz-menu ul,
 .block-superfish .sf-menu.sf-mega-menu ul {
 
   @include breakpoint(menu) {
     background: #f1f1f1 !important;
-  }
-}
-
-.menu-horizontal.nav--header--primary,
-.menu-horizontal.nav--header--secondary {
-  @include breakpoint(menu) {
-    border-bottom: 1px solid #ccc;
   }
 }
 
@@ -49,7 +328,7 @@ ul.sf-menu.sf-mega-menu li {
   }
 }
 
-.menu-horizontal .block-superfish .menu ul li a {
+.nav--horizontal .block-superfish .menu ul li a {
   @include breakpoint(menu) {
     color: #000;
     font-weight: 400;
@@ -208,11 +487,6 @@ ul.sf-menu.sf-horizontal>li>.sf-depth-1.menuparent {
   padding-right: 1.5rem;
 }
 
-.menu-horizontal.nav--header--secondary ul.sf-menu.sf-horizontal,
-.menu-horizontal.nav--header--primary ul.sf-menu.sf-horizontal {
-  margin-top: 10px;
-}
-
 .sf-accordion .sf-clone-parent a,
 .sf-accordion .sf-clone-parent .nolink {
   font-size: 1.2rem !important;
@@ -285,7 +559,7 @@ ul.sf-menu.sf-horizontal>li>.sf-depth-1.menuparent {
   }
 }
 
-.menu-horizontal {
+.nav--horizontal {
 
   .page__container,
   .page__container--mixed {
@@ -302,7 +576,7 @@ ul.sf-menu.sf-horizontal>li>.sf-depth-1.menuparent {
   }
 }
 
-.menu-horizontal {
+.nav--horizontal {
   .sf-accordion.sf-menu {
     padding: 0 $gutter;
 
@@ -417,11 +691,11 @@ ul.sf-menu.sf-accordion .active-trail.sf-no-children.sf-depth-1>.is-active {
 }
 
 // Todo move back to UIDS
-.menu-horizontal {
+.nav--horizontal {
   border-bottom: 1px solid #e6e5e5;
 }
 
-.menu-horizontal.iowa-bar--full {
+.nav--horizontal.iowa-bar--full {
   @include breakpoint(menu) {
     margin-top: 5px;
   }
@@ -429,14 +703,6 @@ ul.sf-menu.sf-accordion .active-trail.sf-no-children.sf-depth-1>.is-active {
 
 .iowa-bar--narrow .site_name--wrapper {
   border-bottom: 1px solid #e6e5e5;
-}
-
-@media (min-width: 855px) {
-
-  .menu-horizontal.nav--header--primary,
-  .menu-horizontal.nav--header--secondary {
-    border-bottom: 1px solid #e6e5e5;
-  }
 }
 
 .block-superfish .menu.sf-accordion li>span {

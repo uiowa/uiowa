@@ -9,7 +9,7 @@ project:
 setup:
   strategy: install
 git:
-  default_branch: master
+  default_branch: main
   remotes:
     - 'uiowa@svn-14671.prod.hosting.acquia.com:uiowa.git'
     - 'uiowa01@svn-29892.prod.hosting.acquia.com:uiowa01.git'
@@ -69,9 +69,6 @@ sync:
 # Custom configuration.
 uiowa:
   applications:
-    uiowa:
-      id: 6bcc006f-9a0e-425e-aba0-198585dd2b56
-    uiowa01:
-      id: 21a2a0ab-b4ed-4ecf-8bd4-9266c70f5ef1
-    uiowa02:
-      id: a912cf23-b421-4071-99a4-2f6f6edb97e3
+    uiowa: 6bcc006f-9a0e-425e-aba0-198585dd2b56
+    uiowa01: 21a2a0ab-b4ed-4ecf-8bd4-9266c70f5ef1
+    uiowa02: a912cf23-b421-4071-99a4-2f6f6edb97e3

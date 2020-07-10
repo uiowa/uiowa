@@ -5,9 +5,15 @@
 
 {{ attach_library('uids_base/iowa-bar') }}
 {{ attach_library('uids_base/header') }}
-{% if header_sticky %}
-  {{ attach_library('uids_base/header-sticky') }}
+
+{% if header_nav == 'toggle' %}
+  {% if not logged_in %}
+    {{ attach_library('uids_base/header-sticky') }}
+  {% elseif logged_in and header_sticky %}
+    {{ attach_library('uids_base/header-sticky') }}
+  {% endif %}
 {% endif %}
+
 <header data-uids-header {{ attributes.addClass(header_classes) }}>
     <div class="iowa-bar__container">
       {% block logo %}
@@ -17,6 +23,7 @@
           logo_classes: 'logo--tab',
           logo_path: uiowa_logo_path,
           logo_path_png: uiowa_logo_path_png,
+          logo_id: 'header',
         } %}
       {% endblock %}
 
@@ -34,7 +41,7 @@
   {% if header_nav in ['horizontal', 'mega'] %}
     {% set nav_attributes = create_attribute() %}
     {% set nav_classes = [
-      'menu-horizontal',
+      'nav--horizontal',
       'nav--' ~ header_nav,
     ] %}
 
