@@ -782,7 +782,16 @@ function sitenow_update_8024() {
     $config_factory = \Drupal::configFactory();
     $config = $config_factory->getEditable('uids_base.settings');
 
-    $config->set('header.type', 'below');
+    $host = \Drupal::requestStack()
+      ->getCurrentRequest()
+      ->getHost();
+    // This will only work for PROD.
+    if ($host != "coronavirus.uiowa.edu") {
+      $config->set('header.type', 'inline');
+    }
+    else {
+      $config->set('header.type', 'below');
+    }
     $config->set('header.nav_style', $nav_style);
     $config->save();
 
