@@ -782,16 +782,15 @@ function sitenow_update_8024() {
     $config_factory = \Drupal::configFactory();
     $config = $config_factory->getEditable('uids_base.settings');
 
-    $host = \Drupal::requestStack()
-      ->getCurrentRequest()
-      ->getHost();
-    // This will only work for PROD.
-    if ($host == "coronavirus.uiowa.edu") {
+    $site_path = \Drupal::service('site.path');
+
+    if ($site_path == 'sites/coronavirus.uiowa.edu') {
       $config->set('header.type', 'inline');
     }
     else {
       $config->set('header.type', 'below');
     }
+
     $config->set('header.nav_style', $nav_style);
     $config->save();
 
@@ -944,14 +943,14 @@ function sitenow_update_8028() {
  * Prepare to remove uiowa_footer module.
  */
 function sitenow_update_8029() {
-  $host = \Drupal::requestStack()
-    ->getCurrentRequest()
-    ->getHost();
-  if ($host != "hr.uiowa.edu") {
+  $site_path = \Drupal::service('site.path');
+
+  if ($site_path != 'sites/hr.uiowa.edu') {
     \Drupal::configFactory()
       ->getEditable('system.theme')
       ->set('default', 'uids_base')
       ->save();
+
     \Drupal::configFactory()
       ->getEditable('uiowa_footer.settings')
       ->delete();
