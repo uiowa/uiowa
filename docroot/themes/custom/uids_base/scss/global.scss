@@ -275,7 +275,8 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   .layout__container {
     margin-bottom: $desktop-width-gutter;
 
-    &div[class*="uids-component--"]:last-child {
+    &div[class*="bg--"]:last-child,
+    &div[class*="bg-pattern--"]:last-child {
       margin-bottom: 0;
     }
   }
@@ -419,7 +420,8 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
 // Section w/ color background padding
 
-div[class*="uids-component--"] {
+div[class*="bg--"],
+div[class*="bg-pattern--"] {
   .lb__container {
     padding-top: $mobile-width-gutter;
     padding-bottom: $mobile-width-gutter;
