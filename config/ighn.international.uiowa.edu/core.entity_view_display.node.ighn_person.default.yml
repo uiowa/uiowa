@@ -17,21 +17,49 @@ dependencies:
     - field.field.node.ighn_person.field_ighn_primary_college
     - node.type.ighn_person
   module:
+    - field_group
     - link
     - text
     - user
+third_party_settings:
+  field_group:
+    group_ighn_person_main_header:
+      children: {  }
+      parent_name: ''
+      weight: 13
+      format_type: html_element
+      region: hidden
+      format_settings:
+        id: ''
+        classes: ighn-main-info
+        element: div
+        show_label: false
+        label_element: h3
+        label_element_classes: ''
+        attributes: ''
+        effect: none
+        speed: fast
+      label: 'IGHN Person Main Header'
 id: node.ighn_person.default
 targetEntityType: node
 bundle: ighn_person
 mode: default
 content:
   field_ighn_person_biography:
-    weight: 5
+    weight: 7
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
+  field_ighn_person_credentials:
+    type: string
+    weight: 9
+    region: content
+    label: visually_hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
   field_ighn_person_cv_link:
     weight: 8
     label: visually_hidden
@@ -45,7 +73,7 @@ content:
     type: link
     region: content
   field_ighn_person_department:
-    weight: 2
+    weight: 3
     label: visually_hidden
     settings:
       link: true
@@ -61,7 +89,7 @@ content:
     type: entity_reference_label
     region: content
   field_ighn_person_global_regions:
-    weight: 6
+    weight: 5
     label: inline
     settings:
       link: false
@@ -78,7 +106,7 @@ content:
     third_party_settings: {  }
     region: content
   field_ighn_person_language:
-    weight: 7
+    weight: 6
     label: inline
     settings:
       link: false
@@ -86,7 +114,7 @@ content:
     type: entity_reference_label
     region: content
   field_ighn_person_position_title:
-    weight: 3
+    weight: 1
     label: visually_hidden
     settings:
       link_to_entity: false
@@ -94,7 +122,7 @@ content:
     type: string
     region: content
   field_ighn_primary_college:
-    weight: 1
+    weight: 2
     label: visually_hidden
     settings:
       link: true
@@ -102,7 +130,6 @@ content:
     type: entity_reference_label
     region: content
 hidden:
-  field_ighn_person_credentials: true
   field_ighn_person_first_name: true
   field_ighn_person_last_name: true
   links: true

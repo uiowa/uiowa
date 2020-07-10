@@ -24,78 +24,65 @@ dependencies:
     - user
 third_party_settings:
   field_group:
-    group_ighn_person:
+    group_ighn_person_group:
       children:
-        - group_ighn_main_info_group
-        - group_ighn
-        - field_ighn_person_cv_link
+        - group_ighn_main_info_g
+        - group_ighn_person_field_groups
       parent_name: ''
-      weight: 0
+      weight: 1
       format_type: html_element
+      region: content
       format_settings:
-        label: 'IGHN Person Group'
         element: div
         show_label: false
         label_element: h3
+        label_element_classes: ''
         attributes: ''
         effect: none
         speed: fast
-        id: ighn-person-group
-        classes: ''
+        id: ''
+        classes: ' ighn-person-group'
       label: 'IGHN Person Group'
-    group_ighn:
+    group_ighn_main_info_g:
       children:
-        - field_ighn_person_focus_areas
-        - group_test
-      parent_name: group_ighn_person
-      weight: 3
+        - field_ighn_person_position_title
+        - field_ighn_primary_college
+        - field_ighn_person_department
+      parent_name: group_ighn_person_group
+      weight: 5
       format_type: html_element
+      region: content
       format_settings:
-        id: ighn-person-field-groups
-        classes: ''
         element: div
         show_label: false
         label_element: h3
+        label_element_classes: ''
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: ighn-main-info
+      label: 'Main Info'
+    group_ighn_person_field_groups:
+      children:
+        - field_ighn_person_focus_areas
+        - field_ighn_person_language
+        - field_ighn_person_global_regions
+      parent_name: group_ighn_person_group
+      weight: 6
+      format_type: html_element
+      region: content
+      format_settings:
+        id: ''
+        classes: ighn-person-field-groups
+        element: div
+        show_label: false
+        label_element: h3
+        label_element_classes: ''
         attributes: ''
         effect: none
         speed: fast
       label: 'IGHN Person Field Groups'
-    group_ighn_main_info_group:
-      children:
-        - field_ighn_primary_college
-        - field_ighn_person_department
-        - field_ighn_person_position_title
-      parent_name: group_ighn_person
-      weight: 2
-      format_type: html_element
-      format_settings:
-        id: ighn-person-main-info
-        classes: ''
-        element: div
-        show_label: false
-        label_element: h3
-        attributes: ''
-        effect: none
-        speed: fast
-      label: 'IGHN Main Info Group'
-    group_test:
-      children:
-        - field_ighn_person_language
-        - field_ighn_person_global_regions
-      parent_name: group_ighn
-      weight: 20
-      format_type: html_element
-      format_settings:
-        label: 'Hover icon'
-        element: div
-        show_label: false
-        label_element: h3
-        attributes: ''
-        effect: none
-        speed: fast
-        id: hover-icon-group
-        classes: ''
-      label: 'Hover icon'
 id: node.ighn_person.teaser
 targetEntityType: node
 bundle: ighn_person
@@ -118,7 +105,7 @@ content:
     third_party_settings: {  }
   field_ighn_person_cv_link:
     type: link
-    weight: 6
+    weight: 4
     region: content
     label: visually_hidden
     settings:
@@ -130,7 +117,7 @@ content:
     third_party_settings: {  }
   field_ighn_person_department:
     type: entity_reference_label
-    weight: 7
+    weight: 9
     region: content
     label: visually_hidden
     settings:
@@ -138,7 +125,7 @@ content:
     third_party_settings: {  }
   field_ighn_person_focus_areas:
     type: entity_reference_label
-    weight: 9
+    weight: 3
     region: content
     label: above
     settings:
@@ -146,7 +133,7 @@ content:
     third_party_settings: {  }
   field_ighn_person_global_regions:
     type: entity_reference_label
-    weight: 11
+    weight: 5
     region: content
     label: above
     settings:
@@ -154,7 +141,7 @@ content:
     third_party_settings: {  }
   field_ighn_person_image:
     type: entity_reference_entity_view
-    weight: 1
+    weight: 0
     region: content
     label: visually_hidden
     settings:
@@ -163,7 +150,7 @@ content:
     third_party_settings: {  }
   field_ighn_person_language:
     type: entity_reference_label
-    weight: 10
+    weight: 4
     region: content
     label: above
     settings:
@@ -171,7 +158,7 @@ content:
     third_party_settings: {  }
   field_ighn_person_position_title:
     type: string
-    weight: 8
+    weight: 7
     region: content
     label: visually_hidden
     settings:
@@ -179,7 +166,7 @@ content:
     third_party_settings: {  }
   field_ighn_primary_college:
     type: entity_reference_label
-    weight: 6
+    weight: 8
     region: content
     label: visually_hidden
     settings:
