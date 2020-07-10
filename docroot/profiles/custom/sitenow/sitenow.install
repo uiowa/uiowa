@@ -786,7 +786,7 @@ function sitenow_update_8024() {
       ->getCurrentRequest()
       ->getHost();
     // This will only work for PROD.
-    if ($host != "coronavirus.uiowa.edu") {
+    if ($host == "coronavirus.uiowa.edu") {
       $config->set('header.type', 'inline');
     }
     else {
