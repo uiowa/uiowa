@@ -779,15 +779,10 @@ function sitenow_update_8024() {
   if ($active_theme->getName() === 'uiowa_bootstrap') {
     $nav_style = 'horizontal';
 
-    $system_config = \Drupal::config('system.site');
-    $has_parent = $system_config->get('has_parent') ?: 0;
-
     $config_factory = \Drupal::configFactory();
     $config = $config_factory->getEditable('uids_base.settings');
 
-    if (!$has_parent) {
-      $config->set('header.type', 'inline');
-    }
+    $config->set('header.type', 'below');
     $config->set('header.nav_style', $nav_style);
     $config->save();
 
