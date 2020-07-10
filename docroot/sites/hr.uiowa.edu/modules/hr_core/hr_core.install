@@ -324,3 +324,17 @@ function hr_core_update_8005() {
     }
   }
 }
+
+/**
+ * Add uiowa_bootstrap to complete split so cim does not error on UIBS block deletion.
+ */
+function hr_core_update_8006() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('config_split.config_split.hr');
+
+  $config
+    ->set('theme', ['hr', 'uiowa_bootstrap'])
+    ->save();
+
+  drupal_flush_all_caches();
+}

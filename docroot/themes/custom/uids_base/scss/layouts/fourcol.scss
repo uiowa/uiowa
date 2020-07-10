@@ -9,10 +9,21 @@
     flex-basis: 100%;
   }
 
-  .layout--fourcol .layout__region {
-    flex: 0 1 100%;
-    display: flex;
+  .layout--fourcol {
+    .layout__region {
+      flex: 0 1 100%;
+      display: flex;
+      flex-wrap: wrap;
+      align-content: unset;
+    }
+
+    &.section-alignment__start {
+      .layout__region {
+        align-content: start;
+      }
+    }
   }
+
 
   .layout--fourcol .layout__region {
     flex: 0 1 24.25%;
