@@ -1,0 +1,13 @@
+project:
+  local:
+    hostname: socialwork.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: socialwork
+  human_name: socialwork.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: socialwork.prod
+drupal:
+  db:
+    database: socialwork_uiowa_edu
