@@ -21,8 +21,7 @@ class P2LbSettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   protected function getEditableConfigNames() {
-    return [
-    ];
+    return [];
   }
 
   /**
