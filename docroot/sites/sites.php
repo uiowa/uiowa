@@ -1505,3 +1505,9 @@ $sites['interdisciplinaryprograms.local.drupal.uiowa.edu'] = 'interdisciplinaryp
 $sites['interdisciplinaryprograms.dev.drupal.uiowa.edu'] = 'interdisciplinaryprograms.uiowa.edu';
 $sites['interdisciplinaryprograms.stage.drupal.uiowa.edu'] = 'interdisciplinaryprograms.uiowa.edu';
 $sites['interdisciplinaryprograms.prod.drupal.uiowa.edu'] = 'interdisciplinaryprograms.uiowa.edu';
+
+// Directory aliases for socialwork.uiowa.edu.
+$sites['socialwork.local.drupal.uiowa.edu'] = 'socialwork.uiowa.edu';
+$sites['socialwork.dev.drupal.uiowa.edu'] = 'socialwork.uiowa.edu';
+$sites['socialwork.stage.drupal.uiowa.edu'] = 'socialwork.uiowa.edu';
+$sites['socialwork.prod.drupal.uiowa.edu'] = 'socialwork.uiowa.edu';
