@@ -1,6 +1,6 @@
 @import "assets/scss/_variables.scss";
 @import "assets/scss/_utilities.scss";
-@import "components/event/_event.scss";
+@import "components/event/event.scss";
 
 
 @include breakpoint(sm) {
@@ -24,5 +24,14 @@
 
   .events-card__row .svg-inline--fa {
     margin-left: -20px;
+  }
+}
+
+
+.layout--fourcol,
+.layout--threecol,
+.layout--twocol {
+  .events-card__row {
+    flex: 1 1 100%;
   }
 }

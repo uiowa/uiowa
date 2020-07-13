@@ -4,7 +4,6 @@ status: true
 dependencies:
   module:
     - sitenow
-    - uiowa_footer
 id: site-settings
 label: 'Basic Site Settings'
 module: sitenow
@@ -25,7 +24,7 @@ tips:
     weight: 1
     attributes:
       data-id: edit-site-information
-    body: '<p>Change your site name, give it a slogan or update the site email address.</p>'
+    body: '<p>Change your site name, update the site email address, or designate a parent organization.</p>'
     location: bottom
   front:
     id: front
@@ -54,33 +53,6 @@ tips:
       data-id: edit-uiowa-footer
     body: '<p>Here you can configure the global footer for the site. Let''s look at what options are available to you.</p>'
     location: left
-  footer-variant:
-    id: footer-variant
-    plugin: text
-    label: 'Footer Variant'
-    weight: 5
-    attributes:
-      data-id: edit-uiowa-footer-variant
-    body: '<p>All sites come with the UIowa Standard variant. Depending on the site there may be other options to choose from. Contact your developer if you would like to create a custom variant that differs from the current option(s).</p>'
-    location: right
-  login-link:
-    id: login-link
-    plugin: text
-    label: 'Login link'
-    weight: 6
-    attributes:
-      data-id: edit-uiowa-footer-login-link
-    body: '<p>This provides a login link to the site. Uncheck it if you don''t want to display it.</p>'
-    location: bottom
-  lockup:
-    id: lockup
-    plugin: text
-    label: Lockup
-    weight: 7
-    attributes:
-      data-id: edit-uiowa-footer-lockup
-    body: '<p>If you have an approved lockup, you can upload it here to display in the footer. See the <a href="//brand.uiowa.edu/lockup-system">University of Iowa Brand Manual</a> for more information.</p>'
-    location: bottom
   footer-links:
     id: footer-links
     plugin: text
@@ -88,17 +60,8 @@ tips:
     weight: 8
     attributes:
       data-id: edit-uiowa-footer-menus
-    body: '<p>The footer region also provides three separate menus for social media links and for other custom footer links. You can add/manage links for those by clicking one of the following: <a href="/admin/structure/menu/manage/social?tour">Social Media</a>, <a href="/admin/structure/menu/manage/footer?tour">Footer</a>, <a href="/admin/structure/menu/manage/footer-second?tour">Footer Second</a></p>'
+    body: '<p>The footer region also provides three separate menus for social media links and for other custom footer links. You can add/manage links for those by clicking one of the following: <a href="/admin/structure/menu/manage/social?tour">Social Media</a>, <a href="/admin/structure/menu/manage/footer-primary?tour">Footer Primary</a>, <a href="/admin/structure/menu/manage/footer-secondary?tour">Footer Secondary</a></p>'
     location: bottom
-  additional-information:
-    id: additional-information
-    plugin: text
-    label: 'Additional Information'
-    weight: 9
-    attributes:
-      data-id: edit-uiowa-footer-additional-info-title
-    body: '<p>This is a title/content area where you can provide global site information like contact information. Checkout our <a href="/node/add/page?tour1">Adding Content</a> tour to learn more about our WYSIWYG (What-You-See-Is-What-You-Get) text editor.</p>'
-    location: left
   next_step:
     id: next_step
     plugin: text
