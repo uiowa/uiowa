@@ -30,6 +30,14 @@ function sitenow_p2lb_node_p2lb($nid) {
     ->getStorage('node')
     ->load($nid);
   // Get sections from the page.
+  $section_ids = sitenow_p2lb_fetch_sections($nid);
+  return;
+}
+
+/**
+ * Fetch all section paragraph ids attached to a node.
+ */
+function sitenow_p2lb_fetch_section_ids($nid) {
   $connection = Database::getConnection();
   $query = $connection->select('paragraphs_item_field_data', 'pifd');
   $query->fields('pifd', ['id'])
@@ -38,7 +46,7 @@ function sitenow_p2lb_node_p2lb($nid) {
   $sections = $query->distinct()
     ->execute()
     ->fetchCol();
-  return;
+  return $sections;
 }
 
 /**
@@ -111,4 +119,25 @@ function sitenow_p2lb_process_paragraph($paragraph) {
 
   }
   return;
+}
+
+/**
+ * Removes all attached paragraphs from a node.
+ */
+function sitenow_p2lb_remove_attached_paragraphs($nid) {
+  $section_ids = sitenow_p2lb_fetch_section_ids($nid);
+  // Grab paragraphs attached to each of the given sections.
+  $connection = Database::getConnection();
+  $query = $connection->select('paragraphs_item_field_data', 'pifd');
+  $query->fields('pifd', ['id'])
+    ->condition('parent_id', $section_ids, 'in')
+    ->condition('parent_field_name', 'field_section_content_block', '=');
+  $child_ids = $query->execute()->fetchCol();
+  $ids = array_merge($child_ids, $section_ids);
+  $paragraphs = \Drupal::service('entity_type.manager')
+    ->getStorage('paragraph')
+    ->loadMultiple($ids);
+  foreach ($paragraphs as $paragraph) {
+    $paragraph->delete();
+  }
 }

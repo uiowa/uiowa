@@ -32,7 +32,19 @@ class P2LbSettingsForm extends ConfigFormBase {
 
     $form['markup'] = [
       '#type' => 'markup',
-      '#markup' => $this->t('<p>These settings let you configure SiteNow Migrate for use on this site.</p>'),
+      '#markup' => $this->t('<p>These settings let you configure and use SiteNow paragraphs2layoutbuilder on this site.</p>'),
+    ];
+
+    $nids_w_paragraphs = sitenow_p2lb_paragraph_nodes();
+    $form['nodes_w_paragraphs'] = [
+      '#type' => 'checkboxes',
+      '#title' => t('Nodes with paragraph items.'),
+      '#options' => $nids_w_paragraphs,
+    ];
+
+    $form['delete'] = [
+      '#type' => 'button',
+      '#value' => t('Delete'),
     ];
 
     return $form;
