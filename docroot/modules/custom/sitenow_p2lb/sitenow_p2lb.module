@@ -1,0 +1,67 @@
+<?php
+
+use Drupal\Core\Database\Database;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Psr\Log\LoggerInterface;
+
+/**
+ * Check for nodes which are using paragraphs.
+ */
+function sitenow_p2lb_paragraph_nodes() {
+    $connection = Database::getConnection();
+    $query = $connection->select('paragraphs_item_field_data', 'pifd');
+    $query->fields('pifd', ['parent_id'])
+        ->condition('parent_type', 'node', '=');
+    $result = $query->distinct()
+        ->execute()
+        ->fetchCol();
+    return $result;
+}
+
+/**
+ * Convert a node from paragraphs to layout builder.
+ */
+function sitenow_p2lb_node_p2lb($nid) {
+    $node = \Drupal::service('entity_type.manager')
+        ->getStorage('node')
+        ->load($nid);
+    // Get sections from the page.
+    $connection = Database::getConnection();
+    $query = $connection->select('paragraphs_item_field_data', 'pifd');
+    $query->fields('pifd', ['id'])
+        ->condition('parent_type', 'node');
+    $sections = $query->distinct()
+        ->execute()
+        ->fetchCol();
+    return;
+}
+
+/**
+ * Load paragraph items.
+ */
+function sitenow_p2lb_load_paragraphs($pid) {
+    $paragraph = \Drupal::service('entity_type.manager')
+        ->getStorage('paragraph')
+        ->load($pid);
+    return;
+}
+
+/**
+ * Process paragraphs section.
+ */
+function sitenow_p2lb_process_section($section_id) {
+    $connection = Database::getConnection();
+    $query = $connection->select('paragraphs_item_field_data', 'pifd');
+    $query->fields('pifd', ['id', 'type'])
+        ->condition('parent_id', $section_id, '=')
+        ->condition('parent_field_name', 'field_section_content_block', '=');
+    $paragraphs = $query->execute()->fetchAll();
+    return;
+}
+
+/**
+ * Process individual paragraph.
+ */
+function sitenow_p2lb_process_paragraph() {
+    return;
+}
