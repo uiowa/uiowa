@@ -36,6 +36,7 @@ class P2LbSettingsForm extends ConfigFormBase {
     ];
 
     $nids_w_paragraphs = sitenow_p2lb_paragraph_nodes();
+    $nids_w_paragraphs = array_combine($nids_w_paragraphs, $nids_w_paragraphs);
     $form['nodes_w_paragraphs'] = [
       '#type' => 'checkboxes',
       '#title' => t('Nodes with paragraph items.'),
@@ -43,8 +44,10 @@ class P2LbSettingsForm extends ConfigFormBase {
     ];
 
     $form['delete'] = [
-      '#type' => 'button',
+      '#type' => 'submit',
       '#value' => t('Delete'),
+      '#name' => 'delete',
+      '#submit' => array([$this, 'deleteButton']),
     ];
 
     return $form;
@@ -57,4 +60,11 @@ class P2LbSettingsForm extends ConfigFormBase {
     parent::submitForm($form, $form_state);
   }
 
+  public function deleteButton(array &$form, FormStateInterface $form_state) {
+    $nids = array_filter(array_values($form_state->getValue('nodes_w_paragraphs')));
+    foreach ($nids as $nid) {
+      sitenow_p2lb_remove_attached_paragraphs($nid);
+    }
+    return $form_state;
+  }
 }
