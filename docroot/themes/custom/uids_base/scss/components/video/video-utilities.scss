@@ -5,6 +5,45 @@
 .media--type-remote-video {
   @extend .embed-responsive;
   @extend .embed-responsive-16by9;
+
+  figure.caption & {
+    @include breakpoint(sm) {
+      padding-bottom: 0;
+    }
+  }
+}
+
+figure.caption .media--type-remote-video iframe {
+  @include breakpoint(sm) {
+    position: unset;
+    display: inherit;
+    width: auto;
+    height: auto;
+    padding: 0;
+    overflow: auto;
+  }
+}
+
+figure.caption .media--type-remote-video.media--view-mode-image-large iframe,
+figure.caption .media--type-remote-video.media--view-mode-full iframe {
+  @include breakpoint(sm) {
+    width: 854px;
+    height: 480px;
+  }
+}
+
+figure.caption .media--type-remote-video.media--view-mode-image-medium iframe {
+  @include breakpoint(sm) {
+    width: 640px;
+    height: 360px;
+  }
+}
+
+figure.caption .media--type-remote-video.media--view-mode-image-small iframe {
+  @include breakpoint(sm) {
+    width: 426px;
+    height: 240px;
+  }
 }
 
 .media--type-remote-video.media--view-mode-small__ultrawide,
