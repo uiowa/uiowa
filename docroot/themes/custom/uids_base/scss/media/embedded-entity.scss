@@ -26,7 +26,12 @@
 }
 
 figure.caption {
-  display: table;
+  display: block;
+
+  @include breakpoint(sm) {
+    display: table;
+  }
+
   margin: 0;
   margin-bottom: .5rem;
 
@@ -36,7 +41,12 @@ figure.caption {
   }
 
   figcaption {
-    display: table-caption;
+    display: block;
+
+    @include breakpoint(sm) {
+      display: table-caption;
+    }
+
     max-width: none;
     caption-side: bottom;
   }

@@ -27,7 +27,7 @@
                 background-color: $secondary;
             }
            span {
-            color: $secondary;
+            color: $secondary !important;
            }
         }
 
@@ -35,6 +35,9 @@
            @include bttn--secondary;
             border: 1px solid $secondary;
            @include bttn--focus;
+           span {
+            color: $white !important;
+           }
         }
     }
 
