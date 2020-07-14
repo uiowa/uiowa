@@ -6,6 +6,9 @@
   @extend .embed-responsive;
   @extend .embed-responsive-16by9;
 
+  &.media--view-mode-image-large,
+  &.media--view-mode-image-medium,
+  &.media--view-mode-image-small,
   figure.caption & {
     @include breakpoint(sm) {
       padding-bottom: 0;
@@ -13,7 +16,10 @@
   }
 }
 
-figure.caption .media--type-remote-video iframe {
+figure.caption .media--type-remote-video iframe,
+.media--type-remote-video.media--view-mode-image-medium iframe,
+.media--type-remote-video.media--view-mode-image-large iframe,
+.media--type-remote-video.media--view-mode-image-small iframe {
   @include breakpoint(sm) {
     position: unset;
     display: inherit;
@@ -25,21 +31,24 @@ figure.caption .media--type-remote-video iframe {
 }
 
 figure.caption .media--type-remote-video.media--view-mode-image-large iframe,
-figure.caption .media--type-remote-video.media--view-mode-full iframe {
+figure.caption .media--type-remote-video.media--view-mode-full iframe,
+.media--type-remote-video.media--view-mode-image-large iframe {
   @include breakpoint(sm) {
     width: 854px;
     height: 480px;
   }
 }
 
-figure.caption .media--type-remote-video.media--view-mode-image-medium iframe {
+figure.caption .media--type-remote-video.media--view-mode-image-medium iframe,
+.media--type-remote-video.media--view-mode-image-medium iframe {
   @include breakpoint(sm) {
     width: 640px;
     height: 360px;
   }
 }
 
-figure.caption .media--type-remote-video.media--view-mode-image-small iframe {
+figure.caption .media--type-remote-video.media--view-mode-image-small iframe,
+.media--type-remote-video.media--view-mode-image-small iframe {
   @include breakpoint(sm) {
     width: 426px;
     height: 240px;
