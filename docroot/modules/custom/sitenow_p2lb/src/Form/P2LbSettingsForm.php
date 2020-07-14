@@ -50,6 +50,13 @@ class P2LbSettingsForm extends ConfigFormBase {
       '#submit' => array([$this, 'deleteButton']),
     ];
 
+    $form['update'] = [
+      '#type' => 'submit',
+      '#value' => t('Update'),
+      '#name' => 'update',
+      '#submit' => array([$this, 'updateButton']),
+    ];
+
     return $form;
   }
 
@@ -60,10 +67,27 @@ class P2LbSettingsForm extends ConfigFormBase {
     parent::submitForm($form, $form_state);
   }
 
+  /**
+   * Delete connected paragraphs from the selected nodes.
+   */
   public function deleteButton(array &$form, FormStateInterface $form_state) {
     $nids = array_filter(array_values($form_state->getValue('nodes_w_paragraphs')));
     foreach ($nids as $nid) {
       sitenow_p2lb_remove_attached_paragraphs($nid);
+    }
+    return $form_state;
+  }
+
+  /**
+   * Update paragraphs to lb blocks from the selected nodes.
+   */
+  public function updateButton(array &$form, FormStateInterface $form_state) {
+    $nids = array_filter(array_values($form_state->getValue('nodes_w_paragraphs')));
+    foreach ($nids as $nid) {
+      $section_ids = sitenow_p2lb_fetch_section_ids($nid);
+      foreach($section_ids as $section_id) {
+        sitenow_p2lb_process_section($section_id);
+      }
     }
     return $form_state;
   }
