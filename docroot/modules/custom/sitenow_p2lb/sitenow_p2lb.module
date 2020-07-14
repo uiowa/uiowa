@@ -77,7 +77,11 @@ function sitenow_p2lb_process_section($section_id) {
     $paragraph = $paragraph->toArray();
     $col_widths[] = $paragraph['field_uip_colwidth']['value'];
   }
-  // @todo Create an lb section based on col_widths
+  // @todo convert uip_colwidth to numeric values.
+
+  // Check if we wrap into additional sections.
+  $total_col_width = array_sum($col_widths);
+  $num_sections = ceil($total_col_width / 12);
   return;
 }
 
