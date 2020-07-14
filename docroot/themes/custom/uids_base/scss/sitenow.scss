@@ -445,6 +445,9 @@ figure.caption .embedded-entity+figcaption {
   @include bttn--secondary;
   border: 1px solid $secondary;
   @include bttn--focus;
+  span {
+    color: $white;
+  }
 }
 
 .btn-primary,
@@ -455,5 +458,8 @@ figure.caption .embedded-entity+figcaption {
 
   &:after {
     background-color: $secondary;
+  }
+  span {
+    color: $secondary;
   }
 }
