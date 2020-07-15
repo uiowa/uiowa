@@ -56,7 +56,7 @@ function sitenow_p2lb_load_paragraphs($pid) {
   $paragraph = \Drupal::service('entity_type.manager')
     ->getStorage('paragraph')
     ->load($pid);
-  return;
+  return $paragraph;
 }
 
 /**
@@ -74,11 +74,11 @@ function sitenow_p2lb_process_section($section_id) {
     ->getStorage('paragraph')
     ->loadMultiple($pids);
   foreach ($paragraphs as &$paragraph) {
-    $paragraph = $paragraph->toArray();
-    $col_widths[] = $paragraph['field_uip_colwidth']['value'];
+    $col_str = $paragraph->get('field_uip_colwidth')->getString();
+    // 'Fluid' paragraph will be a col_width of 0.
+    $col_widths[] = (int) preg_replace('|[^0-9]|', '', $col_str);
+    // @todo Account for Fluid.
   }
-  // @todo convert uip_colwidth to numeric values.
-
   // Check if we wrap into additional sections.
   $total_col_width = array_sum($col_widths);
   $num_sections = ceil($total_col_width / 12);
@@ -89,7 +89,7 @@ function sitenow_p2lb_process_section($section_id) {
  * Process individual paragraph.
  */
 function sitenow_p2lb_process_paragraph($paragraph) {
-  switch ($paragraph['type']) {
+  switch ($paragraph->get('type')->getString()) {
     case 'section':
       break;
 
@@ -99,15 +99,18 @@ function sitenow_p2lb_process_paragraph($paragraph) {
         ->getStorage('block_content')
         ->create([
           'type' => 'uiowa_text_area',
-          'info' => [
-            'lang' => 'en',
-          ],
+          'langcode' => 'en',
+          'status' => $paragraph->get('status')->getString(),
           'field_uiowa_text_area' => [
-            $paragraph['field_text_body'],
+            'value' => $paragraph->get('field_text_body')[0]->get('value')->getString(),
+            'format' => $paragraph->get('field_text_body')[0]->get('format')->getString(),
+            'summary' => '',
           ],
         ]);
 
-      $block->save();
+      if ($block->save()) {
+        return $block->get('id')->getString();
+      }
       break;
 
     case 'accordion':
@@ -122,7 +125,8 @@ function sitenow_p2lb_process_paragraph($paragraph) {
     default:
 
   }
-  return;
+  // No block was successfully created.
+  return 0;
 }
 
 /**
