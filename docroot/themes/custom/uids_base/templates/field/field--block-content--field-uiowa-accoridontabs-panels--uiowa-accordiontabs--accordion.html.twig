@@ -37,24 +37,13 @@
  * @see template_preprocess_field()
  */
 #}
-{%
-  set classes = [
-  'field',
-  'field--name-' ~ field_name|clean_class,
-  'field--type-' ~ field_type|clean_class,
-  'field--label-' ~ label_display,
-]
-%}
-{%
-  set title_classes = [
-  'field__label',
-  label_display == 'visually_hidden' ? 'visually-hidden',
-]
-%}
+{% set accordion_items = items|map(i => {
+  'label': i.content.field_uiowa_panel_title|render,
+  'content': i.content|without('field_uiowa_panel_title'),
+}) %}
 
-{% set block_accordion = {
-  'accordion_items': items,
-  'classes':  classes
+{% set accordion = {
+  'accordion_items': accordion_items,
 }%}
 
-{{ include ('@uids_base/uids/accordion.html.twig', block_accordion, with_context = false) }}
+{{ include ('@uids_base/uids/accordion.html.twig', accordion, with_context = false) }}

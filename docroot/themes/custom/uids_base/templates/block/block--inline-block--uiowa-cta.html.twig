@@ -30,46 +30,46 @@
 
   {{ attach_library('uids_base/cta') }}
 
-	{% block cta_container_start %}
-		<div class="cta__wrapper {{ attributes ? attributes.class }}" {{ attributes ? attributes|without('class') }}>
-			{{ title_prefix }}
-			{{ title_suffix }}
+  {% block cta_container_start %}
+    <div class="cta__wrapper {{ attributes ? attributes.class }}" {{ attributes ? attributes|without('class') }}>
+    {{ title_prefix }}
+    {{ title_suffix }}
 
-			<div class="cta__container">
-			{% endblock %}
+    <div class="cta__container">
+  {% endblock %}
 
-			{% block heading %}
-				{% if content.field_uiowa_cta_title[0]['#text'] is not empty %}
-					<div class="cta__title">
-					{% include '@uids_base/uids/heading.html.twig' with {
-            "heading_level" : content.field_uiowa_cta_title[0]['#size'],
-            "heading_class" : 'bold-headline bold-headline--caps',
-            "heading" : content.field_uiowa_cta_title[0]['#text']
-          } %}
-					</div>
-				{% endif %}
-			{% endblock %}
+  {% block heading %}
+    {% if content.field_uiowa_cta_title|render is not empty %}
+      <div class="cta__title">
+        {% include '@uids_base/uids/headline.html.twig' with {
+          "heading_level" : content.field_uiowa_cta_title[0]['#size'],
+          "heading_class" : 'bold-headline bold-headline--caps',
+          "heading" : content.field_uiowa_cta_title[0]['#text']
+        } %}
+      </div>
+    {% endif %}
+  {% endblock %}
 
-			{% block cta_content %}
-				{% if content.field_uiowa_cta_summary[0] is not empty %}
-					<div class="cta__content">
-						<p class="cta__summary">{{ content.field_uiowa_cta_summary }}</p>
-					</div>
-				{% endif %}
-			{% endblock %}
+  {% block cta_content %}
+    {% if content.field_uiowa_cta_summary[0] is not empty %}
+      <div class="cta__content">
+        <p class="cta__summary">{{ content.field_uiowa_cta_summary }}</p>
+      </div>
+    {% endif %}
+  {% endblock %}
 
-			{% block cta_link %}
-				{% if content.field_uiowa_cta_link[0]['#url'] is not empty %}
-					<div class="cta__link">
-						<a href="{{ content.field_uiowa_cta_link[0]['#url'] }}" class="bttn bttn--primary bttn--caps">{{ content.field_uiowa_cta_link[0]['#title'] }}
-							<i class="fas fa-arrow-right"></i>
-						</a>
-					</div>
-				{% endif %}
-			{% endblock %}
+  {% block cta_link %}
+    {% if content.field_uiowa_cta_link[0]['#url'] is not empty %}
+      <div class="cta__link">
+        <a href="{{ content.field_uiowa_cta_link[0]['#url'] }}" class="bttn bttn--primary bttn--caps">{{ content.field_uiowa_cta_link[0]['#title'] }}
+          <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+    {% endif %}
+  {% endblock %}
 
-		</div>
-	</div>
+  </div>
+  </div>
 
 {% endblock %}
 

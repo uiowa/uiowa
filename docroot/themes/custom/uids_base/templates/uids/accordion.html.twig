@@ -1,43 +1,18 @@
 {{ attach_library('uids_base/accordion') }}
-<div class="uids-accordion
-  {# @todo Implement accordion_variant #}
-  {% if accordion.variant %} uids-accordion--{{ accordion.variant }}{% endif %}"
-     role="tablist"
-     aria-multiselectable="single"
->
-  {% for key, item in accordion_items %}
-    {# @todo How to set the h tag correctly? #}
-    <h2 class="uids-accordion__heading">
-      <button class="uids-accordion__button"
-              role="tab"
-              aria-selected="{{ key == 0 | default('false') }}"
-              aria-expanded="{{ key == 0 | default('false') }}"
-      >
-        {{ item.label }}
-        <i aria-hidden="true" focusable="false" class="fas fa-chevron-up"></i>
-      </button>
-    </h2>
-    <div class="uids-accordion__content">
-      {{ item.content }}
-    </div>
-  {% endfor %}
-</div>
-
-{% if accordion.multiselectable == true %}
+{% if accordion_multiselectable == true %}
   {% set accordion_type = 'multi' %}
 {% else %}
   {% set accordion_type = 'single' %}
 {% endif %}
 
-<div class="accordion
-  {% if accordion.variant %} accordion--{{ variant }}{% endif %}"
+<div class="accordion{% if accordion.variant %} accordion--{{ variant }}{% endif %}"
      role="tablist"
-     aria-multiselectable="{{ multiselectable }}"
+     aria-multiselectable="{{ accordion_type }}"
 >
   {% set item_number = 1 %}
-  {% for item in items %}
+  {% for key, item in accordion_items %}
     <!-- Use the accurate heading level to maintain the document outline -->
-    <h2 id="accordion-heading-{{ item_number }}"
+    <h2 id="accordion-heading-{{ key }}"
         class="accordion__heading"
     >
       <button class="accordion__button"
@@ -46,7 +21,9 @@
               aria-expanded="{{ item.expanded | default('false') }}"
               aria-controls="{{ accordion_type }}-select-{{ item_number }}"
       >
-        {{ item.title }}
+        {% block accordion_label %}
+          {{ item.label }}
+        {% endblock %}
         <i aria-hidden="true" focusable="false" class="fas fa-chevron-up"></i>
       </button>
     </h2>
@@ -54,8 +31,9 @@
          aria-labelledby="accordion-heading-{{ item_number }}"
          class="accordion__content"
     >
-      {{ item.content }}
+      {% block accordion_content %}
+        {{ item.content }}
+      {% endblock %}
     </div>
-    {% set item_number = item_number + 1 %}
   {% endfor %}
 </div>

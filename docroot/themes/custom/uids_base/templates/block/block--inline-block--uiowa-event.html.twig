@@ -32,44 +32,44 @@
 
 {% block content %}
 
-	{{ attach_library('uids_base/event') }}
+  {{ attach_library('uids_base/event') }}
 
-	<div class="events-card events-card__row {{ attributes ? attributes.class }}" {{ attributes ? attributes|without('class') }}>
+  <div class="events-card events-card__row {{ attributes ? attributes.class }}" {{ attributes ? attributes|without('class') }}>
 
-		{{ title_prefix }}
-		{{ title_suffix }}
+    {{ title_prefix }}
+    {{ title_suffix }}
 
-		{% block events_card_img %}
-			{% if content.field_uiowa_event_image %}
-				<div class="events-card__image">
-					{{ content.field_uiowa_event_image }}
-				</div>
-			{% endif %}
-		{% endblock %}
-		<div class="events-card__body">
+    {% block events_card_img %}
+      {% if content.field_uiowa_event_image %}
+        <div class="events-card__image">
+          {{ content.field_uiowa_event_image }}
+        </div>
+      {% endif %}
+    {% endblock %}
+    <div class="events-card__body">
 
-			{% include "@uids_base/uids/heading.html.twig" with {
-            "heading_level" : content.field_uiowa_event_title[0]['#size'],
-            "heading_class" : 'events-card__title',
-            "heading" : content.field_uiowa_event_title[0]['#text'],
-						"heading_url" : event_url,
-          } %}
+      {% include "@uids_base/uids/headline.html.twig" with {
+        "heading_level" : content.field_uiowa_event_title[0]['#size'],
+        "heading_class" : 'events-card__title',
+        "heading" : content.field_uiowa_event_title[0]['#text'],
+        "heading_url" : event_url,
+      } %}
 
-			<div class="events-card__details">
-				<div class="events-card__date">
-					{{ content.field_uiowa_event_date }}
-				</div>
+      <div class="events-card__details">
+        <div class="events-card__date">
+          {{ content.field_uiowa_event_date }}
+        </div>
 
-					{% if event_location is not empty %}
-				<div class="events-card__label">
-				  {{ content.field_uiowa_event_icon }}
-					{{ content.field_uiowa_event_location }}
-				</div>
-					{% endif %}
+        {% if event_location is not empty %}
+          <div class="events-card__label">
+            {{ content.field_uiowa_event_icon }}
+            {{ content.field_uiowa_event_location }}
+          </div>
+        {% endif %}
 
-			</div>
+      </div>
 
-		</div>
-	</div>
+    </div>
+  </div>
 
 {% endblock %}

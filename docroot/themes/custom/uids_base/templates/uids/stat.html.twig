@@ -4,7 +4,7 @@
   {% block heading %}
     <div>
       {% if stat_title is not empty %}
-        {% include '@uids_base/uids/heading.html.twig' with {
+        {% include '@uids_base/uids/headline.html.twig' with {
           'heading_level' : heading_level ?: 'h2',
           'heading_class' : 'stat__title',
           'heading' : stat_title,
