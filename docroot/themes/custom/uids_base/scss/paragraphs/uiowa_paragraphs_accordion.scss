@@ -2,14 +2,16 @@
 @import "uids/assets/scss/_utilities.scss";
 
 .paragraph--type--accordion {
-    .uids-accordion {
-        .uids-accordion__heading {
+    .accordion {
+        .accordion__heading {
             color: $secondary;
         }
 
-        .uids-accordion__content {
+        .accordion__content {
             background-color: $white;
-
+            h2, h3, h4, h5, h6 {
+              color: $secondary;
+            }
             blockquote {
                 color: $secondary;
                 border-color: $primary;
@@ -17,6 +19,9 @@
 
             a:not(.btn):not(.bttn):not(.button) {
                 color: initial;
+                span {
+                  color: initial;
+                }
             }
 
             a.btn-primary {
@@ -27,12 +32,18 @@
                 &:after {
                     background-color: $secondary;
                 }
+                span {
+                  color: $secondary !important;
+                }
             }
 
             a.btn:not(.btn-primary) {
                @include bttn--secondary;
                 border: 1px solid $secondary;
                @include bttn--focus;
+               span {
+                color: $white !important;
+               }
             }
         }
     }
