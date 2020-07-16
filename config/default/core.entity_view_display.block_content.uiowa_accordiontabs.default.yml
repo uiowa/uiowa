@@ -4,12 +4,22 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_accordiontabs
+    - field.field.block_content.uiowa_accordiontabs.field_uiowa_accordiontabs_h_size
     - field.field.block_content.uiowa_accordiontabs.field_uiowa_accoridontabs_panels
+  module:
+    - options
 id: block_content.uiowa_accordiontabs.default
 targetEntityType: block_content
 bundle: uiowa_accordiontabs
 mode: default
 content:
+  field_uiowa_accordiontabs_h_size:
+    type: list_key
+    weight: 1
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
   field_uiowa_accoridontabs_panels:
     weight: 0
     label: hidden

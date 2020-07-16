@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_accordiontabs
+    - field.field.block_content.uiowa_accordiontabs.field_uiowa_accordiontabs_h_size
     - field.field.block_content.uiowa_accordiontabs.field_uiowa_accoridontabs_panels
   module:
     - entity_browser_entity_form
@@ -13,8 +14,14 @@ targetEntityType: block_content
 bundle: uiowa_accordiontabs
 mode: default
 content:
+  field_uiowa_accordiontabs_h_size:
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
   field_uiowa_accoridontabs_panels:
-    weight: 26
+    weight: 2
     settings:
       form_mode: default
       revision: true
@@ -34,7 +41,7 @@ content:
     region: content
   info:
     type: string_textfield
-    weight: -5
+    weight: 0
     region: content
     settings:
       size: 60

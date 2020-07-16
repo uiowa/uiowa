@@ -1,0 +1,23 @@
+uuid: 1931f165-9a8a-4ba3-bf08-6a13ceea4dee
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_accordiontabs
+    - field.storage.block_content.field_uiowa_accordiontabs_h_size
+  module:
+    - options
+id: block_content.uiowa_accordiontabs.field_uiowa_accordiontabs_h_size
+field_name: field_uiowa_accordiontabs_h_size
+entity_type: block_content
+bundle: uiowa_accordiontabs
+label: 'Size of headings'
+description: 'Select the size of the headings for the accordion or tab items. If there is a heading above this block, then you probably want to select <em>Heading 3</em>. If there is no heading, you probably want to select <em>Heading 2</em>.'
+required: true
+translatable: false
+default_value:
+  -
+    value: h2
+default_value_callback: ''
+settings: {  }
+field_type: list_string
