@@ -1,16 +1,18 @@
-uuid: 4cdb3e20-96be-47b8-a905-d07d398bee4a
+uuid: 0b8ef192-ebf6-4924-a210-ef429d049ad9
 langcode: en
 status: true
 dependencies:
   module:
     - block_content
-    - heading
 id: block_content.field_uiowa_panel_title
 field_name: field_uiowa_panel_title
 entity_type: block_content
-type: heading
-settings: {  }
-module: heading
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
 locked: false
 cardinality: 1
 translatable: true

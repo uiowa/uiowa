@@ -4,10 +4,9 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_panel
-    - field.field.block_content.uiowa_panel.field_uiowa_panel_title
     - field.field.block_content.uiowa_panel.field_uiowa_panel_content
+    - field.field.block_content.uiowa_panel.field_uiowa_panel_title
   module:
-    - heading
     - text
 id: block_content.uiowa_panel.default
 targetEntityType: block_content
@@ -15,17 +14,18 @@ bundle: uiowa_panel
 mode: default
 content:
   field_uiowa_panel_content:
-    weight: 1
-    label: above
+    weight: 2
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   field_uiowa_panel_title:
-    weight: 0
-    label: above
-    settings: {  }
+    weight: 1
+    label: hidden
+    settings:
+      link_to_entity: false
     third_party_settings: {  }
-    type: heading
+    type: string
     region: content
 hidden: {  }
