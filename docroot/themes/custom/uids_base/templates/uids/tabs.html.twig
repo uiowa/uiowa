@@ -1,12 +1,12 @@
 {{ attach_library('uids_base/tab') }}
-
+{% set tab_h_size = tab_h_size ?: 'h2' %}
 <div class="tab"
      role="tablist"
      aria-multiselectable="false"
 >
   <div class="tab__tabs">
     {% for key, item in tab_items %}
-      <h2 id="tab-heading-{{ key }}" class="tab__heading">
+      <{{ tab_h_size }} id="tab-heading-{{ key }}" class="tab__heading">
         <button class="tab__button"
                 role="tab"
                 aria-selected="{{ item.expanded | default('false') }}"
@@ -17,7 +17,7 @@
             {{ item.label }}
           {% endblock %}
         </button>
-      </h2>
+      </{{ tab_h_size }}>
     {% endfor %}
   </div>
   <div class="tab__panels">

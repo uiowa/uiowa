@@ -4,6 +4,7 @@
 {% else %}
   {% set accordion_type = 'single' %}
 {% endif %}
+{% set accordion_h_size = accordion_h_size ?: 'h2' %}
 
 <div class="accordion{% if accordion.variant %} accordion--{{ variant }}{% endif %}"
      role="tablist"
@@ -11,7 +12,7 @@
 >
   {% for key, item in accordion_items %}
     <!-- Use the accurate heading level to maintain the document outline -->
-    <h2 id="accordion-heading-{{ key }}" class="accordion__heading">
+    <{{ accordion_h_size }} id="accordion-heading-{{ key }}" class="accordion__heading">
       <button class="accordion__button"
               role="tab"
               aria-selected="{{ item.expanded | default('false') }}"
@@ -23,7 +24,7 @@
         {% endblock %}
         <i aria-hidden="true" focusable="false" class="fas fa-chevron-up"></i>
       </button>
-    </h2>
+    </{{ accordion_h_size }}>
     <div id="accordion-{{ accordion_type }}-select-{{ key }}"
          aria-labelledby="accordion-heading-{{ key }}"
          class="accordion__content"

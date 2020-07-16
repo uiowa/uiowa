@@ -44,6 +44,7 @@
 
 {% set tabs = {
   'tab_items': tab_items,
+  'tab_h_size': h_size|render,
 }%}
 
 {{ include ('@uids_base/uids/tabs.html.twig', tabs, with_context = false) }}

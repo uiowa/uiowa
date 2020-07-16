@@ -44,6 +44,7 @@
 
 {% set accordion = {
   'accordion_items': accordion_items,
+  'accordion_h_size': h_size|render,
 }%}
 
 {{ include ('@uids_base/uids/accordion.html.twig', accordion, with_context = false) }}

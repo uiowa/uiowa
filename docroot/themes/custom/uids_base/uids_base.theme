@@ -193,6 +193,7 @@ function uids_base_preprocess_node(&$variables) {
  */
 function uids_base_preprocess_field(&$variables) {
   $variables['page_featured_image'] = $variables['field_name'] == 'field_image';
+  $element = $variables['element'];
 
   // Set the caption if this is 'field_image'.
   if ($variables['field_name'] === 'field_image') {
@@ -224,6 +225,20 @@ function uids_base_preprocess_field(&$variables) {
     $variables['caption'] = $caption;
   }
 
+  if ($variables['field_name'] === 'field_uiowa_accoridontabs_panels') {
+    /** @var \Drupal\block_content\Entity\BlockContent $block */
+    $block = $element['#object'];
+    $h_size = $block->get('field_uiowa_accordiontabs_h_size');
+    if ($h_size) {
+      $h_size = $h_size->getValue();
+    }
+    $variables['h_size'] = $h_size;
+  }
+
+  if ($variables['field_name'] === 'field_uiowa_accordiontabs_h_size') {
+    $that = 'this';
+  }
+
   if (isset($variables['page_featured_image'])) {
     $block_manager = \Drupal::service('plugin.manager.block');
     $config = [];
@@ -232,8 +247,10 @@ function uids_base_preprocess_field(&$variables) {
   }
 
   // Add labels to collection blocks.
-  $element = $variables['element'];
   if (isset($element['#field_name'])) {
+    if ($element['#field_name'] == 'field_uiowa_accordiontabs_panels') {
+      $test = 'thing';
+    }
     if ($element['#field_name'] == 'field_uiowa_collection_items') {
       foreach ($variables['items'] as $key => &$item) {
         // Add the block description as a label.
