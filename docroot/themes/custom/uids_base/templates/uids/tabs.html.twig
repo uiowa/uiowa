@@ -1,0 +1,35 @@
+{{ attach_library('uids_base/tab') }}
+
+<div class="tab"
+     role="tablist"
+     aria-multiselectable="false"
+>
+  <div class="tab__tabs">
+    {% for key, item in tab_items %}
+      <h2 id="tab-heading-{{ key }}" class="tab__heading">
+        <button class="tab__button"
+                role="tab"
+                aria-selected="{{ item.expanded | default('false') }}"
+                aria-expanded="{{ item.expanded | default('false') }}"
+                aria-controls="tab-select-{{ key }}"
+        >
+          {% block accordion_label %}
+            {{ item.label }}
+          {% endblock %}
+        </button>
+      </h2>
+    {% endfor %}
+  </div>
+  <div class="tab__panels">
+    {% for key, item in tab_items %}
+      <div id="tab-select-{{ key }}"
+           aria-labelledby="tab-heading-{{ key }}"
+           class="tab__panel"
+      >
+        {% block tab_content %}
+          {{ item.content }}
+        {% endblock %}
+      </div>
+    {% endfor %}
+  </div>
+</div>

@@ -9,17 +9,14 @@
      role="tablist"
      aria-multiselectable="{{ accordion_type }}"
 >
-  {% set item_number = 1 %}
   {% for key, item in accordion_items %}
     <!-- Use the accurate heading level to maintain the document outline -->
-    <h2 id="accordion-heading-{{ key }}"
-        class="accordion__heading"
-    >
+    <h2 id="accordion-heading-{{ key }}" class="accordion__heading">
       <button class="accordion__button"
               role="tab"
               aria-selected="{{ item.expanded | default('false') }}"
               aria-expanded="{{ item.expanded | default('false') }}"
-              aria-controls="{{ accordion_type }}-select-{{ item_number }}"
+              aria-controls="accordion-{{ accordion_type }}-select-{{ key }}"
       >
         {% block accordion_label %}
           {{ item.label }}
@@ -27,8 +24,8 @@
         <i aria-hidden="true" focusable="false" class="fas fa-chevron-up"></i>
       </button>
     </h2>
-    <div id="{{ accordion_type }}-select-{{ item_number }}"
-         aria-labelledby="accordion-heading-{{ item_number }}"
+    <div id="accordion-{{ accordion_type }}-select-{{ key }}"
+         aria-labelledby="accordion-heading-{{ key }}"
          class="accordion__content"
     >
       {% block accordion_content %}
