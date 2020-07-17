@@ -188,7 +188,7 @@ function sitenow_articles_preprocess_node(&$variables) {
           $route_name = $current_route->getRouteName();
           $variables['#cache']['contexts'][] = 'route.name';
           if (strpos($route_name, 'view.articles.') === 0) {
-            $variables['content_heading'] = "h2";
+            $variables['content_heading'] = 'h2';
           }
 
           if ($node->hasField('field_article_source_link_direct')) {
