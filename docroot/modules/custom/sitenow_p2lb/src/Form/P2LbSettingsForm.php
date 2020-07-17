@@ -48,7 +48,7 @@ class P2LbSettingsForm extends ConfigFormBase {
       '#value' => t('Delete'),
       '#name' => 'delete',
       '#submit' => [
-        [$this, 'deleteButton']
+        [$this, 'deleteButton'],
       ],
     ];
 
@@ -57,7 +57,7 @@ class P2LbSettingsForm extends ConfigFormBase {
       '#value' => t('Update'),
       '#name' => 'update',
       '#submit' => [
-        [$this, 'updateButton']
+        [$this, 'updateButton'],
       ],
     ];
 

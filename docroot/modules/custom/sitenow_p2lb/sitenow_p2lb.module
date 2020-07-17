@@ -31,7 +31,11 @@ function sitenow_p2lb_node_p2lb($nid) {
     ->load($nid);
   // Get sections from the page.
   $section_ids = sitenow_p2lb_fetch_sections($nid);
-  return;
+  $layout = $node->get('layout_builder__layout');
+  foreach ($section_ids as $section_id) {
+    sitenow_p2lb_process_section($section_id, $layout);
+  }
+  $layout->save();
 }
 
 /**
@@ -43,26 +47,16 @@ function sitenow_p2lb_fetch_section_ids($nid) {
   $query->fields('pifd', ['id'])
     ->condition('parent_type', 'node', '=')
     ->condition('parent_id', $nid, '=');
-  $sections = $query->distinct()
+  $section_ids = $query->distinct()
     ->execute()
     ->fetchCol();
-  return $sections;
-}
-
-/**
- * Load paragraph items.
- */
-function sitenow_p2lb_load_paragraphs($pid) {
-  $paragraph = \Drupal::service('entity_type.manager')
-    ->getStorage('paragraph')
-    ->load($pid);
-  return $paragraph;
+  return $section_ids;
 }
 
 /**
  * Process paragraphs section.
  */
-function sitenow_p2lb_process_section($section_id) {
+function sitenow_p2lb_process_section($section_id, $layout) {
   $connection = Database::getConnection();
   $query = $connection->select('paragraphs_item_field_data', 'pifd');
   $query->fields('pifd', ['id', 'type'])
@@ -70,18 +64,22 @@ function sitenow_p2lb_process_section($section_id) {
     ->condition('parent_field_name', 'field_section_content_block', '=');
   $pids = $query->execute()->fetchAll();
   $col_widths = [];
+  $p2b_ids = [];
   $paragraphs = \Drupal::service('entity_type.manager')
     ->getStorage('paragraph')
     ->loadMultiple($pids);
-  foreach ($paragraphs as &$paragraph) {
+  foreach ($paragraphs as $paragraph) {
     $col_str = $paragraph->get('field_uip_colwidth')->getString();
     // 'Fluid' paragraph will be a col_width of 0.
     $col_widths[] = (int) preg_replace('|[^0-9]|', '', $col_str);
-    // @todo Account for Fluid.
+    $p2b_ids[] = sitenow_p2lb_process_paragraph($paragraph);
   }
   // Check if we wrap into additional sections.
   $total_col_width = array_sum($col_widths);
   $num_sections = ceil($total_col_width / 12);
+  for ($i = 0; $i < $num_sections; $i++) {
+    // Create and append section to our $layout (section list).
+  }
   return;
 }
 
@@ -101,10 +99,12 @@ function sitenow_p2lb_process_paragraph($paragraph) {
           'type' => 'uiowa_text_area',
           'langcode' => 'en',
           'status' => $paragraph->get('status')->getString(),
+          // info- looks like 'title' field?
+          'reusable' => 0, 
+          'default_langcode' => 1,
           'field_uiowa_text_area' => [
             'value' => $paragraph->get('field_text_body')[0]->get('value')->getString(),
             'format' => $paragraph->get('field_text_body')[0]->get('format')->getString(),
-            'summary' => '',
           ],
         ]);
 
