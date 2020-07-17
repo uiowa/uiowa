@@ -974,6 +974,41 @@ function sitenow_update_8029() {
 }
 
 /**
+ * Roll back contact block revision on collegiate sites.
+ */
+function sitenow_update_8030() {
+  /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
+  $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
+  $collegiate_split = 'config_split:collegiate';
+  // This site has the 'collegiate' split enabled.
+  if (isset($filters[$collegiate_split]) && $filters[$collegiate_split]['status']) {
+    $block = \Drupal::service('entity.repository')
+      ->loadEntityByUuid('block_content', '0c0c1f36-3804-48b0-b384-6284eed8c67e');
+    // Check that there aren't filled-in content fields.
+    if (empty($block->get('field_uiowa_text_area')->getValue())) {
+      $id = $block->get('id')->getValue()[0]['value'];
+      $database = \Drupal::database();
+      // Get the last revision. AddInfo migrate didn't create a revision id.
+      $rev_id = $database->select('block_content_revision__field_uiowa_text_area', 'r')
+        ->fields('r', ['revision_id'])
+        ->condition('entity_id', $id, '=')
+        ->orderBy('revision_id', 'DESC')
+        ->range(0, 1)
+        ->execute()
+        ->fetchCol()[0];
+      if ($rev_id) {
+        // Set last revision as the new default and save.
+        $reverted_block = \Drupal::entityTypeManager()->getStorage('block_content')->loadRevision($rev_id);
+        $reverted_block->isDefaultRevision(TRUE);
+        $reverted_block->save();
+        $block->isDefaultRevision(FALSE);
+        $block->save();
+      }
+    }
+  }
+}
+
+/**
  * Transition existing sites to 'sitenow_v2' split.
  *
  * Update to add the 'sitenow_v2' split to all sites that
