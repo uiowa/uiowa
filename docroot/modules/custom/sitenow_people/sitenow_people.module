@@ -215,6 +215,32 @@ function sitenow_people_preprocess_views_view(&$variables) {
 /**
  * Implements hook_preprocess_HOOK().
  */
+function sitenow_people_preprocess_node(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    $node = $variables["node"];
+    switch ($node->getType()) {
+      case 'person':
+        switch ($variables['view_mode']) {
+          case 'teaser':
+            // Heading needs to change based on placement. Defaults to h3 in twig.
+            $current_route = \Drupal::routeMatch();
+            $route_name = $current_route->getRouteName();
+            $variables['#cache']['contexts'][] = 'route.name';
+            if (strpos($route_name, 'view.people.') === 0) {
+              $variables['content_heading'] = 'h2';
+            }
+            break;
+        }
+        break;
+    }
+  }
+
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
 function sitenow_people_preprocess_field(&$variables) {
   switch ($variables["element"]["#field_name"]) {
     // Change header class for person position based on view mode.
