@@ -7,7 +7,11 @@
  */
 
 use Drupal\block\Entity\Block;
+use Drupal\config\StorageReplaceDataWrapper;
+use Drupal\Core\Config\ConfigException;
+use Drupal\Core\Config\ConfigImporter;
 use Drupal\Core\Config\FileStorage;
+use Drupal\Core\Config\StorageComparer;
 use Drupal\node\Entity\Node;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\user\Entity\User;
@@ -17,6 +21,8 @@ use Drupal\field\Entity\FieldConfig;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\filter\Plugin\Filter\FilterHtmlCorrector;
+use Drush\Drupal\Commands\config\ConfigCommands;
+use Webmozart\PathUtil\Path;
 
 /**
  * Update some uiowa_footer settings which are ignored.
@@ -975,7 +981,7 @@ function sitenow_update_8029() {
  * Also removes all Paragraph entity instances from sites
  * that have the 'collegiate' split enabled.
  */
-function sitenow_update_8030() {
+function sitenow_update_8031() {
 
   // @todo Possibly add checks for sites who have not updated
   //   content since the site was provisioned.
@@ -996,25 +1002,99 @@ function sitenow_update_8030() {
   }
   // This site does not have the 'collegiate' split enabled.
   else {
+    // Enable the 'sitenow_v2' split.
+    $config_factory = \Drupal::configFactory();
+    $config = $config_factory->getEditable('config_split.config_split.sitenow_v2');
+    $config->set('status', TRUE);
+    $config->save(TRUE);
+
+    // @todo Remove this. It is just left here as an example of something
+    //   that has been tried. It doesn't work because the drush command
+    //   outputs to the console which generates an error during the update
+    //   hook.
+//    /* @var \Drush\Drupal\Commands\config\ConfigImportCommands $drush_import */
+//    $container = \Drupal::getContainer();
+//    $drush_import = $container->get('config.import.commands');
+//    $drush_import->import(NULL, [
+//      'partial' => TRUE,
+//      'source' => DRUPAL_ROOT . '/../config/features/sitenow_v2',
+//      'diff' => FALSE,
+//    ]);
+
     // Write the 'sitenow_v2' split into active configuration.
-    $config_path = DRUPAL_ROOT . '/../config/default';
-    $source = new FileStorage($config_path);
-    $config_storage = \Drupal::service('config.storage');
-    $config_storage->write('config_split.config_split.sitenow_v2', $source->read('config_split.config_split.sitenow_v2'));
+    // Adapted from \Drush\Drupal\Commands\config\ConfigImportCommands.
+    // @todo Uncomment or remove this. Not sure yet if this step is
+    //   necessary. This seems to run without error, but doesn't prevent
+    //   an issue with importing when the config import is run after the
+    //   update.
+//    $config_path = DRUPAL_ROOT . '/../config/features/sitenow_v2';
+//    $source_storage = new FileStorage($config_path);
+//
+//    /* @var \Drush\Drupal\Commands\config\ConfigImportCommands $drush_import */
+//    $container = \Drupal::getContainer();
+//    $drush_import = $container->get('config.import.commands');
+//
+//    // Determine $source_storage in partial case.
+//    $active_storage = $drush_import->getConfigStorage();
+//    // Mimicking the 'partial' flag in drush.
+//    $replacement_storage = new StorageReplaceDataWrapper($active_storage);
+//    foreach ($source_storage->listAll() as $name) {
+//      $data = $source_storage->read($name);
+//      $replacement_storage->replaceData($name, $data);
+//    }
+//    $source_storage = $replacement_storage;
+//
+//    if ($drush_import->hasImportTransformer()) {
+//      // Use the import transformer if it is available. (Drupal ^8.8)
+//      // Drupal core does not apply transformations for single imports.
+//      // And in addition the StorageReplaceDataWrapper is not compatible
+//      // with StorageCopyTrait::replaceStorageContents.
+//      $source_storage = $drush_import->getImportTransformer()->transform($source_storage);
+//    }
+//
+//    $config_manager = $drush_import->getConfigManager();
+//    $storage_comparer = new StorageComparer($source_storage, $active_storage, $config_manager);
+//
+//
+//    if (!$storage_comparer->createChangelist()->hasChanges()) {
+//      return;
+//    }
+//
+//    $config_importer = new ConfigImporter(
+//      $storage_comparer,
+//      $drush_import->getEventDispatcher(),
+//      $drush_import->getConfigManager(),
+//      $drush_import->getLock(),
+//      $drush_import->getConfigTyped(),
+//      $drush_import->getModuleHandler(),
+//      $drush_import->getModuleInstaller(),
+//      $drush_import->getThemeHandler(),
+//      $drush_import->getStringTranslation(),
+//      $drush_import->getModuleExtensionList()
+//    );
+//    if ($config_importer->alreadyImporting()) {
+//      return;
+//    } else {
+//      try {
+//        $config_importer->import();
+//      } catch (ConfigException $e) {
+//        // Return a negative result for UI purposes. We do not differentiate
+//        // between an actual synchronization error and a failed lock, because
+//        // concurrent synchronizations are an edge-case happening only when
+//        // multiple developers or site builders attempt to do it without
+//        // coordinating.
+//        $message = 'The import failed due to the following reasons:' . "\n";
+//        $message .= implode("\n", $config_importer->getErrors());
+//
+//        watchdog_exception('config_import', $e);
+//        throw new \Exception($message);
+//      }
+//    }
 
-    // Manually enable sitenow_v2 config split.
-    $entity = \Drupal::entityTypeManager()->getStorage('config_split')->load('sitenow_v2');
-    $entity->set('status', TRUE);
-    $entity->save();
-
-    // Manually trigger the partial import of 'sitenow_v2' config.
-    /* @var \Drush\Drupal\Commands\config\ConfigImportCommands $drush_import */
-    $container = \Drupal::getContainer();
-    $drush_import = $container->get('config.import.commands');
-    $drush_import->import(NULL, [
-      'partial' => TRUE,
-      'source' => DRUPAL_ROOT . '/../config/features/sitenow_v2',
-      'diff' => FALSE,
-    ]);
+    // @todo Uncomment or remove this. Not sure yet if this step is
+    //   necessary. It is the same problem with the previous item.
+//    /** @var \Drupal\Core\Config\ConfigInstaller $configInstaller */
+//    $configInstaller = \Drupal::service('config.installer');
+//    $configInstaller->installCollectionDefaultConfig(\Drupal\Core\Config\StorageInterface::DEFAULT_COLLECTION);
   }
 }
