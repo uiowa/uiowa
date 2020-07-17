@@ -100,7 +100,7 @@ function sitenow_p2lb_process_paragraph($paragraph) {
           'langcode' => 'en',
           'status' => $paragraph->get('status')->getString(),
           // info- looks like 'title' field?
-          'reusable' => 0, 
+          'reusable' => 0,
           'default_langcode' => 1,
           'field_uiowa_text_area' => [
             'value' => $paragraph->get('field_text_body')[0]->get('value')->getString(),
