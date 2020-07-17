@@ -223,8 +223,10 @@ function sitenow_people_preprocess_node(&$variables) {
       case 'person':
         switch ($variables['view_mode']) {
           case 'teaser':
+            // Heading needs to change based on placement. Defaults to h3 in twig.
             $current_route = \Drupal::routeMatch();
             $route_name = $current_route->getRouteName();
+            $variables['#cache']['contexts'][] = 'route.name';
             if (strpos($route_name, 'view.people.') === 0) {
               $variables['content_heading'] = "h2";
             }

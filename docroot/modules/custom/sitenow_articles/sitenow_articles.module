@@ -183,11 +183,14 @@ function sitenow_articles_preprocess_node(&$variables) {
           }
         }
         if ($variables['view_mode'] == 'teaser') {
+          // Heading needs to change based on placement. Defaults to h3 in twig.
           $current_route = \Drupal::routeMatch();
           $route_name = $current_route->getRouteName();
+          $variables['#cache']['contexts'][] = 'route.name';
           if (strpos($route_name, 'view.articles.') === 0) {
             $variables['content_heading'] = "h2";
           }
+
           if ($node->hasField('field_article_source_link_direct')) {
             if ($node->field_article_source_link_direct->value == 1 && !$node->get('field_article_source_link')->isEmpty()) {
               unset($variables["content"]["field_article_source_link"]);
