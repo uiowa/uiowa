@@ -87,11 +87,7 @@
   {% set node_link = url %}
 {% endif %}
 
-{% if content_heading %}
-  {% set heading_level = content_heading %}
-{% else %}
-  {% set heading_level = 'h3' %}
-{% endif %}
+{% set heading_level = content_heading ?: 'h3' %}
 
 {{ attach_library('classy/node') }}
 {{ attach_library('uids_base/node-type-article') }}
