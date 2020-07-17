@@ -226,6 +226,7 @@ function sitenow_people_preprocess_node(&$variables) {
             $current_route = \Drupal::routeMatch();
             $route_name = $current_route->getRouteName();
             if (strpos($route_name, 'view.people.') === 0) {
+              $variables['#cache']['contexts'][] = 'route.name';
               $variables['content_heading'] = "h2";
             }
             break;
