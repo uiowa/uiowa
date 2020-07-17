@@ -225,6 +225,7 @@ function uids_base_preprocess_field(&$variables) {
     $variables['caption'] = $caption;
   }
 
+  // Pass the 'h' tag size through from accordion/tabs to their panels.
   if ($variables['field_name'] === 'field_uiowa_accoridontabs_panels') {
     /** @var \Drupal\block_content\Entity\BlockContent $block */
     $block = $element['#object'];
@@ -235,30 +236,11 @@ function uids_base_preprocess_field(&$variables) {
     $variables['h_size'] = $h_size;
   }
 
-  if ($variables['field_name'] === 'field_uiowa_accordiontabs_h_size') {
-    $that = 'this';
-  }
-
   if (isset($variables['page_featured_image'])) {
     $block_manager = \Drupal::service('plugin.manager.block');
     $config = [];
     $plugin_block = $block_manager->createInstance('system_breadcrumb_block', $config);
     $variables['breadcrumb'] = $plugin_block->build();
-  }
-
-  // Add labels to collection blocks.
-  if (isset($element['#field_name'])) {
-    if ($element['#field_name'] == 'field_uiowa_accordiontabs_panels') {
-      $test = 'thing';
-    }
-    if ($element['#field_name'] == 'field_uiowa_collection_items') {
-      foreach ($variables['items'] as $key => &$item) {
-        // Add the block description as a label.
-        /** @var \Drupal\block\Entity\BlockContentInterface $block */
-        $block = $item['content']['#block_content'];
-        $item['label'] = $block->label();
-      }
-    }
   }
 }
 
