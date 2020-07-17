@@ -980,7 +980,7 @@ function sitenow_update_8030() {
     if (empty($block->get('field_uiowa_text_area')->getValue())) {
       $id = $block->get('id')->getValue()[0]['value'];
       $database = \Drupal::database();
-      // Get the last revision.
+      // Get the last revision. AddInfo migrate didn't create a revision id.
       $rev_id = $database->select('block_content_revision__field_uiowa_text_area', 'r')
         ->fields('r', ['revision_id'])
         ->condition('entity_id', $id, '=')
