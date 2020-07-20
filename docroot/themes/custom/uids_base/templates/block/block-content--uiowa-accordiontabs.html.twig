@@ -21,18 +21,8 @@
  * @ingroup themeable
  */
 #}
-{%
-  set classes = [
-  'block-content',
-  'block-content--type-' ~ bundle|clean_class,
-  'block-content--' ~ id,
-  'block-content--view-mode-' ~ view_mode|clean_class
-]
-%}
 
-<div{{ attributes.addClass(classes) }}>
-  <div class="block-content__content">
-    {# Remove the h_size field from output. It has to be included so it can be used in preprocessing. #}
-    {{ content|without('field_uiowa_accordiontabs_h_size') }}
-  </div>
+<div class="block-content__content">
+  {# Remove the h_size field from output. It has to be included so it can be used in preprocessing. #}
+  {{ content|without('field_uiowa_accordiontabs_h_size') }}
 </div>

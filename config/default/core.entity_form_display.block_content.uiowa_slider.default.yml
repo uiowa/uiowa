@@ -14,30 +14,23 @@ bundle: uiowa_slider
 mode: default
 content:
   field_uiowa_slider_slides:
-    weight: 26
+    type: inline_entity_form_complex
+    weight: 0
     settings:
       form_mode: default
       revision: true
-      label_singular: ''
-      label_plural: ''
-      collapsible: true
+      override_labels: true
+      label_singular: slide
+      label_plural: slides
       allow_new: true
       match_operator: CONTAINS
-      override_labels: false
+      allow_duplicate: true
+      collapsible: false
       collapsed: false
       allow_existing: false
-      allow_duplicate: false
     third_party_settings:
       entity_browser_entity_form:
         entity_browser_id: _none
-    type: inline_entity_form_complex
     region: content
-  info:
-    type: string_textfield
-    weight: -5
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-hidden: {  }
+hidden:
+  info: true

@@ -5,7 +5,7 @@ dependencies:
   config:
     - block_content.type.uiowa_accordiontabs
     - field.field.block_content.uiowa_accordiontabs.field_uiowa_accordiontabs_h_size
-    - field.field.block_content.uiowa_accordiontabs.field_uiowa_accoridontabs_panels
+    - field.field.block_content.uiowa_accordiontabs.field_uiowa_accordiontabs_panels
   module:
     - entity_browser_entity_form
     - inline_entity_form
@@ -14,30 +14,24 @@ targetEntityType: block_content
 bundle: uiowa_accordiontabs
 mode: default
 content:
-  field_uiowa_accordiontabs_h_size:
-    weight: 1
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
-    region: content
-  field_uiowa_accoridontabs_panels:
-    weight: 2
+  field_uiowa_accordiontabs_panels:
+    type: inline_entity_form_complex
+    weight: 26
     settings:
       form_mode: default
       revision: true
-      label_singular: ''
-      label_plural: ''
+      override_labels: true
+      label_singular: panel
+      label_plural: panels
       allow_new: true
       match_operator: CONTAINS
       allow_duplicate: true
-      override_labels: false
       collapsible: false
       collapsed: false
       allow_existing: false
     third_party_settings:
       entity_browser_entity_form:
         entity_browser_id: _none
-    type: inline_entity_form_complex
     region: content
   info:
     type: string_textfield
@@ -47,4 +41,5 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  field_uiowa_accordiontabs_h_size: true

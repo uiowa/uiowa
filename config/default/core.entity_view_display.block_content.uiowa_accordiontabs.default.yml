@@ -5,28 +5,22 @@ dependencies:
   config:
     - block_content.type.uiowa_accordiontabs
     - field.field.block_content.uiowa_accordiontabs.field_uiowa_accordiontabs_h_size
-    - field.field.block_content.uiowa_accordiontabs.field_uiowa_accoridontabs_panels
+    - field.field.block_content.uiowa_accordiontabs.field_uiowa_accordiontabs_panels
   module:
-    - options
+    - entity_reference_revisions
 id: block_content.uiowa_accordiontabs.default
 targetEntityType: block_content
 bundle: uiowa_accordiontabs
 mode: default
 content:
-  field_uiowa_accordiontabs_h_size:
-    type: list_key
-    weight: 1
-    region: content
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-  field_uiowa_accoridontabs_panels:
+  field_uiowa_accordiontabs_panels:
+    type: entity_reference_revisions_entity_view
     weight: 0
     label: hidden
     settings:
-      link: true
       view_mode: default
+      link: ''
     third_party_settings: {  }
-    type: entity_reference_entity_view
     region: content
-hidden: {  }
+hidden:
+  field_uiowa_accordiontabs_h_size: true

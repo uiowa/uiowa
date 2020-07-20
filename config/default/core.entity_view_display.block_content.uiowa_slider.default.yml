@@ -5,18 +5,20 @@ dependencies:
   config:
     - block_content.type.uiowa_slider
     - field.field.block_content.uiowa_slider.field_uiowa_slider_slides
+  module:
+    - entity_reference_revisions
 id: block_content.uiowa_slider.default
 targetEntityType: block_content
 bundle: uiowa_slider
 mode: default
 content:
   field_uiowa_slider_slides:
+    type: entity_reference_revisions_entity_view
     weight: 0
     label: hidden
     settings:
       view_mode: default
-      link: false
+      link: ''
     third_party_settings: {  }
-    type: entity_reference_entity_view
     region: content
 hidden: {  }

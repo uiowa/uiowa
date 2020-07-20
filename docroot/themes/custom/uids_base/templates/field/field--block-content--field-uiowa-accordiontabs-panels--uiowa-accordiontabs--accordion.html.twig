@@ -37,9 +37,10 @@
  * @see template_preprocess_field()
  */
 #}
+{{ dump(items) }}
 {% set accordion_items = items|map(i => {
   'label': i.content.field_uiowa_panel_title|render,
-  'content': i.content|without('field_uiowa_panel_title'),
+  'content': i.content|without('field_uiowa_panel_title')|render,
 }) %}
 
 {% set accordion = {

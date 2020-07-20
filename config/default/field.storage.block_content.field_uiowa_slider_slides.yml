@@ -1,16 +1,18 @@
-uuid: 0b07172e-ee1b-475a-bf9f-f99532ba12f5
+uuid: f2ba6147-1076-4ba7-b1f7-21231310743f
 langcode: en
 status: true
 dependencies:
   module:
     - block_content
+    - entity_reference_revisions
+    - paragraphs
 id: block_content.field_uiowa_slider_slides
 field_name: field_uiowa_slider_slides
 entity_type: block_content
-type: entity_reference
+type: entity_reference_revisions
 settings:
-  target_type: block_content
-module: core
+  target_type: paragraph
+module: entity_reference_revisions
 locked: false
 cardinality: -1
 translatable: true
