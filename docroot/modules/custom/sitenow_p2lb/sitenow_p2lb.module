@@ -206,10 +206,9 @@ function sitenow_p2lb_determine_columns($col_widths) {
       }
       return sitenow_p2lb_determine_columns($col_widths);
     }
-    return [[
-      'num_columns' => count(),
-      'col_widths' => $col_widths,
-    ]];
+    return [
+      ['num_columns' => count(), 'col_widths' => $col_widths,]
+    ];
   }
   $sections = [];
   $iter_adder = 0;
