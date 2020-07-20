@@ -175,6 +175,7 @@ function sitenow_p2lb_remove_attached_paragraphs($nid) {
  * Determine section layout_id.
  */
 function sitenow_p2lb_determine_columns($col_widths) {
+  $sections = [];
   // Check if we wrap into additional sections.
   $total_col_width = array_sum($col_widths);
   if ($total_col_width <= 12) {
@@ -204,13 +205,12 @@ function sitenow_p2lb_determine_columns($col_widths) {
       foreach ($fluid_indices as $index) {
         $col_widths[$index] = $repl;
       }
-      return sitenow_p2lb_determine_columns($col_widths);
+      // Reiter with the updated colwidths, in case they run to new section.
+      sitenow_p2lb_determine_columns($col_widths);
     }
-    return [
-      ['num_columns' => count(), 'col_widths' => $col_widths,]
-    ];
+    $sections[] = ['num_columns' => count(), 'col_widths' => $col_widths];
+    return $sections;
   }
-  $sections = [];
   $iter_adder = 0;
   $i = 0;
   $counter = 100;
