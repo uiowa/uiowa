@@ -18,7 +18,7 @@
 {%
   set classes = [
   'layout',
-  'layout--page--paragraph',
+  'layout--page--left-sidebar',
   'layout__container',
   settings.extra_classes,
   sidebar ? 'layout--has-sidebar' : 'layout--no-sidebar',
@@ -26,7 +26,7 @@
 %}
 {{ attach_library('uids_base/sitenow') }}
 {{ attach_library('uids_base/fields') }}
-{{ attach_library('uids_base/paragraph-page') }}
+{{ attach_library('uids_base/page--left-sidebar') }}
 
 
 {% if sidebar or content.content %}
