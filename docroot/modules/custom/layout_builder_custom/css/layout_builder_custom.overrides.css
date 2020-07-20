@@ -1,0 +1,41 @@
+.si-toggle-container.si-pos-side.si-pos-east {
+  display: none;
+}
+
+.ui-dialog.ui-dialog-off-canvas .ui-resizable-handle {
+  width: 20px;
+  height: 50px;
+  top: 20vw;
+  background: #444;
+  box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.3333);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ui-dialog.ui-dialog-off-canvas .ui-resizable-handle:before {
+  content: '';
+  background: #bbb;
+  width: 2px;
+  display: block;
+  height: 30px;
+  border-radius: 1px;
+}
+
+.ui-dialog.ui-dialog-off-canvas .ui-resizable-w {
+  left: -20px;
+}
+
+.ui-dialog.ui-dialog-off-canvas .ui-resizable-w:before {
+  margin-left: -20%;
+  box-shadow: 6px 2px 0 0 #bbb, 6px -2px 0 0 #bbb;
+}
+
+.ui-dialog.ui-dialog-off-canvas .ui-resizable-e {
+  right: -20px;
+}
+
+.ui-dialog.ui-dialog-off-canvas .ui-resizable-e:before {
+  margin-right: -20%;
+  box-shadow: -6px 2px 0 0 #bbb, -6px -2px 0 0 #bbb;
+}
