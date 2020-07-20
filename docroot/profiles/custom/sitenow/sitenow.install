@@ -1041,7 +1041,7 @@ function sitenow_update_8031() {
     $source = new FileStorage($config_path);
 
     // Create the split in active config and import config_ignore settings
-    // otherwise the status will imported as false (and everything will be
+    // otherwise the status will be imported as false (and everything will be
     // deleted on cim) since that is what exists in the default split config.
     $config_storage = \Drupal::service('config.storage');
     $config_storage->write('config_split.config_split.sitenow_v2', $source->read('config_split.config_split.sitenow_v2'));
