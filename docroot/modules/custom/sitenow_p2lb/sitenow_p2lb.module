@@ -100,6 +100,7 @@ function sitenow_p2lb_process_section($section_id, $layout) {
       sitenow_p2lb_create_section($layout_id, $layout_settings)
     )
       ->save();
+    // @todo append associated paragraphs, as well as possible error handling.
   }
   return;
 }
