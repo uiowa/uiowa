@@ -1,5 +1,3 @@
-
-
 <?php
 
 /**
@@ -36,10 +34,6 @@ function ighn_core_theme($existing, $type, $theme, $path) {
     'node__ighn_person__full' => [
       'template' => 'node--ighn-person--full',
       'base hook' => 'node',
-    ],
-    'views_view__ighn_person_view' => [
-      'template' => 'views-view--ighn-person-view',
-      'base hook' => 'views',
     ],
     'field__comma_separated' => [
       'template' => 'field--comma-separated',
@@ -81,6 +75,26 @@ function ighn_core_entity_presave(EntityInterface $entity) {
 /**
  * Implements hook_preprocess_HOOK().
  */
+function ighn_core_preprocess_field(&$variables) {
+  switch ($variables["element"]["#field_name"]) {
+    // Change header class for person position based on view mode.
+    case 'field_ighn_person_position_title':
+      switch ($variables["element"]["#view_mode"]) {
+        case 'full':
+          $variables['attributes']['class'][] = 'h5';
+          break;
+
+        case 'teaser':
+          $variables['attributes']['class'][] = 'h6';
+          break;
+      }
+      break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
 function ighn_core_preprocess_page_title(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
@@ -100,48 +114,6 @@ function ighn_core_preprocess_page_title(&$variables) {
           }
           break;
       }
-    }
-  }
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
-function ighn_core_preprocess_node(&$variables) {
-  $admin_context = \Drupal::service('router.admin_context');
-  if (!$admin_context->isAdminRoute()) {
-
-    $node = $variables["node"];
-    switch ($node->getType()) {
-      case 'ighn_person':
-        switch ($variables["view_mode"]) {
-          case 'teaser':
-            // Create new card attributes.
-            $variables['card_attributes'] = new Attribute();
-            // Add css if applicable.
-            $variables['#attached']['library'][] = 'sitenow_card/default';
-            // Add card link behavior for links.
-            $link_field = $node->get('field_ighn_person_cv_link');
-            if (!$link_field->isEmpty()) {
-              $link = $link_field->first()->getValue();
-              $url = Url::fromUri($link['uri'], ['alias' => TRUE])->toString();
-              $variables['card_attributes']['data-href'] = $url;
-              $variables['card_attributes']['tabindex'] = '0';
-              $variables['card_attributes']['role'] = 'link';
-              $variables['card_attributes']['aria-label'] = $link['title'];
-              $variables['card_attributes']['name'] = $link['title'];
-              $variables['card_attributes']['title'] = $link['title'];
-              $variables['#attached']['library'][] = 'sitenow_card/card-link-js';
-            }
-            if (isset($variables['content']['field_ighn_person_cv_link'], $variables['content']['field_ighn_person_cv_link'][0])) {
-              $variables['content']['field_ighn_person_cv_link'][0]['#options']['attributes']['class'][] = 'card-link';
-              $variables['content']['field_ighn_person_cv_link'][0]['#options']['attributes']['class'][] = 'js-card-link';
-            }
-            break;
-
-        }
-        break;
-
     }
   }
 }

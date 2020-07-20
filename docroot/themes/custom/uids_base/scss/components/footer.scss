@@ -1,7 +1,17 @@
 @import "../uids/assets/scss/_variables.scss";
 @import "../uids/assets/scss/_utilities.scss";
 $imgpath: '../../../../../uids/assets/images/';
-@import "components/footer/_footer.scss";
+@import "components/branding/footer/footer.scss";
+
+.footer {
+  h2, h3, h4, h5, h6 {
+    color: $white;
+    font-weight: $font-weight-normal;
+  }
+  .lead {
+    color: $white;
+  }
+}
 
 .uiowa-footer--login-link {
   a {
@@ -50,13 +60,14 @@ $imgpath: '../../../../../uids/assets/images/';
   }
 }
 
-.header--tertiary .footer .logo-icon--tab {
-  width: 150px;
-
-  @include breakpoint(menu) {
-    width: 185px;
-    height: auto;
-    padding: 0 40px 0 0;
-    margin: 0;
+.footer__links--nav {
+  flex-wrap: wrap;
+  align-content: start;
+  h2 {
+    font-weight: $font-weight-bold;
+    font-size: $h5-font-size;
+  }
+  > * {
+    flex-basis: 100%;
   }
 }
