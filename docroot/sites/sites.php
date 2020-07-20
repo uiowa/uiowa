@@ -1511,3 +1511,15 @@ $sites['socialwork.local.drupal.uiowa.edu'] = 'socialwork.uiowa.edu';
 $sites['socialwork.dev.drupal.uiowa.edu'] = 'socialwork.uiowa.edu';
 $sites['socialwork.stage.drupal.uiowa.edu'] = 'socialwork.uiowa.edu';
 $sites['socialwork.prod.drupal.uiowa.edu'] = 'socialwork.uiowa.edu';
+
+// Directory aliases for ace.uiowa.edu.
+$sites['ace.local.drupal.uiowa.edu'] = 'ace.uiowa.edu';
+$sites['ace.dev.drupal.uiowa.edu'] = 'ace.uiowa.edu';
+$sites['ace.stage.drupal.uiowa.edu'] = 'ace.uiowa.edu';
+$sites['ace.prod.drupal.uiowa.edu'] = 'ace.uiowa.edu';
+
+// Directory aliases for itprivacy.uiowa.edu.
+$sites['itprivacy.local.drupal.uiowa.edu'] = 'itprivacy.uiowa.edu';
+$sites['itprivacy.dev.drupal.uiowa.edu'] = 'itprivacy.uiowa.edu';
+$sites['itprivacy.stage.drupal.uiowa.edu'] = 'itprivacy.uiowa.edu';
+$sites['itprivacy.prod.drupal.uiowa.edu'] = 'itprivacy.uiowa.edu';
