@@ -1,0 +1,73 @@
+uuid: 1940a654-55b0-41df-ac7c-12d70b76d076
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_accordiontabs
+    - field.storage.block_content.field_uiowa_accordiontabs_panels
+    - paragraphs.paragraphs_type.uiowa_panel
+  module:
+    - entity_reference_revisions
+id: block_content.uiowa_accordiontabs.field_uiowa_accordiontabs_panels
+field_name: field_uiowa_accordiontabs_panels
+entity_type: block_content
+bundle: uiowa_accordiontabs
+label: Panels
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      uiowa_panel: uiowa_panel
+    target_bundles_drag_drop:
+      accordion:
+        weight: 16
+        enabled: false
+      accordion_item:
+        weight: 17
+        enabled: false
+      articles:
+        weight: 18
+        enabled: false
+      blockquote:
+        weight: 19
+        enabled: false
+      card:
+        weight: 20
+        enabled: false
+      carousel:
+        weight: 21
+        enabled: false
+      carousel_image:
+        weight: 22
+        enabled: false
+      events:
+        weight: 23
+        enabled: false
+      featured_content:
+        weight: 24
+        enabled: false
+      image_gallery:
+        weight: 25
+        enabled: false
+      people:
+        weight: 26
+        enabled: false
+      section:
+        weight: 27
+        enabled: false
+      text:
+        weight: 28
+        enabled: false
+      uiowa_panel:
+        enabled: true
+        weight: 29
+      webform:
+        weight: 30
+        enabled: false
+field_type: entity_reference_revisions

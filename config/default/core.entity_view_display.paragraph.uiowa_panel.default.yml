@@ -1,0 +1,31 @@
+uuid: b1e767cf-9fd3-4076-beb4-486490681da7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.uiowa_panel.field_uiowa_panel_content
+    - field.field.paragraph.uiowa_panel.field_uiowa_panel_title
+    - paragraphs.paragraphs_type.uiowa_panel
+  module:
+    - text
+id: paragraph.uiowa_panel.default
+targetEntityType: paragraph
+bundle: uiowa_panel
+mode: default
+content:
+  field_uiowa_panel_content:
+    weight: 1
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_uiowa_panel_title:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden: {  }
