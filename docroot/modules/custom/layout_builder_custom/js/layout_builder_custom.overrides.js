@@ -5,14 +5,9 @@
     Drupal.behaviors.layout_builder_custom_overrides = {
         attach: function (context, settings) {
             $('.node-page-layout-builder-form', context).once('layout_builder_custom_overrides').each(function () {
-              $(document).ajaxComplete(function (event, xhr, settings) {
-                if (event.delegateTarget.visibilityState === 'visible' && settings.url.includes('section') === false) {
-                  $(context)
-                    .find('.ui-dialog-off-canvas')
-                    .each(function () {
-                      $(this).css('width', '500px');
-                      $(this).css('left', '925px');
-                    });
+              $(window).on('dialog:aftercreate', function (event, dialog, $element) {
+                if (Drupal.offCanvas.isOffCanvas($element) && $element.find('.layout-selection').length === 0) {
+                  $($element).parent().attr('style', 'position: fixed; width: 500px; right: 0; left: auto;');
                 }
               });
             });
