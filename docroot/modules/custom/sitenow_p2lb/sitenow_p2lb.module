@@ -135,6 +135,14 @@ function sitenow_p2lb_process_paragraph($paragraph) {
   }
   switch ($paragraph->get('type')->getString()) {
     case 'section':
+    case 'accordion':
+    case 'accordion_item':
+    case 'blockquote':
+    case 'image_gallery':
+    case 'webform':
+    case 'featured_content':
+    case 'carousel':
+    case 'carousel_image':
       break;
 
     case 'text':
@@ -156,36 +164,54 @@ function sitenow_p2lb_process_paragraph($paragraph) {
             'format' => $paragraph->get('field_text_body')[0]->get('format')->getString(),
           ],
         ]);
-
-      if ($block->save()) {
-        $uuid = $block->get('uuid')->getValue()[0]['value'];
-        $config = [
-          'id' => 'inline_block:' . $type,
-          'label' => $label,
-          'provider' => 'layout_builder',
-          // @todo update labeling methodology.
-          'label_display' => 0,
-          'block_revision_id' => $block->getRevisionId(),
-          'view_mode' => '',
-        ];
-        return [
-          'configuration' => $config,
-          'uuid' => $uuid,
-        ];
-      }
       break;
 
-    case 'accordion':
-    case 'accordion_item':
-    case 'blockquote':
     case 'card':
-    case 'image_gallery':
-    case 'webform':
-    case 'featured_content':
-    case 'carousel':
-    case 'carousel_image':
+      // @todo This needs to be checked/extended/cleaned up
+      $type = 'uiowa_text_area';
+      // @todo update labeling methodology.
+      $label = 'title';
+      $block = \Drupal::entityTypeManager()
+        ->getStorage('block_content')
+        ->create([
+          'type' => 'uiowa_card',
+          'langcode' => 'en',
+          'status' => $paragraph->get('status')->getString(),
+          'info' => 'Card',
+          'reusable' => 0,
+          'default_langcode' => 1,
+          'field_uiowa_card_author' => [],
+          'field_uiowa_card_excerpt' => [
+            'value' => $paragraph->get('field_card_body')[0]->get('value')->getString(),
+            'format' => $paragraph->get('field_card_body')[0]->get('format')->getString(),
+          ],
+          'field_uiowa_card_image' => $paragraph->get('field_card_image')->getValue()[0]['target_id'],
+          'field_uiowa_card_link' => $paragraph->get('field_card_link')->getValue()[0],
+          'field_uiowa_card_title' => [
+            'size' => 'h2',
+            'text' => $paragraph->get('field_card_title')->getValue()[0]['value'],
+          ],
+        ]);
+      break;
+
     default:
 
+  }
+  if (isset($block) && $block->save()) {
+    $uuid = $block->get('uuid')->getValue()[0]['value'];
+    $config = [
+      'id' => 'inline_block:' . $type,
+      'label' => $label,
+      'provider' => 'layout_builder',
+      // @todo update labeling methodology.
+      'label_display' => 0,
+      'block_revision_id' => $block->getRevisionId(),
+      'view_mode' => '',
+    ];
+    return [
+      'configuration' => $config,
+      'uuid' => $uuid,
+    ];
   }
   // No block was successfully created.
   return [];
