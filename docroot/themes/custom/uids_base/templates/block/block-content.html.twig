@@ -21,16 +21,4 @@
  * @ingroup themeable
  */
 #}
-{%
-  set classes = [
-  'block-content',
-  'block-content--type-' ~ bundle|clean_class,
-  'block-content--' ~ id,
-  'block-content--view-mode-' ~ view_mode|clean_class,
-  'slider',
-]
-%}
-{{ attach_library('uids_base/slider') }}
-<div{{ attributes.addClass(classes) }}>
-  {{ content }}
-</div>
+{{ content }}

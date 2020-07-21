@@ -5,9 +5,10 @@
  * Functions to support theming in the uids_base theme.
  */
 
-use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\block\Entity\Block;
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 
@@ -360,6 +361,78 @@ function uids_base_preprocess_paragraph__card(&$variables) {
     // If the sitenow card link js file has been added, remove it.
     if ($key = array_search('sitenow_card/card-link-js', $variables['#attached']['library'])) {
       unset($variables['#attached']['library'][$key]);
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uids_base_preprocess_paragraph__uiowa_slide(&$variables) {
+  $variables['delta'] = 0;
+  /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+  $paragraph = $variables['paragraph'];
+  $parent = $paragraph->getParentEntity();
+  if ($parent instanceof ContentEntityInterface && $parent->hasField('field_uiowa_slider_slides')) {
+    $id = $paragraph->id();
+    /**
+     * @var  $delta
+     * @var \Drupal\entity_reference_revisions\Plugin\Field\FieldType\EntityReferenceRevisionsItem $item
+     */
+    foreach ($parent->field_uiowa_slider_slides->getValue() as $delta => $item) {
+      if ($item['target_id'] === $id) {
+        $variables['delta'] = $delta;
+        break;
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uids_base_preprocess_paragraph(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+    $paragraph = $variables['paragraph'];
+
+    $field = FALSE;
+
+    switch ($paragraph->bundle()) {
+      case 'uiowa_panel':
+        $field = 'field_uiowa_accordiontabs_panels';
+        break;
+      case 'uiowa_slide':
+        $field = 'field_uiowa_slider_slides';
+        break;
+    }
+
+    if ($field) {
+      $variables['delta'] = 0;
+
+      $parent = $paragraph->getParentEntity();
+      if ($parent instanceof ContentEntityInterface && $parent->hasField($field)) {
+        $id = $paragraph->id();
+        /**
+         * @var  $delta
+         * @var \Drupal\entity_reference_revisions\Plugin\Field\FieldType\EntityReferenceRevisionsItem $item
+         */
+        foreach ($parent->get($field)->getValue() as $delta => $item) {
+          if ($item['target_id'] === $id) {
+            $variables['delta'] = $delta;
+            break;
+          }
+        }
+
+        if ($paragraph->bundle() === 'uiowa_panel') {
+          $variables['h_size'] = 'h3';
+          if ($parent->hasField('field_uiowa_accordiontabs_h_size')) {
+            $variables['h_size'] = $parent->get('field_uiowa_accordiontabs_h_size')->getString();
+          }
+          $that = 'this';
+        }
+      }
     }
   }
 }

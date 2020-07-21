@@ -1,0 +1,32 @@
+{#
+/**
+ * @file
+ * Theme override to display block content.
+ *
+ * Available variables:
+ * - label: The configured label of the block if visible.
+ * - content: The content of this block.
+ * - attributes: array of HTML attributes populated by modules, intended to
+ *   be added to the main container tag of this template.
+ *   - id: A valid HTML ID and guaranteed unique.
+ * - title_attributes: Same as attributes, except applied to the main title
+ *   tag that appears in the template.
+ * - title_prefix: Additional output populated by modules, intended to be
+ *   displayed in front of the main title tag that appears in the template.
+ * - title_suffix: Additional output populated by modules, intended to be
+ *   displayed after the main title tag that appears in the template.
+
+ * @see template_preprocess_block_content_template()
+ *
+ * @ingroup themeable
+ */
+#}
+{% set accordion = {
+  content: content,
+} %}
+
+{% embed '@uids_base/uids/accordion.html.twig' with accordion only %}
+  {% block accordion_items %}
+    {{ content }}
+  {% endblock %}
+{% endembed %}

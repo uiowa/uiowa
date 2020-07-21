@@ -1,0 +1,31 @@
+{{ attach_library('uids_base/accordion') }}
+{% if accordion_multiselectable == true %}
+  {% set accordion_type = 'multi' %}
+{% else %}
+  {% set accordion_type = 'single' %}
+{% endif %}
+{% set accordion_h_size = accordion_h_size ?: 'h2' %}
+{% set accordion_item_id = 'accordion-' ~ accordion_type ~ '-select-' ~ delta %}
+
+<!-- Use the accurate heading level to maintain the document outline -->
+<{{ accordion_h_size }} id="{{ accordion_item_id }}-heading" class="accordion__heading">
+  <button class="accordion__button"
+          role="tab"
+          aria-selected="{{ accordion_item_expanded | default('false') }}"
+          aria-expanded="{{ accordion_item_expanded | default('false') }}"
+          aria-controls="{{ accordion_item_id }}"
+  >
+    {% block accordion_label %}
+      {{ accordion_item_label }}
+    {% endblock %}
+    <i aria-hidden="true" focusable="false" class="fas fa-chevron-up"></i>
+  </button>
+</{{ accordion_h_size }}>
+<div id="{{ accordion_item_id }}"
+     aria-labelledby="{{ accordion_item_id }}-heading"
+     class="accordion__content"
+>
+  {% block accordion_content %}
+    {{ accordion_item_content }}
+  {% endblock %}
+</div>
