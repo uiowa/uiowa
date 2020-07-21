@@ -1523,3 +1523,9 @@ $sites['itprivacy.local.drupal.uiowa.edu'] = 'itprivacy.uiowa.edu';
 $sites['itprivacy.dev.drupal.uiowa.edu'] = 'itprivacy.uiowa.edu';
 $sites['itprivacy.stage.drupal.uiowa.edu'] = 'itprivacy.uiowa.edu';
 $sites['itprivacy.prod.drupal.uiowa.edu'] = 'itprivacy.uiowa.edu';
+
+// Directory aliases for amcs.uiowa.edu.
+$sites['amcs.local.drupal.uiowa.edu'] = 'amcs.uiowa.edu';
+$sites['amcs.dev.drupal.uiowa.edu'] = 'amcs.uiowa.edu';
+$sites['amcs.stage.drupal.uiowa.edu'] = 'amcs.uiowa.edu';
+$sites['amcs.prod.drupal.uiowa.edu'] = 'amcs.uiowa.edu';
