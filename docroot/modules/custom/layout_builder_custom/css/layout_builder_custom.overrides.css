@@ -15,35 +15,36 @@
   height: 50px;
   top: 20vw;
   background: #444;
-  box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.3333);
+  box-shadow: -2px -2px 4px -2px rgba(0, 0, 0, 0.3333), -2px 3px 4px -2px rgba(0, 0, 0, 0.3333);
   display: flex;
   align-items: center;
   justify-content: center;
+  border-right: 1px solid #333333;
+  cursor: ew-resize;
 }
 
-.ui-dialog.ui-dialog-off-canvas .ui-resizable-handle:before {
+.ui-dialog.ui-dialog-off-canvas .ui-resizable-handle:before,
+.ui-dialog.ui-dialog-off-canvas .ui-resizable-handle:after {
   content: '';
-  background: #bbb;
+  background: #85898b;
+  border-right: 1px solid #2d2d2d;
   width: 2px;
   display: block;
   height: 30px;
-  border-radius: 1px;
 }
 
 .ui-dialog.ui-dialog-off-canvas .ui-resizable-w {
-  left: -20px;
+  left: -21px;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
 }
 
 .ui-dialog.ui-dialog-off-canvas .ui-resizable-w:before {
-  margin-left: -20%;
-  box-shadow: 6px 2px 0 0 #bbb, 6px -2px 0 0 #bbb;
+    left: -1px;
+    position: relative;
 }
 
-.ui-dialog.ui-dialog-off-canvas .ui-resizable-e {
-  right: -20px;
-}
-
-.ui-dialog.ui-dialog-off-canvas .ui-resizable-e:before {
-  margin-right: -20%;
-  box-shadow: -6px 2px 0 0 #bbb, -6px -2px 0 0 #bbb;
+.ui-dialog.ui-dialog-off-canvas .ui-resizable-w:after {
+    left: 3px;
+    position: relative;
 }
