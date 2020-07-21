@@ -89,6 +89,12 @@ function sitenow_p2lb_process_section($section_id, $layout) {
 
   $paragraph_iter = 0;
   $paragraph_keys = array_keys($paragraphs);
+  $regional = [
+    0 => 'first',
+    1 => 'second',
+    2 => 'third',
+    4 => 'fourth',
+  ];
   foreach ($sections_info as $section_info) {
     $num_cols = (isset($section_info['num_columns'])) ? $section_info['num_columns'] : 1;
     // Create and append section to our $layout (section list).
@@ -108,12 +114,13 @@ function sitenow_p2lb_process_section($section_id, $layout) {
       $key = $paragraph_keys[$paragraph_iter];
       $block_config = sitenow_p2lb_process_paragraph($paragraphs[$key]);
       if (!empty($block_config)) {
-        // $section->appendComponent($block_config);
+        $region = ($num_cols == 1) ? 'content' : $regional[$i];
         $uuid = $block_config['uuid'];
         $config = $block_config['configuration'];
+
         $section_array['components'][$uuid] = [
           'uuid' => $uuid,
-          'region' => 'content',
+          'region' => $region,
           'configuration' => $config,
           'additional' => [],
           'weight' => 0,
