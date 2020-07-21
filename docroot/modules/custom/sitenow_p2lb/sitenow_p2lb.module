@@ -31,12 +31,11 @@ function sitenow_p2lb_node_p2lb($nid) {
     ->getStorage('node')
     ->load($nid);
   // Get sections from the page.
-  $section_ids = sitenow_p2lb_fetch_sections($nid);
+  $section_ids = sitenow_p2lb_fetch_section_ids($nid);
   $layout = $node->get('layout_builder__layout');
   foreach ($section_ids as $section_id) {
     sitenow_p2lb_process_section($section_id, $layout);
   }
-  $layout->save();
 }
 
 /**
@@ -68,10 +67,10 @@ function sitenow_p2lb_process_section($section_id, $layout) {
 
   $connection = Database::getConnection();
   $query = $connection->select('paragraphs_item_field_data', 'pifd');
-  $query->fields('pifd', ['id', 'type'])
+  $query->fields('pifd', ['id'])
     ->condition('parent_id', $section_id, '=')
     ->condition('parent_field_name', 'field_section_content_block', '=');
-  $pids = $query->execute()->fetchAll();
+  $pids = $query->execute()->fetchCol();
 
   $col_widths = [];
   $p2b_ids = [];
@@ -98,8 +97,7 @@ function sitenow_p2lb_process_section($section_id, $layout) {
     ];
     $layout->appendSection(
       sitenow_p2lb_create_section($layout_id, $layout_settings)
-    )
-      ->save();
+    );
     // @todo append associated paragraphs, as well as possible error handling.
   }
   return;
@@ -209,7 +207,7 @@ function sitenow_p2lb_determine_columns($col_widths) {
       // Reiter with the updated colwidths, in case they run to new section.
       sitenow_p2lb_determine_columns($col_widths);
     }
-    $sections[] = ['num_columns' => count(), 'col_widths' => $col_widths];
+    $sections[] = ['num_columns' => count($col_widths), 'col_widths' => $col_widths];
     return $sections;
   }
   $iter_adder = 0;
@@ -218,14 +216,14 @@ function sitenow_p2lb_determine_columns($col_widths) {
   while (TRUE) {
     $iter_adder += $col_widths[$i];
     if ($iter_adder > 12) {
-      $sections[] = sitenow_p2lb_determine_columns(
-        array_slice($col_widths, $i)
+      $sections = array_merge($sections,
+        sitenow_p2lb_determine_columns(array_slice($col_widths, $i))
       );
       $iter_adder = 0;
     }
     if ($i == count($col_widths) - 1) {
-      $sections[] = sitenow_p2lb_determine_columns(
-        array_slice($col_widths, $i)
+      $sections = array_merge($sections,
+        sitenow_p2lb_determine_columns(array_slice($col_widths, $i))
       );
       break;
     }

@@ -88,10 +88,7 @@ class P2LbSettingsForm extends ConfigFormBase {
   public function updateButton(array &$form, FormStateInterface $form_state) {
     $nids = array_filter(array_values($form_state->getValue('nodes_w_paragraphs')));
     foreach ($nids as $nid) {
-      $section_ids = sitenow_p2lb_fetch_section_ids($nid);
-      foreach ($section_ids as $section_id) {
-        sitenow_p2lb_process_section($section_id);
-      }
+      sitenow_p2lb_node_p2lb($nid);
     }
     return $form_state;
   }
