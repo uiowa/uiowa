@@ -65,8 +65,11 @@ function sitenow_p2lb_process_section($section_id, $layout) {
 
   // Grab section title.
   $section_object = $para_storage->load($section_id);
-  $section_title = $section_object->get('field_section_title')[0]
-    ->getValue()['value'];
+  $section_title = '';
+  if ($section_object->get('field_section_title')[0]) {
+    $section_title = $section_object->get('field_section_title')[0]
+      ->getValue()['value']; // not all sections have titles
+  }
 
   $connection = Database::getConnection();
   $query = $connection->select('paragraphs_item_field_data', 'pifd');
