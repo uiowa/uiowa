@@ -35,8 +35,12 @@ class P2LbSettingsForm extends ConfigFormBase {
       '#markup' => $this->t('<p>These settings let you configure and use SiteNow paragraphs2layoutbuilder on this site.</p>'),
     ];
 
+    // Grab all nodes that currently have paragraphs associated with them.
     $nids_w_paragraphs = sitenow_p2lb_paragraph_nodes();
+
+    // Set the key=>value to use the nid for both.
     $nids_w_paragraphs = array_combine($nids_w_paragraphs, $nids_w_paragraphs);
+
     $form['nodes_w_paragraphs'] = [
       '#type' => 'checkboxes',
       '#title' => t('Nodes with paragraph items.'),
@@ -61,6 +65,8 @@ class P2LbSettingsForm extends ConfigFormBase {
       ],
     ];
 
+    // @todo Original submit button currently doesn't do anything.
+
     return $form;
   }
 
@@ -68,6 +74,7 @@ class P2LbSettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    // Add extra functionality here, if needed, else delete.
     parent::submitForm($form, $form_state);
   }
 
@@ -75,6 +82,7 @@ class P2LbSettingsForm extends ConfigFormBase {
    * Delete connected paragraphs from the selected nodes.
    */
   public function deleteButton(array &$form, FormStateInterface $form_state) {
+    // Grab nids for all boxes that were checked (0s are filtered out).
     $nids = array_filter(array_values($form_state->getValue('nodes_w_paragraphs')));
     foreach ($nids as $nid) {
       sitenow_p2lb_remove_attached_paragraphs($nid);
@@ -86,10 +94,12 @@ class P2LbSettingsForm extends ConfigFormBase {
    * Update paragraphs to lb blocks from the selected nodes.
    */
   public function updateButton(array &$form, FormStateInterface $form_state) {
+    // Grab nids for all boxes that were checked (0s are filtered out).
     $nids = array_filter(array_values($form_state->getValue('nodes_w_paragraphs')));
     foreach ($nids as $nid) {
       sitenow_p2lb_node_p2lb($nid);
     }
+    // @todo Option to remove paragraphs after migrate, or review first?
     return $form_state;
   }
 
