@@ -254,6 +254,8 @@ function sitenow_p2lb_process_paragraph($paragraph) {
     return [];
   }
 
+  $display_label = 0;
+
   // Handle each type of paragraph separately.
   switch ($paragraph->get('type')->getString()) {
     // Paragraph types that yet need mapping.
@@ -272,7 +274,9 @@ function sitenow_p2lb_process_paragraph($paragraph) {
       // @todo This needs to be checked/extended/cleaned up
       $type = 'uiowa_text_area';
       // @todo update labeling methodology and decide how to title.
-      $label = 'title';
+      $label = 'Text block';
+      $display_label = 0;
+
       $block = \Drupal::entityTypeManager()
         ->getStorage('block_content')
         ->create([
@@ -290,6 +294,7 @@ function sitenow_p2lb_process_paragraph($paragraph) {
     case 'card':
       // @todo This needs to be checked/extended/cleaned up
       $type = 'uiowa_card';
+
       // Image isn't required. Check for one, or set to null.
       $image = ($paragraph->get('field_card_image')->getValue()) ?
         $paragraph->get('field_card_image')->getValue()[0]['target_id'] : '';
@@ -301,6 +306,7 @@ function sitenow_p2lb_process_paragraph($paragraph) {
       // Label (title) isn't required. Check for one, or set to null.
       $label = ($paragraph->get('field_card_title')->getValue()) ?
         $paragraph->get('field_card_title')->getString() : '';
+      $display_label = ($label) ? 1 : 0;
 
       // Subtitle field isn't required. Check for one, or set to null.
       $subtitle = ($paragraph->get('field_card_subtitle')->getValue()) ?
@@ -348,7 +354,7 @@ function sitenow_p2lb_process_paragraph($paragraph) {
       'label' => $label,
       'provider' => 'layout_builder',
       // @todo update labeling methodology. Defaulting to visible for now.
-      'label_display' => 1,
+      'label_display' => $display_label,
       'block_revision_id' => $block->getRevisionId(),
       'view_mode' => '',
     ];
