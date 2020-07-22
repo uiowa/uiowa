@@ -2,15 +2,30 @@
  * @file
  */
 (function ($, Drupal) {
-    Drupal.behaviors.layout_builder_custom_overrides = {
+    Drupal.behaviors.layoutBuilderCustomOverrides = {
         attach: function (context, settings) {
-            $('.node-page-layout-builder-form', context).once('layout_builder_custom_overrides').each(function () {
-              $(window).on('dialog:aftercreate', function (event, dialog, $element) {
-                if (Drupal.offCanvas.isOffCanvas($element) && $element.find('.layout-selection').length === 0) {
-                  $($element).parent().attr('style', 'position: fixed; width: 500px; right: 0; left: auto;');
+          $(window).once('off-canvas-overrides').on({
+            'dialog:aftercreate': function (event, dialog, $element) {
+              if (Drupal.offCanvas.isOffCanvas($element) && $element.find('.layout-selection').length === 0) {
+                let offCanvasWidth;
+                const offCanvasCookie = $.cookie('ui_off_canvas_width');
+                if (offCanvasCookie === undefined) {
+                  offCanvasWidth = 500;
+                } else {
+                  offCanvasWidth = offCanvasCookie;
                 }
-              });
-            });
+                $($element).parent().attr('style', `position: fixed; width: ${offCanvasWidth}px; right: 0; left: auto;`);
+
+                let eventData = { settings: settings, $element: $element, offCanvasDialog: Drupal.offCanvas };
+                const $container = Drupal.offCanvas.getContainer($element);
+                $element.on('dialogContentResize.off-canvas', eventData, function() {
+                  // Per request, create cookie that expires in 99 years.
+                  const width = $container.outerWidth();
+                  $.cookie('ui_off_canvas_width', width, { expires: 36135, path: '/' });
+                });
+              }
+            }
+          });
         }
     };
 })(jQuery, Drupal);
