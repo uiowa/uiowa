@@ -193,7 +193,7 @@ function sitenow_p2lb_determine_columns($col_widths) {
         $col_widths[$index] = $repl;
       }
       // Reiter with the updated colwidths, in case they overrun the section.
-      sitenow_p2lb_determine_columns($col_widths);
+      return sitenow_p2lb_determine_columns($col_widths);
     }
     // If we're all good, then add the section info and return.
     else {
