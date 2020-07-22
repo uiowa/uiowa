@@ -19,7 +19,7 @@
                 let eventData = { settings: settings, $element: $element, offCanvasDialog: Drupal.offCanvas };
                 const $container = Drupal.offCanvas.getContainer($element);
                 $element.on('dialogContentResize.off-canvas', eventData, function() {
-                  // Per request, create cookie that expires in 99 years.
+                  // Cookie that expires in 99 years.
                   const width = $container.outerWidth();
                   $.cookie('ui_off_canvas_width', width, { expires: 36135, path: '/' });
                 });
