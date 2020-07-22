@@ -66,7 +66,6 @@ class P2LbSettingsForm extends ConfigFormBase {
     ];
 
     // @todo Original submit button currently doesn't do anything.
-
     return $form;
   }
 
