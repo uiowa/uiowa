@@ -23,7 +23,7 @@
                   if (!justCreated) {
                     // Cookie that expires in 99 years.
                     const width = $container.outerWidth();
-                    $.cookie('ui_off_canvas_width', width, { expires: 36135, path: '/' });
+                    $.cookie('ui_off_canvas_width', width, { expires: 36135, path: '/', domain: '.uiowa.edu'});
                   }
                   justCreated = false;
                 });
