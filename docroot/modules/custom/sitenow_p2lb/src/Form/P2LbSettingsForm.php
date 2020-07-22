@@ -43,13 +43,13 @@ class P2LbSettingsForm extends ConfigFormBase {
 
     $form['nodes_w_paragraphs'] = [
       '#type' => 'checkboxes',
-      '#title' => t('Nodes with paragraph items.'),
+      '#title' => $this->t('Nodes with paragraph items.'),
       '#options' => $nids_w_paragraphs,
     ];
 
     $form['delete'] = [
       '#type' => 'submit',
-      '#value' => t('Delete'),
+      '#value' => $this->t('Delete'),
       '#name' => 'delete',
       '#submit' => [
         [$this, 'deleteButton'],
@@ -58,7 +58,7 @@ class P2LbSettingsForm extends ConfigFormBase {
 
     $form['update'] = [
       '#type' => 'submit',
-      '#value' => t('Update'),
+      '#value' => $this->t('Update'),
       '#name' => 'update',
       '#submit' => [
         [$this, 'updateButton'],
