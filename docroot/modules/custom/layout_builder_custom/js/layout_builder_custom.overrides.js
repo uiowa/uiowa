@@ -7,7 +7,6 @@
           $(window).once('off-canvas-overrides').on({
             'dialog:aftercreate': function (event, dialog, $element) {
               let justCreated = true;
-              console.log('event', event);
               if (Drupal.offCanvas.isOffCanvas($element) && $element.find('.layout-selection').length === 0) {
                 let offCanvasWidth;
                 const offCanvasCookie = $.cookie('ui_off_canvas_width');
