@@ -290,7 +290,20 @@ function sitenow_p2lb_process_paragraph($paragraph) {
 
       // Label (title) isn't required. Check for one, or set to null.
       $label = ($paragraph->get('field_card_title')->getValue()) ?
-        $paragraph->get('field_card_title')->getValue()[0]['value'] : '';
+        $paragraph->get('field_card_title')->getString() : '';
+      
+      // Subtitle field isn't required. Check for one, or set to null.
+      $subtitle = ($paragraph->get('field_card_subtitle')->getValue()) ?
+        $paragraph->get('field_card_subtitle')->getString() : '';
+
+      // Body field isn't required. Check for one, or set to array with empty value.
+      $excerpt = ($paragraph->get('field_card_body')->getValue()) ?
+        $paragraph->get('field_card_body')->getValue() : ['value' => '', 'format' => 'minimal'];
+
+      // If there was a subtitle, prepend it to the body text.
+      if ($subtitle) {
+        $excerpt['value'] = '<p>' . $subtitle . '</p>' . $excerpt['value'];
+      }
 
       $block = \Drupal::entityTypeManager()
         ->getStorage('block_content')
@@ -302,7 +315,7 @@ function sitenow_p2lb_process_paragraph($paragraph) {
           'reusable' => 0,
           'default_langcode' => 1,
           'field_uiowa_card_author' => [],
-          'field_uiowa_card_excerpt' => $paragraph->get('field_card_body')->getValue(),
+          'field_uiowa_card_excerpt' => $excerpt,
           'field_uiowa_card_image' => $image,
           'field_uiowa_card_link' => $link,
           'field_uiowa_card_title' => [
