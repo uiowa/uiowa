@@ -231,28 +231,50 @@
     }
 
     @include breakpoint(menu) {
-      flex: 0 0 47%;
-      max-width: 47%;
+      flex: 0 0 46.8%;
+      max-width: 46.8%;
       margin-bottom: $desktop-width-gutter;
 
+      .sidebar-invisible.layout--has-sidebar & {
+        flex: 0 0 46.8%;
+        max-width: 46.8%;
+      }
+
+      .layout--has-sidebar & {
+        flex: 0 0 45.4%;
+        max-width: 45.4%;
+      }
+
+
       &:nth-child(2n+1) {
-        margin-right: $gutter;
+        margin-right: $desktop-width-gutter;
       }
     }
 
     @include breakpoint(container) {
-      flex: 0 0 31.222222%;
-      max-width: 31.222222%;
+      flex: 0 0 30.8%;
+      max-width: 30.8%;
       margin-bottom: $desktop-width-gutter;
+
+      .sidebar-invisible.layout--has-sidebar & {
+        flex: 0 0 30.8%;
+        max-width: 30.8%;
+      }
+
+      .layout--has-sidebar & {
+        flex: 0 0 29.7%;
+        max-width: 29.7%;
+      }
 
       &:nth-child(2n+1) {
         margin-right: 0;
       }
 
       &:nth-child(3n+2) {
-        margin: 0 $gutter $desktop-width-gutter $gutter;
+        margin: 0 $desktop-width-gutter $desktop-width-gutter $desktop-width-gutter;
       }
     }
+
     display: flex;
   }
 
@@ -292,19 +314,40 @@
     }
 
     @include breakpoint(menu) {
-      flex: 0 0 47%;
-      max-width: 47%;
+      flex: 0 0 46.8%;
+      max-width: 0 0 46.8%;
       margin-bottom: $desktop-width-gutter;
 
+      .sidebar-invisible.layout--has-sidebar & {
+        flex: 0 0 46.8%;
+        max-width: 46.8%;
+      }
+
+      .layout--has-sidebar & {
+        flex: 0 0 45.4%;
+        max-width: 45.4%;
+      }
+
+
       &:nth-child(2n+1) {
-        margin-right: $gutter;
+        margin-right: $desktop-width-gutter;
       }
     }
 
     @include breakpoint(container) {
-      flex: 0 0 31.222222%;
-      max-width: 31.222222%;
+      flex: 0 0 30.8%;
+      max-width: 30.8%;
       margin-bottom: $desktop-width-gutter;
+
+      .sidebar-invisible.layout--has-sidebar & {
+        flex: 0 0 30.8%;
+        max-width: 30.8%;
+      }
+
+      .layout--has-sidebar & {
+        flex: 0 0 29.7%;
+        max-width: 29.7%;
+      }
 
       &:nth-child(2n+1) {
         margin-right: $gutter;
@@ -313,7 +356,7 @@
 
       &:nth-child(3n+2) {
         margin-left: 0;
-        margin: 0 $gutter $desktop-width-gutter $gutter;
+        margin: 0 $desktop-width-gutter $desktop-width-gutter $desktop-width-gutter;
       }
     }
 
@@ -340,19 +383,40 @@
     }
 
     @include breakpoint(menu) {
-      flex: 0 0 47%;
-      max-width: 47%;
+      flex: 0 0 46.8%;
+      max-width: 0 0 46.8%;
       margin-bottom: $desktop-width-gutter;
 
+      .sidebar-invisible.layout--has-sidebar & {
+        flex: 0 0 46.8%;
+        max-width: 46.8%;
+      }
+
+      .layout--has-sidebar & {
+        flex: 0 0 45.4%;
+        max-width: 45.4%;
+      }
+
+
       &:nth-child(2n+1) {
-        margin-right: $gutter;
+        margin-right: $desktop-width-gutter;
       }
     }
 
     @include breakpoint(container) {
-      flex: 0 0 31.222222%;
-      max-width: 31.222222%;
+      flex: 0 0 30.8%;
+      max-width: 30.8%;
       margin-bottom: $desktop-width-gutter;
+
+      .sidebar-invisible.layout--has-sidebar & {
+        flex: 0 0 30.8%;
+        max-width: 30.8%;
+      }
+
+      .layout--has-sidebar & {
+        flex: 0 0 29.7%;
+        max-width: 29.7%;
+      }
 
       &:nth-child(2n+1) {
         margin-right: $gutter;
@@ -361,7 +425,7 @@
 
       &:nth-child(3n+2) {
         margin-left: 0;
-        margin: 0 $gutter $desktop-width-gutter $gutter;
+        margin: 0 $desktop-width-gutter $desktop-width-gutter $desktop-width-gutter;
       }
     }
 
