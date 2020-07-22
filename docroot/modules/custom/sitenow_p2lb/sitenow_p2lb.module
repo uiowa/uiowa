@@ -86,26 +86,37 @@ function sitenow_p2lb_process_section($section_id, $layout) {
     $col_widths[] = (int) preg_replace('|[^0-9]|', '', $col_str);
   }
 
-  $sections_info = sitenow_p2lb_determine_columns($col_widths);
+  $sections_infos = sitenow_p2lb_determine_columns($col_widths);
 
-  // May need more than one layout section for one p-section's paragraphs.
+  // Helpers for iterating through paragraphs later.
   $paragraph_iter = 0;
-
   $paragraph_keys = array_keys($paragraphs);
+
+  // Helpers for section config settings later.
   $regional = [
     0 => 'first',
     1 => 'second',
     2 => 'third',
     4 => 'fourth',
   ];
-  foreach ($sections_info as $section_info) {
+  $w2d = [
+    1 => 'one',
+    2 => 'two',
+    3 => 'three',
+    4 => 'four'
+  ];
+
+  // Create and append sections to our $layout (section list).
+  foreach ($sections_infos as $section_info) {
+    // Catch broken section infos and put into a 'blank slate' section.
     $num_cols = (isset($section_info['num_columns'])) ? $section_info['num_columns'] : 1;
-    // Create and append section to our $layout (section list).
-    $w2d = [1 => 'one', 2 => 'two', 3 => 'three', 4 => 'four'];
+
+    // Determine column layout and create the text string.
     $formatter = (isset($w2d[$num_cols])) ? $w2d[$num_cols] : 'four';
     $layout_id = 'layout_'
       . $formatter
       . 'col';
+
     $layout_settings = [
       'label' => $section_title,
       'column_widths' => sitenow_p2lb_determine_columns($section_info['col_widths']),
@@ -113,10 +124,18 @@ function sitenow_p2lb_process_section($section_id, $layout) {
     ];
     $section_array = sitenow_p2lb_create_section_array($layout_id, $layout_settings);
 
+    // Iterate through the columns and process/attach the next paragraph in the list.
     for ($i = 0; $i < $num_cols; $i++) {
-      $key = $paragraph_keys[$paragraph_iter];
+      // We might have more columns available than remaining paragraphs.
+      if ($paragraph_iter >= count($paragraphs)) {
+        break;
+      }
+      $key = $paragraph_keys[$paragraph_iter++];
+
+      // Empty if the paragraph didn't process correctly.
       $block_config = sitenow_p2lb_process_paragraph($paragraphs[$key]);
       if (!empty($block_config)) {
+        // Onecol uses 'content', rest use region for column placement.
         $region = ($num_cols == 1) ? 'content' : $regional[$i];
         $uuid = $block_config['uuid'];
         $config = $block_config['configuration'];
@@ -129,11 +148,9 @@ function sitenow_p2lb_process_section($section_id, $layout) {
           'weight' => 0,
         ];
       }
-      $paragraph_iter++;
     }
     $section = Section::fromArray($section_array);
     $layout->appendSection($section);
-    // @todo append associated paragraphs, as well as possible error handling.
   }
   return $layout;
 }
