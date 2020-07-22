@@ -206,6 +206,8 @@ function sitenow_p2lb_determine_columns($col_widths) {
 
   while (TRUE) {
     $iter_adder += $col_widths[$i];
+
+    // Overrun of the section. Split and handle separately.
     if ($iter_adder > 12) {
       $sections = array_merge($sections,
         sitenow_p2lb_determine_columns(array_slice($col_widths, 0, $i)),
@@ -213,18 +215,23 @@ function sitenow_p2lb_determine_columns($col_widths) {
       );
       $iter_adder = 0;
     }
+
+    // Out of columns. Take what we have and handle/add to the list.
     if ($i == count($col_widths) - 1) {
       $sections = array_merge($sections,
         sitenow_p2lb_determine_columns(array_slice($col_widths, $i))
       );
       break;
     }
-    // Extra check to break loop.
+
+    // Extra cya check to break loop if something went wrong.
     if ($breaker-- <= 0) {
       break;
     }
+
     $i++;
   }
+
   return $sections;
 }
 
@@ -235,7 +242,10 @@ function sitenow_p2lb_process_paragraph($paragraph) {
   if (empty($paragraph)) {
     return [];
   }
+
+  // Handle each type of paragraph separately.
   switch ($paragraph->get('type')->getString()) {
+    // Paragraph types that yet need mapping.
     case 'section':
     case 'accordion':
     case 'accordion_item':
@@ -250,17 +260,18 @@ function sitenow_p2lb_process_paragraph($paragraph) {
     case 'text':
       // @todo This needs to be checked/extended/cleaned up
       $type = 'uiowa_text_area';
-      // @todo update labeling methodology.
+      // @todo update labeling methodology and decide how to title.
       $label = 'title';
       $block = \Drupal::entityTypeManager()
         ->getStorage('block_content')
         ->create([
           'type' => 'uiowa_text_area',
           'langcode' => 'en',
-          'status' => $paragraph->get('status')->getString(),
-          // info- looks like 'title' field?
+          'status' => $paragraph->get('status')->getValue(),
+          // 'info' looks like 'title' field in lb?
           'reusable' => 0,
           'default_langcode' => 1,
+          // getValue sets both the text value and the format.
           'field_uiowa_text_area' => $paragraph->get('field_text_body')->getValue(),
         ]);
       break;
@@ -268,12 +279,15 @@ function sitenow_p2lb_process_paragraph($paragraph) {
     case 'card':
       // @todo This needs to be checked/extended/cleaned up
       $type = 'uiowa_card';
+      // Image isn't required. Check for one, or set to null.
       $image = ($paragraph->get('field_card_image')->getValue()) ?
         $paragraph->get('field_card_image')->getValue()[0]['target_id'] : '';
 
+      // Link isn't required. Check for one, or set to null.
       $link = ($paragraph->get('field_card_link')->getValue()) ?
         $paragraph->get('field_card_link')->getValue()[0] : '';
 
+      // Label (title) isn't required. Check for one, or set to null.
       $label = ($paragraph->get('field_card_title')->getValue()) ?
         $paragraph->get('field_card_title')->getValue()[0]['value'] : '';
 
@@ -291,6 +305,7 @@ function sitenow_p2lb_process_paragraph($paragraph) {
           'field_uiowa_card_image' => $image,
           'field_uiowa_card_link' => $link,
           'field_uiowa_card_title' => [
+            // Size wasn't set in paragraphs. Defaulting to h2. Can change later.
             'size' => 'h2',
             'text' => $label,
           ],
@@ -300,13 +315,15 @@ function sitenow_p2lb_process_paragraph($paragraph) {
     default:
 
   }
+  // If we have a block save it, and check that it saved succesfully.
   if (isset($block) && $block->save()) {
+    // Create the config that will be used to set the block in its section.
     $uuid = $block->get('uuid')->getValue()[0]['value'];
     $config = [
       'id' => 'inline_block:' . $type,
       'label' => $label,
       'provider' => 'layout_builder',
-      // @todo update labeling methodology.
+      // @todo update labeling methodology. Defaulting to visible for now.
       'label_display' => 1,
       'block_revision_id' => $block->getRevisionId(),
       'view_mode' => '',
@@ -324,7 +341,9 @@ function sitenow_p2lb_process_paragraph($paragraph) {
  * Removes all attached paragraphs from a node.
  */
 function sitenow_p2lb_remove_attached_paragraphs($nid) {
+
   $section_ids = sitenow_p2lb_fetch_section_ids($nid);
+
   // Grab paragraphs attached to each of the given sections.
   $connection = Database::getConnection();
   $query = $connection->select('paragraphs_item_field_data', 'pifd');
@@ -332,7 +351,11 @@ function sitenow_p2lb_remove_attached_paragraphs($nid) {
     ->condition('parent_id', $section_ids, 'in')
     ->condition('parent_field_name', 'field_section_content_block', '=');
   $child_ids = $query->execute()->fetchCol();
+
+  // Gather all ids. Children first, then the parents (harsh!).
   $ids = array_merge($child_ids, $section_ids);
+
+  // Load all paragraphs by id, and delete each.
   $paragraphs = \Drupal::service('entity_type.manager')
     ->getStorage('paragraph')
     ->loadMultiple($ids);
@@ -342,7 +365,7 @@ function sitenow_p2lb_remove_attached_paragraphs($nid) {
 }
 
 /**
- * Create a section.
+ * Simple helper to create a section array.
  */
 function sitenow_p2lb_create_section_array($layout_id, $layout_settings) {
   $section_array = [
@@ -359,8 +382,11 @@ function sitenow_p2lb_create_section_array($layout_id, $layout_settings) {
  */
 function sitenow_p2lb_multicol_settings($col_widths) {
   $settings = '';
+
+  // Different multi-cols have different options to choose from.
   switch (count($col_widths)) {
     case 2:
+      // Helper variable to determine the layout options.
       $options = [
         3 => '25-75',
         4 => '33-67',
@@ -368,20 +394,25 @@ function sitenow_p2lb_multicol_settings($col_widths) {
         8 => '67-33',
         9 => '75-25',
       ];
+      // Check the first column and use to determine the split.
       $picker = $col_widths[0];
       if (in_array($picker, $options)) {
         $settings = $options[$picker];
       }
+      // Default to a 50-50 split if anything went wrong.
       else {
         $settings = $options[6];
       }
       break;
 
     case 3:
+      // If first col is half width, others are 25.
       if ($col_widths[0] == 6) {
         $settings = '50-25-25';
       }
+      // First col is 25, then two options are available.
       elseif ($col_widths[0] == 3) {
+        // Check the middle col to determine which gets the 50.
         if ($col_widths[1] == 3) {
           $settings = '25-25-50';
         }
@@ -389,6 +420,7 @@ function sitenow_p2lb_multicol_settings($col_widths) {
           $settings = '25-50-25';
         }
       }
+      // If anything went wrong, or didn't match, default to even thirds.
       else {
         $settings = '33-34-33';
       }
