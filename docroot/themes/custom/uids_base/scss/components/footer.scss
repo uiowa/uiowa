@@ -3,6 +3,16 @@
 $imgpath: '../../../../../uids/assets/images/';
 @import "components/branding/footer/footer.scss";
 
+.footer {
+  h2, h3, h4, h5, h6 {
+    color: $white;
+    font-weight: $font-weight-normal;
+  }
+  .lead {
+    color: $white;
+  }
+}
+
 .uiowa-footer--login-link {
   a {
     &:before {
@@ -47,5 +57,17 @@ $imgpath: '../../../../../uids/assets/images/';
     position: absolute;
     width: 1px;
     margin-right: 0.5rem;
+  }
+}
+
+.footer__links--nav {
+  flex-wrap: wrap;
+  align-content: start;
+  h2 {
+    font-weight: $font-weight-bold;
+    font-size: $h5-font-size;
+  }
+  > * {
+    flex-basis: 100%;
   }
 }
