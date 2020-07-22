@@ -15,13 +15,11 @@
   }
 }
 
-
 .paragraph--type--events {
   .more-link {
     margin-top: $gutter;
   }
 }
-
 
 .paragraph--type--articles,
 .paragraph--type--events,
@@ -147,16 +145,12 @@
   }
 }
 
-
 .paragraph--type--featured-content.grid,
 .paragraph--type--featured-content.masonry {
   .media-body {
     padding: 2rem;
   }
 }
-
-
-
 
 // Articles List
 .paragraph--type--articles.list,
@@ -258,9 +252,7 @@
       &:nth-child(3n+2) {
         margin: 0 $gutter $desktop-width-gutter $gutter;
       }
-
     }
-
     display: flex;
   }
 
@@ -270,8 +262,6 @@
     display: block;
   }
 }
-
-
 
 .paragraph--type--featured-content.list .node--type-page.node--view-mode-teaser.media {
   display: flex;
@@ -307,25 +297,23 @@
       margin-bottom: $desktop-width-gutter;
 
       &:nth-child(2n+1) {
-        margin-right: $desktop-width-gutter;
+        margin-right: $gutter;
       }
     }
 
     @include breakpoint(container) {
       flex: 0 0 31.222222%;
       max-width: 31.222222%;
-      margin: 0 $gutter $desktop-width-gutter $gutter;
+      margin-bottom: $desktop-width-gutter;
 
       &:nth-child(2n+1) {
         margin-right: $gutter;
-      }
-
-      &:nth-child(3n+1) {
-        margin-left: 0;
-      }
-
-      &:nth-child(3n+3) {
         margin-right: 0;
+      }
+
+      &:nth-child(3n+2) {
+        margin-left: 0;
+        margin: 0 $gutter $desktop-width-gutter $gutter;
       }
     }
 
@@ -357,25 +345,23 @@
       margin-bottom: $desktop-width-gutter;
 
       &:nth-child(2n+1) {
-        margin-right: $desktop-width-gutter;
+        margin-right: $gutter;
       }
     }
 
     @include breakpoint(container) {
       flex: 0 0 31.222222%;
       max-width: 31.222222%;
-      margin: 0 $gutter $desktop-width-gutter $gutter;
+      margin-bottom: $desktop-width-gutter;
 
       &:nth-child(2n+1) {
         margin-right: $gutter;
-      }
-
-      &:nth-child(3n+1) {
-        margin-left: 0;
-      }
-
-      &:nth-child(3n+3) {
         margin-right: 0;
+      }
+
+      &:nth-child(3n+2) {
+        margin-left: 0;
+        margin: 0 $gutter $desktop-width-gutter $gutter;
       }
     }
 
