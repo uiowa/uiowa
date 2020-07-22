@@ -94,10 +94,10 @@ function sitenow_p2lb_process_section($section_id, $layout) {
 
   // Helpers for section config settings later.
   $regional = [
-    0 => 'first',
-    1 => 'second',
-    2 => 'third',
-    4 => 'fourth',
+    'first',
+    'second',
+    'third',
+    'fourth',
   ];
   $w2d = [
     1 => 'one',
@@ -117,9 +117,10 @@ function sitenow_p2lb_process_section($section_id, $layout) {
       . $formatter
       . 'col';
 
+    $col_width_str = sitenow_p2lb_multicol_settings($section_info['col_widths']);
     $layout_settings = [
       'label' => $section_title,
-      'column_widths' => sitenow_p2lb_determine_columns($section_info['col_widths']),
+      'column_widths' => $col_width_str,
       'layout_builder_styles_style' => [],
     ];
     $section_array = sitenow_p2lb_create_section_array($layout_id, $layout_settings);
