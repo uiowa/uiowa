@@ -358,7 +358,7 @@
 
       &:nth-child(3n+2) {
         margin-left: 0;
-        margin: 0 3.5%$desktop-width-gutter $desktop-width-gutter;
+        margin: 0 $desktop-width-gutter $desktop-width-gutter $desktop-width-gutter;
       }
     }
 
@@ -562,12 +562,14 @@
 
 // everything over 2445px
 @media only screen and (min-width: 1425px) {
-
   .container-fluid .paragraph--type--featured-content.grid .featured-content-item,
   .container-fluid .paragraph--type--articles.grid .views-row,
   .container-fluid .paragraph--type--people.grid .views-row,
-  .layout--has-sidebar .paragraph--type--events.grid .container-fluid .card,
-  .paragraph--type--events.grid .container-fluid .card {
+  .layout--has-sidebar .container-fluid .paragraph--type--events.grid .card,
+  .container-fluid .paragraph--type--events.grid .card,
+  .layout--has-sidebar .container-fluid .paragraph--type--articles.grid .views-row,
+  .layout--has-sidebar .container-fluid .paragraph--type--people.grid .views-row,
+  .layout--has-sidebar .container-fluid .paragraph--type--featured-content.grid .featured-content-item {
     flex: 0 0 calc(34% - 3rem);
     max-width: calc(34% - 3rem);
   }
@@ -575,12 +577,19 @@
 
 
 @media only screen and (min-width: 2450px) {
-
   .paragraph--type--featured-content.grid .featured-content-item,
   .layout--has-sidebar .paragraph--type--events.grid .card,
   .paragraph--type--events.grid .card,
   .paragraph--type--articles.grid .views-row,
-  .paragraph--type--people.grid .views-row {
+  .paragraph--type--people.grid .views-row,
+  .container-fluid .paragraph--type--featured-content.grid .featured-content-item,
+  .container-fluid .paragraph--type--articles.grid .views-row,
+  .container-fluid .paragraph--type--people.grid .views-row,
+  .layout--has-sidebar .container-fluid .paragraph--type--featured-content.grid .featured-content-item,
+  .layout--has-sidebar .container-fluid .paragraph--type--articles.grid .views-row,
+  .layout--has-sidebar .container-fluid .paragraph--type--people.grid .views-row,
+  .layout--has-sidebar .container-fluid .paragraph--type--events.grid .card,
+  .container-fluid .paragraph--type--events.grid .card {
     flex: 0 0 calc(33.8% - 3rem);
     max-width: calc(33.8% - 3rem);
   }
