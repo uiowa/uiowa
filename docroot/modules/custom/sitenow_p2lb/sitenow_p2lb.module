@@ -67,6 +67,7 @@ function sitenow_p2lb_process_section($section_id, $layout) {
   $section_object = $para_storage->load($section_id);
   $section_title = ($section_object->get('field_section_title')[0]) ?
     $section_object->get('field_section_title')[0]->getValue()['value'] : '';
+  $section_styles = sitenow_p2lb_section_styles($section_object);
 
   // Get ids for all paragraphs attached to this section.
   $connection = Database::getConnection();
@@ -121,7 +122,7 @@ function sitenow_p2lb_process_section($section_id, $layout) {
     $layout_settings = [
       'label' => $section_title,
       'column_widths' => $col_width_str,
-      'layout_builder_styles_style' => [],
+      'layout_builder_styles_style' => $section_styles,
     ];
     $section_array = sitenow_p2lb_create_section_array($layout_id, $layout_settings);
 
@@ -462,4 +463,33 @@ function sitenow_p2lb_multicol_settings($col_widths) {
       break;
   }
   return $settings;
+}
+
+/**
+ * Match paragraphs section styles to lb section styles.
+ */
+function sitenow_p2lb_section_styles($section) {
+  $paragraph_styles = $section
+    ->get('field_uip_classes')
+    ->getValue();
+
+  $style_matcher = [
+    'bg-light' => 'section_background_style_gray',
+    // Using BG Gray for both light and dark in LB.
+    'bg-dark' => 'section_background_style_gray',
+    'bg-black' => 'section_background_style_black',
+    'bg-yellow' => 'section_background_style_gold',
+    'pt-5' => 'section_padding_top',
+    'pb-5' => 'section_padding_bottom',
+  ];
+  $styles = [];
+  foreach ($paragraph_styles as $p_style) {
+    $p_style = $p_style['value'];
+    if (in_array($p_style, $style_matcher)) {
+      $styles[] = [
+        $style_matcher[$p_style] => $style_matcher[$p_style]
+      ];
+    }
+  }
+  return $styles;
 }
