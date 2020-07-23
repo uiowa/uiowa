@@ -483,8 +483,8 @@ function sitenow_p2lb_section_styles($section_object) {
   ];
   $styles = [];
 
-  foreach ($paragraph_styles as $key => $value) {
-    $style_string = $value['value'];
+  foreach ($paragraph_styles as $paragraph_style) {
+    $style_string = $paragraph_style['value'];
     if (isset($style_matcher[$style_string])) {
       $styles[$style_matcher[$style_string]] = $style_matcher[$style_string];
     }
