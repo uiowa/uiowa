@@ -468,14 +468,13 @@ function sitenow_p2lb_multicol_settings($col_widths) {
 /**
  * Match paragraphs section styles to lb section styles.
  */
-function sitenow_p2lb_section_styles($section) {
-  $paragraph_styles = $section
+function sitenow_p2lb_section_styles($section_object) {
+  $paragraph_styles = $section_object
     ->get('field_uip_classes')
     ->getValue();
 
   $style_matcher = [
     'bg-light' => 'section_background_style_gray',
-    // Using BG Gray for both light and dark in LB.
     'bg-dark' => 'section_background_style_gray',
     'bg-black' => 'section_background_style_black',
     'bg-yellow' => 'section_background_style_gold',
@@ -483,12 +482,11 @@ function sitenow_p2lb_section_styles($section) {
     'pb-5' => 'section_padding_bottom',
   ];
   $styles = [];
-  foreach ($paragraph_styles as $p_style) {
-    $p_style = $p_style['value'];
-    if (in_array($p_style, $style_matcher)) {
-      $styles[] = [
-        $style_matcher[$p_style] => $style_matcher[$p_style]
-      ];
+
+  foreach ($paragraph_styles as $key => $value) {
+    $style_string = $value['value'];
+    if (isset($style_matcher[$style_string])) {
+      $styles[$style_matcher[$style_string]] = $style_matcher[$style_string];
     }
   }
   return $styles;
