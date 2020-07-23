@@ -2,13 +2,16 @@
 
 /**
  * @file
+ * Install hooks for sitenow_people.
  */
 
 use Drupal\Core\Config\FileStorage;
 use Drupal\node\Entity\Node;
 
 /**
- * Implements hook_update_8001().
+ * Updates any site with 'person_extended' split.
+ *
+ * Converts the research areas field to use a new field name.
  */
 function sitenow_people_update_8001() {
   /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
