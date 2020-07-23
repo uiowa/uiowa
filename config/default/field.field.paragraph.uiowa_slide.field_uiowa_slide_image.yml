@@ -1,0 +1,28 @@
+uuid: 70d76145-6259-4141-b876-842fbc5641a9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_uiowa_slide_image
+    - media.type.image
+    - paragraphs.paragraphs_type.uiowa_slide
+id: paragraph.uiowa_slide.field_uiowa_slide_image
+field_name: field_uiowa_slide_image
+entity_type: paragraph
+bundle: uiowa_slide
+label: Image
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
