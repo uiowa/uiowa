@@ -1,0 +1,32 @@
+uuid: 01bfe355-1b03-4ac0-b1ab-96b45bba3eb8
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_image_gallery
+    - field.storage.block_content.field_uiowa_gallery_title
+  module:
+    - heading
+id: block_content.uiowa_image_gallery.field_uiowa_gallery_title
+field_name: field_uiowa_gallery_title
+entity_type: block_content
+bundle: uiowa_image_gallery
+label: Title
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    size: h2
+    text: ''
+default_value_callback: ''
+settings:
+  label: Heading
+  allowed_sizes:
+    h2: h2
+    h3: h3
+    h4: h4
+    h5: h5
+    h6: h6
+    h1: 0
+field_type: heading
