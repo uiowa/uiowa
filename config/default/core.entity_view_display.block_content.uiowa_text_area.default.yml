@@ -5,7 +5,9 @@ dependencies:
   config:
     - block_content.type.uiowa_text_area
     - field.field.block_content.uiowa_text_area.field_uiowa_text_area
+    - field.field.block_content.uiowa_text_area.field_uiowa_text_area_title
   module:
+    - heading
     - text
 _core:
   default_config_hash: zuy-1leukwzvS1fByqQviHLv22AI7ESMuIbFQHTICL4
@@ -20,5 +22,12 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: text_default
+    region: content
+  field_uiowa_text_area_title:
+    weight: 0
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: heading
     region: content
 hidden: {  }
