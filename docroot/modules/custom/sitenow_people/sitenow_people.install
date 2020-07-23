@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @file
+ */
+
 use Drupal\Core\Config\FileStorage;
 use Drupal\node\Entity\Node;
 
@@ -17,31 +21,24 @@ function sitenow_people_update_8001() {
     $config_path = DRUPAL_ROOT . '/../config/features/person_extended';
     $source = new FileStorage($config_path);
 
-    // Create the split in active config and import config_ignore settings
-    // otherwise the status will be imported as false (and everything will be
-    // deleted on cim) since that is what exists in the default split config.
-//    $config_storage = \Drupal::service('config.storage');
-//    $config_storage->write('field.field.node.person.field_person_research_areas', $source->read('field.field.node.person.field_person_research_areas'));
-//    $config_storage->write('field.storage.node.field_person_research_areas', $source->read('field.field.node.person.field_person_research_areas'));
-
-    // Obtain the storage manager for field storage bases
-    // Create a new field from the yaml configuration and save
+    // Create field storage from new config.
     \Drupal::entityTypeManager()->getStorage('field_storage_config')
       ->create($source->read('field.storage.node.field_person_research_areas'))
       ->save();
 
-    // Obtain the storage manager for field instances
-    // Create a new field instance from the yaml configuration and save
+    // Create field instance from new config.
     \Drupal::entityTypeManager()->getStorage('field_config')
       ->create($source->read('field.field.node.person.field_person_research_areas'))
       ->save();
 
+    // Get all the person nodes.
     $nids = \Drupal::entityQuery('node')
       ->condition('type', 'person')
       ->execute();
 
     $nodes = Node::loadMultiple($nids);
 
+    // Update the new field to the value of the old field.
     foreach ($nodes as $node) {
       $research_areas = $node->get('person_pt_faculty_research_areas')->getValue();
       $node
