@@ -164,6 +164,8 @@ third_party_settings:
           - page_title_block
       blacklisted_blocks:
         'Custom block types':
+          - uiowa_page_title_hero
+          - uiowa_spacer_separator
           - uiowa_vertical_video
         'Inline blocks':
           - 'inline_block:uiowa_vertical_video'
@@ -194,6 +196,12 @@ third_party_settings:
         - layout_fourcol
         - layout_page
       blacklisted_blocks:
+        layout_onecol:
+          all_regions:
+            'Custom block types':
+              - uiowa_card
+            'Inline blocks':
+              - 'inline_block:uiowa_card'
         layout_twocol:
           all_regions:
             'Custom block types':
@@ -212,12 +220,6 @@ third_party_settings:
             'Custom block types':
               - uiowa_banner
               - uiowa_hero
-        layout_onecol:
-          all_regions:
-            'Custom block types':
-              - uiowa_card
-            'Inline blocks':
-              - 'inline_block:uiowa_card'
         layout_page:
           all_regions:
             'Inline blocks':
