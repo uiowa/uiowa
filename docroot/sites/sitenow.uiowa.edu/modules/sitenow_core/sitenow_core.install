@@ -4,6 +4,7 @@
  */
 
 use Drupal\Core\Config\FileStorage;
+use Drupal\Core\Serialization\Yaml;
 
 /**
  * Import default config_ignore.settings to avoid deleting webforms.
@@ -15,3 +16,21 @@ function sitenow_core_update_8001() {
   $config_storage->write('config_ignore.settings', $source->read('config_ignore.settings'));
   drupal_flush_all_caches();
 }
+
+/**
+ * Update the request form BLT command to use the new split option.
+ */
+function sitenow_core_update_8003() {
+  $config = \Drupal::configFactory()->getEditable('webform.webform.request_a_site');
+  $elements = $config->get('elements');
+
+  $yaml = Yaml::decode($elements);
+  $yaml['markup']['#markup'] = 'blt uiowa:multisite:create [webform_submission:values:url_host] --requester=[webform_submission:values:hawkid] --split sitenow_v2';
+  $elements = Yaml::encode($yaml);
+
+  $config
+    ->set('elements', $elements)
+    ->save();
+
+}
+
