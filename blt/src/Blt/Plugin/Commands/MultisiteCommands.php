@@ -509,6 +509,8 @@ EOD
    *   Do not create a cloud database.
    * @option requester
    *   The HawkID of the original requester. Will be granted webmaster access.
+   * @option split
+   *   The name of a config split to activate and import after installation.
    *
    * @command uiowa:multisite:create
    *
@@ -524,6 +526,7 @@ EOD
     'no-commit' => FALSE,
     'no-db' => FALSE,
     'requester' => InputOption::VALUE_REQUIRED,
+    'split' => InputOption::VALUE_REQUIRED,
   ]) {
     $db = Multisite::getDatabaseName($host);
     $applications = $this->getConfigValue('uiowa.applications');
@@ -714,9 +717,13 @@ EOD
     $blt['drupal']['db']['database'] = $db;
     $blt['drush']['aliases']['local'] = 'self';
 
-    // If requester option is set, add it to the site's BLT settings.
+    // Add custom options to the site's BLT settings.
     if (isset($options['requester'])) {
       $blt['uiowa']['requester'] = $options['requester'];
+    }
+
+    if (isset($options['split'])) {
+      $blt['uiowa']['config']['split'] = $options['split'];
     }
 
     $this->taskWriteToFile("{$root}/docroot/sites/{$host}/blt.yml")
