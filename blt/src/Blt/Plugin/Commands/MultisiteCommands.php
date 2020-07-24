@@ -280,7 +280,7 @@ class MultisiteCommands extends BltTasks {
               ->run();
 
             // If a requester was added, add them as a webmaster for the site.
-            if ($requester = $this->getConfigValue("uiowa.requester")) {
+            if ($requester = $this->getConfigValue('uiowa.requester')) {
               $this->taskDrush()
                 ->stopOnFail(FALSE)
                 ->drush('user:create')
