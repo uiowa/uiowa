@@ -1,0 +1,52 @@
+<?php
+
+/**
+ * @file
+ * Install hooks for sitenow_people.
+ */
+
+use Drupal\Core\Config\FileStorage;
+use Drupal\node\Entity\Node;
+
+/**
+ * Updates any site with 'person_extended' split.
+ *
+ * Converts the research areas field to use a new field name.
+ */
+function sitenow_people_update_8001() {
+  /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
+  $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
+  $split = 'config_split:person_extended';
+
+  // This site has the 'person_extended' split enabled.
+  if (isset($filters[$split]) && $filters[$split]['status']) {
+    // This site does not have the 'collegiate' split enabled.
+    $config_path = DRUPAL_ROOT . '/../config/features/person_extended';
+    $source = new FileStorage($config_path);
+
+    // Create field storage from new config.
+    \Drupal::entityTypeManager()->getStorage('field_storage_config')
+      ->create($source->read('field.storage.node.field_person_research_areas'))
+      ->save();
+
+    // Create field instance from new config.
+    \Drupal::entityTypeManager()->getStorage('field_config')
+      ->create($source->read('field.field.node.person.field_person_research_areas'))
+      ->save();
+
+    // Get all the person nodes.
+    $nids = \Drupal::entityQuery('node')
+      ->condition('type', 'person')
+      ->execute();
+
+    $nodes = Node::loadMultiple($nids);
+
+    // Update the new field to the value of the old field.
+    foreach ($nodes as $node) {
+      $research_areas = $node->get('person_pt_faculty_research_areas')->getValue();
+      $node
+        ->set('field_person_research_areas', $research_areas)
+        ->save();
+    }
+  }
+}
