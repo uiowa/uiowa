@@ -292,6 +292,17 @@ class MultisiteCommands extends BltTasks {
                 ])
                 ->run();
             }
+
+            // Activate and import any config splits.
+            if ($split = $this->getConfigValue('uiowa.config.split')) {
+              $this->taskDrush()
+                ->stopOnFail(FALSE)
+                ->drush('config:set')
+                ->args("config_split.config_split.{$split}", 'status', true)
+                ->drush('cache:rebuild')
+                ->drush('config:import')
+                ->run();
+            }
           }
 
           $this->sendNotification("Command `uiowa:multisite:install` *finished* for {$uninstalled_list} on {$app} {$env}.");
