@@ -298,7 +298,7 @@ class MultisiteCommands extends BltTasks {
               $this->taskDrush()
                 ->stopOnFail(FALSE)
                 ->drush('config:set')
-                ->args("config_split.config_split.{$split}", 'status', true)
+                ->args("config_split.config_split.{$split}", 'status', TRUE)
                 ->drush('cache:rebuild')
                 ->drush('config:import')
                 ->run();
