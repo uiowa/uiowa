@@ -34,6 +34,8 @@
   'stat_classes': ['stat', 'stat__grid'],
   'heading' : content.field_uiowa_statistic_title[0]['#text'],
   'heading_level': content.field_uiowa_statistic_title[0]['#size'],
+  'title_prefix': title_prefix,
+  'title_suffix': title_suffix,
 } %}
 
 {% embed '@uids_base/uids/stat.html.twig' with stat_block only %}
