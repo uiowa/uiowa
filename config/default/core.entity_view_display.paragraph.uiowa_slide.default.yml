@@ -3,13 +3,12 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.uiowa_slide.field_collection_headline
     - field.field.paragraph.uiowa_slide.field_uiowa_slide_content
-    - field.field.paragraph.uiowa_slide.field_uiowa_slide_headline
     - field.field.paragraph.uiowa_slide.field_uiowa_slide_image
     - field.field.paragraph.uiowa_slide.field_uiowa_slide_link
     - paragraphs.paragraphs_type.uiowa_slide
   module:
-    - heading
     - link
     - text
 id: paragraph.uiowa_slide.default
@@ -17,6 +16,14 @@ targetEntityType: paragraph
 bundle: uiowa_slide
 mode: default
 content:
+  field_collection_headline:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
   field_uiowa_slide_content:
     weight: 2
     label: hidden
@@ -24,16 +31,9 @@ content:
     third_party_settings: {  }
     type: text_default
     region: content
-  field_uiowa_slide_headline:
-    weight: 1
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    type: heading
-    region: content
   field_uiowa_slide_image:
     type: entity_reference_entity_view
-    weight: 0
+    weight: 1
     label: hidden
     settings:
       view_mode: full__ultrawide

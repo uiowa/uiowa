@@ -45,8 +45,8 @@
   'slide_expanded': delta == 0 ? true : false,
   'slide_image': content.field_uiowa_slide_image,
   'slide_summary': content.field_uiowa_slide_content,
-  'slide_title': content.field_uiowa_slide_headline[0]['#text'],
-  'heading_level': content.field_uiowa_slide_headline[0]['#size'],
+  'slide_title': content.field_collection_headline|render,
+  'heading_level': h_size,
   'link': {
     'link_url': content.field_uiowa_slide_link[0]['#url'],
     'link_text' : content.field_uiowa_slide_link[0]['#title'],

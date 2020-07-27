@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_slider
+    - field.field.block_content.uiowa_slider.field_collection_heading_size
     - field.field.block_content.uiowa_slider.field_uiowa_slider_slides
   module:
     - entity_browser_entity_form
@@ -13,9 +14,15 @@ targetEntityType: block_content
 bundle: uiowa_slider
 mode: default
 content:
+  field_collection_heading_size:
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
   field_uiowa_slider_slides:
     type: inline_entity_form_complex
-    weight: 0
+    weight: 1
     settings:
       form_mode: default
       revision: true
