@@ -101,7 +101,7 @@ function sitenow_p2lb_process_section($section_id, $layout) {
   // Check for a section image, and if so, handle it.
   $section_image_fid = ($section_object->get('field_section_image')[0]) ?
     $section_object->get('field_section_image')[0]->getValue()['target_id'] : 0;
-  $banner_text = null;
+  $banner_text = NULL;
   if ($section_image_fid) {
     // If the first (or only) paragraph is text, use it for the created banner.
     if (!empty($paragraphs) && reset($paragraphs)->getType() === 'text') {
@@ -110,7 +110,6 @@ function sitenow_p2lb_process_section($section_id, $layout) {
     // Append our new background image section.
     $section_array = sitenow_p2lb_section_image($section_image_fid, $banner_text);
     if (!empty($section_array)) {
-      dpm($section_array);
       $section = Section::fromArray($section_array);
       $layout->appendSection($section);
       // If that was the only paragraph, we're done with this p_section.
@@ -586,7 +585,7 @@ function sitenow_p2lb_section_image($section_image_fid, $banner_text) {
         'label' => 'Hero image',
         'column_widths' => [],
         'layout_builder_styles_style' => [
-          'section_margin_edge_to_edge' => 'section_margin_edge_to_edge'
+          'section_margin_edge_to_edge' => 'section_margin_edge_to_edge',
         ],
       ];
       $section_array = sitenow_p2lb_create_section_array('layout_onecol', $layout_settings);
