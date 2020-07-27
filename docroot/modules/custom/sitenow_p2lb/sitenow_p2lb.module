@@ -58,8 +58,6 @@ function sitenow_p2lb_node_p2lb($nid) {
 function sitenow_p2lb_fetch_child_ids($parent) {
   switch ($parent->getType()) {
     case 'page':
-    case 'article':
-    case 'person':
       $field = 'field_page_content_block';
       break;
 
