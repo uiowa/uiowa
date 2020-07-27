@@ -101,9 +101,12 @@ div[role=article].node--type-ighn-person.node--view-mode-full {
         }
 
         @include breakpoint(menu) {
-          flex: 0 0 47%;
-          max-width: 47%;
+          flex: 0 0 calc(50% - 1.5rem);
           margin-bottom: $desktop-width-gutter;
+
+          .layout--has-sidebar & {
+            flex: 0 0 calc(50% - 1.5rem);
+          }
 
           &:nth-child(2n+1) {
             margin-right: $desktop-width-gutter;
@@ -111,20 +114,25 @@ div[role=article].node--type-ighn-person.node--view-mode-full {
         }
 
         @include breakpoint(container) {
-          flex: 0 0 31.222222%;
-          max-width: 31.222222%;
-          margin: 0 $gutter $desktop-width-gutter $gutter;
+          flex: 0 0 calc(34.5% - 3rem);
+          margin-bottom: $desktop-width-gutter;
+
+          .sidebar-invisible.layout--has-sidebar & {
+            flex: 0 0 calc(34.5% - 3rem);
+          }
+
+          .layout--has-sidebar & {
+            flex: 0 0 calc(34.5% - 3rem);
+          }
 
           &:nth-child(2n+1) {
             margin-right: $gutter;
-          }
-
-          &:nth-child(3n+1) {
-            margin-left: 0;
-          }
-
-          &:nth-child(3n+3) {
             margin-right: 0;
+          }
+
+          &:nth-child(3n+2) {
+            margin-left: 0;
+            margin: 0 $desktop-width-gutter $desktop-width-gutter $desktop-width-gutter;
           }
         }
 
@@ -141,4 +149,57 @@ div[role=article].node--type-ighn-person.node--view-mode-full {
       }
     }
   }
+}
+
+// everything over 2445px
+@media only screen and (min-width: 1425px) {
+
+  .container-fluid .view-display-id-ighn_person .views-row,
+  .layout--has-sidebar .container-fluid .view-display-id-ighn_person .views-row {
+    flex: 0 0 calc(34% - 3rem);
+  }
+}
+
+
+@media only screen and (min-width: 2450px) {
+
+  .view-display-id-ighn_person .views-row,
+  .container-fluid .view-display-id-ighn_person .views-row,
+  .layout--has-sidebar .container-fluid .view-display-id-ighn_person .views-row {
+    flex: 0 0 calc(33.8% - 3rem);
+  }
+}
+
+// IE 11
+@media all and (-ms-high-contrast: none),
+(-ms-high-contrast: active) {
+
+  .view-display-id-ighn_person .views-row,
+  .container-fluid .view-display-id-ighn_person .views-row,
+  .layout--has-sidebar .container-fluid .view-display-id-ighn_person .views-row {
+    flex: 0 30% !important;
+  }
+
+  .view-display-id-ighn_person .views-row {
+    display: block !important;
+  }
+
+  .view-display-id-ighn_person .view-content {
+    justify-content: space-between !important;
+  }
+
+  .view-display-id-ighn_person :nth-child(2n+1).views-row {
+    margin-right: 0 !important;
+  }
+
+  .view-display-id-ighn_person :nth-child(3n+2).views-row {
+    margin: 0;
+  }
+}
+
+.container-fluid {
+  margin: 0 auto;
+  width: 100%;
+  padding-right: 0;
+  padding-left: 0;
 }
