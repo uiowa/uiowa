@@ -31,7 +31,7 @@ function sitenow_p2lb_node_p2lb($nid) {
     ->getStorage('node')
     ->load($nid);
   // Get sections from the page.
-  $section_ids = sitenow_p2lb_fetch_section_ids($nid);
+  $section_ids = sitenow_p2lb_fetch_section_ids($node);
   $layout = $node->get('layout_builder__layout');
   foreach ($section_ids as $section_id) {
     $layout = sitenow_p2lb_process_section($section_id, $layout);
@@ -44,15 +44,12 @@ function sitenow_p2lb_node_p2lb($nid) {
 /**
  * Fetch all section paragraph ids attached to a node.
  */
-function sitenow_p2lb_fetch_section_ids($nid) {
-  $connection = Database::getConnection();
-  $query = $connection->select('paragraphs_item_field_data', 'pifd');
-  $query->fields('pifd', ['id'])
-    ->condition('parent_type', 'node', '=')
-    ->condition('parent_id', $nid, '=');
-  $section_ids = $query->distinct()
-    ->execute()
-    ->fetchCol();
+function sitenow_p2lb_fetch_section_ids($node) {
+  $content = $node->get('field_page_content_block');
+  $section_ids = [];
+  foreach ($content as $section_ref) {
+    $section_ids[] = $section_ref->getValue()['target_id'];
+  }
   return $section_ids;
 }
 
@@ -62,20 +59,18 @@ function sitenow_p2lb_fetch_section_ids($nid) {
 function sitenow_p2lb_process_section($section_id, $layout) {
   $para_storage = \Drupal::service('entity_type.manager')
     ->getStorage('paragraph');
-
-  // Grab section title.
   $section_object = $para_storage->load($section_id);
+
+  // Grab section title and styles.
   $section_title = ($section_object->get('field_section_title')[0]) ?
     $section_object->get('field_section_title')[0]->getValue()['value'] : '';
   $section_styles = sitenow_p2lb_section_styles($section_object);
 
   // Get ids for all paragraphs attached to this section.
-  $connection = Database::getConnection();
-  $query = $connection->select('paragraphs_item_field_data', 'pifd');
-  $query->fields('pifd', ['id'])
-    ->condition('parent_id', $section_id, '=')
-    ->condition('parent_field_name', 'field_section_content_block', '=');
-  $pids = $query->execute()->fetchCol();
+  $pids = [];
+  foreach ($section_object->get('field_section_content_block') as $content_ref) {
+    $pids[] = $content_ref->getValue()['target_id'];
+  }
 
   $paragraphs = $para_storage->loadMultiple($pids);
 
