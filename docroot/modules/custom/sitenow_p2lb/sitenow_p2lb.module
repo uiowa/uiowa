@@ -94,15 +94,31 @@ function sitenow_p2lb_process_section($section_id, $layout) {
     $section_object->get('field_section_title')[0]->getValue()['value'] : '';
   $section_styles = sitenow_p2lb_section_styles($section_object);
 
-  // Check for a section image.
-  $section_image_fid = ($section_object->get('field_section_image')[0]) ?
-    $section_object->get('field_section_image')[0]->getValue()['target_id'] : 0;
-  //@todo Right now, section background images are handled separately from content.
-
-
   // Get all paragraphs attached to this section.
   $pids = sitenow_p2lb_fetch_child_ids($section_object);
   $paragraphs = $para_storage->loadMultiple($pids);
+
+  // Check for a section image, and if so, handle it.
+  $section_image_fid = ($section_object->get('field_section_image')[0]) ?
+    $section_object->get('field_section_image')[0]->getValue()['target_id'] : 0;
+  $banner_text = null;
+  if ($section_image_fid) {
+    // If the first (or only) paragraph is text, use it for the created banner.
+    if (!empty($paragraphs) && reset($paragraphs)->getType() === 'text') {
+      $banner_text = array_shift($paragraphs);
+    }
+    // Append our new background image section.
+    $section_array = sitenow_p2lb_section_image($section_image_fid, $banner_text);
+    if (!empty($section_array)) {
+      dpm($section_array);
+      $section = Section::fromArray($section_array);
+      $layout->appendSection($section);
+      // If that was the only paragraph, we're done with this p_section.
+      if (empty($paragraphs)) {
+        return $layout;
+      }
+    }
+  }
 
   // Widths are set at the paragraph level. Grab our column widths.
   $col_widths = [];
@@ -515,4 +531,73 @@ function sitenow_p2lb_section_styles($section_object) {
     }
   }
   return $styles;
+}
+
+/**
+ * Creates an lb section for paragraphs section background image.
+ */
+function sitenow_p2lb_section_image($section_image_fid, $banner_text) {
+  $section_array = [];
+
+  $text = (!is_null($banner_text)) ? $banner_text->get('field_text_body')->getValue()[0] : '';
+  $h_level = 'h2';
+  $title = '';
+
+  // Check if the text begins with an <h#> tag.
+  if (preg_match('|\A<(h\d)>(.*?)<\/h\d>|', $text['value'], $matches)) {
+    $h_level = $matches[1];
+    $title = $matches[2];
+    $text['value'] = str_replace(
+      $matches[0],
+      '',
+      $text['value']
+    );
+  }
+  $block = \Drupal::entityTypeManager()
+    ->getStorage('block_content')
+    ->create([
+      'type' => 'uiowa_hero',
+      'langcode' => 'en',
+      'status' => 1,
+      'reusable' => 0,
+      'default_langcode' => 1,
+      'field_uiowa_hero_excerpt' => $text,
+      'field_uiowa_hero_image' => $section_image_fid,
+      'field_uiowa_hero_title' => [
+        'size' => $h_level,
+        'text' => $title,
+      ],
+      'field_uiowa_hero_video' => '',
+    ]);
+  // If we have a block save it, and check that it saved succesfully.
+  if (isset($block) && $block->save()) {
+    // Create the config that will be used to set the block in its section.
+    $uuid = $block->get('uuid')->getValue()[0]['value'];
+    $block_config = [
+      'id' => 'inline_block:uiowa_hero',
+      'label' => 'Hero',
+      'provider' => 'layout_builder',
+      'label_display' => 0,
+      'block_revision_id' => $block->getRevisionId(),
+      'view_mode' => 'full',
+    ];
+    if (!empty($block_config)) {
+      $layout_settings = [
+        'label' => 'Hero image',
+        'column_widths' => [],
+        'layout_builder_styles_style' => [
+          'section_margin_edge_to_edge' => 'section_margin_edge_to_edge'
+        ],
+      ];
+      $section_array = sitenow_p2lb_create_section_array('layout_onecol', $layout_settings);
+      $section_array['components'][$uuid] = [
+        'uuid' => $uuid,
+        'region' => 'content',
+        'configuration' => $block_config,
+        'additional' => [],
+        'weight' => 0,
+      ];
+    }
+  }
+  return $section_array;
 }
