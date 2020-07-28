@@ -404,8 +404,20 @@ function sitenow_p2lb_process_paragraph($paragraph) {
       break;
 
     case 'carousel':
+      $type = 'uiowa_slider';
       $label = $paragraph->get('field_uip_title')->getString();
       $display_label = $paragraph->get('field_uip_display_title')->getString();
+
+      $block = \Drupal::entityTypeManager()
+      ->getStorage('block_content')
+      ->create([
+        'type' => $type,
+        'langcode' => 'en',
+        'status' => $paragraph->get('status')->getValue(),
+        'reusable' => 0,
+        'default_langcode' => 1,
+      ]);
+
       $carousel_image_ids = $paragraph->get('field_carousel_item')->getValue();
       $para_storage = \Drupal::service('entity_type.manager')
         ->getStorage('paragraph');
@@ -413,7 +425,26 @@ function sitenow_p2lb_process_paragraph($paragraph) {
       foreach ($carousel_images as $carousel_image) {
         // Text field array: 'value' and 'format'.
         $caption = $carousel_image->get('field_carousel_image_caption')->getValue()[0];
-        $image_fid = $carousel_image->get('field_carousel_image_image')->getString();
+          // Grab the first complete text piece.
+        if (preg_match('|\A<(.*?\d)>(.*?)<\/.*?\d>|', $caption['value'], $matches)) {
+          // If it was an <h#> tag, grab it to set the proper level.
+          $level = (substr($matches[1], 0, 1) === 'h') ? $matches[1] : 'h2';
+          // Grab the new headline, and pull it out of the rest of the content.
+          $headline = $matches[2];
+          $caption['value'] = str_replace(
+            $matches[0],
+            '',
+            $caption['value']
+          );
+          // Only continue if we were able to create a headline (slider requires it).
+          $image_fid = $carousel_image->get('field_carousel_image_image')->getString();
+          $para_storage->create([
+            'type' => 'uiowa_slide',
+            'field_uiowa_slide_content' => $caption,
+            'field_collection_headline' => $headline,
+            'field_uiowa_slide_image' => $image_fid,
+          ]);
+        }
       }
       break;
 
