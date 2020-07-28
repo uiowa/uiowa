@@ -352,56 +352,56 @@ function sitenow_p2lb_process_paragraph($paragraph) {
         ]);
       break;
 
-      case 'card':
-        // @todo Add default card style overrides?
-        $type = 'uiowa_card';
-  
-        // Image isn't required. Check for one, or set to null.
-        $image = ($paragraph->get('field_card_image')->getValue()) ?
-          $paragraph->get('field_card_image')->getValue()[0]['target_id'] : '';
-  
-        // Link isn't required. Check for one, or set to null.
-        $link = ($paragraph->get('field_card_link')->getValue()) ?
-          $paragraph->get('field_card_link')->getValue()[0] : '';
-  
-        // Label (title) isn't required. Check for one, or set to null.
-        $label = ($paragraph->get('field_card_title')->getValue()) ?
-          $paragraph->get('field_card_title')->getString() : '';
-        $display_label = ($label) ? 1 : 0;
-  
-        // Subtitle field isn't required. Check for one, or set to null.
-        $subtitle = ($paragraph->get('field_card_subtitle')->getValue()) ?
-          $paragraph->get('field_card_subtitle')->getString() : '';
-  
-        // Get body field isn't required or set to array with empty value.
-        $excerpt = ($paragraph->get('field_card_body')->getValue()) ?
-          $paragraph->get('field_card_body')->getValue() : ['value' => '', 'format' => 'minimal'];
-  
-        // If there was a subtitle, prepend it to the body text.
-        if ($subtitle) {
-          $excerpt['value'] = '<p>' . $subtitle . '</p>' . $excerpt['value'];
-        }
-  
-        $block = \Drupal::entityTypeManager()
-          ->getStorage('block_content')
-          ->create([
-            'type' => 'uiowa_card',
-            'langcode' => 'en',
-            'status' => $paragraph->get('status')->getString(),
-            'info' => 'Card',
-            'reusable' => 0,
-            'default_langcode' => 1,
-            'field_uiowa_card_author' => [],
-            'field_uiowa_card_excerpt' => $excerpt,
-            'field_uiowa_card_image' => $image,
-            'field_uiowa_card_link' => $link,
-            'field_uiowa_card_title' => [
-              // Size not set in paragraphs. Defaulting to h2. Can change later.
-              'size' => 'h2',
-              'text' => $label,
-            ],
-          ]);
-        break;
+    case 'card':
+      // @todo Add default card style overrides?
+      $type = 'uiowa_card';
+
+      // Image isn't required. Check for one, or set to null.
+      $image = ($paragraph->get('field_card_image')->getValue()) ?
+        $paragraph->get('field_card_image')->getValue()[0]['target_id'] : '';
+
+      // Link isn't required. Check for one, or set to null.
+      $link = ($paragraph->get('field_card_link')->getValue()) ?
+        $paragraph->get('field_card_link')->getValue()[0] : '';
+
+      // Label (title) isn't required. Check for one, or set to null.
+      $label = ($paragraph->get('field_card_title')->getValue()) ?
+        $paragraph->get('field_card_title')->getString() : '';
+      $display_label = ($label) ? 1 : 0;
+
+      // Subtitle field isn't required. Check for one, or set to null.
+      $subtitle = ($paragraph->get('field_card_subtitle')->getValue()) ?
+        $paragraph->get('field_card_subtitle')->getString() : '';
+
+      // Get body field isn't required or set to array with empty value.
+      $excerpt = ($paragraph->get('field_card_body')->getValue()) ?
+        $paragraph->get('field_card_body')->getValue() : ['value' => '', 'format' => 'minimal'];
+
+      // If there was a subtitle, prepend it to the body text.
+      if ($subtitle) {
+        $excerpt['value'] = '<p>' . $subtitle . '</p>' . $excerpt['value'];
+      }
+
+      $block = \Drupal::entityTypeManager()
+        ->getStorage('block_content')
+        ->create([
+          'type' => 'uiowa_card',
+          'langcode' => 'en',
+          'status' => $paragraph->get('status')->getString(),
+          'info' => 'Card',
+          'reusable' => 0,
+          'default_langcode' => 1,
+          'field_uiowa_card_author' => [],
+          'field_uiowa_card_excerpt' => $excerpt,
+          'field_uiowa_card_image' => $image,
+          'field_uiowa_card_link' => $link,
+          'field_uiowa_card_title' => [
+            // Size not set in paragraphs. Defaulting to h2. Can change later.
+            'size' => 'h2',
+            'text' => $label,
+          ],
+        ]);
+      break;
 
     case 'text':
       $type = 'uiowa_text_area';
