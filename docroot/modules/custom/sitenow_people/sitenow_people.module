@@ -45,7 +45,7 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
           // If the field name matches the pattern for person type
           // specific fields, make it not required and set it to
           // not be visible.
-          if (strpos($field_name, 'person_pt_') !== FALSE) {
+          if (strpos($field_name, '_pt_') !== FALSE) {
             $form[$field_name]['#widget']['#required'] = FALSE;
             $form[$field_name]['#access'] = FALSE;
           }
@@ -57,7 +57,7 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
           // Loop through fields.
           foreach (Element::children($form) as $field_name) {
             // Check for match of term name (lower-cased) in the field name.
-            if (strpos($field_name, 'person_pt_' . strtolower($term->name)) !== FALSE) {
+            if (strpos($field_name, '_pt_' . strtolower($term->name)) !== FALSE) {
               // Add '#states' condition to matching fields to be visible
               // when tid is selected in field_person_type.
               // @todo Do we need to account for the possibility of changing
@@ -210,6 +210,32 @@ function sitenow_people_preprocess_views_view(&$variables) {
       break;
 
   }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_people_preprocess_node(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    $node = $variables["node"];
+    switch ($node->getType()) {
+      case 'person':
+        switch ($variables['view_mode']) {
+          case 'teaser':
+            // Heading needs to change based on placement. Defaults to h3 in twig.
+            $current_route = \Drupal::routeMatch();
+            $route_name = $current_route->getRouteName();
+            $variables['#cache']['contexts'][] = 'route.name';
+            if (strpos($route_name, 'view.people.') === 0) {
+              $variables['content_heading'] = 'h2';
+            }
+            break;
+        }
+        break;
+    }
+  }
+
 }
 
 /**

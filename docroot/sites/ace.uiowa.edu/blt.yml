@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: ace.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: ace
+  human_name: ace.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: ace.prod
+drupal:
+  db:
+    database: ace_uiowa_edu
+uiowa:
+  requester: albeck
