@@ -308,7 +308,6 @@ function sitenow_p2lb_process_paragraph($paragraph) {
     case 'featured_content':
     case 'image_gallery':
     case 'people':
-    case 'webform':
       break;
 
     case 'blockquote':
@@ -444,7 +443,7 @@ function sitenow_p2lb_process_paragraph($paragraph) {
       $uuid = $webform[$webform_data['target_id']]->get('uuid');
 
       $config = [
-        'id' => 'webform',
+        'id' => 'webform_block',
         'provider' => 'webform',
         'label' => $label,
         'label_display' => $display_label,
