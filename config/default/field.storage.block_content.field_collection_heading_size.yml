@@ -1,0 +1,36 @@
+uuid: f924420b-bbb8-4a7b-a955-dddb2a9a3e92
+langcode: en
+status: true
+dependencies:
+  module:
+    - block_content
+    - options
+id: block_content.field_collection_heading_size
+field_name: field_collection_heading_size
+entity_type: block_content
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: h2
+      label: 'Heading 2'
+    -
+      value: h3
+      label: 'Heading 3'
+    -
+      value: h4
+      label: 'Heading 4'
+    -
+      value: h5
+      label: 'Heading 5'
+    -
+      value: h6
+      label: 'Heading 6'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

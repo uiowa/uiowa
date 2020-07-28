@@ -104,7 +104,7 @@
         "drupal/honeypot": "^2.0",
         "drupal/imagecache_external": "^1.0",
         "drupal/imagemagick": "^3.0",
-        "drupal/inline_entity_form": "^1.0@RC",
+        "drupal/inline_entity_form": "^1.0.0-rc2",
         "drupal/layout_builder_restrictions": "^2.6",
         "drupal/layout_builder_styles": "^1.0@beta",
         "drupal/lazy": "^3.4",
@@ -173,6 +173,9 @@
             "drupal/core": "-p2"
         },
         "patches": {
+            "drupal/inline_entity_form": {
+                "Custom blocks created in inline forms should not be reusable": "https://www.drupal.org/files/issues/2020-05-04/3002175-26.patch"
+            },
             "drupal/menu_block": {
                 "Add option to make the starting level follow the active menu item": "https://www.drupal.org/files/issues/2018-05-01/menu_block-follow-2756675-43.patch",
                 "Hide block title if menu tree contains no links": "https://www.drupal.org/files/issues/2018-05-08/menu_block-hide_block_if_no_links-2757215-9.patch",
