@@ -10,29 +10,19 @@ dependencies:
     - field.field.node.page.field_publish_options
     - field.field.node.page.field_tags
     - field.field.node.page.field_teaser
-    - field.field.node.page.layout_builder__layout
     - node.type.page
     - workflows.workflow.editorial
   module:
     - content_moderation
     - media_library
     - metatag
+    - paragraphs
     - path
-    - text
 id: node.page.default
 targetEntityType: node
 bundle: page
 mode: default
 content:
-  body:
-    type: text_textarea_with_summary
-    weight: 1
-    region: content
-    settings:
-      rows: 9
-      summary_rows: 3
-      placeholder: ''
-    third_party_settings: {  }
   created:
     type: datetime_timestamp
     weight: 5
@@ -51,6 +41,25 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: metatag_firehose
+    region: content
+  field_page_content_block:
+    type: paragraphs
+    weight: 2
+    settings:
+      title: Section
+      title_plural: Sections
+      edit_mode: closed
+      closed_mode: preview
+      autocollapse: all
+      closed_mode_threshold: 2
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: _none
+      features:
+        duplicate: duplicate
+        collapse_edit_all: '0'
+        add_above: '0'
+    third_party_settings: {  }
     region: content
   field_publish_options:
     weight: 14
@@ -133,5 +142,4 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
-  field_page_content_block: true
-  layout_builder__layout: true
+  body: true

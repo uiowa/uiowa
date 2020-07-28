@@ -1,11 +1,13 @@
-uuid: 1422930d-3372-4cd5-928e-49b4905e924f
+uuid: 0825cfdd-af2f-4022-8897-60283b52bb51
 langcode: en
 status: true
 dependencies: {  }
-id: publisher
-label: Publisher
-weight: -5
-is_admin: null
+_core:
+  default_config_hash: LO6rl3XZgu-dL4gZtQftKWfrayfBJ6Vti8-I08HVU7w
+id: editor
+label: Editor
+weight: -6
+is_admin: false
 permissions:
   - 'access administration pages'
   - 'access content overview'
@@ -15,6 +17,7 @@ permissions:
   - 'access file_link_browser entity browser pages'
   - 'access files overview'
   - 'access media overview'
+  - 'access media_entity_browser entity browser pages'
   - 'access media_wysiwyg_browser entity browser pages'
   - 'access metatag tag advanced__canonical_url'
   - 'access metatag tag advanced__geo_placename'
@@ -27,7 +30,6 @@ permissions:
   - 'access metatag tag open_graph__og_description'
   - 'access metatag tag open_graph__og_image_url'
   - 'access metatag tag open_graph__og_title'
-  - 'access metatag tag open_graph__og_url'
   - 'access metatag tag schema_article__schema_article_about'
   - 'access metatag tag schema_article__schema_article_author'
   - 'access metatag tag schema_article__schema_article_description'
@@ -59,7 +61,16 @@ permissions:
   - 'create remote_video media'
   - 'create terms in tags'
   - 'create twitter media'
-  - 'create url aliases'
+  - 'create uiowa_banner block content'
+  - 'create uiowa_card block content'
+  - 'create uiowa_cta block content'
+  - 'create uiowa_event block content'
+  - 'create uiowa_hero block content'
+  - 'create uiowa_image_gallery block content'
+  - 'create uiowa_page_title_hero block content'
+  - 'create uiowa_spacer_separator block content'
+  - 'create uiowa_statistic block content'
+  - 'create uiowa_text_area block content'
   - 'delete any article content'
   - 'delete any audio media'
   - 'delete any facebook media'
@@ -70,7 +81,18 @@ permissions:
   - 'delete any person content'
   - 'delete any remote_video media'
   - 'delete any twitter media'
+  - 'delete any uiowa_banner block content'
+  - 'delete any uiowa_card block content'
+  - 'delete any uiowa_cta block content'
+  - 'delete any uiowa_event block content'
+  - 'delete any uiowa_hero block content'
+  - 'delete any uiowa_image_gallery block content'
+  - 'delete any uiowa_page_title_hero block content'
+  - 'delete any uiowa_spacer_separator block content'
+  - 'delete any uiowa_statistic block content'
+  - 'delete any uiowa_text_area block content'
   - 'delete article revisions'
+  - 'delete event feed'
   - 'delete own article content'
   - 'delete own audio media'
   - 'delete own facebook media'
@@ -107,24 +129,30 @@ permissions:
   - 'enter article revision log entry'
   - 'enter page revision log entry'
   - 'enter person revision log entry'
-  - 'override article authored by option'
-  - 'override article authored on option'
   - 'override article published option'
   - 'override page published option'
   - 'override person published option'
   - 'revert article revisions'
   - 'revert page revisions'
-  - 'use editorial transition archive'
-  - 'use editorial transition archived_published'
+  - 'update any uiowa_banner block content'
+  - 'update any uiowa_card block content'
+  - 'update any uiowa_cta block content'
+  - 'update any uiowa_event block content'
+  - 'update any uiowa_hero block content'
+  - 'update any uiowa_image_gallery block content'
+  - 'update any uiowa_page_title_hero block content'
+  - 'update any uiowa_spacer_separator block content'
+  - 'update any uiowa_statistic block content'
+  - 'update any uiowa_text_area block content'
   - 'use editorial transition create_new_draft'
   - 'use editorial transition needs_review'
-  - 'use editorial transition publish'
   - 'use siteimprove'
   - 'use text format filtered_html'
   - 'use text format minimal'
   - 'view any unpublished content'
   - 'view article revisions'
   - 'view latest version'
+  - 'view media'
   - 'view own unpublished content'
   - 'view own unpublished media'
   - 'view page revisions'
