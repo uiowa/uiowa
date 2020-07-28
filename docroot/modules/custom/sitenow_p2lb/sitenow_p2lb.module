@@ -302,8 +302,6 @@ function sitenow_p2lb_process_paragraph($paragraph) {
     case 'accordion':
     case 'accordion_item':
     case 'articles':
-    case 'carousel':
-    case 'carousel_image':
     case 'events':
     case 'featured_content':
     case 'image_gallery':
@@ -403,6 +401,24 @@ function sitenow_p2lb_process_paragraph($paragraph) {
             'text' => $label,
           ],
         ]);
+      break;
+
+    case 'carousel':
+      $label = $paragraph->get('field_uip_title')->getString();
+      $display_label = $paragraph->get('field_uip_display_title')->getString();
+      $carousel_image_ids = $paragraph->get('field_carousel_item')->getValue();
+      $para_storage = \Drupal::service('entity_type.manager')
+        ->getStorage('paragraph');
+      $carousel_images = $para_storage->loadMultiple($carousel_image_ids);
+      foreach ($carousel_images as $carousel_image) {
+        // Text field array: 'value' and 'format'.
+        $caption = $carousel_image->get('field_carousel_image_caption')->getValue()[0];
+        $image_fid = $carousel_image->get('field_carousel_image_image')->getString();
+      }
+      break;
+
+    case 'carousel_image':
+      // We can skip this. Carousel images are handled in the carousel parent.
       break;
 
     case 'text':
