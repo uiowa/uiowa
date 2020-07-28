@@ -365,8 +365,8 @@ function uids_base_preprocess_paragraph(&$variables) {
         }
       }
 
-      if ($parent->hasField('field_collection_h_size')) {
-        $variables['h_size'] = $parent->get('field_collection_h_size')->getString();
+      if ($parent->hasField('field_collection_heading_size')) {
+        $variables['h_size'] = $parent->get('field_collection_heading_size')->getString();
       }
     }
   }
