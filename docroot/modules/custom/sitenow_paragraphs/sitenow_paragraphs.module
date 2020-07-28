@@ -33,8 +33,9 @@ function sitenow_paragraphs_theme($existing, $type, $theme, $path) {
  * Implements hook_entity_create().
  */
 function sitenow_paragraphs_entity_create(EntityInterface $entity) {
+  /** @var \Drupal\node\NodeInterface $entity */
   // On new basic pages.
-  if ($entity->bundle() == 'page' && $entity->isNew()) {
+  if ($entity->bundle() == 'page' && $entity->isNew() && $entity->hasField('field_page_content_block')) {
     // Create a text within a section default.
     $text = Paragraph::create([
       'type' => 'text',
@@ -91,9 +92,9 @@ function sitenow_paragraphs_field_widget_paragraphs_form_alter(&$element, FormSt
 function update_webform_edit_link($form, FormStateInterface $form_state) {
   $selectedValue = $form_state->getTriggeringElement()['#value'];
   $markup =
-  t('<div id="edit-webform">Select an existing webform to place. <a target="new_blank" href="/admin/structure/webform/manage/@webform_id">Edit webform.</a></div>', [
-    '@webform_id' => $selectedValue,
-  ]);
+    t('<div id="edit-webform">Select an existing webform to place. <a target="new_blank" href="/admin/structure/webform/manage/@webform_id">Edit webform.</a></div>', [
+      '@webform_id' => $selectedValue,
+    ]);
   return ['#markup' => $markup];
 }
 

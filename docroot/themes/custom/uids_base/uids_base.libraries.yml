@@ -37,6 +37,8 @@ global-styling:
   dependencies:
     - core/jquery
     - core/jquery.once
+
+# UIDS.
 status-messages:
   js:
     assets/js/uids.status-messages.js: { preprocess: false }
@@ -82,6 +84,14 @@ banner:
   css:
     component:
       assets/css/components/banner.css: { preprocess: false }
+slider:
+  css:
+    component:
+      assets/css/components/slider.css: { preprocess: false }
+  js:
+    uids/components/slider/slider.js: { preprocess: false }
+  dependencies:
+    - uids_base/banner
 video:
   css:
     component:
@@ -290,8 +300,8 @@ fourcol:
   css:
     theme:
       assets/css/layouts/fourcol.css: {}
-paragraph-page:
+page--left-sidebar:
   version: VERSION
   css:
     theme:
-      assets/css/layouts/page--paragraph.css: { preprocess: false }
+      assets/css/layouts/page--left-sidebar.css: { preprocess: false }
