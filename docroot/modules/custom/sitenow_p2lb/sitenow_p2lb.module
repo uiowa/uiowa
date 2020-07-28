@@ -409,26 +409,42 @@ function sitenow_p2lb_process_paragraph($paragraph) {
       $display_label = $paragraph->get('field_uip_display_title')->getString();
 
       $block = \Drupal::entityTypeManager()
-      ->getStorage('block_content')
-      ->create([
-        'type' => $type,
-        'langcode' => 'en',
-        'status' => $paragraph->get('status')->getValue(),
-        'reusable' => 0,
-        'default_langcode' => 1,
-      ]);
+        ->getStorage('block_content')
+        ->create([
+          'type' => $type,
+          'langcode' => 'en',
+          'status' => 1,
+          'reusable' => 0,
+          'default_langcode' => 1,
+          'metatag' => [],
+          'field_collection_heading_size' => 'h2',
+          'field_uiowa_slider_slides' => []
+        ]);
+      $block->save();
+      $parent_id = $block->get('id')->getString();
+      $parent_slides_field = $block->get('field_uiowa_slider_slides');
 
       $carousel_image_ids = $paragraph->get('field_carousel_item')->getValue();
+      // Grab the actual ids to pass to our loader.
+      $carousel_image_ids = array_map(
+        function($arr){
+          return $arr['target_id'];
+        }, $carousel_image_ids);
+
       $para_storage = \Drupal::service('entity_type.manager')
         ->getStorage('paragraph');
       $carousel_images = $para_storage->loadMultiple($carousel_image_ids);
+
       foreach ($carousel_images as $carousel_image) {
         // Text field array: 'value' and 'format'.
         $caption = $carousel_image->get('field_carousel_image_caption')->getValue()[0];
           // Grab the first complete text piece.
         if (preg_match('|\A<(.*?\d)>(.*?)<\/.*?\d>|', $caption['value'], $matches)) {
           // If it was an <h#> tag, grab it to set the proper level.
-          $level = (substr($matches[1], 0, 1) === 'h') ? $matches[1] : 'h2';
+          if (substr($matches[1], 0, 1) === 'h') {
+            $block->set('field_collection_heading_size', $matches[1])
+              ->save();
+          }
           // Grab the new headline, and pull it out of the rest of the content.
           $headline = $matches[2];
           $caption['value'] = str_replace(
@@ -438,12 +454,21 @@ function sitenow_p2lb_process_paragraph($paragraph) {
           );
           // Only continue if we were able to create a headline (slider requires it).
           $image_fid = $carousel_image->get('field_carousel_image_image')->getString();
-          $para_storage->create([
+          $slide = $para_storage->create([
             'type' => 'uiowa_slide',
+            'langcode' => 'en',
+            'status' => 1,
+            'parent_id' => $parent_id,
+            'parent_type' => 'block_content',
+            'parent_field_name' => 'field_uiowa_slider_slides',
+            'default_langcode' => 1,
             'field_uiowa_slide_content' => $caption,
             'field_collection_headline' => $headline,
             'field_uiowa_slide_image' => $image_fid,
           ]);
+          if ($slide->save()) {
+            $parent_slides_field->appendItem($slide);
+          };
         }
       }
       break;
