@@ -301,7 +301,6 @@ function sitenow_p2lb_process_paragraph($paragraph) {
     case 'section':
     case 'accordion':
     case 'accordion_item':
-    case 'blockquote':
     case 'image_gallery':
     case 'webform':
     case 'featured_content':
@@ -309,11 +308,36 @@ function sitenow_p2lb_process_paragraph($paragraph) {
     case 'carousel_image':
       break;
 
-    case 'text':
+    case 'blockquote':
       $type = 'uiowa_text_area';
       // @todo update labeling methodology and decide how to title.
       $label = 'Text block';
       $display_label = 0;
+      $text = $paragraph->get('field_blockquote_content')->getValue()[0];
+      $text['value'] = '<blockquote>' . $text['value'] . '</blockquote>';
+      $text['format'] = 'minimal';
+      $blockquote_footer = ($paragraph->get('field_blockquote_footer')->getValue()) ?
+        $paragraph->get('field_blockquote_footer')[0]->getValue()['value'] . ' ' : '';
+      $blockquote_citation = ($paragraph->get('field_blockquote_cite')->getValue()) ?
+        $paragraph->get('field_blockquote_cite')[0]->getValue() : [];
+      if (!empty($blockquote_citation)) {
+        $citation_link = '<cite><a href="' . $blockquote_citation['uri'] . '">';
+        if (isset($blockquote_citation['title'])) {
+          $citation_link = $citation_link . $blockquote_citation['title'] . '</a></cite>';
+        }
+        else {
+          $citation_link = $citation_link . $blockquote_citation['uri'] . '</a></cite>';
+        }
+      }
+      else {
+        $citation_link = '';
+      }
+      if ($blockquote_footer || $citation_link) {
+        $text['value'] = $text['value']
+          . '<p>'
+          . $blockquote_footer . $citation_link
+          . '</p>';
+      }
 
       $block = \Drupal::entityTypeManager()
         ->getStorage('block_content')
@@ -321,62 +345,81 @@ function sitenow_p2lb_process_paragraph($paragraph) {
           'type' => 'uiowa_text_area',
           'langcode' => 'en',
           'status' => $paragraph->get('status')->getValue(),
-          // 'info' looks like 'title' field in lb?
           'reusable' => 0,
           'default_langcode' => 1,
           // getValue sets both the text value and the format.
-          'field_uiowa_text_area' => $paragraph->get('field_text_body')->getValue(),
+          'field_uiowa_text_area' => $text,
         ]);
       break;
 
-    case 'card':
-      // @todo Add default card style overrides?
-      $type = 'uiowa_card';
+      case 'card':
+        // @todo Add default card style overrides?
+        $type = 'uiowa_card';
+  
+        // Image isn't required. Check for one, or set to null.
+        $image = ($paragraph->get('field_card_image')->getValue()) ?
+          $paragraph->get('field_card_image')->getValue()[0]['target_id'] : '';
+  
+        // Link isn't required. Check for one, or set to null.
+        $link = ($paragraph->get('field_card_link')->getValue()) ?
+          $paragraph->get('field_card_link')->getValue()[0] : '';
+  
+        // Label (title) isn't required. Check for one, or set to null.
+        $label = ($paragraph->get('field_card_title')->getValue()) ?
+          $paragraph->get('field_card_title')->getString() : '';
+        $display_label = ($label) ? 1 : 0;
+  
+        // Subtitle field isn't required. Check for one, or set to null.
+        $subtitle = ($paragraph->get('field_card_subtitle')->getValue()) ?
+          $paragraph->get('field_card_subtitle')->getString() : '';
+  
+        // Get body field isn't required or set to array with empty value.
+        $excerpt = ($paragraph->get('field_card_body')->getValue()) ?
+          $paragraph->get('field_card_body')->getValue() : ['value' => '', 'format' => 'minimal'];
+  
+        // If there was a subtitle, prepend it to the body text.
+        if ($subtitle) {
+          $excerpt['value'] = '<p>' . $subtitle . '</p>' . $excerpt['value'];
+        }
+  
+        $block = \Drupal::entityTypeManager()
+          ->getStorage('block_content')
+          ->create([
+            'type' => 'uiowa_card',
+            'langcode' => 'en',
+            'status' => $paragraph->get('status')->getString(),
+            'info' => 'Card',
+            'reusable' => 0,
+            'default_langcode' => 1,
+            'field_uiowa_card_author' => [],
+            'field_uiowa_card_excerpt' => $excerpt,
+            'field_uiowa_card_image' => $image,
+            'field_uiowa_card_link' => $link,
+            'field_uiowa_card_title' => [
+              // Size not set in paragraphs. Defaulting to h2. Can change later.
+              'size' => 'h2',
+              'text' => $label,
+            ],
+          ]);
+        break;
 
-      // Image isn't required. Check for one, or set to null.
-      $image = ($paragraph->get('field_card_image')->getValue()) ?
-        $paragraph->get('field_card_image')->getValue()[0]['target_id'] : '';
-
-      // Link isn't required. Check for one, or set to null.
-      $link = ($paragraph->get('field_card_link')->getValue()) ?
-        $paragraph->get('field_card_link')->getValue()[0] : '';
-
-      // Label (title) isn't required. Check for one, or set to null.
-      $label = ($paragraph->get('field_card_title')->getValue()) ?
-        $paragraph->get('field_card_title')->getString() : '';
-      $display_label = ($label) ? 1 : 0;
-
-      // Subtitle field isn't required. Check for one, or set to null.
-      $subtitle = ($paragraph->get('field_card_subtitle')->getValue()) ?
-        $paragraph->get('field_card_subtitle')->getString() : '';
-
-      // Get body field isn't required or set to array with empty value.
-      $excerpt = ($paragraph->get('field_card_body')->getValue()) ?
-        $paragraph->get('field_card_body')->getValue() : ['value' => '', 'format' => 'minimal'];
-
-      // If there was a subtitle, prepend it to the body text.
-      if ($subtitle) {
-        $excerpt['value'] = '<p>' . $subtitle . '</p>' . $excerpt['value'];
-      }
+    case 'text':
+      $type = 'uiowa_text_area';
+      // @todo update labeling methodology and decide how to title.
+      $label = 'Text block';
+      $display_label = 0;
+      $text = $paragraph->get('field_text_body')->getValue();
 
       $block = \Drupal::entityTypeManager()
         ->getStorage('block_content')
         ->create([
-          'type' => 'uiowa_card',
+          'type' => 'uiowa_text_area',
           'langcode' => 'en',
-          'status' => $paragraph->get('status')->getString(),
-          'info' => 'Card',
+          'status' => $paragraph->get('status')->getValue(),
           'reusable' => 0,
           'default_langcode' => 1,
-          'field_uiowa_card_author' => [],
-          'field_uiowa_card_excerpt' => $excerpt,
-          'field_uiowa_card_image' => $image,
-          'field_uiowa_card_link' => $link,
-          'field_uiowa_card_title' => [
-            // Size not set in paragraphs. Defaulting to h2. Can change later.
-            'size' => 'h2',
-            'text' => $label,
-          ],
+          // getValue sets both the text value and the format.
+          'field_uiowa_text_area' => $text,
         ]);
       break;
 
