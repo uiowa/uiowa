@@ -301,11 +301,14 @@ function sitenow_p2lb_process_paragraph($paragraph) {
     case 'section':
     case 'accordion':
     case 'accordion_item':
-    case 'image_gallery':
-    case 'webform':
-    case 'featured_content':
+    case 'articles':
     case 'carousel':
     case 'carousel_image':
+    case 'events':
+    case 'featured_content':
+    case 'image_gallery':
+    case 'people':
+    case 'webform':
       break;
 
     case 'blockquote':
@@ -342,7 +345,7 @@ function sitenow_p2lb_process_paragraph($paragraph) {
       $block = \Drupal::entityTypeManager()
         ->getStorage('block_content')
         ->create([
-          'type' => 'uiowa_text_area',
+          'type' => $type,
           'langcode' => 'en',
           'status' => $paragraph->get('status')->getValue(),
           'reusable' => 0,
@@ -385,7 +388,7 @@ function sitenow_p2lb_process_paragraph($paragraph) {
       $block = \Drupal::entityTypeManager()
         ->getStorage('block_content')
         ->create([
-          'type' => 'uiowa_card',
+          'type' => $type,
           'langcode' => 'en',
           'status' => $paragraph->get('status')->getString(),
           'info' => 'Card',
@@ -413,7 +416,7 @@ function sitenow_p2lb_process_paragraph($paragraph) {
       $block = \Drupal::entityTypeManager()
         ->getStorage('block_content')
         ->create([
-          'type' => 'uiowa_text_area',
+          'type' => $type,
           'langcode' => 'en',
           'status' => $paragraph->get('status')->getValue(),
           'reusable' => 0,
@@ -423,12 +426,45 @@ function sitenow_p2lb_process_paragraph($paragraph) {
         ]);
       break;
 
+    case 'webform':
+      $webform_data = $paragraph->get('field_webform')->getValue()[0];
+      if ($paragraph->get('field_uip_title')->getValue()) {
+        $label = $paragraph->get('field_uip_title')->getValue()[0]['value'];
+        $display_label = 1;
+      }
+      else {
+        $label = 'Webform';
+        $display_label = 0;
+      }
+
+      // Get the webform's uuid.
+      $webform_manager = \Drupal::entityTypeManager()
+        ->getStorage('webform');
+      $webform = $webform_manager->loadByProperties(['id' => $webform_data['target_id']]);
+      $uuid = $webform[$webform_data['target_id']]->get('uuid');
+
+      $config = [
+        'id' => 'webform',
+        'provider' => 'webform',
+        'label' => $label,
+        'label_display' => $display_label,
+        'redirect' => 0,
+        'default_data' => $webform_data['default_data'],
+        'view_mode' => '',
+        'webform_id' => $webform_data['target_id'],
+      ];
+
+      // Can skip the followup, because no block needs to be created.
+      return [
+        'configuration' => $config,
+        'uuid' => $uuid,
+      ];
+
     default:
 
   }
   // If we have a block save it, and check that it saved succesfully.
   if (isset($block) && $block->save()) {
-    // Create the config that will be used to set the block in its section.
     $uuid = $block->get('uuid')->getValue()[0]['value'];
     $config = [
       'id' => 'inline_block:' . $type,
@@ -438,6 +474,7 @@ function sitenow_p2lb_process_paragraph($paragraph) {
       'block_revision_id' => $block->getRevisionId(),
       'view_mode' => '',
     ];
+
     return [
       'configuration' => $config,
       'uuid' => $uuid,
