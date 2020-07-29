@@ -1080,6 +1080,10 @@ apache_vhosts:
     servername: amcs.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: labbhagi.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
 
 # Multisite installations should configure additional databases here.
 # It's recommended to prefix database names with 'drupal'. Otherwise,
@@ -1141,5 +1145,4 @@ post_provision_scripts:
 
 nodejs_npm_global_packages:
   - yarn
-
-ansible_python_interpreter: "/usr/bin/env python3"
+ansible_python_interpreter: '/usr/bin/env python3'
