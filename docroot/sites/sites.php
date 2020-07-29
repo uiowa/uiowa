@@ -1529,3 +1529,9 @@ $sites['amcs.local.drupal.uiowa.edu'] = 'amcs.uiowa.edu';
 $sites['amcs.dev.drupal.uiowa.edu'] = 'amcs.uiowa.edu';
 $sites['amcs.stage.drupal.uiowa.edu'] = 'amcs.uiowa.edu';
 $sites['amcs.prod.drupal.uiowa.edu'] = 'amcs.uiowa.edu';
+
+// Directory aliases for bhagi.lab.uiowa.edu.
+$sites['labbhagi.local.drupal.uiowa.edu'] = 'bhagi.lab.uiowa.edu';
+$sites['labbhagi.dev.drupal.uiowa.edu'] = 'bhagi.lab.uiowa.edu';
+$sites['labbhagi.stage.drupal.uiowa.edu'] = 'bhagi.lab.uiowa.edu';
+$sites['labbhagi.prod.drupal.uiowa.edu'] = 'bhagi.lab.uiowa.edu';
