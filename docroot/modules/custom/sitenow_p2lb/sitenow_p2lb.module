@@ -422,7 +422,7 @@ function sitenow_p2lb_process_paragraph($paragraph) {
         ]);
       $block->save();
       $parent_id = $block->get('id')->getString();
-      $parent_slides_field = $block->get('field_uiowa_slider_slides');
+      $parent_slides_field = [];
 
       $carousel_image_ids = $paragraph->get('field_carousel_item')->getValue();
       // Grab the actual ids to pass to our loader.
@@ -467,10 +467,15 @@ function sitenow_p2lb_process_paragraph($paragraph) {
             'field_uiowa_slide_image' => $image_fid,
           ]);
           if ($slide->save()) {
-            $parent_slides_field->appendItem($slide);
+            $parent_slides_field[] = [
+              'target_id' => $slide->get('id')->getString(),
+              'target_revision_id' => $slide->get('revision_id')->getString(),
+            ];
           };
         }
       }
+      $block->set('field_uiowa_slider_slides', $parent_slides_field)
+        ->save();
       break;
 
     case 'carousel_image':
