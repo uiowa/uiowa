@@ -439,7 +439,7 @@ function sitenow_p2lb_process_paragraph($paragraph) {
         // Text field array: 'value' and 'format'.
         $caption = $carousel_image->get('field_carousel_image_caption')->getValue()[0];
         // Grab the first complete text piece.
-        if (preg_match('|\A<(.*?\d)>(.*?)<\/.*?\d>|', $caption['value'], $matches)) {
+        if (preg_match('|\A<(.*?\d?)>(.*?)<\/.*?\d?>|', $caption['value'], $matches)) {
           // If it was an <h#> tag, grab it to set the proper level.
           if (substr($matches[1], 0, 1) === 'h') {
             $block->set('field_collection_heading_size', $matches[1])
