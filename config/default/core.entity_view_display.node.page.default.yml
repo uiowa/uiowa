@@ -155,6 +155,7 @@ third_party_settings:
         - layout_twocol
         - layout_threecol
         - layout_fourcol
+        - layout_page
       whitelisted_blocks:
         'Chaos Tools': {  }
         'Content fields':
@@ -164,15 +165,13 @@ third_party_settings:
           - 'field_block:node:page:changed'
           - 'field_block:node:page:field_teaser'
           - 'field_block:node:page:field_image'
-          - 'extra_field_block:node:page:links'
-          - 'extra_field_block:node:page:content_moderation_control'
-          - 'field_block:node:page:field_tags'
           - 'field_block:node:page:title'
           - 'field_block:user:user:changed'
           - 'field_block:user:user:created'
         'Custom blocks': {  }
         Devel: {  }
         Forms: {  }
+        'Lists (Views)': {  }
         Menus:
           - 'menu_block:main'
           - 'system_menu_block:main'
@@ -192,10 +191,9 @@ third_party_settings:
           - uiowa_spacer_separator
           - uiowa_vertical_video
         'Inline blocks':
+          - 'inline_block:uiowa_page_title_hero'
+          - 'inline_block:uiowa_spacer_separator'
           - 'inline_block:uiowa_vertical_video'
-        'Lists (Views)':
-          - 'views_block:content_recent-block_1'
-          - 'views_block:who_s_online-who_s_online_block'
     allowed_block_categories:
       - 'Chaos Tools'
       - 'Content fields'
