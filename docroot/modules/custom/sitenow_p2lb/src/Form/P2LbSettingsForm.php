@@ -42,9 +42,10 @@ class P2LbSettingsForm extends ConfigFormBase {
     $nids_w_paragraphs = array_combine($nids_w_paragraphs, $nids_w_paragraphs);
 
     $form['nodes_w_paragraphs'] = [
-      '#type' => 'checkboxes',
+      '#type' => 'select',
       '#title' => $this->t('Nodes with paragraph items.'),
       '#options' => $nids_w_paragraphs,
+      '#multiple' => TRUE,
     ];
 
     $form['delete'] = [
