@@ -12,85 +12,72 @@ use Drupal\layout_builder_styles\LayoutBuilderStyleGroups;
  * Implements hook_form_alter().
  */
 function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $form_ids = ['layout_builder_update_block', 'layout_builder_add_block'];
+  $form_ids = ['layout_builder_update_block', 'layout_builder_add_block', 'layout_builder_configure_section'];
 
   // Only continue if this is one of the above forms.
   if (!in_array($form_id, $form_ids)) {
     return;
   }
 
-  // Override display of layout builder styles.
-  $enabled = FALSE;
-
-  // Loop through layout builder style groups.
-  $groups = LayoutBuilderStyleGroups::getGroups();
-
-  foreach (array_keys($groups) as $group) {
-    $lbs = 'layout_builder_style_' . $group;
-    if (isset($form[$lbs])) {
-
-      if ($form_id == 'layout_builder_update_block') {
-        // Set enabled flag based on whether a default value exists
-        // for this layout builder style.
-        $enabled = !empty($form[$lbs]['#default_value']);
-      }
-
-      // Set a state for the layout builder style to toggle
-      // based on the value of the override value specified below.
-      $form[$lbs]['#states'] = [
-        'visible' => [
-          ':input[name="layout_builder_block_override"]' => [
-            'checked' => TRUE,
-          ],
-        ],
-      ];
+  if ($form_id === 'layout_builder_configure_section') {
+    if (isset($form['layout_builder_style_background'])) {
+      $form['layout_builder_style_background']['#multiple'] = false;
     }
   }
+  else {
+    // Override display of layout builder styles.
+    $enabled = FALSE;
 
-  // Add a checkbox to toggle whether the styles should show.
-  $form['layout_builder_block_override'] = [
-    '#type' => 'checkbox',
-    '#title' => t('Override style options'),
-    '#required' => FALSE,
-    '#default_value' => $enabled,
-    '#weight' => 80,
-  ];
+    // Loop through layout builder style groups.
+    $groups = LayoutBuilderStyleGroups::getGroups();
 
-  // Always set title field to not be required.
-  $form['settings']['label']['#required'] = FALSE;
+    foreach (array_keys($groups) as $group) {
+      $lbs = 'layout_builder_style_' . $group;
+      if (isset($form[$lbs])) {
 
-  if ($form_id == 'layout_builder_add_block') {
-    // Set the display of the label to FALSE when adding a block.
-    $form['settings']['label_display']['#default_value'] = FALSE;
+        if ($form_id == 'layout_builder_update_block') {
+          // Set enabled flag based on whether a default value exists
+          // for this layout builder style.
+          $enabled = !empty($form[$lbs]['#default_value']);
+        }
+
+        // Set a state for the layout builder style to toggle
+        // based on the value of the override value specified below.
+        $form[$lbs]['#states'] = [
+          'visible' => [
+            ':input[name="layout_builder_block_override"]' => [
+              'checked' => TRUE,
+            ],
+          ],
+        ];
+
+        // Make the background option single select only.
+        if ($group === 'background') {
+          $form[$lbs]['#multiple'] = false;
+        }
+      }
+    }
+
+    // Add a checkbox to toggle whether the styles should show.
+    $form['layout_builder_block_override'] = [
+      '#type' => 'checkbox',
+      '#title' => t('Override style options'),
+      '#required' => FALSE,
+      '#default_value' => $enabled,
+      '#weight' => 80,
+    ];
+
+    // Always set title field to not be required.
+    $form['settings']['label']['#required'] = FALSE;
+
+    unset($form['settings']['label']);
+    unset($form['settings']['label_display']);
+    unset($form['settings']['admin_label']['#title']);
+
+    $form['settings'] += [
+      '#weight' => 0,
+    ];
   }
-
-  $label = [
-    '#title' => t('Administrative label'),
-    '#description' => t('Add an administrative label to be able to distinguish this block from other blocks while editing.'),
-  ] + $form['settings']['label'];
-  $label_display = [
-    '#title' => t('Display administrative label'),
-  ] + $form['settings']['label_display'];
-
-  unset($form['settings']['label']);
-  unset($form['settings']['label_display']);
-  unset($form['settings']['admin_label']['#title']);
-
-//  $label += [
-//    '#states' => [
-//      'visible' => [
-//        ':input[name="settings[label_display]"]' => [
-//          'checked' => TRUE,
-//        ],
-//      ],
-//    ],
-//  ];
-
-  $form['settings'] += [
-    '#weight' => 0,
-    'label' => $label,
-    'label_display' => $label_display,
-  ];
 }
 
 /**
