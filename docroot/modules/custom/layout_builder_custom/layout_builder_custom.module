@@ -12,7 +12,11 @@ use Drupal\layout_builder_styles\LayoutBuilderStyleGroups;
  * Implements hook_form_alter().
  */
 function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $form_ids = ['layout_builder_update_block', 'layout_builder_add_block', 'layout_builder_configure_section'];
+  $form_ids = [
+    'layout_builder_update_block',
+    'layout_builder_add_block',
+    'layout_builder_configure_section',
+  ];
 
   // Only continue if this is one of the above forms.
   if (!in_array($form_id, $form_ids)) {
@@ -21,7 +25,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
 
   if ($form_id === 'layout_builder_configure_section') {
     if (isset($form['layout_builder_style_background'])) {
-      $form['layout_builder_style_background']['#multiple'] = false;
+      $form['layout_builder_style_background']['#multiple'] = FALSE;
     }
   }
   else {
@@ -53,7 +57,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
 
         // Make the background option single select only.
         if ($group === 'background') {
-          $form[$lbs]['#multiple'] = false;
+          $form[$lbs]['#multiple'] = FALSE;
         }
       }
     }
