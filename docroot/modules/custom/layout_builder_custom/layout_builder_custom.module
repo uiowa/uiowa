@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\layout_builder_styles\LayoutBuilderStyleGroups;
 
 /**
  * Implements hook_form_alter().
@@ -17,6 +18,42 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
   if (!in_array($form_id, $form_ids)) {
     return;
   }
+
+  // Override display of layout builder styles.
+  $enabled = FALSE;
+
+  // Loop through layout builder style groups.
+  $groups = LayoutBuilderStyleGroups::getGroups();
+
+  foreach (array_keys($groups) as $group) {
+    $lbs = 'layout_builder_style_' . $group;
+    if (isset($form[$lbs])) {
+
+      if ($form_id == 'layout_builder_update_block') {
+        // Set enabled flag based on whether a default value exists
+        // for this layout builder style.
+        $enabled = !empty($form[$lbs]['#default_value']);
+      }
+
+      // Set a state for the layout builder style to toggle
+      // based on the value of the override value specified below.
+      $form[$lbs]['#states'] = [
+        'visible' => [
+          ':input[name="layout_builder_block_override"]' => [
+            'checked' => TRUE,
+          ],
+        ],
+      ];
+    }
+  }
+
+  // Add a checkbox to toggle whether the styles should show.
+  $form['layout_builder_block_override'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Override style options'),
+    '#required' => FALSE,
+    '#default_value' => $enabled,
+  ];
 
   // Always set title field to not be required.
   $form['settings']['label']['#required'] = FALSE;
