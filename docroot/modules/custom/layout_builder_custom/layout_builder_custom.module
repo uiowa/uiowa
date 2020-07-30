@@ -53,6 +53,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
     '#title' => t('Override style options'),
     '#required' => FALSE,
     '#default_value' => $enabled,
+    '#weight' => 80,
   ];
 
   // Always set title field to not be required.
@@ -63,25 +64,32 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
     $form['settings']['label_display']['#default_value'] = FALSE;
   }
 
-  $label = $form['settings']['label'];
-  $label_display = $form['settings']['label_display'];
+  $label = [
+    '#title' => t('Administrative label'),
+    '#description' => t('Add an administrative label to be able to distinguish this block from other blocks while editing.'),
+  ] + $form['settings']['label'];
+  $label_display = [
+    '#title' => t('Display administrative label'),
+  ] + $form['settings']['label_display'];
 
   unset($form['settings']['label']);
   unset($form['settings']['label_display']);
+  unset($form['settings']['admin_label']['#title']);
 
-  $label += [
-    '#states' => [
-      'visible' => [
-        ':input[name="settings[label_display]"]' => [
-          'checked' => TRUE,
-        ],
-      ],
-    ],
-  ];
+//  $label += [
+//    '#states' => [
+//      'visible' => [
+//        ':input[name="settings[label_display]"]' => [
+//          'checked' => TRUE,
+//        ],
+//      ],
+//    ],
+//  ];
 
   $form['settings'] += [
-    'label_display' => $label_display,
+    '#weight' => 0,
     'label' => $label,
+    'label_display' => $label_display,
   ];
 }
 
