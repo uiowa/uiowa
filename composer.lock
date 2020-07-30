@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "31995ea0f799da6ded8f15d74f755eec",
+    "content-hash": "78eb1400933233e48e03577e46e92efb",
     "packages": [
         {
             "name": "acquia/blt",
@@ -222,7 +222,7 @@
             "version": "5.13.0",
             "source": {
                 "type": "git",
-                "url": "git@github.com:FortAwesome/Font-Awesome.git",
+                "url": "https://github.com/FortAwesome/Font-Awesome.git",
                 "reference": "4e6402443679e0a9d12c7401ac8783ef4646657f"
             },
             "dist": {
@@ -5464,6 +5464,9 @@
                         "status": "not-covered",
                         "message": "RC releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "Custom blocks created in inline forms should not be reusable": "https://www.drupal.org/files/issues/2020-05-04/3002175-26.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -5727,7 +5730,7 @@
                 "shasum": "a24b2069e9815f743a097ce61999e4c1872453b4"
             },
             "require": {
-                "drupal/core": "*"
+                "drupal/core": "^8"
             },
             "type": "drupal-module",
             "extra": {
@@ -17264,7 +17267,6 @@
         "drupal/diff": 5,
         "drupal/entity_embed": 5,
         "drupal/entity_usage": 15,
-        "drupal/inline_entity_form": 5,
         "drupal/layout_builder_styles": 10,
         "drupal/masquerade": 10,
         "drupal/media_entity_facebook": 15,

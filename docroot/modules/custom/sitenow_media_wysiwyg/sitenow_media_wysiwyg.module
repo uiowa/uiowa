@@ -90,6 +90,15 @@ function sitenow_media_wysiwyg_inline_entity_form_entity_form_alter(&$entity_for
 }
 
 /**
+ * Implements hook_form_FORMID_alter().
+ */
+function sitenow_media_wysiwyg_form_editor_media_dialog_alter(&$form, FormStateInterface $form_state) {
+  if (isset($form['view_mode']) && isset($form['view_mode']['#options']) && isset($form['view_mode']['#options']['default'])) {
+    $form['view_mode']['#options']['default'] = t('Original');
+  }
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function sitenow_media_wysiwyg_form_media_library_add_form_alter(&$form, FormStateInterface $form_state, $form_id) {
