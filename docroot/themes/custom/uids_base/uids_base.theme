@@ -351,22 +351,24 @@ function uids_base_preprocess_paragraph(&$variables) {
       $variables['delta'] = 0;
 
       $parent = $paragraph->getParentEntity();
-      if ($parent instanceof ContentEntityInterface && $parent->hasField($items_field)) {
-        $id = $paragraph->id();
-        /**
-         * @var integer $delta
-         * @var \Drupal\entity_reference_revisions\Plugin\Field\FieldType\EntityReferenceRevisionsItem $item
-         */
-        foreach ($parent->get($items_field)->getValue() as $delta => $item) {
-          if ($item['target_id'] === $id) {
-            $variables['delta'] = $delta;
-            break;
+      if ($parent instanceof ContentEntityInterface) {
+        if ($parent->hasField($items_field)) {
+          $id = $paragraph->id();
+          /**
+           * @var integer $delta
+           * @var \Drupal\entity_reference_revisions\Plugin\Field\FieldType\EntityReferenceRevisionsItem $item
+           */
+          foreach ($parent->get($items_field)->getValue() as $delta => $item) {
+            if ($item['target_id'] === $id) {
+              $variables['delta'] = $delta;
+              break;
+            }
           }
         }
-      }
 
-      if ($parent->hasField('field_collection_heading_size')) {
-        $variables['h_size'] = $parent->get('field_collection_heading_size')->getString();
+        if ($parent->hasField('field_collection_heading_size')) {
+          $variables['h_size'] = $parent->get('field_collection_heading_size')->getString();
+        }
       }
     }
   }
