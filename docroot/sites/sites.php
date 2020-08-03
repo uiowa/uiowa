@@ -1535,3 +1535,15 @@ $sites['labbhagi.local.drupal.uiowa.edu'] = 'bhagi.lab.uiowa.edu';
 $sites['labbhagi.dev.drupal.uiowa.edu'] = 'bhagi.lab.uiowa.edu';
 $sites['labbhagi.stage.drupal.uiowa.edu'] = 'bhagi.lab.uiowa.edu';
 $sites['labbhagi.prod.drupal.uiowa.edu'] = 'bhagi.lab.uiowa.edu';
+
+// Directory aliases for magazine.engineering.uiowa.edu.
+$sites['engineeringmagazine.local.drupal.uiowa.edu'] = 'magazine.engineering.uiowa.edu';
+$sites['engineeringmagazine.dev.drupal.uiowa.edu'] = 'magazine.engineering.uiowa.edu';
+$sites['engineeringmagazine.stage.drupal.uiowa.edu'] = 'magazine.engineering.uiowa.edu';
+$sites['engineeringmagazine.prod.drupal.uiowa.edu'] = 'magazine.engineering.uiowa.edu';
+
+// Directory aliases for news.engineering.uiowa.edu.
+$sites['engineeringnews.local.drupal.uiowa.edu'] = 'news.engineering.uiowa.edu';
+$sites['engineeringnews.dev.drupal.uiowa.edu'] = 'news.engineering.uiowa.edu';
+$sites['engineeringnews.stage.drupal.uiowa.edu'] = 'news.engineering.uiowa.edu';
+$sites['engineeringnews.prod.drupal.uiowa.edu'] = 'news.engineering.uiowa.edu';
