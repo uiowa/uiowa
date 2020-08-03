@@ -12,13 +12,12 @@ dependencies:
     - field.field.node.page.field_teaser
     - field.field.node.page.layout_builder__layout
     - node.type.page
-    - system.menu.main
   module:
     - entity_reference_revisions
     - layout_builder
     - layout_builder_restrictions
-    - menu_block
     - system
+    - text
     - user
   theme:
     - uids_base
@@ -85,32 +84,29 @@ third_party_settings:
             weight: 0
         third_party_settings: {  }
       -
-        layout_id: layout_page
+        layout_id: layout_onecol
         layout_settings:
-          label: Content
+          label: 'Main content'
           layout_builder_styles_style:
             section_margin_edge_to_edge: section_margin_edge_to_edge
         components:
-          c8d974cb-667f-4e0d-8716-d2a77004e0e1:
-            uuid: c8d974cb-667f-4e0d-8716-d2a77004e0e1
-            region: sidebar
+          3f4b0485-7cd7-40eb-b4e0-244cc6817881:
+            uuid: 3f4b0485-7cd7-40eb-b4e0-244cc6817881
+            region: content
             configuration:
-              id: 'menu_block:main'
-              label: 'Main navigation'
-              provider: menu_block
               label_display: '0'
-              follow: 1
-              follow_parent: '0'
-              level: 2
-              depth: 0
-              expand: 0
-              parent: 'main:'
-              suggestion: main
-              context_mapping: {  }
-            additional:
-              layout_builder_styles_style:
-                block_menu_vertical: block_menu_vertical
-            weight: 0
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:page:field_page_content_block'
+              formatter:
+                type: entity_reference_revisions_entity_view
+                label: hidden
+                settings:
+                  view_mode: default
+                  link: ''
+                third_party_settings: {  }
+            additional: {  }
+            weight: -8
           e6fa78b4-cacc-4d27-baa3-f29dde0b845b:
             uuid: e6fa78b4-cacc-4d27-baa3-f29dde0b845b
             region: content
@@ -129,33 +125,6 @@ third_party_settings:
                 view_mode: view_mode
             additional: {  }
             weight: -9
-          3f4b0485-7cd7-40eb-b4e0-244cc6817881:
-            uuid: 3f4b0485-7cd7-40eb-b4e0-244cc6817881
-            region: content
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:page:field_page_content_block'
-              formatter:
-                type: entity_reference_revisions_entity_view
-                label: hidden
-                settings:
-                  view_mode: default
-                  link: ''
-                third_party_settings: {  }
-            additional: {  }
-            weight: -10
-          051b1326-800c-40ca-b518-98ce13ca4e6f:
-            uuid: 051b1326-800c-40ca-b518-98ce13ca4e6f
-            region: content
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'extra_field_block:node:page:content_moderation_control'
-            additional: {  }
-            weight: -8
           6b1aec87-4a37-4710-9c17-e76bca9b7844:
             uuid: 6b1aec87-4a37-4710-9c17-e76bca9b7844
             region: content
@@ -165,7 +134,17 @@ third_party_settings:
                 entity: layout_builder.entity
               id: 'extra_field_block:node:page:links'
             additional: {  }
-            weight: -9
+            weight: -7
+          051b1326-800c-40ca-b518-98ce13ca4e6f:
+            uuid: 051b1326-800c-40ca-b518-98ce13ca4e6f
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'extra_field_block:node:page:content_moderation_control'
+            additional: {  }
+            weight: -10
         third_party_settings: {  }
   layout_builder_restrictions:
     entity_view_mode_restriction:
@@ -175,7 +154,6 @@ third_party_settings:
         - layout_twocol
         - layout_threecol
         - layout_fourcol
-        - layout_header
         - layout_page
       whitelisted_blocks:
         'Chaos Tools': {  }
