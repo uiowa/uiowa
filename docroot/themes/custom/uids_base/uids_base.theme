@@ -59,6 +59,8 @@ function uids_base_preprocess_html(&$variables) {
       $variables['layout_builder_enabled'] = \Drupal::classResolver('\Drupal\layout_builder_custom\LayoutBuilderHelper')->layoutBuilderEnabled($node);
     }
   }
+
+  // Add sitenow library
 }
 
 /**
@@ -257,6 +259,15 @@ function uids_base_preprocess_layout(&$variables) {
         $variables["attributes"]['class'][] = 'sidebar-invisible';
       }
 
+    }
+
+    // Add sitenow library if sitenow_v2 config split is active.
+
+    $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
+    $collegiate_split = 'config_split:sitenow_v2';
+    // This site has the 'collegiate' split enabled.
+    if (isset($filters[$collegiate_split]) && $filters[$collegiate_split]['status']) {
+      $variables['#attached']['library'][] = 'uids_base/sitenow';
     }
   }
 }
