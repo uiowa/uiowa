@@ -7,8 +7,8 @@
 <{{ collection_heading_size }} id="{{ accordion_item_id }}-heading" class="accordion__heading">
   <button class="accordion_button"
     role="tab"
-    aria-selected="{{ collection_item_expanded | default('false') }}"
-    aria-expanded="{{ collection_item_expanded | default('false') }}"
+    aria-selected="false"
+    aria-expanded="false"
     aria-controls="{{ accordion_item_id }}"
   >
     {% block collection_item_label %}

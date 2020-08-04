@@ -25,7 +25,23 @@
 * @see template_preprocess_block()
 */
 #}
-{% set id = "accordion-" ~ id %}
-<div class="accordion" role="tablist" aria-multiselectable="true" id="{{ id }}">
+{% set id = "tab-" ~ id %}
+<div class="tab" role="tablist" aria-multiselectable="false" id="{{ id }}">
+  <div class = "tab__tabs">
+    {% for key, item in tab_items %}
+      <{{ tab_h_size }} id="tab-heading-{{ key }}" class="tab__heading">
+        <button class="tab__button"
+          role="tab"
+          aria-selected="{{ item.expanded | default('false') }}"
+          aria-expanded="{{ item.expanded | default('false') }}"
+          aria-controls="tab-select-{{ key }}"
+        >
+          {% block tab_label %}
+            {{ item.label }}
+          {%% endblock %}
+        </button>
+      </{{ tab_h_size }}>
+    {% endfor %}
+  </div>
   {{ content }}
 </div>
