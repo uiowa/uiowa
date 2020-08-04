@@ -1,0 +1,32 @@
+uuid: 506e96d7-9fba-4e54-984e-c6e1bc6178ef
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_collection
+    - core.entity_view_mode.block_content.descriptive_list
+    - field.field.block_content.uiowa_collection.field_collection_heading_size
+    - field.field.block_content.uiowa_collection.field_uiowa_collection_items
+  module:
+    - entity_reference_revisions
+    - layout_builder
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: false
+id: block_content.uiowa_collection.descriptive_list
+targetEntityType: block_content
+bundle: uiowa_collection
+mode: descriptive_list
+content:
+  field_uiowa_collection_items:
+    type: entity_reference_revisions_entity_view
+    weight: 0
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_collection_heading_size: true
