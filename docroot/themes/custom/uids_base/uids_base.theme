@@ -6,7 +6,6 @@
  */
 
 use Drupal\block\Entity\Block;
-use Drupal\block_content\BlockContentInterface;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Url;
@@ -194,7 +193,6 @@ function uids_base_preprocess_node(&$variables) {
  */
 function uids_base_preprocess_field(&$variables) {
   $variables['page_featured_image'] = $variables['field_name'] == 'field_image';
-  $element = $variables['element'];
 
   // Set the caption if this is 'field_image'.
   if ($variables['field_name'] === 'field_image') {
