@@ -1541,3 +1541,9 @@ $sites['engineeringnews.local.drupal.uiowa.edu'] = 'news.engineering.uiowa.edu';
 $sites['engineeringnews.dev.drupal.uiowa.edu'] = 'news.engineering.uiowa.edu';
 $sites['engineeringnews.stage.drupal.uiowa.edu'] = 'news.engineering.uiowa.edu';
 $sites['engineeringnews.prod.drupal.uiowa.edu'] = 'news.engineering.uiowa.edu';
+
+// Directory aliases for chaurasia.lab.uiowa.edu.
+$sites['labchaurasia.local.drupal.uiowa.edu'] = 'chaurasia.lab.uiowa.edu';
+$sites['labchaurasia.dev.drupal.uiowa.edu'] = 'chaurasia.lab.uiowa.edu';
+$sites['labchaurasia.stage.drupal.uiowa.edu'] = 'chaurasia.lab.uiowa.edu';
+$sites['labchaurasia.prod.drupal.uiowa.edu'] = 'chaurasia.lab.uiowa.edu';
