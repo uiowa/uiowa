@@ -1,27 +1,26 @@
 {{ attach_library('uids_base/accordion') }}
-{% if accordion_multiselectable == true %}
-  {% set accordion_type = 'multi' %}
-{% else %}
-  {% set accordion_type = 'single' %}
-{% endif %}
-{% set accordion_h_size = accordion_h_size ?: 'h2' %}
+{% set accordion_type = 'single' %}
+{% set accordion_item_id = 'accordion-' ~ accordion_type ~ '-select-' ~ delta %}
 
-<div class="accordion{% if accordion.variant %} accordion--{{ variant }}{% endif %}"
-     role="tablist"
-     aria-multiselectable="{{ accordion_type }}"
+<!-- Use the accurate heading level to maintain the document outline -->
+<{{ collection_heading_size }} id="{{ accordion_item_id }}-heading" class="accordion__heading">
+  <button class="accordion_button"
+    role="tab"
+    aria-selected="{{ collection_item_expanded | default('false') }}"
+    aria-expanded="{{ collection_item_expanded | default('false') }}"
+    aria-controls="{{ accordion_item_id }}"
+  >
+    {% block collection_item_label %}
+      {{ collection_item_label }}
+    {% endblock %}
+    <i aria-hidden="true" focusable="false" class="fas fa-chevron-up"></i>
+  </button>
+</{{ collection_heading_size }}>
+<div id="{{ accordion_item_id }}"
+  aria-labelledby="{{ accordion_item_id }}-heading"
+  class="accordion__content"
 >
-  {% block accordion_items %}
-    {% for key, item in accordion_items %}
-      {% set accordion_item = {
-        'accordion_type': accordion_type,
-        'h_size': accordion_h_size,
-        'expanded': item.delta == 0 ? true : false,
-        'key': item.delta,
-        'label': item.label,
-        'content': item.content,
-      } %}
-
-      {% embed '@uids_base/uids/accordion-item.html.twig' with accordion_item only %}{% endembed %}
-    {% endfor %}
+  {% block collection_item_content %}
+    {{ collection_item_content }}
   {% endblock %}
 </div>

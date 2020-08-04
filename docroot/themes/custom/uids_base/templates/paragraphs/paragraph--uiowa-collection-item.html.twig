@@ -42,11 +42,12 @@
 {% set collection_item = {
   'attributes': attributes,
   'delta': delta,
-  'collection_heading_size': h_size,
-  'collection_multiselectable': 'false',
+  'collection_heading_size': h_size ?: 'h2',
   'collection_item_expanded': delta == 0 ? 'true' : 'false',
   'collection_item_label': content.field_collection_headline,
   'collection_item_content': content.field_collection_body,
+  'collection_parent_id': parent_id,
 } %}
 
-{% embed '@uids_base/uids/descriptive-list.html.twig' with collection_item only %}{% endembed %}
+{# {% embed '@uids_base/uids/descriptive-list.html.twig' with collection_item only %}{% endembed %} #}
+{% embed '@uids_base/uids/accordion.html.twig' with collection_item only %}{% endembed %}
