@@ -9,12 +9,19 @@ dependencies:
     - field.field.node.person.field_person_email
     - field.field.node.person.field_person_first_name
     - field.field.node.person.field_person_hide
+    - field.field.node.person.field_person_lab_building
+    - field.field.node.person.field_person_lab_phone
+    - field.field.node.person.field_person_lab_room
     - field.field.node.person.field_person_last_name
+    - field.field.node.person.field_person_office_building
+    - field.field.node.person.field_person_office_phone
+    - field.field.node.person.field_person_office_room
     - field.field.node.person.field_person_phone
     - field.field.node.person.field_person_position
     - field.field.node.person.field_person_research_areas
     - field.field.node.person.field_person_type
     - field.field.node.person.field_person_website
+    - field.field.node.person.field_pt_faculty_type
     - field.field.node.person.field_tags
     - field.field.node.person.field_teaser
     - node.type.person
@@ -33,19 +40,19 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 11
+    weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }
   field_image:
-    weight: 4
+    weight: 5
     settings:
       media_types: {  }
     third_party_settings: {  }
     type: media_library_widget
     region: content
   field_person_bio:
-    weight: 8
+    weight: 9
     settings:
       rows: 5
       placeholder: ''
@@ -53,7 +60,7 @@ content:
     type: text_textarea
     region: content
   field_person_credential:
-    weight: 3
+    weight: 4
     settings:
       size: 60
       placeholder: ''
@@ -62,7 +69,7 @@ content:
     region: content
   field_person_email:
     type: email_default
-    weight: 6
+    weight: 7
     region: content
     settings:
       size: 60
@@ -70,36 +77,82 @@ content:
     third_party_settings: {  }
   field_person_first_name:
     type: string_textfield
-    weight: 1
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_person_hide:
-    weight: 20
-    settings:
-      display_label: true
-    third_party_settings: {  }
-    type: boolean_checkbox
-    region: content
-  field_person_last_name:
-    type: string_textfield
     weight: 2
     region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_person_hide:
+    weight: 21
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_person_lab_building:
+    weight: 32
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_person_lab_phone:
+    weight: 33
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: telephone_default
+    region: content
+  field_person_lab_room:
+    weight: 31
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_person_last_name:
+    type: string_textfield
+    weight: 3
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_person_office_building:
+    weight: 29
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_person_office_phone:
+    weight: 30
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: telephone_default
+    region: content
+  field_person_office_room:
+    weight: 28
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_person_phone:
     type: telephone_default
-    weight: 7
+    weight: 8
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_person_position:
-    weight: 5
+    weight: 6
     settings:
       size: 60
       placeholder: ''
@@ -123,15 +176,21 @@ content:
     type: options_buttons
     region: content
   field_person_website:
-    weight: 9
+    weight: 10
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
     region: content
+  field_pt_faculty_type:
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
   field_tags:
-    weight: 12
+    weight: 13
     settings:
       match_operator: CONTAINS
       size: 60
@@ -141,7 +200,7 @@ content:
     type: entity_reference_autocomplete_tags
     region: content
   field_teaser:
-    weight: 19
+    weight: 20
     settings:
       rows: 5
       placeholder: ''
@@ -150,13 +209,13 @@ content:
     region: content
   moderation_state:
     type: moderation_state_default
-    weight: 18
+    weight: 19
     region: content
     settings: {  }
     third_party_settings: {  }
   path:
     type: path
-    weight: 15
+    weight: 16
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -164,26 +223,26 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 13
+    weight: 14
     region: content
     third_party_settings: {  }
   status:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 17
+    weight: 18
     region: content
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 14
+    weight: 15
     region: content
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 10
+    weight: 11
     settings:
       match_operator: CONTAINS
       size: 60
@@ -192,7 +251,7 @@ content:
     region: content
     third_party_settings: {  }
   url_redirects:
-    weight: 16
+    weight: 17
     region: content
     settings: {  }
     third_party_settings: {  }
