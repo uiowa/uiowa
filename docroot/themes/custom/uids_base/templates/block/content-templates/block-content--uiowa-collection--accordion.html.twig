@@ -25,7 +25,7 @@
 * @see template_preprocess_block()
 */
 #}
-
-<div class="accordion" role="tablist" aria-multiselectable="false">
+{% set id = "accordion-" ~ id %}
+<div class="accordion" role="tablist" aria-multiselectable="false" id="{{ id }}">
   {{ content }}
 </div>
