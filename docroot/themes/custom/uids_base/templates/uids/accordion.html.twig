@@ -1,0 +1,27 @@
+{{ attach_library('uids_base/accordion') }}
+{% if accordion_multiselectable == true %}
+  {% set accordion_type = 'multi' %}
+{% else %}
+  {% set accordion_type = 'single' %}
+{% endif %}
+{% set accordion_h_size = accordion_h_size ?: 'h2' %}
+
+<div class="accordion{% if accordion.variant %} accordion--{{ variant }}{% endif %}"
+     role="tablist"
+     aria-multiselectable="{{ accordion_type }}"
+>
+  {% block accordion_items %}
+    {% for key, item in accordion_items %}
+      {% set accordion_item = {
+        'accordion_type': accordion_type,
+        'h_size': accordion_h_size,
+        'expanded': item.delta == 0 ? true : false,
+        'key': item.delta,
+        'label': item.label,
+        'content': item.content,
+      } %}
+
+      {% embed '@uids_base/uids/accordion-item.html.twig' with accordion_item only %}{% endembed %}
+    {% endfor %}
+  {% endblock %}
+</div>

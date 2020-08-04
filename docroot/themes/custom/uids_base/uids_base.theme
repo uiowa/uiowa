@@ -352,7 +352,8 @@ function uids_base_preprocess_paragraph(&$variables) {
     $paragraph = $variables['paragraph'];
 
     $collection_types = [
-      'uiowa_slide' => 'field_uiowa_slider_slides'
+      'uiowa_slide' => 'field_uiowa_slider_slides',
+      'uiowa_collection_item' => 'field_uiowa_collection_items',
     ];
 
     if (in_array($paragraph->bundle(), array_keys($collection_types))) {
@@ -361,6 +362,7 @@ function uids_base_preprocess_paragraph(&$variables) {
 
       $parent = $paragraph->getParentEntity();
       if ($parent instanceof ContentEntityInterface) {
+        $variables['parent_id'] = $parent->id();
         if ($parent->hasField($items_field)) {
           $id = $paragraph->id();
           /**
