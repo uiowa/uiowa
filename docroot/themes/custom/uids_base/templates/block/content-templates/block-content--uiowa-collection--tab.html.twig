@@ -30,16 +30,16 @@
 
 <div class="tab" role="tablist" aria-multiselectable="false" id="{{ id }}">
   <div class = "tab__tabs">
-    {% for tab_id, tab_label in tabs %}
-      <{{ heading_size }} id="tab-heading-{{ tab_id }}" class="tab__heading">
+    {% for delta, tab in tabs %}
+      <{{ heading_size }} id="tab-heading-{{ tab.id }}" class="tab__heading">
         <button class="tab__button"
           role="tab"
-          aria-selected="{{ item.expanded | default('false') }}"
-          aria-expanded="{{ item.expanded | default('false') }}"
-          aria-controls="tab-select-{{ tab_id }}"
+          aria-selected="{{ delta == 0 ? 'true' : 'false' | default('false') }}"
+          aria-expanded="{{ delta == 0 ? 'true' : 'false' | default('false') }}"
+          aria-controls="tab-select-{{ tab.id }}"
         >
           {% block tab_label %}
-            {{ tab_label }}
+            {{ tab.label }}
           {% endblock %}
         </button>
       </{{ heading_size }}>

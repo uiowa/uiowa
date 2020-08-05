@@ -318,13 +318,16 @@ function uids_base_preprocess_block(&$variables) {
 function uids_base_preprocess_block_content__uiowa_collection__tab(&$variables) {
   $variables['tabs'] = [];
   $items = $variables['elements']['field_uiowa_collection_items']['#items'];
-  foreach ($items->getIterator() as $item) {
+  foreach ($items as $delta => $item) {
     $id = $item->get('target_id')->getString();
     $paragraph = \Drupal::service('entity_type.manager')
       ->getStorage('paragraph')
       ->load($id);
     $label = $paragraph->get('field_collection_headline')->getString();
-    $variables['tabs'][$id] = $label;
+    $variables['tabs'][$delta] = [
+      'id' => $id,
+      'label' => $label,
+    ];
   }
 }
 
