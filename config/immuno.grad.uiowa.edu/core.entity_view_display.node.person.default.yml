@@ -9,13 +9,21 @@ dependencies:
     - field.field.node.person.field_person_email
     - field.field.node.person.field_person_first_name
     - field.field.node.person.field_person_hide
+    - field.field.node.person.field_person_lab_building
+    - field.field.node.person.field_person_lab_phone
+    - field.field.node.person.field_person_lab_room
     - field.field.node.person.field_person_last_name
+    - field.field.node.person.field_person_office_building
+    - field.field.node.person.field_person_office_phone
+    - field.field.node.person.field_person_office_room
     - field.field.node.person.field_person_phone
     - field.field.node.person.field_person_position
     - field.field.node.person.field_person_research_areas
     - field.field.node.person.field_person_type
     - field.field.node.person.field_person_website
     - field.field.node.person.field_pt_faculty_type
+    - field.field.node.person.field_pt_student_current
+    - field.field.node.person.field_pt_student_dissertation
     - field.field.node.person.field_tags
     - field.field.node.person.field_teaser
     - node.type.person
@@ -101,6 +109,24 @@ content:
     third_party_settings: {  }
     type: link_separate
     region: content
+  field_pt_student_current:
+    weight: 12
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_pt_student_dissertation:
+    weight: 11
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
   links:
     weight: 5
     region: content
@@ -110,7 +136,13 @@ hidden:
   field_person_credential: true
   field_person_first_name: true
   field_person_hide: true
+  field_person_lab_building: true
+  field_person_lab_phone: true
+  field_person_lab_room: true
   field_person_last_name: true
+  field_person_office_building: true
+  field_person_office_phone: true
+  field_person_office_room: true
   field_pt_faculty_type: true
   field_tags: true
   field_teaser: true
