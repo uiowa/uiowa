@@ -1,2 +1,15 @@
 {{ attach_library('uids_base/tab') }}
 {% set tab_item_id = 'tab-select-' ~ delta %}
+
+<div id="{{ tab_item_id }}"
+  aria-labelledby="{{ tab_item_id }}-heading"
+  role="tabpanel"
+  class="tab__content"
+  {% if not delta == 0 %}
+    hidden="hidden"
+  {% endif %}
+>
+  {% block tab_content %}
+    {{ collection_item_content }}
+  {% endblock %}
+</div>
