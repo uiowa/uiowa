@@ -26,22 +26,24 @@
 */
 #}
 {% set id = "tab-" ~ id %}
+{% set heading_size = content.field_collection_heading_size.0 %}
+
 <div class="tab" role="tablist" aria-multiselectable="false" id="{{ id }}">
   <div class = "tab__tabs">
-    {% for key, item in tab_items %}
-      <{{ tab_h_size }} id="tab-heading-{{ key }}" class="tab__heading">
+    {% for tab_id, tab_label in tabs %}
+      <{{ heading_size }} id="tab-heading-{{ tab_id }}" class="tab__heading">
         <button class="tab__button"
           role="tab"
           aria-selected="{{ item.expanded | default('false') }}"
           aria-expanded="{{ item.expanded | default('false') }}"
-          aria-controls="tab-select-{{ key }}"
+          aria-controls="tab-select-{{ tab_id }}"
         >
           {% block tab_label %}
-            {{ item.label }}
+            {{ tab_label }}
           {% endblock %}
         </button>
-      </{{ tab_h_size }}>
+      </{{ heading_size }}>
     {% endfor %}
   </div>
-  {{ content }}
+  {{ content.field_uiowa_collection_items }}
 </div>
