@@ -46,6 +46,6 @@
     {% endfor %}
   </div>
   <div class="tab__panels">
-    {{ content.field_uiowa_collection_items }}
+    {{ content|without('field_collection_heading_size') }}
   </div>
 </div>
