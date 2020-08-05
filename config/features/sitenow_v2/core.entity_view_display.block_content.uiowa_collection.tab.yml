@@ -10,6 +10,7 @@ dependencies:
   module:
     - entity_reference_revisions
     - layout_builder
+    - options
 third_party_settings:
   layout_builder:
     allow_custom: false
@@ -19,6 +20,13 @@ targetEntityType: block_content
 bundle: uiowa_collection
 mode: tab
 content:
+  field_collection_heading_size:
+    type: list_key
+    weight: 1
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
   field_uiowa_collection_items:
     type: entity_reference_revisions_entity_view
     weight: 0
@@ -28,5 +36,4 @@ content:
       link: ''
     third_party_settings: {  }
     region: content
-hidden:
-  field_collection_heading_size: true
+hidden: {  }
