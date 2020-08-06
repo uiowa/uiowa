@@ -28,10 +28,15 @@
 {% set id = "tab-" ~ id %}
 {% set heading_size = content.field_collection_heading_size.0 %}
 
-<div class="tab" role="tablist" aria-multiselectable="false" id="{{ id }}">
-  <div class = "tab__tabs">
+<div class="tabs" role="navigation" aria-multiselectable="false" id="{{ id }}" aria-label="Tabs">
+  <ul class="tabs primary">
     {% for delta, tab in tabs %}
-      <{{ heading_size }} id="tab-heading-{{ tab.id }}" class="tab__heading">
+        <li class="tab
+          {% if not delta == 0 %}
+            is-active
+          {% endif %}
+        ">
+      {# <{{ heading_size }} id="tab-heading-{{ tab.id }}" class="tab__heading"> #}
         <button class="tab__button"
           role="tab"
           aria-selected="{{ delta == 0 ? 'true' : 'false' | default('false') }}"
@@ -42,9 +47,10 @@
             {{ tab.label }}
           {% endblock %}
         </button>
-      </{{ heading_size }}>
+      </li>
+      {# </{{ heading_size }}> #}
     {% endfor %}
-  </div>
+  </ul>
   <div class="tab__panels">
     {{ content|without('field_collection_heading_size') }}
   </div>
