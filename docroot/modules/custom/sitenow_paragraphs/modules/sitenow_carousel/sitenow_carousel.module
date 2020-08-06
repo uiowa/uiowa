@@ -44,9 +44,11 @@ function sitenow_carousel_preprocess_paragraph__carousel(&$variables) {
       $variables['content']['field_carousel_item'][0]['#attributes']['class'][] = 'active';
     }
 
-    // Subtract one from the number of items since the indicators are
-    // zero-based.
-    // @see paragraph--carousel--default.html.twig
-    $variables['carousel_item_count'] = $variables['content']['field_carousel_item']['#items']->count() - 1;
+    if ($variables['content']['field_carousel_item']['#items']) {
+      // Subtract one from the number of items since the indicators are
+      // zero-based.
+      // @see paragraph--carousel--default.html.twig
+      $variables['carousel_item_count'] = $variables['content']['field_carousel_item']['#items']->count() - 1;
+    }
   }
 }
