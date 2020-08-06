@@ -5,8 +5,10 @@ dependencies:
   config:
     - field.field.paragraph.uiowa_collection_item.field_collection_body
     - field.field.paragraph.uiowa_collection_item.field_collection_headline
+    - field.field.paragraph.uiowa_collection_item.field_collection_item_view_mode
     - paragraphs.paragraphs_type.uiowa_collection_item
   module:
+    - options
     - text
 id: paragraph.uiowa_collection_item.default
 targetEntityType: paragraph
@@ -27,5 +29,12 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
+  field_collection_item_view_mode:
+    weight: 2
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: list_key
     region: content
 hidden: {  }

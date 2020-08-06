@@ -1,0 +1,30 @@
+uuid: ad221e56-f7ac-4c10-945e-a914ce806ac5
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.field_collection_item_view_mode
+field_name: field_collection_item_view_mode
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: accordion
+      label: Accordion
+    -
+      value: tab
+      label: Tab
+    -
+      value: descriptive_list
+      label: 'Descriptive List'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

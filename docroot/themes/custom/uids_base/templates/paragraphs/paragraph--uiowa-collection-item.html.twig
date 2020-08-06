@@ -49,6 +49,12 @@
   'collection_parent_id': parent_id,
 } %}
 
-{# {% embed '@uids_base/uids/descriptive-list.html.twig' with collection_item only %}{% endembed %} #}
-{# {% embed '@uids_base/uids/accordion.html.twig' with collection_item only %}{% endembed %} #}
-{% embed '@uids_base/uids/tab.html.twig' with collection_item only %}{% endembed %}
+{% if 'accordion' in content.field_collection_item_view_mode.0 %}
+  {% embed '@uids_base/uids/accordion.html.twig' with collection_item only %}{% endembed %}
+{% elseif 'descriptive_list' in content.field_collection_item_view_mode.0 %}
+  {% embed '@uids_base/uids/descriptive-list.html.twig' with collection_item only %}{% endembed %}
+{% elseif 'tab' in content.field_collection_item_view_mode.0 %}
+  {% embed '@uids_base/uids/tab.html.twig' with collection_item only %}{% endembed %}
+{% else %}
+  {% embed '@uids_base/uids/descriptive-list.html.twig' with collection_item only %}{% endembed %}
+{% endif %}
