@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: engineeringnews.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: engineeringnews
+  human_name: news.engineering.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: engineeringnews.prod
+drupal:
+  db:
+    database: news_engineering_uiowa_edu
+uiowa:
+  requester: hboileau
+  config:
+    split: sitenow_v2
