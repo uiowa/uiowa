@@ -46,6 +46,11 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
     'label_display' => $label_display,
     'label' => $label,
   ];
+  // Change view_mode field to radios and remove the 'default' option.
+  if ($form['settings']['block_form']['#block']->bundle() === 'uiowa_collection') {
+    $form['settings']['view_mode']['#type'] = 'radios';
+    array_shift($form['settings']['view_mode']['#options']);
+  }
 }
 
 /**
