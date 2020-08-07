@@ -1,0 +1,49 @@
+@import "assets/scss/_variables.scss";
+@import "assets/scss/_utilities.scss";
+.block-inline-blockuiowa-articles {
+  .more-link {
+    margin-bottom: $gutter;
+  }
+  .card__media {
+    @include card-media-horizontal-right;
+
+    @include breakpoint(sm) {
+      margin-top: $lg;
+      margin-bottom: $gutter;
+    }
+  }
+
+  .card__body {
+    flex: 1;
+  }
+
+  .card__title {
+    @include breakpoint(sm) {
+      padding: 0;
+    }
+  }
+
+  .node--type-article,
+  .card--list {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+
+  .view-content {
+    @include list-group;
+    @include list-group-flush;
+    margin-top: $gutter;
+  }
+
+  .views-row {
+    @include list-group-item;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .node__content {
+    @include media-body;
+  }
+}

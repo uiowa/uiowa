@@ -1,0 +1,29 @@
+uuid: 0ff23439-6a82-453a-a48a-5bf2cc2aacb5
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_articles
+    - field.storage.block_content.field_uiowa_articles_reference
+    - taxonomy.vocabulary.tags
+id: block_content.uiowa_articles.field_uiowa_articles_reference
+field_name: field_uiowa_articles_reference
+entity_type: block_content
+bundle: uiowa_articles
+label: 'Filter articles by tag'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      tags: tags
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

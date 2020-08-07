@@ -1,0 +1,23 @@
+uuid: 9f1a6480-4e7d-4270-b97a-8213203ee544
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_articles
+    - field.storage.block_content.field_uiowa_articles_more
+id: block_content.uiowa_articles.field_uiowa_articles_more
+field_name: field_uiowa_articles_more
+entity_type: block_content
+bundle: uiowa_articles
+label: 'Display More Link'
+description: 'Check to include a ''display more'' link. To use the default <a href="/admin/config/system/uiowa-articles">articles path set within SiteNow Articles</a>, make sure the ‘Enable articles listing’ box is checked. Alternatively, a custom URL path can be provided in the ‘Path’ text box below. '
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

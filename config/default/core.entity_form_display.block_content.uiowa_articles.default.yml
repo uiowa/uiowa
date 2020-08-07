@@ -1,0 +1,66 @@
+uuid: a3026034-62a9-4602-85ed-6db6546e911f
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_articles
+    - field.field.block_content.uiowa_articles.field_uiowa_articles_items
+    - field.field.block_content.uiowa_articles.field_uiowa_articles_more
+    - field.field.block_content.uiowa_articles.field_uiowa_articles_more_path
+    - field.field.block_content.uiowa_articles.field_uiowa_articles_pager
+    - field.field.block_content.uiowa_articles.field_uiowa_articles_reference
+  module:
+    - link
+id: block_content.uiowa_articles.default
+targetEntityType: block_content
+bundle: uiowa_articles
+mode: default
+content:
+  field_uiowa_articles_items:
+    weight: 27
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_uiowa_articles_more:
+    weight: 29
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_uiowa_articles_more_path:
+    weight: 30
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+    region: content
+  field_uiowa_articles_pager:
+    weight: 28
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_uiowa_articles_reference:
+    weight: 26
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete_tags
+    region: content
+  info:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }

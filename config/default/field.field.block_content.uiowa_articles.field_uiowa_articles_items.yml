@@ -1,0 +1,25 @@
+uuid: 411c35c1-2925-4575-a771-1d1c278b80b7
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_articles
+    - field.storage.block_content.field_uiowa_articles_items
+id: block_content.uiowa_articles.field_uiowa_articles_items
+field_name: field_uiowa_articles_items
+entity_type: block_content
+bundle: uiowa_articles
+label: 'Items to display'
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: 10
+default_value_callback: ''
+settings:
+  min: 0
+  max: 50
+  prefix: ''
+  suffix: ''
+field_type: integer
