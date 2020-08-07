@@ -1,15 +1,29 @@
 @import "assets/scss/_variables.scss";
 @import "assets/scss/_utilities.scss";
-.block-inline-blockuiowa-articles {
-  &.hide-images {
-    figure img {
-      display: none;
-    }
+
+.block-inline-blockuiowa-people {
+  &.hide-images .card__media,
+  &.hide-images .content-image {
+    display: none;
   }
   &.hide-descriptions {
     .field--name-field-teaser {
       display: none;
     }
+  }
+  p {
+    display: none;
+  }
+
+  .h6 {
+    margin-top: .7rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .field--name-field-person-position {}
+
+  .field--name-field-teaser {
+    margin-top: $gutter;
   }
   .more-link {
     margin-bottom: $gutter;
@@ -33,7 +47,6 @@
     }
   }
 
-  .node--type-article,
   .card--list {
     display: flex;
     flex-direction: row-reverse;
