@@ -500,7 +500,7 @@ function sitenow_articles_preprocess_block(&$variables) {
             $url = Url::fromRoute('view.articles.page_articles');
           }
           if (isset($url)) {
-            $variables['content']['more']['btn'] = [
+            $variables['content']['more']['bttn'] = [
               '#type' => 'link',
               '#title' => 'View more ' . strtolower($default['display_options']['title']),
               '#url' => $url,

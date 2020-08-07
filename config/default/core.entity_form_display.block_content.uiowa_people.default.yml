@@ -1,0 +1,73 @@
+uuid: f7f6274a-08fd-476b-b9bc-a0012919e76b
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_people
+    - field.field.block_content.uiowa_people.field_uiowa_people_items
+    - field.field.block_content.uiowa_people.field_uiowa_people_more
+    - field.field.block_content.uiowa_people.field_uiowa_people_more_path
+    - field.field.block_content.uiowa_people.field_uiowa_people_pager
+    - field.field.block_content.uiowa_people.field_uiowa_people_reference
+    - field.field.block_content.uiowa_people.field_uiowa_people_sort
+  module:
+    - link
+id: block_content.uiowa_people.default
+targetEntityType: block_content
+bundle: uiowa_people
+mode: default
+content:
+  field_uiowa_people_items:
+    weight: 3
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_uiowa_people_more:
+    weight: 5
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_uiowa_people_more_path:
+    weight: 6
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+    region: content
+  field_uiowa_people_pager:
+    weight: 4
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_uiowa_people_reference:
+    weight: 1
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete_tags
+    region: content
+  field_uiowa_people_sort:
+    weight: 2
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  info:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }

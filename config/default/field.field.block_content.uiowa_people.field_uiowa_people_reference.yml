@@ -1,0 +1,29 @@
+uuid: 35d94cb2-90ba-493e-b9e4-d77845bd1e45
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_people
+    - field.storage.block_content.field_uiowa_people_reference
+    - taxonomy.vocabulary.tags
+id: block_content.uiowa_people.field_uiowa_people_reference
+field_name: field_uiowa_people_reference
+entity_type: block_content
+bundle: uiowa_people
+label: 'Filter people by tag'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      tags: tags
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

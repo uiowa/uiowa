@@ -1,0 +1,23 @@
+uuid: eef76303-703d-477d-8300-9f48c3160cca
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_people
+    - field.storage.block_content.field_uiowa_people_pager
+id: block_content.uiowa_people.field_uiowa_people_pager
+field_name: field_uiowa_people_pager
+entity_type: block_content
+bundle: uiowa_people
+label: 'Show pager'
+description: 'Depending on the number of results and the number of items, this will display a pager.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean
