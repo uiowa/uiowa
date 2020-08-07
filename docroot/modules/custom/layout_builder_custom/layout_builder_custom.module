@@ -28,80 +28,80 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       $form['layout_builder_style_background']['#multiple'] = FALSE;
     }
   }
-    else {
-      // Override display of layout builder styles.
-      $enabled = FALSE;
+  else {
+    // Override display of layout builder styles.
+    $enabled = FALSE;
 
-      // Loop through layout builder style groups.
-      $groups = LayoutBuilderStyleGroups::getGroups();
+    // Loop through layout builder style groups.
+    $groups = LayoutBuilderStyleGroups::getGroups();
 
-      foreach (array_keys($groups) as $group) {
-        $lbs = 'layout_builder_style_' . $group;
-        if (isset($form[$lbs])) {
+    foreach (array_keys($groups) as $group) {
+      $lbs = 'layout_builder_style_' . $group;
+      if (isset($form[$lbs])) {
 
-          if ($form_id == 'layout_builder_update_block') {
-            // Set enabled flag based on whether a default value exists
-            // for this layout builder style.
-            $enabled = !empty($form[$lbs]['#default_value']);
-          }
-
-          // Set a state for the layout builder style to toggle
-          // based on the value of the override value specified below.
-          $form[$lbs]['#states'] = [
-            'visible' => [
-              ':input[name="layout_builder_block_override"]' => [
-                'checked' => TRUE,
-              ],
-            ],
-          ];
-
-          // Make the background option single select only.
-          if ($group === 'background') {
-            $form[$lbs]['#multiple'] = FALSE;
-          }
+        if ($form_id == 'layout_builder_update_block') {
+          // Set enabled flag based on whether a default value exists
+          // for this layout builder style.
+          $enabled = !empty($form[$lbs]['#default_value']);
         }
-      }
 
-      // Add a checkbox to toggle whether the styles should show.
-      $form['layout_builder_block_override'] = [
-        '#type' => 'checkbox',
-        '#title' => t('Override style options'),
-        '#required' => FALSE,
-        '#default_value' => $enabled,
-        '#weight' => 80,
-      ];
-
-      /** @var \Drupal\layout_builder\Section $section */
-      $section = $form_state->getFormObject()->getCurrentSection();
-
-      /** @var \Drupal\layout_builder\SectionComponent $component */
-      $component = $form_state->getFormObject()->getCurrentComponent();
-      $block = $component->getPlugin();
-
-      // Disable overriding layout styles if this is onecol card.
-      if ($section->getLayoutId() == 'layout_onecol' && $block->getPluginId() == 'inline_block:uiowa_card') {
-        $form['layout_builder_block_override']['#default_value'] = TRUE;
-        $form['layout_builder_block_override']['#disabled'] = TRUE;
-        $form['layout_builder_block_override']['#description'] = t('Cards rendered within a one column layout must be horizontal.');
-
-        $form['layout_builder_style_default']['#default_value'] = [
-          'block_card_style_horizontal' => 'block_card_style_horizontal',
+        // Set a state for the layout builder style to toggle
+        // based on the value of the override value specified below.
+        $form[$lbs]['#states'] = [
+          'visible' => [
+            ':input[name="layout_builder_block_override"]' => [
+              'checked' => TRUE,
+            ],
+          ],
         ];
 
-        $form['layout_builder_style_default']['#disabled'] = TRUE;
+        // Make the background option single select only.
+        if ($group === 'background') {
+          $form[$lbs]['#multiple'] = FALSE;
+        }
       }
-
-      // Always set title field to not be required.
-      $form['settings']['label']['#required'] = FALSE;
-
-      unset($form['settings']['label']);
-      unset($form['settings']['label_display']);
-      unset($form['settings']['admin_label']['#title']);
-
-      $form['settings'] += [
-        '#weight' => 0,
-      ];
     }
+
+    // Add a checkbox to toggle whether the styles should show.
+    $form['layout_builder_block_override'] = [
+      '#type' => 'checkbox',
+      '#title' => t('Override style options'),
+      '#required' => FALSE,
+      '#default_value' => $enabled,
+      '#weight' => 80,
+    ];
+
+    /** @var \Drupal\layout_builder\Section $section */
+    $section = $form_state->getFormObject()->getCurrentSection();
+
+    /** @var \Drupal\layout_builder\SectionComponent $component */
+    $component = $form_state->getFormObject()->getCurrentComponent();
+    $block = $component->getPlugin();
+
+    // Disable overriding layout styles if this is onecol card.
+    if ($section->getLayoutId() == 'layout_onecol' && $block->getPluginId() == 'inline_block:uiowa_card') {
+      $form['layout_builder_block_override']['#default_value'] = TRUE;
+      $form['layout_builder_block_override']['#disabled'] = TRUE;
+      $form['layout_builder_block_override']['#description'] = t('Cards rendered within a one column layout must be horizontal.');
+
+      $form['layout_builder_style_default']['#default_value'] = [
+        'block_card_style_horizontal' => 'block_card_style_horizontal',
+      ];
+
+      $form['layout_builder_style_default']['#disabled'] = TRUE;
+    }
+
+    // Always set title field to not be required.
+    $form['settings']['label']['#required'] = FALSE;
+
+    unset($form['settings']['label']);
+    unset($form['settings']['label_display']);
+    unset($form['settings']['admin_label']['#title']);
+
+    $form['settings'] += [
+      '#weight' => 0,
+    ];
+  }
 }
 
 /**
