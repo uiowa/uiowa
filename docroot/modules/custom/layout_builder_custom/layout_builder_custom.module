@@ -111,7 +111,7 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
   $component = $form_state->getFormObject()->getCurrentComponent();
   $block = $component->getPlugin();
 
-  // Disable overriding layout styles if this is onecol card.
+  // Require horizontal style if this is card is in a one column layout.
   if ($section->getLayoutId() == 'layout_onecol' && $block->getPluginId() == 'inline_block:uiowa_card') {
     $styles = $form_state->getValue('layout_builder_style_default');
 
