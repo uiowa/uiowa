@@ -2,8 +2,14 @@
 @import "assets/scss/_utilities.scss";
 .block-inline-blockuiowa-articles {
   &.hide-images {
-    figure img {
+    .card__media {
       display: none;
+    }
+  }
+  &.hide-details {
+    .field--name-field-article-author,
+    .field--name-field-article-source-org {
+      display: none !important;
     }
   }
   &.hide-descriptions {
