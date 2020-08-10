@@ -23,6 +23,10 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
     return;
   }
 
+  if ($form_id == 'layout_builder_add_block' || $form_id == 'layout_builder_update_block') {
+    $form['#validate'][] = '_layout_builder_custom_add_block_validate';
+  }
+
   if ($form_id === 'layout_builder_configure_section') {
     if (isset($form['layout_builder_style_background'])) {
       $form['layout_builder_style_background']['#multiple'] = FALSE;
@@ -71,26 +75,6 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       '#weight' => 80,
     ];
 
-    /** @var \Drupal\layout_builder\Section $section */
-    $section = $form_state->getFormObject()->getCurrentSection();
-
-    /** @var \Drupal\layout_builder\SectionComponent $component */
-    $component = $form_state->getFormObject()->getCurrentComponent();
-    $block = $component->getPlugin();
-
-    // Disable overriding layout styles if this is onecol card.
-    if ($section->getLayoutId() == 'layout_onecol' && $block->getPluginId() == 'inline_block:uiowa_card') {
-      $form['layout_builder_block_override']['#default_value'] = TRUE;
-      $form['layout_builder_block_override']['#disabled'] = TRUE;
-      $form['layout_builder_block_override']['#description'] = t('Cards rendered within a one column layout must be horizontal.');
-
-      $form['layout_builder_style_default']['#default_value'] = [
-        'block_card_style_horizontal' => 'block_card_style_horizontal',
-      ];
-
-      $form['layout_builder_style_default']['#disabled'] = TRUE;
-    }
-
     // Always set title field to not be required.
     $form['settings']['label']['#required'] = FALSE;
 
@@ -109,4 +93,30 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
  */
 function layout_builder_custom_form_node_page_layout_builder_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['#attached']['library'][] = 'layout_builder_custom/layout_builder_custom.overrides';
+}
+
+/**
+ * Custom validation for layout_builder_add_block form.
+ *
+ * @param array $form
+ *   The form element.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state.
+ */
+function _layout_builder_custom_add_block_validate(array &$form, FormStateInterface $form_state) {
+  /** @var \Drupal\layout_builder\Section $section */
+  $section = $form_state->getFormObject()->getCurrentSection();
+
+  /** @var \Drupal\layout_builder\SectionComponent $component */
+  $component = $form_state->getFormObject()->getCurrentComponent();
+  $block = $component->getPlugin();
+
+  // Disable overriding layout styles if this is onecol card.
+  if ($section->getLayoutId() == 'layout_onecol' && $block->getPluginId() == 'inline_block:uiowa_card') {
+    $styles = $form_state->getValue('layout_builder_style_default');
+
+    if (!isset($styles['block_card_style_horizontal'])) {
+      $form_state->setErrorByName('layout_builder_block_override', t('Cards rendered within a one column layout must have the horizontal style.'));
+    }
+  }
 }
