@@ -46,10 +46,15 @@
 .layout-builder__add-section {
   background-color: #fff;
   width: 100%;
-  outline: 2px dotted #e6ecf8;
   padding: 1.5em 0;
   text-align: center;
   margin-bottom: 0;
+  outline: none;
+
+  &:hover {
+    outline: 2px dotted #0036b1;
+    outline-offset: 2px;
+  }
 }
 
 .layout-builder-enabled .vertical-tabs {
@@ -66,12 +71,15 @@
 }
 
 .layout-builder__add-block {
-  outline: 2px dotted #0036b1;
-  outline-offset: -2px;
   background-color: #f3f4f9;
   padding: 0;
   margin-top: 0;
   text-align: center;
+
+  &:hover {
+    outline: 2px dotted #0036b1;
+    outline-offset: 2px;
+  }
 }
 
 .layout-builder__section {
