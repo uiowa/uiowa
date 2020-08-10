@@ -24,7 +24,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
   }
 
   if ($form_id == 'layout_builder_add_block' || $form_id == 'layout_builder_update_block') {
-    $form['#validate'][] = '_layout_builder_custom_add_block_validate';
+    $form['#validate'][] = '_layout_builder_custom_block_validate';
   }
 
   if ($form_id === 'layout_builder_configure_section') {
@@ -103,7 +103,7 @@ function layout_builder_custom_form_node_page_layout_builder_form_alter(&$form, 
  * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   The form state.
  */
-function _layout_builder_custom_add_block_validate(array &$form, FormStateInterface $form_state) {
+function _layout_builder_custom_block_validate(array &$form, FormStateInterface $form_state) {
   /** @var \Drupal\layout_builder\Section $section */
   $section = $form_state->getFormObject()->getCurrentSection();
 
