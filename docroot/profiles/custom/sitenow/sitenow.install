@@ -7,11 +7,7 @@
  */
 
 use Drupal\block\Entity\Block;
-use Drupal\config\StorageReplaceDataWrapper;
-use Drupal\Core\Config\ConfigException;
-use Drupal\Core\Config\ConfigImporter;
 use Drupal\Core\Config\FileStorage;
-use Drupal\Core\Config\StorageComparer;
 use Drupal\node\Entity\Node;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\user\Entity\User;
@@ -21,8 +17,6 @@ use Drupal\field\Entity\FieldConfig;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\filter\Plugin\Filter\FilterHtmlCorrector;
-use Drush\Drupal\Commands\config\ConfigCommands;
-use Webmozart\PathUtil\Path;
 
 /**
  * Update some uiowa_footer settings which are ignored.
