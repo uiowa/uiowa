@@ -419,12 +419,18 @@
         color: $white;
 
         a:not(.btn):not(.bttn):not(.button) {
-            color: $secondary;
-            text-decoration: underline;
+            color: $white;
+        }
 
-            &:hover,
-            &:focus {
-                text-decoration: none;
+        .card__body {
+            a:not(.btn):not(.bttn):not(.button) {
+                color: $secondary;
+                text-decoration: underline;
+    
+                &:hover,
+                &:focus {
+                    text-decoration: none;
+                }
             }
         }
 
@@ -738,6 +744,18 @@
 
 .paragraph.bg-dark,
 .paragraph.bg-black {
+    .card__body {
+        a:not(.btn):not(.bttn):not(.button) {
+            color: $secondary;
+            text-decoration: underline;
+
+            &:hover,
+            &:focus {
+                text-decoration: none;
+            }
+        }
+    }
+
     .paragraph--type--articles.list,
     .paragraph--type--people.list {
 
