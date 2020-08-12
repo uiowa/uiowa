@@ -419,7 +419,13 @@
         color: $white;
 
         a:not(.btn):not(.bttn):not(.button) {
-            color: $white;
+            color: $secondary;
+            text-decoration: underline;
+
+            &:hover,
+            &:focus {
+                text-decoration: none;
+            }
         }
 
         .alert a {
