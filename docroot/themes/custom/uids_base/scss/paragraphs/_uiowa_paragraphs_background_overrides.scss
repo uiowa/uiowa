@@ -422,6 +422,18 @@
             color: $white;
         }
 
+        .card__body {
+            a:not(.btn):not(.bttn):not(.button) {
+                color: $secondary;
+                text-decoration: underline;
+    
+                &:hover,
+                &:focus {
+                    text-decoration: none;
+                }
+            }
+        }
+
         .alert a {
             color: $secondary !important;
         }
@@ -732,6 +744,18 @@
 
 .paragraph.bg-dark,
 .paragraph.bg-black {
+    .card__body {
+        a:not(.btn):not(.bttn):not(.button) {
+            color: $secondary;
+            text-decoration: underline;
+
+            &:hover,
+            &:focus {
+                text-decoration: none;
+            }
+        }
+    }
+
     .paragraph--type--articles.list,
     .paragraph--type--people.list {
 
