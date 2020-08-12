@@ -155,61 +155,45 @@ third_party_settings:
         - layout_twocol
         - layout_threecol
         - layout_fourcol
+        - layout_page
       whitelisted_blocks:
         'Chaos Tools': {  }
+        'Content fields':
+          - 'field_block:node:page:uid'
+          - 'field_block:node:page:created'
+          - 'field_block:node:page:body'
+          - 'field_block:node:page:changed'
+          - 'field_block:node:page:field_teaser'
+          - 'field_block:node:page:field_image'
+          - 'field_block:node:page:title'
+          - 'field_block:user:user:changed'
+          - 'field_block:user:user:created'
         'Custom blocks': {  }
         Devel: {  }
         Forms: {  }
-        Menus: {  }
+        'Lists (Views)': {  }
+        Menus:
+          - 'menu_block:main'
+          - 'system_menu_block:main'
         Superfish: {  }
+        System:
+          - system_breadcrumb_block
+          - system_main_block
+        'University of Iowa Alerts': {  }
         User: {  }
+        Webform:
+          - webform_block
         core:
           - page_title_block
       blacklisted_blocks:
-        'Content fields':
-          - 'field_block:node:page:type'
-          - 'field_block:node:page:revision_default'
-          - 'field_block:node:page:default_langcode'
-          - 'field_block:node:page:nid'
-          - 'field_block:node:page:langcode'
-          - 'field_block:node:page:menu_link'
-          - 'field_block:node:page:moderation_state'
-          - 'field_block:node:page:field_publish_options'
-          - 'field_block:node:page:promote'
-          - 'field_block:node:page:status'
-          - 'field_block:node:page:revision_timestamp'
-          - 'field_block:node:page:vid'
-          - 'field_block:node:page:revision_log'
-          - 'field_block:node:page:revision_translation_affected'
-          - 'field_block:node:page:revision_uid'
-          - 'field_block:node:page:field_meta_tags'
-          - 'field_block:node:page:sticky'
-          - 'field_block:user:user:default_langcode'
-          - 'field_block:user:user:mail'
-          - 'field_block:user:user:init'
-          - 'field_block:user:user:langcode'
-          - 'field_block:user:user:access'
-          - 'field_block:user:user:login'
-          - 'extra_field_block:user:user:masquerade'
-          - 'extra_field_block:user:user:member_for'
-          - 'field_block:user:user:name'
-          - 'field_block:user:user:preferred_admin_langcode'
-          - 'field_block:user:user:preferred_langcode'
-          - 'field_block:user:user:roles'
-          - 'field_block:user:user:timezone'
-          - 'field_block:user:user:uid'
-          - 'field_block:user:user:status'
         'Custom block types':
+          - uiowa_page_title_hero
+          - uiowa_spacer_separator
           - uiowa_vertical_video
         'Inline blocks':
+          - 'inline_block:uiowa_page_title_hero'
+          - 'inline_block:uiowa_spacer_separator'
           - 'inline_block:uiowa_vertical_video'
-        System:
-          - system_messages_block
-          - system_powered_by_block
-          - system_branding_block
-          - node_syndicate_block
-        Webform:
-          - webform_submission_limit_block
     allowed_block_categories:
       - 'Chaos Tools'
       - 'Content fields'
@@ -226,6 +210,40 @@ third_party_settings:
       - User
       - Webform
       - core
+    entity_view_mode_restriction_by_region:
+      allowed_layouts:
+        - layout_onecol
+        - layout_twocol
+        - layout_threecol
+        - layout_fourcol
+        - layout_page
+      blacklisted_blocks:
+        layout_onecol: {  }
+        layout_twocol:
+          all_regions:
+            'Custom block types':
+              - uiowa_banner
+              - uiowa_hero
+            'Inline blocks':
+              - 'inline_block:uiowa_banner'
+              - 'inline_block:uiowa_hero'
+        layout_threecol:
+          all_regions:
+            'Custom block types':
+              - uiowa_banner
+              - uiowa_hero
+            'Inline blocks':
+              - 'inline_block:uiowa_banner'
+              - 'inline_block:uiowa_hero'
+        layout_fourcol:
+          all_regions:
+            'Custom block types':
+              - uiowa_banner
+              - uiowa_hero
+            'Inline blocks':
+              - 'inline_block:uiowa_banner'
+              - 'inline_block:uiowa_hero'
+      whitelisted_blocks: {  }
 _core:
   default_config_hash: 0AcX0F0voV5TKB6_GPZxJpAfbKCnDU7er_5TWcqIgSw
 id: node.page.default
