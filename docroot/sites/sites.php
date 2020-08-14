@@ -1547,3 +1547,15 @@ $sites['labchaurasia.local.drupal.uiowa.edu'] = 'chaurasia.lab.uiowa.edu';
 $sites['labchaurasia.dev.drupal.uiowa.edu'] = 'chaurasia.lab.uiowa.edu';
 $sites['labchaurasia.stage.drupal.uiowa.edu'] = 'chaurasia.lab.uiowa.edu';
 $sites['labchaurasia.prod.drupal.uiowa.edu'] = 'chaurasia.lab.uiowa.edu';
+
+// Directory aliases for engagement.uiowa.edu.
+$sites['engagement.local.drupal.uiowa.edu'] = 'engagement.uiowa.edu';
+$sites['engagement.dev.drupal.uiowa.edu'] = 'engagement.uiowa.edu';
+$sites['engagement.stage.drupal.uiowa.edu'] = 'engagement.uiowa.edu';
+$sites['engagement.prod.drupal.uiowa.edu'] = 'engagement.uiowa.edu';
+
+// Directory aliases for gwsstellmagazine.sites.uiowa.edu.
+$sites['sitesgwsstellmagazine.local.drupal.uiowa.edu'] = 'gwsstellmagazine.sites.uiowa.edu';
+$sites['sitesgwsstellmagazine.dev.drupal.uiowa.edu'] = 'gwsstellmagazine.sites.uiowa.edu';
+$sites['sitesgwsstellmagazine.stage.drupal.uiowa.edu'] = 'gwsstellmagazine.sites.uiowa.edu';
+$sites['sitesgwsstellmagazine.prod.drupal.uiowa.edu'] = 'gwsstellmagazine.sites.uiowa.edu';
