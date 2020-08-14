@@ -21,16 +21,15 @@
 %}
 
 {% if background %}
-
   {% embed "@uids_base/uids/hero.html.twig" with {
     hero_alignment : 'bottom',
     'attributes' : attributes.addClass(classes)
   } %}
     {% block hero_image %}
-      {{ content.background }}
+      {{ content.background | without('layout_builder_add_block')}}
     {% endblock %}
     {% block hero_content %}
-      {{ content.content }}
+      {{ content.content | without('layout_builder_add_block') }}
     {% endblock %}
   {% endembed %}
 
