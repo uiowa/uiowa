@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: sitesgwsstellmagazine.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: sitesgwsstellmagazine
+  human_name: gwsstellmagazine.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesgwsstellmagazine.prod
+drupal:
+  db:
+    database: gwsstellmagazine_sites_uiowa_edu
+uiowa:
+  requester: lmurillo
+  config:
+    split: sitenow_v2
