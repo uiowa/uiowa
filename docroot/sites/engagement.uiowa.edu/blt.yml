@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: engagement.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: engagement
+  human_name: engagement.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: engagement.prod
+drupal:
+  db:
+    database: engagement_uiowa_edu
+uiowa:
+  requester: hjpeterson
+  config:
+    split: sitenow_v2
