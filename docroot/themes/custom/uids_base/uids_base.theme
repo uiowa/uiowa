@@ -259,7 +259,6 @@ function uids_base_preprocess_layout(&$variables) {
     }
 
     // Add sitenow library if sitenow_v2 config split is active.
-
     $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
     $collegiate_split = 'config_split:sitenow_v2';
     // This site has the 'collegiate' split enabled.

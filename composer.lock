@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "da68e800fa553cc34cf8036e2828fdb5",
+    "content-hash": "3691dbeac29949007c96c207a451fff2",
     "packages": [
         {
             "name": "acquia/blt",
@@ -3793,29 +3793,29 @@
         },
         {
             "name": "drupal/cshs",
-            "version": "1.0.0-beta4",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/cshs.git",
-                "reference": "8.x-1.0-beta4"
+                "reference": "8.x-1.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/cshs-8.x-1.0-beta4.zip",
-                "reference": "8.x-1.0-beta4",
-                "shasum": "332c4cf5b70644ab65b338706186e390256a034e"
+                "url": "https://ftp.drupal.org/files/projects/cshs-8.x-1.2.zip",
+                "reference": "8.x-1.2",
+                "shasum": "690e507fa8c81b1879aedd906af2484ef5562477"
             },
             "require": {
-                "drupal/core": "^8"
+                "drupal/core": "^8 || ^9"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.0-beta4",
-                    "datestamp": "1497737343",
+                    "version": "8.x-1.2",
+                    "datestamp": "1595243793",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Beta releases are not covered by Drupal security advisories."
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
                     }
                 }
             },
@@ -3825,22 +3825,35 @@
             ],
             "authors": [
                 {
-                    "name": "BR0kEN",
-                    "homepage": "https://www.drupal.org/user/2802285"
+                    "name": "Walter Jenner",
+                    "homepage": "https://drupal.org/u/valderama"
                 },
                 {
-                    "name": "purushotam.rai",
-                    "homepage": "https://www.drupal.org/user/3193859"
+                    "name": "Sergii Bondarenko",
+                    "homepage": "https://drupal.org/u/BR0kEN",
+                    "email": "sb@firstvector.org"
                 },
                 {
-                    "name": "valderama",
-                    "homepage": "https://www.drupal.org/user/103634"
+                    "name": "Daneel Cruz",
+                    "homepage": "https://drupal.org/u/daneelcm"
+                },
+                {
+                    "name": "Purushotam Rai",
+                    "homepage": "https://drupal.org/u/purushotam.rai"
                 }
             ],
             "description": "A simple client-side hierarchical select widget for taxonomy terms.",
             "homepage": "https://www.drupal.org/project/cshs",
+            "keywords": [
+                "client-side-select",
+                "hierarchical-select",
+                "module",
+                "select",
+                "taxonomy"
+            ],
             "support": {
-                "source": "https://git.drupalcode.org/project/cshs"
+                "source": "https://git.drupalcode.org/project/cshs",
+                "issues": "https://www.drupal.org/project/issues/cshs"
             }
         },
         {
@@ -4950,26 +4963,29 @@
         },
         {
             "name": "drupal/field_group",
-            "version": "3.0.0",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/field_group.git",
-                "reference": "8.x-3.0"
+                "reference": "8.x-3.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/field_group-8.x-3.0.zip",
-                "reference": "8.x-3.0",
-                "shasum": "8d87cdc4abc417aa4d411bffcaeb0a3ef1afa497"
+                "url": "https://ftp.drupal.org/files/projects/field_group-8.x-3.1.zip",
+                "reference": "8.x-3.1",
+                "shasum": "8a719eaea594f0ba874172831cb28da93c66b77a"
             },
             "require": {
-                "drupal/core": "^8 || ^9"
+                "drupal/core": "^8.8 || ^9"
+            },
+            "require-dev": {
+                "drupal/jquery_ui_accordion": "^1.0"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-3.0",
-                    "datestamp": "1580250787",
+                    "version": "8.x-3.1",
+                    "datestamp": "1591772567",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4978,7 +4994,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -5005,7 +5021,8 @@
             "description": "Provides the field_group module.",
             "homepage": "https://www.drupal.org/project/field_group",
             "support": {
-                "source": "https://git.drupalcode.org/project/field_group"
+                "source": "https://git.drupalcode.org/project/field_group",
+                "issues": "https://www.drupal.org/project/issues/field_group"
             }
         },
         {
@@ -5108,17 +5125,17 @@
         },
         {
             "name": "drupal/fontawesome",
-            "version": "2.16.0",
+            "version": "2.17.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/fontawesome.git",
-                "reference": "8.x-2.16"
+                "reference": "8.x-2.17"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/fontawesome-8.x-2.16.zip",
-                "reference": "8.x-2.16",
-                "shasum": "90eeefdbdc2d62cf956af2d8e5628a8c757e5838"
+                "url": "https://ftp.drupal.org/files/projects/fontawesome-8.x-2.17.zip",
+                "reference": "8.x-2.17",
+                "shasum": "ee077ae8295a36d76e85131e975a3626e199c404"
             },
             "require": {
                 "drupal/core": "^8 || ^9"
@@ -5126,8 +5143,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-2.16",
-                    "datestamp": "1588952353",
+                    "version": "8.x-2.17",
+                    "datestamp": "1593708087",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5807,26 +5824,26 @@
         },
         {
             "name": "drupal/lb_direct_add",
-            "version": "1.0.0",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/lb_direct_add.git",
-                "reference": "8.x-1.0"
+                "reference": "8.x-1.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/lb_direct_add-8.x-1.0.zip",
-                "reference": "8.x-1.0",
-                "shasum": "a24b2069e9815f743a097ce61999e4c1872453b4"
+                "url": "https://ftp.drupal.org/files/projects/lb_direct_add-8.x-1.2.zip",
+                "reference": "8.x-1.2",
+                "shasum": "f6b16a7eaa36a7eebfc786665454a1abaa91fcd5"
             },
             "require": {
-                "drupal/core": "^8"
+                "drupal/core": "^8 || ^9"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.0",
-                    "datestamp": "1587402336",
+                    "version": "8.x-1.2",
+                    "datestamp": "1595447183",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -6597,7 +6614,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/metatag.git",
-                "reference": "368021aa00069318395edce4e66f75f8ad55a909"
+                "reference": "31d4e71525f19d29f336a87d8ad145c086168a3f"
             },
             "require": {
                 "drupal/core": "^8 || ^9",
@@ -6607,6 +6624,7 @@
                 "drupal/metatag_dc": "*",
                 "drupal/metatag_open_graph": "*",
                 "drupal/page_manager": "4.x-dev",
+                "drupal/panelizer": "4.x-dev",
                 "drupal/redirect": "1.x-dev"
             },
             "type": "drupal-module",
@@ -6615,8 +6633,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.13+7-dev",
-                    "datestamp": "1594313071",
+                    "version": "8.x-1.14+0-dev",
+                    "datestamp": "1597183551",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -6652,7 +6670,7 @@
                 "issues": "https://www.drupal.org/project/issues/metatag",
                 "docs": "https://www.drupal.org/docs/8/modules/metatag"
             },
-            "time": "2020-07-09T16:45:11+00:00"
+            "time": "2020-08-11T22:05:31+00:00"
         },
         {
             "name": "drupal/migrate_plus",
