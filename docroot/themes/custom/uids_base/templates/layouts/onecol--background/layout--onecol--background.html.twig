@@ -20,7 +20,7 @@
 ]
 %}
 
-{% if background %}
+{% if has_node_image %}
   {% embed "@uids_base/uids/hero.html.twig" with {
     hero_alignment : 'bottom',
     'attributes' : attributes.addClass(classes)
