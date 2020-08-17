@@ -28,6 +28,19 @@
     overflow: auto;
   }
 
+  label.form-required {
+    &:after {
+      margin-left: $xsm;
+      content: "*";
+      color: $danger;
+      vertical-align: middle;
+    }
+  }
+
+  .form-item--error-message {
+    margin: $xsm 0;
+  }
+
   [type="checkbox"],
   [type="radio"] {
     -webkit-box-sizing: border-box;
