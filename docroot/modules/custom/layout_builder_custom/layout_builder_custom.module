@@ -27,6 +27,9 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
     $form['#validate'][] = '_layout_builder_custom_block_validate';
   }
 
+  // Custom form alter for specific block types.
+  $form['settings']['block_form']['#process'][] = '_layout_builder_custom_form_alter';
+
   if ($form_id === 'layout_builder_configure_section') {
     if (isset($form['layout_builder_style_background'])) {
       $form['layout_builder_style_background']['#multiple'] = FALSE;
@@ -119,4 +122,29 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
       $form_state->setErrorByName('layout_builder_block_override', t('Cards rendered within a one column layout must have the horizontal style.'));
     }
   }
+}
+
+/**
+ * Process callback for custom block form.
+ */
+function _layout_builder_custom_form_alter(array $element, FormStateInterface $form_state) {
+  if (isset($element["field_uiowa_articles_more_path"])) {
+    $element["field_uiowa_articles_more_path"]['#states'] = [
+      'visible' => [
+        ':input[name="settings[block_form][field_uiowa_articles_more][value]"]' => [
+          'checked' => TRUE,
+        ],
+      ],
+    ];
+  }
+  if (isset($element["field_uiowa_people_more_path"])) {
+    $element["field_uiowa_people_more_path"]['#states'] = [
+      'visible' => [
+        ':input[name="settings[block_form][field_uiowa_people_more][value]"]' => [
+          'checked' => TRUE,
+        ],
+      ],
+    ];
+  }
+  return $element;
 }
