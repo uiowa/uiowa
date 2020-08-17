@@ -36,10 +36,6 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
     }
   }
   else {
-    // If it's a new Text Area block, grab it for editing its form.
-    if ($form_id == 'layout_builder_add_block' && $form['settings']['block_form']['#block']->bundle() === 'uiowa_text_area') {
-      $form['settings']['block_form']['#process'][] = '_layout_builder_custom_block_form_alter';
-    }
     // Override display of layout builder styles.
     $enabled = FALSE;
 
