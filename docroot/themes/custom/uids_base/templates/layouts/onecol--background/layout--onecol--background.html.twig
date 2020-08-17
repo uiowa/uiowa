@@ -26,10 +26,10 @@
     'attributes' : attributes.addClass(classes)
   } %}
     {% block hero_image %}
-      {{ content.background | without('layout_builder_add_block')}}
+      {{ content.background }}
     {% endblock %}
     {% block hero_content %}
-      {{ content.content | without('layout_builder_add_block') }}
+      {{ content.content }}
     {% endblock %}
   {% endembed %}
 
