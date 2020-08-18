@@ -109,13 +109,10 @@ function layout_builder_custom_form_node_page_layout_builder_form_alter(&$form, 
 function _layout_builder_custom_block_validate(array &$form, FormStateInterface $form_state) {
   /** @var \Drupal\layout_builder\Section $section */
   $section = $form_state->getFormObject()->getCurrentSection();
-
-  /** @var \Drupal\layout_builder\SectionComponent $component */
-  $component = $form_state->getFormObject()->getCurrentComponent();
-  $block = $component->getPlugin();
+  $bundle = $form['settings']['block_form']['#block']->bundle();
 
   // Require horizontal style if this card is in a one column layout.
-  if ($section->getLayoutId() == 'layout_onecol' && $block->getPluginId() == 'inline_block:uiowa_card') {
+  if ($section->getLayoutId() == 'layout_onecol' && $bundle == 'uiowa_card') {
     $styles = $form_state->getValue('layout_builder_style_default');
 
     if (!isset($styles['block_card_style_horizontal'])) {
@@ -125,16 +122,26 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
 }
 
 /**
- * Custom process to update Text Area field format from minimal to filtered.
+ * Custom process block form elements.
  *
  * @param array $element
  *   The current block element.
  * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   The current form state.
+ *
+ * @return array $element
  */
-function _layout_builder_custom_block_form_alter(array $element, FormStateInterface $form_state) {
-  if (isset($element['field_uiowa_text_area'])) {
-    $element['field_uiowa_text_area']['widget'][0]['#format'] = 'filtered_html';
+function _layout_builder_custom_process_element(array $element, FormStateInterface $form_state) {
+  $bundle = $element['#block']->bundle();
+
+  switch ($bundle) {
+    case 'uiowa_text_area':
+      if (isset($element['field_uiowa_text_area'])) {
+        $element['field_uiowa_text_area']['widget'][0]['#format'] = 'filtered_html';
+      }
+
+      break;
   }
+
   return $element;
 }
