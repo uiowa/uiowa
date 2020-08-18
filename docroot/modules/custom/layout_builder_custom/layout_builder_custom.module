@@ -12,31 +12,16 @@ use Drupal\layout_builder_styles\LayoutBuilderStyleGroups;
  * Implements hook_form_alter().
  */
 function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $form_ids = [
-    'layout_builder_update_block',
-    'layout_builder_add_block',
-    'layout_builder_configure_section',
-  ];
+  switch ($form_id) {
+    case 'layout_builder_add_block':
+    case 'layout_builder_update_block':
 
-  // Only continue if this is one of the above forms.
-  if (!in_array($form_id, $form_ids)) {
-    return;
-  }
-
-  if ($form_id == 'layout_builder_add_block' || $form_id == 'layout_builder_update_block') {
+    // Add custom validation for certain blocks/regions to validate.
     $form['#validate'][] = '_layout_builder_custom_block_validate';
-  }
 
-  if ($form_id === 'layout_builder_configure_section') {
-    if (isset($form['layout_builder_style_background'])) {
-      $form['layout_builder_style_background']['#multiple'] = FALSE;
-    }
-  }
-  else {
-    // If it's a new Text Area block, grab it for editing its form.
-    if ($form_id == 'layout_builder_add_block' && $form['settings']['block_form']['#block']->bundle() === 'uiowa_text_area') {
-      $form['settings']['block_form']['#process'][] = '_layout_builder_custom_block_form_alter';
-    }
+    // Add custom process callback for certain blocks to alter form elements.
+    $form['settings']['block_form']['#process'][] = '_layout_builder_custom_process_element';
+
     // Override display of layout builder styles.
     $styles_exist = FALSE;
     $styles_enabled = FALSE;
@@ -94,6 +79,15 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
     $form['settings'] += [
       '#weight' => 0,
     ];
+
+      break;
+
+    case 'layout_builder_configure_section':
+      if (isset($form['layout_builder_style_background'])) {
+        $form['layout_builder_style_background']['#multiple'] = FALSE;
+      }
+
+      break;
   }
 }
 
