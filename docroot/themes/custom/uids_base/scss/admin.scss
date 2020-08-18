@@ -103,10 +103,43 @@
   font-weight: bold;
   border-bottom: 0;
   padding: .3rem 0 0 0;
-  font-size: 1.2rem;
+  font-size: 1rem;
 
   .layout-builder__add-section & {
     padding: .1rem 0 0 1.5rem;
+  }
+}
+
+.layout-builder__section {
+
+  &:hover,
+  &:focus {
+    .layout-builder__link {
+      opacity: 1;
+    }
+  }
+
+  .layout-builder__link {
+    padding: .5rem 1rem .5rem 2rem;
+    z-index: 2;
+    background: #fff;
+    font-size: .8rem;
+    position: absolute;
+    border-right: 1px solid #f1f1f1;
+    border-bottom: 1px solid #f1f1f1;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10);
+    opacity: 0;
+  }
+
+  .layout-builder__link--remove {
+    z-index: 3;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+    height: 31px;
+    margin-left: 0;
+    border-right: 1px solid #f1f1f1;
+    background: url(/core/misc/icons/bebebe/ex.svg) #fff center center / 16px 16px no-repeat !important;
   }
 }
 
@@ -1239,6 +1272,7 @@ div[data-drupal-selector="edit-moderation-state-0"] {
   color: #0036b1;
   font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
   font-weight: bold;
+  font-size: 1rem;
 }
 
 .js .dropbutton {
@@ -1284,14 +1318,36 @@ ul.dropbutton li {
     display: flex;
     align-items: center;
     justify-content: space-around;
+
     .js-hide {
       display: none;
     }
   }
+
   .node-preview-backlink {
     @include bttn;
     @include bttn--primary;
     @include bttn--focus;
     font-family: $font-family-caps-bold;
   }
+}
+
+// Edit block button adjustments
+.js-layout-builder-block .contextual .trigger,
+.uids-content .js-layout-builder-block .contextual [type=button] {
+  width: 36px !important;
+  height: 36px !important;
+  border: 1px solid #ccc;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10);
+  border-radius: 50%;
+  right: 15px;
+  top: 10px;
+  padding: 0;
+  background-image: url(/core/themes/stable/images/core/icons/787878/pencil.svg) !important;
+}
+
+.js-layout-builder-block .contextual.open .trigger {
+  border-radius: 50% 50% 0 0;
+  border: none;
+  box-shadow: none;
 }
