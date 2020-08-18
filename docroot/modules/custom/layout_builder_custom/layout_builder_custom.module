@@ -155,3 +155,19 @@ function _layout_builder_custom_block_form_alter(array $element, FormStateInterf
   }
   return $element;
 }
+
+/**
+ * Replace the label with the collection headline.
+ */
+function layout_builder_custom_inline_entity_form_table_fields_alter(array &$fields, array $context) {
+  if ($context['entity_type'] === 'paragraph') {
+    if (in_array('uiowa_collection_item', $context['allowed_bundles'])) {
+      unset($fields['label']);
+      $fields['field_collection_headline'] = [
+        'type' => 'field',
+        'label' => t('Headline'),
+        'weight' => 0,
+      ];
+    }
+  }
+}
