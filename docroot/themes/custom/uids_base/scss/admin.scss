@@ -111,7 +111,7 @@
   &__add-section {
     margin: 0;
     width: 100%;
-    padding: 1.2rem;
+    padding: $gutter/2;
     outline: none;
   }
 
@@ -125,6 +125,7 @@
 
     &--add {
       background-position: .625rem center;
+      border: 1px solid #f7f7f7;
       display: block;
       outline: 2px dashed #dedede;
       outline-offset: 8px;
@@ -132,8 +133,8 @@
       text-align: left;
 
       &:hover {
-        //border: 1px solid #ccc;
-        //box-shadow: 0 1px 2px rgba(0, 0, 0, .25);
+        border: 1px solid #ccc;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, .25);
         outline: 2px dashed #0036b1;
       }
     }
@@ -688,9 +689,6 @@ body.toolbar-vertical.toolbar-tray-open {
     display: block;
     width: 100%;
     height: auto;
-    position: absolute;
-    top: 5px;
-    left: 5px;
     font-style: italic;
     z-index: 1;
   }
