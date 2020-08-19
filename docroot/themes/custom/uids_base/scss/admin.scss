@@ -196,6 +196,25 @@
   }
 }
 
+.layout-builder-block {
+  padding: 0;
+  cursor: move;
+  background: transparent;
+
+  &.bg--gray {
+    background: $light;
+  }
+
+  &.bg--black,
+  &.bg-pattern--brain-black {
+    background: $secondary;
+  }
+
+  &.bg--gold {
+    background: $primary;
+  }
+}
+
 .chosen-container-multi .chosen-choices {
   position: relative;
   overflow: hidden;
@@ -263,27 +282,6 @@
   display: block !important;
 }
 
-
-
-.layout-builder-block {
-  //padding: 0;
-  cursor: move;
-  background: transparent;
-
-  &.bg--gray {
-    background: $light;
-  }
-
-  &.bg--black,
-  &.bg-pattern--brain-black {
-    background: $secondary;
-  }
-
-  &.bg--gold {
-    background: $primary;
-  }
-}
-
 .layout__container .lb__container {
 
   .layout-builder-block,
@@ -344,12 +342,7 @@
     max-width: 100%;
     margin-right: 0;
     margin-left: 0;
-
-    .layout-builder-block {
-      padding: 0;
-    }
   }
-
 }
 
 // admin styles for responsive layout sections for full width or mixed settings
