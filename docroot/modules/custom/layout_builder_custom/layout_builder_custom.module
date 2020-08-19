@@ -133,15 +133,17 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
  *   The processed block element.
  */
 function _layout_builder_custom_process_element(array $element, FormStateInterface $form_state) {
-  $bundle = $element['#block']->bundle();
+  if (isset($element['#block'])) {
+    $bundle = $element['#block']->bundle();
 
-  switch ($bundle) {
-    case 'uiowa_text_area':
-      if (isset($element['field_uiowa_text_area'])) {
-        $element['field_uiowa_text_area']['widget'][0]['#format'] = 'filtered_html';
-      }
+    switch ($bundle) {
+      case 'uiowa_text_area':
+        if (isset($element['field_uiowa_text_area'])) {
+          $element['field_uiowa_text_area']['widget'][0]['#format'] = 'filtered_html';
+        }
 
-      break;
+        break;
+    }
   }
 
   return $element;
