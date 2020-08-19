@@ -8,6 +8,9 @@
   background: #fff !important;
 }
 
+/*
+ * Off-canvas overrides
+ */
 #drupal-off-canvas .search-choice span,
 #drupal-off-canvas .search-field .chosen-search-input {
   color: #000 !important;
@@ -44,97 +47,137 @@
   width: 20px
 }
 
-.layout-builder__add-section {
-  margin: 1.5rem 0;
-  padding: 1rem 0;
-  outline: none;
-  outline: 2px dashed #f1f1f1;
-  &:hover {
-    outline: 2px dotted #0036b1;
-    outline-offset: 8px;
-  }
-}
-
+/*
+ * Layout builder overrides
+ */
 .layout-builder-enabled .vertical-tabs {
   border: none;
   display: none;
 }
 
-.layout-builder__link--remove {
-  border: none;
+
+
+// admin styles layout builder container reset
+
+.layout-builder {
+  border: 5px solid #dff1ff;
+  margin: $gutter 0;
+  padding: 0;
+
+  &__section {
+
+    &:hover,
+    &:focus {
+      .layout-builder__link {
+        opacity: 1;
+      }
+    }
+
+    .layout-builder {
+      &__link {
+        padding: .7rem 1.3rem .7rem 3rem;
+        z-index: 2;
+        background: #f7f7f7;
+        font-size: .8rem;
+        position: absolute;
+        opacity: 0;
+        border: 1px solid #f1f1f1;
+
+        &--remove {
+          z-index: 3;
+          padding: 0;
+          border-radius: 0;
+          box-shadow: none;
+          height: 38px;
+          width: 40px;
+          margin-left: 0;
+          border: 1px solid #f1f1f1;
+          background: url(/core/misc/icons/bebebe/ex.svg) #fff center center / 16px 16px no-repeat !important;
+        }
+      }
+    }
+
+  }
+
+  &__add-block {
+    margin-top: 0;
+    padding-top: 0;
+    outline: 1px dotted #dedede;
+    padding: .5rem;
+    text-align: center;
+  }
+
+  &__add-section {
+    margin: 1.5rem 0;
+    width: 100%;
+    padding: 1rem 0;
+    outline: 2px dotted #e6ecf8;
+    outline: none;
+    padding: 1rem 0;
+    outline: 2px dashed #f1f1f1;
+    text-align: center;
+
+    &:hover {
+      margin-bottom: 1.5em;
+      outline: 2px dotted #0036b1;
+      outline-offset: 8px;
+    }
+  }
+
+  &__link {
+    color: #545454;
+    font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    font-weight: bold;
+    border-bottom: 0;
+    padding: .3rem 0 0 0;
+    font-size: 1rem;
+
+    &--add {
+      background-position: .625rem center;
+      display: block;
+      outline: 2px dashed #dedede;
+      outline-offset: 8px;
+      padding: 1rem 1rem 1rem 2.5rem;
+      text-align: left;
+
+      &:hover {
+        border: 1px solid #ccc;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, .25);
+        outline: 2px dashed #0036b1;
+      }
+    }
+
+    &--configure {}
+
+    &--remove {
+
+      &:hover {
+        background-color: #111111;
+        background-image: url(/core/misc/icons/ffffff/ex.svg);
+      }
+    }
+  }
 }
 
 .layout-builder__region {
   outline: none;
 }
 
-.layout-builder__add-block {
-  padding: 0;
-  margin-top: 0;
-  text-align: center;
-  background-color: transparent;
-}
-
 .layout-builder__section {
   margin-bottom: 0;
-
-  &:hover {
-    outline: 2px dotted #0036b1;
-    outline-offset: 8px;
-  }
+  padding: 2px;
 
   .hero {
     height: auto;
     min-height: 500px;
   }
-}
 
-.layout-builder {
-  border: 3px solid #dff1ff;
-}
-
-.layout-builder__link {
-  color: #545454;
-  font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-  font-weight: bold;
-  border-bottom: 0;
-  padding: .3rem 0 0 0;
-  font-size: 1rem;
-
-  .layout-builder__add-section & {
-    padding: .1rem 0 0 1.5rem;
-    margin-left: -3.3rem;
-  }
-}
-
-// Configure Section adjustments
-.layout-builder__section {
-
-  &:hover,
-  &:focus {
-    .layout-builder__link {
-      opacity: 1;
+  &:hover {
+    .layout-builder__layout {
+      .lb__container {
+        outline: 2px dashed #0036b1;
+      }
     }
-  }
-
-  .layout-builder__link {
-    padding: .5rem 1rem .5rem 2rem;
-    z-index: 2;
-    background: #f7f7f7;
-    font-size: .8rem;
-    position: absolute;
-    opacity: 0;
-  }
-
-  .layout-builder__link--remove {
-    z-index: 3;
-    padding: 0;
-    border-radius: 0;
-    box-shadow: none;
-    height: 30px;
-    margin-left: 0;
-    border: 1px solid #f1f1f1;
-    background: url(/core/misc/icons/bebebe/ex.svg) #fff center center / 16px 16px no-repeat !important;
   }
 }
 
@@ -167,19 +210,15 @@
 #drupal-off-canvas label {
   color: #fff;
 }
-
 #drupal-off-canvas .description {
   margin: 10px 0 20px;
 }
-
 #drupal-off-canvas form {
   color: #fff;
 }
-
 .form-item-settings-label-display {
   margin: 15px 0;
 }
-
 .form-item-settings-admin-label {
   margin-bottom: 20px;
 }
@@ -209,7 +248,10 @@
   display: block !important;
 }
 
+
+
 .layout-builder-block {
+  //padding: 0;
   cursor: move;
   background: transparent;
 
@@ -244,16 +286,14 @@
   }
 }
 
-// dropbutton adjustments
-.dropbutton-wrapper {
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10);
-  margin-top: 1rem;
+.feature__container .layout__region .layout-builder__region {
+  display: flex;
+  align-content: stretch;
+  align-items: stretch;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
 }
-
-.dropbutton-arrow {
-  right: 25%;
-}
-
 
 #drupal-off-canvas select[multiple] option {
   color: #000;
@@ -363,13 +403,6 @@
   .close {
     padding: 0;
   }
-}
-
-// admin styles layout builder container reset
-
-.layout-builder {
-  margin: $gutter 0;
-  padding: $gutter;
 }
 
 // admin styles adjust vertical tabs at bottom of edit screen
@@ -690,11 +723,9 @@ body.toolbar-vertical.toolbar-tray-open {
 /*!
 Chosen, a Select Box Enhancer for jQuery and Prototype
 by Patrick Filler for Harvest, http://getharvest.com
-
 Version 1.8.7
 Full source at https://github.com/harvesthq/chosen
 Copyright (c) 2011-2018 Harvest http://getharvest.com
-
 MIT License, https://github.com/harvesthq/chosen/blob/master/LICENSE.md
 This file is generated by `grunt build`, do not edit it by hand.
 */
@@ -1258,12 +1289,45 @@ div[data-drupal-selector="edit-moderation-state-0"] {
   padding-top: 10px;
 }
 
+.js-layout-builder-block .contextual .trigger,
+.uids-content .js-layout-builder-block .contextual [type=button] {
+  width: 36px !important;
+  height: 36px !important;
+  border: 1px solid #ccc;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10);
+  border-radius: 50%;
+  right: 15px;
+  top: 10px;
+  padding: 0;
+  background-image: url(/core/themes/stable/images/core/icons/787878/pencil.svg) !important;
+}
+
+.js-layout-builder-block .contextual.open .trigger {
+  border-radius: 50% 50% 0 0;
+  border: none;
+  box-shadow: none;
+}
 
 // Claro Dropbutton
 
+.dropbutton-wrapper {
+  align-content: stretch;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10);
+  align-items: stretch;
+  flex-direction: row;
+}
+
+.dropbutton-arrow {
+  right: 25%;
+}
+
+
+.dropbutton-widget {
+  padding-right: 2.6em;
+}
+
 .dropbutton-multiple .dropbutton .dropbutton-action>* {
   margin-right: 0;
-  //color: #0036b1;
   color: #545454;
   font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
   font-weight: bold;
@@ -1325,24 +1389,4 @@ ul.dropbutton li {
     @include bttn--focus;
     font-family: $font-family-caps-bold;
   }
-}
-
-// Edit block button adjustments
-.js-layout-builder-block .contextual .trigger,
-.uids-content .js-layout-builder-block .contextual [type=button] {
-  width: 36px !important;
-  height: 36px !important;
-  border: 1px solid #ccc;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10);
-  border-radius: 50%;
-  right: 15px;
-  top: 10px;
-  padding: 0;
-  background-image: url(/core/themes/stable/images/core/icons/787878/pencil.svg) !important;
-}
-
-.js-layout-builder-block .contextual.open .trigger {
-  border-radius: 50% 50% 0 0;
-  border: none;
-  box-shadow: none;
 }
