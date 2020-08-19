@@ -280,7 +280,7 @@ class MultisiteCommands extends BltTasks {
               ->run();
 
             // If a requester was added, add them as a webmaster for the site.
-            if ($requester = $this->getConfigValue("uiowa.requester")) {
+            if ($requester = $this->getConfigValue('uiowa.requester')) {
               $this->taskDrush()
                 ->stopOnFail(FALSE)
                 ->drush('user:create')
@@ -290,6 +290,17 @@ class MultisiteCommands extends BltTasks {
                   'webmaster',
                   $requester,
                 ])
+                ->run();
+            }
+
+            // Activate and import any config splits.
+            if ($split = $this->getConfigValue('uiowa.config.split')) {
+              $this->taskDrush()
+                ->stopOnFail(FALSE)
+                ->drush('config:set')
+                ->args("config_split.config_split.{$split}", 'status', TRUE)
+                ->drush('cache:rebuild')
+                ->drush('config:import')
                 ->run();
             }
           }
@@ -498,6 +509,8 @@ EOD
    *   Do not create a cloud database.
    * @option requester
    *   The HawkID of the original requester. Will be granted webmaster access.
+   * @option split
+   *   The name of a config split to activate and import after installation.
    *
    * @command uiowa:multisite:create
    *
@@ -513,6 +526,7 @@ EOD
     'no-commit' => FALSE,
     'no-db' => FALSE,
     'requester' => InputOption::VALUE_REQUIRED,
+    'split' => InputOption::VALUE_REQUIRED,
   ]) {
     $db = Multisite::getDatabaseName($host);
     $applications = $this->getConfigValue('uiowa.applications');
@@ -703,9 +717,13 @@ EOD
     $blt['drupal']['db']['database'] = $db;
     $blt['drush']['aliases']['local'] = 'self';
 
-    // If requester option is set, add it to the site's BLT settings.
+    // Add custom options to the site's BLT settings.
     if (isset($options['requester'])) {
       $blt['uiowa']['requester'] = $options['requester'];
+    }
+
+    if (isset($options['split'])) {
+      $blt['uiowa']['config']['split'] = $options['split'];
     }
 
     $this->taskWriteToFile("{$root}/docroot/sites/{$host}/blt.yml")

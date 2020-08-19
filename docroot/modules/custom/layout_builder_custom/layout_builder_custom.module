@@ -6,46 +6,90 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\layout_builder_styles\LayoutBuilderStyleGroups;
 
 /**
  * Implements hook_form_alter().
  */
 function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $form_ids = ['layout_builder_update_block', 'layout_builder_add_block'];
+  $form_ids = [
+    'layout_builder_update_block',
+    'layout_builder_add_block',
+    'layout_builder_configure_section',
+  ];
 
   // Only continue if this is one of the above forms.
   if (!in_array($form_id, $form_ids)) {
     return;
   }
 
-  // Always set title field to not be required.
-  $form['settings']['label']['#required'] = FALSE;
-
-  if ($form_id == 'layout_builder_add_block') {
-    // Set the display of the label to FALSE when adding a block.
-    $form['settings']['label_display']['#default_value'] = FALSE;
+  if ($form_id == 'layout_builder_add_block' || $form_id == 'layout_builder_update_block') {
+    $form['#validate'][] = '_layout_builder_custom_block_validate';
   }
 
-  $label = $form['settings']['label'];
-  $label_display = $form['settings']['label_display'];
+  if ($form_id === 'layout_builder_configure_section') {
+    if (isset($form['layout_builder_style_background'])) {
+      $form['layout_builder_style_background']['#multiple'] = FALSE;
+    }
+  }
+  else {
+    // If it's a new Text Area block, grab it for editing its form.
+    if ($form_id == 'layout_builder_add_block' && $form['settings']['block_form']['#block']->bundle() === 'uiowa_text_area') {
+      $form['settings']['block_form']['#process'][] = '_layout_builder_custom_block_form_alter';
+    }
+    // Override display of layout builder styles.
+    $enabled = FALSE;
 
-  unset($form['settings']['label']);
-  unset($form['settings']['label_display']);
+    // Loop through layout builder style groups.
+    $groups = LayoutBuilderStyleGroups::getGroups();
 
-  $label += [
-    '#states' => [
-      'visible' => [
-        ':input[name="settings[label_display]"]' => [
-          'checked' => TRUE,
-        ],
-      ],
-    ],
-  ];
+    foreach (array_keys($groups) as $group) {
+      $lbs = 'layout_builder_style_' . $group;
+      if (isset($form[$lbs])) {
 
-  $form['settings'] += [
-    'label_display' => $label_display,
-    'label' => $label,
-  ];
+        if ($form_id == 'layout_builder_update_block') {
+          // Set enabled flag based on whether a default value exists
+          // for this layout builder style.
+          $enabled = !empty($form[$lbs]['#default_value']);
+        }
+
+        // Set a state for the layout builder style to toggle
+        // based on the value of the override value specified below.
+        $form[$lbs]['#states'] = [
+          'visible' => [
+            ':input[name="layout_builder_block_override"]' => [
+              'checked' => TRUE,
+            ],
+          ],
+        ];
+
+        // Make the background option single select only.
+        if ($group === 'background') {
+          $form[$lbs]['#multiple'] = FALSE;
+        }
+      }
+    }
+
+    // Add a checkbox to toggle whether the styles should show.
+    $form['layout_builder_block_override'] = [
+      '#type' => 'checkbox',
+      '#title' => t('Override style options'),
+      '#required' => FALSE,
+      '#default_value' => $enabled,
+      '#weight' => 80,
+    ];
+
+    // Always set title field to not be required.
+    $form['settings']['label']['#required'] = FALSE;
+
+    unset($form['settings']['label']);
+    unset($form['settings']['label_display']);
+    unset($form['settings']['admin_label']['#title']);
+
+    $form['settings'] += [
+      '#weight' => 0,
+    ];
+  }
 }
 
 /**
@@ -53,4 +97,45 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
  */
 function layout_builder_custom_form_node_page_layout_builder_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['#attached']['library'][] = 'layout_builder_custom/layout_builder_custom.overrides';
+}
+
+/**
+ * Custom validation for layout_builder_add/update_block form.
+ *
+ * @param array $form
+ *   The form element.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state.
+ */
+function _layout_builder_custom_block_validate(array &$form, FormStateInterface $form_state) {
+  /** @var \Drupal\layout_builder\Section $section */
+  $section = $form_state->getFormObject()->getCurrentSection();
+
+  /** @var \Drupal\layout_builder\SectionComponent $component */
+  $component = $form_state->getFormObject()->getCurrentComponent();
+  $block = $component->getPlugin();
+
+  // Require horizontal style if this card is in a one column layout.
+  if ($section->getLayoutId() == 'layout_onecol' && $block->getPluginId() == 'inline_block:uiowa_card') {
+    $styles = $form_state->getValue('layout_builder_style_default');
+
+    if (!isset($styles['block_card_style_horizontal'])) {
+      $form_state->setErrorByName('layout_builder_block_override', t('Cards rendered within a one column layout must have the horizontal style.'));
+    }
+  }
+}
+
+/**
+ * Custom process to update Text Area field format from minimal to filtered.
+ *
+ * @param array $element
+ *   The current block element.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The current form state.
+ */
+function _layout_builder_custom_block_form_alter(array $element, FormStateInterface $form_state) {
+  if (isset($element['field_uiowa_text_area'])) {
+    $element['field_uiowa_text_area']['widget'][0]['#format'] = 'filtered_html';
+  }
+  return $element;
 }

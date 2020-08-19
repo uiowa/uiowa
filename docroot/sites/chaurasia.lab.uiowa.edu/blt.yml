@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: labchaurasia.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labchaurasia
+  human_name: chaurasia.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labchaurasia.prod
+drupal:
+  db:
+    database: chaurasia_lab_uiowa_edu
+uiowa:
+  requester: strommerl
+  config:
+    split: sitenow_v2

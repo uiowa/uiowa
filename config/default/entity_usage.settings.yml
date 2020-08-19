@@ -7,33 +7,29 @@ local_task_enabled_entity_types:
 _core:
   default_config_hash: D0RcOA_aIiwSPXOZSHQOTm5FXzziEsJHdfXGaF4nhIQ
 track_enabled_source_entity_types:
-  - content_moderation_state
-  - crop
+  - block_content
   - media
   - node
-  - redirect
   - taxonomy_term
-  - uievents
-  - webform_submission
-  - menu_link_content
-  - paragraph
 track_enabled_target_entity_types:
-  - content_moderation_state
-  - crop
   - media
   - node
-  - redirect
   - taxonomy_term
-  - uievents
-  - webform_submission
-  - menu_link_content
-  - paragraph
-edit_warning_message_entity_types: {  }
-delete_warning_message_entity_types: {  }
+  - webform
+edit_warning_message_entity_types:
+  - media
+  - taxonomy_term
+  - webform
+delete_warning_message_entity_types:
+  - media
+  - node
+  - taxonomy_term
 track_enabled_plugins:
   - dynamic_entity_reference
+  - media_embed
   - link
   - linkit
+  - layout_builder
   - entity_reference
   - entity_embed
   - html_link
