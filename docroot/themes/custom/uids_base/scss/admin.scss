@@ -2,6 +2,7 @@
 @import "assets/scss/_utilities.scss";
 @import "assets/scss/_local-fonts.scss";
 @import url('../../../../../core/themes/claro/css/components/dropbutton.css');
+$imgpath: '../../uids/assets/images';
 // lb claro styles
 
 .search-field {
@@ -162,6 +163,7 @@
   }
 
   .layout-builder-block {
+
     &:hover {
       outline: 1px dashed #d6d6d6;
       outline-offset: -1px;
@@ -199,6 +201,7 @@
 .layout-builder-block {
   padding: 0;
   cursor: move;
+  background: transparent;
 
   &.bg--gray {
     background: $light;
@@ -206,6 +209,21 @@
 
   &.bg--black {
     background: $secondary;
+  }
+
+  &.bg-pattern--brain {
+    background: #fff url("#{$imgpath}/brain-pattern.svg");
+    background-size: auto auto;
+  }
+
+  &.bg-pattern--brain-reversed {
+    background: $primary url("#{$imgpath}/brain-pattern-reversed.svg");
+    background-size: auto auto;
+  }
+
+  &.bg-pattern--brain-black {
+    background: $secondary url("#{$imgpath}/brain-pattern-black.svg");
+    background-size: auto auto;
   }
 
   &.bg--gold {
