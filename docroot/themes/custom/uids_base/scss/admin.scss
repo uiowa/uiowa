@@ -68,8 +68,6 @@
   display: none;
 }
 
-
-
 // admin styles layout builder container reset
 
 .layout-builder {
@@ -110,12 +108,11 @@
         }
       }
     }
-
   }
 
   &__add-block {
+    background-color: transparent;
     margin-top: 0;
-    padding-top: 0;
     outline: 1px dotted #dedede;
     padding: .5rem;
     text-align: center;
@@ -163,6 +160,18 @@
         background-image: url(/core/misc/icons/ffffff/ex.svg);
       }
     }
+  }
+
+  .layout-builder-block {
+    &:hover {
+      outline: 1px dashed #d6d6d6;
+      outline-offset: -1px;
+    }
+  }
+
+  .contextual-region.focus {
+    outline: 1px dashed #0036b1;
+    outline-offset: -1px;
   }
 }
 
