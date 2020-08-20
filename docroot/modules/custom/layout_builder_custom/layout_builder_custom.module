@@ -16,6 +16,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
     'layout_builder_update_block',
     'layout_builder_add_block',
     'layout_builder_configure_section',
+    'node_page_form',
   ];
 
   // Only continue if this is one of the above forms.
@@ -89,6 +90,10 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
     $form['settings'] += [
       '#weight' => 0,
     ];
+  }
+  // Set default node.body text format to filtered over minimal.
+  if ($form_id === 'node_page_form') {
+    $form['body']['widget'][0]['#format'] = 'filtered_html';
   }
 }
 
