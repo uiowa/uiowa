@@ -456,6 +456,11 @@ function sitenow_articles_preprocess_block(&$variables) {
       $args = implode('+', $tids);
       $view->setArguments([$args]);
 
+      // Set custom view variable to send to article teaser template.
+      if ($block->hasField('field_collection_heading_size')) {
+        $view->display_handler->setOption('content_heading', $block->field_collection_heading_size->value);
+      }
+
       if ($block->hasField('field_uiowa_articles_items') && !$block->get('field_uiowa_articles_items')->isEmpty()) {
         $items = $block->field_uiowa_articles_items->value;
         $view->setItemsPerPage($items);

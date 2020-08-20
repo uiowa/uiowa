@@ -490,6 +490,11 @@ function sitenow_people_preprocess_block(&$variables) {
       $args = implode('+', $tids);
       $view->setArguments([$args]);
 
+      // Set custom view variable to send to person teaser template.
+      if ($block->hasField('field_collection_heading_size')) {
+        $view->display_handler->setOption('content_heading', $block->field_collection_heading_size->value);
+      }
+
       if ($block->hasField('field_uip_items') && !$block->get('field_uip_items')->isEmpty()) {
         $items = $block->field_uip_items->value;
         $view->setItemsPerPage($items);
