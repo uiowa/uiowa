@@ -172,3 +172,19 @@ function layout_builder_custom_inline_entity_form_table_fields_alter(array &$fie
     }
   }
 }
+
+/**
+ * Implements hook_theme().
+ */
+function layout_builder_custom_theme($existing, $type, $theme, $path) {
+  $theme = [
+    'uiowa_block_headline_widget' => [
+      'variables' => [
+        'headline' => NULL,
+        'heading_size' => NULL,
+        'hide_headline' => NULL,
+      ]
+    ]
+  ];
+  return $theme;
+}
