@@ -76,11 +76,29 @@ $imgpath: '../../uids/assets/images';
   padding: 0;
 
   &__section {
+    margin-bottom: 0;
+    padding: 2px;
 
+    .hero {
+      height: auto;
+      min-height: 500px;
+    }
+
+    // When hovering over a section, show the structure of it.
     &:hover,
     &:focus {
+      .layout-builder__layout {
+        .lb__container {
+          outline: 2px dashed #0036b1;
+        }
+      }
       .layout-builder__link {
         opacity: 1;
+      }
+
+      .layout-builder-block {
+        outline: 1px dashed #d6d6d6;
+        outline-offset: -1px;
       }
     }
 
@@ -181,21 +199,6 @@ $imgpath: '../../uids/assets/images';
 }
 
 .layout-builder__section {
-  margin-bottom: 0;
-  padding: 2px;
-
-  .hero {
-    height: auto;
-    min-height: 500px;
-  }
-
-  &:hover {
-    .layout-builder__layout {
-      .lb__container {
-        outline: 2px dashed #0036b1;
-      }
-    }
-  }
 }
 
 .layout-builder-block {
@@ -744,8 +747,181 @@ body.toolbar-vertical.toolbar-tray-open {
   }
 }
 
+// Hide header if off canvas tray is open
 
-// Chosen
+.js-off-canvas-dialog-open header {
+  display: none;
+}
+
+// layout page buttons
+
+.layout-builder-form .button {
+  background: #f1f1f1;
+  font-family: $font-family-sans-serif;
+  font-weight: $font-weight-bold;
+  font-size: 1rem !important;
+  border-radius: 4px;
+}
+
+.layout-builder-form .button--primary {
+  color: #fff !important;
+  background: #0035b0 !important;
+}
+
+div[aria-label="Layout Builder tools"] {
+  @include breakpoint(menu) {
+    display: flex;
+    justify-content: center;
+  }
+
+  >* {
+    margin-right: 15px;
+  }
+
+  #edit-preview-toggle {
+    margin-left: 20px;
+  }
+}
+
+div[data-drupal-selector="edit-moderation-state-0"] {
+  label {
+    font-weight: $font-weight-light;
+    padding-bottom: 8px;
+  }
+
+  @include breakpoint(menu) {
+    display: flex;
+    justify-content: center;
+  }
+
+  #edit-moderation-state-0-current {
+    @include breakpoint(menu) {
+      flex: 0 0 10%;
+    }
+
+    label {
+      margin-bottom: 18px;
+    }
+  }
+
+  .form-item-moderation-state-0-state {
+    @include breakpoint(menu) {
+      flex: 0 0 40%;
+    }
+  }
+}
+
+#drupal-off-canvas form {
+  padding-top: 10px;
+}
+
+.js-layout-builder-block .contextual .trigger,
+.uids-content .js-layout-builder-block .contextual [type=button] {
+  width: 36px !important;
+  height: 36px !important;
+  border: 1px solid #ccc;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10);
+  border-radius: 50%;
+  right: 15px;
+  top: 10px;
+  padding: 0;
+  background-image: url(/core/themes/stable/images/core/icons/787878/pencil.svg) !important;
+}
+
+.js-layout-builder-block .contextual.open .trigger {
+  border-radius: 50% 50% 0 0;
+  border: none;
+  box-shadow: 0px -2px 1px rgba(50, 50, 50, 0.15);
+}
+
+// Claro Dropbutton
+
+.dropbutton-wrapper {
+  align-content: stretch;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10);
+  align-items: stretch;
+  flex-direction: row;
+}
+
+.dropbutton-arrow {
+  right: 25%;
+}
+
+
+.dropbutton-widget {
+  padding-right: 2.6em;
+}
+
+.dropbutton-multiple .dropbutton .dropbutton-action>* {
+  margin-right: 0;
+  color: #545454;
+  font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.js .dropbutton {
+  min-height: 3rem;
+  height: auto !important;
+}
+
+ul.dropbutton li {
+  line-height: 2.9;
+
+  a {
+
+    &:hover,
+    &:focus {
+      text-decoration: none;
+    }
+  }
+}
+
+// Set above admin toolbar and superfish.
+.joyride-tip-guide {
+  z-index: 550;
+
+  a.btn.btn-primary.btn-block {
+    color: $secondary;
+    margin-bottom: $md;
+
+    &:hover,
+    &:focus {
+      color: $secondary;
+    }
+  }
+}
+
+.node-preview-container {
+  position: relative;
+  margin-bottom: 1em;
+  padding: $md 0;
+  border-bottom: 2px solid $warning;
+  background: $warning-light;
+
+  form {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    .js-hide {
+      display: none;
+    }
+  }
+
+  .node-preview-backlink {
+    @include bttn;
+    @include bttn--primary;
+    @include bttn--focus;
+    font-family: $font-family-caps-bold;
+  }
+}
+
+/*
+ * Chosen library
+ *
+ * Don't place anything after this.
+ */
 
 /*!
 Chosen, a Select Box Enhancer for jQuery and Prototype
@@ -1246,174 +1422,3 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 /* @end */
-
-
-// Hide header if off canvas tray is open
-
-.js-off-canvas-dialog-open header {
-  display: none;
-}
-
-// layout page buttons
-
-.layout-builder-form .button {
-  background: #f1f1f1;
-  font-family: $font-family-sans-serif;
-  font-weight: $font-weight-bold;
-  font-size: 1rem !important;
-  border-radius: 4px;
-}
-
-.layout-builder-form .button--primary {
-  color: #fff !important;
-  background: #0035b0 !important;
-}
-
-div[aria-label="Layout Builder tools"] {
-  @include breakpoint(menu) {
-    display: flex;
-    justify-content: center;
-  }
-
-  >* {
-    margin-right: 15px;
-  }
-
-  #edit-preview-toggle {
-    margin-left: 20px;
-  }
-}
-
-div[data-drupal-selector="edit-moderation-state-0"] {
-  label {
-    font-weight: $font-weight-light;
-    padding-bottom: 8px;
-  }
-
-  @include breakpoint(menu) {
-    display: flex;
-    justify-content: center;
-  }
-
-  #edit-moderation-state-0-current {
-    @include breakpoint(menu) {
-      flex: 0 0 10%;
-    }
-
-    label {
-      margin-bottom: 18px;
-    }
-  }
-
-  .form-item-moderation-state-0-state {
-    @include breakpoint(menu) {
-      flex: 0 0 40%;
-    }
-  }
-}
-
-#drupal-off-canvas form {
-  padding-top: 10px;
-}
-
-.js-layout-builder-block .contextual .trigger,
-.uids-content .js-layout-builder-block .contextual [type=button] {
-  width: 36px !important;
-  height: 36px !important;
-  border: 1px solid #ccc;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10);
-  border-radius: 50%;
-  right: 15px;
-  top: 10px;
-  padding: 0;
-  background-image: url(/core/themes/stable/images/core/icons/787878/pencil.svg) !important;
-}
-
-.js-layout-builder-block .contextual.open .trigger {
-  border-radius: 50% 50% 0 0;
-  border: none;
-  box-shadow: 0px -2px 1px rgba(50, 50, 50, 0.15);
-}
-
-// Claro Dropbutton
-
-.dropbutton-wrapper {
-  align-content: stretch;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10);
-  align-items: stretch;
-  flex-direction: row;
-}
-
-.dropbutton-arrow {
-  right: 25%;
-}
-
-
-.dropbutton-widget {
-  padding-right: 2.6em;
-}
-
-.dropbutton-multiple .dropbutton .dropbutton-action>* {
-  margin-right: 0;
-  color: #545454;
-  font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-  font-weight: bold;
-  font-size: 1rem;
-}
-
-.js .dropbutton {
-  min-height: 3rem;
-  height: auto !important;
-}
-
-ul.dropbutton li {
-  line-height: 2.5;
-
-  a {
-
-    &:hover,
-    &:focus {
-      text-decoration: none;
-    }
-  }
-}
-
-// Set above admin toolbar and superfish.
-.joyride-tip-guide {
-  z-index: 550;
-
-  a.btn.btn-primary.btn-block {
-    color: $secondary;
-    margin-bottom: $md;
-
-    &:hover,
-    &:focus {
-      color: $secondary;
-    }
-  }
-}
-
-.node-preview-container {
-  position: relative;
-  margin-bottom: 1em;
-  padding: $md 0;
-  border-bottom: 2px solid $warning;
-  background: $warning-light;
-
-  form {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-
-    .js-hide {
-      display: none;
-    }
-  }
-
-  .node-preview-backlink {
-    @include bttn;
-    @include bttn--primary;
-    @include bttn--focus;
-    font-family: $font-family-caps-bold;
-  }
-}
