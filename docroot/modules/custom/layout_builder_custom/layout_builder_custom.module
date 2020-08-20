@@ -84,7 +84,10 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
 
     case 'layout_builder_configure_section':
       if (isset($form['layout_builder_style_background'])) {
+        // Disable multiple selection and weight to the top so focus on a
+        // Chosen-enabled select does not obscure other form elements.
         $form['layout_builder_style_background']['#multiple'] = FALSE;
+        $form['layout_builder_style_background']['#weight'] = 0;
       }
 
       break;
