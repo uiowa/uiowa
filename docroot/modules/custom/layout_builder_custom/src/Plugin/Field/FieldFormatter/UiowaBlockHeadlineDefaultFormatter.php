@@ -12,11 +12,11 @@ use Drupal\Core\Field\FormatterBase;
  *   id = "uiowa_block_headline_formatter",
  *   label = @Translation("Uiowa Block Headline Field Type Formatter"),
  *   field_types = {
- *     "uiowa_block_headline"
+ *     "field_uiowa_block_headline"
  *   }
  * )
  */
-class NameFormatter extends FormatterBase {
+class UiowaBlockHeadlineFormatter extends FormatterBase {
   /**
    * {@inheritdoc}
    */

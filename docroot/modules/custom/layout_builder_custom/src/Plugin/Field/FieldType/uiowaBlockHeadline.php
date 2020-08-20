@@ -2,7 +2,12 @@
 
 namespace Drupal\layout_builder_custom\Plugin\Field\FieldType;
 
+use Drupal\Core\Field\FieldItemBase;
+use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\TypedData\DataDefinition;
+use Drupal\file\Entity\File;
+use Drupal\file\Plugin\Field\FieldType\FileItem;
 
 /**
  * Provides a field type of uiowaBlockHeadline.
@@ -34,7 +39,9 @@ public static function schema(FieldStorageDefinitionInterface $field_definition)
           'not null' => TRUE,
         ],
         'hide_headline' => [
-            'type' => 'boolean',
+            'type' => 'int',
+            'not null' => TRUE,
+            'default' => 0,
         ],
       ],
     ];
@@ -52,6 +59,8 @@ public static function schema(FieldStorageDefinitionInterface $field_definition)
    * {@inheritdoc}
    */
   public static function propertyDefinitions(FieldStorageDefinitionInterface $field_definition) {
+    $properties = [];
+
     $properties['headline'] = DataDefinition::create('string')
       ->setLabel(t('Block Headline'))
       ->setDescription(t('Parent headline over collections of content.'));
