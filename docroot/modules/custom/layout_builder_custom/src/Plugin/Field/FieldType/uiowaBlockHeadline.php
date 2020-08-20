@@ -52,7 +52,7 @@ public static function schema(FieldStorageDefinitionInterface $field_definition)
    */
   public function isEmpty() {
     $item = $this->getValue();
-    return $item['headline'] === NULL || $value === '';
+    return $item['headline'] === NULL || $item['headline'] === '';
   }
 
   /**
