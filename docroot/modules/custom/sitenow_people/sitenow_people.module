@@ -478,8 +478,8 @@ function sitenow_people_preprocess_block(&$variables) {
         }
       }
 
-      if ($block->hasField('field_reference') && !$block->get('field_reference')->isEmpty()) {
-        $tids = $block->get('field_reference')->getValue();
+      if ($block->hasField('field_uiowa_people_reference') && !$block->get('field_uiowa_people_reference')->isEmpty()) {
+        $tids = $block->get('field_uiowa_people_reference')->getValue();
         // Clean array of tids selected.
         $tids = array_column($tids, 'target_id');
       }
