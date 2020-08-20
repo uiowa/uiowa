@@ -5,9 +5,7 @@ dependencies:
   config:
     - block_content.type.uiowa_image_gallery
     - field.field.block_content.uiowa_image_gallery.field_uiowa_gallery_image
-    - field.field.block_content.uiowa_image_gallery.field_uiowa_gallery_title
   module:
-    - heading
     - media_library
 id: block_content.uiowa_image_gallery.default
 targetEntityType: block_content
@@ -20,12 +18,6 @@ content:
       media_types: {  }
     third_party_settings: {  }
     type: media_library_widget
-    region: content
-  field_uiowa_gallery_title:
-    weight: 1
-    settings: {  }
-    third_party_settings: {  }
-    type: heading
     region: content
   info:
     type: string_textfield
