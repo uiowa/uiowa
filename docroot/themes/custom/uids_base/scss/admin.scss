@@ -188,9 +188,15 @@ $imgpath: '../../uids/assets/images';
     }
   }
 
-  .contextual-region.focus {
-    outline: 1px dashed #0036b1;
-    outline-offset: -1px;
+  .contextual-region {
+    &:hover {
+      outline: 1px dashed #222222;
+      outline-offset: -1px;
+    }
+    &.focus {
+      outline: 1px dashed #0036b1;
+      outline-offset: -1px;
+    }
   }
 }
 
@@ -233,9 +239,11 @@ $imgpath: '../../uids/assets/images';
     background: $primary;
   }
 
-  &.block-field-blocknodepagetitle,
-  &.block-extra-field-blocknodepagelinks,
-  &.block-field-blocknodepagebody {
+  // Add padding to all placeholder blocks.
+  &[class*="block-field"],
+  &[class*="block-extra-field"],
+  &.block-menu {
+    background-color: #efefef;
     padding: $gutter;
   }
 }
@@ -401,6 +409,11 @@ $imgpath: '../../uids/assets/images';
   .layout-builder-revert-overrides,
   .layout-builder-discard-changes {
     @extend %container;
+  }
+
+  // Remove margin-top from .layout--has-sidebar
+  .layout__container.layout--has-sidebar {
+    margin-top: 0;
   }
 }
 
