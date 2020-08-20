@@ -18,6 +18,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
     'layout_builder_configure_section',
   ];
 
+  $form['settings']['block_form']['#process'][] = '_layout_builder_custom_block_form_alter';
+
   // Only continue if this is one of the above forms.
   if (!in_array($form_id, $form_ids)) {
     return;
@@ -33,10 +35,6 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
     }
   }
   else {
-    // If it's a new Text Area block, grab it for editing its form.
-    if ($form_id == 'layout_builder_add_block' && $form['settings']['block_form']['#block']->bundle() === 'uiowa_text_area') {
-      $form['settings']['block_form']['#process'][] = '_layout_builder_custom_block_form_alter';
-    }
     // Override display of layout builder styles.
     $enabled = FALSE;
 
@@ -152,6 +150,9 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
 function _layout_builder_custom_block_form_alter(array $element, FormStateInterface $form_state) {
   if (isset($element['field_uiowa_text_area'])) {
     $element['field_uiowa_text_area']['widget'][0]['#format'] = 'filtered_html';
+  }
+  if (isset($element['field_collection_heading_size'])) {
+    dpm($element['field_collection_heading_size']['#access']);
   }
   return $element;
 }
