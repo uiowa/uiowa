@@ -1,0 +1,45 @@
+uuid: 0921b82a-bc68-4750-a415-fff136b24126
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_collection
+    - field.field.block_content.uiowa_collection.field_collection_heading_size
+    - field.field.block_content.uiowa_collection.field_uiowa_collection_items
+  module:
+    - entity_browser_entity_form
+    - inline_entity_form
+id: block_content.uiowa_collection.default
+targetEntityType: block_content
+bundle: uiowa_collection
+mode: default
+content:
+  field_uiowa_collection_items:
+    type: inline_entity_form_complex
+    weight: 1
+    settings:
+      form_mode: default
+      override_labels: true
+      label_singular: 'Collection Item'
+      label_plural: 'Collection Items'
+      allow_new: true
+      match_operator: CONTAINS
+      revision: false
+      collapsible: false
+      collapsed: false
+      allow_existing: false
+      allow_duplicate: false
+    third_party_settings:
+      entity_browser_entity_form:
+        entity_browser_id: _none
+    region: content
+  info:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  field_collection_heading_size: true
