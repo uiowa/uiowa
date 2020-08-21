@@ -14,6 +14,13 @@
   }
 }
 
+.lead {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: 300;
+}
+
 .small {
   font-size: $sm !important;
   line-height: $sm-md !important;
@@ -35,5 +42,107 @@ a:not([href]) {
 .block-content--type-uiowa-text-area div {
   line-height: 1.7;
   font-size: 1.2rem;
+}
+
+.bg--gold,
+.bg--brain-reversed,
+.bg-pattern--brain-reversed,
+.bg-yellow {
+  & .block-inline-blockuiowa-text-area {
+    color: $secondary;
+    border-color: $white;
+
+    h1, h2, h3, h4, h5, h6,
+    p,
+    a {
+      color: $secondary;
+    }
+    blockquote {
+      border-color: $blk;
+    }
+    .alert a {
+      color: initial;
+    }
+    table a {
+      color: $link-color;
+    }
+    &.bg--gray {
+      a {
+        color: $link-color;
+      }
+      blockquote {
+        border-color: $primary;
+      }
+      .alert a {
+        color: initial;
+      }
+    }
+  }
+}
+
+.bg--black,
+.bg-pattern--brain-black,
+.bg-dark {
+  & .block-inline-blockuiowa-text-area {
+    color: #fff;
+
+    h1, h2, h3, h4, h5, h6 {
+      color: #fff;
+    }
+
+    a {
+      color: $primary;
+    }
+    .alert a {
+      color: initial;
+    }
+    table a {
+      color: $link-color;
+    }
+    &.bg--gray {
+      color: initial;
+
+      h1, h2, h3, h4, h5, h6,
+      p {
+        color: initial;
+      }
+      a {
+        color: $link-color;
+      }
+      .alert a {
+        color: initial;
+      }
+    }
+  }
+}
+
+.bg-pattern--brain {
+  & .block-inline-blockuiowa-text-area {
+    color: $secondary;
+    border-color: $secondary;
+
+    h1, h2, h3, h4, h5, h6,
+    p,
+    a {
+      color: $secondary;
+    }
+    .alert a {
+      color: initial;
+    }
+    table a {
+      color: $link-color;
+    }
+    &.bg--gray {
+      a {
+        color: $link-color;
+      }
+      blockquote {
+        border-color: $primary;
+      }
+      .alert a {
+        color: initial;
+      }
+    }
+  }
 }
 
