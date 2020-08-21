@@ -131,9 +131,15 @@ $imgpath: '../../uids/assets/images';
   &__add-block {
     background-color: transparent;
     margin-top: 0;
-    outline: 1px dotted #dedede;
+    outline: 1px dashed #dedede;
+    outline-offset: -1px;
     padding: .5rem;
     text-align: center;
+
+    &:hover,
+    &:focus {
+      outline: 1px dashed #222222;
+    }
   }
 
   &__add-section {
@@ -410,7 +416,7 @@ $imgpath: '../../uids/assets/images';
 
   // Remove margin-top from .layout--has-sidebar
   .layout__container.layout--has-sidebar {
-    margin-top: 0;
+    margin-top: 0 !important;
   }
 }
 
