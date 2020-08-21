@@ -91,6 +91,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       }
 
       break;
+
   }
 }
 
@@ -99,6 +100,14 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
  */
 function layout_builder_custom_form_node_page_layout_builder_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['#attached']['library'][] = 'layout_builder_custom/layout_builder_custom.overrides';
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function layout_builder_custom_form_node_page_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Set default node.body text format to filtered over minimal.
+  $form['body']['widget'][0]['#format'] = 'filtered_html';
 }
 
 /**
