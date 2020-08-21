@@ -7,6 +7,7 @@
 
 use Drupal\block\Entity\Block;
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 
@@ -41,10 +42,6 @@ function uids_base_preprocess_html(&$variables) {
   // @todo Remove uiowa_bar module in favor of uiowa_search.
   if (\Drupal::service('module_handler')->moduleExists('uiowa_bar')) {
     unset($variables['page_top']['uiowa_bar']);
-  }
-
-  if (\Drupal::service('module_handler')->moduleExists('uiowa_footer')) {
-    unset($variables['page_bottom']['uiowa_footer']);
   }
 
   // Get header type for setting sticky padding for tertiary header.
@@ -95,7 +92,7 @@ function uids_base_preprocess_page(&$variables) {
 
   // This is the homepage.
   if (\Drupal::service('site.path') === 'sites/uiowa.edu') {
-    $variables['header_classes'][] = 'header--primary';
+    $variables['header_classes'][] = 'iowa-bar--full';
     $variables['header_type'] = 'homepage';
     $variables['uiowa_url'] = \Drupal::request()->getSchemeAndHttpHost();
   }
@@ -104,14 +101,14 @@ function uids_base_preprocess_page(&$variables) {
       case 'below':
       case 'header--tertiary':
         // @todo Remove this when config is updated for all sites.
-        $variables['header_classes'][] = 'header--tertiary';
+        $variables['header_classes'][] = 'iowa-bar--narrow';
         $variables['header_type'] = 'below';
         break;
 
       case 'inline':
       case 'header--secondary':
         // @todo Remove this when config is updated for all sites.
-        $variables['header_classes'][] = 'header--secondary';
+        $variables['header_classes'][] = 'iowa-bar--full';
         $variables['header_type'] = 'inline';
         break;
     }
@@ -196,6 +193,7 @@ function uids_base_preprocess_node(&$variables) {
  */
 function uids_base_preprocess_field(&$variables) {
   $variables['page_featured_image'] = $variables['field_name'] == 'field_image';
+  $element = $variables['element'];
 
   // Set the caption if this is 'field_image'.
   if ($variables['field_name'] === 'field_image') {
@@ -259,6 +257,14 @@ function uids_base_preprocess_layout(&$variables) {
       }
 
     }
+
+    // Add sitenow library if sitenow_v2 config split is active.
+    $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
+    $collegiate_split = 'config_split:sitenow_v2';
+    // This site has the 'collegiate' split enabled.
+    if (isset($filters[$collegiate_split]) && $filters[$collegiate_split]['status']) {
+      $variables['#attached']['library'][] = 'uids_base/sitenow';
+    }
   }
 }
 
@@ -286,7 +292,7 @@ function uids_base_preprocess_block(&$variables) {
 
       case 'top-links':
         $variables['attributes']['class'][] = 'menu--top';
-        $variables['attributes']['class'][] = 'uids-menu';
+        $variables['attributes']['class'][] = 'nav';
         break;
 
       case 'search-links':
@@ -332,6 +338,56 @@ function uids_base_preprocess_paragraph__card(&$variables) {
       unset($variables['#attached']['library'][$key]);
     }
   }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uids_base_preprocess_paragraph(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+    $paragraph = $variables['paragraph'];
+
+    $collection_types = [
+      'uiowa_slide' => 'field_uiowa_slider_slides',
+    ];
+
+    if (in_array($paragraph->bundle(), array_keys($collection_types))) {
+      $items_field = $collection_types[$paragraph->bundle()];
+      $variables['delta'] = 0;
+
+      $parent = $paragraph->getParentEntity();
+      if ($parent instanceof ContentEntityInterface) {
+        if ($parent->hasField($items_field)) {
+          $id = $paragraph->id();
+          /**
+           * @var integer $delta
+           * @var \Drupal\entity_reference_revisions\Plugin\Field\FieldType\EntityReferenceRevisionsItem $item
+           */
+          foreach ($parent->get($items_field)->getValue() as $delta => $item) {
+            if ($item['target_id'] === $id) {
+              $variables['delta'] = $delta;
+              break;
+            }
+          }
+        }
+
+        if ($parent->hasField('field_collection_heading_size')) {
+          $variables['h_size'] = $parent->get('field_collection_heading_size')->getString();
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function uids_base_theme_suggestions_field_alter(array &$suggestions, array $variables) {
+
+  $element = $variables['element'];
+  $suggestions[] = 'field__' . $element['#entity_type'] . '__' . $element['#field_name'] . '__' . $element['#bundle'] . '__' . $element['#view_mode'];
 }
 
 /**

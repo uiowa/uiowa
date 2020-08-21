@@ -25,36 +25,25 @@
  * @see template_preprocess_block()
  */
 #}
+{% set stat_block = {
+  'attributes': attributes,
+  'stat_summary': content.field_uiowa_statistic_excerpt|render,
+  'stat_title': content.field_uiowa_statistic_title[0]['#text']|render,
+  'stat_prefix': content.field_uiowa_statistic_title_pre|render,
+  'stat_suffix': content.field_uiowa_statistic_title_suf|render,
+  'stat_classes': ['stat', 'stat__grid'],
+  'heading' : content.field_uiowa_statistic_title[0]['#text'],
+  'heading_level': content.field_uiowa_statistic_title[0]['#size'],
+  'title_prefix': title_prefix,
+  'title_suffix': title_suffix,
+} %}
 
-{% block content %}
-	{{ attach_library('uids_base/stat') }}
+{% embed '@uids_base/uids/stat.html.twig' with stat_block only %}
 
-{% embed '@uids_base/uids/blocks/stat-block--basic.twig' with {
+  {% block heading %}
+    {{ title_prefix }}
+    {{ parent() }}
+    {{ title_suffix }}
+  {% endblock %}
 
-    'stat_summary': content.field_uiowa_statistic_excerpt,
-    'heading' : content.field_uiowa_statistic_title[0]['#text'],
-    'heading_prefix': content.field_uiowa_statistic_title_pre[0]['#text'],
-    'heading_suffix': content.field_uiowa_statistic_title_suf[0]['#text'],
-  } %}
-
-		{% block heading %}
-			{{ title_prefix }}
-			{% if content.field_uiowa_statistic_title[0]['#text'] is not empty %}
-        {% include '@uids_base/uids/heading.html.twig' with {
-          'heading_level' : content.field_uiowa_statistic_title[0]['#size'],
-          'heading_class' : 'stat__title',
-          'heading' : content.field_uiowa_statistic_title[0]['#text'],
-          'heading_prefix':content.field_uiowa_statistic_title_pre,
-          'heading_suffix': content.field_uiowa_statistic_title_suf,
-        } %}
-			{% endif %}
-			{{ title_suffix }}
-		{% endblock %}
-
-   {% block stat_wrapper_start %}
-        <div class="stat__grid {{ stat_classes }} {{ attributes ? attributes.class }}" {{ attributes ? attributes|without('class') }}>
-      {% endblock %}
-	{% endembed %}
-{% endblock %}
-
-
+{% endembed %}

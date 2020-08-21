@@ -1,20 +1,26 @@
 {% set header_classes = header_classes|merge([
+  'iowa-bar',
   header_nav,
 ]) %}
 
+{{ attach_library('uids_base/iowa-bar') }}
 {{ attach_library('uids_base/header') }}
-{% if header_sticky %}
-  {{ attach_library('uids_base/header-sticky') }}
+
+{% if header_nav == 'toggle' %}
+  {% if not logged_in %}
+    {{ attach_library('uids_base/header-sticky') }}
+  {% elseif logged_in and header_sticky %}
+    {{ attach_library('uids_base/header-sticky') }}
+  {% endif %}
 {% endif %}
+
 <header data-uids-header {{ attributes.addClass(header_classes) }}>
-  <div class="uiowa-bar">
-    <div class="page__container">
+    <div class="iowa-bar__container">
       {% block logo %}
         {{ attach_library('uids_base/logo') }}
         {% include '@uids_base/uids/logo.twig' with {
           path: uiowa_url,
-          logo_color: 'logo-icon--secondary',
-          logo_classes: 'logo-icon--tab',
+          logo_classes: 'logo--tab',
           logo_path: uiowa_logo_path,
           logo_path_png: uiowa_logo_path_png,
           logo_id: 'header',
@@ -24,7 +30,6 @@
       {% block uiowa_bar %}
         {# UIowa bar content #}
       {% endblock %}
-    </div>
   </div>
 
   {% block tertiary_content %}
@@ -36,11 +41,11 @@
   {% if header_nav in ['horizontal', 'mega'] %}
     {% set nav_attributes = create_attribute() %}
     {% set nav_classes = [
-      'menu-horizontal',
+      'nav--horizontal',
       'nav--' ~ header_nav,
-    ]|merge(header_classes) %}
+    ] %}
 
-    <nav{{ nav_attributes.addClass(nav_classes) }}>
+    <nav{{ nav_attributes.addClass(nav_classes) }} aria-label="Primary menu">
       <div class="page__container">
         {{ page.primary_menu }}
       </div>

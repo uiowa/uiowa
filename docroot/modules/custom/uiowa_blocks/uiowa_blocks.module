@@ -12,47 +12,4 @@ use Drupal\Core\Form\FormStateInterface;
  */
 function uiowa_blocks_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
-  $form_ids = ['layout_builder_update_block', 'layout_builder_add_block'];
-
-  // Only continue if this is one of the above forms.
-  if (!in_array($form_id, $form_ids)) {
-    return;
-  }
-
-  $enabled = FALSE;
-
-  // Loop through layout builder style settings.
-  // @todo Get this list dynamically.
-  foreach ([
-    'layout_builder_style_margin',
-    'layout_builder_style_heading',
-    'layout_builder_style',
-  ] as $lbs) {
-    if (isset($form[$lbs])) {
-
-      if ($form_id == 'layout_builder_update_block') {
-        // Set enabled flag based on whether a default value exists
-        // for this layout builder style.
-        $enabled = !empty($form[$lbs]['#default_value']);
-      }
-
-      // Set a state for the layout builder style to toggle
-      // based on the value of the override value specified below.
-      $form[$lbs]['#states'] = [
-        'visible' => [
-          ':input[name="layout_builder_block_override"]' => [
-            'checked' => TRUE,
-          ],
-        ],
-      ];
-    }
-  }
-
-  // Add a checkbox to toggle whether the styles should show.
-  $form['layout_builder_block_override'] = [
-    '#type' => 'checkbox',
-    '#title' => t("Override Block Styles"),
-    '#required' => FALSE,
-    '#default_value' => $enabled,
-  ];
 }

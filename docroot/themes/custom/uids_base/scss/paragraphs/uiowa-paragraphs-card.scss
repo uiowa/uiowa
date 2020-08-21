@@ -3,6 +3,9 @@
 
 .paragraph--type--card {
     .card__body .field--name-field-card-body {
+        h2, h3, h4, h5, h6 {
+          color: $secondary;
+        }
         blockquote {
             color: $secondary;
             border-color: $primary;
@@ -10,23 +13,32 @@
 
         a:not(.btn):not(.bttn):not(.button) {
             color: initial;
-        }
-
-        a.btn-primary {
-            @extend %bttn--primary;
-            border: 1px solid $primary;
-            @extend %bttn--focus;
-                
-            &:after {
-                background-color: $secondary;
+            span {
+             color: initial;
             }
         }
 
+        a.btn-primary {
+           @include bttn--primary;
+            border: 1px solid $primary;
+           @include bttn--focus;
+
+            &:after {
+                background-color: $secondary;
+            }
+           span {
+            color: $secondary !important;
+           }
+        }
+
         a.btn:not(.btn-primary) {
-            @extend %bttn--secondary;
+           @include bttn--secondary;
             border: 1px solid $secondary;
-            @extend %bttn--focus;
+           @include bttn--focus;
+           span {
+            color: $white !important;
+           }
         }
     }
-    
+
 }

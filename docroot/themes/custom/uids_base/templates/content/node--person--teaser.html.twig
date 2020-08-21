@@ -77,6 +77,8 @@
 ]
 %}
 
+{% set heading_level = content_heading ?: 'h3' %}
+
 {{ attach_library('classy/node') }}
 {{ attach_library('uids_base/paragraphs-lists') }}
 {{ attach_library('uids_base/node-type-person') }}
@@ -88,7 +90,7 @@
   'card_author': content.field_person_credential.0,
   'card_title': label | render,
   'card_link_url': url,
-  'heading_level': 'h3'
+  'heading_level': heading_level,
 } %}
 
 {% embed '@uids_base/uids/card.html.twig' with person_card only %}{% endembed %}

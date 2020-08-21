@@ -1,0 +1,32 @@
+uuid: 78f3ebdd-289f-447d-a1a8-46fde3759955
+langcode: en
+status: false
+dependencies: {  }
+id: sitenow_v2
+label: 'SiteNow V2'
+description: 'Features related to Paragraph-based layout functionality.'
+folder: ../config/features/sitenow_v2
+module:
+  sitenow_accordion: 0
+  sitenow_blockquote: 0
+  sitenow_card: 0
+  sitenow_carousel: 0
+  sitenow_events_paragraph: 0
+  sitenow_paragraphs: 0
+theme: {  }
+blacklist: {  }
+graylist:
+  - core.entity_view_display.node.page.teaser
+  - field.field.node.page.field_page_content_block
+  - field.storage.node.field_page_content_block
+  - paragraphs.settings
+  - user.role.editor
+  - user.role.webmaster
+  - 'core.entity_form_display.paragraph.*'
+  - 'core.entity_view_display.paragraph.*'
+  - 'core.entity_view_mode.paragraph.*'
+  - 'paragraphs.paragraphs_type.*'
+  - 'field.storage.paragraph.*'
+graylist_dependents: true
+graylist_skip_equal: true
+weight: 80

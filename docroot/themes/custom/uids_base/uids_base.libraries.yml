@@ -22,7 +22,6 @@ global-styling:
       assets/css/components/tabs.css: {}
       assets/css/components/form/search.css: {}
       assets/css/components/iowa-bar.css: {}
-      assets/css/components/header.css: {}
       assets/css/components/footer.css: {}
       assets/css/components/menus/group.css: {}
       assets/css/components/menus/superfish.css: {}
@@ -32,11 +31,14 @@ global-styling:
       assets/css/components/menus/quick.css: {}
       assets/css/components/uiowa-bar.css: {}
       assets/css/components/image-gallery-block.css: {}
+      assets/css/fields/fields.css: {}
     theme:
       assets/css/theme/print.css: { media: print }
   dependencies:
     - core/jquery
     - core/jquery.once
+
+# UIDS.
 status-messages:
   js:
     assets/js/uids.status-messages.js: { preprocess: false }
@@ -77,11 +79,19 @@ accordion:
     uids/components/accordion/accordion.js: { preprocess: false  }
 header-sticky:
   js:
-    uids/components/header/header.js: { preprocess: false  }
+    uids/components/branding/iowa-bar/iowa-bar.js: { preprocess: false  }
 banner:
   css:
     component:
       assets/css/components/banner.css: { preprocess: false }
+slider:
+  css:
+    component:
+      assets/css/components/slider.css: { preprocess: false }
+  js:
+    uids/components/slider/slider.js: { preprocess: false }
+  dependencies:
+    - uids_base/banner
 video:
   css:
     component:
@@ -132,14 +142,14 @@ colorbox:
     - core/jquery
     - core/jquery.once
     - colorbox/init
-slick:  
-  css: 
-    theme: 
-      /libraries/slick-carousel/slick/slick.css: {} 
-  js: 
-    /libraries/slick-carousel/slick/slick.min.js: {} 
+slick:
+  css:
+    theme:
+      /libraries/slick-carousel/slick/slick.css: {}
+  js:
+    /libraries/slick-carousel/slick/slick.min.js: {}
   dependencies:
-    - core/jquery 
+    - core/jquery
 cta:
   css:
     component:
@@ -290,8 +300,8 @@ fourcol:
   css:
     theme:
       assets/css/layouts/fourcol.css: {}
-paragraph-page:
+page--left-sidebar:
   version: VERSION
   css:
     theme:
-      assets/css/layouts/page--paragraph.css: { preprocess: false }
+      assets/css/layouts/page--left-sidebar.css: { preprocess: false }

@@ -1,0 +1,205 @@
+@import "../../../../../themes/custom/uids_base/uids/assets/scss/_variables.scss";
+@import "../../../../../themes/custom/uids_base/uids/assets/scss/_utilities.scss";
+
+.path-frontpage .page-title {
+  margin-top: $gutter;
+}
+.field__label {
+  font-weight: bold;
+}
+.ighn-main-info, .ighn-person-field-groups {
+  margin-bottom: $gutter;
+}
+.field--name-field-ighn-primary-college {
+  font-weight: 700;
+}
+.field--name-field-ighn-person-department {
+  font-style: italic;
+}
+
+article.node--type-ighn-person.node--view-mode-full,
+div[role=article].node--type-ighn-person.node--view-mode-full {
+  .content-image img {
+    max-width: 100%;
+    height: auto;
+  }
+  .person-meta {
+    &.col-md-6 {
+      padding: 0;
+
+      @include breakpoint(menu) {
+        padding-right: $desktop-width-gutter;
+        flex: 0 0 33%;
+      }
+    }
+
+    .field--label-inline {
+      margin-bottom: .7rem;
+    }
+
+    figure {
+      margin: 0;
+    }
+
+    .h5.field--name-field-ighn-person-position-title {
+      margin-top: 0;
+      margin-bottom: 1rem;
+    }
+  }
+  .person-content {
+    &.col-md-6 {
+      padding: 0;
+      margin-top: $gutter;
+
+      @include breakpoint(menu) {
+        flex: 0 0 67%;
+        max-width: 67%;
+        margin-top: 0;
+      }
+    }
+  }
+}
+
+// Subtitle
+.subtitle {
+  @include card-subtitle;
+  display: block;
+  font-size: 1.6rem;
+}
+
+.views-element-container {
+  position: relative;
+
+  .view-display-id-ighn_person {
+    .view-header h2 {
+      @include element-invisible;
+    }
+
+    .view-content {
+      margin-top: $gutter;
+
+      @include breakpoint(sm) {
+        margin-top: $lg;
+      }
+
+      @include breakpoint(menu) {
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      figure {
+        margin: 0;
+
+        img {
+          margin-bottom: 0;
+        }
+      }
+
+      .views-row {
+        @include breakpoint(sm) {
+          margin-bottom: $mobile-width-gutter;
+        }
+
+        @include breakpoint(menu) {
+          flex: 0 0 calc(50% - 1.5rem);
+          margin-bottom: $desktop-width-gutter;
+
+          .layout--has-sidebar & {
+            flex: 0 0 calc(50% - 1.5rem);
+          }
+
+          &:nth-child(2n+1) {
+            margin-right: $desktop-width-gutter;
+          }
+        }
+
+        @include breakpoint(container) {
+          flex: 0 0 calc(34.5% - 3rem);
+          margin-bottom: $desktop-width-gutter;
+
+          .sidebar-invisible.layout--has-sidebar & {
+            flex: 0 0 calc(34.5% - 3rem);
+          }
+
+          .layout--has-sidebar & {
+            flex: 0 0 calc(34.5% - 3rem);
+          }
+
+          &:nth-child(2n+1) {
+            margin-right: $gutter;
+            margin-right: 0;
+          }
+
+          &:nth-child(3n+2) {
+            margin-left: 0;
+            margin: 0 $desktop-width-gutter $desktop-width-gutter $desktop-width-gutter;
+          }
+        }
+
+        display: flex;
+
+        .card {
+          @include card-enclosed;
+          display: block;
+
+          .field--name-title {
+            display: block;
+          }
+        }
+      }
+    }
+  }
+}
+
+// everything over 2445px
+@media only screen and (min-width: 1425px) {
+
+  .container-fluid .view-display-id-ighn_person .views-row,
+  .layout--has-sidebar .container-fluid .view-display-id-ighn_person .views-row {
+    flex: 0 0 calc(34% - 3rem);
+  }
+}
+
+
+@media only screen and (min-width: 2450px) {
+
+  .view-display-id-ighn_person .views-row,
+  .container-fluid .view-display-id-ighn_person .views-row,
+  .layout--has-sidebar .container-fluid .view-display-id-ighn_person .views-row {
+    flex: 0 0 calc(33.8% - 3rem);
+  }
+}
+
+// IE 11
+@media all and (-ms-high-contrast: none),
+(-ms-high-contrast: active) {
+
+  .view-display-id-ighn_person .views-row,
+  .container-fluid .view-display-id-ighn_person .views-row,
+  .layout--has-sidebar .container-fluid .view-display-id-ighn_person .views-row {
+    flex: 0 30% !important;
+  }
+
+  .view-display-id-ighn_person .views-row {
+    display: block !important;
+  }
+
+  .view-display-id-ighn_person .view-content {
+    justify-content: space-between !important;
+  }
+
+  .view-display-id-ighn_person :nth-child(2n+1).views-row {
+    margin-right: 0 !important;
+  }
+
+  .view-display-id-ighn_person :nth-child(3n+2).views-row {
+    margin: 0;
+  }
+}
+
+.container-fluid {
+  margin: 0 auto;
+  width: 100%;
+  padding-right: 0;
+  padding-left: 0;
+}

@@ -1,14 +1,27 @@
 uiowa_alerts.settings:
   type: config_object
   label: 'UIowa Alerts settings'
-  mappings:
-    hawk_alert_display:
-      type: boolean
-    hawk_alert_source:
-      type: text
-    custom_alert_display:
-      type: boolean
-    custom_alert_message:
-      type: text
-    custom_alert_level:
-      type: text
+  mapping:
+    hawk_alert:
+      label: 'Hawk Alert settings'
+      type: mapping
+      mapping:
+        display:
+          label: 'Toggles display of Hawk Alerts.'
+          type: boolean
+        source:
+          label: 'The URL of JSON for Hawk Alerts.'
+          type: text
+    custom_alert:
+      label: 'Custom Alert settings'
+      type: mapping
+      mapping:
+        display:
+          label: 'Toggles display of a custom alert.'
+          type: boolean
+        message:
+          label: 'The custom alert message.'
+          type: text
+        level:
+          label: 'The custom alert level.'
+          type: text

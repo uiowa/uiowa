@@ -1,0 +1,90 @@
+uuid: fa2c9cdc-2fcb-4dfe-b968-bb6a6a7766ab
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_section_content_block
+    - paragraphs.paragraphs_type.accordion
+    - paragraphs.paragraphs_type.articles
+    - paragraphs.paragraphs_type.blockquote
+    - paragraphs.paragraphs_type.card
+    - paragraphs.paragraphs_type.carousel
+    - paragraphs.paragraphs_type.events
+    - paragraphs.paragraphs_type.featured_content
+    - paragraphs.paragraphs_type.image_gallery
+    - paragraphs.paragraphs_type.people
+    - paragraphs.paragraphs_type.section
+    - paragraphs.paragraphs_type.text
+    - paragraphs.paragraphs_type.webform
+  module:
+    - entity_reference_revisions
+id: paragraph.section.field_section_content_block
+field_name: field_section_content_block
+entity_type: paragraph
+bundle: section
+label: 'Content Blocks'
+description: 'Add separated content blocks to this section.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      text: text
+      accordion: accordion
+      card: card
+      blockquote: blockquote
+      events: events
+      articles: articles
+      featured_content: featured_content
+      carousel: carousel
+      webform: webform
+      image_gallery: image_gallery
+      people: people
+    target_bundles_drag_drop:
+      section:
+        weight: 3
+        enabled: false
+      text:
+        enabled: true
+        weight: 4
+      accordion:
+        enabled: true
+        weight: 6
+      accordion_item:
+        weight: 7
+        enabled: false
+      card:
+        enabled: true
+        weight: 8
+      blockquote:
+        enabled: true
+        weight: 9
+      events:
+        enabled: true
+        weight: 10
+      articles:
+        enabled: true
+        weight: 11
+      featured_content:
+        enabled: true
+        weight: 16
+      carousel:
+        enabled: true
+        weight: 18
+      webform:
+        enabled: true
+        weight: 18
+      carousel_image:
+        weight: 19
+        enabled: false
+      image_gallery:
+        enabled: true
+        weight: 23
+      people:
+        enabled: true
+        weight: 25
+field_type: entity_reference_revisions

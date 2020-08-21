@@ -15,7 +15,7 @@
  *   Calling other methods, such as node.delete(), will result in an exception.
  *   See \Drupal\node\Entity\Node for a full list of public properties and
  *   methods for the node object.
- * - label: (optional) The title of the node.
+ * - label: The title of the node.
  * - content: All node items. Use {{ content }} to print them all,
  *   or print a subset such as {{ content.field_example }}. Use
  *   {{ content|without('field_example') }} to temporarily suppress the printing
@@ -23,8 +23,8 @@
  * - author_picture: The node author user entity, rendered using the "compact"
  *   view mode.
  * - metadata: Metadata for this node.
- * - date: (optional) Themed creation date field.
- * - author_name: (optional) Themed author name field.
+ * - date: Themed creation date field.
+ * - author_name: Themed author name field.
  * - url: Direct URL of the current node.
  * - display_submitted: Whether submission information should be displayed.
  * - attributes: HTML attributes for the containing element.
@@ -70,48 +70,25 @@
  *   in different view modes.
  */
 #}
+
 {%
   set classes = [
-  'node',
-  'node--type-' ~ node.bundle|clean_class,
-  node.isPromoted() ? 'node--promoted',
-  node.isSticky() ? 'node--sticky',
-  not node.isPublished() ? 'node--unpublished',
-  view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+  'card--list'
 ]
 %}
-{{ attach_library('classy/node') }}
-<article{{ attributes.addClass(classes) }}>
-  <div{{ card_attributes.addClass('card') }}>
-    {% if content.field_ighn_person_image %}
-      <figure class="content-image">
-        {{ content.field_ighn_person_image }}
-      </figure>
-    {% endif %}
-    <div class="card-body">
-      {{ title_prefix }}
-      {% if not page %}
-        <h3{{ title_attributes }}>
-          {{ label }}{% if content.field_ighn_person_credentials %} <small class="subtitle h6">{{ content.field_ighn_person_credentials.0 }}</small>{% endif %}
-        </h3>
-      {% endif %}
-      {{ title_suffix }}
-      <div{{ content_attributes.addClass('node__content') }}>
-        {{ content|without('field_ighn_person_image', 'field_ighn_person_credentials', 'field_ighn_person_biography', 'links') }}
-      </div>
-    </div>
-    {% if content.field_ighn_person_biography.0 %}
-      <div class="card-footer">
-        <a class="btn btn-primary btn-block btn-sm" data-toggle="collapse" href="#ighn-person-{{ node.id }}-bio" role="button" aria-expanded="false" aria-controls="ighn-person-{{ node.id }}-bio">
-          Read {{ node.getTitle() }}'s Biography
-        </a>
-        <div class="collapse" id="ighn-person-{{ node.id }}-bio">
-          <div class="card card-body">
-            {{ content.field_ighn_person_biography }}
-          </div>
-        </div>
-      </div>
-    {% endif %}
-  </div>
 
-</article>
+{{ attach_library('classy/node') }}
+{{ attach_library('uids_base/paragraphs-lists') }}
+{{ attach_library('uids_base/node-type-person') }}
+
+  {% set person_card = {
+    'attributes': attributes.addClass(classes),
+    'card_image': content.field_ighn_person_image|render,
+    'card_text': content|without('field_image', 'field_ighn_person_image', 'field_ighn_person_credentials', 'field_ighn_person_cv_link', 'links'),
+    'card_author': content.field_ighn_person_credentials.0,
+    'card_title': label|render,
+    'card_link_url': content.field_ighn_person_cv_link[0]['#url'],
+    'heading_level': 'h3',
+  } %}
+
+{% embed '@uids_base/uids/card.html.twig' with person_card only %}{% endembed %}
