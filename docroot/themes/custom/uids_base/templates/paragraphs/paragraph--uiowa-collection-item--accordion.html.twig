@@ -39,32 +39,15 @@
  */
 #}
 
-{{ attach_library('uids_base/accordion') }}
-{% set accordion_type = 'single' %}
-{% set accordion_item_id = 'accordion-' ~ accordion_type ~ '-select-' ~ delta %}
-{% set data_parent = "#accordion-" ~ parent_id %}
-{% set collection_heading_size = h_size ?: 'h2' %}
+{% set accordion_item = {
+  'accordion_h_size': h_size ?: 'h2',
+  'accordion_item_id': 'accordion-' ~ accordion_type ~ '-select-' ~ delta,
+  'accordion_parent_id': 'accordion-' ~ parent_id,
+  'accordion_type': 'single',
+  'accordion_item_label': content.field_collection_headline,
+  'accordion_item_content': content.field_collection_body,
+  'accordion_item_expanded': 'false',
+  'attributes': attributes,
+} %}
 
-<!-- Use the accurate heading level to maintain the document outline -->
-<{{ collection_heading_size }} id="{{ accordion_item_id }}-heading" class="accordion__heading">
-  <button class="accordion_button"
-    role="tab"
-    aria-selected="false"
-    aria-expanded="false"
-    aria-controls="{{ accordion_item_id }}"
-  >
-    {% block collection_item_label %}
-      {{ content.field_collection_headline }}
-    {% endblock %}
-    <i aria-hidden="true" focusable="false" class="fas fa-chevron-up"></i>
-  </button>
-</{{ collection_heading_size }}>
-<div id="{{ accordion_item_id }}"
-  aria-labelledby="{{ accordion_item_id }}-heading"
-  class="accordion__content"
-  dataparent="{{ data_parent }}"
->
-  {% block collection_item_content %}
-    {{ content.field_collection_body }}
-  {% endblock %}
-</div>
+{% embed '@uids_base/uids/accordion-item.html.twig' with accordion_item only %}{% endembed %}
