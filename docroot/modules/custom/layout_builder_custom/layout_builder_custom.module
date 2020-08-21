@@ -80,6 +80,23 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         '#weight' => 0,
       ];
 
+      // Change collection view_mode field to radios and remove the 'default' option.
+      if ($form['settings']['block_form']['#block']->bundle() === 'uiowa_collection') {
+        $form['settings']['view_mode']['#type'] = 'radios';
+        array_shift($form['settings']['view_mode']['#options']);
+        // @todo Re-enable 'tab' after theming/functionality is in place.
+        unset($form['settings']['view_mode']['#options']['tab']);
+        $view_options = [
+          'accordion',
+          'descriptive_list',
+          'tab',
+        ];
+        // If view mode not in our options (eg 'full'), set it to <dl>.
+        if (!in_array($form['settings']['view_mode']['#default_value'], $view_options)) {
+          $form['settings']['view_mode']['#default_value'] = 'descriptive_list';
+        }
+      }
+
       break;
 
     case 'layout_builder_configure_section':
@@ -99,6 +116,14 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
  */
 function layout_builder_custom_form_node_page_layout_builder_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['#attached']['library'][] = 'layout_builder_custom/layout_builder_custom.overrides';
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function layout_builder_custom_form_node_page_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Set default node.body text format to filtered over minimal.
+  $form['body']['widget'][0]['#format'] = 'filtered_html';
 }
 
 /**
@@ -150,4 +175,20 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
   }
 
   return $element;
+}
+
+/**
+ * Replace the label with the collection headline.
+ */
+function layout_builder_custom_inline_entity_form_table_fields_alter(array &$fields, array $context) {
+  if ($context['entity_type'] === 'paragraph') {
+    if (in_array('uiowa_collection_item', $context['allowed_bundles'])) {
+      unset($fields['label']);
+      $fields['field_collection_headline'] = [
+        'type' => 'field',
+        'label' => t('Headline'),
+        'weight' => 0,
+      ];
+    }
+  }
 }
