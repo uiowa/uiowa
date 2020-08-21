@@ -212,6 +212,11 @@ $imgpath: '../../uids/assets/images';
   cursor: move;
   background: transparent;
 
+  // Add padding to all placeholder blocks.
+  &--placeholder {
+    padding: $gutter 0;
+  }
+
   &.bg--gray {
     background: $light;
   }
@@ -237,13 +242,6 @@ $imgpath: '../../uids/assets/images';
 
   &.bg--gold {
     background: $primary;
-  }
-
-  // Add padding to all placeholder blocks.
-  &[class*="block-field"],
-  &[class*="block-extra-field"],
-  &.block-menu {
-    padding: $gutter 0;
   }
 }
 
