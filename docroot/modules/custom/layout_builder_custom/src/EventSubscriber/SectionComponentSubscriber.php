@@ -8,6 +8,9 @@ use Drupal\layout_builder\Event\SectionComponentBuildRenderArrayEvent;
 use Drupal\layout_builder\LayoutBuilderEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ * Add an HTML class to blocks that are displaying placeholder text.
+ */
 class SectionComponentSubscriber implements EventSubscriberInterface {
 
   /**
@@ -44,4 +47,5 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
 
     $event->setBuild($build);
   }
+
 }
