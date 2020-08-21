@@ -1,0 +1,31 @@
+uuid: f0c71a3f-54e3-4929-b5a7-3a82491bd2c0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.uiowa_collection_item.field_collection_body
+    - field.field.paragraph.uiowa_collection_item.field_collection_headline
+    - paragraphs.paragraphs_type.uiowa_collection_item
+  module:
+    - text
+id: paragraph.uiowa_collection_item.default
+targetEntityType: paragraph
+bundle: uiowa_collection_item
+mode: default
+content:
+  field_collection_body:
+    weight: 1
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_collection_headline:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden: {  }
