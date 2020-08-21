@@ -1,0 +1,37 @@
+uuid: 39babb60-b7e7-48dd-8611-c744c7a0b095
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.tab
+    - field.field.paragraph.uiowa_collection_item.field_collection_body
+    - field.field.paragraph.uiowa_collection_item.field_collection_headline
+    - paragraphs.paragraphs_type.uiowa_collection_item
+  module:
+    - layout_builder
+    - text
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: false
+id: paragraph.uiowa_collection_item.tab
+targetEntityType: paragraph
+bundle: uiowa_collection_item
+mode: tab
+content:
+  field_collection_body:
+    weight: 1
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_collection_headline:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden: {  }
