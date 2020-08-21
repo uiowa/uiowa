@@ -185,9 +185,12 @@
   }
 }
 
-.layout--onecol--no--background+.layout--threecol .block-field-blocknodepagebody,
-.layout--onecol--background+.layout--threecol .block-field-blocknodepagebody,
-.layout--onecol--no--background+.layout--threecol .block-inline-blockuiowa-text-area,
-.layout--onecol--background+.layout--threecol .block-inline-blockuiowa-text-area {
-  margin-top: $desktop-width-gutter;
+.layout--onecol--no--background+.layout--threecol:not([class*="bg--"]) .block-field-blocknodepagebody,
+.layout--onecol--no--background+.layout--threecol:not([class*="bg--"]) .block-inline-blockuiowa-text-area {
+  margin-top: $gutter;
+}
+
+.layout--onecol--background+.layout--threecol:not([class*="bg--"]) .block-field-blocknodepagebody,
+.layout--onecol--background+.layout--threecol:not([class*="bg--"]) .block-inline-blockuiowa-text-area {
+  margin-top: 2rem;
 }
