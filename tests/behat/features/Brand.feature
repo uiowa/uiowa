@@ -1,5 +1,5 @@
 @base
-Feature: Status
+Feature: Brand
   In order to see global branding
   As a user
   I should be able to load the homepage
