@@ -287,11 +287,16 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 .content__mixed {
 
   .layout__container {
-    margin-bottom: $desktop-width-gutter;
+ padding-bottom: $mobile-width-gutter;
+ padding-top: $mobile-width-gutter;
+     @include breakpoint(container) {
+    padding-bottom: $desktop-width-gutter;
+    padding-top: $desktop-width-gutter;
+     }
 
     &[class*="bg--"]:last-child,
     &[class*="bg-pattern--"]:last-child {
-      margin-bottom: 0;
+     // margin-bottom: 0;
     }
   }
 
@@ -320,37 +325,37 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
     @include breakpoint(sm) {
       &__top {
         .lb__container {
-          padding-top: $desktop-width-gutter;
+          //padding-top: $desktop-width-gutter;
         }
       }
 
       &__top-extra {
         .lb__container {
-          padding-top: $desktop-width-gutter;
+          padding-top: 6rem;
         }
       }
 
       &__bottom-extra {
         .lb__container {
-          padding-bottom: $desktop-width-gutter;
+          padding-bottom: 6rem;
         }
       }
 
       &__right {
         .lb__container {
-          padding-right: $desktop-width-gutter;
+          //padding-right: $desktop-width-gutter;
         }
       }
 
       &__bottom {
         .lb__container {
-          padding-bottom: $desktop-width-gutter;
+          //padding-bottom: $desktop-width-gutter;
         }
       }
 
       &__left {
         .lb__container {
-          padding-left: $desktop-width-gutter;
+          //padding-left: $desktop-width-gutter;
         }
       }
     }
@@ -358,32 +363,35 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
   // layout builder styles margin classes
   .section-margin__top {
-    margin-top: $md;
+    //margin-top: $md;
   }
 
   .section-margin__top.page__container {
 
-    margin-top: $md;
+    //margin-top: $md;
 
   }
 
   .section-margin__bottom {
 
-    margin-bottom: $md;
+   // margin-bottom: $md;
 
   }
 
   .section-margin__bottom.page__container {
 
-    margin-bottom: $md;
+    //margin-bottom: $md;
 
   }
 
 
 
-  .section-margin__removed {
-    margin-top: 0;
-    margin-bottom: 0;
+  .section-margin__removed,
+  .section-padding__removed {
+    //margin-top: 0;
+    //margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
 
   }
 
