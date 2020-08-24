@@ -1530,8 +1530,38 @@ $sites['amcs.dev.drupal.uiowa.edu'] = 'amcs.uiowa.edu';
 $sites['amcs.stage.drupal.uiowa.edu'] = 'amcs.uiowa.edu';
 $sites['amcs.prod.drupal.uiowa.edu'] = 'amcs.uiowa.edu';
 
-// Directory aliases for bhagi.lab.uiowa.edu.
-$sites['labbhagi.local.drupal.uiowa.edu'] = 'bhagi.lab.uiowa.edu';
-$sites['labbhagi.dev.drupal.uiowa.edu'] = 'bhagi.lab.uiowa.edu';
-$sites['labbhagi.stage.drupal.uiowa.edu'] = 'bhagi.lab.uiowa.edu';
-$sites['labbhagi.prod.drupal.uiowa.edu'] = 'bhagi.lab.uiowa.edu';
+// Directory aliases for magazine.engineering.uiowa.edu.
+$sites['engineeringmagazine.local.drupal.uiowa.edu'] = 'magazine.engineering.uiowa.edu';
+$sites['engineeringmagazine.dev.drupal.uiowa.edu'] = 'magazine.engineering.uiowa.edu';
+$sites['engineeringmagazine.stage.drupal.uiowa.edu'] = 'magazine.engineering.uiowa.edu';
+$sites['engineeringmagazine.prod.drupal.uiowa.edu'] = 'magazine.engineering.uiowa.edu';
+
+// Directory aliases for news.engineering.uiowa.edu.
+$sites['engineeringnews.local.drupal.uiowa.edu'] = 'news.engineering.uiowa.edu';
+$sites['engineeringnews.dev.drupal.uiowa.edu'] = 'news.engineering.uiowa.edu';
+$sites['engineeringnews.stage.drupal.uiowa.edu'] = 'news.engineering.uiowa.edu';
+$sites['engineeringnews.prod.drupal.uiowa.edu'] = 'news.engineering.uiowa.edu';
+
+// Directory aliases for chaurasia.lab.uiowa.edu.
+$sites['labchaurasia.local.drupal.uiowa.edu'] = 'chaurasia.lab.uiowa.edu';
+$sites['labchaurasia.dev.drupal.uiowa.edu'] = 'chaurasia.lab.uiowa.edu';
+$sites['labchaurasia.stage.drupal.uiowa.edu'] = 'chaurasia.lab.uiowa.edu';
+$sites['labchaurasia.prod.drupal.uiowa.edu'] = 'chaurasia.lab.uiowa.edu';
+
+// Directory aliases for engagement.uiowa.edu.
+$sites['engagement.local.drupal.uiowa.edu'] = 'engagement.uiowa.edu';
+$sites['engagement.dev.drupal.uiowa.edu'] = 'engagement.uiowa.edu';
+$sites['engagement.stage.drupal.uiowa.edu'] = 'engagement.uiowa.edu';
+$sites['engagement.prod.drupal.uiowa.edu'] = 'engagement.uiowa.edu';
+
+// Directory aliases for gwsstellmagazine.sites.uiowa.edu.
+$sites['sitesgwsstellmagazine.local.drupal.uiowa.edu'] = 'gwsstellmagazine.sites.uiowa.edu';
+$sites['sitesgwsstellmagazine.dev.drupal.uiowa.edu'] = 'gwsstellmagazine.sites.uiowa.edu';
+$sites['sitesgwsstellmagazine.stage.drupal.uiowa.edu'] = 'gwsstellmagazine.sites.uiowa.edu';
+$sites['sitesgwsstellmagazine.prod.drupal.uiowa.edu'] = 'gwsstellmagazine.sites.uiowa.edu';
+
+// Directory aliases for hhpatuiowa.org.uiowa.edu.
+$sites['orghhpatuiowa.local.drupal.uiowa.edu'] = 'hhpatuiowa.org.uiowa.edu';
+$sites['orghhpatuiowa.dev.drupal.uiowa.edu'] = 'hhpatuiowa.org.uiowa.edu';
+$sites['orghhpatuiowa.stage.drupal.uiowa.edu'] = 'hhpatuiowa.org.uiowa.edu';
+$sites['orghhpatuiowa.prod.drupal.uiowa.edu'] = 'hhpatuiowa.org.uiowa.edu';

@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: engineeringmagazine.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: engineeringmagazine
+  human_name: magazine.engineering.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: engineeringmagazine.prod
+drupal:
+  db:
+    database: magazine_engineering_uiowa_edu
+uiowa:
+  requester: hboileau
+  config:
+    split: sitenow_v2

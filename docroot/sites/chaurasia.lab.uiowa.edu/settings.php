@@ -772,7 +772,7 @@ $settings['entity_update_batch_size'] = 50;
 $ah_group = getenv('AH_SITE_GROUP');
 
 if (file_exists('/var/www/site-php')) {
-  require "/var/www/site-php/{$ah_group}/bhagi_lab_uiowa_edu-settings.inc";
+  require "/var/www/site-php/{$ah_group}/chaurasia_lab_uiowa_edu-settings.inc";
 }
 
 require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";

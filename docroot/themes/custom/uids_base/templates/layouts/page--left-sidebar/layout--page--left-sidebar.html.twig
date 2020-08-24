@@ -24,13 +24,10 @@
   sidebar ? 'layout--has-sidebar' : 'layout--no-sidebar',
 ]
 %}
-{{ attach_library('uids_base/sitenow') }}
-{{ attach_library('uids_base/fields') }}
 {{ attach_library('uids_base/page--left-sidebar') }}
 
-
 {% if sidebar or content.content %}
-  <div{{attributes.addClass(classes)}}>
+  <div{{ attributes.addClass(classes) }}>
     <div class="lb__container">
       {% if sidebar %}
         <div class="layout__region layout__region--sidebar">
