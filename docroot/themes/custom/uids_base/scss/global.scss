@@ -178,32 +178,46 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
   &.section-padding {
     &__top-extra {
-      padding-top: $desktop-width-gutter;
+      .lb__container {
+        padding-top: $desktop-width-gutter;
+      }
     }
 
     @include breakpoint(sm) {
       &__top {
-        padding-top: $md;
+        .lb__container {
+          padding-top: $md;
+        }
       }
 
       &__top-extra {
-        padding-top: $desktop-width-gutter;
+        .lb__container {
+          padding-top: $desktop-width-gutter;
+        }
       }
 
       &__bottom-extra {
-        padding-bottom: $desktop-width-gutter;
+        .lb__container {
+          padding-bottom: $desktop-width-gutter;
+        }
       }
 
       &__right {
-        padding-right: $desktop-width-gutter;
+        .lb__container {
+          padding-right: $desktop-width-gutter;
+        }
       }
 
       &__bottom {
-        padding-bottom: $desktop-width-gutter;
+        .lb__container {
+          padding-bottom: $desktop-width-gutter;
+        }
       }
 
       &__left {
-        padding-left: $desktop-width-gutter;
+        .lb__container {
+          padding-left: $desktop-width-gutter;
+        }
       }
     }
 
@@ -309,32 +323,46 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
   .section-padding {
     &__top-extra {
-      padding-top: $mobile-width-gutter;
+      .lb__container {
+        padding-top: $mobile-width-gutter;
+      }
     }
 
     @include breakpoint(sm) {
       &__top {
-        padding-top: $desktop-width-gutter;
+        .lb__container {
+          padding-top: $desktop-width-gutter;
+        }
       }
 
       &__top-extra {
-        padding-top: $desktop-width-gutter;
+        .lb__container {
+          padding-top: $desktop-width-gutter;
+        }
       }
 
       &__bottom-extra {
-        padding-bottom: $desktop-width-gutter;
+        .lb__container {
+          padding-bottom: $desktop-width-gutter;
+        }
       }
 
       &__right {
-        padding-right: $desktop-width-gutter;
+        .lb__container {
+          padding-right: $desktop-width-gutter;
+        }
       }
 
       &__bottom {
-        padding-bottom: $desktop-width-gutter;
+        .lb__container {
+          padding-bottom: $desktop-width-gutter;
+        }
       }
 
       &__left {
-        padding-left: $desktop-width-gutter;
+        .lb__container {
+          padding-left: $desktop-width-gutter;
+        }
       }
     }
   }
