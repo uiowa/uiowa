@@ -140,14 +140,14 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 }
 
 // default left/right gutter spacing for full width settings without layout builder
-
+/*
 .page__container--full .region-content {
   // margin-right: $gutter;
   //margin-left: $gutter;
   margin-right: $mobile-width-gutter;
   margin-left: $mobile-width-gutter;
 }
-
+*/
 // default left/right gutter spacing for full width settings w/ layout builder enabled
 
 .content__full .layout__container.page__container--extended {
@@ -165,11 +165,11 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   margin-left: $mobile-width-gutter;
   margin-bottom: $mobile-width-gutter;
 
-  &.page__container--full {
+  /* &.page__container--full {
     margin-right: 0;
     margin-left: 0;
   }
-
+*/
   // layout builder styles padding classes
 
   &.section-padding {
@@ -182,7 +182,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
     @include breakpoint(sm) {
       &__top {
         .lb__container {
-          padding-top: $md;
+          //padding-top: $md;
         }
       }
 
@@ -200,19 +200,19 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
       &__right {
         .lb__container {
-          padding-right: $desktop-width-gutter;
+          //padding-right: $desktop-width-gutter;
         }
       }
 
       &__bottom {
         .lb__container {
-          padding-bottom: $desktop-width-gutter;
+          //padding-bottom: $desktop-width-gutter;
         }
       }
 
       &__left {
         .lb__container {
-          padding-left: $desktop-width-gutter;
+          //padding-left: $desktop-width-gutter;
         }
       }
     }
@@ -223,18 +223,18 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
   &.section-margin {
     &__top {
-      margin-top: $md;
+      //margin-top: $md;
 
       &.page__container {
-        margin-top: $md;
+        //margin-top: $md;
       }
     }
 
     &__bottom {
-      margin-bottom: $md;
+      //margin-bottom: $md;
 
       &.page__container {
-        margin-bottom: $md;
+        //margin-bottom: $md;
       }
     }
   }
@@ -250,15 +250,15 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   }
 
   &.section-margin__removed {
-    margin-top: 0;
-    margin-bottom: 0;
+    //margin-top: 0;
+    //margin-bottom: 0;
   }
 
 }
 
 
 // settings if page container full or edge is selected on section
-
+/*
 .page__container--full.layout__container .lb__container {
   // margin-right: $gutter;
   // margin-left: $gutter;
@@ -275,7 +275,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
     margin-left: 0;
   }
 }
-
+*/
 .page__container.layout__container {
   max-width: 100%;
 }
@@ -287,16 +287,17 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 .content__mixed {
 
   .layout__container {
- padding-bottom: $mobile-width-gutter;
- padding-top: $mobile-width-gutter;
-     @include breakpoint(container) {
-    padding-bottom: $desktop-width-gutter;
-    padding-top: $desktop-width-gutter;
-     }
+    padding-bottom: $mobile-width-gutter;
+    padding-top: $mobile-width-gutter;
+
+    @include breakpoint(container) {
+      padding-bottom: $desktop-width-gutter;
+      padding-top: $desktop-width-gutter;
+    }
 
     &[class*="bg--"]:last-child,
     &[class*="bg-pattern--"]:last-child {
-     // margin-bottom: 0;
+      // margin-bottom: 0;
     }
   }
 
@@ -374,7 +375,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
   .section-margin__bottom {
 
-   // margin-bottom: $md;
+    // margin-bottom: $md;
 
   }
 
@@ -395,6 +396,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
   }
 
+  /*
   .page__container--full {
     .lb__container {
       max-width: 100%;
@@ -411,7 +413,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
       }
     }
   }
-
+*/
   .page__container--edge {
     .lb__container {
       max-width: 100%;
