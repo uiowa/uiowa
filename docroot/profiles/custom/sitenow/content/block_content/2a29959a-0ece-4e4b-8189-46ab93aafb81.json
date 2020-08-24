@@ -1,30 +1,36 @@
 {
     "_links": {
         "self": {
-            "href": "https:\/\/default.local.drupal.uiowa.edu\/block\/352?_format=hal_json"
+            "href": "https:\/\/default.local.drupal.uiowa.edu\/block\/358?_format=hal_json"
         },
         "type": {
-            "href": "http:\/\/drupal.org\/rest\/type\/block_content\/uiowa_banner"
+            "href": "http:\/\/drupal.org\/rest\/type\/block_content\/uiowa_collection"
         },
-        "http:\/\/drupal.org\/rest\/relation\/block_content\/uiowa_banner\/field_uiowa_banner_image": [
+        "http:\/\/drupal.org\/rest\/relation\/block_content\/uiowa_collection\/field_uiowa_collection_items": [
             {
-                "href": "https:\/\/default.local.drupal.uiowa.edu\/media\/1\/edit?_format=hal_json"
+                "href": ""
+            },
+            {
+                "href": ""
+            },
+            {
+                "href": ""
             }
         ]
     },
     "id": [
         {
-            "value": 352
+            "value": 358
         }
     ],
     "uuid": [
         {
-            "value": "582328d0-e1f0-4de6-843d-e2372c91e6e6"
+            "value": "2a29959a-0ece-4e4b-8189-46ab93aafb81"
         }
     ],
     "revision_id": [
         {
-            "value": 2616
+            "value": 2619
         }
     ],
     "langcode": [
@@ -35,12 +41,12 @@
     ],
     "type": [
         {
-            "target_id": "uiowa_banner"
+            "target_id": "uiowa_collection"
         }
     ],
     "revision_created": [
         {
-            "value": "2020-07-09T00:51:49+00:00",
+            "value": "2020-08-24T17:17:27+00:00",
             "format": "Y-m-d\\TH:i:sP"
         }
     ],
@@ -50,15 +56,9 @@
             "lang": "en"
         }
     ],
-    "info": [
-        {
-            "value": "Banner",
-            "lang": "en"
-        }
-    ],
     "changed": [
         {
-            "value": "2020-07-09T00:58:44+00:00",
+            "value": "2020-08-24T17:17:27+00:00",
             "lang": "en",
             "format": "Y-m-d\\TH:i:sP"
         }
@@ -113,36 +113,62 @@
             }
         }
     ],
-    "field_uiowa_banner_excerpt": [
+    "field_collection_heading_size": [
         {
-            "value": "<p>Let's get started.<\/p>\r\n",
-            "format": "minimal",
-            "processed": "<p>Let's get started.<\/p>"
+            "value": "h2",
+            "lang": "en"
         }
     ],
     "_embedded": {
-        "http:\/\/drupal.org\/rest\/relation\/block_content\/uiowa_banner\/field_uiowa_banner_image": [
+        "http:\/\/drupal.org\/rest\/relation\/block_content\/uiowa_collection\/field_uiowa_collection_items": [
             {
                 "_links": {
                     "self": {
-                        "href": "https:\/\/default.local.drupal.uiowa.edu\/media\/1\/edit?_format=hal_json"
+                        "href": ""
                     },
                     "type": {
-                        "href": "http:\/\/drupal.org\/rest\/type\/media\/image"
+                        "href": "http:\/\/drupal.org\/rest\/type\/paragraph\/uiowa_collection_item"
                     }
                 },
                 "uuid": [
                     {
-                        "value": "fc23ffc0-95e1-45ff-ab07-b92464068d66"
+                        "value": "03ac71f5-2669-4a59-baa7-263aaf0b86fa"
                     }
-                ]
+                ],
+                "target_revision_id": "1"
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": ""
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/paragraph\/uiowa_collection_item"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "f138582f-1cf7-4175-b185-518918afda69"
+                    }
+                ],
+                "target_revision_id": "2"
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": ""
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/paragraph\/uiowa_collection_item"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "27719f84-6831-46ac-9502-9553e7833b75"
+                    }
+                ],
+                "target_revision_id": "3"
             }
         ]
-    },
-    "field_uiowa_banner_title": [
-        {
-            "size": "h2",
-            "text": "Welcome"
-        }
-    ]
+    }
 }
