@@ -30,7 +30,7 @@
     ],
     "vid": [
         {
-            "value": 69
+            "value": 74
         }
     ],
     "langcode": [
@@ -46,7 +46,7 @@
     ],
     "revision_timestamp": [
         {
-            "value": "2020-07-09T00:59:18+00:00",
+            "value": "2020-08-22T17:28:54+00:00",
             "format": "Y-m-d\\TH:i:sP"
         }
     ],
@@ -108,7 +108,7 @@
     ],
     "changed": [
         {
-            "value": "2020-07-09T00:59:18+00:00",
+            "value": "2020-08-22T17:28:54+00:00",
             "lang": "en",
             "format": "Y-m-d\\TH:i:sP"
         }
@@ -181,7 +181,7 @@
     "path": [
         {
             "alias": "\/home",
-            "pid": 56,
+            "pid": 10,
             "langcode": "en",
             "lang": "en"
         }
@@ -198,7 +198,9 @@
                 "layout_settings": {
                     "label": "",
                     "layout_builder_styles_style": {
-                        "section_margin_edge_to_edge": "section_margin_edge_to_edge"
+                        "section_margin_edge_to_edge": "section_margin_edge_to_edge",
+                        "section_margin_remove_default_margins": "section_margin_remove_default_margins",
+                        "0": ""
                     }
                 },
                 "components": [
@@ -228,11 +230,53 @@
         },
         {
             "section": {
+                "layout_id": "layout_onecol",
+                "layout_settings": {
+                    "label": "",
+                    "layout_builder_styles_style": {
+                        "section_padding_top": "section_padding_top",
+                        "section_margin_remove_default_margins": "section_margin_remove_default_margins",
+                        "0": "section_background_style_gray"
+                    }
+                },
+                "components": [
+                    {
+                        "uuid": "37dd12ff-4faf-40d0-a8eb-fa4ae8002334",
+                        "region": "content",
+                        "configuration": {
+                            "id": "inline_block:uiowa_text_area",
+                            "label": null,
+                            "provider": "layout_builder",
+                            "label_display": null,
+                            "view_mode": "full",
+                            "block_revision_id": "2617",
+                            "block_serialized": null,
+                            "context_mapping": [],
+                            "type": "uiowa_text_area",
+                            "uuid": "f8dd3f7c-4628-4738-b588-749c6800dde5"
+                        },
+                        "additional": {
+                            "layout_builder_styles_style": [
+                                ""
+                            ]
+                        },
+                        "weight": 0
+                    }
+                ],
+                "third_party_settings": []
+            }
+        },
+        {
+            "section": {
                 "layout_id": "layout_threecol",
                 "layout_settings": {
                     "label": "Getting Started",
                     "column_widths": "33-34-33",
-                    "layout_builder_styles_style": []
+                    "layout_builder_styles_style": {
+                        "section_padding_bottom": "section_padding_bottom",
+                        "section_padding_remove_default_padding": "section_padding_remove_default_padding",
+                        "0": "section_background_style_gray"
+                    }
                 },
                 "components": [
                     {
@@ -301,12 +345,48 @@
         },
         {
             "section": {
+                "layout_id": "layout_onecol",
+                "layout_settings": {
+                    "label": "",
+                    "layout_builder_styles_style": [
+                        ""
+                    ]
+                },
+                "components": [
+                    {
+                        "uuid": "849cd6cf-edda-4efe-aa23-24f7164b2461",
+                        "region": "content",
+                        "configuration": {
+                            "id": "inline_block:uiowa_text_area",
+                            "label": null,
+                            "provider": "layout_builder",
+                            "label_display": null,
+                            "view_mode": "full",
+                            "block_revision_id": "2618",
+                            "block_serialized": null,
+                            "context_mapping": [],
+                            "type": "uiowa_text_area",
+                            "uuid": "3b5fe990-e911-424c-b3d1-52f2cb1737a9"
+                        },
+                        "additional": {
+                            "layout_builder_styles_style": [
+                                ""
+                            ]
+                        },
+                        "weight": 0
+                    }
+                ],
+                "third_party_settings": []
+            }
+        },
+        {
+            "section": {
                 "layout_id": "layout_page",
                 "layout_settings": {
                     "label": "Content",
-                    "layout_builder_styles_style": {
-                        "section_margin_edge_to_edge": "section_margin_edge_to_edge"
-                    }
+                    "layout_builder_styles_style": [
+                        ""
+                    ]
                 },
                 "components": [
                     {
