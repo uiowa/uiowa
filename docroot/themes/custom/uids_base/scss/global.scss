@@ -11,7 +11,8 @@ $imgpath: '../../uids/assets/images';
     //flex: 1 0 auto;
     flex-basis: 100%;
 
-    &[class*="bg--"] {
+    &[class*="bg--"],
+    &[class*="bg-pattern--"] {
       padding: $desktop-width-gutter;
     }
   }
@@ -311,12 +312,15 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
       }
     }
 
-    &[class*="bg--"] {
+    &[class*="bg--"],
+    &[class*="bg-pattern--"] {
       .lb__container {
+        @include breakpoint(container) {
           padding-top: $desktop-width-gutter;
           padding-bottom: $desktop-width-gutter;
         }
       }
+    }
   }
 
   // layout builder styles padding classes
