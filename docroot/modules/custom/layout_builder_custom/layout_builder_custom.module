@@ -76,6 +76,13 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       unset($form['settings']['label_display']);
       unset($form['settings']['admin_label']['#title']);
 
+      // Restrict block settings on main navigation block.
+      if ($form["settings"]["label"]["#default_value"] == 'Main navigation') {
+        $form["settings"]["menu_levels"]['#access'] = FALSE;
+        $form["settings"]["advanced"]['#access'] = FALSE;
+        $form["settings"]["style"]['#access'] = FALSE;
+      }
+
       $form['settings'] += [
         '#weight' => 0,
       ];
