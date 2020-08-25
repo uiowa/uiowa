@@ -10,6 +10,7 @@ module: {  }
 theme: {  }
 blacklist: {  }
 graylist:
+  - field.storage.node.field_person_department
   - field.storage.node.field_person_lab_building
   - field.storage.node.field_person_lab_phone
   - field.storage.node.field_person_lab_room
@@ -18,8 +19,10 @@ graylist:
   - field.storage.node.field_person_office_room
   - field.storage.node.field_person_research_areas
   - field.storage.node.field_person_type
+  - field.storage.node.field_person_university_id
   - field.storage.node.field_person_website
   - field.storage.node.field_pt_student_current
+  - taxonomy.vocabulary.department
   - taxonomy.vocabulary.person_types
   - taxonomy.vocabulary.research_areas
 graylist_dependents: true
