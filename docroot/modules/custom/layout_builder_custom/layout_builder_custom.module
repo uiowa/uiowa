@@ -178,7 +178,7 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
 }
 
 /**
- * Replace the label with the collection headline.
+ * Implements hook_inline_entity_form_table_fields_alter().
  */
 function layout_builder_custom_inline_entity_form_table_fields_alter(array &$fields, array $context) {
   if ($context['entity_type'] === 'paragraph') {
