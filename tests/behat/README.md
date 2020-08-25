@@ -11,3 +11,5 @@ project:
 Once set, run `blt setup:behat` to generate the behat local config file.
 
 To run behat tests, run `blt behat`. Additional options and filtering can be specified - see `blt behat --help` for details or `blt list tests` for all tests-related commands.
+
+**Note** that behat tests will run against the default site so any created content, users, etc. will be reflected there.
