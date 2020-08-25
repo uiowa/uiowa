@@ -12,169 +12,6 @@ use Drupal\Component\Utility\Xss;
 use GuzzleHttp\Exception\RequestException;
 
 /**
- * Set dynamic allowed values for multiple fields.
- *
- * @param \Drupal\field\Entity\FieldStorageConfig $definition
- *   The field definition.
- * @param \Drupal\Core\Entity\ContentEntityInterface|null $entity
- *   The entity being created if applicable.
- * @param bool $cacheable
- *   Boolean indicating if the results are cacheable.
- *
- * @return array
- *   An array of possible key and value options.
- *
- * @see options_allowed_values()
- */
-function _sitenow_events_get_filter_field_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable = TRUE) {
-  $filter_options = [];
-
-  $endpoints = [
-    \Drupal::config('sitenow_events.settings')
-      ->get('sitenow_events.filters_endpoint'),
-    \Drupal::config('sitenow_events.settings')
-      ->get('sitenow_events.keywords_endpoint'),
-  ];
-
-  foreach ($endpoints as $endpoint) {
-    try {
-      $response = \Drupal::httpClient()
-        ->get($endpoint, ['headers' => ['Accept' => 'text/plain']]);
-      $data = (string) $response->getBody();
-      if (empty($data)) {
-        \Drupal::messenger()->addError(t('Empty response.'));
-      }
-      else {
-        $results = json_decode($data, TRUE);
-      }
-    }
-    catch (RequestException $e) {
-      watchdog_exception('sitenow_events', $e);
-    }
-
-    if (!empty($results)) {
-      $forest = [];
-      // Build a parent/children tree for each filter.
-      foreach ($results as $filter => $values) {
-        $forest[$filter] = _build_options_tree($values);
-      }
-      // Output a formatted options array for each filter.
-      foreach ($forest as $filter => $tree) {
-        $filter_options[$filter] = _build_options_list($tree);
-      }
-    }
-  }
-
-  // Sort the options.
-  ksort($filter_options);
-
-  $options = ['0' => 'None'];
-
-  switch ($definition->getName()) {
-    case 'field_events_department':
-    case 'field_uiowa_events_department':
-      if (isset($filter_options['departments'])) {
-        $options = $filter_options['departments'];
-      }
-      break;
-
-    case 'field_events_audiences':
-    case 'field_uiowa_events_audiences':
-      if (isset($filter_options['event_audience'])) {
-        $options = $filter_options['event_audience'];
-      }
-      break;
-
-    case 'field_events_gen_interests':
-    case 'field_uiowa_events_interests':
-      if (isset($filter_options['event_general_interest'])) {
-        $options = $filter_options['event_general_interest'];
-      }
-      break;
-
-    case 'field_events_event_types':
-    case 'field_uiowa_events_types':
-      if (isset($filter_options['event_types'])) {
-        $options = $filter_options['event_types'];
-      }
-      break;
-
-    case 'field_events_keywords':
-    case 'field_uiowa_events_keywords':
-      if (isset($filter_options['keywords'])) {
-        $options = $filter_options['keywords'];
-      }
-      break;
-
-    case 'field_events_places':
-    case 'field_uiowa_events_places':
-      if (isset($filter_options['places'])) {
-        $options = $filter_options['places'];
-      }
-      break;
-
-  }
-
-  return $options;
-}
-
-/**
- * Helper function to build the options tree.
- *
- * @param array $data
- *   Array of data to be sorted into a tree.
- * @param int $parent
- *   Stores the current id.
- *
- * @return array
- *   Returns an associative array options tree.
- */
-function _build_options_tree(array $data, $parent = 0) {
-  $tree = [];
-  foreach ($data as $d) {
-    if ($d['parent_id'] == $parent) {
-      $children = _build_options_tree($data, $d['id']);
-      // Set a trivial key.
-      if (!empty($children)) {
-        $d['_children'] = $children;
-      }
-      $tree[] = $d;
-    }
-  }
-  return $tree;
-}
-
-/**
- * Helper function to output the options array.
- *
- * @param array $tree
- *   Array of tree data to be printed.
- * @param int $r
- *   Basic counter.
- * @param int $p
- *   Parent id.
- * @param array $options
- *   Options array to be passed recursively.
- *
- * @return array
- *   Returns options with children prefixed with dashes.
- */
-function _build_options_list(array $tree, $r = 0, $p = NULL, array &$options = []) {
-  foreach ($tree as $t) {
-    $dash = ($t['parent_id'] == 0) ? '' : str_repeat('-', $r) . ' ';
-    $options[$t['id']] = $dash . $t['name'];
-    if ($t['parent_id'] == $p) {
-      // Reset $r.
-      $r = 0;
-    }
-    if (isset($t['_children'])) {
-      _build_options_list($t['_children'], ++$r, $t['parent_id'], $options);
-    }
-  }
-  return $options;
-}
-
-/**
  * Load and return events from events api.
  *
  * @param array $params
@@ -231,53 +68,6 @@ function sitenow_events_load(array $params = ['display_id' => 'events'], array $
   }
   // Return an array of events with optional params.
   return $events;
-}
-
-/**
- * Helper function to build an http query string.
- *
- * @param array $query
- *   Key value pairs to be used in the query.
- *
- * @return string
- *   http query string.
- *
- * @see sitenow_events_load()
- */
-function _build_http_query(array $query) {
-  $query_array = [];
-  // Sort the keys of the $params array. This ensures the cache_id.
-  ksort($query);
-  foreach ($query as $param_name => $param_value) {
-    // Only include params that are not empty.
-    if (!empty($param_value)) {
-      // If $param_value is an array assume it's a filter.
-      // Multivalued filter items should be comma separated.
-      if (is_array($param_value)) {
-        // Sort the values to ensure cache_id.
-        sort($param_value);
-        $v = '';
-        $end = end($param_value);
-        // Construct multivalued array items to be comma separated stings.
-        foreach ($param_value as $filter_value) {
-          // If it's the last value then we don't need a comma.
-          if ($filter_value == $end) {
-            $v .= urlencode($filter_value);
-            // When we are done add the param to the query_array.
-            $query_array[] = urlencode($param_name) . '=' . urlencode($v);
-          }
-          // Otherwise add a comma and continue looping.
-          else {
-            $v .= urlencode($filter_value) . ',';
-          }
-        }
-      }
-      else {
-        $query_array[] = urlencode($param_name) . '=' . urlencode($param_value);
-      }
-    }
-  }
-  return implode('&', $query_array);
 }
 
 /**
@@ -526,4 +316,214 @@ function _sitenow_events_process_element(array $element, FormStateInterface $for
   }
 
   return $element;
+}
+
+/**
+ * Set dynamic allowed values for multiple fields.
+ *
+ * @param \Drupal\field\Entity\FieldStorageConfig $definition
+ *   The field definition.
+ * @param \Drupal\Core\Entity\ContentEntityInterface|null $entity
+ *   The entity being created if applicable.
+ * @param bool $cacheable
+ *   Boolean indicating if the results are cacheable.
+ *
+ * @return array
+ *   An array of possible key and value options.
+ *
+ * @see options_allowed_values()
+ */
+function _sitenow_events_get_filter_field_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable = TRUE) {
+  $filter_options = [];
+
+  $endpoints = [
+    \Drupal::config('sitenow_events.settings')
+      ->get('sitenow_events.filters_endpoint'),
+    \Drupal::config('sitenow_events.settings')
+      ->get('sitenow_events.keywords_endpoint'),
+  ];
+
+  foreach ($endpoints as $endpoint) {
+    try {
+      $response = \Drupal::httpClient()
+        ->get($endpoint, ['headers' => ['Accept' => 'text/plain']]);
+      $data = (string) $response->getBody();
+      if (empty($data)) {
+        \Drupal::messenger()->addError(t('Empty response.'));
+      }
+      else {
+        $results = json_decode($data, TRUE);
+      }
+    }
+    catch (RequestException $e) {
+      watchdog_exception('sitenow_events', $e);
+    }
+
+    if (!empty($results)) {
+      $forest = [];
+      // Build a parent/children tree for each filter.
+      foreach ($results as $filter => $values) {
+        $forest[$filter] = _build_options_tree($values);
+      }
+      // Output a formatted options array for each filter.
+      foreach ($forest as $filter => $tree) {
+        $filter_options[$filter] = _build_options_list($tree);
+      }
+    }
+  }
+
+  // Sort the options.
+  ksort($filter_options);
+
+  $options = ['0' => 'None'];
+
+  switch ($definition->getName()) {
+    case 'field_events_department':
+    case 'field_uiowa_events_department':
+      if (isset($filter_options['departments'])) {
+        $options = $filter_options['departments'];
+      }
+      break;
+
+    case 'field_events_audiences':
+    case 'field_uiowa_events_audiences':
+      if (isset($filter_options['event_audience'])) {
+        $options = $filter_options['event_audience'];
+      }
+      break;
+
+    case 'field_events_gen_interests':
+    case 'field_uiowa_events_interests':
+      if (isset($filter_options['event_general_interest'])) {
+        $options = $filter_options['event_general_interest'];
+      }
+      break;
+
+    case 'field_events_event_types':
+    case 'field_uiowa_events_types':
+      if (isset($filter_options['event_types'])) {
+        $options = $filter_options['event_types'];
+      }
+      break;
+
+    case 'field_events_keywords':
+    case 'field_uiowa_events_keywords':
+      if (isset($filter_options['keywords'])) {
+        $options = $filter_options['keywords'];
+      }
+      break;
+
+    case 'field_events_places':
+    case 'field_uiowa_events_places':
+      if (isset($filter_options['places'])) {
+        $options = $filter_options['places'];
+      }
+      break;
+
+  }
+
+  return $options;
+}
+
+/**
+ * Helper function to build the options tree.
+ *
+ * @param array $data
+ *   Array of data to be sorted into a tree.
+ * @param int $parent
+ *   Stores the current id.
+ *
+ * @return array
+ *   Returns an associative array options tree.
+ */
+function _build_options_tree(array $data, $parent = 0) {
+  $tree = [];
+  foreach ($data as $d) {
+    if ($d['parent_id'] == $parent) {
+      $children = _build_options_tree($data, $d['id']);
+      // Set a trivial key.
+      if (!empty($children)) {
+        $d['_children'] = $children;
+      }
+      $tree[] = $d;
+    }
+  }
+  return $tree;
+}
+
+/**
+ * Helper function to output the options array.
+ *
+ * @param array $tree
+ *   Array of tree data to be printed.
+ * @param int $r
+ *   Basic counter.
+ * @param int $p
+ *   Parent id.
+ * @param array $options
+ *   Options array to be passed recursively.
+ *
+ * @return array
+ *   Returns options with children prefixed with dashes.
+ */
+function _build_options_list(array $tree, $r = 0, $p = NULL, array &$options = []) {
+  foreach ($tree as $t) {
+    $dash = ($t['parent_id'] == 0) ? '' : str_repeat('-', $r) . ' ';
+    $options[$t['id']] = $dash . $t['name'];
+    if ($t['parent_id'] == $p) {
+      // Reset $r.
+      $r = 0;
+    }
+    if (isset($t['_children'])) {
+      _build_options_list($t['_children'], ++$r, $t['parent_id'], $options);
+    }
+  }
+  return $options;
+}
+
+/**
+ * Helper function to build an http query string.
+ *
+ * @param array $query
+ *   Key value pairs to be used in the query.
+ *
+ * @return string
+ *   http query string.
+ *
+ * @see sitenow_events_load()
+ */
+function _build_http_query(array $query) {
+  $query_array = [];
+  // Sort the keys of the $params array. This ensures the cache_id.
+  ksort($query);
+  foreach ($query as $param_name => $param_value) {
+    // Only include params that are not empty.
+    if (!empty($param_value)) {
+      // If $param_value is an array assume it's a filter.
+      // Multivalued filter items should be comma separated.
+      if (is_array($param_value)) {
+        // Sort the values to ensure cache_id.
+        sort($param_value);
+        $v = '';
+        $end = end($param_value);
+        // Construct multivalued array items to be comma separated stings.
+        foreach ($param_value as $filter_value) {
+          // If it's the last value then we don't need a comma.
+          if ($filter_value == $end) {
+            $v .= urlencode($filter_value);
+            // When we are done add the param to the query_array.
+            $query_array[] = urlencode($param_name) . '=' . urlencode($v);
+          }
+          // Otherwise add a comma and continue looping.
+          else {
+            $v .= urlencode($filter_value) . ',';
+          }
+        }
+      }
+      else {
+        $query_array[] = urlencode($param_name) . '=' . urlencode($param_value);
+      }
+    }
+  }
+  return implode('&', $query_array);
 }
