@@ -52,6 +52,9 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
 
   /**
    * @Given I click the :arg1 element
+   *
+   * This is necessary as Behat only supports clicking certain links and buttons
+   * out of the box.
    */
   public function iClickTheElement($selector)
   {
