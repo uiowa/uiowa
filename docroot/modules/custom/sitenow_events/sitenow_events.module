@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\Component\Utility\Xss;
 use GuzzleHttp\Exception\RequestException;
@@ -480,4 +481,49 @@ function sitenow_events_field_widget_paragraphs_form_alter(&$element, &$form_sta
       }
     }
   }
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function sitenow_events_form_layout_builder_add_block_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  $form['settings']['block_form']['#process'][] = '_sitenow_events_process_element';
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function sitenow_events_form_layout_builder_update_block_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  $form['settings']['block_form']['#process'][] = '_sitenow_events_process_element';
+}
+
+/**
+ * Custom process block form elements.
+ *
+ * @param array $element
+ *   The current block element.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The current form state.
+ *
+ * @return array
+ *   The processed block element.
+ */
+function _sitenow_events_process_element(array $element, FormStateInterface $form_state) {
+  /** @var \Drupal\layout_builder\SectionComponent $component */
+  $component = $form_state->getFormObject()->getCurrentComponent();
+  $block = $component->getPlugin();
+
+  if ($block->getPluginId() == 'inline_block:uiowa_events') {
+    if (isset($element['field_uiowa_events_more_link'])) {
+      $element['field_uiowa_events_more_link']['#states'] = [
+        'visible' => [
+          ':input[name="settings[block_form][field_uiowa_events_display_more][value]"]' => [
+            'checked' => TRUE,
+          ],
+        ],
+      ];
+    }
+  }
+
+  return $element;
 }
