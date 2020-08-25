@@ -466,7 +466,7 @@ function sitenow_events_format_instance(array $event_instance) {
  * Implements hook_field_widget_WIDGET_TYPE_form_alter().
  */
 function sitenow_events_field_widget_paragraphs_form_alter(&$element, &$form_state, $context) {
-  if ($element["#paragraph_type"] == 'events') {
+  if ($element['#paragraph_type'] == 'events') {
     if (!empty($element['subform']['field_events_more'])) {
       $parents_array = $element['subform']['#parents'];
       $parents = array_shift($parents_array) . '[' . implode('][', $parents_array) . ']';
