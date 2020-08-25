@@ -11,7 +11,7 @@ use Drupal\Component\Utility\Xss;
 use GuzzleHttp\Exception\RequestException;
 
 /**
- * Set dynamic allowed values for the alignment field.
+ * Set dynamic allowed values for multiple fields.
  *
  * @param \Drupal\field\Entity\FieldStorageConfig $definition
  *   The field definition.
@@ -25,64 +25,16 @@ use GuzzleHttp\Exception\RequestException;
  *
  * @see options_allowed_values()
  */
-function _get_filter_field_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
-  $filter_options = _sitenow_events_get_filter_options();
-  $options = ['0' => 'None'];
-  switch ($definition->getName()) {
-    case 'field_events_department':
-      if (isset($filter_options["departments"])) {
-        $options = $filter_options["departments"];
-      }
-      break;
+function _sitenow_events_get_filter_field_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable = TRUE) {
+  $filter_options = [];
 
-    case 'field_events_audiences':
-      if (isset($filter_options['event_audience'])) {
-        $options = $filter_options['event_audience'];
-      }
-      break;
-
-    case 'field_events_gen_interests':
-      if (isset($filter_options['event_general_interest'])) {
-        $options = $filter_options['event_general_interest'];
-      }
-      break;
-
-    case 'field_events_event_types':
-      if (isset($filter_options['event_types'])) {
-        $options = $filter_options['event_types'];
-      }
-      break;
-
-    case 'field_events_keywords':
-      if (isset($filter_options['keywords'])) {
-        $options = $filter_options['keywords'];
-      }
-      break;
-
-    case 'field_events_places':
-      if (isset($filter_options['places'])) {
-        $options = $filter_options['places'];
-      }
-      break;
-
-  }
-  return $options;
-}
-
-/**
- * Helper function to create a filter options.
- *
- * @return array
- *   An array of filters keyed by id.
- */
-function _sitenow_events_get_filter_options() {
-  $options = [];
   $endpoints = [
     \Drupal::config('sitenow_events.settings')
       ->get('sitenow_events.filters_endpoint'),
     \Drupal::config('sitenow_events.settings')
       ->get('sitenow_events.keywords_endpoint'),
   ];
+
   foreach ($endpoints as $endpoint) {
     try {
       $response = \Drupal::httpClient()
@@ -98,6 +50,7 @@ function _sitenow_events_get_filter_options() {
     catch (RequestException $e) {
       watchdog_exception('sitenow_events', $e);
     }
+
     if (!empty($results)) {
       $forest = [];
       // Build a parent/children tree for each filter.
@@ -106,12 +59,61 @@ function _sitenow_events_get_filter_options() {
       }
       // Output a formatted options array for each filter.
       foreach ($forest as $filter => $tree) {
-        $options[$filter] = _build_options_list($tree);
+        $filter_options[$filter] = _build_options_list($tree);
       }
     }
   }
+
   // Sort the options.
-  ksort($options);
+  ksort($filter_options);
+
+  $options = ['0' => 'None'];
+
+  switch ($definition->getName()) {
+    case 'field_events_department':
+    case 'field_uiowa_events_department':
+      if (isset($filter_options['departments'])) {
+        $options = $filter_options['departments'];
+      }
+      break;
+
+    case 'field_events_audiences':
+    case 'field_uiowa_events_audiences':
+      if (isset($filter_options['event_audience'])) {
+        $options = $filter_options['event_audience'];
+      }
+      break;
+
+    case 'field_events_gen_interests':
+    case 'field_uiowa_events_interests':
+      if (isset($filter_options['event_general_interest'])) {
+        $options = $filter_options['event_general_interest'];
+      }
+      break;
+
+    case 'field_events_event_types':
+    case 'field_uiowa_events_types':
+      if (isset($filter_options['event_types'])) {
+        $options = $filter_options['event_types'];
+      }
+      break;
+
+    case 'field_events_keywords':
+    case 'field_uiowa_events_keywords':
+      if (isset($filter_options['keywords'])) {
+        $options = $filter_options['keywords'];
+      }
+      break;
+
+    case 'field_events_places':
+    case 'field_uiowa_events_places':
+      if (isset($filter_options['places'])) {
+        $options = $filter_options['places'];
+      }
+      break;
+
+  }
+
   return $options;
 }
 
