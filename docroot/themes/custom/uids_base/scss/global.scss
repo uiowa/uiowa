@@ -156,7 +156,8 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
     .lb__container {
       @include breakpoint(container) {
         max-width: 100em;
-        padding: 0 $lg;
+        padding-right: $lg;
+        padding-left: $lg;
       }
     }
   }
@@ -172,10 +173,6 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
     padding-top: $desktop-width-gutter;
   }
 
-  &[class*="bg--"]:last-child,
-  &[class*="bg-pattern--"]:last-child {
-    // margin-bottom: 0;
-  }
 }
 
 
@@ -185,20 +182,12 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 .page__container--full.layout__container .lb__container {
   margin-right: $mobile-width-gutter;
   margin-left: $mobile-width-gutter;
+  max-width: 100%;
 
   @include breakpoint(menu) {
     margin-right: $desktop-width-gutter;
     margin-left: $desktop-width-gutter;
   }
-
-  &.page__container--edge {
-    margin-right: 0;
-    margin-left: 0;
-  }
-}
-
-.content__container .page__container--full .lb__container {
-  max-width: 100%;
 }
 
 
@@ -208,12 +197,10 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   &__removed {
     padding-top: 0;
     padding-bottom: 0;
-
   }
 
   &__removed-top {
     padding-top: 0;
-
   }
 
   &__removed-bottom {
@@ -268,31 +255,6 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   }
 }
 
-// Section w/ color background padding
-
-div[class*="bg--"],
-div[class*="bg-pattern--"] {
-  .lb__container {
-    //padding-top: $mobile-width-gutter;
-    // padding-bottom: $mobile-width-gutter;
-
-    @include breakpoint(sm) {
-      //padding-top: $desktop-width-gutter;
-      //padding-bottom: $desktop-width-gutter;
-    }
-  }
-
-  &.section-padding__removed {
-    .lb__container {
-      //padding-top: 0;
-      //padding-bottom: 0
-    }
-  }
-}
-
-
-
-
 // mobile search
 
 .search-button[aria-expanded="true"] {
@@ -312,7 +274,6 @@ div[class*="bg-pattern--"] {
     display: block;
   }
 }
-
 
 // todo move back to uids as toc style also create tag style for term edit
 
