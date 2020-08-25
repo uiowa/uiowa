@@ -276,14 +276,14 @@ function sitenow_events_field_widget_paragraphs_form_alter(&$element, &$form_sta
 /**
  * Implements hook_form_BASE_FORM_ID_alter().
  */
-function sitenow_events_form_layout_builder_add_block_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+function sitenow_events_form_layout_builder_add_block_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['settings']['block_form']['#process'][] = '_sitenow_events_process_element';
 }
 
 /**
  * Implements hook_form_BASE_FORM_ID_alter().
  */
-function sitenow_events_form_layout_builder_update_block_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+function sitenow_events_form_layout_builder_update_block_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['settings']['block_form']['#process'][] = '_sitenow_events_process_element';
 }
 
