@@ -18,8 +18,8 @@
         {% if banner_title is not empty %}
           {# @todo Determine if it is better to programatically set level and class via preprocess. #}
           {% set banner_heading = {
-            'heading_level': heading_level ?: 'h3',
-            'heading_class' : heading_class ?: 'bold-headline--serif bold-headline',
+            'heading_level': heading_level ?: 'h2',
+            'heading_class' : heading_class ?: 'bold-headline',
             'heading' : banner_title,
           } %}
           {% include '@uids_base/uids/heading.html.twig' with banner_heading only %}
@@ -27,7 +27,7 @@
       {% endblock %}
 
       {% if banner_summary is not empty %}
-        <div class="banner__summary">{{ banner_summary }}</div>
+       {{ banner_summary }}
       {% endif %}
 
       {% if link and link.link_url is not empty %}
