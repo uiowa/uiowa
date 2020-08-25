@@ -1,0 +1,25 @@
+uuid: 77e7e474-e20f-48d1-ae68-10bc53f87641
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_events
+    - field.storage.block_content.field_uiowa_events_results
+id: block_content.uiowa_events.field_uiowa_events_results
+field_name: field_uiowa_events_results
+entity_type: block_content
+bundle: uiowa_events
+label: 'Number of results'
+description: 'Max of 50.'
+required: true
+translatable: false
+default_value:
+  -
+    value: 10
+default_value_callback: ''
+settings:
+  min: 1
+  max: 50
+  prefix: ''
+  suffix: ''
+field_type: integer
