@@ -24,7 +24,9 @@ function template_preprocess_sitenow_events_teaser(array &$variables) {
       '#alt' => $variables['event']['title'],
     ];
   }
-  $external_link = ($config->get('event_link') == 'event-link-external') ? TRUE : FALSE;
+
+  $external_link = ($config->get('event_link') == 'event-link-external');
+
   if ($external_link) {
     $variables['event']['url'] = $variables['event']['events_site_url'];
   }
