@@ -59,8 +59,8 @@ function sitenow_events_preprocess_block(&$variables) {
         ],
       ];
 
-      if (!empty($block->get('field_uiowa_events_more_link')->value)) {
-        $url = Url::fromUri();
+      if ($uri = $block->get('field_uiowa_events_more_link')->uri) {
+        $url = Url::fromUri($uri);
       }
       else {
         $url = Url::fromUri('//events.uiowa.edu');
@@ -71,7 +71,7 @@ function sitenow_events_preprocess_block(&$variables) {
         '#title' => 'View more events',
         '#url' => $url,
         '#attributes' => [
-          'class' => ['bttn', 'bttn-primary', 'bttn-caps'],
+          'class' => ['bttn', 'bttn--primary', 'bttn--caps'],
         ],
       ];
     }
