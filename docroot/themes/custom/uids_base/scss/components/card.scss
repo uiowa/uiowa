@@ -26,3 +26,16 @@
     flex: 1 1 100%;
   }
 }
+
+// Add padding if card is on a bg or bg pattern.
+.layout.layout__container {
+
+  &[class*="bg--"],
+  &[class*="bg-pattern--"] {
+    .card:not(.card--horizontal) {
+      .card__body {
+        padding: 2rem;
+      }
+    }
+  }
+}
