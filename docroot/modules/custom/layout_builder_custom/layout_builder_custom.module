@@ -16,6 +16,10 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
     case 'layout_builder_add_block':
     case 'layout_builder_update_block':
 
+      /** @var \Drupal\layout_builder\SectionComponent $component */
+      $component = $form_state->getFormObject()->getCurrentComponent();
+      $block = $component->getPlugin();
+
       // Add custom validation for certain blocks/regions to validate.
       $form['#validate'][] = '_layout_builder_custom_block_validate';
 
@@ -76,8 +80,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       unset($form['settings']['label_display']);
       unset($form['settings']['admin_label']['#title']);
 
-      // Restrict block settings on main navigation block.
-      if ($form["settings"]["label"]["#default_value"] == 'Main navigation') {
+      if ($block->getPluginId() == 'menu_block:main') {
+        // Restrict block settings on main navigation block.
         $form["settings"]["menu_levels"]['#access'] = FALSE;
         $form["settings"]["advanced"]['#access'] = FALSE;
         $form["settings"]["style"]['#access'] = FALSE;
