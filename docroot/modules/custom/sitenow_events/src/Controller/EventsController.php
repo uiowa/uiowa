@@ -39,13 +39,12 @@ class EventsController extends ControllerBase {
         else {
           $title = $events['events'][0]['title'];
         }
-        $build = [
+
+        return [
           '#theme' => 'sitenow_events_single_event',
           '#data' => $events['events'],
           '#title' => $title,
         ];
-
-        return $build;
       }
     }
   }
