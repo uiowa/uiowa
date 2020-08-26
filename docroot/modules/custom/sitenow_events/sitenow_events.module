@@ -17,7 +17,7 @@ use GuzzleHttp\Exception\RequestException;
  */
 function sitenow_events_preprocess_block(&$variables) {
   if ($variables['elements']['#plugin_id'] == 'inline_block:uiowa_events') {
-    $variables['#attached']['library'][] = 'uids_base/event';
+    $variables['#attached']['library'][] = 'uids_base/events';
 
     /** @var \Drupal\Block\Entity\Block $block */
     $block = $variables['elements']['content']['#block_content'];

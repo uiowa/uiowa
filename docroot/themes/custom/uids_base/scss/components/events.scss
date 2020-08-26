@@ -1,0 +1,78 @@
+@import "uids/assets/scss/_variables.scss";
+@import "uids/assets/scss/_utilities.scss";
+
+.block-inline-blockuiowa-events {
+  .field--name-title {
+    display: block;
+    @include h5;
+  }
+
+  .more-link {
+    margin-bottom: $gutter;
+  }
+}
+
+.block-inline-blockuiowa-events {
+  .more-link {
+    margin-top: $gutter;
+  }
+}
+
+.block-inline-blockuiowa-events {
+  &.hide-images .card__media,
+  &.hide-images .content-image {
+    display: none;
+  }
+}
+
+.block-inline-blockuiowa-events {
+  .card__media {
+    @include card-media-horizontal-right;
+
+    @include breakpoint(sm) {
+      margin-top: $lg;
+      margin-bottom: $gutter;
+    }
+  }
+
+  .card__body {
+    flex: 1;
+  }
+
+  .card__title {
+    @include breakpoint(sm) {
+      padding: 0;
+    }
+  }
+
+  .card--list {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+}
+
+// Events List
+.block-inline-blockuiowa-events {
+  .card {
+    @include breakpoint(sm) {
+      border-bottom: 1px solid #ccc;
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+}
+
+.block-inline-blockuiowa-events.hide-descriptions {
+  p {
+    display: none;
+  }
+}
+
+.container-fluid {
+  margin: 0 auto;
+  width: 100%;
+  padding-right: 0;
+  padding-left: 0;
+}
