@@ -394,13 +394,14 @@ function _sitenow_events_process_element(array $element, FormStateInterface $for
  * @see options_allowed_values()
  */
 function _sitenow_events_get_filter_field_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable = TRUE) {
+  $api_endpoint = \Drupal::config('sitenow_events.settings')
+    ->get('base_endpoint');
+
   $filter_options = [];
 
   $endpoints = [
-    \Drupal::config('sitenow_events.settings')
-      ->get('sitenow_events.filters_endpoint'),
-    \Drupal::config('sitenow_events.settings')
-      ->get('sitenow_events.keywords_endpoint'),
+    "{$api_endpoint}/views/filters_api.json?display_id=filters",
+    "{$api_endpoint}/views/filters_api.json?display_id=keywords",
   ];
 
   foreach ($endpoints as $endpoint) {
