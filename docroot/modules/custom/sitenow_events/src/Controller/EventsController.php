@@ -19,7 +19,7 @@ class EventsController extends ControllerBase {
    *   The ID of the event instance.
    *
    * @return array
-   *   A renderable array for single event.
+   *   A render array for single event.
    */
   public function build($event_id, $event_instance) {
     // If the configuration is to link out, make all event pages 404.
