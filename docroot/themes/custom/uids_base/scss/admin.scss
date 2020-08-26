@@ -767,9 +767,11 @@ body.toolbar-vertical.toolbar-tray-open {
 }
 
 // Hide certain system blocks.
-.block-extra-field-blocknodepagecontent-moderation-control,
-.block-extra-field-blocknodepagelinks {
-  @include element-invisible;
+.layout-builder-block--placeholder {
+  &.block-extra-field-blocknodepagecontent-moderation-control,
+  &.block-extra-field-blocknodepagelinks {
+    @include element-invisible;
+  }
 }
 
 // Hide header if off canvas tray is open
