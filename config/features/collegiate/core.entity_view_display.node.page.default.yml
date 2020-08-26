@@ -142,34 +142,21 @@ third_party_settings:
       whitelisted_blocks:
         'Chaos Tools': {  }
         'Content fields':
-          - 'field_block:node:page:uid'
-          - 'field_block:node:page:created'
           - 'field_block:node:page:body'
-          - 'field_block:node:page:changed'
-          - 'field_block:node:page:field_teaser'
-          - 'field_block:node:page:field_image'
-          - 'extra_field_block:node:page:links'
-          - 'extra_field_block:node:page:content_moderation_control'
-          - 'field_block:node:page:field_tags'
-          - 'field_block:node:page:title'
-          - 'field_block:user:user:changed'
-          - 'field_block:user:user:created'
         'Custom blocks': {  }
         Devel: {  }
         Forms: {  }
+        'Lists (Views)': {  }
         Menus:
           - 'menu_block:main'
           - 'system_menu_block:main'
         Superfish: {  }
-        System:
-          - system_breadcrumb_block
-          - system_main_block
+        System: {  }
         'University of Iowa Alerts': {  }
         User: {  }
         Webform:
           - webform_block
-        core:
-          - page_title_block
+        core: {  }
       blacklisted_blocks:
         'Custom block types':
           - uiowa_page_title_hero
@@ -177,9 +164,6 @@ third_party_settings:
           - uiowa_vertical_video
         'Inline blocks':
           - 'inline_block:uiowa_vertical_video'
-        'Lists (Views)':
-          - 'views_block:content_recent-block_1'
-          - 'views_block:who_s_online-who_s_online_block'
     allowed_block_categories:
       - 'Chaos Tools'
       - 'Content fields'
@@ -204,6 +188,14 @@ third_party_settings:
         - layout_fourcol
       blacklisted_blocks:
         layout_onecol: {  }
+        layout_twocol:
+          all_regions:
+            'Custom block types':
+              - uiowa_banner
+              - uiowa_hero
+            'Inline blocks':
+              - 'inline_block:uiowa_banner'
+              - 'inline_block:uiowa_hero'
         layout_threecol:
           all_regions:
             'Custom block types':
@@ -213,14 +205,6 @@ third_party_settings:
               - 'inline_block:uiowa_banner'
               - 'inline_block:uiowa_hero'
         layout_fourcol:
-          all_regions:
-            'Custom block types':
-              - uiowa_banner
-              - uiowa_hero
-            'Inline blocks':
-              - 'inline_block:uiowa_banner'
-              - 'inline_block:uiowa_hero'
-        layout_twocol:
           all_regions:
             'Custom block types':
               - uiowa_banner
