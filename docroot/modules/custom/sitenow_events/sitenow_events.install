@@ -28,7 +28,6 @@ function sitenow_events_update_8002() {
   $config = Drupal::configFactory()->getEditable('sitenow_events.settings');
   $new = [];
 
-  $config->set('sitenow_events.base_endpoint', 'https://content.uiowa.edu/api/v1');
   $config->clear('sitenow_events.filters_endpoint');
   $config->clear('sitenow_events.keywords_endpoint');
 
