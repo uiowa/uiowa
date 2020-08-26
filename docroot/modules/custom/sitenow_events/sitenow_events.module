@@ -51,7 +51,7 @@ function sitenow_events_preprocess_block(&$variables) {
     }
 
     // If we have more link checked and link provided, pass it.
-    if ($block->get('field_uiowa_events_display_more')->value === 1) {
+    if ($block->get('field_uiowa_events_display_more')->value == TRUE) {
       $variables['content']['more'] = [
         '#type' => 'container',
         '#attributes' => [
