@@ -82,6 +82,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
 
       if ($block->getPluginId() == 'menu_block:main') {
         // Restrict block settings on main navigation block.
+        $form["settings"]["menu_levels"]["level"]["#default_value"] = 2;
+        $form["settings"]["advanced"]["follow"]["#default_value"] = 1;
         $form["settings"]["menu_levels"]['#access'] = FALSE;
         $form["settings"]["advanced"]['#access'] = FALSE;
         $form["settings"]["style"]['#access'] = FALSE;
