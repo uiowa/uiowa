@@ -10,6 +10,11 @@ $imgpath: '../../uids/assets/images';
     //width: 100%;
     //flex: 1 0 auto;
     flex-basis: 100%;
+
+    &[class*="bg--"],
+    &[class*="bg-pattern--"] {
+      padding: $desktop-width-gutter;
+    }
   }
 
   .block-system-breadcrumb-block,
@@ -158,6 +163,16 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
         max-width: 100em;
         padding-right: $lg;
         padding-left: $lg;
+      }
+    }
+
+    &[class*="bg--"],
+    &[class*="bg-pattern--"] {
+      .lb__container {
+        @include breakpoint(container) {
+          padding-top: $desktop-width-gutter;
+          padding-bottom: $desktop-width-gutter;
+        }
       }
     }
   }
