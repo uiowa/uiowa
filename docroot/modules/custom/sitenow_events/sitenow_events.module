@@ -51,27 +51,27 @@ function sitenow_events_preprocess_block(&$variables) {
     }
 
     // If we have more link checked and link provided, pass it.
-    if ($block->get('field_uiowa_events_more_link')->value === TRUE) {
-      $variables['more'] = [
+    if ($block->get('field_uiowa_events_display_more')->value === 1) {
+      $variables['content']['more'] = [
         '#type' => 'container',
         '#attributes' => [
           'class' => 'more-link',
         ],
       ];
 
-      if (!empty($instance_values['more_path'])) {
-        $url = Url::fromUri($instance_values['more_path'][0]['uri']);
+      if (!empty($block->get('field_uiowa_events_more_link')->value)) {
+        $url = Url::fromUri();
       }
       else {
         $url = Url::fromUri('//events.uiowa.edu');
       }
 
-      $variables['more']['btn'] = [
+      $variables['content']['more']['btn'] = [
         '#type' => 'link',
         '#title' => 'View more events',
         '#url' => $url,
         '#attributes' => [
-          'class' => ['btn', 'btn-primary'],
+          'class' => ['bttn', 'bttn-primary', 'bttn-caps'],
         ],
       ];
     }
