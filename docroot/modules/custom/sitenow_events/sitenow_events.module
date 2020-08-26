@@ -195,7 +195,7 @@ function sitenow_events_prepare_data(array $events) {
  * @return array
  *   A request object.
  *
- * @todo Remove this after sitenow_events_paragraph is uninstalled.
+ * @todo: Remove this after sitenow_events_paragraph is uninstalled.
  */
 function sitenow_events_instance_values($events_instance) {
   $instance_values = [
@@ -314,7 +314,7 @@ function sitenow_events_format_instance(array $event_instance) {
 /**
  * Implements hook_field_widget_WIDGET_TYPE_form_alter().
  *
- * @todo Remove this after sitenow_events_paragraph is uninstalled.
+ * @todo: Remove this after sitenow_events_paragraph is uninstalled.
  */
 function sitenow_events_field_widget_paragraphs_form_alter(&$element, &$form_state, $context) {
   if ($element['#paragraph_type'] == 'events') {
@@ -493,6 +493,7 @@ function _sitenow_events_get_filter_field_options(FieldStorageConfig $definition
 function _build_options_tree(array $data, $parent = 0) {
   $tree = [];
   foreach ($data as $d) {
+    // @todo: Use strict comparison here.
     if ($d['parent_id'] == $parent) {
       $children = _build_options_tree($data, $d['id']);
       // Set a trivial key.
