@@ -20,16 +20,20 @@
   .bold-headline {
     @include bold-headline-highlight;
     margin-bottom: 1rem;
+
     span {
       @include bold-headline-highlight-word;
     }
   }
+
   .bttn--primary {
     @include bttn--secondary;
     border: none;
+
     svg {
       color: $primary;
     }
+
     &:after {
       background-color: $primary;
     }
@@ -37,10 +41,27 @@
 }
 
 .banner__bold-headline--underline {
+  .bold-headline+.banner__text {
+    margin-top: 1rem;
+  }
+
   .bold-headline {
     @include bold-headline-underline;
+    width: fit-content;
+    box-shadow: inset 0 -0.1em #FFCD00;
+
+    &:after {
+      margin-bottom: 0;
+    }
   }
 }
+
+.banner--horizontal-center.banner__bold-headline--underline {
+  .bold-headline {
+    margin: 0 auto;
+  }
+}
+
 
 .banner__bold-headline--serif {
   .bold-headline {
@@ -53,4 +74,11 @@
     @include bold-headline-highlight;
     font-weight: 600;
   }
+}
+
+.bold-headline--underline::after {
+  content: '\A';
+  white-space: pre;
+  margin-bottom: 0;
+  display: inline-block;
 }
