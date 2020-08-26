@@ -24,12 +24,12 @@ function template_preprocess_sitenow_events_teaser(array &$variables) {
       '#alt' => $variables['event']['title'],
     ];
   }
-  $external_link = ($config->get('sitenow_events.event_link') == 'event-link-external') ? TRUE : FALSE;
+  $external_link = ($config->get('event_link') == 'event-link-external') ? TRUE : FALSE;
   if ($external_link) {
     $variables['event']['url'] = $variables['event']['events_site_url'];
   }
   else {
-    $single_event_path = $config->get('sitenow_events.single_event_path');;
+    $single_event_path = $config->get('single_event_path');;
     // Add a parameter on the URL for event instances.
     foreach ($variables['event']['event_instances'] as $key => $instance) {
       if ($variables['event']['instance_start'] == $instance['event_instance']['start']) {

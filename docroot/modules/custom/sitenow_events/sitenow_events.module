@@ -88,7 +88,7 @@ function sitenow_events_preprocess_block(&$variables) {
 function sitenow_events_load(array $params = ['display_id' => 'events'], array $args = ['views', 'event_instances_api.json'], $cache = TRUE) {
   // Endpoint base.
   $config = \Drupal::config('sitenow_events.settings');
-  $endpoint = $config->get('sitenow_events.base_endpoint');
+  $endpoint = $config->get('base_endpoint');
   // Append args to the $endpoint.
   $endpoint = $endpoint . implode('/', $args);
   // If we have parameters.
@@ -394,8 +394,7 @@ function _sitenow_events_process_element(array $element, FormStateInterface $for
  * @see options_allowed_values()
  */
 function _sitenow_events_get_filter_field_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable = TRUE) {
-  $api_endpoint = \Drupal::config('sitenow_events.settings')
-    ->get('base_endpoint');
+  $api_endpoint = \Drupal::config('sitenow_events.settings')->get('base_endpoint');
 
   $filter_options = [];
 
