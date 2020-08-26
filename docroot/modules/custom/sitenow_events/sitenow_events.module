@@ -7,9 +7,76 @@
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\Component\Utility\Xss;
 use GuzzleHttp\Exception\RequestException;
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_events_preprocess_block(&$variables) {
+  if ($variables['elements']['#plugin_id'] == 'inline_block:uiowa_events') {
+    $variables['#attached']['library'][] = 'uids_base/event';
+
+    /** @var \Drupal\Block\Entity\Block $block */
+    $block = $variables['elements']['content']['#block_content'];
+    $start = date('d-m-Y');
+
+    $events = sitenow_events_load([
+      'display_id' => 'events',
+      'filters[department]' => $block->get('field_uiowa_events_department')->value,
+      'filters[audiences]' => $block->get('field_uiowa_events_audiences')->value,
+      'filters[interests]' => $block->get('field_uiowa_events_interests')->value,
+      'filters[types]' => $block->get('field_uiowa_events_types')->value,
+      'filters[keywords]' => $block->get('field_uiowa_events_keywords')->value,
+      'filters[startdate][value][date]' => date('m-d-Y', strtotime($start)),
+      'filters[enddate][value][date]' => date('m-d-Y', strtotime($start . '+365 days')),
+      'page' => 0,
+      'items_per_page' => $block->get('field_uiowa_events_results')->value ?? 50,
+    ]);
+
+    if (!empty($events['events'])) {
+      foreach ($events['events'] as $e) {
+        $variables['content'][] = [
+          '#theme' => 'sitenow_events_teaser',
+          '#event' => $e,
+        ];
+      }
+    }
+    else {
+      $variables['content'] = [
+        '#markup' => '<div class="events-empty"><p>There are currently no events to display.</p></div>',
+      ];
+    }
+
+    // If we have more link checked and link provided, pass it.
+    if ($block->get('field_uiowa_events_more_link')->value === TRUE) {
+      $variables['more'] = [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => 'more-link',
+        ],
+      ];
+
+      if (!empty($instance_values['more_path'])) {
+        $url = Url::fromUri($instance_values['more_path'][0]['uri']);
+      }
+      else {
+        $url = Url::fromUri('//events.uiowa.edu');
+      }
+
+      $variables['more']['btn'] = [
+        '#type' => 'link',
+        '#title' => 'View more events',
+        '#url' => $url,
+        '#attributes' => [
+          'class' => ['btn', 'btn-primary'],
+        ],
+      ];
+    }
+  }
+}
 
 /**
  * Load and return events from events api.
