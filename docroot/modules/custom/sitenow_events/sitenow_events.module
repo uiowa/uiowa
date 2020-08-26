@@ -405,24 +405,17 @@ function _sitenow_events_get_filter_field_options(FieldStorageConfig $definition
 
   foreach ($endpoints as $endpoint) {
     try {
-      $response = \Drupal::httpClient()
-        ->get($endpoint, ['headers' => ['Accept' => 'text/plain']]);
-      $data = (string) $response->getBody();
-      if (empty($data)) {
-        \Drupal::messenger()->addError(t('Empty response.'));
-      }
-      else {
-        $results = json_decode($data, TRUE);
-      }
+      $response = \Drupal::httpClient()->get($endpoint);
+      $data = json_decode($response->getBody()->getContents(), TRUE);
     }
     catch (RequestException $e) {
       watchdog_exception('sitenow_events', $e);
     }
 
-    if (!empty($results)) {
+    if (!empty($data)) {
       $forest = [];
       // Build a parent/children tree for each filter.
-      foreach ($results as $filter => $values) {
+      foreach ($data as $filter => $values) {
         $forest[$filter] = _build_options_tree($values);
       }
       // Output a formatted options array for each filter.
