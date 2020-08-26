@@ -6,20 +6,25 @@ id: iowasuperfund_uiowa_edu
 label: iowasuperfund.uiowa.edu
 description: 'Site split for iowasuperfund.uiowa.edu.'
 folder: ../config/iowasuperfund.uiowa.edu
-module: {  }
+module:
+  fragments: 0
 theme: {  }
 blacklist: {  }
 graylist:
   - config_split.config_split.iowasuperfund_uiowa_edu
   - core.entity_form_display.node.article.default
   - core.entity_view_display.node.article.default
+  - field.storage.fragment.field_authors
   - field.storage.node.field_publication_date
   - field.storage.node.field_publication_name
   - field.storage.node.field_publication_project_core
   - field.storage.node.field_publication_source_link
+  - fragments.fragment_type.publication
+  - node.type.project_core
   - node.type.publication
   - node.type.research_project
   - node.type.support_core
+  - simple_sitemap.bundle_settings.default.node.project_core
   - simple_sitemap.bundle_settings.default.node.research_project
   - simple_sitemap.bundle_settings.default.node.support_core
 graylist_dependents: true
