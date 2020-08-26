@@ -31,7 +31,7 @@ function template_preprocess_sitenow_events_teaser(array &$variables) {
     $variables['event']['url'] = $variables['event']['events_site_url'];
   }
   else {
-    $single_event_path = $config->get('single_event_path');;
+    $single_event_path = $config->get('single_event_path');
     // Add a parameter on the URL for event instances.
     foreach ($variables['event']['event_instances'] as $key => $instance) {
       if ($variables['event']['instance_start'] == $instance['event_instance']['start']) {
