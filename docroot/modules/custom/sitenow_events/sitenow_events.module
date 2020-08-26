@@ -82,21 +82,20 @@ function sitenow_events_preprocess_block(&$variables) {
  * @param bool $cache
  *   Boolean to determine if we cache the request.
  *
- * @return mixed
- *   A request object.
+ * @return array
+ *   An array of events.
  */
 function sitenow_events_load(array $params = ['display_id' => 'events'], array $args = ['views', 'event_instances_api.json'], $cache = TRUE) {
-  // Endpoint base.
   $config = \Drupal::config('sitenow_events.settings');
   $endpoint = $config->get('base_endpoint');
+
   // Append args to the $endpoint.
   $endpoint = $endpoint . implode('/', $args);
-  // If we have parameters.
+
+  // Build an encoded query string from the params.
   if (!empty($params)) {
-    // Build an encoded query string from the params.
     $query = _build_http_query($params);
     $query = '?' . urldecode($query);
-    // Build the endpoint.
     $endpoint = $endpoint . $query;
   }
 
@@ -105,28 +104,25 @@ function sitenow_events_load(array $params = ['display_id' => 'events'], array $
     $events['cache'] = 'hit: ' . $endpoint;
   }
   else {
-    // Create a request object.
     try {
-      $request = \Drupal::httpClient()->get($endpoint, ['headers' => ['Accept' => 'text/plain']]);
-      $data = $request->getBody();
+      $request = \Drupal::httpClient()->get($endpoint);
     }
     catch (RequestException $e) {
       watchdog_exception('sitenow_events', $e);
     }
-    // Decode the json.
-    $json = json_decode($data, TRUE);
+
     // Return an array of events with optional params.
+    $json = json_decode($request->getBody()->getContents(), TRUE);
     $events = sitenow_events_prepare_data($json);
     $events['cache'] = 'miss';
 
-    // If cache is not set to TRUE.
+    // Create a cache item set to 300 seconds (5 minutes).
     if ($cache !== FALSE) {
-      // Create a cache item set to 300 seconds (5 minutes).
       $request_time = \Drupal::time()->getRequestTime();
       \Drupal::cache('uievents')->set($endpoint, $events, $request_time + 300);
     }
   }
-  // Return an array of events with optional params.
+
   return $events;
 }
 
@@ -140,8 +136,9 @@ function sitenow_events_load(array $params = ['display_id' => 'events'], array $
  *   A request object.
  */
 function sitenow_events_prepare_data(array $events) {
+  // We need to set the events array key to prevent undefined indices.
+  // @todo: Remove this bizarre nesting.
   if (empty($events)) {
-    // We need to set the events array key to prevent undefined indices.
     $events['events'] = [];
   }
   else {
