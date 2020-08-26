@@ -27,8 +27,11 @@
   .bttn--primary {
     @include bttn--secondary;
     border: none;
-    span {
+    svg {
       color: $primary;
+    }
+    &:after {
+      background-color: $primary;
     }
   }
 }
