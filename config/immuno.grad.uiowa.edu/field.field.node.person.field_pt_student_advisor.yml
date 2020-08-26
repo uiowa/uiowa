@@ -1,0 +1,26 @@
+uuid: dfae9064-7712-4984-96b5-85a1e6e4827c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_pt_student_advisor
+    - node.type.person
+id: node.person.field_pt_student_advisor
+field_name: field_pt_student_advisor
+entity_type: node
+bundle: person
+label: Advisor
+description: 'The faculty advisor must have already been created.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: views
+  handler_settings:
+    view:
+      view_name: person_reference
+      display_name: entity_reference_1
+      arguments:
+        - '16'
+field_type: entity_reference
