@@ -36,7 +36,7 @@ function sitenow_events_preprocess_block(&$variables) {
     ]);
 
     if (isset($data['events'])) {
-      foreach ($data['events'] as $key => $value) {
+      foreach ($data['events'] as $value) {
         // The API nests each event as an array.
         $event = $value['event'];
 
