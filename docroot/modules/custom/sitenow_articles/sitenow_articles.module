@@ -444,8 +444,8 @@ function sitenow_articles_preprocess_block(&$variables) {
       $view = Views::getView('articles_block');
       $view->setDisplay('block_articles');
       $block = $variables['elements']['content']['#block_content'];
-      if ($block->hasField('field_uiowa_articles_reference') && !$block->get('field_uiowa_articles_reference')->isEmpty()) {
-        $tids = $block->get('field_uiowa_articles_reference')->getValue();
+      if ($block->hasField('field_uiowa_views_reference') && !$block->get('field_uiowa_views_reference')->isEmpty()) {
+        $tids = $block->get('field_uiowa_views_reference')->getValue();
         // Clean array of tids selected.
         $tids = array_column($tids, 'target_id');
       }
@@ -461,8 +461,8 @@ function sitenow_articles_preprocess_block(&$variables) {
         $view->display_handler->setOption('content_heading', $block->field_collection_heading_size->value);
       }
 
-      if ($block->hasField('field_uiowa_articles_items') && !$block->get('field_uiowa_articles_items')->isEmpty()) {
-        $items = $block->field_uiowa_articles_items->value;
+      if ($block->hasField('field_uiowa_views_items') && !$block->get('field_uiowa_views_items')->isEmpty()) {
+        $items = $block->field_uiowa_views_items->value;
         $view->setItemsPerPage($items);
         $view->setExposedInput([
           'items_per_page' => $items,
@@ -470,8 +470,8 @@ function sitenow_articles_preprocess_block(&$variables) {
       }
       $pager_type = 'some';
       // Show pager if it exists and is set.
-      if ($block->hasField('field_uiowa_articles_pager')) {
-        if ($block->field_uiowa_articles_pager->value == 1) {
+      if ($block->hasField('field_uiowa_views_pager')) {
+        if ($block->field_uiowa_views_pager->value == 1) {
           $pager_type = 'full';
         }
       }
@@ -485,8 +485,8 @@ function sitenow_articles_preprocess_block(&$variables) {
       $variables['content']['view'] = $view->render();
 
       // If we have more link checked and link provided, pass it.
-      if ($block->hasField('field_uiowa_articles_more')) {
-        $more = ($block->field_uiowa_articles_more->value == 1) ? TRUE : FALSE;
+      if ($block->hasField('field_uiowa_views_more')) {
+        $more = ($block->field_uiowa_views_more->value == 1) ? TRUE : FALSE;
         if ($more == TRUE) {
           $variables['content']['more'] = [
             '#type' => 'container',
@@ -498,7 +498,7 @@ function sitenow_articles_preprocess_block(&$variables) {
           $view = View::load('articles');
           $default =& $view->getDisplay('default');
 
-          if (!empty($more_path = $block->get('field_uiowa_articles_more_path')->getValue())) {
+          if (!empty($more_path = $block->get('field_uiowa_views_more_path')->getValue())) {
             $url = Url::fromUri($more_path[0]['uri']);
           }
           elseif ($view->getDisplay('page_articles')['display_options']['enabled'] == TRUE) {

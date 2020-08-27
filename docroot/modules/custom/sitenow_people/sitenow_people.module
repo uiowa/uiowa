@@ -467,19 +467,19 @@ function sitenow_people_preprocess_block(&$variables) {
     case 'inline_block:uiowa_people':
       $variables['#attached']['library'][] = 'uids_base/people';
       $block = $variables['elements']['content']['#block_content'];
-      if ($block->hasField('field_uiowa_people_sort') && !$block->get('field_uiowa_people_sort')->isEmpty()) {
-        if ($block->field_uiowa_people_sort->value == 'block_people_slf') {
+      if ($block->hasField('field_uiowa_views_sort') && !$block->get('field_uiowa_views_sort')->isEmpty()) {
+        if ($block->field_uiowa_views_sort->value == 'block_people_slf') {
           $view = Views::getView('people_block');
           $view->setDisplay('block_people_slf');
         }
-        elseif ($block->field_uiowa_people_sort->value == 'block_people_sfl') {
+        elseif ($block->field_uiowa_views_sort->value == 'block_people_sfl') {
           $view = Views::getView('people_block');
           $view->setDisplay('block_people_sfl');
         }
       }
 
-      if ($block->hasField('field_uiowa_people_reference') && !$block->get('field_uiowa_people_reference')->isEmpty()) {
-        $tids = $block->get('field_uiowa_people_reference')->getValue();
+      if ($block->hasField('field_uiowa_views_reference') && !$block->get('field_uiowa_views_reference')->isEmpty()) {
+        $tids = $block->get('field_uiowa_views_reference')->getValue();
         // Clean array of tids selected.
         $tids = array_column($tids, 'target_id');
       }
@@ -495,8 +495,8 @@ function sitenow_people_preprocess_block(&$variables) {
         $view->display_handler->setOption('content_heading', $block->field_collection_heading_size->value);
       }
 
-      if ($block->hasField('field_uip_items') && !$block->get('field_uip_items')->isEmpty()) {
-        $items = $block->field_uip_items->value;
+      if ($block->hasField('field_uiowa_views_items') && !$block->get('field_uiowa_views_items')->isEmpty()) {
+        $items = $block->field_uiowa_views_items->value;
         $view->setItemsPerPage($items);
         $view->setExposedInput([
           'items_per_page' => $items,
@@ -504,8 +504,8 @@ function sitenow_people_preprocess_block(&$variables) {
       }
       $pager_type = 'some';
       // Show pager if it exists and is set.
-      if ($block->hasField('field_uip_pager')) {
-        if ($block->field_uip_pager->value == 1) {
+      if ($block->hasField('field_uiowa_views_pager')) {
+        if ($block->field_uiowa_views_pager->value == 1) {
           $pager_type = 'full';
         }
       }
@@ -520,8 +520,8 @@ function sitenow_people_preprocess_block(&$variables) {
       $variables['content']['view'] = $view->render();
 
       // If we have more link checked and link provided, pass it.
-      if ($block->hasField('field_uiowa_people_more')) {
-        $more = ($block->field_uiowa_people_more->value == 1) ? TRUE : FALSE;
+      if ($block->hasField('field_uiowa_views_more')) {
+        $more = ($block->field_uiowa_views_more->value == 1) ? TRUE : FALSE;
         if ($more == TRUE) {
           $variables['content']['more'] = [
             '#type' => 'container',
@@ -533,7 +533,7 @@ function sitenow_people_preprocess_block(&$variables) {
           $view = View::load('people');
           $default =& $view->getDisplay('default');
 
-          if (!empty($more_path = $block->get('field_uiowa_people_more_path')->getValue())) {
+          if (!empty($more_path = $block->get('field_uiowa_views_more_path')->getValue())) {
             $url = Url::fromUri($more_path[0]['uri']);
           }
 

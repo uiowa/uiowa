@@ -180,22 +180,11 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
       break;
 
     case 'inline_block:uiowa_articles':
-      if (isset($element["field_uiowa_articles_more_path"])) {
-        $element["field_uiowa_articles_more_path"]['#states'] = [
-          'visible' => [
-            ':input[name="settings[block_form][field_uiowa_articles_more][value]"]' => [
-              'checked' => TRUE,
-            ],
-          ],
-        ];
-      }
-      break;
-
     case 'inline_block:uiowa_people':
-      if (isset($element["field_uiowa_people_more_path"])) {
-        $element["field_uiowa_people_more_path"]['#states'] = [
+      if (isset($element["field_uiowa_views_more_path"])) {
+        $element["field_uiowa_views_more_path"]['#states'] = [
           'visible' => [
-            ':input[name="settings[block_form][field_uiowa_people_more][value]"]' => [
+            ':input[name="settings[block_form][field_uiowa_views_more][value]"]' => [
               'checked' => TRUE,
             ],
           ],

@@ -5,11 +5,11 @@ dependencies:
   config:
     - block_content.type.uiowa_articles
     - field.field.block_content.uiowa_articles.field_collection_heading_size
-    - field.field.block_content.uiowa_articles.field_uiowa_articles_items
-    - field.field.block_content.uiowa_articles.field_uiowa_articles_more
-    - field.field.block_content.uiowa_articles.field_uiowa_articles_more_path
-    - field.field.block_content.uiowa_articles.field_uiowa_articles_pager
-    - field.field.block_content.uiowa_articles.field_uiowa_articles_reference
+    - field.field.block_content.uiowa_articles.field_uiowa_views_items
+    - field.field.block_content.uiowa_articles.field_uiowa_views_more
+    - field.field.block_content.uiowa_articles.field_uiowa_views_more_path
+    - field.field.block_content.uiowa_articles.field_uiowa_views_pager
+    - field.field.block_content.uiowa_articles.field_uiowa_views_reference
   module:
     - link
 id: block_content.uiowa_articles.default
@@ -23,21 +23,21 @@ content:
     third_party_settings: {  }
     type: options_select
     region: content
-  field_uiowa_articles_items:
+  field_uiowa_views_items:
     weight: 2
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
-  field_uiowa_articles_more:
+  field_uiowa_views_more:
     weight: 5
     settings:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
-  field_uiowa_articles_more_path:
+  field_uiowa_views_more_path:
     weight: 6
     settings:
       placeholder_url: ''
@@ -45,14 +45,14 @@ content:
     third_party_settings: {  }
     type: link_default
     region: content
-  field_uiowa_articles_pager:
+  field_uiowa_views_pager:
     weight: 3
     settings:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
-  field_uiowa_articles_reference:
+  field_uiowa_views_reference:
     weight: 1
     settings:
       match_operator: CONTAINS

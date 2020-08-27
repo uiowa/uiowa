@@ -5,12 +5,12 @@ dependencies:
   config:
     - block_content.type.uiowa_people
     - field.field.block_content.uiowa_people.field_collection_heading_size
-    - field.field.block_content.uiowa_people.field_uiowa_people_items
-    - field.field.block_content.uiowa_people.field_uiowa_people_more
-    - field.field.block_content.uiowa_people.field_uiowa_people_more_path
-    - field.field.block_content.uiowa_people.field_uiowa_people_pager
-    - field.field.block_content.uiowa_people.field_uiowa_people_reference
-    - field.field.block_content.uiowa_people.field_uiowa_people_sort
+    - field.field.block_content.uiowa_people.field_uiowa_views_items
+    - field.field.block_content.uiowa_people.field_uiowa_views_more
+    - field.field.block_content.uiowa_people.field_uiowa_views_more_path
+    - field.field.block_content.uiowa_people.field_uiowa_views_pager
+    - field.field.block_content.uiowa_people.field_uiowa_views_reference
+    - field.field.block_content.uiowa_people.field_uiowa_views_sort
   module:
     - link
 id: block_content.uiowa_people.default
@@ -24,21 +24,21 @@ content:
     third_party_settings: {  }
     type: options_select
     region: content
-  field_uiowa_people_items:
+  field_uiowa_views_items:
     weight: 3
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
-  field_uiowa_people_more:
+  field_uiowa_views_more:
     weight: 6
     settings:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
-  field_uiowa_people_more_path:
+  field_uiowa_views_more_path:
     weight: 7
     settings:
       placeholder_url: ''
@@ -46,14 +46,14 @@ content:
     third_party_settings: {  }
     type: link_default
     region: content
-  field_uiowa_people_pager:
+  field_uiowa_views_pager:
     weight: 4
     settings:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
-  field_uiowa_people_reference:
+  field_uiowa_views_reference:
     weight: 1
     settings:
       match_operator: CONTAINS
@@ -63,7 +63,7 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete_tags
     region: content
-  field_uiowa_people_sort:
+  field_uiowa_views_sort:
     weight: 2
     settings: {  }
     third_party_settings: {  }
