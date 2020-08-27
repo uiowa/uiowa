@@ -1565,3 +1565,9 @@ $sites['orghhpatuiowa.local.drupal.uiowa.edu'] = 'hhpatuiowa.org.uiowa.edu';
 $sites['orghhpatuiowa.dev.drupal.uiowa.edu'] = 'hhpatuiowa.org.uiowa.edu';
 $sites['orghhpatuiowa.stage.drupal.uiowa.edu'] = 'hhpatuiowa.org.uiowa.edu';
 $sites['orghhpatuiowa.prod.drupal.uiowa.edu'] = 'hhpatuiowa.org.uiowa.edu';
+
+// Directory aliases for admissions.uiowa.edu.
+$sites['admissions.local.drupal.uiowa.edu'] = 'admissions.uiowa.edu';
+$sites['admissions.dev.drupal.uiowa.edu'] = 'admissions.uiowa.edu';
+$sites['admissions.stage.drupal.uiowa.edu'] = 'admissions.uiowa.edu';
+$sites['admissions.prod.drupal.uiowa.edu'] = 'admissions.uiowa.edu';
