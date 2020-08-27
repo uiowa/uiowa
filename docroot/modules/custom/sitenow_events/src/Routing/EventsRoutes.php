@@ -53,6 +53,7 @@ class EventsRoutes implements ContainerInjectionInterface {
       $path . '/{event_id}/{event_instance}',
       [
         '_controller' => '\Drupal\sitenow_events\Controller\EventsController::build',
+        '_title_callback' => '\Drupal\sitenow_events\Controller\EventsController::title',
       ],
       [
         '_permission'  => 'access content',
