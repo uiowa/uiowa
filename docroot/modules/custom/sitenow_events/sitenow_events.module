@@ -269,143 +269,103 @@ function _sitenow_events_process_element(array $element, FormStateInterface $for
  * @see options_allowed_values()
  */
 function _sitenow_events_get_filter_field_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable = TRUE) {
-  $api_endpoint = \Drupal::config('sitenow_events.settings')->get('base_endpoint');
-
-  $filter_options = [];
-
-  $endpoints = [
-    "{$api_endpoint}views/filters_api.json?display_id=filters",
-    "{$api_endpoint}views/filters_api.json?display_id=keywords",
-  ];
-
-  foreach ($endpoints as $endpoint) {
-    try {
-      $response = \Drupal::httpClient()->get($endpoint);
-      $data = json_decode($response->getBody()->getContents(), TRUE);
-    }
-    catch (RequestException $e) {
-      watchdog_exception('sitenow_events', $e);
-    }
-
-    if (!empty($data)) {
-      $forest = [];
-      // Build a parent/children tree for each filter.
-      foreach ($data as $filter => $values) {
-        $forest[$filter] = _build_options_tree($values);
-      }
-      // Output a formatted options array for each filter.
-      foreach ($forest as $filter => $tree) {
-        $filter_options[$filter] = _build_options_list($tree);
-      }
-    }
-  }
-
-  // Sort the options.
-  ksort($filter_options);
-
-  $options = ['0' => 'None'];
-
   switch ($definition->getName()) {
     case 'field_events_department':
     case 'field_uiowa_events_department':
-      if (isset($filter_options['departments'])) {
-        $options = $filter_options['departments'];
-      }
-      break;
+      $data = sitenow_events_load(['display_id' => 'filters'], ['views', 'filters_api.json']);
+      $options = _sitenow_events_process_nested_filters($data['departments']);
+
+    break;
 
     case 'field_events_audiences':
     case 'field_uiowa_events_audiences':
-      if (isset($filter_options['event_audience'])) {
-        $options = $filter_options['event_audience'];
-      }
+      $data = sitenow_events_load(['display_id' => 'filters'], ['views', 'filters_api.json']);
+      $options = _sitenow_events_process_nested_filters($data['event_audience']);
+
       break;
 
     case 'field_events_gen_interests':
     case 'field_uiowa_events_interests':
-      if (isset($filter_options['event_general_interest'])) {
-        $options = $filter_options['event_general_interest'];
-      }
+      $data = sitenow_events_load(['display_id' => 'filters'], ['views', 'filters_api.json']);
+      $options = _sitenow_events_process_nested_filters($data['event_general_interest']);
+
       break;
 
     case 'field_events_event_types':
     case 'field_uiowa_events_types':
-      if (isset($filter_options['event_types'])) {
-        $options = $filter_options['event_types'];
-      }
+      $data = sitenow_events_load(['display_id' => 'filters'], ['views', 'filters_api.json']);
+      $options = _sitenow_events_process_nested_filters($data['event_types']);
+
       break;
 
     case 'field_events_keywords':
     case 'field_uiowa_events_keywords':
-      if (isset($filter_options['keywords'])) {
-        $options = $filter_options['keywords'];
+      $data = sitenow_events_load(['display_id' => 'keywords'], ['views', 'filters_api.json']);
+
+      foreach ($data['keywords'] as $keyword) {
+        $options[$keyword['id']] = $keyword['name'];
       }
+
       break;
 
     case 'field_events_places':
     case 'field_uiowa_events_places':
-      if (isset($filter_options['places'])) {
-        $options = $filter_options['places'];
+      $data = sitenow_events_load(['display_id' => 'places'], ['views', 'places_api.json']);
+
+      foreach ($data['places'] as $place) {
+        $options[$place['id']] = $place['name'];
       }
+
       break;
 
   }
+
+  // Sort the options.
+  asort($options);
 
   return $options;
 }
 
 /**
- * Helper function to build the options tree.
+ * Process filters as nested select list options with optgroups.
  *
- * @param array $data
- *   Array of data to be sorted into a tree.
- * @param int $parent
- *   Stores the current id.
+ * @param $filters
  *
  * @return array
- *   Returns an associative array options tree.
+ *   The select list options.
  */
-function _build_options_tree(array $data, $parent = 0) {
-  $tree = [];
-  foreach ($data as $d) {
-    // @todo: Use strict comparison here.
-    if ($d['parent_id'] == $parent) {
-      $children = _build_options_tree($data, $d['id']);
-      // Set a trivial key.
-      if (!empty($children)) {
-        $d['_children'] = $children;
-      }
-      $tree[] = $d;
-    }
-  }
-  return $tree;
-}
+function _sitenow_events_process_nested_filters($filters) {
+  $options = [];
 
-/**
- * Helper function to output the options array.
- *
- * @param array $tree
- *   Array of tree data to be printed.
- * @param int $r
- *   Basic counter.
- * @param int $p
- *   Parent id.
- * @param array $options
- *   Options array to be passed recursively.
- *
- * @return array
- *   Returns options with children prefixed with dashes.
- */
-function _build_options_list(array $tree, $r = 0, $p = NULL, array &$options = []) {
-  foreach ($tree as $t) {
-    $dash = ($t['parent_id'] == 0) ? '' : str_repeat('-', $r) . ' ';
-    $options[$t['id']] = $dash . $t['name'];
-    if ($t['parent_id'] == $p) {
-      // Reset $r.
-      $r = 0;
+  foreach ($filters as $filter) {
+    // Create some variables for easier array access.
+    $id = $filter['id'];
+    $name = $filter['name'];
+    $parent_id = $filter['parent_id'];
+    $parent_name = $filter['parent_name'];
+
+    // This filter has no parent. Add it.
+    if ($parent_id == NULL) {
+      $options[$id] = $name;
     }
-    if (isset($t['_children'])) {
-      _build_options_list($t['_children'], ++$r, $t['parent_id'], $options);
+    else {
+      // Add the parent keyed by name so it is used as the optgroup label.
+      if (!isset($options[$parent_name])) {
+        $options[$parent_name] = [
+          $parent_id => $parent_name,
+          $id => $name,
+        ];
+      }
+      else {
+        $options[$parent_name][$id] = $name;
+      }
+
+      // Unset the parent ID so we don't have duplicates.
+      if (isset($options[$parent_id])) {
+        unset($options[$parent_id]);
+      }
     }
   }
+
   return $options;
 }
