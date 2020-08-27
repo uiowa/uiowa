@@ -32,6 +32,18 @@
 
   &[class*="bg--"],
   &[class*="bg-pattern--"] {
+    .card.card--horizontal {
+      padding: 1.25rem;
+    }
+
+    .card.card--horizontal .card__body {
+      padding: 0;
+    }
+
+    .card.card--horizontal .card__media+.card__body {
+      padding: 0 0 0 1.25rem;
+    }
+
     .card:not(.card--horizontal) {
       .card__body {
         padding: 2rem;
@@ -42,6 +54,22 @@
 
 .card.bg--gray {
   background: $light;
+
+  &.card--horizontal {
+    padding: 1.25rem;
+
+    .card__body {
+      padding: 0;
+    }
+
+    .card__media+.card__body {
+      padding: 0 0 0 1.25rem;
+    }
+  }
+
+  .card__body {
+    padding: 2rem;
+  }
 
   .bttn--tertiary {
     background: $light;
