@@ -113,13 +113,19 @@ function sitenow_events_load(array $params = ['display_id' => 'events'], array $
       watchdog_exception('sitenow_events', $e);
     }
 
-    $data = json_decode($request->getBody()->getContents(), TRUE);
+    if ($request) {
+      $data = json_decode($request->getBody()->getContents(), TRUE);
 
-    // Create a cache item set to 300 seconds (5 minutes).
-    if ($cache !== FALSE) {
-      $request_time = \Drupal::time()->getRequestTime();
-      \Drupal::cache('uievents')->set($endpoint, $data, $request_time + 300);
+      // Create a cache item set to 300 seconds (5 minutes).
+      if ($cache !== FALSE) {
+        $request_time = \Drupal::time()->getRequestTime();
+        \Drupal::cache('uievents')->set($endpoint, $data, $request_time + 300);
+      }
     }
+    else {
+      $data = [];
+    }
+
   }
 
   return $data;
