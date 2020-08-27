@@ -113,7 +113,7 @@ function sitenow_events_load(array $params = ['display_id' => 'events'], array $
       watchdog_exception('sitenow_events', $e);
     }
 
-    if ($request) {
+    if (isset($request)) {
       $data = json_decode($request->getBody()->getContents(), TRUE);
 
       // Create a cache item set to 300 seconds (5 minutes).
