@@ -5,6 +5,7 @@
  * Provides an event feed entity type.
  */
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
@@ -21,17 +22,16 @@ function sitenow_events_preprocess_block(&$variables) {
 
     /** @var \Drupal\Block\Entity\Block $block */
     $block = $variables['elements']['content']['#block_content'];
-    $start = date('d-m-Y');
 
     $events = sitenow_events_load([
       'display_id' => 'events',
-      'filters[department]' => $block->get('field_uiowa_events_department')->value,
-      'filters[audiences]' => $block->get('field_uiowa_events_audiences')->value,
-      'filters[interests]' => $block->get('field_uiowa_events_interests')->value,
-      'filters[types]' => $block->get('field_uiowa_events_types')->value,
-      'filters[keywords]' => $block->get('field_uiowa_events_keywords')->value,
-      'filters[startdate][value][date]' => date('m-d-Y', strtotime($start)),
-      'filters[enddate][value][date]' => date('m-d-Y', strtotime($start . '+365 days')),
+      'filters[department]' => $block->get('field_uiowa_events_department')->getString(),
+      'filters[audiences]' => $block->get('field_uiowa_events_audiences')->getString(),
+      'filters[interests]' => $block->get('field_uiowa_events_interests')->getString(),
+      'filters[types]' => $block->get('field_uiowa_events_types')->getString(),
+      'filters[keywords]' => $block->get('field_uiowa_events_keywords')->getString(),
+      'filters[startdate][value][date]' => date('m-d-Y', strtotime(date('d-m-Y'))),
+      'filters[enddate][value][date]' => date('m-d-Y', strtotime(date('d-m-Y') . '+365 days')),
       'page' => 0,
       'items_per_page' => $block->get('field_uiowa_events_results')->value ?? 50,
     ]);
@@ -92,11 +92,11 @@ function sitenow_events_load(array $params = ['display_id' => 'events'], array $
   // Append args to the $endpoint.
   $endpoint = $endpoint . implode('/', $args);
 
-  // Build an encoded query string from the params.
+  // The content hub API does not work with encoded parameters so we decode it.
   if (!empty($params)) {
-    $query = _build_http_query($params);
-    $query = '?' . urldecode($query);
-    $endpoint = $endpoint . $query;
+    $query = UrlHelper::buildQuery($params);
+    $query = urldecode($query);
+    $endpoint = "{$endpoint}?{$query}";
   }
 
   if ($events = \Drupal::cache('uievents')->get($endpoint)) {
@@ -463,51 +463,4 @@ function _build_options_list(array $tree, $r = 0, $p = NULL, array &$options = [
     }
   }
   return $options;
-}
-
-/**
- * Helper function to build an http query string.
- *
- * @param array $query
- *   Key value pairs to be used in the query.
- *
- * @return string
- *   http query string.
- *
- * @see sitenow_events_load()
- */
-function _build_http_query(array $query) {
-  $query_array = [];
-  // Sort the keys of the $params array. This ensures the cache_id.
-  ksort($query);
-  foreach ($query as $param_name => $param_value) {
-    // Only include params that are not empty.
-    if (!empty($param_value)) {
-      // If $param_value is an array assume it's a filter.
-      // Multivalued filter items should be comma separated.
-      if (is_array($param_value)) {
-        // Sort the values to ensure cache_id.
-        sort($param_value);
-        $v = '';
-        $end = end($param_value);
-        // Construct multivalued array items to be comma separated stings.
-        foreach ($param_value as $filter_value) {
-          // If it's the last value then we don't need a comma.
-          if ($filter_value == $end) {
-            $v .= urlencode($filter_value);
-            // When we are done add the param to the query_array.
-            $query_array[] = urlencode($param_name) . '=' . urlencode($v);
-          }
-          // Otherwise add a comma and continue looping.
-          else {
-            $v .= urlencode($filter_value) . ',';
-          }
-        }
-      }
-      else {
-        $query_array[] = urlencode($param_name) . '=' . urlencode($param_value);
-      }
-    }
-  }
-  return implode('&', $query_array);
 }
