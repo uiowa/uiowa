@@ -1,0 +1,222 @@
+uuid: 29543f90-b99a-4bcb-8508-764401e20f22
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.person.field_image
+    - field.field.node.person.field_person_bio
+    - field.field.node.person.field_person_credential
+    - field.field.node.person.field_person_department
+    - field.field.node.person.field_person_email
+    - field.field.node.person.field_person_first_name
+    - field.field.node.person.field_person_hide
+    - field.field.node.person.field_person_lab_building
+    - field.field.node.person.field_person_lab_phone
+    - field.field.node.person.field_person_lab_room
+    - field.field.node.person.field_person_last_name
+    - field.field.node.person.field_person_office_building
+    - field.field.node.person.field_person_office_phone
+    - field.field.node.person.field_person_office_room
+    - field.field.node.person.field_person_phone
+    - field.field.node.person.field_person_position
+    - field.field.node.person.field_person_research_areas
+    - field.field.node.person.field_person_type
+    - field.field.node.person.field_person_university_id
+    - field.field.node.person.field_person_website
+    - field.field.node.person.field_pt_faculty_type
+    - field.field.node.person.field_pt_student_advisor
+    - field.field.node.person.field_pt_student_current
+    - field.field.node.person.field_pt_student_defense_date
+    - field.field.node.person.field_pt_student_program_start
+    - field.field.node.person.field_tags
+    - field.field.node.person.field_teaser
+    - field.field.node.person.pt_student_dissertation_title
+    - node.type.person
+  module:
+    - datetime
+    - link
+    - telephone
+    - text
+    - user
+id: node.person.default
+targetEntityType: node
+bundle: person
+mode: default
+content:
+  content_moderation_control:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_image:
+    type: entity_reference_entity_view
+    weight: 13
+    region: content
+    label: hidden
+    settings:
+      view_mode: large__square
+      link: false
+    third_party_settings: {  }
+  field_person_bio:
+    weight: 11
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_person_department:
+    type: entity_reference_label
+    weight: 2
+    region: content
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_person_email:
+    type: email_mailto
+    weight: 3
+    region: content
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+  field_person_lab_building:
+    type: string
+    weight: 5
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_person_lab_phone:
+    type: telephone_link
+    weight: 7
+    region: content
+    label: above
+    settings:
+      title: ''
+    third_party_settings: {  }
+  field_person_lab_room:
+    type: string
+    weight: 6
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_person_office_building:
+    type: string
+    weight: 8
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_person_office_phone:
+    type: telephone_link
+    weight: 10
+    region: content
+    label: above
+    settings:
+      title: ''
+    third_party_settings: {  }
+  field_person_office_room:
+    type: string
+    weight: 9
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_person_phone:
+    weight: 4
+    label: inline
+    settings:
+      title: ''
+    third_party_settings: {  }
+    type: telephone_link
+    region: content
+  field_person_position:
+    weight: 1
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_person_research_areas:
+    weight: 17
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_person_type:
+    type: entity_reference_label
+    weight: 16
+    region: content
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_person_website:
+    weight: 15
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link_separate
+    region: content
+  field_pt_student_advisor:
+    weight: 14
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_pt_student_defense_date:
+    weight: 20
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  field_pt_student_program_start:
+    weight: 19
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  links:
+    weight: 12
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pt_student_dissertation_title:
+    weight: 18
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden:
+  field_person_credential: true
+  field_person_first_name: true
+  field_person_hide: true
+  field_person_last_name: true
+  field_person_university_id: true
+  field_pt_faculty_type: true
+  field_pt_student_current: true
+  field_tags: true
+  field_teaser: true

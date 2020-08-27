@@ -1,0 +1,76 @@
+uuid: a5a44d16-e5c5-44b8-bd7e-7257251a6707
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_collection
+    - field.storage.block_content.field_uiowa_collection_items
+    - paragraphs.paragraphs_type.uiowa_collection_item
+  module:
+    - entity_reference_revisions
+id: block_content.uiowa_collection.field_uiowa_collection_items
+field_name: field_uiowa_collection_items
+entity_type: block_content
+bundle: uiowa_collection
+label: 'Collection Items'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      uiowa_collection_item: uiowa_collection_item
+    target_bundles_drag_drop:
+      accordion:
+        weight: 17
+        enabled: false
+      accordion_item:
+        weight: 18
+        enabled: false
+      articles:
+        weight: 19
+        enabled: false
+      blockquote:
+        weight: 20
+        enabled: false
+      card:
+        weight: 21
+        enabled: false
+      carousel:
+        weight: 22
+        enabled: false
+      carousel_image:
+        weight: 23
+        enabled: false
+      events:
+        weight: 24
+        enabled: false
+      featured_content:
+        weight: 25
+        enabled: false
+      image_gallery:
+        weight: 26
+        enabled: false
+      people:
+        weight: 27
+        enabled: false
+      section:
+        weight: 28
+        enabled: false
+      text:
+        weight: 29
+        enabled: false
+      uiowa_collection_item:
+        enabled: true
+        weight: 30
+      uiowa_slide:
+        weight: 31
+        enabled: false
+      webform:
+        weight: 32
+        enabled: false
+field_type: entity_reference_revisions

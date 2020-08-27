@@ -1,0 +1,33 @@
+uuid: e924c71b-700a-4ce2-b4dc-2afd5c5f0ef5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_pt_faculty_type
+    - node.type.person
+    - taxonomy.vocabulary.faculty_type
+  content:
+    - 'taxonomy_term:faculty_type:95af8efd-3f4b-4f94-a94b-e5fd5aad1241'
+id: node.person.field_pt_faculty_type
+field_name: field_pt_faculty_type
+entity_type: node
+bundle: person
+label: 'Faculty type'
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    target_uuid: 95af8efd-3f4b-4f94-a94b-e5fd5aad1241
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      faculty_type: faculty_type
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

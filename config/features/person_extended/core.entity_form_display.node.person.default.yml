@@ -3,18 +3,27 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.person.person_pt_faculty_research_areas
     - field.field.node.person.field_image
     - field.field.node.person.field_person_bio
     - field.field.node.person.field_person_credential
+    - field.field.node.person.field_person_department
     - field.field.node.person.field_person_email
     - field.field.node.person.field_person_first_name
     - field.field.node.person.field_person_hide
+    - field.field.node.person.field_person_lab_building
+    - field.field.node.person.field_person_lab_phone
+    - field.field.node.person.field_person_lab_room
     - field.field.node.person.field_person_last_name
+    - field.field.node.person.field_person_office_building
+    - field.field.node.person.field_person_office_phone
+    - field.field.node.person.field_person_office_room
     - field.field.node.person.field_person_phone
     - field.field.node.person.field_person_position
+    - field.field.node.person.field_person_research_areas
     - field.field.node.person.field_person_type
+    - field.field.node.person.field_person_university_id
     - field.field.node.person.field_person_website
+    - field.field.node.person.field_pt_student_current
     - field.field.node.person.field_tags
     - field.field.node.person.field_teaser
     - node.type.person
@@ -33,19 +42,19 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 11
+    weight: 15
     region: content
     settings: {  }
     third_party_settings: {  }
   field_image:
-    weight: 4
+    weight: 6
     settings:
       media_types: {  }
     third_party_settings: {  }
     type: media_library_widget
     region: content
   field_person_bio:
-    weight: 8
+    weight: 12
     settings:
       rows: 5
       placeholder: ''
@@ -53,52 +62,6 @@ content:
     type: text_textarea
     region: content
   field_person_credential:
-    weight: 3
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_person_email:
-    type: email_default
-    weight: 6
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_person_first_name:
-    type: string_textfield
-    weight: 1
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_person_hide:
-    weight: 20
-    settings:
-      display_label: true
-    third_party_settings: {  }
-    type: boolean_checkbox
-    region: content
-  field_person_last_name:
-    type: string_textfield
-    weight: 2
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_person_phone:
-    type: telephone_default
-    weight: 7
-    region: content
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-  field_person_position:
     weight: 5
     settings:
       size: 60
@@ -106,22 +69,149 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
+  field_person_department:
+    type: entity_reference_autocomplete
+    weight: 7
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_person_email:
+    type: email_default
+    weight: 10
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_person_first_name:
+    type: string_textfield
+    weight: 2
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_person_hide:
+    weight: 24
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_person_lab_building:
+    type: string_textfield
+    weight: 28
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_person_lab_phone:
+    type: telephone_default
+    weight: 30
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_person_lab_room:
+    type: string_textfield
+    weight: 29
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_person_last_name:
+    type: string_textfield
+    weight: 3
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_person_office_building:
+    type: string_textfield
+    weight: 32
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_person_office_phone:
+    type: telephone_default
+    weight: 31
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_person_office_room:
+    type: string_textfield
+    weight: 33
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_person_phone:
+    type: telephone_default
+    weight: 11
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_person_position:
+    weight: 8
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_person_research_areas:
+    weight: 25
+    settings:
+      match_operator: STARTS_WITH
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete_tags
+    region: content
   field_person_type:
     weight: 0
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
     region: content
+  field_person_university_id:
+    type: string_textfield
+    weight: 4
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_person_website:
-    weight: 9
+    weight: 13
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
     region: content
+  field_pt_student_current:
+    weight: 27
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
   field_tags:
-    weight: 12
+    weight: 16
     settings:
       match_operator: CONTAINS
       size: 60
@@ -131,7 +221,7 @@ content:
     type: entity_reference_autocomplete_tags
     region: content
   field_teaser:
-    weight: 19
+    weight: 23
     settings:
       rows: 5
       placeholder: ''
@@ -140,50 +230,40 @@ content:
     region: content
   moderation_state:
     type: moderation_state_default
-    weight: 18
+    weight: 22
     region: content
     settings: {  }
     third_party_settings: {  }
   path:
     type: path
-    weight: 15
+    weight: 19
     region: content
     settings: {  }
     third_party_settings: {  }
-  person_pt_faculty_research_areas:
-    weight: 26
-    settings:
-      match_operator: STARTS_WITH
-      match_limit: 10
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete_tags
-    region: content
   promote:
-    type: boolean_checkbox
-    settings:
-      display_label: true
-    weight: 13
-    region: content
-    third_party_settings: {  }
-  status:
     type: boolean_checkbox
     settings:
       display_label: true
     weight: 17
     region: content
     third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 21
+    region: content
+    third_party_settings: {  }
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 14
+    weight: 18
     region: content
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 10
+    weight: 14
     settings:
       match_operator: CONTAINS
       size: 60
@@ -192,7 +272,7 @@ content:
     region: content
     third_party_settings: {  }
   url_redirects:
-    weight: 16
+    weight: 20
     region: content
     settings: {  }
     third_party_settings: {  }

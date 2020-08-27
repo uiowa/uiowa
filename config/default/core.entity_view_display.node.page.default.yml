@@ -6,24 +6,24 @@ dependencies:
     - field.field.node.page.body
     - field.field.node.page.field_image
     - field.field.node.page.field_meta_tags
-    - field.field.node.page.field_page_content_block
     - field.field.node.page.field_publish_options
     - field.field.node.page.field_tags
     - field.field.node.page.field_teaser
+    - field.field.node.page.layout_builder__layout
     - node.type.page
     - system.menu.main
   module:
-    - entity_reference_revisions
     - layout_builder
     - layout_builder_restrictions
     - menu_block
     - system
+    - text
     - user
   theme:
     - uids_base
 third_party_settings:
   layout_builder:
-    allow_custom: false
+    allow_custom: true
     enabled: true
     sections:
       -
@@ -32,6 +32,7 @@ third_party_settings:
           label: Header
           layout_builder_styles_style:
             section_margin_edge_to_edge: section_margin_edge_to_edge
+            0: ''
         components:
           40b768ff-6e34-4257-9398-d83430b061e8:
             uuid: 40b768ff-6e34-4257-9398-d83430b061e8
@@ -82,13 +83,19 @@ third_party_settings:
                 view_mode: view_mode
             additional: {  }
             weight: 0
-        third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock:
+              1: 1
+              2: 2
+              3: 3
+              4: 4
+              6: 6
+              8: 8
       -
         layout_id: layout_page
         layout_settings:
           label: Content
-          layout_builder_styles_style:
-            section_margin_edge_to_edge: section_margin_edge_to_edge
         components:
           c8d974cb-667f-4e0d-8716-d2a77004e0e1:
             uuid: c8d974cb-667f-4e0d-8716-d2a77004e0e1
@@ -119,24 +126,7 @@ third_party_settings:
                 entity: layout_builder.entity
               id: 'extra_field_block:node:page:links'
             additional: {  }
-            weight: 0
-          3f4b0485-7cd7-40eb-b4e0-244cc6817881:
-            uuid: 3f4b0485-7cd7-40eb-b4e0-244cc6817881
-            region: content
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:page:field_page_content_block'
-              formatter:
-                type: entity_reference_revisions_entity_view
-                label: hidden
-                settings:
-                  view_mode: default
-                  link: ''
-                third_party_settings: {  }
-            additional: {  }
-            weight: 2
+            weight: -8
           051b1326-800c-40ca-b518-98ce13ca4e6f:
             uuid: 051b1326-800c-40ca-b518-98ce13ca4e6f
             region: content
@@ -146,16 +136,123 @@ third_party_settings:
                 entity: layout_builder.entity
               id: 'extra_field_block:node:page:content_moderation_control'
             additional: {  }
-            weight: 3
+            weight: -10
+          e6fa78b4-cacc-4d27-baa3-f29dde0b845b:
+            uuid: e6fa78b4-cacc-4d27-baa3-f29dde0b845b
+            region: content
+            configuration:
+              id: 'field_block:node:page:body'
+              label: Body
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: text_default
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: -9
         third_party_settings: {  }
   layout_builder_restrictions:
-    allowed_block_categories: {  }
     entity_view_mode_restriction:
-      whitelisted_blocks: {  }
-      blacklisted_blocks: {  }
+      allowed_blocks: {  }
       allowed_layouts:
-        - layout_header
+        - layout_onecol
+        - layout_twocol
+        - layout_threecol
+        - layout_fourcol
         - layout_page
+      whitelisted_blocks:
+        'Chaos Tools': {  }
+        'Content fields':
+          - 'field_block:node:page:uid'
+          - 'field_block:node:page:created'
+          - 'field_block:node:page:body'
+          - 'field_block:node:page:changed'
+          - 'field_block:node:page:field_teaser'
+          - 'field_block:node:page:field_image'
+          - 'field_block:node:page:title'
+          - 'field_block:user:user:changed'
+          - 'field_block:user:user:created'
+        'Custom blocks': {  }
+        Devel: {  }
+        Forms: {  }
+        'Lists (Views)': {  }
+        Menus:
+          - 'menu_block:main'
+          - 'system_menu_block:main'
+        Superfish: {  }
+        System:
+          - system_breadcrumb_block
+          - system_main_block
+        'University of Iowa Alerts': {  }
+        User: {  }
+        Webform:
+          - webform_block
+        core:
+          - page_title_block
+      blacklisted_blocks:
+        'Custom block types':
+          - uiowa_page_title_hero
+          - uiowa_spacer_separator
+          - uiowa_vertical_video
+        'Inline blocks':
+          - 'inline_block:uiowa_page_title_hero'
+          - 'inline_block:uiowa_spacer_separator'
+          - 'inline_block:uiowa_vertical_video'
+    allowed_block_categories:
+      - 'Chaos Tools'
+      - 'Content fields'
+      - 'Custom block types'
+      - 'Custom blocks'
+      - Devel
+      - Forms
+      - 'Inline blocks'
+      - 'Lists (Views)'
+      - Menus
+      - Superfish
+      - System
+      - 'University of Iowa Alerts'
+      - User
+      - Webform
+      - core
+    entity_view_mode_restriction_by_region:
+      allowed_layouts:
+        - layout_onecol
+        - layout_twocol
+        - layout_threecol
+        - layout_fourcol
+        - layout_page
+      blacklisted_blocks:
+        layout_onecol: {  }
+        layout_twocol:
+          all_regions:
+            'Custom block types':
+              - uiowa_banner
+              - uiowa_hero
+            'Inline blocks':
+              - 'inline_block:uiowa_banner'
+              - 'inline_block:uiowa_hero'
+        layout_threecol:
+          all_regions:
+            'Custom block types':
+              - uiowa_banner
+              - uiowa_hero
+            'Inline blocks':
+              - 'inline_block:uiowa_banner'
+              - 'inline_block:uiowa_hero'
+        layout_fourcol:
+          all_regions:
+            'Custom block types':
+              - uiowa_banner
+              - uiowa_hero
+            'Inline blocks':
+              - 'inline_block:uiowa_banner'
+              - 'inline_block:uiowa_hero'
+      whitelisted_blocks: {  }
 _core:
   default_config_hash: 0AcX0F0voV5TKB6_GPZxJpAfbKCnDU7er_5TWcqIgSw
 id: node.page.default
@@ -163,6 +260,13 @@ targetEntityType: node
 bundle: page
 mode: default
 content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   content_moderation_control:
     weight: 1
     region: content
@@ -177,23 +281,14 @@ content:
       view_mode: full__ultrawide
       link: false
     third_party_settings: {  }
-  field_page_content_block:
-    type: entity_reference_revisions_entity_view
-    weight: 2
-    label: hidden
-    settings:
-      view_mode: default
-      link: ''
-    third_party_settings: {  }
-    region: content
   links:
     weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
-  body: true
   field_meta_tags: true
   field_publish_options: true
   field_tags: true
   field_teaser: true
+  layout_builder__layout: true

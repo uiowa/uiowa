@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: amcs.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: amcs
+  human_name: amcs.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: amcs.prod
+drupal:
+  db:
+    database: amcs_uiowa_edu
+uiowa:
+  requester: ljay
