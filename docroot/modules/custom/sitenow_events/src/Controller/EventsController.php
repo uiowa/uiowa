@@ -27,22 +27,22 @@ class EventsController extends ControllerBase {
       throw new NotFoundHttpException();
     }
     else {
-      $events = sitenow_events_load([], ['node', $event_id . '.json']);
+      $data = sitenow_events_load([], ['node', $event_id . '.json']);
 
-      if (!isset($events['events'], $events['events'][0], $events['events'][0]['event_instances'], $events['events'][0]['event_instances'][$event_instance])) {
+      if (!isset($data['event_instances'], $data['event_instances'][$event_instance])) {
         throw new NotFoundHttpException();
       }
       else {
-        if ($events['events'][0]['canceled'] == TRUE) {
-          $title = '[CANCELED] ' . $events['events'][0]['title'];
+        if ($data['canceled'] == TRUE) {
+          $title = '[CANCELED] ' . $data['title'];
         }
         else {
-          $title = $events['events'][0]['title'];
+          $title = $data['title'];
         }
 
         return [
           '#theme' => 'sitenow_events_single_event',
-          '#data' => $events['events'],
+          '#data' => $data,
           '#title' => $title,
         ];
       }

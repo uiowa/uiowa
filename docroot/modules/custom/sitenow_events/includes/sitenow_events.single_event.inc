@@ -5,6 +5,8 @@
  * Single event theme functions.
  */
 
+use Drupal\Component\Utility\Xss;
+
 /**
  * Preprocess a single event.
  *
@@ -12,15 +14,19 @@
  *   Array reference of arguments given to the theme() function.
  */
 function template_preprocess_sitenow_events_single_event(array &$variables) {
-  // Add single-event css/js.
   $variables['#attached']['library'][] = 'sitenow_events/single-event';
 
-  // Quick hack to get the data structured properly.
-  // This is due to the standardize parsing of data for all events.
-  // @see sitenow_events_prepare_data.
-  $variables['data'] = $variables['data'][0];
+  // Filter the description for any XSS.
+  $variables['data']['description'] = Xss::filterAdmin($variables['data']['description']);
+
+  // Prepare the a11y statement.
+  $variables['data']['accessibility_statement'] = t('Individuals with disabilities are encouraged to attend all University of Iowa–sponsored events. If you are a person with a disability who requires a reasonable accommodation in order to participate in this program, please contact @c_name in advance at @c_ph or @c_email.', [
+    '@c_name' => $variables['data']['contact_name'],
+    '@c_ph' => $variables['data']['contact_phone'],
+    '@c_email' => $variables['data']['contact_email'],
+  ]);
+
   if (isset($variables['data']['event_instances'])) {
-    // All event instances are passed in the event_instances array.
     $instances = [];
     $instance_arg = 0;
 
@@ -29,17 +35,16 @@ function template_preprocess_sitenow_events_single_event(array &$variables) {
     // to $variables['data']['event_instances'][0].
     if (count($variables['data']['event_instances']) > 1) {
       $path = explode('/', \Drupal::service('path.current')->getPath());
+
       if (count($path) > 2) {
         $instance_arg = array_pop($path);
       }
     }
 
-    $current_instance = $variables['data']['event_instances'][$instance_arg];
-
     // Set the current instance on $data.
-    $variables['data']['instance_start'] = $current_instance['event_instance']['start'];
-    $variables['data']['instance_end'] = $current_instance['event_instance']['end'];
-    $variables['data']['instance_all_day'] = $current_instance['event_instance']['all_day'];
+    $variables['data']['instance_start'] = $variables['data']['event_instances'][$instance_arg]['event_instance']['start'];
+    $variables['data']['instance_end'] = $variables['data']['event_instances'][$instance_arg]['event_instance']['end'];
+    $variables['data']['instance_all_day'] = $variables['data']['event_instances'][$instance_arg]['event_instance']['all_day'];
 
     // Insert the current instance as the first element in the $instances
     // array (to be displayed first).
@@ -55,7 +60,7 @@ function template_preprocess_sitenow_events_single_event(array &$variables) {
       'date' => [
         '#type' => 'html_tag',
         '#tag' => 'span',
-        '#value' => sitenow_events_format_instance($current_instance['event_instance']),
+        '#value' => sitenow_events_format_instance($variables['data']['event_instances'][$instance_arg]['event_instance']),
         '#attributes' => [
           'class' => [
             'date-instance__date',

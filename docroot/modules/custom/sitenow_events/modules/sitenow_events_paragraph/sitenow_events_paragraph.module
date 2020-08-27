@@ -80,7 +80,7 @@ function sitenow_events_paragraph_preprocess_paragraph(&$variables) {
 
         $start = date('d-m-Y');
 
-        $events = sitenow_events_load([
+        $data = sitenow_events_load([
           'display_id' => 'events',
           'filters[department]' => $paragraph->get('field_events_department')->getString(),
           'filters[audiences]' => $paragraph->get('field_events_audiences')->getString(),
@@ -93,11 +93,14 @@ function sitenow_events_paragraph_preprocess_paragraph(&$variables) {
           'items_per_page' => $paragraph->get('field_events_results')->getString(),
         ]);
 
-        if (!empty($events['events'])) {
-          foreach ($events['events'] as $e) {
+        if (!empty($data['events'])) {
+          foreach ($data['events'] as $value) {
+            // The API nests each event as an array.
+            $event = $value['event'];
+
             $variables['list'][] = [
               '#theme' => 'sitenow_events_teaser',
-              '#event' => $e,
+              '#event' => $event,
             ];
           }
         }

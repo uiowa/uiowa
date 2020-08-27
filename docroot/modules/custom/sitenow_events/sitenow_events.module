@@ -23,7 +23,7 @@ function sitenow_events_preprocess_block(&$variables) {
     /** @var \Drupal\Block\Entity\Block $block */
     $block = $variables['elements']['content']['#block_content'];
 
-    $events = sitenow_events_load([
+    $data = sitenow_events_load([
       'display_id' => 'events',
       'filters[department]' => $block->get('field_uiowa_events_department')->getString(),
       'filters[audiences]' => $block->get('field_uiowa_events_audiences')->getString(),
@@ -36,11 +36,14 @@ function sitenow_events_preprocess_block(&$variables) {
       'items_per_page' => $block->get('field_uiowa_events_results')->value ?? 50,
     ]);
 
-    if (!empty($events['events'])) {
-      foreach ($events['events'] as $e) {
+    if (isset($data['events'])) {
+      foreach ($data['events'] as $key => $value) {
+        // The API nests each event as an array.
+        $event = $value['event'];
+
         $variables['content'][] = [
           '#theme' => 'sitenow_events_teaser',
-          '#event' => $e,
+          '#event' => $event,
         ];
       }
     }
@@ -72,18 +75,18 @@ function sitenow_events_preprocess_block(&$variables) {
 }
 
 /**
- * Load and return events from events api.
+ * Load and return data from the content hub API.
  *
  * @param array $params
- *   Optional list of parameters for our api call.
+ *   Optional list of parameters for our API call.
  * @param array $args
- *   Required array of arguments for our api call. The args will be assembled
- *   in array order. See: https://content.uiowa.edu/events-api for details.
+ *   Required array of arguments for our API call. The args will be assembled
+ *   in array order.
  * @param bool $cache
  *   Boolean to determine if we cache the request.
  *
  * @return array
- *   An array of events.
+ *   An array of data.
  */
 function sitenow_events_load(array $params = ['display_id' => 'events'], array $args = ['views', 'event_instances_api.json'], $cache = TRUE) {
   $config = \Drupal::config('sitenow_events.settings');
@@ -99,9 +102,8 @@ function sitenow_events_load(array $params = ['display_id' => 'events'], array $
     $endpoint = "{$endpoint}?{$query}";
   }
 
-  if ($events = \Drupal::cache('uievents')->get($endpoint)) {
-    $events = $events->data;
-    $events['cache'] = 'hit: ' . $endpoint;
+  if ($cached = \Drupal::cache('uievents')->get($endpoint)) {
+    $data = $cached->data;
   }
   else {
     try {
@@ -111,79 +113,16 @@ function sitenow_events_load(array $params = ['display_id' => 'events'], array $
       watchdog_exception('sitenow_events', $e);
     }
 
-    // Return an array of events with optional params.
-    $json = json_decode($request->getBody()->getContents(), TRUE);
-    $events = sitenow_events_prepare_data($json);
-    $events['cache'] = 'miss';
+    $data = json_decode($request->getBody()->getContents(), TRUE);
 
     // Create a cache item set to 300 seconds (5 minutes).
     if ($cache !== FALSE) {
       $request_time = \Drupal::time()->getRequestTime();
-      \Drupal::cache('uievents')->set($endpoint, $events, $request_time + 300);
+      \Drupal::cache('uievents')->set($endpoint, $data, $request_time + 300);
     }
   }
 
-  return $events;
-}
-
-/**
- * Parse and prepare data.
- *
- * @param array $events
- *   An array of events.
- *
- * @return array
- *   A request object.
- */
-function sitenow_events_prepare_data(array $events) {
-  // We need to set the events array key to prevent undefined indices.
-  // @todo: Remove this bizarre nesting.
-  if (empty($events)) {
-    $events['events'] = [];
-  }
-  else {
-    // Single events return differently so tweak the events array structure.
-    if (!isset($events['events'])) {
-      $event = $events;
-      $events = [];
-      $events['events'][] = ['event' => $event];
-    }
-
-    $data = [];
-
-    foreach ($events['events'] as $event) {
-      $new_event = $event['event'];
-
-      // Set the instance_id for rendering.
-      if (isset($event['event']['id'])) {
-        $new_event['instance_id'] = $event['event']['id'];
-      }
-
-      // Set the accessibility statement for rendering.
-      // These fields are required from the source.
-      $new_event['accessibility_statement'] = t('Individuals with disabilities are encouraged to attend all University of Iowa–sponsored events. If you are a person with a disability who requires a reasonable accommodation in order to participate in this program, please contact @c_name in advance at @c_ph or @c_email.', [
-        '@c_name' => $event['event']['contact_name'],
-        '@c_ph' => $event['event']['contact_phone'],
-        '@c_email' => $event['event']['contact_email'],
-      ]);
-
-      // Set description for rendering.
-      if (isset($event['event']['description'])) {
-        $new_event['description'] = Xss::filterAdmin($event['event']['description']);
-        $new_event['description_text'] = Xss::filter($event['event']['description_text']);
-      }
-
-      // Set photo_url for rendering.
-      if (isset($event['event']['media'])) {
-        $new_event['photo_url'] = $event['event']['media'][0]['medium_image'];
-      }
-
-      array_push($data, $new_event);
-    }
-    $events['events'] = $data;
-  }
-
-  return $events;
+  return $data;
 }
 
 /**
