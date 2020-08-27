@@ -27,26 +27,45 @@ class EventsController extends ControllerBase {
       throw new NotFoundHttpException();
     }
     else {
-      $data = sitenow_events_load([], ['node', $event_id . '.json']);
+      $data = sitenow_events_load([], ['node', "{$event_id}.json"]);
 
       if (!isset($data['event_instances'], $data['event_instances'][$event_instance])) {
         throw new NotFoundHttpException();
       }
       else {
-        if ($data['canceled'] == TRUE) {
-          $title = '[CANCELED] ' . $data['title'];
-        }
-        else {
-          $title = $data['title'];
-        }
-
         return [
           '#theme' => 'sitenow_events_single_event',
           '#data' => $data,
-          '#title' => $title,
         ];
       }
     }
+  }
+
+  /**
+   * Single event page title callback.
+   *
+   * @param int $event_id
+   *   The ID of the event.
+   *
+   * @return string
+   *   The event title.
+   */
+  public function title($event_id) {
+    $title = '';
+    $data = $this->getEventData($event_id);
+
+    if (isset($data['title'])) {
+      $title = $data['title'];
+    }
+
+    return $title;
+  }
+
+  /**
+   * Get event data from the API.
+   */
+  protected function getEventData($event_id) {
+    return sitenow_events_load([], ['node', "{$event_id}.json"]);
   }
 
 }
