@@ -48,10 +48,10 @@
 		{% endblock %}
 		<div class="events-card__body">
       {% set event_headline = {
-        'heading_level' : content.field_uiowa_event_title[0]['#size'],
-        'heading_class' : 'events-card__title',
+        'headline_level' : content.field_uiowa_event_title[0]['#size'],
+        'headline_class' : 'events-card__title',
         'heading' : content.field_uiowa_event_title[0]['#text'],
-        'heading_url' : event_url,
+        'headline_url' : event_url,
       } %}
 			{% include "@uids_base/uids/heading.html.twig" with event_headline only %}
 

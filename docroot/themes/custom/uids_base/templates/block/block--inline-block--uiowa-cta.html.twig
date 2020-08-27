@@ -42,8 +42,8 @@
 				{% if content.field_uiowa_cta_title[0]['#text'] is not empty %}
 					<div class="cta__title">
             {% set cta_headline = {
-              "heading_level" : content.field_uiowa_cta_title[0]['#size'],
-              "heading_class" : 'bold-headline bold-headline--caps',
+              "headline_level" : content.field_uiowa_cta_title[0]['#size'],
+              "headline_class" : 'bold-headline bold-headline--caps',
               "heading" : content.field_uiowa_cta_title[0]['#text'],
             } %}
 					{% include '@uids_base/uids/heading.html.twig' with cta_headline only %}

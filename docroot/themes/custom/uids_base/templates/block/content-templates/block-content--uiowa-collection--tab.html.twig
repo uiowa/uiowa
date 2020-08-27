@@ -26,7 +26,7 @@
 */
 #}
 {% set id = "tab-" ~ id %}
-{% set heading_size = content.field_collection_heading_size.0 %}
+{% set headline_size = content.field_collection_heading_size.0 %}
 
 <div class="tabs" role="navigation" aria-multiselectable="false" id="{{ id }}" aria-label="Tabs">
   <ul class="tabs primary">
@@ -36,7 +36,7 @@
             is-active
           {% endif %}
         ">
-      {# <{{ heading_size }} id="tab-heading-{{ tab.id }}" class="tab__heading"> #}
+      {# <{{ headline_size }} id="tab-heading-{{ tab.id }}" class="tab__heading"> #}
         <button class="tab__button"
           role="tab"
           aria-selected="{{ delta == 0 ? 'true' : 'false' | default('false') }}"
@@ -48,7 +48,7 @@
           {% endblock %}
         </button>
       </li>
-      {# </{{ heading_size }}> #}
+      {# </{{ headline_size }}> #}
     {% endfor %}
   </ul>
   <div class="tab__panels">

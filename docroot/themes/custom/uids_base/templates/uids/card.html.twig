@@ -54,11 +54,11 @@
       {% if card_title %}
         {# @todo Determine if it is better to programatically set level and class via preprocess. #}
         {% set card_heading = {
-          'heading_level': heading_level ?: 'h2',
-          'heading_class': heading_class ?: 'card__title',
+          'headline_level': headline_level ?: 'h2',
+          'headline_class': headline_class ?: 'card__title',
           'heading': card_title,
-          'heading_url': card_link_url,
-          'heading_aria': card_aria_describedby,
+          'headline_url': card_link_url,
+          'headline_aria': card_aria_describedby,
         } %}
         {% include '@uids_base/uids/heading.html.twig' with card_heading only %}
       {% endif %}
