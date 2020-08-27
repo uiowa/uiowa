@@ -10,7 +10,6 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\Component\Utility\Xss;
 use GuzzleHttp\Exception\RequestException;
 
 /**
@@ -275,7 +274,7 @@ function _sitenow_events_get_filter_field_options(FieldStorageConfig $definition
       $data = sitenow_events_load(['display_id' => 'filters'], ['views', 'filters_api.json']);
       $options = _sitenow_events_process_nested_filters($data['departments']);
 
-    break;
+      break;
 
     case 'field_events_audiences':
     case 'field_uiowa_events_audiences':
@@ -329,12 +328,13 @@ function _sitenow_events_get_filter_field_options(FieldStorageConfig $definition
 /**
  * Process filters as nested select list options with optgroups.
  *
- * @param $filters
+ * @param array $filters
+ *   The array of filters.
  *
  * @return array
  *   The select list options.
  */
-function _sitenow_events_process_nested_filters($filters) {
+function _sitenow_events_process_nested_filters(array $filters) {
   $options = [];
 
   foreach ($filters as $filter) {
