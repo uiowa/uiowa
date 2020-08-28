@@ -44,9 +44,9 @@
             {% set cta_headline = {
               "headline_level" : content.field_uiowa_cta_title[0]['#size'],
               "headline_class" : 'bold-headline bold-headline--caps',
-              "heading" : content.field_uiowa_cta_title[0]['#text'],
+              "headline_text" : content.field_uiowa_cta_title[0]['#text'],
             } %}
-					{% include '@uids_base/uids/heading.html.twig' with cta_headline only %}
+					{% include '@uids_base/uids/headline.html.twig' with cta_headline only %}
 					</div>
 				{% endif %}
 			{% endblock %}

@@ -56,11 +56,11 @@
         {% set card_heading = {
           'headline_level': headline_level ?: 'h2',
           'headline_class': headline_class ?: 'card__title',
-          'heading': card_title,
+          'headline_text': card_title,
           'headline_url': card_link_url,
           'headline_aria': card_aria_describedby,
         } %}
-        {% include '@uids_base/uids/heading.html.twig' with card_heading only %}
+        {% include '@uids_base/uids/headline.html.twig' with card_heading only %}
       {% endif %}
     {% endblock %}
 
