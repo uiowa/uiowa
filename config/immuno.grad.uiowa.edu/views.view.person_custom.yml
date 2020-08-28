@@ -5,10 +5,22 @@ dependencies:
   config:
     - field.storage.node.field_person_department
     - field.storage.node.field_person_email
+    - field.storage.node.field_person_first_name
+    - field.storage.node.field_person_lab_building
+    - field.storage.node.field_person_lab_phone
+    - field.storage.node.field_person_lab_room
+    - field.storage.node.field_person_last_name
     - field.storage.node.field_person_office_building
     - field.storage.node.field_person_office_room
     - field.storage.node.field_person_phone
     - field.storage.node.field_pt_faculty_type
+    - field.storage.node.field_pt_student_advisor
+    - field.storage.node.field_pt_student_cur_pos_dept
+    - field.storage.node.field_pt_student_cur_pos_inst
+    - field.storage.node.field_pt_student_cur_pos_title
+    - field.storage.node.field_pt_student_defense_date
+    - field.storage.node.field_pt_student_program_start
+    - field.storage.node.pt_student_dissertation_title
     - node.type.person
     - system.menu.main
     - taxonomy.vocabulary.person_types
@@ -16,6 +28,7 @@ dependencies:
     - 'taxonomy_term:person_types:2cfe6322-4c73-4002-b3b1-3be96a818248'
     - 'taxonomy_term:person_types:3aa19008-6802-4cc3-8f91-49117d377459'
   module:
+    - datetime
     - node
     - taxonomy
     - telephone
@@ -52,8 +65,8 @@ display:
       exposed_form:
         type: basic
         options:
-          submit_button: Apply
-          reset_button: false
+          submit_button: Search
+          reset_button: true
           reset_button_label: Reset
           exposed_sorts_label: 'Sort by'
           expose_sort_order: true
@@ -89,56 +102,64 @@ display:
           summary: ''
           description: ''
           columns:
-            title: title
-            field_person_email: field_person_email
-            field_person_department: field_person_department
-            field_person_office_building: field_person_office_building
-            field_person_office_room: field_person_office_building
-            field_person_phone: field_person_phone
+            field_person_first_name: field_person_last_name
+            field_person_last_name: field_person_last_name
+            field_person_lab_phone: field_person_lab_phone
+            field_person_lab_room: field_person_lab_building
+            field_person_lab_building: field_person_lab_building
+            field_pt_student_advisor: field_pt_student_advisor
+            field_pt_student_program_start: field_pt_student_program_start
           info:
-            title:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_person_email:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_person_department:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_person_office_building:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_person_office_room:
+            field_person_first_name:
               sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
-            field_person_phone:
+            field_person_last_name:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_person_lab_phone:
               sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
-          default: title
+            field_person_lab_room:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_person_lab_building:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_pt_student_advisor:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_pt_student_program_start:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+          default: field_person_last_name
           empty_table: false
       row:
         type: fields
@@ -681,22 +702,7 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           plugin_id: boolean
-      sorts:
-        created:
-          id: created
-          table: node_field_data
-          field: created
-          order: DESC
-          entity_type: node
-          entity_field: created
-          plugin_id: date
-          relationship: none
-          group_type: group
-          admin_label: ''
-          exposed: false
-          expose:
-            label: ''
-          granularity: second
+      sorts: {  }
       title: Faculty
       header: {  }
       footer: {  }
@@ -1224,79 +1230,14 @@ display:
       path: people/students
       display_description: ''
       fields:
-        title:
-          id: title
-          table: node_field_data
-          field: title
+        field_person_first_name:
+          id: field_person_first_name
+          table: node__field_person_first_name
+          field: field_person_first_name
           relationship: none
           group_type: group
           admin_label: ''
-          label: Name
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: false
-            ellipsis: false
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          settings:
-            link_to_entity: true
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          entity_type: node
-          entity_field: title
-          plugin_id: field
-        field_person_email:
-          id: field_person_email
-          table: node__field_person_email
-          field: field_person_email
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: Email
+          label: 'First Name'
           exclude: false
           alter:
             alter_text: false
@@ -1338,8 +1279,9 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: email_mailto
-          settings: {  }
+          type: string
+          settings:
+            link_to_entity: true
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -1351,14 +1293,77 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_person_phone:
-          id: field_person_phone
-          table: node__field_person_phone
-          field: field_person_phone
+        field_person_last_name:
+          id: field_person_last_name
+          table: node__field_person_last_name
+          field: field_person_last_name
           relationship: none
           group_type: group
           admin_label: ''
-          label: Phone
+          label: 'Last Name'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: true
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_person_lab_phone:
+          id: field_person_lab_phone
+          table: node__field_person_lab_phone
+          field: field_person_lab_phone
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Lab phone'
           exclude: false
           alter:
             alter_text: false
@@ -1403,6 +1408,259 @@ display:
           type: telephone_link
           settings:
             title: ''
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_person_lab_room:
+          id: field_person_lab_room
+          table: node__field_person_lab_room
+          field: field_person_lab_room
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Lab room'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_person_lab_building:
+          id: field_person_lab_building
+          table: node__field_person_lab_building
+          field: field_person_lab_building
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Lab address'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_pt_student_advisor:
+          id: field_pt_student_advisor
+          table: node__field_pt_student_advisor
+          field: field_pt_student_advisor
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: Advisor
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: true
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_pt_student_program_start:
+          id: field_pt_student_program_start
+          table: node__field_pt_student_program_start
+          field: field_pt_student_program_start
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Program start'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: datetime_default
+          settings:
+            timezone_override: ''
+            format_type: html_month
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -1485,7 +1743,8 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           fields:
-            title: title
+            field_person_first_name: field_person_first_name
+            field_person_last_name: field_person_last_name
           plugin_id: combine
         field_person_type_target_id:
           id: field_person_type_target_id
@@ -1635,17 +1894,22 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
-        - 'config:field.storage.node.field_person_email'
-        - 'config:field.storage.node.field_person_phone'
+        - 'config:field.storage.node.field_person_first_name'
+        - 'config:field.storage.node.field_person_lab_building'
+        - 'config:field.storage.node.field_person_lab_phone'
+        - 'config:field.storage.node.field_person_lab_room'
+        - 'config:field.storage.node.field_person_last_name'
+        - 'config:field.storage.node.field_pt_student_advisor'
+        - 'config:field.storage.node.field_pt_student_program_start'
   page_3:
     display_plugin: page
     id: page_3
-    display_title: 'Former students'
+    display_title: 'Past students'
     position: 3
     display_options:
       display_extenders:
         metatag_display_extender: {  }
-      title: 'Former Students'
+      title: 'Past Students'
       defaults:
         title: false
         fields: false
@@ -1653,14 +1917,14 @@ display:
         filter_groups: false
       display_description: ''
       fields:
-        title:
-          id: title
-          table: node_field_data
-          field: title
+        field_person_first_name:
+          id: field_person_first_name
+          table: node__field_person_first_name
+          field: field_person_first_name
           relationship: none
           group_type: group
           admin_label: ''
-          label: Name
+          label: 'First Name'
           exclude: false
           alter:
             alter_text: false
@@ -1680,8 +1944,8 @@ display:
             target: ''
             nl2br: false
             max_length: 0
-            word_boundary: false
-            ellipsis: false
+            word_boundary: true
+            ellipsis: true
             more_link: false
             more_link_text: ''
             more_link_path: ''
@@ -1715,80 +1979,15 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: node
-          entity_field: title
           plugin_id: field
-        field_person_office_room:
-          id: field_person_office_room
-          table: node__field_person_office_room
-          field: field_person_office_room
+        field_person_last_name:
+          id: field_person_last_name
+          table: node__field_person_last_name
+          field: field_person_last_name
           relationship: none
           group_type: group
           admin_label: ''
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          settings:
-            link_to_entity: false
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          plugin_id: field
-        field_person_phone:
-          id: field_person_phone
-          table: node__field_person_phone
-          field: field_person_phone
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: Phone
+          label: 'Last Name'
           exclude: false
           alter:
             alter_text: false
@@ -1830,9 +2029,389 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: telephone_link
+          type: string
           settings:
-            title: ''
+            link_to_entity: true
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        pt_student_dissertation_title:
+          id: pt_student_dissertation_title
+          table: node__pt_student_dissertation_title
+          field: pt_student_dissertation_title
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: Dissertation
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_pt_student_program_start:
+          id: field_pt_student_program_start
+          table: node__field_pt_student_program_start
+          field: field_pt_student_program_start
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Program start'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: datetime_default
+          settings:
+            timezone_override: ''
+            format_type: html_month
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_pt_student_cur_pos_dept:
+          id: field_pt_student_cur_pos_dept
+          table: node__field_pt_student_cur_pos_dept
+          field: field_pt_student_cur_pos_dept
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Current position department'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_pt_student_cur_pos_inst:
+          id: field_pt_student_cur_pos_inst
+          table: node__field_pt_student_cur_pos_inst
+          field: field_pt_student_cur_pos_inst
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Current position institution'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_pt_student_cur_pos_title:
+          id: field_pt_student_cur_pos_title
+          table: node__field_pt_student_cur_pos_title
+          field: field_pt_student_cur_pos_title
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Current position'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_pt_student_defense_date:
+          id: field_pt_student_defense_date
+          table: node__field_pt_student_defense_date
+          field: field_pt_student_defense_date
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: Defense
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: datetime_default
+          settings:
+            timezone_override: ''
+            format_type: html_date
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -1916,7 +2495,9 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           fields:
-            title: title
+            field_person_first_name: field_person_first_name
+            field_person_last_name: field_person_last_name
+            pt_student_dissertation_title: pt_student_dissertation_title
           plugin_id: combine
         field_person_type_target_id:
           id: field_person_type_target_id
@@ -2066,5 +2647,11 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
-        - 'config:field.storage.node.field_person_office_room'
-        - 'config:field.storage.node.field_person_phone'
+        - 'config:field.storage.node.field_person_first_name'
+        - 'config:field.storage.node.field_person_last_name'
+        - 'config:field.storage.node.field_pt_student_cur_pos_dept'
+        - 'config:field.storage.node.field_pt_student_cur_pos_inst'
+        - 'config:field.storage.node.field_pt_student_cur_pos_title'
+        - 'config:field.storage.node.field_pt_student_defense_date'
+        - 'config:field.storage.node.field_pt_student_program_start'
+        - 'config:field.storage.node.pt_student_dissertation_title'
