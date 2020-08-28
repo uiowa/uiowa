@@ -26,10 +26,10 @@
  */
 #}
 
-{% set lb_styles = elements['#layout_builder_style'] %}
+{% set styles = elements['#layout_builder_style'] %}
 {% set banner_attributes = [] %}
 
-{% for style in lb_styles %}
+{% for style in styles %}
 	{% if style == 'bold-headline-caps'  %}
 		{% set banner_attributes = ['bold-headline bold-headline--negative bold-headline--caps'] %}
 	{% elseif style == 'bold-headline-caps-highlight' %}
