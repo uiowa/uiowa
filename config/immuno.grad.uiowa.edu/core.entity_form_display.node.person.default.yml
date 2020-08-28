@@ -25,6 +25,9 @@ dependencies:
     - field.field.node.person.field_person_website
     - field.field.node.person.field_pt_faculty_type
     - field.field.node.person.field_pt_student_advisor
+    - field.field.node.person.field_pt_student_cur_pos_dept
+    - field.field.node.person.field_pt_student_cur_pos_inst
+    - field.field.node.person.field_pt_student_cur_pos_title
     - field.field.node.person.field_pt_student_current
     - field.field.node.person.field_pt_student_defense_date
     - field.field.node.person.field_pt_student_program_start
@@ -224,6 +227,30 @@ content:
       placeholder: 'Search for an advisor'
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
+  field_pt_student_cur_pos_dept:
+    weight: 37
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_pt_student_cur_pos_inst:
+    weight: 36
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_pt_student_cur_pos_title:
+    weight: 38
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
     region: content
   field_pt_student_current:
     weight: 2
