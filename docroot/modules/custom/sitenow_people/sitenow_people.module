@@ -45,7 +45,7 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
           // If the field name matches the pattern for person type
           // specific fields, make it not required and set it to
           // not be visible.
-          if (strpos($field_name, '_pt_') !== FALSE) {
+          if (strpos($field_name, 'pt_') !== FALSE) {
             $form[$field_name]['#widget']['#required'] = FALSE;
             $form[$field_name]['#access'] = FALSE;
           }
@@ -57,7 +57,7 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
           // Loop through fields.
           foreach (Element::children($form) as $field_name) {
             // Check for match of term name (lower-cased) in the field name.
-            if (strpos($field_name, '_pt_' . strtolower($term->name)) !== FALSE) {
+            if (strpos($field_name, 'pt_' . strtolower($term->name)) !== FALSE) {
               // Add '#states' condition to matching fields to be visible
               // when tid is selected in field_person_type.
               // @todo Do we need to account for the possibility of changing
