@@ -22,3 +22,19 @@
   text-shadow: none;
   color: $secondary;
 }
+
+
+.banner {
+  @include breakpoint(sm) {
+    min-height: 18rem;
+
+    &:not([class*="bg-"]) {
+      background: $secondary;
+    }
+  }
+
+  &[class*="bg--"]:after,
+  &[class*="bg-pattern--"]:after {
+    background: none;
+  }
+}
