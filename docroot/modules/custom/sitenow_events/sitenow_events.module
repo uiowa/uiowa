@@ -316,8 +316,8 @@ function _sitenow_events_get_filter_field_options(FieldStorageConfig $definition
 
       break;
 
-    case 'field_events_places':
-    case 'field_uiowa_events_places':
+    case 'field_events_place':
+    case 'field_uiowa_events_place':
       $data = sitenow_events_load(['display_id' => 'places'], ['views', 'places_api.json']);
       $options = [];
 
