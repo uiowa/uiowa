@@ -1,0 +1,23 @@
+uuid: 30c6000d-2e0c-41df-869a-f711d4324fa5
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_events
+    - field.storage.block_content.field_collection_heading_size
+  module:
+    - options
+id: block_content.uiowa_events.field_collection_heading_size
+field_name: field_collection_heading_size
+entity_type: block_content
+bundle: uiowa_events
+label: 'Heading size'
+description: 'The <em>heading size</em> field determines the heading size to use for each event title in the list.'
+required: true
+translatable: true
+default_value:
+  -
+    value: h3
+default_value_callback: ''
+settings: {  }
+field_type: list_string
