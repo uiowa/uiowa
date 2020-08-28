@@ -2,30 +2,8 @@
 @import "assets/scss/_utilities.scss";
 @import "components/banner/banner.scss";
 
-.banner {
-  .bold-headline {
-    @include bold-headline-negative;
-    text-shadow: 0 1px 1px #000;
-    margin-bottom: 0.325rem;
-  }
-}
-
-.banner__bold-headline--caps {
-  .bold-headline {
-    @include bold-headline-caps;
-  }
-}
-
-.banner__bold-headline--highlight {
-  .bold-headline {
-    @include bold-headline-highlight;
-    margin-bottom: 1rem;
-
-    span {
-      @include bold-headline-highlight-word;
-    }
-  }
-
+.bold-headline-caps-highlight,
+.bold-headline-serif-highlight {
   .bttn--primary {
     @include bttn--secondary;
     border: none;
@@ -37,19 +15,5 @@
     &:after {
       background-color: $primary;
     }
-  }
-}
-
-
-.banner__bold-headline--serif {
-  .bold-headline {
-    @include bold-headline-serif;
-  }
-}
-
-.banner__bold-headline--serif-highlight {
-  .bold-headline {
-    @include bold-headline-highlight;
-    font-weight: 600;
   }
 }
