@@ -337,8 +337,6 @@ function _sitenow_events_get_filter_field_options(FieldStorageConfig $definition
 /**
  * Helper function to build the options tree.
  *
- * @todo: Replace with an API endpoint that outputs an entire vocabulary tree.
- *
  * @param array $data
  *   Array of data to be sorted into a tree.
  * @param int $parent
@@ -346,6 +344,8 @@ function _sitenow_events_get_filter_field_options(FieldStorageConfig $definition
  *
  * @return array
  *   Returns an associative array options tree.
+ *
+ * @todo: Replace with an API endpoint that outputs an entire vocabulary tree.
  */
 function _sitenow_events_build_options_tree(array $data, $parent = 0) {
   $tree = [];
@@ -367,8 +367,6 @@ function _sitenow_events_build_options_tree(array $data, $parent = 0) {
 /**
  * Helper function to output the options array.
  *
- * @todo: Replace with an API endpoint that outputs an entire vocabulary tree.
- *
  * @param array $tree
  *   Array of tree data to be printed.
  * @param int $r
@@ -380,6 +378,8 @@ function _sitenow_events_build_options_tree(array $data, $parent = 0) {
  *
  * @return array
  *   Returns options with children prefixed with dashes.
+ *
+ * @todo: Replace with an API endpoint that outputs an entire vocabulary tree.
  */
 function _sitenow_events_build_options_list(array $tree, $r = 0, $p = NULL, array &$options = []) {
   foreach ($tree as $t) {
