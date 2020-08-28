@@ -26,6 +26,7 @@
  */
 #}
 
+
 {% set styles = elements['#layout_builder_style'] %}
 {% set banner_attributes = [] %}
 
@@ -48,9 +49,10 @@
   'banner_title': content.field_uiowa_banner_title[0]['#text'],
   'headline_level': content.field_uiowa_banner_title[0]['#size'],
   'headline_class' : banner_attributes,
+  'banner_aria_describedby': content.field_uiowa_banner_title[0]['#text']|clean_id,
   'link': {
     'link_url': content.field_uiowa_banner_link[0]['#url'],
-    'link_text': content.field_uiowa_banner_link[0]['#title'],
+    'link_text': content.field_uiowa_banner_link[0]['#title']|render,
     'link_classes': ['bttn', 'bttn--primary', 'bttn--caps'],
   },
   'title_prefix': title_prefix,

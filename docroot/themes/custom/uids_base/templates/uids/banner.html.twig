@@ -1,4 +1,22 @@
 {{ attach_library('uids_base/banner') }}
+
+{# The following code is to determine where a link should be attached, if it exists. #}
+{% set link_element, show_button = false, false %}
+{% if link.link_url is not empty %}
+	{% if banner_title is not empty %}
+		{# Title is set, use it as the linking element.  #}
+		{% set link_element = 'title' %}
+		{# If we also have link text, then we'll show a psuedo-button. #}
+		{% if link.link_text  is not empty %}
+			{% set show_button = true %}
+		{% endif %}
+	{% endif %}
+{% endif %}
+
+{% if link_element != 'title' or not show_button %}
+	{% set banner_aria_describedby = '' %}
+{% endif %}
+
 {% set attributes = attributes ?: create_attribute() %}
 {% set banner_classes = ['banner'] %}
 
@@ -21,6 +39,8 @@
             'headline_level': headline_level ?: 'h2',
             'headline_class' : headline_class ?: 'bold-headline bold-headline--serif bold-headline--negative',
             'headline_text' : banner_title,
+            'headline_url': link.link_url,
+            'headline_aria': banner_aria_describedby,
           } %}
           {% include '@uids_base/uids/headline.html.twig' with banner_heading only %}
         {% endif %}
@@ -30,12 +50,15 @@
        <div class="banner__text">{{ banner_summary }}</div>
       {% endif %}
 
-      {% if link and link.link_url is not empty %}
-        {% set link = link|merge({
-          'link_icon_class': 'fas fa-arrow-right',
-        }) %}
-        {% include '@uids_base/uids/link.html.twig' with link only %}
+      {% block banner_bttn %}
+        {% if link.link_text is not empty %}
+            <div aria-hidden="true" class="bttn bttn--primary bttn--caps" {% if banner_aria_describedby %} id="{{ banner_aria_describedby }}" {% endif %}>
+              {{ link.link_text }}
+              <span class="fas fa-arrow-right"></span>
+            </div>
       {% endif %}
+      {% endblock %}
+
     </div>
   </div>
 </div>
