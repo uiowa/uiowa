@@ -19,10 +19,10 @@
           {# @todo Determine if it is better to programatically set level and class via preprocess. #}
           {% set banner_heading = {
             'headline_level': headline_level ?: 'h2',
-            'headline_class' : headline_class ?: 'bold-headline',
-            'heading' : banner_title,
+            'headline_class' : headline_class ?: 'bold-headline bold-headline--serif bold-headline--negative',
+            'headline_text' : banner_title,
           } %}
-          {% include '@uids_base/uids/heading.html.twig' with banner_heading only %}
+          {% include '@uids_base/uids/headline.html.twig' with banner_heading only %}
         {% endif %}
       {% endblock %}
 
