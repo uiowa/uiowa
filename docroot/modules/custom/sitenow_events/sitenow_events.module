@@ -268,102 +268,114 @@ function _sitenow_events_process_element(array $element, FormStateInterface $for
  * @see options_allowed_values()
  */
 function _sitenow_events_get_filter_field_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable = TRUE) {
+  $tree = [];
+  $options = [];
+
   switch ($definition->getName()) {
     case 'field_events_department':
     case 'field_uiowa_events_department':
       $data = sitenow_events_load(['display_id' => 'filters'], ['views', 'filters_api.json']);
-      $options = _sitenow_events_process_nested_filters($data['departments']);
+      $tree = _sitenow_events_build_options_tree($data['departments']);
 
       break;
 
     case 'field_events_audiences':
     case 'field_uiowa_events_audiences':
       $data = sitenow_events_load(['display_id' => 'filters'], ['views', 'filters_api.json']);
-      $options = _sitenow_events_process_nested_filters($data['event_audience']);
+      $tree = _sitenow_events_build_options_tree($data['event_audience']);
 
       break;
 
     case 'field_events_gen_interests':
     case 'field_uiowa_events_interests':
       $data = sitenow_events_load(['display_id' => 'filters'], ['views', 'filters_api.json']);
-      $options = _sitenow_events_process_nested_filters($data['event_general_interest']);
+      $tree = _sitenow_events_build_options_tree($data['event_general_interest']);
 
       break;
 
     case 'field_events_event_types':
     case 'field_uiowa_events_types':
       $data = sitenow_events_load(['display_id' => 'filters'], ['views', 'filters_api.json']);
-      $options = _sitenow_events_process_nested_filters($data['event_types']);
+      $tree = _sitenow_events_build_options_tree($data['event_types']);
 
       break;
 
     case 'field_events_keywords':
     case 'field_uiowa_events_keywords':
       $data = sitenow_events_load(['display_id' => 'keywords'], ['views', 'filters_api.json']);
-
-      foreach ($data['keywords'] as $keyword) {
-        $options[$keyword['id']] = $keyword['name'];
-      }
+      $tree = _sitenow_events_build_options_tree($data['keywords']);
 
       break;
 
     case 'field_events_places':
     case 'field_uiowa_events_places':
       $data = sitenow_events_load(['display_id' => 'places'], ['views', 'places_api.json']);
-
-      foreach ($data['places'] as $place) {
-        $options[$place['id']] = $place['name'];
-      }
+      $tree = _sitenow_events_build_options_tree($data['places']);
 
       break;
 
   }
 
-  // Sort the options.
-  asort($options);
+  $options = _sitenow_events_build_options_list($tree);
 
   return $options;
 }
 
 /**
- * Process filters as nested select list options with optgroups.
+ * Helper function to build the options tree.
  *
- * @param array $filters
- *   The array of filters.
+ * @param array $data
+ *   Array of data to be sorted into a tree.
+ * @param int $parent
+ *   Stores the current id.
  *
  * @return array
- *   The select list options.
+ *   Returns an associative array options tree.
  */
-function _sitenow_events_process_nested_filters(array $filters) {
-  $options = [];
+function _sitenow_events_build_options_tree(array $data, $parent = 0) {
+  $tree = [];
 
-  foreach ($filters as $filter) {
-    // Create some variables for easier array access.
-    $id = $filter['id'];
-    $name = $filter['name'];
-    $parent_id = $filter['parent_id'];
-    $parent_name = $filter['parent_name'];
+  foreach ($data as $d) {
+    if ($d['parent_id'] == $parent) {
+      $children = _sitenow_events_build_options_tree($data, $d['id']);
 
-    // This filter has no parent. Add it.
-    if ($parent_id == NULL) {
-      $options[$id] = $name;
+      if (!empty($children)) {
+        $d['_children'] = $children;
+      }
+      $tree[] = $d;
     }
-    else {
-      // Add the parent keyed by name so it is used as the optgroup label.
-      if (!isset($options[$parent_name])) {
-        $options[$parent_name] = [
-          $parent_id => $parent_name,
-          $id => $name,
-        ];
-      }
-      else {
-        $options[$parent_name][$id] = $name;
-      }
+  }
 
-      // Unset the parent ID so we don't have duplicates.
-      if (isset($options[$parent_id])) {
-        unset($options[$parent_id]);
-      }
+  return $tree;
+}
+
+/**
+ * Helper function to output the options array.
+ *
+ * @param array $tree
+ *   Array of tree data to be printed.
+ * @param int $r
+ *   Basic counter.
+ * @param int $p
+ *   Parent id.
+ * @param array $options
+ *   Options array to be passed recursively.
+ *
+ * @return array
+ *   Returns options with children prefixed with dashes.
+ */
+function _sitenow_events_build_options_list(array $tree, $r = 0, $p = NULL, array &$options = []) {
+  foreach ($tree as $t) {
+    $dash = ($t['parent_id'] == 0) ? '' : str_repeat('-', $r) . ' ';
+    $options[$t['id']] = $dash . $t['name'];
+
+    if ($t['parent_id'] == $p) {
+      // Reset $r.
+      $r = 0;
+    }
+
+    if (isset($t['_children'])) {
+      _sitenow_events_build_options_list($t['_children'], ++$r, $t['parent_id'], $options);
     }
   }
 
