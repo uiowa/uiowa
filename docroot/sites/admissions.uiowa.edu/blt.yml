@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: admissions.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: admissions
+  human_name: admissions.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: admissions.prod
+drupal:
+  db:
+    database: admissions_uiowa_edu
+uiowa:
+  requester: sfiddelk
