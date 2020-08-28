@@ -41,6 +41,7 @@
             'headline_text' : banner_title,
             'headline_url': link.link_url,
             'headline_aria': banner_aria_describedby,
+            'headline_attributes': headline_attributes ?: null,
           } %}
           {% include '@uids_base/uids/headline.html.twig' with banner_heading only %}
         {% endif %}

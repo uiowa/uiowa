@@ -29,17 +29,12 @@
 
 {% set styles = elements['#layout_builder_style'] %}
 {% set banner_attributes = [] %}
+{% set headline_classes = [ ] %}
 
 {% for style in styles %}
-	{% if style == 'bold-headline-caps'  %}
-		{% set banner_attributes = ['bold-headline bold-headline--negative bold-headline--caps'] %}
-	{% elseif style == 'bold-headline-caps-highlight' %}
-		{% set banner_attributes = ['bold-headline bold-headline--highlight bold-headline--caps'] %}
-	{% elseif style == 'bold-headline-serif-highlight' %}
-		{% set banner_attributes = ['bold-headline bold-headline--highlight bold-headline--serif'] %}
-	{% else %}
-		{% set banner_attributes = ['bold-headline bold-headline--serif bold-headline--negative'] %}
-	{% endif %}
+  {% if style starts with 'bold-headline' %}
+    {% set headline_classes = headline_classes.merge([style]) %}
+  {% endif %}
 {% endfor %}
 
 {% set block_banner = {
@@ -48,7 +43,7 @@
   'attributes': attributes,
   'banner_title': content.field_uiowa_banner_title[0]['#text'],
   'headline_level': content.field_uiowa_banner_title[0]['#size'],
-  'headline_class' : banner_attributes,
+  'headline_class' : headline_classes,
   'banner_aria_describedby': content.field_uiowa_banner_title[0]['#text']|clean_id,
   'link': {
     'link_url': content.field_uiowa_banner_link[0]['#url'],
