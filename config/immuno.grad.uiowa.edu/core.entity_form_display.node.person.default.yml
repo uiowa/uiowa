@@ -26,6 +26,8 @@ dependencies:
     - field.field.node.person.field_pt_faculty_type
     - field.field.node.person.field_pt_student_advisor
     - field.field.node.person.field_pt_student_current
+    - field.field.node.person.field_pt_student_defense_date
+    - field.field.node.person.field_pt_student_program_start
     - field.field.node.person.field_tags
     - field.field.node.person.field_teaser
     - field.field.node.person.pt_student_dissertation_title
@@ -33,6 +35,7 @@ dependencies:
     - workflows.workflow.editorial
   module:
     - content_moderation
+    - datetime
     - link
     - media_library
     - path
@@ -228,6 +231,18 @@ content:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
+    region: content
+  field_pt_student_defense_date:
+    weight: 35
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  field_pt_student_program_start:
+    weight: 34
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
     region: content
   field_tags:
     weight: 16
