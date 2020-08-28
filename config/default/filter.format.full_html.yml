@@ -2,10 +2,28 @@ uuid: af460b5c-21d2-4159-946a-27148cc50f88
 langcode: en
 status: true
 dependencies:
+  config:
+    - core.entity_view_mode.media.full__no_crop
+    - core.entity_view_mode.media.full__square
+    - core.entity_view_mode.media.full__ultrawide
+    - core.entity_view_mode.media.full__widescreen
+    - core.entity_view_mode.media.large__no_crop
+    - core.entity_view_mode.media.large__square
+    - core.entity_view_mode.media.large__ultrawide
+    - core.entity_view_mode.media.large__widescreen
+    - core.entity_view_mode.media.medium__no_crop
+    - core.entity_view_mode.media.medium__square
+    - core.entity_view_mode.media.medium__ultrawide
+    - core.entity_view_mode.media.medium__widescreen
+    - core.entity_view_mode.media.small__no_crop
+    - core.entity_view_mode.media.small__square
+    - core.entity_view_mode.media.small__ultrawide
+    - core.entity_view_mode.media.small__widescreen
   module:
     - editor
     - entity_embed
     - linkit
+    - media
 name: 'Full HTML'
 format: full_html
 weight: -8
@@ -81,3 +99,29 @@ filters:
     weight: -50
     settings:
       title: true
+  media_embed:
+    id: media_embed
+    provider: media
+    status: true
+    weight: 100
+    settings:
+      default_view_mode: default
+      allowed_media_types: {  }
+      allowed_view_modes:
+        default: default
+        full__no_crop: full__no_crop
+        full__square: full__square
+        full__ultrawide: full__ultrawide
+        full__widescreen: full__widescreen
+        large__no_crop: large__no_crop
+        large__square: large__square
+        large__ultrawide: large__ultrawide
+        large__widescreen: large__widescreen
+        medium__no_crop: medium__no_crop
+        medium__square: medium__square
+        medium__ultrawide: medium__ultrawide
+        medium__widescreen: medium__widescreen
+        small__no_crop: small__no_crop
+        small__square: small__square
+        small__ultrawide: small__ultrawide
+        small__widescreen: small__widescreen
