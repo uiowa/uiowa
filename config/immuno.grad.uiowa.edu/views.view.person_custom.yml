@@ -10,9 +10,11 @@ dependencies:
     - field.storage.node.field_person_phone
     - field.storage.node.field_pt_faculty_type
     - node.type.person
+    - system.menu.main
     - taxonomy.vocabulary.person_types
   content:
     - 'taxonomy_term:person_types:2cfe6322-4c73-4002-b3b1-3be96a818248'
+    - 'taxonomy_term:person_types:3aa19008-6802-4cc3-8f91-49117d377459'
   module:
     - node
     - taxonomy
@@ -641,6 +643,44 @@ display:
           level_labels: ''
           force_deepest: false
           plugin_id: taxonomy_index_tid
+        field_person_hide_value:
+          id: field_person_hide_value
+          table: node__field_person_hide
+          field: field_person_hide_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: '0'
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: boolean
       sorts:
         created:
           id: created
@@ -692,12 +732,12 @@ display:
       path: people/faculty
       display_description: ''
       menu:
-        type: 'default tab'
+        type: normal
         title: Faculty
         description: ''
-        expanded: false
-        parent: ''
-        weight: 0
+        expanded: true
+        parent: 'menu_link_content:dfe57f86-2e28-4c62-911c-3eea8865b62d'
+        weight: -50
         context: '0'
         menu_name: main
       tab_options:
@@ -1181,7 +1221,7 @@ display:
         fields: false
         filters: false
         filter_groups: false
-      path: students
+      path: people/students
       display_description: ''
       fields:
         title:
@@ -1447,10 +1487,143 @@ display:
           fields:
             title: title
           plugin_id: combine
+        field_person_type_target_id:
+          id: field_person_type_target_id
+          table: node__field_person_type
+          field: field_person_type_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: '21'
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: cshs
+          limit: true
+          vid: person_types
+          hierarchy: false
+          error_message: true
+          parent: 0
+          level_labels: ''
+          force_deepest: false
+          plugin_id: taxonomy_index_tid
+        field_pt_student_current_value:
+          id: field_pt_student_current_value
+          table: node__field_pt_student_current
+          field: field_pt_student_current_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: '1'
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: boolean
+        field_person_hide_value:
+          id: field_person_hide_value
+          table: node__field_person_hide
+          field: field_person_hide_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: '0'
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: boolean
       filter_groups:
         operator: AND
         groups:
           1: AND
+      menu:
+        type: normal
+        title: Students
+        description: ''
+        expanded: false
+        parent: 'menu_link_content:dfe57f86-2e28-4c62-911c-3eea8865b62d'
+        weight: -49
+        context: '0'
+        menu_name: main
     cache_metadata:
       max-age: -1
       contexts:
@@ -1458,6 +1631,7 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
@@ -1670,7 +1844,7 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-      path: students/former
+      path: people/students/former
       filters:
         status:
           value: '1'
@@ -1744,10 +1918,143 @@ display:
           fields:
             title: title
           plugin_id: combine
+        field_person_type_target_id:
+          id: field_person_type_target_id
+          table: node__field_person_type
+          field: field_person_type_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: '21'
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: cshs
+          limit: true
+          vid: person_types
+          hierarchy: false
+          error_message: true
+          parent: 0
+          level_labels: ''
+          force_deepest: false
+          plugin_id: taxonomy_index_tid
+        field_pt_student_current_value:
+          id: field_pt_student_current_value
+          table: node__field_pt_student_current
+          field: field_pt_student_current_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: '0'
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: boolean
+        field_person_hide_value:
+          id: field_person_hide_value
+          table: node__field_person_hide
+          field: field_person_hide_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: '0'
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: boolean
       filter_groups:
         operator: AND
         groups:
           1: AND
+      menu:
+        type: normal
+        title: 'Former Students'
+        description: ''
+        expanded: false
+        parent: 'menu_link_content:dfe57f86-2e28-4c62-911c-3eea8865b62d'
+        weight: 0
+        context: '0'
+        menu_name: main
     cache_metadata:
       max-age: -1
       contexts:
@@ -1755,6 +2062,7 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
