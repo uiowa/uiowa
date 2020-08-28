@@ -20,3 +20,23 @@ function sitenow_events_update_8001() {
   Drupal::database()->schema()->dropTable('uievents');
   drupal_flush_all_caches();
 }
+
+/**
+ * Remove unnecessary config items and nesting.
+ */
+function sitenow_events_update_8002() {
+  $config = Drupal::configFactory()->getEditable('sitenow_events.settings');
+  $new = [];
+
+  $config->clear('sitenow_events.filters_endpoint');
+  $config->clear('sitenow_events.keywords_endpoint');
+
+  foreach ($config->get('sitenow_events') as $key => $value) {
+    $new[$key] = $value;
+  }
+
+  $config->delete();
+  $config->setData($new);
+  $config->save();
+
+}

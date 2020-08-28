@@ -1,0 +1,23 @@
+uuid: 7c488d49-bb5c-4f70-8c54-5832f6df447b
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_events
+    - field.storage.block_content.field_uiowa_events_display_more
+id: block_content.uiowa_events.field_uiowa_events_display_more
+field_name: field_uiowa_events_display_more
+entity_type: block_content
+bundle: uiowa_events
+label: 'Display more link'
+description: 'Check to include a more link. This defaults to events.uiowa.edu but a custom URL path can be provided.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean
