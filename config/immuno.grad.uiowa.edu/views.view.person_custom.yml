@@ -104,11 +104,12 @@ display:
           columns:
             field_person_first_name: field_person_last_name
             field_person_last_name: field_person_last_name
-            field_person_lab_phone: field_person_lab_phone
-            field_person_lab_room: field_person_lab_building
-            field_person_lab_building: field_person_lab_building
-            field_pt_student_advisor: field_pt_student_advisor
+            pt_student_dissertation_title: pt_student_dissertation_title
             field_pt_student_program_start: field_pt_student_program_start
+            field_pt_student_cur_pos_dept: field_pt_student_cur_pos_title
+            field_pt_student_cur_pos_inst: field_pt_student_cur_pos_title
+            field_pt_student_cur_pos_title: field_pt_student_cur_pos_title
+            field_pt_student_defense_date: field_pt_student_defense_date
           info:
             field_person_first_name:
               sortable: false
@@ -124,29 +125,8 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            field_person_lab_phone:
+            pt_student_dissertation_title:
               sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_person_lab_room:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_person_lab_building:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_pt_student_advisor:
-              sortable: true
               default_sort_order: asc
               align: ''
               separator: ''
@@ -154,6 +134,34 @@ display:
               responsive: ''
             field_pt_student_program_start:
               sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_pt_student_cur_pos_dept:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_pt_student_cur_pos_inst:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_pt_student_cur_pos_title:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ', '
+              empty_column: false
+              responsive: ''
+            field_pt_student_defense_date:
+              sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
@@ -742,7 +750,7 @@ display:
         title: Faculty
         description: ''
         expanded: true
-        parent: 'menu_link_content:dfe57f86-2e28-4c62-911c-3eea8865b62d'
+        parent: 'menu_link_content:7d0034b4-e3f3-4085-9359-c889064e701c'
         weight: -50
         context: '0'
         menu_name: main
@@ -1879,7 +1887,7 @@ display:
         title: Students
         description: ''
         expanded: false
-        parent: 'menu_link_content:dfe57f86-2e28-4c62-911c-3eea8865b62d'
+        parent: 'menu_link_content:7d0034b4-e3f3-4085-9359-c889064e701c'
         weight: -49
         context: '0'
         menu_name: main
@@ -2306,8 +2314,8 @@ display:
           label: 'Current position'
           exclude: false
           alter:
-            alter_text: false
-            text: ''
+            alter_text: true
+            text: '{{ field_pt_student_cur_pos_title }}{% if field_pt_student_cur_pos_dept or field_pt_student_cur_pos_inst %},{% endif%} {{ field_pt_student_cur_pos_dept }} {{ field_pt_student_cur_pos_inst }}'
             make_link: false
             path: ''
             absolute: false
@@ -2629,10 +2637,10 @@ display:
           1: AND
       menu:
         type: normal
-        title: 'Former Students'
+        title: 'Past Students'
         description: ''
         expanded: false
-        parent: 'menu_link_content:dfe57f86-2e28-4c62-911c-3eea8865b62d'
+        parent: 'menu_link_content:7d0034b4-e3f3-4085-9359-c889064e701c'
         weight: 0
         context: '0'
         menu_name: main
