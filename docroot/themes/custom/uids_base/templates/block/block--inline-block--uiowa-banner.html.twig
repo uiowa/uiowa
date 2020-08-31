@@ -31,7 +31,7 @@
 {% set headline_classes = [] %}
 
 {% for style in styles %}
-  {% if style starts with 'bold' %}
+  {% if style starts with 'bold-headline' %}
     {% set headline_classes = headline_classes|merge([style]) %}
   {% endif %}
 {% endfor %}
