@@ -181,10 +181,10 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
 
     case 'inline_block:uiowa_articles':
     case 'inline_block:uiowa_people':
-      if (isset($element["field_uiowa_views_more_path"])) {
-        $element["field_uiowa_views_more_path"]['#states'] = [
+      if (isset($element["field_collection_more_path"])) {
+        $element["field_collection_more_path"]['#states'] = [
           'visible' => [
-            ':input[name="settings[block_form][field_uiowa_views_more][value]"]' => [
+            ':input[name="settings[block_form][field_collection_more][value]"]' => [
               'checked' => TRUE,
             ],
           ],

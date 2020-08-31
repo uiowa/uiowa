@@ -5,11 +5,11 @@ dependencies:
   config:
     - block_content.type.uiowa_articles
     - field.field.block_content.uiowa_articles.field_collection_heading_size
-    - field.field.block_content.uiowa_articles.field_uiowa_views_items
-    - field.field.block_content.uiowa_articles.field_uiowa_views_more
-    - field.field.block_content.uiowa_articles.field_uiowa_views_more_path
-    - field.field.block_content.uiowa_articles.field_uiowa_views_pager
-    - field.field.block_content.uiowa_articles.field_uiowa_views_reference
+    - field.field.block_content.uiowa_articles.field_collection_results
+    - field.field.block_content.uiowa_articles.field_collection_more
+    - field.field.block_content.uiowa_articles.field_collection_more_path
+    - field.field.block_content.uiowa_articles.field_collection_pager
+    - field.field.block_content.uiowa_articles.field_collection_reference
   module:
     - link
 id: block_content.uiowa_articles.default
@@ -23,21 +23,14 @@ content:
     third_party_settings: {  }
     type: options_select
     region: content
-  field_uiowa_views_items:
-    weight: 2
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-    region: content
-  field_uiowa_views_more:
+  field_collection_more:
     weight: 5
     settings:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
-  field_uiowa_views_more_path:
+  field_collection_more_path:
     weight: 6
     settings:
       placeholder_url: ''
@@ -45,14 +38,14 @@ content:
     third_party_settings: {  }
     type: link_default
     region: content
-  field_uiowa_views_pager:
+  field_collection_pager:
     weight: 3
     settings:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
-  field_uiowa_views_reference:
+  field_collection_reference:
     weight: 1
     settings:
       match_operator: CONTAINS
@@ -61,6 +54,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete_tags
+    region: content
+  field_collection_results:
+    weight: 2
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
     region: content
   info:
     type: string_textfield

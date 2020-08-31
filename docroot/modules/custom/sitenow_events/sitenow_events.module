@@ -33,7 +33,7 @@ function sitenow_events_preprocess_block(&$variables) {
       'filters[startdate][value][date]' => date('m-d-Y', strtotime(date('d-m-Y'))),
       'filters[enddate][value][date]' => date('m-d-Y', strtotime(date('d-m-Y') . '+365 days')),
       'page' => 0,
-      'items_per_page' => $block->get('field_uiowa_events_results')->value ?? 50,
+      'items_per_page' => $block->get('field_collection_results')->value ?? 50,
     ]);
 
     if (isset($data['events'])) {
@@ -57,8 +57,8 @@ function sitenow_events_preprocess_block(&$variables) {
     }
 
     // If we have more link checked and link provided, pass it.
-    if ($block->get('field_uiowa_events_display_more')->value == TRUE) {
-      if ($uri = $block->get('field_uiowa_events_more_link')->uri) {
+    if ($block->get('field_collection_more')->value == TRUE) {
+      if ($uri = $block->get('field_collection_more_path')->uri) {
         $url = Url::fromUri($uri);
       }
       else {
@@ -242,10 +242,10 @@ function _sitenow_events_process_element(array $element, FormStateInterface $for
   $block = $component->getPlugin();
 
   if ($block->getPluginId() == 'inline_block:uiowa_events') {
-    if (isset($element['field_uiowa_events_more_link'])) {
-      $element['field_uiowa_events_more_link']['#states'] = [
+    if (isset($element['field_collection_more_path'])) {
+      $element['field_collection_more_path']['#states'] = [
         'visible' => [
-          ':input[name="settings[block_form][field_uiowa_events_display_more][value]"]' => [
+          ':input[name="settings[block_form][field_collection_more][value]"]' => [
             'checked' => TRUE,
           ],
         ],
