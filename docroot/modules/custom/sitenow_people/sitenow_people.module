@@ -517,6 +517,14 @@ function sitenow_people_preprocess_block(&$variables) {
 
       $view->preExecute();
       $view->execute();
+
+      // Associate the block's cache tags with each entity in the view result so
+      // that the appropriate render cache ID is cleared when the block changes.
+      foreach ($view->result as $result_row) {
+        $entity = $result_row->_entity;
+        $entity->addCacheTags($variables['content']['#cache']['tags']);
+      }
+
       $variables['content']['view'] = $view->render();
 
       // If we have more link checked and link provided, pass it.
