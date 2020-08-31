@@ -179,8 +179,11 @@ function sitenow_events_format_instance(array $event_instance) {
       $start_day = date('M d Y', strtotime($event_instance['start']));
       $end_day = date('M d Y', strtotime($event_instance['end']));
 
-      if ($start_day == $end_day) {
+      if ($start_day == $end_day && $event_instance['all_day'] == FALSE) {
         $end = date('g:ia', strtotime($event_instance['end']));
+      }
+      elseif ($start_day == $end_day && $event_instance['all_day'] == TRUE) {
+        $end = date('g:ia', strtotime($event_instance['end'])) . ' (all day)';
       }
       else {
         $end = date('l, F j, Y, g:ia', strtotime($event_instance['end']));
