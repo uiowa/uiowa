@@ -484,6 +484,14 @@ function sitenow_articles_preprocess_block(&$variables) {
       $view->execute();
       $variables['content']['view'] = $view->render();
 
+      // Associate the block's cache tags with each entity in the view result so
+      // that the appropriate render cache ID is cleared when the block changes.
+      foreach ($view->result as $result_row) {
+        $entity = $result_row->_entity;
+        $entity->addCacheTags($variables['content']['#cache']['tags']);
+        $entity->save();
+      }
+
       // If we have more link checked and link provided, pass it.
       if ($block->hasField('field_uiowa_views_more')) {
         $more = ($block->field_uiowa_views_more->value == 1) ? TRUE : FALSE;
