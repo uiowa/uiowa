@@ -482,7 +482,6 @@ function sitenow_articles_preprocess_block(&$variables) {
       $view->display_handler->setOption('pager', $pager);
       $view->preExecute();
       $view->execute();
-      $variables['content']['view'] = $view->render();
 
       // Associate the block's cache tags with each entity in the view result so
       // that the appropriate render cache ID is cleared when the block changes.
@@ -490,6 +489,8 @@ function sitenow_articles_preprocess_block(&$variables) {
         $entity = $result_row->_entity;
         $entity->addCacheTags($variables['content']['#cache']['tags']);
       }
+
+      $variables['content']['view'] = $view->render();
 
       // If we have more link checked and link provided, pass it.
       if ($block->hasField('field_collection_more')) {
