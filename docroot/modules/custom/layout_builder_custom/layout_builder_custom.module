@@ -182,17 +182,19 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
 }
 
 /**
- * Replace the label with the collection headline.
+ * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ *
+ * @param array $element
+ *   The current widget element.
+ * @param Drupal\Core\Form\FormStateInterface $form_state
+ *   The current form state.
+ * @param array $context
+ *   The current form widget context.
  */
-function layout_builder_custom_inline_entity_form_table_fields_alter(array &$fields, array $context) {
-  if ($context['entity_type'] === 'paragraph') {
-    if (in_array('uiowa_collection_item', $context['allowed_bundles'])) {
-      unset($fields['label']);
-      $fields['field_collection_headline'] = [
-        'type' => 'field',
-        'label' => t('Headline'),
-        'weight' => 0,
-      ];
-    }
+function layout_builder_custom_field_widget_paragraphs_form_alter(array &$element, FormStateInterface &$form_state, array $context) {
+  if (isset($element['#paragraph_type']) && $element['#paragraph_type'] === 'uiowa_collection_item') {
+    // Pop the headline and place it in the label.
+    $headline = array_shift($element['top']['summary']['fields_info']['#summary']['content']);
+    $element['top']['type']['label']['#markup'] = $headline;
   }
 }
