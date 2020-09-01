@@ -2,39 +2,13 @@
 @import "assets/scss/_utilities.scss";
 @import "components/banner/banner.scss";
 
-.bold-headline-caps-highlight,
-.bold-headline-serif-highlight {
-  .bttn--primary {
-    @include bttn--secondary;
-    border: none;
-
-    svg {
-      color: $primary;
-    }
-
-    &:after {
-      background-color: $primary;
-    }
-  }
-}
-
 .banner.banner--gradient-left-reversed .bold-headline.bold-headline--negative {
   text-shadow: none;
   color: $secondary;
 }
 
-
 .banner {
   @include breakpoint(sm) {
     min-height: 18rem;
-
-    &:not([class*="bg-"]) {
-      background: $secondary;
-    }
-  }
-
-  &[class*="bg--"]:after,
-  &[class*="bg-pattern--"]:after {
-    background: none;
   }
 }
