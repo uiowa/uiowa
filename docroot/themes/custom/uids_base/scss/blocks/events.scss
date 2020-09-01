@@ -3,9 +3,15 @@
 
 .block-inline-blockuiowa-events {
   margin-top: $gutter;
-  .field--name-title {
+  .card__title {
     display: block;
     @include h5;
+  }
+
+  .event-location {
+   font-family: Zilla Slab, serif;
+    font-size: 1.2rem;
+    font-weight: 300;
   }
 
   .more-link {
@@ -17,6 +23,12 @@
 .block-inline-blockuiowa-events {
   &.hide-images .card__media,
   &.hide-images .content-image {
+    display: none;
+  }
+}
+
+.block-inline-blockuiowa-events {
+  &.hide-details .event-location {
     display: none;
   }
 }

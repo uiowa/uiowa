@@ -21,7 +21,7 @@
 {% embed '@uids_base/uids/card.html.twig' with events_card %}
   {% block card_content %}
     {% if event.location_name is not empty %}
-      <div class="event-location">{{ event.location_name }}</div>
+      <div class="event-location"><span class="fas fa-map-marker-alt"></span> {{ event.location_name }}</div>
     {% endif %}
 
     <p>{{ card_text }}</p>
