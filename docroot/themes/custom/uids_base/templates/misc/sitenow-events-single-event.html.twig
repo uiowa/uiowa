@@ -1,45 +1,50 @@
 <div class="sitenow-event-single">
-    <div id="sitenow-event" class="sitenow-event sitenow-event-{{ data.id }}">
+    <div id="sitenow-event" class="sitenow-event sitenow-event-{{ event.id }}">
         <div id="main-column" class="main-column">
+            {% if event.canceled is not empty %}
+              <div class="event-canceled">
+                <span class="badge badge--orange">Canceled</span>
+              </div>
+            {% endif %}
             <div class="event-time">
-                {{ data.date_instances }}
+                {{ event.date_instances }}
             </div>
-            {% if data.location_name|length %}
+            {% if event.location_name|length %}
             <div class="event-location">
-                {{ data.location_name }}
-                {% if data.room_number|length %}
-                {{ data.room_number }}
+                {{ event.location_name }}
+                {% if event.room_number|length %}
+                {{ event.room_number }}
                 {% endif %}
             </div>
             {% endif %}
-            {% if data.address|length %}
+            {% if event.address|length %}
             <div class="event-address">
-                {{ data.address }}
+                {{ event.address }}
             </div>
             {% endif %}
-            {% if data.description|length %}
+            {% if event.description|length %}
             <div class="event-description">
-                {{ data.description|raw }}
+                {{ event.description|raw }}
             </div>
             {% endif %}
-            {% if data.custom_fields.contact_name|length %}
+            {% if event.custom_fields.contact_name|length %}
             <div class="contact-info">
-                Contact Info: {{ data.custom_fields.contact_name }}
-                {% if data.custom_fields.contact_email|length %}
-                , {{ data.custom_fields.contact_email }}
-                {% if data.custom_fields.contact_phone_number|length %}
-                , {{ data.custom_fields.contact_phone_number }}
+                Contact Info: {{ event.custom_fields.contact_name }}
+                {% if event.custom_fields.contact_email|length %}
+                , {{ event.custom_fields.contact_email }}
+                {% if event.custom_fields.contact_phone_number|length %}
+                , {{ event.custom_fields.contact_phone_number }}
                 {% endif %}
                 {% endif %}
             </div>
             {% endif %}
         </div>
         <div id="secondary-column" class="secondary-column">
-            {{ data.event_image }}
-            <a href="{{ data.events_site_url }}" role="button" class="btn btn-primary">View on Event Calendar</a>
+            {{ event.event_image }}
+            <a href="{{ event.events_site_url }}" role="button" class="btn btn-primary">View on Event Calendar</a>
         </div>
     </div>
     <div class="sitenow-event-accessibility-statement">
-        <em>{{ data.accessibility_statement }}</em>
+        <em>{{ event.accessibility_statement }}</em>
     </div>
 </div>
