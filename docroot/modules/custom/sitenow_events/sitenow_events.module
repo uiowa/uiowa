@@ -245,51 +245,6 @@ function sitenow_events_field_widget_paragraphs_form_alter(&$element, &$form_sta
 }
 
 /**
- * Implements hook_form_BASE_FORM_ID_alter().
- */
-function sitenow_events_form_layout_builder_add_block_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $form['settings']['block_form']['#process'][] = '_sitenow_events_process_element';
-}
-
-/**
- * Implements hook_form_BASE_FORM_ID_alter().
- */
-function sitenow_events_form_layout_builder_update_block_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $form['settings']['block_form']['#process'][] = '_sitenow_events_process_element';
-}
-
-/**
- * Custom process block form elements.
- *
- * @param array $element
- *   The current block element.
- * @param \Drupal\Core\Form\FormStateInterface $form_state
- *   The current form state.
- *
- * @return array
- *   The processed block element.
- */
-function _sitenow_events_process_element(array $element, FormStateInterface $form_state) {
-  /** @var \Drupal\layout_builder\SectionComponent $component */
-  $component = $form_state->getFormObject()->getCurrentComponent();
-  $block = $component->getPlugin();
-
-  if ($block->getPluginId() == 'inline_block:uiowa_events') {
-    if (isset($element['field_collection_more_path'])) {
-      $element['field_collection_more_path']['#states'] = [
-        'visible' => [
-          ':input[name="settings[block_form][field_collection_more][value]"]' => [
-            'checked' => TRUE,
-          ],
-        ],
-      ];
-    }
-  }
-
-  return $element;
-}
-
-/**
  * Set dynamic allowed values for multiple fields.
  *
  * @param \Drupal\field\Entity\FieldStorageConfig $definition
