@@ -128,10 +128,10 @@ function template_preprocess_sitenow_events_single_event(array &$variables) {
 
     $variables['event']['date_instances'] = $instances;
   }
-  if (isset($variables['event']['photo_url'])) {
+  if (isset($variables['event']['media'][0]['large_image'])) {
     $variables['event']['event_image'] = [
       '#theme' => 'imagecache_external',
-      '#uri' => $variables['event']['photo_url'],
+      '#uri' => $variables['event']['media'][0]['large_image'],
       '#style_name' => 'medium',
       '#alt' => t('@title promotional image', ['@title' => $variables['event']['title']]),
     ];
