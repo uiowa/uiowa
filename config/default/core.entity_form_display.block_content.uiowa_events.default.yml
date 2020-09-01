@@ -5,14 +5,14 @@ dependencies:
   config:
     - block_content.type.uiowa_events
     - field.field.block_content.uiowa_events.field_collection_heading_size
+    - field.field.block_content.uiowa_events.field_collection_more
+    - field.field.block_content.uiowa_events.field_collection_more_path
+    - field.field.block_content.uiowa_events.field_collection_results
     - field.field.block_content.uiowa_events.field_uiowa_events_audiences
     - field.field.block_content.uiowa_events.field_uiowa_events_department
-    - field.field.block_content.uiowa_events.field_collection_more
     - field.field.block_content.uiowa_events.field_uiowa_events_interests
     - field.field.block_content.uiowa_events.field_uiowa_events_keywords
-    - field.field.block_content.uiowa_events.field_collection_more_path
     - field.field.block_content.uiowa_events.field_uiowa_events_place
-    - field.field.block_content.uiowa_events.field_collection_results
     - field.field.block_content.uiowa_events.field_uiowa_events_types
   module:
     - link
@@ -22,7 +22,7 @@ bundle: uiowa_events
 mode: default
 content:
   field_collection_heading_size:
-    weight: 9
+    weight: 10
     settings: {  }
     third_party_settings: {  }
     type: options_select
@@ -35,7 +35,7 @@ content:
     type: boolean_checkbox
     region: content
   field_collection_more_path:
-    weight: 10
+    weight: 9
     settings:
       placeholder_url: ''
       placeholder_title: ''
