@@ -41,7 +41,7 @@ function template_preprocess_sitenow_events_single_event(array &$variables) {
       }
     }
 
-    // Set the current instance on $data.
+    // Set the current instance.
     $variables['event']['instance_start'] = $variables['event']['event_instances'][$instance_arg]['event_instance']['start'];
     $variables['event']['instance_end'] = $variables['event']['event_instances'][$instance_arg]['event_instance']['end'];
     $variables['event']['instance_all_day'] = $variables['event']['event_instances'][$instance_arg]['event_instance']['all_day'];
