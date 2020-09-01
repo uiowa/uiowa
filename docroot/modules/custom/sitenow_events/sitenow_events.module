@@ -164,30 +164,57 @@ function sitenow_events_theme($existing, $type, $theme, $path) {
  *   The human-readable date string.
  */
 function sitenow_events_format_instance(array $event_instance) {
-  if ($event_instance['all_day']) {
-    $start = date('l, F j, Y', strtotime($event_instance['start']));
+  $start_date = strtotime($event_instance['start']);
+
+  if (isset($event_instance['end'])) {
+    $end_date = strtotime($event_instance['end']);
   }
   else {
-    $start = date('l, F j, Y, g:ia', strtotime($event_instance['start']));
+    $end_date = $start_date;
   }
 
-  if (!empty($event_instance['end'])) {
-    if ($event_instance['start'] == $event_instance['end']) {
-      $end = NULL;
+  $is_all_day = ($event_instance['all_day'] == TRUE);
+  $is_same_day = date('Y-m-d', $start_date) == date('Y-m-d', $end_date);
+  $is_same_time = date('g:ia', $start_date) == date('g:ia', $end_date);
+  $is_same_month = $is_same_day || date('Y-m', $start_date) == date('Y-m', $end_date);
+  $is_same_year = $is_same_day || $is_same_month || (date('Y', $start_date) == date('Y', $end_date));
+
+  if ($is_same_day && $is_all_day) {
+    $start = date('l, F j, Y', $start_date) . ' (all day)';
+  }
+  elseif ($is_same_day && !$is_all_day) {
+    $start = date('l, F j, Y g:ia', $start_date);
+
+    if (!$is_same_time) {
+      $end = date('g:ia', $end_date);
+    }
+  }
+  elseif (!$is_same_day && $is_all_day) {
+    if ($is_same_month) {
+      $start = date('l, F j', $start_date);
+      $end = date('l, F j, Y', $end_date) . ' (all day)';
+    }
+    elseif ($is_same_year) {
+      $start = date('l, F j', $start_date);
+      $end = date('l, F j, Y', $end_date) . ' (all day)';
     }
     else {
-      $start_day = date('M d Y', strtotime($event_instance['start']));
-      $end_day = date('M d Y', strtotime($event_instance['end']));
-
-      if ($start_day == $end_day && $event_instance['all_day'] == FALSE) {
-        $end = date('g:ia', strtotime($event_instance['end']));
-      }
-      elseif ($start_day == $end_day && $event_instance['all_day'] == TRUE) {
-        $end = date('g:ia', strtotime($event_instance['end'])) . ' (all day)';
-      }
-      else {
-        $end = date('l, F j, Y, g:ia', strtotime($event_instance['end']));
-      }
+      $start = date('l, F j, Y', $start_date);
+      $end = date('l, F j, Y', $end_date) . ' (all day)';
+    }
+  }
+  elseif (!$is_same_day & !$is_all_day) {
+    if ($is_same_month) {
+      $start = date('l, F j g:ia', $start_date);
+      $end = date('l, F j, Y g:ia', $end_date);
+    }
+    elseif ($is_same_year) {
+        $start = date('l, F j, g:ia', $start_date);
+        $end = date('l, F j, Y g:ia', $end_date);
+    }
+    else {
+      $start = date('l, F j, Y g:ia', $start_date);
+      $end = date('l, F j, Y g:ia', $end_date);
     }
   }
 
