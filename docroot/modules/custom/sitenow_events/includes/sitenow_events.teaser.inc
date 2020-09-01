@@ -32,6 +32,9 @@ function template_preprocess_sitenow_events_teaser(array &$variables) {
       '#uri' => $variables['event']['media'][0]['medium_image'],
       '#style_name' => 'medium',
       '#alt' => $variables['event']['title'],
+      '#attributes' => [
+        'data-lazy' => TRUE,
+      ],
     ];
   }
 

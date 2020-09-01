@@ -134,6 +134,9 @@ function template_preprocess_sitenow_events_single_event(array &$variables) {
       '#uri' => $variables['event']['media'][0]['large_image'],
       '#style_name' => 'medium',
       '#alt' => t('@title promotional image', ['@title' => $variables['event']['title']]),
+      '#attributes' => [
+        'data-lazy' => TRUE,
+      ],
     ];
   }
 }
