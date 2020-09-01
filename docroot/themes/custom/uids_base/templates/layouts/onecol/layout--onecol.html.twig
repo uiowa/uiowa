@@ -21,7 +21,9 @@
   ]
 %}
 
-{% if content.content %}
+{% set content_render = content.content|render %}
+
+{% if content_render is not empty %}
 
 <div {{ attributes.addClass(classes).removeClass('layout--onecol--background') }}>
 
@@ -30,7 +32,7 @@
       {% if region_attributes.content.storage['data-region'] %}
         <div {{ region_attributes.content.addClass('flex__wra') }}>
         {% endif %}
-        {{ content.content }}
+        {{ content_render }}
         {% if region_attributes.content.storage['data-region'] %}
         </div>
       {% endif %}
