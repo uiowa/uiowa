@@ -8,7 +8,9 @@ default:
       default_session: goutte
       browser_name: chrome
       javascript_session: default
-      goutte: ~
+      goutte:
+        guzzle_parameters:
+          verify: false
       files_path: "%paths.base%/media"
     Drupal\DrupalExtension:
       blackbox: ~

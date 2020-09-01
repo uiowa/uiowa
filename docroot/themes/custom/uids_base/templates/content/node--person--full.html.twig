@@ -120,10 +120,16 @@
           </figure>
         {% endif %}
 
-        {{ content|without('field_image', 'field_person_bio', 'content_moderation_control') }}
+        {{ content|without('field_image', 'field_person_bio', 'content_moderation_control', 'pt_student_dissertation_title', 'field_person_research_areas') }}
       </div>
       <div class="col-md-6 col-lg-9 person-content">
+        {% if content.pt_student_dissertation_title and content.pt_student_dissertation_title|render is not empty %}
+          <h2>
+            {{ content.pt_student_dissertation_title }}
+          </h2>
+        {% endif %}
         {{ content.field_person_bio }}
+        {{ content.field_person_research_areas }}
       </div>
     </div>
   </div>
