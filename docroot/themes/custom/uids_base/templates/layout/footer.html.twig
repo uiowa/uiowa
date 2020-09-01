@@ -13,6 +13,7 @@
 
       {{ attach_library('uids_base/logo') }}
       {% include '@uids_base/uids/logo.twig' with {
+        path: uiowa_url,
         logo_path_2: uiowa_logo_path,
         logo_path_png: uiowa_logo_path_png,
         logo_classes: 'logo--footer',
@@ -23,7 +24,9 @@
         {% if site_name %}
           {# @todo Remove header_type condition when uiowa sub-theme is functional. #}
           {% if header_type != 'homepage' %}
-            <h2 class="site-name">{{ site_name }}</h2>
+            <a class="site-name-link" href="{{ path('<front>') }}">
+              <h2 class="site-name">{{ site_name }}</h2>
+            </a>
           {% endif %}
         {% endif %}
       {% endblock %}
