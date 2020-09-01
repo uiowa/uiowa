@@ -13,8 +13,17 @@
   'card_text': event.description_text,
   'card_author': event.date_string,
   'card_title': event.title | render,
+  'card_subtitle': event.subtitle | render,
   'card_link_url': event.url,
   'heading_level': event.heading_size
 } %}
 
-{% embed '@uids_base/uids/card.html.twig' with events_card only %}{% endembed %}
+{% embed '@uids_base/uids/card.html.twig' with events_card %}
+  {% block card_content %}
+    {% if event.location_name is not empty %}
+      <div class="event-location">{{ event.location_name }}</div>
+    {% endif %}
+
+    <p>{{ card_text }}</p>
+  {% endblock %}
+{% endembed %}

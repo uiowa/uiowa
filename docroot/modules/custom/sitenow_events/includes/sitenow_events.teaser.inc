@@ -18,17 +18,11 @@ use Drupal\Core\Url;
 function template_preprocess_sitenow_events_teaser(array &$variables) {
   $config = \Drupal::config('sitenow_events.settings');
 
-  // Append a badge to the title if the event is canceled.
   if ($variables['event']['canceled'] == TRUE) {
-    $title = $variables['event']['title'];
-
-    $variables['event']['title'] = [
-      '#markup' => $title,
-      'canceled' => [
-        '#markup' => 'Canceled',
-        '#prefix' => '<span class="badge badge--orange">',
-        '#suffix' => '</span>',
-      ],
+    $variables['event']['subtitle'] = [
+      '#markup' => 'Canceled',
+      '#prefix' => '<span class="badge badge--orange">',
+      '#suffix' => '</span>',
     ];
   }
 
