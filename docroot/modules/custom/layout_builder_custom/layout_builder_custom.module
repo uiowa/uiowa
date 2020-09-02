@@ -7,6 +7,7 @@
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\layout_builder_styles\LayoutBuilderStyleGroups;
+use Drupal\Core\Entity\EntityInterface;
 
 /**
  * Implements hook_form_alter().
@@ -196,5 +197,21 @@ function layout_builder_custom_field_widget_paragraphs_form_alter(array &$elemen
     // Pop the headline and place it in the label.
     $headline = array_shift($element['top']['summary']['fields_info']['#summary']['content']);
     $element['top']['type']['label']['#markup'] = $headline;
+  }
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function layout_builder_custom_entity_presave(EntityInterface $entity) {
+  // Fix langcode is empty when you use entity browser x inline entity form.
+  if ($entity->getEntityType()->id() == 'paragraph') {
+    $langcode_key = $entity->getEntityType()->getKey('langcode');
+    if (!empty($langcode_key)) {
+      $lang_value = $entity->get($langcode_key)->getLangcode();
+      if (!empty($lang_value)) {
+        $entity->set($langcode_key, $lang_value);
+      }
+    }
   }
 }
