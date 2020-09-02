@@ -84,20 +84,17 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
         $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
         $collegiate_split = 'config_split:collegiate';
-        // This site has the 'collegiate' split enabled.
-        if (isset($filters[$collegiate_split]) && $filters[$collegiate_split]['status']) {
-          // Set defaults.
-          $form["settings"]["menu_levels"]["level"]["#default_value"] = 2;
-          $form["settings"]["advanced"]["follow"]["#default_value"] = 1;
-        }
-        else {
-          // Set defaults. Restrict block settings on main navigation block.
-          $form["settings"]["menu_levels"]["level"]["#default_value"] = 2;
-          $form["settings"]["advanced"]["follow"]["#default_value"] = 1;
+        // 'collegiate' split either doesn't exist or isn't enabled.
+        if (!isset($filters[$collegiate_split]) || !$filters[$collegiate_split]['status']) {
+          // Restrict block settings on main navigation block.
           $form["settings"]["menu_levels"]['#access'] = FALSE;
           $form["settings"]["advanced"]['#access'] = FALSE;
           $form["settings"]["style"]['#access'] = FALSE;
         }
+
+        // Set defaults.
+        $form["settings"]["menu_levels"]["level"]["#default_value"] = 2;
+        $form["settings"]["advanced"]["follow"]["#default_value"] = 1;
       }
 
       $form['settings'] += [
