@@ -13,10 +13,13 @@
             {% if event.virtual %}
               <div class="event-field event-location">
                 <span class="fas fa-map-marker-alt"></span>
-                <span class="event-location-virtual">Virtual Event</span>
+                <span class="event-location-virtual">
                 {% if event.virtual_url is not empty %}
-                  (<a href="{{ event.virtual_url }}">{{ event.virtual_url }}</a>)
+                <a href="{{ event.virtual_url }}">Virtual Event</a>
+                {% else %}
+                Virtual Event
                 {% endif %}
+                </span>
               </div>
             {% endif %}
 
