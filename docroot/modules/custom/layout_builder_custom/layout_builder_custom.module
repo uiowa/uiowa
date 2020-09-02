@@ -193,17 +193,34 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
   $component = $form_state->getFormObject()->getCurrentComponent();
   $block = $component->getPlugin();
 
-  if ($block->getPluginId() == 'inline_block:uiowa_text_area') {
-    if (isset($element['field_uiowa_text_area'])) {
-      $element['field_uiowa_text_area']['widget'][0]['#format'] = 'filtered_html';
-    }
+  switch ($block->getPluginId()) {
+    case 'inline_block:uiowa_text_area':
+      if (isset($element['field_uiowa_text_area'])) {
+        $element['field_uiowa_text_area']['widget'][0]['#format'] = 'filtered_html';
+      }
+      break;
+
+    case 'inline_block:uiowa_articles':
+    case 'inline_block:uiowa_people':
+    case 'inline_block:uiowa_events':
+      if (isset($element["field_collection_more_path"])) {
+        $element["field_collection_more_path"]['#states'] = [
+          'visible' => [
+            ':input[name="settings[block_form][field_collection_more][value]"]' => [
+              'checked' => TRUE,
+            ],
+          ],
+        ];
+      }
+      break;
+
   }
 
   return $element;
 }
 
 /**
- * Replace the label with the collection headline.
+ * Implements hook_inline_entity_form_table_fields_alter().
  */
 function layout_builder_custom_inline_entity_form_table_fields_alter(array &$fields, array $context) {
   if ($context['entity_type'] === 'paragraph') {
