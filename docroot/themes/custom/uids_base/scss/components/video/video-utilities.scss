@@ -2,6 +2,41 @@
 @import "assets/scss/_utilities.scss";
 @import "components/video/video-utilities/_video-utilities.scss";
 
+// Media alignment
+
+@media (min-width: 576px) {
+
+  .align-right.media {
+    margin-left: $gutter;
+  }
+
+  .align-left.media {
+    margin-right: $gutter;
+  }
+
+  .align-right.media--type-remote-video {
+    width: auto;
+    margin-left: $gutter;
+    .field--name-field-media-oembed-video iframe {
+      float: right;
+    }
+  }
+  .align-left.media--type-remote-video {
+    width: auto;
+    margin-right: $gutter;
+    .field--name-field-media-oembed-video iframe {
+      float: left;
+    }
+  }
+
+}
+
+.align-center.media--type-remote-video {
+  & .field--name-field-media-oembed-video iframe {
+    margin: 0 auto;
+  }
+}
+
 .media--type-remote-video {
   @extend .embed-responsive;
   @extend .embed-responsive-16by9;

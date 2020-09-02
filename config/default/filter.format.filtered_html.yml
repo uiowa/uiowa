@@ -7,6 +7,9 @@ dependencies:
     - core.entity_view_mode.media.full__square
     - core.entity_view_mode.media.full__ultrawide
     - core.entity_view_mode.media.full__widescreen
+    - core.entity_view_mode.media.image_large
+    - core.entity_view_mode.media.image_medium
+    - core.entity_view_mode.media.image_small
     - core.entity_view_mode.media.large__no_crop
     - core.entity_view_mode.media.large__square
     - core.entity_view_mode.media.large__ultrawide
@@ -108,13 +111,22 @@ filters:
     weight: 100
     settings:
       default_view_mode: default
-      allowed_media_types: {  }
+      allowed_media_types:
+        audio: audio
+        facebook: facebook
+        image: image
+        instagram: instagram
+        remote_video: remote_video
+        twitter: twitter
       allowed_view_modes:
         default: default
         full__no_crop: full__no_crop
         full__square: full__square
         full__ultrawide: full__ultrawide
         full__widescreen: full__widescreen
+        image_large: image_large
+        image_medium: image_medium
+        image_small: image_small
         large__no_crop: large__no_crop
         large__square: large__square
         large__ultrawide: large__ultrawide
