@@ -394,7 +394,7 @@ function sitenow_events_instance_values($events_instance) {
 
     if (!empty($keywords_values = $events_instance->get('field_events_keywords'))) {
       foreach ($keywords_values->getValue() as $item) {
-        $instance_values['$keywords'][$item['value']] = $item['value'];
+        $instance_values['keywords'][$item['value']] = $item['value'];
       }
     }
   }
