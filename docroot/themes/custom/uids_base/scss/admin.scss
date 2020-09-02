@@ -258,6 +258,16 @@ $imgpath: '../../uids/assets/images';
   }
 }
 
+.layout-builder-block.card {
+  background-color: $white;
+  blockquote {
+    color: $secondary;
+    a {
+      color: $link-color;
+    }
+  }
+}
+
 .chosen-container-multi .chosen-choices {
   position: relative;
   overflow: hidden;
@@ -771,6 +781,15 @@ body.toolbar-vertical.toolbar-tray-open {
 .js-off-canvas-dialog-open header {
   display: none;
 }
+
+.bg--black,
+.bg-pattern--brain-black,
+.bg-dark {
+  & .layout-builder-block--placeholder {
+    color: $white;
+  }
+}
+
 
 // layout page buttons
 
