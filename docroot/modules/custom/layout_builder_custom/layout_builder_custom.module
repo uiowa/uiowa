@@ -17,6 +17,10 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
     case 'layout_builder_add_block':
     case 'layout_builder_update_block':
 
+      /** @var \Drupal\layout_builder\SectionComponent $component */
+      $component = $form_state->getFormObject()->getCurrentComponent();
+      $block = $component->getPlugin();
+
       // Add custom validation for certain blocks/regions to validate.
       $form['#validate'][] = '_layout_builder_custom_block_validate';
 
@@ -76,6 +80,23 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       unset($form['settings']['label']);
       unset($form['settings']['label_display']);
       unset($form['settings']['admin_label']['#title']);
+
+      if ($block->getPluginId() == 'menu_block:main') {
+        /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
+        $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
+        $collegiate_split = 'config_split:collegiate';
+        // 'collegiate' split either doesn't exist or isn't enabled.
+        if (!isset($filters[$collegiate_split]) || !$filters[$collegiate_split]['status']) {
+          // Restrict block settings on main navigation block.
+          $form["settings"]["menu_levels"]['#access'] = FALSE;
+          $form["settings"]["advanced"]['#access'] = FALSE;
+          $form["settings"]["style"]['#access'] = FALSE;
+        }
+
+        // Set defaults.
+        $form["settings"]["menu_levels"]["level"]["#default_value"] = 2;
+        $form["settings"]["advanced"]["follow"]["#default_value"] = 1;
+      }
 
       $form['settings'] += [
         '#weight' => 0,
