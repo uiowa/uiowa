@@ -78,27 +78,29 @@ function sitenow_events_paragraph_preprocess_paragraph(&$variables) {
           $variables['attributes']['id'][] = Html::getUniqueId($paragraph->field_uip_id->value);
         }
 
-        $instance_values = sitenow_events_instance_values($paragraph);
         $start = date('d-m-Y');
 
-        $events = sitenow_events_load([
+        $data = sitenow_events_load([
           'display_id' => 'events',
-          'filters[department]' => $instance_values['department'],
-          'filters[audiences]' => $instance_values['audiences'],
-          'filters[interests]' => $instance_values['interests'],
-          'filters[types]' => $instance_values['event_types'],
-          'filters[keywords]' => $instance_values['keywords'],
+          'filters[department]' => $paragraph->get('field_events_department')->getString(),
+          'filters[audiences]' => $paragraph->get('field_events_audiences')->getString(),
+          'filters[interests]' => $paragraph->get('field_events_gen_interests')->getString(),
+          'filters[types]' => $paragraph->get('field_events_event_types')->getString(),
+          'filters[keywords]' => $paragraph->get('field_events_keywords')->getString(),
           'filters[startdate][value][date]' => date('m-d-Y', strtotime($start)),
           'filters[enddate][value][date]' => date('m-d-Y', strtotime($start . '+365 days')),
           'page' => 0,
-          'items_per_page' => $instance_values['results'],
+          'items_per_page' => $paragraph->get('field_events_results')->getString(),
         ]);
 
-        if (!empty($events['events'])) {
-          foreach ($events['events'] as $e) {
+        if (!empty($data['events'])) {
+          foreach ($data['events'] as $value) {
+            // The API nests each event as an array.
+            $event = $value['event'];
+
             $variables['list'][] = [
               '#theme' => 'sitenow_events_teaser',
-              '#event' => $e,
+              '#event' => $event,
             ];
           }
         }
@@ -109,16 +111,16 @@ function sitenow_events_paragraph_preprocess_paragraph(&$variables) {
         }
 
         // If we have more link checked and link provided, pass it.
-        $more = ($instance_values['more'][0]['value'] == 1) ? TRUE : FALSE;
-        if ($more == TRUE) {
+        if ($paragraph->get('field_events_more')->value == TRUE) {
           $variables['more'] = [
             '#type' => 'container',
             '#attributes' => [
               'class' => 'more-link',
             ],
           ];
-          if (!empty($instance_values['more_path'])) {
-            $url = Url::fromUri($instance_values['more_path'][0]['uri']);
+
+          if (!empty($paragraph->get('field_events_more_path')->getString())) {
+            $url = Url::fromUri($paragraph->get('field_events_more_path')->uri);
           }
           else {
             $url = Url::fromUri('//events.uiowa.edu');

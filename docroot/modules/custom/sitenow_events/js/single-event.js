@@ -3,8 +3,8 @@
  */
 
 (function ($, Drupal) {
-  Drupal.theme.date_repeats_anchor = function (id, path, title, classes) {
-    var markup = '<a id="' + id + '" href="' + path + '" title="' + title + '" class="' + classes + '">' + title + '</a>';
+  Drupal.theme.date_repeats_anchor = function (id, path, title, classes, icon) {
+    var markup = '<span class="date-repeats-icon fas fa-ellipsis-h"></span><a id="' + id + '" href="' + path + '" title="' + title + '" class="' + classes + '">' + title + '</a>';
     return markup;
   };
 

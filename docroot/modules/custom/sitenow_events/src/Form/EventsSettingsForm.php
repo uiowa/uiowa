@@ -90,7 +90,7 @@ class EventsSettingsForm extends ConfigFormBase {
     $form['global']['sitenow_events_event_link'] = [
       '#type' => 'select',
       '#title' => $this->t('Link Option'),
-      '#default_value' => $config->get('sitenow_events.event_link'),
+      '#default_value' => $config->get('event_link'),
       '#description' => $this->t('Choose to have events link to events.uiowa.edu or an event page on this site.'),
       '#options' => [
         'event-link-external' => $this->t('Link to events.uiowa.edu'),
@@ -102,7 +102,7 @@ class EventsSettingsForm extends ConfigFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Single event path'),
       '#description' => $this->t('The base path component for a single event. Defaults to <em>event</em>.'),
-      '#default_value' => $config->get('sitenow_events.single_event_path'),
+      '#default_value' => $config->get('single_event_path'),
       '#required' => TRUE,
     ];
 
@@ -134,9 +134,8 @@ class EventsSettingsForm extends ConfigFormBase {
     $path = $this->aliasCleaner->cleanString($path);
 
     $this->config('sitenow_events.settings')
-      ->set('sitenow_events.event_link', $form_state->getValue('sitenow_events_event_link'))
-      ->set('sitenow_events.cache_time', $form_state->getValue('sitenow_events_cache_time'))
-      ->set('sitenow_events.single_event_path', $path)
+      ->set('event_link', $form_state->getValue('sitenow_events_event_link'))
+      ->set('single_event_path', $path)
       ->save();
     parent::submitForm($form, $form_state);
   }

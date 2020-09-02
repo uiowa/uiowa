@@ -1,0 +1,96 @@
+uuid: b37e551f-c25a-461f-bd47-c10ee859e853
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_events
+    - field.field.block_content.uiowa_events.field_collection_heading_size
+    - field.field.block_content.uiowa_events.field_collection_more
+    - field.field.block_content.uiowa_events.field_collection_more_path
+    - field.field.block_content.uiowa_events.field_collection_results
+    - field.field.block_content.uiowa_events.field_uiowa_events_audiences
+    - field.field.block_content.uiowa_events.field_uiowa_events_department
+    - field.field.block_content.uiowa_events.field_uiowa_events_interests
+    - field.field.block_content.uiowa_events.field_uiowa_events_keywords
+    - field.field.block_content.uiowa_events.field_uiowa_events_place
+    - field.field.block_content.uiowa_events.field_uiowa_events_types
+  module:
+    - link
+id: block_content.uiowa_events.default
+targetEntityType: block_content
+bundle: uiowa_events
+mode: default
+content:
+  field_collection_heading_size:
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_collection_more:
+    weight: 8
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_collection_more_path:
+    weight: 9
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+    region: content
+  field_collection_results:
+    weight: 7
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_uiowa_events_audiences:
+    weight: 2
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_uiowa_events_department:
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_uiowa_events_interests:
+    weight: 4
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_uiowa_events_keywords:
+    weight: 5
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_uiowa_events_place:
+    weight: 6
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_uiowa_events_types:
+    weight: 3
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  info:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }
