@@ -27,6 +27,34 @@ third_party_settings:
     enabled: true
     sections:
       -
+        layout_id: layout_onecol
+        layout_settings:
+          label: 'Moderation control'
+          layout_builder_styles_style:
+            section_margin_remove_default_margins: section_margin_remove_default_margins
+            0: ''
+        components:
+          051b1326-800c-40ca-b518-98ce13ca4e6f:
+            uuid: 051b1326-800c-40ca-b518-98ce13ca4e6f
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'extra_field_block:node:page:content_moderation_control'
+            additional: {  }
+            weight: 0
+        third_party_settings:
+          layout_builder_lock:
+            lock:
+              1: 1
+              2: 2
+              3: 3
+              4: 4
+              5: 5
+              6: 6
+              8: 8
+      -
         layout_id: layout_header
         layout_settings:
           label: Header
@@ -117,26 +145,6 @@ third_party_settings:
               layout_builder_styles_style:
                 block_menu_vertical: block_menu_vertical
             weight: 0
-          6b1aec87-4a37-4710-9c17-e76bca9b7844:
-            uuid: 6b1aec87-4a37-4710-9c17-e76bca9b7844
-            region: content
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'extra_field_block:node:page:links'
-            additional: {  }
-            weight: -8
-          051b1326-800c-40ca-b518-98ce13ca4e6f:
-            uuid: 051b1326-800c-40ca-b518-98ce13ca4e6f
-            region: content
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'extra_field_block:node:page:content_moderation_control'
-            additional: {  }
-            weight: -10
           e6fa78b4-cacc-4d27-baa3-f29dde0b845b:
             uuid: e6fa78b4-cacc-4d27-baa3-f29dde0b845b
             region: content
