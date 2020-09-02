@@ -176,15 +176,7 @@ third_party_settings:
       whitelisted_blocks:
         'Chaos Tools': {  }
         'Content fields':
-          - 'field_block:node:page:uid'
-          - 'field_block:node:page:created'
           - 'field_block:node:page:body'
-          - 'field_block:node:page:changed'
-          - 'field_block:node:page:field_teaser'
-          - 'field_block:node:page:field_image'
-          - 'field_block:node:page:title'
-          - 'field_block:user:user:changed'
-          - 'field_block:user:user:created'
         'Custom blocks': {  }
         Devel: {  }
         Forms: {  }
@@ -193,24 +185,19 @@ third_party_settings:
           - 'menu_block:main'
           - 'system_menu_block:main'
         Superfish: {  }
-        System:
-          - system_breadcrumb_block
-          - system_main_block
+        System: {  }
         'University of Iowa Alerts': {  }
         User: {  }
         Webform:
           - webform_block
-        core:
-          - page_title_block
+        core: {  }
       blacklisted_blocks:
         'Custom block types':
           - uiowa_page_title_hero
           - uiowa_spacer_separator
-          - uiowa_vertical_video
         'Inline blocks':
           - 'inline_block:uiowa_page_title_hero'
           - 'inline_block:uiowa_spacer_separator'
-          - 'inline_block:uiowa_vertical_video'
     allowed_block_categories:
       - 'Chaos Tools'
       - 'Content fields'
@@ -253,6 +240,14 @@ third_party_settings:
               - 'inline_block:uiowa_banner'
               - 'inline_block:uiowa_hero'
         layout_fourcol:
+          all_regions:
+            'Custom block types':
+              - uiowa_banner
+              - uiowa_hero
+            'Inline blocks':
+              - 'inline_block:uiowa_banner'
+              - 'inline_block:uiowa_hero'
+        layout_page:
           all_regions:
             'Custom block types':
               - uiowa_banner
