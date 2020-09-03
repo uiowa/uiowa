@@ -18,7 +18,7 @@
   'heading_level': event.heading_size
 } %}
 
-{% embed '@uids_base/uids/card.html.twig' with events_card %}
+{% embed '@uids_base/uids/card.html.twig' with events_card only %}
   {% block card_content %}
     {% if event.virtual %}
       <div class="event-location"><span class="fas fa-map-marker-alt"></span> Virtual Event</div>
