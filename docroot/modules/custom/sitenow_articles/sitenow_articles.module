@@ -433,3 +433,97 @@ function sitenow_articles_field_widget_paragraphs_form_alter(&$element, &$form_s
     }
   }
 }
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_articles_preprocess_block(&$variables) {
+  switch ($variables['elements']['#plugin_id']) {
+    case 'inline_block:uiowa_articles':
+      $variables['#attached']['library'][] = 'uids_base/articles';
+      $view = Views::getView('articles_block');
+      $view->setDisplay('block_articles');
+      $block = $variables['elements']['content']['#block_content'];
+      if ($block->hasField('field_collection_reference') && !$block->get('field_collection_reference')->isEmpty()) {
+        $tids = $block->get('field_collection_reference')->getValue();
+        // Clean array of tids selected.
+        $tids = array_column($tids, 'target_id');
+      }
+      else {
+        $tids = ['all'];
+      }
+      // Contextual relationship filter.
+      $args = implode('+', $tids);
+      $view->setArguments([$args]);
+
+      // Set custom view variable to send to article teaser template.
+      if ($block->hasField('field_collection_heading_size')) {
+        $view->display_handler->setOption('content_heading', $block->field_collection_heading_size->value);
+      }
+
+      if ($block->hasField('field_collection_results') && !$block->get('field_collection_results')->isEmpty()) {
+        $items = $block->field_collection_results->value;
+        $view->setItemsPerPage($items);
+        $view->setExposedInput([
+          'items_per_page' => $items,
+        ]);
+      }
+      $pager_type = 'some';
+      // Show pager if it exists and is set.
+      if ($block->hasField('field_collection_pager')) {
+        if ($block->field_collection_pager->value == 1) {
+          $pager_type = 'full';
+        }
+      }
+
+      $pager = $view->display_handler->getOption('pager');
+      // IF show pager, change pager_type to 'full'.
+      $pager['type'] = $pager_type;
+      $view->display_handler->setOption('pager', $pager);
+      $view->preExecute();
+      $view->execute();
+
+      // Associate the block's cache tags with each entity in the view result so
+      // that the appropriate render cache ID is cleared when the block changes.
+      foreach ($view->result as $result_row) {
+        $entity = $result_row->_entity;
+        $entity->addCacheTags($variables['content']['#cache']['tags']);
+      }
+
+      $variables['content']['view'] = $view->render();
+
+      // If we have more link checked and link provided, pass it.
+      if ($block->hasField('field_collection_more')) {
+        $more = ($block->field_collection_more->value == 1) ? TRUE : FALSE;
+        if ($more == TRUE) {
+          $variables['content']['more'] = [
+            '#type' => 'container',
+            '#attributes' => [
+              'class' => 'more-link',
+            ],
+          ];
+
+          $view = View::load('articles');
+          $default =& $view->getDisplay('default');
+
+          if (!empty($more_path = $block->get('field_collection_more_path')->getValue())) {
+            $url = Url::fromUri($more_path[0]['uri']);
+          }
+          elseif ($view->getDisplay('page_articles')['display_options']['enabled'] == TRUE) {
+            $url = Url::fromRoute('view.articles.page_articles');
+          }
+          if (isset($url)) {
+            $variables['content']['more']['bttn'] = [
+              '#type' => 'link',
+              '#title' => 'View more ' . strtolower($default['display_options']['title']),
+              '#url' => $url,
+              '#attributes' => [
+                'class' => ['bttn', 'bttn--primary', 'bttn--caps'],
+              ],
+            ];
+          }
+        }
+      }
+      break;
+  }
+}

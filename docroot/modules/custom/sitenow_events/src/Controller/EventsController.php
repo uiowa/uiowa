@@ -19,35 +19,53 @@ class EventsController extends ControllerBase {
    *   The ID of the event instance.
    *
    * @return array
-   *   A renderable array for single event.
+   *   A render array for single event.
    */
   public function build($event_id, $event_instance) {
     // If the configuration is to link out, make all event pages 404.
-    if ($this->config('sitenow_events.settings')->get('sitenow_events.event_link') == 'event-link-external') {
+    if ($this->config('sitenow_events.settings')->get('event_link') == 'event-link-external') {
       throw new NotFoundHttpException();
     }
     else {
-      $events = sitenow_events_load([], ['node', $event_id . '.json']);
+      $event = sitenow_events_load([], ['node', "{$event_id}.json"]);
 
-      if (!isset($events['events'], $events['events'][0], $events['events'][0]['event_instances'], $events['events'][0]['event_instances'][$event_instance])) {
+      if (!isset($event['event_instances'], $event['event_instances'][$event_instance])) {
         throw new NotFoundHttpException();
       }
       else {
-        if ($events['events'][0]['canceled'] == TRUE) {
-          $title = '[CANCELED] ' . $events['events'][0]['title'];
-        }
-        else {
-          $title = $events['events'][0]['title'];
-        }
-        $build = [
+        return [
           '#theme' => 'sitenow_events_single_event',
-          '#data' => $events['events'],
-          '#title' => $title,
+          '#event' => $event,
         ];
-
-        return $build;
       }
     }
+  }
+
+  /**
+   * Single event page title callback.
+   *
+   * @param int $event_id
+   *   The ID of the event.
+   *
+   * @return string
+   *   The event title.
+   */
+  public function title($event_id) {
+    $title = '';
+    $event = $this->getEventData($event_id);
+
+    if (isset($event['title'])) {
+      $title = $event['title'];
+    }
+
+    return $title;
+  }
+
+  /**
+   * Get event data from the API.
+   */
+  protected function getEventData($event_id) {
+    return sitenow_events_load([], ['node', "{$event_id}.json"]);
   }
 
 }
