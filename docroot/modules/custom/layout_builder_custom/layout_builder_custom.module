@@ -228,10 +228,5 @@ function layout_builder_custom_field_widget_paragraphs_form_alter(array &$elemen
     // Pop the headline and place it in the label.
     $headline = array_shift($element['top']['summary']['fields_info']['#summary']['content']);
     $element['top']['type']['label']['#markup'] = $headline;
-    // Take the remove button out of dropdown actions and make it visible.
-    // $element['top']['actions']['actions']['remove_button'] = $element['top']['actions']['dropdown_actions']['remove_button'];
-    // unset($element['top']['actions']['dropdown_actions']);
-    $element['top']['actions']['dropdown_actions']['edit_button'] = $element['top']['actions']['actions']['edit_button'];
-    unset($element['top']['actions']['actions']);
   }
 }
