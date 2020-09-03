@@ -42,15 +42,17 @@
                 {{ event.description|raw }}
             </div>
             {% endif %}
-            {% if event.custom_fields.contact_name|length %}
+            {% if event.contact_name|length %}
             <div class="event-field contact-info">
-                Contact Info: {{ event.custom_fields.contact_name }}
-                {% if event.custom_fields.contact_email|length %}
-                , {{ event.custom_fields.contact_email }}
-                {% if event.custom_fields.contact_phone_number|length %}
-                , {{ event.custom_fields.contact_phone_number }}
+              <p>
+                Contact Info: {{ event.contact_name }}
+                {% if event.contact_email|length %}
+                  , {{ event.contact_email }}
+                  {% if event.contact_phone_number|length %}
+                    , {{ event.contact_phone_number }}
+                  {% endif %}
                 {% endif %}
-                {% endif %}
+              </p>
             </div>
             {% endif %}
         </div>
