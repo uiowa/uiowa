@@ -25,6 +25,34 @@ third_party_settings:
     enabled: true
     sections:
       -
+        layout_id: layout_onecol
+        layout_settings:
+          label: Moderation control
+          layout_builder_styles_style:
+            section_margin_remove_default_margins: section_margin_remove_default_margins
+            0: ''
+        components:
+          051b1326-800c-40ca-b518-98ce13ca4e6f:
+            uuid: 051b1326-800c-40ca-b518-98ce13ca4e6f
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'extra_field_block:node:page:content_moderation_control'
+            additional: {  }
+            weight: 0
+        third_party_settings:
+          layout_builder_lock:
+            lock:
+              1: 1
+              2: 2
+              3: 3
+              4: 4
+              5: 5
+              6: 6
+              8: 8
+      -
         layout_id: layout_header
         layout_settings:
           label: Header
@@ -95,26 +123,6 @@ third_party_settings:
         layout_settings:
           label: 'Main content'
         components:
-          051b1326-800c-40ca-b518-98ce13ca4e6f:
-            uuid: 051b1326-800c-40ca-b518-98ce13ca4e6f
-            region: content
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'extra_field_block:node:page:content_moderation_control'
-            additional: {  }
-            weight: -1
-          eece7031-5478-448d-bf0c-2a58a8f3a77e:
-            uuid: eece7031-5478-448d-bf0c-2a58a8f3a77e
-            region: content
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'extra_field_block:node:page:links'
-            additional: {  }
-            weight: 1
           a1d1b5c4-e9c0-4117-aa69-95747061ebbc:
             uuid: a1d1b5c4-e9c0-4117-aa69-95747061ebbc
             region: content

@@ -47,12 +47,13 @@ class EventsRoutes implements ContainerInjectionInterface {
   public function routes() {
     $routes = [];
 
-    $path = $this->config->get('sitenow_events.single_event_path') ?: 'event';
+    $path = $this->config->get('single_event_path') ?: 'event';
 
     $routes['sitenow_events.single_controller.' . $path] = new Route(
       $path . '/{event_id}/{event_instance}',
       [
         '_controller' => '\Drupal\sitenow_events\Controller\EventsController::build',
+        '_title_callback' => '\Drupal\sitenow_events\Controller\EventsController::title',
       ],
       [
         '_permission'  => 'access content',

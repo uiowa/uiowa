@@ -5,401 +5,133 @@
  * Provides an event feed entity type.
  */
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\Component\Utility\Xss;
 use GuzzleHttp\Exception\RequestException;
 
 /**
- * Set dynamic allowed values for the alignment field.
- *
- * @param \Drupal\field\Entity\FieldStorageConfig $definition
- *   The field definition.
- * @param \Drupal\Core\Entity\ContentEntityInterface|null $entity
- *   The entity being created if applicable.
- * @param bool $cacheable
- *   Boolean indicating if the results are cacheable.
- *
- * @return array
- *   An array of possible key and value options.
- *
- * @see options_allowed_values()
+ * Implements hook_preprocess_HOOK().
  */
-function _get_filter_field_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
-  $filter_options = _sitenow_events_get_filter_options();
-  $options = ['0' => 'None'];
-  switch ($definition->getName()) {
-    case 'field_events_department':
-      if (isset($filter_options["departments"])) {
-        $options = $filter_options["departments"];
+function sitenow_events_preprocess_block(&$variables) {
+  if ($variables['elements']['#plugin_id'] == 'inline_block:uiowa_events') {
+    $variables['#attached']['library'][] = 'uids_base/events';
+
+    /** @var \Drupal\Block\Entity\Block $block */
+    $block = $variables['elements']['content']['#block_content'];
+
+    $data = sitenow_events_load([
+      'display_id' => 'events',
+      'filters[department]' => $block->get('field_uiowa_events_department')->getString(),
+      'filters[audiences]' => $block->get('field_uiowa_events_audiences')->getString(),
+      'filters[interests]' => $block->get('field_uiowa_events_interests')->getString(),
+      'filters[types]' => $block->get('field_uiowa_events_types')->getString(),
+      'filters[keywords]' => $block->get('field_uiowa_events_keywords')->getString(),
+      'filters[place]' => $block->get('field_uiowa_events_place')->getString(),
+      'filters[startdate][value][date]' => date('m-d-Y', strtotime(date('d-m-Y'))),
+      'filters[enddate][value][date]' => date('m-d-Y', strtotime(date('d-m-Y') . '+365 days')),
+      'page' => 0,
+      'items_per_page' => $block->get('field_collection_results')->value ?? 50,
+    ]);
+
+    if (isset($data['events'])) {
+      $heading_size = $block->get('field_collection_heading_size')->getString() ?? 'h3';
+
+      foreach ($data['events'] as $value) {
+        // The API nests each event as an array.
+        $event = $value['event'];
+        $event['heading_size'] = $heading_size;
+
+        $variables['content'][] = [
+          '#theme' => 'sitenow_events_teaser',
+          '#event' => $event,
+        ];
       }
-      break;
+    }
+    else {
+      $variables['content'] = [
+        '#markup' => '<div class="events-empty"><p>There are currently no events to display.</p></div>',
+      ];
+    }
 
-    case 'field_events_audiences':
-      if (isset($filter_options['event_audience'])) {
-        $options = $filter_options['event_audience'];
-      }
-      break;
-
-    case 'field_events_gen_interests':
-      if (isset($filter_options['event_general_interest'])) {
-        $options = $filter_options['event_general_interest'];
-      }
-      break;
-
-    case 'field_events_event_types':
-      if (isset($filter_options['event_types'])) {
-        $options = $filter_options['event_types'];
-      }
-      break;
-
-    case 'field_events_keywords':
-      if (isset($filter_options['keywords'])) {
-        $options = $filter_options['keywords'];
-      }
-      break;
-
-    case 'field_events_places':
-      if (isset($filter_options['places'])) {
-        $options = $filter_options['places'];
-      }
-      break;
-
-  }
-  return $options;
-}
-
-/**
- * Helper function to create a filter options.
- *
- * @return array
- *   An array of filters keyed by id.
- */
-function _sitenow_events_get_filter_options() {
-  $options = [];
-  $endpoints = [
-    \Drupal::config('sitenow_events.settings')
-      ->get('sitenow_events.filters_endpoint'),
-    \Drupal::config('sitenow_events.settings')
-      ->get('sitenow_events.keywords_endpoint'),
-  ];
-  foreach ($endpoints as $endpoint) {
-    try {
-      $response = \Drupal::httpClient()
-        ->get($endpoint, ['headers' => ['Accept' => 'text/plain']]);
-      $data = (string) $response->getBody();
-      if (empty($data)) {
-        \Drupal::messenger()->addError(t('Empty response.'));
+    // If we have more link checked and link provided, pass it.
+    if ($block->get('field_collection_more')->value == TRUE) {
+      if ($uri = $block->get('field_collection_more_path')->uri) {
+        $url = Url::fromUri($uri);
       }
       else {
-        $results = json_decode($data, TRUE);
+        $url = Url::fromUri('//events.uiowa.edu');
       }
-    }
-    catch (RequestException $e) {
-      watchdog_exception('sitenow_events', $e);
-    }
-    if (!empty($results)) {
-      $forest = [];
-      // Build a parent/children tree for each filter.
-      foreach ($results as $filter => $values) {
-        $forest[$filter] = _build_options_tree($values);
-      }
-      // Output a formatted options array for each filter.
-      foreach ($forest as $filter => $tree) {
-        $options[$filter] = _build_options_list($tree);
-      }
+
+      $variables['content']['more'] = [
+        '#type' => 'link',
+        '#title' => 'View more events',
+        '#url' => $url,
+        '#attributes' => [
+          'class' => ['more-link', 'bttn', 'bttn--primary', 'bttn--caps'],
+        ],
+      ];
     }
   }
-  // Sort the options.
-  ksort($options);
-  return $options;
 }
 
 /**
- * Helper function to build the options tree.
- *
- * @param array $data
- *   Array of data to be sorted into a tree.
- * @param int $parent
- *   Stores the current id.
- *
- * @return array
- *   Returns an associative array options tree.
- */
-function _build_options_tree(array $data, $parent = 0) {
-  $tree = [];
-  foreach ($data as $d) {
-    if ($d['parent_id'] == $parent) {
-      $children = _build_options_tree($data, $d['id']);
-      // Set a trivial key.
-      if (!empty($children)) {
-        $d['_children'] = $children;
-      }
-      $tree[] = $d;
-    }
-  }
-  return $tree;
-}
-
-/**
- * Helper function to output the options array.
- *
- * @param array $tree
- *   Array of tree data to be printed.
- * @param int $r
- *   Basic counter.
- * @param int $p
- *   Parent id.
- * @param array $options
- *   Options array to be passed recursively.
- *
- * @return array
- *   Returns options with children prefixed with dashes.
- */
-function _build_options_list(array $tree, $r = 0, $p = NULL, array &$options = []) {
-  foreach ($tree as $t) {
-    $dash = ($t['parent_id'] == 0) ? '' : str_repeat('-', $r) . ' ';
-    $options[$t['id']] = $dash . $t['name'];
-    if ($t['parent_id'] == $p) {
-      // Reset $r.
-      $r = 0;
-    }
-    if (isset($t['_children'])) {
-      _build_options_list($t['_children'], ++$r, $t['parent_id'], $options);
-    }
-  }
-  return $options;
-}
-
-/**
- * Load and return events from events api.
+ * Load and return data from the content hub API.
  *
  * @param array $params
- *   Optional list of parameters for our api call.
+ *   Optional list of parameters for our API call.
  * @param array $args
- *   Required array of arguments for our api call. The args will be assembled
- *   in array order. See: https://content.uiowa.edu/events-api for details.
+ *   Required array of arguments for our API call. The args will be assembled
+ *   in array order.
  * @param bool $cache
  *   Boolean to determine if we cache the request.
  *
- * @return mixed
- *   A request object.
+ * @return array
+ *   An array of data.
  */
 function sitenow_events_load(array $params = ['display_id' => 'events'], array $args = ['views', 'event_instances_api.json'], $cache = TRUE) {
-  // Endpoint base.
   $config = \Drupal::config('sitenow_events.settings');
-  $endpoint = $config->get('sitenow_events.base_endpoint');
+  $endpoint = $config->get('base_endpoint');
+
   // Append args to the $endpoint.
   $endpoint = $endpoint . implode('/', $args);
-  // If we have parameters.
+
+  // The content hub API does not work with encoded parameters so we decode it.
   if (!empty($params)) {
-    // Build an encoded query string from the params.
-    $query = _build_http_query($params);
-    $query = '?' . urldecode($query);
-    // Build the endpoint.
-    $endpoint = $endpoint . $query;
+    $query = UrlHelper::buildQuery($params);
+    $query = urldecode($query);
+    $endpoint = "{$endpoint}?{$query}";
   }
 
-  if ($events = \Drupal::cache('uievents')->get($endpoint)) {
-    $events = $events->data;
-    $events['cache'] = 'hit: ' . $endpoint;
+  if ($cached = \Drupal::cache('uievents')->get($endpoint)) {
+    $data = $cached->data;
   }
   else {
-    // Create a request object.
     try {
-      $request = \Drupal::httpClient()->get($endpoint, ['headers' => ['Accept' => 'text/plain']]);
-      $data = $request->getBody();
+      $request = \Drupal::httpClient()->get($endpoint);
     }
     catch (RequestException $e) {
       watchdog_exception('sitenow_events', $e);
     }
-    // Decode the json.
-    $json = json_decode($data, TRUE);
-    // Return an array of events with optional params.
-    $events = sitenow_events_prepare_data($json);
-    $events['cache'] = 'miss';
 
-    // If cache is not set to TRUE.
-    if ($cache !== FALSE) {
-      // Create a cache item set to 15 minutes.
-      $request_time = \Drupal::time()->getRequestTime();
-      \Drupal::cache('uievents')->set($endpoint, $events, $request_time + (60 * 15));
-    }
-  }
-  // Return an array of events with optional params.
-  return $events;
-}
+    if (isset($request)) {
+      $data = json_decode($request->getBody()->getContents(), TRUE);
 
-/**
- * Helper function to build an http query string.
- *
- * @param array $query
- *   Key value pairs to be used in the query.
- *
- * @return string
- *   http query string.
- *
- * @see sitenow_events_load()
- */
-function _build_http_query(array $query) {
-  $query_array = [];
-  // Sort the keys of the $params array. This ensures the cache_id.
-  ksort($query);
-  foreach ($query as $param_name => $param_value) {
-    // Only include params that are not empty.
-    if (!empty($param_value)) {
-      // If $param_value is an array assume it's a filter.
-      // Multivalued filter items should be comma separated.
-      if (is_array($param_value)) {
-        // Sort the values to ensure cache_id.
-        sort($param_value);
-        $v = '';
-        $end = end($param_value);
-        // Construct multivalued array items to be comma separated stings.
-        foreach ($param_value as $filter_value) {
-          // If it's the last value then we don't need a comma.
-          if ($filter_value == $end) {
-            $v .= urlencode($filter_value);
-            // When we are done add the param to the query_array.
-            $query_array[] = urlencode($param_name) . '=' . urlencode($v);
-          }
-          // Otherwise add a comma and continue looping.
-          else {
-            $v .= urlencode($filter_value) . ',';
-          }
-        }
-      }
-      else {
-        $query_array[] = urlencode($param_name) . '=' . urlencode($param_value);
+      // Create a cache item set to 300 seconds (5 minutes).
+      if ($cache !== FALSE) {
+        $request_time = \Drupal::time()->getRequestTime();
+        \Drupal::cache('uievents')->set($endpoint, $data, $request_time + 300);
       }
     }
-  }
-  return implode('&', $query_array);
-}
-
-/**
- * Parse and prepare data.
- *
- * @param array $events
- *   An array of events.
- *
- * @return array
- *   A request object.
- */
-function sitenow_events_prepare_data(array $events) {
-  if (empty($events)) {
-    // We need to set the events array key to prevent undefined indices.
-    $events['events'] = [];
-  }
-  else {
-    // Single events return differently so tweak the events array structure.
-    if (!isset($events['events'])) {
-      $event = $events;
-      $events = [];
-      $events['events'][] = ['event' => $event];
+    else {
+      $data = [];
     }
 
-    $data = [];
-
-    foreach ($events['events'] as $event) {
-      $new_event = $event['event'];
-
-      // Set the instance_id for rendering.
-      if (isset($event['event']['id'])) {
-        $new_event['instance_id'] = $event['event']['id'];
-      }
-
-      // Set the accessibility statement for rendering.
-      // These fields are required from the source.
-      $new_event['accessibility_statement'] = t('Individuals with disabilities are encouraged to attend all University of Iowa–sponsored events. If you are a person with a disability who requires a reasonable accommodation in order to participate in this program, please contact @c_name in advance at @c_ph or @c_email.', [
-        '@c_name' => $event['event']['contact_name'],
-        '@c_ph' => $event['event']['contact_phone'],
-        '@c_email' => $event['event']['contact_email'],
-      ]);
-
-      // Set description for rendering.
-      if (isset($event['event']['description'])) {
-        $new_event['description'] = Xss::filterAdmin($event['event']['description']);
-        $new_event['description_text'] = Xss::filter($event['event']['description_text']);
-      }
-
-      // Set photo_url for rendering.
-      if (isset($event['event']['media'])) {
-        $new_event['photo_url'] = $event['event']['media'][0]['medium_image'];
-      }
-
-      array_push($data, $new_event);
-    }
-    $events['events'] = $data;
   }
 
-  return $events;
-}
-
-/**
- * Get values from Event Feed.
- *
- * @param object $events_instance
- *   An event feed object.
- *
- * @return array
- *   A request object.
- */
-function sitenow_events_instance_values($events_instance) {
-  $instance_values = [
-    'department' => NULL,
-    'audiences' => NULL,
-    'event_types' => NULL,
-    'interests' => NULL,
-    'keywords' => NULL,
-    'results' => 50,
-    'more' => FALSE,
-    'more_path' => NULL,
-  ];
-
-  if ($events_instance) {
-    if (!empty($results = $events_instance->get('field_events_results')->getValue())) {
-      $instance_values['results'] = $results[0]['value'];
-    }
-
-    if (!empty($more = $events_instance->get('field_events_more')->getValue())) {
-      $instance_values['more'] = $more;
-    }
-
-    if (!empty($more_path = $events_instance->get('field_events_more_path')->getValue())) {
-      $instance_values['more_path'] = $more_path;
-    }
-
-    if (!empty($department_value = $events_instance->get('field_events_department')->getValue())) {
-      $instance_values['department'] = $department_value[0]['value'];
-    }
-
-    if (!empty($audience_values = $events_instance->get('field_events_audiences'))) {
-      foreach ($audience_values->getValue() as $item) {
-        $instance_values['audiences'][$item['value']] = $item['value'];
-      }
-    }
-
-    if (!empty($interests_values = $events_instance->get('field_events_gen_interests'))) {
-      foreach ($interests_values->getValue() as $item) {
-        $instance_values['interests'][$item['value']] = $item['value'];
-      }
-    }
-
-    if (!empty($event_types_values = $events_instance->get('field_events_event_types'))) {
-      foreach ($event_types_values->getValue() as $item) {
-        $instance_values['event_types'][$item['value']] = $item['value'];
-      }
-    }
-
-    if (!empty($keywords_values = $events_instance->get('field_events_keywords'))) {
-      foreach ($keywords_values->getValue() as $item) {
-        $instance_values['$keywords'][$item['value']] = $item['value'];
-      }
-    }
-  }
-
-  return $instance_values;
+  return $data;
 }
 
 /**
@@ -417,7 +149,7 @@ function sitenow_events_theme($existing, $type, $theme, $path) {
       'path' => $path,
       'template' => 'templates/sitenow-events-single-event',
       'file' => 'includes/sitenow_events.single_event.inc',
-      'variables' => ['data' => NULL],
+      'variables' => ['event' => NULL],
     ],
   ];
 }
@@ -432,27 +164,57 @@ function sitenow_events_theme($existing, $type, $theme, $path) {
  *   The human-readable date string.
  */
 function sitenow_events_format_instance(array $event_instance) {
-  if ($event_instance['all_day']) {
-    $start = date('l, F j, Y', strtotime($event_instance['start']));
+  $start_date = strtotime($event_instance['start']);
+
+  if (isset($event_instance['end'])) {
+    $end_date = strtotime($event_instance['end']);
   }
   else {
-    $start = date('l, F j, Y, g:ia', strtotime($event_instance['start']));
+    $end_date = $start_date;
   }
 
-  if (!empty($event_instance['end'])) {
-    if ($event_instance['start'] == $event_instance['end']) {
-      $end = NULL;
+  $is_all_day = ($event_instance['all_day'] == TRUE);
+  $is_same_day = date('Y-m-d', $start_date) == date('Y-m-d', $end_date);
+  $is_same_time = date('g:ia', $start_date) == date('g:ia', $end_date);
+  $is_same_month = $is_same_day || date('Y-m', $start_date) == date('Y-m', $end_date);
+  $is_same_year = $is_same_day || $is_same_month || (date('Y', $start_date) == date('Y', $end_date));
+
+  if ($is_same_day && $is_all_day) {
+    $start = date('l, F j, Y', $start_date) . ' (all day)';
+  }
+  elseif ($is_same_day && !$is_all_day) {
+    $start = date('l, F j, Y g:ia', $start_date);
+
+    if (!$is_same_time) {
+      $end = date('g:ia', $end_date);
+    }
+  }
+  elseif (!$is_same_day && $is_all_day) {
+    if ($is_same_month) {
+      $start = date('l, F j', $start_date);
+      $end = date('l, F j, Y', $end_date) . ' (all day)';
+    }
+    elseif ($is_same_year) {
+      $start = date('l, F j', $start_date);
+      $end = date('l, F j, Y', $end_date) . ' (all day)';
     }
     else {
-      $start_day = date('M d Y', strtotime($event_instance['start']));
-      $end_day = date('M d Y', strtotime($event_instance['end']));
-
-      if ($start_day == $end_day) {
-        $end = date('g:ia', strtotime($event_instance['end']));
-      }
-      else {
-        $end = date('l, F j, Y, g:ia', strtotime($event_instance['end']));
-      }
+      $start = date('l, F j, Y', $start_date);
+      $end = date('l, F j, Y', $end_date) . ' (all day)';
+    }
+  }
+  elseif (!$is_same_day & !$is_all_day) {
+    if ($is_same_month) {
+      $start = date('l, F j g:ia', $start_date);
+      $end = date('l, F j, Y g:ia', $end_date);
+    }
+    elseif ($is_same_year) {
+      $start = date('l, F j, g:ia', $start_date);
+      $end = date('l, F j, Y g:ia', $end_date);
+    }
+    else {
+      $start = date('l, F j, Y g:ia', $start_date);
+      $end = date('l, F j, Y g:ia', $end_date);
     }
   }
 
@@ -461,9 +223,11 @@ function sitenow_events_format_instance(array $event_instance) {
 
 /**
  * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ *
+ * @todo: Remove this after sitenow_events_paragraph is uninstalled.
  */
 function sitenow_events_field_widget_paragraphs_form_alter(&$element, &$form_state, $context) {
-  if ($element["#paragraph_type"] == 'events') {
+  if ($element['#paragraph_type'] == 'events') {
     if (!empty($element['subform']['field_events_more'])) {
       $parents_array = $element['subform']['#parents'];
       $parents = array_shift($parents_array) . '[' . implode('][', $parents_array) . ']';
@@ -478,4 +242,150 @@ function sitenow_events_field_widget_paragraphs_form_alter(&$element, &$form_sta
       }
     }
   }
+}
+
+/**
+ * Set dynamic allowed values for multiple fields.
+ *
+ * @param \Drupal\field\Entity\FieldStorageConfig $definition
+ *   The field definition.
+ * @param \Drupal\Core\Entity\ContentEntityInterface|null $entity
+ *   The entity being created if applicable.
+ * @param bool $cacheable
+ *   Boolean indicating if the results are cacheable.
+ *
+ * @return array
+ *   An array of possible key and value options.
+ *
+ * @see options_allowed_values()
+ */
+function _sitenow_events_get_filter_field_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable = TRUE) {
+  $options = [];
+
+  switch ($definition->getName()) {
+    case 'field_events_department':
+    case 'field_uiowa_events_department':
+      $data = sitenow_events_load(['display_id' => 'filters'], ['views', 'filters_api.json']);
+      $tree = _sitenow_events_build_options_tree($data['departments']);
+      $options = _sitenow_events_build_options_list($tree);
+
+      break;
+
+    case 'field_events_audiences':
+    case 'field_uiowa_events_audiences':
+      $data = sitenow_events_load(['display_id' => 'filters'], ['views', 'filters_api.json']);
+      $tree = _sitenow_events_build_options_tree($data['event_audience']);
+      $options = _sitenow_events_build_options_list($tree);
+
+      break;
+
+    case 'field_events_gen_interests':
+    case 'field_uiowa_events_interests':
+      $data = sitenow_events_load(['display_id' => 'filters'], ['views', 'filters_api.json']);
+      $tree = _sitenow_events_build_options_tree($data['event_general_interest']);
+      $options = _sitenow_events_build_options_list($tree);
+
+      break;
+
+    case 'field_events_event_types':
+    case 'field_uiowa_events_types':
+      $data = sitenow_events_load(['display_id' => 'filters'], ['views', 'filters_api.json']);
+      $tree = _sitenow_events_build_options_tree($data['event_types']);
+      $options = _sitenow_events_build_options_list($tree);
+
+      break;
+
+    case 'field_events_keywords':
+    case 'field_uiowa_events_keywords':
+      $data = sitenow_events_load(['display_id' => 'keywords'], ['views', 'filters_api.json']);
+
+      $options = [];
+
+      foreach ($data['keywords'] as $keyword) {
+        $options[$keyword['id']] = $keyword['name'];
+      }
+
+      break;
+
+    case 'field_events_place':
+    case 'field_uiowa_events_place':
+      $data = sitenow_events_load(['display_id' => 'places'], ['views', 'places_api.json']);
+      $options = [];
+
+      foreach ($data['places'] as $place) {
+        // API double-nests places for some reason.
+        $place = $place['place'];
+        $options[$place['id']] = $place['name'];
+      }
+
+      break;
+
+  }
+
+  return $options;
+}
+
+/**
+ * Helper function to build the options tree.
+ *
+ * @param array $data
+ *   Array of data to be sorted into a tree.
+ * @param int $parent
+ *   Stores the current id.
+ *
+ * @return array
+ *   Returns an associative array options tree.
+ *
+ * @todo: Replace with an API endpoint that outputs an entire vocabulary tree.
+ */
+function _sitenow_events_build_options_tree(array $data, $parent = 0) {
+  $tree = [];
+
+  foreach ($data as $d) {
+    if ($d['parent_id'] == $parent) {
+      $children = _sitenow_events_build_options_tree($data, $d['id']);
+
+      if (!empty($children)) {
+        $d['_children'] = $children;
+      }
+      $tree[] = $d;
+    }
+  }
+
+  return $tree;
+}
+
+/**
+ * Helper function to output the options array.
+ *
+ * @param array $tree
+ *   Array of tree data to be printed.
+ * @param int $r
+ *   Basic counter.
+ * @param int $p
+ *   Parent id.
+ * @param array $options
+ *   Options array to be passed recursively.
+ *
+ * @return array
+ *   Returns options with children prefixed with dashes.
+ *
+ * @todo: Replace with an API endpoint that outputs an entire vocabulary tree.
+ */
+function _sitenow_events_build_options_list(array $tree, $r = 0, $p = NULL, array &$options = []) {
+  foreach ($tree as $t) {
+    $dash = ($t['parent_id'] == 0) ? '' : str_repeat('-', $r) . ' ';
+    $options[$t['id']] = $dash . $t['name'];
+
+    if ($t['parent_id'] == $p) {
+      // Reset $r.
+      $r = 0;
+    }
+
+    if (isset($t['_children'])) {
+      _sitenow_events_build_options_list($t['_children'], ++$r, $t['parent_id'], $options);
+    }
+  }
+
+  return $options;
 }

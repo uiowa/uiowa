@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "be4577204ee6bdfa93d3429282780fc2",
+    "content-hash": "1aebd0ae8fbf219717e644a022f6db17",
     "packages": [
         {
             "name": "acquia/blt",
@@ -3388,16 +3388,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.8.8",
+            "version": "8.9.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "c067109fcdf86184a7c75081fd8f1d81e4e23f56"
+                "reference": "ee02fd4cbe4ac148b4d7e297ec63b3459983862e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/c067109fcdf86184a7c75081fd8f1d81e4e23f56",
-                "reference": "c067109fcdf86184a7c75081fd8f1d81e4e23f56",
+                "url": "https://api.github.com/repos/drupal/core/zipball/ee02fd4cbe4ac148b4d7e297ec63b3459983862e",
+                "reference": "ee02fd4cbe4ac148b4d7e297ec63b3459983862e",
                 "shasum": ""
             },
             "require": {
@@ -3421,9 +3421,12 @@
                 "ext-tokenizer": "*",
                 "ext-xml": "*",
                 "guzzlehttp/guzzle": "^6.3",
+                "laminas/laminas-diactoros": "^1.8",
+                "laminas/laminas-feed": "^2.12",
                 "masterminds/html5": "^2.1",
                 "pear/archive_tar": "^1.4.9",
                 "php": ">=7.0.8",
+                "psr/log": "^1.0",
                 "stack/builder": "^1.0",
                 "symfony-cmf/routing": "^1.4",
                 "symfony/class-loader": "~3.4.0",
@@ -3441,9 +3444,7 @@
                 "symfony/validator": "~3.4.0",
                 "symfony/yaml": "~3.4.5",
                 "twig/twig": "^1.38.2",
-                "typo3/phar-stream-wrapper": "^3.1.3",
-                "zendframework/zend-diactoros": "^1.8",
-                "zendframework/zend-feed": "^2.12"
+                "typo3/phar-stream-wrapper": "^3.1.3"
             },
             "conflict": {
                 "drupal/pathauto": "<1.6",
@@ -3596,10 +3597,9 @@
                     "The Media library doesn't modify the 'media' view if installed in a profile": "https://www.drupal.org/files/issues/2019-05-12/2992056.patch",
                     "Site extensions don't get rediscovered after drush cr": "https://www.drupal.org/files/issues/2018-07-11/specify_sitepath_cache_rebuild_extension_discovery-2985199-3.patch",
                     "Allow alter oembed providers": "https://www.drupal.org/files/issues/2019-05-15/drupal-allow_alter_oembed_providers-3008119-4.patch",
-                    "Form blocks rendered inside layout builder break save": "https://www.drupal.org/files/issues/2020-02-04/layout-builder-save-issue-3045171-140.patch",
                     "save edits to media embeds": "https://www.drupal.org/files/issues/2019-12-19/3102249-fix-media-ckeditor-snapshop.patch",
                     "add img dimensions": "https://www.drupal.org/files/issues/2019-11-19/responsive_image-provide_dimensions_for_image_tag-3095126-4.patch",
-                    "fix duplicate drag handles in claro": "https://www.drupal.org/files/issues/2020-04-27/claro-nested_paragraphs_multiple_drag_handles-3092181-75-8.8.x-backport.patch",
+                    "fix duplicate drag handles in claro": "https://www.drupal.org/files/issues/2020-05-28/3092181-87-89x.patch",
                     "[PP-1] Reverting entity revisions that contain custom blocks erroneously triggers EntityChangedConstraint": "https://www.drupal.org/files/issues/2019-05-13/3053881-11.patch",
                     "Hidden buttons in off-canvas dialog are not being hidden": "https://www.drupal.org/files/issues/2020-02-28/3070375-4.patch",
                     "Off-canvas style resets are overriding styles (especially SVGs) in Safari resulting in display issues": "https://www.drupal.org/files/issues/2019-05-07/off-canvas-style-resets-2958588-13.patch"
@@ -3626,7 +3626,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2020-06-17T17:58:48+00:00"
+            "time": "2020-08-05T21:49:40+00:00"
         },
         {
             "name": "drupal/crop",
@@ -3905,30 +3905,30 @@
         },
         {
             "name": "drupal/date_recur_modular",
-            "version": "1.3.0",
+            "version": "2.0.0-rc1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/date_recur_modular.git",
-                "reference": "8.x-1.3"
+                "reference": "2.0.0-rc1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/date_recur_modular-8.x-1.3.zip",
-                "reference": "8.x-1.3",
-                "shasum": "fd581dde4d35c5795996f843fa2ae0880a1d4b58"
+                "url": "https://ftp.drupal.org/files/projects/date_recur_modular-2.0.0-rc1.zip",
+                "reference": "2.0.0-rc1",
+                "shasum": "7cc5be0d9feb2f3350eed7acc555827df826f1c7"
             },
             "require": {
-                "drupal/core": ">=8.6 <8.9",
+                "drupal/core": "^8.9",
                 "drupal/date_recur": "^2.0@beta"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.3",
-                    "datestamp": "1587303560",
+                    "version": "2.0.0-rc1",
+                    "datestamp": "1586003091",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "RC releases are not covered by Drupal security advisories."
                     }
                 }
             },

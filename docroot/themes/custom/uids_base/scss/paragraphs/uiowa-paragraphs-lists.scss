@@ -11,13 +11,8 @@
   }
 
   .more-link {
-    margin-bottom: $gutter;
-  }
-}
-
-.paragraph--type--events {
-  .more-link {
     margin-top: $gutter;
+    margin-bottom: $gutter;
   }
 }
 
@@ -175,9 +170,12 @@
 
 // Events List
 .paragraph--type--events.list {
+  .uiowa-events {
+    margin-top: $gutter;
+  }
   .card {
     @include breakpoint(sm) {
-      border-bottom: 1px solid #ccc;
+      border-bottom: 1px solid rgba(0, 0, 0, .125);
 
       &:last-child {
         border-bottom: none;

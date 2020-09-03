@@ -55,3 +55,17 @@
 .grid--1-3 .cta__wrapper.element--flex-center .cta__link {
   margin: .5rem 0 0 0;
 }
+
+.bg--black,
+.bg-pattern--brain-black,
+.bg-dark {
+  .cta__wrapper:not(.bg--black):not(.bg-pattern--brain-black):not(.bg--gold):not(.bg--gray) {
+    .bold-headline {
+      color: $primary;
+    }
+    .cta__summary {
+      color: $white;
+    }
+  }
+}
+
