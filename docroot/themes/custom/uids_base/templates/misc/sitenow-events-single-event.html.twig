@@ -44,13 +44,15 @@
             {% endif %}
             {% if event.contact_name|length %}
             <div class="event-field contact-info">
+              <p>
                 Contact Info: {{ event.contact_name }}
                 {% if event.contact_email|length %}
-                , {{ event.contact_email }}
-                {% if event.contact_phone_number|length %}
-                , {{ event.contact_phone_number }}
+                  , {{ event.contact_email }}
+                  {% if event.contact_phone_number|length %}
+                    , {{ event.contact_phone_number }}
+                  {% endif %}
                 {% endif %}
-                {% endif %}
+              </p>
             </div>
             {% endif %}
         </div>
