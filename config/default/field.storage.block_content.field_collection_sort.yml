@@ -1,0 +1,27 @@
+uuid: eafd4aba-51ae-49bd-84b7-76787977f5b5
+langcode: en
+status: true
+dependencies:
+  module:
+    - block_content
+    - options
+id: block_content.field_collection_sort
+field_name: field_collection_sort
+entity_type: block_content
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: block_people_slf
+      label: Sticky/Last/First
+    -
+      value: block_people_sfl
+      label: Sticky/First/Last
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
