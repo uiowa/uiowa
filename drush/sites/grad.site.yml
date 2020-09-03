@@ -1,32 +1,32 @@
 local:
   root: /var/www/uiowa/docroot
-  uri: grad.local.drupal.uiowa.edu
+  uri: 'https://grad.local.drupal.uiowa.edu'
   paths:
-    files: sites/grad.uiowa.edu/files
+    files: 'sites/grad.uiowa.edu/files'
 dev:
-  uri: grad.dev.drupal.uiowa.edu
+  uri: 'https://grad.dev.drupal.uiowa.edu'
   host: uiowa01dev.ssh.prod.acquia-sites.com
   options: {  }
   paths:
     dump-dir: /mnt/tmp
-    files: sites/grad.uiowa.edu/files
+    files: 'sites/grad.uiowa.edu/files'
   root: /var/www/html/uiowa01.dev/docroot
   user: uiowa01.dev
 prod:
-  uri: grad.uiowa.edu
+  uri: 'https://grad.uiowa.edu'
   host: uiowa01.ssh.prod.acquia-sites.com
   options: {  }
   paths:
     dump-dir: /mnt/tmp
-    files: sites/grad.uiowa.edu/files
+    files: 'sites/grad.uiowa.edu/files'
   root: /var/www/html/uiowa01.prod/docroot
   user: uiowa01.prod
 test:
-  uri: grad.stage.drupal.uiowa.edu
+  uri: 'https://grad.stage.drupal.uiowa.edu'
   host: uiowa01stg.ssh.prod.acquia-sites.com
   options: {  }
   paths:
     dump-dir: /mnt/tmp
-    files: sites/grad.uiowa.edu/files
+    files: 'sites/grad.uiowa.edu/files'
   root: /var/www/html/uiowa01.test/docroot
   user: uiowa01.test

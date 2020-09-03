@@ -426,7 +426,7 @@
             a:not(.btn):not(.bttn):not(.button) {
                 color: $secondary;
                 text-decoration: underline;
-    
+
                 &:hover,
                 &:focus {
                     text-decoration: none;
@@ -754,6 +754,9 @@
                 text-decoration: none;
             }
         }
+        .card__title a {
+          color: $white !important;
+        }
     }
 
     .paragraph--type--articles.list,
@@ -770,7 +773,7 @@
             border-bottom: 1px solid #ffffff21;
 
             &:first-child {
-                border-top: 1px solid #ffffff21;
+                border-top: none;
             }
         }
 
@@ -792,6 +795,7 @@
         .card {
             background-color: transparent !important;
             @include text-light;
+            border-bottom: 1px solid #ffffff21;
         }
     }
 
