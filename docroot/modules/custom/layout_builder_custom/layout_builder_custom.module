@@ -205,13 +205,6 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
 
 /**
  * Implements hook_field_widget_WIDGET_TYPE_form_alter().
- *
- * @param array $element
- *   The current widget element.
- * @param Drupal\Core\Form\FormStateInterface $form_state
- *   The current form state.
- * @param array $context
- *   The current form widget context.
  */
 function layout_builder_custom_field_widget_paragraphs_form_alter(array &$element, FormStateInterface &$form_state, array $context) {
   if (isset($element['#paragraph_type']) && $element['#paragraph_type'] === 'uiowa_collection_item') {
