@@ -8,7 +8,12 @@ description: ''
 folder: ../config/coronavirus.uiowa.edu
 module: {  }
 theme: {  }
-blacklist: {  }
+blacklist:
+  - block_content.type.uiowa_covid_data
+  - core.entity_form_display.block_content.uiowa_covid_data.default
+  - core.entity_view_display.block_content.uiowa_covid_data.default
+  - field.field.block_content.uiowa_covid_data.field_uiowa_covid_date
+  - field.storage.block_content.field_uiowa_covid_date
 graylist:
   - config_split.config_split.coronavirus_uiowa_edu
   - core.entity_view_display.node.page.default

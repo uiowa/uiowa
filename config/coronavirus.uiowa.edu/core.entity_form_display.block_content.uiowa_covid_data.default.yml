@@ -1,0 +1,29 @@
+uuid: bf9c03bf-9252-4432-9cb5-bb5eb9b351ab
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_covid_data
+    - field.field.block_content.uiowa_covid_data.field_uiowa_covid_date
+  module:
+    - datetime
+id: block_content.uiowa_covid_data.default
+targetEntityType: block_content
+bundle: uiowa_covid_data
+mode: default
+content:
+  field_uiowa_covid_date:
+    weight: 26
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  info:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }
