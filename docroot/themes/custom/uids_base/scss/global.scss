@@ -166,8 +166,18 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
       }
     }
   }
-}
 
+  .page__container--narrow {
+    .lb__container {
+      @include breakpoint(md) {
+        max-width: 63.75em;
+        margin: 0 auto;
+        padding-right: $lg;
+        padding-left: $lg;
+      }
+    }
+  }
+}
 
 .layout__container {
   padding-bottom: $mobile-width-gutter;
@@ -178,6 +188,10 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
     padding-top: $desktop-width-gutter;
   }
 
+  /*
+   * @todo Should this be moved to scss/layouts/onecol.scss or
+   *   scss/layouts/onecol--background.scss?
+   */
   &.layout--onecol--no--background,
   &.layout--no-sidebar,
   &.layout--has-sidebar.sidebar-invisible {
@@ -207,6 +221,9 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   }
 }
 
+/*
+ * @todo Should this be moved to scss/layouts/onecol--background.scss?
+ */
 .layout--onecol--no--background+.layout__container[class*="bg--"],
 .layout--onecol--no--background+.layout__container[class*="bg-pattern--"] {
   margin-top: $gutter;
@@ -224,6 +241,14 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   @include breakpoint(menu) {
     margin-right: $desktop-width-gutter;
     margin-left: $desktop-width-gutter;
+  }
+}
+
+.page__container--edge {
+  .lb__container {
+    max-width: 100%;
+    margin-right: 0;
+    margin-left: 0;
   }
 }
 
@@ -252,15 +277,6 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
     padding-bottom: 6rem;
   }
 
-}
-
-
-.page__container--edge {
-  .lb__container {
-    max-width: 100%;
-    margin-right: 0;
-    margin-left: 0;
-  }
 }
 
 
