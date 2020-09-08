@@ -2,7 +2,6 @@
 
 namespace Drupal\uiowa_covid\Plugin\Block;
 
-use Drupal\Component\Utility\Number;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Config\ConfigFactory;
@@ -93,31 +92,32 @@ class CovidDataBlock extends BlockBase implements BlockPluginInterface, Containe
     parent::blockSubmit($form, $form_state);
   }
 
+  public function blockValidate($form, FormStateInterface $form_state) {
+    $values = $form_state->getValues();
+    $timestamp = strtotime($values['covid_data_date']);
+    $data = $this->getData($timestamp);
+
+    $null = [];
+
+    foreach ($data as $name => $datum) {
+      if (is_null($datum)) {
+        $null[] = $name;
+      }
+    }
+
+    if (!empty($null)) {
+      $form_state->setErrorByName('covid_data_date', $this->t('COVID data contains empty vlaues. Please try again later. Empty data: @data', [
+        '@data' => implode(', ', $null),
+      ]));
+    }
+  }
+
   /**
    * {@inheritdoc}
    */
   public function build() {
-    $endpoint = $this->configFactory->get('uiowa.covid')->get('endpoint');
-    $user = $this->configFactory->get('uiowa.covid')->get('user');
-    $key = $this->configFactory->get('uiowa.covid')->get('key');
     $timestamp = strtotime($this->configuration['covid_data_date']);
-    $date = date('m-d-Y', $timestamp);
-
-    /** @var \GuzzleHttp\Client $client */
-    $client = \Drupal::httpClient();
-
-    try {
-      $response = $client->request('GET', "{$endpoint}/{$date}", [
-        'auth' => [
-          $user,
-          $key,
-        ]
-      ]);
-
-      $data = json_decode($response->getBody()->getContents());
-    } catch (RequestException $e) {
-      watchdog_exception('uiowa_covid', $e);
-    }
+    $data = $this->getData($timestamp);
 
     $build = [];
 
@@ -223,6 +223,38 @@ class CovidDataBlock extends BlockBase implements BlockPluginInterface, Containe
     }
 
     return $build;
+  }
+
+  /**
+   * Get API data.
+   *
+   * @param $timestamp
+   * @throws \GuzzleHttp\Exception\GuzzleException
+   */
+  protected function getData($timestamp) {
+    $endpoint = $this->configFactory->get('uiowa.covid')->get('endpoint');
+    $user = $this->configFactory->get('uiowa.covid')->get('user');
+    $key = $this->configFactory->get('uiowa.covid')->get('key');
+    $date = date('m-d-Y', $timestamp);
+
+    /** @var \GuzzleHttp\Client $client */
+    $client = \Drupal::httpClient();
+
+    try {
+      $response = $client->request('GET', "{$endpoint}/{$date}", [
+        'auth' => [
+          $user,
+          $key,
+        ]
+      ]);
+
+      // @todo: Verify status/messages/JSON.
+      $data = json_decode($response->getBody()->getContents());
+      return $data;
+    } catch (RequestException $e) {
+      watchdog_exception('uiowa_covid', $e);
+    }
+
   }
 
 }
