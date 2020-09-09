@@ -106,7 +106,7 @@ class CovidDataBlock extends BlockBase implements BlockPluginInterface, Containe
     }
 
     if (!empty($null)) {
-      $form_state->setErrorByName('covid_data_date', $this->t('COVID data contains empty vlaues. Please try again later. Empty data: @data', [
+      $form_state->setErrorByName('covid_data_date', $this->t('COVID data contains empty values. Please try again later. Empty data: @data', [
         '@data' => implode(', ', $null),
       ]));
     }
