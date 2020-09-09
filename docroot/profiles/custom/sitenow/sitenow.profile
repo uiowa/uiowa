@@ -811,7 +811,7 @@ function sitenow_toolbar() {
       ]),
       '#options' => [
         'attributes' => [
-          'title' => t('Opens help documentation in a new window'),
+          'title' => t('Opens help documentation in a new window.'),
           'id' => 'toolbar-item-sitenow-help',
           'class' => [
             'toolbar-item',
