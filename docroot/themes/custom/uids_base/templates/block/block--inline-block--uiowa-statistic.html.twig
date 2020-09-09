@@ -28,6 +28,7 @@
 {% set stat_block = {
   'attributes': attributes,
   'stat_summary': content.field_uiowa_statistic_excerpt|render,
+  'stat_content': content.field_uiowa_statistic_content|render,
   'stat_title': content.field_uiowa_statistic_title[0]['#text']|render,
   'stat_prefix': content.field_uiowa_statistic_title_pre|render,
   'stat_suffix': content.field_uiowa_statistic_title_suf|render,
