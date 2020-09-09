@@ -21,15 +21,21 @@ use Drupal\node\NodeInterface;
  * Implements hook_preprocess_HOOK().
  */
 function sitenow_preprocess_html(&$variables) {
+  $version = sitenow_get_version();
+
   $meta_web_author = [
     '#tag' => 'meta',
     '#attributes' => [
       'name' => 'web-author',
-      'content' => 'SiteNow v2 (https://sitenow.uiowa.edu)',
+      'content' => t('SiteNow @version (https://sitenow.uiowa.edu)', [
+        '@version' => $version,
+      ]),
     ],
   ];
+
   $variables['page']['#attached']['html_head'][] = [$meta_web_author, 'web-author'];
   $variables['page']['#attached']['library'][] = 'sitenow/global-scripts';
+  $variables['page']['#attached']['drupalSettings']['sitenow']['version'] = $version;
 }
 
 /**
