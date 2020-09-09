@@ -1,25 +1,30 @@
-uuid: 88b5c596-1845-4010-816b-a019c045a98e
+uuid: 3aacb884-1707-4c56-992d-ef69f42d2e97
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.media.image_medium
+    - core.entity_view_mode.media.large
     - field.field.media.remote_video.field_media_oembed_video
     - media.type.remote_video
   module:
+    - layout_builder
     - media
-id: media.remote_video.image_medium
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: false
+id: media.remote_video.large
 targetEntityType: media
 bundle: remote_video
-mode: image_medium
+mode: large
 content:
   field_media_oembed_video:
     type: oembed
     weight: 0
     label: hidden
     settings:
-      max_width: 640
-      max_height: 360
+      max_width: 854
+      max_height: 480
     third_party_settings: {  }
     region: content
 hidden:
