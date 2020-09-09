@@ -1,22 +1,22 @@
 /**
  * @file
- * Sitenow Detector.
+ * Sitenow global scripts. Attached to every page.
  */
 
 (function ($, Drupal) {
-    Drupal.behaviors.sitenowDetector = {
-      attach: function (context) {
-        $(document, context).once('sitenowDetector').each(function () {
+    Drupal.behaviors.sitenow = {
+      attach: function (context, setting) {
+        $(document, context).once('sitenow').each(function () {
+          let version = setting.sitenow.version;
 
-          // I've broken this up so it is easy to change.
           // This is the first line of the log.
-          var sitenow_message_line_1 = "This is a Sitenow v2 Site";
+          let sitenow_message_line_1 = 'This is a Sitenow ' + version +  ' Site.';
 
           // This is the second line of the log.
-          var sitenow_message_line_2 = "For more information, please visit https://sitenow.uiowa.edu";
+          let sitenow_message_line_2 = "For more information, please visit https://sitenow.uiowa.edu.";
 
           // This styles the first line of the log.
-          var sitenow_message_style_1 = "\
+          let sitenow_message_style_1 = "\
             color: #444;\
             font-size: 1.5rem;\
             font-family: 'Helvetica Neue','Arial',sans-serif;\
@@ -30,7 +30,7 @@
           ";
 
           // This styles the second line of the log.
-          var sitenow_message_style_2 = "\
+          let sitenow_message_style_2 = "\
             color: #444;\
             font-size: 1rem;\
             font-family: 'Helvetica Neue','Arial',sans-serif;\
