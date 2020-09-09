@@ -791,13 +791,7 @@ function sitenow_page_attachments(array &$attachments) {
  * Implements hook_toolbar().
  */
 function sitenow_toolbar() {
-  $version = 'v3';
-  $is_v2 = \Drupal::config('config_split.config_split.sitenow_v2')->get('status');
-
-  if ($is_v2) {
-    $version = 'v2';
-  }
-
+  $version = sitenow_get_version();
   $url = Url::fromUri('//sitenow.uiowa.edu/node/36');
 
   $items = [];
@@ -842,4 +836,21 @@ function sitenow_is_user_admin(AccountProxy $current_user) {
   else {
     return FALSE;
   }
+}
+
+/**
+ * Determine the version of SiteNow based on what config is active.
+ *
+ * @todo: Return additional information like if any other splits are active that might impact functionality.
+ */
+function sitenow_get_version() {
+  $version = 'v3';
+
+  $is_v2 = \Drupal::config('config_split.config_split.sitenow_v2')->get('status');
+
+  if ($is_v2) {
+    $version = 'v2';
+  }
+
+  return $version;
 }
