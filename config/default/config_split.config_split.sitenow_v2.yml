@@ -17,12 +17,19 @@ theme: {  }
 blacklist: {  }
 graylist:
   - core.entity_view_display.media.image.edgy
+  - core.entity_view_display.media.image.image_large
+  - core.entity_view_display.media.image.image_medium
+  - core.entity_view_display.media.image.image_small
   - core.entity_view_display.media.image.sitenow_16_9
   - core.entity_view_display.node.page.teaser
   - core.entity_view_mode.media.edgy
+  - core.entity_view_mode.media.image_large
+  - core.entity_view_mode.media.image_medium
+  - core.entity_view_mode.media.image_small
   - core.entity_view_mode.media.sitenow_16_9
   - editor.editor.filtered_html
   - editor.editor.full_html
+  - embed.button.media_entity_embed
   - field.field.node.page.field_page_content_block
   - field.storage.node.field_page_content_block
   - filter.format.filtered_html
@@ -42,9 +49,9 @@ graylist:
   - 'core.entity_form_display.paragraph.*'
   - 'core.entity_view_display.paragraph.*'
   - 'core.entity_view_mode.paragraph.*'
-  - 'paragraphs.paragraphs_type.*'
   - 'field.storage.paragraph.*'
   - 'image.style.ui_edgy_no_crop_*'
+  - 'paragraphs.paragraphs_type.*'
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 80
