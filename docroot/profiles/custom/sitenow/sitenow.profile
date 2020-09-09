@@ -791,6 +791,12 @@ function sitenow_page_attachments(array &$attachments) {
  * Implements hook_toolbar().
  */
 function sitenow_toolbar() {
+  $version = 'v3';
+  $is_v2 = \Drupal::config('config_split.config_split.sitenow_v2')->get('status');
+
+  if ($is_v2) {
+    $version = 'v2';
+  }
 
   $url = Url::fromUri('//sitenow.uiowa.edu/node/36');
 
@@ -800,7 +806,9 @@ function sitenow_toolbar() {
     'tab' => [
       '#type' => 'link',
       '#url' => $url,
-      '#title' => 'SiteNow Help',
+      '#title' => t('SiteNow @version Help', [
+        '@version' => $version,
+      ]),
       '#options' => [
         'attributes' => [
           'title' => t('Opens help documentation in a new window'),
