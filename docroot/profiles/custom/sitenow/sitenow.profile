@@ -21,15 +21,21 @@ use Drupal\node\NodeInterface;
  * Implements hook_preprocess_HOOK().
  */
 function sitenow_preprocess_html(&$variables) {
+  $version = sitenow_get_version();
+
   $meta_web_author = [
     '#tag' => 'meta',
     '#attributes' => [
       'name' => 'web-author',
-      'content' => 'SiteNow v2 (https://sitenow.uiowa.edu)',
+      'content' => t('SiteNow @version (https://sitenow.uiowa.edu)', [
+        '@version' => $version,
+      ]),
     ],
   ];
+
   $variables['page']['#attached']['html_head'][] = [$meta_web_author, 'web-author'];
   $variables['page']['#attached']['library'][] = 'sitenow/global-scripts';
+  $variables['page']['#attached']['drupalSettings']['sitenow']['version'] = $version;
 }
 
 /**
@@ -791,7 +797,7 @@ function sitenow_page_attachments(array &$attachments) {
  * Implements hook_toolbar().
  */
 function sitenow_toolbar() {
-
+  $version = sitenow_get_version();
   $url = Url::fromUri('//sitenow.uiowa.edu/node/36');
 
   $items = [];
@@ -800,10 +806,12 @@ function sitenow_toolbar() {
     'tab' => [
       '#type' => 'link',
       '#url' => $url,
-      '#title' => 'SiteNow Help',
+      '#title' => t('SiteNow @version Help', [
+        '@version' => $version,
+      ]),
       '#options' => [
         'attributes' => [
-          'title' => t('Opens help documentation in a new window'),
+          'title' => t('Opens help documentation in a new window.'),
           'id' => 'toolbar-item-sitenow-help',
           'class' => [
             'toolbar-item',
@@ -834,4 +842,21 @@ function sitenow_is_user_admin(AccountProxy $current_user) {
   else {
     return FALSE;
   }
+}
+
+/**
+ * Determine the version of SiteNow based on what config is active.
+ *
+ * @todo: Return additional information like if any other splits are active that might impact functionality.
+ */
+function sitenow_get_version() {
+  $version = 'v3';
+
+  $is_v2 = \Drupal::config('config_split.config_split.sitenow_v2')->get('status');
+
+  if ($is_v2) {
+    $version = 'v2';
+  }
+
+  return $version;
 }

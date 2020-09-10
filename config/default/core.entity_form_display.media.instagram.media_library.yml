@@ -6,13 +6,15 @@ dependencies:
     - core.entity_form_mode.media.media_library
     - field.field.media.instagram.field_media_instagram
     - media.type.instagram
+  module:
+    - media
 id: media.instagram.media_library
 targetEntityType: media
 bundle: instagram
 mode: media_library
 content:
   field_media_instagram:
-    type: string_textfield
+    type: oembed_textfield
     weight: 0
     region: content
     settings:
