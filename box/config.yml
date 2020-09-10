@@ -1093,6 +1093,22 @@ apache_vhosts:
     servername: labchaurasia.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: engagement.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: sitesgwsstellmagazine.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: orghhpatuiowa.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: admissions.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
 
 # Multisite installations should configure additional databases here.
 # It's recommended to prefix database names with 'drupal'. Otherwise,
@@ -1129,6 +1145,7 @@ installed_extras:
   - nodejs
   - solr
   - xdebug
+  - selenium
 
 php_version: '7.3'
 

@@ -27,11 +27,40 @@ third_party_settings:
     enabled: true
     sections:
       -
+        layout_id: layout_onecol
+        layout_settings:
+          label: 'Moderation control'
+          layout_builder_styles_style:
+            section_margin_remove_default_margins: section_margin_remove_default_margins
+            0: ''
+        components:
+          051b1326-800c-40ca-b518-98ce13ca4e6f:
+            uuid: 051b1326-800c-40ca-b518-98ce13ca4e6f
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'extra_field_block:node:page:content_moderation_control'
+            additional: {  }
+            weight: 0
+        third_party_settings:
+          layout_builder_lock:
+            lock:
+              1: 1
+              2: 2
+              3: 3
+              4: 4
+              5: 5
+              6: 6
+              8: 8
+      -
         layout_id: layout_header
         layout_settings:
           label: Header
           layout_builder_styles_style:
             section_margin_edge_to_edge: section_margin_edge_to_edge
+            0: ''
         components:
           40b768ff-6e34-4257-9398-d83430b061e8:
             uuid: 40b768ff-6e34-4257-9398-d83430b061e8
@@ -82,7 +111,15 @@ third_party_settings:
                 view_mode: view_mode
             additional: {  }
             weight: 0
-        third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock:
+              1: 1
+              2: 2
+              3: 3
+              4: 4
+              6: 6
+              8: 8
       -
         layout_id: layout_page
         layout_settings:
@@ -108,26 +145,6 @@ third_party_settings:
               layout_builder_styles_style:
                 block_menu_vertical: block_menu_vertical
             weight: 0
-          6b1aec87-4a37-4710-9c17-e76bca9b7844:
-            uuid: 6b1aec87-4a37-4710-9c17-e76bca9b7844
-            region: content
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'extra_field_block:node:page:links'
-            additional: {  }
-            weight: -8
-          051b1326-800c-40ca-b518-98ce13ca4e6f:
-            uuid: 051b1326-800c-40ca-b518-98ce13ca4e6f
-            region: content
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'extra_field_block:node:page:content_moderation_control'
-            additional: {  }
-            weight: -10
           e6fa78b4-cacc-4d27-baa3-f29dde0b845b:
             uuid: e6fa78b4-cacc-4d27-baa3-f29dde0b845b
             region: content
@@ -159,15 +176,7 @@ third_party_settings:
       whitelisted_blocks:
         'Chaos Tools': {  }
         'Content fields':
-          - 'field_block:node:page:uid'
-          - 'field_block:node:page:created'
           - 'field_block:node:page:body'
-          - 'field_block:node:page:changed'
-          - 'field_block:node:page:field_teaser'
-          - 'field_block:node:page:field_image'
-          - 'field_block:node:page:title'
-          - 'field_block:user:user:changed'
-          - 'field_block:user:user:created'
         'Custom blocks': {  }
         Devel: {  }
         Forms: {  }
@@ -176,24 +185,19 @@ third_party_settings:
           - 'menu_block:main'
           - 'system_menu_block:main'
         Superfish: {  }
-        System:
-          - system_breadcrumb_block
-          - system_main_block
+        System: {  }
         'University of Iowa Alerts': {  }
         User: {  }
         Webform:
           - webform_block
-        core:
-          - page_title_block
+        core: {  }
       blacklisted_blocks:
         'Custom block types':
           - uiowa_page_title_hero
           - uiowa_spacer_separator
-          - uiowa_vertical_video
         'Inline blocks':
           - 'inline_block:uiowa_page_title_hero'
           - 'inline_block:uiowa_spacer_separator'
-          - 'inline_block:uiowa_vertical_video'
     allowed_block_categories:
       - 'Chaos Tools'
       - 'Content fields'
@@ -236,6 +240,14 @@ third_party_settings:
               - 'inline_block:uiowa_banner'
               - 'inline_block:uiowa_hero'
         layout_fourcol:
+          all_regions:
+            'Custom block types':
+              - uiowa_banner
+              - uiowa_hero
+            'Inline blocks':
+              - 'inline_block:uiowa_banner'
+              - 'inline_block:uiowa_hero'
+        layout_page:
           all_regions:
             'Custom block types':
               - uiowa_banner

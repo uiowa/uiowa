@@ -1,0 +1,59 @@
+{#
+/**
+* @file
+* Theme override to display a block.
+*
+* Available variables:
+* - plugin_id: The ID of the block implementation.
+* - label: The configured label of the block if visible.
+* - configuration: A list of the block's configuration values.
+*   - label: The configured label for the block.
+*   - label_display: The display settings for the label.
+*   - provider: The module or other provider that provided this block plugin.
+*   - Block plugin specific settings will also be stored here.
+* - elements: The elements of this block.
+* - attributes: array of HTML attributes populated by modules, intended to
+*   be added to the main container tag of this template.
+*   - id: A valid HTML ID and guaranteed unique.
+* - title_attributes: Same as attributes, except applied to the main title
+*   tag that appears in the template.
+* - title_prefix: Additional output populated by modules, intended to be
+*   displayed in front of the main title tag that appears in the template.
+* - title_suffix: Additional output populated by modules, intended to be
+*   displayed after the main title tag that appears in the template.
+*
+* @see template_preprocess_block()
+*/
+#}
+{% set id = "tab-" ~ id %}
+{% set heading_size = content.field_collection_heading_size.0 %}
+
+<div class="collection--tabs">
+  <div class="tabs" role="navigation" aria-multiselectable="false" id="{{ id }}" aria-label="Tabs">
+    <ul class="tabs primary">
+      {% for delta, tab in tabs %}
+          <li class="tab
+            {% if not delta == 0 %}
+              is-active
+            {% endif %}
+          ">
+        {# <{{ heading_size }} id="tab-heading-{{ tab.id }}" class="tab__heading"> #}
+          <button class="tab__button"
+            role="tab"
+            aria-selected="{{ delta == 0 ? 'true' : 'false' | default('false') }}"
+            aria-expanded="{{ delta == 0 ? 'true' : 'false' | default('false') }}"
+            aria-controls="tab-select-{{ tab.id }}"
+          >
+            {% block tab_label %}
+              {{ tab.label }}
+            {% endblock %}
+          </button>
+        </li>
+        {# </{{ heading_size }}> #}
+      {% endfor %}
+    </ul>
+    <div class="tab__panels">
+      {{ content|without('field_collection_heading_size') }}
+    </div>
+  </div>
+</div>

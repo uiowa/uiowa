@@ -34,8 +34,8 @@
   margin-bottom: 1.5rem;
 }
 
-.content__container .page__container--edge.layout--has-sidebar .lb__container,
-.content__mixed .page__container--edge.layout--has-sidebar .lb__container {
+.content__container .layout--has-sidebar .lb__container,
+.content__mixed .layout--has-sidebar .lb__container {
   display: flex;
   flex-wrap: wrap;
   @extend %container;
@@ -78,6 +78,21 @@
 .layout--has-sidebar .layout__region--main {
   overflow: auto;
   @include breakpoint(menu) {
-    flex: 0 1 71.75%;
+    flex: 0 1 72.75%;
   }
+}
+
+.layout--onecol--no--background+.sidebar-invisible.layout--page--left-sidebar:not([class*="bg--"]) .block-field-blocknodepagebody,
+.layout--onecol--no--background+.sidebar-invisible.layout--page--left-sidebar:not([class*="bg--"]) .block-inline-blockuiowa-text-area,
+.layout--onecol--no--background+.layout--page--left-sidebar.layout--no-sidebar:not([class*="bg--"]) .block-field-blocknodepagebody,
+.layout--onecol--no--background+.layout--page--left-sidebar.layout--no-sidebar:not([class*="bg--"]) .block-inline-blockuiowa-text-area {
+  margin-top: $gutter;
+}
+
+
+.layout--onecol--background+.sidebar-invisible.layout--page--left-sidebar:not([class*="bg--"]) .block-field-blocknodepagebody,
+.layout--onecol--background+.sidebar-invisible.layout--page--left-sidebar:not([class*="bg--"]) .block-inline-blockuiowa-text-area,
+.layout--onecol--background+.layout--page--left-sidebar.layout--no-sidebar:not([class*="bg--"]) .block-field-blocknodepagebody,
+.layout--onecol--background+.layout--page--left-sidebar.layout--no-sidebar:not([class*="bg--"]) .block-inline-blockuiowa-text-area {
+  margin-top: 2rem;
 }
