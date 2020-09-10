@@ -1,14 +1,12 @@
-uuid: 2ef7adf4-c72a-48ed-80f7-5ac4d0146d44
+uuid: 29606fd9-1bbd-45c7-ac65-24033f8f2d20
 langcode: en
 status: true
 dependencies:
   config:
-    - filter.format.filtered_html
+    - filter.format.full_html
   module:
     - ckeditor
-_core:
-  default_config_hash: evKB8SoK0lat2aPC2lic5Q6fesi19-ObF3dMWC5j3ME
-format: filtered_html
+format: full_html
 editor: ckeditor
 settings:
   toolbar:
@@ -18,8 +16,8 @@ settings:
           name: Formatting
           items:
             - Bold
-            - Italic
             - Strike
+            - Italic
             - JustifyLeft
             - JustifyCenter
             - JustifyRight
@@ -44,7 +42,7 @@ settings:
           items:
             - Blockquote
             - Table
-            - DrupalMediaLibrary
+            - media_entity_embed
         -
           name: Format
           items:

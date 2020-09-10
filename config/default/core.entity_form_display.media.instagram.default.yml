@@ -6,6 +6,7 @@ dependencies:
     - field.field.media.instagram.field_media_instagram
     - media.type.instagram
   module:
+    - media
     - path
 id: media.instagram.default
 targetEntityType: media
@@ -24,7 +25,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
+    type: oembed_textfield
     region: content
   path:
     type: path
