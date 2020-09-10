@@ -1,29 +1,29 @@
-uuid: c160c42d-201d-47cf-ad88-9c6e0b8c4e97
+uuid: c35cb8aa-7739-4233-b8c1-e013d840a560
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_form_mode.media.media_browsers
     - field.field.media.instagram.field_media_instagram
     - media.type.instagram
   module:
-    - media
-id: media.instagram.media_browsers
+    - media_entity_instagram
+id: media.instagram.default
 targetEntityType: media
 bundle: instagram
-mode: media_browsers
+mode: default
 content:
   field_media_instagram:
     weight: 0
+    label: hidden
     settings:
-      size: 60
-      placeholder: ''
+      max_width: 0
+      max_height: null
     third_party_settings: {  }
-    type: oembed_textfield
+    type: instagram_embed
     region: content
 hidden:
   created: true
   name: true
-  path: true
-  status: true
+  search_api_excerpt: true
+  thumbnail: true
   uid: true
