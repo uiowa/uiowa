@@ -66,16 +66,9 @@ function sitenow_media_wysiwyg_form_editor_link_dialog_alter(&$form, FormStateIn
     '#cardinality' => '1',
   ];
   $form['#attached']['library'][] = 'sitenow_media_wysiwyg/button_style';
-  $form['attributes']['class']['#description'] = $form['attributes']['class']['#description'] . " Alternatively, add one or more of these predefined <em>button</em> styles: <small>
+  $form['attributes']['class']['#description'] = $form['attributes']['class']['#description'] . " Alternatively, add one of these predefined <em>button</em> styles: <small>
 <a href='#' data-btn-type='btn-primary' class='button-style'>Primary</a>,
-<a href='#' data-btn-type='btn-secondary' class='button-style'>Secondary</a>,
-<a href='#' data-btn-type='btn-success' class='button-style'>Success</a>,
-<a href='#' data-btn-type='btn-info' class='button-style'>Info</a>,
-<a href='#' data-btn-type='btn-warning' class='button-style'>Warning</a>,
-<a href='#' data-btn-type='btn-danger' class='button-style'>Danger</a>,
-<a href='#' data-btn-type='btn-sm' class='button-style'>Small</a>,
-<a href='#' data-btn-type='btn-lg' class='button-style'>Large</a>,
-<a href='#' data-btn-type='btn-block' class='button-style'>Full-Width</a></small>";
+<a href='#' data-btn-type='btn-secondary' class='button-style'>Secondary</a></small>";
 }
 
 /**
