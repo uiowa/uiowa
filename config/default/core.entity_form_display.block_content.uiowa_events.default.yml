@@ -4,7 +4,7 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_events
-    - field.field.block_content.uiowa_events.field_collection_heading_size
+    - field.field.block_content.uiowa_events.field_collection_headline
     - field.field.block_content.uiowa_events.field_collection_more
     - field.field.block_content.uiowa_events.field_collection_more_path
     - field.field.block_content.uiowa_events.field_collection_results
@@ -15,17 +15,18 @@ dependencies:
     - field.field.block_content.uiowa_events.field_uiowa_events_place
     - field.field.block_content.uiowa_events.field_uiowa_events_types
   module:
+    - layout_builder_custom
     - link
 id: block_content.uiowa_events.default
 targetEntityType: block_content
 bundle: uiowa_events
 mode: default
 content:
-  field_collection_heading_size:
-    weight: 10
+  field_collection_headline:
+    weight: 26
     settings: {  }
     third_party_settings: {  }
-    type: options_select
+    type: uiowa_block_headline_widget
     region: content
   field_collection_more:
     weight: 8

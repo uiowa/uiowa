@@ -4,25 +4,26 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_people
-    - field.field.block_content.uiowa_people.field_collection_heading_size
-    - field.field.block_content.uiowa_people.field_collection_results
+    - field.field.block_content.uiowa_people.field_collection_headline
     - field.field.block_content.uiowa_people.field_collection_more
     - field.field.block_content.uiowa_people.field_collection_more_path
     - field.field.block_content.uiowa_people.field_collection_pager
     - field.field.block_content.uiowa_people.field_collection_reference
+    - field.field.block_content.uiowa_people.field_collection_results
     - field.field.block_content.uiowa_people.field_collection_sort
   module:
+    - layout_builder_custom
     - link
 id: block_content.uiowa_people.default
 targetEntityType: block_content
 bundle: uiowa_people
 mode: default
 content:
-  field_collection_heading_size:
-    weight: 5
+  field_collection_headline:
+    weight: 26
     settings: {  }
     third_party_settings: {  }
-    type: options_select
+    type: uiowa_block_headline_widget
     region: content
   field_collection_more:
     weight: 6

@@ -5,14 +5,23 @@ dependencies:
   config:
     - block_content.type.uiowa_collection
     - field.field.block_content.uiowa_collection.field_collection_heading_size
+    - field.field.block_content.uiowa_collection.field_collection_headline
     - field.field.block_content.uiowa_collection.field_uiowa_collection_items
   module:
     - entity_reference_revisions
+    - layout_builder_custom
 id: block_content.uiowa_collection.default
 targetEntityType: block_content
 bundle: uiowa_collection
 mode: default
 content:
+  field_collection_headline:
+    weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: uiowa_block_headline_formatter
+    region: content
   field_uiowa_collection_items:
     type: entity_reference_revisions_entity_view
     weight: 0

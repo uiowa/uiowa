@@ -5,15 +5,23 @@ dependencies:
   config:
     - block_content.type.uiowa_collection
     - field.field.block_content.uiowa_collection.field_collection_heading_size
+    - field.field.block_content.uiowa_collection.field_collection_headline
     - field.field.block_content.uiowa_collection.field_uiowa_collection_items
   module:
     - entity_browser_entity_form
     - inline_entity_form
+    - layout_builder_custom
 id: block_content.uiowa_collection.default
 targetEntityType: block_content
 bundle: uiowa_collection
 mode: default
 content:
+  field_collection_headline:
+    weight: 26
+    settings: {  }
+    third_party_settings: {  }
+    type: uiowa_block_headline_widget
+    region: content
   field_uiowa_collection_items:
     type: inline_entity_form_complex
     weight: 1
