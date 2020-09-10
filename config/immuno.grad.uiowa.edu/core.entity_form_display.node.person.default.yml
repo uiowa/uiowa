@@ -6,22 +6,39 @@ dependencies:
     - field.field.node.person.field_image
     - field.field.node.person.field_person_bio
     - field.field.node.person.field_person_credential
+    - field.field.node.person.field_person_department
     - field.field.node.person.field_person_email
     - field.field.node.person.field_person_first_name
     - field.field.node.person.field_person_hide
+    - field.field.node.person.field_person_lab_building
+    - field.field.node.person.field_person_lab_phone
+    - field.field.node.person.field_person_lab_room
     - field.field.node.person.field_person_last_name
+    - field.field.node.person.field_person_office_building
+    - field.field.node.person.field_person_office_phone
+    - field.field.node.person.field_person_office_room
     - field.field.node.person.field_person_phone
     - field.field.node.person.field_person_position
     - field.field.node.person.field_person_research_areas
     - field.field.node.person.field_person_type
+    - field.field.node.person.field_person_university_id
     - field.field.node.person.field_person_website
     - field.field.node.person.field_pt_faculty_type
+    - field.field.node.person.field_pt_student_advisor
+    - field.field.node.person.field_pt_student_cur_pos_dept
+    - field.field.node.person.field_pt_student_cur_pos_inst
+    - field.field.node.person.field_pt_student_cur_pos_title
+    - field.field.node.person.field_pt_student_current
+    - field.field.node.person.field_pt_student_defense_date
+    - field.field.node.person.field_pt_student_program_start
     - field.field.node.person.field_tags
     - field.field.node.person.field_teaser
+    - field.field.node.person.pt_student_dissertation_title
     - node.type.person
     - workflows.workflow.editorial
   module:
     - content_moderation
+    - datetime
     - link
     - media_library
     - path
@@ -34,19 +51,19 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 12
+    weight: 17
     region: content
     settings: {  }
     third_party_settings: {  }
   field_image:
-    weight: 5
+    weight: 7
     settings:
       media_types: {  }
     third_party_settings: {  }
     type: media_library_widget
     region: content
   field_person_bio:
-    weight: 9
+    weight: 14
     settings:
       rows: 5
       placeholder: ''
@@ -54,16 +71,26 @@ content:
     type: text_textarea
     region: content
   field_person_credential:
-    weight: 4
+    weight: 6
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
     region: content
+  field_person_department:
+    type: entity_reference_autocomplete
+    weight: 8
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_person_email:
     type: email_default
-    weight: 7
+    weight: 11
     region: content
     settings:
       size: 60
@@ -71,22 +98,68 @@ content:
     third_party_settings: {  }
   field_person_first_name:
     type: string_textfield
-    weight: 2
+    weight: 3
     region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
   field_person_hide:
-    weight: 21
+    weight: 26
     settings:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
+  field_person_lab_building:
+    type: string_textfield
+    weight: 28
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_person_lab_phone:
+    type: telephone_default
+    weight: 30
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_person_lab_room:
+    type: string_textfield
+    weight: 29
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_person_last_name:
     type: string_textfield
-    weight: 3
+    weight: 4
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_person_office_building:
+    type: string_textfield
+    weight: 32
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_person_office_phone:
+    type: telephone_default
+    weight: 31
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_person_office_room:
+    type: string_textfield
+    weight: 33
     region: content
     settings:
       size: 60
@@ -94,13 +167,13 @@ content:
     third_party_settings: {  }
   field_person_phone:
     type: telephone_default
-    weight: 8
+    weight: 12
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_person_position:
-    weight: 6
+    weight: 9
     settings:
       size: 60
       placeholder: ''
@@ -123,8 +196,16 @@ content:
     third_party_settings: {  }
     type: options_buttons
     region: content
+  field_person_university_id:
+    type: string_textfield
+    weight: 5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_person_website:
-    weight: 10
+    weight: 15
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -137,8 +218,61 @@ content:
     third_party_settings: {  }
     type: options_select
     region: content
+  field_pt_student_advisor:
+    weight: 10
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: 'Search for an advisor'
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_pt_student_cur_pos_dept:
+    weight: 37
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_pt_student_cur_pos_inst:
+    weight: 36
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_pt_student_cur_pos_title:
+    weight: 38
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_pt_student_current:
+    weight: 2
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_pt_student_defense_date:
+    weight: 35
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  field_pt_student_program_start:
+    weight: 34
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
   field_tags:
-    weight: 13
+    weight: 18
     settings:
       match_operator: CONTAINS
       size: 60
@@ -148,7 +282,7 @@ content:
     type: entity_reference_autocomplete_tags
     region: content
   field_teaser:
-    weight: 20
+    weight: 25
     settings:
       rows: 5
       placeholder: ''
@@ -157,13 +291,13 @@ content:
     region: content
   moderation_state:
     type: moderation_state_default
-    weight: 19
+    weight: 24
     region: content
     settings: {  }
     third_party_settings: {  }
   path:
     type: path
-    weight: 16
+    weight: 21
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -171,26 +305,34 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 14
+    weight: 19
     region: content
     third_party_settings: {  }
+  pt_student_dissertation_title:
+    weight: 13
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   status:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 18
+    weight: 23
     region: content
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 15
+    weight: 20
     region: content
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 11
+    weight: 16
     settings:
       match_operator: CONTAINS
       size: 60
@@ -199,7 +341,7 @@ content:
     region: content
     third_party_settings: {  }
   url_redirects:
-    weight: 17
+    weight: 22
     region: content
     settings: {  }
     third_party_settings: {  }

@@ -171,6 +171,11 @@ function uids_base_preprocess_page(&$variables) {
     case 'uiowa_bar.search_results':
       $variables['#attached']['library'][] = 'uids_base/search-results';
       break;
+
+    case 'sitenow_events.single_controller.event':
+      $variables['#attached']['library'][] = 'uids_base/sitenow-events-single';
+      break;
+
   }
 }
 
@@ -248,13 +253,20 @@ function uids_base_preprocess_layout(&$variables) {
       $publish_options = $node->get('field_publish_options')->getValue();
       if (array_search('title_hidden', array_column($publish_options, 'value')) !== FALSE) {
         // For uiowa_bootstrap/classy default.
-        $variables["attributes"]['class'][] = 'title-invisible';
+        $variables['attributes']['class'][] = 'title-invisible';
       }
       if (array_search('no_sidebars', array_column($publish_options, 'value')) !== FALSE) {
         // Remove sidebar regions.
-        $variables["attributes"]['class'][] = 'sidebar-invisible';
+        $variables['attributes']['class'][] = 'sidebar-invisible';
       }
+    }
 
+    // Create a featured image boolean variable for easier Twig use.
+    if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
+      $variables['has_node_image'] = TRUE;
+    }
+    else {
+      $variables['has_node_image'] = FALSE;
     }
 
     // Add sitenow library if sitenow_v2 config split is active.
@@ -399,6 +411,14 @@ function uids_base_preprocess_paragraph(&$variables) {
       }
     }
   }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uids_base_preprocess_views_view_table(&$variables) {
+  $view = $variables['view'];
+  $variables['attributes']['class'][] = 'table is-striped';
 }
 
 /**
