@@ -25,11 +25,11 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $heading_size_options = [
-      'h2' => 'h2',
-      'h3' => 'h3',
-      'h4' => 'h4',
-      'h5' => 'h5',
-      'h6' => 'h6',
+      'h2' => 'Heading 2',
+      'h3' => 'Heading 3',
+      'h4' => 'Heading 4',
+      'h5' => 'Heading 5',
+      'h6' => 'Heading 6',
     ];
 
     $element['headline'] = [
