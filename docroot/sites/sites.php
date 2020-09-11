@@ -1571,3 +1571,9 @@ $sites['admissions.local.drupal.uiowa.edu'] = 'admissions.uiowa.edu';
 $sites['admissions.dev.drupal.uiowa.edu'] = 'admissions.uiowa.edu';
 $sites['admissions.stage.drupal.uiowa.edu'] = 'admissions.uiowa.edu';
 $sites['admissions.prod.drupal.uiowa.edu'] = 'admissions.uiowa.edu';
+
+// Directory aliases for pharmacy.uiowa.edu.
+$sites['pharmacy.local.drupal.uiowa.edu'] = 'pharmacy.uiowa.edu';
+$sites['pharmacy.dev.drupal.uiowa.edu'] = 'pharmacy.uiowa.edu';
+$sites['pharmacy.stage.drupal.uiowa.edu'] = 'pharmacy.uiowa.edu';
+$sites['pharmacy.prod.drupal.uiowa.edu'] = 'pharmacy.uiowa.edu';
