@@ -31,7 +31,7 @@ function template_preprocess_sitenow_events_teaser(array &$variables) {
       '#theme' => 'imagecache_external',
       '#uri' => $variables['event']['media'][0]['medium_image'],
       '#style_name' => 'square__384_x_384',
-      '#alt' => $variables['event']['title'],
+      '#alt' => t('@title promotional image', ['@title' => $variables['event']['title']]),
       '#attributes' => [
         'data-lazy' => TRUE,
       ],
