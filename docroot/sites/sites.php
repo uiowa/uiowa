@@ -1577,3 +1577,9 @@ $sites['pharmacy.local.drupal.uiowa.edu'] = 'pharmacy.uiowa.edu';
 $sites['pharmacy.dev.drupal.uiowa.edu'] = 'pharmacy.uiowa.edu';
 $sites['pharmacy.stage.drupal.uiowa.edu'] = 'pharmacy.uiowa.edu';
 $sites['pharmacy.prod.drupal.uiowa.edu'] = 'pharmacy.uiowa.edu';
+
+// Directory aliases for shpe.org.uiowa.edu.
+$sites['orgshpe.local.drupal.uiowa.edu'] = 'shpe.org.uiowa.edu';
+$sites['orgshpe.dev.drupal.uiowa.edu'] = 'shpe.org.uiowa.edu';
+$sites['orgshpe.stage.drupal.uiowa.edu'] = 'shpe.org.uiowa.edu';
+$sites['orgshpe.prod.drupal.uiowa.edu'] = 'shpe.org.uiowa.edu';
