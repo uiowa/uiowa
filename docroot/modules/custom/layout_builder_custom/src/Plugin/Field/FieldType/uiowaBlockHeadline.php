@@ -22,10 +22,10 @@ use Drupal\file\Plugin\Field\FieldType\FileItem;
  */
 class UiowaBlockHeadline extends FieldItemBase {
 
-/**
- * {@inheritdoc}
- */
-public static function schema(FieldStorageDefinitionInterface $field_definition) {
+  /**
+   * {@inheritdoc}
+   */
+  public static function schema(FieldStorageDefinitionInterface $field_definition) {
     return [
       'columns' => [
         'headline' => [
