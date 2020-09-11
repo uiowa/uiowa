@@ -10,7 +10,7 @@ use Drupal\Core\TypedData\DataDefinition;
  * Provides a field type of UiowaBlockHeadline.
  *
  * @FieldType(
- *   id = "field_uiowa_block_headline",
+ *   id = "uiowa_block_headline",
  *   label = @Translation("Block Headline"),
  *   description = @Translation("Parent headline for collections of content."),
  *   default_formatter = "uiowa_block_headline_formatter",

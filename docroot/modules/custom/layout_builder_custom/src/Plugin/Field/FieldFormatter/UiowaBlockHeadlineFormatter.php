@@ -12,7 +12,7 @@ use Drupal\Core\Field\FormatterBase;
  *   id = "uiowa_block_headline_formatter",
  *   label = @Translation("Uiowa Block Headline Field Type Formatter"),
  *   field_types = {
- *     "field_uiowa_block_headline"
+ *     "uiowa_block_headline"
  *   }
  * )
  */
