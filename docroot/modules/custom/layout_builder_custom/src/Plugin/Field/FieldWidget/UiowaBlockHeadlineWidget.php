@@ -32,21 +32,29 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
       'h6' => 'Heading 6',
     ];
 
-    $element['headline'] = [
+    $element['block_title'] = [
+      '#type' => 'fieldset',
+      '#title' => t('Block Title'),
+      '#collapsible' => TRUE,
+      '#collapsed' => FALSE,
+      '#tree' => TRUE,
+    ];
+
+    $element['block_title']['headline'] = [
       '#type' => 'textfield',
       '#title' => t('Headline'),
       '#size' => 80,
       '#default_value' => isset($items[$delta]->headline) ? $items[$delta]->headline : NULL,
     ];
 
-    $element['heading_size'] = [
+    $element['block_title']['heading_size'] = [
       '#type' => 'select',
       '#title' => t('Heading size'),
       '#options' => $heading_size_options,
       '#default_value' => isset($items[$delta]->heading_size) ? $items[$delta]->heading_size : 'h2',
     ];
 
-    $element['hide_headline'] = [
+    $element['block_title']['hide_headline'] = [
       '#type' => 'checkbox',
       '#title' => t('Visually hide title'),
       '#default_value' => isset($items[$delta]->hide_headline) ? $items[$delta]->hide_headline : NULL,
