@@ -34,7 +34,7 @@
             "type": "git",
             "url": "git@github.com:uiowa/uiowa_footer"
         },
-        "colorbox":{
+        "colorbox": {
             "type": "package",
             "package": {
                 "name": "jackmoore/colorbox",
@@ -66,7 +66,6 @@
         "bower-asset/chosen": "^1.8",
         "bower-asset/fontawesome": "^5.14",
         "bower-asset/lazysizes": "^5.2",
-        "drupal-composer/drupal-scaffold": "^2.5.4",
         "drupal/acquia_connector": "^1.5.0",
         "drupal/acquia_purge": "^1.0",
         "drupal/address": "^1.7",
@@ -80,7 +79,8 @@
         "drupal/config_ignore": "^2.2.0",
         "drupal/config_inspector": "^1.0",
         "drupal/config_split": "^1.4",
-        "drupal/core": "^8.9.3",
+        "drupal/core-composer-scaffold": "^8.8",
+        "drupal/core-recommended": "^8.9.5",
         "drupal/cshs": "^1.0@beta",
         "drupal/date_recur_modular": "^2.0",
         "drupal/default_content": "^1.0@alpha",
@@ -262,9 +262,20 @@
             ]
         },
         "drupal-scaffold": {
-            "initial": {
-                "sites/default/default.services.yml": "sites/default/services.yml",
-                "sites/default/default.settings.php": "sites/default/settings.php"
+            "locations": {
+                "web-root": "./docroot"
+            },
+            "file-mapping": {
+                "[web-root]/sites/default/default.services.yml": {
+                    "mode": "replace",
+                    "path": "docroot/core/assets/scaffold/files/default.services.yml",
+                    "overwrite": false
+                },
+                "[web-root]/sites/default/default.settings.php": {
+                    "mode": "replace",
+                    "path": "docroot/core/assets/scaffold/files/default.settings.php",
+                    "overwrite": false
+                }
             }
         }
     },
@@ -272,7 +283,6 @@
         "post-create-project-cmd": [
             "blt internal:create-project:init-repo"
         ],
-        "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
         "nuke": [
             "rm -rf vendor composer.lock docroot/core docroot/modules/contrib docroot/profiles/contrib docroot/themes/contrib",
             "@composer clearcache --ansi",
