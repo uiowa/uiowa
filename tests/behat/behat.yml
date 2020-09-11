@@ -15,6 +15,11 @@ default:
     Drupal\DrupalExtension:
       blackbox: ~
       api_driver: "drupal"
+      selectors:
+        message_selector: '.messages'
+        success_message_selector: '.messages.messages--status'
+        warning_message_selector: '.messages.messages--warning'
+        error_message_selector: '.messages.messages--error'
     jarnaiz\JUnitFormatter\JUnitFormatterExtension:
         filename: report.xml
         outputDir: %paths.base%/build/tests
