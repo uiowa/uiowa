@@ -7,7 +7,7 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\TypedData\DataDefinition;
 
 /**
- * Provides a field type of uiowaBlockHeadline.
+ * Provides a field type of UiowaBlockHeadline.
  *
  * @FieldType(
  *   id = "field_uiowa_block_headline",
