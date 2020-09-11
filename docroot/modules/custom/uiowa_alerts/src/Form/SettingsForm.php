@@ -100,7 +100,10 @@ class SettingsForm extends ConfigFormBase {
     $this->config('uiowa_alerts.settings')
       ->set('custom_alert.display', $form_state->getValue('custom_alert_display'))
       ->set('custom_alert.level', $form_state->getValue('custom_alert_level'))
-      ->set('custom_alert.message', $form_state->getValue(['custom_alert_message', 'value']))
+      ->set('custom_alert.message', $form_state->getValue([
+        'custom_alert_message',
+        'value',
+      ]))
       ->save();
 
     parent::submitForm($form, $form_state);

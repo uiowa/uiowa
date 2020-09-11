@@ -27,7 +27,7 @@ function entity_types_article_help($route_name, RouteMatchInterface $route_match
         return NULL;
       }
 
-      /* @var \Drupal\Core\Extension\ModuleHandler $moduleHandler*/
+      /** @var \Drupal\Core\Extension\ModuleHandler $moduleHandler*/
       $moduleHandler = \Drupal::service('module_handler');
       if ($moduleHandler->moduleExists('markdown')) {
         $filters = $moduleHandler->invoke('markdown', 'filter_info');

@@ -7,7 +7,6 @@
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
 use GuzzleHttp\Exception\RequestException;
@@ -91,7 +90,12 @@ function sitenow_events_preprocess_block(&$variables) {
  * @return array
  *   An array of data.
  */
-function sitenow_events_load(array $params = ['display_id' => 'events'], array $args = ['views', 'event_instances_api.json'], $cache = TRUE) {
+function sitenow_events_load(array $params = [
+  'display_id' => 'events',
+], array $args = [
+  'views',
+  'event_instances_api.json',
+], $cache = TRUE) {
   $config = \Drupal::config('sitenow_events.settings');
   $endpoint = $config->get('base_endpoint');
 
@@ -265,7 +269,12 @@ function _sitenow_events_get_filter_field_options(FieldStorageConfig $definition
   switch ($definition->getName()) {
     case 'field_events_department':
     case 'field_uiowa_events_department':
-      $data = sitenow_events_load(['display_id' => 'filters'], ['views', 'filters_api.json']);
+      $data = sitenow_events_load([
+        'display_id' => 'filters',
+      ], [
+        'views',
+        'filters_api.json',
+      ]);
       $tree = _sitenow_events_build_options_tree($data['departments']);
       $options = _sitenow_events_build_options_list($tree);
 
@@ -273,7 +282,12 @@ function _sitenow_events_get_filter_field_options(FieldStorageConfig $definition
 
     case 'field_events_audiences':
     case 'field_uiowa_events_audiences':
-      $data = sitenow_events_load(['display_id' => 'filters'], ['views', 'filters_api.json']);
+      $data = sitenow_events_load([
+        'display_id' => 'filters',
+      ], [
+        'views',
+        'filters_api.json',
+      ]);
       $tree = _sitenow_events_build_options_tree($data['event_audience']);
       $options = _sitenow_events_build_options_list($tree);
 
@@ -281,7 +295,12 @@ function _sitenow_events_get_filter_field_options(FieldStorageConfig $definition
 
     case 'field_events_gen_interests':
     case 'field_uiowa_events_interests':
-      $data = sitenow_events_load(['display_id' => 'filters'], ['views', 'filters_api.json']);
+      $data = sitenow_events_load([
+        'display_id' => 'filters'
+      ], [
+        'views',
+        'filters_api.json',
+      ]);
       $tree = _sitenow_events_build_options_tree($data['event_general_interest']);
       $options = _sitenow_events_build_options_list($tree);
 
@@ -289,7 +308,12 @@ function _sitenow_events_get_filter_field_options(FieldStorageConfig $definition
 
     case 'field_events_event_types':
     case 'field_uiowa_events_types':
-      $data = sitenow_events_load(['display_id' => 'filters'], ['views', 'filters_api.json']);
+      $data = sitenow_events_load([
+        'display_id' => 'filters'
+      ], [
+        'views',
+        'filters_api.json',
+      ]);
       $tree = _sitenow_events_build_options_tree($data['event_types']);
       $options = _sitenow_events_build_options_list($tree);
 
@@ -297,7 +321,12 @@ function _sitenow_events_get_filter_field_options(FieldStorageConfig $definition
 
     case 'field_events_keywords':
     case 'field_uiowa_events_keywords':
-      $data = sitenow_events_load(['display_id' => 'keywords'], ['views', 'filters_api.json']);
+      $data = sitenow_events_load([
+        'display_id' => 'keywords'
+      ], [
+        'views',
+        'filters_api.json',
+      ]);
 
       $options = [];
 
@@ -309,7 +338,12 @@ function _sitenow_events_get_filter_field_options(FieldStorageConfig $definition
 
     case 'field_events_place':
     case 'field_uiowa_events_place':
-      $data = sitenow_events_load(['display_id' => 'places'], ['views', 'places_api.json']);
+      $data = sitenow_events_load([
+        'display_id' => 'places'
+      ], [
+        'views',
+        'places_api.json',
+      ]);
       $options = [];
 
       foreach ($data['places'] as $place) {
