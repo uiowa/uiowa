@@ -23,13 +23,14 @@ class UiowaBlockHeadlineFormatter extends FormatterBase {
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $element = [];
-      foreach ($items as $delta => $item) {
-        $element[$delta] = [
-          'uiowa_block_headline' => ['#markup' => '<h2>Test</h2>'],
-          '#theme' => 'uiowa_block_headline_field_type',
-        ];
-      }
+    foreach ($items as $delta => $item) {
+      $element[$delta] = [
+        'uiowa_block_headline' => ['#markup' => '<h2>Test</h2>'],
+        '#theme' => 'uiowa_block_headline_field_type',
+      ];
+    }
 
-      return $element;
+    return $element;
   }
+
 }

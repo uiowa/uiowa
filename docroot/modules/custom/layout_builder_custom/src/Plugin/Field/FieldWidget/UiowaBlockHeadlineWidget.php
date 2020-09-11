@@ -19,6 +19,7 @@ use Drupal\Core\Form\FormStateInterface;
  * )
  */
 class UiowaBlockHeadlineWidget extends WidgetBase {
+
   /**
    * {@inheritdoc}
    */
@@ -53,4 +54,5 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
 
     return $element;
   }
+
 }

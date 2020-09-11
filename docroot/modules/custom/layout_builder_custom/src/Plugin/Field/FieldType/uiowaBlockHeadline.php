@@ -3,15 +3,12 @@
 namespace Drupal\layout_builder_custom\Plugin\Field\FieldType;
 
 use Drupal\Core\Field\FieldItemBase;
-use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\TypedData\DataDefinition;
-use Drupal\file\Entity\File;
-use Drupal\file\Plugin\Field\FieldType\FileItem;
 
 /**
  * Provides a field type of uiowaBlockHeadline.
- * 
+ *
  * @FieldType(
  *   id = "field_uiowa_block_headline",
  *   label = @Translation("Block Headline"),
@@ -39,9 +36,9 @@ class UiowaBlockHeadline extends FieldItemBase {
           'not null' => TRUE,
         ],
         'hide_headline' => [
-            'type' => 'int',
-            'not null' => TRUE,
-            'default' => 0,
+          'type' => 'int',
+          'not null' => TRUE,
+          'default' => 0,
         ],
       ],
     ];
