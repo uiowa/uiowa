@@ -1071,7 +1071,7 @@ function sitenow_update_8032() {
       GROUP BY
         {file_managed}.fid
       HAVING
-        (SUM(file_usage_file_managed.count) = 0)
+        (COUNT(file_usage_file_managed.count) = 0)
     ) AS b2
   SET
     b1.status = 0
