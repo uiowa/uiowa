@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f2a2447ec19a6607fc85a6e41fb0e15c",
+    "content-hash": "aca2efce62fcfd37fc4ae040ad353dfd",
     "packages": [
         {
             "name": "acquia/blt",
@@ -219,16 +219,16 @@
         },
         {
             "name": "bower-asset/fontawesome",
-            "version": "5.13.0",
+            "version": "5.14.0",
             "source": {
                 "type": "git",
-                "url": "git@github.com:FortAwesome/Font-Awesome.git",
-                "reference": "4e6402443679e0a9d12c7401ac8783ef4646657f"
+                "url": "https://github.com/FortAwesome/Font-Awesome.git",
+                "reference": "c38da7f63e45b7ba12fb33539a4e54677f8e63aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FortAwesome/Font-Awesome/zipball/4e6402443679e0a9d12c7401ac8783ef4646657f",
-                "reference": "4e6402443679e0a9d12c7401ac8783ef4646657f"
+                "url": "https://api.github.com/repos/FortAwesome/Font-Awesome/zipball/c38da7f63e45b7ba12fb33539a4e54677f8e63aa",
+                "reference": "c38da7f63e45b7ba12fb33539a4e54677f8e63aa"
             },
             "type": "bower-asset"
         },
@@ -2723,26 +2723,26 @@
         },
         {
             "name": "drupal/allowed_formats",
-            "version": "1.2.0",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/allowed_formats.git",
-                "reference": "8.x-1.2"
+                "reference": "8.x-1.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/allowed_formats-8.x-1.2.zip",
-                "reference": "8.x-1.2",
-                "shasum": "50f8f80cf3326382c968521d34d3a113b37e32b3"
+                "url": "https://ftp.drupal.org/files/projects/allowed_formats-8.x-1.3.zip",
+                "reference": "8.x-1.3",
+                "shasum": "4c3c036d7b41428d6e22b61f1219de0ab012feec"
             },
             "require": {
-                "drupal/core": "*"
+                "drupal/core": "^8.7.7 || ^9"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.2",
-                    "datestamp": "1573747386",
+                    "version": "8.x-1.3",
+                    "datestamp": "1592909219",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -3091,9 +3091,6 @@
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
                     "version": "8.x-1.5",
                     "datestamp": "1572542288",
@@ -3603,6 +3600,7 @@
                     "[PP-1] Reverting entity revisions that contain custom blocks erroneously triggers EntityChangedConstraint": "https://www.drupal.org/files/issues/2019-05-13/3053881-11.patch",
                     "Hidden buttons in off-canvas dialog are not being hidden": "https://www.drupal.org/files/issues/2020-02-28/3070375-4.patch",
                     "Off-canvas style resets are overriding styles (especially SVGs) in Safari resulting in display issues": "https://www.drupal.org/files/issues/2019-05-07/off-canvas-style-resets-2958588-13.patch",
+                    "Media viewmode control": "https://www.drupal.org/files/issues/2020-01-31/3097416-ckeditor-view-modes-8.9-combined.patch",
                     "Expose Layout Builder data to REST and JSON:API": "https://www.drupal.org/files/issues/2020-07-07/2942975-116.patch"
                 }
             },
@@ -4798,7 +4796,7 @@
             },
             "require": {
                 "drupal/config_update": "^1.4",
-                "drupal/core": "*"
+                "drupal/core": "^8"
             },
             "type": "drupal-module",
             "extra": {
@@ -4984,21 +4982,21 @@
         },
         {
             "name": "drupal/focal_point",
-            "version": "1.4.0",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/focal_point.git",
-                "reference": "8.x-1.4"
+                "reference": "8.x-1.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/focal_point-8.x-1.4.zip",
-                "reference": "8.x-1.4",
-                "shasum": "8e377f61d0f590f7f89663ea3e841e56a3c14f5c"
+                "url": "https://ftp.drupal.org/files/projects/focal_point-8.x-1.5.zip",
+                "reference": "8.x-1.5",
+                "shasum": "41198e9220788c3b7d3146b10e5dfd6c73cd4784"
             },
             "require": {
-                "drupal/core": "^8 || ^9",
-                "drupal/crop": "*"
+                "drupal/core": "^8.8 || ^9",
+                "drupal/crop": "^1.0 || ^2.0"
             },
             "require-dev": {
                 "drupal/crop": "*"
@@ -5006,8 +5004,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.4",
-                    "datestamp": "1586396577",
+                    "version": "8.x-1.5",
+                    "datestamp": "1598663903",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5020,14 +5018,17 @@
             ],
             "authors": [
                 {
-                    "name": "bleen",
-                    "homepage": "https://www.drupal.org/user/77375"
+                    "name": "Alexander Ross (bleen)",
+                    "homepage": "https://www.drupal.org/u/bleen",
+                    "role": "Maintainer"
                 }
             ],
-            "description": "Allows users to specify the focal point of an image for use during cropping.",
-            "homepage": "https://www.drupal.org/project/focal_point",
+            "description": "Focal Point allows content creators to mark the most important part of an image for easier cropping.",
+            "homepage": "https://drupal.org/project/focal_point",
             "support": {
-                "source": "https://git.drupalcode.org/project/focal_point"
+                "source": "https://cgit.drupalcode.org/focal_point",
+                "issues": "https://drupal.org/project/issues/focal_point",
+                "irc": "irc://irc.freenode.org/drupal-contribute"
             }
         },
         {
@@ -6054,9 +6055,6 @@
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-2.x": "2.x-dev"
-                },
                 "drupal": {
                     "version": "8.x-2.0-beta3",
                     "datestamp": "1579041783",
@@ -6111,38 +6109,38 @@
         },
         {
             "name": "drupal/media_entity_facebook",
-            "version": "2.0.0-alpha1",
+            "version": "2.0.0-beta1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/media_entity_facebook.git",
-                "reference": "8.x-2.0-alpha1"
+                "reference": "8.x-2.0-beta1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/media_entity_facebook-8.x-2.0-alpha1.zip",
-                "reference": "8.x-2.0-alpha1",
-                "shasum": "c520e02e99bcae750925cd7e529dcb490485e54d"
+                "url": "https://ftp.drupal.org/files/projects/media_entity_facebook-8.x-2.0-beta1.zip",
+                "reference": "8.x-2.0-beta1",
+                "shasum": "e86980153bebf13d46fbbb8a52bc8d73ac64d7cd"
             },
             "require": {
-                "drupal/core": "^8.4"
+                "drupal/core": "^8 || ^9"
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-2.x": "2.x-dev"
-                },
                 "drupal": {
-                    "version": "8.x-2.0-alpha1",
-                    "datestamp": "1506693544",
+                    "version": "8.x-2.0-beta1",
+                    "datestamp": "1594950036",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
                     }
+                },
+                "patches_applied": {
+                    "Allow creation of new Facebook media entities using the Media Browser": "https://www.drupal.org/files/issues/2020-03-31/3120085-media-library-add-5.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -6162,7 +6160,7 @@
                     "homepage": "https://www.drupal.org/user/744628"
                 }
             ],
-            "description": "Provides a media entity facebook.",
+            "description": "Media entity Facebook provider.",
             "homepage": "https://www.drupal.org/project/media_entity_facebook",
             "support": {
                 "source": "https://git.drupalcode.org/project/media_entity_facebook"
@@ -6170,29 +6168,26 @@
         },
         {
             "name": "drupal/media_entity_instagram",
-            "version": "2.1.0",
+            "version": "dev-3.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/media_entity_instagram.git",
-                "reference": "8.x-2.1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/media_entity_instagram-8.x-2.1.zip",
-                "reference": "8.x-2.1",
-                "shasum": "e046e9e4df297a6ef065b826e3d8196cf35c3430"
+                "reference": "4c4d0738d70098bfffc743eb0e791279d286c4ae"
             },
             "require": {
                 "drupal/core": "^8.8 || ^9"
             },
             "type": "drupal-module",
             "extra": {
+                "branch-alias": {
+                    "dev-3.x": "3.x-dev"
+                },
                 "drupal": {
-                    "version": "8.x-2.1",
-                    "datestamp": "1591181707",
+                    "version": "3.x-dev",
+                    "datestamp": "1599829429",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -6226,7 +6221,8 @@
             "homepage": "https://www.drupal.org/project/media_entity_instagram",
             "support": {
                 "source": "https://git.drupalcode.org/project/media_entity_instagram"
-            }
+            },
+            "time": "2020-09-11T13:04:14+00:00"
         },
         {
             "name": "drupal/media_entity_twitter",
@@ -7011,9 +7007,6 @@
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-2.x": "2.x-dev"
-                },
                 "drupal": {
                     "version": "8.x-2.4",
                     "datestamp": "1522490884",
@@ -8358,14 +8351,11 @@
                 "shasum": "0dc8ab357c196dde2eea5cb970316e1ff882fb17"
             },
             "require": {
-                "drupal/core": "*",
+                "drupal/core": "^8",
                 "eluceo/ical": "^0.15"
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
                     "version": "8.x-1.0-alpha4",
                     "datestamp": "1571420284",
@@ -8393,6 +8383,62 @@
             "homepage": "https://www.drupal.org/project/views_ical",
             "support": {
                 "source": "https://git.drupalcode.org/project/views_ical"
+            }
+        },
+        {
+            "name": "drupal/views_tree",
+            "version": "2.0.0-alpha1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/views_tree.git",
+                "reference": "8.x-2.0-alpha1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/views_tree-8.x-2.0-alpha1.zip",
+                "reference": "8.x-2.0-alpha1",
+                "shasum": "173243ee6782d84916d1075889a9f3dc3f3c1d1d"
+            },
+            "require": {
+                "drupal/core": "^8"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-2.0-alpha1",
+                    "datestamp": "1538512981",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Alpha releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Crell",
+                    "homepage": "https://www.drupal.org/user/26398"
+                },
+                {
+                    "name": "dawehner",
+                    "homepage": "https://www.drupal.org/user/99340"
+                },
+                {
+                    "name": "geerlingguy",
+                    "homepage": "https://www.drupal.org/user/389011"
+                },
+                {
+                    "name": "jhedstrom",
+                    "homepage": "https://www.drupal.org/user/208732"
+                }
+            ],
+            "description": "A Views style plugin to display a tree of elements using the adjacency model.",
+            "homepage": "https://www.drupal.org/project/views_tree",
+            "support": {
+                "source": "https://git.drupalcode.org/project/views_tree"
             }
         },
         {
@@ -8532,9 +8578,6 @@
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
                     "version": "8.x-1.6",
                     "datestamp": "1585615668",
@@ -9220,16 +9263,16 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "6.5.4",
+            "version": "6.5.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "a4a1b6930528a8f7ee03518e6442ec7a44155d9d"
+                "reference": "9d4290de1cfd701f38099ef7e183b64b4b7b0c5e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/a4a1b6930528a8f7ee03518e6442ec7a44155d9d",
-                "reference": "a4a1b6930528a8f7ee03518e6442ec7a44155d9d",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/9d4290de1cfd701f38099ef7e183b64b4b7b0c5e",
+                "reference": "9d4290de1cfd701f38099ef7e183b64b4b7b0c5e",
                 "shasum": ""
             },
             "require": {
@@ -9237,7 +9280,7 @@
                 "guzzlehttp/promises": "^1.0",
                 "guzzlehttp/psr7": "^1.6.1",
                 "php": ">=5.5",
-                "symfony/polyfill-intl-idn": "1.17.0"
+                "symfony/polyfill-intl-idn": "^1.17.0"
             },
             "require-dev": {
                 "ext-curl": "*",
@@ -9283,7 +9326,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2020-05-25T19:35:05+00:00"
+            "time": "2020-06-16T21:01:06+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -12581,21 +12624,22 @@
         },
         {
             "name": "symfony/polyfill-intl-idn",
-            "version": "v1.17.0",
+            "version": "v1.18.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-idn.git",
-                "reference": "3bff59ea7047e925be6b7f2059d60af31bb46d6a"
+                "reference": "5dcab1bc7146cf8c1beaa4502a3d9be344334251"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-intl-idn/zipball/3bff59ea7047e925be6b7f2059d60af31bb46d6a",
-                "reference": "3bff59ea7047e925be6b7f2059d60af31bb46d6a",
+                "url": "https://api.github.com/repos/symfony/polyfill-intl-idn/zipball/5dcab1bc7146cf8c1beaa4502a3d9be344334251",
+                "reference": "5dcab1bc7146cf8c1beaa4502a3d9be344334251",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3",
-                "symfony/polyfill-mbstring": "^1.3",
+                "symfony/polyfill-intl-normalizer": "^1.10",
+                "symfony/polyfill-php70": "^1.10",
                 "symfony/polyfill-php72": "^1.10"
             },
             "suggest": {
@@ -12604,7 +12648,11 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.17-dev"
+                    "dev-master": "1.18-dev"
+                },
+                "thanks": {
+                    "name": "symfony/polyfill",
+                    "url": "https://github.com/symfony/polyfill"
                 }
             },
             "autoload": {
@@ -12625,6 +12673,10 @@
                     "email": "laurent@bassin.info"
                 },
                 {
+                    "name": "Trevor Rowbotham",
+                    "email": "trevor.rowbotham@pm.me"
+                },
+                {
                     "name": "Symfony Community",
                     "homepage": "https://symfony.com/contributors"
                 }
@@ -12639,11 +12691,106 @@
                 "portable",
                 "shim"
             ],
-            "time": "2020-05-12T16:47:27+00:00"
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-08-04T06:02:08+00:00"
+        },
+        {
+            "name": "symfony/polyfill-intl-normalizer",
+            "version": "v1.18.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/polyfill-intl-normalizer.git",
+                "reference": "37078a8dd4a2a1e9ab0231af7c6cb671b2ed5a7e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/polyfill-intl-normalizer/zipball/37078a8dd4a2a1e9ab0231af7c6cb671b2ed5a7e",
+                "reference": "37078a8dd4a2a1e9ab0231af7c6cb671b2ed5a7e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "suggest": {
+                "ext-intl": "For best performance"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.18-dev"
+                },
+                "thanks": {
+                    "name": "symfony/polyfill",
+                    "url": "https://github.com/symfony/polyfill"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Polyfill\\Intl\\Normalizer\\": ""
+                },
+                "files": [
+                    "bootstrap.php"
+                ],
+                "classmap": [
+                    "Resources/stubs"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony polyfill for intl's Normalizer class and related functions",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "compatibility",
+                "intl",
+                "normalizer",
+                "polyfill",
+                "portable",
+                "shim"
+            ],
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-07-14T12:35:20+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.18.0",
+            "version": "v1.18.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
@@ -12701,6 +12848,20 @@
                 "polyfill",
                 "portable",
                 "shim"
+            ],
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
             ],
             "time": "2020-07-14T12:35:20+00:00"
         },
@@ -12821,16 +12982,16 @@
         },
         {
             "name": "symfony/polyfill-php72",
-            "version": "v1.17.0",
+            "version": "v1.18.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php72.git",
-                "reference": "f048e612a3905f34931127360bdd2def19a5e582"
+                "reference": "639447d008615574653fb3bc60d1986d7172eaae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php72/zipball/f048e612a3905f34931127360bdd2def19a5e582",
-                "reference": "f048e612a3905f34931127360bdd2def19a5e582",
+                "url": "https://api.github.com/repos/symfony/polyfill-php72/zipball/639447d008615574653fb3bc60d1986d7172eaae",
+                "reference": "639447d008615574653fb3bc60d1986d7172eaae",
                 "shasum": ""
             },
             "require": {
@@ -12839,7 +13000,11 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.17-dev"
+                    "dev-master": "1.18-dev"
+                },
+                "thanks": {
+                    "name": "symfony/polyfill",
+                    "url": "https://github.com/symfony/polyfill"
                 }
             },
             "autoload": {
@@ -12872,7 +13037,21 @@
                 "portable",
                 "shim"
             ],
-            "time": "2020-05-12T16:47:27+00:00"
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-07-14T12:35:20+00:00"
         },
         {
             "name": "symfony/polyfill-php80",
@@ -15207,16 +15386,16 @@
         },
         {
             "name": "geerlingguy/drupal-vm",
-            "version": "5.2.0",
+            "version": "6.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/geerlingguy/drupal-vm.git",
-                "reference": "f8bb9218f068994f731647997c7ace195f6ee193"
+                "reference": "0257c5dfaaca71f2125d3076976b143a4fd63a86"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/geerlingguy/drupal-vm/zipball/f8bb9218f068994f731647997c7ace195f6ee193",
-                "reference": "f8bb9218f068994f731647997c7ace195f6ee193",
+                "url": "https://api.github.com/repos/geerlingguy/drupal-vm/zipball/0257c5dfaaca71f2125d3076976b143a4fd63a86",
+                "reference": "0257c5dfaaca71f2125d3076976b143a4fd63a86",
                 "shasum": ""
             },
             "type": "vm",
@@ -15242,7 +15421,17 @@
                 "virtual machine",
                 "vm"
             ],
-            "time": "2020-03-20T19:32:20+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/geerlingguy",
+                    "type": "github"
+                },
+                {
+                    "url": "https://www.patreon.com/geerlingguy",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2020-07-14T17:07:45+00:00"
         },
         {
             "name": "instaclick/php-webdriver",
@@ -15525,20 +15714,20 @@
         },
         {
             "name": "league/oauth2-client",
-            "version": "2.4.1",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/oauth2-client.git",
-                "reference": "cc114abc622a53af969e8664722e84ca36257530"
+                "reference": "d9f2a1e000dc14eb3c02e15d15759385ec7ff0fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/oauth2-client/zipball/cc114abc622a53af969e8664722e84ca36257530",
-                "reference": "cc114abc622a53af969e8664722e84ca36257530",
+                "url": "https://api.github.com/repos/thephpleague/oauth2-client/zipball/d9f2a1e000dc14eb3c02e15d15759385ec7ff0fb",
+                "reference": "d9f2a1e000dc14eb3c02e15d15759385ec7ff0fb",
                 "shasum": ""
             },
             "require": {
-                "guzzlehttp/guzzle": "^6.0",
+                "guzzlehttp/guzzle": "^6.0 || ^7.0",
                 "paragonie/random_compat": "^1|^2|^9.99",
                 "php": "^5.6|^7.0"
             },
@@ -15588,7 +15777,7 @@
                 "oauth2",
                 "single sign on"
             ],
-            "time": "2018-11-22T18:33:57+00:00"
+            "time": "2020-07-18T17:54:32+00:00"
         },
         {
             "name": "mikey179/vfsstream",
@@ -17372,16 +17561,16 @@
         },
         {
             "name": "typhonius/acquia-php-sdk-v2",
-            "version": "2.0.12",
+            "version": "2.0.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/typhonius/acquia-php-sdk-v2.git",
-                "reference": "7ba050b62a409d311b1c9d912a9b536f89ddee06"
+                "reference": "17e8c10fe121a15784e763f061f6263e8d7699af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/typhonius/acquia-php-sdk-v2/zipball/7ba050b62a409d311b1c9d912a9b536f89ddee06",
-                "reference": "7ba050b62a409d311b1c9d912a9b536f89ddee06",
+                "url": "https://api.github.com/repos/typhonius/acquia-php-sdk-v2/zipball/17e8c10fe121a15784e763f061f6263e8d7699af",
+                "reference": "17e8c10fe121a15784e763f061f6263e8d7699af",
                 "shasum": ""
             },
             "require": {
@@ -17416,7 +17605,13 @@
                 }
             ],
             "description": "A PHP SDK for Acquia CloudAPI v2",
-            "time": "2020-05-24T00:57:18+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/typhonius",
+                    "type": "github"
+                }
+            ],
+            "time": "2020-06-21T13:31:04+00:00"
         }
     ],
     "aliases": [],
@@ -17433,7 +17628,7 @@
         "drupal/layout_builder_styles": 10,
         "drupal/lb_direct_add": 20,
         "drupal/masquerade": 10,
-        "drupal/media_entity_facebook": 15,
+        "drupal/media_entity_instagram": 20,
         "drupal/menu_block": 20,
         "drupal/menu_link_weight": 10,
         "drupal/metatag": 20,
@@ -17444,6 +17639,7 @@
         "drupal/redirect": 20,
         "drupal/swiftmailer": 10,
         "drupal/views_ical": 15,
+        "drupal/views_tree": 15,
         "kartsims/easysvg": 20,
         "uiowa/block_content_template": 20,
         "acquia/blt-require-dev": 20
@@ -17451,5 +17647,6 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }

@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: pharmacy.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: pharmacy
+  human_name: pharmacy.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: pharmacy.prod
+drupal:
+  db:
+    database: pharmacy_uiowa_edu
+uiowa:
+  requester: schwartz

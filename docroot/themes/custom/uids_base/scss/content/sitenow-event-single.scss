@@ -1,0 +1,39 @@
+@import "uids/assets/scss/_variables.scss";
+@import "uids/assets/scss/_utilities.scss";
+
+.sitenow-event-single {
+
+  .date-instance__next-upcoming {
+    display: block;
+    @include card-subtitle;
+    color: $secondary;
+  }
+
+  a.date-repeats-toggle {
+    font-family: $font-family-serif;
+    font-size: 1.2rem;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      text-decoration: underline;
+    }
+  }
+
+  .event-location {
+    font-family: $font-family-serif;
+    font-size: 1.2rem;
+
+    a {
+      text-decoration: none;
+
+      &:hover,
+      &:focus {
+        text-decoration: underline;
+      }
+    }
+  }
+  .event-description {
+    margin: $gutter 0;
+  }
+}

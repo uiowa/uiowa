@@ -1,0 +1,29 @@
+uuid: c35cb8aa-7739-4233-b8c1-e013d840a560
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.media.instagram.field_media_instagram
+    - media.type.instagram
+  module:
+    - media_entity_instagram
+id: media.instagram.default
+targetEntityType: media
+bundle: instagram
+mode: default
+content:
+  field_media_instagram:
+    weight: 0
+    label: hidden
+    settings:
+      max_width: 0
+      max_height: null
+    third_party_settings: {  }
+    type: instagram_embed
+    region: content
+hidden:
+  created: true
+  name: true
+  search_api_excerpt: true
+  thumbnail: true
+  uid: true
