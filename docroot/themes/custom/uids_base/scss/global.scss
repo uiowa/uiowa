@@ -7,9 +7,12 @@ $imgpath: '../../uids/assets/images';
 
 .layout__container {
   &:first-of-type {
-    // @todo Verify this works.
-    margin-top: 1.75rem;
+    // Setting these values to 0 for page title blocks
+    margin-top: 0;
+    padding-top: 0;
+    padding-bottom: 0;
   }
+
   .block-inline-blockuiowa-text-area {
     //width: 100%;
     //flex: 1 0 auto;
@@ -203,8 +206,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
     padding-bottom: 0;
   }
 
-  &[class*="bg--"],
-  &[class*="bg-pattern--"] {
+  &[class*="bg-"] {
     @include breakpoint(container) {
       padding-top: $desktop-width-gutter;
       padding-bottom: $desktop-width-gutter;
@@ -218,10 +220,81 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
         padding-bottom: 0;
       }
 
-      &.section-padding__removed-bottom {
+      &.section-padding__removed-top {
         padding-top: 0;
       }
+
+      &.section-padding__top-extra {
+        padding-top: 6rem;
+      }
+
+      &.section-padding__bottom-extra {
+        padding-bottom: 6rem;
+      }
     }
+
+  }
+}
+
+// Override padding for two adjacent containers without background colors
+.layout__container:not([class*="bg-"])+.layout__container:not([class*="bg-"]) {
+  padding-bottom: $mobile-width-gutter;
+  padding-top: $mobile-width-gutter;
+
+  &.section-padding__removed {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  &.section-padding__removed-bottom {
+    padding-bottom: 0;
+  }
+
+  &.section-padding__removed-top {
+    padding-top: 0;
+  }
+
+  &.section-padding__top-extra {
+    padding-top: 6rem;
+  }
+
+  &.section-padding__bottom-extra {
+    padding-bottom: 6rem;
+  }
+}
+
+// Add back in padding for sections directly below a container with class*="bg-
+.layout__container[class*="bg-"]+.layout__container:not([class*="bg-"]) {
+  padding-top: $desktop-width-gutter;
+
+  &.section-padding__removed {
+    padding-top: 0;
+  }
+
+  &.section-padding__removed-top {
+    padding-top: 0;
+  }
+
+  &.section-padding__top-extra {
+    padding-top: 6rem;
+  }
+
+}
+
+// Adjust container padding if container is adjacent to hero background container
+.layout--onecol--background+.layout__container:not([class*="bg-"]) {
+  padding-bottom: $mobile-width-gutter;
+
+  &.section-padding__removed {
+    padding-bottom: 0;
+  }
+
+  &.section-padding__removed-bottom {
+    padding-bottom: 0;
+  }
+
+  &.section-padding__bottom-extra {
+    padding-bottom: 6rem;
   }
 }
 
@@ -230,7 +303,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
  */
 .layout--onecol--no--background+.layout__container[class*="bg--"],
 .layout--onecol--no--background+.layout__container[class*="bg-pattern--"] {
-  margin-top: $gutter;
+  //margin-top: $gutter;
 }
 
 
