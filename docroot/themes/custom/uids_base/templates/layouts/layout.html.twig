@@ -7,7 +7,7 @@
 {%
   set classes = [
   'layout',
-  'layout--' ~ layout.id|clean_class,
+  layout.template|clean_class,
 ]
 %}
 
