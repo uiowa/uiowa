@@ -278,7 +278,7 @@
             "blt internal:create-project:init-repo"
         ],
         "post-drupal-scaffold-cmd": [
-            "patch < patches/core_htaccess.patch"
+            "patch -p1 < patches/core_htaccess.patch"
         ],
         "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
         "nuke": [
