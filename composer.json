@@ -64,7 +64,7 @@
         "acquia/blt": "^11.0.1",
         "acquia/memcache-settings": "*",
         "bower-asset/chosen": "^1.8",
-        "bower-asset/fontawesome": "^5.13",
+        "bower-asset/fontawesome": "^5.14",
         "bower-asset/lazysizes": "^5.2",
         "drupal-composer/drupal-scaffold": "^2.5.4",
         "drupal/acquia_connector": "^1.5.0",
@@ -146,7 +146,9 @@
         "drupal/superfish": "^1.2",
         "drupal/swiftmailer": "^1.0@beta",
         "drupal/twig_tweak": "^2.4",
+        "drupal/upgrade_status": "^2.0",
         "drupal/views_ical": "^1.0@alpha",
+        "drupal/views_tree": "^2.0@alpha",
         "drupal/webform": "^5.12",
         "drupal/workbench_email": "^1.2",
         "drush/drush": "^10",
@@ -165,7 +167,7 @@
     "require-dev": {
         "acquia/blt-require-dev": "11.x-dev",
         "drupal/core-dev": "^8.8",
-        "geerlingguy/drupal-vm": "~5.0",
+        "geerlingguy/drupal-vm": "~6.0",
         "typhonius/acquia-php-sdk-v2": "^2.0.0",
         "zaporylie/composer-drupal-optimizations": "^1.1"
     },
@@ -265,12 +267,18 @@
             "initial": {
                 "sites/default/default.services.yml": "sites/default/services.yml",
                 "sites/default/default.settings.php": "sites/default/settings.php"
-            }
+            },
+            "excludes": [
+                "robots.txt"
+            ]
         }
     },
     "scripts": {
         "post-create-project-cmd": [
             "blt internal:create-project:init-repo"
+        ],
+        "post-drupal-scaffold-cmd": [
+            "patch -p1 < patches/core_htaccess.patch"
         ],
         "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
         "nuke": [
