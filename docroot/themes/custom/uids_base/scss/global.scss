@@ -333,22 +333,12 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   }
 }
 
-// For V2 sites with page title hidden
-.layout--onecol--no--background.title-invisible+.layout__container:not([class*=bg-]) {
-  padding-top: 0;
-}
-
-.layout--onecol--no--background+.layout__container.page__container--edge.layout--no-sidebar:not([class*=bg-]) {
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
 /*
  * @todo Should this be moved to scss/layouts/onecol--background.scss?
  */
-.layout--onecol--no--background+.layout__container[class*="bg--"],
-.layout--onecol--no--background+.layout__container[class*="bg-pattern--"] {
-  //margin-top: $gutter;
+// Add margin above a container with a background color if it appears below the page title
+.layout--onecol--no--background:not([class*="bg-"])+.layout__container[class*="bg-"] {
+  margin-top: $mobile-width-gutter;
 }
 
 
