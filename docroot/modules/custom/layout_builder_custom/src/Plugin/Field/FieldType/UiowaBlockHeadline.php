@@ -40,6 +40,11 @@ class UiowaBlockHeadline extends FieldItemBase {
           'not null' => TRUE,
           'default' => 0,
         ],
+        'child_heading_size' => [
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => TRUE,
+        ],
       ],
     ];
   }
@@ -69,6 +74,10 @@ class UiowaBlockHeadline extends FieldItemBase {
     $properties['hide_headline'] = DataDefinition::create('string')
       ->setLabel(t('Hide Headline'))
       ->setDescription(t('Visually hide block headline'));
+
+    $properties['child_heading_size'] = DataDefinition::create('string')
+      ->setLabel(t('Child Content Headline Size'))
+      ->setDescription(t('Heading size for any child content.'));
 
     return $properties;
   }

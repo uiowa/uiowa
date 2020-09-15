@@ -47,17 +47,42 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
       '#default_value' => isset($items[$delta]->headline) ? $items[$delta]->headline : NULL,
     ];
 
+    $element['block_title']['hide_headline'] = [
+      '#type' => 'checkbox',
+      '#title' => t('Visually hide title'),
+      '#default_value' => isset($items[$delta]->hide_headline) ? $items[$delta]->hide_headline : NULL,
+      '#attributes' => [
+        'name' => 'block-headline-visually-hide',
+      ],
+    ];
+
     $element['block_title']['heading_size'] = [
       '#type' => 'select',
       '#title' => t('Heading size'),
       '#options' => $heading_size_options,
       '#default_value' => isset($items[$delta]->heading_size) ? $items[$delta]->heading_size : 'h2',
+      '#states' => [
+        'visible' => [
+          ':input[name="block-headline-visually-hide"]' => [
+            'checked' => FALSE,
+          ],
+        ],
+      ],
     ];
 
-    $element['block_title']['hide_headline'] = [
-      '#type' => 'checkbox',
-      '#title' => t('Visually hide title'),
-      '#default_value' => isset($items[$delta]->hide_headline) ? $items[$delta]->hide_headline : NULL,
+    $element['block_title']['child_heading_size'] = [
+      '#type' => 'select',
+      '#title' => t('Child content heading size'),
+      '#options' => $heading_size_options,
+      '#default_value' => isset($items[$delta]->child_heading_size) ? $items[$delta]->child_heading_size : 'h2',
+      '#description' => t('The heading size for all child content, such as article titles.'),
+      '#states' => [
+        'visible' => [
+          ':input[name="block-headline-visually-hide"]' => [
+            'checked' => TRUE,
+          ],
+        ],
+      ],
     ];
 
     return $element;

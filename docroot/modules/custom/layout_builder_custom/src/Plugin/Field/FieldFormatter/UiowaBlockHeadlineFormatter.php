@@ -25,7 +25,7 @@ class UiowaBlockHeadlineFormatter extends FormatterBase {
     $element = [];
     foreach ($items as $delta => $item) {
       $element[$delta] = [
-        'uiowa_block_headline' => ['#markup' => '<h2>Test</h2>'],
+        'uiowa_block_headline' => ['#markup' => '<h2>Test Placeholder</h2>'],
         '#theme' => 'uiowa_block_headline_field_type',
       ];
     }
