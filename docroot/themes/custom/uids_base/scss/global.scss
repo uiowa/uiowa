@@ -237,7 +237,8 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 }
 
 // Override padding for two adjacent containers without background colors
-.layout__container:not([class*="bg-"])+.layout__container:not([class*="bg-"]) {
+.layout__container:not([class*="bg-"])+.layout__container:not([class*="bg-"]),
+.layout--onecol--no--background+.layout__container:not([class*="bg-"]) {
   padding-bottom: $mobile-width-gutter;
   padding-top: $mobile-width-gutter;
 
@@ -282,7 +283,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 }
 
 // Adjust container padding if container is adjacent to hero background container
-.layout--onecol--background+.layout__container:not([class*="bg-"]) {
+.layout--onecol--background:not([class*="layout--onecol--no--background"])+.layout__container:not([class*="bg-"]) {
   padding-bottom: $mobile-width-gutter;
 
   &.section-padding__removed {
