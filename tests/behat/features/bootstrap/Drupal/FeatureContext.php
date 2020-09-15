@@ -5,7 +5,9 @@ namespace Drupal;
 use Behat\Behat\Hook\Scope\AfterFeatureScope;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Behat\Behat\Context\SnippetAcceptingContext;
+use Drupal\node\Entity\Node;
 use Drupal\user\Entity\User;
+use Drupal\user\UserInterface;
 
 /**
  * FeatureContext class defines custom step definitions for Behat.
@@ -35,7 +37,7 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $user = user_load_by_name($name);
 
     if (!$user) {
-      /** @var \Drupal\user\Entity\UserInterface $user */
+      /** @var UserInterface $user */
       $user = User::create([
         'name' => $name,
         'mail' => 'noreply@default.local.drupal.uiowa.edu',
@@ -56,7 +58,8 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
    * This is necessary as Behat only supports clicking certain links and buttons
    * out of the box.
    */
-  public function iClickTheElement($selector) {
+  public function iClickTheElement($selector)
+  {
     $page = $this->getSession()->getPage();
     $element = $page->find('css', $selector);
 
@@ -70,11 +73,11 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * @AfterFeature @alerts
    *
-   * @param \Behat\Behat\Hook\Scope\AfterFeatureScope $scope
+   * @param AfterFeatureScope $scope
    */
   public static function alertsTearDown(AfterFeatureScope $scope) {
     \Drupal::configFactory()->getEditable('uiowa_alerts.settings')
-      ->set('custom_alert.display', FALSE)
+      ->set('custom_alert.display', false)
       ->set('hawk_alert.source', 'https://emergency.uiowa.edu/api/active.json')
       ->save();
   }
@@ -82,13 +85,13 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   /**
    * @AfterFeature @events
    *
-   * @param \Behat\Behat\Hook\Scope\AfterFeatureScope $scope
+   * @param AfterFeatureScope $scope
    */
   public static function eventsTearDown(AfterFeatureScope $scope) {
     $query = \Drupal::entityQuery('node');
 
     $ids = $query->condition('title', 'Events')
-      ->condition('status', 1)
+      ->condition('status' ,1)
       ->execute();
 
     if ($ids) {
@@ -97,5 +100,4 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
       $storage_handler->delete($entities);
     }
   }
-
 }
