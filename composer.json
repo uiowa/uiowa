@@ -268,12 +268,18 @@
             "initial": {
                 "sites/default/default.services.yml": "sites/default/services.yml",
                 "sites/default/default.settings.php": "sites/default/settings.php"
-            }
+            },
+            "excludes": [
+                "robots.txt"
+            ]
         }
     },
     "scripts": {
         "post-create-project-cmd": [
             "blt internal:create-project:init-repo"
+        ],
+        "post-drupal-scaffold-cmd": [
+            "patch -p1 < patches/core_htaccess.patch"
         ],
         "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
         "nuke": [
