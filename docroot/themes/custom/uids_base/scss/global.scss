@@ -199,11 +199,11 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
    * @todo Should this be moved to scss/layouts/onecol.scss or
    *   scss/layouts/onecol--background.scss?
    */
-  &.layout--onecol--no--background,
+  //&.layout--onecol--no--background,
   &.layout--no-sidebar,
   &.layout--has-sidebar.sidebar-invisible {
-    //padding-top: 0;
-    //padding-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
   }
 
   &[class*="bg-"] {
@@ -243,7 +243,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   padding-top: $mobile-width-gutter;
 
   &.title-invisible {
-    padding-top: 0;
+   // padding-top: 0;
   }
 
   &.section-padding__removed {
@@ -290,9 +290,9 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 // Adjust top padding for last child container adjacent to another container
 .layout__container:not([class*="bg-"])+.layout__container:not([class*="bg-"]):last-child {
   padding-top: $mobile-width-gutter;
-
-  &.title-invisible {
-    padding-top: 0;
+  // added for HMB
+  &.title-invisible.layout--no-sidebar {
+   // padding-top: 0;
   }
 
   &.section-padding__removed {
