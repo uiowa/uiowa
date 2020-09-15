@@ -2,6 +2,7 @@
 
 namespace Drupal;
 
+use Behat\Behat\Hook\Scope\AfterFeatureScope;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Drupal\user\Entity\User;
@@ -68,4 +69,15 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
     $element->click();
   }
 
+  /**
+   * @AfterFeature @alerts
+   *
+   * @param AfterFeatureScope $scope
+   */
+  public static function alertsTearDown(AfterFeatureScope $scope) {
+    \Drupal::configFactory()->getEditable('uiowa_alerts.settings')
+      ->set('custom_alert.display', false)
+      ->set('hawk_alert.source', 'https://emergency.uiowa.edu/api/active.json')
+      ->save();
+  }
 }
