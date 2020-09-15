@@ -64,7 +64,7 @@
         "acquia/blt": "^11.0.1",
         "acquia/memcache-settings": "*",
         "bower-asset/chosen": "^1.8",
-        "bower-asset/fontawesome": "^5.13",
+        "bower-asset/fontawesome": "^5.14",
         "bower-asset/lazysizes": "^5.2",
         "drupal-composer/drupal-scaffold": "^2.5.4",
         "drupal/acquia_connector": "^1.5.0",
@@ -80,9 +80,9 @@
         "drupal/config_ignore": "^2.2.0",
         "drupal/config_inspector": "^1.0",
         "drupal/config_split": "^1.4",
-        "drupal/core": "^8.8.1",
+        "drupal/core": "^8.9.3",
         "drupal/cshs": "^1.0@beta",
-        "drupal/date_recur_modular": "^1.0",
+        "drupal/date_recur_modular": "^2.0",
         "drupal/default_content": "^1.0@alpha",
         "drupal/devel": "^2.1",
         "drupal/diff": "^1.0@RC",
@@ -96,7 +96,7 @@
         "drupal/features": "^3.8",
         "drupal/field_group": "^3.0",
         "drupal/file_mdm": "^2.1",
-        "drupal/focal_point": "^1.2",
+        "drupal/focal_point": "^1.5",
         "drupal/fontawesome": "^2.9",
         "drupal/fragments": "^1.0@beta",
         "drupal/google_analytics": "^3.0",
@@ -115,10 +115,10 @@
         "drupal/linkit": "^5.0",
         "drupal/mailsystem": "^4.1",
         "drupal/masquerade": "^2.0@beta",
-        "drupal/media_entity_facebook": "^2.0@alpha",
-        "drupal/media_entity_instagram": "^2.0",
-        "drupal/media_entity_twitter": "^2.1",
-        "drupal/media_library_theme_reset": "^1.0-beta1",
+        "drupal/media_entity_facebook": "^2.0",
+        "drupal/media_entity_instagram": "3.x-dev",
+        "drupal/media_entity_twitter": "^2.4",
+        "drupal/media_library_theme_reset": "^1.0",
         "drupal/menu_admin_per_menu": "^1.0",
         "drupal/menu_block": "1.x-dev#fbfb8fe",
         "drupal/menu_breadcrumb": "^1.7",
@@ -146,7 +146,9 @@
         "drupal/superfish": "^1.2",
         "drupal/swiftmailer": "^1.0@beta",
         "drupal/twig_tweak": "^2.4",
+        "drupal/upgrade_status": "^2.0",
         "drupal/views_ical": "^1.0@alpha",
+        "drupal/views_tree": "^2.0@alpha",
         "drupal/webform": "^5.12",
         "drupal/workbench_email": "^1.2",
         "drush/drush": "^10",
@@ -165,7 +167,7 @@
     "require-dev": {
         "acquia/blt-require-dev": "11.x-dev",
         "drupal/core-dev": "^8.8",
-        "geerlingguy/drupal-vm": "~5.0",
+        "geerlingguy/drupal-vm": "~6.0",
         "typhonius/acquia-php-sdk-v2": "^2.0.0",
         "zaporylie/composer-drupal-optimizations": "^1.1"
     },
@@ -203,13 +205,13 @@
                 "The Media library doesn't modify the 'media' view if installed in a profile": "https://www.drupal.org/files/issues/2019-05-12/2992056.patch",
                 "Site extensions don't get rediscovered after drush cr": "https://www.drupal.org/files/issues/2018-07-11/specify_sitepath_cache_rebuild_extension_discovery-2985199-3.patch",
                 "Allow alter oembed providers": "https://www.drupal.org/files/issues/2019-05-15/drupal-allow_alter_oembed_providers-3008119-4.patch",
-                "Form blocks rendered inside layout builder break save": "https://www.drupal.org/files/issues/2020-02-04/layout-builder-save-issue-3045171-140.patch",
                 "save edits to media embeds": "https://www.drupal.org/files/issues/2019-12-19/3102249-fix-media-ckeditor-snapshop.patch",
                 "add img dimensions": "https://www.drupal.org/files/issues/2019-11-19/responsive_image-provide_dimensions_for_image_tag-3095126-4.patch",
-                "fix duplicate drag handles in claro": "https://www.drupal.org/files/issues/2020-04-27/claro-nested_paragraphs_multiple_drag_handles-3092181-75-8.8.x-backport.patch",
+                "fix duplicate drag handles in claro": "https://www.drupal.org/files/issues/2020-05-28/3092181-87-89x.patch",
                 "[PP-1] Reverting entity revisions that contain custom blocks erroneously triggers EntityChangedConstraint": "https://www.drupal.org/files/issues/2019-05-13/3053881-11.patch",
                 "Hidden buttons in off-canvas dialog are not being hidden": "https://www.drupal.org/files/issues/2020-02-28/3070375-4.patch",
-                "Off-canvas style resets are overriding styles (especially SVGs) in Safari resulting in display issues": "https://www.drupal.org/files/issues/2019-05-07/off-canvas-style-resets-2958588-13.patch"
+                "Off-canvas style resets are overriding styles (especially SVGs) in Safari resulting in display issues": "https://www.drupal.org/files/issues/2019-05-07/off-canvas-style-resets-2958588-13.patch",
+                "Media viewmode control": "https://www.drupal.org/files/issues/2020-01-31/3097416-ckeditor-view-modes-8.9-combined.patch"
             },
             "drupal/layout_builder_styles": {
                 "Section dependency on layout plugin configuration form": "https://www.drupal.org/files/issues/2019-08-23/layout_builder_styles-3062261-%2310.patch",
@@ -221,6 +223,9 @@
             },
             "drupal/entity_embed": {
                 "Logs flooded with warning messages Invalid display settings encountered": "https://www.drupal.org/files/issues/2019-12-11/3077225-10.reduce-invalid-config-logs.patch"
+            },
+            "drupal/media_entity_facebook": {
+                "Allow creation of new Facebook media entities using the Media Browser": "https://www.drupal.org/files/issues/2020-03-31/3120085-media-library-add-5.patch"
             }
         },
         "installer-types": [
@@ -262,12 +267,18 @@
             "initial": {
                 "sites/default/default.services.yml": "sites/default/services.yml",
                 "sites/default/default.settings.php": "sites/default/settings.php"
-            }
+            },
+            "excludes": [
+                "robots.txt"
+            ]
         }
     },
     "scripts": {
         "post-create-project-cmd": [
             "blt internal:create-project:init-repo"
+        ],
+        "post-drupal-scaffold-cmd": [
+            "patch -p1 < patches/core_htaccess.patch"
         ],
         "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
         "nuke": [

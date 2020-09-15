@@ -78,6 +78,9 @@
 %}
 
 {% set headline_level = content_heading ?: 'h3' %}
+{% if view %}
+  {% set headline_level = view.display_handler.getOption('content_heading') %}
+{% endif %}
 
 {{ attach_library('classy/node') }}
 {{ attach_library('uids_base/paragraphs-lists') }}

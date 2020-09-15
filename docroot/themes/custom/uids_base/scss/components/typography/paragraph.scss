@@ -14,6 +14,13 @@
   }
 }
 
+.lead {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: 300;
+}
+
 .small {
   font-size: $sm !important;
   line-height: $sm-md !important;
@@ -37,3 +44,118 @@ a:not([href]) {
   font-size: 1.2rem;
 }
 
+.bg--gold,
+.bg--brain-reversed,
+.bg-pattern--brain-reversed,
+.bg-yellow {
+  & .block-field-blocknodepagebody,
+  & .block-inline-blockuiowa-text-area,
+  & .block-inline-blockuiowa-collection .collection--discriptive-list {
+    color: $secondary;
+    border-color: $white;
+
+    h1, h2, h3, h4, h5, h6,
+    p,
+    a:not(.btn):not(.bttn):not(.button) {
+      color: $secondary;
+    }
+    blockquote {
+      border-color: $blk;
+    }
+    .alert a,
+    .contextual-links a {
+      color: initial;
+    }
+    table a {
+      color: $link-color;
+    }
+    &.bg--gray {
+      a {
+        color: $link-color;
+      }
+      blockquote {
+        border-color: $primary;
+      }
+      .alert a,
+      .contextual-links a {
+        color: initial;
+      }
+    }
+  }
+}
+
+.bg--black,
+.bg-pattern--brain-black,
+.bg-dark,
+.footer {
+  & .block-field-blocknodepagebody,
+  & .block-inline-blockuiowa-text-area,
+  & .block-inline-blockuiowa-collection .collection--discriptive-list,
+  & #block-uids-base-footercontactinfo {
+    color: #fff;
+
+    h1, h2, h3, h4, h5, h6 {
+      color: #fff;
+    }
+
+    a {
+      color: $primary;
+    }
+    .alert a,
+    .contextual-links a {
+      color: initial;
+    }
+    table a {
+      color: $link-color;
+    }
+    &.bg--gray {
+      color: initial;
+
+      h1, h2, h3, h4, h5, h6,
+      p {
+        color: initial;
+      }
+      a {
+        color: $link-color;
+      }
+      .alert a,
+      .contextual-links a {
+        color: initial;
+      }
+    }
+  }
+}
+
+.bg-pattern--brain {
+  & .block-field-blocknodepagebody,
+  & .block-inline-blockuiowa-text-area,
+  & .block-inline-blockuiowa-collection .collection--discriptive-list {
+    color: $secondary;
+    border-color: $secondary;
+
+    h1, h2, h3, h4, h5, h6,
+    p,
+    a {
+      color: $secondary;
+    }
+    .alert a,
+    .contextual-links a {
+      color: initial;
+    }
+    table a {
+      color: $link-color;
+    }
+    &.bg--gray {
+      a {
+        color: $link-color;
+      }
+      blockquote {
+        border-color: $primary;
+      }
+      .alert a,
+      .contextual-links a {
+        color: initial;
+      }
+    }
+  }
+}

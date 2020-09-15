@@ -28,30 +28,32 @@
 {% set id = "tab-" ~ id %}
 {% set headline_size = content.field_collection_heading_size.0 %}
 
-<div class="tabs" role="navigation" aria-multiselectable="false" id="{{ id }}" aria-label="Tabs">
-  <ul class="tabs primary">
-    {% for delta, tab in tabs %}
+<div class="collection--tabs">
+  <div class="tabs" role="navigation" aria-multiselectable="false" id="{{ id }}" aria-label="Tabs">
+    <ul class="tabs primary">
+      {% for delta, tab in tabs %}
         <li class="tab
           {% if not delta == 0 %}
             is-active
           {% endif %}
         ">
-      {# <{{ headline_size }} id="tab-heading-{{ tab.id }}" class="tab__heading"> #}
-        <button class="tab__button"
-          role="tab"
-          aria-selected="{{ delta == 0 ? 'true' : 'false' | default('false') }}"
-          aria-expanded="{{ delta == 0 ? 'true' : 'false' | default('false') }}"
-          aria-controls="tab-select-{{ tab.id }}"
-        >
-          {% block tab_label %}
-            {{ tab.label }}
-          {% endblock %}
-        </button>
-      </li>
-      {# </{{ headline_size }}> #}
-    {% endfor %}
-  </ul>
-  <div class="tab__panels">
-    {{ content|without('field_collection_heading_size') }}
+          {# <{{ headline_size }} id="tab-heading-{{ tab.id }}" class="tab__heading"> #}
+          <button class="tab__button"
+                  role="tab"
+                  aria-selected="{{ delta == 0 ? 'true' : 'false' | default('false') }}"
+                  aria-expanded="{{ delta == 0 ? 'true' : 'false' | default('false') }}"
+                  aria-controls="tab-select-{{ tab.id }}"
+          >
+            {% block tab_label %}
+              {{ tab.label }}
+            {% endblock %}
+          </button>
+        </li>
+        {# </{{ headline_size }}> #}
+      {% endfor %}
+    </ul>
+    <div class="tab__panels">
+      {{ content|without('field_collection_heading_size') }}
+    </div>
   </div>
 </div>

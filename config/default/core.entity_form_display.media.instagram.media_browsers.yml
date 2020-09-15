@@ -6,6 +6,8 @@ dependencies:
     - core.entity_form_mode.media.media_browsers
     - field.field.media.instagram.field_media_instagram
     - media.type.instagram
+  module:
+    - media
 id: media.instagram.media_browsers
 targetEntityType: media
 bundle: instagram
@@ -17,7 +19,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
+    type: oembed_textfield
     region: content
 hidden:
   created: true

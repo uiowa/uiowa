@@ -5,6 +5,8 @@
  * Single event theme functions.
  */
 
+use Drupal\Component\Utility\Xss;
+
 /**
  * Preprocess a single event.
  *
@@ -12,34 +14,37 @@
  *   Array reference of arguments given to the theme() function.
  */
 function template_preprocess_sitenow_events_single_event(array &$variables) {
-  // Add single-event css/js.
   $variables['#attached']['library'][] = 'sitenow_events/single-event';
 
-  // Quick hack to get the data structured properly.
-  // This is due to the standardize parsing of data for all events.
-  // @see sitenow_events_prepare_data.
-  $variables['data'] = $variables['data'][0];
-  if (isset($variables['data']['event_instances'])) {
-    // All event instances are passed in the event_instances array.
+  // Filter the description for any XSS.
+  $variables['event']['description'] = Xss::filterAdmin($variables['event']['description']);
+
+  // Prepare the a11y statement.
+  $variables['event']['accessibility_statement'] = t('Individuals with disabilities are encouraged to attend all University of Iowa–sponsored events. If you are a person with a disability who requires a reasonable accommodation in order to participate in this program, please contact @c_name in advance at @c_ph or @c_email.', [
+    '@c_name' => $variables['event']['contact_name'],
+    '@c_ph' => $variables['event']['contact_phone'],
+    '@c_email' => $variables['event']['contact_email'],
+  ]);
+
+  if (isset($variables['event']['event_instances'])) {
     $instances = [];
     $instance_arg = 0;
 
     // If there are more than 1 instances, use the last URL argument to get the
     // requested instance. If there are no instances, set the current instance
-    // to $variables['data']['event_instances'][0].
-    if (count($variables['data']['event_instances']) > 1) {
+    // to $variables['event']['event_instances'][0].
+    if (count($variables['event']['event_instances']) > 1) {
       $path = explode('/', \Drupal::service('path.current')->getPath());
+
       if (count($path) > 2) {
         $instance_arg = array_pop($path);
       }
     }
 
-    $current_instance = $variables['data']['event_instances'][$instance_arg];
-
-    // Set the current instance on $data.
-    $variables['data']['instance_start'] = $current_instance['event_instance']['start'];
-    $variables['data']['instance_end'] = $current_instance['event_instance']['end'];
-    $variables['data']['instance_all_day'] = $current_instance['event_instance']['all_day'];
+    // Set the current instance.
+    $variables['event']['instance_start'] = $variables['event']['event_instances'][$instance_arg]['event_instance']['start'];
+    $variables['event']['instance_end'] = $variables['event']['event_instances'][$instance_arg]['event_instance']['end'];
+    $variables['event']['instance_all_day'] = $variables['event']['event_instances'][$instance_arg]['event_instance']['all_day'];
 
     // Insert the current instance as the first element in the $instances
     // array (to be displayed first).
@@ -55,7 +60,7 @@ function template_preprocess_sitenow_events_single_event(array &$variables) {
       'date' => [
         '#type' => 'html_tag',
         '#tag' => 'span',
-        '#value' => sitenow_events_format_instance($current_instance['event_instance']),
+        '#value' => sitenow_events_format_instance($variables['event']['event_instances'][$instance_arg]['event_instance']),
         '#attributes' => [
           'class' => [
             'date-instance__date',
@@ -66,10 +71,10 @@ function template_preprocess_sitenow_events_single_event(array &$variables) {
 
     // Remove the current instance from the event_instances array to avoid a
     // duplicate date.
-    unset($variables['data']['event_instances'][$instance_arg]);
+    unset($variables['event']['event_instances'][$instance_arg]);
 
     // Loop through and find the next upcoming and set instance_next_upcoming.
-    foreach ($variables['data']['event_instances'] as $instance) {
+    foreach ($variables['event']['event_instances'] as $instance) {
       // All day events start at midnight. If instance is all day, set the
       // timestamp to today at midnight.
       $now = ($instance['event_instance']['all_day'] === TRUE) ? strtotime('today midnight') : time();
@@ -121,14 +126,17 @@ function template_preprocess_sitenow_events_single_event(array &$variables) {
       }
     }
 
-    $variables['data']['date_instances'] = $instances;
+    $variables['event']['date_instances'] = $instances;
   }
-  if (isset($variables['data']['photo_url'])) {
-    $variables['data']['event_image'] = [
+  if (isset($variables['event']['media'][0]['large_image'])) {
+    $variables['event']['event_image'] = [
       '#theme' => 'imagecache_external',
-      '#uri' => $variables['data']['photo_url'],
-      '#style_name' => 'medium',
-      '#alt' => t('@title promotional image', ['@title' => $variables['data']['title']]),
+      '#uri' => $variables['event']['media'][0]['large_image'],
+      '#style_name' => 'square__384_x_384',
+      '#alt' => t('@title promotional image', ['@title' => $variables['event']['title']]),
+      '#attributes' => [
+        'data-lazy' => TRUE,
+      ],
     ];
   }
 }

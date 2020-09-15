@@ -13,8 +13,21 @@
   'card_text': event.description_text,
   'card_author': event.date_string,
   'card_title': event.title | render,
+  'card_subtitle': event.subtitle | render,
   'card_link_url': event.url,
-  'headline_level': 'h3'
+  'headline_level': event.heading_size,
+  'event_location': event.location_name|render,
+  'event_virtual': event.virtual,
 } %}
 
-{% embed '@uids_base/uids/card.html.twig' with events_card only %}{% endembed %}
+{% embed '@uids_base/uids/card.html.twig' with events_card only %}
+  {% block card_content %}
+    {% if event_virtual %}
+      <div class="event-location"><span class="fas fa-map-marker-alt"></span> Virtual Event</div>
+    {% elseif event_location is not empty %}
+      <div class="event-location"><span class="fas fa-map-marker-alt"></span> {{ event_location }}</div>
+    {% endif %}
+
+    <p>{{ card_text }}</p>
+  {% endblock %}
+{% endembed %}

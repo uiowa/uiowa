@@ -8,11 +8,18 @@ default:
       default_session: goutte
       browser_name: chrome
       javascript_session: default
-      goutte: ~
+      goutte:
+        guzzle_parameters:
+          verify: false
       files_path: "%paths.base%/media"
     Drupal\DrupalExtension:
       blackbox: ~
       api_driver: "drupal"
+      selectors:
+        message_selector: '.messages'
+        success_message_selector: '.messages.messages--status'
+        warning_message_selector: '.messages.messages--warning'
+        error_message_selector: '.messages.messages--error'
     jarnaiz\JUnitFormatter\JUnitFormatterExtension:
         filename: report.xml
         outputDir: %paths.base%/build/tests
@@ -20,4 +27,5 @@ default:
       screenshot_taking_mode: failed_steps
       image_drivers:
         local:
-          screenshot_directory: /tmp
+          screenshot_directory: /var/www/uiowa/reports
+
