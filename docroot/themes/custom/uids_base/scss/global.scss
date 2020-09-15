@@ -269,7 +269,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 }
 
 // Add back in padding for sections directly below a container with class*="bg-
-.layout__container[class*="bg-"]+.layout__container:not([class*="bg-"]) {
+.layout__container[class*="bg-"]+.layout__container:not([class*="bg-"]):not(:last-child) {
   padding-top: $desktop-width-gutter;
   padding-bottom: $mobile-width-gutter;
 
