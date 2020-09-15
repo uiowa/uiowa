@@ -10,6 +10,7 @@ Feature: Events
   Scenario: Create a page with an events block
     Given I am logged in as a user with role webmaster
     And I am on "/node/add/page"
+    And I wait for AJAX to finish
     And I fill in "Title" with "Events"
     And I fill in "moderation_state[0][state]" with "published"
     And I press the "Save" button
