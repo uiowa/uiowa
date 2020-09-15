@@ -146,10 +146,13 @@
         "drupal/superfish": "^1.2",
         "drupal/swiftmailer": "^1.0@beta",
         "drupal/twig_tweak": "^2.4",
+        "drupal/upgrade_status": "^2.0",
         "drupal/views_ical": "^1.0@alpha",
+        "drupal/views_tree": "^2.0@alpha",
         "drupal/webform": "^5.12",
         "drupal/workbench_email": "^1.2",
         "drush/drush": "^10",
+        "geerlingguy/drupal-vm": "~6.0",
         "jackmoore/colorbox": "^1.6",
         "kartsims/easysvg": "dev-master",
         "npm-asset/fontawesome-iconpicker": "^3.2",
@@ -165,7 +168,6 @@
     "require-dev": {
         "acquia/blt-require-dev": "11.x-dev",
         "drupal/core-dev": "^8.8",
-        "geerlingguy/drupal-vm": "~5.0",
         "typhonius/acquia-php-sdk-v2": "^2.0.0",
         "zaporylie/composer-drupal-optimizations": "^1.1"
     },
@@ -283,6 +285,10 @@
         "post-create-project-cmd": [
             "blt internal:create-project:init-repo"
         ],
+        "post-drupal-scaffold-cmd": [
+            "patch -p1 < patches/core_htaccess.patch"
+        ],
+        "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
         "nuke": [
             "rm -rf vendor composer.lock docroot/core docroot/modules/contrib docroot/profiles/contrib docroot/themes/contrib",
             "@composer clearcache --ansi",
