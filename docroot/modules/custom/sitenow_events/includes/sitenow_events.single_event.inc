@@ -20,10 +20,10 @@ function template_preprocess_sitenow_events_single_event(array &$variables) {
   $variables['event']['description'] = Xss::filterAdmin($variables['event']['description']);
 
   // Prepare the a11y statement.
-  $variables['event']['accessibility_statement'] = t('Individuals with disabilities are encouraged to attend all University of Iowa–sponsored events. If you are a person with a disability who requires a reasonable accommodation in order to participate in this program, please contact @c_name in advance at @c_ph or @c_email.', [
-    '@c_name' => $variables['event']['contact_name'],
-    '@c_ph' => $variables['event']['contact_phone'],
-    '@c_email' => $variables['event']['contact_email'],
+  $variables['event']['accessibility_statement'] = t('Individuals with disabilities are encouraged to attend all University of Iowa–sponsored events. If you are a person with a disability who requires a reasonable accommodation in order to participate in this program, please contact @name in advance at <a href="tel:@phone">@phone</a> or <a href="mailto:@email">@email</a>.', [
+    '@name' => $variables['event']['contact_name'],
+    '@phone' => $variables['event']['contact_phone'],
+    '@email' => $variables['event']['contact_email'],
   ]);
 
   if (isset($variables['event']['event_instances'])) {
