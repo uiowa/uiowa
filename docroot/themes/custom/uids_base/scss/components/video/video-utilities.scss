@@ -2,6 +2,41 @@
 @import "assets/scss/_utilities.scss";
 @import "components/video/video-utilities/_video-utilities.scss";
 
+// Media alignment
+
+@media (min-width: 576px) {
+
+  .align-right.media {
+    margin-left: $gutter;
+  }
+
+  .align-left.media {
+    margin-right: $gutter;
+  }
+
+  .align-right.media--type-remote-video {
+    width: auto;
+    margin-left: $gutter;
+    .field--name-field-media-oembed-video iframe {
+      float: right;
+    }
+  }
+  .align-left.media--type-remote-video {
+    width: auto;
+    margin-right: $gutter;
+    .field--name-field-media-oembed-video iframe {
+      float: left;
+    }
+  }
+
+}
+
+.align-center.media--type-remote-video {
+  & .field--name-field-media-oembed-video iframe {
+    margin: 0 auto;
+  }
+}
+
 .media--type-remote-video {
   @extend .embed-responsive;
   @extend .embed-responsive-16by9;
@@ -9,6 +44,9 @@
   &.media--view-mode-image-large,
   &.media--view-mode-image-medium,
   &.media--view-mode-image-small,
+  &.media--view-mode-large,
+  &.media--view-mode-medium,
+  &.media--view-mode-small,
   figure.caption & {
     @include breakpoint(sm) {
       padding-bottom: 0;
@@ -19,7 +57,10 @@
 figure.caption .media--type-remote-video iframe,
 .media--type-remote-video.media--view-mode-image-medium iframe,
 .media--type-remote-video.media--view-mode-image-large iframe,
-.media--type-remote-video.media--view-mode-image-small iframe {
+.media--type-remote-video.media--view-mode-image-small iframe,
+.media--type-remote-video.media--view-mode-medium iframe,
+.media--type-remote-video.media--view-mode-large iframe,
+.media--type-remote-video.media--view-mode-small iframe {
   @include breakpoint(sm) {
     position: unset;
     display: inherit;
@@ -31,7 +72,9 @@ figure.caption .media--type-remote-video iframe,
 }
 
 figure.caption .media--type-remote-video.media--view-mode-image-large iframe,
+figure.caption .media--type-remote-video.media--view-mode-large iframe,
 figure.caption .media--type-remote-video.media--view-mode-full iframe,
+.media--type-remote-video.media--view-mode-large iframe,
 .media--type-remote-video.media--view-mode-image-large iframe {
   @include breakpoint(sm) {
     width: 854px;
@@ -40,7 +83,9 @@ figure.caption .media--type-remote-video.media--view-mode-full iframe,
 }
 
 figure.caption .media--type-remote-video.media--view-mode-image-medium iframe,
-.media--type-remote-video.media--view-mode-image-medium iframe {
+figure.caption .media--type-remote-video.media--view-mode-medium iframe,
+.media--type-remote-video.media--view-mode-image-medium iframe,
+.media--type-remote-video.media--view-mode-medium iframe {
   @include breakpoint(sm) {
     width: 640px;
     height: 360px;
@@ -48,6 +93,8 @@ figure.caption .media--type-remote-video.media--view-mode-image-medium iframe,
 }
 
 figure.caption .media--type-remote-video.media--view-mode-image-small iframe,
+figure.caption .media--type-remote-video.media--view-mode-small iframe,
+.media--type-remote-video.media--view-mode-small iframe,
 .media--type-remote-video.media--view-mode-image-small iframe {
   @include breakpoint(sm) {
     width: 426px;
