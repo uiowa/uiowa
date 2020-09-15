@@ -2,8 +2,8 @@
 Feature: Events
   In order to verify that events can be added to a page
   As a user
-  I should see events listed
-  If I add the events block via layout builder
+  I should see events
+  If I add the events block via layout builder or visit a single event page
 
   @api
   @javascript
@@ -23,3 +23,8 @@ Feature: Events
     And I wait for AJAX to finish
     And I press the "Save layout" button
     Then the response status code should be 200
+
+Scenario: Go to a single event page
+  Given I am on "/events"
+  And I click the ".card__title a" element
+  Then the response status code should be 200
