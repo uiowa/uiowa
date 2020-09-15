@@ -26,10 +26,10 @@ function template_preprocess_sitenow_events_teaser(array &$variables) {
     ];
   }
 
-  if (isset($variables['event']['media'][0]['medium_image'])) {
+  if (isset($variables['event']['media'][0]['large_image'])) {
     $variables['event']['image'] = [
       '#theme' => 'imagecache_external',
-      '#uri' => $variables['event']['media'][0]['medium_image'],
+      '#uri' => $variables['event']['media'][0]['large_image'],
       '#style_name' => 'square__384_x_384',
       '#alt' => t('@title promotional image', ['@title' => $variables['event']['title']]),
       '#attributes' => [
