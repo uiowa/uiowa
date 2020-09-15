@@ -37,7 +37,7 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
       '#title' => t('Block Title'),
       '#collapsible' => TRUE,
       '#collapsed' => FALSE,
-      '#tree' => TRUE,
+      '#tree' => FALSE,
     ];
 
     $element['block_title']['headline'] = [
