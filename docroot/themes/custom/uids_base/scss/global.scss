@@ -202,8 +202,8 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   &.layout--onecol--no--background,
   &.layout--no-sidebar,
   &.layout--has-sidebar.sidebar-invisible {
-    padding-top: 0;
-    padding-bottom: 0;
+    //padding-top: 0;
+    //padding-bottom: 0;
   }
 
   &[class*="bg-"] {
@@ -237,10 +237,14 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 }
 
 // Override padding for two adjacent containers without background colors
-.layout__container:not([class*="bg-"])+.layout__container:not([class*="bg-"]),
+.layout__container:not([class*="bg-"])+.layout__container:not([class*="bg-"]):not(:last-child),
 .layout--onecol--no--background+.layout__container:not([class*="bg-"]) {
   padding-bottom: $mobile-width-gutter;
   padding-top: $mobile-width-gutter;
+
+  &.title-invisible {
+    padding-top: 0;
+  }
 
   &.section-padding__removed {
     padding-top: 0;
@@ -267,6 +271,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 // Add back in padding for sections directly below a container with class*="bg-
 .layout__container[class*="bg-"]+.layout__container:not([class*="bg-"]) {
   padding-top: $desktop-width-gutter;
+  padding-bottom: $mobile-width-gutter;
 
   &.section-padding__removed {
     padding-top: 0;
@@ -282,8 +287,37 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
 }
 
+// Adjust top padding for last child container adjacent to another container
+.layout__container:not([class*="bg-"])+.layout__container:not([class*="bg-"]):last-child {
+  padding-top: $mobile-width-gutter;
+
+  &.title-invisible {
+    padding-top: 0;
+  }
+
+  &.section-padding__removed {
+    padding-top: 0;
+  }
+
+  &.section-padding__removed-bottom {
+    padding-bottom: 0;
+  }
+
+  &.section-padding__removed-top {
+    padding-top: 0;
+  }
+
+  &.section-padding__top-extra {
+    padding-top: 6rem;
+  }
+
+  &.section-padding__bottom-extra {
+    padding-bottom: 6rem;
+  }
+}
+
 // Adjust container padding if container is adjacent to hero background container
-.layout--onecol--background:not([class*="layout--onecol--no--background"])+.layout__container:not([class*="bg-"]) {
+.layout--onecol--background:not([class*="layout--onecol--no--background"])+.layout__container:not([class*="bg-"]):not(:last-child) {
   padding-bottom: $mobile-width-gutter;
 
   &.section-padding__removed {
