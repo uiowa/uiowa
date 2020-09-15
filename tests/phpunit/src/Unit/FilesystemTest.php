@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\sitenow\Unit;
+namespace Uiowa\Tests\PHPUnit\Unit;
 
 use Acquia\Blt\Robo\Common\YamlMunge;
 use Drupal\Tests\UnitTestCase;
