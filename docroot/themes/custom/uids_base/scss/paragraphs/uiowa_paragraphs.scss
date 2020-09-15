@@ -277,3 +277,13 @@ div.example2 p.special {
     margin-top: 0;
   }
 }
+
+// For V2 sites with page title hidden
+.layout--onecol--no--background.title-invisible+.layout__container:not([class*=bg-]) {
+  padding-top: 0;
+}
+
+.layout--onecol--no--background+.layout__container.page__container--edge.layout--no-sidebar:not([class*=bg-]) {
+  padding-top: 0;
+  padding-bottom: 0;
+}
