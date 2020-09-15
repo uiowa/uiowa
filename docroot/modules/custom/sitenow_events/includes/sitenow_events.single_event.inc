@@ -128,11 +128,11 @@ function template_preprocess_sitenow_events_single_event(array &$variables) {
 
     $variables['event']['date_instances'] = $instances;
   }
-  if (isset($variables['event']['media'][0]['large_image'])) {
-    $variables['event']['event_image'] = [
-      '#theme' => 'imagecache_external',
-      '#uri' => $variables['event']['media'][0]['large_image'],
-      '#style_name' => 'square__384_x_384',
+  if (isset($variables['event']['media'][0]['original_image'])) {
+    $variables['event']['image'] = [
+      '#theme' => 'imagecache_external_responsive',
+      '#uri' => $variables['event']['media'][0]['original_image'],
+      '#responsive_image_style_id' => 'large__widescreen',
       '#alt' => t('@title promotional image', ['@title' => $variables['event']['title']]),
       '#attributes' => [
         'data-lazy' => TRUE,

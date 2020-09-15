@@ -28,9 +28,9 @@ function template_preprocess_sitenow_events_teaser(array &$variables) {
 
   if (isset($variables['event']['media'][0]['large_image'])) {
     $variables['event']['image'] = [
-      '#theme' => 'imagecache_external',
+      '#theme' => 'imagecache_external_responsive',
       '#uri' => $variables['event']['media'][0]['large_image'],
-      '#style_name' => 'square__384_x_384',
+      '#responsive_image_style_id' => 'large__widescreen',
       '#alt' => t('@title promotional image', ['@title' => $variables['event']['title']]),
       '#attributes' => [
         'data-lazy' => TRUE,
