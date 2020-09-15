@@ -1452,12 +1452,6 @@ $sites['siteschinesereadingworld.dev.drupal.uiowa.edu'] = 'chinesereadingworld.s
 $sites['siteschinesereadingworld.stage.drupal.uiowa.edu'] = 'chinesereadingworld.sites.uiowa.edu';
 $sites['siteschinesereadingworld.prod.drupal.uiowa.edu'] = 'chinesereadingworld.sites.uiowa.edu';
 
-// Directory aliases for baalrud.lab.uiowa.edu.
-$sites['labbaalrud.local.drupal.uiowa.edu'] = 'baalrud.lab.uiowa.edu';
-$sites['labbaalrud.dev.drupal.uiowa.edu'] = 'baalrud.lab.uiowa.edu';
-$sites['labbaalrud.stage.drupal.uiowa.edu'] = 'baalrud.lab.uiowa.edu';
-$sites['labbaalrud.prod.drupal.uiowa.edu'] = 'baalrud.lab.uiowa.edu';
-
 // Directory aliases for viewbook.engineering.uiowa.edu.
 $sites['engineeringviewbook.local.drupal.uiowa.edu'] = 'viewbook.engineering.uiowa.edu';
 $sites['engineeringviewbook.dev.drupal.uiowa.edu'] = 'viewbook.engineering.uiowa.edu';
@@ -1565,3 +1559,21 @@ $sites['orghhpatuiowa.local.drupal.uiowa.edu'] = 'hhpatuiowa.org.uiowa.edu';
 $sites['orghhpatuiowa.dev.drupal.uiowa.edu'] = 'hhpatuiowa.org.uiowa.edu';
 $sites['orghhpatuiowa.stage.drupal.uiowa.edu'] = 'hhpatuiowa.org.uiowa.edu';
 $sites['orghhpatuiowa.prod.drupal.uiowa.edu'] = 'hhpatuiowa.org.uiowa.edu';
+
+// Directory aliases for admissions.uiowa.edu.
+$sites['admissions.local.drupal.uiowa.edu'] = 'admissions.uiowa.edu';
+$sites['admissions.dev.drupal.uiowa.edu'] = 'admissions.uiowa.edu';
+$sites['admissions.stage.drupal.uiowa.edu'] = 'admissions.uiowa.edu';
+$sites['admissions.prod.drupal.uiowa.edu'] = 'admissions.uiowa.edu';
+
+// Directory aliases for pharmacy.uiowa.edu.
+$sites['pharmacy.local.drupal.uiowa.edu'] = 'pharmacy.uiowa.edu';
+$sites['pharmacy.dev.drupal.uiowa.edu'] = 'pharmacy.uiowa.edu';
+$sites['pharmacy.stage.drupal.uiowa.edu'] = 'pharmacy.uiowa.edu';
+$sites['pharmacy.prod.drupal.uiowa.edu'] = 'pharmacy.uiowa.edu';
+
+// Directory aliases for shpe.org.uiowa.edu.
+$sites['orgshpe.local.drupal.uiowa.edu'] = 'shpe.org.uiowa.edu';
+$sites['orgshpe.dev.drupal.uiowa.edu'] = 'shpe.org.uiowa.edu';
+$sites['orgshpe.stage.drupal.uiowa.edu'] = 'shpe.org.uiowa.edu';
+$sites['orgshpe.prod.drupal.uiowa.edu'] = 'shpe.org.uiowa.edu';
