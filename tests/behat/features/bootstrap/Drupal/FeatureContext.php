@@ -5,6 +5,7 @@ namespace Drupal;
 use Behat\Behat\Hook\Scope\AfterFeatureScope;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Behat\Behat\Context\SnippetAcceptingContext;
+use Drupal\node\Entity\Node;
 use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
 
@@ -79,5 +80,24 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
       ->set('custom_alert.display', false)
       ->set('hawk_alert.source', 'https://emergency.uiowa.edu/api/active.json')
       ->save();
+  }
+
+  /**
+   * @AfterFeature @events
+   *
+   * @param AfterFeatureScope $scope
+   */
+  public static function eventsTearDown(AfterFeatureScope $scope) {
+    $query = \Drupal::entityQuery('node');
+
+    $ids = $query->condition('title', 'Events')
+      ->condition('status' ,1)
+      ->execute();
+
+    if ($ids) {
+      $storage_handler = \Drupal::entityTypeManager()->getStorage('node');
+      $entities = $storage_handler->loadMultiple($ids);
+      $storage_handler->delete($entities);
+    }
   }
 }
