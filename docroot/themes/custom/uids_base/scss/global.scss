@@ -159,7 +159,6 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 // default spacing for layout builder pages with container set in theme settings
 
 .content__container {
-
   .lb__container {
     @extend %container;
   }
@@ -186,6 +185,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   }
 }
 
+// layout container padding
 .layout__container {
   padding-bottom: $mobile-width-gutter;
   padding-top: $mobile-width-gutter;
@@ -195,155 +195,54 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
     padding-top: $desktop-width-gutter;
   }
 
-  /*
-   * @todo Should this be moved to scss/layouts/onecol.scss or
-   *   scss/layouts/onecol--background.scss?
-   */
-  &.layout--onecol--no--background,
-  &.layout--no-sidebar,
-  &.layout--has-sidebar.sidebar-invisible {
-    // padding-top: 0;
-    // padding-bottom: 0;
+  // This selector addresses overriding padding for two adjacent containers without background colors except splits the padding between the two adjacent containers instead of stripping the top or bottom only.  This seems to allow more flexibility for default space if a container with a bg color sits below a container like below the race/ethnicity section on https://uiowa.local.drupal.uiowa.edu/about-iowa : https://github.com/uiowa/uiowa/pull/2076#issuecomment-689112678
+
+  &:not([class*="bg-"])+.layout__container:not([class*="bg-"]):not(:last-child) {
+    padding-bottom: 1.5rem;
+    padding-top: 1.5rem;
   }
 
-  &[class*="bg-"] {
-    @include breakpoint(container) {
-      padding-top: $desktop-width-gutter;
-      padding-bottom: $desktop-width-gutter;
+  // Add back in padding for sections directly below a container with class*="bg- : View horizontal menu block on https://uiowa.local.drupal.uiowa.edu/admissions - maintains top spacing while adjusting bottom
 
-      &.section-padding__removed {
-        padding-top: 0;
-        padding-bottom: 0;
-      }
+  &[class*="bg-"]+.layout__container:not([class*="bg-"]):not(:last-child) {
+    padding-top: $desktop-width-gutter;
+    padding-bottom: 1.5rem;
+  }
 
-      &.section-padding__removed-bottom {
-        padding-bottom: 0;
-      }
+  // Adjust top padding for last child container adjacent to another container: view bottom card section here: https://uiowa.local.drupal.uiowa.edu/research adjusts top padding but keeps appropriate bottom padding
 
-      &.section-padding__removed-top {
-        padding-top: 0;
-      }
+  &:not([class*="bg-"])+.layout__container:not([class*="bg-"]):last-child {
+    padding-top: 1.5rem;
+  }
 
-      &.section-padding__top-extra {
-        padding-top: 6rem;
-      }
+  // padding overrides to make sure layout builder padding styles will work on these sections
 
-      &.section-padding__bottom-extra {
-        padding-bottom: 6rem;
-      }
+  &:not([class*="bg-"])+.layout__container:not([class*="bg-"]):not(:last-child),
+  &[class*="bg-"]+.layout__container:not([class*="bg-"]):not(:last-child),
+  &:not([class*="bg-"])+.layout__container:not([class*="bg-"]):last-child {
+    &.section-padding__removed {
+      padding-top: 0;
+      padding-bottom: 0;
     }
 
-  }
-}
+    &.section-padding__removed-bottom {
+      padding-bottom: 0;
+    }
 
-// Override padding for two adjacent containers without background colors
-.layout__container:not([class*="bg-"])+.layout__container:not([class*="bg-"]):not(:last-child),
-.layout--onecol--no--background+.layout__container:not([class*="bg-"]) {
-  padding-bottom: 1.5rem;
-  padding-top: 1.5rem;
+    &.section-padding__removed-top {
+      padding-top: 0;
+    }
 
-  &.title-invisible {
-    // padding-top: 0;
-  }
+    &.section-padding__top-extra {
+      padding-top: 6rem;
+    }
 
-  &.section-padding__removed {
-    padding-top: 0;
-    padding-bottom: 0;
-  }
-
-  &.section-padding__removed-bottom {
-    padding-bottom: 0;
-  }
-
-  &.section-padding__removed-top {
-    padding-top: 0;
-  }
-
-  &.section-padding__top-extra {
-    padding-top: 6rem;
-  }
-
-  &.section-padding__bottom-extra {
-    padding-bottom: 6rem;
-  }
-}
-
-// Add back in padding for sections directly below a container with class*="bg-
-.layout__container[class*="bg-"]+.layout__container:not([class*="bg-"]):not(:last-child) {
-  padding-top: $desktop-width-gutter;
-  padding-bottom: 1.5rem;
-
-  &.section-padding__removed {
-    padding-top: 0;
-    padding-bottom: 0;
-  }
-
-  &.section-padding__removed-top {
-    padding-top: 0;
-  }
-
-  &.section-padding__top-extra {
-    padding-top: 6rem;
+    &.section-padding__bottom-extra {
+      padding-bottom: 6rem;
+    }
   }
 
 }
-
-// Adjust top padding for last child container adjacent to another container
-.layout__container:not([class*="bg-"])+.layout__container:not([class*="bg-"]):last-child {
-  padding-top: 1.5rem;
-
-  &.title-invisible.layout--no-sidebar {
-    //padding-top: 0;
-  }
-
-  &.section-padding__removed {
-    padding-top: 0;
-    padding-bottom: 0;
-  }
-
-  &.section-padding__removed-bottom {
-    padding-bottom: 0;
-  }
-
-  &.section-padding__removed-top {
-    padding-top: 0;
-  }
-
-  &.section-padding__top-extra {
-    padding-top: 6rem;
-  }
-
-  &.section-padding__bottom-extra {
-    padding-bottom: 6rem;
-  }
-}
-
-// Adjust container padding if container is adjacent to hero background container
-.layout--onecol--background:not([class*="layout--onecol--no--background"])+.layout__container:not([class*="bg-"]):not(:last-child) {
-  padding-bottom: 1.5rem;
-
-  &.section-padding__removed {
-    padding-bottom: 0;
-    padding-top: 0;
-  }
-
-  &.section-padding__removed-bottom {
-    padding-bottom: 0;
-  }
-
-  &.section-padding__bottom-extra {
-    padding-bottom: 6rem;
-  }
-}
-
-/*
- * @todo Should this be moved to scss/layouts/onecol--background.scss?
- */
-// Add margin above a container with a background color if it appears below the page title
-.layout--onecol--no--background:not([class*="bg-"])+.layout__container[class*="bg-"] {
-  margin-top: 1.5rem;
-}
-
 
 // default left/right gutter spacing for full width settings without layout builder
 // settings if page container full or edge is selected on section
@@ -393,7 +292,6 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   }
 
 }
-
 
 // Block Margins / Padding
 
@@ -556,6 +454,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
 
 // todo remomve
+
 .uids-component--alert {
   margin-top: 0;
 }
