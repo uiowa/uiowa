@@ -90,7 +90,7 @@ Before starting updates, make sure your local environment is on a feature branch
 
 Drupal core requires the following specific command to update dev dependencies properly: `composer update drupal/core --with-dependencies`. You can run `composer update package/name` after that to update additional dependencies. The output from the Composer commands can be used as the long text for commit messages. Ideally, each package update would be one commit to the composer.lock file.
 
-Certain scaffold files should be resolved/removed afterwards. The redirects in the `docroot/.htaccess` file need to be re-implemented and the `docroot/robots.txt` should be removed. Different updates may require difference procedures. For example, BLT may download default config files that we don't use like `docroot/sites/default/default.services.yml`.
+Certain scaffold files should be resolved/removed afterwards. The redirects patch might need to be regenerated if it does not apply to the new `.htaccess` file. Different updates may require difference procedures. For example, BLT may download default config files that we don't use like `docroot/sites/default/default.services.yml`.
 
 Configuration tracked in the repository will need to be exported before deployment. To ensure configuration is exported correctly, manually sync a site from production using Drush. Then run database updates and export any configuration changes. Add and commit the config changes and then run another `blt dsa` to check for any further config discrepancies. If there are none, proceed with code deployment as per usual.
 
