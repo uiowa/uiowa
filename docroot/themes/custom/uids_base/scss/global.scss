@@ -197,29 +197,20 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
   // This selector addresses overriding padding for two adjacent containers without background colors except splits the padding between the two adjacent containers instead of stripping the top or bottom only.  This seems to allow more flexibility for default space if a container with a bg color sits below a container like below the race/ethnicity section on https://uiowa.local.drupal.uiowa.edu/about-iowa : https://github.com/uiowa/uiowa/pull/2076#issuecomment-689112678
 
-  &:not([class*="bg-"])+.layout__container:not([class*="bg-"]):not(:last-child) {
-    padding-bottom: 1.5rem;
-    padding-top: 1.5rem;
+  &:not([class*="bg-"])+.layout__container:not([class*="bg-"]) {
+    padding-top: 0;
   }
 
   // Add back in padding for sections directly below a container with class*="bg- : View horizontal menu block on https://uiowa.local.drupal.uiowa.edu/admissions - maintains top spacing while adjusting bottom
 
-  &[class*="bg-"]+.layout__container:not([class*="bg-"]):not(:last-child) {
+  &[class*="bg-"]+.layout__container:not([class*="bg-"]) {
     padding-top: $desktop-width-gutter;
-    padding-bottom: 1.5rem;
-  }
-
-  // Adjust top padding for last child container adjacent to another container: view bottom card section here: https://uiowa.local.drupal.uiowa.edu/research adjusts top padding but keeps appropriate bottom padding
-
-  &:not([class*="bg-"])+.layout__container:not([class*="bg-"]):last-child {
-    padding-top: 1.5rem;
   }
 
   // padding overrides to make sure layout builder padding styles will work on these sections
 
-  &:not([class*="bg-"])+.layout__container:not([class*="bg-"]):not(:last-child),
-  &[class*="bg-"]+.layout__container:not([class*="bg-"]):not(:last-child),
-  &:not([class*="bg-"])+.layout__container:not([class*="bg-"]):last-child {
+  &:not([class*="bg-"])+.layout__container:not([class*="bg-"]),
+  &[class*="bg-"]+.layout__container:not([class*="bg-"]) {
     &.section-padding__removed {
       padding-top: 0;
       padding-bottom: 0;
