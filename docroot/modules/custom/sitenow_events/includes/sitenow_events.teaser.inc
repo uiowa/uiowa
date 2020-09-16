@@ -26,11 +26,11 @@ function template_preprocess_sitenow_events_teaser(array &$variables) {
     ];
   }
 
-  if (isset($variables['event']['media'][0]['large_image'])) {
+  if (isset($variables['event']['media'][0]['original_image'])) {
     $variables['event']['image'] = [
       '#theme' => 'imagecache_external_responsive',
-      '#uri' => $variables['event']['media'][0]['large_image'],
-      '#responsive_image_style_id' => 'large__widescreen',
+      '#uri' => $variables['event']['media'][0]['original_image'],
+      '#responsive_image_style_id' => 'large__square',
       '#alt' => t('@title promotional image', ['@title' => $variables['event']['title']]),
       '#attributes' => [
         'data-lazy' => TRUE,
