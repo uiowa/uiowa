@@ -5,6 +5,47 @@
   width: 100%;
 }
 
+// Add margin above a container with a background color if it appears below the page title
+.layout--onecol--no--background:not([class*="bg-"])+.layout__container[class*="bg-"] {
+  margin-top: 1.5rem;
+}
+
+// The second selector tightens up the space below a page title like on http: //gradinformatics.local.drupal.uiowa.edu/programs/bioinformatics-and-computational-biology
+.layout--onecol--no--background+.layout__container:not([class*="bg-"]) {
+  padding-bottom: 1.5rem;
+  padding-top: 1.5rem;
+}
+
+// Adjust container padding if container is adjacent to hero background container
+.layout--onecol--background:not([class*="layout--onecol--no--background"])+.layout__container:not([class*="bg-"]):not(:last-child) {
+  padding-bottom: 1.5rem;
+}
+
+// padding overides
+.layout--onecol--no--background+.layout__container:not([class*="bg-"]),
+.layout--onecol--background:not([class*="layout--onecol--no--background"])+.layout__container:not([class*="bg-"]):not(:last-child) {
+  &.section-padding__removed {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  &.section-padding__removed-bottom {
+    padding-bottom: 0;
+  }
+
+  &.section-padding__removed-top {
+    padding-top: 0;
+  }
+
+  &.section-padding__top-extra {
+    padding-top: 6rem;
+  }
+
+  &.section-padding__bottom-extra {
+    padding-bottom: 6rem;
+  }
+}
+
 /*
  * @todo Move this to a more appropriate location
  */
@@ -17,11 +58,13 @@
 
 .content__container {
   .layout--onecol {
+
     &--background,
     &--no--background {
       &.layout__container {
         margin-bottom: 0;
       }
+
       .lb__container {
         @extend %container;
       }
