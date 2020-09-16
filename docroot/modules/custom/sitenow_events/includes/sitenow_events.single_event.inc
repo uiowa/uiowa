@@ -17,7 +17,9 @@ function template_preprocess_sitenow_events_single_event(array &$variables) {
   $variables['#attached']['library'][] = 'sitenow_events/single-event';
 
   // Filter the description for any XSS.
-  $variables['event']['description'] = Xss::filterAdmin($variables['event']['description']);
+  if (isset($variables['event']['description'])) {
+    $variables['event']['description'] = Xss::filterAdmin($variables['event']['description']);
+  }
 
   // Prepare the a11y statement.
   $variables['event']['accessibility_statement'] = t('Individuals with disabilities are encouraged to attend all University of Iowa–sponsored events. If you are a person with a disability who requires a reasonable accommodation in order to participate in this program, please contact @name in advance at <a href="tel:@phone">@phone</a> or <a href="mailto:@email">@email</a>.', [
