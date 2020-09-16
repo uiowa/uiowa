@@ -53,8 +53,9 @@ class UiowaBlockHeadline extends FieldItemBase {
    * {@inheritdoc}
    */
   public function isEmpty() {
-    $headline = $this->getValue('headline');
-    return $headline === NULL || $headline === '';
+    $headline = $this->get('headline')->getValue();
+    $child_heading_size = $this->get('child_heading_size')->getValue();
+    return empty($headline) && empty($child_heading_size);
   }
 
   /**

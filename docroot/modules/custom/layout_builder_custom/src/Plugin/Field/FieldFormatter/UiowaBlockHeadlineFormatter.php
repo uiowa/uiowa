@@ -24,6 +24,7 @@ class UiowaBlockHeadlineFormatter extends FormatterBase {
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $element = [];
     foreach ($items as $delta => $item) {
+      // dpm($item->getValue());
       $element[$delta] = [
         'uiowa_block_headline' => ['#markup' => '<h2>Test Placeholder</h2>'],
         '#theme' => 'uiowa_block_headline_field_type',

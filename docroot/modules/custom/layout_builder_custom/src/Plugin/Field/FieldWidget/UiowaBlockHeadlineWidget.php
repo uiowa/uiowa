@@ -32,31 +32,30 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
       'h6' => 'Heading 6',
     ];
 
-    $element['block_title'] = [
-      '#type' => 'fieldset',
-      '#title' => t('Block Title'),
-      '#collapsible' => TRUE,
-      '#collapsed' => FALSE,
-      '#tree' => FALSE,
+    $element['container'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => 'block-title--container',
+      ],
     ];
 
-    $element['block_title']['headline'] = [
+    $element['container']['headline'] = [
       '#type' => 'textfield',
       '#title' => t('Headline'),
       '#size' => 80,
-      '#default_value' => isset($items[$delta]->headline) ? $items[$delta]->headline : NULL,
+      '#default_value' => $items[$delta]->headline,
     ];
 
-    $element['block_title']['hide_headline'] = [
+    $element['container']['hide_headline'] = [
       '#type' => 'checkbox',
       '#title' => t('Visually hide title'),
-      '#default_value' => isset($items[$delta]->hide_headline) ? $items[$delta]->hide_headline : NULL,
+      '#default_value' => isset($items[$delta]->hide_headline) ? $items[$delta]->hide_headline : 0,
       '#attributes' => [
         'name' => 'block-headline-visually-hide',
       ],
     ];
 
-    $element['block_title']['heading_size'] = [
+    $element['container']['heading_size'] = [
       '#type' => 'select',
       '#title' => t('Heading size'),
       '#options' => $heading_size_options,
@@ -70,7 +69,7 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
       ],
     ];
 
-    $element['block_title']['child_heading_size'] = [
+    $element['container']['child_heading_size'] = [
       '#type' => 'select',
       '#title' => t('Child content heading size'),
       '#options' => $heading_size_options,
@@ -88,4 +87,18 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
     return $element;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
+    foreach ($values as $delta => $data) {
+      $values[$delta]['headline'] = $data['container']['headline'];
+      $values[$delta]['hide_headline'] = $data['container']['hide_headline'];
+      $values[$delta]['heading_size'] = $data['container']['heading_size'];
+      $values[$delta]['child_heading_size'] = $data['container']['child_heading_size'];
+      unset($values[$delta]['container']);
+    }
+
+    return $values;
+  }
 }
