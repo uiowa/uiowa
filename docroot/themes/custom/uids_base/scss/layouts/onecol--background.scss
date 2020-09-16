@@ -7,19 +7,17 @@
 
 // Add margin above a container with a background color if it appears below the page title
 .layout--onecol--no--background:not([class*="bg-"])+.layout__container[class*="bg-"] {
-  margin-top: 1.5rem;
+  margin-top: $mobile-width-gutter;
 }
 
 // This selector tightens up the space below a page title like on http: //gradinformatics.local.drupal.uiowa.edu/programs/bioinformatics-and-computational-biology
 .layout--onecol--no--background+.layout__container:not([class*="bg-"]) {
-  //padding-bottom: 1.5rem;
-  padding-top: 1.5rem;
+  padding-top: $mobile-width-gutter;
 }
 
-// Adjust container bottom padding if container is adjacent to page title hero background container
+// Adjust container top padding if container is adjacent to page title hero background container
 .layout--onecol--background:not([class*="layout--onecol--no--background"])+.layout__container:not([class*="bg-"]):not(:last-child) {
-  //padding-bottom: 1.5rem;
-  padding-top: 3rem;
+  padding-top: $desktop-width-gutter;
 }
 
 // Padding overrides
