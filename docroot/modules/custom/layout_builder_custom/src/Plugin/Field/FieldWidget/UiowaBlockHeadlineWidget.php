@@ -59,29 +59,8 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
       '#type' => 'select',
       '#title' => t('Heading size'),
       '#options' => $heading_size_options,
+      '#description' => t('The heading size for the block title, if used, or the size of child content headings.'),
       '#default_value' => isset($items[$delta]->heading_size) ? $items[$delta]->heading_size : 'h2',
-      '#states' => [
-        'visible' => [
-          ':input[name="block-headline-visually-hide"]' => [
-            'checked' => FALSE,
-          ],
-        ],
-      ],
-    ];
-
-    $element['container']['child_heading_size'] = [
-      '#type' => 'select',
-      '#title' => t('Child content heading size'),
-      '#options' => $heading_size_options,
-      '#default_value' => isset($items[$delta]->child_heading_size) ? $items[$delta]->child_heading_size : 'h2',
-      '#description' => t('The heading size for all child content, such as article titles.'),
-      '#states' => [
-        'visible' => [
-          ':input[name="block-headline-visually-hide"]' => [
-            'checked' => TRUE,
-          ],
-        ],
-      ],
     ];
 
     return $element;
@@ -101,4 +80,5 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
 
     return $values;
   }
+
 }
