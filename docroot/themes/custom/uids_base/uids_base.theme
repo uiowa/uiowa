@@ -405,8 +405,25 @@ function uids_base_preprocess_paragraph(&$variables) {
           }
         }
 
-        if ($parent->hasField('field_collection_heading_size')) {
-          $variables['h_size'] = $parent->get('field_collection_heading_size')->getString();
+      }
+    }
+
+    // This works for collections and sliders, not other blocks.
+    if ($parent->hasField('field_collection_headline')) {
+      $headline_fields = $parent->get('field_collection_headline')->getValue();
+      // There isn't a headline, so set the children to this heading size.
+      foreach ($headline_fields as $headline_field) {
+        if (empty($headline_field['headline'])) {
+          $variables['h_size'] = $headline_field['heading_size'];
+        }
+        else {
+          $options = [
+            'h2' => 'h3',
+            'h3' => 'h4',
+            'h5' => 'h6',
+            'h6' => 'h6'
+          ];
+          $variables['h_size'] = $options[$headline_field['heading_size']];
         }
       }
     }
