@@ -1051,3 +1051,40 @@ function sitenow_update_8031() {
   // Activating/deactivating splits sometimes requires a cache rebuild.
   drupal_flush_all_caches();
 }
+
+/**
+ * Move all managed unused files to temporary status.
+ */
+function sitenow_update_8032() {
+  $query_force_temp_on_unused_managed_files = "
+  UPDATE
+    {file_managed} AS b1,
+    (
+      SELECT
+        DISTINCT {file_managed}.fid AS file_managed_fid
+      FROM
+        {file_managed}
+      LEFT JOIN
+        {file_usage} file_usage_file_managed
+        ON {file_managed}.fid = {file_usage_file_managed}.fid
+      GROUP BY
+        {file_managed}.fid
+      HAVING
+        (COUNT(file_usage_file_managed.count) = 0)
+    ) AS b2
+  SET
+    b1.status = 0
+  WHERE
+    b1.fid = b2.file_managed_fid;";
+
+  $database = \Drupal::database();
+  $query = $database->query($query_force_temp_on_unused_managed_files);
+
+  // Attempt to execute query, throw error if it failed.
+  if ($query->execute()) {
+    return t('Successfully flagged all file entities with no value in table file_usage for removal after 6 hours on cron run.');
+  }
+  else {
+    throw new UpdateException('Query failed to execute.');
+  }
+}
