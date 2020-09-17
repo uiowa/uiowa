@@ -19,33 +19,34 @@ $imgpath: '../../uids/assets/images';
   }
 
   // For 1+n containers, set default padding-top.
-  ~ & {
+  ~ .layout__container {
     padding-top: $mobile-width-gutter;
 
     @include breakpoint(container) {
-      padding-bottom: $desktop-width-gutter;
+      padding-top: $desktop-width-gutter;
     }
   }
 
-  // This selector addresses overriding padding for two adjacent containers
-  // without background colors except splits the padding between the two
-  // adjacent containers instead of stripping the top or bottom only.  This
-  // seems to allow more flexibility for default space if a container with
-  // a bg color sits below a container like below the race/ethnicity section
-  // on https://uiowa.local.drupal.uiowa.edu/about-iowa :
-  // https://github.com/uiowa/uiowa/pull/2076#issuecomment-689112678
+  // Loop through all the background colors and create a rule to remove top padding from the second one.
+  $bgs: 'bg--gold', 'bg--black', 'bg--gray', 'bg-pattern--brain', 'bg-pattern--brain-reversed', 'bg-pattern--brain-black';
 
-  &:not([class*="bg-"])+.layout__container:not([class*="bg-"]) {
-    padding-top: 0;
-  }
+  @each $bg in $bgs {
+    // This targets the second item in a pair that match the rule.
+    &.#{$bg} + &.#{$bg} {
+      padding-top: 0;
 
-  // Add back in padding for sections directly below a container with
-  // class*="bg- : View horizontal menu block on
-  // https://uiowa.local.drupal.uiowa.edu/admissions - maintains top
-  // spacing while adjusting bottom
+      // Necessary to restore padding
+      &.section-padding {
+        // @todo Is this necessary?
+        //&__removed-top {
+        //  padding-top: 0;
+        //}
 
-  &[class*="bg-"]+.layout__container:not([class*="bg-"]) {
-    padding-top: $desktop-width-gutter;
+        &__top-extra {
+          padding-top: 6rem;
+        }
+      }
+    }
   }
 
   // LBS padding classes
@@ -68,28 +69,6 @@ $imgpath: '../../uids/assets/images';
     }
   }
 
-  // @todo Can this be removed?
-
-  //&:not([class*="bg-"])+.layout__container:not([class*="bg-"]),
-  //&[class*="bg-"]+.layout__container:not([class*="bg-"]) {
-  //  &.section-padding__removed-bottom {
-  //    padding-bottom: 0;
-  //  }
-  //
-  //  &.section-padding__removed-top {
-  //    padding-top: 0;
-  //  }
-  //
-  //  &.section-padding__top-extra {
-  //    padding-top: 6rem;
-  //  }
-  //
-  //  &.section-padding__bottom-extra {
-  //    padding-bottom: 6rem;
-  //  }
-  //}
-
-
   // @todo Where should this live?
   .block-inline-blockuiowa-text-area {
     //width: 100%;
@@ -109,23 +88,6 @@ $imgpath: '../../uids/assets/images';
   .block-inline-blockuiowa-text-area,
   .block-views {
     //flex-basis: 100%;
-  }
-}
-
-.layout--twocol.layout,
-.layout--twocol.layout .lb__container {
-  flex-basis: 100%;
-}
-
-.layout--onecol {
-
-  .feature,
-  .banner {
-    flex-basis: 100%;
-
-    .section-column__row & {
-      flex-basis: unset;
-    }
   }
 }
 
@@ -445,5 +407,22 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   .o-canvas__group {
     -ms-flex-preferred-size: 100% !important;
     flex-basis: 100% !important;
+  }
+}
+
+.layout--twocol.layout,
+.layout--twocol.layout .lb__container {
+  flex-basis: 100%;
+}
+
+.layout--onecol {
+
+  .feature,
+  .banner {
+    flex-basis: 100%;
+
+    .section-column__row & {
+      flex-basis: unset;
+    }
   }
 }
