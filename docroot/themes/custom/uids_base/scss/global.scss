@@ -5,13 +5,92 @@ $imgpath: '../../uids/assets/images';
 @import "../uids/assets/scss/_base.scss";
 
 
+
+// Layout container padding
+
 .layout__container {
-  &:first-of-type {
-    // Setting these values to 0 for page title blocks
-    margin-top: 0;
+  margin-top: 0;
+  padding-bottom: $mobile-width-gutter;
+  // This will be overridden by a subsequent style for 1+n containers.
+  padding-top: 0;
+
+  @include breakpoint(container) {
+    padding-bottom: $desktop-width-gutter;
+  }
+
+  // For 1+n containers, set default padding-top.
+  ~ & {
+    padding-top: $mobile-width-gutter;
+
+    @include breakpoint(container) {
+      padding-bottom: $desktop-width-gutter;
+    }
+  }
+
+  // This selector addresses overriding padding for two adjacent containers
+  // without background colors except splits the padding between the two
+  // adjacent containers instead of stripping the top or bottom only.  This
+  // seems to allow more flexibility for default space if a container with
+  // a bg color sits below a container like below the race/ethnicity section
+  // on https://uiowa.local.drupal.uiowa.edu/about-iowa :
+  // https://github.com/uiowa/uiowa/pull/2076#issuecomment-689112678
+
+  &:not([class*="bg-"])+.layout__container:not([class*="bg-"]) {
     padding-top: 0;
   }
 
+  // Add back in padding for sections directly below a container with
+  // class*="bg- : View horizontal menu block on
+  // https://uiowa.local.drupal.uiowa.edu/admissions - maintains top
+  // spacing while adjusting bottom
+
+  &[class*="bg-"]+.layout__container:not([class*="bg-"]) {
+    padding-top: $desktop-width-gutter;
+  }
+
+  // LBS padding classes
+
+  &.section-padding {
+    &__removed-top {
+      padding-top: 0;
+    }
+
+    &__removed-bottom {
+      padding-bottom: 0;
+    }
+
+    &__top-extra {
+      padding-top: 6rem;
+    }
+
+    &__bottom-extra {
+      padding-bottom: 6rem;
+    }
+  }
+
+  // @todo Can this be removed?
+
+  //&:not([class*="bg-"])+.layout__container:not([class*="bg-"]),
+  //&[class*="bg-"]+.layout__container:not([class*="bg-"]) {
+  //  &.section-padding__removed-bottom {
+  //    padding-bottom: 0;
+  //  }
+  //
+  //  &.section-padding__removed-top {
+  //    padding-top: 0;
+  //  }
+  //
+  //  &.section-padding__top-extra {
+  //    padding-top: 6rem;
+  //  }
+  //
+  //  &.section-padding__bottom-extra {
+  //    padding-bottom: 6rem;
+  //  }
+  //}
+
+
+  // @todo Where should this live?
   .block-inline-blockuiowa-text-area {
     //width: 100%;
     //flex: 1 0 auto;
@@ -23,6 +102,7 @@ $imgpath: '../../uids/assets/images';
     }
   }
 
+  // @todo Can this be removed?
   .block-system-breadcrumb-block,
   .block-field-blocknodepagetitle,
   .block-field-blocknodepagebody,
@@ -31,62 +111,6 @@ $imgpath: '../../uids/assets/images';
     //flex-basis: 100%;
   }
 }
-
-// ie11
-
-@media all and (-ms-high-contrast: none),
-(-ms-high-contrast: active) {
-  .layout__container .block-inline-blockuiowa-text-area {
-    flex-basis: auto;
-  }
-
-  .o-canvas__group {
-    -ms-flex-preferred-size: auto !important;
-    flex-basis: auto !important;
-  }
-
-  .card__body {
-    flex: auto !important;
-  }
-
-  .card.card--horizontal .card__body {
-    flex: 1 !important;
-    flex-direction: column;
-  }
-
-  .card.card--horizontal>* {
-    flex-direction: unset;
-    display: block !important;
-  }
-
-  .paragraph--type--articles.list .card__body,
-  .paragraph--type--people.list .card__body,
-  .paragraph--type--events.list .card__body,
-  .view-display-id-page_articles .card__body,
-  .paragraph--type--featured-content.list .card__body,
-  .view-id-people .card__body,
-  .view-display-id-page_articles .view-content {
-    flex: 1 !important;
-  }
-
-
-  .paragraph--type--articles.list .view-content,
-  .paragraph--type--people.list .view-content,
-  .view-display-id-page_articles .view-content,
-  .paragraph--type--featured-content.list .field--name-field-featured-content {
-    display: block !important;
-  }
-
-  .view-id-people .card--list,
-  .view-id-people .node--type-article {
-    display: flex !important;
-  }
-
-  #superfish-main-accordion {
-    position: relative !important;
-  }
-}
-
 
 .layout--twocol.layout,
 .layout--twocol.layout .lb__container {
@@ -102,14 +126,6 @@ $imgpath: '../../uids/assets/images';
     .section-column__row & {
       flex-basis: unset;
     }
-  }
-}
-
-@media all and (min-width: 0px) and (max-width: 855px) and (-ms-high-contrast: none),
-(-ms-high-contrast: active) {
-  .o-canvas__group {
-    -ms-flex-preferred-size: 100% !important;
-    flex-basis: 100% !important;
   }
 }
 
@@ -153,7 +169,6 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   max-width: 100%;
 }
 
-
 // default spacing for layout builder pages with container set in theme settings
 
 .content__container {
@@ -183,52 +198,6 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   }
 }
 
-// layout container padding
-
-.layout__container {
-  padding-bottom: $mobile-width-gutter;
-  padding-top: $mobile-width-gutter;
-
-  @include breakpoint(container) {
-    padding-bottom: $desktop-width-gutter;
-    padding-top: $desktop-width-gutter;
-  }
-
-  // This selector addresses overriding padding for two adjacent containers without background colors except splits the padding between the two adjacent containers instead of stripping the top or bottom only.  This seems to allow more flexibility for default space if a container with a bg color sits below a container like below the race/ethnicity section on https://uiowa.local.drupal.uiowa.edu/about-iowa : https://github.com/uiowa/uiowa/pull/2076#issuecomment-689112678
-
-  &:not([class*="bg-"])+.layout__container:not([class*="bg-"]) {
-    padding-top: 0;
-  }
-
-  // Add back in padding for sections directly below a container with class*="bg- : View horizontal menu block on https://uiowa.local.drupal.uiowa.edu/admissions - maintains top spacing while adjusting bottom
-
-  &[class*="bg-"]+.layout__container:not([class*="bg-"]) {
-    padding-top: $desktop-width-gutter;
-  }
-
-  // padding overrides to make sure layout builder padding styles will work on these sections
-
-  &:not([class*="bg-"])+.layout__container:not([class*="bg-"]),
-  &[class*="bg-"]+.layout__container:not([class*="bg-"]) {
-    &.section-padding__removed-bottom {
-      padding-bottom: 0;
-    }
-
-    &.section-padding__removed-top {
-      padding-top: 0;
-    }
-
-    &.section-padding__top-extra {
-      padding-top: 6rem;
-    }
-
-    &.section-padding__bottom-extra {
-      padding-bottom: 6rem;
-    }
-  }
-
-}
-
 // default left/right gutter spacing for full width settings without layout builder
 // settings if page container full or edge is selected on section
 
@@ -249,28 +218,6 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
     margin-right: 0;
     margin-left: 0;
   }
-}
-
-
-// layout builder styles padding classes
-
-.section-padding {
-  &__removed-top {
-    padding-top: 0;
-  }
-
-  &__removed-bottom {
-    padding-bottom: 0;
-  }
-
-  &__top-extra {
-    padding-top: 6rem;
-  }
-
-  &__bottom-extra {
-    padding-bottom: 6rem;
-  }
-
 }
 
 // Block Margins / Padding
@@ -433,8 +380,70 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 }
 
 
-// todo remomve
+// @todo remove
 
 .uids-component--alert {
   margin-top: 0;
+}
+
+// ie11
+
+@media all and (-ms-high-contrast: none),
+(-ms-high-contrast: active) {
+  .layout__container .block-inline-blockuiowa-text-area {
+    flex-basis: auto;
+  }
+
+  .o-canvas__group {
+    -ms-flex-preferred-size: auto !important;
+    flex-basis: auto !important;
+  }
+
+  .card__body {
+    flex: auto !important;
+  }
+
+  .card.card--horizontal .card__body {
+    flex: 1 !important;
+    flex-direction: column;
+  }
+
+  .card.card--horizontal>* {
+    flex-direction: unset;
+    display: block !important;
+  }
+
+  .paragraph--type--articles.list .card__body,
+  .paragraph--type--people.list .card__body,
+  .paragraph--type--events.list .card__body,
+  .view-display-id-page_articles .card__body,
+  .paragraph--type--featured-content.list .card__body,
+  .view-id-people .card__body,
+  .view-display-id-page_articles .view-content {
+    flex: 1 !important;
+  }
+
+  .paragraph--type--articles.list .view-content,
+  .paragraph--type--people.list .view-content,
+  .view-display-id-page_articles .view-content,
+  .paragraph--type--featured-content.list .field--name-field-featured-content {
+    display: block !important;
+  }
+
+  .view-id-people .card--list,
+  .view-id-people .node--type-article {
+    display: flex !important;
+  }
+
+  #superfish-main-accordion {
+    position: relative !important;
+  }
+}
+
+@media all and (min-width: 0px) and (max-width: 855px) and (-ms-high-contrast: none),
+(-ms-high-contrast: active) {
+  .o-canvas__group {
+    -ms-flex-preferred-size: 100% !important;
+    flex-basis: 100% !important;
+  }
 }
