@@ -4,10 +4,10 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_events
-    - field.field.block_content.uiowa_events.field_collection_headline
     - field.field.block_content.uiowa_events.field_collection_more
     - field.field.block_content.uiowa_events.field_collection_more_path
     - field.field.block_content.uiowa_events.field_collection_results
+    - field.field.block_content.uiowa_events.field_uiowa_block_headline
     - field.field.block_content.uiowa_events.field_uiowa_events_audiences
     - field.field.block_content.uiowa_events.field_uiowa_events_department
     - field.field.block_content.uiowa_events.field_uiowa_events_interests
@@ -22,12 +22,6 @@ targetEntityType: block_content
 bundle: uiowa_events
 mode: default
 content:
-  field_collection_headline:
-    weight: 1
-    settings: {  }
-    third_party_settings: {  }
-    type: uiowa_block_headline_widget
-    region: content
   field_collection_more:
     weight: 9
     settings:
@@ -49,6 +43,12 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: number
+    region: content
+  field_uiowa_block_headline:
+    weight: 26
+    settings: {  }
+    third_party_settings: {  }
+    type: uiowa_block_headline_widget
     region: content
   field_uiowa_events_audiences:
     weight: 3

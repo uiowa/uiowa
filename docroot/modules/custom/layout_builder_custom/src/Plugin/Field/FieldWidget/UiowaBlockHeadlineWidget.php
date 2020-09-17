@@ -87,7 +87,6 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
       $values[$delta]['headline'] = $data['container']['headline'];
       $values[$delta]['hide_headline'] = $data['container']['hide_headline'];
       $values[$delta]['heading_size'] = $data['container']['heading_size'];
-      $values[$delta]['child_heading_size'] = $data['container']['child_heading_size'];
       unset($values[$delta]['container']);
     }
 

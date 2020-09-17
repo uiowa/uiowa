@@ -5,12 +5,12 @@ dependencies:
   config:
     - block_content.type.uiowa_articles
     - field.field.block_content.uiowa_articles.field_collection_heading_size
-    - field.field.block_content.uiowa_articles.field_collection_headline
     - field.field.block_content.uiowa_articles.field_collection_more
     - field.field.block_content.uiowa_articles.field_collection_more_path
     - field.field.block_content.uiowa_articles.field_collection_pager
     - field.field.block_content.uiowa_articles.field_collection_reference
     - field.field.block_content.uiowa_articles.field_collection_results
+    - field.field.block_content.uiowa_articles.field_uiowa_block_headline
   module:
     - layout_builder_custom
     - link
@@ -24,12 +24,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: options_select
-    region: content
-  field_collection_headline:
-    weight: 1
-    settings: {  }
-    third_party_settings: {  }
-    type: uiowa_block_headline_widget
     region: content
   field_collection_more:
     weight: 6
@@ -69,6 +63,12 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: number
+    region: content
+  field_uiowa_block_headline:
+    weight: 26
+    settings: {  }
+    third_party_settings: {  }
+    type: uiowa_block_headline_widget
     region: content
   info:
     type: string_textfield
