@@ -5,13 +5,11 @@ dependencies:
   config:
     - block_content.type.uiowa_collection
     - core.entity_view_mode.block_content.tab
-    - field.field.block_content.uiowa_collection.field_collection_heading_size
     - field.field.block_content.uiowa_collection.field_uiowa_block_headline
     - field.field.block_content.uiowa_collection.field_uiowa_collection_items
   module:
     - entity_reference_revisions
     - layout_builder
-    - options
 third_party_settings:
   layout_builder:
     allow_custom: false
@@ -21,13 +19,6 @@ targetEntityType: block_content
 bundle: uiowa_collection
 mode: tab
 content:
-  field_collection_heading_size:
-    type: list_key
-    weight: 1
-    region: content
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
   field_uiowa_collection_items:
     type: entity_reference_revisions_entity_view
     weight: 0
