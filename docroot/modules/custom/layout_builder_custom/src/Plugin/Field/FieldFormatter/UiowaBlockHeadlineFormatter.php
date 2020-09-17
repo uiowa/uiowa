@@ -24,10 +24,9 @@ class UiowaBlockHeadlineFormatter extends FormatterBase {
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $element = [];
     foreach ($items as $delta => $item) {
-      $hide_headline = $item->get('hide_headline')->getValue();
       $headline = $item->get('headline')->getValue();
       $heading_size = $item->get('heading_size')->getValue();
-      $markup = ($hide_headline || empty($headline)) ? NULL : '<' . $heading_size . '>' . $headline . '</' . $heading_size . '>';
+      $markup = (empty($headline)) ? NULL : '<' . $heading_size . '>' . $headline . '</' . $heading_size . '>';
       $element[$delta] = [
         'uiowa_block_headline' => ['#markup' => $markup],
         '#theme' => 'uiowa_block_headline_field_type',

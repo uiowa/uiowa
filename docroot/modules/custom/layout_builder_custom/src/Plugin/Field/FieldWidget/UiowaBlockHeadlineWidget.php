@@ -33,7 +33,10 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
     ];
 
     $element['container'] = [
-      '#type' => 'container',
+      '#type' => 'fieldset',
+      '#title' => 'Block Headline',
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
       '#attributes' => [
         'class' => 'block-title--container',
       ],
@@ -43,9 +46,9 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
       '#type' => 'textfield',
       '#title' => t('Headline'),
       '#size' => 80,
-      '#default_value' => $items[$delta]->headline,
+      '#default_value' => isset($items[$delta]->headline) ? $items[$delta]->headline : NULL,
       '#attributes' => [
-        'name' => 'block-headline',
+        'id' => 'uiowa-block-headline-field',
       ],
     ];
 
@@ -53,12 +56,9 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
       '#type' => 'checkbox',
       '#title' => t('Visually hide title'),
       '#default_value' => isset($items[$delta]->hide_headline) ? $items[$delta]->hide_headline : 0,
-      '#attributes' => [
-        'name' => 'block-headline-visually-hide',
-      ],
       '#states' => [
         'visible' => [
-          ':input[name="block-headline"]' => ['filled' => TRUE],
+          ':input[id="uiowa-block-headline-field"]' => ['filled' => TRUE],
         ],
       ],
     ];
@@ -71,7 +71,7 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
       '#default_value' => isset($items[$delta]->heading_size) ? $items[$delta]->heading_size : 'h2',
       '#states' => [
         'visible' => [
-          ':input[name="block-headline"]' => ['filled' => TRUE],
+          ':input[id="uiowa-block-headline-field"]' => ['filled' => TRUE],
         ],
       ],
     ];
@@ -89,7 +89,6 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
       $values[$delta]['heading_size'] = $data['container']['heading_size'];
       unset($values[$delta]['container']);
     }
-
     return $values;
   }
 
