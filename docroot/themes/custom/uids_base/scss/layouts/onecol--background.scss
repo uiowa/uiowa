@@ -16,13 +16,13 @@
 }
 
 // Adjust container top padding if container is adjacent to page title hero background container
-.layout--onecol--background:not([class*="layout--onecol--no--background"])+.layout__container:not([class*="bg-"]):not(:last-child) {
+.layout--onecol--background:not([class*="layout--onecol--no--background"])+.layout__container:not([class*="bg-"]){
   padding-top: $desktop-width-gutter;
 }
 
 // Padding overrides
 .layout--onecol--no--background+.layout__container:not([class*="bg-"]),
-.layout--onecol--background:not([class*="layout--onecol--no--background"])+.layout__container:not([class*="bg-"]):not(:last-child) {
+.layout--onecol--background:not([class*="layout--onecol--no--background"])+.layout__container:not([class*="bg-"]) {
   &.section-padding__removed-bottom {
     padding-bottom: 0;
   }
