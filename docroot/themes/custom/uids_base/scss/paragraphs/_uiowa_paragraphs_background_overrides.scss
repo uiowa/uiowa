@@ -162,7 +162,7 @@
 
     .more-link {
         .btn-primary {
-            color: #fff;
+            color: $white;
             background: $secondary;
         }
     }
@@ -551,7 +551,7 @@
         .views-row
         {
             a {
-                color: #fff;
+                color: $white;
             }
         }
     }
@@ -571,7 +571,7 @@
     .paragraph--type--events.list {
         .card {
             a {
-                color: #fff;
+                color: $white;
             }
         }
     }
@@ -581,7 +581,7 @@
 
         .field a,
         h3 a {
-            color: #fff;
+            color: $white;
         }
     }
 }
@@ -754,9 +754,13 @@
                 text-decoration: none;
             }
         }
+    }
+    .list {
+      .card__body {
         .card__title a {
           color: $white !important;
         }
+      }
     }
 
     .paragraph--type--articles.list,
@@ -766,7 +770,10 @@
         .article-created-date,
         .field__item,
         .field__label {
-            color: #fff;
+            color: $white;
+        }
+       .card__body .article-meta a {
+          color: $white;
         }
 
         .views-row {
@@ -789,7 +796,7 @@
 
         .card__author,
         p {
-            color: #fff;
+            color: $white;
         }
 
         .card {
@@ -798,13 +805,18 @@
             border-bottom: 1px solid #ffffff21;
         }
     }
+    .paragraph--type--events.list {
+      .event-location {
+        color: $white;
+      }
+    }
 
     .paragraph--type--featured-content.list {
 
         .article-created-date,
         .card__author,
         .field {
-            color: #fff;
+            color: $white;
         }
 
 
