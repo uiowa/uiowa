@@ -4,8 +4,10 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_text_area
+    - field.field.block_content.uiowa_text_area.field_uiowa_block_headline
     - field.field.block_content.uiowa_text_area.field_uiowa_text_area
   module:
+    - layout_builder_custom
     - text
 _core:
   default_config_hash: zuy-1leukwzvS1fByqQviHLv22AI7ESMuIbFQHTICL4
@@ -14,6 +16,13 @@ targetEntityType: block_content
 bundle: uiowa_text_area
 mode: default
 content:
+  field_uiowa_block_headline:
+    weight: 2
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: uiowa_block_headline_formatter
+    region: content
   field_uiowa_text_area:
     weight: 1
     label: hidden
