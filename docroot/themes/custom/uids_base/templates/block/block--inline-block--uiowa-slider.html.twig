@@ -30,11 +30,13 @@
     'slider',
   ]
 %}
-{% block heading %}
-  <div class="uiowa-slider__title">
-    {{ content.field_uiowa_block_headline }}
-  </div>
-{% endblock %}
+{% if content.field_uiowa_block_headline.value %}
+  {% block heading %}
+    <div class="uiowa-slider__title">
+      {{ content.field_uiowa_block_headline }}
+    </div>
+  {% endblock %}
+{% endif %}
 {{ attach_library('uids_base/slider') }}
 <div{{ attributes.addClass(classes) }}>
   {{ title_prefix }}

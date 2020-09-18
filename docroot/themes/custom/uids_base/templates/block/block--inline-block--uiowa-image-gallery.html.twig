@@ -35,11 +35,13 @@
 <div{{ attributes.addClass(classes) }}>
   {{ title_prefix }}
 
-  {% block heading %}
-    <div class="uiowa-image-gallery__title">
-      {{ content.field_uiowa_block_headline }}
-    </div>
-  {% endblock %}
+  {% if content.field_uiowa_block_headline.value %}
+    {% block heading %}
+      <div class="uiowa-image-gallery__title">
+        {{ content.field_uiowa_block_headline }}
+      </div>
+    {% endblock %}
+  {% endif %}
   
   {{ title_suffix }}
   <div class="uiowa-image-gallery">
