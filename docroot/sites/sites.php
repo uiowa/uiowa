@@ -1583,3 +1583,9 @@ $sites['orgavclub.local.drupal.uiowa.edu'] = 'avclub.org.uiowa.edu';
 $sites['orgavclub.dev.drupal.uiowa.edu'] = 'avclub.org.uiowa.edu';
 $sites['orgavclub.stage.drupal.uiowa.edu'] = 'avclub.org.uiowa.edu';
 $sites['orgavclub.prod.drupal.uiowa.edu'] = 'avclub.org.uiowa.edu';
+
+// Directory aliases for appliedphys.lab.uiowa.edu.
+$sites['labappliedphys.local.drupal.uiowa.edu'] = 'appliedphys.lab.uiowa.edu';
+$sites['labappliedphys.dev.drupal.uiowa.edu'] = 'appliedphys.lab.uiowa.edu';
+$sites['labappliedphys.stage.drupal.uiowa.edu'] = 'appliedphys.lab.uiowa.edu';
+$sites['labappliedphys.prod.drupal.uiowa.edu'] = 'appliedphys.lab.uiowa.edu';
