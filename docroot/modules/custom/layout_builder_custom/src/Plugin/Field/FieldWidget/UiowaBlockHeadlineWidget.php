@@ -42,7 +42,7 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
 
     $element['container']['headline'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Headline'),
+      '#title' => $this->t('Block title'),
       '#size' => 80,
       '#default_value' => isset($items[$delta]->headline) ? $items[$delta]->headline : NULL,
       '#attributes' => [
@@ -65,7 +65,7 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
       '#type' => 'select',
       '#title' => $this->t('Heading size'),
       '#options' => $heading_size_options,
-      '#description' => $this->t('The heading size for the block title, if used, or the size of child content headings.'),
+      '#description' => $this->t('The heading size for the block title. Child content headings will be set according to this.'),
       '#default_value' => isset($items[$delta]->heading_size) ? $items[$delta]->heading_size : 'h2',
       '#states' => [
         'visible' => [
