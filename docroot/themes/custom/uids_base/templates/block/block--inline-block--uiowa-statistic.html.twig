@@ -25,6 +25,8 @@
  * @see template_preprocess_block()
  */
 #}
+{% set stat_classes = [] %}
+
 {% if content.field_uiowa_statistic_content[0]['#context']['value'] is not null %}
 	{% set stat_classes = 'stat stat__grid stat--transform' %}
 {% endif %}
