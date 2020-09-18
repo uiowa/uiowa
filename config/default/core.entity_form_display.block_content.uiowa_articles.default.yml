@@ -19,21 +19,15 @@ targetEntityType: block_content
 bundle: uiowa_articles
 mode: default
 content:
-  field_collection_heading_size:
-    weight: 5
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
-    region: content
   field_collection_more:
-    weight: 6
+    weight: 5
     settings:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
   field_collection_more_path:
-    weight: 7
+    weight: 6
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -78,4 +72,5 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  field_collection_heading_size: true

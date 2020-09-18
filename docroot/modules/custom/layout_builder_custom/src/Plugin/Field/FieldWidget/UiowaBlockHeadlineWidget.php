@@ -33,10 +33,8 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
     ];
 
     $element['container'] = [
-      '#type' => 'fieldset',
+      '#type' => 'container',
       '#title' => 'Block Headline',
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
       '#attributes' => [
         'class' => 'block-title--container',
       ],
