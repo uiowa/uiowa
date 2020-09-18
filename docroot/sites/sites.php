@@ -1577,3 +1577,9 @@ $sites['orgshpe.local.drupal.uiowa.edu'] = 'shpe.org.uiowa.edu';
 $sites['orgshpe.dev.drupal.uiowa.edu'] = 'shpe.org.uiowa.edu';
 $sites['orgshpe.stage.drupal.uiowa.edu'] = 'shpe.org.uiowa.edu';
 $sites['orgshpe.prod.drupal.uiowa.edu'] = 'shpe.org.uiowa.edu';
+
+// Directory aliases for avclub.org.uiowa.edu.
+$sites['orgavclub.local.drupal.uiowa.edu'] = 'avclub.org.uiowa.edu';
+$sites['orgavclub.dev.drupal.uiowa.edu'] = 'avclub.org.uiowa.edu';
+$sites['orgavclub.stage.drupal.uiowa.edu'] = 'avclub.org.uiowa.edu';
+$sites['orgavclub.prod.drupal.uiowa.edu'] = 'avclub.org.uiowa.edu';
