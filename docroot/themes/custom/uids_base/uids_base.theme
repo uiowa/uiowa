@@ -407,8 +407,8 @@ function uids_base_preprocess_paragraph(&$variables) {
         // This works for collections and sliders, not other blocks.
         if ($parent->hasField('field_uiowa_block_headline')) {
           $headline_fields = $parent->get('field_uiowa_block_headline')->getValue();
-          // There isn't a headline, so set the children to this heading size.
           foreach ($headline_fields as $headline_field) {
+            // There isn't a headline, so set the children to this heading size.
             if (empty($headline_field['headline'])) {
               $variables['h_size'] = 'h2';
             }
