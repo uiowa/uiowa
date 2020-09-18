@@ -36,7 +36,26 @@ function sitenow_events_preprocess_block(&$variables) {
     ]);
 
     if (isset($data['events'])) {
-      $heading_size = $block->get('field_collection_heading_size')->getString() ?? 'h3';
+      if ($block->hasField('field_uiowa_block_headline')) {
+        $headline_fields = $block->get('field_uiowa_block_headline')->getValue();
+        foreach ($headline_fields as $headline_field) {
+          // There isn't a headline, so set the children to this heading size.
+          if (empty($headline_field['headline'])) {
+            $variables['h_size'] = 'h2';
+          }
+          else {
+            $options = [
+              'h2' => 'h3',
+              'h3' => 'h4',
+              'h5' => 'h6',
+              'h6' => 'h6',
+            ];
+            $heading_size = $options[$headline_field['heading_size']];
+          }
+        }
+      } else {
+        $heading_size = 'h3';
+      }
 
       foreach ($data['events'] as $value) {
         // The API nests each event as an array.

@@ -491,8 +491,23 @@ function sitenow_people_preprocess_block(&$variables) {
       $view->setArguments([$args]);
 
       // Set custom view variable to send to person teaser template.
-      if ($block->hasField('field_collection_heading_size')) {
-        $view->display_handler->setOption('content_heading', $block->field_collection_heading_size->value);
+      if ($block->hasField('field_uiowa_block_headline')) {
+        $headline_fields = $block->get('field_uiowa_block_headline')->getValue();
+        foreach ($headline_fields as $headline_field) {
+          // There isn't a headline, so set the children to this heading size.
+          if (empty($headline_field['headline'])) {
+            $variables['h_size'] = 'h2';
+          }
+          else {
+            $options = [
+              'h2' => 'h3',
+              'h3' => 'h4',
+              'h5' => 'h6',
+              'h6' => 'h6',
+            ];
+            $view->display_handler->setOption('content_heading', $options[$headline_field['heading_size']]);
+          }
+        }
       }
 
       if ($block->hasField('field_collection_results') && !$block->get('field_collection_results')->isEmpty()) {
