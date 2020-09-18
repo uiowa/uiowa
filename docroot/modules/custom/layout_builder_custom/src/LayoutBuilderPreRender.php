@@ -4,9 +4,14 @@ namespace Drupal\layout_builder_custom;
 
 use Drupal\Core\Render\Element;
 use Drupal\Core\Security\TrustedCallbackInterface;
-use Drupal\Core\Url;
 use Drupal\layout_builder_styles\Entity\LayoutBuilderStyle;
 
+/**
+ * Layout builder pre-render class.
+ *
+ * Adds layout builder style background class to
+ * the 'layout-builder__section' container.
+ */
 class LayoutBuilderPreRender implements TrustedCallbackInterface {
 
   /**
@@ -17,7 +22,7 @@ class LayoutBuilderPreRender implements TrustedCallbackInterface {
   }
 
   /**
-   * #pre_render callback: Alters layout builder to use dropbuttons to add custom blocks.
+   * Pre-render callback for Layout Builder.
    */
   public static function preRender($element) {
     $lb = &$element['layout_builder'];

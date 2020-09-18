@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\layout_builder_custom\LayoutBuilderPreRender;
 use Drupal\layout_builder_styles\LayoutBuilderStyleGroups;
 
 /**
@@ -18,7 +19,7 @@ use Drupal\layout_builder_styles\LayoutBuilderStyleGroups;
  *   The types to be altered.
  */
 function layout_builder_custom_element_info_alter(array &$types) {
-  $types['layout_builder']['#pre_render'][] = Drupal\layout_builder_custom\LayoutBuilderPreRender::class . '::preRender';
+  $types['layout_builder']['#pre_render'][] = LayoutBuilderPreRender::class . '::preRender';
 }
 
 /**
