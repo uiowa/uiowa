@@ -27,12 +27,20 @@ $imgpath: '../../uids/assets/images';
     }
   }
 
-  // Loop through all the background colors and create a rule to remove top padding from the second one.
-  $bgs: 'bg--gold', 'bg--black', 'bg--gray', 'bg-pattern--brain', 'bg-pattern--brain-reversed', 'bg-pattern--brain-black';
+  // Loop through all the background options and create a
+  // rule to remove top padding from the second one.
+  $backgrounds:
+    ':not([class*="bg-"])',
+    '.bg--gold',
+    '.bg--black',
+    '.bg--gray',
+    '.bg-pattern--brain',
+    '.bg-pattern--brain-reversed',
+    '.bg-pattern--brain-black';
 
-  @each $bg in $bgs {
+  @each $backgrounds in $bgs {
     // This targets the second item in a pair that match the rule.
-    &.#{$bg} + &.#{$bg} {
+    &#{$bg} + &#{$bg} {
       padding-top: 0;
 
       // Necessary to restore padding
@@ -48,6 +56,16 @@ $imgpath: '../../uids/assets/images';
       }
     }
   }
+
+  // Add back in padding for sections directly below a container with
+  // class*="bg- : View horizontal menu block on
+  // https://uiowa.local.drupal.uiowa.edu/admissions - maintains top
+  // spacing while adjusting bottom
+  // @todo Check if this is still necessary.
+
+  //&[class*="bg-"]+.layout__container:not([class*="bg-"]) {
+  //  padding-top: $desktop-width-gutter;
+  //}
 
   // LBS padding classes
 
@@ -134,12 +152,12 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 // default spacing for layout builder pages with container set in theme settings
 
 .content__container {
-  .lb__container {
+  .layout__spacing_container {
     @extend %container;
   }
 
   .page__container--extended {
-    .lb__container {
+    .layout__spacing_container {
       @include breakpoint(container) {
         max-width: 100em;
         padding-right: $lg;
@@ -149,7 +167,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   }
 
   .page__container--narrow {
-    .lb__container {
+    .layout__spacing_container {
       @include breakpoint(md) {
         max-width: 63.75em;
         margin: 0 auto;
@@ -163,7 +181,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 // default left/right gutter spacing for full width settings without layout builder
 // settings if page container full or edge is selected on section
 
-.page__container--full.layout__container .lb__container {
+.page__container--full.layout__container .layout__spacing_container {
   margin-right: $mobile-width-gutter;
   margin-left: $mobile-width-gutter;
   max-width: 100%;
@@ -175,7 +193,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 }
 
 .page__container--edge {
-  .lb__container {
+  .layout__spacing_container {
     max-width: 100%;
     margin-right: 0;
     margin-left: 0;
@@ -411,7 +429,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 }
 
 .layout--twocol.layout,
-.layout--twocol.layout .lb__container {
+.layout--twocol.layout .layout__spacing_container {
   flex-basis: 100%;
 }
 

@@ -68,6 +68,11 @@ $imgpath: '../../uids/assets/images';
   display: none;
 }
 
+// Add some space at the top of the LB controls form.
+form#node-page-layout-builder-form {
+  margin-top: 1.25rem;
+}
+
 // admin styles layout builder container reset
 
 .layout-builder {
@@ -88,7 +93,7 @@ $imgpath: '../../uids/assets/images';
     &:hover,
     &:focus {
       .layout-builder__layout {
-        .lb__container {
+        .layout__spacing_container {
           outline: 2px dashed #0036b1;
         }
       }
@@ -319,19 +324,19 @@ $imgpath: '../../uids/assets/images';
 // Layout Builder Editor Styles
 
 .layout-builder__region,
-.layout-builder__region .lb__container {
+.layout-builder__region .layout__spacing_container {
   width: 100%;
 }
 
-.layout--fourcol .lb__container>.layout__region.js-layout-builder-region {
+.layout--fourcol .layout__spacing_container>.layout__region.js-layout-builder-region {
   display: block !important;
 }
 
-.layout--threecol .lb__container>.layout__region.js-layout-builder-region {
+.layout--threecol .layout__spacing_container>.layout__region.js-layout-builder-region {
   display: block !important;
 }
 
-.layout__container .lb__container {
+.layout__container .layout__spacing_container {
 
   .layout-builder-block,
   .layout-builder__add-block {
@@ -367,7 +372,7 @@ $imgpath: '../../uids/assets/images';
 /*
 .content__container .layout-builder__section,
 .content__mixed .layout-builder__section {
-  .layout__container .lb__container {
+  .layout__container .layout__spacing_container {
     //margin: 0;
 
     @include breakpoint(container) {
@@ -381,13 +386,13 @@ $imgpath: '../../uids/assets/images';
    // margin-bottom: 0;
   }
 
-  .layout__container.page__container--full .lb__container {
+  .layout__container.page__container--full .layout__spacing_container {
     max-width: 100%;
     //margin-right: 0;
     //margin-left: 0;
   }
 
-  .layout__container.page__container--edge .lb__container {
+  .layout__container.page__container--edge .layout__spacing_container {
     //max-width: 100%;
    // margin-right: 0;
     //margin-left: 0;
@@ -397,11 +402,11 @@ $imgpath: '../../uids/assets/images';
 // admin styles for responsive layout sections for full width or mixed settings
 /*
 .content__full .layout-builder__section {
-  .layout__container .lb__container {
+  .layout__container .layout__spacing_container {
     margin: 0;
   }
 
-  .layout__container .page__container .lb__container {
+  .layout__container .page__container .layout__spacing_container {
     @include breakpoint(container) {
       position: relative;
       max-width: 84.375em;

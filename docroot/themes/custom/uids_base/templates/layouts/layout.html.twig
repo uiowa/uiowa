@@ -6,6 +6,7 @@
 #}
 {%
   set classes = [
+  'layout__container',
   'layout',
   layout.template|clean_class,
 ]
@@ -34,11 +35,14 @@
 {% endif %}
 
 {% if render_sections is not empty %}
+  {# Exterior container is necessary so that background colors can go all the way to the edge. #}
   <div{{ attributes.addClass(classes) }}>
-    <div class="lb__container">
+    {# Middle container is necessary for having a fixed width container inside a section with a visible background. #}
+    <div class="layout__spacing_container">
       {% for region in layout.getRegionNames %}
 
         {% if render_sections[region] %}
+          {# The inner container for each region is necessary for putting space between columns. #}
           <div {{ region_attributes[region].addClass('layout__region', 'layout__region--' ~ region|clean_class) }}>
             {{ render_sections[region] }}
           </div>
