@@ -19,7 +19,7 @@ $imgpath: '../../uids/assets/images';
   }
 
   // For 1+n containers, set default padding-top.
-  ~ .layout__container {
+  ~.layout__container {
     padding-top: $mobile-width-gutter;
 
     @include breakpoint(container) {
@@ -29,26 +29,30 @@ $imgpath: '../../uids/assets/images';
 
   // Loop through all the background options and create a
   // rule to remove top padding from the second one.
-  $backgrounds:
-    ':not([class*="bg-"])',
-    '.bg--gold',
-    '.bg--black',
-    '.bg--gray',
-    '.bg-pattern--brain',
-    '.bg-pattern--brain-reversed',
-    '.bg-pattern--brain-black';
+  $backgrounds: ':not([class*="bg-"])',
+  '.bg--gold',
+  '.bg--black',
+  '.bg--gray',
+  '.bg-pattern--brain',
+  '.bg-pattern--brain-reversed',
+  '.bg-pattern--brain-black';
 
   @each $background in $backgrounds {
+
     // This targets the second item in a pair that match the rule.
-    &#{$background} + &#{$background} {
+    &#{$background}+&#{$background} {
       padding-top: 0;
 
       // Necessary to restore padding
       &.section-padding {
+
         // @todo Is this necessary?
         //&__removed-top {
         //  padding-top: 0;
         //}
+        &__top-restored {
+          padding-top: $desktop-width-gutter;
+        }
 
         &__top-extra {
           padding-top: 6rem;
@@ -76,6 +80,10 @@ $imgpath: '../../uids/assets/images';
 
     &__removed-bottom {
       padding-bottom: 0;
+    }
+
+    &__top-restored {
+      padding-top: $desktop-width-gutter;
     }
 
     &__top-extra {
