@@ -38,9 +38,9 @@ $imgpath: '../../uids/assets/images';
     '.bg-pattern--brain-reversed',
     '.bg-pattern--brain-black';
 
-  @each $backgrounds in $bgs {
+  @each $background in $backgrounds {
     // This targets the second item in a pair that match the rule.
-    &#{$bg} + &#{$bg} {
+    &#{$background} + &#{$background} {
       padding-top: 0;
 
       // Necessary to restore padding
