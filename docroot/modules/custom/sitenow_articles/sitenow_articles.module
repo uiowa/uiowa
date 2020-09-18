@@ -462,7 +462,7 @@ function sitenow_articles_preprocess_block(&$variables) {
         foreach ($headline_fields as $headline_field) {
           // There isn't a headline, so set the children to this heading size.
           if (empty($headline_field['headline'])) {
-            $variables['h_size'] = 'h2';
+            $view->display_handler->setOption('content_heading', 'h2');
           }
           else {
             $options = [
