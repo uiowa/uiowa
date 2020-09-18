@@ -7,7 +7,7 @@
         attach: function (context, settings) {
             $('.editor-link-dialog', context).once('button-style-attach').each(function () {
                 $(".button-style").click(function () {
-                    var $class = $(".form-item--attributes-class input");
+                    var $class = $(".js-form-item-attributes-class input");
                     var $button = $(this).data("btn-type");
                     var $classes = $class.val().split(" ");
                     $class.val($class.val().trim());

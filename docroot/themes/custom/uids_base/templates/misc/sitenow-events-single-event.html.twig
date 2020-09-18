@@ -1,65 +1,70 @@
 <div class="sitenow-event-single">
     <div id="sitenow-event" class="sitenow-event sitenow-event-{{ event.id }}">
         <div id="main-column" class="main-column">
-            {% if event.canceled is not empty %}
-              <div class="event-field event-canceled">
-                <span class="badge badge--orange">Canceled</span>
-              </div>
-            {% endif %}
-            <div class="event-field event-time">
-                {{ event.date_instances }}
+          {% if event.canceled is not empty %}
+            <div class="event-field event-canceled">
+              <span class="badge badge--orange">Canceled</span>
             </div>
+          {% endif %}
 
-            {% if event.virtual %}
-              <div class="event-field event-location">
-                <span class="fas fa-map-marker-alt"></span>
-                <span class="event-location-virtual">
-                {% if event.virtual_url is not empty %}
-                <a href="{{ event.virtual_url }}">Virtual Event</a>
-                {% else %}
-                Virtual Event
-                {% endif %}
-                </span>
-              </div>
-            {% endif %}
+          {{ event.image }}
 
-            {% if event.location_name|length %}
-            <div class="event-field event-location">
-                {{ event.location_name }}
-                {% if event.room_number|length %}
-                {{ event.room_number }}
-                {% endif %}
-            </div>
-            {% endif %}
-
-            {% if event.address|length %}
-            <div class="event-field event-address">
-                {{ event.address }}
-            </div>
-            {% endif %}
-            {% if event.description|length %}
-            <div class="event-field event-description">
-                {{ event.description|raw }}
-            </div>
-            {% endif %}
-            {% if event.contact_name|length %}
-            <div class="event-field contact-info">
-              <p>
-                Contact Info: {{ event.contact_name }}
-                {% if event.contact_email|length %}
-                  , {{ event.contact_email }}
-                  {% if event.contact_phone_number|length %}
-                    , {{ event.contact_phone_number }}
-                  {% endif %}
-                {% endif %}
-              </p>
-            </div>
-            {% endif %}
+          {% if event.description|length %}
+          <div class="event-field event-description">
+              {{ event.description|raw }}
+          </div>
+          {% endif %}
         </div>
 
         <div id="secondary-column" class="secondary-column">
-            {{ event.event_image }}
-            <a href="{{ event.events_site_url }}" role="button" class="btn btn-primary">View on Event Calendar</a>
+          <div class="event-field event-time">
+            {{ event.date_instances }}
+          </div>
+
+          {% if event.virtual %}
+            <div class="event-field event-location">
+              <span class="fas fa-map-marker-alt"></span>
+              <span class="event-location-virtual">
+                {% if event.virtual_url is not empty %}
+                  <a href="{{ event.virtual_url }}">Virtual Event</a>
+                {% else %}
+                  Virtual Event
+                {% endif %}
+                </span>
+            </div>
+          {% endif %}
+
+          {% if event.location_name|length %}
+            <div class="event-field event-location">
+              <span class="fas fa-map-marker-alt"></span>
+              {{ event.location_name }}
+              {% if event.room_number|length %}
+                <div class="event-location-details">
+                  {{ event.room_number }}
+                </div>
+              {% endif %}
+
+              {% if event.address|length %}
+                <div class="event-location-details">
+                  {{ event.address }}
+                </div>
+              {% endif %}
+            </div>
+          {% endif %}
+
+          {% if event.contact_name|length %}
+            <div class="event-field contact-info">
+              <span class="fas fa-user"></span>
+              {% if event.contact_email|length %}
+                <a href="mailto:{{ event.contact_email }}">{{ event.contact_name }}</a>
+              {% endif %}
+              {% if event.contact_phone_number|length %}
+                {{ event.contact_phone_number }}
+              {% endif %}
+            </div>
+          {% endif %}
+
+          <a href="{{ event.events_site_url }}" role="button" class="btn btn-primary">View on Event Calendar</a>
         </div>
     </div>
     <div class="sitenow-event-accessibility-statement">
