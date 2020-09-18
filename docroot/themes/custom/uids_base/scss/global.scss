@@ -12,19 +12,24 @@ $imgpath: '../../uids/assets/images';
   margin-top: 0;
   padding-bottom: $mobile-width-gutter;
   // This will be overridden by a subsequent style for 1+n containers.
-  padding-top: 0;
+  padding-top: $mobile-width-gutter;
 
   @include breakpoint(container) {
+    padding-top: $desktop-width-gutter;
     padding-bottom: $desktop-width-gutter;
   }
 
   // For 1+n containers, set default padding-top.
-  ~ .layout__container {
-    padding-top: $mobile-width-gutter;
+  //~ .layout__container {
+  //  padding-top: $mobile-width-gutter;
+  //
+  //  @include breakpoint(container) {
+  //    padding-top: $desktop-width-gutter;
+  //  }
+  //}
 
-    @include breakpoint(container) {
-      padding-top: $desktop-width-gutter;
-    }
+  &:first-child {
+    padding-top: 0;
   }
 
   // Loop through all the background options and create a
