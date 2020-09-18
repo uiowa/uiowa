@@ -19,15 +19,6 @@ $imgpath: '../../uids/assets/images';
     padding-bottom: $desktop-width-gutter;
   }
 
-  // For 1+n containers, set default padding-top.
-  //~ .layout__container {
-  //  padding-top: $mobile-width-gutter;
-  //
-  //  @include breakpoint(container) {
-  //    padding-top: $desktop-width-gutter;
-  //  }
-  //}
-
   &:first-child {
     padding-top: 0;
   }
@@ -50,10 +41,6 @@ $imgpath: '../../uids/assets/images';
 
       // Necessary to restore padding
       &.section-padding {
-        // @todo Is this necessary?
-        //&__removed-top {
-        //  padding-top: 0;
-        //}
         &__top-restored {
           padding-top: $desktop-width-gutter;
         }
