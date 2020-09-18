@@ -44,7 +44,7 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
 
     $element['container']['headline'] = [
       '#type' => 'textfield',
-      '#title' => t('Headline'),
+      '#title' => $this->t('Headline'),
       '#size' => 80,
       '#default_value' => isset($items[$delta]->headline) ? $items[$delta]->headline : NULL,
       '#attributes' => [
@@ -54,7 +54,7 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
 
     $element['container']['hide_headline'] = [
       '#type' => 'checkbox',
-      '#title' => t('Visually hide title'),
+      '#title' => $this->t('Visually hide title'),
       '#default_value' => isset($items[$delta]->hide_headline) ? $items[$delta]->hide_headline : 0,
       '#states' => [
         'visible' => [
@@ -65,9 +65,9 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
 
     $element['container']['heading_size'] = [
       '#type' => 'select',
-      '#title' => t('Heading size'),
+      '#title' => $this->t('Heading size'),
       '#options' => $heading_size_options,
-      '#description' => t('The heading size for the block title, if used, or the size of child content headings.'),
+      '#description' => $this->t('The heading size for the block title, if used, or the size of child content headings.'),
       '#default_value' => isset($items[$delta]->heading_size) ? $items[$delta]->heading_size : 'h2',
       '#states' => [
         'visible' => [
