@@ -52,16 +52,6 @@ $imgpath: '../../uids/assets/images';
     }
   }
 
-  // Add back in padding for sections directly below a container with
-  // class*="bg- : View horizontal menu block on
-  // https://uiowa.local.drupal.uiowa.edu/admissions - maintains top
-  // spacing while adjusting bottom
-  // @todo Check if this is still necessary.
-
-  //&[class*="bg-"]+.layout__container:not([class*="bg-"]) {
-  //  padding-top: $desktop-width-gutter;
-  //}
-
   // LBS padding classes
 
   &.section-padding {
@@ -96,15 +86,6 @@ $imgpath: '../../uids/assets/images';
     &[class*="bg-pattern--"] {
       padding: $desktop-width-gutter;
     }
-  }
-
-  // @todo Can this be removed?
-  .block-system-breadcrumb-block,
-  .block-field-blocknodepagetitle,
-  .block-field-blocknodepagebody,
-  .block-inline-blockuiowa-text-area,
-  .block-views {
-    //flex-basis: 100%;
   }
 }
 
