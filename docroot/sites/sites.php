@@ -1589,3 +1589,9 @@ $sites['labappliedphys.local.drupal.uiowa.edu'] = 'appliedphys.lab.uiowa.edu';
 $sites['labappliedphys.dev.drupal.uiowa.edu'] = 'appliedphys.lab.uiowa.edu';
 $sites['labappliedphys.stage.drupal.uiowa.edu'] = 'appliedphys.lab.uiowa.edu';
 $sites['labappliedphys.prod.drupal.uiowa.edu'] = 'appliedphys.lab.uiowa.edu';
+
+// Directory aliases for hr.clas.uiowa.edu.
+$sites['clashr.local.drupal.uiowa.edu'] = 'hr.clas.uiowa.edu';
+$sites['clashr.dev.drupal.uiowa.edu'] = 'hr.clas.uiowa.edu';
+$sites['clashr.stage.drupal.uiowa.edu'] = 'hr.clas.uiowa.edu';
+$sites['clashr.prod.drupal.uiowa.edu'] = 'hr.clas.uiowa.edu';
