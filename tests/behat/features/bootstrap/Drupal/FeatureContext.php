@@ -77,7 +77,6 @@ class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext
   public static function alertsTearDown(AfterFeatureScope $scope) {
     \Drupal::configFactory()->getEditable('uiowa_alerts.settings')
       ->set('custom_alert.display', false)
-      ->set('hawk_alert.source', 'https://emergency.uiowa.edu/api/active.json')
       ->save();
   }
 }
