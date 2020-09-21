@@ -244,12 +244,13 @@ function uids_base_preprocess_field(&$variables) {
 function uids_base_preprocess_layout(&$variables) {
   $node = \Drupal::routeMatch()->getParameter('node');
   $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
+  $title_hidden = FALSE;
   if ($node instanceof NodeInterface) {
     if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
       $publish_options = $node->get('field_publish_options')->getValue();
       if (array_search('title_hidden', array_column($publish_options, 'value')) !== FALSE) {
         // For uiowa_bootstrap/classy default.
-        $variables['attributes']['class'][] = 'title-invisible';
+        $title_hidden = TRUE;
       }
       if (array_search('no_sidebars', array_column($publish_options, 'value')) !== FALSE) {
         // Remove sidebar regions.
@@ -277,7 +278,10 @@ function uids_base_preprocess_layout(&$variables) {
     $contains_background = FALSE;
     foreach (Element::children($variables['content']) as $region) {
       foreach (Element::children($variables['content'][$region]) as $block_uuid) {
-        if ($region === 'content') {
+        if ($region === 'content'
+          && isset($variables['content'][$region][$block_uuid])
+          && isset($variables['content'][$region][$block_uuid]['#plugin_id'])
+        ) {
           if ($variables['content'][$region][$block_uuid]['#plugin_id'] === 'field_block:node:page:title') {
             $contains_title = TRUE;
             break;
@@ -295,6 +299,10 @@ function uids_base_preprocess_layout(&$variables) {
       $variables['attributes']['class'][] = 'layout--title';
       if ($contains_background) {
         $variables['attributes']['class'][] = 'layout--title--with-background';
+      }
+
+      if ($title_hidden) {
+        $variables['attributes']['class'][] = 'layout--title--hidden';
       }
     }
   }

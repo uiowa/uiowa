@@ -23,8 +23,21 @@ $imgpath: '../../uids/assets/images';
     padding-top: 0;
   }
 
-  // Loop through all the background options and create a
-  // rule to remove top padding from the second one.
+  // @todo Should this be moved to the header layout scss file?
+  &.layout--title {
+    padding-bottom: 1.25rem;
+
+    &.layout--title--hidden {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+  }
+
+  &.layout--title + &:not([class*="bg-"]) {
+    padding-top: 0;
+  }
+
+  // Define a list of background treatments.
   $backgrounds:
     ':not([class*="bg-"])',
     '.bg--gold',
@@ -34,8 +47,12 @@ $imgpath: '../../uids/assets/images';
     '.bg-pattern--brain-reversed',
     '.bg-pattern--brain-black';
 
+  // Loop through each background.
   @each $background in $backgrounds {
-    // This targets the second item in a pair that match the rule.
+
+    // When an element follows a previous element
+    // with the same background treatment, remove the
+    // top padding of the target element.
     &#{$background} + &#{$background} {
       padding-top: 0;
 
@@ -52,17 +69,7 @@ $imgpath: '../../uids/assets/images';
     }
   }
 
-  // @todo Should this be moved to the header layout scss file?
-  &.layout--title {
-    padding-bottom: 1.25rem;
-  }
-
-  &.layout--title + & {
-    padding-top: 0;
-  }
-
   // LBS padding classes
-
   &.section-padding {
     &__removed-top {
       padding-top: 0;

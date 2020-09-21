@@ -31,6 +31,7 @@ class LayoutBuilderPreRender implements TrustedCallbackInterface {
     foreach (Element::children($lb) as $section) {
       if (isset($lb[$section]['layout-builder__section'])
         && isset($lb[$section]['layout-builder__section']['#settings'])
+        && isset($lb[$section]['layout-builder__section']['#settings']['layout_builder_styles_style'])
         && is_array($lb[$section]['layout-builder__section']['#settings']['layout_builder_styles_style'])
       ) {
         foreach ($lb[$section]['layout-builder__section']['#settings']['layout_builder_styles_style'] as $style_name) {

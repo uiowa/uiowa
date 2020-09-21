@@ -5,36 +5,6 @@
   width: 100%;
 }
 
-// This selector tightens up the space below a page title like on http: //gradinformatics.local.drupal.uiowa.edu/programs/bioinformatics-and-computational-biology
-.layout--onecol--no--background+.layout__container:not([class*="bg-"]) {
-  padding-top: $mobile-width-gutter;
-}
-
-// Adjust container top padding if container is adjacent to page title hero background container
-.layout--onecol--background:not([class*="layout--onecol--no--background"])+.layout__container:not([class*="bg-"]){
-  padding-top: $desktop-width-gutter;
-}
-
-// Padding overrides
-.layout--onecol--no--background+.layout__container:not([class*="bg-"]),
-.layout--onecol--background:not([class*="layout--onecol--no--background"])+.layout__container:not([class*="bg-"]) {
-  &.section-padding__removed-bottom {
-    padding-bottom: 0;
-  }
-
-  &.section-padding__removed-top {
-    padding-top: 0;
-  }
-
-  &.section-padding__top-extra {
-    padding-top: 6rem;
-  }
-
-  &.section-padding__bottom-extra {
-    padding-bottom: 6rem;
-  }
-}
-
 /*
  * @todo Move this to a more appropriate location
  */
@@ -73,7 +43,7 @@
   }
 }
 
-.title-invisible {
+.layout--title--hidden {
   .block-system-breadcrumb-block {
     @include element-invisible;
   }
