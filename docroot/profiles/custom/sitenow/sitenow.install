@@ -1095,6 +1095,8 @@ function sitenow_update_8032() {
  */
 function sitenow_update_8033() {
   // Create new field storage for the block headline.
+  $config_path = Settings::get('config_sync_directory');
+  $source = new FileStorage($config_path);
   \Drupal::entityManager()
   ->getStorage('field_storage_config')
   ->create($source->read('field.storage.block_content.field_uiowa_block_headline'))
@@ -1110,8 +1112,6 @@ function sitenow_update_8033() {
     'field.field.block_content.uiowa_collection.field_uiowa_block_headline',
     'field.field.block_content.uiowa_articles.field_uiowa_block_headline',
   ];
-  $config_path = Settings::get('config_sync_directory');
-  $source = new FileStorage($config_path);
   $config_storage = \Drupal::service('config.storage');
   foreach ($config_names as $config_name) {
     $config_storage->write($config_name, $source->read($config_name));
