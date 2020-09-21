@@ -1601,3 +1601,9 @@ $sites['clasfinance.local.drupal.uiowa.edu'] = 'finance.clas.uiowa.edu';
 $sites['clasfinance.dev.drupal.uiowa.edu'] = 'finance.clas.uiowa.edu';
 $sites['clasfinance.stage.drupal.uiowa.edu'] = 'finance.clas.uiowa.edu';
 $sites['clasfinance.prod.drupal.uiowa.edu'] = 'finance.clas.uiowa.edu';
+
+// Directory aliases for cinematicarts.uiowa.edu.
+$sites['cinematicarts.local.drupal.uiowa.edu'] = 'cinematicarts.uiowa.edu';
+$sites['cinematicarts.dev.drupal.uiowa.edu'] = 'cinematicarts.uiowa.edu';
+$sites['cinematicarts.stage.drupal.uiowa.edu'] = 'cinematicarts.uiowa.edu';
+$sites['cinematicarts.prod.drupal.uiowa.edu'] = 'cinematicarts.uiowa.edu';
