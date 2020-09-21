@@ -17,6 +17,7 @@ use Drupal\field\Entity\FieldConfig;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\filter\Plugin\Filter\FilterHtmlCorrector;
+use Drupal\Core\Site\Settings;
 
 /**
  * Update some uiowa_footer settings which are ignored.
@@ -1086,5 +1087,77 @@ function sitenow_update_8032() {
   }
   else {
     throw new UpdateException('Query failed to execute.');
+  }
+}
+
+/**
+ * Set new headline fields from previous heading size fields.
+ */
+function sitenow_update_8033() {
+  // Create new field storage for the block headline.
+  \Drupal::entityManager()
+  ->getStorage('field_storage_config')
+  ->create($source->read('field.storage.block_content.field_uiowa_block_headline'))
+  ->save();
+
+  // Manually pull in the new block configs attaching the new field.
+  $config_names = [
+    'field.field.block_content.uiowa_text_area.field_uiowa_block_headline',
+    'field.field.block_content.uiowa_slider.field_uiowa_block_headline',
+    'field.field.block_content.uiowa_people.field_uiowa_block_headline',
+    'field.field.block_content.uiowa_image_gallery.field_uiowa_block_headline',
+    'field.field.block_content.uiowa_events.field_uiowa_block_headline',
+    'field.field.block_content.uiowa_collection.field_uiowa_block_headline',
+    'field.field.block_content.uiowa_articles.field_uiowa_block_headline',
+  ];
+  $config_path = Settings::get('config_sync_directory');
+  $source = new FileStorage($config_path);
+  $config_storage = \Drupal::service('config.storage');
+  foreach ($config_names as $config_name) {
+    $config_storage->write($config_name, $source->read($config_name));
+  }
+
+  // Grab info on the current heading_size fields in place.
+  $database = \Drupal::database();
+  $results = $database->select('block_content__field_collection_heading_size', 't')
+    ->fields('t', [
+        'bundle',
+        'deleted',
+        'entity_id',
+        'revision_id',
+        'delta',
+        'field_collection_heading_size_value'
+        ])
+    ->execute();
+  foreach ($results as $record) {
+    switch ($record['bundle']) {
+
+      // Bundles with existing 'heading size' or similar field(s).
+      case 'uiowa_articles':
+      case 'uiowa_events':
+      case 'uiowa_people':
+      case 'uiowa_collection':
+      case 'uiowa_card':
+      case 'uiowa_slider':
+        // Do some stuff.
+        break;
+
+      // Bundles receiving new field, without existing fields.
+      case 'uiowa_image_gallery':
+      case 'uiowa_text_area':
+        break;
+
+      // Bundles not receiving the new field.
+      case 'uiowa_banner':
+      case 'uiowa_cta':
+      case 'uiowa_event':
+      case 'uiowa_hero':
+      case 'uiowa_page_title_hero':
+      case 'uiowa_spacer_separator':
+      case 'uiowa_statistic':
+      default:
+        break;
+
+    }
   }
 }
