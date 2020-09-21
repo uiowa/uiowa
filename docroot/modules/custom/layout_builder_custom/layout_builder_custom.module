@@ -55,9 +55,18 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             ],
           ];
 
-          // Make the background option single select only.
-          if ($group === 'background') {
-            $form[$lbs]['#multiple'] = FALSE;
+          $single_only = [
+            'background',
+            'banner_height',
+            'banner_type',
+            'headline_type',
+          ];
+
+          foreach ($single_only as $single) {
+            // Make the background option single select only.
+            if ($group === $single) {
+              $form[$lbs]['#multiple'] = FALSE;
+            }
           }
         }
       }
