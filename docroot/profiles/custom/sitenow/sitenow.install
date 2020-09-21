@@ -1098,9 +1098,9 @@ function sitenow_update_8033() {
   $config_path = Settings::get('config_sync_directory');
   $source = new FileStorage($config_path);
   \Drupal::entityManager()
-  ->getStorage('field_storage_config')
-  ->create($source->read('field.storage.block_content.field_uiowa_block_headline'))
-  ->save();
+    ->getStorage('field_storage_config')
+    ->create($source->read('field.storage.block_content.field_uiowa_block_headline'))
+    ->save();
 
   // Manually pull in the new block configs attaching the new field.
   $config_names = [
@@ -1130,7 +1130,7 @@ function sitenow_update_8033() {
         ])
     ->execute();
   foreach ($results as $record) {
-    switch ($record['bundle']) {
+    switch ($record->bundle) {
 
       // Bundles with existing 'heading size' or similar field(s).
       case 'uiowa_articles':
