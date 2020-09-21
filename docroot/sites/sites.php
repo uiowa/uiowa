@@ -1607,3 +1607,9 @@ $sites['cinematicarts.local.drupal.uiowa.edu'] = 'cinematicarts.uiowa.edu';
 $sites['cinematicarts.dev.drupal.uiowa.edu'] = 'cinematicarts.uiowa.edu';
 $sites['cinematicarts.stage.drupal.uiowa.edu'] = 'cinematicarts.uiowa.edu';
 $sites['cinematicarts.prod.drupal.uiowa.edu'] = 'cinematicarts.uiowa.edu';
+
+// Directory aliases for classics.uiowa.edu.
+$sites['classics.local.drupal.uiowa.edu'] = 'classics.uiowa.edu';
+$sites['classics.dev.drupal.uiowa.edu'] = 'classics.uiowa.edu';
+$sites['classics.stage.drupal.uiowa.edu'] = 'classics.uiowa.edu';
+$sites['classics.prod.drupal.uiowa.edu'] = 'classics.uiowa.edu';
