@@ -1111,6 +1111,7 @@ function sitenow_update_8033() {
     'field.field.block_content.uiowa_events.field_uiowa_block_headline',
     'field.field.block_content.uiowa_collection.field_uiowa_block_headline',
     'field.field.block_content.uiowa_articles.field_uiowa_block_headline',
+    'field.field.block_content.uiowa_card.field_uiowa_block_headline',
   ];
   $config_storage = \Drupal::service('config.storage');
   foreach ($config_names as $config_name) {
@@ -1119,17 +1120,22 @@ function sitenow_update_8033() {
 
   // Grab info on the current heading_size fields in place.
   $database = \Drupal::database();
-  $results = $database->select('block_content__field_collection_heading_size', 't')
+  $heading_size_results = $database->select('block_content__field_collection_heading_size', 't')
     ->fields('t', [
-        'bundle',
-        'deleted',
-        'entity_id',
-        'revision_id',
-        'delta',
-        'field_collection_heading_size_value'
-        ])
+      'bundle',
+      'entity_id',
+      'field_collection_heading_size_value',
+    ])
     ->execute();
 
+  $card_title_results = $database->select('block_content__field_uiowa_card_title ', 't')
+    ->fields('t', [
+      'bundle',
+      'entity_id',
+      'field_uiowa_card_title_size',
+      'field_uiowa_card_title_text',
+    ])
+    ->execute();
   $controller = \Drupal::service('entity_type.manager')
     ->getStorage('block_content');
   $heading_converter = [
@@ -1139,10 +1145,10 @@ function sitenow_update_8033() {
     'h6' => 'h5',
   ];
 
-  foreach ($results as $record) {
+  foreach ($heading_size_results as $record) {
     switch ($record->bundle) {
 
-      // Bundles with existing 'heading size' or similar field(s).
+      // Bundles with existing 'heading size' field.
       case 'uiowa_articles':
       case 'uiowa_events':
       case 'uiowa_people':
@@ -1166,27 +1172,17 @@ function sitenow_update_8033() {
         ])
           ->save();
         break;
-      
-      case 'uiowa_card':
-        // Need the heading size as well as title.
-        break;
-
-      // Bundles receiving new field, without existing fields.
-      case 'uiowa_image_gallery':
-      case 'uiowa_text_area':
-        break;
-
-      // Bundles not receiving the new field.
-      case 'uiowa_banner':
-      case 'uiowa_cta':
-      case 'uiowa_event':
-      case 'uiowa_hero':
-      case 'uiowa_page_title_hero':
-      case 'uiowa_spacer_separator':
-      case 'uiowa_statistic':
-      default:
-        break;
-
     }
+  }
+
+  // Update cards to use the homegrown title field.
+  foreach ($card_title_results as $record) {
+    $block = $controller->load($record->entity_id);
+    $block->set('field_uiowa_block_headline', [
+      'headline' => $record->field_uiowa_card_title_text,
+      'heading_size' => $record->field_uiowa_card_title_size,
+      'hide_headline' => 0,
+    ])
+      ->save();
   }
 }

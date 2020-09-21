@@ -4,13 +4,13 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_card
+    - field.field.block_content.uiowa_card.field_uiowa_block_headline
     - field.field.block_content.uiowa_card.field_uiowa_card_author
     - field.field.block_content.uiowa_card.field_uiowa_card_excerpt
     - field.field.block_content.uiowa_card.field_uiowa_card_image
     - field.field.block_content.uiowa_card.field_uiowa_card_link
-    - field.field.block_content.uiowa_card.field_uiowa_card_title
   module:
-    - heading
+    - layout_builder_custom
     - link
     - text
 _core:
@@ -20,6 +20,13 @@ targetEntityType: block_content
 bundle: uiowa_card
 mode: default
 content:
+  field_uiowa_block_headline:
+    weight: 0
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: uiowa_block_headline_formatter
+    region: content
   field_uiowa_card_author:
     weight: 4
     label: hidden
@@ -55,13 +62,6 @@ content:
       target: '0'
     third_party_settings: {  }
     type: link_separate
-    region: content
-  field_uiowa_card_title:
-    weight: 0
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    type: heading
     region: content
 hidden:
   search_api_excerpt: true
