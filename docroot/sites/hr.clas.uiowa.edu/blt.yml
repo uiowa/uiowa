@@ -1,0 +1,13 @@
+project:
+  local:
+    hostname: clashr.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: clashr
+  human_name: hr.clas.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: clashr.prod
+drupal:
+  db:
+    database: hr_clas_uiowa_edu
