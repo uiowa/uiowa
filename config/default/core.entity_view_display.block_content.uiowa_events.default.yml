@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_events
+    - field.field.block_content.uiowa_events.field_collection_heading_size
     - field.field.block_content.uiowa_events.field_collection_more
     - field.field.block_content.uiowa_events.field_collection_more_path
     - field.field.block_content.uiowa_events.field_collection_results
@@ -23,12 +24,13 @@ mode: default
 content:
   field_uiowa_block_headline:
     weight: 0
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: uiowa_block_headline_formatter
     region: content
 hidden:
+  field_collection_heading_size: true
   field_collection_more: true
   field_collection_more_path: true
   field_collection_results: true
