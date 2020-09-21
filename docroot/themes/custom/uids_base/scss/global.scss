@@ -52,6 +52,15 @@ $imgpath: '../../uids/assets/images';
     }
   }
 
+  // @todo Should this be moved to the header layout scss file?
+  &.layout--title {
+    padding-bottom: 1.25rem;
+  }
+
+  &.layout--title + & {
+    padding-top: 0;
+  }
+
   // LBS padding classes
 
   &.section-padding {
