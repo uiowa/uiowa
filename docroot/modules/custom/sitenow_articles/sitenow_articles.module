@@ -188,7 +188,7 @@ function sitenow_articles_preprocess_node(&$variables) {
           $route_name = $current_route->getRouteName();
           $variables['#cache']['contexts'][] = 'route.name';
           if (strpos($route_name, 'view.articles.') === 0) {
-            $variables['content_heading'] = 'h2';
+            $variables['heading_size'] = 'h2';
           }
 
           if ($node->hasField('field_article_source_link_direct')) {
@@ -462,7 +462,7 @@ function sitenow_articles_preprocess_block(&$variables) {
         foreach ($headline_fields as $headline_field) {
           // There isn't a headline, so set the children to this heading size.
           if (empty($headline_field['headline'])) {
-            $view->display_handler->setOption('content_heading', 'h2');
+            $view->display_handler->setOption('heading_size', 'h2');
           }
           else {
             $options = [
@@ -471,7 +471,7 @@ function sitenow_articles_preprocess_block(&$variables) {
               'h5' => 'h6',
               'h6' => 'h6',
             ];
-            $view->display_handler->setOption('content_heading', $options[$headline_field['heading_size']]);
+            $view->display_handler->setOption('heading_size', $options[$headline_field['heading_size']]);
           }
         }
       }
