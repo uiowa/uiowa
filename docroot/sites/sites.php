@@ -1595,3 +1595,9 @@ $sites['clashr.local.drupal.uiowa.edu'] = 'hr.clas.uiowa.edu';
 $sites['clashr.dev.drupal.uiowa.edu'] = 'hr.clas.uiowa.edu';
 $sites['clashr.stage.drupal.uiowa.edu'] = 'hr.clas.uiowa.edu';
 $sites['clashr.prod.drupal.uiowa.edu'] = 'hr.clas.uiowa.edu';
+
+// Directory aliases for finance.clas.uiowa.edu.
+$sites['clasfinance.local.drupal.uiowa.edu'] = 'finance.clas.uiowa.edu';
+$sites['clasfinance.dev.drupal.uiowa.edu'] = 'finance.clas.uiowa.edu';
+$sites['clasfinance.stage.drupal.uiowa.edu'] = 'finance.clas.uiowa.edu';
+$sites['clasfinance.prod.drupal.uiowa.edu'] = 'finance.clas.uiowa.edu';
