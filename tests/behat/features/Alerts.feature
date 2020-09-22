@@ -15,12 +15,3 @@ Feature: Alerts
     And I am on the homepage
     Then I should see the heading "TEST"
     And I should see "This is a custom alert."
-
-  @drush
-  @api
-  @javascript
-  Scenario: Configure the module for a test Hawk Alert
-    Given I run drush "config:set uiowa_alerts.settings hawk_alert.source 'https://emergency.stage.drupal.uiowa.edu/api/active.json'"
-    And I am on the homepage
-    And I wait for AJAX to finish
-    Then I should see the warning message "Hawk Alert"
