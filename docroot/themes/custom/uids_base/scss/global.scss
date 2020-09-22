@@ -69,6 +69,10 @@ $imgpath: '../../uids/assets/images';
     }
   }
 
+  &.layout--title--hidden + &:not([class*="bg-"]) {
+    padding-top: $desktop-width-gutter;
+  }
+
   // LBS padding classes
   &.section-padding {
     &__removed-top {
