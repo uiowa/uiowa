@@ -41,7 +41,7 @@
   {{ title_prefix }}
   {{ title_suffix }}
 
-  {% if content.field_uiowa_block_headline.value %}
+  {% if content.field_uiowa_block_headline[0]['#text'] %}
     {% block heading %}
       <div class="uiowa-text-area__title">
         {{ content.field_uiowa_block_headline }}

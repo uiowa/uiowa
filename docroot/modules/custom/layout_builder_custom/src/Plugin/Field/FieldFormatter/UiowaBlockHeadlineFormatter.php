@@ -31,6 +31,8 @@ class UiowaBlockHeadlineFormatter extends FormatterBase {
       $element[$delta] = [
         'uiowa_block_headline' => ['#markup' => $markup],
         '#theme' => 'uiowa_block_headline_field_type',
+        '#text' => $headline,
+        '#size' => $heading_size,
       ];
     }
 

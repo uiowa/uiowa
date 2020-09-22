@@ -35,7 +35,7 @@
 <div{{ attributes.addClass(classes) }}>
   {{ title_prefix }}
 
-  {% if content.field_uiowa_block_headline.value %}
+  {% if content.field_uiowa_block_headline[0]['#text'] %}
     {% block heading %}
       <div class="uiowa-image-gallery__title">
         {{ content.field_uiowa_block_headline }}
