@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_people
-    - field.field.block_content.uiowa_people.field_collection_heading_size
     - field.field.block_content.uiowa_people.field_collection_more
     - field.field.block_content.uiowa_people.field_collection_more_path
     - field.field.block_content.uiowa_people.field_collection_pager
@@ -13,7 +12,6 @@ dependencies:
     - field.field.block_content.uiowa_people.field_collection_sort
     - field.field.block_content.uiowa_people.field_uiowa_block_headline
   module:
-    - layout_builder_custom
     - link
 id: block_content.uiowa_people.default
 targetEntityType: block_content
@@ -36,14 +34,14 @@ content:
     type: link_default
     region: content
   field_collection_pager:
-    weight: 5
+    weight: 4
     settings:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
   field_collection_reference:
-    weight: 2
+    weight: 1
     settings:
       match_operator: CONTAINS
       match_limit: 10
@@ -53,23 +51,17 @@ content:
     type: entity_reference_autocomplete_tags
     region: content
   field_collection_results:
-    weight: 4
+    weight: 3
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_collection_sort:
-    weight: 3
+    weight: 2
     settings: {  }
     third_party_settings: {  }
     type: options_select
-    region: content
-  field_uiowa_block_headline:
-    weight: 1
-    settings: {  }
-    third_party_settings: {  }
-    type: uiowa_block_headline_widget
     region: content
   info:
     type: string_textfield
@@ -80,4 +72,4 @@ content:
       placeholder: ''
     third_party_settings: {  }
 hidden:
-  field_collection_heading_size: true
+  field_uiowa_block_headline: true

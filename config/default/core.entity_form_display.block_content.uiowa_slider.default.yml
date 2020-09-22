@@ -4,24 +4,16 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_slider
-    - field.field.block_content.uiowa_slider.field_collection_heading_size
     - field.field.block_content.uiowa_slider.field_uiowa_block_headline
     - field.field.block_content.uiowa_slider.field_uiowa_slider_slides
   module:
     - entity_browser_entity_form
     - inline_entity_form
-    - layout_builder_custom
 id: block_content.uiowa_slider.default
 targetEntityType: block_content
 bundle: uiowa_slider
 mode: default
 content:
-  field_uiowa_block_headline:
-    weight: 0
-    settings: {  }
-    third_party_settings: {  }
-    type: uiowa_block_headline_widget
-    region: content
   field_uiowa_slider_slides:
     type: inline_entity_form_complex
     weight: 1
@@ -42,5 +34,5 @@ content:
         entity_browser_id: _none
     region: content
 hidden:
-  field_collection_heading_size: true
+  field_uiowa_block_headline: true
   info: true

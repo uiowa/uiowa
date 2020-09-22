@@ -4,32 +4,22 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_articles
-    - field.field.block_content.uiowa_articles.field_collection_heading_size
     - field.field.block_content.uiowa_articles.field_collection_more
     - field.field.block_content.uiowa_articles.field_collection_more_path
     - field.field.block_content.uiowa_articles.field_collection_pager
     - field.field.block_content.uiowa_articles.field_collection_reference
     - field.field.block_content.uiowa_articles.field_collection_results
     - field.field.block_content.uiowa_articles.field_uiowa_block_headline
-  module:
-    - layout_builder_custom
 id: block_content.uiowa_articles.default
 targetEntityType: block_content
 bundle: uiowa_articles
 mode: default
-content:
-  field_uiowa_block_headline:
-    weight: 0
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    type: uiowa_block_headline_formatter
-    region: content
+content: {  }
 hidden:
-  field_collection_heading_size: true
   field_collection_more: true
   field_collection_more_path: true
   field_collection_pager: true
   field_collection_reference: true
   field_collection_results: true
+  field_uiowa_block_headline: true
   search_api_excerpt: true
