@@ -10,6 +10,7 @@ dependencies:
     - field.field.block_content.uiowa_card.field_uiowa_card_image
     - field.field.block_content.uiowa_card.field_uiowa_card_link
   module:
+    - layout_builder_custom
     - link
     - media_library
     - text
@@ -20,6 +21,12 @@ targetEntityType: block_content
 bundle: uiowa_card
 mode: default
 content:
+  field_uiowa_block_headline:
+    type: uiowa_block_headline_widget
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_uiowa_card_author:
     weight: 5
     settings:
@@ -53,11 +60,10 @@ content:
     region: content
   info:
     type: string_textfield
-    weight: 1
+    weight: 0
     region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-hidden:
-  field_uiowa_block_headline: true
+hidden: {  }

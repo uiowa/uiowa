@@ -14,16 +14,24 @@ dependencies:
     - field.field.block_content.uiowa_events.field_uiowa_events_keywords
     - field.field.block_content.uiowa_events.field_uiowa_events_place
     - field.field.block_content.uiowa_events.field_uiowa_events_types
+  module:
+    - layout_builder_custom
 id: block_content.uiowa_events.default
 targetEntityType: block_content
 bundle: uiowa_events
 mode: default
-content: {  }
+content:
+  field_uiowa_block_headline:
+    type: uiowa_block_headline_formatter
+    weight: 0
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   field_collection_more: true
   field_collection_more_path: true
   field_collection_results: true
-  field_uiowa_block_headline: true
   field_uiowa_events_audiences: true
   field_uiowa_events_department: true
   field_uiowa_events_interests: true

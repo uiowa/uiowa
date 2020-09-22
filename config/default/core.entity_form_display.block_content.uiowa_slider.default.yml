@@ -9,11 +9,18 @@ dependencies:
   module:
     - entity_browser_entity_form
     - inline_entity_form
+    - layout_builder_custom
 id: block_content.uiowa_slider.default
 targetEntityType: block_content
 bundle: uiowa_slider
 mode: default
 content:
+  field_uiowa_block_headline:
+    type: uiowa_block_headline_widget
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_uiowa_slider_slides:
     type: inline_entity_form_complex
     weight: 1
@@ -34,5 +41,4 @@ content:
         entity_browser_id: _none
     region: content
 hidden:
-  field_uiowa_block_headline: true
   info: true

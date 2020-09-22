@@ -11,11 +11,20 @@ dependencies:
     - field.field.block_content.uiowa_people.field_collection_results
     - field.field.block_content.uiowa_people.field_collection_sort
     - field.field.block_content.uiowa_people.field_uiowa_block_headline
+  module:
+    - layout_builder_custom
 id: block_content.uiowa_people.default
 targetEntityType: block_content
 bundle: uiowa_people
 mode: default
-content: {  }
+content:
+  field_uiowa_block_headline:
+    type: uiowa_block_headline_formatter
+    weight: 0
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   field_collection_more: true
   field_collection_more_path: true
@@ -23,5 +32,4 @@ hidden:
   field_collection_reference: true
   field_collection_results: true
   field_collection_sort: true
-  field_uiowa_block_headline: true
   search_api_excerpt: true

@@ -10,6 +10,7 @@ dependencies:
     - field.field.block_content.uiowa_card.field_uiowa_card_image
     - field.field.block_content.uiowa_card.field_uiowa_card_link
   module:
+    - layout_builder_custom
     - link
     - text
 _core:
@@ -19,6 +20,13 @@ targetEntityType: block_content
 bundle: uiowa_card
 mode: default
 content:
+  field_uiowa_block_headline:
+    type: uiowa_block_headline_formatter
+    weight: 0
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
   field_uiowa_card_author:
     weight: 4
     label: hidden
@@ -56,5 +64,4 @@ content:
     type: link_separate
     region: content
 hidden:
-  field_uiowa_block_headline: true
   search_api_excerpt: true

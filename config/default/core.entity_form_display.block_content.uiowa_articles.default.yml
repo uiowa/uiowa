@@ -11,6 +11,7 @@ dependencies:
     - field.field.block_content.uiowa_articles.field_collection_results
     - field.field.block_content.uiowa_articles.field_uiowa_block_headline
   module:
+    - layout_builder_custom
     - link
 id: block_content.uiowa_articles.default
 targetEntityType: block_content
@@ -33,14 +34,14 @@ content:
     type: link_default
     region: content
   field_collection_pager:
-    weight: 3
+    weight: 4
     settings:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
   field_collection_reference:
-    weight: 1
+    weight: 2
     settings:
       match_operator: CONTAINS
       match_limit: 10
@@ -50,12 +51,18 @@ content:
     type: entity_reference_autocomplete_tags
     region: content
   field_collection_results:
-    weight: 2
+    weight: 3
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
+  field_uiowa_block_headline:
+    type: uiowa_block_headline_widget
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   info:
     type: string_textfield
     weight: 0
@@ -64,5 +71,4 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-hidden:
-  field_uiowa_block_headline: true
+hidden: {  }
