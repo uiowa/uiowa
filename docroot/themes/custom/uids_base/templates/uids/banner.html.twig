@@ -3,18 +3,18 @@
 {# The following code is to determine where a link should be attached, if it exists. #}
 {% set link_element, show_button = false, false %}
 {% if link.link_url is not empty %}
-	{% if banner_title is not empty %}
-		{# Title is set, use it as the linking element.  #}
-		{% set link_element = 'title' %}
-		{# If we also have link text, then we'll show a psuedo-button. #}
-		{% if link.link_text  is not empty %}
-			{% set show_button = true %}
-		{% endif %}
-	{% endif %}
+  {% if banner_title is not empty %}
+    {# Title is set, use it as the linking element.  #}
+    {% set link_element = 'title' %}
+    {# If we also have link text, then we'll show a psuedo-button. #}
+    {% if link.link_text  is not empty %}
+      {% set show_button = true %}
+    {% endif %}
+  {% endif %}
 {% endif %}
 
 {% if link_element != 'title' or not show_button %}
-	{% set banner_aria_describedby = '' %}
+  {% set banner_aria_describedby = '' %}
 {% endif %}
 
 {% set attributes = attributes ?: create_attribute() %}
@@ -48,16 +48,16 @@
       {% endblock %}
 
       {% if banner_summary is not empty %}
-       <div class="banner__text">{{ banner_summary }}</div>
+        <div class="banner__text">{{ banner_summary }}</div>
       {% endif %}
 
       {% block banner_bttn %}
         {% if link.link_text is not empty %}
-            <div aria-hidden="true" class="{{ link.link_classes }}" {% if banner_aria_describedby %} id="{{ banner_aria_describedby }}" {% endif %}>
-              {{ link.link_text }}
-              <span class="fas fa-arrow-right"></span>
-            </div>
-      {% endif %}
+          <div aria-hidden="true" class="{{ link.link_classes }}" {% if banner_aria_describedby %} id="{{ banner_aria_describedby }}" {% endif %}>
+            {{ link.link_text }}
+            <span class="fas fa-arrow-right"></span>
+          </div>
+        {% endif %}
       {% endblock %}
 
     </div>
