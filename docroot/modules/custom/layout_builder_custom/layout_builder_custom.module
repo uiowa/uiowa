@@ -212,12 +212,21 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
   $block = $component->getPlugin();
 
   if ($block->getPluginId() === 'inline_block:uiowa_banner') {
-    $background_option = $form_state->getValue(['settings', 'block_form', 'background_options']);
+    $background_option = $form_state->getValue([
+      'settings',
+      'block_form',
+      'background_options',
+    ]);
     if ($background_option) {
       if ($background_option === 'image'
-        && !$form_state->getValue(['settings', 'block_form', 'field_uiowa_banner_image', 'selection'])
+        && !$form_state->getValue([
+          'settings',
+          'block_form',
+          'field_uiowa_banner_image',
+          'selection',
+        ])
       ) {
-        /**
+        /*
          * If an image wasn't uploaded, revert back to a default selection of black.
          *
          * @todo Add feedback for user about the fact that they didn't upload an image.
@@ -259,6 +268,7 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
         $element['field_uiowa_text_area']['widget'][0]['#format'] = 'filtered_html';
       }
       break;
+
     case 'inline_block:uiowa_banner':
       $all_styles = _layout_builder_styles_retrieve_by_type(LayoutBuilderStyleInterface::TYPE_COMPONENT);
 
@@ -266,7 +276,7 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
 
       $style_options = ['image' => 'Image'];
       foreach ($all_styles as $style) {
-        if ('background' === $group = $style->getGroup()) {
+        if ($style->getGroup() === 'background') {
           $restrictions = $style->getBlockRestrictions();
           /** @var \Drupal\layout_builder_styles\LayoutBuilderStyleInterface $style */
           if (empty($restrictions) || in_array('inline_block:uiowa_banner', $restrictions)) {
@@ -294,21 +304,22 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
       ];
 
       $element['field_uiowa_banner_image'] = [
-          '#states' => [
-            'visible' => [
-              ':input[name="settings[block_form][background_options]"]' => [
-                'value' => 'image',
-              ],
+        '#states' => [
+          'visible' => [
+            ':input[name="settings[block_form][background_options]"]' => [
+              'value' => 'image',
             ],
-            // @todo Conditionally require media field when 'background_options'
-            //   is set to 'image'.
           ],
-          '#weight' => 5,
-        ] + $element['field_uiowa_banner_image'];
+          // @todo Conditionally require media field when 'background_options'
+          //   is set to 'image'.
+        ],
+        '#weight' => 5,
+      ] + $element['field_uiowa_banner_image'];
 
       unset($element['field_uiowa_banner_image']['widget']['#title']);
 
       break;
+
     case 'inline_block:uiowa_articles':
     case 'inline_block:uiowa_people':
     case 'inline_block:uiowa_events':
