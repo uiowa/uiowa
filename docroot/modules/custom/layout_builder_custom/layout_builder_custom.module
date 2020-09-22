@@ -7,6 +7,7 @@
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\layout_builder_styles\LayoutBuilderStyleGroups;
+use Drupal\layout_builder_styles\LayoutBuilderStyleInterface;
 
 /**
  * Implements hook_form_alter().
@@ -23,12 +24,24 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       // Add custom validation for certain blocks/regions to validate.
       $form['#validate'][] = '_layout_builder_custom_block_validate';
 
+      // Our submit handler must execute before the layout_builder_styles one
+      // so it can take advantage of the logic there.
+      array_unshift($form['#submit'], '_layout_builder_custom_block_submit');
+
       // Add custom process callback for certain blocks to alter form elements.
       $form['settings']['block_form']['#process'][] = '_layout_builder_custom_process_element';
 
       // Override display of layout builder styles.
       $styles_exist = FALSE;
       $styles_enabled = FALSE;
+
+      // LB style options that should be set to '#multiple' => FALSE.
+      $single_select_options = [
+        'background',
+        'banner_height',
+        'banner_type',
+        'headline_type',
+      ];
 
       // Loop through layout builder style groups.
       $groups = LayoutBuilderStyleGroups::getGroups();
@@ -55,16 +68,9 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             ],
           ];
 
-          $single_only = [
-            'background',
-            'banner_height',
-            'banner_type',
-            'headline_type',
-          ];
-
-          foreach ($single_only as $single) {
+          foreach ($single_select_options as $option) {
             // Make the background option single select only.
-            if ($group === $single) {
+            if ($group === $option) {
               $form[$lbs]['#multiple'] = FALSE;
             }
           }
@@ -105,6 +111,12 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         $form["settings"]["menu_levels"]["level"]["#default_value"] = 2;
         $form["settings"]["advanced"]["follow"]["#default_value"] = 1;
       }
+      elseif ($block->getPluginId() === 'inline_block:uiowa_banner') {
+        // Hide LB style for background.
+        if (isset($form['layout_builder_style_background'])) {
+          $form['layout_builder_style_background']['#access'] = FALSE;
+        }
+      }
 
       $form['settings'] += [
         '#weight' => 0,
@@ -112,7 +124,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
 
       // Change collection view_mode field to radios and remove the 'default' option.
       if (isset($form['settings']['block_form']['#block'])
-      && $form['settings']['block_form']['#block']->bundle() === 'uiowa_collection') {
+        && $form['settings']['block_form']['#block']->bundle() === 'uiowa_collection') {
         $form['settings']['view_mode']['#type'] = 'radios';
         array_shift($form['settings']['view_mode']['#options']);
 
@@ -187,6 +199,42 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
 }
 
 /**
+ * Custom submit handler for layout_builder_add/update_block form.
+ *
+ * @param array $form
+ *   The form element.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state.
+ */
+function _layout_builder_custom_block_submit(array &$form, FormStateInterface $form_state) {
+  /** @var \Drupal\layout_builder\SectionComponent $component */
+  $component = $form_state->getFormObject()->getCurrentComponent();
+  $block = $component->getPlugin();
+
+  if ($block->getPluginId() === 'inline_block:uiowa_banner') {
+    $background_option = $form_state->getValue(['settings', 'block_form', 'background_options']);
+    if ($background_option) {
+      if ($background_option === 'image'
+        && !$form_state->getValue(['settings', 'block_form', 'field_uiowa_banner_image', 'selection'])
+      ) {
+        /**
+         * If an image wasn't uploaded, revert back to a default selection of black.
+         *
+         * @todo Add feedback for user about the fact that they didn't upload an image.
+         * @todo After we can figure out how we can present an indicator to the user that
+         *   the image field is required (when shown), add validation to check for whether
+         *   an image was uploaded or not.
+         **/
+        $background_option = 'block_background_style_black';
+      }
+      // Set the layout_builder_style_background to the value of our duplicate select.
+      $form_state->setValue('layout_builder_style_background', $background_option);
+    }
+    // @todo If a non-image background was selected, remove the image.
+  }
+}
+
+/**
  * Custom process block form elements.
  *
  * @param array $element
@@ -199,8 +247,11 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
  */
 function _layout_builder_custom_process_element(array $element, FormStateInterface $form_state) {
   /** @var \Drupal\layout_builder\SectionComponent $component */
-  $component = $form_state->getFormObject()->getCurrentComponent();
-  $block = $component->getPlugin();
+  $component = $form_state
+    ->getFormObject()
+    ->getCurrentComponent();
+  $block = $component
+    ->getPlugin();
 
   switch ($block->getPluginId()) {
     case 'inline_block:uiowa_text_area':
@@ -208,7 +259,56 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
         $element['field_uiowa_text_area']['widget'][0]['#format'] = 'filtered_html';
       }
       break;
+    case 'inline_block:uiowa_banner':
+      $all_styles = _layout_builder_styles_retrieve_by_type(LayoutBuilderStyleInterface::TYPE_COMPONENT);
 
+      $selectedStyles = $component->get('layout_builder_styles_style');
+
+      $style_options = ['image' => 'Image'];
+      foreach ($all_styles as $style) {
+        if ('background' === $group = $style->getGroup()) {
+          $restrictions = $style->getBlockRestrictions();
+          /** @var \Drupal\layout_builder_styles\LayoutBuilderStyleInterface $style */
+          if (empty($restrictions) || in_array('inline_block:uiowa_banner', $restrictions)) {
+            $style_options[$style->id()] = $style->label();
+          }
+        }
+      }
+
+      $default_bg = 'image';
+
+      if (is_array($selectedStyles)) {
+        foreach ($selectedStyles as $selectedStyle) {
+          if (array_key_exists($selectedStyle, $style_options)) {
+            $default_bg = $selectedStyle;
+          }
+        }
+      }
+
+      $element['background_options'] = [
+        '#type' => 'select',
+        '#title' => t('Background'),
+        '#options' => $style_options,
+        '#default_value' => $default_bg,
+        '#weight' => 4,
+      ];
+
+      $element['field_uiowa_banner_image'] = [
+          '#states' => [
+            'visible' => [
+              ':input[name="settings[block_form][background_options]"]' => [
+                'value' => 'image',
+              ],
+            ],
+            // @todo Conditionally require media field when 'background_options'
+            //   is set to 'image'.
+          ],
+          '#weight' => 5,
+        ] + $element['field_uiowa_banner_image'];
+
+      unset($element['field_uiowa_banner_image']['widget']['#title']);
+
+      break;
     case 'inline_block:uiowa_articles':
     case 'inline_block:uiowa_people':
     case 'inline_block:uiowa_events':
