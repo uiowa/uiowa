@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: orgshpe.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: orgshpe
+  human_name: shpe.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgshpe.prod
+drupal:
+  db:
+    database: shpe_org_uiowa_edu
+uiowa:
+  requester: jllopezhernandez
+  config:
+    split: sitenow_v2

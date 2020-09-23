@@ -222,7 +222,7 @@ class SettingsForm extends ConfigFormBase {
     $title = $form_state->getValue('sitenow_articles_title');
     $path = $form_state->getValue('sitenow_articles_path');
     $header_content = $form_state->getValue('sitenow_articles_header_content');
-    $show_archive = $form_state->getValue('sitenow_articles_archive');;
+    $show_archive = $form_state->getValue('sitenow_articles_archive');
 
     // Clean path.
     $path = $this->aliasCleaner->cleanString($path);

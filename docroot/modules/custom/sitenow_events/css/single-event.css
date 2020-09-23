@@ -8,6 +8,8 @@
 
 .sitenow-event .event-field {
   margin-bottom: 10px;
+  font-family: Zilla Slab, serif;
+  font-size: 1.2rem;
 }
 
 .sitenow-event .event-field.event-description {
@@ -26,11 +28,17 @@
   flex: 0 0 33%;
 }
 
-.sitenow-event .secondary-column img,
-.sitenow-event .secondary-column .btn {
-  display: block;
-  margin: 0 auto 1em;
-  width: 70%;
+@media only screen and (min-width: 900px) {
+  .sitenow-event .secondary-column .event-field,
+  .sitenow-event .secondary-column .btn {
+    display: block;
+    margin: 0 auto 1em;
+    width: 70%;
+  }
+}
+
+.event-location-details {
+  margin-left: 25px;
 }
 
 .date-instance {

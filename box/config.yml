@@ -113,6 +113,7 @@ apache_vhosts:
     servername: labbuchholz.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+
   -
     servername: fobusinessmanager.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
@@ -1030,10 +1031,6 @@ apache_vhosts:
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
   -
-    servername: labbaalrud.local.drupal.uiowa.edu
-    documentroot: '{{ drupal_core_path }}'
-    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-  -
     servername: engineeringviewbook.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
@@ -1109,6 +1106,38 @@ apache_vhosts:
     servername: admissions.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: pharmacy.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: orgshpe.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: orgavclub.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: labappliedphys.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: clashr.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: clasfinance.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: cinematicarts.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: classics.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
 
 # Multisite installations should configure additional databases here.
 # It's recommended to prefix database names with 'drupal'. Otherwise,
@@ -1156,9 +1185,6 @@ php_packages_extra:
   - 'php{{ php_version }}-zip'
 
 # XDebug configuration.
-php_xdebug_version: 2.7.1
-
-# Change this value to 1 in order to enable xdebug by default.
 php_xdebug_default_enable: 1
 php_xdebug_cli_disable: no
 php_xdebug_remote_autostart: 1
@@ -1171,4 +1197,3 @@ post_provision_scripts:
 
 nodejs_npm_global_packages:
   - yarn
-ansible_python_interpreter: '/usr/bin/env python3'
