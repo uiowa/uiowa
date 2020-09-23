@@ -121,7 +121,10 @@ class Pages extends SqlBase {
 
     // Search for D7 inline embeds and replace with D8 inline entities.
     $content = $row->getSourceProperty('body_value');
-    $content = preg_replace_callback("|\[\[\{.*?\"fid\":\"(.*?)\".*?\]\]|", [$this, 'entityReplace'], $content);
+    $content = preg_replace_callback("|\[\[\{.*?\"fid\":\"(.*?)\".*?\]\]|", [
+      $this,
+      'entityReplace',
+    ], $content);
     $row->setSourceProperty('body_value', $content);
 
     // Check summary, and create one if none exists.
