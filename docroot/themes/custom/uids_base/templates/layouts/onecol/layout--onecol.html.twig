@@ -14,34 +14,12 @@
 #}
 {%
   set classes = [
-    'layout',
-    'layout--onecol',
-    'layout__container',
-    settings.extra_classes,
-  ]
+  'layout',
+  'layout--onecol',
+  settings.extra_classes,
+]
 %}
 
-{% set content_render = content.content|render %}
+{% set attributes = attributes.addClass(classes) %}
 
-{% if content_render is not empty %}
-
-<div {{ attributes.addClass(classes).removeClass('layout--onecol--background') }}>
-
-    <div class="lb__container">
-
-      {% if region_attributes.content.storage['data-region'] %}
-        <div {{ region_attributes.content.addClass('flex__wra') }}>
-        {% endif %}
-        {{ content_render }}
-        {% if region_attributes.content.storage['data-region'] %}
-        </div>
-      {% endif %}
-
-      {% if attributes.hasClass('page__container--edge-container') %}
-      </div>
-    {% endif %}
-
-  </div>
-</div>
-
-{% endif %}
+{% include '@uids_base/layouts/layout.html.twig' %}

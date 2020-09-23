@@ -1,50 +1,21 @@
 {#
 /**
  * @file
- * Default theme implementation to display a two-column 66-33 layout.
+ * Default theme implementation to display a two-column layout.
  *
  * Available variables:
  * - content: The content for this layout.
  * - attributes: HTML attributes for the layout <div>.
  *
  * @ingroup themeable
- * @see https://www.drupal.org/docs/8/api/layout-api/how-to-register-layouts
- * @see https://v4-alpha.getbootstrap.com/layout/grid/
  */
 #}
+{%
+  set classes = [
+  settings.extra_classes,
+]
+%}
 
-{% set classes = ['layout__container'] %}
+{% set attributes = attributes.addClass(classes) %}
 
-{% if content.first or content.second %}
-
-  <div{{ attributes.addClass(classes) }}>
-    <div class="lb__container">
-
-      <div class="layout__region layout__region--first flex__wrapper">
-
-        {% if region_attributes.first.storage['data-region'] %}
-          {{ attach_library('uids_base/admin') }}
-          <div {{ region_attributes.first.addClass('flex__wrapper') }}>
-          {% endif %}
-          {{ content.first }}
-          {% if region_attributes.first.storage['data-region'] %}
-          </div>
-        {% endif %}
-
-      </div>
-
-      <div class="layout__region layout__region--second flex__wrapper">
-
-        {% if region_attributes.second.storage['data-region'] %}
-          <div {{ region_attributes.second.addClass('flex__wrapper') }}>
-          {% endif %}
-          {{ content.second }}
-          {% if region_attributes.second.storage['data-region'] %}
-          </div>
-        {% endif %}
-      </div>
-
-    </div>
-
-  </div>
-{% endif %}
+{% include '@uids_base/layouts/layout.html.twig' %}
