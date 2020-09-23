@@ -33,7 +33,10 @@ function sitenow_preprocess_html(&$variables) {
     ],
   ];
 
-  $variables['page']['#attached']['html_head'][] = [$meta_web_author, 'web-author'];
+  $variables['page']['#attached']['html_head'][] = [
+    $meta_web_author,
+    'web-author',
+  ];
   $variables['page']['#attached']['library'][] = 'sitenow/global-scripts';
   $variables['page']['#attached']['drupalSettings']['sitenow']['version'] = $version;
 }
@@ -501,7 +504,10 @@ function sitenow_form_system_site_information_settings_alter(&$form, FormStateIn
       $menu_link = Url::fromRoute('entity.menu.edit_form', ['menu' => $social_media_menu])->toString();
       $form['uiowa_footer_menus']['uiowa_footer_social_media_menu_help'] = [
         '#type' => 'item',
-        '#markup' => t('Links in the social media section are managed via the <a href="@menu_link">@menu_name menu</a>.', ['@menu_link' => $menu_link, '@menu_name' => $menus[$social_media_menu]]),
+        '#markup' => t('Links in the social media section are managed via the <a href="@menu_link">@menu_name menu</a>.', [
+          '@menu_link' => $menu_link,
+          '@menu_name' => $menus[$social_media_menu],
+        ]),
       ];
     }
 
@@ -510,7 +516,10 @@ function sitenow_form_system_site_information_settings_alter(&$form, FormStateIn
       $menu_link = Url::fromRoute('entity.menu.edit_form', ['menu' => $custom_menu])->toString();
       $form['uiowa_footer_menus']['uiowa_footer_custom_menu_help'] = [
         '#type' => 'item',
-        '#markup' => t('Links in the left column are managed via the <a href="@menu_link">@menu_name menu</a>.', ['@menu_link' => $menu_link, '@menu_name' => $menus[$custom_menu]]),
+        '#markup' => t('Links in the left column are managed via the <a href="@menu_link">@menu_name menu</a>.', [
+          '@menu_link' => $menu_link,
+          '@menu_name' => $menus[$custom_menu],
+        ]),
       ];
     }
 
@@ -519,7 +528,10 @@ function sitenow_form_system_site_information_settings_alter(&$form, FormStateIn
       $menu_link = Url::fromRoute('entity.menu.edit_form', ['menu' => $custom_menu_2])->toString();
       $form['uiowa_footer_menus']['uiowa_footer_custom_menu_2_help'] = [
         '#type' => 'item',
-        '#markup' => t('Links in the middle column are managed via the <a href="@menu_link">@menu_name menu</a>.', ['@menu_link' => $menu_link, '@menu_name' => $menus[$custom_menu_2]]),
+        '#markup' => t('Links in the middle column are managed via the <a href="@menu_link">@menu_name menu</a>.', [
+          '@menu_link' => $menu_link,
+          '@menu_name' => $menus[$custom_menu_2],
+        ]),
       ];
     }
 
@@ -528,7 +540,10 @@ function sitenow_form_system_site_information_settings_alter(&$form, FormStateIn
       $menu_link = Url::fromRoute('entity.menu.edit_form', ['menu' => $custom_menu_3])->toString();
       $form['uiowa_footer_menus']['uiowa_footer_custom_menu_3_help'] = [
         '#type' => 'item',
-        '#markup' => t('Links in the right column are managed via the <a href="@menu_link">@menu_name menu</a>.', ['@menu_link' => $menu_link, '@menu_name' => $menus[$custom_menu_3]]),
+        '#markup' => t('Links in the right column are managed via the <a href="@menu_link">@menu_name menu</a>.', [
+          '@menu_link' => $menu_link,
+          '@menu_name' => $menus[$custom_menu_3],
+        ]),
       ];
     }
 
@@ -541,7 +556,10 @@ function sitenow_form_system_site_information_settings_alter(&$form, FormStateIn
       $menu_link = Url::fromRoute('entity.menu.edit_form', ['menu' => $social_media_menu])->toString();
       $form['uiowa_footer']['uiowa_footer_menus']['uiowa_footer_social_media_menu_help'] = [
         '#type' => 'item',
-        '#markup' => t('Links in the social media section are managed via the <a href="@menu_link">@menu_name menu</a>.', ['@menu_link' => $menu_link, '@menu_name' => $menus[$social_media_menu]]),
+        '#markup' => t('Links in the social media section are managed via the <a href="@menu_link">@menu_name menu</a>.', [
+          '@menu_link' => $menu_link,
+          '@menu_name' => $menus[$social_media_menu],
+        ]),
       ];
     }
 
@@ -550,7 +568,10 @@ function sitenow_form_system_site_information_settings_alter(&$form, FormStateIn
       $menu_link = Url::fromRoute('entity.menu.edit_form', ['menu' => $custom_menu])->toString();
       $form['uiowa_footer']['uiowa_footer_menus']['uiowa_footer_custom_menu_help'] = [
         '#type' => 'item',
-        '#markup' => t('Links in the left column are managed via the <a href="@menu_link">@menu_name menu</a>.', ['@menu_link' => $menu_link, '@menu_name' => $menus[$custom_menu]]),
+        '#markup' => t('Links in the left column are managed via the <a href="@menu_link">@menu_name menu</a>.', [
+          '@menu_link' => $menu_link,
+          '@menu_name' => $menus[$custom_menu],
+        ]),
       ];
     }
 
@@ -559,7 +580,10 @@ function sitenow_form_system_site_information_settings_alter(&$form, FormStateIn
       $menu_link = Url::fromRoute('entity.menu.edit_form', ['menu' => $custom_menu_2])->toString();
       $form['uiowa_footer']['uiowa_footer_menus']['uiowa_footer_custom_menu_2_help'] = [
         '#type' => 'item',
-        '#markup' => t('Links in the right column are managed via the <a href="@menu_link">@menu_name menu</a>.', ['@menu_link' => $menu_link, '@menu_name' => $menus[$custom_menu_2]]),
+        '#markup' => t('Links in the right column are managed via the <a href="@menu_link">@menu_name menu</a>.', [
+          '@menu_link' => $menu_link,
+          '@menu_name' => $menus[$custom_menu_2],
+        ]),
       ];
     }
   }
