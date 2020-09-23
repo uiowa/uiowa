@@ -218,28 +218,33 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
       'background_options',
     ]);
     if ($background_option) {
-      if ($background_option === 'image'
-        && !$form_state->getValue([
-          'settings',
-          'block_form',
-          'field_uiowa_banner_image',
-          'selection',
-        ])
-      ) {
-        /*
-         * If an image wasn't uploaded, revert back to a default selection of black.
-         *
-         * @todo Add feedback for user about the fact that they didn't upload an image.
-         * @todo After we can figure out how we can present an indicator to the user that
-         *   the image field is required (when shown), add validation to check for whether
-         *   an image was uploaded or not.
-         **/
-        $background_option = 'block_background_style_black';
+      $form_media_selection = [
+        'settings',
+        'block_form',
+        'field_uiowa_banner_image',
+        'selection',
+      ];
+      if ($background_option === 'image') {
+        if (!$form_state->getValue($form_media_selection)) {
+          // If an image wasn't uploaded, revert back to a default selection of black.
+          $background_option = 'block_background_style_black';
+
+          // @todo Add feedback for user about the fact that they didn't upload an image.
+          // @todo After we can figure out how we can present an indicator to the user that
+          //   the image field is required (when shown), add validation to check for whether
+          //   an image was uploaded or not.
+        }
+
+      }
+      else {
+        // If a non-image background was selected, remove the reference.
+        $form_state->unsetValue($form_media_selection);
+
+        // @todo Do we need to trigger file deletion if the media item is unused elsewhere?
       }
       // Set the layout_builder_style_background to the value of our duplicate select.
       $form_state->setValue('layout_builder_style_background', $background_option);
     }
-    // @todo If a non-image background was selected, remove the image.
   }
 }
 
@@ -270,6 +275,7 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
       break;
 
     case 'inline_block:uiowa_banner':
+      // @todo Should this be scoped to a condition checking if layout_builder_styles is enabled?
       $all_styles = _layout_builder_styles_retrieve_by_type(LayoutBuilderStyleInterface::TYPE_COMPONENT);
 
       $selectedStyles = $component->get('layout_builder_styles_style');
