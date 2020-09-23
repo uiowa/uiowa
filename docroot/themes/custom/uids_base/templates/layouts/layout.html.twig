@@ -19,7 +19,7 @@
   {% if content[region] %}
     {% set region_rendered = content[region]|render %}
 
-    {% if region_rendered|striptags|trim %}
+    {% if region_rendered|striptags('<embed><hr><iframe><img><input>')|trim %}
       {% set render_sections = render_sections|merge({ (region): region_rendered }) %}
     {% endif %}
   {% endif %}
