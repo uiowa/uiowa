@@ -5,101 +5,107 @@ $imgpath: '../../uids/assets/images';
 @import "../uids/assets/scss/_base.scss";
 
 
+
+// Layout container padding
+
 .layout__container {
+  margin-top: 0;
+  padding-bottom: $mobile-width-gutter;
+  // This will be overridden by a subsequent style for 1+n containers.
+  padding-top: $mobile-width-gutter;
+
+  @include breakpoint(container) {
+    padding-top: $desktop-width-gutter;
+    padding-bottom: $desktop-width-gutter;
+  }
+
+  &:first-child {
+    padding-top: 0;
+  }
+
+  // @todo Should this be moved to the header layout scss file?
+  &.layout--title {
+    padding-bottom: 1.25rem;
+
+    &.layout--title--hidden {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+  }
+
+  &.layout--title + &:not([class*="bg-"]) {
+    padding-top: 0;
+  }
+
+  // Define a list of background treatments.
+  $backgrounds:
+    ':not([class*="bg-"])',
+    '.bg--gold',
+    '.bg--black',
+    '.bg--gray',
+    '.bg-pattern--brain',
+    '.bg-pattern--brain-reversed',
+    '.bg-pattern--brain-black';
+
+  // Loop through each background.
+  @each $background in $backgrounds {
+
+    // When an element follows a previous element
+    // with the same background treatment, remove the
+    // top padding of the target element.
+    &#{$background} + &#{$background} {
+      padding-top: 0;
+
+      // Necessary to restore padding
+      &.section-padding {
+        &__top-restored {
+          padding-top: $desktop-width-gutter;
+        }
+
+        &__top-extra {
+          padding-top: 6rem;
+        }
+      }
+    }
+  }
+
+  &.layout--title--hidden + &:not([class*="bg-"]) {
+    padding-top: $desktop-width-gutter;
+  }
+
+  // LBS padding classes
+  &.section-padding {
+    &__removed-top {
+      padding-top: 0;
+    }
+
+    &__removed-bottom {
+      padding-bottom: 0;
+    }
+
+    &__top-restored {
+      padding-top: $desktop-width-gutter;
+    }
+
+    &__top-extra {
+      padding-top: 6rem;
+    }
+
+    &__bottom-extra {
+      padding-bottom: 6rem;
+    }
+  }
+
+  // @todo Where should this live?
   .block-inline-blockuiowa-text-area {
     //width: 100%;
     //flex: 1 0 auto;
     flex-basis: 100%;
-  }
 
-  .block-system-breadcrumb-block,
-  .block-field-blocknodepagetitle,
-  .block-field-blocknodepagebody,
-  .block-inline-blockuiowa-text-area,
-  .block-views {
-    //flex-basis: 100%;
-  }
-}
-
-// ie11
-
-
-@media all and (-ms-high-contrast: none),
-(-ms-high-contrast: active) {
-  .layout__container .block-inline-blockuiowa-text-area {
-    flex-basis: auto;
-  }
-
-  .o-canvas__group {
-    -ms-flex-preferred-size: auto !important;
-    flex-basis: auto !important;
-  }
-
-  .card__body {
-    flex: auto !important;
-  }
-
-  .card.card--horizontal .card__body {
-    flex: 1 !important;
-    flex-direction: column;
-  }
-
-  .card.card--horizontal>* {
-    flex-direction: unset;
-    display: block !important;
-  }
-
-  .paragraph--type--articles.list .card__body,
-  .paragraph--type--people.list .card__body,
-  .paragraph--type--events.list .card__body,
-  .view-display-id-page_articles .card__body,
-  .paragraph--type--featured-content.list .card__body,
-  .view-id-people .card__body,
-  .view-display-id-page_articles .view-content {
-    flex: 1 !important;
-  }
-
-
-  .paragraph--type--articles.list .view-content,
-  .paragraph--type--people.list .view-content,
-  .view-display-id-page_articles .view-content,
-  .paragraph--type--featured-content.list .field--name-field-featured-content {
-    display: block !important;
-  }
-
-  .view-id-people .card--list,
-  .view-id-people .node--type-article {
-    display: flex !important;
-  }
-
-  #superfish-main-accordion {
-    position: relative !important;
-  }
-}
-
-
-.layout--twocol.layout,
-.layout--twocol.layout .lb__container {
-  flex-basis: 100%;
-}
-
-.layout--onecol {
-
-  .feature,
-  .banner {
-    flex-basis: 100%;
-
-    .section-column__row & {
-      flex-basis: unset;
+    &[class*="bg--"],
+    &[class*="bg-pattern--"] {
+      padding: $desktop-width-gutter;
     }
-  }
-}
-
-@media all and (min-width: 0px) and (max-width: 855px) and (-ms-high-contrast: none),
-(-ms-high-contrast: active) {
-  .o-canvas__group {
-    -ms-flex-preferred-size: 100% !important;
-    flex-basis: 100% !important;
   }
 }
 
@@ -139,281 +145,59 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   }
 }
 
-// default left/right gutter spacing for full width settings without layout builder
-
-.page__container--full .region-content {
-  // margin-right: $gutter;
-  //margin-left: $gutter;
-  margin-right: $mobile-width-gutter;
-  margin-left: $mobile-width-gutter;
+.page__container.layout__container {
+  max-width: 100%;
 }
 
-// default left/right gutter spacing for full width settings w/ layout builder enabled
+// default spacing for layout builder pages with container set in theme settings
 
-.content__full .layout__container.page__container--extended {
-  .lb__container {
-    @include breakpoint(container) {
-      max-width: 100em;
-      padding: 0 $lg;
-      margin: 0 auto;
-    }
-  }
-}
-
-.content__full .layout__container {
-  margin-right: $mobile-width-gutter;
-  margin-left: $mobile-width-gutter;
-  margin-bottom: $mobile-width-gutter;
-
-  &.page__container--full {
-    margin-right: 0;
-    margin-left: 0;
-  }
-
-  // layout builder styles padding classes
-
-  &.section-padding {
-    &__top-extra {
-      .lb__container {
-        padding-top: $desktop-width-gutter;
-      }
-    }
-
-    @include breakpoint(sm) {
-      &__top {
-        .lb__container {
-          padding-top: $md;
-        }
-      }
-
-      &__top-extra {
-        .lb__container {
-          padding-top: $desktop-width-gutter;
-        }
-      }
-
-      &__bottom-extra {
-        .lb__container {
-          padding-bottom: $desktop-width-gutter;
-        }
-      }
-
-      &__right {
-        .lb__container {
-          padding-right: $desktop-width-gutter;
-        }
-      }
-
-      &__bottom {
-        .lb__container {
-          padding-bottom: $desktop-width-gutter;
-        }
-      }
-
-      &__left {
-        .lb__container {
-          padding-left: $desktop-width-gutter;
-        }
-      }
-    }
-
-  }
-
-  // layout builder styles margin classes
-
-  &.section-margin {
-    &__top {
-      margin-top: $md;
-
-      &.page__container {
-        margin-top: $md;
-      }
-    }
-
-    &__bottom {
-      margin-bottom: $md;
-
-      &.page__container {
-        margin-bottom: $md;
-      }
-    }
-  }
-
-  &.page__container--edge {
-    margin-right: 0;
-    margin-left: 0;
-  }
-
-  &.page__container {
-    //margin: 0 auto;
+.content__container {
+  .layout__spacing_container {
     @extend %container;
   }
 
-  &.section-margin__removed {
-    margin-top: 0;
-    margin-bottom: 0;
+  .page__container--extended {
+    .layout__spacing_container {
+      @include breakpoint(container) {
+        max-width: 100em;
+        padding-right: $lg;
+        padding-left: $lg;
+      }
+    }
   }
 
+  .page__container--narrow {
+    .layout__spacing_container {
+      @include breakpoint(md) {
+        max-width: 63.75em;
+        margin: 0 auto;
+        padding-right: $lg;
+        padding-left: $lg;
+      }
+    }
+  }
 }
 
-
+// default left/right gutter spacing for full width settings without layout builder
 // settings if page container full or edge is selected on section
 
-.page__container--full.layout__container .lb__container {
-  // margin-right: $gutter;
-  // margin-left: $gutter;
+.page__container--full.layout__container .layout__spacing_container {
   margin-right: $mobile-width-gutter;
   margin-left: $mobile-width-gutter;
+  max-width: 100%;
 
   @include breakpoint(menu) {
     margin-right: $desktop-width-gutter;
     margin-left: $desktop-width-gutter;
   }
+}
 
-  &.page__container--edge {
+.page__container--edge {
+  .layout__spacing_container {
+    max-width: 100%;
     margin-right: 0;
     margin-left: 0;
   }
-}
-
-.page__container.layout__container {
-  max-width: 100%;
-}
-
-
-// default spacing for layout builder pages with container set in theme settings
-
-.content__container,
-.content__mixed {
-
-  .layout__container {
-    margin-bottom: $desktop-width-gutter;
-
-    &[class*="bg--"]:last-child,
-    &[class*="bg-pattern--"]:last-child {
-      margin-bottom: 0;
-    }
-  }
-
-  .lb__container {
-    @extend %container;
-  }
-
-  .page__container--extended {
-    .lb__container {
-      @include breakpoint(container) {
-        max-width: 100em;
-        padding: 0 $lg;
-      }
-    }
-  }
-
-  // layout builder styles padding classes
-
-  .section-padding {
-    &__top-extra {
-      .lb__container {
-        padding-top: $mobile-width-gutter;
-      }
-    }
-
-    @include breakpoint(sm) {
-      &__top {
-        .lb__container {
-          padding-top: $desktop-width-gutter;
-        }
-      }
-
-      &__top-extra {
-        .lb__container {
-          padding-top: $desktop-width-gutter;
-        }
-      }
-
-      &__bottom-extra {
-        .lb__container {
-          padding-bottom: $desktop-width-gutter;
-        }
-      }
-
-      &__right {
-        .lb__container {
-          padding-right: $desktop-width-gutter;
-        }
-      }
-
-      &__bottom {
-        .lb__container {
-          padding-bottom: $desktop-width-gutter;
-        }
-      }
-
-      &__left {
-        .lb__container {
-          padding-left: $desktop-width-gutter;
-        }
-      }
-    }
-  }
-
-  // layout builder styles margin classes
-  .section-margin__top {
-    margin-top: $md;
-  }
-
-  .section-margin__top.page__container {
-
-    margin-top: $md;
-
-  }
-
-  .section-margin__bottom {
-
-    margin-bottom: $md;
-
-  }
-
-  .section-margin__bottom.page__container {
-
-    margin-bottom: $md;
-
-  }
-
-
-
-  .section-margin__removed {
-    margin-top: 0;
-    margin-bottom: 0;
-
-  }
-
-  .page__container--full {
-    .lb__container {
-      max-width: 100%;
-      padding-right: $mobile-width-gutter;
-      padding-left: $mobile-width-gutter;
-      margin-right: 0;
-      margin-left: 0;
-
-      @include breakpoint(menu) {
-        padding-right: $desktop-width-gutter;
-        padding-left: $desktop-width-gutter;
-        margin-right: 0;
-        margin-left: 0;
-      }
-    }
-  }
-
-  .page__container--edge {
-    .lb__container {
-      max-width: 100%;
-      margin-right: 0;
-      margin-left: 0;
-    }
-  }
-
-
-
 }
 
 // Block Margins / Padding
@@ -444,33 +228,6 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   }
 }
 
-
-
-// Section w/ color background padding
-
-div[class*="bg--"],
-div[class*="bg-pattern--"] {
-  .lb__container {
-    padding-top: $mobile-width-gutter;
-    padding-bottom: $mobile-width-gutter;
-
-    @include breakpoint(sm) {
-      padding-top: $desktop-width-gutter;
-      padding-bottom: $desktop-width-gutter;
-    }
-  }
-
-  &.section-padding__removed {
-    .lb__container {
-      padding-top: 0;
-      padding-bottom: 0
-    }
-  }
-}
-
-
-
-
 // mobile search
 
 .search-button[aria-expanded="true"] {
@@ -490,7 +247,6 @@ div[class*="bg-pattern--"] {
     display: block;
   }
 }
-
 
 // todo move back to uids as toc style also create tag style for term edit
 
@@ -604,7 +360,87 @@ div[class*="bg-pattern--"] {
 }
 
 
-// todo remomve
+// @todo remove
+
 .uids-component--alert {
   margin-top: 0;
+}
+
+// ie11
+
+@media all and (-ms-high-contrast: none),
+(-ms-high-contrast: active) {
+  .layout__container .block-inline-blockuiowa-text-area {
+    flex-basis: auto;
+  }
+
+  .o-canvas__group {
+    -ms-flex-preferred-size: auto !important;
+    flex-basis: auto !important;
+  }
+
+  .card__body {
+    flex: auto !important;
+  }
+
+  .card.card--horizontal .card__body {
+    flex: 1 !important;
+    flex-direction: column;
+  }
+
+  .card.card--horizontal>* {
+    flex-direction: unset;
+    display: block !important;
+  }
+
+  .paragraph--type--articles.list .card__body,
+  .paragraph--type--people.list .card__body,
+  .paragraph--type--events.list .card__body,
+  .view-display-id-page_articles .card__body,
+  .paragraph--type--featured-content.list .card__body,
+  .view-id-people .card__body,
+  .view-display-id-page_articles .view-content {
+    flex: 1 !important;
+  }
+
+  .paragraph--type--articles.list .view-content,
+  .paragraph--type--people.list .view-content,
+  .view-display-id-page_articles .view-content,
+  .paragraph--type--featured-content.list .field--name-field-featured-content {
+    display: block !important;
+  }
+
+  .view-id-people .card--list,
+  .view-id-people .node--type-article {
+    display: flex !important;
+  }
+
+  #superfish-main-accordion {
+    position: relative !important;
+  }
+}
+
+@media all and (min-width: 0px) and (max-width: 855px) and (-ms-high-contrast: none),
+(-ms-high-contrast: active) {
+  .o-canvas__group {
+    -ms-flex-preferred-size: 100% !important;
+    flex-basis: 100% !important;
+  }
+}
+
+.layout--twocol.layout,
+.layout--twocol.layout .layout__spacing_container {
+  flex-basis: 100%;
+}
+
+.layout--onecol {
+
+  .feature,
+  .banner {
+    flex-basis: 100%;
+
+    .section-column__row & {
+      flex-basis: unset;
+    }
+  }
 }
