@@ -6,8 +6,22 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\layout_builder_custom\LayoutBuilderPreRender;
 use Drupal\layout_builder_styles\LayoutBuilderStyleGroups;
 use Drupal\layout_builder_styles\LayoutBuilderStyleInterface;
+
+/**
+ * Implementation of hook_element_info_alter().
+ *
+ * This doesn't work because it is for changing broad-level definitions for how elements
+ * are handled. It doesn't allow for setting the configuration for an individual element.
+ *
+ * @param array $types
+ *   The types to be altered.
+ */
+function layout_builder_custom_element_info_alter(array &$types) {
+  $types['layout_builder']['#pre_render'][] = LayoutBuilderPreRender::class . '::preRender';
+}
 
 /**
  * Implements hook_form_alter().
@@ -146,11 +160,18 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       break;
 
     case 'layout_builder_configure_section':
-      if (isset($form['layout_builder_style_background'])) {
-        // Disable multiple selection and weight to the top so focus on a
-        // Chosen-enabled select does not obscure other form elements.
-        $form['layout_builder_style_background']['#multiple'] = FALSE;
-        $form['layout_builder_style_background']['#weight'] = 0;
+      $single_select_groups = [
+        'layout_builder_style_background',
+        'layout_builder_style_container',
+      ];
+
+      foreach ($single_select_groups as $group) {
+        if (isset($form[$group])) {
+          // Disable multiple selection and weight to the top so focus on a
+          // Chosen-enabled select does not obscure other form elements.
+          $form[$group]['#multiple'] = FALSE;
+          $form[$group]['#weight'] = 0;
+        }
       }
 
       break;
