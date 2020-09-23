@@ -171,7 +171,10 @@ class MigratePostImportEvent implements EventSubscriberInterface {
 
       }
 
-      $content = preg_replace_callback('|<a href="(.*?)">|i', [$this, 'linkReplace'], $content);
+      $content = preg_replace_callback('|<a href="(.*?)">|i', [
+        $this,
+        'linkReplace',
+      ], $content);
 
       // Depending on content type, need to set it differently.
       switch ($node->getType()) {
