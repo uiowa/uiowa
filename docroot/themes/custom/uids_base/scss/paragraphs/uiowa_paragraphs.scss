@@ -221,9 +221,10 @@ div.example2 p.special {
 
   .paragraph--type--text.col-md-12 {
     padding-top: 0;
-      &[class*="bg-"] {
-        padding-top: $gutter;
-      }
+
+    &[class*="bg-"] {
+      padding-top: $gutter;
+    }
   }
 }
 
@@ -275,5 +276,25 @@ div.example2 p.special {
   &.bg-black:first-child,
   &.bg-yellow:first-child {
     margin-top: 0;
+  }
+}
+
+.layout--onecol--no--background+.layout__container.page__container--edge.layout--no-sidebar:not([class*=bg-]) {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/*
+   * @todo Should this be moved to scss/layouts/onecol.scss or
+   *   scss/layouts/onecol--background.scss?
+   */
+
+// Removes container padding from paragraph pages like https://hawkeyemarchingband.local.drupal.uiowa.edu/auditions
+.layout__container {
+  &.layout--onecol--no--background,
+  &.layout--no-sidebar,
+  &.layout--has-sidebar.sidebar-invisible {
+    padding-top: 0;
+    padding-bottom: 0;
   }
 }
