@@ -13,19 +13,6 @@
   }
 }
 
-.bg-pattern--brain-reversed,
-.bg--gold {
-  .bttn--primary {
-    color: #fff;
-    background: $secondary;
-    border: 1px solid $secondary;
-
-    svg {
-      color: $primary;
-    }
-  }
-}
-
 .layout--threecol,
 .layout--fourcol,
 .layout--twocol--25-75 .layout__region--first,
@@ -50,6 +37,15 @@
 
     .banner__text {
       display: none;
+    }
+  }
+}
+
+// Add padding to banner content if not in edge-to-edge column
+.layout--onecol:not([class*=page__container--edge]) {
+  .banner .banner__content {
+    @include breakpoint(sm) {
+    padding: 3rem;
     }
   }
 }
