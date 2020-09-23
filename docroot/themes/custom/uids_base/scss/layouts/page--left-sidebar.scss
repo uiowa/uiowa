@@ -34,23 +34,19 @@
   margin-bottom: 1.5rem;
 }
 
-.content__container .layout--has-sidebar .lb__container,
-.content__mixed .layout--has-sidebar .lb__container {
+.content__container .layout--has-sidebar .layout__spacing_container {
   display: flex;
   flex-wrap: wrap;
   @extend %container;
 }
 
 
-.content__container .page__container--edge.layout--has-sidebar.sidebar-invisible .lb__container,
-.content__mixed .page__container--edge.layout--has-sidebar.sidebar-invisible .lb__container {
+.content__container .page__container--edge.layout--has-sidebar.sidebar-invisible .layout__spacing_container {
   max-width: 100%;
 }
 
 .content__container .layout__container.layout--no-sidebar,
-.content__container .layout__container.layout--has-sidebar.sidebar-invisible,
-.content__mixed .layout__container.layout--no-sidebar,
-.content__mixed .layout__container.layout--has-sidebar.sidebar-invisible {
+.content__container .layout__container.layout--has-sidebar.sidebar-invisible {
   margin-bottom: 0;
 }
 
@@ -81,18 +77,18 @@
     flex: 0 1 72.75%;
   }
 }
-
-.layout--onecol--no--background+.sidebar-invisible.layout--page--left-sidebar:not([class*="bg--"]) .block-field-blocknodepagebody,
-.layout--onecol--no--background+.sidebar-invisible.layout--page--left-sidebar:not([class*="bg--"]) .block-inline-blockuiowa-text-area,
-.layout--onecol--no--background+.layout--page--left-sidebar.layout--no-sidebar:not([class*="bg--"]) .block-field-blocknodepagebody,
-.layout--onecol--no--background+.layout--page--left-sidebar.layout--no-sidebar:not([class*="bg--"]) .block-inline-blockuiowa-text-area {
+/*
+.layout--onecol--no--background+.sidebar-invisible.layout--page--left-sidebar:not([class*="bg-"]) .block-field-blocknodepagebody,
+.layout--onecol--no--background+.sidebar-invisible.layout--page--left-sidebar:not([class*="bg-"]) .block-inline-blockuiowa-text-area,
+.layout--onecol--no--background+.layout--page--left-sidebar.layout--no-sidebar:not([class*="bg-"]) .block-field-blocknodepagebody,
+.layout--onecol--no--background+.layout--page--left-sidebar.layout--no-sidebar:not([class*="bg-"]) .block-inline-blockuiowa-text-area {
   margin-top: $gutter;
 }
 
-
-.layout--onecol--background+.sidebar-invisible.layout--page--left-sidebar:not([class*="bg--"]) .block-field-blocknodepagebody,
-.layout--onecol--background+.sidebar-invisible.layout--page--left-sidebar:not([class*="bg--"]) .block-inline-blockuiowa-text-area,
-.layout--onecol--background+.layout--page--left-sidebar.layout--no-sidebar:not([class*="bg--"]) .block-field-blocknodepagebody,
-.layout--onecol--background+.layout--page--left-sidebar.layout--no-sidebar:not([class*="bg--"]) .block-inline-blockuiowa-text-area {
+.layout--onecol--background+.sidebar-invisible.layout--page--left-sidebar:not([class*="bg-"]) .block-field-blocknodepagebody,
+.layout--onecol--background+.sidebar-invisible.layout--page--left-sidebar:not([class*="bg-"]) .block-inline-blockuiowa-text-area,
+.layout--onecol--background+.layout--page--left-sidebar.layout--no-sidebar:not([class*="bg-"]) .block-field-blocknodepagebody,
+.layout--onecol--background+.layout--page--left-sidebar.layout--no-sidebar:not([class*="bg-"]) .block-inline-blockuiowa-text-area {
   margin-top: 2rem;
 }
+*/
