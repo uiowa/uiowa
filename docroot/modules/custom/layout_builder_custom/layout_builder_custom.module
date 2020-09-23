@@ -224,9 +224,16 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
  * Implements hook_field_widget_WIDGET_TYPE_form_alter().
  */
 function layout_builder_custom_field_widget_paragraphs_form_alter(array &$element, FormStateInterface &$form_state, array $context) {
-  if (isset($element['#paragraph_type']) && $element['#paragraph_type'] === 'uiowa_collection_item') {
-    // Pop the headline and place it in the label.
-    $headline = array_shift($element['top']['summary']['fields_info']['#summary']['content']);
-    $element['top']['type']['label']['#markup'] = $headline;
+  if (isset($element['#paragraph_type'])) {
+    switch ($element['#paragraph_type']) {
+
+      case 'uiowa_collection_item':
+      case 'uiowa_slide':
+        // Pop the headline and place it in the label.
+        $headline = array_shift($element['top']['summary']['fields_info']['#summary']['content']);
+        $element['top']['type']['label']['#markup'] = $headline;
+        break;
+
+    }
   }
 }
