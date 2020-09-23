@@ -102,10 +102,12 @@ class SitenowDcvFileForm extends FormBase {
       '#value' => $this->t('Submit'),
     ];
 
-    /* @var \Drupal\file\Entity\File[] $file */
+    /** @var \Drupal\file\Entity\File[] $file */
     $file = $this->entityTypeManager
       ->getStorage('file')
-      ->loadByProperties(['filename' => $this->state->get('sitenow_dcv_filename', '')]);
+      ->loadByProperties([
+        'filename' => $this->state->get('sitenow_dcv_filename', ''),
+      ]);
 
     // There can be only one (file replaced on upload).
     $file = array_pop($file);
