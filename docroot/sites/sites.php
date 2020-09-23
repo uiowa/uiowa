@@ -1577,3 +1577,39 @@ $sites['orgshpe.local.drupal.uiowa.edu'] = 'shpe.org.uiowa.edu';
 $sites['orgshpe.dev.drupal.uiowa.edu'] = 'shpe.org.uiowa.edu';
 $sites['orgshpe.stage.drupal.uiowa.edu'] = 'shpe.org.uiowa.edu';
 $sites['orgshpe.prod.drupal.uiowa.edu'] = 'shpe.org.uiowa.edu';
+
+// Directory aliases for avclub.org.uiowa.edu.
+$sites['orgavclub.local.drupal.uiowa.edu'] = 'avclub.org.uiowa.edu';
+$sites['orgavclub.dev.drupal.uiowa.edu'] = 'avclub.org.uiowa.edu';
+$sites['orgavclub.stage.drupal.uiowa.edu'] = 'avclub.org.uiowa.edu';
+$sites['orgavclub.prod.drupal.uiowa.edu'] = 'avclub.org.uiowa.edu';
+
+// Directory aliases for appliedphys.lab.uiowa.edu.
+$sites['labappliedphys.local.drupal.uiowa.edu'] = 'appliedphys.lab.uiowa.edu';
+$sites['labappliedphys.dev.drupal.uiowa.edu'] = 'appliedphys.lab.uiowa.edu';
+$sites['labappliedphys.stage.drupal.uiowa.edu'] = 'appliedphys.lab.uiowa.edu';
+$sites['labappliedphys.prod.drupal.uiowa.edu'] = 'appliedphys.lab.uiowa.edu';
+
+// Directory aliases for hr.clas.uiowa.edu.
+$sites['clashr.local.drupal.uiowa.edu'] = 'hr.clas.uiowa.edu';
+$sites['clashr.dev.drupal.uiowa.edu'] = 'hr.clas.uiowa.edu';
+$sites['clashr.stage.drupal.uiowa.edu'] = 'hr.clas.uiowa.edu';
+$sites['clashr.prod.drupal.uiowa.edu'] = 'hr.clas.uiowa.edu';
+
+// Directory aliases for finance.clas.uiowa.edu.
+$sites['clasfinance.local.drupal.uiowa.edu'] = 'finance.clas.uiowa.edu';
+$sites['clasfinance.dev.drupal.uiowa.edu'] = 'finance.clas.uiowa.edu';
+$sites['clasfinance.stage.drupal.uiowa.edu'] = 'finance.clas.uiowa.edu';
+$sites['clasfinance.prod.drupal.uiowa.edu'] = 'finance.clas.uiowa.edu';
+
+// Directory aliases for cinematicarts.uiowa.edu.
+$sites['cinematicarts.local.drupal.uiowa.edu'] = 'cinematicarts.uiowa.edu';
+$sites['cinematicarts.dev.drupal.uiowa.edu'] = 'cinematicarts.uiowa.edu';
+$sites['cinematicarts.stage.drupal.uiowa.edu'] = 'cinematicarts.uiowa.edu';
+$sites['cinematicarts.prod.drupal.uiowa.edu'] = 'cinematicarts.uiowa.edu';
+
+// Directory aliases for classics.uiowa.edu.
+$sites['classics.local.drupal.uiowa.edu'] = 'classics.uiowa.edu';
+$sites['classics.dev.drupal.uiowa.edu'] = 'classics.uiowa.edu';
+$sites['classics.stage.drupal.uiowa.edu'] = 'classics.uiowa.edu';
+$sites['classics.prod.drupal.uiowa.edu'] = 'classics.uiowa.edu';
