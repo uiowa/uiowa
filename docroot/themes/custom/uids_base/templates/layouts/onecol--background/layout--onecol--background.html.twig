@@ -16,14 +16,17 @@
 
 {%
   set classes = [
-  'layout--onecol--background'
+  has_node_image ? 'layout--onecol--background',
+  not has_node_image ? 'layout--onecol--no--background',
 ]
 %}
+
+{% set attributes = attributes.addClass(classes) %}
 
 {% if has_node_image %}
   {% embed "@uids_base/uids/hero.html.twig" with {
     hero_alignment : 'bottom',
-    'attributes' : attributes.addClass(classes)
+    'attributes' : attributes,
   } %}
     {% block hero_image %}
       {{ content.background }}
@@ -32,10 +35,6 @@
       {{ content.content }}
     {% endblock %}
   {% endembed %}
-
 {% else %}
-  {% embed '@uids_base/layouts/onecol/layout--onecol.html.twig' with {
-    'attributes': attributes.addClass(classes, 'layout--onecol--no--background'),
-}%}{% endembed %}
-
+  {% include '@uids_base/layouts/layout.html.twig' %}
 {% endif %}
