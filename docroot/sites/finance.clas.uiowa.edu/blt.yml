@@ -1,0 +1,13 @@
+project:
+  local:
+    hostname: clasfinance.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: clasfinance
+  human_name: finance.clas.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: clasfinance.prod
+drupal:
+  db:
+    database: finance_clas_uiowa_edu
