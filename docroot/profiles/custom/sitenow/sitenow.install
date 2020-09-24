@@ -1090,7 +1090,7 @@ function sitenow_update_8032() {
 }
 
 /**
- * Move all managed unused files to temporary status.
+ * Create banner blocks out of existing hero blocks.
  */
 function sitenow_update_8033() {
   $connection = Database::getConnection();
@@ -1151,8 +1151,4 @@ function sitenow_update_8033() {
       // }
     }
   }
-  // @todo Get all hero instances and loop through them.
-  // @todo Create a banner instance to replace each hero.
-  // @todo Except in the case of the hero on the homepage of the hp site.
-  // @todo Update the layout builder reference to point to the new block.
 }

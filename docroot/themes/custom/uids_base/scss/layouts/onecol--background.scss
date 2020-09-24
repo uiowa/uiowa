@@ -20,20 +20,22 @@
 
     &--background,
     &--no--background {
-      &.layout__container {
-        margin-bottom: 0;
-      }
+      // @todo Remove if unnecessary.
+      //&.layout__container {
+      //  margin-bottom: 0;
+      //}
 
       .layout__spacing_container {
         @extend %container;
       }
     }
 
-    &--background {
-      &.layout__container.title-invisible {
-        margin-bottom: 0;
-      }
-    }
+    // @todo Remove if unnecessary.
+    //&--background {
+    //  &.layout__container.title-invisible {
+    //    margin-bottom: 0;
+    //  }
+    //}
   }
 
   .layout--has-sidebar {
