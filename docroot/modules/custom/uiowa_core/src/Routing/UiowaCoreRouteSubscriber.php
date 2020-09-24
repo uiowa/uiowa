@@ -22,8 +22,10 @@ class UiowaCoreRouteSubscriber extends RouteSubscriberBase {
       $route->setDefault('_form', 'Drupal\uiowa_core\Form\UiowaCoreSiteInformationForm');
     }
     $restricted_routes = [
-      'google_tag.settings_form', // Google Tag Manager settings.
-      'system.theme_settings', // Global theme settings.
+      // Google Tag Manager settings.
+      'google_tag.settings_form',
+      // Global theme settings.
+      'system.theme_settings',
     ];
 
     // Restrict access to these routes for non-admins.
