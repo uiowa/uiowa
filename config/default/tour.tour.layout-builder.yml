@@ -1,0 +1,158 @@
+uuid: 8c4c7753-2041-45d8-ae39-a778d6b2a239
+langcode: en
+status: true
+dependencies:
+  module:
+    - sitenow
+id: layout-builder
+label: 'Layout Builder'
+module: sitenow
+routes:
+  -
+    route_name: layout_builder.overrides.node.view
+tips:
+  page:
+    id: page
+    plugin: text
+    label: 'Layout Builder'
+    weight: 0
+    attributes: {  }
+    body: '<p>The Layout Builder blocks serve as a page building tool to create complex layouts with a mixture of different content. </p><p>Every page is made up of "Sections". Sections are top-level content blocks that wrap around and contain the other existing layout builder blocks.</p>'
+    location: top
+  layout-builder-menu:
+    id: layout-builder-menu
+    plugin: text
+    label: 'Layout Builder Menu'
+    weight: 1
+    attributes:
+      data-id: block-uids-base-local-tasks
+    body: '<p>To change basic page settings (ie page title, featured image, URL, Summary etc) go to the "Edit" menu tab. To view the layout builder blocks, select the "Layout" tab.</p>'
+    location: bottom
+  layout-builder-header:
+    id: layout-builder-header
+    plugin: text
+    label: 'Header Section'
+    weight: 2
+    attributes:
+      data-class: block-system-breadcrumb-block
+    body: '<p>Every Basic Page is provided with a “Header” section, which contains the page title, breadcrumbs and featured image (if one has been added through the page “edit” tab).</p>'
+    location: top
+  add-builder-section:
+    id: add-builder-section
+    plugin: text
+    label: 'Add a Section'
+    weight: 3
+    attributes:
+      data-class: layout-builder__add-section
+    body: '<p>To add a section, click the “+ Add section” button. This will prompt a right sidebar menu to appear allowing you to select how you would like the layout builder blocks to be displayed.</p>'
+    location: top
+  add-admin-title:
+    id: add-admin-title
+    plugin: text
+    label: 'Administrative Title'
+    weight: 4
+    attributes:
+      data-class: layout-builder__add-section
+    body: '<p> When you add a section that has more than one column, you have the option to provide an "Administrative Title". This isn’t displayed to users, but is helpful to organize content when working with more than one section on a page.</p>'
+    location: right
+  remove-builder-section:
+    id: remove-builder-section
+    plugin: text
+    label: 'Removing a Section'
+    weight: 5
+    attributes:
+      data-class: bold-headline
+    body: '<p>Hover over the section you wish to remove. In the upper left corner, there will be an “x” icon followed by a “Configure [Administrative Label]” link. Select the “x” icon. This will prompt a message in the right sidebar menu where you can either confirm or cancel the removal of the section. </p>'
+    location: right
+  add-builder-block:
+    id: add-builder-block
+    plugin: text
+    label: 'Add Layout Builder Block'
+    weight: 6
+    attributes:
+      data-class: dropbutton-toggle
+    body: '<p> Click on the dropdown arrow to see the avilable blocks. </p>'
+    location: left
+  banner-block-title:
+    id: banner-block-title
+    plugin: text
+    label: 'Banner Block Title'
+    weight: 7
+    attributes:
+      data-class: edit-settings-block-form-field-uiowa-banner-title-0-container
+    body: '<p>The Title will be displayed over the Image. </p>'
+    location: top
+  cta-block:
+    id: cta-block
+    plugin: text
+    label: 'Call to Action Block'
+    weight: 8
+    attributes:
+      data-class: field--name-field-uiowa-cta-title
+    body: '<p>A Call to Action (CTA) block should be used when you are wanting to persuade site visitors to perform a desired action on your site.</p><p> CTA Examples include:</p><p>"Get Started", "Our Work", "Learn More", "Sign Up", "Subscribe" or "Continue".</p>'
+    location: left
+  cta-block-summary:
+    id: cta-block-summary
+    plugin: text
+    label: 'Call to Action Block Summary'
+    weight: 9
+    attributes:
+      data-class: field--name-field-uiowa-cta-summary
+    body: '<p>The summary of a CTA block should be concise, effective and to the point. Make sure to not lose focus of your actionable goal and to use strong verbs.
+Instead of a "Click Here" CTA use something more personal like "Discover your best life."</p>'
+    location: left
+  cta-block-link:
+    id: cta-block-link
+    plugin: text
+    label: 'Call to Action Block Link'
+    weight: 10
+    attributes:
+      data-class: field--name-field-uiowa-cta-link
+    body: '<p> You can wrap the CTA in an accessible, clickable link. The ‘Link text’ will appear as a button below the CTA summary text. The ‘Link text’ is recommended to clarify where users will be directed if they click on the selected CTA block.</p>'
+    location: top
+  collection-block:
+    id: collection-block
+    plugin: text
+    label: 'Collection Block'
+    weight: 11
+    attributes:
+      data-class: field--name-field-uiowa-collection-items
+    body: '<p>A Collection Block can be used to create a grouping of title/content or key/value information such as a definition list or an accordion. You can create multiple collection items and they will display based on the display settings you select.</p>'
+    location: left
+  collection-block-headline:
+    id: collection-block-headline
+    plugin: text
+    label: 'Collection Block Headline'
+    weight: 12
+    attributes:
+      data-class: field--name-field-collection-headline
+    body: '<p>The headline should describe what the collection body will entail. Think of it as a "title"</p>'
+    location: left
+  collection-block-body:
+    id: collection-block-body
+    plugin: text
+    label: 'Collection Block Body'
+    weight: 13
+    attributes:
+      data-class: field--name-field-collection-body
+    body: '<p>The collection body should contain descriptive text that directly correlates to the "Headline".</p>'
+    location: left
+  collection-block-view-mode-1:
+    id: collection-block-view-mode
+    plugin: text
+    label: 'Descriptive List'
+    weight: 14
+    attributes:
+      data-class: field--name-field-uiowa-collection-items
+    body: '<p>The “Headline” and “Collection Body” will display as an indented list where both fields are visible at all times. Common uses for this element are to implement a glossary or to display metadata (a list of key-value pairs).</p>'
+    location: left
+  collection-block-view-mode-2:
+    id: collection-block-view-mode-2
+    plugin: text
+    label: 'Accordion'
+    weight: 15
+    attributes:
+      data-class: field--name-field-uiowa-collection-items
+    body: '<p>The “Headline” will appear with a dropdown arrow. When selected, the “Collection Body” will be visible. With the Accordion View Mode, you can create collapsible “Headline”/content pairs. These can be expanded or collapsed by clicking the individual headlines. These are often used to shorten the initial length of a page while providing a lot of detail.</p>'
+    location: left
+  

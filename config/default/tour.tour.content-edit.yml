@@ -1,21 +1,14 @@
-uuid: 4220652e-4625-4224-a70b-d7b1b1298755
 langcode: en
 status: true
 dependencies:
   module:
     - sitenow
-id: content-add
-label: 'Adding Content'
+id: content-edit
+label: 'Editing Content'
 module: sitenow
 routes:
   -
-    route_name: node.add
-    route_params:
-      node_type: page
-  -
     route_name: entity.node.edit_form
-    route_params:
-      node_type: page
 tips:
   page:
     id: page
@@ -34,11 +27,20 @@ tips:
       data-id: edit-title-wrapper
     body: '<p>First off, give your page a title. This is a required field. Other required fields are marked with a red asterisk.</p>'
     location: bottom
+  page-summary:
+    id: page-summary
+    plugin: text
+    label: 'Page Summary'
+    weight: 2
+    attributes:
+      data-class: field--type-text-with-summary
+    body: '<p>If text is added to the body field, it will be displayed as static text in the “Main Section” of the Layout tab.</p>'
+    location: top
   page-advanced:
     id: page-advanced
     plugin: text
     label: Advanced
-    weight: 2
+    weight: 3
     attributes:
       data-id: edit-advanced
     body: '<p>There are a lot of optional advanced settings for the page tucked away here. You will use this part when dealing with menu placement, URL path, custom SEO settings.</p><p>Click on the section titles to expand them and see what they offer.</p>'
@@ -47,7 +49,7 @@ tips:
     id: content-blocks-actions
     plugin: text
     label: 'Content Block Actions'
-    weight: 3
+    weight: 4
     attributes:
       data-class: paragraphs-dropdown
     body: '<p>Each content block comes with actions which let you edit, remove or duplicate the content block.</p><p>Duplicating a content block will attempt to make a copy of everything within it, even other content blocks!action-links <a href="/admin/structure/forum/add/forum"></a></p>'
@@ -56,16 +58,16 @@ tips:
     id: page-teaser-text
     plugin: text
     label: 'Content Description'
-    weight: 4
+    weight: 5
     attributes:
-      data-id: edit-node-teaser
+      data-class: node-form-teaser
     body: '<p>One advanced setting to take note of is the Content Description. Type a short summary of you content here. It will be used if there are any displays around the site that reference this content. By default, this is also used by search engines when they crawl and index your site.</p><p>To learn more about Search Engine Optimization (SEO) for your site, <a href="https://sitenow.uiowa.edu/node/81">view our documentation section about SEO</a>.</p>'
     location: right
   page-image-entity:
     id: page-image-entity
     plugin: text
     label: 'Featured Image'
-    weight: 5
+    weight: 6
     attributes:
       data-id: edit-node-image
     body: '<p>A featured image for the Page can be added. Select Browse media or Add media to add a picture from your computer or already existing media from the Media library.</p><p>Additionally, add a caption to give the user more information on the picture.</p>'
@@ -74,7 +76,7 @@ tips:
     id: page-relationships
     plugin: text
     label: Relationships
-    weight: 6
+    weight: 7
     attributes:
       data-id: edit-node-relations
     body: '<p>You can create relationships to taxonomy terms. Commonly used to organize and classify content behind the scenes.You can reference existing (autocomplete) or create new tags by typing comma-separate terms.Additionally, to view existing tags, go to the <a href="/admin/structure/taxonomy/manage/tags/overview">Tags taxonomy page</a></p>'
@@ -83,7 +85,7 @@ tips:
     id: content-blocks-admin-title
     plugin: text
     label: 'Section Administrative Title'
-    weight: 7
+    weight: 8
     attributes:
       data-id: edit-field-page-content-block-0-subform-field-section-title-wrapper
     body: '<p>Give your section an administrative label. This isn''t displayed to users, but is helpful when working with more than one section on a page.</p>'
@@ -92,7 +94,7 @@ tips:
     id: content-blocks
     plugin: text
     label: 'Content Blocks'
-    weight: 8
+    weight: 9
     attributes:
       data-id: edit-field-page-content-block-0-subform-field-section-content-block-add-more
     body: '<p>Content blocks make up the content of the page. There is just so much that can be done with these. We will step through the basics.</p><p>To get a more detailed overview, <a href="https://sitenow.uiowa.edu/node/176">view our documentation section about content blocks</a>.</p>'
@@ -101,7 +103,7 @@ tips:
     id: content-block-settings
     plugin: text
     label: 'Content Block Settings'
-    weight: 9
+    weight: 10
     attributes:
       data-class: 'paragraphs-subform .field-group-details'
     body: '<p>Each content block comes with a set of advanced settings. Click the arrow to expand and then click next. I''ll wait for you.</p>'
