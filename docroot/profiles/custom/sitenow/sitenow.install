@@ -1162,7 +1162,10 @@ function sitenow_update_8033() {
     }
     $section_arr['components'] = $new_components;
     $new_section = Section::fromArray($section_arr);
-    $layout->appendSection($new_section);
+    $layout->removeSection($delta);
+    $layout->insertSection($delta, $new_section);
+    $node->set('layout_builder__layout', $layout->getSections())
+      ->save();
   }
   // @todo Get all hero instances and loop through them.
   // @todo Create a banner instance to replace each hero.
