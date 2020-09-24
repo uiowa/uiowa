@@ -21,8 +21,12 @@ class UiowaCoreRouteSubscriber extends RouteSubscriberBase {
       // Next, we need to set the value for _form to the form we have created.
       $route->setDefault('_form', 'Drupal\uiowa_core\Form\UiowaCoreSiteInformationForm');
     }
-    // Block route for non-admins.
+    // Block route for non-admins for Google Tag Manager settings.
     if ($route = $collection->get('google_tag.settings_form')) {
+      $route->setRequirement('_uiowa_core_access_check', 'TRUE');
+    }
+    // Block route for non-admins for global theme settings.
+    if ($route = $collection->get('system.theme_settings')) {
       $route->setRequirement('_uiowa_core_access_check', 'TRUE');
     }
   }
