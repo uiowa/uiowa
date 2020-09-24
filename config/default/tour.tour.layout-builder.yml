@@ -28,11 +28,20 @@ tips:
       data-id: block-uids-base-local-tasks
     body: '<p>To change basic page settings (ie page title, featured image, URL, Summary etc) go to the "Edit" menu tab. To view the layout builder blocks, select the "Layout" menu tab.</p>'
     location: top
+  layout-builder-page-options:
+    id: layout-builder-page-options
+    plugin: text
+    label: 'Layout Builder Page Options'
+    weight: 2
+    attributes:
+      data-id: edit-submit
+    body: '<p>Here you can save the layout with the changes you’ve made, discard any changes that were made to the page from the last time it was saved or revert the page and wipe out all of the content.</p>'
+    location: top
   layout-builder-header:
     id: layout-builder-header
     plugin: text
     label: 'Header Section'
-    weight: 2
+    weight: 3
     attributes:
       data-class: block-system-breadcrumb-block
     body: '<p>Every Basic Page is provided with a “Header” section, which contains the page title, breadcrumbs and featured image (if one has been added through the page “Edit” tab).</p>'
@@ -41,7 +50,7 @@ tips:
     id: add-builder-section
     plugin: text
     label: 'Add a Section'
-    weight: 3
+    weight: 4
     attributes:
       data-class: layout-builder__add-section
     body: '<p>To add a section, click the “+ Add section” button. This will prompt a right sidebar menu to appear allowing you to select how you would like the layout builder blocks to be displayed.</p>'
@@ -50,7 +59,7 @@ tips:
     id: add-admin-title
     plugin: text
     label: 'Administrative Title'
-    weight: 4
+    weight: 5
     attributes:
       data-class: layout-builder__add-section
     body: '<p> When you add a section that has more than one column, you have the option to provide an "Administrative Title". This isn’t displayed to users, but is helpful to organize content when working with more than one section on a page.</p>'
@@ -59,16 +68,25 @@ tips:
     id: remove-builder-section
     plugin: text
     label: 'Removing a Section'
-    weight: 5
+    weight: 6
     attributes:
       data-class: bold-headline
     body: '<p>Hover over the section you wish to remove. In the upper left corner, there will be an “x” icon followed by a “Configure [Administrative Label]” link. Select the “x” icon. This will prompt a message in the right sidebar menu where you can either confirm or cancel the removal of the section. </p>'
+    location: right
+  edit-builder-section:
+    id: edit-builder-section
+    plugin: text
+    label: 'Edit a Section'
+    weight: 7
+    attributes:
+      data-class: bold-headline
+    body: '<p>When hovering over a section, in the upper left corner, there will be an "x" icon followed by a “Configure [Administrative Label]” link. Click on the linked text. With the One Column Layout, you can change the styles applied to the section block. With the multiple Column Layouts, you have the option to change a section’s Administrative Label, applied section styles and column width.</p'
     location: right
   add-builder-block:
     id: add-builder-block
     plugin: text
     label: 'Add Layout Builder Block'
-    weight: 6
+    weight: 8
     attributes:
       data-class: dropbutton-toggle
     body: '<p> Click on the dropdown arrow to see the avilable blocks. </p>'
@@ -77,7 +95,7 @@ tips:
     id: banner-block-title
     plugin: text
     label: 'Banner Block Title'
-    weight: 7
+    weight: 9
     attributes:
       data-class: edit-settings-block-form-field-uiowa-banner-title-0-container
     body: '<p>The Title will be displayed over the Image. </p>'
@@ -86,7 +104,7 @@ tips:
     id: cta-block
     plugin: text
     label: 'Call to Action Block'
-    weight: 8
+    weight: 10
     attributes:
       data-class: field--name-field-uiowa-cta-title
     body: "<p>A Call to Action (CTA)\_block should be used when you are wanting to persuade site visitors to perform a desired action on your site.</p><p> CTA Examples include: \"Get Started\", \"Our Work\", \"Learn More\", \"Sign Up\", \"Subscribe\" or \"Continue\".</p>"
@@ -95,7 +113,7 @@ tips:
     id: cta-block-summary
     plugin: text
     label: 'Call to Action Block Summary'
-    weight: 9
+    weight: 11
     attributes:
       data-class: field--name-field-uiowa-cta-summary
     body: "<p>The summary of a CTA block should be concise, effective and to the point. Make sure\_to not lose focus of your\_actionable goal and to use strong verbs.</p><p>Instead of a\_\"Click Here\" CTA use something more personal like\_\"Discover your best life.\"</p>"
@@ -104,7 +122,7 @@ tips:
     id: cta-block-link
     plugin: text
     label: 'Call to Action Block Link'
-    weight: 10
+    weight: 12
     attributes:
       data-class: field--name-field-uiowa-cta-link
     body: '<p> You can wrap the CTA in an accessible, clickable link. The ‘Link text’ will appear as a button below the CTA summary text. The ‘Link text’ is recommended to clarify where users will be directed if they click on the selected CTA block.</p>'
@@ -113,7 +131,7 @@ tips:
     id: collection-block
     plugin: text
     label: 'Collection Block'
-    weight: 11
+    weight: 13
     attributes:
       data-class: field--name-field-uiowa-collection-items
     body: '<p>A Collection Block can be used to create a grouping of title/content or key/value information such as a definition list or an accordion. You can create multiple collection items and they will display based on the display settings you select.</p>'
@@ -122,7 +140,7 @@ tips:
     id: collection-block-headline
     plugin: text
     label: 'Collection Block Headline'
-    weight: 12
+    weight: 14
     attributes:
       data-class: field--name-field-collection-headline
     body: '<p>The headline should describe what the collection body will entail. Think of it as a "title"</p>'
@@ -131,7 +149,7 @@ tips:
     id: collection-block-body
     plugin: text
     label: 'Collection Block Body'
-    weight: 13
+    weight: 15
     attributes:
       data-class: field--name-field-collection-body
     body: '<p>The collection body should contain descriptive text that directly correlates to the "Headline".</p>'
@@ -140,7 +158,7 @@ tips:
     id: collection-block-view-mode
     plugin: text
     label: 'Descriptive List'
-    weight: 14
+    weight: 16
     attributes:
       data-class: field--name-field-uiowa-collection-items
     body: "<p>The “Headline” and “Collection Body” will display as an indented list where both fields are visible at all times.\_Common uses for this element are to implement a glossary or to display metadata (a list of key-value pairs).</p>"
@@ -149,7 +167,7 @@ tips:
     id: collection-block-view-mode-2
     plugin: text
     label: Accordion
-    weight: 15
+    weight: 17
     attributes:
       data-class: field--name-field-uiowa-collection-items
     body: "<p>The “Headline” will appear with a dropdown arrow. When selected, the “Collection Body” will be visible.\_With the Accordion View Mode, you can create collapsible “Headline”/content pairs. These\_can be expanded or collapsed by clicking the individual headlines. These are often used to shorten the initial length of a page while providing a lot of detail.</p>"
@@ -158,7 +176,7 @@ tips:
     id: event-block
     plugin: text
     label: 'Event Block'
-    weight: 16
+    weight: 18
     attributes:
       data-class: field--name-field-uiowa-event-title
     body: '<p>The purpose of this block is to create a single static event. To create a listing of upcoming events from <a href="https://events.uiowa.edu/" title="https://events.uiowa.edu/">events.uiowa.edu</a> use the <a href="https://sitenow.uiowa.edu/documentation/layout-builder-sitenow-v3-only/events-block" title="https://sitenow.uiowa.edu/documentation/layout-builder-sitenow-v3-only/events-block">Events Block.</a></p>'
@@ -167,7 +185,7 @@ tips:
     id: event-block-icon
     plugin: text
     label: 'Location Icon'
-    weight: 17
+    weight: 19
     attributes:
       data-class: field--name-field-uiowa-event-icon
     body: '<p>The location icon uses a Font Awesome Icon. The "map-marker-alt" Font Awesome icon has been added by default, but you can filter through the icons by typing in the "Location Icon" text box.</p><p>To view all of the available icons, <a href="https://fontawesome.com/icons?d=gallery&m=free" title="Click Here">click here</a>.</p>'
@@ -176,7 +194,7 @@ tips:
       id: events-block
       plugin: text
       label: 'Events Block'
-      weight: 18
+      weight: 20
       attributes:
         data-class: field--name-field-uiowa-events-department
       body: '<p>The purpose of this block is to create a listing of upcoming events from <a href="http://events.uiowa.edu/">events.uiowa.edu</a>. To use a single static event, use the <a href="https://sitenow.uiowa.edu/documentation/layout-builder-sitenow-v3-only/event-block" title="Event Block">Event Block.</a></span></p>'
@@ -185,7 +203,7 @@ tips:
     id: events-block-filters
     plugin: text
     label: 'Filters'
-    weight: 19
+    weight: 21
     attributes:
       data-class: field--name-field-uiowa-events-department
     body: '<p>NOTE: Use filters sparingly as events must match existing filters to be displayed.</p><p>Events from content.uiowa.edu can be categorized and tagged differently to provide different displays of relevant events. These include department (single value), audiences, types, interests, keywords, location (single value).</p>'
@@ -194,7 +212,7 @@ tips:
     id: events-block-number
     plugin: text
     label: 'Number of Results'
-    weight: 20
+    weight: 22
     attributes:
       data-class: field--name-field-collection-results
     body: '<p>You have the ability to display 1 to 50 events.</p>'
@@ -203,7 +221,7 @@ tips:
     id: events-block-link
     plugin: text
     label: 'More Link'
-    weight: 21
+    weight: 23
     attributes:
       data-class: form-item-settings-block-form-field-collection-more-value
     body: '<p>Check to include a more link. This defaults to events.uiowa.edu but a custom URL path can be provided.</p>'
@@ -212,7 +230,7 @@ tips:
     id: events-errors
     plugin: text
     label: 'Troubleshooting'
-    weight: 22
+    weight: 24
     attributes:
       data-class: form-item-settings-block-form-field-collection-more-value
     body: '<p> Multiple values within a filter work as an OR. Each filter group works as an AND.</p><p>Event feed data requests are cached for a certain amount of time, so new events may not display for up to a couple hours.</p><p>Events must be approved/published in the system before they get pulled into the display.</p>'
@@ -221,7 +239,7 @@ tips:
     id: spacer-block
     plugin: text
     label: 'Spacer Block'
-    weight: 22
+    weight: 25
     attributes:
       data-class: field--name-field-uiowa-spacer-separator-txt
     body: '<p>A spacer block is a horizontal line that provides a way to break up a section''s column on a page. For instance, if you have a three column section and want a block in the first column to align with a block in the third column, you can add a separator to provide a more symmetrical look to your page.</p>'
