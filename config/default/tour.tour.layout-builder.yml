@@ -197,7 +197,7 @@ tips:
     weight: 20
     attributes:
       data-class: field--name-field-collection-results
-    body: '<p>Select how many events to display. You can display 1 to 50 events.</p>'
+    body: '<p>You have the ability to display 1 to 50 events.</p>'
     location: left
   events-block-link:
     id: events-block-link
@@ -207,6 +207,15 @@ tips:
     attributes:
       data-class: form-item-settings-block-form-field-collection-more-value
     body: '<p>Check to include a more link. This defaults to events.uiowa.edu but a custom URL path can be provided.</p>'
+    location: left
+  events-errors:
+    id: events-errors
+    plugin: text
+    label: 'Troubleshooting'
+    weight: 22
+    attributes:
+      data-class: form-item-settings-block-form-field-collection-more-value
+    body: '<p> Multiple values within a filter work as an OR. Each filter group works as an AND.</p><p>Event feed data requests are cached for a certain amount of time, so new events may not display for up to a couple hours.</p><p>Events must be approved/published in the system before they get pulled into the display.</p>'
     location: left
   spacer-block:
     id: spacer-block
