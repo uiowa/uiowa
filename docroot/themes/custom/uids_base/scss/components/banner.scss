@@ -11,6 +11,10 @@
   @include breakpoint(sm) {
     min-height: 18rem;
   }
+
+  .bold-headline a:hover {
+    text-decoration: none;
+  }
 }
 
 .layout--threecol,
@@ -45,7 +49,7 @@
 .layout--onecol:not([class*=page__container--edge]) {
   .banner .banner__content {
     @include breakpoint(sm) {
-    padding: 3rem;
+      padding: 3rem;
     }
   }
 }
