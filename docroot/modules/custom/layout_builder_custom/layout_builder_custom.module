@@ -367,17 +367,19 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
 }
 
 /**
- * Implements hook_inline_entity_form_table_fields_alter().
+ * Implements hook_field_widget_WIDGET_TYPE_form_alter().
  */
-function layout_builder_custom_inline_entity_form_table_fields_alter(array &$fields, array $context) {
-  if ($context['entity_type'] === 'paragraph') {
-    if (in_array('uiowa_collection_item', $context['allowed_bundles'])) {
-      unset($fields['label']);
-      $fields['field_collection_headline'] = [
-        'type' => 'field',
-        'label' => t('Headline'),
-        'weight' => 0,
-      ];
+function layout_builder_custom_field_widget_paragraphs_form_alter(array &$element, FormStateInterface &$form_state, array $context) {
+  if (isset($element['#paragraph_type'])) {
+    switch ($element['#paragraph_type']) {
+
+      case 'uiowa_collection_item':
+      case 'uiowa_slide':
+        // Pop the headline and place it in the label.
+        $headline = array_shift($element['top']['summary']['fields_info']['#summary']['content']);
+        $element['top']['type']['label']['#markup'] = $headline;
+        break;
+
     }
   }
 }
