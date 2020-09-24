@@ -1124,20 +1124,21 @@ function sitenow_update_8033() {
       // fields.
     ]);
 
-  // Check that the block saves, grab its uuid, and create a config array.
-  if (isset($block) && $block->save()) {
-    $uuid = $block->get('uuid')->getValue()[0]['value'];
-    $config = [
-      'id' => 'inline_block:' . $type,
-      'label' => $label,
-      'provider' => 'layout_builder',
-      'label_display' => $display_label,
-      'block_revision_id' => $block->getRevisionId(),
-      'view_mode' => '',
-    ];
+    // Check that the block saves, grab its uuid, and create a config array.
+    if (isset($block) && $block->save()) {
+      $uuid = $block->get('uuid')->getValue()[0]['value'];
+      $config = [
+        'id' => 'inline_block:' . $type,
+        'label' => $label,
+        'provider' => 'layout_builder',
+        'label_display' => $display_label,
+        'block_revision_id' => $block->getRevisionId(),
+        'view_mode' => '',
+      ];
+    }
+    // @todo Get all hero instances and loop through them.
+    // @todo Create a banner instance to replace each hero.
+    // @todo Except in the case of the hero on the homepage of the hp site.
+    // @todo Update the layout builder reference to point to the new block.
   }
-  // @todo Get all hero instances and loop through them.
-  // @todo Create a banner instance to replace each hero.
-  // @todo Except in the case of the hero on the homepage of the hp site.
-  // @todo Update the layout builder reference to point to the new block.
 }
