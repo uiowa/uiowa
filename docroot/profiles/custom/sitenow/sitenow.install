@@ -17,6 +17,7 @@ use Drupal\field\Entity\FieldConfig;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\filter\Plugin\Filter\FilterHtmlCorrector;
+use Drupal\layout_builder\Section;
 
 /**
  * Update some uiowa_footer settings which are ignored.
@@ -1115,41 +1116,53 @@ function sitenow_update_8033() {
     $layout = $node->get('layout_builder__layout');
     $section = $layout->get($section_delta)->getValue()['section'];
 
-    $components = $section->getComponents();
-    foreach ($components as $uuid => $component) {
+    $section_arr = $section->toArray();
+    $components = $section_arr['components'];
+    $new_components = [];
+    foreach ($components as $component) {
+      // @todo check that it is a hero block component.
+      $component_arr = $component->toArray();
+      $rev_id = $component_arr['configuration']['block_revision_id'];
+      $hero_block = $block_storage->loadRevision($rev_id);
       // Grab field values.
-      // $excerpt = $hero_block->get('field_uiowa_hero_excerpt')->getValue()[0];
-      // $image = $hero_block->get('field_uiowa_hero_image')->getValue()[0];
-      // $title = $hero_block->get('field_uiowa_hero_title')->getValue()[0];
-      // $video = $hero_block->get('field_uiowa_hero_video')->getValue()[0];
-      // $status = $hero_block->get('status')->getValue();
+      $excerpt = $hero_block->get('field_uiowa_hero_excerpt')->getValue()[0];
+      $image = $hero_block->get('field_uiowa_hero_image')->getValue()[0];
+      $title = $hero_block->get('field_uiowa_hero_title')->getValue()[0];
+      $video = $hero_block->get('field_uiowa_hero_video')->getValue()[0];
+      $status = $hero_block->get('status')->getValue();
 
       // Create banner block.
-      // $banner_block = $block_storage->create([
-      //   'type' => 'uiowa_banner',
-      //   'langcode' => 'en',
-      //   'status' => $status,
-      //   'reusable' => 0,
-      //   'default_langcode' => 1,
-      //   'field_uiowa_banner_excerpt' => $excerpt,
-      //   'field_uiowa_banner_image' => $image,
-      //   'field_uiowa_banner_link' => NULL,
-      //   'field_uiowa_banner_title' => $title,
-      // ]);
+      $banner_block = $block_storage->create([
+        'type' => 'uiowa_banner',
+        'langcode' => 'en',
+        'status' => $status,
+        'reusable' => 0,
+        'default_langcode' => 1,
+        'field_uiowa_banner_excerpt' => $excerpt,
+        'field_uiowa_banner_image' => $image,
+        'field_uiowa_banner_link' => NULL,
+        'field_uiowa_banner_title' => $title,
+      ]);
 
       // Check that the block saves, grab its uuid, and create a config array.
-      // if (isset($banner_block) && $banner_block->save()) {
-      //   $uuid = $banner_block->get('uuid')->getValue()[0]['value'];
-      //   $config = [
-      //     'id' => 'inline_block:uiowa_banner',
-      //     'label' => '',
-      //     'provider' => 'layout_builder',
-      //     'label_display' => $display_label,
-      //     'block_revision_id' => $block->getRevisionId(),
-      //     'view_mode' => '',
-      //   ];
-      // }
+      if (isset($banner_block) && $banner_block->save()) {
+        $uuid = $banner_block->get('uuid')->getValue()[0]['value'];
+        $config = [
+          'id' => 'inline_block:uiowa_banner',
+          'label' => 'Banner',
+          'provider' => 'layout_builder',
+          'label_display' => 0,
+          'block_revision_id' => $block->getRevisionId(),
+          'view_mode' => '',
+        ];
+      }
+      $component_arr['uuid'] = $uuid;
+      $component_arr['configuration'] = $config;
+      $new_components[$uuid] = $component->fromArray($component_arr);
     }
+    $section_arr['components'] = $new_components;
+    $new_section = Section::fromArray($section_arr);
+    $layout->appendSection($new_section);
   }
   // @todo Get all hero instances and loop through them.
   // @todo Create a banner instance to replace each hero.
