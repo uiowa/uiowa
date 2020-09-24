@@ -1093,49 +1093,63 @@ function sitenow_update_8032() {
  * Move all managed unused files to temporary status.
  */
 function sitenow_update_8033() {
-  // Grab all block hero ids.
   $connection = Database::getConnection();
-  $query = $connection->select('block_content', 'b');
-  $query->fields('b', ['id'])
-    ->condition('type', 'uiowa_hero', '=');
-  $results = $query->distinct()
-    ->execute()
-    ->fetchCol();
 
-  // Load the hero blocks.
+  // Grab nids and section deltas for all nodes w/hero.
+  $query = $connection->select('node__layout_builder__layout', 'n');
+  $query->fields('n', ['entity_id', 'delta'])
+    ->condition('layout_builder__layout_section', '%uiowa_hero%', 'LIKE');
+  $results = $query->execute();
+
   $block_storage = \Drupal::service('entity_type.manager')
     ->getStorage('block_content');
-  $hero_blocks = $block_storage->loadMultiple($results);
 
-  foreach ($hero_blocks as $hero_block) {
-    // Grab field values.
-    $excerpt = $hero_block->get('field_uiowa_hero_excerpt')->getValue()[0];
-    $image = $hero_block->get('field_uiowa_hero_image')->getValue()[0];
-    $title = $hero_block->get('field_uiowa_hero_title')->getValue()[0];
-    $video = $hero_block->get('field_uiowa_hero_video')->getValue()[0];
-    $status = $hero_block->get('status')->getValue();
+  $node_storage = \Drupal::service('entity_type.manager')
+    ->getStorage('node');
 
-    // Create banner block.
-    $banner_block = $block_storage->create([
-      'type' => '',
-      'langcode' => 'en',
-      'status' => $status,
-      'reusable' => 0,
-      'default_langcode' => 1,
-      // fields.
-    ]);
+  foreach ($results as $record) {
+    $nid = $record->entity_id;
+    $section_delta = $record->delta;
 
-  // Check that the block saves, grab its uuid, and create a config array.
-  if (isset($banner_block) && $banner_block->save()) {
-    $uuid = $banner_block->get('uuid')->getValue()[0]['value'];
-    $config = [
-      'id' => 'inline_block:' . $type,
-      'label' => $label,
-      'provider' => 'layout_builder',
-      'label_display' => $display_label,
-      'block_revision_id' => $block->getRevisionId(),
-      'view_mode' => '',
-    ];
+    $node = $node_storage->load($nid);
+    $layout = $node->get('layout_builder__layout');
+    $section = $layout->get($section_delta)->getValue()['section'];
+
+    $components = $section->getComponents();
+    foreach ($components as $uuid => $component) {
+      // Grab field values.
+      // $excerpt = $hero_block->get('field_uiowa_hero_excerpt')->getValue()[0];
+      // $image = $hero_block->get('field_uiowa_hero_image')->getValue()[0];
+      // $title = $hero_block->get('field_uiowa_hero_title')->getValue()[0];
+      // $video = $hero_block->get('field_uiowa_hero_video')->getValue()[0];
+      // $status = $hero_block->get('status')->getValue();
+
+      // Create banner block.
+      // $banner_block = $block_storage->create([
+      //   'type' => 'uiowa_banner',
+      //   'langcode' => 'en',
+      //   'status' => $status,
+      //   'reusable' => 0,
+      //   'default_langcode' => 1,
+      //   'field_uiowa_banner_excerpt' => $excerpt,
+      //   'field_uiowa_banner_image' => $image,
+      //   'field_uiowa_banner_link' => NULL,
+      //   'field_uiowa_banner_title' => $title,
+      // ]);
+
+      // Check that the block saves, grab its uuid, and create a config array.
+      // if (isset($banner_block) && $banner_block->save()) {
+      //   $uuid = $banner_block->get('uuid')->getValue()[0]['value'];
+      //   $config = [
+      //     'id' => 'inline_block:uiowa_banner',
+      //     'label' => '',
+      //     'provider' => 'layout_builder',
+      //     'label_display' => $display_label,
+      //     'block_revision_id' => $block->getRevisionId(),
+      //     'view_mode' => '',
+      //   ];
+      // }
+    }
   }
   // @todo Get all hero instances and loop through them.
   // @todo Create a banner instance to replace each hero.
