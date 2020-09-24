@@ -339,6 +339,16 @@ function sitenow_form_config_split_edit_form_alter(&$form, FormStateInterface $f
  */
 function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
+    // Restrict theme settings form for non-admins.
+    case 'system_theme_settings':
+      if (!sitenow_is_user_admin(\Drupal::currentUser())) {
+        $form["theme_settings"]['#access'] = FALSE;
+        $form["logo"]['#access'] = FALSE;
+        $form["favicon"]['#access'] = FALSE;
+      }
+      break;
+
+    // Node form modifications.
     case 'node_page_edit_form':
     case 'node_page_form':
     case 'node_article_edit_form':
@@ -436,6 +446,7 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
       }
       break;
 
+    // Restrict certain webform component options.
     case 'webform_ui_element_form':
       if (!sitenow_is_user_admin(\Drupal::currentUser())) {
         // Remove access to wrapper, element, label attributes.
