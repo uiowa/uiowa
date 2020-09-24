@@ -32,6 +32,8 @@
     'block-' ~ plugin_id|clean_class,
   ]
 %}
+{% set content_rendered = content|render %}
+{% if content_rendered is not empty %}
 <div{{ attributes.addClass(classes) }}>
   {{ title_prefix }}
   {% if label %}
@@ -42,3 +44,4 @@
     {{ content }}
   {% endblock %}
 </div>
+{% endif %}
