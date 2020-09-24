@@ -1101,12 +1101,13 @@ function sitenow_update_8033() {
   $results = $query->distinct()
     ->execute()
     ->fetchCol();
-  // Loop through each id.
+
+  // Load the hero blocks.
   $block_storage = \Drupal::service('entity_type.manager')
     ->getStorage('block_content');
-  foreach ($results as $id) {
-    // Load the hero block.
-    $hero_block = $block_storage->load($id);
+  $hero_blocks = $block_storage->loadMultiple($results);
+
+  foreach ($hero_blocks as $hero_block) {
     // Grab field values.
     $excerpt = $hero_block->get('field_uiowa_hero_excerpt')->getValue()[0];
     $image = $hero_block->get('field_uiowa_hero_image')->getValue()[0];
@@ -1114,8 +1115,8 @@ function sitenow_update_8033() {
     $video = $hero_block->get('field_uiowa_hero_video')->getValue()[0];
     $status = $hero_block->get('status')->getValue();
 
-    // Create block.
-    $block = $block_storage->create([
+    // Create banner block.
+    $banner_block = $block_storage->create([
       'type' => '',
       'langcode' => 'en',
       'status' => $status,
@@ -1125,8 +1126,8 @@ function sitenow_update_8033() {
     ]);
 
   // Check that the block saves, grab its uuid, and create a config array.
-  if (isset($block) && $block->save()) {
-    $uuid = $block->get('uuid')->getValue()[0]['value'];
+  if (isset($banner_block) && $banner_block->save()) {
+    $uuid = $banner_block->get('uuid')->getValue()[0]['value'];
     $config = [
       'id' => 'inline_block:' . $type,
       'label' => $label,
