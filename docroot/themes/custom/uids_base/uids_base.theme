@@ -8,6 +8,7 @@
 use Drupal\block\Entity\Block;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 
@@ -241,19 +242,15 @@ function uids_base_preprocess_field(&$variables) {
  * Implements hook_preprocess_layout().
  */
 function uids_base_preprocess_layout(&$variables) {
-  $block_manager = \Drupal::service('plugin.manager.block');
-  $config = [];
-  $plugin_block = $block_manager->createInstance('system_breadcrumb_block', $config);
-  $variables['breadcrumb'] = $plugin_block->build();
-
   $node = \Drupal::routeMatch()->getParameter('node');
   $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
+  $title_hidden = FALSE;
   if ($node instanceof NodeInterface) {
     if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
       $publish_options = $node->get('field_publish_options')->getValue();
       if (array_search('title_hidden', array_column($publish_options, 'value')) !== FALSE) {
         // For uiowa_bootstrap/classy default.
-        $variables['attributes']['class'][] = 'title-invisible';
+        $title_hidden = TRUE;
       }
       if (array_search('no_sidebars', array_column($publish_options, 'value')) !== FALSE) {
         // Remove sidebar regions.
@@ -262,21 +259,54 @@ function uids_base_preprocess_layout(&$variables) {
     }
 
     // Create a featured image boolean variable for easier Twig use.
-    if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
-      $variables['has_node_image'] = TRUE;
-    }
-    else {
-      $variables['has_node_image'] = FALSE;
-    }
+    $variables['has_node_image'] = $node->hasField('field_image') && !$node->get('field_image')->isEmpty();
 
     // Add sitenow library if sitenow_v2 config split is active.
     $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
-    $collegiate_split = 'config_split:sitenow_v2';
-    // This site has the 'collegiate' split enabled.
-    if (isset($filters[$collegiate_split]) && $filters[$collegiate_split]['status']) {
+    $sitenow_v2_split = 'config_split:sitenow_v2';
+    // This site has the 'sitenow_v2' split enabled.
+    if (isset($filters[$sitenow_v2_split]) && $filters[$sitenow_v2_split]['status']) {
       $variables['#attached']['library'][] = 'uids_base/sitenow';
     }
   }
+
+  /** @var \Drupal\Core\Layout\LayoutDefinition $layout */
+  $layout = $variables['layout'];
+
+  if ($layout->id() === 'layout_header') {
+    $contains_title = FALSE;
+    $contains_background = FALSE;
+    foreach (Element::children($variables['content']) as $region) {
+      foreach (Element::children($variables['content'][$region]) as $block_uuid) {
+        if ($region === 'content'
+          && isset($variables['content'][$region][$block_uuid])
+          && isset($variables['content'][$region][$block_uuid]['#plugin_id'])
+        ) {
+          if ($variables['content'][$region][$block_uuid]['#plugin_id'] === 'field_block:node:page:title') {
+            $contains_title = TRUE;
+            break;
+          }
+        }
+        elseif ($region == 'background') {
+          if (!empty(Element::children($variables['content'][$region][$block_uuid]))) {
+            $contains_background = TRUE;
+            break;
+          }
+        }
+      }
+    }
+    if ($contains_title) {
+      $variables['attributes']['class'][] = 'layout--title';
+      if ($contains_background) {
+        $variables['attributes']['class'][] = 'layout--title--with-background';
+      }
+
+      if ($title_hidden) {
+        $variables['attributes']['class'][] = 'layout--title--hidden';
+      }
+    }
+  }
+  $test = 'thing';
 }
 
 /**

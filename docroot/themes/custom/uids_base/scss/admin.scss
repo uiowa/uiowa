@@ -73,6 +73,11 @@ $imgpath: '../../uids/assets/images';
   display: none;
 }
 
+// Add some space at the top of the LB controls form.
+form#node-page-layout-builder-form {
+  margin-top: 1.25rem;
+}
+
 // admin styles layout builder container reset
 
 .layout-builder {
@@ -93,9 +98,9 @@ $imgpath: '../../uids/assets/images';
     &:hover,
     &:focus {
       .layout-builder__layout {
-        .lb__container {
+        //.layout__spacing_container {
           outline: 2px dashed #0036b1;
-        }
+        //}
       }
       .layout-builder__link {
         opacity: 1;
@@ -263,7 +268,7 @@ $imgpath: '../../uids/assets/images';
   }
 }
 
-.layout-builder-block.card {
+.layout-builder-block.card:not([class*="bg-"]) {
   background-color: $white;
   blockquote {
     color: $secondary;
@@ -324,19 +329,19 @@ $imgpath: '../../uids/assets/images';
 // Layout Builder Editor Styles
 
 .layout-builder__region,
-.layout-builder__region .lb__container {
+.layout-builder__region .layout__spacing_container {
   width: 100%;
 }
 
-.layout--fourcol .lb__container>.layout__region.js-layout-builder-region {
+.layout--fourcol .layout__spacing_container>.layout__region.js-layout-builder-region {
   display: block !important;
 }
 
-.layout--threecol .lb__container>.layout__region.js-layout-builder-region {
+.layout--threecol .layout__spacing_container>.layout__region.js-layout-builder-region {
   display: block !important;
 }
 
-.layout__container .lb__container {
+.layout__container .layout__spacing_container {
 
   .layout-builder-block,
   .layout-builder__add-block {
@@ -349,6 +354,40 @@ $imgpath: '../../uids/assets/images';
     .layout-builder__add-block {
       flex: 1 1 0%;
       flex-basis: unset;
+    }
+  }
+}
+
+.layout-builder__section {
+  // Loop through all the background options and create a
+  // rule to remove top padding from the second one.
+  $backgrounds:
+    ':not([class*="bg-"])',
+    '.bg--gold',
+    '.bg--black',
+    '.bg--gray',
+    '.bg-pattern--brain',
+    '.bg-pattern--brain-reversed',
+    '.bg-pattern--brain-black';
+
+  @each $background in $backgrounds {
+    // This targets the second item in a pair that match the rule.
+    &#{$background} + .layout-builder__add-section + &#{$background} {
+
+      > .layout__container {
+        padding-top: 0;
+
+        // Necessary to restore padding
+        &.section-padding {
+          &__top-restored {
+            padding-top: $desktop-width-gutter;
+          }
+
+          &__top-extra {
+            padding-top: 6rem;
+          }
+        }
+      }
     }
   }
 }
@@ -368,58 +407,7 @@ $imgpath: '../../uids/assets/images';
   font-family: "Lucida Grande", "Lucida Sans Unicode", "liberation sans", sans-serif;
 }
 
-// admin styles for responsive layout sections for container
-
-.content__container .layout-builder__section,
-.content__mixed .layout-builder__section {
-  .layout__container .lb__container {
-    margin: 0;
-
-    @include breakpoint(container) {
-      position: relative;
-      max-width: 81.875em;
-      margin: 0 auto;
-    }
-  }
-
-  .layout__container {
-    margin-bottom: 0;
-  }
-
-  .layout__container.page__container--full .lb__container {
-    max-width: 100%;
-    margin-right: 0;
-    margin-left: 0;
-  }
-
-  .layout__container.page__container--edge .lb__container {
-    max-width: 100%;
-    margin-right: 0;
-    margin-left: 0;
-  }
-}
-
-// admin styles for responsive layout sections for full width or mixed settings
-
-.content__full .layout-builder__section {
-  .layout__container .lb__container {
-    margin: 0;
-  }
-
-  .layout__container .page__container .lb__container {
-    @include breakpoint(container) {
-      position: relative;
-      max-width: 84.375em;
-      margin: 0 auto;
-    }
-  }
-
-}
-
-// admin styles for container setting local drupal admin blocks
-
-.content__container,
-.content__mixed {
+.content__container {
 
   .block-local-tasks-block,
   .block-help-block,
@@ -433,7 +421,7 @@ $imgpath: '../../uids/assets/images';
   }
 
   // Remove margin-top from .layout--has-sidebar
-  .layout__container.layout--has-sidebar {
+  .layout-builder__layout.layout__container.layout--has-sidebar {
     margin-top: 0 !important;
   }
 }
