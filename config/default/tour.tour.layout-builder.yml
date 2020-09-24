@@ -26,8 +26,8 @@ tips:
     weight: 1
     attributes:
       data-id: block-uids-base-local-tasks
-    body: '<p>To change basic page settings (ie page title, featured image, URL, Summary etc) go to the "Edit" menu tab. To view the layout builder blocks, select the "Layout" tab.</p>'
-    location: bottom
+    body: '<p>To change basic page settings (ie page title, featured image, URL, Summary etc) go to the "Edit" menu tab. To view the layout builder blocks, select the "Layout" menu tab.</p>'
+    location: top
   layout-builder-header:
     id: layout-builder-header
     plugin: text
@@ -35,7 +35,7 @@ tips:
     weight: 2
     attributes:
       data-class: block-system-breadcrumb-block
-    body: '<p>Every Basic Page is provided with a “Header” section, which contains the page title, breadcrumbs and featured image (if one has been added through the page “edit” tab).</p>'
+    body: '<p>Every Basic Page is provided with a “Header” section, which contains the page title, breadcrumbs and featured image (if one has been added through the page “Edit” tab).</p>'
     location: top
   add-builder-section:
     id: add-builder-section
@@ -89,7 +89,7 @@ tips:
     weight: 8
     attributes:
       data-class: field--name-field-uiowa-cta-title
-    body: '<p>A Call to Action (CTA) block should be used when you are wanting to persuade site visitors to perform a desired action on your site.</p><p> CTA Examples include:</p><p>"Get Started", "Our Work", "Learn More", "Sign Up", "Subscribe" or "Continue".</p>'
+    body: '<p>A Call to Action (CTA) block should be used when you are wanting to persuade site visitors to perform a desired action on your site.</p><p> CTA Examples include: "Get Started", "Our Work", "Learn More", "Sign Up", "Subscribe" or "Continue".</p>'
     location: left
   cta-block-summary:
     id: cta-block-summary
@@ -98,8 +98,7 @@ tips:
     weight: 9
     attributes:
       data-class: field--name-field-uiowa-cta-summary
-    body: '<p>The summary of a CTA block should be concise, effective and to the point. Make sure to not lose focus of your actionable goal and to use strong verbs.
-Instead of a "Click Here" CTA use something more personal like "Discover your best life."</p>'
+    body: '<p>The summary of a CTA block should be concise, effective and to the point. Make sure to not lose focus of your actionable goal and to use strong verbs.</p><p>Instead of a "Click Here" CTA use something more personal like "Discover your best life."</p>'
     location: left
   cta-block-link:
     id: cta-block-link
@@ -154,4 +153,22 @@ Instead of a "Click Here" CTA use something more personal like "Discover your 
     attributes:
       data-class: field--name-field-uiowa-collection-items
     body: '<p>The “Headline” will appear with a dropdown arrow. When selected, the “Collection Body” will be visible. With the Accordion View Mode, you can create collapsible “Headline”/content pairs. These can be expanded or collapsed by clicking the individual headlines. These are often used to shorten the initial length of a page while providing a lot of detail.</p>'
+    location: left
+  event-block:
+    id: event-block
+    plugin: text
+    label: 'Event Block'
+    weight: 16
+    attributes:
+      data-class: field--name-field-uiowa-event-title
+    body: '<p>The purpose of this block is to create a single static event. To create a listing of upcoming events from <a href="https://events.uiowa.edu/" title="https://events.uiowa.edu/">events.uiowa.edu</a> use the <a href="https://sitenow.uiowa.edu/documentation/layout-builder-sitenow-v3-only/events-block" title="https://sitenow.uiowa.edu/documentation/layout-builder-sitenow-v3-only/events-block">Events Block.</a></p>'
+    location: left
+  event-block-icon:
+    id: event-block-icon
+    plugin: text
+    label: 'Location Icon'
+    weight: 17
+    attributes:
+      data-class: field--name-field-uiowa-event-icon
+    body: '<p>The location icon uses a Font Awesome Icon. The "map-marker-alt" Font Awesome icon has been added by default, but you can filter through the icons by typing in the "Location Icon" text box.</p><p>To view all of the available icons, <a href="https://fontawesome.com/icons?d=gallery&m=free" title="Click Here">click here</a>.</p>'
     location: left
