@@ -11,7 +11,7 @@ use Drupal\layout_builder_styles\LayoutBuilderStyleGroups;
 use Drupal\layout_builder_styles\LayoutBuilderStyleInterface;
 
 /**
- * Implementation of hook_element_info_alter().
+ * Implements hook_element_info_alter().
  *
  * This doesn't work because it is for changing broad-level definitions for how elements
  * are handled. It doesn't allow for setting the configuration for an individual element.
@@ -352,17 +352,17 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
       ];
 
       $element['field_uiowa_banner_image'] = [
-          '#states' => [
-            'visible' => [
-              ':input[name="settings[block_form][background_options]"]' => [
-                'value' => 'image',
-              ],
+        '#states' => [
+          'visible' => [
+            ':input[name="settings[block_form][background_options]"]' => [
+              'value' => 'image',
             ],
-            // @todo Conditionally require media field when 'background_options'
-            //   is set to 'image'.
           ],
-          '#weight' => 5,
-        ] + $element['field_uiowa_banner_image'];
+          // @todo Conditionally require media field when 'background_options'
+          //   is set to 'image'.
+        ],
+        '#weight' => 5,
+      ] + $element['field_uiowa_banner_image'];
 
       unset($element['field_uiowa_banner_image']['widget']['#title']);
 
