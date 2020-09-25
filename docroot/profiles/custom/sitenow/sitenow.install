@@ -1146,13 +1146,17 @@ function sitenow_update_8033() {
 
           // Grab and process component styles.
           $comp_styles = $component_arr['additional']['layout_builder_styles_style'];
-          $new_styles['banner_centered'] = 'banner_centered';
+          $new_styles = [
+            'image',
+            'banner_centered',
+            'banner-medium',
+            'headline-bold-serif',
+          ];
           foreach ($comp_styles as $style) {
             switch ($style) {
               // Replace default centered with left aligned.
               case 'block_style_hero_left_aligned':
-                unset($new_styles['banner_centered']);
-                $new_styles['banner_centered_left'] = 'banner_centered_left';
+                $new_styles[1] = 'banner_centered_left';
                 break;
 
             }
