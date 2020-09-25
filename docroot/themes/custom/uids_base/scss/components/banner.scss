@@ -15,7 +15,24 @@
   .bold-headline a:hover {
     text-decoration: none;
   }
+
+  // override background color if button is within a gold container
+  &.bg-pattern--brain-reversed,
+  &.bg--gold {
+    .bttn--primary {
+      color: #fff;
+      background: $secondary;
+      border: 1px solid $secondary;
+
+      svg {
+        color: $primary;
+      }
+    }
+  }
 }
+
+
+
 
 .layout--threecol,
 .layout--fourcol,
