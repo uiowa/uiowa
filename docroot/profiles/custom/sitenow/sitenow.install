@@ -1136,6 +1136,21 @@ function sitenow_update_8033() {
           $status = $hero_block->get('status')->getValue();
           $link = NULL;
 
+          // Grab and process component styles.
+          $comp_styles = $component_arr['additional']['layout_builder_styles_style'];
+          $new_styles['banner_centered'] = 'banner_centered';
+          foreach ($comp_styles as $style) {
+            switch ($style) {
+                // Replace default centered with left aligned.
+              case 'block_style_hero_left_aligned':
+                unset($new_styles['banner_centered']);
+                $new_styles['banner_centered_left'] = 'banner_centered_left';
+                break;
+
+            }
+
+          }
+
           // Update excerpt format to minimal_html if filtered_html.
           $excerpt['format'] = ($excerpt['format'] === 'filtered_html') ?
             'minimal' : $excerpt['format'];
@@ -1183,6 +1198,7 @@ function sitenow_update_8033() {
           // Replace the new references in the existing component array.
           $component_arr['uuid'] = $uuid;
           $component_arr['configuration'] = $config;
+          $component_arr['additional']['layout_builder_styles_style'] = $new_styles;
           // Set the edited component to an assoc. array by uuid.
           $new_components[$uuid] = $component_arr;
         }
