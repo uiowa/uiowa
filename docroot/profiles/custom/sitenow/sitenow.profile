@@ -345,6 +345,7 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         $form["theme_settings"]['#access'] = FALSE;
         $form["logo"]['#access'] = FALSE;
         $form["favicon"]['#access'] = FALSE;
+        $form["layout"]['#access'] = FALSE;
       }
       break;
 
