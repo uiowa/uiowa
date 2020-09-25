@@ -1108,6 +1108,12 @@ function sitenow_update_8033() {
   $node_storage = \Drupal::service('entity_type.manager')
     ->getStorage('node');
 
+  // UUIDs of two hp hero components not to be updated.
+  $no_updates = [
+    'fe6bc0f1-7fcd-4802-922e-08c60eff58c6',
+    'a3f324a0-53ea-4336-9f68-224f358a74fd',
+  ];
+
   foreach ($results as $record) {
     $nid = $record->entity_id;
     $section_delta = $record->delta;
@@ -1122,12 +1128,14 @@ function sitenow_update_8033() {
 
     foreach ($components as $component) {
       $component_arr = $component->toArray();
-      // Check that it is actually a hero.
-      if ($component_arr['configuration']['id'] === 'inline_block:uiowa_hero') {
+      // Check that it's a hero, and not in our no-update list.
+      if (!in_array($component_arr['uuid'], $no_updates) &&
+        $component_arr['configuration']['id'] === 'inline_block:uiowa_hero') {
+
         $rev_id = $component_arr['configuration']['block_revision_id'];
         $hero_block = $block_storage->loadRevision($rev_id);
 
-        // Continue only if there is no video involved.
+        // Continue only if no video, and not in list by uuid.
         if ($hero_block->get('field_uiowa_hero_video')->isEmpty()) {
           // Grab field values.
           $excerpt = $hero_block->get('field_uiowa_hero_excerpt')->getValue()[0];
