@@ -17,6 +17,7 @@ use Drupal\field\Entity\FieldConfig;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\filter\Plugin\Filter\FilterHtmlCorrector;
+use Drupal\Core\Database\Database;
 use Drupal\layout_builder\Section;
 
 /**
@@ -1117,7 +1118,7 @@ function sitenow_update_8033() {
     $section = $layout->get($section_delta)->getValue()['section'];
 
     $section_arr = $section->toArray();
-    $components = $section_arr['components'];
+    $components = $section->getComponents();
     $new_components = [];
     foreach ($components as $component) {
       // @todo check that it is a hero block component.
@@ -1152,13 +1153,13 @@ function sitenow_update_8033() {
           'label' => 'Banner',
           'provider' => 'layout_builder',
           'label_display' => 0,
-          'block_revision_id' => $block->getRevisionId(),
+          'block_revision_id' => $banner_block->getRevisionId(),
           'view_mode' => '',
         ];
       }
       $component_arr['uuid'] = $uuid;
       $component_arr['configuration'] = $config;
-      $new_components[$uuid] = $component->fromArray($component_arr);
+      $new_components[$uuid] = $component_arr;
     }
     $section_arr['components'] = $new_components;
     $new_section = Section::fromArray($section_arr);
