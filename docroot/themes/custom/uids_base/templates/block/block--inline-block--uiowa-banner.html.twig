@@ -29,15 +29,8 @@
 {% set styles = elements['#layout_builder_style'] %}
 {% set headline_classes = [] %}
 {% set highlight_classes = [] %}
-{% set background_classes = [] %}
 
 {% for style in styles %}
-  {# Remove background pattern styles if image exists #}
-  {% if content.field_uiowa_banner_image[0]['#media'] is not empty %}
-    {% if style starts with 'bg-' %}
-      {% set background_classes = background_classes|merge([style]) %}
-    {% endif %}
-  {% endif %}
   {# Remove headline classes from attributes #}
   {% if style starts with 'bold-headline' %}
     {% set headline_classes = headline_classes|merge([style]) %}
