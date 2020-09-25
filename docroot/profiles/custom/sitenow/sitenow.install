@@ -1131,6 +1131,21 @@ function sitenow_update_8033() {
       $title = $hero_block->get('field_uiowa_hero_title')->getValue()[0];
       $video = $hero_block->get('field_uiowa_hero_video')->getValue()[0];
       $status = $hero_block->get('status')->getValue();
+      $link = NULL;
+
+      // Check if a link is present, and extract info.
+      if (preg_match('|(.*?)(<a.*?</a>)(.*?)|', $excerpt['value'], $matches)) {
+        $excerpt['value'] = $matches[1] . $matches[3];
+        preg_match('|<a.*?href="(.*?)".*?>(.*?)</a>|', $matches[2], $link_matches);
+        // Set URI based on link being absolute or relative.
+        $uri = (substr($link_matches[1], 0, 4) === 'http') ?
+          $link_matches[1] : \Drupal::request()->getSchemeAndHttpHost() . $link_matches[1];
+        $link = [
+          'uri' => $uri,
+          'title' => strip_tags($link_matches[2]),
+          'options' => [],
+        ];
+      }
 
       // Create banner block.
       $banner_block = $block_storage->create([
@@ -1141,7 +1156,7 @@ function sitenow_update_8033() {
         'default_langcode' => 1,
         'field_uiowa_banner_excerpt' => $excerpt,
         'field_uiowa_banner_image' => $image,
-        'field_uiowa_banner_link' => NULL,
+        'field_uiowa_banner_link' => $link,
         'field_uiowa_banner_title' => $title,
       ]);
 
