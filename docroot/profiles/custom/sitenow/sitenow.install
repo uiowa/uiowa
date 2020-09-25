@@ -1141,7 +1141,7 @@ function sitenow_update_8033() {
           $new_styles['banner_centered'] = 'banner_centered';
           foreach ($comp_styles as $style) {
             switch ($style) {
-                // Replace default centered with left aligned.
+              // Replace default centered with left aligned.
               case 'block_style_hero_left_aligned':
                 unset($new_styles['banner_centered']);
                 $new_styles['banner_centered_left'] = 'banner_centered_left';
@@ -1181,7 +1181,7 @@ function sitenow_update_8033() {
             'field_uiowa_banner_title' => $title,
           ]);
 
-          // Check that the block saves, grab its uuid, and create a config array.
+          // Check that the block saves, grab its uuid, and create config array.
           if (isset($banner_block) && $banner_block->save()) {
             $uuid = $banner_block->get('uuid')->getValue()[0]['value'];
             $config = [
