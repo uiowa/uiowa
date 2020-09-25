@@ -1141,15 +1141,14 @@ function sitenow_update_8033() {
             'minimal' : $excerpt['format'];
 
           // Check if a link is present, and extract info.
-          if (preg_match('|(.*?)(<a.*?</a>)(.*?)|', $excerpt['value'], $matches)) {
-            $excerpt['value'] = $matches[1] . $matches[3];
-            preg_match('|<a.*?href="(.*?)".*?>(.*?)</a>|', $matches[2], $link_matches);
+          if (preg_match('|(.*?)(<a.*?href="(.*?)".*?>(.*?)<\/a>)(.*)|is', $excerpt['value'], $matches)) {
+            $excerpt['value'] = $matches[1] . $matches[5];
             // Set URI based on link being absolute or relative.
-            $uri = (substr($link_matches[1], 0, 4) === 'http') ?
-              $link_matches[1] : \Drupal::request()->getSchemeAndHttpHost() . $link_matches[1];
+            $uri = (substr($matches[3], 0, 4) === 'http') ?
+              $matches[3] : \Drupal::request()->getSchemeAndHttpHost() . $matches[3];
             $link = [
               'uri' => $uri,
-              'title' => strip_tags($link_matches[2]),
+              'title' => strip_tags($matches[4]),
               'options' => [],
             ];
           }
