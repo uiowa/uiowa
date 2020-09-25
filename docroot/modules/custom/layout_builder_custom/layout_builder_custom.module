@@ -91,17 +91,6 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         }
       }
 
-      // Add a checkbox to toggle whether the styles should show.
-      if ($styles_exist) {
-        $form['layout_builder_block_override'] = [
-          '#type' => 'checkbox',
-          '#title' => t('Override style options'),
-          '#required' => FALSE,
-          '#default_value' => $styles_enabled,
-          '#weight' => 80,
-        ];
-      }
-
       // Always set title field to not be required.
       $form['settings']['label']['#required'] = FALSE;
 
@@ -130,6 +119,38 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         if (isset($form['layout_builder_style_background'])) {
           $form['layout_builder_style_background']['#access'] = FALSE;
         }
+        // Set defaults for banner options if the block is being added.
+        if ($form_id === 'layout_builder_add_block') {
+          // Default is centered, left.
+          if (isset($form['layout_builder_style_banner_type'])) {
+            $form['layout_builder_style_banner_type']['#default_value'] = ['banner_centered_left'];
+          }
+
+          // Default is medium.
+          if (isset($form['layout_builder_style_banner_height'])) {
+            $form['layout_builder_style_banner_height']['#default_value'] = ['banner_medium'];
+          }
+
+          // Default is bold serif.
+          if (isset($form['layout_builder_style_headline_type'])) {
+            $form['layout_builder_style_headline_type']['#default_value'] = ['headline_bold_serif'];
+          }
+
+          // Trigger the override to show.
+          $styles_exist = $styles_enabled = TRUE;
+        }
+      }
+
+      // @todo Replace this with a fieldset that shows all the time.
+      // Add a checkbox to toggle whether the styles should show.
+      if ($styles_exist) {
+        $form['layout_builder_block_override'] = [
+          '#type' => 'checkbox',
+          '#title' => t('Override options'),
+          '#required' => FALSE,
+          '#default_value' => $styles_enabled,
+          '#weight' => 80,
+        ];
       }
 
       $form['settings'] += [
@@ -331,17 +352,17 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
       ];
 
       $element['field_uiowa_banner_image'] = [
-        '#states' => [
-          'visible' => [
-            ':input[name="settings[block_form][background_options]"]' => [
-              'value' => 'image',
+          '#states' => [
+            'visible' => [
+              ':input[name="settings[block_form][background_options]"]' => [
+                'value' => 'image',
+              ],
             ],
+            // @todo Conditionally require media field when 'background_options'
+            //   is set to 'image'.
           ],
-          // @todo Conditionally require media field when 'background_options'
-          //   is set to 'image'.
-        ],
-        '#weight' => 5,
-      ] + $element['field_uiowa_banner_image'];
+          '#weight' => 5,
+        ] + $element['field_uiowa_banner_image'];
 
       unset($element['field_uiowa_banner_image']['widget']['#title']);
 
