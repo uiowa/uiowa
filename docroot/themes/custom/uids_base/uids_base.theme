@@ -311,7 +311,6 @@ function uids_base_preprocess_layout(&$variables) {
       }
     }
   }
-  $test = 'thing';
 }
 
 /**
@@ -458,7 +457,10 @@ function uids_base_preprocess_paragraph(&$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function uids_base_preprocess_views_view_table(&$variables) {
-  $variables['attributes']['class'][] = 'table is-striped';
+  // For all view tables except for draggable view tables.
+  if (!isset($variables["view"]->display_handler->handlers["field"]["draggableviews"])) {
+    $variables['attributes']['class'][] = 'table is-striped';
+  }
 }
 
 /**
