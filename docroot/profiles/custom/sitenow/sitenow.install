@@ -1136,6 +1136,10 @@ function sitenow_update_8033() {
           $status = $hero_block->get('status')->getValue();
           $link = NULL;
 
+          // Update excerpt format to minimal_html if filtered_html.
+          $excerpt['format'] = ($excerpt['format'] === 'filtered_html') ?
+            'minimal' : $excerpt['format'];
+
           // Check if a link is present, and extract info.
           if (preg_match('|(.*?)(<a.*?</a>)(.*?)|', $excerpt['value'], $matches)) {
             $excerpt['value'] = $matches[1] . $matches[3];
@@ -1190,7 +1194,6 @@ function sitenow_update_8033() {
     if (!empty($new_components)) {
       $section_arr['components'] = $new_components;
       $new_section = Section::fromArray($section_arr);
-      // @todo This isn't inserting in the proper place.
       $layout_arr = $layout->getSections();
       $layout_arr[$section_delta] = $new_section;
       $node->set('layout_builder__layout', $layout_arr)
