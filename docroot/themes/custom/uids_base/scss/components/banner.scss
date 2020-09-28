@@ -41,8 +41,10 @@
 .layout--twocol--33-67 .layout__region--first,
 .layout--twocol--67-33 .layout__region--second {
   .banner {
-    height: auto;
-    min-height: auto;
+    &:not([class*="bg-"]) {
+      height: auto;
+      min-height: auto;
+    }
 
     .bttn {
       font-size: 1.1vw;
