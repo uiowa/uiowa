@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: shlbiomonitoring.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: shlbiomonitoring
+  human_name: biomonitoring.shl.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: shlbiomonitoring.prod
+drupal:
+  db:
+    database: biomonitoring_shl_uiowa_edu
+uiowa:
+  requester: makyea
