@@ -19,6 +19,7 @@ use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\filter\Plugin\Filter\FilterHtmlCorrector;
 use Drupal\Core\Database\Database;
 use Drupal\layout_builder\Section;
+use Drupal\layout_builder\SectionComponent;
 
 /**
  * Update some uiowa_footer settings which are ignored.
@@ -1124,7 +1125,6 @@ function sitenow_update_8033() {
 
     $section_arr = $section->toArray();
     $components = $section->getComponents();
-    $new_components = [];
 
     foreach ($components as $component) {
       $component_arr = $component->toArray();
@@ -1137,6 +1137,9 @@ function sitenow_update_8033() {
 
         // Continue only if no video, and not in list by uuid.
         if ($hero_block->get('field_uiowa_hero_video')->isEmpty()) {
+          // Remove the old component.
+          $section->removeComponent($component_arr['uuid']);
+
           // Grab field values.
           $excerpt = $hero_block->get('field_uiowa_hero_excerpt')->getValue()[0];
           $image = $hero_block->get('field_uiowa_hero_image')->getValue()[0];
@@ -1149,8 +1152,8 @@ function sitenow_update_8033() {
           $new_styles = [
             'image',
             'banner_centered',
-            'banner-medium',
-            'headline-bold-serif',
+            'banner_medium',
+            'headline_bold_serif',
           ];
           foreach ($comp_styles as $style) {
             switch ($style) {
@@ -1207,28 +1210,19 @@ function sitenow_update_8033() {
               'context_mapping' => [],
             ];
           }
-          // Replace the new references in the existing component array.
-          $component_arr['uuid'] = $uuid;
-          $component_arr['configuration'] = $config;
-          $component_arr['additional']['layout_builder_styles_style'] = $new_styles;
-          // Set the edited component to an assoc. array by uuid.
-          $new_components[$uuid] = $component_arr;
+
+          // Create a new component, set styles, and append to section.
+          $new_component = new SectionComponent($node->uuid(), 'content', $config);
+          $new_component->set('layout_builder_styles_style', $new_styles);
+          $section->appendComponent($new_component);
         }
       }
     }
 
-    // Set the new component(s) in the existing section array, if not empty.
-    if (!empty($new_components)) {
-      $section_arr['components'] = $new_components;
-      $new_section = Section::fromArray($section_arr);
-      $layout_arr = $layout->getSections();
-      $layout_arr[$section_delta] = $new_section;
-      $node->set('layout_builder__layout', $layout_arr)
-        ->save();
-    }
+    // Replace the old section with our newly created one.
+    $layout_arr = $layout->getSections();
+    $layout_arr[$section_delta] = $section;
+    $node->set('layout_builder__layout', $layout_arr)
+      ->save();
   }
-  // @todo Get all hero instances and loop through them.
-  // @todo Create a banner instance to replace each hero.
-  // @todo Except in the case of the hero on the homepage of the hp site.
-  // @todo Update the layout builder reference to point to the new block.
 }

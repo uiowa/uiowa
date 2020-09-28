@@ -1613,3 +1613,9 @@ $sites['classics.local.drupal.uiowa.edu'] = 'classics.uiowa.edu';
 $sites['classics.dev.drupal.uiowa.edu'] = 'classics.uiowa.edu';
 $sites['classics.stage.drupal.uiowa.edu'] = 'classics.uiowa.edu';
 $sites['classics.prod.drupal.uiowa.edu'] = 'classics.uiowa.edu';
+
+// Directory aliases for biomonitoring.shl.uiowa.edu.
+$sites['shlbiomonitoring.local.drupal.uiowa.edu'] = 'biomonitoring.shl.uiowa.edu';
+$sites['shlbiomonitoring.dev.drupal.uiowa.edu'] = 'biomonitoring.shl.uiowa.edu';
+$sites['shlbiomonitoring.stage.drupal.uiowa.edu'] = 'biomonitoring.shl.uiowa.edu';
+$sites['shlbiomonitoring.prod.drupal.uiowa.edu'] = 'biomonitoring.shl.uiowa.edu';
