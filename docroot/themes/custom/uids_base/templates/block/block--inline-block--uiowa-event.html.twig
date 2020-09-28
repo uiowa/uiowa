@@ -26,50 +26,26 @@
 */
 #}
 
-{% set event_url = content.field_uiowa_event_link[0]['#url'] %}
-{% set event_location = content.field_uiowa_event_location[0]['#context']['value'] %}
+{% set event_block = {
+  'attributes': attributes,
+  'event_title': content.field_uiowa_event_title[0]['#text']|render,
+  'event_image': content.field_uiowa_event_image|render,
+	'event_location': content.field_uiowa_event_location[0]['#context']['value'],
+	'event_icon': content.field_uiowa_event_icon|render,
+	'event_date': content.field_uiowa_event_date|render,
+	'heading_level': content.field_uiowa_event_title[0]['#size'],
+	'event_url': content.field_uiowa_event_link[0]['#url'],
+  'title_prefix': title_prefix,
+  'title_suffix': title_suffix,
+} %}
 
+{% embed '@uids_base/uids/event.html.twig' with event_block only %}
 
-{% block content %}
-
-	{{ attach_library('uids_base/event') }}
-
-	<div class="events-card events-card__row {{ attributes ? attributes.class }}" {{ attributes ? attributes|without('class') }}>
-
+	{% block heading %}
 		{{ title_prefix }}
+		{{ parent() }}
 		{{ title_suffix }}
+	{% endblock %}
 
-		{% block events_card_img %}
-			{% if content.field_uiowa_event_image %}
-				<div class="events-card__image">
-					{{ content.field_uiowa_event_image }}
-				</div>
-			{% endif %}
-		{% endblock %}
-		<div class="events-card__body">
-      {% set event_headline = {
-        'heading_level' : content.field_uiowa_event_title[0]['#size'],
-        'heading_class' : 'events-card__title',
-        'heading' : content.field_uiowa_event_title[0]['#text'],
-        'heading_url' : event_url,
-      } %}
-			{% include "@uids_base/uids/heading.html.twig" with event_headline only %}
+{% endembed %}
 
-			<div class="events-card__details">
-				<div class="events-card__date">
-					{{ content.field_uiowa_event_date }}
-				</div>
-
-					{% if event_location is not empty %}
-				<div class="events-card__label">
-				  {{ content.field_uiowa_event_icon }}
-					{{ content.field_uiowa_event_location }}
-				</div>
-					{% endif %}
-
-			</div>
-
-		</div>
-	</div>
-
-{% endblock %}
