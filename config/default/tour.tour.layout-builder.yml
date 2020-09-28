@@ -80,7 +80,7 @@ tips:
     weight: 7
     attributes:
       data-class: bold-headline
-    body: '<p>When hovering over a section, in the upper left corner, there will be an "x" icon followed by a “Configure [Administrative Label]” link. Click on the linked text. With the One Column Layout, you can change the styles applied to the section block. With the multiple Column Layouts, you have the option to change a section’s Administrative Label, applied section styles and column width.</p'
+    body: '<p>When hovering over a section, in the upper left corner, there will be an "x" icon followed by a “Configure [Administrative Label]” link. Click on the linked text. You have the ability to change a section’s Administrative Label (for 2+ columns), applied section styles and column width.</p'
     location: right
   add-builder-block:
     id: add-builder-block
@@ -91,15 +91,6 @@ tips:
       data-class: dropbutton-toggle
     body: '<p> Click on the dropdown arrow to see the avilable blocks. </p>'
     location: left
-  banner-block-title:
-    id: banner-block-title
-    plugin: text
-    label: 'Banner Block Title'
-    weight: 9
-    attributes:
-      data-class: edit-settings-block-form-field-uiowa-banner-title-0-container
-    body: '<p>The Title will be displayed over the Image. </p>'
-    location: top
   cta-block:
     id: cta-block
     plugin: text
@@ -107,7 +98,7 @@ tips:
     weight: 10
     attributes:
       data-class: field--name-field-uiowa-cta-title
-    body: "<p>A Call to Action (CTA)\_block should be used when you are wanting to persuade site visitors to perform a desired action on your site.</p><p> CTA Examples include: \"Get Started\", \"Our Work\", \"Learn More\", \"Sign Up\", \"Subscribe\" or \"Continue\".</p>"
+    body: '<p>A Call to Action (CTA) block should be used when you are wanting to persuade site visitors to perform a desired action on your site.</p><p> CTA Examples include: "Get Started", "Our Work", "Learn More", "Sign Up", "Subscribe" or "Continue".</p>'
     location: left
   cta-block-summary:
     id: cta-block-summary
@@ -116,7 +107,7 @@ tips:
     weight: 11
     attributes:
       data-class: field--name-field-uiowa-cta-summary
-    body: "<p>The summary of a CTA block should be concise, effective and to the point. Make sure\_to not lose focus of your\_actionable goal and to use strong verbs.</p><p>Instead of a\_\"Click Here\" CTA use something more personal like\_\"Discover your best life.\"</p>"
+    body: '<p>The summary of a CTA block should be concise, effective and to the point. Make sure to not lose focus of your actionable goal and to use strong verbs.</p>'
     location: left
   cta-block-link:
     id: cta-block-link
@@ -125,8 +116,80 @@ tips:
     weight: 12
     attributes:
       data-class: field--name-field-uiowa-cta-link
-    body: '<p> You can wrap the CTA in an accessible, clickable link. The ‘Link text’ will appear as a button below the CTA summary text. The ‘Link text’ is recommended to clarify where users will be directed if they click on the selected CTA block.</p>'
-    location: top
+    body: '<p>You can wrap the CTA in an accessible, clickable link.</p>'
+    location: left
+  cta-block-link-title:
+    id: cta-block-link-title
+    plugin: text
+    label: 'Link Text'
+    weight: 13
+    attributes:
+      data-class: js-form-item-settings-block-form-field-uiowa-cta-link-0-title
+    body: '<p>The ''Link text'' will appear as a button below the CTA summary text. The ''Link text'' is recommended to clarify where users will be directed if they click on the selected CTA block</p>'
+    location: left
+  cta-block-docs:
+    id: cta-block-docs
+    plugin: text
+    label: 'CTA Documentation'
+    weight: 14
+    attributes:
+      data-class: field--name-field-uiowa-cta-title
+    body: '<p>Be sure to checkout our <a href="https://sitenow.uiowa.edu/node/286">Call to Action Documentation</a></p>'
+    location: left
+  card-block-title:
+    id: card-block-title
+    plugin: text
+    label: 'Card Block Title'
+    weight: 15
+    attributes:
+      data-class: field--name-field-uiowa-card-title
+    body: '<p>Cards are very versatile and a common design pattern on the web. With the default Card styling, it is recommended to use smaller column layouts</p>'
+    location: left
+  card-block-excerpt:
+    id: card-block-excerpt
+    plugin: text
+    label: 'Card Block Excerpt'
+    weight: 16
+    attributes:
+      data-class: field--name-field-uiowa-card-excerpt
+    body: '<p>The excerpt will be used for longer, descriptive text. It will be displayed under the title. </p>'
+    location: left
+  card-block-link:
+    id: card-block-link
+    plugin: text
+    label: 'Card Block Link'
+    weight: 17
+    attributes:
+      data-class: field--name-field-uiowa-card-link
+    body: '<p>Additionally, you can wrap the card in an accessible clickable link. The link text will display as a clickable button below the ''Excerpt'' field</p>'
+    location: left
+  card-block-image:
+    id: card-block-image
+    plugin: text
+    label: 'Card Block Image'
+    weight: 18
+    attributes:
+      data-class: field--name-field-uiowa-card-image 
+    body: '<p>Make sure your card image follows the <a href="https://sitenow.uiowa.edu/node/156">Image Specifications </a>Guidelines</p>'
+    location: left
+  card-block-author:
+    id: card-block-author
+    plugin: text
+    label: 'Card Block Author'
+    weight: 19
+    attributes:
+      data-class: field--name-field-uiowa-card-author
+    body: '<p>The optional Author field is displayed as a subtitle below the card block title</p>'
+    location: left
+  card-block-docs:
+    id: card-block-docs
+    plugin: text
+    label: 'Card Block Documentation'
+    weight: 20
+    attributes:
+      data-class: field--name-field-uiowa-card-title
+    body: '<p>Be sure to checkout our <a href="https://sitenow.uiowa.edu/node/271">Card Documentation</a></p>'
+    location: left
   collection-block:
     id: collection-block
     plugin: text
@@ -134,7 +197,7 @@ tips:
     weight: 13
     attributes:
       data-class: field--name-field-uiowa-collection-items
-    body: '<p>A Collection Block can be used to create a grouping of title/content or key/value information such as a definition list or an accordion. You can create multiple collection items and they will display based on the display settings you select.</p>'
+    body: '<p>A Collection Block can be used to create a grouping of title/content or key/value information such as a definition list or an accordion. You can create multiple collection items.</p>'
     location: left
   collection-block-headline:
     id: collection-block-headline
@@ -143,7 +206,7 @@ tips:
     weight: 14
     attributes:
       data-class: field--name-field-collection-headline
-    body: '<p>The headline should describe what the collection body will entail. Think of it as a "title"</p>'
+    body: '<p>The headline should describe what the collection body will entail. Think of it as a "title".</p>'
     location: left
   collection-block-body:
     id: collection-block-body
@@ -155,7 +218,7 @@ tips:
     body: '<p>The collection body should contain descriptive text that directly correlates to the "Headline".</p>'
     location: left
   collection-block-view-mode-1:
-    id: collection-block-view-mode
+    id: collection-block-view-mode-1
     plugin: text
     label: 'Descriptive List'
     weight: 16
@@ -191,14 +254,14 @@ tips:
     body: '<p>The location icon uses a Font Awesome Icon. The "map-marker-alt" Font Awesome icon has been added by default, but you can filter through the icons by typing in the "Location Icon" text box.</p><p>To view all of the available icons, <a href="https://fontawesome.com/icons?d=gallery&m=free" title="Click Here">click here</a>.</p>'
     location: left
   events-block:
-      id: events-block
-      plugin: text
-      label: 'Events Block'
-      weight: 20
-      attributes:
-        data-class: field--name-field-uiowa-events-department
-      body: '<p>The purpose of this block is to create a listing of upcoming events from <a href="http://events.uiowa.edu/">events.uiowa.edu</a>. To use a single static event, use the <a href="https://sitenow.uiowa.edu/documentation/layout-builder-sitenow-v3-only/event-block" title="Event Block">Event Block.</a></span></p>'
-      location: left
+    id: events-block
+    plugin: text
+    label: 'Events Block'
+    weight: 20
+    attributes:
+      data-class: field--name-field-uiowa-events-department
+    body: '<p>The purpose of this block is to create a listing of upcoming events from <a href="http://events.uiowa.edu/">events.uiowa.edu</a>. To use a single static event, use the <a href="https://sitenow.uiowa.edu/documentation/layout-builder-sitenow-v3-only/event-block" title="Event Block">Event Block.</a></span></p>'
+    location: left
   events-block-filters:
     id: events-block-filters
     plugin: text
