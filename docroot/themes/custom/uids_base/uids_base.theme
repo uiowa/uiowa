@@ -236,6 +236,10 @@ function uids_base_preprocess_field(&$variables) {
     $plugin_block = $block_manager->createInstance('system_breadcrumb_block', $config);
     $variables['breadcrumb'] = $plugin_block->build();
   }
+
+  if ($variables['element']['#field_type'] == 'text_long' && $variables['element']['#formatter'] == 'text_default') {
+    $variables['#attached']['library'][] = 'uids_base/tables';
+  }
 }
 
 /**
