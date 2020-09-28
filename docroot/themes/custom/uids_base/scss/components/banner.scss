@@ -9,11 +9,11 @@
 
 .banner {
   @include breakpoint(sm) {
-    min-height: 18rem;
+    //min-height: 18rem;
   }
 
   .bold-headline a:hover {
-    text-decoration: none;
+   // text-decoration: none;
   }
 
   // override background color if button is within a gold container
@@ -31,8 +31,20 @@
   }
 }
 
+// adjust img height for threecol and fourcol layouts
+.banner__image img {
+  .layout--threecol & {
+    @include breakpoint(sm) {
+      height: 18vw;
+    }
+  }
 
-
+  .layout--fourcol & {
+    @include breakpoint(sm) {
+      height: 14vw;
+    }
+  }
+}
 
 .layout--threecol,
 .layout--fourcol,
@@ -41,21 +53,49 @@
 .layout--twocol--33-67 .layout__region--first,
 .layout--twocol--67-33 .layout__region--second {
   .banner {
+
+    // set height to auto for image banners in layout columns
     &:not([class*="bg-"]) {
-      height: auto;
-      min-height: auto;
+      height: max-content;
+      min-height: max-content;
+    }
+
+    // remove absolute positioning if within a layout column for bg colors
+    &[class*="bg-"] {
+      .banner__content {
+        @include breakpoint(sm) {
+          position: relative;
+        }
+      }
     }
 
     .bttn {
+        @include breakpoint(menu) {
       font-size: 1.1vw;
+       }
     }
 
     .bold-headline {
-      font-size: 1.2vw;
+       @include breakpoint(menu) {
+      font-size: 1.7vw;
+      }
+      &.bold-headline--highlight {
+          @include breakpoint(menu) {
+            font-size: 1.3vw;
+          }
+      }
+    }
+
+    .banner__text p {
+      @include breakpoint(sm) {
+      font-size: 1rem;
+      }
     }
 
     .banner__content {
-      padding: 1.5rem;
+      @include breakpoint(sm) {
+      padding: 2rem;
+      }
     }
 
   }
@@ -69,3 +109,171 @@
     }
   }
 }
+
+
+// from uids
+
+// banner Heights
+/*
+.banner {
+  &.banner--medium {
+    @include breakpoint(sm) {
+      height: 33rem;
+    }
+  }
+
+  &.banner--small {
+    @include breakpoint(sm) {
+      height: 18rem;
+    }
+  }
+}
+*/
+
+
+// headings and content
+
+// Medium and Small Variant
+/*
+.banner:not(.banner--large) {
+  .bold-headline {
+    font-size: 3rem;
+  }
+
+  p {
+    font-size: 1.3rem;
+    line-height: 1.7;
+  }
+}
+*/
+
+// Set layout text width for onecol containers
+.layout--onecol {
+  .banner__text {
+    @include breakpoint(sm) {
+      width: 70%;
+    }
+
+    @include breakpoint(menu) {
+      width: 60%;
+    }
+
+    @include breakpoint(container) {
+      width: 60%;
+    }
+  }
+  }
+
+
+
+  // Gradients/Overlays
+
+  .banner {
+    &--gradient-center-left {
+
+      &:after {
+        @include breakpoint(sm) {
+          background: -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(0, 0, 0, 1)));
+          background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 1));
+        }
+      }
+
+      &[class*="bg-"]:after {
+        background: none;
+      }
+    }
+
+    &--gradient-center {
+
+      &:after {
+        @include breakpoint(sm) {
+          background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 70%);
+        }
+      }
+
+      &[class*="bg-"]:after {
+        background: none;
+      }
+    }
+
+    &--solid-opacity {
+
+      &:after {
+        @include breakpoint(sm) {
+          background: rgba(0, 0, 0, .5);
+        }
+      }
+
+      &[class*="bg-"]:after {
+        background: none;
+      }
+    }
+
+    &--solid-opacity-reversed {
+
+      &:after {
+        @include breakpoint(sm) {
+          background: rgba(255, 255, 255, .1);
+        }
+      }
+
+      &[class*="bg-"]:after {
+        background: none;
+      }
+    }
+
+    &--gradient-left:after {
+      @include breakpoint(sm) {
+        background: linear-gradient(90deg, rgba(0, 0, 0, .86) 0, rgba(0, 0, 0, .23) 65%, transparent);
+      }
+    }
+
+    &--gradient-left-reversed {
+      &:after {
+        @include breakpoint(sm) {
+          background: linear-gradient(90deg, #fff 1%, hsla(0, 0%, 100%, .92) 32%, hsla(0, 0%, 100%, 0));
+        }
+      }
+
+      &[class*="bg-"]:after {
+        background: none;
+      }
+    }
+  }
+
+
+/*
+
+.banner--medium.banner--vertical-center.banner--horizontal-left,
+.banner--medium.banner--vertical-bottom.banner--horizontal-left,
+.banner--small.banner--vertical-center.banner--horizontal-left,
+.banner--small.banner--vertical-bottom.banner--horizontal-left {
+  .banner__text {
+    @include breakpoint(sm) {
+      width: 70%;
+    }
+
+    @include breakpoint(menu) {
+      width: 60%;
+    }
+
+    @include breakpoint(container) {
+      width: 40%;
+    }
+  }
+
+  .bold-headline {
+    @include breakpoint(sm) {
+      width: 80%;
+    }
+
+    @include breakpoint(menu) {
+      width: 70%;
+    }
+
+    @include breakpoint(container) {
+      width: 70%;
+    }
+  }
+}
+*/
