@@ -7,13 +7,22 @@
   color: $secondary;
 }
 
+
+
 .banner {
+
+  // set height to auto for image banners in layout columns
+  &:not([class*="bg-"]) {
+    height: max-content;
+    min-height: max-content;
+  }
+
   @include breakpoint(sm) {
     //min-height: 18rem;
   }
 
   .bold-headline a:hover {
-   // text-decoration: none;
+    // text-decoration: none;
   }
 
   // override background color if button is within a gold container
@@ -33,15 +42,11 @@
 
 // adjust img height for threecol and fourcol layouts
 .banner__image img {
-  .layout--threecol & {
-    @include breakpoint(sm) {
-      height: 18vw;
-    }
-  }
 
+  .layout--threecol &,
   .layout--fourcol & {
     @include breakpoint(sm) {
-      height: 14vw;
+      height: 20rem;
     }
   }
 }
@@ -54,12 +59,6 @@
 .layout--twocol--67-33 .layout__region--second {
   .banner {
 
-    // set height to auto for image banners in layout columns
-    &:not([class*="bg-"]) {
-      height: max-content;
-      min-height: max-content;
-    }
-
     // remove absolute positioning if within a layout column for bg colors
     &[class*="bg-"] {
       .banner__content {
@@ -70,39 +69,41 @@
     }
 
     .bttn {
-        @include breakpoint(menu) {
-      font-size: 1.1vw;
-       }
+      @include breakpoint(menu) {
+        font-size: 1.1vw;
+      }
     }
 
     .bold-headline {
-       @include breakpoint(menu) {
-      font-size: 1.7vw;
+      @include breakpoint(menu) {
+        font-size: 1.7vw;
       }
+
       &.bold-headline--highlight {
-          @include breakpoint(menu) {
-            font-size: 1.3vw;
-          }
+        @include breakpoint(menu) {
+          font-size: 1.3vw;
+        }
       }
     }
 
     .banner__text p {
       @include breakpoint(sm) {
-      font-size: 1rem;
+        font-size: 1rem;
       }
     }
 
     .banner__content {
       @include breakpoint(sm) {
-      padding: 2rem;
+        padding: 2rem;
       }
     }
 
   }
 }
 
-// Add padding to banner content if not in edge-to-edge column
-.layout--onecol:not([class*=page__container--edge]) {
+// Add padding to banner content if not in edge-to-edge column or is in twocol layout
+.layout--onecol,
+.layout--twocol {
   .banner .banner__content {
     @include breakpoint(sm) {
       padding: 3rem;
@@ -110,25 +111,53 @@
   }
 }
 
-
-// from uids
-
-// banner Heights
-/*
-.banner {
-  &.banner--medium {
-    @include breakpoint(sm) {
-      height: 33rem;
-    }
-  }
-
-  &.banner--small {
-    @include breakpoint(sm) {
-      height: 18rem;
+.layout--onecol[class*=page__container--edge] {
+  .banner .banner__content {
+    @include breakpoint(container) {
+      padding: 0;
     }
   }
 }
-*/
+
+
+.layout--onecol {
+  .banner {
+    // banner Heights
+    &--medium {
+      @include breakpoint(container) {
+        height: 33rem;
+      }
+    }
+
+    &--small {
+      @include breakpoint(container) {
+        height: 18rem;
+      }
+    }
+  // Set layout text width for onecol containers only
+  .banner__text {
+    @include breakpoint(sm) {
+      width: 70%;
+    }
+
+    @include breakpoint(menu) {
+      width: 60%;
+    }
+
+    @include breakpoint(container) {
+      width: 60%;
+    }
+  }
+  // set larger heading size for large banner only
+  .banner--large {
+    .bold-headline {
+      @include breakpoint(md) {
+        font-size: calc(100% + 3.5vw);
+      }
+    }
+  }
+}
+}
 
 
 // headings and content
@@ -147,27 +176,17 @@
 }
 */
 
-// Set layout text width for onecol containers
-.layout--onecol {
-  .banner__text {
-    @include breakpoint(sm) {
-      width: 70%;
-    }
-
-    @include breakpoint(menu) {
-      width: 60%;
-    }
-
-    @include breakpoint(container) {
-      width: 60%;
-    }
-  }
-  }
 
 
 
-  // Gradients/Overlays
 
+// Gradient overlays for onecol and twocol layouts only, solid overlays will appear for three and fourcol layouts
+.layout--onecol,
+.layout--twocol--75-25 .layout__region--first,
+.layout--twocol--25-75 .layout__region--second,
+.layout--twocol--67-33 .layout__region--first,
+.layout--twocol--33-67 .layout__region--second,
+.layout--twocol--50-50 {
   .banner {
     &--gradient-center-left {
 
@@ -240,6 +259,28 @@
       }
     }
   }
+}
+
+
+.layout--threecol,
+.layout--fourcol,
+.layout--twocol {
+  .banner {
+
+    // white opacity overlay set as default if reversed gradient is used within smaller columns
+    &--gradient-left-reversed {
+      &:after {
+        @include breakpoint(sm) {
+          background: rgba(255, 255, 255, .7);
+        }
+      }
+
+      &[class*="bg-"]:after {
+        background: none;
+      }
+    }
+  }
+}
 
 
 /*
