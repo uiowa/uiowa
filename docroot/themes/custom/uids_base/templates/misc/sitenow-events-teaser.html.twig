@@ -6,7 +6,7 @@
 
 {{ attach_library('classy/node') }}
 {{ attach_library('uids_base/paragraphs-lists') }}
-
+{#
 {% set events_card = {
   'attributes': attributes.addClass(classes),
   'card_image': event.image | render,
@@ -19,15 +19,14 @@
   'event_location': event.location_name|render,
   'event_virtual': event.virtual,
 } %}
+#}
+{# Create a data array #}
+{% set events_event = {
+  'attributes': attributes.addClass(classes),
+  'events_card_image' : event.image
+} %}
 
-{% embed '@uids_base/uids/card.html.twig' with events_card only %}
-  {% block card_content %}
-    {% if event_virtual %}
-      <div class="event-location"><span class="fas fa-map-marker-alt"></span> Virtual Event</div>
-    {% elseif event_location is not empty %}
-      <div class="event-location"><span class="fas fa-map-marker-alt"></span> {{ event_location }}</div>
-    {% endif %}
+{{ kint(event) }}
+{% embed '@uids_base/block/block--inline-block--uiowa-event.html.twig' with events_event only %}
 
-    <p>{{ card_text }}</p>
-  {% endblock %}
 {% endembed %}
