@@ -388,3 +388,39 @@ tips:
       data-class: field--name-field-uiowa-spacer-separator-txt
     body: '<p>A spacer block is a horizontal line that provides a way to break up a section''s column on a page. For instance, if you have a three column section and want a block in the first column to align with a block in the third column, you can add a separator to provide a more symmetrical look to your page.</p>'
     location: left
+  statistic-block:
+    id: statistic-block
+    plugin: text
+    label: 'Statistic Block'
+    weight: 30
+    attributes:
+      data-class: field--name-field-uiowa-statistic-title
+    body: '<p>The title field should be used to display the main statistic number (ie 500+ or 60%). This field will be the focal point of the block, with the remaining statistic fields centralized around it.</p>'
+    location: left
+  statistic-block-excerpt:
+    id: statistic-block-excerpt
+    plugin: text
+    label: 'Statistic Block Excerpt'
+    weight: 31
+    attributes:
+      data-class: field--name-field-uiowa-statistic-excerpt
+    body: '<p>The excerpt will be used for longer, descriptive text explaining the statistic values. It will be displayed under the title, title suffix and title prefix fields.</p>'
+    location: left
+  statistic-block-pre:
+    id: statistic-block-pre
+    plugin: text
+    label: 'Statistic Block Prefix'
+    weight: 32
+    attributes:
+      data-class: field--name-field-uiowa-statistic-title-pre
+    body: '<p>The title prefix will be displayed before the title field in a smaller font identical to the title suffix field.</p><p>NOTE: This is not a required field.</p>'
+    location: left
+  statistic-block-suf:
+    id: statistic-block-suf
+    plugin: text
+    label: 'Statistic Block Suffix'
+    weight: 33
+    attributes:
+      data-class: field--name-field-uiowa-statistic-title-suf
+    body: '<p>The title suffix will be displayed after the title field in a smaller font identical to the title prefix field.</p><p>NOTE: This is not a required field.</p>'
+    location: left
