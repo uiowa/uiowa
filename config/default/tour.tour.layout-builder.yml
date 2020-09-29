@@ -343,11 +343,47 @@ tips:
       data-class: form-item-settings-block-form-field-collection-more-value
     body: '<p> Multiple values within a filter work as an OR. Each filter group works as an AND.</p><p>Event feed data requests are cached for a certain amount of time, so new events may not display for up to a couple hours.</p><p>Events must be approved/published in the system before they get pulled into the display.</p>'
     location: left
+  image-gallery:
+    id: image-gallery
+    plugin: text
+    label: 'Image Gallery Block'
+    weight: 25
+    attributes:
+      data-class: field--name-field-uiowa-gallery-image
+    body: '<p>This is a multiple image upload field where you will be asked to fill in a required accessible alternative text value and an optional global caption for each image.</p><p>NOTE: Be sure to provide descriptive global captions since they will be displayed over the bottom of the image gallery images. You can drag and drop the order of the images after insert.</p>'
+    location: left
+  image-gallery-styles:
+    id: image-gallery-styles
+    plugin: text
+    label: 'Image Gallery Style Overrides'
+    weight: 26
+    attributes:
+      data-class: field--name-field-uiowa-gallery-image
+    body: '<p>The display order of the images depends on the default (left to right, wrap) or masonry (top-down, wrap) style selection. By default, the image gallery will display as a grid of square thumbnail images. Selecting masonry will maintain the image''s original aspect ratio and display the images in a top-down then right masonry-like pattern.</p>'
+    location: left
+  image-gallery-image-specs:
+    id: image-gallery-image-specs
+    plugin: text
+    label: 'Image Gallery Specs'
+    weight: 27
+    attributes:
+      data-class: field--name-field-uiowa-gallery-image
+    body: '<p>Make sure your image follows the <a href="https://sitenow.uiowa.edu/node/156">Image Specifications </a>Guidelines</p>'
+    location: left
+  image-gallery-docs:
+    id: image-gallery-docs
+    plugin: text
+    label: 'Image Gallery Documentation'
+    weight: 28
+    attributes:
+      data-class: field--name-field-uiowa-gallery-image
+    body: '<p>Don''t forget to checkout our <a href="https://sitenow.uiowa.edu/node/291">Image Gallery Block </a>Documentation</p>'
+    location: left
   spacer-block:
     id: spacer-block
     plugin: text
     label: 'Spacer Block'
-    weight: 25
+    weight: 29
     attributes:
       data-class: field--name-field-uiowa-spacer-separator-txt
     body: '<p>A spacer block is a horizontal line that provides a way to break up a section''s column on a page. For instance, if you have a three column section and want a block in the first column to align with a block in the third column, you can add a separator to provide a more symmetrical look to your page.</p>'
