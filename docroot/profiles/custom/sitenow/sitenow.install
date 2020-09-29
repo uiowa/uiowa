@@ -20,6 +20,7 @@ use Drupal\filter\Plugin\Filter\FilterHtmlCorrector;
 use Drupal\Core\Database\Database;
 use Drupal\layout_builder\Section;
 use Drupal\layout_builder\SectionComponent;
+use \Drupal\layout_builder\InlineBlockUsage;
 
 /**
  * Update some uiowa_footer settings which are ignored.
@@ -1097,6 +1098,8 @@ function sitenow_update_8032() {
  */
 function sitenow_update_8033() {
   $connection = Database::getConnection();
+  $database = \Drupal::database();
+  $use_controller = new InlineBlockUsage($database);
 
   // Grab nids and section deltas for all nodes w/hero.
   $query = $connection->select('node__layout_builder__layout', 'n');
@@ -1195,12 +1198,11 @@ function sitenow_update_8033() {
             'field_uiowa_banner_image' => $image,
             'field_uiowa_banner_link' => $link,
             'field_uiowa_banner_title' => $title,
-          ])
-            ->setAccessDependency($node);
+          ]);
 
           // Check that the block saves, grab its uuid, and create config array.
           if (isset($banner_block) && $banner_block->save()) {
-            $uuid = $banner_block->get('uuid')->getValue()[0]['value'];
+            $uuid = $banner_block->uuid();
             $config = [
               'id' => 'inline_block:uiowa_banner',
               'label' => 'Banner',
@@ -1215,6 +1217,7 @@ function sitenow_update_8033() {
 
           // Create a new component, set styles, and append to section.
           $new_component = new SectionComponent($node->uuid(), 'content', $config);
+          $use_controller->addUsage($banner_block->id(), $node);
           $new_component->set('layout_builder_styles_style', $new_styles);
           $section->appendComponent($new_component);
         }
