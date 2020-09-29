@@ -20,26 +20,25 @@
 
 {# Set the event icon #}
 {% if event.virtual %}
-  {% set event_icon = '<i class="fas fa-laptop"></i>' %}
+  {% set event_icon = '<span class="fas fa-laptop"></span>' %}
   {% set event_location = 'Virtual' %}
 {% else %}
-  {% set event_icon = '<i class="fas fa-map-marker-alt"></i>' %}
+  {% set event_icon = '<span class="fas fa-map-marker-alt"></span>' %}
   {% set event_location = event.location_name %}
 
 {% endif %}
 
 {% set event_block = {
 	'attributes': attributes.addClass(classes),
-	'event_image': event.image | render,
-	'event_title': event.title | render,
+	'event_image': event.image|render,
+	'event_title': event.title|render,
 	'title_prefix': title_prefix,
 	'title_suffix': title_suffix,
 	'event_url': event.url,
 	'event_date': event.date_string,
 	'heading_level': event.heading_size,
-  'event_icon': event_icon|render,
+  'event_icon': event_icon|trans ,
   'event_location': event_location|render,
-
   'event_description': event.description_text,
 } %}
 
