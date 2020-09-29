@@ -512,14 +512,13 @@ function sitenow_form_system_site_information_settings_alter(&$form, FormStateIn
     ];
     // Add link to Footer Contact Infomation block since block id is not always "1".
     // Contextual link does not show if block is empty.
-    $footer_contact_block = \Drupal::service(
-      'entity.repository')->loadEntityByUuid(
-        'block_content', '0c0c1f36-3804-48b0-b384-6284eed8c67e');
+    $footer_contact_block = \Drupal::service('entity.repository')->loadEntityByUuid('block_content', '0c0c1f36-3804-48b0-b384-6284eed8c67e');
     if ($footer_contact_block) {
       $destination = Url::fromRoute('<front>')->toString();
       $footer_contact_block_link = Url::fromRoute(
         'entity.block_content.edit_form',
-        ['block_content' => $footer_contact_block->id()],[
+        ['block_content' => $footer_contact_block->id()],
+        [
           'query' => array('destination' => $destination),
           'absolute' => TRUE,
         ])->toString();
