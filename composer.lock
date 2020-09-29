@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a1b6351a1bdefa69a1e628ca2c15a765",
+    "content-hash": "e62e480bb9e3d5deb0f43e2d8c7a8fa8",
     "packages": [
         {
             "name": "acquia/blt",
@@ -237,7 +237,7 @@
             "version": "5.2.2",
             "source": {
                 "type": "git",
-                "url": "git@github.com:aFarkas/lazysizes.git",
+                "url": "https://github.com/aFarkas/lazysizes.git",
                 "reference": "bce35e58dc3cdd6793ecd4cf47349ede240199e6"
             },
             "dist": {
@@ -2769,6 +2769,50 @@
             }
         },
         {
+            "name": "drupal/antibot",
+            "version": "1.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/antibot.git",
+                "reference": "8.x-1.4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/antibot-8.x-1.4.zip",
+                "reference": "8.x-1.4",
+                "shasum": "2ef65587c34c94f6a7ec0538c755eef5cdd359fd"
+            },
+            "require": {
+                "drupal/core": "^8.8 || ^9"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.4",
+                    "datestamp": "1590592550",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "mstef",
+                    "homepage": "https://www.drupal.org/user/107190"
+                }
+            ],
+            "description": "Prevent forms from being submitted without JavaScript enabled.",
+            "homepage": "https://www.drupal.org/project/antibot",
+            "support": {
+                "source": "https://git.drupalcode.org/project/antibot"
+            }
+        },
+        {
             "name": "drupal/better_normalizers",
             "version": "1.0.0-beta4",
             "source": {
@@ -3095,6 +3139,9 @@
             },
             "type": "drupal-module",
             "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
                 "drupal": {
                     "version": "8.x-1.5",
                     "datestamp": "1572542288",
@@ -4800,7 +4847,7 @@
             },
             "require": {
                 "drupal/config_update": "^1.4",
-                "drupal/core": "^8"
+                "drupal/core": "*"
             },
             "type": "drupal-module",
             "extra": {
@@ -6106,6 +6153,9 @@
             },
             "type": "drupal-module",
             "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                },
                 "drupal": {
                     "version": "8.x-2.0-beta3",
                     "datestamp": "1579041783",
@@ -6591,8 +6641,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.6+5-dev",
-                    "datestamp": "1591593747",
+                    "version": "8.x-1.6+2-dev",
+                    "datestamp": "1588567896",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -7100,6 +7150,9 @@
             },
             "type": "drupal-module",
             "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                },
                 "drupal": {
                     "version": "8.x-2.4",
                     "datestamp": "1522490884",
@@ -7169,6 +7222,9 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
+                },
+                "patches_applied": {
+                    "Langcode error when switching away from IEF for paragraphs in LB": "https://www.drupal.org/files/issues/2020-06-25/paragraphs-2901390-51.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -8308,6 +8364,54 @@
             }
         },
         {
+            "name": "drupal/theme_permission",
+            "version": "2.0.0-beta1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/theme_permission.git",
+                "reference": "2.0.0-beta1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/theme_permission-2.0.0-beta1.zip",
+                "reference": "2.0.0-beta1",
+                "shasum": "888a629c12eb2d1fe0687b72e6e42742d9dff64f"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.0.0-beta1",
+                    "datestamp": "1586903130",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "liber_t",
+                    "homepage": "https://www.drupal.org/user/3377176"
+                }
+            ],
+            "description": "This module extend  theme permission.",
+            "homepage": "https://www.drupal.org/project/theme_permission",
+            "keywords": [
+                "Drupal"
+            ],
+            "support": {
+                "source": "http://cgit.drupalcode.org/theme_permission",
+                "issues": "https://www.drupal.org/project/issues/theme_permission"
+            }
+        },
+        {
             "name": "drupal/token",
             "version": "1.7.0",
             "source": {
@@ -8518,11 +8622,14 @@
                 "shasum": "0dc8ab357c196dde2eea5cb970316e1ff882fb17"
             },
             "require": {
-                "drupal/core": "^8",
+                "drupal/core": "*",
                 "eluceo/ical": "^0.15"
             },
             "type": "drupal-module",
             "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
                 "drupal": {
                     "version": "8.x-1.0-alpha4",
                     "datestamp": "1571420284",
@@ -8745,6 +8852,9 @@
             },
             "type": "drupal-module",
             "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
                 "drupal": {
                     "version": "8.x-1.6",
                     "datestamp": "1585615668",
@@ -17974,5 +18084,6 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }
