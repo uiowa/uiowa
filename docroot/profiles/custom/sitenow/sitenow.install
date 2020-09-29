@@ -1186,15 +1186,17 @@ function sitenow_update_8033() {
           // Create banner block.
           $banner_block = $block_storage->create([
             'type' => 'uiowa_banner',
+            'info' => 'Banner',
             'langcode' => 'en',
-            'status' => $status,
+            'status' => 1,
             'reusable' => 0,
             'default_langcode' => 1,
             'field_uiowa_banner_excerpt' => $excerpt,
             'field_uiowa_banner_image' => $image,
             'field_uiowa_banner_link' => $link,
             'field_uiowa_banner_title' => $title,
-          ]);
+          ])
+            ->setAccessDependency($node);
 
           // Check that the block saves, grab its uuid, and create config array.
           if (isset($banner_block) && $banner_block->save()) {
@@ -1203,7 +1205,7 @@ function sitenow_update_8033() {
               'id' => 'inline_block:uiowa_banner',
               'label' => 'Banner',
               'provider' => 'layout_builder',
-              'label_display' => 0,
+              'label_display' => NULL,
               'block_revision_id' => $banner_block->getRevisionId(),
               'view_mode' => 'full',
               'block_serialized' => NULL,
