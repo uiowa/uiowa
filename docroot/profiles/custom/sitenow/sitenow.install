@@ -18,9 +18,8 @@ use Drupal\paragraphs\ParagraphInterface;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\filter\Plugin\Filter\FilterHtmlCorrector;
 use Drupal\Core\Database\Database;
-use Drupal\layout_builder\Section;
 use Drupal\layout_builder\SectionComponent;
-use \Drupal\layout_builder\InlineBlockUsage;
+use Drupal\layout_builder\InlineBlockUsage;
 
 /**
  * Update some uiowa_footer settings which are ignored.
@@ -1126,7 +1125,6 @@ function sitenow_update_8033() {
     $layout = $node->get('layout_builder__layout');
     $section = $layout->get($section_delta)->getValue()['section'];
 
-    $section_arr = $section->toArray();
     $components = $section->getComponents();
 
     foreach ($components as $component) {
@@ -1147,7 +1145,6 @@ function sitenow_update_8033() {
           $excerpt = $hero_block->get('field_uiowa_hero_excerpt')->getValue()[0];
           $image = $hero_block->get('field_uiowa_hero_image')->getValue()[0];
           $title = $hero_block->get('field_uiowa_hero_title')->getValue()[0];
-          $status = $hero_block->get('status')->getValue();
           $link = NULL;
 
           // Grab and process component styles.
@@ -1202,7 +1199,6 @@ function sitenow_update_8033() {
 
           // Check that the block saves, grab its uuid, and create config array.
           if (isset($banner_block) && $banner_block->save()) {
-            $uuid = $banner_block->uuid();
             $config = [
               'id' => 'inline_block:uiowa_banner',
               'label' => 'Banner',
