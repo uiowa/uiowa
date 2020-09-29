@@ -8,25 +8,50 @@
 {{ attach_library('uids_base/paragraphs-lists') }}
 {#
 {% set events_card = {
-  'attributes': attributes.addClass(classes),
-  'card_image': event.image | render,
-  'card_text': event.description_text,
-  'card_author': event.date_string,
-  'card_title': event.title | render,
+
   'card_subtitle': event.subtitle | render,
-  'card_link_url': event.url,
-  'heading_level': event.heading_size,
-  'event_location': event.location_name|render,
   'event_virtual': event.virtual,
 } %}
 #}
 {# Create a data array #}
-{% set events_event = {
-  'attributes': attributes.addClass(classes),
-  'events_card_image' : event.image
+
+{# 'event_icon': content.field_uiowa_event_icon|render, #}
+
+
+{# Set the event icon #}
+{% if event.virtual %}
+  {% set event_icon = '<i class="fas fa-laptop"></i>' %}
+  {% set event_location = 'Virtual' %}
+{% else %}
+  {% set event_icon = '<i class="fas fa-map-marker-alt"></i>' %}
+  {% set event_location = event.location_name %}
+
+{% endif %}
+
+{% set event_block = {
+	'attributes': attributes.addClass(classes),
+	'event_image': event.image | render,
+	'event_title': event.title | render,
+	'title_prefix': title_prefix,
+	'title_suffix': title_suffix,
+	'event_url': event.url,
+	'event_date': event.date_string,
+	'heading_level': event.heading_size,
+  'event_icon': event_icon|render,
+  'event_location': event_location|render,
+
+  'event_description': event.description_text,
 } %}
 
 {{ kint(event) }}
-{% embed '@uids_base/block/block--inline-block--uiowa-event.html.twig' with events_event only %}
+
+{% embed '@uids_base/uids/event.html.twig' with event_block only %}
+
+	{% block heading %}
+		{{ title_prefix }}
+		{{ parent() }}
+		{{ title_suffix }}
+	{% endblock %}
 
 {% endembed %}
+

@@ -27,16 +27,16 @@
 #}
 
 {% set event_block = {
-  'attributes': attributes,
-  'event_title': content.field_uiowa_event_title[0]['#text']|render,
-  'event_image': content.field_uiowa_event_image|render,
+	'attributes': attributes,
+	'event_title': content.field_uiowa_event_title[0]['#text']|render,
+	'event_image': content.field_uiowa_event_image|render,
 	'event_location': content.field_uiowa_event_location[0]['#context']['value'],
 	'event_icon': content.field_uiowa_event_icon|render,
 	'event_date': content.field_uiowa_event_date|render,
 	'heading_level': content.field_uiowa_event_title[0]['#size'],
 	'event_url': content.field_uiowa_event_link[0]['#url'],
-  'title_prefix': title_prefix,
-  'title_suffix': title_suffix,
+	'title_prefix': title_prefix,
+	'title_suffix': title_suffix,
 } %}
 
 {% embed '@uids_base/uids/event.html.twig' with event_block only %}
