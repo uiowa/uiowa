@@ -518,8 +518,7 @@ function sitenow_form_system_site_information_settings_alter(&$form, FormStateIn
       $footer_contact_block_link = Url::fromRoute(
         'entity.block_content.edit_form',
         ['block_content' => $footer_contact_block->id()],
-        [
-          'query' => array('destination' => $destination),
+        ['query' => ['destination' => $destination],
           'absolute' => TRUE,
         ])->toString();
 
