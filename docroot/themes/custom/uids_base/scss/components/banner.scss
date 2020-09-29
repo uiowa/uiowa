@@ -44,7 +44,11 @@
 .banner__image img {
 
   .layout--threecol &,
-  .layout--fourcol & {
+  .layout--fourcol &,
+  .layout--twocol--25-75 .layout__region--first &,
+  .layout--twocol--75-25 .layout__region--second &,
+  .layout--twocol--33-67 .layout__region--first &,
+  .layout--twocol--67-33 .layout__region--second & {
     @include breakpoint(sm) {
       height: 20rem;
     }
@@ -122,7 +126,14 @@
 
 .layout--onecol {
   .banner {
+
     // banner Heights
+    &--large[class*="bg-"] {
+      @include breakpoint(container) {
+        height: 43rem;
+      }
+    }
+
     &--medium {
       @include breakpoint(container) {
         height: 33rem;
@@ -135,6 +146,7 @@
       }
     }
   }
+
   // Set layout text width for onecol containers only
   .banner__text {
     @include breakpoint(sm) {
@@ -149,6 +161,7 @@
       width: 60%;
     }
   }
+
   // set larger heading size for large banner only
   .banner--large {
     .bold-headline {
