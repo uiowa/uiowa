@@ -244,14 +244,59 @@ tips:
       data-class: field--name-field-uiowa-event-title
     body: '<p>The purpose of this block is to create a single static event. To create a listing of upcoming events from <a href="https://events.uiowa.edu/" title="https://events.uiowa.edu/">events.uiowa.edu</a> use the <a href="https://sitenow.uiowa.edu/documentation/layout-builder-sitenow-v3-only/events-block" title="https://sitenow.uiowa.edu/documentation/layout-builder-sitenow-v3-only/events-block">Events Block.</a></p>'
     location: left
+  event-block-location:
+    id: event-block-location
+    plugin: text
+    label: 'Event Block Location'
+    weight: 19
+    attributes:
+      data-class: field--name-field-uiowa-event-location
+    body: '<p>Type the name of the location where the event will take place.</p>'
+    location: left
+  event-block-image:
+    id: event-block-image
+    plugin: text
+    label: 'Event Block Image'
+    weight: 20
+    attributes:
+      data-class: field--name-field-uiowa-event-image
+    body: '<p>When adding the Event Block image, you will be asked to fill in a required accessible alternative text value and an optional global caption.</p><p>Make sure your event image follows the <a href="https://sitenow.uiowa.edu/node/156">Image Specifications </a>Guidelines</p>'
+    location: left
+  event-block-date:
+    id: event-block-date
+    plugin: text
+    label: 'Event Block Date'
+    weight: 21
+    attributes:
+      data-class: field--name-field-uiowa-event-date
+    body: '<p>The date field will tell users the day and time when the event will take place. The event will display as follows: Day of the week, Month Day, Year - Hour:Minute AM/PM (ie Monday, July 27, 2020 - 3:31 PM)</p>'
+    location: left
+  event-block-link:
+    id: event-block-link
+    plugin: text
+    label: 'Event Block Link'
+    weight: 22
+    attributes:
+      data-class: field--name-field-uiowa-event-link
+    body: '<p>Additionally, you can wrap the event in an accessible, clickable link. The event information should clarify where users will be directed when they click on the selected event block.</p>'
+    location: left
   event-block-icon:
     id: event-block-icon
     plugin: text
     label: 'Location Icon'
-    weight: 19
+    weight: 23
     attributes:
       data-class: field--name-field-uiowa-event-icon
-    body: '<p>The location icon uses a Font Awesome Icon. The "map-marker-alt" Font Awesome icon has been added by default, but you can filter through the icons by typing in the "Location Icon" text box.</p><p>To view all of the available icons, <a href="https://fontawesome.com/icons?d=gallery&m=free" title="Click Here">click here</a>.</p>'
+    body: '<p>The location icon uses a Font Awesome Icon. The "map-marker-alt" Font Awesome icon has been added by default, but you can filter through the icons by typing in the text box.</p><p>To view all of the available icons, <a href="https://fontawesome.com/icons?d=gallery&m=free" title="Click Here">click here</a>.</p>'
+    location: left
+  event-block-docs:
+    id: event-block-docs
+    plugin: text
+    label: 'Event Block Documentation'
+    weight: 24
+    attributes:
+      data-class: field--name-field-uiowa-event-title
+    body: '<p><a href="https://sitenow.uiowa.edu/node/311">Click here</a> to view our Event Block documentation</p>'
     location: left
   events-block:
     id: events-block
