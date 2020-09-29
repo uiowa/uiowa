@@ -43,9 +43,9 @@ tips:
     label: Advanced
     weight: 3
     attributes:
-      data-class: layout-region-node-secondary
+      data-id: edit-meta-published
     body: '<p>There are a lot of optional advanced settings for the page tucked away here. You will use this part when dealing with menu placement, URL path, custom SEO settings.</p><p>Click on the section titles to expand them and see what they offer.</p>'
-    location: left
+    location: top
   content-blocks-actions:
     id: content-blocks-actions
     plugin: text
@@ -62,7 +62,7 @@ tips:
     weight: 5
     attributes:
       data-id: edit-node-teaser
-    body: '<p>One important advanced setting is the Content Description. Type a short summary of your content here. It will be used if there are any displays around the site that reference this content. By default, this is also used by search engines when they crawl and index your site.</p><p>To learn more about Search Engine Optimization (SEO) for your site, <a href="https://sitenow.uiowa.edu/node/81">view our documentation section about SEO</a>.</p>'
+    body: '<p>Type a short summary of your content here. It will be used if there are any displays around the site that reference this content. By default, this is also used by search engines when they crawl and index your site.</p><p>To learn more about Search Engine Optimization (SEO) for your site, <a href="https://sitenow.uiowa.edu/node/81">view our SEO documentation</a>.</p>'
     location: right
   page-image-entity:
     id: page-image-entity
@@ -71,7 +71,7 @@ tips:
     weight: 6
     attributes:
       data-id: edit-node-image
-    body: '<p>A featured image for the Page can be added. Select Browse media or Add media to add a picture from your computer or already existing media from the Media library.</p><p>Additionally, add a caption to give the user more information on the picture.</p>'
+    body: '<p>A featured image can optionally be added to a page. Select Browse media or Add media to add an image from your computer or from your existing media from the Media library.</p><p>Additionally, add a caption to give the user more information on the picture.</p>'
     location: left
   page-relationships:
     id: page-relationships
@@ -80,7 +80,7 @@ tips:
     weight: 7
     attributes:
       data-id: edit-node-relations
-    body: '<p>You can create relationships to taxonomy terms. Commonly used to organize and classify content behind the scenes.You can reference existing (autocomplete) or create new tags by typing comma-separate terms.Additionally, to view existing tags, go to the <a href="/admin/structure/taxonomy/manage/tags/overview">Tags taxonomy page</a></p>'
+    body: '<p>You can create relationships to taxonomy terms. Commonly used to organize and classify content behind the scenes. You can reference existing (autocomplete) or create new tags by typing comma-separate terms. Additionally, to view existing tags, go to the <a href="/admin/structure/taxonomy/manage/tags/overview">Tags taxonomy page</a></p>'
     location: right
   content-blocks-admin-title:
     id: content-blocks-admin-title
@@ -113,7 +113,7 @@ tips:
     id: wysiwyg
     plugin: text
     label: 'Text Editor (WYSIWYG) Overview'
-    weight: 10
+    weight: 11
     attributes:
       data-class: field--widget-text-textarea
     body: '<p>The What-You-See-Is-What-You-Get (WYSIWYG) text editor gives you the ability to format your content and add links/media. This editor is available on most text areas around the site.</p><p>For more details, <a href="https://sitenow.uiowa.edu/node/136">view our documentation section about the WYSIWYG</a>.</p>'
@@ -122,7 +122,7 @@ tips:
     id: entity-embed
     plugin: text
     label: 'Media Entity Embed'
-    weight: 11
+    weight: 12
     attributes:
       data-class: cke_button__media_entity_embed
     body: '<p>This allows you to add new or existing images, videos from a URL, audio files, Tweets, Instagram and Facebook posts to your content. A separate configuration window will load. <a href="https://sitenow.uiowa.edu/node/141">Click here for media documentation</a>.</p>'
@@ -131,7 +131,7 @@ tips:
     id: content-blocks-drag
     plugin: text
     label: Reorder
-    weight: 12
+    weight: 13
     attributes:
       data-class: handle
     body: '<p>Content blocks can be reordered using this handle.</p><p><strong>Note</strong>: You cannot drag an item to another level of nesting.</p>'
@@ -140,7 +140,7 @@ tips:
     id: content-blocks-section-settings
     plugin: text
     label: 'Section Settings'
-    weight: 13
+    weight: 14
     attributes:
       data-class: 'field-add-more-submit paragraphs-add-wrapper button js-form-submit form-submit'
     body: '<p>Each section can optionally be configured to have a background image. You can additionally change the width, style and alignment of sections. </p>'
@@ -149,7 +149,7 @@ tips:
     id: content-blocks-colwidth
     plugin: text
     label: 'Column Width'
-    weight: 14
+    weight: 15
     attributes:
       data-class: field--name-field-section-container
     body: '<p>The content blocks within a section each have a column width setting that defaults to "Full." Cards default to "Fluid," which means it will fill the horizontal space unless another content block within the same section gets in the way.</p><p>Two or more fluid content blocks will create divide the horizontal space up equally.</p><p>The other options, Quarter, Third, and Half will set and respect certain widths.</p>'
@@ -158,7 +158,7 @@ tips:
     id: content-blocks-add-more
     plugin: text
     label: 'Add Another Content Block'
-    weight: 15
+    weight: 16
     attributes:
       data-id: edit-field-page-content-block-0-subform-field-section-content-block-add-more
     body: '<p>Use this button to add another content block. Click the dropbutton arrow and see what other types are available. If you want to learn more about our Content Blocks, <a href="//sitenow.uiowa.edu/node/176"> view our documentation</a> for more information </p>'
@@ -167,7 +167,7 @@ tips:
     id: content-blocks-add-section
     plugin: text
     label: 'Add Section'
-    weight: 16
+    weight: 17
     attributes:
       data-id: field-page-content-block-section-add-more
     body: '<p>Use this button to add another section.</p>'
@@ -176,7 +176,7 @@ tips:
     id: page-actions
     plugin: text
     label: 'Page Options'
-    weight: 17
+    weight: 18
     attributes:
       data-id: edit-moderation-state-0-state
     body: '<p>You can save the page unpublished as a draft, select that it''s ready for review or publish the page here.</p><p>Content automatically saves as a draft which will not be visible to site visitors. Site visitors will only see content marked as published.</p>'
@@ -185,14 +185,14 @@ tips:
     id: layout-builder-step
     plugin: text
     label: 'Layout Builder Blocks'
-    weight: 18
+    weight: 19
     attributes:
       data-class: layout-region-node-main
     body: '<p>You will have access to the Layout Builder blocks once the page is saved with a Title. </p>'
     location: top
-  next-step:
-    id: next-step
+  lb-next-step:
+    id: lb-next-step
     plugin: text
     label: 'That''s It!'
-    weight: 19
+    weight: 20
     body: '<p>Thanks for sticking with us.</p><p>As you are using the site, look for the tour icon which designates a tour is available on that page, otherwise, <a href="//sitenow.uiowa.edu/node/36"> view our documentation</a> for more information.</p>'
