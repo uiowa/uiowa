@@ -1108,7 +1108,7 @@ function sitenow_update_8033() {
   // Node storage controller.
   $node_storage = \Drupal::service('entity_type.manager')
     ->getStorage('node');
-  
+
   foreach ($results as $record) {
     $updated = FALSE;
     $nid = $record->entity_id;
