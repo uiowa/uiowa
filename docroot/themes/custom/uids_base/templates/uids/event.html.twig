@@ -15,6 +15,7 @@
 			{% endif %}
 
 
+
 		<div class="events-card__body">
 
       {% block heading %}
@@ -42,6 +43,11 @@
 					<div class="events-card__label">
 						{{ event_icon }}
 						{{ event_location }}
+					</div>
+				{% endif %}
+				{% if event_description is not empty %}
+					<div class="events-card__description">
+						{{ event_description }}
 					</div>
 				{% endif %}
 

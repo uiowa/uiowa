@@ -6,16 +6,6 @@
 
 {{ attach_library('classy/node') }}
 {{ attach_library('uids_base/paragraphs-lists') }}
-{#
-{% set events_card = {
-
-  'card_subtitle': event.subtitle | render,
-  'event_virtual': event.virtual,
-} %}
-#}
-{# Create a data array #}
-
-{# 'event_icon': content.field_uiowa_event_icon|render, #}
 
 
 {# Set the event icon #}
@@ -41,8 +31,6 @@
   'event_location': event_location|render,
   'event_description': event.description_text,
 } %}
-
-{{ kint(event) }}
 
 {% embed '@uids_base/uids/event.html.twig' with event_block only %}
 
