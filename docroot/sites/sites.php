@@ -1619,3 +1619,9 @@ $sites['shlbiomonitoring.local.drupal.uiowa.edu'] = 'biomonitoring.shl.uiowa.edu
 $sites['shlbiomonitoring.dev.drupal.uiowa.edu'] = 'biomonitoring.shl.uiowa.edu';
 $sites['shlbiomonitoring.stage.drupal.uiowa.edu'] = 'biomonitoring.shl.uiowa.edu';
 $sites['shlbiomonitoring.prod.drupal.uiowa.edu'] = 'biomonitoring.shl.uiowa.edu';
+
+// Directory aliases for folland.lab.uiowa.edu.
+$sites['labfolland.local.drupal.uiowa.edu'] = 'folland.lab.uiowa.edu';
+$sites['labfolland.dev.drupal.uiowa.edu'] = 'folland.lab.uiowa.edu';
+$sites['labfolland.stage.drupal.uiowa.edu'] = 'folland.lab.uiowa.edu';
+$sites['labfolland.prod.drupal.uiowa.edu'] = 'folland.lab.uiowa.edu';
