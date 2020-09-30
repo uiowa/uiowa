@@ -150,11 +150,7 @@
   // Set layout text width for onecol containers only
   .banner__text {
     @include breakpoint(sm) {
-      width: 70%;
-    }
-
-    @include breakpoint(menu) {
-      width: 60%;
+      width: 100%;
     }
 
     @include breakpoint(container) {
@@ -184,7 +180,7 @@
     &--gradient-center-left {
 
       &:after {
-        @include breakpoint(sm) {
+        @include breakpoint(menu) {
           background: -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(0, 0, 0, 1)));
           background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 1));
         }
@@ -198,7 +194,7 @@
     &--gradient-center {
 
       &:after {
-        @include breakpoint(sm) {
+        @include breakpoint(container) {
           background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 70%);
         }
       }
@@ -211,7 +207,7 @@
     &--solid-opacity {
 
       &:after {
-        @include breakpoint(sm) {
+        @include breakpoint(container) {
           background: rgba(0, 0, 0, .5);
         }
       }
@@ -224,7 +220,7 @@
     &--solid-opacity-reversed {
 
       &:after {
-        @include breakpoint(sm) {
+        @include breakpoint(container) {
           background: rgba(255, 255, 255, .1);
         }
       }
@@ -235,14 +231,14 @@
     }
 
     &--gradient-left:after {
-      @include breakpoint(sm) {
+      @include breakpoint(container) {
         background: linear-gradient(90deg, rgba(0, 0, 0, .86) 0, rgba(0, 0, 0, .23) 65%, transparent);
       }
     }
 
     &--gradient-left-reversed {
       &:after {
-        @include breakpoint(sm) {
+        @include breakpoint(container) {
           background: linear-gradient(90deg, #fff 1%, hsla(0, 0%, 100%, .92) 32%, hsla(0, 0%, 100%, 0));
         }
       }
