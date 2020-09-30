@@ -27,7 +27,9 @@ class UiowaBlockHeadlineFormatter extends FormatterBase {
       $hide_headline = $item->get('hide_headline')->getValue();
       $headline = $item->get('headline')->getValue();
       $heading_size = $item->get('heading_size')->getValue();
-      $markup = ($hide_headline || empty($headline)) ? NULL : '<' . $heading_size . '>' . $headline . '</' . $heading_size . '>';
+      $markup = ($hide_headline || empty($headline)) ?
+        '<' . $heading_size . ' class="sr-only"' . '>' . $headline . '</' . $heading_size . '>' :
+        '<' . $heading_size . '>' . $headline . '</' . $heading_size . '>';
       $element[$delta] = [
         'uiowa_block_headline' => ['#markup' => $markup],
         '#theme' => 'uiowa_block_headline_field_type',
