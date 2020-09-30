@@ -1,0 +1,32 @@
+local:
+  root: /var/www/uiowa/docroot
+  uri: engineering.local.drupal.uiowa.edu
+  paths:
+    files: sites/engineering.uiowa.edu/files
+dev:
+  uri: engineering.dev.drupal.uiowa.edu
+  host: uiowadev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/engineering.uiowa.edu/files
+  root: /var/www/html/uiowa.dev/docroot
+  user: uiowa.dev
+prod:
+  uri: engineering.uiowa.edu
+  host: uiowa.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/engineering.uiowa.edu/files
+  root: /var/www/html/uiowa.prod/docroot
+  user: uiowa.prod
+test:
+  uri: engineering.stage.drupal.uiowa.edu
+  host: uiowastg.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/engineering.uiowa.edu/files
+  root: /var/www/html/uiowa.test/docroot
+  user: uiowa.test
