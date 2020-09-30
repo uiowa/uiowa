@@ -23,19 +23,6 @@
 }
 
 .block-inline-blockuiowa-events {
-  &.hide-images .card__media,
-  &.hide-images .content-image {
-    display: none;
-  }
-}
-
-.block-inline-blockuiowa-events {
-  &.hide-details .event-location {
-    display: none;
-  }
-}
-
-.block-inline-blockuiowa-events {
   .card__media {
     @include card-media-horizontal-right;
 
@@ -136,10 +123,20 @@
       }
     }
   }
-}
 
-.block-inline-blockuiowa-events.hide-descriptions {
-  p {
+  &.hide-descriptions {
+    .events-card {
+        &__description {
+          display: none;
+        }
+    }
+  }
+
+  &.hide-images .events-card__image {
+    display: none;
+  }
+
+  &.hide-details .events-card__details {
     display: none;
   }
 }
