@@ -1111,7 +1111,6 @@ function sitenow_update_8033() {
     'field.field.block_content.uiowa_events.field_uiowa_block_headline',
     'field.field.block_content.uiowa_collection.field_uiowa_block_headline',
     'field.field.block_content.uiowa_articles.field_uiowa_block_headline',
-    'field.field.block_content.uiowa_card.field_uiowa_block_headline',
   ];
   $config_storage = \Drupal::service('config.storage');
   foreach ($config_names as $config_name) {
@@ -1128,14 +1127,6 @@ function sitenow_update_8033() {
     ])
     ->execute();
 
-  $card_title_results = $database->select('block_content__field_uiowa_card_title ', 't')
-    ->fields('t', [
-      'bundle',
-      'entity_id',
-      'field_uiowa_card_title_size',
-      'field_uiowa_card_title_text',
-    ])
-    ->execute();
   $controller = \Drupal::service('entity_type.manager')
     ->getStorage('block_content');
   $heading_converter = [
@@ -1173,16 +1164,5 @@ function sitenow_update_8033() {
           ->save();
         break;
     }
-  }
-
-  // Update cards to use the homegrown title field.
-  foreach ($card_title_results as $record) {
-    $block = $controller->load($record->entity_id);
-    $block->set('field_uiowa_block_headline', [
-      'headline' => $record->field_uiowa_card_title_text,
-      'heading_size' => $record->field_uiowa_card_title_size,
-      'hide_headline' => 0,
-    ])
-      ->save();
   }
 }
