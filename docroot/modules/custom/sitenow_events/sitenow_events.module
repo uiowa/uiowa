@@ -41,7 +41,7 @@ function sitenow_events_preprocess_block(&$variables) {
         foreach ($headline_fields as $headline_field) {
           // There isn't a headline, so set the children to this heading size.
           if (empty($headline_field['headline'])) {
-            $heading_size = 'h3';
+            $heading_size = $headline_field['child_heading_size'];
           }
           else {
             $options = [
