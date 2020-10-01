@@ -54,9 +54,13 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Visually hide title'),
       '#default_value' => isset($items[$delta]->hide_headline) ? $items[$delta]->hide_headline : 0,
+      '#attributes' => [
+        'id' => 'uiowa-block-headline-hide-headline-field',
+      ],
       '#states' => [
         'visible' => [
-          ':input[id="uiowa-block-headline-field"]' => ['filled' => TRUE],
+          ':input[id="uiowa-block-headline-field"]' => [
+            'filled' => TRUE],
         ],
       ],
     ];
@@ -69,7 +73,24 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
       '#default_value' => isset($items[$delta]->heading_size) ? $items[$delta]->heading_size : 'h2',
       '#states' => [
         'visible' => [
-          ':input[id="uiowa-block-headline-field"]' => ['filled' => TRUE],
+          ':input[id="uiowa-block-headline-hide-headline-field"]' => [
+            'checked' => FALSE,
+          ],
+        ],
+      ],
+    ];
+
+    $element['container']['child_heading_size'] = [
+      '#type' => 'select',
+      '#title' => t('Child content heading size'),
+      '#options' => $heading_size_options,
+      '#default_value' => isset($items[$delta]->child_heading_size) ? $items[$delta]->child_heading_size : 'h2',
+      '#description' => t('The heading size for all child content, such as article titles.'),
+      '#states' => [
+        'visible' => [
+          ':input[id="uiowa-block-headline-hide-headline-field"]' => [
+            'checked' => TRUE,
+          ],
         ],
       ],
     ];
