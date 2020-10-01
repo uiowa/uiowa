@@ -158,7 +158,7 @@ function sitenow_paragraphs_preprocess_paragraph(&$variables) {
         }
         // Get field_uip_id value.
         if ($paragraph->hasField('field_uip_id') && !$paragraph->get('field_uip_id')->isEmpty()) {
-          $variables['attributes']['id'][] = Html::getUniqueId($paragraph->field_uip_id->value);
+          $variables['attributes']['id'][] = Html::getClass($paragraph->field_uip_id->value);
         }
         // If section...
         if ($paragraph->bundle() == 'section') {
