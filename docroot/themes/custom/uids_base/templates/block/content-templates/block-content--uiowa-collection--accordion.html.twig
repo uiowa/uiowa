@@ -26,8 +26,17 @@
 */
 #}
 {% set id = "accordion-" ~ id %}
+
+{% if content.field_uiowa_block_headline[0]['#text'] %}
+  {% block heading %}
+    <div class="uiowa-text-area__title">
+      {{ content.field_uiowa_block_headline }}
+    </div>
+  {% endblock %}
+{% endif %}
+
 <div class="collection--accordion">
   <div class="accordion" role="tablist" aria-multiselectable="true" id="{{ id }}">
-    {{ content }}
+    {{ content|without('field_uiowa_block_headline') }}
   </div>
 </div>

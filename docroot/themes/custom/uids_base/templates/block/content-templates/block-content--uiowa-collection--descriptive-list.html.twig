@@ -25,8 +25,17 @@
 * @see template_preprocess_block()
 */
 #}
+
+{% if content.field_uiowa_block_headline[0]['#text'] %}
+  {% block heading %}
+    <div class="uiowa-text-area__title">
+      {{ content.field_uiowa_block_headline }}
+    </div>
+  {% endblock %}
+{% endif %}
+
 <div class="collection--discriptive-list">
   <dl>
-    {{ content }}
+    {{ content|without('field_uiowa_block_headline') }}
   </dl>
 </div>
