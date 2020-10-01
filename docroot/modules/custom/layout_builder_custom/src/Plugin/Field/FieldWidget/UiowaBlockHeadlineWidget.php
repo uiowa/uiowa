@@ -60,7 +60,8 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
       '#states' => [
         'visible' => [
           ':input[id="uiowa-block-headline-field"]' => [
-            'filled' => TRUE],
+            'filled' => TRUE
+          ],
         ],
       ],
     ];
@@ -82,10 +83,10 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
 
     $element['container']['child_heading_size'] = [
       '#type' => 'select',
-      '#title' => t('Child content heading size'),
+      '#title' => $this->t('Child content heading size'),
       '#options' => $heading_size_options,
       '#default_value' => isset($items[$delta]->child_heading_size) ? $items[$delta]->child_heading_size : 'h2',
-      '#description' => t('The heading size for all child content, such as article titles.'),
+      '#description' => $this->t('The heading size for all child content, such as article titles.'),
       '#states' => [
         'visible' => [
           ':input[id="uiowa-block-headline-hide-headline-field"]' => [
