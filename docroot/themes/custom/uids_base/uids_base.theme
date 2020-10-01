@@ -452,9 +452,9 @@ function uids_base_preprocess_paragraph(&$variables) {
         if ($parent->hasField('field_uiowa_block_headline')) {
           $headline_fields = $parent->get('field_uiowa_block_headline')->getValue();
           foreach ($headline_fields as $headline_field) {
-            // There isn't a headline, so set the children to this heading size.
+            // There isn't a headline, so set the children by their separate field.
             if (empty($headline_field['headline'])) {
-              $variables['h_size'] = 'h2';
+              $variables['h_size'] = $headline_field['child_heading_size'];
             }
             else {
               $options = [
