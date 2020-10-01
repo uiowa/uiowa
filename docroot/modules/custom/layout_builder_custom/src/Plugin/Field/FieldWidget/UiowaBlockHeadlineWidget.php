@@ -68,14 +68,14 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
 
     $element['container']['heading_size'] = [
       '#type' => 'select',
-      '#title' => $this->t('Heading size'),
+      '#title' => $this->t('Block title heading size'),
       '#options' => $heading_size_options,
       '#description' => $this->t('The heading size for the block title. Child content headings will be set according to this.'),
       '#default_value' => isset($items[$delta]->heading_size) ? $items[$delta]->heading_size : 'h2',
       '#states' => [
         'visible' => [
-          ':input[id="uiowa-block-headline-hide-headline-field"]' => [
-            'checked' => FALSE,
+          ':input[id="uiowa-block-headline-field"]' => [
+            'filled' => TRUE,
           ],
         ],
       ],
@@ -86,11 +86,11 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
       '#title' => $this->t('Child content heading size'),
       '#options' => $heading_size_options,
       '#default_value' => isset($items[$delta]->child_heading_size) ? $items[$delta]->child_heading_size : 'h2',
-      '#description' => $this->t('The heading size for all child content, such as article titles.'),
+      '#description' => $this->t('The heading size for all child content, such as article titles. Available if no title is used.'),
       '#states' => [
         'visible' => [
-          ':input[id="uiowa-block-headline-hide-headline-field"]' => [
-            'checked' => TRUE,
+          ':input[id="uiowa-block-headline-field"]' => [
+            'filled' => FALSE,
           ],
         ],
       ],
