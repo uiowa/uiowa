@@ -12,10 +12,12 @@ dependencies:
     - field.field.node.person.field_person_last_name
     - field.field.node.person.field_person_phone
     - field.field.node.person.field_person_position
+    - field.field.node.person.field_person_website
     - field.field.node.person.field_tags
     - field.field.node.person.field_teaser
     - node.type.person
   module:
+    - link
     - telephone
     - text
     - user
@@ -31,7 +33,7 @@ content:
     third_party_settings: {  }
   field_image:
     type: entity_reference_entity_view
-    weight: 6
+    weight: 7
     region: content
     label: hidden
     settings:
@@ -39,7 +41,7 @@ content:
       link: false
     third_party_settings: {  }
   field_person_bio:
-    weight: 4
+    weight: 5
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
@@ -68,8 +70,20 @@ content:
     third_party_settings: {  }
     type: string
     region: content
+  field_person_website:
+    type: link
+    weight: 4
+    region: content
+    label: inline
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: '0'
+      target: '0'
+    third_party_settings: {  }
   links:
-    weight: 5
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
