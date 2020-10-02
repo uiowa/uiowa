@@ -66,6 +66,24 @@ function sitenow_paragraphs_field_widget_paragraphs_form_alter(&$element, FormSt
     }
   }
 
+  // Show clean unique id so editors know what to target without inspecting source.
+  if (isset($element['subform']['field_uip_id'])) {
+    $element['subform']['field_uip_id']['widget'][0]['value']['#ajax'] = [
+      'callback' => 'show_clean_unique_id',
+      'event' => 'change',
+      'wrapper' => 'clean-unique-id-description',
+      'progress' => [
+        'type' => 'throbber',
+        'message' => NULL,
+      ],
+    ];
+    $clean_id = Html::getClass($element['subform']['field_uip_id']['widget'][0]['value']['#default_value']);
+    $element['subform']['field_uip_id']['widget'][0]['value']['#description'] =
+      t('<div id="clean-unique-id-description">Provide a unique identifier for this content block. Primarily used for anchor links. You can target this id by using <em>#@clean_id</em></div>', [
+        '@clean_id' => $clean_id,
+      ]);
+  }
+
   if ($element['#paragraph_type'] == 'webform') {
     if (isset($element['subform']['field_webform']['widget'][0]['target_id']['#default_value'])) {
       $element['subform']['field_webform']['widget'][0]['target_id']['#ajax'] = [
@@ -84,6 +102,18 @@ function sitenow_paragraphs_field_widget_paragraphs_form_alter(&$element, FormSt
         ]);
     }
   }
+}
+
+/**
+ * AJAX function create clean unique id to display to editor.
+ */
+function show_clean_unique_id($form, FormStateInterface $form_state) {
+  $clean_id = Html::getClass($form_state->getTriggeringElement()['#value']);
+  $markup =
+    t('<div id="clean-unique-id-description">Provide a unique identifier for this content block. Primarily used for anchor links. You can target this id by using <em>#@clean_id</em></div>', [
+      '@clean_id' => $clean_id,
+    ]);
+  return ['#markup' => $markup];
 }
 
 /**
