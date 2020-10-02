@@ -78,10 +78,14 @@ function sitenow_paragraphs_field_widget_paragraphs_form_alter(&$element, FormSt
       ],
     ];
     $clean_id = Html::getClass($element['subform']['field_uip_id']['widget'][0]['value']['#default_value']);
-    $element['subform']['field_uip_id']['widget'][0]['value']['#description'] =
-      t('<div id="clean-unique-id-description">Provide a unique identifier for this content block. Primarily used for anchor links. You can target this id by using <em>#@clean_id</em></div>', [
+    if ($clean_id) {
+      $description = t('<div id="clean-unique-id-description">Provide a unique identifier for this content block. Primarily used for anchor links. You can target this id by using <em>#@clean_id</em></div>', [
         '@clean_id' => $clean_id,
       ]);
+    } else {
+      $description = t('<div id="clean-unique-id-description">Provide a unique identifier for this content block. Primarily used for anchor links.</div>');
+    }
+    $element['subform']['field_uip_id']['widget'][0]['value']['#description'] = $description;
   }
 
   if ($element['#paragraph_type'] == 'webform') {
@@ -126,6 +130,19 @@ function update_webform_edit_link($form, FormStateInterface $form_state) {
       '@webform_id' => $selectedValue,
     ]);
   return ['#markup' => $markup];
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function sitenow_paragraphs_entity_presave(Drupal\Core\Entity\EntityInterface $entity) {
+  $type = $entity->getEntityType();
+  if ($type->id() == 'paragraph') {
+    // If unique id, clean it and save it as value.
+    if ($entity->hasField('field_uip_id') && !$entity->get('field_uip_id')->isEmpty()) {
+      $entity->set('field_uip_id', Html::getClass($entity->get('field_uip_id')->value));
+    }
+  }
 }
 
 /**
