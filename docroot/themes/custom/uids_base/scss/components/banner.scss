@@ -153,9 +153,30 @@
       width: 100%;
     }
 
+    @include breakpoint(menu) {
+      width: 80%;
+    }
+
     @include breakpoint(container) {
       width: 60%;
     }
+  }
+
+  .banner--vertical-center.banner--horizontal-left {
+    .banner__content {
+      @include breakpoint(sm) {
+        width: 100%;
+      }
+
+      @include breakpoint(menu) {
+        width: 80%;
+      }
+
+      @include breakpoint(container) {
+        width: 50%;
+      }
+    }
+
   }
 
   // set larger heading size for large banner only
@@ -181,8 +202,7 @@
 
       &:after {
         @include breakpoint(menu) {
-          background: -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(0, 0, 0, 1)));
-          background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 1));
+          background: linear-gradient(90deg, rgba(0, 0, 0, .86) 0, rgba(0, 0, 0, .23) 65%, transparent);
         }
       }
 
