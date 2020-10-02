@@ -82,7 +82,8 @@ function sitenow_paragraphs_field_widget_paragraphs_form_alter(&$element, FormSt
       $description = t('<div id="clean-unique-id-description">Provide a unique identifier for this content block. Primarily used for anchor links. You can target this id by using <em>#@clean_id</em></div>', [
         '@clean_id' => $clean_id,
       ]);
-    } else {
+    }
+    else {
       $description = t('<div id="clean-unique-id-description">Provide a unique identifier for this content block. Primarily used for anchor links.</div>');
     }
     $element['subform']['field_uip_id']['widget'][0]['value']['#description'] = $description;
@@ -135,7 +136,7 @@ function update_webform_edit_link($form, FormStateInterface $form_state) {
 /**
  * Implements hook_entity_presave().
  */
-function sitenow_paragraphs_entity_presave(Drupal\Core\Entity\EntityInterface $entity) {
+function sitenow_paragraphs_entity_presave(EntityInterface $entity) {
   $type = $entity->getEntityType();
   if ($type->id() == 'paragraph') {
     // If unique id, clean it and save it as value.
