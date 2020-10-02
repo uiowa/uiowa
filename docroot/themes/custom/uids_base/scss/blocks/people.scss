@@ -2,21 +2,26 @@
 @import "assets/scss/_utilities.scss";
 
 .block-inline-blockuiowa-people {
+
   &.hide-images .card__media,
   &.hide-images .content-image {
     display: none;
   }
+
   &.hide-details {
+
     .field--name-field-person-email,
     .field--name-field-person-phone {
       display: none;
     }
   }
+
   &.hide-descriptions {
     .field--name-field-teaser {
       display: none;
     }
   }
+
   p {
     display: none;
   }
@@ -31,17 +36,22 @@
   .field--name-field-teaser {
     margin-top: $gutter;
   }
+
   .more-link {
     margin-top: $gutter;
     margin-bottom: $gutter;
   }
+
   .card__media {
     @include card-media-horizontal-right;
 
     @include breakpoint(sm) {
       margin-top: $lg;
       margin-bottom: $gutter;
-      margin-right: $gutter;
+
+      [class*="bg-"] & {
+        margin-right: $gutter;
+      }
     }
   }
 
@@ -68,9 +78,11 @@
 
   .views-row {
     @include list-group-item;
+
     &:first-child {
       border-top: none;
     }
+
     &:last-child {
       border-bottom: none;
     }

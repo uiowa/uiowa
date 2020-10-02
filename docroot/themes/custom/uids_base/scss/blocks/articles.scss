@@ -1,18 +1,22 @@
 @import "assets/scss/_variables.scss";
 @import "assets/scss/_utilities.scss";
+
 .block-inline-blockuiowa-articles {
   &.hide-images {
     .card__media {
       display: none;
     }
   }
+
   &.hide-details {
+
     .field--name-field-article-author,
     .field--name-field-article-source-org,
     .field--name-field-article-source-link {
       display: none !important;
     }
   }
+
   &.hide-descriptions {
     .field--name-field-teaser {
       display: none;
@@ -30,7 +34,10 @@
     @include breakpoint(sm) {
       margin-top: $lg;
       margin-bottom: $gutter;
-      margin-right: $gutter;
+
+      [class*="bg-"] & {
+        margin-right: $gutter;
+      }
     }
   }
 
@@ -58,9 +65,11 @@
 
   .views-row {
     @include list-group-item;
+
     &:first-child {
       border-top: none;
     }
+
     &:last-child {
       border-bottom: none;
     }
