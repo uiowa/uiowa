@@ -13,6 +13,7 @@ dependencies:
     - field.field.node.person.field_person_last_name
     - field.field.node.person.field_person_phone
     - field.field.node.person.field_person_position
+    - field.field.node.person.field_person_research_areas
     - field.field.node.person.field_person_website
     - field.field.node.person.field_tags
     - field.field.node.person.field_teaser
@@ -32,7 +33,7 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 11
+    weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -84,7 +85,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_person_hide:
-    weight: 20
+    weight: 21
     settings:
       display_label: true
     third_party_settings: {  }
@@ -113,16 +114,26 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
+  field_person_research_areas:
+    type: entity_reference_autocomplete
+    weight: 9
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_person_website:
     type: link_default
-    weight: 9
+    weight: 10
     region: content
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
   field_tags:
-    weight: 12
+    weight: 13
     settings:
       match_operator: CONTAINS
       size: 60
@@ -132,7 +143,7 @@ content:
     type: entity_reference_autocomplete_tags
     region: content
   field_teaser:
-    weight: 19
+    weight: 20
     settings:
       rows: 5
       placeholder: ''
@@ -141,13 +152,13 @@ content:
     region: content
   moderation_state:
     type: moderation_state_default
-    weight: 18
+    weight: 19
     region: content
     settings: {  }
     third_party_settings: {  }
   path:
     type: path
-    weight: 15
+    weight: 16
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -155,26 +166,26 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 13
+    weight: 14
     region: content
     third_party_settings: {  }
   status:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 17
+    weight: 18
     region: content
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 14
+    weight: 15
     region: content
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 10
+    weight: 11
     settings:
       match_operator: CONTAINS
       size: 60
@@ -183,7 +194,7 @@ content:
     region: content
     third_party_settings: {  }
   url_redirects:
-    weight: 16
+    weight: 17
     region: content
     settings: {  }
     third_party_settings: {  }

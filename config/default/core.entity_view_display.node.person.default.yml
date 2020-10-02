@@ -13,6 +13,7 @@ dependencies:
     - field.field.node.person.field_person_last_name
     - field.field.node.person.field_person_phone
     - field.field.node.person.field_person_position
+    - field.field.node.person.field_person_research_areas
     - field.field.node.person.field_person_website
     - field.field.node.person.field_tags
     - field.field.node.person.field_teaser
@@ -34,7 +35,7 @@ content:
     third_party_settings: {  }
   field_image:
     type: entity_reference_entity_view
-    weight: 8
+    weight: 9
     region: content
     label: hidden
     settings:
@@ -78,6 +79,14 @@ content:
     third_party_settings: {  }
     type: string
     region: content
+  field_person_research_areas:
+    type: entity_reference_label
+    weight: 7
+    region: content
+    label: above
+    settings:
+      link: false
+    third_party_settings: {  }
   field_person_website:
     type: link
     weight: 4
@@ -91,7 +100,7 @@ content:
       target: '0'
     third_party_settings: {  }
   links:
-    weight: 7
+    weight: 8
     region: content
     settings: {  }
     third_party_settings: {  }
