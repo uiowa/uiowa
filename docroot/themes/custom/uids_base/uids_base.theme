@@ -477,7 +477,7 @@ function uids_base_preprocess_aggregator_item(&$variables) {
   /** @var Drupal\aggregator\Entity\Feed $feed */
   $feed = \Drupal::entityTypeManager()->getStorage('aggregator_feed')->load($item->getFeedId());
 
-  $variables['feed_image'] = $feed->get('field_aggregator_feed_image');
+  $variables['feed_image'] = $feed->get('field_aggregator_feed_image')->view();
 }
 
 /**
