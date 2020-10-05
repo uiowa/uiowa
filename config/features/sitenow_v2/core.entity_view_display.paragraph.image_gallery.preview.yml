@@ -1,0 +1,46 @@
+uuid: 0c1a80e8-cdfb-4924-828c-eaf05878636f
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.preview
+    - field.field.paragraph.image_gallery.field_image
+    - field.field.paragraph.image_gallery.field_uip_classes
+    - field.field.paragraph.image_gallery.field_uip_colwidth
+    - field.field.paragraph.image_gallery.field_uip_display_title
+    - field.field.paragraph.image_gallery.field_uip_id
+    - field.field.paragraph.image_gallery.field_uip_title
+    - paragraphs.paragraphs_type.image_gallery
+  module:
+    - layout_builder
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: false
+id: paragraph.image_gallery.preview
+targetEntityType: paragraph
+bundle: image_gallery
+mode: preview
+content:
+  field_uip_id:
+    type: string
+    weight: 1
+    region: content
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_uip_title:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden:
+  field_image: true
+  field_uip_classes: true
+  field_uip_colwidth: true
+  field_uip_display_title: true
+  search_api_excerpt: true
