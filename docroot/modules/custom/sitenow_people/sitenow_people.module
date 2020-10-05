@@ -323,7 +323,7 @@ function sitenow_people_preprocess_paragraph(&$variables) {
         }
         // Get field_uip_id value.
         if ($paragraph->hasField('field_uip_id')) {
-          $variables['attributes']['id'][] = Html::getUniqueId($paragraph->field_uip_id->value);
+          $variables['attributes']['id'][] = Html::getClass($paragraph->field_uip_id->value);
         }
 
         if ($paragraph->hasField('field_people_sort') && !$paragraph->get('field_people_sort')->isEmpty()) {
