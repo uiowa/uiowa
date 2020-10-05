@@ -66,6 +66,29 @@ function sitenow_paragraphs_field_widget_paragraphs_form_alter(&$element, FormSt
     }
   }
 
+  // Show clean unique id so editors know what to target without inspecting source.
+  if (isset($element['subform']['field_uip_id'])) {
+    $element['subform']['field_uip_id']['widget'][0]['value']['#ajax'] = [
+      'callback' => 'show_clean_unique_id',
+      'event' => 'change',
+      'wrapper' => 'clean-unique-id-description',
+      'progress' => [
+        'type' => 'throbber',
+        'message' => NULL,
+      ],
+    ];
+    $clean_id = Html::getClass($element['subform']['field_uip_id']['widget'][0]['value']['#default_value']);
+    if ($clean_id) {
+      $description = t('<div id="clean-unique-id-description">Provide a unique identifier for this content block. Primarily used for anchor links. You can target this id by using <em>#@clean_id</em></div>', [
+        '@clean_id' => $clean_id,
+      ]);
+    }
+    else {
+      $description = t('<div id="clean-unique-id-description">Provide a unique identifier for this content block. Primarily used for anchor links.</div>');
+    }
+    $element['subform']['field_uip_id']['widget'][0]['value']['#description'] = $description;
+  }
+
   if ($element['#paragraph_type'] == 'webform') {
     if (isset($element['subform']['field_webform']['widget'][0]['target_id']['#default_value'])) {
       $element['subform']['field_webform']['widget'][0]['target_id']['#ajax'] = [
@@ -87,6 +110,18 @@ function sitenow_paragraphs_field_widget_paragraphs_form_alter(&$element, FormSt
 }
 
 /**
+ * AJAX function create clean unique id to display to editor.
+ */
+function show_clean_unique_id($form, FormStateInterface $form_state) {
+  $clean_id = Html::getClass($form_state->getTriggeringElement()['#value']);
+  $markup =
+    t('<div id="clean-unique-id-description">Provide a unique identifier for this content block. Primarily used for anchor links. You can target this id by using <em>#@clean_id</em></div>', [
+      '@clean_id' => $clean_id,
+    ]);
+  return ['#markup' => $markup];
+}
+
+/**
  * AJAX function to update webform edit link to the current selection.
  */
 function update_webform_edit_link($form, FormStateInterface $form_state) {
@@ -96,6 +131,19 @@ function update_webform_edit_link($form, FormStateInterface $form_state) {
       '@webform_id' => $selectedValue,
     ]);
   return ['#markup' => $markup];
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function sitenow_paragraphs_entity_presave(EntityInterface $entity) {
+  $type = $entity->getEntityType();
+  if ($type->id() == 'paragraph') {
+    // If unique id, clean it and save it as value.
+    if ($entity->hasField('field_uip_id') && !$entity->get('field_uip_id')->isEmpty()) {
+      $entity->set('field_uip_id', Html::getClass($entity->get('field_uip_id')->value));
+    }
+  }
 }
 
 /**
@@ -158,7 +206,7 @@ function sitenow_paragraphs_preprocess_paragraph(&$variables) {
         }
         // Get field_uip_id value.
         if ($paragraph->hasField('field_uip_id') && !$paragraph->get('field_uip_id')->isEmpty()) {
-          $variables['attributes']['id'][] = Html::getUniqueId($paragraph->field_uip_id->value);
+          $variables['attributes']['id'][] = Html::getClass($paragraph->field_uip_id->value);
         }
         // If section...
         if ($paragraph->bundle() == 'section') {
