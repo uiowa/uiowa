@@ -10,6 +10,7 @@ dependencies:
   module:
     - entity_reference_revisions
     - layout_builder
+    - layout_builder_custom
 third_party_settings:
   layout_builder:
     allow_custom: false
@@ -19,9 +20,16 @@ targetEntityType: block_content
 bundle: uiowa_collection
 mode: tab
 content:
+  field_uiowa_block_headline:
+    type: uiowa_block_headline_formatter
+    weight: 0
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
   field_uiowa_collection_items:
     type: entity_reference_revisions_entity_view
-    weight: 0
+    weight: 1
     label: hidden
     settings:
       view_mode: tab
@@ -29,5 +37,4 @@ content:
     third_party_settings: {  }
     region: content
 hidden:
-  field_uiowa_block_headline: true
   search_api_excerpt: true
