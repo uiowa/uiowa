@@ -17,14 +17,6 @@
     min-height: max-content;
   }
 
-  @include breakpoint(sm) {
-    //min-height: 18rem;
-  }
-
-  .bold-headline a:hover {
-    // text-decoration: none;
-  }
-
   // override background color if button is within a gold container
   &.bg-pattern--brain-reversed,
   &.bg--gold {
@@ -40,22 +32,6 @@
   }
 }
 
-// adjust img height for threecol and fourcol layouts
-/*
-.banner__image img {
-
-  .layout--threecol &,
-  .layout--fourcol &,
-  .layout--twocol--25-75 .layout__region--first &,
-  .layout--twocol--75-25 .layout__region--second &,
-  .layout--twocol--33-67 .layout__region--first &,
-  .layout--twocol--67-33 .layout__region--second & {
-    @include breakpoint(sm) {
-      height: 20rem;
-    }
-  }
-}
-*/
 .layout--threecol,
 .layout--fourcol,
 .layout--twocol--25-75 .layout__region--first,
@@ -119,7 +95,7 @@
 .layout--onecol[class*=page__container--edge] {
   .banner .banner__content {
     @include breakpoint(container) {
-      padding: 0;
+      padding: 3rem 0;
     }
   }
 }
