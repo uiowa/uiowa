@@ -1,0 +1,29 @@
+uuid: 400ae758-18eb-4656-8239-bf7ae11213c2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.aggregator_feed.field_aggregator_feed_image
+    - media.type.image
+  module:
+    - aggregator
+id: aggregator_feed.aggregator_feed.field_aggregator_feed_image
+field_name: field_aggregator_feed_image
+entity_type: aggregator_feed
+bundle: aggregator_feed
+label: Image
+description: 'An image to associate with the feed. Will be shown in teaser and full view modes.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

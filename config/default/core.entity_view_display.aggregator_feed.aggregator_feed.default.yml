@@ -1,0 +1,64 @@
+uuid: 235ad150-3f8a-4365-b352-85a1376fe516
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.aggregator_feed.aggregator_feed.field_aggregator_feed_image
+  module:
+    - aggregator
+_core:
+  default_config_hash: ORtH44CMbYMb3_0zumUPwVhPmaLBiImWpZa_hO3qmhU
+id: aggregator_feed.aggregator_feed.default
+targetEntityType: aggregator_feed
+bundle: aggregator_feed
+mode: default
+content:
+  checked:
+    type: timestamp_ago
+    weight: 2
+    region: content
+    settings:
+      future_format: '@interval hence'
+      past_format: '@interval ago'
+      granularity: 2
+    third_party_settings: {  }
+    label: inline
+  description:
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  feed_icon:
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_aggregator_feed_image:
+    type: entity_reference_entity_view
+    weight: 0
+    label: hidden
+    settings:
+      view_mode: medium__square
+      link: false
+    third_party_settings: {  }
+    region: content
+  image:
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  items:
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  link:
+    type: uri_link
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    label: inline
+hidden:
+  more_link: true
+  search_api_excerpt: true

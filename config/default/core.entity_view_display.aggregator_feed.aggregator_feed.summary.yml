@@ -1,0 +1,42 @@
+uuid: f9825591-38fa-4344-81cc-9baa33d27b3a
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.aggregator_feed.summary
+    - field.field.aggregator_feed.aggregator_feed.field_aggregator_feed_image
+  module:
+    - aggregator
+_core:
+  default_config_hash: OCl6AtoDUvFAsnvg1fosqsjFuoUvnIWQ28b_0Nc14Cg
+id: aggregator_feed.aggregator_feed.summary
+targetEntityType: aggregator_feed
+bundle: aggregator_feed
+mode: summary
+content:
+  field_aggregator_feed_image:
+    type: entity_reference_entity_view
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      view_mode: small__square
+      link: false
+    third_party_settings: {  }
+  items:
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  more_link:
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  checked: true
+  description: true
+  feed_icon: true
+  image: true
+  link: true
+  search_api_excerpt: true
