@@ -5,13 +5,14 @@
 
 .block-inline-blockuiowa-events {
   margin-top: $gutter;
+
   .card__title {
     display: block;
     @include h5;
   }
 
   .event-location {
-   font-family: Zilla Slab, serif;
+    font-family: Zilla Slab, serif;
     font-size: 1.2rem;
     font-weight: 300;
   }
@@ -23,6 +24,7 @@
 }
 
 .block-inline-blockuiowa-events {
+
   &.hide-images .card__media,
   &.hide-images .content-image {
     display: none;
@@ -42,6 +44,10 @@
     @include breakpoint(sm) {
       margin-top: $lg;
       margin-bottom: $gutter;
+
+      [class*="bg-"] & {
+        margin-right: $gutter;
+      }
     }
   }
 
