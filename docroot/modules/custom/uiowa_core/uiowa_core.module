@@ -33,7 +33,7 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       // currently being blocked from being inserted.
       if ($uiowa_core_gtag == '0') {
         \Drupal::messenger()
-          ->addWarning(t('Local Google Tag Manager container snippets are are currently blocked from being inserted on this website. Please contact the ITS HelpDesk about enabling this functionality.'));
+          ->addWarning(t('Local Google Tag Manager container snippets are currently blocked from being inserted on this website. Please contact the ITS Help Desk about enabling this functionality.'));
       }
       break;
 
