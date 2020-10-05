@@ -27,6 +27,14 @@ targetEntityType: paragraph
 bundle: people
 mode: preview
 content:
+  field_uip_id:
+    type: string
+    weight: 1
+    region: content
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
   field_uip_title:
     weight: 0
     label: hidden
@@ -43,7 +51,6 @@ hidden:
   field_uip_classes: true
   field_uip_colwidth: true
   field_uip_display_title: true
-  field_uip_id: true
   field_uip_items: true
   field_uip_pager: true
   search_api_excerpt: true
