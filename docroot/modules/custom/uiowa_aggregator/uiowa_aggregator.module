@@ -1,0 +1,26 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for uiowa_aggregator module.
+ */
+
+/**
+ * Implements hook_form_alter().
+ */
+function uiowa_aggregator_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    case 'layout_builder_add_block':
+    case 'layout_builder_update_block':
+      /** @var \Drupal\layout_builder\SectionComponent $component */
+      $component = $form_state->getFormObject()->getCurrentComponent();
+      $block = $component->getPlugin();
+
+      if ($block->getPluginId() == 'aggregator_feed_block') {
+        $block_count = [1 => 1] + $form['settings']['block_count']['#options'];
+        $form['settings']['block_count']['#options'] = $block_count;
+      }
+
+    break;
+  }
+}
