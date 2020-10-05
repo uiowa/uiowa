@@ -41,6 +41,7 @@
 }
 
 // adjust img height for threecol and fourcol layouts
+/*
 .banner__image img {
 
   .layout--threecol &,
@@ -54,7 +55,7 @@
     }
   }
 }
-
+*/
 .layout--threecol,
 .layout--fourcol,
 .layout--twocol--25-75 .layout__region--first,
@@ -128,21 +129,21 @@
   .banner {
 
     // banner Heights
-    &--large[class*="bg-"] {
+    &--large {
       @include breakpoint(menu) {
-        height: 43rem;
+        min-height: 48rem;
       }
     }
 
     &--medium {
       @include breakpoint(menu) {
-        height: 33rem;
+        min-height: 33rem;
       }
     }
 
     &--small {
       @include breakpoint(menu) {
-        height: 18rem;
+        min-height: 18rem;
       }
     }
   }
@@ -275,7 +276,6 @@
 .layout--fourcol,
 .layout--twocol {
   .banner {
-
     // white opacity overlay set as default if reversed gradient is used within smaller columns
     &--gradient-left-reversed {
       &:after {
@@ -291,39 +291,9 @@
   }
 }
 
-
-/*
-
-.banner--medium.banner--vertical-center.banner--horizontal-left,
-.banner--medium.banner--vertical-bottom.banner--horizontal-left,
-.banner--small.banner--vertical-center.banner--horizontal-left,
-.banner--small.banner--vertical-bottom.banner--horizontal-left {
-  .banner__text {
-    @include breakpoint(sm) {
-      width: 70%;
-    }
-
-    @include breakpoint(menu) {
-      width: 60%;
-    }
-
-    @include breakpoint(container) {
-      width: 40%;
-    }
-  }
-
-  .bold-headline {
-    @include breakpoint(sm) {
-      width: 80%;
-    }
-
-    @include breakpoint(menu) {
-      width: 70%;
-    }
-
-    @include breakpoint(container) {
-      width: 70%;
-    }
+// remove contextual position for logged in view of banner image
+.banner__image {
+  .contextual-region {
+    position: unset;
   }
 }
-*/
