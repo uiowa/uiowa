@@ -5,10 +5,12 @@
  * Primary module hooks for uiowa_aggregator module.
  */
 
+use Drupal\Core\Form\FormStateInterface;
+
 /**
  * Implements hook_form_alter().
  */
-function uiowa_aggregator_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+function uiowa_aggregator_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
     case 'layout_builder_add_block':
     case 'layout_builder_update_block':
@@ -21,6 +23,6 @@ function uiowa_aggregator_form_alter(&$form, \Drupal\Core\Form\FormStateInterfac
         $form['settings']['block_count']['#options'] = $block_count;
       }
 
-    break;
+      break;
   }
 }

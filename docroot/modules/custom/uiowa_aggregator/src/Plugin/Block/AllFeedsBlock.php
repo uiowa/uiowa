@@ -20,21 +20,31 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class AllFeedsBlock extends BlockBase implements ContainerFactoryPluginInterface {
   /**
-   * @var EntityTypeManager
+   * The EntityTypeManager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManager
    */
   protected $entityTypeManager;
 
   /**
-   * @var ConfigFactoryInterface
+   * The ConfigFactory service.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
   protected $configFactory;
 
+  /**
+   * {@inheritdoc}
+   */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManager $entityTypeManager, ConfigFactoryInterface $configFactory) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManager = $entityTypeManager;
     $this->configFactory = $configFactory;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
       $configuration,
@@ -45,6 +55,9 @@ class AllFeedsBlock extends BlockBase implements ContainerFactoryPluginInterface
     );
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function blockForm($form, FormStateInterface $form_state) {
     $form = parent::blockForm($form, $form_state);
 
@@ -60,6 +73,9 @@ class AllFeedsBlock extends BlockBase implements ContainerFactoryPluginInterface
     return $form;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function blockSubmit($form, FormStateInterface $form_state) {
     parent::blockSubmit($form, $form_state);
     $values = $form_state->getValues();
@@ -86,7 +102,10 @@ class AllFeedsBlock extends BlockBase implements ContainerFactoryPluginInterface
       $build['pager'] = ['#type' => 'pager'];
     }
 
-    $build['#attached']['feed'][] = ['aggregator/rss', $this->configFactory->get('system.site')->get('name') . ' ' . $this->t('aggregator')];
+    $build['#attached']['feed'][] = [
+      'aggregator/rss',
+      $this->configFactory->get('system.site')->get('name') . ' ' . $this->t('aggregator'),
+    ];
 
     return $build;
 
