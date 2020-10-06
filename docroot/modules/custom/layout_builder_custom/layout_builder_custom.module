@@ -216,8 +216,14 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
 
   switch ($block->getPluginId()) {
     case 'inline_block:uiowa_text_area':
+      // Set the default text format to filtered.
       if (isset($element['field_uiowa_text_area'])) {
         $element['field_uiowa_text_area']['widget'][0]['#format'] = 'filtered_html';
+      }
+
+      // Unset the unnecessary 'child_heading_size' field option.
+      if (isset($element['field_uiowa_block_headline'])) {
+        unset($element['field_uiowa_block_headline']['widget'][0]['container']['child_heading_size']);
       }
       break;
 
@@ -232,6 +238,13 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
             ],
           ],
         ];
+      }
+      break;
+
+    case 'inline_block:uiowa_image_gallery':
+      // Unset the unnecessary 'child_heading_size' field option.
+      if (isset($element['field_uiowa_block_headline'])) {
+        unset($element['field_uiowa_block_headline']['widget'][0]['container']['child_heading_size']);
       }
       break;
 
@@ -267,6 +280,7 @@ function layout_builder_custom_theme($existing, $type, $theme, $path) {
         'headline' => NULL,
         'heading_size' => NULL,
         'hide_headline' => NULL,
+        'child_heading_size' => NULL,
       ],
     ],
   ];
