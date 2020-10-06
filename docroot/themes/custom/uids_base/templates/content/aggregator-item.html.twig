@@ -19,7 +19,9 @@
  * @see template_preprocess_aggregator_item()
  */
 #}
+
 <article{{ attributes.addClass('aggregator-item') }}>
+  {{ feed_image }}
   {{ title_prefix }}
   {% if title %}
     <h3 class="feed-item-title">
