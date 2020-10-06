@@ -135,9 +135,9 @@ function template_preprocess_sitenow_events_single_event(array &$variables) {
       '#theme' => 'imagecache_external_responsive',
       '#uri' => $variables['event']['media'][0]['original_image'],
       '#responsive_image_style_id' => 'large__square',
-      '#alt' => t('@title promotional image', ['@title' => $variables['event']['title']]),
       '#attributes' => [
         'data-lazy' => TRUE,
+        '#alt' => t('@title promotional image', ['@title' => $variables['event']['title']]),
       ],
     ];
   }
