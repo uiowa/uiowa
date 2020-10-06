@@ -226,7 +226,7 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
         unset($element['field_uiowa_block_headline']['widget'][0]['container']['child_heading_size']);
         // Update the help text.
         $element['field_uiowa_block_headline']['widget'][0]['container']['heading_size']['#description'] =
-          'The heading size for the block title.';
+          t('The heading size for the block title.');
         // Add in the 'h6' option.
         $element['field_uiowa_block_headline']['widget'][0]['container']['heading_size']['#options']['h6'] = 'Heading 6';
       }
