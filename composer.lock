@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "463a1674cadbf9f9f1ae8430b2ded3a2",
+    "content-hash": "7668037e5dee9ef349f09703e141cb8b",
     "packages": [
         {
             "name": "acquia/blt",
@@ -3651,7 +3651,8 @@
                     "[PP-1] Reverting entity revisions that contain custom blocks erroneously triggers EntityChangedConstraint": "https://www.drupal.org/files/issues/2019-05-13/3053881-11.patch",
                     "Hidden buttons in off-canvas dialog are not being hidden": "https://www.drupal.org/files/issues/2020-02-28/3070375-4.patch",
                     "Off-canvas style resets are overriding styles (especially SVGs) in Safari resulting in display issues": "https://www.drupal.org/files/issues/2019-05-07/off-canvas-style-resets-2958588-13.patch",
-                    "Media viewmode control": "https://www.drupal.org/files/issues/2020-01-31/3097416-ckeditor-view-modes-8.9-combined.patch"
+                    "Media viewmode control": "https://www.drupal.org/files/issues/2020-01-31/3097416-ckeditor-view-modes-8.9-combined.patch",
+                    "Expose Layout Builder data to REST and JSON:API": "https://www.drupal.org/files/issues/2020-07-07/2942975-116.patch"
                 }
             },
             "autoload": {
@@ -4003,26 +4004,29 @@
         },
         {
             "name": "drupal/default_content",
-            "version": "1.0.0-alpha9",
+            "version": "2.0.0-alpha1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/default_content.git",
-                "reference": "8.x-1.0-alpha9"
+                "reference": "2.0.0-alpha1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/default_content-8.x-1.0-alpha9.zip",
-                "reference": "8.x-1.0-alpha9",
-                "shasum": "e8d5cc6ae96b14e882852512fbf5887e752146a0"
+                "url": "https://ftp.drupal.org/files/projects/default_content-2.0.0-alpha1.zip",
+                "reference": "2.0.0-alpha1",
+                "shasum": "0d534ab8e44786a352e24c7cec3dc06bef155f66"
             },
             "require": {
                 "drupal/core": "^8.7.7 || ^9"
             },
+            "require-dev": {
+                "drupal/paragraphs": "^1"
+            },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.0-alpha9",
-                    "datestamp": "1588280141",
+                    "version": "2.0.0-alpha1",
+                    "datestamp": "1595072288",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Alpha releases are not covered by Drupal security advisories."
@@ -4034,7 +4038,7 @@
                     }
                 },
                 "patches_applied": {
-                    "Respect revision ids for entity_reference_revisions": "https://www.drupal.org/files/issues/2018-08-06/exported_revision_ids-2989887-6.patch"
+                    "Add a Normalizer and Denormalizer to support Layout Builder": "https://www.drupal.org/files/issues/2020-08-24/default_content-add-normalizer-denormalizer-for-layout-builder-3160146-25.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -18054,7 +18058,6 @@
     "stability-flags": {
         "drupal/better_normalizers": 10,
         "drupal/cshs": 10,
-        "drupal/default_content": 15,
         "drupal/diff": 5,
         "drupal/entity_embed": 5,
         "drupal/entity_usage": 15,
