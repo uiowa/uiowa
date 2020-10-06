@@ -29,7 +29,6 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
       'h3' => 'Heading 3',
       'h4' => 'Heading 4',
       'h5' => 'Heading 5',
-      'h6' => 'Heading 6',
     ];
 
     $element['container'] = [
@@ -70,7 +69,7 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
       '#type' => 'select',
       '#title' => $this->t('Block title heading size'),
       '#options' => $heading_size_options,
-      '#description' => $this->t('The heading size for the block title. Child content headings will be set according to this.'),
+      '#description' => $this->t('The heading size for the block title. Children headings will be set one level lower.'),
       '#default_value' => isset($items[$delta]->heading_size) ? $items[$delta]->heading_size : 'h2',
       '#states' => [
         'visible' => [
@@ -81,12 +80,15 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
       ],
     ];
 
+    // Add an additional option for children headings.
+    $heading_size_options['h6'] = 'Heading 6';
+
     $element['container']['child_heading_size'] = [
       '#type' => 'select',
       '#title' => $this->t('Child content heading size'),
       '#options' => $heading_size_options,
       '#default_value' => isset($items[$delta]->child_heading_size) ? $items[$delta]->child_heading_size : 'h2',
-      '#description' => $this->t('The heading size for all child content, such as article titles. Available if no title is used.'),
+      '#description' => $this->t('The heading size for all children headings.'),
       '#states' => [
         'visible' => [
           ':input[id="uiowa-block-headline-field"]' => [
