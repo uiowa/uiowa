@@ -7,17 +7,45 @@
   color: $secondary;
 }
 
-
-
 .banner {
 
-  // set height to auto for image banners in layout columns
-  &:not([class*="bg-"]) {
-    height: max-content;
-    min-height: max-content;
+  // Banner Heights
+  &--large {
+    @include breakpoint(menu) {
+      min-height: 48rem;
+    }
   }
 
-  // override background color if button is within a gold container
+  &--medium {
+    @include breakpoint(menu) {
+      min-height: 33rem;
+    }
+  }
+
+  &--small {
+    @include breakpoint(menu) {
+      min-height: 18rem;
+    }
+  }
+
+  // Set layout text width for onecol containers only excluding the rule below
+  &:not([class*="banner--horizontal-left"]) {
+    .banner__text {
+      @include breakpoint(sm) {
+        width: 100%;
+      }
+
+      @include breakpoint(menu) {
+        width: 80%;
+      }
+
+      @include breakpoint(container) {
+        width: 60%;
+      }
+    }
+  }
+
+  // Override background color if button is within a gold container
   &.bg-pattern--brain-reversed,
   &.bg--gold {
     .bttn--primary {
@@ -32,6 +60,7 @@
   }
 }
 
+// Layout specific sizing overrides
 .layout--threecol,
 .layout--fourcol,
 .layout--twocol--25-75 .layout__region--first,
@@ -39,15 +68,6 @@
 .layout--twocol--33-67 .layout__region--first,
 .layout--twocol--67-33 .layout__region--second {
   .banner {
-
-    // remove absolute positioning if within a layout column for bg colors
-    &[class*="bg-"] {
-      .banner__content {
-        @include breakpoint(sm) {
-          position: relative;
-        }
-      }
-    }
 
     .bttn {
       @include breakpoint(menu) {
@@ -84,63 +104,18 @@
 
 // Add padding to banner content if not in edge-to-edge column or is in twocol layout
 .layout--onecol,
-.layout--twocol {
+.layout--twocol--25-75 .layout__region--second,
+.layout--twocol--75-25 .layout__region--first,
+.layout--twocol--33-67 .layout__region--second,
+.layout--twocol--67-33 .layout__region--first,
+.layout--twocol--50-50 {
   .banner .banner__content {
     @include breakpoint(sm) {
       padding: 3rem;
     }
   }
-}
 
-.layout--onecol[class*=page__container--edge] {
-  .banner .banner__content {
-    @include breakpoint(container) {
-      padding: 3rem 0;
-    }
-  }
-}
-
-
-.layout--onecol {
-  .banner {
-
-    // banner Heights
-    &--large {
-      @include breakpoint(menu) {
-        min-height: 48rem;
-      }
-    }
-
-    &--medium {
-      @include breakpoint(menu) {
-        min-height: 33rem;
-      }
-    }
-
-    &--small {
-      @include breakpoint(menu) {
-        min-height: 18rem;
-      }
-    }
-  }
-
-  // Set layout text width for onecol containers only excluding the rule below
-  .banner:not([class*="banner--horizontal-left"]) {
-    .banner__text {
-      @include breakpoint(sm) {
-        width: 100%;
-      }
-
-      @include breakpoint(menu) {
-        width: 80%;
-      }
-
-      @include breakpoint(container) {
-        width: 60%;
-      }
-    }
-  }
-
+  // Set banner content width if centered left is selected
   .banner--vertical-center.banner--horizontal-left {
     .banner__content {
       @include breakpoint(sm) {
@@ -155,19 +130,26 @@
         width: 50%;
       }
     }
-
   }
+}
 
-  // set larger heading size for large banner only
-  .banner--large {
-    .bold-headline {
-      @include breakpoint(md) {
-        font-size: calc(100% + 3.5vw);
-      }
+// Remove left/right padding if edge-to-edge is selected
+.layout--onecol[class*=page__container--edge] {
+  .banner .banner__content {
+    @include breakpoint(container) {
+      padding: 3rem 0;
     }
   }
 }
 
+// Set larger heading size for large banner only
+.banner--large {
+  .bold-headline {
+    @include breakpoint(md) {
+      font-size: calc(100% + 3.5vw);
+    }
+  }
+}
 
 // Gradient overlays for onecol and twocol layouts only, solid overlays will appear for three and fourcol layouts
 .layout--onecol,
@@ -249,13 +231,12 @@
   }
 }
 
-
 .layout--threecol,
 .layout--fourcol,
 .layout--twocol {
   .banner {
 
-    // white opacity overlay set as default if reversed gradient is used within smaller columns
+    // White opacity overlay set as default if reversed gradient is used within smaller columns
     &--gradient-left-reversed {
       &:after {
         @include breakpoint(sm) {
@@ -270,7 +251,7 @@
   }
 }
 
-// remove contextual position for logged in view of banner image
+// Remove contextual position for logged in view of banner image
 .banner__image {
   .contextual-region {
     position: unset;
