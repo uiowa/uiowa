@@ -221,9 +221,14 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
         $element['field_uiowa_text_area']['widget'][0]['#format'] = 'filtered_html';
       }
 
-      // Unset the unnecessary 'child_heading_size' field option.
       if (isset($element['field_uiowa_block_headline'])) {
+        // Unset the unnecessary 'child_heading_size' field option.
         unset($element['field_uiowa_block_headline']['widget'][0]['container']['child_heading_size']);
+        // Update the help text.
+        $element['field_uiowa_block_headline']['widget'][0]['container']['heading_size']['#description'] =
+          'The heading size for the block title.';
+        // Add in the 'h6' option.
+        $element['field_uiowa_block_headline']['widget'][0]['container']['heading_size']['#options']['h6'] = 'Heading 6';
       }
       break;
 
@@ -242,9 +247,14 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
       break;
 
     case 'inline_block:uiowa_image_gallery':
-      // Unset the unnecessary 'child_heading_size' field option.
       if (isset($element['field_uiowa_block_headline'])) {
+        // Unset the unnecessary 'child_heading_size' field option.
         unset($element['field_uiowa_block_headline']['widget'][0]['container']['child_heading_size']);
+        // Update the help text.
+        $element['field_uiowa_block_headline']['widget'][0]['container']['heading_size']['#description'] =
+          'The heading size for the block title.';
+        // Add in the 'h6' option.
+        $element['field_uiowa_block_headline']['widget'][0]['container']['heading_size']['#options']['h6'] = 'Heading 6';
       }
       break;
 
