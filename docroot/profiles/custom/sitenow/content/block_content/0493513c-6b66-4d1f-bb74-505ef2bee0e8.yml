@@ -4,10 +4,6 @@ _meta:
   uuid: 0493513c-6b66-4d1f-bb74-505ef2bee0e8
   bundle: uiowa_slider
   default_langcode: en
-  depends:
-    0005b838-46f9-4c0f-a669-be81fa5bd03a: media
-    d872b41f-45af-4c94-9054-56d249130203: media
-    e40c44de-579d-4b50-9e5e-5b0c304564ff: media
 default:
   status:
     -
@@ -52,7 +48,7 @@ default:
               format: minimal
           field_uiowa_slide_image:
             -
-              entity: 0005b838-46f9-4c0f-a669-be81fa5bd03a
+              target_id: 5
           field_uiowa_slide_link:
             -
               uri: 'https://sitenow.uiowa.edu/documentation'
@@ -76,6 +72,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_collection_headline:
             -
               value: 'Create content'
@@ -85,7 +84,7 @@ default:
               format: minimal
           field_uiowa_slide_image:
             -
-              entity: d872b41f-45af-4c94-9054-56d249130203
+              target_id: 6
           field_uiowa_slide_link:
             -
               uri: 'internal:/admin/content'
@@ -109,6 +108,9 @@ default:
           behavior_settings:
             -
               value: {  }
+          revision_translation_affected:
+            -
+              value: true
           field_collection_headline:
             -
               value: 'Change settings'
@@ -118,7 +120,7 @@ default:
               format: minimal
           field_uiowa_slide_image:
             -
-              entity: e40c44de-579d-4b50-9e5e-5b0c304564ff
+              target_id: 7
           field_uiowa_slide_link:
             -
               uri: 'internal:/admin'
