@@ -11,18 +11,24 @@
 
   // Banner Heights
   &--large {
+    min-height: 33rem;
+
     @include breakpoint(menu) {
       min-height: 48rem;
     }
   }
 
   &--medium {
+    min-height: 33rem;
+
     @include breakpoint(menu) {
       min-height: 33rem;
     }
   }
 
   &--small {
+    min-height: 18rem;
+
     @include breakpoint(menu) {
       min-height: 18rem;
     }
@@ -69,27 +75,15 @@
 .layout--twocol--67-33 .layout__region--second {
   .banner {
 
-    .bttn {
-      @include breakpoint(menu) {
-        font-size: 1.1vw;
-      }
-    }
-
     .bold-headline {
       @include breakpoint(menu) {
-        font-size: 1.7vw;
+        font-size: 2.4rem;
       }
 
       &.bold-headline--highlight {
         @include breakpoint(menu) {
-          font-size: 1.3vw;
+          font-size: 2rem;
         }
-      }
-    }
-
-    .banner__text p {
-      @include breakpoint(sm) {
-        font-size: 1rem;
       }
     }
 
