@@ -33,7 +33,7 @@ function template_preprocess_sitenow_events_teaser(array &$variables) {
       '#responsive_image_style_id' => 'large__square',
       '#attributes' => [
         'data-lazy' => TRUE,
-        '#alt' => t('@title promotional image', ['@title' => $variables['event']['title']]),
+        'alt' => t('@title promotional image', ['@title' => $variables['event']['title']]),
       ],
     ];
   }
