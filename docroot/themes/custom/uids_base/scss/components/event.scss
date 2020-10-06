@@ -40,9 +40,11 @@
   .events-card__title a {
     color: $white;
   }
+
   .events-card__date {
     color: $primary;
   }
+
   .events-card__label {
     color: $light;
   }
@@ -66,6 +68,18 @@
   .more-link {
     margin-top: $gutter;
     margin-bottom: $gutter;
+
+    .bg-pattern--brain-reversed &,
+    .bg--gold & {
+      background: #fff;
+    }
+  }
+
+  .bg--black &,
+  .bg-pattern--brain-black & {
+    .events-empty {
+      color: #fff;
+    }
   }
 }
 
@@ -145,7 +159,8 @@
     }
   }
 
-  .bg--black & {
+  .bg--black &,
+  .bg-pattern--brain-black & {
     .events-card {
       &__description {
         color: $white;
@@ -185,6 +200,11 @@
 
   &.image-right .events-card__image {
     order: 1;
+
+    @include breakpoint(sm) {
+      margin-left: 15px;
+      margin-right: 0;
+    }
   }
 
   &.hide-images .events-card__image {
@@ -201,4 +221,24 @@
   width: 100%;
   padding-right: 0;
   padding-left: 0;
+}
+
+// Move to UIDS
+.bg-pattern--brain-black .events-card__image img {
+  @include breakpoint(sm) {
+    background: #151515;
+    border: 1px solid #ffcd00;
+  }
+}
+
+.bg-pattern--brain-reversed .events-card__image img {
+  @include breakpoint(sm) {
+    border: 1px solid #fff;
+    background: #ffcd00;
+  }
+}
+
+.bg-pattern--brain-reversed .events-card__row .fas,
+.bg-pattern--brain-reversed .events-card__row .svg-inline--fa {
+  color: #fff;
 }
