@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.aggregator_feed.summary
-    - field.field.aggregator_feed.aggregator_feed.field_aggregator_feed_image
   module:
     - aggregator
 _core:
@@ -14,15 +13,6 @@ targetEntityType: aggregator_feed
 bundle: aggregator_feed
 mode: summary
 content:
-  field_aggregator_feed_image:
-    type: entity_reference_entity_view
-    weight: 0
-    region: content
-    label: hidden
-    settings:
-      view_mode: small__square
-      link: false
-    third_party_settings: {  }
   items:
     weight: 1
     region: content

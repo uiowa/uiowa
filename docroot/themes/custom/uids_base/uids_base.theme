@@ -477,12 +477,19 @@ function uids_base_preprocess_aggregator_item(&$variables) {
 
   /** @var Drupal\aggregator\Entity\Feed $feed */
   $feed = \Drupal::entityTypeManager()->getStorage('aggregator_feed')->load($item->getFeedId());
-  $media_id = $feed->get('field_aggregator_feed_image')->getString();
+  $image = $feed->getImage();
 
-  /** @var Drupal\media\Entity\Media $media */
-  $media = Media::load($media_id);
-  $build = \Drupal::entityTypeManager()->getViewBuilder('media')->view($media);
-  $variables['feed_image'] = $build;
+  if ($image) {
+    $variables['feed_image'] = [
+      '#theme' => 'imagecache_external_responsive',
+      '#uri' => $image,
+      '#responsive_image_style_id' => 'large__square',
+      '#alt' => t('@title feed image', ['@title' => $feed->get('title')]),
+      '#attributes' => [
+        'data-lazy' => TRUE,
+      ],
+    ];
+  }
 }
 
 /**

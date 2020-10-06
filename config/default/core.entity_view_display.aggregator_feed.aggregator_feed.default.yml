@@ -2,8 +2,6 @@ uuid: 235ad150-3f8a-4365-b352-85a1376fe516
 langcode: en
 status: true
 dependencies:
-  config:
-    - field.field.aggregator_feed.aggregator_feed.field_aggregator_feed_image
   module:
     - aggregator
 _core:
@@ -14,51 +12,36 @@ bundle: aggregator_feed
 mode: default
 content:
   checked:
-    type: timestamp_ago
+    type: timestamp
     weight: 2
     region: content
+    label: above
     settings:
-      future_format: '@interval hence'
-      past_format: '@interval ago'
-      granularity: 2
+      date_format: medium
+      custom_date_format: ''
+      timezone: ''
     third_party_settings: {  }
-    label: inline
   description:
-    weight: 4
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  feed_icon:
-    weight: 6
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  field_aggregator_feed_image:
-    type: entity_reference_entity_view
-    weight: 0
-    label: hidden
-    settings:
-      view_mode: medium__square
-      link: false
-    third_party_settings: {  }
-    region: content
-  image:
-    weight: 3
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  items:
     weight: 1
     region: content
     settings: {  }
     third_party_settings: {  }
-  link:
-    type: uri_link
-    weight: 5
+  feed_icon:
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
-    label: inline
+  image:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  items:
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
+  link: true
   more_link: true
   search_api_excerpt: true
