@@ -472,23 +472,26 @@ function uids_base_preprocess_views_view_table(&$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function uids_base_preprocess_aggregator_item(&$variables) {
-  /** @var Drupal\aggregator\Entity\Item $item */
-  $item = $variables['elements']['#aggregator_item'];
+  // Only add the feed image to the aggregator item if we're not on the canonical feed page.
+  if (\Drupal::routeMatch()->getRouteName() != 'entity.aggregator_feed.canonical') {
+    /** @var Drupal\aggregator\Entity\Item $item */
+    $item = $variables['elements']['#aggregator_item'];
 
-  /** @var Drupal\aggregator\Entity\Feed $feed */
-  $feed = \Drupal::entityTypeManager()->getStorage('aggregator_feed')->load($item->getFeedId());
-  $image = $feed->getImage();
+    /** @var Drupal\aggregator\Entity\Feed $feed */
+    $feed = \Drupal::entityTypeManager()->getStorage('aggregator_feed')->load($item->getFeedId());
+    $image = $feed->getImage();
 
-  if ($image) {
-    $variables['feed_image'] = [
-      '#theme' => 'imagecache_external_responsive',
-      '#uri' => $image,
-      '#responsive_image_style_id' => 'small__square',
-      '#attributes' => [
-        'data-lazy' => TRUE,
-        'alt' => t('@title feed image', ['@title' => $feed->get('title')->getString()]),
-      ],
-    ];
+    if ($image) {
+      $variables['feed_image'] = [
+        '#theme' => 'imagecache_external_responsive',
+        '#uri' => $image,
+        '#responsive_image_style_id' => 'small__square',
+        '#attributes' => [
+          'data-lazy' => TRUE,
+          'alt' => t('@title feed image', ['@title' => $feed->get('title')->getString()]),
+        ],
+      ];
+    }
   }
 }
 
