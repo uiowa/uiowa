@@ -10,6 +10,7 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
+use Drupal\media\Entity\Media;
 use Drupal\node\NodeInterface;
 
 /**
@@ -476,8 +477,12 @@ function uids_base_preprocess_aggregator_item(&$variables) {
 
   /** @var Drupal\aggregator\Entity\Feed $feed */
   $feed = \Drupal::entityTypeManager()->getStorage('aggregator_feed')->load($item->getFeedId());
+  $media_id = $feed->get('field_aggregator_feed_image')->getString();
 
-  $variables['feed_image'] = $feed->get('field_aggregator_feed_image')->view();
+  /** @var Drupal\media\Entity\Media $media */
+  $media = Media::load($media_id);
+  $build = \Drupal::entityTypeManager()->getViewBuilder('media')->view($media);
+  $variables['feed_image'] = $build;
 }
 
 /**
