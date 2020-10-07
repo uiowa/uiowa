@@ -19,15 +19,43 @@
  * @see template_preprocess_aggregator_item()
  */
 #}
+{{ attach_library('uids_base/event') }}
 
-<article{{ attributes.addClass('aggregator-item') }}>
-  {{ feed_image }}
+<article{{attributes.addClass('aggregator-itemevents-cardevents-card__row')}}>
+
+  {% if feed_image %}
+		<div class="events-card__image">
+			{{ feed_image }}
+		</div>
+	{% endif %}
+
   {{ title_prefix }}
-  {% if title %}
-    <h3 class="feed-item-title">
-      <a href="{{ url }}">{{ title }}</a>
-    </h3>
-  {% endif %}
-  {{ title_suffix }}
-  {{ content }}
+
+	<div class="events-card__body">
+
+    {% if title %}
+			<h3 class="events-card__title">
+				<a href="{{ url }}">{{ title }}</a>
+			</h3>
+    {% endif %}
+
+		{{ title_suffix }}
+
+		<div class="events-card__details">
+			<div class="events-card__date">
+        {{ content.timestamp }}
+      </div>
+			|
+			<div class="events-card__label">
+				<i class="fas fa-user"></i>
+        {{ content.author }}
+      </div>
+
+			<div class="events__description">
+				{{ content.description }}
+			</div>
+		</div>
+
+	</div>
+
 </article>
