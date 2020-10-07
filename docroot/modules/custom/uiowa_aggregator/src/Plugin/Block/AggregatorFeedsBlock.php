@@ -171,15 +171,15 @@ class AggregatorFeedsBlock extends BlockBase implements ContainerFactoryPluginIn
       ],
     ];
 
-    if ($result) {
-      if (!empty($title)) {
-        $build['title'] = [
-          '#markup' => $this->t($title),
-          '#prefix' => '<h2 class="uiowa-aggregator-title">',
-          '#suffix' => '</h2>',
-        ];
-      }
+    if (!empty($title)) {
+      $build['title'] = [
+        '#markup' => $this->t($title),
+        '#prefix' => '<h2 class="uiowa-aggregator-title">',
+        '#suffix' => '</h2>',
+      ];
+    }
 
+    if ($result) {
       $build['feed_source'] = ['#markup' => ''];
       $items = $this->itemStorage->loadMultiple($result);
 
