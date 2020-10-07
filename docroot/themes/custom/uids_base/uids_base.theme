@@ -10,7 +10,6 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
-use Drupal\media\Entity\Media;
 use Drupal\node\NodeInterface;
 
 /**
@@ -509,9 +508,9 @@ function uids_base_preprocess_aggregator_item(&$variables) {
             'alt' => t('@title feed image', ['@title' => $feed->get('title')->getString()]),
             'class' => [
               'channel-image',
-            ]
+            ],
           ],
-        ]
+        ],
       ];
     }
   }
