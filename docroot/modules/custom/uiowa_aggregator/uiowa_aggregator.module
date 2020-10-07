@@ -21,8 +21,8 @@ function uiowa_aggregator_form_aggregator_admin_form_alter(&$form, FormStateInte
     $form['aggregator_allowed_html_tags']['#disabled'] = TRUE;
     $form['aggregator_allowed_html_tags']['#description'] .= t('&nbsp;<em>This field has been disabled for security reasons.</em>');
 
-    // Remove one hour and never from aggregator cleanup options
-    // since cron runs every three hours.
+    // Remove one hour and never from aggregator cleanup options since cron
+    // runs every three hours.
     unset($form['processors']['aggregator']['aggregator_clear']['#options'][3600]);
     unset($form['processors']['aggregator']['aggregator_clear']['#options'][0]);
     $form['processors']['aggregator']['aggregator_clear']['#description'] = t('<em>Items cannot be kept indefinitely for performance reasons.</em>');
