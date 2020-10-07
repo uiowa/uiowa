@@ -240,6 +240,12 @@ function uids_base_preprocess_field(&$variables) {
   if ($variables['element']['#field_type'] == 'text_long' && $variables['element']['#formatter'] == 'text_default') {
     $variables['#attached']['library'][] = 'uids_base/tables';
   }
+
+  // Add an extra class variable to uiowa_block_headline instances.
+  if ($variables['element']['#field_type'] == 'uiowa_block_headline') {
+    $bundle = $variables['element']['#bundle'];
+    $variables['headline_class'] = str_replace('_', '-', $bundle) . '--headline';
+  }
 }
 
 /**
