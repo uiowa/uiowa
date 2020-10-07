@@ -5,24 +5,25 @@
  * Primary module hooks for uiowa_aggregator module.
  */
 
+use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\uiowa_core\Access\UiowaCoreAccess;
 
 /**
- * Implements hook_form_alter().
+ * Implements hook_form_FORM_ID_alter().
  */
-function uiowa_aggregator_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  switch ($form_id) {
-    case 'layout_builder_add_block':
-    case 'layout_builder_update_block':
-      /** @var \Drupal\layout_builder\SectionComponent $component */
-      $component = $form_state->getFormObject()->getCurrentComponent();
-      $block = $component->getPlugin();
+function uiowa_aggregator_form_aggregator_admin_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+  $check = \Drupal::service('uiowa_core.access_checker');
 
-      if ($block->getPluginId() == 'aggregator_feed_block') {
-        $block_count = [1 => 1] + $form['settings']['block_count']['#options'];
-        $form['settings']['block_count']['#options'] = $block_count;
-      }
+  /** @var Drupal\Core\Access\AccessResultInterface $is_admin */
+  $access = $check->access(\Drupal::currentUser()->getAccount());
 
-      break;
+  if ($access->isForbidden()) {
+    $form['aggregator_allowed_html_tags']['#disabled'] = TRUE;
+    $form['aggregator_allowed_html_tags']['#description'] .= t(' <em>This field has been disabled for security reasons.</em>');
+
+    $form['processors']['aggregator']['aggregator_clear']['#disabled'] = TRUE;
+    $form['processors']['aggregator']['aggregator_clear']['#description'] = t('<em>This field has been disabled for performance reasons.</em>');
   }
 }
