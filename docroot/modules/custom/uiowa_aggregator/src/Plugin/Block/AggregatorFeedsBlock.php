@@ -122,14 +122,6 @@ class AggregatorFeedsBlock extends BlockBase implements ContainerFactoryPluginIn
       '#required' => TRUE,
     ];
 
-    $form['pager'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Display pager'),
-      '#description' => $this->t('Whether or not to display a pager if there are more items.'),
-      '#default_value' => $this->configuration['pager'],
-      '#return_value' => TRUE,
-    ];
-
     return $form;
   }
 
@@ -142,7 +134,6 @@ class AggregatorFeedsBlock extends BlockBase implements ContainerFactoryPluginIn
     $this->configuration['title'] = $values['title'];
     $this->configuration['feeds'] = $values['feeds'];
     $this->configuration['item_count'] = $values['item_count'];
-    $this->configuration['pager'] = $values['pager'];
   }
 
   /**
@@ -152,7 +143,6 @@ class AggregatorFeedsBlock extends BlockBase implements ContainerFactoryPluginIn
     $title = $this->getConfiguration()['title'];
     $count = $this->getConfiguration()['item_count'];
     $feeds = $this->getConfiguration()['feeds'];
-    $pager = $this->getConfiguration()['pager'];
 
     $result = $this->itemStorage->getQuery()
       ->condition('fid', $feeds, 'IN')
@@ -185,10 +175,6 @@ class AggregatorFeedsBlock extends BlockBase implements ContainerFactoryPluginIn
 
       if ($items) {
         $build['items'] = $this->entityTypeManager->getViewBuilder('aggregator_item')->viewMultiple($items, 'default');
-
-        if ($pager === TRUE) {
-          $build['pager'] = ['#type' => 'pager'];
-        }
       }
     }
     else {
