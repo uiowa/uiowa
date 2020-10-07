@@ -91,7 +91,12 @@ class AggregatorFeedsBlock extends BlockBase implements ContainerFactoryPluginIn
 
     $build = [
       '#type' => 'container',
-      '#attributes' => ['class' => ['aggregator-wrapper']],
+      '#attributes' => [
+        'class' => [
+          'aggregator-wrapper',
+          'uiowa-aggregator',
+        ],
+      ],
     ];
 
     $build['feed_source'] = ['#markup' => ''];
