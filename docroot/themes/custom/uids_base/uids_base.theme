@@ -489,6 +489,9 @@ function uids_base_preprocess_aggregator_item(&$variables) {
         '#attributes' => [
           'data-lazy' => TRUE,
           'alt' => t('@title feed image', ['@title' => $feed->get('title')->getString()]),
+          'class' => [
+            'channel-image',
+          ]
         ],
       ];
     }
