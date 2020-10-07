@@ -13,12 +13,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Provides an example block.
  *
  * @Block(
- *   id = "uiowa_aggregator_all_feeds",
- *   admin_label = @Translation("All aggregator feeds combined"),
+ *   id = "uiowa_aggregator_feeds",
+ *   admin_label = @Translation("Aggregator feeds"),
  *   category = @Translation("Lists (Views)")
  * )
  */
-class AllFeedsBlock extends BlockBase implements ContainerFactoryPluginInterface {
+class AggregatorFeedsBlock extends BlockBase implements ContainerFactoryPluginInterface {
   /**
    * The EntityTypeManager service.
    *
