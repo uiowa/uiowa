@@ -27,11 +27,12 @@
 #}
 {% set id = "accordion-" ~ id %}
 {% if content.field_uiowa_block_headline[0]['#text'] %}
-  {% block heading %}
-    <div class="uiowa-accordion__title">
-      {{ content.field_uiowa_block_headline }}
-    </div>
-  {% endblock %}
+  {% set headline = {
+    'heading_level' : content.field_uiowa_block_headline[0]['#size'],
+    'heading_class' : 'uiowa-accordion--headline',
+    'heading' : content.field_uiowa_block_headline[0]['#text'],
+  } %}
+  {% include '@uids_base/uids/heading.html.twig' with headline only %}
 {% endif %}
 
 <div class="collection--accordion">

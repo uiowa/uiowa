@@ -42,11 +42,12 @@
   {{ title_suffix }}
 
   {% if content.field_uiowa_block_headline[0]['#text'] %}
-    {% block heading %}
-      <div class="uiowa-text-area__title">
-        {{ content.field_uiowa_block_headline }}
-      </div>
-    {% endblock %}
+    {% set headline = {
+      'heading_level' : content.field_uiowa_block_headline[0]['#size'],
+      'heading_class' : 'uiowa-text-area--headline',
+      'heading' : content.field_uiowa_block_headline[0]['#text'],
+    } %}
+    {% include '@uids_base/uids/heading.html.twig' with headline only %}
   {% endif %}
 
   {% block content %}
