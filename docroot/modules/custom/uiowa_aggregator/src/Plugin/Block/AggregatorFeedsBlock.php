@@ -9,7 +9,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Render\MetadataBubblingUrlGenerator;
+use Drupal\Core\Routing\UrlGeneratorInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -53,14 +53,14 @@ class AggregatorFeedsBlock extends BlockBase implements ContainerFactoryPluginIn
   /**
    * The url generator service.
    *
-   * @var \Drupal\Core\Render\MetadataBubblingUrlGenerator
+   * @var \Drupal\Core\Routing\UrlGeneratorInterface
    */
   protected $urlGenerator;
 
   /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManager $entityTypeManager, ConfigFactoryInterface $configFactory, FeedStorageInterface $feed_storage, ItemStorageInterface $item_storage, MetadataBubblingUrlGenerator $urlGenerator) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManager $entityTypeManager, ConfigFactoryInterface $configFactory, FeedStorageInterface $feed_storage, ItemStorageInterface $item_storage, UrlGeneratorInterface $urlGenerator) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManager = $entityTypeManager;
     $this->configFactory = $configFactory;
