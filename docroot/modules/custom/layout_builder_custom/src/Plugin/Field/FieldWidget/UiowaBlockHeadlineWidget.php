@@ -59,7 +59,7 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
       '#states' => [
         'visible' => [
           ':input[id="uiowa-block-headline-field"]' => [
-            'filled' => TRUE
+            'filled' => TRUE,
           ],
         ],
       ],
@@ -84,9 +84,9 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
       '#type' => 'select',
       '#title' => $this->t('Block title heading style'),
       '#options' => [
-        'default' => 'Default',
-        'headline_bold_serif' => 'Headline bold serif',
-        'headline_bold_serif_highlight' => 'Headline bold serif highlight',
+        'default' => $this->t('Default'),
+        'headline_bold_serif' => $this->t('Headline bold serif'),
+        'headline_bold_serif_highlight' => $this->t('Headline bold serif highlight'),
       ],
       '#default_value' => isset($items[$delta]->headline_style) ? $items[$delta]->headline_style : 'default',
       '#states' => [
