@@ -107,7 +107,7 @@ class AggregatorFeedsBlock extends BlockBase implements ContainerFactoryPluginIn
     ];
 
     $min = 1;
-    $max = 20;
+    $max = 25;
 
     $form['item_count'] = [
       '#type' => 'number',
