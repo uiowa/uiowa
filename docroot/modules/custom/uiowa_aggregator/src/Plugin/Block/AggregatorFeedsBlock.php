@@ -81,13 +81,53 @@ class AggregatorFeedsBlock extends BlockBase implements ContainerFactoryPluginIn
   public function blockForm($form, FormStateInterface $form_state) {
     $form = parent::blockForm($form, $form_state);
 
-    $range = range(1, 20);
+    $feeds = $this->feedStorage->loadMultiple();
+    $options = [];
 
-    $form['block_count'] = [
+    foreach ($feeds as $feed) {
+      $options[$feed->id()] = $feed->label();
+    }
+
+    // @todo: Investigate shared parent field for use here.
+    $form['title'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Title'),
+      '#description' => $this->t('An optional title to display before the feed items.'),
+      '#default_value' => $this->configuration['title'],
+    ];
+
+    $form['feeds'] = [
       '#type' => 'select',
-      '#title' => $this->t('Number of news items in block'),
-      '#default_value' => $this->configuration['block_count'],
-      '#options' => array_combine($range, $range),
+      '#title' => $this->t('Feeds'),
+      '#description' => $this->t('The feed(s) to display items from. Sorted by most recent.'),
+      '#default_value' => $this->configuration['feeds'],
+      '#multiple' => TRUE,
+      '#options' => $options,
+      '#required' => TRUE,
+    ];
+
+    $min = 1;
+    $max = 20;
+
+    $form['item_count'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Number of items'),
+      '#description' => $this->t('The number of items to display. Min: @min. Max: @max', [
+        '@min' => $min,
+        '@max' => $max,
+      ]),
+      '#default_value' => $this->configuration['item_count'],
+      '#min' => $min,
+      '#max' => $max,
+      '#required' => TRUE,
+    ];
+
+    $form['pager'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Display pager'),
+      '#description' => $this->t('Whether or not to display a pager if there are more items.'),
+      '#default_value' => $this->configuration['pager'],
+      '#return_value' => TRUE,
     ];
 
     return $form;
@@ -99,15 +139,27 @@ class AggregatorFeedsBlock extends BlockBase implements ContainerFactoryPluginIn
   public function blockSubmit($form, FormStateInterface $form_state) {
     parent::blockSubmit($form, $form_state);
     $values = $form_state->getValues();
-    $this->configuration['block_count'] = $values['block_count'];
+    $this->configuration['title'] = $values['title'];
+    $this->configuration['feeds'] = $values['feeds'];
+    $this->configuration['item_count'] = $values['item_count'];
+    $this->configuration['pager'] = $values['pager'];
   }
 
   /**
    * {@inheritdoc}
    */
   public function build() {
-    $count = $this->getConfiguration()['block_count'] ?? 20;
-    $items = $this->entityTypeManager->getStorage('aggregator_item')->loadAll($count);
+    $title = $this->getConfiguration()['title'];
+    $count = $this->getConfiguration()['item_count'];
+    $feeds = $this->getConfiguration()['feeds'];
+    $pager = $this->getConfiguration()['pager'];
+
+    $result = $this->itemStorage->getQuery()
+      ->condition('fid', $feeds, 'IN')
+      ->range(0, $count)
+      ->sort('timestamp', 'DESC')
+      ->sort('iid', 'DESC')
+      ->execute();
 
     $build = [
       '#type' => 'container',
@@ -119,11 +171,32 @@ class AggregatorFeedsBlock extends BlockBase implements ContainerFactoryPluginIn
       ],
     ];
 
-    $build['feed_source'] = ['#markup' => ''];
+    if ($result) {
+      if (!empty($title)) {
+        $build['title'] = [
+          '#markup' => $this->t($title),
+          '#prefix' => '<h2 class="uiowa-aggregator-title">',
+          '#suffix' => '</h2>',
+        ];
+      }
 
-    if ($items) {
-      $build['items'] = $this->entityTypeManager->getViewBuilder('aggregator_item')->viewMultiple($items, 'default');
-      $build['pager'] = ['#type' => 'pager'];
+      $build['feed_source'] = ['#markup' => ''];
+      $items = $this->itemStorage->loadMultiple($result);
+
+      if ($items) {
+        $build['items'] = $this->entityTypeManager->getViewBuilder('aggregator_item')->viewMultiple($items, 'default');
+
+        if ($pager === TRUE) {
+          $build['pager'] = ['#type' => 'pager'];
+        }
+      }
+    }
+    else {
+      $build['no_results'] = [
+        '#markup' => $this->t('There are on results.'),
+        '#prefix' => '<div class="uiowa-aggregator-no-results">',
+        '#suffix' => '</div>',
+      ];
     }
 
     $build['#attached']['feed'][] = [
@@ -132,7 +205,6 @@ class AggregatorFeedsBlock extends BlockBase implements ContainerFactoryPluginIn
     ];
 
     return $build;
-
   }
 
 }
