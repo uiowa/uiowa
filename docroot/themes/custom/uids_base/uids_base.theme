@@ -367,6 +367,10 @@ function uids_base_preprocess_block(&$variables) {
     $variables['breadcrumb'] = $plugin_block->build();
   }
 
+  if ($variables['base_plugin_id'] == 'uiowa_aggregator_feeds') {
+    $variables['#attached']['library'][] = 'uids_base/aggregator';
+  }
+
 }
 
 /**
@@ -466,6 +470,13 @@ function uids_base_preprocess_views_view_table(&$variables) {
   if (!isset($variables["view"]->display_handler->handlers["field"]["draggableviews"])) {
     $variables['attributes']['class'][] = 'table is-striped';
   }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uids_base_preprocess_aggregator_feed(&$variables) {
+  $variables['#attached']['library'][] = 'uids_base/aggregator-feed';
 }
 
 /**
