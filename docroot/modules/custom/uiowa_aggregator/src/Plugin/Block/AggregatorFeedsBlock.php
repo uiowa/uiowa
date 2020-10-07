@@ -87,7 +87,6 @@ class AggregatorFeedsBlock extends BlockBase implements ContainerFactoryPluginIn
    */
   public function build() {
     $count = $this->getConfiguration()['block_count'] ?? 20;
-
     $items = $this->entityTypeManager->getStorage('aggregator_item')->loadAll($count);
 
     $build = [
