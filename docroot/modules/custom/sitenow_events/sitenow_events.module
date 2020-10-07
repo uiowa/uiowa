@@ -56,14 +56,10 @@ function sitenow_events_preprocess_block(&$variables) {
         }
       }
 
-      else {
-        $heading_size = 'h3';
-      }
-
       foreach ($data['events'] as $value) {
         // The API nests each event as an array.
         $event = $value['event'];
-        $event['heading_size'] = $heading_size;
+        $event['heading_size'] = isset($heading_size) ? $heading_size : 'h3';
 
         $variables['content'][] = [
           '#theme' => 'sitenow_events_teaser',
