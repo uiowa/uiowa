@@ -28,3 +28,23 @@ function uiowa_aggregator_form_aggregator_admin_form_alter(&$form, FormStateInte
     $form['processors']['aggregator']['aggregator_clear']['#description'] = t('<em>Items cannot be kept indefinitely for performance reasons.</em>');
   }
 }
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function uiowa_aggregator_form_aggregator_feed_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+  $check = \Drupal::service('uiowa_core.access_checker');
+
+  /** @var Drupal\Core\Access\AccessResultInterface $is_admin */
+  $access = $check->access(\Drupal::currentUser()->getAccount());
+
+  // Set the minimum feed fresh to 3 hours.
+  if ($access->isForbidden()) {
+    foreach ($form['refresh']['widget']['#options'] as $key => $value) {
+      if ($key !== 0 && $key < 10800) {
+        unset($form['refresh']['widget']['#options'][$key]);
+      }
+    }
+  }
+}
