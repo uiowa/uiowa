@@ -32,7 +32,7 @@ function uiowa_aggregator_form_aggregator_admin_form_alter(&$form, FormStateInte
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function uiowa_aggregator_form_aggregator_feed_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+function uiowa_aggregator_form_aggregator_feed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
   $check = \Drupal::service('uiowa_core.access_checker');
 
