@@ -9,6 +9,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Render\MetadataBubblingUrlGenerator;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -50,14 +51,22 @@ class AggregatorFeedsBlock extends BlockBase implements ContainerFactoryPluginIn
   protected $itemStorage;
 
   /**
+   * The url generator service.
+   *
+   * @var \Drupal\Core\Render\MetadataBubblingUrlGenerator
+   */
+  protected $urlGenerator;
+
+  /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManager $entityTypeManager, ConfigFactoryInterface $configFactory, FeedStorageInterface $feed_storage, ItemStorageInterface $item_storage) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManager $entityTypeManager, ConfigFactoryInterface $configFactory, FeedStorageInterface $feed_storage, ItemStorageInterface $item_storage, MetadataBubblingUrlGenerator $urlGenerator) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManager = $entityTypeManager;
     $this->configFactory = $configFactory;
     $this->feedStorage = $feed_storage;
     $this->itemStorage = $item_storage;
+    $this->urlGenerator = $urlGenerator;
   }
 
   /**
@@ -71,7 +80,8 @@ class AggregatorFeedsBlock extends BlockBase implements ContainerFactoryPluginIn
       $container->get('entity_type.manager'),
       $container->get('config.factory'),
       $container->get('entity_type.manager')->getStorage('aggregator_feed'),
-      $container->get('entity_type.manager')->getStorage('aggregator_item')
+      $container->get('entity_type.manager')->getStorage('aggregator_item'),
+      $container->get('url_generator')
     );
   }
 
@@ -80,7 +90,6 @@ class AggregatorFeedsBlock extends BlockBase implements ContainerFactoryPluginIn
    */
   public function blockForm($form, FormStateInterface $form_state) {
     $form = parent::blockForm($form, $form_state);
-
     $feeds = $this->feedStorage->loadMultiple();
     $options = [];
 
@@ -99,7 +108,9 @@ class AggregatorFeedsBlock extends BlockBase implements ContainerFactoryPluginIn
     $form['feeds'] = [
       '#type' => 'select',
       '#title' => $this->t('Feeds'),
-      '#description' => $this->t('The feed(s) to display items from. Sorted by most recent.'),
+      '#description' => $this->t('The <a href="@link">feed(s)</a> to display items from. Sorted by most recent.', [
+        '@link' => $this->urlGenerator->generateFromRoute('aggregator.admin_overview'),
+      ]),
       '#default_value' => $this->configuration['feeds'],
       '#multiple' => TRUE,
       '#options' => $options,
