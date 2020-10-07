@@ -2,6 +2,8 @@
 
 namespace Drupal\uiowa_aggregator\Plugin\Block;
 
+use Drupal\aggregator\FeedStorageInterface;
+use Drupal\aggregator\ItemStorageInterface;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManager;
@@ -34,12 +36,28 @@ class AggregatorFeedsBlock extends BlockBase implements ContainerFactoryPluginIn
   protected $configFactory;
 
   /**
+   * The entity storage for feeds.
+   *
+   * @var \Drupal\aggregator\FeedStorageInterface
+   */
+  protected $feedStorage;
+
+  /**
+   * The entity storage for items.
+   *
+   * @var \Drupal\aggregator\ItemStorageInterface
+   */
+  protected $itemStorage;
+
+  /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManager $entityTypeManager, ConfigFactoryInterface $configFactory) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManager $entityTypeManager, ConfigFactoryInterface $configFactory, FeedStorageInterface $feed_storage, ItemStorageInterface $item_storage) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManager = $entityTypeManager;
     $this->configFactory = $configFactory;
+    $this->feedStorage = $feed_storage;
+    $this->itemStorage = $item_storage;
   }
 
   /**
@@ -51,7 +69,9 @@ class AggregatorFeedsBlock extends BlockBase implements ContainerFactoryPluginIn
       $plugin_id,
       $plugin_definition,
       $container->get('entity_type.manager'),
-      $container->get('config.factory')
+      $container->get('config.factory'),
+      $container->get('entity_type.manager')->getStorage('aggregator_feed'),
+      $container->get('entity_type.manager')->getStorage('aggregator_item')
     );
   }
 
