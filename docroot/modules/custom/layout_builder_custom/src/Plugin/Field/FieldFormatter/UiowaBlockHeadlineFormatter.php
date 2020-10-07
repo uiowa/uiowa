@@ -24,11 +24,19 @@ class UiowaBlockHeadlineFormatter extends FormatterBase {
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $element = [];
     foreach ($items as $delta => $item) {
+
+      $styles = [
+        'default' => '',
+        'headline_bold_serif' => 'bold-headline bold-headline--serif',
+        'headline_bold_serif_highlight' => 'bold-headline bold-headline--serif bold-headline--underline',
+      ];
+      $hidden = ($item->get('hide_headline')->getValue()) ? ' sr-only' : '';
+
       $element[$delta] = [
         '#theme' => 'uiowa_block_headline_field_type',
         '#text' => strip_tags($item->get('headline')->getValue()),
         '#size' => $item->get('heading_size')->getValue(),
-        '#hidden' => $item->get('hide_headline')->getValue(),
+        '#styles' => $styles[$item->get('headline_style')->getValue()] . $hidden,
       ];
     }
 

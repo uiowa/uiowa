@@ -80,6 +80,24 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
       ],
     ];
 
+    $element['container']['headline_style'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Block title heading style'),
+      '#options' => [
+        'default' => 'Default',
+        'headline_bold_serif' => 'Headline bold serif',
+        'headline_bold_serif_highlight' => 'Headline bold serif highlight',
+      ],
+      '#default_value' => isset($items[$delta]->headline_style) ? $items[$delta]->headline_style : 'default',
+      '#states' => [
+        'visible' => [
+          ':input[id="uiowa-block-headline-field"]' => [
+            'filled' => TRUE,
+          ],
+        ],
+      ],
+    ];
+
     // Add an additional option for children headings.
     $heading_size_options['h6'] = 'Heading 6';
 
@@ -108,6 +126,7 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
     foreach ($values as $delta => $data) {
       $values[$delta]['headline'] = $data['container']['headline'];
       $values[$delta]['hide_headline'] = $data['container']['hide_headline'];
+      $values[$delta]['headline_style'] = $data['container']['headline_style'];
       $values[$delta]['heading_size'] = $data['container']['heading_size'];
       $values[$delta]['child_heading_size'] = $data['container']['child_heading_size'];
       unset($values[$delta]['container']);

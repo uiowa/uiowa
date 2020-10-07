@@ -40,6 +40,11 @@ class UiowaBlockHeadline extends FieldItemBase {
           'not null' => TRUE,
           'default' => 0,
         ],
+        'headline_style' => [
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ],
         'child_heading_size' => [
           'type' => 'varchar',
           'length' => 255,
@@ -65,16 +70,20 @@ class UiowaBlockHeadline extends FieldItemBase {
     $properties = [];
 
     $properties['headline'] = DataDefinition::create('string')
-      ->setLabel(t('Block Headline'))
+      ->setLabel(t('Block headline'))
       ->setDescription(t('Parent headline over collections of content.'));
 
     $properties['heading_size'] = DataDefinition::create('string')
-      ->setLabel(t('Block Headline Size'))
+      ->setLabel(t('Block headline size'))
       ->setDescription(t('Heading size for the parent headline.'));
 
     $properties['hide_headline'] = DataDefinition::create('string')
-      ->setLabel(t('Hide Headline'))
-      ->setDescription(t('Visually hide block headline'));
+      ->setLabel(t('Hide headline'))
+      ->setDescription(t('Visually hide block headline.'));
+
+    $properties['headline_style'] = DataDefinition::create('string')
+      ->setLabel(t('Headline style'))
+      ->setDescription(t('Set the block headline style.'));
 
     $properties['child_heading_size'] = DataDefinition::create('string')
       ->setLabel(t('Child Content Headline Size'))
