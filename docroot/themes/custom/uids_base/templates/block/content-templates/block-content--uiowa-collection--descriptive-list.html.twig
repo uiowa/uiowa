@@ -26,17 +26,8 @@
 */
 #}
 
-{% if content.field_uiowa_block_headline[0]['#text'] %}
-  {% set headline = {
-    'heading_level' : content.field_uiowa_block_headline[0]['#size'],
-    'heading_class' : 'uiowa-descriptive-list--headline',
-    'heading' : content.field_uiowa_block_headline[0]['#text'],
-  } %}
-  {% include '@uids_base/uids/heading.html.twig' with headline only %}
-{% endif %}
-
 <div class="collection--discriptive-list">
   <dl>
-    {{ content|without('field_uiowa_block_headline') }}
+    {{ content }}
   </dl>
 </div>

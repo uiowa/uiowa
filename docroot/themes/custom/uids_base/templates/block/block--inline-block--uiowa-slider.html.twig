@@ -30,17 +30,9 @@
     'slider',
   ]
 %}
-{% if content.field_uiowa_block_headline[0]['#text'] %}
-  {% set headline = {
-    'heading_level' : content.field_uiowa_block_headline[0]['#size'],
-    'heading_class' : 'uiowa-slider--headline',
-    'heading' : content.field_uiowa_block_headline[0]['#text'],
-  } %}
-  {% include '@uids_base/uids/heading.html.twig' with headline only %}
-{% endif %}
 {{ attach_library('uids_base/slider') }}
 <div{{ attributes.addClass(classes) }}>
   {{ title_prefix }}
   {{ title_suffix }}
-  {{ content|without('field_uiowa_block_headline') }}
+  {{ content }}
 </div>

@@ -34,20 +34,10 @@
 %}
 <div{{ attributes.addClass(classes) }}>
   {{ title_prefix }}
-
-  {% if content.field_uiowa_block_headline[0]['#text'] %}
-    {% set headline = {
-      'heading_level' : content.field_uiowa_block_headline[0]['#size'],
-      'heading_class' : 'uiowa-image-gallery--headline',
-      'heading' : content.field_uiowa_block_headline[0]['#text'],
-    } %}
-    {% include '@uids_base/uids/heading.html.twig' with headline only %}
-  {% endif %}
-  
   {{ title_suffix }}
   <div class="uiowa-image-gallery">
   {% block content %}
-    {{ content|without('field_uiowa_block_headline') }}
+    {{ content }}
   {% endblock %}
   </div>
 </div>

@@ -38,5 +38,12 @@
  */
 #}
 {% for item in items %}
-  {{ item.content }}
+  {% if item.content['#text'] %}
+    {% set headline = {
+      'heading_level' : item.content['#size'] ?: 'h2',
+      'heading_class' : item.content['#hidden'] ? 'sr-only' : '',
+      'heading' : item.content['#text'] ?: '',
+    } %}
+    {% include '@uids_base/uids/heading.html.twig' with headline only %}
+  {% endif %}
 {% endfor %}
