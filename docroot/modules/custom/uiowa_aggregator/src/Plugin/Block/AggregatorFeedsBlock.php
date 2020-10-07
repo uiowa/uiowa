@@ -163,7 +163,9 @@ class AggregatorFeedsBlock extends BlockBase implements ContainerFactoryPluginIn
 
     if (!empty($title)) {
       $build['title'] = [
-        '#markup' => $this->t($title),
+        '#markup' => $this->t('@title', [
+          '@title' => $title,
+        ]),
         '#prefix' => '<h2 class="uiowa-aggregator-title">',
         '#suffix' => '</h2>',
       ];

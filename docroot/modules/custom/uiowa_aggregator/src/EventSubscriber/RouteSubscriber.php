@@ -9,6 +9,7 @@ use Symfony\Component\Routing\RouteCollection;
  * Disable access to OPML.
  */
 class RouteSubscriber extends RouteSubscriberBase {
+
   /**
    * {@inheritdoc}
    */
