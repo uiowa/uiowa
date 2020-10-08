@@ -34,22 +34,6 @@
     }
   }
 
-  // Set layout text width for onecol containers only excluding the rule below
-  &:not([class*="banner--horizontal-left"]) {
-    .banner__text {
-      @include breakpoint(sm) {
-        width: 100%;
-      }
-
-      @include breakpoint(menu) {
-        width: 80%;
-      }
-
-      @include breakpoint(container) {
-        width: 60%;
-      }
-    }
-  }
 
   // Override background color if button is within a gold container
   &.bg-pattern--brain-reversed,
@@ -65,6 +49,35 @@
     }
   }
 }
+
+.layout--onecol,
+.layout--twocol--75-25 .layout__region--first,
+.layout--twocol--25-75 .layout__region--second,
+.layout--twocol--67-33 .layout__region--first,
+.layout--twocol--33-67 .layout__region--second,
+.layout--twocol--50-50 {
+  .banner {
+
+    // Set layout text width for onecol containers only excluding the rule below
+    &:not([class*="banner--horizontal-left"]) {
+      .banner__text {
+        @include breakpoint(sm) {
+          width: 100%;
+        }
+
+        @include breakpoint(menu) {
+          width: 80%;
+        }
+
+        @include breakpoint(container) {
+          width: 60%;
+        }
+      }
+    }
+  }
+}
+
+
 
 // Layout specific sizing overrides
 .layout--threecol,
@@ -158,6 +171,7 @@
     &.banner--gradient-light {
       &:after {
         background: rgba(255, 255, 255, .7);
+
         @include breakpoint(container) {
           background: linear-gradient(90deg, #fff 1%, hsla(0, 0%, 100%, .92) 32%, hsla(0, 0%, 100%, 0));
         }
@@ -183,6 +197,7 @@
     &.banner--gradient-light {
       &:after {
         background: rgba(255, 255, 255, .7);
+
         @include breakpoint(container) {
           background: linear-gradient(180deg, transparent 0, hsla(0, 0%, 100%, .9) 55%);
         }
