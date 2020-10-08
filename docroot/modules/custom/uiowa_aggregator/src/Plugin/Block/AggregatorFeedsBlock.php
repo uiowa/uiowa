@@ -162,15 +162,7 @@ class AggregatorFeedsBlock extends BlockBase implements ContainerFactoryPluginIn
       ->sort('iid', 'DESC')
       ->execute();
 
-    $build = [
-      '#type' => 'container',
-      '#attributes' => [
-        'class' => [
-          'aggregator-wrapper',
-          'uiowa-aggregator',
-        ],
-      ],
-    ];
+    $build = [];
 
     if (!empty($title)) {
       $build['title'] = [
@@ -182,12 +174,22 @@ class AggregatorFeedsBlock extends BlockBase implements ContainerFactoryPluginIn
       ];
     }
 
+    $build['aggregator'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => [
+          'aggregator-wrapper',
+          'uiowa-aggregator',
+        ],
+      ],
+    ];
+
     if ($result) {
-      $build['feed_source'] = ['#markup' => ''];
+      $build['aggregator']['feed_source'] = ['#markup' => ''];
       $items = $this->itemStorage->loadMultiple($result);
 
       if ($items) {
-        $build['items'] = $this->entityTypeManager->getViewBuilder('aggregator_item')->viewMultiple($items, 'default');
+        $build['aggregator']['items'] = $this->entityTypeManager->getViewBuilder('aggregator_item')->viewMultiple($items, 'default');
       }
     }
     else {
