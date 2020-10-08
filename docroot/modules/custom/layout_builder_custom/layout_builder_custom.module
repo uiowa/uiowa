@@ -58,6 +58,13 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         'headline_type',
       ];
 
+      $remove_none = [
+        'banner_height',
+        'banner_type',
+        'banner_gradient',
+        'headline_type',
+      ];
+
       // Loop through layout builder style groups.
       $groups = LayoutBuilderStyleGroups::getGroups();
 
@@ -83,11 +90,14 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             ],
           ];
 
-          foreach ($single_select_options as $option) {
+          if (in_array($group, $single_select_options)) {
             // Make the background option single select only.
-            if ($group === $option) {
-              $form[$lbs]['#multiple'] = FALSE;
-            }
+            $form[$lbs]['#multiple'] = FALSE;
+          }
+
+          if (in_array($group, $remove_none)) {
+            // Make the option required.
+            unset($form[$lbs]['#empty_option']);
           }
         }
       }
