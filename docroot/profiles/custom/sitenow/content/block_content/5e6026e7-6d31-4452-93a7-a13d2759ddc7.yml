@@ -1,0 +1,35 @@
+_meta:
+  version: '1.0'
+  entity_type: block_content
+  uuid: 5e6026e7-6d31-4452-93a7-a13d2759ddc7
+  bundle: uiowa_card
+  default_langcode: en
+  depends:
+    99436d77-db6b-43b8-8e04-ea2f0e62b590: media
+    f44a17cb-a187-4286-ad9f-aae44a8e9f85: node
+default:
+  status:
+    -
+      value: true
+  reusable:
+    -
+      value: false
+  revision_translation_affected:
+    -
+      value: true
+  field_uiowa_card_excerpt:
+    -
+      value: "<p>You can also stack cards vertically, which can be helpful when linking to child pages within a section of your site.&nbsp;</p>\r\n"
+      format: minimal
+  field_uiowa_card_image:
+    -
+      entity: 99436d77-db6b-43b8-8e04-ea2f0e62b590
+  field_uiowa_card_link:
+    -
+      target_uuid: f44a17cb-a187-4286-ad9f-aae44a8e9f85
+      title: 'Go to page'
+      options: {  }
+  field_uiowa_card_title:
+    -
+      size: h2
+      text: 'Horizontal variant'
