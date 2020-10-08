@@ -10,6 +10,7 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
+use Drupal\media\Entity\Media;
 use Drupal\node\NodeInterface;
 
 /**
@@ -489,17 +490,15 @@ function uids_base_preprocess_aggregator_item(&$variables) {
 
     /** @var Drupal\aggregator\Entity\Feed $feed */
     $feed = \Drupal::entityTypeManager()->getStorage('aggregator_feed')->load($item->getFeedId());
-    $image = $feed->getImage();
+    $mid = $feed->get('field_aggregator_feed_image')->getString();
 
-    if ($image) {
-      $variables['feed_image'] = [
-        '#type' => 'container',
-        '#attributes' => [
-          'class' => [
-            'channel-image-wrapper',
-          ],
-        ],
-        'channel-image' => [
+    // A local feed image should take precedence.
+    if ($media = Media::load($mid) ) {
+      $variables['feed_image'] = \Drupal::entityTypeManager()->getViewBuilder('media')->view($media);
+    }
+    else {
+      if ($image = $feed->getImage()) {
+        $variables['feed_image'] = [
           '#theme' => 'imagecache_external_responsive',
           '#uri' => $image,
           '#responsive_image_style_id' => 'small__square',
@@ -507,11 +506,11 @@ function uids_base_preprocess_aggregator_item(&$variables) {
             'data-lazy' => TRUE,
             'alt' => t('@title feed image', ['@title' => $feed->get('title')->getString()]),
             'class' => [
-              'channel-image',
+              'feed-image',
             ],
           ],
-        ],
-      ];
+        ];
+      }
     }
   }
 }
