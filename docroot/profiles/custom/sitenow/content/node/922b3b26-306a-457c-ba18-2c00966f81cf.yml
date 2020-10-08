@@ -5,6 +5,7 @@ _meta:
   bundle: page
   default_langcode: en
   depends:
+    e4f9470e-e4e3-4a32-b9e2-930ea6475859: user
     2af0cb3a-4444-4062-b36f-33e43464e428: block_content
     864b5f82-0037-4e9b-8c8c-b63315c34741: block_content
     4bac5ebc-8bf1-4cfa-91b1-de19cd8b63e3: block_content
@@ -12,7 +13,7 @@ _meta:
 default:
   revision_uid:
     -
-      target_id: 1
+      entity: e4f9470e-e4e3-4a32-b9e2-930ea6475859
   status:
     -
       value: true
@@ -149,24 +150,6 @@ default:
             - ''
         components:
           -
-            uuid: e6fa78b4-cacc-4d27-baa3-f29dde0b845b
-            region: content
-            configuration:
-              id: 'field_block:node:page:body'
-              label: Body
-              provider: layout_builder
-              label_display: '0'
-              formatter:
-                label: hidden
-                type: text_default
-                settings: {  }
-                third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-            additional: {  }
-            weight: 1
-          -
             uuid: 4b6984f4-54c8-4f9f-b638-0e816fe87b52
             region: content
             configuration:
@@ -175,7 +158,7 @@ default:
               provider: layout_builder
               label_display: null
               view_mode: full
-              block_revision_id: '8'
+              block_revision_id: '3006'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_text_area
@@ -184,7 +167,7 @@ default:
               layout_builder_styles_style:
                 - ''
               target_uuid: 2af0cb3a-4444-4062-b36f-33e43464e428
-            weight: 2
+            weight: 0
         third_party_settings: {  }
     -
       section:
@@ -205,7 +188,7 @@ default:
               provider: layout_builder
               label_display: null
               view_mode: full
-              block_revision_id: '20'
+              block_revision_id: '3011'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_card
@@ -225,7 +208,7 @@ default:
               provider: layout_builder
               label_display: null
               view_mode: full
-              block_revision_id: '18'
+              block_revision_id: '3076'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_card
@@ -245,7 +228,7 @@ default:
               provider: layout_builder
               label_display: null
               view_mode: full
-              block_revision_id: '17'
+              block_revision_id: '3021'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_card
@@ -256,4 +239,49 @@ default:
                 block_card_style_border: block_card_style_border
               target_uuid: 2f6d0aa0-10ad-4d8a-af85-a74c1f9ef05a
             weight: 0
+        third_party_settings: {  }
+    -
+      section:
+        layout_id: layout_page
+        layout_settings:
+          label: Content
+        components:
+          -
+            uuid: c8d974cb-667f-4e0d-8716-d2a77004e0e1
+            region: sidebar
+            configuration:
+              id: 'menu_block:main'
+              label: 'Main navigation'
+              provider: menu_block
+              label_display: '0'
+              follow: 1
+              follow_parent: '0'
+              level: 2
+              depth: 0
+              expand: 0
+              parent: 'main:'
+              suggestion: main
+              context_mapping: {  }
+            additional:
+              layout_builder_styles_style:
+                block_menu_vertical: block_menu_vertical
+            weight: 0
+          -
+            uuid: e6fa78b4-cacc-4d27-baa3-f29dde0b845b
+            region: content
+            configuration:
+              id: 'field_block:node:page:body'
+              label: Body
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: hidden
+                type: text_default
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: -9
         third_party_settings: {  }
