@@ -2,22 +2,32 @@ uuid: 79316912-53d7-4261-b5f8-baff3afb7346
 langcode: en
 status: true
 dependencies:
+  config:
+    - field.field.aggregator_feed.aggregator_feed.field_aggregator_feed_image
   module:
     - aggregator
+    - media_library
 id: aggregator_feed.aggregator_feed.default
 targetEntityType: aggregator_feed
 bundle: aggregator_feed
 mode: default
 content:
+  field_aggregator_feed_image:
+    type: media_library_widget
+    weight: 2
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+    region: content
   refresh:
     type: options_select
-    weight: -2
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
   title:
     type: string_textfield
-    weight: -5
+    weight: 0
     region: content
     settings:
       size: 60
@@ -25,7 +35,7 @@ content:
     third_party_settings: {  }
   url:
     type: uri
-    weight: -3
+    weight: 1
     region: content
     settings:
       size: 60

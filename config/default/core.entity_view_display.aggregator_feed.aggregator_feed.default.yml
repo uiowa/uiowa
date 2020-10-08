@@ -2,6 +2,8 @@ uuid: 235ad150-3f8a-4365-b352-85a1376fe516
 langcode: en
 status: true
 dependencies:
+  config:
+    - field.field.aggregator_feed.aggregator_feed.field_aggregator_feed_image
   module:
     - aggregator
 _core:
@@ -42,6 +44,7 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_aggregator_feed_image: true
   link: true
   more_link: true
   search_api_excerpt: true
