@@ -54,6 +54,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         'background',
         'banner_height',
         'banner_type',
+        'banner_gradient',
         'headline_type',
       ];
 
@@ -129,6 +130,11 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           // Default is medium.
           if (isset($form['layout_builder_style_banner_height'])) {
             $form['layout_builder_style_banner_height']['#default_value'] = ['banner_medium'];
+          }
+
+          // Default is dark gradient.
+          if (isset($form['layout_builder_style_banner_gradient'])) {
+            $form['layout_builder_style_banner_gradient']['#default_value'] = ['banner_gradient_dark'];
           }
 
           // Default is bold serif.
