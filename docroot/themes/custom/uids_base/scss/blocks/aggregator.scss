@@ -14,8 +14,8 @@
   .events-card__row {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
     align-content: flex-start;
+    flex-wrap: nowrap;
   }
 
   .events-card {
@@ -49,6 +49,8 @@
     display: block;
     width: 50%;
     margin: 0 auto;
+    flex-basis: 100%;
+    flex: none;
   }
 
   .events-card__body {
