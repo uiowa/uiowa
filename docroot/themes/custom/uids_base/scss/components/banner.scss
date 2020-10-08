@@ -145,74 +145,19 @@
   }
 }
 
-// Gradient overlays for onecol and twocol layouts only, solid overlays will appear for three and fourcol layouts
-.layout--onecol,
-.layout--twocol--75-25 .layout__region--first,
-.layout--twocol--25-75 .layout__region--second,
-.layout--twocol--67-33 .layout__region--first,
-.layout--twocol--33-67 .layout__region--second,
-.layout--twocol--50-50 {
-  .banner {
-    &--gradient-center-left {
+// Gradient overlays
+.banner {
+  &--gradient-left {
 
-      &:after {
-        @include breakpoint(menu) {
-          background: linear-gradient(90deg, rgba(0, 0, 0, .86) 0, rgba(0, 0, 0, .23) 65%, transparent);
-        }
-      }
-
-      &[class*="bg-"]:after {
-        background: none;
-      }
-    }
-
-    &--gradient-center {
-
-      &:after {
-        @include breakpoint(container) {
-          background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 70%);
-        }
-      }
-
-      &[class*="bg-"]:after {
-        background: none;
-      }
-    }
-
-    &--solid-opacity {
-
-      &:after {
-        @include breakpoint(container) {
-          background: rgba(0, 0, 0, .5);
-        }
-      }
-
-      &[class*="bg-"]:after {
-        background: none;
-      }
-    }
-
-    &--solid-opacity-reversed {
-
-      &:after {
-        @include breakpoint(container) {
-          background: rgba(255, 255, 255, .1);
-        }
-      }
-
-      &[class*="bg-"]:after {
-        background: none;
-      }
-    }
-
-    &--gradient-left:after {
+    &:after {
       @include breakpoint(container) {
         background: linear-gradient(90deg, rgba(0, 0, 0, .86) 0, rgba(0, 0, 0, .23) 65%, transparent);
       }
     }
 
-    &--gradient-left-reversed {
+    &.banner--gradient-light {
       &:after {
+        background: rgba(255, 255, 255, .7);
         @include breakpoint(container) {
           background: linear-gradient(90deg, #fff 1%, hsla(0, 0%, 100%, .92) 32%, hsla(0, 0%, 100%, 0));
         }
@@ -222,19 +167,24 @@
         background: none;
       }
     }
+
+    &[class*="bg-"]:after {
+      background: none;
+    }
   }
-}
 
-.layout--threecol,
-.layout--fourcol,
-.layout--twocol {
-  .banner {
+  &--gradient-bottom {
+    &:after {
+      @include breakpoint(container) {
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 70%);
+      }
+    }
 
-    // White opacity overlay set as default if reversed gradient is used within smaller columns
-    &--gradient-left-reversed {
+    &.banner--gradient-light {
       &:after {
-        @include breakpoint(sm) {
-          background: rgba(255, 255, 255, .7);
+        background: rgba(255, 255, 255, .7);
+        @include breakpoint(container) {
+          background: linear-gradient(180deg, transparent 0, hsla(0, 0%, 100%, .9) 55%);
         }
       }
 
@@ -244,6 +194,7 @@
     }
   }
 }
+
 
 // Remove contextual position for logged in view of banner image
 .banner__image {
