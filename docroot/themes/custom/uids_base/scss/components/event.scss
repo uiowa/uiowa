@@ -190,7 +190,8 @@
     }
   }
 
-  &.hide-descriptions {
+  &.hide-descriptions,
+  .paragraph--type--events.hide-descriptions & {
     .events-card {
       &__description {
         display: none;
@@ -207,12 +208,49 @@
     }
   }
 
-  &.hide-images .events-card__image {
+  &.hide-images .events-card__image,
+  .paragraph--type--events.hide-images & .events-card__image {
     display: none;
   }
 
   &.hide-details .events-card__details {
     display: none;
+  }
+
+  .paragraph--type--events.grid & {
+    .events-card {
+      &__row {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      &__image {
+        max-width: 165px;
+        margin: 0;
+      }
+
+      &__body {
+        text-align: center;
+      }
+    }
+  }
+
+  .paragraph--type--events.masonry & {
+.events-card {
+      &__row {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      &__image {
+        max-width: 165px;
+        margin: 0;
+      }
+
+      &__body {
+        text-align: center;
+      }
+    }
   }
 }
 
