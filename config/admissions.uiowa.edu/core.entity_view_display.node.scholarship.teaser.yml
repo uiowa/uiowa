@@ -1,0 +1,31 @@
+uuid: 58c70f09-6246-4e6d-a29d-8c788b7567df
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.scholarship.body
+    - node.type.scholarship
+  module:
+    - text
+    - user
+id: node.scholarship.teaser
+targetEntityType: node
+bundle: scholarship
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  search_api_excerpt: true

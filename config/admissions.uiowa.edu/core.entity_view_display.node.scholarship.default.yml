@@ -1,0 +1,29 @@
+uuid: 5b8e21c2-9f34-4bf4-98b9-e0d7597a0d11
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.scholarship.body
+    - node.type.scholarship
+  module:
+    - text
+    - user
+id: node.scholarship.default
+targetEntityType: node
+bundle: scholarship
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 101
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  search_api_excerpt: true
