@@ -19,43 +19,37 @@
  * @see template_preprocess_aggregator_item()
  */
 #}
-{{ attach_library('uids_base/event') }}
+{%
+  set classes = [
+  'aggregator-item',
+]
+%}
 
-<article{{attributes.addClass('aggregator-item events-card events-card__row')}}>
+{{ attach_library('uids_base/events') }}
 
-  {% if feed_image %}
-		<div class="events-card__image">
-			{{ feed_image }}
-		</div>
-	{% endif %}
+{# Set the event icon #}
+{% set event_icon = '<span class="fas fa-user"></span>' %}
 
-  {{ title_prefix }}
+{% set event_block = {
+  'attributes': attributes.addClass(classes),
+  'event_image': feed_image|render,
+  'event_title': title|render,
+  'title_prefix': title_prefix,
+  'title_suffix': title_suffix,
+  'event_url': url,
+  'event_date': content.timestamp,
+  'heading_level': 'h3',
+  'event_icon': event_icon|trans,
+  'event_location': content.author|render,
+  'event_description': content.description,
+} %}
 
-	<div class="events-card__body">
+{% embed '@uids_base/uids/event.html.twig' with event_block only %}
 
-    {% if title %}
-			<h3 class="events-card__title">
-				<a href="{{ url }}">{{ title }}</a>
-			</h3>
-    {% endif %}
-
+	{% block heading %}
+		{{ title_prefix }}
+		{{ parent() }}
 		{{ title_suffix }}
+	{% endblock %}
 
-		<div class="events-card__details">
-			<div class="events-card__date">
-        {{ content.timestamp }}
-      </div>
-			|
-			<div class="events-card__label">
-				<i class="fas fa-user"></i>
-        {{ content.author }}
-      </div>
-
-			<div class="events__description">
-				{{ content.description }}
-			</div>
-		</div>
-
-	</div>
-
-</article>
+{% endembed %}
