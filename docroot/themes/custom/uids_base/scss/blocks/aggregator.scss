@@ -1,73 +1,14 @@
 @import "assets/scss/_variables.scss";
 @import "assets/scss/_utilities.scss";
 
-.block-uiowa-aggregator-feeds.hide-images {
-  .events-card__image {
-    display: none;
-  }
-}
-
-.uiowa-aggregator {
-  padding: 0;
-  display: flex;
-
-  .events-card__row {
-    display: flex;
-    flex-direction: row;
-    align-content: flex-start;
-    flex-wrap: nowrap;
+.block-uiowa-aggregator-feeds {
+  .screen-reader-text {
+    @include element-invisible;
   }
 
-  .events-card {
-    position: relative;
-    transition: transform .35s, z-index .5s;
-    display: flex;
-    flex-direction: column;
-    flex: 1 1 0%;
-  }
-
-  .events__description {
-    @include card-paragraph;
-    position: relative;
-    padding-top: 40px;
-
-    &:before {
-      position: absolute;
-      content: "";
-      height: 6px;
-      top: 18px;
-      margin: 0 auto;
-      left: 0;
-      right: 0;
-      width: 35%;
-      background: #ffcd00;
-      transition: .5s;
+  .hide-images {
+    .events-card__image {
+      display: none;
     }
-  }
-
-  .events-card__image {
-    display: block;
-    width: 50%;
-    margin: 0 auto;
-    flex-basis: 100%;
-    flex: none;
-  }
-
-  .events-card__body {
-    text-align: center;
-  }
-
-  .events-card__label {
-    display: inline-block;
-    padding-left: 35px;
-  }
-
-  .events-card__date {
-    display: inline-block;
-    padding-right: 10px;
-  }
-
-  .events-card__row .svg-inline--fa {
-    margin-left: -38px;
   }
 }
