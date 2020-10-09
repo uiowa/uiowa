@@ -1,0 +1,58 @@
+{{ attach_library('uids_base/event') }}
+{% set attributes = attributes ?: create_attribute() %}
+
+{% block content %}
+
+  <div class="events-card events-card__row {{ attributes ? attributes.class }}" {{ attributes ? attributes|without('class') }}>
+
+    {{ title_prefix }}
+    {{ title_suffix }}
+
+    {% if event_image %}
+      <div class="events-card__image">
+        {{ event_image }}
+      </div>
+    {% endif %}
+
+    <div class="events-card__body">
+
+      {% block heading %}
+        <div>
+          {% if event_title is not empty %}
+            {% include '@uids_base/uids/heading.html.twig' with {
+              'heading_level' : heading_level ?: 'h2',
+              'heading_class' : 'events-card__title',
+              'heading' : event_title,
+              'heading_url' : event_url,
+            } only %}
+          {% endif %}
+        </div>
+      {% endblock %}
+
+      <div class="events-card__details">
+
+        {% if event_date is not empty %}
+          <div class="events-card__date">
+            {{ event_date }}
+          </div>
+        {% endif %}
+
+        {% if event_location is not empty %}
+          <div class="events-card__label">
+            {{ event_icon }}
+            {{ event_location }}
+          </div>
+        {% endif %}
+        {% if event_description is not empty %}
+          <div class="events-card__description">
+            {{ event_description }}
+          </div>
+        {% endif %}
+
+      </div>
+
+    </div>
+  </div>
+
+{% endblock %}
+
