@@ -1,21 +1,15 @@
-uuid: 4220652e-4625-4224-a70b-d7b1b1298755
+uuid: e8941e11-c685-4bc2-bae7-f1948cee87ee
 langcode: en
 status: true
 dependencies:
   module:
     - sitenow
-id: content-add
-label: 'Adding Content'
+id: content-edit
+label: 'Editing Content'
 module: sitenow
 routes:
   -
-    route_name: node.add
-    route_params:
-      node_type: page
-  -
     route_name: entity.node.edit_form
-    route_params:
-      node_type: page
 tips:
   page:
     id: page
@@ -50,8 +44,8 @@ tips:
     weight: 3
     attributes:
       data-id: edit-meta-published
-    body: '<p>There are a lot of optional advanced settings for the page tucked away here. You will use this part when dealing with menu placement, the URL path of the page, relationships and custom SEO settings.</p><p>Click on the section titles to expand them and see what they offer.</p>'
-    location: left
+    body: '<p>There are a lot of optional advanced settings for the page tucked away here. You will use this part when dealing with menu placement, URL path, custom SEO settings.</p><p>Click on the section titles to expand them and see what they offer.</p>'
+    location: top
   content-blocks-actions:
     id: content-blocks-actions
     plugin: text
@@ -68,7 +62,7 @@ tips:
     weight: 5
     attributes:
       data-id: edit-node-teaser
-    body: '<p>One important advanced setting is the Content Description. Type a short summary of your content here. It will be used if there are any displays around the site that reference this content. By default, this is also used by search engines when they crawl and index your site.</p><p>To learn more about Search Engine Optimization (SEO) for your site, <a href="https://sitenow.uiowa.edu/node/81">view our documentation section about SEO</a>.</p>'
+    body: '<p>Type a short summary of your content here. It will be used if there are any displays around the site that reference this content. By default, this is also used by search engines when they crawl and index your site.</p><p>To learn more about Search Engine Optimization (SEO) for your site, <a href="https://sitenow.uiowa.edu/node/81">view our SEO documentation</a>.</p>'
     location: right
   page-image-entity:
     id: page-image-entity
@@ -77,7 +71,7 @@ tips:
     weight: 6
     attributes:
       data-id: edit-node-image
-    body: '<p>A featured image can optionally be added to a page. Select ''Browse media'' or ''Add media'' to add an image from your computer or from your existing media from the Media library.</p><p>Additionally, add a caption to give the user more information on the picture.</p>'
+    body: '<p>A featured image can optionally be added to a page. Select Browse media or Add media to add an image from your computer or from your existing media from the Media library.</p><p>Additionally, add a caption to give the user more information on the picture.</p>'
     location: left
   page-relationships:
     id: page-relationships
@@ -196,8 +190,8 @@ tips:
       data-id: edit-body-wrapper
     body: '<p>You will have access to the Layout Builder blocks once the page is saved with a Title. </p>'
     location: top
-  content-add-next-step:
-    id: content-add-next-step
+  lb-next-step:
+    id: lb-next-step
     plugin: text
     label: 'That''s It!'
     weight: 20
