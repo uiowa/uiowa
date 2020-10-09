@@ -21,9 +21,7 @@ function uiowa_aggregator_form_aggregator_admin_form_alter(&$form, FormStateInte
     $form['aggregator_allowed_html_tags']['#disabled'] = TRUE;
     $form['aggregator_allowed_html_tags']['#description'] .= t('&nbsp;<em>This field has been disabled for security reasons.</em>');
 
-    // Remove one hour and never from aggregator cleanup options since cron
-    // runs every three hours.
-    unset($form['processors']['aggregator']['aggregator_clear']['#options'][3600]);
+    // Remove never from aggregator cleanup options as that table could get big.
     unset($form['processors']['aggregator']['aggregator_clear']['#options'][0]);
     $form['processors']['aggregator']['aggregator_clear']['#description'] = t('<em>Items cannot be kept indefinitely for performance reasons.</em>');
   }
@@ -39,10 +37,12 @@ function uiowa_aggregator_form_aggregator_feed_form_alter(&$form, FormStateInter
   /** @var Drupal\Core\Access\AccessResultInterface $is_admin */
   $access = $check->access(\Drupal::currentUser()->getAccount());
 
-  // Set the minimum feed fresh to 3 hours.
+  // Set the minimum feed refresh to match our hourly cron job so that
+  // webmasters aren't confused as to why its not refreshing sooner. Admins can
+  // set this to whatever assuming they set up a custom job to run more often.
   if ($access->isForbidden()) {
     foreach ($form['refresh']['widget']['#options'] as $key => $value) {
-      if ($key !== 0 && $key < 10800) {
+      if ($key !== 0 && $key < 3600) {
         unset($form['refresh']['widget']['#options'][$key]);
       }
     }
