@@ -494,7 +494,7 @@ function uids_base_preprocess_aggregator_item(&$variables) {
 
     // A local feed image should take precedence.
     if ($media = Media::load($mid)) {
-      $variables['feed_image'] = \Drupal::entityTypeManager()->getViewBuilder('media')->view($media);
+      $variables['feed_image'] = \Drupal::entityTypeManager()->getViewBuilder('media')->view($media, 'small__square');
     }
     else {
       if ($image = $feed->getImage()) {
