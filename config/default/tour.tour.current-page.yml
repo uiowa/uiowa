@@ -1,0 +1,56 @@
+uuid: 480795dd-3767-408c-bd7c-a8f175208a7f
+langcode: en
+status: true
+dependencies:
+  module:
+    - sitenow
+id: current-page
+label: 'Current Page'
+module: sitenow
+routes:
+  -
+    route_name: entity.node.canonical
+tips:
+  main-logo:
+    id: main-logo
+    plugin: text
+    label: 'Site Information'
+    attributes:
+      data-class: site-name
+    body: '<p>You can change your site name and menu links <a href="/admin/config/system/site-information?tour=1">here</a></p>'
+    weight: 0
+    location: top
+  main-menu-field:
+    id: main-menu-field
+    plugin: text
+    label: 'Main Menu'
+    attributes:
+      data-id: block-main-navigation-superfish-horizontal
+    body: '<p>The main menu displays above every page. Learn how to configure the main menu <a href="/admin/structure/menu/manage/main?tour=1">here</a></p>'
+    weight: 1
+    location: right
+  moderation-field:
+    id: moderation-field
+    plugin: text
+    label: 'Moderation State'
+    attributes:
+      data-id: content-moderation-entity-moderation-form
+    body: '<p>You can save the page unpublished as a draft, select that it''s ready for review or publish the page here.</p><p>Content automatically saves as a draft which will not be visible to site visitors. Site visitors will only see content marked as published.</p>'
+    weight: 2
+    location: bottom
+  social-footer:
+    id: social-footer
+    plugin: text
+    label: 'Footer'
+    attributes:
+      data-class: footer
+    body: '<p>Depending on your assigned role, you can configure the <a href="/admin/structure/menu/manage/footer-primary?tour">primary footer menu links</a> in the left column, the <a href="/admin/structure/menu/manage/footer-secondary">secondary footer links</a> in the middle column, and the <a href="/admin/structure/menu/manage/footer-tertiary?tour">tertiary menu links</a> in the right column of the footer.</p>'
+    weight: 3
+    location: top
+  current-docs:
+    id: current-docs
+    plugin: text
+    label: 'Documentation'
+    body: '<p>Be sure to checkout our <a href="https://sitenow.uiowa.edu/node/266">SiteNow Documentation!</a></p>'
+    weight: 4
+    location: top

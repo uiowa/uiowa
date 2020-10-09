@@ -26,23 +26,32 @@ tips:
     body: '<p>This is will take you to the media (files/images) overview which is similar to this page.</p><p><a_href="/media/add?tour=1">Click here for our guided Media tour</a></p>'
     weight: 1
     attributes:
-      data-class: 'tabs.primary li:nth-child(2)'
-    location: bottom
+      data-class: tabs--primary
+    location: right
+  moderated-content-types:
+    id: moderated-content-types
+    plugin: text
+    label: 'Moderated Content'
+    body: '<p>This tab will show all of the content that isn''t published to the public. For instance, it will show content in the "Draft" or "Review" state.</p>'
+    weight: 2
+    attributes:
+      data-class: tabs--secondary
+    location: right
   add:
     id: add
     plugin: text
     label: 'Add Content'
     body: '<p>When it is time to add new content to your site, this will guide you in doing so.</p>'
-    weight: 2
+    weight: 3
     attributes:
-      data-class: action-links
+      data-id: block-claro-local-actions
     location: bottom
   filters:
     id: filters
     plugin: text
     label: Filters
     body: '<p>Filters can be used to search the content based on author, type, title and other parameters.</p>'
-    weight: 3
+    weight: 4
     attributes:
       data-id: views-exposed-form-content-page-1
     location: bottom
@@ -51,7 +60,7 @@ tips:
     plugin: text
     label: Actions
     body: '<p>They let you execute actions on multiple content items at once. Check which actions are offered in the drop-down.</p>'
-    weight: 4
+    weight: 5
     attributes:
       data-id: edit-node-bulk-form--2
     location: top
@@ -60,7 +69,7 @@ tips:
     plugin: text
     label: Actions
     body: '<p>In order to define which items to execute an action on use the checkboxes. The one in the header row will select all items on a page and the ones in the rows below will select corresponding individual items.</p>'
-    weight: 5
+    weight: 6
     attributes:
       data-class: 'views-table .select-all'
     location: right
@@ -69,7 +78,7 @@ tips:
     plugin: text
     label: Sorting
     body: '<p>Click on the links in the header row to sort the list. Arrow next to the active sort link indicates the sort direction (ascending or descending).</p>'
-    weight: 6
+    weight: 7
     attributes:
       data-class: 'views-table #view-changed-table-column'
     location: top
@@ -78,7 +87,7 @@ tips:
     plugin: text
     label: 'Content operations'
     body: '<p>Use content operations dropbutton to edit or delete a given content item.</p>'
-    weight: 7
+    weight: 8
     attributes:
       data-class: 'views-table tr:nth-child(1) .views-field-operations'
     location: left
@@ -87,4 +96,4 @@ tips:
     plugin: text
     label: 'Where to next?'
     body: '<p><a href="/node/add/page?tour=1" class="button button--primary">Page Content</a></p><p><a href="/media/add?tour=1" class="button button--primary">Adding Media</a></p>'
-    weight: 8
+    weight: 9
