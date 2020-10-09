@@ -72,6 +72,7 @@
         "drupal/address": "^1.7",
         "drupal/administerusersbyrole": "^3.0",
         "drupal/allowed_formats": "^1.1",
+        "drupal/antibot": "^1.4",
         "drupal/better_normalizers": "^1.0@beta",
         "drupal/big_pipe_sessionless": "^1.2",
         "drupal/block_content_permissions": "^1.9",
@@ -83,7 +84,7 @@
         "drupal/core": "^8.9.3",
         "drupal/cshs": "^1.0@beta",
         "drupal/date_recur_modular": "^2.0",
-        "drupal/default_content": "^1.0@alpha",
+        "drupal/default_content": "^2.0",
         "drupal/devel": "^2.1",
         "drupal/diff": "^1.0@RC",
         "drupal/draggableviews": "^1.2",
@@ -147,6 +148,7 @@
         "drupal/stage_file_proxy": "^1.0",
         "drupal/superfish": "^1.2",
         "drupal/swiftmailer": "^1.0@beta",
+        "drupal/theme_permission": "^2.0",
         "drupal/twig_tweak": "^2.4",
         "drupal/upgrade_status": "^2.0",
         "drupal/views_ical": "^1.0@alpha",
@@ -195,7 +197,7 @@
                 "Webpage > SearchAction missing target": "https://www.drupal.org/files/issues/2020-02-17/3055278-7.patch"
             },
             "drupal/default_content": {
-                "Respect revision ids for entity_reference_revisions": "https://www.drupal.org/files/issues/2018-08-06/exported_revision_ids-2989887-6.patch"
+                "Add a Normalizer and Denormalizer to support Layout Builder": "https://www.drupal.org/files/issues/2020-08-24/default_content-add-normalizer-denormalizer-for-layout-builder-3160146-25.patch"
             },
             "drupal/purge": {
                 "Port purge commands to Drush 9": "https://www.drupal.org/files/issues/2921309-17-port-purge-drush-9.patch"
@@ -213,7 +215,8 @@
                 "[PP-1] Reverting entity revisions that contain custom blocks erroneously triggers EntityChangedConstraint": "https://www.drupal.org/files/issues/2019-05-13/3053881-11.patch",
                 "Hidden buttons in off-canvas dialog are not being hidden": "https://www.drupal.org/files/issues/2020-02-28/3070375-4.patch",
                 "Off-canvas style resets are overriding styles (especially SVGs) in Safari resulting in display issues": "https://www.drupal.org/files/issues/2019-05-07/off-canvas-style-resets-2958588-13.patch",
-                "Media viewmode control": "https://www.drupal.org/files/issues/2020-01-31/3097416-ckeditor-view-modes-8.9-combined.patch"
+                "Media viewmode control": "https://www.drupal.org/files/issues/2020-01-31/3097416-ckeditor-view-modes-8.9-combined.patch",
+                "Expose Layout Builder data to REST and JSON:API": "https://www.drupal.org/files/issues/2020-07-07/2942975-116.patch"
             },
             "drupal/layout_builder_styles": {
                 "Section dependency on layout plugin configuration form": "https://www.drupal.org/files/issues/2019-08-23/layout_builder_styles-3062261-%2310.patch",
@@ -228,6 +231,9 @@
             },
             "drupal/media_entity_facebook": {
                 "Allow creation of new Facebook media entities using the Media Browser": "https://www.drupal.org/files/issues/2020-03-31/3120085-media-library-add-5.patch"
+            },
+            "drupal/paragraphs": {
+                "Langcode error when switching away from IEF for paragraphs in LB": "https://www.drupal.org/files/issues/2020-06-25/paragraphs-2901390-51.patch"
             }
         },
         "installer-types": [

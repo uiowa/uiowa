@@ -116,12 +116,3 @@ You can also run blt commands on an Acquia Cloud environment, but you must run t
 BLT projects are designed to instill software development best practices (including git workflows).
 
 Our BLT Developer documentation includes an [example workflow](https://docs.acquia.com/blt/developer/dev-workflow/#workflow-example-local-development).
-
-## Resources
-
-* GitHub - https://github.com/uiowa/uiowa
-* Acquia Cloud
-  * uiowa
-    * https://cloud.acquia.com/app/develop/applications/6bcc006f-9a0e-425e-aba0-198585dd2b56
-  * uiowa01
-    * https://cloud.acquia.com/app/develop/applications/21a2a0ab-b4ed-4ecf-8bd4-9266c70f5ef1

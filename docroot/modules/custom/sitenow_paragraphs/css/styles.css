@@ -33,3 +33,17 @@
     object-position: center;
   }
 }
+
+/* Overrides for IE10 & IE11 */
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  .paragraph--type--section > picture > img {
+    width: auto;
+    height: auto;
+    min-height: 100%;
+    min-width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
