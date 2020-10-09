@@ -20,14 +20,14 @@
 {% endif %}
 
 {% set event_block = {
-	'attributes': attributes.addClass(classes),
-	'event_image': event.image|render,
-	'event_title': event.title|render,
-	'title_prefix': title_prefix,
-	'title_suffix': title_suffix,
-	'event_url': event.url,
-	'event_date': event.date_string,
-	'heading_level': event.heading_size,
+  'attributes': attributes.addClass(classes),
+  'event_image': event.image|render,
+  'event_title': event.title|render,
+  'title_prefix': title_prefix,
+  'title_suffix': title_suffix,
+  'event_url': event.url,
+  'event_date': event.date_string,
+  'heading_level': event.heading_size,
   'event_icon': event_icon|trans ,
   'event_location': event_location|render,
   'event_description': event.description_text,
@@ -35,11 +35,10 @@
 
 {% embed '@uids_base/uids/event.html.twig' with event_block only %}
 
-	{% block heading %}
-		{{ title_prefix }}
-		{{ parent() }}
-		{{ title_suffix }}
-	{% endblock %}
+  {% block heading %}
+    {{ title_prefix }}
+    {{ parent() }}
+    {{ title_suffix }}
+  {% endblock %}
 
 {% endembed %}
-

@@ -2,885 +2,885 @@
 .bg-yellow.has-section-image,
 .paragraph .bg-yellow,
 .paragraph .bg-yellow.has-section-image  {
-    &.paragraph--type--carousel-image,
-    &.paragraph--type--section,
-    &.paragraph--type--blockquote,
-    &.paragraph--type--text,
-    &.paragraph--type--webform,
-    &.paragraph--type--articles,
-    &.paragraph--type--accordion,
-    &.paragraph--type--events {
+  &.paragraph--type--carousel-image,
+  &.paragraph--type--section,
+  &.paragraph--type--blockquote,
+  &.paragraph--type--text,
+  &.paragraph--type--webform,
+  &.paragraph--type--articles,
+  &.paragraph--type--accordion,
+  &.paragraph--type--events {
+    background-color: $primary;
+
+    a.btn-primary {
+      @include bttn--secondary;
+      border: 1px solid $secondary;
+      @include bttn--focus;
+
+      &:after {
         background-color: $primary;
-
-        a.btn-primary {
-            @include bttn--secondary;
-            border: 1px solid $secondary;
-            @include bttn--focus;
-
-            &:after {
-                background-color: $primary;
-            }
-            span {
-              color: $white !important;
-            }
-        }
-
-        a.btn:not(.btn-primary) {
-            @include bttn--secondary;
-            border: 1px solid $secondary;
-            @include bttn--focus;
-
-            &:after {
-                background-color: $primary;
-            }
-            span {
-              color: $white !important;
-            }
-        }
-
-        &.semi-transparent {
-            background-color: rgba(255, 205, 0, 0.8) !important;
-        }
-
-        a:not(.btn):not(.bttn):not(.button) {
-            color: $secondary;
-            text-decoration: underline;
-
-            &:hover,
-            &:focus {
-                text-decoration: none;
-            }
-        }
-
-        .alert a {
-            color: $secondary !important;
-        }
-
-        label {
-            color: $secondary;
-        }
-
-        .uiowa-events {
-            .events-card {
-                &__image img {
-                    background-color: $primary;
-                    border-color: $white;
-                }
-            }
-        }
+      }
+      span {
+        color: $white !important;
+      }
     }
 
-    &.paragraph--type--carousel-image .carousel-caption{
-        color: $secondary;
+    a.btn:not(.btn-primary) {
+      @include bttn--secondary;
+      border: 1px solid $secondary;
+      @include bttn--focus;
 
-        blockquote p {
-            color: $secondary;
-        }
+      &:after {
+        background-color: $primary;
+      }
+      span {
+        color: $white !important;
+      }
     }
 
-    .paragraph--type--carousel-image:not(.bg-yellow):not(.bg-light):not(.bg-dark):not(.bg-black) {
-        a:not(.btn):not(.bttn):not(.button) {
-            color: $primary;
-        }
-
-        blockquote p {
-            color: $white;
-        }
+    &.semi-transparent {
+      background-color: rgba(255, 205, 0, 0.8) !important;
     }
 
-    &.paragraph--type--webform,
-    .paragraph--type--webform {
-        label {
-            color: $secondary;
-        }
+    a:not(.btn):not(.bttn):not(.button) {
+      color: $secondary;
+      text-decoration: underline;
 
-        input[id^='edit-actions-submit'],
-        input#edit-actions-submit {
-            @include bttn--secondary;
-            border: 1px solid $secondary;
-            @include bttn--focus;
-            color: $white !important;
-
-            &:after {
-                background-color: $primary;
-            }
-        }
+      &:hover,
+      &:focus {
+        text-decoration: none;
+      }
     }
 
-    &.paragraph--type--articles,
-    .paragraph--type--articles {
-        &.list {
-            .views-row {
-                background-color: $primary;
-                padding: 0 1.25rem;
-
-                .card {
-                    background-color: $primary;
-                }
-
-                .article-created-date {
-                    color: $secondary;
-                }
-            }
-        }
-
-        .pager {
-            .pager__item {
-                &.is-active {
-                    &>a {
-                        background-color: $secondary;
-                        color: $white;
-
-                        &:hover {
-                            background-color: lighten($secondary, 20%);
-                            color: $white;
-                            cursor: pointer;
-                        }
-                    }
-                }
-
-                &>a:hover {
-                    background-color: lighten($secondary, 20%);
-                    color: $white;
-                }
-            }
-        }
+    .alert a {
+      color: $secondary !important;
     }
 
-    &.paragraph--type--featured-content,
-    .paragraph--type--featured-content {
-        .featured-content-item {
-            padding: .75rem 1.25rem;
-
-            &:first-child {
-                padding-top: 0.75rem;
-            }
-        }
+    label {
+      color: $secondary;
     }
 
-    &.paragraph--type--events.list .card,
-    .paragraph--type--events.list .card {
-        @include breakpoint(menu) {
-            border-bottom: 1px solid #666;
+    .uiowa-events {
+      .events-card {
+        &__image img {
+          background-color: $primary;
+          border-color: $white;
         }
+      }
+    }
+  }
+
+  &.paragraph--type--carousel-image .carousel-caption{
+    color: $secondary;
+
+    blockquote p {
+      color: $secondary;
+    }
+  }
+
+  .paragraph--type--carousel-image:not(.bg-yellow):not(.bg-light):not(.bg-dark):not(.bg-black) {
+    a:not(.btn):not(.bttn):not(.button) {
+      color: $primary;
     }
 
-    .card__author {
-        color: $secondary;
+    blockquote p {
+      color: $white;
+    }
+  }
+
+  &.paragraph--type--webform,
+  .paragraph--type--webform {
+    label {
+      color: $secondary;
     }
 
-    .more-link {
-        .btn-primary {
-            color: $white;
-            background: $secondary;
-        }
+    input[id^='edit-actions-submit'],
+    input#edit-actions-submit {
+      @include bttn--secondary;
+      border: 1px solid $secondary;
+      @include bttn--focus;
+      color: $white !important;
+
+      &:after {
+        background-color: $primary;
+      }
     }
+  }
 
-    &.paragraph--type--events.list .card,
-    .paragraph--type--events.list .card {
-        @include breakpoint(menu) {
-            border-bottom: 1px solid #666;
-        }
-    }
+  &.paragraph--type--articles,
+  .paragraph--type--articles {
+    &.list {
+      .views-row {
+        background-color: $primary;
+        padding: 0 1.25rem;
 
-    &.paragraph--type--articles.list,
-    &.paragraph--type--featured-content.list,
-    .paragraph--type--articles.list,
-    .paragraph--type--featured-content.list {
-        .article-created-date {
-            color: $secondary;
-        }
-    }
-
-    &.paragraph--type--articles.list,
-    &.paragraph--type--people.list,
-    &.paragraph--type--featured-content.list,
-    .paragraph--type--articles.list,
-    .paragraph--type--people.list,
-    .paragraph--type--featured-content.list {
-
-        .card,
-        .node--view-mode-teaser {
-            @include bg-yellow;
-        }
-
-        .views-row {
-            @include bg-yellow;
-
-            a {
-                color: $secondary;
-                text-decoration: underline;
-
-                &:hover,
-                &:focus {
-                text-decoration: none;
-                }
-            }
-        }
-    }
-
-    .paragraph--type--events.list {
         .card {
-            @include bg-yellow;
-
-            a {
-                color: $secondary;
-                text-decoration: underline;
-
-                &:hover,
-                &:focus {
-                text-decoration: none;
-                }
-            }
+          background-color: $primary;
         }
+
+        .article-created-date {
+          color: $secondary;
+        }
+      }
     }
+
+    .pager {
+      .pager__item {
+        &.is-active {
+          &>a {
+            background-color: $secondary;
+            color: $white;
+
+            &:hover {
+              background-color: lighten($secondary, 20%);
+              color: $white;
+              cursor: pointer;
+            }
+          }
+        }
+
+        &>a:hover {
+          background-color: lighten($secondary, 20%);
+          color: $white;
+        }
+      }
+    }
+  }
+
+  &.paragraph--type--featured-content,
+  .paragraph--type--featured-content {
+    .featured-content-item {
+      padding: .75rem 1.25rem;
+
+      &:first-child {
+        padding-top: 0.75rem;
+      }
+    }
+  }
+
+  &.paragraph--type--events.list .card,
+  .paragraph--type--events.list .card {
+    @include breakpoint(menu) {
+      border-bottom: 1px solid #666;
+    }
+  }
+
+  .card__author {
+    color: $secondary;
+  }
+
+  .more-link {
+    .btn-primary {
+      color: $white;
+      background: $secondary;
+    }
+  }
+
+  &.paragraph--type--events.list .card,
+  .paragraph--type--events.list .card {
+    @include breakpoint(menu) {
+      border-bottom: 1px solid #666;
+    }
+  }
+
+  &.paragraph--type--articles.list,
+  &.paragraph--type--featured-content.list,
+  .paragraph--type--articles.list,
+  .paragraph--type--featured-content.list {
+    .article-created-date {
+      color: $secondary;
+    }
+  }
+
+  &.paragraph--type--articles.list,
+  &.paragraph--type--people.list,
+  &.paragraph--type--featured-content.list,
+  .paragraph--type--articles.list,
+  .paragraph--type--people.list,
+  .paragraph--type--featured-content.list {
+
+    .card,
+    .node--view-mode-teaser {
+      @include bg-yellow;
+    }
+
+    .views-row {
+      @include bg-yellow;
+
+      a {
+        color: $secondary;
+        text-decoration: underline;
+
+        &:hover,
+        &:focus {
+          text-decoration: none;
+        }
+      }
+    }
+  }
+
+  .paragraph--type--events.list {
+    .card {
+      @include bg-yellow;
+
+      a {
+        color: $secondary;
+        text-decoration: underline;
+
+        &:hover,
+        &:focus {
+          text-decoration: none;
+        }
+      }
+    }
+  }
 }
 
 .bg-black,
 .bg-black.has-section-image,
 .paragraph .bg-black,
 .paragraph .bg-black.has-section-image  {
-    &.paragraph--type--carousel-image,
-    &.paragraph--type--section,
-    &.paragraph--type--blockquote,
-    &.paragraph--type--text,
-    &.paragraph--type--webform,
-    &.paragraph--type--articles,
-    &.paragraph--type--accordion,
-    &.paragraph--type--events {
+  &.paragraph--type--carousel-image,
+  &.paragraph--type--section,
+  &.paragraph--type--blockquote,
+  &.paragraph--type--text,
+  &.paragraph--type--webform,
+  &.paragraph--type--articles,
+  &.paragraph--type--accordion,
+  &.paragraph--type--events {
+    background-color: $secondary;
+    color: $white;
+
+    a:not(.btn):not(.bttn):not(.button) {
+      color: $primary;
+    }
+
+    a.btn-primary {
+      @include bttn--primary;
+      border: 1px solid $primary;
+      @include bttn--focus;
+
+      &:after {
         background-color: $secondary;
-        color: $white;
-
-        a:not(.btn):not(.bttn):not(.button) {
-            color: $primary;
-        }
-
-        a.btn-primary {
-            @include bttn--primary;
-            border: 1px solid $primary;
-            @include bttn--focus;
-
-            &:after {
-                background-color: $secondary;
-            }
-            span {
-              color: $secondary !important;
-            }
-        }
-
-        a.btn:not(.btn-primary) {
-            @include bttn--primary;
-            border: 1px solid $primary;
-            @include bttn--focus;
-
-            &:after {
-                background-color: $secondary;
-            }
-            span {
-              color: $secondary !important;
-            }
-        }
-
-        .alert a {
-            color: $secondary !important;
-        }
-
-        &.semi-transparent {
-            background-color: rgba(21, 21, 21, 0.8) !important;
-        }
-
-        label {
-            color: $white;
-        }
-
-        .uiowa-events {
-            .events-card {
-                &__image img {
-                    background-color: $secondary;
-                    border-color: $primary;
-                }
-
-                &__date {
-                    color: $primary;
-                }
-
-                &__description,
-                &__title a:not(.btn):not(.bttn):not(.button),
-                &__label {
-                    color: $white;
-                }
-            }
-        }
+      }
+      span {
+        color: $secondary !important;
+      }
     }
 
-    &.paragraph--type--carousel-image .carousel-caption {
-        color: $white;
+    a.btn:not(.btn-primary) {
+      @include bttn--primary;
+      border: 1px solid $primary;
+      @include bttn--focus;
 
-        blockquote p {
-            color: $white;
-        }
+      &:after {
+        background-color: $secondary;
+      }
+      span {
+        color: $secondary !important;
+      }
     }
 
-    &.paragraph--type--webform,
-    .paragraph--type--webform {
-        label {
-            color: $white;
-        }
-
-        input[id^='edit-actions-submit'],
-        input#edit-actions-submit {
-            @include bttn--primary;
-            border: 1px solid $primary;
-            @include bttn--focus;
-            color: $secondary !important;
-
-            &:after {
-                background-color: $secondary;
-            }
-        }
+    .alert a {
+      color: $secondary !important;
     }
 
-    &.paragraph--type--articles,
-    .paragraph--type--articles {
-        &.list {
-            .views-row {
-                background-color: $secondary;
-                padding: 0 1.25rem;
-
-                .article-created-date {
-                    color: $white;
-                }
-
-                a {
-                    color: $primary;
-                }
-
-                .card__body {
-                    color: $white;
-                }
-
-                .card {
-                    background-color: $secondary;
-                }
-            }
-        }
-
-        .pager {
-            .pager__item {
-                &.is-active {
-                    &>a {
-                        color: $white;
-                        background-color: lighten($secondary, 20%);
-
-                        &:hover {
-                            background-color: lighten($secondary, 10%);
-                            cursor: pointer;
-                        }
-                    }
-                }
-
-                &>a:hover {
-                    background-color: lighten($secondary, 10%);
-                    color: $white;
-                }
-            }
-        }
+    &.semi-transparent {
+      background-color: rgba(21, 21, 21, 0.8) !important;
     }
 
-    &.paragraph--type--articles.list,
-    &.paragraph--type--people.list,
-    .paragraph--type--articles.list,
-    .paragraph--type--people.list {
-
-        .card,
-        .views-row {
-            a {
-                color: $primary;
-            }
-        }
+    label {
+      color: $white;
     }
 
-    &.paragraph--type--featured-content,
-    .paragraph--type--featured-content {
-        .featured-content-item {
-            padding: .75rem 1.25rem;
-
-            &:first-child {
-                padding-top: 0.75rem;
-            }
+    .uiowa-events {
+      .events-card {
+        &__image img {
+          background-color: $secondary;
+          border-color: $primary;
         }
+
+        &__date {
+          color: $primary;
+        }
+
+        &__description,
+        &__title a:not(.btn):not(.bttn):not(.button),
+        &__label {
+          color: $white;
+        }
+      }
+    }
+  }
+
+  &.paragraph--type--carousel-image .carousel-caption {
+    color: $white;
+
+    blockquote p {
+      color: $white;
+    }
+  }
+
+  &.paragraph--type--webform,
+  .paragraph--type--webform {
+    label {
+      color: $white;
     }
 
-    &.paragraph--type--events.list,
-    .paragraph--type--events.list {
+    input[id^='edit-actions-submit'],
+    input#edit-actions-submit {
+      @include bttn--primary;
+      border: 1px solid $primary;
+      @include bttn--focus;
+      color: $secondary !important;
+
+      &:after {
+        background-color: $secondary;
+      }
+    }
+  }
+
+  &.paragraph--type--articles,
+  .paragraph--type--articles {
+    &.list {
+      .views-row {
+        background-color: $secondary;
+        padding: 0 1.25rem;
+
+        .article-created-date {
+          color: $white;
+        }
+
+        a {
+          color: $primary;
+        }
+
+        .card__body {
+          color: $white;
+        }
+
         .card {
-            a {
-                color: $primary;
+          background-color: $secondary;
+        }
+      }
+    }
+
+    .pager {
+      .pager__item {
+        &.is-active {
+          &>a {
+            color: $white;
+            background-color: lighten($secondary, 20%);
+
+            &:hover {
+              background-color: lighten($secondary, 10%);
+              cursor: pointer;
             }
+          }
         }
-    }
 
-    &.paragraph--type--featured-content.list,
-    .paragraph--type--featured-content.list {
-
-        .field a,
-        .h5.field,
-        h3 a {
-            color: $primary;
+        &>a:hover {
+          background-color: lighten($secondary, 10%);
+          color: $white;
         }
+      }
     }
+  }
+
+  &.paragraph--type--articles.list,
+  &.paragraph--type--people.list,
+  .paragraph--type--articles.list,
+  .paragraph--type--people.list {
+
+    .card,
+    .views-row {
+      a {
+        color: $primary;
+      }
+    }
+  }
+
+  &.paragraph--type--featured-content,
+  .paragraph--type--featured-content {
+    .featured-content-item {
+      padding: .75rem 1.25rem;
+
+      &:first-child {
+        padding-top: 0.75rem;
+      }
+    }
+  }
+
+  &.paragraph--type--events.list,
+  .paragraph--type--events.list {
+    .card {
+      a {
+        color: $primary;
+      }
+    }
+  }
+
+  &.paragraph--type--featured-content.list,
+  .paragraph--type--featured-content.list {
+
+    .field a,
+    .h5.field,
+    h3 a {
+      color: $primary;
+    }
+  }
 }
 
 .bg-dark,
 .bg-dark.has-section-image,
 .paragraph .bg-dark,
 .paragraph .bg-dark.has-section-image {
-    &.paragraph--type--carousel-image,
-    &.paragraph--type--section,
-    &.paragraph--type--blockquote,
-    &.paragraph--type--text,
-    &.paragraph--type--webform,
-    &.paragraph--type--articles,
-    &.paragraph--type--accordion,
-    &.paragraph--type--events {
-        background-color: $brand-cool-gray;
-        color: $white;
+  &.paragraph--type--carousel-image,
+  &.paragraph--type--section,
+  &.paragraph--type--blockquote,
+  &.paragraph--type--text,
+  &.paragraph--type--webform,
+  &.paragraph--type--articles,
+  &.paragraph--type--accordion,
+  &.paragraph--type--events {
+    background-color: $brand-cool-gray;
+    color: $white;
 
-        a:not(.btn):not(.bttn):not(.button) {
-            color: $white;
+    a:not(.btn):not(.bttn):not(.button) {
+      color: $white;
+    }
+
+    .card__body {
+      a:not(.btn):not(.bttn):not(.button) {
+        color: $secondary;
+        text-decoration: underline;
+
+        &:hover,
+        &:focus {
+          text-decoration: none;
+        }
+      }
+    }
+
+    .alert a {
+      color: $secondary !important;
+    }
+
+    &.semi-transparent {
+      background-color: rgba(52, 58, 64, 0.8) !important;
+    }
+
+    a.btn-primary {
+      @include bttn--primary;
+      border: 1px solid $primary;
+      @include bttn--focus;
+
+      &:after {
+        background-color: $secondary;
+      }
+      span {
+        color: $secondary !important;
+      }
+    }
+
+    a.btn:not(.btn-primary) {
+      @include bttn--secondary;
+      border: 1px solid $secondary;
+      @include bttn--focus;
+      span {
+        color: $white !important;
+      }
+    }
+
+    label {
+      color: $white;
+    }
+
+    .uiowa-events {
+      .events-card {
+        &__image img {
+          background-color: $brand-cool-gray;
+          border-color: $white;
+        }
+
+        &__date {
+          color: $white;
+        }
+
+        &__description,
+        &__title a:not(.btn):not(.bttn):not(.button),
+        &__label {
+          color: $white;
+        }
+      }
+    }
+  }
+
+  &.paragraph--type--carousel-image .carousel-caption {
+    color: $white;
+
+    blockquote p {
+      color: $white;
+    }
+  }
+
+  &.paragraph--type--webform,
+  .paragraph--type--webform {
+    label {
+      color: $white;
+    }
+
+    input[id^='edit-actions-submit'],
+    input#edit-actions-submit {
+      @include bttn--primary;
+      border: 1px solid $primary;
+      @include bttn--focus;
+      color: $secondary !important;
+
+      &:after {
+        background-color: $secondary;
+      }
+    }
+  }
+
+  &.paragraph--type--articles,
+  .paragraph--type--articles {
+    &.list {
+      .views-row {
+        padding: 0 1.25rem;
+
+        .article-created-date {
+          color: $white;
+        }
+
+        a {
+          color: $primary;
         }
 
         .card__body {
-            a:not(.btn):not(.bttn):not(.button) {
-                color: $secondary;
-                text-decoration: underline;
-
-                &:hover,
-                &:focus {
-                    text-decoration: none;
-                }
-            }
+          color: $white;
         }
 
-        .alert a {
-            color: $secondary !important;
-        }
-
-        &.semi-transparent {
-            background-color: rgba(52, 58, 64, 0.8) !important;
-        }
-
-        a.btn-primary {
-            @include bttn--primary;
-            border: 1px solid $primary;
-            @include bttn--focus;
-
-            &:after {
-                background-color: $secondary;
-            }
-            span {
-              color: $secondary !important;
-            }
-        }
-
-        a.btn:not(.btn-primary) {
-            @include bttn--secondary;
-            border: 1px solid $secondary;
-            @include bttn--focus;
-            span {
-              color: $white !important;
-            }
-        }
-
-        label {
-            color: $white;
-        }
-
-        .uiowa-events {
-            .events-card {
-                &__image img {
-                    background-color: $brand-cool-gray;
-                    border-color: $white;
-                }
-
-                &__date {
-                    color: $white;
-                }
-
-                &__description,
-                &__title a:not(.btn):not(.bttn):not(.button),
-                &__label {
-                    color: $white;
-                }
-            }
-        }
-    }
-
-    &.paragraph--type--carousel-image .carousel-caption {
-        color: $white;
-
-        blockquote p {
-            color: $white;
-        }
-    }
-
-    &.paragraph--type--webform,
-    .paragraph--type--webform {
-        label {
-            color: $white;
-        }
-
-        input[id^='edit-actions-submit'],
-        input#edit-actions-submit {
-            @include bttn--primary;
-            border: 1px solid $primary;
-            @include bttn--focus;
-            color: $secondary !important;
-
-            &:after {
-                background-color: $secondary;
-            }
-        }
-    }
-
-    &.paragraph--type--articles,
-    .paragraph--type--articles {
-        &.list {
-            .views-row {
-                padding: 0 1.25rem;
-
-                .article-created-date {
-                    color: $white;
-                }
-
-                a {
-                    color: $primary;
-                }
-
-                .card__body {
-                    color: $white;
-                }
-
-                .card {
-                    background-color: $brand-cool-gray;
-                }
-            }
-        }
-
-        .pager {
-            .pager__item {
-                &.is-active {
-                    &>a {
-                        color: $white;
-                        background-color: lighten($secondary, 20%);
-
-                        &:hover {
-                            background-color: lighten($secondary, 10%);
-                            cursor: pointer;
-                        }
-                    }
-                }
-
-                &>a:hover {
-                    background-color: lighten($secondary, 10%);
-                    color: $white;
-                }
-            }
-        }
-    }
-
-    &.paragraph--type--articles.list,
-    &.paragraph--type--people.list,
-    .paragraph--type--articles.list,
-    .paragraph--type--people.list {
-
-        .card,
-        .views-row
-        {
-            a {
-                color: $white;
-            }
-        }
-    }
-
-    &.paragraph--type--featured-content,
-    .paragraph--type--featured-content {
-        .featured-content-item {
-            padding: .75rem 1.25rem;
-
-            &:first-child {
-                padding-top: 0.75rem;
-            }
-        }
-    }
-
-    &.paragraph--type--events.list,
-    .paragraph--type--events.list {
         .card {
-            a {
-                color: $white;
-            }
+          background-color: $brand-cool-gray;
         }
+      }
     }
 
-    &.paragraph--type--featured-content.list,
-    .paragraph--type--featured-content.list {
-
-        .field a,
-        h3 a {
+    .pager {
+      .pager__item {
+        &.is-active {
+          &>a {
             color: $white;
+            background-color: lighten($secondary, 20%);
+
+            &:hover {
+              background-color: lighten($secondary, 10%);
+              cursor: pointer;
+            }
+          }
         }
+
+        &>a:hover {
+          background-color: lighten($secondary, 10%);
+          color: $white;
+        }
+      }
     }
+  }
+
+  &.paragraph--type--articles.list,
+  &.paragraph--type--people.list,
+  .paragraph--type--articles.list,
+  .paragraph--type--people.list {
+
+    .card,
+    .views-row
+    {
+      a {
+        color: $white;
+      }
+    }
+  }
+
+  &.paragraph--type--featured-content,
+  .paragraph--type--featured-content {
+    .featured-content-item {
+      padding: .75rem 1.25rem;
+
+      &:first-child {
+        padding-top: 0.75rem;
+      }
+    }
+  }
+
+  &.paragraph--type--events.list,
+  .paragraph--type--events.list {
+    .card {
+      a {
+        color: $white;
+      }
+    }
+  }
+
+  &.paragraph--type--featured-content.list,
+  .paragraph--type--featured-content.list {
+
+    .field a,
+    h3 a {
+      color: $white;
+    }
+  }
 }
 
 .bg-light,
 .bg-light.has-section-image,
 .paragraph .bg-light,
 .paragraph .bg-light.has-section-image {
-    &.paragraph--type--carousel-image,
-    &.paragraph--type--section,
-    &.paragraph--type--blockquote,
-    &.paragraph--type--text,
-    &.paragraph--type--webform,
-    &.paragraph--type--articles,
-    &.paragraph--type--accordion,
-    &.paragraph--type--events {
+  &.paragraph--type--carousel-image,
+  &.paragraph--type--section,
+  &.paragraph--type--blockquote,
+  &.paragraph--type--text,
+  &.paragraph--type--webform,
+  &.paragraph--type--articles,
+  &.paragraph--type--accordion,
+  &.paragraph--type--events {
+    background-color: $light;
+
+    a:not(.btn):not(.bttn):not(.button) {
+      color: $secondary;
+    }
+
+    &.semi-transparent {
+      background-color: rgba(248, 249, 250, 0.8) !important;
+    }
+
+    a.btn-primary {
+      @include bttn--primary;
+      border: 1px solid $primary;
+      @include bttn--focus;
+
+      &:after {
+        background-color: $secondary;
+      }
+      span {
+        color: $secondary !important;
+      }
+    }
+
+    a.btn:not(.btn-primary) {
+      @include bttn--secondary;
+      border: 1px solid $secondary;
+      @include bttn--focus;
+      span {
+        color: $white !important;
+      }
+    }
+
+    label {
+      color: $secondary;
+    }
+
+    .uiowa-events {
+      .events-card {
+        &__image img {
+          background-color: $light;
+          border-color: $secondary;
+        }
+      }
+    }
+  }
+
+  &.paragraph--type--carousel-image .carousel-caption {
+    color: $secondary;
+
+    blockquote p {
+      color: $secondary;
+    }
+  }
+
+  .paragraph--type--carousel-image:not(.bg-yellow):not(.bg-light):not(.bg-dark):not(.bg-black) .carousel-caption a:not(.btn):not(.bttn):not(.button) {
+    color: $primary;
+  }
+
+  &.paragraph--type--webform,
+  .paragraph--type--webform {
+    label {
+      color: $secondary;
+    }
+
+    input[id^='edit-actions-submit'],
+    input#edit-actions-submit {
+      @include bttn--primary;
+      border: 1px solid $primary;
+      @include bttn--focus;
+      color: $secondary !important;
+
+      &:after {
+        background-color: $secondary;
+      }
+    }
+  }
+
+  &.paragraph--type--articles,
+  .paragraph--type--articles {
+    &.list {
+      .views-row {
         background-color: $light;
+        padding: 0 1.25rem;
 
-        a:not(.btn):not(.bttn):not(.button) {
-            color: $secondary;
-        }
-
-        &.semi-transparent {
-            background-color: rgba(248, 249, 250, 0.8) !important;
-        }
-
-        a.btn-primary {
-            @include bttn--primary;
-            border: 1px solid $primary;
-            @include bttn--focus;
-
-            &:after {
-                background-color: $secondary;
-            }
-            span {
-              color: $secondary !important;
-            }
-        }
-
-        a.btn:not(.btn-primary) {
-            @include bttn--secondary;
-            border: 1px solid $secondary;
-            @include bttn--focus;
-            span {
-              color: $white !important;
-            }
-        }
-
-        label {
-            color: $secondary;
-        }
-
-        .uiowa-events {
-            .events-card {
-                &__image img {
-                    background-color: $light;
-                    border-color: $secondary;
-                }
-            }
-        }
-    }
-
-    &.paragraph--type--carousel-image .carousel-caption {
-        color: $secondary;
-
-        blockquote p {
-            color: $secondary;
-        }
-    }
-
-    .paragraph--type--carousel-image:not(.bg-yellow):not(.bg-light):not(.bg-dark):not(.bg-black) .carousel-caption a:not(.btn):not(.bttn):not(.button) {
-        color: $primary;
-    }
-
-    &.paragraph--type--webform,
-    .paragraph--type--webform {
-        label {
-            color: $secondary;
-        }
-
-        input[id^='edit-actions-submit'],
-        input#edit-actions-submit {
-            @include bttn--primary;
-            border: 1px solid $primary;
-            @include bttn--focus;
-            color: $secondary !important;
-
-            &:after {
-                background-color: $secondary;
-            }
-        }
-    }
-
-    &.paragraph--type--articles,
-    .paragraph--type--articles {
-        &.list {
-            .views-row {
-                background-color: $light;
-                padding: 0 1.25rem;
-
-                .card {
-                    background-color: $light;
-                }
-            }
-        }
-
-        .pager {
-            .pager__item {
-                &.is-active {
-                    &>a {
-                        background-color: darken($light, 20%);
-                        color: $secondary;
-
-                        &:hover {
-                            background-color: darken($light, 40%);
-                            cursor: pointer;
-                        }
-                    }
-                }
-
-                &>a:hover {
-                    background-color: darken($light, 40%);
-                }
-            }
-        }
-    }
-
-    &.paragraph--type--featured-content,
-    .paragraph--type--featured-content {
-        .featured-content-item {
-            padding: .75rem 1.25rem;
-
-            &:first-child {
-                padding-top: 0.75rem;
-            }
-        }
-    }
-
-    &.paragraph--type--articles.list,
-    &.paragraph--type--people.list,
-    .paragraph--type--articles.list,
-    .paragraph--type--people.list {
-
-        .views-row,
         .card {
-            @include bg-light;
+          background-color: $light;
         }
+      }
     }
 
-    &.paragraph--type--events.list,
-    .paragraph--type--events.list {
-        .card {
-            @include bg-light;
-        }
-    }
+    .pager {
+      .pager__item {
+        &.is-active {
+          &>a {
+            background-color: darken($light, 20%);
+            color: $secondary;
 
-    &.paragraph--type--featured-content,
-    .paragraph--type--featured-content {
-
-        .featured-content-item,
-        .node--view-mode-teaser,
-        .card {
-            @include bg-light;
+            &:hover {
+              background-color: darken($light, 40%);
+              cursor: pointer;
+            }
+          }
         }
+
+        &>a:hover {
+          background-color: darken($light, 40%);
+        }
+      }
     }
+  }
+
+  &.paragraph--type--featured-content,
+  .paragraph--type--featured-content {
+    .featured-content-item {
+      padding: .75rem 1.25rem;
+
+      &:first-child {
+        padding-top: 0.75rem;
+      }
+    }
+  }
+
+  &.paragraph--type--articles.list,
+  &.paragraph--type--people.list,
+  .paragraph--type--articles.list,
+  .paragraph--type--people.list {
+
+    .views-row,
+    .card {
+      @include bg-light;
+    }
+  }
+
+  &.paragraph--type--events.list,
+  .paragraph--type--events.list {
+    .card {
+      @include bg-light;
+    }
+  }
+
+  &.paragraph--type--featured-content,
+  .paragraph--type--featured-content {
+
+    .featured-content-item,
+    .node--view-mode-teaser,
+    .card {
+      @include bg-light;
+    }
+  }
 }
 
 
 
 .paragraph.bg-dark,
 .paragraph.bg-black {
+  .card__body {
+    a:not(.btn):not(.bttn):not(.button) {
+      color: $secondary;
+      text-decoration: underline;
+
+      &:hover,
+      &:focus {
+        text-decoration: none;
+      }
+    }
+  }
+  .list {
     .card__body {
-        a:not(.btn):not(.bttn):not(.button) {
-            color: $secondary;
-            text-decoration: underline;
-
-            &:hover,
-            &:focus {
-                text-decoration: none;
-            }
-        }
+      .card__title a {
+        color: $white !important;
+      }
     }
-    .list {
-      .card__body {
-        .card__title a {
-          color: $white !important;
-        }
+  }
+
+  .paragraph--type--articles.list,
+  .paragraph--type--people.list {
+
+    .field--name-field-teaser,
+    .article-created-date,
+    .field__item,
+    .field__label {
+      color: $white;
+    }
+    .card__body .article-meta a {
+      color: $white;
+    }
+
+    .views-row {
+      border-bottom: 1px solid #ffffff21;
+
+      &:first-child {
+        border-top: none;
       }
     }
 
-    .paragraph--type--articles.list,
-    .paragraph--type--people.list {
+    .card,
+    .views-row {
+      background-color: transparent !important;
+      @include text-light;
+    }
+  }
 
-        .field--name-field-teaser,
-        .article-created-date,
-        .field__item,
-        .field__label {
-            color: $white;
-        }
-       .card__body .article-meta a {
-          color: $white;
-        }
+  .paragraph--type--events.list,
+  .paragraph--type--people.list {
 
-        .views-row {
-            border-bottom: 1px solid #ffffff21;
-
-            &:first-child {
-                border-top: none;
-            }
-        }
-
-        .card,
-        .views-row {
-            background-color: transparent !important;
-            @include text-light;
-        }
+    .card__author,
+    p {
+      color: $white;
     }
 
-    .paragraph--type--events.list,
-    .paragraph--type--people.list {
-
-        .card__author,
-        p {
-            color: $white;
-        }
-
-        .card {
-            background-color: transparent !important;
-            @include text-light;
-            border-bottom: 1px solid #ffffff21;
-        }
+    .card {
+      background-color: transparent !important;
+      @include text-light;
+      border-bottom: 1px solid #ffffff21;
     }
-    .paragraph--type--events.list {
-      .event-location {
-        color: $white;
-      }
+  }
+  .paragraph--type--events.list {
+    .event-location {
+      color: $white;
+    }
+  }
+
+  .paragraph--type--featured-content.list {
+
+    .article-created-date,
+    .card__author,
+    .field {
+      color: $white;
     }
 
-    .paragraph--type--featured-content.list {
 
-        .article-created-date,
-        .card__author,
-        .field {
-            color: $white;
-        }
-
-
-        .card,
-        .featured-content-item,
-        .node--view-mode-teaser.media {
-            background-color: transparent !important;
-            @include text-light;
-        }
+    .card,
+    .featured-content-item,
+    .node--view-mode-teaser.media {
+      background-color: transparent !important;
+      @include text-light;
     }
+  }
 }
