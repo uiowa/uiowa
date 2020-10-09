@@ -11,7 +11,7 @@
   }
 
   .events-card__row .svg-inline--fa {
-    margin-left: -10px;
+    margin-left: -20px;
   }
 }
 
@@ -40,10 +40,243 @@
   .events-card__title a {
     color: $white;
   }
+
   .events-card__date {
     color: $primary;
   }
+
   .events-card__label {
     color: $light;
   }
+}
+
+// Events.
+.block-inline-blockuiowa-events {
+  margin-top: $gutter;
+
+  .card__title {
+    display: block;
+    @include h5;
+  }
+
+  .event-location {
+    font-family: Zilla Slab, serif;
+    font-size: 1.2rem;
+    font-weight: 300;
+  }
+
+  .more-link {
+    margin-top: $gutter;
+    margin-bottom: $gutter;
+
+    .bg-pattern--brain-reversed &,
+    .bg--gold & {
+      background: #fff;
+    }
+  }
+
+  .bg--black &,
+  .bg-pattern--brain-black & {
+    .events-empty {
+      color: #fff;
+    }
+  }
+}
+
+.block-inline-blockuiowa-events {
+  .card__media {
+    @include card-media-horizontal-right;
+
+    @include breakpoint(sm) {
+      margin-top: $lg;
+      margin-bottom: $gutter;
+    }
+  }
+
+  .card__body {
+    flex: 1;
+  }
+
+  .card__title {
+    @include breakpoint(sm) {
+      padding: 0;
+    }
+
+    .badge {
+      margin-left: $sm;
+    }
+  }
+
+  .card--list {
+    display: flex;
+  }
+}
+
+// Events List
+.block-inline-blockuiowa-events,
+.uiowa-events {
+  .card {
+    @include breakpoint(sm) {
+      border-bottom: 1px solid #ccc;
+
+      &:last-of-type {
+        border-bottom: none;
+      }
+    }
+  }
+
+  .events-card {
+    &__row {
+      @include breakpoint(sm) {
+        display: flex;
+        justify-content: center;
+        flex-wrap: nowrap;
+        border: none;
+        padding: 1.5rem 0;
+        background: transparent;
+      }
+    }
+
+    &__image {
+      @include breakpoint(sm) {
+        flex: 1 0 10%;
+        margin-right: 15px;
+        min-width: 125px;
+      }
+    }
+
+    &__body {
+      @include breakpoint(sm) {
+        flex: 1 1 90%;
+        padding: 0;
+        text-align: left;
+      }
+    }
+
+    &__description {
+      line-height: 1.7;
+      margin-top: .5rem;
+    }
+  }
+
+  .bg--black &,
+  .bg-pattern--brain-black & {
+    .events-card {
+      &__description {
+        color: $white;
+      }
+    }
+  }
+
+  .layout--twocol .layout__spacing_container & {
+    @media screen and (min-width: 40em) {
+      .events-card__image img {
+        border-radius: 50%;
+        margin-top: 0;
+        height: auto;
+        padding: 8px;
+      }
+    }
+  }
+
+  .layout--fourcol .layout__spacing_container & {
+    @media screen and (min-width: 40em) {
+      .events-card__image img {
+        border-radius: 50%;
+        margin-top: 0;
+        height: auto;
+        padding: 8px;
+      }
+    }
+  }
+
+  &.hide-descriptions,
+  .paragraph--type--events.hide-descriptions & {
+    .events-card {
+      &__description {
+        display: none;
+      }
+    }
+  }
+
+  &.image-right .events-card__image {
+    @include breakpoint(sm) {
+      margin-left: 15px;
+      margin-right: 0;
+      order: 1;
+    }
+  }
+
+  &.hide-images .events-card__image,
+  .paragraph--type--events.hide-images & .events-card__image {
+    display: none;
+  }
+
+  &.hide-details .events-card__details {
+    display: none;
+  }
+
+  .paragraph--type--events.grid & {
+    .events-card {
+      &__row {
+        display: inline-block;
+        padding: 1.5rem;
+        flex-basis: 33%;
+      }
+
+      &__image {
+        max-width: 165px;
+        margin: 0 auto;
+      }
+
+      &__body {
+        text-align: center;
+      }
+    }
+  }
+
+  .paragraph--type--events.masonry & {
+    .events-card {
+      &__row {
+        display: inline-block;
+        padding: 1.5rem;
+      }
+
+      &__image {
+        max-width: 165px;
+        margin: 0 auto;
+      }
+
+      &__body {
+        text-align: center;
+      }
+    }
+  }
+}
+
+.container-fluid {
+  margin: 0 auto;
+  width: 100%;
+  padding-right: 0;
+  padding-left: 0;
+}
+
+// Move to UIDS
+.bg-pattern--brain-black .events-card__image img {
+  @include breakpoint(sm) {
+    background: #151515;
+    border: 1px solid #ffcd00;
+  }
+}
+
+.bg-pattern--brain-reversed .events-card__image img {
+  @include breakpoint(sm) {
+    border: 1px solid #fff;
+    background: #ffcd00;
+  }
+}
+
+.bg-pattern--brain-reversed .events-card__row .fas,
+.bg-pattern--brain-reversed .events-card__row .svg-inline--fa {
+  color: #fff;
 }
