@@ -477,6 +477,29 @@ function uids_base_preprocess_views_view_table(&$variables) {
  */
 function uids_base_preprocess_aggregator_feed(&$variables) {
   $variables['#attached']['library'][] = 'uids_base/aggregator-feed';
+
+  /** @var Drupal\aggregator\Entity\Feed $feed */
+  $feed = $variables['elements']['#aggregator_feed'];
+  $image = $feed->get('field_aggregator_feed_image');
+
+  // The image field will print via the view mode if set. If not, we'll replace
+  // it with the feed image if that is set.
+  if ($image->isEmpty()) {
+    if ($image = $feed->getImage()) {
+      $variables['content']['field_aggregator_image'] = [
+        '#theme' => 'imagecache_external_responsive',
+        '#uri' => $image,
+        '#responsive_image_style_id' => 'small__square',
+        '#attributes' => [
+          'data-lazy' => TRUE,
+          'alt' => t('@title feed image', ['@title' => $feed->get('title')->getString()]),
+          'class' => [
+            'feed-image',
+          ],
+        ],
+      ];
+    }
+  }
 }
 
 /**
