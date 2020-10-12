@@ -486,7 +486,7 @@ function uids_base_preprocess_aggregator_feed(&$variables) {
   // it with the feed image if that is set.
   if ($image->isEmpty()) {
     if ($image = $feed->getImage()) {
-      $variables['content']['field_aggregator_image'] = [
+      $variables['content']['field_aggregator_feed_image'] = [
         '#theme' => 'imagecache_external_responsive',
         '#uri' => $image,
         '#responsive_image_style_id' => 'small__square',
