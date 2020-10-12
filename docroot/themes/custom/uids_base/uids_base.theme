@@ -241,8 +241,8 @@ function uids_base_preprocess_field(&$variables) {
     $variables['#attached']['library'][] = 'uids_base/tables';
   }
 
-  // Add an extra class variable to uiowa_block_headline instances.
-  if ($variables['element']['#field_type'] == 'uiowa_block_headline') {
+  // Add an extra class variable to uiowa_headline instances.
+  if ($variables['element']['#field_type'] == 'uiowa_headline') {
     $bundle = $variables['element']['#bundle'];
     $variables['headline_class'] = str_replace('_', '-', $bundle) . '--headline';
   }
@@ -455,8 +455,8 @@ function uids_base_preprocess_paragraph(&$variables) {
           }
         }
         // This works for collections and sliders, not other blocks.
-        if ($parent->hasField('field_uiowa_block_headline')) {
-          $headline_fields = $parent->get('field_uiowa_block_headline')->getValue();
+        if ($parent->hasField('field_uiowa_headline')) {
+          $headline_fields = $parent->get('field_uiowa_headline')->getValue();
           foreach ($headline_fields as $headline_field) {
             // There isn't a headline, so set the children by their separate field.
             if (empty($headline_field['headline'])) {

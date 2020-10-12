@@ -5,7 +5,7 @@ dependencies:
   config:
     - block_content.type.uiowa_collection
     - core.entity_view_mode.block_content.descriptive_list
-    - field.field.block_content.uiowa_collection.field_uiowa_block_headline
+    - field.field.block_content.uiowa_collection.field_uiowa_headline
     - field.field.block_content.uiowa_collection.field_uiowa_collection_items
   module:
     - entity_reference_revisions
@@ -20,8 +20,8 @@ targetEntityType: block_content
 bundle: uiowa_collection
 mode: descriptive_list
 content:
-  field_uiowa_block_headline:
-    type: uiowa_block_headline_formatter
+  field_uiowa_headline:
+    type: uiowa_headline_formatter
     weight: 0
     region: content
     label: hidden

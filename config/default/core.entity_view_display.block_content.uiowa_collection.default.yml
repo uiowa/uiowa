@@ -4,7 +4,7 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_collection
-    - field.field.block_content.uiowa_collection.field_uiowa_block_headline
+    - field.field.block_content.uiowa_collection.field_uiowa_headline
     - field.field.block_content.uiowa_collection.field_uiowa_collection_items
   module:
     - entity_reference_revisions
@@ -14,8 +14,8 @@ targetEntityType: block_content
 bundle: uiowa_collection
 mode: default
 content:
-  field_uiowa_block_headline:
-    type: uiowa_block_headline_formatter
+  field_uiowa_headline:
+    type: uiowa_headline_formatter
     weight: 0
     region: content
     label: hidden

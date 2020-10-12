@@ -6,17 +6,17 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
 
 /**
- * Plugin implementation of the 'uiowa_block_headline_formatter' formatter.
+ * Plugin implementation of the 'uiowa_headline_formatter' formatter.
  *
  * @FieldFormatter(
- *   id = "uiowa_block_headline_formatter",
- *   label = @Translation("Uiowa Block Headline Field Type Formatter"),
+ *   id = "uiowa_headline_formatter",
+ *   label = @Translation("Uiowa Headline Field Type Formatter"),
  *   field_types = {
- *     "uiowa_block_headline"
+ *     "uiowa_headline"
  *   }
  * )
  */
-class UiowaBlockHeadlineFormatter extends FormatterBase {
+class UiowaHeadlineFormatter extends FormatterBase {
 
   /**
    * {@inheritdoc}
@@ -33,7 +33,7 @@ class UiowaBlockHeadlineFormatter extends FormatterBase {
       $hidden = ($item->get('hide_headline')->getValue()) ? ' sr-only' : '';
 
       $element[$delta] = [
-        '#theme' => 'uiowa_block_headline_field_type',
+        '#theme' => 'uiowa_headline_field_type',
         '#text' => strip_tags($item->get('headline')->getValue()),
         '#size' => $item->get('heading_size')->getValue(),
         '#styles' => $styles[$item->get('headline_style')->getValue()] . $hidden,

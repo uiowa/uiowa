@@ -7,17 +7,17 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\TypedData\DataDefinition;
 
 /**
- * Provides a field type of UiowaBlockHeadline.
+ * Provides a field type of UiowaHeadline.
  *
  * @FieldType(
- *   id = "uiowa_block_headline",
- *   label = @Translation("Block Headline"),
+ *   id = "uiowa_headline",
+ *   label = @Translation("Headline"),
  *   description = @Translation("Parent headline for collections of content."),
- *   default_formatter = "uiowa_block_headline_formatter",
- *   default_widget = "uiowa_block_headline_widget",
+ *   default_formatter = "uiowa_headline_formatter",
+ *   default_widget = "uiowa_headline_widget",
  * )
  */
-class UiowaBlockHeadline extends FieldItemBase {
+class UiowaHeadline extends FieldItemBase {
 
   /**
    * {@inheritdoc}
@@ -70,11 +70,11 @@ class UiowaBlockHeadline extends FieldItemBase {
     $properties = [];
 
     $properties['headline'] = DataDefinition::create('string')
-      ->setLabel(t('Block headline'))
+      ->setLabel(t('Headline'))
       ->setDescription(t('Parent headline over collections of content.'));
 
     $properties['heading_size'] = DataDefinition::create('string')
-      ->setLabel(t('Block headline size'))
+      ->setLabel(t('Headline size'))
       ->setDescription(t('Heading size for the parent headline.'));
 
     $properties['hide_headline'] = DataDefinition::create('string')
@@ -83,10 +83,10 @@ class UiowaBlockHeadline extends FieldItemBase {
 
     $properties['headline_style'] = DataDefinition::create('string')
       ->setLabel(t('Headline style'))
-      ->setDescription(t('Set the block headline style.'));
+      ->setDescription(t('Set the headline style.'));
 
     $properties['child_heading_size'] = DataDefinition::create('string')
-      ->setLabel(t('Child Content Headline Size'))
+      ->setLabel(t('Child content headline size'))
       ->setDescription(t('Heading size for any child content.'));
 
     return $properties;

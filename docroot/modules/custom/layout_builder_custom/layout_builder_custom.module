@@ -221,14 +221,14 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
         $element['field_uiowa_text_area']['widget'][0]['#format'] = 'filtered_html';
       }
 
-      if (isset($element['field_uiowa_block_headline'])) {
+      if (isset($element['field_uiowa_headline'])) {
         // Unset the unnecessary 'child_heading_size' field option.
-        unset($element['field_uiowa_block_headline']['widget'][0]['container']['child_heading_size']);
+        unset($element['field_uiowa_headline']['widget'][0]['container']['child_heading_size']);
         // Update the help text.
-        $element['field_uiowa_block_headline']['widget'][0]['container']['heading_size']['#description'] =
+        $element['field_uiowa_headline']['widget'][0]['container']['heading_size']['#description'] =
           t('The heading size for the block title.');
         // Add in the 'h6' option.
-        $element['field_uiowa_block_headline']['widget'][0]['container']['heading_size']['#options']['h6'] = 'Heading 6';
+        $element['field_uiowa_headline']['widget'][0]['container']['heading_size']['#options']['h6'] = 'Heading 6';
       }
       break;
 
@@ -247,23 +247,23 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
       break;
 
     case 'inline_block:uiowa_image_gallery':
-      if (isset($element['field_uiowa_block_headline'])) {
+      if (isset($element['field_uiowa_headline'])) {
         // Unset the unnecessary 'child_heading_size' field option.
-        unset($element['field_uiowa_block_headline']['widget'][0]['container']['child_heading_size']);
+        unset($element['field_uiowa_headline']['widget'][0]['container']['child_heading_size']);
         // Update the help text.
-        $element['field_uiowa_block_headline']['widget'][0]['container']['heading_size']['#description'] =
+        $element['field_uiowa_headline']['widget'][0]['container']['heading_size']['#description'] =
           t('The heading size for the block title.');
         // Add in the 'h6' option.
-        $element['field_uiowa_block_headline']['widget'][0]['container']['heading_size']['#options']['h6'] = 'Heading 6';
+        $element['field_uiowa_headline']['widget'][0]['container']['heading_size']['#options']['h6'] = 'Heading 6';
       }
       break;
 
     case 'inline_block:uiowa_collection':
-      if (isset($element['field_uiowa_block_headline'])) {
+      if (isset($element['field_uiowa_headline'])) {
         // Update the help text.
-        $element['field_uiowa_block_headline']['widget'][0]['container']['heading_size']['#description'] =
+        $element['field_uiowa_headline']['widget'][0]['container']['heading_size']['#description'] =
           t('The heading size for the block title. Accordion item headings will be set one heading level lower. Does not apply to descriptive list.');
-        $element['field_uiowa_block_headline']['widget'][0]['container']['child_heading_size']['#description'] =
+        $element['field_uiowa_headline']['widget'][0]['container']['child_heading_size']['#description'] =
           t('The heading size for all accordion headings. Does not apply to descriptive list.');
       }
       break;
@@ -295,7 +295,7 @@ function layout_builder_custom_field_widget_paragraphs_form_alter(array &$elemen
  */
 function layout_builder_custom_theme($existing, $type, $theme, $path) {
   $theme = [
-    'uiowa_block_headline_widget' => [
+    'uiowa_headline_widget' => [
       'variables' => [
         'headline' => NULL,
         'heading_size' => NULL,

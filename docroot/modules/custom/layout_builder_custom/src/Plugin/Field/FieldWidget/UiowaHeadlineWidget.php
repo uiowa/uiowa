@@ -7,18 +7,18 @@ use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Plugin implementation of the 'UiowaBlockHeadlineDefaultWidget' widget.
+ * Plugin implementation of the 'UiowaHeadlineDefaultWidget' widget.
  *
  * @FieldWidget(
- *   id = "uiowa_block_headline_widget",
- *   label = @Translation("Uiowa Block Headline Field Type Default Widget"),
- *   description = @Translation("Uiowa Block Headline Field Type Default Widget"),
+ *   id = "uiowa_headline_widget",
+ *   label = @Translation("Uiowa Headline Field Type Default Widget"),
+ *   description = @Translation("Uiowa Headline Field Type Default Widget"),
  *   field_types = {
- *     "uiowa_block_headline",
+ *     "uiowa_headline",
  *   }
  * )
  */
-class UiowaBlockHeadlineWidget extends WidgetBase {
+class UiowaHeadlineWidget extends WidgetBase {
 
   /**
    * {@inheritdoc}
@@ -33,19 +33,19 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
 
     $element['container'] = [
       '#type' => 'container',
-      '#title' => 'Block Headline',
+      '#title' => 'Headline',
       '#attributes' => [
-        'class' => 'block-title--container',
+        'class' => 'uiowa-headline--container',
       ],
     ];
 
     $element['container']['headline'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Block title'),
+      '#title' => $this->t('Headline'),
       '#size' => 80,
       '#default_value' => isset($items[$delta]->headline) ? $items[$delta]->headline : NULL,
       '#attributes' => [
-        'id' => 'uiowa-block-headline-field',
+        'id' => 'uiowa-headline-field',
       ],
     ];
 
@@ -54,11 +54,11 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
       '#title' => $this->t('Visually hide title'),
       '#default_value' => isset($items[$delta]->hide_headline) ? $items[$delta]->hide_headline : 0,
       '#attributes' => [
-        'id' => 'uiowa-block-headline-hide-headline-field',
+        'id' => 'uiowa-headline-hide-headline-field',
       ],
       '#states' => [
         'visible' => [
-          ':input[id="uiowa-block-headline-field"]' => [
+          ':input[id="uiowa-headline-field"]' => [
             'filled' => TRUE,
           ],
         ],
@@ -67,13 +67,13 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
 
     $element['container']['heading_size'] = [
       '#type' => 'select',
-      '#title' => $this->t('Block title heading size'),
+      '#title' => $this->t('Headline size'),
       '#options' => $heading_size_options,
       '#description' => $this->t('The heading size for the block title. Children headings will be set one level lower.'),
       '#default_value' => isset($items[$delta]->heading_size) ? $items[$delta]->heading_size : 'h2',
       '#states' => [
         'visible' => [
-          ':input[id="uiowa-block-headline-field"]' => [
+          ':input[id="uiowa-headline-field"]' => [
             'filled' => TRUE,
           ],
         ],
@@ -82,7 +82,7 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
 
     $element['container']['headline_style'] = [
       '#type' => 'select',
-      '#title' => $this->t('Block title heading style'),
+      '#title' => $this->t('Headline style'),
       '#options' => [
         'default' => $this->t('Default'),
         'headline_bold_serif' => $this->t('Headline bold serif'),
@@ -91,7 +91,7 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
       '#default_value' => isset($items[$delta]->headline_style) ? $items[$delta]->headline_style : 'default',
       '#states' => [
         'visible' => [
-          ':input[id="uiowa-block-headline-field"]' => [
+          ':input[id="uiowa-headline-field"]' => [
             'filled' => TRUE,
           ],
         ],
@@ -109,7 +109,7 @@ class UiowaBlockHeadlineWidget extends WidgetBase {
       '#description' => $this->t('The heading size for all children headings.'),
       '#states' => [
         'visible' => [
-          ':input[id="uiowa-block-headline-field"]' => [
+          ':input[id="uiowa-headline-field"]' => [
             'filled' => FALSE,
           ],
         ],
