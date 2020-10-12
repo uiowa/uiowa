@@ -24,6 +24,9 @@ function uiowa_aggregator_form_aggregator_admin_form_alter(&$form, FormStateInte
     // Remove never from aggregator cleanup options as that table could get big.
     unset($form['processors']['aggregator']['aggregator_clear']['#options'][0]);
     $form['processors']['aggregator']['aggregator_clear']['#description'] = t('<em>Items cannot be kept indefinitely for performance reasons.</em>');
+
+    // Remove access to aggregator summary items to avoid confusion with block.
+    $form['processors']['aggregator']['aggregator_summary_items']['#access'] = FALSE;
   }
 }
 
