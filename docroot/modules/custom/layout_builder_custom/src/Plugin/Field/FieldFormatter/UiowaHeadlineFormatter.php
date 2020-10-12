@@ -26,9 +26,9 @@ class UiowaHeadlineFormatter extends FormatterBase {
     foreach ($items as $delta => $item) {
 
       $styles = [
-        'default' => '',
-        'headline_bold_serif' => 'bold-headline bold-headline--serif',
-        'headline_bold_serif_highlight' => 'bold-headline bold-headline--serif bold-headline--underline',
+        'default' => 'uiowa-headline',
+        'headline_bold_serif' => 'uiowa-headline bold-headline bold-headline--serif',
+        'headline_bold_serif_highlight' => 'uiowa-headline bold-headline bold-headline--serif bold-headline--underline',
       ];
       $hidden = ($item->get('hide_headline')->getValue()) ? ' sr-only' : '';
 
