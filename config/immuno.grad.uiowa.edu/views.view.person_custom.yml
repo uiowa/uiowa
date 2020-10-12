@@ -97,7 +97,7 @@ display:
           grouping: {  }
           row_class: ''
           default_row_class: true
-          override: true
+          override: false
           sticky: false
           caption: ''
           summary: ''
@@ -968,7 +968,19 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           plugin_id: boolean
-      sorts: {  }
+      sorts:
+        field_person_last_name_value:
+          id: field_person_last_name_value
+          table: node__field_person_last_name
+          field: field_person_last_name_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: false
+          expose:
+            label: ''
+          plugin_id: standard
       title: Faculty
       header: {  }
       footer: {  }
