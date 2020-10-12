@@ -4,6 +4,8 @@ status: true
 dependencies:
   config:
     - field.field.node.scholarship.body
+    - field.field.node.scholarship.field_scholarship_resident
+    - field.field.node.scholarship.field_scholarship_type
     - node.type.scholarship
   module:
     - text
@@ -16,14 +18,16 @@ content:
   body:
     label: hidden
     type: text_default
-    weight: 101
+    weight: 1
     settings: {  }
     third_party_settings: {  }
     region: content
   links:
-    weight: 100
+    weight: 0
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
+  field_scholarship_resident: true
+  field_scholarship_type: true
   search_api_excerpt: true

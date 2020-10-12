@@ -5,6 +5,8 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.scholarship.body
+    - field.field.node.scholarship.field_scholarship_resident
+    - field.field.node.scholarship.field_scholarship_type
     - node.type.scholarship
   module:
     - text
@@ -28,4 +30,6 @@ content:
     third_party_settings: {  }
     region: content
 hidden:
+  field_scholarship_resident: true
+  field_scholarship_type: true
   search_api_excerpt: true
