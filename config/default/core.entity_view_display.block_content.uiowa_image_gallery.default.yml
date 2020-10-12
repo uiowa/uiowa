@@ -13,13 +13,6 @@ targetEntityType: block_content
 bundle: uiowa_image_gallery
 mode: default
 content:
-  field_uiowa_headline:
-    type: uiowa_headline_formatter
-    weight: 0
-    region: content
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
   field_uiowa_gallery_image:
     weight: 1
     label: hidden
@@ -29,5 +22,12 @@ content:
     third_party_settings: {  }
     type: entity_reference_entity_view
     region: content
+  field_uiowa_headline:
+    type: uiowa_headline_formatter
+    weight: 0
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   search_api_excerpt: true
