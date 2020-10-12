@@ -33,10 +33,14 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  image:
+  field_aggregator_feed_image:
+    type: entity_reference_entity_view
     weight: 0
     region: content
-    settings: {  }
+    label: hidden
+    settings:
+      view_mode: small__square
+      link: false
     third_party_settings: {  }
   items:
     weight: 4
@@ -44,7 +48,7 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
-  field_aggregator_feed_image: true
+  image: true
   link: true
   more_link: true
   search_api_excerpt: true
