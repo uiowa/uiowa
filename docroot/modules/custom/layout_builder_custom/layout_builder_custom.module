@@ -7,7 +7,6 @@
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\layout_builder_custom\LayoutBuilderPreRender;
-use Drupal\layout_builder_styles\LayoutBuilderStyleGroups;
 
 /**
  * Implementation of hook_element_info_alter().
@@ -40,51 +39,9 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       // Add custom process callback for certain blocks to alter form elements.
       $form['settings']['block_form']['#process'][] = '_layout_builder_custom_process_element';
 
-      // Override display of layout builder styles.
-      $styles_exist = FALSE;
-      $styles_enabled = FALSE;
-
-      // Loop through layout builder style groups.
-      $groups = LayoutBuilderStyleGroups::getGroups();
-
-      foreach (array_keys($groups) as $group) {
-        $lbs = 'layout_builder_style_' . $group;
-
-        if (isset($form[$lbs])) {
-          $styles_exist = TRUE;
-
-          if ($form_id == 'layout_builder_update_block') {
-            // Set enabled flag based on whether a default value exists
-            // for this layout builder style.
-            $styles_enabled = !empty($form[$lbs]['#default_value']);
-          }
-
-          // Set a state for the layout builder style to toggle
-          // based on the value of the override value specified below.
-          $form[$lbs]['#states'] = [
-            'visible' => [
-              ':input[name="layout_builder_block_override"]' => [
-                'checked' => TRUE,
-              ],
-            ],
-          ];
-
-          // Make the background option single select only.
-          if ($group === 'background') {
-            $form[$lbs]['#multiple'] = FALSE;
-          }
-        }
-      }
-
-      // Add a checkbox to toggle whether the styles should show.
-      if ($styles_exist) {
-        $form['layout_builder_block_override'] = [
-          '#type' => 'checkbox',
-          '#title' => t('Override style options'),
-          '#required' => FALSE,
-          '#default_value' => $styles_enabled,
-          '#weight' => 80,
-        ];
+      // Make the background option single select only.
+      if (isset($form['layout_builder_style_background'])) {
+        $form['layout_builder_style_background']['#multiple'] = FALSE;
       }
 
       // Always set title field to not be required.
