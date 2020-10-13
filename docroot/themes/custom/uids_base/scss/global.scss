@@ -38,14 +38,13 @@ $imgpath: '../../uids/assets/images';
   }
 
   // Define a list of background treatments.
-  $backgrounds:
-    ':not([class*="bg-"])',
-    '.bg--gold',
-    '.bg--black',
-    '.bg--gray',
-    '.bg-pattern--brain',
-    '.bg-pattern--brain-reversed',
-    '.bg-pattern--brain-black';
+  $backgrounds: ':not([class*="bg-"])',
+  '.bg--gold',
+  '.bg--black',
+  '.bg--gray',
+  '.bg-pattern--brain',
+  '.bg-pattern--brain-reversed',
+  '.bg-pattern--brain-black';
 
   // Loop through each background.
   @each $background in $backgrounds {
@@ -53,7 +52,7 @@ $imgpath: '../../uids/assets/images';
     // When an element follows a previous element
     // with the same background treatment, remove the
     // top padding of the target element.
-    &#{$background} + &#{$background} {
+    &#{$background}+&#{$background} {
       padding-top: 0;
 
       // Necessary to restore padding
@@ -65,6 +64,17 @@ $imgpath: '../../uids/assets/images';
         &__top-extra {
           padding-top: 6rem;
         }
+      }
+    }
+  }
+
+  // Add default padding if page title is hidden
+  &.layout--title--hidden + &:not([class*="bg-"]) {
+    padding-top: $desktop-width-gutter;
+
+    &.section-padding {
+      &__removed-top {
+        padding-top: 0;
       }
     }
   }
