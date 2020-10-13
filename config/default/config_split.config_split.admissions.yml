@@ -6,10 +6,12 @@ id: admissions
 label: Admissions
 description: 'The Admissions site split.'
 folder: ../config/admissions.uiowa.edu
-module: {  }
+module:
+  admissions_core: 0
 theme: {  }
 blacklist:
   - core.base_field_override.node.scholarship.promote
+  - core.entity_view_display.node.page.default
   - field.field.node.scholarship.body
   - node.type.scholarship
   - pathauto.pattern.scholarship
