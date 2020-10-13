@@ -133,6 +133,17 @@ class AggregatorFeedsBlock extends BlockBase implements ContainerFactoryPluginIn
       '#required' => TRUE,
     ];
 
+    $form['no_results'] = [
+      '#type' => 'text_format',
+      '#format' => $this->configuration['no_results']['format'],
+      '#allowed_formats' => [
+        'minimal',
+      ],
+      '#title' => $this->t('No results text'),
+      '#description' => $this->t('What to display if there are no results.'),
+      '#default_value' => $this->configuration['no_results']['value'],
+    ];
+
     return $form;
   }
 
@@ -145,15 +156,18 @@ class AggregatorFeedsBlock extends BlockBase implements ContainerFactoryPluginIn
     $this->configuration['title'] = $values['title'];
     $this->configuration['feeds'] = $values['feeds'];
     $this->configuration['item_count'] = $values['item_count'];
+    $this->configuration['no_results'] = $values['no_results'];
   }
 
   /**
    * {@inheritdoc}
    */
   public function build() {
-    $title = $this->getConfiguration()['title'];
-    $count = $this->getConfiguration()['item_count'];
-    $feeds = $this->getConfiguration()['feeds'];
+    $title = $this->configuration['title'];
+    $count = $this->configuration['item_count'];
+    $feeds = $this->configuration['feeds'];
+    $no_results = $this->configuration['no_results'];
+    $filtered_message = check_markup($no_results['value'], $no_results['format']);
 
     $result = $this->itemStorage->getQuery()
       ->condition('fid', $feeds, 'IN')
@@ -194,7 +208,7 @@ class AggregatorFeedsBlock extends BlockBase implements ContainerFactoryPluginIn
     }
     else {
       $build['no_results'] = [
-        '#markup' => $this->t('There are on results.'),
+        '#markup' => $filtered_message,
         '#prefix' => '<div class="uiowa-aggregator-no-results">',
         '#suffix' => '</div>',
       ];
