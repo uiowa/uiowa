@@ -4,8 +4,14 @@ status: true
 dependencies:
   config:
     - field.field.node.scholarship.body
+    - field.field.node.scholarship.field_scholarship_application
+    - field.field.node.scholarship.field_scholarship_contact
+    - field.field.node.scholarship.field_scholarship_deadline
+    - field.field.node.scholarship.field_scholarship_renewal
+    - field.field.node.scholarship.field_scholarship_requirements
     - field.field.node.scholarship.field_scholarship_resident
     - field.field.node.scholarship.field_scholarship_type
+    - field.field.node.scholarship.field_scholarship_value
     - node.type.scholarship
   module:
     - text
@@ -18,12 +24,54 @@ content:
   body:
     label: hidden
     type: text_default
-    weight: 1
+    weight: 0
     settings: {  }
     third_party_settings: {  }
     region: content
+  field_scholarship_application:
+    weight: 3
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_scholarship_contact:
+    weight: 6
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_scholarship_deadline:
+    weight: 4
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_scholarship_renewal:
+    weight: 5
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_scholarship_requirements:
+    weight: 2
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_scholarship_value:
+    weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
   links:
-    weight: 0
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }

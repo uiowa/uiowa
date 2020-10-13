@@ -5,8 +5,14 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.scholarship.body
+    - field.field.node.scholarship.field_scholarship_application
+    - field.field.node.scholarship.field_scholarship_contact
+    - field.field.node.scholarship.field_scholarship_deadline
+    - field.field.node.scholarship.field_scholarship_renewal
+    - field.field.node.scholarship.field_scholarship_requirements
     - field.field.node.scholarship.field_scholarship_resident
     - field.field.node.scholarship.field_scholarship_type
+    - field.field.node.scholarship.field_scholarship_value
     - node.type.scholarship
   module:
     - text
@@ -19,17 +25,23 @@ content:
   body:
     label: hidden
     type: text_summary_or_trimmed
-    weight: 101
+    weight: 0
     settings:
       trim_length: 600
     third_party_settings: {  }
     region: content
   links:
-    weight: 100
+    weight: 1
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
+  field_scholarship_application: true
+  field_scholarship_contact: true
+  field_scholarship_deadline: true
+  field_scholarship_renewal: true
+  field_scholarship_requirements: true
   field_scholarship_resident: true
   field_scholarship_type: true
+  field_scholarship_value: true
   search_api_excerpt: true
