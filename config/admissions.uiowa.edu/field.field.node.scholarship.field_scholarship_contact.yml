@@ -1,10 +1,12 @@
-uuid: f9f39d33-a5cd-475c-87ab-ed908f6d1bdb
+uuid: fd1eea92-5d16-472b-b2a1-2d142891ea16
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_scholarship_contact
     - node.type.scholarship
+  module:
+    - link
 id: node.scholarship.field_scholarship_contact
 field_name: field_scholarship_contact
 entity_type: node
@@ -15,5 +17,7 @@ required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings: {  }
-field_type: email
+settings:
+  link_type: 17
+  title: 1
+field_type: link

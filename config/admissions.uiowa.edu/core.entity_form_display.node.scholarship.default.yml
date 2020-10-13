@@ -16,6 +16,7 @@ dependencies:
   module:
     - allowed_formats
     - content_moderation
+    - link
     - path
     - text
 id: node.scholarship.default
@@ -51,12 +52,12 @@ content:
     type: text_textarea
     region: content
   field_scholarship_contact:
-    weight: 15
+    weight: 26
     settings:
-      size: 60
-      placeholder: ''
+      placeholder_url: 'mailto:admissions-avcmail@uiowa.edu'
+      placeholder_title: 'Office of Admissions'
     third_party_settings: {  }
-    type: email_default
+    type: link_default
     region: content
   field_scholarship_deadline:
     weight: 13
