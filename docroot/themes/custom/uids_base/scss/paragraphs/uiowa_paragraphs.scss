@@ -293,7 +293,7 @@ div.example2 p.special {
 
 // Removes container padding from paragraph pages like https://hawkeyemarchingband.local.drupal.uiowa.edu/auditions
 .layout__container {
-  &.layout--onecol--no--background,
+  &.layout--onecol--no--background:not([class*="layout--title"]),
   &.layout--no-sidebar,
   &.layout--has-sidebar.sidebar-invisible {
     padding-top: 0;

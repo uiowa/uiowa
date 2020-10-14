@@ -69,8 +69,15 @@ $imgpath: '../../uids/assets/images';
     }
   }
 
+  // Add default padding if page title is hidden
   &.layout--title--hidden + &:not([class*="bg-"]) {
     padding-top: $desktop-width-gutter;
+
+    &.section-padding {
+      &__removed-top {
+        padding-top: 0;
+      }
+    }
   }
 
   // LBS padding classes
