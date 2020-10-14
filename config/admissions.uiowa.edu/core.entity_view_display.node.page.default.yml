@@ -148,8 +148,6 @@ third_party_settings:
         - layout_threecol
         - layout_fourcol
       whitelisted_blocks:
-        'Admissions Core':
-          - admissions_core_scholarships
         'Chaos Tools': {  }
         'Content fields':
           - 'field_block:node:page:uid'
@@ -240,14 +238,16 @@ third_party_settings:
               - 'inline_block:uiowa_banner'
               - 'inline_block:uiowa_hero'
       whitelisted_blocks:
-        layout_onecol:
-          content:
-            'Admissions Core':
-              - admissions_core_scholarships
-        layout_twocol:
+        layout_onecol: {  }
+        layout_twocol: {  }
+        layout_threecol:
           all_regions:
             'Admissions Core':
-              - admissions_core_scholarships
+              - admissions_core_scholarships_jump_menu
+        layout_fourcol:
+          all_regions:
+            'Admissions Core':
+              - admissions_core_scholarships_jump_menu
 _core:
   default_config_hash: 0AcX0F0voV5TKB6_GPZxJpAfbKCnDU7er_5TWcqIgSw
 id: node.page.default
