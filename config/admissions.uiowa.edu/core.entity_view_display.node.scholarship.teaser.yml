@@ -15,6 +15,7 @@ dependencies:
     - field.field.node.scholarship.field_scholarship_value
     - node.type.scholarship
   module:
+    - link
     - text
     - user
 id: node.scholarship.teaser
@@ -24,24 +25,64 @@ mode: teaser
 content:
   body:
     label: hidden
-    type: text_summary_or_trimmed
+    type: text_default
     weight: 0
-    settings:
-      trim_length: 600
+    settings: {  }
     third_party_settings: {  }
     region: content
-  links:
+  field_scholarship_application:
+    type: text_default
+    weight: 3
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_scholarship_contact:
+    type: link
+    weight: 6
+    region: content
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+  field_scholarship_deadline:
+    type: text_default
+    weight: 4
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_scholarship_renewal:
+    type: text_default
+    weight: 5
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_scholarship_requirements:
+    type: text_default
+    weight: 2
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_scholarship_value:
+    type: text_default
     weight: 1
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  links:
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
-  field_scholarship_application: true
-  field_scholarship_contact: true
-  field_scholarship_deadline: true
-  field_scholarship_renewal: true
-  field_scholarship_requirements: true
   field_scholarship_resident: true
   field_scholarship_type: true
-  field_scholarship_value: true
   search_api_excerpt: true
