@@ -65,8 +65,8 @@ class ScholarshipsBlock extends BlockBase {
 
     $form['scholarship_type'] = [
       '#type' => 'checkboxes',
-      '#title' => $this->t('Scholarship Type'),
-      '#description' => $this->t('Filter scholarships by these types.'),
+      '#title' => $this->t('Type'),
+      '#description' => $this->t('Filter scholarships by these types. Multiple selections are treated like ORs.'),
       '#options' => [
         'first-year' => 'First Year',
         'transfer' => 'Transfer',
@@ -77,7 +77,7 @@ class ScholarshipsBlock extends BlockBase {
     $form['resident'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Resident'),
-      '#description' => $this->t('Filter scholarships by resident statuses.'),
+      '#description' => $this->t('Filter scholarships by resident statuses. Multiple selections are treated like ORs.'),
       '#options' => [
         'resident' => 'Resident',
         'nonresident' => 'Non-Resident'
