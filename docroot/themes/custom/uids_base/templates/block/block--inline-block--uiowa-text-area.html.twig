@@ -41,18 +41,6 @@
   {{ title_prefix }}
   {{ title_suffix }}
 
-  {% block heading %}
-  {% if content.field_uiowa_text_area_title[0]['#text'] is not empty %}
-    <div class="cta__title">
-    {% include '@uids_base/uids/heading.html.twig' with {
-      "heading_level" : content.field_uiowa_text_area_title[0]['#size'],
-      "heading_class" : 'bold-headline bold-headline--caps',
-      "heading" : content.field_uiowa_text_area_title[0]['#text']
-    } %}
-    </div>
-  {% endif %}
-{% endblock %}
-
   {% block content %}
     {{ content }}
   {% endblock %}

@@ -241,6 +241,12 @@ function uids_base_preprocess_field(&$variables) {
   if ($variables['element']['#field_type'] == 'text_long' && $variables['element']['#formatter'] == 'text_default') {
     $variables['#attached']['library'][] = 'uids_base/tables';
   }
+
+  // Add an extra class variable to uiowa_headline instances.
+  if ($variables['element']['#field_type'] == 'uiowa_headline') {
+    $bundle = $variables['element']['#bundle'];
+    $variables['headline_class'] = str_replace('_', '-', $bundle) . '--headline';
+  }
 }
 
 /**
@@ -453,9 +459,25 @@ function uids_base_preprocess_paragraph(&$variables) {
             }
           }
         }
-
-        if ($parent->hasField('field_collection_heading_size')) {
-          $variables['h_size'] = $parent->get('field_collection_heading_size')->getString();
+        // This works for collections and sliders, not other blocks.
+        if ($parent->hasField('field_uiowa_headline')) {
+          $headline_fields = $parent->get('field_uiowa_headline')->getValue();
+          foreach ($headline_fields as $headline_field) {
+            // There isn't a headline, so set the children by their separate field.
+            if (empty($headline_field['headline'])) {
+              $variables['h_size'] = $headline_field['child_heading_size'];
+            }
+            else {
+              $options = [
+                'h2' => 'h3',
+                'h3' => 'h4',
+                'h4' => 'h5',
+                'h5' => 'h6',
+                'h6' => 'h6',
+              ];
+              $variables['h_size'] = $options[$headline_field['heading_size']];
+            }
+          }
         }
       }
     }
