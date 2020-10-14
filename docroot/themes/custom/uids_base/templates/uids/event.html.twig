@@ -16,14 +16,14 @@
 
     <div class="events-card__body">
 
-      {% block heading %}
+      {% block headline %}
         <div>
           {% if event_title is not empty %}
-            {% include '@uids_base/uids/heading.html.twig' with {
-              'heading_level' : heading_level ?: 'h2',
-              'heading_class' : 'events-card__title',
-              'heading' : event_title,
-              'heading_url' : event_url,
+            {% include '@uids_base/uids/headline.html.twig' with {
+              'headline_level' : headline_level ?: 'h2',
+              'headline_class' : 'events-card__title',
+              'headline_text' : event_title,
+              'headline_url' : event_url,
             } only %}
           {% endif %}
         </div>

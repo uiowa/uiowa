@@ -27,7 +27,7 @@
   'title_suffix': title_suffix,
   'event_url': event.url,
   'event_date': event.date_string,
-  'heading_level': event.heading_size,
+  'headline_level': event.heading_size,
   'event_icon': event_icon|trans ,
   'event_location': event_location|render,
   'event_description': event.description_text,
@@ -35,7 +35,7 @@
 
 {% embed '@uids_base/uids/event.html.twig' with event_block only %}
 
-  {% block heading %}
+  {% block headline %}
     {{ title_prefix }}
     {{ parent() }}
     {{ title_suffix }}
