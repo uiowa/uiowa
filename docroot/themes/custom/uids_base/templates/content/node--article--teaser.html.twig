@@ -87,9 +87,9 @@
   {% set node_link = url %}
 {% endif %}
 
-{% set heading_level = content_heading ?: 'h3' %}
+{% set headline_level = content_heading ?: 'h3' %}
 {% if view %}
-  {% set heading_level = view.display_handler.getOption('content_heading') %}
+  {% set headline_level = view.display_handler.getOption('content_heading') %}
 {% endif %}
 
 {{ attach_library('classy/node') }}
@@ -102,7 +102,7 @@
   'card_title': label,
   'content': content,
   'card_link_url': node_link,
-  'heading_level': heading_level,
+  'headline_level': headline_level,
 } %}
 
 {% embed '@uids_base/uids/card.html.twig' with article_card only %}

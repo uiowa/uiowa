@@ -8,9 +8,10 @@
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\layout_builder_custom\LayoutBuilderPreRender;
 use Drupal\layout_builder_styles\LayoutBuilderStyleGroups;
+use Drupal\layout_builder_styles\LayoutBuilderStyleInterface;
 
 /**
- * Implementation of hook_element_info_alter().
+ * Implements hook_element_info_alter().
  *
  * This doesn't work because it is for changing broad-level definitions for how elements
  * are handled. It doesn't allow for setting the configuration for an individual element.
@@ -37,12 +38,32 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       // Add custom validation for certain blocks/regions to validate.
       $form['#validate'][] = '_layout_builder_custom_block_validate';
 
+      // Our submit handler must execute before the layout_builder_styles one
+      // so it can take advantage of the logic there.
+      array_unshift($form['#submit'], '_layout_builder_custom_block_submit');
+
       // Add custom process callback for certain blocks to alter form elements.
       $form['settings']['block_form']['#process'][] = '_layout_builder_custom_process_element';
 
       // Override display of layout builder styles.
       $styles_exist = FALSE;
       $styles_enabled = FALSE;
+
+      // LB style options that should be set to '#multiple' => FALSE.
+      $single_select_options = [
+        'background',
+        'banner_height',
+        'banner_type',
+        'banner_gradient',
+        'headline_type',
+      ];
+
+      $remove_none = [
+        'banner_height',
+        'banner_type',
+        'banner_gradient',
+        'headline_type',
+      ];
 
       // Loop through layout builder style groups.
       $groups = LayoutBuilderStyleGroups::getGroups();
@@ -69,22 +90,16 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             ],
           ];
 
-          // Make the background option single select only.
-          if ($group === 'background') {
+          if (in_array($group, $single_select_options)) {
+            // Make the background option single select only.
             $form[$lbs]['#multiple'] = FALSE;
           }
-        }
-      }
 
-      // Add a checkbox to toggle whether the styles should show.
-      if ($styles_exist) {
-        $form['layout_builder_block_override'] = [
-          '#type' => 'checkbox',
-          '#title' => t('Override style options'),
-          '#required' => FALSE,
-          '#default_value' => $styles_enabled,
-          '#weight' => 80,
-        ];
+          if (in_array($group, $remove_none)) {
+            // Make the option required.
+            unset($form[$lbs]['#empty_option']);
+          }
+        }
       }
 
       // Always set title field to not be required.
@@ -110,6 +125,49 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         $form["settings"]["menu_levels"]["level"]["#default_value"] = 2;
         $form["settings"]["advanced"]["follow"]["#default_value"] = 1;
       }
+      elseif ($block->getPluginId() === 'inline_block:uiowa_banner') {
+        // Hide LB style for background.
+        if (isset($form['layout_builder_style_background'])) {
+          $form['layout_builder_style_background']['#access'] = FALSE;
+        }
+        // Set defaults for banner options if the block is being added.
+        if ($form_id === 'layout_builder_add_block') {
+          // Default is centered, left.
+          if (isset($form['layout_builder_style_banner_type'])) {
+            $form['layout_builder_style_banner_type']['#default_value'] = ['banner_centered_left'];
+          }
+
+          // Default is medium.
+          if (isset($form['layout_builder_style_banner_height'])) {
+            $form['layout_builder_style_banner_height']['#default_value'] = ['banner_medium'];
+          }
+
+          // Default is dark gradient.
+          if (isset($form['layout_builder_style_banner_gradient'])) {
+            $form['layout_builder_style_banner_gradient']['#default_value'] = ['banner_gradient_dark'];
+          }
+
+          // Default is bold serif.
+          if (isset($form['layout_builder_style_headline_type'])) {
+            $form['layout_builder_style_headline_type']['#default_value'] = ['headline_bold_serif'];
+          }
+
+          // Trigger the override to show.
+          $styles_exist = $styles_enabled = TRUE;
+        }
+      }
+
+      // @todo Replace this with a fieldset that shows all the time.
+      // Add a checkbox to toggle whether the styles should show.
+      if ($styles_exist) {
+        $form['layout_builder_block_override'] = [
+          '#type' => 'checkbox',
+          '#title' => t('Override options'),
+          '#required' => FALSE,
+          '#default_value' => $styles_enabled,
+          '#weight' => 80,
+        ];
+      }
 
       $form['settings'] += [
         '#weight' => 0,
@@ -117,7 +175,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
 
       // Change collection view_mode field to radios and remove the 'default' option.
       if (isset($form['settings']['block_form']['#block'])
-      && $form['settings']['block_form']['#block']->bundle() === 'uiowa_collection') {
+        && $form['settings']['block_form']['#block']->bundle() === 'uiowa_collection') {
         $form['settings']['view_mode']['#type'] = 'radios';
         array_shift($form['settings']['view_mode']['#options']);
 
@@ -196,6 +254,69 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
       $form_state->setErrorByName('layout_builder_block_override', t('Cards rendered within a one column layout must have the horizontal style.'));
     }
   }
+
+  // Add a character limit to the stat block prefix/suffix fields.
+  if ($block->getPluginId() == 'inline_block:uiowa_statistic') {
+    $block_form = $form_state->getValue('settings')['block_form'];
+    $prefix = $block_form['field_uiowa_statistic_title_pre'][0]['value'];
+    $suffix = $block_form['field_uiowa_statistic_title_suf'][0]['value'];
+    if (strlen($prefix) > 3) {
+      $form_state->setErrorByName('settings][block_form][field_uiowa_statistic_title_pre', t('Prefix cannot exceed 3 characters.'));
+    }
+    if (strlen($suffix) > 3) {
+      $form_state->setErrorByName('settings][block_form][field_uiowa_statistic_title_suf', t('Suffix cannot exceed 3 characters.'));
+    }
+  }
+}
+
+/**
+ * Custom submit handler for layout_builder_add/update_block form.
+ *
+ * @param array $form
+ *   The form element.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state.
+ */
+function _layout_builder_custom_block_submit(array &$form, FormStateInterface $form_state) {
+  /** @var \Drupal\layout_builder\SectionComponent $component */
+  $component = $form_state->getFormObject()->getCurrentComponent();
+  $block = $component->getPlugin();
+
+  if ($block->getPluginId() === 'inline_block:uiowa_banner') {
+    $background_option = $form_state->getValue([
+      'settings',
+      'block_form',
+      'background_options',
+    ]);
+    if ($background_option) {
+      $form_media_selection = [
+        'settings',
+        'block_form',
+        'field_uiowa_banner_image',
+        'selection',
+      ];
+      if ($background_option === 'image') {
+        if (!$form_state->getValue($form_media_selection)) {
+          // If an image wasn't uploaded, revert back to a default selection of black.
+          $background_option = 'block_background_style_black';
+
+          // @todo Add feedback for user about the fact that they didn't upload an image.
+          // @todo After we can figure out how we can present an indicator to the user that
+          //   the image field is required (when shown), add validation to check for whether
+          //   an image was uploaded or not.
+        }
+
+      }
+      else {
+        // If a non-image background was selected, remove the reference.
+        $form_state->unsetValue($form_media_selection);
+
+        // @todo Do we need to trigger file deletion if the media item is unused elsewhere?
+      }
+      // Set the layout_builder_style_background to the value of our duplicate select.
+      $form_state->setValue('layout_builder_style_background', $background_option);
+    }
+  }
 }
 
 /**
@@ -211,14 +332,69 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
  */
 function _layout_builder_custom_process_element(array $element, FormStateInterface $form_state) {
   /** @var \Drupal\layout_builder\SectionComponent $component */
-  $component = $form_state->getFormObject()->getCurrentComponent();
-  $block = $component->getPlugin();
+  $component = $form_state
+    ->getFormObject()
+    ->getCurrentComponent();
+  $block = $component
+    ->getPlugin();
 
   switch ($block->getPluginId()) {
     case 'inline_block:uiowa_text_area':
       if (isset($element['field_uiowa_text_area'])) {
         $element['field_uiowa_text_area']['widget'][0]['#format'] = 'filtered_html';
       }
+      break;
+
+    case 'inline_block:uiowa_banner':
+      // @todo Should this be scoped to a condition checking if layout_builder_styles is enabled?
+      $all_styles = _layout_builder_styles_retrieve_by_type(LayoutBuilderStyleInterface::TYPE_COMPONENT);
+
+      $selectedStyles = $component->get('layout_builder_styles_style');
+
+      $style_options = ['image' => 'Image'];
+      foreach ($all_styles as $style) {
+        if ($style->getGroup() === 'background') {
+          $restrictions = $style->getBlockRestrictions();
+          /** @var \Drupal\layout_builder_styles\LayoutBuilderStyleInterface $style */
+          if (empty($restrictions) || in_array('inline_block:uiowa_banner', $restrictions)) {
+            $style_options[$style->id()] = $style->label();
+          }
+        }
+      }
+
+      $default_bg = 'image';
+
+      if (is_array($selectedStyles)) {
+        foreach ($selectedStyles as $selectedStyle) {
+          if (array_key_exists($selectedStyle, $style_options)) {
+            $default_bg = $selectedStyle;
+          }
+        }
+      }
+
+      $element['background_options'] = [
+        '#type' => 'select',
+        '#title' => t('Background'),
+        '#options' => $style_options,
+        '#default_value' => $default_bg,
+        '#weight' => 4,
+      ];
+
+      $element['field_uiowa_banner_image'] = [
+        '#states' => [
+          'visible' => [
+            ':input[name="settings[block_form][background_options]"]' => [
+              'value' => 'image',
+            ],
+          ],
+          // @todo Conditionally require media field when 'background_options'
+          //   is set to 'image'.
+        ],
+        '#weight' => 5,
+      ] + $element['field_uiowa_banner_image'];
+
+      unset($element['field_uiowa_banner_image']['widget']['#title']);
+
       break;
 
     case 'inline_block:uiowa_articles':
@@ -241,17 +417,19 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
 }
 
 /**
- * Implements hook_inline_entity_form_table_fields_alter().
+ * Implements hook_field_widget_WIDGET_TYPE_form_alter().
  */
-function layout_builder_custom_inline_entity_form_table_fields_alter(array &$fields, array $context) {
-  if ($context['entity_type'] === 'paragraph') {
-    if (in_array('uiowa_collection_item', $context['allowed_bundles'])) {
-      unset($fields['label']);
-      $fields['field_collection_headline'] = [
-        'type' => 'field',
-        'label' => t('Headline'),
-        'weight' => 0,
-      ];
+function layout_builder_custom_field_widget_paragraphs_form_alter(array &$element, FormStateInterface &$form_state, array $context) {
+  if (isset($element['#paragraph_type'])) {
+    switch ($element['#paragraph_type']) {
+
+      case 'uiowa_collection_item':
+      case 'uiowa_slide':
+        // Pop the headline and place it in the label.
+        $headline = array_shift($element['top']['summary']['fields_info']['#summary']['content']);
+        $element['top']['type']['label']['#markup'] = $headline;
+        break;
+
     }
   }
 }

@@ -40,7 +40,7 @@ tips:
     id: instagram
     plugin: text
     label: 'Instagram URL'
-    body: '<p>Add the URL of the Instagram post you wish to display. Make sure the profile is public.</p>'
+    body: '<p>Add the URL of the Instagram post you wish to display. Make sure the Instagram account is public. Don''t forget to checkout our <a href="https://sitenow.uiowa.edu/node/146">Instagram documentation</a> for guidance</p>'
     weight: 1
     attributes:
       data-id: edit-field-media-instagram-0-value
@@ -48,7 +48,7 @@ tips:
     id: twitter
     plugin: text
     label: 'Tweet URL'
-    body: '<p>Add the URL of the tweet you wish to display. Make sure the account is public!</p>'
+    body: '<p>Add the URL of the tweet you wish to display. Make sure the Twitter account is public! Don''t forget to checkout our <a href="https://sitenow.uiowa.edu/node/146">Twitter documentation</a> for guidance.</p>'
     weight: 1
     attributes:
       data-id: edit-field-media-twitter-0-value
@@ -56,10 +56,10 @@ tips:
     id: facebook
     plugin: text
     label: 'Facebook URL'
-    body: '<p>Add the URL of the Facebook post you wish to display. Make sure the post is public.</p>'
+    body: '<p>Add the URL of the Facebook post you wish to display. Make sure the post is public. Don''t forget to to checkout our <a href="https://sitenow.uiowa.edu/node/146">Facebook documentation</a> for guidance.</p>'
     weight: 1
     attributes:
-      data-class: form-item-field-media-facebook-0-value
+      data-class: field--name-field-media-facebook
   upload:
     id: upload
     plugin: text
@@ -95,15 +95,37 @@ tips:
     weight: 6
     attributes:
       data-class: focal-point-preview-link
-  other:
-    id: other
+    location: right
+  img-global-caption:
+    id: img-global-caption
     plugin: text
-    label: 'Other settings'
-    body: '<p>There are other settings available to you, but they are all optional and set to the ideal default.</p><p>Site visitors will only see content marked as published.</p>'
+    label: 'Global Caption'
+    body: '<p>Provide a global caption for the image. Used on Photo Gallery images and Carousel Images if not overridden locally.</p><p>Be sure to checkout our <a href="https://sitenow.uiowa.edu/node/156/">image specificiations documentation</a></p>'
     weight: 7
+    attributes:
+      data-id: cke_edit-field-media-caption-0-value
+    location: bottom
+  url-alias:
+    id: url-alias
+    plugin: text
+    label: 'URL Alias'
+    body: '<p>Uncheck the "Generate automatic URL alias" if you want to create a custom URL for the file. Then specify an alternative path by which this data can be accessed in the "URL alias" textbox.</p>'
+    weight: 8
+    attributes:
+      data-id: edit-path-0
+    location: top
+  moderation-status:
+    id: moderation-status
+    plugin: text
+    label: 'Moderation Status'
+    body: '<p>Check to publish the file. If unchecked, the file will be saved as a draft.</p>'
+    weight: 9
+    attributes:
+      data-class: field--name-status
+    location: bottom
   next_step:
     id: next_step
     plugin: text
     label: 'Where to next?'
     body: '<p><a href="/node/add/page?tour=1" class="button button--primary">Page Content</a></p><p><a href="/media/add?tour=1" class="button button--primary">Media</a></p>'
-    weight: 8
+    weight: 10
