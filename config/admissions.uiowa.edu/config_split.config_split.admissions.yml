@@ -9,7 +9,8 @@ folder: ../config/admissions.uiowa.edu
 module:
   admissions_core: 0
 theme: {  }
-blacklist:
+blacklist: {  }
+graylist:
   - config_split.config_split.admissions
   - core.base_field_override.node.scholarship.promote
   - core.entity_view_display.node.page.default
@@ -22,7 +23,7 @@ blacklist:
   - 'core.entity_view_display.node.scholarship.*'
   - 'field.field.node.scholarship.*'
   - 'field.storage.node.field_scholarship_*'
-graylist: {  }
+  - 'user.role.*'
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 90
