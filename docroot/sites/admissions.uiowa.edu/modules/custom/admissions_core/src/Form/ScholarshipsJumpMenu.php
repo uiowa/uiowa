@@ -3,6 +3,7 @@
 namespace Drupal\admissions_core\Form;
 
 use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\InvokeCommand;
 use Drupal\Core\Ajax\RedirectCommand;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -70,14 +71,14 @@ class ScholarshipsJumpMenu extends FormBase {
     if ($selectedValue = $form_state->getValue('scholarship_type')) {
       if ($selectedValue == 'international') {
         $url = Url::fromRoute('entity.node.canonical', ['node' => $build_info["scholarship_paths"]["international"]]);
-        $command = new RedirectCommand($url->toString());
-        $response->addCommand($command);
+        $response->addCommand(new InvokeCommand('#edit-scholarship-type', 'val', ['']));
+        $response->addCommand(new RedirectCommand($url->toString()));
         return $response;
       }
       if ($selectedValue == 'transfer') {
         $url = Url::fromRoute('entity.node.canonical', ['node' => $build_info["scholarship_paths"]["transfer"]]);
-        $command = new RedirectCommand($url->toString());
-        $response->addCommand($command);
+        $response->addCommand(new InvokeCommand('#edit-scholarship-type', 'val', ['']));
+        $response->addCommand(new RedirectCommand($url->toString()));
         return $response;
       }
     }
@@ -94,14 +95,16 @@ class ScholarshipsJumpMenu extends FormBase {
     if ($selectedValue = $form_state->getValue('resident')) {
       if ($selectedValue == 'resident') {
         $url = Url::fromRoute('entity.node.canonical', ['node' => $build_info["scholarship_paths"]["resident"]]);
-        $command = new RedirectCommand($url->toString());
-        $response->addCommand($command);
+        $response->addCommand(new InvokeCommand('#edit-scholarship-type', 'val', ['']));
+        $response->addCommand(new InvokeCommand('#edit-resident', 'val', ['']));
+        $response->addCommand(new RedirectCommand($url->toString()));
         return $response;
       }
       else {
         $url = Url::fromRoute('entity.node.canonical', ['node' => $build_info["scholarship_paths"]["nonresident"]]);
-        $command = new RedirectCommand($url->toString());
-        $response->addCommand($command);
+        $response->addCommand(new InvokeCommand('#edit-scholarship-type', 'val', ['']));
+        $response->addCommand(new InvokeCommand('#edit-resident', 'val', ['']));
+        $response->addCommand(new RedirectCommand($url->toString()));
         return $response;
       }
     }
