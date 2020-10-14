@@ -1,0 +1,22 @@
+{% set headline_level = headline_level ?: 'h2' %}
+{% set headline_attributes = headline_attributes ?: create_attribute() %}
+{% set headline_class = headline_class ?: [] %}
+<{{ headline_level }}{{ headline_attributes.addClass(headline_class) }}>
+{% if headline_url %}
+<a href="{{ headline_url }}" {% if headline_aria %}aria-describedby="{{ headline_aria }}"{% endif %}>
+  {% endif %}
+  {% if headline_prefix %}
+    <span class="headline__prefix">{{ headline_prefix }}</span>
+  {% endif %}
+  <span class="headline__heading">
+    {% block headline_content %}
+    {{ headline_text }}
+    {% endblock headline_content %}
+  </span>
+  {% if headline_suffix %}
+    <span class="headline__suffix">{{ headline_suffix }}</span>
+  {% endif %}
+  {% if headline_url %}
+</a>
+{% endif %}
+</{{ headline_level }}>
