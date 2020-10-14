@@ -23,11 +23,31 @@ class ScholarshipsBlock extends BlockBase {
   public function build() {
     $config = $this->getConfiguration();
 
-    $type = $config['scholarship_type'];
-    $resident = $config['resident'];
     $view = Views::getView('scholarships');
     $view->setDisplay('block_scholarships');
-    $view->setArguments([$type, $resident]);
+
+    $types = [];
+    foreach ($config["scholarship_type"] as $option) {
+      if ($option !== 0) {
+        $types[] = $option;
+      }
+    }
+    $type_args = implode('+', $types);
+    if (empty($type_args)) {
+      $type_args = 'all';
+    }
+    $resident = [];
+    foreach ($config['resident'] as $option) {
+      if ($option !== 0) {
+        $resident[] = $option;
+      }
+    }
+    $resident_args = implode('+', $resident);
+    if (empty($resident_args)) {
+      $resident_args = 'all';
+    }
+    $view->setArguments([$type_args, $resident_args]);
+
     $view->preExecute();
     $view->execute();
     $build['content'] = $view->render();
@@ -44,25 +64,25 @@ class ScholarshipsBlock extends BlockBase {
     $config = $this->getConfiguration();
 
     $form['scholarship_type'] = [
-      '#type' => 'select',
+      '#type' => 'checkboxes',
       '#title' => $this->t('Scholarship Type'),
-      '#description' => $this->t('Filter scholarships by this type.'),
+      '#description' => $this->t('Filter scholarships by these types.'),
       '#options' => [
         'first-year' => 'First Year',
         'transfer' => 'Transfer',
         'international' => 'International'
       ],
-      '#default_value' => isset($config['scholarship_type']) ? $config['scholarship_type'] : 'first-year',
+      '#default_value' => isset($config['scholarship_type']) ? $config['scholarship_type'] : '',
     ];
     $form['resident'] = [
-      '#type' => 'select',
+      '#type' => 'checkboxes',
       '#title' => $this->t('Resident'),
-      '#description' => $this->t('Filter scholarships by resident status.'),
+      '#description' => $this->t('Filter scholarships by resident statuses.'),
       '#options' => [
         'resident' => 'Resident',
         'nonresident' => 'Non-Resident'
       ],
-      '#default_value' => isset($config['resident']) ? $config['resident'] : 'resident',
+      '#default_value' => isset($config['resident']) ? $config['resident'] : '',
     ];
 
     return $form;
