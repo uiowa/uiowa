@@ -39,6 +39,17 @@
 	{% set vertical_align = 'center' %}
 {% endif %}
 
+
+{% if elements['#layout_builder_style'][0] == 'hero__container-bottom' %}
+	{% set vertical_align = 'bottom' %}
+{% elseif  elements['#layout_builder_style'][0] == 'hero__container-grid' %}
+	{% set vertical_align = 'grid' %}
+{% else %}
+	{% set vertical_align = 'center' %}
+{% endif %}
+
+
+
 {% embed "@uids_base/uids/hero.html.twig" with {
 	hero_alignment: vertical_align
 } %}
@@ -57,11 +68,11 @@
 	{% block hero_content %}
 		{% if content.field_uiowa_hero_title[0]['#text'] is not empty %}
       {% set hero_headline = {
-        'heading_level' : content.field_uiowa_hero_title[0]['#size'],
-        'heading_class' : 'bold-headline--serif bold-headline',
-        'heading' : content.field_uiowa_hero_title[0]['#text'],
+        'headline_level' : content.field_uiowa_hero_title[0]['#size'],
+        'headline_class' : 'bold-headline--serif bold-headline',
+        'headline_text' : content.field_uiowa_hero_title[0]['#text'],
       } %}
-			{% include '@uids_base/uids/heading.html.twig' with hero_headline only %}
+			{% include '@uids_base/uids/headline.html.twig' with hero_headline only %}
 		{% endif %}
 		{{ content.field_uiowa_hero_excerpt }}
 	{% endblock %}
