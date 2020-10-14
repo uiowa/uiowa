@@ -4,18 +4,21 @@
   {% block heading %}
     <div>
       {% if stat_title is not empty %}
-        {% include '@uids_base/uids/heading.html.twig' with {
-          'heading_level' : heading_level ?: 'h2',
-          'heading_class' : 'stat__title',
-          'heading' : stat_title,
-          'heading_prefix' : stat_prefix,
-          'heading_suffix' : stat_suffix,
+        {% include '@uids_base/uids/headline.html.twig' with {
+          'headline_level' : headline_level ?: 'h2',
+          'headline_class' : 'stat__title',
+          'headline_text' : stat_title,
+          'headline_prefix' : stat_prefix,
+          'headline_suffix' : stat_suffix,
         } only %}
       {% endif %}
     </div>
   {% endblock %}
   {% if stat_summary is not empty %}
     <p class="stat__description">{{ stat_summary }}</p>
+  {% endif %}
+  {% if stat_content is not empty %}
+    <p class="stat__content">{{ stat_content }}</p>
   {% endif %}
 </div>
 

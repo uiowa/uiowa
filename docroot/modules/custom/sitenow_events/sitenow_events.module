@@ -16,7 +16,6 @@ use GuzzleHttp\Exception\RequestException;
  */
 function sitenow_events_preprocess_block(&$variables) {
   if ($variables['elements']['#plugin_id'] == 'inline_block:uiowa_events') {
-    $variables['#attached']['library'][] = 'uids_base/events';
 
     /** @var \Drupal\Block\Entity\Block $block */
     $block = $variables['elements']['content']['#block_content'];
@@ -296,7 +295,7 @@ function _sitenow_events_get_filter_field_options(FieldStorageConfig $definition
     case 'field_events_gen_interests':
     case 'field_uiowa_events_interests':
       $data = sitenow_events_load([
-        'display_id' => 'filters'
+        'display_id' => 'filters',
       ], [
         'views',
         'filters_api.json',
@@ -309,7 +308,7 @@ function _sitenow_events_get_filter_field_options(FieldStorageConfig $definition
     case 'field_events_event_types':
     case 'field_uiowa_events_types':
       $data = sitenow_events_load([
-        'display_id' => 'filters'
+        'display_id' => 'filters',
       ], [
         'views',
         'filters_api.json',
@@ -322,7 +321,7 @@ function _sitenow_events_get_filter_field_options(FieldStorageConfig $definition
     case 'field_events_keywords':
     case 'field_uiowa_events_keywords':
       $data = sitenow_events_load([
-        'display_id' => 'keywords'
+        'display_id' => 'keywords',
       ], [
         'views',
         'filters_api.json',
@@ -339,7 +338,7 @@ function _sitenow_events_get_filter_field_options(FieldStorageConfig $definition
     case 'field_events_place':
     case 'field_uiowa_events_place':
       $data = sitenow_events_load([
-        'display_id' => 'places'
+        'display_id' => 'places',
       ], [
         'views',
         'places_api.json',

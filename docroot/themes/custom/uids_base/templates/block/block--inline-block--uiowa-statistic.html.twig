@@ -25,15 +25,22 @@
  * @see template_preprocess_block()
  */
 #}
+{% set stat_classes = [] %}
+
+{% if content.field_uiowa_statistic_content[0]['#context']['value'] is not null %}
+	{% set stat_classes = 'stat stat__grid stat--transform' %}
+{% endif %}
+
 {% set stat_block = {
   'attributes': attributes,
   'stat_summary': content.field_uiowa_statistic_excerpt|render,
+  'stat_content': content.field_uiowa_statistic_content|render,
   'stat_title': content.field_uiowa_statistic_title[0]['#text']|render,
   'stat_prefix': content.field_uiowa_statistic_title_pre|render,
   'stat_suffix': content.field_uiowa_statistic_title_suf|render,
-  'stat_classes': ['stat', 'stat__grid'],
-  'heading' : content.field_uiowa_statistic_title[0]['#text'],
-  'heading_level': content.field_uiowa_statistic_title[0]['#size'],
+  'stat_classes': stat_classes ?: 'stat stat__grid',
+  'headline_text' : content.field_uiowa_statistic_title[0]['#text'],
+  'headline_level': content.field_uiowa_statistic_title[0]['#size'],
   'title_prefix': title_prefix,
   'title_suffix': title_suffix,
 } %}
