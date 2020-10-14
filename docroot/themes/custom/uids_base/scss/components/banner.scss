@@ -2,26 +2,218 @@
 @import "assets/scss/_utilities.scss";
 @import "components/banner/banner.scss";
 
-.banner--reversed *:not(.bttn) {
-  color: #fff;
+.banner.banner--gradient-left-reversed .bold-headline.bold-headline--negative {
+  text-shadow: none;
+  color: $secondary;
 }
 
-.banner__summary {
-  line-height: 1.7;
+.banner {
 
-  p {
-    font-weight: 300;
-    font-size: 1.3rem;
-    margin-top: 1.05rem;
-    margin-bottom: 1.875rem;
+  // Banner Heights
+  &--large {
+    min-height: 33rem;
+
+    @include breakpoint(menu) {
+      min-height: 48rem;
+    }
   }
 
-  strong {
-    font-weight: $font-weight-medium-bold;
+  &--medium {
+    min-height: 33rem;
+
+    @include breakpoint(menu) {
+      min-height: 33rem;
+    }
   }
 
-  a {
-    font-weight: $font-weight-medium;
+  &--small {
+    min-height: 18rem;
+
+    @include breakpoint(menu) {
+      min-height: 18rem;
+    }
   }
 
+
+  // Override background color if button is within a gold container
+  &.bg-pattern--brain-reversed,
+  &.bg--gold {
+    .bttn--primary {
+      color: #fff;
+      background: $secondary;
+      border: 1px solid $secondary;
+
+      svg {
+        color: $primary;
+      }
+    }
+  }
+}
+
+.layout--onecol,
+.layout--twocol--75-25 .layout__region--first,
+.layout--twocol--25-75 .layout__region--second,
+.layout--twocol--67-33 .layout__region--first,
+.layout--twocol--33-67 .layout__region--second,
+.layout--twocol--50-50 {
+  .banner {
+
+    // Set layout text width for onecol containers only excluding the rule below
+    &:not([class*="banner--horizontal-left"]) {
+      .banner__text {
+        @include breakpoint(sm) {
+          width: 100%;
+        }
+
+        @include breakpoint(menu) {
+          width: 80%;
+        }
+
+        @include breakpoint(container) {
+          width: 60%;
+        }
+      }
+    }
+  }
+}
+
+
+
+// Layout specific sizing overrides
+.layout--threecol,
+.layout--fourcol,
+.layout--twocol--25-75 .layout__region--first,
+.layout--twocol--75-25 .layout__region--second,
+.layout--twocol--33-67 .layout__region--first,
+.layout--twocol--67-33 .layout__region--second {
+  .banner {
+
+    .bold-headline {
+      @include breakpoint(menu) {
+        font-size: 2.4rem;
+      }
+
+      &.bold-headline--highlight {
+        @include breakpoint(menu) {
+          font-size: 1.8rem;
+        }
+      }
+    }
+
+    .banner__content {
+      @include breakpoint(sm) {
+        padding: 2rem;
+      }
+    }
+
+  }
+}
+
+// Add padding to banner content if not in edge-to-edge column or is in twocol layout
+.layout--onecol,
+.layout--twocol--25-75 .layout__region--second,
+.layout--twocol--75-25 .layout__region--first,
+.layout--twocol--33-67 .layout__region--second,
+.layout--twocol--67-33 .layout__region--first,
+.layout--twocol--50-50 {
+  .banner .banner__content {
+    @include breakpoint(sm) {
+      padding: 3rem;
+    }
+  }
+
+  // Set banner content width if centered left is selected
+  .banner--vertical-center.banner--horizontal-left {
+    .banner__content {
+      @include breakpoint(sm) {
+        width: 100%;
+      }
+
+      @include breakpoint(menu) {
+        width: 80%;
+      }
+
+      @include breakpoint(container) {
+        width: 50%;
+      }
+    }
+  }
+}
+
+// Remove left/right padding if edge-to-edge is selected
+.layout--onecol[class*=page__container--edge] {
+  .banner .banner__content {
+    @include breakpoint(container) {
+      padding: 3rem 0;
+    }
+  }
+}
+
+// Set larger heading size for large banner only
+.banner--large {
+  .bold-headline {
+    @include breakpoint(md) {
+      font-size: calc(100% + 3.5vw);
+    }
+  }
+}
+
+// Gradient overlays
+.banner {
+  &--gradient-left {
+
+    &:after {
+      @include breakpoint(container) {
+        background: linear-gradient(90deg, rgba(0, 0, 0, .86) 0, rgba(0, 0, 0, .23) 65%, transparent);
+      }
+    }
+
+    &.banner--gradient-light {
+      &:after {
+        background: rgba(255, 255, 255, .7);
+
+        @include breakpoint(container) {
+          background: linear-gradient(90deg, #fff 1%, hsla(0, 0%, 100%, .92) 32%, hsla(0, 0%, 100%, 0));
+        }
+      }
+
+      &[class*="bg-"]:after {
+        background: none;
+      }
+    }
+
+    &[class*="bg-"]:after {
+      background: none;
+    }
+  }
+
+  &--gradient-bottom {
+    &:after {
+      @include breakpoint(container) {
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 70%);
+      }
+    }
+
+    &.banner--gradient-light {
+      &:after {
+        background: rgba(255, 255, 255, .7);
+
+        @include breakpoint(container) {
+          background: linear-gradient(180deg, transparent 0, hsla(0, 0%, 100%, .9) 55%);
+        }
+      }
+
+      &[class*="bg-"]:after {
+        background: none;
+      }
+    }
+  }
+}
+
+
+// Remove contextual position for logged in view of banner image
+.banner__image {
+  .contextual-region {
+    position: unset;
+  }
 }
