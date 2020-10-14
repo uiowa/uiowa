@@ -85,8 +85,8 @@ class UiowaHeadlineWidget extends WidgetBase {
       '#title' => $this->t('Headline style'),
       '#options' => [
         'default' => $this->t('Default'),
-        'headline_bold_serif' => $this->t('Headline bold serif'),
-        'headline_bold_serif_underline' => $this->t('Headline bold serif underline'),
+        'headline_bold_serif' => $this->t('Bold serif'),
+        'headline_bold_serif_underline' => $this->t('Bold serif, highlighted'),
       ],
       '#default_value' => isset($items[$delta]->headline_style) ? $items[$delta]->headline_style : 'default',
       '#states' => [
