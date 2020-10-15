@@ -28,6 +28,10 @@ function uiowa_aggregator_form_aggregator_admin_form_alter(&$form, FormStateInte
 
     // Remove access to aggregator summary items to avoid confusion with block.
     $form['processors']['aggregator']['aggregator_summary_items']['#access'] = FALSE;
+
+    // Remove access to aggregator teaser length as it does nothing.
+    // @see: https://www.drupal.org/project/drupal/issues/2283877
+    $form['processors']['aggregator']['aggregator_teaser_length']['#access'] = FALSE;
   }
 }
 
