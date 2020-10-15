@@ -1697,3 +1697,9 @@ $sites['labgaine.local.drupal.uiowa.edu'] = 'gaine.lab.uiowa.edu';
 $sites['labgaine.dev.drupal.uiowa.edu'] = 'gaine.lab.uiowa.edu';
 $sites['labgaine.stage.drupal.uiowa.edu'] = 'gaine.lab.uiowa.edu';
 $sites['labgaine.prod.drupal.uiowa.edu'] = 'gaine.lab.uiowa.edu';
+
+// Directory aliases for car.lab.uiowa.edu.
+$sites['labcar.local.drupal.uiowa.edu'] = 'car.lab.uiowa.edu';
+$sites['labcar.dev.drupal.uiowa.edu'] = 'car.lab.uiowa.edu';
+$sites['labcar.stage.drupal.uiowa.edu'] = 'car.lab.uiowa.edu';
+$sites['labcar.prod.drupal.uiowa.edu'] = 'car.lab.uiowa.edu';
