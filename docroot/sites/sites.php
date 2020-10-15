@@ -1709,3 +1709,9 @@ $sites['sitesuisrm-internship.local.drupal.uiowa.edu'] = 'uisrm-internship.sites
 $sites['sitesuisrm-internship.dev.drupal.uiowa.edu'] = 'uisrm-internship.sites.uiowa.edu';
 $sites['sitesuisrm-internship.stage.drupal.uiowa.edu'] = 'uisrm-internship.sites.uiowa.edu';
 $sites['sitesuisrm-internship.prod.drupal.uiowa.edu'] = 'uisrm-internship.sites.uiowa.edu';
+
+// Directory aliases for csomaycenter.uiowa.edu.
+$sites['csomaycenter.local.drupal.uiowa.edu'] = 'csomaycenter.uiowa.edu';
+$sites['csomaycenter.dev.drupal.uiowa.edu'] = 'csomaycenter.uiowa.edu';
+$sites['csomaycenter.stage.drupal.uiowa.edu'] = 'csomaycenter.uiowa.edu';
+$sites['csomaycenter.prod.drupal.uiowa.edu'] = 'csomaycenter.uiowa.edu';
