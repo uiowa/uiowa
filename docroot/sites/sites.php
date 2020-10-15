@@ -1649,3 +1649,9 @@ $sites['labcerebrovascular.local.drupal.uiowa.edu'] = 'cerebrovascular.lab.uiowa
 $sites['labcerebrovascular.dev.drupal.uiowa.edu'] = 'cerebrovascular.lab.uiowa.edu';
 $sites['labcerebrovascular.stage.drupal.uiowa.edu'] = 'cerebrovascular.lab.uiowa.edu';
 $sites['labcerebrovascular.prod.drupal.uiowa.edu'] = 'cerebrovascular.lab.uiowa.edu';
+
+// Directory aliases for success.course.uiowa.edu.
+$sites['coursesuccess.local.drupal.uiowa.edu'] = 'success.course.uiowa.edu';
+$sites['coursesuccess.dev.drupal.uiowa.edu'] = 'success.course.uiowa.edu';
+$sites['coursesuccess.stage.drupal.uiowa.edu'] = 'success.course.uiowa.edu';
+$sites['coursesuccess.prod.drupal.uiowa.edu'] = 'success.course.uiowa.edu';
