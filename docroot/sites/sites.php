@@ -1685,3 +1685,9 @@ $sites['labandersen.local.drupal.uiowa.edu'] = 'andersen.lab.uiowa.edu';
 $sites['labandersen.dev.drupal.uiowa.edu'] = 'andersen.lab.uiowa.edu';
 $sites['labandersen.stage.drupal.uiowa.edu'] = 'andersen.lab.uiowa.edu';
 $sites['labandersen.prod.drupal.uiowa.edu'] = 'andersen.lab.uiowa.edu';
+
+// Directory aliases for dietrich.lab.uiowa.edu.
+$sites['labdietrich.local.drupal.uiowa.edu'] = 'dietrich.lab.uiowa.edu';
+$sites['labdietrich.dev.drupal.uiowa.edu'] = 'dietrich.lab.uiowa.edu';
+$sites['labdietrich.stage.drupal.uiowa.edu'] = 'dietrich.lab.uiowa.edu';
+$sites['labdietrich.prod.drupal.uiowa.edu'] = 'dietrich.lab.uiowa.edu';
