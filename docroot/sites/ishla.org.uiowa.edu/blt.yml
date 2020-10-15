@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: orgishla.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: orgishla
+  human_name: ishla.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgishla.prod
+drupal:
+  db:
+    database: ishla_org_uiowa_edu
+uiowa:
+  requester: scropper
