@@ -1655,3 +1655,9 @@ $sites['coursesuccess.local.drupal.uiowa.edu'] = 'success.course.uiowa.edu';
 $sites['coursesuccess.dev.drupal.uiowa.edu'] = 'success.course.uiowa.edu';
 $sites['coursesuccess.stage.drupal.uiowa.edu'] = 'success.course.uiowa.edu';
 $sites['coursesuccess.prod.drupal.uiowa.edu'] = 'success.course.uiowa.edu';
+
+// Directory aliases for ofirl.lab.uiowa.edu.
+$sites['labofirl.local.drupal.uiowa.edu'] = 'ofirl.lab.uiowa.edu';
+$sites['labofirl.dev.drupal.uiowa.edu'] = 'ofirl.lab.uiowa.edu';
+$sites['labofirl.stage.drupal.uiowa.edu'] = 'ofirl.lab.uiowa.edu';
+$sites['labofirl.prod.drupal.uiowa.edu'] = 'ofirl.lab.uiowa.edu';
