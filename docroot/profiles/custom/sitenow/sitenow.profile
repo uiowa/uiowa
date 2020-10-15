@@ -16,6 +16,7 @@ use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\layout_builder\InlineBlockUsage;
 
 /**
  * Implements hook_preprocess_HOOK().
@@ -921,4 +922,42 @@ function sitenow_get_version() {
   }
 
   return $version;
+}
+
+/**
+ * Implements hook_entity_insert().
+ */
+function sitenow_entity_insert(Drupal\Core\Entity\EntityInterface $entity) {
+  // UUIDs for default content Home and About pages.
+  $uuids = [
+    '922b3b26-306a-457c-ba18-2c00966f81cf',
+    'f44a17cb-a187-4286-ad9f-aae44a8e9f85',
+  ];
+  if (in_array($entity->uuid(), $uuids)) {
+    $database = \Drupal::database();
+    $use_controller = new InlineBlockUsage($database);
+    $block_controller = \Drupal::service('entity_type.manager')
+      ->getStorage('block_content');
+
+    // Load the node and grab the layout information.
+    $node = \Drupal::service('entity.repository')
+      ->loadEntityByUuid('node', $entity->uuid());
+    $layouts = $node->get('layout_builder__layout');
+
+    foreach ($layouts as $layout) {
+      $section = $layout->getValue()['section'];
+      // Pull out individual components.
+      foreach ($section->getComponents() as $component) {
+        // Grab the associated block's uuid.
+        $config = $component->get('configuration');
+        if (isset($config['block_revision_id'])) {
+          $rev_id = $config['block_revision_id'];
+          $block = $block_controller->loadRevision($rev_id);
+          if ($block) {
+            $use_controller->addUsage($block->id(), $node);
+          }
+        }
+      }
+    }
+  }
 }
