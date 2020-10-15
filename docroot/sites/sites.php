@@ -1703,3 +1703,9 @@ $sites['labcar.local.drupal.uiowa.edu'] = 'car.lab.uiowa.edu';
 $sites['labcar.dev.drupal.uiowa.edu'] = 'car.lab.uiowa.edu';
 $sites['labcar.stage.drupal.uiowa.edu'] = 'car.lab.uiowa.edu';
 $sites['labcar.prod.drupal.uiowa.edu'] = 'car.lab.uiowa.edu';
+
+// Directory aliases for uisrm-internship.sites.uiowa.edu.
+$sites['sitesuisrm-internship.local.drupal.uiowa.edu'] = 'uisrm-internship.sites.uiowa.edu';
+$sites['sitesuisrm-internship.dev.drupal.uiowa.edu'] = 'uisrm-internship.sites.uiowa.edu';
+$sites['sitesuisrm-internship.stage.drupal.uiowa.edu'] = 'uisrm-internship.sites.uiowa.edu';
+$sites['sitesuisrm-internship.prod.drupal.uiowa.edu'] = 'uisrm-internship.sites.uiowa.edu';
