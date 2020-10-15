@@ -1631,3 +1631,9 @@ $sites['engineering.local.drupal.uiowa.edu'] = 'engineering.uiowa.edu';
 $sites['engineering.dev.drupal.uiowa.edu'] = 'engineering.uiowa.edu';
 $sites['engineering.stage.drupal.uiowa.edu'] = 'engineering.uiowa.edu';
 $sites['engineering.prod.drupal.uiowa.edu'] = 'engineering.uiowa.edu';
+
+// Directory aliases for ishla.org.uiowa.edu.
+$sites['orgishla.local.drupal.uiowa.edu'] = 'ishla.org.uiowa.edu';
+$sites['orgishla.dev.drupal.uiowa.edu'] = 'ishla.org.uiowa.edu';
+$sites['orgishla.stage.drupal.uiowa.edu'] = 'ishla.org.uiowa.edu';
+$sites['orgishla.prod.drupal.uiowa.edu'] = 'ishla.org.uiowa.edu';
