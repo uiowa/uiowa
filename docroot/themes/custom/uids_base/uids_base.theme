@@ -528,13 +528,17 @@ function uids_base_preprocess_aggregator_feed(&$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function uids_base_preprocess_aggregator_item(&$variables) {
-  // Only add the feed image to the aggregator item if we're not on the canonical feed page.
+  /** @var Drupal\aggregator\Entity\Item $item */
+  $item = $variables['elements']['#aggregator_item'];
+
+  $timestamp = $item->getPostedTime();
+  $variables['post_date'] = \Drupal::service('date.formatter')->format($timestamp, 'medium');
+
+  // Only add the feed image  and heading size to the aggregator item if we're
+  // not on the canonical feed page.
   if (\Drupal::routeMatch()->getRouteName() != 'entity.aggregator_feed.canonical') {
     // Set the heading level size for use in the template.
     $variables['heading_size'] = $variables['elements']['#heading_size'];
-
-    /** @var Drupal\aggregator\Entity\Item $item */
-    $item = $variables['elements']['#aggregator_item'];
 
     /** @var Drupal\aggregator\Entity\Feed $feed */
     $feed = \Drupal::entityTypeManager()->getStorage('aggregator_feed')->load($item->getFeedId());
