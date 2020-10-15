@@ -1637,3 +1637,9 @@ $sites['orgishla.local.drupal.uiowa.edu'] = 'ishla.org.uiowa.edu';
 $sites['orgishla.dev.drupal.uiowa.edu'] = 'ishla.org.uiowa.edu';
 $sites['orgishla.stage.drupal.uiowa.edu'] = 'ishla.org.uiowa.edu';
 $sites['orgishla.prod.drupal.uiowa.edu'] = 'ishla.org.uiowa.edu';
+
+// Directory aliases for kawai.lab.uiowa.edu.
+$sites['labkawai.local.drupal.uiowa.edu'] = 'kawai.lab.uiowa.edu';
+$sites['labkawai.dev.drupal.uiowa.edu'] = 'kawai.lab.uiowa.edu';
+$sites['labkawai.stage.drupal.uiowa.edu'] = 'kawai.lab.uiowa.edu';
+$sites['labkawai.prod.drupal.uiowa.edu'] = 'kawai.lab.uiowa.edu';
