@@ -51,3 +51,73 @@ function uiowa_aggregator_form_aggregator_feed_form_alter(&$form, FormStateInter
     }
   }
 }
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uiowa_aggregator_preprocess_block(&$variables) {
+  if ($variables['elements']['#plugin_id'] == 'inline_block:uiowa_aggregator') {
+    /** @var \Drupal\Block\Entity\Block $block */
+    $block = $variables['elements']['content']['#block_content'];
+
+    $feeds = [];
+
+    foreach ($block->get('field_uiowa_aggregator_feeds')->getIterator() as $item) {
+      $feeds[] = $item->getString();
+    }
+
+    $count = $block->get('field_uiowa_aggregator_count')->getString();
+
+    $result = \Drupal::entityTypeManager()->getStorage('aggregator_item')->getQuery()
+      ->condition('fid', $feeds, 'IN')
+      ->range(0, $count)
+      ->sort('timestamp', 'DESC')
+      ->sort('iid', 'DESC')
+      ->execute();
+
+    $variables['content']['aggregator'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => [
+          'aggregator-wrapper',
+          'uiowa-aggregator',
+        ],
+      ],
+    ];
+
+    if ($result) {
+      $variables['content']['aggregator']['feed_source'] = ['#markup' => ''];
+      $items = \Drupal::entityTypeManager()->getStorage('aggregator_item')->loadMultiple($result);
+
+      if ($items) {
+        $variables['content']['aggregator']['items'] = \Drupal::entityTypeManager()->getViewBuilder('aggregator_item')->viewMultiple($items, 'default');
+      }
+    }
+    else {
+      $variables['content']['no_results'] = [
+        '#markup' => $block->get('field_uiowa_aggregator_text')->getString(),
+        '#prefix' => '<div class="uiowa-aggregator-no-results">',
+        '#suffix' => '</div>',
+      ];
+    }
+
+    $variables['#attached']['feed'][] = [
+      'aggregator/rss',
+      \Drupal::configFactory()->get('system.site')->get('name') . ' ' . t('aggregator'),
+    ];
+  }
+}
+
+/**
+ * Allowed values callback for uiowa_aggregator_feeds field.
+ */
+function _uiowa_aggregator_get_feeds() {
+  $feeds = \Drupal::entityTypeManager()->getStorage('aggregator_feed')->loadMultiple();
+  $options = [];
+
+  foreach ($feeds as $feed) {
+    $options[$feed->id()] = $feed->label();
+  }
+
+  return $options;
+}
