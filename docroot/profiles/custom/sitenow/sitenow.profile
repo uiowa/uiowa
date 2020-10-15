@@ -16,6 +16,7 @@ use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\layout_builder\InlineBlockUsage;
 
 /**
@@ -927,7 +928,7 @@ function sitenow_get_version() {
 /**
  * Implements hook_entity_insert().
  */
-function sitenow_entity_insert(Drupal\Core\Entity\EntityInterface $entity) {
+function sitenow_entity_insert(EntityInterface $entity) {
   // UUIDs for default content Home and About pages.
   $uuids = [
     '922b3b26-306a-457c-ba18-2c00966f81cf',
