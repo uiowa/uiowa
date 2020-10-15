@@ -530,6 +530,9 @@ function uids_base_preprocess_aggregator_feed(&$variables) {
 function uids_base_preprocess_aggregator_item(&$variables) {
   // Only add the feed image to the aggregator item if we're not on the canonical feed page.
   if (\Drupal::routeMatch()->getRouteName() != 'entity.aggregator_feed.canonical') {
+    // Set the heading level size for use in the template.
+    $variables['heading_size'] = $variables['elements']['#heading_size'];
+
     /** @var Drupal\aggregator\Entity\Item $item */
     $item = $variables['elements']['#aggregator_item'];
 

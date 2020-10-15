@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -60,10 +61,31 @@ function uiowa_aggregator_preprocess_block(&$variables) {
     /** @var \Drupal\Block\Entity\Block $block */
     $block = $variables['elements']['content']['#block_content'];
 
+    if ($block->hasField('field_uiowa_headline')) {
+      $headline_fields = $block->get('field_uiowa_headline')->getValue();
+      foreach ($headline_fields as $headline_field) {
+        // There isn't a headline, so set the children to this heading size.
+        if (empty($headline_field['headline'])) {
+          $heading_size = $headline_field['child_heading_size'];
+        }
+        else {
+          $options = [
+            'h2' => 'h3',
+            'h3' => 'h4',
+            'h4' => 'h5',
+            'h5' => 'h6',
+            'h6' => 'h6',
+          ];
+
+          $heading_size = $options[$headline_field['heading_size']];
+        }
+      }
+    }
+
     $feeds = [];
 
-    foreach ($block->get('field_uiowa_aggregator_feeds')->getIterator() as $item) {
-      $feeds[] = $item->getString();
+    foreach ($block->get('field_uiowa_aggregator_feeds')->getIterator() as $list_string_item) {
+      $feeds[] = $list_string_item->getString();
     }
 
     $count = $block->get('field_uiowa_aggregator_count')->getString();
@@ -91,6 +113,10 @@ function uiowa_aggregator_preprocess_block(&$variables) {
 
       if ($items) {
         $variables['content']['aggregator']['items'] = \Drupal::entityTypeManager()->getViewBuilder('aggregator_item')->viewMultiple($items, 'default');
+
+        foreach (Element::children($variables['content']['aggregator']['items']) as $child) {
+          $variables['content']['aggregator']['items'][$child]['#heading_size'] = $heading_size ?? 'h3';
+        }
       }
     }
     else {
