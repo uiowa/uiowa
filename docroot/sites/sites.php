@@ -1673,3 +1673,9 @@ $sites['labpinnaro.local.drupal.uiowa.edu'] = 'pinnaro.lab.uiowa.edu';
 $sites['labpinnaro.dev.drupal.uiowa.edu'] = 'pinnaro.lab.uiowa.edu';
 $sites['labpinnaro.stage.drupal.uiowa.edu'] = 'pinnaro.lab.uiowa.edu';
 $sites['labpinnaro.prod.drupal.uiowa.edu'] = 'pinnaro.lab.uiowa.edu';
+
+// Directory aliases for messingham.lab.uiowa.edu.
+$sites['labmessingham.local.drupal.uiowa.edu'] = 'messingham.lab.uiowa.edu';
+$sites['labmessingham.dev.drupal.uiowa.edu'] = 'messingham.lab.uiowa.edu';
+$sites['labmessingham.stage.drupal.uiowa.edu'] = 'messingham.lab.uiowa.edu';
+$sites['labmessingham.prod.drupal.uiowa.edu'] = 'messingham.lab.uiowa.edu';
