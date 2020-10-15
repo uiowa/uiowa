@@ -1661,3 +1661,9 @@ $sites['labofirl.local.drupal.uiowa.edu'] = 'ofirl.lab.uiowa.edu';
 $sites['labofirl.dev.drupal.uiowa.edu'] = 'ofirl.lab.uiowa.edu';
 $sites['labofirl.stage.drupal.uiowa.edu'] = 'ofirl.lab.uiowa.edu';
 $sites['labofirl.prod.drupal.uiowa.edu'] = 'ofirl.lab.uiowa.edu';
+
+// Directory aliases for uisps.org.uiowa.edu.
+$sites['orguisps.local.drupal.uiowa.edu'] = 'uisps.org.uiowa.edu';
+$sites['orguisps.dev.drupal.uiowa.edu'] = 'uisps.org.uiowa.edu';
+$sites['orguisps.stage.drupal.uiowa.edu'] = 'uisps.org.uiowa.edu';
+$sites['orguisps.prod.drupal.uiowa.edu'] = 'uisps.org.uiowa.edu';
