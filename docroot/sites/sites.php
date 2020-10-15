@@ -1667,3 +1667,9 @@ $sites['orguisps.local.drupal.uiowa.edu'] = 'uisps.org.uiowa.edu';
 $sites['orguisps.dev.drupal.uiowa.edu'] = 'uisps.org.uiowa.edu';
 $sites['orguisps.stage.drupal.uiowa.edu'] = 'uisps.org.uiowa.edu';
 $sites['orguisps.prod.drupal.uiowa.edu'] = 'uisps.org.uiowa.edu';
+
+// Directory aliases for pinnaro.lab.uiowa.edu.
+$sites['labpinnaro.local.drupal.uiowa.edu'] = 'pinnaro.lab.uiowa.edu';
+$sites['labpinnaro.dev.drupal.uiowa.edu'] = 'pinnaro.lab.uiowa.edu';
+$sites['labpinnaro.stage.drupal.uiowa.edu'] = 'pinnaro.lab.uiowa.edu';
+$sites['labpinnaro.prod.drupal.uiowa.edu'] = 'pinnaro.lab.uiowa.edu';
