@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labmessingham.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labmessingham
+  human_name: messingham.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labmessingham.prod
+drupal:
+  db:
+    database: messingham_lab_uiowa_edu
+uiowa:
+  requester: messinghamk
