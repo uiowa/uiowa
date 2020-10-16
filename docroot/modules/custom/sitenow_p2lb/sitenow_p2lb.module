@@ -401,6 +401,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         ];
 
       // If there was a subtitle, prepend it to the body text.
+      // @todo This can be placed as the "Author" field.
       if ($subtitle) {
         $excerpt['value'] = '<p>' . $subtitle . '</p>' . $excerpt['value'];
       }
@@ -720,7 +721,7 @@ function sitenow_p2lb_section_styles($section_object) {
 /**
  * Creates an lb section for paragraphs section background image.
  */
-function sitenow_p2lb_section_image($section_image_fid, $banner_text) {
+function sitenow_p2lb_section_image($section_image_fid, $banner_text, $node) {
   $section_array = [];
 
   $text = (!is_null($banner_text)) ? $banner_text->get('field_text_body')->getValue()[0] : '';
