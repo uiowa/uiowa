@@ -188,7 +188,7 @@ function sitenow_articles_preprocess_node(&$variables) {
           $route_name = $current_route->getRouteName();
           $variables['#cache']['contexts'][] = 'route.name';
           if (strpos($route_name, 'view.articles.') === 0) {
-            $variables['content_heading'] = 'h2';
+            $variables['heading_size'] = 'h2';
           }
 
           if ($node->hasField('field_article_source_link_direct')) {
@@ -457,8 +457,24 @@ function sitenow_articles_preprocess_block(&$variables) {
       $view->setArguments([$args]);
 
       // Set custom view variable to send to article teaser template.
-      if ($block->hasField('field_collection_heading_size')) {
-        $view->display_handler->setOption('content_heading', $block->field_collection_heading_size->value);
+      if ($block->hasField('field_uiowa_headline')) {
+        $headline_fields = $block->get('field_uiowa_headline')->getValue();
+        foreach ($headline_fields as $headline_field) {
+          // There isn't a headline, so set the children to this heading size.
+          if (empty($headline_field['headline'])) {
+            $view->display_handler->setOption('heading_size', $headline_field['child_heading_size']);
+          }
+          else {
+            $options = [
+              'h2' => 'h3',
+              'h3' => 'h4',
+              'h4' => 'h5',
+              'h5' => 'h6',
+              'h6' => 'h6',
+            ];
+            $view->display_handler->setOption('heading_size', $options[$headline_field['heading_size']]);
+          }
+        }
       }
 
       if ($block->hasField('field_collection_results') && !$block->get('field_collection_results')->isEmpty()) {

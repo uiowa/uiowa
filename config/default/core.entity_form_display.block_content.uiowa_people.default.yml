@@ -4,26 +4,21 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_people
-    - field.field.block_content.uiowa_people.field_collection_heading_size
-    - field.field.block_content.uiowa_people.field_collection_results
     - field.field.block_content.uiowa_people.field_collection_more
     - field.field.block_content.uiowa_people.field_collection_more_path
     - field.field.block_content.uiowa_people.field_collection_pager
     - field.field.block_content.uiowa_people.field_collection_reference
+    - field.field.block_content.uiowa_people.field_collection_results
     - field.field.block_content.uiowa_people.field_collection_sort
+    - field.field.block_content.uiowa_people.field_uiowa_headline
   module:
+    - layout_builder_custom
     - link
 id: block_content.uiowa_people.default
 targetEntityType: block_content
 bundle: uiowa_people
 mode: default
 content:
-  field_collection_heading_size:
-    weight: 5
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
-    region: content
   field_collection_more:
     weight: 6
     settings:
@@ -40,14 +35,14 @@ content:
     type: link_default
     region: content
   field_collection_pager:
-    weight: 4
+    weight: 5
     settings:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
   field_collection_reference:
-    weight: 1
+    weight: 2
     settings:
       match_operator: CONTAINS
       match_limit: 10
@@ -57,18 +52,24 @@ content:
     type: entity_reference_autocomplete_tags
     region: content
   field_collection_results:
-    weight: 3
+    weight: 4
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_collection_sort:
-    weight: 2
+    weight: 3
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
+  field_uiowa_headline:
+    type: uiowa_headline_widget
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   info:
     type: string_textfield
     weight: 0
