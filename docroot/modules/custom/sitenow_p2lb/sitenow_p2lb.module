@@ -311,13 +311,21 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
   switch ($paragraph->get('type')->getString()) {
     // Paragraph types that yet need mapping.
     case 'section':
+    case 'featured_content':
+      break;
+
     case 'accordion':
+      // @todo Grab children, make a collection.
+      break;
+
     case 'accordion_item':
+      // Skip--handled by the parent accordion.
+      break;
+
     case 'articles':
     case 'events':
-    case 'featured_content':
-    case 'image_gallery':
     case 'people':
+      // @todo Create these view-based blocks.
       break;
 
     case 'blockquote':
@@ -495,6 +503,10 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
 
     case 'carousel_image':
       // We can skip this. Carousel images are handled in the carousel parent.
+      break;
+
+    case 'image_gallery':
+      // @todo Create an image gallery block.
       break;
 
     case 'text':
@@ -691,8 +703,8 @@ function sitenow_p2lb_section_styles($section_object) {
     'bg-dark' => 'section_background_style_gray',
     'bg-black' => 'section_background_style_black',
     'bg-yellow' => 'section_background_style_gold',
-    'pt-5' => 'section_padding_top',
-    'pb-5' => 'section_padding_bottom',
+    'pt-5' => 'section_padding_top_extra',
+    'pb-5' => 'section_padding_bottom_extra',
   ];
   $styles = [];
 
