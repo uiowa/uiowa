@@ -517,6 +517,11 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       $display_label = 0;
       $text = $paragraph->get('field_text_body')->getValue();
 
+      // @todo While we're already processing this text block,
+      //   do we want to also check and see if it starts with a
+      //   title and set a headline from it then strip that from
+      //   the field?
+
       $block = \Drupal::entityTypeManager()
         ->getStorage('block_content')
         ->create([
