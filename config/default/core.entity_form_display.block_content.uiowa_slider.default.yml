@@ -4,7 +4,7 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_slider
-    - field.field.block_content.uiowa_slider.field_collection_heading_size
+    - field.field.block_content.uiowa_slider.field_uiowa_headline
     - field.field.block_content.uiowa_slider.field_uiowa_slider_slides
   module:
     - paragraphs
@@ -13,12 +13,12 @@ targetEntityType: block_content
 bundle: uiowa_slider
 mode: default
 content:
-  field_collection_heading_size:
+  field_uiowa_headline:
+    type: uiowa_headline_widget
     weight: 0
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: options_select
-    region: content
   field_uiowa_slider_slides:
     type: paragraphs
     weight: 1
