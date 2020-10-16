@@ -719,8 +719,6 @@ function sitenow_p2lb_section_styles($section_object) {
 
 /**
  * Creates an lb section for paragraphs section background image.
- * 
- * @todo Update to use banner block instead of hero.
  */
 function sitenow_p2lb_section_image($section_image_fid, $banner_text) {
   $section_array = [];
@@ -739,28 +737,52 @@ function sitenow_p2lb_section_image($section_image_fid, $banner_text) {
       $text['value']
     );
   }
+
+  $link = NULL;
+  // Check if a link is present, and extract info.
+  // (Content)(Full link content (HREF))(Other content).
+  // Assumes only one button or link is present.
+  // Any more links will remain in the body.
+  if (preg_match('|(.*?)(<a.*?href="(.*?)".*?>(.*?)<\/a>)(.*)|is', $text['value'], $matches)) {
+    // Attach the bookended content into a single value.
+    $text['value'] = $matches[1] . $matches[5];
+    // Set URI based on link being absolute or relative.
+    $uri = (substr($matches[3], 0, 4) === 'http') ?
+      $matches[3] : \Drupal::request()->getSchemeAndHttpHost() . $matches[3];
+    // Construct an appropriate link field.
+    $link = [
+      'uri' => $uri,
+      'title' => strip_tags($matches[4]),
+      'options' => [],
+    ];
+  }
+
+  // Banner only allows up to minimal. Change if needed.
+  $text['format'] = ($text['format'] === 'filtered_html') ?
+    'minimal' : $text['format'];
+
   $block = \Drupal::entityTypeManager()
     ->getStorage('block_content')
     ->create([
-      'type' => 'uiowa_hero',
+      'type' => 'uiowa_banner',
       'langcode' => 'en',
       'status' => 1,
       'reusable' => 0,
       'default_langcode' => 1,
-      'field_uiowa_hero_excerpt' => $text,
-      'field_uiowa_hero_image' => $section_image_fid,
-      'field_uiowa_hero_title' => [
+      'field_uiowa_banner_excerpt' => $text,
+      'field_uiowa_banner_image' => $section_image_fid,
+      'field_uiowa_banner_title' => [
         'size' => $h_level,
         'text' => $title,
       ],
-      'field_uiowa_hero_video' => '',
+      'field_uiowa_banner_link' => $link,
     ]);
   // If we have a block save it, and check that it saved succesfully.
   if (isset($block) && $block->save()) {
     // Create the config that will be used to set the block in its section.
     $uuid = $block->get('uuid')->getValue()[0]['value'];
     $block_config = [
-      'id' => 'inline_block:uiowa_hero',
+      'id' => 'inline_block:uiowa_banner',
       'label' => 'Hero',
       'provider' => 'layout_builder',
       'label_display' => 0,
@@ -780,7 +802,14 @@ function sitenow_p2lb_section_image($section_image_fid, $banner_text) {
         'uuid' => $uuid,
         'region' => 'content',
         'configuration' => $block_config,
-        'additional' => [],
+        'additional' => [
+          'layout_builder_styles_style' => [
+            'image',
+            'banner_centered',
+            'banner_medium',
+            'headline_bold_serif',
+          ]
+        ],
         'weight' => 0,
       ];
     }
