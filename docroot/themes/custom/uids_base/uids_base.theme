@@ -538,7 +538,7 @@ function uids_base_preprocess_aggregator_item(&$variables) {
   // not on the canonical feed page.
   if (\Drupal::routeMatch()->getRouteName() != 'entity.aggregator_feed.canonical') {
     // Set the heading level size for use in the template.
-    $variables['heading_size'] = $variables['elements']['#heading_size'];
+    $variables['heading_size'] = $variables['elements']['#heading_size'] ?? 'h3';
 
     /** @var Drupal\aggregator\Entity\Feed $feed */
     $feed = \Drupal::entityTypeManager()->getStorage('aggregator_feed')->load($item->getFeedId());
