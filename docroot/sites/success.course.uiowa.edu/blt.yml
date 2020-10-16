@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: coursesuccess.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: coursesuccess
+  human_name: success.course.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: coursesuccess.prod
+drupal:
+  db:
+    database: success_course_uiowa_edu
+uiowa:
+  requester: suwiley
