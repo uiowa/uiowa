@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: csomaycenter.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: csomaycenter
+  human_name: csomaycenter.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: csomaycenter.prod
+drupal:
+  db:
+    database: csomaycenter_uiowa_edu
+uiowa:
+  requester: rmaas
