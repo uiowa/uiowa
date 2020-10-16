@@ -4,23 +4,31 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_events
-    - field.field.block_content.uiowa_events.field_collection_heading_size
+    - field.field.block_content.uiowa_events.field_collection_more
+    - field.field.block_content.uiowa_events.field_collection_more_path
+    - field.field.block_content.uiowa_events.field_collection_results
+    - field.field.block_content.uiowa_events.field_uiowa_headline
     - field.field.block_content.uiowa_events.field_uiowa_events_audiences
     - field.field.block_content.uiowa_events.field_uiowa_events_department
-    - field.field.block_content.uiowa_events.field_collection_more
     - field.field.block_content.uiowa_events.field_uiowa_events_interests
     - field.field.block_content.uiowa_events.field_uiowa_events_keywords
-    - field.field.block_content.uiowa_events.field_collection_more_path
     - field.field.block_content.uiowa_events.field_uiowa_events_place
-    - field.field.block_content.uiowa_events.field_collection_results
     - field.field.block_content.uiowa_events.field_uiowa_events_types
+  module:
+    - layout_builder_custom
 id: block_content.uiowa_events.default
 targetEntityType: block_content
 bundle: uiowa_events
 mode: default
-content: {  }
+content:
+  field_uiowa_headline:
+    type: uiowa_headline_formatter
+    weight: 0
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
 hidden:
-  field_collection_heading_size: true
   field_collection_more: true
   field_collection_more_path: true
   field_collection_results: true

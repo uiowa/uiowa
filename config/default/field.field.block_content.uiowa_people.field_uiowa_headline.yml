@@ -1,0 +1,25 @@
+uuid: 7219b2f0-d7e2-4ac8-8e35-7e1602abf2be
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_people
+    - field.storage.block_content.field_uiowa_headline
+  module:
+    - layout_builder_custom
+id: block_content.uiowa_people.field_uiowa_headline
+field_name: field_uiowa_headline
+entity_type: block_content
+bundle: uiowa_people
+label: 'Headline'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    headline: ''
+    heading_size: h2
+    hide_headline: 0
+default_value_callback: ''
+settings: {  }
+field_type: uiowa_headline

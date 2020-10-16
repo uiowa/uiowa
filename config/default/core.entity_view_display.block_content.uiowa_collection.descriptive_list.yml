@@ -5,11 +5,12 @@ dependencies:
   config:
     - block_content.type.uiowa_collection
     - core.entity_view_mode.block_content.descriptive_list
-    - field.field.block_content.uiowa_collection.field_collection_heading_size
+    - field.field.block_content.uiowa_collection.field_uiowa_headline
     - field.field.block_content.uiowa_collection.field_uiowa_collection_items
   module:
     - entity_reference_revisions
     - layout_builder
+    - layout_builder_custom
 third_party_settings:
   layout_builder:
     allow_custom: false
@@ -21,13 +22,19 @@ mode: descriptive_list
 content:
   field_uiowa_collection_items:
     type: entity_reference_revisions_entity_view
-    weight: 0
+    weight: 1
     label: hidden
     settings:
       view_mode: descriptive_list
       link: ''
     third_party_settings: {  }
     region: content
+  field_uiowa_headline:
+    type: uiowa_headline_formatter
+    weight: 0
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
 hidden:
-  field_collection_heading_size: true
   search_api_excerpt: true
