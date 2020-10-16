@@ -40,10 +40,10 @@
 {% for item in items %}
   {% if item.content['#text'] %}
     {% set headline = {
-      'heading_level' : item.content['#size'] ?: 'h2',
-      'heading_class' : item.content['#styles'] ?: 'headline',
-      'heading' : item.content['#text'] ?: '',
+      'headline_level' : item.content['#size'] ?: 'h2',
+      'headline_class' : item.content['#styles'] ?: 'headline',
+      'headline_text' : item.content['#text'] ?: '',
     } %}
-    {% include '@uids_base/uids/heading.html.twig' with headline only %}
+    {% include '@uids_base/uids/headline.html.twig' with headline only %}
   {% endif %}
 {% endfor %}
