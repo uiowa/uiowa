@@ -64,15 +64,30 @@
       {% endif %}
     {% endblock %}
 
-    {% block subheading %}
-      {% if card_subtitle is not empty %}
-        {{ card_subtitle }}
-      {% endif %}
-    {% endblock %}
-
-    {% block card_author %}
-      {% if card_author is not empty %}
-        <div class="card__author">{{ card_author }}</div>
+    {% block card_details %}
+      {% if card_subtitle or card_tag or card_date is not empty %}
+        <div class="card__details">
+          {% block card_subtitle %}
+            {% if card_subtitle is not empty %}
+              <div class="card__subtitle">{{ card_subtitle }}</div>
+            {% endif %}
+          {% endblock %}
+          {% block card_date %}
+            {% if card_date is not empty %}
+              <div class="card__date">
+                {{ card_date }}
+              </div>
+            {% endif %}
+          {% endblock %}
+          {% block card_tag %}
+            {% if card_tag is not empty %}
+              <div class="card__label">
+                <i class="fas fa-map-marker-alt"></i>
+                {{ card_tag }}
+              </div>
+            {% endif %}
+          {% endblock %}
+        </div>
       {% endif %}
     {% endblock %}
 
