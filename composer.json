@@ -34,7 +34,7 @@
             "type": "git",
             "url": "git@github.com:uiowa/uiowa_footer"
         },
-        "colorbox":{
+        "colorbox": {
             "type": "package",
             "package": {
                 "name": "jackmoore/colorbox",
@@ -66,7 +66,6 @@
         "bower-asset/chosen": "^1.8",
         "bower-asset/fontawesome": "^5.14",
         "bower-asset/lazysizes": "^5.2",
-        "drupal-composer/drupal-scaffold": "^2.5.4",
         "drupal/acquia_connector": "^1.5.0",
         "drupal/acquia_purge": "^1.0",
         "drupal/address": "^1.7",
@@ -81,7 +80,8 @@
         "drupal/config_ignore": "^2.2.0",
         "drupal/config_inspector": "^1.0",
         "drupal/config_split": "^1.4",
-        "drupal/core": "^8.9.3",
+        "drupal/core-composer-scaffold": "^8.8",
+        "drupal/core-recommended": "^8.9.5",
         "drupal/cshs": "^1.0@beta",
         "drupal/date_recur_modular": "^2.0",
         "drupal/default_content": "^2.0",
@@ -194,7 +194,7 @@
                 "Allow each tag to have its own permission": "https://www.drupal.org/files/issues/2020-01-17/metatag-n2782797-25.patch"
             },
             "drupal/schema_metatag": {
-                "Webpage > SearchAction missing target": "https://www.drupal.org/files/issues/2020-02-17/3055278-7.patch"
+                "Webpage > SearchAction missing target": "https://www.drupal.org/files/issues/2020-09-14/3055278-8.patch"
             },
             "drupal/default_content": {
                 "Add a Normalizer and Denormalizer to support Layout Builder": "https://www.drupal.org/files/issues/2020-08-24/default_content-add-normalizer-denormalizer-for-layout-builder-3160146-25.patch",
@@ -273,13 +273,22 @@
             ]
         },
         "drupal-scaffold": {
-            "initial": {
-                "sites/default/default.services.yml": "sites/default/services.yml",
-                "sites/default/default.settings.php": "sites/default/settings.php"
+            "locations": {
+                "web-root": "./docroot"
             },
-            "excludes": [
-                "robots.txt"
-            ]
+            "file-mapping": {
+                "[web-root]/robots.txt": false,
+                "[web-root]/sites/default/default.services.yml": {
+                    "mode": "replace",
+                    "path": "docroot/core/assets/scaffold/files/default.services.yml",
+                    "overwrite": false
+                },
+                "[web-root]/sites/default/default.settings.php": {
+                    "mode": "replace",
+                    "path": "docroot/core/assets/scaffold/files/default.settings.php",
+                    "overwrite": false
+                }
+            }
         }
     },
     "scripts": {
