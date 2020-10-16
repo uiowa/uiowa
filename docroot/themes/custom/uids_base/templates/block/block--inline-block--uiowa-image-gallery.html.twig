@@ -34,6 +34,19 @@
 %}
 <div{{ attributes.addClass(classes) }}>
   {{ title_prefix }}
+
+  {% block heading %}
+    {% if content.field_uiowa_gallery_title[0]['#text'] is not empty %}
+      <div class="cta__title">
+      {% include '@uids_base/uids/headline.html.twig' with {
+        "headline_level" : content.field_uiowa_gallery_title[0]['#size'],
+        "headline_class" : 'bold-headline bold-headline--caps',
+        "headline_text" : content.field_uiowa_gallery_title[0]['#text']
+      } %}
+      </div>
+    {% endif %}
+  {% endblock %}
+
   {{ title_suffix }}
   <div class="uiowa-image-gallery">
   {% block content %}

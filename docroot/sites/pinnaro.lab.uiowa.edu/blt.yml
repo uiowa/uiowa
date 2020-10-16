@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labpinnaro.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labpinnaro
+  human_name: pinnaro.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labpinnaro.prod
+drupal:
+  db:
+    database: pinnaro_lab_uiowa_edu
+uiowa:
+  requester: pinnaroc

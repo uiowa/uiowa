@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labgaine.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labgaine
+  human_name: gaine.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labgaine.prod
+drupal:
+  db:
+    database: gaine_lab_uiowa_edu
+uiowa:
+  requester: gainem
