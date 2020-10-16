@@ -4,7 +4,7 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_collection
-    - field.field.block_content.uiowa_collection.field_collection_heading_size
+    - field.field.block_content.uiowa_collection.field_uiowa_headline
     - field.field.block_content.uiowa_collection.field_uiowa_collection_items
   module:
     - paragraphs
@@ -27,11 +27,17 @@ content:
       form_display_mode: default
       default_paragraph_type: uiowa_collection_item
       features:
-        duplicate: '0'
-        collapse_edit_all: '0'
         add_above: '0'
+        collapse_edit_all: '0'
+        duplicate: '0'
     third_party_settings: {  }
     region: content
+  field_uiowa_headline:
+    type: uiowa_headline_widget
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   info:
     type: string_textfield
     weight: 0
@@ -40,5 +46,4 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-hidden:
-  field_collection_heading_size: true
+hidden: {  }
