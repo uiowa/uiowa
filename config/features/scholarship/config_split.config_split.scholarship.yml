@@ -1,0 +1,27 @@
+uuid: 5310fd81-d69c-4215-a390-9c030d9e4b5d
+langcode: en
+status: true
+dependencies: {  }
+id: scholarship
+label: Scholarship
+description: 'Scholarship content type.'
+folder: ../config/features/scholarship
+module: {  }
+theme: {  }
+blacklist: {  }
+graylist:
+  - config_split.config_split.scholarship
+  - core.base_field_override.node.scholarship.promote
+  - field.field.node.scholarship.body
+  - node.type.scholarship
+  - pathauto.pattern.scholarship
+  - simple_sitemap.bundle_settings.default.node.scholarship
+  - workflows.workflow.editorial
+  - 'core.entity_form_display.node.scholarship.*'
+  - 'core.entity_view_display.node.scholarship.*'
+  - 'field.field.node.scholarship.*'
+  - 'field.storage.node.field_scholarship_*'
+  - 'user.role.*'
+graylist_dependents: true
+graylist_skip_equal: true
+weight: 80

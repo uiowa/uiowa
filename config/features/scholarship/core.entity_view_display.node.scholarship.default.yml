@@ -1,27 +1,24 @@
-uuid: 58c70f09-6246-4e6d-a29d-8c788b7567df
+uuid: 5b8e21c2-9f34-4bf4-98b9-e0d7597a0d11
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.teaser
     - field.field.node.scholarship.body
     - field.field.node.scholarship.field_scholarship_application
     - field.field.node.scholarship.field_scholarship_contact
     - field.field.node.scholarship.field_scholarship_deadline
     - field.field.node.scholarship.field_scholarship_renewal
     - field.field.node.scholarship.field_scholarship_requirements
-    - field.field.node.scholarship.field_scholarship_resident
-    - field.field.node.scholarship.field_scholarship_type
     - field.field.node.scholarship.field_scholarship_value
     - node.type.scholarship
   module:
     - link
     - text
     - user
-id: node.scholarship.teaser
+id: node.scholarship.default
 targetEntityType: node
 bundle: scholarship
-mode: teaser
+mode: default
 content:
   body:
     label: hidden
@@ -36,16 +33,14 @@ content:
     third_party_settings: {  }
     region: content
   field_scholarship_application:
-    type: text_default
     weight: 3
-    region: content
     label: above
     settings: {  }
     third_party_settings: {  }
-  field_scholarship_contact:
-    type: link
-    weight: 6
+    type: text_default
     region: content
+  field_scholarship_contact:
+    weight: 6
     label: above
     settings:
       trim_length: 80
@@ -54,40 +49,40 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
+    type: link
+    region: content
   field_scholarship_deadline:
-    type: text_default
     weight: 4
-    region: content
     label: above
     settings: {  }
     third_party_settings: {  }
+    type: text_default
+    region: content
   field_scholarship_renewal:
-    type: text_default
     weight: 5
-    region: content
     label: above
     settings: {  }
     third_party_settings: {  }
+    type: text_default
+    region: content
   field_scholarship_requirements:
-    type: text_default
     weight: 2
-    region: content
     label: above
     settings: {  }
     third_party_settings: {  }
-  field_scholarship_value:
     type: text_default
-    weight: 1
     region: content
+  field_scholarship_value:
+    weight: 1
     label: above
     settings: {  }
     third_party_settings: {  }
+    type: text_default
+    region: content
   links:
     weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
-  field_scholarship_resident: true
-  field_scholarship_type: true
   search_api_excerpt: true

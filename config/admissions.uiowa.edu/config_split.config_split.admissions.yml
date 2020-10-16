@@ -12,17 +12,13 @@ theme: {  }
 blacklist: {  }
 graylist:
   - config_split.config_split.admissions
-  - core.base_field_override.node.scholarship.promote
-  - core.entity_view_display.node.page.default
-  - field.field.node.scholarship.body
-  - node.type.scholarship
-  - pathauto.pattern.scholarship
-  - simple_sitemap.bundle_settings.default.node.scholarship
+  - field.field.node.scholarship.field_scholarship_resident
+  - field.field.node.scholarship.field_scholarship_type
+  - field.storage.node.field_scholarship_resident
+  - field.storage.node.field_scholarship_type
   - views.view.scholarships
   - 'core.entity_form_display.node.scholarship.*'
   - 'core.entity_view_display.node.scholarship.*'
-  - 'field.field.node.scholarship.*'
-  - 'field.storage.node.field_scholarship_*'
   - 'user.role.*'
 graylist_dependents: true
 graylist_skip_equal: true
