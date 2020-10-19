@@ -22,7 +22,7 @@ function entity_types_person_install() {
     'Department C',
   ];
   foreach ($items as $item) {
-    $term = Term::create([
+    Term::create([
       'parent' => [],
       'name' => $item,
       'vid' => $vocab,
@@ -38,7 +38,7 @@ function entity_types_person_install() {
     'Student',
   ];
   foreach ($items as $item) {
-    $term = Term::create([
+    Term::create([
       'parent' => [],
       'name' => $item,
       'vid' => $vocab,

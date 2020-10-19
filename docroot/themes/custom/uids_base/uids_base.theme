@@ -458,7 +458,7 @@ function uids_base_preprocess_paragraph(&$variables) {
         if ($parent->hasField('field_uiowa_headline')) {
           $headline_fields = $parent->get('field_uiowa_headline')->getValue();
           foreach ($headline_fields as $headline_field) {
-            // There isn't a headline, so set the children by their separate field.
+            // There isn't a headline, so use the child heading size field.
             if (empty($headline_field['headline'])) {
               $variables['h_size'] = $headline_field['child_heading_size'];
             }
