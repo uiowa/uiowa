@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- * uiowa_aggregator event subscriber.
+ * Alter the aggregator.admin_overview route controller render array.
  */
 class ControllerAlterSubscriber implements EventSubscriberInterface {
   use StringTranslationTrait;
@@ -22,19 +22,29 @@ class ControllerAlterSubscriber implements EventSubscriberInterface {
    */
   protected $config;
 
+  /**
+   * The date formatter service.
+   *
+   * @var \Drupal\Core\Datetime\DateFormatter
+   */
   protected $dateFormatter;
 
   /**
    * Constructs event subscriber.
    *
-   * @param \Drupal\Core\Config\ConfigFactoryInterface
-   *   The config factory interface.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config
+   *   The config factory service.
+   * @param \Drupal\Core\Datetime\DateFormatter $dateFormatter
+   *   The date formatter service.
    */
   public function __construct(ConfigFactoryInterface $config, DateFormatter $dateFormatter) {
     $this->config = $config;
     $this->dateFormatter = $dateFormatter;
   }
 
+  /**
+   * Add a disclaimer about feed import/clear timings to aggregator overview.
+   */
   public function onView(GetResponseForControllerResultEvent $event) {
     $request = $event->getRequest();
     $route = $request->attributes->get('_route');
