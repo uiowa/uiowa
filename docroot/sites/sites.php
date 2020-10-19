@@ -1715,3 +1715,9 @@ $sites['csomaycenter.local.drupal.uiowa.edu'] = 'csomaycenter.uiowa.edu';
 $sites['csomaycenter.dev.drupal.uiowa.edu'] = 'csomaycenter.uiowa.edu';
 $sites['csomaycenter.stage.drupal.uiowa.edu'] = 'csomaycenter.uiowa.edu';
 $sites['csomaycenter.prod.drupal.uiowa.edu'] = 'csomaycenter.uiowa.edu';
+
+// Directory aliases for sandbox.uiowa.edu.
+$sites['sandbox.local.drupal.uiowa.edu'] = 'sandbox.uiowa.edu';
+$sites['sandbox.dev.drupal.uiowa.edu'] = 'sandbox.uiowa.edu';
+$sites['sandbox.stage.drupal.uiowa.edu'] = 'sandbox.uiowa.edu';
+$sites['sandbox.prod.drupal.uiowa.edu'] = 'sandbox.uiowa.edu';
