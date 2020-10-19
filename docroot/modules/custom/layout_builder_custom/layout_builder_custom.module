@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 use Drupal\layout_builder_custom\LayoutBuilderPreRender;
 use Drupal\layout_builder_styles\LayoutBuilderStyleGroups;
 use Drupal\layout_builder_styles\LayoutBuilderStyleInterface;
@@ -40,11 +41,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       // Add custom process callback for certain blocks to alter form elements.
       $form['settings']['block_form']['#process'][] = '_layout_builder_custom_process_element';
 
-      /** @var \Drupal\layout_builder\SectionComponent $component */
-      $component = $form_state->getFormObject()->getCurrentComponent();
-      $block = $component->getPlugin();
-
-      $styles_exist = FALSE;
+      // Add our a heading before style options.
+      _layout_builder_custom_add_lbs_heading($form);
 
       // LB style options that should be set to '#multiple' => FALSE.
       $single_select_options = [
@@ -84,29 +82,16 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         }
       }
 
-      if ($styles_exist) {
-        // Create an element to delineate the layout builder styles form section.
-        $form['lbs_heading'] = [
-          '#type' => 'container',
-          '#attributes' => [
-            'class' => [
-              'layout-builder-style-heading'
-            ]
-          ],
-          'markup' => [
-            '#prefix' => '<span>',
-            '#markup' => t('Appearance'),
-            '#suffix' => '</span>',
-          ],
-        ];
-      }
-
       // Always set title field to not be required.
       $form['settings']['label']['#required'] = FALSE;
 
       unset($form['settings']['label']);
       unset($form['settings']['label_display']);
       unset($form['settings']['admin_label']['#title']);
+
+      /** @var \Drupal\layout_builder\SectionComponent $component */
+      $component = $form_state->getFormObject()->getCurrentComponent();
+      $block = $component->getPlugin();
 
       if ($block->getPluginId() == 'menu_block:main') {
         /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
@@ -181,6 +166,9 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       break;
 
     case 'layout_builder_configure_section':
+      // Add our a heading before style options.
+      _layout_builder_custom_add_lbs_heading($form);
+
       $single_select_groups = [
         'layout_builder_style_background',
         'layout_builder_style_container',
@@ -188,10 +176,10 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
 
       foreach ($single_select_groups as $group) {
         if (isset($form[$group])) {
-          // Disable multiple selection and weight to the top so focus on a
-          // Chosen-enabled select does not obscure other form elements.
+          // Disable multiple selection and weight before LBS elements so focus
+          // on a Chosen-enabled select does not obscure other form elements.
           $form[$group]['#multiple'] = FALSE;
-          $form[$group]['#weight'] = 0;
+          $form[$group]['#weight'] = 89;
         }
       }
 
@@ -465,4 +453,34 @@ function layout_builder_custom_theme($existing, $type, $theme, $path) {
     ],
   ];
   return $theme;
+}
+
+/**
+ * Add an element to delineate the layout builder styles form section.
+ *
+ * @return array
+ */
+function _layout_builder_custom_add_lbs_heading(&$form) {
+  $children = Element::children($form);
+
+  $styles = array_filter($children, function ($v) {
+    return (strpos($v, 'layout_builder_style_') === 0);
+  });
+
+  if (!empty($styles)) {
+    $form['lbs_heading'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => [
+          'layout-builder-style-heading'
+        ]
+      ],
+      'markup' => [
+        '#prefix' => '<span>',
+        '#markup' => t('Display Options'),
+        '#suffix' => '</span>',
+      ],
+      '#weight' => 80,
+    ];
+  }
 }
