@@ -30,11 +30,6 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
   switch ($form_id) {
     case 'layout_builder_add_block':
     case 'layout_builder_update_block':
-
-      /** @var \Drupal\layout_builder\SectionComponent $component */
-      $component = $form_state->getFormObject()->getCurrentComponent();
-      $block = $component->getPlugin();
-
       // Add custom validation for certain blocks/regions to validate.
       $form['#validate'][] = '_layout_builder_custom_block_validate';
 
@@ -45,9 +40,9 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       // Add custom process callback for certain blocks to alter form elements.
       $form['settings']['block_form']['#process'][] = '_layout_builder_custom_process_element';
 
-      // Override display of layout builder styles.
-      $styles_exist = FALSE;
-      $styles_enabled = FALSE;
+      /** @var \Drupal\layout_builder\SectionComponent $component */
+      $component = $form_state->getFormObject()->getCurrentComponent();
+      $block = $component->getPlugin();
 
       // LB style options that should be set to '#multiple' => FALSE.
       $single_select_options = [
