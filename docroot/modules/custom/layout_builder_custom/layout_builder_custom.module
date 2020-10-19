@@ -111,14 +111,14 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         // 'collegiate' split either doesn't exist or isn't enabled.
         if (!isset($filters[$collegiate_split]) || !$filters[$collegiate_split]['status']) {
           // Restrict block settings on main navigation block.
-          $form["settings"]["menu_levels"]['#access'] = FALSE;
-          $form["settings"]["advanced"]['#access'] = FALSE;
-          $form["settings"]["style"]['#access'] = FALSE;
+          $form['settings']['menu_levels']['#access'] = FALSE;
+          $form['settings']['advanced']['#access'] = FALSE;
+          $form['settings']['style']['#access'] = FALSE;
         }
 
         // Set defaults.
-        $form["settings"]["menu_levels"]["level"]["#default_value"] = 2;
-        $form["settings"]["advanced"]["follow"]["#default_value"] = 1;
+        $form['settings']['menu_levels']['level']['#default_value'] = 2;
+        $form['settings']['advanced']['follow']['#default_value'] = 1;
       }
       elseif ($block->getPluginId() === 'inline_block:uiowa_banner') {
         // Hide LB style for background.
@@ -406,8 +406,8 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
     case 'inline_block:uiowa_articles':
     case 'inline_block:uiowa_people':
     case 'inline_block:uiowa_events':
-      if (isset($element["field_collection_more_path"])) {
-        $element["field_collection_more_path"]['#states'] = [
+      if (isset($element['field_collection_more_path'])) {
+        $element['field_collection_more_path']['#states'] = [
           'visible' => [
             ':input[name="settings[block_form][field_collection_more][value]"]' => [
               'checked' => TRUE,
