@@ -61,7 +61,6 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         $lbs = 'layout_builder_style_' . $group;
 
         if (isset($form[$lbs])) {
-          $styles_exist = TRUE;
           $form[$lbs]['#attributes']['class'][] = 'layout-builder-style';
 
           if (in_array($group, $single_select_options)) {
@@ -448,7 +447,10 @@ function layout_builder_custom_theme($existing, $type, $theme, $path) {
 /**
  * Add an element to delineate the layout builder styles form section.
  *
- * @return array
+ * The weights are important here. The layout_builder_custom module weighs all
+ * fields at 90. We weigh single-select fields at 89 when configuring a section.
+ *
+ * @see: layout_builder_custom_form_alter().
  */
 function _layout_builder_custom_add_lbs_heading(&$form) {
   $children = Element::children($form);
@@ -462,8 +464,8 @@ function _layout_builder_custom_add_lbs_heading(&$form) {
       '#type' => 'container',
       '#attributes' => [
         'class' => [
-          'layout-builder-style-heading'
-        ]
+          'layout-builder-style-heading',
+        ],
       ],
       'markup' => [
         '#prefix' => '<span>',
