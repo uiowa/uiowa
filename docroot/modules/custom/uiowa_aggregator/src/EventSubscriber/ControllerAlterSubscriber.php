@@ -47,7 +47,7 @@ class ControllerAlterSubscriber implements EventSubscriberInterface {
         $interval = $this->dateFormatter->formatInterval($expire);
 
         $build['disclaimer'] = [
-          '#markup' => $this->t('<em>Note that feed items will be imported if their post date is within @interval or less. Items already imported will be deleted after @interval</em>.', [
+          '#markup' => $this->t('<em>Note that feed items will only be imported if their post date is within @interval or less. Items already imported will be deleted after @interval</em>.', [
             '@interval' => $interval,
           ]),
         ];
