@@ -9,7 +9,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\path_alias\AliasRepositoryInterface;
 use Drupal\pathauto\AliasCleanerInterface;
 use Drupal\pathauto\PathautoGenerator;
-use Drupal\views\Entity\View;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -102,25 +101,25 @@ class SettingsForm extends ConfigFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildForm($form, $form_state);
-    $view = View::load('articles');
+    $view = $this->entityTypeManager->getStorage('view')->load('articles');
     $display =& $view->getDisplay('page_articles');
     $archive =& $view->getDisplay('block_articles_archive');
     $feed =& $view->getDisplay('feed_articles');
 
-    if ($feed["display_options"]["displays"]["page_articles"] == 'page_articles') {
+    if ($feed['display_options']['displays']['page_articles'] == 'page_articles') {
       $show_feed = 1;
     }
     else {
       $show_feed = 0;
     }
-    if ($archive["display_options"]["enabled"] == TRUE) {
+    if ($archive['display_options']['enabled'] == TRUE) {
       $show_archive = 1;
     }
     else {
       $show_archive = 0;
     }
     $default =& $view->getDisplay('default');
-    if ($display["display_options"]["enabled"] == TRUE) {
+    if ($display['display_options']['enabled'] == TRUE) {
       $status = 1;
     }
     else {
@@ -167,7 +166,7 @@ class SettingsForm extends ConfigFormBase {
       '#format' => 'filtered_html',
       '#title' => $this->t('Header Content'),
       '#description' => $this->t('Enter any content that is displayed above the articles listing.'),
-      '#default_value' => $default["display_options"]["header"]["area"]["content"]["value"],
+      '#default_value' => $default['display_options']['header']['area']['content']['value'],
     ];
 
     $form['global']['sitenow_articles_archive'] = [
@@ -228,7 +227,7 @@ class SettingsForm extends ConfigFormBase {
     $path = $this->aliasCleaner->cleanString($path);
 
     // Load article listing view.
-    $view = View::load('articles');
+    $view = $this->entityTypeManager->getStorage('view')->load('articles');
     $display =& $view->getDisplay('page_articles');
     $feed =& $view->getDisplay('feed_articles');
     $archive =& $view->getDisplay('block_articles_archive');
@@ -236,27 +235,27 @@ class SettingsForm extends ConfigFormBase {
 
     // Enable/Disable view display.
     if ($status == 1) {
-      $display["display_options"]["enabled"] = TRUE;
+      $display['display_options']['enabled'] = TRUE;
     }
     else {
-      $display["display_options"]["enabled"] = FALSE;
+      $display['display_options']['enabled'] = FALSE;
     }
 
     // Set title.
-    $default["display_options"]["title"] = $title;
-    $feed["display_options"]["title"] = $title;
+    $default['display_options']['title'] = $title;
+    $feed['display_options']['title'] = $title;
 
     // Set validated and clean path.
     $display['display_options']['path'] = $path;
     $feed['display_options']['path'] = $path . '/feed';
 
-    $archive["display_options"]["arguments"]["created_year_month"]["summary_options"]["base_path"] = $path;
+    $archive['display_options']['arguments']['created_year_month']['summary_options']['base_path'] = $path;
 
     if ($show_archive == 1) {
-      $archive["display_options"]["enabled"] = TRUE;
+      $archive['display_options']['enabled'] = TRUE;
     }
     else {
-      $archive["display_options"]["enabled"] = FALSE;
+      $archive['display_options']['enabled'] = FALSE;
     }
 
     // Set header area content.
@@ -264,10 +263,10 @@ class SettingsForm extends ConfigFormBase {
 
     // Display feed icon.
     if ($show_feed) {
-      $feed["display_options"]["displays"]["page_articles"] = 'page_articles';
+      $feed['display_options']['displays']['page_articles'] = 'page_articles';
     }
     else {
-      $feed["display_options"]["displays"]["page_articles"] = '0';
+      $feed['display_options']['displays']['page_articles'] = '0';
     }
     $view->save();
 

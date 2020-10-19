@@ -223,7 +223,7 @@ function sitenow_people_preprocess_node(&$variables) {
       case 'person':
         switch ($variables['view_mode']) {
           case 'teaser':
-            // Heading needs to change based on placement. Defaults to h3 in twig.
+            // Heading needs to change by placement. Defaults to h3 in twig.
             $current_route = \Drupal::routeMatch();
             $route_name = $current_route->getRouteName();
             $variables['#cache']['contexts'][] = 'route.name';
@@ -391,12 +391,13 @@ function sitenow_people_preprocess_paragraph(&$variables) {
               $url = Url::fromUri($more_path[0]['uri']);
             }
 
-            // Check to see if other displays are enabled before setting more link.
+            // Only render more link if one other display is enabled.
             $displays = [
               'page_people_sfl',
               'page_people_slf',
               'page_people_table',
             ];
+
             foreach ($displays as $display) {
               if ($view->getDisplay($display)['display_options']['enabled'] == TRUE) {
                 $url = Url::fromRoute('view.people.' . $display);
@@ -561,12 +562,13 @@ function sitenow_people_preprocess_block(&$variables) {
             $url = Url::fromUri($more_path[0]['uri']);
           }
 
-          // Check to see if other displays are enabled before setting more link.
+          // Only render more link if one other display is enabled.
           $displays = [
             'page_people_sfl',
             'page_people_slf',
             'page_people_table',
           ];
+
           foreach ($displays as $display) {
             if ($view->getDisplay($display)['display_options']['enabled'] == TRUE) {
               $url = Url::fromRoute('view.people.' . $display);

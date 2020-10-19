@@ -12,7 +12,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Class MigratePostImportEvent.
+ * Event subscriber for post-import migrate event.
  *
  * @package Drupal\sitenow_migrate\EventSubscriber
  */

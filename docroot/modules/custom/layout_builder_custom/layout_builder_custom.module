@@ -13,12 +13,6 @@ use Drupal\layout_builder_styles\LayoutBuilderStyleInterface;
 
 /**
  * Implements hook_element_info_alter().
- *
- * This doesn't work because it is for changing broad-level definitions for how elements
- * are handled. It doesn't allow for setting the configuration for an individual element.
- *
- * @param array $types
- *   The types to be altered.
  */
 function layout_builder_custom_element_info_alter(array &$types) {
   $types['layout_builder']['#pre_render'][] = LayoutBuilderPreRender::class . '::preRender';
@@ -142,7 +136,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         '#weight' => 0,
       ];
 
-      // Change collection view_mode field to radios and remove the 'default' option.
+      // Change collection view_mode to radios and remove the 'default' option.
       if (isset($form['settings']['block_form']['#block'])
         && $form['settings']['block_form']['#block']->bundle() === 'uiowa_collection') {
         $form['settings']['view_mode']['#type'] = 'radios';
@@ -269,23 +263,19 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
       ];
       if ($background_option === 'image') {
         if (!$form_state->getValue($form_media_selection)) {
-          // If an image wasn't uploaded, revert back to a default selection of black.
+          // If an image wasn't uploaded, revert to default selection of black.
+          // @todo: Add feedback for user that they didn't upload an image.
+          // @todo: Add validation to check whether image uploaded or not.
           $background_option = 'block_background_style_black';
-
-          // @todo Add feedback for user about the fact that they didn't upload an image.
-          // @todo After we can figure out how we can present an indicator to the user that
-          //   the image field is required (when shown), add validation to check for whether
-          //   an image was uploaded or not.
         }
 
       }
       else {
         // If a non-image background was selected, remove the reference.
+        // @todo Trigger file deletion if the media item is unused elsewhere.
         $form_state->unsetValue($form_media_selection);
-
-        // @todo Do we need to trigger file deletion if the media item is unused elsewhere?
       }
-      // Set the layout_builder_style_background to the value of our duplicate select.
+      // Set layout_builder_style_background to value of our duplicate select.
       $form_state->setValue('layout_builder_style_background', $background_option);
     }
   }
