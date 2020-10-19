@@ -5,3 +5,9 @@ services:
     arguments: ['@current_user']
     tags:
       - { name: event_subscriber }
+
+  uiowa_aggregator.controller_alter:
+    class: Drupal\uiowa_aggregator\EventSubscriber\ControllerAlterSubscriber
+    arguments: ['@config.factory', '@date.formatter']
+    tags:
+      - { name: event_subscriber }
