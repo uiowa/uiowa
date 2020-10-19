@@ -12,12 +12,6 @@ use Drupal\layout_builder_styles\LayoutBuilderStyleInterface;
 
 /**
  * Implements hook_element_info_alter().
- *
- * This doesn't work because it is for changing broad-level definitions for how elements
- * are handled. It doesn't allow for setting the configuration for an individual element.
- *
- * @param array $types
- *   The types to be altered.
  */
 function layout_builder_custom_element_info_alter(array &$types) {
   $types['layout_builder']['#pre_render'][] = LayoutBuilderPreRender::class . '::preRender';
