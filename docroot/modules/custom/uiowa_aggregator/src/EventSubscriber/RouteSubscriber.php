@@ -14,8 +14,13 @@ class RouteSubscriber extends RouteSubscriberBase {
    * {@inheritdoc}
    */
   protected function alterRoutes(RouteCollection $collection) {
-    // Remove OPML access until we know what this is.
+    // Remove non-admin OPML access until we know what this is.
     if ($route = $collection->get('aggregator.opml_add')) {
+      $route->setRequirement('_uiowa_core_access_check', 'TRUE');
+    }
+
+    // Remove non-admin access to aggregator settings.
+    if ($route = $collection->get('aggregator.admin_settings')) {
       $route->setRequirement('_uiowa_core_access_check', 'TRUE');
     }
 
