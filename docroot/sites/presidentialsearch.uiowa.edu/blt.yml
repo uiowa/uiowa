@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: presidentialsearch.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: presidentialsearch
+  human_name: presidentialsearch.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: presidentialsearch.prod
+drupal:
+  db:
+    database: presidentialsearch_uiowa_edu
+uiowa:
+  requester: bosto
