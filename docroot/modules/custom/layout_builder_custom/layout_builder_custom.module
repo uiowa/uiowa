@@ -44,6 +44,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       $component = $form_state->getFormObject()->getCurrentComponent();
       $block = $component->getPlugin();
 
+      $styles_exist = FALSE;
+
       // LB style options that should be set to '#multiple' => FALSE.
       $single_select_options = [
         'background',
@@ -60,21 +62,6 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         'headline_type',
       ];
 
-      // Create an element to delineate the layout builder styles form section.
-      $form['lbs_heading'] = [
-        '#type' => 'container',
-        '#attributes' => [
-          'class' => [
-            'layout-builder-style-heading'
-          ]
-        ],
-        'markup' => [
-          '#prefix' => '<span>',
-          '#markup' => t('Appearance'),
-          '#suffix' => '</span>',
-        ],
-      ];
-
       // Loop through layout builder style groups.
       $groups = LayoutBuilderStyleGroups::getGroups();
 
@@ -82,6 +69,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         $lbs = 'layout_builder_style_' . $group;
 
         if (isset($form[$lbs])) {
+          $styles_exist = TRUE;
           $form[$lbs]['#attributes']['class'][] = 'layout-builder-style';
 
           if (in_array($group, $single_select_options)) {
@@ -94,6 +82,23 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             unset($form[$lbs]['#empty_option']);
           }
         }
+      }
+
+      if ($styles_exist) {
+        // Create an element to delineate the layout builder styles form section.
+        $form['lbs_heading'] = [
+          '#type' => 'container',
+          '#attributes' => [
+            'class' => [
+              'layout-builder-style-heading'
+            ]
+          ],
+          'markup' => [
+            '#prefix' => '<span>',
+            '#markup' => t('Appearance'),
+            '#suffix' => '</span>',
+          ],
+        ];
       }
 
       // Always set title field to not be required.
