@@ -303,7 +303,7 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
         // @todo Trigger file deletion if the media item is unused elsewhere.
         $form_state->unsetValue($form_media_selection);
       }
-      // Set the layout_builder_style_background to the value of our duplicate select.
+      // Set layout_builder_style_background to value of our duplicate select.
       $form_state->setValue('layout_builder_style_background', $background_option);
     }
   }
