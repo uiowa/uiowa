@@ -1721,3 +1721,9 @@ $sites['sandbox.local.drupal.uiowa.edu'] = 'sandbox.uiowa.edu';
 $sites['sandbox.dev.drupal.uiowa.edu'] = 'sandbox.uiowa.edu';
 $sites['sandbox.stage.drupal.uiowa.edu'] = 'sandbox.uiowa.edu';
 $sites['sandbox.prod.drupal.uiowa.edu'] = 'sandbox.uiowa.edu';
+
+// Directory aliases for media.journalism.uiowa.edu.
+$sites['journalismmedia.local.drupal.uiowa.edu'] = 'media.journalism.uiowa.edu';
+$sites['journalismmedia.dev.drupal.uiowa.edu'] = 'media.journalism.uiowa.edu';
+$sites['journalismmedia.stage.drupal.uiowa.edu'] = 'media.journalism.uiowa.edu';
+$sites['journalismmedia.prod.drupal.uiowa.edu'] = 'media.journalism.uiowa.edu';
