@@ -35,7 +35,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       // Add custom process callback for certain blocks to alter form elements.
       $form['settings']['block_form']['#process'][] = '_layout_builder_custom_process_element';
 
-      // Add our a heading before style options.
+      // Add our LBS heading before style options.
       _layout_builder_custom_add_lbs_heading($form);
 
       // LB style options that should be set to '#multiple' => FALSE.
@@ -160,7 +160,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       break;
 
     case 'layout_builder_configure_section':
-      // Add our a heading before style options.
+      // Add our LBS heading before style options.
       _layout_builder_custom_add_lbs_heading($form);
 
       $single_select_groups = [
