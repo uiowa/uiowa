@@ -61,8 +61,6 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         $lbs = 'layout_builder_style_' . $group;
 
         if (isset($form[$lbs])) {
-          $form[$lbs]['#attributes']['class'][] = 'layout-builder-style';
-
           if (in_array($group, $single_select_options)) {
             // Make the background option single select only.
             $form[$lbs]['#multiple'] = FALSE;
