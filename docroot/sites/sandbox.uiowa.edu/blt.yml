@@ -1,0 +1,13 @@
+project:
+  local:
+    hostname: sandbox.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: sandbox
+  human_name: sandbox.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sandbox.prod
+drupal:
+  db:
+    database: sandbox_uiowa_edu
