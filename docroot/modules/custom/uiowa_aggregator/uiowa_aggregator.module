@@ -12,27 +12,14 @@ use Drupal\Core\Render\Element;
  * Implements hook_form_FORM_ID_alter().
  */
 function uiowa_aggregator_form_aggregator_admin_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
-  $check = \Drupal::service('uiowa_core.access_checker');
+  // Replace never from aggregator cleanup options with 6 months. Keeping
+  // items forever has potential to create very large database tables.
+  unset($form['processors']['aggregator']['aggregator_clear']['#options'][0]);
+  $form['processors']['aggregator']['aggregator_clear']['#options'][15552000] = t('6 months');
 
-  /** @var Drupal\Core\Access\AccessResultInterface $is_admin */
-  $access = $check->access(\Drupal::currentUser()->getAccount());
-
-  if ($access->isForbidden()) {
-    $form['aggregator_allowed_html_tags']['#disabled'] = TRUE;
-    $form['aggregator_allowed_html_tags']['#description'] .= t('&nbsp;<em>This field has been disabled for security reasons.</em>');
-
-    // Remove never from aggregator cleanup options as that table could get big.
-    unset($form['processors']['aggregator']['aggregator_clear']['#options'][0]);
-    $form['processors']['aggregator']['aggregator_clear']['#description'] = t('<em>Items cannot be kept indefinitely for performance reasons.</em>');
-
-    // Remove access to aggregator summary items to avoid confusion with block.
-    $form['processors']['aggregator']['aggregator_summary_items']['#access'] = FALSE;
-
-    // Remove access to aggregator teaser length as it does nothing.
-    // @see: https://www.drupal.org/project/drupal/issues/2283877
-    $form['processors']['aggregator']['aggregator_teaser_length']['#access'] = FALSE;
-  }
+  // Remove access to aggregator teaser length as it does nothing!
+  // @see: https://www.drupal.org/project/drupal/issues/2283877
+  $form['processors']['aggregator']['aggregator_teaser_length']['#access'] = FALSE;
 }
 
 /**
