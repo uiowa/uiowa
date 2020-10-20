@@ -1362,3 +1362,14 @@ function sitenow_update_8035() {
     }
   }
 }
+
+/**
+ * Remove deprecated layout options config.
+ */
+function sitenow_update_8036() {
+  \Drupal::configFactory()
+    ->getEditable('uids_base.settings')
+    ->clear('layout')
+    ->clear('uids_base.layout')
+    ->save();
+}
