@@ -31,12 +31,14 @@ class UiowaHeadlineFormatter extends FormatterBase {
         'headline_bold_serif_underline' => 'headline bold-headline bold-headline--serif bold-headline--underline',
       ];
       $hidden = ($item->get('hide_headline')->getValue()) ? ' sr-only' : '';
+      $item_style = isset($styles[$item->get('headline_style')->getValue()]) ?
+        $styles[$item->get('headline_style')->getValue()] . $hidden : $hidden;
 
       $element[$delta] = [
         '#theme' => 'uiowa_headline_field_type',
         '#text' => strip_tags($item->get('headline')->getValue()),
         '#size' => $item->get('heading_size')->getValue(),
-        '#styles' => $styles[$item->get('headline_style')->getValue()] . $hidden,
+        '#styles' => $item_style,
       ];
     }
 
