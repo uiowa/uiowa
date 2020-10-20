@@ -54,6 +54,7 @@
   {% set content_classes = content_classes|merge(['content__container']) %}
 {% else %}
   {{ attach_library('uids_base/sitenow') }}
+  {% set content_classes = content_classes|merge(['page__container']) %}
   {# Add sticky classes #}
   {% if sticky_classes %}
     {% set content_classes = content_classes|merge(sticky_classes) %}
