@@ -533,7 +533,6 @@ EOD;
     $sites = Multisite::getAllSites($root);
 
     foreach ($sites as $site) {
-      $id = Multisite::getIdentifier("https://{$site}");
       $file = "{$root}/docroot/sites/{$site}/blt.yml";
 
       $yaml = YamlMunge::parseFile($file);

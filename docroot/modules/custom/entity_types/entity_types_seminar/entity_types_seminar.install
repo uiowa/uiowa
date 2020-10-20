@@ -24,7 +24,7 @@ function entity_types_seminar_install() {
     'Campus',
   ];
   foreach ($items as $item) {
-    $term = Term::create([
+    Term::create([
       'parent' => [],
       'name' => $item,
       'vid' => $vocab,
