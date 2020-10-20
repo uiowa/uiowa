@@ -362,9 +362,29 @@ function uids_base_preprocess_block(&$variables) {
 
     }
   }
+  if ($variables['derivative_plugin_id'] === 'uiowa_card') {
+    if (isset($variables['elements']) && isset($variables['elements']['#layout_builder_style'])) {
+      // Map the layout builder styles to the view mode that should be used.
+      $media_formats = [
+        'media--large-widescreen' => 'large__widescreen',
+        'media--square' => 'large__square',
+        'media--circle' => 'large__square',
+      ];
+
+      // Loop through the map to check if any of them are being used and
+      // adjust the view mode accordingly.
+      foreach ($media_formats as $style => $view_mode) {
+        if (in_array($style, $variables['elements']['#layout_builder_style'])) {
+          $variables['content']['field_uiowa_card_image'][0]['#view_mode'] = $view_mode;
+          // We only want this to execute once.
+          break;
+        }
+      }
+    }
+  }
 
   // Add the system breadcrumb to the page title hero block.
-  if ($variables['derivative_plugin_id'] === 'uiowa_page_title_hero') {
+  elseif ($variables['derivative_plugin_id'] === 'uiowa_page_title_hero') {
     $block_manager = \Drupal::service('plugin.manager.block');
     $config = [];
     $plugin_block = $block_manager->createInstance('system_breadcrumb_block', $config);
