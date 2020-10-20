@@ -9,7 +9,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\path_alias\AliasRepositoryInterface;
 use Drupal\pathauto\AliasCleanerInterface;
 use Drupal\pathauto\PathautoGenerator;
-use Drupal\views\Entity\View;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -102,7 +101,7 @@ class SettingsForm extends ConfigFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildForm($form, $form_state);
-    $view = View::load('people');
+    $view = $this->entityTypeManager->getStorage('view')->load('people');
 
     // Setup sort options by getting all displays.
     $displays = $view->get('display');
@@ -210,7 +209,7 @@ class SettingsForm extends ConfigFormBase {
     $path = $this->aliasCleaner->cleanString($path);
 
     // Load people listing view.
-    $view = View::load('people');
+    $view = $this->entityTypeManager->getStorage('view')->load('people');
 
     // For all displays but Master, disable and set path.
     $displays = $view->get('display');
