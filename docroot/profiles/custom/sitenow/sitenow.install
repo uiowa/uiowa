@@ -1373,3 +1373,17 @@ function sitenow_update_8036() {
     ->clear('uids_base.layout')
     ->save();
 }
+
+/**
+ * Deactivate the grad site split from every site except grad.uiowa.edu.
+ */
+function sitenow_update_8037() {
+  if (\Drupal::service('site.path') != 'sites/grad.uiowa.edu') {
+    \Drupal::configFactory()
+      ->getEditable('config_split.config_split.site_grad_uiowa_edu.settings')
+      ->set('status', FALSE)
+      ->save();
+  }
+
+  drupal_flush_all_caches();
+}
