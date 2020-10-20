@@ -1,4 +1,7 @@
 services:
+  logger.channel.uiowa_core:
+    parent: logger.channel_base
+    arguments: [ 'uiowa_core' ]
   uiowa_core.route_subscriber:
     class: 'Drupal\uiowa_core\Routing\UiowaCoreRouteSubscriber'
     tags:
@@ -7,4 +10,4 @@ services:
     class: Drupal\uiowa_core\Access\UiowaCoreAccess
     arguments: ['@current_user']
     tags:
-      - {name: access_check, applies_to: _uiowa_core_access_check}
+      - { name: access_check, applies_to: _uiowa_core_access_check }

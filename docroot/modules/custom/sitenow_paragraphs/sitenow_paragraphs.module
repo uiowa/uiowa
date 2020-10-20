@@ -66,7 +66,7 @@ function sitenow_paragraphs_field_widget_paragraphs_form_alter(&$element, FormSt
     }
   }
 
-  // Show clean unique id so editors know what to target without inspecting source.
+  // Show clean unique ID so editors know what to target.
   if (isset($element['subform']['field_uip_id'])) {
     $element['subform']['field_uip_id']['widget'][0]['value']['#ajax'] = [
       'callback' => 'show_clean_unique_id',
