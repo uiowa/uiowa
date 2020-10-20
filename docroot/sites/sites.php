@@ -1715,3 +1715,21 @@ $sites['csomaycenter.local.drupal.uiowa.edu'] = 'csomaycenter.uiowa.edu';
 $sites['csomaycenter.dev.drupal.uiowa.edu'] = 'csomaycenter.uiowa.edu';
 $sites['csomaycenter.stage.drupal.uiowa.edu'] = 'csomaycenter.uiowa.edu';
 $sites['csomaycenter.prod.drupal.uiowa.edu'] = 'csomaycenter.uiowa.edu';
+
+// Directory aliases for presidentialsearch.uiowa.edu.
+$sites['presidentialsearch.local.drupal.uiowa.edu'] = 'presidentialsearch.uiowa.edu';
+$sites['presidentialsearch.dev.drupal.uiowa.edu'] = 'presidentialsearch.uiowa.edu';
+$sites['presidentialsearch.stage.drupal.uiowa.edu'] = 'presidentialsearch.uiowa.edu';
+$sites['presidentialsearch.prod.drupal.uiowa.edu'] = 'presidentialsearch.uiowa.edu';
+
+// Directory aliases for sandbox.uiowa.edu.
+$sites['sandbox.local.drupal.uiowa.edu'] = 'sandbox.uiowa.edu';
+$sites['sandbox.dev.drupal.uiowa.edu'] = 'sandbox.uiowa.edu';
+$sites['sandbox.stage.drupal.uiowa.edu'] = 'sandbox.uiowa.edu';
+$sites['sandbox.prod.drupal.uiowa.edu'] = 'sandbox.uiowa.edu';
+
+// Directory aliases for media.journalism.uiowa.edu.
+$sites['journalismmedia.local.drupal.uiowa.edu'] = 'media.journalism.uiowa.edu';
+$sites['journalismmedia.dev.drupal.uiowa.edu'] = 'media.journalism.uiowa.edu';
+$sites['journalismmedia.stage.drupal.uiowa.edu'] = 'media.journalism.uiowa.edu';
+$sites['journalismmedia.prod.drupal.uiowa.edu'] = 'media.journalism.uiowa.edu';
