@@ -65,25 +65,6 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
       ],
     ],
   ];
-  $form['layout'] = [
-    '#type' => 'details',
-    '#title' => t('Layout options'),
-    '#description' => t('Choose different layout options.'),
-    '#weight' => -999,
-    '#open' => TRUE,
-    '#tree' => TRUE,
-  ];
-  $form['layout']['container'] = [
-    '#type' => 'select',
-    '#title' => t('Container Settings'),
-    '#description' => t('Select an option'),
-    '#options' => [
-      'page__container' => t('Container (default)'),
-      'page__container--full' => t('Full Width'),
-      'page__container--mixed' => t('Full Width (Header Only)'),
-    ],
-    '#default_value' => theme_get_setting('layout.container'),
-  ];
 
   $form['theme_settings']['#open'] = FALSE;
   $form['favicon']['#open'] = TRUE;
