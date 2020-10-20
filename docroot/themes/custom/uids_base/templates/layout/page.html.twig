@@ -51,18 +51,10 @@
 {% set content_classes = [] %}
 
 {% if layout_builder_enabled == TRUE %}
-  {# Set layout builder UI classes #}
-  {% if layout_container == 'page__container' %}
-    {% set content_classes = content_classes|merge(['content__container']) %}
-  {% elseif layout_container == 'page__container--mixed' %}
-    {% set content_classes = content_classes|merge(['content__mixed']) %}
-  {% else %}
-    {% set content_classes = content_classes|merge(['content__full']) %}
-  {% endif %}
+  {% set content_classes = content_classes|merge(['content__container']) %}
 {% else %}
   {{ attach_library('uids_base/sitenow') }}
-  {# Use classes defined in theme and add sticky classes #}
-  {% set content_classes = content_classes|merge([layout_container]) %}
+  {# Add sticky classes #}
   {% if sticky_classes %}
     {% set content_classes = content_classes|merge(sticky_classes) %}
   {% endif %}

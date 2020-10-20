@@ -7,7 +7,7 @@ use Drupal\migrate\Event\MigrateEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Class PostRowSaveEvent.
+ * Event subscriber for post-row save migrate event.
  *
  * @package Drupal\sitenow_migrate\EventSubscriber
  */
