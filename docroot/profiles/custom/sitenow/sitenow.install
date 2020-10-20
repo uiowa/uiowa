@@ -1380,7 +1380,7 @@ function sitenow_update_8036() {
 function sitenow_update_8037() {
   if (\Drupal::service('site.path') != 'sites/grad.uiowa.edu') {
     \Drupal::configFactory()
-      ->getEditable('config_split.config_split.site_grad_uiowa_edu.settings')
+      ->getEditable('config_split.config_split.site_grad_uiowa_edu')
       ->set('status', FALSE)
       ->save();
   }
