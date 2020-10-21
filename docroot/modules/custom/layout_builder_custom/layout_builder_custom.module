@@ -64,11 +64,18 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           'remove_none' => TRUE,
           'default' => 'headline_bold_serif',
         ],
+        'image_size' => [
+          'single' => TRUE,
+        ],
         'media_format' => [
           'single' => TRUE,
+          'remove_none' => TRUE,
+          'default' => 'media_format_widescreen',
         ],
         'media_position' => [
           'single' => TRUE,
+          'remove_none' => TRUE,
+          'default' => 'media_position_left',
         ],
       ];
 
