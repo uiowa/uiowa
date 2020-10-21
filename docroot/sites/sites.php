@@ -1739,3 +1739,9 @@ $sites['labmccleery.local.drupal.uiowa.edu'] = 'mccleery.lab.uiowa.edu';
 $sites['labmccleery.dev.drupal.uiowa.edu'] = 'mccleery.lab.uiowa.edu';
 $sites['labmccleery.stage.drupal.uiowa.edu'] = 'mccleery.lab.uiowa.edu';
 $sites['labmccleery.prod.drupal.uiowa.edu'] = 'mccleery.lab.uiowa.edu';
+
+// Directory aliases for italymba.tippie.uiowa.edu.
+$sites['tippieitalymba.local.drupal.uiowa.edu'] = 'italymba.tippie.uiowa.edu';
+$sites['tippieitalymba.dev.drupal.uiowa.edu'] = 'italymba.tippie.uiowa.edu';
+$sites['tippieitalymba.stage.drupal.uiowa.edu'] = 'italymba.tippie.uiowa.edu';
+$sites['tippieitalymba.prod.drupal.uiowa.edu'] = 'italymba.tippie.uiowa.edu';
