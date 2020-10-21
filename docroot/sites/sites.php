@@ -1745,3 +1745,9 @@ $sites['tippieitalymba.local.drupal.uiowa.edu'] = 'italymba.tippie.uiowa.edu';
 $sites['tippieitalymba.dev.drupal.uiowa.edu'] = 'italymba.tippie.uiowa.edu';
 $sites['tippieitalymba.stage.drupal.uiowa.edu'] = 'italymba.tippie.uiowa.edu';
 $sites['tippieitalymba.prod.drupal.uiowa.edu'] = 'italymba.tippie.uiowa.edu';
+
+// Directory aliases for obgynnewsletter.sites.uiowa.edu.
+$sites['sitesobgynnewsletter.local.drupal.uiowa.edu'] = 'obgynnewsletter.sites.uiowa.edu';
+$sites['sitesobgynnewsletter.dev.drupal.uiowa.edu'] = 'obgynnewsletter.sites.uiowa.edu';
+$sites['sitesobgynnewsletter.stage.drupal.uiowa.edu'] = 'obgynnewsletter.sites.uiowa.edu';
+$sites['sitesobgynnewsletter.prod.drupal.uiowa.edu'] = 'obgynnewsletter.sites.uiowa.edu';
