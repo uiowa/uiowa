@@ -11,11 +11,9 @@ dependencies:
     - field.field.node.page.field_teaser
     - field.field.node.page.layout_builder__layout
     - node.type.page
-    - system.menu.main
   module:
     - layout_builder
     - layout_builder_restrictions
-    - menu_block
     - system
     - text
     - user
@@ -121,48 +119,25 @@ third_party_settings:
               6: 6
               8: 8
       -
-        layout_id: layout_page
+        layout_id: layout_onecol
         layout_settings:
-          label: Content
+          label: 'Main content'
         components:
           -
-            uuid: c8d974cb-667f-4e0d-8716-d2a77004e0e1
-            region: sidebar
-            configuration:
-              id: 'menu_block:main'
-              label: 'Main navigation'
-              provider: menu_block
-              label_display: '0'
-              follow: 1
-              follow_parent: '0'
-              level: 2
-              depth: 0
-              expand: 0
-              parent: 'main:'
-              suggestion: main
-              context_mapping: {  }
-            additional:
-              layout_builder_styles_style:
-                block_menu_vertical: block_menu_vertical
-            weight: 0
-          -
-            uuid: e6fa78b4-cacc-4d27-baa3-f29dde0b845b
+            uuid: a1d1b5c4-e9c0-4117-aa69-95747061ebbc
             region: content
             configuration:
-              id: 'field_block:node:page:body'
-              label: Body
-              provider: layout_builder
               label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:page:body'
               formatter:
                 label: hidden
                 type: text_default
                 settings: {  }
                 third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
             additional: {  }
-            weight: -9
+            weight: 0
         third_party_settings: {  }
   layout_builder_restrictions:
     entity_view_mode_restriction:
@@ -172,25 +147,37 @@ third_party_settings:
         - layout_twocol
         - layout_threecol
         - layout_fourcol
-        - layout_page
       whitelisted_blocks:
         'Chaos Tools': {  }
         'Content fields':
+          - 'field_block:node:page:uid'
+          - 'field_block:node:page:created'
           - 'field_block:node:page:body'
+          - 'field_block:node:page:changed'
+          - 'field_block:node:page:field_teaser'
+          - 'field_block:node:page:field_image'
+          - 'extra_field_block:node:page:links'
+          - 'extra_field_block:node:page:content_moderation_control'
+          - 'field_block:node:page:field_tags'
+          - 'field_block:node:page:title'
+          - 'field_block:user:user:changed'
+          - 'field_block:user:user:created'
         'Custom blocks': {  }
         Devel: {  }
         Forms: {  }
-        'Lists (Views)': {  }
         Menus:
           - 'menu_block:main'
           - 'system_menu_block:main'
         Superfish: {  }
-        System: {  }
+        System:
+          - system_breadcrumb_block
+          - system_main_block
         'University of Iowa Alerts': {  }
         User: {  }
         Webform:
           - webform_block
-        core: {  }
+        core:
+          - page_title_block
       blacklisted_blocks:
         'Custom block types':
           - uiowa_page_title_hero
@@ -198,6 +185,9 @@ third_party_settings:
         'Inline blocks':
           - 'inline_block:uiowa_page_title_hero'
           - 'inline_block:uiowa_spacer_separator'
+        'Lists (Views)':
+          - 'views_block:content_recent-block_1'
+          - 'views_block:who_s_online-who_s_online_block'
     allowed_block_categories:
       - 'Admissions Core'
       - 'Chaos Tools'
@@ -221,7 +211,6 @@ third_party_settings:
         - layout_twocol
         - layout_threecol
         - layout_fourcol
-        - layout_page
       blacklisted_blocks:
         layout_onecol: {  }
         layout_twocol:
@@ -241,14 +230,6 @@ third_party_settings:
               - 'inline_block:uiowa_hero'
               - 'inline_block:uiowa_slider'
         layout_fourcol:
-          all_regions:
-            'Custom block types':
-              - uiowa_hero
-              - uiowa_slider
-            'Inline blocks':
-              - 'inline_block:uiowa_hero'
-              - 'inline_block:uiowa_slider'
-        layout_page:
           all_regions:
             'Custom block types':
               - uiowa_hero
