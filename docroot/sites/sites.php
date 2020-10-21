@@ -1733,3 +1733,9 @@ $sites['journalismmedia.local.drupal.uiowa.edu'] = 'media.journalism.uiowa.edu';
 $sites['journalismmedia.dev.drupal.uiowa.edu'] = 'media.journalism.uiowa.edu';
 $sites['journalismmedia.stage.drupal.uiowa.edu'] = 'media.journalism.uiowa.edu';
 $sites['journalismmedia.prod.drupal.uiowa.edu'] = 'media.journalism.uiowa.edu';
+
+// Directory aliases for mccleery.lab.uiowa.edu.
+$sites['labmccleery.local.drupal.uiowa.edu'] = 'mccleery.lab.uiowa.edu';
+$sites['labmccleery.dev.drupal.uiowa.edu'] = 'mccleery.lab.uiowa.edu';
+$sites['labmccleery.stage.drupal.uiowa.edu'] = 'mccleery.lab.uiowa.edu';
+$sites['labmccleery.prod.drupal.uiowa.edu'] = 'mccleery.lab.uiowa.edu';

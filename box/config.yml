@@ -1222,6 +1222,10 @@ apache_vhosts:
     servername: presidentialsearch.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: labmccleery.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
 
 # Multisite installations should configure additional databases here.
 # It's recommended to prefix database names with 'drupal'. Otherwise,
@@ -1271,7 +1275,7 @@ php_packages_extra:
 # XDebug configuration.
 php_xdebug_default_enable: 1
 php_xdebug_cli_disable: no
-php_xdebug_remote_autostart: 1
+php_xdebug_remote_autostart: 0
 php_memory_limit: 512M
 solr_version: 4.5.1
 
