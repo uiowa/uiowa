@@ -112,7 +112,7 @@ function uiowa_aggregator_preprocess_block(&$variables) {
     }
     else {
       $variables['content']['no_results'] = [
-        '#markup' => $block->get('field_uiowa_aggregator_text')->getString(),
+        '#markup' => $block->get('field_uiowa_aggregator_text')->first()->value,
         '#prefix' => '<div class="uiowa-aggregator-no-results">',
         '#suffix' => '</div>',
       ];
