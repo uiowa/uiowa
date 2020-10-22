@@ -48,6 +48,36 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
       }
     }
 
+    // For cards, we are going to programmatically set the view mode for
+    // the image field. This is necessary to allow selection of different
+    // image formats.
+    if (isset($build['#derivative_plugin_id']) && $build['#derivative_plugin_id'] === 'uiowa_card') {
+      if (isset($build['#layout_builder_style'])) {
+        // Map the layout builder styles to the view mode that should be used.
+        $media_formats = [
+          'media--large-widescreen' => 'large__widescreen',
+          'media--square' => 'large__square',
+          'media--circle' => 'large__square',
+        ];
+
+        // Loop through the map to check if any of them are being used and
+        // adjust the view mode accordingly.
+        foreach ($media_formats as $style => $view_mode) {
+          if (in_array($style, $build['#layout_builder_style'])) {
+            // Change the view mode to match the format.
+            $build['content']['field_uiowa_card_image'][0]['#view_mode'] = $view_mode;
+            // Important: Delete the cache keys to prevent this from being applied to
+            // all the instances of the same image.
+            if (isset($build['content']['field_uiowa_card_image'][0]['#cache']) && isset($build['content']['field_uiowa_card_image'][0]['#cache']['keys'])) {
+              unset($build['content']['field_uiowa_card_image'][0]['#cache']['keys']);
+            }
+            // We only want this to execute once.
+            break;
+          }
+        }
+      }
+    }
+
     $event->setBuild($build);
   }
 
