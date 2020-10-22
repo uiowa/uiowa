@@ -391,21 +391,6 @@ function uids_base_preprocess_block(&$variables) {
 
 }
 
-function uids_base_preprocess_responsive_image_formatter(&$variables) {
-  // get the imagefield's parent entity
-  $parentEntity = $variables['item']->getEntity();
-
-  // this line is only needed if using media entities (= entity references)
-  // must disable entity view caching to work correctly
-  $parentEntity = $parentEntity->_referringItem->getEntity();
-
-  // @todo Check if $parentEntity is an instance of the BlockContent interface
-  // @todo Check if $parentEntity is 'uiowa_card' type of block.
-  // @todo Get the LB styles associated with the block.
-  // @todo If the card has the media_format_circle style, add the appropriate class
-  //   to $variables['responsive_image']['#attributes']['class']
-}
-
 /**
  * Implements hook_preprocess_HOOK() for block_content__uiowa_collection__tab.html.twig.
  */
