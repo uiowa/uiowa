@@ -1,0 +1,25 @@
+@import "assets/scss/_variables.scss";
+@import "assets/scss/_utilities.scss";
+
+.block-inline-blockuiowa-aggregator {
+  &.hide-images {
+    .events-card__image {
+      display: none;
+    }
+  }
+
+  .bg-pattern--brain-reversed &,
+  .bg--gold & {
+    .more-link {
+      color: $secondary;
+      background: transparent;
+    }
+  }
+
+  .bg-pattern--brain-black &,
+  .bg--black & {
+    .more-link {
+      color: $primary;
+    }
+  }
+}
