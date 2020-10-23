@@ -58,7 +58,6 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
           'media--large-widescreen' => 'large__widescreen',
           'media--square' => 'large__square',
           'media--circle' => 'large__square',
-          'media--circle media--border' => 'large__square',
         ];
 
         // Loop through the map to check if any of them are being used and
