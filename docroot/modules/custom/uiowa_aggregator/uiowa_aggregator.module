@@ -1,0 +1,140 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for uiowa_aggregator module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function uiowa_aggregator_form_aggregator_admin_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Replace never from aggregator cleanup options with 6 months. Keeping
+  // items forever has potential to create very large database tables.
+  unset($form['processors']['aggregator']['aggregator_clear']['#options'][0]);
+  $form['processors']['aggregator']['aggregator_clear']['#options'][15552000] = t('6 months');
+
+  // Remove access to aggregator teaser length as it does nothing!
+  // @see: https://www.drupal.org/project/drupal/issues/2283877
+  $form['processors']['aggregator']['aggregator_teaser_length']['#access'] = FALSE;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function uiowa_aggregator_form_aggregator_feed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+  $check = \Drupal::service('uiowa_core.access_checker');
+
+  /** @var Drupal\Core\Access\AccessResultInterface $is_admin */
+  $access = $check->access(\Drupal::currentUser()->getAccount());
+
+  // Set the minimum feed refresh to match our hourly cron job so that
+  // webmasters aren't confused as to why its not refreshing sooner. Admins can
+  // set this to whatever assuming they set up a custom job to run more often.
+  if ($access->isForbidden()) {
+    foreach ($form['refresh']['widget']['#options'] as $key => $value) {
+      if ($key !== 0 && $key < 3600) {
+        unset($form['refresh']['widget']['#options'][$key]);
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uiowa_aggregator_preprocess_block(&$variables) {
+  if ($variables['elements']['#plugin_id'] == 'inline_block:uiowa_aggregator') {
+    /** @var \Drupal\Block\Entity\Block $block */
+    $block = $variables['elements']['content']['#block_content'];
+
+    if ($block->hasField('field_uiowa_headline')) {
+      $headline_fields = $block->get('field_uiowa_headline')->getValue();
+      foreach ($headline_fields as $headline_field) {
+        // There isn't a headline, so set the children to this heading size.
+        if (empty($headline_field['headline'])) {
+          $heading_size = $headline_field['child_heading_size'];
+        }
+        else {
+          $options = [
+            'h2' => 'h3',
+            'h3' => 'h4',
+            'h4' => 'h5',
+            'h5' => 'h6',
+            'h6' => 'h6',
+          ];
+
+          $heading_size = $options[$headline_field['heading_size']];
+        }
+      }
+    }
+
+    $feeds = [];
+
+    foreach ($block->get('field_uiowa_aggregator_feeds')->getIterator() as $list_string_item) {
+      $feeds[] = $list_string_item->getString();
+    }
+
+    $count = $block->get('field_uiowa_aggregator_count')->getString();
+
+    $result = \Drupal::entityTypeManager()->getStorage('aggregator_item')->getQuery()
+      ->condition('fid', $feeds, 'IN')
+      ->range(0, $count)
+      ->sort('timestamp', 'DESC')
+      ->sort('iid', 'DESC')
+      ->execute();
+
+    $variables['content']['aggregator'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => [
+          'aggregator-wrapper',
+          'uiowa-aggregator',
+        ],
+      ],
+    ];
+
+    if ($result) {
+      $variables['content']['aggregator']['feed_source'] = ['#markup' => ''];
+      $items = \Drupal::entityTypeManager()->getStorage('aggregator_item')->loadMultiple($result);
+
+      if ($items) {
+        $variables['content']['aggregator']['items'] = \Drupal::entityTypeManager()->getViewBuilder('aggregator_item')->viewMultiple($items, 'default');
+
+        foreach (Element::children($variables['content']['aggregator']['items']) as $child) {
+          $variables['content']['aggregator']['items'][$child]['#heading_size'] = $heading_size ?? 'h3';
+        }
+      }
+    }
+    else {
+      $variables['content']['no_results'] = [
+        '#markup' => $block->get('field_uiowa_aggregator_text')->first()->value,
+        '#prefix' => '<div class="uiowa-aggregator-no-results">',
+        '#suffix' => '</div>',
+      ];
+    }
+
+    $variables['#attached']['feed'][] = [
+      'aggregator/rss',
+      \Drupal::configFactory()->get('system.site')->get('name') . ' ' . t('aggregator'),
+    ];
+  }
+}
+
+/**
+ * Allowed values callback for uiowa_aggregator_feeds field.
+ */
+function _uiowa_aggregator_get_feeds() {
+  $feeds = \Drupal::entityTypeManager()->getStorage('aggregator_feed')->loadMultiple();
+  $options = [];
+
+  foreach ($feeds as $feed) {
+    $options[$feed->id()] = $feed->label();
+  }
+
+  return $options;
+}
