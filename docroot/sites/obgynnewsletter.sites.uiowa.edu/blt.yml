@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: sitesobgynnewsletter.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: sitesobgynnewsletter
+  human_name: obgynnewsletter.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesobgynnewsletter.prod
+drupal:
+  db:
+    database: obgynnewsletter_sites_uiowa_edu
+uiowa:
+  requester: ghoeksema

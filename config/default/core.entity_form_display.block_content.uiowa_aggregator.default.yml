@@ -1,0 +1,54 @@
+uuid: b654e3c2-33e7-481b-9601-d08dba83c1bf
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_aggregator
+    - field.field.block_content.uiowa_aggregator.field_uiowa_aggregator_count
+    - field.field.block_content.uiowa_aggregator.field_uiowa_aggregator_feeds
+    - field.field.block_content.uiowa_aggregator.field_uiowa_aggregator_text
+    - field.field.block_content.uiowa_aggregator.field_uiowa_headline
+  module:
+    - layout_builder_custom
+    - text
+id: block_content.uiowa_aggregator.default
+targetEntityType: block_content
+bundle: uiowa_aggregator
+mode: default
+content:
+  field_uiowa_aggregator_count:
+    weight: 28
+    settings:
+      placeholder: '5'
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_uiowa_aggregator_feeds:
+    weight: 27
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_uiowa_aggregator_text:
+    weight: 29
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_uiowa_headline:
+    weight: 26
+    settings: {  }
+    third_party_settings: {  }
+    type: uiowa_headline_widget
+    region: content
+  info:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }
