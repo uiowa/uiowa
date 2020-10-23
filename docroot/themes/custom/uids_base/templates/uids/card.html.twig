@@ -2,6 +2,7 @@
 {{ attach_library('uids_base/media') }}
 {% set attributes = attributes ?: create_attribute() %}
 {% set card_classes = ['card'] %}
+{% set media_attributes = media_attributes ?: create_attribute() %}
 
 {# The following code is to determine where a link should be attached, if it exists. #}
 {% set link_element, show_button = false, false %}
@@ -38,7 +39,7 @@
   {% block card_img %}
     {% if card_image is not empty %}
       {# @todo Add image template #}
-      <div class="card__media">
+      <div {{ media_attributes.addClass(media_classes, 'card__media') }}>
         {% if link_element == 'image' %}
         <a href="{{ card_link_url }}">
           {% endif %}

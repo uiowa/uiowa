@@ -25,9 +25,19 @@
 * @see template_preprocess_block()
 */
 #}
+{% set styles = elements['#layout_builder_style'] %}
+{% set style_classes = [] %}
+
+{% for style in styles %}
+	{# Remove media classes if media--circle  #}
+	{% if style starts with 'media--circle' %}
+		{% set style_classes = style_classes|merge([style]) %}
+	{% endif %}
+{% endfor %}
 
 {% set block_card = {
-  'attributes': attributes,
+  'attributes': attributes.removeClass(style_classes),
+  'media_classes' : style_classes,
   'card_image': content.field_uiowa_card_image|render,
   'card_text': content.field_uiowa_card_excerpt,
   'card_link_url': content.field_uiowa_card_link[0]['#url'],
