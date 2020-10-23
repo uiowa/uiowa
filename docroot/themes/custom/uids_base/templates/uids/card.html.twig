@@ -39,7 +39,7 @@
   {% block card_img %}
     {% if card_image is not empty %}
       {# @todo Add image template #}
-      <div {{ media_attributes.addClass(media_classes, 'card__media') }}>
+      <div {{ media_attributes.addClass(media_styles, media_sizes, 'card__media') }}>
         {% if link_element == 'image' %}
         <a href="{{ card_link_url }}">
           {% endif %}
