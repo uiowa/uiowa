@@ -1,0 +1,21 @@
+uuid: d3e5481e-eb56-4a2e-82b8-1490ac6d2d12
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_aggregator
+    - field.storage.block_content.field_uiowa_aggregator_feeds
+  module:
+    - options
+id: block_content.uiowa_aggregator.field_uiowa_aggregator_feeds
+field_name: field_uiowa_aggregator_feeds
+entity_type: block_content
+bundle: uiowa_aggregator
+label: Feeds
+description: 'The <a href="/admin/config/services/aggregator">feed(s)</a> to display items from. Sorted by most recent.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

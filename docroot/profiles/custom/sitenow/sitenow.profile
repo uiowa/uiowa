@@ -898,6 +898,8 @@ function sitenow_toolbar() {
  *
  * @return bool
  *   Boolean indicating whether or not current user is an admin.
+ *
+ * @todo: Replace this with uiowa_core access checker service.
  */
 function sitenow_is_user_admin(AccountProxy $current_user) {
   if ($current_user->id() == 1 || in_array('administrator', $current_user->getRoles())) {
