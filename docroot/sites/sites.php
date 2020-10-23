@@ -1751,3 +1751,9 @@ $sites['sitesobgynnewsletter.local.drupal.uiowa.edu'] = 'obgynnewsletter.sites.u
 $sites['sitesobgynnewsletter.dev.drupal.uiowa.edu'] = 'obgynnewsletter.sites.uiowa.edu';
 $sites['sitesobgynnewsletter.stage.drupal.uiowa.edu'] = 'obgynnewsletter.sites.uiowa.edu';
 $sites['sitesobgynnewsletter.prod.drupal.uiowa.edu'] = 'obgynnewsletter.sites.uiowa.edu';
+
+// Directory aliases for schnieders.lab.uiowa.edu.
+$sites['labschnieders.local.drupal.uiowa.edu'] = 'schnieders.lab.uiowa.edu';
+$sites['labschnieders.dev.drupal.uiowa.edu'] = 'schnieders.lab.uiowa.edu';
+$sites['labschnieders.stage.drupal.uiowa.edu'] = 'schnieders.lab.uiowa.edu';
+$sites['labschnieders.prod.drupal.uiowa.edu'] = 'schnieders.lab.uiowa.edu';
