@@ -334,6 +334,10 @@ function sitenow_form_views_form_administerusersbyrole_people_page_1_alter(&$for
 function sitenow_form_config_split_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Enable themes to be blacklisted.
   $form['blacklist_fieldset']['theme']['#access'] = TRUE;
+  if (!\Drupal::state()->get('config_split_use_select')) {
+    \Drupal::state()->set('config_split_use_select', TRUE);
+    header('Refresh:0');
+  }
 }
 
 /**
