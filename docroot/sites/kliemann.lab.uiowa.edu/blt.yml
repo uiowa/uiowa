@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labkliemann.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labkliemann
+  human_name: kliemann.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labkliemann.prod
+drupal:
+  db:
+    database: kliemann_lab_uiowa_edu
+uiowa:
+  requester: dkliemann

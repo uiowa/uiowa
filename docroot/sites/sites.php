@@ -1757,3 +1757,9 @@ $sites['labschnieders.local.drupal.uiowa.edu'] = 'schnieders.lab.uiowa.edu';
 $sites['labschnieders.dev.drupal.uiowa.edu'] = 'schnieders.lab.uiowa.edu';
 $sites['labschnieders.stage.drupal.uiowa.edu'] = 'schnieders.lab.uiowa.edu';
 $sites['labschnieders.prod.drupal.uiowa.edu'] = 'schnieders.lab.uiowa.edu';
+
+// Directory aliases for kliemann.lab.uiowa.edu.
+$sites['labkliemann.local.drupal.uiowa.edu'] = 'kliemann.lab.uiowa.edu';
+$sites['labkliemann.dev.drupal.uiowa.edu'] = 'kliemann.lab.uiowa.edu';
+$sites['labkliemann.stage.drupal.uiowa.edu'] = 'kliemann.lab.uiowa.edu';
+$sites['labkliemann.prod.drupal.uiowa.edu'] = 'kliemann.lab.uiowa.edu';
