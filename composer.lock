@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "46b00461b897c0d8c42909b60a83f4a5",
+    "content-hash": "4517e7c16a2c1542ed3c872a69903b89",
     "packages": [
         {
             "name": "acquia/blt",
@@ -222,7 +222,7 @@
             "version": "5.15.1",
             "source": {
                 "type": "git",
-                "url": "git@github.com:FortAwesome/Font-Awesome.git",
+                "url": "https://github.com/FortAwesome/Font-Awesome.git",
                 "reference": "57005cea6da7d1c67f3466974aecd25485f60452"
             },
             "dist": {
@@ -6122,26 +6122,23 @@
         },
         {
             "name": "drupal/media_entity_facebook",
-            "version": "2.0.0-beta1",
+            "version": "dev-2.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/media_entity_facebook.git",
-                "reference": "8.x-2.0-beta1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/media_entity_facebook-8.x-2.0-beta1.zip",
-                "reference": "8.x-2.0-beta1",
-                "shasum": "e86980153bebf13d46fbbb8a52bc8d73ac64d7cd"
+                "reference": "e3cadd1205123ec0fd9ba41aa27dce7004ca233e"
             },
             "require": {
                 "drupal/core": "^8 || ^9"
             },
             "type": "drupal-module",
             "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                },
                 "drupal": {
-                    "version": "8.x-2.0-beta1",
-                    "datestamp": "1594950036",
+                    "version": "8.x-2.0-alpha1+2-dev",
+                    "datestamp": "1594949483",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -6169,6 +6166,10 @@
                     "homepage": "https://www.drupal.org/user/99340"
                 },
                 {
+                    "name": "phenaproxima",
+                    "homepage": "https://www.drupal.org/user/205645"
+                },
+                {
                     "name": "slashrsm",
                     "homepage": "https://www.drupal.org/user/744628"
                 }
@@ -6177,7 +6178,8 @@
             "homepage": "https://www.drupal.org/project/media_entity_facebook",
             "support": {
                 "source": "https://git.drupalcode.org/project/media_entity_facebook"
-            }
+            },
+            "time": "2020-07-17T01:31:04+00:00"
         },
         {
             "name": "drupal/media_entity_file_replace",
@@ -6556,8 +6558,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.6+2-dev",
-                    "datestamp": "1588567896",
+                    "version": "8.x-1.6+5-dev",
+                    "datestamp": "1591593747",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -17830,6 +17832,7 @@
         "drupal/layout_builder_styles": 10,
         "drupal/lb_direct_add": 20,
         "drupal/masquerade": 10,
+        "drupal/media_entity_facebook": 20,
         "drupal/media_entity_file_replace": 20,
         "drupal/media_entity_instagram": 20,
         "drupal/menu_block": 20,
