@@ -66,8 +66,8 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
           if (in_array($style, $build['#layout_builder_style'])) {
             // Change the view mode to match the format.
             $build['content']['field_uiowa_card_image'][0]['#view_mode'] = $view_mode;
-            // Important: Delete the cache keys to prevent this from being applied to
-            // all the instances of the same image.
+            // Important: Delete the cache keys to prevent this from being
+            // applied to all the instances of the same image.
             if (isset($build['content']['field_uiowa_card_image'][0]['#cache']) && isset($build['content']['field_uiowa_card_image'][0]['#cache']['keys'])) {
               unset($build['content']['field_uiowa_card_image'][0]['#cache']['keys']);
             }

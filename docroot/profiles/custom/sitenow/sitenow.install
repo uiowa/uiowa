@@ -1388,6 +1388,9 @@ function sitenow_update_8037() {
   drupal_flush_all_caches();
 }
 
+/**
+ * Set defaults for new LB styles on card blocks.
+ */
 function sitenow_update_8038() {
   $query = \Drupal::entityQuery('node')
     ->condition('type', 'page')
@@ -1404,7 +1407,7 @@ function sitenow_update_8038() {
     $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
     $layout = $node->get('layout_builder__layout');
     /**
-     * @var  $delta
+     * @var int $delta
      * @var \Drupal\layout_builder\Section $section
      */
     foreach ($layout->getSections() as $delta_s => $section) {
