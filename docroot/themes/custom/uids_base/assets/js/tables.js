@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+// This function, when defined, allows user defined functionality to be injected in the beginning of a triggerTableRespond() call.
 function hook_triggerTableRespond(responsive_tables) {
     for (let i = 0; i < responsive_tables.length; i++) {
         // Reset Tables container sizes if they are contained in layout containers.
@@ -36,6 +37,26 @@ function hook_triggerTableRespond(responsive_tables) {
             resizeTableContainers(responsive_tables[i]);
         }
     }
+}
+
+// This function, when defined, allows user defined changes to be made to the table selector at the beginning of a generateResponsiveTables() call.
+// This function will modify the single selector 'table:not(.table--static)'.
+function hook_modifyTableSelector(selector) {
+    let prefixes = [
+        // This is the manual opt in class.
+        '.uids-responsive-tables',
+        // These are the classes that we want t
+        '.block-inline-blockuiowa-text-area',
+        '.text-formatted',
+        '.view-header'
+    ];
+
+    prefixes.forEach(function(item, index) {
+        prefixes[index] = item + ' ' + selector;
+    });
+
+    console.log(prefixes.join(', '));
+    return prefixes.join(', ');
 }
 
 // This function resets the table wrapper size.
