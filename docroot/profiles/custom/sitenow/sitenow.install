@@ -1406,35 +1406,46 @@ function sitenow_update_8038() {
   foreach ($results as $nid) {
     $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
     $layout = $node->get('layout_builder__layout');
+
+    // Grab the sections. We'll set updated ones back in below.
+    $layout_sections = $layout->getSections();
+    $i = 0;
     /**
-     * @var int $delta
+     * @var  $delta
      * @var \Drupal\layout_builder\Section $section
      */
-    foreach ($layout->getSections() as $delta_s => $section) {
+    foreach ($layout_sections as $delta_s => $section) {
       $section_is_updated = FALSE;
+
+      // insertComponent() uses delta and region
+      // which makes it more difficult to re-set components.
+      // With an array and iterator
+      // we can set it directly by its uuid.
+      $section_arr = $section->toArray();
+
       /**
        * @var \Drupal\layout_builder\SectionComponent $component
        */
-      foreach ($section->getComponents() as $delta_c => $component) {
+      foreach ($section->getComponents() as $uuid => $component) {
         if ($component->getPluginId() === 'inline_block:uiowa_card') {
           $existing_styles_clean = [];
           $existing_styles = $component->get('layout_builder_styles_style');
           foreach ($existing_styles as $k => $style) {
-            if (empty($style)) {
-              unset($existing_styles[$k]);
-            }
-            elseif (!in_array($style, $new_style_defaults)) {
+            if (!empty($style) && !in_array($style, $new_style_defaults)) {
               $existing_styles_clean[] = $style;
             }
           }
-          $component->set('layout_builder_styles_style', $existing_styles_clean + $new_style_defaults);
-          // @todo Update the component.
-          $section_is_updated = TRUE;
+          $component->set('layout_builder_styles_style', array_merge($existing_styles_clean, $new_style_defaults));
+
+          $section_arr['components'][$i] = $component->toArray();
         }
+        $i++;
       }
 
       if ($section_is_updated) {
-        // @todo Update the section.
+        $layout_sections[$delta_s] = Section::fromArray($section_arr);;
+        $node->set('layout_builder__layout', $layout_sections)
+          ->save();
       }
     }
   }
