@@ -59,23 +59,30 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           'remove_none' => TRUE,
           'default' => 'banner_centered_left',
         ],
+        'content_alignment' => [
+          'single' => TRUE,
+          'remove_none' => TRUE,
+          'default' => 'content_alignment_left',
+        ],
         'headline_type' => [
           'single' => TRUE,
           'remove_none' => TRUE,
           'default' => 'headline_bold_serif',
         ],
-        'image_size' => [
+        'card_image_size' => [
           'single' => TRUE,
+          'remove_none' => TRUE,
+          'default' => 'card_image_large',
         ],
         'media_format' => [
           'single' => TRUE,
           'remove_none' => TRUE,
           'default' => 'media_format_widescreen',
         ],
-        'media_position' => [
+        'card_media_position' => [
           'single' => TRUE,
           'remove_none' => TRUE,
-          'default' => 'media_position_left',
+          'default' => 'card_media_position_stacked',
         ],
       ];
 
