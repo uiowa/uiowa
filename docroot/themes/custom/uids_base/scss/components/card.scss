@@ -79,8 +79,25 @@
 .layout__container .card {
   blockquote {
     color: $secondary;
+
     a {
       color: $link-color;
+    }
+  }
+}
+
+// adjust card title for large size in one and two and three cols
+.layout--onecol,
+.layout--twocol--50-50.page__container--edge,
+.layout--twocol--25-75 .layout__region--second,
+.layout--twocol--75-25 .layout__region--first,
+.layout--twocol--33-67 .layout__region--second,
+.layout--twocol--67-33 .layout__region--first {
+  .card--media-right,
+  .card--media-left {
+    .card__media--large+.card__body .card__title {
+      font-size: 2.5rem;
+      line-height: 1;
     }
   }
 }
