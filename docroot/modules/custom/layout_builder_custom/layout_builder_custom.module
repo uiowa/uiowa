@@ -224,21 +224,9 @@ function layout_builder_custom_form_node_page_form_alter(&$form, FormStateInterf
  *   The form state.
  */
 function _layout_builder_custom_block_validate(array &$form, FormStateInterface $form_state) {
-  /** @var \Drupal\layout_builder\Section $section */
-  $section = $form_state->getFormObject()->getCurrentSection();
-
   /** @var \Drupal\layout_builder\SectionComponent $component */
   $component = $form_state->getFormObject()->getCurrentComponent();
   $block = $component->getPlugin();
-
-  // Require horizontal style if this card is in a one column layout.
-  if ($section->getLayoutId() == 'layout_onecol' && $block->getPluginId() == 'inline_block:uiowa_card') {
-    $styles = $form_state->getValue('layout_builder_style_default');
-
-    if (!isset($styles['block_card_style_horizontal'])) {
-      $form_state->setErrorByName('layout_builder_block_override', t('Cards rendered within a one column layout must have the horizontal style.'));
-    }
-  }
 
   // Add a character limit to the stat block prefix/suffix fields.
   if ($block->getPluginId() == 'inline_block:uiowa_statistic') {
