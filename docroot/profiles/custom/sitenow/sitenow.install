@@ -1399,8 +1399,10 @@ function sitenow_update_8038() {
   $results = $query->execute();
 
   $new_style_defaults = [
+    'card_image_large',
+    'card_media_position_stacked',
+    'content_alignment_left',
     'media_format_widescreen',
-    'media_position_left',
   ];
 
   foreach ($results as $nid) {
