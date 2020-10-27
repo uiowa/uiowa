@@ -1,3 +1,13 @@
+let responsiveTablePrefixes = [
+    // This is the manual opt in class.
+    '.uids-responsive-tables',
+    // These are the classes that we want t
+    '.block-inline-blockuiowa-text-area',
+    '.block-inline-blockuiowa-collection',
+    '.text-formatted',
+    '.view-header'
+];
+
 document.addEventListener("DOMContentLoaded", function () {
 
     // Detect if we are on a layout builder preview page.
@@ -20,20 +30,38 @@ document.addEventListener("DOMContentLoaded", function () {
         // This is where we tell the mutation observer what element to observe.
         layoutContentMO.observe(layoutContent, { childList: true, subtree: true, characterData: true });
     }
+
+    // Make sure triggerTableRespond is defined just in case.
+    if (typeof triggerTableRespond === "function") {
+        // Get all tables in accordions.
+        let accordionTables = document.querySelectorAll('.accordion__content .table__responsive-container');
+        // If we find tables that exist inside accordions...
+        if (accordionTables.length > 0) {
+            // For each one.
+            accordionTables.forEach(function (table) {
+                // Add an event listener so that whenever one is expanded, we trigger the tables to respond to the waking of the accordion item.
+                let accordionHeaderButton = table.closest('.accordion__content').previousElementSibling.querySelector('.accordion__button');
+                accordionHeaderButton.addEventListener('click', function () {
+                    triggerTableRespond();
+                });
+
+            });
+        }
+    }
 });
 
 // This function, when defined, allows user defined functionality to be injected in the beginning of a triggerTableRespond() call.
 function hook_triggerTableRespond(responsive_tables) {
     for (let i = 0; i < responsive_tables.length; i++) {
         // Reset Tables container sizes if they are contained in layout containers.
-        if (responsive_tables[i].closest('.block-inline-blockuiowa-text-area')) {
+        if (responsive_tables[i].closest(responsiveTablePrefixes.join(', '))) {
             resetTableContainers(responsive_tables[i]);
         }
     }
 
     for (let i = 0; i < responsive_tables.length; i++) {
         // Resize Tables container sizes if they are contained in layout containers.
-        if (responsive_tables[i].closest('.block-inline-blockuiowa-text-area')) {
+        if (responsive_tables[i].closest(responsiveTablePrefixes.join(', '))) {
             resizeTableContainers(responsive_tables[i]);
         }
     }
@@ -42,50 +70,22 @@ function hook_triggerTableRespond(responsive_tables) {
 // This function, when defined, allows user defined changes to be made to the table selector at the beginning of a generateResponsiveTables() call.
 // This function will modify the single selector 'table:not(.table--static)'.
 function hook_modifyTableSelector(selector) {
-    let prefixes = [
-        // This is the manual opt in class.
-        '.uids-responsive-tables',
-        // These are the classes that we want t
-        '.block-inline-blockuiowa-text-area',
-        '.text-formatted',
-        '.view-header'
-    ];
-
-    prefixes.forEach(function(item, index) {
-        prefixes[index] = item + ' ' + selector;
+    let joinedPrefixes = [];
+    responsiveTablePrefixes.forEach(function(item, index) {
+        joinedPrefixes[index] = item + ' ' + selector;
     });
 
-    console.log(prefixes.join(', '));
-    return prefixes.join(', ');
+    return joinedPrefixes.join(', ');
 }
 
 // This function resets the table wrapper size.
 function resetTableContainers(table) {
-    let table_bounding_box_selector = table;
-    let lb_container = table_bounding_box_selector.closest('.layout__container');
-    let lb_container_has_multiple_columns = lb_container.querySelectorAll('.layout__spacing_container>.layout__region').length;
-
-    if (lb_container_has_multiple_columns) {
-        table_bounding_box_selector.style.width = '1px';
-    }
-    else {
-        table_bounding_box_selector.style.width = '1px';
-    }
+    table.style.width = '1px';
 }
 
 // This function resizes the table wrapper.
 function resizeTableContainers(table) {
-    let table_bounding_box_selector = table;
-    let lb_container = table_bounding_box_selector.closest('.layout__container');
-    let lb_container_has_multiple_columns = lb_container.querySelectorAll('.layout__spacing_container>.layout__region').length;
-    let layout_width;
-
-    if (lb_container_has_multiple_columns) {
-        layout_width = table_bounding_box_selector.closest('.layout__region').offsetWidth;
-    }
-    else {
-        layout_width = table_bounding_box_selector.closest('.layout__spacing_container').offsetWidth;
-    }
-
-    table_bounding_box_selector.style.width = layout_width + 'px';
+    let tid = table.id.charAt(table.id.length-1);
+    let layout_width = document.getElementById('table__responsive-measurer--' + tid).offsetWidth;
+    table.style.width = layout_width + 'px';
 }
