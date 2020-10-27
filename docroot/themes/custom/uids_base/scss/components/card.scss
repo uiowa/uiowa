@@ -93,11 +93,24 @@
 .layout--twocol--75-25 .layout__region--first,
 .layout--twocol--33-67 .layout__region--second,
 .layout--twocol--67-33 .layout__region--first {
+
   .card--media-right,
   .card--media-left {
     .card__media--large+.card__body .card__title {
-      font-size: 2.5rem;
-      line-height: 1;
+      @include breakpoint(sm) {
+        font-size: 2.5rem;
+        line-height: 1;
+      }
+    }
+  }
+
+  .card--media-right.media--square,
+  .card--media-left.media--square {
+    .card__media--medium+.card__body .card__title {
+      @include breakpoint(sm) {
+        font-size: 2.5rem;
+        line-height: 1;
+      }
     }
   }
 }
