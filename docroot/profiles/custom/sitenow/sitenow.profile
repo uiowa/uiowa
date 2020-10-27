@@ -342,7 +342,7 @@ function sitenow_form_config_split_edit_form_alter(&$form, FormStateInterface $f
 function sitenow_config_split_prepare_form(EntityInterface $entity, $operation, FormStateInterface $form_state) {
   // Set a state variable to ensure config_split uses our Chosen
   // select implementation instead of checkboxes.
-  if ($operation == 'edit' && !\Drupal::state()->get('config_split_use_select')) {
+  if (!\Drupal::state()->get('config_split_use_select')) {
     \Drupal::state()->set('config_split_use_select', TRUE);
   }
 }
