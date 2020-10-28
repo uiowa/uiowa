@@ -1,0 +1,13 @@
+project:
+  local:
+    hostname: gradtoxicology.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: gradtoxicology
+  human_name: toxicology.grad.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: gradtoxicology.prod
+drupal:
+  db:
+    database: toxicology_grad_uiowa_edu
