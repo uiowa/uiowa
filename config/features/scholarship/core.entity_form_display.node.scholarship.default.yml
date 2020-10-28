@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.scholarship.field_scholarship_application
     - field.field.node.scholarship.field_scholarship_contact
     - field.field.node.scholarship.field_scholarship_deadline
+    - field.field.node.scholarship.field_scholarship_more_info
     - field.field.node.scholarship.field_scholarship_renewal
     - field.field.node.scholarship.field_scholarship_requirements
     - field.field.node.scholarship.field_scholarship_value
@@ -51,7 +52,7 @@ content:
     type: text_textarea
     region: content
   field_scholarship_contact:
-    weight: 26
+    weight: 16
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -67,6 +68,17 @@ content:
       allowed_formats:
         hide_help: '1'
         hide_guidelines: '1'
+    type: text_textarea
+    region: content
+  field_scholarship_more_info:
+    weight: 15
+    settings:
+      rows: 3
+      placeholder: ''
+    third_party_settings:
+      allowed_formats:
+        hide_help: '0'
+        hide_guidelines: '0'
     type: text_textarea
     region: content
   field_scholarship_renewal:
