@@ -71,15 +71,34 @@
  */
 #}
 
+{{ attach_library('admissions_core/scholarship-teaser') }}
+
+{% set accordion_button_teaser %}
+  {% block accordion_button_teaser %}
+    <div class="accordion__button__teaser">
+      {{ content.body.0 }}
+      {{ content.field_scholarship_value.0 }}
+    </div>
+  {% endblock %}
+{% endset %}
+
 {% set accordion_item = {
   'accordion_h_size': h_size ?: 'h2',
   'accordion_item_id': 'accordion-item-' ~ 'scholarships' ~ '-' ~ node.id,
   'accordion_parent_id': 'accordion-' ~ 'scholarships',
   'accordion_type': 'single',
   'accordion_item_label': label,
-  'accordion_item_content': content|without('links'),
+  'accordion_item_content': content|without('links', 'body', 'field_scholarship_value'),
   'accordion_item_expanded': 'false',
   'attributes': attributes,
+  'accordion_button_teaser': accordion_button_teaser,
 } %}
 
-{% embed '@uids_base/uids/accordion-item.html.twig' with accordion_item only %}{% endembed %}
+{% embed '@uids_base/uids/accordion-item.html.twig' with accordion_item only %}
+  {% block accordion_label %}
+    <div class="accordion__button__content">
+      {{ accordion_item_label }}
+      {{ accordion_button_teaser }}
+    </div>
+  {% endblock %}
+{% endembed %}
