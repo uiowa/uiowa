@@ -7,12 +7,14 @@ dependencies:
     - field.field.node.scholarship.field_scholarship_application
     - field.field.node.scholarship.field_scholarship_contact
     - field.field.node.scholarship.field_scholarship_deadline
+    - field.field.node.scholarship.field_scholarship_more_info
     - field.field.node.scholarship.field_scholarship_renewal
     - field.field.node.scholarship.field_scholarship_requirements
     - field.field.node.scholarship.field_scholarship_resident
     - field.field.node.scholarship.field_scholarship_type
     - field.field.node.scholarship.field_scholarship_value
     - node.type.scholarship
+    - workflows.workflow.editorial
   module:
     - allowed_formats
     - content_moderation
@@ -52,7 +54,7 @@ content:
     type: text_textarea
     region: content
   field_scholarship_contact:
-    weight: 26
+    weight: 16
     settings:
       placeholder_url: 'mailto:admissions-avcmail@uiowa.edu'
       placeholder_title: 'Office of Admissions'
@@ -70,6 +72,17 @@ content:
         hide_guidelines: '1'
     type: text_textarea
     region: content
+  field_scholarship_more_info:
+    type: text_textarea
+    weight: 15
+    region: content
+    settings:
+      rows: 3
+      placeholder: ''
+    third_party_settings:
+      allowed_formats:
+        hide_help: '0'
+        hide_guidelines: '0'
   field_scholarship_renewal:
     weight: 14
     settings:
@@ -93,13 +106,13 @@ content:
     type: text_textarea
     region: content
   field_scholarship_resident:
-    weight: 17
+    weight: 18
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
     region: content
   field_scholarship_type:
-    weight: 16
+    weight: 17
     settings: {  }
     third_party_settings: {  }
     type: options_buttons

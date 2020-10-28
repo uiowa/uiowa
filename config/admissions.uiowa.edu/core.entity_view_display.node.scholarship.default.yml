@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.scholarship.field_scholarship_application
     - field.field.node.scholarship.field_scholarship_contact
     - field.field.node.scholarship.field_scholarship_deadline
+    - field.field.node.scholarship.field_scholarship_more_info
     - field.field.node.scholarship.field_scholarship_renewal
     - field.field.node.scholarship.field_scholarship_requirements
     - field.field.node.scholarship.field_scholarship_resident
@@ -25,24 +26,24 @@ content:
   body:
     label: hidden
     type: text_default
-    weight: 0
+    weight: 1
     settings: {  }
     third_party_settings: {  }
     region: content
   content_moderation_control:
-    weight: -20
+    weight: 0
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
   field_scholarship_application:
-    weight: 3
+    weight: 4
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   field_scholarship_contact:
-    weight: 6
+    weight: 8
     label: above
     settings:
       trim_length: 80
@@ -54,35 +55,42 @@ content:
     type: link
     region: content
   field_scholarship_deadline:
-    weight: 4
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
-    region: content
-  field_scholarship_renewal:
     weight: 5
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
+  field_scholarship_more_info:
+    type: text_default
+    weight: 7
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_scholarship_renewal:
+    weight: 6
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
   field_scholarship_requirements:
-    weight: 2
+    weight: 3
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   field_scholarship_value:
-    weight: 1
+    weight: 2
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   links:
-    weight: 7
+    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }
