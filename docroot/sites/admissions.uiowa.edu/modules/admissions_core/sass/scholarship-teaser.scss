@@ -1,8 +1,19 @@
 .accordion__button__teaser {
+  opacity: 1;
+  height: auto;
+  overflow: hidden;
+  transition: opacity 0.3s ease-out;
   p {
     margin-bottom: 0;
     margin-top: 0;
     font-size: 1rem;
     line-height: 1.7;
+  }
+}
+
+.accordion__button[aria-expanded="true"] {
+  .accordion__button__teaser {
+    opacity: 0;
+    height: 0;
   }
 }
