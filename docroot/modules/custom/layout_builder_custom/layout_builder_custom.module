@@ -186,14 +186,6 @@ function layout_builder_custom_form_node_page_layout_builder_form_alter(&$form, 
 }
 
 /**
- * Implements hook_form_FORM_ID_alter().
- */
-function layout_builder_custom_form_node_page_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // Set default node.body text format to filtered over minimal.
-  $form['body']['widget'][0]['#format'] = 'filtered_html';
-}
-
-/**
  * Custom validation for layout_builder_add/update_block form.
  *
  * @param array $form
@@ -299,11 +291,6 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
 
   switch ($block->getPluginId()) {
     case 'inline_block:uiowa_text_area':
-      // Set the default text format to filtered.
-      if (isset($element['field_uiowa_text_area'])) {
-        $element['field_uiowa_text_area']['widget'][0]['#format'] = 'filtered_html';
-      }
-
       if (isset($element['field_uiowa_headline'])) {
         // Unset the unnecessary 'child_heading_size' field option.
         unset($element['field_uiowa_headline']['widget'][0]['container']['child_heading_size']);
