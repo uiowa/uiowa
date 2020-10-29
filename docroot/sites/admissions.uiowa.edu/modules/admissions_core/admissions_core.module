@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Admissions Core module.
+ */
+
+/**
+ * Implements hook_theme for Scholarship teaser.
+ */
+function admissions_core_theme($existing, $type, $theme, $path) {
+  return [
+    'node__scholarship__teaser' => [
+      'template' => 'node--scholarship--teaser',
+      'base hook' => 'node',
+    ],
+    'views_view_unformatted__scholarships__block_scholarships' => [
+      'template' => 'views-view-unformatted--scholarships--block-scholarships',
+      'base hook' => 'view',
+    ]
+  ];
+}
