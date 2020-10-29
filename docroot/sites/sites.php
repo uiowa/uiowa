@@ -1769,3 +1769,9 @@ $sites['gradtoxicology.local.drupal.uiowa.edu'] = 'toxicology.grad.uiowa.edu';
 $sites['gradtoxicology.dev.drupal.uiowa.edu'] = 'toxicology.grad.uiowa.edu';
 $sites['gradtoxicology.stage.drupal.uiowa.edu'] = 'toxicology.grad.uiowa.edu';
 $sites['gradtoxicology.prod.drupal.uiowa.edu'] = 'toxicology.grad.uiowa.edu';
+
+// Directory aliases for transportation.uiowa.edu.
+$sites['transportation.local.drupal.uiowa.edu'] = 'transportation.uiowa.edu';
+$sites['transportation.dev.drupal.uiowa.edu'] = 'transportation.uiowa.edu';
+$sites['transportation.stage.drupal.uiowa.edu'] = 'transportation.uiowa.edu';
+$sites['transportation.prod.drupal.uiowa.edu'] = 'transportation.uiowa.edu';
