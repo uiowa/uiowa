@@ -1763,3 +1763,15 @@ $sites['labkliemann.local.drupal.uiowa.edu'] = 'kliemann.lab.uiowa.edu';
 $sites['labkliemann.dev.drupal.uiowa.edu'] = 'kliemann.lab.uiowa.edu';
 $sites['labkliemann.stage.drupal.uiowa.edu'] = 'kliemann.lab.uiowa.edu';
 $sites['labkliemann.prod.drupal.uiowa.edu'] = 'kliemann.lab.uiowa.edu';
+
+// Directory aliases for toxicology.grad.uiowa.edu.
+$sites['gradtoxicology.local.drupal.uiowa.edu'] = 'toxicology.grad.uiowa.edu';
+$sites['gradtoxicology.dev.drupal.uiowa.edu'] = 'toxicology.grad.uiowa.edu';
+$sites['gradtoxicology.stage.drupal.uiowa.edu'] = 'toxicology.grad.uiowa.edu';
+$sites['gradtoxicology.prod.drupal.uiowa.edu'] = 'toxicology.grad.uiowa.edu';
+
+// Directory aliases for transportation.uiowa.edu.
+$sites['transportation.local.drupal.uiowa.edu'] = 'transportation.uiowa.edu';
+$sites['transportation.dev.drupal.uiowa.edu'] = 'transportation.uiowa.edu';
+$sites['transportation.stage.drupal.uiowa.edu'] = 'transportation.uiowa.edu';
+$sites['transportation.prod.drupal.uiowa.edu'] = 'transportation.uiowa.edu';
