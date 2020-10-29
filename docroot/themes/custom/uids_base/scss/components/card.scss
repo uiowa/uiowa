@@ -119,12 +119,13 @@
 
 // @todo move back to uids before https://github.com/uiowa/uids/issues/309 is closed.
 
+// set small size for card stacked small circle
 .card--stacked .card__media--small.media--circle {
   @include breakpoint(sm) {
     max-width: 150px;
   }
 }
-
+// Adjust small size for small circle left/right
 .card.card--media-left .card__media--small.media--circle,
 .card.card--media-right .card__media--small.media--circle {
   @include breakpoint(sm) {
@@ -134,6 +135,7 @@
   }
 }
 
+// Adjust small size for medium circle left/right
 .card.card--media-left .card__media--medium.media--circle,
 .card.card--media-right .card__media--medium.media--circle {
   @include breakpoint(sm) {
@@ -141,7 +143,7 @@
     width: 25%;
   }
 }
-
+// Adjust small size for large circle left/right
 .card.card--media-left .card__media--large.media--circle,
 .card.card--media-right .card__media--large.media--circle {
   @include breakpoint(sm) {
@@ -149,7 +151,7 @@
     width: 37%;
   }
 }
-
+// Adjust small size for medium square left/right
 .card.card--media-left.media--square .card__media--medium,
 .card.card--media-right.media--square .card__media--medium {
   @include breakpoint(sm) {
@@ -157,7 +159,7 @@
     width: 25%;
   }
 }
-
+// Adjust small size for large square left/right
 .card.card--media-left.media--square .card__media--large,
 .card.card--media-right.media--square .card__media--large {
   @include breakpoint(sm) {
@@ -165,31 +167,23 @@
     width: 37%;
   }
 }
-
-.layout.layout__container[class*="bg-"] .card.card--media-left,
-.layout.layout__container[class*="bg-"] .card.card--media-right {
-  padding: 1.25rem;
-}
-
+// Adjust margin if circle is within stacked version with bg color
 .bg--gray.card--stacked .media--circle.card__media--small,
 .bg--gray.card--stacked .media--circle.card__media--large {
   margin-top: 2rem;
 }
-
+// Add padding if large circle stacked is enclosed or has bg color
 .bg--gray.card--stacked .media--circle.card__media--large,
 .card--enclosed.card--stacked .media--circle.card__media--large {
   padding: 0 2rem;
 }
 
-.card__title a {
-  color: #151515;
-}
-
+// Remove padding if section container background color matches card background color
 .layout.layout__container.bg--gray .bg--gray.card.card--media-left:not(.card--enclosed),
 .layout.layout__container.bg--gray .bg--gray.card.card--media-right:not(.card--enclosed) {
   padding: 0;
 }
-
+// Add padding if section background color is set when using a circle within stacked card and extra for large size
 .layout.layout__container[class*="bg-"] {
   .card--stacked {
     .media--circle {
@@ -205,6 +199,12 @@
 
 // @todo remove once https://github.com/uiowa/uiowa/issues/2426 is integrated.
 
+// Adjust padding if there's a section background color
+.layout.layout__container[class*="bg-"] .card.card--media-left,
+.layout.layout__container[class*="bg-"] .card.card--media-right {
+  padding: 1.25rem;
+}
+
 .card {
   background: #fff;
 }
@@ -213,3 +213,6 @@
   background: $light;
 }
 
+.card__title a {
+  color: #151515;
+}
