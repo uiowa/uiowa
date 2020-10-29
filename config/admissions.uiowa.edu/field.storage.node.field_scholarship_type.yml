@@ -1,0 +1,30 @@
+uuid: 288258f7-c6ad-4183-9c40-c8bf28e95245
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_scholarship_type
+field_name: field_scholarship_type
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: first-year
+      label: First-year
+    -
+      value: transfer
+      label: Transfer
+    -
+      value: international
+      label: International
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

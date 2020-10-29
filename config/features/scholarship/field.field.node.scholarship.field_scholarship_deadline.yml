@@ -1,0 +1,28 @@
+uuid: ec90e769-be75-4c5c-9326-32673a5eea9f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_scholarship_deadline
+    - node.type.scholarship
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    minimal: '0'
+    filtered_html: '0'
+    full_html: '0'
+    plain_text: '0'
+id: node.scholarship.field_scholarship_deadline
+field_name: field_scholarship_deadline
+entity_type: node
+bundle: scholarship
+label: Deadline
+description: 'Information regarding deadlines.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long
