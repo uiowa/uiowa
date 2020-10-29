@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: transportation.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: transportation
+  human_name: transportation.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: transportation.prod
+drupal:
+  db:
+    database: transportation_uiowa_edu
+uiowa:
+  requester: dagwang
