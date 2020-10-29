@@ -28,31 +28,23 @@
 }
 
 // Add padding if card is on a bg or bg pattern.
-/*
+
 .layout.layout__container {
-
-  &[class*="bg--"],
-  &[class*="bg-pattern--"] {
-    .card.card--horizontal {
-      padding: 1.25rem;
+  .card--stacked[class*="bg-"] {
+    .card__body {
+      padding: 2rem;
     }
+  }
 
-    .card.card--horizontal .card__body {
-      padding: 0;
-    }
-
-    .card.card--horizontal .card__media+.card__body {
-      padding: 0 0 0 1.25rem;
-    }
-
-    .card:not(.card--horizontal) {
+  &[class*="bg-"] {
+    .card--stacked:not([class*="bg-"]) {
       .card__body {
         padding: 2rem;
       }
     }
   }
 }
-*/
+
 /*
 .card.bg--gray {
   background: $light;
@@ -90,29 +82,102 @@
 
 // adjust card title for large size in one and two and three cols
 .layout--onecol,
-.layout--twocol--50-50.page__container--edge,
-.layout--twocol--25-75 .layout__region--second,
-.layout--twocol--75-25 .layout__region--first,
-.layout--twocol--33-67 .layout__region--second,
-.layout--twocol--67-33 .layout__region--first {
+.layout--twocol {
 
   .card--media-right,
   .card--media-left {
-    .card__media--large+.card__body .card__title {
-      @include breakpoint(sm) {
-        font-size: 2.5rem;
-        line-height: 1;
-      }
-    }
-  }
-
-  .card--media-right.media--square,
-  .card--media-left.media--square {
     .card__media--medium+.card__body .card__title {
       @include breakpoint(sm) {
-        font-size: 2.5rem;
+        font-size: 2.3rem;
+        //line-height: 1;
+      }
+    }
+
+    .card__media--medium+.card__body p {
+      @include breakpoint(sm) {
+        font-size: 1.1rem;
+      }
+    }
+
+    .card__media--large+.card__body .card__title {
+      @include breakpoint(sm) {
+        font-size: 2.8rem;
+        margin-bottom: .7rem;
         line-height: 1;
       }
     }
+
+    .card__media--large+.card__body p {
+      @include breakpoint(sm) {
+        font-size: 1.2rem;
+      }
+    }
   }
+}
+
+
+
+// move back to uids
+
+.card--stacked .card__media--small.media--circle {
+  max-width: 150px;
+}
+
+.card.card--media-left .card__media--small.media--circle,
+.card.card--media-right .card__media--small.media--circle {
+  flex: 0 0 25%;
+  width: 25%;
+  max-width: 150px;
+}
+
+.card.card--media-left .card__media--medium.media--circle,
+.card.card--media-right .card__media--medium.media--circle {
+  flex: 0 0 25%;
+  width: 25%;
+}
+
+.card.card--media-left .card__media--large.media--circle,
+.card.card--media-right .card__media--large.media--circle {
+  flex: 0 0 37%;
+  width: 37%;
+}
+
+.card.card--media-left.media--square .card__media--medium,
+.card.card--media-right.media--square .card__media--medium {
+  flex: 0 0 25%;
+  width: 25%;
+}
+
+.card.card--media-left.media--square .card__media--large,
+.card.card--media-right.media--square .card__media--large {
+  flex: 0 0 37%;
+  width: 37%;
+}
+
+// remove once https://github.com/uiowa/uiowa/issues/2426 is integrated.
+
+.card {
+  background: #fff;
+}
+
+.card.bg--gray {
+  background: $light;
+}
+
+.layout.layout__container[class*="bg-"] .card.card--media-left,
+.layout.layout__container[class*="bg-"] .card.card--media-right {
+  padding: 1.25rem;
+}
+
+.bg--gray.card--stacked .media--circle.card__media--small {
+  margin-top: 2rem;
+}
+
+.bg--gray.card--stacked .media--circle.card__media--large,
+.card--enclosed.card--stacked .media--circle.card__media--large {
+  padding: 0 2rem;
+}
+
+.card__title a {
+  color: #151515;
 }
