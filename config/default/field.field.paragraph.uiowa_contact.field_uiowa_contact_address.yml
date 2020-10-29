@@ -1,0 +1,47 @@
+uuid: 9118d710-5236-40c5-bf46-adcaa971b646
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_uiowa_contact_address
+    - paragraphs.paragraphs_type.uiowa_contact
+  module:
+    - address
+id: paragraph.uiowa_contact.field_uiowa_contact_address
+field_name: field_uiowa_contact_address
+entity_type: paragraph
+bundle: uiowa_contact
+label: Address
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  available_countries: {  }
+  langcode_override: ''
+  field_overrides:
+    givenName:
+      override: optional
+    additionalName:
+      override: optional
+    familyName:
+      override: optional
+    organization:
+      override: optional
+    addressLine1:
+      override: optional
+    addressLine2:
+      override: optional
+    postalCode:
+      override: optional
+    sortingCode:
+      override: optional
+    dependentLocality:
+      override: optional
+    locality:
+      override: optional
+    administrativeArea:
+      override: optional
+  fields: {  }
+field_type: address
