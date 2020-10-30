@@ -1775,3 +1775,9 @@ $sites['transportation.local.drupal.uiowa.edu'] = 'transportation.uiowa.edu';
 $sites['transportation.dev.drupal.uiowa.edu'] = 'transportation.uiowa.edu';
 $sites['transportation.stage.drupal.uiowa.edu'] = 'transportation.uiowa.edu';
 $sites['transportation.prod.drupal.uiowa.edu'] = 'transportation.uiowa.edu';
+
+// Directory aliases for 3mlearning.uiowa.edu.
+$sites['3mlearning.local.drupal.uiowa.edu'] = '3mlearning.uiowa.edu';
+$sites['3mlearning.dev.drupal.uiowa.edu'] = '3mlearning.uiowa.edu';
+$sites['3mlearning.stage.drupal.uiowa.edu'] = '3mlearning.uiowa.edu';
+$sites['3mlearning.prod.drupal.uiowa.edu'] = '3mlearning.uiowa.edu';
