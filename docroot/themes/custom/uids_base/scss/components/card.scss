@@ -43,33 +43,19 @@
       }
     }
   }
-}
 
-/*
-.card.bg--gray {
-  background: $light;
-
-  &.card--horizontal {
-    padding: 1.25rem;
-
-    .card__body {
-      padding: 0;
-    }
-
-    .card__media+.card__body {
-      padding: 0 0 0 1.25rem;
+  // remove card body padding if section and card have same bg color
+  &.bg--gray {
+    .card--stacked.bg--gray:not(.card--enclosed) {
+      .card__body {
+        padding-right: 0;
+        padding-left: 0;
+      }
     }
   }
-
-  .card__body {
-    padding: 2rem;
-  }
-
-  .bttn--tertiary {
-    background: $light;
-  }
 }
-*/
+
+
 .layout__container .card {
   blockquote {
     color: $secondary;
@@ -110,87 +96,6 @@
     .card__media--large+.card__body p {
       @include breakpoint(sm) {
         font-size: 1.2rem;
-      }
-    }
-  }
-}
-
-
-
-// @todo move back to uids before https://github.com/uiowa/uids/issues/309 is closed.
-
-// set small size for card stacked small circle
-.card--stacked .card__media--small.media--circle {
-  @include breakpoint(sm) {
-    max-width: 150px;
-  }
-}
-// Adjust small size for small circle left/right
-.card.card--media-left .card__media--small.media--circle,
-.card.card--media-right .card__media--small.media--circle {
-  @include breakpoint(sm) {
-    flex: 0 0 25%;
-    width: 25%;
-    max-width: 150px;
-  }
-}
-
-// Adjust small size for medium circle left/right
-.card.card--media-left .card__media--medium.media--circle,
-.card.card--media-right .card__media--medium.media--circle {
-  @include breakpoint(sm) {
-    flex: 0 0 25%;
-    width: 25%;
-  }
-}
-// Adjust small size for large circle left/right
-.card.card--media-left .card__media--large.media--circle,
-.card.card--media-right .card__media--large.media--circle {
-  @include breakpoint(sm) {
-    flex: 0 0 37%;
-    width: 37%;
-  }
-}
-// Adjust small size for medium square left/right
-.card.card--media-left.media--square .card__media--medium,
-.card.card--media-right.media--square .card__media--medium {
-  @include breakpoint(sm) {
-    flex: 0 0 25%;
-    width: 25%;
-  }
-}
-// Adjust small size for large square left/right
-.card.card--media-left.media--square .card__media--large,
-.card.card--media-right.media--square .card__media--large {
-  @include breakpoint(sm) {
-    flex: 0 0 37%;
-    width: 37%;
-  }
-}
-// Adjust margin if circle is within stacked version with bg color
-.bg--gray.card--stacked .media--circle.card__media--small,
-.bg--gray.card--stacked .media--circle.card__media--large {
-  margin-top: 2rem;
-}
-// Add padding if large circle stacked is enclosed or has bg color
-.bg--gray.card--stacked .media--circle.card__media--large,
-.card--enclosed.card--stacked .media--circle.card__media--large {
-  padding: 0 2rem;
-}
-
-// Remove padding if section container background color matches card background color
-.layout.layout__container.bg--gray .bg--gray.card.card--media-left:not(.card--enclosed),
-.layout.layout__container.bg--gray .bg--gray.card.card--media-right:not(.card--enclosed) {
-  padding: 0;
-}
-// Add padding if section background color is set when using a circle within stacked card and extra for large size
-.layout.layout__container[class*="bg-"] {
-  .card--stacked {
-    .media--circle {
-      padding-top: 2rem;
-
-      &.card__media--large {
-        padding: 2rem 2rem 0 2rem;
       }
     }
   }
