@@ -126,6 +126,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       // Always set title field to not be required.
       $form['settings']['label']['#required'] = FALSE;
 
+      // Hide all block labels.
       unset($form['settings']['label']);
       unset($form['settings']['label_display']);
       unset($form['settings']['admin_label']['#title']);
@@ -134,54 +135,76 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       $component = $form_state->getFormObject()->getCurrentComponent();
       $block = $component->getPlugin();
 
-      if ($block->getPluginId() == 'menu_block:main') {
-        /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
-        $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
-        $collegiate_split = 'config_split:collegiate';
-        // 'collegiate' split either doesn't exist or isn't enabled.
-        if (!isset($filters[$collegiate_split]) || !$filters[$collegiate_split]['status']) {
-          // Restrict block settings on main navigation block.
-          $form['settings']['menu_levels']['#access'] = FALSE;
-          $form['settings']['advanced']['#access'] = FALSE;
-          $form['settings']['style']['#access'] = FALSE;
-        }
+      // Form modifications per block plugin and bundle.
+      switch ($block->getPluginId()) {
+        case 'inline_block:uiowa_banner':
+          // We provide a field that provides background options, so
+          // this is hidden.
+          if (isset($form['layout_builder_style_background'])) {
+            $form['layout_builder_style_background']['#access'] = FALSE;
+          }
+          break;
 
-        // Set defaults.
-        $form['settings']['menu_levels']['level']['#default_value'] = 2;
-        $form['settings']['advanced']['follow']['#default_value'] = 1;
-      }
-      elseif ($block->getPluginId() === 'inline_block:uiowa_banner') {
-        // We provide a field that provides background options, so
-        // this is hidden.
-        if (isset($form['layout_builder_style_background'])) {
-          $form['layout_builder_style_background']['#access'] = FALSE;
-        }
+        case 'inline_block:uiowa_card':
+          // Set '#states' for card image size.
+          $form['layout_builder_style_card_image_size']['#states'] = [
+            'visible' => [
+              // Always show when media format is set to 'circle'.
+              [
+                ':input[name="layout_builder_style_media_format"]' => [
+                  'value' => 'media_format_circle',
+                ],
+              ],
+              // Always show when card media position is not 'stacked'.
+              [
+                ':input[name="layout_builder_style_card_media_position"]' => [
+                  '!value' => 'card_media_position_stacked',
+                ],
+              ],
+            ],
+          ];
+          break;
+
+        case 'inline_block:uiowa_collection':
+          $form['settings']['view_mode']['#type'] = 'radios';
+          array_shift($form['settings']['view_mode']['#options']);
+
+          // @todo Re-enable 'tab' after theming/functionality is in place.
+          unset($form['settings']['view_mode']['#options']['tab']);
+
+          $view_options = [
+            'accordion',
+            'descriptive_list',
+            'tab',
+          ];
+
+          // If view mode not in our options (eg 'full'), set it to <dl>.
+          if (!in_array($form['settings']['view_mode']['#default_value'], $view_options)) {
+            $form['settings']['view_mode']['#default_value'] = 'descriptive_list';
+          }
+          break;
+
+        case 'menu_block:main':
+          /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
+          $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
+          $collegiate_split = 'config_split:collegiate';
+          // 'collegiate' split either doesn't exist or isn't enabled.
+          if (!isset($filters[$collegiate_split]) || !$filters[$collegiate_split]['status']) {
+            // Restrict block settings on main navigation block.
+            $form['settings']['menu_levels']['#access'] = FALSE;
+            $form['settings']['advanced']['#access'] = FALSE;
+            $form['settings']['style']['#access'] = FALSE;
+          }
+
+          // Set defaults.
+          $form['settings']['menu_levels']['level']['#default_value'] = 2;
+          $form['settings']['advanced']['follow']['#default_value'] = 1;
+          break;
       }
 
       $form['settings'] += [
         '#weight' => 0,
       ];
-
-      // Change collection view_mode to radios and remove the 'default' option.
-      if (isset($form['settings']['block_form']['#block'])
-        && $form['settings']['block_form']['#block']->bundle() === 'uiowa_collection') {
-        $form['settings']['view_mode']['#type'] = 'radios';
-        array_shift($form['settings']['view_mode']['#options']);
-
-        // @todo Re-enable 'tab' after theming/functionality is in place.
-        unset($form['settings']['view_mode']['#options']['tab']);
-
-        $view_options = [
-          'accordion',
-          'descriptive_list',
-          'tab',
-        ];
-
-        // If view mode not in our options (eg 'full'), set it to <dl>.
-        if (!in_array($form['settings']['view_mode']['#default_value'], $view_options)) {
-          $form['settings']['view_mode']['#default_value'] = 'descriptive_list';
-        }
-      }
 
       break;
 
