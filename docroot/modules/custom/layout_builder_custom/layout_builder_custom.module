@@ -277,37 +277,56 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
   $component = $form_state->getFormObject()->getCurrentComponent();
   $block = $component->getPlugin();
 
-  if ($block->getPluginId() === 'inline_block:uiowa_banner') {
-    $background_option = $form_state->getValue([
-      'settings',
-      'block_form',
-      'background_options',
-    ]);
-    if ($background_option) {
-      $form_media_selection = [
+  switch ($block->getPluginId()) {
+    case 'inline_block:uiowa_banner':
+      $background_option = $form_state->getValue([
         'settings',
         'block_form',
-        'field_uiowa_banner_image',
-        'selection',
-      ];
-      if ($background_option === 'image') {
-        if (!$form_state->getValue($form_media_selection)) {
-          // If an image wasn't uploaded, revert to default selection of black.
-          // @todo: Add feedback for user that they didn't upload an image.
-          // @todo: Add validation to check whether image uploaded or not.
-          $background_option = 'block_background_style_black';
-        }
+        'background_options',
+      ]);
+      if ($background_option) {
+        $form_media_selection = [
+          'settings',
+          'block_form',
+          'field_uiowa_banner_image',
+          'selection',
+        ];
+        if ($background_option === 'image') {
+          if (!$form_state->getValue($form_media_selection)) {
+            // If an image wasn't uploaded, revert to default of 'black'.
+            // @todo: Add feedback for user that they didn't upload an image.
+            // @todo: Add validation to check whether image uploaded or not.
+            $background_option = 'block_background_style_black';
+          }
 
+        }
+        else {
+          // If a non-image background was selected, remove the reference.
+          // @todo Trigger file deletion if the media item is unused elsewhere.
+          $form_state->unsetValue($form_media_selection);
+        }
+        // Set layout_builder_style_background to value of our duplicate select.
+        $form_state->setValue('layout_builder_style_background', $background_option);
       }
-      else {
-        // If a non-image background was selected, remove the reference.
-        // @todo Trigger file deletion if the media item is unused elsewhere.
-        $form_state->unsetValue($form_media_selection);
+      break;
+
+    case 'inline_block:uiowa_card':
+      $media_position = $form_state->getValue('layout_builder_style_card_media_position');
+      $media_format = $form_state->getValue('layout_builder_style_media_format');
+
+      if ($media_position === 'card_media_position_stacked') {
+        if (in_array($media_format, [
+          'media_format_widescreen',
+          'media_format_square',
+        ])) {
+          $form_state->setValue('layout_builder_style_card_image_size', 'card_image_large');
+          // @todo Should we set a message here to let the user
+          //   know the image size was changed?
+        }
       }
-      // Set layout_builder_style_background to value of our duplicate select.
-      $form_state->setValue('layout_builder_style_background', $background_option);
-    }
+      break;
   }
+
 }
 
 /**
