@@ -55,11 +55,11 @@ div[role=article].node--type-person.node--view-mode-teaser {
 }
 
 // Subtitle
-  .subtitle {
-    @include card-subtitle;
-    display: block;
-    font-size: 1.6rem;
-  }
+.subtitle {
+  @include card-subtitle;
+  display: block;
+  font-size: 1.6rem;
+}
 
 
 // Person Meta
@@ -89,6 +89,20 @@ div[role=article].node--type-person.node--view-mode-teaser {
     margin-bottom: 1rem;
   }
 }
+
+.field--name-field-person-contact-information {
+  margin-bottom: .7rem;
+}
+.field--name-field-uiowa-contact-label {
+  margin-top: .7rem;
+  font-weight: $font-weight-bold;
+  line-height: 1.7;
+  font-size: 1.2rem;
+  &:after {
+    content: ":";
+  }
+}
+
 
 // paragraph teaser
 .paragraph--type--people {
