@@ -596,6 +596,9 @@ function sitenow_people_preprocess_block(&$variables) {
   }
 }
 
+/**
+ * Custom submit handler for node person forms.
+ */
 function _sitenow_people_person_form_submit(array &$form, FormStateInterface $form_state) {
   // Get all instances of field_uiowa_contact_address.
   $contact_addresses = $form_state->getValue([
@@ -633,7 +636,7 @@ function _sitenow_people_person_form_submit(array &$form, FormStateInterface $fo
           'field_uiowa_contact_address',
           $delta,
           'address',
-          'country_code'
+          'country_code',
         ], '');
       }
     }
