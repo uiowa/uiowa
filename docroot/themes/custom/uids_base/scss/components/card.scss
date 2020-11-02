@@ -28,59 +28,96 @@
 }
 
 // Add padding if card is on a bg or bg pattern.
+
 .layout.layout__container {
-
-  &[class*="bg--"],
-  &[class*="bg-pattern--"] {
-    .card.card--horizontal {
-      padding: 1.25rem;
+  .card--stacked[class*="bg-"] {
+    .card__body {
+      padding: 2rem;
     }
+  }
 
-    .card.card--horizontal .card__body {
-      padding: 0;
-    }
-
-    .card.card--horizontal .card__media+.card__body {
-      padding: 0 0 0 1.25rem;
-    }
-
-    .card:not(.card--horizontal) {
+  &[class*="bg-"] {
+    .card--stacked:not([class*="bg-"]) {
       .card__body {
         padding: 2rem;
       }
     }
   }
-}
 
-.card.bg--gray {
-  background: $light;
-
-  &.card--horizontal {
-    padding: 1.25rem;
-
-    .card__body {
-      padding: 0;
-    }
-
-    .card__media+.card__body {
-      padding: 0 0 0 1.25rem;
+  // remove card body padding if section and card have same bg color
+  &.bg--gray {
+    .card--stacked.bg--gray:not(.card--enclosed) {
+      .card__body {
+        padding-right: 0;
+        padding-left: 0;
+      }
     }
   }
-
-  .card__body {
-    padding: 2rem;
-  }
-
-  .bttn--tertiary {
-    background: $light;
-  }
 }
+
 
 .layout__container .card {
   blockquote {
     color: $secondary;
+
     a {
       color: $link-color;
     }
   }
+}
+
+// adjust card title for large size in one and two and three cols
+.layout--onecol,
+.layout--twocol {
+
+  .card--media-right,
+  .card--media-left {
+    .card__media--medium+.card__body .card__title {
+      @include breakpoint(sm) {
+        font-size: 2.3rem;
+        //line-height: 1;
+      }
+    }
+
+    .card__media--medium+.card__body p {
+      @include breakpoint(sm) {
+        font-size: 1.1rem;
+      }
+    }
+
+    .card__media--large+.card__body .card__title {
+      @include breakpoint(sm) {
+        font-size: 2.8rem;
+        margin-bottom: .7rem;
+        line-height: 1;
+      }
+    }
+
+    .card__media--large+.card__body p {
+      @include breakpoint(sm) {
+        font-size: 1.2rem;
+      }
+    }
+  }
+}
+
+
+// @todo remove once https://github.com/uiowa/uiowa/issues/2426 is integrated.
+
+// Adjust padding if there's a section background color
+.layout.layout__container[class*="bg-"] .card.card--media-left,
+.layout.layout__container[class*="bg-"] .card.card--media-right {
+  padding: 1.25rem;
+}
+
+.card {
+  background: #fff;
+}
+
+.card.bg--gray {
+  background: $light;
+}
+
+.card__title a {
+  color: #151515;
 }

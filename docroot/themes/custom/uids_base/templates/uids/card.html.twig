@@ -1,6 +1,8 @@
 {{ attach_library('uids_base/card') }}
+{{ attach_library('uids_base/media') }}
 {% set attributes = attributes ?: create_attribute() %}
 {% set card_classes = ['card'] %}
+{% set media_attributes = media_attributes ?: create_attribute() %}
 
 {# The following code is to determine where a link should be attached, if it exists. #}
 {% set link_element, show_button = false, false %}
@@ -37,7 +39,7 @@
   {% block card_img %}
     {% if card_image is not empty %}
       {# @todo Add image template #}
-      <div class="card__media">
+      <div {{ media_attributes.addClass(media_styles, media_sizes, 'card__media') }}>
         {% if link_element == 'image' %}
         <a href="{{ card_link_url }}">
           {% endif %}
@@ -64,15 +66,30 @@
       {% endif %}
     {% endblock %}
 
-    {% block subheading %}
-      {% if card_subtitle is not empty %}
-        {{ card_subtitle }}
-      {% endif %}
-    {% endblock %}
-
-    {% block card_author %}
-      {% if card_author is not empty %}
-        <div class="card__author">{{ card_author }}</div>
+    {% block card_details %}
+      {% if card_subtitle or card_tag or card_date is not empty %}
+        <div class="card__details">
+          {% block card_subtitle %}
+            {% if card_subtitle is not empty %}
+              <div class="card__subtitle">{{ card_subtitle }}</div>
+            {% endif %}
+          {% endblock %}
+          {% block card_date %}
+            {% if card_date is not empty %}
+              <div class="card__date">
+                {{ card_date }}
+              </div>
+            {% endif %}
+          {% endblock %}
+          {% block card_tag %}
+            {% if card_tag is not empty %}
+              <div class="card__label">
+                <i class="fas fa-map-marker-alt"></i>
+                {{ card_tag }}
+              </div>
+            {% endif %}
+          {% endblock %}
+        </div>
       {% endif %}
     {% endblock %}
 
