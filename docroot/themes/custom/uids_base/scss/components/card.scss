@@ -1,6 +1,7 @@
 @import "assets/scss/_variables.scss";
 @import "assets/scss/_utilities.scss";
 @import "components/card/card.scss";
+@import "background.scss";
 
 // ie11
 @media all and (-ms-high-contrast: none),
@@ -100,3 +101,14 @@
     }
   }
 }
+
+
+// @todo remove once https://github.com/uiowa/uiowa/issues/2426 is integrated.
+
+// Adjust padding if there's a section background color
+.layout.layout__container[class*="bg-"] .card.card--media-left,
+.layout.layout__container[class*="bg-"] .card.card--media-right {
+  padding: 1.25rem;
+}
+
+@include add-backgrounds();
