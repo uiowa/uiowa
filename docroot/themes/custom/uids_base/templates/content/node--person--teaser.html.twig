@@ -90,7 +90,7 @@
   'attributes': attributes.addClass(classes),
   'card_image': content.field_image | render,
   'card_text': content|without('field_image', 'field_image', 'field_person_credential', 'links'),
-  'card_author': content.field_person_credential.0,
+  'card_subtitle': content.field_person_credential.0,
   'card_title': label | render,
   'card_link_url': url,
   'headline_level': headline_level,
