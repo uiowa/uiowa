@@ -22,34 +22,41 @@
 {%
   set classes = [
   'aggregator-item',
+  'card--media-left',
+  'media--border',
+  'card--centered-left',
+  'card--alignment-left',
 ]
 %}
 
-{{ attach_library('uids_base/card') }}
-
-{# Set the user icon #}
-{% set user_icon = '<span class="fas fa-user"></span>' %}
-
 {% set aggregator_card = {
   'attributes': attributes.addClass(classes),
+  'media_styles': 'media--circle',
+  'media_sizes': 'card__media--small',
   'card_image': feed_image|render,
   'card_title': title|render,
   'title_prefix': title_prefix,
   'title_suffix': title_suffix,
   'card_link_url': url,
-  'card_date': post_date,
+  'card_subtitle': post_date,
   'headline_level': heading_size,
-  'event_icon': user_icon|trans,
-  'card_subtitle': content.author|render,
+  'aggregator_creator': content.author|render,
   'card_text': content.description,
 } %}
 
 {% embed '@uids_base/uids/card.html.twig' with aggregator_card only %}
 
-	{% block heading %}
-		{{ title_prefix }}
-		{{ parent() }}
-		{{ title_suffix }}
-	{% endblock %}
+  {% block heading %}
+    {{ title_prefix }}
+    {{ parent() }}
+    {{ title_suffix }}
+  {% endblock %}
+
+ {% block card_subtitle %}
+   <div class="card__subtitle">
+     {{ card_subtitle }}
+     {{ aggregator_creator }}
+   </div>
+ {% endblock %}
 
 {% endembed %}
