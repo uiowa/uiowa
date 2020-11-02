@@ -38,37 +38,87 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       // Add our LBS heading before style options.
       _layout_builder_custom_add_lbs_heading($form);
 
-      // LB style options that should be set to '#multiple' => FALSE.
-      $single_select_options = [
-        'background',
-        'banner_height',
-        'banner_type',
-        'banner_gradient',
-        'headline_type',
+      // @todo Write a patch for layout_builder_styles that adds these options.
+      // An array of options for altering Layout Builder Styles behavior.
+      $lbs_extra_options = [
+        'background' => [
+          'single' => TRUE,
+        ],
+        'banner_gradient' => [
+          'single' => TRUE,
+          'remove_none' => TRUE,
+          'default' => 'banner_gradient_dark',
+        ],
+        'banner_height' => [
+          'single' => TRUE,
+          'remove_none' => TRUE,
+          'default' => 'banner_medium',
+        ],
+        'banner_type' => [
+          'single' => TRUE,
+          'remove_none' => TRUE,
+          'default' => 'banner_centered_left',
+        ],
+        'card_image_size' => [
+          'single' => TRUE,
+          'remove_none' => TRUE,
+          'default' => 'card_image_large',
+        ],
+        'card_media_position' => [
+          'single' => TRUE,
+          'remove_none' => TRUE,
+          'default' => 'card_media_position_stacked',
+        ],
+        'content_alignment' => [
+          'single' => TRUE,
+          'remove_none' => TRUE,
+          'default' => 'content_alignment_left',
+        ],
+        'headline_type' => [
+          'single' => TRUE,
+          'remove_none' => TRUE,
+          'default' => 'headline_bold_serif',
+        ],
+        'media_format' => [
+          'single' => TRUE,
+          'remove_none' => TRUE,
+          'default' => 'media_format_widescreen',
+        ],
       ];
 
-      $remove_none = [
-        'banner_height',
-        'banner_type',
-        'banner_gradient',
-        'headline_type',
-      ];
-
-      // Loop through layout builder style groups.
       $groups = LayoutBuilderStyleGroups::getGroups();
 
+      // Loop through layout builder style groups.
       foreach (array_keys($groups) as $group) {
-        $lbs = 'layout_builder_style_' . $group;
 
-        if (isset($form[$lbs])) {
-          if (in_array($group, $single_select_options)) {
-            // Make the background option single select only.
-            $form[$lbs]['#multiple'] = FALSE;
-          }
+        // Check if we have extra options defined.
+        if (isset($lbs_extra_options[$group])) {
+          // The key that is used in the form array.
+          $group_key = 'layout_builder_style_' . $group;
 
-          if (in_array($group, $remove_none)) {
-            // Make the option required.
-            unset($form[$lbs]['#empty_option']);
+          // Check if the style group is set in the form.
+          if (isset($form[$group_key])) {
+
+            // Check if the style group should be limited to a
+            // single selection.
+            if (isset($lbs_extra_options[$group]['single']) && $lbs_extra_options[$group]['single']) {
+              // Make the background option single select only.
+              $form[$group_key]['#multiple'] = FALSE;
+            }
+
+            // Check if the style group should have the '-None-'
+            // option removed.
+            if (isset($lbs_extra_options[$group]['remove_none']) && $lbs_extra_options[$group]['remove_none']) {
+              // Make the option required.
+              unset($form[$group_key]['#empty_option']);
+            }
+
+            if ($form_id === 'layout_builder_add_block') {
+              // Set default for this group if it exists.
+              if (isset($lbs_extra_options[$group]['default'])) {
+                $form[$group_key]['#default_value'] = [$lbs_extra_options[$group]['default']];
+              }
+            }
           }
         }
       }
@@ -76,6 +126,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       // Always set title field to not be required.
       $form['settings']['label']['#required'] = FALSE;
 
+      // Hide all block labels.
       unset($form['settings']['label']);
       unset($form['settings']['label_display']);
       unset($form['settings']['admin_label']['#title']);
@@ -84,75 +135,76 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       $component = $form_state->getFormObject()->getCurrentComponent();
       $block = $component->getPlugin();
 
-      if ($block->getPluginId() == 'menu_block:main') {
-        /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
-        $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
-        $collegiate_split = 'config_split:collegiate';
-        // 'collegiate' split either doesn't exist or isn't enabled.
-        if (!isset($filters[$collegiate_split]) || !$filters[$collegiate_split]['status']) {
-          // Restrict block settings on main navigation block.
-          $form['settings']['menu_levels']['#access'] = FALSE;
-          $form['settings']['advanced']['#access'] = FALSE;
-          $form['settings']['style']['#access'] = FALSE;
-        }
+      // Form modifications per block plugin and bundle.
+      switch ($block->getPluginId()) {
+        case 'inline_block:uiowa_banner':
+          // We provide a field that provides background options, so
+          // this is hidden.
+          if (isset($form['layout_builder_style_background'])) {
+            $form['layout_builder_style_background']['#access'] = FALSE;
+          }
+          break;
 
-        // Set defaults.
-        $form['settings']['menu_levels']['level']['#default_value'] = 2;
-        $form['settings']['advanced']['follow']['#default_value'] = 1;
-      }
-      elseif ($block->getPluginId() === 'inline_block:uiowa_banner') {
-        // Hide LB style for background.
-        if (isset($form['layout_builder_style_background'])) {
-          $form['layout_builder_style_background']['#access'] = FALSE;
-        }
-        // Set defaults for banner options if the block is being added.
-        if ($form_id === 'layout_builder_add_block') {
-          // Default is centered, left.
-          if (isset($form['layout_builder_style_banner_type'])) {
-            $form['layout_builder_style_banner_type']['#default_value'] = ['banner_centered_left'];
+        case 'inline_block:uiowa_card':
+          // Set '#states' for card image size.
+          $form['layout_builder_style_card_image_size']['#states'] = [
+            'visible' => [
+              // Always show when media format is set to 'circle'.
+              [
+                ':input[name="layout_builder_style_media_format"]' => [
+                  'value' => 'media_format_circle',
+                ],
+              ],
+              // Always show when card media position is not 'stacked'.
+              [
+                ':input[name="layout_builder_style_card_media_position"]' => [
+                  '!value' => 'card_media_position_stacked',
+                ],
+              ],
+            ],
+          ];
+          break;
+
+        case 'inline_block:uiowa_collection':
+          $form['settings']['view_mode']['#type'] = 'radios';
+          array_shift($form['settings']['view_mode']['#options']);
+
+          // @todo Re-enable 'tab' after theming/functionality is in place.
+          unset($form['settings']['view_mode']['#options']['tab']);
+
+          $view_options = [
+            'accordion',
+            'descriptive_list',
+            'tab',
+          ];
+
+          // If view mode not in our options (eg 'full'), set it to <dl>.
+          if (!in_array($form['settings']['view_mode']['#default_value'], $view_options)) {
+            $form['settings']['view_mode']['#default_value'] = 'descriptive_list';
+          }
+          break;
+
+        case 'menu_block:main':
+          /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
+          $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
+          $collegiate_split = 'config_split:collegiate';
+          // 'collegiate' split either doesn't exist or isn't enabled.
+          if (!isset($filters[$collegiate_split]) || !$filters[$collegiate_split]['status']) {
+            // Restrict block settings on main navigation block.
+            $form['settings']['menu_levels']['#access'] = FALSE;
+            $form['settings']['advanced']['#access'] = FALSE;
+            $form['settings']['style']['#access'] = FALSE;
           }
 
-          // Default is medium.
-          if (isset($form['layout_builder_style_banner_height'])) {
-            $form['layout_builder_style_banner_height']['#default_value'] = ['banner_medium'];
-          }
-
-          // Default is dark gradient.
-          if (isset($form['layout_builder_style_banner_gradient'])) {
-            $form['layout_builder_style_banner_gradient']['#default_value'] = ['banner_gradient_dark'];
-          }
-
-          // Default is bold serif.
-          if (isset($form['layout_builder_style_headline_type'])) {
-            $form['layout_builder_style_headline_type']['#default_value'] = ['headline_bold_serif'];
-          }
-        }
+          // Set defaults.
+          $form['settings']['menu_levels']['level']['#default_value'] = 2;
+          $form['settings']['advanced']['follow']['#default_value'] = 1;
+          break;
       }
 
       $form['settings'] += [
         '#weight' => 0,
       ];
-
-      // Change collection view_mode to radios and remove the 'default' option.
-      if (isset($form['settings']['block_form']['#block'])
-        && $form['settings']['block_form']['#block']->bundle() === 'uiowa_collection') {
-        $form['settings']['view_mode']['#type'] = 'radios';
-        array_shift($form['settings']['view_mode']['#options']);
-
-        // @todo Re-enable 'tab' after theming/functionality is in place.
-        unset($form['settings']['view_mode']['#options']['tab']);
-
-        $view_options = [
-          'accordion',
-          'descriptive_list',
-          'tab',
-        ];
-
-        // If view mode not in our options (eg 'full'), set it to <dl>.
-        if (!in_array($form['settings']['view_mode']['#default_value'], $view_options)) {
-          $form['settings']['view_mode']['#default_value'] = 'descriptive_list';
-        }
-      }
 
       break;
 
@@ -194,21 +246,9 @@ function layout_builder_custom_form_node_page_layout_builder_form_alter(&$form, 
  *   The form state.
  */
 function _layout_builder_custom_block_validate(array &$form, FormStateInterface $form_state) {
-  /** @var \Drupal\layout_builder\Section $section */
-  $section = $form_state->getFormObject()->getCurrentSection();
-
   /** @var \Drupal\layout_builder\SectionComponent $component */
   $component = $form_state->getFormObject()->getCurrentComponent();
   $block = $component->getPlugin();
-
-  // Require horizontal style if this card is in a one column layout.
-  if ($section->getLayoutId() == 'layout_onecol' && $block->getPluginId() == 'inline_block:uiowa_card') {
-    $styles = $form_state->getValue('layout_builder_style_default');
-
-    if (!isset($styles['block_card_style_horizontal'])) {
-      $form_state->setErrorByName('layout_builder_block_override', t('Cards rendered within a one column layout must have the horizontal style.'));
-    }
-  }
 
   // Add a character limit to the stat block prefix/suffix fields.
   if ($block->getPluginId() == 'inline_block:uiowa_statistic') {
@@ -237,37 +277,56 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
   $component = $form_state->getFormObject()->getCurrentComponent();
   $block = $component->getPlugin();
 
-  if ($block->getPluginId() === 'inline_block:uiowa_banner') {
-    $background_option = $form_state->getValue([
-      'settings',
-      'block_form',
-      'background_options',
-    ]);
-    if ($background_option) {
-      $form_media_selection = [
+  switch ($block->getPluginId()) {
+    case 'inline_block:uiowa_banner':
+      $background_option = $form_state->getValue([
         'settings',
         'block_form',
-        'field_uiowa_banner_image',
-        'selection',
-      ];
-      if ($background_option === 'image') {
-        if (!$form_state->getValue($form_media_selection)) {
-          // If an image wasn't uploaded, revert to default selection of black.
-          // @todo: Add feedback for user that they didn't upload an image.
-          // @todo: Add validation to check whether image uploaded or not.
-          $background_option = 'block_background_style_black';
-        }
+        'background_options',
+      ]);
+      if ($background_option) {
+        $form_media_selection = [
+          'settings',
+          'block_form',
+          'field_uiowa_banner_image',
+          'selection',
+        ];
+        if ($background_option === 'image') {
+          if (!$form_state->getValue($form_media_selection)) {
+            // If an image wasn't uploaded, revert to default of 'black'.
+            // @todo: Add feedback for user that they didn't upload an image.
+            // @todo: Add validation to check whether image uploaded or not.
+            $background_option = 'block_background_style_black';
+          }
 
+        }
+        else {
+          // If a non-image background was selected, remove the reference.
+          // @todo Trigger file deletion if the media item is unused elsewhere.
+          $form_state->unsetValue($form_media_selection);
+        }
+        // Set layout_builder_style_background to value of our duplicate select.
+        $form_state->setValue('layout_builder_style_background', $background_option);
       }
-      else {
-        // If a non-image background was selected, remove the reference.
-        // @todo Trigger file deletion if the media item is unused elsewhere.
-        $form_state->unsetValue($form_media_selection);
+      break;
+
+    case 'inline_block:uiowa_card':
+      $media_position = $form_state->getValue('layout_builder_style_card_media_position');
+      $media_format = $form_state->getValue('layout_builder_style_media_format');
+
+      if ($media_position === 'card_media_position_stacked') {
+        if (in_array($media_format, [
+          'media_format_widescreen',
+          'media_format_square',
+        ])) {
+          $form_state->setValue('layout_builder_style_card_image_size', 'card_image_large');
+          // @todo Should we set a message here to let the user
+          //   know the image size was changed?
+        }
       }
-      // Set layout_builder_style_background to value of our duplicate select.
-      $form_state->setValue('layout_builder_style_background', $background_option);
-    }
+      break;
   }
+
 }
 
 /**
