@@ -1,0 +1,37 @@
+uuid: dd83af8e-25db-4038-b45e-f0a694833c0a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_person_contact_information
+    - node.type.person
+    - paragraphs.paragraphs_type.uiowa_contact
+  module:
+    - entity_reference_revisions
+id: node.person.field_person_contact_information
+field_name: field_person_contact_information
+entity_type: node
+bundle: person
+label: 'Contact Information'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      uiowa_contact: uiowa_contact
+    target_bundles_drag_drop:
+      uiowa_collection_item:
+        weight: 4
+        enabled: false
+      uiowa_contact:
+        enabled: true
+        weight: 5
+      uiowa_slide:
+        weight: 6
+        enabled: false
+field_type: entity_reference_revisions
