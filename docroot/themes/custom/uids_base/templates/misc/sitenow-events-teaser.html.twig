@@ -19,35 +19,13 @@
 
 {% endif %}
 
-{% set event_block = {
-  'attributes': attributes.addClass(classes),
-  'event_image': event.image|render,
-  'event_title': event.title|render,
-  'title_prefix': title_prefix,
-  'title_suffix': title_suffix,
-  'event_url': event.url,
-  'event_date': event.date_string,
-  'headline_level': event.heading_size,
-  'event_icon': event_icon|trans ,
-  'event_location': event_location|render,
-  'event_description': event.description_text,
-} %}
-
-{#{% set styles = elements['#layout_builder_style'] %}#}
-{#{% set style_classes = [] %}#}
-{#{% set size_classes = [] %}#}
-
-{#{% for style in styles %}#}
-{#  #}{# Remove media classes if media--circle  #}
-{#  {% if style starts with 'media--circle' %}#}
-{#    {% set style_classes = style_classes|merge([style]) %}#}
-{#  {% endif %}#}
-{#  {% if style starts with 'card__media' %}#}
-{#    {% set size_classes = size_classes|merge([style]) %}#}
-{#  {% endif %}#}
-{#{% endfor %}#}
-
 {#{% set event_block = {#}
+{#  'attributes': attributes.addClass(classes),#}
+{#  'event_image': event.image|render,#}
+{#  'event_title': event.title|render,#}
+{#  'title_prefix': title_prefix,#}
+{#  'title_suffix': title_suffix,#}
+{#  'event_url': event.url,#}
 {#  'event_date': event.date_string,#}
 {#  'headline_level': event.heading_size,#}
 {#  'event_icon': event_icon|trans ,#}
@@ -55,22 +33,45 @@
 {#  'event_description': event.description_text,#}
 {#} %}#}
 
-{#{% set block_card = {#}
-{#  'attributes': attributes.removeClass(style_classes, size_classes),#}
-{#  'media_styles' : style_classes,#}
-{#  'media_sizes' : size_classes,#}
-{#  'card_image': event.image|render,#}
-{#  'card_title': event.title|render,#}
-{#  'title_prefix': title_prefix,#}
-{#  'title_suffix': title_suffix,#}
-{#  'card_link_url': event.url,#}
+{% set styles = elements['#layout_builder_style'] %}
+{% set style_classes = [] %}
+{% set size_classes = [] %}
 
-{#  'card_text': content.field_uiowa_card_excerpt,#}
+{% for style in styles %}
+  {# Remove media classes if media--circle  #}
+  {% if style starts with 'media--circle' %}
+    {% set style_classes = style_classes|merge([style]) %}
+  {% endif %}
+  {% if style starts with 'card__media' %}
+    {% set size_classes = size_classes|merge([style]) %}
+  {% endif %}
+{% endfor %}
+
+{#{% set event_block = {#}
+{#  'event_icon': event_icon|trans ,#}
+{#  'event_location': event_location|render,#}
+{#  'event_description': event.description_text,#}
+{#} %}#}
+
+{% set block_card = {
+  'attributes': attributes.removeClass(style_classes, size_classes),
+  'media_styles' : style_classes,
+  'media_sizes' : size_classes,
+  'card_image': event.image|render,
+  'card_title': event.title|render,
+  'title_prefix': title_prefix,
+  'title_suffix': title_suffix,
+  'card_link_url': event.url,
+  'card_date': event.date_string,
+  'headline_level': event.heading_size,
+  'card_text': event.description_text,
+
+
+} %}
+
 {#  'card_link_title': content.field_uiowa_card_link[0]['#title']|render,#}
 {#  'card_subtitle': content.field_uiowa_card_author|render,#}
 {#  'card_position': elements['#weight'],#}
 {#  'card_aria_describedby': content.field_uiowa_card_title[0]['#text']|clean_id,#}
-{#  'headline_level': content.field_uiowa_card_title[0]['#size'],#}
-{#} %}#}
 
-{#{% embed '@uids_base/uids/card.html.twig' with block_card only %}{% endembed %}#}
+{% embed '@uids_base/uids/card.html.twig' with block_card only %}{% endembed %}
