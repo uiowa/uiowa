@@ -5,6 +5,9 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.area_of_study.body
+    - field.field.node.area_of_study.field_area_of_study_category
+    - field.field.node.area_of_study.field_area_of_study_degrees
+    - field.field.node.area_of_study.field_area_of_study_related
     - field.field.node.area_of_study.field_image
     - node.type.area_of_study
   module:
@@ -29,5 +32,8 @@ content:
     third_party_settings: {  }
     region: content
 hidden:
+  field_area_of_study_category: true
+  field_area_of_study_degrees: true
+  field_area_of_study_related: true
   field_image: true
   search_api_excerpt: true

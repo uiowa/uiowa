@@ -1,0 +1,27 @@
+uuid: 334056c6-46bc-4f1f-a42b-0142a45751ec
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_area_of_study_related
+    - node.type.area_of_study
+id: node.area_of_study.field_area_of_study_related
+field_name: field_area_of_study_related
+entity_type: node
+bundle: area_of_study
+label: Related
+description: 'Any related <em>area of study</em> that are related.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      area_of_study: area_of_study
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

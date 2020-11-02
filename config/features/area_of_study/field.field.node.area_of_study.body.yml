@@ -6,12 +6,19 @@ dependencies:
     - field.storage.node.body
     - node.type.area_of_study
   module:
+    - allowed_formats
     - text
+third_party_settings:
+  allowed_formats:
+    filtered_html: '0'
+    minimal: '0'
+    full_html: '0'
+    plain_text: '0'
 id: node.area_of_study.body
 field_name: body
 entity_type: node
 bundle: area_of_study
-label: Body
+label: Description
 description: ''
 required: false
 translatable: true
