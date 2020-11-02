@@ -601,43 +601,41 @@ function sitenow_people_preprocess_block(&$variables) {
  */
 function _sitenow_people_person_form_submit(array &$form, FormStateInterface $form_state) {
   // Get all instances of field_uiowa_contact_address.
-  $contact_addresses = $form_state->getValue([
-    'field_person_contact_information',
-    0,
-    'subform',
-    'field_uiowa_contact_address',
-  ]);
+  $contact_addresses = $form_state->getValue('field_person_contact_information');
 
   // Loop through each address.
-  foreach ($contact_addresses as $delta => $contact_address) {
-    if (isset($contact_address['address'])) {
-      $has_info = FALSE;
-      // Loop through all the details of the address to
-      // check if any of them have been set besides the
-      // country.
-      foreach ($contact_address['address'] as $key => $details) {
-        if ($key === 'country_code') {
-          continue;
+  foreach ($contact_addresses as $delta => $contact_address_subform) {
+    if (isset($contact_address_subform['subform'])) {
+      $contact_address = $contact_address_subform['subform']['field_uiowa_contact_address'][0];
+      if (isset($contact_address['address'])) {
+        $has_info = FALSE;
+        // Loop through all the details of the address to
+        // check if any of them have been set besides the
+        // country.
+        foreach ($contact_address['address'] as $key => $details) {
+          if ($key === 'country_code') {
+            continue;
+          }
+          // If we find a non-empty value, we can stop looping.
+          if (!empty($details)) {
+            $has_info = TRUE;
+            break;
+          }
         }
-        // If we find a non-empty value, we can stop looping.
-        if (!empty($details[$key])) {
-          $has_info = TRUE;
-          break;
-        }
-      }
 
-      // If no other fields have been set, then unset the address.
-      if (!$has_info) {
-        // Set country code to empty string.
-        $form_state->setValue([
-          'field_person_contact_information',
-          0,
-          'subform',
-          'field_uiowa_contact_address',
-          $delta,
-          'address',
-          'country_code',
-        ], '');
+        // If no other fields have been set, then unset the address.
+        if (!$has_info) {
+          // Set country code to empty string.
+          $form_state->setValue([
+            'field_person_contact_information',
+            $delta,
+            'subform',
+            'field_uiowa_contact_address',
+            0,
+            'address',
+            'country_code',
+          ], '');
+        }
       }
     }
   }
