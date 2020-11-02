@@ -25,26 +25,26 @@
 ]
 %}
 
-{{ attach_library('uids_base/events') }}
+{{ attach_library('uids_base/card') }}
 
-{# Set the event icon #}
-{% set event_icon = '<span class="fas fa-user"></span>' %}
+{# Set the user icon #}
+{% set user_icon = '<span class="fas fa-user"></span>' %}
 
-{% set event_block = {
+{% set aggregator_card = {
   'attributes': attributes.addClass(classes),
-  'event_image': feed_image|render,
-  'event_title': title|render,
+  'card_image': feed_image|render,
+  'card_title': title|render,
   'title_prefix': title_prefix,
   'title_suffix': title_suffix,
-  'event_url': url,
-  'event_date': post_date,
+  'card_link_url': url,
+  'card_date': post_date,
   'headline_level': heading_size,
-  'event_icon': event_icon|trans,
-  'event_location': content.author|render,
-  'event_description': content.description,
+  'event_icon': user_icon|trans,
+  'card_subtitle': content.author|render,
+  'card_text': content.description,
 } %}
 
-{% embed '@uids_base/uids/event.html.twig' with event_block only %}
+{% embed '@uids_base/uids/card.html.twig' with aggregator_card only %}
 
 	{% block heading %}
 		{{ title_prefix }}
