@@ -8,7 +8,6 @@
 {{ attach_library('uids_base/paragraphs-lists') }}
 {{ attach_library('uids_base/events') }}
 
-
 {# Set the event icon #}
 {% if event.virtual %}
   {% set event_icon = '<span class="fas fa-laptop"></span>' %}
@@ -34,7 +33,7 @@
 {#} %}#}
 
 {% set styles = elements['#layout_builder_style'] %}
-{% set style_classes = [] %}
+{% set style_classes = ['media--circle'] %}
 {% set size_classes = [] %}
 
 {% for style in styles %}
@@ -47,14 +46,14 @@
   {% endif %}
 {% endfor %}
 
+{{ devel_breakpoint() }}
+
 {#{% set event_block = {#}
-{#  'event_icon': event_icon|trans ,#}
-{#  'event_location': event_location|render,#}
 {#  'event_description': event.description_text,#}
 {#} %}#}
 
 {% set block_card = {
-  'attributes': attributes.removeClass(style_classes, size_classes),
+  'attributes': attributes.removeClass(style_classes, size_classes).addClass(classes),
   'media_styles' : style_classes,
   'media_sizes' : size_classes,
   'card_image': event.image|render,
@@ -65,9 +64,11 @@
   'card_date': event.date_string,
   'headline_level': event.heading_size,
   'card_text': event.description_text,
-
-
+  'event_icon': event_icon|trans ,
+  'card_tag': event_location|render,
 } %}
+
+
 
 {#  'card_link_title': content.field_uiowa_card_link[0]['#title']|render,#}
 {#  'card_subtitle': content.field_uiowa_card_author|render,#}
