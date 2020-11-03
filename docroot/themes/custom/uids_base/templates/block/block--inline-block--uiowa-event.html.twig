@@ -58,5 +58,14 @@
     {{ title_suffix }}
   {% endblock %}
 
+  {% block card_tag %}
+    {% if card_tag is not empty %}
+      <div class="card__label">
+        {{ card_icon }}
+        {{ card_tag }}
+      </div>
+    {% endif %}
+  {% endblock %}
+
 {% endembed %}
 
