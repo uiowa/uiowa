@@ -38,9 +38,9 @@
   'title_prefix': title_prefix,
   'title_suffix': title_suffix,
   'card_link_url': url,
-  'card_subtitle': post_date,
+  'card_date': post_date,
+  'card_subtitle': content.author|render,
   'headline_level': heading_size,
-  'aggregator_creator': content.author|render,
   'card_text': content.description,
 } %}
 
@@ -51,12 +51,5 @@
     {{ parent() }}
     {{ title_suffix }}
   {% endblock %}
-
- {% block card_subtitle %}
-   <div class="card__subtitle">
-     {{ card_subtitle }}
-     {{ aggregator_creator }}
-   </div>
- {% endblock %}
 
 {% endembed %}
