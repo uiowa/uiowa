@@ -1512,12 +1512,14 @@ function sitenow_update_8039() {
       foreach ($section->getComponents() as $component) {
         if ($component->getPluginId() === 'inline_block:uiowa_card') {
           $styles = $component->get('layout_builder_styles_style');
-          $styles[] = 'block_background_style_light';
-          // @todo Check if gray background has been selected.
-          $component->set('layout_builder_styles_style', $styles);
+          // If card was bg--gray, keep it.
+          if (!in_array('block_background_style_gray', $styles)) {
+            $styles[] = 'block_background_style_light';
+            $component->set('layout_builder_styles_style', $styles);
 
-          $section_arr['components'][$i] = $component->toArray();
-          $section_is_updated = TRUE;
+            $section_arr['components'][$i] = $component->toArray();
+            $section_is_updated = TRUE;
+          }
         }
         $i++;
       }
