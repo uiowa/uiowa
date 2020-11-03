@@ -41,7 +41,7 @@
   {% if item.content['#text'] %}
     {% set headline = {
       'headline_level' : item.content['#size'] ?: 'h2',
-      'headline_class' : item.content['#styles'] ?: 'headline',
+      'headline_class' : item.content['#styles'] ?: 'headline headline--parent',
       'headline_text' : item.content['#text'] ?: '',
     } %}
     {% include '@uids_base/uids/headline.html.twig' with headline only %}
