@@ -1,12 +1,15 @@
 {%
   set classes = [
-  'card--list'
-]
+    'card--list',
+    'card__row',
+    'card--media-left'
+  ]
 %}
 
 {{ attach_library('classy/node') }}
 {{ attach_library('uids_base/paragraphs-lists') }}
-{{ attach_library('uids_base/events') }}
+{{ attach_library('uids_base/event') }}
+{{ attach_library('uids_base/media') }}
 
 {# Set the event icon #}
 {% if event.virtual %}
@@ -54,8 +57,8 @@
 
 {% set block_card = {
   'attributes': attributes.removeClass(style_classes, size_classes).addClass(classes),
-  'media_styles' : style_classes,
-  'media_sizes' : size_classes,
+  'media_styles' : ['media--circle', 'media--border'],
+  'media_sizes' : 'card__media--small',
   'card_image': event.image|render,
   'card_title': event.title|render,
   'title_prefix': title_prefix,
