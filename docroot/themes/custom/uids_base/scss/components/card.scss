@@ -1,7 +1,6 @@
 @import "assets/scss/_variables.scss";
 @import "assets/scss/_utilities.scss";
 @import "components/card/card.scss";
-@import "background.scss";
 
 // ie11
 @media all and (-ms-high-contrast: none),
@@ -40,7 +39,7 @@
   &[class*="bg-"] {
     .card--stacked:not([class*="bg-"]) {
       .card__body {
-        padding: 2rem;
+        //padding: 2rem;
       }
     }
   }
@@ -107,5 +106,3 @@
 .layout.layout__container[class*="bg-"] .card.card--media-right {
   padding: 1.25rem;
 }
-
-@include add-backgrounds();
