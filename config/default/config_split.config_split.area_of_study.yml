@@ -10,6 +10,8 @@ module: {  }
 theme: {  }
 blacklist:
   - node.type.area_of_study
+  - pathauto.pattern.area_of_study
+  - views.view.area_of_study
   - taxonomy.vocabulary.area_of_study_category
   - 'core.base_field_override.node.area_of_study.*'
   - 'core.entity_form_display.node.area_of_study.*'
@@ -19,6 +21,7 @@ blacklist:
   - 'field.storage.node.field_area_of_study_*'
 graylist:
   - 'user.role.*'
+  - core.entity_view_display.node.page.default
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 80

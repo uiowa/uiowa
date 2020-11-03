@@ -4,13 +4,16 @@ status: true
 dependencies:
   config:
     - field.field.node.area_of_study.body
-    - field.field.node.area_of_study.field_area_of_study_category
+    - field.field.node.area_of_study.field_area_of_study_college
     - field.field.node.area_of_study.field_area_of_study_degrees
+    - field.field.node.area_of_study.field_area_of_study_link
     - field.field.node.area_of_study.field_area_of_study_related
+    - field.field.node.area_of_study.field_area_of_study_type
     - field.field.node.area_of_study.field_image
     - node.type.area_of_study
   module:
     - content_moderation
+    - link
     - media_library
     - path
     - text
@@ -35,21 +38,25 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_area_of_study_category:
-    weight: 12
-    settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
+  field_area_of_study_college:
+    weight: 28
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: options_select
     region: content
   field_area_of_study_degrees:
     weight: 11
     settings: {  }
     third_party_settings: {  }
     type: options_select
+    region: content
+  field_area_of_study_link:
+    weight: 26
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
     region: content
   field_area_of_study_related:
     weight: 13
@@ -60,6 +67,12 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
+  field_area_of_study_type:
+    weight: 27
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
     region: content
   field_image:
     weight: 9
