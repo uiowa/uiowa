@@ -27,45 +27,6 @@
   }
 }
 
-// Add padding if card is on a bg or bg pattern.
-
-.layout.layout__container {
-  .card--stacked[class*="bg-"] {
-    .card__body {
-      padding: 2rem;
-    }
-  }
-
-  &[class*="bg-"] {
-    .card--stacked:not([class*="bg-"]) {
-      .card__body {
-        //padding: 2rem;
-      }
-    }
-  }
-
-  // remove card body padding if section and card have same bg color
-  &.bg--gray {
-    .card--stacked.bg--gray:not(.card--enclosed) {
-      .card__body {
-        padding-right: 0;
-        padding-left: 0;
-      }
-    }
-  }
-}
-
-
-.layout__container .card {
-  blockquote {
-    color: $secondary;
-
-    a {
-      color: $link-color;
-    }
-  }
-}
-
 // adjust card title for large size in one and two and three cols
 .layout--onecol,
 .layout--twocol {
@@ -105,4 +66,18 @@
 .layout.layout__container[class*="bg-"] .card.card--media-left,
 .layout.layout__container[class*="bg-"] .card.card--media-right {
   padding: 1.25rem;
+}
+
+// unset matching background color padding
+.bg--gold .bg--gold.card.card--media-left,
+.bg--gold .bg--gold.card.card--media-right,
+.bg--white .bg--white.card--media-left,
+.bg--white .bg--white.card--media-right,
+.bg--light .bg--light.card--media-left,
+.bg--light .bg--light.card--media-right,
+.bg--black .bg--black.card--media-left,
+.bg--black .bg--black.card--media-right,
+.bg--gray .bg--gray.card--media-left,
+.bg--gray .bg--gray.card--media-right {
+    padding: 0;
 }
