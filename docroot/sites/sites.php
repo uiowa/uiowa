@@ -1781,3 +1781,9 @@ $sites['3mlearning.local.drupal.uiowa.edu'] = '3mlearning.uiowa.edu';
 $sites['3mlearning.dev.drupal.uiowa.edu'] = '3mlearning.uiowa.edu';
 $sites['3mlearning.stage.drupal.uiowa.edu'] = '3mlearning.uiowa.edu';
 $sites['3mlearning.prod.drupal.uiowa.edu'] = '3mlearning.uiowa.edu';
+
+// Directory aliases for ipol.lab.uiowa.edu.
+$sites['labipol.local.drupal.uiowa.edu'] = 'ipol.lab.uiowa.edu';
+$sites['labipol.dev.drupal.uiowa.edu'] = 'ipol.lab.uiowa.edu';
+$sites['labipol.stage.drupal.uiowa.edu'] = 'ipol.lab.uiowa.edu';
+$sites['labipol.prod.drupal.uiowa.edu'] = 'ipol.lab.uiowa.edu';
