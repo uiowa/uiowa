@@ -47,7 +47,7 @@ display:
           reset_button: false
           reset_button_label: Reset
           exposed_sorts_label: 'Sort by'
-          expose_sort_order: true
+          expose_sort_order: false
           sort_asc_label: Asc
           sort_desc_label: Desc
       pager:
@@ -381,28 +381,160 @@ display:
           expose:
             operator_limit_selection: false
             operator_list: {  }
+        title:
+          id: title
+          table: node_field_data
+          field: title
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: contains
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: title_op
+            label: Search
+            description: ''
+            use_operator: false
+            operator: title_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: title
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: node
+          entity_field: title
+          plugin_id: string
+        field_area_of_study_type_value:
+          id: field_area_of_study_type_value
+          table: node__field_area_of_study_type
+          field: field_area_of_study_type_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_area_of_study_type_value_op
+            label: Type
+            description: ''
+            use_operator: false
+            operator: field_area_of_study_type_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_area_of_study_type_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          plugin_id: list_field
+        field_area_of_study_college_value:
+          id: field_area_of_study_college_value
+          table: node__field_area_of_study_college
+          field: field_area_of_study_college_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_area_of_study_college_value_op
+            label: College
+            description: ''
+            use_operator: false
+            operator: field_area_of_study_college_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_area_of_study_college_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          plugin_id: list_field
       sorts: {  }
       title: 'Areas of Study'
       header: {  }
       footer: {  }
       empty: {  }
-      relationships:
-        field_area_of_study_category:
-          id: field_area_of_study_category
-          table: node__field_area_of_study_category
-          field: field_area_of_study_category
-          relationship: none
-          group_type: group
-          admin_label: 'field_area_of_study_category: Taxonomy term'
-          required: false
-          plugin_id: standard
+      relationships: {  }
       arguments: {  }
       display_extenders: {  }
+      use_ajax: true
     cache_metadata:
       max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - url
         - url.query_args
         - 'user.node_grants:view'
         - user.permissions
@@ -410,22 +542,23 @@ display:
         - 'config:field.storage.node.field_area_of_study_college'
         - 'config:field.storage.node.field_area_of_study_degrees'
         - 'config:field.storage.node.field_area_of_study_related'
-  block_area_of_study_table:
-    display_plugin: block
-    id: block_area_of_study_table
-    display_title: Block
-    position: 1
+  areas_of_study:
+    display_plugin: page
+    id: areas_of_study
+    display_title: Page
+    position: 2
     display_options:
       display_extenders:
         metatag_display_extender: {  }
-      allow:
-        items_per_page: false
-      block_description: 'Areas of Study Table'
+      path: areas-of-study
+      display_description: 'Areas of Study page with table with exposed filters.'
+      enabled: true
     cache_metadata:
       max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - url
         - url.query_args
         - 'user.node_grants:view'
         - user.permissions
