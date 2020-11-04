@@ -61,9 +61,30 @@
   }
 }
 
-// Set background for all v2 cards
-.paragraph--type--section {
-  .card {
-    background: #fff;
+// @todo remove once https://github.com/uiowa/uiowa/issues/2426 is integrated.
+
+// Adjust padding if there's a section background color
+.layout.layout__container[class*="bg-"] .card.card--media-left,
+.layout.layout__container[class*="bg-"] .card.card--media-right {
+  padding: 1.25rem;
+}
+
+.card {
+  background: #fff;
+
+  &__label {
+    position: relative;
+
+    .svg-inline--fa {
+      height: 100%;
+    }
   }
+}
+
+.card.bg--gray {
+  background: $light;
+}
+
+.card__title a {
+  color: #151515;
 }

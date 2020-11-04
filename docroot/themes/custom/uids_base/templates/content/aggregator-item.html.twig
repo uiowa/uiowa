@@ -22,34 +22,34 @@
 {%
   set classes = [
   'aggregator-item',
+  'card--media-left',
+  'media--border',
+  'card--centered-left',
+  'card--alignment-left',
 ]
 %}
 
-{{ attach_library('uids_base/events') }}
-
-{# Set the event icon #}
-{% set event_icon = '<span class="fas fa-user"></span>' %}
-
-{% set event_block = {
+{% set aggregator_card = {
   'attributes': attributes.addClass(classes),
-  'event_image': feed_image|render,
-  'event_title': title|render,
+  'media_styles': 'media--circle',
+  'media_sizes': 'card__media--small',
+  'card_image': feed_image|render,
+  'card_title': title|render,
   'title_prefix': title_prefix,
   'title_suffix': title_suffix,
-  'event_url': url,
-  'event_date': post_date,
+  'card_link_url': url,
+  'card_date': post_date,
+  'card_subtitle': content.author|render,
   'headline_level': heading_size,
-  'event_icon': event_icon|trans,
-  'event_location': content.author|render,
-  'event_description': content.description,
+  'card_text': content.description,
 } %}
 
-{% embed '@uids_base/uids/event.html.twig' with event_block only %}
+{% embed '@uids_base/uids/card.html.twig' with aggregator_card only %}
 
-	{% block heading %}
-		{{ title_prefix }}
-		{{ parent() }}
-		{{ title_suffix }}
-	{% endblock %}
+  {% block heading %}
+    {{ title_prefix }}
+    {{ parent() }}
+    {{ title_suffix }}
+  {% endblock %}
 
 {% endembed %}
