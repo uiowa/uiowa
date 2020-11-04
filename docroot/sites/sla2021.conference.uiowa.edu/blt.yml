@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: conferencesla2021.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: conferencesla2021
+  human_name: sla2021.conference.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: conferencesla2021.prod
+drupal:
+  db:
+    database: sla2021_conference_uiowa_edu
+uiowa:
+  requester: antonioalejandro
