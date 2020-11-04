@@ -18,43 +18,10 @@
 {% else %}
   {% set event_icon = '<span class="fas fa-map-marker-alt"></span>' %}
   {% set event_location = event.location_name %}
-
 {% endif %}
 
-{#{% set event_block = {#}
-{#  'attributes': attributes.addClass(classes),#}
-{#  'event_image': event.image|render,#}
-{#  'event_title': event.title|render,#}
-{#  'title_prefix': title_prefix,#}
-{#  'title_suffix': title_suffix,#}
-{#  'event_url': event.url,#}
-{#  'event_date': event.date_string,#}
-{#  'headline_level': event.heading_size,#}
-{#  'event_icon': event_icon|trans ,#}
-{#  'event_location': event_location|render,#}
-{#  'event_description': event.description_text,#}
-{#} %}#}
-
-{% set styles = elements['#layout_builder_style'] %}
-{% set style_classes = ['media--circle'] %}
-{% set size_classes = [] %}
-
-{% for style in styles %}
-  {# Remove media classes if media--circle  #}
-  {% if style starts with 'media--circle' %}
-    {% set style_classes = style_classes|merge([style]) %}
-  {% endif %}
-  {% if style starts with 'card__media' %}
-    {% set size_classes = size_classes|merge([style]) %}
-  {% endif %}
-{% endfor %}
-
-{#{% set event_block = {#}
-{#  'event_description': event.description_text,#}
-{#} %}#}
-
 {% set block_card = {
-  'attributes': attributes.removeClass(style_classes, size_classes).addClass(classes),
+  'attributes': attributes.addClass(classes),
   'media_styles' : ['media--circle', 'media--border'],
   'media_sizes' : 'card__media--small',
   'card_image': event.image|render,
@@ -69,11 +36,15 @@
   'card_tag': event_location|render,
 } %}
 
+{% embed '@uids_base/uids/card.html.twig' with block_card only %}
 
+  {% block card_tag %}
+    {% if card_tag is not empty %}
+      <div class="card__label">
+        {{ event_icon }}
+        {{ card_tag }}
+      </div>
+    {% endif %}
+  {% endblock %}
 
-{#  'card_link_title': content.field_uiowa_card_link[0]['#title']|render,#}
-{#  'card_subtitle': content.field_uiowa_card_author|render,#}
-{#  'card_position': elements['#weight'],#}
-{#  'card_aria_describedby': content.field_uiowa_card_title[0]['#text']|clean_id,#}
-
-{% embed '@uids_base/uids/card.html.twig' with block_card only %}{% endembed %}
+{% endembed %}
