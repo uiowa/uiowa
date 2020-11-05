@@ -19,6 +19,7 @@ use Drupal\Component\Utility\Html;
 use Drupal\views\Views;
 use Drupal\views\Entity\View;
 use Drupal\Core\Render\Element;
+use Drupal\node\NodeInterface;
 
 /**
  * Implements hook_form_alter().
@@ -315,7 +316,7 @@ function sitenow_people_views_pre_render(ViewExecutable $view) {
   if ($view->id() === 'person_custom' && $view->current_display === 'students') {
     foreach ($view->result as $key => $result) {
       if ($node = $result->_entity) {
-        if ($node instanceof \Drupal\node\NodeInterface) {
+        if ($node instanceof NodeInterface) {
           if (!is_null($advisor_field = $node->field_pt_student_advisor) && $advisor = $advisor_field->entity) {
             $hide_person = $advisor->field_person_hide->value;
 
