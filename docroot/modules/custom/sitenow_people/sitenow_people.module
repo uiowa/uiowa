@@ -311,6 +311,23 @@ function sitenow_people_views_pre_render(ViewExecutable $view) {
   if ($view->id() == "people" && $view->current_display == 'page_people_table') {
     $view->field["draggableviews"]->options["label"] = 'Sort Control';
   }
+
+  if ($view->id() === 'person_custom' && $view->current_display === 'students') {
+    foreach ($view->result as $key => $result) {
+      if ($node = $result->_entity) {
+        if ($node instanceof \Drupal\node\NodeInterface) {
+          if (!is_null($advisor_field = $node->field_pt_student_advisor) && $advisor = $advisor_field->entity) {
+            $hide_person = $advisor->field_person_hide->value;
+
+            if ($hide_person) {
+              // Display advisor name as plain text.
+              // @todo Add code to update the view field output.
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 /**
