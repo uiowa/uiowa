@@ -29,6 +29,9 @@
 ]
 %}
 
+{# Set the event icon #}
+{% set event_icon = '<span class="fas fa-user"></span>' %}
+
 {% set aggregator_card = {
   'attributes': attributes.addClass(classes),
   'media_styles': 'media--circle',
@@ -39,17 +42,21 @@
   'title_suffix': title_suffix,
   'card_link_url': url,
   'card_date': post_date,
-  'card_subtitle': content.author|render,
+  'card_tag': content.author|render,
+  'event_icon': event_icon|trans,
   'headline_level': heading_size,
   'card_text': content.description,
 } %}
 
 {% embed '@uids_base/uids/card.html.twig' with aggregator_card only %}
 
-  {% block heading %}
-    {{ title_prefix }}
-    {{ parent() }}
-    {{ title_suffix }}
-  {% endblock %}
+{% block card_tag %}
+	{% if card_tag is not empty %}
+		<div class="card__label">
+			{{ event_icon }}
+			{{ card_tag }}
+		</div>
+	{% endif %}
+{% endblock %}
 
 {% endembed %}

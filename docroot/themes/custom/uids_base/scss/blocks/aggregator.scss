@@ -4,6 +4,7 @@
 
 .aggregator-wrapper {
   margin-top: $gutter;
+
   .card {
     @include breakpoint(sm) {
       padding: 0 0 $gutter;
@@ -11,6 +12,14 @@
 
       &:last-of-type {
         border-bottom: none;
+      }
+
+      &__title.headline {
+        font-size: 1.3rem;
+      }
+
+      &__date {
+        font-size: 1rem;
       }
     }
   }
