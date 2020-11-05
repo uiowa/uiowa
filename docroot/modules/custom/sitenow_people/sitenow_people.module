@@ -112,13 +112,11 @@ function sitenow_people_entity_view_alter(array &$build, EntityInterface $entity
     if (isset($build['#node']) && $node = $build['#node']) {
       switch ($node->getType()) {
         case 'person':
-          $advisor_field = $node->field_pt_student_advisor;
-
-          if ($advisor = $advisor_field->entity) {
+          if (!is_null($advisor_field = $node->field_pt_student_advisor) && $advisor = $advisor_field->entity) {
             $hide_person = $advisor->field_person_hide->value;
 
             if ($hide_person) {
-              // Display person name as plain text.
+              // Display advisor name as plain text.
               $build['field_pt_student_advisor'][0] = [
                 '#plain_text' => $advisor->getTitle(),
               ];
