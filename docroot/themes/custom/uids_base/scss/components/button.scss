@@ -18,10 +18,41 @@ a.bttn {
 
 // @todo move back to UIDS
 .bttn--primary {
+  .bg--gray &,
+  .bg-pattern--brain &,
+  .bg--white--pattern--brain & {
+    border: none;
+  }
+
 
   .bg--black--pattern--brain &,
   .bg-pattern--brain-black &,
   .bg--black & {
     color: $secondary;
+  }
+}
+
+.bttn--secondary {
+
+  .bg--white &,
+  .bg--gray &,
+  .bg-pattern--brain-reversed &,
+  .bg--gold--pattern--brain &,
+  .bg--gold &,
+  .bg-pattern--brain &,
+  .bg--white--pattern--brain & {
+    color: #fff;
+    border: none;
+  }
+}
+
+.bttn--tertiary i,
+.bttn--tertiary span,
+.bttn--tertiary svg {
+
+  .bg-pattern--brain-reversed &,
+  .bg--gold--pattern--brain &,
+  .bg--gold & {
+    color: inherit;
   }
 }
