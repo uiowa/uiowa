@@ -30,6 +30,7 @@ before_install:
   - phpenv config-rm xdebug.ini
   - yes | pecl install memcache
   - composer self-update
+  - composer global require hirak/prestissimo
 
 install:
   - nvm install 10
