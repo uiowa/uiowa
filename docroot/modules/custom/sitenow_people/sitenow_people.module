@@ -35,6 +35,17 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
         $form['field_person_hide']['#group'] = 'options';
       }
 
+      if (isset($form['field_person_types'])) {
+        // Remove disabled person types from select list.
+        $disabled_types = \Drupal::entityTypeManager()
+          ->getStorage('person_type')->loadByProperties(['status' => FALSE]);
+        foreach ($form["field_person_types"]["widget"]["#options"] as $key => $option) {
+          if (array_key_exists($key, $disabled_types)) {
+            unset($form['field_person_types']['widget']['#options'][$key]);
+          }
+        }
+      }
+
       // Extended person functionality.
       /** @var \Drupal\taxonomy\Entity\Vocabulary $terms */
       $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('person_types');
