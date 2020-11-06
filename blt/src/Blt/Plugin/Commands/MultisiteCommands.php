@@ -565,7 +565,8 @@ EOD
     $host_parts = explode('.', $host, 2);
     $sans_search = '*.' . $host_parts[1];
 
-    // Consider the parent domain related and search for it.
+    // Consider the parent domain related and search for it since it could
+    // be covered with one SSL SAN while double subdomains cannot.
     $related_search = $host_parts[1];
 
     // If the host is one subdomain off uiowa.edu or a vanity domain,
