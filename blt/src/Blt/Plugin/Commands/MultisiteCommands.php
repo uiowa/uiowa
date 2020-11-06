@@ -545,7 +545,15 @@ EOD
     $certificates = new SslCertificates($client);
 
     $table = new Table($this->output);
-    $table->setHeaders(['Application', 'DBs', 'SANs', 'SSL - Coverage', 'SSL - Related Domains']);
+
+    $table->setHeaders([
+      'Application',
+      'DBs',
+      'SANs',
+      'SSL - Coverage',
+      'SSL - Related Domains'
+    ]);
+
     $rows = [];
 
     // A boolean to track whether any application covers this domain.
