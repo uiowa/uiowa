@@ -18,6 +18,7 @@ a.bttn {
 
 // @todo move back to UIDS
 .bttn--primary {
+
   .bg--gray &,
   .bg-pattern--brain &,
   .bg--white--pattern--brain & {
@@ -31,6 +32,12 @@ a.bttn {
     color: $primary;
   }
 
+  .bg-pattern--brain-reversed .bg--gray &,
+  .bg--gold .bg--gray &,
+  .bg--gold--pattern--brain .bg--gray & {
+    background: $primary;
+    color: $secondary;
+  }
 
   .bg--black--pattern--brain &,
   .bg-pattern--brain-black &,
@@ -39,8 +46,16 @@ a.bttn {
   }
 }
 
+.bttn--tertiary {
+  [class*=bg-] .bg--gray & {
+    border-color: $secondary;
+  }
+}
+
+
 .bttn--secondary {
 
+  [class*=bg-] .bg--gray &,
   .bg--white &,
   .bg--gray &,
   .bg-pattern--brain-reversed &,

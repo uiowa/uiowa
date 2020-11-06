@@ -107,9 +107,10 @@ form#node-page-layout-builder-form {
     &:focus {
       .layout-builder__layout {
         //.layout__spacing_container {
-          outline: 2px dashed #0036b1;
+        outline: 2px dashed #0036b1;
         //}
       }
+
       .layout-builder__link {
         opacity: 1;
       }
@@ -176,7 +177,7 @@ form#node-page-layout-builder-form {
   }
 
   &__link {
-    color: #545454;
+    color: #545454!important;
     font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
     font-weight: bold;
     border-bottom: 0;
@@ -224,6 +225,7 @@ form#node-page-layout-builder-form {
       outline: 1px dashed #222222;
       outline-offset: -1px;
     }
+
     &.focus {
       outline: 1px dashed #0036b1;
       outline-offset: -1px;
@@ -235,8 +237,7 @@ form#node-page-layout-builder-form {
   outline: none;
 }
 
-.layout-builder__section {
-}
+.layout-builder__section {}
 
 .layout-builder-block {
   padding: 0;
@@ -376,10 +377,11 @@ form#node-page-layout-builder-form {
     '.bg-pattern--brain-black';
 
   @each $background in $backgrounds {
-    // This targets the second item in a pair that match the rule.
-    &#{$background} + .layout-builder__add-section + &#{$background} {
 
-      > .layout__container {
+    // This targets the second item in a pair that match the rule.
+    &#{$background}+.layout-builder__add-section+&#{$background} {
+
+      >.layout__container {
         padding-top: 0;
 
         // Necessary to restore padding
@@ -921,6 +923,9 @@ div[data-drupal-selector="edit-moderation-state-0"] {
 
 .dropbutton-arrow {
   right: 25%;
+  border-right-color: transparent !important;
+  border-bottom-color: transparent !important;
+  border-left-color: transparent !important;
 }
 
 
