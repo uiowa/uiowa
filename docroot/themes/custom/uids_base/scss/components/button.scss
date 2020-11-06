@@ -34,9 +34,13 @@ a.bttn {
 
   .bg-pattern--brain-reversed .bg--gray &,
   .bg--gold .bg--gray &,
-  .bg--gold--pattern--brain .bg--gray & {
+  .bg--gold--pattern--brain .bg--gray &,
+  .bg-pattern--brain-reversed .bg--white &,
+  .bg--gold .bg--white &,
+  .bg--gold--pattern--brain .bg--white & {
     background: $primary;
     color: $secondary;
+    border: none;
   }
 
   .bg--black--pattern--brain &,
@@ -52,11 +56,10 @@ a.bttn {
   }
 }
 
-
 .bttn--secondary {
 
   [class*=bg-] .bg--gray &,
-  .bg--white &,
+  [class*=bg-] .bg--white &,
   .bg--gray &,
   .bg-pattern--brain-reversed &,
   .bg--gold--pattern--brain &,
