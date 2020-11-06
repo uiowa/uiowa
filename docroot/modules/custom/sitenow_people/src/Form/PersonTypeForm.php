@@ -64,11 +64,11 @@ class PersonTypeForm extends EntityForm {
       }
     );
     $field_settings = \Drupal::config('sitenow_people.field_settings');
-    if ($field_settings->get('locked_fields')) {
-      $locked_fields = array_keys($field_settings->get('locked_fields'));
+    if ($field_settings->get('default_fields')) {
+      $default_fields = array_keys($field_settings->get('default_fields'));
       foreach ($fields as $field) {
         $field_name = $field->getName();
-        if (in_array($field_name, $locked_fields)) {
+        if (in_array($field_name, $default_fields)) {
           unset($fields[$field_name]);
         }
       }

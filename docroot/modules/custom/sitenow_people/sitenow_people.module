@@ -44,6 +44,21 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
             unset($form['field_person_types']['widget']['#options'][$key]);
           }
         }
+        $allowed_types = \Drupal::entityTypeManager()
+          ->getStorage('person_type')->loadByProperties(['status' => TRUE]);
+        // Loop through fields.
+        foreach (Element::children($form) as $field_name) {
+          $conditions = [];
+          // Loop through allowed types looking for field name.
+          foreach ($allowed_types as $key => $type) {
+            $allowed_fields = $type->getAllowedFields();
+            // If match, create a visibility condition.
+            if (in_array($field_name, $allowed_fields)) {
+              $conditions[] = [':input[name="field_person_types[' . $key . ']"][value="' . $key . '"]' => ['checked' => TRUE,]];
+            }
+          }
+          $form[$field_name]['#states']['visible'][] = $conditions;
+        }
       }
 
       // Extended person functionality.
