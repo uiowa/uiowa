@@ -5,8 +5,10 @@ dependencies:
   config:
     - field.field.node.person.field_image
     - field.field.node.person.field_person_bio
+    - field.field.node.person.field_person_contact_information
     - field.field.node.person.field_person_credential
     - field.field.node.person.field_person_department
+    - field.field.node.person.field_person_education
     - field.field.node.person.field_person_email
     - field.field.node.person.field_person_first_name
     - field.field.node.person.field_person_hide
@@ -234,7 +236,9 @@ content:
     type: string
     region: content
 hidden:
+  field_person_contact_information: true
   field_person_credential: true
+  field_person_education: true
   field_person_first_name: true
   field_person_hide: true
   field_person_last_name: true
@@ -246,3 +250,4 @@ hidden:
   field_pt_student_program_start: true
   field_tags: true
   field_teaser: true
+  search_api_excerpt: true
