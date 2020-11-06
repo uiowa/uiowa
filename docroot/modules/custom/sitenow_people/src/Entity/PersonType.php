@@ -42,7 +42,8 @@ use Drupal\sitenow_people\PersonTypeInterface;
  *   config_export = {
  *     "id",
  *     "label",
- *     "description"
+ *     "description",
+ *     "allowed_fields"
  *   }
  * )
  */
@@ -75,5 +76,19 @@ class PersonType extends ConfigEntityBase implements PersonTypeInterface {
    * @var string
    */
   protected $description;
+
+  /**
+   * A list of person fields to show for this type.
+   *
+   * @var array
+   */
+  protected $allowed_fields;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getAllowedFields() {
+    return isset($this->allowed_fields) ? $this->allowed_fields : [];
+  }
 
 }

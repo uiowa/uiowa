@@ -9,4 +9,14 @@ use Drupal\Core\Config\Entity\ConfigEntityInterface;
  */
 interface PersonTypeInterface extends ConfigEntityInterface {
 
+  const TYPE_COMPONENT = 'component';
+
+  /**
+   * Returns list of person fields to allow based on this type.
+   *
+   * @return array
+   *   The person fields to allow based on this type.
+   */
+  public function getAllowedFields();
+
 }
