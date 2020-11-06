@@ -4,6 +4,7 @@ namespace Drupal\sitenow_people\Form;
 
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\field\FieldConfigInterface;
 
 /**
  * Person Type form.
@@ -16,7 +17,6 @@ class PersonTypeForm extends EntityForm {
    * {@inheritdoc}
    */
   public function form(array $form, FormStateInterface $form_state) {
-
     $form = parent::form($form, $form_state);
 
     $form['label'] = [
@@ -50,7 +50,49 @@ class PersonTypeForm extends EntityForm {
       '#description' => $this->t('Description of the person type.'),
     ];
 
+    $form['allowed_fields'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Allowed fields'),
+      '#description' => $this->t('Show these person fields when this person type is selected.'),
+    ];
+
+    $entityManager = \Drupal::service('entity.manager');
+    $fields = array_filter(
+      $entityManager->getFieldDefinitions('node', 'person'),
+      function ($field_definition) {
+        return $field_definition instanceof FieldConfigInterface;
+      }
+    );
+
+    foreach ($fields as $fieldID => $field) {
+      $field_name = $field->getName();
+      $field_label = $field->getLabel();
+      $form['allowed_fields'][$field_name] = [
+        '#type' => 'checkbox',
+        '#title' => $field_label,
+        '#default_value' => in_array($field_name, $this->entity->getAllowedFields()),
+        '#parents' => [
+          'allowed_fields',
+          $fieldID,
+        ],
+      ];
+    }
     return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildEntity(array $form, FormStateInterface $form_state) {
+    $entity = parent::buildEntity($form, $form_state);
+
+    // We need to convert the individual checkbox values that were submitted
+    // in the form to a single array containing all the fields that
+    // were checked.
+    $allowedFields = $form_state->getValue('allowed_fields');
+    $allowedFields = array_keys(array_filter($allowedFields));
+    $entity->set('allowed_fields', $allowedFields);
+    return $entity;
   }
 
   /**
