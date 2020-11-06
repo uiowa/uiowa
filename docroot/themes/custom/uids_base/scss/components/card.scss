@@ -64,6 +64,12 @@
 
 // Set background for all v2 cards
 .paragraph--type--section {
+  &[class*=bg-] {
+    .card {
+      color: $secondary;
+    }
+  }
+
   .card {
     background: #fff;
   }

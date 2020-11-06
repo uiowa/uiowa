@@ -1,7 +1,8 @@
 .bg-yellow,
 .bg-yellow.has-section-image,
 .paragraph .bg-yellow,
-.paragraph .bg-yellow.has-section-image  {
+.paragraph .bg-yellow.has-section-image {
+
   &.paragraph--type--carousel-image,
   &.paragraph--type--section,
   &.paragraph--type--blockquote,
@@ -20,6 +21,7 @@
       &:after {
         background-color: $primary;
       }
+
       span {
         color: $white !important;
       }
@@ -33,6 +35,7 @@
       &:after {
         background-color: $primary;
       }
+
       span {
         color: $white !important;
       }
@@ -70,7 +73,7 @@
     }
   }
 
-  &.paragraph--type--carousel-image .carousel-caption{
+  &.paragraph--type--carousel-image .carousel-caption {
     color: $secondary;
 
     blockquote p {
@@ -239,7 +242,8 @@
 .bg-black,
 .bg-black.has-section-image,
 .paragraph .bg-black,
-.paragraph .bg-black.has-section-image  {
+.paragraph .bg-black.has-section-image {
+
   &.paragraph--type--carousel-image,
   &.paragraph--type--section,
   &.paragraph--type--blockquote,
@@ -263,6 +267,7 @@
       &:after {
         background-color: $secondary;
       }
+
       span {
         color: $secondary !important;
       }
@@ -276,6 +281,7 @@
       &:after {
         background-color: $secondary;
       }
+
       span {
         color: $secondary !important;
       }
@@ -435,6 +441,7 @@
 .bg-dark.has-section-image,
 .paragraph .bg-dark,
 .paragraph .bg-dark.has-section-image {
+
   &.paragraph--type--carousel-image,
   &.paragraph--type--section,
   &.paragraph--type--blockquote,
@@ -478,6 +485,7 @@
       &:after {
         background-color: $secondary;
       }
+
       span {
         color: $secondary !important;
       }
@@ -487,6 +495,7 @@
       @include bttn--secondary;
       border: 1px solid $secondary;
       @include bttn--focus;
+
       span {
         color: $white !important;
       }
@@ -595,8 +604,7 @@
   .paragraph--type--people.list {
 
     .card,
-    .views-row
-    {
+    .views-row {
       a {
         color: $white;
       }
@@ -637,6 +645,7 @@
 .bg-light.has-section-image,
 .paragraph .bg-light,
 .paragraph .bg-light.has-section-image {
+
   &.paragraph--type--carousel-image,
   &.paragraph--type--section,
   &.paragraph--type--blockquote,
@@ -663,6 +672,7 @@
       &:after {
         background-color: $secondary;
       }
+
       span {
         color: $secondary !important;
       }
@@ -672,6 +682,7 @@
       @include bttn--secondary;
       border: 1px solid $secondary;
       @include bttn--focus;
+
       span {
         color: $white !important;
       }
@@ -811,6 +822,7 @@
       }
     }
   }
+
   .list {
     .card__body {
       .card__title a {
@@ -828,6 +840,7 @@
     .field__label {
       color: $white;
     }
+
     .card__body .article-meta a {
       color: $white;
     }
@@ -861,6 +874,7 @@
       border-bottom: 1px solid #ffffff21;
     }
   }
+
   .paragraph--type--events.list {
     .event-location {
       color: $white;
@@ -884,3 +898,9 @@
     }
   }
 }
+
+.bg-dark.paragraph.paragraph--type--section .paragraph--type--featured-content.list .field a,
+.bg-black.paragraph.paragraph--type--section .paragraph--type--featured-content.list .field a,
+.paragraph.bg-dark .paragraph--type--people.list .card .field a,
+.paragraph.bg-black .paragraph--type--people.list .card .field a {
+  color: i
