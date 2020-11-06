@@ -618,7 +618,7 @@ EOD
 
     // If we did not find any SSL coverage, log an error.
     if (!$has_ssl_coverage) {
-      $this->logger->error("No SSL coverage found on any application for {$host}. Be sure to install new SSL certificate before updating DNS.");
+      $this->logger->error("No SSL coverage found on any application for {$host}. Be sure to check existing SSL certificates for related domains and install a new one before updating DNS.");
     }
 
     $app = $this->askChoice('Which cloud application should be used?', array_keys($applications));
