@@ -1805,3 +1805,9 @@ $sites['pharmacycollections.local.drupal.uiowa.edu'] = 'collections.pharmacy.uio
 $sites['pharmacycollections.dev.drupal.uiowa.edu'] = 'collections.pharmacy.uiowa.edu';
 $sites['pharmacycollections.stage.drupal.uiowa.edu'] = 'collections.pharmacy.uiowa.edu';
 $sites['pharmacycollections.prod.drupal.uiowa.edu'] = 'collections.pharmacy.uiowa.edu';
+
+// Directory aliases for lhpdc.law.uiowa.edu.
+$sites['lawlhpdc.local.drupal.uiowa.edu'] = 'lhpdc.law.uiowa.edu';
+$sites['lawlhpdc.dev.drupal.uiowa.edu'] = 'lhpdc.law.uiowa.edu';
+$sites['lawlhpdc.stage.drupal.uiowa.edu'] = 'lhpdc.law.uiowa.edu';
+$sites['lawlhpdc.prod.drupal.uiowa.edu'] = 'lhpdc.law.uiowa.edu';
