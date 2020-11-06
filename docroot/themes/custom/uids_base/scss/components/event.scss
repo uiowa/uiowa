@@ -160,3 +160,41 @@
   padding-right: 0;
   padding-left: 0;
 }
+
+// v2 styles
+
+.bg-black .paragraph--type--events {
+  color: #fff;
+
+  a {
+    color: $primary;
+  }
+}
+
+.paragraph--type--section.bg-black .paragraph--type--events {
+  color: inherit;
+
+  a {
+    color: inherit;
+  }
+}
+
+
+.paragraph.bg-black .paragraph--type--events .card__body a:not(.btn):not(.bttn):not(.button),
+.paragraph.bg-dark .paragraph--type--events .card__body a:not(.btn):not(.bttn):not(.button) {
+  color: #fff;
+  text-decoration: none;
+  ;
+}
+
+.paragraph--type--events {
+  .card {
+    background: transparent;
+  }
+}
+
+.bg-yellow.paragraph .paragraph--type--events.list .card,
+.bg-black.paragraph.paragraph--type--section .paragraph--type--events.list .card,
+.bg-dark.paragraph.paragraph--type--section .paragraph--type--events.list .card {
+  border-bottom: none;
+}
