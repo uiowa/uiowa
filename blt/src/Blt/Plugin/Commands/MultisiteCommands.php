@@ -545,7 +545,7 @@ EOD
     $certificates = new SslCertificates($client);
 
     $table = new Table($this->output);
-    $table->setHeaders(['Application', 'DBs', 'SANs', 'SSL Coverage']);
+    $table->setHeaders(['Application', 'DBs', 'SANs', 'SSL - Coverage', 'SSL - Related Domains']);
     $rows = [];
 
     // A boolean to track whether any application covers this domain.
@@ -556,6 +556,9 @@ EOD
     // Ex. foo.bar.baz.uiowa.edu -> search for *.bar.baz.uiowa.edu.
     $host_parts = explode('.', $host, 2);
     $sans_search = '*.' . $host_parts[1];
+
+    // Consider the parent domain related and search for it.
+    $related_search = $host_parts[1];
 
     // If the host is one subdomain off uiowa.edu or a vanity domain,
     // search for the host instead.
@@ -569,6 +572,9 @@ EOD
       $row = [];
       $row[] = $name;
       $row[] = count($databases->getAll($uuid));
+
+      // Reset related domains for this application.
+      $related = '';
 
       $envs = $environments->getAll($uuid);
 
@@ -587,6 +593,10 @@ EOD
                     $has_ssl_coverage = TRUE;
                     break;
                   }
+
+                  if ($domain == $related_search) {
+                    $related .= $domain;
+                  }
                 }
               }
             }
@@ -594,6 +604,12 @@ EOD
         }
       }
 
+      // Append an empty string so related domains go in the next column.
+      if (!$has_ssl_coverage) {
+        $row[] = '';
+      }
+
+      $row[] = $related;
       $rows[] = $row;
     }
 
