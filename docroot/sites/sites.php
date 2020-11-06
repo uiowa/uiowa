@@ -1799,3 +1799,9 @@ $sites['conferencesla2021.local.drupal.uiowa.edu'] = 'sla2021.conference.uiowa.e
 $sites['conferencesla2021.dev.drupal.uiowa.edu'] = 'sla2021.conference.uiowa.edu';
 $sites['conferencesla2021.stage.drupal.uiowa.edu'] = 'sla2021.conference.uiowa.edu';
 $sites['conferencesla2021.prod.drupal.uiowa.edu'] = 'sla2021.conference.uiowa.edu';
+
+// Directory aliases for lhpdc.law.uiowa.edu.
+$sites['lawlhpdc.local.drupal.uiowa.edu'] = 'lhpdc.law.uiowa.edu';
+$sites['lawlhpdc.dev.drupal.uiowa.edu'] = 'lhpdc.law.uiowa.edu';
+$sites['lawlhpdc.stage.drupal.uiowa.edu'] = 'lhpdc.law.uiowa.edu';
+$sites['lawlhpdc.prod.drupal.uiowa.edu'] = 'lhpdc.law.uiowa.edu';
