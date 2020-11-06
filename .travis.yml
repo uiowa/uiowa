@@ -29,7 +29,7 @@ before_install:
   - chmod 600 $HOME/.ssh/id_rsa
   - phpenv config-rm xdebug.ini
   - yes | pecl install memcache
-  - composer self-update --1
+  - composer self-update
   - composer global require hirak/prestissimo
 
 install:
