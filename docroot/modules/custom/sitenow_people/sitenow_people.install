@@ -83,12 +83,25 @@ function sitenow_people_update_8002() {
 
     $nodes = Node::loadMultiple($nids);
 
-    // Update the new field to the value of the old field.
+    // Get an array of person type config data.
+    $list = $source->readMultiple($source->listAll('sitenow_people.person_type'));
+
+    // Create a map from person type labels (which correspond
+    // to the terms being used previously) to the id of the
+    // person type.
+    $map = [];
+    foreach ($list as $config) {
+      $map[$config['label']] = $config['id'];
+    }
+
     foreach ($nodes as $node) {
-      $person_type = $node->get('field_person_type')->getValue();
-      $node
-        ->set('field_person_types', $person_type)
-        ->save();
+      if (!is_null($person_type_field = $node->field_person_type) && $term = $person_type_field->entity) {
+        // Use the map to set the value of the new field
+        // from the old one.
+        $node
+          ->set('field_person_types', $map[$term->getName()])
+          ->save();
+      }
     }
   }
 }
