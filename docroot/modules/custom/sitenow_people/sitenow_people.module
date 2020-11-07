@@ -55,12 +55,19 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
             // If match, create a visibility condition.
             if (in_array($field_name, $allowed_fields)) {
               $conditions[] = [
-                ':input[name="field_person_types[' . $key . ']"]
-                [value="' . $key . '"]' => ['checked' => TRUE],
+                ':input[name="field_person_types[' . $key . ']"]' => [
+                  'checked' => TRUE
+                ],
               ];
             }
           }
-          $form[$field_name]['#states']['visible'][] = $conditions;
+          if (!empty($conditions)) {
+            $form[$field_name] += [
+              '#states' => [
+                'visible' => $conditions,
+              ],
+            ];
+          }
         }
       }
 
