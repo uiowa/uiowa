@@ -86,6 +86,6 @@ function resetTableContainers(table) {
 // This function resizes the table wrapper.
 function resizeTableContainers(table) {
     let tid = table.id.split('--')[1];
-    let layout_width = document.getElementById('table__responsive-measurer--' + tid).offsetWidth;
+    let layout_width = document.getElementById('table__responsive-measurer--' + tid).getBoundingClientRect().width;
     table.style.width = layout_width + 'px';
 }
