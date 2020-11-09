@@ -50,3 +50,67 @@ function sitenow_people_update_8001() {
     }
   }
 }
+
+/**
+ * Moves data from 'person_type' to 'person_types' field.
+ *
+ * Only runs on sites that have 'person_extended' enabled.
+ */
+function sitenow_people_update_8002() {
+  /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
+  $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
+  $split = 'config_split:person_extended';
+
+  // This site has the 'person_extended' split enabled.
+  if (isset($filters[$split]) && $filters[$split]['status']) {
+    $config_path = DRUPAL_ROOT . '/../config/default';
+    $source = new FileStorage($config_path);
+
+    // Create field storage from new config.
+    \Drupal::entityTypeManager()->getStorage('field_storage_config')
+      ->create($source->read('field.storage.node.field_person_types'))
+      ->save();
+
+    // Create field instance from new config.
+    \Drupal::entityTypeManager()->getStorage('field_config')
+      ->create($source->read('field.field.node.person.field_person_types'))
+      ->save();
+
+    // Get all the person nodes.
+    $nids = \Drupal::entityQuery('node')
+      ->condition('type', 'person')
+      ->execute();
+
+    $nodes = Node::loadMultiple($nids);
+
+    // Get an array of person type config data.
+    $list = $source->readMultiple($source->listAll('sitenow_people.person_type'));
+
+    // Create a map from person type labels (which correspond
+    // to the terms being used previously) to the id of the
+    // person type.
+    $map = [];
+    foreach ($list as $config) {
+      $map[$config['label']] = $config['id'];
+    }
+
+    foreach ($nodes as $node) {
+      if (!is_null($person_type_field = $node->field_person_type) && $term = $person_type_field->entity) {
+        // Use the map to set the value of the new field
+        // from the old one.
+        $node
+          ->set('field_person_types', $map[$term->getName()])
+          ->save();
+      }
+    }
+
+    // Delete all the person type terms so that
+    // the vocabulary can be removed.
+    /** @var \Drupal\taxonomy\Entity\Vocabulary $terms */
+    $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('person_types', 0, NULL, TRUE);
+    /** @var \Drupal\taxonomy\Entity\Term $term */
+    foreach ($terms as $term) {
+      $term->delete();
+    }
+  }
+}
