@@ -582,8 +582,8 @@ EOD
       $row[] = $name;
       $row[] = count($databases->getAll($uuid));
 
-      // Reset related domains for this application.
-      $related = '';
+      // Reset related domain for this application.
+      $related = NULL;
 
       $envs = $environments->getAll($uuid);
 
@@ -604,7 +604,8 @@ EOD
                   }
 
                   if ($domain == $related_search) {
-                    $related .= $domain;
+                    $related = $domain;
+                    break;
                   }
                 }
               }
