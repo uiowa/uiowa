@@ -115,7 +115,7 @@
     &.list {
       .views-row {
         background-color: $primary;
-        padding: 0 1.25rem;
+        //padding: 0 1.25rem;
 
         .card {
           background-color: $primary;
@@ -351,7 +351,7 @@
     &.list {
       .views-row {
         background-color: $secondary;
-        padding: 0 1.25rem;
+        //padding: 0 1.25rem;
 
         .article-created-date {
           color: $white;
@@ -556,7 +556,7 @@
   .paragraph--type--articles {
     &.list {
       .views-row {
-        padding: 0 1.25rem;
+        //padding: 0 1.25rem;
 
         .article-created-date {
           color: $white;
@@ -738,7 +738,7 @@
     &.list {
       .views-row {
         background-color: $light;
-        padding: 0 1.25rem;
+        //padding: 0 1.25rem;
 
         .card {
           background-color: $light;
@@ -934,4 +934,13 @@
 
 .bg-black.paragraph--type--section .paragraph--type--events a.btn-primary {
   color: $secondary;
+}
+
+.bg-yellow.paragraph.paragraph--type--section .pager__item.is-active a,
+.bg-light.paragraph.paragraph--type--section .pager__item.is-active a {
+  color: #fff;
+
+  &:hover {
+    background: $secondary;
+  }
 }
