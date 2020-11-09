@@ -770,10 +770,10 @@
   &.paragraph--type--featured-content,
   .paragraph--type--featured-content {
     .featured-content-item {
-      padding: .75rem 1.25rem;
+      //padding: .75rem 1.25rem;
 
       &:first-child {
-        padding-top: 0.75rem;
+        //padding-top: 0.75rem;
       }
     }
   }
@@ -904,4 +904,30 @@
 .paragraph.bg-dark .paragraph--type--people.list .card .field a,
 .paragraph.bg-black .paragraph--type--people.list .card .field a {
   color: inherit;
+}
+
+.bg-black.paragraph.paragraph--type--section .paragraph--type--people.masonry .card,
+.bg-dark.paragraph.paragraph--type--section .paragraph--type--people.masonry .card,
+.bg-black.paragraph.paragraph--type--section .paragraph--type--people.grid .card,
+.bg-dark.paragraph.paragraph--type--section .paragraph--type--people.grid .card {
+  color: $secondary;
+}
+
+.bg-black.paragraph.paragraph--type--section .paragraph--type--featured-content.grid .node--view-mode-teaser.media,
+.bg-dark.paragraph.paragraph--type--section .paragraph--type--featured-content.grid .node--view-mode-teaser.media,
+.bg-yellow.paragraph.paragraph--type--section .paragraph--type--featured-content.grid .node--view-mode-teaser.media,
+.bg-black.paragraph.paragraph--type--section .paragraph--type--featured-content.masonry .node--view-mode-teaser.media,
+.bg-dark.paragraph.paragraph--type--section .paragraph--type--featured-content.masonry .node--view-mode-teaser.media,
+.bg-yellow.paragraph.paragraph--type--section .paragraph--type--featured-content.masonry .node--view-mode-teaser.media {
+  background: #fff;
+
+  a {
+    color: $secondary;
+  }
+}
+
+.paragraph.paragraph--type--section .paragraph--type--featured-content .node--view-mode-teaser.media {
+  a {
+    color: $secondary;
+  }
 }
