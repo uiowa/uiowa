@@ -56,7 +56,7 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
             if (in_array($field_name, $allowed_fields)) {
               $conditions[] = [
                 ':input[name="field_person_types[' . $key . ']"]' => [
-                  'checked' => TRUE
+                  'checked' => TRUE,
                 ],
               ];
             }

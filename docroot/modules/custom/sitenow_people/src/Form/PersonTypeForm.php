@@ -2,9 +2,12 @@
 
 namespace Drupal\sitenow_people\Form;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\field\FieldConfigInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Person Type form.
@@ -12,6 +15,38 @@ use Drupal\field\FieldConfigInterface;
  * @property \Drupal\sitenow_people\PersonTypeInterface $entity
  */
 class PersonTypeForm extends EntityForm {
+
+  /**
+   * The config factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
+   * The entity field manager.
+   *
+   * @var \Drupal\Core\Entity\EntityFieldManagerInterface
+   */
+  protected $entityFieldManager;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(EntityFieldManagerInterface $entityFieldManager, ConfigFactoryInterface $configFactory) {
+    $this->entityFieldManager = $entityFieldManager;
+    $this->configFactory = $configFactory;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('entity_field.manager'),
+      $container->get('config.factory')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -56,14 +91,13 @@ class PersonTypeForm extends EntityForm {
       '#description' => $this->t('Show these person fields when this person type is selected.'),
     ];
 
-    $entityManager = \Drupal::service('entity.manager');
     $fields = array_filter(
-      $entityManager->getFieldDefinitions('node', 'person'),
+      $this->entityFieldManager->getFieldDefinitions('node', 'person'),
       function ($field_definition) {
         return $field_definition instanceof FieldConfigInterface;
       }
     );
-    $field_settings = \Drupal::config('sitenow_people.field_settings');
+    $field_settings = $this->configFactory->get('sitenow_people.field_settings');
     if ($field_settings->get('default_fields')) {
       $default_fields = array_keys($field_settings->get('default_fields'));
       foreach ($fields as $field) {
