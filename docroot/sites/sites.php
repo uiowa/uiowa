@@ -1811,3 +1811,9 @@ $sites['lawlhpdc.local.drupal.uiowa.edu'] = 'lhpdc.law.uiowa.edu';
 $sites['lawlhpdc.dev.drupal.uiowa.edu'] = 'lhpdc.law.uiowa.edu';
 $sites['lawlhpdc.stage.drupal.uiowa.edu'] = 'lhpdc.law.uiowa.edu';
 $sites['lawlhpdc.prod.drupal.uiowa.edu'] = 'lhpdc.law.uiowa.edu';
+
+// Directory aliases for ventilator.course.uiowa.edu.
+$sites['courseventilator.local.drupal.uiowa.edu'] = 'ventilator.course.uiowa.edu';
+$sites['courseventilator.dev.drupal.uiowa.edu'] = 'ventilator.course.uiowa.edu';
+$sites['courseventilator.stage.drupal.uiowa.edu'] = 'ventilator.course.uiowa.edu';
+$sites['courseventilator.prod.drupal.uiowa.edu'] = 'ventilator.course.uiowa.edu';
