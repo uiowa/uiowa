@@ -18,3 +18,22 @@ function admissions_core_install() {
 function admissions_core_uninstall() {
   \Drupal::messenger()->addStatus(__FUNCTION__);
 }
+
+/**
+ * Set weights to 0 for existing scholarships content.
+ */
+function admissions_core_update_8001() {
+  $query = \Drupal::entityQuery('node')
+    ->condition('type', 'scholarship');
+
+  $results = $query->execute();
+  $nodes = Drupal::entityTypeManager()->getStorage('node')->loadMultiple($results);
+
+  // Set field_weight to 0 for all existing scholarships.
+  foreach ($nodes as $node) {
+    if (empty($node->get('field_weight'))) {
+      $node->set('field_weight', 0)
+        ->save();
+    }
+  }
+}
