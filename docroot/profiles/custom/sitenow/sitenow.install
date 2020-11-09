@@ -1474,3 +1474,19 @@ function sitenow_update_8038() {
     }
   }
 }
+
+/**
+ * Set weights to 0 for existing scholarships content.
+ */
+function sitenow_update_8039() {
+  $query = \Drupal::entityQuery('node')
+    ->condition('type', 'scholarship');
+
+  $results = $query->execute();
+  $nodes = Drupal::entityTypeManager()->getStorage('node')->loadMultiple($results);
+
+  foreach ($nodes as $node) {
+    $node->set('field_weight', 0)
+      ->save();
+  }
+}
