@@ -5,6 +5,9 @@
  * Install, update and uninstall functions for the Admissions Core module.
  */
 
+use Drupal\Core\Site\Settings;
+use Drupal\Core\Config\FileStorage;
+
 /**
  * Implements hook_install().
  */
@@ -17,4 +20,42 @@ function admissions_core_install() {
  */
 function admissions_core_uninstall() {
   \Drupal::messenger()->addStatus(__FUNCTION__);
+}
+
+
+/**
+ * Set weights to 0 for existing scholarships content.
+ */
+function admissions_core_update_8001() {
+  // Enable the weight module prior to creating new field.
+  \Drupal::service('module_installer')->install(['weight'], TRUE);
+
+  $config_path = Settings::get('config_sync_directory');
+  $config_path = str_replace('default', 'admissions.uiowa.edu', $config_path);
+  $source = new FileStorage($config_path);
+  $field_storage = \Drupal::entityTypeManager()
+    ->getStorage('field_storage_config');
+
+  // Create new field storage for the field_weight.
+  if (!$field_storage->load('node.field_weight')) {
+    $field_storage->create($source->read('field.storage.node.field_weight'))
+      ->save();
+  }
+
+  // Manually pull in the config attaching the new field.
+  $config_storage = \Drupal::service('config.storage');
+  $config_storage->write('field.field.node.scholarship.field_weight',
+    $source->read('field.field.node.scholarship.field_weight'));
+
+  $query = \Drupal::entityQuery('node')
+    ->condition('type', 'scholarship');
+
+  $results = $query->execute();
+  $nodes = Drupal::entityTypeManager()->getStorage('node')->loadMultiple($results);
+
+  // Set field_weight to 0 for all existing scholarships.
+  foreach ($nodes as $node) {
+    $node->set('field_weight', 0)
+      ->save();
+  }
 }
