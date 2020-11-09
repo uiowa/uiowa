@@ -135,8 +135,12 @@ class PersonTypeForm extends EntityForm {
     $allowedFields = $form_state->getValue('allowed_fields');
     if ($allowedFields) {
       $allowedFields = array_keys(array_filter($allowedFields));
-      $entity->set('allowed_fields', $allowedFields);
     }
+    else {
+      $allowedFields = [];
+    }
+    $entity->set('allowed_fields', $allowedFields);
+
     return $entity;
   }
 
