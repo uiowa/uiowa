@@ -211,9 +211,13 @@
 }
 
 
-// Remove contextual position for logged in view of banner image
 .banner__image {
   .contextual-region {
+    // Remove contextual position for logged in view of banner image
     position: unset;
+  }
+  .field--name-field-media-image img {
+    // Override height:auto set in media--type-image.scss
+    height: 100%;
   }
 }
