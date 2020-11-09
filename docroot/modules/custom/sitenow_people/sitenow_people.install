@@ -104,6 +104,13 @@ function sitenow_people_update_8002() {
       }
     }
 
-    // @todo Delete all terms in the person type vocabulary.
+    // Delete all the person type terms so that
+    // the vocabulary can be removed.
+    /** @var \Drupal\taxonomy\Entity\Vocabulary $terms */
+    $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('person_types', 0, NULL, TRUE);
+    /** @var \Drupal\taxonomy\Entity\Term $term */
+    foreach ($terms as $term) {
+      $term->delete();
+    }
   }
 }
