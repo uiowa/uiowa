@@ -37,11 +37,20 @@
  * @see template_preprocess_field()
  */
 #}
+{%
+  set headline_classes = [
+    'headline',
+    'headline--parent'
+  ]
+%}
+
 {% for item in items %}
   {% if item.content['#text'] %}
+    {% set styles = item.content['#styles'] %}
+    {% set headline_classes = headline_classes|merge([styles]) %}
     {% set headline = {
       'headline_level' : item.content['#size'] ?: 'h2',
-      'headline_class' : item.content['#styles'] ?: 'headline',
+      'headline_class' : headline_classes,
       'headline_text' : item.content['#text'] ?: '',
     } %}
     {% include '@uids_base/uids/headline.html.twig' with headline only %}

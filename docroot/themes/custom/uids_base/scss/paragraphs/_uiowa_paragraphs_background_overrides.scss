@@ -1,7 +1,8 @@
 .bg-yellow,
 .bg-yellow.has-section-image,
 .paragraph .bg-yellow,
-.paragraph .bg-yellow.has-section-image  {
+.paragraph .bg-yellow.has-section-image {
+
   &.paragraph--type--carousel-image,
   &.paragraph--type--section,
   &.paragraph--type--blockquote,
@@ -20,6 +21,7 @@
       &:after {
         background-color: $primary;
       }
+
       span {
         color: $white !important;
       }
@@ -33,6 +35,7 @@
       &:after {
         background-color: $primary;
       }
+
       span {
         color: $white !important;
       }
@@ -70,7 +73,7 @@
     }
   }
 
-  &.paragraph--type--carousel-image .carousel-caption{
+  &.paragraph--type--carousel-image .carousel-caption {
     color: $secondary;
 
     blockquote p {
@@ -112,7 +115,7 @@
     &.list {
       .views-row {
         background-color: $primary;
-        padding: 0 1.25rem;
+        //padding: 0 1.25rem;
 
         .card {
           background-color: $primary;
@@ -150,10 +153,10 @@
   &.paragraph--type--featured-content,
   .paragraph--type--featured-content {
     .featured-content-item {
-      padding: .75rem 1.25rem;
+      //padding: .75rem 1.25rem;
 
       &:first-child {
-        padding-top: 0.75rem;
+        //padding-top: 0.75rem;
       }
     }
   }
@@ -239,7 +242,8 @@
 .bg-black,
 .bg-black.has-section-image,
 .paragraph .bg-black,
-.paragraph .bg-black.has-section-image  {
+.paragraph .bg-black.has-section-image {
+
   &.paragraph--type--carousel-image,
   &.paragraph--type--section,
   &.paragraph--type--blockquote,
@@ -263,6 +267,7 @@
       &:after {
         background-color: $secondary;
       }
+
       span {
         color: $secondary !important;
       }
@@ -276,6 +281,7 @@
       &:after {
         background-color: $secondary;
       }
+
       span {
         color: $secondary !important;
       }
@@ -345,7 +351,7 @@
     &.list {
       .views-row {
         background-color: $secondary;
-        padding: 0 1.25rem;
+        //padding: 0 1.25rem;
 
         .article-created-date {
           color: $white;
@@ -403,10 +409,10 @@
   &.paragraph--type--featured-content,
   .paragraph--type--featured-content {
     .featured-content-item {
-      padding: .75rem 1.25rem;
+      //padding: .75rem 1.25rem;
 
       &:first-child {
-        padding-top: 0.75rem;
+        //padding-top: 0.75rem;
       }
     }
   }
@@ -435,6 +441,7 @@
 .bg-dark.has-section-image,
 .paragraph .bg-dark,
 .paragraph .bg-dark.has-section-image {
+
   &.paragraph--type--carousel-image,
   &.paragraph--type--section,
   &.paragraph--type--blockquote,
@@ -478,6 +485,7 @@
       &:after {
         background-color: $secondary;
       }
+
       span {
         color: $secondary !important;
       }
@@ -487,6 +495,7 @@
       @include bttn--secondary;
       border: 1px solid $secondary;
       @include bttn--focus;
+
       span {
         color: $white !important;
       }
@@ -547,7 +556,7 @@
   .paragraph--type--articles {
     &.list {
       .views-row {
-        padding: 0 1.25rem;
+        //padding: 0 1.25rem;
 
         .article-created-date {
           color: $white;
@@ -595,8 +604,7 @@
   .paragraph--type--people.list {
 
     .card,
-    .views-row
-    {
+    .views-row {
       a {
         color: $white;
       }
@@ -606,10 +614,10 @@
   &.paragraph--type--featured-content,
   .paragraph--type--featured-content {
     .featured-content-item {
-      padding: .75rem 1.25rem;
+      //padding: .75rem 1.25rem;
 
       &:first-child {
-        padding-top: 0.75rem;
+        //padding-top: 0.75rem;
       }
     }
   }
@@ -637,6 +645,7 @@
 .bg-light.has-section-image,
 .paragraph .bg-light,
 .paragraph .bg-light.has-section-image {
+
   &.paragraph--type--carousel-image,
   &.paragraph--type--section,
   &.paragraph--type--blockquote,
@@ -663,6 +672,7 @@
       &:after {
         background-color: $secondary;
       }
+
       span {
         color: $secondary !important;
       }
@@ -672,6 +682,7 @@
       @include bttn--secondary;
       border: 1px solid $secondary;
       @include bttn--focus;
+
       span {
         color: $white !important;
       }
@@ -727,7 +738,7 @@
     &.list {
       .views-row {
         background-color: $light;
-        padding: 0 1.25rem;
+        //padding: 0 1.25rem;
 
         .card {
           background-color: $light;
@@ -759,10 +770,10 @@
   &.paragraph--type--featured-content,
   .paragraph--type--featured-content {
     .featured-content-item {
-      padding: .75rem 1.25rem;
+      //padding: .75rem 1.25rem;
 
       &:first-child {
-        padding-top: 0.75rem;
+        //padding-top: 0.75rem;
       }
     }
   }
@@ -811,6 +822,7 @@
       }
     }
   }
+
   .list {
     .card__body {
       .card__title a {
@@ -828,6 +840,7 @@
     .field__label {
       color: $white;
     }
+
     .card__body .article-meta a {
       color: $white;
     }
@@ -861,6 +874,7 @@
       border-bottom: 1px solid #ffffff21;
     }
   }
+
   .paragraph--type--events.list {
     .event-location {
       color: $white;
@@ -882,5 +896,51 @@
       background-color: transparent !important;
       @include text-light;
     }
+  }
+}
+
+.bg-dark.paragraph.paragraph--type--section .paragraph--type--featured-content.list .field a,
+.bg-black.paragraph.paragraph--type--section .paragraph--type--featured-content.list .field a,
+.paragraph.bg-dark .paragraph--type--people.list .card .field a,
+.paragraph.bg-black .paragraph--type--people.list .card .field a {
+  color: inherit;
+}
+
+.bg-black.paragraph.paragraph--type--section .paragraph--type--people.masonry .card,
+.bg-dark.paragraph.paragraph--type--section .paragraph--type--people.masonry .card,
+.bg-black.paragraph.paragraph--type--section .paragraph--type--people.grid .card,
+.bg-dark.paragraph.paragraph--type--section .paragraph--type--people.grid .card {
+  color: $secondary;
+}
+
+.bg-black.paragraph.paragraph--type--section .paragraph--type--featured-content.grid .node--view-mode-teaser.media,
+.bg-dark.paragraph.paragraph--type--section .paragraph--type--featured-content.grid .node--view-mode-teaser.media,
+.bg-yellow.paragraph.paragraph--type--section .paragraph--type--featured-content.grid .node--view-mode-teaser.media,
+.bg-black.paragraph.paragraph--type--section .paragraph--type--featured-content.masonry .node--view-mode-teaser.media,
+.bg-dark.paragraph.paragraph--type--section .paragraph--type--featured-content.masonry .node--view-mode-teaser.media,
+.bg-yellow.paragraph.paragraph--type--section .paragraph--type--featured-content.masonry .node--view-mode-teaser.media {
+  background: #fff;
+
+  a {
+    color: $secondary;
+  }
+}
+
+.paragraph.paragraph--type--section .paragraph--type--featured-content .node--view-mode-teaser.media {
+  a {
+    color: $secondary;
+  }
+}
+
+.bg-black.paragraph--type--section .paragraph--type--events a.btn-primary {
+  color: $secondary;
+}
+
+.bg-yellow.paragraph.paragraph--type--section .pager__item.is-active a,
+.bg-light.paragraph.paragraph--type--section .pager__item.is-active a {
+  color: #fff;
+
+  &:hover {
+    background: $secondary;
   }
 }
