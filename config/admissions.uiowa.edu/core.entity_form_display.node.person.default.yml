@@ -11,6 +11,7 @@ dependencies:
     - field.field.node.person.field_person_email
     - field.field.node.person.field_person_first_name
     - field.field.node.person.field_person_hide
+    - field.field.node.person.field_person_hometown
     - field.field.node.person.field_person_last_name
     - field.field.node.person.field_person_phone
     - field.field.node.person.field_person_position
@@ -113,6 +114,14 @@ content:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
+    region: content
+  field_person_hometown:
+    weight: 26
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
     region: content
   field_person_last_name:
     type: string_textfield
