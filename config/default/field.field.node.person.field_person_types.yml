@@ -1,0 +1,23 @@
+uuid: 69719eda-417b-4564-8e87-1fd6c996b098
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_person_types
+    - node.type.person
+id: node.person.field_person_types
+field_name: field_person_types
+entity_type: node
+bundle: person
+label: 'Person Types'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:person_type'
+  handler_settings:
+    target_bundles: null
+    auto_create: false
+field_type: entity_reference

@@ -5,8 +5,10 @@ dependencies:
   config:
     - field.field.node.person.field_image
     - field.field.node.person.field_person_bio
+    - field.field.node.person.field_person_contact_information
     - field.field.node.person.field_person_credential
     - field.field.node.person.field_person_department
+    - field.field.node.person.field_person_education
     - field.field.node.person.field_person_email
     - field.field.node.person.field_person_first_name
     - field.field.node.person.field_person_hide
@@ -20,7 +22,7 @@ dependencies:
     - field.field.node.person.field_person_phone
     - field.field.node.person.field_person_position
     - field.field.node.person.field_person_research_areas
-    - field.field.node.person.field_person_type
+    - field.field.node.person.field_person_types
     - field.field.node.person.field_person_university_id
     - field.field.node.person.field_person_website
     - field.field.node.person.field_pt_student_current
@@ -28,6 +30,7 @@ dependencies:
     - field.field.node.person.field_teaser
     - node.type.person
   module:
+    - entity_reference_revisions
     - link
     - telephone
     - text
@@ -44,7 +47,7 @@ content:
     third_party_settings: {  }
   field_image:
     type: entity_reference_entity_view
-    weight: 13
+    weight: 15
     region: content
     label: hidden
     settings:
@@ -58,6 +61,15 @@ content:
     third_party_settings: {  }
     type: text_default
     region: content
+  field_person_contact_information:
+    type: entity_reference_revisions_entity_view
+    weight: 13
+    region: content
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
   field_person_department:
     type: entity_reference_label
     weight: 2
@@ -65,6 +77,13 @@ content:
     label: above
     settings:
       link: true
+    third_party_settings: {  }
+  field_person_education:
+    type: basic_string
+    weight: 12
+    region: content
+    label: above
+    settings: {  }
     third_party_settings: {  }
   field_person_email:
     type: email_mailto
@@ -145,16 +164,8 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
-  field_person_type:
-    type: entity_reference_label
-    weight: 16
-    region: content
-    label: hidden
-    settings:
-      link: true
-    third_party_settings: {  }
   field_person_website:
-    weight: 15
+    weight: 16
     label: above
     settings:
       trim_length: 80
@@ -166,7 +177,7 @@ content:
     type: link_separate
     region: content
   links:
-    weight: 12
+    weight: 14
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -175,6 +186,7 @@ hidden:
   field_person_first_name: true
   field_person_hide: true
   field_person_last_name: true
+  field_person_types: true
   field_person_university_id: true
   field_pt_student_current: true
   field_tags: true
