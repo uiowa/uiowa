@@ -120,7 +120,15 @@
           </figure>
         {% endif %}
 
-        {{ content|without('field_image', 'field_person_bio', 'content_moderation_control', 'pt_student_dissertation_title', 'field_person_education', 'field_person_research_areas') }}
+        {{ content|without(
+          'field_image',
+          'field_person_bio',
+          'content_moderation_control',
+          'pt_student_dissertation_title',
+          'field_person_education',
+          'field_person_research_areas',
+          'field_person_publications_link'
+        ) }}
       </div>
       <div class="col-md-6 col-lg-9 person-content">
         {% if content.pt_student_dissertation_title and content.pt_student_dissertation_title|render is not empty %}
@@ -130,6 +138,7 @@
         {% endif %}
         {{ content.field_person_bio }}
         {{ content.field_person_education }}
+        {{ content.field_person_publications_link }}
         {{ content.field_person_research_areas }}
       </div>
     </div>
