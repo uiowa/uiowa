@@ -7,10 +7,10 @@ dependencies:
     - field.field.node.area_of_study.field_area_of_study_college
     - field.field.node.area_of_study.field_area_of_study_degrees
     - field.field.node.area_of_study.field_area_of_study_related
-    - field.field.node.area_of_study.field_area_of_study_type
     - field.field.node.area_of_study.field_image
     - node.type.area_of_study
   module:
+    - entity_reference_revisions
     - options
     - text
     - user
@@ -34,11 +34,13 @@ content:
     type: list_default
     region: content
   field_area_of_study_degrees:
-    weight: 4
-    label: inline
-    settings: {  }
+    type: entity_reference_revisions_entity_view
+    weight: 7
+    label: above
+    settings:
+      view_mode: default
+      link: ''
     third_party_settings: {  }
-    type: list_default
     region: content
   field_area_of_study_related:
     weight: 6
@@ -47,13 +49,6 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-    region: content
-  field_area_of_study_type:
-    weight: 3
-    label: inline
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
     region: content
   field_image:
     weight: 1

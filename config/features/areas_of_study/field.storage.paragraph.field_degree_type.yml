@@ -1,13 +1,13 @@
-uuid: aae295a7-c4bf-4649-99fc-7208ceab2bbd
+uuid: 4baf0f59-90cb-4d67-a948-917f296b4996
 langcode: en
 status: true
 dependencies:
   module:
-    - node
     - options
-id: node.field_area_of_study_type
-field_name: field_area_of_study_type
-entity_type: node
+    - paragraphs
+id: paragraph.field_degree_type
+field_name: field_degree_type
+entity_type: paragraph
 type: list_string
 settings:
   allowed_values:
@@ -29,7 +29,7 @@ settings:
   allowed_values_function: ''
 module: options
 locked: false
-cardinality: -1
+cardinality: 1
 translatable: true
 indexes: {  }
 persist_with_no_fields: false

@@ -1,69 +1,18 @@
-uuid: 3cd97451-fd74-495c-87b3-4f4872ad6198
+uuid: 40fe6da0-1c35-4be1-915c-840110689a61
 langcode: en
 status: true
 dependencies:
   module:
+    - entity_reference_revisions
     - node
-    - options
+    - paragraphs
 id: node.field_area_of_study_degrees
 field_name: field_area_of_study_degrees
 entity_type: node
-type: list_string
+type: entity_reference_revisions
 settings:
-  allowed_values:
-    -
-      value: AuD
-      label: AuD
-    -
-      value: BA
-      label: BA
-    -
-      value: BBA
-      label: BBA
-    -
-      value: BS
-      label: BS
-    -
-      value: Certificate
-      label: Certificate
-    -
-      value: DDS
-      label: DDS
-    -
-      value: EdD
-      label: EdD
-    -
-      value: MA
-      label: MA
-    -
-      value: MAc
-      label: MAc
-    -
-      value: MAT
-      label: MAT
-    -
-      value: MCA
-      label: MCA
-    -
-      value: MCS
-      label: MCS
-    -
-      value: Minor
-      label: Minor
-    -
-      value: MFA
-      label: MFA
-    -
-      value: MS
-      label: MS
-    -
-      value: PhD
-      label: PhD
-    -
-      value: SJD
-      label: SJD
-  allowed_values_function: ''
-module: options
+  target_type: paragraph
+module: entity_reference_revisions
 locked: false
 cardinality: -1
 translatable: true
