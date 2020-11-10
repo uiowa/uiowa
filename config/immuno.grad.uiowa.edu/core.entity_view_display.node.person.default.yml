@@ -21,6 +21,7 @@ dependencies:
     - field.field.node.person.field_person_office_room
     - field.field.node.person.field_person_phone
     - field.field.node.person.field_person_position
+    - field.field.node.person.field_person_publications_link
     - field.field.node.person.field_person_research_areas
     - field.field.node.person.field_person_types
     - field.field.node.person.field_person_university_id
@@ -51,7 +52,7 @@ third_party_settings:
         - field_pt_student_cur_pos_dept
         - field_pt_student_cur_pos_inst
       parent_name: ''
-      weight: 18
+      weight: 19
       format_type: html_element
       region: content
       format_settings:
@@ -170,8 +171,20 @@ content:
     third_party_settings: {  }
     type: string
     region: content
-  field_person_research_areas:
+  field_person_publications_link:
     weight: 16
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  field_person_research_areas:
+    weight: 17
     label: above
     settings:
       link: false
@@ -228,7 +241,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   pt_student_dissertation_title:
-    weight: 17
+    weight: 18
     label: hidden
     settings:
       link_to_entity: false
