@@ -173,6 +173,7 @@
   .uiowa-events {
     margin-top: $gutter;
   }
+
   .card {
     @include breakpoint(sm) {
       border-bottom: 1px solid rgba(0, 0, 0, .125);
@@ -390,11 +391,6 @@
         margin-right: $gutter;
         margin-right: 0;
       }
-
-      &:nth-child(3n+2) {
-        margin-left: 0;
-        margin: 0 $desktop-width-gutter $desktop-width-gutter $desktop-width-gutter;
-      }
     }
 
     display: flex;
@@ -457,7 +453,7 @@
   }
 
   .views-row {
-    @include card-enclosed;
+    //@include card-enclosed;
     display: inline-block;
     width: 100%;
     margin-bottom: $gutter;
@@ -475,6 +471,10 @@
 
   .node__content {
     @include card-body;
+  }
+
+  .card__body {
+    padding: 2rem;
   }
 
   .node__content .field--name-title {

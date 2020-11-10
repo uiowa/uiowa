@@ -163,6 +163,15 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
               ],
             ],
           ];
+
+          // Label the white background option as the default.
+          $form['layout_builder_style_background']['#options']['block_background_style_light'] = 'White (default)';
+
+          // If the block is new, set its default background
+          // to white instead of none.
+          if ($form_id === 'layout_builder_add_block') {
+            $form['layout_builder_style_background']['#default_value'] = 'block_background_style_light';
+          }
           break;
 
         case 'inline_block:uiowa_collection':
