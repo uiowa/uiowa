@@ -10,7 +10,9 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
+use Drupal\media\Entity\Media;
 use Drupal\node\NodeInterface;
+use Drupal\views\Plugin\views\field\EntityField;
 
 /**
  * Implements hook_preprocess_HOOK() for html.html.twig.
@@ -369,6 +371,10 @@ function uids_base_preprocess_block(&$variables) {
     $variables['breadcrumb'] = $plugin_block->build();
   }
 
+  if ($variables['derivative_plugin_id'] == 'uiowa_aggregator') {
+    $variables['#attached']['library'][] = 'uids_base/aggregator';
+  }
+
 }
 
 /**
@@ -479,10 +485,119 @@ function uids_base_preprocess_paragraph(&$variables) {
 /**
  * Implements hook_preprocess_HOOK().
  */
+function uids_base_preprocess_views_view_field(&$variables) {
+  $view = $variables['view'];
+
+  // Limit this to the 'person_custom' view using
+  // the 'students' display.
+  if ($view->id() === 'person_custom' && $view->current_display === 'students') {
+    $field = $variables['field'];
+    // Check that we're looking at the 'Advisor' field.
+    if ($field instanceof EntityField && $field->field === 'field_pt_student_advisor') {
+      // Check that we can access the person node.
+      if (isset($variables['row'])
+        && !is_null($node = $variables['row']->_entity)
+        && $node instanceof NodeInterface
+      ) {
+        // Check that we can access the Advisor entity reference.
+        if (!is_null($advisor_field = $node->field_pt_student_advisor) && $advisor = $advisor_field->entity) {
+          // Is the advisor hidden?
+          $hide_person = $advisor->field_person_hide->value;
+
+          if ($hide_person) {
+            // Display advisor name as plain text.
+            $field->options['settings']['link'] = FALSE;
+            $variables['output'] = $variables['field']
+              ->advancedRender($variables['row']);
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
 function uids_base_preprocess_views_view_table(&$variables) {
   // For all view tables except for draggable view tables.
   if (!isset($variables["view"]->display_handler->handlers["field"]["draggableviews"])) {
     $variables['attributes']['class'][] = 'table is-striped';
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uids_base_preprocess_aggregator_feed(&$variables) {
+  if (\Drupal::routeMatch()->getRouteName() == 'entity.aggregator_feed.canonical') {
+    $variables['#attached']['library'][] = 'uids_base/aggregator-feed';
+
+    /** @var Drupal\aggregator\Entity\Feed $feed */
+    $feed = $variables['elements']['#aggregator_feed'];
+    $image = $feed->get('field_aggregator_feed_image');
+
+    // The image field prints via the view mode if set. If not, we'll replace
+    // it with the feed image if that is set.
+    if ($image->isEmpty()) {
+      if ($image = $feed->getImage()) {
+        $variables['content']['field_aggregator_feed_image'] = [
+          '#theme' => 'imagecache_external_responsive',
+          '#uri' => $image,
+          '#responsive_image_style_id' => 'small__square',
+          '#attributes' => [
+            'data-lazy' => TRUE,
+            'alt' => t('@title feed image', ['@title' => $feed->get('title')->getString()]),
+            'class' => [
+              'feed-image',
+            ],
+          ],
+        ];
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uids_base_preprocess_aggregator_item(&$variables) {
+  /** @var Drupal\aggregator\Entity\Item $item */
+  $item = $variables['elements']['#aggregator_item'];
+
+  $timestamp = $item->getPostedTime();
+  $variables['post_date'] = \Drupal::service('date.formatter')->format($timestamp, 'medium');
+
+  // Only add the feed image  and heading size to the aggregator item if we're
+  // not on the canonical feed page.
+  if (\Drupal::routeMatch()->getRouteName() != 'entity.aggregator_feed.canonical') {
+    // Set the heading level size for use in the template.
+    $variables['heading_size'] = $variables['elements']['#heading_size'] ?? 'h3';
+
+    /** @var Drupal\aggregator\Entity\Feed $feed */
+    $feed = \Drupal::entityTypeManager()->getStorage('aggregator_feed')->load($item->getFeedId());
+    $mid = $feed->get('field_aggregator_feed_image')->getString();
+
+    // A local feed image should take precedence.
+    if ($media = Media::load($mid)) {
+      $variables['feed_image'] = \Drupal::entityTypeManager()->getViewBuilder('media')->view($media, 'small__square');
+    }
+    else {
+      if ($image = $feed->getImage()) {
+        $variables['feed_image'] = [
+          '#theme' => 'imagecache_external_responsive',
+          '#uri' => $image,
+          '#responsive_image_style_id' => 'small__square',
+          '#attributes' => [
+            'data-lazy' => TRUE,
+            'alt' => t('@title feed image', ['@title' => $feed->get('title')->getString()]),
+            'class' => [
+              'feed-image',
+            ],
+          ],
+        ];
+      }
+    }
   }
 }
 

@@ -1,0 +1,21 @@
+@import "assets/scss/_variables.scss";
+@import "assets/scss/_utilities.scss";
+@import "components/media/_media-mixins.scss";
+
+.media {
+  &--border {
+    .field--name-field-media-image {
+      img {
+        @include media-border;
+      }
+    }
+  }
+
+  &--circle {
+    .field--name-field-media-image {
+      img {
+        @include media-circle;
+      }
+    }
+  }
+}

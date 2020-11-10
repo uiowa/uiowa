@@ -1387,3 +1387,90 @@ function sitenow_update_8037() {
 
   drupal_flush_all_caches();
 }
+
+/**
+ * Set defaults for new LB styles on card blocks.
+ */
+function sitenow_update_8038() {
+  $query = \Drupal::entityQuery('node')
+    ->condition('type', 'page')
+    ->condition('layout_builder__layout', '%uiowa_card%', 'LIKE');
+
+  $results = $query->execute();
+
+  $new_style_defaults = [
+    'vertical' => [
+      'card_image_large',
+      'card_media_position_stacked',
+      'content_alignment_left',
+      'media_format_widescreen',
+    ],
+    'horizontal' => [
+      'card_image_small',
+      'card_media_position_left',
+      'content_alignment_left',
+      'media_format_widescreen',
+    ],
+  ];
+
+  foreach ($results as $nid) {
+    $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+    $layout = $node->get('layout_builder__layout');
+
+    // Grab the sections. We'll set updated ones back in below.
+    $layout_sections = $layout->getSections();
+
+    /**
+     * @var integer $delta_s
+     * @var \Drupal\layout_builder\Section $section
+     */
+    foreach ($layout_sections as $delta_s => $section) {
+      $section_is_updated = FALSE;
+
+      // insertComponent() uses delta and region
+      // which makes it more difficult to re-set components.
+      // With an array and iterator we can set it directly.
+      $section_arr = $section->toArray();
+      $i = 0;
+
+      /**
+       * @var \Drupal\layout_builder\SectionComponent $component
+       */
+      foreach ($section->getComponents() as $component) {
+        if ($component->getPluginId() === 'inline_block:uiowa_card') {
+          $existing_styles_clean = [];
+          $existing_styles = $component->get('layout_builder_styles_style');
+          $card_type = 'vertical';
+          foreach ($existing_styles as $style) {
+            // If the style isn't an empty string.
+            if (!empty($style)) {
+              if ($style === 'block_card_style_horizontal') {
+                $card_type = 'horizontal';
+              }
+              else {
+                // If the style isn't in either new list of defaults
+                // we need to re-add it.
+                if (!in_array($style, $new_style_defaults['vertical']) && !in_array($style, $new_style_defaults['horizontal'])) {
+                  $existing_styles_clean[] = $style;
+                }
+              }
+            }
+          }
+
+          $component->set('layout_builder_styles_style', array_merge($existing_styles_clean, $new_style_defaults[$card_type]));
+
+          $section_arr['components'][$i] = $component->toArray();
+          $section_is_updated = TRUE;
+        }
+        $i++;
+      }
+
+      if ($section_is_updated) {
+        // Create a section from array, set, and save.
+        $layout_sections[$delta_s] = Section::fromArray($section_arr);
+        $node->set('layout_builder__layout', $layout_sections)
+          ->save();
+      }
+    }
+  }
+}

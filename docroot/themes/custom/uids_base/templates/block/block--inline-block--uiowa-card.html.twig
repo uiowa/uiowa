@@ -25,15 +25,30 @@
 * @see template_preprocess_block()
 */
 #}
+{% set styles = elements['#layout_builder_style'] %}
+{% set style_classes = [] %}
+{% set size_classes = [] %}
+
+{% for style in styles %}
+	{# Remove media classes if media--circle  #}
+	{% if style starts with 'media--circle' %}
+		{% set style_classes = style_classes|merge([style]) %}
+	{% endif %}
+  	{% if style starts with 'card__media' %}
+		{% set size_classes = size_classes|merge([style]) %}
+	{% endif %}
+{% endfor %}
 
 {% set block_card = {
-  'attributes': attributes,
+  'attributes': attributes.removeClass(style_classes, size_classes),
+  'media_styles' : style_classes,
+  'media_sizes' : size_classes,
   'card_image': content.field_uiowa_card_image|render,
   'card_text': content.field_uiowa_card_excerpt,
   'card_link_url': content.field_uiowa_card_link[0]['#url'],
   'card_link_title': content.field_uiowa_card_link[0]['#title']|render,
   'card_title': content.field_uiowa_card_title[0]['#text'],
-  'card_author': content.field_uiowa_card_author|render,
+  'card_subtitle': content.field_uiowa_card_author|render,
   'card_position': elements['#weight'],
   'card_aria_describedby': content.field_uiowa_card_title[0]['#text']|clean_id,
   'headline_level': content.field_uiowa_card_title[0]['#size'],

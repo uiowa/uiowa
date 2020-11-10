@@ -337,6 +337,17 @@ function sitenow_form_config_split_edit_form_alter(&$form, FormStateInterface $f
 }
 
 /**
+ * Implements hook_ENTITY_TYPE_prepare_form().
+ */
+function sitenow_config_split_prepare_form(EntityInterface $entity, $operation, FormStateInterface $form_state) {
+  // Set a state variable to ensure config_split uses our Chosen
+  // select implementation instead of checkboxes.
+  if (!\Drupal::state()->get('config_split_use_select')) {
+    \Drupal::state()->set('config_split_use_select', TRUE);
+  }
+}
+
+/**
  * Implements hook_form_alter().
  */
 function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
@@ -898,6 +909,8 @@ function sitenow_toolbar() {
  *
  * @return bool
  *   Boolean indicating whether or not current user is an admin.
+ *
+ * @todo: Replace this with uiowa_core access checker service.
  */
 function sitenow_is_user_admin(AccountProxy $current_user) {
   if ($current_user->id() == 1 || in_array('administrator', $current_user->getRoles())) {

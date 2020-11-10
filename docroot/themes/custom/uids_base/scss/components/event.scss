@@ -1,7 +1,7 @@
 @import "assets/scss/_variables.scss";
 @import "assets/scss/_utilities.scss";
 @import "components/event/event.scss";
-
+@import "components/card/_card-mixins.scss";
 
 @include breakpoint(sm) {
   .fontawesome-icons {
@@ -51,7 +51,8 @@
 }
 
 // Events.
-.block-inline-blockuiowa-events {
+.block-inline-blockuiowa-events,
+.aggregator-wrapper {
   margin-top: $gutter;
 
   .card__title {
@@ -114,7 +115,8 @@
 
 // Events List
 .block-inline-blockuiowa-events,
-.uiowa-events {
+.uiowa-events,
+.aggregator-wrapper {
   .card {
     @include breakpoint(sm) {
       border-bottom: 1px solid #ccc;

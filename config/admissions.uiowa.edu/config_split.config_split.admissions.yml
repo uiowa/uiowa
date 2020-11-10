@@ -1,0 +1,29 @@
+uuid: 1aa7f804-a75a-4201-bb26-1a50922ec5dd
+langcode: en
+status: true
+dependencies: {  }
+id: admissions
+label: Admissions
+description: 'The Admissions site split.'
+folder: ../config/admissions.uiowa.edu
+module:
+  admissions_core: 0
+  weight: 0
+theme: {  }
+blacklist: {  }
+graylist:
+  - config_split.config_split.admissions
+  - field.field.node.scholarship.field_scholarship_resident
+  - field.field.node.scholarship.field_scholarship_type
+  - field.field.node.scholarship.field_weight
+  - field.storage.node.field_scholarship_resident
+  - field.storage.node.field_scholarship_type
+  - field.storage.node.field_weight
+  - views.view.scholarships
+  - 'core.entity_form_display.node.scholarship.*'
+  - 'core.entity_view_display.node.scholarship.*'
+  - 'core.entity_view_display.node.page.*'
+  - 'user.role.*'
+graylist_dependents: true
+graylist_skip_equal: true
+weight: 90

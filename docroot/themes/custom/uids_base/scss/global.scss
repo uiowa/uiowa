@@ -113,6 +113,10 @@ $imgpath: '../../uids/assets/images';
     &[class*="bg-pattern--"] {
       padding: $desktop-width-gutter;
     }
+    &[class*="bg--"].block-padding__all--extra,
+    &[class*="bg-pattern--"].block-padding__all--extra {
+      padding: 6rem;
+    }
   }
 }
 
@@ -212,6 +216,9 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 .block-padding {
   &__all {
     padding: $desktop-width-gutter;
+  }
+  &__all--extra {
+    padding: 6rem;
   }
 }
 
@@ -450,4 +457,12 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
       flex-basis: unset;
     }
   }
+}
+
+.block-inline-blockuiowa-collection {
+  flex-basis: 100%;
+}
+
+.screen-reader-text {
+  @include element-invisible;
 }
