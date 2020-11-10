@@ -1,25 +1,85 @@
 @import "assets/scss/_variables.scss";
 @import "assets/scss/_utilities.scss";
+@import "components/card/_card-mixins.scss";
 
-.block-inline-blockuiowa-aggregator {
-  &.hide-images {
-    .events-card__image {
+.aggregator-wrapper {
+  margin-top: $gutter;
+
+  .card {
+    @include breakpoint(sm) {
+      padding: 0 0 $gutter;
+
+      &__title.headline {
+        font-size: 1.3rem;
+      }
+    }
+  }
+
+  .card {
+    &__row {
+      @include breakpoint(sm) {
+        display: flex;
+        justify-content: center;
+        flex-wrap: nowrap;
+        border: none;
+        padding: 1.5rem 0;
+        background: transparent;
+      }
+    }
+  }
+
+  .layout--twocol .layout__spacing_container & {
+    @media screen and (min-width: 40em) {
+      .card__media img {
+        border-radius: 50%;
+        margin-top: 0;
+        height: auto;
+        padding: 8px;
+      }
+    }
+  }
+
+  .layout--fourcol .layout__spacing_container & {
+    @media screen and (min-width: 40em) {
+      .card__media img {
+        border-radius: 50%;
+        margin-top: 0;
+        height: auto;
+        padding: 8px;
+      }
+    }
+  }
+
+  &.hide-descriptions {
+    .card__description {
       display: none;
     }
   }
 
-  .bg-pattern--brain-reversed &,
-  .bg--gold & {
-    .more-link {
-      color: $secondary;
-      background: transparent;
+  &.image-right .card__media.media--circle {
+    @include breakpoint(sm) {
+      margin-left: 15px;
+      margin-right: 0;
+      order: 1;
+
+      &+.card__body {
+        padding-left: 0;
+        padding-right: 1.25rem;
+      }
     }
   }
 
-  .bg-pattern--brain-black &,
-  .bg--black & {
-    .more-link {
-      color: $primary;
+  &.hide-images {
+    .card__media.media--circle {
+      display: none;
+
+      &+.card__body {
+        padding: 0;
+      }
     }
+  }
+
+  &.hide-details .card__details {
+    display: none;
   }
 }
