@@ -12,6 +12,7 @@ use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\media\Entity\Media;
 use Drupal\node\NodeInterface;
+use Drupal\views\Plugin\views\field\EntityField;
 
 /**
  * Implements hook_preprocess_HOOK() for html.html.twig.
@@ -474,6 +475,40 @@ function uids_base_preprocess_paragraph(&$variables) {
               ];
               $variables['h_size'] = $options[$headline_field['heading_size']];
             }
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uids_base_preprocess_views_view_field(&$variables) {
+  $view = $variables['view'];
+
+  // Limit this to the 'person_custom' view using
+  // the 'students' display.
+  if ($view->id() === 'person_custom' && $view->current_display === 'students') {
+    $field = $variables['field'];
+    // Check that we're looking at the 'Advisor' field.
+    if ($field instanceof EntityField && $field->field === 'field_pt_student_advisor') {
+      // Check that we can access the person node.
+      if (isset($variables['row'])
+        && !is_null($node = $variables['row']->_entity)
+        && $node instanceof NodeInterface
+      ) {
+        // Check that we can access the Advisor entity reference.
+        if (!is_null($advisor_field = $node->field_pt_student_advisor) && $advisor = $advisor_field->entity) {
+          // Is the advisor hidden?
+          $hide_person = $advisor->field_person_hide->value;
+
+          if ($hide_person) {
+            // Display advisor name as plain text.
+            $field->options['settings']['link'] = FALSE;
+            $variables['output'] = $variables['field']
+              ->advancedRender($variables['row']);
           }
         }
       }
