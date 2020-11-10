@@ -105,7 +105,9 @@
       display: none;
 
       &+.card__body {
-        padding: 0;
+        @include breakpoint(sm) {
+          padding: 0;
+        }
       }
     }
   }
