@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.person.field_image
     - field.field.node.person.field_person_bio
+    - field.field.node.person.field_person_contact_information
     - field.field.node.person.field_person_credential
     - field.field.node.person.field_person_education
     - field.field.node.person.field_person_email
@@ -14,11 +15,13 @@ dependencies:
     - field.field.node.person.field_person_phone
     - field.field.node.person.field_person_position
     - field.field.node.person.field_person_research_areas
+    - field.field.node.person.field_person_types
     - field.field.node.person.field_person_website
     - field.field.node.person.field_tags
     - field.field.node.person.field_teaser
     - node.type.person
   module:
+    - entity_reference_revisions
     - link
     - telephone
     - text
@@ -48,6 +51,15 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: text_default
+    region: content
+  field_person_contact_information:
+    type: entity_reference_revisions_entity_view
+    weight: 10
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
     region: content
   field_person_education:
     weight: 6
@@ -84,6 +96,14 @@ content:
     weight: 7
     region: content
     label: above
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_person_types:
+    type: entity_reference_label
+    weight: 11
+    region: content
+    label: inline
     settings:
       link: false
     third_party_settings: {  }

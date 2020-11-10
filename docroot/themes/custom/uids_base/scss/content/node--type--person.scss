@@ -1,11 +1,16 @@
 @import "uids/assets/scss/_variables.scss";
 @import "uids/assets/scss/_utilities.scss";
+@import "components/card/_card-mixins.scss";
 
 article.node--type-person.node--view-mode-full,
 div[role=article].node--type-person.node--view-mode-full {
   .content-image img {
     max-width: 100%;
     height: auto;
+  }
+  .field a {
+    line-height: 1.7;
+    font-size: 1.2rem;
   }
 }
 
@@ -55,11 +60,11 @@ div[role=article].node--type-person.node--view-mode-teaser {
 }
 
 // Subtitle
-  .subtitle {
-    @include card-subtitle;
-    display: block;
-    font-size: 1.6rem;
-  }
+.subtitle {
+  @include card-subtitle;
+  display: block;
+  font-size: 1.6rem;
+}
 
 
 // Person Meta
@@ -87,6 +92,19 @@ div[role=article].node--type-person.node--view-mode-teaser {
   }
   .h5.field--name-field-person-position .field__item {
     margin-bottom: 1rem;
+  }
+}
+
+.field--name-field-person-contact-information {
+  margin-bottom: .7rem;
+}
+.field--name-field-uiowa-contact-label {
+  margin-top: .7rem;
+  font-weight: $font-weight-bold;
+  line-height: 1.7;
+  font-size: 1.2rem;
+  &:after {
+    content: ":";
   }
 }
 

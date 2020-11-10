@@ -1,0 +1,27 @@
+uuid: fef621c6-e69d-494d-8e6b-af8d1276bac5
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_scholarship_resident
+field_name: field_scholarship_resident
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: resident
+      label: Resident
+    -
+      value: nonresident
+      label: Nonresident
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1769,3 +1769,51 @@ $sites['gradtoxicology.local.drupal.uiowa.edu'] = 'toxicology.grad.uiowa.edu';
 $sites['gradtoxicology.dev.drupal.uiowa.edu'] = 'toxicology.grad.uiowa.edu';
 $sites['gradtoxicology.stage.drupal.uiowa.edu'] = 'toxicology.grad.uiowa.edu';
 $sites['gradtoxicology.prod.drupal.uiowa.edu'] = 'toxicology.grad.uiowa.edu';
+
+// Directory aliases for transportation.uiowa.edu.
+$sites['transportation.local.drupal.uiowa.edu'] = 'transportation.uiowa.edu';
+$sites['transportation.dev.drupal.uiowa.edu'] = 'transportation.uiowa.edu';
+$sites['transportation.stage.drupal.uiowa.edu'] = 'transportation.uiowa.edu';
+$sites['transportation.prod.drupal.uiowa.edu'] = 'transportation.uiowa.edu';
+
+// Directory aliases for 3mlearning.uiowa.edu.
+$sites['3mlearning.local.drupal.uiowa.edu'] = '3mlearning.uiowa.edu';
+$sites['3mlearning.dev.drupal.uiowa.edu'] = '3mlearning.uiowa.edu';
+$sites['3mlearning.stage.drupal.uiowa.edu'] = '3mlearning.uiowa.edu';
+$sites['3mlearning.prod.drupal.uiowa.edu'] = '3mlearning.uiowa.edu';
+
+// Directory aliases for ipol.lab.uiowa.edu.
+$sites['labipol.local.drupal.uiowa.edu'] = 'ipol.lab.uiowa.edu';
+$sites['labipol.dev.drupal.uiowa.edu'] = 'ipol.lab.uiowa.edu';
+$sites['labipol.stage.drupal.uiowa.edu'] = 'ipol.lab.uiowa.edu';
+$sites['labipol.prod.drupal.uiowa.edu'] = 'ipol.lab.uiowa.edu';
+
+// Directory aliases for fys.uiowa.edu.
+$sites['fys.local.drupal.uiowa.edu'] = 'fys.uiowa.edu';
+$sites['fys.dev.drupal.uiowa.edu'] = 'fys.uiowa.edu';
+$sites['fys.stage.drupal.uiowa.edu'] = 'fys.uiowa.edu';
+$sites['fys.prod.drupal.uiowa.edu'] = 'fys.uiowa.edu';
+
+// Directory aliases for sla2021.conference.uiowa.edu.
+$sites['conferencesla2021.local.drupal.uiowa.edu'] = 'sla2021.conference.uiowa.edu';
+$sites['conferencesla2021.dev.drupal.uiowa.edu'] = 'sla2021.conference.uiowa.edu';
+$sites['conferencesla2021.stage.drupal.uiowa.edu'] = 'sla2021.conference.uiowa.edu';
+$sites['conferencesla2021.prod.drupal.uiowa.edu'] = 'sla2021.conference.uiowa.edu';
+
+// Directory aliases for collections.pharmacy.uiowa.edu.
+$sites['pharmacycollections.local.drupal.uiowa.edu'] = 'collections.pharmacy.uiowa.edu';
+$sites['pharmacycollections.dev.drupal.uiowa.edu'] = 'collections.pharmacy.uiowa.edu';
+$sites['pharmacycollections.stage.drupal.uiowa.edu'] = 'collections.pharmacy.uiowa.edu';
+$sites['pharmacycollections.prod.drupal.uiowa.edu'] = 'collections.pharmacy.uiowa.edu';
+
+// Directory aliases for lhpdc.law.uiowa.edu.
+$sites['lawlhpdc.local.drupal.uiowa.edu'] = 'lhpdc.law.uiowa.edu';
+$sites['lawlhpdc.dev.drupal.uiowa.edu'] = 'lhpdc.law.uiowa.edu';
+$sites['lawlhpdc.stage.drupal.uiowa.edu'] = 'lhpdc.law.uiowa.edu';
+$sites['lawlhpdc.prod.drupal.uiowa.edu'] = 'lhpdc.law.uiowa.edu';
+
+// Directory aliases for ventilator.course.uiowa.edu.
+$sites['courseventilator.local.drupal.uiowa.edu'] = 'ventilator.course.uiowa.edu';
+$sites['courseventilator.dev.drupal.uiowa.edu'] = 'ventilator.course.uiowa.edu';
+$sites['courseventilator.stage.drupal.uiowa.edu'] = 'ventilator.course.uiowa.edu';
+$sites['courseventilator.prod.drupal.uiowa.edu'] = 'ventilator.course.uiowa.edu';
