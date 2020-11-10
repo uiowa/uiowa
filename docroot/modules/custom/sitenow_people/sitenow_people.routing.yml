@@ -1,3 +1,35 @@
+entity.person_type.collection:
+  path: '/admin/structure/person-type'
+  defaults:
+    _entity_list: 'person_type'
+    _title: 'Person Type configuration'
+  requirements:
+    _permission: 'administer person_type'
+
+entity.person_type.add_form:
+  path: '/admin/structure/person_type/add'
+  defaults:
+    _entity_form: 'person_type.add'
+    _title: 'Add a person type'
+  requirements:
+    _permission: 'administer person_type'
+
+entity.person_type.edit_form:
+  path: '/admin/structure/person-type/{person_type}'
+  defaults:
+    _entity_form: 'person_type.edit'
+    _title: 'Edit a person type'
+  requirements:
+    _permission: 'administer person_type'
+
+entity.person_type.delete_form:
+  path: '/admin/structure/person-type/{person_type}/delete'
+  defaults:
+    _entity_form: 'person_type.delete'
+    _title: 'Delete a person type'
+  requirements:
+    _permission: 'administer person_type'
+
 sitenow_people.settings_form:
   path: '/admin/config/system/sitenow-people'
   defaults:

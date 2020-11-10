@@ -5,8 +5,10 @@ dependencies:
   config:
     - field.field.node.person.field_image
     - field.field.node.person.field_person_bio
+    - field.field.node.person.field_person_contact_information
     - field.field.node.person.field_person_credential
     - field.field.node.person.field_person_department
+    - field.field.node.person.field_person_education
     - field.field.node.person.field_person_email
     - field.field.node.person.field_person_first_name
     - field.field.node.person.field_person_hide
@@ -19,8 +21,9 @@ dependencies:
     - field.field.node.person.field_person_office_room
     - field.field.node.person.field_person_phone
     - field.field.node.person.field_person_position
+    - field.field.node.person.field_person_publications_link
     - field.field.node.person.field_person_research_areas
-    - field.field.node.person.field_person_type
+    - field.field.node.person.field_person_types
     - field.field.node.person.field_person_university_id
     - field.field.node.person.field_person_website
     - field.field.node.person.field_pt_faculty_type
@@ -49,7 +52,7 @@ third_party_settings:
         - field_pt_student_cur_pos_dept
         - field_pt_student_cur_pos_inst
       parent_name: ''
-      weight: 18
+      weight: 19
       format_type: html_element
       region: content
       format_settings:
@@ -168,8 +171,20 @@ content:
     third_party_settings: {  }
     type: string
     region: content
-  field_person_research_areas:
+  field_person_publications_link:
     weight: 16
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  field_person_research_areas:
+    weight: 17
     label: above
     settings:
       link: false
@@ -226,7 +241,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   pt_student_dissertation_title:
-    weight: 17
+    weight: 18
     label: hidden
     settings:
       link_to_entity: false
@@ -234,11 +249,13 @@ content:
     type: string
     region: content
 hidden:
+  field_person_contact_information: true
   field_person_credential: true
+  field_person_education: true
   field_person_first_name: true
   field_person_hide: true
   field_person_last_name: true
-  field_person_type: true
+  field_person_types: true
   field_person_university_id: true
   field_pt_faculty_type: true
   field_pt_student_current: true
@@ -246,3 +263,4 @@ hidden:
   field_pt_student_program_start: true
   field_tags: true
   field_teaser: true
+  search_api_excerpt: true
