@@ -545,7 +545,15 @@ EOD
     $certificates = new SslCertificates($client);
 
     $table = new Table($this->output);
-    $table->setHeaders(['Application', 'DBs', 'SANs', 'SSL Coverage']);
+
+    $table->setHeaders([
+      'Application',
+      'DBs',
+      'SANs',
+      'SSL - Coverage',
+      'SSL - Related Domains'
+    ]);
+
     $rows = [];
 
     // A boolean to track whether any application covers this domain.
@@ -556,6 +564,10 @@ EOD
     // Ex. foo.bar.baz.uiowa.edu -> search for *.bar.baz.uiowa.edu.
     $host_parts = explode('.', $host, 2);
     $sans_search = '*.' . $host_parts[1];
+
+    // Consider the parent domain related and search for it since it could
+    // be covered with one SSL SAN while double subdomains cannot.
+    $related_search = $host_parts[1];
 
     // If the host is one subdomain off uiowa.edu or a vanity domain,
     // search for the host instead.
@@ -569,6 +581,9 @@ EOD
       $row = [];
       $row[] = $name;
       $row[] = count($databases->getAll($uuid));
+
+      // Reset related domain for this application.
+      $related = NULL;
 
       $envs = $environments->getAll($uuid);
 
@@ -587,6 +602,11 @@ EOD
                     $has_ssl_coverage = TRUE;
                     break;
                   }
+
+                  if ($domain == $related_search) {
+                    $related = $domain;
+                    break;
+                  }
                 }
               }
             }
@@ -594,6 +614,12 @@ EOD
         }
       }
 
+      // Append an empty string so related domains go in the next column.
+      if (!$has_ssl_coverage) {
+        $row[] = '';
+      }
+
+      $row[] = $related;
       $rows[] = $row;
     }
 
@@ -602,7 +628,7 @@ EOD
 
     // If we did not find any SSL coverage, log an error.
     if (!$has_ssl_coverage) {
-      $this->logger->error("No SSL coverage found on any application for {$host}. Be sure to install new SSL certificate before updating DNS.");
+      $this->logger->error("No SSL coverage found on any application for {$host}. Be sure to check existing SSL certificates for related domains and install a new one before updating DNS.");
     }
 
     $app = $this->askChoice('Which cloud application should be used?', array_keys($applications));
