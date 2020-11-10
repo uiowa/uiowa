@@ -33,6 +33,7 @@ dependencies:
     - field.field.node.person.field_pt_student_current
     - field.field.node.person.field_pt_student_defense_date
     - field.field.node.person.field_pt_student_program_start
+    - field.field.node.person.field_research_publications
     - field.field.node.person.field_tags
     - field.field.node.person.field_teaser
     - field.field.node.person.pt_student_dissertation_title
@@ -53,19 +54,19 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 18
+    weight: 17
     region: content
     settings: {  }
     third_party_settings: {  }
   field_image:
-    weight: 8
+    weight: 7
     settings:
       media_types: {  }
     third_party_settings: {  }
     type: media_library_widget
     region: content
   field_person_bio:
-    weight: 15
+    weight: 14
     settings:
       rows: 5
       placeholder: ''
@@ -73,7 +74,7 @@ content:
     type: text_textarea
     region: content
   field_person_credential:
-    weight: 7
+    weight: 6
     settings:
       size: 60
       placeholder: ''
@@ -82,7 +83,7 @@ content:
     region: content
   field_person_department:
     type: entity_reference_autocomplete
-    weight: 9
+    weight: 8
     region: content
     settings:
       match_operator: CONTAINS
@@ -92,7 +93,7 @@ content:
     third_party_settings: {  }
   field_person_email:
     type: email_default
-    weight: 12
+    weight: 11
     region: content
     settings:
       size: 60
@@ -100,14 +101,14 @@ content:
     third_party_settings: {  }
   field_person_first_name:
     type: string_textfield
-    weight: 4
+    weight: 3
     region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
   field_person_hide:
-    weight: 27
+    weight: 26
     settings:
       display_label: true
     third_party_settings: {  }
@@ -138,7 +139,7 @@ content:
     third_party_settings: {  }
   field_person_last_name:
     type: string_textfield
-    weight: 5
+    weight: 4
     region: content
     settings:
       size: 60
@@ -169,13 +170,13 @@ content:
     third_party_settings: {  }
   field_person_phone:
     type: telephone_default
-    weight: 13
+    weight: 12
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_person_position:
-    weight: 10
+    weight: 9
     settings:
       size: 60
       placeholder: ''
@@ -183,7 +184,7 @@ content:
     type: string_textfield
     region: content
   field_person_research_areas:
-    weight: 28
+    weight: 27
     settings:
       match_operator: STARTS_WITH
       match_limit: 10
@@ -194,20 +195,20 @@ content:
     region: content
   field_person_types:
     type: options_buttons
-    weight: 1
+    weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }
   field_person_university_id:
     type: string_textfield
-    weight: 6
+    weight: 5
     region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
   field_person_website:
-    weight: 16
+    weight: 15
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -215,13 +216,13 @@ content:
     type: link_default
     region: content
   field_pt_faculty_type:
-    weight: 2
+    weight: 1
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_pt_student_advisor:
-    weight: 11
+    weight: 10
     settings:
       match_operator: CONTAINS
       match_limit: 10
@@ -255,7 +256,7 @@ content:
     type: string_textfield
     region: content
   field_pt_student_current:
-    weight: 3
+    weight: 2
     settings:
       display_label: true
     third_party_settings: {  }
@@ -273,8 +274,16 @@ content:
     third_party_settings: {  }
     type: datetime_default
     region: content
+  field_research_publications:
+    weight: 28
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+    region: content
   field_tags:
-    weight: 19
+    weight: 18
     settings:
       match_operator: CONTAINS
       size: 60
@@ -284,7 +293,7 @@ content:
     type: entity_reference_autocomplete_tags
     region: content
   field_teaser:
-    weight: 26
+    weight: 25
     settings:
       rows: 5
       placeholder: ''
@@ -293,13 +302,13 @@ content:
     region: content
   moderation_state:
     type: moderation_state_default
-    weight: 25
+    weight: 24
     region: content
     settings: {  }
     third_party_settings: {  }
   path:
     type: path
-    weight: 22
+    weight: 21
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -307,11 +316,11 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 20
+    weight: 19
     region: content
     third_party_settings: {  }
   pt_student_dissertation_title:
-    weight: 14
+    weight: 13
     settings:
       size: 60
       placeholder: ''
@@ -322,19 +331,19 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 24
+    weight: 23
     region: content
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 21
+    weight: 20
     region: content
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 17
+    weight: 16
     settings:
       match_operator: CONTAINS
       size: 60
@@ -343,7 +352,7 @@ content:
     region: content
     third_party_settings: {  }
   url_redirects:
-    weight: 23
+    weight: 22
     region: content
     settings: {  }
     third_party_settings: {  }
