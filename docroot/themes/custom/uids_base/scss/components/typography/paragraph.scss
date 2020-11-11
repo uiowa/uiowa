@@ -44,6 +44,19 @@ a:not([href]) {
   font-size: 1.2rem;
 }
 
+
+[class*=bg-] .element--spacer-separator,
+[class*=bg-] [class*=bg-] .element--spacer-separator {
+  border: 1px solid transparent;
+}
+
+[class*=bg-] .element--spacer-thin,
+[class*=bg-] [class*=bg-] .element--spacer-thin {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/*
 .bg--gold,
 .bg--brain-reversed,
 .bg-pattern--brain-reversed,
@@ -159,3 +172,4 @@ a:not([href]) {
     }
   }
 }
+*/
