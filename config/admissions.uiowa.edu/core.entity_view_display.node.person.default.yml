@@ -9,20 +9,16 @@ dependencies:
     - field.field.node.person.field_person_credential
     - field.field.node.person.field_person_education
     - field.field.node.person.field_person_email
-    - field.field.node.person.field_person_favorite_admissions
     - field.field.node.person.field_person_first_name
     - field.field.node.person.field_person_hide
     - field.field.node.person.field_person_hometown
-    - field.field.node.person.field_person_iowa_city_favorites
     - field.field.node.person.field_person_last_name
     - field.field.node.person.field_person_phone
     - field.field.node.person.field_person_position
     - field.field.node.person.field_person_research_areas
-    - field.field.node.person.field_person_surprising_anecdote
     - field.field.node.person.field_person_territory
     - field.field.node.person.field_person_types
     - field.field.node.person.field_person_website
-    - field.field.node.person.field_person_why_iowa
     - field.field.node.person.field_tags
     - field.field.node.person.field_teaser
     - node.type.person
@@ -48,8 +44,9 @@ third_party_settings:
         layout_settings:
           label: Header
           layout_builder_styles_style:
-            - ''
-            - section_margin_fixed_width_container
+            0: ''
+            1: section_margin_fixed_width_container
+            remove_default_bottom_padding: remove_default_bottom_padding
         components:
           -
             uuid: ea6c6fe6-713c-407b-9389-bc6638854cf5
@@ -85,51 +82,33 @@ third_party_settings:
           layout_builder_lock:
             lock: {  }
       -
-        layout_id: layout_twocol
+        layout_id: layout_person
         layout_settings:
           label: ''
-          column_widths: 33-67
           layout_builder_styles_style:
-            0: ''
-            1: section_margin_fixed_width_container
-            section_alignment_start: section_alignment_start
+            - ''
+            - ''
         components:
           -
-            uuid: 494d9a86-6b0a-4ec5-a66d-e4185deb6ab6
-            region: first
+            uuid: d80c0e46-2dc5-4612-a78a-09f276a61c2e
+            region: sidebar
             configuration:
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-              id: 'field_block:node:person:field_image'
+              id: 'field_block:node:person:field_person_contact_information'
               formatter:
-                type: entity_reference_entity_view
+                type: entity_reference_revisions_entity_view
                 label: hidden
                 settings:
-                  view_mode: large__square
-                  link: false
+                  view_mode: default
+                  link: ''
                 third_party_settings: {  }
             additional: {  }
-            weight: -9
-          -
-            uuid: 479fe452-b32a-4e0b-917b-64a1a1b69792
-            region: first
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:person:field_person_position'
-              formatter:
-                label: hidden
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-                type: string
-            additional: {  }
-            weight: -8
+            weight: 2
           -
             uuid: fda5971b-e5e1-4db6-848e-3e2953999eae
-            region: first
+            region: sidebar
             configuration:
               label_display: '0'
               context_mapping:
@@ -141,26 +120,41 @@ third_party_settings:
                 settings: {  }
                 third_party_settings: {  }
             additional: {  }
-            weight: -7
+            weight: 0
           -
-            uuid: f3a493e2-ddb0-4c5c-84fb-5cad4285c43e
-            region: first
+            uuid: 5acd9f0f-ee1b-42f5-aca2-c695db1898b1
+            region: sidebar
             configuration:
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-              id: 'field_block:node:person:field_person_hometown'
+              id: 'field_block:node:person:field_person_education'
               formatter:
                 label: above
-                settings:
-                  link_to_entity: false
+                settings: {  }
                 third_party_settings: {  }
-                type: string
+                type: basic_string
             additional: {  }
-            weight: -5
+            weight: 1
+          -
+            uuid: 55902d77-b911-4148-acbf-488399b2af29
+            region: sidebar
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:person:field_person_phone'
+              formatter:
+                label: inline
+                settings:
+                  title: ''
+                third_party_settings: {  }
+                type: telephone_link
+            additional: {  }
+            weight: -1
           -
             uuid: d049b5dc-3cb3-4fee-bc4c-823470438c10
-            region: first
+            region: sidebar
             configuration:
               label_display: '0'
               context_mapping:
@@ -177,26 +171,26 @@ third_party_settings:
                   target: '0'
                 third_party_settings: {  }
             additional: {  }
-            weight: -4
+            weight: -2
           -
-            uuid: 55902d77-b911-4148-acbf-488399b2af29
-            region: first
+            uuid: f3a493e2-ddb0-4c5c-84fb-5cad4285c43e
+            region: sidebar
             configuration:
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-              id: 'field_block:node:person:field_person_phone'
+              id: 'field_block:node:person:field_person_hometown'
               formatter:
-                label: inline
+                label: above
                 settings:
-                  title: ''
+                  link_to_entity: false
                 third_party_settings: {  }
-                type: telephone_link
+                type: string
             additional: {  }
             weight: -3
           -
             uuid: e0cbb1a7-b222-44d0-9dae-c6d78d5e74c2
-            region: second
+            region: content
             configuration:
               label_display: '0'
               context_mapping:
@@ -208,10 +202,10 @@ third_party_settings:
                 third_party_settings: {  }
                 type: text_default
             additional: {  }
-            weight: 0
+            weight: -9
           -
             uuid: 532de6e6-fc41-4b7d-a135-5d1cf2c63cf3
-            region: second
+            region: content
             configuration:
               label_display: '0'
               context_mapping:
@@ -224,105 +218,10 @@ third_party_settings:
                   link: false
                 third_party_settings: {  }
             additional: {  }
-            weight: 1
-          -
-            uuid: 6aef7bb8-e199-4b32-bd62-c7ab382c224e
-            region: second
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'extra_field_block:node:person:links'
-            additional: {  }
-            weight: 2
-          -
-            uuid: c238bc04-896b-4a2a-9b70-404943841604
-            region: second
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'extra_field_block:node:person:content_moderation_control'
-            additional: {  }
-            weight: 3
-          -
-            uuid: 8ce0955e-0eda-42e7-adf4-2509123aa8ff
-            region: second
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:person:field_person_surprising_anecdote'
-              formatter:
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-                type: basic_string
-            additional: {  }
-            weight: 4
-          -
-            uuid: 5efe7c40-9518-448f-8241-95bb644b2e66
-            region: second
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:person:field_person_favorite_admissions'
-              formatter:
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-                type: basic_string
-            additional: {  }
-            weight: 5
-          -
-            uuid: 444e46b8-2a00-4a8e-979f-42f0a108cf37
-            region: second
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:person:field_person_iowa_city_favorites'
-              formatter:
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-                type: basic_string
-            additional: {  }
-            weight: 6
-          -
-            uuid: 90a81e57-dffc-4576-9067-0d755374daf4
-            region: second
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:person:field_person_why_iowa'
-              formatter:
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-                type: basic_string
-            additional: {  }
-            weight: 7
-          -
-            uuid: 5acd9f0f-ee1b-42f5-aca2-c695db1898b1
-            region: first
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:person:field_person_education'
-              formatter:
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-                type: basic_string
-            additional: {  }
-            weight: -6
+            weight: -8
           -
             uuid: 69dd1e67-4c47-4b9d-9bce-5e0cfb8d92c6
-            region: second
+            region: content
             configuration:
               label_display: '0'
               context_mapping:
@@ -334,35 +233,61 @@ third_party_settings:
                 third_party_settings: {  }
                 type: list_default
             additional: {  }
-            weight: 8
+            weight: -1
           -
-            uuid: d80c0e46-2dc5-4612-a78a-09f276a61c2e
-            region: first
+            uuid: c238bc04-896b-4a2a-9b70-404943841604
+            region: content
             configuration:
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-              id: 'field_block:node:person:field_person_contact_information'
+              id: 'extra_field_block:node:person:content_moderation_control'
+            additional: {  }
+            weight: -6
+          -
+            uuid: 6aef7bb8-e199-4b32-bd62-c7ab382c224e
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'extra_field_block:node:person:links'
+            additional: {  }
+            weight: -7
+          -
+            uuid: 494d9a86-6b0a-4ec5-a66d-e4185deb6ab6
+            region: sidebar
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:person:field_image'
               formatter:
-                type: entity_reference_revisions_entity_view
+                type: entity_reference_entity_view
                 label: hidden
                 settings:
-                  view_mode: default
-                  link: ''
+                  view_mode: large__square
+                  link: false
                 third_party_settings: {  }
             additional: {  }
+            weight: -4
+          -
+            uuid: 479fe452-b32a-4e0b-917b-64a1a1b69792
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:person:field_person_position'
+              formatter:
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+                type: string
+            additional: {  }
             weight: -10
-        third_party_settings:
-          layout_builder_lock:
-            lock: {  }
-      -
-        layout_id: layout_onecol
-        layout_settings:
-          label: ''
-        components: {  }
-        third_party_settings:
-          layout_builder_lock:
-            lock: {  }
+        third_party_settings: {  }
   layout_builder_restrictions:
     allowed_block_categories: {  }
     entity_view_mode_restriction:
@@ -420,13 +345,6 @@ content:
     label: inline
     settings: {  }
     third_party_settings: {  }
-  field_person_favorite_admissions:
-    weight: 14
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: basic_string
-    region: content
   field_person_hometown:
     weight: 12
     label: above
@@ -434,13 +352,6 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
-    region: content
-  field_person_iowa_city_favorites:
-    weight: 15
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: basic_string
     region: content
   field_person_phone:
     weight: 3
@@ -466,13 +377,6 @@ content:
     settings:
       link: false
     third_party_settings: {  }
-  field_person_surprising_anecdote:
-    weight: 13
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: basic_string
-    region: content
   field_person_territory:
     weight: 11
     label: above
@@ -492,13 +396,6 @@ content:
       rel: '0'
       target: '0'
     third_party_settings: {  }
-  field_person_why_iowa:
-    weight: 16
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: basic_string
-    region: content
   links:
     weight: 8
     region: content
