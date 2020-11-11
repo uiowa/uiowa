@@ -22,6 +22,7 @@ dependencies:
     - field.field.node.person.field_tags
     - field.field.node.person.field_teaser
     - node.type.person
+    - views.view.person_card
   module:
     - entity_reference_revisions
     - layout_builder
@@ -32,6 +33,7 @@ dependencies:
     - telephone
     - text
     - user
+    - views
   theme:
     - uids_base
 third_party_settings:
@@ -173,90 +175,6 @@ third_party_settings:
             additional: {  }
             weight: 7
           -
-            uuid: f3a493e2-ddb0-4c5c-84fb-5cad4285c43e
-            region: second
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:person:field_person_hometown'
-              formatter:
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-                type: string
-            additional: {  }
-            weight: -2
-          -
-            uuid: 494d9a86-6b0a-4ec5-a66d-e4185deb6ab6
-            region: second
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:person:field_image'
-              formatter:
-                type: entity_reference_entity_view
-                label: hidden
-                settings:
-                  view_mode: large__square
-                  link: false
-                third_party_settings: {  }
-            additional: {  }
-            weight: -3
-          -
-            uuid: d049b5dc-3cb3-4fee-bc4c-823470438c10
-            region: second
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:person:field_person_website'
-              formatter:
-                type: link
-                label: inline
-                settings:
-                  trim_length: 80
-                  url_only: false
-                  url_plain: false
-                  rel: '0'
-                  target: '0'
-                third_party_settings: {  }
-            additional: {  }
-            weight: -2
-          -
-            uuid: 55902d77-b911-4148-acbf-488399b2af29
-            region: second
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:person:field_person_phone'
-              formatter:
-                label: inline
-                settings:
-                  title: ''
-                third_party_settings: {  }
-                type: telephone_link
-            additional: {  }
-            weight: -1
-          -
-            uuid: fda5971b-e5e1-4db6-848e-3e2953999eae
-            region: second
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:person:field_person_email'
-              formatter:
-                type: email_mailto
-                label: inline
-                settings: {  }
-                third_party_settings: {  }
-            additional: {  }
-            weight: 0
-          -
             uuid: 5acd9f0f-ee1b-42f5-aca2-c695db1898b1
             region: first
             configuration:
@@ -286,6 +204,19 @@ third_party_settings:
                   view_mode: default
                   link: ''
                 third_party_settings: {  }
+            additional: {  }
+            weight: 0
+          -
+            uuid: 234062aa-1d55-4cb2-a398-7cdf98e7de79
+            region: second
+            configuration:
+              id: 'views_block:person_card-block_1'
+              label: null
+              provider: views
+              label_display: null
+              views_label: ''
+              items_per_page: none
+              context_mapping: {  }
             additional: {  }
             weight: 0
         third_party_settings: {  }
