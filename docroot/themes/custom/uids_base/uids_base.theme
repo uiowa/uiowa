@@ -368,7 +368,7 @@ function uids_base_preprocess_block(&$variables) {
     $config = [];
     $plugin_block = $block_manager->createInstance('system_breadcrumb_block', $config);
 
-    $variables['page_title'] = null;
+    $variables['page_title'] = NULL;
     $node = \Drupal::routeMatch()->getParameter('node');
     if ($node instanceof NodeInterface) {
       $variables['page_title'] = $node->getTitle();
