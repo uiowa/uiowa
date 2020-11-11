@@ -1,0 +1,109 @@
+@import "uids/assets/scss/_variables.scss";
+@import "uids/assets/scss/_utilities.scss";
+@import "components/typography/headings/headings.scss";
+@import "components/headline/_headline-mixins.scss";
+@import "components/card/_card-mixins.scss";
+@import "components/media/_media-mixins.scss";
+
+.layout--onecol .layout__region {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.container.container--title,
+.sidebar-invisible.layout--has-person-sidebar .container.container--title {
+  padding-right: 1.25rem;
+  padding-left: 1.25rem;
+}
+
+.sidebar-invisible.layout--has-person-sidebar .container.container--title {
+  margin-bottom: 0;
+}
+
+.layout--has-person-sidebar .container.container--title {
+  padding: 0;
+  margin-bottom: 1.5rem;
+}
+
+.layout--no-person-sidebar .container.container--title {
+  margin-bottom: 1.5rem;
+}
+
+.content__container .layout--has-person-sidebar .layout__spacing_container {
+  display: flex;
+  flex-wrap: wrap;
+  @extend %container;
+}
+
+
+.content__container .page__container--edge.layout--has-person-sidebar.sidebar-invisible .layout__spacing_container {
+  max-width: 100%;
+}
+
+.content__container .layout__container.layout--no-person-sidebar,
+.content__container .layout__container.layout--has-person-sidebar.sidebar-invisible {
+  margin-bottom: 0;
+}
+
+.layout--has-person-sidebar {
+  .layout__region--sidebar {
+    @include breakpoint(menu) {
+      flex: 0 1 24.25%;
+      margin-right: 3%;
+    }
+  }
+
+  &.sidebar-invisible {
+    .layout__region--sidebar {
+      display: none;
+    }
+
+    .layout__region--main {
+      @include breakpoint(menu) {
+        flex: 0 1 100%;
+      }
+    }
+  }
+}
+
+.layout--has-person-sidebar .layout__region--main {
+  overflow: auto;
+
+  @include breakpoint(menu) {
+    flex: 0 1 70%;
+    margin-right: 2.75%;
+  }
+}
+
+.field--name-field-person-position {
+  @include headline-serif;
+  @include headline-highlight;
+  @include headline-highlight-word;
+  display: inline-block;
+  font-size: 2rem;
+  line-height: 1;
+  font-weight: 500;
+}
+
+.block-field-blocknodepersonfield-person-bio {
+  margin-top: 2rem;
+}
+
+.layout--page--person {
+  .card {
+    margin-top: 110px;
+  }
+
+  .field--name-field-media-image {
+    @include breakpoint(sm) {
+      margin-top: -150px;
+    }
+
+    img {
+      @include media-border;
+      @include media-circle;
+      background: #fff;
+      margin-bottom: 2rem;
+    }
+  }
+}
