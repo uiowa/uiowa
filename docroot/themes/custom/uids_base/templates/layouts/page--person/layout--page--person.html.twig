@@ -1,0 +1,66 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a one column layout.
+ *
+ * Available variables:
+ * - content: The content for this layout.
+ * - attributes: HTML attributes for the layout <div>.
+ *
+ * @ingroup themeable
+ * @see https://www.drupal.org/docs/8/api/layout-api/how-to-register-layouts
+ * @see https://v4-alpha.getbootstrap.com/layout/grid/
+ */
+#}
+
+{% set sidebar = content.sidebar|render %}
+
+{%
+  set classes = [
+  'layout',
+  'layout--page--person',
+  'layout__container',
+  settings.extra_classes,
+  sidebar ? 'layout--has-person-sidebar' : 'layout--no-person-sidebar',
+]
+%}
+{{ attach_library('uids_base/page--person') }}
+{{ attach_library('uids_base/card') }}
+
+{% if content %}
+  <div{{ attributes.addClass(classes) }}>
+    <div class="layout__spacing_container">
+
+      {% if content.content %}
+        <div class="layout__region layout__region--main">
+          {% if region_attributes.content.storage['data-region'] %}
+          {{ attach_library('uids_base/admin') }}
+          <div {{ region_attributes.content.addClass('flex__wrapper') }}>
+            {% endif %}
+            {{ content.content }}
+            {% if region_attributes.content.storage['data-region'] %}
+          </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if sidebar %}
+        <div class="layout__region layout__region--sidebar">
+          <div class="bg--white card--stacked media--border card--centered-left card--alignment-left card--enclosed card">
+            <div class="card__body">
+          {% if region_attributes.sidebar.storage['data-region'] %}
+          {{ attach_library('uids_base/admin') }}
+          <div {{ region_attributes.sidebar.addClass('flex__wrapper') }}>
+            {% endif %}
+            {{ sidebar }}
+            {% if region_attributes.sidebar.storage['data-region'] %}
+          </div>
+          {% endif %}
+          </div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+{% endif %}
