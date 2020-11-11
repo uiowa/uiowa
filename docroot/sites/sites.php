@@ -1817,3 +1817,9 @@ $sites['courseventilator.local.drupal.uiowa.edu'] = 'ventilator.course.uiowa.edu
 $sites['courseventilator.dev.drupal.uiowa.edu'] = 'ventilator.course.uiowa.edu';
 $sites['courseventilator.stage.drupal.uiowa.edu'] = 'ventilator.course.uiowa.edu';
 $sites['courseventilator.prod.drupal.uiowa.edu'] = 'ventilator.course.uiowa.edu';
+
+// Directory aliases for uip.pharmacy.uiowa.edu.
+$sites['pharmacyuip.local.drupal.uiowa.edu'] = 'uip.pharmacy.uiowa.edu';
+$sites['pharmacyuip.dev.drupal.uiowa.edu'] = 'uip.pharmacy.uiowa.edu';
+$sites['pharmacyuip.stage.drupal.uiowa.edu'] = 'uip.pharmacy.uiowa.edu';
+$sites['pharmacyuip.prod.drupal.uiowa.edu'] = 'uip.pharmacy.uiowa.edu';
