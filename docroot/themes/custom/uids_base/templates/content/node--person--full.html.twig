@@ -83,7 +83,7 @@
 {{ attach_library('classy/node') }}
 {{ attach_library('uids_base/node-type-person') }}
 
-{% if layout_builder_enabled == FALSE %}
+{% if layout_builder_enabled == TRUE %}
   {{ content }}
 {% else %}
   <article{{ attributes.addClass(classes) }}>
