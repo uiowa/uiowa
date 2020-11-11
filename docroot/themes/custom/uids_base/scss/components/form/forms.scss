@@ -3,6 +3,15 @@
 
 .uids-content {
 
+  .button--primary {
+
+    .bg--gray &,
+    .bg-pattern--brain &,
+    .bg--white--pattern--brain & {
+      background: $primary;
+    }
+  }
+
   fieldset {
     margin: 1rem 0;
     padding: 1.11111rem;
@@ -673,21 +682,28 @@
   font-family: $font-family-caps-bold;
   border: 1px solid #FFCD00;
 }
+
 .uids-content .help-text,
 .uids-content .description {
   font-style: normal;
 }
+
 .views-exposed-form.uids-content:not(.uids-search) {
   padding: 5px 19px;
+
   .form--inline {
     align-items: flex-start;
   }
-  .form-item, .form-actions {
+
+  .form-item,
+  .form-actions {
     margin-right: 1em;
   }
+
   .form-actions {
     margin-top: 2.5em;
   }
+
   .button {
     @include bttn--secondary;
     border: 0;
