@@ -6,7 +6,14 @@ dependencies:
     - block_content.type.uiowa_text_area
     - field.storage.block_content.field_uiowa_text_area
   module:
+    - allowed_formats
     - text
+third_party_settings:
+  allowed_formats:
+    filtered_html: '0'
+    minimal: '0'
+    full_html: '0'
+    plain_text: '0'
 _core:
   default_config_hash: laCW_7qA-r5joL8F7_vHl7iqy1pPoSW6f1etoQ6chl8
 id: block_content.uiowa_text_area.field_uiowa_text_area
@@ -14,7 +21,7 @@ field_name: field_uiowa_text_area
 entity_type: block_content
 bundle: uiowa_text_area
 label: 'Text Area'
-description: ''
+description: 'Write text to be displayed in Text Area'
 required: false
 translatable: false
 default_value: {  }
