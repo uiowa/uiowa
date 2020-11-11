@@ -24,6 +24,7 @@ dependencies:
     - field.field.node.person.field_teaser
     - node.type.person
   module:
+    - options
     - telephone
     - user
 id: node.person.teaser
@@ -33,7 +34,7 @@ mode: teaser
 content:
   field_image:
     type: entity_reference_entity_view
-    weight: 6
+    weight: 7
     region: content
     label: hidden
     settings:
@@ -71,6 +72,13 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
+  field_person_territory:
+    type: list_default
+    weight: 5
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
   field_teaser:
     type: basic_string
     weight: 4
@@ -79,7 +87,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   links:
-    weight: 5
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -93,7 +101,6 @@ hidden:
   field_person_hometown: true
   field_person_last_name: true
   field_person_research_areas: true
-  field_person_territory: true
   field_person_types: true
   field_person_website: true
   field_tags: true
