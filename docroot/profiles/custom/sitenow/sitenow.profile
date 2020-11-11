@@ -484,6 +484,34 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 }
 
 /**
+ * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ */
+function sitenow_field_widget_paragraphs_form_alter(array &$element, FormStateInterface &$form_state, array $context) {
+  if (isset($element['#paragraph_type'])) {
+    switch ($element['#paragraph_type']) {
+
+      case 'degree':
+        // Only display the abbreviations field
+        // if "Major" is the chosen type.
+        $element['subform']['field_degree_abbreviation']['#states'] = [
+          'visible' => [
+            [
+              // Need to limit it to the specific paragraph instance
+              // based on the element delta using a formatter.
+              sprintf(':input[name="field_area_of_study_degrees[%d][subform][field_degree_type]"]', $element['#delta']) => [
+                'value' => 'Major',
+              ],
+            ],
+          ],
+        ];
+        break;
+
+    }
+  }
+  return $element;
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function sitenow_form_revision_overview_form_alter(&$form, FormStateInterface $form_state, $form_id) {
