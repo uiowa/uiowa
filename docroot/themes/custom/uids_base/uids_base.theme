@@ -264,7 +264,8 @@ function uids_base_preprocess_field(&$variables) {
     foreach ($variables['items'] as &$item) {
       $link = $colleges[$item['content']['#markup']];
       if ($link) {
-        $item['content']['#markup'] = '<a href="' . $link . '">' . $item['content']['#markup'] . '</a>';
+        $item['content']['#prefix'] = '<a href = "' . $link . '">';
+        $item['content']['#suffix'] = '</a>';
       }
     }
   }
