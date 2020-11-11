@@ -245,6 +245,29 @@ function uids_base_preprocess_field(&$variables) {
     $bundle = $variables['element']['#bundle'];
     $variables['headline_class'] = str_replace('_', '-', $bundle) . '--headline';
   }
+
+  if ($variables['field_name'] === 'field_area_of_study_college') {
+    $colleges = [
+      'Carver College of Medicine' => '',
+      'College of Dentistry' => '',
+      'College of Education' => '',
+      'College of Engineering' => '',
+      'College of Law' => 'https://law.uiowa.edu',
+      'College of Liberal Arts &amp; Sciences' => '',
+      'College of Nursing' => '',
+      'College of Pharmacy' => '',
+      'College of Public Health' => '',
+      'Graduate College' => '',
+      'Tippie College of Business' => '',
+      'University College' => '',
+    ];
+    foreach ($variables['items'] as &$item) {
+      $link = $colleges[$item['content']['#markup']];
+      if ($link) {
+        $item['content']['#markup'] = '<a href="' . $link . '">' . $item['content']['#markup'] . '</a>';
+      }
+    }
+  }
 }
 
 /**
