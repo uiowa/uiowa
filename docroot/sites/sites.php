@@ -1817,3 +1817,15 @@ $sites['courseventilator.local.drupal.uiowa.edu'] = 'ventilator.course.uiowa.edu
 $sites['courseventilator.dev.drupal.uiowa.edu'] = 'ventilator.course.uiowa.edu';
 $sites['courseventilator.stage.drupal.uiowa.edu'] = 'ventilator.course.uiowa.edu';
 $sites['courseventilator.prod.drupal.uiowa.edu'] = 'ventilator.course.uiowa.edu';
+
+// Directory aliases for uip.pharmacy.uiowa.edu.
+$sites['pharmacyuip.local.drupal.uiowa.edu'] = 'uip.pharmacy.uiowa.edu';
+$sites['pharmacyuip.dev.drupal.uiowa.edu'] = 'uip.pharmacy.uiowa.edu';
+$sites['pharmacyuip.stage.drupal.uiowa.edu'] = 'uip.pharmacy.uiowa.edu';
+$sites['pharmacyuip.prod.drupal.uiowa.edu'] = 'uip.pharmacy.uiowa.edu';
+
+// Directory aliases for licensing.sites.uiowa.edu.
+$sites['siteslicensing.local.drupal.uiowa.edu'] = 'licensing.sites.uiowa.edu';
+$sites['siteslicensing.dev.drupal.uiowa.edu'] = 'licensing.sites.uiowa.edu';
+$sites['siteslicensing.stage.drupal.uiowa.edu'] = 'licensing.sites.uiowa.edu';
+$sites['siteslicensing.prod.drupal.uiowa.edu'] = 'licensing.sites.uiowa.edu';
