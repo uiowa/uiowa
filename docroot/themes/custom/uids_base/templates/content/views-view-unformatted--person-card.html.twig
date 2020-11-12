@@ -92,21 +92,52 @@
 #}
 {% if title %}
   <h3>{{ title }}</h3>
-{% endif %}dfsddf
+{% endif %}
 {% for key,row in rows %}
   {% set row_classes = [
     default_row_class ? 'views-row',
   ] %}
   <div{{ row.attributes.addClass(row_classes) }}>
-    <div class="field_video">
-      {{ view.style_plugin.getField(key, 'field_image') }}
-    </div>
-    <div class="field_date">
-      {{ view.style_plugin.getField(key, 'field_image') }}
-    </div>
-    <div class="field_audio">
-      {{ view.style_plugin.getField(key, 'field_image') }}
-    </div>
+
+    {% set media_attributes = media_attributes ?: create_attribute() %}
+
+    {%
+      set classes = [
+      'bg--white',
+      'card--stacked',
+      'media--border',
+      'card--centered',
+      'card--alignment-left',
+      'card--enclosed'
+    ]
+    %}
+
+    {% set person_card_view = {
+      'attributes': attributes.addClass(classes),
+      'card_image': view.style_plugin.getField(key, 'field_image'),
+      'card_subtitle': view.style_plugin.getField(key, 'field_person_email'),
+      'card_tag': view.style_plugin.getField(key, 'field_person_phone') ,
+      'person_education': view.style_plugin.getField(key, 'field_person_education'),
+      'person_hometown': view.style_plugin.getField(key, 'field_person_hometown'),
+      'media_attributes': media_attributes.addClass('media--circle card__media--medium card__media'),
+    } %}
+
+    {% embed '@uids_base/uids/card.html.twig' with person_card_view only %}
+      {% block card_subtitle %}
+        {% if card_subtitle is not empty %}
+          <div class="card__subtitle"><span class="fas fa-envelope"></span> {{ card_subtitle }}</div>
+        {% endif %}
+      {% endblock %}
+
+      {% block card_tag %}
+        {% if card_tag is not empty %}
+          <div class="card__label"><span class="fas fa-phone"></span> {{ card_tag }}</div>
+          <div class="card__label"><span class="fas fa-university"></span> {{ person_education }} </div>
+          <div class="card__label"><span class="fas fa-globe-americas"></span> {{ person_hometown }} </div>
+        {% endif %}
+      {% endblock %}
+
+    {% endembed %}
   </div>
 {% endfor %}
 
