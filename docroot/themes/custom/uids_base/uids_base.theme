@@ -222,11 +222,11 @@ function uids_base_preprocess_field(&$variables) {
         }
       }
       break;
+
     case 'field_image':
       $variables['page_featured_image'] = TRUE;
 
       // Set the caption if this is 'field_image'.
-
       $caption = NULL;
       // If the global caption is set on the media object,
       // use that.
