@@ -27,46 +27,7 @@
   }
 }
 
-// Add padding if card is on a bg or bg pattern.
-
-.layout.layout__container {
-  .card--stacked[class*="bg-"] {
-    .card__body {
-      padding: 2rem;
-    }
-  }
-
-  &[class*="bg-"] {
-    .card--stacked:not([class*="bg-"]) {
-      .card__body {
-        padding: 2rem;
-      }
-    }
-  }
-
-  // remove card body padding if section and card have same bg color
-  &.bg--gray {
-    .card--stacked.bg--gray:not(.card--enclosed) {
-      .card__body {
-        padding-right: 0;
-        padding-left: 0;
-      }
-    }
-  }
-}
-
-
-.layout__container .card {
-  blockquote {
-    color: $secondary;
-
-    a {
-      color: $link-color;
-    }
-  }
-}
-
-// adjust card title for large size in one and two and three cols
+// Adjust card title for large size in one and two and three cols
 .layout--onecol,
 .layout--twocol {
 
@@ -75,7 +36,7 @@
     .card__media--medium+.card__body .card__title {
       @include breakpoint(sm) {
         font-size: 2.3rem;
-        //line-height: 1;
+        line-height: 1;
       }
     }
 
@@ -101,23 +62,32 @@
   }
 }
 
+// Set background for all v2 cards
+.paragraph--type--section {
+  &[class*=bg-] {
+    .card {
+      //color: $secondary;
+    }
+  }
 
-// @todo remove once https://github.com/uiowa/uiowa/issues/2426 is integrated.
+  .card {
+    background: #fff;
+  }
 
-// Adjust padding if there's a section background color
-.layout.layout__container[class*="bg-"] .card.card--media-left,
-.layout.layout__container[class*="bg-"] .card.card--media-right {
-  padding: 1.25rem;
+  .paragraph--type--card {
+    .card {
+      border: 1px solid rgba(0, 0, 0, .125);
+    }
+  }
 }
 
 .card {
-  background: #fff;
-}
 
-.card.bg--gray {
-  background: $light;
-}
+  &__label {
+    position: relative;
 
-.card__title a {
-  color: #151515;
+    .svg-inline--fa {
+      height: 100%;
+    }
+  }
 }
