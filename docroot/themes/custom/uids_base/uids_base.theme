@@ -371,6 +371,17 @@ function uids_base_preprocess_block(&$variables) {
     $config = [];
     $plugin_block = $block_manager->createInstance('system_breadcrumb_block', $config);
 
+    $variables['page_title'] = NULL;
+    $node = \Drupal::routeMatch()->getParameter('node');
+    if ($node instanceof NodeInterface) {
+      $variables['page_title'] = $node->getTitle();
+    }
+    else {
+      $request = \Drupal::request();
+      $route_match = \Drupal::routeMatch();
+      $variables['page_title'] = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
+    }
+
     $variables['breadcrumb'] = $plugin_block->build();
   }
 
