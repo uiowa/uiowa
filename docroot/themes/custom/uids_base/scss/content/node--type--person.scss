@@ -6,34 +6,49 @@
 
 .page-node-type-person.layout-builder-enabled {
   .field--name-field-person-position {
-    @include headline-serif;
-    @include headline-highlight;
-    @include headline-highlight-word;
-    display: inline-block;
-    font-size: 2rem;
-    line-height: 1;
-    font-weight: 500;
+    margin-top: 1rem;
+    .field__item {
+      @include headline-serif;
+      @include headline-highlight;
+      @include headline-highlight-word;
+      display: inline-block;
+      font-size: 2rem;
+      line-height: 1;
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
   }
 
   .block-field-blocknodepersonfield-person-bio {
     margin-top: 2rem;
   }
 
-  .card {
-    margin-top: 110px;
+  .card__subtitle a,
+  .card__label a {
+    text-decoration: none;
   }
 
-  .field--name-field-media-image {
-    @include breakpoint(sm) {
-      margin-top: -150px;
+  .card__label {
+    padding-left: 30px;
+    .svg-inline--fa {
+      width: 20px;
+      margin-left: -25px;
+      color: $secondary;
     }
+  }
 
-    img {
-      @include media-border;
-      @include media-circle;
-      background: #fff;
-      margin-bottom: 2rem;
+  .card__subtitle {
+    .svg-inline--fa  {
+      font-size: 1rem;
+      margin-right: .5rem;
+      color: $secondary;
     }
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-bottom: 1rem;
+    padding: .5rem;
+    background-color: #ffffff;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cg fill='%23cccccc' fill-opacity='0.4'%3E%3Cpath fill-rule='evenodd' d='M0 0h4v4H0V0zm4 4h4v4H4V4z'/%3E%3C/g%3E%3C/svg%3E");
   }
 }
 
