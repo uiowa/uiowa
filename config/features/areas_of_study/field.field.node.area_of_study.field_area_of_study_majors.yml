@@ -1,18 +1,18 @@
-uuid: f815c271-d215-454f-a812-2d732f081a5d
+uuid: b8f7cdc4-d12d-4c94-882a-7c5fe3716bfe
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_area_of_study_degrees
+    - field.storage.node.field_area_of_study_majors
     - node.type.area_of_study
     - paragraphs.paragraphs_type.degree
   module:
     - entity_reference_revisions
-id: node.area_of_study.field_area_of_study_degrees
-field_name: field_area_of_study_degrees
+id: node.area_of_study.field_area_of_study_majors
+field_name: field_area_of_study_majors
 entity_type: node
 bundle: area_of_study
-label: Degrees
+label: Majors
 description: ''
 required: false
 translatable: false
@@ -27,14 +27,14 @@ settings:
     target_bundles_drag_drop:
       degree:
         enabled: true
-        weight: 8
-      uiowa_collection_item:
         weight: 5
-        enabled: false
-      uiowa_contact:
+      uiowa_collection_item:
         weight: 6
         enabled: false
-      uiowa_slide:
+      uiowa_contact:
         weight: 7
+        enabled: false
+      uiowa_slide:
+        weight: 8
         enabled: false
 field_type: entity_reference_revisions

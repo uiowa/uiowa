@@ -74,7 +74,6 @@
   set classes = [
     'node',
     'node--type-' ~ node.bundle|clean_class,
-    'uids-content',
     node.isPromoted() ? 'node--promoted',
     node.isSticky() ? 'node--sticky',
     not node.isPublished() ? 'node--unpublished',
@@ -95,22 +94,20 @@
   {% endif %}
   {{ title_suffix }}
 
-  <div{{ content_attributes.addClass('node__content', 'main') }}>
-    {% if content.field_image %}
-      <figure class="content-image">
-        {{ content.field_image }}
-        {% if content.field_image_caption %}
-          <figcaption>
-            {{ label }}
-          </figcaption>
-        {% endif %}
-      </figure>
-    {% endif %}
+  {% if display_submitted %}
+    <footer class="node__meta">
+      {{ author_picture }}
+      <div{{ author_attributes.addClass('node__submitted') }}>
+        {% trans %}Submitted by
+        {{ author_name }}
+        on
+        {{ date }}{% endtrans %}
+        {{ metadata }}
+      </div>
+    </footer>
+  {% endif %}
 
-    {{ content|without('field_image', 'field_area_of_study_type', 'field_area_of_study_degrees', 'field_area_of_study_college', 'field_area_of_study_related') }}
+  <div{{ content_attributes.addClass('node__content') }}>
+    {{ content|without('field_image') }}
   </div>
-  <div {{ content_attributes.addClass('sidebar') }}>
-    {{ content|without('field_image', 'body') }}
-  </div>
-
 </div>

@@ -5,7 +5,6 @@ dependencies:
   config:
     - field.field.paragraph.degree.field_degree_abbreviation
     - field.field.paragraph.degree.field_degree_label
-    - field.field.paragraph.degree.field_degree_type
     - paragraphs.paragraphs_type.degree
 id: paragraph.degree.default
 targetEntityType: paragraph
@@ -13,24 +12,18 @@ bundle: degree
 mode: default
 content:
   field_degree_abbreviation:
-    weight: 2
+    weight: 1
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_degree_label:
-    weight: 1
+    weight: 2
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
-    region: content
-  field_degree_type:
-    weight: 0
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
     region: content
 hidden:
   created: true

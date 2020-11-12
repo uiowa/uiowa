@@ -4,8 +4,11 @@ status: true
 dependencies:
   config:
     - field.field.node.area_of_study.body
-    - field.field.node.area_of_study.field_area_of_study_college
-    - field.field.node.area_of_study.field_area_of_study_degrees
+    - field.field.node.area_of_study.field_area_of_study_certificates
+    - field.field.node.area_of_study.field_area_of_study_majors
+    - field.field.node.area_of_study.field_area_of_study_minors
+    - field.field.node.area_of_study.field_area_of_study_online_offca
+    - field.field.node.area_of_study.field_area_of_study_preprof
     - field.field.node.area_of_study.field_area_of_study_related
     - field.field.node.area_of_study.field_image
     - node.type.area_of_study
@@ -32,22 +35,24 @@ content:
     region: content
   created:
     type: datetime_timestamp
-    weight: 6
+    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_area_of_study_college:
-    weight: 3
-    settings: {  }
+  field_area_of_study_certificates:
+    weight: 4
+    settings:
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
-    type: options_select
+    type: string_textfield
     region: content
-  field_area_of_study_degrees:
+  field_area_of_study_majors:
     type: paragraphs
     weight: 2
     settings:
-      title: Degree
-      title_plural: 'Degree Title'
+      title: Paragraph
+      title_plural: Paragraphs
       edit_mode: open
       closed_mode: summary
       autocollapse: none
@@ -58,11 +63,35 @@ content:
       features:
         add_above: '0'
         collapse_edit_all: collapse_edit_all
-        duplicate: duplicate
+        duplicate: '0'
     third_party_settings: {  }
     region: content
+  field_area_of_study_minors:
+    weight: 3
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_area_of_study_online_offca:
+    weight: 6
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_area_of_study_preprof:
+    weight: 5
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_area_of_study_related:
-    weight: 4
+    weight: 7
     settings:
       match_operator: CONTAINS
       match_limit: 10
@@ -72,7 +101,7 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_image:
-    weight: 13
+    weight: 16
     settings:
       media_types: {  }
     third_party_settings: {  }
@@ -80,13 +109,13 @@ content:
     region: content
   moderation_state:
     type: moderation_state_default
-    weight: 11
+    weight: 14
     settings: {  }
     region: content
     third_party_settings: {  }
   path:
     type: path
-    weight: 9
+    weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -94,21 +123,21 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 7
+    weight: 10
     region: content
     third_party_settings: {  }
   status:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 12
+    weight: 15
     region: content
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 8
+    weight: 11
     region: content
     third_party_settings: {  }
   title:
@@ -121,7 +150,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 5
+    weight: 8
     settings:
       match_operator: CONTAINS
       size: 60
@@ -130,7 +159,7 @@ content:
     region: content
     third_party_settings: {  }
   url_redirects:
-    weight: 10
+    weight: 13
     region: content
     settings: {  }
     third_party_settings: {  }
