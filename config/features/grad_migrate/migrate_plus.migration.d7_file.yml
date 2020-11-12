@@ -1,0 +1,59 @@
+uuid: f5632ae2-1383-4cb0-b8e5-59980d2722fc
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: v57jMEA0TIzfYtFETlEhMAoDurmW5WHuzvA9xU2mxwU
+id: d7_file
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - 'Drupal 7'
+  - Content
+  - Files
+migration_group: grad_migrate
+label: Files
+source:
+  plugin: files
+  constants:
+    SOURCE_BASE_PATH: ''
+    DRUPAL_FILE_DIRECTORY: ''
+process:
+  filename:
+    plugin: get
+    source: filename
+  source_full_path:
+    -
+      plugin: concat
+      delimiter: /
+      source:
+        - constants/SOURCE_BASE_PATH
+        - uri
+    -
+      plugin: urlencode
+  destination_full_path:
+    -
+      plugin: concat
+      delimiter: /
+      source:
+        - constants/DRUPAL_FILE_DIRECTORY
+        - filename
+    -
+      plugin: urlencode
+  uri:
+    plugin: file_copy
+    source:
+      - '@source_full_path'
+      - '@destination_full_path'
+    file_exists: rename
+  filemime: filemime
+  status: status
+  created: timestamp
+  changed: timestamp
+  uid:
+    plugin: default_value
+    default_value: 0
+destination:
+  plugin: 'entity:file'
+migration_dependencies: null

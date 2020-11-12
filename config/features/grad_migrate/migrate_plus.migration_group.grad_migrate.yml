@@ -1,0 +1,25 @@
+uuid: 8bd24e5d-6d33-4242-827e-387d5ec9d78e
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - sitenow_migrate
+_core:
+  default_config_hash: mBeOlqoY7YqG3FMhqG7ka0b0XMBcTLY9VfL6YPM1SKE
+id: grad_migrate
+label: 'D7 to D8 sitenow content migration'
+description: 'Import D7 files and content to D8 entities'
+source_type: 'D7 SQL db'
+module: null
+shared_configuration:
+  source:
+    key: drupal_7
+    database:
+      driver: mysql
+      username: root
+      password: ''
+      host: 10.0.2.2
+      port: 33067
+      database: null
+      prefix: null
