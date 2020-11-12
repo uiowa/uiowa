@@ -86,7 +86,7 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
           $form[$program_type] += [
             '#states' => [
               'visible' => [
-                ':input[name="' . $program_toggle. '"]' => [
+                ':input[name="' . $program_toggle . '"]' => [
                   'checked' => TRUE,
                 ],
               ],
