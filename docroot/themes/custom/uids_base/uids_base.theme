@@ -199,30 +199,6 @@ function uids_base_preprocess_node(&$variables) {
 function uids_base_preprocess_field(&$variables) {
 
   switch ($variables['field_name']) {
-    case 'field_area_of_study_college':
-      $colleges = [
-        'Carver College of Medicine' => '',
-        'College of Dentistry' => '',
-        'College of Education' => '',
-        'College of Engineering' => '',
-        'College of Law' => 'https://law.uiowa.edu',
-        'College of Liberal Arts &amp; Sciences' => '',
-        'College of Nursing' => '',
-        'College of Pharmacy' => '',
-        'College of Public Health' => '',
-        'Graduate College' => '',
-        'Tippie College of Business' => '',
-        'University College' => '',
-      ];
-      foreach ($variables['items'] as &$item) {
-        $link = $colleges[$item['content']['#markup']];
-        if ($link) {
-          $item['content']['#prefix'] = '<a href = "' . $link . '">';
-          $item['content']['#suffix'] = '</a>';
-        }
-      }
-      break;
-
     case 'field_image':
       $variables['page_featured_image'] = TRUE;
 
