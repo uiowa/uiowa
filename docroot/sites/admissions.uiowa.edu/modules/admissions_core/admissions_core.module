@@ -5,6 +5,8 @@
  * Primary module hooks for Admissions Core module.
  */
 
+use Drupal\views\ViewExecutable;
+
 /**
  * Implements hook_theme for Scholarship teaser.
  */
@@ -33,5 +35,15 @@ function admissions_core_theme_suggestions_field_alter(array &$suggestions, arra
     case 'field_person_territory':
       $suggestions[] = 'field__comma_separated';
       break;
+  }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function admissions_core_views_pre_render(ViewExecutable $view) {
+  if ($view->id() == "counselors" && $view->current_display == 'block_counselors') {
+    $view->element['#attached']['library'][] = 'admissions_core/counselors-list';
+    $foo = $view;
   }
 }
