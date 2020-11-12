@@ -28,10 +28,11 @@ const uids = {
   dest: `${__dirname}/uids/`,
 }
 
-const colorbox = {
-  src: '../../../libraries/colorbox',
-  dest: `${__dirname}/colorbox/`,
-}
+// Add colorbox to build process once patched version is added to composer.
+// const colorbox = {
+//   src: '../../../libraries/colorbox',
+//   dest: `${__dirname}/colorbox/`,
+// }
 
 const leaflet = {
   src: '../../../libraries/leaflet',
@@ -56,12 +57,12 @@ function copyUids() {
     .pipe(dest(`${uids.dest}`));
 }
 
-function copyColorbox() {
-  return src([
-    `${colorbox.src}`,
-  ])
-    .pipe(dest(`${colorbox.dest}`));
-}
+// function copyColorbox() {
+//   return src([
+//     `${colorbox.src}`,
+//   ])
+//     .pipe(dest(`${colorbox.dest}`));
+// }
 
 function copyLeaflet() {
   return src([
@@ -97,7 +98,7 @@ function watchFiles() {
   // @todo Watch other changes?
 }
 
-const copy = parallel(copyUids, copyColorbox, copyLeaflet, fontCopy);
+const copy = parallel(copyUids, copyLeaflet, fontCopy);
 const compile = series(clean, copy, css);
 
 exports.copy = copy;
