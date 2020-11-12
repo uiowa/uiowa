@@ -61,6 +61,40 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       }
       break;
 
+    // @todo Move this to a more appropriate location.
+    case 'node_area_of_study_form':
+      foreach ([
+        'field_area_of_study_majors',
+        'field_area_of_study_minors',
+        'field_area_of_study_certificates',
+        'field_area_of_study_preprof',
+        'field_area_of_study_online',
+      ] as $program_type) {
+
+        if (isset($form[$program_type])) {
+          $program_toggle = $program_type . '_toggle';
+          $form[$program_toggle] = [
+            '#type' => 'checkbox',
+            '#title' => $form[$program_type]['widget']['#title'],
+            '#weight' => $form[$program_type]['#weight'] - 1,
+            '#name' => $program_toggle,
+          ];
+
+          $form['#group_children'][$program_toggle] = 'group_area_of_study_program_type';
+          $form['#fieldgroups']['group_area_of_study_program_type']->children[] = $program_toggle;
+
+          $form[$program_type] += [
+            '#states' => [
+              'visible' => [
+                ':input[name="' . $program_toggle. '"]' => [
+                  'checked' => TRUE,
+                ],
+              ],
+            ],
+          ];
+        }
+      }
+      break;
   }
 }
 
