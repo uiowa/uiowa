@@ -120,6 +120,7 @@
       'person_website': view.style_plugin.getField(key, 'field_person_website'),
       'person_education': view.style_plugin.getField(key, 'field_person_education'),
       'person_hometown': view.style_plugin.getField(key, 'field_person_hometown'),
+      'person_contact': view.style_plugin.getField(key, 'field_person_contact_information'),
       'media_attributes': media_attributes.addClass('media--circle card__media--medium card__media'),
     } %}
 
@@ -149,6 +150,9 @@
         {% endif %}
         {% if person_education|striptags|trim is not empty %}
           <div class="card__date"><span class="fas fa-university"></span> {{ person_education }}</div>
+        {% endif %}
+        {% if person_contact|striptags|trim is not empty %}
+          <div class="card__date"><span class="fas fa-map-marker"></span> {{ person_contact }}</div>
         {% endif %}
       {% endblock %}
 
