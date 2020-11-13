@@ -106,7 +106,7 @@
       'bg--white',
       'card--stacked',
       'media--border',
-      'card--centered',
+      'card--centered-left',
       'card--alignment-left',
       'card--enclosed'
     ]
@@ -116,7 +116,8 @@
       'attributes': attributes.addClass(classes),
       'card_image': view.style_plugin.getField(key, 'field_image'),
       'card_subtitle': view.style_plugin.getField(key, 'field_person_email'),
-      'card_tag': view.style_plugin.getField(key, 'field_person_phone') ,
+      'card_tag': view.style_plugin.getField(key, 'field_person_phone'),
+      'person_website': view.style_plugin.getField(key, 'field_person_website'),
       'person_education': view.style_plugin.getField(key, 'field_person_education'),
       'person_hometown': view.style_plugin.getField(key, 'field_person_hometown'),
       'media_attributes': media_attributes.addClass('media--circle card__media--medium card__media'),
@@ -131,9 +132,16 @@
 
       {% block card_tag %}
         {% if card_tag is not empty %}
-          <div class="card__label"><span class="fas fa-phone"></span> {{ card_tag }}</div>
-          <div class="card__label"><span class="fas fa-university"></span> {{ person_education }} </div>
-          <div class="card__label"><span class="fas fa-globe-americas"></span> {{ person_hometown }} </div>
+          <div class="card__date"><span class="fas fa-phone"></span> {{ card_tag }}</div>
+        {% endif %}
+        {% if person_hometown is not empty %}
+          <div class="card__date"><span class="fas fa-globe-americas"></span> {{ person_hometown }}</div>
+        {% endif %}
+        {% if person_website is not empty %}
+          <div class="card__date"><span class="fas fa-desktop"></span> {{ person_website }}</div>
+        {% endif %}
+        {% if person_education is not empty %}
+          <div class="card__date"><span class="fas fa-university"></span> {{ person_education }}</div>
         {% endif %}
       {% endblock %}
 
