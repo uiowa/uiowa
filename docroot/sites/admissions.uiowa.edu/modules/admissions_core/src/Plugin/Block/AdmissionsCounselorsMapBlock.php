@@ -19,12 +19,17 @@ class AdmissionsCounselorsMapBlock extends BlockBase {
    * {@inheritdoc}
    */
   public function build() {
-    $build['#attached']['library'][] = 'uids_base/leaflet';
-    $build['content'] = [
-      '#markup' => '<div id="admissions-counselors-map"><div>',
+    $html = '<div id="admissions-counselors-map"></div>';
+    return [
+      '#type' => 'markup',
+      '#markup' => $this->t($html),
+      '#attached' => [
+        'library' => [
+          'uids_base/leaflet',
+          'admissions_core/counselors-map',
+        ],
+      ],
     ];
-    $build['#attached']['library'][] = 'admissions_core/counselors-map';
-    return $build;
   }
 
 }

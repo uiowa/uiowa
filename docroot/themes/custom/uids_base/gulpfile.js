@@ -35,8 +35,8 @@ const uids = {
 // }
 
 const leaflet = {
-  src: '../../../libraries/leaflet',
-  dest: `${__dirname}/leaflet/`,
+  src: '../../../libraries/leaflet/dist',
+  dest: `${__dirname}/leaflet/dist/`,
 }
 
 // Clean
@@ -66,7 +66,8 @@ function copyUids() {
 
 function copyLeaflet() {
   return src([
-    `${leaflet.src}`,
+    `${leaflet.src}/leaflet.js`,
+    `${leaflet.src}/leaflet.css`,
   ])
     .pipe(dest(`${leaflet.dest}`));
 }
