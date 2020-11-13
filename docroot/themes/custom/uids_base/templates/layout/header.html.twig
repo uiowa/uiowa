@@ -15,6 +15,7 @@
 {% endif %}
 
 <header data-uids-header {{ attributes.addClass(header_classes) }}>
+
     <div class="iowa-bar__container">
       {% block logo %}
         {{ attach_library('uids_base/logo') }}
@@ -30,6 +31,9 @@
       {% block uiowa_bar %}
         {# UIowa bar content #}
       {% endblock %}
+
+
+
   </div>
 
   {% block tertiary_content %}
@@ -38,6 +42,7 @@
 </header>
 
 {% block horizontal_nav %}
+
   {% if header_nav in ['horizontal', 'mega'] %}
     {% set nav_attributes = create_attribute() %}
     {% set nav_classes = [
