@@ -63,14 +63,28 @@ function generateMap() {
   let map = L.map("admissions-counselors-map").setView([37.8, -96], 4);
   map.scrollWheelZoom.disable();
 
+  function hasCounselors(feature) {
+    let hasCounselors = false;
+    if (window.drupalSettings.admissions_core.territories.includes(feature.id)){
+      hasCounselors = true;
+    }
+    return hasCounselors;
+  }
+
   function style(feature) {
+    let fillColor = "white";
+    let fillOpacity = 0.1;
+    if (hasCounselors(feature)) {
+      fillColor = "#ffcd00";
+      fillOpacity = 0.7;
+    }
     return {
-      fillColor: "white",
+      fillColor: fillColor,
       weight: 2,
       opacity: 1,
       color: "white",
       dashArray: "3",
-      fillOpacity: 0.1
+      fillOpacity: fillOpacity
     };
   }
 
@@ -98,13 +112,10 @@ function generateMap() {
     map.fitBounds(e.target.getBounds());
     // get centroid lat/long of polygon
     let centroid = e.target.getBounds().getCenter();
-    let content = '';
+    let content = '<div><strong>' + e.target.feature.properties.name + '</strong></div>';
 
-    if (window.drupalSettings.admissions_core.territories.includes(e.target.feature.id)){
-      content = '<div>' + e.target.feature.properties.name + '<br /><a href="/counselors/' + e.target.feature.id + '">View counselors in ' + e.target.feature.properties.name + '</a></div>';
-    }
-    else {
-      content = '<div>' + e.target.feature.properties.name + '</div>';
+    if (hasCounselors(e.target.feature)) {
+      content = '<div><strong>' + e.target.feature.properties.name + '</strong><br /><a href="/counselors/' + e.target.feature.id + '">View counselors in ' + e.target.feature.properties.name + '</a></div>';
     }
     let popup = L.popup()
       .setLatLng(centroid)
