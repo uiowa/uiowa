@@ -124,6 +124,13 @@
     } %}
 
     {% embed '@uids_base/uids/card.html.twig' with person_card_view only %}
+
+      {% block card_img %}
+        {% if card_image|striptags('<img><picture>')|trim is not empty %}
+          {{ parent() }}
+        {% endif %}
+      {% endblock %}
+
       {% block card_subtitle %}
         {% if card_subtitle|striptags|trim is not empty %}
           <div class="card__subtitle"><span class="fas fa-envelope"></span> {{ card_subtitle }}</div>
