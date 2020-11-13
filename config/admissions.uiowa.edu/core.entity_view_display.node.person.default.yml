@@ -46,9 +46,8 @@ third_party_settings:
         layout_settings:
           label: Header
           layout_builder_styles_style:
-            0: ''
-            1: section_margin_fixed_width_container
-            remove_default_bottom_padding: remove_default_bottom_padding
+            - ''
+            - section_margin_fixed_width_container
         components:
           -
             uuid: ea6c6fe6-713c-407b-9389-bc6638854cf5
@@ -60,7 +59,7 @@ third_party_settings:
               label_display: '0'
               context_mapping: {  }
             additional: {  }
-            weight: 0
+            weight: 1
           -
             uuid: 67a1e643-c773-4015-a856-3609f77513e8
             region: content
@@ -79,7 +78,23 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
-            weight: 1
+            weight: 2
+          -
+            uuid: 479fe452-b32a-4e0b-917b-64a1a1b69792
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:person:field_person_position'
+              formatter:
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+                type: string
+            additional: {  }
+            weight: 3
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -93,22 +108,6 @@ third_party_settings:
             1: ''
             section_alignment_start: section_alignment_start
         components:
-          -
-            uuid: 479fe452-b32a-4e0b-917b-64a1a1b69792
-            region: first
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:person:field_person_position'
-              formatter:
-                label: hidden
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-                type: string
-            additional: {  }
-            weight: -10
           -
             uuid: 532de6e6-fc41-4b7d-a135-5d1cf2c63cf3
             region: first
