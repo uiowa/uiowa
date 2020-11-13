@@ -19,7 +19,7 @@ class AdmissionsCounselorsMapBlock extends BlockBase {
    * {@inheritdoc}
    */
   public function build() {
-    $html = '<div id="admissions-counselors-map"></div>';
+    $html = '<div id="admissions-counselors-map">&nbsp;</div>';
     return [
       '#type' => 'markup',
       '#markup' => $this->t($html),

@@ -4426,6 +4426,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function zoomToFeature(e) {
     map.fitBounds(e.target.getBounds());
+    // get centroid lat/long of polygon
+    let centroid = e.target.getBounds().getCenter();
+    let popup = L.popup()
+        .setLatLng(centroid)
+      .setContent('<div align="center">' + e.target.feature.properties.name + '</div>')
+      .openOn(map);
   }
 
   function onEachFeature(feature, layer) {
