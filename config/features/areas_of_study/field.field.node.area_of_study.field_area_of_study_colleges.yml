@@ -1,0 +1,21 @@
+uuid: 50e789df-9988-4396-99d9-e9e1091977dc
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_area_of_study_colleges
+    - node.type.area_of_study
+id: node.area_of_study.field_area_of_study_colleges
+field_name: field_area_of_study_colleges
+entity_type: node
+bundle: area_of_study
+label: Colleges
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:area_of_study_college'
+  handler_settings: {  }
+field_type: entity_reference

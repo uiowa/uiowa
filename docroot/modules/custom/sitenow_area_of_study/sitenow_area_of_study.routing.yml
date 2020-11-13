@@ -1,0 +1,39 @@
+entity.area_of_study_college.collection:
+  path: '/admin/structure/area-of-study-college'
+  defaults:
+    _entity_list: 'area_of_study_college'
+    _title: 'Area of Study College configuration'
+  requirements:
+    _permission: 'administer area_of_study_college'
+
+entity.area_of_study_college.add_form:
+  path: '/admin/structure/area-of-study-college/add'
+  defaults:
+    _entity_form: 'area_of_study_college.add'
+    _title: 'Add a college'
+  requirements:
+    _permission: 'administer area_of_study_college'
+
+entity.area_of_study_college.edit_form:
+  path: '/admin/structure/area-of-study-college/{area_of_study_college}'
+  defaults:
+    _entity_form: 'area_of_study_college.edit'
+    _title: 'Edit a college'
+  requirements:
+    _permission: 'administer area_of_study_college'
+
+entity.area_of_study_college.delete_form:
+  path: '/admin/structure/area-of-study-college/{area_of_study_college}/delete'
+  defaults:
+    _entity_form: 'area_of_study_college.delete'
+    _title: 'Delete a college'
+  requirements:
+    _permission: 'administer area_of_study_college'
+
+sitenow_area_of_study.settings_form:
+  path: '/admin/config/system/sitenow-area-of-study'
+  defaults:
+    _title: 'SiteNow Area of Study'
+    _form: 'Drupal\sitenow_area_of_study\Form\SettingsForm'
+  requirements:
+    _permission: 'administer sitenow areas of study'
