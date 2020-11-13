@@ -3,9 +3,10 @@
  * Display Admissions' Counselors Map.
  */
 document.addEventListener("DOMContentLoaded", function () {
-  var map = L.map("admissions-counselors-map").setView([37.8, -96], 4);
-  var geojson;
-  var statesData = {
+  let map = L.map("admissions-counselors-map").setView([37.8, -96], 4);
+  map.scrollWheelZoom.disable();
+  let geojson;
+  let statesData = {
     type: "FeatureCollection",
     features: [
       {
@@ -4404,10 +4405,10 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function highlightFeature(e) {
-    var layer = e.target;
+    let layer = e.target;
 
     layer.setStyle({
-      weight: 5,
+      weight: 2,
       color: "#666",
       dashArray: "",
       fillOpacity: 0.7
@@ -4430,7 +4431,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let centroid = e.target.getBounds().getCenter();
     let popup = L.popup()
         .setLatLng(centroid)
-      .setContent('<div align="center">' + e.target.feature.properties.name + '</div>')
+      .setContent('<div>' + e.target.feature.properties.name + '</div>')
       .openOn(map);
   }
 
@@ -4442,7 +4443,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  var info = L.control();
+  let info = L.control();
 
   info.onAdd = function (map) {
     this._div = L.DomUtil.create("div", "info");
