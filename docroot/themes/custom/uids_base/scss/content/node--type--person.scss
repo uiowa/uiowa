@@ -4,6 +4,7 @@
 @import "components/headline/_headline-mixins.scss";
 @import "components/media/_media-mixins.scss";
 
+
 .page-node-type-person.layout-builder-enabled {
   .field__item {
     line-height: 1.7;
@@ -33,18 +34,17 @@
   }
 
   .card__subtitle a,
-  .card__label a {
+  .card__date a {
     text-decoration: none;
   }
 
-  .card__label {
-    padding-left: 30px;
+  .card__date {
+    padding-left: 45px;
     font-size: 1rem;
     margin-bottom: .6rem;
-    font-family: Roboto,sans-serif;
     .svg-inline--fa {
-      width: 20px;
-      margin-left: -25px;
+      width: 35px;
+      margin-left: -40px;
       color: $secondary;
     }
   }
@@ -58,13 +58,9 @@
     border: 1px solid #ccc;
     border-radius: 3px;
     margin-bottom: 1rem;
-    padding: .5rem 1rem;
-    display: inline-block;
+    padding: .7rem 1rem;
     background: url(/themes/custom/uids_base/assets/images/particle.png);
     background-size: 120%;
-    opacity: 1;
-    //background-color: #ffffff;
-    //background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cg fill='%23cccccc' fill-opacity='0.4'%3E%3Cpath fill-rule='evenodd' d='M0 0h4v4H0V0zm4 4h4v4H4V4z'/%3E%3C/g%3E%3C/svg%3E");
   }
 }
 
