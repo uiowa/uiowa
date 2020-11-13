@@ -125,22 +125,22 @@
 
     {% embed '@uids_base/uids/card.html.twig' with person_card_view only %}
       {% block card_subtitle %}
-        {% if card_subtitle is not empty %}
+        {% if card_subtitle|striptags|trim is not empty %}
           <div class="card__subtitle"><span class="fas fa-envelope"></span> {{ card_subtitle }}</div>
         {% endif %}
       {% endblock %}
 
       {% block card_tag %}
-        {% if card_tag is not empty %}
+        {% if card_tag|striptags|trim is not empty %}
           <div class="card__date"><span class="fas fa-phone"></span> {{ card_tag }}</div>
         {% endif %}
-        {% if person_hometown is not empty %}
+        {% if person_hometown|striptags|trim is not empty %}
           <div class="card__date"><span class="fas fa-globe-americas"></span> {{ person_hometown }}</div>
         {% endif %}
-        {% if person_website is not empty %}
+        {% if person_website|striptags|trim is not empty %}
           <div class="card__date"><span class="fas fa-desktop"></span> {{ person_website }}</div>
         {% endif %}
-        {% if person_education is not empty %}
+        {% if person_education|striptags|trim is not empty %}
           <div class="card__date"><span class="fas fa-university"></span> {{ person_education }}</div>
         {% endif %}
       {% endblock %}
