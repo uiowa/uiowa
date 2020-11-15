@@ -2,17 +2,21 @@
 
 namespace Drupal\grad_migrate\Plugin\migrate\source;
 
-use Drupal\migrate\Plugin\migrate\source\SqlBase;
+use Drupal\migrate\Row;
+use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
+use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
 
 /**
  * Basic implementation of the source plugin.
  *
  * @MigrateSource(
- *  id = "grad_articles",
+ *  id = "grad_article",
  *  source_module = "grad_migrate"
  * )
  */
-class Articles extends SqlBase {
+class Article extends BaseNodeSource {
+
+  use ProcessMediaTrait;
 
   /**
    * {@inheritdoc}
@@ -53,7 +57,7 @@ class Articles extends SqlBase {
    */
   public function fields() {
     $fields = [
-      'entity_type' => $this->t('(article body) Entity type body content is associated with'),
+      'entity_type' => $this->t('Entity type of the content, should be node'),
       'bundle' => $this->t('(article body) Bundle the node associated to the body content belongs to'),
       'deleted' => $this->t('(article body) Indicator for content marked for deletion'),
       'entity_id' => $this->t('(article body) ID of the entity the body content is associated with'),
