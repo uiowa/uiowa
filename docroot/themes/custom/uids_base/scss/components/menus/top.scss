@@ -2,47 +2,64 @@
 @import "assets/scss/_utilities.scss";
 @import "components/menus/top/top.scss";
 
-.menu--top.nav {
-  @include breakpoint(menu) {
-    right: -10px;
-    margin-top: 4px;
-  }
-}
-
-.menu--top.nav {
-  @include breakpoint(menu) {
-    position: relative;
-    align-self: center;
-  }
-}
-
-.iowa-bar--full .menu--top {
-  @include breakpoint(menu) {
-    flex: 0 1 25%;
-  }
-
-  .menu li {
+// Iowa Bar Full adjustments
+.iowa-bar--full {
+  .menu--top.nav {
     @include breakpoint(menu) {
-      margin: 0 15px 0 0 !important;
+      right: -10px;
+      margin-top: 4px;
+    }
+  }
+
+  .menu--top.nav {
+    @include breakpoint(menu) {
+      position: relative;
+      align-self: center;
+    }
+  }
+
+  .menu--top {
+    @include breakpoint(menu) {
+      flex: 0 1 25%;
+      display: flex;
+      justify-content: flex-end;
     }
 
-    a {
+    .menu li {
       @include breakpoint(menu) {
-        display: block;
-        text-decoration: none;
-        color: $secondary;
-        font-size: .8rem;
-        text-transform: uppercase;
-        padding: .325rem 1.05rem;
-        font-weight: 400;
+        margin: 0 15px 0 0 !important;
       }
-      @include breakpoint(container) {
-        border: 1px solid $secondary;
+
+      + li {
+        a {
+          @include breakpoint(menu) {
+            border-left: 1px solid $secondary;
+            padding-left: 1.05rem;
+          }
+
+        }
+      }
+
+      a {
+        @include breakpoint(menu) {
+          display: block;
+          text-decoration: none;
+          color: $secondary;
+          font-size: .8rem;
+          text-transform: uppercase;
+          padding: 0;
+          @include breakpoint(container) {
+            padding: .325rem 1.05rem;
+          }
+          font-weight: 400;
+        }
+        @include breakpoint(container) {
+          border: 1px solid $secondary;
+        }
       }
     }
   }
 }
-
 // background color buttons
 /*
 @media (min-width: 855px) {
