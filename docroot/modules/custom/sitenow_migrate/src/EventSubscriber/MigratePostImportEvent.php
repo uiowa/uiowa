@@ -119,6 +119,8 @@ class MigratePostImportEvent implements EventSubscriberInterface {
     $migration = $event->getMigration();
     switch ($migration->id()) {
 
+      // Right now, page migration is set to run last.
+      // This should only run after it has finished.
       case 'd7_page':
         $this->sourceToDestIds = $this->fetchMapping();
         $this->d7Aliases = $this->fetchAliases(TRUE);
@@ -150,7 +152,8 @@ class MigratePostImportEvent implements EventSubscriberInterface {
       // Depending on the content type, we need to access the content
       // differently. Page pull from paragraphs. Person/Article pull from body.
       switch ($node->getType()) {
-        case 'page':
+        // This is no longer needed, unless we place content in lb.
+        case 'page-deprecated':
           $section_target = $node->get('field_page_content_block')->getValue();
 
           /** @var \Drupal\paragraphs\ParagraphInterface $section */
@@ -166,6 +169,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
 
         case 'article':
         case 'person':
+        case 'page':
           $content = $node->body->value;
           break;
 
@@ -178,7 +182,8 @@ class MigratePostImportEvent implements EventSubscriberInterface {
 
       // Depending on content type, need to set it differently.
       switch ($node->getType()) {
-        case 'page':
+        // No longer needed, unless we build in lb.
+        case 'page-deprecated':
           $paragraph->set('field_text_body', [
             'value' => $content,
             'format' => 'filtered_html',
@@ -188,6 +193,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
 
         case 'article':
         case 'person':
+        case 'page':
           $node->body->value = $content;
           break;
       }
@@ -204,64 +210,82 @@ class MigratePostImportEvent implements EventSubscriberInterface {
       '@old_link' => $old_link,
     ]));
 
-    // If it's an anchor link only, we can skip it then.
+    // Check if it's a mailto: link and return if it is.
+    if (substr($old_link, 0, 7) == 'mailto:') {
+      $this->logger->notice($this->t('Mailto link found...skipping.'));
+      return $match[0];
+    }
+
+    // If it's an anchor link only, we can skip it.
+    // Look only for # after the first position.
     if (strpos($old_link, '#', 1)) {
       $split_anchor = explode('#', $old_link);
-      $suffix = $split_anchor[1];
+      $suffix = '#' . $split_anchor[1];
       $old_link = $split_anchor[0];
     }
     else {
       $suffix = '';
     }
 
-    // Check if it's a relative link.
-    if (substr($old_link, 0, 1) == '/' || substr($old_link, 0, 4) == 'node') {
+    // Check if it's a direct node path.
+    if (substr($old_link, 0, 4) == 'node' || substr($old_link, 0, 5) == '/node') {
+      // Split and grab the last part
+      // which will be the node number.
       $link_parts = explode('/', $old_link);
+      $old_nid = end($link_parts);
 
-      $link_found = FALSE;
-      // Old node/# formatted links just need the updated mapping.
-      for ($i = 0; $i < count($link_parts) - 1; $i++) {
-        if ($link_parts[$i] == 'node') {
-          // Take the node id.
-          $old_nid = $link_parts[$i + 1];
-          $new_nid = $this->sourceToDestIds[$old_nid];
-          $this->logger->notice($this->t('Old nid... @old_nid', [
-            '@old_nid' => $old_nid,
-          ]));
-          $this->logger->notice($this->t('New nid... @new_nid', [
-            '@new_nid' => $new_nid,
-          ]));
-          // If we don't have the correct mapping, return the original link.
-          $link_found = isset($this->sourceToDestIds[$old_nid]);
-          $new_link = ($link_found) ? '<a href="/node/' . $this->sourceToDestIds[$old_nid] . '"' : $match[0];
-          break;
-        }
+      // Check that there is a mapping and set it to the new id.
+      if (isset($this->sourceToDestIds[$old_id])) {
+        $new_nid = $this->sourceToDestIds[$old_id];
+        // Display message in terminal.
+        $this->logger->notice($this->t('Old nid... @old_nid', [
+          '@old_nid' => $old_nid,
+        ]));
+        $this->logger->notice($this->t('New nid... @new_nid', [
+          '@new_nid' => $new_nid,
+        ]));
+        $new_link = '<a href="/node/' . $new_id . $suffix . '"';
       }
-      if (!$link_found) {
-        // If it wasn't in node/# format, we need to use the alias
-        // (w/out preceding /) to get the correct mapping.
-        $d7_nid = $this->d7Aliases[$old_link];
-        $new_link = (isset($this->sourceToDestIds[$d7_nid])) ? '<a href="/node/' . $this->sourceToDestIds[$d7_nid] . '"' : $match[0];
+      // No mapping found, so keep the old link.
+      else {
+        $new_link = $match[0];
+        $this->logger->notice($this->t('No mapping found for nid... @old_nid', [
+          '@old_nid' => $old_nid,
+        ]));
       }
-      $this->logger->notice($this->t('New link found from /node/ path... @new_link', [
-        '@new_link' => $new_link . $suffix,
-      ]));
-
-      return $new_link . $suffix;
+      return $new_link;
     }
-    else {
-      // We have an absolute link--need to check if it references this
-      // site or is external.
+
+    // We have an absolute link--need to check if it references this
+    // site or is external site.
+    elseif (substr($old_link, 0, 4) == 'http') {
       $pattern = '|"(https?://)?(www.)?(' . $this->basePath . ')/(.*?)"|';
-      if (preg_match($pattern, $old_link, $abs_match)) {
-        $d7_nid = $this->d7Aliases[$abs_match[4]];
-        $new_link = (isset($this->sourceToDestIds[$d7_nid])) ? '<a href="/node/' . $this->sourceToDestIds[$d7_nid] . '"' : '<a href="/' . $abs_match[4] . '"';
+      if (preg_match($pattern, $old_link, $absolute_path)) {
+        $d7_nid = $this->d7Aliases[$absolute_path[4]];
+        $new_link = (isset($this->sourceToDestIds[$d7_nid])) ?
+          '<a href="/node/' . $this->sourceToDestIds[$d7_nid] . '"' :
+          '<a href="/' . $absolute_path[4] . $suffix . '"';
         $this->logger->notice($this->t('New link found from absolute path... @new_link', [
           '@new_link' => $new_link,
         ]));
 
         return $new_link;
       }
+    }
+
+    // If we got here, we should have a relative link
+    // that isn't in the /node/id format.
+    else {
+      $d7_nid = $this->d7Aliases[$old_link];
+      $new_link = (isset($this->sourceToDestIds[$d7_nid])) ?
+        '<a href="/node/' . $this->sourceToDestIds[$d7_nid] . $suffix . '"' :
+        $match[0];
+
+      $this->logger->notice($this->t('New link found from /node/ path... @new_link', [
+        '@new_link' => $new_link,
+      ]));
+
+      return $new_link;
     }
 
     // No matches were found--return the unchanged original.
@@ -272,30 +296,15 @@ class MigratePostImportEvent implements EventSubscriberInterface {
    * Query for a list of nodes which may contain newly broken links.
    */
   private function checkForPossibleLinkBreaks() {
-    $candidates = [];
-    // Check for possible link breaks in paragraph fields within pages.
-    $query = $this->connection->select('node__field_page_content_block', 'n');
-    $query->join('paragraph__field_section_content_block', 's', 's.entity_id = n.field_page_content_block_target_id');
-    $query->join('paragraph__field_text_body', 'p', 'p.entity_id = s.field_section_content_block_target_id');
-    $query->fields('n', ['entity_id'])
-      ->condition($query->orConditionGroup()
-        ->condition('p.field_text_body_value', '%' . $this->basePath . '%', 'LIKE')
-        ->condition('p.field_text_body_value', '%<a href="/node/%"%', 'LIKE')
+    // Check for possible link breaks in standard body fields.
+    $query = $this->connection->select('node__body', 'nb')
+      ->fields('nb', ['entity_id']);
+    $query->condition($query->orConditionGroup()
+      ->condition('nb.body_value', $this->basePath, 'LIKE')
+      ->condition('nb.body_value', "%<a href%node/%", 'LIKE')
     );
     $result = $query->execute();
-    $candidates = array_merge($candidates, $result->fetchCol());
-
-    // Now check for possible link breaks in standard body fields
-    // (articles and people content types).
-    $query = $this->connection->select('node__body', 'nb')
-      ->fields('nb', ['entity_id'])
-      ->condition($query->orConditionGroup()
-        ->condition('nb.body_value', $this->basePath, 'LIKE')
-        ->condition('nb.body_value', "%<a href%node/%", 'LIKE')
-      );
-
-    $result = $query->execute();
-    $candidates = array_merge($candidates, $result->fetchCol());
+    $candidates = $result->fetchCol();
 
     foreach ($candidates as $candidate) {
       $this->logger->notice($this->t('Possible broken link found in node @candidate', [
@@ -343,12 +352,14 @@ class MigratePostImportEvent implements EventSubscriberInterface {
    * Query the migration map to get a D7-nid => D8-nid indexed array.
    */
   private function fetchMapping() {
-    $sub_result1 = $this->connection->select('migrate_map_d7_page', 'mm')
-      ->fields('mm', ['sourceid1', 'destid1']);
+    if ($this->connection->schema()->tableExists('migrate_map_d7_page')) {
+      $sub_result1 = $this->connection->select('migrate_map_d7_page', 'mm')
+        ->fields('mm', ['sourceid1', 'destid1']);
+    }
     if ($this->connection->schema()->tableExists('migrate_map_d7_article')) {
       $sub_result2 = $this->connection->select('migrate_map_d7_article', 'mma')
         ->fields('mma', ['sourceid1', 'destid1']);
-      $unioned = $sub_result1->union($sub_result2);
+      $unioned = isset($sub_result1) ? $sub_result1->union($sub_result2) : $sub_result2;
     }
     else {
       $unioned = $sub_result1;
