@@ -1829,3 +1829,15 @@ $sites['siteslicensing.local.drupal.uiowa.edu'] = 'licensing.sites.uiowa.edu';
 $sites['siteslicensing.dev.drupal.uiowa.edu'] = 'licensing.sites.uiowa.edu';
 $sites['siteslicensing.stage.drupal.uiowa.edu'] = 'licensing.sites.uiowa.edu';
 $sites['siteslicensing.prod.drupal.uiowa.edu'] = 'licensing.sites.uiowa.edu';
+
+// Directory aliases for reno.sites.uiowa.edu.
+$sites['sitesreno.local.drupal.uiowa.edu'] = 'reno.sites.uiowa.edu';
+$sites['sitesreno.dev.drupal.uiowa.edu'] = 'reno.sites.uiowa.edu';
+$sites['sitesreno.stage.drupal.uiowa.edu'] = 'reno.sites.uiowa.edu';
+$sites['sitesreno.prod.drupal.uiowa.edu'] = 'reno.sites.uiowa.edu';
+
+// Directory aliases for afpcc.org.uiowa.edu.
+$sites['orgafpcc.local.drupal.uiowa.edu'] = 'afpcc.org.uiowa.edu';
+$sites['orgafpcc.dev.drupal.uiowa.edu'] = 'afpcc.org.uiowa.edu';
+$sites['orgafpcc.stage.drupal.uiowa.edu'] = 'afpcc.org.uiowa.edu';
+$sites['orgafpcc.prod.drupal.uiowa.edu'] = 'afpcc.org.uiowa.edu';
