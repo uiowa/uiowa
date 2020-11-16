@@ -8,15 +8,3 @@
  * This file is no longer required in Drupal 8.
  * @see https://www.drupal.org/node/2217931
  */
-
-/**
- * Implements hook_form_alter().
- */
-function sitenow_area_of_study_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  switch ($form_id) {
-    case 'node_area_of_study_edit_form':
-    case 'node_area_of_study_form':
-      // Add stuff here.
-      break;
-  }
-}
