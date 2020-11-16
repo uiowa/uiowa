@@ -15,7 +15,7 @@
  *   Calling other methods, such as node.delete(), will result in an exception.
  *   See \Drupal\node\Entity\Node for a full list of public properties and
  *   methods for the node object.
- * - label: (optional) The title of the node.
+ * - label: The title of the node.
  * - content: All node items. Use {{ content }} to print them all,
  *   or print a subset such as {{ content.field_example }}. Use
  *   {{ content|without('field_example') }} to temporarily suppress the printing
@@ -23,8 +23,8 @@
  * - author_picture: The node author user entity, rendered using the "compact"
  *   view mode.
  * - metadata: Metadata for this node.
- * - date: (optional) Themed creation date field.
- * - author_name: (optional) Themed author name field.
+ * - date: Themed creation date field.
+ * - author_name: Themed author name field.
  * - url: Direct URL of the current node.
  * - display_submitted: Whether submission information should be displayed.
  * - attributes: HTML attributes for the containing element.
@@ -70,83 +70,96 @@
  *   in different view modes.
  */
 #}
-{%
-  set classes = [
-    'node',
-    'node--type-' ~ node.bundle|clean_class,
-    node.isPromoted() ? 'node--promoted',
-    node.isSticky() ? 'node--sticky',
-    not node.isPublished() ? 'node--unpublished',
-    view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
-  ]
-%}
-{{ attach_library('classy/node') }}
-{{ attach_library('uids_base/node-type-person') }}
 
-{% if layout_builder_enabled == TRUE %}
-  {{ content }}
-{% else %}
-  <article{{ attributes.addClass(classes) }}>
-
-    {{ title_prefix }}
-    {% if label and not page %}
-      <h2{{ title_attributes }}>
-        <a href="{{ url }}" rel="bookmark">{{ label }}</a>
-      </h2>
-    {% endif %}
-    {{ title_suffix }}
-  {{ devel_breakpoint }}
-    {% if display_submitted %}
-      <footer class="node__meta">
-        {{ author_picture }}
-        <div{{ author_attributes.addClass('node__submitted') }}>
-          {% trans %}Submitted by
-          {{ author_name }}
-          on
-          {{ date }}{% endtrans %}
-          {{ metadata }}
-        </div>
-      </footer>
-    {% endif %}
-
-    <div{{ content_attributes.addClass('node__content') }}>
-      {{ content.content_moderation_control }}
-      <div class="row">
-        <div class="col-md-6 col-lg-3 person-meta">
-          {% if content.field_image %}
-            <figure class="content-image">
-              {{ content.field_image }}
-              {% if content.field_image_caption %}
-                <figcaption>
-                  {{ label }}
-                </figcaption>
-              {% endif %}
-            </figure>
-          {% endif %}
-
-          {{ content|without(
-            'field_image',
-            'field_person_bio',
-            'content_moderation_control',
-            'pt_student_dissertation_title',
-            'field_person_education',
-            'field_person_research_areas',
-            'field_person_publications_link'
-          ) }}
-        </div>
-        <div class="col-md-6 col-lg-9 person-content">
-          {% if content.pt_student_dissertation_title and content.pt_student_dissertation_title|render is not empty %}
-            <h2>
-              {{ content.pt_student_dissertation_title }}
-            </h2>
-          {% endif %}
-          {{ content.field_person_bio }}
-          {{ content.field_person_education }}
-          {{ content.field_person_publications_link }}
-          {{ content.field_person_research_areas }}
-        </div>
-      </div>
-    </div>
-
-  </article>
+{#
+/**
+ * @file
+ * Default theme implementation to display a view of unformatted rows.
+ *
+ * Available variables:
+ * - title: The title of this group of rows. May be empty.
+ * - rows: A list of the view's row items.
+ *   - attributes: The row's HTML attributes.
+ *   - content: The row's content.
+ * - view: The view object.
+ * - default_row_class: A flag indicating whether default classes should be
+ *   used on rows.
+ *
+ * @see template_preprocess_views_view_unformatted()
+ *
+ * @ingroup themeable
+ */
+#}
+{% if title %}
+  <h3>{{ title }}</h3>
 {% endif %}
+{% for key,row in rows %}
+  {% set row_classes = [
+    default_row_class ? 'views-row',
+  ] %}
+  <div{{ row.attributes.addClass(row_classes) }}>
+
+    {% set media_attributes = media_attributes ?: create_attribute() %}
+
+    {%
+      set classes = [
+      'bg--white',
+      'card--stacked',
+      'media--border',
+      'card--centered-left',
+      'card--alignment-left',
+      'card--enclosed'
+    ]
+    %}
+
+    {% set person_card_view = {
+      'attributes': attributes.addClass(classes),
+      'card_image': view.style_plugin.getField(key, 'field_image'),
+      'card_subtitle': view.style_plugin.getField(key, 'field_person_email'),
+      'card_tag': view.style_plugin.getField(key, 'field_person_phone'),
+      'person_website': view.style_plugin.getField(key, 'field_person_website'),
+      'person_education': view.style_plugin.getField(key, 'field_person_education'),
+      'person_hometown': view.style_plugin.getField(key, 'field_person_hometown'),
+      'person_contact': view.style_plugin.getField(key, 'field_person_contact_information'),
+      'media_attributes': media_attributes.addClass('media--circle card__media--medium card__media'),
+    } %}
+
+    {% embed '@uids_base/uids/card.html.twig' with person_card_view only %}
+
+      {% block card_img %}
+        {% if card_image|striptags('<img><picture>')|trim is not empty %}
+          {{ parent() }}
+        {% endif %}
+      {% endblock %}
+
+      {% block card_subtitle %}
+        {% if card_subtitle|striptags|trim is not empty %}
+          <div class="card__subtitle"><span class="fas fa-envelope"></span> {{ card_subtitle }}</div>
+        {% endif %}
+      {% endblock %}
+
+      {% block card_tag %}
+        {% if card_tag|striptags|trim is not empty %}
+          <div class="card__date"><span class="fas fa-phone"></span> {{ card_tag }}</div>
+        {% endif %}
+        {% if person_hometown|striptags|trim is not empty %}
+          <div class="card__date"><span class="fas fa-globe-americas"></span> {{ person_hometown }}</div>
+        {% endif %}
+        {% if person_website|striptags|trim is not empty %}
+          <div class="card__date"><span class="fas fa-desktop"></span> {{ person_website }}</div>
+        {% endif %}
+        {% if person_education|striptags|trim is not empty %}
+          <div class="card__date"><span class="fas fa-university"></span> {{ person_education }}</div>
+        {% endif %}
+        {% if person_contact|striptags|trim is not empty %}
+          <div class="card__date"><span class="fas fa-map-marker"></span> {{ person_contact }}</div>
+        {% endif %}
+      {% endblock %}
+
+    {% endembed %}
+  </div>
+{% endfor %}
+
+
+
+
