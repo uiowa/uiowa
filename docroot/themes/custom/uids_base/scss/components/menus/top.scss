@@ -3,7 +3,8 @@
 @import "components/menus/top/top.scss";
 
 // Iowa Bar Full adjustments
-.iowa-bar--full {
+.iowa-bar--full.horizontal,
+.iowa-bar--full.toggle  {
   .menu--top.nav {
     @include breakpoint(menu) {
       right: -10px;
@@ -15,6 +16,7 @@
     @include breakpoint(menu) {
       position: relative;
       align-self: center;
+     // margin-left: auto;
     }
   }
 
@@ -57,6 +59,17 @@
           border: 1px solid $secondary;
         }
       }
+    }
+  }
+}
+
+@media (min-width: 1700px) {
+.iowa-bar--full.toggle {
+  .menu--top.nav {
+      margin-top: 30px;
+      position: absolute;
+      align-self: center;
+      right: 340px;
     }
   }
 }
