@@ -1,0 +1,50 @@
+@import "../../../../../themes/custom/uids_base/uids/assets/scss/_variables.scss";
+@import "../../../../../themes/custom/uids_base/uids/assets/scss/_utilities.scss";
+@import "../../../../../themes/custom/uids_base/uids/components/card/_card-mixins.scss";
+
+.view-id-counselors {
+
+  .card__media {
+    @include card-media-horizontal-right;
+
+    @include breakpoint(sm) {
+      margin-top: $lg;
+      margin-bottom: $gutter;
+    }
+  }
+
+  .card__body {
+    flex: 1;
+  }
+
+  .card__title {
+    @include breakpoint(sm) {
+      padding: 0;
+    }
+  }
+
+  .node--type-article,
+  .card--list {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+}
+
+.view-id-counselors {
+  .view-content {
+    @include list-group;
+    @include list-group-flush;
+  }
+
+  .views-row {
+    @include list-group-item;
+  }
+
+  .view-content:first-child .views-row:first-child {
+    border-top: none;
+  }
+
+  .view-content:last-child .views-row:last-child {
+    border-bottom: none;
+  }
+}
