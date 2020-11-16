@@ -83,6 +83,7 @@ function uids_base_preprocess_page(&$variables) {
   $variables['header_nav'] = theme_get_setting('header.nav_style');
   $variables['header_sticky'] = theme_get_setting('header.sticky');
   $variables['header_classes'] = [];
+  $length = strlen($variables['site_name']);
 
   // The site has a parent, so we are overriding the header type.
   if ($variables['site_has_parent']) {
@@ -97,7 +98,7 @@ function uids_base_preprocess_page(&$variables) {
     $variables['header_type'] = 'homepage';
     $variables['uiowa_url'] = \Drupal::request()->getSchemeAndHttpHost();
   }
-  else {
+  elseif ($length < 44) {
     switch ($variables['header_type']) {
       case 'below':
       case 'header--tertiary':
@@ -114,6 +115,17 @@ function uids_base_preprocess_page(&$variables) {
         break;
     }
   }
+  else {
+    switch ($variables['header_type']) {
+      case 'below' || 'inline':
+      case 'header--tertiary' || 'header--secondary':
+        // @todo Remove this when config is updated for all sites.
+        $variables['header_classes'][] = 'iowa-bar--narrow';
+        $variables['header_type'] = 'below';
+        break;
+    }
+  }
+
 
   $variables['uiowa_search_form'] = FALSE;
 
