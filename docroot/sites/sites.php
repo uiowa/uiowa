@@ -1835,3 +1835,9 @@ $sites['sitesreno.local.drupal.uiowa.edu'] = 'reno.sites.uiowa.edu';
 $sites['sitesreno.dev.drupal.uiowa.edu'] = 'reno.sites.uiowa.edu';
 $sites['sitesreno.stage.drupal.uiowa.edu'] = 'reno.sites.uiowa.edu';
 $sites['sitesreno.prod.drupal.uiowa.edu'] = 'reno.sites.uiowa.edu';
+
+// Directory aliases for afpcc.org.uiowa.edu.
+$sites['orgafpcc.local.drupal.uiowa.edu'] = 'afpcc.org.uiowa.edu';
+$sites['orgafpcc.dev.drupal.uiowa.edu'] = 'afpcc.org.uiowa.edu';
+$sites['orgafpcc.stage.drupal.uiowa.edu'] = 'afpcc.org.uiowa.edu';
+$sites['orgafpcc.prod.drupal.uiowa.edu'] = 'afpcc.org.uiowa.edu';
