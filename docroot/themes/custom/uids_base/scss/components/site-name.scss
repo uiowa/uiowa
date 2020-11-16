@@ -1,3 +1,25 @@
 @import "assets/scss/_variables.scss";
 @import "assets/scss/_utilities.scss";
 @import "components/branding/site-name/site-name.scss";
+
+// 43 Characters: "Fraternal Order of Eagles Diabetes Research"
+@media screen and (max-width: 1605px) and (min-width: 855px) {
+  .iowa-bar .site-name {
+    font-size: 2vw;
+  }
+}
+
+.iowa-bar .site-name {
+  @include breakpoint(menu) {
+    flex: 0 1 48%;
+  }
+}
+
+.site-name {
+  @include breakpoint(menu) {
+    margin: 5px 0 0;
+    text-align: left;
+    font-size: 1.7rem;
+    font-size: 2rem;
+  }
+}
