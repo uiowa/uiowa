@@ -298,11 +298,12 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
           'settings',
           'block_form',
           'field_uiowa_banner_image',
+          'field_uiowa_banner_video',
           'selection',
         ];
-        if ($background_option === 'image') {
+        if ($background_option === 'image' || 'video') {
           if (!$form_state->getValue($form_media_selection)) {
-            // If an image wasn't uploaded, revert to default of 'black'.
+            // If an image or video wasn't uploaded, revert to default of 'black'.
             // @todo: Add feedback for user that they didn't upload an image.
             // @todo: Add validation to check whether image uploaded or not.
             $background_option = 'block_background_style_black';
@@ -376,7 +377,10 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
 
       $selectedStyles = $component->get('layout_builder_styles_style');
 
-      $style_options = ['image' => 'Image'];
+      $style_options = [
+        'image' => 'Image',
+        'video' => 'Video',
+      ];
       foreach ($all_styles as $style) {
         if ($style->getGroup() === 'background') {
           $restrictions = $style->getBlockRestrictions();
@@ -418,7 +422,19 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
         '#weight' => 5,
       ] + $element['field_uiowa_banner_image'];
 
+      $element['field_uiowa_banner_video'] = [
+        '#states' => [
+          'visible' => [
+            ':input[name="settings[block_form][background_options]"]' => [
+              'value' => 'video',
+            ],
+          ],
+        ],
+        '#weight' => 6,
+      ] + $element['field_uiowa_banner_video'];
+
       unset($element['field_uiowa_banner_image']['widget']['#title']);
+      unset($element['field_uiowa_banner_video']['widget']['#title']);
 
       break;
 
