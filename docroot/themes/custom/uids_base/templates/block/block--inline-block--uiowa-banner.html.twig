@@ -25,10 +25,6 @@
  * @see template_preprocess_block()
  */
 #}
-{% set video_field = content.field_uiowa_banner_video[0]['#media'].field_media_video_file.entity.uri.value %}
-{% set video_url = file_url(content.field_uiowa_banner_video[0]['#media'].field_media_video_file.entity.uri.value) %}
-{% set video_thumbnail = file_url(content.field_uiowa_banner_image[0]['#media'].field_media_image.entity.uri.value) %}
-
 {% set styles = elements['#layout_builder_style'] %}
 {% set headline_classes = [] %}
 {% set highlight_classes = [] %}
@@ -67,7 +63,13 @@
 {% embed '@uids_base/uids/banner.html.twig' with block_banner only %}
 
   {% block banner_image %}
-    {{ parent() }}
+    {% if banner_video_field is not empty %}
+      <div class="video-controls video">
+        <button class="video-btn video-btn__pause" aria-label="Pause" id="video-btn">
+          <span class="element-invisible">Pause</span>
+        </button>
+      </div>
+    {% endif %}
     {# Embed contextual links so that they'll show up in the upper right-hand corner. #}
     {{ title_prefix }}
     {{ title_suffix }}
@@ -77,7 +79,7 @@
         <source src="{{ banner_video_url }}" type="video/mp4">
       </video>
     {% else %}
-      {% if banner_image %}
+      {% if banner_image  %}
         <div class="banner__image">
           {{ banner_image }}
         </div>
