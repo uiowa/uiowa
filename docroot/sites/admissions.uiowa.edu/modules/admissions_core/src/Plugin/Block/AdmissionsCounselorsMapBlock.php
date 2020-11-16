@@ -41,7 +41,7 @@ class AdmissionsCounselorsMapBlock extends BlockBase {
         }
       }
       // Filter out territory duplicates.
-      $territories = array_unique($territories);
+      $territories = array_values(array_unique($territories));
     }
 
     return [

@@ -65,9 +65,9 @@ function generateMap() {
   map.scrollWheelZoom.disable();
 
   // Check for counselor data.
-  function hasCounselors(feature) {
+  function hasCounselors(id) {
     let hasCounselors = false;
-    if (window.drupalSettings.admissions_core.territories.includes(feature.id)){
+    if (window.drupalSettings.admissions_core.territories.includes(id)){
       hasCounselors = true;
     }
     return hasCounselors;
@@ -77,7 +77,7 @@ function generateMap() {
   function style(feature) {
     let fillColor = "white";
     let fillOpacity = 0.1;
-    if (hasCounselors(feature)) {
+    if (hasCounselors(feature.id)) {
       fillColor = "#ffcd00";
       fillOpacity = 0.7;
     }
@@ -134,7 +134,7 @@ function generateMap() {
     let centroid = e.target.getBounds().getCenter();
     let content = '<div><strong>' + e.target.feature.properties.name + '</strong></div>';
 
-    if (hasCounselors(e.target.feature)) {
+    if (hasCounselors(e.target.feature.id)) {
       content = '<div><strong>' + e.target.feature.properties.name + '</strong><br /><a href="/counselors/' + e.target.feature.id + '">View counselors in ' + e.target.feature.properties.name + '</a></div>';
     }
     let popup = L.popup()
