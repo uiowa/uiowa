@@ -53,16 +53,18 @@ function reGenerateMap() {
 // This function generates the map.
 // TODO: Document this and organize it's functions in a more reasonable way. this is too confusing to leave as is.
 function generateMap() {
-  // Get drupalSettings.
+  // Get drupalSettings the non-jQuery/Drupal Behaviors way.
   let settingsElement = document.querySelector('head > script[type="application/json"][data-drupal-selector="drupal-settings-json"], body > script[type="application/json"][data-drupal-selector="drupal-settings-json"]');
   window.drupalSettings = {};
   if (settingsElement !== null) {
     window.drupalSettings = JSON.parse(settingsElement.textContent);
   }
 
+  // Establish map and prevent scrollwheel zooming.
   let map = L.map("admissions-counselors-map").setView([37.8, -96], 4);
   map.scrollWheelZoom.disable();
 
+  // Check for counselor data.
   function hasCounselors(feature) {
     let hasCounselors = false;
     if (window.drupalSettings.admissions_core.territories.includes(feature.id)){
@@ -71,6 +73,7 @@ function generateMap() {
     return hasCounselors;
   }
 
+  // Style differently based on Counselor data.
   function style(feature) {
     let fillColor = "white";
     let fillOpacity = 0.1;
@@ -88,6 +91,7 @@ function generateMap() {
     };
   }
 
+  // Mouse over effect.
   function highlightFeature(e) {
     let layer = e.target;
     layer.setStyle({
@@ -103,14 +107,30 @@ function generateMap() {
     }
   }
 
+  // Reset.
   function resetHighlight(e) {
     geojson.resetStyle(e.target);
     info.update();
   }
 
+  // Map element selection. Zoom to, infobox, filter accompanying view if exists.
   function zoomToFeature(e) {
     map.fitBounds(e.target.getBounds());
-    // get centroid lat/long of polygon
+
+    // Update Counselors' view filters based on map selection.
+    let counselorsFilters = document.getElementById("views-exposed-form-counselors-block-counselors");
+    if (typeof(counselorsFilters) != 'undefined' && counselorsFilters != null){
+      let counselorsTerritory = counselorsFilters.querySelector('.form-select');
+      let counselorsSubmit = counselorsFilters.querySelector('.form-submit');
+      // Get map element id and pass to select list (assumes value exists).
+      counselorsTerritory.value = e.target.feature.id;
+      counselorsSubmit.click();
+      // Announce that the form was submitted based on map selection.
+      Drupal.announce(
+        Drupal.t('Results filtered based on map selection.')
+      );
+    }
+    //get centroid lat/long of polygon
     let centroid = e.target.getBounds().getCenter();
     let content = '<div><strong>' + e.target.feature.properties.name + '</strong></div>';
 
@@ -123,6 +143,7 @@ function generateMap() {
       .openOn(map);
   }
 
+  // Establish functionality on each GeoJSON feature.
   function onEachFeature(feature, layer) {
       layer.on({
         mouseover: highlightFeature,
@@ -131,20 +152,19 @@ function generateMap() {
       });
   }
 
+  // Floating window to display state info on hover.
   let info = L.control();
-
+  info.setPosition('bottomright');
   info.onAdd = function (map) {
     this._div = L.DomUtil.create("div", "info");
     this.update();
     return this._div;
   };
-
   info.update = function (props) {
     this._div.innerHTML =
       "<strong>State Information</strong><br />" +
       (props ? props.name + "<br />" : "Hover over a state");
   };
-
   info.addTo(map);
 
   geojson = L.geoJson(statesData, {
