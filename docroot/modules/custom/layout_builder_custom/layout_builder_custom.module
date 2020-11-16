@@ -298,10 +298,9 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
           'settings',
           'block_form',
           'field_uiowa_banner_image',
-          'field_uiowa_banner_video',
           'selection',
         ];
-        if ($background_option === 'image' || 'video') {
+        if ($background_option === 'image') {
           if (!$form_state->getValue($form_media_selection)) {
             // If an image or video wasn't uploaded, revert to default of 'black'.
             // @todo: Add feedback for user that they didn't upload an image.
