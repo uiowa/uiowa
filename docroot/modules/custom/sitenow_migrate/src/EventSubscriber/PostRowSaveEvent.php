@@ -68,6 +68,7 @@ class PostRowSaveEvent implements EventSubscriberInterface {
       case 'd7_article':
       case 'd7_person':
       case 'd7_page':
+      case 'd7_grad_article':
         $nids = $event->getDestinationIdValues();
 
         /** @var \Drupal\node\NodeInterface $node */
