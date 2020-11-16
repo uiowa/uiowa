@@ -74,26 +74,17 @@
     flex: 0 1 25%;
   }
 
-
   .layout--twocol--25-75.column-spacing__removed .layout__region--second,
   .layout--twocol--75-25.column-spacing__removed .layout__region--first {
     flex: 0 1 75%;
   }
 
-  .layout--twocol--33-67 .layout__region--second,
-  .layout--twocol--75-25 .layout__region--second,
-  .layout--twocol--67-33 .layout__region--second,
-  .layout--twocol--50-50 .layout__region--second,
-  .layout--twocol--25-75 .layout__region--second {
-    margin-left: 2rem;
-  }
-
-  .layout--twocol--75-25 .layout__region--first,
-  .layout--twocol--25-75 .layout__region--first,
-  .layout--twocol--67-33 .layout__region--first,
-  .layout--twocol--33-67 .layout__region--first,
-  .layout--twocol--50-50 .layout__region--first {
-    margin-right: 2rem;
+  .layout--twocol--75-25 .layout__region--first + .layout__region--second,
+  .layout--twocol--25-75 .layout__region--first + .layout__region--second,
+  .layout--twocol--67-33 .layout__region--first + .layout__region--second,
+  .layout--twocol--33-67 .layout__region--first + .layout__region--second,
+  .layout--twocol--50-50 .layout__region--first + .layout__region--second {
+    margin-left: 4rem;
   }
 
   .layout--twocol--33-67.column-spacing__removed .layout__region--second,
@@ -111,5 +102,4 @@
   .layout--twocol--50-50.column-spacing__removed .layout__region--first {
     margin-right: 0;
   }
-
 }
