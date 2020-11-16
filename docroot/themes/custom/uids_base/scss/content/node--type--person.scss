@@ -1,6 +1,74 @@
 @import "uids/assets/scss/_variables.scss";
 @import "uids/assets/scss/_utilities.scss";
 @import "components/card/_card-mixins.scss";
+@import "components/headline/_headline-mixins.scss";
+@import "components/media/_media-mixins.scss";
+
+
+.page-node-type-person.layout-builder-enabled {
+  .layout__region--first .field__item {
+    line-height: 1.7;
+    font-size: 1.2rem;
+    margin-top: 0;
+  }
+  .field__label {
+    margin-bottom: 0;
+  }
+  .field--name-field-uiowa-contact-label {
+    font-size: 1rem;
+  }
+  .field--label-above {
+    margin-bottom: 1.5rem;
+  }
+
+  .field--name-field-person-position {
+    margin-top: .6rem;
+    .field__item {
+      display: inline-block;
+      font-size: 2.3rem;
+      line-height: 1;
+      font-weight: 300;
+      margin-bottom: .5rem;
+    }
+  }
+
+  .views-element-container {
+    margin-top: 0;
+  }
+
+  .card__subtitle a,
+  .card__date a {
+    text-decoration: none;
+  }
+
+  .card__date {
+    padding-left: 45px;
+    font-size: 1rem;
+    margin-bottom: .6rem;
+    .svg-inline--fa {
+      width: 35px;
+      margin-left: -40px;
+      color: $secondary;
+      position: absolute;
+    }
+  }
+
+  .card__subtitle {
+    .svg-inline--fa  {
+      font-size: 1rem;
+      margin-right: .5rem;
+      color: $secondary;
+    }
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: 3px;
+    margin-bottom: 1rem;
+    padding: .7rem 1rem;
+    background: url(/themes/custom/uids_base/assets/images/particle.png);
+    background-size: 120%;
+    opacity: 1;
+  }
+}
+
 
 article.node--type-person.node--view-mode-full,
 div[role=article].node--type-person.node--view-mode-full {
@@ -8,6 +76,7 @@ div[role=article].node--type-person.node--view-mode-full {
     max-width: 100%;
     height: auto;
   }
+
   .field a {
     line-height: 1.7;
     font-size: 1.2rem;
@@ -90,6 +159,7 @@ div[role=article].node--type-person.node--view-mode-teaser {
     margin-top: 0;
     margin-bottom: 1rem;
   }
+
   .h5.field--name-field-person-position .field__item {
     margin-bottom: 1rem;
   }
@@ -98,11 +168,13 @@ div[role=article].node--type-person.node--view-mode-teaser {
 .field--name-field-person-contact-information {
   margin-bottom: .7rem;
 }
+
 .field--name-field-uiowa-contact-label {
   margin-top: .7rem;
   font-weight: $font-weight-bold;
   line-height: 1.7;
   font-size: 1.2rem;
+
   &:after {
     content: ":";
   }
