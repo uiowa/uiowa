@@ -49,6 +49,19 @@ class Article extends BaseNodeSource {
         'sticky',
       ])
       ->condition('b.bundle', 'article');
+    // @todo Add any additional fields that need to be defined.
+    // @todo field_author
+    // @todo field_lead - necessary?
+    // @todo field_thumbnail_image - necessary?
+    // @todo field_pull_quote
+    // @todo field_pull_quote_featured
+    // @todo field_article_people
+    // @todo field_article_program
+    // @todo field_annual_report
+    // @todo field_article_source_link
+    // @todo field_photo_credit
+    // @todo field_attachments
+    // @todo field_tags
     return $query;
   }
 
@@ -64,15 +77,29 @@ class Article extends BaseNodeSource {
       'revision_id' => $this->t('(article body) Revision ID for the piece of content'),
       'language' => $this->t('(article body) Language designation'),
       'delta' => $this->t('(article body) 0 for standard sites'),
-      'field_body_value' => $this->t('(article body) Body content'),
-      'field_body_summary' => $this->t('(article body) Body summary content'),
-      'field_body_format' => $this->t('(article body) Body content text format'),
-      'title' => $this->t('(node) Node title'),
       'created' => $this->t('(node) Timestamp for node creation date'),
       'changed' => $this->t('(node) Timestamp for node last changed date'),
       'status' => $this->t('(node) 0/1 for Unpublished/Published'),
       'promote' => $this->t('(node) 0/1 for Unpromoted/Promoted'),
       'sticky' => $this->t('(node) 0/1 for Unsticky/Sticky'),
+      'title' => $this->t('(node) Node title'),
+      'field_body_value' => $this->t('(article body) Body content'),
+      'field_body_summary' => $this->t('(article body) Body summary content'),
+      'field_body_format' => $this->t('(article body) Body content text format'),
+      'field_author' => $this->t('The author node reference.'),
+      'field_lead' => $this->t('The lead field.'),
+      'field_thumbnail_image' => $this->t('Thumbnail image field'),
+
+      // @todo Add any additional fields that need to be defined.
+      // @todo field_pull_quote
+      // @todo field_pull_quote_featured
+      // @todo field_article_people
+      // @todo field_article_program
+      // @todo field_annual_report
+      // @todo field_article_source_link
+      // @todo field_photo_credit
+      // @todo field_attachments
+      // @todo field_tags
     ];
     return $fields;
   }

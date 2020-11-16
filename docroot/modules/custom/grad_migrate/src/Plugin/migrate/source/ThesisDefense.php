@@ -42,6 +42,14 @@ class ThesisDefense extends BaseNodeSource {
       ])
       ->condition('b.bundle', 'thesis_defense');
     // @todo Add any additional fields that need to be defined.
+    // @todo field_thesis_firstname
+    // @todo field_thesis_lastname
+    // @todo field_thesis_defense_date
+    // @todo field_thesis_location
+    // @todo field_thesis_title
+    // @todo field_thesis_department
+    // @todo field_thesis_chair
+    // @todo upload
     return $query;
   }
 
@@ -66,6 +74,15 @@ class ThesisDefense extends BaseNodeSource {
       'status' => $this->t('(node) 0/1 for Unpublished/Published'),
       'promote' => $this->t('(node) 0/1 for Unpromoted/Promoted'),
       'sticky' => $this->t('(node) 0/1 for Unsticky/Sticky'),
+      // @todo Add any additional fields that need to be defined.
+      // @todo field_thesis_firstname
+      // @todo field_thesis_lastname
+      // @todo field_thesis_defense_date
+      // @todo field_thesis_location
+      // @todo field_thesis_title
+      // @todo field_thesis_department
+      // @todo field_thesis_chair
+      // @todo upload
     ];
     return $fields;
   }

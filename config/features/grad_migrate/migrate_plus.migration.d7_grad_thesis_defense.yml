@@ -1,18 +1,18 @@
-uuid: 4dcd276f-12aa-486f-9ddd-3fea21a1e9e7
+uuid: d4ac9978-c059-420b-b956-a360f43f70ee
 langcode: en
 status: true
 dependencies: {  }
 _core:
   default_config_hash: DlFAuL2oveqROI4eNhsgkiDLP3bjztpzCO2z40OKjA0
-id: d7_article
+id: d7_grad_thesis_defense
 class: null
 field_plugin_method: null
 cck_plugin_method: null
 migration_tags: null
-migration_group: sitenow_migrate
-label: 'Article node migration from Drupal 7'
+migration_group: grad_migrate
+label: 'Thesis Defense node migration from Drupal 7'
 source:
-  plugin: grad_articles
+  plugin: grad_thesis_defense
 process:
   langcode:
     plugin: static_map
@@ -38,7 +38,7 @@ process:
   field_image: field_header_image_fid
 destination:
   plugin: 'entity:node'
-  type: article
+  default_bundle: thesis_defense
 migration_dependencies:
   required:
     - d7_file
