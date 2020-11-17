@@ -7,6 +7,7 @@ dependencies:
     - image.style.thumbnail
     - media.type.video
   module:
+    - file
     - image
     - user
 id: media.video.default
@@ -17,16 +18,30 @@ content:
   created:
     label: hidden
     type: timestamp
-    weight: 0
+    weight: 2
     region: content
     settings:
       date_format: medium
       custom_date_format: ''
       timezone: ''
     third_party_settings: {  }
+  field_media_video_file:
+    type: file_video
+    weight: 0
+    region: content
+    label: above
+    settings:
+      muted: false
+      width: 640
+      height: 480
+      controls: true
+      autoplay: false
+      loop: false
+      multiple_file_display_type: tags
+    third_party_settings: {  }
   thumbnail:
     type: image
-    weight: 5
+    weight: 3
     label: hidden
     settings:
       image_style: thumbnail
@@ -36,11 +51,10 @@ content:
   uid:
     label: hidden
     type: author
-    weight: 0
+    weight: 1
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
-  field_media_video_file: true
   name: true
   search_api_excerpt: true
