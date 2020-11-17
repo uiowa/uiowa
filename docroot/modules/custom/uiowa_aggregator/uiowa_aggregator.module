@@ -131,10 +131,13 @@ function uiowa_aggregator_preprocess_block(&$variables) {
 function _uiowa_aggregator_get_feeds() {
   $feeds = \Drupal::entityTypeManager()->getStorage('aggregator_feed')->loadMultiple();
   $options = [];
-
-  foreach ($feeds as $feed) {
-    $options[$feed->id()] = $feed->label();
+  if ($feeds) {
+    foreach ($feeds as $feed) {
+      $options[$feed->id()] = $feed->label();
+    }
   }
-
+  else {
+    $options = ['no-results' => 'No feeds available',];
+  }
   return $options;
 }
