@@ -86,7 +86,7 @@ class AcademicUnitForm extends EntityForm {
 
     $form['homepage'] = [
       '#type' => 'url',
-      '#title' => $this->t('College homepage link.'),
+      '#title' => $this->t('Academic unit homepage link.'),
       '#default_value' => $this->entity->get('homepage'),
       '#description' => $this->t('URL to get more information on this academic unit.'),
     ];
