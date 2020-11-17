@@ -16,6 +16,11 @@
 */
 #}
 
+<div class="video-controls video">
+  <button class="video-btn video-btn__pause" aria-label="Pause" id="video-btn">
+    <span class="element-invisible">Pause</span>
+  </button>
+</div>
 <video {{ attributes }}>
   {% for file in files %}
     <source {{ file.source_attributes }} />

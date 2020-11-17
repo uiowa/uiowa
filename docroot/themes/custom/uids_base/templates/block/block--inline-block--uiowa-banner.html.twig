@@ -63,27 +63,13 @@
 {% embed '@uids_base/uids/banner.html.twig' with block_banner only %}
 
   {% block banner_image %}
-    {% if banner_video_field is not empty %}
-      <div class="video-controls video">
-        <button class="video-btn video-btn__pause" aria-label="Pause" id="video-btn">
-          <span class="element-invisible">Pause</span>
-        </button>
-      </div>
-    {% endif %}
     {# Embed contextual links so that they'll show up in the upper right-hand corner. #}
     {{ title_prefix }}
     {{ title_suffix }}
-    {% if banner_video_field is not empty %}
-      {{ attach_library('uids_base/hero-block-video') }}
-      <video class="banner__video" autoplay="autoplay" muted="muted" loop="loop" id="video-container" poster="{{ banner_video_thumbnail }}">
-        <source src="{{ banner_video_url }}" type="video/mp4">
-      </video>
-    {% else %}
-      {% if banner_image  %}
-        <div class="banner__image">
-          {{ banner_image }}
-        </div>
-      {% endif %}
+    {% if banner_image  %}
+      <div class="banner__image">
+        {{ banner_image }}
+      </div>
     {% endif %}
   {% endblock %}
 
