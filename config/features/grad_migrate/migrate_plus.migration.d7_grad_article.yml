@@ -12,7 +12,8 @@ migration_tags: null
 migration_group: sitenow_migrate
 label: 'Article node migration from Drupal 7'
 source:
-  plugin: grad_article
+  plugin: d7_node
+  node_type: article
 process:
   langcode:
     plugin: static_map
