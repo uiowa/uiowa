@@ -376,7 +376,7 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
 
       $selectedStyles = $component->get('layout_builder_styles_style');
 
-      $style_options = ['image' => 'Image'];
+      $style_options = ['image' => 'Image or Video'];
       foreach ($all_styles as $style) {
         if ($style->getGroup() === 'background') {
           $restrictions = $style->getBlockRestrictions();
