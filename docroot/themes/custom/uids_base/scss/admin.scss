@@ -1,7 +1,6 @@
 @import "assets/scss/_variables.scss";
 @import "assets/scss/_utilities.scss";
 @import "assets/scss/_local-fonts.scss";
-@import "components/background.scss";
 @import url('../../../../../core/themes/claro/css/components/dropbutton.css');
 $imgpath: '../../uids/assets/images';
 // lb claro styles
@@ -969,14 +968,18 @@ ul.dropbutton li {
 // Set above admin toolbar and superfish.
 .joyride-tip-guide {
   z-index: 550;
+  
+  a {
+    background: transparent;
 
-  a.btn.btn-primary.btn-block {
-    color: $secondary;
-    margin-bottom: $md;
-
-    &:hover,
-    &:focus {
+    .btn.btn-primary.btn-block {
       color: $secondary;
+      margin-bottom: $md;
+
+      &:hover,
+      &:focus {
+        color: $secondary;
+      }
     }
   }
 }
