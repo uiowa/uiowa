@@ -138,7 +138,6 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       // Form modifications per block plugin and bundle.
       switch ($block->getPluginId()) {
         case 'inline_block:uiowa_banner':
-
           // We provide a field that provides background options, so
           // this is hidden.
           if (isset($form['layout_builder_style_background'])) {
@@ -260,14 +259,6 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
   $component = $form_state->getFormObject()->getCurrentComponent();
   $block = $component->getPlugin();
 
-  if ($block->getPluginId() == 'inline_block:uiowa_banner') {
-    $block_form = $form_state->getValue('settings')['block_form'];
-    $prefix = $block_form['field_uiowa_statistic_title_pre'][0]['value'];
-    if (!isset($styles['block_card_style_horizontal'])) {
-      $form_state->setErrorByName('layout_builder_block_override', t('Cards rendered within a one column layout must have the horizontal style.'));
-    }
-  }
-
   // Add a character limit to the stat block prefix/suffix fields.
   if ($block->getPluginId() == 'inline_block:uiowa_statistic') {
     $block_form = $form_state->getValue('settings')['block_form'];
@@ -297,11 +288,6 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
 
   switch ($block->getPluginId()) {
     case 'inline_block:uiowa_banner':
-      $checkbox_option = $form_state->getValue([
-        'settings',
-        'block_form',
-        'layout_builder_block_override',
-      ]);
       $background_option = $form_state->getValue([
         'settings',
         'block_form',
@@ -316,7 +302,7 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
         ];
         if ($background_option === 'image') {
           if (!$form_state->getValue($form_media_selection)) {
-            // If an image or video wasn't uploaded, revert to default of 'black'.
+            // If an image wasn't uploaded, revert to default of 'black'.
             // @todo: Add feedback for user that they didn't upload an image.
             // @todo: Add validation to check whether image uploaded or not.
             $background_option = 'block_background_style_black';
@@ -330,7 +316,6 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
         }
         // Set layout_builder_style_background to value of our duplicate select.
         $form_state->setValue('layout_builder_style_background', $background_option);
-        $form_state->setValue('layout_builder_block_override', $checkbox_option);
       }
       break;
 
@@ -391,10 +376,7 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
 
       $selectedStyles = $component->get('layout_builder_styles_style');
 
-      $style_options = [
-        'image' => 'Image',
-        'video' => 'Video',
-      ];
+      $style_options = ['image' => 'Image'];
       foreach ($all_styles as $style) {
         if ($style->getGroup() === 'background') {
           $restrictions = $style->getBlockRestrictions();
@@ -423,16 +405,6 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
         '#weight' => 4,
       ];
 
-      // Set a state for the layout builder style to toggle.
-      // Add a checkbox to toggle whether the styles should show.
-      $element['layout_builder_block_override'] = [
-        '#type' => 'checkbox',
-        '#title' => t('Disable autoplay'),
-        '#required' => FALSE,
-        '#default_value' => TRUE,
-        '#weight' => 80,
-      ];
-
       $element['field_uiowa_banner_image'] = [
         '#states' => [
           'visible' => [
@@ -440,36 +412,13 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
               'value' => 'image',
             ],
           ],
-          // @todo Conditionally require media field when 'background_options'
-          //   is set to 'image'.
+            // @todo Conditionally require media field when 'background_options'
+            //   is set to 'image'.
         ],
         '#weight' => 5,
       ] + $element['field_uiowa_banner_image'];
 
-      $element['layout_builder_block_override'] = [
-        '#states' => [
-          'visible' => [
-            ':input[name="settings[block_form][background_options]"]' => [
-              'value' => 'video',
-            ],
-          ],
-        ],
-        '#weight' => 5,
-      ] + $element['layout_builder_block_override'];
-
-      $element['field_uiowa_banner_video'] = [
-        '#states' => [
-          'visible' => [
-            ':input[name="settings[block_form][background_options]"]' => [
-              'value' => 'video',
-            ],
-          ],
-        ],
-        '#weight' => 6,
-      ] + $element['field_uiowa_banner_video'];
-
       unset($element['field_uiowa_banner_image']['widget']['#title']);
-      unset($element['field_uiowa_banner_video']['widget']['#title']);
 
       break;
 
