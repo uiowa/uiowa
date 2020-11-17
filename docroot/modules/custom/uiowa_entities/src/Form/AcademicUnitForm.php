@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @property \Drupal\uiowa_entities\UnitInterface $entity
  */
-class CollegeForm extends EntityForm {
+class AcademicUnitForm extends EntityForm {
 
   /**
    * The config factory.
@@ -58,7 +58,7 @@ class CollegeForm extends EntityForm {
       '#title' => $this->t('Label'),
       '#maxlength' => 255,
       '#default_value' => $this->entity->label(),
-      '#description' => $this->t('Label for the college.'),
+      '#description' => $this->t('Label for the academic unit.'),
       '#required' => TRUE,
     ];
 
@@ -66,7 +66,7 @@ class CollegeForm extends EntityForm {
       '#type' => 'machine_name',
       '#default_value' => $this->entity->id(),
       '#machine_name' => [
-        'exists' => '\Drupal\uiowa_entities\Entity\College::load',
+        'exists' => '\Drupal\uiowa_entities\Entity\AcademicUnit::load',
       ],
       '#disabled' => !$this->entity->isNew(),
     ];
@@ -81,14 +81,14 @@ class CollegeForm extends EntityForm {
       '#type' => 'textarea',
       '#title' => $this->t('Description'),
       '#default_value' => $this->entity->get('description'),
-      '#description' => $this->t('Description of the college.'),
+      '#description' => $this->t('Description of the academic unit.'),
     ];
 
     $form['homepage'] = [
       '#type' => 'url',
       '#title' => $this->t('College homepage link.'),
       '#default_value' => $this->entity->get('homepage'),
-      '#description' => $this->t('URL to get more information on this college.'),
+      '#description' => $this->t('URL to get more information on this academic unit.'),
     ];
 
     return $form;
@@ -110,8 +110,8 @@ class CollegeForm extends EntityForm {
     $result = parent::save($form, $form_state);
     $message_args = ['%label' => $this->entity->label()];
     $message = $result == SAVED_NEW
-      ? $this->t('Created new college %label.', $message_args)
-      : $this->t('Updated college %label.', $message_args);
+      ? $this->t('Created new academic unit %label.', $message_args)
+      : $this->t('Updated academic unit %label.', $message_args);
     $this->messenger()->addStatus($message);
     $form_state->setRedirectUrl($this->entity->toUrl('collection'));
     return $result;

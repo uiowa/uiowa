@@ -3,7 +3,7 @@
 namespace Drupal\uiowa_entities\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
-use Drupal\uiowa_entities\CollegeInterface;
+use Drupal\uiowa_entities\UnitInterface;
 
 /**
  * Defines the person type entity type.
@@ -19,7 +19,7 @@ use Drupal\uiowa_entities\CollegeInterface;
  *     plural = "@count colleges",
  *   ),
  *   handlers = {
- *     "list_builder" = "Drupal\uiowa_entities\CollegeListBuilder",
+ *     "list_builder" = "Drupal\uiowa_entities\UnitListBuilder",
  *     "form" = {
  *       "add" = "Drupal\uiowa_entities\Form\CollegeForm",
  *       "edit" = "Drupal\uiowa_entities\Form\CollegeForm",
@@ -47,7 +47,7 @@ use Drupal\uiowa_entities\CollegeInterface;
  *   }
  * )
  */
-class College extends ConfigEntityBase implements CollegeInterface {
+class College extends ConfigEntityBase implements UnitInterface {
 
   /**
    * The college ID.

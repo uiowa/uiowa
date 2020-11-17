@@ -56,7 +56,7 @@
             requiredWarning();
 
             // Show preview and inject content based on existing input or live input for
-            // both the Primary Unit and Sub Unit, Horizontal and Stacked.
+            // both the Primary College and Sub College, Horizontal and Stacked.
             if (primaryUnit.val() !== "") {
                 $(".lockup-horizontal .primary-unit").text(primaryUnit.val());
             }
@@ -191,7 +191,7 @@
                     "top": divTop
                 });
 
-                // Grab the text from Primary Unit to calculate width of divider.
+                // Grab the text from Primary College to calculate width of divider.
                 $('#primary-first-line-measure-stacked').text($('.lockup-stacked .lockup-content .lockup-content-inner .primary-unit').text());
                 var divWidth = Math.max($('#primary-first-line-measure-stacked').outerWidth() - 14, blockIowaDims.width + 6);
                 var divPos = ($('.lockup-stacked .lockup-content').outerWidth()/2) - (divWidth/2);

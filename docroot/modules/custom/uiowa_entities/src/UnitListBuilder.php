@@ -6,9 +6,9 @@ use Drupal\Core\Config\Entity\ConfigEntityListBuilder;
 use Drupal\Core\Entity\EntityInterface;
 
 /**
- * Provides a listing of Colleges.
+ * Provides a listing of Units.
  */
-class CollegeListBuilder extends ConfigEntityListBuilder {
+class UnitListBuilder extends ConfigEntityListBuilder {
 
   /**
    * {@inheritdoc}
@@ -25,7 +25,7 @@ class CollegeListBuilder extends ConfigEntityListBuilder {
    * {@inheritdoc}
    */
   public function buildRow(EntityInterface $entity) {
-    /** @var \Drupal\uiowa_entities\CollegeInterface $entity */
+    /** @var \Drupal\uiowa_entities\UnitInterface $entity */
     $row['label'] = $entity->label();
     $row['id'] = $entity->id();
     $row['status'] = $entity->status() ? $this->t('Enabled') : $this->t('Disabled');
