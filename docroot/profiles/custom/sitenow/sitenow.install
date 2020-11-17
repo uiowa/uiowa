@@ -1533,3 +1533,15 @@ function sitenow_update_8039() {
     }
   }
 }
+
+/**
+ * Install person type configuration entity (existing module).
+ */
+function sitenow_update_8040() {
+  $type_manager = \Drupal::entityTypeManager();
+  $type_manager->clearCachedDefinitions();
+  $entity_type = $type_manager->getDefinition('person_type');
+  \Drupal::entityDefinitionUpdateManager()->installEntityType($entity_type);
+
+  return t('Installed the person_type entity type');
+}
