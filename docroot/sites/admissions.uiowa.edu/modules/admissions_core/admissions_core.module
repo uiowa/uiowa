@@ -42,7 +42,7 @@ function admissions_core_theme_suggestions_field_alter(array &$suggestions, arra
  * Implements hook_views_pre_render().
  */
 function admissions_core_views_pre_render(ViewExecutable $view) {
-  if ($view->id() == "counselors" && $view->current_display == 'block_counselors') {
+  if ($view->id() == "counselors") {
     switch ($view->current_display) {
       case 'block_counselors':
       case 'page_counselors':
