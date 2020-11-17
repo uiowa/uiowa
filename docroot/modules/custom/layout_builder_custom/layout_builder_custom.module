@@ -138,6 +138,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       // Form modifications per block plugin and bundle.
       switch ($block->getPluginId()) {
         case 'inline_block:uiowa_banner':
+
           // We provide a field that provides background options, so
           // this is hidden.
           if (isset($form['layout_builder_style_background'])) {
@@ -259,6 +260,14 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
   $component = $form_state->getFormObject()->getCurrentComponent();
   $block = $component->getPlugin();
 
+  if ($block->getPluginId() == 'inline_block:uiowa_banner') {
+    $block_form = $form_state->getValue('settings')['block_form'];
+    $prefix = $block_form['field_uiowa_statistic_title_pre'][0]['value'];
+    if (!isset($styles['block_card_style_horizontal'])) {
+      $form_state->setErrorByName('layout_builder_block_override', t('Cards rendered within a one column layout must have the horizontal style.'));
+    }
+  }
+
   // Add a character limit to the stat block prefix/suffix fields.
   if ($block->getPluginId() == 'inline_block:uiowa_statistic') {
     $block_form = $form_state->getValue('settings')['block_form'];
@@ -288,6 +297,11 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
 
   switch ($block->getPluginId()) {
     case 'inline_block:uiowa_banner':
+      $checkbox_option = $form_state->getValue([
+        'settings',
+        'block_form',
+        'layout_builder_block_override',
+      ]);
       $background_option = $form_state->getValue([
         'settings',
         'block_form',
@@ -316,6 +330,7 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
         }
         // Set layout_builder_style_background to value of our duplicate select.
         $form_state->setValue('layout_builder_style_background', $background_option);
+        $form_state->setValue('layout_builder_block_override', $checkbox_option);
       }
       break;
 
@@ -408,6 +423,16 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
         '#weight' => 4,
       ];
 
+      // Set a state for the layout builder style to toggle.
+      // Add a checkbox to toggle whether the styles should show.
+      $element['layout_builder_block_override'] = [
+        '#type' => 'checkbox',
+        '#title' => t('Disable autoplay'),
+        '#required' => FALSE,
+        '#default_value' => TRUE,
+        '#weight' => 80,
+      ];
+
       $element['field_uiowa_banner_image'] = [
         '#states' => [
           'visible' => [
@@ -420,6 +445,17 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
         ],
         '#weight' => 5,
       ] + $element['field_uiowa_banner_image'];
+
+      $element['layout_builder_block_override'] = [
+        '#states' => [
+          'visible' => [
+            ':input[name="settings[block_form][background_options]"]' => [
+              'value' => 'video',
+            ],
+          ],
+        ],
+        '#weight' => 5,
+      ] + $element['layout_builder_block_override'];
 
       $element['field_uiowa_banner_video'] = [
         '#states' => [
