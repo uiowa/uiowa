@@ -968,14 +968,18 @@ ul.dropbutton li {
 // Set above admin toolbar and superfish.
 .joyride-tip-guide {
   z-index: 550;
+  
+  a {
+    background: transparent;
 
-  a.btn.btn-primary.btn-block {
-    color: $secondary;
-    margin-bottom: $md;
-
-    &:hover,
-    &:focus {
+    .btn.btn-primary.btn-block {
       color: $secondary;
+      margin-bottom: $md;
+
+      &:hover,
+      &:focus {
+        color: $secondary;
+      }
     }
   }
 }
