@@ -43,7 +43,12 @@ function admissions_core_theme_suggestions_field_alter(array &$suggestions, arra
  */
 function admissions_core_views_pre_render(ViewExecutable $view) {
   if ($view->id() == "counselors" && $view->current_display == 'block_counselors') {
-    $view->element['#attached']['library'][] = 'admissions_core/counselors-list';
-    $foo = $view;
+    switch ($view->current_display) {
+      case 'block_counselors':
+      case 'page_counselors':
+        $view->element['#attached']['library'][] = 'admissions_core/counselors-list';
+        break;
+
+    }
   }
 }
