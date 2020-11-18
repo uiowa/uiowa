@@ -5,6 +5,7 @@ dependencies:
   config:
     - core.entity_form_mode.media.media_library
     - field.field.media.video.field_media_video_file
+    - field.field.media.video.field_video_enable_autoplay
     - media.type.video
 _core:
   default_config_hash: tDAk5WjHHzEBR0eK2k8ZlWr7Ji5lCSh_ddgoQnmfsCY
@@ -13,6 +14,13 @@ targetEntityType: media
 bundle: video
 mode: media_library
 content:
+  field_video_enable_autoplay:
+    type: boolean_checkbox
+    weight: 1
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
   name:
     type: string_textfield
     weight: 0

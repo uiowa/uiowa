@@ -1,0 +1,23 @@
+uuid: efd94ecb-a27b-4598-975f-1323a666fbf0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_video_enable_autoplay
+    - media.type.video
+id: media.video.field_video_enable_autoplay
+field_name: field_video_enable_autoplay
+entity_type: media
+bundle: video
+label: 'Enable autoplay'
+description: 'Warning: '
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean
