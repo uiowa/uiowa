@@ -152,7 +152,7 @@ class LockupController extends ControllerBase {
           $s_data['lines'] = $s_lines;
         }
 
-        // College name generation.
+        // Unit name generation.
         $p_txt = $node->field_lockup_p_unit_stacked->value;
         $p_explode = explode(PHP_EOL, $p_txt);
         $p_count = count($p_explode);
@@ -278,7 +278,7 @@ class LockupController extends ControllerBase {
           $s_data['lines'] = $s_lines;
         }
 
-        // College name generation.
+        // Unit name generation.
         $p_txt = $node->field_lockup_primary_unit->value;
         $p_explode = explode(PHP_EOL, $p_txt);
         $p_count = count($p_explode);
