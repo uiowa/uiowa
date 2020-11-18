@@ -7,15 +7,18 @@ label: 'Grad Migrate'
 description: 'Migrations for the Grad College'
 folder: ../config/features/grad_migrate
 module:
+  grad_migrate: 0
   migrate: 0
   migrate_drupal: 0
   migrate_plus: 0
   migrate_tools: 0
   sitenow_migrate: 0
-  grad_migrate: 0
 theme: {  }
 blacklist:
   - config_split.config_split.grad_migrate
+  - migrate_plus.migration.d7_grad_article
+  - migrate_plus.migration.d7_grad_file
+  - migrate_plus.migration.d7_grad_thesis_defense
 graylist: {  }
 graylist_dependents: true
 graylist_skip_equal: true

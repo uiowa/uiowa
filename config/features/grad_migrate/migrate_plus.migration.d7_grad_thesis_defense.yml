@@ -12,7 +12,7 @@ migration_tags: null
 migration_group: sitenow_migrate
 label: 'Thesis Defense node migration from Drupal 7'
 source:
-  plugin: grad_thesis_defense
+  plugin: d7_node
   node_type: thesis_defense
 process:
   langcode:
@@ -24,7 +24,7 @@ process:
   title: title
   type:
     plugin: default_value
-    default_value: article
+    default_value: thesis_defense
   uid:
     plugin: default_value
     default_value: 0
@@ -42,4 +42,4 @@ destination:
   default_bundle: thesis_defense
 migration_dependencies:
   required:
-    - d7_file
+    - d7_grad_file
