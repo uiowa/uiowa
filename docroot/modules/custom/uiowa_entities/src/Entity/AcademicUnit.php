@@ -10,7 +10,7 @@ use Drupal\uiowa_entities\UnitInterface;
  *
  * @ConfigEntityType(
  *   id = "uiowa_academic_unit",
- *   label = @Translation("Academic College"),
+ *   label = @Translation("Academic Unit"),
  *   label_collection = @Translation("Academic Units"),
  *   label_singular = @Translation("academic unit"),
  *   label_plural = @Translation("academic units"),
