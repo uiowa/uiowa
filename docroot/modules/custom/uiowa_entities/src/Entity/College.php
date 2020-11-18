@@ -26,7 +26,7 @@ use Drupal\uiowa_entities\UnitInterface;
  *       "delete" = "Drupal\Core\Entity\EntityDeleteForm"
  *     }
  *   },
- *   config_prefix = "uiowa_college",
+ *   config_prefix = "unit.college",
  *   admin_permission = "administer uiowa_college",
  *   links = {
  *     "collection" = "/admin/structure/uiowa-college",
@@ -42,7 +42,6 @@ use Drupal\uiowa_entities\UnitInterface;
  *   config_export = {
  *     "id",
  *     "label",
- *     "description",
  *     "homepage"
  *   }
  * )

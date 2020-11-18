@@ -77,13 +77,6 @@ class CollegeForm extends EntityForm {
       '#default_value' => $this->entity->status(),
     ];
 
-    $form['description'] = [
-      '#type' => 'textarea',
-      '#title' => $this->t('Description'),
-      '#default_value' => $this->entity->get('description'),
-      '#description' => $this->t('Description of the college.'),
-    ];
-
     $form['homepage'] = [
       '#type' => 'url',
       '#title' => $this->t('College homepage link.'),

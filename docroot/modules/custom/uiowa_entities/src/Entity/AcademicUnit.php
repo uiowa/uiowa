@@ -23,10 +23,10 @@ use Drupal\uiowa_entities\UnitInterface;
  *     "form" = {
  *       "add" = "Drupal\uiowa_entities\Form\AcademicUnitForm",
  *       "edit" = "Drupal\uiowa_entities\Form\AcademicUnitForm",
- *       "delete" = "Drupal\Core\Entity\EntityAcademicUnitForm"
+ *       "delete" = "Drupal\Core\Entity\EntityDeleteForm"
  *     }
  *   },
- *   config_prefix = "uiowa_academic_unit",
+ *   config_prefix = "unit.academic_unit",
  *   admin_permission = "administer uiowa_academic_unit",
  *   links = {
  *     "collection" = "/admin/structure/uiowa-acadmeic-unit",
@@ -42,7 +42,6 @@ use Drupal\uiowa_entities\UnitInterface;
  *   config_export = {
  *     "id",
  *     "label",
- *     "description",
  *     "homepage"
  *   }
  * )
@@ -69,13 +68,6 @@ class AcademicUnit extends ConfigEntityBase implements UnitInterface {
    * @var bool
    */
   protected $status;
-
-  /**
-   * The academic unit description.
-   *
-   * @var string
-   */
-  protected $description;
 
   /**
    * A link to the academic unit homepage.
