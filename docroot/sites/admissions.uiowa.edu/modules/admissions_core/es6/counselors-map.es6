@@ -103,6 +103,20 @@
             });
         }
 
+        let reset = L.control();
+        reset.setPosition('topleft');
+        reset.onAdd = function (map) {
+          this._div = L.DomUtil.create("div", "reset");
+          this._div.innerHTML = "<button class='badge badge--cool-gray' id='map-reset'>Reset</button>";
+          return this._div;
+        };
+        reset.addTo(map);
+
+        let resetButton = document.getElementById("map-reset");
+        resetButton.addEventListener("click", function() {
+          map.setView([37.8, -96], 4);
+        });
+
         // Floating window to display state info on hover.
         let info = L.control();
         info.setPosition('bottomright');
