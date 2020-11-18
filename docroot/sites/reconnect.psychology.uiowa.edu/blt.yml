@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: psychologyreconnect.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: psychologyreconnect
+  human_name: reconnect.psychology.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: psychologyreconnect.prod
+drupal:
+  db:
+    database: reconnect_psychology_uiowa_edu
+uiowa:
+  requester: cbierman

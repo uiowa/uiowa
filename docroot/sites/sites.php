@@ -1835,3 +1835,9 @@ $sites['orgafpcc.local.drupal.uiowa.edu'] = 'afpcc.org.uiowa.edu';
 $sites['orgafpcc.dev.drupal.uiowa.edu'] = 'afpcc.org.uiowa.edu';
 $sites['orgafpcc.stage.drupal.uiowa.edu'] = 'afpcc.org.uiowa.edu';
 $sites['orgafpcc.prod.drupal.uiowa.edu'] = 'afpcc.org.uiowa.edu';
+
+// Directory aliases for reconnect.psychology.uiowa.edu.
+$sites['psychologyreconnect.local.drupal.uiowa.edu'] = 'reconnect.psychology.uiowa.edu';
+$sites['psychologyreconnect.dev.drupal.uiowa.edu'] = 'reconnect.psychology.uiowa.edu';
+$sites['psychologyreconnect.stage.drupal.uiowa.edu'] = 'reconnect.psychology.uiowa.edu';
+$sites['psychologyreconnect.prod.drupal.uiowa.edu'] = 'reconnect.psychology.uiowa.edu';
