@@ -208,19 +208,20 @@ function uids_base_preprocess_media(array &$variables) {
   /** @var \Drupal\media\Entity\Media $media */
   $media = $variables['media'];
 
-  // @todo Add a check for the video type so this only runs when necessary.
+  // Get the media entity's bundle (such as video, image, etc.)
+  $mediaType = $variables['media']->bundle();
 
-  // @todo Get the entity object for the parent entity:
-  //   $referring_field = $media->_referringItem->getParent();
-  //   $parent_entity = $referring_field->getParent();
-  //   I'm not sure if this will work reliably.
-
-  // @todo Get the field value of autoplay from the parent entity:
-  //   if ($autoplay_field = $parent_entity->field_banner_video_autoplay && $autoplay = $autoplay_field->value) { ... }
-
-  // @todo Set the autoplay attribute on the video:
-  //   $variables['content']['field_media_video_file'][0]['#attributes']['storage']['autoplay'] = $autoplay;
-
+  if ($mediaType == 'video') {
+    $referring_field = $media->_referringItem->getParent();
+    $parent_entity = $referring_field->getParent();
+    if ($autoplay_field = $parent_entity->field_uiowa_banner_autoplay && $autoplay = $autoplay_field->value) {
+      $variables['content']['field_media_video_file'][0]['#attributes']['storage']['autoplay'] = $autoplay;
+      $variables['content']['field_media_video_file'][0]['#attributes'] = [
+        'autoplay' => ['autoplay'],
+        'loop' => ['loop'],
+      ];
+    }
+  }
 }
 
 /**
