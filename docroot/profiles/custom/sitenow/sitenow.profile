@@ -981,7 +981,7 @@ function sitenow_entity_insert(EntityInterface $entity) {
  * Implements hook_ENTITY_TYPE_presave().
  *
  * @param \Drupal\node\Entity\Node $node
- * Get straight to the node instead of through entity.
+ *   Get straight to the node instead of through entity.
  */
 function sitenow_node_presave(Node $node) {
   $tags = ['node_type:' . $node->getType()];
@@ -992,7 +992,7 @@ function sitenow_node_presave(Node $node) {
  * Implements hook_ENTITY_TYPE_delete().
  *
  * @param \Drupal\node\Entity\Node $node
- * Get straight to the node instead of through entity.
+ *   Get straight to the node instead of through entity.
  */
 function sitenow_node_delete(Node $node) {
   $tags = ['node_type:' . $node->getType()];
