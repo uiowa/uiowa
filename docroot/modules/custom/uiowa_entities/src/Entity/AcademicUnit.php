@@ -10,13 +10,13 @@ use Drupal\uiowa_entities\UnitInterface;
  *
  * @ConfigEntityType(
  *   id = "uiowa_academic_unit",
- *   label = @Translation("Academic Unit"),
- *   label_collection = @Translation("Academic Units"),
- *   label_singular = @Translation("academic unit"),
- *   label_plural = @Translation("academic units"),
+ *   label = @Translation("Non-Collegiate Academic Unit"),
+ *   label_collection = @Translation("Non-Collegiate Academic Units"),
+ *   label_singular = @Translation("non-collegiate academic unit"),
+ *   label_plural = @Translation("non-collegiate academic units"),
  *   label_count = @PluralTranslation(
- *     singular = "@count academic unit",
- *     plural = "@count academic units",
+ *     singular = "@count non-collegiate academic unit",
+ *     plural = "@count non-collegiate academic units",
  *   ),
  *   handlers = {
  *     "list_builder" = "Drupal\uiowa_entities\UnitListBuilder",

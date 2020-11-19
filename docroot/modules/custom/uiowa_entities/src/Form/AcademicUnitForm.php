@@ -58,7 +58,7 @@ class AcademicUnitForm extends EntityForm {
       '#title' => $this->t('Label'),
       '#maxlength' => 255,
       '#default_value' => $this->entity->label(),
-      '#description' => $this->t('Label for the academic unit.'),
+      '#description' => $this->t('Label for the non-collegiate academic unit.'),
       '#required' => TRUE,
     ];
 
@@ -79,9 +79,9 @@ class AcademicUnitForm extends EntityForm {
 
     $form['homepage'] = [
       '#type' => 'url',
-      '#title' => $this->t('Academic unit homepage link.'),
+      '#title' => $this->t('Non-collegiate academic unit homepage link.'),
       '#default_value' => $this->entity->get('homepage'),
-      '#description' => $this->t('URL to get more information on this academic unit.'),
+      '#description' => $this->t('URL to get more information on this non-collegiate academic unit.'),
     ];
 
     return $form;
@@ -103,8 +103,8 @@ class AcademicUnitForm extends EntityForm {
     $result = parent::save($form, $form_state);
     $message_args = ['%label' => $this->entity->label()];
     $message = $result == SAVED_NEW
-      ? $this->t('Created new academic unit %label.', $message_args)
-      : $this->t('Updated academic unit %label.', $message_args);
+      ? $this->t('Created new non-collegiate academic unit %label.', $message_args)
+      : $this->t('Updated non-collegiate academic unit %label.', $message_args);
     $this->messenger()->addStatus($message);
     $form_state->setRedirectUrl($this->entity->toUrl('collection'));
     return $result;

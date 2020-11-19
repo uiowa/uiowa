@@ -6,17 +6,17 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
 use Drupal\uiowa_entities\UnitInterface;
 
 /**
- * Defines the uiowa unit entity type.
+ * Defines the uiowa academic unit entity type.
  *
  * @ConfigEntityType(
  *   id = "uiowa_unit",
- *   label = @Translation("Unit"),
- *   label_collection = @Translation("Units"),
- *   label_singular = @Translation("unit"),
- *   label_plural = @Translation("units"),
+ *   label = @Translation("Academic Unit"),
+ *   label_collection = @Translation("Academic Units"),
+ *   label_singular = @Translation("academic unit"),
+ *   label_plural = @Translation("academic units"),
  *   label_count = @PluralTranslation(
- *     singular = "@count unit",
- *     plural = "@count units",
+ *     singular = "@count academic unit",
+ *     plural = "@count academic units",
  *   ),
  *   config_prefix = "unit",
  *   entity_keys = {
