@@ -419,15 +419,15 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
       ] + $element['field_uiowa_banner_image'];
 
       $element['field_uiowa_banner_autoplay'] = [
-          '#states' => [
-            'visible' => [
-              ':input[name="settings[block_form][background_options]"]' => [
-                'value' => 'image',
-              ],
+        '#states' => [
+          'visible' => [
+            ':input[name="settings[block_form][background_options]"]' => [
+              'value' => 'image',
             ],
           ],
-          '#weight' => 5,
-        ] + $element['field_uiowa_banner_autoplay'];
+        ],
+        '#weight' => 5,
+      ] + $element['field_uiowa_banner_autoplay'];
 
       unset($element['field_uiowa_banner_image']['widget']['#title']);
       unset($element['field_uiowa_banner_autoplay']['widget']['#title']);
