@@ -202,7 +202,7 @@ function uids_base_preprocess_node(&$variables) {
 }
 
 /**
- *
+ * Implements hook_entity_view().
  */
 function uids_base_entity_view(&$build, $entity, $display, $view_mode) {
   if ($entity->getEntityTypeId() == 'media' && $entity->bundle() == 'video') {
