@@ -20,6 +20,14 @@ function admissions_core_theme($existing, $type, $theme, $path) {
       'template' => 'views-view-unformatted--scholarships--block-scholarships',
       'base hook' => 'view',
     ],
+    'views_view_unformatted__counselors' => [
+      'template' => 'views-view-unformatted--counselors',
+      'base hook' => 'view',
+    ],
+    'views_view_unformatted__person_card' => [
+      'template' => 'views-view-unformatted--person-card',
+      'base hook' => 'view',
+    ],
     'node__view__counselors' => [
       'template' => 'node--view--counselors',
       'base hook' => 'node',
@@ -51,6 +59,7 @@ function admissions_core_views_pre_render(ViewExecutable $view) {
       case 'block_counselors':
       case 'page_counselors':
         $view->element['#attached']['library'][] = 'admissions_core/counselors-list';
+        $view->element['#attached']['library'][] = 'admissions_core/person';
         break;
 
     }
