@@ -1194,12 +1194,6 @@ $sites['slis.dev.drupal.uiowa.edu'] = 'slis.uiowa.edu';
 $sites['slis.stage.drupal.uiowa.edu'] = 'slis.uiowa.edu';
 $sites['slis.prod.drupal.uiowa.edu'] = 'slis.uiowa.edu';
 
-// Directory aliases for livingwellstudy.sites.uiowa.edu.
-$sites['siteslivingwellstudy.local.drupal.uiowa.edu'] = 'livingwellstudy.sites.uiowa.edu';
-$sites['siteslivingwellstudy.dev.drupal.uiowa.edu'] = 'livingwellstudy.sites.uiowa.edu';
-$sites['siteslivingwellstudy.stage.drupal.uiowa.edu'] = 'livingwellstudy.sites.uiowa.edu';
-$sites['siteslivingwellstudy.prod.drupal.uiowa.edu'] = 'livingwellstudy.sites.uiowa.edu';
-
 // Directory aliases for anthropology.uiowa.edu.
 $sites['anthropology.local.drupal.uiowa.edu'] = 'anthropology.uiowa.edu';
 $sites['anthropology.dev.drupal.uiowa.edu'] = 'anthropology.uiowa.edu';
@@ -1841,3 +1835,9 @@ $sites['orgafpcc.local.drupal.uiowa.edu'] = 'afpcc.org.uiowa.edu';
 $sites['orgafpcc.dev.drupal.uiowa.edu'] = 'afpcc.org.uiowa.edu';
 $sites['orgafpcc.stage.drupal.uiowa.edu'] = 'afpcc.org.uiowa.edu';
 $sites['orgafpcc.prod.drupal.uiowa.edu'] = 'afpcc.org.uiowa.edu';
+
+// Directory aliases for reconnect.psychology.uiowa.edu.
+$sites['psychologyreconnect.local.drupal.uiowa.edu'] = 'reconnect.psychology.uiowa.edu';
+$sites['psychologyreconnect.dev.drupal.uiowa.edu'] = 'reconnect.psychology.uiowa.edu';
+$sites['psychologyreconnect.stage.drupal.uiowa.edu'] = 'reconnect.psychology.uiowa.edu';
+$sites['psychologyreconnect.prod.drupal.uiowa.edu'] = 'reconnect.psychology.uiowa.edu';

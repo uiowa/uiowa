@@ -73,7 +73,7 @@ class SettingsForm extends ConfigFormBase {
       ],
     ];
 
-    // @todo: Figure out why required state results in console error on submit.
+    // @todo Figure out why required state results in console error on submit.
     $form['custom_alert_message'] = [
       '#type' => 'text_format',
       '#title' => $this->t('Custom Alert Message'),
