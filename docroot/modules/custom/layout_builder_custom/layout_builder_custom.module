@@ -303,8 +303,8 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
         if ($background_option === 'image') {
           if (!$form_state->getValue($form_media_selection)) {
             // If an image wasn't uploaded, revert to default of 'black'.
-            // @todo: Add feedback for user that they didn't upload an image.
-            // @todo: Add validation to check whether image uploaded or not.
+            // @todo Add feedback for user that they didn't upload an image.
+            // @todo Add validation to check whether image uploaded or not.
             $background_option = 'block_background_style_black';
           }
 
