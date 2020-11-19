@@ -6,6 +6,7 @@
  */
 
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -974,4 +975,22 @@ function sitenow_entity_insert(EntityInterface $entity) {
       }
     }
   }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * @param \Drupal\node\Entity\Node $node
+ */
+function sitenow_node_presave(Node $node) {
+  $tags = ['node_type:' . $node->getType()];
+  Cache::invalidateTags($tags);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ */
+function sitenow_node_delete(Node $node) {
+  $tags = ['node_type:' . $node->getType()];
+  Cache::invalidateTags($tags);
 }

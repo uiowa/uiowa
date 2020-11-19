@@ -47,6 +47,9 @@ class AdmissionsCounselorsMapBlock extends BlockBase {
     return [
       '#type' => 'markup',
       '#markup' => $this->t($html),
+      '#cache' => [
+        'tags' => ['node_type:person'],
+      ],
       '#attached' => [
         'library' => [
           'uids_base/leaflet',
