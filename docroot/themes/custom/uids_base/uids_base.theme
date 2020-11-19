@@ -191,6 +191,14 @@ function uids_base_preprocess_node(&$variables) {
       $variables['breadcrumb'] = $plugin_block->build();
     }
   }
+  $node = \Drupal::routeMatch()->getParameter('node');
+
+  if ($node instanceof NodeInterface) {
+    // @todo Is there a better way to have a soft dependency on a class?
+    if (class_exists('\Drupal\layout_builder_custom\LayoutBuilderHelper')) {
+      $variables['layout_builder_enabled'] = \Drupal::classResolver('\Drupal\layout_builder_custom\LayoutBuilderHelper')->layoutBuilderEnabled($node);
+    }
+  }
 }
 
 /**
@@ -367,6 +375,17 @@ function uids_base_preprocess_block(&$variables) {
     $block_manager = \Drupal::service('plugin.manager.block');
     $config = [];
     $plugin_block = $block_manager->createInstance('system_breadcrumb_block', $config);
+
+    $variables['page_title'] = NULL;
+    $node = \Drupal::routeMatch()->getParameter('node');
+    if ($node instanceof NodeInterface) {
+      $variables['page_title'] = $node->getTitle();
+    }
+    else {
+      $request = \Drupal::request();
+      $route_match = \Drupal::routeMatch();
+      $variables['page_title'] = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
+    }
 
     $variables['breadcrumb'] = $plugin_block->build();
   }

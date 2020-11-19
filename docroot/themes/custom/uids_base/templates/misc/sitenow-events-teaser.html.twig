@@ -1,13 +1,15 @@
 {%
   set classes = [
-  'card--list'
-]
+    'card--list',
+    'card__row',
+    'card--media-left'
+  ]
 %}
 
 {{ attach_library('classy/node') }}
 {{ attach_library('uids_base/paragraphs-lists') }}
-{{ attach_library('uids_base/events') }}
-
+{{ attach_library('uids_base/event') }}
+{{ attach_library('uids_base/media') }}
 
 {# Set the event icon #}
 {% if event.virtual %}
@@ -16,29 +18,33 @@
 {% else %}
   {% set event_icon = '<span class="fas fa-map-marker-alt"></span>' %}
   {% set event_location = event.location_name %}
-
 {% endif %}
 
-{% set event_block = {
+{% set block_card = {
   'attributes': attributes.addClass(classes),
-  'event_image': event.image|render,
-  'event_title': event.title|render,
+  'media_styles' : ['media--circle', 'media--border'],
+  'media_sizes' : 'card__media--small',
+  'card_image': event.image|render,
+  'card_title': event.title|render,
   'title_prefix': title_prefix,
   'title_suffix': title_suffix,
-  'event_url': event.url,
-  'event_date': event.date_string,
+  'card_link_url': event.url,
+  'card_date': event.date_string,
   'headline_level': event.heading_size,
-  'event_icon': event_icon|trans ,
-  'event_location': event_location|render,
-  'event_description': event.description_text,
+  'card_text': event.description_text,
+  'event_icon': event_icon|trans,
+  'card_tag': event_location|render,
 } %}
 
-{% embed '@uids_base/uids/event.html.twig' with event_block only %}
+{% embed '@uids_base/uids/card.html.twig' with block_card only %}
 
-  {% block headline %}
-    {{ title_prefix }}
-    {{ parent() }}
-    {{ title_suffix }}
+  {% block card_tag %}
+    {% if card_tag is not empty %}
+      <div class="card__label">
+        {{ event_icon }}
+        {{ card_tag }}
+      </div>
+    {% endif %}
   {% endblock %}
 
 {% endembed %}

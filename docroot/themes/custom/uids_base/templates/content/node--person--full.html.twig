@@ -82,66 +82,71 @@
 %}
 {{ attach_library('classy/node') }}
 {{ attach_library('uids_base/node-type-person') }}
-<article{{ attributes.addClass(classes) }}>
 
-  {{ title_prefix }}
-  {% if label and not page %}
-    <h2{{ title_attributes }}>
-      <a href="{{ url }}" rel="bookmark">{{ label }}</a>
-    </h2>
-  {% endif %}
-  {{ title_suffix }}
+{% if layout_builder_enabled == TRUE %}
+  {{ content }}
+{% else %}
+  <article{{ attributes.addClass(classes) }}>
 
-  {% if display_submitted %}
-    <footer class="node__meta">
-      {{ author_picture }}
-      <div{{ author_attributes.addClass('node__submitted') }}>
-        {% trans %}Submitted by
-        {{ author_name }}
-        on
-        {{ date }}{% endtrans %}
-        {{ metadata }}
-      </div>
-    </footer>
-  {% endif %}
+    {{ title_prefix }}
+    {% if label and not page %}
+      <h2{{ title_attributes }}>
+        <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+      </h2>
+    {% endif %}
+    {{ title_suffix }}
+  {{ devel_breakpoint }}
+    {% if display_submitted %}
+      <footer class="node__meta">
+        {{ author_picture }}
+        <div{{ author_attributes.addClass('node__submitted') }}>
+          {% trans %}Submitted by
+          {{ author_name }}
+          on
+          {{ date }}{% endtrans %}
+          {{ metadata }}
+        </div>
+      </footer>
+    {% endif %}
 
-  <div{{ content_attributes.addClass('node__content') }}>
-    {{ content.content_moderation_control }}
-    <div class="row">
-      <div class="col-md-6 col-lg-3 person-meta">
-        {% if content.field_image %}
-          <figure class="content-image">
-            {{ content.field_image }}
-            {% if content.field_image_caption %}
-              <figcaption>
-                {{ label }}
-              </figcaption>
-            {% endif %}
-          </figure>
-        {% endif %}
+    <div{{ content_attributes.addClass('node__content') }}>
+      {{ content.content_moderation_control }}
+      <div class="row">
+        <div class="col-md-6 col-lg-3 person-meta">
+          {% if content.field_image %}
+            <figure class="content-image">
+              {{ content.field_image }}
+              {% if content.field_image_caption %}
+                <figcaption>
+                  {{ label }}
+                </figcaption>
+              {% endif %}
+            </figure>
+          {% endif %}
 
-        {{ content|without(
-          'field_image',
-          'field_person_bio',
-          'content_moderation_control',
-          'pt_student_dissertation_title',
-          'field_person_education',
-          'field_person_research_areas',
-          'field_person_publications_link'
-        ) }}
-      </div>
-      <div class="col-md-6 col-lg-9 person-content">
-        {% if content.pt_student_dissertation_title and content.pt_student_dissertation_title|render is not empty %}
-          <h2>
-            {{ content.pt_student_dissertation_title }}
-          </h2>
-        {% endif %}
-        {{ content.field_person_bio }}
-        {{ content.field_person_education }}
-        {{ content.field_person_publications_link }}
-        {{ content.field_person_research_areas }}
+          {{ content|without(
+            'field_image',
+            'field_person_bio',
+            'content_moderation_control',
+            'pt_student_dissertation_title',
+            'field_person_education',
+            'field_person_research_areas',
+            'field_person_publications_link'
+          ) }}
+        </div>
+        <div class="col-md-6 col-lg-9 person-content">
+          {% if content.pt_student_dissertation_title and content.pt_student_dissertation_title|render is not empty %}
+            <h2>
+              {{ content.pt_student_dissertation_title }}
+            </h2>
+          {% endif %}
+          {{ content.field_person_bio }}
+          {{ content.field_person_education }}
+          {{ content.field_person_publications_link }}
+          {{ content.field_person_research_areas }}
+        </div>
       </div>
     </div>
-  </div>
 
-</article>
+  </article>
+{% endif %}

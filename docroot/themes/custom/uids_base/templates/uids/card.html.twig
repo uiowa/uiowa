@@ -57,7 +57,7 @@
         {# @todo Determine if it is better to programatically set level and class via preprocess. #}
         {% set card_heading = {
           'headline_level': headline_level ?: 'h2',
-          'headline_class': headline_class ?: 'card__title',
+          'headline_class': headline_class ?: 'card__title headline',
           'headline_text': card_title,
           'headline_url': card_link_url,
           'headline_aria': card_aria_describedby,
@@ -95,19 +95,19 @@
 
     {% block card_content %}
       {% if card_text is not empty %}
-        <p>{{ card_text }}</p>
+        <p class="card__description">{{ card_text }}</p>
       {% endif %}
     {% endblock %}
 
     {% block card_bttn %}
       {% if card_link_url is not empty and show_button %}
         {% if link_element == 'button' %}
-          <a class="bttn bttn--outline bttn--tertiary bttn--sans-serif bttn--full" href="{{ card_link_url }}">
+          <a class="bttn bttn--outline bttn--sans-serif bttn--full" href="{{ card_link_url }}">
             {{ card_link_title }}
             <i class="fas fa-arrow-right"></i>
           </a>
         {% else %}
-          <div aria-hidden="true" class="bttn bttn--outline bttn--tertiary bttn--sans-serif"{% if card_aria_describedby %} id="{{ card_aria_describedby }}"{% endif %}>
+          <div aria-hidden="true" class="bttn bttn--outline bttn--sans-serif"{% if card_aria_describedby %} id="{{ card_aria_describedby }}"{% endif %}>
             {{ card_link_title }}
             <i class="fas fa-arrow-right"></i>
           </div>

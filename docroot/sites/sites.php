@@ -1194,12 +1194,6 @@ $sites['slis.dev.drupal.uiowa.edu'] = 'slis.uiowa.edu';
 $sites['slis.stage.drupal.uiowa.edu'] = 'slis.uiowa.edu';
 $sites['slis.prod.drupal.uiowa.edu'] = 'slis.uiowa.edu';
 
-// Directory aliases for livingwellstudy.sites.uiowa.edu.
-$sites['siteslivingwellstudy.local.drupal.uiowa.edu'] = 'livingwellstudy.sites.uiowa.edu';
-$sites['siteslivingwellstudy.dev.drupal.uiowa.edu'] = 'livingwellstudy.sites.uiowa.edu';
-$sites['siteslivingwellstudy.stage.drupal.uiowa.edu'] = 'livingwellstudy.sites.uiowa.edu';
-$sites['siteslivingwellstudy.prod.drupal.uiowa.edu'] = 'livingwellstudy.sites.uiowa.edu';
-
 // Directory aliases for anthropology.uiowa.edu.
 $sites['anthropology.local.drupal.uiowa.edu'] = 'anthropology.uiowa.edu';
 $sites['anthropology.dev.drupal.uiowa.edu'] = 'anthropology.uiowa.edu';
@@ -1817,3 +1811,33 @@ $sites['courseventilator.local.drupal.uiowa.edu'] = 'ventilator.course.uiowa.edu
 $sites['courseventilator.dev.drupal.uiowa.edu'] = 'ventilator.course.uiowa.edu';
 $sites['courseventilator.stage.drupal.uiowa.edu'] = 'ventilator.course.uiowa.edu';
 $sites['courseventilator.prod.drupal.uiowa.edu'] = 'ventilator.course.uiowa.edu';
+
+// Directory aliases for uip.pharmacy.uiowa.edu.
+$sites['pharmacyuip.local.drupal.uiowa.edu'] = 'uip.pharmacy.uiowa.edu';
+$sites['pharmacyuip.dev.drupal.uiowa.edu'] = 'uip.pharmacy.uiowa.edu';
+$sites['pharmacyuip.stage.drupal.uiowa.edu'] = 'uip.pharmacy.uiowa.edu';
+$sites['pharmacyuip.prod.drupal.uiowa.edu'] = 'uip.pharmacy.uiowa.edu';
+
+// Directory aliases for licensing.sites.uiowa.edu.
+$sites['siteslicensing.local.drupal.uiowa.edu'] = 'licensing.sites.uiowa.edu';
+$sites['siteslicensing.dev.drupal.uiowa.edu'] = 'licensing.sites.uiowa.edu';
+$sites['siteslicensing.stage.drupal.uiowa.edu'] = 'licensing.sites.uiowa.edu';
+$sites['siteslicensing.prod.drupal.uiowa.edu'] = 'licensing.sites.uiowa.edu';
+
+// Directory aliases for reno.sites.uiowa.edu.
+$sites['sitesreno.local.drupal.uiowa.edu'] = 'reno.sites.uiowa.edu';
+$sites['sitesreno.dev.drupal.uiowa.edu'] = 'reno.sites.uiowa.edu';
+$sites['sitesreno.stage.drupal.uiowa.edu'] = 'reno.sites.uiowa.edu';
+$sites['sitesreno.prod.drupal.uiowa.edu'] = 'reno.sites.uiowa.edu';
+
+// Directory aliases for afpcc.org.uiowa.edu.
+$sites['orgafpcc.local.drupal.uiowa.edu'] = 'afpcc.org.uiowa.edu';
+$sites['orgafpcc.dev.drupal.uiowa.edu'] = 'afpcc.org.uiowa.edu';
+$sites['orgafpcc.stage.drupal.uiowa.edu'] = 'afpcc.org.uiowa.edu';
+$sites['orgafpcc.prod.drupal.uiowa.edu'] = 'afpcc.org.uiowa.edu';
+
+// Directory aliases for reconnect.psychology.uiowa.edu.
+$sites['psychologyreconnect.local.drupal.uiowa.edu'] = 'reconnect.psychology.uiowa.edu';
+$sites['psychologyreconnect.dev.drupal.uiowa.edu'] = 'reconnect.psychology.uiowa.edu';
+$sites['psychologyreconnect.stage.drupal.uiowa.edu'] = 'reconnect.psychology.uiowa.edu';
+$sites['psychologyreconnect.prod.drupal.uiowa.edu'] = 'reconnect.psychology.uiowa.edu';
