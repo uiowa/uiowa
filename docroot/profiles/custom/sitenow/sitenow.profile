@@ -989,6 +989,8 @@ function sitenow_node_presave(Node $node) {
 
 /**
  * Implements hook_ENTITY_TYPE_delete().
+ *
+ * @param \Drupal\node\Entity\Node $node
  */
 function sitenow_node_delete(Node $node) {
   $tags = ['node_type:' . $node->getType()];
