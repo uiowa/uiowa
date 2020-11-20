@@ -1557,9 +1557,6 @@ function sitenow_update_8041() {
   // This site has the 'collegiate' split enabled.
   if (isset($filters[$collegiate_split]) && $filters[$collegiate_split]['status']) {
     $config_factory = \Drupal::configFactory();
-    $config = $config_factory->getEditable('config_split.config_split.collegiate');
-    $config
-      ->set('status', FALSE)
-      ->save();
+    $config_factory->getEditable('config_split.config_split.collegiate')->delete();
   }
 }
