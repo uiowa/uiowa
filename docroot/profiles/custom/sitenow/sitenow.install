@@ -1574,8 +1574,12 @@ function sitenow_update_8041() {
  * Import new config_ignore.settings before config import uninstalls uiowa_bar.
  */
 function sitenow_update_8042() {
-  $config_path = Settings::get('config_sync_directory');
-  $source = new FileStorage($config_path);
-  $config_storage = \Drupal::service('config.storage');
-  $config_storage->write('config_ignore.settings', $source->read('config_ignore.settings'));
+  $site_path = \Drupal::service('site.path');
+
+  if ($site_path != 'sites/hr.uiowa.edu') {
+    $config_path = Settings::get('config_sync_directory');
+    $source = new FileStorage($config_path);
+    $config_storage = \Drupal::service('config.storage');
+    $config_storage->write('config_ignore.settings', $source->read('config_ignore.settings'));
+  }
 }
