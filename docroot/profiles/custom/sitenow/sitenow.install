@@ -1561,7 +1561,6 @@ function sitenow_update_8041() {
     'uiowa_bar.display_search' => 'uiowa_search.display_search',
   ];
 
-
   foreach ($changes as $old => $new) {
     $value = $old_config->get($old);
     $new_config->set($new, $value);
