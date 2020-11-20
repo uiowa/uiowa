@@ -18,7 +18,7 @@ use Drupal\uiowa_entities\UnitInterface;
  *     singular = "@count academic unit",
  *     plural = "@count academic units",
  *   ),
- *   config_prefix = "unit",
+ *   config_prefix = "unit.*",
  *   entity_keys = {
  *     "id" = "id",
  *     "label" = "label",
