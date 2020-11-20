@@ -1545,3 +1545,21 @@ function sitenow_update_8040() {
 
   return t('Installed the person_type entity type');
 }
+
+/**
+ * De-activate the collegiate split on sites where it is active.
+ */
+function sitenow_update_8041() {
+  /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
+  $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
+  $collegiate_split = 'config_split:collegiate';
+
+  // This site has the 'collegiate' split enabled.
+  if (isset($filters[$collegiate_split]) && $filters[$collegiate_split]['status']) {
+    $config_factory = \Drupal::configFactory();
+    $config = $config_factory->getEditable('config_split.config_split.collegiate');
+    $config
+      ->set('status', FALSE)
+      ->save();
+  }
+}
