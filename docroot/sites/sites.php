@@ -1841,3 +1841,9 @@ $sites['psychologyreconnect.local.drupal.uiowa.edu'] = 'reconnect.psychology.uio
 $sites['psychologyreconnect.dev.drupal.uiowa.edu'] = 'reconnect.psychology.uiowa.edu';
 $sites['psychologyreconnect.stage.drupal.uiowa.edu'] = 'reconnect.psychology.uiowa.edu';
 $sites['psychologyreconnect.prod.drupal.uiowa.edu'] = 'reconnect.psychology.uiowa.edu';
+
+// Directory aliases for journalism.uiowa.edu.
+$sites['journalism.local.drupal.uiowa.edu'] = 'journalism.uiowa.edu';
+$sites['journalism.dev.drupal.uiowa.edu'] = 'journalism.uiowa.edu';
+$sites['journalism.stage.drupal.uiowa.edu'] = 'journalism.uiowa.edu';
+$sites['journalism.prod.drupal.uiowa.edu'] = 'journalism.uiowa.edu';
