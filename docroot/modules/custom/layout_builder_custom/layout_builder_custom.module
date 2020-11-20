@@ -194,9 +194,13 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           break;
 
         case 'menu_block:main':
-          $user = \Drupal::currentUser();
-          // Account for user 1 for local development.
-          if ($user->id() != 1 && !in_array('administrator', $user->getRoles())) {
+          /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+          $check = \Drupal::service('uiowa_core.access_checker');
+
+          /** @var Drupal\Core\Access\AccessResultInterface $is_admin */
+          $access = $check->access(\Drupal::currentUser()->getAccount());
+
+          if ($access->isForbidden()) {
             // Restrict block settings on main navigation block.
             $form['settings']['menu_levels']['#access'] = FALSE;
             $form['settings']['advanced']['#access'] = FALSE;
