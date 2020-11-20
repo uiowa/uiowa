@@ -1550,7 +1550,7 @@ function sitenow_update_8040() {
  * Move uiowa_bar config to uiowa_search.
  */
 function sitenow_update_8041() {
-  \Drupal::service('module_installer')->install('uiowa_search');
+  \Drupal::service('module_installer')->install(['uiowa_search']);
 
   $old_config = \Drupal::configFactory()->get('uiowa_bar.settings');
   $new_config = \Drupal::configFactory()->getEditable('uiowa_search.settings');
