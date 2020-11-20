@@ -26,6 +26,6 @@ function uiowa_search_theme($existing, $type, $theme, $path) {
 function uiowa_search_page_attachments(&$page) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
-    $page['#attached']['library'][] = 'uiowa_search/uiowa-search';
+    $page['#attached']['library'][] = 'uiowa_search/search-form';
   }
 }
