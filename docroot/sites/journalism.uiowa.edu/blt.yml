@@ -1,0 +1,13 @@
+project:
+  local:
+    hostname: journalism.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: journalism
+  human_name: journalism.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: journalism.prod
+drupal:
+  db:
+    database: journalism_uiowa_edu
