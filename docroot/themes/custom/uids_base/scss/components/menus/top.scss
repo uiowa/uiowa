@@ -19,7 +19,11 @@
     @include breakpoint(menu) {
       position: relative;
       align-self: center;
+      justify-content: flex-start;
      // margin-left: auto;
+    }
+    @include breakpoint(container) {
+      justify-content: flex-end;
     }
   }
 
@@ -54,6 +58,9 @@
           text-transform: uppercase;
           padding: 0;
           position: relative;
+          line-height: 1.3;
+          text-align: center;
+          font-weight: 400;
 
           &:after {
             @include breakpoint(container) {
@@ -82,13 +89,14 @@
           }
           @include breakpoint(container) {
             padding: .325rem 1.05rem;
+            font-weight: 400;
           }
-          font-weight: 400;
         }
         @include breakpoint(container) {
           border: 1px solid $secondary;
         }
       }
+
     }
   }
 }
@@ -103,37 +111,3 @@
     }
   }
 }
-
-// background color buttons
-/*
-@media (min-width: 855px) {
-  .iowa-bar--full .menu--top .menu li {
-    a {
-      font-size: 1rem;
-      padding-right: 1.05rem;
-      padding: .9rem 1rem;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      cursor: pointer;
-      border: 1px solid #fff;
-      text-transform: uppercase;
-      font-family: Antonio, sans-serif;
-      line-height: 1;
-      font-size: 1.2rem;
-      padding: .6rem .7rem;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      cursor: pointer;
-      border: none;
-      text-transform: uppercase;
-      font-family: Antonio, sans-serif;
-      line-height: 1;
-      background: #BD472A;
-      color: #fff;
-      margin-right: 10px;
-    }
-  }
-}
-*/
