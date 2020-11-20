@@ -92,12 +92,15 @@
         }
 
         // Establish functionality on each GeoJSON feature.
+        featureByName = {};
+
         function onEachFeature(feature, layer) {
-            layer.on({
-              mouseover: highlightFeature,
-              mouseout: resetHighlight,
-              click: zoomToFeature
-            });
+          layer.on({
+            mouseover: highlightFeature,
+            mouseout: resetHighlight,
+            click: zoomToFeature
+          });
+          featureByName[feature.properties.name] = layer;
         }
 
         let reset = L.control();
@@ -112,6 +115,46 @@
         let resetButton = document.getElementById("map-reset");
         resetButton.addEventListener("click", function() {
           map.setView([37.8, -96], 4);
+        });
+
+        let panToButtons = L.control();
+        panToButtons.setPosition('topleft');
+        panToButtons.onAdd = function (map) {
+          this._div = L.DomUtil.create("div", "pan-to-buttons");
+          this._div.innerHTML = "<button class='badge badge--cool-gray' id='alaska-button'>Alaska</button>" +
+            "<br/><button class='badge badge--cool-gray' id='hawaii-button'>Hawaii</button>";
+          return this._div;
+        }
+        panToButtons.addTo(map);
+
+        let alaskaButton = document.getElementById("alaska-button");
+
+        alaskaButton.addEventListener("click", function() {
+          let alaskaCenter = featureByName['Alaska'].getBounds().getCenter();
+          map.setView(alaskaCenter, 3, {
+            pan: {
+              animate: true,
+              duration: 1.5
+            },
+            zoom: {
+              animate: true
+            }
+          });
+        });
+
+        let hawaiiButton = document.getElementById("hawaii-button");
+
+        hawaiiButton.addEventListener("click", function() {
+          let hawaiiCenter = featureByName['Hawaii'].getBounds().getCenter();
+          map.setView(hawaiiCenter, 7, {
+            pan: {
+              animate: true,
+              duration: 1.5
+            },
+            zoom: {
+              animate: true
+            }
+          });
         });
 
         // Floating window to display state info on hover.
