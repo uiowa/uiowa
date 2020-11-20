@@ -26,7 +26,7 @@
   // Attach uiowaSearchResults behavior.
   Drupal.behaviors.uiowaSearchResults = {
     attach: function(context, settings) {
-      $('body.path-google-search', context).once('uiowaSearchResults').each(function() {
+      $('body.path-uiowa-search', context).once('uiowaSearchResults').each(function() {
         window.__gcse = {
           parsetags: 'explicit',
           callback: Drupal.uiowaSearchResults,
