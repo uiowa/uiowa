@@ -1568,5 +1568,14 @@ function sitenow_update_8041() {
   }
 
   $new_config->save();
+}
 
+/**
+ * Import new config_ignore.settings before config import uninstalls uiowa_bar.
+ */
+function sitenow_update_8042() {
+  $config_path = Settings::get('config_sync_directory');
+  $source = new FileStorage($config_path);
+  $config_storage = \Drupal::service('config.storage');
+  $config_storage->write('config_ignore.settings', $source->read('config_ignore.settings'));
 }
