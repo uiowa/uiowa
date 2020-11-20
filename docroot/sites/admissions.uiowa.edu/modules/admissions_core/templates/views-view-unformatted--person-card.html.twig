@@ -143,7 +143,7 @@
           <div class="card__date"><span class="fas fa-phone"></span> {{ card_tag }}</div>
         {% endif %}
         {% if person_hometown|striptags|trim is not empty %}
-          <div class="card__date"><span class="fas fa-globe-americas"></span> <strong>Hometown:</strong>{{ person_hometown }}</div>
+          <div class="card__date"><span class="fas fa-globe-americas"></span> <strong>Hometown:</strong> {{ person_hometown }}</div>
         {% endif %}
         {% if person_website|striptags|trim is not empty %}
           <div class="card__date"><span class="fas fa-desktop"></span> {{ person_website }}</div>
