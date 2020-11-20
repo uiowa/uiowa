@@ -85,9 +85,6 @@
           let centroid = e.target.getBounds().getCenter();
           let content = '<div><strong>' + e.target.feature.properties.name + '</strong></div>';
 
-          if (hasCounselors(e.target.feature.id)) {
-            content = '<div><strong>' + e.target.feature.properties.name + '</strong><br /><a href="/counselors/' + e.target.feature.id + '">View counselors in ' + e.target.feature.properties.name + '</a></div>';
-          }
           let popup = L.popup()
             .setLatLng(centroid)
             .setContent(content)
