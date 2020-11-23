@@ -15,6 +15,17 @@
     }
   }
 
+  .iowa-bar--full.toggle  {
+  .iowa-bar__container {
+    @include breakpoint(container) {
+      //margin-right: 150px;
+    }
+  }
+    .search-button {
+      position: relative;
+    }
+  }
+
   .menu--top.nav {
     @include breakpoint(menu) {
       position: relative;
@@ -76,7 +87,7 @@
             }
           }
           &:hover, &:focus {
-            text-decoration: underline;
+            //text-decoration: underline;
             @include breakpoint(container) {
               background: #fff;
             }
@@ -102,27 +113,30 @@
 @media (min-width: 1700px) {
 .iowa-bar--full.toggle {
   .menu--top.nav {
-      margin-top: 30px;
-      position: absolute;
-      align-self: center;
-      right: 340px;
+      //margin-top: 30px;
+      //position: absolute;
+      //align-self: center;
+      //right: 340px;
     }
   }
 }
 
-@media only screen and (min-width: 0) and (max-width: 480px) {
+@media only screen and (min-width: 0) and (max-width: 580px) {
   .search-is-open .iowa-bar--full .menu--top {
-    display: block;
+    display: block!important;
   }
 
   .iowa-bar--full .menu--top {
     background: $primary;
-    margin-top: 0;
+    margin-top: -.4rem;
     position: inherit;
-    padding-bottom: 1rem;
+    padding: 0 1.25rem 1.25rem;
 
     .menu li {
       margin: 0;
+      &:first-child {
+        margin: 0 15px 0 0;
+      }
       a {
         display: block;
         text-decoration: none;
@@ -136,7 +150,7 @@
         border: 1px solid $secondary;
       }
       &:first-child a {
-        border-right: none;
+        //border-right: none;
       }
     }
   }
