@@ -12,7 +12,7 @@
       queryParameterName: 'search',
     }
 
-    if (drupalSettings.uiowaSearch.cseScope == 1) {
+    if (drupalSettings.uiowaSearch.cseScope === 1) {
       cseAttributes.as_sitesearch = window.location.hostname+drupalSettings.path.baseUrl;
     }
 
