@@ -1545,3 +1545,40 @@ function sitenow_update_8040() {
 
   return t('Installed the person_type entity type');
 }
+
+/**
+ * Move uiowa_bar config to uiowa_search.
+ */
+function sitenow_update_8041() {
+  \Drupal::service('module_installer')->install(['uiowa_search']);
+
+  $old_config = \Drupal::configFactory()->get('uiowa_bar.settings');
+  $new_config = \Drupal::configFactory()->getEditable('uiowa_search.settings');
+
+  $changes = [
+    'uiowa_bar.cse_engine_id' => 'uiowa_search.cse_engine_id',
+    'uiowa_bar.cse_scope' => 'uiowa_search.cse_scope',
+    'uiowa_bar.display_search' => 'uiowa_search.display_search',
+  ];
+
+  foreach ($changes as $old => $new) {
+    $value = $old_config->get($old);
+    $new_config->set($new, $value);
+  }
+
+  $new_config->save();
+}
+
+/**
+ * Import new config_ignore.settings before config import uninstalls uiowa_bar.
+ */
+function sitenow_update_8042() {
+  $site_path = \Drupal::service('site.path');
+
+  if ($site_path != 'sites/hr.uiowa.edu') {
+    $config_path = Settings::get('config_sync_directory');
+    $source = new FileStorage($config_path);
+    $config_storage = \Drupal::service('config.storage');
+    $config_storage->write('config_ignore.settings', $source->read('config_ignore.settings'));
+  }
+}
