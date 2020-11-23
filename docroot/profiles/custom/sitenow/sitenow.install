@@ -1582,3 +1582,18 @@ function sitenow_update_8042() {
     $config_storage->write('config_ignore.settings', $source->read('config_ignore.settings'));
   }
 }
+
+/**
+ * De-activate the collegiate split on sites where it is active.
+ */
+function sitenow_update_8043() {
+  /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
+  $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
+  $collegiate_split = 'config_split:collegiate';
+
+  // This site has the 'collegiate' split in config.
+  if (isset($filters[$collegiate_split])) {
+    $config_factory = \Drupal::configFactory();
+    $config_factory->getEditable('config_split.config_split.collegiate')->delete();
+  }
+}
