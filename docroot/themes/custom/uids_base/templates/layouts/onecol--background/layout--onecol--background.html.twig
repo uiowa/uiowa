@@ -24,14 +24,13 @@
 {% set attributes = attributes.addClass(classes) %}
 
 {% if has_node_image %}
-  {% embed "@uids_base/uids/hero.html.twig" with {
-    hero_alignment : 'bottom',
+  {% embed "@uids_base/uids/banner.html.twig" with {
     'attributes' : attributes,
   } %}
-    {% block hero_image %}
+    {% block banner_image %}
       {{ content.background }}
     {% endblock %}
-    {% block hero_content %}
+    {% block banner_title %}
       {{ content.content }}
     {% endblock %}
   {% endembed %}
