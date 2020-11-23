@@ -81,8 +81,8 @@ class AcademicUnitForm extends EntityForm {
       '#type' => 'radios',
       '#title' => $this->t('Type of academic unit'),
       '#options' => [
-        'college' => 'Collegiate',
-        'non-collegiate' => 'Non-Collegiate',
+        'college' => $this->t('Collegiate'),
+        'non-collegiate' => $this->t('Non-Collegiate'),
       ],
       '#default_value' => $this->entity->get('type'),
     ];
