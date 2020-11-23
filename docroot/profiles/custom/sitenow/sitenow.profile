@@ -82,7 +82,7 @@ function sitenow_preprocess_select(&$variables) {
  */
 function sitenow_module_implements_alter(&$implementations, $hook) {
   // Unset administerusersbyrole query alter which over-filters the people page.
-  // @todo: Refactor this to move sitenow last and then alter the altered query.
+  // @todo Refactor this to move sitenow last and then alter the altered query.
   if ($hook == 'query_alter' && isset($implementations['administerusersbyrole'])) {
     unset($implementations['administerusersbyrole']);
   }
@@ -912,7 +912,7 @@ function sitenow_toolbar() {
  * @return bool
  *   Boolean indicating whether or not current user is an admin.
  *
- * @todo: Replace this with uiowa_core access checker service.
+ * @todo Replace this with uiowa_core access checker service.
  */
 function sitenow_is_user_admin(AccountProxy $current_user) {
   if ($current_user->id() == 1 || in_array('administrator', $current_user->getRoles())) {
@@ -926,7 +926,7 @@ function sitenow_is_user_admin(AccountProxy $current_user) {
 /**
  * Determine the version of SiteNow based on what config is active.
  *
- * @todo: Return additional information like if any other splits are active that might impact functionality.
+ * @todo Return additional information like if any other splits are active that might impact functionality.
  */
 function sitenow_get_version() {
   $version = 'v3';
