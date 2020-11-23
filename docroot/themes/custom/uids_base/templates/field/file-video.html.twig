@@ -15,14 +15,16 @@
 * @ingroup themeable
 */
 #}
-
-<div class="video-controls video">
-  <button class="video-btn video-btn__pause" aria-label="Pause" id="video-btn">
-    <span class="element-invisible">Pause</span>
-  </button>
+<div class="media--video">
+  {{ devel_breakpoint() }}
+  <div class="video-controls video">
+    <button class="video-btn video-btn__pause" aria-label="Pause" id="video-btn">
+      <span class="element-invisible">Pause</span>
+    </button>
+  </div>
+  <video {{ attributes }}>
+    {% for file in files %}
+      <source {{ file.source_attributes }} />
+    {% endfor %}
+  </video>
 </div>
-<video {{ attributes }}>
-  {% for file in files %}
-    <source {{ file.source_attributes }} />
-  {% endfor %}
-</video>

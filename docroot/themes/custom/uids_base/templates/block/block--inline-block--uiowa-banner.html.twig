@@ -41,6 +41,7 @@
 {% endfor %}
 
 {% set block_banner = {
+  'banner_type': content.field_media_video_file[0]['#attributes']['banner_type'],
   'banner_image': content.field_uiowa_banner_image,
   'banner_video_field': content.field_uiowa_banner_video[0]['#media'].field_media_video_file.entity.uri.value,
   'banner_video_url': file_url(content.field_uiowa_banner_video[0]['#media'].field_media_video_file.entity.uri.value),
@@ -63,7 +64,7 @@
 {% embed '@uids_base/uids/banner.html.twig' with block_banner only %}
 
   {% block banner_image %}
-    {# Embed contextual links so that they'll show up in the upper right-hand corner. #}
+{#     Embed contextual links so that they'll show up in the upper right-hand corner. #}
     {{ title_prefix }}
     {{ title_suffix }}
     {% if banner_image  %}
