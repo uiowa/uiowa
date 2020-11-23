@@ -45,7 +45,7 @@ class SearchForm extends FormBase {
       '#name' => 'btnG',
     ];
 
-    $form['#action'] = '/search';
+    $form['#action'] = Url::fromRoute('uiowa_search.search_results')->toString();
 
     $form['#attributes']['class'][] = 'uiowa-search--search-form';
     $form['#attributes']['class'][] = 'search-google-appliance-search-form';
