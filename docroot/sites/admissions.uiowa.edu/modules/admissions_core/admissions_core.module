@@ -5,6 +5,8 @@
  * Primary module hooks for Admissions Core module.
  */
 
+use Drupal\Core\Cache\Cache;
+use Drupal\node\Entity\Node;
 use Drupal\views\ViewExecutable;
 
 /**
@@ -78,5 +80,33 @@ function admissions_core_preprocess_node(&$variables) {
         $variables['#attached']['library'][] = 'admissions_core/person';
         break;
     }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * @param \Drupal\node\Entity\Node $node
+ *   Get straight to the node instead of through entity.
+ */
+function admissions_core_node_presave(Node $node) {
+  // Used on Admissions counselors map.
+  if ($node->getType() == 'person') {
+    $tags = ['node_type:' . $node->getType()];
+    Cache::invalidateTags($tags);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ *
+ * @param \Drupal\node\Entity\Node $node
+ *   Get straight to the node instead of through entity.
+ */
+function admissions_core_node_delete(Node $node) {
+  // Used on Admissions counselors map.
+  if ($node->getType() == 'person') {
+    $tags = ['node_type:' . $node->getType()];
+    Cache::invalidateTags($tags);
   }
 }
