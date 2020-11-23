@@ -16,6 +16,8 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
 
   $config = \Drupal::config('system.site');
   $has_parent = $config->get('has_parent') ?: 0;
+  $variables['site_name'] = $config->get('name');
+  $name_length = strlen($variables['site_name']);
   $form['header'] = [
     '#type' => 'details',
     '#title' => t('IOWA bar settings'),
@@ -38,6 +40,20 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     $form['header']['type']['#disabled'] = TRUE;
     $form['header']['type']['#default_value'] = 'below';
     $form['header']['type']['#description'] = t('This option is disabled because a parent organization was set on the <a href=":site-settings-page">site settings page</a>. When you have a parent organization, your site name will <em>always</em> display on the line below. You will need to remove the parent organization information to select another option.', [
+      ':site-settings-page' => Url::fromRoute('system.site_information_settings')->toString(),
+    ]);
+  }
+  if ($name_length > 43) {
+    $form['header']['type']['#disabled'] = TRUE;
+    $form['header']['type']['#default_value'] = 'below';
+    $form['header']['type']['#description'] = t('This option is disabled because your site name exceeds 43 characters.', [
+      ':site-settings-page' => Url::fromRoute('system.site_information_settings')->toString(),
+    ]);
+  }
+  if (($has_parent) && ($name_length > 43)) {
+    $form['header']['type']['#disabled'] = TRUE;
+    $form['header']['type']['#default_value'] = 'below';
+    $form['header']['type']['#description'] = t('This option is disabled because your site name exceeds 43 characters and a parent organization was set on the <a href=":site-settings-page">site settings page</a>.', [
       ':site-settings-page' => Url::fromRoute('system.site_information_settings')->toString(),
     ]);
   }
