@@ -45,6 +45,18 @@
                     "type": "zip"
                 }
             }
+        },
+        "leaflet": {
+            "type": "package",
+            "package": {
+                "name": "Leaflet/Leaflet",
+                "version": "1.7.1",
+                "type": "drupal-library",
+                "dist": {
+                    "url": "https://github.com/Leaflet/Leaflet/archive/v1.7.1.zip",
+                    "type": "zip"
+                }
+            }
         }
     },
     "autoload": {
@@ -161,6 +173,7 @@
         "kartsims/easysvg": "dev-master",
         "npm-asset/fontawesome-iconpicker": "^3.2",
         "npm-asset/jquery-collapse": "^1.1",
+        "npm-asset/leaflet": "^1.7",
         "npm-asset/moment": "^2.24",
         "npm-asset/slick-carousel": "^1.8",
         "richardbporter/drush-users-commands": "^2.0",
@@ -233,6 +246,9 @@
             },
             "drupal/paragraphs": {
                 "Langcode error when switching away from IEF for paragraphs in LB": "https://www.drupal.org/files/issues/2020-06-25/paragraphs-2901390-51.patch"
+            },
+            "jackmoore/colorbox": {
+                "Accessibility improvements": "https://patch-diff.githubusercontent.com/raw/jackmoore/colorbox/pull/832.diff"
             }
         },
         "installer-types": [
