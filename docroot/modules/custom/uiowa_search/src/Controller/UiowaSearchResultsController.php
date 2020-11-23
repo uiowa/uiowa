@@ -42,6 +42,7 @@ class UiowaSearchResultsController extends ControllerBase {
       'ud' => '1',
       'site' => 'default_collection',
     ];
+
     $build['search'] = [
       '#type' => 'link',
       '#title' => $this->t('Search all University of Iowa for @terms', ['@terms' => $search_terms]),
@@ -50,6 +51,7 @@ class UiowaSearchResultsController extends ControllerBase {
         'target' => '_blank',
       ],
     ];
+
     $build['results_container'] = [
       '#type' => 'container',
       '#attributes' => [

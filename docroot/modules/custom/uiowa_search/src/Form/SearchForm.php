@@ -23,6 +23,7 @@ class SearchForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = [];
+
     $form['search-terms'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Search'),
@@ -37,6 +38,7 @@ class SearchForm extends FormBase {
       '#maxlength' => '256',
       '#size' => '15',
     ];
+
     $form['submit-search'] = [
       '#type' => 'submit',
       '#value' => $this->t('Search'),
