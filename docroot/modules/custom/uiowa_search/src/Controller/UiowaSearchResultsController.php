@@ -62,7 +62,9 @@ class UiowaSearchResultsController extends ControllerBase {
     $build['#attached']['library'][] = 'uiowa_search/search-results';
     $build['#attached']['drupalSettings']['uiowaSearch']['engineId'] = $config['cse_engine_id'];
     $build['#attached']['drupalSettings']['uiowaSearch']['cseScope'] = $config['cse_scope'];
-    $build['#cache']['max-age'] = 0;
+
+    // Cache by URL query arguments since that controls the link markup above.
+    $build['#cache']['contexts'][] = 'url.query_args';
 
     return $build;
   }
