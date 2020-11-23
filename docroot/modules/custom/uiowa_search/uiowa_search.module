@@ -26,12 +26,6 @@ function uiowa_search_theme($existing, $type, $theme, $path) {
 function uiowa_search_page_attachments(&$page) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
-    $page['#attached']['library'][] = 'uiowa_search/uiowa-search';
-
-    // Load Google Tag in PROD.
-    $env = getenv('AH_PRODUCTION');
-    if ($env == 1) {
-      $page['#attached']['library'][] = 'uiowa_search/gtag';
-    }
+    $page['#attached']['library'][] = 'uiowa_search/search-form';
   }
 }
