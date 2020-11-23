@@ -22,7 +22,7 @@
       <span class="element-invisible">Pause</span>
     </button>
   </div>
-  <video {{ attributes }}>
+  <video {{ attributes }} id="video-container">
     {% for file in files %}
       <source {{ file.source_attributes }} />
     {% endfor %}
