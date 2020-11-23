@@ -933,6 +933,12 @@ div[data-drupal-selector="edit-moderation-state-0"] {
   border-right-color: transparent !important;
   border-bottom-color: transparent !important;
   border-left-color: transparent !important;
+
+  .bg--black &,
+  .bg--black--pattern--brain &,
+  .bg-pattern--brain-black & {
+    color: $secondary;
+  }
 }
 
 
@@ -946,6 +952,10 @@ div[data-drupal-selector="edit-moderation-state-0"] {
   font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
   font-weight: bold;
   font-size: 1rem;
+}
+
+.dropbutton-multiple.open .dropbutton-arrow {
+  border-top-color: inherit;
 }
 
 .js .dropbutton {
@@ -968,7 +978,7 @@ ul.dropbutton li {
 // Set above admin toolbar and superfish.
 .joyride-tip-guide {
   z-index: 550;
-  
+
   a {
     background: transparent;
 
