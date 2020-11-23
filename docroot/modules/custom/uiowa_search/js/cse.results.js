@@ -17,7 +17,7 @@
     }
 
     google.search.cse.element.render({
-        div: "search-results",
+        div: 'search-results',
         tag: 'search',
         attributes: cseAttributes
     });
