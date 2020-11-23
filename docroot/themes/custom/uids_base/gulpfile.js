@@ -28,16 +28,6 @@ const uids = {
   dest: `${__dirname}/uids/`,
 }
 
-const colorbox = {
-  src: '../../../libraries/colorbox',
-  dest: `${__dirname}/colorbox/`,
-}
-
-const leaflet = {
-  src: '../../../libraries/leaflet/dist',
-  dest: `${__dirname}/leaflet/dist/`,
-}
-
 // Clean
 function clean() {
   return del([
@@ -54,21 +44,6 @@ function copyUids() {
     `${uids.src}/**/*.{woff,woff2}`,
   ])
     .pipe(dest(`${uids.dest}`));
-}
-
-function copyColorbox() {
-  return src([
-    `${colorbox.src}/jquery.colorbox-min.js`,
-  ])
-    .pipe(dest(`${colorbox.dest}`));
-}
-
-function copyLeaflet() {
-  return src([
-    `${leaflet.src}/leaflet.js`,
-    `${leaflet.src}/leaflet.css`,
-  ])
-    .pipe(dest(`${leaflet.dest}`));
 }
 
 function fontCopy() {
@@ -98,7 +73,7 @@ function watchFiles() {
   // @todo Watch other changes?
 }
 
-const copy = parallel(copyUids, copyColorbox, copyLeaflet, fontCopy);
+const copy = parallel(copyUids, fontCopy);
 const compile = series(clean, copy, css);
 
 exports.copy = copy;
