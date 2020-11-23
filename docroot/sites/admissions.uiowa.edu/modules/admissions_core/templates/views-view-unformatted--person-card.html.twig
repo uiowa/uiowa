@@ -121,7 +121,7 @@
       'person_education': view.style_plugin.getField(key, 'field_person_education'),
       'person_hometown': view.style_plugin.getField(key, 'field_person_hometown'),
       'person_contact': view.style_plugin.getField(key, 'field_person_contact_information'),
-      'media_attributes': media_attributes.addClass('media--circle card__media--medium card__media'),
+      'media_attributes': media_attributes.addClass('media--circle card__media--large card__media'),
     } %}
 
     {% embed '@uids_base/uids/card.html.twig' with person_card_view only %}
@@ -143,7 +143,7 @@
           <div class="card__date"><span class="fas fa-phone"></span> {{ card_tag }}</div>
         {% endif %}
         {% if person_hometown|striptags|trim is not empty %}
-          <div class="card__date"><span class="fas fa-globe-americas"></span> {{ person_hometown }}</div>
+          <div class="card__date"><span class="fas fa-globe-americas"></span> <strong>Hometown:</strong> {{ person_hometown }}</div>
         {% endif %}
         {% if person_website|striptags|trim is not empty %}
           <div class="card__date"><span class="fas fa-desktop"></span> {{ person_website }}</div>
