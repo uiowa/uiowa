@@ -6,9 +6,9 @@ use Drupal\Core\Config\Entity\ConfigEntityListBuilder;
 use Drupal\Core\Entity\EntityInterface;
 
 /**
- * Provides a listing of Units.
+ * Provides a listing of Academic Units.
  */
-class UnitListBuilder extends ConfigEntityListBuilder {
+class AcademicUnitListBuilder extends ConfigEntityListBuilder {
 
   /**
    * {@inheritdoc}
@@ -17,6 +17,7 @@ class UnitListBuilder extends ConfigEntityListBuilder {
     $header['label'] = $this->t('Label');
     $header['id'] = $this->t('Machine name');
     $header['status'] = $this->t('Status');
+    $header['type'] = $this->t('Type');
     $header['homepage'] = $this->t('Homepage');
     return $header + parent::buildHeader();
   }
@@ -29,6 +30,7 @@ class UnitListBuilder extends ConfigEntityListBuilder {
     $row['label'] = $entity->label();
     $row['id'] = $entity->id();
     $row['status'] = $entity->status() ? $this->t('Enabled') : $this->t('Disabled');
+    $row['type'] = $entity->get('type');
     $row['homepage'] = $entity->get('homepage');
     return $row + parent::buildRow($entity);
   }

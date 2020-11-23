@@ -1,6 +1,6 @@
-uiowa_entities.unit.college.*:
+uiowa_entities.academic_unit.*:
   type: config_entity
-  label: College
+  label: Academic Unit
   mapping:
     id:
       type: string
@@ -8,24 +8,11 @@ uiowa_entities.unit.college.*:
     label:
       type: label
       label: Label
+    type:
+      type: string
+      label: Type of academic unit
     uuid:
       type: string
     homepage:
       type: string
-      label: College homepage link
-
-uiowa_entities.unit.academic_unit.*:
-  type: config_entity
-  label: Non-Collegiate Academic Unit
-  mapping:
-    id:
-      type: string
-      label: ID
-    label:
-      type: label
-      label: Label
-    uuid:
-      type: string
-    homepage:
-      type: string
-      label: Noncollegiate academic unit homepage link
+      label: Academic unit homepage link

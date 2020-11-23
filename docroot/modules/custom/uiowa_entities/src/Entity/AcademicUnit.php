@@ -3,33 +3,33 @@
 namespace Drupal\uiowa_entities\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
-use Drupal\uiowa_entities\UnitInterface;
+use Drupal\uiowa_entities\AcademicUnitInterface;
 
 /**
  * Defines the academic unit entity type.
  *
  * @ConfigEntityType(
  *   id = "uiowa_academic_unit",
- *   label = @Translation("Non-Collegiate Academic Unit"),
- *   label_collection = @Translation("Non-Collegiate Academic Units"),
- *   label_singular = @Translation("non-collegiate academic unit"),
- *   label_plural = @Translation("non-collegiate academic units"),
+ *   label = @Translation("Academic Unit"),
+ *   label_collection = @Translation("Academic Units"),
+ *   label_singular = @Translation("academic unit"),
+ *   label_plural = @Translation("academic units"),
  *   label_count = @PluralTranslation(
- *     singular = "@count non-collegiate academic unit",
- *     plural = "@count non-collegiate academic units",
+ *     singular = "@count academic unit",
+ *     plural = "@count academic units",
  *   ),
  *   handlers = {
- *     "list_builder" = "Drupal\uiowa_entities\UnitListBuilder",
+ *     "list_builder" = "Drupal\uiowa_entities\AcademicUnitListBuilder",
  *     "form" = {
  *       "add" = "Drupal\uiowa_entities\Form\AcademicUnitForm",
  *       "edit" = "Drupal\uiowa_entities\Form\AcademicUnitForm",
  *       "delete" = "Drupal\Core\Entity\EntityDeleteForm"
  *     }
  *   },
- *   config_prefix = "unit.academic_unit",
+ *   config_prefix = "academic_unit",
  *   admin_permission = "administer uiowa_academic_unit",
  *   links = {
- *     "collection" = "/admin/structure/uiowa-acadmeic-unit",
+ *     "collection" = "/admin/structure/uiowa-academic-unit",
  *     "add-form" = "/admin/structure/uiowa-academic-unit/add",
  *     "edit-form" = "/admin/structure/uiowa-academic-unit/{uiowa_academic_unit}",
  *     "delete-form" = "/admin/structure/uiowa-academic-unit/{uiowa_academic_unit}/delete"
@@ -42,11 +42,12 @@ use Drupal\uiowa_entities\UnitInterface;
  *   config_export = {
  *     "id",
  *     "label",
+ *     "type",
  *     "homepage"
  *   }
  * )
  */
-class AcademicUnit extends ConfigEntityBase implements UnitInterface {
+class AcademicUnit extends ConfigEntityBase implements AcademicUnitInterface {
 
   /**
    * The academic unit ID.
@@ -68,6 +69,13 @@ class AcademicUnit extends ConfigEntityBase implements UnitInterface {
    * @var bool
    */
   protected $status;
+
+  /**
+   * The academic unit type.
+   *
+   * @var string
+   */
+  protected $type;
 
   /**
    * A link to the academic unit homepage.

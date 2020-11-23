@@ -1,35 +1,3 @@
-entity.uiowa_college.collection:
-  path: '/admin/structure/uiowa-college'
-  defaults:
-    _entity_list: 'uiowa_college'
-    _title: 'College configuration'
-  requirements:
-    _permission: 'administer uiowa_college'
-
-entity.uiowa_college.add_form:
-  path: '/admin/structure/uiowa-college/add'
-  defaults:
-    _entity_form: 'uiowa_college.add'
-    _title: 'Add a college'
-  requirements:
-    _permission: 'administer uiowa_college'
-
-entity.uiowa_college.edit_form:
-  path: '/admin/structure/uiowa-college/{uiowa_college}'
-  defaults:
-    _entity_form: 'uiowa_college.edit'
-    _title: 'Edit a college'
-  requirements:
-    _permission: 'administer uiowa_college'
-
-entity.uiowa_college.delete_form:
-  path: '/admin/structure/uiowa-college/{uiowa_college}/delete'
-  defaults:
-    _entity_form: 'uiowa_college.delete'
-    _title: 'Delete a college'
-  requirements:
-    _permission: 'administer uiowa_college'
-
 entity.uiowa_academic_unit.collection:
   path: '/admin/structure/uiowa-academic-unit'
   defaults:

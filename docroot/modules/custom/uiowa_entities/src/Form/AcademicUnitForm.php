@@ -9,9 +9,9 @@ use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * College form.
+ * Academic unit form.
  *
- * @property \Drupal\uiowa_entities\UnitInterface $entity
+ * @property \Drupal\uiowa_entities\AcademicUnitInterface $entity
  */
 class AcademicUnitForm extends EntityForm {
 
@@ -58,7 +58,7 @@ class AcademicUnitForm extends EntityForm {
       '#title' => $this->t('Label'),
       '#maxlength' => 255,
       '#default_value' => $this->entity->label(),
-      '#description' => $this->t('Label for the non-collegiate academic unit.'),
+      '#description' => $this->t('Label for the academic unit.'),
       '#required' => TRUE,
     ];
 
@@ -77,11 +77,21 @@ class AcademicUnitForm extends EntityForm {
       '#default_value' => $this->entity->status(),
     ];
 
+    $form['type'] = [
+      '#type' => 'radios',
+      '#title' => $this->t('Type of academic unit'),
+      '#options' => [
+        'college' => 'Collegiate',
+        'non-collegiate' => 'Non-Collegiate',
+      ],
+      '#default_value' => $this->entity->get('type'),
+    ];
+
     $form['homepage'] = [
       '#type' => 'url',
-      '#title' => $this->t('Non-collegiate academic unit homepage link.'),
+      '#title' => $this->t('Academic unit homepage link.'),
       '#default_value' => $this->entity->get('homepage'),
-      '#description' => $this->t('URL to get more information on this non-collegiate academic unit.'),
+      '#description' => $this->t('URL to get more information on this academic unit.'),
     ];
 
     return $form;
@@ -101,10 +111,13 @@ class AcademicUnitForm extends EntityForm {
    */
   public function save(array $form, FormStateInterface $form_state) {
     $result = parent::save($form, $form_state);
-    $message_args = ['%label' => $this->entity->label()];
+    $message_args = [
+      '%type' => $this->entity->get('type'),
+      '%label' => $this->entity->label(),
+    ];
     $message = $result == SAVED_NEW
-      ? $this->t('Created new non-collegiate academic unit %label.', $message_args)
-      : $this->t('Updated non-collegiate academic unit %label.', $message_args);
+      ? $this->t('Created new %type Academic Unit %label.', $message_args)
+      : $this->t('Updated %type Academic Unit %label.', $message_args);
     $this->messenger()->addStatus($message);
     $form_state->setRedirectUrl($this->entity->toUrl('collection'));
     return $result;
