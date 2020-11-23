@@ -42,6 +42,7 @@ class UiowaHeadlineWidget extends WidgetBase {
     $element['container']['headline'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Headline'),
+      '#description' => $element['#description'],
       '#size' => 80,
       '#default_value' => isset($items[$delta]->headline) ? $items[$delta]->headline : NULL,
       '#attributes' => [
