@@ -44,9 +44,9 @@ class SearchForm extends FormBase {
       '#value' => $this->t('Search'),
       '#name' => 'btnG',
     ];
-    $form['#action'] = $GLOBALS['base_url'] . '/uiowa-search';
-    // Use core search CSS in addition to this module's css.
-    // (keep it general in case core search is enabled).
+
+    $form['#action'] = '/search';
+
     $form['#attributes']['class'][] = 'uiowa-search--search-form';
     $form['#attributes']['class'][] = 'search-google-appliance-search-form';
     $form['#attributes']['aria-label'] = 'site search';
