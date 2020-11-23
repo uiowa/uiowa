@@ -1847,3 +1847,9 @@ $sites['journalism.local.drupal.uiowa.edu'] = 'journalism.uiowa.edu';
 $sites['journalism.dev.drupal.uiowa.edu'] = 'journalism.uiowa.edu';
 $sites['journalism.stage.drupal.uiowa.edu'] = 'journalism.uiowa.edu';
 $sites['journalism.prod.drupal.uiowa.edu'] = 'journalism.uiowa.edu';
+
+// Directory aliases for shawgroup.lab.uiowa.edu.
+$sites['labshawgroup.local.drupal.uiowa.edu'] = 'shawgroup.lab.uiowa.edu';
+$sites['labshawgroup.dev.drupal.uiowa.edu'] = 'shawgroup.lab.uiowa.edu';
+$sites['labshawgroup.stage.drupal.uiowa.edu'] = 'shawgroup.lab.uiowa.edu';
+$sites['labshawgroup.prod.drupal.uiowa.edu'] = 'shawgroup.lab.uiowa.edu';
