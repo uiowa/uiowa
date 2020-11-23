@@ -32,8 +32,8 @@ class ScholarshipsBlock extends BlockBase {
         $types[] = $option;
       }
     }
-    // This is how views says ANDs should be strung together. Doesn't work though.
-    $type_args = implode(',', $types);
+    // This is how views says ORs should be strung together.
+    $type_args = implode('+', $types);
     if (empty($type_args)) {
       $type_args = 'all';
     }
@@ -43,8 +43,8 @@ class ScholarshipsBlock extends BlockBase {
         $resident[] = $option;
       }
     }
-    // This is how views says ANDs should be strung together. Doesn't work though.
-    $resident_args = implode(',', $resident);
+    // This is how views says ORs should be strung together.
+    $resident_args = implode('+', $resident);
     if (empty($resident_args)) {
       $resident_args = 'all';
     }
@@ -52,36 +52,6 @@ class ScholarshipsBlock extends BlockBase {
 
     $view->preExecute();
     $view->execute();
-
-    // Poor-man's solution to deal with the non-functioning views query...
-    // The view provides back OR results which must be filtered more to meet the AND expectation.
-    // @todo Remove when views core fixes https://github.com/uiowa/uiowa/issues/2109.
-    foreach ($view->result as $key => $item) {
-      $node_storage = \Drupal::entityTypeManager()->getStorage('node');
-      $node = $node_storage->load($item->nid);
-      if (!empty($type_args)) {
-        $scholarship_types = $node->get('field_scholarship_type')->getValue();
-        $values = [];
-        foreach($scholarship_types as $value) {
-          $values[] = $value['value'];
-        }
-        $actual_types = implode(',', $values);
-          if ($actual_types !== $type_args && $type_args !== 'all') {
-            unset($view->result[$key]);
-          }
-      }
-      if (!empty($resident_args)) {
-        $scholarship_resident = $node->get('field_scholarship_resident')->getValue();
-        $values = [];
-        foreach($scholarship_resident as $value) {
-          $values[] = $value['value'];
-        }
-        $actual_resident = implode(',', $values);
-        if ($actual_resident !== $resident_args && $resident_args !== 'all') {
-          unset($view->result[$key]);
-        }
-      }
-    }
 
     $build['content'] = $view->render();
 
@@ -99,7 +69,7 @@ class ScholarshipsBlock extends BlockBase {
     $form['scholarship_type'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Type'),
-      '#description' => $this->t('Filter scholarships by these types. Leave blank for all. Multiple selections are treated like ANDs.'),
+      '#description' => $this->t('Filter scholarships by these types. Leave blank for all. Multiple selections are treated like ORs.'),
       '#options' => [
         'first-year' => 'First Year',
         'transfer' => 'Transfer',
@@ -110,7 +80,7 @@ class ScholarshipsBlock extends BlockBase {
     $form['resident'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Resident'),
-      '#description' => $this->t('Filter scholarships by resident statuses. Leave blank for all. Multiple selections are treated like ANDs.'),
+      '#description' => $this->t('Filter scholarships by resident statuses. Leave blank for all. Multiple selections are treated like ORs.'),
       '#options' => [
         'resident' => 'Resident',
         'nonresident' => 'Non-Resident'
