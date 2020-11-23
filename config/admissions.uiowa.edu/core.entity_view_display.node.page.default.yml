@@ -154,10 +154,11 @@ third_party_settings:
         'Custom blocks': {  }
         Devel: {  }
         Forms: {  }
-        'Lists (Views)': {  }
+        'Lists (Views)':
+          - 'views_block:counselors-block_counselors'
         Menus:
-          - 'menu_block:main'
           - 'system_menu_block:main'
+          - 'menu_block:main'
         Superfish: {  }
         System:
           - system_breadcrumb_block
@@ -201,6 +202,12 @@ third_party_settings:
         - layout_fourcol
       blacklisted_blocks:
         layout_onecol: {  }
+        layout_page:
+          all_regions:
+            'Custom block types':
+              - uiowa_slider
+            'Inline blocks':
+              - 'inline_block:uiowa_slider'
         layout_twocol:
           all_regions:
             'Custom block types':
@@ -214,12 +221,6 @@ third_party_settings:
             'Inline blocks':
               - 'inline_block:uiowa_slider'
         layout_fourcol:
-          all_regions:
-            'Custom block types':
-              - uiowa_slider
-            'Inline blocks':
-              - 'inline_block:uiowa_slider'
-        layout_page:
           all_regions:
             'Custom block types':
               - uiowa_slider
