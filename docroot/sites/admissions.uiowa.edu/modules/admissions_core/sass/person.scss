@@ -1,0 +1,114 @@
+@import "../../../../../themes/custom/uids_base/uids/assets/scss/_variables.scss";
+@import "../../../../../themes/custom/uids_base/uids/assets/scss/_utilities.scss";
+
+.field--name-field-person-territory {
+  .field__label {
+    font-size: $small-font-size;
+    margin-bottom: 0;
+    margin-top: $gutter;
+  }
+  .field__items, .field__item {
+    font-size: $small-font-size;
+    color: $text-muted;
+  }
+}
+
+// Counselor person layout
+.page-node-type-person.layout-builder-enabled {
+  .layout__region--first {
+    .field__item {
+      line-height: 1.7;
+      font-size: 1.2rem;
+      margin-top: 0;
+    }
+
+    .field--name-field-person-territory {
+      .field__items, .field__item {
+        font-size: $small-font-size;
+        color: $text-muted;
+      }
+    }
+  }
+  .field__label {
+    margin-bottom: 0;
+  }
+  .field--name-field-uiowa-contact-label {
+    font-size: 1rem;
+  }
+  .field--label-above {
+    margin-bottom: 1.5rem;
+  }
+
+  .field--name-field-person-position {
+    margin-top: .6rem;
+    .field__item {
+      display: inline-block;
+      font-size: 2.3rem;
+      line-height: 1;
+      font-weight: 300;
+      margin-bottom: .5rem;
+    }
+  }
+
+  .views-element-container {
+    margin-top: 0;
+  }
+
+  .card__subtitle {
+    .svg-inline--fa {
+      font-size: 1rem;
+      margin-right: .5rem;
+      color: $secondary;
+    }
+
+    border: 1px solid rgba(0, 0, 0, .125);
+    margin-bottom: 1rem;
+    padding: .7rem 1rem;
+    background: url(/themes/custom/uids_base/assets/images/particle.png);
+    background-size: 120%;
+    opacity: 1;
+  }
+}
+
+// Shared styles by counselors list and person
+.page-node-type-person.layout-builder-enabled,
+.view-id-counselors {
+  .card__subtitle a,
+  .card__date a {
+    text-decoration: none;
+  }
+
+  .card__date {
+    padding-left: 45px;
+    font-size: 1rem;
+    margin-bottom: .6rem;
+    line-height: 1.3;
+
+    .svg-inline--fa {
+      width: 35px;
+      margin-left: -40px;
+      color: $secondary;
+      position: absolute;
+    }
+  }
+}
+
+// Counselors
+.view-id-counselors {
+  .card.card--media-left .card__title {
+    margin: 0;
+  }
+  .card__date {
+    padding-left: 35px;
+  }
+  .card__subtitle {
+    padding-bottom: .5rem;
+  }
+  .card__description {
+    font-size: $small-font-size;
+    color: $text-muted;
+    strong {
+      color: $secondary;
+    }
+  }
+}
