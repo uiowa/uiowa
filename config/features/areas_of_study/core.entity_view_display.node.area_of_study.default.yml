@@ -5,12 +5,10 @@ dependencies:
   config:
     - field.field.node.area_of_study.body
     - field.field.node.area_of_study.field_area_of_study_certificates
-    - field.field.node.area_of_study.field_area_of_study_colleges
     - field.field.node.area_of_study.field_area_of_study_majors
     - field.field.node.area_of_study.field_area_of_study_minors
     - field.field.node.area_of_study.field_area_of_study_online
     - field.field.node.area_of_study.field_area_of_study_preprof
-    - field.field.node.area_of_study.field_area_of_study_related
     - field.field.node.area_of_study.field_image
     - node.type.area_of_study
   module:
@@ -163,22 +161,6 @@ third_party_settings:
                 type: string
             additional: {  }
             weight: 6
-          -
-            uuid: db9b5849-c13a-4c45-a578-1c6346c6ea16
-            region: content
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:area_of_study:field_area_of_study_colleges'
-              formatter:
-                label: above
-                settings:
-                  link: true
-                third_party_settings: {  }
-                type: entity_reference_label
-            additional: {  }
-            weight: 7
         third_party_settings: {  }
       -
         layout_id: layout_twocol
@@ -204,22 +186,6 @@ third_party_settings:
                 third_party_settings: {  }
             additional: {  }
             weight: 0
-          -
-            uuid: fbaf77db-2d4a-4d40-b155-325a7c0bc2e0
-            region: first
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:area_of_study:field_area_of_study_related'
-              formatter:
-                label: inline
-                settings:
-                  link: true
-                third_party_settings: {  }
-                type: entity_reference_label
-            additional: {  }
-            weight: 2
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -297,14 +263,6 @@ content:
     third_party_settings: {  }
     type: string
     region: content
-  field_area_of_study_colleges:
-    weight: 13
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
   field_area_of_study_majors:
     type: entity_reference_revisions_entity_view
     weight: 8
@@ -337,14 +295,6 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
-    region: content
-  field_area_of_study_related:
-    weight: 6
-    label: inline
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
     region: content
   field_image:
     weight: 1
