@@ -3,37 +3,19 @@
 @import "components/menus/top/top.scss";
 
 // Iowa Bar Full adjustments
+.iowa-bar--full.mega,
 .iowa-bar--full.horizontal,
 .iowa-bar--full.toggle  {
-  .menu--top.nav {
+  .menu--top {
     @include breakpoint(menu) {
       right: -10px;
       margin-top: 8px;
-    }
-    @include breakpoint(container) {
-      margin-top: 4px;
-    }
-  }
-
-  .iowa-bar--full.toggle  {
-  .iowa-bar__container {
-    @include breakpoint(container) {
-      //margin-right: 150px;
-    }
-  }
-    .search-button {
-      position: relative;
-    }
-  }
-
-  .menu--top.nav {
-    @include breakpoint(menu) {
       position: relative;
       align-self: center;
       justify-content: flex-start;
-     // margin-left: auto;
     }
     @include breakpoint(container) {
+      margin-top: 4px;
       justify-content: flex-end;
     }
   }
@@ -70,7 +52,7 @@
           position: relative;
           line-height: 1.3;
           text-align: center;
-         // font-weight: 400;
+          font-weight: 400;
 
           &:after {
             @include breakpoint(container) {
@@ -87,7 +69,6 @@
             }
           }
           &:hover, &:focus {
-            //text-decoration: underline;
             @include breakpoint(container) {
               background: #fff;
             }
@@ -110,48 +91,57 @@
   }
 }
 
-@media (min-width: 1700px) {
 .iowa-bar--full.toggle {
-  .menu--top.nav {
-      //margin-top: 30px;
-      //position: absolute;
-      //align-self: center;
-      //right: 340px;
+  .menu--top {
+    @include breakpoint(menu) {
+      flex: 1;
+    }
+    @include breakpoint(container) {
+      margin-right: calc(10% - 40vw);
+    }
+  }
+  .site-name + .menu--top {
+    @include breakpoint(menu) {
+      flex: 1;
+    }
+    @include breakpoint(container) {
+      right: calc(50% - 40vw);
+      flex: 0 1 25%;
     }
   }
 }
 
 @media only screen and (min-width: 0) and (max-width: 580px) {
-  .search-is-open .iowa-bar--full .menu--top {
-    display: block!important;
-  }
+  .iowa-bar--full {
+    .menu--top {
+      background: $primary;
+      margin-top: -.4rem;
+      position: inherit;
+      padding: 1.25rem;
 
-  .iowa-bar--full .menu--top {
-    background: $primary;
-    margin-top: -.4rem;
-    position: inherit;
-    padding: 0 1.25rem 1.25rem;
+      .menu li {
+        margin: 0;
 
-    .menu li {
-      margin: 0;
-      &:first-child {
-        margin: 0 15px 0 0;
+        &:first-child {
+          margin: 0 15px 0 0;
+        }
+
+        a {
+          display: block;
+          text-decoration: none;
+          color: $secondary;
+          font-size: .8rem;
+          text-transform: uppercase;
+          padding: .325rem 1.05rem;
+          position: relative;
+          line-height: 1.3;
+          text-align: center;
+          border: 1px solid $secondary;
+        }
       }
-      a {
-        display: block;
-        text-decoration: none;
-        color: $secondary;
-        font-size: .8rem;
-        text-transform: uppercase;
-        padding: .325rem 1.05rem;
-        position: relative;
-        line-height: 1.3;
-        text-align: center;
-        border: 1px solid $secondary;
-      }
-      &:first-child a {
-        //border-right: none;
-      }
+    }
+    .site-name + .menu--top {
+      padding: 0 1.25rem 1.25rem;
     }
   }
 }
