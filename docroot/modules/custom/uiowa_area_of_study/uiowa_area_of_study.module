@@ -59,6 +59,9 @@ function uiowa_area_of_study_preprocess_block(&$variables) {
   if ($variables['elements']['#plugin_id'] == 'inline_block:area_of_study_search') {
     // @todo Does this field need a headline field option?
 
+    // Using a process described here:
+    // https://drupal.stackexchange.com/a/274383/6066
+
     $form = [];
     $view_id = 'areas_of_study';
     $display_id = 'areas_of_study';
