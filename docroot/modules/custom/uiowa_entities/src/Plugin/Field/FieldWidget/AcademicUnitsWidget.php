@@ -28,6 +28,9 @@ class AcademicUnitsWidget extends WidgetBase {
     $units = \Drupal::entityTypeManager()
       ->getStorage('uiowa_academic_unit')
       ->loadByProperties(['type' => 'college']);
+    foreach ($units as $key => $value) {
+      $units[$key] = $value->get('label');
+    }
 
     $element['academic_units'] = [
       '#type' => 'select',
