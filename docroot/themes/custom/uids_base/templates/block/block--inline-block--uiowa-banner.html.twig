@@ -67,7 +67,14 @@
 {#     Embed contextual links so that they'll show up in the upper right-hand corner. #}
     {{ title_prefix }}
     {{ title_suffix }}
+    {#  NONE OF THESE WORK  #}
+    {{ devel_breakpoint(banner_image["#items"].list) }}
     {% if banner_image  %}
+      {% if banner_image["#items"].list[0].properties["entity"].target.entity.values["bundle"]["x-default"] == "video" %}
+        {{ attach_library('uids_base/banner-video') }}
+        <div>SOME EXAMPLE</div>
+      {% endif %}
+      {# TESTING ENDS HERE #}
       <div class="banner__image">
         {{ banner_image }}
       </div>
