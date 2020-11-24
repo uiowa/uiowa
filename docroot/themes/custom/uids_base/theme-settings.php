@@ -46,14 +46,14 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
   if ($name_length > 43) {
     $form['header']['type']['#disabled'] = TRUE;
     $form['header']['type']['#default_value'] = 'below';
-    $form['header']['type']['#description'] = t('This option is disabled because your site name exceeds 43 characters.', [
+    $form['header']['type']['#description'] = t('This option is disabled because the site name set on the <a href=":site-settings-page">site settings page</a> exceeds the recommended character count of 43 characters.', [
       ':site-settings-page' => Url::fromRoute('system.site_information_settings')->toString(),
     ]);
   }
   if (($has_parent) && ($name_length > 43)) {
     $form['header']['type']['#disabled'] = TRUE;
     $form['header']['type']['#default_value'] = 'below';
-    $form['header']['type']['#description'] = t('This option is disabled because your site name exceeds 43 characters and a parent organization was set on the <a href=":site-settings-page">site settings page</a>.', [
+    $form['header']['type']['#description'] = t('This option is disabled because a parent organization was set on the <a href=":site-settings-page">site settings page</a> and the site name exceeds the recommended character count of 43 characters.', [
       ':site-settings-page' => Url::fromRoute('system.site_information_settings')->toString(),
     ]);
   }
