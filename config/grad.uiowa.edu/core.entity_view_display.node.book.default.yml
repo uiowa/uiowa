@@ -4,14 +4,13 @@ status: true
 dependencies:
   config:
     - field.field.node.book.body
+    - field.field.node.book.field_uiowa_editorial_group
     - node.type.book
   module:
     - layout_builder
     - layout_builder_restrictions
     - text
     - user
-  theme:
-    - uids_base
 third_party_settings:
   layout_builder:
     allow_custom: false
@@ -34,10 +33,11 @@ content:
   body:
     label: hidden
     type: text_default
-    weight: 2
+    weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_uiowa_editorial_group: true
   links: true
   search_api_excerpt: true

@@ -1,0 +1,29 @@
+uuid: 4609eef8-fa5d-4cb9-b488-c37957824460
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_uiowa_editorial_group
+    - node.type.article
+    - taxonomy.vocabulary.editorial_groups
+id: node.article.field_uiowa_editorial_group
+field_name: field_uiowa_editorial_group
+entity_type: node
+bundle: article
+label: 'Editorial Group'
+description: 'Editorial access to this content is limited to the selected group.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      editorial_groups: editorial_groups
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

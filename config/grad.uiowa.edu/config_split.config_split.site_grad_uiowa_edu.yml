@@ -8,10 +8,26 @@ description: 'Split configuration for grad.uiowa.edu.'
 folder: ../config/grad.uiowa.edu
 module:
   book: 0
+  workbench_access: 0
 theme: {  }
 blacklist:
   - config_split.config_split.site_grad_uiowa_edu
-graylist: {  }
+graylist:
+  - administerusersbyrole.settings
+  - field.storage.node.field_uiowa_editorial_group
+  - taxonomy.vocabulary.editorial_groups
+  - user.role.web_admin
+  - workbench_access.access_scheme.editorial_access
+  - workbench_access.settings
+  - 'core.entity_view_display.node.person.*'
+  - 'core.entity_view_display.node.page.*'
+  - 'core.entity_view_display.node.article.*'
+  - 'core.entity_view_display.node.book.*'
+  - 'core.entity_form_display.node.person.*'
+  - 'core.entity_form_display.node.page.*'
+  - 'core.entity_form_display.node.article.*'
+  - 'core.entity_form_display.node.book.*'
+  - 'user.role.*'
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 90

@@ -1,0 +1,29 @@
+uuid: c2ea589f-f157-4a83-86d5-6aebef32cee7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_uiowa_editorial_group
+    - node.type.book
+    - taxonomy.vocabulary.editorial_groups
+id: node.book.field_uiowa_editorial_group
+field_name: field_uiowa_editorial_group
+entity_type: node
+bundle: book
+label: 'Editorial Group'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      editorial_groups: editorial_groups
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
