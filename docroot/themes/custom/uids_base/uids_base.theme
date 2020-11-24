@@ -80,8 +80,9 @@ function uids_base_preprocess_page(&$variables) {
   $variables['header_classes'] = [];
   $name_length = strlen($variables['site_name']);
 
-  // The site has a parent, so we are overriding the header type.
-  if ($variables['site_has_parent']) {
+  // If the site has a parent organization or the site name is more than 43
+  // characters, we force the site to use the 'below' header option.
+  if ($variables['site_has_parent'] || $name_length > 43) {
     $variables['header_type'] = 'below';
   }
 
@@ -93,7 +94,7 @@ function uids_base_preprocess_page(&$variables) {
     $variables['header_type'] = 'homepage';
     $variables['uiowa_url'] = \Drupal::request()->getSchemeAndHttpHost();
   }
-  elseif ($name_length < 44) {
+  else {
     switch ($variables['header_type']) {
       case 'below':
       case 'header--tertiary':
@@ -107,16 +108,6 @@ function uids_base_preprocess_page(&$variables) {
         // @todo Remove this when config is updated for all sites.
         $variables['header_classes'][] = 'iowa-bar--full';
         $variables['header_type'] = 'inline';
-        break;
-    }
-  }
-  else {
-    switch ($variables['header_type']) {
-      case 'below' || 'inline':
-      case 'header--tertiary' || 'header--secondary':
-        // @todo Remove this when config is updated for all sites.
-        $variables['header_classes'][] = 'iowa-bar--narrow';
-        $variables['header_type'] = 'below';
         break;
     }
   }
