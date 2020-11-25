@@ -111,11 +111,33 @@
   }
 }
 
+// Change order for mobile stacking for logo, site name, and top menu
 @media only screen and (min-width: 0) and (max-width: 580px) {
   .iowa-bar--full {
+    .iowa-bar__container {
+      display: flex;
+
+      .logo--tab {
+        order: 1;
+        flex: 0 1 100%;
+      }
+
+      .site-name {
+        order: 3;
+      }
+
+      .menu--top {
+        order: 2;
+        flex: 0 1 100%;
+      }
+    }
+  }
+
+  // Mobile adjustments for top menu
+  @media only screen and (min-width: 0) and (max-width: 580px) {
     .menu--top {
       background: $primary;
-      margin-top: -.4rem;
+      margin-top: 0;
       position: inherit;
       padding: 1.25rem;
 
@@ -141,9 +163,10 @@
       }
     }
     .site-name + .menu--top {
-      padding: 0 1.25rem 1.25rem;
+      padding: 1.25rem 1.25rem 0 1.25rem;
     }
   }
 }
+
 
 
