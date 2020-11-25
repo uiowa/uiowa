@@ -13,19 +13,8 @@ dependencies:
     - field.field.node.person.field_person_first_name
     - field.field.node.person.field_person_hide
     - field.field.node.person.field_person_last_name
-    - field.field.node.person.field_person_mentor_college
-    - field.field.node.person.field_person_mentor_dept
-    - field.field.node.person.field_person_mentor_dept_second
-    - field.field.node.person.field_person_mentor_interest
-    - field.field.node.person.field_person_mentor_prev
-    - field.field.node.person.field_person_mentor_prev_years
-    - field.field.node.person.field_person_mentor_project
     - field.field.node.person.field_person_phone
     - field.field.node.person.field_person_position
-    - field.field.node.person.field_person_project_assistants
-    - field.field.node.person.field_person_project_desc
-    - field.field.node.person.field_person_project_qualif
-    - field.field.node.person.field_person_project_undergrad
     - field.field.node.person.field_person_research_areas
     - field.field.node.person.field_person_types
     - field.field.node.person.field_person_website
@@ -33,9 +22,7 @@ dependencies:
     - field.field.node.person.field_teaser
     - node.type.person
   module:
-    - options
     - telephone
-    - text
     - user
 id: node.person.teaser
 targetEntityType: node
@@ -44,7 +31,7 @@ mode: teaser
 content:
   field_image:
     type: entity_reference_entity_view
-    weight: 15
+    weight: 6
     region: content
     label: hidden
     settings:
@@ -61,48 +48,13 @@ content:
     third_party_settings: {  }
   field_person_email:
     type: email_mailto
-    weight: 11
+    weight: 2
     region: content
     label: inline
     settings: {  }
     third_party_settings: {  }
-  field_person_mentor_college:
-    type: list_default
-    weight: 8
-    region: content
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-  field_person_mentor_dept:
-    type: list_default
-    weight: 5
-    region: content
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-  field_person_mentor_dept_second:
-    type: list_default
-    weight: 6
-    region: content
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-  field_person_mentor_interest:
-    type: list_default
-    weight: 10
-    region: content
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-  field_person_mentor_project:
-    type: text_default
-    weight: 1
-    region: content
-    label: above
-    settings: {  }
-    third_party_settings: {  }
   field_person_phone:
-    weight: 12
+    weight: 3
     label: inline
     settings:
       title: ''
@@ -111,50 +63,21 @@ content:
     region: content
   field_person_position:
     type: string
-    weight: 3
+    weight: 1
     region: content
-    label: hidden
+    label: visually_hidden
     settings:
       link_to_entity: false
-    third_party_settings: {  }
-  field_person_project_assistants:
-    type: string
-    weight: 2
-    region: content
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-  field_person_project_desc:
-    type: text_default
-    weight: 4
-    region: content
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-  field_person_project_qualif:
-    type: basic_string
-    weight: 9
-    region: content
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-  field_person_project_undergrad:
-    type: basic_string
-    weight: 7
-    region: content
-    label: above
-    settings: {  }
     third_party_settings: {  }
   field_teaser:
     type: basic_string
-    weight: 13
+    weight: 4
     region: content
     label: hidden
     settings: {  }
     third_party_settings: {  }
   links:
-    weight: 14
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -166,8 +89,6 @@ hidden:
   field_person_first_name: true
   field_person_hide: true
   field_person_last_name: true
-  field_person_mentor_prev: true
-  field_person_mentor_prev_years: true
   field_person_research_areas: true
   field_person_types: true
   field_person_website: true
