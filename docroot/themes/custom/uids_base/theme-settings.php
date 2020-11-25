@@ -36,27 +36,28 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     ],
     '#default_value' => theme_get_setting('header.type'),
   ];
-  if ($has_parent) {
+
+  // If there is a parent organization or the name is longer than 43
+  // characters, set the header type to disabled.
+  if ($has_parent || $name_length > 43) {
+    $description = '';
+    if (($has_parent) && ($name_length > 43)) {
+      $description = 'This option is disabled because a parent organization was set on the <a href=":site-settings-page">site settings page</a> and the site name exceeds the recommended character count of 43 characters.';
+    }
+    elseif ($name_length > 43) {
+      $description = 'This option is disabled because the site name set on the <a href=":site-settings-page">site settings page</a> exceeds the recommended character count of 43 characters.';
+    }
+    elseif ($has_parent) {
+      $description = 'This option is disabled because a parent organization was set on the <a href=":site-settings-page">site settings page</a>. When you have a parent organization, your site name will <em>always</em> display on the line below. You will need to remove the parent organization information to select another option.';
+    }
+
     $form['header']['type']['#disabled'] = TRUE;
     $form['header']['type']['#default_value'] = 'below';
-    $form['header']['type']['#description'] = t('This option is disabled because a parent organization was set on the <a href=":site-settings-page">site settings page</a>. When you have a parent organization, your site name will <em>always</em> display on the line below. You will need to remove the parent organization information to select another option.', [
+    $form['header']['type']['#description'] = t($description, [
       ':site-settings-page' => Url::fromRoute('system.site_information_settings')->toString(),
     ]);
   }
-  if ($name_length > 43) {
-    $form['header']['type']['#disabled'] = TRUE;
-    $form['header']['type']['#default_value'] = 'below';
-    $form['header']['type']['#description'] = t('This option is disabled because the site name set on the <a href=":site-settings-page">site settings page</a> exceeds the recommended character count of 43 characters.', [
-      ':site-settings-page' => Url::fromRoute('system.site_information_settings')->toString(),
-    ]);
-  }
-  if (($has_parent) && ($name_length > 43)) {
-    $form['header']['type']['#disabled'] = TRUE;
-    $form['header']['type']['#default_value'] = 'below';
-    $form['header']['type']['#description'] = t('This option is disabled because a parent organization was set on the <a href=":site-settings-page">site settings page</a> and the site name exceeds the recommended character count of 43 characters.', [
-      ':site-settings-page' => Url::fromRoute('system.site_information_settings')->toString(),
-    ]);
-  }
+
   $form['header']['nav_style'] = [
     '#type' => 'select',
     '#title' => t('Header navigation style'),

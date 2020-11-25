@@ -1605,12 +1605,12 @@ function sitenow_update_8044() {
   /** @var \Drupal\Core\Theme\ActiveTheme $active_theme */
   $active_theme = \Drupal::service('theme.manager')->getActiveTheme();
 
-  // Limit to just sites running uids_base.
-  if ($active_theme->getName() === 'uids_base') {
-    $config_factory = \Drupal::configFactory();
-    /** @var  $config */
-    $config = $config_factory->getEditable('uids_base.settings');
+  $config_factory = \Drupal::configFactory();
+  /** @var  $config */
+  $config = $config_factory->getEditable('uids_base.settings');
 
+  // Only run this if config exists.
+  if ($config) {
     $changed = FALSE;
 
     foreach (['branding', 'uids_base'] as $key) {
@@ -1625,6 +1625,5 @@ function sitenow_update_8044() {
     if ($changed) {
       $config->save();
     }
-
   }
 }
