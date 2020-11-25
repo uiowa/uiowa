@@ -14,6 +14,7 @@ blacklist:
 graylist:
   - core.entity_form_display.node.person.default
   - core.entity_form_display.node.person.minimal
+  - core.entity_view_display.block_content.uiowa_people.default
   - core.entity_view_display.node.person.default
   - core.entity_view_display.node.person.teaser
   - field.field.node.person.field_person_mentor_dept
@@ -34,7 +35,13 @@ graylist:
   - field.storage.node.field_person_project_undergrad
   - field.storage.node.field_person_types
   - node.type.person
+  - simple_sitemap.bundle_settings.default.node.person
+  - sitenow_people.field_settings
   - sitenow_people.person_type.mentor
+  - user.role.anonymous
+  - user.role.authenticated
+  - user.role.editor
+  - user.role.webmaster
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 90
