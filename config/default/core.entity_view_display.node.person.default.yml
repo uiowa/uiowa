@@ -12,11 +12,6 @@ dependencies:
     - field.field.node.person.field_person_first_name
     - field.field.node.person.field_person_hide
     - field.field.node.person.field_person_last_name
-    - field.field.node.person.field_person_mentor_first_name
-    - field.field.node.person.field_person_mentor_interest
-    - field.field.node.person.field_person_mentor_last_name
-    - field.field.node.person.field_person_mentor_prev_years
-    - field.field.node.person.field_person_mentor_previously
     - field.field.node.person.field_person_phone
     - field.field.node.person.field_person_position
     - field.field.node.person.field_person_research_areas
@@ -28,7 +23,6 @@ dependencies:
   module:
     - entity_reference_revisions
     - link
-    - options
     - telephone
     - text
     - user
@@ -81,43 +75,6 @@ content:
     label: inline
     settings: {  }
     third_party_settings: {  }
-  field_person_mentor_first_name:
-    weight: 16
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
-  field_person_mentor_interest:
-    weight: 14
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
-    region: content
-  field_person_mentor_last_name:
-    weight: 17
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
-  field_person_mentor_prev_years:
-    weight: 15
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
-    region: content
-  field_person_mentor_previously:
-    weight: 13
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
-    region: content
   field_person_phone:
     weight: 3
     label: inline
