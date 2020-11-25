@@ -34,7 +34,7 @@ class AcademicUnitsWidget extends WidgetBase {
     }
     // Update values to the text labels
     // rather than the objects themselves.
-    array_walk($units, function(&$value, $key) {
+    array_walk($units, function (&$value, $key) {
       $value = $value->get('label');
     });
 
@@ -55,8 +55,8 @@ class AcademicUnitsWidget extends WidgetBase {
    */
   public static function defaultSettings() {
     return [
-      'types' => ['college']
-      ] + parent::defaultSettings();
+      'types' => ['college'],
+    ] + parent::defaultSettings();
   }
 
   /**
@@ -86,4 +86,5 @@ class AcademicUnitsWidget extends WidgetBase {
       ['@types' => implode(", ", array_filter($this->getSetting('types')))]);
     return $summary;
   }
+
 }

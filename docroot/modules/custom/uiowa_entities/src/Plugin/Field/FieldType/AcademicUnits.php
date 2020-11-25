@@ -26,8 +26,6 @@ class AcademicUnits extends FieldItemBase {
    * {@inheritdoc}
    */
   public static function schema(FieldStorageDefinitionInterface $field_definition) {
-    $target_type_info = \Drupal::entityTypeManager()->getDefinition('uiowa_academic_unit');
-
     $columns = [
       'target_id' => [
         'description' => 'The ID of the target configuration entity.',
