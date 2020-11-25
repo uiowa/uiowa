@@ -24,17 +24,19 @@ class AcademicUnitsWidget extends WidgetBase {
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
-    $options = array_filter($this->getSetting('types'));
+    // Grab available units.
     $units = [];
+    $options = array_filter($this->getSetting('types'));
     foreach ($options as $option) {
       $units += \Drupal::entityTypeManager()
         ->getStorage('uiowa_academic_unit')
         ->loadByProperties(['type' => $option]);
     }
-
-    foreach ($units as $key => $value) {
-      $units[$key] = $value->get('label');
-    }
+    // Update values to the text labels
+    // rather than the objects themselves.
+    array_walk($units, function(&$value, $key) {
+      $value = $value->get('label');
+    });
 
     $element['academic_units'] = [
       '#type' => 'select',
@@ -65,6 +67,8 @@ class AcademicUnitsWidget extends WidgetBase {
       '#type' => 'checkboxes',
       '#title' => $this->t('Which types of academic units should be included?'),
       '#options' => [
+        // Options are hardcoded in, but this could be updated
+        // to pull available options directly from the config entity.
         'college' => $this->t('Collegiate'),
         'non-collegiate' => $this->t('Non-Collegiate'),
       ],

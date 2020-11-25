@@ -26,7 +26,9 @@ class AcademicUnitsFormatter extends FormatterBase {
 
     foreach ($items as $delta => $item) {
       $element[$delta] = [
-        '#plain_text' => 'testing',
+        '#plain_text' => $item->get('label'),
+        '#url' => $item->get('homepage')->getValue(),
+        '#type' => $item->get('type')->getValue(),
       ];
     }
 
