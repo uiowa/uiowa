@@ -9,32 +9,49 @@ cck_plugin_method: null
 migration_tags:
   - 'Drupal 7'
   - Content
+  - Files
 migration_group: sitenow_migrate
-label: 'Public files'
+label: Files
 source:
-  plugin: d7_file
-  scheme: public
+  plugin: files
+  constants:
+    SOURCE_BASE_PATH: 'https://www.grad.uiowa.edu/sites/gc/files/'
+    DRUPAL_FILE_DIRECTORY: 'sites/grad.uiowa.edu/files/'
 process:
-  filename: filename
+  filename:
+    plugin: get
+    source: filename
   source_full_path:
     -
       plugin: concat
       delimiter: /
       source:
         - constants/SOURCE_BASE_PATH
-        - filepath
+        - uri
+    -
+      plugin: urlencode
+  destination_full_path:
+    -
+      plugin: concat
+      delimiter: /
+      source:
+        - constants/DRUPAL_FILE_DIRECTORY
+        - filename
     -
       plugin: urlencode
   uri:
     plugin: file_copy
     source:
       - '@source_full_path'
-      - uri
+      - '@destination_full_path'
+    file_exists: use existing
   filemime: filemime
   status: status
   created: timestamp
   changed: timestamp
-  uid: uid
+  uid:
+    plugin: default_value
+    default_value: 0
 destination:
   plugin: 'entity:file'
 migration_dependencies: null

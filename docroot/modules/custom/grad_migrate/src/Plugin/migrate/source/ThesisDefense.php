@@ -2,22 +2,17 @@
 
 namespace Drupal\grad_migrate\Plugin\migrate\source;
 
-use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Extension\ModuleHandlerInterface;
-use Drupal\Core\State\StateInterface;
-use Drupal\migrate\Plugin\MigrationInterface;
-use Drupal\node\Plugin\migrate\source\d7\Node as D7Node;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 
 /**
  * Basic implementation of the source plugin.
  *
  * @MigrateSource(
- *  id = "grad_thesis_defense",
- *  source_provider = "node"
+ *  id = "d7_grad_thesis_defense",
+ *  source_module = "grad_migrate"
  * )
  */
-class ThesisDefense extends D7Node {
+class ThesisDefense extends BaseNodeSource {
 
   /**
    * {@inheritdoc}
