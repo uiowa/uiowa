@@ -12,6 +12,9 @@ dependencies:
     - field.field.node.person.field_person_first_name
     - field.field.node.person.field_person_hide
     - field.field.node.person.field_person_last_name
+    - field.field.node.person.field_person_mentor_interest
+    - field.field.node.person.field_person_mentor_prev
+    - field.field.node.person.field_person_mentor_prev_years
     - field.field.node.person.field_person_phone
     - field.field.node.person.field_person_position
     - field.field.node.person.field_person_research_areas
@@ -121,6 +124,26 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_person_mentor_interest:
+    weight: 26
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_person_mentor_prev:
+    weight: 27
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_person_mentor_prev_years:
+    weight: 28
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_person_phone:
     type: telephone_default
     weight: 7
