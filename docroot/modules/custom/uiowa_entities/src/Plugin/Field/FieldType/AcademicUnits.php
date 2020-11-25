@@ -62,16 +62,17 @@ class AcademicUnits extends FieldItemBase {
     $target_info = \Drupal::entityTypeManager()->getDefinition('uiowa_academic_unit');
 
     $target_id_definition = DataReferenceTargetDefinition::create('string')
-      ->setLabel(t('uiowa_academic_unit ID'));
-    $target_id_definition->setRequired(TRUE);
+      ->setLabel(t('uiowa_academic_unit ID'))
+      ->setRequired(TRUE);
+
     $properties['target_id'] = $target_id_definition;
     $properties['entity'] = DataReferenceDefinition::create('entity')
       ->setLabel($target_info->getLabel())
       ->setDescription(t('The referenced entity'))
-      // The entity object is computed out of the entity ID.
       ->setComputed(TRUE)
       ->setReadOnly(FALSE)
       ->setTargetDefinition(EntityDataDefinition::create('uiowa_academic_unit'));
+
     return $properties;
   }
 

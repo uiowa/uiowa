@@ -24,10 +24,14 @@ class AcademicUnitsWidget extends WidgetBase {
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
-    $options = $this->getSetting('types');
-    $units = \Drupal::entityTypeManager()
-      ->getStorage('uiowa_academic_unit')
-      ->loadByProperties(['type' => 'college']);
+    $options = array_filter($this->getSetting('types'));
+    $units = [];
+    foreach ($options as $option) {
+      $units += \Drupal::entityTypeManager()
+        ->getStorage('uiowa_academic_unit')
+        ->loadByProperties(['type' => $option]);
+    }
+
     foreach ($units as $key => $value) {
       $units[$key] = $value->get('label');
     }
@@ -37,7 +41,7 @@ class AcademicUnitsWidget extends WidgetBase {
       '#title' => $this->t('Academic Units'),
       '#options' => $units,
       '#default_value' => isset($items[$delta]->academic_units) ? $items[$delta]->academic_units : [],
-      '#description' => $this->t('The heading size for all children headings.'),
+      '#description' => $this->t('Academic units related to this content.'),
       '#multiple' => TRUE,
     ];
 
