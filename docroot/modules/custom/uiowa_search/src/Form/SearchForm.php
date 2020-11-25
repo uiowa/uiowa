@@ -23,6 +23,7 @@ class SearchForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = [];
+
     $form['search-terms'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Search'),
@@ -37,26 +38,20 @@ class SearchForm extends FormBase {
       '#maxlength' => '256',
       '#size' => '15',
     ];
+
     $form['submit-search'] = [
       '#type' => 'submit',
       '#value' => $this->t('Search'),
       '#name' => 'btnG',
     ];
-    $form['#action'] = $GLOBALS['base_url'] . '/uiowa-search';
-    // Use core search CSS in addition to this module's css.
-    // (keep it general in case core search is enabled).
+
+    $form['#action'] = Url::fromRoute('uiowa_search.search_results')->toString();
+
     $form['#attributes']['class'][] = 'uiowa-search--search-form';
     $form['#attributes']['class'][] = 'search-google-appliance-search-form';
     $form['#attributes']['aria-label'] = 'site search';
     $form['#attributes']['role'] = 'search';
     return $form;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-
   }
 
   /**

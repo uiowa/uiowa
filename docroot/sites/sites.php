@@ -1841,3 +1841,21 @@ $sites['psychologyreconnect.local.drupal.uiowa.edu'] = 'reconnect.psychology.uio
 $sites['psychologyreconnect.dev.drupal.uiowa.edu'] = 'reconnect.psychology.uiowa.edu';
 $sites['psychologyreconnect.stage.drupal.uiowa.edu'] = 'reconnect.psychology.uiowa.edu';
 $sites['psychologyreconnect.prod.drupal.uiowa.edu'] = 'reconnect.psychology.uiowa.edu';
+
+// Directory aliases for journalism.uiowa.edu.
+$sites['journalism.local.drupal.uiowa.edu'] = 'journalism.uiowa.edu';
+$sites['journalism.dev.drupal.uiowa.edu'] = 'journalism.uiowa.edu';
+$sites['journalism.stage.drupal.uiowa.edu'] = 'journalism.uiowa.edu';
+$sites['journalism.prod.drupal.uiowa.edu'] = 'journalism.uiowa.edu';
+
+// Directory aliases for shawgroup.lab.uiowa.edu.
+$sites['labshawgroup.local.drupal.uiowa.edu'] = 'shawgroup.lab.uiowa.edu';
+$sites['labshawgroup.dev.drupal.uiowa.edu'] = 'shawgroup.lab.uiowa.edu';
+$sites['labshawgroup.stage.drupal.uiowa.edu'] = 'shawgroup.lab.uiowa.edu';
+$sites['labshawgroup.prod.drupal.uiowa.edu'] = 'shawgroup.lab.uiowa.edu';
+
+// Directory aliases for chowdhury.lab.uiowa.edu.
+$sites['labchowdhury.local.drupal.uiowa.edu'] = 'chowdhury.lab.uiowa.edu';
+$sites['labchowdhury.dev.drupal.uiowa.edu'] = 'chowdhury.lab.uiowa.edu';
+$sites['labchowdhury.stage.drupal.uiowa.edu'] = 'chowdhury.lab.uiowa.edu';
+$sites['labchowdhury.prod.drupal.uiowa.edu'] = 'chowdhury.lab.uiowa.edu';

@@ -245,7 +245,7 @@ function sitenow_events_format_instance(array $event_instance) {
 /**
  * Implements hook_field_widget_WIDGET_TYPE_form_alter().
  *
- * @todo: Remove this after sitenow_events_paragraph is uninstalled.
+ * @todo Remove this after sitenow_events_paragraph is uninstalled.
  */
 function sitenow_events_field_widget_paragraphs_form_alter(&$element, &$form_state, $context) {
   if ($element['#paragraph_type'] == 'events') {
@@ -387,7 +387,7 @@ function _sitenow_events_get_filter_field_options(FieldStorageConfig $definition
  * @return array
  *   Returns an associative array options tree.
  *
- * @todo: Replace with an API endpoint that outputs an entire vocabulary tree.
+ * @todo Replace with an API endpoint that outputs an entire vocabulary tree.
  */
 function _sitenow_events_build_options_tree(array $data, $parent = 0) {
   $tree = [];
@@ -421,7 +421,7 @@ function _sitenow_events_build_options_tree(array $data, $parent = 0) {
  * @return array
  *   Returns options with children prefixed with dashes.
  *
- * @todo: Replace with an API endpoint that outputs an entire vocabulary tree.
+ * @todo Replace with an API endpoint that outputs an entire vocabulary tree.
  */
 function _sitenow_events_build_options_list(array $tree, $r = 0, $p = NULL, array &$options = []) {
   foreach ($tree as $t) {
