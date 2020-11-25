@@ -1,0 +1,134 @@
+uuid: cd0dc47a-a721-4842-a61f-0af8e2d74a64
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.person.field_image
+    - field.field.node.person.field_person_bio
+    - field.field.node.person.field_person_contact_information
+    - field.field.node.person.field_person_credential
+    - field.field.node.person.field_person_education
+    - field.field.node.person.field_person_email
+    - field.field.node.person.field_person_first_name
+    - field.field.node.person.field_person_hide
+    - field.field.node.person.field_person_last_name
+    - field.field.node.person.field_person_mentor_dept
+    - field.field.node.person.field_person_mentor_dept_second
+    - field.field.node.person.field_person_mentor_prev
+    - field.field.node.person.field_person_mentor_prev_years
+    - field.field.node.person.field_person_mentor_project
+    - field.field.node.person.field_person_phone
+    - field.field.node.person.field_person_position
+    - field.field.node.person.field_person_project_assistants
+    - field.field.node.person.field_person_project_desc
+    - field.field.node.person.field_person_project_qualif
+    - field.field.node.person.field_person_project_undergrad
+    - field.field.node.person.field_person_research_areas
+    - field.field.node.person.field_person_types
+    - field.field.node.person.field_person_website
+    - field.field.node.person.field_tags
+    - field.field.node.person.field_teaser
+    - node.type.person
+  module:
+    - options
+    - telephone
+    - text
+    - user
+id: node.person.teaser
+targetEntityType: node
+bundle: person
+mode: teaser
+content:
+  field_image:
+    type: entity_reference_entity_view
+    weight: 11
+    region: content
+    label: hidden
+    settings:
+      view_mode: large__square
+      link: false
+    third_party_settings: {  }
+  field_person_credential:
+    type: string
+    weight: 0
+    region: content
+    label: visually_hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_person_email:
+    type: email_mailto
+    weight: 7
+    region: content
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+  field_person_mentor_dept:
+    type: list_default
+    weight: 2
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_person_mentor_dept_second:
+    type: list_default
+    weight: 3
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_person_mentor_project:
+    type: text_default
+    weight: 6
+    region: content
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+  field_person_phone:
+    weight: 8
+    label: inline
+    settings:
+      title: ''
+    third_party_settings: {  }
+    type: telephone_link
+    region: content
+  field_person_position:
+    type: string
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_teaser:
+    type: basic_string
+    weight: 9
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  links:
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  content_moderation_control: true
+  field_person_bio: true
+  field_person_contact_information: true
+  field_person_education: true
+  field_person_first_name: true
+  field_person_hide: true
+  field_person_last_name: true
+  field_person_mentor_prev: true
+  field_person_mentor_prev_years: true
+  field_person_project_assistants: true
+  field_person_project_desc: true
+  field_person_project_qualif: true
+  field_person_project_undergrad: true
+  field_person_research_areas: true
+  field_person_types: true
+  field_person_website: true
+  field_tags: true
+  search_api_excerpt: true
