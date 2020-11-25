@@ -51,7 +51,7 @@ class AcademicUnitsWidget extends WidgetBase {
   }
 
   /**
-   * (@inheritdoc)
+   * {@inheritdoc}
    */
   public static function defaultSettings() {
     return [
@@ -60,7 +60,7 @@ class AcademicUnitsWidget extends WidgetBase {
   }
 
   /**
-   * (@inheritdoc)
+   * {@inheritdoc}
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $element['types'] = [
@@ -78,7 +78,7 @@ class AcademicUnitsWidget extends WidgetBase {
   }
 
   /**
-   * (@inheritdoc)
+   * {@inheritdoc}
    */
   public function settingsSummary() {
     $summary = [];
