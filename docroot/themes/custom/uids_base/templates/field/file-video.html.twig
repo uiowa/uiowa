@@ -16,6 +16,7 @@
 */
 #}
 <div class="media--video">
+  {{ attach_library('uids_base/banner-video') }}
   {% if attributes.storage.autoplay %}
     <div class="video-controls video">
       <button class="video-btn video-btn__pause" id="video-btn">
@@ -29,7 +30,8 @@
       </button>
     </div>
   {% endif %}
-  <video {{ attributes }} id="video-container">
+  <video {{ attributes }} id="video-container" muted="muted">
+    {{ devel_breakpoint(attributes) }}
     {% for file in files %}
       <source {{ file.source_attributes }} />
     {% endfor %}
