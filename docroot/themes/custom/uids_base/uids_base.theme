@@ -213,7 +213,7 @@ function uids_base_preprocess_media(array &$variables) {
 
   // Get the media entity's bundle (such as video, image, etc.)
   $mediaType = $variables['media']->bundle();
-//  $variables;
+  // $variables;
   if ($mediaType == 'video') {
     $referring_item = $media->_referringItem;
     if ($referring_item) {
