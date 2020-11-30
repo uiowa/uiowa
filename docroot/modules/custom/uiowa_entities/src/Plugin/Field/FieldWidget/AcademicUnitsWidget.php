@@ -67,12 +67,10 @@ class AcademicUnitsWidget extends WidgetBase implements ContainerFactoryPluginIn
       $value = $value->get('label');
     });
 
-    $element['academic_units'] = [
+    $element['value'] = $element + [
       '#type' => 'select',
-      '#title' => $this->t('Academic Units'),
       '#options' => $units,
       '#default_value' => isset($items[$delta]->academic_units) ? $items[$delta]->academic_units : [],
-      '#description' => $this->t('Academic units related to this content.'),
       '#multiple' => TRUE,
     ];
 
