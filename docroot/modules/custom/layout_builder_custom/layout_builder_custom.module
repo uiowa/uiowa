@@ -194,11 +194,13 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           break;
 
         case 'menu_block:main':
-          /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
-          $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
-          $collegiate_split = 'config_split:collegiate';
-          // 'collegiate' split either doesn't exist or isn't enabled.
-          if (!isset($filters[$collegiate_split]) || !$filters[$collegiate_split]['status']) {
+          /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+          $check = \Drupal::service('uiowa_core.access_checker');
+
+          /** @var Drupal\Core\Access\AccessResultInterface $is_admin */
+          $access = $check->access(\Drupal::currentUser()->getAccount());
+
+          if ($access->isForbidden()) {
             // Restrict block settings on main navigation block.
             $form['settings']['menu_levels']['#access'] = FALSE;
             $form['settings']['advanced']['#access'] = FALSE;

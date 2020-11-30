@@ -1,18 +1,12 @@
-# Custom module library for general purposes.
-uiowa-search:
-  version: 1.x
-  js:
-    js/cse.results.js: {}
+search-form:
   css:
     base:
-      css/uiowa-search.css: {}
+      css/search-form.css: {}
+search-results:
+  js:
+    js/cse.results.js: { }
   dependencies:
     - core/jquery
     - core/jquery.once
     - core/drupalSettings
     - core/drupal
-
-gtag:
-  version: 1.x
-  js:
-    js/tag-manager.js: {}

@@ -28,6 +28,7 @@ class UiowaSearchResultsController extends ControllerBase {
   public function build(Request $request) {
     $config = $this->config('uiowa_search.settings')->get('uiowa_search');
     $search_terms = $request->get('search');
+
     $search_params = [
       'q' => $search_terms,
       'client' => 'our_frontend',
@@ -41,6 +42,7 @@ class UiowaSearchResultsController extends ControllerBase {
       'ud' => '1',
       'site' => 'default_collection',
     ];
+
     $build['search'] = [
       '#type' => 'link',
       '#title' => $this->t('Search all University of Iowa for @terms', ['@terms' => $search_terms]),
@@ -49,16 +51,20 @@ class UiowaSearchResultsController extends ControllerBase {
         'target' => '_blank',
       ],
     ];
+
     $build['results_container'] = [
       '#type' => 'container',
       '#attributes' => [
         'id' => 'search-results',
       ],
     ];
-    // Pass config to drupalSettings.
+
+    $build['#attached']['library'][] = 'uiowa_search/search-results';
     $build['#attached']['drupalSettings']['uiowaSearch']['engineId'] = $config['cse_engine_id'];
     $build['#attached']['drupalSettings']['uiowaSearch']['cseScope'] = $config['cse_scope'];
-    $build['#cache']['max-age'] = 0;
+
+    // Cache by URL query arguments since that controls the link markup above.
+    $build['#cache']['contexts'][] = 'url.query_args';
 
     return $build;
   }

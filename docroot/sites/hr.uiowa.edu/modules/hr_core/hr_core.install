@@ -338,3 +338,13 @@ function hr_core_update_8006() {
 
   drupal_flush_all_caches();
 }
+
+/**
+ * Import HR split config_ignore.settings so uiowa_bar.settings are kept.
+ */
+function hr_core_update_8007() {
+  $config_path = \Drupal::configFactory()->get('config_split.config_split.hr')->get('folder');
+  $source = new FileStorage($config_path);
+  $config_storage = \Drupal::service('config.storage');
+  $config_storage->write('config_ignore.settings', $source->read('config_ignore.settings'));
+}
