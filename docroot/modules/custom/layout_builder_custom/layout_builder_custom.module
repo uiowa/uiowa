@@ -555,7 +555,7 @@ function layout_builder_custom_preprocess_block(&$variables) {
       $block = $variables['elements']['content']['#block_content'];
       // Media entity template needs to change based on this block, so invalidate cache.
       if ($block->hasField('field_uiowa_banner_image') && !$block->get('field_uiowa_banner_image')->isEmpty()) {
-        $id = $block->get('field_uiowa_banner_image')->target_id;;
+        $id = $block->get('field_uiowa_banner_image')->target_id;
         Cache::invalidateTags(['media:' . $id]);
       }
       break;
