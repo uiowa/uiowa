@@ -21,6 +21,10 @@ dependencies:
     - field.field.node.person.field_person_project_qualif
     - field.field.node.person.field_person_project_undergrad
     - field.field.node.person.field_person_research_areas
+    - field.field.node.person.field_person_scholar_abstract
+    - field.field.node.person.field_person_scholar_institution
+    - field.field.node.person.field_person_scholar_mentor_link
+    - field.field.node.person.field_person_scholar_srop_year
     - field.field.node.person.field_person_types
     - field.field.node.person.field_person_website
     - field.field.node.person.field_tags
@@ -201,6 +205,36 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_person_scholar_abstract:
+    weight: 38
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_person_scholar_institution:
+    weight: 35
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textfield
+    region: content
+  field_person_scholar_mentor_link:
+    weight: 36
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+    region: content
+  field_person_scholar_srop_year:
+    weight: 37
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
   field_person_types:
     type: options_buttons
     weight: 2

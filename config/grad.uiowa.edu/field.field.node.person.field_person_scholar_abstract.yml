@@ -1,0 +1,28 @@
+uuid: c0c36938-a983-4699-9286-ffa0fc5c141b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_person_scholar_abstract
+    - node.type.person
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    filtered_html: filtered_html
+    minimal: '0'
+    full_html: '0'
+    plain_text: '0'
+id: node.person.field_person_scholar_abstract
+field_name: field_person_scholar_abstract
+entity_type: node
+bundle: person
+label: Abstract
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long
