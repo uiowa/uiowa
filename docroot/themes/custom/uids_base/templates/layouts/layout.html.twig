@@ -8,7 +8,7 @@
   set classes = [
   'layout__container',
   'layout',
-  layout.template|clean_class,
+  (layout.template != 'layout--onecol--background') ? layout.template|clean_class,
 ]
 %}
 
