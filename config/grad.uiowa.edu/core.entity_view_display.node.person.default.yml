@@ -157,7 +157,7 @@ content:
     type: text_default
     region: content
   field_person_scholar_mentor_link:
-    weight: 9
+    weight: 10
     label: inline
     settings:
       trim_length: 80
@@ -169,11 +169,12 @@ content:
     type: link
     region: content
   field_person_scholar_srop_year:
-    weight: 10
+    weight: 9
     label: inline
-    settings: {  }
+    settings:
+      link: true
     third_party_settings: {  }
-    type: list_default
+    type: entity_reference_label
     region: content
   field_person_website:
     type: link

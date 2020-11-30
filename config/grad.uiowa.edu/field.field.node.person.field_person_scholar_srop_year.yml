@@ -1,12 +1,11 @@
-uuid: b9f3d431-6808-49bd-aaf0-a7ffb5cf54d2
+uuid: 179b37f7-d427-41f6-9489-bd03231f050a
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_person_scholar_srop_year
     - node.type.person
-  module:
-    - options
+    - taxonomy.vocabulary.grad_srop_year
 id: node.person.field_person_scholar_srop_year
 field_name: field_person_scholar_srop_year
 entity_type: node
@@ -17,5 +16,14 @@ required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings: {  }
-field_type: list_integer
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      grad_srop_year: grad_srop_year
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference
