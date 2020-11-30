@@ -31,7 +31,6 @@
     </div>
   {% endif %}
   <video {{ attributes }} id="video-container">
-    {{ devel_breakpoint(attributes) }}
     {% for file in files %}
       <source {{ file.source_attributes }} />
     {% endfor %}
