@@ -6,25 +6,25 @@ dependencies:
     - field.field.media.video.field_media_video_file
     - media.type.video
   module:
-    - file
+    - media_thumbnails_video
 id: media.video.default
 targetEntityType: media
 bundle: video
 mode: default
 content:
   field_media_video_file:
-    type: file_video
+    type: file_video_extended
     weight: 0
     region: content
     label: hidden
     settings:
-      loop: true
+      loop: '1'
       multiple_file_display_type: tags
-      muted: true
-      width: 640
-      height: 480
-      controls: false
-      autoplay: false
+      muted: '1'
+      width: '640'
+      height: '480'
+      controls: 0
+      autoplay: 0
     third_party_settings: {  }
 hidden:
   created: true
