@@ -31,10 +31,8 @@ dependencies:
     - field.field.node.person.field_teaser
     - node.type.person
   module:
-    - entity_reference_revisions
     - link
     - options
-    - telephone
     - text
     - user
 id: node.person.default
@@ -49,7 +47,7 @@ content:
     third_party_settings: {  }
   field_image:
     type: entity_reference_entity_view
-    weight: 9
+    weight: 1
     region: content
     label: hidden
     settings:
@@ -63,18 +61,9 @@ content:
     third_party_settings: {  }
     type: text_default
     region: content
-  field_person_contact_information:
-    type: entity_reference_revisions_entity_view
-    weight: 10
-    label: hidden
-    settings:
-      view_mode: default
-      link: ''
-    third_party_settings: {  }
-    region: content
   field_person_education:
-    weight: 6
-    label: above
+    weight: 2
+    label: inline
     settings: {  }
     third_party_settings: {  }
     type: basic_string
@@ -83,7 +72,7 @@ content:
     type: email_mailto
     weight: 7
     region: content
-    label: inline
+    label: hidden
     settings: {  }
     third_party_settings: {  }
   field_person_mentor_dept:
@@ -95,7 +84,7 @@ content:
     region: content
   field_person_mentor_project:
     weight: 13
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
@@ -104,12 +93,12 @@ content:
     weight: 6
     label: hidden
     settings:
-      title: ''
+      link_to_entity: false
     third_party_settings: {  }
-    type: telephone_link
+    type: string
     region: content
   field_person_position:
-    weight: 1
+    weight: 3
     label: hidden
     settings:
       link_to_entity: false
@@ -149,13 +138,13 @@ content:
     type: entity_reference_label
     weight: 11
     region: content
-    label: above
+    label: inline
     settings:
       link: false
     third_party_settings: {  }
   field_person_scholar_abstract:
     weight: 19
-    label: above
+    label: visually_hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
@@ -180,7 +169,7 @@ content:
     type: link
     region: content
   field_person_scholar_srop_year:
-    weight: 8
+    weight: 10
     label: inline
     settings: {  }
     third_party_settings: {  }
@@ -188,9 +177,9 @@ content:
     region: content
   field_person_website:
     type: link
-    weight: 10
+    weight: 8
     region: content
-    label: inline
+    label: hidden
     settings:
       trim_length: 80
       url_only: false
@@ -204,6 +193,7 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_person_contact_information: true
   field_person_credential: true
   field_person_first_name: true
   field_person_hide: true

@@ -42,7 +42,7 @@ mode: teaser
 content:
   field_image:
     type: entity_reference_entity_view
-    weight: 6
+    weight: 8
     region: content
     label: hidden
     settings:
@@ -59,7 +59,7 @@ content:
     third_party_settings: {  }
   field_person_email:
     type: email_mailto
-    weight: 2
+    weight: 3
     region: content
     label: inline
     settings: {  }
@@ -72,7 +72,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_person_phone:
-    weight: 3
+    weight: 4
     label: inline
     settings:
       title: ''
@@ -83,19 +83,27 @@ content:
     type: string
     weight: 1
     region: content
-    label: visually_hidden
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
+  field_person_research_areas:
+    type: entity_reference_label
+    weight: 5
+    region: content
+    label: above
+    settings:
+      link: false
+    third_party_settings: {  }
   field_teaser:
     type: basic_string
-    weight: 4
+    weight: 6
     region: content
     label: hidden
     settings: {  }
     third_party_settings: {  }
   links:
-    weight: 5
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -112,7 +120,6 @@ hidden:
   field_person_project_desc: true
   field_person_project_qualif: true
   field_person_project_undergrad: true
-  field_person_research_areas: true
   field_person_scholar_abstract: true
   field_person_scholar_institution: true
   field_person_scholar_mentor_link: true
