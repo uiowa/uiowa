@@ -1,0 +1,28 @@
+uuid: b3905fda-71e1-4d28-afb8-87f85b8a79a1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_person_project_undergrad
+    - node.type.person
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    filtered_html: filtered_html
+    minimal: '0'
+    full_html: '0'
+    plain_text: '0'
+id: node.person.field_person_project_undergrad
+field_name: field_person_project_undergrad
+entity_type: node
+bundle: person
+label: 'Undergraduate Role'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

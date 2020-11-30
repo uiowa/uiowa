@@ -5,6 +5,8 @@
  * Primary module hooks for Admissions Core module.
  */
 
+use Drupal\Core\Cache\Cache;
+use Drupal\node\Entity\Node;
 use Drupal\views\ViewExecutable;
 
 /**
@@ -19,6 +21,18 @@ function admissions_core_theme($existing, $type, $theme, $path) {
     'views_view_unformatted__scholarships__block_scholarships' => [
       'template' => 'views-view-unformatted--scholarships--block-scholarships',
       'base hook' => 'view',
+    ],
+    'views_view_unformatted__counselors' => [
+      'template' => 'views-view-unformatted--counselors',
+      'base hook' => 'view',
+    ],
+    'views_view_unformatted__person_card' => [
+      'template' => 'views-view-unformatted--person-card',
+      'base hook' => 'view',
+    ],
+    'node__view__counselors' => [
+      'template' => 'node--view--counselors',
+      'base hook' => 'node',
     ],
     'field__comma_separated' => [
       'template' => 'field--comma-separated',
@@ -42,8 +56,57 @@ function admissions_core_theme_suggestions_field_alter(array &$suggestions, arra
  * Implements hook_views_pre_render().
  */
 function admissions_core_views_pre_render(ViewExecutable $view) {
-  if ($view->id() == "counselors" && $view->current_display == 'block_counselors') {
-    $view->element['#attached']['library'][] = 'admissions_core/counselors-list';
-    $foo = $view;
+  if ($view->id() == "counselors") {
+    switch ($view->current_display) {
+      case 'block_counselors':
+      case 'page_counselors':
+        $view->element['#attached']['library'][] = 'admissions_core/counselors-list';
+        $view->element['#attached']['library'][] = 'admissions_core/person';
+        break;
+
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function admissions_core_preprocess_node(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    $node = $variables["node"];
+    switch ($node->getType()) {
+      case 'person':
+        $variables['#attached']['library'][] = 'admissions_core/person';
+        break;
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * @param \Drupal\node\Entity\Node $node
+ *   Get straight to the node instead of through entity.
+ */
+function admissions_core_node_presave(Node $node) {
+  // Used on Admissions counselors map.
+  if ($node->getType() == 'person') {
+    $tags = ['node_type:' . $node->getType()];
+    Cache::invalidateTags($tags);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ *
+ * @param \Drupal\node\Entity\Node $node
+ *   Get straight to the node instead of through entity.
+ */
+function admissions_core_node_delete(Node $node) {
+  // Used on Admissions counselors map.
+  if ($node->getType() == 'person') {
+    $tags = ['node_type:' . $node->getType()];
+    Cache::invalidateTags($tags);
   }
 }

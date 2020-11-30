@@ -1,3 +1,7 @@
+person:
+  css:
+    theme:
+      assets/css/person.css: { }
 counselors-list:
   css:
     theme:
@@ -6,3 +10,13 @@ scholarship-teaser:
   css:
     theme:
       assets/css/scholarship-teaser.css: {}
+counselors-map:
+  css:
+    theme:
+      assets/css/counselors-map.css: { }
+  js:
+    assets/js/counselors-map.js: { preprocess: false  }
+  dependencies:
+    - core/jquery.once
+    - core/drupalSettings
+    - core/drupal.message
