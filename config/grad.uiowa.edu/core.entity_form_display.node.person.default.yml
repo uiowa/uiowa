@@ -29,34 +29,12 @@ dependencies:
     - workflows.workflow.editorial
   module:
     - content_moderation
-    - field_group
     - link
     - media_library
     - paragraphs
     - path
     - telephone
     - text
-third_party_settings:
-  field_group:
-    group_project:
-      children:
-        - field_person_mentor_project
-        - field_person_project_assistants
-        - field_person_project_desc
-        - field_person_project_undergrad
-        - field_person_project_qualif
-      parent_name: ''
-      weight: 25
-      format_type: details
-      region: content
-      format_settings:
-        id: ''
-        classes: ''
-        description: ''
-        open: false
-        required_fields: true
-        weight: 0
-      label: Project
 id: node.person.default
 targetEntityType: node
 bundle: person
