@@ -22,7 +22,6 @@ dependencies:
     - field.field.node.person.field_person_project_undergrad
     - field.field.node.person.field_person_research_areas
     - field.field.node.person.field_person_scholar_abstract
-    - field.field.node.person.field_person_scholar_institution
     - field.field.node.person.field_person_scholar_mentor_link
     - field.field.node.person.field_person_scholar_srop_year
     - field.field.node.person.field_person_types
@@ -55,14 +54,14 @@ content:
       link: false
     third_party_settings: {  }
   field_person_bio:
-    weight: 12
+    weight: 11
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   field_person_education:
-    weight: 2
+    weight: 4
     label: inline
     settings: {  }
     third_party_settings: {  }
@@ -70,27 +69,27 @@ content:
     region: content
   field_person_email:
     type: email_mailto
-    weight: 7
+    weight: 6
     region: content
     label: hidden
     settings: {  }
     third_party_settings: {  }
   field_person_mentor_dept:
-    weight: 4
+    weight: 3
     label: hidden
     settings: {  }
     third_party_settings: {  }
     type: list_default
     region: content
   field_person_mentor_project:
-    weight: 13
+    weight: 12
     label: hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   field_person_phone:
-    weight: 6
+    weight: 5
     label: hidden
     settings:
       link_to_entity: false
@@ -98,7 +97,7 @@ content:
     type: string
     region: content
   field_person_position:
-    weight: 3
+    weight: 2
     label: hidden
     settings:
       link_to_entity: false
@@ -106,7 +105,7 @@ content:
     type: string
     region: content
   field_person_project_assistants:
-    weight: 14
+    weight: 13
     label: hidden
     settings:
       link_to_entity: false
@@ -114,21 +113,21 @@ content:
     type: string
     region: content
   field_person_project_desc:
-    weight: 15
+    weight: 14
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   field_person_project_qualif:
-    weight: 17
+    weight: 16
     label: inline
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   field_person_project_undergrad:
-    weight: 16
+    weight: 15
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -136,28 +135,21 @@ content:
     region: content
   field_person_research_areas:
     type: entity_reference_label
-    weight: 11
+    weight: 10
     region: content
     label: inline
     settings:
       link: false
     third_party_settings: {  }
   field_person_scholar_abstract:
-    weight: 19
+    weight: 18
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
-  field_person_scholar_institution:
-    weight: 5
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
-    region: content
   field_person_scholar_mentor_link:
-    weight: 10
+    weight: 9
     label: inline
     settings:
       trim_length: 80
@@ -169,7 +161,7 @@ content:
     type: link
     region: content
   field_person_scholar_srop_year:
-    weight: 9
+    weight: 8
     label: inline
     settings:
       link: false
@@ -178,7 +170,7 @@ content:
     region: content
   field_person_website:
     type: link
-    weight: 8
+    weight: 7
     region: content
     label: hidden
     settings:
@@ -189,7 +181,7 @@ content:
       target: '0'
     third_party_settings: {  }
   links:
-    weight: 18
+    weight: 17
     region: content
     settings: {  }
     third_party_settings: {  }
