@@ -7,31 +7,29 @@ dependencies:
     - field.field.node.person.field_person_bio
     - field.field.node.person.field_person_contact_information
     - field.field.node.person.field_person_credential
-    - field.field.node.person.field_person_department
     - field.field.node.person.field_person_education
     - field.field.node.person.field_person_email
     - field.field.node.person.field_person_first_name
     - field.field.node.person.field_person_hide
-    - field.field.node.person.field_person_lab_building
-    - field.field.node.person.field_person_lab_phone
-    - field.field.node.person.field_person_lab_room
     - field.field.node.person.field_person_last_name
-    - field.field.node.person.field_person_office_building
-    - field.field.node.person.field_person_office_phone
-    - field.field.node.person.field_person_office_room
+    - field.field.node.person.field_person_mentor_dept
+    - field.field.node.person.field_person_mentor_project
     - field.field.node.person.field_person_phone
     - field.field.node.person.field_person_position
+    - field.field.node.person.field_person_project_assistants
+    - field.field.node.person.field_person_project_desc
+    - field.field.node.person.field_person_project_qualif
+    - field.field.node.person.field_person_project_undergrad
     - field.field.node.person.field_person_research_areas
     - field.field.node.person.field_person_types
-    - field.field.node.person.field_person_university_id
     - field.field.node.person.field_person_website
-    - field.field.node.person.field_pt_student_current
     - field.field.node.person.field_tags
     - field.field.node.person.field_teaser
     - node.type.person
   module:
     - entity_reference_revisions
     - link
+    - options
     - telephone
     - text
     - user
@@ -47,7 +45,7 @@ content:
     third_party_settings: {  }
   field_image:
     type: entity_reference_entity_view
-    weight: 15
+    weight: 9
     region: content
     label: hidden
     settings:
@@ -55,7 +53,7 @@ content:
       link: false
     third_party_settings: {  }
   field_person_bio:
-    weight: 11
+    weight: 5
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
@@ -70,14 +68,6 @@ content:
       link: ''
     third_party_settings: {  }
     region: content
-  field_person_department:
-    type: entity_reference_label
-    weight: 2
-    region: content
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
   field_person_education:
     weight: 6
     label: above
@@ -87,61 +77,27 @@ content:
     region: content
   field_person_email:
     type: email_mailto
-    weight: 3
+    weight: 2
     region: content
     label: inline
     settings: {  }
     third_party_settings: {  }
-  field_person_lab_building:
-    type: string
-    weight: 5
-    region: content
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-  field_person_lab_phone:
-    type: telephone_link
-    weight: 7
-    region: content
-    label: above
-    settings:
-      title: ''
-    third_party_settings: {  }
-  field_person_lab_room:
-    type: string
-    weight: 6
-    region: content
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-  field_person_office_building:
-    type: string
-    weight: 8
-    region: content
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-  field_person_office_phone:
-    type: telephone_link
-    weight: 10
-    region: content
-    label: above
-    settings:
-      title: ''
-    third_party_settings: {  }
-  field_person_office_room:
-    type: string
-    weight: 9
-    region: content
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-  field_person_phone:
+  field_person_mentor_dept:
     weight: 4
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  field_person_mentor_project:
+    weight: 10
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_person_phone:
+    weight: 3
     label: inline
     settings:
       title: ''
@@ -155,6 +111,35 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
+  field_person_project_assistants:
+    weight: 11
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_person_project_desc:
+    weight: 12
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_person_project_qualif:
+    weight: 14
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_person_project_undergrad:
+    weight: 13
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
     region: content
   field_person_research_areas:
     type: entity_reference_label
@@ -177,7 +162,7 @@ content:
       target: '0'
     third_party_settings: {  }
   links:
-    weight: 14
+    weight: 8
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -187,8 +172,6 @@ hidden:
   field_person_hide: true
   field_person_last_name: true
   field_person_types: true
-  field_person_university_id: true
-  field_pt_student_current: true
   field_tags: true
   field_teaser: true
   search_api_excerpt: true
