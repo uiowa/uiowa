@@ -50,3 +50,220 @@
     @include element-invisible;
   }
 }
+
+// Page title hero
+
+// breadcrumbs
+
+.layout--onecol--background {
+  .breadcrumb {
+    li {
+      @include breakpoint(sm) {
+        color: white;
+      }
+    }
+
+    a {
+      @include breakpoint(sm) {
+        color: white;
+      }
+    }
+  }
+}
+
+@media (min-aspect-ratio:16/9) {
+  .layout--onecol--background {
+    height: 80vh;
+  }
+}
+
+.layout--onecol--background {
+  position: relative;
+  overflow: hidden;
+  background: $secondary;
+
+  img {
+    width: 100%;
+  }
+
+  &__image img {
+    display: block;
+    width: 100%;
+    -o-object-fit: cover;
+    object-fit: cover;
+  }
+}
+
+.layout--onecol--background img.banner-image {
+  display: block;
+  width: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+
+.layout--onecol--background .banner__image {
+  overflow: hidden;
+  contain: paint;
+}
+
+.layout--onecol--background {
+  .bttn--secondary {
+    z-index: 1;
+    margin-bottom: $md;
+    background: #fff;
+    color: $secondary;
+    display: block;
+
+    @include breakpoint(sm) {
+      color: #fff;
+      display: inline-block;
+    }
+
+
+    @include breakpoint(sm) {
+      margin-right: $md;
+      background: #000;
+      background: rgba(0, 0, 0, 0.58);
+    }
+
+    &:hover,
+    &:focus {
+      color: $secondary;
+
+      @include breakpoint(sm) {
+        color: $primary;
+        background: #333;
+        background: rgba(34, 34, 34, 0.73);
+
+      }
+    }
+  }
+}
+
+
+.layout--onecol--background {
+  p {
+    color: #000;
+    line-height: 1.5;
+    margin-top: 0;
+
+    @include breakpoint(sm) {
+      color: #fff;
+      max-width: 50em;
+    }
+  }
+
+  .bold-headline {
+    &.bold-headline--caps {}
+
+    &.bold-headline--serif {
+      color: #000;
+
+      @include breakpoint(sm) {
+        color: #fff;
+      }
+    }
+
+    margin-top: 0;
+    padding: 0;
+    margin-bottom: .7rem;
+    font-size: calc(100% + 4vw);
+    line-height: 1;
+
+    @include breakpoint(sm) {
+      text-shadow: 0 1px 1px #000;
+      font-size: calc(100% + 2.5vw);
+    }
+
+    @include breakpoint(menu) {
+      margin-bottom: .3rem;
+    }
+
+    @include breakpoint(md) {
+      font-size: calc(100% + 3.5vw);
+    }
+  }
+}
+
+.layout--onecol--background .banner__container {
+  max-width: 81.875em;
+  margin: 0 auto;
+}
+
+.layout--onecol--background .banner__content {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 100%;
+  background: white;
+  padding: 0 $gutter;
+
+  @include breakpoint(sm) {
+    position: absolute;
+    background: transparent;
+    padding: $gutter;
+    max-width: $container-width;
+  }
+
+  @include breakpoint(container) {
+    padding: $gutter 0;
+  }
+}
+
+.layout--onecol--background .banner__content {
+  padding: 0 $md;
+  grid-template-columns: repeat(1, 1fr);
+  justify-self: stretch;
+
+  @include breakpoint(sm) {
+    position: absolute;
+    background: transparent;
+    grid-column: 1/-1;
+    grid-template-columns: repeat(6, 1fr);
+    grid-column-gap: 1.25rem;
+  }
+
+  @include breakpoint(container) {
+    width: 81.875em;
+    padding: 0;
+  }
+}
+
+.layout--onecol--background .banner__content {
+  padding: 0 0 $sm;
+
+  @include breakpoint(sm) {
+    bottom: 0;
+  }
+}
+
+.layout--onecol--background .banner__content .banner__container {
+  max-width: 81.875em;
+  margin: 0 auto;
+}
+
+.layout--onecol--background .banner__content>* {
+  @include breakpoint(sm) {
+    grid-column: 1/-1;
+  }
+}
+
+.layout--onecol--background::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  content: "";
+  -webkit-transition: all .5s ease-in-out;
+  transition: all .5s ease-in-out;
+  opacity: .75;
+  background: -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(0, 0, 0, 1)));
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 1));
+  will-change: opacity;
+}
+
+@media only screen and (min-width: 889px) {
+  body {}
+}
