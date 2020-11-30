@@ -63,13 +63,13 @@ content:
     region: content
   field_person_contact_information:
     type: entity_reference_revisions_entity_view
-    weight: 13
-    region: content
-    label: above
+    weight: 10
+    label: hidden
     settings:
       view_mode: default
       link: ''
     third_party_settings: {  }
+    region: content
   field_person_department:
     type: entity_reference_label
     weight: 2
@@ -79,12 +79,12 @@ content:
       link: true
     third_party_settings: {  }
   field_person_education:
-    type: basic_string
-    weight: 12
-    region: content
+    weight: 6
     label: above
     settings: {  }
     third_party_settings: {  }
+    type: basic_string
+    region: content
   field_person_email:
     type: email_mailto
     weight: 3
@@ -157,25 +157,25 @@ content:
     type: string
     region: content
   field_person_research_areas:
-    weight: 17
-    label: hidden
-    settings:
-      link: true
-    third_party_settings: {  }
     type: entity_reference_label
+    weight: 7
     region: content
-  field_person_website:
-    weight: 16
     label: above
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_person_website:
+    type: link
+    weight: 4
+    region: content
+    label: inline
     settings:
       trim_length: 80
       url_only: false
       url_plain: false
-      rel: ''
-      target: ''
+      rel: '0'
+      target: '0'
     third_party_settings: {  }
-    type: link_separate
-    region: content
   links:
     weight: 14
     region: content
