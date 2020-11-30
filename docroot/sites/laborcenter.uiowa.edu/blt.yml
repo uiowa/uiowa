@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: laborcenter.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: laborcenter
+  human_name: laborcenter.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: laborcenter.prod
+drupal:
+  db:
+    database: laborcenter_uiowa_edu
+uiowa:
+  requester: gmoralesii
