@@ -40,11 +40,6 @@ function uids_base_preprocess_html(&$variables) {
 
   $variables['attributes']['class'][] = $sticky_class;
 
-  // @todo Remove uiowa_bar module in favor of uiowa_search.
-  if (\Drupal::service('module_handler')->moduleExists('uiowa_bar')) {
-    unset($variables['page_top']['uiowa_bar']);
-  }
-
   // Get header type for setting sticky padding for tertiary header.
   $variables['header_type'] = theme_get_setting('header.type');
 
@@ -115,15 +110,13 @@ function uids_base_preprocess_page(&$variables) {
     }
   }
 
+  // Hide the search form by default.
   $variables['uiowa_search_form'] = FALSE;
 
-  // Add a variable for the search form.
-  // @todo Test with uiowa_search enabled.
   if (\Drupal::service('module_handler')->moduleExists('uiowa_search')) {
-    $variables['uiowa_search_form'] = \Drupal::formBuilder()->getForm('Drupal\uiowa_search\Form\SearchForm');
-  }
-  elseif (\Drupal::service('module_handler')->moduleExists('uiowa_bar')) {
-    $variables['uiowa_search_form'] = \Drupal::formBuilder()->getForm('Drupal\uiowa_bar\Form\SearchForm');
+    if (\Drupal::config('uiowa_search.settings')->get('uiowa_search.display_search')) {
+      $variables['uiowa_search_form'] = \Drupal::formBuilder()->getForm('Drupal\uiowa_search\Form\SearchForm');
+    }
   }
 
   // The uiowa_auth module replaces local authentication with SAML SSO.
@@ -167,8 +160,9 @@ function uids_base_preprocess_page(&$variables) {
   }
   $current_route = \Drupal::routeMatch();
   $route_name = $current_route->getRouteName();
+
   switch ($route_name) {
-    case 'uiowa_bar.search_results':
+    case 'uiowa_search.search_results':
       $variables['#attached']['library'][] = 'uids_base/search-results';
       break;
 
@@ -219,7 +213,7 @@ function uids_base_preprocess_media(array &$variables) {
 
   // Get the media entity's bundle (such as video, image, etc.)
   $mediaType = $variables['media']->bundle();
-//  $variables;
+  // $variables;
   if ($mediaType == 'video') {
     $referring_item = $media->_referringItem;
     if ($referring_item) {
@@ -722,9 +716,7 @@ function uids_base_form_alter(&$form, $form_state, $form_id) {
     $form['actions']['#attributes']['class'][] = 'uids-content';
     $form['layout_builder_message']['#attributes']['class'][] = 'uids-content';
   }
-  if (strpos($form_id, 'uiowa_bar_search_form') !== FALSE) {
-    $form['#attributes']['class'][] = 'uids-search';
-  }
+
   if (strpos($form_id, 'uiowa_search_form') !== FALSE) {
     $form['#attributes']['class'][] = 'uids-search';
   }

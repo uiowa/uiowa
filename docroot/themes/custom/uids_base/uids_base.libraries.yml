@@ -169,12 +169,25 @@ colorbox:
     name: MIT
     gpl-compatible: false
   js:
-    colorbox/jquery.colorbox-min.js: { minified: true }
+    /libraries/colorbox/jquery.colorbox-min.js: { minified: true }
     assets/js/colorbox_overrides.behavior.js: {}
   dependencies:
     - core/jquery
     - core/jquery.once
     - colorbox/init
+leaflet:
+  remote: http://leafletjs.com/
+  version: 1.7.1
+  license:
+    name: Leaflet-License
+    url: https://github.com/Leaflet/Leaflet/blob/v1.7.1/LICENSE
+    gpl-compatible: true
+  js:
+    /libraries/leaflet/dist/leaflet.js: {}
+  css:
+    component:
+      /libraries/leaflet/dist/leaflet.css: {}
+      assets/css/components/leaflet.css: { preprocess: false }
 slick:
   css:
     theme:
