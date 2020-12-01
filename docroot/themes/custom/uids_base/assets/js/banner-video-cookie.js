@@ -7,14 +7,18 @@
       $('.media--video', context).once('media-video-attach').each(function () {
         const video = this.querySelector("video");
         const btn = this.querySelector(".video-controls .video-btn");
+        // Set the bannerVideoCookie dictionary to an empty dictionary.
         let bannerVideoCookie = {};
+        // If the banner video cookie already exists, load it in to the bannerVideoCookie variable.
         if ($.cookie('bannervideo')) {
           bannerVideoCookie = JSON.parse($.cookie('bannervideo'));
         }
+        // Also get the block reference uuid for later usage.
         const video_uuid = video.getAttribute('data-parent-block-uuid');
 
         // Check bannervideo cookie to see if user paused video previously.
         if (bannerVideoCookie !== {} && bannerVideoCookie[video_uuid] === 'paused') {
+          // If they did, pause the video.
           video.removeAttribute('autoplay');
           video.pause();
           btn.innerHTML = '<span class="element-invisible">' + 'Play' + '</span>';
@@ -23,24 +27,30 @@
         }
 
         // Create/erase herovideo cookie.
+        // If the video element exists...
         if (video) {
+          // On the video controls button click...
           btn.onclick = function() {
+            // Update the video cookie to make sure we have the latest one.
+            bannerVideoCookie = JSON.parse($.cookie('bannervideo'));
+            // And then if the video is paused...
             if (video.paused) {
+              // Set an index equal to the uuid to 'paused'.
               bannerVideoCookie[video_uuid] = 'paused';
+              // And then re-stringify the JSON so it can be saved as a cookie.
               let bannerVideoCookieString = JSON.stringify(bannerVideoCookie);
-              console.log(bannerVideoCookie);
               // Per request, create cookie that expires in 99 years.
               $.cookie('bannervideo', bannerVideoCookieString, { expires: 36135, path: '/' });
             }
             else {
-              // Remove a cookie.
+              // Remove a cookie based upon the uuid index.
               delete bannerVideoCookie[video_uuid];
-              console.log(bannerVideoCookie);
-              // If array is empty, remove cookie dict.
+
+              // If cookie array is empty, remove cookie dictionary.
               if (Object.keys(bannerVideoCookie).length === 0) {
                 $.removeCookie('bannervideo', { path: '/' });
               }
-              // Else, re-save the dict.
+              // Else, re-save the dictionary.
               else {
                 let bannerVideoCookieString = JSON.stringify(bannerVideoCookie);
                 $.cookie('bannervideo', bannerVideoCookieString, { expires: 36135, path: '/' });
