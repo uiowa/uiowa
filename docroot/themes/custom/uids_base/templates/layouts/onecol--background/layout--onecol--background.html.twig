@@ -13,11 +13,9 @@
  */
 #}
 {% set background = content.background | render %}
-
 {%
   set classes = [
-  has_node_image ? 'layout--onecol--background',
-  not has_node_image ? 'layout--onecol--no--background',
+  has_node_image ? 'layout--onecol--background' : 'layout--onecol--no--background',
 ]
 %}
 
@@ -28,7 +26,9 @@
     'attributes' : attributes,
   } %}
     {% block banner_image %}
-      {{ content.background }}
+      <div class="banner__image">
+        {{ background }}
+      </div>
     {% endblock %}
     {% block heading %}
       {{ content.content }}

@@ -8,7 +8,7 @@
 /*
  * @todo Move this to a more appropriate location
  */
-.layout--onecol--background .hero__img .layout-builder__add-block {
+.layout--onecol--background .banner__image .layout-builder__add-block {
   position: absolute;
   top: 10px;
   right: 25px;
@@ -20,22 +20,10 @@
 
     &--background,
     &--no--background {
-      // @todo Remove if unnecessary.
-      //&.layout__container {
-      //  margin-bottom: 0;
-      //}
-
       .layout__spacing_container {
         @extend %container;
       }
     }
-
-    // @todo Remove if unnecessary.
-    //&--background {
-    //  &.layout__container.title-invisible {
-    //    margin-bottom: 0;
-    //  }
-    //}
   }
 
   .layout--has-sidebar {
@@ -86,7 +74,7 @@
     width: 100%;
   }
 
-  &__image img {
+  .banner__image img {
     display: block;
     width: 100%;
     -o-object-fit: cover;
@@ -99,45 +87,6 @@
   width: 100%;
   -o-object-fit: cover;
   object-fit: cover;
-}
-
-.layout--onecol--background .banner__image {
-  overflow: hidden;
-  contain: paint;
-}
-
-.layout--onecol--background {
-  .bttn--secondary {
-    z-index: 1;
-    margin-bottom: $md;
-    background: #fff;
-    color: $secondary;
-    display: block;
-
-    @include breakpoint(sm) {
-      color: #fff;
-      display: inline-block;
-    }
-
-
-    @include breakpoint(sm) {
-      margin-right: $md;
-      background: #000;
-      background: rgba(0, 0, 0, 0.58);
-    }
-
-    &:hover,
-    &:focus {
-      color: $secondary;
-
-      @include breakpoint(sm) {
-        color: $primary;
-        background: #333;
-        background: rgba(34, 34, 34, 0.73);
-
-      }
-    }
-  }
 }
 
 
@@ -154,7 +103,6 @@
   }
 
   .bold-headline {
-    &.bold-headline--caps {}
 
     &.bold-headline--serif {
       color: #000;
@@ -183,85 +131,65 @@
       font-size: calc(100% + 3.5vw);
     }
   }
-}
 
-.layout--onecol--background .banner__container {
-  max-width: 81.875em;
-  margin: 0 auto;
-}
+  .banner__container {
+    max-width: 81.875em;
+    margin: 0 auto;
+  }
 
-.layout--onecol--background .banner__content {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  width: 100%;
-  background: white;
-  padding: 0 $gutter;
+  .banner__content {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    width: 100%;
+    background: white;
+    padding: 0 $gutter;
+    grid-template-columns: repeat(1, 1fr);
+    justify-self: stretch;
 
-  @include breakpoint(sm) {
+    @include breakpoint(sm) {
+      position: absolute;
+      background: transparent;
+      padding: $gutter;
+      max-width: $container-width;
+      grid-column: 1/-1;
+      grid-template-columns: repeat(6, 1fr);
+      grid-column-gap: 1.25rem;
+      bottom: 0;
+    }
+
+    @include breakpoint(container) {
+      padding: $gutter 0;
+      width: 81.875em;
+    }
+  }
+
+  .banner__content .banner__container {
+    max-width: 81.875em;
+    margin: 0 auto;
+  }
+
+  .banner__content>* {
+    @include breakpoint(sm) {
+      grid-column: 1/-1;
+    }
+  }
+
+  &::after {
     position: absolute;
-    background: transparent;
-    padding: $gutter;
-    max-width: $container-width;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    content: "";
+    -webkit-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+    opacity: .75;
+    background: -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(0, 0, 0, 1)));
+    background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 1));
+    will-change: opacity;
   }
-
-  @include breakpoint(container) {
-    padding: $gutter 0;
-  }
-}
-
-.layout--onecol--background .banner__content {
-  padding: 0 $md;
-  grid-template-columns: repeat(1, 1fr);
-  justify-self: stretch;
-
-  @include breakpoint(sm) {
-    position: absolute;
-    background: transparent;
-    grid-column: 1/-1;
-    grid-template-columns: repeat(6, 1fr);
-    grid-column-gap: 1.25rem;
-  }
-
-  @include breakpoint(container) {
-    width: 81.875em;
-    padding: 0;
-  }
-}
-
-.layout--onecol--background .banner__content {
-  padding: 0 0 $sm;
-
-  @include breakpoint(sm) {
-    bottom: 0;
-  }
-}
-
-.layout--onecol--background .banner__content .banner__container {
-  max-width: 81.875em;
-  margin: 0 auto;
-}
-
-.layout--onecol--background .banner__content>* {
-  @include breakpoint(sm) {
-    grid-column: 1/-1;
-  }
-}
-
-.layout--onecol--background::after {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-  content: "";
-  -webkit-transition: all .5s ease-in-out;
-  transition: all .5s ease-in-out;
-  opacity: .75;
-  background: -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(0, 0, 0, 1)));
-  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 1));
-  will-change: opacity;
 }
 
 @media only screen and (min-width: 889px) {
