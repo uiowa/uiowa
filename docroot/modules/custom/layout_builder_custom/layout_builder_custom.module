@@ -261,33 +261,18 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
   $component = $form_state->getFormObject()->getCurrentComponent();
   $block = $component->getPlugin();
 
-  switch ($block->getPluginId()) {
-    case 'inline_block:uiowa_statistic':
-      // Add a character limit to the stat block prefix/suffix fields.
-      $block_form = $form_state->getValue('settings')['block_form'];
-      $prefix = $block_form['field_uiowa_statistic_title_pre'][0]['value'];
-      $suffix = $block_form['field_uiowa_statistic_title_suf'][0]['value'];
-      if (strlen($prefix) > 3) {
-        $form_state->setErrorByName('settings][block_form][field_uiowa_statistic_title_pre', t('Prefix cannot exceed 3 characters.'));
-      }
-      if (strlen($suffix) > 3) {
-        $form_state->setErrorByName('settings][block_form][field_uiowa_statistic_title_suf', t('Suffix cannot exceed 3 characters.'));
-      }
-
-      break;
-
-    case 'inline_block:uiowa_banner':
-      // Only allow three links on the banner.
-      $link = $form_state->getValue('settings')['block_form']['field_uiowa_banner_link'];
-      $children = Element::children($link);
-
-      if (count($children) > 3) {
-        $form_state->setErrorByName('settings][block_form][field_uiowa_banner_link', t('Banner can only have up to 3 links.'));
-      }
-
-      break;
+  // Add a character limit to the stat block prefix/suffix fields.
+  if ($block->getPluginId() == 'inline_block:uiowa_statistic') {
+    $block_form = $form_state->getValue('settings')['block_form'];
+    $prefix = $block_form['field_uiowa_statistic_title_pre'][0]['value'];
+    $suffix = $block_form['field_uiowa_statistic_title_suf'][0]['value'];
+    if (strlen($prefix) > 3) {
+      $form_state->setErrorByName('settings][block_form][field_uiowa_statistic_title_pre', t('Prefix cannot exceed 3 characters.'));
+    }
+    if (strlen($suffix) > 3) {
+      $form_state->setErrorByName('settings][block_form][field_uiowa_statistic_title_suf', t('Suffix cannot exceed 3 characters.'));
+    }
   }
-
 }
 
 /**
