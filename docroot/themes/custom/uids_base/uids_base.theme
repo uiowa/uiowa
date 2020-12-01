@@ -388,6 +388,36 @@ function uids_base_preprocess_block(&$variables) {
     $variables['#attached']['library'][] = 'uids_base/aggregator';
   }
 
+  if ($variables['derivative_plugin_id'] == 'uiowa_banner') {
+    /** @var \Drupal\Block\Entity\Block $block */
+    $block = $variables['elements']['content']['#block_content'];
+
+    // Remove headline classes from attributes.
+    $variables['headline_classes'] = array_filter($variables['elements']['#layout_builder_style'], function ($v) {
+      return substr($v, 0, 13) === 'bold-headline';
+    });
+
+    // Change link style to match highlight, if set.
+    if (in_array('bold-headline--highlight', $variables['headline_classes'])) {
+      $highlight_classes = 'bttn bttn--secondary bttn--caps';
+    }
+    else {
+      $highlight_classes = 'bttn bttn--primary bttn--caps';
+    }
+
+    $variables['links'] = [];
+
+    if ($block->hasField('field_uiowa_banner_link')) {
+      foreach ($block->get('field_uiowa_banner_link')->getIterator() as $link) {
+        $variables['links'][] = [
+          'link_url' => $link->get('uri')->getValue(),
+          'link_text' => $link->get('title')->getValue(),
+          'link_classes' => $highlight_classes,
+        ];
+      }
+    }
+  }
+
 }
 
 /**
