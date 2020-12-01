@@ -17,19 +17,21 @@
 #}
 <div class="media--video">
   {{ attach_library('uids_base/banner-video') }}
+<<<<<<< HEAD
   {% if attributes.storage.autoplay and attributes.storage.muted %}
+=======
+>>>>>>> 12f1ba0ee9ba57b3631cee4ebdb43608f8f8322b
     <div class="video-controls video">
+      {% if attributes.storage.autoplay %}
       <button class="video-btn video-btn__pause" id="video-btn">
         <span class="element-invisible">Pause</span>
       </button>
-    </div>
-  {% else %}
-    <div class="video-controls video">
+      {% else %}
       <button class="video-btn video-btn__play" id="video-btn">
         <span class="element-invisible">Play</span>
       </button>
+      {% endif %}
     </div>
-  {% endif %}
   <video {{ attributes }} id="video-container">
     {% for file in files %}
       <source {{ file.source_attributes }} />
