@@ -199,36 +199,39 @@ function uids_base_preprocess_node(&$variables) {
  * Implements hook_preprocess_HOOK() for field.html.twig.
  */
 function uids_base_preprocess_field(&$variables) {
-  $variables['page_featured_image'] = $variables['field_name'] == 'field_image';
 
-  // Set the caption if this is 'field_image'.
-  if ($variables['field_name'] === 'field_image') {
-    $caption = NULL;
-    // If the global caption is set on the media object,
-    // use that.
-    if (isset($variables['element'][0]) && isset($variables['element'][0]['#media'])) {
-      /** @var \Drupal\media\Entity\Media $media */
-      $media = $variables['element'][0]['#media'];
-      if ($media && $media->hasField('field_media_caption')) {
-        $caption = $media->get('field_media_caption');
-      }
-    }
-    // If the caption is not set yet, attempt to set it from
-    // the 'field_image_caption' field.
-    /** @var \Drupal\node\NodeInterface $node */
-    if (!$caption->count() && (NULL !== $node = $variables['element']['#object']) && $node->hasField('field_image_caption')) {
-      $caption = $node->get('field_image_caption');
-    }
+  switch ($variables['field_name']) {
+    case 'field_image':
+      $variables['page_featured_image'] = TRUE;
 
-    // If the caption has been set, render it.
-    if ($caption->count()) {
-      $caption = $caption->view();
-    }
-    else {
+      // Set the caption if this is 'field_image'.
       $caption = NULL;
-    }
+      // If the global caption is set on the media object,
+      // use that.
+      if (isset($variables['element'][0]) && isset($variables['element'][0]['#media'])) {
+        /** @var \Drupal\media\Entity\Media $media */
+        $media = $variables['element'][0]['#media'];
+        if ($media && $media->hasField('field_media_caption')) {
+          $caption = $media->get('field_media_caption');
+        }
+      }
+      // If the caption is not set yet, attempt to set it from
+      // the 'field_image_caption' field.
+      /** @var \Drupal\node\NodeInterface $node */
+      if (!$caption->count() && (NULL !== $node = $variables['element']['#object']) && $node->hasField('field_image_caption')) {
+        $caption = $node->get('field_image_caption');
+      }
 
-    $variables['caption'] = $caption;
+      // If the caption has been set, render it.
+      if ($caption->count()) {
+        $caption = $caption->view();
+      }
+      else {
+        $caption = NULL;
+      }
+
+      $variables['caption'] = $caption;
+      break;
   }
 
   if (isset($variables['page_featured_image'])) {
