@@ -13,11 +13,17 @@
 
         // @todo Add a class to this field so we can target it more precisely.
         if (mediaTypeVideo) {
+          let checkbox_wrapper = $(this).parent().next('.js-hide.form-wrapper');
           // Show the autoplay field.
-          $(this).parent().next('.js-hide.form-wrapper').removeClass('js-hide');
+          checkbox_wrapper.removeClass('js-hide');
+          checkbox_wrapper.removeAttr("tabindex");
+          checkbox_wrapper.removeAttr('aria-hidden');
         } else {
+          let checkbox_wrapper = $(this).parent().next('.form-wrapper');
           // Hide the autoplay field.
-          $(this).parent().next('.form-wrapper').addClass('js-hide');
+          checkbox_wrapper.addClass('js-hide');
+          checkbox_wrapper.tabIndex = -1;
+          checkbox_wrapper.setAttribute('aria-hidden', "true");
         }
       });
     }

@@ -428,6 +428,12 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
           'class' => [
             'js-hide',
           ],
+          'tabindex' => [
+            '-1',
+          ],
+          'aria-hidden' => [
+            'true',
+          ],
         ],
         '#weight' => 6,
       ] + $element['field_uiowa_banner_autoplay'];
