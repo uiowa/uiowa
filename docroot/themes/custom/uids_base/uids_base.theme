@@ -215,7 +215,7 @@ function uids_base_preprocess_media(array &$variables) {
         $parent_entity = $parent_entity->getEntity();
 
         if ($autoplay_field = $parent_entity->field_uiowa_banner_autoplay) {
-          if ($autoplay = $autoplay_field->value) {
+          if ($autoplay_field->value) {
             $variables['content']['field_media_video_file'][0]['#attributes']['autoplay'] = 'autoplay';
           }
         }
