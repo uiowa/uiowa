@@ -7,11 +7,14 @@
       $('.media--video', context).once('media-video-attach').each(function () {
         const video = this.querySelector("video");
         const btn = this.querySelector(".video-controls .video-btn");
-        const bannerVideoCookie = JSON.parse($.cookie('bannervideo'));
-        console.log(bannerVideoCookie);
+        let bannerVideoCookie = {};
+        if ($.cookie('bannervideo')) {
+          bannerVideoCookie = JSON.parse($.cookie('bannervideo'));
+        }
+        const video_uuid = video.getAttribute('data-parent-block-uuid');
 
         // Check bannervideo cookie to see if user paused video previously.
-        if (bannerVideoCookie === 'paused') {
+        if (bannerVideoCookie !== {} && bannerVideoCookie[video_uuid] === 'paused') {
           video.removeAttribute('autoplay');
           video.pause();
           btn.innerHTML = '<span class="element-invisible">' + 'Play' + '</span>';
@@ -23,17 +26,25 @@
         if (video) {
           btn.onclick = function() {
             if (video.paused) {
-              console.log($.cookie('bannervideo'));
-              let banner_video_dict =  {};
-              banner_video_dict["paused"] = true;
-              let cookie_banner_video = JSON.stringify(banner_video_dict);
+              bannerVideoCookie[video_uuid] = 'paused';
+              let bannerVideoCookieString = JSON.stringify(bannerVideoCookie);
+              console.log(bannerVideoCookie);
               // Per request, create cookie that expires in 99 years.
-              $.cookie('bannervideo', cookie_banner_video, { expires: 36135, path: '/' });
+              $.cookie('bannervideo', bannerVideoCookieString, { expires: 36135, path: '/' });
             }
             else {
-              console.log('notpaused');
               // Remove a cookie.
-              $.removeCookie('bannervideo', { path: '/' });
+              delete bannerVideoCookie[video_uuid];
+              console.log(bannerVideoCookie);
+              // If array is empty, remove cookie dict.
+              if (Object.keys(bannerVideoCookie).length === 0) {
+                $.removeCookie('bannervideo', { path: '/' });
+              }
+              // Else, re-save the dict.
+              else {
+                let bannerVideoCookieString = JSON.stringify(bannerVideoCookie);
+                $.cookie('bannervideo', bannerVideoCookieString, { expires: 36135, path: '/' });
+              }
             }
           }
         }

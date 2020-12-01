@@ -219,6 +219,10 @@ function uids_base_preprocess_media(array &$variables) {
             $variables['content']['field_media_video_file'][0]['#attributes']['autoplay'] = 'autoplay';
           }
         }
+
+        if ($parent_entity_uuid = $parent_entity->uuid()) {
+          $variables['content']['field_media_video_file'][0]['#attributes']['data-parent-block-uuid'] = $parent_entity_uuid;
+        }
       }
     }
   }
