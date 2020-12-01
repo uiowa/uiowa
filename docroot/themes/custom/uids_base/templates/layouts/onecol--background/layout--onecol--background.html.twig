@@ -23,7 +23,7 @@
 
 {% if has_node_image %}
   {% embed "@uids_base/uids/banner.html.twig" with {
-    'attributes' : attributes,
+    'attributes' : attributes.addClass('banner--vertical-bottom banner--horizontal-left banner--gradient-bottom banner--large banner--gradient-dark'),
   } %}
     {% block banner_image %}
       <div class="banner__image">
