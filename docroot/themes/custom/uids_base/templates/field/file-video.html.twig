@@ -17,7 +17,7 @@
 #}
 <div class="media--video">
   {{ attach_library('uids_base/banner-video') }}
-  {% if attributes.storage.autoplay %}
+  {% if attributes.storage.autoplay and attributes.storage.muted %}
     <div class="video-controls video">
       <button class="video-btn video-btn__pause" id="video-btn">
         <span class="element-invisible">Pause</span>

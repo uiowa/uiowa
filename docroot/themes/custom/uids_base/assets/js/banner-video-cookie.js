@@ -7,8 +7,8 @@
       $('.media--video', context).once('media-video-attach').each(function () {
         const video = this.querySelector("video");
         const btn = this.querySelector(".video-controls .video-btn");
-        const bannerVideoCookie = $.cookie('bannervideo');
-        console.log([bannerVideoCookie]);
+        const bannerVideoCookie = JSON.parse($.cookie('bannervideo'));
+        console.log(bannerVideoCookie);
 
         // Check bannervideo cookie to see if user paused video previously.
         if (bannerVideoCookie === 'paused') {
@@ -24,8 +24,11 @@
           btn.onclick = function() {
             if (video.paused) {
               console.log($.cookie('bannervideo'));
+              let banner_video_dict =  {};
+              banner_video_dict["paused"] = true;
+              let cookie_banner_video = JSON.stringify(banner_video_dict);
               // Per request, create cookie that expires in 99 years.
-              $.cookie('bannervideo', 'paused', { expires: 36135, path: '/' });
+              $.cookie('bannervideo', cookie_banner_video, { expires: 36135, path: '/' });
             }
             else {
               console.log('notpaused');
