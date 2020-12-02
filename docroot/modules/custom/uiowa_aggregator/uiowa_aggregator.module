@@ -105,8 +105,31 @@ function uiowa_aggregator_preprocess_block(&$variables) {
       if ($items) {
         $variables['content']['aggregator']['items'] = \Drupal::entityTypeManager()->getViewBuilder('aggregator_item')->viewMultiple($items, 'default');
 
+        // Get block layout builder styles if they exist.
+        if (isset($variables["elements"]["#layout_builder_style"]) && !empty($variables["elements"]["#layout_builder_style"])) {
+          $variables["elements"]["#layout_builder_style"];
+          $parent_lb_styles = $variables["elements"]["#layout_builder_style"];
+        }
+
+        // Unset classes meant for children.
+        foreach ($variables["attributes"]["class"] as $key => $style) {
+          if (substr($style, 0, strlen('card')) === 'card') {
+            unset($variables["attributes"]["class"][$key]);
+          }
+          if (substr($style, 0, strlen('media')) === 'media') {
+              unset($variables["attributes"]["class"][$key]);
+          }
+          if (substr($style, 0, strlen('hide')) === 'hide') {
+              unset($variables["attributes"]["class"][$key]);
+          }
+        }
+
         foreach (Element::children($variables['content']['aggregator']['items']) as $child) {
           $variables['content']['aggregator']['items'][$child]['#heading_size'] = $heading_size ?? 'h3';
+          // Pass the parent block's layout_builder_styles to each item.
+          if (!empty($parent_lb_styles)) {
+            $variables['content']['aggregator']['items'][$child]['#parent_lb_styles'] = $parent_lb_styles;
+          }
         }
       }
     }
