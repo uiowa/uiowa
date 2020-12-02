@@ -46,10 +46,10 @@ validate:
 command-hooks:
   frontend-reqs:
     dir: ${docroot}
-    command: 'yarn install --production --ignore-optional --frozen-lockfile --non-interactive'
+    command: 'yarn workspaces focus --all --production'
   frontend-assets:
     dir: ${docroot}
-    command: 'yarn workspaces run build'
+    command: 'yarn workspaces foreach run build'
   post-deploy-build:
     dir: ${repo.root}
     command: './vendor/bin/blt uiowa:post:build'
