@@ -40,13 +40,17 @@ class Files extends SqlBase {
    * {@inheritdoc}
    */
   public function query() {
-    $query = $this->select('file_managed', 'f')
-      ->fields('f', [
+    $query = $this->select('file_managed', 'f');
+    // Limit it to only files which appear in the file_usage table.
+    $query->innerJoin('file_usage', 'u', 'u.fid = f.fid');
+    $query = $query->fields('f', [
         'fid',
         'filename',
         'uri',
         'filemime',
-      ]);
+      ])
+      // Need distinct to avoid duplicates from the file_usage join.
+      ->distinct();
     return $query;
   }
 
