@@ -29,14 +29,9 @@
     }
 
     .menu li {
-      @include breakpoint(menu) {
-        //margin: 0 15px 0 0 !important;
-      }
-
       + li {
         a {
           @include breakpoint(menu) {
-            //border-left: 1px solid $secondary;
             padding-left: .8rem;
           }
         }
@@ -48,8 +43,6 @@
           text-decoration: none;
           color: $secondary;
           font-size: 1.1rem;
-          //text-transform: uppercase;
-          //padding: 0;
           position: relative;
           line-height: 1.3;
           text-align: center;
@@ -83,9 +76,6 @@
             font-weight: 300;
           }
         }
-        @include breakpoint(container) {
-          //border: 1px solid $secondary;
-        }
       }
     }
   }
@@ -118,22 +108,19 @@
       display: flex;
 
       .logo--tab {
-       // order: 1;
         flex: 0 1 100%;
       }
 
-      .site-name {
-       // order: 3;
-      }
-
       .menu--top {
-       // order: 2;
         flex: 0 1 100%;
       }
     }
   }
 }
 
+.menu--top .menu li:nth-child(3) {
+  display: block!important;
+}
 
 // Mobile adjustments for top menu
 @media only screen and (min-width: 0) and (max-width: 855px) {
@@ -141,7 +128,7 @@
     background: $primary;
     margin-top: 0;
     position: inherit;
-    padding: 1.25rem;
+    padding: .75rem 1.25rem;
 
     .menu li {
       margin: 0;
@@ -162,40 +149,39 @@
   }
 }
 
-.menu--top .menu li:nth-child(3) {
-  display: block!important;
+// Mobile adjustments for iowa bar below
+@media only screen and (min-width: 0) and (max-width: 855px) {
+
+  .iowa-bar.iowa-bar--narrow {
+    display: flex;
+    flex-wrap: wrap;
+
+    .nav.menu--top {
+      right: 0;
+      padding-left: 20px;
+      position: relative !important;
+      overflow: unset !important;
+      clip: unset !important;
+    }
+
+    .menu--top.nav .menu li a {
+      padding: 0 0 .75rem 0;
+    }
+
+    .iowa-bar__below {
+      margin-top: 70px;
+      border-bottom: none;
+    }
+
+    .iowa-bar__container {
+      flex-basis: 100%;
+      order: 3;
+    }
+
+    .logo--tab {
+      position: absolute;
+      top: 0;
+    }
+  }
 }
 
-
-//
-.iowa-bar.iowa-bar--narrow .iowa-bar__below {
-  order: 2;
-  flex-basis: 100%;
-  width: 100%;
-  display: flex;
-  margin-top: 70px;
-}
-
-.iowa-bar.iowa-bar--narrow .iowa-bar__container {
-  flex-basis: 100%;
-  display: flex;
-  flex-wrap: nowrap;
-  order: 3;
-}
-
-.iowa-bar.iowa-bar--narrow .logo--tab {
-
-  position: absolute;
-  /* order: 1; */
-  top: 0;
-  left: 0;
-}
-
-.iowa-bar.iowa-bar--narrow  {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  min-height: auto;
-  background: #151515;
-  flex-wrap: wrap;
-}
