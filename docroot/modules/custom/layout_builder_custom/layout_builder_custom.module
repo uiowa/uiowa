@@ -427,6 +427,11 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
       if (isset($element['field_uiowa_banner_link']) &&
         $element['field_uiowa_banner_link']['widget']['#max_delta'] >= 2) {
         unset($element['field_uiowa_banner_link']['widget']['add_more']);
+        // If we're editing a banner with 3 existing links
+        // we also need to unset the fourth pre-added link field.
+        if (isset($element['field_uiowa_banner_link']['widget'][3])) {
+          unset($element['field_uiowa_banner_link']['widget'][3]);
+        }
       }
 
       break;
