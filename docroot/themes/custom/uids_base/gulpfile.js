@@ -69,7 +69,7 @@ function css() {
 
 // Watch files.
 function watchFiles() {
-  watch(paths.src, { usePolling: true }, compile);
+  watch(paths.src, compile);
   // @todo Watch other changes?
 }
 
