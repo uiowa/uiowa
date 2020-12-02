@@ -32,7 +32,8 @@ before_install:
 install:
   - nvm install --lts
   - nvm use --lts
-  - yarn cache clean
+  - yarn -v
+  - yarn cache clean --all
   - composer install
   - source ${BLT_DIR}/scripts/travis/exit_early
   - source ${BLT_DIR}/scripts/travis/setup_environment
