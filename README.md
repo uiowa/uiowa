@@ -21,11 +21,11 @@ This project is based on BLT, an open-source project template and tool that enab
 # Local Environment
 Follow the [BLT docs](https://docs.acquia.com/blt/install/local-development/) to get started wit [DrupalVM](https://www.drupalvm.com/).
 
-All BLT commands should be run on the VM. You can SSH into the VM using `vagrant ssh`. See the [Vagrant docs](https://www.vagrantup.com/docs/cli/) for basic CLI usage.
+Most CLI commands should be run on the VM - for example `blt`, `drush` and `composer`. The exception to this is `blt frontend` and `yarn` commands. You can SSH into the VM using `vagrant ssh`. See the [Vagrant docs](https://www.vagrantup.com/docs/cli/) for basic CLI usage. It is useful to keep to terminal tabs open at the application root - one SSH'ed into the VM and one not (on the host).
 
-If you have troubles with an error on DrupalVM related to /tmp/xdebug.log, https://github.com/geerlingguy/drupal-vm/issues/1813
+In order to run `blt frontend` and `yarn` commands on your computer (host), you need Node [Version Manager (NVM)](https://github.com/nvm-sh/nvm). This is used to lock the version of Node to the latest LTS. After installing NVM, run `nvm use`. You may need to install the specified version of Node using `nvm install`.
 
-**TLDR;** Run `sudo chmod 766 /tmp/xdebug.log` in the VM.
+If you have troubles with [an error](https://github.com/geerlingguy/drupal-vm/issues/1813) on the VM related to /tmp/xdebug.log, run `sudo chmod 766 /tmp/xdebug.log` in the VM.
 
 ## Databases
 Use [SequelPro](https://www.sequelpro.com/) to [connect to DrupalVM](http://docs.drupalvm.com/en/latest/configurations/databases-mysql/#connect-using-sequel-pro-or-a-similar-client).
