@@ -22,6 +22,7 @@ dependencies:
     - field.field.node.person.field_person_project_undergrad
     - field.field.node.person.field_person_research_areas
     - field.field.node.person.field_person_scholar_abstract
+    - field.field.node.person.field_person_scholar_institution
     - field.field.node.person.field_person_scholar_mentor_link
     - field.field.node.person.field_person_scholar_srop_year
     - field.field.node.person.field_person_types
@@ -54,22 +55,15 @@ content:
       link: false
     third_party_settings: {  }
   field_person_bio:
-    weight: 11
+    weight: 10
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
-  field_person_education:
-    weight: 4
-    label: inline
-    settings: {  }
-    third_party_settings: {  }
-    type: basic_string
-    region: content
   field_person_email:
     type: email_mailto
-    weight: 6
+    weight: 5
     region: content
     label: hidden
     settings: {  }
@@ -82,14 +76,14 @@ content:
     type: list_default
     region: content
   field_person_mentor_project:
-    weight: 12
-    label: hidden
+    weight: 11
+    label: inline
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   field_person_phone:
-    weight: 5
+    weight: 4
     label: hidden
     settings:
       link_to_entity: false
@@ -105,45 +99,44 @@ content:
     type: string
     region: content
   field_person_project_assistants:
-    weight: 13
-    label: hidden
+    weight: 12
+    label: inline
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
     region: content
   field_person_project_desc:
-    weight: 14
-    label: above
+    weight: 13
+    label: inline
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   field_person_project_qualif:
-    weight: 16
+    weight: 15
     label: inline
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   field_person_project_undergrad:
-    weight: 15
+    weight: 14
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_person_scholar_abstract:
+    weight: 17
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
-  field_person_research_areas:
-    type: entity_reference_label
-    weight: 10
-    region: content
+  field_person_scholar_institution:
+    weight: 7
     label: inline
-    settings:
-      link: false
-    third_party_settings: {  }
-  field_person_scholar_abstract:
-    weight: 18
-    label: visually_hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
@@ -170,7 +163,7 @@ content:
     region: content
   field_person_website:
     type: link
-    weight: 7
+    weight: 6
     region: content
     label: hidden
     settings:
@@ -181,16 +174,18 @@ content:
       target: '0'
     third_party_settings: {  }
   links:
-    weight: 17
+    weight: 16
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
   field_person_contact_information: true
   field_person_credential: true
+  field_person_education: true
   field_person_first_name: true
   field_person_hide: true
   field_person_last_name: true
+  field_person_research_areas: true
   field_person_types: true
   field_tags: true
   field_teaser: true
