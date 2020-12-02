@@ -34,6 +34,7 @@ install:
   - nvm use --lts
   - yarn -v
   - yarn cache clean --all
+  - YARN_CHECKSUM_BEHAVIOR=update yarn
   - composer install
   - source ${BLT_DIR}/scripts/travis/exit_early
   - source ${BLT_DIR}/scripts/travis/setup_environment
