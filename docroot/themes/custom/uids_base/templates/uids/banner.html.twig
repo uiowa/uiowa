@@ -65,10 +65,12 @@
             {% endfor %}
           </div>
         {% elseif links|length == 1 %}
-          <div aria-hidden="true" class="{{ link.link_classes }}" {% if banner_aria_describedby %} id="{{ banner_aria_describedby }}" {% endif %}>
-            {{ link.link_text }}
-            <span class="fas fa-arrow-right"></span>
-          </div>
+          {% if show_button == true %}
+            <div aria-hidden="true" class="{{ link.link_classes }}" {% if banner_aria_describedby %} id="{{ banner_aria_describedby }}" {% endif %}>
+              {{ link.link_text }}
+              <span class="fas fa-arrow-right"></span>
+            </div>
+          {% endif %}
         {% endif %}
       {% endblock %}
 
