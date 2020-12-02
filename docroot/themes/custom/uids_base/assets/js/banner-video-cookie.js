@@ -32,7 +32,9 @@
           // On the video controls button click...
           btn.onclick = function() {
             // Update the video cookie to make sure we have the latest one.
-            bannerVideoCookie = JSON.parse($.cookie('bannervideo'));
+            if ($.cookie('bannervideo')) {
+              bannerVideoCookie = JSON.parse($.cookie('bannervideo'));
+            }
             // And then if the video is paused...
             if (video.paused) {
               // Set an index equal to the uuid to 'paused'.
@@ -44,16 +46,18 @@
             }
             else {
               // Remove a cookie based upon the uuid index.
-              delete bannerVideoCookie[video_uuid];
+              if ($.cookie('bannervideo')) {
+                delete bannerVideoCookie[video_uuid];
 
-              // If cookie array is empty, remove cookie dictionary.
-              if (Object.keys(bannerVideoCookie).length === 0) {
-                $.removeCookie('bannervideo', { path: '/' });
-              }
-              // Else, re-save the dictionary.
-              else {
-                let bannerVideoCookieString = JSON.stringify(bannerVideoCookie);
-                $.cookie('bannervideo', bannerVideoCookieString, { expires: 36135, path: '/' });
+                // If cookie array is empty, remove cookie dictionary.
+                if (Object.keys(bannerVideoCookie).length === 0) {
+                  $.removeCookie('bannervideo', { path: '/' });
+                }
+                // Else, re-save the dictionary.
+                else {
+                  let bannerVideoCookieString = JSON.stringify(bannerVideoCookie);
+                  $.cookie('bannervideo', bannerVideoCookieString, { expires: 36135, path: '/' });
+                }
               }
             }
           }
