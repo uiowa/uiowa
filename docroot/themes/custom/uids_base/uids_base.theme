@@ -413,8 +413,8 @@ function uids_base_preprocess_block(&$variables) {
     if ($block->hasField('field_uiowa_banner_link')) {
       foreach ($block->get('field_uiowa_banner_link')->getIterator() as $link) {
         $variables['links'][] = [
-          'link_url' => $link->get('uri')->getValue(),
-          'link_text' => $link->get('title')->getValue(),
+          'link_url' => $link->getUrl()->toString(),
+          'link_text' => $link->get('title')->getString(),
           'link_classes' => $highlight_classes,
         ];
       }
