@@ -3,18 +3,6 @@
 @import "components/card/_card-mixins.scss";
 
 .aggregator-wrapper {
-  margin-top: $gutter;
-
-  .card {
-    @include breakpoint(sm) {
-      padding: 0 0 $gutter;
-
-      &__title.headline {
-        font-size: 1.3rem;
-      }
-    }
-  }
-
   .card {
     &__row {
       @include breakpoint(sm) {
@@ -27,50 +15,24 @@
       }
     }
   }
-
-  .layout--twocol .layout__spacing_container & {
-    @media screen and (min-width: 40em) {
-      .card__media img {
-        border-radius: 50%;
-        margin-top: 0;
-        height: auto;
-        padding: 8px;
-      }
+  .card--alignment-center {
+    .card__label {
+      padding-left: 0;
+    }
+    .svg-inline--fa {
+      @include element-invisible;
     }
   }
-
-  .layout--fourcol .layout__spacing_container & {
-    @media screen and (min-width: 40em) {
-      .card__media img {
-        border-radius: 50%;
-        margin-top: 0;
-        height: auto;
-        padding: 8px;
-      }
-    }
-  }
-
+}
+.aggregator-item {
   &.hide-descriptions {
-    .card__description {
+    .card__description,
+    .item-description {
       display: none;
     }
   }
-
-  &.image-right .card__media.media--circle {
-    @include breakpoint(sm) {
-      margin-left: 15px;
-      margin-right: 0;
-      order: 1;
-
-      &+.card__body {
-        padding-left: 0;
-        padding-right: 1.25rem;
-      }
-    }
-  }
-
   &.hide-images {
-    .card__media.media--circle {
+    .card__media {
       display: none;
 
       &+.card__body {
@@ -78,7 +40,6 @@
       }
     }
   }
-
   &.hide-details .card__details {
     display: none;
   }
