@@ -21,9 +21,9 @@ This project is based on BLT, an open-source project template and tool that enab
 # Local Environment
 Follow the [BLT docs](https://docs.acquia.com/blt/install/local-development/) to get started wit [DrupalVM](https://www.drupalvm.com/).
 
-Most CLI commands should be run on the VM - for example `blt`, `drush` and `composer`. The exception to this is `blt frontend` and `yarn` commands. You can SSH into the VM using `vagrant ssh`. See the [Vagrant docs](https://www.vagrantup.com/docs/cli/) for basic CLI usage. It is useful to keep to terminal tabs open at the application root - one SSH'ed into the VM and one not (on the host).
+Most CLI commands should be run on the VM - for example `blt`, `drush` and `composer`. The exception to this is `blt frontend` and `yarn` commands. You can SSH into the VM using `vagrant ssh`. See the [Vagrant docs](https://www.vagrantup.com/docs/cli/) for basic CLI usage. It can be helpful to keep two terminal tabs open at the application root - one on the host and one on the VM.
 
-In order to run `blt frontend` and `yarn` commands on your computer (host), you need Node [Version Manager (NVM)](https://github.com/nvm-sh/nvm). This is used to lock the version of Node to the latest LTS. After installing NVM, run `nvm use`. You may need to install the specified version of Node using `nvm install`.
+In order to run `blt frontend` and `yarn` commands on your computer (host), you need Node [Version Manager (NVM)](https://github.com/nvm-sh/nvm) and [Yarn](https://classic.yarnpkg.com/en/docs/getting-started). NVM is used to lock the version of Node to the latest LTS. After installing NVM, run `nvm use`. You may need to install the specified version of Node using `nvm install`.
 
 If you have troubles with [an error](https://github.com/geerlingguy/drupal-vm/issues/1813) on the VM related to /tmp/xdebug.log, run `sudo chmod 766 /tmp/xdebug.log` in the VM.
 
@@ -31,7 +31,7 @@ If you have troubles with [an error](https://github.com/geerlingguy/drupal-vm/is
 Use [SequelPro](https://www.sequelpro.com/) to [connect to DrupalVM](http://docs.drupalvm.com/en/latest/configurations/databases-mysql/#connect-using-sequel-pro-or-a-similar-client).
 
 ## Logging
-As long as a site has a local settings file, it should be configured to show all warnings and errors to the screen. Other log messages, like watchdog, can be viewed by tailing the syslog: `sudo tail -f /var/log/syslog | grep drupal`. [PimpMyLog](http://docs.drupalvm.com/en/latest/extras/pimpmylog/) is also available at https://pimpmylog.local.drupal.uiowa.edu but requires more configuration to work with syslog.
+As long as a site has a local.settings.php file, it should be configured to show all warnings and errors to the screen. Other log messages, like watchdog, can be viewed by tailing the syslog: `sudo tail -f /var/log/syslog | grep drupal`. [PimpMyLog](http://docs.drupalvm.com/en/latest/extras/pimpmylog/) is also available at https://pimpmylog.local.drupal.uiowa.edu but requires more configuration to work with syslog.
 
 ### BLT Configuration
 Make sure you have an [Acquia Cloud key and secret](https://docs.acquia.com/acquia-cloud/develop/api/auth/) saved in the `blt/local.blt.yml` file. This file is ignored by Git. Be sure you do not accidentally commit your credentials to the `blt/blt.yml` file which is tracked in Git. Do not share your key or secret with anyone.
