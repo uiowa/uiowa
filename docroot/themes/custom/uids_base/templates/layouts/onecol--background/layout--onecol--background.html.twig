@@ -13,17 +13,20 @@
  */
 #}
 {% set background = content.background | render %}
-{%
-  set classes = [
+{% set classes = [
   has_node_image ? 'layout--onecol--background' : 'layout--onecol--no--background',
-]
-%}
+  'banner--gradient-bottom',
+  'banner--gradient-dark',
+  'banner--horizontal-left',
+  'banner--large',
+  'banner--vertical-bottom',
+] %}
 
 {% set attributes = attributes.addClass(classes) %}
 
 {% if has_node_image %}
   {% embed "@uids_base/uids/banner.html.twig" with {
-    'attributes' : attributes.addClass('banner--vertical-bottom banner--horizontal-left banner--gradient-bottom banner--large banner--gradient-dark'),
+    'attributes' : attributes,
   } %}
     {% block banner_image %}
       <div class="banner__image">
