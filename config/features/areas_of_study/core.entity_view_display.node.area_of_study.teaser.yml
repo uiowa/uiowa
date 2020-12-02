@@ -1,0 +1,43 @@
+uuid: 4b2e2370-d132-49bc-8194-3e3ce3fe126c
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.area_of_study.body
+    - field.field.node.area_of_study.field_area_of_study_certificates
+    - field.field.node.area_of_study.field_area_of_study_majors
+    - field.field.node.area_of_study.field_area_of_study_minors
+    - field.field.node.area_of_study.field_area_of_study_online
+    - field.field.node.area_of_study.field_area_of_study_preprof
+    - field.field.node.area_of_study.field_image
+    - node.type.area_of_study
+  module:
+    - text
+    - user
+id: node.area_of_study.teaser
+targetEntityType: node
+bundle: area_of_study
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_area_of_study_certificates: true
+  field_area_of_study_majors: true
+  field_area_of_study_minors: true
+  field_area_of_study_online: true
+  field_area_of_study_preprof: true
+  field_image: true
+  search_api_excerpt: true
