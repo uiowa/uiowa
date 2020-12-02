@@ -1,0 +1,28 @@
+uuid: d528befd-8058-404c-bac1-5edd8708373b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_person_student_major
+    - node.type.person
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    plain_text: plain_text
+    filtered_html: '0'
+    minimal: '0'
+    full_html: '0'
+id: node.person.field_person_student_major
+field_name: field_person_student_major
+entity_type: node
+bundle: person
+label: Major
+description: 'Enter the student''s primary major'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text

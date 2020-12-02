@@ -1,0 +1,36 @@
+uuid: 3fbda329-85af-406c-9117-9f5192b3c2b3
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_person_student_gender
+field_name: field_person_student_gender
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: Woman
+      label: Woman
+    -
+      value: Man
+      label: Man
+    -
+      value: Transgender
+      label: Transgender
+    -
+      value: Non-binary/non-conforming
+      label: Non-binary/non-conforming
+    -
+      value: 'Prefer not to respond'
+      label: 'Prefer not to respond'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,28 @@
+uuid: 2069fa97-5c57-46f5-82c7-fd70587f7834
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_person_student_blurb
+    - node.type.person
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    filtered_html: filtered_html
+    minimal: '0'
+    full_html: '0'
+    plain_text: '0'
+id: node.person.field_person_student_blurb
+field_name: field_person_student_blurb
+entity_type: node
+bundle: person
+label: 'Short Profile Blurb'
+description: 'This is the text that will show in the page sidebar.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

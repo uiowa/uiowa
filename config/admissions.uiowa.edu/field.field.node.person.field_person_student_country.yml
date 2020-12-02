@@ -1,0 +1,22 @@
+uuid: 657deb8c-6991-488b-b756-a532f70ce4c6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_person_student_country
+    - node.type.person
+  module:
+    - address
+id: node.person.field_person_student_country
+field_name: field_person_student_country
+entity_type: node
+bundle: person
+label: Country
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  available_countries: {  }
+field_type: address_country

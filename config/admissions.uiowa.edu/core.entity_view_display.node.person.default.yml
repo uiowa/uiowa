@@ -16,6 +16,14 @@ dependencies:
     - field.field.node.person.field_person_phone
     - field.field.node.person.field_person_position
     - field.field.node.person.field_person_research_areas
+    - field.field.node.person.field_person_student_attributes
+    - field.field.node.person.field_person_student_blurb
+    - field.field.node.person.field_person_student_country
+    - field.field.node.person.field_person_student_gender
+    - field.field.node.person.field_person_student_grad_date
+    - field.field.node.person.field_person_student_home_state
+    - field.field.node.person.field_person_student_major
+    - field.field.node.person.field_person_student_videos
     - field.field.node.person.field_person_territory
     - field.field.node.person.field_person_types
     - field.field.node.person.field_person_website
@@ -24,6 +32,7 @@ dependencies:
     - node.type.person
     - views.view.person_card
   module:
+    - address
     - entity_reference_revisions
     - layout_builder
     - layout_builder_restrictions
@@ -95,6 +104,128 @@ third_party_settings:
                 type: string
             additional: {  }
             weight: 3
+          -
+            uuid: 84802b8f-6fd2-4687-9440-f453dfce62be
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:person:field_person_student_gender'
+              formatter:
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+                type: list_default
+            additional: {  }
+            weight: 4
+          -
+            uuid: 15a9f50a-e785-4cdd-98db-8c790e6e78c4
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:person:field_person_student_major'
+              formatter:
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+                type: text_default
+            additional: {  }
+            weight: 6
+          -
+            uuid: 826d9eb7-8b73-4fb3-a589-78630f696d1a
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:person:field_person_student_attributes'
+              formatter:
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+                type: list_default
+            additional: {  }
+            weight: 7
+          -
+            uuid: 46a962e9-e32e-4090-bd1a-30a6ec95fe20
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:person:field_person_student_home_state'
+              formatter:
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+                type: list_default
+            additional: {  }
+            weight: 8
+          -
+            uuid: 28959d8a-827e-4725-95fb-5278451b17cd
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:person:field_person_student_blurb'
+              formatter:
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+                type: text_default
+            additional: {  }
+            weight: 9
+          -
+            uuid: 71c3b5f6-4488-41eb-b2e9-f1091fad15c2
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:person:field_person_student_country'
+              formatter:
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+                type: address_country_default
+            additional: {  }
+            weight: 11
+          -
+            uuid: 1c7f61dd-8a0a-439f-a326-1798dc7b130b
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:person:field_person_student_grad_date'
+              formatter:
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+                type: list_default
+            additional: {  }
+            weight: 12
+          -
+            uuid: d18c977f-9cf6-4a6f-8843-b209f4146d1e
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:person:field_person_student_videos'
+              formatter:
+                type: entity_reference_entity_view
+                label: above
+                settings:
+                  view_mode: default
+                  link: false
+                third_party_settings: {  }
+            additional: {  }
+            weight: 13
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -279,6 +410,64 @@ content:
     settings:
       link: false
     third_party_settings: {  }
+  field_person_student_attributes:
+    weight: 16
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  field_person_student_blurb:
+    weight: 18
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_person_student_country:
+    weight: 20
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: address_country_default
+    region: content
+  field_person_student_gender:
+    weight: 13
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  field_person_student_grad_date:
+    weight: 21
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  field_person_student_home_state:
+    weight: 17
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  field_person_student_major:
+    weight: 15
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_person_student_videos:
+    type: entity_reference_entity_view
+    weight: 22
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
   field_person_territory:
     weight: 11
     label: above
