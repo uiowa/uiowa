@@ -92,13 +92,15 @@ class AcademicUnitsWidget extends WidgetBase implements ContainerFactoryPluginIn
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $element['types'] = [
       '#type' => 'checkboxes',
-      '#title' => $this->t('Which types of academic units should be included?'),
+      '#title' => $this->t('Unit Types'),
+      '#description' => $this->t('Which types of academic units should be included? At least one must be selected.'),
       '#options' => [
         // Options are hardcoded in, but this could be updated
         // to pull available options directly from the config entity.
         'college' => $this->t('Collegiate'),
         'non-collegiate' => $this->t('Non-Collegiate'),
       ],
+      '#required' => TRUE,
       '#default_value' => $this->getSetting('types'),
     ];
     return $element;
