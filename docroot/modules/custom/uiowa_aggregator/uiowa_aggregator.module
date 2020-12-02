@@ -117,10 +117,10 @@ function uiowa_aggregator_preprocess_block(&$variables) {
             unset($variables["attributes"]["class"][$key]);
           }
           if (substr($style, 0, strlen('media')) === 'media') {
-              unset($variables["attributes"]["class"][$key]);
+            unset($variables["attributes"]["class"][$key]);
           }
           if (substr($style, 0, strlen('hide')) === 'hide') {
-              unset($variables["attributes"]["class"][$key]);
+            unset($variables["attributes"]["class"][$key]);
           }
         }
 
