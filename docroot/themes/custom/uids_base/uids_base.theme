@@ -324,6 +324,10 @@ function uids_base_preprocess_layout(&$variables) {
         $variables['attributes']['class'][] = 'layout--title--hidden';
       }
     }
+
+    if ($variables['has_node_image']) {
+      $variables['attributes']['class'][] = 'layout--onecol--background';
+    }
   }
 }
 
