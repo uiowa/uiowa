@@ -21,7 +21,8 @@ function layout_builder_custom_element_info_alter(array &$types) {
 /**
  * Implements hook_form_alter().
  */
-function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state, $form_id)
+{
   switch ($form_id) {
     case 'layout_builder_add_block':
     case 'layout_builder_update_block':
@@ -421,6 +422,13 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
       ] + $element['field_uiowa_banner_image'];
 
       unset($element['field_uiowa_banner_image']['widget']['#title']);
+
+      // Check the max_delta to see how many banner links have been added
+      // and unset the add more button if we've reached the third link.
+      if (isset($element['field_uiowa_banner_link']) &&
+        $element['field_uiowa_banner_link']['widget']['#max_delta'] >= 2) {
+        unset($element['field_uiowa_banner_link']['widget']['add_more']);
+      }
 
       break;
 
