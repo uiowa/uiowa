@@ -132,14 +132,14 @@
             'field_person_education',
             'field_person_research_areas',
             'field_person_publications_link',
-            'field_person_scholar_abstract',
             'field_person_scholar_srop_year',
             'field_person_scholar_mentor_link',
             'field_person_mentor_project',
             'field_person_project_assistants',
             'field_person_project_desc',
             'field_person_project_undergrad',
-            'field_person_project_qualif'
+            'field_person_project_qualif',
+            'field_person_scholar_abstract'
           ) }}
         </div>
         <div class="col-md-6 col-lg-9 person-content">
@@ -149,7 +149,6 @@
             </h2>
           {% endif %}
           {{ content.field_person_bio }}
-          {{ content.field_person_scholar_abstract }}
           {{ content.field_person_scholar_mentor_link }}
           {{ content.field_person_scholar_srop_year }}
           {{ content.field_person_education }}
@@ -160,6 +159,7 @@
           {{ content.field_person_project_desc }}
           {{ content.field_person_project_undergrad }}
           {{ content.field_person_project_qualif }}
+          {{ content.field_person_scholar_abstract }}
         </div>
       </div>
     </div>

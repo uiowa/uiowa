@@ -34,6 +34,7 @@ dependencies:
   module:
     - link
     - options
+    - smart_trim
     - text
     - user
 id: node.person.teaser
@@ -74,11 +75,23 @@ content:
       link_to_entity: false
     third_party_settings: {  }
   field_person_scholar_abstract:
-    type: text_default
+    type: smart_trim
     weight: 6
     region: content
-    label: hidden
-    settings: {  }
+    label: visually_hidden
+    settings:
+      trim_length: 100
+      trim_type: words
+      trim_suffix: ''
+      wrap_class: trimmed
+      more_link: true
+      more_text: More
+      more_class: grad-more-link
+      trim_options:
+        text: true
+        trim_zero: true
+      wrap_output: false
+      summary_handler: full
     third_party_settings: {  }
   field_person_scholar_institution:
     type: text_default

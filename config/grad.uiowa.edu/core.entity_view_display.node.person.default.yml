@@ -54,13 +54,6 @@ content:
       view_mode: large__square
       link: false
     third_party_settings: {  }
-  field_person_bio:
-    weight: 10
-    label: visually_hidden
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
-    region: content
   field_person_email:
     type: email_mailto
     weight: 5
@@ -76,11 +69,12 @@ content:
     type: list_default
     region: content
   field_person_mentor_project:
-    weight: 11
+    weight: 10
     label: inline
-    settings: {  }
+    settings:
+      trim_length: 200
     third_party_settings: {  }
-    type: text_default
+    type: text_trimmed
     region: content
   field_person_phone:
     weight: 4
@@ -99,7 +93,7 @@ content:
     type: string
     region: content
   field_person_project_assistants:
-    weight: 12
+    weight: 11
     label: inline
     settings:
       link_to_entity: false
@@ -107,28 +101,28 @@ content:
     type: string
     region: content
   field_person_project_desc:
-    weight: 13
+    weight: 12
     label: inline
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   field_person_project_qualif:
-    weight: 15
-    label: inline
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
-    region: content
-  field_person_project_undergrad:
     weight: 14
     label: inline
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
+  field_person_project_undergrad:
+    weight: 13
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
   field_person_scholar_abstract:
-    weight: 17
+    weight: 16
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -174,11 +168,12 @@ content:
       target: '0'
     third_party_settings: {  }
   links:
-    weight: 16
+    weight: 15
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_person_bio: true
   field_person_contact_information: true
   field_person_credential: true
   field_person_education: true
