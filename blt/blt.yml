@@ -46,7 +46,7 @@ validate:
 command-hooks:
   frontend-reqs:
     dir: ${docroot}
-    command: 'yarn workspaces focus --all --production && git status'
+    command: 'yarn workspaces focus --all --production'
   frontend-assets:
     dir: ${docroot}
     command: 'yarn workspaces foreach run build'
