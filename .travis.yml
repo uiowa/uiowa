@@ -11,6 +11,8 @@ cache:
   directories:
     - "$HOME/.composer/cache"
     - "$HOME/.drush/cache"
+    - "$TRAVIS_BUILD_DIR/.yarn/cache"
+    - "$TRAVIS_BUILD_DIR/node_modules"
 
 services:
   - mysql
@@ -33,8 +35,6 @@ install:
   - nvm install --lts
   - nvm use --lts
   - yarn -v
-  - yarn cache clean --all
-  - YARN_CHECKSUM_BEHAVIOR=update yarn
   - composer install
   - source ${BLT_DIR}/scripts/travis/exit_early
   - source ${BLT_DIR}/scripts/travis/setup_environment
