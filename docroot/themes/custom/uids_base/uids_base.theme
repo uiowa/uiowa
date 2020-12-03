@@ -273,7 +273,7 @@ function uids_base_preprocess_layout(&$variables) {
     }
 
     // Create a featured image boolean variable for easier Twig use.
-    $variables['has_node_image'] = $node->hasField('field_image') && !$node->get('field_image')->isEmpty();
+    $variables['has_node_image'] = $node->hasField('field_image') && !$node->field_image;
 
     // Add sitenow library if sitenow_v2 config split is active.
     $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
@@ -319,14 +319,13 @@ function uids_base_preprocess_layout(&$variables) {
       if ($contains_background) {
         $variables['attributes']['class'][] = 'layout--title--with-background';
       }
+      else {
+        $variables['attributes']['class'][] = 'layout--onecol--no--background';
+      }
 
       if ($title_hidden) {
         $variables['attributes']['class'][] = 'layout--title--hidden';
       }
-    }
-
-    if ($variables['has_node_image']) {
-      $variables['attributes']['class'][] = 'layout--onecol--background';
     }
   }
 }

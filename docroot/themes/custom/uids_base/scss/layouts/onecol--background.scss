@@ -7,14 +7,45 @@
   width: 100%;
 }
 
-/*
- * @todo Move this to a more appropriate location
- */
-.layout--onecol--background .banner__image .layout-builder__add-block {
-  position: absolute;
-  top: 10px;
-  right: 25px;
-  z-index: 2;
+.layout--onecol--background {
+  // Add padding to banner content if not in edge-to-edge column
+  // or is in twocol layout.
+  &.banner {
+    .banner__content {
+      @include breakpoint(sm) {
+        padding: 1.25rem;
+      }
+      @include breakpoint(container) {
+        padding: 1.25rem 0;
+      }
+    }
+  }
+
+  // @todo Move this to a more appropriate location.
+  .banner__image .layout-builder__add-block {
+    position: absolute;
+    top: 10px;
+    right: 25px;
+    z-index: 2;
+  }
+
+  // When we have a background image - and we're not in the Layout
+  // Builder screen - change the text color to white.
+  &.layout--title--with-background[class*="layout-builder--layout"] {
+    .bold-headline {
+      @include headline-negative;
+    }
+
+    .breadcrumb {
+      li {
+        color: white;
+      }
+
+      a {
+        color: white;
+      }
+    }
+  }
 }
 
 .content__container {
@@ -40,20 +71,4 @@
     @include element-invisible;
   }
 }
-.layout--onecol--background {
-  .bold-headline {
-    @include headline-negative;
-  }
-
-  .breadcrumb {
-    li {
-      color: white;
-    }
-
-    a {
-      color: white;
-    }
-  }
-}
-
 
