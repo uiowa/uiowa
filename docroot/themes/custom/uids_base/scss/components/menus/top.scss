@@ -172,19 +172,29 @@
     }
 
     .iowa-bar__below {
-      margin-top: 70px;
+      //margin-top: 70px;
       border-bottom: none;
+      width: 100%;
     }
 
     .iowa-bar__container {
       flex-basis: 100%;
-      order: 3;
-    }
-
-    .logo--tab {
-      position: absolute;
-      top: 0;
     }
   }
 }
 
+.iowa-bar.iowa-bar--narrow {
+  .nav.menu--top {
+    @include breakpoint(menu) {
+      height: 90px;
+    }
+  }
+
+  &.horizontal, &.mega {
+    .nav.menu--top {
+      @include breakpoint(container) {
+        top: -50px;
+      }
+    }
+  }
+}
