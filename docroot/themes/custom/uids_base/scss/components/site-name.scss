@@ -43,3 +43,10 @@
     font-size: 2vw;
   }
 }
+
+// Firefox width fix
+.iowa-bar--narrow.iowa-bar .site-name {
+  @include breakpoint(menu) {
+    flex-basis: auto;
+  }
+}
