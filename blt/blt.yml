@@ -49,7 +49,7 @@ command-hooks:
     command: 'yarn workspaces focus --all --production'
   frontend-assets:
     dir: ${docroot}
-    command: 'yarn workspaces foreach run build'
+    command: 'yarn workspaces foreach --parallel --topological run build'
   post-deploy-build:
     dir: ${repo.root}
     command: './vendor/bin/blt uiowa:post:build'
