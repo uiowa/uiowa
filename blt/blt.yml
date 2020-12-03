@@ -46,7 +46,7 @@ validate:
 command-hooks:
   frontend-reqs:
     dir: ${docroot}
-    command: 'yarn workspaces focus --all --production'
+    command: 'YARN_CHECKSUM_BEHAVIOR=update yarn workspaces focus --all --production'
   frontend-assets:
     dir: ${docroot}
     command: 'yarn workspaces foreach --parallel --topological run build'
