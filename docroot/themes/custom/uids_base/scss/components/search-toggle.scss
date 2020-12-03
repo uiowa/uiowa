@@ -50,6 +50,30 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
   }
 }
 
+.iowa-bar--full.toggle {
+  .search-button {
+    @include breakpoint(container) {
+      height: 85px;
+      width: 159px;
+    }
+  }
+}
+
+.iowa-bar--full.toggle {
+  .search-wrapper {
+    @include breakpoint(menu) {
+      flex: 0 1 147px;
+    }
+    @include breakpoint(container) {
+      flex: 1;
+    }
+  }
+  .site-name + .menu--top + .search-wrapper {
+    @include breakpoint(menu) {
+      flex: 1;
+    }
+  }
+}
 
 .iowa-bar--full.toggle {
   .search-wrapper {

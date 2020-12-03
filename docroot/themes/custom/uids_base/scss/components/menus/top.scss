@@ -84,10 +84,11 @@
 .iowa-bar--full.toggle {
   .menu--top {
     @include breakpoint(menu) {
-      flex: 1;
+      flex: auto;
     }
     @include breakpoint(container) {
       margin-right: calc(10% - 40vw);
+      flex: 1;
     }
   }
   .site-name + .menu--top {
@@ -146,6 +147,7 @@
   }
   .site-name + .menu--top {
     padding: 0 1.25rem .75rem 1.25rem;
+    margin-top: -.75rem;
   }
 }
 
