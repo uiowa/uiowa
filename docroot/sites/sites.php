@@ -1877,3 +1877,9 @@ $sites['labmailloux.local.drupal.uiowa.edu'] = 'mailloux.lab.uiowa.edu';
 $sites['labmailloux.dev.drupal.uiowa.edu'] = 'mailloux.lab.uiowa.edu';
 $sites['labmailloux.stage.drupal.uiowa.edu'] = 'mailloux.lab.uiowa.edu';
 $sites['labmailloux.prod.drupal.uiowa.edu'] = 'mailloux.lab.uiowa.edu';
+
+// Directory aliases for reinhardt.lab.uiowa.edu.
+$sites['labreinhardt.local.drupal.uiowa.edu'] = 'reinhardt.lab.uiowa.edu';
+$sites['labreinhardt.dev.drupal.uiowa.edu'] = 'reinhardt.lab.uiowa.edu';
+$sites['labreinhardt.stage.drupal.uiowa.edu'] = 'reinhardt.lab.uiowa.edu';
+$sites['labreinhardt.prod.drupal.uiowa.edu'] = 'reinhardt.lab.uiowa.edu';
