@@ -9,7 +9,6 @@ dependencies:
     - field.storage.node.field_student_profile_major
     - node.type.student_profile
   module:
-    - heading
     - node
     - text
     - user
@@ -195,9 +194,9 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: heading_text
+          type: string
           settings:
-            size: h6
+            link_to_entity: false
           group_column: value
           group_columns: {  }
           group_rows: true

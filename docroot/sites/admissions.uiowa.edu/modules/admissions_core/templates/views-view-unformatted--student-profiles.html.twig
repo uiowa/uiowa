@@ -114,10 +114,10 @@
 
     {% set person_card_view = {
         'attributes': attributes.addClass(classes),
-        'card_title': view.style_plugin.getField(key, 'title'),
+        'card_title': view.style_plugin.getField(key, 'field_person_first_name'),
         'card_image': view.style_plugin.getField(key, 'field_image'),
         'card_tag': view.style_plugin.getField(key, 'field_student_profile_major'),
-        'card_subtitle': view.style_plugin.getField(key, 'field_person_first_name'),
+        'card_subtitle': view.style_plugin.getField(key, 'field_student_profile_major'),
         'person_blurb': view.style_plugin.getField(key, 'field_student_profile_blurb'),
         'media_attributes': media_attributes.addClass('media--circle card__media--small card__media'),
     } %}
@@ -130,6 +130,12 @@
         {% endif %}
     {% endblock %}
 
+    {% block card_title %}
+        {% if card_title|striptags|trim is not empty %}
+            <div class="card__title">{{ card_title }}</div>
+        {% endif %}
+    {% endblock %}
+    
     {% block card_subtitle %}
         {% if card_subtitle|striptags|trim is not empty %}
             <div class="card__subtitle">{{ card_subtitle }}</div>
@@ -141,7 +147,7 @@
             <div class="card__date"><span class="fas fa-university"></span> {{ card_tag }}</div>
         {% endif %}
         {% if person_blurb|striptags|trim is not empty %}
-            <div class="card__description"><span class="fas fa-quote-left"></span> {{ person_blurb }}</div>
+            <div class="card__date"><span class="fas fa-quote-left"></span> {{ person_blurb }}</div>
         {% endif %}
     {% endblock %}
 
