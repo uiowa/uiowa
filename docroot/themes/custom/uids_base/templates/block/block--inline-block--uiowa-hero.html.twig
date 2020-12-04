@@ -60,6 +60,11 @@
 			<video class="hero__video" autoplay="autoplay" muted="muted" loop="loop" id="video-container" poster="{{ video_thumbnail }}">
 				<source src="{{ video_url }}" type="video/mp4">
 			</video>
+      <div class="video-controls video">
+        <button class="video-btn video-btn__pause" aria-label="Pause" id="video-btn">
+          <span class="element-invisible">Pause</span>
+        </button>
+      </div>
 		{% else %}
 			{{ content.field_uiowa_hero_image }}
 		{% endif %}
@@ -76,17 +81,5 @@
 		{% endif %}
 		{{ content.field_uiowa_hero_excerpt }}
 	{% endblock %}
-
-
-	{% block hero_footer %}
-		{% if video_field is not empty %}
-			<div class="video-controls video">
-				<button class="video-btn video-btn__pause" aria-label="Pause" id="video-btn">
-					<span class="element-invisible">Pause</span>
-				</button>
-			</div>
-		{% endif %}
-	{% endblock %}
-
 
 {% endembed %}

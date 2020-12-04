@@ -105,10 +105,14 @@ slider:
     uids/components/slider/slider.js: { preprocess: false }
   dependencies:
     - uids_base/banner
-video:
+remote-video:
   css:
     component:
       assets/css/components/video/video-utilities.css: { preprocess: false }
+video:
+  css:
+    component:
+      assets/css/components/video/video.css: { preprocess: false }
 hero:
   css:
     component:
@@ -131,7 +135,7 @@ aggregator-feed:
       assets/css/content/aggregator-feed.css: { preprocess: false }
 hero-block-video:
   js:
-    uids/components/hero/hero.js: { preprocess: false }
+    uids/components/video/video.js: { preprocess: false }
     assets/js/hero-video-cookie.js: { preprocess: false }
   dependencies:
     - core/jquery
