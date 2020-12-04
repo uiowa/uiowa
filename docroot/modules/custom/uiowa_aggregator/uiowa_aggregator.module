@@ -113,6 +113,9 @@ function uiowa_aggregator_preprocess_block(&$variables) {
 
         // Unset classes meant for children.
         foreach ($variables["attributes"]["class"] as $key => $style) {
+          if (substr($style, 0, strlen('bg')) === 'bg') {
+            unset($variables["attributes"]["class"][$key]);
+          }
           if (substr($style, 0, strlen('card')) === 'card') {
             unset($variables["attributes"]["class"][$key]);
           }
