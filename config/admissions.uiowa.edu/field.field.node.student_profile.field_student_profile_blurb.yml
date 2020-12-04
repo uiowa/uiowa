@@ -1,0 +1,28 @@
+uuid: 663d3393-254e-4ae2-891f-14787d22757c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_student_profile_blurb
+    - node.type.student_profile
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    filtered_html: filtered_html
+    minimal: '0'
+    full_html: '0'
+    plain_text: '0'
+id: node.student_profile.field_student_profile_blurb
+field_name: field_student_profile_blurb
+entity_type: node
+bundle: student_profile
+label: 'Short Profile Blurb'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

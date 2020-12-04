@@ -1,0 +1,30 @@
+uuid: e947f170-54c9-4e07-b664-edf8284ef25a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_student_profile_videos
+    - media.type.remote_video
+    - media.type.video
+    - node.type.student_profile
+id: node.student_profile.field_student_profile_videos
+field_name: field_student_profile_videos
+entity_type: node
+bundle: student_profile
+label: Videos
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      remote_video: remote_video
+      video: video
+    sort:
+      field: _none
+    auto_create: true
+    auto_create_bundle: remote_video
+field_type: entity_reference

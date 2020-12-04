@@ -1,0 +1,22 @@
+uuid: 8e14cf3a-fb73-4bd9-adc2-091790ccdc36
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_student_profile_country
+    - node.type.student_profile
+  module:
+    - address
+id: node.student_profile.field_student_profile_country
+field_name: field_student_profile_country
+entity_type: node
+bundle: student_profile
+label: 'Home Country'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  available_countries: {  }
+field_type: address_country

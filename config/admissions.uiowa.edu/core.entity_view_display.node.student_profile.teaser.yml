@@ -1,0 +1,55 @@
+uuid: a5180815-700b-499d-93bb-8adc125102ed
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.student_profile.body
+    - field.field.node.student_profile.field_image
+    - field.field.node.student_profile.field_person_first_name
+    - field.field.node.student_profile.field_person_hometown
+    - field.field.node.student_profile.field_person_last_name
+    - field.field.node.student_profile.field_person_territory
+    - field.field.node.student_profile.field_student_profile_attributes
+    - field.field.node.student_profile.field_student_profile_blurb
+    - field.field.node.student_profile.field_student_profile_country
+    - field.field.node.student_profile.field_student_profile_gender
+    - field.field.node.student_profile.field_student_profile_grad_date
+    - field.field.node.student_profile.field_student_profile_major
+    - field.field.node.student_profile.field_student_profile_videos
+    - node.type.student_profile
+  module:
+    - text
+    - user
+id: node.student_profile.teaser
+targetEntityType: node
+bundle: student_profile
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_image: true
+  field_person_first_name: true
+  field_person_hometown: true
+  field_person_last_name: true
+  field_person_territory: true
+  field_student_profile_attributes: true
+  field_student_profile_blurb: true
+  field_student_profile_country: true
+  field_student_profile_gender: true
+  field_student_profile_grad_date: true
+  field_student_profile_major: true
+  field_student_profile_videos: true
+  search_api_excerpt: true
