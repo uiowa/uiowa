@@ -1871,3 +1871,9 @@ $sites['iihrcurrents.local.drupal.uiowa.edu'] = 'currents.iihr.uiowa.edu';
 $sites['iihrcurrents.dev.drupal.uiowa.edu'] = 'currents.iihr.uiowa.edu';
 $sites['iihrcurrents.stage.drupal.uiowa.edu'] = 'currents.iihr.uiowa.edu';
 $sites['iihrcurrents.prod.drupal.uiowa.edu'] = 'currents.iihr.uiowa.edu';
+
+// Directory aliases for mailloux.lab.uiowa.edu.
+$sites['labmailloux.local.drupal.uiowa.edu'] = 'mailloux.lab.uiowa.edu';
+$sites['labmailloux.dev.drupal.uiowa.edu'] = 'mailloux.lab.uiowa.edu';
+$sites['labmailloux.stage.drupal.uiowa.edu'] = 'mailloux.lab.uiowa.edu';
+$sites['labmailloux.prod.drupal.uiowa.edu'] = 'mailloux.lab.uiowa.edu';
