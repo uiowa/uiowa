@@ -1865,3 +1865,9 @@ $sites['laborcenter.local.drupal.uiowa.edu'] = 'laborcenter.uiowa.edu';
 $sites['laborcenter.dev.drupal.uiowa.edu'] = 'laborcenter.uiowa.edu';
 $sites['laborcenter.stage.drupal.uiowa.edu'] = 'laborcenter.uiowa.edu';
 $sites['laborcenter.prod.drupal.uiowa.edu'] = 'laborcenter.uiowa.edu';
+
+// Directory aliases for currents.iihr.uiowa.edu.
+$sites['iihrcurrents.local.drupal.uiowa.edu'] = 'currents.iihr.uiowa.edu';
+$sites['iihrcurrents.dev.drupal.uiowa.edu'] = 'currents.iihr.uiowa.edu';
+$sites['iihrcurrents.stage.drupal.uiowa.edu'] = 'currents.iihr.uiowa.edu';
+$sites['iihrcurrents.prod.drupal.uiowa.edu'] = 'currents.iihr.uiowa.edu';
