@@ -30,7 +30,7 @@ mode: default
 content:
   body:
     type: text_textarea_with_summary
-    weight: 121
+    weight: 12
     settings:
       rows: 9
       summary_rows: 3
@@ -38,24 +38,15 @@ content:
       show_summary: false
     third_party_settings: {  }
     region: content
-  created:
-    type: datetime_timestamp
-    weight: 10
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   field_image:
-    weight: 132
+    weight: 3
     settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
+      media_types: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: media_library_widget
     region: content
   field_person_first_name:
-    weight: 122
+    weight: 1
     settings:
       size: 60
       placeholder: ''
@@ -63,7 +54,7 @@ content:
     type: string_textfield
     region: content
   field_person_hometown:
-    weight: 127
+    weight: 5
     settings:
       size: 60
       placeholder: ''
@@ -71,7 +62,7 @@ content:
     type: string_textfield
     region: content
   field_person_last_name:
-    weight: 123
+    weight: 2
     settings:
       size: 60
       placeholder: ''
@@ -79,19 +70,19 @@ content:
     type: string_textfield
     region: content
   field_person_territory:
-    weight: 128
+    weight: 6
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_student_profile_attributes:
-    weight: 125
+    weight: 11
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_student_profile_blurb:
-    weight: 131
+    weight: 10
     settings:
       rows: 5
       placeholder: ''
@@ -99,25 +90,25 @@ content:
     type: text_textarea
     region: content
   field_student_profile_country:
-    weight: 129
+    weight: 7
     settings: {  }
     third_party_settings: {  }
     type: address_country_default
     region: content
   field_student_profile_gender:
-    weight: 124
+    weight: 4
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_student_profile_grad_date:
-    weight: 130
+    weight: 9
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_student_profile_major:
-    weight: 126
+    weight: 8
     settings:
       size: 60
       placeholder: ''
@@ -126,65 +117,45 @@ content:
     region: content
   field_student_profile_videos:
     type: media_library_widget
-    weight: 133
+    weight: 13
     settings:
       media_types: {  }
     third_party_settings: {  }
     region: content
   moderation_state:
     type: moderation_state_default
-    weight: 100
+    weight: 16
     settings: {  }
     region: content
     third_party_settings: {  }
   path:
     type: path
-    weight: 30
+    weight: 14
     region: content
     settings: {  }
-    third_party_settings: {  }
-  promote:
-    type: boolean_checkbox
-    settings:
-      display_label: true
-    weight: 15
-    region: content
     third_party_settings: {  }
   status:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 120
-    region: content
-    third_party_settings: {  }
-  sticky:
-    type: boolean_checkbox
-    settings:
-      display_label: true
-    weight: 16
+    weight: 17
     region: content
     third_party_settings: {  }
   title:
     type: string_textfield
-    weight: -5
+    weight: 0
     region: content
     settings:
       size: 60
       placeholder: ''
-    third_party_settings: {  }
-  uid:
-    type: entity_reference_autocomplete
-    weight: 5
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-      match_limit: 10
-    region: content
     third_party_settings: {  }
   url_redirects:
-    weight: 50
+    weight: 15
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
-hidden: {  }
+hidden:
+  created: true
+  promote: true
+  sticky: true
+  uid: true
