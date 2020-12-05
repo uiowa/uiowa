@@ -1,5 +1,5 @@
 {% set headline_level = headline_level ?: 'h2' %}
-{% set headline_attributes = headline_attributes ?: create_attribute() %}
+{% set headline_attributes = headline_attributes ?: create_attribute().addClass('headline') %}
 {% set headline_class = headline_class ?: [] %}
 <{{ headline_level }}{{ headline_attributes.addClass(headline_class) }}>
 {% if headline_url %}
