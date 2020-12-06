@@ -1,0 +1,33 @@
+uuid: e4a98be8-803b-4996-ae2d-8409924733ba
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.thesis_defense.field_person_first_name
+    - field.field.node.thesis_defense.field_person_last_name
+    - field.field.node.thesis_defense.field_thesis_defense_chairs
+    - field.field.node.thesis_defense.field_thesis_defense_date
+    - field.field.node.thesis_defense.field_thesis_defense_location
+    - field.field.node.thesis_defense.field_thesis_defense_major
+    - node.type.thesis_defense
+  module:
+    - user
+id: node.thesis_defense.teaser
+targetEntityType: node
+bundle: thesis_defense
+mode: teaser
+content:
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_person_first_name: true
+  field_person_last_name: true
+  field_thesis_defense_chairs: true
+  field_thesis_defense_date: true
+  field_thesis_defense_location: true
+  field_thesis_defense_major: true
+  search_api_excerpt: true

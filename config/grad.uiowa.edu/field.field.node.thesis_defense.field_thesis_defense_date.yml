@@ -1,0 +1,26 @@
+uuid: fbe40557-a962-41bb-bf12-5bcd4ef96faf
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_thesis_defense_date
+    - node.type.thesis_defense
+  module:
+    - smart_date
+id: node.thesis_defense.field_thesis_defense_date
+field_name: field_thesis_defense_date
+entity_type: node
+bundle: thesis_defense
+label: 'Defense date'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    default_date_type: next_hour
+    default_date: ''
+    default_duration_increments: '0'
+    default_duration: 0
+default_value_callback: ''
+settings: {  }
+field_type: smartdate

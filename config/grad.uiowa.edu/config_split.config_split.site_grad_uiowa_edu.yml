@@ -8,6 +8,7 @@ description: 'Split configuration for grad.uiowa.edu.'
 folder: ../config/grad.uiowa.edu
 module:
   book: 0
+  smart_date: 0
 theme: {  }
 blacklist:
   - config_split.config_split.site_grad_uiowa_edu
@@ -37,13 +38,16 @@ graylist:
   - field.storage.node.field_person_research_areas
   - field.storage.node.field_person_types
   - node.type.person
+  - node.type.thesis_defense
   - simple_sitemap.bundle_settings.default.node.person
+  - simple_sitemap.bundle_settings.default.node.thesis_defense
   - sitenow_people.field_settings
   - sitenow_people.person_type.mentor
   - user.role.anonymous
   - user.role.authenticated
   - user.role.editor
   - user.role.webmaster
+  - 'field.storage.node.field_thesis_defense_*'
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 90
