@@ -1602,11 +1602,7 @@ function sitenow_update_8043() {
  * Fix any outstanding issues with uids_base theme configuration.
  */
 function sitenow_update_8044() {
-  /** @var \Drupal\Core\Theme\ActiveTheme $active_theme */
-  $active_theme = \Drupal::service('theme.manager')->getActiveTheme();
-
   $config_factory = \Drupal::configFactory();
-  /** @var  $config */
   $config = $config_factory->getEditable('uids_base.settings');
 
   // Only run this if config exists.
