@@ -15,6 +15,9 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
   background-repeat: no-repeat;
   @include breakpoint(menu) {
     background-image: url($search-img-path);
+    background-repeat: no-repeat;
+    background-position: 50%;
+    background-size: 90%;
   }
 }
 
@@ -35,3 +38,56 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
   }
 }
 */
+
+// Iowa Bar Full adjustments
+.iowa-bar--full.horizontal,
+.iowa-bar--full.mega {
+  .search-button {
+    @include breakpoint(container) {
+      height: 85px;
+      width: 159px;
+    }
+  }
+}
+
+.iowa-bar--full.toggle {
+  .search-button {
+    @include breakpoint(container) {
+      height: 85px;
+      width: 159px;
+    }
+  }
+}
+
+.iowa-bar--full.toggle {
+  .search-wrapper {
+    @include breakpoint(menu) {
+      flex: 0 1 147px;
+    }
+    @include breakpoint(container) {
+      flex: 1;
+    }
+  }
+  .site-name + .menu--top + .search-wrapper {
+    @include breakpoint(menu) {
+      flex: 1;
+    }
+  }
+}
+
+.iowa-bar--full.toggle {
+  .search-wrapper {
+    .search-is-open & {
+      @include breakpoint(menu) {
+        flex: 1;
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 0) and (max-width: 855px) {
+  .search-is-open .iowa-bar--full .menu--top {
+    display: block !important;
+  }
+}
+
