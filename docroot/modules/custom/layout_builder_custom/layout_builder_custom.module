@@ -74,10 +74,20 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           'remove_none' => TRUE,
           'default' => 'content_alignment_left',
         ],
+        'grid_columns' => [
+          'single' => TRUE,
+          'remove_none' => TRUE,
+          'default' => 'block_grid_threecol_33_34_33',
+        ],
         'headline_type' => [
           'single' => TRUE,
           'remove_none' => TRUE,
           'default' => 'headline_bold_serif',
+        ],
+        'list_format' => [
+          'single' => TRUE,
+          'remove_none' => TRUE,
+          'default' => 'list_format_list',
         ],
         'media_format' => [
           'single' => TRUE,
@@ -130,6 +140,18 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       unset($form['settings']['label']);
       unset($form['settings']['label_display']);
       unset($form['settings']['admin_label']['#title']);
+
+      // Set '#states' for block grid columns.
+      $form['layout_builder_style_grid_columns']['#states'] = [
+        'visible' => [
+          // Always show when list format is grid.
+          [
+            ':input[name="layout_builder_style_list_format"]' => [
+              'value' => 'list_format_grid',
+            ],
+          ],
+        ],
+      ];
 
       /** @var \Drupal\layout_builder\SectionComponent $component */
       $component = $form_state->getFormObject()->getCurrentComponent();

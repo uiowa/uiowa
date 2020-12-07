@@ -348,6 +348,15 @@ function uids_base_preprocess_block(&$variables) {
     }
   }
 
+  // If block list, remove any block grid classes.
+  if (isset($variables["attributes"]["class"]) && in_array('block--list', $variables["attributes"]["class"])) {
+    foreach ($variables["attributes"]["class"] as $key => $style) {
+      if (substr($style, 0, strlen('block--grid')) === 'block--grid') {
+        unset($variables["attributes"]["class"][$key]);
+      }
+    }
+  }
+
   if (in_array($variables['base_plugin_id'], [
     'system_menu_block',
     'menu_block',
