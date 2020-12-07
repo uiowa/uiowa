@@ -576,7 +576,7 @@ function layout_builder_custom_preprocess_media(&$variables) {
   $media = $variables['elements']['#media'];
   if ($media->bundle() === 'video') {
     $variables['attributes'] = [
-      'class' => ['media--content-video'],
+      'class' => ['media--video'],
     ] + $variables['attributes'];
   }
 }

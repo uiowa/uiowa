@@ -9,7 +9,7 @@
       $('.media-library-widget', context).once('media-form-attach').each(function () {
 
         // Check if the referenced media is a video.
-        const mediaTypeVideo = this.querySelector('.media--content-video');
+        const mediaTypeVideo = this.querySelector('.media--video');
 
         // @todo Add a class to this field so we can target it more precisely.
         if (mediaTypeVideo) {
