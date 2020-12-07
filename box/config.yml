@@ -26,15 +26,20 @@ vagrant_synced_folders:
       - .yarn
       - node_modules
       # Exclude NFS mounts.
-      - config
       - vendor
+      - config
+      - docroot
   # Use a slower but two-way sync for necessary directories.
+  - local_path: vendor
+    destination: /var/www/uiowa/vendor
+    type: "nfs"
+    create: true
   - local_path: config
     destination: /var/www/uiowa/config
     type: "nfs"
     create: true
-  - local_path: vendor
-    destination: /var/www/uiowa/vendor
+  - local_path: docroot
+    destination: /var/www/uiowa/docroot
     type: "nfs"
     create: true
 
