@@ -1895,3 +1895,9 @@ $sites['siteshealthydata.local.drupal.uiowa.edu'] = 'healthydata.sites.uiowa.edu
 $sites['siteshealthydata.dev.drupal.uiowa.edu'] = 'healthydata.sites.uiowa.edu';
 $sites['siteshealthydata.stage.drupal.uiowa.edu'] = 'healthydata.sites.uiowa.edu';
 $sites['siteshealthydata.prod.drupal.uiowa.edu'] = 'healthydata.sites.uiowa.edu';
+
+// Directory aliases for provost.uiowa.edu.
+$sites['provost.local.drupal.uiowa.edu'] = 'provost.uiowa.edu';
+$sites['provost.dev.drupal.uiowa.edu'] = 'provost.uiowa.edu';
+$sites['provost.stage.drupal.uiowa.edu'] = 'provost.uiowa.edu';
+$sites['provost.prod.drupal.uiowa.edu'] = 'provost.uiowa.edu';
