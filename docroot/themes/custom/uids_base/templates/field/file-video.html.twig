@@ -15,22 +15,20 @@
 * @ingroup themeable
 */
 #}
-<div class="media--video">
-  {{ attach_library('uids_base/banner-video') }}
-    <div class="video-controls video">
-      {% if attributes.storage.autoplay and attributes.storage.muted %}
-      <button class="video-btn video-btn__pause" id="video-btn">
-        <span class="element-invisible">Pause</span>
-      </button>
-      {% else %}
-      <button class="video-btn video-btn__play" id="video-btn">
-        <span class="element-invisible">Play</span>
-      </button>
-      {% endif %}
-    </div>
-  <video {{ attributes }} id="video-container">
-    {% for file in files %}
-      <source {{ file.source_attributes }} />
-    {% endfor %}
-  </video>
-</div>
+{{ attach_library('uids_base/banner-video') }}
+  <div class="video-controls video">
+    {% if attributes.storage.autoplay and attributes.storage.muted %}
+    <button class="video-btn video-btn__pause" id="video-btn">
+      <span class="element-invisible">Pause</span>
+    </button>
+    {% else %}
+    <button class="video-btn video-btn__play" id="video-btn">
+      <span class="element-invisible">Play</span>
+    </button>
+    {% endif %}
+  </div>
+<video {{ attributes }} id="video-container">
+  {% for file in files %}
+    <source {{ file.source_attributes }} />
+  {% endfor %}
+</video>
