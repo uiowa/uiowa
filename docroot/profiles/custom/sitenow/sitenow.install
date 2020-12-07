@@ -1597,3 +1597,29 @@ function sitenow_update_8043() {
     $config_factory->getEditable('config_split.config_split.collegiate')->delete();
   }
 }
+
+/**
+ * Fix any outstanding issues with uids_base theme configuration.
+ */
+function sitenow_update_8044() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uids_base.settings');
+
+  // Only run this if config exists.
+  if ($config) {
+    $changed = FALSE;
+
+    foreach (['branding', 'uids_base'] as $key) {
+      // Check if the key exists and delete it if so.
+      if ($config->get($key)) {
+        $config->clear($key);
+        $changed = TRUE;
+      }
+    }
+
+    // Save the config if we've updated it.
+    if ($changed) {
+      $config->save();
+    }
+  }
+}
