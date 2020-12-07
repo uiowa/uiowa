@@ -14,14 +14,29 @@ vagrant_box: geerlingguy/drupal-vm
 workspace: /root
 drupal_site_name: local.drupal.uiowa.edu
 
-# Provide the path to the project root to Vagrant.
 vagrant_synced_folders:
-
-  -
-    local_path: .
-    # Set the destination to the Acquia Cloud subscription machine name.
+  - local_path: .
     destination: /var/www/uiowa
-    type: nfs
+    type: rsync
+    create: true
+    excluded_paths:
+      - .idea
+      - .vscode
+      - .git
+      - .yarn
+      - node_modules
+      # Exclude NFS mounts.
+      - config
+      - vendor
+  # Use a slower but two-way sync for necessary directories.
+  - local_path: config
+    destination: /var/www/uiowa/config
+    type: "nfs"
+    create: true
+  - local_path: vendor
+    destination: /var/www/uiowa/vendor
+    type: "nfs"
+    create: true
 
 drupal_build_composer_project: false
 drupal_composer_path: false
