@@ -28,7 +28,7 @@ before_install:
   - mv deploy_key $HOME/.ssh/id_rsa
   - chmod 600 $HOME/.ssh/id_rsa
   - phpenv config-rm xdebug.ini
-  - yes | pecl install memcache
+  - yes | pecl install memcache-3.0.8
 
 install:
   - nvm install 10
