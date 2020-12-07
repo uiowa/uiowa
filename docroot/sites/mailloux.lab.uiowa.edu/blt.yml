@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labmailloux.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labmailloux
+  human_name: mailloux.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labmailloux.prod
+drupal:
+  db:
+    database: mailloux_lab_uiowa_edu
+uiowa:
+  requester: chernndez
