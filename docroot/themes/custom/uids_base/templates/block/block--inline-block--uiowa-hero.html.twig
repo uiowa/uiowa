@@ -57,7 +57,7 @@
 	{% block hero_image %}
 		{% if video_field is not empty %}
 			{{ attach_library('uids_base/hero-block-video') }}
-			<video class="hero__video" autoplay="autoplay" muted="muted" loop="loop" id="video-container" poster="{{ video_thumbnail }}">
+			<video class="media__video" autoplay="autoplay" muted="muted" loop="loop" id="video-container" poster="{{ video_thumbnail }}">
 				<source src="{{ video_url }}" type="video/mp4">
 			</video>
       <div class="video-controls video">
