@@ -143,7 +143,7 @@
 
     {% block card_tag %}
         {% if person_blurb|striptags|trim is not empty %}
-            <div class="card__date"><span class="fas fa-quote-left"></span> <div class="col-md-4">{{ person_blurb }}</div></div>
+            <div class="card__date">  {{ person_blurb }}</div>
         {% endif %}
     {% endblock %}
 
