@@ -292,15 +292,16 @@ function uids_base_preprocess_layout(&$variables) {
   if ($layout->id() === 'layout_header') {
     $contains_title = FALSE;
     $contains_background = FALSE;
-    // Loop through regions
+    // Loop through regions in the layout.
     foreach (Element::children($variables['content']) as $region) {
-      // Loop through blocks
+      // Loop through blocks in that region.
       foreach (Element::children($variables['content'][$region]) as $block_uuid) {
         if ($region === 'content'
           && isset($variables['content'][$region][$block_uuid])
           && isset($variables['content'][$region][$block_uuid]['#plugin_id'])
         ) {
-          // Check if this block plugin_id matches the pattern for a page title block.
+          // Check if this block plugin_id matches the pattern for a
+          // page title block.
           $plugin_id = $variables['content'][$region][$block_uuid]['#plugin_id'];
           $start_check = 'field_block:node:';
           $end_check = ':title';
