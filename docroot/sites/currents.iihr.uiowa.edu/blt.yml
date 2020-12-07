@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: iihrcurrents.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: iihrcurrents
+  human_name: currents.iihr.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: iihrcurrents.prod
+drupal:
+  db:
+    database: currents_iihr_uiowa_edu
+uiowa:
+  requester: stolze
