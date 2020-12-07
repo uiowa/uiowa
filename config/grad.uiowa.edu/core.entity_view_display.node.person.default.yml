@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.person.field_image
     - field.field.node.person.field_person_bio
+    - field.field.node.person.field_person_college
     - field.field.node.person.field_person_contact_information
     - field.field.node.person.field_person_credential
     - field.field.node.person.field_person_education
@@ -32,6 +33,7 @@ dependencies:
     - options
     - telephone
     - text
+    - uiowa_entities
     - user
 id: node.person.default
 targetEntityType: node
@@ -58,6 +60,13 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: text_default
+    region: content
+  field_person_college:
+    weight: 15
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: uiowa_academic_units_formatter
     region: content
   field_person_contact_information:
     type: entity_reference_revisions_entity_view
