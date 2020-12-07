@@ -66,9 +66,9 @@ trait ProcessMediaTrait {
   /**
    * Fetch the media id based on the original site's fid.
    */
-  protected function getFid($original_fid) {
+  protected function getFid($original_fid, $migrate_map = 'migrate_map_d7_file') {
     $connection = \Drupal::database();
-    $query = $connection->select('migrate_map_d7_file', 'mm');
+    $query = $connection->select($migrate_map, 'mm');
     $query->join('media__field_media_image', 'fmi', 'mm.destid1 = fmi.field_media_image_target_id');
     $result = $query->fields('fmi', ['entity_id'])
       ->condition('mm.sourceid1', $original_fid)
