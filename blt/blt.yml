@@ -32,9 +32,6 @@ disable-targets:
       run: true
     frontend:
       run: true
-    yaml:
-      lint:
-        all: true
 tests:
   phpunit:
     - config: '${repo.root}'
@@ -49,10 +46,10 @@ validate:
 command-hooks:
   frontend-reqs:
     dir: ${docroot}
-    command: './vendor/bin/blt uiowa:frontend:install'
+    command: 'yarn install --production --ignore-optional --frozen-lockfile --non-interactive'
   frontend-assets:
     dir: ${docroot}
-    command: './vendor/bin/blt uiowa:frontend:build'
+    command: 'yarn workspaces run build'
   post-deploy-build:
     dir: ${repo.root}
     command: './vendor/bin/blt uiowa:post:build'
