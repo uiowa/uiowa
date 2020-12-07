@@ -49,10 +49,10 @@ validate:
 command-hooks:
   frontend-reqs:
     dir: ${docroot}
-    command: 'YARN_CHECKSUM_BEHAVIOR=update yarn workspaces focus --all --production'
+    command: './vendor/bin/blt uiowa:frontend:install'
   frontend-assets:
     dir: ${docroot}
-    command: 'yarn workspaces foreach --parallel --topological run build'
+    command: './vendor/bin/blt uiowa:frontend:build'
   post-deploy-build:
     dir: ${repo.root}
     command: './vendor/bin/blt uiowa:post:build'
