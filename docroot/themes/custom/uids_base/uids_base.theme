@@ -292,12 +292,15 @@ function uids_base_preprocess_layout(&$variables) {
   if ($layout->id() === 'layout_header') {
     $contains_title = FALSE;
     $contains_background = FALSE;
+    // Loop through regions
     foreach (Element::children($variables['content']) as $region) {
+      // Loop through blocks
       foreach (Element::children($variables['content'][$region]) as $block_uuid) {
         if ($region === 'content'
           && isset($variables['content'][$region][$block_uuid])
           && isset($variables['content'][$region][$block_uuid]['#plugin_id'])
         ) {
+          // Check if this block plugin_id matches the pattern for a page title block.
           $plugin_id = $variables['content'][$region][$block_uuid]['#plugin_id'];
           $start_check = 'field_block:node:';
           $end_check = ':title';
@@ -309,6 +312,7 @@ function uids_base_preprocess_layout(&$variables) {
           }
         }
         elseif ($region == 'background') {
+          // If there is anything in this region, then we have a background.
           if (!empty(Element::children($variables['content'][$region][$block_uuid]))) {
             $contains_background = TRUE;
             break;
