@@ -275,7 +275,7 @@ function uids_base_preprocess_layout(&$variables) {
     }
 
     // Create a featured image boolean variable for easier Twig use.
-    $variables['has_node_image'] = $node->hasField('field_image') && !$node->field_image;
+    $variables['has_node_image'] = $node->hasField('field_image') && $node->field_image;
 
     // Add sitenow library if sitenow_v2 config split is active.
     $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
