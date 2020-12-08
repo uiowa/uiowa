@@ -9,7 +9,9 @@ dependencies:
     - field.storage.node.field_student_profile_major
     - node.type.student_profile
   module:
+    - address
     - node
+    - options
     - text
     - user
 id: student_profiles
@@ -359,6 +361,400 @@ display:
           expose:
             operator_limit_selection: false
             operator_list: {  }
+          group: 1
+        field_student_profile_major_value:
+          id: field_student_profile_major_value
+          table: node__field_student_profile_major
+          field: field_student_profile_major_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: contains
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_student_profile_major_value_op
+            label: Major
+            description: ''
+            use_operator: false
+            operator: field_student_profile_major_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_student_profile_major_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: string
+        field_person_territory_value:
+          id: field_person_territory_value
+          table: node__field_person_territory
+          field: field_person_territory_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_person_territory_value_op
+            label: State
+            description: ''
+            use_operator: false
+            operator: field_person_territory_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_person_territory_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          plugin_id: list_field
+        field_student_profile_country_value:
+          id: field_student_profile_country_value
+          table: node__field_student_profile_country
+          field: field_student_profile_country_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: in
+          value:
+            all: all
+            AF: AF
+            AX: AX
+            AL: AL
+            DZ: DZ
+            AS: AS
+            AD: AD
+            AO: AO
+            AI: AI
+            AQ: AQ
+            AG: AG
+            AR: AR
+            AM: AM
+            AW: AW
+            AC: AC
+            AU: AU
+            AT: AT
+            AZ: AZ
+            BS: BS
+            BH: BH
+            BD: BD
+            BB: BB
+            BY: BY
+            BE: BE
+            BZ: BZ
+            BJ: BJ
+            BM: BM
+            BT: BT
+            BO: BO
+            BA: BA
+            BW: BW
+            BV: BV
+            BR: BR
+            IO: IO
+            VG: VG
+            BN: BN
+            BG: BG
+            BF: BF
+            BI: BI
+            KH: KH
+            CM: CM
+            CA: CA
+            IC: IC
+            CV: CV
+            BQ: BQ
+            KY: KY
+            CF: CF
+            EA: EA
+            TD: TD
+            CL: CL
+            CN: CN
+            CX: CX
+            CP: CP
+            CC: CC
+            CO: CO
+            KM: KM
+            CG: CG
+            CD: CD
+            CK: CK
+            CR: CR
+            CI: CI
+            HR: HR
+            CU: CU
+            CW: CW
+            CY: CY
+            CZ: CZ
+            DK: DK
+            DG: DG
+            DJ: DJ
+            DM: DM
+            DO: DO
+            EC: EC
+            EG: EG
+            SV: SV
+            GQ: GQ
+            ER: ER
+            EE: EE
+            SZ: SZ
+            ET: ET
+            FK: FK
+            FO: FO
+            FJ: FJ
+            FI: FI
+            FR: FR
+            GF: GF
+            PF: PF
+            TF: TF
+            GA: GA
+            GM: GM
+            GE: GE
+            DE: DE
+            GH: GH
+            GI: GI
+            GR: GR
+            GL: GL
+            GD: GD
+            GP: GP
+            GU: GU
+            GT: GT
+            GG: GG
+            GN: GN
+            GW: GW
+            GY: GY
+            HT: HT
+            HM: HM
+            HN: HN
+            HK: HK
+            HU: HU
+            IS: IS
+            IN: IN
+            ID: ID
+            IR: IR
+            IQ: IQ
+            IE: IE
+            IM: IM
+            IL: IL
+            IT: IT
+            JM: JM
+            JP: JP
+            JE: JE
+            JO: JO
+            KZ: KZ
+            KE: KE
+            KI: KI
+            XK: XK
+            KW: KW
+            KG: KG
+            LA: LA
+            LV: LV
+            LB: LB
+            LS: LS
+            LR: LR
+            LY: LY
+            LI: LI
+            LT: LT
+            LU: LU
+            MO: MO
+            MG: MG
+            MW: MW
+            MY: MY
+            MV: MV
+            ML: ML
+            MT: MT
+            MH: MH
+            MQ: MQ
+            MR: MR
+            MU: MU
+            YT: YT
+            MX: MX
+            FM: FM
+            MD: MD
+            MC: MC
+            MN: MN
+            ME: ME
+            MS: MS
+            MA: MA
+            MZ: MZ
+            MM: MM
+            NA: NA
+            NR: NR
+            NP: NP
+            NL: NL
+            NC: NC
+            NZ: NZ
+            NI: NI
+            NE: NE
+            NG: NG
+            NU: NU
+            NF: NF
+            KP: KP
+            MK: MK
+            MP: MP
+            'NO': 'NO'
+            OM: OM
+            PK: PK
+            PW: PW
+            PS: PS
+            PA: PA
+            PG: PG
+            PY: PY
+            PE: PE
+            PH: PH
+            PN: PN
+            PL: PL
+            PT: PT
+            PR: PR
+            QA: QA
+            RE: RE
+            RO: RO
+            RU: RU
+            RW: RW
+            WS: WS
+            SM: SM
+            ST: ST
+            SA: SA
+            SN: SN
+            RS: RS
+            SC: SC
+            SL: SL
+            SG: SG
+            SX: SX
+            SK: SK
+            SI: SI
+            SB: SB
+            SO: SO
+            ZA: ZA
+            GS: GS
+            KR: KR
+            SS: SS
+            ES: ES
+            LK: LK
+            BL: BL
+            SH: SH
+            KN: KN
+            LC: LC
+            MF: MF
+            PM: PM
+            VC: VC
+            SD: SD
+            SR: SR
+            SJ: SJ
+            SE: SE
+            CH: CH
+            SY: SY
+            TW: TW
+            TJ: TJ
+            TZ: TZ
+            TH: TH
+            TL: TL
+            TG: TG
+            TK: TK
+            TO: TO
+            TT: TT
+            TA: TA
+            TN: TN
+            TR: TR
+            TM: TM
+            TC: TC
+            TV: TV
+            UM: UM
+            VI: VI
+            UG: UG
+            UA: UA
+            AE: AE
+            GB: GB
+            US: US
+            UY: UY
+            UZ: UZ
+            VU: VU
+            VA: VA
+            VE: VE
+            VN: VN
+            WF: WF
+            EH: EH
+            YE: YE
+            ZM: ZM
+            ZW: ZW
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_student_profile_country_value_op
+            label: 'Home Country'
+            description: ''
+            use_operator: false
+            operator: field_student_profile_country_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_student_profile_country_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: country
       sorts:
         field_person_first_name_value:
           id: field_person_first_name_value
@@ -391,11 +787,16 @@ display:
       relationships: {  }
       arguments: {  }
       display_extenders: {  }
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
     cache_metadata:
       max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - url
         - url.query_args
         - 'user.node_grants:view'
         - user.permissions
@@ -417,6 +818,7 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - url
         - url.query_args
         - 'user.node_grants:view'
         - user.permissions
@@ -439,6 +841,7 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - url
         - url.query_args
         - 'user.node_grants:view'
         - user.permissions
