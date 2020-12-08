@@ -61,12 +61,14 @@ class MigratePreRollbackEvent implements EventSubscriberInterface {
    * {@inheritdoc}
    */
   public function onMigratePreRollback($event) {
-    $migration = $event->getMigration();
-    switch ($migration->id()) {
+    $migration_id = $event->getMigration()->id();
+    switch ($migration_id) {
 
       // Calls for creating a media entity for imported files.
       case 'd7_file':
-        $this->removeMediaEntities();
+      case 'd7_grad_file':
+        $migrate_map = 'migrate_map_' . $migration_id;
+        $this->removeMediaEntities($migrate_map);
         break;
     }
   }
@@ -74,10 +76,10 @@ class MigratePreRollbackEvent implements EventSubscriberInterface {
   /**
    * Remove associated media entities prior to file removal.
    */
-  public function removeMediaEntities() {
+  public function removeMediaEntities($migrate_map) {
     // Get our destination file ids.
     $connection = Database::getConnection();
-    $query = $connection->select('migrate_map_d7_file', 'mm')
+    $query = $connection->select($migrate_map, 'mm')
       ->fields('mm', ['destid1']);
     $fids = $query->execute()->fetchCol();
 
