@@ -91,6 +91,13 @@ banner:
       assets/css/components/banner.css: { preprocess: false }
   js:
     uids/components/banner/banner.js: { preprocess: false }
+video-cookie:
+  js:
+    assets/js/video-cookie.js: { preprocess: false }
+  dependencies:
+    - core/jquery
+    - core/jquery.cookie
+    - uids_base/video
 slider:
   css:
     component:
@@ -99,10 +106,16 @@ slider:
     uids/components/slider/slider.js: { preprocess: false }
   dependencies:
     - uids_base/banner
-video:
+remote-video:
   css:
     component:
       assets/css/components/video/video-utilities.css: { preprocess: false }
+video:
+  css:
+    component:
+      assets/css/components/video/video.css: { preprocess: false }
+  js:
+    uids/components/video/video.js: { preprocess: false }
 hero:
   css:
     component:
@@ -125,7 +138,7 @@ aggregator-feed:
       assets/css/content/aggregator-feed.css: { preprocess: false }
 hero-block-video:
   js:
-    uids/components/hero/hero.js: { preprocess: false }
+    uids/components/video/video.js: { preprocess: false }
     assets/js/hero-video-cookie.js: { preprocess: false }
   dependencies:
     - core/jquery

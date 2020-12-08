@@ -198,6 +198,41 @@ function uids_base_preprocess_node(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK() for media.html.twig.
+ */
+function uids_base_preprocess_media(array &$variables) {
+  /** @var \Drupal\media\Entity\Media $media */
+  $media = $variables['media'];
+
+  // Get the media entity's bundle (such as video, image, etc.)
+  $mediaType = $variables['media']->bundle();
+  // $variables;
+  if ($mediaType == 'video') {
+    $referring_item = $media->_referringItem;
+    if ($referring_item) {
+      /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $referring_field */
+      $referring_field = $referring_item->getParent();
+      if ($referring_field) {
+        $parent_entity = $referring_field->getParent();
+        $parent_entity = $parent_entity->getEntity();
+
+        // @todo 2020/12/08 Add check to see if video is paused in uiowa-video
+        //   and skip adding autoplay if so.
+        if ($autoplay_field = $parent_entity->field_uiowa_banner_autoplay) {
+          if ($autoplay_field->value) {
+            $variables['content']['field_media_video_file'][0]['#attributes']['autoplay'] = 'autoplay';
+          }
+        }
+
+        if ($parent_entity_uuid = $parent_entity->uuid()) {
+          $variables['content']['field_media_video_file'][0]['#attributes']['data-video-cookie-id'] = $parent_entity_uuid;
+        }
+      }
+    }
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK() for field.html.twig.
  */
 function uids_base_preprocess_field(&$variables) {
