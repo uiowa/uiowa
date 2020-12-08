@@ -25,7 +25,6 @@
  * @see template_preprocess_block()
  */
 #}
-
 {% set styles = elements['#layout_builder_style'] %}
 {% set headline_classes = [] %}
 {% set highlight_classes = [] %}
@@ -42,7 +41,11 @@
 {% endfor %}
 
 {% set block_banner = {
+  'banner_type': content.field_media_video_file[0]['#attributes']['banner_type'],
   'banner_image': content.field_uiowa_banner_image,
+  'banner_video_field': content.field_uiowa_banner_video[0]['#media'].field_media_video_file.entity.uri.value,
+  'banner_video_url': file_url(content.field_uiowa_banner_video[0]['#media'].field_media_video_file.entity.uri.value),
+  'banner_video_thumbnail': file_url(content.field_uiowa_banner_image[0]['#media'].field_media_image.entity.uri.value),
   'banner_summary': content.field_uiowa_banner_excerpt,
   'attributes': attributes.removeClass(headline_classes,background_classes),
   'banner_title': content.field_uiowa_banner_title[0]['#text'],
@@ -61,10 +64,14 @@
 {% embed '@uids_base/uids/banner.html.twig' with block_banner only %}
 
   {% block banner_image %}
-  {{ parent() }}
-  {# Embed contextual links so that they'll show up in the upper right-hand corner. #}
-  {{ title_prefix }}
-  {{ title_suffix }}
-  {% endblock banner_image %}
+{#     Embed contextual links so that they'll show up in the upper right-hand corner. #}
+    {{ title_prefix }}
+    {{ title_suffix }}
+    {% if banner_image  %}
+      <div class="banner__image">
+        {{ banner_image }}
+      </div>
+    {% endif %}
+  {% endblock %}
 
 {% endembed %}
