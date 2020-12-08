@@ -149,6 +149,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           break;
 
         case 'inline_block:uiowa_card':
+        case 'inline_block:uiowa_aggregator':
           // Set '#states' for card image size.
           $form['layout_builder_style_card_image_size']['#states'] = [
             'visible' => [
@@ -170,10 +171,24 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           // Label the white background option as the default.
           $form['layout_builder_style_background']['#options']['block_background_style_light'] = 'White (default)';
 
+          if ($block->getPluginId() == 'inline_block:uiowa_aggregator') {
+            // Custom default label changes for aggregator.
+            $form['layout_builder_style_card_media_position']['#options']['card_media_position_left'] = 'Left (default)';
+            $form['layout_builder_style_card_media_position']['#options']['card_media_position_stacked'] = 'Stacked';
+            $form['layout_builder_style_media_format']['#options']['media_format_circle'] = 'Circle (default)';
+            $form['layout_builder_style_card_image_size']['#options']['card_image_small'] = 'Small (default)';
+          }
+
           // If the block is new, set its default background
           // to white instead of none.
           if ($form_id === 'layout_builder_add_block') {
             $form['layout_builder_style_background']['#default_value'] = 'block_background_style_light';
+
+            if ($block->getPluginId() == 'inline_block:uiowa_aggregator') {
+              $form['layout_builder_style_card_media_position']['#default_value'] = 'card_media_position_left';
+              $form['layout_builder_style_media_format']['#default_value'] = 'media_format_circle';
+              $form['layout_builder_style_card_image_size']['#default_value'] = 'card_image_small';
+            }
           }
           break;
 
@@ -325,6 +340,7 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
       break;
 
     case 'inline_block:uiowa_card':
+    case 'inline_block:uiowa_aggregator':
       $media_position = $form_state->getValue('layout_builder_style_card_media_position');
       $media_format = $form_state->getValue('layout_builder_style_media_format');
 
