@@ -78,9 +78,11 @@ function uids_base_preprocess_page(&$variables) {
   $variables['header_nav'] = theme_get_setting('header.nav_style');
   $variables['header_sticky'] = theme_get_setting('header.sticky');
   $variables['header_classes'] = [];
+  $name_length = strlen($variables['site_name']);
 
-  // The site has a parent, so we are overriding the header type.
-  if ($variables['site_has_parent']) {
+  // If the site has a parent organization or the site name is more than 43
+  // characters, we force the site to use the 'below' header option.
+  if ($variables['site_has_parent'] || $name_length > 43) {
     $variables['header_type'] = 'below';
   }
 
