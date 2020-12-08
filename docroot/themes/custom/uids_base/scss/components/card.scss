@@ -90,4 +90,32 @@
       height: 100%;
     }
   }
+  &--alignment-center {
+    .card__label {
+      padding-left: 0;
+
+      .svg-inline--fa {
+        @include element-invisible;
+      }
+    }
+  }
+
+  &.hide-descriptions {
+    .card__description,
+    .item-description {
+      display: none;
+    }
+  }
+  &.hide-images {
+    .card__media {
+      display: none;
+
+      &+.card__body {
+        padding: 0;
+      }
+    }
+  }
+  &.hide-details .card__details {
+    display: none;
+  }
 }
