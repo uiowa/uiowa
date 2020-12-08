@@ -591,21 +591,47 @@ function uids_base_preprocess_aggregator_item(&$variables) {
   if (\Drupal::routeMatch()->getRouteName() != 'entity.aggregator_feed.canonical') {
     // Set the heading level size for use in the template.
     $variables['heading_size'] = $variables['elements']['#heading_size'] ?? 'h3';
+    if (isset($variables["elements"]["#parent_lb_styles"]) && !empty($variables["elements"]["#parent_lb_styles"])) {
+      $variables['parent_lb_styles'] = $variables["elements"]["#parent_lb_styles"];
+    }
 
     /** @var Drupal\aggregator\Entity\Feed $feed */
     $feed = \Drupal::entityTypeManager()->getStorage('aggregator_feed')->load($item->getFeedId());
     $mid = $feed->get('field_aggregator_feed_image')->getString();
 
+    // Establish default view mode if layout_builder_styles don't exist.
+    $image_view_mode = 'large__square';
+
+    // Map the layout builder styles to the view mode that should be used.
+    $media_formats = [
+      'media--widescreen' => 'large__widescreen',
+      'media--square' => 'large__square',
+      'media--circle' => 'large__square',
+    ];
+
+    // Loop through the map to check if any of them are being used and
+    // adjust the view mode accordingly. Last one wins out.
+    if ($variables['parent_lb_styles']) {
+      foreach ($media_formats as $style => $view_mode) {
+        if (in_array($style, $variables['parent_lb_styles'])) {
+          $image_view_mode = $view_mode;
+        }
+      }
+    }
+
     // A local feed image should take precedence.
     if ($media = Media::load($mid)) {
-      $variables['feed_image'] = \Drupal::entityTypeManager()->getViewBuilder('media')->view($media, 'small__square');
+      $variables['feed_image'] = \Drupal::entityTypeManager()->getViewBuilder('media')->view($media, $image_view_mode);
+      if (!in_array($view_mode, $variables["feed_image"]["#cache"]["keys"])) {
+        unset($variables["feed_image"]["#cache"]["keys"]);
+      }
     }
     else {
       if ($image = $feed->getImage()) {
         $variables['feed_image'] = [
           '#theme' => 'imagecache_external_responsive',
           '#uri' => $image,
-          '#responsive_image_style_id' => 'small__square',
+          '#responsive_image_style_id' => $image_view_mode,
           '#attributes' => [
             'data-lazy' => TRUE,
             'alt' => t('@title feed image', ['@title' => $feed->get('title')->getString()]),
