@@ -69,7 +69,7 @@
 		{% if content.field_uiowa_hero_title[0]['#text'] is not empty %}
       {% set hero_headline = {
         'headline_level' : content.field_uiowa_hero_title[0]['#size'],
-        'headline_class' : 'bold-headline--serif bold-headline',
+        'headline_class' : 'headline bold-headline--serif bold-headline',
         'headline_text' : content.field_uiowa_hero_title[0]['#text'],
       } %}
 			{% include '@uids_base/uids/headline.html.twig' with hero_headline only %}
