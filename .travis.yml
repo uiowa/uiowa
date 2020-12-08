@@ -33,6 +33,7 @@ before_install:
 install:
   - nvm install
   - nvm use
+  - yarn --version
   - composer install
   - source ${BLT_DIR}/scripts/travis/exit_early
   - source ${BLT_DIR}/scripts/travis/setup_environment
