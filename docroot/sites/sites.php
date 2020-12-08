@@ -1865,3 +1865,39 @@ $sites['laborcenter.local.drupal.uiowa.edu'] = 'laborcenter.uiowa.edu';
 $sites['laborcenter.dev.drupal.uiowa.edu'] = 'laborcenter.uiowa.edu';
 $sites['laborcenter.stage.drupal.uiowa.edu'] = 'laborcenter.uiowa.edu';
 $sites['laborcenter.prod.drupal.uiowa.edu'] = 'laborcenter.uiowa.edu';
+
+// Directory aliases for currents.iihr.uiowa.edu.
+$sites['iihrcurrents.local.drupal.uiowa.edu'] = 'currents.iihr.uiowa.edu';
+$sites['iihrcurrents.dev.drupal.uiowa.edu'] = 'currents.iihr.uiowa.edu';
+$sites['iihrcurrents.stage.drupal.uiowa.edu'] = 'currents.iihr.uiowa.edu';
+$sites['iihrcurrents.prod.drupal.uiowa.edu'] = 'currents.iihr.uiowa.edu';
+
+// Directory aliases for mailloux.lab.uiowa.edu.
+$sites['labmailloux.local.drupal.uiowa.edu'] = 'mailloux.lab.uiowa.edu';
+$sites['labmailloux.dev.drupal.uiowa.edu'] = 'mailloux.lab.uiowa.edu';
+$sites['labmailloux.stage.drupal.uiowa.edu'] = 'mailloux.lab.uiowa.edu';
+$sites['labmailloux.prod.drupal.uiowa.edu'] = 'mailloux.lab.uiowa.edu';
+
+// Directory aliases for reinhardt.lab.uiowa.edu.
+$sites['labreinhardt.local.drupal.uiowa.edu'] = 'reinhardt.lab.uiowa.edu';
+$sites['labreinhardt.dev.drupal.uiowa.edu'] = 'reinhardt.lab.uiowa.edu';
+$sites['labreinhardt.stage.drupal.uiowa.edu'] = 'reinhardt.lab.uiowa.edu';
+$sites['labreinhardt.prod.drupal.uiowa.edu'] = 'reinhardt.lab.uiowa.edu';
+
+// Directory aliases for horadahistoria.sites.uiowa.edu.
+$sites['siteshoradahistoria.local.drupal.uiowa.edu'] = 'horadahistoria.sites.uiowa.edu';
+$sites['siteshoradahistoria.dev.drupal.uiowa.edu'] = 'horadahistoria.sites.uiowa.edu';
+$sites['siteshoradahistoria.stage.drupal.uiowa.edu'] = 'horadahistoria.sites.uiowa.edu';
+$sites['siteshoradahistoria.prod.drupal.uiowa.edu'] = 'horadahistoria.sites.uiowa.edu';
+
+// Directory aliases for healthydata.sites.uiowa.edu.
+$sites['siteshealthydata.local.drupal.uiowa.edu'] = 'healthydata.sites.uiowa.edu';
+$sites['siteshealthydata.dev.drupal.uiowa.edu'] = 'healthydata.sites.uiowa.edu';
+$sites['siteshealthydata.stage.drupal.uiowa.edu'] = 'healthydata.sites.uiowa.edu';
+$sites['siteshealthydata.prod.drupal.uiowa.edu'] = 'healthydata.sites.uiowa.edu';
+
+// Directory aliases for provost.uiowa.edu.
+$sites['provost.local.drupal.uiowa.edu'] = 'provost.uiowa.edu';
+$sites['provost.dev.drupal.uiowa.edu'] = 'provost.uiowa.edu';
+$sites['provost.stage.drupal.uiowa.edu'] = 'provost.uiowa.edu';
+$sites['provost.prod.drupal.uiowa.edu'] = 'provost.uiowa.edu';
