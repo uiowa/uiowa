@@ -198,6 +198,41 @@ function uids_base_preprocess_node(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK() for media.html.twig.
+ */
+function uids_base_preprocess_media(array &$variables) {
+  /** @var \Drupal\media\Entity\Media $media */
+  $media = $variables['media'];
+
+  // Get the media entity's bundle (such as video, image, etc.)
+  $mediaType = $variables['media']->bundle();
+  // $variables;
+  if ($mediaType == 'video') {
+    $referring_item = $media->_referringItem;
+    if ($referring_item) {
+      /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $referring_field */
+      $referring_field = $referring_item->getParent();
+      if ($referring_field) {
+        $parent_entity = $referring_field->getParent();
+        $parent_entity = $parent_entity->getEntity();
+
+        // @todo 2020/12/08 Add check to see if video is paused in uiowa-video
+        //   and skip adding autoplay if so.
+        if ($autoplay_field = $parent_entity->field_uiowa_banner_autoplay) {
+          if ($autoplay_field->value) {
+            $variables['content']['field_media_video_file'][0]['#attributes']['autoplay'] = 'autoplay';
+          }
+        }
+
+        if ($parent_entity_uuid = $parent_entity->uuid()) {
+          $variables['content']['field_media_video_file'][0]['#attributes']['data-video-cookie-id'] = $parent_entity_uuid;
+        }
+      }
+    }
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK() for field.html.twig.
  */
 function uids_base_preprocess_field(&$variables) {
@@ -621,21 +656,47 @@ function uids_base_preprocess_aggregator_item(&$variables) {
   if (\Drupal::routeMatch()->getRouteName() != 'entity.aggregator_feed.canonical') {
     // Set the heading level size for use in the template.
     $variables['heading_size'] = $variables['elements']['#heading_size'] ?? 'h3';
+    if (isset($variables["elements"]["#parent_lb_styles"]) && !empty($variables["elements"]["#parent_lb_styles"])) {
+      $variables['parent_lb_styles'] = $variables["elements"]["#parent_lb_styles"];
+    }
 
     /** @var Drupal\aggregator\Entity\Feed $feed */
     $feed = \Drupal::entityTypeManager()->getStorage('aggregator_feed')->load($item->getFeedId());
     $mid = $feed->get('field_aggregator_feed_image')->getString();
 
+    // Establish default view mode if layout_builder_styles don't exist.
+    $image_view_mode = 'large__square';
+
+    // Map the layout builder styles to the view mode that should be used.
+    $media_formats = [
+      'media--widescreen' => 'large__widescreen',
+      'media--square' => 'large__square',
+      'media--circle' => 'large__square',
+    ];
+
+    // Loop through the map to check if any of them are being used and
+    // adjust the view mode accordingly. Last one wins out.
+    if ($variables['parent_lb_styles']) {
+      foreach ($media_formats as $style => $view_mode) {
+        if (in_array($style, $variables['parent_lb_styles'])) {
+          $image_view_mode = $view_mode;
+        }
+      }
+    }
+
     // A local feed image should take precedence.
     if ($media = Media::load($mid)) {
-      $variables['feed_image'] = \Drupal::entityTypeManager()->getViewBuilder('media')->view($media, 'small__square');
+      $variables['feed_image'] = \Drupal::entityTypeManager()->getViewBuilder('media')->view($media, $image_view_mode);
+      if (!in_array($view_mode, $variables["feed_image"]["#cache"]["keys"])) {
+        unset($variables["feed_image"]["#cache"]["keys"]);
+      }
     }
     else {
       if ($image = $feed->getImage()) {
         $variables['feed_image'] = [
           '#theme' => 'imagecache_external_responsive',
           '#uri' => $image,
-          '#responsive_image_style_id' => 'small__square',
+          '#responsive_image_style_id' => $image_view_mode,
           '#attributes' => [
             'data-lazy' => TRUE,
             'alt' => t('@title feed image', ['@title' => $feed->get('title')->getString()]),
