@@ -39,7 +39,7 @@ If you're watching SASS and compiling it, you'll need to rebuild node-sass bindi
 
 `npm rebuild node-sass`
 
-This should not result in any changes to yarn.lock. If you try to compile back on the VM, you'll need to rebuild it there or run `blt frontend` again to match production. Note that you do not need to use NVM on the VM - it is not installed.
+This should not result in any changes to yarn.lock. If you try to compile back on the VM, you may need to rebuild it there or run `blt frontend` again to match production. Note that you do not need to use NVM on the VM - it is not installed.
 
 ## Databases
 Use [SequelPro](https://www.sequelpro.com/) to [connect to DrupalVM](http://docs.drupalvm.com/en/latest/configurations/databases-mysql/#connect-using-sequel-pro-or-a-similar-client).
