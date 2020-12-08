@@ -91,13 +91,13 @@ banner:
       assets/css/components/banner.css: { preprocess: false }
   js:
     uids/components/banner/banner.js: { preprocess: false }
-banner-video:
+video-cookie:
   js:
-    uids/components/video/video.js: { preprocess: false }
-    assets/js/banner-video-cookie.js: { preprocess: false }
+    assets/js/video-cookie.js: { preprocess: false }
   dependencies:
     - core/jquery
     - core/jquery.cookie
+    - uids_base/video
 slider:
   css:
     component:
@@ -114,6 +114,8 @@ video:
   css:
     component:
       assets/css/components/video/video.css: { preprocess: false }
+  js:
+    uids/components/video/video.js: { preprocess: false }
 hero:
   css:
     component:

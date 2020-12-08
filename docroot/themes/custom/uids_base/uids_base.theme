@@ -214,6 +214,8 @@ function uids_base_preprocess_media(array &$variables) {
         $parent_entity = $referring_field->getParent();
         $parent_entity = $parent_entity->getEntity();
 
+        // @todo 2020/12/08 Add check to see if video is paused in uiowa-video
+        //   and skip adding autoplay if so.
         if ($autoplay_field = $parent_entity->field_uiowa_banner_autoplay) {
           if ($autoplay_field->value) {
             $variables['content']['field_media_video_file'][0]['#attributes']['autoplay'] = 'autoplay';
@@ -221,7 +223,7 @@ function uids_base_preprocess_media(array &$variables) {
         }
 
         if ($parent_entity_uuid = $parent_entity->uuid()) {
-          $variables['content']['field_media_video_file'][0]['#attributes']['data-parent-block-uuid'] = $parent_entity_uuid;
+          $variables['content']['field_media_video_file'][0]['#attributes']['data-video-cookie-id'] = $parent_entity_uuid;
         }
       }
     }
