@@ -16,6 +16,8 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
 
   $config = \Drupal::config('system.site');
   $has_parent = $config->get('has_parent') ?: 0;
+  $variables['site_name'] = $config->get('name');
+  $name_length = strlen($variables['site_name']);
   $form['header'] = [
     '#type' => 'details',
     '#title' => t('IOWA bar settings'),
@@ -34,13 +36,28 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     ],
     '#default_value' => theme_get_setting('header.type'),
   ];
-  if ($has_parent) {
+
+  // If there is a parent organization or the name is longer than 43
+  // characters, set the header type to disabled.
+  if ($has_parent || $name_length > 43) {
+    $description = '';
+    if (($has_parent) && ($name_length > 43)) {
+      $description = 'This option is disabled because a parent organization was set on the <a href=":site-settings-page">site settings page</a> and the site name exceeds the recommended character count of 43 characters.';
+    }
+    elseif ($name_length > 43) {
+      $description = 'This option is disabled because the site name set on the <a href=":site-settings-page">site settings page</a> exceeds the recommended character count of 43 characters.';
+    }
+    elseif ($has_parent) {
+      $description = 'This option is disabled because a parent organization was set on the <a href=":site-settings-page">site settings page</a>. When you have a parent organization, your site name will <em>always</em> display on the line below. You will need to remove the parent organization information to select another option.';
+    }
+
     $form['header']['type']['#disabled'] = TRUE;
     $form['header']['type']['#default_value'] = 'below';
-    $form['header']['type']['#description'] = t('This option is disabled because a parent organization was set on the <a href=":site-settings-page">site settings page</a>. When you have a parent organization, your site name will <em>always</em> display on the line below. You will need to remove the parent organization information to select another option.', [
+    $form['header']['type']['#description'] = t($description, [
       ':site-settings-page' => Url::fromRoute('system.site_information_settings')->toString(),
     ]);
   }
+
   $form['header']['nav_style'] = [
     '#type' => 'select',
     '#title' => t('Header navigation style'),
@@ -64,6 +81,15 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
         ],
       ],
     ],
+  ];
+
+  $top_links_limit = theme_get_setting('header.top_links_limit');
+  // Get limit, otherwise limit to 2.
+  $form['header']['top_links_limit'] = [
+    '#type' => 'number',
+    '#title' => t('Top Links Limit'),
+    '#access' => FALSE,
+    '#default_value' => ($top_links_limit ? $top_links_limit : 2),
   ];
 
   $form['theme_settings']['#open'] = FALSE;
