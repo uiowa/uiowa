@@ -26,9 +26,9 @@ All BLT commands should be run on the VM. You can SSH into the VM using `vagrant
 If you have troubles with [an error](https://github.com/geerlingguy/drupal-vm/issues/1813) on DrupalVM related to /tmp/xdebug.log, un `sudo chmod 766 /tmp/xdebug.log` in the VM.
 
 ## Workspaces
-Yarn [workspaces](https://classic.yarnpkg.com/en/docs/workspaces) can be defined in the top-level package.json file. Each workspace can depend on other workspaces as well as define their own build script. You can run workspace build scripts on the VM with `yarn workspace WORKSPACE_NAME run SCRIPT_NAME`.
+Yarn [workspaces](https://classic.yarnpkg.com/en/docs/workspaces) can be defined in the top-level package.json file. Each workspace can depend on other workspaces as well as define their own build script. You can run workspace build scripts on the VM with `yarn workspace WORKSPACE_NAME run SCRIPT_NAME`. Every workspace build script gets run during continuous integration to build assets. The build assets are committed to the build artifact and deployed.
 
-Note that certain filesystem watch commands are either slow or broken over Vagrant synced folders. To get around this, it is possible to run watch commands on your host although you'll need Node, [NVM](https://github.com/nvm-sh/nvm#installing-and-updating) and [Yarn](https://classic.yarnpkg.com/en/docs/install#mac-stable). Once installed, you can the following from the application root:
+Note that certain filesystem watch commands are either slow or broken over Vagrant synced folders. To get around this, you can run workspace build scripts manually or run watch commands on your host although you'll need Node, [NVM](https://github.com/nvm-sh/nvm#installing-and-updating) and [Yarn](https://classic.yarnpkg.com/en/docs/install#mac-stable). Once installed, you can run the following from the application root:
 
 ```
 nvm install
@@ -39,7 +39,7 @@ If you're watching SASS and compiling it, you'll need to rebuild node-sass bindi
 
 `npm rebuild node-sass`
 
-This should not result in any changes to yarn.lock. If you try to compile back on the VM, you'll need to rebuild it there or run `blt frontend` again to match production.
+This should not result in any changes to yarn.lock. If you try to compile back on the VM, you'll need to rebuild it there or run `blt frontend` again to match production. Note that you do not need to use NVM on the VM - it is not installed.
 
 ## Databases
 Use [SequelPro](https://www.sequelpro.com/) to [connect to DrupalVM](http://docs.drupalvm.com/en/latest/configurations/databases-mysql/#connect-using-sequel-pro-or-a-similar-client).
