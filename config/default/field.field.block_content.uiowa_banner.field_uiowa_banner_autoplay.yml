@@ -1,0 +1,23 @@
+uuid: 0b986aec-94b8-4a66-a351-32346fc2d71b
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_banner
+    - field.storage.block_content.field_uiowa_banner_autoplay
+id: block_content.uiowa_banner.field_uiowa_banner_autoplay
+field_name: field_uiowa_banner_autoplay
+entity_type: block_content
+bundle: uiowa_banner
+label: 'Enable autoplay for video'
+description: 'Warning: enabling autoplay can trigger <a target="_blank" href="https://webaim.org/articles/seizure/#vestibular">vestibular disorders</a>. '
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean
