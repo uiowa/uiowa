@@ -40,7 +40,7 @@
           {# @todo Determine if it is better to programatically set level and class via preprocess. #}
           {% set banner_heading = {
             'headline_level': headline_level ?: 'h2',
-            'headline_class' : headline_class ?: 'headline bold-headline bold-headline--serif bold-headline--negative',
+            'headline_class' : headline_class|merge(['headline']) ?: 'headline bold-headline bold-headline--serif bold-headline--negative',
             'headline_text' : banner_title,
             'headline_url': link.link_url,
             'headline_aria': banner_aria_describedby,
@@ -67,13 +67,11 @@
                   </a>
                 {% endfor %}
               </div>
-            {% elseif links|length == 1 %}
-              {% if show_button == true %}
-                <div aria-hidden="true" class="{{ link.link_classes }}" {% if banner_aria_describedby %} id="{{ banner_aria_describedby }}" {% endif %}>
-                  {{ link.link_text }}
-                  <span class="fas fa-arrow-right"></span>
-                </div>
-              {% endif %}
+            {% elseif links|length == 1 and show_button == true %}
+              <div aria-hidden="true" class="{{ link.link_classes }}" {% if banner_aria_describedby %} id="{{ banner_aria_describedby }}" {% endif %}>
+                {{ link.link_text }}
+                <span class="fas fa-arrow-right"></span>
+              </div>
             {% endif %}
           </div>
         {% endif %}
