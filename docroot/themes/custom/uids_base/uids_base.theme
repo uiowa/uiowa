@@ -327,12 +327,16 @@ function uids_base_preprocess_layout(&$variables) {
   if ($layout->id() === 'layout_header') {
     $contains_title = FALSE;
     $contains_background = FALSE;
+    // Loop through regions in the layout.
     foreach (Element::children($variables['content']) as $region) {
+      // Loop through blocks in that region.
       foreach (Element::children($variables['content'][$region]) as $block_uuid) {
         if ($region === 'content'
           && isset($variables['content'][$region][$block_uuid])
           && isset($variables['content'][$region][$block_uuid]['#plugin_id'])
         ) {
+          // Check if this block plugin_id matches the pattern for a
+          // page title block.
           $plugin_id = $variables['content'][$region][$block_uuid]['#plugin_id'];
           $start_check = 'field_block:node:';
           $end_check = ':title';
@@ -344,6 +348,7 @@ function uids_base_preprocess_layout(&$variables) {
           }
         }
         elseif ($region == 'background') {
+          // If there is anything in this region, then we have a background.
           if (!empty(Element::children($variables['content'][$region][$block_uuid]))) {
             $contains_background = TRUE;
             break;
@@ -355,6 +360,9 @@ function uids_base_preprocess_layout(&$variables) {
       $variables['attributes']['class'][] = 'layout--title';
       if ($contains_background) {
         $variables['attributes']['class'][] = 'layout--title--with-background';
+      }
+      else {
+        $variables['attributes']['class'][] = 'layout--onecol--no--background';
       }
 
       if ($title_hidden) {
@@ -646,7 +654,7 @@ function uids_base_preprocess_aggregator_item(&$variables) {
 
     // Loop through the map to check if any of them are being used and
     // adjust the view mode accordingly. Last one wins out.
-    if ($variables['parent_lb_styles']) {
+    if (isset($variables['parent_lb_styles'])) {
       foreach ($media_formats as $style => $view_mode) {
         if (in_array($style, $variables['parent_lb_styles'])) {
           $image_view_mode = $view_mode;
@@ -657,7 +665,7 @@ function uids_base_preprocess_aggregator_item(&$variables) {
     // A local feed image should take precedence.
     if ($media = Media::load($mid)) {
       $variables['feed_image'] = \Drupal::entityTypeManager()->getViewBuilder('media')->view($media, $image_view_mode);
-      if (!in_array($view_mode, $variables["feed_image"]["#cache"]["keys"])) {
+      if (!in_array($image_view_mode, $variables["feed_image"]["#cache"]["keys"])) {
         unset($variables["feed_image"]["#cache"]["keys"]);
       }
     }

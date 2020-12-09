@@ -14,24 +14,25 @@
 #}
 {% set background = content.background | render %}
 
-{%
-  set classes = [
-  has_node_image ? 'layout--onecol--background',
-  not has_node_image ? 'layout--onecol--no--background',
-]
-%}
-
-{% set attributes = attributes.addClass(classes) %}
-
 {% if has_node_image %}
-  {% embed "@uids_base/uids/hero.html.twig" with {
-    hero_alignment : 'bottom',
-    'attributes' : attributes,
+  {% set classes = [
+    'banner--gradient-bottom',
+    'banner--gradient-dark',
+    'banner--horizontal-left',
+    'banner--large',
+    'banner--vertical-bottom',
+    layout.template|clean_class,
+  ] %}
+
+  {% embed "@uids_base/uids/banner.html.twig" with {
+    'attributes' : attributes.addClass(classes),
   } %}
-    {% block hero_image %}
-      {{ content.background }}
+    {% block banner_image %}
+      <div class="banner__image">
+        {{ background }}
+      </div>
     {% endblock %}
-    {% block hero_content %}
+    {% block heading %}
       {{ content.content }}
     {% endblock %}
   {% endembed %}

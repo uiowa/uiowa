@@ -17,24 +17,12 @@ graylist:
   - core.entity_view_display.block_content.uiowa_people.default
   - core.entity_view_display.node.person.default
   - core.entity_view_display.node.person.teaser
-  - field.field.node.person.field_person_mentor_dept
-  - field.field.node.person.field_person_mentor_project
-  - field.field.node.person.field_person_position
-  - field.field.node.person.field_person_project_assistants
-  - field.field.node.person.field_person_project_desc
-  - field.field.node.person.field_person_project_qualif
-  - field.field.node.person.field_person_project_undergrad
-  - field.field.node.person.field_person_research_areas
-  - field.field.node.person.field_person_types
-  - field.field.node.person.field_teaser
-  - field.storage.node.field_person_mentor_dept
-  - field.storage.node.field_person_mentor_project
+  - field.storage.node.field_person_mentor_qualif
+  - field.storage.node.field_person_mentor_ug_role
   - field.storage.node.field_person_position
-  - field.storage.node.field_person_project_assistants
-  - field.storage.node.field_person_project_desc
-  - field.storage.node.field_person_project_qualif
-  - field.storage.node.field_person_project_undergrad
   - field.storage.node.field_person_research_areas
+  - field.storage.node.field_person_research_assistants
+  - field.storage.node.field_person_research_desc
   - field.storage.node.field_person_types
   - node.type.person
   - simple_sitemap.bundle_settings.default.node.person
@@ -44,6 +32,8 @@ graylist:
   - user.role.authenticated
   - user.role.editor
   - user.role.webmaster
+  - 'field.storage.node.field_person_*'
+  - field.storage.node.field_uiowa_college
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 90
