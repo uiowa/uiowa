@@ -5,7 +5,6 @@ dependencies:
   config:
     - field.field.node.person.field_image
     - field.field.node.person.field_person_bio
-    - field.field.node.person.field_person_college
     - field.field.node.person.field_person_contact_information
     - field.field.node.person.field_person_credential
     - field.field.node.person.field_person_education
@@ -62,15 +61,6 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
-    region: content
-  field_person_college:
-    weight: 7
-    settings:
-      types:
-        college: college
-        non-collegiate: 0
-    third_party_settings: {  }
-    type: uiowa_academic_units_widget
     region: content
   field_person_contact_information:
     type: paragraphs
