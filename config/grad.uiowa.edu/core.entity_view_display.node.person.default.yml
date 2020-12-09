@@ -12,14 +12,14 @@ dependencies:
     - field.field.node.person.field_person_first_name
     - field.field.node.person.field_person_hide
     - field.field.node.person.field_person_last_name
-    - field.field.node.person.field_person_research_proj
-    - field.field.node.person.field_person_phone
-    - field.field.node.person.field_person_position
-    - field.field.node.person.field_person_research_assistants
-    - field.field.node.person.field_person_research_desc
     - field.field.node.person.field_person_mentor_qualif
     - field.field.node.person.field_person_mentor_ug_role
+    - field.field.node.person.field_person_phone
+    - field.field.node.person.field_person_position
     - field.field.node.person.field_person_research_areas
+    - field.field.node.person.field_person_research_assistants
+    - field.field.node.person.field_person_research_desc
+    - field.field.node.person.field_person_research_project
     - field.field.node.person.field_person_types
     - field.field.node.person.field_person_website
     - field.field.node.person.field_tags
@@ -133,12 +133,13 @@ content:
     third_party_settings: {  }
     type: text_default
     region: content
-  field_person_research_proj:
-    weight: 10
+  field_person_research_project:
+    weight: 15
     label: above
-    settings: {  }
+    settings:
+      link_to_entity: false
     third_party_settings: {  }
-    type: text_default
+    type: string
     region: content
   field_person_website:
     type: link
