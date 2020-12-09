@@ -69,7 +69,14 @@ function css() {
 
 // Watch files.
 function watchFiles() {
-  watch(paths.src, { usePolling: true }, compile);
+  // Only use polling if the user running it is vagrant.
+  let polling = false;
+
+  if (process.env.USER === 'vagrant') {
+    polling = true;
+  }
+
+  watch(paths.src, { usePolling: polling }, compile);
   // @todo Watch other changes?
 }
 
