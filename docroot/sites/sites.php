@@ -1901,3 +1901,9 @@ $sites['provost.local.drupal.uiowa.edu'] = 'provost.uiowa.edu';
 $sites['provost.dev.drupal.uiowa.edu'] = 'provost.uiowa.edu';
 $sites['provost.stage.drupal.uiowa.edu'] = 'provost.uiowa.edu';
 $sites['provost.prod.drupal.uiowa.edu'] = 'provost.uiowa.edu';
+
+// Directory aliases for fiegel.lab.uiowa.edu.
+$sites['labfiegel.local.drupal.uiowa.edu'] = 'fiegel.lab.uiowa.edu';
+$sites['labfiegel.dev.drupal.uiowa.edu'] = 'fiegel.lab.uiowa.edu';
+$sites['labfiegel.stage.drupal.uiowa.edu'] = 'fiegel.lab.uiowa.edu';
+$sites['labfiegel.prod.drupal.uiowa.edu'] = 'fiegel.lab.uiowa.edu';
