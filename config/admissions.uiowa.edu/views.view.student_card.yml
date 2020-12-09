@@ -174,7 +174,20 @@ display:
             label: ''
           plugin_id: random
       title: 'Student Grid'
-      header: {  }
+      header:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          tokenize: false
+          content:
+            value: '<h4><span class="fas fa-user"></span> <a href="/student-profiles">Student Profiles</a></h4>'
+            format: filtered_html
+          plugin_id: text
       footer: {  }
       empty: {  }
       relationships: {  }
