@@ -111,10 +111,6 @@ class PostRowSaveEvent implements EventSubscriberInterface {
               'title' => $meta['field_file_image_title_text_value'],
             ],
             'langcode' => 'en',
-            'thumbnail' => [
-              'target_id' => $fids[0],
-              'alt' => $meta['field_file_image_alt_text_value'],
-            ],
           ]);
 
           $media->setName($meta['field_file_image_title_text_value']);
@@ -125,10 +121,6 @@ class PostRowSaveEvent implements EventSubscriberInterface {
         case 'application':
         case 'document':
         case 'file':
-          // Check if there's a generic.png already.
-          $generic = $this->entityTypeManager->getStorage('file')
-            ->loadByProperties(['filename' => 'generic.png']);
-          $gen_id = ($generic) ? array_values($generic)[0] : null;
           /** @var \Drupal\Media\MediaInterface $media */
           $media = $this->entityTypeManager->getStorage('media')->create([
             'bundle' => 'file',
@@ -139,10 +131,6 @@ class PostRowSaveEvent implements EventSubscriberInterface {
             ],
             'langcode' => 'en',
             'metadata' => [],
-            'thumbnail' => [
-              'target_id' => $gen_id,
-              'alt' => $file->getFileName(),
-            ]
           ]);
 
           $media->setName($file->getFileName());
