@@ -12,12 +12,11 @@ dependencies:
     - field.field.node.person.field_person_first_name
     - field.field.node.person.field_person_hide
     - field.field.node.person.field_person_last_name
-    - field.field.node.person.field_person_mentor_dept
     - field.field.node.person.field_person_mentor_project
     - field.field.node.person.field_person_phone
     - field.field.node.person.field_person_position
     - field.field.node.person.field_person_project_assistants
-    - field.field.node.person.field_person_project_desc
+    - field.field.node.person.field_person_research_desc
     - field.field.node.person.field_person_project_qualif
     - field.field.node.person.field_person_project_undergrad
     - field.field.node.person.field_person_research_areas
@@ -29,7 +28,6 @@ dependencies:
   module:
     - entity_reference_revisions
     - link
-    - options
     - telephone
     - text
     - user
@@ -82,13 +80,6 @@ content:
     label: inline
     settings: {  }
     third_party_settings: {  }
-  field_person_mentor_dept:
-    weight: 4
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
-    region: content
   field_person_mentor_project:
     weight: 10
     label: above
@@ -120,7 +111,7 @@ content:
     third_party_settings: {  }
     type: string
     region: content
-  field_person_project_desc:
+  field_person_research_desc:
     weight: 12
     label: above
     settings: {  }

@@ -13,12 +13,11 @@ dependencies:
     - field.field.node.person.field_person_first_name
     - field.field.node.person.field_person_hide
     - field.field.node.person.field_person_last_name
-    - field.field.node.person.field_person_mentor_dept
     - field.field.node.person.field_person_mentor_project
     - field.field.node.person.field_person_phone
     - field.field.node.person.field_person_position
     - field.field.node.person.field_person_project_assistants
-    - field.field.node.person.field_person_project_desc
+    - field.field.node.person.field_person_research_desc
     - field.field.node.person.field_person_project_qualif
     - field.field.node.person.field_person_project_undergrad
     - field.field.node.person.field_person_research_areas
@@ -28,7 +27,6 @@ dependencies:
     - field.field.node.person.field_teaser
     - node.type.person
   module:
-    - options
     - telephone
     - user
 id: node.person.teaser
@@ -58,13 +56,6 @@ content:
     weight: 2
     region: content
     label: inline
-    settings: {  }
-    third_party_settings: {  }
-  field_person_mentor_dept:
-    type: list_default
-    weight: 2
-    region: content
-    label: hidden
     settings: {  }
     third_party_settings: {  }
   field_person_phone:
@@ -105,7 +96,7 @@ hidden:
   field_person_last_name: true
   field_person_mentor_project: true
   field_person_project_assistants: true
-  field_person_project_desc: true
+  field_person_research_desc: true
   field_person_project_qualif: true
   field_person_project_undergrad: true
   field_person_research_areas: true
