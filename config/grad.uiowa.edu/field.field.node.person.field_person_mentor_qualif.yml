@@ -1,9 +1,9 @@
-uuid: ea7c649f-f148-4132-92bb-a5f429a87701
+uuid: b38f7e2d-5876-4080-829d-dcfec546f1a2
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_person_mentor_project
+    - field.storage.node.field_person_mentor_qualif
     - node.type.person
   module:
     - allowed_formats
@@ -14,13 +14,13 @@ third_party_settings:
     minimal: '0'
     full_html: '0'
     plain_text: '0'
-id: node.person.field_person_mentor_project
-field_name: field_person_mentor_project
+id: node.person.field_person_mentor_qualif
+field_name: field_person_mentor_qualif
 entity_type: node
 bundle: person
-label: 'Research Project Title'
-description: '200 character limit'
-required: true
+label: 'Undergraduate minimum qualifications'
+description: ''
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
