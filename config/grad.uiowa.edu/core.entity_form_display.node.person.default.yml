@@ -24,6 +24,7 @@ dependencies:
     - field.field.node.person.field_person_website
     - field.field.node.person.field_tags
     - field.field.node.person.field_teaser
+    - field.field.node.person.field_uiowa_college
     - node.type.person
     - workflows.workflow.editorial
   module:
@@ -35,6 +36,7 @@ dependencies:
     - path
     - telephone
     - text
+    - uiowa_entities
 id: node.person.default
 targetEntityType: node
 bundle: person
@@ -226,6 +228,14 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textarea
+    region: content
+  field_uiowa_college:
+    weight: 36
+    settings:
+      types:
+        - college
+    third_party_settings: {  }
+    type: uiowa_academic_units_widget
     region: content
   moderation_state:
     type: moderation_state_default

@@ -24,12 +24,14 @@ dependencies:
     - field.field.node.person.field_person_website
     - field.field.node.person.field_tags
     - field.field.node.person.field_teaser
+    - field.field.node.person.field_uiowa_college
     - node.type.person
   module:
     - entity_reference_revisions
     - link
     - telephone
     - text
+    - uiowa_entities
     - user
 id: node.person.default
 targetEntityType: node
@@ -153,6 +155,13 @@ content:
       rel: '0'
       target: '0'
     third_party_settings: {  }
+  field_uiowa_college:
+    weight: 16
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: uiowa_academic_units_formatter
+    region: content
   links:
     weight: 8
     region: content
