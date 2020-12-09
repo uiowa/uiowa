@@ -8,32 +8,22 @@
 }
 
 .banner {
-
+  min-height: 18rem;
   // Banner Heights
   &--large {
-    min-height: 33rem;
-
+    @include breakpoint(sm) {
+      min-height: 33rem;
+    }
     @include breakpoint(menu) {
       min-height: 48rem;
     }
   }
 
   &--medium {
-    min-height: 33rem;
-
-    @include breakpoint(menu) {
+    @include breakpoint(sm) {
       min-height: 33rem;
     }
   }
-
-  &--small {
-    min-height: 18rem;
-
-    @include breakpoint(menu) {
-      min-height: 18rem;
-    }
-  }
-
 
   // Override background color if button is within a gold container
   &.bg-pattern--brain-reversed,
@@ -77,8 +67,6 @@
   }
 }
 
-
-
 // Layout specific sizing overrides
 .layout--threecol,
 .layout--fourcol,
@@ -109,7 +97,6 @@
   }
 }
 
-// Add padding to banner content if not in edge-to-edge column or is in twocol layout
 .layout--onecol,
 .layout--twocol--25-75 .layout__region--second,
 .layout--twocol--75-25 .layout__region--first,
@@ -221,3 +208,9 @@
     height: 100%;
   }
 }
+
+// Video override
+.banner video {
+  width: 100% !important;
+}
+
