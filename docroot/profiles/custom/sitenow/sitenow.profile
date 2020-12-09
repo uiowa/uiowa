@@ -371,6 +371,8 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
     case 'node_person_form':
     case 'node_area_of_study_form':
     case 'node_area_of_study_edit_form':
+    case 'node_student_profile_form':
+    case 'node_student_profile_edit_form':
       if (isset($form['field_teaser'])) {
         // Create node_teaser group in the advanced container.
         $form['node_teaser'] = [
