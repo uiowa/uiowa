@@ -654,7 +654,7 @@ function uids_base_preprocess_aggregator_item(&$variables) {
 
     // Loop through the map to check if any of them are being used and
     // adjust the view mode accordingly. Last one wins out.
-    if ($variables['parent_lb_styles']) {
+    if (isset($variables['parent_lb_styles'])) {
       foreach ($media_formats as $style => $view_mode) {
         if (in_array($style, $variables['parent_lb_styles'])) {
           $image_view_mode = $view_mode;
@@ -665,7 +665,7 @@ function uids_base_preprocess_aggregator_item(&$variables) {
     // A local feed image should take precedence.
     if ($media = Media::load($mid)) {
       $variables['feed_image'] = \Drupal::entityTypeManager()->getViewBuilder('media')->view($media, $image_view_mode);
-      if (!in_array($view_mode, $variables["feed_image"]["#cache"]["keys"])) {
+      if (!in_array($image_view_mode, $variables["feed_image"]["#cache"]["keys"])) {
         unset($variables["feed_image"]["#cache"]["keys"]);
       }
     }
