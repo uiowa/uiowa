@@ -30,7 +30,7 @@ mode: default
 content:
   body:
     type: text_textarea_with_summary
-    weight: 12
+    weight: 11
     settings:
       rows: 9
       summary_rows: 3
@@ -39,14 +39,14 @@ content:
     third_party_settings: {  }
     region: content
   field_image:
-    weight: 3
+    weight: 2
     settings:
       media_types: {  }
     third_party_settings: {  }
     type: media_library_widget
     region: content
   field_person_first_name:
-    weight: 1
+    weight: 0
     settings:
       size: 60
       placeholder: ''
@@ -54,7 +54,7 @@ content:
     type: string_textfield
     region: content
   field_person_hometown:
-    weight: 5
+    weight: 4
     settings:
       size: 60
       placeholder: ''
@@ -62,7 +62,7 @@ content:
     type: string_textfield
     region: content
   field_person_last_name:
-    weight: 2
+    weight: 1
     settings:
       size: 60
       placeholder: ''
@@ -70,19 +70,19 @@ content:
     type: string_textfield
     region: content
   field_person_territory:
-    weight: 6
+    weight: 5
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_student_profile_attributes:
-    weight: 11
+    weight: 10
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_student_profile_blurb:
-    weight: 10
+    weight: 9
     settings:
       rows: 5
       placeholder: ''
@@ -90,25 +90,25 @@ content:
     type: text_textarea
     region: content
   field_student_profile_country:
-    weight: 7
+    weight: 6
     settings: {  }
     third_party_settings: {  }
     type: address_country_default
     region: content
   field_student_profile_gender:
-    weight: 4
+    weight: 3
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_student_profile_grad_date:
-    weight: 9
+    weight: 8
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_student_profile_major:
-    weight: 8
+    weight: 7
     settings:
       size: 60
       placeholder: ''
@@ -117,20 +117,20 @@ content:
     region: content
   field_student_profile_videos:
     type: media_library_widget
-    weight: 13
+    weight: 12
     settings:
       media_types: {  }
     third_party_settings: {  }
     region: content
   moderation_state:
     type: moderation_state_default
-    weight: 16
+    weight: 15
     settings: {  }
     region: content
     third_party_settings: {  }
   path:
     type: path
-    weight: 14
+    weight: 13
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -138,19 +138,11 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 17
+    weight: 16
     region: content
-    third_party_settings: {  }
-  title:
-    type: string_textfield
-    weight: 0
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
     third_party_settings: {  }
   url_redirects:
-    weight: 15
+    weight: 14
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -158,4 +150,5 @@ hidden:
   created: true
   promote: true
   sticky: true
+  title: true
   uid: true
