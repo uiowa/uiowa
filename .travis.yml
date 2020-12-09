@@ -31,8 +31,9 @@ before_install:
   - yes | pecl install memcache-4.0.5.2
 
 install:
-  - nvm install 10
-  - nvm use 10
+  - nvm install
+  - nvm use
+  - yarn --version
   - composer install
   - source ${BLT_DIR}/scripts/travis/exit_early
   - source ${BLT_DIR}/scripts/travis/setup_environment
