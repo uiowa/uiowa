@@ -78,9 +78,11 @@ function uids_base_preprocess_page(&$variables) {
   $variables['header_nav'] = theme_get_setting('header.nav_style');
   $variables['header_sticky'] = theme_get_setting('header.sticky');
   $variables['header_classes'] = [];
+  $name_length = strlen($variables['site_name']);
 
-  // The site has a parent, so we are overriding the header type.
-  if ($variables['site_has_parent']) {
+  // If the site has a parent organization or the site name is more than 43
+  // characters, we force the site to use the 'below' header option.
+  if ($variables['site_has_parent'] || $name_length > 43) {
     $variables['header_type'] = 'below';
   }
 
@@ -196,39 +198,77 @@ function uids_base_preprocess_node(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK() for media.html.twig.
+ */
+function uids_base_preprocess_media(array &$variables) {
+  /** @var \Drupal\media\Entity\Media $media */
+  $media = $variables['media'];
+
+  // Get the media entity's bundle (such as video, image, etc.)
+  $mediaType = $variables['media']->bundle();
+  // $variables;
+  if ($mediaType == 'video') {
+    $referring_item = $media->_referringItem;
+    if ($referring_item) {
+      /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $referring_field */
+      $referring_field = $referring_item->getParent();
+      if ($referring_field) {
+        $parent_entity = $referring_field->getParent();
+        $parent_entity = $parent_entity->getEntity();
+
+        // @todo 2020/12/08 Add check to see if video is paused in uiowa-video
+        //   and skip adding autoplay if so.
+        if ($autoplay_field = $parent_entity->field_uiowa_banner_autoplay) {
+          if ($autoplay_field->value) {
+            $variables['content']['field_media_video_file'][0]['#attributes']['autoplay'] = 'autoplay';
+          }
+        }
+
+        if ($parent_entity_uuid = $parent_entity->uuid()) {
+          $variables['content']['field_media_video_file'][0]['#attributes']['data-video-cookie-id'] = $parent_entity_uuid;
+        }
+      }
+    }
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK() for field.html.twig.
  */
 function uids_base_preprocess_field(&$variables) {
-  $variables['page_featured_image'] = $variables['field_name'] == 'field_image';
 
-  // Set the caption if this is 'field_image'.
-  if ($variables['field_name'] === 'field_image') {
-    $caption = NULL;
-    // If the global caption is set on the media object,
-    // use that.
-    if (isset($variables['element'][0]) && isset($variables['element'][0]['#media'])) {
-      /** @var \Drupal\media\Entity\Media $media */
-      $media = $variables['element'][0]['#media'];
-      if ($media && $media->hasField('field_media_caption')) {
-        $caption = $media->get('field_media_caption');
-      }
-    }
-    // If the caption is not set yet, attempt to set it from
-    // the 'field_image_caption' field.
-    /** @var \Drupal\node\NodeInterface $node */
-    if (!$caption->count() && (NULL !== $node = $variables['element']['#object']) && $node->hasField('field_image_caption')) {
-      $caption = $node->get('field_image_caption');
-    }
+  switch ($variables['field_name']) {
+    case 'field_image':
+      $variables['page_featured_image'] = TRUE;
 
-    // If the caption has been set, render it.
-    if ($caption->count()) {
-      $caption = $caption->view();
-    }
-    else {
+      // Set the caption if this is 'field_image'.
       $caption = NULL;
-    }
+      // If the global caption is set on the media object,
+      // use that.
+      if (isset($variables['element'][0]) && isset($variables['element'][0]['#media'])) {
+        /** @var \Drupal\media\Entity\Media $media */
+        $media = $variables['element'][0]['#media'];
+        if ($media && $media->hasField('field_media_caption')) {
+          $caption = $media->get('field_media_caption');
+        }
+      }
+      // If the caption is not set yet, attempt to set it from
+      // the 'field_image_caption' field.
+      /** @var \Drupal\node\NodeInterface $node */
+      if (!$caption->count() && (NULL !== $node = $variables['element']['#object']) && $node->hasField('field_image_caption')) {
+        $caption = $node->get('field_image_caption');
+      }
 
-    $variables['caption'] = $caption;
+      // If the caption has been set, render it.
+      if ($caption->count()) {
+        $caption = $caption->view();
+      }
+      else {
+        $caption = NULL;
+      }
+
+      $variables['caption'] = $caption;
+      break;
   }
 
   if (isset($variables['page_featured_image'])) {
@@ -287,12 +327,16 @@ function uids_base_preprocess_layout(&$variables) {
   if ($layout->id() === 'layout_header') {
     $contains_title = FALSE;
     $contains_background = FALSE;
+    // Loop through regions in the layout.
     foreach (Element::children($variables['content']) as $region) {
+      // Loop through blocks in that region.
       foreach (Element::children($variables['content'][$region]) as $block_uuid) {
         if ($region === 'content'
           && isset($variables['content'][$region][$block_uuid])
           && isset($variables['content'][$region][$block_uuid]['#plugin_id'])
         ) {
+          // Check if this block plugin_id matches the pattern for a
+          // page title block.
           $plugin_id = $variables['content'][$region][$block_uuid]['#plugin_id'];
           $start_check = 'field_block:node:';
           $end_check = ':title';
@@ -304,6 +348,7 @@ function uids_base_preprocess_layout(&$variables) {
           }
         }
         elseif ($region == 'background') {
+          // If there is anything in this region, then we have a background.
           if (!empty(Element::children($variables['content'][$region][$block_uuid]))) {
             $contains_background = TRUE;
             break;
@@ -315,6 +360,9 @@ function uids_base_preprocess_layout(&$variables) {
       $variables['attributes']['class'][] = 'layout--title';
       if ($contains_background) {
         $variables['attributes']['class'][] = 'layout--title--with-background';
+      }
+      else {
+        $variables['attributes']['class'][] = 'layout--onecol--no--background';
       }
 
       if ($title_hidden) {
@@ -586,21 +634,47 @@ function uids_base_preprocess_aggregator_item(&$variables) {
   if (\Drupal::routeMatch()->getRouteName() != 'entity.aggregator_feed.canonical') {
     // Set the heading level size for use in the template.
     $variables['heading_size'] = $variables['elements']['#heading_size'] ?? 'h3';
+    if (isset($variables["elements"]["#parent_lb_styles"]) && !empty($variables["elements"]["#parent_lb_styles"])) {
+      $variables['parent_lb_styles'] = $variables["elements"]["#parent_lb_styles"];
+    }
 
     /** @var Drupal\aggregator\Entity\Feed $feed */
     $feed = \Drupal::entityTypeManager()->getStorage('aggregator_feed')->load($item->getFeedId());
     $mid = $feed->get('field_aggregator_feed_image')->getString();
 
+    // Establish default view mode if layout_builder_styles don't exist.
+    $image_view_mode = 'large__square';
+
+    // Map the layout builder styles to the view mode that should be used.
+    $media_formats = [
+      'media--widescreen' => 'large__widescreen',
+      'media--square' => 'large__square',
+      'media--circle' => 'large__square',
+    ];
+
+    // Loop through the map to check if any of them are being used and
+    // adjust the view mode accordingly. Last one wins out.
+    if (isset($variables['parent_lb_styles'])) {
+      foreach ($media_formats as $style => $view_mode) {
+        if (in_array($style, $variables['parent_lb_styles'])) {
+          $image_view_mode = $view_mode;
+        }
+      }
+    }
+
     // A local feed image should take precedence.
     if ($media = Media::load($mid)) {
-      $variables['feed_image'] = \Drupal::entityTypeManager()->getViewBuilder('media')->view($media, 'small__square');
+      $variables['feed_image'] = \Drupal::entityTypeManager()->getViewBuilder('media')->view($media, $image_view_mode);
+      if (!in_array($image_view_mode, $variables["feed_image"]["#cache"]["keys"])) {
+        unset($variables["feed_image"]["#cache"]["keys"]);
+      }
     }
     else {
       if ($image = $feed->getImage()) {
         $variables['feed_image'] = [
           '#theme' => 'imagecache_external_responsive',
           '#uri' => $image,
-          '#responsive_image_style_id' => 'small__square',
+          '#responsive_image_style_id' => $image_view_mode,
           '#attributes' => [
             'data-lazy' => TRUE,
             'alt' => t('@title feed image', ['@title' => $feed->get('title')->getString()]),
