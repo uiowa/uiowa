@@ -20,7 +20,7 @@ dependencies:
     - node.type.student_profile
   module:
     - heading
-    - text
+    - smart_trim
     - user
 id: node.student_profile.teaser
 targetEntityType: node
@@ -45,11 +45,23 @@ content:
       size: h2
     third_party_settings: {  }
   field_student_profile_blurb:
-    type: text_default
+    type: smart_trim
     weight: 3
     region: content
     label: visually_hidden
-    settings: {  }
+    settings:
+      trim_length: 150
+      trim_type: words
+      trim_suffix: ''
+      wrap_class: trimmed
+      more_text: More
+      more_class: more-link
+      wrap_output: false
+      more_link: false
+      trim_options:
+        text: false
+        trim_zero: false
+      summary_handler: full
     third_party_settings: {  }
   field_student_profile_major:
     type: string
