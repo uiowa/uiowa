@@ -1,24 +1,33 @@
 {{ attach_library('uids_base/banner') }}
 
 {# The following code is to determine where a link should be attached, if it exists. #}
-{% set link_element, show_button = false, false %}
-{% if link.link_url is not empty %}
-  {% if banner_title is not empty %}
-    {# Title is set, use it as the linking element.  #}
-    {% set link_element = 'title' %}
-    {# If we also have link text, then we'll show a psuedo-button. #}
-    {% if link.link_text  is not empty %}
-      {% set show_button = true %}
+{% if links|length == 1 %}
+  {% set link = links|first %}
+  {% set link_element, show_button = false, false %}
+  {% if link.link_url is not empty %}
+    {% if banner_title is not empty %}
+      {# Title is set, use it as the linking element.  #}
+      {% set link_element = 'title' %}
+      {# If we also have link text, then we'll show a psuedo-button. #}
+      {% if link.link_text is not empty %}
+        {% set show_button = true %}
+      {% endif %}
     {% endif %}
   {% endif %}
-{% endif %}
 
-{% if link_element != 'title' or not show_button %}
-  {% set banner_aria_describedby = '' %}
+  {% if link_element != 'title' or not show_button %}
+    {% set banner_aria_describedby = '' %}
+  {% endif %}
 {% endif %}
 
 {% set attributes = attributes ?: create_attribute() %}
 {% set banner_classes = ['banner'] %}
+{% set headline_class = headline_class ? headline_class|merge(['headline']) : [
+  'headline',
+  'bold-headline',
+  'bold-headline--serif',
+  'bold-headline--negative',
+] %}
 
 <div{{ attributes.addClass(banner_classes) }}>
 
@@ -37,7 +46,7 @@
           {# @todo Determine if it is better to programatically set level and class via preprocess. #}
           {% set banner_heading = {
             'headline_level': headline_level ?: 'h2',
-            'headline_class' : headline_class ?: 'bold-headline bold-headline--serif bold-headline--negative',
+            'headline_class' : headline_class,
             'headline_text' : banner_title,
             'headline_url': link.link_url,
             'headline_aria': banner_aria_describedby,
@@ -52,10 +61,24 @@
       {% endif %}
 
       {% block banner_bttn %}
-        {% if link.link_text is not empty %}
-          <div aria-hidden="true" class="{{ link.link_classes }}" {% if banner_aria_describedby %} id="{{ banner_aria_describedby }}" {% endif %}>
-            {{ link.link_text }}
-            <span class="fas fa-arrow-right"></span>
+        {% if links is not empty %}
+
+          <div class="banner__action">
+            {% if links|length > 1 %}
+              <div class="bttn--row">
+                {% for link in links %}
+                  <a class="{{ link.link_classes }}" href="{{ link.link_url }}">
+                    {{ link.link_text }}
+                    <span class="fas fa-arrow-right"></span>
+                  </a>
+                {% endfor %}
+              </div>
+            {% elseif links|length == 1 and show_button == true %}
+              <div aria-hidden="true" class="{{ link.link_classes }}" {% if banner_aria_describedby %} id="{{ banner_aria_describedby }}" {% endif %}>
+                {{ link.link_text }}
+                <span class="fas fa-arrow-right"></span>
+              </div>
+            {% endif %}
           </div>
         {% endif %}
       {% endblock %}
