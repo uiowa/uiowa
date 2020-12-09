@@ -22,6 +22,12 @@
 
 {% set attributes = attributes ?: create_attribute() %}
 {% set banner_classes = ['banner'] %}
+{% set headline_class = headline_class ? headline_class|merge(['headline']) : [
+  'headline',
+  'bold-headline',
+  'bold-headline--serif',
+  'bold-headline--negative',
+] %}
 
 <div{{ attributes.addClass(banner_classes) }}>
 
@@ -40,7 +46,7 @@
           {# @todo Determine if it is better to programatically set level and class via preprocess. #}
           {% set banner_heading = {
             'headline_level': headline_level ?: 'h2',
-            'headline_class' : headline_class|merge(['headline']) ?: 'headline bold-headline bold-headline--serif bold-headline--negative',
+            'headline_class' : headline_class,
             'headline_text' : banner_title,
             'headline_url': link.link_url,
             'headline_aria': banner_aria_describedby,
