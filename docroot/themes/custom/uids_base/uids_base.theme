@@ -297,6 +297,7 @@ function uids_base_preprocess_layout(&$variables) {
   $node = \Drupal::routeMatch()->getParameter('node');
   $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
   $title_hidden = FALSE;
+  $variables['has_node_image'] = FALSE;
   if ($node instanceof NodeInterface) {
     if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
       $publish_options = $node->get('field_publish_options')->getValue();
@@ -350,7 +351,7 @@ function uids_base_preprocess_layout(&$variables) {
         }
         elseif ($region == 'background') {
           // If there is anything in this region, then we have a background.
-          if (!empty(Element::children($variables['content'][$region][$block_uuid]))) {
+          if (!empty(Element::children($variables['content'][$region][$block_uuid])) && $variables['has_node_image']) {
             $contains_background = TRUE;
             break;
           }
