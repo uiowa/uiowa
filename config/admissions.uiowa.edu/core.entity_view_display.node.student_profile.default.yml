@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - block_content.type.uiowa_text_area
     - field.field.node.student_profile.body
     - field.field.node.student_profile.field_image
     - field.field.node.student_profile.field_person_first_name
@@ -84,8 +85,10 @@ third_party_settings:
         layout_settings:
           label: ''
           layout_builder_styles_style:
-            - ''
-            - section_margin_fixed_width_container
+            0: section_background_style_gray
+            1: section_margin_fixed_width_container
+            remove_default_bottom_padding: remove_default_bottom_padding
+            remove_default_top_padding: remove_default_top_padding
         components:
           -
             uuid: e1386b19-0032-4aea-b6f5-a1aa298b0df9
@@ -106,28 +109,58 @@ third_party_settings:
           layout_builder_lock:
             lock: {  }
       -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          layout_builder_styles_style:
+            0: ''
+            1: ''
+            remove_default_bottom_padding: remove_default_bottom_padding
+            remove_default_top_padding: remove_default_top_padding
+        components:
+          -
+            uuid: 42820202-6955-4255-a85b-ca79cdcc3a0f
+            region: content
+            configuration:
+              id: 'inline_block:uiowa_text_area'
+              label: null
+              provider: layout_builder
+              label_display: null
+              view_mode: full
+              block_revision_id: 7616
+              block_serialized: null
+              context_mapping: {  }
+              type: uiowa_text_area
+              uuid: 6d2a8355-6d90-460f-8123-83573c8c1bfe
+            additional:
+              layout_builder_styles_style:
+                - ''
+            weight: 0
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+      -
         layout_id: layout_twocol_section
         layout_settings:
           label: ''
           column_widths: 67-33
           layout_builder_styles_style:
-            - ''
-            - section_margin_fixed_width_container
+            0: ''
+            1: section_margin_fixed_width_container
+            section_padding_top_extra: section_padding_top_extra
+            restore_default_spacing: restore_default_spacing
         components:
           -
-            uuid: eb2ffa86-8513-4845-a6b2-eb5275769035
-            region: first
+            uuid: 6183bf4a-ee2c-4525-83fd-42252dc07eb4
+            region: second
             configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:student_profile:field_student_profile_major'
-              formatter:
-                label: inline
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-                type: string
+              id: 'views_block:student_card-block_1'
+              label: null
+              provider: views
+              label_display: null
+              views_label: ''
+              items_per_page: '6'
+              context_mapping: {  }
             additional: {  }
             weight: 0
           -
@@ -144,7 +177,7 @@ third_party_settings:
                 settings: {  }
                 third_party_settings: {  }
             additional: {  }
-            weight: 4
+            weight: -7
           -
             uuid: 8bc338af-d4d9-4287-bff3-d5cfcbd286be
             region: first
@@ -160,65 +193,69 @@ third_party_settings:
                 third_party_settings: {  }
                 type: string
             additional: {  }
-            weight: 1
+            weight: -9
+          -
+            uuid: eb2ffa86-8513-4845-a6b2-eb5275769035
+            region: first
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:student_profile:field_student_profile_major'
+              formatter:
+                label: inline
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+                type: string
+            additional: {  }
+            weight: -10
           -
             uuid: 9e4c10bb-50d7-4436-bf58-7b3674632acf
             region: first
             configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
               id: 'field_block:node:student_profile:field_person_territory'
+              label: null
+              provider: layout_builder
+              label_display: null
               formatter:
-                label: visually_hidden
+                label: inline
+                type: list_default
                 settings: {  }
                 third_party_settings: {  }
-                type: list_default
-            additional: {  }
-            weight: 2
-          -
-            uuid: 3f9de4e5-fe55-426e-be03-8bcacf85136f
-            region: first
-            configuration:
-              label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-              id: 'field_block:node:student_profile:field_student_profile_attributes'
-              formatter:
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-                type: list_default
+                view_mode: view_mode
             additional: {  }
-            weight: 6
+            weight: -8
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          layout_builder_styles_style:
+            - section_background_style_gray
+            - ''
+        components:
           -
             uuid: 9fd33fb9-3ffb-4253-9900-734b946fac9a
-            region: first
+            region: content
             configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
               id: 'field_block:node:student_profile:field_student_profile_videos'
+              label: null
+              provider: layout_builder
+              label_display: null
               formatter:
+                label: hidden
                 type: entity_reference_entity_view
-                label: above
                 settings:
                   view_mode: default
-                  link: false
                 third_party_settings: {  }
-            additional: {  }
-            weight: 7
-          -
-            uuid: 6183bf4a-ee2c-4525-83fd-42252dc07eb4
-            region: second
-            configuration:
-              id: 'views_block:student_card-block_1'
-              label: null
-              provider: views
-              label_display: null
-              views_label: ''
-              items_per_page: '6'
-              context_mapping: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
             additional: {  }
             weight: 0
         third_party_settings:
