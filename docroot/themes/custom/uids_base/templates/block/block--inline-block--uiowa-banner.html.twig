@@ -25,38 +25,16 @@
  * @see template_preprocess_block()
  */
 #}
-{% set styles = elements['#layout_builder_style'] %}
-{% set headline_classes = [] %}
-{% set highlight_classes = [] %}
-
-{% for style in styles %}
-  {# Remove headline classes from attributes #}
-  {% if style starts with 'bold-headline' %}
-    {% set headline_classes = headline_classes|merge([style]) %}
-  {% endif %}
-  {# Change link style to bttn--secondary if headline style is set to highlight #}
-  {% if style starts with 'bold-headline--highlight' %}
-    {% set highlight_classes = 'bttn bttn--secondary bttn--caps' %}
-  {% endif %}
-{% endfor %}
 
 {% set block_banner = {
-  'banner_type': content.field_media_video_file[0]['#attributes']['banner_type'],
   'banner_image': content.field_uiowa_banner_image,
-  'banner_video_field': content.field_uiowa_banner_video[0]['#media'].field_media_video_file.entity.uri.value,
-  'banner_video_url': file_url(content.field_uiowa_banner_video[0]['#media'].field_media_video_file.entity.uri.value),
-  'banner_video_thumbnail': file_url(content.field_uiowa_banner_image[0]['#media'].field_media_image.entity.uri.value),
   'banner_summary': content.field_uiowa_banner_excerpt,
   'attributes': attributes.removeClass(headline_classes,background_classes),
   'banner_title': content.field_uiowa_banner_title[0]['#text'],
   'headline_level': content.field_uiowa_banner_title[0]['#size'],
   'headline_class' : headline_classes,
   'banner_aria_describedby': content.field_uiowa_banner_title[0]['#text']|clean_id,
-  'link': {
-    'link_url': content.field_uiowa_banner_link[0]['#url'],
-    'link_text': content.field_uiowa_banner_link[0]['#title']|render,
-    'link_classes': highlight_classes ?: 'bttn bttn--primary bttn--caps',
-  },
+  'links': links,
   'title_prefix': title_prefix,
   'title_suffix': title_suffix,
 } %}
@@ -64,7 +42,7 @@
 {% embed '@uids_base/uids/banner.html.twig' with block_banner only %}
 
   {% block banner_image %}
-{#     Embed contextual links so that they'll show up in the upper right-hand corner. #}
+    {# Embed contextual links so that they'll show up in the upper right-hand corner. #}
     {{ title_prefix }}
     {{ title_suffix }}
     {% if banner_image  %}
