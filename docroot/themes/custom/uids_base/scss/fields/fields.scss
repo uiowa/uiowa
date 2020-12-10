@@ -1,7 +1,8 @@
 @import "uids/assets/scss/_variables.scss";
 @import "uids/assets/scss/_utilities.scss";
 
-.field--label-inline .field__label::after {
+.field--label-inline .field__label::after,
+.field--label-above .field__label::after {
   content: ":";
 }
 
@@ -27,4 +28,46 @@
   // @todo Add a general mixin for link fields
   //   and replace this with that.
   word-break: break-word;
+}
+
+// Student profiles
+.field--label-hidden.field__item {
+  //margin-top: 1rem;
+}
+
+.field__item {
+  line-height: 1.7;
+  font-size: 1.2rem;
+  margin-top: 0;
+}
+
+.field__label {
+  margin-bottom: 0;
+}
+
+.field--name-field-uiowa-contact-label {
+  font-size: 1rem;
+}
+
+.field--label-above {
+  margin-bottom: 1.5rem;
+
+  ul {
+    margin-top: 0;
+  }
+}
+
+.field--type-text-long.field--label-inline {
+  p {
+    display: inline;
+  }
+}
+
+.field--label-visually_hidden + .field--label-above,
+.field--label-hidden + .field--label-above {
+  margin-top: 1.5rem;
+}
+
+.field--label-inline {
+  margin-bottom: .7rem;
 }
