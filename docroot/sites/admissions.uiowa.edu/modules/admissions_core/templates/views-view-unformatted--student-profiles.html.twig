@@ -104,7 +104,6 @@
     {%
     set classes = [
         'card--list',
-        'bg--white',
         'card--media-left',
         'media--border',
         'card--centered-left',
@@ -134,7 +133,7 @@
             <div class="card__title">{{ card_title }}</div>
         {% endif %}
     {% endblock %}
-    
+
     {% block card_subtitle %}
         {% if card_subtitle|striptags|trim is not empty %}
             <div class="card__subtitle">{{ card_subtitle }}</div>
@@ -143,7 +142,7 @@
 
     {% block card_tag %}
         {% if person_blurb|striptags|trim is not empty %}
-            <div class="card__date">  {{ person_blurb }}</div>
+            <div class="card__date"><blockquote>{{ person_blurb }}</blockquote></div>
         {% endif %}
     {% endblock %}
 
