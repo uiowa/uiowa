@@ -1335,6 +1335,14 @@ apache_vhosts:
     servername: provost.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: labfiegel.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: nads.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
 
 # Multisite installations should configure additional databases here.
 # It's recommended to prefix database names with 'drupal'. Otherwise,
@@ -1392,6 +1400,8 @@ solr_version: 4.5.1
 post_provision_scripts:
   - ../../../acquia/blt/scripts/drupal-vm/configure-solr.sh
   - ../../../acquia/blt/scripts/drupal-vm/post-provision.php
+  - ../../../../box/post-provision.sh
+nodejs_version: 14.x
 
 nodejs_npm_global_packages:
   - yarn
