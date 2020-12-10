@@ -23,3 +23,22 @@ field.widget.settings.uiowa_academic_units_widget:
   mapping:
     type: string
     label: Types of academic units to include
+
+uiowa_entities.department.*:
+  type: config_entity
+  label: Department
+  mapping:
+    id:
+      type: string
+      label: ID
+    label:
+      type: label
+      label: Label
+    maui_code:
+      type: string
+      label: The code to identify the department in MAUI
+    uuid:
+      type: string
+    homepage:
+      type: string
+      label: Department homepage link
