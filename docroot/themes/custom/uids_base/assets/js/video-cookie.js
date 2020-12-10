@@ -10,7 +10,6 @@
         const video = this.querySelector('video');
         // We only need to execute the rest of this if the video element exists.
         if (video) {
-          console.log('video', video);
           const btn = this.querySelector('.video-controls .video-btn');
           // Set videoCookieCollection to be an empty dictionary.
           let videoCookieCollection = {};
@@ -23,7 +22,6 @@
 
           // Check cookie id entry to see if the video was paused previously.
           if (videoCookieCollection !== {} && videoCookieCollection[videoCookieId] === 'paused') {
-            console.log('finding the video in cookie dictionary');
             // If they did, pause the video.
             video.removeAttribute('autoplay');
             video.pause();
