@@ -351,7 +351,7 @@ function uids_base_preprocess_layout(&$variables) {
         }
         elseif ($region == 'background') {
           // If there is anything in this region, then we have a background.
-          if (!empty(Element::children($variables['content'][$region][$block_uuid])) && $variables['has_node_image']) {
+          if (!empty(Element::children($variables['content'][$region][$block_uuid]))) {
             $contains_background = TRUE;
             break;
           }
@@ -360,7 +360,7 @@ function uids_base_preprocess_layout(&$variables) {
     }
     if ($contains_title) {
       $variables['attributes']['class'][] = 'layout--title';
-      if ($contains_background) {
+      if ($contains_background && $variables['has_node_image']) {
         $variables['attributes']['class'][] = 'layout--title--with-background';
       }
       else {
