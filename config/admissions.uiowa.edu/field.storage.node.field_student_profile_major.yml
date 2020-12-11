@@ -1,4 +1,4 @@
-uuid: 88cd6f0a-65e5-4bb4-b4c6-b5f07c0ae2c5
+uuid: 609f02e0-00f1-4c64-b15f-b405fceb6b2c
 langcode: en
 status: true
 dependencies:
@@ -7,14 +7,12 @@ dependencies:
 id: node.field_student_profile_major
 field_name: field_student_profile_major
 entity_type: node
-type: string
+type: entity_reference
 settings:
-  max_length: 255
-  is_ascii: false
-  case_sensitive: false
+  target_type: node
 module: core
 locked: false
-cardinality: 1
+cardinality: -1
 translatable: true
 indexes: {  }
 persist_with_no_fields: false

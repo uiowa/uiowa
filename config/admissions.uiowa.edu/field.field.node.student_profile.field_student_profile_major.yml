@@ -1,19 +1,28 @@
-uuid: a25a69c0-383a-4904-ac68-b158c3a328a5
+uuid: 759b704b-d426-4c73-a70b-ea2bc20e0da1
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_student_profile_major
+    - node.type.area_of_study
     - node.type.student_profile
 id: node.student_profile.field_student_profile_major
 field_name: field_student_profile_major
 entity_type: node
 bundle: student_profile
 label: Major
-description: 'Enter the student''s primary major'
+description: ''
 required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
-settings: {  }
-field_type: string
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      area_of_study: area_of_study
+    sort:
+      field: _none
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

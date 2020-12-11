@@ -110,10 +110,12 @@ content:
   field_student_profile_major:
     weight: 7
     settings:
+      match_operator: CONTAINS
+      match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
+    type: entity_reference_autocomplete
     region: content
   field_student_profile_videos:
     type: media_library_widget
