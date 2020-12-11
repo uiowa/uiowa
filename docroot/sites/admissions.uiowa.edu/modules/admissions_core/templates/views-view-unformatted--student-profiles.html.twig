@@ -118,6 +118,8 @@
         'card_subtitle': view.style_plugin.getField(key, 'field_student_profile_major'),
         'person_blurb': view.style_plugin.getField(key, 'field_student_profile_blurb'),
         'person_hometown': view.style_plugin.getField(key, 'field_person_hometown'),
+        'person_territory': view.style_plugin.getField(key, 'field_person_territory'),
+        'person_country': view.style_plugin.getField(key, 'field_student_profile_country'),
         'media_attributes': media_attributes.addClass('media--circle card__media--small card__media'),
     } %}
 
@@ -143,13 +145,12 @@
 
     {% block card_tag %}
         {% if person_hometown|striptags|trim is not empty %}
-            <div class="card__date"><span class="fas fa-globe-americas"></span> {{ person_hometown }}</div>
+            <div class="card__date"><span class="fas fa-globe-americas"></span> {{ person_hometown }} {{ person_territory }} {{ person_country }}</div>
         {% endif %}
         {% if person_blurb|striptags|trim is not empty %}
             <div class="card__date">{{ person_blurb }}</div>
         {% endif %}
     {% endblock %}
-
 
     {% endembed %}
     </div>
