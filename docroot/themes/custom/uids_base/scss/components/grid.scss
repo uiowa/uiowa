@@ -1,0 +1,54 @@
+@import "uids/assets/scss/_variables.scss";
+@import "uids/assets/scss/_utilities.scss";
+
+// Determines if the placement is grid worthy based on parent container percentage.
+@mixin inner-grid($parent) {
+  .inner--grid.grid--twocol--50-50 {
+    @if $parent >= 50 {
+      @include breakpoint(sm) {
+        .aggregator-wrapper,
+        .view-content,
+        .list-wrapper {
+          display: grid;
+          column-gap: 1.5rem;
+          grid-template-columns: repeat(auto-fill, minmax(48%, 1fr));
+        }
+      }
+    }
+  }
+  .inner--grid.grid--threecol--33-34-33 {
+    @if $parent >= 75 {
+      @include breakpoint(sm) {
+        .aggregator-wrapper,
+        .view-content,
+        .list-wrapper {
+          display: grid;
+          column-gap: 1.5rem;
+          grid-template-columns: repeat(auto-fill, minmax(31.63%, 1fr));
+        }
+      }
+    }
+  }
+  .inner--grid.grid--threecol--30-40-30 {
+    @if $parent >= 75 {
+      @include breakpoint(sm) {
+        .aggregator-wrapper,
+        .view-content,
+        .list-wrapper {
+          display: grid;
+          column-gap: 1.5rem;
+          grid-template-columns: repeat(auto-fill, minmax(31.63%, 1fr));
+        }
+      }
+      @include breakpoint(md) {
+        .aggregator-wrapper,
+        .view-content,
+        .list-wrapper {
+          display: grid;
+          column-gap: 1.5rem;
+          grid-template-columns: repeat(auto-fill, minmax(28%,1fr) minmax(38%,1fr) minmax(28%,1fr));
+        }
+      }
+    }
+  }
+}
