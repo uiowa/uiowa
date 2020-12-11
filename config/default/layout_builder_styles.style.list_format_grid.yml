@@ -4,8 +4,12 @@ status: true
 dependencies: {  }
 id: list_format_grid
 label: Grid
-classes: block--grid
+classes: inner--grid
 type: component
 group: list_format
 weight: 3
-block_restrictions: {  }
+block_restrictions:
+  - 'inline_block:uiowa_articles'
+  - 'inline_block:uiowa_events'
+  - 'inline_block:uiowa_people'
+  - 'inline_block:uiowa_aggregator'
