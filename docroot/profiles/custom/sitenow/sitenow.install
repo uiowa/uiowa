@@ -1686,12 +1686,17 @@ function sitenow_update_8045() {
  * Set list grid defaults for existing list blocks.
  */
 function sitenow_update_8046() {
-  $block_types = ['uiowa_aggregator', 'uiowa_events', 'uiowa_articles', 'uiowa_people'];
+  $block_types = [
+    'uiowa_aggregator',
+    'uiowa_events',
+    'uiowa_articles',
+    'uiowa_people'
+  ];
   foreach ($block_types as $block_type) {
     // Find NIDs for all nodes with at least one aggregator block.
     $query = \Drupal::entityQuery('node')
       ->condition('type', 'page')
-      ->condition('layout_builder__layout', '%' . $block_type .'%', 'LIKE');
+      ->condition('layout_builder__layout', '%' . $block_type . '%', 'LIKE');
 
     $results = $query->execute();
 
