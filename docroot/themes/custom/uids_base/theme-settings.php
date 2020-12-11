@@ -18,6 +18,7 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
   $has_parent = $config->get('has_parent') ?: 0;
   $variables['site_name'] = $config->get('name');
   $name_length = strlen($variables['site_name']);
+
   $form['header'] = [
     '#type' => 'details',
     '#title' => t('IOWA bar settings'),
@@ -26,6 +27,7 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     '#open' => TRUE,
     '#tree' => TRUE,
   ];
+
   $form['header']['type'] = [
     '#type' => 'select',
     '#title' => t('Site name display'),
@@ -41,21 +43,27 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
   // characters, set the header type to disabled.
   if ($has_parent || $name_length > 43) {
     $description = '';
+    $url = Url::fromRoute('system.site_information_settings')->toString();
+
     if (($has_parent) && ($name_length > 43)) {
-      $description = 'This option is disabled because a parent organization was set on the <a href=":site-settings-page">site settings page</a> and the site name exceeds the recommended character count of 43 characters.';
+      $description = t('This option is disabled because a parent organization was set on the <a href=":url">site settings page</a> and the site name exceeds the recommended character count of 43 characters.', [
+        ':url' => $url,
+      ]);
     }
     elseif ($name_length > 43) {
-      $description = 'This option is disabled because the site name set on the <a href=":site-settings-page">site settings page</a> exceeds the recommended character count of 43 characters.';
+      $description = t('This option is disabled because the site name set on the <a href=":url">site settings page</a> exceeds the recommended character count of 43 characters.', [
+        ':url' => $url,
+      ]);
     }
     elseif ($has_parent) {
-      $description = 'This option is disabled because a parent organization was set on the <a href=":site-settings-page">site settings page</a>. When you have a parent organization, your site name will <em>always</em> display on the line below. You will need to remove the parent organization information to select another option.';
+      $description = t('This option is disabled because a parent organization was set on the <a href=":url">site settings page</a>. When you have a parent organization, your site name will <em>always</em> display on the line below. You will need to remove the parent organization information to select another option.', [
+        ':url' => $url,
+      ]);
     }
 
     $form['header']['type']['#disabled'] = TRUE;
     $form['header']['type']['#default_value'] = 'below';
-    $form['header']['type']['#description'] = t($description, [
-      ':site-settings-page' => Url::fromRoute('system.site_information_settings')->toString(),
-    ]);
+    $form['header']['type']['#description'] = $description;
   }
 
   $form['header']['nav_style'] = [
