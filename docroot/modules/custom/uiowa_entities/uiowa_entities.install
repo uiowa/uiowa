@@ -4,3 +4,15 @@
  * @file
  * Install hooks for uiowa_entities.
  */
+
+/**
+ * Install person type configuration entity (existing module).
+ */
+function uiowa_entities_update_8000() {
+  $type_manager = \Drupal::entityTypeManager();
+  $type_manager->clearCachedDefinitions();
+  $entity_type = $type_manager->getDefinition('department');
+  \Drupal::entityDefinitionUpdateManager()->installEntityType($entity_type);
+
+  return t('Installed the department entity type');
+}
