@@ -216,14 +216,15 @@ function uids_base_preprocess_media(array &$variables) {
         $parent_entity = $referring_field->getParent();
         $parent_entity = $parent_entity->getEntity();
 
-        // @todo 2020/12/08 Add check to see if video is paused in uiowa-video
-        //   and skip adding autoplay if so.
+        // @todo 2020/12/08 Add check to see if video is paused in 'uiowa-video'
+        //   cookie and skip adding autoplay if so.
         if ($autoplay_field = $parent_entity->field_uiowa_banner_autoplay) {
           if ($autoplay_field->value) {
             $variables['content']['field_media_video_file'][0]['#attributes']['autoplay'] = 'autoplay';
           }
         }
 
+        // Add a unique id to use for setting a video cookie.
         if ($parent_entity_uuid = $parent_entity->uuid()) {
           $variables['content']['field_media_video_file'][0]['#attributes']['data-video-cookie-id'] = $parent_entity_uuid;
         }
@@ -296,6 +297,7 @@ function uids_base_preprocess_layout(&$variables) {
   $node = \Drupal::routeMatch()->getParameter('node');
   $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
   $title_hidden = FALSE;
+  $variables['has_node_image'] = FALSE;
   if ($node instanceof NodeInterface) {
     if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
       $publish_options = $node->get('field_publish_options')->getValue();
@@ -358,7 +360,7 @@ function uids_base_preprocess_layout(&$variables) {
     }
     if ($contains_title) {
       $variables['attributes']['class'][] = 'layout--title';
-      if ($contains_background) {
+      if ($contains_background && $variables['has_node_image']) {
         $variables['attributes']['class'][] = 'layout--title--with-background';
       }
       else {
