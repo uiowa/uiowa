@@ -391,10 +391,10 @@ function uids_base_preprocess_block(&$variables) {
     }
   }
 
-  // If block list, remove any block grid classes.
-  if (isset($variables["attributes"]["class"]) && in_array('block--list', $variables["attributes"]["class"])) {
+  // If inner list, remove any inner grid classes.
+  if (isset($variables["attributes"]["class"]) && in_array('inner--list', $variables["attributes"]["class"])) {
     foreach ($variables["attributes"]["class"] as $key => $style) {
-      if (substr($style, 0, strlen('block--grid')) === 'block--grid') {
+      if (substr($style, 0, strlen('inner--grid')) === 'inner--grid') {
         unset($variables["attributes"]["class"][$key]);
       }
     }
