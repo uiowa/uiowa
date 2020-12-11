@@ -1,0 +1,29 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a block content.
+ *
+ * Available variables:
+ * - label: The configured label of the block if visible.
+ * - content: The content of this block.
+ * - attributes: array of HTML attributes populated by modules, intended to
+ *   be added to the main container tag of this template.
+ *   - id: A valid HTML ID and guaranteed unique.
+ * - title_attributes: Same as attributes, except applied to the main title
+ *   tag that appears in the template.
+ * - title_prefix: Additional output populated by modules, intended to be
+ *   displayed in front of the main title tag that appears in the template.
+ * - title_suffix: Additional output populated by modules, intended to be
+ *   displayed after the main title tag that appears in the template.
+
+ * @see template_preprocess_block_content_template()
+ *
+ * @ingroup themeable
+ */
+#}
+
+{{ content.field_uiowa_headline }}
+<div class="uiowa-events-wrapper list-wrapper">
+  {{ content|without('field_uiowa_headline', 'more') }}
+</div>
+{{ content.more }}
