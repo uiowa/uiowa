@@ -2,6 +2,7 @@
 
 namespace Drupal\grad_migrate\Plugin\migrate\source;
 
+use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 
 /**
@@ -75,4 +76,18 @@ class ThesisDefense extends BaseNodeSource {
     return $query;
   }
 
+  /**
+   * Prepare row used for altering source data prior to its insertion.
+   */
+  public function prepareRow(Row $row) {
+
+    // Grab the mapped FID for the file upload field..
+    $original_fid = $row->getSourceProperty('upload_fid');
+    if (isset($original_fid)) {
+      $row->setSourceProperty('upload_fid', $this->getFid($original_fid, 'migrate_map_d7_grad_file'));
+    }
+
+    // Call the parent prepareRow.
+    return parent::prepareRow($row);
+  }
 }
