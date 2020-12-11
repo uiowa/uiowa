@@ -1,13 +1,18 @@
 @import "uids/assets/scss/_variables.scss";
 @import "uids/assets/scss/_utilities.scss";
 @import "components/headline/_headline-mixins.scss";
+@import "../components/grid.scss";
 
 
 .layout--onecol .layout__region {
   width: 100%;
+  @include inner-grid(100);
 }
 
 .layout--onecol--background {
+  .layout__region {
+    @include inner-grid(100);
+  }
   // Add padding to banner content if not in edge-to-edge column
   // or is in twocol layout.
   &.banner {

@@ -1,5 +1,6 @@
 @import "uids/assets/scss/_variables.scss";
 @import "uids/assets/scss/_utilities.scss";
+@import "../components/grid.scss";
 
 .layout--onecol .layout__region {
   display: flex;
@@ -75,5 +76,6 @@
   overflow: auto;
   @include breakpoint(menu) {
     flex: 0 1 72.75%;
+    @include inner-grid(75);
   }
 }

@@ -1,8 +1,10 @@
 @import "uids/assets/scss/_variables.scss";
 @import "uids/assets/scss/_utilities.scss";
+@import "../components/grid.scss";
 
 .layout--onecol .layout__region {
   width: 100%;
+  @include inner-grid(100);
 }
 
 .layout--onecol {

@@ -1,5 +1,6 @@
 @import "uids/assets/scss/_variables.scss";
 @import "uids/assets/scss/_utilities.scss";
+@import "../components/grid.scss";
 
 @media screen and (min-width: 40em) {
 
@@ -65,10 +66,12 @@
 
   .layout--threecol--50-25-25.column-spacing__removed .layout__region--first {
     flex: 0 1 50%;
+    @include inner-grid(50);
   }
 
   .layout--threecol--50-25-25 .layout__region--first {
     flex: 0 1 50%;
+    @include inner-grid(50);
   }
 
   .layout--threecol--33-34-33 .layout__region--first,
@@ -127,10 +130,12 @@
 
   .layout--threecol--25-25-50 .layout__region--third {
     flex: 0 1 50%;
+    @include inner-grid(50);
   }
 
   .layout--threecol--25-25-50.column-spacing__removed .layout__region--third {
     flex: 0 1 50%;
+    @include inner-grid(50);
   }
 
   .layout--threecol--25-50-25 .layout__region--first,
@@ -153,6 +158,7 @@
     flex: 0 1 41.75%;
 
     margin: 0 1.5rem;
+    @include inner-grid(50);
   }
 
   .layout--threecol--25-50-25 .layout__region--third {
