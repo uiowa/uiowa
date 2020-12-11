@@ -177,7 +177,7 @@ third_party_settings:
                 settings: {  }
                 third_party_settings: {  }
             additional: {  }
-            weight: -5
+            weight: -4
           -
             uuid: 9e4c10bb-50d7-4436-bf58-7b3674632acf
             region: first
@@ -187,7 +187,7 @@ third_party_settings:
               provider: layout_builder
               label_display: null
               formatter:
-                label: inline
+                label: visually_hidden
                 type: list_default
                 settings: {  }
                 third_party_settings: {  }
@@ -200,16 +200,19 @@ third_party_settings:
             uuid: ca025ee4-6544-49c8-a701-cd4bf06afa38
             region: first
             configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
               id: 'field_block:node:student_profile:field_student_profile_major'
+              label: null
+              provider: layout_builder
+              label_display: null
               formatter:
-                label: above
+                label: visually_hidden
+                type: entity_reference_label
                 settings:
                   link: true
                 third_party_settings: {  }
-                type: entity_reference_label
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
             additional: {  }
             weight: -8
           -
@@ -228,6 +231,24 @@ third_party_settings:
                 type: string
             additional: {  }
             weight: -7
+          -
+            uuid: d62c4041-a1f0-49df-82c0-f8a026e02907
+            region: first
+            configuration:
+              id: 'field_block:node:student_profile:field_student_profile_country'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: visually_hidden
+                type: address_country_default
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: -5
         third_party_settings:
           layout_builder_lock:
             lock: {  }
