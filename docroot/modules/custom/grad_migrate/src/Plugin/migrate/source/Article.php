@@ -40,8 +40,8 @@ class Article extends BaseNodeSource {
    * {@inheritdoc}
    */
   public function query() {
-    $query = $this->select('field_data_body', 'b');
-    $query->leftJoin('node', 'n', 'n.nid = b.entity_id');
+    $query = parent::query();
+    $query->join('field_data_body', 'b', 'n.nid = b.entity_id');
     $query->leftJoin('field_data_field_header_image', 'hi', 'n.nid = hi.entity_id');
     $query->leftJoin('field_data_field_thumbnail_image', 'ti', 'n.nid = ti.entity_id');
     $query->leftJoin('field_data_field_lead', 'l', 'n.nid = l.entity_id');
@@ -108,8 +108,7 @@ class Article extends BaseNodeSource {
         'status',
         'promote',
         'sticky',
-      ])
-      ->condition('b.bundle', 'article');
+      ]);
     return $query;
   }
 
