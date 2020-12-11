@@ -90,4 +90,5 @@ class ThesisDefense extends BaseNodeSource {
     // Call the parent prepareRow.
     return parent::prepareRow($row);
   }
+
 }
