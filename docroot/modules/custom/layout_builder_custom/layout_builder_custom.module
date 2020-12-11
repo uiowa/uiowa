@@ -211,6 +211,13 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
               $form['layout_builder_style_media_format']['#default_value'] = 'media_format_circle';
               $form['layout_builder_style_card_image_size']['#default_value'] = 'card_image_small';
             }
+
+            if (isset($form['layout_builder_style_list_format'])) {
+              $form['layout_builder_style_list_format']['#default_value'] = 'list_format_list';
+            }
+            if (isset($form['layout_builder_style_grid_columns'])) {
+              $form['layout_builder_style_grid_columns']['#default_value'] = 'block_grid_threecol_33_34_33';
+            }
           }
           break;
 
