@@ -97,7 +97,7 @@ class Article extends BaseNodeSource {
       ->fields('ar', [
         'field_annual_report_value',
       ])
-      ->fields('ar', [
+      ->fields('pc', [
         'field_photo_credit_value',
         'field_photo_credit_format',
       ])
@@ -158,8 +158,7 @@ class Article extends BaseNodeSource {
     // Check if an image was attached, and if so, update with new fid.
     $original_fid = $row->getSourceProperty('field_header_image_fid');
     if (isset($original_fid)) {
-      // @todo Update getFid() to use the right migrate map.
-      $row->setSourceProperty('field_header_image_fid', $this->getFid($original_fid));
+      $row->setSourceProperty('field_header_image_fid', $this->getFid($original_fid, 'migrate_map_d7__grad_file'));
     }
 
     // Call the parent prepareRow.
