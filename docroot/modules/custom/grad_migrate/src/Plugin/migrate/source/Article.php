@@ -157,7 +157,7 @@ class Article extends BaseNodeSource {
     // Check if an image was attached, and if so, update with new fid.
     $original_fid = $row->getSourceProperty('field_header_image_fid');
     if (isset($original_fid)) {
-      $row->setSourceProperty('field_header_image_fid', $this->getFid($original_fid, 'migrate_map_d7__grad_file'));
+      $row->setSourceProperty('field_header_image_fid', $this->getFid($original_fid, 'migrate_map_d7_grad_file'));
     }
 
     // Call the parent prepareRow.
