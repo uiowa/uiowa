@@ -44,9 +44,17 @@ content:
     settings:
       size: h2
     third_party_settings: {  }
+  field_person_hometown:
+    type: string
+    weight: 3
+    region: content
+    label: visually_hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
   field_student_profile_blurb:
     type: smart_trim
-    weight: 3
+    weight: 4
     region: content
     label: visually_hidden
     settings:
@@ -73,7 +81,6 @@ content:
     third_party_settings: {  }
 hidden:
   body: true
-  field_person_hometown: true
   field_person_last_name: true
   field_person_territory: true
   field_student_profile_attributes: true
