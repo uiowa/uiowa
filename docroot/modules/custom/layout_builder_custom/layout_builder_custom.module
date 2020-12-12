@@ -9,8 +9,10 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\layout_builder_custom\LayoutBuilderPreRender;
+use Drupal\layout_builder_custom\Plugin\Display\ListBlock;
 use Drupal\layout_builder_styles\LayoutBuilderStyleGroups;
 use Drupal\layout_builder_styles\LayoutBuilderStyleInterface;
+use Drupal\views\Plugin\views\display\Block;
 
 /**
  * Implements hook_element_info_alter().
@@ -606,5 +608,14 @@ function layout_builder_custom_preprocess_media(&$variables) {
     $variables['attributes'] = [
       'class' => ['media--video'],
     ] + $variables['attributes'];
+  }
+}
+
+/**
+ * Implements hook_views_plugins_display_alter().
+ */
+function layout_builder_custom_views_plugins_display_alter(&$displays) {
+  if (!empty($displays['block']['class']) && $displays['block']['class'] == Block::class) {
+    $displays['block']['class'] = ListBlock::class;
   }
 }
