@@ -172,7 +172,6 @@ class ListBlock extends CoreBlock {
             if ($filter_value) {
               if (is_array($filter_value)) {
                 $filter_value = array_column($filter_value, 'target_id');
-                $filter_value = implode('+', $filter_value);
               }
               // Save exposed filter setting as block configuration.
               $configuration['filter'][$filter_name]['value'] = $filter_value;
