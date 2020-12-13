@@ -53,6 +53,9 @@ class ListBlock extends CoreBlock {
     $form['allow']['#default_value'] = $defaults;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function blockForm(ViewsBlock $block, array &$form, FormStateInterface $form_state) {
     $form = parent::blockForm($block, $form, $form_state);
 
@@ -88,7 +91,6 @@ class ListBlock extends CoreBlock {
     // @todo Add "Display more path" setting.
     // @todo Only show "Display more path" setting when "Display more" is checked.
     // @todo Add "Sort" setting. How to populate this from the view?
-
     // Provide "Exposed filters" block settings form.
     if (!empty($allow_settings['filter_in_block'])) {
       $items = [];
@@ -126,6 +128,9 @@ class ListBlock extends CoreBlock {
     return $form;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function blockSubmit(ViewsBlock $block, $form, FormStateInterface $form_state) {
     parent::blockSubmit($block, $form, $form_state);
     $configuration = $block->getConfiguration();
@@ -138,13 +143,15 @@ class ListBlock extends CoreBlock {
 
     // Save "Pager offset" settings to block configuration.
     if (!empty($allow_settings['offset'])) {
-      $configuration['pager_offset'] = $form_state->getValue(['override', 'pager_offset']);
+      $configuration['pager_offset'] = $form_state->getValue([
+        'override',
+        'pager_offset',
+      ]);
     }
 
     // @todo Save "Display pager" setting to block configuration.
     // @todo Save "Display more path" setting to block configuration.
     // @todo Save "Sort" setting to block configuration.
-
     // Save "Filter in block" settings to block configuration.
     if (!empty($allow_settings['filter_in_block'])) {
       if ($filters = $form_state->getValue(['override', 'filters'])) {
@@ -187,8 +194,6 @@ class ListBlock extends CoreBlock {
     $allow_settings = array_filter($this->getOption('allow'));
     $config = $block->getConfiguration();
     list(, $display_id) = explode('-', $block->getDerivativeId(), 2);
-    $filters = $this->view->getHandlers('filter', $display_id);
-    $filters_changed = TRUE;
 
     if (!empty($allow_settings['items_per_page']) && !empty($config['items_per_page'])) {
       $this->view->setItemsPerPage($config['items_per_page']);
@@ -207,6 +212,8 @@ class ListBlock extends CoreBlock {
     // @todo Set view sorts based on "Sort" setting.
     // @todo Set view filter based on "Filter" setting.
     if (!empty($allow_settings['filter_in_block'])) {
+      $filters = $this->view->getHandlers('filter', $display_id);
+      $changed = TRUE;
       foreach ($filters as $filter_name => $value) {
         if (!empty($config['filter'][$filter_name])) {
           // Override exposed filter value from block settings.
@@ -217,10 +224,11 @@ class ListBlock extends CoreBlock {
           continue;
         }
       }
-    }
 
-    if ($filters_changed) {
-      $this->view->display_handler->overrideOption('filters', $filters);
+      if ($changed) {
+        $this->view->display_handler->overrideOption('filters', $filters);
+      }
     }
   }
+
 }
