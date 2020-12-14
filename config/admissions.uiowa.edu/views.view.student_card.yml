@@ -253,7 +253,20 @@ display:
             value: '<div class="text-align-left"><h4 class="headline headline--serif headline--underline"><span class="fas fa-user"></span> &nbsp;<a href="/student-profiles">Student Profiles</a></h4></div>'
             format: filtered_html
           plugin_id: text
-      footer: {  }
+      footer:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          tokenize: false
+          content:
+            value: '<a href="https://apply.admissions.uiowa.edu/admissions/login.page">Apply Now!</a>'
+            format: filtered_html
+          plugin_id: text
       empty: {  }
       relationships: {  }
       arguments: {  }
