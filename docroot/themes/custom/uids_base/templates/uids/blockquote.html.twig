@@ -14,7 +14,9 @@
 {% endif %}
 
 <blockquote {{ blockquote_attributes }}>
-{{ blockquote_content }}
+  {% block blockquote_text %}
+    {{ blockquote_content }}
+  {% endblock %}
     {% if blockquote_footer is not empty or (blockquote_cite is not empty) %}
       <footer>
         {% if blockquote_footer is not empty %}

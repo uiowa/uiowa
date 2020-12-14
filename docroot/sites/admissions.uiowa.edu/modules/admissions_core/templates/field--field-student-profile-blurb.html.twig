@@ -46,6 +46,9 @@
       'blockquote_content': item.content,
     } %}
     {% embed '@uids_base/uids/blockquote.html.twig' with blockquote_block only %}
+      {% block blockquote_text %}
+        <p class="h2">{{ blockquote_content|render|striptags }}</p>
+      {% endblock %}
     {% endembed %}
   {% endif %}
 {% endfor %}
