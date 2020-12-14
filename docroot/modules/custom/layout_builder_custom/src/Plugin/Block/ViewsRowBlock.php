@@ -2,7 +2,6 @@
 
 namespace Drupal\layout_builder_custom\Plugin\Block;
 
-use Drupal\views\Plugin\Block\ViewsBlock;
 use Drupal\views\Plugin\Block\ViewsBlockBase;
 
 /**
@@ -58,7 +57,10 @@ class ViewsRowBlock extends ViewsBlockBase {
 
       // Override the label to the dynamic title configured in the view.
       if (empty($this->configuration['views_label']) && $this->view->getTitle()) {
-        $output['#title'] = ['#markup' => $this->view->getTitle(), '#allowed_tags' => Xss::getHtmlTagList()];
+        $output['#title'] = [
+          '#markup' => $this->view->getTitle(),
+          '#allowed_tags' => Xss::getHtmlTagList(),
+        ];
       }
 
       // When view_build is empty, the actual render array output for this View
@@ -74,4 +76,5 @@ class ViewsRowBlock extends ViewsBlockBase {
 
     return [];
   }
+
 }

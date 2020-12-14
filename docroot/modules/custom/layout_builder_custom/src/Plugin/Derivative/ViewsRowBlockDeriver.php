@@ -2,9 +2,13 @@
 
 namespace Drupal\layout_builder_custom\Plugin\Derivative;
 
-use Drupal\views\Entity\View;
 use Drupal\views\Plugin\Derivative\ViewsBlock;
 
+/**
+ * Provides block plugin definitions for Views block display rows.
+ *
+ * @see \Drupal\views\Plugin\Block\ViewsBlock
+ */
 class ViewsRowBlockDeriver extends ViewsBlock {
 
   /**
@@ -15,12 +19,12 @@ class ViewsRowBlockDeriver extends ViewsBlock {
     $derivatives = [];
     foreach ($parent_derivatives as $view_delta => $derivative) {
       [$name, $display_id] = explode('-', $view_delta, 2);
-      $view = $this->viewStorage->load($name);
+      // $view = $this->viewStorage->load($name);
       /** @var \Drupal\views\ViewExecutable $executable */
-      $executable = $view->getExecutable();
-//      $display = $executable->preview($display_id);
-//      $total_item = $executable->getPager()->getTotalItems();
-//      $per_page = $executable->getPager()->getItemsPerPage();
+      // $executable = $view->getExecutable();
+      // $display = $executable->preview($display_id);
+      // $total_item = $executable->getPager()->getTotalItems();
+      // $per_page = $executable->getPager()->getItemsPerPage();
       $cardinality = 3;
       // Check if pager type is set to 'some'
       // If so, get 'items per page' and use that as the max.
@@ -35,19 +39,11 @@ class ViewsRowBlockDeriver extends ViewsBlock {
           'category' => $parent_derivatives[$view_delta]['category'],
         ];
 
-
         $derivatives[$plugin_id] += $parent_derivatives[$view_delta];
       }
-
-      $test = 'thing';
     }
-    // Loop through all views
-    // @todo Set variable for $view.
-    // Loop through all displays
-    // @todo Set variable for $display
-    // Check paging settings to see how many results are allowed.
-    // If its a set number, create derivative for each row.
 
     return $derivatives;
   }
+
 }
