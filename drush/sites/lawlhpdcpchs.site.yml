@@ -1,0 +1,32 @@
+local:
+  root: /var/www/uiowa/docroot
+  uri: lawlhpdcpchs.local.drupal.uiowa.edu
+  paths:
+    files: sites/pchs.lhpdc.law.uiowa.edu/files
+dev:
+  uri: lawlhpdcpchs.dev.drupal.uiowa.edu
+  host: uiowadev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/pchs.lhpdc.law.uiowa.edu/files
+  root: /var/www/html/uiowa.dev/docroot
+  user: uiowa.dev
+prod:
+  uri: pchs.lhpdc.law.uiowa.edu
+  host: uiowa.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/pchs.lhpdc.law.uiowa.edu/files
+  root: /var/www/html/uiowa.prod/docroot
+  user: uiowa.prod
+test:
+  uri: lawlhpdcpchs.stage.drupal.uiowa.edu
+  host: uiowastg.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/pchs.lhpdc.law.uiowa.edu/files
+  root: /var/www/html/uiowa.test/docroot
+  user: uiowa.test
