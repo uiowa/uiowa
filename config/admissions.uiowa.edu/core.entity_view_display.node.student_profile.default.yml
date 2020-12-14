@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - block_content.type.uiowa_text_area
     - field.field.node.student_profile.body
     - field.field.node.student_profile.field_image
     - field.field.node.student_profile.field_person_first_name
@@ -216,6 +217,25 @@ third_party_settings:
                 view_mode: view_mode
             additional: {  }
             weight: -5
+          -
+            uuid: d857483c-f54e-4de3-9315-8ecfdb4dec27
+            region: second
+            configuration:
+              id: 'inline_block:uiowa_text_area'
+              label: null
+              provider: layout_builder
+              label_display: null
+              view_mode: full
+              block_revision_id: 8211
+              block_serialized: null
+              context_mapping: {  }
+              type: uiowa_text_area
+              uuid: 3147594b-e050-45aa-8d48-c5a4b23ebd7f
+            additional:
+              layout_builder_styles_style:
+                block_margin_top: block_margin_top
+                0: ''
+            weight: 1
         third_party_settings:
           layout_builder_lock:
             lock: {  }
