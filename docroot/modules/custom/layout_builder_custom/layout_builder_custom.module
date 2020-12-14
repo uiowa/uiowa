@@ -290,6 +290,108 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
 
 /**
  * Implements hook_form_FORM_ID_alter().
+ *
+ * Modify the configuration form for layout builder sections (layouts).
+ */
+function layout_builder_custom_form_layout_builder_configure_section_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $formObject = $form_state->getFormObject();
+  $layout = $formObject->getLayout();
+  $config = $layout->getConfiguration();
+
+  $form['regions'] = [
+    '#prefix' => '<label>',
+    '#markup' => t('Region settings'),
+    '#suffix' => '</label>',
+  ];
+
+
+  // Loop through regions.
+  // @todo Only add detail wrapper when this is a multiple column layout
+  foreach ($layout->getPluginDefinition()->get('regions') as $region_name => $region) {
+    $form[$region_name] = [
+      '#type' => 'details',
+      '#title' => $region['label'],
+      '#open' => TRUE,
+    ];
+
+    $form[$region_name]['format'] = [
+      '#type' => 'radios',
+      '#title' => t('Block display'),
+      '#description' => t('Choose how blocks placed in this region will be displayed. When using a grid option, blocks will display side-by-side up to the maximum number defined below and wrap into a new row after that.'),
+      '#options' => [
+        'stacked' => t('Stacked (default)'),
+        'grid' => t('Grid'),
+      ],
+      '#default_value' => $config['region_formats'][$region_name]['format'] ?: 'stacked',
+      '#attributes' => [
+        'name' => "layout_settings[$region_name][format]"
+      ]
+    ];
+
+    $form[$region_name]['grid_row_max'] = [
+      '#type' => 'select',
+      '#title' => t('Maximum blocks per row'),
+      '#description' => t('When using a grid option, blocks will display side-by-side on larger screen formats up to the maximum number per row and then wrap.'),
+      '#options' => [
+        2 => t('2 (default)'),
+        3,
+      ],
+      '#default_value' => $config['region_formats'][$region_name]['grid_row_max'] ?: 2,
+      '#states' => [
+        'visible' => [
+          ":input[name=\"layout_settings[$region_name][format]\"]" => ['value' => 'grid'],
+        ],
+      ],
+    ];
+  }
+
+  // Our submit handler must execute before the default one, because the
+  // default handler stores the section & component data in the tempstore
+  // and we need to update those objects before that happens.
+  array_unshift($form['#submit'], '_layout_builder_custom_submit_section_form');
+
+}
+
+/**
+ * Custom submit handler for layout builder section configure form.
+ *
+ * @param array $form
+ *   The form element.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state.
+ */
+function _layout_builder_custom_submit_section_form(array &$form, FormStateInterface $form_state) {
+
+  $formObject = $form_state->getFormObject();
+  $layout = $formObject->getLayout();
+  $config = $layout->getConfiguration();
+
+  $form['regions'] = [
+    '#prefix' => '<label>',
+    '#markup' => t('Region settings'),
+    '#suffix' => '</label>',
+  ];
+
+
+  // Loop through regions.
+  // @todo Only add detail wrapper when this is a multiple column layout
+  foreach ($layout->getPluginDefinition()->get('regions') as $region_name => $region) {
+    $config['region_formats'][$region_name]['format'] = $form_state->getValue([
+      $region_name,
+      'format',
+    ]);
+    $config['region_formats'][$region_name]['grid_row_max'] = $form_state->getValue([
+      $region_name,
+      'grid_row_max',
+    ]);
+  }
+
+  $layout
+    ->setConfiguration($config);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
  */
 function layout_builder_custom_form_node_page_layout_builder_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['#attached']['library'][] = 'layout_builder_custom/layout_builder_custom.overrides';
@@ -556,6 +658,34 @@ function layout_builder_custom_field_widget_paragraphs_form_alter(array &$elemen
 
     }
   }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function layout_builder_custom_preprocess_layout(&$variables) {
+  if (isset($variables['settings']['region_formats'])) {
+    foreach (Element::children($variables['content']) as $region_name) {
+      if (isset($variables['settings']['region_formats'][$region_name])
+        && isset($variables['settings']['region_formats'][$region_name]['format'])
+        && $variables['settings']['region_formats'][$region_name]['format'] === 'grid'
+      ) {
+        $max = $variables['settings']['region_formats'][$region_name]['grid_row_max'] ?: 2;
+        $class = NULL;
+        switch ($max) {
+          case 2:
+            $class = 'grid--threecol--33-34-33';
+            break;
+          case 3:
+            $class = 'grid--twocol--50-50';
+            break;
+        }
+        $variables['region_attributes'][$region_name]->addClass($class);
+      }
+    }
+  }
+
+//  $config = $layout
 }
 
 /**
