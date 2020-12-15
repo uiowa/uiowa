@@ -18,7 +18,7 @@ dependencies:
     - image
     - node
     - options
-    - smart_trim
+    - text
     - user
 id: student_profiles
 label: 'Student Profiles'
@@ -60,17 +60,15 @@ display:
           sort_asc_label: Asc
           sort_desc_label: Desc
       pager:
-        type: full
+        type: mini
         options:
-          items_per_page: 0
+          items_per_page: 12
           offset: 0
           id: 0
           total_pages: null
           tags:
-            previous: '‹ Previous'
-            next: 'Next ›'
-            first: '« First'
-            last: 'Last »'
+            previous: ‹‹
+            next: ››
           expose:
             items_per_page: false
             items_per_page_label: 'Items per page'
@@ -79,7 +77,6 @@ display:
             items_per_page_options_all_label: '- All -'
             offset: false
             offset_label: Offset
-          quantity: 9
       style:
         type: default
       row:
@@ -476,8 +473,8 @@ display:
           label: ''
           exclude: false
           alter:
-            alter_text: false
-            text: ''
+            alter_text: true
+            text: '<blockquote blockquote-center>{{ field_student_profile_blurb }}</blockquote blockquote-center>'
             make_link: false
             path: ''
             absolute: false
@@ -502,7 +499,7 @@ display:
             trim: false
             preserve_tags: ''
             html: false
-          element_type: h1
+          element_type: ''
           element_class: ''
           element_label_type: ''
           element_label_class: ''
@@ -515,19 +512,8 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: smart_trim
-          settings:
-            trim_length: 150
-            trim_type: words
-            trim_suffix: ''
-            wrap_output: false
-            wrap_class: trimmed
-            more_link: false
-            more_text: More
-            more_class: more-link
-            trim_options:
-              text: false
-              trim_zero: false
+          type: text_default
+          settings: {  }
           group_column: value
           group_columns: {  }
           group_rows: true

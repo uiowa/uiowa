@@ -26,7 +26,7 @@ dependencies:
     - image
     - lazy
     - options
-    - smart_trim
+    - text
     - user
 id: node.student_profile.teaser
 targetEntityType: node
@@ -66,23 +66,11 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_student_profile_blurb:
-    type: smart_trim
+    type: text_default
     weight: 7
     region: content
     label: visually_hidden
-    settings:
-      trim_length: 150
-      trim_type: words
-      trim_suffix: ''
-      wrap_class: trimmed
-      more_text: More
-      more_class: more-link
-      wrap_output: false
-      more_link: false
-      trim_options:
-        text: false
-        trim_zero: false
-      summary_handler: full
+    settings: {  }
     third_party_settings: {  }
   field_student_profile_country:
     type: address_country_default
