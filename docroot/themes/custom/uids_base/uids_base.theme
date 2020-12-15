@@ -314,6 +314,11 @@ function uids_base_preprocess_layout(&$variables) {
     // Create a featured image boolean variable for easier Twig use.
     $variables['has_node_image'] = $node->hasField('field_image') && !$node->get('field_image')->isEmpty();
 
+    // COMMENT HERE
+    if($node->hasField('field_featured_image_size') && !$node->get('field_featured_image_size')->isEmpty()) {
+      $variables['field_featured_image_size'] = $node->get('field_featured_image_size')->getString();
+    }
+
     // Add sitenow library if sitenow_v2 config split is active.
     $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
     $sitenow_v2_split = 'config_split:sitenow_v2';

@@ -19,11 +19,10 @@
     'banner--gradient-bottom',
     'banner--gradient-dark',
     'banner--horizontal-left',
-    'banner--large',
+    "banner--#{field_featured_image_size}",
     'banner--vertical-bottom',
     layout.template|clean_class,
   ] %}
-
   {% embed "@uids_base/uids/banner.html.twig" with {
     'attributes' : attributes.addClass(classes),
   } %}
