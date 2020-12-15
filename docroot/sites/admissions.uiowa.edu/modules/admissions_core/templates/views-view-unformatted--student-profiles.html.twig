@@ -145,7 +145,7 @@
 
     {% block card_tag %}
         {% if person_hometown|striptags|trim is not empty %}
-            <div class="card__date"><span class="fas fa-map-marker-alt"></span> {{ person_hometown }} {{ person_territory }},{{ person_country }}</div>
+            <div class="card__date"><span class="fas fa-map-marker-alt"></span> {{ person_hometown }} </div>
         {% endif %}
         {% if person_blurb|striptags|trim is not empty %}
             <div class="card__date">{{ person_blurb }}</div>
