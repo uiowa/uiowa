@@ -1,6 +1,7 @@
 @import "uids/assets/scss/_variables.scss";
 @import "uids/assets/scss/_utilities.scss";
 
+.field--label-above .field__label::after,
 .field--label-inline .field__label::after {
   content: ":";
 }
@@ -13,11 +14,82 @@
   font-weight: bold;
   line-height: 1.7;
   font-size: 1.2rem;
-  margin-bottom: 1.05rem;
+  margin-bottom: $xsm;
 }
 
-.field--label-inline>* {
-  display: inline;
+.field--label-inline {
+  margin-bottom: $sm;
+}
+
+.field--label-inline {
+  * {
+    display: inline;
+  }
+}
+
+.field__item {
+  line-height: 1.7;
+  font-size: 1.2rem;
+  margin-top: 0;
+}
+
+.field--label-above {
+  margin-bottom: $sm;
+  ul {
+    margin-top: 0;
+  }
+}
+
+.field--type-text-long.field--label-inline {
+  p {
+    display: inline;
+  }
+}
+
+.field--label-inline.field--type-entity-reference,
+.field--label-inline.field--type-link {
+  .field__item  + .field__item {
+    &:before {
+      content: ",";
+      padding-right: $xsm;
+      margin-left: -3px;
+    }
+  }
+}
+
+.field--label-inline.field--type-link {
+  .link-title {
+    margin-right: $xsm;
+  }
+}
+
+.field--label-hidden.field__items + .field--label-inline {
+  margin-top: $sm;
+}
+
+.field--label-hidden.field__item + .field--label-hidden.field__item,
+.field--label-hidden.field__items + .field--label-hidden.field__item,
+.field--label-hidden.field__items + .field--label-hidden.field__items {
+  margin-bottom: $sm;
+}
+
+.field--label-hidden.field__item + .field--label-hidden.field__item {
+  margin-top: $sm;
+}
+
+.field--label-visually_hidden + .field--label-above,
+.field--label-hidden + .field--label-above,
+.field--label-hidden + .field--label-inline {
+  margin-top: $md;
+}
+
+.text-formatted.field--type-text {
+  div {
+    margin-bottom: $sm;
+  }
+  p {
+    margin-bottom: 0;
+  }
 }
 
 // Wrap long links by allow them to break mid-word.
