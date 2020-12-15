@@ -216,14 +216,15 @@ function uids_base_preprocess_media(array &$variables) {
         $parent_entity = $referring_field->getParent();
         $parent_entity = $parent_entity->getEntity();
 
-        // @todo 2020/12/08 Add check to see if video is paused in uiowa-video
-        //   and skip adding autoplay if so.
+        // @todo 2020/12/08 Add check to see if video is paused in 'uiowa-video'
+        //   cookie and skip adding autoplay if so.
         if ($autoplay_field = $parent_entity->field_uiowa_banner_autoplay) {
           if ($autoplay_field->value) {
             $variables['content']['field_media_video_file'][0]['#attributes']['autoplay'] = 'autoplay';
           }
         }
 
+        // Add a unique id to use for setting a video cookie.
         if ($parent_entity_uuid = $parent_entity->uuid()) {
           $variables['content']['field_media_video_file'][0]['#attributes']['data-video-cookie-id'] = $parent_entity_uuid;
         }
@@ -296,6 +297,7 @@ function uids_base_preprocess_layout(&$variables) {
   $node = \Drupal::routeMatch()->getParameter('node');
   $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
   $title_hidden = FALSE;
+  $variables['has_node_image'] = FALSE;
   if ($node instanceof NodeInterface) {
     if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
       $publish_options = $node->get('field_publish_options')->getValue();
@@ -327,12 +329,16 @@ function uids_base_preprocess_layout(&$variables) {
   if ($layout->id() === 'layout_header') {
     $contains_title = FALSE;
     $contains_background = FALSE;
+    // Loop through regions in the layout.
     foreach (Element::children($variables['content']) as $region) {
+      // Loop through blocks in that region.
       foreach (Element::children($variables['content'][$region]) as $block_uuid) {
         if ($region === 'content'
           && isset($variables['content'][$region][$block_uuid])
           && isset($variables['content'][$region][$block_uuid]['#plugin_id'])
         ) {
+          // Check if this block plugin_id matches the pattern for a
+          // page title block.
           $plugin_id = $variables['content'][$region][$block_uuid]['#plugin_id'];
           $start_check = 'field_block:node:';
           $end_check = ':title';
@@ -344,6 +350,7 @@ function uids_base_preprocess_layout(&$variables) {
           }
         }
         elseif ($region == 'background') {
+          // If there is anything in this region, then we have a background.
           if (!empty(Element::children($variables['content'][$region][$block_uuid]))) {
             $contains_background = TRUE;
             break;
@@ -353,8 +360,11 @@ function uids_base_preprocess_layout(&$variables) {
     }
     if ($contains_title) {
       $variables['attributes']['class'][] = 'layout--title';
-      if ($contains_background) {
+      if ($contains_background && $variables['has_node_image']) {
         $variables['attributes']['class'][] = 'layout--title--with-background';
+      }
+      else {
+        $variables['attributes']['class'][] = 'layout--onecol--no--background';
       }
 
       if ($title_hidden) {
@@ -426,6 +436,36 @@ function uids_base_preprocess_block(&$variables) {
 
   if ($variables['derivative_plugin_id'] == 'uiowa_aggregator') {
     $variables['#attached']['library'][] = 'uids_base/aggregator';
+  }
+
+  if ($variables['derivative_plugin_id'] == 'uiowa_banner') {
+    /** @var \Drupal\Block\Entity\Block $block */
+    $block = $variables['elements']['content']['#block_content'];
+
+    // Remove headline classes from attributes.
+    $variables['headline_classes'] = array_filter($variables['elements']['#layout_builder_style'], function ($v) {
+      return substr($v, 0, 13) === 'bold-headline';
+    });
+
+    // Change link style to match highlight, if set.
+    if (in_array('bold-headline--highlight', $variables['headline_classes'])) {
+      $highlight_classes = 'bttn bttn--secondary bttn--caps';
+    }
+    else {
+      $highlight_classes = 'bttn bttn--primary bttn--caps';
+    }
+
+    $variables['links'] = [];
+
+    if ($block->hasField('field_uiowa_banner_link')) {
+      foreach ($block->get('field_uiowa_banner_link')->getIterator() as $link) {
+        $variables['links'][] = [
+          'link_url' => $link->getUrl()->toString(),
+          'link_text' => $link->get('title')->getString(),
+          'link_classes' => $highlight_classes,
+        ];
+      }
+    }
   }
 
 }
@@ -646,7 +686,7 @@ function uids_base_preprocess_aggregator_item(&$variables) {
 
     // Loop through the map to check if any of them are being used and
     // adjust the view mode accordingly. Last one wins out.
-    if ($variables['parent_lb_styles']) {
+    if (isset($variables['parent_lb_styles'])) {
       foreach ($media_formats as $style => $view_mode) {
         if (in_array($style, $variables['parent_lb_styles'])) {
           $image_view_mode = $view_mode;
@@ -657,7 +697,7 @@ function uids_base_preprocess_aggregator_item(&$variables) {
     // A local feed image should take precedence.
     if ($media = Media::load($mid)) {
       $variables['feed_image'] = \Drupal::entityTypeManager()->getViewBuilder('media')->view($media, $image_view_mode);
-      if (!in_array($view_mode, $variables["feed_image"]["#cache"]["keys"])) {
+      if (!in_array($image_view_mode, $variables["feed_image"]["#cache"]["keys"])) {
         unset($variables["feed_image"]["#cache"]["keys"]);
       }
     }

@@ -13,15 +13,14 @@ dependencies:
     - field.field.node.person.field_person_first_name
     - field.field.node.person.field_person_hide
     - field.field.node.person.field_person_last_name
-    - field.field.node.person.field_person_mentor_dept
-    - field.field.node.person.field_person_mentor_project
+    - field.field.node.person.field_person_mentor_qualif
+    - field.field.node.person.field_person_mentor_ug_role
     - field.field.node.person.field_person_phone
     - field.field.node.person.field_person_position
-    - field.field.node.person.field_person_project_assistants
-    - field.field.node.person.field_person_project_desc
-    - field.field.node.person.field_person_project_qualif
-    - field.field.node.person.field_person_project_undergrad
     - field.field.node.person.field_person_research_areas
+    - field.field.node.person.field_person_research_assistants
+    - field.field.node.person.field_person_research_desc
+    - field.field.node.person.field_person_research_project
     - field.field.node.person.field_person_scholar_abstract
     - field.field.node.person.field_person_scholar_institution
     - field.field.node.person.field_person_scholar_mentor_link
@@ -30,11 +29,13 @@ dependencies:
     - field.field.node.person.field_person_website
     - field.field.node.person.field_tags
     - field.field.node.person.field_teaser
+    - field.field.node.person.field_uiowa_college
     - node.type.person
   module:
     - link
     - options
     - smart_trim
+    - telephone
     - text
     - user
 id: node.person.teaser
@@ -59,46 +60,28 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-  field_person_mentor_dept:
-    type: list_default
+  field_person_email:
+    type: email_mailto
     weight: 2
-    region: content
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-  field_person_mentor_project:
-    type: text_default
-    weight: 6
     region: content
     label: inline
     settings: {  }
     third_party_settings: {  }
+  field_person_phone:
+    weight: 3
+    label: inline
+    settings:
+      title: ''
+    third_party_settings: {  }
+    type: telephone_link
+    region: content
   field_person_position:
     type: string
     weight: 1
     region: content
-    label: hidden
+    label: visually_hidden
     settings:
       link_to_entity: false
-    third_party_settings: {  }
-  field_person_project_desc:
-    type: smart_trim
-    weight: 7
-    region: content
-    label: inline
-    settings:
-      trim_length: 100
-      trim_type: words
-      trim_suffix: ''
-      wrap_class: trimmed
-      more_link: true
-      more_text: More
-      more_class: grad-more-link
-      trim_options:
-        text: true
-        trim_zero: true
-      wrap_output: false
-      summary_handler: full
     third_party_settings: {  }
   field_person_scholar_abstract:
     type: smart_trim
@@ -119,35 +102,35 @@ content:
       wrap_output: false
       summary_handler: full
     third_party_settings: {  }
-  field_person_scholar_institution:
-    type: text_default
-    weight: 3
-    region: content
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-  field_person_scholar_mentor_link:
-    type: link
-    weight: 4
-    region: content
-    label: inline
-    settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
-  field_person_scholar_srop_year:
-    type: entity_reference_label
-    weight: 5
-    region: content
-    label: inline
-    settings:
-      link: true
-    third_party_settings: {  }
+    field_person_scholar_institution:
+      type: text_default
+      weight: 3
+      region: content
+      label: hidden
+      settings: {  }
+      third_party_settings: {  }
+    field_person_scholar_mentor_link:
+      type: link
+      weight: 4
+      region: content
+      label: inline
+      settings:
+        trim_length: 80
+        url_only: false
+        url_plain: false
+        rel: ''
+        target: ''
+      third_party_settings: {  }
+    field_person_scholar_srop_year:
+      type: entity_reference_label
+      weight: 5
+      region: content
+      label: inline
+      settings:
+        link: true
+      third_party_settings: {  }
   links:
-    weight: 9
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -160,13 +143,18 @@ hidden:
   field_person_first_name: true
   field_person_hide: true
   field_person_last_name: true
-  field_person_phone: true
-  field_person_project_assistants: true
-  field_person_project_qualif: true
-  field_person_project_undergrad: true
+  field_person_mentor_qualif: true
+  field_person_mentor_ug_role: true
   field_person_research_areas: true
+  field_person_research_assistants: true
+  field_person_research_desc: true
+  field_person_research_project: true
+  field_person_scholar_institution: true
+  field_person_scholar_mentor_link: true
+  field_person_scholar_srop_year: true
   field_person_types: true
   field_person_website: true
   field_tags: true
   field_teaser: true
+  field_uiowa_college: true
   search_api_excerpt: true

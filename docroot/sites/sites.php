@@ -1901,3 +1901,21 @@ $sites['provost.local.drupal.uiowa.edu'] = 'provost.uiowa.edu';
 $sites['provost.dev.drupal.uiowa.edu'] = 'provost.uiowa.edu';
 $sites['provost.stage.drupal.uiowa.edu'] = 'provost.uiowa.edu';
 $sites['provost.prod.drupal.uiowa.edu'] = 'provost.uiowa.edu';
+
+// Directory aliases for fiegel.lab.uiowa.edu.
+$sites['labfiegel.local.drupal.uiowa.edu'] = 'fiegel.lab.uiowa.edu';
+$sites['labfiegel.dev.drupal.uiowa.edu'] = 'fiegel.lab.uiowa.edu';
+$sites['labfiegel.stage.drupal.uiowa.edu'] = 'fiegel.lab.uiowa.edu';
+$sites['labfiegel.prod.drupal.uiowa.edu'] = 'fiegel.lab.uiowa.edu';
+
+// Directory aliases for nads.uiowa.edu.
+$sites['nads.local.drupal.uiowa.edu'] = 'nads.uiowa.edu';
+$sites['nads.dev.drupal.uiowa.edu'] = 'nads.uiowa.edu';
+$sites['nads.stage.drupal.uiowa.edu'] = 'nads.uiowa.edu';
+$sites['nads.prod.drupal.uiowa.edu'] = 'nads.uiowa.edu';
+
+// Directory aliases for pchs.lhpdc.law.uiowa.edu.
+$sites['lawlhpdcpchs.local.drupal.uiowa.edu'] = 'pchs.lhpdc.law.uiowa.edu';
+$sites['lawlhpdcpchs.dev.drupal.uiowa.edu'] = 'pchs.lhpdc.law.uiowa.edu';
+$sites['lawlhpdcpchs.stage.drupal.uiowa.edu'] = 'pchs.lhpdc.law.uiowa.edu';
+$sites['lawlhpdcpchs.prod.drupal.uiowa.edu'] = 'pchs.lhpdc.law.uiowa.edu';
