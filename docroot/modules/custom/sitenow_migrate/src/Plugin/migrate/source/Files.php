@@ -83,6 +83,11 @@ class Files extends SqlBase {
    * Prepare row used for altering source data prior to its insertion.
    */
   public function prepareRow(Row $row) {
+    // Skip if the file is in the private directory, because
+    // we won't be able to download it directly.
+    if (str_starts_with($row->getSourceProperty('uri'), "private://")) {
+      return FALSE;
+    }
     // Create source filepath based on URI.
     $row->setSourceProperty('uri', str_replace("public://", "", $row->getSourceProperty('uri')));
 
