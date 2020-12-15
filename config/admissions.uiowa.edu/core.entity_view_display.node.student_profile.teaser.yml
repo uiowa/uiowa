@@ -22,7 +22,6 @@ dependencies:
     - node.type.student_profile
   module:
     - address
-    - heading
     - image
     - lazy
     - options
@@ -33,26 +32,9 @@ targetEntityType: node
 bundle: student_profile
 mode: teaser
 content:
-  field_image:
-    type: entity_reference_entity_view
-    weight: 1
-    region: content
-    label: visually_hidden
-    settings:
-      view_mode: medium__square
-      link: false
-    third_party_settings: {  }
-  field_person_first_name:
-    type: heading_text
-    weight: 2
-    region: content
-    label: visually_hidden
-    settings:
-      size: h2
-    third_party_settings: {  }
   field_person_hometown:
     type: string
-    weight: 4
+    weight: 2
     region: content
     label: visually_hidden
     settings:
@@ -60,28 +42,28 @@ content:
     third_party_settings: {  }
   field_person_territory:
     type: list_default
-    weight: 5
+    weight: 3
     region: content
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
   field_student_profile_blurb:
     type: text_default
-    weight: 7
+    weight: 5
     region: content
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
   field_student_profile_country:
     type: address_country_default
-    weight: 6
+    weight: 4
     region: content
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
   field_student_profile_major:
     type: entity_reference_label
-    weight: 3
+    weight: 1
     region: content
     label: visually_hidden
     settings:
@@ -102,6 +84,8 @@ content:
         data_uri: false
 hidden:
   body: true
+  field_image: true
+  field_person_first_name: true
   field_person_last_name: true
   field_student_profile_attributes: true
   field_student_profile_gender: true
