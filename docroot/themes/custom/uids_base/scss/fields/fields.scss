@@ -21,8 +21,10 @@
   margin-bottom: $sm;
 }
 
-.field--label-inline > * {
-  display: inline;
+.field--label-inline {
+  * {
+    display: inline;
+  }
 }
 
 .field__item {
@@ -41,6 +43,23 @@
 .field--type-text-long.field--label-inline {
   p {
     display: inline;
+  }
+}
+
+.field--label-inline.field--type-entity-reference,
+.field--label-inline.field--type-link {
+  .field__item  + .field__item {
+    &:before {
+      content: ",";
+      padding-right: $xsm;
+      margin-left: -3px;
+    }
+  }
+}
+
+.field--label-inline.field--type-link {
+  .link-title {
+    margin-right: $xsm;
   }
 }
 
