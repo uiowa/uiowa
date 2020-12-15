@@ -90,6 +90,7 @@
  * @ingroup themeable
  */
 #}
+{{ attach_library('admissions_core/person') }}
 {% if title %}
   <h3>{{ title }}</h3>
 {% endif %}
@@ -105,7 +106,7 @@
     set classes = [
         'card--list',
         'card--media-left',
-        'media--border',
+        'media--square',
         'card--centered-left',
         'card--alignment-left'
     ]
@@ -120,7 +121,7 @@
         'person_hometown': view.style_plugin.getField(key, 'field_person_hometown'),
         'person_territory': view.style_plugin.getField(key, 'field_person_territory'),
         'person_country': view.style_plugin.getField(key, 'field_student_profile_country'),
-        'media_attributes': media_attributes.addClass('media--circle card__media--small card__media'),
+        'media_attributes': media_attributes.addClass('card__media--medium card__media'),
     } %}
 
     {% embed '@uids_base/uids/card.html.twig' with person_card_view only %}
@@ -145,10 +146,11 @@
 
     {% block card_tag %}
         {% if person_hometown|striptags|trim is not empty %}
-            <div class="card__text"><span class="fas fa-map-marker-alt"></span> {{ person_hometown }} </div>
+            <div class="card__date"><span class="fas fa-map-marker-alt"></span> {{ person_hometown }} </div>
         {% endif %}
         {% if person_blurb|striptags|trim is not empty %}
-            {{ person_blurb }}
+          <hr class="element--spacer-gold" />
+          <div class="lead">{{ person_blurb|striptags|trim }}</div>
         {% endif %}
     {% endblock %}
 
