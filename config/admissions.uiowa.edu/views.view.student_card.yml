@@ -3,9 +3,11 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_image
+    - field.storage.node.field_student_profile_photo
+    - image.style.grid_gallery
     - node.type.student_profile
   module:
+    - image
     - node
     - user
 id: student_card
@@ -136,10 +138,10 @@ display:
           entity_type: node
           entity_field: title
           plugin_id: field
-        field_image:
-          id: field_image
-          table: node__field_image
-          field: field_image
+        field_student_profile_photo:
+          id: field_student_profile_photo
+          table: node__field_student_profile_photo
+          field: field_student_profile_photo
           relationship: none
           group_type: group
           admin_label: ''
@@ -152,8 +154,8 @@ display:
             path: '/{{ title }}'
             absolute: false
             external: false
-            replace_spaces: true
-            path_case: lower
+            replace_spaces: false
+            path_case: none
             trim_whitespace: false
             alt: '{{ title }}'
             rel: ''
@@ -185,10 +187,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_entity_view
+          type: image
           settings:
-            view_mode: grid_gallery
-          group_column: target_id
+            image_style: grid_gallery
+            image_link: content
+          group_column: ''
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -267,10 +270,10 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
-        - 'config:field.storage.node.field_image'
-  block_1:
+        - 'config:field.storage.node.field_student_profile_photo'
+  block_student_grid:
     display_plugin: block
-    id: block_1
+    id: block_student_grid
     display_title: Block
     position: 1
     display_options:
@@ -284,4 +287,4 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
-        - 'config:field.storage.node.field_image'
+        - 'config:field.storage.node.field_student_profile_photo'

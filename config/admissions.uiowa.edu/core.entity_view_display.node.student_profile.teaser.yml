@@ -16,11 +16,15 @@ dependencies:
     - field.field.node.student_profile.field_student_profile_gender
     - field.field.node.student_profile.field_student_profile_grad_date
     - field.field.node.student_profile.field_student_profile_major
+    - field.field.node.student_profile.field_student_profile_photo
     - field.field.node.student_profile.field_student_profile_videos
+    - image.style.square__768_x_768
     - node.type.student_profile
   module:
     - address
     - heading
+    - image
+    - lazy
     - options
     - smart_trim
     - user
@@ -31,7 +35,7 @@ mode: teaser
 content:
   field_image:
     type: entity_reference_entity_view
-    weight: 0
+    weight: 1
     region: content
     label: visually_hidden
     settings:
@@ -40,7 +44,7 @@ content:
     third_party_settings: {  }
   field_person_first_name:
     type: heading_text
-    weight: 1
+    weight: 2
     region: content
     label: visually_hidden
     settings:
@@ -48,7 +52,7 @@ content:
     third_party_settings: {  }
   field_person_hometown:
     type: string
-    weight: 3
+    weight: 4
     region: content
     label: visually_hidden
     settings:
@@ -56,14 +60,14 @@ content:
     third_party_settings: {  }
   field_person_territory:
     type: list_default
-    weight: 4
+    weight: 5
     region: content
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
   field_student_profile_blurb:
     type: smart_trim
-    weight: 6
+    weight: 7
     region: content
     label: visually_hidden
     settings:
@@ -82,19 +86,32 @@ content:
     third_party_settings: {  }
   field_student_profile_country:
     type: address_country_default
-    weight: 5
+    weight: 6
     region: content
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
   field_student_profile_major:
     type: entity_reference_label
-    weight: 2
+    weight: 3
     region: content
     label: visually_hidden
     settings:
       link: true
     third_party_settings: {  }
+  field_student_profile_photo:
+    type: image
+    weight: 0
+    region: content
+    label: visually_hidden
+    settings:
+      image_style: square__768_x_768
+      image_link: content
+    third_party_settings:
+      lazy:
+        placeholder_style: ''
+        lazy_image: '0'
+        data_uri: false
 hidden:
   body: true
   field_person_last_name: true

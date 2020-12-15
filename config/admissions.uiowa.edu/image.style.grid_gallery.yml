@@ -1,15 +1,17 @@
 uuid: 1a6fa31d-a37e-4f3d-bd9a-d202527dd170
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - focal_point
 name: grid_gallery
 label: 'Grid Gallery'
 effects:
-  91ae1cad-d68c-4fe6-979f-0db359110daa:
-    uuid: 91ae1cad-d68c-4fe6-979f-0db359110daa
-    id: image_scale
-    weight: 1
+  8f28a33f-f203-4b33-8a60-5a2cf2fcd4a1:
+    uuid: 8f28a33f-f203-4b33-8a60-5a2cf2fcd4a1
+    id: focal_point_scale_and_crop
+    weight: 2
     data:
-      width: 768
-      height: null
-      upscale: true
+      width: 236
+      height: 236
+      crop_type: focal_point

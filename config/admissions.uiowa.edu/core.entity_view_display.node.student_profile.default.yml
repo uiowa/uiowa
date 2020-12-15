@@ -16,12 +16,14 @@ dependencies:
     - field.field.node.student_profile.field_student_profile_gender
     - field.field.node.student_profile.field_student_profile_grad_date
     - field.field.node.student_profile.field_student_profile_major
+    - field.field.node.student_profile.field_student_profile_photo
     - field.field.node.student_profile.field_student_profile_videos
     - node.type.student_profile
     - views.view.student_card
   module:
     - address
     - heading
+    - image
     - layout_builder
     - layout_builder_restrictions
     - options
@@ -119,19 +121,6 @@ third_party_settings:
             section_alignment_start: section_alignment_start
         components:
           -
-            uuid: 6183bf4a-ee2c-4525-83fd-42252dc07eb4
-            region: second
-            configuration:
-              id: 'views_block:student_card-block_1'
-              label: null
-              provider: views
-              label_display: null
-              views_label: ''
-              items_per_page: '6'
-              context_mapping: {  }
-            additional: {  }
-            weight: 0
-          -
             uuid: d2a854e7-c288-434c-a708-43d287bb9c86
             region: first
             configuration:
@@ -179,7 +168,7 @@ third_party_settings:
                 label: inline
                 type: entity_reference_label
                 settings:
-                  link: true
+                  link: false
                 third_party_settings: {  }
               context_mapping:
                 entity: layout_builder.entity
@@ -240,6 +229,19 @@ third_party_settings:
                 block_margin_left: block_margin_left
                 block_margin_top: block_margin_top
                 0: ''
+            weight: 2
+          -
+            uuid: f445c4a1-ce0b-4ebc-a6f6-2105893b26ab
+            region: second
+            configuration:
+              id: 'views_block:student_card-block_student_grid'
+              label: null
+              provider: views
+              label_display: null
+              views_label: ''
+              items_per_page: none
+              context_mapping: {  }
+            additional: {  }
             weight: 1
         third_party_settings:
           layout_builder_lock:
@@ -365,6 +367,15 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
+  field_student_profile_photo:
+    weight: 11
+    label: above
+    settings:
+      image_style: ''
+      image_link: ''
+    third_party_settings: {  }
+    type: image
     region: content
   field_student_profile_videos:
     type: entity_reference_entity_view
