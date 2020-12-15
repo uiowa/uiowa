@@ -90,9 +90,10 @@ class ProfileController extends ControllerBase {
           '#type' => 'html_tag',
           '#tag' => 'apr-directory',
           '#attributes' => [
-            'api-key' => $this->config('uiowa_apr.settings')->get('api_key'),
+            'api-key' => $this->apr->config->get('api_key'),
             'slug' => $slug,
-            'title-selector' => $this->config('uiowa_apr.settings')->get('title_selector'),
+            'title-selector' => 'h1.page-title',
+            ':show-title' => 'false',
           ],
         ],
         'profile' => [

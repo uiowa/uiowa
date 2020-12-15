@@ -90,9 +90,9 @@ class DirectoryController extends ControllerBase {
       '#attributes' => [
         'api-key' => $this->apr->config->get('api_key'),
         'title' => $this->apr->config->get('directory.title'),
-        'title-selector' => NULL,
+        'title-selector' => 'h1.page-title',
         ':page-size' => $this->apr->config->get('directory.page_size'),
-        ':show-title' => FALSE,
+        ':show-title' => 'false',
         ':show-switcher' => $this->apr->config->get('directory.show_switcher'),
       ],
     ];
