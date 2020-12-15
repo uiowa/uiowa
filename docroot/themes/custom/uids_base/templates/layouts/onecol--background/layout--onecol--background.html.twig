@@ -19,7 +19,7 @@
     'banner--gradient-bottom',
     'banner--gradient-dark',
     'banner--horizontal-left',
-    "banner--#{field_featured_image_size}",
+    field_featured_image_size ? "banner--#{field_featured_image_size}" : 'banner--large',
     'banner--vertical-bottom',
     layout.template|clean_class,
   ] %}
