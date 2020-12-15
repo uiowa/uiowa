@@ -33,6 +33,17 @@
         }
     };
 
+  Drupal.behaviors.layoutBuilderDoubleClick = {
+    attach: function(context, settings) {
+      const $blocks = $('#layout-builder [data-layout-block-uuid]', context);
+      $blocks.on('dblclick', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        $(this).find('.contextual-links li.layout-builder-block-update > a').click();
+      })
+    }
+  }
+
   // Allows saving filtered and minimal html content while Source is open.
   // Solution from https://www.drupal.org/project/drupal/issues/3095304.
   var origBeforeSubmit = Drupal.Ajax.prototype.beforeSubmit;
