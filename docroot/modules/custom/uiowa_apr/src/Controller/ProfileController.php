@@ -4,6 +4,7 @@ namespace Drupal\uiowa_apr\Controller;
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\uiowa_apr\Apr;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -22,11 +23,11 @@ class ProfileController extends ControllerBase {
   protected $httpClient;
 
   /**
-   * The base API endpoint.
+   * The APR service.
    *
-   * @var string
+   * @var \Drupal\uiowa_apr\Apr
    */
-  protected $endpoint;
+  protected $apr;
 
   /**
    * The controller constructor.
@@ -34,8 +35,9 @@ class ProfileController extends ControllerBase {
    * @param \GuzzleHttp\ClientInterface $http_client
    *   The HTTP client.
    */
-  public function __construct(ClientInterface $http_client) {
+  public function __construct(ClientInterface $http_client, Apr $apr) {
     $this->httpClient = $http_client;
+    $this->apr = $apr;
 
   }
 
@@ -44,7 +46,8 @@ class ProfileController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('http_client')
+      $container->get('http_client'),
+      $container->get('uiowa_apr.apr')
     );
   }
 
@@ -55,17 +58,14 @@ class ProfileController extends ControllerBase {
    *   The slugified profile name.
    */
   public function build($slug) {
-    $apr = $this->config('uiowa_apr.settings');
-    $env = $apr->get('environment');
-
     $params = UrlHelper::buildQuery([
-      'key' => $this->config('uiowa_apr.settings')->get('api_key'),
+      'key' => $this->apr->config->get('api_key'),
       'collapse' => 'false',
       'title' => 'false',
     ]);
 
     try {
-      $response = $this->httpClient->request('GET', "{$this->endpoint}/people/{$slug}?{$params}");
+      $response = $this->httpClient->request('GET', "{$this->apr->endpoint}/people/{$slug}?{$params}");
       $data = $response->getBody()->getContents();
     }
     catch (RequestException $e) {
@@ -76,7 +76,7 @@ class ProfileController extends ControllerBase {
       $build = [
         '#attached' => [
           'library' => [
-            "uiowa_apr/apr.{$env}",
+            "uiowa_apr/apr.{$this->apr->environment}",
           ],
         ],
         '#type' => 'container',
@@ -118,8 +118,8 @@ class ProfileController extends ControllerBase {
    * Dynamic page title route callback.
    */
   public function title(Request $request, $slug) {
-    $params = UrlHelper::buildQuery(['key' => $this->config('uiowa_apr.settings')->get('api_key')]);
-    $response = $this->httpClient->request('GET', "{$this->endpoint}/people/{$slug}/meta?{$params}");
+    $params = UrlHelper::buildQuery(['key' => $this->apr->config->get('api_key')]);
+    $response = $this->httpClient->request('GET', "{$this->apr->endpoint}/people/{$slug}/meta?{$params}");
 
     if ($contents = $response->getBody()->getContents()) {
       $meta = json_decode($contents);
@@ -130,7 +130,7 @@ class ProfileController extends ControllerBase {
 
       $build['#attached']['html_head_link'][][] = [
         'rel' => 'canonical',
-        'href' => $this->config('uiowa_apr.settings')->get('directory.canonical') ?? $request->getHost(),
+        'href' => $this->apr->config->get('directory.canonical') ?? $request->getHost(),
       ];
 
       return $build;
