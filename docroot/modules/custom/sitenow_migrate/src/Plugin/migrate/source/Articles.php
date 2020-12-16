@@ -39,8 +39,8 @@ class Articles extends BaseNodeSource {
    * {@inheritdoc}
    */
   public function query() {
-    $query = $this->select('field_data_field_article_body', 'b');
-    $query->join('node', 'n', 'n.nid = b.entity_id');
+    $query = parent::query();
+    $query->join('field_data_field_article_body', 'b', 'n.nid = b.entity_id');
     $query->join('field_data_field_image', 'i', 'n.nid = i.entity_id');
     $query = $query->fields('b', [
       'entity_type',
