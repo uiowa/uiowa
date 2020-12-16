@@ -64,7 +64,7 @@ display:
           col_class_default: true
           col_class_custom: ''
           row_class_default: true
-          row_class_custom: ''
+          row_class_custom: 'bg--gray block-padding__right block-padding__left block-padding__bottom block-margin__bottom'
       row:
         type: fields
         options:
@@ -253,7 +253,7 @@ display:
           empty: false
           tokenize: false
           content:
-            value: '<div class="text-align-left"><h4 class="headline headline--serif headline--underline"><span class="fas fa-user"></span> &nbsp;<a href="/student-profiles">Student Profiles</a></h4></div>'
+            value: '<div class="bg--gray block-padding__top block-padding__right block-padding__left"><h4 class="headline headline--serif headline--underline"><span class="fas fa-user"></span> &nbsp;<a href="/student-profiles">Student Profiles</a></h4></div>'
             format: filtered_html
           plugin_id: text
       footer:
@@ -267,14 +267,14 @@ display:
           empty: false
           tokenize: false
           content:
-            value: '<br><a class="bttn bttn--primary bttn--caps" href="https://apply.admissions.uiowa.edu/admissions/login.page" target="_blank" title="APPLY NOW!">APPLY NOW!</a>'
+            value: "<br><p><a class=\"bttn bttn--full bttn--primary bttn--caps\" href=\"https://apply.admissions.uiowa.edu/admissions/login.page\">Apply Now <span class=\"fa-arrow-right fas\"></span> </a></p>\r\n"
             format: filtered_html
           plugin_id: text
       empty: {  }
       relationships: {  }
       arguments: {  }
       display_extenders: {  }
-      css_class: 'bg--gray block-padding__all block-margin__left'
+      css_class: ''
     cache_metadata:
       max-age: 0
       contexts:
