@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "37860535588d0173fc5e32eaad69db89",
+    "content-hash": "f469f7f178775fbe49b57e033f6742e2",
     "packages": [
         {
             "name": "acquia/blt",
@@ -5869,6 +5869,47 @@
             "homepage": "https://www.drupal.org/project/layout_builder_restrictions",
             "support": {
                 "source": "https://git.drupalcode.org/project/layout_builder_restrictions"
+            }
+        },
+        {
+            "name": "drupal/layout_builder_shortcuts",
+            "version": "dev-1.0.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/layout_builder_shortcuts.git",
+                "reference": "5cbeec3e4e2f19874dfeaf36345f67d38ef5fd8d"
+            },
+            "require": {
+                "drupal/core": "^8.8 || ^9"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.0.x": "1.0.x-dev"
+                },
+                "drupal": {
+                    "version": "1.0.x-dev",
+                    "datestamp": "1608129839",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "pyrello",
+                    "homepage": "https://www.drupal.org/user/62893"
+                }
+            ],
+            "description": "Provides a shortcut for editing blocks in Layout Builder.",
+            "homepage": "https://www.drupal.org/project/layout_builder_shortcuts",
+            "support": {
+                "source": "https://git.drupalcode.org/project/layout_builder_shortcuts"
             }
         },
         {
@@ -19558,6 +19599,7 @@
         "drupal/entity_usage": 15,
         "drupal/fragments": 10,
         "drupal/layout_builder_lock": 5,
+        "drupal/layout_builder_shortcuts": 20,
         "drupal/layout_builder_styles": 10,
         "drupal/lb_direct_add": 20,
         "drupal/masquerade": 10,
