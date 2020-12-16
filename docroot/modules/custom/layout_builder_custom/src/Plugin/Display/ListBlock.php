@@ -22,6 +22,8 @@ class ListBlock extends CoreBlock {
     $filter_options = [
       'items_per_page' => $this->t('Items per page'),
       'offset' => $this->t('Pager offset'),
+      'display_more_link' => $this->t('Display more link'),
+      'sort_sorts' => $this->t('Adjust the order of sorts'),
       'filter_in_block' => $this->t('Set exposed filters in block settings.'),
     ];
     $filter_intersect = array_intersect_key($filter_options, $filtered_allow);
@@ -40,6 +42,9 @@ class ListBlock extends CoreBlock {
     parent::buildOptionsForm($form, $form_state);
 
     $form['allow']['#options']['offset'] = $this->t('Pager offset');
+    // @todo Figure out how to add an option to set help text for more link.
+    $form['allow']['#options']['display_more_link'] = $this->t('Display more link');
+    $form['allow']['#options']['sort_sorts'] = $this->t('Adjust the order of sorts');
     $form['allow']['#options']['filter_in_block'] = $this->t('Set filters in block');
 
     $defaults = [];
@@ -83,14 +88,37 @@ class ListBlock extends CoreBlock {
       $form['override']['pager'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Display pager'),
-        '#default_value' => isset($block_configuration['pager_display']) ? $block_configuration : FALSE,
+        '#default_value' => isset($block_configuration['pager_display']) ? $block_configuration['pager_display'] : FALSE,
       ];
     }
 
-    // @todo Add "Display more" toggle.
-    // @todo Add "Display more path" setting.
-    // @todo Only show "Display more path" setting when "Display more" is checked.
-    // @todo Add "Sort" setting. How to populate this from the view?
+    if (!empty($allow_settings['display_more_link'])) {
+      $form['override']['display_more_toggle'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Display More link')
+      ];
+
+      // @todo Figure out how to make the style of this field
+      //   look like other LinkIt fields.
+      $form['override']['display_more_path'] = [
+        '#type' => 'linkit',
+        '#title' => $this->t('Path'),
+        '#description' => $this->t('Start typing to see a list of results. Click to select.'),
+        '#autocomplete_route_name' => 'linkit.autocomplete',
+        '#autocomplete_route_parameters' => [
+          'linkit_profile_id' => 'default',
+        ],
+        '#default_value' => isset($block_configuration['display_more_path']) ? $block_configuration['display_more_path'] : NULL,
+      ];
+      $form['#attached']['library'][] = 'linkit/linkit.autocomplete';
+      // @todo Add "Display more path" setting.
+      // @todo Only show "Display more path" setting when "Display more" is checked.
+    }
+
+    if (!empty($allow_settings['sort_sorts'])) {
+      // @todo Add "Sort" setting. How to populate this from the view?
+    }
+
     // Provide "Exposed filters" block settings form.
     if (!empty($allow_settings['filter_in_block'])) {
       $items = [];
@@ -148,10 +176,15 @@ class ListBlock extends CoreBlock {
         'pager_offset',
       ]);
     }
+    if (!empty($allow_settings['display_more_link'])) {
+      // @todo Save "Display pager" setting to block configuration.
+      // @todo Save "Display more path" setting to block configuration.
+    }
 
-    // @todo Save "Display pager" setting to block configuration.
-    // @todo Save "Display more path" setting to block configuration.
-    // @todo Save "Sort" setting to block configuration.
+    if (!empty($allow_settings['sort_sorts'])) {
+      // @todo Save "Sort" setting to block configuration.
+    }
+
     // Save "Filter in block" settings to block configuration.
     if (!empty($allow_settings['filter_in_block'])) {
       if ($filters = $form_state->getValue(['override', 'filters'])) {
