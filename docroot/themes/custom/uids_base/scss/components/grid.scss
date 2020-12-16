@@ -5,48 +5,26 @@
 @mixin inner-grid($parent) {
   .inner--grid.grid--twocol--50-50 {
     @if $parent >= 50 {
-      @include breakpoint(sm) {
+      @media screen and (min-width: 768px) {
         .aggregator-wrapper,
         .view-content,
         .list-wrapper {
           display: grid;
-          gap: 1.5rem;
-          grid-template-columns: repeat(auto-fill, minmax(48%, 1fr));
+          gap: 3rem;
+          grid-template-columns: repeat(auto-fill, minmax(46.7%, 1fr));
         }
       }
     }
   }
   .inner--grid.grid--threecol--33-34-33 {
     @if $parent >= 75 {
-      @include breakpoint(sm) {
+      @media (min-width: 40em) and (max-width: 58.125em) {
         .aggregator-wrapper,
         .view-content,
         .list-wrapper {
           display: grid;
-          gap: 1.5rem;
-          grid-template-columns: repeat(auto-fill, minmax(31.63%, 1fr));
-        }
-      }
-    }
-  }
-  .inner--grid.grid--threecol--30-40-30 {
-    @if $parent >= 75 {
-      @include breakpoint(sm) {
-        .aggregator-wrapper,
-        .view-content,
-        .list-wrapper {
-          display: grid;
-          gap: 1.5rem;
-          grid-template-columns: repeat(auto-fill, minmax(31.63%, 1fr));
-        }
-      }
-      @include breakpoint(md) {
-        .aggregator-wrapper,
-        .view-content,
-        .list-wrapper {
-          display: grid;
-          gap: 1.5rem;
-          grid-template-columns: repeat(auto-fill, minmax(28%,1fr) minmax(38%,1fr) minmax(28%,1fr));
+          gap: 3rem;
+          grid-template-columns: repeat(auto-fill, minmax(29.74%, 1fr));
         }
       }
     }
