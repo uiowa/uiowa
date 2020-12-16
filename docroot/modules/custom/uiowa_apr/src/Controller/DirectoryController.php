@@ -2,6 +2,7 @@
 
 namespace Drupal\uiowa_apr\Controller;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\uiowa_apr\Apr;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -68,12 +69,12 @@ class DirectoryController extends ControllerBase {
       '#type' => 'html_tag',
       '#tag' => 'apr-directory',
       '#attributes' => [
-        'api-key' => $this->apr->config->get('api_key'),
-        'title' => $this->apr->config->get('directory.title'),
+        'api-key' => Html::escape($this->apr->config->get('api_key')),
+        'title' => Html::escape($this->apr->config->get('directory.title')),
         'title-selector' => 'h1.page-title',
-        ':page-size' => $this->apr->config->get('directory.page_size'),
+        ':page-size' => Html::escape($this->apr->config->get('directory.page_size')),
         ':show-title' => 'false',
-        ':show-switcher' => $this->apr->config->get('directory.show_switcher'),
+        ':show-switcher' => Html::escape($this->apr->config->get('directory.show_switcher')),
       ],
       'intro' => [
         '#type' => 'html_tag',
@@ -86,7 +87,7 @@ class DirectoryController extends ControllerBase {
     ];
 
     if ($slug) {
-      $build['directory']['#attributes']['slug'] = $slug;
+      $build['directory']['#attributes']['slug'] = Html::escape($slug);
     }
 
     return $build;
@@ -113,7 +114,7 @@ class DirectoryController extends ControllerBase {
 
       $build['#attached']['html_head_link'][][] = [
         'rel' => 'canonical',
-        'href' => $this->apr->config->get('directory.canonical') ?? $request->getHost(),
+        'href' => Html::escape($this->apr->config->get('directory.canonical')) ?? $request->getHost(),
       ];
     }
     else {
