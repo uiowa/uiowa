@@ -124,7 +124,7 @@ class Apr {
    * @param string $slug
    *   The person slug.
    *
-   * @return array
+   * @return object
    *   The decoded JSON array of metadata information.
    */
   public function getMeta($slug) {
