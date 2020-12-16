@@ -10,13 +10,22 @@
         .view-content,
         .list-wrapper {
           display: grid;
-          gap: 3rem;
+          column-gap: 3rem;
+          row-gap: $gutter;
           grid-template-columns: repeat(auto-fill, minmax(46.7%, 1fr));
           // @todo Remove when uiowa/uiowa#2670 and uiowa/uiowa#2554 are resolved.
           .card.card--media-left,
           .card.card--media-right {
             margin-bottom: 0;
           }
+        }
+      }
+      @media screen and (min-width: 58.125em) {
+        .aggregator-wrapper,
+        .view-content,
+        .list-wrapper {
+          gap: 3rem;
+          grid-template-columns: 1fr 1fr;
         }
       }
     }
