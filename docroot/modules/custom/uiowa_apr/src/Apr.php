@@ -35,7 +35,7 @@ class Apr {
   /**
    * The uiowa_apr logger channel.
    *
-   * @var LoggerInterface
+   * @var \Psr\Log\LoggerInterface
    */
   protected $logger;
 
@@ -54,12 +54,14 @@ class Apr {
   protected $endpoint;
 
   /**
-   * Constructs an Apr object.
+   * Constructs an Apr service object.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config factory.
-   *
-   * @param \GuzzleHttp\ClientInterface
+   * @param \GuzzleHttp\ClientInterface $httpClient
+   *   The HttpClient service.
+   * @param \Psr\Log\LoggerInterface $logger
+   *   The uiowa_apr logger channel.
    */
   public function __construct(ConfigFactoryInterface $config_factory, ClientInterface $httpClient, LoggerInterface $logger) {
     $this->config = $config_factory->get('uiowa_apr.settings');
@@ -122,7 +124,8 @@ class Apr {
    * @param string $slug
    *   The person slug.
    *
-   * @return array|mixed
+   * @return array
+   *   The decoded JSON array of metadata information.
    */
   public function getMeta($slug) {
     $params = UrlHelper::buildQuery(['key' => $this->config->get('api_key')]);
@@ -135,7 +138,8 @@ class Apr {
    * @param string $slug
    *   The person slug.
    *
-   * @return mixed|string
+   * @return string
+   *   The profile HTML string.
    */
   public function getProfile($slug) {
     $params = UrlHelper::buildQuery([
@@ -150,18 +154,17 @@ class Apr {
   /**
    * Make an APR API request.
    *
-   * @param $method
+   * @param string $method
    *   The HTTP method to use.
-   *
-   * @param $endpoint
+   * @param string $endpoint
    *   The API endpoint to query.
-   *
-   * @param false $json
+   * @param bool $json
    *   Whether to return decoded JSON or not.
    *
-   * @return mixed|string
+   * @return mixed
+   *   The API response.
    *
-   * @throws NotFoundHttpException
+   * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
    */
   protected function request($method, $endpoint, $json = FALSE) {
     try {
@@ -169,7 +172,7 @@ class Apr {
       $contents = $response->getBody()->getContents();
 
       if ($json) {
-       return json_decode($contents);
+        return json_decode($contents);
       }
       else {
         return $contents;
@@ -184,6 +187,5 @@ class Apr {
       }
     }
   }
-
 
 }

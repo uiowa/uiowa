@@ -42,6 +42,8 @@ class DirectoryController extends ControllerBase {
    *
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   The current request.
+   * @param string $slug
+   *   The optional person slug. Determines if the directory or profile prints.
    *
    * @return array
    *   The render array.
@@ -80,7 +82,7 @@ class DirectoryController extends ControllerBase {
           'v-slot:introduction' => TRUE,
         ],
         '#markup' => check_markup($this->apr->config->get('directory.intro')['value'], $this->apr->config->get('directory.intro')['format']),
-      ]
+      ],
     ];
 
     if ($slug) {
@@ -94,12 +96,11 @@ class DirectoryController extends ControllerBase {
    * Dynamic route title callback.
    *
    * @param \Symfony\Component\HttpFoundation\Request $request
-   *  The request.
-   *
-   *@ @param string $slug
+   *   The request.
+   * @param string $slug
    *   The optional route parameter person slug.
    *
-   * @return array $build
+   * @return array
    *   The page title render array.
    */
   public function title(Request $request, $slug = NULL) {
@@ -117,7 +118,7 @@ class DirectoryController extends ControllerBase {
     }
     else {
       $build['#markup'] = $this->t('@title', [
-        '@title' => $this->apr->config->get('directory.title') ?? 'People'
+        '@title' => $this->apr->config->get('directory.title') ?? 'People',
       ]);
     }
 

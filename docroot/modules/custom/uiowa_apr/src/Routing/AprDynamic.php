@@ -47,7 +47,7 @@ class AprDynamic implements ContainerInjectionInterface {
       [
         '_controller' => 'Drupal\uiowa_apr\Controller\DirectoryController::build',
         '_title_callback' => 'Drupal\uiowa_apr\Controller\DirectoryController::title',
-        'slug' => NULL
+        'slug' => NULL,
       ],
       [
         '_permission' => 'access content',
