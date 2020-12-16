@@ -56,8 +56,8 @@ class People extends BaseNodeSource {
     $query->leftJoin('field_data_field_person_website', 'w', 'n.nid = w.entity_id');
 
     $query = $query->fields('fn', [
-        'field_people_first_name_value',
-      ])
+      'field_people_first_name_value',
+    ])
       ->fields('ln', [
         'field_people_last_name_value',
       ])

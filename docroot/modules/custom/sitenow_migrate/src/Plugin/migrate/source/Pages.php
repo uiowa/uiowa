@@ -42,10 +42,10 @@ class Pages extends BaseNodeSource {
     $query = parent::query();
     $query->join('field_data_body', 'b', 'n.nid = b.entity_id');
     $query = $query->fields('b', [
-        'body_value',
-        'body_summary',
-        'body_format',
-      ])
+      'body_value',
+      'body_summary',
+      'body_format',
+    ])
       ->condition('n.type', 'page');
     return $query;
   }
