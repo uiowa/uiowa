@@ -1767,7 +1767,6 @@ function sitenow_update_8046() {
     // Use a union to move 'intl' to the front of the array.
     $new_field_storage['settings']['allowed_values'] = ['intl' => 'International Recruitment'] + $new_field_storage['settings']['allowed_values'];
 
-
     // Deleting at the field_storage level takes care of the bundles as well.
     $field_storage->delete();
 
