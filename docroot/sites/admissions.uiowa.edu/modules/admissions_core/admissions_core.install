@@ -5,8 +5,8 @@
  * Install, update and uninstall functions for the Admissions Core module.
  */
 
-use Drupal\Core\Site\Settings;
-use Drupal\Core\Config\FileStorage;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
 
 /**
  * Implements hook_install().
@@ -37,6 +37,135 @@ function admissions_core_update_8001() {
     if (empty($node->get('field_weight')->getValue())) {
       $node->set('field_weight', 0)
         ->save();
+    }
+  }
+}
+
+/**
+ * Update the counselor select list to remove several options.
+ */
+function admissions_core_update_8002() {
+  // Statically defining the field to be updated.
+  $field_name = 'field_person_territory';
+
+  // Get the field and revision storage table names for each field.
+  $table_mapping = \Drupal::service('entity_type.manager')
+    ->getStorage('node')
+    ->getTableMapping();
+  $storage_definitions = \Drupal::service('entity_field.manager')
+    ->getActiveFieldStorageDefinitions('node');
+  $field_definition = $storage_definitions[$field_name];
+
+  $table = $table_mapping->getDedicatedDataTableName($field_definition);
+  $revision_table = $table_mapping->getDedicatedRevisionTableName($field_definition);
+  $field_storage = FieldStorageConfig::loadByName('node', $field_name);
+
+  // Fetch data currently stored in the field and save for later.
+  $database = \Drupal::database();
+  $rows = NULL;
+  $revision_rows = NULL;
+  if ($database->schema()->tableExists($table)) {
+    $rows = $database
+      ->select($table, 't')
+      ->fields('t')
+      ->execute()
+      ->fetchAll();
+    if ($database->schema()->tableExists($revision_table)) {
+      $revision_rows = $database
+        ->select($revision_table, 'r')
+        ->fields('r')
+        ->execute()
+        ->fetchAll();
+    }
+
+    $new_fields = [];
+    $weights = [];
+    foreach ($field_storage->getBundles() as $bundle => $label) {
+      $old_field = FieldConfig::loadByName('node', $bundle, $field_name);
+      $new_field = $old_field->toArray();
+      $new_fields[] = $new_field;
+      // Get the view display weights so we can re-set them later.
+      $entity_view = 'node.' . $bundle . '.default';
+      $view_display = \Drupal::entityTypeManager()
+        ->getStorage('entity_view_display')
+        ->load($entity_view)
+        ->getComponent($field_name);
+      $weights['entity_view_display'][$entity_view] = $view_display['weight'];
+      // Get the form display weights so we can re-set them later.
+      $form_display = \Drupal::entityTypeManager()
+        ->getStorage('entity_form_display')
+        ->load('node.' . $bundle . '.default')
+        ->getComponent($field_name);
+      $weights['entity_form_display']['node.' . $bundle . '.default'] = $form_display['weight'];
+    }
+
+    // Store the old field settings and update with new settings.
+    $new_field_storage = $field_storage->toArray();
+    // Our statically defined list of items to remove, including
+    // American Samoa, Guam, Northern Mariana Islands,
+    // Puerto Rico, United States Minor Outlying Islands, and
+    // Virgin Islands, U.S.
+    $to_remove = [
+      'AS',
+      'GU',
+      'MP',
+      'PR',
+      'UM',
+      'VI',
+    ];
+    foreach ($to_remove as $location) {
+      unset($new_field_storage['settings']['allowed_values'][$location]);
+    }
+    // Use a union to move 'intl' to the front of the array.
+    $new_field_storage['settings']['allowed_values'] = ['intl' => 'International Recruitment'] + $new_field_storage['settings']['allowed_values'];
+
+    // Deleting at the field_storage level takes care of the bundles as well.
+    $field_storage->delete();
+
+    // Purge in order for new field to be created after deleting the old.
+    field_purge_batch(100);
+
+    // Save our new, updated field storage.
+    $new_field_storage = FieldStorageConfig::create($new_field_storage);
+    $new_field_storage->save();
+
+    // Create our new fields to match the field storages.
+    $new_field_config = FieldConfig::create($new_field);
+    $new_field_config->save();
+
+    // Replace into the new fields data we saved from the old fields.
+    if (!is_null($rows)) {
+      foreach ($rows as $row) {
+        $row = (array) $row;
+        $database
+          ->insert($table)
+          ->fields($row)
+          ->execute();
+      }
+    }
+    if (!is_null($revision_rows)) {
+      foreach ($revision_rows as $row) {
+        $row = (array) $row;
+        $database
+          ->insert($revision_table)
+          ->fields($row)
+          ->execute();
+      }
+    }
+
+    // Update the view and form display weights, which enables the new fields.
+    foreach ($weights as $display_mode => $view_modes) {
+      foreach ($view_modes as $view_mode => $weight) {
+        if ($weight) {
+          \Drupal::entityTypeManager()
+            ->getStorage($display_mode)
+            ->load($view_mode)
+            ->setComponent($field_name, [
+              'weight' => $weight,
+            ])
+            ->save();
+        }
+      }
     }
   }
 }
