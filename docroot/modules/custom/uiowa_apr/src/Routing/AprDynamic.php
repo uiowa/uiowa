@@ -43,21 +43,11 @@ class AprDynamic implements ContainerInjectionInterface {
     $directory_path = $this->config->get('directory.path') ?? 'apr/people';
 
     $routes['uiowa_apr.directory'] = new Route(
-      $directory_path,
+      "{$directory_path}/{slug}",
       [
         '_controller' => 'Drupal\uiowa_apr\Controller\DirectoryController::build',
         '_title_callback' => 'Drupal\uiowa_apr\Controller\DirectoryController::title',
-      ],
-      [
-        '_permission' => 'access content',
-      ]
-    );
-
-    $routes['uiowa_apr.profile'] = new Route(
-      "{$directory_path}/{slug}",
-      [
-        '_controller' => 'Drupal\uiowa_apr\Controller\ProfileController::build',
-        '_title_callback' => 'Drupal\uiowa_apr\Controller\ProfileController::title',
+        'slug' => NULL
       ],
       [
         '_permission' => 'access content',

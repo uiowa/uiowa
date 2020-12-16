@@ -2,7 +2,13 @@
 
 namespace Drupal\uiowa_apr;
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\RequestException;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * The APR service sets some dynamic properties based on the environment.
@@ -12,13 +18,26 @@ use Drupal\Core\Config\ConfigFactoryInterface;
  * @property string $endpoint The APR API endpoint.
  */
 class Apr {
-
   /**
    * The APR settings config.
    *
    * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
   protected $config;
+
+  /**
+   * The HTTP client.
+   *
+   * @var \GuzzleHttp\ClientInterface
+   */
+  protected $httpClient;
+
+  /**
+   * The uiowa_apr logger channel.
+   *
+   * @var LoggerInterface
+   */
+  protected $logger;
 
   /**
    * The APR environment.
@@ -39,9 +58,13 @@ class Apr {
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config factory.
+   *
+   * @param \GuzzleHttp\ClientInterface
    */
-  public function __construct(ConfigFactoryInterface $config_factory) {
+  public function __construct(ConfigFactoryInterface $config_factory, ClientInterface $httpClient, LoggerInterface $logger) {
     $this->config = $config_factory->get('uiowa_apr.settings');
+    $this->httpClient = $httpClient;
+    $this->logger = $logger;
     $this->setEnvironment();
     $this->setEndpoint();
   }
@@ -70,17 +93,13 @@ class Apr {
       $env = getenv('AH_SITE_ENVIRONMENT');
 
       switch ($env) {
-        case 'dev':
         case 'test':
-          $this->environment = 'test';
-          break;
-
         case 'prod':
           $this->environment = 'prod';
           break;
 
         default:
-          $this->environment = 'prod';
+          $this->environment = 'test';
       }
     }
   }
@@ -96,5 +115,75 @@ class Apr {
       $this->endpoint = 'https://apps.its.uiowa.edu/apr';
     }
   }
+
+  /**
+   * Get profile metadata from APR API.
+   *
+   * @param string $slug
+   *   The person slug.
+   *
+   * @return array|mixed
+   */
+  public function getMeta($slug) {
+    $params = UrlHelper::buildQuery(['key' => $this->config->get('api_key')]);
+    return $this->request('GET', "{$this->endpoint}/people/{$slug}/meta?{$params}", TRUE);
+  }
+
+  /**
+   * Get profile data from APR API.
+   *
+   * @param string $slug
+   *   The person slug.
+   *
+   * @return mixed|string
+   */
+  public function getProfile($slug) {
+    $params = UrlHelper::buildQuery([
+      'key' => $this->config->get('api_key'),
+      'collapse' => 'false',
+      'title' => 'false',
+    ]);
+
+    return $this->request('GET', "{$this->endpoint}/people/{$slug}?{$params}");
+  }
+
+  /**
+   * Make an APR API request.
+   *
+   * @param $method
+   *   The HTTP method to use.
+   *
+   * @param $endpoint
+   *   The API endpoint to query.
+   *
+   * @param false $json
+   *   Whether to return decoded JSON or not.
+   *
+   * @return mixed|string
+   *
+   * @throws NotFoundHttpException
+   */
+  protected function request($method, $endpoint, $json = FALSE) {
+    try {
+      $response = $this->httpClient->request($method, $endpoint);
+      $contents = $response->getBody()->getContents();
+
+      if ($json) {
+       return json_decode($contents);
+      }
+      else {
+        return $contents;
+      }
+    }
+    catch (RequestException | GuzzleException $e) {
+      if ($e->getCode() === 404) {
+        throw new NotFoundHttpException();
+      }
+      else {
+        $this->logger->error($e->getMessage());
+      }
+    }
+  }
+
 
 }

@@ -46,7 +46,7 @@ class DirectoryController extends ControllerBase {
    * @return array
    *   The render array.
    */
-  public function build(Request $request) {
+  public function build(Request $request, $slug = NULL) {
     $build = [
       '#attached' => [
         'library' => [
@@ -62,28 +62,6 @@ class DirectoryController extends ControllerBase {
       ],
     ];
 
-    // Nonexistent profiles will be redirected back to the directory. Output
-    // a message if that is the case to help users understand that.
-    $is_not_found = $request->get('not_found');
-
-    if ($is_not_found) {
-      $build['error'] = [
-        '#type' => 'container',
-        '#attributes' => [
-          'id' => 'apr-error-message',
-        ],
-        '#markup' => $this->t('<p>Profile not found. Please use the filters below to find a person.</p>'),
-      ];
-    }
-
-    $build['intro'] = [
-      '#type' => 'container',
-      '#attributes' => [
-        'id' => 'apr-directory-introduction',
-      ],
-      '#markup' => check_markup($this->apr->config->get('directory.intro')['value'], $this->apr->config->get('directory.intro')['format']),
-    ];
-
     $build['directory'] = [
       '#type' => 'html_tag',
       '#tag' => 'apr-directory',
@@ -95,16 +73,55 @@ class DirectoryController extends ControllerBase {
         ':show-title' => 'false',
         ':show-switcher' => $this->apr->config->get('directory.show_switcher'),
       ],
+      'intro' => [
+        '#type' => 'html_tag',
+        '#tag' => 'template',
+        '#attributes' => [
+          'v-slot:introduction' => TRUE,
+        ],
+        '#markup' => check_markup($this->apr->config->get('directory.intro')['value'], $this->apr->config->get('directory.intro')['format']),
+      ]
     ];
+
+    if ($slug) {
+      $build['directory']['#attributes']['slug'] = $slug;
+    }
 
     return $build;
   }
 
   /**
    * Dynamic route title callback.
+   *
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *  The request.
+   *
+   *@ @param string $slug
+   *   The optional route parameter person slug.
+   *
+   * @return array $build
+   *   The page title render array.
    */
-  public function title() {
-    return $this->config('uiowa_apr.settings')->get('directory.title') ?? 'People';
+  public function title(Request $request, $slug = NULL) {
+    $build = [];
+
+    if ($slug && $meta = $this->apr->getMeta($slug)) {
+      $build['#markup'] = $this->t('@title', [
+        '@title' => $meta->name,
+      ]);
+
+      $build['#attached']['html_head_link'][][] = [
+        'rel' => 'canonical',
+        'href' => $this->apr->config->get('directory.canonical') ?? $request->getHost(),
+      ];
+    }
+    else {
+      $build['#markup'] = $this->t('@title', [
+        '@title' => $this->apr->config->get('directory.title') ?? 'People'
+      ]);
+    }
+
+    return $build;
   }
 
 }

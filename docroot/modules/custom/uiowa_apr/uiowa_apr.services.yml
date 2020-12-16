@@ -1,4 +1,7 @@
 services:
+  logger.channel.uiowa_apr:
+    parent: logger.channel_base
+    arguments: ['uiowa_apr']
   uiowa_apr.apr:
     class: Drupal\uiowa_apr\Apr
-    arguments: ['@config.factory']
+    arguments: ['@config.factory', '@http_client', '@logger.channel.uiowa_apr']
