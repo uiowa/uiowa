@@ -2,7 +2,6 @@
 
 namespace Drupal\sitenow_migrate\Plugin\migrate\source;
 
-use Drupal\migrate\Plugin\migrate\source\SqlBase;
 use Drupal\migrate\Row;
 
 /**
@@ -13,7 +12,7 @@ use Drupal\migrate\Row;
  *  source_module = "sitenow_migrate"
  * )
  */
-class People extends SqlBase {
+class People extends BaseNodeSource {
 
   /**
    * The public file directory path.
@@ -45,7 +44,7 @@ class People extends SqlBase {
    * is not migrated currently.
    */
   public function query() {
-    $query = $this->select('node', 'n');
+    $query = parent::query();
     $query->leftJoin('field_data_field_people_first_name', 'fn', 'n.nid = fn.entity_id');
     $query->leftJoin('field_data_field_people_last_name', 'ln', 'n.nid = ln.entity_id');
     $query->leftJoin('field_data_field_person_bio', 'b', 'n.nid = b.entity_id');
@@ -56,19 +55,9 @@ class People extends SqlBase {
     $query->leftJoin('field_data_field_person_position', 'pos', 'n.nid = pos.entity_id');
     $query->leftJoin('field_data_field_person_website', 'w', 'n.nid = w.entity_id');
 
-    $query = $query->fields('n', [
-      'nid',
-      'title',
-      'status',
-      'created',
-      'changed',
-      'promote',
-      'sticky',
-      'tnid',
+    $query = $query->fields('fn', [
+      'field_people_first_name_value',
     ])
-      ->fields('fn', [
-        'field_people_first_name_value',
-      ])
       ->fields('ln', [
         'field_people_last_name_value',
       ])
@@ -143,16 +132,6 @@ class People extends SqlBase {
    * Prepare row used for altering source data prior to insertion.
    */
   public function prepareRow(Row $row) {
-    // Determine if the content should be published or not.
-    switch ($row->getSourceProperty('status')) {
-
-      case 1:
-        $row->setSourceProperty('moderation_state', 'published');
-        break;
-
-      default:
-        $row->setSourceProperty('moderation_state', 'draft');
-    }
 
     // Get mid from fid for profile image.
     $fid = $row->getSourceProperty('field_person_image_fid');
@@ -166,31 +145,7 @@ class People extends SqlBase {
     // Check summary, and create one if none exists.
     if (!$row->getSourceProperty('field_person_bio_summary')) {
       $content = $row->getSourceProperty('field_person_bio_value');
-      $new_summary = substr($content, 0, 200);
-      // Shorten the string until we reach a natural(ish) breaking point.
-      $looper = TRUE;
-      while ($looper && strlen($new_summary) > 0) {
-        switch (substr($new_summary, -1)) {
-
-          case '.':
-          case '!':
-          case '?':
-            $looper = FALSE;
-            break;
-
-          case ';':
-          case ':':
-          case '"':
-            $looper = FALSE;
-            $new_summary = $new_summary . '...';
-            break;
-
-          default:
-            $new_summary = substr($new_summary, 0, -1);
-        }
-      }
-      // Strip out any HTML, and set the new summary.
-      $new_summary = preg_replace("|<.*?>|", '', $new_summary);
+      $new_summary = $this->extractSummaryFromText($content);
       $row->setSourceProperty('field_person_bio_summary', $new_summary);
     }
 
@@ -212,18 +167,6 @@ class People extends SqlBase {
       ->execute();
 
     return $result->fetchAssoc();
-  }
-
-  /**
-   * Simple query to get info on the Drupal 7 file based on fid.
-   */
-  public function fidQuery($fid) {
-    $query = $this->select('file_managed', 'f')
-      ->fields('f', ['filename'])
-      ->condition('f.fid', $fid);
-
-    $results = $query->execute();
-    return $results->fetchAssoc();
   }
 
 }
