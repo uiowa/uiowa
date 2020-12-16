@@ -57,14 +57,6 @@ class Articles extends BaseNodeSource {
       ->fields('i', [
         'field_image_fid',
       ])
-      ->fields('n', [
-        'title',
-        'created',
-        'changed',
-        'status',
-        'promote',
-        'sticky',
-      ])
       ->condition('b.bundle', 'article');
     return $query;
   }
