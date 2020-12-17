@@ -508,8 +508,10 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
       break;
 
     case 'inline_block:uiowa_cta':
-      // Set the default text format to plain.
-      if ($element['#block']->isNew() && isset($element['field_uiowa_cta_summary'])) {
+      // Set the default text format to plain if the block is new.
+      // We look at the #default_value in the widget, as it is empty
+      // unless we're editing a block with existing content.
+      if (isset($element['field_uiowa_cta_summary']) && empty($element['field_uiowa_cta_summary']['widget'][0]['#default_value'])) {
         $element['field_uiowa_cta_summary']['widget'][0]['#format'] = 'plain_text';
       }
       break;
