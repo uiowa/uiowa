@@ -8,6 +8,7 @@
 use Drupal\Core\Cache\Cache;
 use Drupal\node\Entity\Node;
 use Drupal\views\ViewExecutable;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Implements hook_theme for Scholarship teaser.
@@ -108,5 +109,11 @@ function admissions_core_node_delete(Node $node) {
   if ($node->getType() == 'person') {
     $tags = ['node_type:' . $node->getType()];
     Cache::invalidateTags($tags);
+  }
+}
+
+function admissions_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form['#id'] == 'views-exposed-form-counselors-block-counselors') {
+    $form["territory"]["#options"]["All"] = t("- All -");
   }
 }
