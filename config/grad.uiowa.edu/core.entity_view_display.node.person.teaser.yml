@@ -31,8 +31,9 @@ dependencies:
     - field.field.node.person.field_uiowa_college
     - node.type.person
   module:
-    - smart_trim
+    - options
     - telephone
+    - text
     - user
 id: node.person.teaser
 targetEntityType: node
@@ -80,23 +81,12 @@ content:
       link_to_entity: false
     third_party_settings: {  }
   field_person_scholar_abstract:
-    type: smart_trim
+    type: text_trimmed
     weight: 5
     region: content
     label: visually_hidden
     settings:
       trim_length: 100
-      trim_type: words
-      trim_suffix: ''
-      wrap_class: trimmed
-      more_link: true
-      more_text: More
-      more_class: grad-more-link
-      trim_options:
-        text: true
-        trim_zero: true
-      wrap_output: false
-      summary_handler: full
     third_party_settings: {  }
     field_person_scholar_institution:
       type: text_default
@@ -125,8 +115,15 @@ content:
       settings:
         link: true
       third_party_settings: {  }
-  links:
+  field_person_scholar_srop_year:
+    type: list_default
     weight: 4
+    region: content
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+  links:
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -145,7 +142,6 @@ hidden:
   field_person_research_desc: true
   field_person_research_project: true
   field_person_scholar_mentor_link: true
-  field_person_scholar_srop_year: true
   field_person_types: true
   field_person_website: true
   field_tags: true
