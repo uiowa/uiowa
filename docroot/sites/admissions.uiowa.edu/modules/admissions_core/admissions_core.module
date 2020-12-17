@@ -106,6 +106,29 @@ function admissions_core_preprocess_node(&$variables) {
       case 'person':
         $variables['#attached']['library'][] = 'admissions_core/person';
         break;
+      case 'student_profile':
+        $hometown = $node->field_person_hometown->value;
+        $state = $node->field_person_territory->value;
+        $country = $node->field_student_profile_country->value;
+        unset($variables["content"]["field_person_hometown"]);
+        unset($variables['content']['field_person_territory']);
+        unset($variables['content']['field_student_profile_country']);
+        if ($node->hasField('field_student_profile_country')) {
+          if ($node->field_student_profile_country->value === 'US') {
+            // combine those fields in a tag
+            $variables['content']['combined_fields'] = array(
+              '#markup' => '<div class="field__item">'.$hometown.$state.'</div>',
+              '#weight' => 2
+            );
+          }
+          else {
+            $variables['content']['combined_fields'] = array(
+              '#markup' => '<div class="field__item">'.$hometown.$country.'</div>',
+              '#weight' => 2
+            );
+          }
+        }
+        break;
     }
   }
 }
