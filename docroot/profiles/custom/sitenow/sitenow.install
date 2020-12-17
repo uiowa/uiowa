@@ -1681,3 +1681,122 @@ function sitenow_update_8045() {
     }
   }
 }
+
+
+/**
+ * Update CTA summary from plain text to formatted plain text.
+ */
+function sitenow_update_8046() {
+  // Statically defining our field to be updated.
+  $field_name = 'field_uiowa_cta_summary';
+  // Get the field and revision storage table name for the field.
+  $table_mapping = \Drupal::service('entity_type.manager')
+    ->getStorage('block_content')
+    ->getTableMapping();
+  $storage_definitions = \Drupal::service('entity_field.manager')
+    ->getActiveFieldStorageDefinitions('block_content');
+  $field_definition = $storage_definitions[$field_name];
+  $table = $table_mapping->getDedicatedDataTableName($field_definition);
+  $revision_table = $table_mapping->getDedicatedRevisionTableName($field_definition);
+
+  $database = \Drupal::database();
+  $field_storage = FieldStorageConfig::loadByName('block_content', $field_name);
+  // Fetch data currently stored in the field and save for later.
+  $rows = NULL;
+  $revision_rows = NULL;
+  if ($database->schema()->tableExists($table)) {
+    $rows = $database
+      ->select($table, 't')
+      ->fields('t')
+      ->execute()
+      ->fetchAll();
+    if ($database->schema()->tableExists($revision_table)) {
+      $revision_rows = $database
+        ->select($revision_table, 'r')
+        ->fields('r')
+        ->execute()
+        ->fetchAll();
+    }
+  }
+
+  $new_fields = [];
+  $weights = [];
+  foreach ($field_storage->getBundles() as $bundle => $label) {
+    $old_field = FieldConfig::loadByName('block_content', $bundle, $field_name);
+    $new_field = $old_field->toArray();
+    $new_field['field_type'] = 'text_long';
+    $new_field['settings'] = [];
+    $new_fields[] = $new_field;
+    // Get the view display weights so we can re-set them later.
+    $entity_view = 'block_content.' . $bundle . '.default';
+    $view_display = \Drupal::entityTypeManager()
+      ->getStorage('entity_view_display')
+      ->load($entity_view)
+      ->getComponent($field_name);
+    $weights['entity_view_display'][$entity_view] = $view_display['weight'];
+    // Get the form display weights so we can re-set them later.
+    $form_display = \Drupal::entityTypeManager()
+      ->getStorage('entity_form_display')
+      ->load('block_content.' . $bundle . '.default')
+      ->getComponent($field_name);
+    $weights['entity_form_display']['block_content.' . $bundle . '.default'] = $form_display['weight'];
+  }
+
+  // Store the old field settings and update to text_long.
+  $new_field_storage = $field_storage->toArray();
+  $new_field_storage['type'] = 'text_long';
+  $new_field_storage['settings'] = [];
+  $new_field_storage['module'] = 'text';
+  // Deleting at the field_storage level takes care of the bundles as well.
+  $field_storage->delete();
+
+  // Purge in order for new field to be created after deleting the old.
+  field_purge_batch(100);
+
+  // Save our new, updated field storage.
+  $new_field_storage = FieldStorageConfig::create($new_field_storage);
+  $new_field_storage->save();
+
+  // Create our new fields to match the field storages.
+  foreach ($new_fields as $new_field) {
+    $new_field_config = FieldConfig::create($new_field);
+    $new_field_config->save();
+  }
+
+  // Replace into the new fields data we saved from the old fields.
+  if (!is_null($rows)) {
+    foreach ($rows as $row) {
+      $row = (array) $row;
+      $row[$field_name . '_format'] = 'plain';
+      $database
+        ->insert($table)
+        ->fields($row)
+        ->execute();
+    }
+  }
+  if (!is_null($revision_rows)) {
+    foreach ($revision_rows as $row) {
+      $row = (array) $row;
+      $row[$field_name . '_format'] = 'plain';
+      $database
+        ->insert($revision_table)
+        ->fields($row)
+        ->execute();
+    }
+  }
+
+  // Update the view and form display weights, which enables the new fields.
+  foreach ($weights as $display_mode => $view_modes) {
+    foreach ($view_modes as $view_mode => $weight) {
+      if ($weight) {
+        \Drupal::entityTypeManager()
+          ->getStorage($display_mode)
+          ->load($view_mode)
+          ->setComponent($field_name, [
+            'weight' => $weight,
+          ])
+          ->save();
+      }
+    }
+  }
+}
