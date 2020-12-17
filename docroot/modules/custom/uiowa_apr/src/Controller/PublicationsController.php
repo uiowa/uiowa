@@ -41,6 +41,9 @@ class PublicationsController extends ControllerBase {
 
   /**
    * Builds the response.
+   *
+   * @return array
+   *   The publications render array.
    */
   public function build() {
     $build = [
@@ -77,6 +80,12 @@ class PublicationsController extends ControllerBase {
     return $build;
   }
 
+  /**
+   * The page title callback.
+   *
+   * @return string
+   *   The page title.
+   */
   public function title() {
     return Html::escape($this->apr->config->get('publications.title')) ?? 'Publications';
   }
