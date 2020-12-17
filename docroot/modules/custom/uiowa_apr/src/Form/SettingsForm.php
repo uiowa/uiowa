@@ -64,7 +64,7 @@ class SettingsForm extends ConfigFormBase {
     $form['directory_page_size'] = [
       '#type' => 'number',
       '#title' => $this->t('Directory Page Size'),
-      '#default_value' => $this->config('uiowa_apr.settings')->get('directory.page_size') ?? '30',
+      '#default_value' => $this->config('uiowa_apr.settings')->get('directory.page_size') ?? 30,
       '#min' => 5,
       '#max' => 50,
       '#description' => $this->t('Number of entries per page of the directory. Min: 5, Max: 50'),
@@ -114,7 +114,7 @@ class SettingsForm extends ConfigFormBase {
     $form['publications_page_size'] = [
       '#type' => 'number',
       '#title' => $this->t('Publications Page Size'),
-      '#default_value' => $this->config('uiowa_apr.settings')->get('publications.page_size') ?? '10',
+      '#default_value' => $this->config('uiowa_apr.settings')->get('publications.page_size') ?? 10,
       '#min' => 5,
       '#max' => 50,
       '#description' => $this->t('Number of entries per page of the publications directory. Min: 5, Max: 50.'),
