@@ -23,7 +23,6 @@ dependencies:
     - field.field.node.person.field_person_scholar_abstract
     - field.field.node.person.field_person_scholar_institution
     - field.field.node.person.field_person_scholar_mentor_link
-    - field.field.node.person.field_person_scholar_srop_year
     - field.field.node.person.field_person_types
     - field.field.node.person.field_person_website
     - field.field.node.person.field_tags
@@ -32,10 +31,10 @@ dependencies:
     - node.type.person
     - workflows.workflow.editorial
   module:
-    - allowed_formats
     - content_moderation
     - link
     - media_library
+    - paragraphs
     - path
     - telephone
     - text
@@ -223,16 +222,6 @@ content:
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
-    region: content
-  field_person_scholar_srop_year:
-    weight: 10
-    settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete
     region: content
   field_person_types:
     type: options_buttons
