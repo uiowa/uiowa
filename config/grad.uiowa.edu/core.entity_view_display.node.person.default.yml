@@ -21,8 +21,8 @@ dependencies:
     - field.field.node.person.field_person_research_desc
     - field.field.node.person.field_person_research_project
     - field.field.node.person.field_person_scholar_abstract
-    - field.field.node.person.field_person_scholar_institution
     - field.field.node.person.field_person_scholar_mentor_link
+    - field.field.node.person.field_person_scholar_srop_year
     - field.field.node.person.field_person_types
     - field.field.node.person.field_person_website
     - field.field.node.person.field_tags
@@ -32,6 +32,7 @@ dependencies:
   module:
     - entity_reference_revisions
     - link
+    - options
     - telephone
     - text
     - uiowa_entities
@@ -64,7 +65,7 @@ content:
     region: content
   field_person_contact_information:
     type: entity_reference_revisions_entity_view
-    weight: 10
+    weight: 12
     label: hidden
     settings:
       view_mode: default
@@ -80,27 +81,27 @@ content:
     region: content
   field_person_email:
     type: email_mailto
-    weight: 2
+    weight: 3
     region: content
     label: inline
     settings: {  }
     third_party_settings: {  }
   field_person_mentor_qualif:
-    weight: 14
+    weight: 16
     label: inline
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   field_person_mentor_ug_role:
-    weight: 13
+    weight: 15
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   field_person_phone:
-    weight: 3
+    weight: 4
     label: inline
     settings:
       title: ''
@@ -108,7 +109,7 @@ content:
     type: telephone_link
     region: content
   field_person_position:
-    weight: 1
+    weight: 2
     label: hidden
     settings:
       link_to_entity: false
@@ -117,14 +118,14 @@ content:
     region: content
   field_person_research_areas:
     type: entity_reference_label
-    weight: 7
+    weight: 9
     region: content
     label: above
     settings:
       link: false
     third_party_settings: {  }
   field_person_research_assistants:
-    weight: 11
+    weight: 13
     label: hidden
     settings:
       link_to_entity: false
@@ -132,29 +133,22 @@ content:
     type: string
     region: content
   field_person_research_desc:
-    weight: 12
+    weight: 14
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   field_person_research_project:
-    weight: 15
+    weight: 17
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
     region: content
-  field_person_scholar_institution:
-    weight: 7
-    label: inline
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
-    region: content
   field_person_scholar_mentor_link:
-    weight: 9
+    weight: 10
     label: inline
     settings:
       trim_length: 80
@@ -165,9 +159,16 @@ content:
     third_party_settings: {  }
     type: link
     region: content
+  field_person_scholar_srop_year:
+    weight: 11
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
   field_person_website:
     type: link
-    weight: 6
+    weight: 7
     region: content
     label: inline
     settings:
@@ -178,14 +179,14 @@ content:
       target: '0'
     third_party_settings: {  }
   field_uiowa_college:
-    weight: 16
+    weight: 19
     label: above
     settings: {  }
     third_party_settings: {  }
     type: uiowa_academic_units_formatter
     region: content
   links:
-    weight: 15
+    weight: 18
     region: content
     settings: {  }
     third_party_settings: {  }
