@@ -507,6 +507,13 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
       }
       break;
 
+    case 'inline_block:uiowa_cta':
+      // Set the default text format to plain.
+      if ($element['#block']->isNew() && isset($element['field_uiowa_cta_summary'])) {
+        $element['field_uiowa_cta_summary']['widget'][0]['#format'] = 'plain_text';
+      }
+      break;
+
   }
   return $element;
 }
