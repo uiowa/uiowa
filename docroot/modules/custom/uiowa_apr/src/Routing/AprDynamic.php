@@ -54,6 +54,17 @@ class AprDynamic implements ContainerInjectionInterface {
       ]
     );
 
+    $routes['uiowa_apr.publications'] = new Route(
+      $publications,
+      [
+        '_controller' => 'Drupal\uiowa_apr\Controller\PublicationsController::build',
+        '_title_callback' => 'Drupal\uiowa_apr\Controller\PublicationsController::title',
+      ],
+      [
+        '_permission' => 'access content',
+      ]
+    );
+
     return $routes;
   }
 
