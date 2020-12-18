@@ -33,7 +33,7 @@ class PublicationsController extends ControllerBase {
    *
    * @param \Drupal\uiowa_apr\Apr $apr
    *   The uiowa_apr.apr service.
-   * @param ConfigFactoryInterface $config
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config
    *   The config factory service.
    */
   public function __construct(Apr $apr, ConfigFactoryInterface $config) {

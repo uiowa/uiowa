@@ -80,10 +80,11 @@ class SitemapController extends ControllerBase {
   /**
    * Builds the response.
    *
-   * @param Request $request
+   * @param \Symfony\Component\HttpFoundation\Request $request
    *   The request object.
    *
-   * @return Response
+   * @return \Symfony\Component\HttpFoundation\Response
+   *   The response object.
    */
   public function build(Request $request) {
     $params = UrlHelper::buildQuery([

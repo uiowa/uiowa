@@ -52,7 +52,6 @@ class Apr {
    */
   public function __construct(ConfigFactoryInterface $config_factory, LoggerInterface $logger) {
     $this->config = $config_factory->get('uiowa_apr.settings');
-    ;
     $this->logger = $logger;
     $this->environment = $this->setEnvironment();
     $this->endpoint = $this->setEndpoint();

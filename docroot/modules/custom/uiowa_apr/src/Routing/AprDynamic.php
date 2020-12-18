@@ -20,6 +20,9 @@ class AprDynamic implements ContainerInjectionInterface {
 
   /**
    * Dynamic APR routes constructor.
+   *
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config
+   *   The config factory service.
    */
   public function __construct(ConfigFactoryInterface $config) {
     $this->config = $config->get('uiowa_apr.settings');
