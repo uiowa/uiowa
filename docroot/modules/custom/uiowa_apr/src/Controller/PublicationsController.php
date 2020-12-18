@@ -61,7 +61,7 @@ class PublicationsController extends ControllerBase {
     $build = [
       '#attached' => [
         'library' => [
-          "uiowa_apr/publications.{$this->apr->environment}",
+          "uiowa_apr/apr.publications.{$this->apr->environment}",
         ],
       ],
       '#type' => 'container',

@@ -1,25 +1,35 @@
-apr.test:
+uiowa_apr.directory:
+  css:
+    theme:
+      assets/css/directory.css: { }
+
+uiowa_apr.publications:
+  css:
+    theme:
+      assets/css/publications.css: { }
+
+apr.directory.test:
   remote: https://test.its.uiowa.edu/apr
   version: VERSION
   license: MIT
   js:
     https://test.its.uiowa.edu/apr/public/dist/aprDirectory.js: { type: external, minified: true }
 
-apr.prod:
+apr.directory.prod:
   remote: https://apps.its.uiowa.edu/apr
   version: VERSION
   license: MIT
   js:
     https://apps.its.uiowa.edu/apr/public/dist/aprDirectory.js: { type: external, minified: true }
 
-publications.test:
+apr.publications.test:
   remote: https://test.its.uiowa.edu/apr
   version: VERSION
   license: MIT
   js:
     https://test.its.uiowa.edu/apr/public/dist/aprPublications.js: { type: external, minified: true }
 
-publications.prod:
+apr.publications.prod:
   remote: https://apps.its.uiowa.edu/apr
   version: VERSION
   license: MIT
