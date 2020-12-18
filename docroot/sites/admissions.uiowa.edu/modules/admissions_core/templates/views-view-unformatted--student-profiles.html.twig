@@ -105,9 +105,11 @@
     {%
     set classes = [
         'card--list',
-        'card--media-left',
+        'card--stacked',
         'media--circle',
         'media--border',
+        'card--enclosed',
+        'bg--white',
         'card--centered-left',
         'card--alignment-left'
     ]
@@ -115,6 +117,7 @@
 
     {% set person_card_view = {
         'attributes': attributes.addClass(classes),
+        'headline_class': 'headline headline--uppercase',
         'card_title': view.style_plugin.getField(key, 'title'),
         'card_image': view.style_plugin.getField(key, 'field_student_profile_photo'),
         'card_subtitle': view.style_plugin.getField(key, 'field_student_profile_major'),
@@ -122,7 +125,7 @@
         'person_hometown': view.style_plugin.getField(key, 'field_person_hometown'),
         'person_territory': view.style_plugin.getField(key, 'field_person_territory'),
         'person_country': view.style_plugin.getField(key, 'field_student_profile_country'),
-        'media_attributes': media_attributes.addClass('card__media--small card__media'),
+        'media_attributes': media_attributes.addClass('card__media--medium card__media'),
     } %}
 
     {% embed '@uids_base/uids/card.html.twig' with person_card_view only %}
@@ -130,12 +133,6 @@
     {% block card_img %}
         {% if card_image|striptags('<img><picture>')|trim is not empty %}
             {{ parent() }}
-        {% endif %}
-    {% endblock %}
-
-    {% block card_title %}
-        {% if card_title|striptags|trim is not empty %}
-            <div class="card__title">{{ card_title }}</div>
         {% endif %}
     {% endblock %}
 
