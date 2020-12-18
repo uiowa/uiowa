@@ -100,23 +100,36 @@ function admissions_core_entity_presave(EntityInterface $entity) {
  */
 function admissions_core_preprocess_field(&$variables) {
   if ($variables['field_name'] === 'field_person_hometown') {
+    
     $element = $variables['element'];
     $node = $element['#object'];
-    $hometown = $node->hasField('field_person_hometown') ? $node->field_person_hometown->value : NULL;
-    $country = $node->hasField('field_student_profile_country') ? $node->field_student_profile_country->value : NULL;
-    if ($hometown && $country) {
-      if ($country === 'US') {
-        $state = $node->hasField('field_person_territory') ? $node->field_person_territory->value : NULL;
-        if ($state) {
-          $hometown .= ", $state";
+    if ($node->hasField('field_person_hometown') && !$node->get('field_person_hometown')->isEmpty()) {
+      $variables["label"]= array(
+        '#type' => 'markup',
+        '#markup' => '<i class="fa fa-map-marker-alt" aria-hidden="true"></i>',
+        );
+      $hometown = $node->hasField('field_person_hometown') ? $node->field_person_hometown->value : NULL;
+      $country = $node->hasField('field_student_profile_country') ? $node->field_student_profile_country->value : NULL;
+      if ($hometown && $country) {
+        if ($country === 'US') {
+          $state = $node->hasField('field_person_territory') ? $node->field_person_territory->value : NULL;
+          if ($state) {
+            $hometown .= ", $state";
+          }
+        }
+        else {
+          $hometown .= ", $country";
         }
       }
-      else {
-        $hometown .= ", $country";
-      }
+      $variables['items'][0]['content']['#context']['value'] = $hometown;
     }
-    $variables['items'][0]['content']['#context']['value'] = $hometown;
   }
+  if ($variables['field_name'] === 'field_student_profile_major') {
+    $variables["label"]= array(
+      '#type' => 'markup',
+      '#markup' => '<i class="fas fa-book" aria-hidden="true"></i>',
+      );
+}
 }
 
 /**
