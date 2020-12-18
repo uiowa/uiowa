@@ -62,6 +62,7 @@ class PublicationsController extends ControllerBase {
       '#attached' => [
         'library' => [
           "uiowa_apr/apr.publications.{$this->apr->environment}",
+          'uiowa_apr/uiowa_apr.publications',
         ],
       ],
       '#type' => 'container',
