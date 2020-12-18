@@ -29,12 +29,14 @@ class DirectoryController extends ControllerBase {
   /**
    * The uiowa_apr config.
    *
-   * @var \Drupal\Core\Config\ImmutableConfig $config
+   * @var \Drupal\Core\Config\ImmutableConfig
    */
   protected $config;
 
   /**
-   * @var ClientInterface
+   * The HTTP client.
+   *
+   * @var \GuzzleHttp\ClientInterface
    */
   protected $client;
 
@@ -50,9 +52,9 @@ class DirectoryController extends ControllerBase {
    *
    * @param \Drupal\uiowa_apr\Apr $apr
    *   The APR service.
-   * @param ConfigFactoryInterface $config
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config
    *   The config factory service.
-   * @param ClientInterface $client
+   * @param \GuzzleHttp\ClientInterface $client
    *   The Guzzle HTTP client.
    */
   public function __construct(Apr $apr, ConfigFactoryInterface $config, ClientInterface $client) {
@@ -153,7 +155,7 @@ class DirectoryController extends ControllerBase {
           'headers' => [
             'Accept' => 'text/plain',
             'Referer' => $request->getSchemeAndHttpHost(),
-          ]
+          ],
         ]);
       }
       catch (RequestException | GuzzleException $e) {

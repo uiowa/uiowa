@@ -24,7 +24,7 @@ class SitemapController extends ControllerBase {
   /**
    * The APR service.
    *
-   * @var Apr
+   * @var \Drupal\uiowa_apr\Apr
    */
   protected $apr;
 
@@ -36,25 +36,27 @@ class SitemapController extends ControllerBase {
   protected $config;
 
   /**
-   * @var ClientInterface $httpClient
+   * The HTTP client.
+   *
+   * @var \GuzzleHttp\ClientInterface
    */
   protected $httpClient;
 
   /**
    * The uiowa_apr logger channel.
    *
-   * @var
+   * @var \Psr\Log\LoggerInterface
    */
   protected $logger;
 
   /**
    * The controller constructor.
    *
-   * @param Apr $apr
+   * @param \Drupal\uiowa_apr\Apr $apr
    *   The uiowa_apr.apr service.
-   * @param ConfigFactoryInterface $config
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config
    *   The config factory service.
-   * @param ClientInterface $httpClient
+   * @param \GuzzleHttp\ClientInterface $httpClient
    *   The HTTP client service.
    */
   public function __construct(Apr $apr, ConfigFactoryInterface $config, ClientInterface $httpClient) {
@@ -89,7 +91,7 @@ class SitemapController extends ControllerBase {
         'headers' => [
           'Accept' => 'text/plain',
           'Referer' => $request->getSchemeAndHttpHost(),
-        ]
+        ],
       ]);
     }
     catch (RequestException | GuzzleException $e) {
