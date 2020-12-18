@@ -27,22 +27,26 @@
 #}
 {{ attach_library('uids_base/event') }}
 
-{%
-  set classes = [
-  'card--media-left',
-  'media--border',
-  'uiowa-card-event',
-  'card--centered-left',
-  'card--alignment-left',
-]
-%}
+{% set styles = elements['#layout_builder_style'] %}
+{% set style_classes = [] %}
+{% set size_classes = [] %}
+
+{% for style in styles %}
+  {% if style starts with 'media--' %}
+    {% set style_classes = style_classes|merge([style]) %}
+  {% endif %}
+
+  {% if style starts with 'card__media' %}
+    {% set size_classes = size_classes|merge([style]) %}
+  {% endif %}
+{% endfor %}
 
 {% set event_block = {
-  'attributes': attributes.addClass(classes),
+  'attributes': attributes.removeClass(style_classes, size_classes),
   'card_title': content.field_uiowa_event_title[0]['#text']|render,
   'card_image': content.field_uiowa_event_image|render,
-  'media_styles': 'media--circle',
-  'media_sizes': 'card__media--small',
+  'media_styles': style_classes,
+  'media_sizes': size_classes,
   'card_tag': content.field_uiowa_event_location[0]['#context']['value'],
   'card_icon': content.field_uiowa_event_icon|render,
   'card_date': content.field_uiowa_event_date|render,
