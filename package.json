@@ -8,14 +8,14 @@
   "private": true,
   "workspaces": {
     "packages": [
-      "docroot/themes/custom/uids_base",
-      "docroot/themes/custom/uiowa_bootstrap",
+      "docroot/themes/custom/*",
       "docroot/sites/*/themes/*",
-      "docroot/modules/custom/uiowa_alerts",
+      "docroot/modules/custom/*",
       "docroot/sites/admissions.uiowa.edu/modules/admissions_core",
       "docroot/sites/ighn.international.uiowa.edu/modules/ighn_core"
     ],
     "nohoist": [
+      "**/uids_base",
       "**/node-sass-glob-importer"
     ]
   }
