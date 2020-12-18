@@ -11,6 +11,8 @@ use Drupal\Core\Render\Element;
 use Drupal\layout_builder_custom\LayoutBuilderPreRender;
 use Drupal\layout_builder_styles\LayoutBuilderStyleGroups;
 use Drupal\layout_builder_styles\LayoutBuilderStyleInterface;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\Core\Entity\ContentEntityInterface;
 
 /**
  * Implements hook_element_info_alter().
@@ -607,4 +609,19 @@ function layout_builder_custom_preprocess_media(&$variables) {
       'class' => ['media--video'],
     ] + $variables['attributes'];
   }
+}
+
+/**
+ * Implements hook_allowed_values_function().
+ */
+function srop_year_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  // Available srop year values
+  $thisyear = date('Y');
+  $i = 2000;
+  $options = array();
+  while ($i <= $thisyear):
+    $options[$i] = $i;
+    $i++;
+  endwhile;
+  return $options;
 }
