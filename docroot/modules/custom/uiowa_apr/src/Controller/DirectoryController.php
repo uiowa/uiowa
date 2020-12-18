@@ -102,6 +102,9 @@ class DirectoryController extends ControllerBase {
         'role' => 'region',
         'aria-live' => 'polite',
         'aria-label' => 'People Directory',
+        'class' => [
+          'uids-content',
+        ]
       ],
     ];
 

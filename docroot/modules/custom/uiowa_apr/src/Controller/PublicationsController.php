@@ -71,6 +71,9 @@ class PublicationsController extends ControllerBase {
         'role' => 'region',
         'aria-live' => 'polite',
         'aria-label' => 'Publication Listing',
+        'class' => [
+          'uids-content',
+        ]
       ],
     ];
 
