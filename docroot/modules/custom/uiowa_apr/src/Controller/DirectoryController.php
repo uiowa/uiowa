@@ -3,15 +3,22 @@
 namespace Drupal\uiowa_apr\Controller;
 
 use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\UrlHelper;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\uiowa_apr\Apr;
+use GuzzleHttp\ClientInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Returns responses for APR routes.
  */
 class DirectoryController extends ControllerBase {
+  use LoggerChannelTrait;
+
   /**
    * The APR service.
    *
@@ -20,13 +27,39 @@ class DirectoryController extends ControllerBase {
   protected $apr;
 
   /**
+   * The uiowa_apr config.
+   *
+   * @var \Drupal\Core\Config\ImmutableConfig $config
+   */
+  protected $config;
+
+  /**
+   * @var ClientInterface
+   */
+  protected $client;
+
+  /**
+   * The uiowa_apr logger channel.
+   *
+   * @var \Psr\Log\LoggerInterface
+   */
+  protected $logger;
+
+  /**
    * DirectoryController constructor.
    *
    * @param \Drupal\uiowa_apr\Apr $apr
    *   The APR service.
+   * @param ConfigFactoryInterface $config
+   *   The config factory service.
+   * @param ClientInterface $client
+   *   The Guzzle HTTP client.
    */
-  public function __construct(Apr $apr) {
+  public function __construct(Apr $apr, ConfigFactoryInterface $config, ClientInterface $client) {
     $this->apr = $apr;
+    $this->config = $config->get('uiowa_apr.settings');
+    $this->client = $client;
+    $this->logger = $this->getLogger('uiowa_apr');
   }
 
   /**
@@ -34,7 +67,9 @@ class DirectoryController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('uiowa_apr.apr')
+      $container->get('uiowa_apr.apr'),
+      $container->get('config.factory'),
+      $container->get('http_client')
     );
   }
 
@@ -49,7 +84,7 @@ class DirectoryController extends ControllerBase {
    * @return array
    *   The render array.
    */
-  public function build(Request $request, $slug = NULL) {
+  public function build(Request $request, $slug = NULL): array {
     $build = [
       '#attached' => [
         'library' => [
@@ -69,12 +104,12 @@ class DirectoryController extends ControllerBase {
       '#type' => 'html_tag',
       '#tag' => 'apr-directory',
       '#attributes' => [
-        'api-key' => Html::escape($this->apr->config->get('api_key')),
-        'title' => Html::escape($this->apr->config->get('directory.title')),
+        'api-key' => Html::escape($this->config->get('api_key')),
+        'title' => Html::escape($this->config->get('directory.title')),
         'title-selector' => 'h1.page-title',
-        ':page-size' => Html::escape($this->apr->config->get('directory.page_size')),
+        ':page-size' => Html::escape($this->config->get('directory.page_size')),
         ':show-title' => 'false',
-        ':show-switcher' => Html::escape($this->apr->config->get('directory.show_switcher')),
+        ':show-switcher' => Html::escape($this->config->get('directory.show_switcher')),
       ],
       'intro' => [
         '#type' => 'html_tag',
@@ -82,7 +117,7 @@ class DirectoryController extends ControllerBase {
         '#attributes' => [
           'v-slot:introduction' => TRUE,
         ],
-        '#markup' => check_markup($this->apr->config->get('directory.intro')['value'], $this->apr->config->get('directory.intro')['format']),
+        '#markup' => check_markup($this->config->get('directory.intro')['value'], $this->config->get('directory.intro')['format']),
       ],
     ];
 
@@ -103,23 +138,47 @@ class DirectoryController extends ControllerBase {
    *
    * @return array
    *   The page title render array.
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  public function title(Request $request, $slug = NULL) {
+  public function title(Request $request, $slug = NULL): array {
     $build = [];
 
-    if ($slug && $meta = $this->apr->getMeta($slug)) {
+    // If a slug is set, this is a profile page. Otherwise, its the directory.
+    if ($slug) {
+      $params = UrlHelper::buildQuery(['key' => $this->config->get('api_key')]);
+
+      try {
+        $response = $this->client->request('GET', "{$this->apr->endpoint}/people/{$slug}/meta?{$params}", [
+          'headers' => [
+            'Accept' => 'text/plain',
+            'Referer' => $request->getSchemeAndHttpHost(),
+          ]
+        ]);
+      }
+      catch (RequestException | GuzzleException $e) {
+        // If we can't set the page title, throw a 404.
+        $this->logger->error($e->getMessage());
+        throw new NotFoundHttpException();
+      }
+
+      $contents = $response->getBody()->getContents();
+
+      /** @var object $meta */
+      $meta = json_decode($contents);
+
       $build['#markup'] = $this->t('@title', [
         '@title' => $meta->name,
       ]);
 
       $build['#attached']['html_head_link'][][] = [
         'rel' => 'canonical',
-        'href' => Html::escape($this->apr->config->get('directory.canonical')) ?? $request->getHost(),
+        'href' => Html::escape($this->config->get('directory.canonical')) ?? $request->getHost(),
       ];
     }
     else {
       $build['#markup'] = $this->t('@title', [
-        '@title' => $this->apr->config->get('directory.title') ?? 'People',
+        '@title' => $this->config->get('directory.title') ?? 'People',
       ]);
     }
 
