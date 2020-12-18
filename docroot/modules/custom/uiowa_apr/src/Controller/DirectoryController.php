@@ -86,7 +86,7 @@ class DirectoryController extends ControllerBase {
    * @return array
    *   The render array.
    */
-  public function build(Request $request, $slug = NULL): array {
+  public function build(Request $request, $slug = NULL) {
     $build = [
       '#attached' => [
         'library' => [
@@ -143,7 +143,7 @@ class DirectoryController extends ControllerBase {
    *
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  public function title(Request $request, $slug = NULL): array {
+  public function title(Request $request, $slug = NULL) {
     $build = [];
 
     // If a slug is set, this is a profile page. Otherwise, its the directory.

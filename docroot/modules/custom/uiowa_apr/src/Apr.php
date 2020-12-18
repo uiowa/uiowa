@@ -108,7 +108,7 @@ class Apr {
    * @return string
    *   The API endpoint.
    */
-  protected function setEndpoint(): string {
+  protected function setEndpoint() {
     $endpoint = '';
 
     if ($this->environment == 'test') {

@@ -79,8 +79,13 @@ class SitemapController extends ControllerBase {
 
   /**
    * Builds the response.
+   *
+   * @param Request $request
+   *   The request object.
+   *
+   * @return Response
    */
-  public function build(Request $request): Response {
+  public function build(Request $request) {
     $params = UrlHelper::buildQuery([
       'key' => $this->config->get('api_key'),
       'path' => $this->config->get('directory.path'),
