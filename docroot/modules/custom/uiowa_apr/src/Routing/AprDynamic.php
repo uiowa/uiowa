@@ -66,6 +66,16 @@ class AprDynamic implements ContainerInjectionInterface {
       ]
     );
 
+    $routes['uiowa_apr.sitemap'] = new Route(
+      "{$directory}/sitemap.txt",
+      [
+        '_controller' => 'Drupal\uiowa_apr\Controller\SitemapController::build',
+      ],
+      [
+        '_permission' => 'access content',
+      ]
+    );
+
     return $routes;
   }
 
