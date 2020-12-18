@@ -1919,3 +1919,9 @@ $sites['lawlhpdcpchs.local.drupal.uiowa.edu'] = 'pchs.lhpdc.law.uiowa.edu';
 $sites['lawlhpdcpchs.dev.drupal.uiowa.edu'] = 'pchs.lhpdc.law.uiowa.edu';
 $sites['lawlhpdcpchs.stage.drupal.uiowa.edu'] = 'pchs.lhpdc.law.uiowa.edu';
 $sites['lawlhpdcpchs.prod.drupal.uiowa.edu'] = 'pchs.lhpdc.law.uiowa.edu';
+
+// Directory aliases for obgynprotocols.sites.uiowa.edu.
+$sites['sitesobgynprotocols.local.drupal.uiowa.edu'] = 'obgynprotocols.sites.uiowa.edu';
+$sites['sitesobgynprotocols.dev.drupal.uiowa.edu'] = 'obgynprotocols.sites.uiowa.edu';
+$sites['sitesobgynprotocols.stage.drupal.uiowa.edu'] = 'obgynprotocols.sites.uiowa.edu';
+$sites['sitesobgynprotocols.prod.drupal.uiowa.edu'] = 'obgynprotocols.sites.uiowa.edu';
