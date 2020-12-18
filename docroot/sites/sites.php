@@ -1919,3 +1919,21 @@ $sites['lawlhpdcpchs.local.drupal.uiowa.edu'] = 'pchs.lhpdc.law.uiowa.edu';
 $sites['lawlhpdcpchs.dev.drupal.uiowa.edu'] = 'pchs.lhpdc.law.uiowa.edu';
 $sites['lawlhpdcpchs.stage.drupal.uiowa.edu'] = 'pchs.lhpdc.law.uiowa.edu';
 $sites['lawlhpdcpchs.prod.drupal.uiowa.edu'] = 'pchs.lhpdc.law.uiowa.edu';
+
+// Directory aliases for studentlife.uiowa.edu.
+$sites['studentlife.local.drupal.uiowa.edu'] = 'studentlife.uiowa.edu';
+$sites['studentlife.dev.drupal.uiowa.edu'] = 'studentlife.uiowa.edu';
+$sites['studentlife.stage.drupal.uiowa.edu'] = 'studentlife.uiowa.edu';
+$sites['studentlife.prod.drupal.uiowa.edu'] = 'studentlife.uiowa.edu';
+
+// Directory aliases for obgynprotocols.sites.uiowa.edu.
+$sites['sitesobgynprotocols.local.drupal.uiowa.edu'] = 'obgynprotocols.sites.uiowa.edu';
+$sites['sitesobgynprotocols.dev.drupal.uiowa.edu'] = 'obgynprotocols.sites.uiowa.edu';
+$sites['sitesobgynprotocols.stage.drupal.uiowa.edu'] = 'obgynprotocols.sites.uiowa.edu';
+$sites['sitesobgynprotocols.prod.drupal.uiowa.edu'] = 'obgynprotocols.sites.uiowa.edu';
+
+// Directory aliases for ejanderson.lab.uiowa.edu.
+$sites['labejanderson.local.drupal.uiowa.edu'] = 'ejanderson.lab.uiowa.edu';
+$sites['labejanderson.dev.drupal.uiowa.edu'] = 'ejanderson.lab.uiowa.edu';
+$sites['labejanderson.stage.drupal.uiowa.edu'] = 'ejanderson.lab.uiowa.edu';
+$sites['labejanderson.prod.drupal.uiowa.edu'] = 'ejanderson.lab.uiowa.edu';

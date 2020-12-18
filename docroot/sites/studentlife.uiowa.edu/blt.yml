@@ -1,0 +1,13 @@
+project:
+  local:
+    hostname: studentlife.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: studentlife
+  human_name: studentlife.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: studentlife.prod
+drupal:
+  db:
+    database: studentlife_uiowa_edu
