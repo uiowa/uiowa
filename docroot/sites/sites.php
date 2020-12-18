@@ -1920,6 +1920,12 @@ $sites['lawlhpdcpchs.dev.drupal.uiowa.edu'] = 'pchs.lhpdc.law.uiowa.edu';
 $sites['lawlhpdcpchs.stage.drupal.uiowa.edu'] = 'pchs.lhpdc.law.uiowa.edu';
 $sites['lawlhpdcpchs.prod.drupal.uiowa.edu'] = 'pchs.lhpdc.law.uiowa.edu';
 
+// Directory aliases for studentlife.uiowa.edu.
+$sites['studentlife.local.drupal.uiowa.edu'] = 'studentlife.uiowa.edu';
+$sites['studentlife.dev.drupal.uiowa.edu'] = 'studentlife.uiowa.edu';
+$sites['studentlife.stage.drupal.uiowa.edu'] = 'studentlife.uiowa.edu';
+$sites['studentlife.prod.drupal.uiowa.edu'] = 'studentlife.uiowa.edu';
+
 // Directory aliases for obgynprotocols.sites.uiowa.edu.
 $sites['sitesobgynprotocols.local.drupal.uiowa.edu'] = 'obgynprotocols.sites.uiowa.edu';
 $sites['sitesobgynprotocols.dev.drupal.uiowa.edu'] = 'obgynprotocols.sites.uiowa.edu';
