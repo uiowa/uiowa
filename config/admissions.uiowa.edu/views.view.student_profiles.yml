@@ -9,7 +9,7 @@ dependencies:
     - field.storage.node.field_student_profile_country
     - field.storage.node.field_student_profile_major
     - field.storage.node.field_student_profile_photo
-    - image.style.square__384_x_384
+    - image.style.square__768_x_768
     - node.type.student_profile
   module:
     - address
@@ -136,7 +136,7 @@ display:
           click_sort_column: target_id
           type: image
           settings:
-            image_style: square__384_x_384
+            image_style: square__768_x_768
             image_link: content
           group_column: ''
           group_columns: {  }
@@ -589,6 +589,7 @@ display:
         operator: AND
         groups:
           1: AND
+      css_class: grid--threecol--33-34-33
     cache_metadata:
       max-age: -1
       contexts:
