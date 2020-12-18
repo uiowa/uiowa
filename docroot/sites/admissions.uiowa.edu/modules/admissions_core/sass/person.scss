@@ -130,6 +130,12 @@
 
 // @todo remove once https://github.com/uiowa/uiowa/pull/2676 is merged.
 .grid--threecol--33-34-33 .view-content {
+  .card {
+    height: 100%;
+    .section-alignment__start & {
+      height: auto;
+    }
+  }
   @include breakpoint(sm) {
     display: grid;
     gap: 3rem;
