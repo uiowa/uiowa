@@ -1715,7 +1715,7 @@ function sitenow_update_8046() {
     $layout_sections = $layout->getSections();
 
     // Loop through sections.
-    foreach ($layout_sections as $delta_s => $section) {
+    foreach ($layout_sections as $section) {
       // Is this a header section?
       if ($section->getLayoutId() == 'layout_header') {
         // Get lock settings.
