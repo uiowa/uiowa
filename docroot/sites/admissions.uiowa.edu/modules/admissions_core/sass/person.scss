@@ -121,33 +121,18 @@
   }
 }
 
-// todo remove once https://github.com/uiowa/uids/pull/440 is merged.
+// Student profiles
+.view-student-profiles {
+  .card__date {
+    font-size: 1.1rem;
+  }
+}
 
-.element--spacer-gold {
-  clear: both;
-  float: none;
-  width: 100%;
-  height: 0;
-  border: 1px solid transparent;
-  margin: 1.25rem 0;
-  &:after {
-    content: "";
-    display: block;
-    width: 150px;
-    height: 8px;
-    margin: 0;
-    background: $primary;
-  }
-  &--centered {
-    &:after {
-      margin: 0 auto;
-    }
-  }
-  .bg-pattern--brain-reversed &,
-  .bg--gold--pattern--brain &,
-  .bg--gold & {
-    &:after {
-      background: #fff;
-    }
+// @todo remove once https://github.com/uiowa/uiowa/pull/2676 is merged.
+.grid--threecol--33-34-33 .view-content {
+  @include breakpoint(sm) {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(31.63%, 1fr));
   }
 }
