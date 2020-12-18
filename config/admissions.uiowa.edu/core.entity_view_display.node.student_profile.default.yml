@@ -146,7 +146,7 @@ third_party_settings:
               provider: layout_builder
               label_display: null
               formatter:
-                label: inline
+                label: visually_hidden
                 type: entity_reference_label
                 settings:
                   link: true
@@ -160,16 +160,19 @@ third_party_settings:
             uuid: 8bc338af-d4d9-4287-bff3-d5cfcbd286be
             region: first
             configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
               id: 'field_block:node:student_profile:field_person_hometown'
+              label: null
+              provider: layout_builder
+              label_display: null
               formatter:
-                label: inline
+                label: visually_hidden
+                type: string
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-                type: string
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
             additional: {  }
             weight: -6
           -
