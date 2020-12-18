@@ -1,0 +1,36 @@
+@import "node_modules/uids_base/uids/assets/scss/variables";
+@import "node_modules/uids_base/uids/assets/scss/utilities";
+@import "node_modules/uids_base/uids/components/card/_card-mixins.scss";
+
+#apr-directory-service {
+
+  .list-view {
+    margin: $gutter 0;
+  }
+
+  .apr-filter {
+    min-height: 20px;
+    padding: 19px;
+    margin-bottom: 20px;
+    background-color: $light;
+    border: 1px solid $grey;
+    border-radius: 4px;
+
+    .form-inline {
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-end;
+      flex-wrap: wrap;
+    }
+  }
+
+  .profiles {
+    ul, ol {
+      margin-left: 0;
+
+      li {
+        list-style-type: none;
+      }
+    }
+  }
+}
