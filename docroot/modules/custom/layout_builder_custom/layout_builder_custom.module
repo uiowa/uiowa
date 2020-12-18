@@ -615,11 +615,11 @@ function layout_builder_custom_preprocess_media(&$variables) {
  * Implements hook_allowed_values_function().
  */
 function srop_year_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
-  // Available srop year values
+  // Available srop year values.
   $thisyear = date('Y');
   $i = 2000;
-  $options = array();
-  while ($i <= $thisyear):
+  $options = [];
+  while ($i <= $thisyear) :
     $options[$i] = $i;
     $i++;
   endwhile;
