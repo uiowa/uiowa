@@ -119,7 +119,8 @@ function admissions_core_preprocess_field(&$variables) {
             }
           }
           else {
-            $hometown .= ", $country";
+            $country_value = \Drupal::service('country_manager')->getList()[$country]->__toString();
+            $hometown .= ", $country_value";
           }
         }
         $variables['items'][0]['content']['#context']['value'] = $hometown;
