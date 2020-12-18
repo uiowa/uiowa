@@ -4,6 +4,7 @@ namespace Drupal\uiowa_apr\Controller;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Xss;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\uiowa_apr\Apr;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -21,13 +22,23 @@ class PublicationsController extends ControllerBase {
   protected $apr;
 
   /**
+   * The uiowa_apr config settings.
+   *
+   * @var \Drupal\Core\Config\ImmutableConfig
+   */
+  protected $config;
+
+  /**
    * The controller constructor.
    *
    * @param \Drupal\uiowa_apr\Apr $apr
    *   The uiowa_apr.apr service.
+   * @param ConfigFactoryInterface $config
+   *   The config factory service.
    */
-  public function __construct(Apr $apr) {
+  public function __construct(Apr $apr, ConfigFactoryInterface $config) {
     $this->apr = $apr;
+    $this->config = $config->get('uiowa_apr.settings');
   }
 
   /**
@@ -35,7 +46,8 @@ class PublicationsController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('uiowa_apr.apr')
+      $container->get('uiowa_apr.apr'),
+      $container->get('config.factory')
     );
   }
 
@@ -65,13 +77,13 @@ class PublicationsController extends ControllerBase {
       '#type' => 'html_tag',
       '#tag' => 'apr-publications',
       '#attributes' => [
-        'api-key' => Html::escape($this->apr->config->get('api_key')),
-        'profile-path' => Html::escape($this->apr->config->get('directory.path')) ?? '/apr/people',
-        ':page-size' => Html::escape($this->apr->config->get('publications.page_size')) ?? 10,
+        'api-key' => Html::escape($this->config->get('api_key')),
+        'profile-path' => Html::escape($this->config->get('directory.path')) ?? '/apr/people',
+        ':page-size' => Html::escape($this->config->get('publications.page_size')) ?? 10,
       ],
     ];
 
-    $departments = $this->apr->config->get('publications.departments');
+    $departments = $this->config->get('publications.departments');
 
     if (!empty($departments)) {
       $build['publications']['#attributes'][':departments'] = Xss::filter($departments);
@@ -87,7 +99,7 @@ class PublicationsController extends ControllerBase {
    *   The page title.
    */
   public function title() {
-    return Html::escape($this->apr->config->get('publications.title')) ?? 'Publications';
+    return Html::escape($this->config->get('publications.title')) ?? 'Publications';
   }
 
 }
