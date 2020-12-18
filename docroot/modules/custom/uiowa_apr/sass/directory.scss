@@ -1,12 +1,14 @@
 @import "node_modules/uids_base/uids/assets/scss/variables";
 @import "node_modules/uids_base/uids/assets/scss/utilities";
 @import "node_modules/uids_base/uids/components/card/_card-mixins.scss";
+@import "node_modules/uids_base/uids/components/pagination/pagination";
 
 #apr-directory-service {
   .list-view {
     margin: $gutter 0;
   }
 
+  // Duplicated from uids_base views exposed filters.
   .apr-filter {
     min-height: $sm;
     padding: $sm;
@@ -18,6 +20,7 @@
     .form-inline {
       @include list-group;
 
+      // Duplicated from uids_base forms.
       #apr-query-input {
         display: block;
         box-sizing: border-box;
@@ -40,15 +43,33 @@
   }
 
   .profiles {
+    ul, ol {
+      @extend %no-ul-list;
+    }
+
+    // Last TD is not wrapped in anything for some reason.
     table {
       td:last-child {
         font-size: $content-font-size;
         line-height: 1.7;
       }
+    }
 
-      ul, ol {
-        @extend %no-ul-list;
+    .apr-cards {
+      display: flex;
+
+      .card {
+        @include card;
       }
+    }
+  }
+
+  nav {
+    text-align: center;
+    @extend .pager;
+
+    li.active {
+      font-weight: $font-weight-bold;
     }
   }
 }
