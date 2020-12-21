@@ -87,9 +87,12 @@ class SitemapController extends ControllerBase {
    *   The response object.
    */
   public function build(Request $request) {
+    // The returned sitemap URLs already include a slash so remove ours.
+    $path = $this->config->get('directory.path');
+
     $params = UrlHelper::buildQuery([
       'key' => $this->config->get('api_key'),
-      'path' => $this->config->get('directory.path'),
+      'path' => ltrim($path, '/'),
     ]);
 
     try {
