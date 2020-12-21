@@ -6,10 +6,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Path\PathValidatorInterface;
-use Drupal\Core\Url;
-use Drupal\path_alias\AliasRepositoryInterface;
 use Drupal\pathauto\AliasCleanerInterface;
-use Drupal\pathauto\PathautoGeneratorInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -26,7 +23,7 @@ class SettingsForm extends ConfigFormBase {
   /**
    * The path.validator service.
    *
-   * @var PathValidatorInterface
+   * @var \Drupal\Core\Path\PathValidatorInterface
    */
   protected $pathValidator;
 
@@ -37,7 +34,7 @@ class SettingsForm extends ConfigFormBase {
    *   The config.factory service.
    * @param \Drupal\pathauto\AliasCleanerInterface $aliasCleaner
    *   The pathauto.alias_cleaner service.
-   * @param PathValidatorInterface $pathValidator
+   * @param \Drupal\Core\Path\PathValidatorInterface $pathValidator
    *   The path.validator service.
    */
   public function __construct(ConfigFactoryInterface $config_factory, AliasCleanerInterface $aliasCleaner, PathValidatorInterface $pathValidator) {
@@ -194,7 +191,7 @@ class SettingsForm extends ConfigFormBase {
     foreach ($fields as $field) {
       $path = $this->aliasCleaner->cleanAlias($form_state->getValue($field));
 
-      /** @var Url $url */
+      /** @var \Drupal\Core\Url $url */
       $url = $this->pathValidator->getUrlIfValid($path);
 
       // If $url is anything besides FALSE then the path is already in use.
