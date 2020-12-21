@@ -29,13 +29,6 @@ class SettingsForm extends ConfigFormBase {
   protected $aliasRepository;
 
   /**
-   * The pathauto.generator service.
-   *
-   * @var \Drupal\pathauto\PathautoGeneratorInterface
-   */
-  protected $pathautoGenerator;
-
-  /**
    * Settings form constructor.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
@@ -44,14 +37,11 @@ class SettingsForm extends ConfigFormBase {
    *   The pathauto.alias_cleaner service.
    * @param \Drupal\path_alias\AliasRepositoryInterface $aliasRepository
    *   The path_alias.repository service.
-   * @param \Drupal\pathauto\PathautoGeneratorInterface $pathautoGenerator
-   *   The pathauto.generator service.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, AliasCleanerInterface $aliasCleaner, AliasRepositoryInterface $aliasRepository, PathautoGeneratorInterface $pathautoGenerator) {
+  public function __construct(ConfigFactoryInterface $config_factory, AliasCleanerInterface $aliasCleaner, AliasRepositoryInterface $aliasRepository) {
     parent::__construct($config_factory);
     $this->aliasCleaner = $aliasCleaner;
     $this->aliasRepository = $aliasRepository;
-    $this->pathautoGenerator = $pathautoGenerator;
   }
 
   /**
@@ -61,8 +51,7 @@ class SettingsForm extends ConfigFormBase {
     return new static(
       $container->get('config.factory'),
       $container->get('pathauto.alias_cleaner'),
-      $container->get('path_alias.repository'),
-      $container->get('pathauto.generator')
+      $container->get('path_alias.repository')
     );
   }
 
