@@ -1,42 +1,10 @@
 @import "../../../../node_modules/@uiowa/uids/src/assets/scss/variables";
 @import "../../../../node_modules/@uiowa/uids/src/assets/scss/utilities";
 @import "../../../../node_modules/@uiowa/uids/src/components/card/_card-mixins.scss";
+@import "../../../../node_modules/@uiowa/uids/src/components/headline/_headline-mixins.scss";
 @import "../../../../node_modules/@uiowa/uids/src/components/pagination/pagination";
 
 #apr-publication-service {
-  // Duplicated from uids_base views exposed filters.
-  .apr-filter {
-    min-height: $sm;
-    padding: $sm;
-    margin-bottom: $sm;
-    background-color: $light;
-    border: $border-width solid $grey;
-    border-radius: $border-radius;
-
-    .form-inline {
-      @include list-group;
-
-      // Duplicated from uids_base forms.
-      #apr-query-input {
-        display: block;
-        box-sizing: border-box;
-        width: 100%;
-        height: 3.5rem;
-        margin: 0 0 1rem;
-        padding: 0.5rem;
-        transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
-        color: #0a0a0a;
-        border: 1px solid #cacaca;
-        background-color: #fefefe;
-        box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.1);
-        font-family: inherit;
-        font-size: 1rem;
-        font-weight: normal;
-        line-height: 1.5;
-        appearance: none;
-      }
-    }
-  }
 
   .apr-publication-list {
     ul {
@@ -44,6 +12,18 @@
 
       li {
         margin: $gutter 0;
+        .pub-author {
+          @include card-header;
+          @include headline;
+          margin-bottom: 0;
+        }
+        .pub-department {
+          @include card-subtitle;
+        }
+        .pub-citation {
+          @include card-paragraph;
+          margin-top: $sm;
+        }
       }
     }
   }
