@@ -6,6 +6,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Path\PathValidatorInterface;
+use Drupal\Core\Routing\RouteBuilderInterface;
 use Drupal\pathauto\AliasCleanerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -28,6 +29,13 @@ class SettingsForm extends ConfigFormBase {
   protected $pathValidator;
 
   /**
+   * The route.builder service.
+   *
+   * @var RouteBuilderInterface
+   */
+  protected $routeBuilder;
+
+  /**
    * Settings form constructor.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
@@ -36,8 +44,10 @@ class SettingsForm extends ConfigFormBase {
    *   The pathauto.alias_cleaner service.
    * @param \Drupal\Core\Path\PathValidatorInterface $pathValidator
    *   The path.validator service.
+   * @param RouteBuilderInterface $routeBuilder
+   *   The route.builder service.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, AliasCleanerInterface $aliasCleaner, PathValidatorInterface $pathValidator) {
+  public function __construct(ConfigFactoryInterface $config_factory, AliasCleanerInterface $aliasCleaner, PathValidatorInterface $pathValidator, RouteBuilderInterface $routeBuilder) {
     parent::__construct($config_factory);
     $this->aliasCleaner = $aliasCleaner;
     $this->pathValidator = $pathValidator;
@@ -50,7 +60,8 @@ class SettingsForm extends ConfigFormBase {
     return new static(
       $container->get('config.factory'),
       $container->get('pathauto.alias_cleaner'),
-      $container->get('path.validator')
+      $container->get('path.validator'),
+      $container->get('router.builder')
     );
   }
 
@@ -224,9 +235,10 @@ class SettingsForm extends ConfigFormBase {
       ->set('publications.departments', $form_state->getValue('publications_departments'))
       ->save();
 
-    \Drupal::service('router.builder')->rebuild();
-
     parent::submitForm($form, $form_state);
+
+    // Rebuild routes so any path changes are applied.
+    $this->routeBuilder->rebuild();
   }
 
 }
