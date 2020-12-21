@@ -185,6 +185,24 @@ class SettingsForm extends ConfigFormBase {
       '#size' => 60,
     ];
 
+    $form['global']['sitenow_articles_default_featured_image_size'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Articles Sitewide Default Featured Image Size'),
+      '#description' => $this->t('Sets the Default Featured Image Size for Articles'),
+      '#options' => [
+        'do_not_display' => $this
+          ->t('Do not Display'),
+        'small' => $this
+          ->t('Small'),
+        'medium' => $this
+          ->t('Medium'),
+        'large' => $this
+          ->t('Large'),
+        ],
+      '#default_value' => 'large',
+//      '#required' => TRUE,
+    ];
+
     if ($view->get('status') == FALSE) {
       $this->messenger()->addError($this->t('Related functionality has been turned off. Please contact an administrator.'));
       $form['#disabled'] = TRUE;
