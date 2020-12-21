@@ -107,24 +107,29 @@ function admissions_core_entity_presave(EntityInterface $entity) {
  * Implements hook_preprocess_HOOK().
  */
 function admissions_core_preprocess_field(&$variables) {
-  if ($variables['field_name'] === 'field_person_hometown') {
+  if (($variables['field_name'] === 'field_person_hometown') || ($variables['field_name'] === 'field_student_profile_country')) {
+    $home_location = [];
     $element = $variables['element'];
     $node = $element['#object'];
     $hometown = $node->hasField('field_person_hometown') ? $node->field_person_hometown->value : NULL;
     $country = $node->hasField('field_student_profile_country') ? $node->field_student_profile_country->value : NULL;
-    if ($hometown && $country) {
+    if ($hometown) {
+      $home_location = $hometown;
+    }
+    if ($country) {
       if ($country === 'US') {
         $state = $node->hasField('field_person_territory') ? $node->field_person_territory->value : NULL;
         if ($state) {
-          $hometown .= ", $state";
+          $home_location = $state;
         }
-      }
-      else {
+      } else {
         $country_value = \Drupal::service('country_manager')->getList()[$country]->__toString();
-        $hometown .= ", $country_value";
+        $home_location = $country_value;
       }
     }
-    $variables['items'][0]['content']['#context']['value'] = $hometown;
+    if (!empty($home_location)) {
+      $variables['items'][0]['content']['#context']['value'] =  implode(', ', $home_location);
+    }
   }
 }
 
