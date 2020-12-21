@@ -5,6 +5,8 @@ namespace Drupal\uiowa_apr\Form;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Path\PathValidatorInterface;
+use Drupal\Core\Url;
 use Drupal\path_alias\AliasRepositoryInterface;
 use Drupal\pathauto\AliasCleanerInterface;
 use Drupal\pathauto\PathautoGeneratorInterface;
@@ -22,11 +24,11 @@ class SettingsForm extends ConfigFormBase {
   protected $aliasCleaner;
 
   /**
-   * The path_alias.repository service.
+   * The path.validator service.
    *
-   * @var \Drupal\path_alias\AliasRepositoryInterface
+   * @var PathValidatorInterface
    */
-  protected $aliasRepository;
+  protected $pathValidator;
 
   /**
    * Settings form constructor.
@@ -35,13 +37,13 @@ class SettingsForm extends ConfigFormBase {
    *   The config.factory service.
    * @param \Drupal\pathauto\AliasCleanerInterface $aliasCleaner
    *   The pathauto.alias_cleaner service.
-   * @param \Drupal\path_alias\AliasRepositoryInterface $aliasRepository
-   *   The path_alias.repository service.
+   * @param PathValidatorInterface $pathValidator
+   *   The path.validator service.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, AliasCleanerInterface $aliasCleaner, AliasRepositoryInterface $aliasRepository) {
+  public function __construct(ConfigFactoryInterface $config_factory, AliasCleanerInterface $aliasCleaner, PathValidatorInterface $pathValidator) {
     parent::__construct($config_factory);
     $this->aliasCleaner = $aliasCleaner;
-    $this->aliasRepository = $aliasRepository;
+    $this->pathValidator = $pathValidator;
   }
 
   /**
@@ -51,7 +53,7 @@ class SettingsForm extends ConfigFormBase {
     return new static(
       $container->get('config.factory'),
       $container->get('pathauto.alias_cleaner'),
-      $container->get('path_alias.repository')
+      $container->get('path.validator')
     );
   }
 
@@ -184,19 +186,23 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritDoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    $paths = [
+    $fields = [
       'directory_path',
       'publications_path',
     ];
 
-    foreach ($paths as $path) {
-      $cleaned = $this->aliasCleaner->cleanAlias($form_state->getValue($path));
+    foreach ($fields as $field) {
+      $path = $this->aliasCleaner->cleanAlias($form_state->getValue($field));
 
-      if ($this->aliasRepository->lookupByAlias($cleaned, 'en')) {
-        $form_state->setErrorByName($path, 'This path is already in use.');
+      /** @var Url $url */
+      $url = $this->pathValidator->getUrlIfValid($path);
+
+      // If $url is anything besides FALSE then the path is already in use.
+      if ($url && substr($url->getRouteName(), 0, 9) != 'uiowa_apr') {
+        $form_state->setErrorByName($field, 'This path is already in use.');
       }
       else {
-        $form_state->setValue($path, $cleaned);
+        $form_state->setValue($field, $path);
       }
     }
 
