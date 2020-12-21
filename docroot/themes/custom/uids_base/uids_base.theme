@@ -468,6 +468,11 @@ function uids_base_preprocess_block(&$variables) {
     }
   }
 
+  //
+  if ($variables['derivative_plugin_id'] == 'uiowa_statistic' && isset($variables['elements']['#layout_builder_style'])) {
+    $variables['has_hover_effect'] = !in_array('stat--static', $variables['elements']['#layout_builder_style']);
+  }
+
 }
 
 /**
