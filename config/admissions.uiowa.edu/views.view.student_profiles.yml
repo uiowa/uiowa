@@ -288,7 +288,7 @@ display:
           exclude: true
           alter:
             alter_text: true
-            text: ''
+            text: ', {{ field_student_profile_country }}'
             make_link: false
             path: ''
             absolute: false
@@ -349,8 +349,8 @@ display:
           label: ''
           exclude: true
           alter:
-            alter_text: false
-            text: ''
+            alter_text: true
+            text: ', {{ field_person_territory }} '
             make_link: false
             path: ''
             absolute: false
@@ -412,7 +412,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: '{{ field_person_hometown }}, {{ field_person_territory }}'
+            text: '{{ field_person_hometown }}{{ field_person_territory }}'
             make_link: false
             path: ''
             absolute: false
