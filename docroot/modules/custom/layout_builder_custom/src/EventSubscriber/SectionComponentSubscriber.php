@@ -58,6 +58,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
 
           // Add hometown, if it exists.
           $hometown = $node->hasField('field_person_hometown') ? $node->field_person_hometown->value : NULL;
+          $state = $node->hasField('field_person_territory') ? $node->field_person_territory->value : NULL;
           if ($hometown) {
             $home_location[] = $hometown;
           }
@@ -67,13 +68,17 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
           $country = $node->hasField('field_student_profile_country') ? $node->field_student_profile_country->value : NULL;
           if ($country) {
             if ($country === 'US') {
-              $state = $node->hasField('field_person_territory') ? $node->field_person_territory->value : NULL;
               if ($state) {
                 $home_location[] = $state;
               }
             } else {
               $country_value = \Drupal::service('country_manager')->getList()[$country]->__toString();
               $home_location[] = $country_value;
+            }
+          }
+          else {
+            if ($state) {
+              $home_location[] = $state;
             }
           }
           if (!empty($home_location)) {
