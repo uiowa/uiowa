@@ -148,8 +148,12 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           $form['#attached']['library'][] = 'layout_builder_custom/banner-block-form';
           break;
 
-        case 'inline_block:uiowa_card':
         case 'inline_block:uiowa_aggregator':
+        case 'inline_block:uiowa_articles':
+        case 'inline_block:uiowa_card':
+        case 'inline_block:uiowa_event':
+        case 'inline_block:uiowa_events':
+        case 'inline_block:uiowa_people':
           // Set '#states' for card image size.
           $form['layout_builder_style_card_image_size']['#states'] = [
             'visible' => [
@@ -339,8 +343,12 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
       }
       break;
 
-    case 'inline_block:uiowa_card':
     case 'inline_block:uiowa_aggregator':
+    case 'inline_block:uiowa_articles':
+    case 'inline_block:uiowa_card':
+    case 'inline_block:uiowa_event':
+    case 'inline_block:uiowa_events':
+    case 'inline_block:uiowa_people':
       $media_position = $form_state->getValue('layout_builder_style_card_media_position');
       $media_format = $form_state->getValue('layout_builder_style_media_format');
 
