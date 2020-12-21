@@ -415,6 +415,7 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
       }
       if (isset($form['field_featured_image_size'])) {
         $form['field_featured_image_size']['#group'] = 'node_image';
+        $form['field_featured_image_size']['widget']['#options']['_none'] = 'Site default';
       }
       if (isset($form['field_tags'])) {
         // Create node_relations group in the advanced container.
@@ -979,4 +980,30 @@ function sitenow_entity_insert(EntityInterface $entity) {
       }
     }
   }
+}
+
+/**
+ * Set dynamic allowed values for the alignment field.
+ *
+ * @param \Drupal\field\Entity\FieldStorageConfig $definition
+ *   The field definition.
+ * @param \Drupal\Core\Entity\ContentEntityInterface|null $entity
+ *   The entity being created if applicable.
+ * @param bool $cacheable
+ *   Boolean indicating if the results are cacheable.
+ *
+ * @return array
+ *   An array of possible key and value options.
+ *
+ * @see options_allowed_values()
+ */
+function featured_image_size_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  $options = [
+    'do_not_display' => 'Do not display',
+    'small' => 'Small',
+    'medium' => 'Medium',
+    'large' => 'Large',
+  ];
+
+  return $options;
 }
