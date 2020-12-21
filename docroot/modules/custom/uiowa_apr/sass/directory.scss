@@ -3,43 +3,54 @@
 @import "../../../../node_modules/@uiowa/uids/src/components/card/_card-mixins.scss";
 @import "../../../../node_modules/@uiowa/uids/src/components/pagination/pagination";
 
+
+.apr-filter {
+  min-height: 20px;
+  padding: 1rem;
+  margin: $gutter 0;
+  background-color: $light;
+
+  .form-inline {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    flex-wrap: wrap;
+  }
+
+  [type="button"].btn {
+    padding-top: 14px;
+    padding-bottom: 14px;
+    width: 100%;
+    &.btn-default {
+      background-color: $primary;
+    }
+  }
+
+  .form-group {
+    flex: 0 1 100%;
+    @include breakpoint(menu) {
+      flex: 0 1 auto;
+      margin: 0 1rem 1rem 0;
+    }
+    @include breakpoint(container) {
+      flex: auto 1 1;
+      margin: 0;
+    }
+    + .form-group {
+      @include breakpoint(container) {
+        margin-left: 1rem;
+      }
+    }
+    select, #apr-query-input.form-control {
+      margin: 0;
+    }
+  }
+}
+
+
 #apr-directory-service {
   .list-view {
     margin: $gutter 0;
-  }
-
-  // Duplicated from uids_base views exposed filters.
-  .apr-filter {
-    min-height: $sm;
-    padding: $sm;
-    margin-bottom: $sm;
-    background-color: $light;
-    border: $border-width solid $grey;
-    border-radius: $border-radius;
-
-    .form-inline {
-      @include list-group;
-
-      // Duplicated from uids_base forms.
-      #apr-query-input {
-        display: block;
-        box-sizing: border-box;
-        width: 100%;
-        height: 3.5rem;
-        margin: 0 0 1rem;
-        padding: 0.5rem;
-        transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
-        color: #0a0a0a;
-        border: 1px solid #cacaca;
-        background-color: #fefefe;
-        box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.1);
-        font-family: inherit;
-        font-size: 1rem;
-        font-weight: normal;
-        line-height: 1.5;
-        appearance: none;
-      }
-    }
   }
 
   .profiles {
