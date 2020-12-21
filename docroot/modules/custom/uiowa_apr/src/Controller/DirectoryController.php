@@ -125,7 +125,11 @@ class DirectoryController extends ControllerBase {
         '#attributes' => [
           'v-slot:introduction' => TRUE,
         ],
-        '#markup' => check_markup($this->config->get('directory.intro')['value'], $this->config->get('directory.intro')['format']),
+        'text' => [
+          '#type' => 'processed_text',
+          '#text' => $this->config->get('directory.intro')['value'],
+          '#format' => $this->config->get('directory.intro')['format'],
+        ],
       ],
     ];
 
