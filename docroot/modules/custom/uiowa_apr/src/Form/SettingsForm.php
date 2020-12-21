@@ -14,10 +14,39 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Configure APR settings for this site.
  */
 class SettingsForm extends ConfigFormBase {
+  /**
+   * The pathauto.alias_cleaner service.
+   *
+   * @var \Drupal\pathauto\AliasCleanerInterface
+   */
   protected $aliasCleaner;
+
+  /**
+   * The path_alias.repository service.
+   *
+   * @var \Drupal\path_alias\AliasRepositoryInterface
+   */
   protected $aliasRepository;
+
+  /**
+   * The pathauto.generator service.
+   *
+   * @var \Drupal\pathauto\PathautoGeneratorInterface
+   */
   protected $pathautoGenerator;
 
+  /**
+   * Settings form constructor.
+   *
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The config.factory service.
+   * @param \Drupal\pathauto\AliasCleanerInterface $aliasCleaner
+   *   The pathauto.alias_cleaner service.
+   * @param \Drupal\path_alias\AliasRepositoryInterface $aliasRepository
+   *   The path_alias.repository service.
+   * @param \Drupal\pathauto\PathautoGeneratorInterface $pathautoGenerator
+   *   The pathauto.generator service.
+   */
   public function __construct(ConfigFactoryInterface $config_factory, AliasCleanerInterface $aliasCleaner, AliasRepositoryInterface $aliasRepository, PathautoGeneratorInterface $pathautoGenerator) {
     parent::__construct($config_factory);
     $this->aliasCleaner = $aliasCleaner;
@@ -25,6 +54,9 @@ class SettingsForm extends ConfigFormBase {
     $this->pathautoGenerator = $pathautoGenerator;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
@@ -159,6 +191,9 @@ class SettingsForm extends ConfigFormBase {
     return parent::buildForm($form, $form_state);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $paths = [
       'directory_path',

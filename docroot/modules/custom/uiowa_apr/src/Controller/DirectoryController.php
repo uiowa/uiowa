@@ -104,7 +104,7 @@ class DirectoryController extends ControllerBase {
         'aria-label' => 'People Directory',
         'class' => [
           'uids-content',
-        ]
+        ],
       ],
     ];
 

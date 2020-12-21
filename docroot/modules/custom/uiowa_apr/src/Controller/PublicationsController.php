@@ -73,7 +73,7 @@ class PublicationsController extends ControllerBase {
         'aria-label' => 'Publication Listing',
         'class' => [
           'uids-content',
-        ]
+        ],
       ],
     ];
 
