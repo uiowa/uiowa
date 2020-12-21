@@ -10,17 +10,8 @@ field_name: field_featured_image_size
 entity_type: node
 type: list_string
 settings:
-  allowed_values:
-    -
-      value: small
-      label: Small
-    -
-      value: medium
-      label: Medium
-    -
-      value: large
-      label: Large
-  allowed_values_function: ''
+  allowed_values: { }
+  allowed_values_function: 'featured_image_size_values'
 module: options
 locked: false
 cardinality: 1
