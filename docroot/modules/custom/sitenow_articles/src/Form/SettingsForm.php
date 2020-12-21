@@ -187,11 +187,11 @@ class SettingsForm extends ConfigFormBase {
 
     $form['global']['sitenow_articles_default_featured_image_size'] = [
       '#type' => 'select',
-      '#title' => $this->t('Articles Sitewide Default Featured Image Size'),
-      '#description' => $this->t('Sets the Default Featured Image Size for Articles'),
+      '#title' => $this->t('Display featured image'),
+      '#description' => $this->t('Set the default behavior for how to display a featured image.'),
       '#options' => [
         'do_not_display' => $this
-          ->t('Do not Display'),
+          ->t('Do not display'),
         'small' => $this
           ->t('Small'),
         'medium' => $this
