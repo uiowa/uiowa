@@ -18,7 +18,6 @@ dependencies:
     - field.field.node.person.field_person_position
     - field.field.node.person.field_person_research_areas
     - field.field.node.person.field_person_research_assistants
-    - field.field.node.person.field_person_research_desc
     - field.field.node.person.field_person_research_project
     - field.field.node.person.field_person_scholar_mentor_link
     - field.field.node.person.field_person_scholar_srop_year
@@ -87,7 +86,7 @@ content:
     third_party_settings: {  }
   field_person_mentor_qualif:
     weight: 16
-    label: inline
+    label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
@@ -130,13 +129,6 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
-    region: content
-  field_person_research_desc:
-    weight: 14
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
     region: content
   field_person_research_project:
     weight: 17
