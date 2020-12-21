@@ -107,41 +107,24 @@ function admissions_core_entity_presave(EntityInterface $entity) {
  * Implements hook_preprocess_HOOK().
  */
 function admissions_core_preprocess_field(&$variables) {
-  $element = $variables['element'];
-  $node = $element['#object'];
-
-  switch ($variables["element"]["#field_name"]) {
-    case 'field_person_hometown':
-      if ($node->hasField('field_person_hometown') && !$node->get('field_person_hometown')->isEmpty()) {
-        $variables["label"]= array(
-          '#type' => 'markup',
-          '#markup' => '<i class="fa fa-map-marker-alt" aria-hidden="true"></i>',
-          );
-        $hometown = $node->hasField('field_person_hometown') ? $node->field_person_hometown->value : NULL;
-        $country = $node->hasField('field_student_profile_country') ? $node->field_student_profile_country->value : NULL;
-        if ($hometown && $country) {
-          if ($country === 'US') {
-            $state = $node->hasField('field_person_territory') ? $node->field_person_territory->value : NULL;
-            if ($state) {
-              $hometown .= ", $state";
-            }
-          }
-          else {
-            $country_value = \Drupal::service('country_manager')->getList()[$country]->__toString();
-            $hometown .= ", $country_value";
-          }
+  if ($variables['field_name'] === 'field_person_hometown') {
+    $element = $variables['element'];
+    $node = $element['#object'];
+    $hometown = $node->hasField('field_person_hometown') ? $node->field_person_hometown->value : NULL;
+    $country = $node->hasField('field_student_profile_country') ? $node->field_student_profile_country->value : NULL;
+    if ($hometown && $country) {
+      if ($country === 'US') {
+        $state = $node->hasField('field_person_territory') ? $node->field_person_territory->value : NULL;
+        if ($state) {
+          $hometown .= ", $state";
         }
-        $variables['items'][0]['content']['#context']['value'] = $hometown;
       }
-      break;
-    case 'field_student_profile_major':
-      if ($node->hasField('field_student_profile_major') && !$node->get('field_student_profile_major')->isEmpty()) {
-        $variables["label"]= array(
-          '#type' => 'markup',
-          '#markup' => '<i class="fas fa-book" aria-hidden="true"></i>',
-          );
+      else {
+        $country_value = \Drupal::service('country_manager')->getList()[$country]->__toString();
+        $hometown .= ", $country_value";
       }
-      break;
+    }
+    $variables['items'][0]['content']['#context']['value'] = $hometown;
   }
 }
 
