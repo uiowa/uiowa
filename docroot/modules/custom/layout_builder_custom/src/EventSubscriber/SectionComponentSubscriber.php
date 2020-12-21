@@ -6,6 +6,7 @@ use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Render\PreviewFallbackInterface;
 use Drupal\layout_builder\Event\SectionComponentBuildRenderArrayEvent;
 use Drupal\layout_builder\LayoutBuilderEvents;
+use Drupal\layout_builder\Plugin\Block\FieldBlock;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -44,6 +45,52 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
 
         if ($is_placeholder) {
           $build['#attributes']['class'][] = 'layout-builder-block--placeholder';
+        }
+      }
+    }
+
+    // @todo Move this to an Admissions-specific class.
+    if ($block instanceof FieldBlock && $block->getPluginId() === 'field_block:node:student_profile:field_person_hometown') {
+      $contexts = $event->getContexts();
+      if (isset($contexts['layout_builder.entity'])) {
+        if ($node = $contexts['layout_builder.entity']->getContextValue()) {
+          $home_location = [];
+
+          // Add hometown, if it exists.
+          $hometown = $node->hasField('field_person_hometown') ? $node->field_person_hometown->value : NULL;
+          if ($hometown) {
+            $home_location[] = $hometown;
+          }
+
+          // Check the country. Add the state if it exists and the country is the US.
+          // Otherwise, add the country.
+          $country = $node->hasField('field_student_profile_country') ? $node->field_student_profile_country->value : NULL;
+          if ($country) {
+            if ($country === 'US') {
+              $state = $node->hasField('field_person_territory') ? $node->field_person_territory->value : NULL;
+              if ($state) {
+                $home_location[] = $state;
+              }
+            } else {
+              $country_value = \Drupal::service('country_manager')->getList()[$country]->__toString();
+              $home_location[] = $country_value;
+            }
+          }
+          if (!empty($home_location)) {
+            $node->field_person_hometown->value =  implode(', ', $home_location);
+            $content = $block->build();
+
+            $build = [
+              // @todo Move this to BlockBase in https://www.drupal.org/node/2931040.
+              '#theme' => 'block',
+              '#configuration' => $block->getConfiguration(),
+              '#plugin_id' => $block->getPluginId(),
+              '#base_plugin_id' => $block->getBaseId(),
+              '#derivative_plugin_id' => $block->getDerivativeId(),
+              '#weight' => $event->getComponent()->getWeight(),
+              'content' => $content,
+            ];
+          }
         }
       }
     }
