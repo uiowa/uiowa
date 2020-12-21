@@ -31,7 +31,7 @@ class SettingsForm extends ConfigFormBase {
   /**
    * The route.builder service.
    *
-   * @var RouteBuilderInterface
+   * @var \Drupal\Core\Routing\RouteBuilderInterface
    */
   protected $routeBuilder;
 
@@ -44,7 +44,7 @@ class SettingsForm extends ConfigFormBase {
    *   The pathauto.alias_cleaner service.
    * @param \Drupal\Core\Path\PathValidatorInterface $pathValidator
    *   The path.validator service.
-   * @param RouteBuilderInterface $routeBuilder
+   * @param \Drupal\Core\Routing\RouteBuilderInterface $routeBuilder
    *   The route.builder service.
    */
   public function __construct(ConfigFactoryInterface $config_factory, AliasCleanerInterface $aliasCleaner, PathValidatorInterface $pathValidator, RouteBuilderInterface $routeBuilder) {
