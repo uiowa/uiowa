@@ -93,7 +93,7 @@ class DirectoryController extends ControllerBase {
       '#attached' => [
         'library' => [
           "uiowa_apr/apr.directory.{$this->apr->environment}",
-          'uiowa_apr/uiowa_apr.directory',
+          'uiowa_apr/styles',
         ],
       ],
       '#type' => 'container',

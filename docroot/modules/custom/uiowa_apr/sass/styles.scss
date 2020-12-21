@@ -1,6 +1,7 @@
 @import "../../../../node_modules/@uiowa/uids/src/assets/scss/variables";
 @import "../../../../node_modules/@uiowa/uids/src/assets/scss/utilities";
 @import "../../../../node_modules/@uiowa/uids/src/components/card/_card-mixins.scss";
+@import "../../../../node_modules/@uiowa/uids/src/components/headline/headline-mixins";
 @import "../../../../node_modules/@uiowa/uids/src/components/pagination/pagination";
 
 
@@ -71,6 +72,40 @@
 
       .card {
         @include card;
+      }
+    }
+  }
+
+  nav {
+    text-align: center;
+    @extend .pager;
+
+    li.active {
+      font-weight: $font-weight-bold;
+    }
+  }
+}
+
+#apr-publication-service {
+
+  .apr-publication-list {
+    ul {
+      @extend %no-ul-list;
+
+      li {
+        margin: $gutter 0;
+        .pub-author {
+          @include card-header;
+          @include headline;
+          margin-bottom: 0;
+        }
+        .pub-department {
+          @include card-subtitle;
+        }
+        .pub-citation {
+          @include card-paragraph;
+          margin-top: $sm;
+        }
       }
     }
   }

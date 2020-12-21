@@ -224,6 +224,8 @@ class SettingsForm extends ConfigFormBase {
       ->set('publications.departments', $form_state->getValue('publications_departments'))
       ->save();
 
+    \Drupal::service('router.builder')->rebuild();
+
     parent::submitForm($form, $form_state);
   }
 
