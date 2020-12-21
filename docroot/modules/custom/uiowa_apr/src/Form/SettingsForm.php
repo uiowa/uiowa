@@ -2,13 +2,37 @@
 
 namespace Drupal\uiowa_apr\Form;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\path_alias\AliasRepositoryInterface;
+use Drupal\pathauto\AliasCleanerInterface;
+use Drupal\pathauto\PathautoGeneratorInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Configure APR settings for this site.
  */
 class SettingsForm extends ConfigFormBase {
+  protected $aliasCleaner;
+  protected $aliasRepository;
+  protected $pathautoGenerator;
+
+  public function __construct(ConfigFactoryInterface $config_factory, AliasCleanerInterface $aliasCleaner, AliasRepositoryInterface $aliasRepository, PathautoGeneratorInterface $pathautoGenerator) {
+    parent::__construct($config_factory);
+    $this->aliasCleaner = $aliasCleaner;
+    $this->aliasRepository = $aliasRepository;
+    $this->pathautoGenerator = $pathautoGenerator;
+  }
+
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('config.factory'),
+      $container->get('pathauto.alias_cleaner'),
+      $container->get('path_alias.repository'),
+      $container->get('pathauto.generator')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -133,6 +157,26 @@ class SettingsForm extends ConfigFormBase {
     ];
 
     return parent::buildForm($form, $form_state);
+  }
+
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    $paths = [
+      'directory_path',
+      'publications_path',
+    ];
+
+    foreach ($paths as $path) {
+      $cleaned = $this->aliasCleaner->cleanAlias($form_state->getValue($path));
+
+      if ($this->aliasRepository->lookupByAlias($cleaned, 'en')) {
+        $form_state->setErrorByName($path, 'This path is already in use.');
+      }
+      else {
+        $form_state->setValue($path, $cleaned);
+      }
+    }
+
+    parent::validateForm($form, $form_state);
   }
 
   /**

@@ -188,7 +188,7 @@ class SettingsForm extends ConfigFormBase {
     $path = $this->aliasCleaner->cleanString($path);
     $path_exists = $this->aliasRepository->lookupByAlias('/' . $path, 'en');
     if ($path_exists) {
-      $form_state->setErrorByName('path', $this->t('This path is already in-use.'));
+      $form_state->setErrorByName('path', $this->t('This path is already in use.'));
     }
 
     parent::validateForm($form, $form_state);
