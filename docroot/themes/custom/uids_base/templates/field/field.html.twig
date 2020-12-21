@@ -70,6 +70,8 @@
     {% endif %}
   {% else %}
     <div{{ attributes.addClass(classes) }}>
+      {% block field_icon %}
+      {% endblock %}
       <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
       {% if multiple %}
       <div class="field__items">
