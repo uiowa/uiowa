@@ -95,7 +95,7 @@ class SettingsForm extends ConfigFormBase {
     $form['directory_path'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Directory Path'),
-      '#default_value' => $this->config('uiowa_apr.settings')->get('directory.path') ?? 'apr/people',
+      '#default_value' => $this->config('uiowa_apr.settings')->get('directory.path') ?? '/apr/people',
       '#description' => $this->t("Path for the site's primary APR directory. Serves as the base for all profile URLs."),
       '#required' => TRUE,
     ];
@@ -154,7 +154,7 @@ class SettingsForm extends ConfigFormBase {
     $form['publications_path'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Publications Path'),
-      '#default_value' => $this->config('uiowa_apr.settings')->get('publications.path') ?? 'apr/publications',
+      '#default_value' => $this->config('uiowa_apr.settings')->get('publications.path') ?? '/apr/publications',
       '#description' => $this->t("Path for the site's APR publications directory."),
       '#required' => TRUE,
     ];
