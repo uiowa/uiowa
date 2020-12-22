@@ -12,14 +12,23 @@
  * @see https://v4-alpha.getbootstrap.com/layout/grid/
  */
 #}
-{% set background = content.background | render %}
+{% if field_featured_image_size == "" %}
+  {# Use Default. #}
+  {# TODO: create sitewide_default variable from sitewided defaults. #}
+  {% set display_setting = sitewide_default %}
+{% elseif field_featured_image_size is not null %}
+  {% set display_setting = "banner--#{field_featured_image_size}" %}
+{% else %}
+  {% set display_setting = 'banner--large' %}
+{% endif %}
 
+{% set background = content.background | render %}
 {% if has_node_image %}
   {% set classes = [
     'banner--gradient-bottom',
     'banner--gradient-dark',
     'banner--horizontal-left',
-    field_featured_image_size ? "banner--#{field_featured_image_size}" : 'banner--large',
+    display_setting,
     'banner--vertical-bottom',
     layout.template|clean_class,
   ] %}
