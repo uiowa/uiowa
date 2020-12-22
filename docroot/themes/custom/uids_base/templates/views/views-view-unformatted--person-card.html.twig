@@ -28,18 +28,7 @@
 
     {% set media_attributes = media_attributes ?: create_attribute() %}
 
-    {%
-      set classes = [
-      'bg--white',
-      'card--stacked',
-      'card--centered-left',
-      'card--alignment-left',
-      'card--enclosed'
-    ]
-    %}
-
     {% set person_card_view = {
-      'attributes': attributes.addClass(classes),
       'card_image': view.style_plugin.getField(key, 'field_image'),
       'card_subtitle': view.style_plugin.getField(key, 'field_person_email'),
       'card_tag': view.style_plugin.getField(key, 'field_person_phone'),
@@ -47,8 +36,37 @@
       'person_education': view.style_plugin.getField(key, 'field_person_education'),
       'person_hometown': view.style_plugin.getField(key, 'field_person_hometown'),
       'person_contact': view.style_plugin.getField(key, 'field_person_contact_information'),
-      'media_attributes': media_attributes.addClass('media--square card__media--large card__media'),
+      'media_attributes': media_attributes.addClass('media--circle card__media--large card__media'),
     } %}
+
+    {%
+      set classes = [
+      'card--stacked',
+      'card--centered-left',
+      'card--alignment-left',
+      'media--border',
+    ]
+    %}
+
+    {% set add_border = false %}
+
+    {% for check in ['card_subtitle', 'card_tag', 'person_website', 'person_education', 'person_hometown', 'person_contact'] %}
+      {% if person_card_view[check]|striptags|trim is not empty %}
+        {{ check }}
+        {% set add_border = true %}
+      {% endif %}
+    {% endfor %}
+
+    {% if add_border %}
+      {% set classes = classes|merge([
+        'bg--white',
+        'card--enclosed',
+      ]) %}
+    {% endif %}
+
+    {% set person_card_view = person_card_view|merge({
+      'attributes': attributes.addClass(classes),
+    }) %}
 
     {% embed '@uids_base/uids/card.html.twig' with person_card_view only %}
 
