@@ -42,7 +42,7 @@ class UiowaSearchResultsController extends ControllerBase {
     if ($config['cse_scope'] === 1) {
       $build['search'] = [
         '#type' => 'link',
-        '#title' => $this->t('Search all University of Iowa for: @terms', ['@terms' => $search_terms]),
+        '#title' => $this->t('Search all University of Iowa for @terms', ['@terms' => $search_terms]),
         '#url' => Url::fromUri('https://search.uiowa.edu', ['query' => $search_params]),
         '#attributes' => [
           'target' => '_blank',
