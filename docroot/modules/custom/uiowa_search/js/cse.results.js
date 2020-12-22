@@ -9,7 +9,7 @@
 
   Drupal.uiowaSearchResults = function() {
     let cseAttributes = {
-      queryParameterName: 'search',
+      queryParameterName: 'terms',
     }
 
     if (drupalSettings.uiowaSearch.cseScope === 1) {
