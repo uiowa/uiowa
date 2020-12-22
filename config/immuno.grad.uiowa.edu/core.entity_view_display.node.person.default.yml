@@ -12,6 +12,7 @@ dependencies:
     - field.field.node.person.field_person_email
     - field.field.node.person.field_person_first_name
     - field.field.node.person.field_person_hide
+    - field.field.node.person.field_person_hometown
     - field.field.node.person.field_person_lab_building
     - field.field.node.person.field_person_lab_phone
     - field.field.node.person.field_person_lab_room
@@ -38,12 +39,17 @@ dependencies:
     - field.field.node.person.field_teaser
     - field.field.node.person.pt_student_dissertation_title
     - node.type.person
+    - views.view.person_card
   module:
+    - entity_reference_revisions
     - field_group
+    - layout_builder
+    - layout_builder_restrictions
     - link
     - telephone
     - text
     - user
+    - views
 third_party_settings:
   field_group:
     group_student_current_position:
@@ -66,6 +72,443 @@ third_party_settings:
         id: ''
         classes: ''
       label: 'Current position'
+  layout_builder:
+    allow_custom: false
+    enabled: true
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: Moderation
+          layout_builder_styles_style: {  }
+        components:
+          -
+            uuid: 61c49641-a81f-417f-b400-4112c693eafa
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'extra_field_block:node:person:content_moderation_control'
+            additional: {  }
+            weight: 0
+        third_party_settings: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: Header
+          layout_builder_styles_style:
+            - ''
+            - ''
+        components:
+          -
+            uuid: ea6c6fe6-713c-407b-9389-bc6638854cf5
+            region: content
+            configuration:
+              id: system_breadcrumb_block
+              label: Breadcrumbs
+              provider: system
+              label_display: '0'
+              context_mapping: {  }
+            additional: {  }
+            weight: 1
+          -
+            uuid: 67a1e643-c773-4015-a856-3609f77513e8
+            region: content
+            configuration:
+              id: 'field_block:node:page:title'
+              label: Title
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: visually_hidden
+                type: string
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 2
+          -
+            uuid: 479fe452-b32a-4e0b-917b-64a1a1b69792
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:person:field_person_position'
+              formatter:
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+                type: string
+            additional: {  }
+            weight: 3
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+      -
+        layout_id: layout_twocol
+        layout_settings:
+          label: Content
+          column_widths: 67-33
+          layout_builder_styles_style:
+            section_alignment_start: section_alignment_start
+        components:
+          -
+            uuid: 310cf53b-c472-437f-bca6-68aba9dae4c3
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:person:field_person_position'
+              formatter:
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+                type: string
+            additional: {  }
+            weight: 1
+          -
+            uuid: 343e43ae-2ab0-4578-8608-d4e2023ade06
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:person:field_person_department'
+              formatter:
+                type: entity_reference_label
+                label: inline
+                settings:
+                  link: false
+                third_party_settings: {  }
+            additional: {  }
+            weight: 2
+          -
+            uuid: 31cdfb19-21ec-4a07-93c6-56978803cc45
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:person:field_person_email'
+              formatter:
+                type: email_mailto
+                label: inline
+                settings: {  }
+                third_party_settings: {  }
+            additional: {  }
+            weight: 3
+          -
+            uuid: 85108298-c2e5-4ee9-a550-eee358572cc1
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:person:field_person_phone'
+              formatter:
+                label: inline
+                settings:
+                  title: ''
+                third_party_settings: {  }
+                type: telephone_link
+            additional: {  }
+            weight: 4
+          -
+            uuid: b50e3a53-5aa1-4e86-a379-9c5711444d22
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:person:field_person_office_room'
+              formatter:
+                type: string
+                label: inline
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            additional: {  }
+            weight: 5
+          -
+            uuid: 4985a2c0-78cc-40de-967a-d73e5bc91614
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:person:field_person_office_building'
+              formatter:
+                type: string
+                label: inline
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            additional: {  }
+            weight: 6
+          -
+            uuid: b6e3b958-ae3c-4145-8cfc-4ee0e6dc7c31
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:person:field_person_office_phone'
+              formatter:
+                type: telephone_link
+                label: inline
+                settings:
+                  title: ''
+                third_party_settings: {  }
+            additional: {  }
+            weight: 7
+          -
+            uuid: ff44c453-7262-4498-82ec-f3aaff6f72d1
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:person:field_person_lab_room'
+              formatter:
+                type: string
+                label: inline
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            additional: {  }
+            weight: 8
+          -
+            uuid: cdcdf63c-4dbd-4b26-94f0-29ce35084f48
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:person:field_person_lab_building'
+              formatter:
+                type: string
+                label: inline
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            additional: {  }
+            weight: 9
+          -
+            uuid: a076a67e-6d5d-48ab-99c0-04eea26ca5e1
+            region: first
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:person:field_person_lab_phone'
+              formatter:
+                type: telephone_link
+                label: above
+                settings:
+                  title: ''
+                third_party_settings: {  }
+            additional: {  }
+            weight: 10
+          -
+            uuid: 3c958b8b-61de-4793-b39e-ec5a4b9252e3
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:person:field_image'
+              formatter:
+                type: entity_reference_entity_view
+                label: hidden
+                settings:
+                  view_mode: large__square
+                  link: false
+                third_party_settings: {  }
+            additional: {  }
+            weight: 13
+          -
+            uuid: 582c261d-6278-4909-835d-de8efe388ef4
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:person:field_pt_student_advisor'
+              formatter:
+                label: inline
+                settings:
+                  link: true
+                third_party_settings: {  }
+                type: entity_reference_label
+            additional: {  }
+            weight: 14
+          -
+            uuid: d82d8eb4-26f2-452c-87d8-edf06b2aed44
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:person:field_person_website'
+              formatter:
+                label: inline
+                settings:
+                  trim_length: 80
+                  url_only: false
+                  url_plain: false
+                  rel: ''
+                  target: ''
+                third_party_settings: {  }
+                type: link_separate
+            additional: {  }
+            weight: 15
+          -
+            uuid: ba1d0839-732c-4818-ac32-64c45203c2bd
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:person:field_person_publications_link'
+              formatter:
+                label: hidden
+                settings:
+                  trim_length: 80
+                  url_only: false
+                  url_plain: false
+                  rel: ''
+                  target: ''
+                third_party_settings: {  }
+                type: link
+            additional: {  }
+            weight: 16
+          -
+            uuid: fb6b8f0f-82ce-4f4d-94aa-8b6760b25415
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:person:field_person_research_areas'
+              formatter:
+                label: above
+                settings:
+                  link: false
+                third_party_settings: {  }
+                type: entity_reference_label
+            additional: {  }
+            weight: 17
+          -
+            uuid: 44227f44-bf86-413c-b6b2-2df45a67f259
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:person:pt_student_dissertation_title'
+              formatter:
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+                type: string
+            additional: {  }
+            weight: 18
+          -
+            uuid: 5372c224-abaa-4a47-8cbc-17ffeb948d8d
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:person:field_pt_student_cur_pos_title'
+              formatter:
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+                type: string
+            additional: {  }
+            weight: 19
+          -
+            uuid: fc2e71fb-6ac9-4bee-8fd1-a44760200e6a
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:person:field_pt_student_cur_pos_dept'
+              formatter:
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+                type: string
+            additional: {  }
+            weight: 20
+          -
+            uuid: 36909c1d-bb61-4468-8a50-19afb0e16931
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:person:field_pt_student_cur_pos_inst'
+              formatter:
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+                type: string
+            additional: {  }
+            weight: -9
+              -
+              uuid: e0cbb1a7-b222-44d0-9dae-c6d78d5e74c2
+              region: first
+              configuration:
+                label_display: '0'
+                context_mapping:
+                  entity: layout_builder.entity
+                id: 'field_block:node:person:field_person_bio'
+                formatter:
+                  label: visually_hidden
+                  settings: {  }
+                  third_party_settings: {  }
+                  type: text_default
+              additional: {  }
+              weight: -9
+          -
+            uuid: 234062aa-1d55-4cb2-a398-7cdf98e7de79
+            region: second
+            configuration:
+              id: 'views_block:person_card-block_1'
+              label: null
+              provider: views
+              label_display: null
+              views_label: ''
+              items_per_page: none
+              context_mapping: {  }
+            additional: {  }
+            weight: 0
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+  layout_builder_restrictions:
+    allowed_block_categories: {  }
+    entity_view_mode_restriction:
+      whitelisted_blocks: {  }
+      blacklisted_blocks: {  }
+      allowed_layouts: {  }
+    entity_view_mode_restriction_by_region:
+      allowed_layouts: {  }
 id: node.person.default
 targetEntityType: node
 bundle: person
@@ -254,6 +697,7 @@ hidden:
   field_person_education: true
   field_person_first_name: true
   field_person_hide: true
+  field_person_hometown: true
   field_person_last_name: true
   field_person_types: true
   field_person_university_id: true
