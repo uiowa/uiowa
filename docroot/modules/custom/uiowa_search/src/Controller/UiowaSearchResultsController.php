@@ -12,11 +12,6 @@ use Symfony\Component\HttpFoundation\Request;
 class UiowaSearchResultsController extends ControllerBase {
 
   /**
-   * Constructs the controller object.
-   */
-  public function __construct() {}
-
-  /**
    * Builds the response.
    *
    * @param Symfony\Component\HttpFoundation\Request $request
@@ -27,7 +22,7 @@ class UiowaSearchResultsController extends ControllerBase {
    */
   public function build(Request $request) {
     $config = $this->config('uiowa_search.settings')->get('uiowa_search');
-    $search_terms = $request->get('search');
+    $search_terms = $request->get('terms');
 
     $search_params = [
       'q' => $search_terms,
@@ -43,14 +38,17 @@ class UiowaSearchResultsController extends ControllerBase {
       'site' => 'default_collection',
     ];
 
-    $build['search'] = [
-      '#type' => 'link',
-      '#title' => $this->t('Search all University of Iowa for @terms', ['@terms' => $search_terms]),
-      '#url' => Url::fromUri('https://search.uiowa.edu/search', ['query' => $search_params]),
-      '#attributes' => [
-        'target' => '_blank',
-      ],
-    ];
+    // Only show the search-all link if search-this-site is configured.
+    if ($config['cse_scope'] === 1) {
+      $build['search'] = [
+        '#type' => 'link',
+        '#title' => $this->t('Search all University of Iowa for @terms', ['@terms' => $search_terms]),
+        '#url' => Url::fromUri('https://search.uiowa.edu', ['query' => $search_params]),
+        '#attributes' => [
+          'target' => '_blank',
+        ],
+      ];
+    }
 
     $build['results_container'] = [
       '#type' => 'container',
