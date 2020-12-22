@@ -14,15 +14,13 @@ dependencies:
     - field.field.node.student_profile.field_student_profile_country
     - field.field.node.student_profile.field_student_profile_gender
     - field.field.node.student_profile.field_student_profile_grad_date
+    - field.field.node.student_profile.field_student_profile_image
     - field.field.node.student_profile.field_student_profile_major
-    - field.field.node.student_profile.field_student_profile_photo
     - field.field.node.student_profile.field_student_profile_videos
-    - image.style.thumbnail
     - node.type.student_profile
   module:
     - address
     - content_moderation
-    - focal_point
     - media_library
     - path
     - text
@@ -42,7 +40,7 @@ content:
     third_party_settings: {  }
     region: content
   field_image:
-    weight: 3
+    weight: 2
     settings:
       media_types: {  }
     third_party_settings: {  }
@@ -110,6 +108,13 @@ content:
     third_party_settings: {  }
     type: options_select
     region: content
+  field_student_profile_image:
+    type: media_library_widget
+    weight: 3
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+    region: content
   field_student_profile_major:
     weight: 8
     settings:
@@ -119,16 +124,6 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
-    region: content
-  field_student_profile_photo:
-    weight: 2
-    settings:
-      progress_indicator: throbber
-      preview_image_style: thumbnail
-      preview_link: true
-      offsets: '50,50'
-    third_party_settings: {  }
-    type: image_focal_point
     region: content
   field_student_profile_videos:
     type: media_library_widget

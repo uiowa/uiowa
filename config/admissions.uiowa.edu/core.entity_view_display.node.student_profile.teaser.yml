@@ -15,15 +15,12 @@ dependencies:
     - field.field.node.student_profile.field_student_profile_country
     - field.field.node.student_profile.field_student_profile_gender
     - field.field.node.student_profile.field_student_profile_grad_date
+    - field.field.node.student_profile.field_student_profile_image
     - field.field.node.student_profile.field_student_profile_major
-    - field.field.node.student_profile.field_student_profile_photo
     - field.field.node.student_profile.field_student_profile_videos
-    - image.style.square__768_x_768
     - node.type.student_profile
   module:
     - address
-    - image
-    - lazy
     - options
     - text
     - user
@@ -61,6 +58,15 @@ content:
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
+  field_student_profile_image:
+    type: entity_reference_entity_view
+    weight: 0
+    region: content
+    label: visually_hidden
+    settings:
+      view_mode: grid_gallery
+      link: false
+    third_party_settings: {  }
   field_student_profile_major:
     type: entity_reference_label
     weight: 1
@@ -69,19 +75,6 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-  field_student_profile_photo:
-    type: image
-    weight: 0
-    region: content
-    label: visually_hidden
-    settings:
-      image_style: square__768_x_768
-      image_link: content
-    third_party_settings:
-      lazy:
-        placeholder_style: ''
-        lazy_image: '0'
-        data_uri: false
 hidden:
   body: true
   field_image: true

@@ -14,15 +14,14 @@ dependencies:
     - field.field.node.student_profile.field_student_profile_country
     - field.field.node.student_profile.field_student_profile_gender
     - field.field.node.student_profile.field_student_profile_grad_date
+    - field.field.node.student_profile.field_student_profile_image
     - field.field.node.student_profile.field_student_profile_major
-    - field.field.node.student_profile.field_student_profile_photo
     - field.field.node.student_profile.field_student_profile_videos
     - node.type.student_profile
     - views.view.student_card
   module:
     - address
     - heading
-    - image
     - layout_builder
     - layout_builder_restrictions
     - options
@@ -305,6 +304,15 @@ content:
     third_party_settings: {  }
     type: address_country_default
     region: content
+  field_student_profile_image:
+    type: entity_reference_entity_view
+    weight: 12
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
   field_student_profile_major:
     weight: 10
     label: above
@@ -312,15 +320,6 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-    region: content
-  field_student_profile_photo:
-    weight: 11
-    label: above
-    settings:
-      image_style: ''
-      image_link: ''
-    third_party_settings: {  }
-    type: image
     region: content
   field_student_profile_videos:
     type: entity_reference_entity_view
