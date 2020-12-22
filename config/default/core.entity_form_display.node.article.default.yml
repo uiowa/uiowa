@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.article.field_article_source_link
     - field.field.node.article.field_article_source_link_direct
     - field.field.node.article.field_article_source_org
+    - field.field.node.article.field_featured_image_size
     - field.field.node.article.field_image
     - field.field.node.article.field_image_caption
     - field.field.node.article.field_meta_tags
@@ -86,6 +87,12 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  field_featured_image_size:
+    weight: 26
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
     region: content
   field_image:
     type: media_library_widget

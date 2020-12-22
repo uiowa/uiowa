@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.article.field_article_source_link
     - field.field.node.article.field_article_source_link_direct
     - field.field.node.article.field_article_source_org
+    - field.field.node.article.field_featured_image_size
     - field.field.node.article.field_image
     - field.field.node.article.field_image_caption
     - field.field.node.article.field_meta_tags
@@ -18,6 +19,7 @@ dependencies:
     - layout_builder
     - layout_builder_restrictions
     - link
+    - options
     - system
     - text
     - user
@@ -83,6 +85,21 @@ third_party_settings:
                 view_mode: view_mode
             additional: {  }
             weight: -9
+          -
+            uuid: 8dda86f2-3116-4141-8f0f-60dbaa3b2fd6
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:article:field_featured_image_size'
+              formatter:
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+                type: list_default
+            additional: {  }
+            weight: -8
         third_party_settings: {  }
       -
         layout_id: layout_onecol
@@ -238,6 +255,13 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
+  field_featured_image_size:
+    weight: 8
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
     region: content
   field_image:
     type: entity_reference_entity_view
