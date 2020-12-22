@@ -48,16 +48,18 @@
     ]
     %}
 
-    {% set add_border = false %}
+    {% set has_body = false %}
 
-    {% for check in ['card_subtitle', 'card_tag', 'person_website', 'person_education', 'person_hometown', 'person_contact'] %}
+    {% set card_body_fields = ['card_subtitle', 'card_tag', 'person_website', 'person_education', 'person_hometown', 'person_contact'] %}
+
+    {% for check in card_body_fields %}
       {% if person_card_view[check]|striptags|trim is not empty %}
         {{ check }}
-        {% set add_border = true %}
+        {% set has_body = true %}
       {% endif %}
     {% endfor %}
 
-    {% if add_border %}
+    {% if has_body %}
       {% set classes = classes|merge([
         'bg--white',
         'card--enclosed',
@@ -66,6 +68,7 @@
 
     {% set person_card_view = person_card_view|merge({
       'attributes': attributes.addClass(classes),
+      'has_body': has_body,
     }) %}
 
     {% embed '@uids_base/uids/card.html.twig' with person_card_view only %}
@@ -77,7 +80,7 @@
       {% endblock %}
 
       {% block card_body %}
-        {% if card_subtitle|striptags|trim or card_tag|striptags|trim is not empty %}
+        {% if has_body %}
 
           <div class="card__body">
             {% block card_subtitle %}
@@ -111,7 +114,3 @@
     {% endembed %}
   </div>
 {% endfor %}
-
-
-
-
