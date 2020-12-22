@@ -58,8 +58,6 @@ function sitenow_events_preprocess_block(&$variables) {
         }
       }
 
-
-
       if ($block->hasField('field_uiowa_headline')) {
         $headline_fields = $block->get('field_uiowa_headline')->getValue();
         foreach ($headline_fields as $headline_field) {
