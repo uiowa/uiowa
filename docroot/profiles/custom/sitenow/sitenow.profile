@@ -415,6 +415,29 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
           $form['field_image_caption']['#group'] = 'node_image';
         }
       }
+      if (isset($form['field_student_profile_image'])) {
+        // Create node_image group in the advanced container.
+        $form['node_student_profile_image'] = [
+          '#type' => 'details',
+          '#title' => $form["field_student_profile_image"]["widget"]["#title"],
+          '#group' => 'advanced',
+          '#attributes' => [
+            'class' => ['node-form-image'],
+          ],
+          '#attached' => [
+            'library' => ['node/drupal.node'],
+          ],
+          '#weight' => -10,
+          '#optional' => TRUE,
+          '#open' => FALSE,
+        ];
+        // Set field_image to node_image group.
+        $form['field_student_profile_image']['#group'] = 'node_student_profile_image';
+        if (isset($form['field_image_caption'])) {
+          // Set field_image_caption to node_image group.
+          $form['field_image_caption']['#group'] = 'node_student_profile_image';
+        }
+      }
       if (isset($form['field_tags'])) {
         // Create node_relations group in the advanced container.
         $form['node_relations'] = [
