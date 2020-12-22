@@ -1,0 +1,28 @@
+uuid: 6a3b3084-ba02-4bbe-a508-bf4224921d8d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_student_profile_image
+    - media.type.image
+    - node.type.student_profile
+id: node.student_profile.field_student_profile_image
+field_name: field_student_profile_image
+entity_type: node
+bundle: student_profile
+label: 'Student profile image'
+description: 'Image that displays in the teaser display and student profile grid'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference
