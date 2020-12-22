@@ -24,7 +24,7 @@ class SearchForm extends FormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = [];
 
-    $form['search-terms'] = [
+    $form['search_terms'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Search'),
       '#label_attributes' => [
@@ -39,7 +39,7 @@ class SearchForm extends FormBase {
       '#size' => '15',
     ];
 
-    $form['submit-search'] = [
+    $form['submit_search'] = [
       '#type' => 'submit',
       '#value' => $this->t('Search'),
       '#name' => 'btnG',
@@ -60,7 +60,7 @@ class SearchForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $form_state->setRedirectUrl(Url::fromRoute('uiowa_search.search_results', [], [
       'query' => [
-        'search' => $form_state->getValue('search-terms'),
+        'terms' => $form_state->getValue('search_terms'),
       ],
     ]));
   }
