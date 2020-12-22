@@ -396,6 +396,17 @@ function sitenow_people_preprocess_paragraph(&$variables) {
         $pager['type'] = $pager_type;
         $view->display_handler->setOption('pager', $pager);
 
+        // Provide default v2 style classes.
+        $v2_defaults = [
+          'card--list',
+          'card__row',
+          'card--media-left',
+          'media--circle',
+          'media--border',
+          'card__media--small',
+        ];
+        $view->display_handler->setOption('parent_lb_styles', $v2_defaults);
+
         $view->preExecute();
         $view->execute();
         $variables['content']['view'] = $view->render();
@@ -535,6 +546,30 @@ function sitenow_people_preprocess_block(&$variables) {
               'h6' => 'h6',
             ];
             $view->display_handler->setOption('heading_size', $options[$headline_field['heading_size']]);
+          }
+        }
+      }
+
+      // Get block layout builder styles if they exist.
+      if (isset($variables["elements"]["#layout_builder_style"]) && !empty($variables["elements"]["#layout_builder_style"])) {
+        $parent_lb_styles = $variables["elements"]["#layout_builder_style"];
+        $view->display_handler->setOption('parent_lb_styles', $parent_lb_styles);
+      }
+
+      // Unset classes meant for children.
+      if (isset($variables["attributes"]["class"])) {
+        foreach ($variables["attributes"]["class"] as $key => $style) {
+          if (substr($style, 0, strlen('bg')) === 'bg') {
+            unset($variables["attributes"]["class"][$key]);
+          }
+          if (substr($style, 0, strlen('card')) === 'card') {
+            unset($variables["attributes"]["class"][$key]);
+          }
+          if (substr($style, 0, strlen('media')) === 'media') {
+            unset($variables["attributes"]["class"][$key]);
+          }
+          if (substr($style, 0, strlen('hide')) === 'hide') {
+            unset($variables["attributes"]["class"][$key]);
           }
         }
       }

@@ -70,12 +70,28 @@
  *   in different view modes.
  */
 #}
-
+{% set style_classes = [] %}
+{% set size_classes = [] %}
 {%
   set classes = [
   'card--list'
 ]
 %}
+
+{% set parent_lb_styles = view.display_handler.getOption('parent_lb_styles') %}
+{% for style in parent_lb_styles %}
+
+  {% set classes = classes|merge([style]) %}
+
+  {% if style starts with 'media--' %}
+    {% set style_classes = style_classes|merge([style]) %}
+  {% endif %}
+
+  {% if style starts with 'card__media' %}
+    {% set size_classes = size_classes|merge([style]) %}
+  {% endif %}
+
+{% endfor %}
 
 {% set headline_level = heading_size ?: 'h3' %}
 {% if view %}
@@ -87,7 +103,9 @@
 {{ attach_library('uids_base/node-type-person') }}
 
 {% set person_card = {
-  'attributes': attributes.addClass(classes),
+  'attributes': attributes.addClass(classes).removeClass(style_classes, size_classes),
+  'media_styles': style_classes,
+  'media_sizes': size_classes,
   'card_image': content.field_image | render,
   'card_text': content|without('field_image', 'field_image', 'field_person_credential', 'links'),
   'card_subtitle': content.field_person_credential.0,
