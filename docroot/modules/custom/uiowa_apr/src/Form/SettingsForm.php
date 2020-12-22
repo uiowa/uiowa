@@ -51,6 +51,7 @@ class SettingsForm extends ConfigFormBase {
     parent::__construct($config_factory);
     $this->aliasCleaner = $aliasCleaner;
     $this->pathValidator = $pathValidator;
+    $this->routeBuilder = $routeBuilder;
   }
 
   /**
