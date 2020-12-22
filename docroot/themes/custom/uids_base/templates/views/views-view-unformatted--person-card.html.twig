@@ -54,7 +54,6 @@
 
     {% for check in card_body_fields %}
       {% if person_card_view[check]|striptags|trim is not empty %}
-        {{ check }}
         {% set has_body = true %}
       {% endif %}
     {% endfor %}
