@@ -12,11 +12,6 @@ use Symfony\Component\HttpFoundation\Request;
 class UiowaSearchResultsController extends ControllerBase {
 
   /**
-   * Constructs the controller object.
-   */
-  public function __construct() {}
-
-  /**
    * Builds the response.
    *
    * @param Symfony\Component\HttpFoundation\Request $request
