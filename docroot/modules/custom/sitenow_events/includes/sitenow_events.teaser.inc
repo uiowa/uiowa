@@ -27,10 +27,28 @@ function template_preprocess_sitenow_events_teaser(array &$variables) {
   }
 
   if (isset($variables['event']['media'][0]['original_image'])) {
+    // Establish default view mode if layout_builder_styles don't exist.
+    $image_view_mode = 'large__square';
+
+    // Map the layout builder styles to the view mode that should be used.
+    $media_formats = [
+      'media--widescreen' => 'large__widescreen',
+      'media--square' => 'large__square',
+      'media--circle' => 'large__square',
+    ];
+    // Loop through the map to check if any of them are being used and
+    // adjust the view mode accordingly. Last one wins out.
+    if (isset($variables["event"]["parent_lb_styles"])) {
+      foreach ($media_formats as $style => $view_mode) {
+        if (in_array($style, $variables["event"]["parent_lb_styles"])) {
+          $image_view_mode = $view_mode;
+        }
+      }
+    }
     $variables['event']['image'] = [
       '#theme' => 'imagecache_external_responsive',
       '#uri' => $variables['event']['media'][0]['original_image'],
-      '#responsive_image_style_id' => 'large__square',
+      '#responsive_image_style_id' => $image_view_mode,
       '#attributes' => [
         'data-lazy' => TRUE,
         'alt' => t('@title promotional image', ['@title' => $variables['event']['title']]),

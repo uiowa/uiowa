@@ -1,11 +1,3 @@
-{%
-  set classes = [
-    'card--list',
-    'card__row',
-    'card--media-left'
-  ]
-%}
-
 {{ attach_library('classy/node') }}
 {{ attach_library('uids_base/paragraphs-lists') }}
 {{ attach_library('uids_base/event') }}
@@ -19,11 +11,31 @@
   {% set event_icon = '<span class="fas fa-map-marker-alt"></span>' %}
   {% set event_location = event.location_name %}
 {% endif %}
+{% set style_classes = [] %}
+{% set size_classes = [] %}
+{%
+  set classes = [
+  'event-item',
+]
+%}
+{% for style in event.parent_lb_styles %}
+
+  {% set classes = classes|merge([style]) %}
+
+  {% if style starts with 'media--' %}
+    {% set style_classes = style_classes|merge([style]) %}
+  {% endif %}
+
+  {% if style starts with 'card__media' %}
+    {% set size_classes = size_classes|merge([style]) %}
+  {% endif %}
+
+{% endfor %}
 
 {% set block_card = {
-  'attributes': attributes.addClass(classes),
-  'media_styles' : ['media--circle', 'media--border'],
-  'media_sizes' : 'card__media--small',
+  'attributes': attributes.addClass(classes).removeClass(style_classes, size_classes),
+  'media_styles': style_classes,
+  'media_sizes': size_classes,
   'card_image': event.image|render,
   'card_title': event.title|render,
   'title_prefix': title_prefix,

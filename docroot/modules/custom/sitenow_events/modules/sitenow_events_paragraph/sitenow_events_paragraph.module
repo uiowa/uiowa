@@ -98,6 +98,17 @@ function sitenow_events_paragraph_preprocess_paragraph(&$variables) {
             // The API nests each event as an array.
             $event = $value['event'];
 
+            // Provide default v2 style classes.
+            $v2_defaults = [
+              'card--list',
+              'card__row',
+              'card--media-left',
+              'media--circle',
+              'media--border',
+              'card__media--small'
+            ];
+            $event['parent_lb_styles'] = $v2_defaults;
+
             $variables['list'][] = [
               '#theme' => 'sitenow_events_teaser',
               '#event' => $event,
