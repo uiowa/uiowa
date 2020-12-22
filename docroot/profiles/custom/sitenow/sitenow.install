@@ -1838,15 +1838,16 @@ function sitenow_update_8047() {
       if ($section->getLayoutId() == 'layout_header') {
         // Get lock settings.
         $lock_settings = $section->getThirdPartySetting('layout_builder_lock', 'lock');
-
         // Check for the missing key, add it if it doesn't exist already.
-        if (!array_key_exists(5, $lock_settings)) {
-          $lock_settings[5] = 5;
-          ksort($lock_settings);
-          // Save changes.
-          $section->setThirdPartySetting('layout_builder_lock', 'lock', $lock_settings);
-          $node->set('layout_builder__layout', $layout_sections)
-            ->save();
+        if (isset($lock_settings)) {
+          if (!array_key_exists(5, $lock_settings)) {
+            $lock_settings[5] = 5;
+            ksort($lock_settings);
+            // Save changes.
+            $section->setThirdPartySetting('layout_builder_lock', 'lock', $lock_settings);
+            $node->set('layout_builder__layout', $layout_sections)
+              ->save();
+          }
         }
       }
     }
