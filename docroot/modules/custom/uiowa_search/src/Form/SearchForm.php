@@ -23,7 +23,7 @@ class SearchForm extends FormBase {
   /**
    * The form constructor.
    *
-   * @param ConfigFactoryInterface $config
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config
    *   The config.factory service.
    */
   public function __construct(ConfigFactoryInterface $config) {
