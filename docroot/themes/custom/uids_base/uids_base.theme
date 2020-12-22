@@ -315,7 +315,7 @@ function uids_base_preprocess_layout(&$variables) {
     $variables['has_node_image'] = $node->hasField('field_image') && !$node->get('field_image')->isEmpty();
 
     // Create a featured image size variable for easier Twig use.
-    if ($node->hasField('field_featured_image_size') && !$node->get('field_featured_image_size')->isEmpty()) {
+    if ($node->hasField('field_featured_image_size') && gettype($node->get('field_featured_image_size')->getString()) == "string") {
       $variables['field_featured_image_size'] = $node->get('field_featured_image_size')->getString();
     }
 

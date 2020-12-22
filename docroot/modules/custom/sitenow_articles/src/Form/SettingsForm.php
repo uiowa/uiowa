@@ -198,9 +198,8 @@ class SettingsForm extends ConfigFormBase {
           ->t('Medium'),
         'large' => $this
           ->t('Large'),
-        ],
+      ],
       '#default_value' => 'large',
-//      '#required' => TRUE,
     ];
 
     if ($view->get('status') == FALSE) {
