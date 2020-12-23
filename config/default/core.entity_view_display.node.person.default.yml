@@ -32,6 +32,8 @@ dependencies:
     - text
     - user
     - views
+  theme:
+    - uids_base
 third_party_settings:
   layout_builder:
     allow_custom: false
@@ -120,6 +122,21 @@ third_party_settings:
             section_alignment_start: section_alignment_start
         components:
           -
+            uuid: e0cbb1a7-b222-44d0-9dae-c6d78d5e74c2
+            region: first
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:person:field_person_bio'
+              formatter:
+                label: visually_hidden
+                settings: {  }
+                third_party_settings: {  }
+                type: text_default
+            additional: {  }
+            weight: -9
+          -
             uuid: 532de6e6-fc41-4b7d-a135-5d1cf2c63cf3
             region: first
             configuration:
@@ -151,21 +168,6 @@ third_party_settings:
                 third_party_settings: {  }
             additional: {  }
             weight: 4
-          -
-            uuid: e0cbb1a7-b222-44d0-9dae-c6d78d5e74c2
-            region: first
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:person:field_person_bio'
-              formatter:
-                label: visually_hidden
-                settings: {  }
-                third_party_settings: {  }
-                type: text_default
-            additional: {  }
-            weight: -9
           -
             uuid: 234062aa-1d55-4cb2-a398-7cdf98e7de79
             region: second
