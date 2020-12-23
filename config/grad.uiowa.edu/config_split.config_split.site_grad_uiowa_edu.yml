@@ -7,7 +7,7 @@ label: grad.uiowa.edu
 description: 'Split configuration for grad.uiowa.edu.'
 folder: ../config/grad.uiowa.edu
 module:
-  book: 0
+  grad_srop: 0
 theme: {  }
 blacklist:
   - config_split.config_split.site_grad_uiowa_edu
@@ -22,18 +22,19 @@ graylist:
   - field.storage.node.field_person_position
   - field.storage.node.field_person_research_areas
   - field.storage.node.field_person_research_assistants
-  - field.storage.node.field_person_research_desc
   - field.storage.node.field_person_types
+  - field.storage.node.field_uiowa_college
   - node.type.person
   - simple_sitemap.bundle_settings.default.node.person
   - sitenow_people.field_settings
   - sitenow_people.person_type.mentor
+  - sitenow_people.person_type.scholar
   - user.role.anonymous
   - user.role.authenticated
   - user.role.editor
   - user.role.webmaster
+  - field.storage.node.field_person_research_desc
   - 'field.storage.node.field_person_*'
-  - field.storage.node.field_uiowa_college
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 90
