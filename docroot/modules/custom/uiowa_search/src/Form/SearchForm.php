@@ -89,7 +89,7 @@ class SearchForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $form_state->setRedirectUrl(Url::fromRoute('uiowa_search.search_results', [], [
       'query' => [
-        'terms' => $form_state->getValue('search_terms'),
+        'terms' => $form_state->getValue('search-terms'),
       ],
     ]));
   }
