@@ -179,20 +179,29 @@ function uids_base_preprocess_page(&$variables) {
  * Implements hook_preprocess_HOOK() for node.html.twig.
  */
 function uids_base_preprocess_node(&$variables) {
-  if (isset($variables['node'])) {
-    if (in_array($variables['node']->getType(), ['article', 'page'])) {
-      $block_manager = \Drupal::service('plugin.manager.block');
-      $config = [];
-      $plugin_block = $block_manager->createInstance('system_breadcrumb_block', $config);
-      $variables['breadcrumb'] = $plugin_block->build();
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    if (isset($variables['node'])) {
+      if (in_array($variables['node']->getType(), ['article', 'page'])) {
+        $block_manager = \Drupal::service('plugin.manager.block');
+        $config = [];
+        $plugin_block = $block_manager->createInstance('system_breadcrumb_block', $config);
+        $variables['breadcrumb'] = $plugin_block->build();
+      }
     }
-  }
-  $node = \Drupal::routeMatch()->getParameter('node');
+    $node = \Drupal::routeMatch()->getParameter('node');
 
-  if ($node instanceof NodeInterface) {
-    // @todo Is there a better way to have a soft dependency on a class?
-    if (class_exists('\Drupal\layout_builder_custom\LayoutBuilderHelper')) {
-      $variables['layout_builder_enabled'] = \Drupal::classResolver('\Drupal\layout_builder_custom\LayoutBuilderHelper')->layoutBuilderEnabled($node);
+    if ($node instanceof NodeInterface) {
+      $node = $variables["node"];
+      switch ($node->getType()) {
+        case 'person':
+          $variables['#attached']['library'][] = 'uids_base/person';
+          break;
+      }
+      // @todo Is there a better way to have a soft dependency on a class?
+      if (class_exists('\Drupal\layout_builder_custom\LayoutBuilderHelper')) {
+        $variables['layout_builder_enabled'] = \Drupal::classResolver('\Drupal\layout_builder_custom\LayoutBuilderHelper')->layoutBuilderEnabled($node);
+      }
     }
   }
 }
