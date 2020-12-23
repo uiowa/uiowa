@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: shl.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: shl
+  human_name: shl.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: shl.prod
+drupal:
+  db:
+    database: shl_uiowa_edu
+uiowa:
+  requester: makyea
