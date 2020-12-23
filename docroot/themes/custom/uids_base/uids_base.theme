@@ -473,6 +473,11 @@ function uids_base_preprocess_block(&$variables) {
     }
   }
 
+  // Check if the hover effect should be applied on the stat block.
+  if ($variables['derivative_plugin_id'] == 'uiowa_statistic' && isset($variables['elements']['#layout_builder_style'])) {
+    $variables['has_hover_effect'] = !in_array('stat--static', $variables['elements']['#layout_builder_style']);
+  }
+
 }
 
 /**
