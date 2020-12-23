@@ -83,7 +83,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
         case 'uiowa_card':
         case 'uiowa_event':
           if (isset($build['#layout_builder_style'])) {
-            // Map the layout builder styles to the view mode that should be used.
+            // Map the layout builder styles to the view mode to be used.
             $media_formats = [
               'media--widescreen' => 'large__widescreen',
               'media--square' => 'large__square',
