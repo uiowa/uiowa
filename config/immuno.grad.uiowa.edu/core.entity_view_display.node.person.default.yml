@@ -165,32 +165,38 @@ third_party_settings:
             uuid: b301c8f7-531e-48cc-8b83-518004541915
             region: first
             configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
               id: 'field_block:node:person:field_person_office_building'
+              label: null
+              provider: layout_builder
+              label_display: null
               formatter:
+                label: inline
                 type: string
-                label: above
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
             additional: {  }
             weight: -3
           -
             uuid: 75ec76b8-18b3-4187-88ee-7ed67daea597
             region: first
             configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
               id: 'field_block:node:person:field_person_office_phone'
+              label: null
+              provider: layout_builder
+              label_display: null
               formatter:
+                label: inline
                 type: telephone_link
-                label: above
                 settings:
                   title: ''
                 third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
             additional: {  }
             weight: -2
           -
@@ -225,13 +231,13 @@ third_party_settings:
             uuid: c38bcde8-8b85-49e6-b363-368ca1b4fe9b
             region: first
             configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
               id: 'field_block:node:person:field_person_office_room'
+              label: null
+              provider: layout_builder
+              label_display: null
               formatter:
+                label: inline
                 type: string
-                label: above
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
@@ -262,7 +268,7 @@ third_party_settings:
               provider: layout_builder
               label_display: null
               formatter:
-                label: above
+                label: inline
                 type: string
                 settings:
                   link_to_entity: false
@@ -281,7 +287,7 @@ third_party_settings:
               provider: layout_builder
               label_display: null
               formatter:
-                label: above
+                label: inline
                 type: string
                 settings:
                   link_to_entity: false
@@ -327,32 +333,38 @@ third_party_settings:
             uuid: 31d47173-0115-4fe7-933f-848510287ad4
             region: first
             configuration:
-              label_display: '0'
+              id: 'field_block:node:person:field_person_department'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: inline
+                type: entity_reference_label
+                settings:
+                  link: false
+                third_party_settings: {  }
               context_mapping:
                 entity: layout_builder.entity
-              id: 'field_block:node:person:field_person_department'
-              formatter:
-                type: entity_reference_label
-                label: above
-                settings:
-                  link: true
-                third_party_settings: {  }
+                view_mode: view_mode
             additional: {  }
             weight: -9
           -
             uuid: a076a67e-6d5d-48ab-99c0-04eea26ca5e1
             region: first
             configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
               id: 'field_block:node:person:field_person_lab_phone'
+              label: null
+              provider: layout_builder
+              label_display: null
               formatter:
+                label: inline
                 type: telephone_link
-                label: above
                 settings:
                   title: ''
                 third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
             additional: {  }
             weight: 1
           -
