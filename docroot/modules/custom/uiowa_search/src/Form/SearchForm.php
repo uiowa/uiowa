@@ -52,7 +52,8 @@ class SearchForm extends FormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = [];
 
-    $form['search_terms'] = [
+    // Styles are targeting hyphenated element keys which control the name.
+    $form['search-terms'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Search'),
       '#label_attributes' => [
@@ -60,24 +61,14 @@ class SearchForm extends FormBase {
           'sr-only',
         ],
       ],
+      '#attributes' => [
+        'placeholder' => $this->t('Search this site'),
+      ],
       '#maxlength' => '256',
       '#size' => '15',
     ];
 
-    $placeholder = $this->t('Search');
-
-    if ($this->config->get('uiowa_search.cse_scope') === 1) {
-      $placeholder = $this->t('Search this site');
-    }
-    elseif ($this->config->get('uiowa_search.cse_scope') === 0) {
-      $placeholder = $this->t('Search all University of Iowa');
-    }
-
-    $form['search_terms']['#attributes'] = [
-      'placeholder' => $placeholder,
-    ];
-
-    $form['submit_search'] = [
+    $form['submit-search'] = [
       '#type' => 'submit',
       '#value' => $this->t('Search'),
       '#name' => 'btnG',
@@ -98,7 +89,7 @@ class SearchForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $form_state->setRedirectUrl(Url::fromRoute('uiowa_search.search_results', [], [
       'query' => [
-        'terms' => $form_state->getValue('search_terms'),
+        'terms' => $form_state->getValue('search-terms'),
       ],
     ]));
   }
