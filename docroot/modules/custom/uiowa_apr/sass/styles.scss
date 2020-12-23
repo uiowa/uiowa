@@ -50,6 +50,47 @@
 
 
 #apr-directory-service {
+
+  .apr-profile .apr-section.summary {
+    ul {
+      @extend %no-ul-list;
+      li {
+        margin-bottom: $md;
+      }
+    }
+  }
+
+  .apr-profile.apr-profile-grid .groups {
+    figure {
+      margin: 0;
+    }
+    @include breakpoint(sm) {
+      grid-template-columns: 300px auto;
+      column-gap: 1.5em;
+    }
+  }
+  .apr-profile .apr-section.intro {
+    @include breakpoint(sm) {
+      grid-column: 1 /2;
+    }
+  }
+  .apr-profile .apr-section.profile-details {
+    @include breakpoint(sm) {
+      grid-row: 1 / span 5;
+      grid-column: 2 / 3;
+      margin-left: 1rem;
+    }
+  }
+  .apr-profile div.groups,
+  .apr-profile .apr-section {
+    @include breakpoint(sm) {
+      display: grid;
+      grid-gap: 1.5em;
+      row-gap: 1em;
+      align-content: start;
+    }
+  }
+
   .list-view {
     margin: $gutter 0;
   }
@@ -68,7 +109,10 @@
     }
 
     .apr-cards {
-      display: flex;
+      @include grid-base;
+      @include breakpoint(sm) {
+        @include threecol-grid;
+      }
 
       .card {
         @include card;
