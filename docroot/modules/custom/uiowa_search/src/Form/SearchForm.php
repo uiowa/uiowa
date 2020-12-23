@@ -52,7 +52,8 @@ class SearchForm extends FormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = [];
 
-    $form['search_terms'] = [
+    // Styles are targeting hyphenated element keys which control the name.
+    $form['search-terms'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Search'),
       '#label_attributes' => [
@@ -67,7 +68,7 @@ class SearchForm extends FormBase {
       '#size' => '15',
     ];
 
-    $form['submit_search'] = [
+    $form['submit-search'] = [
       '#type' => 'submit',
       '#value' => $this->t('Search'),
       '#name' => 'btnG',
