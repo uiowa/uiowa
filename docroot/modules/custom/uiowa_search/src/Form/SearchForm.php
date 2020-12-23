@@ -60,21 +60,11 @@ class SearchForm extends FormBase {
           'sr-only',
         ],
       ],
+      '#attributes' => [
+        'placeholder' => $this->t('Search this site'),
+      ],
       '#maxlength' => '256',
       '#size' => '15',
-    ];
-
-    $placeholder = $this->t('Search');
-
-    if ($this->config->get('uiowa_search.cse_scope') === 1) {
-      $placeholder = $this->t('Search this site');
-    }
-    elseif ($this->config->get('uiowa_search.cse_scope') === 0) {
-      $placeholder = $this->t('Search all University of Iowa');
-    }
-
-    $form['search_terms']['#attributes'] = [
-      'placeholder' => $placeholder,
     ];
 
     $form['submit_search'] = [
