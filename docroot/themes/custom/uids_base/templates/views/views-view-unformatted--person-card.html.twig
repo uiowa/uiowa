@@ -47,6 +47,8 @@
     ]
     %}
 
+    {% set media_size = 'large' %}
+
     {% set has_body = false %}
 
     {% set card_body_fields = ['card_subtitle', 'card_tag', 'person_website', 'person_education', 'person_hometown', 'person_contact'] %}
@@ -62,18 +64,13 @@
         'bg--white',
         'card--enclosed',
       ]) %}
-      {% set media_classes = media_attributes|merge([
-        'card__media--medium',
-      ]) %}
-    {% else %}
-      {% set media_classes = media_attributes|merge([
-        'card__media--large',
-      ]) %}
+
+      {% set media_size = 'medium' %}
     {% endif %}
 
     {% set person_card_view = person_card_view|merge({
       'attributes': attributes.addClass(classes),
-      'media_attributes': media_attributes.addClass(media_classes, 'media--circle card__media'),
+      'media_attributes': media_attributes.addClass('media--circle card__media card__media--' ~ media_size),
       'has_body': has_body,
     }) %}
 
