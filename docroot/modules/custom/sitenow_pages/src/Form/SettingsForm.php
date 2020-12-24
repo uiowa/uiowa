@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\uiowa_pages\Form;
+namespace Drupal\sitenow_pages\Form;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManager;
@@ -12,7 +12,7 @@ use Drupal\pathauto\PathautoGenerator;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Configure UIowa Articles settings for this site.
+ * Configure SiteNow Pages settings for this site.
  */
 class SettingsForm extends ConfigFormBase {
 
