@@ -102,7 +102,9 @@ class SettingsForm extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildForm($form, $form_state);
 
-    $form['global']['default_featured_image_display'] = [
+    $featured_image_display_default = $this->config('sitenow_page.settings')->get('featured_image_display_default');
+
+    $form['global']['featured_image_display_default'] = [
       '#type' => 'select',
       '#title' => $this->t('Display featured image'),
       '#description' => $this->t('Set the default behavior for how to display a featured image.'),
@@ -116,7 +118,7 @@ class SettingsForm extends ConfigFormBase {
         'large' => $this
           ->t('Large'),
       ],
-      '#default_value' => 'large',
+      '#default_value' => $featured_image_display_default ?: 'large',
     ];
 
     return $form;
@@ -126,7 +128,11 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    // @todo Add code to save 'default_featured_image_display'.
+    $featured_image_display_default = $form_state->getValue('featured_image_display_default');
+
+    // Save the featured image display default.
+    $this->config('sitenow_pages.settings')->set('featured_image_display_default', $featured_image_display_default)->save();
+
     parent::submitForm($form, $form_state);
   }
 

@@ -185,7 +185,9 @@ class SettingsForm extends ConfigFormBase {
       '#size' => 60,
     ];
 
-    $form['global']['sitenow_articles_default_featured_image_size'] = [
+    $featured_image_display_default = $this->config('sitenow_articles.settings')->get('featured_image_display_default');
+
+    $form['global']['featured_image_display_default'] = [
       '#type' => 'select',
       '#title' => $this->t('Display featured image'),
       '#description' => $this->t('Set the default behavior for how to display a featured image.'),
@@ -199,7 +201,7 @@ class SettingsForm extends ConfigFormBase {
         'large' => $this
           ->t('Large'),
       ],
-      '#default_value' => 'large',
+      '#default_value' => $featured_image_display_default ?: 'large',
     ];
 
     if ($view->get('status') == FALSE) {
@@ -239,6 +241,10 @@ class SettingsForm extends ConfigFormBase {
     $path = $form_state->getValue('sitenow_articles_path');
     $header_content = $form_state->getValue('sitenow_articles_header_content');
     $show_archive = $form_state->getValue('sitenow_articles_archive');
+    $featured_image_display_default = $form_state->getValue('featured_image_display_default');
+
+    // Save the featured image display default.
+    $this->config('sitenow_articles.settings')->set('featured_image_display_default', $featured_image_display_default)->save();
 
     // Clean path.
     $path = $this->aliasCleaner->cleanString($path);
