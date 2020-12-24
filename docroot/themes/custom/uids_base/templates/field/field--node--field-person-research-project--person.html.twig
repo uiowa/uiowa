@@ -1,0 +1,5 @@
+{% embed '@uids_base/field/field.html.twig' %}
+  {% block field_items %}
+    <h2{{ item.attributes.addClass('field__item') }}>{{ item.content }}</h2>
+  {% endblock %}
+{% endembed %}

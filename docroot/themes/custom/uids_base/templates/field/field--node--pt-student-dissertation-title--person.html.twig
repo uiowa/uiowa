@@ -65,7 +65,7 @@
       </div>
     {% else %}
       {% for item in items %}
-        <div{{ attributes.addClass(classes, 'field__item') }}>{{ item.content }}</div>
+        <h2{{ attributes.addClass(classes, 'field__item') }}>{{ item.content }}</h2>
       {% endfor %}
     {% endif %}
   {% else %}
@@ -75,9 +75,7 @@
       <div class="field__items">
         {% endif %}
         {% for item in items %}
-          {% block field_items %}
-            <div{{ item.attributes.addClass('field__item') }}>{{ item.content }}</div>
-          {% endblock %}
+          <h2{{ item.attributes.addClass('field__item') }}>{{ item.content }}</h2>
         {% endfor %}
         {% if multiple %}
       </div>

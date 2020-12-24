@@ -1,5 +1,5 @@
-@import "../../../../../themes/custom/uids_base/uids/assets/scss/_variables.scss";
-@import "../../../../../themes/custom/uids_base/uids/assets/scss/_utilities.scss";
+@import "../../uids/assets/scss/variables";
+@import "../../uids/assets/scss/utilities";
 
 .field--name-field-person-territory {
   .field__label {
@@ -42,7 +42,6 @@
   .field--name-field-person-position {
     margin-top: .6rem;
     .field__item {
-      display: inline-block;
       font-size: 2.3rem;
       line-height: 1;
       font-weight: 300;
@@ -64,8 +63,7 @@
     border: 1px solid rgba(0, 0, 0, .125);
     margin-bottom: 1rem;
     padding: .7rem 1rem;
-    background: url(/themes/custom/uids_base/assets/images/particle.png);
-    background-size: 120%;
+    background: $light;
     opacity: 1;
   }
 }
