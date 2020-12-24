@@ -37,53 +37,58 @@
  * @see template_preprocess_field()
  */
 #}
-{% set classes = [
-  'field',
-  'field--name-' ~ field_name|clean_class,
-  'field--type-' ~ field_type|clean_class,
-  'field--label-' ~ label_display,
-] %}
-{% set title_classes = [
-  'field__label',
-  label_display == 'visually_hidden' ? 'visually-hidden',
-] %}
-
-{% if entity_type == 'block_content' %}
-
-  {% for item in items %}
-    {{ item.content }}
-  {% endfor %}
-
-{% else %}
-
-  {% if label_hidden %}
+{%
+    set classes = [
+    'field',
+    'field--name-' ~ field_name|clean_class,
+    'field--type-' ~ field_type|clean_class,
+    'field--label-' ~ label_display,
+]
+%}
+{%
+    set title_classes = [
+    'field__label',
+    label_display == 'visually_hidden' ? 'visually-hidden',
+]
+%}
+{% if label_hidden %}
     {% if multiple %}
-      <div{{ attributes.addClass(classes, 'field__items') }}>
-        {% for item in items %}
-          <div{{ item.attributes.addClass('field__item') }}>{{ item.content }}</div>
-        {% endfor %}
-      </div>
+        <div{{ attributes.addClass(classes, 'field__items') }}>
+            {% for item in items %}
+                {% if loop.last %}
+                    {% set separator = '' %}
+                {% else %}
+                    {% set separator = ', ' %}
+                {% endif %}
+                <span{{ item.attributes.addClass('field__item') }}>{{ item.content }}</span>{{ separator }}
+            {% endfor %}
+        </div>
     {% else %}
-      {% for item in items %}
-        <div{{ attributes.addClass(classes, 'field__item') }}>{{ item.content }}</div>
-      {% endfor %}
+        {% for item in items %}
+            {% if loop.last %}
+                {% set separator = '' %}
+            {% else %}
+                {% set separator = ', ' %}
+            {% endif %}            
+            <span{{ attributes.addClass(classes, 'field__item') }}>{{ item.content }}</span>{{ separator }}
+        {% endfor %}
     {% endif %}
-  {% else %}
+{% else %}
     <div{{ attributes.addClass(classes) }}>
-      {% block field_icon %}
-      {% endblock %}
-      <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
-      {% if multiple %}
-      <div class="field__items">
+        <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
+        {% if multiple %}
+            <div class="field__items">
         {% endif %}
         {% for item in items %}
-          {% block field_items %}
-            <div{{ item.attributes.addClass('field__item') }}>{{ item.content }}</div>
-          {% endblock %}
+            {% if loop.last %}
+                {% set separator = '' %}
+            {% else %}
+                {% set separator = ', ' %}
+            {% endif %}
+            <span{{ item.attributes.addClass('field__item') }}>{{ item.content }}</span>{{ separator }}
         {% endfor %}
         {% if multiple %}
-      </div>
-      {% endif %}
+            </div>
+        {% endif %}
     </div>
-  {% endif %}
 {% endif %}
