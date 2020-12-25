@@ -1853,15 +1853,3 @@ function sitenow_update_8047() {
     }
   }
 }
-
-/**
- * Adds global featured image settings for articles.
- */
-function sitenow_update_8048() {
-  $config_factory = \Drupal::configFactory();
-  $config = $config_factory->getEditable('sitenow_articles.settings');
-
-  $config
-    ->set('featured_image_display_default', 'medium')
-    ->save();
-}
