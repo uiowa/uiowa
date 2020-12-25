@@ -134,8 +134,6 @@ function uids_base_preprocess_page(&$variables) {
     }
   }
 
-  $variables['has_node_image'] = FALSE;
-
   // Set a variable for whether layout builder is enabled.
   $variables['layout_builder_enabled'] = FALSE;
   if (!empty($variables['node'])) {
@@ -145,18 +143,6 @@ function uids_base_preprocess_page(&$variables) {
       // @todo Is there a better way to have a soft dependency on a class?
       if (class_exists('\Drupal\layout_builder_custom\LayoutBuilderHelper')) {
         $variables['layout_builder_enabled'] = \Drupal::classResolver('\Drupal\layout_builder_custom\LayoutBuilderHelper')->layoutBuilderEnabled($node);
-      }
-
-      $type = $node->getType();
-      switch ($type) {
-        case 'page':
-        case 'article':
-          if ($node->hasField('field_image') && !$node->get('field_image')
-            ->isEmpty() && $node->preview_view_mode !== 'teaser') {
-            $variables['has_node_image'] = TRUE;
-          }
-          break;
-
       }
     }
   }
@@ -281,6 +267,7 @@ function uids_base_preprocess_field(&$variables) {
       break;
   }
 
+  // @todo Is this code still necessary?
   if (isset($variables['page_featured_image'])) {
     $block_manager = \Drupal::service('plugin.manager.block');
     $config = [];
@@ -303,11 +290,16 @@ function uids_base_preprocess_field(&$variables) {
  * Implements hook_preprocess_layout().
  */
 function uids_base_preprocess_layout(&$variables) {
+  /** @var \Drupal\Core\Layout\LayoutDefinition $layout */
+  $layout = $variables['layout'];
   $node = \Drupal::routeMatch()->getParameter('node');
   $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
   $title_hidden = FALSE;
   $variables['has_node_image'] = FALSE;
+  $variables['featured_image_display'] = FALSE;
   if ($node instanceof NodeInterface) {
+    // @todo Scope this to target layout so it doesn't run
+    //   every time a layout is preprocessed.
     if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
       $publish_options = $node->get('field_publish_options')->getValue();
       if (array_search('title_hidden', array_column($publish_options, 'value')) !== FALSE) {
@@ -320,12 +312,75 @@ function uids_base_preprocess_layout(&$variables) {
       }
     }
 
-    // Create a featured image boolean variable for easier Twig use.
-    $variables['has_node_image'] = $node->hasField('field_image') && !$node->get('field_image')->isEmpty();
+    // Process the header layout.
+    if ($layout->id() === 'layout_header') {
+      $contains_title = FALSE;
+      $contains_background = FALSE;
 
-    // Create a featured image size variable for easier Twig use.
-    if ($node->hasField('field_featured_image_size') && gettype($node->get('field_featured_image_size')->getString()) == "string") {
-      $variables['field_featured_image_size'] = $node->get('field_featured_image_size')->getString();
+      // Check if the featured image exists.
+      if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
+        // Check value of 'field_featured_image_display'.
+        if ($node->hasField('field_featured_image_display') && !$node->field_featured_image_display->isEmpty()) {
+          if ($node->field_featured_image_display->value !== 'do_not_display') {
+            // Use the node setting.
+            $variables['featured_image_display'] = $node->field_featured_image_display->value;
+          }
+        }
+        else {
+          $site_wide_setting = \Drupal::config("sitenow_{$node->getType()}s.settings")->get('featured_image_display_default');
+          if ($site_wide_setting && $site_wide_setting !== 'do_not_display') {
+            // Use the site-wide default.
+            $variables['featured_image_display'] = \Drupal::config("sitenow_{$node->getType()}s.settings")->get('featured_image_display_default');
+          }
+        }
+      }
+
+      if (!$variables['featured_image_display']) {
+        unset($variables['content']['background']);
+      }
+
+      // Loop through regions in the layout.
+      foreach (Element::children($variables['content']) as $region) {
+        // Loop through blocks in that region.
+        foreach (Element::children($variables['content'][$region]) as $block_uuid) {
+          if ($region === 'content'
+            && isset($variables['content'][$region][$block_uuid])
+            && isset($variables['content'][$region][$block_uuid]['#plugin_id'])
+          ) {
+            // Check if this block plugin_id matches the pattern for a
+            // page title block.
+            $plugin_id = $variables['content'][$region][$block_uuid]['#plugin_id'];
+            $start_check = 'field_block:node:';
+            $end_check = ':title';
+            if (substr($plugin_id, 0, strlen($start_check)) === $start_check
+              && substr($plugin_id, -strlen($end_check)) === $end_check
+            ) {
+              $contains_title = TRUE;
+              break;
+            }
+          }
+          elseif ($region == 'background') {
+            // If there is anything in this region, then we have a background.
+            if (!empty(Element::children($variables['content'][$region][$block_uuid]))) {
+              $contains_background = TRUE;
+              break;
+            }
+          }
+        }
+      }
+      if ($contains_title) {
+        $variables['attributes']['class'][] = 'layout--title';
+        if ($contains_background && $variables['featured_image_display']) {
+          $variables['attributes']['class'][] = 'layout--title--with-background';
+        }
+        else {
+          $variables['attributes']['class'][] = 'layout--onecol--no--background';
+        }
+
+        if ($title_hidden) {
+          $variables['attributes']['class'][] = 'layout--title--hidden';
+        }
+      }
     }
 
     // Add sitenow library if sitenow_v2 config split is active.
@@ -334,56 +389,6 @@ function uids_base_preprocess_layout(&$variables) {
     // This site has the 'sitenow_v2' split enabled.
     if (isset($filters[$sitenow_v2_split]) && $filters[$sitenow_v2_split]['status']) {
       $variables['#attached']['library'][] = 'uids_base/sitenow';
-    }
-  }
-
-  /** @var \Drupal\Core\Layout\LayoutDefinition $layout */
-  $layout = $variables['layout'];
-
-  if ($layout->id() === 'layout_header') {
-    $contains_title = FALSE;
-    $contains_background = FALSE;
-    // Loop through regions in the layout.
-    foreach (Element::children($variables['content']) as $region) {
-      // Loop through blocks in that region.
-      foreach (Element::children($variables['content'][$region]) as $block_uuid) {
-        if ($region === 'content'
-          && isset($variables['content'][$region][$block_uuid])
-          && isset($variables['content'][$region][$block_uuid]['#plugin_id'])
-        ) {
-          // Check if this block plugin_id matches the pattern for a
-          // page title block.
-          $plugin_id = $variables['content'][$region][$block_uuid]['#plugin_id'];
-          $start_check = 'field_block:node:';
-          $end_check = ':title';
-          if (substr($plugin_id, 0, strlen($start_check)) === $start_check
-            && substr($plugin_id, -strlen($end_check)) === $end_check
-          ) {
-            $contains_title = TRUE;
-            break;
-          }
-        }
-        elseif ($region == 'background') {
-          // If there is anything in this region, then we have a background.
-          if (!empty(Element::children($variables['content'][$region][$block_uuid]))) {
-            $contains_background = TRUE;
-            break;
-          }
-        }
-      }
-    }
-    if ($contains_title) {
-      $variables['attributes']['class'][] = 'layout--title';
-      if ($contains_background && $variables['has_node_image']) {
-        $variables['attributes']['class'][] = 'layout--title--with-background';
-      }
-      else {
-        $variables['attributes']['class'][] = 'layout--onecol--no--background';
-      }
-
-      if ($title_hidden) {
-        $variables['attributes']['class'][] = 'layout--title--hidden';
-      }
     }
   }
 }

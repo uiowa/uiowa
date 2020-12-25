@@ -17,6 +17,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class SettingsForm extends ConfigFormBase {
 
   /**
+   * Config settings.
+   *
+   * @var string
+   */
+  const SETTINGS = 'sitenow_articles.settings';
+
+  /**
    * The alias cleaner.
    *
    * @var \Drupal\pathauto\AliasCleanerInterface
@@ -91,7 +98,7 @@ class SettingsForm extends ConfigFormBase {
    */
   protected function getEditableConfigNames() {
     return [
-      'sitenow_articles.settings',
+      static::SETTINGS,
       'pathauto.pattern.article',
     ];
   }
@@ -100,6 +107,7 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    $config = $this->config(static::SETTINGS);
     $form = parent::buildForm($form, $form_state);
     $view = $this->entityTypeManager->getStorage('view')->load('articles');
     $display =& $view->getDisplay('page_articles');
@@ -185,7 +193,7 @@ class SettingsForm extends ConfigFormBase {
       '#size' => 60,
     ];
 
-    $featured_image_display_default = $this->config('sitenow_articles.settings')->get('featured_image_display_default');
+    $featured_image_display_default = $config->get('featured_image_display_default');
 
     $form['global']['featured_image_display_default'] = [
       '#type' => 'select',
@@ -243,8 +251,10 @@ class SettingsForm extends ConfigFormBase {
     $show_archive = $form_state->getValue('sitenow_articles_archive');
     $featured_image_display_default = $form_state->getValue('featured_image_display_default');
 
-    // Save the featured image display default.
-    $this->config('sitenow_articles.settings')->set('featured_image_display_default', $featured_image_display_default)->save();
+    $this->configFactory->getEditable(static::SETTINGS)
+      // Save the featured image display default.
+      ->set('featured_image_display_default', $featured_image_display_default)
+      ->save();
 
     // Clean path.
     $path = $this->aliasCleaner->cleanString($path);
@@ -291,16 +301,27 @@ class SettingsForm extends ConfigFormBase {
     else {
       $feed['display_options']['displays']['page_articles'] = '0';
     }
+
     $view->save();
 
-    // Update article path pattern.
-    $this->config('pathauto.pattern.article')->set('pattern', $path . '/[node:created:custom:Y]/[node:created:custom:m]/[node:title]')->save();
+    $old_pattern = $this->config('pathauto.pattern.article')->get('pattern');
 
-    // Load and update article node path aliases.
-    $entities = $this->entityTypeManager->getStorage('node')->loadByProperties(['type' => 'article']);
+    $new_pattern = $path . '/[node:created:custom:Y]/[node:created:custom:m]/[node:title]';
 
-    foreach ($entities as $entity) {
-      $this->pathAutoGenerator->updateEntityAlias($entity, 'update');
+    // Only run this potentially expensive process if this setting is changing.
+    if ($new_pattern != $old_pattern) {
+      // Update article path pattern.
+      $this->config('pathauto.pattern.article')
+        ->set('pattern', $new_pattern)
+        ->save();
+
+      // Load and update article node path aliases.
+      $entities = $this->entityTypeManager->getStorage('node')
+        ->loadByProperties(['type' => 'article']);
+
+      foreach ($entities as $entity) {
+        $this->pathAutoGenerator->updateEntityAlias($entity, 'update');
+      }
     }
 
     parent::submitForm($form, $form_state);

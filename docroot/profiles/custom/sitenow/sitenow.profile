@@ -413,9 +413,9 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
           $form['field_image_caption']['#group'] = 'node_image';
         }
       }
-      if (isset($form['field_featured_image_size'])) {
-        $form['field_featured_image_size']['#group'] = 'node_image';
-        $form['field_featured_image_size']['widget']['#options']['_none'] = 'Site default';
+      if (isset($form['field_featured_image_display'])) {
+        $form['field_featured_image_display']['#group'] = 'node_image';
+        $form['field_featured_image_display']['widget']['#options']['_none'] = 'Site default';
       }
       if (isset($form['field_tags'])) {
         // Create node_relations group in the advanced container.

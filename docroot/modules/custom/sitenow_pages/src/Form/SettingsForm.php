@@ -17,6 +17,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class SettingsForm extends ConfigFormBase {
 
   /**
+   * Config settings.
+   *
+   * @var string
+   */
+  const SETTINGS = 'sitenow_pages.settings';
+
+  /**
    * The alias cleaner.
    *
    * @var \Drupal\pathauto\AliasCleanerInterface
@@ -83,7 +90,7 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'sitenow_articles_settings';
+    return 'sitenow_pages_settings';
   }
 
   /**
@@ -91,7 +98,7 @@ class SettingsForm extends ConfigFormBase {
    */
   protected function getEditableConfigNames() {
     return [
-      'sitenow_articles.settings',
+      static::SETTINGS,
       'pathauto.pattern.article',
     ];
   }
@@ -100,9 +107,10 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    $config = $this->config(static::SETTINGS);
     $form = parent::buildForm($form, $form_state);
 
-    $featured_image_display_default = $this->config('sitenow_page.settings')->get('featured_image_display_default');
+    $featured_image_display_default = $config->get('featured_image_display_default');
 
     $form['global']['featured_image_display_default'] = [
       '#type' => 'select',
@@ -130,10 +138,14 @@ class SettingsForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $featured_image_display_default = $form_state->getValue('featured_image_display_default');
 
-    // Save the featured image display default.
-    $this->config('sitenow_pages.settings')->set('featured_image_display_default', $featured_image_display_default)->save();
+    $this->configFactory->getEditable(static::SETTINGS)
+      // Save the featured image display default.
+      ->set('featured_image_display_default', $featured_image_display_default)
+      ->save();
 
     parent::submitForm($form, $form_state);
+
+    drupal_flush_all_caches();
   }
 
 }
