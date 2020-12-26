@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains grad_srop.module.
+ */
+
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\Core\Entity\ContentEntityInterface;
+
+/**
+ * Implements hook_allowed_values_function().
+ */
+function srop_year_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  // Available srop year values.
+  $thisyear = date('Y');
+  $i = 2000;
+  $options = [];
+  while ($i <= $thisyear) :
+    $options[$i] = $i;
+    $i++;
+  endwhile;
+  return array_reverse($options);
+}

@@ -51,13 +51,14 @@ class PostRowSaveEvent implements EventSubscriberInterface {
 
       // Calls for creating a media entity for imported files.
       case 'd7_file':
+      case 'd7_grad_file':
         $row = $event->getRow();
         $fids = $event->getDestinationIdValues();
         $this->makeEntity($row, $fids);
         break;
 
       // Body content needs to be put into paragraph for Basic Pages.
-      case 'd7_page':
+      case 'd7_page-deprecated':
         $row = $event->getRow();
         $nids = $event->getDestinationIdValues();
         $this->createParagraph($row, $nids);
@@ -67,12 +68,14 @@ class PostRowSaveEvent implements EventSubscriberInterface {
       // Inefficient node_load but body/format migration won't correctly attach.
       case 'd7_article':
       case 'd7_person':
+      case 'd7_page':
+      case 'd7_grad_article':
         $nids = $event->getDestinationIdValues();
 
         /** @var \Drupal\node\NodeInterface $node */
         $node = $this->entityTypeManager->getStorage('node')->load($nids[0]);
 
-        if ($node->getType() == 'article') {
+        if ($node->getType() == 'article' || $node->getType() == 'page') {
           $node->body->format = 'filtered_html';
         }
         else {
@@ -123,8 +126,11 @@ class PostRowSaveEvent implements EventSubscriberInterface {
             'bundle' => 'file',
             'field_media_file' => [
               'target_id' => $fids[0],
+              'display' => 1,
+              'description' => '',
             ],
             'langcode' => 'en',
+            'metadata' => [],
           ]);
 
           $media->setName($file->getFileName());

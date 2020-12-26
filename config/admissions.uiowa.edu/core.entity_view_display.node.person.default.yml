@@ -44,6 +44,23 @@ third_party_settings:
       -
         layout_id: layout_onecol
         layout_settings:
+          label: Moderation
+          layout_builder_styles_style: {  }
+        components:
+          -
+            uuid: 61c49641-a81f-417f-b400-4112c693eafa
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'extra_field_block:node:person:content_moderation_control'
+            additional: {  }
+            weight: 0
+        third_party_settings: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
           label: Header
           layout_builder_styles_style:
             - ''
@@ -101,29 +118,11 @@ third_party_settings:
       -
         layout_id: layout_twocol
         layout_settings:
-          label: ''
+          label: Content
           column_widths: 67-33
           layout_builder_styles_style:
-            0: ''
-            1: ''
             section_alignment_start: section_alignment_start
         components:
-          -
-            uuid: 532de6e6-fc41-4b7d-a135-5d1cf2c63cf3
-            region: first
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:person:field_person_research_areas'
-              formatter:
-                type: entity_reference_label
-                label: above
-                settings:
-                  link: false
-                third_party_settings: {  }
-            additional: {  }
-            weight: -8
           -
             uuid: e0cbb1a7-b222-44d0-9dae-c6d78d5e74c2
             region: first
@@ -140,25 +139,21 @@ third_party_settings:
             additional: {  }
             weight: -9
           -
-            uuid: 6aef7bb8-e199-4b32-bd62-c7ab382c224e
+            uuid: 532de6e6-fc41-4b7d-a135-5d1cf2c63cf3
             region: first
             configuration:
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-              id: 'extra_field_block:node:person:links'
+              id: 'field_block:node:person:field_person_research_areas'
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: false
+                third_party_settings: {  }
             additional: {  }
-            weight: -5
-          -
-            uuid: c238bc04-896b-4a2a-9b70-404943841604
-            region: first
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'extra_field_block:node:person:content_moderation_control'
-            additional: {  }
-            weight: -4
+            weight: -8
           -
             uuid: 69dd1e67-4c47-4b9d-9bce-5e0cfb8d92c6
             region: first

@@ -40,13 +40,17 @@ class Files extends SqlBase {
    * {@inheritdoc}
    */
   public function query() {
-    $query = $this->select('file_managed', 'f')
-      ->fields('f', [
-        'fid',
-        'filename',
-        'uri',
-        'filemime',
-      ]);
+    $query = $this->select('file_managed', 'f');
+    // Limit it to only files which appear in the file_usage table.
+    $query->innerJoin('file_usage', 'u', 'u.fid = f.fid');
+    $query = $query->fields('f', [
+      'fid',
+      'filename',
+      'uri',
+      'filemime',
+    ])
+      // Need distinct to avoid duplicates from the file_usage join.
+      ->distinct();
     return $query;
   }
 
@@ -79,6 +83,11 @@ class Files extends SqlBase {
    * Prepare row used for altering source data prior to its insertion.
    */
   public function prepareRow(Row $row) {
+    // Skip if the file is in the private directory, because
+    // we won't be able to download it directly.
+    if (str_starts_with($row->getSourceProperty('uri'), "private://")) {
+      return FALSE;
+    }
     // Create source filepath based on URI.
     $row->setSourceProperty('uri', str_replace("public://", "", $row->getSourceProperty('uri')));
 
