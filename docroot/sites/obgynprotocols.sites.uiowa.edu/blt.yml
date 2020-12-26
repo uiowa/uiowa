@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: sitesobgynprotocols.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: sitesobgynprotocols
+  human_name: obgynprotocols.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesobgynprotocols.prod
+drupal:
+  db:
+    database: obgynprotocols_sites_uiowa_edu
+uiowa:
+  requester: ewhitehead

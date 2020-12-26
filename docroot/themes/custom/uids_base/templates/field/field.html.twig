@@ -75,7 +75,9 @@
       <div class="field__items">
         {% endif %}
         {% for item in items %}
-          <div{{ item.attributes.addClass('field__item') }}>{{ item.content }}</div>
+          {% block field_items %}
+            <div{{ item.attributes.addClass('field__item') }}>{{ item.content }}</div>
+          {% endblock %}
         {% endfor %}
         {% if multiple %}
       </div>

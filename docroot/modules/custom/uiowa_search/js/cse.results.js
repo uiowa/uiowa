@@ -9,11 +9,11 @@
 
   Drupal.uiowaSearchResults = function() {
     let cseAttributes = {
-      queryParameterName: 'search',
+      queryParameterName: 'terms',
     }
 
     if (drupalSettings.uiowaSearch.cseScope === 1) {
-      cseAttributes.as_sitesearch = window.location.hostname+drupalSettings.path.baseUrl;
+      cseAttributes.as_sitesearch = window.location.hostname + drupalSettings.path.baseUrl;
     }
 
     google.search.cse.element.render({

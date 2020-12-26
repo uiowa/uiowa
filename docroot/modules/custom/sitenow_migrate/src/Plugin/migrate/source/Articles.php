@@ -2,7 +2,6 @@
 
 namespace Drupal\sitenow_migrate\Plugin\migrate\source;
 
-use Drupal\migrate\Plugin\migrate\source\SqlBase;
 use Drupal\migrate\Row;
 
 /**
@@ -13,7 +12,7 @@ use Drupal\migrate\Row;
  *  source_module = "sitenow_migrate"
  * )
  */
-class Articles extends SqlBase {
+class Articles extends BaseNodeSource {
 
   /**
    * The public file directory path.
@@ -40,8 +39,8 @@ class Articles extends SqlBase {
    * {@inheritdoc}
    */
   public function query() {
-    $query = $this->select('field_data_field_article_body', 'b');
-    $query->join('node', 'n', 'n.nid = b.entity_id');
+    $query = parent::query();
+    $query->join('field_data_field_article_body', 'b', 'n.nid = b.entity_id');
     $query->join('field_data_field_image', 'i', 'n.nid = i.entity_id');
     $query = $query->fields('b', [
       'entity_type',
@@ -57,14 +56,6 @@ class Articles extends SqlBase {
     ])
       ->fields('i', [
         'field_image_fid',
-      ])
-      ->fields('n', [
-        'title',
-        'created',
-        'changed',
-        'status',
-        'promote',
-        'sticky',
       ])
       ->condition('b.bundle', 'article');
     return $query;
@@ -111,16 +102,6 @@ class Articles extends SqlBase {
    * Prepare row used for altering source data prior to its insertion.
    */
   public function prepareRow(Row $row) {
-    // Determine if the content should be published or not.
-    switch ($row->getSourceProperty('status')) {
-
-      case 1:
-        $row->setSourceProperty('moderation_state', 'published');
-        break;
-
-      default:
-        $row->setSourceProperty('moderation_state', 'draft');
-    }
 
     // Check if an image was attached, and if so, update with new fid.
     $original_fid = $row->getSourceProperty('field_image_fid');
@@ -138,105 +119,11 @@ class Articles extends SqlBase {
 
     // Check summary, and create one if none exists.
     if (!$row->getSourceProperty('field_article_body_summary')) {
-      $new_summary = substr($content, 0, 200);
-      $looper = TRUE;
-      // Shorten the string until we reach a natural(ish) breaking point.
-      while ($looper && strlen($new_summary) > 0) {
-        switch (substr($new_summary, -1)) {
-
-          case '.':
-          case '!':
-          case '?':
-            $looper = FALSE;
-            break;
-
-          case ';':
-          case ':':
-          case '"':
-            $looper = FALSE;
-            $new_summary = $new_summary . '...';
-            break;
-
-          default:
-            $new_summary = substr($new_summary, 0, -1);
-        }
-      }
-      // Strip out any HTML, and set the new summary.
-      $new_summary = preg_replace("|<.*?>|", '', $new_summary);
+      $new_summary = $this->extractSummaryFromText($content);
       $row->setSourceProperty('field_article_body_summary', $new_summary);
     }
     // Call the parent prepareRow.
     return parent::prepareRow($row);
-  }
-
-  /**
-   * Regex to find Drupal 7 JSON for inline embedded files.
-   */
-  public function entityReplace($match) {
-    $fid = $match[1];
-    $file_data = $this->fidQuery($fid);
-    if ($file_data) {
-      $uuid = $this->getMid($file_data['filename'])['uuid'];
-      return $this->constructInlineEntity($uuid);
-    }
-    // Failed to find a file, so let's leave the content unchanged.
-    return $match;
-  }
-
-  /**
-   * Simple query to get info on the Drupal 7 file based on fid.
-   */
-  public function fidQuery($fid) {
-    $query = $this->select('file_managed', 'f')
-      ->fields('f', ['filename'])
-      ->condition('f.fid', $fid);
-    $results = $query->execute();
-    return $results->fetchAssoc();
-  }
-
-  /**
-   * Fetch the media uuid based on the provided filename.
-   */
-  public function getMid($filename) {
-    $connection = \Drupal::database();
-    $query = $connection->select('file_managed', 'f');
-    $query->join('media__field_media_image', 'fmi', 'f.fid = fmi.field_media_image_target_id');
-    $query->join('media', 'm', 'fmi.entity_id = m.mid');
-    $result = $query->fields('m', ['uuid'])
-      ->condition('f.filename', $filename)
-      ->execute();
-    return $result->fetchAssoc();
-  }
-
-  /**
-   * Build the new inline embed entity format for Drupal 8 images.
-   */
-  public function constructInlineEntity($uuid) {
-    $parts = [
-      '<drupal-entity',
-      'data-embed-button="media_entity_embed"',
-      'data-entity-embed-display="view_mode:media.full"',
-      'data-entity-embed-display-settings=""',
-      'data-entity-type="media"',
-      'data-entity-uuid="' . $uuid . '"',
-      'data-langcode="en">',
-      '</drupal-entity>',
-    ];
-    return implode(" ", $parts);
-  }
-
-  /**
-   * Fetch the media id based on the original site's fid.
-   */
-  private function getFid($original_fid) {
-    $connection = \Drupal::database();
-    $query = $connection->select('migrate_map_d7_file', 'mm');
-    $query->join('media__field_media_image', 'fmi', 'mm.destid1 = fmi.field_media_image_target_id');
-    $result = $query->fields('fmi', ['entity_id'])
-      ->condition('mm.sourceid1', $original_fid)
-      ->execute();
-    $new_fid = $result->fetchField();
-    return $new_fid;
   }
 
 }
