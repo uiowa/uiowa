@@ -330,7 +330,7 @@ function uids_base_preprocess_layout(&$variables) {
           $site_wide_setting = \Drupal::config("sitenow_{$node->getType()}s.settings")->get('featured_image_display_default');
           if ($site_wide_setting && $site_wide_setting !== 'do_not_display') {
             // Use the site-wide default.
-            $variables['featured_image_display'] = \Drupal::config("sitenow_{$node->getType()}s.settings")->get('featured_image_display_default');
+            $variables['featured_image_display'] = $site_wide_setting;
           }
         }
       }

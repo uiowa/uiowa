@@ -415,7 +415,17 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
       }
       if (isset($form['field_featured_image_display'])) {
         $form['field_featured_image_display']['#group'] = 'node_image';
-        $form['field_featured_image_display']['widget']['#options']['_none'] = 'Site default';
+        $form['field_featured_image_display']['widget']['#options']['_none'] = 'Site-wide default';
+
+        $form_object = $form_state->getFormObject();
+
+        if ($form_object && $node = $form_object->getEntity()) {
+          $type = $node->getType() . 's';
+          $form['field_featured_image_display']['widget']['#description'] .= t(' If "Site-wide default" is selected, this setting can be changed on the <a href="@settings_url">SiteNow @types settings</a>.', [
+            '@settings_url' => Url::fromRoute("sitenow_$type.settings_form")->toString(),
+            '@types' => ucfirst($type),
+          ]);
+        }
       }
       if (isset($form['field_tags'])) {
         // Create node_relations group in the advanced container.
