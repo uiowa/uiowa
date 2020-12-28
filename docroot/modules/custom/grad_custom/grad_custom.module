@@ -5,10 +5,10 @@
  * Contains grad_srop.module.
  */
 
-use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\field\Entity\FieldStorageConfig;
 
 /**
  * Implements hook_entity_presave().
@@ -27,7 +27,7 @@ function grad_custom_entity_presave(EntityInterface $entity) {
 /**
  * Implements hook_form_alter().
  */
-function grad_custom_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+function grad_custom_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
     case 'node_thesis_defense_edit_form':
     case 'node_thesis_defense_form':
