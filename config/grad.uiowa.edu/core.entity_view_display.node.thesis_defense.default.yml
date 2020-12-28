@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.thesis_defense.field_thesis_defense_date
     - field.field.node.thesis_defense.field_thesis_defense_location
     - field.field.node.thesis_defense.field_thesis_defense_major
+    - field.field.node.thesis_defense.field_thesis_defense_title
     - node.type.thesis_defense
   module:
     - options
@@ -19,24 +20,8 @@ targetEntityType: node
 bundle: thesis_defense
 mode: default
 content:
-  field_person_first_name:
-    weight: 102
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
-  field_person_last_name:
-    weight: 103
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
   field_thesis_defense_chairs:
-    weight: 107
+    weight: 4
     label: above
     settings:
       link_to_entity: false
@@ -44,8 +29,8 @@ content:
     type: string
     region: content
   field_thesis_defense_date:
-    weight: 105
-    label: above
+    weight: 1
+    label: visually_hidden
     settings:
       format: default
       force_chronological: false
@@ -56,24 +41,30 @@ content:
     type: smartdate_default
     region: content
   field_thesis_defense_location:
-    weight: 104
-    label: above
+    weight: 2
+    label: visually_hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
     region: content
   field_thesis_defense_major:
-    weight: 106
-    label: above
+    weight: 3
+    label: inline
     settings: {  }
     third_party_settings: {  }
     type: list_default
     region: content
-  links:
-    weight: 100
-    settings: {  }
+  field_thesis_defense_title:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
     third_party_settings: {  }
+    type: string
     region: content
 hidden:
+  field_person_first_name: true
+  field_person_last_name: true
+  links: true
   search_api_excerpt: true
