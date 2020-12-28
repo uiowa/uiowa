@@ -3,12 +3,12 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.thesis_defense.field_grad_department
     - field.field.node.thesis_defense.field_person_first_name
     - field.field.node.thesis_defense.field_person_last_name
     - field.field.node.thesis_defense.field_thesis_defense_chairs
     - field.field.node.thesis_defense.field_thesis_defense_date
     - field.field.node.thesis_defense.field_thesis_defense_location
-    - field.field.node.thesis_defense.field_thesis_defense_major
     - field.field.node.thesis_defense.field_thesis_defense_title
     - node.type.thesis_defense
   module:
@@ -20,6 +20,13 @@ targetEntityType: node
 bundle: thesis_defense
 mode: default
 content:
+  field_grad_department:
+    weight: 3
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
   field_thesis_defense_chairs:
     weight: 4
     label: above
@@ -47,13 +54,6 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
-    region: content
-  field_thesis_defense_major:
-    weight: 3
-    label: inline
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
     region: content
   field_thesis_defense_title:
     weight: 0

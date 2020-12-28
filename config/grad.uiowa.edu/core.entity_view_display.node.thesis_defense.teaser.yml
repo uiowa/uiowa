@@ -4,12 +4,12 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
+    - field.field.node.thesis_defense.field_grad_department
     - field.field.node.thesis_defense.field_person_first_name
     - field.field.node.thesis_defense.field_person_last_name
     - field.field.node.thesis_defense.field_thesis_defense_chairs
     - field.field.node.thesis_defense.field_thesis_defense_date
     - field.field.node.thesis_defense.field_thesis_defense_location
-    - field.field.node.thesis_defense.field_thesis_defense_major
     - field.field.node.thesis_defense.field_thesis_defense_title
     - node.type.thesis_defense
   module:
@@ -25,11 +25,11 @@ content:
     third_party_settings: {  }
     region: content
 hidden:
+  field_grad_department: true
   field_person_first_name: true
   field_person_last_name: true
   field_thesis_defense_chairs: true
   field_thesis_defense_date: true
   field_thesis_defense_location: true
-  field_thesis_defense_major: true
   field_thesis_defense_title: true
   search_api_excerpt: true
