@@ -140,7 +140,7 @@ function admissions_core_form_views_exposed_form_alter(&$form, FormStateInterfac
 /**
  * Added allowed values function for student profiles territory field
  */
-function admissions_core_territory_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+function admissions_core_state_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
   $options = [
     'intl' => 'International Recruitment bitches',
     'AL' => 'Alabama',
