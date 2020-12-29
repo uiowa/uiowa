@@ -64,6 +64,18 @@ function _grad_custom_thesis_defense_submit(array &$form, FormStateInterface $fo
   }
 }
 
+function grad_disciplines_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  return [
+    'Applied Health Sciences' => 'Applied Health Sciences',
+    'Biomedical and Life Sciences' => 'Biomedical and Life Sciences',
+    'Engineering' => 'Engineering',
+    'Education' => 'Education',
+    'Humanities' => 'Humanities',
+    'Physical Sciences' => 'Physical Sciences',
+    'Social Sciences' => 'Social Sciences',
+  ];
+}
+
 /**
  * Implements hook_allowed_values_function().
  */

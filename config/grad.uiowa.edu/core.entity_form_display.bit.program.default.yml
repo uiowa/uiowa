@@ -5,6 +5,7 @@ dependencies:
   config:
     - bit.bit_type.program
     - field.field.bit.program.field_grad_degrees_offered
+    - field.field.bit.program.field_grad_discipline
     - field.field.bit.program.field_program_certificate
     - field.field.bit.program.field_program_homepage
     - field.field.bit.program.field_program_interdisciplinary
@@ -31,6 +32,12 @@ content:
     third_party_settings: {  }
   field_grad_degrees_offered:
     weight: 29
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_grad_discipline:
+    weight: 30
     settings: {  }
     third_party_settings: {  }
     type: options_select
