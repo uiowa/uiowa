@@ -36,7 +36,6 @@
       'person_education': view.style_plugin.getField(key, 'field_person_education'),
       'person_hometown': view.style_plugin.getField(key, 'field_person_hometown'),
       'person_contact': view.style_plugin.getField(key, 'field_person_contact_information'),
-      'media_attributes': media_attributes.addClass('media--circle card__media--large card__media'),
     } %}
 
     {%
@@ -47,6 +46,8 @@
       'media--border',
     ]
     %}
+
+    {% set media_size = 'large' %}
 
     {% set has_body = false %}
 
@@ -63,10 +64,13 @@
         'bg--white',
         'card--enclosed',
       ]) %}
+
+      {% set media_size = 'medium' %}
     {% endif %}
 
     {% set person_card_view = person_card_view|merge({
       'attributes': attributes.addClass(classes),
+      'media_attributes': media_attributes.addClass('media--circle card__media card__media--' ~ media_size),
       'has_body': has_body,
     }) %}
 

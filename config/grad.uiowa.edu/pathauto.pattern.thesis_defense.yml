@@ -1,0 +1,22 @@
+uuid: f6b0e54f-ea70-4db6-86f0-91bafdbe79fb
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: thesis_defense
+label: 'Thesis Defense'
+type: 'canonical_entities:node'
+pattern: 'thesis-defenses/[node:field_thesis_defense_date:value-custom:Y-m-d]/[node:title]'
+selection_criteria:
+  7573919d-6d06-4402-a107-70f58298f2cd:
+    id: node_type
+    bundles:
+      thesis_defense: thesis_defense
+    negate: false
+    context_mapping:
+      node: node
+    uuid: 7573919d-6d06-4402-a107-70f58298f2cd
+selection_logic: and
+weight: -5
+relationships: {  }
