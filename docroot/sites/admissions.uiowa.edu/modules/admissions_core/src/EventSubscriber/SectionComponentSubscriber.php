@@ -39,7 +39,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
 
     $build = $event->getBuild();
 
-    // @todo Move this to an Admissions-specific class.
+    // Check if this is an instance of the hometown field.
     if ($block instanceof FieldBlock && $block->getPluginId() === 'field_block:node:student_profile:field_person_hometown') {
       $contexts = $event->getContexts();
       if (isset($contexts['layout_builder.entity'])) {
