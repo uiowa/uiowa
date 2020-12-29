@@ -11,6 +11,9 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\node\Entity\Node;
 use Drupal\views\ViewExecutable;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Form\FormState;
 
 /**
  * Implements hook_theme for Scholarship teaser.
@@ -136,4 +139,65 @@ function admissions_core_form_views_exposed_form_alter(&$form, FormStateInterfac
   if ($form['#id'] == 'views-exposed-form-counselors-block-counselors') {
     $form["territory"]["#options"]["All"] = t("- All -");
   }
+}
+
+/**
+ * Added allowed values function for student profiles territory field
+ */
+function admissions_core_territory_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  $options = [
+    'intl' => 'International Recruitment bitches',
+    'AL' => 'Alabama',
+    'AK' => 'Alaska',
+    'AZ' => 'Arizona',
+    'AR' => 'Arkansas',
+    'CA' => 'California',
+    'CO' => 'Colorado',
+    'CT' => 'Connecticut',
+    'DE' => 'Delaware',
+    'FL' => 'Florida',
+    'GA' => 'Georgia',
+    'HI' => 'Hawaii',
+    'ID' => 'Idaho',
+    'IL' => 'Illinois',
+    'IN' => 'Indiana',
+    'IA' => 'Iowa',
+    'KS' => 'Kansas',
+    'KY' => 'Kentucky',
+    'LA' => 'Louisiana',
+    'ME' => 'Maine',
+    'MD' => 'Maryland',
+    'MA' => 'Massachusetts',
+    'MI' => 'Michigan',
+    'MN' => 'Minnesota',
+    'MS' => 'Mississippi',
+    'MO' => 'Missouri',
+    'MT' => 'Montana',
+    'NE' => 'Nebraska',
+    'NV' => 'Nevada',
+    'NH' => 'New Hampshire',
+    'NJ' => 'New Jersey',
+    'NM' => 'New Mexico',
+    'NY' => 'New York',
+    'NC' => 'North Carolina',
+    'ND' => 'North Dakota',
+    'OH' => 'Ohio',
+    'OK' => 'Oklahoma',
+    'OR' => 'Oregon',
+    'PA' => 'Pennsylvania',
+    'RI' => 'Rhode Island',
+    'SC' => 'South Carolina',
+    'SD' => 'South Dakota',
+    'TN' => 'Tennessee',
+    'TX' => 'Texas',
+    'UT' => 'Utah',
+    'VT' => 'Vermont',
+    'VA' => 'Virginia',
+    'WA' => 'Washington',
+    'WV' => 'West Virginia',
+    'WI' => 'Wisconsin',
+    'WY' => 'Wyoming',
+    'DC' => 'District of Columbia',
+  ];
+  return $options;
 }
