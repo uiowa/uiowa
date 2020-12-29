@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
+    - field.field.node.person.field_grad_department
     - field.field.node.person.field_image
     - field.field.node.person.field_person_bio
     - field.field.node.person.field_person_contact_information
@@ -12,6 +13,7 @@ dependencies:
     - field.field.node.person.field_person_email
     - field.field.node.person.field_person_first_name
     - field.field.node.person.field_person_hide
+    - field.field.node.person.field_person_hometown
     - field.field.node.person.field_person_last_name
     - field.field.node.person.field_person_mentor_qualif
     - field.field.node.person.field_person_mentor_ug_role
@@ -91,6 +93,7 @@ content:
     third_party_settings: {  }
 hidden:
   content_moderation_control: true
+  field_grad_department: true
   field_person_bio: true
   field_person_contact_information: true
   field_person_education: true
