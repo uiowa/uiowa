@@ -64,6 +64,9 @@ function _grad_custom_thesis_defense_submit(array &$form, FormStateInterface $fo
   }
 }
 
+/**
+ * Implements hook_allowed_values_function().
+ */
 function grad_disciplines_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
   return [
     'Applied Health Sciences' => 'Applied Health Sciences',
