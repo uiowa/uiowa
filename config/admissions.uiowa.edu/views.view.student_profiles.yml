@@ -4,11 +4,11 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_person_hometown
-    - field.storage.node.field_person_territory
     - field.storage.node.field_student_profile_blurb
     - field.storage.node.field_student_profile_country
     - field.storage.node.field_student_profile_image
     - field.storage.node.field_student_profile_major
+    - field.storage.node.field_student_profile_territory
     - node.type.student_profile
   module:
     - address
@@ -336,10 +336,10 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_person_territory:
-          id: field_person_territory
-          table: node__field_person_territory
-          field: field_person_territory
+        field_student_profile_territory:
+          id: field_student_profile_territory
+          table: node__field_student_profile_territory
+          field: field_student_profile_territory
           relationship: none
           group_type: group
           admin_label: ''
@@ -347,7 +347,7 @@ display:
           exclude: true
           alter:
             alter_text: true
-            text: '{{ field_person_territory }} '
+            text: '{{ field_student_profile_territory }} '
             make_link: false
             path: ''
             absolute: false
@@ -409,7 +409,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: '{{ field_person_hometown }}, {{ field_person_territory }}'
+            text: '{{ field_person_hometown }}, {{ field_student_profile_territory }}'
             make_link: false
             path: ''
             absolute: false
@@ -597,11 +597,11 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.node.field_person_hometown'
-        - 'config:field.storage.node.field_person_territory'
         - 'config:field.storage.node.field_student_profile_blurb'
         - 'config:field.storage.node.field_student_profile_country'
         - 'config:field.storage.node.field_student_profile_image'
         - 'config:field.storage.node.field_student_profile_major'
+        - 'config:field.storage.node.field_student_profile_territory'
   block_1:
     display_plugin: block
     id: block_1
@@ -620,11 +620,11 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.node.field_person_hometown'
-        - 'config:field.storage.node.field_person_territory'
         - 'config:field.storage.node.field_student_profile_blurb'
         - 'config:field.storage.node.field_student_profile_country'
         - 'config:field.storage.node.field_student_profile_image'
         - 'config:field.storage.node.field_student_profile_major'
+        - 'config:field.storage.node.field_student_profile_territory'
   page_1:
     display_plugin: page
     id: page_1
@@ -644,8 +644,8 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.node.field_person_hometown'
-        - 'config:field.storage.node.field_person_territory'
         - 'config:field.storage.node.field_student_profile_blurb'
         - 'config:field.storage.node.field_student_profile_country'
         - 'config:field.storage.node.field_student_profile_image'
         - 'config:field.storage.node.field_student_profile_major'
+        - 'config:field.storage.node.field_student_profile_territory'
