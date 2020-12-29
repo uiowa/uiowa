@@ -62,6 +62,7 @@ abstract class BaseNodeSource extends SqlBase {
         'nid',
         'type',
         'language',
+        'uid',
         'status',
         'created',
         'changed',

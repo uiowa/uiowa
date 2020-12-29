@@ -44,7 +44,7 @@ class People extends BaseNodeSource {
    * is not migrated currently.
    */
   public function query() {
-    $query = $this->select('node', 'n');
+    $query = parent::query();
     $query->leftJoin('field_data_field_people_first_name', 'fn', 'n.nid = fn.entity_id');
     $query->leftJoin('field_data_field_people_last_name', 'ln', 'n.nid = ln.entity_id');
     $query->leftJoin('field_data_field_person_bio', 'b', 'n.nid = b.entity_id');
@@ -55,19 +55,9 @@ class People extends BaseNodeSource {
     $query->leftJoin('field_data_field_person_position', 'pos', 'n.nid = pos.entity_id');
     $query->leftJoin('field_data_field_person_website', 'w', 'n.nid = w.entity_id');
 
-    $query = $query->fields('n', [
-      'nid',
-      'title',
-      'status',
-      'created',
-      'changed',
-      'promote',
-      'sticky',
-      'tnid',
+    $query = $query->fields('fn', [
+      'field_people_first_name_value',
     ])
-      ->fields('fn', [
-        'field_people_first_name_value',
-      ])
       ->fields('ln', [
         'field_people_last_name_value',
       ])

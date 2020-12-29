@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - core.entity_form_mode.node.minimal
+    - field.field.node.person.field_grad_department
     - field.field.node.person.field_image
     - field.field.node.person.field_person_bio
     - field.field.node.person.field_person_contact_information
@@ -12,6 +13,7 @@ dependencies:
     - field.field.node.person.field_person_email
     - field.field.node.person.field_person_first_name
     - field.field.node.person.field_person_hide
+    - field.field.node.person.field_person_hometown
     - field.field.node.person.field_person_last_name
     - field.field.node.person.field_person_mentor_qualif
     - field.field.node.person.field_person_mentor_ug_role
@@ -19,8 +21,9 @@ dependencies:
     - field.field.node.person.field_person_position
     - field.field.node.person.field_person_research_areas
     - field.field.node.person.field_person_research_assistants
-    - field.field.node.person.field_person_research_desc
     - field.field.node.person.field_person_research_project
+    - field.field.node.person.field_person_scholar_mentor_link
+    - field.field.node.person.field_person_scholar_srop_year
     - field.field.node.person.field_person_types
     - field.field.node.person.field_person_website
     - field.field.node.person.field_tags
@@ -73,20 +76,23 @@ content:
     third_party_settings: {  }
 hidden:
   created: true
+  field_grad_department: true
   field_image: true
   field_person_bio: true
   field_person_contact_information: true
   field_person_credential: true
   field_person_education: true
   field_person_email: true
+  field_person_hometown: true
   field_person_mentor_qualif: true
   field_person_mentor_ug_role: true
   field_person_phone: true
   field_person_position: true
   field_person_research_areas: true
   field_person_research_assistants: true
-  field_person_research_desc: true
   field_person_research_project: true
+  field_person_scholar_mentor_link: true
+  field_person_scholar_srop_year: true
   field_person_types: true
   field_person_website: true
   field_tags: true

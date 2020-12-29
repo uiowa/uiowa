@@ -39,29 +39,13 @@ class Pages extends BaseNodeSource {
    * {@inheritdoc}
    */
   public function query() {
-    $query = $this->select('node', 'n');
+    $query = parent::query();
     $query->join('field_data_body', 'b', 'n.nid = b.entity_id');
-    $query = $query->fields('n', [
-      'nid',
-      'vid',
-      'type',
-      'language',
-      'title',
-      'uid',
-      'status',
-      'created',
-      'changed',
-      'comment',
-      'promote',
-      'sticky',
-      'tnid',
-      'translate',
+    $query = $query->fields('b', [
+      'body_value',
+      'body_summary',
+      'body_format',
     ])
-      ->fields('b', [
-        'body_value',
-        'body_summary',
-        'body_format',
-      ])
       ->condition('n.type', 'page');
     return $query;
   }
