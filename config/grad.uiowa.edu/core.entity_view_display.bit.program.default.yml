@@ -4,12 +4,13 @@ status: true
 dependencies:
   config:
     - bit.bit_type.program
+    - field.field.bit.program.field_grad_degrees_offered
     - field.field.bit.program.field_program_certificate
     - field.field.bit.program.field_program_homepage
     - field.field.bit.program.field_program_interdisciplinary
   module:
     - link
-    - text
+    - options
     - user
 id: bit.program.default
 targetEntityType: bit
@@ -33,6 +34,13 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_grad_degrees_offered:
+    weight: 24
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
   field_program_certificate:
     weight: 23
     label: above
