@@ -29,8 +29,14 @@
 
 .field__item {
   line-height: 1.7;
-  font-size: 1.2rem;
   margin-top: 0;
+
+  @at-root {
+    div#{&},
+    p#{&} {
+      font-size: 1.2rem;
+    }
+  }
 }
 
 
