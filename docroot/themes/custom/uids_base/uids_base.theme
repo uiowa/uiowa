@@ -215,30 +215,67 @@ function uids_base_preprocess_media(array &$variables) {
 
   // Get the media entity's bundle (such as video, image, etc.)
   $mediaType = $variables['media']->bundle();
-  // $variables;
-  if ($mediaType == 'video') {
-    $referring_item = $media->_referringItem;
-    if ($referring_item) {
-      /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $referring_field */
-      $referring_field = $referring_item->getParent();
-      if ($referring_field) {
-        $parent_entity = $referring_field->getParent();
-        $parent_entity = $parent_entity->getEntity();
-
-        // @todo 2020/12/08 Add check to see if video is paused in 'uiowa-video'
-        //   cookie and skip adding autoplay if so.
-        if ($autoplay_field = $parent_entity->field_uiowa_banner_autoplay) {
-          if ($autoplay_field->value) {
-            $variables['content']['field_media_video_file'][0]['#attributes']['autoplay'] = 'autoplay';
+  switch ($mediaType) {
+    case 'image':
+      $referring_item = $media->_referringItem;
+      if ($referring_item) {
+        /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $referring_field */
+        $referring_field = $referring_item->getParent();
+        if ($referring_field) {
+          $parent_entity = $referring_field->getParent();
+          $parent_entity = $parent_entity->getEntity();
+          // If view is attached to parent entity.
+          if ($parent_entity->view) {
+            $view = $parent_entity->view;
+            // If parent_lb_styles were attached to the view.
+            if ($view->display_handler->options["parent_lb_styles"]) {
+              $parent_lb_styles = $view->display_handler->options["parent_lb_styles"];
+              $media_formats = [
+                'media--widescreen' => 'large__widescreen',
+                'media--square' => 'large__square',
+                'media--circle' => 'large__square',
+              ];
+              // Change view_mode based on lb_styles.
+              foreach ($media_formats as $style => $view_mode) {
+                if (in_array($style, $parent_lb_styles)) {
+                  $variables["content"]["field_media_image"][0]["#responsive_image_style_id"] = $view_mode;
+                  // Important: Delete the cache keys to prevent this from being
+                  // applied to all the instances of the same image.
+                  if (isset($variables['content']['field_media_image'][0]['#cache']) && isset($variables['content']['field_media_image'][0]['#cache']['keys'])) {
+                    unset($variables['content']['field_media_image'][0]['#cache']['keys']);
+                  }
+                }
+              }
+            }
           }
         }
+      }
+      break;
 
-        // Add a unique id to use for setting a video cookie.
-        if ($parent_entity_uuid = $parent_entity->uuid()) {
-          $variables['content']['field_media_video_file'][0]['#attributes']['data-video-cookie-id'] = $parent_entity_uuid;
+    case 'video':
+      $referring_item = $media->_referringItem;
+      if ($referring_item) {
+        /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $referring_field */
+        $referring_field = $referring_item->getParent();
+        if ($referring_field) {
+          $parent_entity = $referring_field->getParent();
+          $parent_entity = $parent_entity->getEntity();
+
+          // @todo 2020/12/08 Add check to see if video is paused in 'uiowa-video'
+          //   cookie and skip adding autoplay if so.
+          if ($autoplay_field = $parent_entity->field_uiowa_banner_autoplay) {
+            if ($autoplay_field->value) {
+              $variables['content']['field_media_video_file'][0]['#attributes']['autoplay'] = 'autoplay';
+            }
+          }
+
+          // Add a unique id to use for setting a video cookie.
+          if ($parent_entity_uuid = $parent_entity->uuid()) {
+            $variables['content']['field_media_video_file'][0]['#attributes']['data-video-cookie-id'] = $parent_entity_uuid;
+          }
         }
       }
-    }
+      break;
   }
 }
 
