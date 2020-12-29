@@ -9,7 +9,6 @@ dependencies:
     - field.field.node.student_profile.field_person_first_name
     - field.field.node.student_profile.field_person_hometown
     - field.field.node.student_profile.field_person_last_name
-    - field.field.node.student_profile.field_person_territory
     - field.field.node.student_profile.field_student_profile_attributes
     - field.field.node.student_profile.field_student_profile_blurb
     - field.field.node.student_profile.field_student_profile_country
@@ -17,6 +16,7 @@ dependencies:
     - field.field.node.student_profile.field_student_profile_grad_date
     - field.field.node.student_profile.field_student_profile_image
     - field.field.node.student_profile.field_student_profile_major
+    - field.field.node.student_profile.field_student_profile_territory
     - field.field.node.student_profile.field_student_profile_videos
     - node.type.student_profile
   module:
@@ -36,13 +36,6 @@ content:
     label: visually_hidden
     settings:
       link_to_entity: false
-    third_party_settings: {  }
-  field_person_territory:
-    type: list_default
-    weight: 3
-    region: content
-    label: visually_hidden
-    settings: {  }
     third_party_settings: {  }
   field_student_profile_blurb:
     type: text_default
@@ -74,6 +67,13 @@ content:
     label: visually_hidden
     settings:
       link: true
+    third_party_settings: {  }
+  field_student_profile_territory:
+    type: list_default
+    weight: 3
+    region: content
+    label: visually_hidden
+    settings: {  }
     third_party_settings: {  }
 hidden:
   body: true
