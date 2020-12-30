@@ -139,63 +139,15 @@ class SettingsForm extends ConfigFormBase {
       '#markup' => $this->t('<p>These settings allows you to customize the display of articles on the site.</p>'),
     ];
 
-    $form['global'] = [
+    $form['article_node'] = [
       '#type' => 'fieldset',
-      '#title' => 'Settings',
+      '#title' => 'Article Settings',
       '#collapsible' => FALSE,
-    ];
-
-    $form['global']['sitenow_articles_status'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Enable articles listing'),
-      '#default_value' => $status,
-      '#description' => $this->t('If checked, an articles listing will display at the configurable path below.'),
-      '#size' => 60,
-    ];
-
-    $form['global']['sitenow_articles_title'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Articles title'),
-      '#description' => $this->t('The title for the articles listing. Defaults to <em>News</em>.'),
-      '#default_value' => $default['display_options']['title'],
-      '#required' => TRUE,
-    ];
-
-    $form['global']['sitenow_articles_path'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Articles path'),
-      '#description' => $this->t('The base path for the articles listing. Defaults to <em>news</em>.<br /><em>Warning:</em> The RSS feed path is controlled by this setting. {articles path}/feed)'),
-      '#default_value' => $display['display_options']['path'],
-      '#required' => TRUE,
-    ];
-
-    $form['global']['sitenow_articles_header_content'] = [
-      '#type' => 'text_format',
-      '#format' => 'filtered_html',
-      '#title' => $this->t('Header Content'),
-      '#description' => $this->t('Enter any content that is displayed above the articles listing.'),
-      '#default_value' => $default['display_options']['header']['area']['content']['value'],
-    ];
-
-    $form['global']['sitenow_articles_archive'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Display monthly archive'),
-      '#default_value' => $show_archive,
-      '#description' => $this->t('If checked, a monthly archive listing will display.'),
-      '#size' => 60,
-    ];
-
-    $form['global']['sitenow_articles_feed'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Show RSS Feed icon'),
-      '#default_value' => $show_feed,
-      '#description' => $this->t('If checked, a linked RSS icon will be displayed.'),
-      '#size' => 60,
     ];
 
     $featured_image_display_default = $config->get('featured_image_display_default');
 
-    $form['global']['featured_image_display_default'] = [
+    $form['article_node']['featured_image_display_default'] = [
       '#type' => 'select',
       '#title' => $this->t('Display featured image'),
       '#description' => $this->t('Set the default behavior for how to display a featured image.'),
@@ -212,9 +164,63 @@ class SettingsForm extends ConfigFormBase {
       '#default_value' => $featured_image_display_default ?: 'large',
     ];
 
+    $form['view_page'] = [
+      '#type' => 'fieldset',
+      '#title' => 'View Page Settings',
+      '#collapsible' => FALSE,
+    ];
+
+    $form['view_page']['sitenow_articles_status'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Enable articles listing'),
+      '#default_value' => $status,
+      '#description' => $this->t('If checked, an articles listing will display at the configurable path below.'),
+      '#size' => 60,
+    ];
+
+    $form['view_page']['sitenow_articles_title'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Articles title'),
+      '#description' => $this->t('The title for the articles listing. Defaults to <em>News</em>.'),
+      '#default_value' => $default['display_options']['title'],
+      '#required' => TRUE,
+    ];
+
+    $form['view_page']['sitenow_articles_path'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Articles path'),
+      '#description' => $this->t('The base path for the articles listing. Defaults to <em>news</em>.<br /><em>Warning:</em> The RSS feed path is controlled by this setting. {articles path}/feed)'),
+      '#default_value' => $display['display_options']['path'],
+      '#required' => TRUE,
+    ];
+
+    $form['view_page']['sitenow_articles_header_content'] = [
+      '#type' => 'text_format',
+      '#format' => 'filtered_html',
+      '#title' => $this->t('Header Content'),
+      '#description' => $this->t('Enter any content that is displayed above the articles listing.'),
+      '#default_value' => $default['display_options']['header']['area']['content']['value'],
+    ];
+
+    $form['view_page']['sitenow_articles_archive'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Display monthly archive'),
+      '#default_value' => $show_archive,
+      '#description' => $this->t('If checked, a monthly archive listing will display.'),
+      '#size' => 60,
+    ];
+
+    $form['view_page']['sitenow_articles_feed'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Show RSS Feed icon'),
+      '#default_value' => $show_feed,
+      '#description' => $this->t('If checked, a linked RSS icon will be displayed.'),
+      '#size' => 60,
+    ];
+
     if ($view->get('status') == FALSE) {
-      $this->messenger()->addError($this->t('Related functionality has been turned off. Please contact an administrator.'));
-      $form['#disabled'] = TRUE;
+      $this->messenger()->addError($this->t('Articles views page functionality has been disabled. Please contact an administrator.'));
+      $form['view_page']['#disabled'] = TRUE;
     }
 
     return $form;
