@@ -211,10 +211,10 @@ function uids_base_preprocess_media(array &$variables) {
           $parent_entity = $referring_field->getParent();
           $parent_entity = $parent_entity->getEntity();
           // If view is attached to parent entity.
-          if ($parent_entity->view) {
+          if (isset($parent_entity->view)) {
             $view = $parent_entity->view;
             // If parent_lb_styles were attached to the view.
-            if ($view->display_handler->options["parent_lb_styles"]) {
+            if (isset($view->display_handler->options["parent_lb_styles"])) {
               $parent_lb_styles = $view->display_handler->options["parent_lb_styles"];
               $media_formats = [
                 'media--widescreen' => 'large__widescreen',
