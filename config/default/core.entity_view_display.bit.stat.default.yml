@@ -1,0 +1,61 @@
+uuid: e8d8990c-e0b6-4dbd-a45d-293b2a716d37
+langcode: en
+status: true
+dependencies:
+  config:
+    - bit.bit_type.stat
+    - field.field.bit.stat.field_stat_content
+    - field.field.bit.stat.field_stat_figure
+    - field.field.bit.stat.field_stat_prefix
+    - field.field.bit.stat.field_stat_suffix
+    - field.field.bit.stat.field_stat_summary
+  module:
+    - heading
+id: bit.stat.default
+targetEntityType: bit
+bundle: stat
+mode: default
+content:
+  field_stat_content:
+    weight: 4
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_stat_figure:
+    weight: 1
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: heading
+    region: content
+  field_stat_prefix:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_stat_suffix:
+    weight: 2
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_stat_summary:
+    weight: 3
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+hidden:
+  created: true
+  search_api_excerpt: true
+  status: true
+  title: true
+  uid: true
