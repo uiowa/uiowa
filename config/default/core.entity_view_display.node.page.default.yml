@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.page.body
+    - field.field.node.page.field_featured_image_display
     - field.field.node.page.field_image
     - field.field.node.page.field_meta_tags
     - field.field.node.page.field_publish_options
@@ -59,8 +60,8 @@ third_party_settings:
         layout_settings:
           label: Header
           layout_builder_styles_style:
-            section_margin_edge_to_edge: section_margin_edge_to_edge
-            0: ''
+            - ''
+            - section_margin_edge_to_edge
         components:
           -
             uuid: 40b768ff-6e34-4257-9398-d83430b061e8
@@ -118,6 +119,7 @@ third_party_settings:
               2: 2
               3: 3
               4: 4
+              5: 5
               6: 6
               8: 8
       -
@@ -203,6 +205,7 @@ third_party_settings:
     allowed_block_categories:
       - 'Chaos Tools'
       - 'Content fields'
+      - Custom
       - 'Custom block types'
       - 'Custom blocks'
       - Devel
@@ -285,6 +288,7 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_featured_image_display: true
   field_meta_tags: true
   field_publish_options: true
   field_tags: true
