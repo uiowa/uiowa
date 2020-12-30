@@ -407,6 +407,47 @@ display:
             group_items: {  }
           reduce_duplicates: false
           plugin_id: list_field
+        field_grad_degrees_offered_value:
+          id: field_grad_degrees_offered_value
+          table: bit__field_grad_degrees_offered
+          field: field_grad_degrees_offered_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: not
+          value:
+            Certificate: Certificate
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          plugin_id: list_field
       sorts: {  }
       title: 'Graduate Programs'
       header: {  }
@@ -427,10 +468,141 @@ display:
         - 'config:field.storage.bit.field_grad_degrees_offered'
         - 'config:field.storage.bit.field_grad_discipline'
         - 'config:field.storage.bit.field_program_homepage'
+  block_1:
+    display_plugin: block
+    id: block_1
+    display_title: 'Certificates Block'
+    position: 2
+    display_options:
+      display_extenders:
+        metatag_display_extender: {  }
+      display_description: ''
+      filters:
+        bundle:
+          id: bundle
+          table: bit
+          field: bundle
+          value:
+            program: program
+          entity_type: bit
+          entity_field: bundle
+          plugin_id: bundle
+          expose:
+            operator_limit_selection: false
+            operator_list: {  }
+        field_grad_discipline_value:
+          id: field_grad_discipline_value
+          table: bit__field_grad_discipline
+          field: field_grad_discipline_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_grad_discipline_value_op
+            label: Discipline
+            description: ''
+            use_operator: false
+            operator: field_grad_discipline_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: discipline
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          plugin_id: list_field
+        field_grad_degrees_offered_value:
+          id: field_grad_degrees_offered_value
+          table: bit__field_grad_degrees_offered
+          field: field_grad_degrees_offered_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value:
+            Certificate: Certificate
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          plugin_id: list_field
+      defaults:
+        filters: false
+        filter_groups: false
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
+      block_category: Custom
+      block_description: 'Certificates list'
+      allow:
+        items_per_page: false
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - url.query_args
+      tags:
+        - 'config:field.storage.bit.field_grad_degrees_offered'
+        - 'config:field.storage.bit.field_grad_discipline'
+        - 'config:field.storage.bit.field_program_homepage'
   program_block:
     display_plugin: block
     id: program_block
-    display_title: Block
+    display_title: 'Programs Block'
     position: 1
     display_options:
       display_extenders:
@@ -439,6 +611,7 @@ display:
       block_description: 'Program list'
       allow:
         items_per_page: false
+      display_description: ''
     cache_metadata:
       max-age: -1
       contexts:

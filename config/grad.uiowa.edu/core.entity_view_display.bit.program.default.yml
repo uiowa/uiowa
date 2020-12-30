@@ -6,28 +6,17 @@ dependencies:
     - bit.bit_type.program
     - field.field.bit.program.field_grad_degrees_offered
     - field.field.bit.program.field_grad_discipline
-    - field.field.bit.program.field_program_certificate
+    - field.field.bit.program.field_program_conferred_by_grad
     - field.field.bit.program.field_program_homepage
     - field.field.bit.program.field_program_interdisciplinary
   module:
     - link
     - options
-    - user
 id: bit.program.default
 targetEntityType: bit
 bundle: program
 mode: default
 content:
-  created:
-    label: above
-    type: timestamp
-    weight: 20
-    region: content
-    settings:
-      date_format: medium
-      custom_date_format: ''
-      timezone: ''
-    third_party_settings: {  }
   description:
     type: text_default
     label: above
@@ -36,21 +25,21 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_grad_degrees_offered:
-    weight: 24
-    label: above
+    weight: 4
+    label: inline
     settings: {  }
     third_party_settings: {  }
     type: list_default
     region: content
   field_grad_discipline:
-    weight: 25
-    label: above
+    weight: 5
+    label: inline
     settings: {  }
     third_party_settings: {  }
     type: list_default
     region: content
-  field_program_certificate:
-    weight: 23
+  field_program_conferred_by_grad:
+    weight: 11
     label: above
     settings:
       format: default
@@ -60,8 +49,8 @@ content:
     type: boolean
     region: content
   field_program_homepage:
-    weight: 21
-    label: above
+    weight: 1
+    label: inline
     settings:
       trim_length: 80
       url_only: false
@@ -72,8 +61,8 @@ content:
     type: link
     region: content
   field_program_interdisciplinary:
-    weight: 22
-    label: above
+    weight: 2
+    label: inline
     settings:
       format: default
       format_custom_false: ''
@@ -81,30 +70,16 @@ content:
     third_party_settings: {  }
     type: boolean
     region: content
-  status:
-    type: boolean
-    label: above
-    weight: 0
-    settings:
-      format: enabled-disabled
-      format_custom_false: ''
-      format_custom_true: ''
-    region: content
-    third_party_settings: {  }
   title:
     label: hidden
     type: string
-    weight: -5
+    weight: 0
     region: content
     settings:
       link_to_entity: false
     third_party_settings: {  }
-  uid:
-    label: above
-    type: author
-    weight: 15
-    region: content
-    settings: {  }
-    third_party_settings: {  }
 hidden:
+  created: true
   search_api_excerpt: true
+  status: true
+  uid: true
