@@ -9,16 +9,7 @@ folder: ../config/iowasuperfund.uiowa.edu
 module:
   fragments: 0
 theme: {  }
-blacklist: {  }
-graylist:
-  - config_split.config_split.iowasuperfund_uiowa_edu
-  - core.entity_form_display.node.article.default
-  - core.entity_view_display.node.article.default
-  - field.storage.fragment.field_authors
-  - field.storage.node.field_publication_date
-  - field.storage.node.field_publication_name
-  - field.storage.node.field_publication_project_core
-  - field.storage.node.field_publication_source_link
+blacklist:
   - fragments.fragment_type.publication
   - node.type.project_core
   - node.type.publication
@@ -27,6 +18,9 @@ graylist:
   - simple_sitemap.bundle_settings.default.node.project_core
   - simple_sitemap.bundle_settings.default.node.research_project
   - simple_sitemap.bundle_settings.default.node.support_core
+  - 'field.storage.node.field_publication_*'
+graylist:
+  - config_split.config_split.iowasuperfund_uiowa_edu
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 90
