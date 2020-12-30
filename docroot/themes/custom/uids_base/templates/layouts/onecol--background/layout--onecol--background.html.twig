@@ -12,18 +12,17 @@
  * @see https://v4-alpha.getbootstrap.com/layout/grid/
  */
 #}
-{% set background = content.background | render %}
 
-{% if has_node_image %}
+{% set background = content.background | render %}
+{% if background is not empty %}
   {% set classes = [
     'banner--gradient-bottom',
     'banner--gradient-dark',
     'banner--horizontal-left',
-    'banner--large',
+    'banner--' ~ featured_image_display,
     'banner--vertical-bottom',
     layout.template|clean_class,
   ] %}
-
   {% embed "@uids_base/uids/banner.html.twig" with {
     'attributes' : attributes.addClass(classes),
   } %}

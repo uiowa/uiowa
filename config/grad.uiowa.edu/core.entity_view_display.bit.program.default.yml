@@ -1,0 +1,85 @@
+uuid: 05ba0ed5-a5fa-44ba-b083-5d7c7f2034a0
+langcode: en
+status: true
+dependencies:
+  config:
+    - bit.bit_type.program
+    - field.field.bit.program.field_grad_degrees_offered
+    - field.field.bit.program.field_grad_discipline
+    - field.field.bit.program.field_program_conferred_by_grad
+    - field.field.bit.program.field_program_homepage
+    - field.field.bit.program.field_program_interdisciplinary
+  module:
+    - link
+    - options
+id: bit.program.default
+targetEntityType: bit
+bundle: program
+mode: default
+content:
+  description:
+    type: text_default
+    label: above
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_grad_degrees_offered:
+    weight: 4
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  field_grad_discipline:
+    weight: 5
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  field_program_conferred_by_grad:
+    weight: 11
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_program_homepage:
+    weight: 1
+    label: inline
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  field_program_interdisciplinary:
+    weight: 2
+    label: inline
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  title:
+    label: hidden
+    type: string
+    weight: 0
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  created: true
+  search_api_excerpt: true
+  status: true
+  uid: true
