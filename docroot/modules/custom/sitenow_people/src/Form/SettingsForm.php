@@ -135,11 +135,13 @@ class SettingsForm extends ConfigFormBase {
       '#type' => 'markup',
       '#markup' => $this->t('<p>These settings allows you to customize the display of people on the site.</p>'),
     ];
+
     $form['global'] = [
       '#type' => 'fieldset',
       '#title' => 'Settings',
       '#collapsible' => FALSE,
     ];
+
     $form['global']['sitenow_people_status'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Enable people listing'),
@@ -147,6 +149,7 @@ class SettingsForm extends ConfigFormBase {
       '#description' => $this->t('If checked, a people listing will display at the configurable path below.'),
       '#size' => 60,
     ];
+
     $form['global']['sitenow_people_title'] = [
       '#type' => 'textfield',
       '#title' => $this->t('People title'),
@@ -154,6 +157,7 @@ class SettingsForm extends ConfigFormBase {
       '#default_value' => $default['display_options']['title'],
       '#required' => TRUE,
     ];
+
     $form['global']['sitenow_people_path'] = [
       '#type' => 'textfield',
       '#title' => $this->t('People path'),
@@ -161,6 +165,7 @@ class SettingsForm extends ConfigFormBase {
       '#default_value' => $enabled_display['display_options']['path'],
       '#required' => TRUE,
     ];
+
     $form['global']['sitenow_people_header_content'] = [
       '#type' => 'text_format',
       '#format' => 'filtered_html',
@@ -168,6 +173,7 @@ class SettingsForm extends ConfigFormBase {
       '#description' => $this->t('Enter any content that is displayed above the people listing.'),
       '#default_value' => $default["display_options"]["header"]["area"]["content"]["value"],
     ];
+
     $form['global']['sitenow_people_sort'] = [
       '#type' => 'select',
       '#title' => $this->t('Sort'),
@@ -175,6 +181,7 @@ class SettingsForm extends ConfigFormBase {
       '#default_value' => $default_sort,
       '#description' => $this->t('Choose the sorting preference for the people listing.'),
     ];
+
     return $form;
   }
 
@@ -184,9 +191,11 @@ class SettingsForm extends ConfigFormBase {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // Check if path already exists.
     $path = $form_state->getValue('sitenow_people_path');
+
     // Clean up path first.
     $path = $this->aliasCleaner->cleanString($path);
     $path_exists = $this->aliasRepository->lookupByAlias('/' . $path, 'en');
+
     if ($path_exists) {
       $form_state->setErrorByName('path', $this->t('This path is already in-use.'));
     }
@@ -240,14 +249,24 @@ class SettingsForm extends ConfigFormBase {
 
     $view->save();
 
-    // Update person path pattern.
-    $this->config('pathauto.pattern.person')->set('pattern', $path . '/[node:title]')->save();
+    $old_pattern = $this->config('pathauto.pattern.person')->get('pattern');
 
-    // Load and update person node path aliases.
-    $entities = $this->entityTypeManager->getStorage('node')->loadByProperties(['type' => 'person']);
+    $new_pattern = $path . '/[node:title]';
 
-    foreach ($entities as $entity) {
-      $this->pathAutoGenerator->updateEntityAlias($entity, 'update');
+    // Only run this potentially expensive process if this setting is changing.
+    if ($new_pattern != $old_pattern) {
+      // Update person path pattern.
+      $this->config('pathauto.pattern.person')
+        ->set('pattern', $new_pattern)
+        ->save();
+
+      // Load and update person node path aliases.
+      $entities = $this->entityTypeManager->getStorage('node')
+        ->loadByProperties(['type' => 'person']);
+
+      foreach ($entities as $entity) {
+        $this->pathAutoGenerator->updateEntityAlias($entity, 'update');
+      }
     }
 
     parent::submitForm($form, $form_state);
