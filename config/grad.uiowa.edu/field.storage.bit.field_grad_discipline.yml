@@ -1,17 +1,17 @@
-uuid: d5c7590b-9700-458b-a194-4a5897d289d3
+uuid: 925a3e50-ab3d-4af3-8431-7cbcf9d85d88
 langcode: en
 status: true
 dependencies:
   module:
-    - node
+    - bit
     - options
-id: node.field_grad_department
-field_name: field_grad_department
-entity_type: node
+id: bit.field_grad_discipline
+field_name: field_grad_discipline
+entity_type: bit
 type: list_string
 settings:
+  allowed_values_function: grad_disciplines_allowed_values
   allowed_values: {  }
-  allowed_values_function: grad_programs_allowed_values
 module: options
 locked: false
 cardinality: 1
