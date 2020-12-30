@@ -48,7 +48,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
 
           // Add hometown, if it exists.
           $hometown = $node->hasField('field_person_hometown') ? $node->field_person_hometown->value : NULL;
-          $state = $node->hasField('field_student_profile_territory') ? $node->field_student_profile_territory->value : NULL;
+          $state = $node->hasField('field_student_profile_state') ? $node->field_student_profile_state->value : NULL;
           if ($hometown) {
             $home_location[] = $hometown;
           }
