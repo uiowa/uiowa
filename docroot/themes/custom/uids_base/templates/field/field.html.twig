@@ -48,6 +48,10 @@
   label_display == 'visually_hidden' ? 'visually-hidden',
 ] %}
 
+{% if item_tag is empty %}
+  {% set item_tag = 'div' %}
+{% endif %}
+
 {% if entity_type == 'block_content' %}
 
   {% for item in items %}
@@ -59,14 +63,14 @@
   {% if label_hidden %}
     {% if multiple %}
       <div{{ attributes.addClass(classes, 'field__items') }}>
-        {% for item in items %}
-          <div{{ item.attributes.addClass('field__item') }}>{{ item.content }}</div>
-        {% endfor %}
+          {% for item in items %}
+            <div{{ item.attributes.addClass('field__item') }}>{{ item.content }}</div>
+          {% endfor %}
       </div>
     {% else %}
-      {% for item in items %}
-        <div{{ attributes.addClass(classes, 'field__item') }}>{{ item.content }}</div>
-      {% endfor %}
+        {% for item in items %}
+          <{{ item_tag }}{{ attributes.addClass(classes, 'field__item') }}>{{ item.content }}</{{ item_tag }}>
+        {% endfor %}
     {% endif %}
   {% else %}
     <div{{ attributes.addClass(classes) }}>
@@ -74,9 +78,11 @@
       {% if multiple %}
       <div class="field__items">
         {% endif %}
-        {% for item in items %}
-          <div{{ item.attributes.addClass('field__item') }}>{{ item.content }}</div>
-        {% endfor %}
+        {% block field_items %}
+          {% for item in items %}
+            <{{ item_tag }}{{ item.attributes.addClass('field__item') }}>{{ item.content }}</{{ item_tag }}>
+          {% endfor %}
+        {% endblock %}
         {% if multiple %}
       </div>
       {% endif %}
