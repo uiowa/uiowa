@@ -19,6 +19,22 @@ function bit_theme() {
 }
 
 /**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function bit_theme_suggestions_bit(array $variables) {
+  $suggestions = [];
+  $bit = $variables['elements']['#bit'];
+  $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
+
+  $suggestions[] = 'bit__' . $sanitized_view_mode;
+  $suggestions[] = 'bit__' . $bit->bundle();
+  $suggestions[] = 'bit__' . $bit->bundle() . '__' . $sanitized_view_mode;
+
+  return $suggestions;
+}
+
+
+/**
  * Prepares variables for bit templates.
  *
  * Default template: bit.html.twig.
