@@ -11,6 +11,7 @@ dependencies:
     - field.field.node.page.field_publish_options
     - field.field.node.page.field_tags
     - field.field.node.page.field_teaser
+    - field.field.node.page.layout_builder__layout
     - node.type.page
     - workflows.workflow.editorial
   module:
@@ -45,7 +46,8 @@ content:
     third_party_settings: {  }
   field_meta_tags:
     weight: 12
-    settings: {  }
+    settings:
+      sidebar: true
     third_party_settings: {  }
     type: metatag_firehose
     region: content
