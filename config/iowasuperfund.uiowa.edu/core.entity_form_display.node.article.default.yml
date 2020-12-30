@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.article.field_article_source_link
     - field.field.node.article.field_article_source_link_direct
     - field.field.node.article.field_article_source_org
+    - field.field.node.article.field_featured_image_display
     - field.field.node.article.field_image
     - field.field.node.article.field_image_caption
     - field.field.node.article.field_meta_tags
@@ -42,6 +43,12 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_featured_image_display:
+    type: options_select
+    weight: 15
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_image:
     type: media_library_widget
     weight: 1
@@ -61,7 +68,8 @@ content:
     type: metatag_firehose
     weight: 4
     region: content
-    settings: {  }
+    settings:
+      sidebar: true
     third_party_settings: {  }
   field_tags:
     weight: 8
