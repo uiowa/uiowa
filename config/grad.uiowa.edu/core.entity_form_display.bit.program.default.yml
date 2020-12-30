@@ -6,7 +6,7 @@ dependencies:
     - bit.bit_type.program
     - field.field.bit.program.field_grad_degrees_offered
     - field.field.bit.program.field_grad_discipline
-    - field.field.bit.program.field_program_certificate
+    - field.field.bit.program.field_program_conferred_by_grad
     - field.field.bit.program.field_program_homepage
     - field.field.bit.program.field_program_interdisciplinary
   module:
@@ -16,12 +16,6 @@ targetEntityType: bit
 bundle: program
 mode: default
 content:
-  created:
-    type: datetime_timestamp
-    weight: 20
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   description:
     type: text_textarea
     weight: 10
@@ -31,26 +25,26 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_grad_degrees_offered:
-    weight: 29
+    weight: 3
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_grad_discipline:
-    weight: 30
+    weight: 2
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
-  field_program_certificate:
-    weight: 28
+  field_program_conferred_by_grad:
+    weight: 6
     settings:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
   field_program_homepage:
-    weight: 26
+    weight: 1
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -58,35 +52,21 @@ content:
     type: link_default
     region: content
   field_program_interdisciplinary:
-    weight: 27
+    weight: 4
     settings:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
-  status:
-    type: boolean_checkbox
-    settings:
-      display_label: false
-    weight: 0
-    region: content
-    third_party_settings: {  }
   title:
     type: string_textfield
-    weight: -5
+    weight: 0
     region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-  uid:
-    type: entity_reference_autocomplete
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-      match_limit: 10
-    weight: 15
-    region: content
-    third_party_settings: {  }
-hidden: {  }
+hidden:
+  created: true
+  status: true
+  uid: true
