@@ -1,0 +1,28 @@
+uuid: b38f7e2d-5876-4080-829d-dcfec546f1a2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_person_mentor_qualif
+    - node.type.person
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    filtered_html: filtered_html
+    minimal: '0'
+    full_html: '0'
+    plain_text: '0'
+id: node.person.field_person_mentor_qualif
+field_name: field_person_mentor_qualif
+entity_type: node
+bundle: person
+label: 'Undergraduate minimum qualifications'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

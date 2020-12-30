@@ -1,0 +1,30 @@
+uuid: ca79056b-ce1e-4def-943c-75c3618ff0a8
+langcode: en
+status: false
+dependencies: {  }
+id: areas_of_study
+label: 'Areas of Study'
+description: 'Areas of Study content type, views and related configuration.'
+folder: ../config/features/areas_of_study
+module:
+  uiowa_area_of_study: 0
+theme: {  }
+blacklist:
+  - block_content.type.area_of_study_search
+  - node.type.area_of_study
+  - paragraphs.paragraphs_type.degree
+  - pathauto.pattern.areas_of_study
+  - views.view.areas_of_study
+  - 'core.base_field_override.node.area_of_study.*'
+  - 'core.entity_form_display.node.area_of_study.*'
+  - 'core.entity_view_display.node.area_of_study.*'
+  - 'field.field.node.area_of_study.*'
+  - 'field.field.node.area_of_study.*'
+  - 'field.storage.node.field_area_of_study_*'
+  - 'field.storage.paragraph.field_degree*'
+graylist:
+  - core.entity_view_display.node.page.default
+  - 'user.role.*'
+graylist_dependents: true
+graylist_skip_equal: true
+weight: 80

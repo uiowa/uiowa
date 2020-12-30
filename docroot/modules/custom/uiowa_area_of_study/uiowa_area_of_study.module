@@ -1,0 +1,85 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for SiteNow Area of Study module.
+ *
+ * @DCG
+ * This file is no longer required in Drupal 8.
+ * @see https://www.drupal.org/node/2217931
+ */
+
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\views\Views;
+use Drupal\Core\Form\FormState;
+
+/**
+ * Implements hook_allowed_values_function().
+ */
+function uiowa_area_of_study_allowed_values_function(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  // Available degree abbreviations.
+  // Can be moved to store in a config file later.
+  $options = [
+    'AuD' => 'AuD',
+    'BA' => 'BA',
+    'BAS' => 'BAS',
+    'BBA' => 'BBA',
+    'BFA' => 'BFA',
+    'BM' => 'BM',
+    'BS' => 'BS',
+    'BSE' => 'BSE',
+    'BSN' => 'BSN',
+    'DDS' => 'DDS',
+    'DNP' => 'DNP',
+    'EdD' => 'EdD',
+    'JD' => 'JD',
+    'LLM' => 'LLM',
+    'MA' => 'MA',
+    'MAc' => 'MAc',
+    'MAT' => 'MAT',
+    'MCA' => 'MCA',
+    'MCS' => 'MCS',
+    'MFA' => 'MFA',
+    'MHA' => 'MHA',
+    'MPH' => 'MPH',
+    'MS' => 'MS',
+    'MSL' => 'MSL',
+    'PhD' => 'PhD',
+    'PHR' => 'PHR',
+    'SJD' => 'SJD',
+  ];
+  return $options;
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uiowa_area_of_study_preprocess_block(&$variables) {
+  if ($variables['elements']['#plugin_id'] == 'inline_block:area_of_study_search') {
+    // @todo Does this field need a headline field option?
+    // Using a process described here:
+    // https://drupal.stackexchange.com/a/274383/6066
+    $form = [];
+    $view_id = 'areas_of_study';
+    $display_id = 'areas_of_study';
+    $view = Views::getView($view_id);
+    if ($view) {
+      $view->setDisplay($display_id);
+      $view->initHandlers();
+      $form_state = (new FormState())
+        ->setStorage([
+          'view' => $view,
+          'display' => &$view->display_handler->display,
+          'rerender' => TRUE,
+        ])
+        ->setMethod('get')
+        ->setAlwaysProcess()
+        ->disableRedirect();
+      $form_state->set('rerender', NULL);
+      $form = \Drupal::formBuilder()
+        ->buildForm('\Drupal\views\Form\ViewsExposedForm', $form_state);
+    }
+    $variables['content']['form'] = $form;
+  }
+}

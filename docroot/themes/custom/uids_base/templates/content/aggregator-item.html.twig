@@ -22,20 +22,32 @@
 {%
   set classes = [
   'aggregator-item',
-  'card--media-left',
-  'media--border',
-  'card--centered-left',
-  'card--alignment-left',
 ]
 %}
+
+{% set style_classes = [] %}
+{% set size_classes = [] %}
+{% for style in parent_lb_styles %}
+
+  {% set classes = classes|merge([style]) %}
+
+  {% if style starts with 'media--' %}
+    {% set style_classes = style_classes|merge([style]) %}
+  {% endif %}
+
+  {% if style starts with 'card__media' %}
+    {% set size_classes = size_classes|merge([style]) %}
+  {% endif %}
+
+{% endfor %}
 
 {# Set the event icon #}
 {% set event_icon = '<span class="fas fa-user"></span>' %}
 
 {% set aggregator_card = {
-  'attributes': attributes.addClass(classes),
-  'media_styles': 'media--circle',
-  'media_sizes': 'card__media--small',
+  'attributes': attributes.addClass(classes).removeClass(style_classes, size_classes),
+  'media_styles': style_classes,
+  'media_sizes': size_classes,
   'card_image': feed_image|render,
   'card_title': title|render,
   'title_prefix': title_prefix,

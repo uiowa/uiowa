@@ -105,6 +105,7 @@ function sitenow_people_entity_presave(EntityInterface $entity) {
 function sitenow_people_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
+    // @todo Remove this line and just use $entity->bundle() instead.
     if (isset($build['#node']) && $node = $build['#node']) {
       switch ($node->getType()) {
         case 'person':

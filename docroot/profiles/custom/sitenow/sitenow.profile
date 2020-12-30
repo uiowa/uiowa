@@ -369,6 +369,8 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
     case 'node_article_form':
     case 'node_person_edit_form':
     case 'node_person_form':
+    case 'node_area_of_study_form':
+    case 'node_area_of_study_edit_form':
       if (isset($form['field_teaser'])) {
         // Create node_teaser group in the advanced container.
         $form['node_teaser'] = [
@@ -409,6 +411,20 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         if (isset($form['field_image_caption'])) {
           // Set field_image_caption to node_image group.
           $form['field_image_caption']['#group'] = 'node_image';
+        }
+      }
+      if (isset($form['field_featured_image_display'])) {
+        $form['field_featured_image_display']['#group'] = 'node_image';
+        $form['field_featured_image_display']['widget']['#options']['_none'] = 'Site-wide default';
+
+        $form_object = $form_state->getFormObject();
+
+        if ($form_object && $node = $form_object->getEntity()) {
+          $type = $node->getType() . 's';
+          $form['field_featured_image_display']['widget']['#description'] .= t(' If "Site-wide default" is selected, this setting can be changed on the <a href="@settings_url">SiteNow @types settings</a>.', [
+            '@settings_url' => Url::fromRoute("sitenow_$type.settings_form")->toString(),
+            '@types' => ucfirst($type),
+          ]);
         }
       }
       if (isset($form['field_tags'])) {
@@ -974,4 +990,30 @@ function sitenow_entity_insert(EntityInterface $entity) {
       }
     }
   }
+}
+
+/**
+ * Set dynamic allowed values for the alignment field.
+ *
+ * @param \Drupal\field\Entity\FieldStorageConfig $definition
+ *   The field definition.
+ * @param \Drupal\Core\Entity\ContentEntityInterface|null $entity
+ *   The entity being created if applicable.
+ * @param bool $cacheable
+ *   Boolean indicating if the results are cacheable.
+ *
+ * @return array
+ *   An array of possible key and value options.
+ *
+ * @see options_allowed_values()
+ */
+function featured_image_size_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  $options = [
+    'do_not_display' => 'Do not display',
+    'small' => 'Small',
+    'medium' => 'Medium',
+    'large' => 'Large',
+  ];
+
+  return $options;
 }

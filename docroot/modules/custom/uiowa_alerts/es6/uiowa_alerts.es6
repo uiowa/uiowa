@@ -23,19 +23,24 @@
                 new_alerts.push(id);
 
                 if (!messages.select(id)) {
+                  let date = new Date(item.hawkalert.date * 1000);
+                  let month = date.toLocaleDateString('en-us', { month: 'long' });
+                  let time = date.toLocaleTimeString('en-us', { hour: 'numeric', minute: '2-digit' })
+                    .replace(' AM', 'am')
+                    .replace(' PM', 'pm');
+
                   let alert = `
 <div class="hawk-alert alert alert-danger">
 <div class="hawk-alert-message">
     <span class="hawk-alert-heading">
         <span class="hawk-alert-label">Hawk Alert</span>
-        <span class="hawk-alert-date">${moment.unix(item.hawkalert.date).format('MMMM D, YYYY - h:mma')}</span>
+        <span class="hawk-alert-date">${month} ${date.getDate()}, ${date.getFullYear()} - ${time}</span>
     </span>
     <span class="hawk-alert-body">${item.hawkalert.alert}</span>
     <a class="hawk-alert-link alert-link" href=https://${item.hawkalert.more_info_link}>Visit ${item.hawkalert.more_info_link} for more information.</a>
 </div>
 </div>
         `;
-
                   messages.add(alert, {
                     id: id,
                     type: 'warning'

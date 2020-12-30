@@ -6,6 +6,7 @@ use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Render\PreviewFallbackInterface;
 use Drupal\layout_builder\Event\SectionComponentBuildRenderArrayEvent;
 use Drupal\layout_builder\LayoutBuilderEvents;
+use Drupal\layout_builder\Plugin\Block\FieldBlock;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -44,6 +45,32 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
 
         if ($is_placeholder) {
           $build['#attributes']['class'][] = 'layout-builder-block--placeholder';
+        }
+      }
+    }
+
+    if ($block instanceof FieldBlock && $block->getPluginId() === 'field_block:node:page:title') {
+
+      $contexts = $event->getContexts();
+      if (isset($contexts['layout_builder.entity'])) {
+        /** @var \Drupal\node\Entity\Node $node */
+        if ($node = $contexts['layout_builder.entity']->getContextValue()) {
+          $credentials = $node->hasField('field_person_credential') ? $node->field_person_credential->value : NULL;
+          if ($credentials) {
+            $node->setTitle("{$node->getTitle()}, $credentials");
+            $content = $block->build();
+
+            $build = [
+              // @todo Move this to BlockBase in https://www.drupal.org/node/2931040.
+              '#theme' => 'block',
+              '#configuration' => $block->getConfiguration(),
+              '#plugin_id' => $block->getPluginId(),
+              '#base_plugin_id' => $block->getBaseId(),
+              '#derivative_plugin_id' => $block->getDerivativeId(),
+              '#weight' => $event->getComponent()->getWeight(),
+              'content' => $content,
+            ];
+          }
         }
       }
     }

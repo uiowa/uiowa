@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: siteshoradahistoria.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: siteshoradahistoria
+  human_name: horadahistoria.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: siteshoradahistoria.prod
+drupal:
+  db:
+    database: horadahistoria_sites_uiowa_edu
+uiowa:
+  requester: cbarbosadelira

@@ -5,6 +5,15 @@ dependencies:
   config:
     - block_content.type.uiowa_cta
     - field.storage.block_content.field_uiowa_cta_summary
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    minimal: minimal
+    plain_text: plain_text
+    filtered_html: '0'
+    full_html: '0'
 _core:
   default_config_hash: 4vFszaUxeTr6om6ugZ2o6nBn7Atao3aOwmts5uj1mAY
 id: block_content.uiowa_cta.field_uiowa_cta_summary
@@ -18,4 +27,4 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings: {  }
-field_type: string_long
+field_type: text_long

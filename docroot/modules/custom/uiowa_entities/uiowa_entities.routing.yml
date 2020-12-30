@@ -1,0 +1,39 @@
+entity.uiowa_academic_unit.collection:
+  path: '/admin/structure/uiowa-academic-unit'
+  defaults:
+    _entity_list: 'uiowa_academic_unit'
+    _title: 'Academic unit configuration'
+  requirements:
+    _permission: 'administer uiowa_academic_unit'
+
+entity.uiowa_academic_unit.add_form:
+  path: '/admin/structure/uiowa-academic-unit/add'
+  defaults:
+    _entity_form: 'uiowa_academic_unit.add'
+    _title: 'Add an academic unit'
+  requirements:
+    _permission: 'administer uiowa_academic_unit'
+
+entity.uiowa_academic_unit.edit_form:
+  path: '/admin/structure/uiowa-academic-unit/{uiowa_academic_unit}'
+  defaults:
+    _entity_form: 'uiowa_academic_unit.edit'
+    _title: 'Edit an academic unit'
+  requirements:
+    _permission: 'administer uiowa_academic_unit'
+
+entity.uiowa_academic_unit.delete_form:
+  path: '/admin/structure/uiowa-academic-unit/{uiowa_academic_unit}/delete'
+  defaults:
+    _entity_form: 'uiowa_academic_unit.delete'
+    _title: 'Delete an academic unit'
+  requirements:
+    _permission: 'administer uiowa_academic_unit'
+
+uiowa_entities.settings_form:
+  path: '/admin/config/system/uiowa-entities'
+  defaults:
+    _title: 'Uiowa Entities'
+    _form: 'Drupal\uiowa_entities\Form\SettingsForm'
+  requirements:
+    _permission: 'administer uiowa_entities'
