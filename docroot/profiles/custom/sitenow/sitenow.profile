@@ -367,6 +367,8 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
     case 'node_page_form':
     case 'node_article_edit_form':
     case 'node_article_form':
+    case 'node_event_edit_form':
+    case 'node_event_form':
     case 'node_person_edit_form':
     case 'node_person_form':
     case 'node_area_of_study_form':

@@ -1,0 +1,23 @@
+uuid: b6a8e5bf-a53f-4a89-ad05-f771bcd6e9a3
+langcode: en
+status: false
+dependencies: {  }
+id: event
+label: Event
+description: 'Event content type.'
+folder: ../config/features/event
+module:
+  smart_date: 0
+  smart_date_recur: 0
+theme: {  }
+blacklist: {  }
+graylist:
+  - field.storage.node.field_event_location
+  - field.storage.node.field_event_when
+  - node.type.event
+  - simple_sitemap.bundle_settings.default.node.event
+  - views.view.events
+  - 'smart_date.*'
+graylist_dependents: true
+graylist_skip_equal: true
+weight: 80
