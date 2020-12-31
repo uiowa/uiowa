@@ -350,8 +350,10 @@ function sitenow_config_split_prepare_form(EntityInterface $entity, $operation, 
 /**
  * Custom node content type form defaults.
  *
- * @param $form
- * @param $form_state
+ * @param array $form
+ *   Nested array of form elements that comprise the form.
+ * @param Drupal\Core\Form\FormStateInterface $form_state
+ *   The current state of the form.
  *
  * @return mixed
  */
@@ -484,7 +486,7 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
     case 'node_article_form':
     case 'node_person_edit_form':
     case 'node_person_form':
-        _sitenow_node_form_defaults($form, $form_state);
+      _sitenow_node_form_defaults($form, $form_state);
       break;
 
     // Restrict certain webform component options.

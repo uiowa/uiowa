@@ -9,6 +9,7 @@
  * @see https://www.drupal.org/node/2217931
  */
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\views\Views;
@@ -17,7 +18,7 @@ use Drupal\Core\Form\FormState;
 /**
  * Implements hook_form_alter().
  */
-function uiowa_area_of_study_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+function uiowa_area_of_study_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
     case 'node_area_of_study_form':
     case 'node_area_of_study_edit_form':
