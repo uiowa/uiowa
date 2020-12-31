@@ -15,6 +15,18 @@ use Drupal\views\Views;
 use Drupal\Core\Form\FormState;
 
 /**
+ * Implements hook_form_alter().
+ */
+function uiowa_area_of_study_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    case 'node_area_of_study_form':
+    case 'node_area_of_study_edit_form':
+      _sitenow_node_form_defaults($form, $form_state);
+      break;
+  }
+}
+
+/**
  * Implements hook_allowed_values_function().
  */
 function uiowa_area_of_study_allowed_values_function(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {

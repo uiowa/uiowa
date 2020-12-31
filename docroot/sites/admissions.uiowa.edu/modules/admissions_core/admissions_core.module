@@ -64,6 +64,43 @@ function admissions_core_theme($existing, $type, $theme, $path) {
 }
 
 /**
+ * Implements hook_form_alter().
+ */
+function admissions_core_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    case 'node_student_profile_form':
+    case 'node_student_profile_edit_form':
+      // Set form defaults if they exist.
+      _sitenow_node_form_defaults($form, $form_state);
+
+      if (isset($form['field_student_profile_image'])) {
+        // Create node_student_profile_image group in the advanced container.
+        $form['node_student_profile_image'] = [
+          '#type' => 'details',
+          '#title' => $form["field_student_profile_image"]["widget"]["#title"],
+          '#group' => 'advanced',
+          '#attributes' => [
+            'class' => ['node-form-image'],
+          ],
+          '#attached' => [
+            'library' => ['node/drupal.node'],
+          ],
+          '#weight' => -10,
+          '#optional' => TRUE,
+          '#open' => FALSE,
+        ];
+        // Set field_student_profile_image to node_student_profile_image group.
+        $form['field_student_profile_image']['#group'] = 'node_student_profile_image';
+        if (isset($form['field_image_caption'])) {
+          // Set field_image_caption to node_student_profile_image group.
+          $form['field_image_caption']['#group'] = 'node_student_profile_image';
+        }
+      }
+      break;
+  }
+}
+
+/**
  * Implements hook_theme_suggestions_HOOK_alter().
  */
 function admissions_core_theme_suggestions_field_alter(array &$suggestions, array $variables) {
