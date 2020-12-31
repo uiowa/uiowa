@@ -46,12 +46,12 @@ class ThesisDefense extends BaseNodeSource {
         'field_thesis_defense_date_value',
       ])
       ->fields('fn', [
-        'field_thesis_first_name_value',
-        'field_thesis_first_name_format',
+        'field_thesis_firstname_value',
+        'field_thesis_firstname_format',
       ])
       ->fields('ln', [
-        'field_thesis_last_name_value',
-        'field_thesis_last_name_format',
+        'field_thesis_lastname_value',
+        'field_thesis_lastname_format',
       ])
       ->fields('tt', [
         'field_thesis_title_value',

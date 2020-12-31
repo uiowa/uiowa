@@ -36,10 +36,16 @@ process:
   body: body
   field_teaser: body_summary
   moderation_state: moderation_state
-  field_image: field_header_image_fid
+  field_person_first_name: field_thesis_firstname_value
+  field_person_last_name: field_thesis_lastname_value
+  field_thesis_defense_title:
+    plugin: callback
+    source: field_thesis_title_value
+    callable: strip_tags
+  field_thesis_defense_location: field_thesis_location_value
+#  field_thesis_defense_date: field_thesis_defense_date_value
+  field_grad_program: field_thesis_department_value
+  field_thesis_defense_chairs: field_thesis_chair_value
 destination:
   plugin: 'entity:node'
   default_bundle: thesis_defense
-migration_dependencies:
-  required:
-    - d7_grad_file

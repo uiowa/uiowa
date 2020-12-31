@@ -1,0 +1,47 @@
+uuid: 06f5d544-d636-4e2b-b745-7db12609162e
+langcode: en
+status: true
+dependencies: {  }
+id: d7_grad_thesis_defense_redirect
+migration_group: sitenow_migrate
+migration_tags:
+  - redirect
+  - thesis_defense
+label: 'Thesis Defense redirects'
+source:
+  plugin: d7_grad_thesis_defense
+  node_type: thesis_defense
+  constants:
+    redirect_prefix: 'internal:/node/'
+    uid_admin: 1
+    status_code: 301
+process:
+  temp_nid:
+    plugin: migration_lookup
+    source: slug
+    migration: d7_grad_thesis_defense
+  # Specify the path which is to be redirected.
+  #
+  # This will be the path as on the old website, example, "blog/SLUG.php" without a "/" in the front.
+  redirect_source:
+    plugin: concat
+    source:
+      - constants/source_prefix
+      - slug
+      - constants/source_suffix
+  # The redirect destination is supposed be a URI of the form "internal:/node/NID".
+  #
+  # The URI will be used by the redirect module to get the respective path alias for the node. Even if the alias
+  # changes sometime in the future, the redirect will start pointing to the new alias instead of breaking.
+  redirect_redirect:
+    plugin: concat
+    source:
+      - constants/redirect_prefix
+      - "@temp_nid"
+  # We want to generate 301 permanent redirects as opposed to 302 temporary redirects.
+  status_code: constants/status_code
+destination:
+  plugin: 'entity:redirect'
+migration_dependencies:
+  required:
+    - d7_grad_thesis_defense
