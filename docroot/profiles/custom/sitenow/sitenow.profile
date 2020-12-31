@@ -349,13 +349,6 @@ function sitenow_config_split_prepare_form(EntityInterface $entity, $operation, 
 
 /**
  * Custom node content type form defaults.
- *
- * @param array $form
- *   Nested array of form elements that comprise the form.
- * @param Drupal\Core\Form\FormStateInterface $form_state
- *   The current state of the form.
- *
- * @return mixed
  */
 function _sitenow_node_form_defaults(&$form, $form_state) {
   if (isset($form['field_teaser'])) {
