@@ -57,10 +57,6 @@ function admissions_core_form_alter(&$form, \Drupal\Core\Form\FormStateInterface
         ];
         // Set field_student_profile_image to node_student_profile_image group.
         $form['field_student_profile_image']['#group'] = 'node_student_profile_image';
-        if (isset($form['field_image_caption'])) {
-          // Set field_image_caption to node_student_profile_image group.
-          $form['field_image_caption']['#group'] = 'node_student_profile_image';
-        }
       }
       break;
   }
