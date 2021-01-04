@@ -108,6 +108,10 @@
 {% set headline_level = heading_size ?: 'h3' %}
 {% if view %}
   {% set headline_level = view.display_handler.getOption('heading_size') %}
+  {# @todo Remove once we can set card styles on SiteNow Articles and account for other implementations. #}
+  {% if view.current_display != 'block_articles' %}
+    {% set classes = classes|merge(['card--list']) %}
+  {% endif %}
 {% endif %}
 
 {{ attach_library('classy/node') }}
