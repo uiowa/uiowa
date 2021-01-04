@@ -1,0 +1,36 @@
+uuid: 00a0af82-e490-48b4-8490-20287a8f00e4
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_student_profile_gender
+field_name: field_student_profile_gender
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: M
+      label: Male
+    -
+      value: F
+      label: Female
+    -
+      value: T
+      label: Transgender
+    -
+      value: NB-NC
+      label: Non-binary/non-conforming
+    -
+      value: NA
+      label: 'Prefer not to respond'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

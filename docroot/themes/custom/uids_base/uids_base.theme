@@ -295,8 +295,6 @@ function uids_base_preprocess_layout(&$variables) {
   $node = \Drupal::routeMatch()->getParameter('node');
   $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
   $title_hidden = FALSE;
-  $variables['has_node_image'] = FALSE;
-  $variables['featured_image_display'] = FALSE;
   if ($node instanceof NodeInterface) {
     // @todo Scope this to target layout so it doesn't run
     //   every time a layout is preprocessed.
@@ -317,26 +315,32 @@ function uids_base_preprocess_layout(&$variables) {
       $contains_title = FALSE;
       $contains_background = FALSE;
 
-      // Check if the featured image exists.
-      if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
-        // Check value of 'field_featured_image_display'.
-        if ($node->hasField('field_featured_image_display') && !$node->field_featured_image_display->isEmpty()) {
-          if ($node->field_featured_image_display->value !== 'do_not_display') {
-            // Use the node setting.
-            $variables['featured_image_display'] = $node->field_featured_image_display->value;
-          }
-        }
-        else {
-          $site_wide_setting = \Drupal::config("sitenow_{$node->getType()}s.settings")->get('featured_image_display_default');
-          if ($site_wide_setting && $site_wide_setting !== 'do_not_display') {
-            // Use the site-wide default.
-            $variables['featured_image_display'] = $site_wide_setting;
-          }
-        }
-      }
+      // Only run the following if 'featured_image_display'
+      // is not already set.
+      if (!isset($variables['featured_image_display'])) {
+        $variables['featured_image_display'] = FALSE;
 
-      if (!$variables['featured_image_display']) {
-        unset($variables['content']['background']);
+        // Check if the featured image exists.
+        if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
+          // Check value of 'field_featured_image_display'.
+          if ($node->hasField('field_featured_image_display') && !$node->field_featured_image_display->isEmpty()) {
+            if ($node->field_featured_image_display->value !== 'do_not_display') {
+              // Use the node setting.
+              $variables['featured_image_display'] = $node->field_featured_image_display->value;
+            }
+          }
+          else {
+            $site_wide_setting = \Drupal::config("sitenow_{$node->getType()}s.settings")->get('featured_image_display_default');
+            if ($site_wide_setting && $site_wide_setting !== 'do_not_display') {
+              // Use the site-wide default.
+              $variables['featured_image_display'] = $site_wide_setting;
+            }
+          }
+        }
+
+        if (!$variables['featured_image_display']) {
+          unset($variables['content']['background']);
+        }
       }
 
       // Loop through regions in the layout.
