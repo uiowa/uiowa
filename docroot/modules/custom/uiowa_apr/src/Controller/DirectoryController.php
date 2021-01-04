@@ -95,6 +95,11 @@ class DirectoryController extends ControllerBase {
           "uiowa_apr/apr.directory.{$this->apr->environment}",
           'uiowa_apr/styles',
         ],
+        'drupalSettings' => [
+          'uiowaApr' => [
+            'pageSize' => Html::escape($this->config->get('directory.page_size'))
+          ],
+        ],
       ],
       '#type' => 'container',
       '#attributes' => [

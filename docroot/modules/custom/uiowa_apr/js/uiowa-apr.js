@@ -14,7 +14,7 @@
     attach: function (context, settings) {
       $('#apr-directory-service table tbody', context).once('uiowaApr').each(function() {
         const observer = new MutationObserver(function (mutationList, observer) {
-          if (mutationList.length === 30) {
+          if (mutationList.length === settings.uiowaApr.pageSize) {
             $('#apr-directory-service table')
               .addClass('is-striped')
               .addClass('uids-responsive-tables')
