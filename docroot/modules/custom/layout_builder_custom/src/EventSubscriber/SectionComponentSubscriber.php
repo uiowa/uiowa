@@ -75,13 +75,12 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
       }
     }
 
-    // For cards, event, we are going to programmatically set the view mode for
+    // For cards or other blocks, we are going to programmatically set the view mode for
     // the image field. This is necessary to allow selection of different
     // image formats.
     if (isset($build['#derivative_plugin_id'])) {
       switch ($build['#derivative_plugin_id']) {
         case 'uiowa_card':
-        case 'uiowa_event':
           if (isset($build['#layout_builder_style'])) {
             // Map the layout builder styles to the view mode to be used.
             $media_formats = [

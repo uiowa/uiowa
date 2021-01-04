@@ -1855,68 +1855,63 @@ function sitenow_update_8047() {
 }
 
 /**
- * Set new style defaults for existing event, events blocks.
+ * Set new style defaults for existing events blocks.
  */
 function sitenow_update_8048() {
-  // Do this for both block types.
-  $types = ['uiowa_event', 'uiowa_events'];
-  foreach ($types as $type) {
-    // Find NIDs for all nodes with at least one event block.
-    $query = \Drupal::entityQuery('node')
-      ->condition('type', 'page')
-      ->condition('layout_builder__layout', '%' . $type . '%', 'LIKE');
+  // Find NIDs for all nodes with at least one events block.
+  $query = \Drupal::entityQuery('node')
+    ->condition('type', 'page')
+    ->condition('layout_builder__layout', '%uiowa_events%', 'LIKE');
 
-    $results = $query->execute();
+  $results = $query->execute();
 
-    foreach ($results as $nid) {
-      $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
-      $layout = $node->get('layout_builder__layout');
+  foreach ($results as $nid) {
+    $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+    $layout = $node->get('layout_builder__layout');
 
-      // Grab the sections. We'll set updated ones back in below.
-      $layout_sections = $layout->getSections();
+    // Grab the sections. We'll set updated ones back in below.
+    $layout_sections = $layout->getSections();
+
+    /**
+     * @var integer $delta_s
+     * @var \Drupal\layout_builder\Section $section
+     */
+    foreach ($layout_sections as $delta_s => $section) {
+      $section_is_updated = FALSE;
+
+      // insertComponent() uses delta and region
+      // which makes it more difficult to re-set components.
+      // With an array and iterator we can set it directly.
+      $section_arr = $section->toArray();
+      $i = 0;
 
       /**
-       * @var integer $delta_s
-       * @var \Drupal\layout_builder\Section $section
+       * @var \Drupal\layout_builder\SectionComponent $component
        */
-      foreach ($layout_sections as $delta_s => $section) {
-        $section_is_updated = FALSE;
+      foreach ($section->getComponents() as $component) {
+        if ($component->getPluginId() === 'inline_block:uiowa_events') {
+          $styles = $component->get('layout_builder_styles_style');
+          // Events - Small circle left-aligned, left align content, transparent.
+          $styles[] = 'card_media_position_left';
+          $styles[] = 'media_format_circle';
+          $styles[] = 'card_image_small';
+          $styles[] = 'content_alignment_left';
+          $component->set('layout_builder_styles_style', $styles);
 
-        // insertComponent() uses delta and region
-        // which makes it more difficult to re-set components.
-        // With an array and iterator we can set it directly.
-        $section_arr = $section->toArray();
-        $i = 0;
-
-        /**
-         * @var \Drupal\layout_builder\SectionComponent $component
-         */
-        foreach ($section->getComponents() as $component) {
-          if ($component->getPluginId() === 'inline_block:' . $type) {
-            $styles = $component->get('layout_builder_styles_style');
-            // Event/Events - Small circle left-aligned, left align content, transparent.
-            $styles[] = 'card_media_position_left';
-            $styles[] = 'media_format_circle';
-            $styles[] = 'card_image_small';
-            $styles[] = 'content_alignment_left';
-            $component->set('layout_builder_styles_style', $styles);
-
-            $section_arr['components'][$i] = $component->toArray();
-            $section_is_updated = TRUE;
-          }
-          $i++;
+          $section_arr['components'][$i] = $component->toArray();
+          $section_is_updated = TRUE;
         }
+        $i++;
+      }
 
-        if ($section_is_updated) {
-          // Create a section from array, set, and save.
-          $layout_sections[$delta_s] = Section::fromArray($section_arr);
-          $node->set('layout_builder__layout', $layout_sections)
-            ->save();
-        }
+      if ($section_is_updated) {
+        // Create a section from array, set, and save.
+        $layout_sections[$delta_s] = Section::fromArray($section_arr);
+        $node->set('layout_builder__layout', $layout_sections)
+          ->save();
       }
     }
   }
-
 }
 
 /**
