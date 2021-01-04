@@ -114,7 +114,7 @@ function admissions_core_preprocess_layout(&$variables) {
     if ($node instanceof NodeInterface && $node->getType() === 'student_profile') {
       if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
         // Set the featured image display.
-        $variables['featured_image_display'] = 'medium';
+        $variables['featured_image_display'] = 'large';
       }
     }
   }
