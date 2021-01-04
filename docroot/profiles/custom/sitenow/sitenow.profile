@@ -57,6 +57,32 @@ function sitenow_toolbar_alter(&$items) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_preprocess_breadcrumb(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    $routes = [];
+    foreach ($variables["links"] as $key => $link) {
+      $url = $link->getURL();
+      // Test for external paths.
+      if ($url->isRouted()) {
+        $routes[$key] = $link->getUrl()->getRouteName();
+      }
+    }
+    // For webforms, remove all system routes and the webform route.
+    if (($key = array_search("entity.webform.collection", $routes)) !== false) {
+      unset($variables["breadcrumb"][$key]);
+      foreach ($routes as $key => $value) {
+        if (substr($value, 0, strlen('system')) === 'system') {
+          unset($variables["breadcrumb"][$key]);
+        }
+      }
+    }
+  }
+}
+
+/**
  * Implements hook_preprocess_select().
  */
 function sitenow_preprocess_select(&$variables) {
