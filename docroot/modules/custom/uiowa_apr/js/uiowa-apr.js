@@ -36,3 +36,7 @@
 
 } (jQuery, Drupal));
 
+// @todo: Requiring this seems wrong. Remove after debugging why its required.
+function hook_modifyTableSelector(selector) {
+  return '.uids-responsive-tables';
+}
