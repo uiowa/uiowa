@@ -97,7 +97,7 @@ class DirectoryController extends ControllerBase {
         ],
         'drupalSettings' => [
           'uiowaApr' => [
-            'pageSize' => Html::escape($this->config->get('directory.page_size'))
+            'pageSize' => Html::escape($this->config->get('directory.page_size')),
           ],
         ],
       ],

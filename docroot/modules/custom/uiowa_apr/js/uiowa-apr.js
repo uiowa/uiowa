@@ -13,8 +13,10 @@
   Drupal.behaviors.uiowaApr = {
     attach: function (context, settings) {
       $('#apr-directory-service table tbody', context).once('uiowaApr').each(function() {
+        let pageSize = parseInt(settings.uiowaApr.pageSize);
+
         const observer = new MutationObserver(function (mutationList, observer) {
-          if (mutationList.length === settings.uiowaApr.pageSize) {
+          if (mutationList.length === pageSize) {
             $('#apr-directory-service table')
               .addClass('is-striped')
               .addClass('uids-responsive-tables')
