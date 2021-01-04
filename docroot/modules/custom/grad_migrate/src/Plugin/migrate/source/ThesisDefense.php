@@ -87,6 +87,15 @@ class ThesisDefense extends BaseNodeSource {
       $row->setSourceProperty('upload_fid', $this->getFid($original_fid, 'migrate_map_d7_grad_file'));
     }
 
+    $old_date_format = $row->getSourceProperty('field_thesis_defense_date_value');
+    if (isset($old_date_format)) {
+      // There's an extra formatter 'T' that can be removed
+      // or handled by the createFromFormat.
+      // In this case, we should be able to remove it.
+      $old_date_format = str_replace('T', ' ', $old_date_format);
+      $row->setSourceProperty('field_thesis_defense_date_value', \DateTime::createFromFormat('Y-m-d H:i:s', $old_date_format)->getTimestamp());
+    }
+
     // Call the parent prepareRow.
     return parent::prepareRow($row);
   }
