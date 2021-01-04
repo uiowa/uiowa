@@ -71,7 +71,7 @@ function sitenow_preprocess_breadcrumb(&$variables) {
       }
     }
     // For webforms, remove all system routes and the webform route.
-    if (($key = array_search("entity.webform.collection", $routes)) !== false) {
+    if (($key = array_search("entity.webform.collection", $routes)) !== FALSE) {
       unset($variables["breadcrumb"][$key]);
       foreach ($routes as $key => $value) {
         if (substr($value, 0, strlen('system')) === 'system') {
