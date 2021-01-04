@@ -550,6 +550,7 @@ function sitenow_people_preprocess_block(&$variables) {
       // Get block layout builder styles if they exist.
       if (isset($variables["elements"]["#layout_builder_style"]) && !empty($variables["elements"]["#layout_builder_style"])) {
         $parent_lb_styles = $variables["elements"]["#layout_builder_style"];
+        $parent_lb_styles[] = 'list-item';
         $view->display_handler->setOption('parent_lb_styles', $parent_lb_styles);
       }
 

@@ -31,22 +31,23 @@
 .layout--onecol,
 .layout--twocol {
 
-  .card--media-right,
-  .card--media-left {
-    .card__media--medium+.card__body .card__title {
+  // Apply to non-list cards.
+  .card--media-right:not(.list-item),
+  .card--media-left:not(.list-item) {
+    .card__media--medium + .card__body .card__title {
       @include breakpoint(sm) {
         font-size: 2.3rem;
         line-height: 1;
       }
     }
 
-    .card__media--medium+.card__body p {
+    .card__media--medium + .card__body p {
       @include breakpoint(sm) {
         font-size: 1.1rem;
       }
     }
 
-    .card__media--large+.card__body .card__title {
+    .card__media--large + .card__body .card__title {
       @include breakpoint(sm) {
         font-size: 2.8rem;
         margin-bottom: .7rem;
@@ -54,7 +55,7 @@
       }
     }
 
-    .card__media--large+.card__body p {
+    .card__media--large + .card__body p {
       @include breakpoint(sm) {
         font-size: 1.2rem;
       }
