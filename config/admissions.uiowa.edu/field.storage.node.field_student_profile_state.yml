@@ -1,0 +1,21 @@
+uuid: b4421f7a-0490-4813-b81f-e5c24f330955
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_student_profile_state
+field_name: field_student_profile_state
+entity_type: node
+type: list_string
+settings:
+  allowed_values: {  }
+  allowed_values_function: admissions_core_state_options
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
