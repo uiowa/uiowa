@@ -1,0 +1,63 @@
+uuid: 0dba0260-3a97-48b7-b68c-82c9a7611260
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_student_profile_attributes
+field_name: field_student_profile_attributes
+entity_type: node
+type: list_float
+settings:
+  allowed_values:
+    -
+      value: !!float 0
+      label: Alumni
+    -
+      value: !!float 1
+      label: 'African American'
+    -
+      value: !!float 2
+      label: 'American Indian'
+    -
+      value: !!float 3
+      label: Asian
+    -
+      value: !!float 4
+      label: Disabilities
+    -
+      value: !!float 5
+      label: 'First Generation'
+    -
+      value: !!float 6
+      label: Hispanic
+    -
+      value: !!float 7
+      label: Honors
+    -
+      value: !!float 8
+      label: International
+    -
+      value: !!float 9
+      label: LGBT
+    -
+      value: !!float 10
+      label: Transfer
+    -
+      value: !!float 11
+      label: Veterans
+    -
+      value: !!float 12
+      label: 'Tour Guide'
+    -
+      value: !!float 13
+      label: 'International Ambassador'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
