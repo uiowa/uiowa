@@ -29,14 +29,33 @@
 
 .field__item {
   line-height: 1.7;
-  font-size: 1.2rem;
   margin-top: 0;
+
+  @at-root {
+    div#{&},
+    p#{&} {
+      font-size: 1.2rem;
+    }
+  }
 }
+
 
 .field--label-above {
   margin-bottom: $sm;
   ul {
     margin-top: 0;
+  }
+}
+
+.field--label-visually_hidden {
+  .svg-inline--fa {
+    margin-right: .3rem;
+  }
+  .field__items {
+    display: inline;
+  }
+  .field__item {
+    display: inline;
   }
 }
 
@@ -47,7 +66,9 @@
 }
 
 .field--label-inline.field--type-entity-reference,
-.field--label-inline.field--type-link {
+.field--label-visually_hidden.field--type-entity-reference,
+.field--label-inline.field--type-link,
+.field--label-visually_hidden.field--type-link {
   .field__item  + .field__item {
     &:before {
       content: ",";

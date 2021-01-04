@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.article.field_article_source_link
     - field.field.node.article.field_article_source_link_direct
     - field.field.node.article.field_article_source_org
+    - field.field.node.article.field_featured_image_display
     - field.field.node.article.field_image
     - field.field.node.article.field_image_caption
     - field.field.node.article.field_meta_tags
@@ -62,6 +63,7 @@ content:
       match_operator: CONTAINS
       collapsed: false
       allow_duplicate: false
+      revision: false
     third_party_settings:
       entity_browser_entity_form:
         entity_browser_id: _none
@@ -107,7 +109,8 @@ content:
     type: metatag_firehose
     weight: 6
     region: content
-    settings: {  }
+    settings:
+      sidebar: true
     third_party_settings: {  }
   field_reference:
     type: entity_reference_autocomplete_tags
@@ -193,4 +196,5 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  field_featured_image_display: true
