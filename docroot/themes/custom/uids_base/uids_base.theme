@@ -204,6 +204,7 @@ function uids_base_preprocess_media(array &$variables) {
   switch ($mediaType) {
     case 'image':
       $referring_item = $media->_referringItem;
+      // So far, only way to get media viewmode switching lb block > view > node > media deep.
       if ($referring_item) {
         /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $referring_field */
         $referring_field = $referring_item->getParent();
