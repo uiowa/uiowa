@@ -65,7 +65,7 @@ class PostRowSaveEvent implements EventSubscriberInterface {
         Redirect::create([
           'redirect_source' => $source_url,
           'redirect_redirect' => $dest_uri,
-          'language' => 'und',
+          'language' => 'en',
           'status_code' => '301',
         ])->save();
     }

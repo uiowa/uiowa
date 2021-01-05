@@ -4,6 +4,7 @@ namespace Drupal\sitenow_migrate\EventSubscriber;
 
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\migrate\Event\MigrateEvents;
+use Drupal\redirect\Entity\Redirect;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -83,6 +84,26 @@ class PostRowSaveEvent implements EventSubscriberInterface {
         }
 
         $node->save();
+        break;
+
+      // @todo Move this to the grad_migrate module.
+      case 'd7_grad_thesis_defense':
+        $nids = $event->getDestinationIdValues();
+        $nid = $nids[0];
+
+        /** @var \Drupal\node\NodeInterface $node */
+        $node = $this->entityTypeManager->getStorage('node')->load($nid);
+        $url_parts = explode('/', $node->toUrl()->toString());
+        $suffix = end($url_parts);
+        $source_url = 'thesis-defense/' . $suffix;
+        $dest_uri = 'internal:/node/' . $nid;
+        // @todo Create a MigratePreRollbackEvent to undo this on rollback.
+        Redirect::create([
+          'redirect_source' => $source_url,
+          'redirect_redirect' => $dest_uri,
+          'language' => 'en',
+          'status_code' => '301',
+        ])->save();
     }
   }
 
