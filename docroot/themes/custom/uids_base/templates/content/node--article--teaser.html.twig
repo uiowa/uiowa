@@ -82,7 +82,6 @@
 %}
 {% set style_classes = [] %}
 {% set size_classes = [] %}
-{% set classes = [] %}
 
 {% set parent_lb_styles = view.display_handler.getOption('parent_lb_styles') %}
 {% for style in parent_lb_styles %}
@@ -122,7 +121,7 @@
   'attributes': attributes.addClass(classes).removeClass(style_classes, size_classes),
   'media_styles': style_classes,
   'media_sizes': size_classes,
-  'card_image' : content.field_image|render,
+  'card_image': content.field_image|render,
   'card_title': label,
   'content': content,
   'card_link_url': node_link,
