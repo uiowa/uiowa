@@ -1,18 +1,18 @@
-uuid: 8c3c774f-d6be-4438-b904-aad61b198fd2
+uuid: 9b1bce70-95d0-4dba-86d2-6d0f2212a44e
 langcode: en
 status: true
 dependencies:
   config:
-    - bit.bit_type.program
-    - field.field.bit.program.field_grad_degrees_offered
-    - field.field.bit.program.field_grad_discipline
-    - field.field.bit.program.field_program_conferred_by_grad
-    - field.field.bit.program.field_program_homepage
-    - field.field.bit.program.field_program_interdisciplinary
+    - field.field.fragment.program.field_grad_degrees_offered
+    - field.field.fragment.program.field_grad_discipline
+    - field.field.fragment.program.field_program_conferred_by_grad
+    - field.field.fragment.program.field_program_homepage
+    - field.field.fragment.program.field_program_interdisciplinary
+    - fragments.fragment_type.program
   module:
     - link
-id: bit.program.default
-targetEntityType: bit
+id: fragment.program.default
+targetEntityType: fragment
 bundle: program
 mode: default
 content:
@@ -37,7 +37,7 @@ content:
     type: options_select
     region: content
   field_program_conferred_by_grad:
-    weight: 6
+    weight: 5
     settings:
       display_label: true
     third_party_settings: {  }
@@ -66,7 +66,16 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  user_id:
+    type: entity_reference_autocomplete
+    weight: 5
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+      match_limit: 10
+    region: content
+    third_party_settings: {  }
 hidden:
   created: true
-  status: true
   uid: true
