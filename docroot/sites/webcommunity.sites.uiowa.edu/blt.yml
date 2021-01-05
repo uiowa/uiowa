@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: siteswebcommunity.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: siteswebcommunity
+  human_name: webcommunity.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: siteswebcommunity.prod
+drupal:
+  db:
+    database: webcommunity_sites_uiowa_edu
+uiowa:
+  requester: bosto
