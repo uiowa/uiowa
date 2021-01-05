@@ -100,8 +100,14 @@
       @extend %no-ul-list;
     }
 
-    // Last TD is not wrapped in anything for some reason.
     table {
+      overflow: auto;
+
+      &:focus {
+        outline: .1em solid rgba(0,0,0,.1);
+      }
+
+      // Last TD is not wrapped in anything for some reason.
       td:last-child {
         font-size: $content-font-size;
         line-height: 1.7;

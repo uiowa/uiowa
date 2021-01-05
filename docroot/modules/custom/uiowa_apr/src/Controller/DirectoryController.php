@@ -106,9 +106,22 @@ class DirectoryController extends ControllerBase {
         'id' => 'apr-directory-service',
         'role' => 'region',
         'aria-live' => 'polite',
-        'aria-label' => 'People Directory',
+        'aria-labelled-by' => 'apr-table-label',
+        'tabindex' => 0,
         'class' => [
           'uids-content',
+        ],
+      ],
+      'label' => [
+        '#type' => 'container',
+        '#attributes' => [
+          'id' => 'apr-table-label',
+          'class' => [
+            'visually-hidden',
+          ],
+        ],
+        'markup' => [
+          '#markup' => $this->t('APR people listing in a scrolling container.'),
         ],
       ],
     ];
