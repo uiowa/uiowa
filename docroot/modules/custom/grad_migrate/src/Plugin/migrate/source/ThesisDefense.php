@@ -83,6 +83,21 @@ class ThesisDefense extends BaseNodeSource {
     ];
     $this->fetchAdditionalFields($row, $additional_fields);
 
+    // Grab the current path alias.
+    $nid = $row->getSourceProperty('nid');
+    $query = $this->select('url_alias', 'url');
+    $aliases = $query->fields('url', [
+      'alias',
+    ])
+      ->condition('source', 'node/' . $nid, '=')
+      ->execute()
+      ->fetchCol();
+    // Grab just the (first) ending slug and set it as a property.
+    // No coverage here if multiple aliases exist.
+    $alias = explode('/', array_shift($aliases));
+    $slug = end($alias);
+    $row->setSourceProperty('slug', $slug);
+
     // Grab the mapped FID for the file upload field..
     $original_fid = $row->getSourceProperty('upload_fid');
     if (isset($original_fid)) {
