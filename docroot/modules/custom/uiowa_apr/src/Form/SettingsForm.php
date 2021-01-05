@@ -143,7 +143,10 @@ class SettingsForm extends ConfigFormBase {
       '#required' => FALSE,
     ];
 
+    // The grid display was never fully implemented. The images returned from
+    // the APR API are not the same size which makes it difficult to style.
     $form['directory_show_switcher'] = [
+      '#access' => FALSE,
       '#type' => 'checkbox',
       '#title' => $this->t('Show List Switcher'),
       '#return_value' => TRUE,
