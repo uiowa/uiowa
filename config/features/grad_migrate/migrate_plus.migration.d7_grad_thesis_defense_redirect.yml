@@ -12,13 +12,14 @@ source:
   plugin: d7_grad_thesis_defense
   node_type: thesis_defense
   constants:
+    source_prefix: 'thesis-defense/'
     redirect_prefix: 'internal:/node/'
     uid_admin: 1
     status_code: 301
 process:
   temp_nid:
     plugin: migration_lookup
-    source: slug
+    source: nid
     migration: d7_grad_thesis_defense
   # Specify the path which is to be redirected.
   #
@@ -43,5 +44,5 @@ process:
 destination:
   plugin: 'entity:redirect'
 migration_dependencies:
-  required:
-    - d7_grad_thesis_defense
+  required: { }
+    # - d7_grad_thesis_defense
