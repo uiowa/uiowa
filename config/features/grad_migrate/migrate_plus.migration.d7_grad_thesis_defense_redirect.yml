@@ -14,6 +14,7 @@ source:
   constants:
     source_prefix: 'thesis-defense/'
     redirect_prefix: 'internal:/node/'
+    dash: '-'
     uid_admin: 1
     status_code: 301
 process:
@@ -28,8 +29,9 @@ process:
     plugin: concat
     source:
       - constants/source_prefix
-      - slug
-      - constants/source_suffix
+      - field_thesis_firstname_value
+      - constants/dash
+      - field_thesis_lastname_value
   # The redirect destination is supposed be a URI of the form "internal:/node/NID".
   #
   # The URI will be used by the redirect module to get the respective path alias for the node. Even if the alias
