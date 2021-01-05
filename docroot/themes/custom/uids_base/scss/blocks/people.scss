@@ -44,12 +44,7 @@
   }
 
   .card__media {
-    @include card-media-horizontal-right;
-
     @include breakpoint(sm) {
-      margin-top: $lg;
-      margin-bottom: $gutter;
-
       [class*="bg-"] & {
         margin-right: $gutter;
       }
