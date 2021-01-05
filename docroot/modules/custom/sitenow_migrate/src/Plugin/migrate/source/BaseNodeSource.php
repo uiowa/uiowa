@@ -198,4 +198,26 @@ abstract class BaseNodeSource extends SqlBase {
     }
   }
 
+  /**
+   * Fetch additional multi-value fields from our database.
+   *
+   * @param \Drupal\migrate\Row $row
+   *   The migration row result.
+   * @param array $tables
+   *   An associative array of table names and fields to add.
+   */
+  public function fetchAdditionalFields(Row &$row, array $tables) {
+    $nid = $row->getSourceProperty('nid');
+    foreach ($tables as $table_name => $fields) {
+      foreach ($fields as $field) {
+        $query = $this->select($table_name, 't');
+        $record = $query->fields('t', [$field])
+          ->condition('entity_id', $nid, '=')
+          ->execute()
+          ->fetchCol();
+        $row->setSourceProperty($field, $record);
+      }
+    }
+  }
+
 }

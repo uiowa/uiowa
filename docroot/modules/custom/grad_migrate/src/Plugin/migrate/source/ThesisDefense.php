@@ -26,7 +26,6 @@ class ThesisDefense extends BaseNodeSource {
     $query->leftJoin('field_data_field_thesis_lastname', 'ln', 'n.nid = ln.entity_id');
     $query->leftJoin('field_data_field_thesis_title', 'tt', 'n.nid = tt.entity_id');
     $query->leftJoin('field_data_field_thesis_department', 'td', 'n.nid = td.entity_id');
-    $query->leftJoin('field_data_field_thesis_chair', 'tc', 'n.nid = tc.entity_id');
     $query->leftJoin('field_data_upload', 'u', 'n.nid = u.entity_id');
     $query->leftJoin('field_data_field_d8_migration_status', 's', 'n.nid = s.entity_id');
 
@@ -60,10 +59,6 @@ class ThesisDefense extends BaseNodeSource {
       ->fields('td', [
         'field_thesis_department_value',
       ])
-      ->fields('tc', [
-        'field_thesis_chair_value',
-        'field_thesis_chair_format',
-      ])
       ->fields('u', [
         'delta',
         'upload_fid',
@@ -80,6 +75,13 @@ class ThesisDefense extends BaseNodeSource {
    * Prepare row used for altering source data prior to its insertion.
    */
   public function prepareRow(Row $row) {
+    // Get our multi-value fields.
+    $additional_fields = [
+      'field_data_field_thesis_chair' => [
+        'field_thesis_chair_value',
+      ],
+    ];
+    $this->fetchAdditionalFields($row, $additional_fields);
 
     // Grab the mapped FID for the file upload field..
     $original_fid = $row->getSourceProperty('upload_fid');
