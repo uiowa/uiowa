@@ -3,12 +3,12 @@ langcode: en
 status: true
 dependencies:
   config:
-    - bit.bit_type.program
-    - field.storage.bit.field_grad_degrees_offered
-    - field.storage.bit.field_grad_discipline
-    - field.storage.bit.field_program_homepage
+    - fragments.fragment_type.program
+    - field.storage.fragment.field_grad_degrees_offered
+    - field.storage.fragment.field_grad_discipline
+    - field.storage.fragment.field_program_homepage
   module:
-    - bit
+    - fragments
     - link
     - options
 id: graduate_programs
@@ -16,7 +16,7 @@ label: 'Graduate Programs'
 module: views
 description: ''
 tag: ''
-base_table: bit
+base_table: fragment
 base_field: id
 display:
   default:
@@ -94,7 +94,7 @@ display:
       fields:
         field_program_homepage:
           id: field_program_homepage
-          table: bit__field_program_homepage
+          table: fragment__field_program_homepage
           field: field_program_homepage
           relationship: none
           group_type: group
@@ -161,7 +161,7 @@ display:
           plugin_id: field
         title:
           id: title
-          table: bit
+          table: fragment
           field: title
           relationship: none
           group_type: group
@@ -226,7 +226,7 @@ display:
           plugin_id: field
         field_grad_degrees_offered:
           id: field_grad_degrees_offered
-          table: bit__field_grad_degrees_offered
+          table: fragment__field_grad_degrees_offered
           field: field_grad_degrees_offered
           relationship: none
           group_type: group
@@ -288,7 +288,7 @@ display:
           plugin_id: field
         field_grad_discipline:
           id: field_grad_discipline
-          table: bit__field_grad_discipline
+          table: fragment__field_grad_discipline
           field: field_grad_discipline
           relationship: none
           group_type: group
@@ -351,11 +351,11 @@ display:
       filters:
         bundle:
           id: bundle
-          table: bit
+          table: fragment
           field: bundle
           value:
             program: program
-          entity_type: bit
+          entity_type: fragment
           entity_field: bundle
           plugin_id: bundle
           expose:
@@ -363,7 +363,7 @@ display:
             operator_list: {  }
         field_grad_discipline_value:
           id: field_grad_discipline_value
-          table: bit__field_grad_discipline
+          table: fragment__field_grad_discipline
           field: field_grad_discipline_value
           relationship: none
           group_type: group
@@ -409,7 +409,7 @@ display:
           plugin_id: list_field
         field_grad_degrees_offered_value:
           id: field_grad_degrees_offered_value
-          table: bit__field_grad_degrees_offered
+          table: fragment__field_grad_degrees_offered
           field: field_grad_degrees_offered_value
           relationship: none
           group_type: group
@@ -465,9 +465,9 @@ display:
         - url
         - url.query_args
       tags:
-        - 'config:field.storage.bit.field_grad_degrees_offered'
-        - 'config:field.storage.bit.field_grad_discipline'
-        - 'config:field.storage.bit.field_program_homepage'
+        - 'config:field.storage.fragment.field_grad_degrees_offered'
+        - 'config:field.storage.fragment.field_grad_discipline'
+        - 'config:field.storage.fragment.field_program_homepage'
   block_1:
     display_plugin: block
     id: block_1
@@ -480,11 +480,11 @@ display:
       filters:
         bundle:
           id: bundle
-          table: bit
+          table: fragment
           field: bundle
           value:
             program: program
-          entity_type: bit
+          entity_type: fragment
           entity_field: bundle
           plugin_id: bundle
           expose:
@@ -492,7 +492,7 @@ display:
             operator_list: {  }
         field_grad_discipline_value:
           id: field_grad_discipline_value
-          table: bit__field_grad_discipline
+          table: fragment__field_grad_discipline
           field: field_grad_discipline_value
           relationship: none
           group_type: group
@@ -538,7 +538,7 @@ display:
           plugin_id: list_field
         field_grad_degrees_offered_value:
           id: field_grad_degrees_offered_value
-          table: bit__field_grad_degrees_offered
+          table: fragment__field_grad_degrees_offered
           field: field_grad_degrees_offered_value
           relationship: none
           group_type: group
@@ -596,9 +596,9 @@ display:
         - url
         - url.query_args
       tags:
-        - 'config:field.storage.bit.field_grad_degrees_offered'
-        - 'config:field.storage.bit.field_grad_discipline'
-        - 'config:field.storage.bit.field_program_homepage'
+        - 'config:field.storage.fragment.field_grad_degrees_offered'
+        - 'config:field.storage.fragment.field_grad_discipline'
+        - 'config:field.storage.fragment.field_program_homepage'
   program_block:
     display_plugin: block
     id: program_block
@@ -620,6 +620,6 @@ display:
         - url
         - url.query_args
       tags:
-        - 'config:field.storage.bit.field_grad_degrees_offered'
-        - 'config:field.storage.bit.field_grad_discipline'
-        - 'config:field.storage.bit.field_program_homepage'
+        - 'config:field.storage.fragment.field_grad_degrees_offered'
+        - 'config:field.storage.fragment.field_grad_discipline'
+        - 'config:field.storage.fragment.field_program_homepage'
