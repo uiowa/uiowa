@@ -1,17 +1,17 @@
-uuid: 925a3e50-ab3d-4af3-8431-7cbcf9d85d88
+uuid: b4421f7a-0490-4813-b81f-e5c24f330955
 langcode: en
 status: true
 dependencies:
   module:
-    - bit
+    - node
     - options
-id: bit.field_grad_discipline
-field_name: field_grad_discipline
-entity_type: bit
+id: node.field_student_profile_state
+field_name: field_student_profile_state
+entity_type: node
 type: list_string
 settings:
-  allowed_values_function: grad_disciplines_allowed_values
   allowed_values: {  }
+  allowed_values_function: admissions_core_state_options
 module: options
 locked: false
 cardinality: 1
