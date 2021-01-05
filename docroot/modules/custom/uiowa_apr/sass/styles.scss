@@ -130,8 +130,8 @@
     @extend .pager;
 
     .pagination {
-          @extend %no-ul-list;
-      }
+      @extend %no-ul-list;
+    }
 
     li.active {
       font-weight: $font-weight-bold;
@@ -166,6 +166,10 @@
   nav {
     text-align: center;
     @extend .pager;
+
+    .pagination {
+      @extend %no-ul-list;
+    }
 
     li.active {
       font-weight: $font-weight-bold;
