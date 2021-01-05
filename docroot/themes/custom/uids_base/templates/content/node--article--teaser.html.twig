@@ -111,6 +111,8 @@
   {% if view.current_display != 'block_articles' %}
     {% set classes = classes|merge(['card--list']) %}
   {% endif %}
+{% else %}
+  {% set classes = classes|merge(['card--list']) %}
 {% endif %}
 
 {{ attach_library('classy/node') }}
