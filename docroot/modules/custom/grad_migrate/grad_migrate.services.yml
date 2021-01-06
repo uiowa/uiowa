@@ -1,6 +1,0 @@
-services:
-  post_rowsave_subscriber:
-    class: 'Drupal\grad_migrate\EventSubscriber\PostRowSaveEvent'
-    arguments: [ '@entity_type.manager' ]
-    tags:
-      - { name: 'event_subscriber' }
