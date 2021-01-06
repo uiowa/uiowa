@@ -290,12 +290,22 @@ function uids_base_preprocess_field(&$variables) {
  * Implements hook_preprocess_layout().
  */
 function uids_base_preprocess_layout(&$variables) {
-  /** @var \Drupal\Core\Layout\LayoutDefinition $layout */
-  $layout = $variables['layout'];
-  $node = \Drupal::routeMatch()->getParameter('node');
-  $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
-  $title_hidden = FALSE;
+  $node = $variables['content']['#entity'] ?: null;
+  // If we don't have the node yet, attempt
+  // to grab it from the route.
+  // @todo Is this necessary? Possibly we can
+  //   remove it.
+  if (!$node) {
+    $route_matcher = \Drupal::routeMatch();
+    $node = $route_matcher->getParameter('node');
+    $node = (isset($node) ? $node : $route_matcher->getParameter('node_preview'));
+  }
+  // If we have found a node instance, continue.
   if ($node instanceof NodeInterface) {
+    $title_hidden = FALSE;
+    /** @var \Drupal\Core\Layout\LayoutDefinition $layout */
+    $layout = $variables['layout'];
+
     // @todo Scope this to target layout so it doesn't run
     //   every time a layout is preprocessed.
     if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
