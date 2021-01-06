@@ -1943,3 +1943,15 @@ $sites['shl.local.drupal.uiowa.edu'] = 'shl.uiowa.edu';
 $sites['shl.dev.drupal.uiowa.edu'] = 'shl.uiowa.edu';
 $sites['shl.stage.drupal.uiowa.edu'] = 'shl.uiowa.edu';
 $sites['shl.prod.drupal.uiowa.edu'] = 'shl.uiowa.edu';
+
+// Directory aliases for webcommunity.sites.uiowa.edu.
+$sites['siteswebcommunity.local.drupal.uiowa.edu'] = 'webcommunity.sites.uiowa.edu';
+$sites['siteswebcommunity.dev.drupal.uiowa.edu'] = 'webcommunity.sites.uiowa.edu';
+$sites['siteswebcommunity.stage.drupal.uiowa.edu'] = 'webcommunity.sites.uiowa.edu';
+$sites['siteswebcommunity.prod.drupal.uiowa.edu'] = 'webcommunity.sites.uiowa.edu';
+
+// Directory aliases for blsa.org.uiowa.edu.
+$sites['orgblsa.local.drupal.uiowa.edu'] = 'blsa.org.uiowa.edu';
+$sites['orgblsa.dev.drupal.uiowa.edu'] = 'blsa.org.uiowa.edu';
+$sites['orgblsa.stage.drupal.uiowa.edu'] = 'blsa.org.uiowa.edu';
+$sites['orgblsa.prod.drupal.uiowa.edu'] = 'blsa.org.uiowa.edu';
