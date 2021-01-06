@@ -27,42 +27,6 @@
   }
 }
 
-// Adjust card title for large size in one and two and three cols
-.layout--onecol,
-.layout--twocol {
-
-  // Apply to non-list cards.
-  .card--media-right:not(.list-item),
-  .card--media-left:not(.list-item) {
-    .card__media--medium + .card__body .card__title {
-      @include breakpoint(sm) {
-        font-size: 2.3rem;
-        line-height: 1;
-      }
-    }
-
-    .card__media--medium + .card__body p {
-      @include breakpoint(sm) {
-        font-size: 1.1rem;
-      }
-    }
-
-    .card__media--large + .card__body .card__title {
-      @include breakpoint(sm) {
-        font-size: 2.8rem;
-        margin-bottom: .7rem;
-        line-height: 1;
-      }
-    }
-
-    .card__media--large + .card__body p {
-      @include breakpoint(sm) {
-        font-size: 1.2rem;
-      }
-    }
-  }
-}
-
 // Set background for all v2 cards
 .paragraph--type--section {
   &[class*=bg-] {
