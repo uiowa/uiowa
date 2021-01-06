@@ -1,12 +1,12 @@
-uuid: 22c3a29d-4676-4703-8e9b-3e7ab5c10e7f
+uuid: bb397ef7-786c-4df8-b71c-4a54e9e638f1
 langcode: en
 status: true
 dependencies:
   config:
-    - fragments.fragment_type.program
     - field.storage.fragment.field_grad_degrees_offered
     - field.storage.fragment.field_grad_discipline
     - field.storage.fragment.field_program_homepage
+    - fragments.fragment_type.program
   module:
     - fragments
     - link
@@ -16,7 +16,7 @@ label: 'Graduate Programs'
 module: views
 description: ''
 tag: ''
-base_table: fragment
+base_table: fragment_field_data
 base_field: id
 display:
   default:
@@ -56,39 +56,6 @@ display:
           offset: 0
       style:
         type: table
-        options:
-          grouping: {  }
-          row_class: ''
-          default_row_class: true
-          override: true
-          sticky: false
-          caption: ''
-          summary: ''
-          description: ''
-          columns:
-            field_program_homepage: field_program_homepage
-            title: title
-            field_grad_degrees_offered: field_grad_degrees_offered
-          info:
-            field_program_homepage:
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            title:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_grad_degrees_offered:
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-          default: '-1'
-          empty_table: false
       row:
         type: fields
       fields:
@@ -161,7 +128,7 @@ display:
           plugin_id: field
         title:
           id: title
-          table: fragment
+          table: fragment_field_data
           field: title
           relationship: none
           group_type: group
@@ -349,64 +316,18 @@ display:
           field_api_classes: false
           plugin_id: field
       filters:
-        bundle:
-          id: bundle
-          table: fragment
-          field: bundle
+        type:
+          id: type
+          table: fragment_field_data
+          field: type
           value:
             program: program
           entity_type: fragment
-          entity_field: bundle
+          entity_field: type
           plugin_id: bundle
           expose:
             operator_limit_selection: false
             operator_list: {  }
-        field_grad_discipline_value:
-          id: field_grad_discipline_value
-          table: fragment__field_grad_discipline
-          field: field_grad_discipline_value
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: or
-          value: {  }
-          group: 1
-          exposed: true
-          expose:
-            operator_id: field_grad_discipline_value_op
-            label: Discipline
-            description: ''
-            use_operator: false
-            operator: field_grad_discipline_value_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: discipline
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              viewer: '0'
-              editor: '0'
-              publisher: '0'
-              webmaster: '0'
-              administrator: '0'
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-          plugin_id: list_field
         field_grad_degrees_offered_value:
           id: field_grad_degrees_offered_value
           table: fragment__field_grad_degrees_offered
@@ -448,48 +369,6 @@ display:
             group_items: {  }
           reduce_duplicates: false
           plugin_id: list_field
-      sorts: {  }
-      title: 'Graduate Programs'
-      header: {  }
-      footer: {  }
-      empty: {  }
-      relationships: {  }
-      arguments: {  }
-      display_extenders: {  }
-      use_ajax: true
-    cache_metadata:
-      max-age: -1
-      contexts:
-        - 'languages:language_content'
-        - 'languages:language_interface'
-        - url
-        - url.query_args
-      tags:
-        - 'config:field.storage.fragment.field_grad_degrees_offered'
-        - 'config:field.storage.fragment.field_grad_discipline'
-        - 'config:field.storage.fragment.field_program_homepage'
-  block_1:
-    display_plugin: block
-    id: block_1
-    display_title: 'Certificates Block'
-    position: 2
-    display_options:
-      display_extenders:
-        metatag_display_extender: {  }
-      display_description: ''
-      filters:
-        bundle:
-          id: bundle
-          table: fragment
-          field: bundle
-          value:
-            program: program
-          entity_type: fragment
-          entity_field: bundle
-          plugin_id: bundle
-          expose:
-            operator_limit_selection: false
-            operator_list: {  }
         field_grad_discipline_value:
           id: field_grad_discipline_value
           table: fragment__field_grad_discipline
@@ -536,6 +415,52 @@ display:
             group_items: {  }
           reduce_duplicates: false
           plugin_id: list_field
+      sorts: {  }
+      title: 'Graduate Programs'
+      header: {  }
+      footer: {  }
+      empty: {  }
+      relationships: {  }
+      arguments: {  }
+      display_extenders: {  }
+      use_ajax: true
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+      tags:
+        - 'config:field.storage.fragment.field_grad_degrees_offered'
+        - 'config:field.storage.fragment.field_grad_discipline'
+        - 'config:field.storage.fragment.field_program_homepage'
+  certificates:
+    display_plugin: block
+    id: certificates
+    display_title: Certificates
+    position: 2
+    display_options:
+      display_extenders:
+        metatag_display_extender: {  }
+      display_description: ''
+      title: 'Graduate Certificates'
+      defaults:
+        title: false
+        filters: false
+        filter_groups: false
+      filters:
+        type:
+          id: type
+          table: fragment_field_data
+          field: type
+          value:
+            program: program
+          entity_type: fragment
+          entity_field: type
+          plugin_id: bundle
+          expose:
+            operator_limit_selection: false
+            operator_list: {  }
         field_grad_degrees_offered_value:
           id: field_grad_degrees_offered_value
           table: fragment__field_grad_degrees_offered
@@ -543,7 +468,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          operator: or
+          operator: and
           value:
             Certificate: Certificate
           group: 1
@@ -577,48 +502,89 @@ display:
             group_items: {  }
           reduce_duplicates: false
           plugin_id: list_field
-      defaults:
-        filters: false
-        filter_groups: false
+        field_grad_discipline_value:
+          id: field_grad_discipline_value
+          table: fragment__field_grad_discipline
+          field: field_grad_discipline_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_grad_discipline_value_op
+            label: Discipline
+            description: ''
+            use_operator: false
+            operator: field_grad_discipline_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: discipline
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          plugin_id: list_field
       filter_groups:
         operator: AND
         groups:
           1: AND
       block_category: Custom
-      block_description: 'Certificates list'
       allow:
         items_per_page: false
+      block_description: 'Grad certificates list'
     cache_metadata:
       max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
-        - url.query_args
       tags:
         - 'config:field.storage.fragment.field_grad_degrees_offered'
         - 'config:field.storage.fragment.field_grad_discipline'
         - 'config:field.storage.fragment.field_program_homepage'
-  program_block:
+  programs:
     display_plugin: block
-    id: program_block
-    display_title: 'Programs Block'
+    id: programs
+    display_title: Programs
     position: 1
     display_options:
       display_extenders:
         metatag_display_extender: {  }
+      display_description: ''
       block_category: Custom
-      block_description: 'Program list'
       allow:
         items_per_page: false
-      display_description: ''
+      block_description: 'Grad programs list'
     cache_metadata:
       max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
-        - url.query_args
       tags:
         - 'config:field.storage.fragment.field_grad_degrees_offered'
         - 'config:field.storage.fragment.field_grad_discipline'
