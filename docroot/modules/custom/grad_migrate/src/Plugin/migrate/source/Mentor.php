@@ -55,6 +55,30 @@ class Mentor extends BaseNodeSource {
       ->fields('lastname', [
         'field_mentor_lastname_value',
         'field_mentor_lastname_format',
+      ])
+      ->fields('degrees', [
+        'field_mentor_degree_value',
+      ])
+      ->fields('position', [
+        'field_mentor_position_value',
+      ])
+      ->fields('email', [
+        'field_mentor_email_email',
+      ])
+      ->fields('project_title', [
+        'field_mentor_project_title',
+      ])
+      ->fields('phone', [
+        'field_mentor_phone_phone_na',
+      ])
+      ->fields('website', [
+        'field_mentor_website_url',
+      ])
+      ->fields('undergrad_role', [
+        'field_project_undergrad_role_value',
+      ])
+      ->fields('undergrad_qualif', [
+        'field_project_undergrad_qualif_value',
       ]);
     return $query;
   }

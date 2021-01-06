@@ -34,8 +34,19 @@ process:
   body: body
   field_teaser: body_summary
   moderation_state: moderation_state
+  field_person_types:
+    plugin: default_value
+    default_value: mentor
   field_person_first_name: field_mentor_firstname_value
   field_person_last_name: field_mentor_lastname_value
+  field_person_credential: field_mentor_degree_value
+  field_person_position: field_mentor_position_value
+  field_person_email: field_mentor_email_email
+  field_person_research_project: field_mentor_project_title
+  field_person_phone: field_mentor_phone_phone_na
+  field_person_website: field_mentor_website_url
+  field_person_mentor_ug_role: field_project_undergrad_role_value
+  field_person_mentor_qualif: field_project_undergrad_qualif_value
 destination:
   plugin: 'entity:node'
   default_bundle: person
