@@ -43,12 +43,9 @@ process:
     source: field_thesis_title_value
     callable: strip_tags
   field_thesis_defense_location: field_thesis_location_value
-  # Assuming all defense date values have 0 duration.
-  # 
-  # Setting value and end_value to same time, and defaulting duration to 0.
   field_thesis_defense_date/value: field_thesis_defense_date_value
   field_thesis_defense_date/end_value: field_thesis_defense_date_value
-  field_thesis_defense_date/duration: 
+  field_thesis_defense_date/duration:
     plugin: default_value
     default_value: 0
   field_grad_program: field_thesis_department_value
@@ -56,3 +53,4 @@ process:
 destination:
   plugin: 'entity:node'
   default_bundle: thesis_defense
+migration_dependencies: null

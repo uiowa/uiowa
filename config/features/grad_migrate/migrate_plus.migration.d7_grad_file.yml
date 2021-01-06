@@ -16,7 +16,7 @@ source:
   plugin: files
   constants:
     SOURCE_BASE_PATH: 'https://www.grad.uiowa.edu/sites/gc/files/'
-    DRUPAL_FILE_DIRECTORY: 'sites/grad.uiowa.edu/files'
+    DRUPAL_FILE_DIRECTORY: sites/grad.uiowa.edu/files
 process:
   filename:
     plugin: get
@@ -44,7 +44,7 @@ process:
     source:
       - '@source_full_path'
       - '@destination_full_path'
-    file_exists: use existing
+    file_exists: 'use existing'
   filemime: filemime
   status: status
   created: timestamp
