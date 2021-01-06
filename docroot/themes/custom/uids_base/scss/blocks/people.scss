@@ -3,24 +3,21 @@
 @import "components/card/_card-mixins.scss";
 
 .block-inline-blockuiowa-people {
-  .card {
-    &.hide-images .card__media,
-    &.hide-images .content-image {
+  .hide-images .card__media,
+  .hide-images .content-image {
+    display: none;
+  }
+
+  .hide-details {
+    .field--name-field-person-email,
+    .field--name-field-person-phone {
       display: none;
     }
+  }
 
-    &.hide-details {
-
-      .field--name-field-person-email,
-      .field--name-field-person-phone {
-        display: none;
-      }
-    }
-
-    &.hide-descriptions {
-      .field--name-field-teaser {
-        display: none;
-      }
+  .hide-descriptions {
+    .field--name-field-teaser {
+      display: none;
     }
   }
 

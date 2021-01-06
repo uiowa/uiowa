@@ -3,25 +3,23 @@
 @import "components/card/_card-mixins.scss";
 
 .block-inline-blockuiowa-articles {
-  .card {
-    &.hide-images {
-      .card__media {
-        display: none;
-      }
+  .hide-images {
+    .card__media {
+      display: none;
     }
+  }
 
-    &.hide-details {
-      .field--name-field-article-author,
-      .field--name-field-article-source-org,
-      .field--name-field-article-source-link {
-        display: none !important;
-      }
+  .hide-details {
+    .field--name-field-article-author,
+    .field--name-field-article-source-org,
+    .field--name-field-article-source-link {
+      display: none !important;
     }
+  }
 
-    &.hide-descriptions {
-      .field--name-field-teaser {
-        display: none;
-      }
+  .hide-descriptions {
+    .field--name-field-teaser {
+      display: none;
     }
   }
 
