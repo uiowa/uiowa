@@ -1,0 +1,10 @@
+uiowa_apr.settings_form:
+  path: '/admin/config/content/uiowa-apr'
+  defaults:
+    _title: 'APR settings'
+    _form: 'Drupal\uiowa_apr\Form\SettingsForm'
+  requirements:
+    _permission: 'administer uiowa_apr configuration'
+
+route_callbacks:
+  - '\Drupal\uiowa_apr\Routing\AprDynamic::routes'
