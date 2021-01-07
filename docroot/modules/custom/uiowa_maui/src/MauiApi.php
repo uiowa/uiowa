@@ -11,6 +11,8 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Maui API service.
+ *
+ * @see: https://api.maui.uiowa.edu/maui/pub/webservices/documentation.page
  */
 class MauiApi {
 
