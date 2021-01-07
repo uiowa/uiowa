@@ -3,13 +3,14 @@
 @import "components/card/_card-mixins.scss";
 
 .block-inline-blockuiowa-articles {
-  .hide-images {
+  &.hide-images {
     .card__media {
       display: none;
     }
   }
 
-  .hide-details {
+  &.hide-details {
+
     .field--name-field-article-author,
     .field--name-field-article-source-org,
     .field--name-field-article-source-link {
@@ -17,7 +18,7 @@
     }
   }
 
-  .hide-descriptions {
+  &.hide-descriptions {
     .field--name-field-teaser {
       display: none;
     }

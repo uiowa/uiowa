@@ -3,19 +3,21 @@
 @import "components/card/_card-mixins.scss";
 
 .block-inline-blockuiowa-people {
-  .hide-images .card__media,
-  .hide-images .content-image {
+
+  &.hide-images .card__media,
+  &.hide-images .content-image {
     display: none;
   }
 
-  .hide-details {
+  &.hide-details {
+
     .field--name-field-person-email,
     .field--name-field-person-phone {
       display: none;
     }
   }
 
-  .hide-descriptions {
+  &.hide-descriptions {
     .field--name-field-teaser {
       display: none;
     }
@@ -39,6 +41,19 @@
   .more-link {
     margin-top: $gutter;
     margin-bottom: $gutter;
+  }
+
+  .card__media {
+    @include card-media-horizontal-right;
+
+    @include breakpoint(sm) {
+      margin-top: $lg;
+      margin-bottom: $gutter;
+
+      [class*="bg-"] & {
+        margin-right: $gutter;
+      }
+    }
   }
 
   .card__body {
