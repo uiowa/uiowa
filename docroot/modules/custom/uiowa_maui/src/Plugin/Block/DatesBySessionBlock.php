@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @Block(
  *   id = "uiowa_maui_dates_by_session",
  *   admin_label = @Translation("Academic dates by session"),
- *   category = @Translation("uiowa_maui")
+ *   category = @Translation("MAUI")
  * )
  */
 class DatesBySessionBlock extends BlockBase implements ContainerFactoryPluginInterface {
