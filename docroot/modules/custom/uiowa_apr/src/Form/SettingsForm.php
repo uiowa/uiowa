@@ -186,8 +186,8 @@ class SettingsForm extends ConfigFormBase {
       '#cols' => '100',
       '#title' => $this->t('Publications Departments'),
       '#default_value' => $this->config('uiowa_apr.settings')->get('publications.departments') ?? '',
-      '#description' => $this->t('Customize the list of departments exposed by the publications tool. Expects a JSON array. Value attributes in the array must match a department name in APR. Use the text attribute to customize the text the user will see.'),
-      '#attributes' => ['placeholder' => "[{text: 'Economics', value: 'Economics'}]"],
+      '#description' => $this->t('Customize the list of departments exposed by the publications tool. Enter one department per line. The department must match a name in APR.'),
+      '#attributes' => ['placeholder' => "Economics\rAccounting\rFinance"],
       '#required' => FALSE,
     ];
 
