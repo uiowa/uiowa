@@ -128,4 +128,12 @@ class MauiApi {
     }
   }
 
+  /**
+   * @return object
+   *   The session object.
+   */
+  public function getCurrentSession() {
+    return $this->request('GET', '/pub/registrar/sessions/current');
+  }
+
 }
