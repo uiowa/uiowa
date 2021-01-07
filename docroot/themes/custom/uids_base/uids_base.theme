@@ -418,9 +418,9 @@ function uids_base_preprocess_block(&$variables) {
     $region = Block::load($variables['elements']['#id'])->getRegion();
 
     if ($region === 'footer_second' && in_array($variables['base_plugin_id'], [
-        'system_menu_block',
-        'menu_block',
-      ])) {
+      'system_menu_block',
+      'menu_block',
+    ])) {
       $variables['attributes']['class'][] = 'footer__links';
       $variables['attributes']['class'][] = 'footer__links--nav';
     }
