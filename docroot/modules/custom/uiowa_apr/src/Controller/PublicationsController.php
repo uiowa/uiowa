@@ -3,7 +3,6 @@
 namespace Drupal\uiowa_apr\Controller;
 
 use Drupal\Component\Utility\Html;
-use Drupal\Component\Utility\Xss;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\uiowa_apr\Apr;
