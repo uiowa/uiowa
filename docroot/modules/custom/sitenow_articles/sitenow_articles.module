@@ -355,14 +355,6 @@ function sitenow_articles_preprocess_paragraph(&$variables) {
         $pager['type'] = $pager_type;
         $view->display_handler->setOption('pager', $pager);
 
-        // Provide default v2 style classes.
-        $v2_defaults = [
-          'card--list',
-          'media--widescreen',
-          'card__media--large',
-        ];
-        $view->display_handler->setOption('parent_lb_styles', $v2_defaults);
-
         $view->preExecute();
         $view->execute();
         $variables['content']['view'] = $view->render();
@@ -481,29 +473,6 @@ function sitenow_articles_preprocess_block(&$variables) {
               'h6' => 'h6',
             ];
             $view->display_handler->setOption('heading_size', $options[$headline_field['heading_size']]);
-          }
-        }
-      }
-
-      // Get block layout builder styles if they exist.
-      if (isset($variables["elements"]["#layout_builder_style"]) && !empty($variables["elements"]["#layout_builder_style"])) {
-        $parent_lb_styles = $variables["elements"]["#layout_builder_style"];
-        $parent_lb_styles[] = 'list-item';
-        $view->display_handler->setOption('parent_lb_styles', $parent_lb_styles);
-      }
-
-      // Unset classes meant for children.
-      if (isset($variables["attributes"]["class"])) {
-        foreach ($variables["attributes"]["class"] as $key => $style) {
-          foreach ([
-            'bg',
-            'card',
-            'media',
-            'hide',
-          ] as $check) {
-            if (substr($style, 0, strlen($check)) === $check) {
-              unset($variables['attributes']['class'][$key]);
-            }
           }
         }
       }
