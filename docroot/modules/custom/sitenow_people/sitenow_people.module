@@ -182,7 +182,7 @@ function sitenow_people_preprocess_page_title(&$variables) {
       switch ($node->getType()) {
         case 'person':
           if ($node->hasField('field_person_credential') && !$node->get('field_person_credential')
-              ->isEmpty()) {
+            ->isEmpty()) {
             $variables['subtitle'] = $node->field_person_credential->value;
           }
           break;
