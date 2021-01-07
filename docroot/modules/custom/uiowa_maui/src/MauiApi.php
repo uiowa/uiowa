@@ -72,7 +72,7 @@ class MauiApi {
     $uri = self::BASE . ltrim($path, '/');
 
     // Append any query string parameters.
-    if (isset($params)) {
+    if (!empty($params)) {
       $query = UrlHelper::buildQuery($params);
       $uri .= "?{$query}";
     }
