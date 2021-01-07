@@ -44,9 +44,14 @@ class DatesBySessionBlock extends BlockBase implements ContainerFactoryPluginInt
    * {@inheritdoc}
    */
   public function build() {
+    $session = $this->mauiApi->getCurrentSession();
+
     $build['content'] = [
-      '#markup' => $this->t('It works!'),
+      '#markup' => $this->t('The current session is @current.', [
+        '@current' => $session->shortDescription,
+      ]),
     ];
+
     return $build;
   }
 
