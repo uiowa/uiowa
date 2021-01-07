@@ -3,7 +3,6 @@
 namespace Drupal\uiowa_apr\Controller;
 
 use Drupal\Component\Utility\Html;
-use Drupal\Component\Utility\Xss;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\uiowa_apr\Apr;
@@ -87,10 +86,20 @@ class PublicationsController extends ControllerBase {
       ],
     ];
 
-    $departments = $this->config->get('publications.departments');
+    $departments = Html::escape($this->config->get('publications.departments'));
 
     if (!empty($departments)) {
-      $build['publications']['#attributes'][':departments'] = Xss::filter($departments);
+      $json = [];
+
+      foreach (explode(PHP_EOL, $departments) as $department) {
+        $json[] = (object) [
+          'text' => rtrim($department),
+          'value' => rtrim($department),
+        ];
+      }
+
+      $json = json_encode($json);
+      $build['publications']['#attributes'][':departments'] = $json;
     }
 
     return $build;
