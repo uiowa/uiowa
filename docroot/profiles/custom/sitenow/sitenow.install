@@ -1922,7 +1922,8 @@ function sitenow_update_8049() {
 
   if ($site_path != 'sites/hr.uiowa.edu') {
     $config_path = Settings::get('config_sync_directory');
-  } else {
+  }
+  else {
     $config_path = DRUPAL_ROOT . '/../config/hr.uiowa.edu/';
   }
   $source = new FileStorage($config_path);
