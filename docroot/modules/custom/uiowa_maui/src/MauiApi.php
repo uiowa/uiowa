@@ -154,7 +154,7 @@ class MauiApi {
       return strtotime($a->startDate) > strtotime($b->startDate);
     });
 
-   return $data;
+    return $data;
   }
 
   /**
@@ -163,23 +163,23 @@ class MauiApi {
    * GET /pub/registrar/session-dates.
    *
    * @param int $session_id
-   *    The internal session id to search. Either this or sessionCode must
+   *   The internal session id to search. Either this or sessionCode must
    *    be specified.
    * @param string $date_category
-   *    The natural key of the date category you are interested in. (e.g.
+   *   The natural key of the date category you are interested in. (e.g.
    *    HOUSING_DINING).
    * @param mixed $print_date
-   *    Whether or not to include Print Date dates in results. The API
+   *   Whether or not to include Print Date dates in results. The API
    *    requires a string value so booleans are converted here.
    * @param string $five_year_date
-   *    Whether or not to include Five Year Date dates in results.
+   *   Whether or not to include Five Year Date dates in results.
    * @param int $session_code
-   *    The session code to search (20148 for example).
+   *   The session code to search (20148 for example).
    * @param string $date
-   *    The natural key of the session date you are interested in. (e.g.
+   *   The natural key of the session date you are interested in. (e.g.
    *    ISISAVAIL).
    * @param string $context
-   *    The natural key of the calendar context you are interested in. (e.g.
+   *   The natural key of the calendar context you are interested in. (e.g.
    *    DEFAULT).
    *
    * @return array
