@@ -7,8 +7,109 @@ dependencies:
     - field.field.node.spotlight.field_spotlight_subject
     - node.type.spotlight
   module:
+    - layout_builder
+    - system
     - text
     - user
+  theme:
+    - uids_base
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: true
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          layout_builder_styles_style:
+            - ''
+            - ''
+        components:
+          -
+            uuid: a4395fbb-3330-4010-9608-9c2620556db5
+            region: content
+            configuration:
+              id: system_breadcrumb_block
+              label: null
+              provider: system
+              label_display: null
+              context_mapping: {  }
+            additional: {  }
+            weight: 0
+          -
+            uuid: 2c3e01fa-5368-4c00-bdc8-b59af6b90d9f
+            region: content
+            configuration:
+              id: 'field_block:node:spotlight:title'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: hidden
+                type: string
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 1
+        third_party_settings:
+          layout_builder_lock:
+            lock:
+              1: 1
+              2: 2
+              3: 3
+              4: 4
+              5: 5
+              6: 6
+              8: 8
+      -
+        layout_id: layout_twocol_section
+        layout_settings:
+          label: ''
+          column_widths: 67-33
+          layout_builder_styles_style:
+            - ''
+            - section_margin_fixed_width_container
+        components:
+          -
+            uuid: dcc5c213-e65a-4dd3-84e9-360eee0da2e9
+            region: second
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:spotlight:field_spotlight_subject'
+              formatter:
+                label: hidden
+                settings:
+                  view_mode: teaser
+                  link: false
+                third_party_settings: {  }
+                type: entity_reference_entity_view
+            additional: {  }
+            weight: 0
+          -
+            uuid: ea795b31-9b5c-4e3c-a1ad-a4a12357fb73
+            region: first
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:spotlight:body'
+              formatter:
+                label: hidden
+                type: text_default
+                settings: {  }
+                third_party_settings: {  }
+            additional: {  }
+            weight: 0
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
 id: node.spotlight.default
 targetEntityType: node
 bundle: spotlight
