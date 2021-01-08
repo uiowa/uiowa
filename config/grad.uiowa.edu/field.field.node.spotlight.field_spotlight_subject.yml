@@ -1,0 +1,29 @@
+uuid: 095e057f-75de-4c2f-963a-8415edcbbe84
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_spotlight_subject
+    - node.type.person
+    - node.type.spotlight
+id: node.spotlight.field_spotlight_subject
+field_name: field_spotlight_subject
+entity_type: node
+bundle: spotlight
+label: Subject
+description: 'Select the person that is being spotlighted.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      person: person
+    sort:
+      field: field_person_last_name
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,0 +1,33 @@
+uuid: 81d614e4-f9b9-4336-91ad-e952f208fd0c
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.spotlight.body
+    - field.field.node.spotlight.field_spotlight_subject
+    - node.type.spotlight
+  module:
+    - text
+    - user
+id: node.spotlight.teaser
+targetEntityType: node
+bundle: spotlight
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_spotlight_subject: true
+  search_api_excerpt: true

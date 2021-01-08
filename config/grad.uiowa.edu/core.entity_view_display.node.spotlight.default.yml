@@ -1,0 +1,35 @@
+uuid: 9507ee11-2d8c-4396-899e-6c33d86a0eb0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.spotlight.body
+    - field.field.node.spotlight.field_spotlight_subject
+    - node.type.spotlight
+  module:
+    - text
+    - user
+id: node.spotlight.default
+targetEntityType: node
+bundle: spotlight
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_spotlight_subject:
+    weight: 0
+    label: hidden
+    settings:
+      view_mode: teaser
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_entity_view
+    region: content
+hidden:
+  links: true
+  search_api_excerpt: true
