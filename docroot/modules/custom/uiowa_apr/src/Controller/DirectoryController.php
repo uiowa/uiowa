@@ -126,6 +126,10 @@ class DirectoryController extends ControllerBase {
       ],
     ];
 
+    // Apparently, booleans need to be a string representation of the variable
+    // in the APR element attribute values.
+    $show_switcher = var_export($this->config->get('directory.show_switcher'), TRUE);
+
     $build['directory'] = [
       '#type' => 'html_tag',
       '#tag' => 'apr-directory',
@@ -135,7 +139,7 @@ class DirectoryController extends ControllerBase {
         'title-selector' => 'h1.page-title',
         ':page-size' => Html::escape($this->config->get('directory.page_size')),
         ':show-title' => 'false',
-        ':show-switcher' => Html::escape($this->config->get('directory.show_switcher')),
+        ':show-switcher' => "{$show_switcher}",
       ],
       'intro' => [
         '#type' => 'html_tag',
