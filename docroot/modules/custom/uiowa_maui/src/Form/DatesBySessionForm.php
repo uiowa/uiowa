@@ -18,7 +18,6 @@ class DatesBySessionForm extends FormBase {
    * @var \Drupal\uiowa_maui\MauiApi
    */
   protected $maui;
-  protected $headingSize;
 
   /**
    * DatesBySessionForm constructor.

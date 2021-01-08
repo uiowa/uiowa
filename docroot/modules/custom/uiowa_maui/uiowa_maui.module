@@ -16,13 +16,9 @@ function uiowa_maui_theme($existing, $type, $theme, $path) {
       'variables' => [
         'date' => NULL,
         'heading_size' => NULL,
-      ]
+      ],
     ],
   ];
-}
-
-function template_preprocess_uiowa_maui_session_date(&$variables) {
-  $variables['title'] = Xss::filter($variables['date']->dateLookup->description);
 }
 
 /**
@@ -57,4 +53,11 @@ function uiowa_maui_preprocess_block(&$variables) {
       $variables['content']['form'] = \Drupal::formBuilder()->getForm('\Drupal\uiowa_maui\Form\DatesBySessionForm', $heading_size);
       break;
   }
+}
+
+/**
+ * Theme preprocess function for uiowa_maui_session_date.
+ */
+function template_preprocess_uiowa_maui_session_date(&$variables) {
+  $variables['title'] = Xss::filter($variables['date']->dateLookup->description);
 }
