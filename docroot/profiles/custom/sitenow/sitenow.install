@@ -1913,3 +1913,13 @@ function sitenow_update_8048() {
     }
   }
 }
+
+/**
+ * Sometimes config ignore needs a little push.
+ */
+function sitenow_update_8049() {
+  $config_path = Settings::get('config_sync_directory');
+  $source = new FileStorage($config_path);
+  $config_storage = \Drupal::service('config.storage');
+  $config_storage->write('config_ignore.settings', $source->read('config_ignore.settings'));
+}
