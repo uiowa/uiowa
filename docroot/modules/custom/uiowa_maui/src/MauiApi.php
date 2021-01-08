@@ -214,12 +214,7 @@ class MauiApi {
         $b_key++;
       }
 
-      if ($a_key == $b_key) {
-        return 0;
-      }
-      else {
-        return ($a_key < $b_key) ? -1 : 1;
-      }
+      return $a_key <=> $b_key;
     });
 
     return $data;
