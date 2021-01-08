@@ -7,6 +7,7 @@ use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Path\PathValidatorInterface;
 use Drupal\Core\Routing\RouteBuilderInterface;
+use Drupal\Core\Url;
 use Drupal\pathauto\AliasCleanerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -96,7 +97,9 @@ class SettingsForm extends ConfigFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Directory Path'),
       '#default_value' => $this->config('uiowa_apr.settings')->get('directory.path') ?? '/apr/people',
-      '#description' => $this->t("Path for the site's primary APR directory. Serves as the base for all profile URLs."),
+      '#description' => $this->t('Path for the primary APR directory. Serves as the base for all profiles and an additional <a href=":url">sitemap</a> to submit to search engines.', [
+        ':url' => Url::fromRoute('uiowa_apr.sitemap')->toString(),
+      ]),
       '#required' => TRUE,
     ];
 
