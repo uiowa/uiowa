@@ -735,6 +735,7 @@ function publish_options_allowed_values(FieldStorageConfig $definition, ContentE
       case 'page':
         $options['title_hidden'] = 'Visually hide title';
         $options['no_sidebars'] = 'Remove sidebar regions';
+        $options['no_top_scroll'] = 'Remove scroll to top arrow';
         break;
     }
 
@@ -765,6 +766,9 @@ function sitenow_preprocess_page(&$variables) {
         }
         if (array_search('title_hidden', array_column($publish_options, 'value')) !== FALSE) {
           $variables['header_attributes']->addClass('title-hidden');
+        }
+        if (array_search('no_top_scroll', array_column($publish_options, 'value')) !== FALSE) {
+          $variables['header_attributes']->addClass('top-scroll-invisible');
         }
       }
     }
