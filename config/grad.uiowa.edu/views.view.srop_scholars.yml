@@ -8,6 +8,7 @@ dependencies:
     - field.storage.node.field_person_scholar_mentor_link
     - field.storage.node.field_person_scholar_srop_year
     - node.type.person
+    - system.menu.main
   module:
     - link
     - node
@@ -478,6 +479,15 @@ display:
       defaults:
         style: true
         row: true
+      menu:
+        type: normal
+        title: 'Past Scholars'
+        description: 'Past SROP scholars'
+        expanded: false
+        parent: 'menu_link_content:db6f1b42-8b75-4726-99d3-be6e736bd415'
+        weight: 0
+        context: '0'
+        menu_name: main
     cache_metadata:
       max-age: -1
       contexts:

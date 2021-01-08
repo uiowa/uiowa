@@ -1,0 +1,23 @@
+uuid: eabf6b98-86ac-4edf-be4d-4f0a99bacafb
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+    - node_revision_delete
+third_party_settings:
+  menu_ui:
+    available_menus:
+      - main
+    parent: 'main:'
+  node_revision_delete:
+    minimum_revisions_to_keep: 10
+    minimum_age_to_delete: 0
+    when_to_delete: 0
+name: Scholar
+type: scholar
+description: 'Use the <em>scholar</em> content type to create pages for student participants in SROP or similar programs.'
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: false
