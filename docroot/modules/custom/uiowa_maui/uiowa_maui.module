@@ -3,8 +3,15 @@
 /**
  * @file
  * Primary module hooks for uiowa_maui module.
- *
- * @DCG
- * This file is no longer required in Drupal 8.
- * @see https://www.drupal.org/node/2217931
  */
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uiowa_maui_preprocess_block(&$variables) {
+  switch ($variables['derivative_plugin_id']) {
+    case 'uiowa_maui_academic_dates':
+      $variables['content']['form'] = \Drupal::formBuilder()->getForm('\Drupal\uiowa_maui\Form\DatesBySessionForm');
+      break;
+  }
+}
