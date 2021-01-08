@@ -5,15 +5,24 @@
  * Primary module hooks for uiowa_maui module.
  */
 
+use Drupal\Component\Utility\Xss;
+
 /**
  * Implements hook_theme().
  */
 function uiowa_maui_theme($existing, $type, $theme, $path) {
   return [
     'uiowa_maui_session_date' => [
-      'render element' => 'element'
+      'variables' => [
+        'date' => NULL,
+        'heading_size' => NULL,
+      ]
     ],
   ];
+}
+
+function template_preprocess_uiowa_maui_session_date(&$variables) {
+  $variables['title'] = Xss::filter($variables['date']->dateLookup->description);
 }
 
 /**

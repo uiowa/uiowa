@@ -69,7 +69,7 @@ class DatesBySessionForm extends FormBase {
       '#options' => $options,
       '#ajax' => [
         'callback' => '::ajaxResponse',
-        'wrapper' => 'maui-dates',
+        'wrapper' => 'maui-dates-wrapper',
       ],
     ];
 
@@ -83,24 +83,35 @@ class DatesBySessionForm extends FormBase {
       '#options' => $this->maui->getDateCategories(),
       '#ajax' => [
         'callback' => '::ajaxResponse',
-        'wrapper' => 'maui-dates',
+        'wrapper' => 'maui-dates-wrapper',
       ],
     ];
-
-    // @todo Theme dates up into markup and use in form element.
-    $dates = $this->maui->getSessionDates($current, $category);
 
     // This ID needs to be different than the form ID.
-    $form['dates'] = [
+    $form['dates-wrapper'] = [
       '#type' => 'container',
       '#attributes' => [
-        'id' => 'maui-dates',
+        'id' => 'maui-dates-wrapper',
       ],
-      '#markup' => $this->t('Dates for @session and category: @category.', [
-        '@session' => $current,
-        '@category' => $category ?? 'All',
-      ]),
+      'dates' => [],
     ];
+
+    $dates = $this->maui->getSessionDates($current, $category);
+
+    if (!empty($dates)) {
+      foreach ($dates as $date) {
+        $form['dates-wrapper']['dates'][] = [
+          '#theme' => 'uiowa_maui_session_date',
+          '#date' => $date,
+          '#heading_size' => $heading_size,
+        ];
+      }
+    }
+    else {
+      $form['dates-wrapper']['dates'] = [
+        '#markup' => $this->t('No dates found.'),
+      ];
+    }
 
     return $form;
   }
@@ -123,7 +134,7 @@ class DatesBySessionForm extends FormBase {
    * AJAX callback for session and category form element changes.
    */
   public function ajaxResponse(array &$form, FormStateInterface $form_state) {
-    return $form['dates'];
+    return $form['dates-wrapper'];
   }
 
 }
