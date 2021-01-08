@@ -201,7 +201,7 @@ class MauiApi {
       return (!empty($v->dateCategoryLookups));
     });
 
-    // Sort by start date and subsession.
+    // Sort by start date and then subsession, if set.
     usort($data, function ($a, $b) {
       $a_key = strtotime($a->beginDate);
       $b_key = strtotime($b->beginDate);
