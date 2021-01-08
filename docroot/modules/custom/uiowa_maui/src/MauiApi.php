@@ -21,7 +21,7 @@ class MauiApi {
   /**
    * The uiowa_maui logger channel.
    *
-   * @var LoggerInterface
+   * @var \Psr\Log\LoggerInterface
    */
   protected $logger;
 
@@ -43,7 +43,9 @@ class MauiApi {
    * Constructs a Maui object.
    *
    * @param \Psr\Log\LoggerInterface $logger
+   *   The uiowa_maui logger channel.
    * @param \Drupal\Core\Cache\CacheBackendInterface $cache
+   *   The uiowa_maui cache.
    * @param \GuzzleHttp\ClientInterface $http_client
    *   The HTTP client.
    */
@@ -54,17 +56,21 @@ class MauiApi {
   }
 
   /**
-   * Make an API request.
+   * Make a MAUI API request and return data.
    *
-   * @param $method
-   * @param $path
+   * @param string $method
+   *   The HTTP method to use.
+   * @param string $path
+   *   The API path to use. Do no include the base URL.
    * @param array $params
+   *   Optional request parameters.
    * @param array $options
+   *   Optional request options. All requests expect JSON response data.
    *
    * @return mixed
    *   The API response data.
    */
-  public function request($method, $path, $params = [], $options = []) {
+  public function request($method, $path, array $params = [], array $options = []) {
     // Encode any special characters and trim duplicate slash.
     $path = UrlHelper::encodePath($path);
     $uri = self::BASE . ltrim($path, '/');
@@ -86,7 +92,6 @@ class MauiApi {
     $hash = base64_encode($uri . serialize($options));
     $cid = "uiowa_maui:request:{$hash}";
     $data = [];
-
 
     if ($cache = $this->cache->get($cid)) {
       $data = $cache->data;
@@ -118,12 +123,14 @@ class MauiApi {
   }
 
   /**
+   * Get the current session and return the session object.
+   *
    * @return object
    *   The session object.
    */
   public function getCurrentSession() {
     $data = $this->request('GET', '/pub/registrar/sessions/current');
-    return new MauiCourse($data);
+    return new MauiSession($data);
   }
 
 }

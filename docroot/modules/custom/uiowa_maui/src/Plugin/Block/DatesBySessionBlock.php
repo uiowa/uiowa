@@ -19,25 +19,30 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class DatesBySessionBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
-   * @var MauiApi
+   * The MauiApi service.
+   *
+   * @var \Drupal\uiowa_maui\MauiApi
    */
   protected $mauiApi;
 
+  /**
+   * Construct the block.
+   */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, MauiApi $maui) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->mauiApi = $maui;
   }
 
   /**
-   * {@inheritDoc}
+   * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-   return new static(
+    return new static(
      $configuration,
      $plugin_id,
      $plugin_definition,
      $container->get('uiowa_maui.api')
-   );
+    );
   }
 
   /**
