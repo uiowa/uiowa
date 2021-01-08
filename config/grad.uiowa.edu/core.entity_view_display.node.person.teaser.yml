@@ -31,6 +31,7 @@ dependencies:
     - field.field.node.person.field_uiowa_college
     - node.type.person
   module:
+    - link
     - options
     - telephone
     - user
@@ -39,9 +40,16 @@ targetEntityType: node
 bundle: person
 mode: teaser
 content:
+  field_grad_program:
+    type: list_default
+    weight: 3
+    region: content
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
   field_image:
     type: entity_reference_entity_view
-    weight: 6
+    weight: 8
     region: content
     label: hidden
     settings:
@@ -56,57 +64,73 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
+  field_person_education:
+    type: basic_string
+    weight: 1
+    region: content
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
   field_person_email:
     type: email_mailto
-    weight: 2
+    weight: 4
     region: content
     label: inline
     settings: {  }
     third_party_settings: {  }
   field_person_phone:
-    weight: 3
+    weight: 5
     label: inline
     settings:
       title: ''
     third_party_settings: {  }
     type: telephone_link
     region: content
-  field_person_position:
+  field_person_research_project:
     type: string
-    weight: 1
+    weight: 7
     region: content
     label: visually_hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
+  field_person_scholar_mentor_link:
+    type: link
+    weight: 2
+    region: content
+    label: inline
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
   field_person_scholar_srop_year:
-    type: list_key
-    weight: 4
+    type: list_default
+    weight: 6
     region: content
     label: inline
     settings: {  }
     third_party_settings: {  }
   links:
-    weight: 7
+    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
   content_moderation_control: true
-  field_grad_program: true
   field_person_bio: true
   field_person_contact_information: true
-  field_person_education: true
   field_person_first_name: true
   field_person_hide: true
   field_person_hometown: true
   field_person_last_name: true
   field_person_mentor_qualif: true
   field_person_mentor_ug_role: true
+  field_person_position: true
   field_person_research_areas: true
   field_person_research_assistants: true
-  field_person_research_project: true
-  field_person_scholar_mentor_link: true
   field_person_types: true
   field_person_website: true
   field_tags: true
