@@ -1967,3 +1967,9 @@ $sites['sitesstrategicplan.local.drupal.uiowa.edu'] = 'strategicplan.sites.uiowa
 $sites['sitesstrategicplan.dev.drupal.uiowa.edu'] = 'strategicplan.sites.uiowa.edu';
 $sites['sitesstrategicplan.stage.drupal.uiowa.edu'] = 'strategicplan.sites.uiowa.edu';
 $sites['sitesstrategicplan.prod.drupal.uiowa.edu'] = 'strategicplan.sites.uiowa.edu';
+
+// Directory aliases for ftoor.lab.uiowa.edu.
+$sites['labftoor.local.drupal.uiowa.edu'] = 'ftoor.lab.uiowa.edu';
+$sites['labftoor.dev.drupal.uiowa.edu'] = 'ftoor.lab.uiowa.edu';
+$sites['labftoor.stage.drupal.uiowa.edu'] = 'ftoor.lab.uiowa.edu';
+$sites['labftoor.prod.drupal.uiowa.edu'] = 'ftoor.lab.uiowa.edu';
