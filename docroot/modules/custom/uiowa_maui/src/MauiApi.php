@@ -111,7 +111,7 @@ class MauiApi {
       if (isset($response)) {
         $contents = $response->getBody()->getContents();
 
-        /** @var object $meta */
+        /** @var object $data */
         $data = json_decode($contents);
 
         // Cache for 15 minutes.
