@@ -7,7 +7,7 @@ dependencies:
     - field.storage.node.field_image
     - field.storage.node.field_person_scholar_mentor_link
     - field.storage.node.field_person_scholar_srop_year
-    - node.type.person
+    - node.type.scholar
     - system.menu.main
   module:
     - link
@@ -323,23 +323,12 @@ display:
           id: type
           table: node_field_data
           field: type
-          value:
-            person: person
-          entity_type: node
-          entity_field: type
-          plugin_id: bundle
-          expose:
-            operator_limit_selection: false
-            operator_list: {  }
-        field_person_types_target_id:
-          id: field_person_types_target_id
-          table: node__field_person_types
-          field: field_person_types_target_id
           relationship: none
           group_type: group
           admin_label: ''
-          operator: '='
-          value: Scholar
+          operator: in
+          value:
+            scholar: scholar
           group: 1
           exposed: false
           expose:
@@ -356,7 +345,7 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
-            placeholder: ''
+            reduce: false
           is_grouped: false
           group_info:
             label: ''
@@ -369,12 +358,14 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          plugin_id: string
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
       sorts:
-        field_person_scholar_srop_year_value:
-          id: field_person_scholar_srop_year_value
-          table: node__field_person_scholar_srop_year
-          field: field_person_scholar_srop_year_value
+        field_scholar_participation_year_value:
+          id: field_scholar_participation_year_value
+          table: node__field_scholar_participation_year
+          field: field_scholar_participation_year_value
           relationship: none
           group_type: group
           admin_label: ''
@@ -414,10 +405,10 @@ display:
           plugin_id: text
       relationships: {  }
       arguments:
-        field_person_scholar_srop_year_value:
-          id: field_person_scholar_srop_year_value
-          table: node__field_person_scholar_srop_year
-          field: field_person_scholar_srop_year_value
+        field_scholar_participation_year_value:
+          id: field_scholar_participation_year_value
+          table: node__field_scholar_participation_year
+          field: field_scholar_participation_year_value
           relationship: none
           group_type: group
           admin_label: ''
@@ -425,7 +416,7 @@ display:
           exception:
             value: all
             title_enable: false
-            title: 'Past SROP Scholars %1'
+            title: All
           title_enable: false
           title: ''
           default_argument_type: fixed

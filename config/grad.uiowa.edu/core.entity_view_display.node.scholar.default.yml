@@ -3,13 +3,18 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.scholar.field_person_credential
+    - field.field.node.scholar.field_person_education
     - field.field.node.scholar.field_person_first_name
     - field.field.node.scholar.field_person_last_name
+    - field.field.node.scholar.field_person_position
+    - field.field.node.scholar.field_person_scholar_mentor_link
     - field.field.node.scholar.field_scholar_bio
     - field.field.node.scholar.field_scholar_bio_headline
     - field.field.node.scholar.field_scholar_participation_year
     - node.type.scholar
   module:
+    - link
     - options
     - text
     - user
@@ -18,48 +23,69 @@ targetEntityType: node
 bundle: scholar
 mode: default
 content:
-  field_person_first_name:
-    weight: 102
-    label: above
+  field_person_credential:
+    weight: 1
+    label: visually_hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
     region: content
-  field_person_last_name:
-    weight: 103
-    label: above
+  field_person_education:
+    weight: 2
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_person_position:
+    weight: 3
+    label: visually_hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
+  field_person_scholar_mentor_link:
+    weight: 4
+    label: inline
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
     region: content
   field_scholar_bio:
-    weight: 101
-    label: above
+    weight: 7
+    label: visually_hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   field_scholar_bio_headline:
-    weight: 105
-    label: above
+    weight: 6
+    label: visually_hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
     region: content
   field_scholar_participation_year:
-    weight: 104
-    label: above
+    weight: 5
+    label: inline
     settings: {  }
     third_party_settings: {  }
     type: list_default
     region: content
   links:
-    weight: 100
+    weight: 0
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
+  field_person_first_name: true
+  field_person_last_name: true
   search_api_excerpt: true
