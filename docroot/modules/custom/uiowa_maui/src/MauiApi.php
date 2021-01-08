@@ -122,7 +122,8 @@ class MauiApi {
    *   The session object.
    */
   public function getCurrentSession() {
-    return $this->request('GET', '/pub/registrar/sessions/current');
+    $data = $this->request('GET', '/pub/registrar/sessions/current');
+    return new MauiCourse($data);
   }
 
 }
