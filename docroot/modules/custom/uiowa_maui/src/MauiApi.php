@@ -19,18 +19,18 @@ class MauiApi {
   const BASE = 'https://api.maui.uiowa.edu/maui/api/';
 
   /**
+   * The uiowa_maui logger channel.
+   *
    * @var LoggerInterface
    */
   protected $logger;
 
   /**
-   * The.
+   * The uiowa_maui cache.
    *
    * @var \Drupal\Core\Cache\CacheBackendInterface
    */
   protected $cache;
-
-  protected $static;
 
   /**
    * The HTTP client.
@@ -44,14 +44,12 @@ class MauiApi {
    *
    * @param \Psr\Log\LoggerInterface $logger
    * @param \Drupal\Core\Cache\CacheBackendInterface $cache
-   * @param \Drupal\Core\Cache\CacheBackendInterface $static
    * @param \GuzzleHttp\ClientInterface $http_client
    *   The HTTP client.
    */
-  public function __construct(LoggerInterface $logger, CacheBackendInterface $cache, CacheBackendInterface $static, ClientInterface $http_client) {
+  public function __construct(LoggerInterface $logger, CacheBackendInterface $cache, ClientInterface $http_client) {
     $this->logger = $logger;
     $this->cache = $cache;
-    $this->static = $static;
     $this->client = $http_client;
   }
 
@@ -87,45 +85,36 @@ class MauiApi {
     // Create a hash for the CID. Can always be decoded for debugging purposes.
     $hash = base64_encode($uri . serialize($options));
     $cid = "uiowa_maui:request:{$hash}";
+    $data = [];
 
-    if ($static_cache = $this->static->get($cid)) {
-      return $static_cache->data;
+
+    if ($cache = $this->cache->get($cid)) {
+      $data = $cache->data;
     }
     else {
-      $cache = $this->cache->get($cid);
-
-      if (isset($cache, $cache->data, $cache->expire) &&  time() < $cache->expire) {
-        $data = $cache->data;
+      try {
+        $response = $this->client->request($method, $uri, $options);
       }
-      else {
-        try {
-          $response = $this->client->request($method, $uri, $options);
-        }
-        catch (RequestException | GuzzleException $e) {
-          $this->logger->error('Error encountered getting data from @endpoint: @code @error', [
-            '@endpoint' => $uri,
-            '@code' => $e->getCode(),
-            '@error' => $e->getMessage(),
-          ]);
-        }
-
-        if (isset($response)) {
-          $contents = $response->getBody()->getContents();
-
-          /** @var object $meta */
-          $data = json_decode($contents);
-
-          // Cache for 15 minutes.
-          $this->cache->set($cid, $data, time() + 300);
-          $this->static->set($cid, $data, time() + 300);
-        }
-        else {
-          $data = [];
-        }
+      catch (RequestException | GuzzleException $e) {
+        $this->logger->error('Error encountered getting data from @endpoint: @code @error', [
+          '@endpoint' => $uri,
+          '@code' => $e->getCode(),
+          '@error' => $e->getMessage(),
+        ]);
       }
 
-      return $data;
+      if (isset($response)) {
+        $contents = $response->getBody()->getContents();
+
+        /** @var object $meta */
+        $data = json_decode($contents);
+
+        // Cache for 15 minutes.
+        $this->cache->set($cid, $data, time() + 900);
+      }
     }
+
+    return $data;
   }
 
   /**
