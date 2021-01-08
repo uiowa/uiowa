@@ -18,6 +18,7 @@ dependencies:
   module:
     - link
     - options
+    - text
     - user
 id: node.scholar.teaser
 targetEntityType: node
@@ -26,7 +27,7 @@ mode: teaser
 content:
   field_image:
     type: entity_reference_entity_view
-    weight: 7
+    weight: 8
     region: content
     label: visually_hidden
     settings:
@@ -68,6 +69,14 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
+  field_scholar_bio:
+    type: text_summary_or_trimmed
+    weight: 7
+    region: content
+    label: visually_hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
   field_scholar_bio_headline:
     type: string
     weight: 6
@@ -91,5 +100,4 @@ content:
 hidden:
   field_person_first_name: true
   field_person_last_name: true
-  field_scholar_bio: true
   search_api_excerpt: true

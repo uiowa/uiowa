@@ -15,10 +15,17 @@ dependencies:
     - field.field.node.scholar.field_scholar_participation_year
     - node.type.scholar
   module:
+    - layout_builder
     - link
     - options
     - text
     - user
+  theme:
+    - uids_base
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: false
 id: node.scholar.default
 targetEntityType: node
 bundle: scholar
