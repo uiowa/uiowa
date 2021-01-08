@@ -125,12 +125,104 @@ class MauiApi {
   /**
    * Get the current session and return the session object.
    *
-   * @return object
+   * @return array
    *   The session object.
    */
   public function getCurrentSession() {
-    $data = $this->request('GET', '/pub/registrar/sessions/current');
-    return new MauiSession($data);
+    return $this->request('GET', '/pub/registrar/sessions/current');
+  }
+
+  /**
+   * Find a list of sessions specified by how many previous and future.
+   *
+   * @param int $previous
+   *   The number of session back from the current session.
+   * @param int $future
+   *   The number of session after the current session.
+   *
+   * @return array
+   *   Array of session objects.
+   */
+  public function getSessionsBounded($previous = 4, $future = 4) {
+    $data = $this->request('GET', '/pub/registrar/sessions/bounded', [
+      'previous' => $previous,
+      'future' => $future,
+    ]);
+
+    // Sort by start date.
+    usort($data, function ($a, $b) {
+      return strtotime($a->startDate) > strtotime($b->startDate);
+    });
+
+   return $data;
+  }
+
+  /**
+   * Search session dates.
+   *
+   * GET /pub/registrar/session-dates.
+   *
+   * @param int $session_id
+   *    The internal session id to search. Either this or sessionCode must
+   *    be specified.
+   * @param string $date_category
+   *    The natural key of the date category you are interested in. (e.g.
+   *    HOUSING_DINING).
+   * @param mixed $print_date
+   *    Whether or not to include Print Date dates in results. The API
+   *    requires a string value so booleans are converted here.
+   * @param string $five_year_date
+   *    Whether or not to include Five Year Date dates in results.
+   * @param int $session_code
+   *    The session code to search (20148 for example).
+   * @param string $date
+   *    The natural key of the session date you are interested in. (e.g.
+   *    ISISAVAIL).
+   * @param string $context
+   *    The natural key of the calendar context you are interested in. (e.g.
+   *    DEFAULT).
+   *
+   * @return array
+   *   JSON decoded array of response data.
+   */
+  public function getSessionDates($session_id, $date_category = NULL, $print_date = NULL, $five_year_date = NULL, $session_code = NULL, $date = NULL, $context = NULL) {
+    $data = $this->request('GET', '/pub/registrar/session-dates', [
+      'context' => $context,
+      'date' => $date,
+      'sessionCode' => $session_code,
+      'sessionId' => $session_id,
+      'fiveYearDate' => is_bool($five_year_date) ? var_export($five_year_date, TRUE) : $five_year_date,
+      'printDate' => is_bool($print_date) ? var_export($print_date, TRUE) : $print_date,
+      'dateCategory' => $date_category,
+    ]);
+
+    // Filter out dates with no categories.
+    $data = array_filter($data, function ($v) {
+      return (!empty($v->dateCategoryLookups));
+    });
+
+    // Sort by start date and subsession.
+    usort($data, function ($a, $b) {
+      $a_key = strtotime($a->beginDate);
+      $b_key = strtotime($b->beginDate);
+
+      if (!empty($a->subSession)) {
+        $a_key++;
+      }
+
+      if (!empty($b->subSession)) {
+        $b_key++;
+      }
+
+      if ($a_key == $b_key) {
+        return 0;
+      }
+      else {
+        return ($a_key < $b_key) ? -1 : 1;
+      }
+    });
+
+    return $data;
   }
 
   /**
