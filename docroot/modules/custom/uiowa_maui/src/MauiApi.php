@@ -133,4 +133,34 @@ class MauiApi {
     return new MauiSession($data);
   }
 
+  /**
+   * Return a static list of session date categories as key/value pairs.
+   *
+   * There is no API call to get these right now. The array keys are the
+   * machine names of the categories and the value is the human-readable name.
+   *
+   * @return array
+   *   List of session date categories.
+   */
+  public function getDateCategories() {
+    return [
+      'Student' => [
+        'STUDENT' => 'All Student Dates',
+        'DISTANCE_ONLINE_ED' => 'Distance and Online Education',
+        'GRADUATE_STUDENTS' => 'Graduate Students',
+        'GRADUATION_COMMENCEMENT' => 'Graduation and Commencement',
+        'HOUSING_DINING' => 'Housing and Dining',
+        'NO_CLASSES' => 'No Classes',
+        'STUDENT_REGISTRATION' => 'Registration Dates and Deadlines',
+      ],
+      'Faculty/Staff' => [
+        'OFFERINGS_CLASSROOMS' => 'Course Offerings / Classroom Scheduling',
+        'DEPARTMENTAL_ADMIN' => 'Departmental Admin',
+        'GRADES_ATTENDANCE' => 'Grades and Attendance',
+        'REGISTRATION_ADMIN' => 'Registration Admin',
+        'UNIVERSITY_OFFICES_CLOSED' => 'University Offices Closed',
+      ],
+    ];
+  }
+
 }
