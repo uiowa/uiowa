@@ -180,7 +180,9 @@
       // @todo Remove when uiowa/uiowa#2670 and uiowa/uiowa#2554 are resolved.
       &.card--media-left,
       &.card--media-right {
-        margin-bottom: 0;
+        .paragraph--type--section:not([class*="bg-"]) & {
+          margin-bottom: 0;
+        }
       }
       &:last-child {
         border-bottom: none;
