@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
+    - field.field.node.scholar.field_image
     - field.field.node.scholar.field_person_credential
     - field.field.node.scholar.field_person_education
     - field.field.node.scholar.field_person_first_name
@@ -15,25 +16,80 @@ dependencies:
     - field.field.node.scholar.field_scholar_participation_year
     - node.type.scholar
   module:
+    - link
+    - options
     - user
 id: node.scholar.teaser
 targetEntityType: node
 bundle: scholar
 mode: teaser
 content:
-  links:
-    weight: 100
+  field_image:
+    type: entity_reference_entity_view
+    weight: 7
+    region: content
+    label: visually_hidden
+    settings:
+      link: true
+      view_mode: default
+    third_party_settings: {  }
+  field_person_credential:
+    type: string
+    weight: 1
+    region: content
+    label: visually_hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_person_education:
+    type: basic_string
+    weight: 3
+    region: content
+    label: visually_hidden
     settings: {  }
     third_party_settings: {  }
+  field_person_position:
+    type: string
+    weight: 2
     region: content
+    label: visually_hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_person_scholar_mentor_link:
+    type: link
+    weight: 5
+    region: content
+    label: inline
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+  field_scholar_bio_headline:
+    type: string
+    weight: 6
+    region: content
+    label: visually_hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_scholar_participation_year:
+    type: list_default
+    weight: 4
+    region: content
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+  links:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
-  field_person_credential: true
-  field_person_education: true
   field_person_first_name: true
   field_person_last_name: true
-  field_person_position: true
-  field_person_scholar_mentor_link: true
   field_scholar_bio: true
-  field_scholar_bio_headline: true
-  field_scholar_participation_year: true
   search_api_excerpt: true

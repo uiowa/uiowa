@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.scholar.field_image
     - field.field.node.scholar.field_person_credential
     - field.field.node.scholar.field_person_education
     - field.field.node.scholar.field_person_first_name
@@ -16,6 +17,7 @@ dependencies:
   module:
     - content_moderation
     - link
+    - media_library
     - path
     - text
 id: node.scholar.default
@@ -23,6 +25,13 @@ targetEntityType: node
 bundle: scholar
 mode: default
 content:
+  field_image:
+    weight: 26
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+    type: media_library_widget
+    region: content
   field_person_credential:
     weight: 8
     settings:
