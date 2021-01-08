@@ -18,6 +18,7 @@ class DatesBySessionForm extends FormBase {
    * @var \Drupal\uiowa_maui\MauiApi
    */
   protected $maui;
+  protected $headingSize;
 
   /**
    * DatesBySessionForm constructor.
@@ -48,7 +49,7 @@ class DatesBySessionForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
+  public function buildForm(array $form, FormStateInterface $form_state, $heading_size = NULL) {
     $current = $form_state->getValue('session') ?? $this->maui->getCurrentSession()->id;
     $category = $form_state->getValue('category') ?? NULL;
 
