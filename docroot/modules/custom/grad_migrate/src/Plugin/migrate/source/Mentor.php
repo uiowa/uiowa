@@ -71,7 +71,6 @@ class Mentor extends BaseNodeSource {
       ->fields('phone', [
         'field_mentor_phone_phone_na',
       ])
-      // @todo Preprocess this to check/fix invalid values.
       ->fields('website', [
         'field_mentor_website_url',
       ])
@@ -88,6 +87,14 @@ class Mentor extends BaseNodeSource {
    * Prepare row used for altering source data prior to its insertion.
    */
   public function prepareRow(Row $row) {
+    // Update with protocols if missing.
+    // Not a robust preprocess, but works for all data in this specific field.
+    $url = $row->getSourceProperty('field_mentor_website_url');
+    if (isset($url) && substr($url, 0, 4) != 'http') {
+      $url = 'http://' . $url;
+      $row->setSourceProperty('field_mentor_website_url', $url);
+    }
+
     // Call the parent prepareRow.
     return parent::prepareRow($row);
   }
