@@ -120,6 +120,7 @@ class ThesisDefense extends BaseNodeSource {
    */
   public function mapProgramLists($old_code) {
     $program_list_map = [
+      // >> MATCHES.
       // Accounting => Business Administration - Accounting.
       '06a' => 'BUSN:SP_ACTG',
       // Actuarial Science.
@@ -288,6 +289,8 @@ class ThesisDefense extends BaseNodeSource {
       '182' => 'PHYS_REH_SCI',
       // Physics.
       '29p' => 'PHYSICS',
+
+      // >> NOT COMPLETED YET.
       // 030|Political Science
       // 063|Prev Med and Env Hlth
       // 96z|Prof Nursing and Healthcare Prac
@@ -326,7 +329,7 @@ class ThesisDefense extends BaseNodeSource {
       // @todo Add 'Other' option to allowed values function.
       'Other' => 'OTHER',
 
-      // I can't find a match for these.
+      // >> NO MATCH.
       // 96j|Advanced Practice Nursing.
       // 02a|Biology
       // 156|Biosciences Program
@@ -360,7 +363,7 @@ class ThesisDefense extends BaseNodeSource {
       // 147|Physician Assistant Studies
       // 72a|Physiology and Biophysics
 
-      // I might have found a match, but not sure.
+      // >> POSSIBLE MATCHES ("=?" indicates I'm unsure if these match).
       // 153|Aging Studies Program =? 'AGING' => "Aging and Longevity Studies".
       // 149|Amer Indian and Native Studies =? 'AM_IND_NAT' => "Native American and Indigenous Studies".
       // 7CE|Counseling, Rehab and Stdnt Dev =? 'CRSD:SP_ST_DEV_PSE' => "Rehabilitation and Counselor Education - Student Development in Postsecondary Education"
@@ -370,7 +373,7 @@ class ThesisDefense extends BaseNodeSource {
       // 46m|Med and Nat Prod Chemistry =? 'PHAR:SP_MED_NAT_PROD_CHEM' => "Pharmacy - Medicinal & Natural Products Chemistry"
       // 101|Phys Therapy and Rehab Science =? 'PHYS_THER' => "Physical Therapy"
 
-      // These seem to have a match, but its not in the list.
+      // >> POSSIBLE MATCHES AGAINST ANOTHER LIST, BUT NOT ON PROVIDED LIST.
       // 48l|Comparative Lit - Translation =? 'COMP_LIT_TRANSL' => "Comparative Literature - Translation"
       // 48c|Comparative Literature =? 'COMPARATIVE_LIT' => "Comparative Literature"
       // 07b|Ed Policy and Leadership Studies =? 'EDUC_PLS' => "Educational Policy and Leadership Studies"
