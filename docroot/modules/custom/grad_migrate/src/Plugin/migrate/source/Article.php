@@ -47,9 +47,9 @@ class Article extends BaseNodeSource {
     $query->leftJoin('field_data_field_lead', 'l', 'n.nid = l.entity_id');
     $query->leftJoin('field_data_field_pull_quote', 'pq', 'n.nid = pq.entity_id');
     $query->leftJoin('field_data_field_pull_quote_featured', 'pqf', 'n.nid = pqf.entity_id');
-    $query->leftJoin('field_data_field_annual_report', 'ar', 'n.nid = ar.entity_id');
-    // Both field_data_field_article_source_link table is empty and not needed
-    // and field_data_field_attachments.
+    // field_data_field_annual_report is not needed.
+    // field_data_field_article_source_link is not needed
+    // field_data_field_attachments is not needed
     $query->leftJoin('field_data_field_photo_credit', 'pc', 'n.nid = pc.entity_id');
     $query = $query->fields('b', [
       'entity_type',
