@@ -29,7 +29,7 @@ bundle: scholar
 mode: default
 content:
   field_image:
-    weight: 1
+    weight: 0
     label: visually_hidden
     settings:
       view_mode: large__square
@@ -38,7 +38,7 @@ content:
     type: entity_reference_entity_view
     region: content
   field_person_credential:
-    weight: 2
+    weight: 1
     label: visually_hidden
     settings:
       link_to_entity: false
@@ -46,14 +46,14 @@ content:
     type: string
     region: content
   field_person_education:
-    weight: 3
+    weight: 2
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
     type: basic_string
     region: content
   field_person_position:
-    weight: 4
+    weight: 3
     label: visually_hidden
     settings:
       link_to_entity: false
@@ -61,14 +61,14 @@ content:
     type: string
     region: content
   field_scholar_bio:
-    weight: 8
+    weight: 7
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   field_scholar_bio_headline:
-    weight: 7
+    weight: 6
     label: visually_hidden
     settings:
       link_to_entity: false
@@ -76,7 +76,7 @@ content:
     type: string
     region: content
   field_scholar_mentor:
-    weight: 5
+    weight: 4
     label: inline
     settings:
       link_to_entity: false
@@ -84,18 +84,14 @@ content:
     type: string
     region: content
   field_scholar_participation_year:
-    weight: 6
+    weight: 5
     label: inline
     settings: {  }
     third_party_settings: {  }
     type: list_default
     region: content
-  links:
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
 hidden:
   field_person_first_name: true
   field_person_last_name: true
+  links: true
   search_api_excerpt: true

@@ -29,14 +29,14 @@ mode: teaser
 content:
   field_grad_program:
     type: list_default
-    weight: 7
+    weight: 5
     region: content
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
   field_image:
     type: entity_reference_entity_view
-    weight: 1
+    weight: 0
     region: content
     label: visually_hidden
     settings:
@@ -45,7 +45,7 @@ content:
     third_party_settings: {  }
   field_person_credential:
     type: string
-    weight: 2
+    weight: 1
     region: content
     label: visually_hidden
     settings:
@@ -53,14 +53,14 @@ content:
     third_party_settings: {  }
   field_person_education:
     type: basic_string
-    weight: 6
+    weight: 4
     region: content
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
   field_person_position:
     type: string
-    weight: 3
+    weight: 2
     region: content
     label: above
     settings:
@@ -68,14 +68,9 @@ content:
     third_party_settings: {  }
   field_uiowa_college:
     type: uiowa_academic_units_formatter
-    weight: 5
+    weight: 3
     region: content
     label: visually_hidden
-    settings: {  }
-    third_party_settings: {  }
-  links:
-    weight: 0
-    region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
@@ -86,4 +81,5 @@ hidden:
   field_person_research_assistants: true
   field_scholar_bio: true
   field_scholar_bio_headline: true
+  links: true
   search_api_excerpt: true
