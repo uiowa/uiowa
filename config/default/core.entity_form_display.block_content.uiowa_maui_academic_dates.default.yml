@@ -5,6 +5,7 @@ dependencies:
   config:
     - block_content.type.uiowa_maui_academic_dates
     - field.field.block_content.uiowa_maui_academic_dates.field_uiowa_headline
+    - field.field.block_content.uiowa_maui_academic_dates.field_uiowa_maui_date_category
   module:
     - layout_builder_custom
 id: block_content.uiowa_maui_academic_dates.default
@@ -17,6 +18,12 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: uiowa_headline_widget
+    region: content
+  field_uiowa_maui_date_category:
+    weight: 27
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
     region: content
   info:
     type: string_textfield
