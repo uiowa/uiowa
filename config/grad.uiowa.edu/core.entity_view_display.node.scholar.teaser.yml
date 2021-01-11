@@ -10,14 +10,12 @@ dependencies:
     - field.field.node.scholar.field_person_first_name
     - field.field.node.scholar.field_person_last_name
     - field.field.node.scholar.field_person_position
-    - field.field.node.scholar.field_person_scholar_mentor_link
     - field.field.node.scholar.field_scholar_bio
     - field.field.node.scholar.field_scholar_bio_headline
     - field.field.node.scholar.field_scholar_mentor
     - field.field.node.scholar.field_scholar_participation_year
     - node.type.scholar
   module:
-    - link
     - options
     - text
     - user
@@ -57,18 +55,6 @@ content:
     label: visually_hidden
     settings:
       link_to_entity: false
-    third_party_settings: {  }
-  field_person_scholar_mentor_link:
-    type: link
-    weight: 5
-    region: content
-    label: inline
-    settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
     third_party_settings: {  }
   field_scholar_bio:
     type: text_summary_or_trimmed

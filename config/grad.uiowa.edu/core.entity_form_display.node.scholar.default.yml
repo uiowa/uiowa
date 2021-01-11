@@ -9,7 +9,6 @@ dependencies:
     - field.field.node.scholar.field_person_first_name
     - field.field.node.scholar.field_person_last_name
     - field.field.node.scholar.field_person_position
-    - field.field.node.scholar.field_person_scholar_mentor_link
     - field.field.node.scholar.field_scholar_bio
     - field.field.node.scholar.field_scholar_bio_headline
     - field.field.node.scholar.field_scholar_mentor
@@ -17,7 +16,6 @@ dependencies:
     - node.type.scholar
   module:
     - content_moderation
-    - link
     - media_library
     - path
     - text
@@ -72,14 +70,6 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
-    region: content
-  field_person_scholar_mentor_link:
-    weight: 12
-    settings:
-      placeholder_url: ''
-      placeholder_title: ''
-    third_party_settings: {  }
-    type: link_default
     region: content
   field_scholar_bio:
     weight: 16
