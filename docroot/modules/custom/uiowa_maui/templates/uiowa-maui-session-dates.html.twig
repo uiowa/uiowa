@@ -35,7 +35,7 @@
 
   {% set event_block = {
     'attributes': attributes.addClass(classes),
-    'card_subtitle': date_description|t,
+    'card_date': date_description|t,
     'card_title': date.start != date.end ? date.start ~ ' - ' ~ date.end : date.start,
     'heading_level': heading_size,
     'title_prefix': title_prefix,
