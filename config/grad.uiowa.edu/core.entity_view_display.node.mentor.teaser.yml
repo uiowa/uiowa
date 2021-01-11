@@ -1,0 +1,35 @@
+uuid: 347ea138-f6f7-4344-adb5-80cc9004b84d
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.mentor.body
+    - field.field.node.mentor.field_person_first_name
+    - field.field.node.mentor.field_person_last_name
+    - node.type.mentor
+  module:
+    - text
+    - user
+id: node.mentor.teaser
+targetEntityType: node
+bundle: mentor
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_person_first_name: true
+  field_person_last_name: true
+  search_api_excerpt: true
