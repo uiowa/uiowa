@@ -69,7 +69,7 @@
                 {% set separator = '' %}
             {% else %}
                 {% set separator = ', ' %}
-            {% endif %}
+            {% endif %}            
             <span{{ attributes.addClass(classes, 'field__item') }}>{{ item.content }}</span>{{ separator }}
         {% endfor %}
     {% endif %}
