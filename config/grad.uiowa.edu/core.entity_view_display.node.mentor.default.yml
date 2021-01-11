@@ -27,66 +27,51 @@ content:
   body:
     label: hidden
     type: text_default
-    weight: 101
+    weight: 1
     settings: {  }
     third_party_settings: {  }
     region: content
   field_image:
-    weight: 111
-    label: above
+    weight: 9
+    label: visually_hidden
     settings:
-      link: true
+      view_mode: large__square
+      link: false
     third_party_settings: {  }
-    type: entity_reference_label
+    type: entity_reference_entity_view
     region: content
   field_person_credential:
-    weight: 107
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
-  field_person_first_name:
-    weight: 102
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
-  field_person_last_name:
-    weight: 103
-    label: above
+    weight: 2
+    label: visually_hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
     region: content
   field_person_mentor_qualif:
-    weight: 105
+    weight: 7
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   field_person_mentor_ug_role:
-    weight: 106
+    weight: 8
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   field_person_position:
-    weight: 108
-    label: above
+    weight: 4
+    label: visually_hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
     region: content
   field_person_research_assistants:
-    weight: 110
+    weight: 6
     label: above
     settings:
       link_to_entity: false
@@ -94,7 +79,7 @@ content:
     type: string
     region: content
   field_person_research_project:
-    weight: 109
+    weight: 5
     label: above
     settings:
       link_to_entity: false
@@ -102,16 +87,18 @@ content:
     type: string
     region: content
   field_uiowa_college:
-    weight: 104
-    label: above
+    weight: 3
+    label: visually_hidden
     settings: {  }
     third_party_settings: {  }
     type: uiowa_academic_units_formatter
     region: content
   links:
-    weight: 100
+    weight: 0
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
+  field_person_first_name: true
+  field_person_last_name: true
   search_api_excerpt: true

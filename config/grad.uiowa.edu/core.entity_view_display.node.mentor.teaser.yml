@@ -17,35 +17,63 @@ dependencies:
     - field.field.node.mentor.field_uiowa_college
     - node.type.mentor
   module:
-    - text
+    - uiowa_entities
     - user
 id: node.mentor.teaser
 targetEntityType: node
 bundle: mentor
 mode: teaser
 content:
-  body:
-    label: hidden
-    type: text_summary_or_trimmed
-    weight: 101
-    settings:
-      trim_length: 600
-    third_party_settings: {  }
+  field_image:
+    type: entity_reference_entity_view
+    weight: 1
     region: content
-  links:
-    weight: 100
+    label: visually_hidden
+    settings:
+      view_mode: large__square
+      link: false
+    third_party_settings: {  }
+  field_person_credential:
+    type: string
+    weight: 2
+    region: content
+    label: visually_hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_person_position:
+    type: string
+    weight: 3
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_person_research_project:
+    type: string
+    weight: 4
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_uiowa_college:
+    type: uiowa_academic_units_formatter
+    weight: 6
+    region: content
+    label: visually_hidden
     settings: {  }
     third_party_settings: {  }
+  links:
+    weight: 0
     region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
-  field_image: true
-  field_person_credential: true
+  body: true
   field_person_first_name: true
   field_person_last_name: true
   field_person_mentor_qualif: true
   field_person_mentor_ug_role: true
-  field_person_position: true
   field_person_research_assistants: true
-  field_person_research_project: true
-  field_uiowa_college: true
   search_api_excerpt: true
