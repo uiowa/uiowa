@@ -13,6 +13,7 @@ dependencies:
     - field.field.node.scholar.field_person_scholar_mentor_link
     - field.field.node.scholar.field_scholar_bio
     - field.field.node.scholar.field_scholar_bio_headline
+    - field.field.node.scholar.field_scholar_mentor
     - field.field.node.scholar.field_scholar_participation_year
     - node.type.scholar
   module:
@@ -27,7 +28,7 @@ mode: teaser
 content:
   field_image:
     type: entity_reference_entity_view
-    weight: 8
+    weight: 9
     region: content
     label: visually_hidden
     settings:
@@ -71,7 +72,7 @@ content:
     third_party_settings: {  }
   field_scholar_bio:
     type: text_summary_or_trimmed
-    weight: 7
+    weight: 8
     region: content
     label: visually_hidden
     settings:
@@ -79,9 +80,17 @@ content:
     third_party_settings: {  }
   field_scholar_bio_headline:
     type: string
-    weight: 6
+    weight: 7
     region: content
     label: visually_hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_scholar_mentor:
+    type: string
+    weight: 6
+    region: content
+    label: inline
     settings:
       link_to_entity: false
     third_party_settings: {  }

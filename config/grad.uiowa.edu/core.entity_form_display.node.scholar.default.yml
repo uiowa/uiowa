@@ -12,6 +12,7 @@ dependencies:
     - field.field.node.scholar.field_person_scholar_mentor_link
     - field.field.node.scholar.field_scholar_bio
     - field.field.node.scholar.field_scholar_bio_headline
+    - field.field.node.scholar.field_scholar_mentor
     - field.field.node.scholar.field_scholar_participation_year
     - node.type.scholar
   module:
@@ -81,7 +82,7 @@ content:
     type: link_default
     region: content
   field_scholar_bio:
-    weight: 15
+    weight: 16
     settings:
       rows: 9
       summary_rows: 3
@@ -91,6 +92,14 @@ content:
     type: text_textarea_with_summary
     region: content
   field_scholar_bio_headline:
+    weight: 14
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_scholar_mentor:
     weight: 13
     settings:
       size: 60
@@ -99,7 +108,7 @@ content:
     type: string_textfield
     region: content
   field_scholar_participation_year:
-    weight: 14
+    weight: 15
     settings: {  }
     third_party_settings: {  }
     type: options_select
