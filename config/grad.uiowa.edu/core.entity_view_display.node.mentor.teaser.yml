@@ -29,7 +29,7 @@ mode: teaser
 content:
   field_grad_program:
     type: list_default
-    weight: 5
+    weight: 4
     region: content
     label: visually_hidden
     settings: {  }
@@ -43,24 +43,16 @@ content:
       view_mode: large__square
       link: false
     third_party_settings: {  }
-  field_person_credential:
-    type: string
-    weight: 1
-    region: content
-    label: visually_hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
   field_person_education:
     type: basic_string
-    weight: 4
+    weight: 3
     region: content
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
   field_person_position:
     type: string
-    weight: 2
+    weight: 1
     region: content
     label: above
     settings:
@@ -68,12 +60,13 @@ content:
     third_party_settings: {  }
   field_uiowa_college:
     type: uiowa_academic_units_formatter
-    weight: 3
+    weight: 2
     region: content
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_person_credential: true
   field_person_first_name: true
   field_person_last_name: true
   field_person_mentor_qualif: true
