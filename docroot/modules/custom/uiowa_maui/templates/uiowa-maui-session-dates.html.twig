@@ -1,0 +1,37 @@
+{#
+/**
+ * @file
+ * Default theme implementation for MAUI session date.
+ *
+ * Available variables:
+ * - heading_size: The heading size to use for the date.
+ * - dates: An array of session dates grouped by start/end times.
+ *   - start: The formatted start date.
+ *    - end: The formatted end date.
+ *    - items: Array of items occuring on this date.
+ *      - description: The description of the item.
+ *      - session: The session it applies to.
+ *
+ * @see template_preprocess_uiowa_maui_session_date()
+ *
+ * @ingroup themeable
+ */
+#}
+
+{% for date in dates %}
+<div class="uiowa-maui-session-date">
+  <{{ heading_size }}>
+  {{ date.start }}
+  {% if date.start != date.end %}
+    - {{ date.end }}
+  {% endif %}
+  </{{ heading_size }}>
+
+  {% for item in date.items %}
+    <div class="uiowa-maui-session-date-description">
+      {{ item.description }}
+      <span class="uiowa-maui-session-date-session">{{ item.session }}</span>
+    </div>
+  {% endfor %}
+</div>
+{% endfor %}

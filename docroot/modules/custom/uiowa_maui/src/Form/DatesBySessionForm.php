@@ -95,16 +95,14 @@ class DatesBySessionForm extends FormBase {
       'dates' => [],
     ];
 
-    $dates = $this->maui->getSessionDates($current, $category);
+    $data = $this->maui->getSessionDates($current, $category);
 
-    if (!empty($dates)) {
-      foreach ($dates as $date) {
-        $form['dates-wrapper']['dates'][] = [
-          '#theme' => 'uiowa_maui_session_date',
-          '#date' => $date,
-          '#heading_size' => $heading_size,
-        ];
-      }
+    if (!empty($data)) {
+      $form['dates-wrapper']['dates'][] = [
+        '#theme' => 'uiowa_maui_session_dates',
+        '#data' => $data,
+        '#heading_size' => $heading_size,
+      ];
     }
     else {
       $form['dates-wrapper']['dates'] = [
