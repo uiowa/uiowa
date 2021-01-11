@@ -70,53 +70,34 @@
  *   in different view modes.
  */
 #}
+
 {%
   set classes = [
-  'node',
-  'node--type-' ~ node.bundle|clean_class,
-  node.isPromoted() ? 'node--promoted',
-  node.isSticky() ? 'node--sticky',
-  not node.isPublished() ? 'node--unpublished',
-  view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+  'card--list',
+  'bg--white',
+  'card--media-left',
+  'media--border',
+  'card--centered-left',
+  'card--alignment-left'
 ]
 %}
 
-{% if '1' in content.field_article_source_link_direct.0 and node.field_article_source_link.0.uri %}
-  {% set node_link = node.field_article_source_link.0.uri %}
-{% else %}
-  {% set node_link = url %}
-{% endif %}
-
-{% set headline_level = heading_size ?: 'h3' %}
-{% if view %}
-  {% set headline_level = view.display_handler.getOption('heading_size') %}
-{% endif %}
+{% set headline_level = heading_size ?: 'h2' %}
 
 {{ attach_library('classy/node') }}
-{{ attach_library('uids_base/node-type-article') }}
 {{ attach_library('uids_base/paragraphs-lists') }}
+{{ attach_library('uids_base/node-type-person') }}
 
-{% set article_card = {
+{% set person_card = {
   'attributes': attributes.addClass(classes),
-  'card_image' : content.field_image|render,
-  'card_title': label,
-  'content': content,
-  'card_link_url': node_link,
+  'card_image': content.field_image | render,
+  'media_styles': 'media--circle',
+  'media_sizes': 'card__media--small',
+  'card_text': content|without('field_image', 'field_image', 'field_person_email', 'field_person_phone', 'field_person_education', 'field_person_credential', 'links'),
+  'card_subtitle': content.field_person_education.0,
+  'card_title': label | render,
+  'card_link_url': url,
   'headline_level': headline_level,
 } %}
 
-{% embed '@uids_base/uids/card.html.twig' with article_card only %}
-
-  {# @todo Add content_attributes.addClass('node__content media-body') #}
-
-  {% block card_details %}
-    <div class="article-meta">
-      {{ content.article_created_date }}{{ content.article_author }}{{ content.field_article_source_org }}{{ content.field_article_source_link }}
-    </div>
-  {% endblock %}
-
-  {% block card_content %}
-    {{ content|without('field_image', 'links', 'article_created_date', 'article_author', 'field_article_source_org', 'field_article_source_link', 'field_article_source_link_direct') }}
-  {% endblock %}
-
-{% endembed %}
+{% embed '@uids_base/uids/card.html.twig' with person_card only %}{% endembed %}
