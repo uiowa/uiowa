@@ -4,12 +4,15 @@ status: true
 dependencies:
   config:
     - field.field.node.mentor.body
+    - field.field.node.mentor.field_image
     - field.field.node.mentor.field_person_credential
     - field.field.node.mentor.field_person_first_name
     - field.field.node.mentor.field_person_last_name
     - field.field.node.mentor.field_person_mentor_qualif
     - field.field.node.mentor.field_person_mentor_ug_role
     - field.field.node.mentor.field_person_position
+    - field.field.node.mentor.field_person_research_assistants
+    - field.field.node.mentor.field_person_research_project
     - field.field.node.mentor.field_uiowa_college
     - node.type.mentor
   module:
@@ -27,6 +30,14 @@ content:
     weight: 101
     settings: {  }
     third_party_settings: {  }
+    region: content
+  field_image:
+    weight: 111
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
     region: content
   field_person_credential:
     weight: 107
@@ -68,6 +79,22 @@ content:
     region: content
   field_person_position:
     weight: 108
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_person_research_assistants:
+    weight: 110
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_person_research_project:
+    weight: 109
     label: above
     settings:
       link_to_entity: false

@@ -4,12 +4,15 @@ status: true
 dependencies:
   config:
     - field.field.node.mentor.body
+    - field.field.node.mentor.field_image
     - field.field.node.mentor.field_person_credential
     - field.field.node.mentor.field_person_first_name
     - field.field.node.mentor.field_person_last_name
     - field.field.node.mentor.field_person_mentor_qualif
     - field.field.node.mentor.field_person_mentor_ug_role
     - field.field.node.mentor.field_person_position
+    - field.field.node.mentor.field_person_research_assistants
+    - field.field.node.mentor.field_person_research_project
     - field.field.node.mentor.field_uiowa_college
     - node.type.mentor
   module:
@@ -24,7 +27,7 @@ mode: default
 content:
   body:
     type: text_textarea_with_summary
-    weight: 121
+    weight: 12
     settings:
       rows: 9
       summary_rows: 3
@@ -34,12 +37,22 @@ content:
     region: content
   created:
     type: datetime_timestamp
-    weight: 10
+    weight: 1
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_image:
+    weight: 8
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
   field_person_credential:
-    weight: 127
+    weight: 11
     settings:
       size: 60
       placeholder: ''
@@ -47,7 +60,7 @@ content:
     type: string_textfield
     region: content
   field_person_first_name:
-    weight: 122
+    weight: 9
     settings:
       size: 60
       placeholder: ''
@@ -55,7 +68,7 @@ content:
     type: string_textfield
     region: content
   field_person_last_name:
-    weight: 123
+    weight: 10
     settings:
       size: 60
       placeholder: ''
@@ -63,7 +76,7 @@ content:
     type: string_textfield
     region: content
   field_person_mentor_qualif:
-    weight: 125
+    weight: 18
     settings:
       rows: 5
       placeholder: ''
@@ -71,7 +84,7 @@ content:
     type: text_textarea
     region: content
   field_person_mentor_ug_role:
-    weight: 126
+    weight: 17
     settings:
       rows: 5
       placeholder: ''
@@ -79,7 +92,23 @@ content:
     type: text_textarea
     region: content
   field_person_position:
-    weight: 128
+    weight: 14
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_person_research_assistants:
+    weight: 16
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_person_research_project:
+    weight: 15
     settings:
       size: 60
       placeholder: ''
@@ -87,7 +116,7 @@ content:
     type: string_textfield
     region: content
   field_uiowa_college:
-    weight: 124
+    weight: 13
     settings:
       types:
         - college
@@ -96,13 +125,13 @@ content:
     region: content
   moderation_state:
     type: moderation_state_default
-    weight: 100
+    weight: 6
     settings: {  }
     region: content
     third_party_settings: {  }
   path:
     type: path
-    weight: 30
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -110,34 +139,26 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 15
+    weight: 2
     region: content
     third_party_settings: {  }
   status:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 120
+    weight: 7
     region: content
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 16
+    weight: 3
     region: content
-    third_party_settings: {  }
-  title:
-    type: string_textfield
-    weight: -5
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 5
+    weight: 0
     settings:
       match_operator: CONTAINS
       size: 60
@@ -146,8 +167,9 @@ content:
     region: content
     third_party_settings: {  }
   url_redirects:
-    weight: 50
+    weight: 5
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
-hidden: {  }
+hidden:
+  title: true

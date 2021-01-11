@@ -5,12 +5,15 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.mentor.body
+    - field.field.node.mentor.field_image
     - field.field.node.mentor.field_person_credential
     - field.field.node.mentor.field_person_first_name
     - field.field.node.mentor.field_person_last_name
     - field.field.node.mentor.field_person_mentor_qualif
     - field.field.node.mentor.field_person_mentor_ug_role
     - field.field.node.mentor.field_person_position
+    - field.field.node.mentor.field_person_research_assistants
+    - field.field.node.mentor.field_person_research_project
     - field.field.node.mentor.field_uiowa_college
     - node.type.mentor
   module:
@@ -35,11 +38,14 @@ content:
     third_party_settings: {  }
     region: content
 hidden:
+  field_image: true
   field_person_credential: true
   field_person_first_name: true
   field_person_last_name: true
   field_person_mentor_qualif: true
   field_person_mentor_ug_role: true
   field_person_position: true
+  field_person_research_assistants: true
+  field_person_research_project: true
   field_uiowa_college: true
   search_api_excerpt: true
