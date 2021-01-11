@@ -117,7 +117,7 @@ class DatesBySessionForm extends FormBase {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    // @todo Validate session and category form values.
+    parent::validateForm($form, $form_state);
   }
 
   /**
