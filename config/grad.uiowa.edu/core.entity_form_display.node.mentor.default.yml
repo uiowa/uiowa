@@ -3,7 +3,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.mentor.body
     - field.field.node.mentor.field_grad_program
     - field.field.node.mentor.field_image
     - field.field.node.mentor.field_person_credential
@@ -14,11 +13,12 @@ dependencies:
     - field.field.node.mentor.field_person_mentor_ug_role
     - field.field.node.mentor.field_person_position
     - field.field.node.mentor.field_person_research_assistants
-    - field.field.node.mentor.field_person_research_project
+    - field.field.node.mentor.field_scholar_bio
     - field.field.node.mentor.field_uiowa_college
     - node.type.mentor
   module:
     - content_moderation
+    - media_library
     - path
     - text
     - uiowa_entities
@@ -27,16 +27,6 @@ targetEntityType: node
 bundle: mentor
 mode: default
 content:
-  body:
-    type: text_textarea_with_summary
-    weight: 12
-    settings:
-      rows: 9
-      summary_rows: 3
-      placeholder: ''
-      show_summary: false
-    third_party_settings: {  }
-    region: content
   created:
     type: datetime_timestamp
     weight: 1
@@ -52,12 +42,9 @@ content:
   field_image:
     weight: 8
     settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
+      media_types: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: media_library_widget
     region: content
   field_person_credential:
     weight: 11
@@ -123,13 +110,15 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
-  field_person_research_project:
-    weight: 17
+  field_scholar_bio:
+    weight: 26
     settings:
-      size: 60
+      rows: 9
+      summary_rows: 3
       placeholder: ''
+      show_summary: false
     third_party_settings: {  }
-    type: string_textfield
+    type: text_textarea_with_summary
     region: content
   field_uiowa_college:
     weight: 13

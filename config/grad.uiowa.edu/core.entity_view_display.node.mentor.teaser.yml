@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
-    - field.field.node.mentor.body
     - field.field.node.mentor.field_grad_program
     - field.field.node.mentor.field_image
     - field.field.node.mentor.field_person_credential
@@ -15,7 +14,7 @@ dependencies:
     - field.field.node.mentor.field_person_mentor_ug_role
     - field.field.node.mentor.field_person_position
     - field.field.node.mentor.field_person_research_assistants
-    - field.field.node.mentor.field_person_research_project
+    - field.field.node.mentor.field_scholar_bio
     - field.field.node.mentor.field_uiowa_college
     - node.type.mentor
   module:
@@ -66,14 +65,6 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-  field_person_research_project:
-    type: string
-    weight: 4
-    region: content
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
   field_uiowa_college:
     type: uiowa_academic_units_formatter
     weight: 5
@@ -87,10 +78,10 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
-  body: true
   field_person_first_name: true
   field_person_last_name: true
   field_person_mentor_qualif: true
   field_person_mentor_ug_role: true
   field_person_research_assistants: true
+  field_scholar_bio: true
   search_api_excerpt: true

@@ -1,10 +1,10 @@
-uuid: a9671d79-8a8d-4dc4-8a2d-5fd49d6e342f
+uuid: 0262d6b2-cba6-4cfa-ab54-935769d8f777
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_scholar_bio
-    - node.type.scholar
+    - node.type.mentor
   module:
     - allowed_formats
     - text
@@ -14,14 +14,14 @@ third_party_settings:
     filtered_html: '0'
     full_html: '0'
     plain_text: '0'
-id: node.scholar.field_scholar_bio
+id: node.mentor.field_scholar_bio
 field_name: field_scholar_bio
 entity_type: node
-bundle: scholar
+bundle: mentor
 label: Bio
 description: 'Use this field to give general information about the person or to talk about the focus of their studies or research.'
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:

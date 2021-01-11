@@ -3,7 +3,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.mentor.body
     - field.field.node.mentor.field_grad_program
     - field.field.node.mentor.field_image
     - field.field.node.mentor.field_person_credential
@@ -14,7 +13,7 @@ dependencies:
     - field.field.node.mentor.field_person_mentor_ug_role
     - field.field.node.mentor.field_person_position
     - field.field.node.mentor.field_person_research_assistants
-    - field.field.node.mentor.field_person_research_project
+    - field.field.node.mentor.field_scholar_bio
     - field.field.node.mentor.field_uiowa_college
     - node.type.mentor
   module:
@@ -27,13 +26,6 @@ targetEntityType: node
 bundle: mentor
 mode: default
 content:
-  body:
-    label: hidden
-    type: text_default
-    weight: 1
-    settings: {  }
-    third_party_settings: {  }
-    region: content
   field_grad_program:
     weight: 4
     label: visually_hidden
@@ -95,13 +87,12 @@ content:
     third_party_settings: {  }
     type: string
     region: content
-  field_person_research_project:
-    weight: 7
+  field_scholar_bio:
+    weight: 12
     label: above
-    settings:
-      link_to_entity: false
+    settings: {  }
     third_party_settings: {  }
-    type: string
+    type: text_default
     region: content
   field_uiowa_college:
     weight: 3
