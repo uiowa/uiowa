@@ -23,12 +23,11 @@
 
 {% for date in dates %}
   {% for item in date.items %}
-    {% set date_description = item.description ~ ' - ' ~  item.session %}
+    {% set date_description = item.description ~ '&nbsp;<span class="badge badge--primary">' ~ item.session ~ '</span>' %}
 
   {%
     set classes = [
     'card--media-left',
-    'uiowa-card-event',
     'card--centered-left',
     'card--alignment-left',
   ]
@@ -36,7 +35,7 @@
 
   {% set event_block = {
     'attributes': attributes.addClass(classes),
-    'card_subtitle': date_description,
+    'card_subtitle': date_description|t,
     'card_title': date.start != date.end ? date.start ~ ' - ' ~ date.end : date.start,
     'card_icon': "icon",
     'heading_level': heading_size,
