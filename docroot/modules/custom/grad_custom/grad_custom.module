@@ -26,6 +26,23 @@ function grad_custom_entity_presave(EntityInterface $entity) {
   }
 }
 
+function grad_custom_theme($existing, $type, $theme, $path) {
+  return [
+    'field__comma_separated' => [
+      'template' => 'field--comma-separated',
+      'base hook' => 'field',
+    ],
+    'field__node__field_scholar_mentor' => [
+      'template' => 'field--node--field-scholar-mentor',
+      'base hook' => 'field',
+    ],
+    'field__node__field_scholar_participation_year' => [
+      'template' => 'field--node--field-scholar-participation-year',
+      'base hook' => 'field',
+    ],
+  ];
+}
+
 /**
  * Implements hook_form_alter().
  */
