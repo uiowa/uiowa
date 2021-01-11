@@ -26,6 +26,9 @@ function grad_custom_entity_presave(EntityInterface $entity) {
   }
 }
 
+/**
+ * Implements hook_theme for templates.
+ */
 function grad_custom_theme($existing, $type, $theme, $path) {
   return [
     'field__comma_separated' => [
@@ -39,6 +42,10 @@ function grad_custom_theme($existing, $type, $theme, $path) {
     'field__node__field_scholar_participation_year' => [
       'template' => 'field--node--field-scholar-participation-year',
       'base hook' => 'field',
+    ],
+    'node__view__srop_scholars' => [
+      'template' => 'node--view--srop-scholars',
+      'base hook' => 'node',
     ],
   ];
 }
