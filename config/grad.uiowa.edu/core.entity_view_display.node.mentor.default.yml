@@ -14,6 +14,7 @@ dependencies:
     - field.field.node.mentor.field_person_position
     - field.field.node.mentor.field_person_research_assistants
     - field.field.node.mentor.field_scholar_bio
+    - field.field.node.mentor.field_scholar_bio_headline
     - field.field.node.mentor.field_uiowa_college
     - node.type.mentor
   module:
@@ -27,14 +28,14 @@ bundle: mentor
 mode: default
 content:
   field_grad_program:
-    weight: 4
+    weight: 3
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
     type: list_default
     region: content
   field_image:
-    weight: 11
+    weight: 10
     label: visually_hidden
     settings:
       view_mode: large__square
@@ -43,7 +44,7 @@ content:
     type: entity_reference_entity_view
     region: content
   field_person_credential:
-    weight: 2
+    weight: 1
     label: visually_hidden
     settings:
       link_to_entity: false
@@ -51,28 +52,28 @@ content:
     type: string
     region: content
   field_person_education:
-    weight: 5
+    weight: 4
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
     type: basic_string
     region: content
   field_person_mentor_qualif:
-    weight: 9
+    weight: 8
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   field_person_mentor_ug_role:
-    weight: 10
+    weight: 9
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   field_person_position:
-    weight: 6
+    weight: 5
     label: visually_hidden
     settings:
       link_to_entity: false
@@ -80,7 +81,7 @@ content:
     type: string
     region: content
   field_person_research_assistants:
-    weight: 8
+    weight: 7
     label: above
     settings:
       link_to_entity: false
@@ -88,14 +89,22 @@ content:
     type: string
     region: content
   field_scholar_bio:
-    weight: 12
-    label: above
+    weight: 11
+    label: visually_hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
+  field_scholar_bio_headline:
+    weight: 6
+    label: visually_hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
   field_uiowa_college:
-    weight: 3
+    weight: 2
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
