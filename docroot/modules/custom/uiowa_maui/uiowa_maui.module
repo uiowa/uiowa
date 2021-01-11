@@ -59,5 +59,10 @@ function uiowa_maui_preprocess_block(&$variables) {
  * Theme preprocess function for uiowa_maui_session_date.
  */
 function template_preprocess_uiowa_maui_session_date(&$variables) {
-  $variables['title'] = Xss::filter($variables['date']->dateLookup->description);
+  $variables['session_date'] = date('F j, Y', strtotime($variables['date']->beginDate));
+  $variables['description'] = Xss::filter($variables['date']->dateLookup->description);
+
+  // Use the subsession if it is set.
+  $session = $variables['date']->subSession ?? $variables['date']->session->shortDescription;
+  $variables['session'] = Xss::filter($session);
 }
