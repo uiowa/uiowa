@@ -4,8 +4,10 @@ status: true
 dependencies:
   config:
     - field.field.node.mentor.body
+    - field.field.node.mentor.field_grad_program
     - field.field.node.mentor.field_image
     - field.field.node.mentor.field_person_credential
+    - field.field.node.mentor.field_person_education
     - field.field.node.mentor.field_person_first_name
     - field.field.node.mentor.field_person_last_name
     - field.field.node.mentor.field_person_mentor_qualif
@@ -41,6 +43,12 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_grad_program:
+    weight: 14
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
   field_image:
     weight: 8
     settings:
@@ -59,6 +67,14 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
+  field_person_education:
+    weight: 15
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
   field_person_first_name:
     weight: 9
     settings:
@@ -76,7 +92,7 @@ content:
     type: string_textfield
     region: content
   field_person_mentor_qualif:
-    weight: 18
+    weight: 20
     settings:
       rows: 5
       placeholder: ''
@@ -84,7 +100,7 @@ content:
     type: text_textarea
     region: content
   field_person_mentor_ug_role:
-    weight: 17
+    weight: 19
     settings:
       rows: 5
       placeholder: ''
@@ -92,14 +108,6 @@ content:
     type: text_textarea
     region: content
   field_person_position:
-    weight: 14
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_person_research_assistants:
     weight: 16
     settings:
       size: 60
@@ -107,8 +115,16 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
+  field_person_research_assistants:
+    weight: 18
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_person_research_project:
-    weight: 15
+    weight: 17
     settings:
       size: 60
       placeholder: ''
