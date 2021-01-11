@@ -1955,3 +1955,21 @@ $sites['orgblsa.local.drupal.uiowa.edu'] = 'blsa.org.uiowa.edu';
 $sites['orgblsa.dev.drupal.uiowa.edu'] = 'blsa.org.uiowa.edu';
 $sites['orgblsa.stage.drupal.uiowa.edu'] = 'blsa.org.uiowa.edu';
 $sites['orgblsa.prod.drupal.uiowa.edu'] = 'blsa.org.uiowa.edu';
+
+// Directory aliases for freespeech.uiowa.edu.
+$sites['freespeech.local.drupal.uiowa.edu'] = 'freespeech.uiowa.edu';
+$sites['freespeech.dev.drupal.uiowa.edu'] = 'freespeech.uiowa.edu';
+$sites['freespeech.stage.drupal.uiowa.edu'] = 'freespeech.uiowa.edu';
+$sites['freespeech.prod.drupal.uiowa.edu'] = 'freespeech.uiowa.edu';
+
+// Directory aliases for strategicplan.sites.uiowa.edu.
+$sites['sitesstrategicplan.local.drupal.uiowa.edu'] = 'strategicplan.sites.uiowa.edu';
+$sites['sitesstrategicplan.dev.drupal.uiowa.edu'] = 'strategicplan.sites.uiowa.edu';
+$sites['sitesstrategicplan.stage.drupal.uiowa.edu'] = 'strategicplan.sites.uiowa.edu';
+$sites['sitesstrategicplan.prod.drupal.uiowa.edu'] = 'strategicplan.sites.uiowa.edu';
+
+// Directory aliases for ftoor.lab.uiowa.edu.
+$sites['labftoor.local.drupal.uiowa.edu'] = 'ftoor.lab.uiowa.edu';
+$sites['labftoor.dev.drupal.uiowa.edu'] = 'ftoor.lab.uiowa.edu';
+$sites['labftoor.stage.drupal.uiowa.edu'] = 'ftoor.lab.uiowa.edu';
+$sites['labftoor.prod.drupal.uiowa.edu'] = 'ftoor.lab.uiowa.edu';

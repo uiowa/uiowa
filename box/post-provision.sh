@@ -5,3 +5,4 @@
 
 # Update Composer to version 2 since setting composer_version didn't work.
 composer self-update --2
+sudo chmod 766 /tmp/xdebug.log
