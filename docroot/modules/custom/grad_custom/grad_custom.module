@@ -131,7 +131,7 @@ function grad_degrees_offered_allowed_values(FieldStorageConfig $definition, Con
 /**
  * Implements hook_allowed_values_function().
  */
-function grad_programs_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+function grad_programs_allowed_values() {
   return [
     'ACTG' => "Accounting",
     'ACT_SCI' => "Actuarial Science",
