@@ -59,7 +59,15 @@ function uiowa_maui_preprocess_block(&$variables) {
         }
       }
 
-      $variables['content']['form'] = \Drupal::formBuilder()->getForm('\Drupal\uiowa_maui\Form\DatesBySessionForm', $heading_size);
+      // Pass the prefiltered category argument to the form build method.
+      if ($block->get('field_uiowa_maui_date_category')->isEmpty()) {
+        $category_prefilter = NULL;
+      }
+      else {
+        $category_prefilter = $block->get('field_uiowa_maui_date_category')->getString();
+      }
+
+      $variables['content']['form'] = \Drupal::formBuilder()->getForm('\Drupal\uiowa_maui\Form\DatesBySessionForm', $heading_size, $category_prefilter);
       break;
   }
 }

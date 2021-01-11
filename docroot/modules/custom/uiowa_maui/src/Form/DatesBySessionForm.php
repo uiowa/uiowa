@@ -48,9 +48,9 @@ class DatesBySessionForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, $heading_size = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, $heading_size = NULL, $category_prefilter = NULL) {
     $current = $form_state->getValue('session') ?? $this->maui->getCurrentSession()->id;
-    $category = $form_state->getValue('category') ?? NULL;
+    $category = $form_state->getValue('category') ?? $category_prefilter;
 
     // Get a list of sessions for the select list options.
     $sessions = $this->maui->getSessionsBounded(5, 5);
