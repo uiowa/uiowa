@@ -53,7 +53,7 @@ class DatesBySessionForm extends FormBase {
     $category = $form_state->getValue('category') ?? $category_prefilter;
 
     // Get a list of sessions for the select list options.
-    $sessions = $this->maui->getSessionsBounded(5, 5);
+    $sessions = $this->maui->getSessionsBounded(10, 10);
     $options = [];
 
     foreach ($sessions as $session) {
