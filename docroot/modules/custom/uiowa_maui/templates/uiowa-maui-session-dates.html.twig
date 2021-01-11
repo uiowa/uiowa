@@ -18,20 +18,33 @@
  */
 #}
 
-{% for date in dates %}
-<div class="uiowa-maui-session-date">
-  <{{ heading_size }}>
-  {{ date.start }}
-  {% if date.start != date.end %}
-    - {{ date.end }}
-  {% endif %}
-  </{{ heading_size }}>
+{{ attach_library('uids_base/event') }}
+{{ attach_library('uids_base/badge') }}
 
+{% for date in dates %}
   {% for item in date.items %}
-    <div class="uiowa-maui-session-date-description">
-      {{ item.description }}
-      <span class="uiowa-maui-session-date-session">{{ item.session }}</span>
-    </div>
+    {% set date_description = item.description ~ ' - ' ~  item.session %}
+
+  {%
+    set classes = [
+    'card--media-left',
+    'uiowa-card-event',
+    'card--centered-left',
+    'card--alignment-left',
+  ]
+  %}
+
+  {% set event_block = {
+    'attributes': attributes.addClass(classes),
+    'card_subtitle': date_description,
+    'card_title': date.start != date.end ? date.start ~ ' - ' ~ date.end : date.start,
+    'card_icon': "icon",
+    'heading_level': heading_size,
+    'title_prefix': title_prefix,
+    'title_suffix': title_suffix,
+  } %}
+
+  {% embed '@uids_base/uids/card.html.twig' with event_block only %}
+  {% endembed %}
   {% endfor %}
-</div>
 {% endfor %}
