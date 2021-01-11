@@ -67,7 +67,7 @@ class DatesBySessionForm extends FormBase {
       '#default_value' => $current,
       '#options' => $options,
       '#ajax' => [
-        'callback' => '::ajaxResponse',
+        'callback' => [$this, 'sessionChanged'],
         'wrapper' => 'maui-dates-wrapper',
       ],
     ];
@@ -81,7 +81,7 @@ class DatesBySessionForm extends FormBase {
       '#empty_option' => $this->t('- All -'),
       '#options' => $this->maui->getDateCategories(),
       '#ajax' => [
-        'callback' => '::ajaxResponse',
+        'callback' => [$this, 'categoryChanged'],
         'wrapper' => 'maui-dates-wrapper',
       ],
     ];
@@ -128,9 +128,16 @@ class DatesBySessionForm extends FormBase {
   }
 
   /**
-   * AJAX callback for session and category form element changes.
+   * AJAX callback for session form element change.
    */
-  public function ajaxResponse(array &$form, FormStateInterface $form_state) {
+  public function sessionChanged(array &$form, FormStateInterface $form_state) {
+    return $form['dates-wrapper'];
+  }
+
+  /**
+   * AJAX callback for category form element change.
+   */
+  public function categoryChanged(array &$form, FormStateInterface $form_state) {
     return $form['dates-wrapper'];
   }
 
