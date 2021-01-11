@@ -37,13 +37,12 @@
     'attributes': attributes.addClass(classes),
     'card_subtitle': date_description|t,
     'card_title': date.start != date.end ? date.start ~ ' - ' ~ date.end : date.start,
-    'card_icon': "icon",
     'heading_level': heading_size,
     'title_prefix': title_prefix,
     'title_suffix': title_suffix,
   } %}
 
-  {% embed '@uids_base/uids/card.html.twig' with event_block only %}
-  {% endembed %}
+    {% embed '@uids_base/uids/card.html.twig' with event_block only %}
+    {% endembed %}
   {% endfor %}
 {% endfor %}
