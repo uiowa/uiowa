@@ -4,11 +4,17 @@ status: true
 dependencies:
   config:
     - field.field.node.mentor.body
+    - field.field.node.mentor.field_person_credential
     - field.field.node.mentor.field_person_first_name
     - field.field.node.mentor.field_person_last_name
+    - field.field.node.mentor.field_person_mentor_qualif
+    - field.field.node.mentor.field_person_mentor_ug_role
+    - field.field.node.mentor.field_person_position
+    - field.field.node.mentor.field_uiowa_college
     - node.type.mentor
   module:
     - text
+    - uiowa_entities
     - user
 id: node.mentor.default
 targetEntityType: node
@@ -21,6 +27,14 @@ content:
     weight: 101
     settings: {  }
     third_party_settings: {  }
+    region: content
+  field_person_credential:
+    weight: 107
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
     region: content
   field_person_first_name:
     weight: 102
@@ -37,6 +51,35 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
+  field_person_mentor_qualif:
+    weight: 105
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_person_mentor_ug_role:
+    weight: 106
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_person_position:
+    weight: 108
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_uiowa_college:
+    weight: 104
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: uiowa_academic_units_formatter
     region: content
   links:
     weight: 100

@@ -4,13 +4,19 @@ status: true
 dependencies:
   config:
     - field.field.node.mentor.body
+    - field.field.node.mentor.field_person_credential
     - field.field.node.mentor.field_person_first_name
     - field.field.node.mentor.field_person_last_name
+    - field.field.node.mentor.field_person_mentor_qualif
+    - field.field.node.mentor.field_person_mentor_ug_role
+    - field.field.node.mentor.field_person_position
+    - field.field.node.mentor.field_uiowa_college
     - node.type.mentor
   module:
     - content_moderation
     - path
     - text
+    - uiowa_entities
 id: node.mentor.default
 targetEntityType: node
 bundle: mentor
@@ -32,6 +38,14 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_person_credential:
+    weight: 127
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_person_first_name:
     weight: 122
     settings:
@@ -47,6 +61,38 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  field_person_mentor_qualif:
+    weight: 125
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_person_mentor_ug_role:
+    weight: 126
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_person_position:
+    weight: 128
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_uiowa_college:
+    weight: 124
+    settings:
+      types:
+        - college
+    third_party_settings: {  }
+    type: uiowa_academic_units_widget
     region: content
   moderation_state:
     type: moderation_state_default
