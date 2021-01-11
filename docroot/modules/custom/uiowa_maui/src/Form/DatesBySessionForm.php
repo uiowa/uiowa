@@ -91,6 +91,7 @@ class DatesBySessionForm extends FormBase {
       '#type' => 'container',
       '#attributes' => [
         'id' => 'maui-dates-wrapper',
+        'aria-live' => 'polite',
       ],
       'dates' => [],
     ];
