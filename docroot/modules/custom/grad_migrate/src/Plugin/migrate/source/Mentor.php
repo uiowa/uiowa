@@ -57,7 +57,7 @@ class Mentor extends BaseNodeSource {
         'field_mentor_lastname_format',
       ])
       ->fields('degrees', [
-        'field_mentor_degree_value',
+        'field_mentor_degrees_value',
       ])
       ->fields('position', [
         'field_mentor_position_value',
@@ -66,11 +66,12 @@ class Mentor extends BaseNodeSource {
         'field_mentor_email_email',
       ])
       ->fields('project_title', [
-        'field_mentor_project_title',
+        'field_mentor_project_title_value',
       ])
       ->fields('phone', [
         'field_mentor_phone_phone_na',
       ])
+      // @todo Preprocess this to check/fix invalid values.
       ->fields('website', [
         'field_mentor_website_url',
       ])
