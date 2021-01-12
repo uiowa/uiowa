@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\uiowa_maui\Plugin\Block\AcademicCalendarBlock.
- */
-
 namespace Drupal\uiowa_maui\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
@@ -30,10 +25,16 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
   protected $maui;
 
   /**
+   * Override the construction method.
+   *
    * @param array $configuration
+   *   The block configuration.
    * @param string $plugin_id
+   *   The plugin ID.
    * @param mixed $plugin_definition
+   *   The plugin definition.
    * @param \Drupal\uiowa_maui\MauiApi $maui
+   *   The MAUI API class.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, MauiApi $maui) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
@@ -41,10 +42,16 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
   }
 
   /**
+   * Override the create method.
+   *
    * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+   *   The application container.
    * @param array $configuration
+   *   The block configuration.
    * @param string $plugin_id
+   *   The plugin ID.
    * @param mixed $plugin_definition
+   *   The plugin definition.
    *
    * @return static
    */
@@ -134,4 +141,5 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
     }
     return $build;
   }
+
 }
