@@ -2,6 +2,8 @@
 
 namespace Drupal\grad_migrate\Plugin\migrate\source;
 
+use Drupal\Core\File\FileSystemInterface;
+use Drupal\migrate\MigrateException;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\migrate\Row;
 
@@ -42,14 +44,14 @@ class Article extends BaseNodeSource {
   public function query() {
     $query = parent::query();
     $query->join('field_data_body', 'b', 'n.nid = b.entity_id');
-    $query->leftJoin('field_data_field_header_image', 'hi', 'n.nid = hi.entity_id');
+    // field_data_field_header_image is not used.
     $query->leftJoin('field_data_field_thumbnail_image', 'ti', 'n.nid = ti.entity_id');
     $query->leftJoin('field_data_field_lead', 'l', 'n.nid = l.entity_id');
     $query->leftJoin('field_data_field_pull_quote', 'pq', 'n.nid = pq.entity_id');
     $query->leftJoin('field_data_field_pull_quote_featured', 'pqf', 'n.nid = pqf.entity_id');
     // field_data_field_annual_report is not needed.
-    // field_data_field_article_source_link is not needed
-    // field_data_field_attachments is not needed
+    // field_data_field_article_source_link is not needed.
+    // field_data_field_attachments is not needed.
     $query->leftJoin('field_data_field_photo_credit', 'pc', 'n.nid = pc.entity_id');
     $query = $query->fields('b', [
       'entity_type',
@@ -69,13 +71,6 @@ class Article extends BaseNodeSource {
       // @todo Join programs reference.
       // @todo Join editorial group reference.
       // @todo Check D8 migration status.
-      ->fields('hi', [
-        'field_header_image_fid',
-        'field_header_image_alt',
-        'field_header_image_title',
-        'field_header_image_width',
-        'field_header_image_height',
-      ])
       ->fields('ti', [
         'field_thumbnail_image_fid',
         'field_thumbnail_image_alt',
@@ -93,9 +88,6 @@ class Article extends BaseNodeSource {
       ])
       ->fields('pqf', [
         'field_pull_quote_featured_value',
-      ])
-      ->fields('ar', [
-        'field_annual_report_value',
       ])
       ->fields('pc', [
         'field_photo_credit_value',
@@ -151,13 +143,54 @@ class Article extends BaseNodeSource {
 
   /**
    * Prepare row used for altering source data prior to its insertion.
+   *
+   * @throws \Drupal\migrate\MigrateException
    */
   public function prepareRow(Row $row) {
 
+    // Hard-coding our constants, at least for now.
+    $source_base_path = 'https://www.grad.uiowa.edu/sites/gc/files/';
+    // Put the files in a time-specified path to match
+    // default file upload behaviors.
+    $drupal_file_directory = 'public://' . date('Y-m') . '/';
+
     // Check if an image was attached, and if so, update with new fid.
-    $original_fid = $row->getSourceProperty('field_header_image_fid');
+    $original_fid = $row->getSourceProperty('field_thumbnail_image_fid');
     if (isset($original_fid)) {
-      $row->setSourceProperty('field_header_image_fid', $this->getFid($original_fid, 'migrate_map_d7_grad_file'));
+      $filename = $this->fidQuery($original_fid)['filename'];
+      // Get a connection for the destination database.
+      $dest_connection = \Drupal::database();
+      $dest_query = $dest_connection->select('file_managed', 'f');
+      $new_fid = $dest_query->fields('f', ['fid'])
+        ->condition('f.filename', $filename)
+        ->execute()
+        ->fetchField();
+      // @todo move this to a shareable method.
+      if (!$new_fid) {
+        $raw_file = file_get_contents($source_base_path . $filename);
+        // Try to write the file, but we might need to create a directory.
+        $file = file_save_data($raw_file, $drupal_file_directory . $filename);
+        // If we weren't able to save, need to create directory.
+        if (!$file) {
+          $dir = $this->fileSystem
+            ->dirname($drupal_file_directory . $filename);
+          if (!$this->fileSystem
+            ->prepareDirectory($dir, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS)) {
+            // Something went seriously wrong.
+            throw new MigrateException("Could not create or write to directory '{$dir}'");
+          }
+        }
+        $dest_query = $dest_connection->select('file_managed', 'f');
+        $new_fid = $dest_query->fields('f', ['fid'])
+          ->condition('f.filename', $filename)
+          ->execute()
+          ->fetchField();
+        // @todo create media.
+      }
+      else {
+        // @todo fetch media.
+      }
+      // @todo add media for thumbnail image.
     }
 
     // Call the parent prepareRow.
