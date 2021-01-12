@@ -33,20 +33,20 @@
 {% for date in dates %}
   <div{{ attributes.addClass(classes) }}>
     <div class="card__body">
-      <{{ heading_size }} class="headline card__title">
-      {{ date.start }}
-      {% if date.start != date.end %}
-        - {{ date.end }}
-      {% endif %}
-    </{{ heading_size }}>
-    <div class="card__details">
-      {% for item in date.items %}
-        <div class="card__date">
-          {{ item.description }}
-          <span class="badge badge--primary">{{ item.session }}</span>
-        </div>
-      {% endfor %}
+      {% set date_heading = {
+        'headline_level': heading_size ?: 'h2',
+        'headline_class': 'card__title headline',
+        'headline_text': date.start != date.end ? date.start ~ ' - ' ~ date.end : date.start,
+      } %}
+      {% include '@uids_base/uids/headline.html.twig' with date_heading only %}
+      <div class="card__details">
+        {% for item in date.items %}
+          <div class="card__date">
+            {{ item.description }}
+            <span class="badge badge--primary">{{ item.session }}</span>
+          </div>
+        {% endfor %}
+      </div>
     </div>
-  </div>
   </div>
 {% endfor %}
