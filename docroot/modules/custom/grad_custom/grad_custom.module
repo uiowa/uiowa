@@ -25,6 +25,32 @@ function grad_custom_entity_presave(EntityInterface $entity) {
 
   }
 }
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function grad_custom_preprocess_page_title(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    $route_name = \Drupal::routeMatch()->getRouteName();
+    if ($route_name == 'entity.node.canonical') {
+      $node = \Drupal::routeMatch()->getParameter('node');
+    }
+    elseif ($route_name == 'entity.node.preview') {
+      $node = \Drupal::routeMatch()->getParameter('node_preview');
+    }
+    if (isset($node)) {
+      switch ($node->getType()) {
+        case 'scholar':
+        case 'mentor':
+          if ($node->hasField('field_person_credential') && !$node->get('field_person_credential')
+            ->isEmpty()) {
+            $variables['subtitle'] = $node->field_person_credential->value;
+          }
+          break;
+      }
+    }
+  }
+}
 
 /**
  * Implements hook_theme for templates.
@@ -45,6 +71,14 @@ function grad_custom_theme($existing, $type, $theme, $path) {
     ],
     'node__view__srop_scholars' => [
       'template' => 'node--view--srop-scholars',
+      'base hook' => 'node',
+    ],
+    'node__mentor__full' => [
+      'template' => 'node--mentor--full',
+      'base hook' => 'node',
+    ],
+    'node__scholar__full' => [
+      'template' => 'node--scholar--full',
       'base hook' => 'node',
     ],
   ];
