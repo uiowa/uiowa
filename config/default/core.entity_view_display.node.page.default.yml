@@ -184,8 +184,8 @@ third_party_settings:
         Forms: {  }
         'Lists (Views)': {  }
         Menus:
-          - 'system_menu_block:main'
           - 'menu_block:main'
+          - 'system_menu_block:main'
         Superfish: {  }
         System: {  }
         'University of Iowa Alerts': {  }
@@ -205,7 +205,6 @@ third_party_settings:
     allowed_block_categories:
       - 'Chaos Tools'
       - 'Content fields'
-      - Custom
       - 'Custom block types'
       - 'Custom blocks'
       - Devel
@@ -227,8 +226,14 @@ third_party_settings:
         - layout_fourcol
         - layout_page
       blacklisted_blocks:
+        layout_fourcol:
+          all_regions:
+            'Custom block types':
+              - uiowa_slider
+            'Inline blocks':
+              - 'inline_block:uiowa_slider'
         layout_onecol: {  }
-        layout_twocol:
+        layout_page:
           all_regions:
             'Custom block types':
               - uiowa_slider
@@ -240,13 +245,7 @@ third_party_settings:
               - uiowa_slider
             'Inline blocks':
               - 'inline_block:uiowa_slider'
-        layout_fourcol:
-          all_regions:
-            'Custom block types':
-              - uiowa_slider
-            'Inline blocks':
-              - 'inline_block:uiowa_slider'
-        layout_page:
+        layout_twocol:
           all_regions:
             'Custom block types':
               - uiowa_slider
