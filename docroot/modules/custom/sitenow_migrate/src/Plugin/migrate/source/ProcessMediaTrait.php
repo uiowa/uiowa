@@ -91,6 +91,9 @@ trait ProcessMediaTrait {
    */
   public function downloadFile($filename, $source_base_path, $drupal_file_directory) {
     $raw_file = file_get_contents($source_base_path . $filename);
+    if (!$raw_file) {
+      return false;
+    }
     // Try to write the file, but we might need to create a directory.
     $file = file_save_data($raw_file, $drupal_file_directory . $filename);
     // If we weren't able to save, need to create directory.
