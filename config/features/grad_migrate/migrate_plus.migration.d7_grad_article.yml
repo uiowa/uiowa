@@ -35,7 +35,10 @@ process:
   changed: changed
   promote: promote
   sticky: sticky
-  body: body_value
+  body/value: body_value
+  body/format:
+    plugin: default_value
+    default_value: filtered_html
   field_teaser: body_summary
   moderation_state: moderation_state
   field_image: field_thumbnail_image_fid
