@@ -2,7 +2,14 @@
 
 namespace Drupal\layout_builder_custom;
 
+/**
+ * A class to help with the rendering headlines.
+ */
 class HeadlineHelper {
+
+  /**
+   * Get a list of valid heading options as element => human-readable pairs.
+   */
   public static function getHeadingOptions() {
     return [
       'h2' => 'Heading 2',
@@ -12,6 +19,9 @@ class HeadlineHelper {
     ];
   }
 
+  /**
+   * Size up a heading based on the argument.
+   */
   public static function getHeadingSizeUp($size) {
     $options = [
       'h2' => 'h3',
@@ -24,8 +34,11 @@ class HeadlineHelper {
     return $options[$size];
   }
 
+  /**
+   * Get a list of valid heading styles as machine-name => class pairs.
+   */
   public static function getStyles() {
-    return  [
+    return [
       'default' => 'headline',
       'headline_bold_serif' => 'headline bold-headline bold-headline--serif',
       'headline_bold_serif_underline' => 'headline bold-headline bold-headline--serif bold-headline--underline',
@@ -33,7 +46,7 @@ class HeadlineHelper {
   }
 
   /**
-   * Provide the basis for a render element.
+   * Provide the render array structure for a headline element.
    *
    * @todo Investigate creating a custom render element for this.
    */

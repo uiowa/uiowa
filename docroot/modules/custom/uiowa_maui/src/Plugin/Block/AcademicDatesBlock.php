@@ -66,6 +66,9 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
     );
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function blockForm($form, FormStateInterface $form_state) {
     $form = parent::blockForm($form, $form_state);
     $config = $this->getConfiguration();
@@ -91,6 +94,9 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
     return $form;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function blockSubmit($form, FormStateInterface $form_state) {
     // Alter the headline field settings for configuration.
     foreach ($form_state->getValues()['headline']['container'] as $name => $value) {
@@ -107,7 +113,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
   public function build() {
     $config = $this->getConfiguration();
 
-    // @todo Write a headline theme function to render it here.
+    // @todo Write a headline theme function to render it here and use DI here.
     return \Drupal::formBuilder()->getForm(
       '\Drupal\uiowa_maui\Form\AcademicDatesForm',
       $config['heading'],
