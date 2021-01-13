@@ -79,7 +79,7 @@ function uiowa_core_google_tag_insert_alter(&$satisfied, Container $container) {
 /**
  * Function to provide form partial for headline form element.
  */
-function uiowa_core_headline_form_snippet(&$form, $required = FALSE, $text_default = '', $size_default = '') {
+function uiowa_core_headline_form_partial(&$form, $required = FALSE, $text_default = '', $size_default = '') {
   // @todo Finish defining these fields to get required functionality.
   $form['headline'] = [
     '#type' => 'container',
