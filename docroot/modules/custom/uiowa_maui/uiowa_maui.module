@@ -5,6 +5,8 @@
  * Primary module hooks for uiowa_maui module.
  */
 
+use Drupal\layout_builder_custom\HeadlineHelper;
+
 /**
  * Implements hook_theme().
  */
@@ -12,65 +14,15 @@ function uiowa_maui_theme($existing, $type, $theme, $path) {
   return [
     'uiowa_maui_session_dates' => [
       'variables' => [
+        'headline' => NULL,
+        'hide_headline' => NULL,
         'heading_size' => NULL,
+        'headline_style' => NULL,
+        'child_heading_size' => NULL,
         'data' => NULL,
       ],
     ],
   ];
-}
-
-/**
- * Allowed values callback function for field_uiowa_maui_date_category field.
- *
- * @return array
- *   Array of date categories for use in a select list.
- */
-function uiowa_maui_date_categories() {
-  /** @var Drupal\uiowa_maui\MauiApi $maui */
-  $maui = \Drupal::service('uiowa_maui.api');
-  return $maui->getDateCategories();
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
-function uiowa_maui_preprocess_block(&$variables) {
-  switch ($variables['derivative_plugin_id']) {
-    case 'uiowa_maui_academic_dates':
-      /** @var \Drupal\block_content\Entity\BlockContent $block */
-      $block = $variables['elements']['content']['#block_content'];
-
-      if ($block->hasField('field_uiowa_headline')) {
-        $headline_fields = $block->get('field_uiowa_headline')->getValue();
-        foreach ($headline_fields as $headline_field) {
-          // There isn't a headline, so set the children to this heading size.
-          if (empty($headline_field['headline'])) {
-            $heading_size = $headline_field['child_heading_size'];
-          }
-          else {
-            $options = [
-              'h2' => 'h3',
-              'h3' => 'h4',
-              'h4' => 'h5',
-              'h5' => 'h6',
-              'h6' => 'h6',
-            ];
-            $heading_size = $options[$headline_field['heading_size']];
-          }
-        }
-      }
-
-      // Pass the prefiltered category argument to the form build method.
-      if ($block->get('field_uiowa_maui_date_category')->isEmpty()) {
-        $category_prefilter = NULL;
-      }
-      else {
-        $category_prefilter = $block->get('field_uiowa_maui_date_category')->getString();
-      }
-
-      $variables['content']['form'] = \Drupal::formBuilder()->getForm('\Drupal\uiowa_maui\Form\DatesBySessionForm', $heading_size, $category_prefilter);
-      break;
-  }
 }
 
 /**
@@ -107,4 +59,8 @@ function template_preprocess_uiowa_maui_session_dates(&$variables) {
 
   // Remove raw data availability in template.
   unset($variables['data']);
+
+  // Rewrite headline classes.
+  $style = HeadlineHelper::getStyles()[$variables['headline_style']];
+  $variables['headline_class'] = $style;
 }

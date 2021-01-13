@@ -30,11 +30,18 @@
 ]
 %}
 
+{% set heading = {
+  'headline_level': heading_size ?: 'h2',
+  'headline_class': headline_class,
+  'headline_text': headline,
+} %}
+{% include '@uids_base/uids/headline.html.twig' with heading only %}
+
 {% for date in dates %}
   <div{{ attributes.addClass(classes) }}>
     <div class="card__body">
       {% set date_heading = {
-        'headline_level': heading_size ?: 'h2',
+        'headline_level': child_heading_size ?: 'h3',
         'headline_class': 'card__title headline',
         'headline_text': date.start != date.end ? date.start ~ ' - ' ~ date.end : date.start,
       } %}
