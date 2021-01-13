@@ -5,8 +5,9 @@ namespace Drupal\sitenow\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 
 /**
- * A 'Powered by SiteNow' block, but is really to establish 'Custom' category
- * for config management purposes.
+ * A 'Powered by SiteNow' block.
+ *
+ * This is really to establish 'Custom' category for config management purposes.
  *
  * @Block(
  *   id = "sitenow_block",
@@ -27,7 +28,11 @@ class SiteNowBlock extends BlockBase {
    * {@inheritdoc}
    */
   public function build() {
-    return ['#markup' => '<span>' . $this->t('Powered by <a href=":link">SiteNow</a>', [':link' => 'https://sitenow.uiowa.edu']) . '</span>'];
+    return [
+      '#markup' =>
+        '<span>' . $this->t('Powered by <a href=":link">SiteNow</a>',
+          [':link' => 'https://sitenow.uiowa.edu']
+        ) . '</span>'];
   }
 
 }
