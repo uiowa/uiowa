@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\sitenow_migrate\EventSubscriber;
+namespace Drupal\grad_migrate\EventSubscriber;
 
 use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\EntityTypeManager;
@@ -10,7 +10,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
  * Event subscriber for pre-rollback migrate event.
  *
- * @package Drupal\sitenow_migrate\EventSubscriber
+ * @package Drupal\grad_migrate\EventSubscriber
  */
 class MigratePreRollbackEvent implements EventSubscriberInterface {
 
@@ -64,39 +64,33 @@ class MigratePreRollbackEvent implements EventSubscriberInterface {
     $migration_id = $event->getMigration()->id();
     switch ($migration_id) {
 
-      // Calls for creating a media entity for imported files.
-      case 'd7_file':
-      case 'd7_grad_file':
-        $migrate_map = 'migrate_map_' . $migration_id;
-        $this->removeMediaEntities($migrate_map);
+      case 'd7_grad_article':
+        $this->removeArticleMedia();
         break;
-
     }
   }
 
   /**
-   * Remove associated media entities prior to file removal.
+   * Removes media entities that were created as part of the article migration.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  public function removeMediaEntities($migrate_map) {
-    // Get our destination file ids.
+  public function removeArticleMedia() {
     $connection = Database::getConnection();
-    $query = $connection->select($migrate_map, 'mm')
-      ->fields('mm', ['destid1']);
-    $fids = $query->execute()->fetchCol();
+    $query = $connection->select('migrate_map_d7_grad_article', 'mm');
+    $query->innerJoin('entity_usage', 'usage', 'mm.destid1 = usage.target_id');
+    $query = $query->fields('usage', ['target_id']);
+    // @todo check that the media is ONLY used in migrated articles.
+    $mids = $query->execute()
+      ->fetchCol();
 
-    // Grab our image media entities that reference files to be removed.
-    $query1 = $connection->select('media__field_media_image', 'm_image')
-      ->fields('m_image', ['entity_id'])
-      ->condition('m_image.field_media_image_target_id', $fids, 'in');
-    // Grab our file media entities that reference files to be removed.
-    $query2 = $connection->select('media__field_media_file', 'm_file')
-      ->fields('m_file', ['entity_id'])
-      ->condition('m_file.field_media_file_target_id', $fids, 'in');
-    $results = $query1->execute()->fetchCol();
-    $results = array_merge($results, $query2->execute()->fetchCol());
-
+    // Delete the media entities.
+    // This should include removal of the file usages,
+    // which will mark them for deletion on next cleanup.
     $entityManager = $this->entityTypeManager->getStorage('media');
-    $mediaEntities = $entityManager->loadMultiple($results);
+    $mediaEntities = $entityManager->loadMultiple($mids);
     $entityManager->delete($mediaEntities);
   }
 

@@ -171,6 +171,12 @@ class Article extends BaseNodeSource {
       }
       else {
         $mid = $this->getMid($filename);
+        // And in case we had the file, but not the media entity.
+        if (!$mid) {
+          $meta['alt'] = $row->getSourceProperty('field_thumbnail_image_alt');
+          $meta['title'] = $row->getSourceProperty('field_thumbnail_image_title');
+          $mid = $this->createMediaEntity($new_fid, $meta);
+        }
       }
       $row->setSourceProperty('field_thumbnail_image_fid', $mid);
     }
