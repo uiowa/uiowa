@@ -1985,3 +1985,9 @@ $sites['stanleymuseum.local.drupal.uiowa.edu'] = 'stanleymuseum.uiowa.edu';
 $sites['stanleymuseum.dev.drupal.uiowa.edu'] = 'stanleymuseum.uiowa.edu';
 $sites['stanleymuseum.stage.drupal.uiowa.edu'] = 'stanleymuseum.uiowa.edu';
 $sites['stanleymuseum.prod.drupal.uiowa.edu'] = 'stanleymuseum.uiowa.edu';
+
+// Directory aliases for waldschmidt.lab.uiowa.edu.
+$sites['labwaldschmidt.local.drupal.uiowa.edu'] = 'waldschmidt.lab.uiowa.edu';
+$sites['labwaldschmidt.dev.drupal.uiowa.edu'] = 'waldschmidt.lab.uiowa.edu';
+$sites['labwaldschmidt.stage.drupal.uiowa.edu'] = 'waldschmidt.lab.uiowa.edu';
+$sites['labwaldschmidt.prod.drupal.uiowa.edu'] = 'waldschmidt.lab.uiowa.edu';
