@@ -30,9 +30,10 @@ class SiteNowBlock extends BlockBase {
   public function build() {
     return [
       '#markup' =>
-        '<span>' . $this->t('Powered by <a href=":link">SiteNow</a>',
+      '<span>' . $this->t('Powered by <a href=":link">SiteNow</a>',
           [':link' => 'https://sitenow.uiowa.edu']
-        ) . '</span>'];
+      ) . '</span>',
+    ];
   }
 
 }
