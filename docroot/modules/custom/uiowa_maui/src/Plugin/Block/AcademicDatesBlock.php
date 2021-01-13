@@ -30,7 +30,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
   /**
    * The form_builder service.
    *
-   * @var FormBuilderInterface
+   * @var \Drupal\Core\Form\FormBuilderInterface
    */
   protected $formBuilder;
 
@@ -45,7 +45,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
    *   The plugin definition.
    * @param \Drupal\uiowa_maui\MauiApi $maui
    *   The uiowa_maui.api service.
-   * @param FormBuilderInterface $formBuilder
+   * @param \Drupal\Core\Form\FormBuilderInterface $formBuilder
    *   The form_builder service.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, MauiApi $maui, FormBuilderInterface $formBuilder) {
@@ -132,7 +132,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
         '#hide_headline' => $config['hide_headline'],
         '#heading_size' => $config['heading_size'],
         '#headline_style' => $config['headline_style'],
-      ]
+      ],
     ];
 
     if (empty($config['headline'])) {
@@ -141,7 +141,6 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
     else {
       $child_heading_size = HeadlineHelper::getHeadingSizeUp($config['heading_size']);
     }
-
 
     $build['form'] = $this->formBuilder->getForm(
       '\Drupal\uiowa_maui\Form\AcademicDatesForm',
