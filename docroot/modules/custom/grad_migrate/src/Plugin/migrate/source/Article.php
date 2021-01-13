@@ -175,6 +175,9 @@ class Article extends BaseNodeSource {
       $row->setSourceProperty('field_thumbnail_image_fid', $mid);
     }
 
+    // Strip tags so they don't show up in the field teaser.
+    $row->setSourceProperty('body_summary', strip_tags($row->getSourceProperty('body_summary')));
+
     // Call the parent prepareRow.
     return parent::prepareRow($row);
   }
