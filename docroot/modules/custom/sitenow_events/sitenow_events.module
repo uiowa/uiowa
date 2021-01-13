@@ -9,6 +9,7 @@ use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\layout_builder_custom\HeadlineHelper;
 use GuzzleHttp\Exception\RequestException;
 
 /**
@@ -65,14 +66,7 @@ function sitenow_events_preprocess_block(&$variables) {
             $heading_size = $headline_field['child_heading_size'];
           }
           else {
-            $options = [
-              'h2' => 'h3',
-              'h3' => 'h4',
-              'h4' => 'h5',
-              'h5' => 'h6',
-              'h6' => 'h6',
-            ];
-            $heading_size = $options[$headline_field['heading_size']];
+            $heading_size = HeadlineHelper::getHeadingSizeUp($headline_field['heading_size']);
           }
         }
       }

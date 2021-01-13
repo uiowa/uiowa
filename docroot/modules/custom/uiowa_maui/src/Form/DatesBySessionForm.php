@@ -5,6 +5,7 @@ namespace Drupal\uiowa_maui\Form;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\layout_builder_custom\HeadlineHelper;
 use Drupal\uiowa_maui\MauiApi;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -98,11 +99,22 @@ class DatesBySessionForm extends FormBase {
 
     $data = $this->maui->getSessionDates($current, $category);
 
+    if (empty($heading['headline'])) {
+      $child_heading_size = $heading['child_heading_size'];
+    }
+    else {
+      $child_heading_size = HeadlineHelper::getHeadingSizeUp($heading['heading_size']);
+    }
+
     if (!empty($data)) {
-      $form['dates-wrapper']['dates'][] = [
+      $form['dates-wrapper']['dates'] = [
         '#theme' => 'uiowa_maui_session_dates',
         '#data' => $data,
-        '#heading_size' => $heading_size,
+        '#headline' => $heading['headline'],
+        '#hide_headline' => $heading['hide_headline'],
+        '#heading_size' => $heading['heading_size'],
+        '#headline_style' => $heading['headline_style'],
+        '#child_heading_size' => $child_heading_size,
       ];
     }
     else {
