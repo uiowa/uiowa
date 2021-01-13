@@ -3,6 +3,7 @@
 namespace Drupal\uiowa_maui\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\uiowa_core\HeadlineHelper;
@@ -27,6 +28,13 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
   protected $maui;
 
   /**
+   * The form_builder service.
+   *
+   * @var FormBuilderInterface
+   */
+  protected $formBuilder;
+
+  /**
    * Override the construction method.
    *
    * @param array $configuration
@@ -36,11 +44,14 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
    * @param mixed $plugin_definition
    *   The plugin definition.
    * @param \Drupal\uiowa_maui\MauiApi $maui
-   *   The MAUI API class.
+   *   The uiowa_maui.api service.
+   * @param FormBuilderInterface $formBuilder
+   *   The form_builder service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, MauiApi $maui) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, MauiApi $maui, FormBuilderInterface $formBuilder) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->maui = $maui;
+    $this->formBuilder = $formBuilder;
   }
 
   /**
@@ -62,7 +73,8 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('uiowa_maui.api')
+      $container->get('uiowa_maui.api'),
+      $container->get('form_builder')
     );
   }
 
