@@ -7,6 +7,32 @@
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\google_tag\Entity\Container;
+use Drupal\uiowa_core\HeadlineHelper;
+
+/**
+ * Implements hook_theme().
+ */
+function uiowa_core_theme($existing, $type, $theme, $path) {
+  return [
+    'uiowa_core_headline' => [
+      'variables' => [
+        'headline' => NULL,
+        'hide_headline' => FALSE,
+        'heading_size' => 'h2',
+        'headline_style' => 'default',
+      ]
+    ]
+  ];
+}
+
+/**
+ * Preprocess function uiowa_core_headline.
+ */
+function template_preprocess_uiowa_core_headline(&$variables) {
+  $style = HeadlineHelper::getStyles()[$variables['headline_style']];
+  $variables['headline_style'] = $style;
+
+}
 
 /**
  * Implements hook_page_attachments().
