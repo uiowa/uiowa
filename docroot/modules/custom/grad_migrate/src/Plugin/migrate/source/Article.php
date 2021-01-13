@@ -165,9 +165,11 @@ class Article extends BaseNodeSource {
         ->fetchField();
       if (!$new_fid) {
         $new_fid = $this->downloadFile($filename, $source_base_path, $drupal_file_directory);
-        $meta['alt'] = $row->getSourceProperty('field_thumbnail_image_alt');
-        $meta['title'] = $row->getSourceProperty('field_thumbnail_image_title');
-        $mid = $this->createMediaEntity($new_fid, $meta);
+        if ($new_fid) {
+          $meta['alt'] = $row->getSourceProperty('field_thumbnail_image_alt');
+          $meta['title'] = $row->getSourceProperty('field_thumbnail_image_title');
+          $mid = $this->createMediaEntity($new_fid, $meta);
+        }
       }
       else {
         $mid = $this->getMid($filename);
