@@ -5,7 +5,7 @@ namespace Drupal\uiowa_maui\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\layout_builder_custom\HeadlineHelper;
+use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\uiowa_maui\MauiApi;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

@@ -5,7 +5,7 @@ namespace Drupal\layout_builder_custom\Plugin\Field\FieldWidget;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\layout_builder_custom\HeadlineHelper;
+use Drupal\uiowa_core\HeadlineHelper;
 
 /**
  * Plugin implementation of the 'UiowaHeadlineDefaultWidget' widget.

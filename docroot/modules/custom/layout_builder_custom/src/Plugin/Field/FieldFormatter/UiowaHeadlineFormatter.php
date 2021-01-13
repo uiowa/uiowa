@@ -4,7 +4,7 @@ namespace Drupal\layout_builder_custom\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
-use Drupal\layout_builder_custom\HeadlineHelper;
+use Drupal\uiowa_core\HeadlineHelper;
 
 /**
  * Plugin implementation of the 'uiowa_headline_formatter' formatter.

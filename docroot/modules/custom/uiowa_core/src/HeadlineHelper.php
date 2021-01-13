@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\layout_builder_custom;
+namespace Drupal\uiowa_core;
 
 /**
  * A class to help with the rendering headlines.

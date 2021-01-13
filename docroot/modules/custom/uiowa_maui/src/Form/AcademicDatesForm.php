@@ -4,7 +4,7 @@ namespace Drupal\uiowa_maui\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\layout_builder_custom\HeadlineHelper;
+use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\uiowa_maui\MauiApi;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
