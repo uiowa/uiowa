@@ -63,7 +63,7 @@ abstract class BaseNodeSource extends SqlBase {
       $container->get('state'),
       $container->get('module_handler'),
       $container->get('file_system'),
-      $container->get('entity_type_manager')
+      $container->get('entity_type.manager')
     );
   }
 
