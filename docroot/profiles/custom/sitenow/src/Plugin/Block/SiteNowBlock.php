@@ -11,7 +11,7 @@ use Drupal\Core\Block\BlockBase;
  *
  * @Block(
  *   id = "sitenow_block",
- *   admin_label = @Translation("Powered by SiteNow")
+ *   admin_label = @Translation("Powered by SiteNow"),
  *   category = @Translation("Custom")
  * )
  */
