@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   category = @Translation("MAUI")
  * )
  */
-class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginInterface {
+class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInterface {
   /**
    * The MAUI API service.
    *

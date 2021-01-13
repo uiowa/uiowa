@@ -76,13 +76,16 @@ function uiowa_core_google_tag_insert_alter(&$satisfied, Container $container) {
   }
 }
 
+/**
+ * Function to provide form partial for headline form element.
+ */
 function uiowa_core_headline_form_snippet(&$form, $required = FALSE, $text_default = '', $size_default = '') {
   // @todo Finish defining these fields to get required functionality.
   $form['headline'] = [
     '#type' => 'container',
   ];
 
-  // Headline text
+  // Headline text.
   $form['headline']['text'] = [
     '#type' => 'textfield',
     '#attributes' => [
@@ -92,7 +95,7 @@ function uiowa_core_headline_form_snippet(&$form, $required = FALSE, $text_defau
     '#default_value' => $text_default,
   ];
 
-  // Headline size
+  // Headline size.
   $element['headline']['size'] = [
     '#type' => 'textfield',
     '#attributes' => [
