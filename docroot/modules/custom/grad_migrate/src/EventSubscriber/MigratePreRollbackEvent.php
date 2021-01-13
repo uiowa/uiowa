@@ -80,10 +80,11 @@ class MigratePreRollbackEvent implements EventSubscriberInterface {
   public function removeArticleMedia() {
     $connection = Database::getConnection();
     $query = $connection->select('migrate_map_d7_grad_article', 'mm');
-    $query->innerJoin('entity_usage', 'usage', 'mm.destid1 = usage.target_id');
+    $query->join('entity_usage', 'usage', 'mm.destid1 = usage.source_id');
     $query = $query->fields('usage', ['target_id']);
     // @todo check that the media is ONLY used in migrated articles.
-    $mids = $query->execute()
+    $mids = $query->distinct()
+      ->execute()
       ->fetchCol();
 
     // Delete the media entities.
