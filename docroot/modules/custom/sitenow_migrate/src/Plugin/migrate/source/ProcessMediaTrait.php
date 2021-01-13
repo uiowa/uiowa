@@ -83,16 +83,22 @@ trait ProcessMediaTrait {
   /**
    * Download a remote file to the destination file directory.
    *
-   * @param $filename
-   * @param $source_base_path
-   * @param $drupal_file_directory
+   * @param string $filename
+   *   Filename of the file to be downloaded.
+   * @param string $source_base_path
+   *   The base path for files at the source.
+   * @param string $drupal_file_directory
+   *   The base path for the file directory to place the downloaded file.
+   *
    * @return int
-   * @throws MigrateException
+   *   Returns the fid of the newly downloaded file.
+   *
+   * @throws \Drupal\migrate\MigrateException
    */
   public function downloadFile($filename, $source_base_path, $drupal_file_directory) {
     $raw_file = file_get_contents($source_base_path . $filename);
     if (!$raw_file) {
-      return false;
+      return FALSE;
     }
     // Try to write the file, but we might need to create a directory.
     $file = file_save_data($raw_file, $drupal_file_directory . $filename);
@@ -119,12 +125,18 @@ trait ProcessMediaTrait {
    * Create a media entity for images.
    *
    * @param int $fid
+   *   File id for the media being created.
    * @param array $meta
+   *   Associative array holding the title and alt texts.
    * @param int $owner_id
+   *   User id for the media owner, or default to anonymous.
+   *
    * @return false|int|string|null
+   *   Media id, if successful, or else false.
+   *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  public function createMediaEntity($fid, $meta, $owner_id = 0) {
+  public function createMediaEntity($fid, array $meta, $owner_id = 0) {
     /** @var \Drupal\file\FileInterface $file */
     $file = $this->entityTypeManager->getStorage('file')->load($fid);
 
@@ -172,7 +184,7 @@ trait ProcessMediaTrait {
           return $media->id();
 
         default:
-          return false;
+          return FALSE;
       }
     }
   }
