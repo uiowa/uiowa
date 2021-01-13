@@ -175,6 +175,49 @@ class Article extends BaseNodeSource {
       $row->setSourceProperty('field_thumbnail_image_fid', $mid);
     }
 
+    // Search for D7 inline embeds and replace with D8 inline entities.
+    $content = $row->getSourceProperty('body_value');
+    // @todo clean this up so we don't run two separate regexps.
+    // Check for any inline file references
+    // and make sure we have files ready to be referenced.
+    preg_match_all("|\[\[\{.*?\"fid\":\"(.*?)\".*?\]\]|", $content, $matches);
+    foreach ($matches[1] as $original_fid) {
+      $filename = $this->fidQuery($original_fid)['filename'];
+      $dest_connection = isset($dest_connection) ? $dest_connection : \Drupal::database();
+      $dest_query = $dest_connection->select('file_managed', 'f');
+      $new_fid = $dest_query->fields('f', ['fid'])
+        ->condition('f.filename', $filename)
+        ->execute()
+        ->fetchField();
+      // If we didn't find the file, we need to download it
+      // and create it's media entity.
+      if (!$new_fid) {
+        $new_fid = $this->downloadFile($filename, $source_base_path, $drupal_file_directory);
+        // Fetch old meta.
+        $query = $this->select('file_managed', 'f');
+        $query->join('field_data_field_file_image_alt_text', 'a', 'a.entity_id = f.fid');
+        $query->join('field_data_field_file_image_title_text', 't', 't.entity_id = f.fid');
+        $result = $query->fields('a', [
+          'field_file_image_alt_text_value',
+        ])
+          ->fields('t', [
+            'field_file_image_title_text_value',
+          ])
+          ->condition('f.fid', $original_fid)
+          ->execute()
+          ->fetchAssoc();
+        $meta['alt'] = $result['field_file_image_alt_text_value'];
+        $meta['title'] = $result['field_file_image_title_text_value'];
+        $this->createMediaEntity($new_fid, $meta);
+      }
+    }
+    // We have the files, so now we're able to replace with new entities.
+    $content = preg_replace_callback("|\[\[\{.*?\"fid\":\"(.*?)\".*?\]\]|", [
+      $this,
+      'entityReplace',
+    ], $content);
+    $row->setSourceProperty('body_value', $content);
+
     // Strip tags so they don't show up in the field teaser.
     $row->setSourceProperty('body_summary', strip_tags($row->getSourceProperty('body_summary')));
 
