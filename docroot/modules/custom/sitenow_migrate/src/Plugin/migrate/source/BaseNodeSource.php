@@ -4,6 +4,8 @@ namespace Drupal\sitenow_migrate\Plugin\migrate\source;
 
 use Drupal\Core\Database\Query\SelectInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\State\StateInterface;
 use Drupal\migrate\Plugin\migrate\source\SqlBase;
 use Drupal\migrate\Plugin\MigrationInterface;
@@ -26,11 +28,27 @@ abstract class BaseNodeSource extends SqlBase {
   protected $moduleHandler;
 
   /**
+   * The file system service.
+   *
+   * @var \Drupal\Core\File\FileSystemInterface
+   */
+  protected $fileSystem;
+
+  /**
+   * The EntityTypeManager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManager
+   */
+  protected $entityTypeManager;
+
+  /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration, StateInterface $state, ModuleHandlerInterface $module_handler) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration, StateInterface $state, ModuleHandlerInterface $module_handler, FileSystemInterface $file_system, EntityTypeManager $entityTypeManager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $migration, $state);
     $this->moduleHandler = $module_handler;
+    $this->fileSystem = $file_system;
+    $this->entityTypeManager = $entityTypeManager;
   }
 
   /**
@@ -43,7 +61,9 @@ abstract class BaseNodeSource extends SqlBase {
       $plugin_definition,
       $migration,
       $container->get('state'),
-      $container->get('module_handler')
+      $container->get('module_handler'),
+      $container->get('file_system'),
+      $container->get('entity_type_manager')
     );
   }
 

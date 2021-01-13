@@ -2,8 +2,6 @@
 
 namespace Drupal\grad_migrate\Plugin\migrate\source;
 
-use Drupal\Core\File\FileSystemInterface;
-use Drupal\migrate\MigrateException;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\migrate\Row;
 
@@ -165,32 +163,16 @@ class Article extends BaseNodeSource {
         ->condition('f.filename', $filename)
         ->execute()
         ->fetchField();
-      // @todo move this to a shareable method.
       if (!$new_fid) {
-        $raw_file = file_get_contents($source_base_path . $filename);
-        // Try to write the file, but we might need to create a directory.
-        $file = file_save_data($raw_file, $drupal_file_directory . $filename);
-        // If we weren't able to save, need to create directory.
-        if (!$file) {
-          $dir = $this->fileSystem
-            ->dirname($drupal_file_directory . $filename);
-          if (!$this->fileSystem
-            ->prepareDirectory($dir, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS)) {
-            // Something went seriously wrong.
-            throw new MigrateException("Could not create or write to directory '{$dir}'");
-          }
-        }
-        $dest_query = $dest_connection->select('file_managed', 'f');
-        $new_fid = $dest_query->fields('f', ['fid'])
-          ->condition('f.filename', $filename)
-          ->execute()
-          ->fetchField();
-        // @todo create media.
+        $new_fid = $this->downloadFile($filename, $source_base_path, $drupal_file_directory);
+        $meta['alt'] = $row->getSourceProperty('field_thumbnail_image_alt');
+        $meta['title'] = $row->getSourceProperty('field_thumbnail_image_title');
+        $mid = $this->createMediaEntity($new_fid, $meta);
       }
       else {
-        // @todo fetch media.
+        $mid = $this->getMid($filename);
       }
-      // @todo add media for thumbnail image.
+      $row->setSourceProperty('field_thumbnail_image_fid', $mid);
     }
 
     // Call the parent prepareRow.

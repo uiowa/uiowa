@@ -2,6 +2,9 @@
 
 namespace Drupal\sitenow_migrate\Plugin\migrate\source;
 
+use Drupal\Core\File\FileSystemInterface;
+use Drupal\migrate\MigrateException;
+
 /**
  * Provides functions for processing media in source plugins.
  */
@@ -75,6 +78,100 @@ trait ProcessMediaTrait {
       ->execute();
     $new_fid = $result->fetchField();
     return $new_fid;
+  }
+
+  /**
+   * Download a remote file to the destination file directory.
+   *
+   * @param $filename
+   * @param $source_base_path
+   * @param $drupal_file_directory
+   * @return int
+   * @throws MigrateException
+   */
+  public function downloadFile($filename, $source_base_path, $drupal_file_directory) {
+    $raw_file = file_get_contents($source_base_path . $filename);
+    // Try to write the file, but we might need to create a directory.
+    $file = file_save_data($raw_file, $drupal_file_directory . $filename);
+    // If we weren't able to save, need to create directory.
+    if (!$file) {
+      $dir = $this->fileSystem
+        ->dirname($drupal_file_directory . $filename);
+      if (!$this->fileSystem
+        ->prepareDirectory($dir, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS)) {
+        // Something went seriously wrong.
+        throw new MigrateException("Could not create or write to directory '{$dir}'");
+      }
+    }
+    // Get a connection for the destination database.
+    $dest_connection = \Drupal::database();
+    $dest_query = $dest_connection->select('file_managed', 'f');
+    return $dest_query->fields('f', ['fid'])
+      ->condition('f.filename', $filename)
+      ->execute()
+      ->fetchField();
+  }
+
+  /**
+   * Create a media entity for images.
+   *
+   * @param int $fid
+   * @param array $meta
+   * @param int $owner_id
+   * @return false|int|string|null
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function createMediaEntity($fid, $meta, $owner_id = 0) {
+    /** @var \Drupal\file\FileInterface $file */
+    $file = $this->entityTypeManager->getStorage('file')->load($fid);
+
+    if ($file) {
+      $fileType = explode('/', $file->getMimeType())[0];
+      // Currently handles images and documents.
+      // May need to check for other file types.
+      switch ($fileType) {
+
+        case 'image':
+          /** @var \Drupal\Media\MediaInterface $media */
+          $media = $this->entityTypeManager->getStorage('media')->create([
+            'bundle' => 'image',
+            'field_media_image' => [
+              'target_id' => $fid,
+              'alt' => $meta['alt'],
+              'title' => $meta['title'],
+            ],
+            'langcode' => 'en',
+          ]);
+
+          $media->setName($meta['title']);
+          $media->setOwnerId($owner_id);
+          $media->save();
+          return $media->id();
+
+        case 'application':
+        case 'document':
+        case 'file':
+          /** @var \Drupal\Media\MediaInterface $media */
+          $media = $this->entityTypeManager->getStorage('media')->create([
+            'bundle' => 'file',
+            'field_media_file' => [
+              'target_id' => $fid,
+              'display' => 1,
+              'description' => '',
+            ],
+            'langcode' => 'en',
+            'metadata' => [],
+          ]);
+
+          $media->setName($file->getFileName());
+          $media->setOwnerId($owner_id);
+          $media->save();
+          return $media->id();
+
+        default:
+          return false;
+      }
+    }
   }
 
 }
