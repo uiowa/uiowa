@@ -3,17 +3,18 @@
 namespace Drupal\uiowa_maui\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Component\Utility\Html;
+use Drupal\layout_builder_custom\HeadlineHelper;
 use Drupal\uiowa_maui\MauiApi;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides a MAUI Calendar block.
+ * Provides a MAUI date list block.
  *
  * @Block(
- *   id = "uiowa_maui_academic_calendar",
- *   admin_label = @Translation("Academic calendar"),
+ *   id = "uiowa_maui_academic_dates",
+ *   admin_label = @Translation("Academic dates"),
  *   category = @Translation("MAUI")
  * )
  */
@@ -65,82 +66,53 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
     );
   }
 
-  /**
-   * Build the content for mymodule block.
-   */
-  public function build() {
-    // @todo Replace with block configuration, if set.
-    $current = $this->maui->getCurrentSession()->id;
-    // @todo Replace with block configuration, if set.
-    $category = 'GRADUATE_STUDENTS';
+  public function blockForm($form, FormStateInterface $form_state) {
+    $form = parent::blockForm($form, $form_state);
+    $config = $this->getConfiguration();
 
-    // @todo If session is not set in block configuration, show
-    //   the form element.
-    if (FALSE) {
-      // Get a list of sessions for the select list options.
-      $sessions = $this->maui->getSessionsBounded(10, 10);
-      $options = [];
+    $form['headline'] = HeadlineHelper::getElement([
+      'headline' => $config['heading']['headline'] ?? NULL,
+      'hide_headline' => $config['heading']['hide_headline'] ?? 0,
+      'heading_size' => $config['heading']['heading_size'] ?? 'h2',
+      'headline_style' => $config['heading']['headline_style'] ?? 'default',
+      'child_heading_size' => $config['heading']['child_heading_size'] ?? 'h2',
+    ]);
 
-      foreach ($sessions as $session) {
-        $options[$session->id] = Html::escape($session->shortDescription);
-      }
-
-      $form['session'] = [
-        '#type' => 'select',
-        '#title' => $this->t('Session'),
-        '#description' => $this->t('Select a session to show dates for.'),
-        '#default_value' => $current,
-        '#options' => $options,
-        '#ajax' => [
-          'callback' => [$this, 'sessionChanged'],
-          'wrapper' => 'maui-dates-wrapper',
-        ],
-      ];
-    }
-
-    // @todo If category is not set in block configuration, show
-    //   the form element.
-    if (FALSE) {
-      $form['category'] = [
-        '#type' => 'select',
-        '#title' => $this->t('Category'),
-        '#description' => $this->t('Select a category to filter dates on.'),
-        '#default_value' => $category,
-        '#empty_value' => NULL,
-        '#empty_option' => $this->t('- All -'),
-        '#options' => $this->maui->getDateCategories(),
-        '#ajax' => [
-          'callback' => [$this, 'categoryChanged'],
-          'wrapper' => 'maui-dates-wrapper',
-        ],
-      ];
-    }
-    $data = $this->maui->getSessionDates($current, $category);
-
-    // This ID needs to be different than the form ID.
-    $form['dates-wrapper'] = [
-      '#type' => 'container',
-      '#attributes' => [
-        'id' => 'maui-dates-wrapper',
-        'aria-live' => 'polite',
-      ],
-      'dates' => [],
+    $form['category'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Category'),
+      '#description' => $this->t('Select a category to filter dates on.'),
+      '#default_value' => $config['category'] ?? NULL,
+      '#empty_value' => NULL,
+      '#empty_option' => $this->t('- All -'),
+      '#options' => $this->maui->getDateCategories(),
     ];
 
-    if (!empty($data)) {
-      $form['dates-wrapper']['dates'][] = [
-        '#theme' => 'uiowa_maui_session_dates',
-        '#data' => $data,
-        // @todo Replace with block configuration.
-        '#heading_size' => 'h2',
-      ];
-    }
-    else {
-      $form['dates-wrapper']['dates'] = [
-        '#markup' => $this->t('No dates found.'),
-      ];
-    }
     return $form;
+  }
+
+  public function blockSubmit($form, FormStateInterface $form_state) {
+    // Alter the headline field settings for configuration.
+    foreach ($form_state->getValues()['headline']['container'] as $name => $value) {
+      $this->configuration['heading'][$name] = $value;
+    }
+
+    $this->configuration['category'] = $form_state->getValue('category');
+    parent::blockSubmit($form, $form_state);
+  }
+
+  /**
+   * Build the block.
+   */
+  public function build() {
+    $config = $this->getConfiguration();
+
+    // @todo Write a headline theme function to render it here.
+    return \Drupal::formBuilder()->getForm(
+      '\Drupal\uiowa_maui\Form\DatesBySessionForm',
+      $config['heading'],
+      $config['category'],
+    );
   }
 
 }
