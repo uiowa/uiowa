@@ -111,7 +111,7 @@ class HeadlineHelper {
         'headline_bold_serif' => t('Bold serif'),
         'headline_bold_serif_underline' => t('Bold serif, highlighted'),
       ],
-      '#default_value' => $defaults['heading_style'],
+      '#default_value' => $defaults['headline_style'],
       '#states' => [
         'visible' => [
           ':input[id="uiowa-headline-field"]' => [
