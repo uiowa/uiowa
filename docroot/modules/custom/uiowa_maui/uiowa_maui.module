@@ -14,12 +14,8 @@ function uiowa_maui_theme($existing, $type, $theme, $path) {
   return [
     'uiowa_maui_session_dates' => [
       'variables' => [
-        'headline' => NULL,
-        'hide_headline' => NULL,
-        'heading_size' => NULL,
-        'headline_style' => NULL,
-        'child_heading_size' => NULL,
-        'data' => NULL,
+        'data' => [],
+        'child_heading_size' => 'h3',
       ],
     ],
   ];
@@ -59,8 +55,4 @@ function template_preprocess_uiowa_maui_session_dates(&$variables) {
 
   // Remove raw data availability in template.
   unset($variables['data']);
-
-  // Rewrite headline classes.
-  $style = HeadlineHelper::getStyles()[$variables['headline_style']];
-  $variables['headline_class'] = $style;
 }

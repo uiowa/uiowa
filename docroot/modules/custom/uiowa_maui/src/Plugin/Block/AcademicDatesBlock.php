@@ -74,11 +74,11 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
     $config = $this->getConfiguration();
 
     $form['headline'] = HeadlineHelper::getElement([
-      'headline' => $config['heading']['headline'] ?? NULL,
-      'hide_headline' => $config['heading']['hide_headline'] ?? 0,
-      'heading_size' => $config['heading']['heading_size'] ?? 'h2',
-      'headline_style' => $config['heading']['headline_style'] ?? 'default',
-      'child_heading_size' => $config['heading']['child_heading_size'] ?? 'h2',
+      'headline' => $config['headline'] ?? NULL,
+      'hide_headline' => $config['hide_headline'] ?? 0,
+      'heading_size' => $config['heading_size'] ?? 'h2',
+      'headline_style' => $config['headline_style'] ?? 'default',
+      'child_heading_size' => $config['child_heading_size'] ?? 'h3',
     ]);
 
     $form['category'] = [
@@ -100,7 +100,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
   public function blockSubmit($form, FormStateInterface $form_state) {
     // Alter the headline field settings for configuration.
     foreach ($form_state->getValues()['headline']['container'] as $name => $value) {
-      $this->configuration['heading'][$name] = $value;
+      $this->configuration[$name] = $value;
     }
 
     $this->configuration['category'] = $form_state->getValue('category');
@@ -113,12 +113,31 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
   public function build() {
     $config = $this->getConfiguration();
 
-    // @todo Write a headline theme function to render it here and use DI here.
-    return \Drupal::formBuilder()->getForm(
+    $build = [
+      'heading' => [
+        '#theme' => 'uiowa_core_headline',
+        '#headline' => $config['headline'],
+        '#hide_headline' => $config['hide_headline'],
+        '#heading_size' => $config['heading_size'],
+        '#headline_style' => $config['headline_style'],
+      ]
+    ];
+
+    if (empty($config['headline'])) {
+      $child_heading_size = $config['child_heading_size'];
+    }
+    else {
+      $child_heading_size = HeadlineHelper::getHeadingSizeUp($config['heading_size']);
+    }
+
+
+    $build['form'] = $this->formBuilder->getForm(
       '\Drupal\uiowa_maui\Form\AcademicDatesForm',
-      $config['heading'],
       $config['category'],
+      $child_heading_size
     );
+
+    return $build;
   }
 
 }
