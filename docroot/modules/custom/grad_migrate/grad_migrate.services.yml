@@ -1,6 +1,0 @@
-services:
-  pre_rollback_subscriber:
-    class: 'Drupal\grad_migrate\EventSubscriber\MigratePreRollbackEvent'
-    arguments: [ '@entity_type.manager' ]
-    tags:
-      - { name: 'event_subscriber' }
