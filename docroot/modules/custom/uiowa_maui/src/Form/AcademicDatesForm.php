@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Provides a uiowa_maui form.
  */
-class DatesBySessionForm extends FormBase {
+class AcademicDatesForm extends FormBase {
   /**
    * The MAUI API service.
    *

@@ -109,7 +109,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
 
     // @todo Write a headline theme function to render it here.
     return \Drupal::formBuilder()->getForm(
-      '\Drupal\uiowa_maui\Form\DatesBySessionForm',
+      '\Drupal\uiowa_maui\Form\AcademicDatesForm',
       $config['heading'],
       $config['category'],
     );
