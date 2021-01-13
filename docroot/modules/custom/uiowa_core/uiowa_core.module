@@ -75,3 +75,32 @@ function uiowa_core_google_tag_insert_alter(&$satisfied, Container $container) {
     $satisfied = FALSE;
   }
 }
+
+function uiowa_core_headline_form_snippet(&$form, $required = FALSE, $text_default = '', $size_default = '') {
+  // @todo Finish defining these fields to get required functionality.
+  $form['headline'] = [
+    '#type' => 'container',
+  ];
+
+  // Headline text
+  $form['headline']['text'] = [
+    '#type' => 'textfield',
+    '#attributes' => [
+      'name' => 'headline[text]',
+    ],
+    '#required' => $required,
+    '#default_value' => $text_default,
+  ];
+
+  // Headline size
+  $element['headline']['size'] = [
+    '#type' => 'textfield',
+    '#attributes' => [
+      'name' => 'headline[size]',
+    ],
+    '#required' => $required,
+    '#default_value' => $text_default,
+  ];
+
+  return $form;
+}

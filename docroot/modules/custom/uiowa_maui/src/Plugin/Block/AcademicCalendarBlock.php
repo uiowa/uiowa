@@ -4,6 +4,7 @@ namespace Drupal\uiowa_maui\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Component\Utility\Html;
 use Drupal\uiowa_maui\MauiApi;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -127,7 +128,7 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
     ];
 
     if (!empty($data)) {
-      $build['dates-wrapper']['dates'][] = [
+      $form['dates-wrapper']['dates'][] = [
         '#theme' => 'uiowa_maui_session_dates',
         '#data' => $data,
         // @todo Replace with block configuration.
@@ -135,11 +136,11 @@ class AcademicCalendarBlock extends BlockBase implements ContainerFactoryPluginI
       ];
     }
     else {
-      $build['dates-wrapper']['dates'] = [
+      $form['dates-wrapper']['dates'] = [
         '#markup' => $this->t('No dates found.'),
       ];
     }
-    return $build;
+    return $form;
   }
 
 }
