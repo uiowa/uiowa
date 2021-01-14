@@ -117,7 +117,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       '#description' => $this->t('Select a category to filter dates on.'),
       '#default_value' => $config['category'] ?? NULL,
       '#empty_value' => NULL,
-      '#empty_option' => $this->t('- All -'),
+      '#empty_option' => $this->t('- Exposed -'),
       '#options' => $this->maui->getDateCategories(),
     ];
 
