@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labftoor.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labftoor
+  human_name: ftoor.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labftoor.prod
+drupal:
+  db:
+    database: ftoor_lab_uiowa_edu
+uiowa:
+  requester: ftoor
