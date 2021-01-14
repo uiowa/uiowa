@@ -37,6 +37,13 @@ class Article extends BaseNodeSource {
   protected $temporaryPath;
 
   /**
+   * Node-to-node mapping for author content.
+   *
+   * @var array
+   */
+  protected $authorMapping;
+
+  /**
    * {@inheritdoc}
    */
   public function query() {
@@ -234,6 +241,39 @@ class Article extends BaseNodeSource {
 
     // Call the parent prepareRow.
     return parent::prepareRow($row);
+  }
+
+  /**
+   * Check if we have the author mapping, and query if not.
+   *
+   * @param int $author_nid
+   *
+   * @return int
+   */
+  protected function getAuthor($author_nid) {
+    // If we have the mapping, then return.
+    if (isset($authorMapping[$author_nid])) {
+      return $authorMapping[$author_nid];
+    }
+    // We haven't mapped yet, so queries are needed.
+    // First grab the title of the source author node.
+    $source_query = $this->select('node', 'n');
+    $source_query = $source_query->fields('n', [
+      'title'
+    ])
+      ->condition('nid', $author_nid, '=');
+    $title = $source_query->execute()
+      ->fetchField();
+    // Now we need to find the matching destination person.
+    $dest_connection = \Drupal::database();
+    $dest_query = $dest_connection->select('node_field_data', 'nfd');
+    $new_author_nid = $dest_query->fields('nfd', ['nid'])
+      ->condition('nfd.title', $title)
+      ->execute()
+      ->fetchField();
+    // Set the new mapping.
+    $authorMapping[$author_nid] = $new_author_nid;
+    return $new_author_nid;
   }
 
 }
