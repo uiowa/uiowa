@@ -1997,3 +1997,9 @@ $sites['lawisba.local.drupal.uiowa.edu'] = 'isba.law.uiowa.edu';
 $sites['lawisba.dev.drupal.uiowa.edu'] = 'isba.law.uiowa.edu';
 $sites['lawisba.stage.drupal.uiowa.edu'] = 'isba.law.uiowa.edu';
 $sites['lawisba.prod.drupal.uiowa.edu'] = 'isba.law.uiowa.edu';
+
+// Directory aliases for lungimaging.sites.uiowa.edu.
+$sites['siteslungimaging.local.drupal.uiowa.edu'] = 'lungimaging.sites.uiowa.edu';
+$sites['siteslungimaging.dev.drupal.uiowa.edu'] = 'lungimaging.sites.uiowa.edu';
+$sites['siteslungimaging.stage.drupal.uiowa.edu'] = 'lungimaging.sites.uiowa.edu';
+$sites['siteslungimaging.prod.drupal.uiowa.edu'] = 'lungimaging.sites.uiowa.edu';
