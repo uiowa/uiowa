@@ -80,7 +80,7 @@ class AcademicDatesForm extends FormBase {
       'dates' => [],
     ];
 
-    $data = $this->maui->getSessionDates($current, $category);
+    $data = $this->maui->searchSessionDates($current, $category);
 
     if (!empty($data)) {
       $form['dates-wrapper']['dates'] = [

@@ -185,7 +185,7 @@ class MauiApi {
    * @return array
    *   JSON decoded array of response data.
    */
-  public function getSessionDates($session_id, $date_category = NULL, $print_date = NULL, $five_year_date = NULL, $session_code = NULL, $date = NULL, $context = NULL) {
+  public function searchSessionDates($session_id, $date_category = NULL, $print_date = NULL, $five_year_date = NULL, $session_code = NULL, $date = NULL, $context = NULL) {
     $data = $this->request('GET', '/pub/registrar/session-dates', [
       'context' => $context,
       'date' => $date,
