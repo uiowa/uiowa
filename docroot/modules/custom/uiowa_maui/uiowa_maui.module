@@ -5,6 +5,9 @@
  * Primary module hooks for uiowa_maui module.
  */
 
+use Drupal\Component\Utility\Xss;
+
+
 /**
  * Implements hook_theme().
  */
@@ -30,10 +33,10 @@ function template_preprocess_uiowa_maui_session_dates(&$variables) {
     $end = strtotime($date->endDate);
     $key = $start . $end;
 
-    // The subsession takes priority if set.
+    // Web description is not always set. The subsession takes priority if set.
     $item = (object) [
-      'description' => $date->dateLookup->description,
-      'session' => $date->subSession ?? $date->session->shortDescription,
+      'description' => Xss::filter($date->dateLookup->webDescription ?? $date->dateLookup->description),
+      'session' => Xss::filter($date->subSession ?? $date->session->shortDescription),
     ];
 
     // Group items by date.
