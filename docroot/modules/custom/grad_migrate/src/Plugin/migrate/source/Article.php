@@ -258,8 +258,8 @@ class Article extends BaseNodeSource {
    */
   protected function getAuthor($author_nid) {
     // If we have the mapping, then return.
-    if (isset($authorMapping[$author_nid])) {
-      return $authorMapping[$author_nid];
+    if (isset($this->authorMapping[$author_nid])) {
+      return $this->authorMapping[$author_nid];
     }
     // We haven't mapped yet, so queries are needed.
     // First grab the title of the source author node.
@@ -278,7 +278,7 @@ class Article extends BaseNodeSource {
       ->execute()
       ->fetchField();
     // Set the new mapping.
-    $authorMapping[$author_nid] = $new_author_nid;
+    $this->authorMapping[$author_nid] = $new_author_nid;
     return $new_author_nid;
   }
 
