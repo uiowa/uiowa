@@ -76,7 +76,7 @@ class AcademicDatesForm extends FormBase {
       $sessions = [$current];
     }
     else {
-      $sessions = $this->maui->getSessionsBounded(0, $session_prefilter);
+      $sessions = array_column($this->maui->getSessionsBounded(0, $session_prefilter), 'id');
     }
 
     if (!$category_prefilter) {
