@@ -239,6 +239,12 @@ class Article extends BaseNodeSource {
     // Strip tags so they don't show up in the field teaser.
     $row->setSourceProperty('body_summary', strip_tags($row->getSourceProperty('body_summary')));
 
+    // Update the author reference to use the destination People content.
+    $author_nid = $row->getSourceProperty('field_author_nid');
+    if ($author_nid) {
+      $row->setSourceProperty('field_author_nid', $this->getAuthor($author_nid));
+    }
+
     // Call the parent prepareRow.
     return parent::prepareRow($row);
   }
