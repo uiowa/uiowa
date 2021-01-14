@@ -84,6 +84,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
   public function blockForm($form, FormStateInterface $form_state) {
     $form = parent::blockForm($form, $form_state);
     $config = $this->getConfiguration();
+    $current = $this->maui->getCurrentSession();
 
     $form['headline'] = HeadlineHelper::getElement([
       'headline' => $config['headline'] ?? NULL,
@@ -95,7 +96,11 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
 
     $form['sessions'] = [
       '#title' => $this->t('Sessions'),
-      '#description' => $this->t('What session(s) you wish to display dates for.'),
+      '#description' => $this->t('What session(s) you wish to display dates for. The %exposed option will allow the user to select a session, defaulting to the current session. The current session is @current and it will end on @end.', [
+        '%exposed' => '- Exposed -',
+        '@current' => $current->shortDescription,
+        '@end' => date('F j, Y', strtotime($current->endDate)),
+      ]),
       '#type' => 'select',
       '#options' => [
         0 => $this->t('Current session'),
@@ -113,7 +118,9 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
     $form['category'] = [
       '#type' => 'select',
       '#title' => $this->t('Category'),
-      '#description' => $this->t('Select a category to filter dates on.'),
+      '#description' => $this->t('Select a category to filter dates on. The %exposed option will allow the user to select a category, defaulting to all categories. Leave empty to expose a select list to the user.', [
+        '%exposed' => '- Exposed -',
+      ]),
       '#default_value' => $config['category'] ?? NULL,
       '#empty_value' => NULL,
       '#empty_option' => $this->t('- Exposed -'),
