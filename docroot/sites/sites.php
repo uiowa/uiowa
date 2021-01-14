@@ -1979,3 +1979,15 @@ $sites['org-iowastemse.local.drupal.uiowa.edu'] = 'se.iowastem.org';
 $sites['org-iowastemse.dev.drupal.uiowa.edu'] = 'se.iowastem.org';
 $sites['org-iowastemse.stage.drupal.uiowa.edu'] = 'se.iowastem.org';
 $sites['org-iowastemse.prod.drupal.uiowa.edu'] = 'se.iowastem.org';
+
+// Directory aliases for stanleymuseum.uiowa.edu.
+$sites['stanleymuseum.local.drupal.uiowa.edu'] = 'stanleymuseum.uiowa.edu';
+$sites['stanleymuseum.dev.drupal.uiowa.edu'] = 'stanleymuseum.uiowa.edu';
+$sites['stanleymuseum.stage.drupal.uiowa.edu'] = 'stanleymuseum.uiowa.edu';
+$sites['stanleymuseum.prod.drupal.uiowa.edu'] = 'stanleymuseum.uiowa.edu';
+
+// Directory aliases for waldschmidt.lab.uiowa.edu.
+$sites['labwaldschmidt.local.drupal.uiowa.edu'] = 'waldschmidt.lab.uiowa.edu';
+$sites['labwaldschmidt.dev.drupal.uiowa.edu'] = 'waldschmidt.lab.uiowa.edu';
+$sites['labwaldschmidt.stage.drupal.uiowa.edu'] = 'waldschmidt.lab.uiowa.edu';
+$sites['labwaldschmidt.prod.drupal.uiowa.edu'] = 'waldschmidt.lab.uiowa.edu';
