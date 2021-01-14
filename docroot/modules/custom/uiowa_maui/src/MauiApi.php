@@ -158,13 +158,12 @@ class MauiApi {
   }
 
   /**
-   * Search session dates.
+   * Search session dates. Modified to support multiple sessions.
    *
    * GET /pub/registrar/session-dates.
    *
-   * @param int $session_id
-   *   The internal session id to search. Either this or sessionCode must
-   *    be specified.
+   * @param array $sessions
+   *   An array of internal session IDs.
    * @param string $date_category
    *   The natural key of the date category you are interested in. (e.g.
    *    HOUSING_DINING).
@@ -173,8 +172,6 @@ class MauiApi {
    *    requires a string value so booleans are converted here.
    * @param string $five_year_date
    *   Whether or not to include Five Year Date dates in results.
-   * @param int $session_code
-   *   The session code to search (20148 for example).
    * @param string $date
    *   The natural key of the session date you are interested in. (e.g.
    *    ISISAVAIL).
@@ -185,16 +182,19 @@ class MauiApi {
    * @return array
    *   JSON decoded array of response data.
    */
-  public function searchSessionDates($session_id, $date_category = NULL, $print_date = NULL, $five_year_date = NULL, $session_code = NULL, $date = NULL, $context = NULL) {
-    $data = $this->request('GET', '/pub/registrar/session-dates', [
-      'context' => $context,
-      'date' => $date,
-      'sessionCode' => $session_code,
-      'sessionId' => $session_id,
-      'fiveYearDate' => is_bool($five_year_date) ? var_export($five_year_date, TRUE) : $five_year_date,
-      'printDate' => is_bool($print_date) ? var_export($print_date, TRUE) : $print_date,
-      'dateCategory' => $date_category,
-    ]);
+  public function searchSessionDates(array $sessions, $date_category = NULL, $print_date = NULL, $five_year_date = NULL, $date = NULL, $context = NULL) {
+    $data = [];
+
+    foreach ($sessions as $session) {
+      $data = array_merge($data, $this->request('GET', '/pub/registrar/session-dates', [
+        'context' => $context,
+        'date' => $date,
+        'sessionId' => $session,
+        'fiveYearDate' => is_bool($five_year_date) ? var_export($five_year_date, TRUE) : $five_year_date,
+        'printDate' => is_bool($print_date) ? var_export($print_date, TRUE) : $print_date,
+        'dateCategory' => $date_category,
+      ]));
+    }
 
     // Filter out dates with no categories.
     $data = array_filter($data, function ($v) {
