@@ -2,6 +2,7 @@
 
 namespace Drupal\uiowa_maui\Form;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\uiowa_maui\MauiApi;
@@ -51,6 +52,8 @@ class AcademicDatesForm extends FormBase {
     $current = $form_state->getValue('session') ?? $this->maui->getCurrentSession()->id;
     $category = $form_state->getValue('category') ?? $category_prefilter;
 
+    $wrapper_id = Html::getUniqueId('maui-dates-wrapper');
+
     if (!$category_prefilter) {
       $form['category'] = [
         '#type' => 'select',
@@ -62,7 +65,7 @@ class AcademicDatesForm extends FormBase {
         '#options' => $this->maui->getDateCategories(),
         '#ajax' => [
           'callback' => [$this, 'categoryChanged'],
-          'wrapper' => 'maui-dates-wrapper',
+          'wrapper' => $wrapper_id,
         ],
       ];
     }
@@ -71,7 +74,7 @@ class AcademicDatesForm extends FormBase {
     $form['dates-wrapper'] = [
       '#type' => 'container',
       '#attributes' => [
-        'id' => 'maui-dates-wrapper',
+        'id' => $wrapper_id,
         'aria-live' => 'polite',
       ],
       'dates' => [],
