@@ -12,7 +12,7 @@ use Drupal\Core\Block\BlockBase;
  * @Block(
  *   id = "sitenow_block",
  *   admin_label = @Translation("Powered by SiteNow"),
- *   category = @Translation("Custom")
+ *   category = @Translation("Site custom")
  * )
  */
 class SiteNowBlock extends BlockBase {
