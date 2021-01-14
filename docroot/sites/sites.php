@@ -1991,3 +1991,9 @@ $sites['labwaldschmidt.local.drupal.uiowa.edu'] = 'waldschmidt.lab.uiowa.edu';
 $sites['labwaldschmidt.dev.drupal.uiowa.edu'] = 'waldschmidt.lab.uiowa.edu';
 $sites['labwaldschmidt.stage.drupal.uiowa.edu'] = 'waldschmidt.lab.uiowa.edu';
 $sites['labwaldschmidt.prod.drupal.uiowa.edu'] = 'waldschmidt.lab.uiowa.edu';
+
+// Directory aliases for isba.law.uiowa.edu.
+$sites['lawisba.local.drupal.uiowa.edu'] = 'isba.law.uiowa.edu';
+$sites['lawisba.dev.drupal.uiowa.edu'] = 'isba.law.uiowa.edu';
+$sites['lawisba.stage.drupal.uiowa.edu'] = 'isba.law.uiowa.edu';
+$sites['lawisba.prod.drupal.uiowa.edu'] = 'isba.law.uiowa.edu';
