@@ -93,6 +93,24 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       'child_heading_size' => $config['child_heading_size'] ?? 'h3',
     ]);
 
+    $form['sessions'] = array(
+      '#title' => t('Sessions'),
+      '#description' => t('What session(s) you wish to display dates for.'),
+      '#type' => 'select',
+      '#options' => array(
+        0 => t('Current session'),
+        1 => t('Current session, plus next session'),
+        2 => t('Current session, plus next two sessions'),
+        3 => t('Current session, plus next three sessions'),
+        4 => t('Current session, plus next four sessions'),
+      ),
+      '#default_value' => $config['sessions'] ?? NULL,
+      '#required' => FALSE,
+      '#empty_value' => NULL,
+      '#empty_option' => $this->t(' - Exposed -'),
+    );
+
+
     $form['category'] = [
       '#type' => 'select',
       '#title' => $this->t('Category'),
@@ -115,7 +133,13 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       $this->configuration[$name] = $value;
     }
 
-    $this->configuration['category'] = $form_state->getValue('category');
+    // Despite the form element empty_value set to NULL, these are saved as
+    // empty strings and we want NULL as that is the default form argument.
+    $sessions = $form_state->getValue('sessions');
+    $category = $form_state->getValue('category');
+
+    $this->configuration['sessions'] = !empty($sessions) ? $sessions : NULL;
+    $this->configuration['category'] = !empty($category) ? $category : NULL;
     parent::blockSubmit($form, $form_state);
   }
 
@@ -144,6 +168,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
 
     $build['form'] = $this->formBuilder->getForm(
       '\Drupal\uiowa_maui\Form\AcademicDatesForm',
+      $config['sessions'],
       $config['category'],
       $child_heading_size
     );
