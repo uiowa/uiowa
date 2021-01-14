@@ -93,23 +93,22 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       'child_heading_size' => $config['child_heading_size'] ?? 'h3',
     ]);
 
-    $form['sessions'] = array(
-      '#title' => t('Sessions'),
-      '#description' => t('What session(s) you wish to display dates for.'),
+    $form['sessions'] = [
+      '#title' => $this->t('Sessions'),
+      '#description' => $this->t('What session(s) you wish to display dates for.'),
       '#type' => 'select',
-      '#options' => array(
-        0 => t('Current session'),
-        1 => t('Current session, plus next session'),
-        2 => t('Current session, plus next two sessions'),
-        3 => t('Current session, plus next three sessions'),
-        4 => t('Current session, plus next four sessions'),
-      ),
+      '#options' => [
+        0 => $this->t('Current session'),
+        1 => $this->t('Current session, plus next session'),
+        2 => $this->t('Current session, plus next two sessions'),
+        3 => $this->t('Current session, plus next three sessions'),
+        4 => $this->t('Current session, plus next four sessions'),
+      ],
       '#default_value' => $config['sessions'] ?? NULL,
       '#required' => FALSE,
       '#empty_value' => NULL,
-      '#empty_option' => $this->t(' - Exposed -'),
-    );
-
+      '#empty_option' => $this->t('- Exposed -'),
+    ];
 
     $form['category'] = [
       '#type' => 'select',
