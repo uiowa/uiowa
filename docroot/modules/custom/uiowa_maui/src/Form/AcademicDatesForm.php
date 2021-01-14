@@ -54,6 +54,31 @@ class AcademicDatesForm extends FormBase {
 
     $wrapper_id = Html::getUniqueId('maui-dates-wrapper');
 
+    if (!$session_prefilter) {
+      $options = [];
+
+      foreach ($this->maui->getSessionsBounded() as $session) {
+        $options[$session->id] = Html::escape($session->shortDescription);
+      }
+
+      $form['session'] = [
+        '#type' => 'select',
+        '#title' => $this->t('Session'),
+        '#description' => $this->t('Select a session to filter dates on.'),
+        '#default_value' => $current,
+        '#options' => $options,
+        '#ajax' => [
+          'callback' => [$this, 'sessionChanged'],
+          'wrapper' => $wrapper_id,
+        ],
+      ];
+
+      $sessions = [$current];
+    }
+    else {
+      $sessions = $this->maui->getSessionsBounded(0, $session_prefilter);
+    }
+
     if (!$category_prefilter) {
       $form['category'] = [
         '#type' => 'select',
@@ -80,7 +105,7 @@ class AcademicDatesForm extends FormBase {
       'dates' => [],
     ];
 
-    $data = $this->maui->searchSessionDates($current, $category);
+    $data = $this->maui->searchSessionDates($sessions, $category);
 
     if (!empty($data)) {
       $form['dates-wrapper']['dates'] = [
