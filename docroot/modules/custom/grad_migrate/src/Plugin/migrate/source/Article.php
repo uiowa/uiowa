@@ -253,8 +253,10 @@ class Article extends BaseNodeSource {
    * Check if we have the author mapping, and query if not.
    *
    * @param int $author_nid
+   *   The original source author nid.
    *
    * @return int
+   *   The nid for the new destination Person node.
    */
   protected function getAuthor($author_nid) {
     // If we have the mapping, then return.
@@ -265,7 +267,7 @@ class Article extends BaseNodeSource {
     // First grab the title of the source author node.
     $source_query = $this->select('node', 'n');
     $source_query = $source_query->fields('n', [
-      'title'
+      'title',
     ])
       ->condition('nid', $author_nid, '=');
     $title = $source_query->execute()
