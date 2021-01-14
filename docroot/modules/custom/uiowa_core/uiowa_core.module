@@ -29,7 +29,13 @@ function uiowa_core_theme($existing, $type, $theme, $path) {
  * Preprocess function uiowa_core_headline.
  */
 function template_preprocess_uiowa_core_headline(&$variables) {
-  $style = HeadlineHelper::getStyles()[$variables['headline_style']];
+  if ($variables['hide_headline'] == TRUE) {
+    $style = 'sr-only';
+  }
+  else {
+    $style = HeadlineHelper::getStyles()[$variables['headline_style']];
+  }
+
   $variables['headline_style'] = $style;
 
 }
