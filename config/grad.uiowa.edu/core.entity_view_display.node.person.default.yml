@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.person.field_grad_program
+    - field.field.node.person.field_grad_program_phd
     - field.field.node.person.field_image
     - field.field.node.person.field_person_bio
     - field.field.node.person.field_person_contact_information
@@ -72,7 +72,7 @@ third_party_settings:
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-              id: 'field_block:node:person:field_grad_program'
+              id: 'field_block:node:person:field_grad_program_phd'
               formatter:
                 label: above
                 settings: {  }
@@ -326,7 +326,7 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_grad_program:
+  field_grad_program_phd:
     weight: 20
     label: above
     settings: {  }
