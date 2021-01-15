@@ -174,6 +174,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
   public function build() {
     $config = $this->getConfiguration();
 
+    // @todo: Replace the dynamic placeholder value with the session name.
     $build = [
       'heading' => [
         '#theme' => 'uiowa_core_headline',
