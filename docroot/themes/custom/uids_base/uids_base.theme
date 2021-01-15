@@ -129,7 +129,7 @@ function uids_base_preprocess_page(&$variables) {
       $login_url = Url::fromRoute('samlauth.saml_controller_login', [], [
         'query' => [
           'destination' => $destination,
-        ]
+        ],
       ]);
 
       $variables['footer_login_link'] = [
