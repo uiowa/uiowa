@@ -158,6 +158,38 @@ class MauiApi {
   }
 
   /**
+   * Find a list of sessions specified by a query.
+   *
+   * GET /pub/registrar/sessions/range.
+   *
+   * @param int $from
+   *        The internal id of the session.
+   * @param int $steps
+   *        The number of steps to take from the 'from' session. May be negative
+   *        to go back. Cannot be zero.
+   * @param string $term
+   *        The session term enum value: SUMMER, FALL, WINTER or SPRING. This is
+   *        case-sensitive but that is not documented in the API.
+   *
+   * @return array $data
+   *         JSON decoded array of response data.
+   */
+  function getSessionsRange($from, $steps, $term = NULL) {
+    $data = $this->request('GET', '/pub/registrar/sessions/range', [
+      'from' => $from,
+      'steps' => $steps,
+      'term' => strtoupper($term),
+    ]);
+
+    // Sort by start date.
+    usort($data, function($a, $b) {
+      return strtotime($a->startDate) > strtotime($b->startDate);
+    });
+
+    return $data;
+  }
+
+  /**
    * Search session dates. Modified to support multiple sessions.
    *
    * GET /pub/registrar/session-dates.
