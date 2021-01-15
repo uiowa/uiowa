@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.mentor.field_grad_program
+    - field.field.node.mentor.field_grad_program_all_degree
     - field.field.node.mentor.field_image
     - field.field.node.mentor.field_person_credential
     - field.field.node.mentor.field_person_education
@@ -52,7 +52,7 @@ third_party_settings:
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-              id: 'field_block:node:mentor:field_grad_program'
+              id: 'field_block:node:mentor:field_grad_program_all_degree'
               formatter:
                 label: visually_hidden
                 settings: {  }
@@ -220,7 +220,7 @@ targetEntityType: node
 bundle: mentor
 mode: default
 content:
-  field_grad_program:
+  field_grad_program_all_degree:
     weight: 2
     label: visually_hidden
     settings: {  }
