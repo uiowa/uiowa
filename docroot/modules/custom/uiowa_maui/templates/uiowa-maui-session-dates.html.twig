@@ -43,7 +43,7 @@
         {% for item in date.items %}
           <div class="card__date">
             {{ item.description|raw }}
-            <span class="badge badge--primary">{{ item.session }}</span>
+            <span{{ item.attributes }}>{{ item.session }}</span>
           </div>
         {% endfor %}
       </div>
