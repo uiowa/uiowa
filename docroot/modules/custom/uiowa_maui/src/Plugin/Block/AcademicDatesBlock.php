@@ -84,7 +84,14 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
   public function blockForm($form, FormStateInterface $form_state) {
     $form = parent::blockForm($form, $form_state);
     $config = $this->getConfiguration();
-    $current = $this->maui->getCurrentSession();
+
+    list(
+      $current,
+      $plus_one,
+      $plus_two,
+      $plus_three
+    ) = $this->maui->getSessionsRange($this->maui->getCurrentSession()->id, 3);
+
 
     $form['headline'] = HeadlineHelper::getElement([
       'headline' => $config['headline'] ?? NULL,
@@ -94,24 +101,38 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       'child_heading_size' => $config['child_heading_size'] ?? 'h3',
     ]);
 
-    $form['sessions'] = [
-      '#title' => $this->t('Sessions'),
-      '#description' => $this->t('What session(s) you wish to display dates for. The %exposed option will allow the user to select a session, defaulting to the current session. The current session is @current and it will end on @end.', [
-        '%exposed' => '- Exposed -',
+    $form['headline']['container']['headline']['#description'] = $this->t('Use %session as a placeholder for the selected session below.', [
+      '%session' => '@session',
+    ]);
+
+    $form['session'] = [
+      '#title' => $this->t('Session'),
+      '#description' => $this->t('What relative session you wish to display dates for. This will roll over automatically when the session ends. The %exposed option will allow the user to select a session, defaulting to the current.', [
         '@current' => $current->shortDescription,
-        '@end' => date('F j, Y', strtotime($current->endDate)),
+        '%exposed' => '- Exposed -',
       ]),
       '#type' => 'select',
       '#options' => [
-        0 => $this->t('Current session'),
-        1 => $this->t('Current session, plus next session'),
-        2 => $this->t('Current session, plus next two sessions'),
-        3 => $this->t('Current session, plus next three sessions'),
-        4 => $this->t('Current session, plus next four sessions'),
+        0 => $this->t('Current session (@session, ends @end)', [
+          '@session' => $current->shortDescription,
+          '@end' => date('n/j/Y', strtotime($current->endDate))
+        ]),
+        1 => $this->t('Current session plus one (@session, ends @end)', [
+          '@session' => $plus_one->shortDescription,
+          '@end' => date('n/j/Y', strtotime($plus_one->endDate))
+        ]),
+        2 => $this->t('Current session plus two (@session, ends @end)', [
+          '@session' => $plus_two->shortDescription,
+          '@end' => date('n/j/Y', strtotime($plus_two->endDate))
+        ]),
+        3 => $this->t('Current session plus three (@session, ends @end)', [
+          '@session' => $plus_three->shortDescription,
+          '@end' => date('n/j/Y', strtotime($plus_three->endDate))
+        ]),
       ],
-      '#default_value' => $config['sessions'] ?? NULL,
+      '#default_value' => $config['session'] ?? '',
       '#required' => FALSE,
-      '#empty_value' => NULL,
+      '#empty_value' => '',
       '#empty_option' => $this->t('- Exposed -'),
     ];
 
@@ -121,8 +142,8 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       '#description' => $this->t('Select a category to filter dates on. The %exposed option will allow the user to select a category, defaulting to all categories.', [
         '%exposed' => '- Exposed -',
       ]),
-      '#default_value' => $config['category'] ?? NULL,
-      '#empty_value' => NULL,
+      '#default_value' => $config['category'] ?? '',
+      '#empty_value' => '',
       '#empty_option' => $this->t('- Exposed -'),
       '#options' => $this->maui->getDateCategories(),
     ];
@@ -139,13 +160,12 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       $this->configuration[$name] = $value;
     }
 
-    // Despite the form element empty_value set to NULL, these are saved as
-    // empty strings and we want NULL as that is the default form argument.
-    $sessions = $form_state->getValue('sessions');
+    // Convert select list values to what we're expecting in the form builder.
+    $session = $form_state->getValue('session');
     $category = $form_state->getValue('category');
 
-    $this->configuration['sessions'] = !empty($sessions) ? $sessions : NULL;
-    $this->configuration['category'] = !empty($category) ? $category : NULL;
+    $this->configuration['session'] = ($session === '') ? NULL : $session;
+    $this->configuration['category'] = ($category === '') ? NULL : $category;
     parent::blockSubmit($form, $form_state);
   }
 
@@ -174,7 +194,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
 
     $build['form'] = $this->formBuilder->getForm(
       '\Drupal\uiowa_maui\Form\AcademicDatesForm',
-      $config['sessions'],
+      $config['session'],
       $config['category'],
       $child_heading_size
     );
