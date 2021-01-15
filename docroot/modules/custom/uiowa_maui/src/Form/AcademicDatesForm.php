@@ -54,7 +54,7 @@ class AcademicDatesForm extends FormBase {
 
     $wrapper = Html::getUniqueId('uiowa-maui-dates-wrapper');
 
-    if (!$session_prefilter) {
+    if ($session_prefilter === NULL) {
       $options = [];
 
       foreach ($this->maui->getSessionsBounded() as $session) {
@@ -80,7 +80,7 @@ class AcademicDatesForm extends FormBase {
       $sessions = array_column($this->maui->getSessionsBounded(0, $session_prefilter), 'id');
     }
 
-    if (!$category_prefilter) {
+    if ($category_prefilter === NULL) {
       $form['category'] = [
         '#type' => 'select',
         '#title' => $this->t('Category'),
