@@ -6,6 +6,7 @@
  */
 
 use Drupal\Component\Utility\Xss;
+use Drupal\Core\Template\Attribute;
 
 /**
  * Implements hook_theme().
@@ -33,9 +34,14 @@ function template_preprocess_uiowa_maui_session_dates(&$variables) {
     $key = $start . $end;
 
     // Web description is not always set. The subsession takes priority if set.
+    $subsession = $date->subSession ?? FALSE;
+
     $item = (object) [
       'description' => Xss::filter($date->dateLookup->webDescription ?? $date->dateLookup->description),
-      'session' => Xss::filter($date->subSession ?? $date->session->shortDescription),
+      'session' => Xss::filter($subsession ?: $date->session->shortDescription),
+      'attributes' => new Attribute([
+        'class' => $subsession ? 'badge badge--primary subsession' : 'badge badge--primary session'
+      ]),
     ];
 
     // Group items by date.
