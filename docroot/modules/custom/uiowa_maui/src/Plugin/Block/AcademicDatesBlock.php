@@ -92,7 +92,6 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       $plus_three
     ) = $this->maui->getSessionsRange($this->maui->getCurrentSession()->id, 3);
 
-
     $form['headline'] = HeadlineHelper::getElement([
       'headline' => $config['headline'] ?? NULL,
       'hide_headline' => $config['hide_headline'] ?? 0,
@@ -115,19 +114,19 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       '#options' => [
         0 => $this->t('Current session (@session, ends @end)', [
           '@session' => $current->shortDescription,
-          '@end' => date('n/j/Y', strtotime($current->endDate))
+          '@end' => date('n/j/Y', strtotime($current->endDate)),
         ]),
         1 => $this->t('Current session plus one (@session, ends @end)', [
           '@session' => $plus_one->shortDescription,
-          '@end' => date('n/j/Y', strtotime($plus_one->endDate))
+          '@end' => date('n/j/Y', strtotime($plus_one->endDate)),
         ]),
         2 => $this->t('Current session plus two (@session, ends @end)', [
           '@session' => $plus_two->shortDescription,
-          '@end' => date('n/j/Y', strtotime($plus_two->endDate))
+          '@end' => date('n/j/Y', strtotime($plus_two->endDate)),
         ]),
         3 => $this->t('Current session plus three (@session, ends @end)', [
           '@session' => $plus_three->shortDescription,
-          '@end' => date('n/j/Y', strtotime($plus_three->endDate))
+          '@end' => date('n/j/Y', strtotime($plus_three->endDate)),
         ]),
       ],
       '#default_value' => $config['session'] ?? '',
