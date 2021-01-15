@@ -55,7 +55,6 @@ class Article extends BaseNodeSource {
     // field_data_field_lead is not being migrated.
     // field_data_field_pull_quote is not being migrated.
     // field_data_field_pull_quote_featured is not being migrated.
-    // field_data_field_author is not being migrated.
     // field_data_field_annual_report is not being migrated.
     // field_data_field_article_source_link is not being migrated.
     // field_data_field_attachments is not being migrated.
