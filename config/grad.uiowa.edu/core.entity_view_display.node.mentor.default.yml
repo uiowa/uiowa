@@ -20,6 +20,7 @@ dependencies:
     - field.field.node.mentor.field_scholar_bio_headline
     - field.field.node.mentor.field_uiowa_college
     - node.type.mentor
+    - views.view.mentor_card
   module:
     - layout_builder
     - link
@@ -28,6 +29,7 @@ dependencies:
     - text
     - uiowa_entities
     - user
+    - views
   theme:
     - uids_base
 third_party_settings:
@@ -199,6 +201,19 @@ third_party_settings:
                 type: string
             additional: {  }
             weight: 4
+          -
+            uuid: 371069fc-372e-4f83-927a-7c5995918c8b
+            region: second
+            configuration:
+              id: 'views_block:mentor_card-block_1'
+              label: null
+              provider: views
+              label_display: null
+              views_label: ''
+              items_per_page: '1'
+              context_mapping: {  }
+            additional: {  }
+            weight: 0
         third_party_settings: {  }
 id: node.mentor.default
 targetEntityType: node
