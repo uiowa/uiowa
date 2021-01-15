@@ -188,11 +188,11 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
     }
 
     $build['heading'] = [
-        '#theme' => 'uiowa_core_headline',
-        '#headline' => $config['headline'],
-        '#hide_headline' => $config['hide_headline'],
-        '#heading_size' => $config['heading_size'],
-        '#headline_style' => $config['headline_style'],
+      '#theme' => 'uiowa_core_headline',
+      '#headline' => $config['headline'],
+      '#hide_headline' => $config['hide_headline'],
+      '#heading_size' => $config['heading_size'],
+      '#headline_style' => $config['headline_style'],
     ];
 
     if (empty($config['headline'])) {

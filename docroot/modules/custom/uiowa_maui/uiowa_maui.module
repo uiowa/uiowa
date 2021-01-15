@@ -40,7 +40,7 @@ function template_preprocess_uiowa_maui_session_dates(&$variables) {
       'description' => Xss::filter($date->dateLookup->webDescription ?? $date->dateLookup->description),
       'session' => Xss::filter($subsession ?: $date->session->shortDescription),
       'attributes' => new Attribute([
-        'class' => $subsession ? 'badge badge--primary subsession' : 'badge badge--primary session'
+        'class' => $subsession ? 'badge badge--primary subsession' : 'badge badge--primary session',
       ]),
     ];
 
