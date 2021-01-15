@@ -427,3 +427,15 @@ function srop_year_allowed_values(FieldStorageConfig $definition, ContentEntityI
   endwhile;
   return $options;
 }
+
+/**
+ * Implements hook_theme for Thesis Defense teaser.
+ */
+function grad_custom_theme($existing, $type, $theme, $path) {
+  return [
+    'node__thesis_defense__teaser' => [
+      'template' => 'node--thesis-defense--teaser',
+      'base hook' => 'node',
+    ],
+  ];
+}
