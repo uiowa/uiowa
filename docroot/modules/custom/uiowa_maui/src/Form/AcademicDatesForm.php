@@ -42,7 +42,7 @@ class AcademicDatesForm extends FormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'uiowa_maui_dates_by_session';
+    return 'uiowa_maui_academic_dates';
   }
 
   /**
