@@ -176,7 +176,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
 
     // Replace the dynamic placeholder value with the session name.
     if (stristr($config['headline'], '@session')) {
-      $bounding = $this->maui->getSessionsBounded(0, 4);
+      $bounding = $this->maui->getSessionsBounded(0, 3);
       $current = $bounding[$config['session']];
       $config['headline'] = str_replace('@session', $current->shortDescription, $config['headline']);
     }

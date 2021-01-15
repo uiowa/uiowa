@@ -76,7 +76,7 @@ class AcademicDatesForm extends FormBase {
     }
     else {
       // Get the relative session from the prefilter value.
-      $bounding = $this->maui->getSessionsBounded(0, 4);
+      $bounding = $this->maui->getSessionsBounded(0, 3);
       $current = $bounding[$session_prefilter]->id;
     }
 
