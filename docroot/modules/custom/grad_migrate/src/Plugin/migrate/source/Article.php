@@ -71,11 +71,8 @@ class Article extends BaseNodeSource {
       'body_summary',
       'body_format',
     ])
-      // @todo Join article people reference.
       // @todo Join tags reference.
       // @todo Join programs reference.
-      // @todo Join editorial group reference.
-      // @todo Check D8 migration status.
       ->fields('ti', [
         'field_thumbnail_image_fid',
         'field_thumbnail_image_alt',
