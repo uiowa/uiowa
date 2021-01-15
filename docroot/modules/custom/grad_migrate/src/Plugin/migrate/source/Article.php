@@ -285,7 +285,7 @@ class Article extends BaseNodeSource {
    * Map taxonomy to a tag.
    */
   protected function getTags(&$row) {
-    $tids = $row->getSourceProperty('field_tags_tid') + $row->getSourceProperty('field_article_program_tid');
+    $tids = array_merge($row->getSourceProperty('field_tags_tid'), $row->getSourceProperty('field_article_program_tid'));
     foreach ($tids as $tid) {
       if (isset($this->termMapping[$tid])) {
         $new_tids[] = $this->termMapping[$tid];
@@ -304,7 +304,7 @@ class Article extends BaseNodeSource {
         ->condition('t.tid', $source_tids, 'in');
       $terms = $source_query->distinct()
         ->execute()
-        ->fetchAllKeyed('tid');
+        ->fetchAllKeyed(0, 1);
       foreach ($terms as $tid => $name) {
         $term = Term::create([
           'name' => $name,
