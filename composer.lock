@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ad4bd46e428ac633a7a005c752ba3a46",
+    "content-hash": "af5ec6bc416f2c66d1e6f82cd7760219",
     "packages": [
         {
             "name": "acquia/blt",
@@ -5479,26 +5479,26 @@
         },
         {
             "name": "drupal/imagecache_external",
-            "version": "1.2.0",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/imagecache_external.git",
-                "reference": "8.x-1.2"
+                "reference": "3.0.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/imagecache_external-8.x-1.2.zip",
-                "reference": "8.x-1.2",
-                "shasum": "dd4f041441d2096f0b9b6979a1f11a58c7c18958"
+                "url": "https://ftp.drupal.org/files/projects/imagecache_external-3.0.0.zip",
+                "reference": "3.0.0",
+                "shasum": "8975bf8229dcfae47600502b872b01861eee1440"
             },
             "require": {
-                "drupal/core": "^8"
+                "drupal/core": "^8 || ^9"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.2",
-                    "datestamp": "1579607283",
+                    "version": "3.0.0",
+                    "datestamp": "1605799095",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -8143,26 +8143,29 @@
         },
         {
             "name": "drupal/siteimprove",
-            "version": "1.6.0",
+            "version": "1.10.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/siteimprove.git",
-                "reference": "8.x-1.6"
+                "reference": "8.x-1.10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/siteimprove-8.x-1.6.zip",
-                "reference": "8.x-1.6",
-                "shasum": "1b8892359f53da8197f910a9efe1dbe39447ccaf"
+                "url": "https://ftp.drupal.org/files/projects/siteimprove-8.x-1.10.zip",
+                "reference": "8.x-1.10",
+                "shasum": "53a86cbbe4e3e01840d90e5005159ba2da918efa"
             },
             "require": {
                 "drupal/core": "^8 || ^9"
             },
+            "require-dev": {
+                "drupal/domain_access": "*"
+            },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.6",
-                    "datestamp": "1602602495",
+                    "version": "8.x-1.10",
+                    "datestamp": "1607458409",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -8209,7 +8212,7 @@
                 "Drupal"
             ],
             "support": {
-                "source": "http://cgit.drupalcode.org/siteimprove",
+                "source": "https://git.drupalcode.org/project/siteimprove",
                 "issues": "https://www.drupal.org/project/issues/siteimprove"
             }
         },
@@ -14280,16 +14283,16 @@
         },
         {
             "name": "symfony/polyfill-php80",
-            "version": "v1.20.0",
+            "version": "v1.22.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php80.git",
-                "reference": "e70aa8b064c5b72d3df2abd5ab1e90464ad009de"
+                "reference": "dc3063ba22c2a1fd2f45ed856374d79114998f91"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/e70aa8b064c5b72d3df2abd5ab1e90464ad009de",
-                "reference": "e70aa8b064c5b72d3df2abd5ab1e90464ad009de",
+                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/dc3063ba22c2a1fd2f45ed856374d79114998f91",
+                "reference": "dc3063ba22c2a1fd2f45ed856374d79114998f91",
                 "shasum": ""
             },
             "require": {
@@ -14298,7 +14301,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "1.20-dev"
+                    "dev-main": "1.22-dev"
                 },
                 "thanks": {
                     "name": "symfony/polyfill",
@@ -14343,7 +14346,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php80/tree/v1.20.0"
+                "source": "https://github.com/symfony/polyfill-php80/tree/v1.22.0"
             },
             "funding": [
                 {
@@ -14359,7 +14362,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-10-23T14:02:19+00:00"
+            "time": "2021-01-07T16:49:33+00:00"
         },
         {
             "name": "symfony/polyfill-util",
@@ -15347,11 +15350,11 @@
         },
         {
             "name": "uiowa/uiowa_auth",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "git@github.com:uiowa/uiowa_auth",
-                "reference": "0bb19b22dc5f09c2409c3c8567ae75254eb6f761"
+                "reference": "a967bdf425f9d40c98ba6464026c091abb9ea878"
             },
             "require": {
                 "composer/installers": "^1.6",
@@ -15360,7 +15363,7 @@
             },
             "type": "drupal-custom-module",
             "description": "Disables Drupal authentication and implements HawkID SSO.",
-            "time": "2020-10-16T20:05:02+00:00"
+            "time": "2021-01-12T16:47:55+00:00"
         },
         {
             "name": "uiowa/uiowa_bar",

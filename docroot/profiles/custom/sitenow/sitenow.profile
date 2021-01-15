@@ -427,7 +427,7 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
 
     if ($form_object && $node = $form_object->getEntity()) {
       $type = $node->getType() . 's';
-      $form['field_featured_image_display']['widget']['#description'] .= t(' If "Site-wide default" is selected, this setting can be changed on the <a href="@settings_url">SiteNow @types settings</a>.', [
+      $form['field_featured_image_display']['widget']['#description'] .= t('&nbsp;If "Site-wide default" is selected, this setting can be changed on the <a href="@settings_url">SiteNow @types settings</a>.', [
         '@settings_url' => Url::fromRoute("sitenow_$type.settings_form")->toString(),
         '@types' => ucfirst($type),
       ]);
