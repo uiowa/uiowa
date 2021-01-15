@@ -151,7 +151,7 @@ function uiowa_bootstrap_preprocess_layout(&$variables) {
         $variables["attributes"]['class'][] = 'sidebar-invisible';
       }
       if (array_search('no_top_scroll', array_column($publish_options, 'value')) !== FALSE) {
-        $variables["attributes"]['class'][] = 'scrollTop';
+        $variables["attributes"]['class'][] = 'no-top-scroll';
       }
 
     }

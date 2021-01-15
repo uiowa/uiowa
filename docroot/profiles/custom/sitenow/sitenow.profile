@@ -768,7 +768,7 @@ function sitenow_preprocess_page(&$variables) {
           $variables['header_attributes']->addClass('title-hidden');
         }
         if (array_search('no_top_scroll', array_column($publish_options, 'value')) !== FALSE) {
-          $variables['header_attributes']->addClass('scrollTop');
+          $variables['header_attributes']->addClass('no-top-scroll');
         }
       }
     }
