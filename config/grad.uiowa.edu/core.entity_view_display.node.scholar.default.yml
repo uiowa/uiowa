@@ -19,10 +19,112 @@ dependencies:
     - options
     - text
     - user
+  theme:
+    - uids_base
 third_party_settings:
   layout_builder:
     allow_custom: false
-    enabled: false
+    enabled: true
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+        components:
+          -
+            uuid: 5f8df59a-03b0-4939-aa52-c8cbbaeaf6c1
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:scholar:field_person_position'
+              formatter:
+                label: visually_hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+                type: string
+            additional: {  }
+            weight: 1
+          -
+            uuid: fbf69cdb-e9c5-4e88-ae0b-c4068d88c4cb
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:scholar:field_person_education'
+              formatter:
+                label: visually_hidden
+                settings: {  }
+                third_party_settings: {  }
+                type: basic_string
+            additional: {  }
+            weight: 2
+          -
+            uuid: 316adb53-8968-45d1-833e-f5b98529ce5e
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:scholar:field_scholar_mentor'
+              formatter:
+                label: inline
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+                type: string
+            additional: {  }
+            weight: 3
+          -
+            uuid: fde084cd-1a0a-4df9-9d3e-4d8c327bff05
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:scholar:field_scholar_participation_year'
+              formatter:
+                label: inline
+                settings: {  }
+                third_party_settings: {  }
+                type: list_default
+            additional: {  }
+            weight: 4
+          -
+            uuid: 5a5f1da4-b802-49ef-b43f-b5ff379e545a
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:scholar:field_scholar_bio_headline'
+              formatter:
+                label: visually_hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+                type: string
+            additional: {  }
+            weight: 5
+          -
+            uuid: 85183206-4cb2-4888-819c-9f3edca83ee4
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:scholar:field_scholar_bio'
+              formatter:
+                label: visually_hidden
+                settings: {  }
+                third_party_settings: {  }
+                type: text_default
+            additional: {  }
+            weight: 6
+        third_party_settings: {  }
 id: node.scholar.default
 targetEntityType: node
 bundle: scholar
