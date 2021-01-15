@@ -71,6 +71,7 @@ class AcademicDatesForm extends FormBase {
           'callback' => [$this, 'sessionChanged'],
           'wrapper' => $wrapper,
           'method' => 'html',
+          'disable-refocus' => TRUE,
         ],
       ];
     }
@@ -93,6 +94,7 @@ class AcademicDatesForm extends FormBase {
           'callback' => [$this, 'categoryChanged'],
           'wrapper' => $wrapper,
           'method' => 'html',
+          'disable-refocus' => TRUE,
         ],
       ];
     }
