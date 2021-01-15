@@ -284,19 +284,30 @@ class Article extends BaseNodeSource {
    * Map taxonomy to a tag.
    */
   protected function getTags(&$row) {
-    $new_tids = [];
     $tids = $row->getSourceProperty('field_tags_tid') + $row->getSourceProperty('field_article_program_tid');
     foreach ($tids as $tid) {
-      if (!isset($this->termMapping[$tid])) {
-        // @todo get term info.
+      if (isset($this->termMapping[$tid])) {
+        $new_tids[] = $this->termMapping[$tid];
+      }
+      else {
+        $source_tids[] = $tid;
+      }
+    }
+    if (!empty($source_tids)) {
+      $source_query = $this->select('taxonomy_term_data', '');
+      $source_query = $source_query->fields('t', [
+        'tid',
+        'name',
+        // We can leave out description, as all are empty.
+      ])
+        ->condition('tid', $source_tids, 'in');
+      $terms = $source_query->execute()
+        ->fetchAllKeyed('tid');
+      foreach ($terms as $tid => $name) {
         // @todo make a new term.
         // @todo add term to mapping.
         // @todo assign $tid.
       }
-      else {
-        $tid = $this->termMapping[$tid];
-      }
-      $new_tids[] = $tid;
     }
     $row->setSourceProperty('article_tids', $new_tids);
   }
