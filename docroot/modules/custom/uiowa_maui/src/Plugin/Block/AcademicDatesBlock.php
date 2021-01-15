@@ -174,6 +174,12 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
   public function build() {
     $config = $this->getConfiguration();
 
+    $build = [
+      '#attached' => [
+        'library' => 'uiowa_maui/session_dates',
+      ],
+    ];
+
     // Replace the dynamic placeholder value with the session name.
     if (stristr($config['headline'], '@session')) {
       $bounding = $this->maui->getSessionsBounded(0, 3);
@@ -181,14 +187,12 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       $config['headline'] = str_replace('@session', $current->shortDescription, $config['headline']);
     }
 
-    $build = [
-      'heading' => [
+    $build['heading'] = [
         '#theme' => 'uiowa_core_headline',
         '#headline' => $config['headline'],
         '#hide_headline' => $config['hide_headline'],
         '#heading_size' => $config['heading_size'],
         '#headline_style' => $config['headline_style'],
-      ],
     ];
 
     if (empty($config['headline'])) {
