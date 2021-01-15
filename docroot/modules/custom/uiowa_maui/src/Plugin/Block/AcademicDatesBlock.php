@@ -153,6 +153,21 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
   /**
    * {@inheritdoc}
    */
+  public function blockValidate($form, FormStateInterface $form_state) {
+    $headline = $form_state->getValue('headline')['container']['headline'];
+
+    if (stristr($headline, '@session')) {
+      if ($form_state->getValue('session') === '') {
+        $form_state->setErrorByName('session', $this->t('You cannot use the %session headline placeholder with the - Exposed - session option.', [
+          '%session' => '@session',
+        ]));
+      }
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function blockSubmit($form, FormStateInterface $form_state) {
     // Alter the headline field settings for configuration.
     foreach ($form_state->getValues()['headline']['container'] as $name => $value) {
