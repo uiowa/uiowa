@@ -52,6 +52,8 @@ class AcademicDatesForm extends FormBase {
     $current = $form_state->getValue('session') ?? $session_prefilter ?? $this->maui->getCurrentSession()->id;
     $category = $form_state->getValue('category') ?? $category_prefilter;
 
+    $wrapper = Html::getUniqueId('uiowa-maui-dates-wrapper');
+
     if (!$session_prefilter) {
       $options = [];
 
@@ -67,7 +69,8 @@ class AcademicDatesForm extends FormBase {
         '#options' => $options,
         '#ajax' => [
           'callback' => [$this, 'sessionChanged'],
-          'wrapper' => 'maui-dates-wrapper',
+          'wrapper' => $wrapper,
+          'method' => 'html',
         ],
       ];
 
@@ -88,7 +91,8 @@ class AcademicDatesForm extends FormBase {
         '#options' => $this->maui->getDateCategories(),
         '#ajax' => [
           'callback' => [$this, 'categoryChanged'],
-          'wrapper' => 'maui-dates-wrapper',
+          'wrapper' => $wrapper,
+          'method' => 'html',
         ],
       ];
     }
@@ -97,7 +101,7 @@ class AcademicDatesForm extends FormBase {
     $form['dates-wrapper'] = [
       '#type' => 'container',
       '#attributes' => [
-        'id' => 'maui-dates-wrapper',
+        'id' => $wrapper,
         'aria-live' => 'polite',
       ],
       'dates' => [],
@@ -132,14 +136,14 @@ class AcademicDatesForm extends FormBase {
    * AJAX callback for session form element change.
    */
   public function sessionChanged(array &$form, FormStateInterface $form_state) {
-    return $form['dates-wrapper'];
+    return $form['dates-wrapper']['dates'];
   }
 
   /**
    * AJAX callback for category form element change.
    */
   public function categoryChanged(array &$form, FormStateInterface $form_state) {
-    return $form['dates-wrapper'];
+    return $form['dates-wrapper']['dates'];
   }
 
 }
