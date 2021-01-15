@@ -7,20 +7,25 @@ dependencies:
     - field.field.node.mentor.field_image
     - field.field.node.mentor.field_person_credential
     - field.field.node.mentor.field_person_education
+    - field.field.node.mentor.field_person_email
     - field.field.node.mentor.field_person_first_name
     - field.field.node.mentor.field_person_last_name
     - field.field.node.mentor.field_person_mentor_qualif
     - field.field.node.mentor.field_person_mentor_ug_role
+    - field.field.node.mentor.field_person_phone
     - field.field.node.mentor.field_person_position
     - field.field.node.mentor.field_person_research_assistants
+    - field.field.node.mentor.field_person_website
     - field.field.node.mentor.field_scholar_bio
     - field.field.node.mentor.field_scholar_bio_headline
     - field.field.node.mentor.field_uiowa_college
     - node.type.mentor
   module:
     - content_moderation
+    - link
     - media_library
     - path
+    - telephone
     - text
     - uiowa_entities
 id: node.mentor.default
@@ -57,6 +62,14 @@ content:
     third_party_settings: {  }
     type: string_textarea
     region: content
+  field_person_email:
+    weight: 26
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: email_default
+    region: content
   field_person_first_name:
     weight: 7
     settings:
@@ -89,6 +102,13 @@ content:
     third_party_settings: {  }
     type: text_textarea
     region: content
+  field_person_phone:
+    weight: 27
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: telephone_default
+    region: content
   field_person_position:
     weight: 13
     settings:
@@ -104,6 +124,14 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  field_person_website:
+    weight: 28
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
     region: content
   field_scholar_bio:
     weight: 15
