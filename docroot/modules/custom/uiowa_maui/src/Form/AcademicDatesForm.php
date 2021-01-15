@@ -108,7 +108,7 @@ class AcademicDatesForm extends FormBase {
       'dates' => [],
     ];
 
-    $data = $this->maui->searchSessionDates($session, $category);
+    $data = $this->maui->searchSessionDates($session->id, $category);
 
     if (!empty($data)) {
       $form['dates-wrapper']['dates'] = [
