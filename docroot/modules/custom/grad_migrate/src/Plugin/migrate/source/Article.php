@@ -4,6 +4,7 @@ namespace Drupal\grad_migrate\Plugin\migrate\source;
 
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\migrate\Row;
+use Drupal\taxonomy\Entity\Term;
 
 /**
  * Basic implementation of the source plugin.
@@ -234,8 +235,8 @@ class Article extends BaseNodeSource {
 
     // Get both the article tags and programs.
     $tables = [
-      'field_tags' => 'field_tags_tid',
-      'field_article_program' => 'field_article_program_tid',
+      'field_data_field_tags' => ['field_tags_tid'],
+      'field_data_field_article_program' => ['field_article_program_tid'],
     ];
     $this->fetchAdditionalFields($row, $tables);
     // Get the mapped tags.
@@ -294,22 +295,30 @@ class Article extends BaseNodeSource {
       }
     }
     if (!empty($source_tids)) {
-      $source_query = $this->select('taxonomy_term_data', '');
+      $source_query = $this->select('taxonomy_term_data', 't');
       $source_query = $source_query->fields('t', [
         'tid',
         'name',
         // We can leave out description, as all are empty.
       ])
-        ->condition('tid', $source_tids, 'in');
-      $terms = $source_query->execute()
+        ->condition('t.tid', $source_tids, 'in');
+      $terms = $source_query->distinct()
+        ->execute()
         ->fetchAllKeyed('tid');
       foreach ($terms as $tid => $name) {
-        // @todo make a new term.
-        // @todo add term to mapping.
-        // @todo assign $tid.
+        $term = Term::create([
+          'name' => $name,
+          'vid' => 'tags',
+        ]);
+        if ($term->save()) {
+          $this->termMapping[$tid] = $term->id();
+          $new_tids[] = $term->id();
+        }
       }
     }
-    $row->setSourceProperty('article_tids', $new_tids);
+    if (!empty($new_tids)) {
+      $row->setSourceProperty('article_tids', $new_tids);
+    }
   }
 
 }
