@@ -90,6 +90,19 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
       ],
     ],
   ];
+  $form['header']['toppage'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Top Page'),
+    '#description' => t('A sticky header will continue to be available as the user scrolls down the page. It will hide on scroll down and show when the user starts to scroll up.'),
+    '#default_value' => theme_get_setting('header.toppage'),
+    '#states' => [
+      'visible' => [
+        ':input[name="header[nav_style]"]' => [
+          'value' => 'toggle',
+        ],
+      ],
+    ],
+  ];
 
   $top_links_limit = theme_get_setting('header.top_links_limit');
   // Get limit, otherwise limit to 2.

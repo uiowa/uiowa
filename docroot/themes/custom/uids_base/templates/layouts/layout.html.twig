@@ -45,6 +45,11 @@
           {# The inner container for each region is necessary for putting space between columns. #}
           <div {{ region_attributes[region].addClass('layout__region', 'layout__region--' ~ region|clean_class) }}>
             {{ render_sections[region] }}
+            <div class="scrollUp">
+              <a href="#" role="link" aria-label="scroll to top">
+              {{ '<i class="fas fa-chevron-circle-up"></i>'|t }}
+              </a>
+            </div>
           </div>
         {% endif %}
 
