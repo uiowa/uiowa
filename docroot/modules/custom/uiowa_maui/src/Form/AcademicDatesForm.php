@@ -74,10 +74,11 @@ class AcademicDatesForm extends FormBase {
         ],
       ];
 
-      $sessions = [$current];
+      $session = $current;
     }
     else {
-      $sessions = array_column($this->maui->getSessionsBounded(0, $session_prefilter), 'id');
+      // @todo Get the relative session from the prefilter value.
+      $session = $current;
     }
 
     if ($category_prefilter === NULL) {
@@ -107,7 +108,7 @@ class AcademicDatesForm extends FormBase {
       'dates' => [],
     ];
 
-    $data = $this->maui->searchSessionDates($sessions, $category);
+    $data = $this->maui->searchSessionDates($session, $category);
 
     if (!empty($data)) {
       $form['dates-wrapper']['dates'] = [
