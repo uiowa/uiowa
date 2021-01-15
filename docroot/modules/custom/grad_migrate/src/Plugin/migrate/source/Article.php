@@ -49,16 +49,17 @@ class Article extends BaseNodeSource {
   public function query() {
     $query = parent::query();
     $query->join('field_data_body', 'b', 'n.nid = b.entity_id');
-    // field_data_field_header_image is not used.
     $query->leftJoin('field_data_field_thumbnail_image', 'ti', 'n.nid = ti.entity_id');
-    $query->leftJoin('field_data_field_lead', 'l', 'n.nid = l.entity_id');
-    $query->leftJoin('field_data_field_pull_quote', 'pq', 'n.nid = pq.entity_id');
-    $query->leftJoin('field_data_field_pull_quote_featured', 'pqf', 'n.nid = pqf.entity_id');
     $query->leftJoin('field_data_field_author', 'author', 'n.nid = author.entity_id');
-    // field_data_field_annual_report is not needed.
-    // field_data_field_article_source_link is not needed.
-    // field_data_field_attachments is not needed.
-    $query->leftJoin('field_data_field_photo_credit', 'pc', 'n.nid = pc.entity_id');
+    // field_data_field_header_image is not being migrated.
+    // field_data_field_lead is not being migrated.
+    // field_data_field_pull_quote is not being migrated.
+    // field_data_field_pull_quote_featured is not being migrated.
+    // field_data_field_author is not being migrated.
+    // field_data_field_annual_report is not being migrated.
+    // field_data_field_article_source_link is not being migrated.
+    // field_data_field_attachments is not being migrated.
+    // field_data_field_photo_credit is not being migrated.
     $query = $query->fields('b', [
       'entity_type',
       'bundle',
@@ -79,21 +80,6 @@ class Article extends BaseNodeSource {
         'field_thumbnail_image_title',
         'field_thumbnail_image_width',
         'field_thumbnail_image_height',
-      ])
-      ->fields('l', [
-        'field_lead_value',
-        'field_lead_format',
-      ])
-      ->fields('pq', [
-        'field_pull_quote_value',
-        'field_pull_quote_format',
-      ])
-      ->fields('pqf', [
-        'field_pull_quote_featured_value',
-      ])
-      ->fields('pc', [
-        'field_photo_credit_value',
-        'field_photo_credit_format',
       ])
       ->fields('n', [
         'title',
