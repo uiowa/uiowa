@@ -126,18 +126,72 @@ function _grad_custom_thesis_defense_submit(array &$form, FormStateInterface $fo
 }
 
 /**
+ * Implements hook_preprocess_HOOK().
+ */
+function grad_custom_preprocess_node(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    $node = $variables["node"];
+    $type = $node->getType();
+    switch ($type) {
+      case 'article':
+      case 'page':
+      case 'person':
+        switch ($variables['view_mode']) {
+          case 'teaser':
+            // Show trimmed body/bio if no teaser is provided.
+            if ($node->get('field_teaser')->isEmpty()) {
+              $field = ($type == 'person' ? 'field_person_bio' : 'body');
+              $variables['content']['field_teaser'] = $variables['node']->$field->view([
+                'label' => 'hidden',
+                'type' => 'smart_trim',
+                'weight' => 99,
+                'settings' => [
+                  'trim_length' => 300,
+                  'trim_suffix' => '...',
+                  'trim_options' => [
+                    'text' => TRUE,
+                  ],
+                ],
+              ]);
+            }
+            break;
+
+        }
+    }
+  }
+}
+
+/**
  * Implements hook_allowed_values_function().
  */
-function grad_disciplines_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
-  return [
-    'Applied Health Sciences' => 'Applied Health Sciences',
-    'Biomedical and Life Sciences' => 'Biomedical and Life Sciences',
-    'Engineering' => 'Engineering',
-    'Education' => 'Education',
-    'Humanities' => 'Humanities',
-    'Physical Sciences' => 'Physical Sciences',
-    'Social Sciences' => 'Social Sciences',
-  ];
+function grad_custom_programs_all_majors_allowed_values() {
+  $output = [];
+
+  foreach (_grad_custom_program_list() as $maui_code => $program) {
+    if (count(array_intersect(_grad_custom_all_program_degrees(), $program['objectives'])) > 0) {
+      $output[$maui_code] = $program['label'];
+    }
+  }
+  natsort($output);
+
+  return $output;
+}
+
+/**
+ * Implements hook_allowed_values_function().
+ */
+function grad_custom_programs_phd_allowed_values() {
+  $output = [];
+
+  foreach (_grad_custom_program_list() as $maui_code => $program) {
+    if (in_array('PHD', $program['objectives'])) {
+      $output[$maui_code] = $program['label'];
+    }
+  }
+  natsort($output);
+
+  return $output;
 }
 
 /**
@@ -192,33 +246,16 @@ function grad_degrees_offered_allowed_values(FieldStorageConfig $definition, Con
 /**
  * Implements hook_allowed_values_function().
  */
-function grad_custom_programs_phd_allowed_values() {
-  $output = [];
-
-  foreach (_grad_custom_program_list() as $maui_code => $program) {
-    if (in_array('PHD', $program['objectives'])) {
-      $output[$maui_code] = $program['label'];
-    }
-  }
-  natsort($output);
-
-  return $output;
-}
-
-/**
- * Implements hook_allowed_values_function().
- */
-function grad_custom_programs_all_majors_allowed_values() {
-  $output = [];
-
-  foreach (_grad_custom_program_list() as $maui_code => $program) {
-    if (count(array_intersect(_grad_custom_all_program_degrees(), $program['objectives'])) > 0) {
-      $output[$maui_code] = $program['label'];
-    }
-  }
-  natsort($output);
-
-  return $output;
+function grad_disciplines_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  return [
+    'Applied Health Sciences' => 'Applied Health Sciences',
+    'Biomedical and Life Sciences' => 'Biomedical and Life Sciences',
+    'Engineering' => 'Engineering',
+    'Education' => 'Education',
+    'Humanities' => 'Humanities',
+    'Physical Sciences' => 'Physical Sciences',
+    'Social Sciences' => 'Social Sciences',
+  ];
 }
 
 /**
