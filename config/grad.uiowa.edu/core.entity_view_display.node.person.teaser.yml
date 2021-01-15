@@ -4,7 +4,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
-    - field.field.node.person.field_grad_program_phd
+    - field.field.node.person.field_grad_program_all_degree
     - field.field.node.person.field_image
     - field.field.node.person.field_person_bio
     - field.field.node.person.field_person_contact_information
@@ -40,13 +40,6 @@ targetEntityType: node
 bundle: person
 mode: teaser
 content:
-  field_grad_program_phd:
-    type: list_default
-    weight: 3
-    region: content
-    label: visually_hidden
-    settings: {  }
-    third_party_settings: {  }
   field_image:
     type: entity_reference_entity_view
     weight: 8
@@ -120,6 +113,7 @@ content:
     third_party_settings: {  }
 hidden:
   content_moderation_control: true
+  field_grad_program_all_degree: true
   field_person_bio: true
   field_person_contact_information: true
   field_person_first_name: true

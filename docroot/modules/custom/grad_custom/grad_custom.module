@@ -139,6 +139,20 @@ function grad_custom_programs_phd_allowed_values() {
       $output[$maui_code] = $program['label'];
     }
   }
+  natsort($output);
+
+  return $output;
+}
+
+function grad_custom_programs_all_majors_allowed_values() {
+  $output = [];
+
+  foreach (_grad_custom_program_list() as $maui_code => $program) {
+    if (in_array(_grad_all_program_degrees(), $program['objectives'])) {
+      $output[$maui_code] = $program['label'];
+    }
+  }
+  natsort($output);
 
   return $output;
 }
@@ -156,6 +170,33 @@ function srop_year_allowed_values(FieldStorageConfig $definition, ContentEntityI
     $i++;
   endwhile;
   return $options;
+}
+
+/**
+ * Helper function to list degree objectives.
+ */
+function _grad_custom_all_program_degrees() {
+  return [
+    'AUD',
+    'DMA',
+    'DNP',
+    'DPT',
+    'EDD',
+    'EDS',
+    'MA',
+    'MAC',
+    'MAT',
+    'MBA',
+    'MCS',
+    'MD',
+    'MFA',
+    'MHA',
+    'MPH',
+    'MS',
+    'MSN',
+    'MSW',
+    'PHD',
+  ];
 }
 
 /**
