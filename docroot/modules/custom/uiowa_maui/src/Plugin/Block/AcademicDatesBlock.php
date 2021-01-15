@@ -118,7 +118,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
     $form['category'] = [
       '#type' => 'select',
       '#title' => $this->t('Category'),
-      '#description' => $this->t('Select a category to filter dates on. The %exposed option will allow the user to select a category, defaulting to all categories. Leave empty to expose a select list to the user.', [
+      '#description' => $this->t('Select a category to filter dates on. The %exposed option will allow the user to select a category, defaulting to all categories.', [
         '%exposed' => '- Exposed -',
       ]),
       '#default_value' => $config['category'] ?? NULL,
