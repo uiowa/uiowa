@@ -44,6 +44,13 @@ class Article extends BaseNodeSource {
   protected $authorMapping;
 
   /**
+   * Term-to-term mapping for tags.
+   *
+   * @var array
+   */
+  protected $termMapping;
+
+  /**
    * {@inheritdoc}
    */
   public function query() {
@@ -71,8 +78,6 @@ class Article extends BaseNodeSource {
       'body_summary',
       'body_format',
     ])
-      // @todo Join tags reference.
-      // @todo Join programs reference.
       ->fields('ti', [
         'field_thumbnail_image_fid',
         'field_thumbnail_image_alt',
@@ -227,6 +232,15 @@ class Article extends BaseNodeSource {
       $row->setSourceProperty('field_author_nid', $this->getAuthor($author_nid));
     }
 
+    // Get both the article tags and programs.
+    $tables = [
+      'field_tags' => 'field_tags_tid',
+      'field_article_program' => 'field_article_program_tid',
+    ];
+    $this->fetchAdditionalFields($row, $tables);
+    // Get the mapped tags.
+    $this->getTags($row);
+
     // Call the parent prepareRow.
     return parent::prepareRow($row);
   }
@@ -264,6 +278,27 @@ class Article extends BaseNodeSource {
     // Set the new mapping.
     $this->authorMapping[$author_nid] = $new_author_nid;
     return $new_author_nid;
+  }
+
+  /**
+   * Map taxonomy to a tag.
+   */
+  protected function getTags(&$row) {
+    $new_tids = [];
+    $tids = $row->getSourceProperty('field_tags_tid') + $row->getSourceProperty('field_article_program_tid');
+    foreach ($tids as $tid) {
+      if (!isset($this->termMapping[$tid])) {
+        // @todo get term info.
+        // @todo make a new term.
+        // @todo add term to mapping.
+        // @todo assign $tid.
+      }
+      else {
+        $tid = $this->termMapping[$tid];
+      }
+      $new_tids[] = $tid;
+    }
+    $row->setSourceProperty('article_tids', $new_tids);
   }
 
 }
