@@ -148,7 +148,7 @@ function grad_custom_programs_all_majors_allowed_values() {
   $output = [];
 
   foreach (_grad_custom_program_list() as $maui_code => $program) {
-    if (in_array(_grad_all_program_degrees(), $program['objectives'])) {
+    if (count(array_intersect(_grad_custom_all_program_degrees(), $program['objectives'])) > 0) {
       $output[$maui_code] = $program['label'];
     }
   }
