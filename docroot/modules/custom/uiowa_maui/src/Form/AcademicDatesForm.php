@@ -126,7 +126,7 @@ class AcademicDatesForm extends FormBase {
             'class' => 'uiowa-maui-no-results',
           ],
           '#markup' => $this->t('No dates found.'),
-        ]
+        ],
       ];
     }
 
