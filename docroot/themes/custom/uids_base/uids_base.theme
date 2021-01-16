@@ -40,10 +40,10 @@ function uids_base_preprocess_html(&$variables) {
 
   $variables['attributes']['class'][] = $sticky_class;
 
-  $toppage = 'btn-not-sticky';
+  $toppage = 'scroll-up';
   // Only set to sticky if it is set and nav_style is 'toggle'.
-  if (theme_get_setting('header.nav_style') === 'toggle' && theme_get_setting('header.toppage')) {
-    $toppage = 'scroll-up';
+  if (theme_get_setting('header.toppage')) {
+    $toppage = 'no-top-scroll';
   }
   $variables['attributes']['class'][] = $toppage;
 

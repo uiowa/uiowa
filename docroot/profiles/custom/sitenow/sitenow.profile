@@ -735,7 +735,10 @@ function publish_options_allowed_values(FieldStorageConfig $definition, ContentE
       case 'page':
         $options['title_hidden'] = 'Visually hide title';
         $options['no_sidebars'] = 'Remove sidebar regions';
-        $options['no_top_scroll'] = 'Remove scroll to top arrow';
+        $options['no_top_scroll'] = 'Remove scroll to top button';
+        break;
+      case 'article':
+        $options['no_top_scroll'] = 'Remove scroll to top button';
         break;
     }
 
