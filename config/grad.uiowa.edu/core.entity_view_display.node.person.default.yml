@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.person.field_grad_program
+    - field.field.node.person.field_grad_program_all_degree
     - field.field.node.person.field_image
     - field.field.node.person.field_person_bio
     - field.field.node.person.field_person_contact_information
@@ -65,21 +65,6 @@ third_party_settings:
               id: 'extra_field_block:node:person:content_moderation_control'
             additional: {  }
             weight: 0
-          -
-            uuid: ace8bca9-e56e-47ee-a1d7-f86653f396ba
-            region: content
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:person:field_grad_program'
-              formatter:
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-                type: list_default
-            additional: {  }
-            weight: 1
         third_party_settings: {  }
       -
         layout_id: layout_onecol
@@ -326,8 +311,8 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_grad_program:
-    weight: 20
+  field_grad_program_all_degree:
+    weight: 21
     label: above
     settings: {  }
     third_party_settings: {  }
