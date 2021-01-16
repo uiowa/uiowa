@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - field.field.node.scholar.field_image
-    - field.field.node.scholar.field_person_credential
     - field.field.node.scholar.field_person_education
     - field.field.node.scholar.field_person_first_name
     - field.field.node.scholar.field_person_last_name
@@ -25,22 +24,14 @@ bundle: scholar
 mode: default
 content:
   field_image:
-    weight: 0
+    weight: 3
     settings:
       media_types: {  }
     third_party_settings: {  }
     type: media_library_widget
     region: content
-  field_person_credential:
-    weight: 9
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_person_education:
-    weight: 11
+    weight: 9
     settings:
       rows: 2
       placeholder: ''
@@ -48,7 +39,7 @@ content:
     type: string_textarea
     region: content
   field_person_first_name:
-    weight: 7
+    weight: 0
     settings:
       size: 60
       placeholder: ''
@@ -56,7 +47,7 @@ content:
     type: string_textfield
     region: content
   field_person_last_name:
-    weight: 8
+    weight: 1
     settings:
       size: 60
       placeholder: ''
@@ -64,7 +55,7 @@ content:
     type: string_textfield
     region: content
   field_person_position:
-    weight: 10
+    weight: 4
     settings:
       size: 60
       placeholder: ''
@@ -72,7 +63,7 @@ content:
     type: string_textfield
     region: content
   field_scholar_bio:
-    weight: 16
+    weight: 8
     settings:
       rows: 9
       summary_rows: 3
@@ -82,7 +73,7 @@ content:
     type: text_textarea_with_summary
     region: content
   field_scholar_bio_headline:
-    weight: 14
+    weight: 7
     settings:
       size: 60
       placeholder: ''
@@ -90,7 +81,7 @@ content:
     type: string_textfield
     region: content
   field_scholar_mentor:
-    weight: 13
+    weight: 5
     settings:
       size: 60
       placeholder: ''
@@ -98,20 +89,20 @@ content:
     type: string_textfield
     region: content
   field_scholar_participation_year:
-    weight: 15
+    weight: 6
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   moderation_state:
     type: moderation_state_default
-    weight: 5
+    weight: 14
     settings: {  }
     region: content
     third_party_settings: {  }
   path:
     type: path
-    weight: 3
+    weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -119,25 +110,25 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 1
+    weight: 10
     region: content
     third_party_settings: {  }
   status:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 6
+    weight: 15
     region: content
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 2
+    weight: 11
     region: content
     third_party_settings: {  }
   url_redirects:
-    weight: 4
+    weight: 13
     region: content
     settings: {  }
     third_party_settings: {  }
