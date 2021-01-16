@@ -120,7 +120,13 @@ class AcademicDatesForm extends FormBase {
     }
     else {
       $form['dates-wrapper']['dates'] = [
-        '#markup' => $this->t('No dates found.'),
+        'none' => [
+          '#type' => 'container',
+          '#attributes' => [
+            'class' => 'uiowa-maui-no-results',
+          ],
+          '#markup' => $this->t('No dates found.'),
+        ]
       ];
     }
 
