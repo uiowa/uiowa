@@ -1,0 +1,30 @@
+uuid: 0262d6b2-cba6-4cfa-ab54-935769d8f777
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_scholar_bio
+    - node.type.mentor
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    minimal: minimal
+    filtered_html: '0'
+    full_html: '0'
+    plain_text: '0'
+id: node.mentor.field_scholar_bio
+field_name: field_scholar_bio
+entity_type: node
+bundle: mentor
+label: 'Research description'
+description: 'Use this field to give general information about the person or to talk about the focus of their studies or research.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+  required_summary: false
+field_type: text_with_summary

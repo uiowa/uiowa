@@ -1,0 +1,21 @@
+uuid: 7ab19f09-231e-4c43-99d5-c6e1274b7b7b
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_scholar_participation_year
+field_name: field_scholar_participation_year
+entity_type: node
+type: list_string
+settings:
+  allowed_values: {  }
+  allowed_values_function: srop_year_allowed_values
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

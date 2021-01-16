@@ -17,6 +17,9 @@
  * @ingroup themeable
  */
 #}
+{{ attach_library('uids_base/person') }}
+{{ attach_library('uids_base/card') }}
+
 {% if title %}
   <h3>{{ title }}</h3>
 {% endif %}
@@ -41,6 +44,7 @@
     {%
       set classes = [
       'card--stacked',
+      'card--person',
       'card--centered-left',
       'card--alignment-left',
       'media--border',

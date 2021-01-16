@@ -14,20 +14,13 @@ dependencies:
     - field.field.node.person.field_person_hide
     - field.field.node.person.field_person_hometown
     - field.field.node.person.field_person_last_name
-    - field.field.node.person.field_person_mentor_qualif
-    - field.field.node.person.field_person_mentor_ug_role
     - field.field.node.person.field_person_phone
     - field.field.node.person.field_person_position
     - field.field.node.person.field_person_research_areas
-    - field.field.node.person.field_person_research_assistants
-    - field.field.node.person.field_person_research_project
-    - field.field.node.person.field_person_scholar_mentor_link
-    - field.field.node.person.field_person_scholar_srop_year
     - field.field.node.person.field_person_types
     - field.field.node.person.field_person_website
     - field.field.node.person.field_tags
     - field.field.node.person.field_teaser
-    - field.field.node.person.field_uiowa_college
     - node.type.person
     - views.view.person_card
   module:
@@ -39,7 +32,6 @@ dependencies:
     - system
     - telephone
     - text
-    - uiowa_entities
     - user
     - views
   theme:
@@ -175,121 +167,6 @@ third_party_settings:
               context_mapping: {  }
             additional: {  }
             weight: 0
-          -
-            uuid: aa4090df-f85b-400a-9a23-7b618a9e57e0
-            region: first
-            configuration:
-              id: 'field_block:node:person:field_person_research_assistants'
-              label: null
-              provider: layout_builder
-              label_display: null
-              formatter:
-                label: above
-                type: string
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-            additional: {  }
-            weight: -4
-          -
-            uuid: fabc5764-fc03-48c1-9bad-a0ce952c2ca8
-            region: first
-            configuration:
-              id: 'field_block:node:person:field_person_research_project'
-              label: null
-              provider: layout_builder
-              label_display: null
-              formatter:
-                label: hidden
-                type: string
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-            additional: {  }
-            weight: -7
-          -
-            uuid: e6c804e5-970c-4ec3-a991-1375718fbd3b
-            region: first
-            configuration:
-              id: 'field_block:node:person:field_person_scholar_srop_year'
-              label: null
-              provider: layout_builder
-              label_display: null
-              formatter:
-                label: above
-                type: list_default
-                settings: {  }
-                third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-            additional: {  }
-            weight: -9
-          -
-            uuid: adc3a392-5b29-4ee1-91bb-3eb8478d2696
-            region: first
-            configuration:
-              id: 'field_block:node:person:field_person_mentor_qualif'
-              label: null
-              provider: layout_builder
-              label_display: null
-              formatter:
-                label: above
-                type: text_default
-                settings: {  }
-                third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-            additional: {  }
-            weight: -2
-          -
-            uuid: 2c93c5ad-8dfe-4795-ab27-2ea4a550eb34
-            region: first
-            configuration:
-              id: 'field_block:node:person:field_person_mentor_ug_role'
-              label: null
-              provider: layout_builder
-              label_display: null
-              formatter:
-                label: above
-                type: text_default
-                settings: {  }
-                third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-            additional: {  }
-            weight: -3
-          -
-            uuid: 14958769-5700-4b12-a0ca-0ea54e8b6e3d
-            region: first
-            configuration:
-              id: 'field_block:node:person:field_person_scholar_mentor_link'
-              label: null
-              provider: layout_builder
-              label_display: null
-              formatter:
-                label: above
-                type: link
-                settings:
-                  trim_length: 80
-                  url_only: false
-                  url_plain: false
-                  rel: '0'
-                  target: '0'
-                third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-            additional: {  }
-            weight: -8
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -357,20 +234,6 @@ content:
     label: inline
     settings: {  }
     third_party_settings: {  }
-  field_person_mentor_qualif:
-    weight: 16
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
-    region: content
-  field_person_mentor_ug_role:
-    weight: 15
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
-    region: content
   field_person_phone:
     weight: 4
     label: inline
@@ -395,41 +258,6 @@ content:
     settings:
       link: false
     third_party_settings: {  }
-  field_person_research_assistants:
-    weight: 13
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
-  field_person_research_project:
-    weight: 17
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
-  field_person_scholar_mentor_link:
-    weight: 10
-    label: inline
-    settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
-    type: link
-    region: content
-  field_person_scholar_srop_year:
-    weight: 11
-    label: inline
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
-    region: content
   field_person_website:
     type: link
     weight: 7
@@ -442,13 +270,6 @@ content:
       rel: '0'
       target: '0'
     third_party_settings: {  }
-  field_uiowa_college:
-    weight: 19
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: uiowa_academic_units_formatter
-    region: content
   links:
     weight: 18
     region: content
