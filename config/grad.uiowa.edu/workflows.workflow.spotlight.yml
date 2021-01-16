@@ -1,17 +1,13 @@
-uuid: bc53f025-6404-4f83-a327-b4ac195bc5c8
+uuid: 10c83a59-d402-4b46-a9f7-ddb9e71db436
 langcode: en
 status: true
 dependencies:
   config:
-    - node.type.article
-    - node.type.page
-    - node.type.person
-    - node.type.scholarship
     - node.type.spotlight
   module:
     - content_moderation
-id: editorial
-label: Editorial
+id: spotlight
+label: Spotlight
 type: content_moderation
 type_settings:
   states:
@@ -74,9 +70,5 @@ type_settings:
         - review
   entity_types:
     node:
-      - article
-      - page
-      - person
-      - scholarship
       - spotlight
   default_moderation_state: draft
