@@ -13,9 +13,8 @@
   }
 }
 
-// Counselor person layout
-.page-node-type-person.layout-builder-enabled,
-.page-node-type-mentor.layout-builder-enabled {
+// person layout
+.page-node-type-person.layout-builder-enabled {
   .layout__region--first {
     .field__item {
       line-height: 1.7;
@@ -53,7 +52,25 @@
   .views-element-container {
     margin-top: 0;
   }
+}
 
+// Shared styles by card person view and card person teaser views
+.card--person,
+.card--person-teaser {
+  .card__subtitle a,
+  .card__date a {
+    text-decoration: none;
+  }
+
+  .card__date {
+    font-size: 1.1rem;
+    margin-bottom: .6rem;
+    line-height: 1.3;
+  }
+}
+
+// Person card view block
+.card--person {
   .card__subtitle {
     .svg-inline--fa {
       font-size: 1rem;
@@ -67,27 +84,7 @@
     background: $light;
     opacity: 1;
   }
-}
 
-// Shared styles by counselors list, person, student profiles
-.page-node-type-person.layout-builder-enabled,
-.page-node-type-mentor.layout-builder-enabled,
-.view-id-counselors,
-.view-student-profiles {
-  .card__subtitle a,
-  .card__date a {
-    text-decoration: none;
-  }
-
-  .card__date {
-    font-size: 1rem;
-    margin-bottom: .6rem;
-    line-height: 1.3;
-  }
-}
-
-.page-node-type-person.layout-builder-enabled,
-.page-node-type-mentor.layout-builder-enabled {
   .card__date {
     padding-left: 45px;
     .svg-inline--fa {
@@ -99,16 +96,15 @@
   }
 }
 
-// Counselors
-.view-id-counselors,
-.view-student-profiles {
+// Card person teaser view
+.card--person-teaser {
   .card__date,
   .card__subtitle {
     .svg-inline--fa {
       margin-right: .3rem;
     }
   }
-  .card.card--media-left .card__title {
+  &.card .card__title {
     margin: 0;
   }
   .card__subtitle {
@@ -123,12 +119,5 @@
     strong {
       color: $secondary;
     }
-  }
-}
-
-// Student profiles
-.view-student-profiles {
-  .card__date {
-    font-size: 1.1rem;
   }
 }
