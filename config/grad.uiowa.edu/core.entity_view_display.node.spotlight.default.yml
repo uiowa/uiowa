@@ -25,37 +25,7 @@ third_party_settings:
           layout_builder_styles_style:
             - ''
             - ''
-        components:
-          -
-            uuid: a4395fbb-3330-4010-9608-9c2620556db5
-            region: content
-            configuration:
-              id: system_breadcrumb_block
-              label: null
-              provider: system
-              label_display: null
-              context_mapping: {  }
-            additional: {  }
-            weight: 0
-          -
-            uuid: 2c3e01fa-5368-4c00-bdc8-b59af6b90d9f
-            region: content
-            configuration:
-              id: 'field_block:node:spotlight:title'
-              label: null
-              provider: layout_builder
-              label_display: null
-              formatter:
-                label: hidden
-                type: string
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-            additional: {  }
-            weight: 1
+        components: {  }
         third_party_settings:
           layout_builder_lock:
             lock:
@@ -67,29 +37,31 @@ third_party_settings:
               6: 6
               8: 8
       -
-        layout_id: layout_twocol_section
+        layout_id: layout_twocol
         layout_settings:
-          label: ''
+          label: Content
           column_widths: 67-33
           layout_builder_styles_style:
             - ''
-            - section_margin_fixed_width_container
+            - ''
         components:
           -
             uuid: dcc5c213-e65a-4dd3-84e9-360eee0da2e9
             region: second
             configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
               id: 'field_block:node:spotlight:field_spotlight_subject'
+              label: null
+              provider: layout_builder
+              label_display: null
               formatter:
                 label: hidden
-                settings:
-                  view_mode: teaser
-                  link: false
-                third_party_settings: {  }
                 type: entity_reference_entity_view
+                settings:
+                  view_mode: card
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
             additional: {  }
             weight: 0
           -
@@ -106,6 +78,36 @@ third_party_settings:
                 settings: {  }
                 third_party_settings: {  }
             additional: {  }
+            weight: 2
+          -
+            uuid: 2c3e01fa-5368-4c00-bdc8-b59af6b90d9f
+            region: first
+            configuration:
+              id: 'field_block:node:spotlight:title'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: hidden
+                type: string
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 1
+          -
+            uuid: a4395fbb-3330-4010-9608-9c2620556db5
+            region: first
+            configuration:
+              id: system_breadcrumb_block
+              label: null
+              provider: system
+              label_display: null
+              context_mapping: {  }
+            additional: {  }
             weight: 0
         third_party_settings:
           layout_builder_lock:
@@ -119,6 +121,11 @@ content:
     label: hidden
     type: text_default
     weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  content_moderation_control:
+    weight: -20
     settings: {  }
     third_party_settings: {  }
     region: content

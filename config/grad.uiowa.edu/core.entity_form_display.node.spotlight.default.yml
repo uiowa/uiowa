@@ -3,10 +3,11 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_form_mode.node.minimal
+    - core.entity_form_mode.node.spotlight
     - field.field.node.spotlight.body
     - field.field.node.spotlight.field_spotlight_subject
     - node.type.spotlight
+    - workflows.workflow.spotlight
   module:
     - content_moderation
     - entity_browser_entity_form
@@ -37,7 +38,7 @@ content:
   field_spotlight_subject:
     weight: 0
     settings:
-      form_mode: minimal
+      form_mode: spotlight
       override_labels: true
       label_singular: subject
       label_plural: subjects

@@ -1,0 +1,138 @@
+uuid: 2e033cd9-8440-4f03-bee9-56a582df3c7a
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.card
+    - field.field.node.person.field_grad_program_all_degree
+    - field.field.node.person.field_image
+    - field.field.node.person.field_person_bio
+    - field.field.node.person.field_person_contact_information
+    - field.field.node.person.field_person_credential
+    - field.field.node.person.field_person_education
+    - field.field.node.person.field_person_email
+    - field.field.node.person.field_person_first_name
+    - field.field.node.person.field_person_hide
+    - field.field.node.person.field_person_hometown
+    - field.field.node.person.field_person_last_name
+    - field.field.node.person.field_person_phone
+    - field.field.node.person.field_person_position
+    - field.field.node.person.field_person_research_areas
+    - field.field.node.person.field_person_types
+    - field.field.node.person.field_person_website
+    - field.field.node.person.field_tags
+    - field.field.node.person.field_teaser
+    - node.type.person
+  module:
+    - entity_reference_revisions
+    - layout_builder
+    - layout_builder_restrictions
+    - link
+    - telephone
+    - text
+    - user
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: false
+  layout_builder_restrictions:
+    allowed_block_categories: {  }
+    entity_view_mode_restriction:
+      whitelisted_blocks: {  }
+      blacklisted_blocks: {  }
+      allowed_layouts: {  }
+    entity_view_mode_restriction_by_region:
+      allowed_layouts: {  }
+id: node.person.card
+targetEntityType: node
+bundle: person
+mode: card
+content:
+  field_image:
+    type: entity_reference_entity_view
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      view_mode: large__square
+      link: false
+    third_party_settings: {  }
+  field_person_bio:
+    weight: 4
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_person_contact_information:
+    type: entity_reference_revisions_entity_view
+    weight: 8
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
+  field_person_education:
+    weight: 5
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_person_email:
+    type: email_mailto
+    weight: 2
+    region: content
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+  field_person_phone:
+    weight: 3
+    label: inline
+    settings:
+      title: ''
+    third_party_settings: {  }
+    type: telephone_link
+    region: content
+  field_person_position:
+    weight: 1
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_person_research_areas:
+    type: entity_reference_label
+    weight: 7
+    region: content
+    label: above
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_person_website:
+    type: link
+    weight: 6
+    region: content
+    label: inline
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: '0'
+      target: '0'
+    third_party_settings: {  }
+hidden:
+  content_moderation_control: true
+  field_grad_program_all_degree: true
+  field_person_credential: true
+  field_person_first_name: true
+  field_person_hide: true
+  field_person_hometown: true
+  field_person_last_name: true
+  field_person_types: true
+  field_tags: true
+  field_teaser: true
+  links: true
+  search_api_excerpt: true
