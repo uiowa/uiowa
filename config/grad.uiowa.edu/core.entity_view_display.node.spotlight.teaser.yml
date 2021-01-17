@@ -5,6 +5,7 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.spotlight.body
+    - field.field.node.spotlight.field_spotlight_quote
     - field.field.node.spotlight.field_spotlight_subject
     - node.type.spotlight
   module:
@@ -23,11 +24,17 @@ content:
       trim_length: 600
     third_party_settings: {  }
     region: content
+  content_moderation_control:
+    weight: -20
+    settings: {  }
+    third_party_settings: {  }
+    region: content
   links:
     weight: 100
     settings: {  }
     third_party_settings: {  }
     region: content
 hidden:
+  field_spotlight_quote: true
   field_spotlight_subject: true
   search_api_excerpt: true

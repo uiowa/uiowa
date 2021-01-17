@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.spotlight.body
+    - field.field.node.spotlight.field_spotlight_quote
     - field.field.node.spotlight.field_spotlight_subject
     - node.type.spotlight
   module:
@@ -25,7 +26,19 @@ third_party_settings:
           layout_builder_styles_style:
             - ''
             - ''
-        components: {  }
+        components:
+          -
+            uuid: 287e685b-2bfd-445b-8e29-0be32c5ea25b
+            region: content
+            configuration:
+              id: 'extra_field_block:node:spotlight:content_moderation_control'
+              label: null
+              provider: layout_builder
+              label_display: null
+              context_mapping:
+                entity: layout_builder.entity
+            additional: {  }
+            weight: 0
         third_party_settings:
           layout_builder_lock:
             lock:
@@ -42,8 +55,9 @@ third_party_settings:
           label: Content
           column_widths: 67-33
           layout_builder_styles_style:
-            - ''
-            - ''
+            0: ''
+            1: ''
+            section_alignment_start: section_alignment_start
         components:
           -
             uuid: dcc5c213-e65a-4dd3-84e9-360eee0da2e9
@@ -78,7 +92,7 @@ third_party_settings:
                 settings: {  }
                 third_party_settings: {  }
             additional: {  }
-            weight: 2
+            weight: 3
           -
             uuid: 2c3e01fa-5368-4c00-bdc8-b59af6b90d9f
             region: first
@@ -109,6 +123,24 @@ third_party_settings:
               context_mapping: {  }
             additional: {  }
             weight: 0
+          -
+            uuid: a75fa8b9-3f56-4f37-890f-5191cb3bfb82
+            region: first
+            configuration:
+              id: 'field_block:node:spotlight:field_spotlight_quote'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: hidden
+                type: text_default
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 2
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -128,6 +160,13 @@ content:
     weight: -20
     settings: {  }
     third_party_settings: {  }
+    region: content
+  field_spotlight_quote:
+    weight: 2
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
     region: content
   field_spotlight_subject:
     weight: 0

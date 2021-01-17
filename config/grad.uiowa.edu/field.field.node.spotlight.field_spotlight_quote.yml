@@ -1,0 +1,28 @@
+uuid: 8069d7e4-3f2b-41ac-9d20-376758f6d487
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_spotlight_quote
+    - node.type.spotlight
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    minimal: minimal
+    filtered_html: '0'
+    full_html: '0'
+    plain_text: '0'
+id: node.spotlight.field_spotlight_quote
+field_name: field_spotlight_quote
+entity_type: node
+bundle: spotlight
+label: Quote
+description: 'Feature a quote from the person being spotlighted.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

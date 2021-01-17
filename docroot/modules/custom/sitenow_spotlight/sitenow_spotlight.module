@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * Implements hook_theme for templates.
+ */
+function sitenow_spotlight_theme($existing, $type, $theme, $path) {
+  return [
+    'field__node__field_spotlight_quote' => [
+      'template' => 'field--node--field-spotlight-quote',
+      'base hook' => 'field',
+    ],
+  ];
+}

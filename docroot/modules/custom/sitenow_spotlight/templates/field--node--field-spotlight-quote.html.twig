@@ -1,0 +1,7 @@
+{% embed '@uids_base/uids/blockquote.html.twig' %}
+  {% block blockquote_text %}
+    {% for item in items %}
+      {{ item.content }}
+    {% endfor %}
+  {% endblock %}
+{% endembed %}
