@@ -1,0 +1,28 @@
+uuid: df7014ad-084f-4c9d-8279-64873559308a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_image
+    - media.type.image
+    - node.type.mentor
+id: node.mentor.field_image
+field_name: field_image
+entity_type: node
+bundle: mentor
+label: 'Person Photo'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference
