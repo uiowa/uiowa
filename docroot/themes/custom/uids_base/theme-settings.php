@@ -77,11 +77,11 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     ],
     '#default_value' => theme_get_setting('header.nav_style'),
   ];
-  $form['header']['toppage'] = [
+  $form['header']['sticky'] = [
     '#type' => 'checkbox',
     '#title' => t('Sticky header'),
     '#description' => t('A sticky header will continue to be available as the user scrolls down the page. It will hide on scroll down and show when the user starts to scroll up.'),
-    '#default_value' => theme_get_setting('header.toppage'),
+    '#default_value' => theme_get_setting('header.sticky'),
     '#states' => [
       'visible' => [
         ':input[name="header[nav_style]"]' => [
