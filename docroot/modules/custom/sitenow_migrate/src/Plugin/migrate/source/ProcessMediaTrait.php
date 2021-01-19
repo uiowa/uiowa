@@ -174,7 +174,18 @@ trait ProcessMediaTrait {
             'langcode' => 'en',
           ]);
 
-          $media->setName($meta['title']);
+          // Need to truncate the title prior to setting the media name
+          // due to media.name column schema restriction.
+          if (strlen($meta['title']) > 255) {
+            // Break at a word. Doesn't make a perfect title,
+            // but preserves some of the original intention.
+            $title = wordwrap($meta['title'], 255);
+            $title = substr($title, 0, strpos($title, '\n'));
+          }
+          else {
+            $title = $meta['title'];
+          }
+          $media->setName($title);
           $media->setOwnerId($owner_id);
           $media->save();
           return $media->id();
