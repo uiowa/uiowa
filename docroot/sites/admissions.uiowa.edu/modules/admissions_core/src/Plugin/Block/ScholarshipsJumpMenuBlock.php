@@ -13,7 +13,7 @@ use Drupal\node\Entity\Node;
  * @Block(
  *   id = "admissions_core_scholarships_jump_menu",
  *   admin_label = @Translation("Scholarships Jump Menu"),
- *   category = @Translation("Admissions Core")
+ *   category = @Translation("Site custom")
  * )
  */
 class ScholarshipsJumpMenuBlock extends BlockBase {
