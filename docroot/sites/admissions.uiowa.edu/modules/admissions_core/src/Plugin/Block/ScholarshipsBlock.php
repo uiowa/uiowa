@@ -12,7 +12,7 @@ use Drupal\views\Views;
  * @Block(
  *   id = "admissions_core_scholarships",
  *   admin_label = @Translation("Scholarships"),
- *   category = @Translation("Admissions Core")
+ *   category = @Translation("Site custom")
  * )
  */
 class ScholarshipsBlock extends BlockBase {
