@@ -4,10 +4,12 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
+    - field.storage.node.field_thesis_defense_date
     - node.type.thesis_defense
   module:
-    - fullcalendar
+    - fullcalendar_view
     - node
+    - smart_date
     - user
 id: thesis_defenses
 label: 'Thesis Defenses'
@@ -212,74 +214,209 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags: {  }
-  page_1:
+  page_calendar:
     display_plugin: page
-    id: page_1
-    display_title: Page
+    id: page_calendar
+    display_title: Calendar
     position: 2
     display_options:
       display_extenders:
         metatag_display_extender: {  }
       style:
-        type: fullcalendar
+        type: fullcalendar_view_display
         options:
-          display:
-            defaultView: month
-            firstDay: '0'
-            weekMode: fixed
-          times:
-            default_date: false
-            date: ''
-          left: 'today prev,next'
-          center: title
-          right: 'month agendaWeek agendaDay'
-          timeformat: 'h:mm'
-          advanced: false
-          slotLabelFormat: 'h(:mm)a'
-          timeformatMonth: 'h:mm'
-          timeformatWeek: 'h:mm'
-          timeformatDay: 'h:mm'
-          titleformatMonth: 'MMMM YYYY'
-          titleformatWeek: 'MMM D YYYY'
-          titleformatDay: 'MMMM D YYYY'
-          columnformatMonth: ddd
-          columnformatWeek: 'ddd M/D'
-          columnformatDay: dddd
-          theme: true
-          sameWindow: false
-          modalWindow: false
-          contentHeight: 0
-          editable: false
-          fields:
-            title: false
-            title_field: title
-            url: false
-            url_field: title
-            date: false
-            date_field: {  }
-          fullcalendar_options:
-            firstHour: 6
-            minTime: 0
-            maxTime: 24
-            slotMinutes: 30
-            defaultEventMinutes: 120
-            allDaySlot: true
-            weekends: true
-            lazyFetching: true
-            disableDragging: false
-            disableResizing: false
-            dragRevertDuration: 500
-            dayClick: false
-            dayClickView: agendaWeek
+          default_date_source: now
+          defaultDate: ''
+          start: field_thesis_defense_date
+          end: field_thesis_defense_date
+          title: title
+          left_buttons: 'prev,next today'
+          right_buttons: 'dayGridMonth,timeGridWeek,timeGridDay,listYear'
+          default_view: dayGridMonth
+          firstDay: '0'
+          nav_links: 1
+          timeFormat: 'hh:mm a'
+          allowEventOverlap: 1
+          updateAllowed: 1
+          updateConfirm: 1
+          defaultLanguage: en
+          languageSelector: 0
+          dialogWindow: 0
+          openEntityInNewTab: 1
+          createEventLink: 0
+          tax_field: ''
+          vocabularies: ''
+          color_bundle:
+            article: '#3a87ad'
+            mentor: '#3a87ad'
+            page: '#3a87ad'
+            person: '#3a87ad'
+            scholar: '#3a87ad'
+            scholarship: '#3a87ad'
+            thesis_defense: '#3a87ad'
+          rrule: ''
+          duration: ''
+          bundle_type: ''
+          classes: ''
       defaults:
         style: false
         row: false
+        fields: false
+        sorts: false
+        filters: false
+        filter_groups: false
       row:
         type: 'entity:node'
         options:
           relationship: none
           view_mode: teaser
       path: academics/thesis-and-dissertation/calendar
+      fields:
+        title:
+          id: title
+          table: node_field_data
+          field: title
+          entity_type: node
+          entity_field: title
+          label: ''
+          alter:
+            alter_text: false
+            make_link: false
+            absolute: false
+            trim: false
+            word_boundary: false
+            ellipsis: false
+            strip_tags: false
+            html: false
+          hide_empty: false
+          empty_zero: false
+          settings:
+            link_to_entity: true
+          plugin_id: field
+          relationship: none
+          group_type: group
+          admin_label: ''
+          exclude: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        field_thesis_defense_date:
+          id: field_thesis_defense_date
+          table: node__field_thesis_defense_date
+          field: field_thesis_defense_date
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: smartdate_default
+          settings:
+            timezone_override: ''
+            format: default
+            force_chronological: false
+            add_classes: 0
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+      sorts: {  }
+      display_description: ''
+      filters:
+        status:
+          value: '1'
+          table: node_field_data
+          field: status
+          plugin_id: boolean
+          entity_type: node
+          entity_field: status
+          id: status
+          expose:
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+          group: 1
+        type:
+          id: type
+          table: node_field_data
+          field: type
+          value:
+            thesis_defense: thesis_defense
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
+          expose:
+            operator_limit_selection: false
+            operator_list: {  }
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
     cache_metadata:
       max-age: -1
       contexts:
@@ -287,7 +424,8 @@ display:
         - 'languages:language_interface'
         - 'user.node_grants:view'
         - user.permissions
-      tags: {  }
+      tags:
+        - 'config:field.storage.node.field_thesis_defense_date'
   page_list:
     display_plugin: page
     id: page_list
