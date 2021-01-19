@@ -157,18 +157,6 @@ function srop_year_allowed_values(FieldStorageConfig $definition, ContentEntityI
 }
 
 /**
- * Implements hook_theme for Thesis Defense teaser.
- */
-function grad_custom_theme($existing, $type, $theme, $path) {
-  return [
-    'node__thesis_defense__teaser' => [
-      'template' => 'node--thesis-defense--teaser',
-      'base hook' => 'node',
-    ],
-  ];
-}
-
-/**
  * Helper function to list degree objectives.
  */
 function _grad_custom_all_program_degrees() {
@@ -5713,4 +5701,16 @@ function _grad_custom_program_list() {
     ],
   ];
 
+}
+
+/**
+ * Implements hook_theme() for Thesis Defense teaser.
+ */
+function grad_custom_theme($existing, $type, $theme, $path) {
+  return [
+    'node__thesis_defense__teaser' => [
+      'template' => 'node--thesis-defense--teaser',
+      'base hook' => 'node',
+    ],
+  ];
 }
