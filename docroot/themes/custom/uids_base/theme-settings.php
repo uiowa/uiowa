@@ -92,8 +92,8 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
   ];
   $form['header']['toppage'] = [
     '#type' => 'checkbox',
-    '#title' => t('Top Page'),
-    '#description' => t('A  as the user scrolls down the page. It will hide on scroll down and show when the user starts to scroll up.'),
+    '#title' => t('Hide Scroll to top button'),
+    '#description' => t('Remove scroll to top button functionality on site'),
     '#default_value' => theme_get_setting('header.toppage'),
     '#states' => [
       'visible' => [
