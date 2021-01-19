@@ -69,7 +69,9 @@
  *   rendered twice on a page this is invalid CSS for example: two lists
  *   in different view modes.
  */
+  # @todo Remove block-margin__top-extra class when https://github.com/uiowa/uiowa/issues/2887 is available.
 #}
+
 
 {%
   set classes = [
@@ -80,7 +82,7 @@
   'card--centered-left',
   'card--alignment-left',
   'media--border',
-  'block-margin__top-extra',
+  'block-margin__top--extra',
 ]
 %}
 
