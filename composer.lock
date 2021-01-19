@@ -5214,26 +5214,31 @@
         },
         {
             "name": "drupal/fragments",
-            "version": "1.0.0-beta2",
+            "version": "1.0.0-beta3",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/fragments.git",
-                "reference": "8.x-1.0-beta2"
+                "reference": "8.x-1.0-beta3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/fragments-8.x-1.0-beta2.zip",
-                "reference": "8.x-1.0-beta2",
-                "shasum": "0ca0c2c64d6a20f6114e834264913708858e638e"
+                "url": "https://ftp.drupal.org/files/projects/fragments-8.x-1.0-beta3.zip",
+                "reference": "8.x-1.0-beta3",
+                "shasum": "52cf291b53a7fd13d425a631c1acd6d9082248c9"
             },
             "require": {
-                "drupal/core": "^8.0"
+                "drupal/core": "^8.7.7 || ^9"
+            },
+            "suggest": {
+                "drupal/auto_entitylabel": "Automatically create a title for fragments based on other fields.",
+                "drupal/inline_entity_form": "Create fragments where and when you need them.",
+                "drupal/views_bulk_operations": "Provides more advanced administration screen."
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.0-beta2",
-                    "datestamp": "1577269022",
+                    "version": "8.x-1.0-beta3",
+                    "datestamp": "1607374965",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -15350,11 +15355,11 @@
         },
         {
             "name": "uiowa/uiowa_auth",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "git@github.com:uiowa/uiowa_auth",
-                "reference": "0bb19b22dc5f09c2409c3c8567ae75254eb6f761"
+                "reference": "a967bdf425f9d40c98ba6464026c091abb9ea878"
             },
             "require": {
                 "composer/installers": "^1.6",
@@ -15363,7 +15368,7 @@
             },
             "type": "drupal-custom-module",
             "description": "Disables Drupal authentication and implements HawkID SSO.",
-            "time": "2020-10-16T20:05:02+00:00"
+            "time": "2021-01-12T16:47:55+00:00"
         },
         {
             "name": "uiowa/uiowa_bar",
