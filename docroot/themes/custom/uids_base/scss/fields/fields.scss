@@ -35,6 +35,11 @@
     div#{&},
     p#{&} {
       font-size: 1.2rem;
+      [class*="element-"] &,
+      .h1 &, .h2 &, .h3 &, .h4 &, .h5 &, .h6 & {
+        font-size: inherit;
+        line-height: inherit;
+      }
     }
   }
 }
@@ -65,6 +70,7 @@
   }
 }
 
+.field--label-inline.field--type-string,
 .field--label-inline.field--type-entity-reference,
 .field--label-visually_hidden.field--type-entity-reference,
 .field--label-inline.field--type-link,
