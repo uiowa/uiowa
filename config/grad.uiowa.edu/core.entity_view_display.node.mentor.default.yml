@@ -127,16 +127,19 @@ third_party_settings:
             uuid: 08e1c521-09e2-4640-968c-e01eec96c20f
             region: first
             configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
               id: 'field_block:node:mentor:field_person_research_assistants'
+              label: null
+              provider: layout_builder
+              label_display: null
               formatter:
-                label: above
+                label: inline
+                type: string
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-                type: string
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
             additional: {  }
             weight: 9
           -
