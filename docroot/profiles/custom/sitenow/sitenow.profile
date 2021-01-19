@@ -738,6 +738,7 @@ function publish_options_allowed_values(FieldStorageConfig $definition, ContentE
         $options['no_sidebars'] = 'Remove sidebar regions';
         $options['no_top_scroll'] = 'Remove scroll to top button';
         break;
+
       case 'article':
         $options['no_top_scroll'] = 'Remove scroll to top button';
         break;
