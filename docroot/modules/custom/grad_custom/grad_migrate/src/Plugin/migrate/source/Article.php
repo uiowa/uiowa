@@ -2,6 +2,7 @@
 
 namespace Drupal\grad_migrate\Plugin\migrate\source;
 
+use Drupal\Component\Utility\Html;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\migrate\Row;
 use Drupal\taxonomy\Entity\Term;
@@ -50,6 +51,8 @@ class Article extends BaseNodeSource {
    * @var array
    */
   protected $termMapping;
+
+  protected const SOURCE_BASE_PATH = 'https://www.grad.uiowa.edu/sites/gc/files/';
 
   /**
    * {@inheritdoc}
@@ -143,17 +146,17 @@ class Article extends BaseNodeSource {
    * @throws \Drupal\migrate\MigrateException
    */
   public function prepareRow(Row $row) {
-
-    // Hard-coding our constants, at least for now.
-    $source_base_path = 'https://www.grad.uiowa.edu/sites/gc/files/';
     // Put the files in a time-specified path to match
     // default file upload behaviors.
     $drupal_file_directory = 'public://' . date('Y-m') . '/';
 
     // Check if an image was attached, and if so, update with new fid.
     $original_fid = $row->getSourceProperty('field_thumbnail_image_fid');
+
+    // @todo clean this up so we don't run two separate regexps.
     if (isset($original_fid)) {
-      $filename = $this->fidQuery($original_fid)['filename'];
+      $uri = $this->fidQuery($original_fid)['uri'];
+      $filename = str_replace('public://', '', $uri);
       // Get a connection for the destination database.
       $dest_connection = \Drupal::database();
       $dest_query = $dest_connection->select('file_managed', 'f');
@@ -162,7 +165,7 @@ class Article extends BaseNodeSource {
         ->execute()
         ->fetchField();
       if (!$new_fid) {
-        $new_fid = $this->downloadFile($filename, $source_base_path, $drupal_file_directory);
+        $new_fid = $this->downloadFile($filename, static::SOURCE_BASE_PATH, $drupal_file_directory);
         if ($new_fid) {
           $meta['alt'] = $row->getSourceProperty('field_thumbnail_image_alt');
           $meta['title'] = $row->getSourceProperty('field_thumbnail_image_title');
@@ -175,7 +178,7 @@ class Article extends BaseNodeSource {
         if (!$mid) {
           $meta['alt'] = $row->getSourceProperty('field_thumbnail_image_alt');
           $meta['title'] = $row->getSourceProperty('field_thumbnail_image_title');
-          $mid = $this->createMediaEntity($new_fid, $meta);
+          $mid = $this->createMediaEntity($new_fid, $meta, 1);
         }
       }
       $row->setSourceProperty('field_thumbnail_image_fid', $mid);
@@ -183,45 +186,10 @@ class Article extends BaseNodeSource {
 
     // Search for D7 inline embeds and replace with D8 inline entities.
     $content = $row->getSourceProperty('body_value');
-    // @todo clean this up so we don't run two separate regexps.
-    // Check for any inline file references
-    // and make sure we have files ready to be referenced.
-    preg_match_all("|\[\[\{.*?\"fid\":\"(.*?)\".*?\]\]|", $content, $matches);
-    foreach ($matches[1] as $original_fid) {
-      $filename = $this->fidQuery($original_fid)['filename'];
-      $dest_connection = isset($dest_connection) ? $dest_connection : \Drupal::database();
-      $dest_query = $dest_connection->select('file_managed', 'f');
-      $new_fid = $dest_query->fields('f', ['fid'])
-        ->condition('f.filename', $filename)
-        ->execute()
-        ->fetchField();
-      // If we didn't find the file, we need to download it
-      // and create it's media entity.
-      if (!$new_fid) {
-        $new_fid = $this->downloadFile($filename, $source_base_path, $drupal_file_directory);
-        // Fetch old meta.
-        $query = $this->select('file_managed', 'f');
-        $query->join('field_data_field_file_image_alt_text', 'a', 'a.entity_id = f.fid');
-        $query->join('field_data_field_file_image_title_text', 't', 't.entity_id = f.fid');
-        $result = $query->fields('a', [
-          'field_file_image_alt_text_value',
-        ])
-          ->fields('t', [
-            'field_file_image_title_text_value',
-          ])
-          ->condition('f.fid', $original_fid)
-          ->execute()
-          ->fetchAssoc();
-        $meta['alt'] = $result['field_file_image_alt_text_value'];
-        $meta['title'] = $result['field_file_image_title_text_value'];
-        $this->createMediaEntity($new_fid, $meta);
-      }
-    }
-    // We have the files, so now we're able to replace with new entities.
-    $content = preg_replace_callback("|\[\[\{.*?\"fid\":\"(.*?)\".*?\]\]|", [
-      $this,
-      'entityReplace',
-    ], $content);
+
+    // Replace any inline images, if they exist.
+    $content = $this->replaceInlineImages($content);
+
     $row->setSourceProperty('body_value', $content);
 
     // Strip tags so they don't show up in the field teaser.
@@ -319,6 +287,122 @@ class Article extends BaseNodeSource {
     if (!empty($new_tids)) {
       $row->setSourceProperty('article_tids', $new_tids);
     }
+  }
+
+  /**
+   * Replace inline image tags with media references.
+   *
+   * Used this as reference: https://stackoverflow.com/a/3195048.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Drupal\migrate\MigrateException
+   */
+  protected function replaceInlineImages($content) {
+    $drupal_file_directory = 'public://' . date('Y-m') . '/';
+
+    // Create a HTML content fragment.
+    $document = Html::load($content);
+
+    // Get all the image from the $content.
+    $images = $document->getElementsByTagName('img');
+
+    // As we replace the inline images, they are actually
+    // removed in the DOMNodeList $images, so we have to
+    // use a regressive loop to count through them.
+    // See https://www.php.net/manual/en/domnode.replacechild.php#50500.
+    $i = $images->length - 1;
+
+    while ($i >= 0) {
+      // The current inline image element.
+      $img = $images->item($i);
+      $src = $img->getAttribute('src');
+      // No point in continuing after this point because the
+      // image is broken if we don't have a 'src'.
+      if ($src) {
+        // Process the 'src' into a consistent format.
+        $file_path = basename(rawurldecode($src));
+
+        // Attempt to get existing image.
+        $fid = $this->getD8FileByFilename($file_path);
+
+        if (!$fid) {
+          // Get the prefix to the path for downloading purposes.
+          $prefix_path = str_replace('/sites/gc/files/', '', substr($src, 0, strpos($src, $file_path)));
+
+          // Download the file and create the file record.
+          $fid = $this->downloadFile($file_path, static::SOURCE_BASE_PATH . $prefix_path, $drupal_file_directory);
+
+          // Get meta data an create the media entity.
+          $meta = [];
+          foreach (['alt', 'title'] as $name) {
+            if ($prop = $img->getAttribute($name)) {
+              $meta[$name] = $prop;
+            }
+          }
+          $this->createMediaEntity($fid, $meta);
+        }
+
+        // Get the media UUID.
+        $uuid = $this->getMid($file_path)['uuid'];
+
+        // There is an issue at this point if we don't have an MID,
+        // and we definitely don't want to replace the existing item
+        // with a broken media embed.
+        if ($uuid) {
+          // Create the <drupal-media> element.
+          $media_embed = $document->createElement('drupal-media');
+          $media_embed->setAttribute('data-entity-uuid', $uuid);
+          // @todo Determine how to correctly set the crop.
+          //   $media_embed->setAttribute('data-view-mode', 'full_no_crop');
+          $media_embed->setAttribute('data-entity-type', 'media');
+
+          // Set the alignment if we can determine it.
+          $align = $this->getImageAlign($img);
+          if ($align) {
+            $media_embed->setAttribute('data-align', $align);
+          }
+
+          // Replace the <img> element with the <drupal-media> element.
+          $img->parentNode->replaceChild($media_embed, $img);
+        }
+      }
+      // @todo Is it important to account for stripping out the
+      //   image tag if it can't be created for some reason?
+      $i--;
+    }
+
+    // Convert back into a string and return it.
+    return Html::serialize($document);
+  }
+
+  /**
+   * Attempt to determine the image alignment.
+   */
+  protected function getImageAlign($img) {
+    $align = NULL;
+    if ($img->getAttribute('align')) {
+      $align = $img->getAttribute('align');
+    }
+    elseif ($img->getAttribute('style')) {
+      preg_match('/(?:float: )(left|right)/i', $img->getAttribute('style'), $align_match);
+      if ($align_match && !empty($align_match)) {
+        $align = $align_match[1];
+      }
+    }
+
+    return $align;
+  }
+
+  /**
+   * Get the D7 file record using the filename.
+   */
+  protected function getD8FileByFilename($filename) {
+    $connection = \Drupal::database();
+    $query = $connection->select('file_managed', 'f');
+    return $query->fields('f', ['fid'])
+      ->condition('f.filename', $filename)
+      ->execute()
+      ->fetchField();
   }
 
 }

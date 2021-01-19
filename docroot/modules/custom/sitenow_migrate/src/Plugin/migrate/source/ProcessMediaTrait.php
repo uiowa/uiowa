@@ -11,6 +11,13 @@ use Drupal\migrate\MigrateException;
 trait ProcessMediaTrait {
 
   /**
+   * The file system service.
+   *
+   * @var \Drupal\Core\File\FileSystemInterface
+   */
+  protected $fileSystem;
+
+  /**
    * Regex to find Drupal 7 JSON for inline embedded files.
    */
   public function entityReplace($match) {
@@ -29,7 +36,7 @@ trait ProcessMediaTrait {
    */
   public function fidQuery($fid) {
     $query = $this->select('file_managed', 'f')
-      ->fields('f', ['filename'])
+      ->fields('f')
       ->condition('f.fid', $fid);
     $results = $query->execute();
     return $results->fetchAssoc();
@@ -43,10 +50,10 @@ trait ProcessMediaTrait {
     $query = $connection->select('file_managed', 'f');
     $query->join('media__field_media_image', 'fmi', 'f.fid = fmi.field_media_image_target_id');
     $query->join('media', 'm', 'fmi.entity_id = m.mid');
-    $result = $query->fields('m', ['uuid'])
+    return $query->fields('m', ['uuid'])
       ->condition('f.filename', $filename)
-      ->execute();
-    return $result->fetchAssoc();
+      ->execute()
+      ->fetchAssoc();
   }
 
   /**
@@ -90,8 +97,9 @@ trait ProcessMediaTrait {
    * @param string $drupal_file_directory
    *   The base path for the file directory to place the downloaded file.
    *
-   * @return int
-   *   Returns the fid of the newly downloaded file.
+   * @return int|bool
+   *   Returns the fid of the new file record or FALSE if there is
+   *   an issue.
    *
    * @throws \Drupal\migrate\MigrateException
    */
@@ -102,25 +110,31 @@ trait ProcessMediaTrait {
     if (!$raw_file) {
       return FALSE;
     }
-    // Try to write the file, but we might need to create a directory.
-    $file = file_save_data($raw_file, $drupal_file_directory . $filename);
-    // If we weren't able to save, need to create directory.
-    if (!$file) {
-      $dir = $this->fileSystem
-        ->dirname($drupal_file_directory . $filename);
-      if (!$this->fileSystem
-        ->prepareDirectory($dir, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS)) {
-        // Something went seriously wrong.
-        throw new MigrateException("Could not create or write to directory '{$dir}'");
-      }
+
+    // Prepare directory in case it doesn't already exist.
+    $dir = $this->fileSystem
+      ->dirname($drupal_file_directory . $filename);
+    if (!$this->fileSystem
+      ->prepareDirectory($dir, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS)) {
+      // Something went seriously wrong.
+      throw new MigrateException("Could not create or write to directory '{$dir}'");
     }
-    // Get a connection for the destination database.
-    $dest_connection = \Drupal::database();
-    $dest_query = $dest_connection->select('file_managed', 'f');
-    return $dest_query->fields('f', ['fid'])
-      ->condition('f.filename', $filename)
-      ->execute()
-      ->fetchField();
+
+    // Try to write the file.
+    $file = file_save_data($raw_file, $drupal_file_directory . $filename);
+
+    // If we have a file, continue.
+    if ($file) {
+      // Get a connection for the destination database.
+      $connection = \Drupal::database();
+      $query = $connection->select('file_managed', 'f');
+      return $query->fields('f', ['fid'])
+        ->condition('f.filename', $filename)
+        ->execute()
+        ->fetchField();
+    }
+
+    return FALSE;
   }
 
   /**

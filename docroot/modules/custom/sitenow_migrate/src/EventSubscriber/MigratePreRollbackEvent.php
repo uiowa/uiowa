@@ -66,7 +66,6 @@ class MigratePreRollbackEvent implements EventSubscriberInterface {
 
       // Calls for creating a media entity for imported files.
       case 'd7_file':
-      case 'd7_grad_file':
         $migrate_map = 'migrate_map_' . $migration_id;
         $this->removeMediaEntities($migrate_map);
         break;

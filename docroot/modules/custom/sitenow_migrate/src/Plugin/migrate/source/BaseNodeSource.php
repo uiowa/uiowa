@@ -18,6 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * This class copies heavily from \Drupal\node\Plugin\migrate\source\d7\Node.
  */
 abstract class BaseNodeSource extends SqlBase {
+
   use ProcessMediaTrait;
 
   /**
@@ -26,13 +27,6 @@ abstract class BaseNodeSource extends SqlBase {
    * @var \Drupal\Core\Extension\ModuleHandlerInterface
    */
   protected $moduleHandler;
-
-  /**
-   * The file system service.
-   *
-   * @var \Drupal\Core\File\FileSystemInterface
-   */
-  protected $fileSystem;
 
   /**
    * The EntityTypeManager service.
@@ -121,6 +115,11 @@ abstract class BaseNodeSource extends SqlBase {
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
+    // Always include this fragment at the beginning of every prepareRow()
+    // implementation, so parent classes can ignore rows.
+    if (parent::prepareRow($row) === FALSE) {
+      return FALSE;
+    }
     // Determine if the content should be published or not.
     switch ($row->getSourceProperty('status')) {
 
