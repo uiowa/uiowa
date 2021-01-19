@@ -365,9 +365,14 @@ class Article extends BaseNodeSource {
           // Replace the <img> element with the <drupal-media> element.
           $img->parentNode->replaceChild($media_embed, $img);
         }
+        // If we weren't able to find or download an image,
+        // let's insert a token for cleanup later.
+        else {
+          $token = $document->createComment('Missing image: ' . $file_path);
+          // Replace the <img> element with our token comment.
+          $img->parentNode->replaceChild($token, $img);
+        }
       }
-      // @todo Is it important to account for stripping out the
-      //   image tag if it can't be created for some reason?
       $i--;
     }
 
