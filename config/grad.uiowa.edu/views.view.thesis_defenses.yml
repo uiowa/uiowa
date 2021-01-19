@@ -6,6 +6,7 @@ dependencies:
     - core.entity_view_mode.node.teaser
     - node.type.thesis_defense
   module:
+    - fullcalendar
     - node
     - user
 id: thesis_defenses
@@ -203,6 +204,82 @@ display:
       arguments: {  }
       display_extenders: {  }
       title: 'Upcoming Thesis Defenses'
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - 'user.node_grants:view'
+        - user.permissions
+      tags: {  }
+  page_1:
+    display_plugin: page
+    id: page_1
+    display_title: Page
+    position: 2
+    display_options:
+      display_extenders:
+        metatag_display_extender: {  }
+      style:
+        type: fullcalendar
+        options:
+          display:
+            defaultView: month
+            firstDay: '0'
+            weekMode: fixed
+          times:
+            default_date: false
+            date: ''
+          left: 'today prev,next'
+          center: title
+          right: 'month agendaWeek agendaDay'
+          timeformat: 'h:mm'
+          advanced: false
+          slotLabelFormat: 'h(:mm)a'
+          timeformatMonth: 'h:mm'
+          timeformatWeek: 'h:mm'
+          timeformatDay: 'h:mm'
+          titleformatMonth: 'MMMM YYYY'
+          titleformatWeek: 'MMM D YYYY'
+          titleformatDay: 'MMMM D YYYY'
+          columnformatMonth: ddd
+          columnformatWeek: 'ddd M/D'
+          columnformatDay: dddd
+          theme: true
+          sameWindow: false
+          modalWindow: false
+          contentHeight: 0
+          editable: false
+          fields:
+            title: false
+            title_field: title
+            url: false
+            url_field: title
+            date: false
+            date_field: {  }
+          fullcalendar_options:
+            firstHour: 6
+            minTime: 0
+            maxTime: 24
+            slotMinutes: 30
+            defaultEventMinutes: 120
+            allDaySlot: true
+            weekends: true
+            lazyFetching: true
+            disableDragging: false
+            disableResizing: false
+            dragRevertDuration: 500
+            dayClick: false
+            dayClickView: agendaWeek
+      defaults:
+        style: false
+        row: false
+      row:
+        type: 'entity:node'
+        options:
+          relationship: none
+          view_mode: teaser
+      path: academics/thesis-and-dissertation/calendar
     cache_metadata:
       max-age: -1
       contexts:
