@@ -71,88 +71,33 @@
  */
 #}
 
-{#
-/**
- * @file
- * Default theme implementation to display a view of unformatted rows.
- *
- * Available variables:
- * - title: The title of this group of rows. May be empty.
- * - rows: A list of the view's row items.
- *   - attributes: The row's HTML attributes.
- *   - content: The row's content.
- * - view: The view object.
- * - default_row_class: A flag indicating whether default classes should be
- *   used on rows.
- *
- * @see template_preprocess_views_view_unformatted()
- *
- * @ingroup themeable
- */
-#}
-{{ attach_library('uids_base/person') }}
-{% if title %}
-  <h3>{{ title }}</h3>
-{% endif %}
-{% for key,row in rows %}
-  {% set row_classes = [
-    default_row_class ? 'views-row',
-  ] %}
-  <div{{ row.attributes.addClass(row_classes) }}>
+{%
+  set classes = [
+  'card--list',
+  'bg--white',
+  'card--media-left',
+  'media--border',
+  'card--centered-left',
+  'card--alignment-left'
+]
+%}
 
-    {% set media_attributes = media_attributes ?: create_attribute() %}
+{% set headline_level = heading_size ?: 'h2' %}
 
-    {%
-    set classes = [
-        'card--person-teaser',
-        'card--list',
-        'card--stacked',
-        'media--circle',
-        'media--border',
-        'card--enclosed',
-        'bg--white',
-        'card--centered-left',
-        'card--alignment-left'
-    ]
-    %}
+{{ attach_library('classy/node') }}
+{{ attach_library('uids_base/paragraphs-lists') }}
+{{ attach_library('uids_base/node-type-person') }}
 
-    {% set person_card_view = {
-        'attributes': attributes.addClass(classes),
-        'headline_class': 'h3 headline headline--uppercase',
-        'card_title': view.style_plugin.getField(key, 'title'),
-        'card_image': view.style_plugin.getField(key, 'field_student_profile_image'),
-        'card_subtitle': view.style_plugin.getField(key, 'field_student_profile_major'),
-        'person_blurb': view.style_plugin.getField(key, 'field_student_profile_blurb'),
-        'person_hometown': view.style_plugin.getField(key, 'field_person_hometown'),
-        'person_territory': view.style_plugin.getField(key, 'field_student_profile_state'),
-        'person_country': view.style_plugin.getField(key, 'field_student_profile_country'),
-        'media_attributes': media_attributes.addClass('card__media--medium card__media'),
-    } %}
+{% set person_card = {
+  'attributes': attributes.addClass(classes),
+  'card_image': content.field_image | render,
+  'media_styles': 'media--circle',
+  'media_sizes': 'card__media--small',
+  'card_text': content|without('field_image', 'field_person_email', 'field_person_phone', 'field_person_education', 'field_person_credential', 'links'),
+  'card_subtitle': content.field_person_education.0,
+  'card_title': label | render,
+  'card_link_url': url,
+  'headline_level': headline_level,
+} %}
 
-    {% embed '@uids_base/uids/card.html.twig' with person_card_view only %}
-
-    {% block card_img %}
-        {% if card_image|striptags('<img><picture>')|trim is not empty %}
-            {{ parent() }}
-        {% endif %}
-    {% endblock %}
-
-    {% block card_subtitle %}
-        {% if card_subtitle|striptags|trim is not empty %}
-            <div class="card__subtitle"><span class="fas fa-book"></span>{{ card_subtitle }}</div>
-        {% endif %}
-    {% endblock %}
-
-    {% block card_tag %}
-        {% if person_hometown|striptags|trim is not empty %}
-            <div class="card__date"><span class="fas fa-map-marker-alt"></span> {{ person_hometown }} </div>
-        {% endif %}
-        {% if person_blurb|striptags|trim is not empty %}
-          <hr class="element--spacer-gold" />
-          <div class="lead">{{ person_blurb|striptags|trim }}</div>
-        {% endif %}
-    {% endblock %}
-
-    {% endembed %}
-    </div>
-{% endfor %}
+{% embed '@uids_base/uids/card.html.twig' with person_card only %}{% endembed %}
