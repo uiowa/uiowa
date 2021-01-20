@@ -1,0 +1,7 @@
+{% set heading = {
+  'headline_level': heading_size ?: 'h2',
+  'headline_class': headline_style,
+  'headline_text': headline,
+} %}
+
+{% include '@uids_base/uids/headline.html.twig' with heading only %}
