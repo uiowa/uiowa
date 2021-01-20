@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.node.teaser
     - field.storage.node.field_grad_program_all_degree
     - field.storage.node.field_image
     - field.storage.node.field_scholar_bio_headline
@@ -11,7 +12,7 @@ dependencies:
     - node
     - options
     - user
-id: grad_mentor_view
+id: srop_mentors
 label: 'Available SROP Mentors'
 module: views
 description: ''
@@ -55,7 +56,7 @@ display:
         options:
           offset: 0
       style:
-        type: table
+        type: default
         options:
           grouping:
             -
@@ -64,60 +65,11 @@ display:
               rendered_strip: false
           row_class: ''
           default_row_class: true
-          override: true
-          sticky: false
-          caption: ''
-          summary: ''
-          description: ''
-          columns:
-            field_grad_program_all_degree: field_grad_program_all_degree
-            title: title
-            field_image: field_image
-            field_person_position: field_person_position
-            field_scholar_bio_headline: field_scholar_bio_headline
-          info:
-            field_grad_program_all_degree:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            title:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_image:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_person_position:
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_scholar_bio_headline:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-          default: '-1'
-          empty_table: false
       row:
-        type: fields
+        type: 'entity:node'
         options:
-          inline: {  }
-          separator: ''
-          hide_empty: false
-          default_field_elements: true
+          relationship: none
+          view_mode: teaser
       fields:
         field_grad_program_all_degree:
           id: field_grad_program_all_degree

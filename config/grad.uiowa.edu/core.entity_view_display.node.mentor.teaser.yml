@@ -22,7 +22,6 @@ dependencies:
     - node.type.mentor
   module:
     - options
-    - uiowa_entities
     - user
 id: node.mentor.teaser
 targetEntityType: node
@@ -31,34 +30,27 @@ mode: teaser
 content:
   field_grad_program_all_degree:
     type: list_default
-    weight: 3
+    weight: 0
     region: content
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
   field_image:
     type: entity_reference_entity_view
-    weight: 0
+    weight: 2
     region: content
     label: visually_hidden
     settings:
       view_mode: large__square
       link: false
     third_party_settings: {  }
-  field_person_position:
+  field_scholar_bio_headline:
     type: string
     weight: 1
     region: content
-    label: above
+    label: visually_hidden
     settings:
       link_to_entity: false
-    third_party_settings: {  }
-  field_uiowa_college:
-    type: uiowa_academic_units_formatter
-    weight: 2
-    region: content
-    label: visually_hidden
-    settings: {  }
     third_party_settings: {  }
 hidden:
   field_person_credential: true
@@ -68,9 +60,10 @@ hidden:
   field_person_mentor_qualif: true
   field_person_mentor_ug_role: true
   field_person_phone: true
+  field_person_position: true
   field_person_research_assistants: true
   field_person_website: true
   field_scholar_bio: true
-  field_scholar_bio_headline: true
+  field_uiowa_college: true
   links: true
   search_api_excerpt: true
