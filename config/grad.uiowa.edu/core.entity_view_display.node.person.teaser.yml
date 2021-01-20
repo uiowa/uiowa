@@ -4,7 +4,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
-    - field.field.node.person.field_grad_program
+    - field.field.node.person.field_grad_program_all_degree
     - field.field.node.person.field_image
     - field.field.node.person.field_person_bio
     - field.field.node.person.field_person_contact_information
@@ -15,24 +15,15 @@ dependencies:
     - field.field.node.person.field_person_hide
     - field.field.node.person.field_person_hometown
     - field.field.node.person.field_person_last_name
-    - field.field.node.person.field_person_mentor_qualif
-    - field.field.node.person.field_person_mentor_ug_role
     - field.field.node.person.field_person_phone
     - field.field.node.person.field_person_position
     - field.field.node.person.field_person_research_areas
-    - field.field.node.person.field_person_research_assistants
-    - field.field.node.person.field_person_research_project
-    - field.field.node.person.field_person_scholar_mentor_link
-    - field.field.node.person.field_person_scholar_srop_year
     - field.field.node.person.field_person_types
     - field.field.node.person.field_person_website
     - field.field.node.person.field_tags
     - field.field.node.person.field_teaser
-    - field.field.node.person.field_uiowa_college
     - node.type.person
   module:
-    - link
-    - options
     - telephone
     - user
 id: node.person.teaser
@@ -40,13 +31,6 @@ targetEntityType: node
 bundle: person
 mode: teaser
 content:
-  field_grad_program:
-    type: list_default
-    weight: 3
-    region: content
-    label: visually_hidden
-    settings: {  }
-    third_party_settings: {  }
   field_image:
     type: entity_reference_entity_view
     weight: 8
@@ -86,33 +70,6 @@ content:
     third_party_settings: {  }
     type: telephone_link
     region: content
-  field_person_research_project:
-    type: string
-    weight: 7
-    region: content
-    label: visually_hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-  field_person_scholar_mentor_link:
-    type: link
-    weight: 2
-    region: content
-    label: inline
-    settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
-  field_person_scholar_srop_year:
-    type: list_default
-    weight: 6
-    region: content
-    label: inline
-    settings: {  }
-    third_party_settings: {  }
   links:
     weight: 9
     region: content
@@ -120,20 +77,17 @@ content:
     third_party_settings: {  }
 hidden:
   content_moderation_control: true
+  field_grad_program_all_degree: true
   field_person_bio: true
   field_person_contact_information: true
   field_person_first_name: true
   field_person_hide: true
   field_person_hometown: true
   field_person_last_name: true
-  field_person_mentor_qualif: true
-  field_person_mentor_ug_role: true
   field_person_position: true
   field_person_research_areas: true
-  field_person_research_assistants: true
   field_person_types: true
   field_person_website: true
   field_tags: true
   field_teaser: true
-  field_uiowa_college: true
   search_api_excerpt: true
