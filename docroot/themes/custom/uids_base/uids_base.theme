@@ -12,6 +12,7 @@ use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\media\Entity\Media;
 use Drupal\node\NodeInterface;
+use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\views\Plugin\views\field\EntityField;
 
 /**
@@ -603,14 +604,7 @@ function uids_base_preprocess_paragraph(&$variables) {
               $variables['h_size'] = $headline_field['child_heading_size'];
             }
             else {
-              $options = [
-                'h2' => 'h3',
-                'h3' => 'h4',
-                'h4' => 'h5',
-                'h5' => 'h6',
-                'h6' => 'h6',
-              ];
-              $variables['h_size'] = $options[$headline_field['heading_size']];
+              $variables['h_size'] = HeadlineHelper::getHeadingSizeUp($headline_field['heading_size']);
             }
           }
         }
