@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Implements hook_entity_presave().
@@ -16,6 +17,20 @@ function sitenow_student_profile_entity_presave(EntityInterface $entity) {
       // Setting the title with the first/last name values.
       $output = $entity->get('field_person_first_name')->value . " " . $entity->get('field_person_last_name')->value;
       $entity->setTitle($output);
+      break;
+
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function sitenow_student_profile_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    // Node form modifications.
+    case 'node_student_profile_edit_form':
+    case 'node_student_profile_form':
+      _sitenow_node_form_defaults($form, $form_state);
       break;
 
   }
