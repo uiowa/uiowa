@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1559dc89b1276bb34f44263d58b58afe",
+    "content-hash": "c84f8daff1df55fdd4f2e87772b6644f",
     "packages": [
         {
             "name": "acquia/blt",
@@ -314,7 +314,7 @@
             "version": "5.2.2",
             "source": {
                 "type": "git",
-                "url": "git@github.com:aFarkas/lazysizes.git",
+                "url": "https://github.com/aFarkas/lazysizes.git",
                 "reference": "bce35e58dc3cdd6793ecd4cf47349ede240199e6"
             },
             "dist": {
@@ -4139,7 +4139,7 @@
             "extra": {
                 "drupal": {
                     "version": "4.0.1",
-                    "datestamp": "1600300079",
+                    "datestamp": "1609250413",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -6945,8 +6945,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.6+5-dev",
-                    "datestamp": "1591593747",
+                    "version": "8.x-1.6+7-dev",
+                    "datestamp": "1609455004",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -7133,8 +7133,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.14+17-dev",
-                    "datestamp": "1605375471",
+                    "version": "8.x-1.15+11-dev",
+                    "datestamp": "1610547370",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -9008,26 +9008,26 @@
         },
         {
             "name": "drupal/webform",
-            "version": "5.22.0",
+            "version": "6.0.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/webform.git",
-                "reference": "8.x-5.22"
+                "reference": "6.0.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/webform-8.x-5.22.zip",
-                "reference": "8.x-5.22",
-                "shasum": "807308bb8c57c3c66c7a839effc558ab2a76c1f5"
+                "url": "https://ftp.drupal.org/files/projects/webform-6.0.0.zip",
+                "reference": "6.0.0",
+                "shasum": "2528636c9e90fe1623544eee433f102faa0f1b57"
             },
             "require": {
-                "drupal/core": "^8.8"
+                "drupal/core": "^8.8 || ^9"
             },
             "require-dev": {
                 "drupal/address": "~1.0",
                 "drupal/bootstrap": "~3.0",
                 "drupal/captcha": "~1.0",
-                "drupal/chosen": "~2.0",
+                "drupal/chosen": "~3.0",
                 "drupal/clientside_validation": "~3.0",
                 "drupal/clientside_validation_jquery": "*",
                 "drupal/devel": "~3.0",
@@ -9035,6 +9035,9 @@
                 "drupal/entity_print": "~2.0",
                 "drupal/gnode": "*",
                 "drupal/group": "1.0",
+                "drupal/jquery_ui": "~1.0",
+                "drupal/jquery_ui_checkboxradio": "~1.0",
+                "drupal/jquery_ui_datepicker": "~1.0",
                 "drupal/lingotek": "~3.0",
                 "drupal/mailsystem": "~4.0",
                 "drupal/paragraphs": "~1.0",
@@ -9056,11 +9059,15 @@
                 "drupal/webform_share": "*",
                 "drupal/webform_ui": "*"
             },
+            "suggest": {
+                "drupal/jquery_ui_checkboxradio": "Provides jQuery UI Checkboxradio library. Required by the Webform jQueryUI Buttons module. The Webform jQueryUI Buttons module is deprecated because jQueryUI is no longer maintained.",
+                "drupal/jquery_ui_datepicker": "Provides jQuery UI Datepicker library. Required to support datepickers. The Webform jQueryUI Datepicker module is deprecated because jQueryUI is no longer maintained."
+            },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-5.22",
-                    "datestamp": "1601919522",
+                    "version": "6.0.0",
+                    "datestamp": "1608855845",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -12752,6 +12759,7 @@
                 "issues": "https://github.com/sensiolabs/security-checker/issues",
                 "source": "https://github.com/sensiolabs/security-checker/tree/master"
             },
+            "abandoned": "https://github.com/fabpot/local-php-security-checker",
             "time": "2018-12-19T17:14:59+00:00"
         },
         {
