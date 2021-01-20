@@ -1,0 +1,52 @@
+{#
+/**
+ * @file
+ * Default theme implementation for MAUI session date.
+ *
+ * Available variables:
+ * - heading_size: The heading size to use for the date.
+ * - dates: An array of session dates grouped by start/end times.
+ *   - start: The formatted start date.
+ *    - end: The formatted end date.
+ *    - items: Array of items occuring on this date.
+ *      - description: The description of the item.
+ *      - session: The session it applies to.
+ *
+ * @see template_preprocess_uiowa_maui_session_date()
+ *
+ * @ingroup themeable
+ */
+#}
+{{ attach_library('uids_base/card') }}
+{{ attach_library('uids_base/badge') }}
+
+{%
+  set classes = [
+  'card',
+  'card--media-left',
+  'card--centered-left',
+  'card--alignment-left',
+  'bg--white',
+]
+%}
+
+{% for date in dates %}
+  <div{{ attributes.addClass(classes) }}>
+    <div class="card__body">
+      {% set date_heading = {
+        'headline_level': child_heading_size ?: 'h3',
+        'headline_class': 'card__title headline',
+        'headline_text': date.start != date.end ? date.start ~ ' - ' ~ date.end : date.start,
+      } %}
+      {% include '@uids_base/uids/headline.html.twig' with date_heading only %}
+      <div class="card__details">
+        {% for item in date.items %}
+          <div class="card__date">
+            {{ item.description|raw }}
+            <span{{ item.attributes }}>{{ item.session }}</span>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endfor %}
