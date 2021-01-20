@@ -5,6 +5,7 @@
  * Profile code.
  */
 
+use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
@@ -427,7 +428,7 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
 
     if ($form_object && $node = $form_object->getEntity()) {
       $type = $node->getType() . 's';
-      $form['field_featured_image_display']['widget']['#description'] .= t(' If "Site-wide default" is selected, this setting can be changed on the <a href="@settings_url">SiteNow @types settings</a>.', [
+      $form['field_featured_image_display']['widget']['#description'] .= t('&nbsp;If "Site-wide default" is selected, this setting can be changed on the <a href="@settings_url">SiteNow @types settings</a>.', [
         '@settings_url' => Url::fromRoute("sitenow_$type.settings_form")->toString(),
         '@types' => ucfirst($type),
       ]);
@@ -1048,4 +1049,46 @@ function featured_image_size_values(FieldStorageConfig $definition, ContentEntit
   ];
 
   return $options;
+}
+
+/**
+ * Implements hook_tokens().
+ */
+function sitenow_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
+  $replacements = [];
+  if (!empty($data['node'])) {
+    // Limit this to content types that have 'field_teaser' field.
+    if ($data['node']->hasField('field_teaser')) {
+      foreach ($tokens as $name => $original) {
+        switch ($name) {
+          // Not consistent across content types which token is used for meta description.
+          case 'field_teaser':
+          case 'field_teaser:value':
+            $field_teaser = $data['node']->get('field_teaser')->value;
+            if (empty($field_teaser)) {
+              // Person content type.
+              if ($data["node"]->hasField('field_person_bio') && !empty($data['node']->get('field_person_bio')->value)) {
+                $replacement_value = $data['node']->get('field_person_bio')->value;
+              }
+              // Article content type, v3 Page content type.
+              if ($data["node"]->hasField('body') && !empty($data['node']->get('body')->value)) {
+                $replacement_value = $data['node']->get('body')->value;
+              }
+              if (!empty($replacement_value)) {
+                // Plain text doesn't do faulty html correction, and don't
+                // want tags counting towards limit.
+                $replacement_value = trim(strip_tags($replacement_value));
+                // Using text.module text_summary().
+                // @todo Make length a configuration setting.
+                $replacements[$original] = text_summary($replacement_value, "plain_text", "300");
+              }
+            }
+            break;
+
+        }
+      }
+    }
+  }
+
+  return $replacements;
 }

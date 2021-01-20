@@ -1,0 +1,81 @@
+uuid: 9b1bce70-95d0-4dba-86d2-6d0f2212a44e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.fragment.program.field_grad_degrees_offered
+    - field.field.fragment.program.field_grad_discipline
+    - field.field.fragment.program.field_program_conferred_by_grad
+    - field.field.fragment.program.field_program_homepage
+    - field.field.fragment.program.field_program_interdisciplinary
+    - fragments.fragment_type.program
+  module:
+    - link
+id: fragment.program.default
+targetEntityType: fragment
+bundle: program
+mode: default
+content:
+  description:
+    type: text_textarea
+    weight: 10
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_grad_degrees_offered:
+    weight: 3
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_grad_discipline:
+    weight: 2
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_program_conferred_by_grad:
+    weight: 5
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_program_homepage:
+    weight: 1
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+    region: content
+  field_program_interdisciplinary:
+    weight: 4
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  user_id:
+    type: entity_reference_autocomplete
+    weight: 5
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+      match_limit: 10
+    region: content
+    third_party_settings: {  }
+hidden:
+  created: true
+  uid: true

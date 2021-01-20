@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.person.field_grad_program
+    - field.field.node.person.field_grad_program_all_degree
     - field.field.node.person.field_image
     - field.field.node.person.field_person_bio
     - field.field.node.person.field_person_contact_information
@@ -14,20 +14,13 @@ dependencies:
     - field.field.node.person.field_person_hide
     - field.field.node.person.field_person_hometown
     - field.field.node.person.field_person_last_name
-    - field.field.node.person.field_person_mentor_qualif
-    - field.field.node.person.field_person_mentor_ug_role
     - field.field.node.person.field_person_phone
     - field.field.node.person.field_person_position
     - field.field.node.person.field_person_research_areas
-    - field.field.node.person.field_person_research_assistants
-    - field.field.node.person.field_person_research_project
-    - field.field.node.person.field_person_scholar_mentor_link
-    - field.field.node.person.field_person_scholar_srop_year
     - field.field.node.person.field_person_types
     - field.field.node.person.field_person_website
     - field.field.node.person.field_tags
     - field.field.node.person.field_teaser
-    - field.field.node.person.field_uiowa_college
     - node.type.person
     - workflows.workflow.editorial
   module:
@@ -38,7 +31,6 @@ dependencies:
     - path
     - telephone
     - text
-    - uiowa_entities
 id: node.person.default
 targetEntityType: node
 bundle: person
@@ -50,8 +42,8 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_grad_program:
-    weight: 32
+  field_grad_program_all_degree:
+    weight: 33
     settings: {  }
     third_party_settings: {  }
     type: options_select
@@ -137,22 +129,6 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-  field_person_mentor_qualif:
-    weight: 30
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
-  field_person_mentor_ug_role:
-    weight: 29
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
   field_person_phone:
     type: telephone_default
     weight: 9
@@ -178,36 +154,6 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-  field_person_research_assistants:
-    weight: 27
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_person_research_project:
-    weight: 8
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_person_scholar_mentor_link:
-    weight: 25
-    settings:
-      placeholder_url: ''
-      placeholder_title: ''
-    third_party_settings: {  }
-    type: link_default
-    region: content
-  field_person_scholar_srop_year:
-    weight: 26
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
-    region: content
   field_person_types:
     type: options_buttons
     weight: 2
@@ -239,14 +185,6 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textarea
-    region: content
-  field_uiowa_college:
-    weight: 31
-    settings:
-      types:
-        - college
-    third_party_settings: {  }
-    type: uiowa_academic_units_widget
     region: content
   moderation_state:
     type: moderation_state_default

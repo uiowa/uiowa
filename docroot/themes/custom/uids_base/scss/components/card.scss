@@ -27,37 +27,26 @@
   }
 }
 
-// Adjust card title for large size in one and two and three cols
-.layout--onecol,
-.layout--twocol {
-
-  .card--media-right,
-  .card--media-left {
-    .card__media--medium+.card__body .card__title {
-      @include breakpoint(sm) {
-        font-size: 2.3rem;
-        line-height: 1;
-      }
+// Border color adjustment for cards not using a bg color
+.card:not([class*="bg-"]) {
+  border-color: rgba(0,0,0,.125);
+  .bg--black--pattern--brain &,
+  .bg-pattern--brain-black &,
+  .bg--black & {
+    border-color: rgba(255,255,255,.325);
+    .bttn--sans-serif {
+      border-color: rgba(255,255,255,.325);
     }
+  }
+  .bttn--sans-serif {
+    border-color: rgba(0,0,0,.125);
+  }
+}
 
-    .card__media--medium+.card__body p {
-      @include breakpoint(sm) {
-        font-size: 1.1rem;
-      }
-    }
-
-    .card__media--large+.card__body .card__title {
-      @include breakpoint(sm) {
-        font-size: 2.8rem;
-        margin-bottom: .7rem;
-        line-height: 1;
-      }
-    }
-
-    .card__media--large+.card__body p {
-      @include breakpoint(sm) {
-        font-size: 1.2rem;
-      }
+.card:not([class*="bg-"]) {
+  .layout__container:not([class*="bg-"]) & {
+    .bttn--sans-serif {
+      border-color: rgba(0,0,0,.125);
     }
   }
 }
@@ -111,7 +100,7 @@
       display: none;
 
       &+.card__body {
-        padding: 0;
+        padding: 0 !important;
       }
     }
   }

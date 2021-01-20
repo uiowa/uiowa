@@ -1855,9 +1855,86 @@ function sitenow_update_8047() {
 }
 
 /**
- * Set list grid defaults for existing list blocks.
+ * Set new style defaults for existing events blocks.
  */
 function sitenow_update_8048() {
+  // Find NIDs for all nodes with at least one events block.
+  $query = \Drupal::entityQuery('node')
+    ->condition('type', 'page')
+    ->condition('layout_builder__layout', '%uiowa_events%', 'LIKE');
+
+  $results = $query->execute();
+
+  foreach ($results as $nid) {
+    $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+    $layout = $node->get('layout_builder__layout');
+
+    // Grab the sections. We'll set updated ones back in below.
+    $layout_sections = $layout->getSections();
+
+    /**
+     * @var integer $delta_s
+     * @var \Drupal\layout_builder\Section $section
+     */
+    foreach ($layout_sections as $delta_s => $section) {
+      $section_is_updated = FALSE;
+
+      // insertComponent() uses delta and region
+      // which makes it more difficult to re-set components.
+      // With an array and iterator we can set it directly.
+      $section_arr = $section->toArray();
+      $i = 0;
+
+      /**
+       * @var \Drupal\layout_builder\SectionComponent $component
+       */
+      foreach ($section->getComponents() as $component) {
+        if ($component->getPluginId() === 'inline_block:uiowa_events') {
+          $styles = $component->get('layout_builder_styles_style');
+          // Events - Small circle left-aligned, left align content, transparent.
+          $styles[] = 'card_media_position_left';
+          $styles[] = 'media_format_circle';
+          $styles[] = 'card_image_small';
+          $styles[] = 'content_alignment_left';
+          $component->set('layout_builder_styles_style', $styles);
+
+          $section_arr['components'][$i] = $component->toArray();
+          $section_is_updated = TRUE;
+        }
+        $i++;
+      }
+
+      if ($section_is_updated) {
+        // Create a section from array, set, and save.
+        $layout_sections[$delta_s] = Section::fromArray($section_arr);
+        $node->set('layout_builder__layout', $layout_sections)
+          ->save();
+      }
+    }
+  }
+}
+
+/**
+ * Sometimes config ignore needs a little push.
+ */
+function sitenow_update_8049() {
+  $site_path = \Drupal::service('site.path');
+
+  if ($site_path != 'sites/hr.uiowa.edu') {
+    $config_path = Settings::get('config_sync_directory');
+  }
+  else {
+    $config_path = DRUPAL_ROOT . '/../config/hr.uiowa.edu/';
+  }
+  $source = new FileStorage($config_path);
+  $config_storage = \Drupal::service('config.storage');
+  $config_storage->write('config_ignore.settings', $source->read('config_ignore.settings'));
+}
+
+/**
+ * Set list grid defaults for existing list blocks.
+ */
+function sitenow_update_8050() {
   $block_types = [
     'uiowa_aggregator',
     'uiowa_events',
@@ -1901,7 +1978,6 @@ function sitenow_update_8048() {
             $styles[] = 'list_format_list';
             $styles[] = 'block_grid_threecol_33_34_33';
             $component->set('layout_builder_styles_style', $styles);
-
             $section_arr['components'][$i] = $component->toArray();
             $section_is_updated = TRUE;
           }
