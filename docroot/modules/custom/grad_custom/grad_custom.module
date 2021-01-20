@@ -51,12 +51,12 @@ function grad_custom_preprocess_node(&$variables) {
  */
 function grad_custom_preprocess_html(&$variables) {
   $toppage = 'scroll-up';
-  // Don't display button is user opts not to.
+  // Don't display button is user opts to hide it.
   if (theme_get_setting('header.toppage')) {
     $toppage = 'no-top-scroll';
   }
-  $variables['attributes']['class'][] = $toppage;}
-
+  $variables['attributes']['class'][] = $toppage;
+}
 
 /**
  * Implements hook_allowed_values_function().
