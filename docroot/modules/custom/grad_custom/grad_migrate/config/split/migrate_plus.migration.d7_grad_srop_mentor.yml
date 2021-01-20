@@ -31,7 +31,10 @@ process:
   changed: changed
   promote: promote
   sticky: sticky
-  field_scholar_bio/value: body
+  field_scholar_bio/value: field_project_research_desc_value
+  field_scholar_bio/format:
+    plugin: default_value
+    default_value: minimal
   field_scholar_bio/summary: body_summary
   moderation_state: moderation_state
   field_person_first_name: field_mentor_firstname_value

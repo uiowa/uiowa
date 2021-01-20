@@ -81,6 +81,9 @@ class Mentor extends BaseNodeSource {
       ])
       ->fields('undergrad_qualif', [
         'field_project_undergrad_qualif_value',
+      ])
+      ->fields('research_desc', [
+        'field_project_research_desc_value',
       ]);
     return $query;
   }
