@@ -22,7 +22,7 @@ process:
   title: title
   type:
     plugin: default_value
-    default_value: person
+    default_value: scholar
   uid:
     plugin: default_value
     default_value: 1
@@ -31,16 +31,17 @@ process:
   changed: changed
   promote: promote
   sticky: sticky
-  body: body
-  field_teaser: body_summary
   moderation_state: moderation_state
-  field_person_types:
-    plugin: default_value
-    default_value: scholar
+  field_scholar_bio/value: body
+  field_scholar_bio/summary: body_summary
+  field_person_education: field_scholar_institution_value
   field_person_first_name: field_scholar_firstname_value
   field_person_last_name: field_scholar_lastname_value
-  field_person_research_project: field_scholar_project_title
+  field_scholar_mentor: field_scholar_mentorlink_title
+  field_scholar_participation_year: field_scholar_sropyear_value
+#  field_image:
+  field_scholar_bio_headline: field_scholar_project_title
 destination:
   plugin: 'entity:node'
-  default_bundle: person
+  default_bundle: scholar
 migration_dependencies: null
