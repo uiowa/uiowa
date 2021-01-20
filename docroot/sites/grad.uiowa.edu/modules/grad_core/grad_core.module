@@ -38,12 +38,13 @@ function grad_core_form_alter(&$form, FormStateInterface $form_state, $form_id) 
       break;
     case 'node_thesis_defense_edit_form':
     case 'node_thesis_defense_form':
+      $form['#attached']['library'][] = 'grad_core/admin-overrides';
       // Our submit handler must execute before the layout_builder_styles one
       // so it can take advantage of the logic there.
       array_unshift($form['actions']['submit']['#submit'], '_grad_core_thesis_defense_submit');
       if (isset($form['field_thesis_defense_date'])) {
-        $form['field_thesis_defense_date']['widget'][0]['end_value']['#access'] = FALSE;
-        $form['field_thesis_defense_date']['widget'][0]['duration']['#access'] = FALSE;
+        $form['field_thesis_defense_date']['widget'][0]['end_value']['#disabled'] = TRUE;
+        $form['field_thesis_defense_date']['widget'][0]['duration']['#disabled'] = TRUE;
       }
       break;
   }
