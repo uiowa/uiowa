@@ -32,6 +32,9 @@ disable-targets:
       run: true
     frontend:
       run: true
+    security:
+      check:
+        composer: true
 tests:
   phpunit:
     - config: '${repo.root}'
