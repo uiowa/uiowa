@@ -97,6 +97,9 @@ class Mentor extends BaseNodeSource {
       $row->setSourceProperty('field_mentor_website_url', $url);
     }
 
+    // Strip out HTML tags from project title.
+    $row->setSourceProperty('field_mentor_project_title_value', strip_tags($row->getSourceProperty('field_mentor_project_title_value')));
+
     // Call the parent prepareRow.
     return parent::prepareRow($row);
   }
