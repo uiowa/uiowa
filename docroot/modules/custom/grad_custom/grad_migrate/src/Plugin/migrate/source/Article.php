@@ -17,6 +17,8 @@ use Drupal\taxonomy\Entity\Term;
  */
 class Article extends BaseNodeSource {
 
+  use ProcessGradMediaTrait;
+
   /**
    * The public file directory path.
    *
@@ -51,8 +53,6 @@ class Article extends BaseNodeSource {
    * @var array
    */
   protected $termMapping;
-
-  protected const SOURCE_BASE_PATH = 'https://www.grad.uiowa.edu/sites/gc/files/';
 
   /**
    * {@inheritdoc}
@@ -150,39 +150,8 @@ class Article extends BaseNodeSource {
     // default file upload behaviors.
     $drupal_file_directory = 'public://' . date('Y-m') . '/';
 
-    // Check if an image was attached, and if so, update with new fid.
-    $original_fid = $row->getSourceProperty('field_thumbnail_image_fid');
-
-    // @todo clean this up so we don't run two separate regexps.
-    if (isset($original_fid)) {
-      $uri = $this->fidQuery($original_fid)['uri'];
-      $filename = str_replace('public://', '', $uri);
-      // Get a connection for the destination database.
-      $dest_connection = \Drupal::database();
-      $dest_query = $dest_connection->select('file_managed', 'f');
-      $new_fid = $dest_query->fields('f', ['fid'])
-        ->condition('f.filename', $filename)
-        ->execute()
-        ->fetchField();
-      if (!$new_fid) {
-        $new_fid = $this->downloadFile($filename, static::SOURCE_BASE_PATH, $drupal_file_directory);
-        if ($new_fid) {
-          $meta['alt'] = $row->getSourceProperty('field_thumbnail_image_alt');
-          $meta['title'] = $row->getSourceProperty('field_thumbnail_image_title');
-          $mid = $this->createMediaEntity($new_fid, $meta);
-        }
-      }
-      else {
-        $mid = $this->getMid($filename);
-        // And in case we had the file, but not the media entity.
-        if (!$mid) {
-          $meta['alt'] = $row->getSourceProperty('field_thumbnail_image_alt');
-          $meta['title'] = $row->getSourceProperty('field_thumbnail_image_title');
-          $mid = $this->createMediaEntity($new_fid, $meta, 1);
-        }
-      }
-      $row->setSourceProperty('field_thumbnail_image_fid', $mid);
-    }
+    // Process image field if it exists.
+    $this->processImageField($row, 'field_thumbnail_image');
 
     // Search for D7 inline embeds and replace with D8 inline entities.
     $content = $row->getSourceProperty('body_value');
@@ -298,7 +267,7 @@ class Article extends BaseNodeSource {
    * @throws \Drupal\migrate\MigrateException
    */
   protected function replaceInlineImages($content) {
-    $drupal_file_directory = 'public://' . date('Y-m') . '/';
+    $drupal_file_directory = $this->getDrupalFileDirectory();
 
     // Create a HTML content fragment.
     $document = Html::load($content);
@@ -330,7 +299,7 @@ class Article extends BaseNodeSource {
           $prefix_path = str_replace('/sites/gc/files/', '', substr($src, 0, strpos($src, $file_path)));
 
           // Download the file and create the file record.
-          $fid = $this->downloadFile($file_path, static::SOURCE_BASE_PATH . $prefix_path, $drupal_file_directory);
+          $fid = $this->downloadFile($file_path, $this->getSourceBasePath() . $prefix_path, $drupal_file_directory);
 
           // Get meta data an create the media entity.
           $meta = [];
@@ -373,6 +342,7 @@ class Article extends BaseNodeSource {
           $img->parentNode->replaceChild($token, $img);
         }
       }
+
       $i--;
     }
 

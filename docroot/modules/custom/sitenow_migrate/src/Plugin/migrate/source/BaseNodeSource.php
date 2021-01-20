@@ -19,8 +19,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 abstract class BaseNodeSource extends SqlBase {
 
-  use ProcessMediaTrait;
-
   /**
    * The module handler.
    *

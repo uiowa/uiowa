@@ -15,6 +15,8 @@ use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
  */
 class Scholar extends BaseNodeSource {
 
+  use ProcessGradMediaTrait;
+
   /**
    * {@inheritdoc}
    */
