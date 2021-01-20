@@ -7,6 +7,7 @@
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Implements hook_preprocess_HOOK().
@@ -44,6 +45,18 @@ function grad_custom_preprocess_node(&$variables) {
     }
   }
 }
+
+/**
+ * Implements hook_preprocess_HOOK() for html.html.twig.
+ */
+function grad_custom_preprocess_html(&$variables) {
+  $toppage = 'scroll-up';
+  // Don't display button is user opts not to.
+  if (theme_get_setting('header.toppage')) {
+    $toppage = 'no-top-scroll';
+  }
+  $variables['attributes']['class'][] = $toppage;}
+
 
 /**
  * Implements hook_allowed_values_function().

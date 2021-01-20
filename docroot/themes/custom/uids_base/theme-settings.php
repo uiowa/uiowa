@@ -16,6 +16,7 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
 
   $config = \Drupal::config('system.site');
   $has_parent = $config->get('has_parent') ?: 0;
+  $test = $config->get('name');
   $variables['site_name'] = $config->get('name');
   $name_length = strlen($variables['site_name']);
 
@@ -65,6 +66,9 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     $form['header']['type']['#default_value'] = 'below';
     $form['header']['type']['#description'] = $description;
   }
+  // if ($test === 'Graduate College') {
+  //   $form['header']['type']['#disabled'] = TRUE;
+  // }
 
   $form['header']['nav_style'] = [
     '#type' => 'select',
@@ -90,6 +94,15 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
       ],
     ],
   ];
+  // Only display scroll to top button functionality if site name is Graduate College.
+  if ($test === 'Graduate College') {
+    $form['header']['toppage'] = [
+      '#type' => 'checkbox',
+      '#title' => t('Hide Scroll to top button'),
+      '#description' => t('Remove scroll to top button functionality on site'),
+      '#default_value' => theme_get_setting('header.toppage'),
+    ];
+  }
 
   $top_links_limit = theme_get_setting('header.top_links_limit');
   // Get limit, otherwise limit to 2.
