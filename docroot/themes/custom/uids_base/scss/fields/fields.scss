@@ -31,6 +31,10 @@
   line-height: 1.7;
   margin-top: 0;
 
+  &.h1, &.h2, &.h3, &.h4, &.h5, &.h6, &[class*="element-"] {
+    line-height: inherit;
+  }
+
   @at-root {
     div#{&},
     p#{&} {
