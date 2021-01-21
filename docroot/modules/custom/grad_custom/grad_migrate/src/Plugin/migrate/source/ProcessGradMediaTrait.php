@@ -65,7 +65,7 @@ trait ProcessGradMediaTrait {
           $mid = $this->createMediaEntity($new_fid, $meta, 1);
         }
       }
-      $row->setSourceProperty('field_thumbnail_image_fid', $mid);
+      $row->setSourceProperty("{$field_name}_fid", $mid);
     }
   }
 
