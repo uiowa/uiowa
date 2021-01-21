@@ -25,15 +25,21 @@ process:
     plugin: migration_lookup
     source: nid
     migration: d7_grad_thesis_defense
-  redirect_source:
+  temp_name_slug:
     - plugin: concat
       source:
-        - constants/source_prefix
         - field_thesis_firstname_value
         - constants/dash
         - field_thesis_lastname_value
     - plugin: callback
-      callable: strtolower
+      callable:
+        - 'Drupal\Component\Utility\Html'
+        - getClass
+  redirect_source:
+    plugin: concat
+    source:
+      - constants/source_prefix
+      - '@temp_name_slug'
   redirect_redirect:
     plugin: concat
     source:
