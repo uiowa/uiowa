@@ -32,6 +32,10 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
    *   The altered command result.
    */
   public function alterStatus($result, CommandData $commandData) {
+    if ($app = getenv('AH_SITE_GROUP')) {
+      $result['application'] = $app;
+    }
+
     if (isset($result['bootstrap']) && $result['bootstrap'] == 'Successful') {
       $db = $result['db-name'];
       $selfRecord = $this->siteAliasManager()->getSelf();
@@ -41,8 +45,9 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
       $process->mustRun();
       $output = trim($process->getOutput());
       $result['db-size'] = $output . " MB";
-      return $result;
     }
+
+    return $result;
   }
 
   /**
@@ -51,10 +56,15 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
    * @hook init core:status
    */
   public function initStatus(InputInterface $input, AnnotationData $annotationData) {
-    $annotationData->append('field-labels', "\n" . " db-size: DB Size");
+    $annotationData->append('field-labels', "\n application: Application");
+    $annotationData->append('field-labels', "\n db-size: DB Size");
+
     $defaults = $annotationData->getList('default-fields');
     $key = array_search('db-name', $defaults);
     array_splice($defaults, $key, 0, 'db-size');
+    array_unshift($defaults, 'application');
+
+
     $annotationData->set('default-fields', $defaults);
     $input->setOption('fields', $defaults);
   }

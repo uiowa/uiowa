@@ -1452,12 +1452,6 @@ $sites['engineeringviewbook.dev.drupal.uiowa.edu'] = 'viewbook.engineering.uiowa
 $sites['engineeringviewbook.stage.drupal.uiowa.edu'] = 'viewbook.engineering.uiowa.edu';
 $sites['engineeringviewbook.prod.drupal.uiowa.edu'] = 'viewbook.engineering.uiowa.edu';
 
-// Directory aliases for lb-test.uiowa.edu.
-$sites['lb-test.local.drupal.uiowa.edu'] = 'lb-test.uiowa.edu';
-$sites['lb-test.dev.drupal.uiowa.edu'] = 'lb-test.uiowa.edu';
-$sites['lb-test.stage.drupal.uiowa.edu'] = 'lb-test.uiowa.edu';
-$sites['lb-test.prod.drupal.uiowa.edu'] = 'lb-test.uiowa.edu';
-
 // Directory aliases for globalhealthstudies.uiowa.edu.
 $sites['globalhealthstudies.local.drupal.uiowa.edu'] = 'globalhealthstudies.uiowa.edu';
 $sites['globalhealthstudies.dev.drupal.uiowa.edu'] = 'globalhealthstudies.uiowa.edu';
@@ -2003,3 +1997,15 @@ $sites['siteslungimaging.local.drupal.uiowa.edu'] = 'lungimaging.sites.uiowa.edu
 $sites['siteslungimaging.dev.drupal.uiowa.edu'] = 'lungimaging.sites.uiowa.edu';
 $sites['siteslungimaging.stage.drupal.uiowa.edu'] = 'lungimaging.sites.uiowa.edu';
 $sites['siteslungimaging.prod.drupal.uiowa.edu'] = 'lungimaging.sites.uiowa.edu';
+
+// Directory aliases for licensing.uiowa.edu.
+$sites['licensing.local.drupal.uiowa.edu'] = 'licensing.uiowa.edu';
+$sites['licensing.dev.drupal.uiowa.edu'] = 'licensing.uiowa.edu';
+$sites['licensing.stage.drupal.uiowa.edu'] = 'licensing.uiowa.edu';
+$sites['licensing.prod.drupal.uiowa.edu'] = 'licensing.uiowa.edu';
+
+// Directory aliases for kang.lab.uiowa.edu.
+$sites['labkang.local.drupal.uiowa.edu'] = 'kang.lab.uiowa.edu';
+$sites['labkang.dev.drupal.uiowa.edu'] = 'kang.lab.uiowa.edu';
+$sites['labkang.stage.drupal.uiowa.edu'] = 'kang.lab.uiowa.edu';
+$sites['labkang.prod.drupal.uiowa.edu'] = 'kang.lab.uiowa.edu';
