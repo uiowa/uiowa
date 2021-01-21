@@ -84,6 +84,14 @@ class Mentor extends BaseNodeSource {
       ])
       ->fields('research_desc', [
         'field_project_research_desc_value',
+      ])
+      ->fields('image', [
+        'field_image_attach_fid',
+        'field_image_attach_alt',
+        'field_image_attach_title',
+      ])
+      ->fields('department', [
+        'field_mentor_department_value',
       ]);
     return $query;
   }
@@ -98,6 +106,27 @@ class Mentor extends BaseNodeSource {
     if (isset($url) && substr($url, 0, 4) != 'http') {
       $url = 'http://' . $url;
       $row->setSourceProperty('field_mentor_website_url', $url);
+    }
+
+    // Process image field if it exists.
+    $this->processImageField($row, 'field_image_attach');
+
+    // Process the old program field into the new.
+    $program = $row->getSourceProperty('field_mentor_department_value');
+    // Loop through our helper array.
+    foreach (_grad_custom_program_list() as $program_info) {
+      if ($program == $program_info['label']) {
+        $program_code = $program_info['maui_code'];
+        break;
+      }
+    }
+    // If we found a code, set it.
+    if (isset($program_code)) {
+      $row->setSourceProperty('field_mentor_department_value', $program_code);
+    }
+    // If we didn't, set a token for db search later.
+    else {
+      $row->setSourceProperty('field_mentor_department_value', 'UPDATE');
     }
 
     // Strip out HTML tags from project title.
