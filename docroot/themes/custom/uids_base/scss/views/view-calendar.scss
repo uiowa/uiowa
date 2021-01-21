@@ -1,0 +1,38 @@
+@import "uids/assets/scss/_variables.scss";
+@import "uids/assets/scss/_utilities.scss";
+
+// Full Calendar styles
+a.fc-event {
+  border: none;
+}
+.fc-button-primary {
+  background-color: $secondary;
+}
+
+.fc-button-primary:hover {
+  background-color: $secondary;
+}
+
+.fc-button-primary:focus {
+  box-shadow: 0 0 0 0 darken($secondary, 15%);
+}
+
+.fc-button-primary:disabled {
+  background-color: rgb(66, 66, 66);
+  border-color: rgb(66, 66, 66);
+}
+
+.fc-button-primary:not(:disabled):active,
+.fc-button-primary:not(:disabled).fc-button-active {
+  border-color: darken($secondary, 15%);
+}
+
+.fc-button-primary:not(:disabled):active:focus,
+.fc-button-primary:not(:disabled).fc-button-active:focus {
+  box-shadow: 0 0 0 0.2rem darken($secondary, 15%);
+}
+
+.fc-button-primary:not(:disabled).fc-button-active,
+.fc-button-primary:not(:disabled):active {
+  background-color: $brand-cool-gray;
+}
