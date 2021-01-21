@@ -32,15 +32,17 @@ process:
   promote: promote
   sticky: sticky
   moderation_state: moderation_state
-  field_scholar_bio/value: body
-  field_scholar_bio/summary: body_summary
-  field_person_education: field_scholar_institution_value
   field_person_first_name: field_scholar_firstname_value
   field_person_last_name: field_scholar_lastname_value
   field_scholar_mentor: field_scholar_mentorlink_title
   field_scholar_participation_year: field_scholar_sropyear_value
-#  field_image:
-  field_scholar_bio_headline: field_mentor_project_title_value
+  field_scholar_bio/value: field_scholar_abstract_value
+  field_scholar_bio/format:
+    plugin: default_value
+    default_value: minimal
+  field_person_education: field_scholar_institution_value
+  #  field_image:
+  field_scholar_bio_headline: field_scholar_project_title_value
 destination:
   plugin: 'entity:node'
   default_bundle: scholar

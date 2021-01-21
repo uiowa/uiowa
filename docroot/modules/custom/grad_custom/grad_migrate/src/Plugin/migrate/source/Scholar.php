@@ -85,7 +85,7 @@ class Scholar extends BaseNodeSource {
     $this->fetchAdditionalFields($row, $additional_fields);
 
     // Strip out HTML tags from project title.
-    $row->setSourceProperty('field_mentor_project_title_value', strip_tags($row->getSourceProperty('field_mentor_project_title_value')));
+    $row->setSourceProperty('field_scholar_project_title_value', strip_tags($row->getSourceProperty('field_scholar_project_title_value')));
 
     // Call the parent prepareRow.
     return parent::prepareRow($row);
