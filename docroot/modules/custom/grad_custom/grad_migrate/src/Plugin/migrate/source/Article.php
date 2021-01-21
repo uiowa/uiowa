@@ -146,10 +146,6 @@ class Article extends BaseNodeSource {
    * @throws \Drupal\migrate\MigrateException
    */
   public function prepareRow(Row $row) {
-    // Put the files in a time-specified path to match
-    // default file upload behaviors.
-    $drupal_file_directory = 'public://' . date('Y-m') . '/';
-
     // Process image field if it exists.
     $this->processImageField($row, 'field_thumbnail_image');
 
