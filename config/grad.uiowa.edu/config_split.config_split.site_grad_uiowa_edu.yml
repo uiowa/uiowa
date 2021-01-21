@@ -8,6 +8,9 @@ description: 'Split configuration for grad.uiowa.edu.'
 folder: ../config/grad.uiowa.edu
 module:
   fragments: 0
+  fullcalendar: 0
+  fullcalendar_options: 0
+  fullcalendar_view: 0
   grad_core: 0
   grad_custom: 0
   smart_date: 0
@@ -15,6 +18,8 @@ module:
 theme: {  }
 blacklist:
   - config_split.config_split.site_grad_uiowa_edu
+  - fullcalendar.settings
+  - fullcalendar_options.settings
   - metatag.metatag_defaults.node__mentor
   - metatag.metatag_defaults.node__scholar
   - node.type.mentor
@@ -44,6 +49,8 @@ graylist:
   - user.role.authenticated
   - user.role.editor
   - user.role.webmaster
+  - views.view.srop_scholars
+  - views.view.thesis_defenses
   - 'field.storage.node.field_person_*'
   - 'field.storage.node.field_grad_*'
   - 'field.storage.fragment.field_grad_*'
