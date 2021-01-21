@@ -1,0 +1,28 @@
+uuid: 2dfe437c-062d-4aa7-b679-5307e206bcb2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_person_quote
+    - node.type.student_profile
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    minimal: minimal
+    filtered_html: '0'
+    full_html: '0'
+    plain_text: '0'
+id: node.student_profile.field_person_quote
+field_name: field_person_quote
+entity_type: node
+bundle: student_profile
+label: Quote
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long
