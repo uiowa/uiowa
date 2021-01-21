@@ -105,6 +105,10 @@ function grad_core_preprocess_page_title(&$variables) {
  */
 function grad_core_theme($existing, $type, $theme, $path) {
   return [
+    'field__field_thesis_defense_date' => [
+      'template' => 'field--node--field-thesis-defense-date',
+      'base hook' => 'field',
+    ],
     'node__view__srop_scholars' => [
       'template' => 'node--view--srop-scholars',
       'base hook' => 'node',
