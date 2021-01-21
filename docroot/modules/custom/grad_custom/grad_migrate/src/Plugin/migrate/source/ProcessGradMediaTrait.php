@@ -39,6 +39,9 @@ trait ProcessGradMediaTrait {
     if (isset($original_fid)) {
       $uri = $this->fidQuery($original_fid)['uri'];
       $filename = str_replace('public://', '', $uri);
+      // @todo need to split this up into filepath and filename.
+      $filename = explode('/', $filename);
+      $filename = end($filename);
       // Get a connection for the destination database.
       $dest_connection = \Drupal::database();
       $dest_query = $dest_connection->select('file_managed', 'f');
