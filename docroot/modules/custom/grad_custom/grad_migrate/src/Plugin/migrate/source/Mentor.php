@@ -126,7 +126,7 @@ class Mentor extends BaseNodeSource {
     }
     // If we didn't, set a token for db search later.
     else {
-      $row->setSourceProperty('field_mentor_department_value', 'UPDATE');
+      $row->setSourceProperty('field_mentor_department_value', 'UPDATE: ' . $program);
     }
 
     // Strip out HTML tags from project title.
