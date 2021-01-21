@@ -41,10 +41,12 @@ function grad_core_form_alter(&$form, FormStateInterface $form_state, $form_id) 
       // Our submit handler must execute before the layout_builder_styles one
       // so it can take advantage of the logic there.
       array_unshift($form['actions']['submit']['#submit'], '_grad_core_thesis_defense_submit');
-      if (isset($form['field_thesis_defense_date'])) {
-        $form['field_thesis_defense_date']['widget'][0]['end_value']['#access'] = FALSE;
-        $form['field_thesis_defense_date']['widget'][0]['duration']['#access'] = FALSE;
-      }
+    // Currently errors on save.
+    // @todo Get this to work so that duration of 0 with no end date can occur.
+    // if (isset($form['field_thesis_defense_date'])) {
+    // $form['field_thesis_defense_date']['widget'][0]['end_value']['#access'] = FALSE;
+    // $form['field_thesis_defense_date']['widget'][0]['duration']['#access'] = FALSE;
+    // }
       break;
   }
 }
@@ -103,6 +105,10 @@ function grad_core_preprocess_page_title(&$variables) {
  */
 function grad_core_theme($existing, $type, $theme, $path) {
   return [
+    'field__field_thesis_defense_date' => [
+      'template' => 'field--node--field-thesis-defense-date',
+      'base hook' => 'field',
+    ],
     'node__view__srop_scholars' => [
       'template' => 'node--view--srop-scholars',
       'base hook' => 'node',
