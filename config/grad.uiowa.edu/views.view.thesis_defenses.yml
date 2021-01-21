@@ -6,6 +6,7 @@ dependencies:
     - core.entity_view_mode.node.teaser
     - field.storage.node.field_thesis_defense_date
     - node.type.thesis_defense
+    - system.menu.main
   module:
     - fullcalendar_view
     - node
@@ -272,7 +273,7 @@ display:
         options:
           relationship: none
           view_mode: teaser
-      path: academics/thesis-and-dissertation/calendar
+      path: academics/thesis-defenses
       fields:
         title:
           id: title
@@ -419,7 +420,7 @@ display:
         operator: AND
         groups:
           1: AND
-      title: 'Thesis Defenses Calendar'
+      title: 'Thesis Defense Calendar'
       empty:
         area_text_custom:
           id: area_text_custom
@@ -432,6 +433,15 @@ display:
           tokenize: false
           content: 'There are currently no results to display'
           plugin_id: text_custom
+      menu:
+        type: normal
+        title: 'Thesis Defense Calendar'
+        description: 'View upcoming thesis defenses.'
+        expanded: false
+        parent: 'menu_link_content:31726bf1-35fb-41a4-824e-59d226527f34'
+        weight: 0
+        context: '0'
+        menu_name: main
     cache_metadata:
       max-age: -1
       contexts:
@@ -449,7 +459,7 @@ display:
     display_options:
       display_extenders:
         metatag_display_extender: {  }
-      path: academics/thesis-and-dissertation/list
+      path: academics/thesis-defenses/list
       display_description: ''
       empty:
         area_text_custom:
