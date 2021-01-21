@@ -41,7 +41,7 @@ trait ProcessGradMediaTrait {
       $filename_w_subdir = str_replace('public://', '', $uri);
       // Split apart the filename from the subdirectory path.
       $filename_w_subdir = explode('/', $filename_w_subdir);
-      $filename = array_pop($filename);
+      $filename = array_pop($filename_w_subdir);
       $subdir = implode('/', $filename_w_subdir);
       // Get a connection for the destination database.
       $dest_connection = \Drupal::database();
