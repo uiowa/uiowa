@@ -26,7 +26,6 @@ class Scholar extends BaseNodeSource {
     $query->leftJoin('field_data_field_scholar_middlename', 'middlename', 'n.nid = middlename.entity_id');
     $query->leftJoin('field_data_field_scholar_lastname', 'lastname', 'n.nid = lastname.entity_id');
     $query->leftJoin('field_data_field_scholar_institution', 'institution', 'n.nid = institution.entity_id');
-    $query->leftJoin('field_data_field_scholar_mentorlink', 'mentorlink', 'n.nid = mentorlink.entity_id');
     $query->leftJoin('field_data_field_scholar_department', 'department', 'n.nid = department.entity_id');
     $query->leftJoin('field_data_field_scholar_sropyear', 'sropyear', 'n.nid = sropyear.entity_id');
     $query->leftJoin('field_data_field_scholar_project_title', 'project_title', 'n.nid = project_title.entity_id');
@@ -56,11 +55,6 @@ class Scholar extends BaseNodeSource {
         'field_scholar_institution_value',
         'field_scholar_institution_format',
       ])
-      ->fields('mentorlink', [
-        'field_scholar_mentorlink_title',
-        'field_scholar_mentorlink_url',
-        'field_scholar_mentorlink_attributes',
-      ])
       ->fields('department', [
         'field_scholar_department_value',
         'field_scholar_department_format',
@@ -83,6 +77,14 @@ class Scholar extends BaseNodeSource {
    * Prepare row used for altering source data prior to its insertion.
    */
   public function prepareRow(Row $row) {
+    // Get our multi-value fields.
+    $additional_fields = [
+      'field_data_field_scholar_mentorlink' => [
+        'field_scholar_mentorlink_title',
+      ],
+    ];
+    $this->fetchAdditionalFields($row, $additional_fields);
+
     // Call the parent prepareRow.
     return parent::prepareRow($row);
   }
