@@ -28,7 +28,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
    *
    * @hook alter core:status
    *
-   * @return result
+   * @return array
    *   The altered command result.
    */
   public function alterStatus($result, CommandData $commandData) {
