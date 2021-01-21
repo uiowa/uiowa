@@ -1,0 +1,31 @@
+uuid: 7d6e88f4-a4ce-4d95-af52-b38a28253275
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.admissions_requirement.body
+    - node.type.admissions_requirement
+  module:
+    - text
+    - user
+id: node.admissions_requirement.teaser
+targetEntityType: node
+bundle: admissions_requirement
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  search_api_excerpt: true

@@ -1,0 +1,29 @@
+uuid: 53de88f6-5502-4b4e-8171-6c2c9920b4a6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.admissions_requirement.body
+    - node.type.admissions_requirement
+  module:
+    - text
+    - user
+id: node.admissions_requirement.default
+targetEntityType: node
+bundle: admissions_requirement
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 101
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  search_api_excerpt: true
