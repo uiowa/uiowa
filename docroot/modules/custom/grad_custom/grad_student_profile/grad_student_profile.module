@@ -11,7 +11,7 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * Implements hook_entity_presave().
  */
-function sitenow_student_profile_entity_presave(EntityInterface $entity) {
+function grad_student_profile_entity_presave(EntityInterface $entity) {
   switch ($entity->bundle()) {
     case 'student_profile':
       // Setting the title with the first/last name values.
@@ -25,7 +25,7 @@ function sitenow_student_profile_entity_presave(EntityInterface $entity) {
 /**
  * Implements hook_form_alter().
  */
-function sitenow_student_profile_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function grad_student_profile_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
     // Node form modifications.
     case 'node_student_profile_edit_form':
@@ -34,4 +34,20 @@ function sitenow_student_profile_form_alter(&$form, FormStateInterface $form_sta
       break;
 
   }
+}
+
+/**
+ * Implements hook_theme.
+ */
+function grad_student_profile_theme($existing, $type, $theme, $path) {
+  return [
+    'field__node__field_person_quote' => [
+      'template' => 'field--node--field-person-quote',
+      'base hook' => 'field',
+    ],
+    'views_view_unformatted__student_profile_card' => [
+      'template' => 'views-view-unformatted--student-profile-card',
+      'base hook' => 'view',
+    ],
+  ];
 }
