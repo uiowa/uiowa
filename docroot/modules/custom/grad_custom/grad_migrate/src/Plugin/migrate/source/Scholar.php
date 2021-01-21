@@ -30,6 +30,7 @@ class Scholar extends BaseNodeSource {
     $query->leftJoin('field_data_field_scholar_sropyear', 'sropyear', 'n.nid = sropyear.entity_id');
     $query->leftJoin('field_data_field_scholar_project_title', 'project_title', 'n.nid = project_title.entity_id');
     $query->leftJoin('field_data_field_scholar_abstract', 'abstract', 'n.nid = abstract.entity_id');
+    $query->leftJoin('field_data_field_image_attach', 'image', 'n.nid = image.entity_id');
 
     $query = $query->fields('n', [
       'title',
@@ -65,6 +66,11 @@ class Scholar extends BaseNodeSource {
       ->fields('project_title', [
         'field_scholar_project_title_value',
       ])
+      ->fields('image', [
+        'field_image_attach_fid',
+        'field_image_attach_alt',
+        'field_image_attach_title',
+      ])
       ->fields('abstract', [
         'field_scholar_abstract_value',
         'field_scholar_abstract_format',
@@ -86,6 +92,9 @@ class Scholar extends BaseNodeSource {
 
     // Strip out HTML tags from project title.
     $row->setSourceProperty('field_scholar_project_title_value', strip_tags($row->getSourceProperty('field_scholar_project_title_value')));
+
+    // Process image field if it exists.
+    $this->processImageField($row, 'field_image_attach');
 
     // Call the parent prepareRow.
     return parent::prepareRow($row);
