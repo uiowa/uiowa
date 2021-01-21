@@ -38,10 +38,11 @@ trait ProcessGradMediaTrait {
 
     if (isset($original_fid)) {
       $uri = $this->fidQuery($original_fid)['uri'];
-      $filename = str_replace('public://', '', $uri);
-      // @todo need to split this up into filepath and filename.
-      $filename = explode('/', $filename);
-      $filename = end($filename);
+      $filename_w_subdir = str_replace('public://', '', $uri);
+      // Split apart the filename from the subdirectory path.
+      $filename_w_subdir = explode('/', $filename_w_subdir);
+      $filename = array_pop($filename);
+      $subdir = implode('/', $filename_w_subdir);
       // Get a connection for the destination database.
       $dest_connection = \Drupal::database();
       $dest_query = $dest_connection->select('file_managed', 'f');
@@ -56,7 +57,8 @@ trait ProcessGradMediaTrait {
       ];
 
       if (!$new_fid) {
-        $new_fid = $this->downloadFile($filename, $this->getSourceBasePath(), $this->getDrupalFileDirectory());
+        // Use the filename, update the source base path with the subdirectory.
+        $new_fid = $this->downloadFile($filename, $this->getSourceBasePath() . $subdir, $this->getDrupalFileDirectory());
         if ($new_fid) {
           $mid = $this->createMediaEntity($new_fid, $meta, 1);
         }
