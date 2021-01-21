@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dc0013852a34ea956b1c6f462e4884d3",
+    "content-hash": "cdfdeb05e9eef21346cf243429d09104",
     "packages": [
         {
             "name": "acquia/blt",
@@ -7110,11 +7110,17 @@
         },
         {
             "name": "drupal/metatag",
-            "version": "dev-1.x",
+            "version": "1.15.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/metatag.git",
-                "reference": "c32d6f8"
+                "reference": "8.x-1.15"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/metatag-8.x-1.15.zip",
+                "reference": "8.x-1.15",
+                "shasum": "7658d7286fdc075ea72a6ec36aea737b1182b5d8"
             },
             "require": {
                 "drupal/core": "^8 || ^9",
@@ -7129,15 +7135,12 @@
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
-                    "version": "8.x-1.15+15-dev",
-                    "datestamp": "1611217028",
+                    "version": "8.x-1.15",
+                    "datestamp": "1611210662",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
                     }
                 }
             },
@@ -20009,7 +20012,6 @@
         "drupal/media_thumbnails_video": 15,
         "drupal/menu_block": 20,
         "drupal/menu_link_weight": 10,
-        "drupal/metatag": 20,
         "drupal/mimemail": 15,
         "drupal/node_revision_delete": 10,
         "drupal/purge": 10,
