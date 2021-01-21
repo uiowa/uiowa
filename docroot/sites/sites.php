@@ -2003,3 +2003,9 @@ $sites['licensing.local.drupal.uiowa.edu'] = 'licensing.uiowa.edu';
 $sites['licensing.dev.drupal.uiowa.edu'] = 'licensing.uiowa.edu';
 $sites['licensing.stage.drupal.uiowa.edu'] = 'licensing.uiowa.edu';
 $sites['licensing.prod.drupal.uiowa.edu'] = 'licensing.uiowa.edu';
+
+// Directory aliases for kang.lab.uiowa.edu.
+$sites['labkang.local.drupal.uiowa.edu'] = 'kang.lab.uiowa.edu';
+$sites['labkang.dev.drupal.uiowa.edu'] = 'kang.lab.uiowa.edu';
+$sites['labkang.stage.drupal.uiowa.edu'] = 'kang.lab.uiowa.edu';
+$sites['labkang.prod.drupal.uiowa.edu'] = 'kang.lab.uiowa.edu';
