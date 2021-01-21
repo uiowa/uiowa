@@ -1,10 +1,10 @@
-uuid: 663d3393-254e-4ae2-891f-14787d22757c
+uuid: b059ad5a-af1a-467c-9eb5-59bf40b281e9
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_student_profile_blurb
-    - node.type.student_profile
+    - field.storage.paragraph.field_admissions_card_content
+    - paragraphs.paragraphs_type.admissions_card
   module:
     - allowed_formats
     - text
@@ -14,11 +14,11 @@ third_party_settings:
     plain_text: plain_text
     filtered_html: '0'
     full_html: '0'
-id: node.student_profile.field_student_profile_blurb
-field_name: field_student_profile_blurb
-entity_type: node
-bundle: student_profile
-label: 'Short profile blurb'
+id: paragraph.admissions_card.field_admissions_card_content
+field_name: field_admissions_card_content
+entity_type: paragraph
+bundle: admissions_card
+label: Content
 description: ''
 required: false
 translatable: false
