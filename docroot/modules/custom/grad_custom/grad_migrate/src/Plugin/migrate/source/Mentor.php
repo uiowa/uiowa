@@ -92,6 +92,9 @@ class Mentor extends BaseNodeSource {
       ])
       ->fields('department', [
         'field_mentor_department_value',
+      ])
+      ->fields('college', [
+        'field_mentor_college_value',
       ]);
     return $query;
   }
@@ -107,6 +110,20 @@ class Mentor extends BaseNodeSource {
       $url = 'http://' . $url;
       $row->setSourceProperty('field_mentor_website_url', $url);
     }
+
+    // Match the college entities. Source values are only those
+    // that appear in the current database.
+//    $colleges = [
+//      '0' => 'college_of_liberal_arts_sciences',
+//      '3' => 'college_of_education',
+//      '5' => 'graduate_college',
+//      '7' => 'carver_college_of_medicine',
+//      'Carver College of Medicine' => 'carver_college_of_medicine',
+//      'College of Public Health' => 'college_of_public_health',
+//    ];
+//    $source_college = $row->getSourceProperty('field_mentor_college_value');
+//    $source_college = isset($colleges[$source_college]) ? $colleges[$source_college] : '';
+//    $row->setSourceProperty('field_mentor_college_value', $source_college);
 
     // Process image field if it exists.
     $this->processImageField($row, 'field_image_attach');
