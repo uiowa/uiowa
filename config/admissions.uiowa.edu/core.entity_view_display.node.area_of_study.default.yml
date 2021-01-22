@@ -174,15 +174,18 @@ third_party_settings:
             uuid: b592b89b-c491-476a-8c2f-252bb70b140f
             region: content
             configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
               id: 'field_block:node:area_of_study:field_area_of_study_subtitle'
+              label: null
+              provider: layout_builder
+              label_display: null
               formatter:
-                label: above
+                label: hidden
+                type: text_default
                 settings: {  }
                 third_party_settings: {  }
-                type: text_default
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
             additional: {  }
             weight: 7
           -
