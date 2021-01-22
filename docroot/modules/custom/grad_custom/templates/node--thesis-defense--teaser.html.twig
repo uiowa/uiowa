@@ -88,11 +88,21 @@
 
 {% set thesis_defense_card = {
   'attributes': attributes.addClass(classes),
-  'card_text': content|without('field_thesis_defense_title', 'links'),
+  'card_text': content.field_thesis_defense_chairs,
   'card_subtitle': content.field_thesis_defense_title.0,
+  'card_date':  content.field_thesis_defense_date.0,
+  'card_tag':  content.field_thesis_defense_location.0,
   'card_title': label | render,
   'card_link_url': url,
   'headline_level': 'h2',
 } %}
 
-{% embed '@uids_base/uids/card.html.twig' with thesis_defense_card only %}{% endembed %}
+{% embed '@uids_base/uids/card.html.twig' with thesis_defense_card only %}
+  {% block card_date %}
+    {% if card_date is not empty %}
+      <div class="card__label">
+        <i class="fa fa-calendar" aria-hidden="true"></i> {{ card_date }}
+      </div>
+    {% endif %}
+  {% endblock %}{% endembed %}
+
