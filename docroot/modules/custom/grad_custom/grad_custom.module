@@ -56,7 +56,7 @@ function grad_custom_programs_all_majors_allowed_values() {
   foreach ($program_list as $maui_code => $program) {
     if (count(array_intersect(_grad_custom_all_program_degrees(), $program['objectives'])) > 0) {
       $label = $program['label'];
-      if (isset($program['parent_code']) && isset ($program_list[$program['parent_code']])) {
+      if (isset($program['parent_code']) && isset($program_list[$program['parent_code']])) {
         $label = $program_list[$program['parent_code']]['label'] . ' - ' . $label;
       }
       $output[$maui_code] = $label;
@@ -78,7 +78,7 @@ function grad_custom_programs_phd_allowed_values() {
   foreach ($program_list as $maui_code => $program) {
     if (in_array('PHD', $program['objectives'])) {
       $label = $program['label'];
-      if (isset($program['parent_code']) && isset ($program_list[$program['parent_code']])) {
+      if (isset($program['parent_code']) && isset($program_list[$program['parent_code']])) {
         $label = $program_list[$program['parent_code']]['label'] . ' - ' . $label;
       }
       $output[$maui_code] = $label;
