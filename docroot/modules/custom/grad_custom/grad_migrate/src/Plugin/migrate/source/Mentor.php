@@ -103,6 +103,7 @@ class Mentor extends BaseNodeSource {
    * Prepare row used for altering source data prior to its insertion.
    */
   public function prepareRow(Row $row) {
+    print("\nStarting prepareRow >>>\n");
     // Update with protocols if missing.
     // Not a robust preprocess, but works for all data in this specific field.
     $url = $row->getSourceProperty('field_mentor_website_url');
@@ -135,6 +136,7 @@ class Mentor extends BaseNodeSource {
     // Strip out HTML tags from project title.
     $row->setSourceProperty('field_mentor_project_title_value', strip_tags($row->getSourceProperty('field_mentor_project_title_value')));
 
+    print("\nFinished prepareRow >>>\n");
     // Call the parent prepareRow.
     return parent::prepareRow($row);
   }

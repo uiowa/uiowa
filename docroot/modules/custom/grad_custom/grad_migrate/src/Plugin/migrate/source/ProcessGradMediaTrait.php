@@ -56,10 +56,13 @@ trait ProcessGradMediaTrait {
         'title' => $row->getSourceProperty("{$field_name}_title"),
       ];
 
+      print("New FID: $new_fid\n");
+
       if (!$new_fid) {
         // Use the filename, update the source base path with the subdirectory.
         $new_fid = $this->downloadFile($filename, $this->getSourceBasePath() . $subdir, $this->getDrupalFileDirectory());
         if ($new_fid) {
+          print("File downloaded and record created.\n");
           $mid = $this->createMediaEntity($new_fid, $meta, 1);
         }
       }
