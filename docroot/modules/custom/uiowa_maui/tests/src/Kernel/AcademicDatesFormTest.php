@@ -128,6 +128,16 @@ class AcademicDatesFormTest extends KernelTestBase {
   }
 
   /**
+   * Test form IDs are not equal per request.
+   */
+  public function testFormIdsDifferPerForm() {
+    $one = new AcademicDatesForm($this->maui);
+    $two = new AcademicDatesForm($this->maui);
+
+    $this->assertNotEqual($one->getFormId(), $two->getFormId());
+  }
+
+  /**
    * Data provider for session prefilters.
    */
   public function sessionPrefilterProvider() {
