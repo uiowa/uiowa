@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\uiowa_maui\Kernel;
 
+use Drupal\Core\Form\FormState;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\uiowa_maui\Plugin\Block\AcademicDatesBlock;
 
@@ -17,15 +18,39 @@ class AcademicDatesBlockTest extends KernelTestBase {
    */
   public static $modules = ['uiowa_maui'];
 
+  /**
+   * Mock MAUI service.
+   *
+   * @var \Drupal\uiowa_maui\MauiApi|\PHPUnit\Framework\MockObject\MockObject
+   */
   protected $maui;
 
+  /**
+   * Mock FormBuilder service.
+   *
+   * @var \Drupal\Core\Form\FormBuilder|\PHPUnit\Framework\MockObject\MockObject
+   */
   protected $formBuilder;
+
+  /**
+   * Fake block plugin configuration.
+   *
+   * @var string[]
+   */
+  protected $plugin;
 
   /**
    * {@inheritdoc}
    */
   protected function setUp() {
     parent::setUp();
+
+    $this->plugin = [
+      'admin_label' => 'Academic dates',
+      'provider' => 'uiowa_maui',
+      'category' => 'MAUI',
+    ];
+
     $this->maui = $this->getMockBuilder('\Drupal\uiowa_maui\MauiApi')
       ->disableOriginalConstructor()
       ->getMock();
@@ -37,7 +62,7 @@ class AcademicDatesBlockTest extends KernelTestBase {
           'id' => 1,
           'shortDescription' => 'Winter 2020',
         ]
-    ));
+      ));
 
     $this->maui->expects($this->any())
       ->method('getSessionsBounded')
@@ -70,7 +95,7 @@ class AcademicDatesBlockTest extends KernelTestBase {
    *
    * @dataProvider placeholderProvider
    */
-  public function testHeadlinePlaceholder($placeholder) {
+  public function testHeadlinePlaceholderIsReplaced($placeholder) {
     $config = [
       'headline' => $placeholder,
       'hide_headline' => FALSE,
@@ -80,18 +105,85 @@ class AcademicDatesBlockTest extends KernelTestBase {
       'category' => '',
     ];
 
-    $plugin = [
-      'admin_label' => 'Academic dates',
-      'provider' => 'uiowa_maui',
-      'category' => 'MAUI',
-    ];
-
-    $sut = new AcademicDatesBlock($config, 'uiowa_maui_academic_dates', $plugin, $this->maui, $this->formBuilder);
+    $sut = new AcademicDatesBlock($config, 'uiowa_maui_academic_dates', $this->plugin, $this->maui, $this->formBuilder);
 
     $build = $sut->build();
     $this->assertStringContainsString('Winter 2020', $build['heading']['#headline']);
   }
 
+  /**
+   * Test headline placeholder.
+   */
+  public function testHeadlinePlaceholderCannotBeUsedWithExposedSession() {
+    $sut = new AcademicDatesBlock([], 'uiowa_maui_academic_dates', $this->plugin, $this->maui, $this->formBuilder);
+    $form_state = new FormState();
+
+    $form_state->setValues([
+      'headline' => [
+        'container' => [
+          'headline' => 'foo bar @session baz',
+        ],
+      ],
+      'session' => '',
+      'category' => '',
+    ]);
+
+    $sut->blockValidate([], $form_state);
+    $this->assertTrue($form_state->hasAnyErrors());
+  }
+
+  /**
+   * Test empty session and category select options are saved as NULL.
+   */
+  public function testEmptyValuesSavedAsNull() {
+    $sut = new AcademicDatesBlock([], 'uiowa_maui_academic_dates', $this->plugin, $this->maui, $this->formBuilder);
+
+    $form_state = new FormState();
+
+    $form_state->setValues([
+      'headline' => [
+        'container' => [
+          'headline' => 'Foo',
+        ],
+      ],
+      'session' => '',
+      'category' => '',
+    ]);
+
+    $sut->blockSubmit([], $form_state);
+    $this->assertFalse($form_state->hasAnyErrors());
+    $config = $sut->getConfiguration();
+    $this->assertEqual($config['session'], NULL);
+    $this->assertEqual($config['category'], NULL);
+  }
+
+  /**
+   * Test selected values for session and category.
+   */
+  public function testNonEmptyValuesSavedAsNotNull() {
+    $sut = new AcademicDatesBlock([], 'uiowa_maui_academic_dates', $this->plugin, $this->maui, $this->formBuilder);
+    $form_state = new FormState();
+
+    $form_state->setValues([
+      'headline' => [
+        'container' => [
+          'headline' => 'Foo',
+        ],
+      ],
+      'session' => 0,
+      'category' => 1,
+    ]);
+
+    $sut->blockSubmit([], $form_state);
+    $this->assertFalse($form_state->hasAnyErrors());
+    $config = $sut->getConfiguration();
+    $this->assertEqual($config['session'], 0);
+    $this->assertEqual($config['category'], 1);
+  }
+
+  /**
+   * Data provider.
+   */
   public function placeholderProvider() {
     return [
       ['@session'],
@@ -100,4 +192,5 @@ class AcademicDatesBlockTest extends KernelTestBase {
       ['@foo @bar @session'],
     ];
   }
+
 }
