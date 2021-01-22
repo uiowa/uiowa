@@ -1998,6 +1998,12 @@ $sites['siteslungimaging.dev.drupal.uiowa.edu'] = 'lungimaging.sites.uiowa.edu';
 $sites['siteslungimaging.stage.drupal.uiowa.edu'] = 'lungimaging.sites.uiowa.edu';
 $sites['siteslungimaging.prod.drupal.uiowa.edu'] = 'lungimaging.sites.uiowa.edu';
 
+// Directory aliases for basbls.uc.uiowa.edu.
+$sites['ucbasbls.local.drupal.uiowa.edu'] = 'basbls.uc.uiowa.edu';
+$sites['ucbasbls.dev.drupal.uiowa.edu'] = 'basbls.uc.uiowa.edu';
+$sites['ucbasbls.stage.drupal.uiowa.edu'] = 'basbls.uc.uiowa.edu';
+$sites['ucbasbls.prod.drupal.uiowa.edu'] = 'basbls.uc.uiowa.edu';
+
 // Directory aliases for licensing.uiowa.edu.
 $sites['licensing.local.drupal.uiowa.edu'] = 'licensing.uiowa.edu';
 $sites['licensing.dev.drupal.uiowa.edu'] = 'licensing.uiowa.edu';
