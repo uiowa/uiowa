@@ -381,10 +381,10 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
   // Collapse inner SEO field groups.
   if (isset($form["field_meta_tags"])) {
     if ($form["field_meta_tags"]["widget"][0]["advanced"]) {
-      $form["field_meta_tags"]["widget"][0]["advanced"]["#open"] = false;
+      $form["field_meta_tags"]["widget"][0]["advanced"]["#open"] = FALSE;
     }
     if (isset($form["field_meta_tags"]["widget"][0]["open_graph"])) {
-      $form["field_meta_tags"]["widget"][0]["open_graph"]["#open"] = false;
+      $form["field_meta_tags"]["widget"][0]["open_graph"]["#open"] = FALSE;
     }
   }
 
