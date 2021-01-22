@@ -42,7 +42,9 @@ class AcademicDatesForm extends FormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'uiowa_maui_academic_dates';
+    static $count;
+    $count++;
+    return 'uiowa_maui_academic_dates_' . $count;
   }
 
   /**
