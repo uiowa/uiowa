@@ -51,9 +51,15 @@ function grad_custom_preprocess_node(&$variables) {
 function grad_custom_programs_all_majors_allowed_values() {
   $output = [];
 
-  foreach (_grad_custom_program_list() as $maui_code => $program) {
+  $program_list = _grad_custom_program_list();
+
+  foreach ($program_list as $maui_code => $program) {
     if (count(array_intersect(_grad_custom_all_program_degrees(), $program['objectives'])) > 0) {
-      $output[$maui_code] = $program['label'];
+      $label = $program['label'];
+      if (isset($program['parent_code']) && isset($program_list[$program['parent_code']])) {
+        $label = $program_list[$program['parent_code']]['label'] . ' - ' . $label;
+      }
+      $output[$maui_code] = $label;
     }
   }
   natsort($output);
@@ -67,9 +73,15 @@ function grad_custom_programs_all_majors_allowed_values() {
 function grad_custom_programs_phd_allowed_values() {
   $output = [];
 
-  foreach (_grad_custom_program_list() as $maui_code => $program) {
+  $program_list = _grad_custom_program_list();
+
+  foreach ($program_list as $maui_code => $program) {
     if (in_array('PHD', $program['objectives'])) {
-      $output[$maui_code] = $program['label'];
+      $label = $program['label'];
+      if (isset($program['parent_code']) && isset($program_list[$program['parent_code']])) {
+        $label = $program_list[$program['parent_code']]['label'] . ' - ' . $label;
+      }
+      $output[$maui_code] = $label;
     }
   }
   natsort($output);
@@ -5701,4 +5713,16 @@ function _grad_custom_program_list() {
     ],
   ];
 
+}
+
+/**
+ * Implements hook_theme() for Thesis Defense teaser.
+ */
+function grad_custom_theme($existing, $type, $theme, $path) {
+  return [
+    'node__thesis_defense__teaser' => [
+      'template' => 'node--thesis-defense--teaser',
+      'base hook' => 'node',
+    ],
+  ];
 }
