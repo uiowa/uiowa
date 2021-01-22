@@ -41,6 +41,7 @@ class Mentor extends BaseNodeSource {
     $query->leftJoin('field_data_field_project_research_desc', 'research_desc', 'n.nid = research_desc.entity_id');
     $query->leftJoin('field_data_field_project_undergrad_role', 'undergrad_role', 'n.nid = undergrad_role.entity_id');
     $query->leftJoin('field_data_field_project_undergrad_qualif', 'undergrad_qualif', 'n.nid = undergrad_qualif.entity_id');
+    $query->leftJoin('url_alias', 'alias', "alias.source = CONCAT('node/', n.nid)");
 
     $query = $query->fields('n', [
       'title',
@@ -95,6 +96,9 @@ class Mentor extends BaseNodeSource {
       ])
       ->fields('college', [
         'field_mentor_college_value',
+      ])
+      ->fields('alias', [
+        'alias',
       ]);
     return $query;
   }
@@ -103,7 +107,6 @@ class Mentor extends BaseNodeSource {
    * Prepare row used for altering source data prior to its insertion.
    */
   public function prepareRow(Row $row) {
-    print("\nStarting prepareRow >>>\n");
     // Update with protocols if missing.
     // Not a robust preprocess, but works for all data in this specific field.
     $url = $row->getSourceProperty('field_mentor_website_url');
@@ -136,7 +139,6 @@ class Mentor extends BaseNodeSource {
     // Strip out HTML tags from project title.
     $row->setSourceProperty('field_mentor_project_title_value', strip_tags($row->getSourceProperty('field_mentor_project_title_value')));
 
-    print("\nFinished prepareRow >>>\n");
     // Call the parent prepareRow.
     return parent::prepareRow($row);
   }
