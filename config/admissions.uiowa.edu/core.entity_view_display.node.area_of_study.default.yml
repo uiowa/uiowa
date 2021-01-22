@@ -6,7 +6,6 @@ dependencies:
     - field.field.node.area_of_study.body
     - field.field.node.area_of_study.field_area_of_study_career
     - field.field.node.area_of_study.field_area_of_study_certificates
-    - field.field.node.area_of_study.field_area_of_study_intro
     - field.field.node.area_of_study.field_area_of_study_link
     - field.field.node.area_of_study.field_area_of_study_majors
     - field.field.node.area_of_study.field_area_of_study_minors
@@ -187,21 +186,6 @@ third_party_settings:
             additional: {  }
             weight: 7
           -
-            uuid: 64943387-e17c-424f-a2df-33ca694a4881
-            region: content
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:area_of_study:field_area_of_study_intro'
-              formatter:
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-                type: text_default
-            additional: {  }
-            weight: 8
-          -
             uuid: caf9690a-3d7d-472a-8fe3-f63f55ee53fe
             region: content
             configuration:
@@ -235,16 +219,19 @@ third_party_settings:
             uuid: 0a03ab1b-c311-4a08-bd84-f7208f4beb26
             region: content
             configuration:
-              label_display: '0'
+              id: 'field_block:node:area_of_study:field_area_of_study_ref_ar'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: hidden
+                type: entity_reference_entity_view
+                settings:
+                  view_mode: teaser
+                third_party_settings: {  }
               context_mapping:
                 entity: layout_builder.entity
-              id: 'field_block:node:area_of_study:field_area_of_study_ref_ar'
-              formatter:
-                label: above
-                settings:
-                  link: true
-                third_party_settings: {  }
-                type: entity_reference_label
+                view_mode: view_mode
             additional: {  }
             weight: 11
           -
@@ -421,13 +408,6 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
-    region: content
-  field_area_of_study_intro:
-    weight: 14
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
     region: content
   field_area_of_study_link:
     weight: 20

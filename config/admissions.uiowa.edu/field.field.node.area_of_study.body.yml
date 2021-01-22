@@ -1,9 +1,9 @@
-uuid: 2d296161-1ebd-4ca8-b695-6b2310626ee9
+uuid: f38d28f7-90a8-4458-8b21-1eb8f58608e7
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_area_of_study_intro
+    - field.storage.node.body
     - node.type.area_of_study
   module:
     - allowed_formats
@@ -14,15 +14,17 @@ third_party_settings:
     minimal: '0'
     full_html: '0'
     plain_text: '0'
-id: node.area_of_study.field_area_of_study_intro
-field_name: field_area_of_study_intro
+id: node.area_of_study.body
+field_name: body
 entity_type: node
 bundle: area_of_study
 label: Intro
 description: ''
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
-settings: {  }
-field_type: text_long
+settings:
+  display_summary: true
+  required_summary: false
+field_type: text_with_summary
