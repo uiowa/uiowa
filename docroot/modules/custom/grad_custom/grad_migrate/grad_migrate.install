@@ -1,0 +1,29 @@
+<?php
+
+/**
+ * @file
+ * Installation functions for grad_migrate module.
+ */
+
+use Drupal\Core\Config\FileStorage;
+
+/**
+ * Implements hook_install().
+ */
+function grad_migrate_install() {
+  // This site does not have the 'collegiate' split enabled.
+  $config_path = drupal_get_path('module', 'grad_migrate') . '/config/split';
+  $source = new FileStorage($config_path);
+
+  // Loop through the config and import them all.
+  $config_storage = \Drupal::service('config.storage');
+  foreach ($source->listAll() as $config) {
+    $config_storage->write($config, $source->read($config));
+  }
+
+  // Enable the 'grad_migrate' split.
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('config_split.config_split.grad_migrate');
+  $config->set('status', TRUE);
+  $config->save(TRUE);
+}
