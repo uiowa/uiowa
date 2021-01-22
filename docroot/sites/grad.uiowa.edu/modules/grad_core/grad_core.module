@@ -12,12 +12,16 @@ use Drupal\Core\Form\FormStateInterface;
  * Implements hook_entity_presave().
  */
 function grad_core_entity_presave(EntityInterface $entity) {
+  $extra = '';
   switch ($entity->bundle()) {
+    case 'mentor':
+      if ($credentials = $entity->get('field_person_credential')->value) {
+        $extra = ", $credentials";
+      }
     case 'thesis_defense':
     case 'scholar':
-    case 'mentor':
       // Setting the title with the first/last name values.
-      $output = $entity->get('field_person_first_name')->value . " " . $entity->get('field_person_last_name')->value;
+      $output = $entity->get('field_person_first_name')->value . " " . $entity->get('field_person_last_name')->value . $extra;
       $entity->setTitle($output);
       break;
 
@@ -88,11 +92,10 @@ function grad_core_preprocess_page_title(&$variables) {
     }
     if (isset($node)) {
       switch ($node->getType()) {
-        case 'scholar':
         case 'mentor':
-          if ($node->hasField('field_person_credential') && !$node->get('field_person_credential')
+          if ($node->hasField('field_person_position') && !$node->get('field_person_position')
               ->isEmpty()) {
-            $variables['subtitle'] = $node->field_person_credential->value;
+            $variables['subtitle'] = $node->field_person_position->value;
           }
           break;
       }
@@ -107,6 +110,10 @@ function grad_core_theme($existing, $type, $theme, $path) {
   return [
     'field__field_thesis_defense_date' => [
       'template' => 'field--node--field-thesis-defense-date',
+      'base hook' => 'field',
+    ],
+    'field__field_thesis_defense_location' => [
+      'template' => 'field--node--field-thesis-defense-location',
       'base hook' => 'field',
     ],
     'node__view__srop_scholars' => [
