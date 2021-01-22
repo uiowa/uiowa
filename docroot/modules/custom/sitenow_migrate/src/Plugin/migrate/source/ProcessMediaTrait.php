@@ -104,7 +104,7 @@ trait ProcessMediaTrait {
    * @throws \Drupal\migrate\MigrateException
    */
   public function downloadFile($filename, $source_base_path, $drupal_file_directory) {
-    print("Downloading $filename\n");
+    print("Downloading $source_base_path$filename\n");
     // Suppressing errors, because we expect there to be at least some
     // private:// files or 404 errors.
     $raw_file = @file_get_contents($source_base_path . $filename);
@@ -125,7 +125,7 @@ trait ProcessMediaTrait {
     // Try to write the file.
     $file = file_save_data($raw_file, $drupal_file_directory . $filename);
 
-    print_r($file);
+//    print_r($file);
 
     // If we have a file, continue.
     if ($file) {
