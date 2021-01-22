@@ -51,7 +51,6 @@ class PostRowSaveEvent implements EventSubscriberInterface {
 
       // Calls for creating a media entity for imported files.
       case 'd7_file':
-      case 'd7_grad_file':
         $row = $event->getRow();
         $fids = $event->getDestinationIdValues();
         $this->makeEntity($row, $fids);
@@ -69,7 +68,6 @@ class PostRowSaveEvent implements EventSubscriberInterface {
       case 'd7_article':
       case 'd7_person':
       case 'd7_page':
-      case 'd7_grad_article':
         $nids = $event->getDestinationIdValues();
 
         /** @var \Drupal\node\NodeInterface $node */
