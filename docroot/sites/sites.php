@@ -2021,3 +2021,9 @@ $sites['sitesphysicsresearch.local.drupal.uiowa.edu'] = 'physicsresearch.sites.u
 $sites['sitesphysicsresearch.dev.drupal.uiowa.edu'] = 'physicsresearch.sites.uiowa.edu';
 $sites['sitesphysicsresearch.stage.drupal.uiowa.edu'] = 'physicsresearch.sites.uiowa.edu';
 $sites['sitesphysicsresearch.prod.drupal.uiowa.edu'] = 'physicsresearch.sites.uiowa.edu';
+
+// Directory aliases for newmoonmagazine.org.uiowa.edu.
+$sites['orgnewmoonmagazine.local.drupal.uiowa.edu'] = 'newmoonmagazine.org.uiowa.edu';
+$sites['orgnewmoonmagazine.dev.drupal.uiowa.edu'] = 'newmoonmagazine.org.uiowa.edu';
+$sites['orgnewmoonmagazine.stage.drupal.uiowa.edu'] = 'newmoonmagazine.org.uiowa.edu';
+$sites['orgnewmoonmagazine.prod.drupal.uiowa.edu'] = 'newmoonmagazine.org.uiowa.edu';
