@@ -1,0 +1,24 @@
+uuid: 26250d00-0da8-4280-9bba-1b369d360c5d
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.content_list
+    - field.field.block_content.content_list.field_content_list_list
+id: block_content.content_list.default
+targetEntityType: block_content
+bundle: content_list
+mode: default
+content:
+  field_content_list_list:
+    weight: 0
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+hidden:
+  info: true

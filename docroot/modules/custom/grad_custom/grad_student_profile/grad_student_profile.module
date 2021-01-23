@@ -41,8 +41,20 @@ function grad_student_profile_form_alter(&$form, FormStateInterface $form_state,
  */
 function grad_student_profile_theme($existing, $type, $theme, $path) {
   return [
+    'field__node__field_person_distinction__student_profile__default' => [
+      'template' => 'field--node--field-person-distinction--student-profile--default',
+      'base hook' => 'field',
+    ],
+    'field__node__field_person_distinction__student_profile__teaser' => [
+      'template' => 'field--node--field-person-distinction--student-profile--teaser',
+      'base hook' => 'field',
+    ],
     'field__node__field_person_quote' => [
       'template' => 'field--node--field-person-quote',
+      'base hook' => 'field',
+    ],
+    'node__student_profile__teaser' => [
+      'template' => 'node--student-profile--teaser',
       'base hook' => 'field',
     ],
     'views_view_unformatted__student_profile_card' => [
