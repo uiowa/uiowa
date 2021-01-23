@@ -1,24 +1,24 @@
-uuid: 663d3393-254e-4ae2-891f-14787d22757c
+uuid: 29b95175-429b-416f-a75f-3c89b46b7760
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_student_profile_blurb
-    - node.type.student_profile
+    - field.storage.node.field_area_of_study_opportunity
+    - node.type.area_of_study
   module:
     - allowed_formats
     - text
 third_party_settings:
   allowed_formats:
-    minimal: minimal
-    plain_text: plain_text
     filtered_html: '0'
+    minimal: '0'
     full_html: '0'
-id: node.student_profile.field_student_profile_blurb
-field_name: field_student_profile_blurb
+    plain_text: '0'
+id: node.area_of_study.field_area_of_study_opportunity
+field_name: field_area_of_study_opportunity
 entity_type: node
-bundle: student_profile
-label: 'Short profile blurb'
+bundle: area_of_study
+label: 'Student Opportunities'
 description: ''
 required: false
 translatable: false
