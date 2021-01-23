@@ -92,7 +92,7 @@
 #}
     {{ attach_library('uids_base/person') }}
     {%
-    set classes = [
+      set classes = [
       'card--list',
       'card--person-teaser',
       'bg--white',
@@ -104,52 +104,52 @@
     %}
 
 
-    <h3>{{ title }}</h3>
+<h3>{{ title }}</h3>
 
-    {% set person_card_view = {
-      'attributes': attributes.addClass(classes),
-      'headline_class': 'card__title headline',
-      'card_title': label | render,
-      'card_image': content.field_image | render,
-      'media_styles': 'media--circle',
-      'media_sizes': 'card__media--small',
-      'card_text': content|without('title', 'field_image', 'field_uiowa_college', 'field_person_position', 'field_person_credential', 'field_person_email', '	field_grad_program_all_degree', 'field_person_phone', 'links'),
-      'card_subtitle': content.field_person_position,
-      'card_tag': content.field_person_email,
-      'person_territory': content.field_scholar_bio_headline,
-      'person_education': content.field_uiowa_college,
-      'person_phone': content.field_person_phone,
-      'card_link_url': url,
-    } %}
+{% set person_card_view = {
+  'attributes': attributes.addClass(classes),
+  'headline_class': 'card__title headline',
+  'card_title': label | render,
+  'card_image': content.field_image | render,
+  'media_styles': 'media--circle',
+  'media_sizes': 'card__media--small',
+  'card_text': content|without('title', 'field_image', 'field_uiowa_college', 'field_person_position', 'field_person_credential', 'field_person_email', '	field_grad_program_all_degree', 'field_person_phone', 'links'),
+  'card_subtitle': content.field_person_position,
+  'card_tag': content.field_person_email,
+  'person_territory': content.field_scholar_bio_headline,
+  'person_education': content.field_uiowa_college,
+  'person_phone': content.field_person_phone,
+  'card_link_url': url,
+} %}
 
-    {% embed '@uids_base/uids/card.html.twig' with person_card_view only %}
+{% embed '@uids_base/uids/card.html.twig' with person_card_view only %}
 
-    {% block card_img %}
-        {% if card_image|striptags('<img><picture>') is not empty %}
-            {{ parent() }}
-        {% endif %}
-    {% endblock %}
+  {% block card_img %}
+    {% if card_image|striptags('<img><picture>') is not empty %}
+      {{ parent() }}
+    {% endif %}
+  {% endblock %}
 
-    {% block card_subtitle %}
-        {% if card_subtitle is not empty %}
-            <div class="card__subtitle">{{ card_subtitle }}</div>
-        {% endif %}
-    {% endblock %}
+  {% block card_subtitle %}
+    {% if card_subtitle is not empty %}
+      <div class="card__subtitle">{{ card_subtitle }}</div>
+    {% endif %}
+  {% endblock %}
 
-    {% block card_tag %}
-        {% if card_tag is not empty %}
-          <div class="card__date">{{ card_tag }}</div>
-        {% endif %}
-        {% if person_phone is not empty %}
-          <div class="card__date"> {{ person_phone }}</div>
-        {% endif %}
-          <div class="card__date">{{ person_education }}</div>
-    {% endblock %}
+  {% block card_tag %}
+    {% if card_tag is not empty %}
+      <div class="card__date">{{ card_tag }}</div>
+    {% endif %}
+    {% if person_phone is not empty %}
+      <div class="card__date"> {{ person_phone }}</div>
+    {% endif %}
+    <div class="card__date">{{ person_education }}</div>
+  {% endblock %}
 
-    {% block card_content %}
-      {% if card_text is not empty %}
-        <p class="card__description">{{ card_text }}</p>
-      {% endif %}
-    {% endblock %}
+  {% block card_content %}
+    {% if card_text is not empty %}
+      <p class="card__description">{{ card_text }}</p>
+    {% endif %}
+  {% endblock %}
 
-    {% endembed %}
+{% endembed %}
