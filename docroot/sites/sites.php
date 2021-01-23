@@ -1997,3 +1997,33 @@ $sites['siteslungimaging.local.drupal.uiowa.edu'] = 'lungimaging.sites.uiowa.edu
 $sites['siteslungimaging.dev.drupal.uiowa.edu'] = 'lungimaging.sites.uiowa.edu';
 $sites['siteslungimaging.stage.drupal.uiowa.edu'] = 'lungimaging.sites.uiowa.edu';
 $sites['siteslungimaging.prod.drupal.uiowa.edu'] = 'lungimaging.sites.uiowa.edu';
+
+// Directory aliases for basbls.uc.uiowa.edu.
+$sites['ucbasbls.local.drupal.uiowa.edu'] = 'basbls.uc.uiowa.edu';
+$sites['ucbasbls.dev.drupal.uiowa.edu'] = 'basbls.uc.uiowa.edu';
+$sites['ucbasbls.stage.drupal.uiowa.edu'] = 'basbls.uc.uiowa.edu';
+$sites['ucbasbls.prod.drupal.uiowa.edu'] = 'basbls.uc.uiowa.edu';
+
+// Directory aliases for licensing.uiowa.edu.
+$sites['licensing.local.drupal.uiowa.edu'] = 'licensing.uiowa.edu';
+$sites['licensing.dev.drupal.uiowa.edu'] = 'licensing.uiowa.edu';
+$sites['licensing.stage.drupal.uiowa.edu'] = 'licensing.uiowa.edu';
+$sites['licensing.prod.drupal.uiowa.edu'] = 'licensing.uiowa.edu';
+
+// Directory aliases for kang.lab.uiowa.edu.
+$sites['labkang.local.drupal.uiowa.edu'] = 'kang.lab.uiowa.edu';
+$sites['labkang.dev.drupal.uiowa.edu'] = 'kang.lab.uiowa.edu';
+$sites['labkang.stage.drupal.uiowa.edu'] = 'kang.lab.uiowa.edu';
+$sites['labkang.prod.drupal.uiowa.edu'] = 'kang.lab.uiowa.edu';
+
+// Directory aliases for physicsresearch.sites.uiowa.edu.
+$sites['sitesphysicsresearch.local.drupal.uiowa.edu'] = 'physicsresearch.sites.uiowa.edu';
+$sites['sitesphysicsresearch.dev.drupal.uiowa.edu'] = 'physicsresearch.sites.uiowa.edu';
+$sites['sitesphysicsresearch.stage.drupal.uiowa.edu'] = 'physicsresearch.sites.uiowa.edu';
+$sites['sitesphysicsresearch.prod.drupal.uiowa.edu'] = 'physicsresearch.sites.uiowa.edu';
+
+// Directory aliases for newmoonmagazine.org.uiowa.edu.
+$sites['orgnewmoonmagazine.local.drupal.uiowa.edu'] = 'newmoonmagazine.org.uiowa.edu';
+$sites['orgnewmoonmagazine.dev.drupal.uiowa.edu'] = 'newmoonmagazine.org.uiowa.edu';
+$sites['orgnewmoonmagazine.stage.drupal.uiowa.edu'] = 'newmoonmagazine.org.uiowa.edu';
+$sites['orgnewmoonmagazine.prod.drupal.uiowa.edu'] = 'newmoonmagazine.org.uiowa.edu';
