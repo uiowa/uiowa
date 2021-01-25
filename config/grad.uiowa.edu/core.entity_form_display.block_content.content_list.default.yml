@@ -11,7 +11,7 @@ bundle: content_list
 mode: default
 content:
   field_content_list_items:
-    weight: 26
+    weight: 0
     settings:
       match_operator: CONTAINS
       match_limit: 10
@@ -20,12 +20,5 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
-  info:
-    type: string_textfield
-    weight: -5
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-hidden: {  }
+hidden:
+  info: true
