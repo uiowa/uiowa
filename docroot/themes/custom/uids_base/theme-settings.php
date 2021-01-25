@@ -91,6 +91,20 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
       ],
     ],
   ];
+  // Used for page by page basis display of scroll to top button
+  $form['header']['toppage'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Hide Scroll to top button'),
+    '#description' => t('Remove scroll to top button functionality on site'),
+    '#default_value' => theme_get_setting('header.toppage'),
+    '#states' => [
+      'visible' => [
+        ':input[name="header[nav_style]"]' => [
+          'value' => 'toggle',
+        ],
+      ],
+    ],
+  ];
   // Only display scroll to top button functionality if site name is Graduate College.
   if ($site_name === 'Graduate College') {
     $form['header']['toppage'] = [
