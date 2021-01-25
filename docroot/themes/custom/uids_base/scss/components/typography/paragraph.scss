@@ -59,34 +59,28 @@ a:not([href]) {
 
 // @todo move back to UIDS
 
-.element--spacer-gray {
-  clear: both;
-  float: none;
-  width: 100%;
-  height: 0;
-  border: 1px solid transparent;
-  margin: 1.25rem 0;
+.element--spacer {
+  margin: $gutter 0;
   &:after {
     content: "";
     display: block;
     width: 33%;
-    height: 6px;
     margin: 0;
-    background: rgba(0,0,0,.125);
   }
-  &--centered {
-    &:after {
-      margin: 0 auto;
-    }
+}
+
+.element--spacer-gray {
+  &:after {
+    width: 33%;
+    height: 6px;
+    background: rgba(0,0,0,.125);
   }
   [class*="bg-"] & {
     border: none;
   }
-  .bg-pattern--brain-reversed &,
-  .bg--gold--pattern--brain &,
-  .bg--gold & {
+  .bg--gray & {
     &:after {
-      background: #fff;
+      background: $brand-cool-gray;
     }
   }
 }
