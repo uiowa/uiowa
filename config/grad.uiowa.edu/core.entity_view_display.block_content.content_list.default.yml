@@ -1,23 +1,22 @@
-uuid: b5fad5f7-7d6f-4446-afa9-95ee353bce47
+uuid: db7acdd7-8950-45c3-9963-6aeb02f65b09
 langcode: en
 status: true
 dependencies:
   config:
     - block_content.type.content_list
-    - field.field.block_content.content_list.field_content_list_list
+    - field.field.block_content.content_list.field_content_list_items
 id: block_content.content_list.default
 targetEntityType: block_content
 bundle: content_list
 mode: default
 content:
-  field_content_list_list:
+  field_content_list_items:
     weight: 0
-    label: hidden
+    label: above
     settings:
-      view_mode: teaser
-      link: false
+      link: true
     third_party_settings: {  }
-    type: entity_reference_entity_view
+    type: entity_reference_label
     region: content
 hidden:
   search_api_excerpt: true

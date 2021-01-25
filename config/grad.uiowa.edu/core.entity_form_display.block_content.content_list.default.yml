@@ -1,17 +1,17 @@
-uuid: 26250d00-0da8-4280-9bba-1b369d360c5d
+uuid: 791ca09a-0f4c-458b-a794-797ffb797b8e
 langcode: en
 status: true
 dependencies:
   config:
     - block_content.type.content_list
-    - field.field.block_content.content_list.field_content_list_list
+    - field.field.block_content.content_list.field_content_list_items
 id: block_content.content_list.default
 targetEntityType: block_content
 bundle: content_list
 mode: default
 content:
-  field_content_list_list:
-    weight: 0
+  field_content_list_items:
+    weight: 26
     settings:
       match_operator: CONTAINS
       match_limit: 10
@@ -20,5 +20,12 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
-hidden:
-  info: true
+  info:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }
