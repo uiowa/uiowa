@@ -2033,3 +2033,9 @@ $sites['communicationstudies.local.drupal.uiowa.edu'] = 'communicationstudies.ui
 $sites['communicationstudies.dev.drupal.uiowa.edu'] = 'communicationstudies.uiowa.edu';
 $sites['communicationstudies.stage.drupal.uiowa.edu'] = 'communicationstudies.uiowa.edu';
 $sites['communicationstudies.prod.drupal.uiowa.edu'] = 'communicationstudies.uiowa.edu';
+
+// Directory aliases for csd.uiowa.edu.
+$sites['csd.local.drupal.uiowa.edu'] = 'csd.uiowa.edu';
+$sites['csd.dev.drupal.uiowa.edu'] = 'csd.uiowa.edu';
+$sites['csd.stage.drupal.uiowa.edu'] = 'csd.uiowa.edu';
+$sites['csd.prod.drupal.uiowa.edu'] = 'csd.uiowa.edu';
