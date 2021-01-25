@@ -2069,3 +2069,9 @@ $sites['history.local.drupal.uiowa.edu'] = 'history.uiowa.edu';
 $sites['history.dev.drupal.uiowa.edu'] = 'history.uiowa.edu';
 $sites['history.stage.drupal.uiowa.edu'] = 'history.uiowa.edu';
 $sites['history.prod.drupal.uiowa.edu'] = 'history.uiowa.edu';
+
+// Directory aliases for humanities.uiowa.edu.
+$sites['humanities.local.drupal.uiowa.edu'] = 'humanities.uiowa.edu';
+$sites['humanities.dev.drupal.uiowa.edu'] = 'humanities.uiowa.edu';
+$sites['humanities.stage.drupal.uiowa.edu'] = 'humanities.uiowa.edu';
+$sites['humanities.prod.drupal.uiowa.edu'] = 'humanities.uiowa.edu';
