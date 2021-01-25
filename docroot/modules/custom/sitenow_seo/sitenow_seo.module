@@ -30,3 +30,29 @@ function sitenow_metatags_alter(array &$metatags, array &$context) {
     $metatags['title'] .= " | Page {$page}";
   }
 }
+
+/**
+ * Implements hook_form_alter().
+ */
+function sitenow_metatags_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    // Node form modifications.
+    case 'node_page_edit_form':
+    case 'node_page_form':
+    case 'node_article_edit_form':
+    case 'node_article_form':
+    case 'node_person_edit_form':
+    case 'node_person_form':
+      // Collapse inner SEO field groups.
+      if (isset($form["field_meta_tags"])) {
+        if ($form["field_meta_tags"]["widget"][0]["advanced"]) {
+          $form["field_meta_tags"]["widget"][0]["advanced"]["#open"] = FALSE;
+        }
+        if (isset($form["field_meta_tags"]["widget"][0]["open_graph"])) {
+          $form["field_meta_tags"]["widget"][0]["open_graph"]["#open"] = FALSE;
+        }
+      }
+      break;
+
+  }
+}
