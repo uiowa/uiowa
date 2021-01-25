@@ -2063,3 +2063,9 @@ $sites['geography.local.drupal.uiowa.edu'] = 'geography.uiowa.edu';
 $sites['geography.dev.drupal.uiowa.edu'] = 'geography.uiowa.edu';
 $sites['geography.stage.drupal.uiowa.edu'] = 'geography.uiowa.edu';
 $sites['geography.prod.drupal.uiowa.edu'] = 'geography.uiowa.edu';
+
+// Directory aliases for history.uiowa.edu.
+$sites['history.local.drupal.uiowa.edu'] = 'history.uiowa.edu';
+$sites['history.dev.drupal.uiowa.edu'] = 'history.uiowa.edu';
+$sites['history.stage.drupal.uiowa.edu'] = 'history.uiowa.edu';
+$sites['history.prod.drupal.uiowa.edu'] = 'history.uiowa.edu';
