@@ -378,16 +378,6 @@ function sitenow_config_split_prepare_form(EntityInterface $entity, $operation, 
  * Custom node content type form defaults.
  */
 function _sitenow_node_form_defaults(&$form, $form_state) {
-  // Collapse inner SEO field groups.
-  if (isset($form["field_meta_tags"])) {
-    if ($form["field_meta_tags"]["widget"][0]["advanced"]) {
-      $form["field_meta_tags"]["widget"][0]["advanced"]["#open"] = FALSE;
-    }
-    if (isset($form["field_meta_tags"]["widget"][0]["open_graph"])) {
-      $form["field_meta_tags"]["widget"][0]["open_graph"]["#open"] = FALSE;
-    }
-  }
-
   if (isset($form['field_teaser'])) {
     // Create node_teaser group in the advanced container.
     $form['node_teaser'] = [
