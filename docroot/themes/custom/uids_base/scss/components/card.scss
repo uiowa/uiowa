@@ -108,3 +108,16 @@
     display: none;
   }
 }
+
+// 70/30 variant to backport to UIDS
+// Mixin
+@mixin card-media-widescreen {
+  @include breakpoint(sm) {
+    flex: 0 0 70%;
+    width: 70%;
+  }
+}
+
+.card__media--widescreen {
+  @include card-media-widescreen;
+}

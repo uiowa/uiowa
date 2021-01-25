@@ -75,6 +75,11 @@
 set classes = [
   'card--list',
   'list-container',
+  'card--media-left',
+  'card--centered-left',
+  'card--alignment-left',
+  'media--widescreen',
+  'bg--white',
 ]
 %}
 
@@ -97,13 +102,12 @@ set classes = [
   'card_link_title': 'Read more' | t,
   'headline_level': headline_level,
   'headline_class': 'h1 headline headline--uppercase',
+  'media_sizes' : 'card__media--widescreen',
 } %}
 
-<div class="inner--grid grid--twocol--67-33">
   {% embed '@uids_base/uids/card.html.twig' with student_profile_card only %}
     {% block card_content %}
       <hr class="element--spacer-gold">
       {{ parent() }}
     {% endblock %}
   {% endembed %}
-</div>
