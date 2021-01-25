@@ -2051,3 +2051,9 @@ $sites['esl.local.drupal.uiowa.edu'] = 'esl.uiowa.edu';
 $sites['esl.dev.drupal.uiowa.edu'] = 'esl.uiowa.edu';
 $sites['esl.stage.drupal.uiowa.edu'] = 'esl.uiowa.edu';
 $sites['esl.prod.drupal.uiowa.edu'] = 'esl.uiowa.edu';
+
+// Directory aliases for ethicspublicpolicy.uiowa.edu.
+$sites['ethicspublicpolicy.local.drupal.uiowa.edu'] = 'ethicspublicpolicy.uiowa.edu';
+$sites['ethicspublicpolicy.dev.drupal.uiowa.edu'] = 'ethicspublicpolicy.uiowa.edu';
+$sites['ethicspublicpolicy.stage.drupal.uiowa.edu'] = 'ethicspublicpolicy.uiowa.edu';
+$sites['ethicspublicpolicy.prod.drupal.uiowa.edu'] = 'ethicspublicpolicy.uiowa.edu';
