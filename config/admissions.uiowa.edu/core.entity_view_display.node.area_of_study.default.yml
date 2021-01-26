@@ -342,6 +342,43 @@ third_party_settings:
                 view_mode: view_mode
             additional: {  }
             weight: 5
+          -
+            uuid: aed37d18-1645-4ad2-9213-4d85bc2633d8
+            region: first
+            configuration:
+              id: 'field_block:node:area_of_study:field_area_of_study_career'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: above
+                type: text_default
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 5
+          -
+            uuid: d3781dce-5a95-4db5-9fd4-c831b3803676
+            region: first
+            configuration:
+              id: 'field_block:node:area_of_study:field_area_of_study_stories'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: above
+                type: entity_reference_revisions_entity_view
+                settings:
+                  view_mode: default
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 6
         third_party_settings:
           layout_builder_lock:
             lock: {  }
