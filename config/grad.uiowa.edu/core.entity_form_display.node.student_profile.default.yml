@@ -6,11 +6,13 @@ dependencies:
     - field.field.node.student_profile.body
     - field.field.node.student_profile.field_grad_program_all_degree
     - field.field.node.student_profile.field_image
+    - field.field.node.student_profile.field_person_bio_headline
     - field.field.node.student_profile.field_person_distinction
     - field.field.node.student_profile.field_person_first_name
     - field.field.node.student_profile.field_person_hometown
     - field.field.node.student_profile.field_person_last_name
     - field.field.node.student_profile.field_person_quote
+    - field.field.node.student_profile.field_tags
     - node.type.student_profile
   module:
     - content_moderation
@@ -51,6 +53,14 @@ content:
     third_party_settings: {  }
     type: media_library_widget
     region: content
+  field_person_bio_headline:
+    weight: 27
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_person_distinction:
     weight: 5
     settings:
@@ -90,6 +100,16 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
+    region: content
+  field_tags:
+    weight: 26
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
     region: content
   moderation_state:
     type: moderation_state_default
