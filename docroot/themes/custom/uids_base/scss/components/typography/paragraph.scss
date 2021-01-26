@@ -57,36 +57,6 @@ a:not([href]) {
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-// @todo move back to UIDS
-
-.element--spacer {
-  margin: $gutter 0;
-  &:after {
-    content: "";
-    display: block;
-    width: 33%;
-    margin: 0;
-  }
-}
-
-.element--spacer-gray {
-  &:after {
-    width: 33%;
-    height: 6px;
-    background: rgba(0,0,0,.125);
-  }
-  [class*="bg-"] & {
-    border: none;
-  }
-  .bg--gray & {
-    &:after {
-      background: $brand-cool-gray;
-    }
-  }
-}
-
-
-
 /*
 .bg--gold,
 .bg--brain-reversed,
