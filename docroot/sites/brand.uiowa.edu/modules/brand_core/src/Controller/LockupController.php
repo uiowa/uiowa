@@ -21,7 +21,8 @@ class LockupController extends ControllerBase {
     $is_node = \Drupal::entityQuery('node')->condition('nid', $nid)->execute();
 
     if ($is_node) {
-      $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+      // @todo Change this!
+      $node = node_load($nid, TRUE);
 
       $path = $node->getTitle();
       $name = Html::cleanCssIdentifier($path);
