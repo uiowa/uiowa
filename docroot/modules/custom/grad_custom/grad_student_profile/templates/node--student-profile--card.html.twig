@@ -109,8 +109,4 @@ set classes = [
 } %}
 
   {% embed '@uids_base/uids/card.html.twig' with person_card only %}
-    {% block card_content %}
-      <hr class="element--spacer element--spacer-gray">
-      {{ parent() }}
-    {% endblock %}
   {% endembed %}
