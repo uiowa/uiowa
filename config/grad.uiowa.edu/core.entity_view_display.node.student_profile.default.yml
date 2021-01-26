@@ -54,7 +54,7 @@ third_party_settings:
                 settings: {  }
                 third_party_settings: {  }
             additional: {  }
-            weight: 5
+            weight: 6
           -
             uuid: 94515214-3d42-42fa-9604-0e808bb27c7f
             region: second
@@ -152,23 +152,26 @@ third_party_settings:
                 third_party_settings: {  }
                 type: entity_reference_label
             additional: {  }
-            weight: 6
+            weight: 7
           -
             uuid: 265639a1-2826-451a-949e-17eafabf13e4
             region: first
             configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
               id: 'field_block:node:student_profile:field_person_bio_headline'
+              label: null
+              provider: layout_builder
+              label_display: null
               formatter:
-                label: above
+                label: hidden
+                type: string
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-                type: string
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
             additional: {  }
-            weight: 7
+            weight: 5
         third_party_settings: {  }
   layout_builder_restrictions:
     allowed_block_categories: {  }

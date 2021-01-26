@@ -70,6 +70,10 @@ function grad_student_profile_preprocess_node(&$variables) {
  */
 function grad_student_profile_theme($existing, $type, $theme, $path) {
   return [
+    'field__node__field_person_bio_headline__student_profile__default' => [
+      'template' => 'field--node--field-person-bio-headline--student-profile--default',
+      'base hook' => 'field',
+    ],
     'field__node__field_person_distinction__student_profile__card' => [
       'template' => 'field--node--field-person-distinction--student-profile--card',
       'base hook' => 'field',
