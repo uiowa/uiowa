@@ -18,6 +18,7 @@ module:
   uiowa_maui: 0
 theme: {  }
 blacklist:
+  - block_content.type.content_list
   - config_split.config_split.site_grad_uiowa_edu
   - fullcalendar.settings
   - fullcalendar_options.settings
@@ -42,9 +43,11 @@ blacklist:
   - 'field.storage.node.field_thesis_defense_*'
   - 'field.storage.node.field_scholar_*'
   - 'field.storage.node.field_student_profile_*'
+  - 'field.storage.block_content.field_content_list_*'
 graylist:
   - core.entity_view_display.block_content.uiowa_people.default
   - core.entity_view_display.node.page.default
+  - core.entity_view_mode.node.card
   - field.storage.node.field_uiowa_college
   - node.type.person
   - node.type.scholarship
