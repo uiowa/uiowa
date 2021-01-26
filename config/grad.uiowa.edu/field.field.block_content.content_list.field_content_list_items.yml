@@ -5,9 +5,6 @@ dependencies:
   config:
     - block_content.type.content_list
     - field.storage.block_content.field_content_list_items
-    - node.type.article
-    - node.type.page
-    - node.type.person
     - node.type.student_profile
 id: block_content.content_list.field_content_list_items
 field_name: field_content_list_items
@@ -23,9 +20,6 @@ settings:
   handler: 'default:node'
   handler_settings:
     target_bundles:
-      article: article
-      page: page
-      person: person
       student_profile: student_profile
     sort:
       field: field_thesis_defense_title
