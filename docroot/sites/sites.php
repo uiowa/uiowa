@@ -2075,3 +2075,9 @@ $sites['humanities.local.drupal.uiowa.edu'] = 'humanities.uiowa.edu';
 $sites['humanities.dev.drupal.uiowa.edu'] = 'humanities.uiowa.edu';
 $sites['humanities.stage.drupal.uiowa.edu'] = 'humanities.uiowa.edu';
 $sites['humanities.prod.drupal.uiowa.edu'] = 'humanities.uiowa.edu';
+
+// Directory aliases for nrcfcp.uiowa.edu.
+$sites['nrcfcp.local.drupal.uiowa.edu'] = 'nrcfcp.uiowa.edu';
+$sites['nrcfcp.dev.drupal.uiowa.edu'] = 'nrcfcp.uiowa.edu';
+$sites['nrcfcp.stage.drupal.uiowa.edu'] = 'nrcfcp.uiowa.edu';
+$sites['nrcfcp.prod.drupal.uiowa.edu'] = 'nrcfcp.uiowa.edu';
