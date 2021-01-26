@@ -71,15 +71,18 @@
  */
 #}
 
+{% set extra_classes = ['card--media-left', 'bg--gray'] %}
+
+{% if delta and (delta % 2 != 0) %}
+  {% set extra_classes = ['card--media-right', 'bg-pattern--brain'] %}
+{% endif %}
+
 {%
 set classes = [
   'card--list',
-  'card--media-left',
-  'card--centered-left',
   'card--alignment-left',
   'media--widescreen',
-  'bg--white',
-]
+] | merge(extra_classes)
 %}
 
 {% set headline_level = heading_size ?: 'h2' %}
@@ -87,11 +90,12 @@ set classes = [
   {% set headline_level = view.display_handler.getOption('heading_size') %}
 {% endif %}
 
+
 {{ attach_library('classy/node') }}
 {{ attach_library('uids_base/paragraphs-lists') }}
 {{ attach_library('uids_base/node-type-person') }}
 
-{% set student_profile_card = {
+{% set person_card = {
   'attributes': attributes.addClass(classes),
   'card_image': content.field_image | render,
   'card_text': content | without('field_image', 'field_person_credential', 'field_person_distinction', 'links'),
@@ -101,10 +105,10 @@ set classes = [
   'card_link_title': 'Read more' | t,
   'headline_level': headline_level,
   'headline_class': 'h1 headline headline--uppercase',
-  'media_sizes' : 'card__media--xlarge',
+  'media_sizes' : 'card__media--large',
 } %}
 
-  {% embed '@uids_base/uids/card.html.twig' with student_profile_card only %}
+  {% embed '@uids_base/uids/card.html.twig' with person_card only %}
     {% block card_content %}
       <hr class="element--spacer element--spacer-gray">
       {{ parent() }}
