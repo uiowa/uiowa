@@ -5,6 +5,7 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.person.field_image
+    - field.field.node.person.field_meta_tags
     - field.field.node.person.field_person_bio
     - field.field.node.person.field_person_contact_information
     - field.field.node.person.field_person_credential
@@ -90,12 +91,14 @@ content:
     third_party_settings: {  }
 hidden:
   content_moderation_control: true
+  field_meta_tags: true
   field_person_bio: true
   field_person_contact_information: true
   field_person_department: true
   field_person_education: true
   field_person_first_name: true
   field_person_hide: true
+  field_person_hometown: true
   field_person_lab_building: true
   field_person_lab_phone: true
   field_person_lab_room: true
