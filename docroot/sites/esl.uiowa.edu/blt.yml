@@ -1,0 +1,13 @@
+project:
+  local:
+    hostname: esl.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: esl
+  human_name: esl.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: esl.prod
+drupal:
+  db:
+    database: esl_uiowa_edu
