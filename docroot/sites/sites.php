@@ -2087,3 +2087,9 @@ $sites['environmentalsciences.local.drupal.uiowa.edu'] = 'environmentalsciences.
 $sites['environmentalsciences.dev.drupal.uiowa.edu'] = 'environmentalsciences.uiowa.edu';
 $sites['environmentalsciences.stage.drupal.uiowa.edu'] = 'environmentalsciences.uiowa.edu';
 $sites['environmentalsciences.prod.drupal.uiowa.edu'] = 'environmentalsciences.uiowa.edu';
+
+// Directory aliases for stephens.lab.uiowa.edu.
+$sites['labstephens.local.drupal.uiowa.edu'] = 'stephens.lab.uiowa.edu';
+$sites['labstephens.dev.drupal.uiowa.edu'] = 'stephens.lab.uiowa.edu';
+$sites['labstephens.stage.drupal.uiowa.edu'] = 'stephens.lab.uiowa.edu';
+$sites['labstephens.prod.drupal.uiowa.edu'] = 'stephens.lab.uiowa.edu';
