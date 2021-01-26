@@ -258,12 +258,12 @@ function uids_base_preprocess_field(&$variables) {
       // If the caption is not set yet, attempt to set it from
       // the 'field_image_caption' field.
       /** @var \Drupal\node\NodeInterface $node */
-      if (!$caption->count() && (NULL !== $node = $variables['element']['#object']) && $node->hasField('field_image_caption')) {
+      if ((!$caption || !$caption->count()) && (NULL !== $node = $variables['element']['#object']) && $node->hasField('field_image_caption')) {
         $caption = $node->get('field_image_caption');
       }
 
       // If the caption has been set, render it.
-      if ($caption->count()) {
+      if ($caption && $caption->count()) {
         $caption = $caption->view();
       }
       else {
