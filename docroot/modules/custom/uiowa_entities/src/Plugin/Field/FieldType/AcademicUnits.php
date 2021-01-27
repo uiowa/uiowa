@@ -4,6 +4,7 @@ namespace Drupal\uiowa_entities\Plugin\Field\FieldType;
 
 use Drupal\Core\Field\FieldItemBase;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\Core\TypedData\DataReferenceTargetDefinition;
 use Drupal\Core\Entity\TypedData\EntityDataDefinition;
 use Drupal\Core\TypedData\DataReferenceDefinition;
@@ -20,7 +21,7 @@ use Drupal\Core\TypedData\DataReferenceDefinition;
  *   default_widget = "uiowa_academic_units_widget",
  * )
  */
-class AcademicUnits extends FieldItemBase {
+class AcademicUnits extends EntityReferenceItem {
 
   /**
    * {@inheritdoc}
@@ -45,19 +46,8 @@ class AcademicUnits extends FieldItemBase {
   /**
    * {@inheritdoc}
    */
-  public function isEmpty() {
-    if ($this->target_id !== NULL) {
-      return FALSE;
-    }
-    return TRUE;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public static function propertyDefinitions(FieldStorageDefinitionInterface $field_definition) {
     $properties = [];
-    $target_info = \Drupal::entityTypeManager()->getDefinition('uiowa_academic_unit');
 
     $target_id_definition = DataReferenceTargetDefinition::create('string')
       ->setLabel(t('uiowa_academic_unit ID'))
@@ -65,11 +55,12 @@ class AcademicUnits extends FieldItemBase {
 
     $properties['target_id'] = $target_id_definition;
     $properties['entity'] = DataReferenceDefinition::create('entity')
-      ->setLabel($target_info->getLabel())
+      ->setLabel('uiowa_academic_unit')
       ->setDescription(t('The referenced entity'))
       ->setComputed(TRUE)
       ->setReadOnly(FALSE)
-      ->setTargetDefinition(EntityDataDefinition::create('uiowa_academic_unit'));
+      ->setTargetDefinition(EntityDataDefinition::create('uiowa_academic_unit'))
+      ->addConstraint('EntityType', 'uiowa_academic_unit');;
 
     return $properties;
   }

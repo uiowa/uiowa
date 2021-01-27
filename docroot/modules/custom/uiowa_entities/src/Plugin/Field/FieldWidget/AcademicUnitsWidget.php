@@ -2,7 +2,9 @@
 
 namespace Drupal\uiowa_entities\Plugin\Field\FieldWidget;
 
+use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsSelectWidget;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\EntityTypeManager;
@@ -22,7 +24,7 @@ use Drupal\Core\Field\FieldDefinitionInterface;
  *   }
  * )
  */
-class AcademicUnitsWidget extends WidgetBase implements ContainerFactoryPluginInterface {
+class AcademicUnitsWidget extends OptionsSelectWidget implements ContainerFactoryPluginInterface {
 
   /**
    * The EntityTypeManager service.
@@ -53,28 +55,54 @@ class AcademicUnitsWidget extends WidgetBase implements ContainerFactoryPluginIn
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
-    // Grab available units.
-    $units = [];
-    $options = array_filter($this->getSetting('types'));
-    foreach ($options as $option) {
-      $units += $this->entityTypeManager
-        ->getStorage('uiowa_academic_unit')
-        ->loadByProperties(['type' => $option]);
-    }
-    // Update values to the text labels
-    // rather than the objects themselves.
-    array_walk($units, function (&$value, $key) {
-      $value = $value->get('label');
-    });
+    $element = parent::formElement($items, $delta, $element, $form, $form_state);
+    $element['#multiple'] = TRUE;
 
-    $element['value'] = $element + [
+    dpm(isset($items[$delta]->target_id));
+    dpm($items[$delta]->toArray());
+    $element += [
       '#type' => 'select',
-      '#options' => $units,
-      '#default_value' => isset($items[$delta]->academic_units) ? $items[$delta]->academic_units : [],
-      '#multiple' => TRUE,
+      '#options' => $this->getOptions($items->getEntity()),
+      '#default_value' => isset($items[$delta]) ? $items[$delta]->target_id : [],
     ];
 
     return $element;
+  }
+
+  protected function getOptions(FieldableEntityInterface $entity) {
+    if (!isset($this->options)) {
+      // Grab available units.
+      $options = [];
+      $units = array_filter($this->getSetting('types'));
+      foreach ($units as $unit) {
+        $options += $this->entityTypeManager
+          ->getStorage('uiowa_academic_unit')
+          ->loadByProperties(['type' => $unit]);
+      }
+      // Update values to the text labels
+      // rather than the objects themselves.
+      array_walk($options, function (&$value, $key) {
+        $value = $value->get('label');
+      });
+      $this->options = $options;
+    }
+    return $this->options;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
+    foreach ($values as $key => $value) {
+      // The entity_autocomplete form element returns an array when an entity
+      // was "autocreated", so we need to move it up a level.
+      if (isset($value['target_id'])) {
+        unset($values[$key]['target_id']);
+        $values[$key] += $value['target_id'];
+      }
+    }
+
+    return $values;
   }
 
   /**
