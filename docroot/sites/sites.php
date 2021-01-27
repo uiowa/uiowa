@@ -2099,3 +2099,9 @@ $sites['labcarvour.local.drupal.uiowa.edu'] = 'carvour.lab.uiowa.edu';
 $sites['labcarvour.dev.drupal.uiowa.edu'] = 'carvour.lab.uiowa.edu';
 $sites['labcarvour.stage.drupal.uiowa.edu'] = 'carvour.lab.uiowa.edu';
 $sites['labcarvour.prod.drupal.uiowa.edu'] = 'carvour.lab.uiowa.edu';
+
+// Directory aliases for developmental-psychopathology.lab.uiowa.edu.
+$sites['labdevelopmental-psychopathology.local.drupal.uiowa.edu'] = 'developmental-psychopathology.lab.uiowa.edu';
+$sites['labdevelopmental-psychopathology.dev.drupal.uiowa.edu'] = 'developmental-psychopathology.lab.uiowa.edu';
+$sites['labdevelopmental-psychopathology.stage.drupal.uiowa.edu'] = 'developmental-psychopathology.lab.uiowa.edu';
+$sites['labdevelopmental-psychopathology.prod.drupal.uiowa.edu'] = 'developmental-psychopathology.lab.uiowa.edu';
