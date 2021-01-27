@@ -98,20 +98,33 @@ $settings['config_sync_directory'] = DRUPAL_ROOT . '/config/' . $site_dir;
 ```
 
 # Updating Dependencies
-Before starting updates, make sure your local environment is on a feature branch created from the latest version of the default branch and synced with production by running `blt dsa`.
-
-Drupal core requires the following specific command to update dev dependencies properly: `composer update drupal/core --with-dependencies`. You can run `composer update package/name` after that to update additional dependencies. The output from the Composer commands can be used as the long text for commit messages. Ideally, each package update would be one commit to the composer.lock file.
-
-Certain scaffold files should be resolved/removed afterwards. The redirects patch might need to be regenerated if it does not apply to the new `.htaccess` file. Different updates may require difference procedures. For example, BLT may download default config files that we don't use like `docroot/sites/default/default.services.yml`.
+Before starting updates, make sure your local environment is on a feature branch created from the latest version of the default branch and synced with production by running `blt dsa`. After updating, certain scaffold files may need to be resolved/removed. For example, the htaccess patch might need to be regenerated if it does not apply to the new `.htaccess` file. BLT may download default config files that we don't use like `docroot/sites/default/default.services.yml`. Different updates may require difference procedures.
 
 Configuration tracked in the repository will need to be exported before deployment. To ensure configuration is exported correctly, manually sync a site from production using Drush. Then run database updates and export any configuration changes. Add and commit the config changes and then run another `blt dsa` to check for any further config discrepancies. If there are none, proceed with code deployment as per usual.
+
+## Core
+Follow the `drupal/core-recommended` [instructions](https://github.com/drupal/core-recommended#upgrading) on updating.
+
+## Contrib
+You can run `composer update package/name` to update additional dependencies. The output from the Composer commands can be used as the long text for commit messages. Ideally, each package update would be one commit for clarity and easier reverting.
+
+### Locked Packages
+The packages below are locked at specific SHAs and will not update using the method described above. They should be periodically checked for new stable releases and updated, if viable.
+
+| Package                               | Reason                   |
+| ------------------------------------- | ------------------------ |
+| drupal/layout_builder_shortcuts       | No stable release.       |
+| drupal/lb_direct_add                  | No stable release.       |
+| drupal/redirect                       | Need e5201ca5 from 8.x-1.x branch plus a patch. https://git.drupalcode.org/project/redirect/-/commits/8.x-1.x       |
+| kartsims/easysvg                      | Need https://github.com/kartsims/easysvg/pull/27 which is not included in a release. |
+| uiowa/block_content_template          | Forked from a deprecated project. |
 
 # Redirects
 Redirects can be added to the docroot/.htaccess file. The .htaccess file be will deployed to all applications, regardless of the domain. Therefore, creating per-site redirects using the Redirect module is preferred.
 
 Note that too many .htaccess redirects can incur a performance hit. See the [Acquia redirect documentation](https://docs.acquia.com/acquia-cloud/manage/htaccess/) for more information and examples.
 
-Redirects in .htaccess should only exist for six months. Check the commit history of that file using a command similar to: `git log --before="6 months ago" --grep="redirect" -- docroot/.htaccess`.
+Ideally, redirects in .htaccess would only exist temporarily. Check the commit history of that file using a command similar to: `git log --before="6 months ago" --grep="redirect" -- docroot/.htaccess` to see how old a redirect is.
 
 # Resources
 Additional [BLT documentation](https://docs.acquia.com/blt/) may be useful. You may also access a list of BLT commands by running this:
