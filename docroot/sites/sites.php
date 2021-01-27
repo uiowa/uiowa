@@ -2105,3 +2105,9 @@ $sites['labdevelopmental-psychopathology.local.drupal.uiowa.edu'] = 'development
 $sites['labdevelopmental-psychopathology.dev.drupal.uiowa.edu'] = 'developmental-psychopathology.lab.uiowa.edu';
 $sites['labdevelopmental-psychopathology.stage.drupal.uiowa.edu'] = 'developmental-psychopathology.lab.uiowa.edu';
 $sites['labdevelopmental-psychopathology.prod.drupal.uiowa.edu'] = 'developmental-psychopathology.lab.uiowa.edu';
+
+// Directory aliases for basinanalysis.lab.uiowa.edu.
+$sites['labbasinanalysis.local.drupal.uiowa.edu'] = 'basinanalysis.lab.uiowa.edu';
+$sites['labbasinanalysis.dev.drupal.uiowa.edu'] = 'basinanalysis.lab.uiowa.edu';
+$sites['labbasinanalysis.stage.drupal.uiowa.edu'] = 'basinanalysis.lab.uiowa.edu';
+$sites['labbasinanalysis.prod.drupal.uiowa.edu'] = 'basinanalysis.lab.uiowa.edu';
