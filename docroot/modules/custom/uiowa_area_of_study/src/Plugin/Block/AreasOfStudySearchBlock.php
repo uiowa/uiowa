@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\uiowa_areas_of_study\Plugin\Block;
+namespace Drupal\uiowa_area_of_study\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormBuilderInterface;
@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Provides the Areas of Study Search block.
  *
  * @Block(
- *   id = "uiowa_areas_of_study_search",
+ *   id = "uiowa_area_of_study_search",
  *   admin_label = @Translation("Areas of Study Search"),
  *   category = @Translation("Site custom")
  * )
