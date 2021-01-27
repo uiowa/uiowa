@@ -3,8 +3,10 @@
 namespace Drupal\uiowa_areas_of_study\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormState;
 use Drupal\views\Views;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides the Areas of Study Search block.
@@ -16,6 +18,52 @@ use Drupal\views\Views;
  * )
  */
 class AreasOfStudySearchBlock extends BlockBase {
+  /**
+   * The form_builder service.
+   *
+   * @var \Drupal\Core\Form\FormBuilderInterface
+   */
+  protected $formBuilder;
+
+  /**
+   * Override the construction method.
+   *
+   * @param array $configuration
+   *   The block configuration.
+   * @param string $plugin_id
+   *   The plugin ID.
+   * @param mixed $plugin_definition
+   *   The plugin definition.
+   * @param \Drupal\Core\Form\FormBuilderInterface $formBuilder
+   *   The form_builder service.
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, FormBuilderInterface $formBuilder) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->formBuilder = $formBuilder;
+  }
+
+  /**
+   * Override the create method.
+   *
+   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+   *   The application container.
+   * @param array $configuration
+   *   The block configuration.
+   * @param string $plugin_id
+   *   The plugin ID.
+   * @param mixed $plugin_definition
+   *   The plugin definition.
+   *
+   * @return static
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('form_builder')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -40,13 +88,11 @@ class AreasOfStudySearchBlock extends BlockBase {
         ->setAlwaysProcess()
         ->disableRedirect();
       $form_state->set('rerender', NULL);
-      $form = \Drupal::formBuilder()
+      $form = $this->formBuilder
         ->buildForm('\Drupal\views\Form\ViewsExposedForm', $form_state);
     }
-    $variables['content']['form'] = $form;
 
-    $build['content'] = $form;
-
-    return $build;
+    return $form;
   }
+
 }
