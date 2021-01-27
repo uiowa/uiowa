@@ -1,0 +1,29 @@
+uuid: d606a8df-3c5e-490b-813c-fdc7bb75f570
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_area_of_study_ar_first
+    - node.type.admissions_requirement
+    - node.type.area_of_study
+id: node.area_of_study.field_area_of_study_ar_first
+field_name: field_area_of_study_ar_first
+entity_type: node
+bundle: area_of_study
+label: 'Requirements: First-year'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      admissions_requirement: admissions_requirement
+    sort:
+      field: title
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
