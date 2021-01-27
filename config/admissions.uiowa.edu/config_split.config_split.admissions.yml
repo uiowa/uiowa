@@ -8,6 +8,7 @@ description: 'The Admissions site split.'
 folder: ../config/admissions.uiowa.edu
 module:
   admissions_core: 0
+  fragments: 0
   weight: 0
 theme: {  }
 blacklist: {  }
@@ -111,6 +112,8 @@ graylist:
   - 'core.entity_form_display.node.person.*'
   - 'core.entity_view_display.node.person.*'
   - 'user.role.*'
+  - fragment.fragment_type.stat
+  - 'field.storage.fragment.field_stat_*'
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 90
