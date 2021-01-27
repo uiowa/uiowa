@@ -6,6 +6,7 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\brand_core\BrandSVG;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\File\FileSystemInterface;
+use Drupal\node\Entity\Node;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -21,8 +22,8 @@ class LockupController extends ControllerBase {
     $is_node = \Drupal::entityQuery('node')->condition('nid', $nid)->execute();
 
     if ($is_node) {
-      // @todo Change this!
-      $node = node_load($nid, TRUE);
+      \Drupal::entityTypeManager()->getStorage('node')->resetCache([$nid]);
+      $node = Node::load($nid);
 
       $path = $node->getTitle();
       $name = Html::cleanCssIdentifier($path);
