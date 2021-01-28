@@ -31,6 +31,7 @@ class Scholar extends BaseNodeSource {
     $query->leftJoin('field_data_field_scholar_project_title', 'project_title', 'n.nid = project_title.entity_id');
     $query->leftJoin('field_data_field_scholar_abstract', 'abstract', 'n.nid = abstract.entity_id');
     $query->leftJoin('field_data_field_image_attach', 'image', 'n.nid = image.entity_id');
+    $query->leftJoin('url_alias', 'alias', "alias.source = CONCAT('node/', n.nid)");
 
     $query = $query->fields('n', [
       'title',
@@ -74,6 +75,9 @@ class Scholar extends BaseNodeSource {
       ->fields('abstract', [
         'field_scholar_abstract_value',
         'field_scholar_abstract_format',
+      ])
+      ->fields('alias', [
+        'alias',
       ]);
     return $query;
   }
