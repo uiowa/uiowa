@@ -72,6 +72,11 @@ function admissions_core_form_alter(&$form, \Drupal\Core\Form\FormStateInterface
         $form['field_student_profile_image']['#group'] = 'node_student_profile_image';
       }
       break;
+
+    case 'fragment_stat_edit_form':
+    case 'fragment_stat_form':
+      $form['#attached']['library'][]  = 'admissions_core/admin';
+      break;
   }
 }
 
@@ -187,6 +192,10 @@ function admissions_core_theme($existing, $type, $theme, $path) {
     'field__node__title__student_profile__default' => [
       'template' => 'field--node--title--student-profile--default',
       'base hook' => 'field',
+    ],
+    'fragment__stat' => [
+      'template' => 'fragment--stat',
+      'base hook' => 'fragment',
     ],
     'paragraph__admissions_card__default' => [
       'template' => 'paragraph--admissions-card--default',
