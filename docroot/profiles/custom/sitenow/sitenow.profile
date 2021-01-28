@@ -1061,7 +1061,8 @@ function sitenow_tokens($type, $tokens, array $data, array $options, BubbleableM
     if ($data['node']->hasField('field_teaser')) {
       foreach ($tokens as $name => $original) {
         switch ($name) {
-          // Not consistent across content types which token is used for meta description.
+          // Not consistent across content types which
+          // token is used for meta description.
           case 'field_teaser':
           case 'field_teaser:value':
             $field_teaser = $data['node']->get('field_teaser')->value;
