@@ -1878,12 +1878,6 @@ $sites['labreinhardt.dev.drupal.uiowa.edu'] = 'reinhardt.lab.uiowa.edu';
 $sites['labreinhardt.stage.drupal.uiowa.edu'] = 'reinhardt.lab.uiowa.edu';
 $sites['labreinhardt.prod.drupal.uiowa.edu'] = 'reinhardt.lab.uiowa.edu';
 
-// Directory aliases for horadahistoria.sites.uiowa.edu.
-$sites['siteshoradahistoria.local.drupal.uiowa.edu'] = 'horadahistoria.sites.uiowa.edu';
-$sites['siteshoradahistoria.dev.drupal.uiowa.edu'] = 'horadahistoria.sites.uiowa.edu';
-$sites['siteshoradahistoria.stage.drupal.uiowa.edu'] = 'horadahistoria.sites.uiowa.edu';
-$sites['siteshoradahistoria.prod.drupal.uiowa.edu'] = 'horadahistoria.sites.uiowa.edu';
-
 // Directory aliases for healthydata.sites.uiowa.edu.
 $sites['siteshealthydata.local.drupal.uiowa.edu'] = 'healthydata.sites.uiowa.edu';
 $sites['siteshealthydata.dev.drupal.uiowa.edu'] = 'healthydata.sites.uiowa.edu';
