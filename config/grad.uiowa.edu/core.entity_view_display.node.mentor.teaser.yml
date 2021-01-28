@@ -30,31 +30,23 @@ mode: teaser
 content:
   field_image:
     type: entity_reference_entity_view
-    weight: 5
+    weight: 4
     region: content
     label: visually_hidden
     settings:
-      view_mode: default
+      view_mode: small__square
       link: false
-    third_party_settings: {  }
-  field_person_credential:
-    type: string
-    weight: 0
-    region: content
-    label: visually_hidden
-    settings:
-      link_to_entity: false
     third_party_settings: {  }
   field_person_email:
     type: email_mailto
-    weight: 3
+    weight: 2
     region: content
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
   field_person_phone:
     type: telephone_link
-    weight: 4
+    weight: 3
     region: content
     label: visually_hidden
     settings:
@@ -62,7 +54,7 @@ content:
     third_party_settings: {  }
   field_person_position:
     type: string
-    weight: 1
+    weight: 0
     region: content
     label: visually_hidden
     settings:
@@ -70,7 +62,7 @@ content:
     third_party_settings: {  }
   field_scholar_bio_headline:
     type: string
-    weight: 2
+    weight: 1
     region: content
     label: visually_hidden
     settings:
@@ -78,6 +70,7 @@ content:
     third_party_settings: {  }
 hidden:
   field_grad_program_all_degree: true
+  field_person_credential: true
   field_person_first_name: true
   field_person_last_name: true
   field_person_mentor_qualif: true
