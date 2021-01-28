@@ -13,6 +13,7 @@ dependencies:
     - field.field.node.area_of_study.field_area_of_study_opportunity
     - field.field.node.area_of_study.field_area_of_study_preprof
     - field.field.node.area_of_study.field_area_of_study_requirement
+    - field.field.node.area_of_study.field_area_of_study_stat
     - field.field.node.area_of_study.field_area_of_study_stories
     - field.field.node.area_of_study.field_area_of_study_subtitle
     - field.field.node.area_of_study.field_area_of_study_why
@@ -201,7 +202,7 @@ third_party_settings:
                 third_party_settings: {  }
                 type: text_default
             additional: {  }
-            weight: 9
+            weight: 10
           -
             uuid: e59abf56-a1a2-464f-9919-a7a29a45da23
             region: content
@@ -216,7 +217,7 @@ third_party_settings:
                 third_party_settings: {  }
                 type: text_default
             additional: {  }
-            weight: 10
+            weight: 11
           -
             uuid: 8dd0daee-870d-483b-9ee6-5e03829f54fb
             region: content
@@ -284,6 +285,25 @@ third_party_settings:
                 third_party_settings: {  }
             additional: {  }
             weight: 15
+          -
+            uuid: f5efc3ea-7887-471f-85d5-bc7a312765ff
+            region: content
+            configuration:
+              id: 'field_block:node:area_of_study:field_area_of_study_stat'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: hidden
+                type: entity_reference_entity_view
+                settings:
+                  view_mode: default
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 9
         third_party_settings: {  }
       -
         layout_id: layout_twocol
@@ -334,8 +354,8 @@ third_party_settings:
       whitelisted_blocks:
         'Chaos Tools': {  }
         'Content fields':
-          - 'field_block:node:area_of_study:body'
           - 'field_block:node:area_of_study:field_image'
+          - 'field_block:node:area_of_study:body'
           - 'field_block:node:area_of_study:title'
         'Custom block types': {  }
         'Custom blocks': {  }
@@ -489,4 +509,5 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_area_of_study_stat: true
   search_api_excerpt: true
