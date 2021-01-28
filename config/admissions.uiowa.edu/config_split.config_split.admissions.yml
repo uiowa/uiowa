@@ -8,9 +8,11 @@ description: 'The Admissions site split.'
 folder: ../config/admissions.uiowa.edu
 module:
   admissions_core: 0
+  entity_print: 0
   weight: 0
 theme: {  }
-blacklist: {  }
+blacklist:
+  - core.entity_view_mode.node.pdf
 graylist:
   - config_split.config_split.admissions
   - core.base_field_override.node.admissions_requirement.promote
