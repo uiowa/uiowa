@@ -71,85 +71,43 @@
  */
 #}
 
-{#
-/**
- * @file
- * Default theme implementation to display a view of unformatted rows.
- *
- * Available variables:
- * - title: The title of this group of rows. May be empty.
- * - rows: A list of the view's row items.
- *   - attributes: The row's HTML attributes.
- *   - content: The row's content.
- * - view: The view object.
- * - default_row_class: A flag indicating whether default classes should be
- *   used on rows.
- *
- * @see template_preprocess_views_view_unformatted()
- *
- * @ingroup themeable
- */
-#}
-    {{ attach_library('uids_base/person') }}
-    {%
-      set classes = [
-      'card--list',
-      'card--person-teaser',
-      'bg--white',
-      'card--media-left',
-      'media--border',
-      'card--centered-left',
-      'card--alignment-left'
-    ]
-    %}
+{%
+  set classes = [
+  'card--list',
+  'card--person-teaser',
+  'bg--white',
+  'card--media-left',
+  'media--border',
+  'card--centered-left',
+  'card--alignment-left',
+  'card',
+]
+%}
 
+{{ attach_library('classy/node') }}
 
-<h3>{{ title }}</h3>
-
-{% set person_card_view = {
+{% set mentor_card = {
   'attributes': attributes.addClass(classes),
-  'headline_class': 'card__title headline',
+  'card_text': content|without('title', 'field_image', 'field_person_position', 'field_person_email', 'field_person_phone', 'links'),
+  'card_subtitle': content.field_person_position,
+  'card_tag': content.field_person_email,
+  'person_phone': content.field_person_phone.0,
   'card_title': label | render,
   'card_image': content.field_image | render,
   'media_styles': 'media--circle',
   'media_sizes': 'card__media--small',
-  'card_text': content|without('title', 'field_image', 'field_uiowa_college', 'field_person_position', 'field_person_credential', 'field_person_email', '	field_grad_program_all_degree', 'field_person_phone', 'links'),
-  'card_subtitle': content.field_person_position,
-  'card_tag': content.field_person_email,
-  'person_territory': content.field_scholar_bio_headline,
-  'person_education': content.field_uiowa_college,
-  'person_phone': content.field_person_phone,
   'card_link_url': url,
+  'headline_level': 'h2',
 } %}
 
-{% embed '@uids_base/uids/card.html.twig' with person_card_view only %}
-
-  {% block card_img %}
-    {% if card_image|striptags('<img><picture>') is not empty %}
-      {{ parent() }}
-    {% endif %}
-  {% endblock %}
-
-  {% block card_subtitle %}
-    {% if card_subtitle is not empty %}
-      <div class="card__subtitle">{{ card_subtitle }}</div>
-    {% endif %}
-  {% endblock %}
-
-  {% block card_tag %}
-    {% if card_tag is not empty %}
-      <div class="card__date">{{ card_tag }}</div>
-    {% endif %}
-    {% if person_phone is not empty %}
-      <div class="card__date"> {{ person_phone }}</div>
-    {% endif %}
-    <div class="card__date">{{ person_education }}</div>
-  {% endblock %}
-
-  {% block card_content %}
-    {% if card_text is not empty %}
-      <p class="card__description">{{ card_text }}</p>
-    {% endif %}
-  {% endblock %}
-
+{% embed '@uids_base/uids/card.html.twig' with mentor_card only %}
+    {% block card_tag %}
+      {% if card_tag is not empty %}
+        <div class="card__label">{{ card_tag }}</div>
+      {% endif %}
+      {% if person_phone is not empty %}
+        <div class="card__label"><span class="fas fa-phone"></span> {{ person_phone }}</div>
+      {% endif %}
+    {% endblock %}
 {% endembed %}
+
