@@ -19,6 +19,7 @@ dependencies:
     - field.field.node.area_of_study.field_image
     - node.type.area_of_study
   module:
+    - entity_print
     - entity_reference_revisions
     - layout_builder
     - layout_builder_restrictions
@@ -309,6 +310,24 @@ third_party_settings:
                 third_party_settings: {  }
             additional: {  }
             weight: 0
+          -
+            uuid: 344c471a-2e88-442d-bcdd-a2d5f1cc03dc
+            region: first
+            configuration:
+              id: print_links
+              label: null
+              provider: entity_print
+              label_display: null
+              pdf_enabled: true
+              pdf_link_text: 'View PDF'
+              epub_enabled: false
+              epub_link_text: 'View EPub'
+              word_docx_enabled: false
+              word_docx_link_text: 'View Word Document'
+              context_mapping:
+                entity: layout_builder.entity
+            additional: {  }
+            weight: 1
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -319,6 +338,7 @@ third_party_settings:
       - 'Custom block types'
       - 'Custom blocks'
       - Devel
+      - 'Entity Print'
       - Forms
       - 'Inline blocks'
       - 'Lists (Views)'
@@ -334,12 +354,14 @@ third_party_settings:
       whitelisted_blocks:
         'Chaos Tools': {  }
         'Content fields':
-          - 'field_block:node:area_of_study:body'
           - 'field_block:node:area_of_study:field_image'
+          - 'field_block:node:area_of_study:body'
           - 'field_block:node:area_of_study:title'
         'Custom block types': {  }
         'Custom blocks': {  }
         Devel: {  }
+        'Entity Print':
+          - print_links
         Forms: {  }
         'Inline blocks': {  }
         'Lists (Views)': {  }
@@ -489,4 +511,7 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   search_api_excerpt: true
