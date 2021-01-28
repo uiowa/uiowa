@@ -1,0 +1,62 @@
+uuid: 4158e108-3146-4cff-9f74-7746bcc5d453
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.admissions_card.field_admissions_card_content
+    - field.field.paragraph.admissions_card.field_admissions_card_link
+    - field.field.paragraph.admissions_card.field_admissions_card_media
+    - field.field.paragraph.admissions_card.field_admissions_card_subtitle
+    - field.field.paragraph.admissions_card.field_admissions_card_title
+    - paragraphs.paragraphs_type.admissions_card
+  module:
+    - link
+    - media_library
+    - text
+id: paragraph.admissions_card.default
+targetEntityType: paragraph
+bundle: admissions_card
+mode: default
+content:
+  field_admissions_card_content:
+    weight: 3
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_admissions_card_link:
+    weight: 4
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+    region: content
+  field_admissions_card_media:
+    type: media_library_widget
+    weight: 2
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+    region: content
+  field_admissions_card_subtitle:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_admissions_card_title:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden:
+  created: true
+  status: true

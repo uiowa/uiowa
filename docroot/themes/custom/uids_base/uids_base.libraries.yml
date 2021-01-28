@@ -8,6 +8,7 @@ global-styling:
     layout:
       assets/css/components/page-layouts.css: {}
     component:
+      assets/css/components/badge.css: {}
       assets/css/components/breadcrumbs.css: {}
       assets/css/components/colors.css: {}
       assets/css/components/blockquote.css: {}
@@ -32,7 +33,7 @@ global-styling:
       assets/css/components/uiowa-bar.css: {}
       assets/css/components/image-gallery-block.css: {}
       assets/css/fields/fields.css: {}
-      assets/css/components/background.css: {}
+      assets/css/components/background.css: { weight: 200 }
       assets/css/components/grid.css: {}
     theme:
       assets/css/theme/print.css: { media: print }
@@ -204,6 +205,10 @@ slick:
     /libraries/slick-carousel/slick/slick.min.js: {}
   dependencies:
     - core/jquery
+badge:
+  css:
+    component:
+      assets/css/components/badge.css: { preprocess: false }
 cta:
   css:
     component:

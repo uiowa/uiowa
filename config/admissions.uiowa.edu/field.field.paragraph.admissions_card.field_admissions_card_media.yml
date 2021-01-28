@@ -1,0 +1,30 @@
+uuid: 3da0fa07-aa47-463e-8c1a-7ed7a8f10330
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_admissions_card_media
+    - media.type.image
+    - media.type.remote_video
+    - paragraphs.paragraphs_type.admissions_card
+id: paragraph.admissions_card.field_admissions_card_media
+field_name: field_admissions_card_media
+entity_type: paragraph
+bundle: admissions_card
+label: Media
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+      remote_video: remote_video
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: image
+field_type: entity_reference

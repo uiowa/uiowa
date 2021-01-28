@@ -1,0 +1,22 @@
+uuid: 9fac659d-ea61-43ef-8f50-84802ca704ae
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.admissions_requirement
+id: node.admissions_requirement.promote
+field_name: promote
+entity_type: node
+bundle: admissions_requirement
+label: 'Promoted to front page'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

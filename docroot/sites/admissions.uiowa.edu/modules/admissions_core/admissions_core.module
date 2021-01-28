@@ -102,6 +102,16 @@ function admissions_core_node_presave(Node $node) {
 /**
  * Implements hook_preprocess_HOOK().
  */
+function admissions_core_preprocess_field(&$variables) {
+  // Add question mark to label.
+  if ($variables["element"]["#field_name"] == 'field_area_of_study_why') {
+    $variables["label"] = t('Why Iowa?');
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
 function admissions_core_preprocess_layout(&$variables) {
   /** @var \Drupal\Core\Layout\LayoutDefinition $layout */
   $layout = $variables['layout'];
@@ -141,17 +151,9 @@ function admissions_core_theme($existing, $type, $theme, $path) {
       'template' => 'views-view-unformatted--student-profiles',
       'base hook' => 'view',
     ],
-    'node__view__counselors' => [
-      'template' => 'node--view--counselors',
-      'base hook' => 'node',
-    ],
     'node__view__student_profiles' => [
       'template' => 'node--view--student-profiles',
       'base hook' => 'node',
-    ],
-    'field__comma_separated' => [
-      'template' => 'field--comma-separated',
-      'base hook' => 'field',
     ],
     'field__field_student_profile_blurb' => [
       'template' => 'field--field-student-profile-blurb',
@@ -168,6 +170,10 @@ function admissions_core_theme($existing, $type, $theme, $path) {
     'field__node__title__student_profile__default' => [
       'template' => 'field--node--title--student-profile--default',
       'base hook' => 'field',
+    ],
+    'paragraph__admissions_card__default' => [
+      'template' => 'paragraph--admissions-card--default',
+      'base hook' => 'paragraph',
     ],
   ];
 }
