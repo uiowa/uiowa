@@ -41,6 +41,7 @@ class Mentor extends BaseNodeSource {
     $query->leftJoin('field_data_field_project_research_desc', 'research_desc', 'n.nid = research_desc.entity_id');
     $query->leftJoin('field_data_field_project_undergrad_role', 'undergrad_role', 'n.nid = undergrad_role.entity_id');
     $query->leftJoin('field_data_field_project_undergrad_qualif', 'undergrad_qualif', 'n.nid = undergrad_qualif.entity_id');
+    $query->leftJoin('url_alias', 'alias', "alias.source = CONCAT('node/', n.nid)");
 
     $query = $query->fields('n', [
       'title',
@@ -95,6 +96,9 @@ class Mentor extends BaseNodeSource {
       ])
       ->fields('college', [
         'field_mentor_college_value',
+      ])
+      ->fields('alias', [
+        'alias',
       ]);
     return $query;
   }
