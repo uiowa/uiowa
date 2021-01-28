@@ -2099,3 +2099,9 @@ $sites['labcarvour.local.drupal.uiowa.edu'] = 'carvour.lab.uiowa.edu';
 $sites['labcarvour.dev.drupal.uiowa.edu'] = 'carvour.lab.uiowa.edu';
 $sites['labcarvour.stage.drupal.uiowa.edu'] = 'carvour.lab.uiowa.edu';
 $sites['labcarvour.prod.drupal.uiowa.edu'] = 'carvour.lab.uiowa.edu';
+
+// Directory aliases for uiprehealth.conference.uiowa.edu.
+$sites['conferenceuiprehealth.local.drupal.uiowa.edu'] = 'uiprehealth.conference.uiowa.edu';
+$sites['conferenceuiprehealth.dev.drupal.uiowa.edu'] = 'uiprehealth.conference.uiowa.edu';
+$sites['conferenceuiprehealth.stage.drupal.uiowa.edu'] = 'uiprehealth.conference.uiowa.edu';
+$sites['conferenceuiprehealth.prod.drupal.uiowa.edu'] = 'uiprehealth.conference.uiowa.edu';
