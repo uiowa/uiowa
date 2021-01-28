@@ -62,6 +62,7 @@ class Article extends BaseNodeSource {
     $query->join('field_data_body', 'b', 'n.nid = b.entity_id');
     $query->leftJoin('field_data_field_thumbnail_image', 'ti', 'n.nid = ti.entity_id');
     $query->leftJoin('field_data_field_author', 'author', 'n.nid = author.entity_id');
+    $query->leftJoin('url_alias', 'alias', "alias.source = CONCAT('node/', n.nid)");
     // field_data_field_header_image is not being migrated.
     // field_data_field_lead is not being migrated.
     // field_data_field_pull_quote is not being migrated.
@@ -99,6 +100,9 @@ class Article extends BaseNodeSource {
       ])
       ->fields('author', [
         'field_author_nid',
+      ])
+      ->fields('alias', [
+        'alias',
       ]);
     return $query;
   }

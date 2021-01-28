@@ -49,7 +49,6 @@ function grad_student_profile_preprocess_node(&$variables) {
         if ($referring_field) {
           $parent_entity = $referring_field->getParent();
           $parent_entity = $parent_entity->getEntity();
-          $test = 'thing';
           if ($parent_entity->hasField('field_content_list_items')) {
             /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $er_list */
             $er_list = $parent_entity->field_content_list_items;
@@ -66,7 +65,7 @@ function grad_student_profile_preprocess_node(&$variables) {
 }
 
 /**
- * Implements hook_theme.
+ * Implements hook_theme().
  */
 function grad_student_profile_theme($existing, $type, $theme, $path) {
   return [

@@ -12,7 +12,6 @@ dependencies:
     - field.field.node.area_of_study.field_area_of_study_online
     - field.field.node.area_of_study.field_area_of_study_opportunity
     - field.field.node.area_of_study.field_area_of_study_preprof
-    - field.field.node.area_of_study.field_area_of_study_ref_ar
     - field.field.node.area_of_study.field_area_of_study_requirement
     - field.field.node.area_of_study.field_area_of_study_stories
     - field.field.node.area_of_study.field_area_of_study_subtitle
@@ -218,25 +217,6 @@ third_party_settings:
                 type: text_default
             additional: {  }
             weight: 10
-          -
-            uuid: 0a03ab1b-c311-4a08-bd84-f7208f4beb26
-            region: content
-            configuration:
-              id: 'field_block:node:area_of_study:field_area_of_study_ref_ar'
-              label: null
-              provider: layout_builder
-              label_display: null
-              formatter:
-                label: hidden
-                type: entity_reference_entity_view
-                settings:
-                  view_mode: teaser
-                third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-            additional: {  }
-            weight: 11
           -
             uuid: 8dd0daee-870d-483b-9ee6-5e03829f54fb
             region: content
@@ -463,14 +443,6 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
-    region: content
-  field_area_of_study_ref_ar:
-    weight: 17
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
     region: content
   field_area_of_study_requirement:
     weight: 16
