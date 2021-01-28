@@ -9,10 +9,6 @@
       'parent_url': site_parent_url,
     } %}
   {% endif %}
-
-  {% if page.action_menu %}
-    {{ page.action_menu }}
-  {% endif %}
 {% endblock %}
 
 {% block tertiary_content %}
@@ -29,6 +25,9 @@
         {% include '@uids_base/uids/global/search-toggle.html.twig' with {
           search_form: uiowa_search_form
         } %}
+      {% endif %}
+      {% if page.action_menu %}
+        {{ page.action_menu }}
       {% endif %}
       {% if page.primary_menu %}
         {% if header_nav == 'toggle' %}

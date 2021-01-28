@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: provost.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: provost
+  human_name: provost.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: provost.prod
+drupal:
+  db:
+    database: provost_uiowa_edu
+uiowa:
+  requester: kyows

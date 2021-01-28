@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.page.body
+    - field.field.node.page.field_featured_image_display
     - field.field.node.page.field_image
     - field.field.node.page.field_meta_tags
     - field.field.node.page.field_page_content_block
@@ -59,7 +60,8 @@ third_party_settings:
         layout_settings:
           label: Header
           layout_builder_styles_style:
-            section_margin_edge_to_edge: section_margin_edge_to_edge
+            - ''
+            - section_margin_edge_to_edge
         components:
           -
             uuid: 40b768ff-6e34-4257-9398-d83430b061e8
@@ -181,8 +183,8 @@ third_party_settings:
         Forms: {  }
         'Lists (Views)': {  }
         Menus:
-          - 'menu_block:main'
           - 'system_menu_block:main'
+          - 'menu_block:main'
         Superfish: {  }
         System: {  }
         'University of Iowa Alerts': {  }
@@ -209,6 +211,7 @@ third_party_settings:
       - 'Inline blocks'
       - 'Lists (Views)'
       - Menus
+      - 'Site custom'
       - Superfish
       - System
       - 'University of Iowa Alerts'
@@ -223,8 +226,14 @@ third_party_settings:
         - layout_fourcol
         - layout_page
       blacklisted_blocks:
+        layout_fourcol:
+          all_regions:
+            'Custom block types':
+              - uiowa_slider
+            'Inline blocks':
+              - 'inline_block:uiowa_slider'
         layout_onecol: {  }
-        layout_twocol:
+        layout_page:
           all_regions:
             'Custom block types':
               - uiowa_slider
@@ -236,13 +245,7 @@ third_party_settings:
               - uiowa_slider
             'Inline blocks':
               - 'inline_block:uiowa_slider'
-        layout_fourcol:
-          all_regions:
-            'Custom block types':
-              - uiowa_slider
-            'Inline blocks':
-              - 'inline_block:uiowa_slider'
-        layout_page:
+        layout_twocol:
           all_regions:
             'Custom block types':
               - uiowa_slider
@@ -292,6 +295,7 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_featured_image_display: true
   field_meta_tags: true
   field_publish_options: true
   field_tags: true

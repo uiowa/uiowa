@@ -14,6 +14,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
+use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\views\ViewExecutable;
 use Drupal\Component\Utility\Html;
 use Drupal\views\Views;
@@ -105,6 +106,7 @@ function sitenow_people_entity_presave(EntityInterface $entity) {
 function sitenow_people_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
+    // @todo Remove this line and just use $entity->bundle() instead.
     if (isset($build['#node']) && $node = $build['#node']) {
       switch ($node->getType()) {
         case 'person':
@@ -526,14 +528,8 @@ function sitenow_people_preprocess_block(&$variables) {
             $view->display_handler->setOption('heading_size', $headline_field['child_heading_size']);
           }
           else {
-            $options = [
-              'h2' => 'h3',
-              'h3' => 'h4',
-              'h4' => 'h5',
-              'h5' => 'h6',
-              'h6' => 'h6',
-            ];
-            $view->display_handler->setOption('heading_size', $options[$headline_field['heading_size']]);
+            $heading_size = HeadlineHelper::getHeadingSizeUp($headline_field['heading_size']);
+            $view->display_handler->setOption('heading_size', $heading_size);
           }
         }
       }

@@ -1,0 +1,105 @@
+<?php
+
+/**
+ * @file
+ * Contains the sitenow_student_profile module.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_entity_presave().
+ */
+function grad_student_profile_entity_presave(EntityInterface $entity) {
+  switch ($entity->bundle()) {
+    case 'student_profile':
+      // Setting the title with the first/last name values.
+      $output = $entity->get('field_person_first_name')->value . " " . $entity->get('field_person_last_name')->value;
+      $entity->setTitle($output);
+      break;
+
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function grad_student_profile_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    // Node form modifications.
+    case 'node_student_profile_edit_form':
+    case 'node_student_profile_form':
+      _sitenow_node_form_defaults($form, $form_state);
+      break;
+
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function grad_student_profile_preprocess_node(&$variables) {
+  if ($variables['view_mode'] === 'card') {
+    if (isset($variables['node'])) {
+      $referring_item = $variables['node']->_referringItem;
+      if ($referring_item) {
+        /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $referring_field */
+        $referring_field = $referring_item->getParent();
+        if ($referring_field) {
+          $parent_entity = $referring_field->getParent();
+          $parent_entity = $parent_entity->getEntity();
+          if ($parent_entity->hasField('field_content_list_items')) {
+            /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $er_list */
+            $er_list = $parent_entity->field_content_list_items;
+            foreach ($er_list->referencedEntities() as $delta => $entity) {
+              if ($variables['node']->id() === $entity->id()) {
+                $variables['delta'] = $delta;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function grad_student_profile_theme($existing, $type, $theme, $path) {
+  return [
+    'field__node__field_person_bio_headline__student_profile__default' => [
+      'template' => 'field--node--field-person-bio-headline--student-profile--default',
+      'base hook' => 'field',
+    ],
+    'field__node__field_person_distinction__student_profile__card' => [
+      'template' => 'field--node--field-person-distinction--student-profile--card',
+      'base hook' => 'field',
+    ],
+    'field__node__field_person_distinction__student_profile__default' => [
+      'template' => 'field--node--field-person-distinction--student-profile--default',
+      'base hook' => 'field',
+    ],
+    'field__node__field_person_distinction__student_profile__teaser' => [
+      'template' => 'field--node--field-person-distinction--student-profile--teaser',
+      'base hook' => 'field',
+    ],
+    'field__node__field_person_quote' => [
+      'template' => 'field--node--field-person-quote',
+      'base hook' => 'field',
+    ],
+    'field__node__title__student_profile__default' => [
+      'template' => 'field--node--title--student-profile--default',
+      'base hook' => 'field',
+    ],
+    'node__student_profile__card' => [
+      'template' => 'node--student-profile--card',
+      'base hook' => 'field',
+    ],
+    'views_view_unformatted__student_profile_card' => [
+      'template' => 'views-view-unformatted--student-profile-card',
+      'base hook' => 'view',
+    ],
+  ];
+}

@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labreinhardt.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labreinhardt
+  human_name: reinhardt.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labreinhardt.prod
+drupal:
+  db:
+    database: reinhardt_lab_uiowa_edu
+uiowa:
+  requester: jmr

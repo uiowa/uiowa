@@ -394,7 +394,7 @@ function brand_core_node_update(Drupal\Core\Entity\EntityInterface $entity) {
         \Drupal::service('cache.render')->invalidateAll();
 
         // If available (not Local), try to clear the varnish cache for the files.
-        if (\Drupal::moduleHandler()->moduleExists('purge')) {
+        if (\Drupal::moduleHandler()->moduleExists('acquia_purge')) {
           $purgeInvalidationFactory = \Drupal::service('purge.invalidation.factory');
           $purgeQueuers = \Drupal::service('purge.queuers');
           $purgeQueue = \Drupal::service('purge.queue');

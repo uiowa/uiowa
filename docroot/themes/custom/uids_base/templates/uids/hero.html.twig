@@ -5,7 +5,7 @@
 	{{ title_suffix }}
 	{% block hero_footer %}
 	{% endblock hero_footer %}
-	<div class="hero__img">
+	<div class="hero__img{% if video_field and video_field is not empty %} media--video{% endif %}">
 		{% block hero_image %}
 		{% endblock %}
 	</div>

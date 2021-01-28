@@ -1,0 +1,40 @@
+uuid: b8f7cdc4-d12d-4c94-882a-7c5fe3716bfe
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_area_of_study_majors
+    - node.type.area_of_study
+    - paragraphs.paragraphs_type.degree
+  module:
+    - entity_reference_revisions
+id: node.area_of_study.field_area_of_study_majors
+field_name: field_area_of_study_majors
+entity_type: node
+bundle: area_of_study
+label: Major(s)
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      degree: degree
+    target_bundles_drag_drop:
+      degree:
+        enabled: true
+        weight: 5
+      uiowa_collection_item:
+        weight: 6
+        enabled: false
+      uiowa_contact:
+        weight: 7
+        enabled: false
+      uiowa_slide:
+        weight: 8
+        enabled: false
+field_type: entity_reference_revisions

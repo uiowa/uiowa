@@ -4,6 +4,7 @@ namespace Drupal\layout_builder_custom\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
+use Drupal\uiowa_core\HeadlineHelper;
 
 /**
  * Plugin implementation of the 'uiowa_headline_formatter' formatter.
@@ -23,14 +24,11 @@ class UiowaHeadlineFormatter extends FormatterBase {
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $element = [];
-    foreach ($items as $delta => $item) {
+    $styles = HeadlineHelper::getStyles();
 
-      $styles = [
-        'default' => 'headline',
-        'headline_bold_serif' => 'headline bold-headline bold-headline--serif',
-        'headline_bold_serif_underline' => 'headline bold-headline bold-headline--serif bold-headline--underline',
-      ];
+    foreach ($items as $delta => $item) {
       $hidden = ($item->get('hide_headline')->getValue()) ? ' sr-only' : '';
+
       $item_style = isset($styles[$item->get('headline_style')->getValue()]) ?
         $styles[$item->get('headline_style')->getValue()] . $hidden : $hidden;
 

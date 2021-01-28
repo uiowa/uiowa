@@ -8,6 +8,7 @@ global-styling:
     layout:
       assets/css/components/page-layouts.css: {}
     component:
+      assets/css/components/badge.css: {}
       assets/css/components/breadcrumbs.css: {}
       assets/css/components/colors.css: {}
       assets/css/components/blockquote.css: {}
@@ -32,7 +33,8 @@ global-styling:
       assets/css/components/uiowa-bar.css: {}
       assets/css/components/image-gallery-block.css: {}
       assets/css/fields/fields.css: {}
-      assets/css/components/background.css: {}
+      assets/css/components/background.css: { weight: 200 }
+      assets/css/components/grid.css: {}
     theme:
       assets/css/theme/print.css: { media: print }
   dependencies:
@@ -91,6 +93,13 @@ banner:
       assets/css/components/banner.css: { preprocess: false }
   js:
     uids/components/banner/banner.js: { preprocess: false }
+video-cookie:
+  js:
+    assets/js/video-cookie.js: { preprocess: false }
+  dependencies:
+    - core/jquery
+    - core/jquery.cookie
+    - uids_base/video
 slider:
   css:
     component:
@@ -99,10 +108,16 @@ slider:
     uids/components/slider/slider.js: { preprocess: false }
   dependencies:
     - uids_base/banner
-video:
+remote-video:
   css:
     component:
       assets/css/components/video/video-utilities.css: { preprocess: false }
+video:
+  css:
+    component:
+      assets/css/components/video/video.css: { preprocess: false }
+  js:
+    uids/components/video/video.js: { preprocess: false }
 hero:
   css:
     component:
@@ -125,8 +140,8 @@ aggregator-feed:
       assets/css/content/aggregator-feed.css: { preprocess: false }
 hero-block-video:
   js:
-    uids/components/hero/hero.js: { preprocess: false }
-    assets/js/hero-video-cookie.js: { preprocess: false }
+    uids/components/video/video.js: { preprocess: false }
+    assets/js/video-cookie.js: { preprocess: false }
   dependencies:
     - core/jquery
     - core/jquery.once
@@ -190,6 +205,10 @@ slick:
     /libraries/slick-carousel/slick/slick.min.js: {}
   dependencies:
     - core/jquery
+badge:
+  css:
+    component:
+      assets/css/components/badge.css: { preprocess: false }
 cta:
   css:
     component:
@@ -300,6 +319,10 @@ node-type-article:
   css:
     component:
       assets/css/content/node--type--article.css: { preprocess: false }
+node-type-area-of-study:
+  css:
+    component:
+      assets/css/content/node--type--area-of-study.css: { preprocess: false }
 node-type-page:
   css:
     component:
@@ -357,3 +380,7 @@ tables:
   js:
     uids/components/tables/tables.js: { preprocess: false  }
     assets/js/tables.js: { preprocess: false  }
+person:
+  css:
+    theme:
+      assets/css/content/person.css: { }

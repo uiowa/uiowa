@@ -9,6 +9,7 @@ use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\uiowa_core\HeadlineHelper;
 use GuzzleHttp\Exception\RequestException;
 
 /**
@@ -35,6 +36,28 @@ function sitenow_events_preprocess_block(&$variables) {
     ]);
 
     if (isset($data['events'])) {
+      // Get block layout builder styles if they exist.
+      if (isset($variables["elements"]["#layout_builder_style"]) && !empty($variables["elements"]["#layout_builder_style"])) {
+        $parent_lb_styles = $variables["elements"]["#layout_builder_style"];
+        $parent_lb_styles[] = 'list-item';
+      }
+
+      // Unset classes meant for children.
+      if (isset($variables["attributes"]["class"])) {
+        foreach ($variables["attributes"]["class"] as $key => $style) {
+          foreach ([
+            'bg',
+            'card',
+            'media',
+            'hide',
+          ] as $check) {
+            if (substr($style, 0, strlen($check)) === $check) {
+              unset($variables['attributes']['class'][$key]);
+            }
+          }
+        }
+      }
+
       if ($block->hasField('field_uiowa_headline')) {
         $headline_fields = $block->get('field_uiowa_headline')->getValue();
         foreach ($headline_fields as $headline_field) {
@@ -43,14 +66,7 @@ function sitenow_events_preprocess_block(&$variables) {
             $heading_size = $headline_field['child_heading_size'];
           }
           else {
-            $options = [
-              'h2' => 'h3',
-              'h3' => 'h4',
-              'h4' => 'h5',
-              'h5' => 'h6',
-              'h6' => 'h6',
-            ];
-            $heading_size = $options[$headline_field['heading_size']];
+            $heading_size = HeadlineHelper::getHeadingSizeUp($headline_field['heading_size']);
           }
         }
       }
@@ -59,7 +75,10 @@ function sitenow_events_preprocess_block(&$variables) {
         // The API nests each event as an array.
         $event = $value['event'];
         $event['heading_size'] = isset($heading_size) ? $heading_size : 'h3';
-
+        // Pass the parent block's layout_builder_styles to each item.
+        if (!empty($parent_lb_styles)) {
+          $event['parent_lb_styles'] = $parent_lb_styles;
+        }
         $variables['content'][] = [
           '#theme' => 'sitenow_events_teaser',
           '#event' => $event,

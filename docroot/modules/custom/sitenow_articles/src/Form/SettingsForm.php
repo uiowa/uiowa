@@ -17,6 +17,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class SettingsForm extends ConfigFormBase {
 
   /**
+   * Config settings.
+   *
+   * @var string
+   */
+  const SETTINGS = 'sitenow_articles.settings';
+
+  /**
    * The alias cleaner.
    *
    * @var \Drupal\pathauto\AliasCleanerInterface
@@ -91,7 +98,7 @@ class SettingsForm extends ConfigFormBase {
    */
   protected function getEditableConfigNames() {
     return [
-      'sitenow_articles.settings',
+      static::SETTINGS,
       'pathauto.pattern.article',
     ];
   }
@@ -100,6 +107,7 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    $config = $this->config(static::SETTINGS);
     $form = parent::buildForm($form, $form_state);
     $view = $this->entityTypeManager->getStorage('view')->load('articles');
     $display =& $view->getDisplay('page_articles');
@@ -131,13 +139,45 @@ class SettingsForm extends ConfigFormBase {
       '#markup' => $this->t('<p>These settings allows you to customize the display of articles on the site.</p>'),
     ];
 
-    $form['global'] = [
+    $form['article_node'] = [
       '#type' => 'fieldset',
-      '#title' => 'Settings',
+      '#title' => 'Article Settings',
       '#collapsible' => FALSE,
     ];
 
-    $form['global']['sitenow_articles_status'] = [
+    // @todo remove when hr adopts uids_base.
+    // https://github.com/uiowa/uiowa/issues/2629
+    $site_path = \Drupal::service('site.path');
+    if ($site_path === 'sites/hr.uiowa.edu') {
+      $form['article_node']['#access'] = FALSE;
+    }
+
+    $featured_image_display_default = $config->get('featured_image_display_default');
+
+    $form['article_node']['featured_image_display_default'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Display featured image'),
+      '#description' => $this->t('Set the default behavior for how to display a featured image.'),
+      '#options' => [
+        'do_not_display' => $this
+          ->t('Do not display'),
+        'small' => $this
+          ->t('Small'),
+        'medium' => $this
+          ->t('Medium'),
+        'large' => $this
+          ->t('Large'),
+      ],
+      '#default_value' => $featured_image_display_default ?: 'large',
+    ];
+
+    $form['view_page'] = [
+      '#type' => 'fieldset',
+      '#title' => 'View Page Settings',
+      '#collapsible' => FALSE,
+    ];
+
+    $form['view_page']['sitenow_articles_status'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Enable articles listing'),
       '#default_value' => $status,
@@ -145,7 +185,7 @@ class SettingsForm extends ConfigFormBase {
       '#size' => 60,
     ];
 
-    $form['global']['sitenow_articles_title'] = [
+    $form['view_page']['sitenow_articles_title'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Articles title'),
       '#description' => $this->t('The title for the articles listing. Defaults to <em>News</em>.'),
@@ -153,7 +193,7 @@ class SettingsForm extends ConfigFormBase {
       '#required' => TRUE,
     ];
 
-    $form['global']['sitenow_articles_path'] = [
+    $form['view_page']['sitenow_articles_path'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Articles path'),
       '#description' => $this->t('The base path for the articles listing. Defaults to <em>news</em>.<br /><em>Warning:</em> The RSS feed path is controlled by this setting. {articles path}/feed)'),
@@ -161,7 +201,7 @@ class SettingsForm extends ConfigFormBase {
       '#required' => TRUE,
     ];
 
-    $form['global']['sitenow_articles_header_content'] = [
+    $form['view_page']['sitenow_articles_header_content'] = [
       '#type' => 'text_format',
       '#format' => 'filtered_html',
       '#title' => $this->t('Header Content'),
@@ -169,7 +209,7 @@ class SettingsForm extends ConfigFormBase {
       '#default_value' => $default['display_options']['header']['area']['content']['value'],
     ];
 
-    $form['global']['sitenow_articles_archive'] = [
+    $form['view_page']['sitenow_articles_archive'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Display monthly archive'),
       '#default_value' => $show_archive,
@@ -177,7 +217,7 @@ class SettingsForm extends ConfigFormBase {
       '#size' => 60,
     ];
 
-    $form['global']['sitenow_articles_feed'] = [
+    $form['view_page']['sitenow_articles_feed'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Show RSS Feed icon'),
       '#default_value' => $show_feed,
@@ -186,8 +226,8 @@ class SettingsForm extends ConfigFormBase {
     ];
 
     if ($view->get('status') == FALSE) {
-      $this->messenger()->addError($this->t('Related functionality has been turned off. Please contact an administrator.'));
-      $form['#disabled'] = TRUE;
+      $this->messenger()->addError($this->t('Articles views page functionality has been disabled. Please contact an administrator.'));
+      $form['view_page']['#disabled'] = TRUE;
     }
 
     return $form;
@@ -222,6 +262,12 @@ class SettingsForm extends ConfigFormBase {
     $path = $form_state->getValue('sitenow_articles_path');
     $header_content = $form_state->getValue('sitenow_articles_header_content');
     $show_archive = $form_state->getValue('sitenow_articles_archive');
+    $featured_image_display_default = $form_state->getValue('featured_image_display_default');
+
+    $this->configFactory->getEditable(static::SETTINGS)
+      // Save the featured image display default.
+      ->set('featured_image_display_default', $featured_image_display_default)
+      ->save();
 
     // Clean path.
     $path = $this->aliasCleaner->cleanString($path);
@@ -268,16 +314,27 @@ class SettingsForm extends ConfigFormBase {
     else {
       $feed['display_options']['displays']['page_articles'] = '0';
     }
+
     $view->save();
 
-    // Update article path pattern.
-    $this->config('pathauto.pattern.article')->set('pattern', $path . '/[node:created:custom:Y]/[node:created:custom:m]/[node:title]')->save();
+    $old_pattern = $this->config('pathauto.pattern.article')->get('pattern');
 
-    // Load and update article node path aliases.
-    $entities = $this->entityTypeManager->getStorage('node')->loadByProperties(['type' => 'article']);
+    $new_pattern = $path . '/[node:created:custom:Y]/[node:created:custom:m]/[node:title]';
 
-    foreach ($entities as $entity) {
-      $this->pathAutoGenerator->updateEntityAlias($entity, 'update');
+    // Only run this potentially expensive process if this setting is changing.
+    if ($new_pattern != $old_pattern) {
+      // Update article path pattern.
+      $this->config('pathauto.pattern.article')
+        ->set('pattern', $new_pattern)
+        ->save();
+
+      // Load and update article node path aliases.
+      $entities = $this->entityTypeManager->getStorage('node')
+        ->loadByProperties(['type' => 'article']);
+
+      foreach ($entities as $entity) {
+        $this->pathAutoGenerator->updateEntityAlias($entity, 'update');
+      }
     }
 
     parent::submitForm($form, $form_state);

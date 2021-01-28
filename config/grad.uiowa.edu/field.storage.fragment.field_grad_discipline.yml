@@ -1,0 +1,21 @@
+uuid: 98442f68-d63c-4f3f-acf7-1dcf14138be3
+langcode: en
+status: true
+dependencies:
+  module:
+    - fragments
+    - options
+id: fragment.field_grad_discipline
+field_name: field_grad_discipline
+entity_type: fragment
+type: list_string
+settings:
+  allowed_values_function: grad_disciplines_allowed_values
+  allowed_values: {  }
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_banner
+    - field.field.block_content.uiowa_banner.field_uiowa_banner_autoplay
     - field.field.block_content.uiowa_banner.field_uiowa_banner_excerpt
     - field.field.block_content.uiowa_banner.field_uiowa_banner_image
     - field.field.block_content.uiowa_banner.field_uiowa_banner_link
@@ -20,6 +21,13 @@ targetEntityType: block_content
 bundle: uiowa_banner
 mode: default
 content:
+  field_uiowa_banner_autoplay:
+    weight: 26
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
   field_uiowa_banner_excerpt:
     weight: 2
     settings:
