@@ -14,6 +14,8 @@ use Drupal\migrate\Row;
  */
 class People extends BaseNodeSource {
 
+  use ProcessMediaTrait;
+
   /**
    * The public file directory path.
    *

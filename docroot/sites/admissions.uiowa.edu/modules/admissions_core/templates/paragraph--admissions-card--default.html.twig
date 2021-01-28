@@ -1,0 +1,96 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a paragraph.
+ *
+ * Available variables:
+ * - paragraph: Full paragraph entity.
+ *   Only method names starting with "get", "has", or "is" and a few common
+ *   methods such as "id", "label", and "bundle" are available. For example:
+ *   - paragraph.getCreatedTime() will return the paragraph creation timestamp.
+ *   - paragraph.id(): The paragraph ID.
+ *   - paragraph.bundle(): The type of the paragraph, for example, "image" or "text".
+ *   - paragraph.getOwnerId(): The user ID of the paragraph author.
+ *   See Drupal\paragraphs\Entity\Paragraph for a full list of public properties
+ *   and methods for the paragraph object.
+ * - content: All paragraph items. Use {{ content }} to print them all,
+ *   or print a subset such as {{ content.field_example }}. Use
+ *   {{ content|without('field_example') }} to temporarily suppress the printing
+ *   of a given child element.
+ * - attributes: HTML attributes for the containing element.
+ *   The attributes.class element may contain one or more of the following
+ *   classes:
+ *   - paragraphs: The current template type (also known as a "theming hook").
+ *   - paragraphs--type-[type]: The current paragraphs type. For example, if the paragraph is an
+ *     "Image" it would result in "paragraphs--type--image". Note that the machine
+ *     name will often be in a short form of the human readable label.
+ *   - paragraphs--view-mode--[view_mode]: The View Mode of the paragraph; for example, a
+ *     preview would result in: "paragraphs--view-mode--preview", and
+ *     default: "paragraphs--view-mode--default".
+ * - view_mode: View mode; for example, "preview" or "full".
+ * - logged_in: Flag for authenticated user status. Will be true when the
+ *   current user is a logged-in member.
+ * - is_admin: Flag for admin user status. Will be true when the current user
+ *   is an administrator.
+ *
+ * @see template_preprocess_paragraph()
+ *
+ * @ingroup themeable
+ */
+#}
+{% set classes = [
+  'paragraph',
+  'paragraph--type--' ~ paragraph.bundle|clean_class,
+  view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
+  not paragraph.isPublished() ? 'paragraph--unpublished'
+] %}
+
+{% set card_attributes = create_attribute() %}
+
+{% set no_body = (paragraph.field_card_title.isEmpty()) and (paragraph.field_card_subtitle.isEmpty()) and (paragraph.field_card_body.isEmpty()) %}
+<div{{ attributes.addclass(classes) }}>
+
+  {% if no_body %}
+    {#
+          sitenow_card includes the ability to have just an image and a link.
+          This isn't considered a card in UIDS, so in that case we just output
+          an image wrapped in a link.
+    #}
+    {% set paragraph_card_link = {
+      'link_url': content.field_admissions_card_link[0]['#url'],
+      'link_class': 'media',
+      'card_image': content.field_admissions_card_media,
+    } %}
+    {% embed '@uids_base/uids/link.html.twig' with paragraph_card_link only %}
+      {% block link_content %}
+        {% if card_image is not empty %}
+          {{ card_image }}
+        {% endif %}
+      {% endblock %}
+    {% endembed %}
+
+  {% else %}
+    {# This is a card and can be handled as such. #}
+    {% set paragraph_card = {
+      'attributes': card_attributes.addClass(['card--enclosed']),
+      'card_image': content.field_admissions_card_media|render,
+      'card_text': content.field_admissions_card_body,
+      'card_subtitle': content.field_admissions_card_subtitle,
+      'card_title': content.field_admissions_card_title|render,
+      'card_link_url': content.field_admissions_card_link[0]['#url'],
+      'headline_level': 'h2',
+      'paragraph': paragraph,
+    } %}
+
+    {% embed '@uids_base/uids/card.html.twig' with paragraph_card only %}
+
+      {# We override this because the text is formatted already. #}
+      {% block card_content %}
+        {% if card_text is not empty %}
+          {{ card_text }}
+        {% endif %}
+      {% endblock %}
+
+    {% endembed %}
+  {% endif %}
+</div>
