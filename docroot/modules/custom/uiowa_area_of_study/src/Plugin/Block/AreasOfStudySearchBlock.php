@@ -5,6 +5,7 @@ namespace Drupal\uiowa_area_of_study\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormState;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\views\Views;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -17,7 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   category = @Translation("Site custom")
  * )
  */
-class AreasOfStudySearchBlock extends BlockBase {
+class AreasOfStudySearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
   /**
    * The form_builder service.
    *
