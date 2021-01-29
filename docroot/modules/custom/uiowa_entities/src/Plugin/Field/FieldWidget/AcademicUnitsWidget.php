@@ -5,6 +5,7 @@ namespace Drupal\uiowa_entities\Plugin\Field\FieldWidget;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsSelectWidget;
+use Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsWidgetBase;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\EntityTypeManager;
@@ -58,12 +59,10 @@ class AcademicUnitsWidget extends OptionsSelectWidget implements ContainerFactor
     $element = parent::formElement($items, $delta, $element, $form, $form_state);
     $element['#multiple'] = TRUE;
 
-    dpm(isset($items[$delta]->target_id));
-    dpm($items[$delta]->toArray());
     $element += [
       '#type' => 'select',
       '#options' => $this->getOptions($items->getEntity()),
-      '#default_value' => isset($items[$delta]) ? $items[$delta]->target_id : [],
+      '#default_value' => isset($items[$delta]) ? $items[$delta] : NULL,
     ];
 
     return $element;
