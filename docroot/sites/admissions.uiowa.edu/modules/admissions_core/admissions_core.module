@@ -176,14 +176,14 @@ function admissions_core_theme($existing, $type, $theme, $path) {
       'template' => 'node--view--student-profiles',
       'base hook' => 'node',
     ],
-    'field__node__field_area_of_study_career' => [
-      'template' => 'field--node--field-area-of-study-career',
-      'base hook' => 'field',
-    ],
-    'field__node__field_area_of_study_opportunity' => [
-      'template' => 'field--node--field-area-of-study-opportunity',
-      'base hook' => 'field',
-    ],
+//    'field__node__field_area_of_study_career' => [
+//      'template' => 'field--node--field-area-of-study-career',
+//      'base hook' => 'field',
+//    ],
+//    'field__node__field_area_of_study_opportunity' => [
+//      'template' => 'field--node--field-area-of-study-opportunity',
+//      'base hook' => 'field',
+//    ],
     'field__node__field_area_of_study_stat' => [
       'template' => 'field--node--field-area-of-study-stat',
       'base hook' => 'field',
@@ -220,6 +220,12 @@ function admissions_core_theme($existing, $type, $theme, $path) {
  */
 function admissions_core_theme_suggestions_field_alter(array &$suggestions, array $variables) {
   switch ($variables["element"]["#field_name"]) {
+    case 'field_area_of_study_career':
+    case 'field_area_of_study_opportunity':
+    case 'field_area_of_study_why':
+    case 'field_area_of_study_requirement':
+      $suggestions[] = 'field__bold_headline_label';
+      break;
     case 'field_person_territory':
       $suggestions[] = 'field__comma_separated';
       break;
