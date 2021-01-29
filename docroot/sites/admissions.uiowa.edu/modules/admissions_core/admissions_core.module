@@ -74,7 +74,7 @@ function admissions_core_form_alter(&$form, \Drupal\Core\Form\FormStateInterface
       break;
 
     case 'fragment_stat_edit_form':
-    case 'fragment_stat_form':
+    case 'fragment_stat_add_form':
       $form['#attached']['library'][]  = 'admissions_core/admin';
       break;
   }
