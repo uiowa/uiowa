@@ -175,6 +175,14 @@ function admissions_core_theme($existing, $type, $theme, $path) {
       'template' => 'paragraph--admissions-card--default',
       'base hook' => 'paragraph',
     ],
+    'entity_print__node__area_of_study' => [
+      'template' => 'entity-print--node--area-of-study',
+      'base hook' => 'entity_print',
+    ],
+    'node__area_of_study__pdf' => [
+      'template' => 'node--area-of-study--pdf',
+      'base hook' => 'node',
+    ],
   ];
 }
 
