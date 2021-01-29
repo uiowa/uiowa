@@ -2,7 +2,6 @@
 
 namespace Drupal\uiowa_entities\Plugin\Field\FieldType;
 
-use Drupal\Core\Field\FieldItemBase;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\Core\TypedData\DataReferenceTargetDefinition;
@@ -19,7 +18,6 @@ use Drupal\Core\Session\AccountInterface;
  *   label = @Translation("Academic Units"),
  *   description = @Translation("Reference academic unit configuration entities."),
  *   category = @Translation("Reference"),
- *   list_class = "\Drupal\uiowa_entities\Plugin\Field\FieldType\AcademicUnitsList",
  *   default_formatter = "uiowa_academic_units_formatter",
  *   default_widget = "uiowa_academic_units_widget",
  * )
@@ -31,8 +29,8 @@ class AcademicUnits extends EntityReferenceItem {
    */
   public static function defaultStorageSettings() {
     return [
-        'target_type' => 'uiowa_academic_unit',
-      ] + parent::defaultStorageSettings();
+      'target_type' => 'uiowa_academic_unit',
+    ] + parent::defaultStorageSettings();
   }
 
   /**
@@ -71,8 +69,7 @@ class AcademicUnits extends EntityReferenceItem {
       ->setDescription(t('The referenced entity'))
       ->setComputed(TRUE)
       ->setReadOnly(FALSE)
-      ->setTargetDefinition(EntityDataDefinition::create('uiowa_academic_unit'))
-      ->addConstraint('EntityType', 'uiowa_academic_unit');;
+      ->setTargetDefinition(EntityDataDefinition::create('uiowa_academic_unit'));
 
     return $properties;
   }

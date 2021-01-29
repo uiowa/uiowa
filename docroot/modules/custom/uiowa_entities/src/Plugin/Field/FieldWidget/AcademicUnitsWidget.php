@@ -5,8 +5,6 @@ namespace Drupal\uiowa_entities\Plugin\Field\FieldWidget;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsSelectWidget;
-use Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsWidgetBase;
-use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -65,6 +63,9 @@ class AcademicUnitsWidget extends OptionsSelectWidget implements ContainerFactor
     return $element;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   protected function getOptions(FieldableEntityInterface $entity) {
     if (!isset($this->options)) {
       // Grab available units.
