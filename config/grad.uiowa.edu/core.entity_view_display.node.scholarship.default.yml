@@ -115,11 +115,11 @@ third_party_settings:
               label: 'Main navigation'
               provider: menu_block
               label_display: '0'
-              follow: 1
+              follow: true
               follow_parent: '0'
               level: 2
               depth: 0
-              expand: 0
+              expand: false
               parent: 'main:'
               suggestion: main
               context_mapping: {  }
@@ -141,7 +141,7 @@ third_party_settings:
                 third_party_settings: {  }
                 type: text_default
             additional: {  }
-            weight: -8
+            weight: -7
           -
             uuid: 736c3c12-304d-4926-bcec-f0368985048c
             region: content
@@ -156,7 +156,7 @@ third_party_settings:
                 third_party_settings: {  }
                 type: text_default
             additional: {  }
-            weight: -7
+            weight: -6
           -
             uuid: 6dec8e86-00b9-481f-9f36-3f9db6e7739f
             region: content
@@ -171,7 +171,7 @@ third_party_settings:
                 third_party_settings: {  }
                 type: text_default
             additional: {  }
-            weight: -6
+            weight: -5
           -
             uuid: fa545645-7ee9-42a6-9ea7-5d791ee7f6d6
             region: content
@@ -186,7 +186,7 @@ third_party_settings:
                 third_party_settings: {  }
                 type: text_default
             additional: {  }
-            weight: -5
+            weight: -4
           -
             uuid: 7c5956e0-6ce8-4fe3-9d7e-79e6e363e647
             region: content
@@ -201,7 +201,7 @@ third_party_settings:
                 third_party_settings: {  }
                 type: text_default
             additional: {  }
-            weight: -4
+            weight: -3
           -
             uuid: 9018128c-570e-4b86-a2f2-711a79395472
             region: content
@@ -216,7 +216,7 @@ third_party_settings:
                 third_party_settings: {  }
                 type: text_default
             additional: {  }
-            weight: -3
+            weight: -2
           -
             uuid: 7621544a-9792-4406-b471-389d9393e485
             region: content
@@ -236,7 +236,25 @@ third_party_settings:
                 third_party_settings: {  }
                 type: link
             additional: {  }
-            weight: -2
+            weight: -1
+          -
+            uuid: 93c65c44-60b6-47e6-b26a-2229086118a1
+            region: content
+            configuration:
+              id: 'field_block:node:scholarship:body'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: hidden
+                type: text_default
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: -8
         third_party_settings: {  }
 id: node.scholarship.default
 targetEntityType: node
