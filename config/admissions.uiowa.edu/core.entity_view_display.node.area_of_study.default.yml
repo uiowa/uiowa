@@ -285,25 +285,6 @@ third_party_settings:
                 third_party_settings: {  }
             additional: {  }
             weight: 15
-          -
-            uuid: f5efc3ea-7887-471f-85d5-bc7a312765ff
-            region: content
-            configuration:
-              id: 'field_block:node:area_of_study:field_area_of_study_stat'
-              label: null
-              provider: layout_builder
-              label_display: null
-              formatter:
-                label: hidden
-                type: entity_reference_entity_view
-                settings:
-                  view_mode: default
-                third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-            additional: {  }
-            weight: 9
         third_party_settings: {  }
       -
         layout_id: layout_twocol
@@ -311,8 +292,10 @@ third_party_settings:
           label: ''
           column_widths: 67-33
           layout_builder_styles_style:
-            - ''
-            - ''
+            0: ''
+            1: ''
+            section_padding_remove_default_padding: section_padding_remove_default_padding
+            section_alignment_start: section_alignment_start
         components:
           -
             uuid: bd18ff33-3031-499c-97e8-bfa321c9dd68
@@ -327,6 +310,25 @@ third_party_settings:
                 type: text_default
                 settings: {  }
                 third_party_settings: {  }
+            additional: {  }
+            weight: 1
+          -
+            uuid: f5efc3ea-7887-471f-85d5-bc7a312765ff
+            region: first
+            configuration:
+              id: 'field_block:node:area_of_study:field_area_of_study_stat'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: hidden
+                type: entity_reference_entity_view
+                settings:
+                  view_mode: default
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
             additional: {  }
             weight: 0
         third_party_settings:
@@ -356,6 +358,7 @@ third_party_settings:
         'Content fields':
           - 'field_block:node:area_of_study:field_image'
           - 'field_block:node:area_of_study:body'
+          - 'field_block:node:area_of_study:field_area_of_study_stat'
           - 'field_block:node:area_of_study:title'
         'Custom block types': {  }
         'Custom blocks': {  }
