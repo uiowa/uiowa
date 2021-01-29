@@ -39,12 +39,15 @@
 #}
 {%
   set classes = [
-    'page-title',
-    'bold-headline--serif bold-headline',
+    'text-align-center',
+    'headline',
+    'bold-headline--serif',
+    'bold-headline',
+    'bold-headline--highlight',
   ]
 %}
 <h1 {{ attributes.addClass(classes) }}>
 	{%- for item in items -%}
-		{{ item.content }}
+    <span>{{ item.content }}</span>
 	{%- endfor -%}
 </h1>
