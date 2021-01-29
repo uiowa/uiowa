@@ -138,6 +138,9 @@ function admissions_core_preprocess_layout(&$variables) {
   if ($layout->id() === 'layout_header') {
     $node = \Drupal::routeMatch()->getParameter('node');
     $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
+    if ($node instanceof NodeInterface && $node->getType() === 'area_of_study') {
+      $variables['#attached']['library'][] = 'admissions_core/area-of-study';
+    }
     // Limit to just Student profiles.
     if ($node instanceof NodeInterface && $node->getType() === 'student_profile') {
       if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
@@ -172,6 +175,10 @@ function admissions_core_theme($existing, $type, $theme, $path) {
     'node__view__student_profiles' => [
       'template' => 'node--view--student-profiles',
       'base hook' => 'node',
+    ],
+    'field__node__field_area_of_study_stat' => [
+      'template' => 'field--node--field-area-of-study-stat',
+      'base hook' => 'field',
     ],
     'field__field_student_profile_blurb' => [
       'template' => 'field--field-student-profile-blurb',
