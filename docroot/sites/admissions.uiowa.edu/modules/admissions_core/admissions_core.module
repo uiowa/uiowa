@@ -24,13 +24,13 @@ function admissions_core_entity_presave(EntityInterface $entity) {
     // Statistic Fragment.
     case 'stat':
       $output = '';
-      if ($entity->hasField('field_stat_title_pre') && !empty($entity->get('field_stat_title_pre'))) {
-        $output .= $entity->get('field_stat_title_pre')->value . ' ';
+      if ($entity->hasField('field_stat_figure_pre') && !empty($entity->get('field_stat_figure_pre'))) {
+        $output .= $entity->get('field_stat_figure_pre')->value . ' ';
       }
       // Required field. Go on, get it.
-      $output .= $entity->get('field_stat_title')->text;
-      if ($entity->hasField('field_stat_title_suf') && !empty($entity->get('field_stat_title_suf'))) {
-        $output .= ' ' . $entity->get('field_stat_title_suf')->value;
+      $output .= $entity->get('field_stat_figure')->text;
+      if ($entity->hasField('field_stat_figure_suf') && !empty($entity->get('field_stat_figure_suf'))) {
+        $output .= ' ' . $entity->get('field_stat_figure_suf')->value;
       }
       $entity->setTitle($output);
       break;
