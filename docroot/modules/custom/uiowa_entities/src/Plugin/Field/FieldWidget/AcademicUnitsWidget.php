@@ -18,11 +18,12 @@ use Drupal\Core\Field\FieldDefinitionInterface;
  *
  * @FieldWidget(
  *   id = "uiowa_academic_units_widget",
- *   label = @Translation("Academic Units Config Entity Reference Field Widget"),
+ *   label = @Translation("Academic Units Field Widget"),
  *   description = @Translation("Widget for handling configuration entity references for academic units."),
  *   field_types = {
  *     "uiowa_academic_units",
- *   }
+ *   },
+ *   multiple_values = TRUE
  * )
  */
 class AcademicUnitsWidget extends OptionsSelectWidget implements ContainerFactoryPluginInterface {
@@ -57,13 +58,9 @@ class AcademicUnitsWidget extends OptionsSelectWidget implements ContainerFactor
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $element = parent::formElement($items, $delta, $element, $form, $form_state);
+    // Force allowed multiple values. Needs to be revisited
+    // and fixed later.
     $element['#multiple'] = TRUE;
-
-    $element += [
-      '#type' => 'select',
-      '#options' => $this->getOptions($items->getEntity()),
-      '#default_value' => isset($items[$delta]) ? $items[$delta] : NULL,
-    ];
 
     return $element;
   }
@@ -86,22 +83,6 @@ class AcademicUnitsWidget extends OptionsSelectWidget implements ContainerFactor
       $this->options = $options;
     }
     return $this->options;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
-    foreach ($values as $key => $value) {
-      // The entity_autocomplete form element returns an array when an entity
-      // was "autocreated", so we need to move it up a level.
-      if (isset($value['target_id'])) {
-        unset($values[$key]['target_id']);
-        $values[$key] += $value['target_id'];
-      }
-    }
-
-    return $values;
   }
 
   /**

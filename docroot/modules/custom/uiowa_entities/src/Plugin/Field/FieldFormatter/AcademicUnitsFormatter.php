@@ -4,6 +4,7 @@ namespace Drupal\uiowa_entities\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
+use Drupal\Core\Field\Plugin\Field\FieldFormatter\EntityReferenceFormatterBase;
 
 /**
  * Plugin implementation of the 'uiowa_academic_units_formatter' formatter.
@@ -16,7 +17,7 @@ use Drupal\Core\Field\FormatterBase;
  *   }
  * )
  */
-class AcademicUnitsFormatter extends FormatterBase {
+class AcademicUnitsFormatter extends EntityReferenceFormatterBase {
 
   /**
    * {@inheritdoc}
