@@ -24,7 +24,6 @@ dependencies:
     - layout_builder
     - layout_builder_restrictions
     - link
-    - system
     - text
     - user
   theme:
@@ -38,9 +37,10 @@ third_party_settings:
         layout_id: layout_header
         layout_settings:
           label: Header
-          layout_builder_styles_style: { }
+          layout_builder_styles_style: {  }
         components:
-          - uuid: 26e192ee-63a7-4cac-8865-674c89aa9063
+          -
+            uuid: 26e192ee-63a7-4cac-8865-674c89aa9063
             region: background
             configuration:
               id: 'field_block:node:area_of_study:field_image'
@@ -52,13 +52,14 @@ third_party_settings:
                 type: entity_reference_entity_view
                 settings:
                   view_mode: full__ultrawide
-                third_party_settings: { }
+                third_party_settings: {  }
               context_mapping:
                 entity: layout_builder.entity
                 view_mode: view_mode
-            additional: { }
+            additional: {  }
             weight: 2
-          - uuid: d75c28a9-d252-47df-86e8-206190ec5052
+          -
+            uuid: d75c28a9-d252-47df-86e8-206190ec5052
             region: content
             configuration:
               id: 'field_block:node:area_of_study:title'
@@ -70,13 +71,13 @@ third_party_settings:
                 type: string
                 settings:
                   link_to_entity: false
-                third_party_settings: { }
+                third_party_settings: {  }
               context_mapping:
                 entity: layout_builder.entity
                 view_mode: view_mode
-            additional: { }
+            additional: {  }
             weight: -9
-        third_party_settings: { }
+        third_party_settings: {  }
       -
         layout_id: layout_onecol
         layout_settings:
