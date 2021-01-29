@@ -2111,3 +2111,9 @@ $sites['labbasinanalysis.local.drupal.uiowa.edu'] = 'basinanalysis.lab.uiowa.edu
 $sites['labbasinanalysis.dev.drupal.uiowa.edu'] = 'basinanalysis.lab.uiowa.edu';
 $sites['labbasinanalysis.stage.drupal.uiowa.edu'] = 'basinanalysis.lab.uiowa.edu';
 $sites['labbasinanalysis.prod.drupal.uiowa.edu'] = 'basinanalysis.lab.uiowa.edu';
+
+// Directory aliases for osc.uiowa.edu.
+$sites['osc.local.drupal.uiowa.edu'] = 'osc.uiowa.edu';
+$sites['osc.dev.drupal.uiowa.edu'] = 'osc.uiowa.edu';
+$sites['osc.stage.drupal.uiowa.edu'] = 'osc.uiowa.edu';
+$sites['osc.prod.drupal.uiowa.edu'] = 'osc.uiowa.edu';
