@@ -37,58 +37,54 @@ third_party_settings:
       -
         layout_id: layout_header
         layout_settings:
+          label: Header
+          layout_builder_styles_style: { }
+        components:
+          - uuid: 26e192ee-63a7-4cac-8865-674c89aa9063
+            region: background
+            configuration:
+              id: 'field_block:node:area_of_study:field_image'
+              label: 'Featured Image'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: visually_hidden
+                type: entity_reference_entity_view
+                settings:
+                  view_mode: full__ultrawide
+                third_party_settings: { }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: { }
+            weight: 2
+          - uuid: d75c28a9-d252-47df-86e8-206190ec5052
+            region: content
+            configuration:
+              id: 'field_block:node:area_of_study:title'
+              label: Title
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: visually_hidden
+                type: string
+                settings:
+                  link_to_entity: false
+                third_party_settings: { }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: { }
+            weight: -9
+        third_party_settings: { }
+      -
+        layout_id: layout_onecol
+        layout_settings:
           label: ''
           layout_builder_styles_style:
             - ''
             - section_margin_edge_to_edge
         components:
-          -
-            uuid: 7854f557-9ad7-4592-aabe-78b46d93e510
-            region: content
-            configuration:
-              id: system_breadcrumb_block
-              label: null
-              provider: system
-              label_display: null
-              context_mapping: {  }
-            additional: {  }
-            weight: 0
-          -
-            uuid: df5471dc-43b4-4a02-820c-1128fee17f11
-            region: content
-            configuration:
-              id: 'field_block:node:area_of_study:title'
-              label: null
-              provider: layout_builder
-              label_display: null
-              formatter:
-                label: hidden
-                type: string
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-            additional: {  }
-            weight: 1
-          -
-            uuid: d5628205-7805-460b-b65e-9d15b3d94e71
-            region: background
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:area_of_study:field_image'
-              formatter:
-                label: hidden
-                settings:
-                  view_mode: medium__square
-                  link: false
-                third_party_settings: {  }
-                type: entity_reference_entity_view
-            additional: {  }
-            weight: 0
           -
             uuid: 4662491f-9799-481e-aab0-cfe9e5dc3fa8
             region: content
