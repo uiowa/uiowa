@@ -105,7 +105,7 @@ function admissions_core_node_presave(Node $node) {
 function admissions_core_preprocess_entity_print(&$variables) {
   if ($variables['theme_hook_original'] == 'entity_print__node__area_of_study') {
     if (isset($variables['content'][0]['#node'])) {
-      $variables['title'] = t('@title - PDF', [
+      $variables['title'] = t('@title', [
         '@title' => $variables['content'][0]['#node']->getTitle(),
       ]);
     }
