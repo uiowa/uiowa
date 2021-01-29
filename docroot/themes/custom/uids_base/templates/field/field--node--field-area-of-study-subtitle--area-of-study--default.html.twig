@@ -44,6 +44,6 @@
 %}
 <h1 {{ attributes.addClass(classes) }}>
 	{%- for item in items -%}
-    {{ item.content }}
+   <p class="element--light-intro">{{ item.content|render|striptags }}</p>
 	{%- endfor -%}
 </h1>
