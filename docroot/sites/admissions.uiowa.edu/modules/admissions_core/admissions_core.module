@@ -140,6 +140,11 @@ function admissions_core_preprocess_layout(&$variables) {
     $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
     if ($node instanceof NodeInterface && $node->getType() === 'area_of_study') {
       $variables['#attached']['library'][] = 'admissions_core/area-of-study';
+
+      if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
+        // Set the featured image display.
+        $variables['featured_image_display'] = 'small';
+      }
       $banner_classes = ['banner--horizontal-center', 'banner--vertical-center', 'banner--transparent', 'banner--small'];
       foreach ($banner_classes as $class) {
         $variables['attributes']['class'][] = $class;
