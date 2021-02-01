@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.area_of_study.body
     - field.field.node.area_of_study.field_area_of_study_career
     - field.field.node.area_of_study.field_area_of_study_certificates
+    - field.field.node.area_of_study.field_area_of_study_course_work
     - field.field.node.area_of_study.field_area_of_study_link
     - field.field.node.area_of_study.field_area_of_study_majors
     - field.field.node.area_of_study.field_area_of_study_minors
@@ -13,6 +14,8 @@ dependencies:
     - field.field.node.area_of_study.field_area_of_study_opportunity
     - field.field.node.area_of_study.field_area_of_study_preprof
     - field.field.node.area_of_study.field_area_of_study_requirement
+    - field.field.node.area_of_study.field_area_of_study_scholarship
+    - field.field.node.area_of_study.field_area_of_study_stat
     - field.field.node.area_of_study.field_area_of_study_stories
     - field.field.node.area_of_study.field_area_of_study_subtitle
     - field.field.node.area_of_study.field_area_of_study_why
@@ -23,7 +26,6 @@ dependencies:
     - layout_builder
     - layout_builder_restrictions
     - link
-    - system
     - text
     - user
   theme:
@@ -36,32 +38,38 @@ third_party_settings:
       -
         layout_id: layout_header
         layout_settings:
-          label: ''
-          layout_builder_styles_style:
-            - ''
-            - section_margin_edge_to_edge
+          label: Header
+          layout_builder_styles_style: {  }
         components:
           -
-            uuid: 7854f557-9ad7-4592-aabe-78b46d93e510
-            region: content
+            uuid: 26e192ee-63a7-4cac-8865-674c89aa9063
+            region: background
             configuration:
-              id: system_breadcrumb_block
-              label: null
-              provider: system
-              label_display: null
-              context_mapping: {  }
+              id: 'field_block:node:area_of_study:field_image'
+              label: 'Featured Image'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: visually_hidden
+                type: entity_reference_entity_view
+                settings:
+                  view_mode: full__ultrawide
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
             additional: {  }
-            weight: 0
+            weight: 2
           -
-            uuid: df5471dc-43b4-4a02-820c-1128fee17f11
+            uuid: d75c28a9-d252-47df-86e8-206190ec5052
             region: content
             configuration:
               id: 'field_block:node:area_of_study:title'
-              label: null
+              label: Title
               provider: layout_builder
-              label_display: null
+              label_display: '0'
               formatter:
-                label: hidden
+                label: visually_hidden
                 type: string
                 settings:
                   link_to_entity: false
@@ -70,105 +78,16 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
-            weight: 1
-          -
-            uuid: d5628205-7805-460b-b65e-9d15b3d94e71
-            region: background
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:area_of_study:field_image'
-              formatter:
-                label: hidden
-                settings:
-                  view_mode: medium__square
-                  link: false
-                third_party_settings: {  }
-                type: entity_reference_entity_view
-            additional: {  }
-            weight: 0
-          -
-            uuid: 4662491f-9799-481e-aab0-cfe9e5dc3fa8
-            region: content
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:area_of_study:field_area_of_study_majors'
-              formatter:
-                type: entity_reference_revisions_entity_view
-                label: above
-                settings:
-                  view_mode: default
-                  link: ''
-                third_party_settings: {  }
-            additional: {  }
-            weight: 2
-          -
-            uuid: 7b79f9d2-739d-4ca8-b868-a5aa2f3adf13
-            region: content
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:area_of_study:field_area_of_study_minors'
-              formatter:
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-                type: string
-            additional: {  }
-            weight: 3
-          -
-            uuid: 569e5bc6-063a-41d1-aba6-898af65e7270
-            region: content
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:area_of_study:field_area_of_study_certificates'
-              formatter:
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-                type: string
-            additional: {  }
-            weight: 4
-          -
-            uuid: b2b883ff-d241-46a6-82b2-1b8e020fb2ba
-            region: content
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:area_of_study:field_area_of_study_preprof'
-              formatter:
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-                type: string
-            additional: {  }
-            weight: 5
-          -
-            uuid: 6c8e45b2-5729-447c-a807-f351855d6695
-            region: content
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:area_of_study:field_area_of_study_online'
-              formatter:
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-                type: string
-            additional: {  }
-            weight: 6
+            weight: -9
+        third_party_settings: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          layout_builder_styles_style:
+            - ''
+            - ''
+        components:
           -
             uuid: b592b89b-c491-476a-8c2f-252bb70b140f
             region: content
@@ -186,95 +105,200 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
-            weight: 7
+            weight: 2
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+      -
+        layout_id: layout_twocol
+        layout_settings:
+          label: ''
+          column_widths: 67-33
+          layout_builder_styles_style:
+            0: ''
+            1: ''
+            section_padding_remove_default_padding: section_padding_remove_default_padding
+            section_alignment_start: section_alignment_start
+        components:
           -
-            uuid: caf9690a-3d7d-472a-8fe3-f63f55ee53fe
-            region: content
+            uuid: f5efc3ea-7887-471f-85d5-bc7a312765ff
+            region: first
             configuration:
-              label_display: '0'
+              id: 'field_block:node:area_of_study:field_area_of_study_stat'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: hidden
+                type: entity_reference_entity_view
+                settings:
+                  view_mode: default
+                third_party_settings: {  }
               context_mapping:
                 entity: layout_builder.entity
+                view_mode: view_mode
+            additional:
+              layout_builder_styles_style:
+                block_margin_bottom: block_margin_bottom
+                block_margin_top: block_margin_top
+                block_margin_right: block_margin_right
+            weight: 2
+          -
+            uuid: f99d4ffa-b056-484b-bc4b-caf2a203cfc0
+            region: first
+            configuration:
               id: 'field_block:node:area_of_study:field_area_of_study_why'
+              label: null
+              provider: layout_builder
+              label_display: null
               formatter:
                 label: above
+                type: text_default
                 settings: {  }
                 third_party_settings: {  }
-                type: text_default
-            additional: {  }
-            weight: 9
-          -
-            uuid: e59abf56-a1a2-464f-9919-a7a29a45da23
-            region: content
-            configuration:
-              label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-              id: 'field_block:node:area_of_study:field_area_of_study_requirement'
-              formatter:
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-                type: text_default
-            additional: {  }
-            weight: 10
+                view_mode: view_mode
+            additional:
+              layout_builder_styles_style:
+                block_margin_top: block_margin_top
+                block_margin_bottom: block_margin_bottom
+                block_margin_right: block_margin_right
+            weight: 1
           -
-            uuid: 8dd0daee-870d-483b-9ee6-5e03829f54fb
-            region: content
+            uuid: 32b68e28-f595-45a5-a247-b3b7c6613d30
+            region: second
             configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:area_of_study:field_area_of_study_career'
-              formatter:
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-                type: text_default
-            additional: {  }
-            weight: 12
-          -
-            uuid: 1203ee0e-a1ac-4206-8172-cebca42b7fe3
-            region: content
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:area_of_study:field_area_of_study_opportunity'
-              formatter:
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-                type: text_default
-            additional: {  }
-            weight: 13
-          -
-            uuid: 6e22c29a-f706-41c9-8e8a-02eecb0e5d54
-            region: content
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
               id: 'field_block:node:area_of_study:field_area_of_study_link'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: above
+                type: link
+                settings:
+                  trim_length: null
+                  url_only: false
+                  url_plain: false
+                  rel: '0'
+                  target: '0'
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 6
+          -
+            uuid: 616b3735-14cb-45ac-8d36-f0ed42845915
+            region: first
+            configuration:
+              id: 'field_block:node:area_of_study:field_area_of_study_requirement'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: above
+                type: text_default
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional:
+              layout_builder_styles_style:
+                block_margin_top: block_margin_top
+                block_margin_right: block_margin_right
+            weight: 3
+          -
+            uuid: 0eeb1ce7-7903-4640-89a5-cd8d147d3244
+            region: first
+            configuration:
+              id: 'field_block:node:area_of_study:body'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: hidden
+                type: text_default
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 0
+          -
+            uuid: 6c8e45b2-5729-447c-a807-f351855d6695
+            region: second
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:area_of_study:field_area_of_study_online'
               formatter:
                 label: above
                 settings:
-                  trim_length: 80
-                  url_only: false
-                  url_plain: false
-                  rel: ''
-                  target: ''
+                  link_to_entity: false
                 third_party_settings: {  }
-                type: link
+                type: string
             additional: {  }
-            weight: 14
+            weight: 4
           -
-            uuid: d5d1cc3f-6b69-483b-b013-5be891590e0b
-            region: content
+            uuid: b2b883ff-d241-46a6-82b2-1b8e020fb2ba
+            region: second
             configuration:
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-              id: 'field_block:node:area_of_study:field_area_of_study_stories'
+              id: 'field_block:node:area_of_study:field_area_of_study_preprof'
+              formatter:
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+                type: string
+            additional: {  }
+            weight: 3
+          -
+            uuid: 569e5bc6-063a-41d1-aba6-898af65e7270
+            region: second
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:area_of_study:field_area_of_study_certificates'
+              formatter:
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+                type: string
+            additional: {  }
+            weight: 2
+          -
+            uuid: 7b79f9d2-739d-4ca8-b868-a5aa2f3adf13
+            region: second
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:area_of_study:field_area_of_study_minors'
+              formatter:
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+                type: string
+            additional: {  }
+            weight: 1
+          -
+            uuid: 4662491f-9799-481e-aab0-cfe9e5dc3fa8
+            region: second
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:area_of_study:field_area_of_study_majors'
               formatter:
                 type: entity_reference_revisions_entity_view
                 label: above
@@ -283,77 +307,148 @@ third_party_settings:
                   link: ''
                 third_party_settings: {  }
             additional: {  }
-            weight: 15
-        third_party_settings: {  }
+            weight: 0
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
       -
         layout_id: layout_twocol
         layout_settings:
           label: ''
           column_widths: 67-33
           layout_builder_styles_style:
-            - ''
-            - ''
+            0: ''
+            1: ''
+            section_alignment_start: section_alignment_start
         components:
           -
-            uuid: bd18ff33-3031-499c-97e8-bfa321c9dd68
+            uuid: eec9f44d-414e-4899-ad13-dec64319dc29
             region: first
             configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:area_of_study:body'
+              id: 'field_block:node:area_of_study:field_area_of_study_career'
+              label: null
+              provider: layout_builder
+              label_display: null
               formatter:
-                label: hidden
+                label: above
                 type: text_default
                 settings: {  }
                 third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional:
+              layout_builder_styles_style:
+                block_margin_bottom: block_margin_bottom
+                block_margin_right: block_margin_right
+            weight: 0
+          -
+            uuid: b2460d91-7c3a-4070-a999-9fe66505b352
+            region: first
+            configuration:
+              id: 'field_block:node:area_of_study:field_area_of_study_opportunity'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: above
+                type: text_default
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional:
+              layout_builder_styles_style:
+                block_margin_top: block_margin_top
+                block_margin_right: block_margin_right
+            weight: 1
+          -
+            uuid: d1eea26e-c704-48e1-a481-ea13e704e45c
+            region: second
+            configuration:
+              id: 'field_block:node:area_of_study:field_area_of_study_scholarship'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: above
+                type: text_default
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
             additional: {  }
             weight: 0
         third_party_settings:
           layout_builder_lock:
             lock: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          layout_builder_styles_style:
+            - ''
+            - ''
+        components:
+          -
+            uuid: 84675222-fd75-46f0-9d18-bce0e05d2b64
+            region: content
+            configuration:
+              id: 'field_block:node:area_of_study:field_area_of_study_stories'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: above
+                type: entity_reference_revisions_entity_view
+                settings:
+                  view_mode: default
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 0
+        third_party_settings: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          layout_builder_styles_style:
+            - ''
+            - ''
+        components:
+          -
+            uuid: 140b89e6-8aff-40f2-bf85-ce5f901b9b29
+            region: content
+            configuration:
+              id: 'field_block:node:area_of_study:field_area_of_study_course_work'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: above
+                type: text_default
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 0
+        third_party_settings: {  }
   layout_builder_restrictions:
-    allowed_block_categories:
-      - 'Chaos Tools'
-      - 'Content fields'
-      - 'Custom block types'
-      - 'Custom blocks'
-      - Devel
-      - 'Entity Print'
-      - Forms
-      - 'Inline blocks'
-      - 'Lists (Views)'
-      - Menus
-      - 'Site custom'
-      - Superfish
-      - System
-      - 'University of Iowa Alerts'
-      - User
-      - Webform
-      - core
+    allowed_block_categories: {  }
     entity_view_mode_restriction:
       whitelisted_blocks:
-        'Chaos Tools': {  }
-        'Content fields':
-          - 'field_block:node:area_of_study:field_image'
-          - 'field_block:node:area_of_study:body'
-          - 'field_block:node:area_of_study:title'
-        'Custom block types': {  }
-        'Custom blocks': {  }
-        Devel: {  }
-        'Entity Print':
-          - print_links
-        Forms: {  }
-        'Inline blocks': {  }
-        'Lists (Views)': {  }
-        Menus: {  }
         'Site custom': {  }
         Superfish: {  }
         System:
           - system_breadcrumb_block
         User: {  }
         Webform: {  }
-        core: {  }
       blacklisted_blocks: {  }
       allowed_layouts:
         - layout_onecol
@@ -394,6 +489,13 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
+  field_area_of_study_course_work:
+    weight: 23
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
     region: content
   field_area_of_study_link:
     weight: 20
@@ -454,6 +556,13 @@ content:
     third_party_settings: {  }
     type: text_default
     region: content
+  field_area_of_study_scholarship:
+    weight: 22
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
   field_area_of_study_stories:
     type: entity_reference_revisions_entity_view
     weight: 21
@@ -495,4 +604,5 @@ hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
+  field_area_of_study_stat: true
   search_api_excerpt: true
