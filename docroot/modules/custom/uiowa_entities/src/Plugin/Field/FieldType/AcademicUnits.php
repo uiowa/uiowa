@@ -20,6 +20,7 @@ use Drupal\Core\Session\AccountInterface;
  *   category = @Translation("Reference"),
  *   default_formatter = "uiowa_academic_units_formatter",
  *   default_widget = "uiowa_academic_units_widget",
+ *   list_class = "\Drupal\Core\Field\EntityReferenceFieldItemList",
  * )
  */
 class AcademicUnits extends EntityReferenceItem {
