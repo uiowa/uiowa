@@ -2117,3 +2117,15 @@ $sites['osc.local.drupal.uiowa.edu'] = 'osc.uiowa.edu';
 $sites['osc.dev.drupal.uiowa.edu'] = 'osc.uiowa.edu';
 $sites['osc.stage.drupal.uiowa.edu'] = 'osc.uiowa.edu';
 $sites['osc.prod.drupal.uiowa.edu'] = 'osc.uiowa.edu';
+
+// Directory aliases for peate.lab.uiowa.edu.
+$sites['labpeate.local.drupal.uiowa.edu'] = 'peate.lab.uiowa.edu';
+$sites['labpeate.dev.drupal.uiowa.edu'] = 'peate.lab.uiowa.edu';
+$sites['labpeate.stage.drupal.uiowa.edu'] = 'peate.lab.uiowa.edu';
+$sites['labpeate.prod.drupal.uiowa.edu'] = 'peate.lab.uiowa.edu';
+
+// Directory aliases for anunsettledbody.sites.uiowa.edu.
+$sites['sitesanunsettledbody.local.drupal.uiowa.edu'] = 'anunsettledbody.sites.uiowa.edu';
+$sites['sitesanunsettledbody.dev.drupal.uiowa.edu'] = 'anunsettledbody.sites.uiowa.edu';
+$sites['sitesanunsettledbody.stage.drupal.uiowa.edu'] = 'anunsettledbody.sites.uiowa.edu';
+$sites['sitesanunsettledbody.prod.drupal.uiowa.edu'] = 'anunsettledbody.sites.uiowa.edu';
