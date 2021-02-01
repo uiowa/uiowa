@@ -1,18 +1,16 @@
-uuid: c45d451f-71e2-43c7-85f9-7aa57abb1fa5
+uuid: c5baa8fc-eb5a-49bb-9bc0-c4758b16807a
 langcode: en
 status: true
 dependencies:
   config:
-    - block_content.type.uiowa_statistic
-    - field.storage.block_content.field_uiowa_statistic_title
+    - field.storage.fragment.field_stat_figure
+    - fragments.fragment_type.stat
   module:
     - heading
-_core:
-  default_config_hash: Ka0kV9fzHgOqk8b78OtmhiAnTO2sWjxlNIOIZvxFVo0
-id: block_content.uiowa_statistic.field_uiowa_statistic_title
-field_name: field_uiowa_statistic_title
-entity_type: block_content
-bundle: uiowa_statistic
+id: fragment.stat.field_stat_figure
+field_name: field_stat_figure
+entity_type: fragment
+bundle: stat
 label: Figure
 description: 'Enter the main ranking, achievement, or data into this field (e.g. 95%, 500+, 1 of 3, etc.)'
 required: true
