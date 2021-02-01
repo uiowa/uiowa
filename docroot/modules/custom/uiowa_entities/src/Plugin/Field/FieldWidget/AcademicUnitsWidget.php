@@ -68,6 +68,10 @@ class AcademicUnitsWidget extends OptionsSelectWidget implements ContainerFactor
       array_walk($options, function (&$value, $key) {
         $value = $value->get('label');
       });
+      // Add an empty option if the widget needs one.
+      if ($empty_label = $this->getEmptyLabel()) {
+        $options = ['_none' => $empty_label] + $options;
+      }
       $this->options = $options;
     }
     return $this->options;
