@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.area_of_study.body
     - field.field.node.area_of_study.field_area_of_study_career
     - field.field.node.area_of_study.field_area_of_study_certificates
+    - field.field.node.area_of_study.field_area_of_study_course_work
     - field.field.node.area_of_study.field_area_of_study_link
     - field.field.node.area_of_study.field_area_of_study_majors
     - field.field.node.area_of_study.field_area_of_study_minors
@@ -13,6 +14,7 @@ dependencies:
     - field.field.node.area_of_study.field_area_of_study_opportunity
     - field.field.node.area_of_study.field_area_of_study_preprof
     - field.field.node.area_of_study.field_area_of_study_requirement
+    - field.field.node.area_of_study.field_area_of_study_scholarship
     - field.field.node.area_of_study.field_area_of_study_stat
     - field.field.node.area_of_study.field_area_of_study_stories
     - field.field.node.area_of_study.field_area_of_study_subtitle
@@ -225,7 +227,7 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
-            weight: 5
+            weight: 6
           -
             uuid: 616b3735-14cb-45ac-8d36-f0ed42845915
             region: first
@@ -365,6 +367,42 @@ third_party_settings:
                 third_party_settings: {  }
             additional: {  }
             weight: 0
+          -
+            uuid: d1eea26e-c704-48e1-a481-ea13e704e45c
+            region: second
+            configuration:
+              id: 'field_block:node:area_of_study:field_area_of_study_scholarship'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: above
+                type: text_default
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 5
+          -
+            uuid: 140b89e6-8aff-40f2-bf85-ce5f901b9b29
+            region: first
+            configuration:
+              id: 'field_block:node:area_of_study:field_area_of_study_course_work'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: above
+                type: text_default
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 7
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -418,6 +456,13 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
+  field_area_of_study_course_work:
+    weight: 23
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
     region: content
   field_area_of_study_link:
     weight: 20
@@ -473,6 +518,13 @@ content:
     region: content
   field_area_of_study_requirement:
     weight: 16
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_area_of_study_scholarship:
+    weight: 22
     label: above
     settings: {  }
     third_party_settings: {  }
