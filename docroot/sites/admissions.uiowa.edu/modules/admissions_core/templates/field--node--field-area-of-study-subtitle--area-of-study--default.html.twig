@@ -42,9 +42,9 @@
     'element--light-intro',
   ]
 %}
-<h1 {{ attributes.addClass(classes) }}>
+<div {{ attributes.addClass(classes) }}>
 	{%- for item in items -%}
-   <p class="element--light-intro">{{ item.content|render|striptags }}</p>
+   {{ item.content }}
 	{%- endfor -%}
-</h1>
+</div>
 <hr class="element--spacer-thin">
