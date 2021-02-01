@@ -9,6 +9,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class EntityPrintSubscriber implements EventSubscriberInterface {
 
+  /**
+   * {@inheritdoc}
+   */
   public static function getSubscribedEvents() {
     $events = [];
 
@@ -19,6 +22,11 @@ class EntityPrintSubscriber implements EventSubscriberInterface {
     return $events;
   }
 
+  /**
+   * Attach our CSS library since we don't use a custom theme.
+   *
+   * @param PrintCssAlterEvent $event
+   */
   public function alterCss(PrintCssAlterEvent $event) {
     $event->getBuild()['#attached']['library'][] = 'admissions_core/pdf';
   }
