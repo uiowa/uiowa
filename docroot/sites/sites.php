@@ -2135,3 +2135,9 @@ $sites['dentistryaadr.local.drupal.uiowa.edu'] = 'aadr.dentistry.uiowa.edu';
 $sites['dentistryaadr.dev.drupal.uiowa.edu'] = 'aadr.dentistry.uiowa.edu';
 $sites['dentistryaadr.stage.drupal.uiowa.edu'] = 'aadr.dentistry.uiowa.edu';
 $sites['dentistryaadr.prod.drupal.uiowa.edu'] = 'aadr.dentistry.uiowa.edu';
+
+// Directory aliases for uppu.lab.uiowa.edu.
+$sites['labuppu.local.drupal.uiowa.edu'] = 'uppu.lab.uiowa.edu';
+$sites['labuppu.dev.drupal.uiowa.edu'] = 'uppu.lab.uiowa.edu';
+$sites['labuppu.stage.drupal.uiowa.edu'] = 'uppu.lab.uiowa.edu';
+$sites['labuppu.prod.drupal.uiowa.edu'] = 'uppu.lab.uiowa.edu';
