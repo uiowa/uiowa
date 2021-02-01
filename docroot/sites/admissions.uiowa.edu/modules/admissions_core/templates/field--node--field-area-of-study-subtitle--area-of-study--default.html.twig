@@ -37,14 +37,9 @@
  * @see template_preprocess_field()
  */
 #}
-{%
-  set classes = [
-    'element--light-intro',
-  ]
-%}
-<h1 {{ attributes.addClass(classes) }}>
+<div {{ attributes.addClass(classes) }}>
 	{%- for item in items -%}
    <p class="element--light-intro">{{ item.content|render|striptags }}</p>
 	{%- endfor -%}
-</h1>
+</div>
 <hr class="element--spacer-thin">
