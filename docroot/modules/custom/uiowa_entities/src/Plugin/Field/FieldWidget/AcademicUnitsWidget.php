@@ -54,18 +54,6 @@ class AcademicUnitsWidget extends OptionsSelectWidget implements ContainerFactor
   /**
    * {@inheritdoc}
    */
-  public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
-    $element = parent::formElement($items, $delta, $element, $form, $form_state);
-    // Force allowed multiple values. Needs to be revisited
-    // and fixed later.
-    $element['#multiple'] = TRUE;
-
-    return $element;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   protected function getOptions(FieldableEntityInterface $entity) {
     if (!isset($this->options)) {
       // Grab available units.
