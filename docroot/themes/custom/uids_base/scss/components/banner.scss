@@ -73,7 +73,7 @@
 .layout--twocol--50-50 {
   .banner .banner__content {
     @include breakpoint(sm) {
-      padding: 3rem;
+      padding: 1.5rem;
     }
   }
 
@@ -95,8 +95,8 @@
   }
 }
 
-// Remove left/right padding if edge-to-edge is selected
-.layout--onecol[class*=page__container--edge] {
+// Adjust padding for left aligned bottom content
+.layout--onecol {
   .banner {
     &.banner--vertical-bottom.banner--horizontal-left {
       .banner__content {
@@ -105,6 +105,10 @@
         }
       }
     }
+  }
+
+  // Remove left/right padding if edge-to-edge is selected
+  .layout--onecol[class*=page__container--edge] {
     .banner__content {
       @include breakpoint(container) {
         padding: 3rem 0;
@@ -143,8 +147,8 @@
   z-index: 2;
   .banner--vertical-bottom.banner--horizontal-left & {
     @include breakpoint(sm) {
-      left: 1rem;
-      right: 1rem;
+      left: 1.5rem;
+      bottom: 1.5rem;
     }
   }
 }
