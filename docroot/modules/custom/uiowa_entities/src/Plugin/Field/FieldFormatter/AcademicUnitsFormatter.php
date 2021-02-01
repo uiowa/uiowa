@@ -24,11 +24,11 @@ class AcademicUnitsFormatter extends EntityReferenceFormatterBase {
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $element = [];
 
-    foreach ($items as $delta => $item) {
+    foreach ($this->getEntitiesToView($items, 'en') as $delta => $entity) {
       $element[$delta] = [
-        '#plain_text' => $item->get('label'),
-        '#url' => $item->get('homepage')->getValue(),
-        '#type' => $item->get('type')->getValue(),
+        '#plain_text' => $entity->get('label'),
+        '#url' => $entity->get('homepage'),
+        '#type' => $entity->get('type'),
       ];
     }
 
