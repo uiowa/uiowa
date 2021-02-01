@@ -24,9 +24,6 @@ drush:
     ci: self
   default_alias: self
 disable-targets:
-  security:
-    check:
-      composer: true
   drupal:
     toggle:
       modules: true
@@ -35,6 +32,9 @@ disable-targets:
       run: true
     frontend:
       run: true
+    security:
+      check:
+        composer: true
 tests:
   phpunit:
     - config: '${repo.root}'
