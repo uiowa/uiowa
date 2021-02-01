@@ -10,9 +10,13 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class EntityPrintSubscriber implements EventSubscriberInterface {
 
   public static function getSubscribedEvents() {
-    return [
-      PrintEvents::CSS_ALTER => 'alterCss',
-    ];
+    $events = [];
+
+    if (class_exists(PrintEvents::class)) {
+      $events[PrintEvents::CSS_ALTER][] = 'alterCss';
+    }
+
+    return $events;
   }
 
   public function alterCss(PrintCssAlterEvent $event) {
