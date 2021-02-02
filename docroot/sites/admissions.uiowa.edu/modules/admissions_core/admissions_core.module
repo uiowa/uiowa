@@ -98,6 +98,21 @@ function admissions_core_form_node_area_of_study_form_alter(&$form, FormStateInt
       'input[name="field_area_of_study_teaching[teaching_licensure]"]' => ['checked' => TRUE],
     ]
   ];
+  $form['field_area_of_study_select_txt']['#states'] = [
+    'visible' => [
+      'input[name="field_area_of_study_selective[selective_admission]"]' => ['checked' => TRUE],
+    ]
+  ];
+  $form['field_area_of_study_four_txt']['#states'] = [
+    'visible' => [
+      'input[name="field_area_of_study_four_year[four_year_graduate_plan]"]' => ['checked' => TRUE],
+    ]
+  ];
+  $form['field_area_of_study_comp_txt']['#states'] = [
+    'visible' => [
+      'input[name="field_area_of_study_competitive[competitive_admission]"]' => ['checked' => TRUE],
+    ]
+  ];
 }
 
 
