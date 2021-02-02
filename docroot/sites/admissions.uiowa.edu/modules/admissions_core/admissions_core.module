@@ -76,6 +76,30 @@ function admissions_core_form_alter(&$form, \Drupal\Core\Form\FormStateInterface
     case 'fragment_stat_add_form':
       $form['#attached']['library'][]  = 'admissions_core/admin';
       break;
+
+    case 'node_area_of_study_form':
+    case 'node_area_of_study_edit_form':
+      $form['field_area_of_study_teaching_txt']['#states'] = [
+        'visible' => [
+          'input[name="field_area_of_study_teaching[teaching_licensure]"]' => ['checked' => TRUE],
+        ]
+      ];
+      $form['field_area_of_study_select_txt']['#states'] = [
+        'visible' => [
+          'input[name="field_area_of_study_selective[selective_admission]"]' => ['checked' => TRUE],
+        ]
+      ];
+      $form['field_area_of_study_four_txt']['#states'] = [
+        'visible' => [
+          'input[name="field_area_of_study_four_year[four_year_graduate_plan]"]' => ['checked' => TRUE],
+        ]
+      ];
+      $form['field_area_of_study_comp_txt']['#states'] = [
+        'visible' => [
+          'input[name="field_area_of_study_competitive[competitive_admission]"]' => ['checked' => TRUE],
+        ]
+      ];
+      break;
   }
 }
 
@@ -87,33 +111,6 @@ function admissions_core_form_views_exposed_form_alter(&$form, FormStateInterfac
     $form["territory"]["#options"]["All"] = t("- All -");
   }
 }
-
-/**
- * Implements hook_form_FORM_ID_alter().
- */
-function admissions_core_form_node_area_of_study_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $form['field_area_of_study_teaching_txt']['#states'] = [
-    'visible' => [
-      'input[name="field_area_of_study_teaching[teaching_licensure]"]' => ['checked' => TRUE],
-    ]
-  ];
-  $form['field_area_of_study_select_txt']['#states'] = [
-    'visible' => [
-      'input[name="field_area_of_study_selective[selective_admission]"]' => ['checked' => TRUE],
-    ]
-  ];
-  $form['field_area_of_study_four_txt']['#states'] = [
-    'visible' => [
-      'input[name="field_area_of_study_four_year[four_year_graduate_plan]"]' => ['checked' => TRUE],
-    ]
-  ];
-  $form['field_area_of_study_comp_txt']['#states'] = [
-    'visible' => [
-      'input[name="field_area_of_study_competitive[competitive_admission]"]' => ['checked' => TRUE],
-    ]
-  ];
-}
-
 
 /**
  * Implements hook_ENTITY_TYPE_delete().
