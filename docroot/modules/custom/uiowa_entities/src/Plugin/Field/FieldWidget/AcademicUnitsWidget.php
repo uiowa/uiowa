@@ -2,8 +2,8 @@
 
 namespace Drupal\uiowa_entities\Plugin\Field\FieldWidget;
 
-use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\Core\Field\WidgetBase;
+use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsSelectWidget;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -15,14 +15,15 @@ use Drupal\Core\Field\FieldDefinitionInterface;
  *
  * @FieldWidget(
  *   id = "uiowa_academic_units_widget",
- *   label = @Translation("Academic Units Config Entity Reference Field Widget"),
+ *   label = @Translation("Academic Units Field Widget"),
  *   description = @Translation("Widget for handling configuration entity references for academic units."),
  *   field_types = {
  *     "uiowa_academic_units",
- *   }
+ *   },
+ *   multiple_values = TRUE
  * )
  */
-class AcademicUnitsWidget extends WidgetBase implements ContainerFactoryPluginInterface {
+class AcademicUnitsWidget extends OptionsSelectWidget implements ContainerFactoryPluginInterface {
 
   /**
    * The EntityTypeManager service.
@@ -52,29 +53,28 @@ class AcademicUnitsWidget extends WidgetBase implements ContainerFactoryPluginIn
   /**
    * {@inheritdoc}
    */
-  public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
-    // Grab available units.
-    $units = [];
-    $options = array_filter($this->getSetting('types'));
-    foreach ($options as $option) {
-      $units += $this->entityTypeManager
-        ->getStorage('uiowa_academic_unit')
-        ->loadByProperties(['type' => $option]);
+  protected function getOptions(FieldableEntityInterface $entity) {
+    if (!isset($this->options)) {
+      // Grab available units.
+      $options = [];
+      $units = array_filter($this->getSetting('types'));
+      foreach ($units as $unit) {
+        $options += $this->entityTypeManager
+          ->getStorage('uiowa_academic_unit')
+          ->loadByProperties(['type' => $unit]);
+      }
+      // Update values to the text labels
+      // rather than the objects themselves.
+      array_walk($options, function (&$value, $key) {
+        $value = $value->get('label');
+      });
+      // Add an empty option if the widget needs one.
+      if ($empty_label = $this->getEmptyLabel()) {
+        $options = ['_none' => $empty_label] + $options;
+      }
+      $this->options = $options;
     }
-    // Update values to the text labels
-    // rather than the objects themselves.
-    array_walk($units, function (&$value, $key) {
-      $value = $value->get('label');
-    });
-
-    $element['value'] = $element + [
-      '#type' => 'select',
-      '#options' => $units,
-      '#default_value' => isset($items[$delta]->academic_units) ? $items[$delta]->academic_units : [],
-      '#multiple' => TRUE,
-    ];
-
-    return $element;
+    return $this->options;
   }
 
   /**
