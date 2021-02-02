@@ -6,7 +6,12 @@ dependencies:
     - field.field.node.area_of_study.body
     - field.field.node.area_of_study.field_area_of_study_career
     - field.field.node.area_of_study.field_area_of_study_certificates
+    - field.field.node.area_of_study.field_area_of_study_comp_txt
+    - field.field.node.area_of_study.field_area_of_study_competitive
     - field.field.node.area_of_study.field_area_of_study_course_work
+    - field.field.node.area_of_study.field_area_of_study_four_txt
+    - field.field.node.area_of_study.field_area_of_study_four_year
+    - field.field.node.area_of_study.field_area_of_study_honors
     - field.field.node.area_of_study.field_area_of_study_link
     - field.field.node.area_of_study.field_area_of_study_majors
     - field.field.node.area_of_study.field_area_of_study_minors
@@ -15,6 +20,8 @@ dependencies:
     - field.field.node.area_of_study.field_area_of_study_preprof
     - field.field.node.area_of_study.field_area_of_study_requirement
     - field.field.node.area_of_study.field_area_of_study_scholarship
+    - field.field.node.area_of_study.field_area_of_study_select_txt
+    - field.field.node.area_of_study.field_area_of_study_selective
     - field.field.node.area_of_study.field_area_of_study_stat
     - field.field.node.area_of_study.field_area_of_study_stories
     - field.field.node.area_of_study.field_area_of_study_subtitle
@@ -42,6 +49,13 @@ third_party_settings:
         - field_area_of_study_online
         - field_area_of_study_teaching
         - field_area_of_study_teaching_txt
+        - field_area_of_study_honors
+        - field_area_of_study_four_year
+        - field_area_of_study_four_txt
+        - field_area_of_study_selective
+        - field_area_of_study_select_txt
+        - field_area_of_study_competitive
+        - field_area_of_study_comp_txt
       parent_name: ''
       weight: 11
       format_type: fieldset
@@ -89,6 +103,20 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
+  field_area_of_study_comp_txt:
+    weight: 15
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_area_of_study_competitive:
+    weight: 14
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+    region: content
   field_area_of_study_course_work:
     weight: 8
     settings:
@@ -96,6 +124,26 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
+    region: content
+  field_area_of_study_four_txt:
+    weight: 11
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_area_of_study_four_year:
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+    region: content
+  field_area_of_study_honors:
+    weight: 9
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
     region: content
   field_area_of_study_link:
     weight: 12
@@ -171,6 +219,20 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
+    region: content
+  field_area_of_study_select_txt:
+    weight: 13
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_area_of_study_selective:
+    weight: 12
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
     region: content
   field_area_of_study_stat:
     type: entity_reference_autocomplete
