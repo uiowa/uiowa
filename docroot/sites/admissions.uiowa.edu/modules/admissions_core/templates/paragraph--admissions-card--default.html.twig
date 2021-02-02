@@ -61,10 +61,11 @@
 
 {% set admissions_card = {
   'attributes': attributes.addClass(classes),
-  'card_text': content.field_admissions_card_body,
+  'card_text': content.field_admissions_card_content,
   'card_subtitle': content.field_admissions_card_subtitle,
   'card_title': content.field_admissions_card_title|render,
   'card_link_url': content.field_admissions_card_link[0]['#url'],
+  'card_link_title': content.field_admissions_card_link[0]['#title']|render,
   'card_image': content.field_admissions_card_media|render,
   'media_sizes': 'card__media--large',
   'card_link_url': url,
