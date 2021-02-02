@@ -21,6 +21,7 @@ dependencies:
     - field.field.node.area_of_study.field_area_of_study_why
     - field.field.node.area_of_study.field_image
     - node.type.area_of_study
+    - views.view.areas_of_study_block
   module:
     - entity_reference_revisions
     - layout_builder
@@ -28,6 +29,7 @@ dependencies:
     - link
     - text
     - user
+    - views
   theme:
     - uids_base
 third_party_settings:
@@ -187,7 +189,7 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
-            weight: 6
+            weight: 7
           -
             uuid: 616b3735-14cb-45ac-8d36-f0ed42845915
             region: first
@@ -228,86 +230,18 @@ third_party_settings:
             additional: {  }
             weight: 0
           -
-            uuid: 6c8e45b2-5729-447c-a807-f351855d6695
+            uuid: b4d948cb-4c09-4224-bd33-436b6b200a70
             region: second
             configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:area_of_study:field_area_of_study_online'
-              formatter:
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-                type: string
+              id: 'views_block:areas_of_study_block-block_1'
+              label: null
+              provider: views
+              label_display: null
+              views_label: ''
+              items_per_page: none
+              context_mapping: {  }
             additional: {  }
-            weight: 4
-          -
-            uuid: b2b883ff-d241-46a6-82b2-1b8e020fb2ba
-            region: second
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:area_of_study:field_area_of_study_preprof'
-              formatter:
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-                type: string
-            additional: {  }
-            weight: 3
-          -
-            uuid: 569e5bc6-063a-41d1-aba6-898af65e7270
-            region: second
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:area_of_study:field_area_of_study_certificates'
-              formatter:
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-                type: string
-            additional: {  }
-            weight: 2
-          -
-            uuid: 7b79f9d2-739d-4ca8-b868-a5aa2f3adf13
-            region: second
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:area_of_study:field_area_of_study_minors'
-              formatter:
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-                type: string
-            additional: {  }
-            weight: 1
-          -
-            uuid: 4662491f-9799-481e-aab0-cfe9e5dc3fa8
-            region: second
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:area_of_study:field_area_of_study_majors'
-              formatter:
-                type: entity_reference_revisions_entity_view
-                label: above
-                settings:
-                  view_mode: default
-                  link: ''
-                third_party_settings: {  }
-            additional: {  }
-            weight: 0
+            weight: 6
         third_party_settings:
           layout_builder_lock:
             lock: {  }
