@@ -38,59 +38,37 @@
  * @ingroup themeable
  */
 #}
-{% set classes = [
-  'paragraph',
-  'paragraph--type--' ~ paragraph.bundle|clean_class,
-  view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
-  not paragraph.isPublished() ? 'paragraph--unpublished'
-] %}
 
-{% set card_attributes = create_attribute() %}
+{%
+  set classes = [
+  'card--list',
+  'card--enclosed',
+  'bg--white',
+  'media--widescreen',
+  'card--centered-left',
+  'card--alignment-left',
+  'card',
+]
+%}
 
-{% set no_body = (paragraph.field_card_title.isEmpty()) and (paragraph.field_card_subtitle.isEmpty()) and (paragraph.field_card_body.isEmpty()) %}
-<div{{ attributes.addclass(classes) }}>
+{% if zebra == 'odd' %}
+  {% set classes = classes|merge(['card--media-left']) %}
+{% else %}
+  {% set classes = classes|merge(['card--media-right']) %}
+{% endif %}
 
-  {% if no_body %}
-    {#
-          sitenow_card includes the ability to have just an image and a link.
-          This isn't considered a card in UIDS, so in that case we just output
-          an image wrapped in a link.
-    #}
-    {% set paragraph_card_link = {
-      'link_url': content.field_admissions_card_link[0]['#url'],
-      'link_class': 'media',
-      'card_image': content.field_admissions_card_media,
-    } %}
-    {% embed '@uids_base/uids/link.html.twig' with paragraph_card_link only %}
-      {% block link_content %}
-        {% if card_image is not empty %}
-          {{ card_image }}
-        {% endif %}
-      {% endblock %}
-    {% endembed %}
+{{ attach_library('classy/node') }}
 
-  {% else %}
-    {# This is a card and can be handled as such. #}
-    {% set paragraph_card = {
-      'attributes': card_attributes.addClass(['card--enclosed']),
-      'card_image': content.field_admissions_card_media|render,
-      'card_text': content.field_admissions_card_body,
-      'card_subtitle': content.field_admissions_card_subtitle,
-      'card_title': content.field_admissions_card_title|render,
-      'card_link_url': content.field_admissions_card_link[0]['#url'],
-      'headline_level': 'h2',
-      'paragraph': paragraph,
-    } %}
+{% set admissions_card = {
+  'attributes': attributes.addClass(classes),
+  'card_text': content.field_admissions_card_body,
+  'card_subtitle': content.field_admissions_card_subtitle,
+  'card_title': content.field_admissions_card_title|render,
+  'card_link_url': content.field_admissions_card_link[0]['#url'],
+  'card_image': content.field_admissions_card_media|render,
+  'media_sizes': 'card__media--large',
+  'card_link_url': url,
+  'headline_level': 'h2',
+} %}
 
-    {% embed '@uids_base/uids/card.html.twig' with paragraph_card only %}
-
-      {# We override this because the text is formatted already. #}
-      {% block card_content %}
-        {% if card_text is not empty %}
-          {{ card_text }}
-        {% endif %}
-      {% endblock %}
-
-    {% endembed %}
-  {% endif %}
-</div>
+{% embed '@uids_base/uids/card.html.twig' with admissions_card only %}{% endembed %}
