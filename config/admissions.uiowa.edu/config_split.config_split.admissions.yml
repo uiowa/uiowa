@@ -8,6 +8,7 @@ description: 'The Admissions site split.'
 folder: ../config/admissions.uiowa.edu
 module:
   admissions_core: 0
+  fragments: 0
   weight: 0
 theme: {  }
 blacklist: {  }
@@ -29,9 +30,11 @@ graylist:
   - field.field.node.admissions_requirement.body
   - field.field.node.area_of_study.body
   - field.field.node.area_of_study.field_area_of_study_career
+  - field.field.node.area_of_study.field_area_of_study_course_work
   - field.field.node.area_of_study.field_area_of_study_link
   - field.field.node.area_of_study.field_area_of_study_opportunity
   - field.field.node.area_of_study.field_area_of_study_requirement
+  - field.field.node.area_of_study.field_area_of_study_scholarship
   - field.field.node.area_of_study.field_area_of_study_stories
   - field.field.node.area_of_study.field_area_of_study_subtitle
   - field.field.node.area_of_study.field_area_of_study_why
@@ -60,9 +63,11 @@ graylist:
   - field.field.paragraph.admissions_card.field_admissions_card_subtitle
   - field.field.paragraph.admissions_card.field_admissions_card_title
   - field.storage.node.field_area_of_study_career
+  - field.storage.node.field_area_of_study_course_work
   - field.storage.node.field_area_of_study_link
   - field.storage.node.field_area_of_study_opportunity
   - field.storage.node.field_area_of_study_requirement
+  - field.storage.node.field_area_of_study_scholarship
   - field.storage.node.field_area_of_study_stories
   - field.storage.node.field_area_of_study_subtitle
   - field.storage.node.field_area_of_study_why
@@ -111,6 +116,8 @@ graylist:
   - 'core.entity_form_display.node.person.*'
   - 'core.entity_view_display.node.person.*'
   - 'user.role.*'
+  - fragment.fragment_type.stat
+  - 'field.storage.fragment.field_stat_*'
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 90
