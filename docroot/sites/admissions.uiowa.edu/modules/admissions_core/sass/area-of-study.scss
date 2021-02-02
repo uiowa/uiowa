@@ -16,3 +16,20 @@
   }
 }
 
+.view-id-areas_of_study_block {
+  .field__label {
+    text-transform: uppercase;
+  }
+  .paragraph--type--degree {
+    display: flex;
+    .field--name-field-degree-abbreviation.field--label-hidden.field__item{
+      margin: 0 $xsm;
+      &:before {
+        content: "(";
+      }
+      &:after {
+        content: ")";
+      }
+    }
+  }
+}
