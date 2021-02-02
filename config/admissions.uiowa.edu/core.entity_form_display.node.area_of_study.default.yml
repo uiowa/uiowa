@@ -18,6 +18,8 @@ dependencies:
     - field.field.node.area_of_study.field_area_of_study_stat
     - field.field.node.area_of_study.field_area_of_study_stories
     - field.field.node.area_of_study.field_area_of_study_subtitle
+    - field.field.node.area_of_study.field_area_of_study_teaching
+    - field.field.node.area_of_study.field_area_of_study_teaching_txt
     - field.field.node.area_of_study.field_area_of_study_why
     - field.field.node.area_of_study.field_image
     - node.type.area_of_study
@@ -38,6 +40,8 @@ third_party_settings:
         - field_area_of_study_certificates
         - field_area_of_study_preprof
         - field_area_of_study_online
+        - field_area_of_study_teaching
+        - field_area_of_study_teaching_txt
       parent_name: ''
       weight: 11
       format_type: fieldset
@@ -65,7 +69,7 @@ content:
     region: content
   created:
     type: datetime_timestamp
-    weight: 14
+    weight: 15
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -205,6 +209,20 @@ content:
     third_party_settings: {  }
     type: text_textarea
     region: content
+  field_area_of_study_teaching:
+    weight: 7
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+    region: content
+  field_area_of_study_teaching_txt:
+    weight: 8
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_area_of_study_why:
     weight: 3
     settings:
@@ -214,7 +232,7 @@ content:
     type: text_textarea
     region: content
   field_image:
-    weight: 21
+    weight: 22
     settings:
       media_types: {  }
     third_party_settings: {  }
@@ -222,13 +240,13 @@ content:
     region: content
   moderation_state:
     type: moderation_state_default
-    weight: 19
+    weight: 20
     settings: {  }
     region: content
     third_party_settings: {  }
   path:
     type: path
-    weight: 17
+    weight: 18
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -236,21 +254,21 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 15
+    weight: 16
     region: content
     third_party_settings: {  }
   status:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 20
+    weight: 21
     region: content
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 16
+    weight: 17
     region: content
     third_party_settings: {  }
   title:
@@ -272,7 +290,7 @@ content:
     region: content
     third_party_settings: {  }
   url_redirects:
-    weight: 18
+    weight: 19
     region: content
     settings: {  }
     third_party_settings: {  }
