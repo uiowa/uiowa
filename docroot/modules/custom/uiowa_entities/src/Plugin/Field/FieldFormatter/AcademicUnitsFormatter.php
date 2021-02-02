@@ -3,7 +3,7 @@
 namespace Drupal\uiowa_entities\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\Core\Field\FormatterBase;
+use Drupal\Core\Field\Plugin\Field\FieldFormatter\EntityReferenceFormatterBase;
 
 /**
  * Plugin implementation of the 'uiowa_academic_units_formatter' formatter.
@@ -16,7 +16,7 @@ use Drupal\Core\Field\FormatterBase;
  *   }
  * )
  */
-class AcademicUnitsFormatter extends FormatterBase {
+class AcademicUnitsFormatter extends EntityReferenceFormatterBase {
 
   /**
    * {@inheritdoc}
@@ -24,11 +24,11 @@ class AcademicUnitsFormatter extends FormatterBase {
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $element = [];
 
-    foreach ($items as $delta => $item) {
+    foreach ($this->getEntitiesToView($items, 'en') as $delta => $entity) {
       $element[$delta] = [
-        '#plain_text' => $item->get('label'),
-        '#url' => $item->get('homepage')->getValue(),
-        '#type' => $item->get('type')->getValue(),
+        '#plain_text' => $entity->get('label'),
+        '#url' => $entity->get('homepage'),
+        '#type' => $entity->get('type'),
       ];
     }
 
