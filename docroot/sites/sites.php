@@ -2147,3 +2147,9 @@ $sites['labwindschitl.local.drupal.uiowa.edu'] = 'windschitl.lab.uiowa.edu';
 $sites['labwindschitl.dev.drupal.uiowa.edu'] = 'windschitl.lab.uiowa.edu';
 $sites['labwindschitl.stage.drupal.uiowa.edu'] = 'windschitl.lab.uiowa.edu';
 $sites['labwindschitl.prod.drupal.uiowa.edu'] = 'windschitl.lab.uiowa.edu';
+
+// Directory aliases for education.uiowa.edu.
+$sites['education.local.drupal.uiowa.edu'] = 'education.uiowa.edu';
+$sites['education.dev.drupal.uiowa.edu'] = 'education.uiowa.edu';
+$sites['education.stage.drupal.uiowa.edu'] = 'education.uiowa.edu';
+$sites['education.prod.drupal.uiowa.edu'] = 'education.uiowa.edu';
