@@ -8,13 +8,12 @@
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Element;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\views\ViewExecutable;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Form\FormState;
+use Drupal\Core\Template\Attribute;
 
 /**
  * Implements hook_entity_presave().
@@ -122,9 +121,12 @@ function admissions_core_node_presave(Node $node) {
  */
 function admissions_core_preprocess_entity_print(&$variables) {
   if ($variables['theme_hook_original'] == 'entity_print__node__area_of_study') {
-    if (isset($variables['content'][0]['#node'])) {
+    // The debug path nests this differently for some reason.
+    $node = $variables['content'][0]['#node'] ?? $variables['content'][0][0]['#node'] ?? NULL;
+
+    if ($node) {
       $variables['title'] = t('@title', [
-        '@title' => $variables['content'][0]['#node']->getTitle(),
+        '@title' => $node->getTitle(),
       ]);
     }
   }
