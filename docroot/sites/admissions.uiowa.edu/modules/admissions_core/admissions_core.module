@@ -193,6 +193,55 @@ function admissions_core_preprocess_paragraph__admissions_card(&$variables) {
 /**
  * Implements hook_preprocess_HOOK().
  */
+function admissions_core_preprocess_paragraph__admissions_requirement(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    $paragraph = $variables['paragraph'];
+    $variables['admissions_requirement_links'] = [];
+    if ($paragraph->hasField('field_ar_requirement_label') && !$paragraph->get('field_ar_requirement_label')->isEmpty()) {
+      $variables['admissions_requirement_links']['requirement_label'] = $paragraph->field_ar_requirement_label->value;
+    }
+    else {
+      $variables['admissions_requirement_links']['requirement_label'] = t('Admissions Requirements');
+    }
+    if ($paragraph->hasField('field_ar_requirement_content') && !$paragraph->get('field_ar_requirement_content')->isEmpty()) {
+      $path = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $paragraph->field_ar_requirement_content->target_id);
+      $variables['admissions_requirement_links']['requirement_url'] = $path;
+    }
+    if ($paragraph->hasField('field_ar_process_label') && !$paragraph->get('field_ar_process_label')->isEmpty()) {
+      $variables['admissions_requirement_links']['process_label'] = $paragraph->field_ar_process_label->value;
+    }
+    else {
+      $variables['admissions_requirement_links']['process_label'] = t('Application Process');
+    }
+    if ($paragraph->hasField('field_ar_process_content') && !$paragraph->get('field_ar_process_content')->isEmpty()) {
+      $path = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $paragraph->field_ar_process_content->target_id);
+      $variables['admissions_requirement_links']['process_url'] = $path;
+    }
+    $parent = $paragraph->getParentEntity();
+    if ($parent instanceof ContentEntityInterface) {
+      $admissions_requirements = [
+        'field_area_of_study_first_year' => t('First-Year'),
+        'field_area_of_study_transfer' => t('Transfer'),
+        'field_area_of_study_international' => t('International'),
+      ];
+      $id = $paragraph->id();
+      foreach ($admissions_requirements as $requirement => $label) {
+        if ($parent->hasField($requirement)) {
+          foreach ($parent->get($requirement)->getValue() as $delta => $item) {
+            if ($item['target_id'] === $id) {
+              $variables['requirement_card_label'] = $label;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
 function admissions_core_preprocess_layout(&$variables) {
   /** @var \Drupal\Core\Layout\LayoutDefinition $layout */
   $layout = $variables['layout'];

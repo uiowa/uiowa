@@ -54,8 +54,24 @@
 
 {% set admissions_requirement = {
   'attributes': attributes.addClass(classes),
-  'card_text': content,
+  'card_title': requirement_card_label,
+  'card_text': content.field_ar_intro,
   'headline_level': 'h2',
+  'requirement_label': admissions_requirement_links['requirement_label'],
+  'requirement_url': admissions_requirement_links['requirement_url'],
+  'process_label': admissions_requirement_links['process_label'],
+  'process_url': admissions_requirement_links['process_url'],
 } %}
-
-{% embed '@uids_base/uids/card.html.twig' with admissions_requirement only %}{% endembed %}
+{% embed '@uids_base/uids/card.html.twig' with admissions_requirement only %}
+  {% block card_content %}
+    {% if card_text is not empty %}
+      {{ card_text }}
+    {% endif %}
+    {% if requirement_url is not empty %}
+      <a href="{{ requirement_url }}" class="bttn bttn--outline bttn--sans-serif">{{ requirement_label }}</a>
+    {% endif %}
+    {% if process_url is not empty %}
+      <a href="{{ process_url }}" class="bttn bttn--outline bttn--sans-serif">{{ process_label }}</a>
+    {% endif %}
+  {% endblock %}
+{% endembed %}
