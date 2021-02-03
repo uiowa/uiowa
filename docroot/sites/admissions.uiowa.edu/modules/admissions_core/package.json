@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "clean": "rm -rf assets",
+    "clean": "rm -rf assets/css assets/js",
     "sass-compile": "node-sass --output-style compressed sass -o assets/css --importer node_modules/node-sass-glob-importer/dist/cli.js",
     "sass-watch": "node-sass -w --source-map true --output-style expanded sass -o assets/css --importer node_modules/node-sass-glob-importer/dist/cli.js",
     "es6-compile": "babel es6 --out-dir assets/js --minified --no-comments",
