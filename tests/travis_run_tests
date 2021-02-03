@@ -8,6 +8,6 @@ set -ev
 blt blt:telemetry:disable --no-interaction
 blt validate --no-interaction
 blt setup -D drush.alias='${drush.aliases.ci}' --no-interaction --verbose
-blt tests:all --define drush.alias='${drush.aliases.ci}' --define tests.run-server=true --no-interaction --verbose
+blt tests --define drush.alias='${drush.aliases.ci}' --define tests.run-server=true --no-interaction --verbose
 
 set +ev
