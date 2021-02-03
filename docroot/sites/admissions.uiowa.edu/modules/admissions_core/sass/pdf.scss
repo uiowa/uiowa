@@ -2,24 +2,66 @@
 // @see: https://github.com/dompdf/dompdf/wiki/CSSCompatibility.
 
 // Many UIDS components include selectors/properties that are not supported
-// by dompdf. Unsupported selectors will break PDF generation.
+// by dompdf. Unsupported selectors will break PDF generation. The heading
+// utilities cannot be used due to some issue with the font-variant property.
 @import "../../../../themes/custom/uids_base/uids/assets/scss/variables";
 @import "../../../../themes/custom/uids_base/uids/assets/scss/utilities";
 
 @font-face {
+  font-family: 'Antonio';
+  font-variant: normal;
+  font-weight: bold;
+  src: local('Antonio-Bold'), url('../fonts/Antonio-Bold.ttf') format('truetype');
+}
+
+@font-face {
   font-family: 'Zilla Slab';
-  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  src: local('ZillaSlab-Bold'), url('../fonts/ZillaSlab-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-variant: normal;
+  font-weight: bold;
+  src: local('Roboto-Regular'), url('../fonts/Roboto-Regular.ttf') format('truetype');
+}
+
+p,
+dl,
+ol,
+ul,
+blockquote,
+pre,
+table {
+  font-family: 'Roboto', sans-serif;
+}
+
+h1 {
+  font-family: 'Antonio', serif;
+  text-transform: uppercase;
+}
+
+h2, h3, h4, h5, h6 {
+  font-family: 'Zilla Slab', serif;
+}
+
+.uids-component--bold-intro,
+.element--bold-intro {
+  font-family: $font-family-serif;
+  font-weight: bold;
+}
+
+.uids-component--light-intro,
+.element--light-intro {
   font-weight: normal;
-  src: local('ZillaSlab-Regular'), url('../fonts/ZillaSlab-Regular.ttf') format('truetype');
 }
 
 .node--type-area-of-study {
-  .pdf-title {
-    font-family: 'Zilla Slab', serif;
-  }
-
   .field__label {
-    font-weight: $font-weight-bold;
+    font-family: 'Zilla Slab', serif;
+    font-weight: bold;
     font-size: $content-font-size;
   }
 
