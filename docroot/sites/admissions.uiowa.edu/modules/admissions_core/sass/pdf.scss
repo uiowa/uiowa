@@ -1,0 +1,31 @@
+// The dompdf library has VERY limited CSS 3 support.
+// @see: https://github.com/dompdf/dompdf/wiki/CSSCompatibility.
+
+// Many UIDS components include selectors/properties that are not supported so
+// we've created our own PDF-version of the partials. Unsupported selectors or
+// properties are commented out in those partials.
+@import "../../../../themes/custom/uids_base/uids/assets/scss/variables";
+@import "../../../../themes/custom/uids_base/uids/assets/scss/utilities";
+@import "pdf/fonts";
+@import "pdf/paragraphs";
+@import "../../../../themes/custom/uids_base/uids/components/typography/headings/headings";
+
+
+.node--type-area-of-study {
+  .pdf-title {
+     color: $secondary;
+     text-decoration: none;
+     font-family: Zilla Slab, serif;
+  }
+
+  .field__label {
+    font-weight: $font-weight-bold;
+    font-size: $content-font-size;
+  }
+
+  .field__item {
+    font-weight: $font-weight-normal;
+    font-size: $content-font-size;
+    @include margin($bottom: $md, $top: 0);
+  }
+}
