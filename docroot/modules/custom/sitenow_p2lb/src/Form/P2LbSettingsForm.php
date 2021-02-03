@@ -2,8 +2,10 @@
 
 namespace Drupal\sitenow_p2lb\Form;
 
+use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Site\Settings;
 
 /**
  * Primary paragraphs2layoutbuilder class.
@@ -66,6 +68,15 @@ class P2LbSettingsForm extends ConfigFormBase {
       ],
     ];
 
+    $form['magic'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('MAGIC'),
+      '#name' => 'magic',
+      '#submit' => [
+        [$this, 'magicButton'],
+      ],
+    ];
+
     // @todo Original submit button currently doesn't do anything.
     return $form;
   }
@@ -100,6 +111,24 @@ class P2LbSettingsForm extends ConfigFormBase {
       sitenow_p2lb_node_p2lb($nid);
     }
     // @todo Option to remove paragraphs after migrate, or review first?
+    return $form_state;
+  }
+
+  /**
+   * Update paragraphs to lb blocks from the selected nodes.
+   */
+  public function magicButton(array &$form, FormStateInterface $form_state) {
+    // Update config to enable layout builder for page layouts.
+    $config_path = Settings::get('config_sync_directory');
+    $source = new FileStorage($config_path);
+    $config_storage = \Drupal::service('config.storage');
+    $config_storage->write('core.entity_view_display.node.page.default', $source->read('core.entity_view_display.node.page.default'));
+
+    // Grab all nids for nodes with paragraphs.
+    $nids = sitenow_p2lb_paragraph_nodes();
+    foreach ($nids as $nid) {
+      sitenow_p2lb_node_p2lb($nid, TRUE);
+    }
     return $form_state;
   }
 
