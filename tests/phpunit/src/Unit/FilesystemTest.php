@@ -52,7 +52,7 @@ class FilesystemTest extends UnitTestCase {
 \$sites['$test'] = '$site';
 \$sites['$prod'] = '$site';
 EOD;
-      $this->assertContains($needle, $haystack);
+      $this->assertStringContainsString($needle, $haystack);
     }
   }
 
@@ -70,7 +70,7 @@ if (isset(\$config_directories['vcs'])) {
 }
 EOD;
 
-    $this->assertContains($needle, $haystack);
+    $this->assertStringContainsString($needle, $haystack);
 
     $needle = <<<EOD
 if (InstallerKernel::installationAttempted() && php_sapi_name() != 'cli') {
@@ -78,7 +78,7 @@ if (InstallerKernel::installationAttempted() && php_sapi_name() != 'cli') {
 }
 EOD;
 
-    $this->assertContains($needle, $haystack);
+    $this->assertStringContainsString($needle, $haystack);
   }
 
   /**
@@ -127,7 +127,7 @@ EOD;
       $file = "{$path}/settings.php";
       $this->assertFileExists($file);
       $haystack = file_get_contents($file);
-      $this->assertContains($needle, $haystack);
+      $this->assertStringContainsString($needle, $haystack);
 
       // Test Drush aliases.
       $yaml = Yaml::parseFile($this->root . "/../drush/sites/{$id}.site.yml");
