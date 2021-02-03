@@ -333,7 +333,7 @@ third_party_settings:
         layout_settings:
           label: ''
           layout_builder_styles_style:
-            - ''
+            - section_background_style_gray
             - ''
         components:
           -
@@ -345,7 +345,7 @@ third_party_settings:
               provider: layout_builder
               label_display: null
               formatter:
-                label: above
+                label: hidden
                 type: entity_reference_revisions_entity_view
                 settings:
                   view_mode: default
@@ -355,7 +355,9 @@ third_party_settings:
                 view_mode: view_mode
             additional: {  }
             weight: 0
-        third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
       -
         layout_id: layout_onecol
         layout_settings:
