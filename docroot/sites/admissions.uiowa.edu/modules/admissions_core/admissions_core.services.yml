@@ -2,4 +2,8 @@ services:
   admissions_core.section_component_subscriber:
     class: Drupal\admissions_core\EventSubscriber\SectionComponentSubscriber
     tags:
-    - { name: event_subscriber }
+      - { name: event_subscriber }
+  admissions_core.entity_print_subscriber:
+    class: Drupal\admissions_core\EventSubscriber\EntityPrintSubscriber
+    tags:
+      - { name: event_subscriber }
