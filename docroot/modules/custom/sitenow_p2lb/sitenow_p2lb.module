@@ -197,12 +197,15 @@ function sitenow_p2lb_process_section($section_id, $layout, $node) {
         $region = ($num_cols == 1) ? 'content' : $regional[$i];
         $uuid = $block_config['uuid'];
         $config = $block_config['configuration'];
+        $styles = $block_config['styles'];
 
         $section_array['components'][$uuid] = [
           'uuid' => $uuid,
           'region' => $region,
           'configuration' => $config,
-          'additional' => [],
+          'additional' => [
+            'layout_builder_styles_style' => $styles,
+          ],
           'weight' => 0,
         ];
       }
@@ -389,7 +392,13 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       break;
 
     case 'card':
-      // @todo Add default card style overrides?
+      $styles = [
+        'block_background_style_light',
+        'card_image_large',
+        'card_media_position_stacked',
+        'content_alignment_left',
+        'media_format_widescreen',
+      ];
       $type = 'uiowa_card';
 
       // Image isn't required. Check for one, or set to null.
@@ -582,6 +591,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       return [
         'configuration' => $config,
         'uuid' => $uuid,
+        'styles' => [],
       ];
 
     default:
@@ -602,9 +612,12 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
     // Set the block usage to the node.
     $use_controller->addUsage($block->id(), $node);
 
+    // @todo make sure styles is set before this for all block types.
+    $styles = isset($styles) ? $styles : [];
     return [
       'configuration' => $config,
       'uuid' => $uuid,
+      'styles' => $styles,
     ];
   }
 
