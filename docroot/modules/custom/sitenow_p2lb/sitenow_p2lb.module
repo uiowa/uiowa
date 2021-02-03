@@ -334,7 +334,23 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       break;
 
     case 'accordion':
-      // @todo Grab children, make a collection.
+      $type = 'uiowa_collection';
+      $styles = [];
+      $label = 'Accordion collection';
+      $display_label = 0;
+      $view_mode = 'accordion';
+      // @todo get children.
+      $children = [];
+      $block = \Drupal::entityTypeManager()
+        ->getStorage('block_content')
+        ->create([
+          'type' => $type,
+          'langcode' => 'en',
+          'status' => $paragraph->get('status')->getValue(),
+          'reusable' => 0,
+          'default_langcode' => 1,
+          'field_uiowa_collection_items' => $children,
+        ]);
       break;
 
     case 'accordion_item':
@@ -578,6 +594,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         ->getStorage('webform');
       $webform = $webform_manager->loadByProperties(['id' => $webform_data['target_id']]);
       $uuid = $webform[$webform_data['target_id']]->get('uuid');
+      $view_mode = isset($view_mode) ? $view_mode : '';
 
       $config = [
         'id' => 'webform_block',
@@ -586,7 +603,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         'label_display' => $display_label,
         'redirect' => 0,
         'default_data' => $webform_data['default_data'],
-        'view_mode' => '',
+        'view_mode' => $view_mode,
         'webform_id' => $webform_data['target_id'],
       ];
 
