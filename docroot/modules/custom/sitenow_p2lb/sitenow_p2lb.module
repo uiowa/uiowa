@@ -339,7 +339,13 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       $label = 'Accordion collection';
       $display_label = 0;
       $view_mode = 'accordion';
-      // @todo get children.
+      $accordion_items = $paragraph->get('field_accordion_item');
+      foreach ($accordion_items as $accordion_item) {
+        $accordion_paragraph = $paragraph->load($accordion_item->target_id);
+        $body = $accordion_paragraph->get('field_accordion_item_body')->getValue()[0];
+        $title = $accordion_paragraph->get('field_accordion_item_title')->getString();
+        // @todo create collection_item paragraph and add to children list.
+      }
       $children = [];
       $block = \Drupal::entityTypeManager()
         ->getStorage('block_content')
