@@ -50,6 +50,16 @@ class P2LbSettingsForm extends ConfigFormBase {
       '#multiple' => TRUE,
     ];
 
+    $form['update'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Update'),
+      '#button_type' => 'primary',
+      '#name' => 'update',
+      '#submit' => [
+        [$this, 'updateButton'],
+      ],
+    ];
+
     $form['delete'] = [
       '#type' => 'submit',
       '#value' => $this->t('Delete'),
@@ -59,17 +69,9 @@ class P2LbSettingsForm extends ConfigFormBase {
       ],
     ];
 
-    $form['update'] = [
-      '#type' => 'submit',
-      '#value' => $this->t('Update'),
-      '#name' => 'update',
-      '#submit' => [
-        [$this, 'updateButton'],
-      ],
-    ];
-
     $form['magic'] = [
       '#type' => 'submit',
+      '#button_type' => 'danger',
       '#value' => $this->t('MAGIC'),
       '#name' => 'magic',
       '#submit' => [
@@ -77,16 +79,9 @@ class P2LbSettingsForm extends ConfigFormBase {
       ],
     ];
 
-    // @todo Original submit button currently doesn't do anything.
+    // Unset the original, unused submit button.
+    unset($form['actions']['submit']);
     return $form;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    // Add extra functionality here, if needed, else delete.
-    parent::submitForm($form, $form_state);
   }
 
   /**
