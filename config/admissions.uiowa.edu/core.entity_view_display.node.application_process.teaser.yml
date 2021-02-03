@@ -1,0 +1,34 @@
+uuid: 7051ffbd-0d75-4860-9d8d-2df313f26ce9
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.application_process.body
+    - node.type.application_process
+  module:
+    - text
+    - user
+id: node.application_process.teaser
+targetEntityType: node
+bundle: application_process
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true
