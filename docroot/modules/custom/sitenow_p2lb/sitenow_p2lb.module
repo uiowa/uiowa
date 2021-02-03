@@ -349,6 +349,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
 
     case 'blockquote':
       $type = 'uiowa_text_area';
+      $styles = [];
       // @todo update labeling methodology and decide how to title.
       $label = 'Text block';
       $display_label = 0;
@@ -392,6 +393,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       break;
 
     case 'card':
+      $type = 'uiowa_card';
       $styles = [
         'block_background_style_light',
         'card_image_large',
@@ -399,7 +401,6 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         'content_alignment_left',
         'media_format_widescreen',
       ];
-      $type = 'uiowa_card';
 
       // Image isn't required. Check for one, or set to null.
       $image = ($paragraph->get('field_card_image')->getValue()) ?
@@ -418,9 +419,9 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       $subtitle = ($paragraph->get('field_card_subtitle')->getValue()) ?
         $paragraph->get('field_card_subtitle')->getString() : '';
 
-      // Get body field isn't required or set to array with empty value.
+      // Card body isn't required. Check or or set to array with empty value.
       $excerpt = ($paragraph->get('field_card_body')->getValue()) ?
-        $paragraph->get('field_card_body')->getValue() : [
+        $paragraph->get('field_card_body')->getValue()[0] : [
           'value' => '',
           'format' => 'minimal',
         ];
@@ -454,6 +455,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
 
     case 'carousel':
       $type = 'uiowa_slider';
+      $styles = [];
       $label = $paragraph->get('field_uip_title')->getString();
       $display_label = $paragraph->get('field_uip_display_title')->getString();
 
@@ -537,6 +539,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
 
     case 'text':
       $type = 'uiowa_text_area';
+      $styles = sitenow_p2lb_section_styles($paragraph);
       // @todo update labeling methodology and decide how to title.
       $label = 'Text block';
       $display_label = 0;
