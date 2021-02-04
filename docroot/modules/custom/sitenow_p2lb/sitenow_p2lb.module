@@ -340,13 +340,25 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       $display_label = 0;
       $view_mode = 'accordion';
       $accordion_items = $paragraph->get('field_accordion_item');
+      $children = [];
       foreach ($accordion_items as $accordion_item) {
         $accordion_paragraph = $paragraph->load($accordion_item->target_id);
         $body = $accordion_paragraph->get('field_accordion_item_body')->getValue()[0];
         $title = $accordion_paragraph->get('field_accordion_item_title')->getString();
-        // @todo create collection_item paragraph and add to children list.
+        $child = $paragraph->create([
+          'langcode' => 'en',
+          'type' => 'uiowa_collection_item',
+          'status' => 1,
+          // @todo parent_id (block) should be added here.
+          'parent_type' => 'block_content',
+          'parent_field_name' => 'field_uiowa_collection_items',
+          'field_collection_body' => $body,
+          'field_collection_headline' => $title,
+        ]);
+        if ($child->save()) {
+          $children[] = $child;
+        }
       }
-      $children = [];
       $block = \Drupal::entityTypeManager()
         ->getStorage('block_content')
         ->create([
@@ -600,7 +612,6 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         ->getStorage('webform');
       $webform = $webform_manager->loadByProperties(['id' => $webform_data['target_id']]);
       $uuid = $webform[$webform_data['target_id']]->get('uuid');
-      $view_mode = isset($view_mode) ? $view_mode : '';
 
       $config = [
         'id' => 'webform_block',
@@ -609,7 +620,6 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         'label_display' => $display_label,
         'redirect' => 0,
         'default_data' => $webform_data['default_data'],
-        'view_mode' => $view_mode,
         'webform_id' => $webform_data['target_id'],
       ];
 
@@ -624,6 +634,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
 
   }
   // If we have a block save it, and check that it saved succesfully.
+  $view_mode = isset($view_mode) ? $view_mode : '';
   if (isset($block) && $block->save()) {
     $uuid = $block->get('uuid')->getValue()[0]['value'];
     $config = [
@@ -632,7 +643,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       'provider' => 'layout_builder',
       'label_display' => $display_label,
       'block_revision_id' => $block->getRevisionId(),
-      'view_mode' => '',
+      'view_mode' => $view_mode,
     ];
 
     // Set the block usage to the node.
