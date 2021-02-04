@@ -2165,3 +2165,9 @@ $sites['nursing.local.drupal.uiowa.edu'] = 'nursing.uiowa.edu';
 $sites['nursing.dev.drupal.uiowa.edu'] = 'nursing.uiowa.edu';
 $sites['nursing.stage.drupal.uiowa.edu'] = 'nursing.uiowa.edu';
 $sites['nursing.prod.drupal.uiowa.edu'] = 'nursing.uiowa.edu';
+
+// Directory aliases for teachonline.uiowa.edu.
+$sites['teachonline.local.drupal.uiowa.edu'] = 'teachonline.uiowa.edu';
+$sites['teachonline.dev.drupal.uiowa.edu'] = 'teachonline.uiowa.edu';
+$sites['teachonline.stage.drupal.uiowa.edu'] = 'teachonline.uiowa.edu';
+$sites['teachonline.prod.drupal.uiowa.edu'] = 'teachonline.uiowa.edu';
