@@ -201,22 +201,43 @@ function admissions_core_preprocess_layout(&$variables) {
   if ($layout->id() === 'layout_header') {
     $node = \Drupal::routeMatch()->getParameter('node');
     $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
-    if ($node instanceof NodeInterface && $node->getType() === 'area_of_study') {
-      $variables['#attached']['library'][] = 'admissions_core/area-of-study';
-
-      if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
-        // Set the featured image display.
-        $variables['featured_image_display'] = 'small';
+    if ($node instanceof NodeInterface) {
+      if (in_array($node->getType(), [
+        'area_of_study',
+        'student_profile',
+      ])) {
+        if (!isset($variables['banner_attributes'])) {
+          $variables['banner_settings'] = [];
+        }
       }
-      $variables['banner_override_classes'] = 'banner--horizontal-center banner--vertical-center banner--transparent';
-    }
-    // Limit to just Student profiles.
-    if ($node instanceof NodeInterface && $node->getType() === 'student_profile') {
-      if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
-        // Set the featured image display.
-        $variables['featured_image_display'] = 'large';
-        // Override default gradient
-        $variables['attributes']['class'][] = 'banner--transparent';
+      switch ($node->getType()) {
+        case 'area_of_study':
+          // @todo Move this to admissions_core_preprocess_node().
+          $variables['#attached']['library'][] = 'admissions_core/area-of-study';
+
+          if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
+
+            // Set the featured image display.
+            $variables['featured_image_display'] = 'small';
+
+            // Set banner defaults
+            $variables['banner_settings']['transparent'] = TRUE;
+            $variables['banner_settings']['horizontal_align'] = 'center';
+            $variables['banner_settings']['vertical_align'] = 'center';
+          }
+          break;
+
+        case 'student_profile':
+          if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
+
+            // Set the featured image display.
+            $variables['featured_image_display'] = 'large';
+
+            // Set banner defaults.
+            $variables['banner_settings']['transparent'] = TRUE;
+          }
+          break;
+
       }
     }
   }

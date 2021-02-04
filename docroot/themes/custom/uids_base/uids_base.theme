@@ -358,6 +358,9 @@ function uids_base_preprocess_layout(&$variables) {
         if (!$variables['featured_image_display']) {
           unset($variables['content']['background']);
         }
+        else {
+          $variables['attributes']['class'][] = 'banner--' . $variables['featured_image_display'];
+        }
       }
 
       // Loop through regions in the layout.
@@ -389,6 +392,34 @@ function uids_base_preprocess_layout(&$variables) {
           }
         }
       }
+
+
+      if (!isset($variables['banner_settings'])) {
+        if (!isset($variables['banner_attributes'])) {
+          $variables['banner_settings'] = [];
+        }
+        $defaults = [
+          'transparent' => FALSE,
+          'horizontal_align' => 'left',
+          'vertical_align' => 'bottom',
+        ];
+
+        $variables['banner_settings'] = $defaults + $variables['banner_settings'];
+      }
+
+      // Set default for banner gradient.
+      if ($variables['banner_settings']['transparent']) {
+        $variables['attributes']['class'][] = 'banner--transparent';
+      }
+      else {
+        $variables['attributes']['class'][] = 'banner--gradient-bottom';
+        $variables['attributes']['class'][] = 'banner--gradient-dark';
+      }
+
+      // Set other banner default classes.
+      $variables['attributes']['class'][] = 'banner--horizontal-' . $variables['banner_settings']['horizontal_align'];
+      $variables['attributes']['class'][] = 'banner--vertical-' . $variables['banner_settings']['vertical_align'];
+
       if ($contains_title) {
         $variables['attributes']['class'][] = 'layout--title';
         if ($contains_background && $variables['featured_image_display']) {
