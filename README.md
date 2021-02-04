@@ -26,6 +26,8 @@ All BLT commands should be run on the VM. You can SSH into the VM using `vagrant
 ## Workspaces
 Yarn [workspaces](https://classic.yarnpkg.com/en/docs/workspaces) can be defined in the top-level package.json file. Each workspace can depend on other workspaces as well as define their own build script. You can run workspace build scripts on the VM with `yarn workspace WORKSPACE_NAME run SCRIPT_NAME`. Every workspace build script gets run during continuous integration to build assets. The build assets are committed to the build artifact and deployed.
 
+Workspaces that need to leverage uiowa/uids assets should depend on uids_base and not uiowa/uids directly. This is to ensure the version of uiowa/uids is strictly managed and because uids_base runs a build script that copies necessary assets into the build artifact. For example, fonts are available in uids_base which would not be available in the excluded node_modules directory.
+
 Note that certain filesystem watch commands are either slow or broken over Vagrant synced folders. To get around this, you can run workspace build scripts manually or run watch commands on your host although you'll need Node, [NVM](https://github.com/nvm-sh/nvm#installing-and-updating) and [Yarn](https://classic.yarnpkg.com/en/docs/install#mac-stable). Once installed, you can run the following from the application root:
 
 ```
