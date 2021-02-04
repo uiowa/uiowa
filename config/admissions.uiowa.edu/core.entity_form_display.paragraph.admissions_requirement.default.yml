@@ -1,0 +1,65 @@
+uuid: 5b3d448c-1e87-4633-9198-916753cc5be4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.admissions_requirement.field_ar_intro
+    - field.field.paragraph.admissions_requirement.field_ar_process_content
+    - field.field.paragraph.admissions_requirement.field_ar_process_label
+    - field.field.paragraph.admissions_requirement.field_ar_requirement_content
+    - field.field.paragraph.admissions_requirement.field_ar_requirement_label
+    - paragraphs.paragraphs_type.admissions_requirement
+  module:
+    - text
+id: paragraph.admissions_requirement.default
+targetEntityType: paragraph
+bundle: admissions_requirement
+mode: default
+content:
+  field_ar_intro:
+    weight: 0
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_ar_process_content:
+    weight: 4
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_ar_process_label:
+    weight: 3
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_ar_requirement_content:
+    weight: 2
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_ar_requirement_label:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden:
+  created: true
+  status: true
