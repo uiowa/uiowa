@@ -44,8 +44,9 @@
   'card--list',
   'card--enclosed',
   'bg--white',
-  'card--centered',
-  'card--stacked',
+  'card--centered-left',
+  'card--alignment-left',
+  'card--media-left',
   'card',
 ]
 %}
@@ -63,7 +64,7 @@
   'requirement_url': admissions_requirement_links['requirement_url'],
   'process_label': admissions_requirement_links['process_label'],
   'process_url': admissions_requirement_links['process_url'],
-  'media_sizes': 'media--circle card__media--small',
+  'media_sizes': 'card__media--small',
 } %}
 {% embed '@uids_base/uids/card.html.twig' with admissions_requirement only %}
   {% block card_img %}
