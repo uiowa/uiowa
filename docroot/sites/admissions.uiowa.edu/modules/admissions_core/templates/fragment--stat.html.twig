@@ -31,8 +31,9 @@
  * @see template_preprocess_bit()
  */
 #}
-{% set has_hover_effect = false %}
-{% set stat_classes = [] %}
+{% set stat_classes = [
+  'stat--static',
+] %}
 {% if has_hover_effect and content.field_stat_content[0]['#context']['value'] is not null %}
   {% set stat_classes = 'stat stat__grid stat--transform' %}
 {% endif %}
