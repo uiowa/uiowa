@@ -20,19 +20,6 @@ use Drupal\Core\Template\Attribute;
  */
 function admissions_core_entity_presave(EntityInterface $entity) {
   switch ($entity->bundle()) {
-    // Statistic Fragment.
-    case 'stat':
-      $output = '';
-      if ($entity->hasField('field_stat_figure_pre') && !empty($entity->get('field_stat_figure_pre'))) {
-        $output .= $entity->get('field_stat_figure_pre')->value . ' ';
-      }
-      // Required field. Go on, get it.
-      $output .= $entity->get('field_stat_figure')->text;
-      if ($entity->hasField('field_stat_figure_suf') && !empty($entity->get('field_stat_figure_suf'))) {
-        $output .= ' ' . $entity->get('field_stat_figure_suf')->value;
-      }
-      $entity->setTitle($output);
-      break;
     case 'student_profile':
       // Setting the student profile title with the first/last name values.
       $output = $entity->get('field_person_first_name')->value . " " . $entity->get('field_person_last_name')->value;
