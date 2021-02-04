@@ -2159,3 +2159,9 @@ $sites['labbhattacherjee.local.drupal.uiowa.edu'] = 'bhattacherjee.lab.uiowa.edu
 $sites['labbhattacherjee.dev.drupal.uiowa.edu'] = 'bhattacherjee.lab.uiowa.edu';
 $sites['labbhattacherjee.stage.drupal.uiowa.edu'] = 'bhattacherjee.lab.uiowa.edu';
 $sites['labbhattacherjee.prod.drupal.uiowa.edu'] = 'bhattacherjee.lab.uiowa.edu';
+
+// Directory aliases for nursing.uiowa.edu.
+$sites['nursing.local.drupal.uiowa.edu'] = 'nursing.uiowa.edu';
+$sites['nursing.dev.drupal.uiowa.edu'] = 'nursing.uiowa.edu';
+$sites['nursing.stage.drupal.uiowa.edu'] = 'nursing.uiowa.edu';
+$sites['nursing.prod.drupal.uiowa.edu'] = 'nursing.uiowa.edu';
