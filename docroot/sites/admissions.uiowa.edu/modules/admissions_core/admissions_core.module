@@ -210,7 +210,7 @@ function admissions_core_preprocess_paragraph__admissions_requirement(&$variable
       $admissions_requirements = [
         'field_area_of_study_first_year' => t('First-Year'),
         'field_area_of_study_transfer' => t('Transfer'),
-        'field_area_of_study_international' => t('International'),
+        'field_area_of_study_intl' => t('International'),
       ];
       $id = $paragraph->id();
       foreach ($admissions_requirements as $requirement => $label) {
@@ -297,6 +297,14 @@ function admissions_core_theme($existing, $type, $theme, $path) {
     ],
     'field__node__field_area_of_study_subtitle__area_of_study__default' => [
       'template' => 'field--node--field-area-of-study-subtitle--area-of-study--default',
+      'base hook' => 'field',
+    ],
+    'field__node__field_area_of_study_link__area_of_study__default' => [
+      'template' => 'field--node--field-area-of-study-link--area-of-study--default',
+      'base hook' => 'field',
+    ],
+    'field__node__field_area_of_study_scholarship__area_of_study__default' => [
+      'template' => 'field--node--field-area-of-study-scholarship--area-of-study--default',
       'base hook' => 'field',
     ],
     'field__field_student_profile_blurb' => [
