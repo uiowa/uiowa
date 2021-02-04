@@ -16,11 +16,8 @@
 {% set background = content.background | render %}
 {% if background is not empty and (featured_image_display is not empty) %}
   {% set classes = [
-    'banner--gradient-bottom',
-    'banner--gradient-dark',
-    'banner--horizontal-left',
+    banner_override_classes ? banner_override_classes : 'banner--gradient-bottom banner--gradient-dark banner--horizontal-left banner--vertical-bottom',
     'banner--' ~ featured_image_display,
-    'banner--vertical-bottom',
     layout.template|clean_class,
   ] %}
   {% embed "@uids_base/uids/banner.html.twig" with {

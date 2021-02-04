@@ -208,11 +208,7 @@ function admissions_core_preprocess_layout(&$variables) {
         // Set the featured image display.
         $variables['featured_image_display'] = 'small';
       }
-      $banner_classes = ['banner--horizontal-center', 'banner--vertical-center', 'banner--transparent', 'banner--small'];
-      foreach ($banner_classes as $class) {
-        $variables['attributes']['class'][] = $class;
-      }
-
+      $variables['banner_override_classes'] = 'banner--horizontal-center banner--vertical-center banner--transparent';
     }
     // Limit to just Student profiles.
     if ($node instanceof NodeInterface && $node->getType() === 'student_profile') {
