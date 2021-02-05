@@ -295,9 +295,9 @@ class Article extends BaseNodeSource {
   protected function getTags(&$row) {
     $tids = $row->getSourceProperty('field_tags_tid');
     $target_ids = [
-      'primary_department_' => $row->getSourceProperty('field_primary_department_target_id'),
-      'department_feed_' => $row->getSourceProperty('field_department_target_id'),
-      'target_audience_' => $row->getSourceProperty('field_audience_multi_target_id'),
+      'Primary Department: ' => $row->getSourceProperty('field_primary_department_target_id'),
+      'Department Feed: ' => $row->getSourceProperty('field_department_target_id'),
+      'Audience: ' => $row->getSourceProperty('field_audience_multi_target_id'),
     ];
 
     foreach ($tids as $tid) {
