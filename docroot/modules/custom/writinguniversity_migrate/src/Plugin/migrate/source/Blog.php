@@ -6,7 +6,6 @@ use Drupal\Component\Utility\Html;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
-use Drupal\taxonomy\Entity\Term;
 
 /**
  * Basic implementation of the source plugin.
