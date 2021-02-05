@@ -46,7 +46,7 @@ class Article extends BaseNodeSource {
   public function query() {
     $query = parent::query();
     $query->join('field_data_body', 'b', 'n.nid = b.entity_id');
-    $query->leftJoin('field_data_field_large_featured_blog_image', 'image', 'n.nid = image.entity_id');
+    $query->leftJoin('field_data_field_image', 'image', 'n.nid = image.entity_id');
     $query->leftJoin('url_alias', 'alias', "alias.source = CONCAT('node/', n.nid)");
     $query = $query->fields('b', [
       'entity_type',
@@ -61,11 +61,11 @@ class Article extends BaseNodeSource {
       'body_format',
     ])
       ->fields('image', [
-        'field_large_featured_blog_image_fid',
-        'field_large_featured_blog_image_alt',
-        'field_large_featured_blog_image_title',
-        'field_large_featured_blog_image_width',
-        'field_large_featured_blog_image_height',
+        'field_image_fid',
+        'field_image_alt',
+        'field_image_title',
+        'field_image_width',
+        'field_image_height',
       ])
       ->fields('n', [
         'title',
@@ -125,7 +125,7 @@ class Article extends BaseNodeSource {
    */
   public function prepareRow(Row $row) {
     // Process image field if it exists.
-    $this->processImageField($row, 'field_large_featured_blog_image');
+    $this->processImageField($row, 'field_image');
 
     // Search for D7 inline embeds and replace with D8 inline entities.
     $content = $row->getSourceProperty('body_value');
