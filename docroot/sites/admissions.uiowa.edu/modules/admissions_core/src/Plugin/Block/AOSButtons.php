@@ -28,7 +28,7 @@ class AOSButtons extends BlockBase {
   public function build() {
     $markup = '<div class="layout-builder-block block-margin__bottom">
       <p>
-          <a class="bttn bttn--full bttn--primary bttn--caps" href="https://www.example.com">
+          <a class="bttn bttn--full bttn--primary bttn--caps" href="https://apply.admissions.uiowa.edu/admissions/login.page">
               Apply Now <span class="fa-arrow-right fas"></span>
           </a>
       </p>
