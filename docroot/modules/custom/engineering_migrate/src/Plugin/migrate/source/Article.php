@@ -132,12 +132,21 @@ class Article extends BaseNodeSource {
 
     // Replace any inline images, if they exist.
     $content = $this->replaceInlineImages($content);
-
     $row->setSourceProperty('body_value', $content);
 
     // Strip tags so they don't show up in the field teaser.
     $row->setSourceProperty('body_summary', strip_tags($row->getSourceProperty('body_summary')));
 
+    // Get the various references and terms
+    // that will be combined into the Tags field..
+    $tables = [
+      'field_data_field_primary_department' => ['field_primary_department_target_id'],
+      'field_data_field_department' => ['field_department_target_id'],
+      'field_data_field_audience_multi' => ['field_audience_multi_target_id'],
+      'field_data_field_tags' => ['field_tags_tid'],
+    ];
+    // @todo fetch or create tags based on the references above.
+    $this->fetchAdditionalFields($row, $tables);
     // Call the parent prepareRow.
     return parent::prepareRow($row);
   }
