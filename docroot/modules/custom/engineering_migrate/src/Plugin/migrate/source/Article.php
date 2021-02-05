@@ -336,7 +336,8 @@ class Article extends BaseNodeSource {
       foreach ($ref_ids as $ref_id) {
         if (isset($this->refMapping[$ref_id])) {
           $new_tids[] = $this->termMapping[$ref_id];
-        } else {
+        }
+        else {
           $source_ref_ids[] = $ref_id;
         }
       }
