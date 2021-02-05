@@ -4,14 +4,24 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_area_of_study_certificates
+    - field.storage.node.field_area_of_study_comp_txt
+    - field.storage.node.field_area_of_study_competitive
+    - field.storage.node.field_area_of_study_four_txt
+    - field.storage.node.field_area_of_study_four_year
+    - field.storage.node.field_area_of_study_honors
     - field.storage.node.field_area_of_study_majors
     - field.storage.node.field_area_of_study_minors
     - field.storage.node.field_area_of_study_online
     - field.storage.node.field_area_of_study_preprof
+    - field.storage.node.field_area_of_study_select_txt
+    - field.storage.node.field_area_of_study_selective
+    - field.storage.node.field_area_of_study_teaching
+    - field.storage.node.field_area_of_study_teaching_txt
     - node.type.area_of_study
   module:
     - entity_reference_revisions
     - node
+    - options
     - user
 id: areas_of_study_block
 label: 'Areas of Study Block'
@@ -38,7 +48,7 @@ display:
         type: views_query
         options:
           disable_sql_rewrite: false
-          distinct: true
+          distinct: false
           replica: false
           query_comment: ''
           query_tags: {  }
@@ -65,6 +75,11 @@ display:
           default_row_class: true
       row:
         type: fields
+        options:
+          default_field_elements: true
+          inline: {  }
+          separator: ''
+          hide_empty: true
       fields:
         field_area_of_study_majors:
           id: field_area_of_study_majors
@@ -381,6 +396,816 @@ display:
           separator: ''
           field_api_classes: true
           plugin_id: field
+        field_area_of_study_teaching:
+          id: field_area_of_study_teaching
+          table: node__field_area_of_study_teaching
+          field: field_area_of_study_teaching
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: true
+            text: '<span class="fa-check-square fas"></span>&nbsp; {{ field_area_of_study_teaching }}'
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: field__label
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: list_default
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_area_of_study_teaching_txt:
+          id: field_area_of_study_teaching_txt
+          table: node__field_area_of_study_teaching_txt
+          field: field_area_of_study_teaching_txt
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: 'field__item block-margin__bottom '
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_area_of_study_teaching_1:
+          id: field_area_of_study_teaching_1
+          table: node__field_area_of_study_teaching
+          field: field_area_of_study_teaching
+          relationship: none
+          group_type: group
+          admin_label: 'Teaching Licensure Description Display'
+          label: ''
+          exclude: false
+          alter:
+            alter_text: true
+            text: '{{ field_area_of_study_teaching_txt }}'
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: 'field__item block-margin__bottom '
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: list_default
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_area_of_study_honors:
+          id: field_area_of_study_honors
+          table: node__field_area_of_study_honors
+          field: field_area_of_study_honors
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: true
+            text: '<span class="fa-check-square fas"></span>&nbsp; {{ field_area_of_study_honors }}'
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: field__label
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: list_default
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_area_of_study_four_year:
+          id: field_area_of_study_four_year
+          table: node__field_area_of_study_four_year
+          field: field_area_of_study_four_year
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: true
+            text: '<span class="fa-check-square fas"></span>&nbsp; {{ field_area_of_study_four_year }} '
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: field__label
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: list_default
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_area_of_study_four_txt:
+          id: field_area_of_study_four_txt
+          table: node__field_area_of_study_four_txt
+          field: field_area_of_study_four_txt
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: 'field__item block-margin__bottom '
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_area_of_study_four_year_1:
+          id: field_area_of_study_four_year_1
+          table: node__field_area_of_study_four_year
+          field: field_area_of_study_four_year
+          relationship: none
+          group_type: group
+          admin_label: 'Four-Year Graduate Plan Description Display'
+          label: ''
+          exclude: false
+          alter:
+            alter_text: true
+            text: '{{ field_area_of_study_four_txt }}'
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: 'field__item block-margin__bottom '
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: list_default
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_area_of_study_selective:
+          id: field_area_of_study_selective
+          table: node__field_area_of_study_selective
+          field: field_area_of_study_selective
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: true
+            text: '<span class="fa-check-square fas"></span>&nbsp; {{ field_area_of_study_selective }}'
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: field__label
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: list_default
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_area_of_study_select_txt:
+          id: field_area_of_study_select_txt
+          table: node__field_area_of_study_select_txt
+          field: field_area_of_study_select_txt
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: div
+          element_class: 'field__item block-margin__bottom '
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: false
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_area_of_study_selective_1:
+          id: field_area_of_study_selective_1
+          table: node__field_area_of_study_selective
+          field: field_area_of_study_selective
+          relationship: none
+          group_type: group
+          admin_label: 'Selective Admission Description Display'
+          label: ''
+          exclude: false
+          alter:
+            alter_text: true
+            text: '{{ field_area_of_study_select_txt }}'
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: 'field__item block-margin__bottom '
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: list_default
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_area_of_study_competitive:
+          id: field_area_of_study_competitive
+          table: node__field_area_of_study_competitive
+          field: field_area_of_study_competitive
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: true
+            text: '<span class="fa-check-square fas"></span>&nbsp; {{ field_area_of_study_competitive }}'
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: field__label
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: list_default
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_area_of_study_comp_txt:
+          id: field_area_of_study_comp_txt
+          table: node__field_area_of_study_comp_txt
+          field: field_area_of_study_comp_txt
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: field__item
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_area_of_study_competitive_1:
+          id: field_area_of_study_competitive_1
+          table: node__field_area_of_study_competitive
+          field: field_area_of_study_competitive
+          relationship: none
+          group_type: group
+          admin_label: 'Competitive Admission Description Display'
+          label: ''
+          exclude: false
+          alter:
+            alter_text: true
+            text: '{{ field_area_of_study_comp_txt }}'
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: 'field__item block-margin__bottom '
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: list_default
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
       filters:
         status:
           value: '1'
@@ -475,10 +1300,19 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.node.field_area_of_study_certificates'
+        - 'config:field.storage.node.field_area_of_study_comp_txt'
+        - 'config:field.storage.node.field_area_of_study_competitive'
+        - 'config:field.storage.node.field_area_of_study_four_txt'
+        - 'config:field.storage.node.field_area_of_study_four_year'
+        - 'config:field.storage.node.field_area_of_study_honors'
         - 'config:field.storage.node.field_area_of_study_majors'
         - 'config:field.storage.node.field_area_of_study_minors'
         - 'config:field.storage.node.field_area_of_study_online'
         - 'config:field.storage.node.field_area_of_study_preprof'
+        - 'config:field.storage.node.field_area_of_study_select_txt'
+        - 'config:field.storage.node.field_area_of_study_selective'
+        - 'config:field.storage.node.field_area_of_study_teaching'
+        - 'config:field.storage.node.field_area_of_study_teaching_txt'
   block_1:
     display_plugin: block
     id: block_1
@@ -497,7 +1331,16 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.node.field_area_of_study_certificates'
+        - 'config:field.storage.node.field_area_of_study_comp_txt'
+        - 'config:field.storage.node.field_area_of_study_competitive'
+        - 'config:field.storage.node.field_area_of_study_four_txt'
+        - 'config:field.storage.node.field_area_of_study_four_year'
+        - 'config:field.storage.node.field_area_of_study_honors'
         - 'config:field.storage.node.field_area_of_study_majors'
         - 'config:field.storage.node.field_area_of_study_minors'
         - 'config:field.storage.node.field_area_of_study_online'
         - 'config:field.storage.node.field_area_of_study_preprof'
+        - 'config:field.storage.node.field_area_of_study_select_txt'
+        - 'config:field.storage.node.field_area_of_study_selective'
+        - 'config:field.storage.node.field_area_of_study_teaching'
+        - 'config:field.storage.node.field_area_of_study_teaching_txt'

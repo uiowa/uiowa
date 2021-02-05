@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: teachonline.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: teachonline
+  human_name: teachonline.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: teachonline.prod
+drupal:
+  db:
+    database: teachonline_uiowa_edu
+uiowa:
+  requester: tripple
