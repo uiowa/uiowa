@@ -6,6 +6,7 @@ use Drupal\Component\Utility\Html;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
+use Drupal\taxonomy\Entity\Term;
 
 /**
  * Basic implementation of the source plugin.
@@ -39,6 +40,20 @@ class Article extends BaseNodeSource {
    * @var string
    */
   protected $temporaryPath;
+
+  /**
+   * Term-to-term mapping for tags.
+   *
+   * @var array
+   */
+  protected $termMapping;
+
+  /**
+   * Reference-to-term mapping for tags.
+   *
+   * @var array
+   */
+  protected $refMapping;
 
   /**
    * {@inheritdoc}
@@ -145,8 +160,9 @@ class Article extends BaseNodeSource {
       'field_data_field_audience_multi' => ['field_audience_multi_target_id'],
       'field_data_field_tags' => ['field_tags_tid'],
     ];
-    // @todo fetch or create tags based on the references above.
+
     $this->fetchAdditionalFields($row, $tables);
+    $this->getTags($row);
     // Call the parent prepareRow.
     return parent::prepareRow($row);
   }
@@ -271,6 +287,87 @@ class Article extends BaseNodeSource {
       ->condition('f.filename', $filename)
       ->execute()
       ->fetchField();
+  }
+
+  /**
+   * Map taxonomy to a tag.
+   */
+  protected function getTags(&$row) {
+    $tids = $row->getSourceProperty('field_tags_tid');
+    $target_ids = [
+      'primary_department_' => $row->getSourceProperty('field_primary_department_target_id'),
+      'department_feed_' => $row->getSourceProperty('field_department_target_id'),
+      'target_audience_' => $row->getSourceProperty('field_audience_multi_target_id'),
+    ];
+
+    foreach ($tids as $tid) {
+      if (isset($this->termMapping[$tid])) {
+        $new_tids[] = $this->termMapping[$tid];
+      }
+      else {
+        $source_tids[] = $tid;
+      }
+    }
+    if (!empty($source_tids)) {
+      $source_query = $this->select('taxonomy_term_data', 't');
+      $source_query = $source_query->fields('t', [
+        'tid',
+        'name',
+        // We can leave out description, as all are empty.
+      ])
+        ->condition('t.tid', $source_tids, 'in');
+      $terms = $source_query->distinct()
+        ->execute()
+        ->fetchAllKeyed(0, 1);
+      foreach ($terms as $tid => $name) {
+        $term = Term::create([
+          'name' => $name,
+          'vid' => 'tags',
+        ]);
+        if ($term->save()) {
+          $this->termMapping[$tid] = $term->id();
+          $new_tids[] = $term->id();
+        }
+      }
+    }
+
+    // Now for the reference ids.
+    foreach ($target_ids as $type => $ref_ids) {
+      foreach ($ref_ids as $ref_id) {
+        if (isset($this->refMapping[$ref_id])) {
+          $new_tids[] = $this->termMapping[$ref_id];
+        } else {
+          $source_ref_ids[] = $ref_id;
+        }
+      }
+      if (!empty($source_ref_ids)) {
+        $source_query = $this->select('taxonomy_term_data', 't');
+        $source_query = $source_query->fields('t', [
+          'tid',
+          'name',
+          // We can leave out description, as all are empty.
+        ])
+          ->condition('t.tid', $source_ref_ids, 'in');
+        $terms = $source_query->distinct()
+          ->execute()
+          ->fetchAllKeyed(0, 1);
+        foreach ($terms as $ref_id => $name) {
+          // Prepend the fieldtype and create a new term.
+          $term = Term::create([
+            'name' => $type . $name,
+            'vid' => 'tags',
+          ]);
+          if ($term->save()) {
+            $this->termMapping[$ref_id] = $term->id();
+            $new_tids[] = $term->id();
+          }
+        }
+      }
+    }
+
+    if (!empty($new_tids)) {
+      $row->setSourceProperty('article_tids', $new_tids);
+    }
   }
 
 }
