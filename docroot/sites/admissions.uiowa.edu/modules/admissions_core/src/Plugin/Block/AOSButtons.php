@@ -27,18 +27,14 @@ class AOSButtons extends BlockBase {
    */
   public function build() {
     $markup = '<div class="layout-builder-block block-margin__bottom">
-      <p>
-          <a class="bttn bttn--full bttn--primary bttn--caps" href="https://apply.admissions.uiowa.edu/admissions/login.page">
-              Apply Now <span class="fa-arrow-right fas"></span>
-          </a>
-      </p>
-    </div>
-    <div class="layout-builder-block block-margin__bottom block-margin__top">
-      <p>
-        <a class="bttn bttn--full bttn--secondary bttn--caps" href="https://www.maui.uiowa.edu/maui/pub/admissions/webinquiry/undergraduate.page">
-            Request Info <span class="fa-arrow-right fas"></span>
+        <a class="bttn bttn--full bttn--primary bttn--caps" href="https://apply.admissions.uiowa.edu/admissions/login.page">
+            Apply Now <span class="fa-arrow-right fas"></span>
         </a>
-      </p>
+    </div>
+    <div class="layout-builder-block block-margin__bottom block-margin__top--extra">
+      <a class="bttn bttn--full bttn--secondary bttn--caps" href="https://www.maui.uiowa.edu/maui/pub/admissions/webinquiry/undergraduate.page">
+          Request Info <span class="fa-arrow-right fas"></span>
+      </a>
     </div>';
 
     return ['#markup' => $markup];
