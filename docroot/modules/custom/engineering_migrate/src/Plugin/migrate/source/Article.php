@@ -335,7 +335,7 @@ class Article extends BaseNodeSource {
     foreach ($target_ids as $type => $ref_ids) {
       foreach ($ref_ids as $ref_id) {
         if (isset($this->refMapping[$ref_id])) {
-          $new_tids[] = $this->termMapping[$ref_id];
+          $new_tids[] = $this->refMapping[$ref_id];
         }
         else {
           $source_ref_ids[] = $ref_id;
@@ -359,7 +359,7 @@ class Article extends BaseNodeSource {
             'vid' => 'tags',
           ]);
           if ($term->save()) {
-            $this->termMapping[$ref_id] = $term->id();
+            $this->refMapping[$ref_id] = $term->id();
             $new_tids[] = $term->id();
           }
         }
