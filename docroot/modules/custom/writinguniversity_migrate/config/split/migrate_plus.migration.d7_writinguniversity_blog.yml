@@ -15,7 +15,7 @@ migration_group: sitenow_migrate
 label: 'Blog:Image node migration from Drupal 7'
 source:
   plugin: d7_writinguniversity_blog
-  node_type: article
+  node_type: blog-entry-image-large
 process:
   langcode:
     plugin: static_map
@@ -41,9 +41,7 @@ process:
     default_value: filtered_html
   field_teaser: body_summary
   moderation_state: moderation_state
-  field_image: field_thumbnail_image_fid
-  field_article_author: field_author_nid
-  field_tags: article_tids
+  field_image: field_large_featured_blog_image_fid
 destination:
   plugin: 'entity:node'
   default_bundle: article
