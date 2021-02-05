@@ -42,36 +42,13 @@ class Blog extends BaseNodeSource {
   protected $temporaryPath;
 
   /**
-   * Node-to-node mapping for author content.
-   *
-   * @var array
-   */
-  protected $authorMapping;
-
-  /**
-   * Term-to-term mapping for tags.
-   *
-   * @var array
-   */
-  protected $termMapping;
-
-  /**
    * {@inheritdoc}
    */
   public function query() {
     $query = parent::query();
     $query->join('field_data_body', 'b', 'n.nid = b.entity_id');
-    $query->leftJoin('field_data_field_thumbnail_image', 'ti', 'n.nid = ti.entity_id');
-    $query->leftJoin('field_data_field_author', 'author', 'n.nid = author.entity_id');
+    $query->leftJoin('field_data_field_large_featured_blog_image', 'image', 'n.nid = image.entity_id');
     $query->leftJoin('url_alias', 'alias', "alias.source = CONCAT('node/', n.nid)");
-    // field_data_field_header_image is not being migrated.
-    // field_data_field_lead is not being migrated.
-    // field_data_field_pull_quote is not being migrated.
-    // field_data_field_pull_quote_featured is not being migrated.
-    // field_data_field_annual_report is not being migrated.
-    // field_data_field_article_source_link is not being migrated.
-    // field_data_field_attachments is not being migrated.
-    // field_data_field_photo_credit is not being migrated.
     $query = $query->fields('b', [
       'entity_type',
       'bundle',
@@ -84,12 +61,12 @@ class Blog extends BaseNodeSource {
       'body_summary',
       'body_format',
     ])
-      ->fields('ti', [
-        'field_thumbnail_image_fid',
-        'field_thumbnail_image_alt',
-        'field_thumbnail_image_title',
-        'field_thumbnail_image_width',
-        'field_thumbnail_image_height',
+      ->fields('image', [
+        'field_large_featured_blog_image_fid',
+        'field_large_featured_blog_image_alt',
+        'field_large_featured_blog_image_title',
+        'field_large_featured_blog_image_width',
+        'field_large_featured_blog_image_height',
       ])
       ->fields('n', [
         'title',
@@ -98,9 +75,6 @@ class Blog extends BaseNodeSource {
         'status',
         'promote',
         'sticky',
-      ])
-      ->fields('author', [
-        'field_author_nid',
       ])
       ->fields('alias', [
         'alias',
@@ -152,7 +126,7 @@ class Blog extends BaseNodeSource {
    */
   public function prepareRow(Row $row) {
     // Process image field if it exists.
-    $this->processImageField($row, 'field_thumbnail_image');
+    $this->processImageField($row, 'field_large_featured_blog_image');
 
     // Search for D7 inline embeds and replace with D8 inline entities.
     $content = $row->getSourceProperty('body_value');
@@ -165,98 +139,8 @@ class Blog extends BaseNodeSource {
     // Strip tags so they don't show up in the field teaser.
     $row->setSourceProperty('body_summary', strip_tags($row->getSourceProperty('body_summary')));
 
-    // Update the author reference to use the destination People content.
-    $author_nid = $row->getSourceProperty('field_author_nid');
-    if ($author_nid) {
-      $row->setSourceProperty('field_author_nid', $this->getAuthor($author_nid));
-    }
-
-    // Get both the article tags and programs.
-    $tables = [
-      'field_data_field_tags' => ['field_tags_tid'],
-      'field_data_field_article_program' => ['field_article_program_tid'],
-    ];
-    $this->fetchAdditionalFields($row, $tables);
-    // Get the mapped tags.
-    $this->getTags($row);
-
     // Call the parent prepareRow.
     return parent::prepareRow($row);
-  }
-
-  /**
-   * Check if we have the author mapping, and query if not.
-   *
-   * @param int $author_nid
-   *   The original source author nid.
-   *
-   * @return int
-   *   The nid for the new destination Person node.
-   */
-  protected function getAuthor($author_nid) {
-    // If we have the mapping, then return.
-    if (isset($this->authorMapping[$author_nid])) {
-      return $this->authorMapping[$author_nid];
-    }
-    // We haven't mapped yet, so queries are needed.
-    // First grab the title of the source author node.
-    $source_query = $this->select('node', 'n');
-    $source_query = $source_query->fields('n', [
-      'title',
-    ])
-      ->condition('nid', $author_nid, '=');
-    $title = $source_query->execute()
-      ->fetchField();
-    // Now we need to find the matching destination person.
-    $dest_connection = \Drupal::database();
-    $dest_query = $dest_connection->select('node_field_data', 'nfd');
-    $new_author_nid = $dest_query->fields('nfd', ['nid'])
-      ->condition('nfd.title', $title)
-      ->execute()
-      ->fetchField();
-    // Set the new mapping.
-    $this->authorMapping[$author_nid] = $new_author_nid;
-    return $new_author_nid;
-  }
-
-  /**
-   * Map taxonomy to a tag.
-   */
-  protected function getTags(&$row) {
-    $tids = array_merge($row->getSourceProperty('field_tags_tid'), $row->getSourceProperty('field_article_program_tid'));
-    foreach ($tids as $tid) {
-      if (isset($this->termMapping[$tid])) {
-        $new_tids[] = $this->termMapping[$tid];
-      }
-      else {
-        $source_tids[] = $tid;
-      }
-    }
-    if (!empty($source_tids)) {
-      $source_query = $this->select('taxonomy_term_data', 't');
-      $source_query = $source_query->fields('t', [
-        'tid',
-        'name',
-        // We can leave out description, as all are empty.
-      ])
-        ->condition('t.tid', $source_tids, 'in');
-      $terms = $source_query->distinct()
-        ->execute()
-        ->fetchAllKeyed(0, 1);
-      foreach ($terms as $tid => $name) {
-        $term = Term::create([
-          'name' => $name,
-          'vid' => 'tags',
-        ]);
-        if ($term->save()) {
-          $this->termMapping[$tid] = $term->id();
-          $new_tids[] = $term->id();
-        }
-      }
-    }
-    if (!empty($new_tids)) {
-      $row->setSourceProperty('article_tids', $new_tids);
-    }
   }
 
   /**
