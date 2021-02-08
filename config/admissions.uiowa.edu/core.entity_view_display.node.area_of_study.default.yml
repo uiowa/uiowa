@@ -35,6 +35,7 @@ dependencies:
     - node.type.area_of_study
     - views.view.areas_of_study_block
   module:
+    - admissions_core
     - entity_reference_revisions
     - layout_builder
     - layout_builder_restrictions
@@ -207,7 +208,7 @@ third_party_settings:
                 block_padding_all: block_padding_all
                 block_margin_top: block_margin_top
                 block_margin_bottom: block_margin_bottom
-            weight: 7
+            weight: 8
           -
             uuid: 0eeb1ce7-7903-4640-89a5-cd8d147d3244
             region: first
@@ -236,6 +237,17 @@ third_party_settings:
               label_display: null
               views_label: ''
               items_per_page: none
+              context_mapping: {  }
+            additional: {  }
+            weight: 7
+          -
+            uuid: 088e48b0-97ec-479c-ae31-bac797a7e224
+            region: second
+            configuration:
+              id: aosbuttons_block
+              label: null
+              provider: admissions_core
+              label_display: null
               context_mapping: {  }
             additional: {  }
             weight: 6
