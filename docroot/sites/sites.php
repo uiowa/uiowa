@@ -2171,3 +2171,9 @@ $sites['teachonline.local.drupal.uiowa.edu'] = 'teachonline.uiowa.edu';
 $sites['teachonline.dev.drupal.uiowa.edu'] = 'teachonline.uiowa.edu';
 $sites['teachonline.stage.drupal.uiowa.edu'] = 'teachonline.uiowa.edu';
 $sites['teachonline.prod.drupal.uiowa.edu'] = 'teachonline.uiowa.edu';
+
+// Directory aliases for uimsa.org.uiowa.edu.
+$sites['orguimsa.local.drupal.uiowa.edu'] = 'uimsa.org.uiowa.edu';
+$sites['orguimsa.dev.drupal.uiowa.edu'] = 'uimsa.org.uiowa.edu';
+$sites['orguimsa.stage.drupal.uiowa.edu'] = 'uimsa.org.uiowa.edu';
+$sites['orguimsa.prod.drupal.uiowa.edu'] = 'uimsa.org.uiowa.edu';
