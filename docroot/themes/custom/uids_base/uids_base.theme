@@ -361,13 +361,13 @@ function uids_base_preprocess_layout(&$variables) {
             }
           }
         }
+      }
 
-        if (!$variables['featured_image_display']) {
-          unset($variables['content']['background']);
-        }
-        else {
-          $variables['attributes']['class'][] = 'banner--' . $variables['featured_image_display'];
-        }
+      if (!$variables['featured_image_display']) {
+        unset($variables['content']['background']);
+      }
+      else {
+        $variables['attributes']['class'][] = 'banner--' . $variables['featured_image_display'];
       }
 
       // Loop through regions in the layout.
