@@ -38,7 +38,7 @@ function hr_core_update_8002() {
 
   // Obtain the storage manager for vocabularies.
   // Create a new vocabulary from the yaml configuration and save.
-  \Drupal::entityManager()->getStorage('taxonomy_vocabulary')
+  \Drupal::entityTypeManager()->getStorage('taxonomy_vocabulary')
     ->create($source->read('taxonomy.vocabulary.faq_categories'))
     ->save();
 
