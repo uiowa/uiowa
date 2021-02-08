@@ -148,8 +148,8 @@
             <div class="card__date"><span class="fas fa-map-marker-alt"></span>{{ person_hometown }}</div>
         {% endif %}
     {% endblock %}
-    
-    {% block card_blurb %}
+
+    {% block card_content %}
         {% if person_blurb|striptags|trim is not empty %}
           <hr class="element--spacer-gold" />
           <div class="lead">{{ person_blurb }}</div>
