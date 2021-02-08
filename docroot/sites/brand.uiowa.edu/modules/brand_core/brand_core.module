@@ -144,7 +144,7 @@ function brand_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
           $uid = $record->revision_uid;
           $user = User::load($uid);
           $email = $user->getEmail();
-          $username = $user->getUsername();
+          $username = $user->getAccountName();
           $timestamp = $record->revision_timestamp;
           $date = \Drupal::service('date.formatter')->format($timestamp, 'short');
           if (!empty($record->revision_log)) {
@@ -270,7 +270,7 @@ function brand_core_preprocess_node(&$variables) {
             $name = Html::cleanCssIdentifier($path);
             $state = $node->get('moderation_state')->value;
             if ($state == 'published') {
-              $alias = \Drupal::service('path.alias_manager')->getAliasByPath('/node/' . $nid);
+              $alias = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
               $variables['content']['download'] = [
                 '#markup' => '<div class="my-2"><a class="btn btn-primary" href="' . $alias . '/download">Download <span class="fas fa-cloud-download-alt"></span></a></div>',
                 '#weight' => 999,
@@ -294,7 +294,7 @@ function brand_core_preprocess_views_view_field(&$variables) {
       $state = $variables["row"]->_entity->get('moderation_state')->value;
       if ($state == 'published') {
         $nid = $variables["row"]->_entity->get('nid')->value;
-        $alias = \Drupal::service('path.alias_manager')->getAliasByPath('/node/' . $nid);
+        $alias = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
         $variables['output'] = [
           '#markup' => '<a class="btn btn-primary" href="' . $alias . '/download">Download <span class="fas fa-cloud-download-alt"></span></a>',
         ];
