@@ -1,0 +1,165 @@
+
+// UIDS Paragraphs
+
+p,
+dl,
+ol,
+ul,
+blockquote,
+pre,
+table {
+  font-weight: $font-weight-normal;
+}
+
+p {
+  line-height: 1.7;
+  font-size: $content-font-size;
+  @include margin($bottom: $md, $top: 0);
+}
+
+a {
+  color: $link-color;
+  text-decoration: underline;
+
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
+}
+
+figcaption {
+  font-size: 90%;
+  color: $dark;
+  line-height: 1.5;
+}
+
+figure img {
+  display: inline-block;
+  @include margin($bottom: $md);
+}
+
+pre {
+  //overflow-x: auto;
+  //-webkit-overflow-scrolling: touch;
+  padding: $md;
+  white-space: pre;
+  word-wrap: normal;
+}
+
+small {
+  vertical-align: middle;
+  display: inline-block;
+  line-height: 1.3;
+
+  &.small--inline {
+    display: inline;
+  }
+}
+
+sup,
+sub {
+  font-size: 75%;
+}
+
+mark {
+  background-color: $primary;
+}
+
+.is-small {
+  font-size: $small-font-size;
+}
+
+.is-medium {
+  font-size: $h6-font-size;
+}
+
+.is-large {
+  font-size: $h4-font-size;
+}
+
+.margin-top {
+  margin-top: $sm-md;
+}
+
+.image {
+  position: relative;
+  display: block;
+}
+
+.image img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.element--spacer-separator {
+  clear: both;
+  float: none;
+  width: 100%;
+  height: 0;
+  border: 1px solid transparent;
+  margin: $gutter 0;
+}
+
+.element--spacer-thin {
+  border: 0;
+  height: 0;
+  clear: both;
+  float: none;
+  width: 100%;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.element--spacer-gold {
+  clear: both;
+  float: none;
+  width: 100%;
+  height: 0;
+  border: 1px solid transparent;
+  margin: 1.25rem 0;
+  &:after {
+    content: "";
+    display: block;
+    width: 33%;
+    height: 6px;
+    margin: 0;
+    background: $primary;
+  }
+  &--centered {
+    &:after {
+      margin: 0 auto;
+    }
+  }
+  [class*="bg-"] & {
+    border: none;
+  }
+  .bg-pattern--brain-reversed &,
+  .bg--gold--pattern--brain &,
+  .bg--gold & {
+    &:after {
+      background: #fff;
+    }
+  }
+}
+
+// Bold intro component class
+
+.uids-component--bold-intro,
+.element--bold-intro {
+  font-family: $font-family-serif;
+  font-weight: $font-weight-medium-bold;
+  line-height: 1.2;
+  font-size: 2.5rem;
+  margin-top: 0;
+  margin-bottom: 1.7rem;
+}
+
+.uids-component--light-intro,
+.element--light-intro {
+  font-weight: $font-weight-light;
+  line-height: 1.2;
+  font-size: 2.5rem;
+  margin-top: 0;
+  margin-bottom: 1.7rem;
+}

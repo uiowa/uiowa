@@ -1,5 +1,6 @@
 @import "uids/assets/scss/_variables.scss";
 @import "uids/assets/scss/_utilities.scss";
+@import "components/grid/grid.scss";
 
 // Determines if the placement is grid worthy based on parent container percentage.
 @mixin inner-grid($parent) {
@@ -49,6 +50,15 @@
           grid-template-columns: repeat(auto-fill, minmax(28%,1fr) minmax(38%,1fr) minmax(28%,1fr));
         }
       }
+    }
+  }
+}
+
+.list-container {
+  .card {
+    height: 100%;
+    .section-alignment__start & {
+      height: auto;
     }
   }
 }

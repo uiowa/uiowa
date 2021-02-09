@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.person.field_image
+    - field.field.node.person.field_meta_tags
     - field.field.node.person.field_person_bio
     - field.field.node.person.field_person_contact_information
     - field.field.node.person.field_person_credential
@@ -11,6 +12,7 @@ dependencies:
     - field.field.node.person.field_person_email
     - field.field.node.person.field_person_first_name
     - field.field.node.person.field_person_hide
+    - field.field.node.person.field_person_hometown
     - field.field.node.person.field_person_last_name
     - field.field.node.person.field_person_phone
     - field.field.node.person.field_person_position
@@ -25,6 +27,7 @@ dependencies:
     - content_moderation
     - link
     - media_library
+    - metatag
     - paragraphs
     - path
     - telephone
@@ -46,6 +49,13 @@ content:
       media_types: {  }
     third_party_settings: {  }
     type: media_library_widget
+    region: content
+  field_meta_tags:
+    weight: 24
+    settings:
+      sidebar: true
+    third_party_settings: {  }
+    type: metatag_firehose
     region: content
   field_person_bio:
     weight: 8
@@ -227,4 +237,5 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_person_hometown: true
   title: true

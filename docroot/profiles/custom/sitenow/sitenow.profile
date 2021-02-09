@@ -5,6 +5,7 @@
  * Profile code.
  */
 
+use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
@@ -53,6 +54,32 @@ function sitenow_toolbar_alter(&$items) {
 
   if (isset($items['tour'])) {
     $items['tour']['#attached']['library'][] = 'claro/tour-styling';
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_preprocess_breadcrumb(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    $routes = [];
+    foreach ($variables["links"] as $key => $link) {
+      $url = $link->getURL();
+      // Test for external paths.
+      if ($url->isRouted()) {
+        $routes[$key] = $link->getUrl()->getRouteName();
+      }
+    }
+    // For webforms, remove all system routes and the webform route.
+    if (($key = array_search("entity.webform.collection", $routes)) !== FALSE) {
+      unset($variables["breadcrumb"][$key]);
+      foreach ($routes as $key => $value) {
+        if (substr($value, 0, strlen('system')) === 'system') {
+          unset($variables["breadcrumb"][$key]);
+        }
+      }
+    }
   }
 }
 
@@ -348,6 +375,116 @@ function sitenow_config_split_prepare_form(EntityInterface $entity, $operation, 
 }
 
 /**
+ * Custom node content type form defaults.
+ */
+function _sitenow_node_form_defaults(&$form, $form_state) {
+  if (isset($form['field_teaser'])) {
+    // Create node_teaser group in the advanced container.
+    $form['node_teaser'] = [
+      '#type' => 'details',
+      '#title' => $form["field_teaser"]["widget"][0]["#title"],
+      '#group' => 'advanced',
+      '#attributes' => [
+        'class' => ['node-form-teaser'],
+      ],
+      '#attached' => [
+        'library' => ['node/drupal.node'],
+      ],
+      '#weight' => -10,
+      '#optional' => TRUE,
+      '#open' => FALSE,
+    ];
+    // Set field_teaser to node_teaser group.
+    $form['field_teaser']['#group'] = 'node_teaser';
+  }
+  if (isset($form['field_image'])) {
+    // Create node_image group in the advanced container.
+    $form['node_image'] = [
+      '#type' => 'details',
+      '#title' => $form["field_image"]["widget"]["#title"],
+      '#group' => 'advanced',
+      '#attributes' => [
+        'class' => ['node-form-image'],
+      ],
+      '#attached' => [
+        'library' => ['node/drupal.node'],
+      ],
+      '#weight' => -10,
+      '#optional' => TRUE,
+      '#open' => FALSE,
+    ];
+    // Set field_image to node_image group.
+    $form['field_image']['#group'] = 'node_image';
+    if (isset($form['field_image_caption'])) {
+      // Set field_image_caption to node_image group.
+      $form['field_image_caption']['#group'] = 'node_image';
+    }
+  }
+  if (isset($form['field_featured_image_display'])) {
+    $form['field_featured_image_display']['#group'] = 'node_image';
+    $form['field_featured_image_display']['widget']['#options']['_none'] = 'Site-wide default';
+
+    $form_object = $form_state->getFormObject();
+
+    if ($form_object && $node = $form_object->getEntity()) {
+      $type = $node->getType() . 's';
+      $form['field_featured_image_display']['widget']['#description'] .= t('&nbsp;If "Site-wide default" is selected, this setting can be changed on the <a href="@settings_url">SiteNow @types settings</a>.', [
+        '@settings_url' => Url::fromRoute("sitenow_$type.settings_form")->toString(),
+        '@types' => ucfirst($type),
+      ]);
+    }
+  }
+  if (isset($form['field_tags'])) {
+    // Create node_relations group in the advanced container.
+    $form['node_relations'] = [
+      '#type' => 'details',
+      '#title' => t('Relationships'),
+      '#group' => 'advanced',
+      '#attributes' => [
+        'class' => ['node-form-relations'],
+      ],
+      '#attached' => [
+        'library' => ['node/drupal.node'],
+      ],
+      '#weight' => -10,
+      '#optional' => TRUE,
+      '#open' => FALSE,
+    ];
+    // Set field_tags to node_reference group.
+    $form['field_tags']['#group'] = 'node_relations';
+  }
+  if (isset($form['field_publish_options'])) {
+    // Place field in advanced options group.
+    if (!empty($form["field_publish_options"]["widget"]["#options"])) {
+      // Create node_publish group in the advanced container.
+      $form['node_publish'] = [
+        '#type' => 'details',
+        '#title' => t('Page Options'),
+        '#group' => 'advanced',
+        '#attributes' => [
+          'class' => ['node-form-publish'],
+        ],
+        '#attached' => [
+          'library' => ['node/drupal.node'],
+        ],
+        '#weight' => 99,
+        '#optional' => TRUE,
+        '#open' => FALSE,
+      ];
+      // Set field_publish_options to node_publish group.
+      $form['field_publish_options']['#group'] = 'node_publish';
+      // Hide label. Redundant with group label.
+      $form['field_publish_options']['widget']['#title_display'] = 'invisible';
+    }
+    else {
+      // If no field options, set access to false.
+      $form["field_publish_options"]['#access'] = FALSE;
+    }
+  }
+  return $form;
+}
+
+/**
  * Implements hook_form_alter().
  */
 function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
@@ -369,97 +506,7 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
     case 'node_article_form':
     case 'node_person_edit_form':
     case 'node_person_form':
-    case 'node_area_of_study_form':
-    case 'node_area_of_study_edit_form':
-      if (isset($form['field_teaser'])) {
-        // Create node_teaser group in the advanced container.
-        $form['node_teaser'] = [
-          '#type' => 'details',
-          '#title' => $form["field_teaser"]["widget"][0]["#title"],
-          '#group' => 'advanced',
-          '#attributes' => [
-            'class' => ['node-form-teaser'],
-          ],
-          '#attached' => [
-            'library' => ['node/drupal.node'],
-          ],
-          '#weight' => -10,
-          '#optional' => TRUE,
-          '#open' => FALSE,
-        ];
-        // Set field_teaser to node_teaser group.
-        $form['field_teaser']['#group'] = 'node_teaser';
-      }
-      if (isset($form['field_image'])) {
-        // Create node_image group in the advanced container.
-        $form['node_image'] = [
-          '#type' => 'details',
-          '#title' => $form["field_image"]["widget"]["#title"],
-          '#group' => 'advanced',
-          '#attributes' => [
-            'class' => ['node-form-image'],
-          ],
-          '#attached' => [
-            'library' => ['node/drupal.node'],
-          ],
-          '#weight' => -10,
-          '#optional' => TRUE,
-          '#open' => FALSE,
-        ];
-        // Set field_image to node_image group.
-        $form['field_image']['#group'] = 'node_image';
-        if (isset($form['field_image_caption'])) {
-          // Set field_image_caption to node_image group.
-          $form['field_image_caption']['#group'] = 'node_image';
-        }
-      }
-      if (isset($form['field_tags'])) {
-        // Create node_relations group in the advanced container.
-        $form['node_relations'] = [
-          '#type' => 'details',
-          '#title' => t('Relationships'),
-          '#group' => 'advanced',
-          '#attributes' => [
-            'class' => ['node-form-relations'],
-          ],
-          '#attached' => [
-            'library' => ['node/drupal.node'],
-          ],
-          '#weight' => -10,
-          '#optional' => TRUE,
-          '#open' => FALSE,
-        ];
-        // Set field_tags to node_reference group.
-        $form['field_tags']['#group'] = 'node_relations';
-      }
-      if (isset($form['field_publish_options'])) {
-        // Place field in advanced options group.
-        if (!empty($form["field_publish_options"]["widget"]["#options"])) {
-          // Create node_publish group in the advanced container.
-          $form['node_publish'] = [
-            '#type' => 'details',
-            '#title' => t('Page Options'),
-            '#group' => 'advanced',
-            '#attributes' => [
-              'class' => ['node-form-publish'],
-            ],
-            '#attached' => [
-              'library' => ['node/drupal.node'],
-            ],
-            '#weight' => 99,
-            '#optional' => TRUE,
-            '#open' => FALSE,
-          ];
-          // Set field_publish_options to node_publish group.
-          $form['field_publish_options']['#group'] = 'node_publish';
-          // Hide label. Redundant with group label.
-          $form['field_publish_options']['widget']['#title_display'] = 'invisible';
-        }
-        else {
-          // If no field options, set access to false.
-          $form["field_publish_options"]['#access'] = FALSE;
-        }
-      }
+      _sitenow_node_form_defaults($form, $form_state);
       break;
 
     // Restrict certain webform component options.
@@ -976,4 +1023,73 @@ function sitenow_entity_insert(EntityInterface $entity) {
       }
     }
   }
+}
+
+/**
+ * Set dynamic allowed values for the alignment field.
+ *
+ * @param \Drupal\field\Entity\FieldStorageConfig $definition
+ *   The field definition.
+ * @param \Drupal\Core\Entity\ContentEntityInterface|null $entity
+ *   The entity being created if applicable.
+ * @param bool $cacheable
+ *   Boolean indicating if the results are cacheable.
+ *
+ * @return array
+ *   An array of possible key and value options.
+ *
+ * @see options_allowed_values()
+ */
+function featured_image_size_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  $options = [
+    'do_not_display' => 'Do not display',
+    'small' => 'Small',
+    'medium' => 'Medium',
+    'large' => 'Large',
+  ];
+
+  return $options;
+}
+
+/**
+ * Implements hook_tokens().
+ */
+function sitenow_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
+  $replacements = [];
+  if (!empty($data['node'])) {
+    // Limit this to content types that have 'field_teaser' field.
+    if ($data['node']->hasField('field_teaser')) {
+      foreach ($tokens as $name => $original) {
+        switch ($name) {
+          // Not consistent across content types which
+          // token is used for meta description.
+          case 'field_teaser':
+          case 'field_teaser:value':
+            $field_teaser = $data['node']->get('field_teaser')->value;
+            if (empty($field_teaser)) {
+              // Person content type.
+              if ($data["node"]->hasField('field_person_bio') && !empty($data['node']->get('field_person_bio')->value)) {
+                $replacement_value = $data['node']->get('field_person_bio')->value;
+              }
+              // Article content type, v3 Page content type.
+              if ($data["node"]->hasField('body') && !empty($data['node']->get('body')->value)) {
+                $replacement_value = $data['node']->get('body')->value;
+              }
+              if (!empty($replacement_value)) {
+                // Plain text doesn't do faulty html correction, and don't
+                // want tags counting towards limit.
+                $replacement_value = trim(strip_tags($replacement_value));
+                // Using text.module text_summary().
+                // @todo Make length a configuration setting.
+                $replacements[$original] = text_summary($replacement_value, "plain_text", "300");
+              }
+            }
+            break;
+
+        }
+      }
+    }
+  }
+
+  return $replacements;
 }

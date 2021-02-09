@@ -10,7 +10,7 @@ use Drupal\Core\Block\BlockBase;
  * @Block(
  *   id = "admissions_core_admissions_counselors_map",
  *   admin_label = @Translation("Counselors Map"),
- *   category = @Translation("Admissions Core")
+ *   category = @Translation("Site custom")
  * )
  */
 class AdmissionsCounselorsMapBlock extends BlockBase {

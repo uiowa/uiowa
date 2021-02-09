@@ -1,0 +1,5718 @@
+<?php
+
+/**
+ * @file
+ * Contains grad_srop.module.
+ */
+
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\field\Entity\FieldStorageConfig;
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function grad_custom_preprocess_node(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    $node = $variables["node"];
+    $type = $node->getType();
+    switch ($type) {
+      case 'article':
+      case 'page':
+      case 'person':
+        switch ($variables['view_mode']) {
+          case 'teaser':
+            // Show trimmed body/bio if no teaser is provided.
+            if ($node->get('field_teaser')->isEmpty()) {
+              $field = ($type == 'person' ? 'field_person_bio' : 'body');
+              $variables['content']['field_teaser'] = $variables['node']->$field->view([
+                'label' => 'hidden',
+                'type' => 'smart_trim',
+                'weight' => 99,
+                'settings' => [
+                  'trim_length' => 300,
+                  'trim_suffix' => '...',
+                  'trim_options' => [
+                    'text' => TRUE,
+                  ],
+                ],
+              ]);
+            }
+            break;
+
+        }
+    }
+  }
+}
+
+/**
+ * Implements hook_allowed_values_function().
+ */
+function grad_custom_programs_all_majors_allowed_values() {
+  $output = [];
+
+  $program_list = _grad_custom_program_list();
+
+  foreach ($program_list as $maui_code => $program) {
+    if (count(array_intersect(_grad_custom_all_program_degrees(), $program['objectives'])) > 0) {
+      $label = $program['label'];
+      if (isset($program['parent_code']) && isset($program_list[$program['parent_code']])) {
+        $label = $program_list[$program['parent_code']]['label'] . ' - ' . $label;
+      }
+      $output[$maui_code] = $label;
+    }
+  }
+  natsort($output);
+
+  $output['other'] = 'Other';
+
+  return $output;
+}
+
+/**
+ * Implements hook_allowed_values_function().
+ */
+function grad_custom_programs_phd_allowed_values() {
+  $output = [];
+
+  $program_list = _grad_custom_program_list();
+
+  foreach ($program_list as $maui_code => $program) {
+    if (in_array('PHD', $program['objectives'])) {
+      $label = $program['label'];
+      if (isset($program['parent_code']) && isset($program_list[$program['parent_code']])) {
+        $label = $program_list[$program['parent_code']]['label'] . ' - ' . $label;
+      }
+      $output[$maui_code] = $label;
+    }
+  }
+  natsort($output);
+
+  return $output;
+}
+
+/**
+ * Implements hook_allowed_values_function().
+ */
+function grad_degrees_offered_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  return [
+    'Au.D.' => 'Au.D.',
+    'Certificate' => 'Certificate',
+    'D.M.A.' => 'D.M.A.',
+    'D.N.P.' => 'D.N.P.',
+    'D.P.T.' => 'D.P.T.',
+    'Ed.S.' => 'Ed.S.',
+    'Ed.S.nt' => 'Ed.S.<sup>1</sup>',
+    'Ed.D.nt' => 'Ed.D.<sup>1</sup>',
+    'M.A.' => 'M.A.',
+    'M.A.ses' => 'M.A.<sup>4</sup>',
+    'M.A.tnt' => 'M.A.<sup>*</sup>',
+    'M.A.tnt.ses' => 'M.A.<sup>*</sup><sup>2</sup>',
+    'M.A.nt' => 'M.A.<sup>1</sup>',
+    'M.A.T.' => 'M.A.T.',
+    'M.A.T.nt' => 'M.A.T.<sup>1</sup>',
+    'M.A.T.ses' => 'M.A.T.<sup>2</sup>',
+    'M.A.T.nt.ses' => 'M.A.T.<sup>1,2</sup>',
+    'M.Ac.' => 'M.Ac.<sup>1</sup>',
+    'M.B.A.' => 'M.B.A.',
+    'M.C.S.' => 'M.C.S.',
+    'M.C.S.nt' => 'M.C.S.<sup>1</sup>',
+    'M.D.' => 'M.D.',
+    'M.F.A.' => 'M.F.A.',
+    'M.H.A.' => 'M.H.A.',
+    'M.H.A.nt' => 'M.H.A.<sup>1</sup>',
+    'M.P.H.' => 'M.P.H.',
+    'M.P.H.nt' => 'M.P.H.<sup>1</sup>',
+    'M.S.' => 'M.S.',
+    'M.S.ses' => 'M.S.<sup>2</sup>',
+    'M.S.tnt' => 'M.S.<sup>*</sup>',
+    'M.S.tnt.ses' => 'M.S.<sup>*</sup><sup>2</sup>',
+    'M.S.nt' => 'M.S.<sup>1</sup>',
+    'M.S.N.' => 'M.S.N.',
+    'M.S.N.tnt' => 'M.S.N.<sup>*</sup>',
+    'M.S.W.' => 'M.S.W.',
+    'M.S.W.tnt' => 'M.S.W.<sup>*</sup>',
+    'Ph.D.' => 'Ph.D.',
+    'Ph.D.ses' => 'Ph.D.<sup>2</sup>',
+    'Ph.D.bio' => 'Ph.D.<sup>3</sup>',
+    'NoDegree' => 'Not a degree major',
+    'NoDegree3' => 'Not a degree major<sup>3</sup>',
+  ];
+}
+
+/**
+ * Implements hook_allowed_values_function().
+ */
+function grad_disciplines_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  return [
+    'Applied Health Sciences' => 'Applied Health Sciences',
+    'Biomedical and Life Sciences' => 'Biomedical and Life Sciences',
+    'Engineering' => 'Engineering',
+    'Education' => 'Education',
+    'Humanities' => 'Humanities',
+    'Physical Sciences' => 'Physical Sciences',
+    'Social Sciences' => 'Social Sciences',
+  ];
+}
+
+/**
+ * Implements hook_allowed_values_function().
+ */
+function srop_year_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  // Available srop year values.
+  $thisyear = date('Y');
+  $i = 2000;
+  $options = [];
+  while ($i <= $thisyear) :
+    $options[$i] = $i;
+    $i++;
+  endwhile;
+  return $options;
+}
+
+/**
+ * Helper function to list degree objectives.
+ */
+function _grad_custom_all_program_degrees() {
+  return [
+    'AUD',
+    'DMA',
+    'DNP',
+    'DPT',
+    'EDD',
+    'EDS',
+    'MA',
+    'MAC',
+    'MAT',
+    'MBA',
+    'MCS',
+    'MD',
+    'MFA',
+    'MHA',
+    'MPH',
+    'MS',
+    'MSN',
+    'MSW',
+    'PHD',
+  ];
+}
+
+/**
+ * Helper function for return list of Grad programs.
+ */
+function _grad_custom_program_list() {
+  return [
+    'ACTG' => [
+      'maui_code' => "ACTG",
+      'label' => "Accounting",
+      'end_session' => "",
+      'start_session' => "19951",
+      'parent_code' => "",
+      'objectives' => [
+        'MAC',
+        'PI',
+      ],
+    ],
+    'ACT_SCI' => [
+      'maui_code' => "ACT_SCI",
+      'label' => "Actuarial Science",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PI',
+      ],
+    ],
+    'ADULT_GER_NP_ACUTE_CARE' => [
+      'maui_code' => "ADULT_GER_NP_ACUTE_CARE",
+      'label' => "Adult Gerontology Acute Care Nurse Practitioner",
+      'end_session' => "",
+      'start_session' => "20178",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'ADULT_GER_NP_PRM_CARE' => [
+      'maui_code' => "ADULT_GER_NP_PRM_CARE",
+      'label' => "Adult Gerontology Primary Care Nurse Practitioner",
+      'end_session' => "",
+      'start_session' => "20178",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'ADV_PR_NURS' => [
+      'maui_code' => "ADV_PR_NURS",
+      'label' => "Advanced Practice Nursing",
+      'end_session' => "20138",
+      'start_session' => "19983",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'AFR_AM' => [
+      'maui_code' => "AFR_AM",
+      'label' => "African American Studies",
+      'end_session' => "",
+      'start_session' => "20181",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'AFR_AM_WORLD' => [
+      'maui_code' => "AFR_AM_WORLD",
+      'label' => "African American World Studies",
+      'end_session' => "",
+      'start_session' => "19783",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'PI',
+      ],
+    ],
+    'AGING' => [
+      'maui_code' => "AGING",
+      'label' => "Aging and Longevity Studies",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'AGRI_SAF_HLTH' => [
+      'maui_code' => "AGRI_SAF_HLTH",
+      'label' => "Agricultural Safety and Health",
+      'end_session' => "",
+      'start_session' => "20071",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'AM_IND_NAT' => [
+      'maui_code' => "AM_IND_NAT",
+      'label' => "Native American and Indigenous Studies",
+      'end_session' => "",
+      'start_session' => "19958",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'AM_STDS' => [
+      'maui_code' => "AM_STDS",
+      'label' => "American Studies",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'ANAT_CELL_BIOL' => [
+      'maui_code' => "ANAT_CELL_BIOL",
+      'label' => "Anatomy and Cell Biology",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'ANTH' => [
+      'maui_code' => "ANTH",
+      'label' => "Anthropology",
+      'end_session' => "",
+      'start_session' => "19723",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'APPL_MATH_CS' => [
+      'maui_code' => "APPL_MATH_CS",
+      'label' => "Applied Mathematical and Computational Sciences",
+      'end_session' => "",
+      'start_session' => "19723",
+      'parent_code' => "",
+      'objectives' => [
+        'PHD',
+        'PI',
+      ],
+    ],
+    'APP_BEHAV_ANALYSIS' => [
+      'maui_code' => "APP_BEHAV_ANALYSIS",
+      'label' => "Applied Behavior Analysis",
+      'end_session' => "",
+      'start_session' => "20203",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'ART' => [
+      'maui_code' => "ART",
+      'label' => "Art",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'MFA',
+        'PI',
+      ],
+    ],
+    'ART_HIST' => [
+      'maui_code' => "ART_HIST",
+      'label' => "Art History",
+      'end_session' => "",
+      'start_session' => "19703",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'ASIAN_CIV' => [
+      'maui_code' => "ASIAN_CIV",
+      'label' => "Asian Civilizations",
+      'end_session' => "",
+      'start_session' => "19743",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'PI',
+      ],
+    ],
+    'ASTR' => [
+      'maui_code' => "ASTR",
+      'label' => "Astronomy",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PI',
+      ],
+    ],
+    'ATHLETIC_TRNG' => [
+      'maui_code' => "ATHLETIC_TRNG",
+      'label' => "Athletic Training",
+      'end_session' => "",
+      'start_session' => "20188",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+      ],
+    ],
+    'ATHL_TNG' => [
+      'maui_code' => "ATHL_TNG",
+      'label' => "Athletic Training",
+      'end_session' => "20188",
+      'start_session' => "20188",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+      ],
+    ],
+    'BI0_SCI' => [
+      'maui_code' => "BI0_SCI",
+      'label' => "Biosciences Program",
+      'end_session' => "20161",
+      'start_session' => "19983",
+      'parent_code' => "",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'BIOCHEM' => [
+      'maui_code' => "BIOCHEM",
+      'label' => "Biochemistry",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'BIOLOGY' => [
+      'maui_code' => "BIOLOGY",
+      'label' => "Biology",
+      'end_session' => "20131",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'BIOMED_ENGR' => [
+      'maui_code' => "BIOMED_ENGR",
+      'label' => "Biomedical Engineering",
+      'end_session' => "",
+      'start_session' => "19883",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'BIOMED_SCI_GRAD' => [
+      'maui_code' => "BIOMED_SCI_GRAD",
+      'label' => "Biomedical Science",
+      'end_session' => "",
+      'start_session' => "20163",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PHD',
+      ],
+    ],
+    'BIO_STAT' => [
+      'maui_code' => "BIO_STAT",
+      'label' => "Biostatistics",
+      'end_session' => "",
+      'start_session' => "20001",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+        'MS',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'BKST_BKART' => [
+      'maui_code' => "BKST_BKART",
+      'label' => "Book Studies/Book Arts and Technologies",
+      'end_session' => "",
+      'start_session' => "19958",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'BOOK_ARTS' => [
+      'maui_code' => "BOOK_ARTS",
+      'label' => "Book Arts",
+      'end_session' => "",
+      'start_session' => "20108",
+      'parent_code' => "",
+      'objectives' => [
+        'MFA',
+      ],
+    ],
+    'BOTANY' => [
+      'maui_code' => "BOTANY",
+      'label' => "Botany",
+      'end_session' => "19981",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PHD',
+      ],
+    ],
+    'BUSN' => [
+      'maui_code' => "BUSN",
+      'label' => "Business Administration",
+      'end_session' => "",
+      'start_session' => "19693",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+      ],
+    ],
+    'BUSN_ANALYTICS' => [
+      'maui_code' => "BUSN_ANALYTICS",
+      'label' => "Business Analytics",
+      'end_session' => "",
+      'start_session' => "20141",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+        'MS',
+        'PI',
+      ],
+    ],
+    'CE_DISTANCE' => [
+      'maui_code' => "CE_DISTANCE",
+      'label' => "Continuing Education Distance",
+      'end_session' => "20181",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'NONE',
+      ],
+    ],
+    'CE_ON_CAMPUS' => [
+      'maui_code' => "CE_ON_CAMPUS",
+      'label' => "Continuing Education On Campus",
+      'end_session' => "20138",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'NONE',
+      ],
+    ],
+    'CHEM' => [
+      'maui_code' => "CHEM",
+      'label' => "Chemistry",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'CHEM_BIO_ENGR' => [
+      'maui_code' => "CHEM_BIO_ENGR",
+      'label' => "Chemical and Biochemical Engineering",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'CIC_TVL_SCHL' => [
+      'maui_code' => "CIC_TVL_SCHL",
+      'label' => "CIC Traveling Scholar",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'NONE',
+      ],
+    ],
+    'CIREH' => [
+      'maui_code' => "CIREH",
+      'label' => "Center for International Rural & Environmental Health",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'NONE',
+      ],
+    ],
+    'CIV_ENV_ENGR' => [
+      'maui_code' => "CIV_ENV_ENGR",
+      'label' => "Civil and Environmental Engineering",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'CLASSICS' => [
+      'maui_code' => "CLASSICS",
+      'label' => "Classics",
+      'end_session' => "",
+      'start_session' => "19743",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'CLIN_INV_GRAD' => [
+      'maui_code' => "CLIN_INV_GRAD",
+      'label' => "Clinical Investigation",
+      'end_session' => "20113",
+      'start_session' => "20031",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+        'MS',
+      ],
+    ],
+    'COGNITIVE_SCI_LANG' => [
+      'maui_code' => "COGNITIVE_SCI_LANG",
+      'label' => "Cognitive Science of Language",
+      'end_session' => "",
+      'start_session' => "20131",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'COLL_TCH' => [
+      'maui_code' => "COLL_TCH",
+      'label' => "College Teaching",
+      'end_session' => "",
+      'start_session' => "20043",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'COMM' => [
+      'maui_code' => "COMM",
+      'label' => "Communication Studies",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'COMM_BEH_HLTH' => [
+      'maui_code' => "COMM_BEH_HLTH",
+      'label' => "Community and Behavioral Health",
+      'end_session' => "20185",
+      'start_session' => "20028",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'COMPARATIVE_LIT' => [
+      'maui_code' => "COMPARATIVE_LIT",
+      'label' => "Comparative Literature",
+      'end_session' => "20121",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'COMP_LIT_TRANSL' => [
+      'maui_code' => "COMP_LIT_TRANSL",
+      'label' => "Comparative Literature - Translation",
+      'end_session' => "20191",
+      'start_session' => "19873",
+      'parent_code' => "",
+      'objectives' => [
+        'MFA',
+        'PI',
+      ],
+    ],
+    'COMP_SCI' => [
+      'maui_code' => "COMP_SCI",
+      'label' => "Computer Science",
+      'end_session' => "",
+      'start_session' => "19663",
+      'parent_code' => "",
+      'objectives' => [
+        'MCS',
+        'MS',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'CRSD' => [
+      'maui_code' => "CRSD",
+      'label' => "Rehabilitation and Counselor Education",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'EDU',
+        'MA',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'DANCE' => [
+      'maui_code' => "DANCE",
+      'label' => "Dance",
+      'end_session' => "",
+      'start_session' => "19883",
+      'parent_code' => "",
+      'objectives' => [
+        'MFA',
+        'PI',
+      ],
+    ],
+    'DENT_PH' => [
+      'maui_code' => "DENT_PH",
+      'label' => "Dental Public Health",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PI',
+      ],
+    ],
+    'DIET_INTERN' => [
+      'maui_code' => "DIET_INTERN",
+      'label' => "Dietetic Internship Program",
+      'end_session' => "20205",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+        'PI',
+      ],
+    ],
+    'DIGITAL_PUBLIC_HUMANITIES' => [
+      'maui_code' => "DIGITAL_PUBLIC_HUMANITIES",
+      'label' => "Public Digital Humanities",
+      'end_session' => "",
+      'start_session' => "20141",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'DIST_ONLINE_NONDEG' => [
+      'maui_code' => "DIST_ONLINE_NONDEG",
+      'label' => "Distance and Online Nondegree",
+      'end_session' => "",
+      'start_session' => "20183",
+      'parent_code' => "",
+      'objectives' => [
+        'NONE',
+      ],
+    ],
+    'DORTMUND' => [
+      'maui_code' => "DORTMUND",
+      'label' => "Dortmund Exchange",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'NONE',
+      ],
+    ],
+    'ECON' => [
+      'maui_code' => "ECON",
+      'label' => "Economics",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'EDUC' => [
+      'maui_code' => "EDUC",
+      'label' => "Education",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'EDU',
+        'MA',
+        'MAT',
+        'PHD',
+      ],
+    ],
+    'EDUC_PLS' => [
+      'maui_code' => "EDUC_PLS",
+      'label' => "Educational Policy and Leadership Studies",
+      'end_session' => "20118",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+      ],
+    ],
+    'ELEC_COMP_ENGR' => [
+      'maui_code' => "ELEC_COMP_ENGR",
+      'label' => "Electrical and Computer Engineering",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'ELEM_EDUC' => [
+      'maui_code' => "ELEM_EDUC",
+      'label' => "Elementary Education",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'EDU',
+        'MA',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'EMER_INFEC_DIS' => [
+      'maui_code' => "EMER_INFEC_DIS",
+      'label' => "Emerging Infectious Disease Epidemiology",
+      'end_session' => "",
+      'start_session' => "20081",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'ENGIN_INFO_TECH' => [
+      'maui_code' => "ENGIN_INFO_TECH",
+      'label' => "Engineering and Information Technology",
+      'end_session' => "20195",
+      'start_session' => "20193",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+      ],
+    ],
+    'ENGL' => [
+      'maui_code' => "ENGL",
+      'label' => "English",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'MFA',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'EPID' => [
+      'maui_code' => "EPID",
+      'label' => "Epidemiology",
+      'end_session' => "",
+      'start_session' => "20001",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'EXER_SCI' => [
+      'maui_code' => "EXER_SCI",
+      'label' => "Exercise Science",
+      'end_session' => "20123",
+      'start_session' => "19918",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'FAM_NURSE_PRACT' => [
+      'maui_code' => "FAM_NURSE_PRACT",
+      'label' => "Family Nurse Practitioner",
+      'end_session' => "",
+      'start_session' => "20178",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'FILM_STDS' => [
+      'maui_code' => "FILM_STDS",
+      'label' => "Film Studies",
+      'end_session' => "",
+      'start_session' => "20003",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'FILM_VIDEO' => [
+      'maui_code' => "FILM_VIDEO",
+      'label' => "Film and Video Production",
+      'end_session' => "",
+      'start_session' => "19938",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'MFA',
+        'PI',
+      ],
+    ],
+    'FINANCE' => [
+      'maui_code' => "FINANCE",
+      'label' => "Finance",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PI',
+      ],
+    ],
+    'FLTA' => [
+      'maui_code' => "FLTA",
+      'label' => "Fulbright Language Teaching Assistant",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'NONE',
+      ],
+    ],
+    'FREE_RADIC_RAD' => [
+      'maui_code' => "FREE_RADIC_RAD",
+      'label' => "Free Radical and Radiation Biology",
+      'end_session' => "",
+      'start_session' => "19993",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'FREN' => [
+      'maui_code' => "FREN",
+      'label' => "French",
+      'end_session' => "20083",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'FREN_FRANC' => [
+      'maui_code' => "FREN_FRANC",
+      'label' => "French and Francophone World Studies",
+      'end_session' => "",
+      'start_session' => "20083",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'GENETICS' => [
+      'maui_code' => "GENETICS",
+      'label' => "Genetics",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'PHD',
+        'PI',
+      ],
+    ],
+    'GEOG' => [
+      'maui_code' => "GEOG",
+      'label' => "Geography",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'GEOS' => [
+      'maui_code' => "GEOS",
+      'label' => "Geoscience",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'GERMAN' => [
+      'maui_code' => "GERMAN",
+      'label' => "German",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'GLOB_HLTH' => [
+      'maui_code' => "GLOB_HLTH",
+      'label' => "Global Health Studies",
+      'end_session' => "",
+      'start_session' => "19963",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'GRAD_NDS' => [
+      'maui_code' => "GRAD_NDS",
+      'label' => "Graduate Nondepartmental",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'NONE',
+      ],
+    ],
+    'GRAD_WKS' => [
+      'maui_code' => "GRAD_WKS",
+      'label' => "Graduate Workshop",
+      'end_session' => "20181",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'NONE',
+      ],
+    ],
+    'GREEK' => [
+      'maui_code' => "GREEK",
+      'label' => "Greek",
+      'end_session' => "",
+      'start_session' => "19743",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'PI',
+      ],
+    ],
+    'HEALTH_INFORM' => [
+      'maui_code' => "HEALTH_INFORM",
+      'label' => "Health Informatics",
+      'end_session' => "20068",
+      'start_session' => "19993",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'HEALTH_POLICY' => [
+      'maui_code' => "HEALTH_POLICY",
+      'label' => "Health Policy",
+      'end_session' => "",
+      'start_session' => "20148",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+      ],
+    ],
+    'HEALTH_SYSTEMS' => [
+      'maui_code' => "HEALTH_SYSTEMS",
+      'label' => "Health Systems",
+      'end_session' => "",
+      'start_session' => "20178",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'HIST' => [
+      'maui_code' => "HIST",
+      'label' => "History",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'HLTHCARE_MGMT' => [
+      'maui_code' => "HLTHCARE_MGMT",
+      'label' => "Healthcare Management",
+      'end_session' => "",
+      'start_session' => "20183",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'HLTH_HUM_PHYS' => [
+      'maui_code' => "HLTH_HUM_PHYS",
+      'label' => "Health and Human Physiology",
+      'end_session' => "",
+      'start_session' => "20123",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'HLTH_MGMT_POL' => [
+      'maui_code' => "HLTH_MGMT_POL",
+      'label' => "Health Management and Policy",
+      'end_session' => "",
+      'start_session' => "20001",
+      'parent_code' => "",
+      'objectives' => [
+        'MHA',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'HLTH_SPORT' => [
+      'maui_code' => "HLTH_SPORT",
+      'label' => "Health and Sport Studies",
+      'end_session' => "20123",
+      'start_session' => "19951",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'HLTH_SVC_POL' => [
+      'maui_code' => "HLTH_SVC_POL",
+      'label' => "Health Services and Policy",
+      'end_session' => "",
+      'start_session' => "20058",
+      'parent_code' => "",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'HUMAN_TOX' => [
+      'maui_code' => "HUMAN_TOX",
+      'label' => "Human Toxicology",
+      'end_session' => "",
+      'start_session' => "20068",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'IMMUN' => [
+      'maui_code' => "IMMUN",
+      'label' => "Immunology",
+      'end_session' => "",
+      'start_session' => "19928",
+      'parent_code' => "",
+      'objectives' => [
+        'PHD',
+        'PI',
+      ],
+    ],
+    'IND_ENGR' => [
+      'maui_code' => "IND_ENGR",
+      'label' => "Industrial Engineering",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'INFORM' => [
+      'maui_code' => "INFORM",
+      'label' => "Informatics",
+      'end_session' => "",
+      'start_session' => "20068",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+        'MS',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'INST_RES_EFFECT' => [
+      'maui_code' => "INST_RES_EFFECT",
+      'label' => "Institutional Research and Effectiveness",
+      'end_session' => "",
+      'start_session' => "20208",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'INTD_MSTR' => [
+      'maui_code' => "INTD_MSTR",
+      'label' => "Interdisciplinary Studies-Master''s",
+      'end_session' => "20131",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'MFA',
+        'MS',
+      ],
+    ],
+    'INTD_PHD' => [
+      'maui_code' => "INTD_PHD",
+      'label' => "Interdisciplinary Studies-PhD",
+      'end_session' => "20131",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'INTEGRATED_BIOLOGY' => [
+      'maui_code' => "INTEGRATED_BIOLOGY",
+      'label' => "Integrated Biology",
+      'end_session' => "",
+      'start_session' => "20131",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PHD',
+      ],
+    ],
+    'INTEG_PHYS_HH' => [
+      'maui_code' => "INTEG_PHYS_HH",
+      'label' => "Integrative Physiology",
+      'end_session' => "20123",
+      'start_session' => "20063",
+      'parent_code' => "",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'INTL_STUDIES_GRAD' => [
+      'maui_code' => "INTL_STUDIES_GRAD",
+      'label' => "International Studies",
+      'end_session' => "20133",
+      'start_session' => "20093",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'PI',
+      ],
+    ],
+    'JRNL' => [
+      'maui_code' => "JRNL",
+      'label' => "Journalism",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'PI',
+      ],
+    ],
+    'LATIN' => [
+      'maui_code' => "LATIN",
+      'label' => "Latin",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'PI',
+      ],
+    ],
+    'LEIS_STDS' => [
+      'maui_code' => "LEIS_STDS",
+      'label' => "Leisure Studies",
+      'end_session' => "20191",
+      'start_session' => "20023",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'PI',
+      ],
+    ],
+    'LIBR_INFO_SCI' => [
+      'maui_code' => "LIBR_INFO_SCI",
+      'label' => "Library and Information Science",
+      'end_session' => "",
+      'start_session' => "19683",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'PI',
+      ],
+    ],
+    'LING' => [
+      'maui_code' => "LING",
+      'label' => "Linguistics",
+      'end_session' => "",
+      'start_session' => "19763",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'LIT_TRANS' => [
+      'maui_code' => "LIT_TRANS",
+      'label' => "Literary Translation",
+      'end_session' => "",
+      'start_session' => "20193",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+        'MFA',
+        'PI',
+      ],
+    ],
+    'MASS_COMMS' => [
+      'maui_code' => "MASS_COMMS",
+      'label' => "Mass Communications",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'PHD',
+        'PI',
+      ],
+    ],
+    'MASTERS_PH' => [
+      'maui_code' => "MASTERS_PH",
+      'label' => "MPH Program",
+      'end_session' => "",
+      'start_session' => "20001",
+      'parent_code' => "",
+      'objectives' => [
+        'MPH',
+        'PI',
+      ],
+    ],
+    'MATH' => [
+      'maui_code' => "MATH",
+      'label' => "Mathematics",
+      'end_session' => "",
+      'start_session' => "19663",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'MECH_ENGR' => [
+      'maui_code' => "MECH_ENGR",
+      'label' => "Mechanical Engineering",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'MGMT_ORGS' => [
+      'maui_code' => "MGMT_ORGS",
+      'label' => "Management and Organizations",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'PI',
+      ],
+    ],
+    'MGMT_SCI' => [
+      'maui_code' => "MGMT_SCI",
+      'label' => "Management Sciences",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'PI',
+      ],
+    ],
+    'MICROBIOL' => [
+      'maui_code' => "MICROBIOL",
+      'label' => "Microbiology",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'MKTG' => [
+      'maui_code' => "MKTG",
+      'label' => "Marketing",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'PI',
+      ],
+    ],
+    'MOL_BIOL' => [
+      'maui_code' => "MOL_BIOL",
+      'label' => "Molecular Biology",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'PHD',
+        'PI',
+      ],
+    ],
+    'MOL_CELL_BIOL' => [
+      'maui_code' => "MOL_CELL_BIOL",
+      'label' => "Molecular and Cellular Biology",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'PHD',
+        'PI',
+      ],
+    ],
+    'MOL_PHYS_BIOPHYS' => [
+      'maui_code' => "MOL_PHYS_BIOPHYS",
+      'label' => "Molecular Physiology and Biophysics",
+      'end_session' => "",
+      'start_session' => "20038",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'MSTP' => [
+      'maui_code' => "MSTP",
+      'label' => "Medical Scientist Training Program",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'MULTI_EDUC_CULT' => [
+      'maui_code' => "MULTI_EDUC_CULT",
+      'label' => "Multicultural Education and Culturally Competent Practice",
+      'end_session' => "20183",
+      'start_session' => "20098",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'MUSIC' => [
+      'maui_code' => "MUSIC",
+      'label' => "Music",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'DMA',
+        'MA',
+        'MFA',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'MUSIC_SACRED' => [
+      'maui_code' => "MUSIC_SACRED",
+      'label' => "Sacred Music",
+      'end_session' => "",
+      'start_session' => "19908",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'MUSIC_THRY_PEDAGOGY' => [
+      'maui_code' => "MUSIC_THRY_PEDAGOGY",
+      'label' => "Theory Pedagogy",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'MINOR',
+      ],
+    ],
+    'NEUROSCI' => [
+      'maui_code' => "NEUROSCI",
+      'label' => "Neuroscience",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'PHD',
+        'PI',
+      ],
+    ],
+    'NURS' => [
+      'maui_code' => "NURS",
+      'label' => "Nursing",
+      'end_session' => "",
+      'start_session' => "20071",
+      'parent_code' => "",
+      'objectives' => [
+        'DNP',
+        'MA',
+        'MSN',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'NURS_INFORM' => [
+      'maui_code' => "NURS_INFORM",
+      'label' => "Nursing Informatics",
+      'end_session' => "20113",
+      'start_session' => "19973",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'NURS_SVC_ADM' => [
+      'maui_code' => "NURS_SVC_ADM",
+      'label' => "Nursing Service Administration",
+      'end_session' => "20113",
+      'start_session' => "20021",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'OCC_ENV_HLTH' => [
+      'maui_code' => "OCC_ENV_HLTH",
+      'label' => "Occupational and Environmental Health",
+      'end_session' => "",
+      'start_session' => "20001",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'ONLINE_TEACHING' => [
+      'maui_code' => "ONLINE_TEACHING",
+      'label' => "Online Teaching",
+      'end_session' => "",
+      'start_session' => "20141",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'OPER_DENT' => [
+      'maui_code' => "OPER_DENT",
+      'label' => "Operative Dentistry",
+      'end_session' => "20131",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PI',
+      ],
+    ],
+    'ORAL_MAX_SURG' => [
+      'maui_code' => "ORAL_MAX_SURG",
+      'label' => "Oral and Maxillofacial Surgery",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PI',
+      ],
+    ],
+    'ORAL_SCI' => [
+      'maui_code' => "ORAL_SCI",
+      'label' => "Oral Science",
+      'end_session' => "",
+      'start_session' => "19933",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'ORTHODONTICS' => [
+      'maui_code' => "ORTHODONTICS",
+      'label' => "Orthodontics",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PI',
+      ],
+    ],
+    'PATHOLOGY' => [
+      'maui_code' => "PATHOLOGY",
+      'label' => "Pathology",
+      'end_session' => "",
+      'start_session' => "19723",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PI',
+      ],
+    ],
+    'PED_NRSE_PRACT_ACUTE_CARE' => [
+      'maui_code' => "PED_NRSE_PRACT_ACUTE_CARE",
+      'label' => "Pediatric Nurse Practitioner-Acute Care",
+      'end_session' => "",
+      'start_session' => "20178",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'PED_NRSE_PRACT_PRI_CARE' => [
+      'maui_code' => "PED_NRSE_PRACT_PRI_CARE",
+      'label' => "Pediatric Nurse Practitioner-Primary Care",
+      'end_session' => "",
+      'start_session' => "20178",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'PHAR' => [
+      'maui_code' => "PHAR",
+      'label' => "Pharmacy",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'PHARMC' => [
+      'maui_code' => "PHARMC",
+      'label' => "Pharmacology",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'PHIL' => [
+      'maui_code' => "PHIL",
+      'label' => "Philosophy",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'PHYSICAL_EDUCATION' => [
+      'maui_code' => "PHYSICAL_EDUCATION",
+      'label' => "Physical Education",
+      'end_session' => "19921",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+      ],
+    ],
+    'PHYSICS' => [
+      'maui_code' => "PHYSICS",
+      'label' => "Physics",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'PHYS_ASST_STDS' => [
+      'maui_code' => "PHYS_ASST_STDS",
+      'label' => "Physician Assistant Studies",
+      'end_session' => "20068",
+      'start_session' => "19923",
+      'parent_code' => "",
+      'objectives' => [
+        'MPA',
+      ],
+    ],
+    'PHYS_EDUC' => [
+      'maui_code' => "PHYS_EDUC",
+      'label' => "Physical Education",
+      'end_session' => "19948",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'PHD',
+      ],
+    ],
+    'PHYS_REH_SCI' => [
+      'maui_code' => "PHYS_REH_SCI",
+      'label' => "Physical Rehabilitation Science",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'PHYS_THER' => [
+      'maui_code' => "PHYS_THER",
+      'label' => "Physical Therapy",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'DPT',
+        'MA',
+      ],
+    ],
+    'PH_CERT_GRAD' => [
+      'maui_code' => "PH_CERT_GRAD",
+      'label' => "Public Health",
+      'end_session' => "",
+      'start_session' => "20193",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'POL_SCI' => [
+      'maui_code' => "POL_SCI",
+      'label' => "Political Science",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'POST_DOC' => [
+      'maui_code' => "POST_DOC",
+      'label' => "Post Doctoral",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'PGT',
+      ],
+    ],
+    'PREV_MED' => [
+      'maui_code' => "PREV_MED",
+      'label' => "Preventive Medicine and Environmental Health",
+      'end_session' => "20103",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PHD',
+      ],
+    ],
+    'PSYCH' => [
+      'maui_code' => "PSYCH",
+      'label' => "Psychology",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'PSYCH_MNTL_HLTH_NRS_PRAC' => [
+      'maui_code' => "PSYCH_MNTL_HLTH_NRS_PRAC",
+      'label' => "Psychiatric/Mental Health Nurse Practitioner",
+      'end_session' => "",
+      'start_session' => "20178",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'PSYCH_QUANT' => [
+      'maui_code' => "PSYCH_QUANT",
+      'label' => "Psychological and Quantitative Foundations",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'EDS',
+        'MA',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'PUBLIC_HEALTH_CERT' => [
+      'maui_code' => "PUBLIC_HEALTH_CERT",
+      'label' => "Public Health",
+      'end_session' => "20193",
+      'start_session' => "20123",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'PUB_AFF' => [
+      'maui_code' => "PUB_AFF",
+      'label' => "Public Affairs",
+      'end_session' => "",
+      'start_session' => "20203",
+      'parent_code' => "",
+      'objectives' => [
+        'MPAFF',
+      ],
+    ],
+    'RELIG_STDS' => [
+      'maui_code' => "RELIG_STDS",
+      'label' => "Religious Studies",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'RESP_COND_RES' => [
+      'maui_code' => "RESP_COND_RES",
+      'label' => "Responsible Conduct of Research",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'NONE',
+      ],
+    ],
+    'RGNT_EX_GRAD' => [
+      'maui_code' => "RGNT_EX_GRAD",
+      'label' => "Regents Exchange",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'NONE',
+      ],
+    ],
+    'RHET_INQ' => [
+      'maui_code' => "RHET_INQ",
+      'label' => "Rhetorics of Inquiry",
+      'end_session' => "20138",
+      'start_session' => "19941",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'SCI_EDUC' => [
+      'maui_code' => "SCI_EDUC",
+      'label' => "Science Education",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'MAT',
+        'MS',
+        'PHD',
+      ],
+    ],
+    'SEC_EDUC' => [
+      'maui_code' => "SEC_EDUC",
+      'label' => "Secondary Education",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'EDU',
+        'MA',
+        'MAT',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'SEC_LANG_ACQ' => [
+      'maui_code' => "SEC_LANG_ACQ",
+      'label' => "Second Language Acquisition",
+      'end_session' => "",
+      'start_session' => "19998",
+      'parent_code' => "",
+      'objectives' => [
+        'PHD',
+        'PI',
+      ],
+    ],
+    'SEC_TCH_CERT_TEP' => [
+      'maui_code' => "SEC_TCH_CERT_TEP",
+      'label' => "Secondary Teacher Certification Program (TEP)",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SOCIOL' => [
+      'maui_code' => "SOCIOL",
+      'label' => "Sociology",
+      'end_session' => "",
+      'start_session' => "19703",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'SOC_WK' => [
+      'maui_code' => "SOC_WK",
+      'label' => "Social Work",
+      'end_session' => "",
+      'start_session' => "19663",
+      'parent_code' => "",
+      'objectives' => [
+        'MSW',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'SPAN' => [
+      'maui_code' => "SPAN",
+      'label' => "Spanish",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'SPAN_CRTV_WRTG' => [
+      'maui_code' => "SPAN_CRTV_WRTG",
+      'label' => "Spanish Creative Writing",
+      'end_session' => "",
+      'start_session' => "20118",
+      'parent_code' => "",
+      'objectives' => [
+        'MFA',
+        'PI',
+      ],
+    ],
+    'SPEC_COLL_LIBRNSHP' => [
+      'maui_code' => "SPEC_COLL_LIBRNSHP",
+      'label' => "Special Collections Librarianship",
+      'end_session' => "",
+      'start_session' => "20203",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'SPEC_EDUC' => [
+      'maui_code' => "SPEC_EDUC",
+      'label' => "Special Education",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'EDU',
+        'MA',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'SPEECH_HEAR_SCI' => [
+      'maui_code' => "SPEECH_HEAR_SCI",
+      'label' => "Speech and Hearing Science",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'PHD',
+        'PI',
+      ],
+    ],
+    'SPEECH_PATH_AUD' => [
+      'maui_code' => "SPEECH_PATH_AUD",
+      'label' => "Speech Pathology and Audiology",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'AUD',
+        'MA',
+        'PI',
+      ],
+    ],
+    'SPORT_REC_MGMT' => [
+      'maui_code' => "SPORT_REC_MGMT",
+      'label' => "Sport and Recreation Management",
+      'end_session' => "",
+      'start_session' => "20173",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+      ],
+    ],
+    'SP_ACTG' => [
+      'maui_code' => "SP_ACTG",
+      'label' => "Accounting",
+      'end_session' => "",
+      'start_session' => "19653",
+      'parent_code' => "BUSN",
+      'objectives' => [
+        'MA',
+        'PHD',
+      ],
+    ],
+    'SP_ACTING' => [
+      'maui_code' => "SP_ACTING",
+      'label' => "Acting",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "THEATRE_ARTS",
+      'objectives' => [
+        'MFA',
+      ],
+    ],
+    'SP_ACT_SCI' => [
+      'maui_code' => "SP_ACT_SCI",
+      'label' => "Actuarial Science",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "STAT",
+      'objectives' => [
+        'MS',
+      ],
+    ],
+    'SP_ADDICT' => [
+      'maui_code' => "SP_ADDICT",
+      'label' => "Addiction Studies",
+      'end_session' => "20178",
+      'start_session' => "20028",
+      'parent_code' => "COMM_BEH_HLTH",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'SP_ADULT/GER_NP' => [
+      'maui_code' => "SP_ADULT/GER_NP",
+      'label' => "Adult Gerontology Primary Care Nurse Practitioner",
+      'end_session' => "",
+      'start_session' => "19948",
+      'parent_code' => "NURS",
+      'objectives' => [
+        'DNP',
+        'MA',
+        'MSN',
+      ],
+    ],
+    'SP_ADULT_GER_NP' => [
+      'maui_code' => "SP_ADULT_GER_NP",
+      'label' => "Adult Gerontology Nurse Practitioner-Primary Care",
+      'end_session' => "20178",
+      'start_session' => "20141",
+      'parent_code' => "ADV_PR_NURS",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'SP_ADULT_GER_NP_ACUTE' => [
+      'maui_code' => "SP_ADULT_GER_NP_ACUTE",
+      'label' => "Adult Gerontology Acute Care Nurse Practitioner",
+      'end_session' => "",
+      'start_session' => "20153",
+      'parent_code' => "NURS",
+      'objectives' => [
+        'DNP',
+        'MSN',
+      ],
+    ],
+    'SP_ADULT_GER_NP_ACUTE_1' => [
+      'maui_code' => "SP_ADULT_GER_NP_ACUTE_1",
+      'label' => "Adult/Gerontology Nurse Practitioner-Acute Care",
+      'end_session' => "20178",
+      'start_session' => "20153",
+      'parent_code' => "ADV_PR_NURS",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'SP_AEA_AM_GOV_5-12' => [
+      'maui_code' => "SP_AEA_AM_GOV_5-12",
+      'label' => "Additional Emphasis Area American Government 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SOC_STDS_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEA_AM_HIST_5-12' => [
+      'maui_code' => "SP_AEA_AM_HIST_5-12",
+      'label' => "Additional Emphasis Area American History 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SOC_STDS_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEA_ANTH_5-12' => [
+      'maui_code' => "SP_AEA_ANTH_5-12",
+      'label' => "Additional Emphasis Area Anthropology 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SOC_STDS_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEA_BIOL_5-12' => [
+      'maui_code' => "SP_AEA_BIOL_5-12",
+      'label' => "Additional Emphasis Area Biology 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SCI_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEA_CHEM_5-12' => [
+      'maui_code' => "SP_AEA_CHEM_5-12",
+      'label' => "Additional Emphasis Area Chemistry 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SCI_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEA_EARTH_SCI_5-12' => [
+      'maui_code' => "SP_AEA_EARTH_SCI_5-12",
+      'label' => "Additional Emphasis Area Earth Science 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SCI_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEA_ECON_5-12' => [
+      'maui_code' => "SP_AEA_ECON_5-12",
+      'label' => "Additional Emphasis Area Economics 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SOC_STDS_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEA_GEOG_5-12' => [
+      'maui_code' => "SP_AEA_GEOG_5-12",
+      'label' => "Additional Emphasis Area Geography 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SOC_STDS_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEA_PHYSICS_5-12' => [
+      'maui_code' => "SP_AEA_PHYSICS_5-12",
+      'label' => "Additional Emphasis Area Physics 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SCI_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEA_PSYCH_5-12' => [
+      'maui_code' => "SP_AEA_PSYCH_5-12",
+      'label' => "Additional Emphasis Area Psychology 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SOC_STDS_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEA_SOCIO_5-12' => [
+      'maui_code' => "SP_AEA_SOCIO_5-12",
+      'label' => "Additional Emphasis Area Sociology 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SOC_STDS_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEA_WRLD_HIST_5-12' => [
+      'maui_code' => "SP_AEA_WRLD_HIST_5-12",
+      'label' => "Additional Emphasis Area World History 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SOC_STDS_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_ALL_LANG_ARTS_5-12' => [
+      'maui_code' => "SP_AEP_ALL_LANG_ARTS_5-12",
+      'label' => "All Language Arts Added Endorsement Program 5-12",
+      'end_session' => "",
+      'start_session' => "20188",
+      'parent_code' => "ENGL_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_ALL_SCI_9-12' => [
+      'maui_code' => "SP_AEP_ALL_SCI_9-12",
+      'label' => "All Science Added Endorsement Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SCI_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_ALL_SS_7-12' => [
+      'maui_code' => "SP_AEP_ALL_SS_7-12",
+      'label' => "All Social Studies Added Endorsement Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SOC_STDS_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_AM_GOV_5-12' => [
+      'maui_code' => "SP_AEP_AM_GOV_5-12",
+      'label' => "American Government Added Endorsement Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SOC_STDS_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_AM_HIST_5-12' => [
+      'maui_code' => "SP_AEP_AM_HIST_5-12",
+      'label' => "American History Added Endorsement Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SOC_STDS_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_ANTH_5-12' => [
+      'maui_code' => "SP_AEP_ANTH_5-12",
+      'label' => "Anthropology Added Endorsement Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SOC_STDS_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_ART_5-12' => [
+      'maui_code' => "SP_AEP_ART_5-12",
+      'label' => "Added Endorsement Program 5-12",
+      'end_session' => "",
+      'start_session' => "20111",
+      'parent_code' => "ART_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_ART_SPEC_K-8' => [
+      'maui_code' => "SP_AEP_ART_SPEC_K-8",
+      'label' => "Art Added Endorsement Program K-8",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "ELEM_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_ATH_COACH_K-12' => [
+      'maui_code' => "SP_AEP_ATH_COACH_K-12",
+      'label' => "Added Endorsement Program K-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "ATHLETIC_COACH",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_BASIC_SCI_5-12' => [
+      'maui_code' => "SP_AEP_BASIC_SCI_5-12",
+      'label' => "Basic Science Added Endorsement Program 5-12",
+      'end_session' => "",
+      'start_session' => "20138",
+      'parent_code' => "SCI_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_BIOL_5-12' => [
+      'maui_code' => "SP_AEP_BIOL_5-12",
+      'label' => "Biology Added Endorsement Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SCI_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_CHEM_5-12' => [
+      'maui_code' => "SP_AEP_CHEM_5-12",
+      'label' => "Chemistry Added Endorsement Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SCI_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_CHIN_5-12_FLED' => [
+      'maui_code' => "SP_AEP_CHIN_5-12_FLED",
+      'label' => "Chinese Added Endorsement Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "FGN_LANG_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_CHIN_K-12_FLED' => [
+      'maui_code' => "SP_AEP_CHIN_K-12_FLED",
+      'label' => "Chinese Added Endorsement Program K-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "FGN_LANG_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_EARLY_CHILD_K-8' => [
+      'maui_code' => "SP_AEP_EARLY_CHILD_K-8",
+      'label' => "Early Childhood Added Endorsement Program PK-K",
+      'end_session' => "20178",
+      'start_session' => "20143",
+      'parent_code' => "ELEM_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_EARTH_SCI_5-12' => [
+      'maui_code' => "SP_AEP_EARTH_SCI_5-12",
+      'label' => "Earth Science Added Endorsement Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SCI_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_ECON_5-12' => [
+      'maui_code' => "SP_AEP_ECON_5-12",
+      'label' => "Economics Added Endorsement Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SOC_STDS_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_ED_ADM_PK-12' => [
+      'maui_code' => "SP_AEP_ED_ADM_PK-12",
+      'label' => "Educational Leadership Superintendent Added Endorsement Program PK-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "EDUC_PLS",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_ENGL_LA_K-8' => [
+      'maui_code' => "SP_AEP_ENGL_LA_K-8",
+      'label' => "English-Language Arts Added Endorsement Program K-8",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "ELEM_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_EVALUATOR' => [
+      'maui_code' => "SP_AEP_EVALUATOR",
+      'label' => "Evaluator Added Endorsement Program",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "EDUC_PLS",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_FREN_5-12_FLED' => [
+      'maui_code' => "SP_AEP_FREN_5-12_FLED",
+      'label' => "French Added Endorsement Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "FGN_LANG_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_FREN_K-12_FLED' => [
+      'maui_code' => "SP_AEP_FREN_K-12_FLED",
+      'label' => "French Added Endorsement Program K-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "FGN_LANG_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_GEN_SCI_5-12' => [
+      'maui_code' => "SP_AEP_GEN_SCI_5-12",
+      'label' => "General Science Added Endorsement Program 5-12",
+      'end_session' => "20128",
+      'start_session' => "19903",
+      'parent_code' => "SCI_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_GEOG_5-12' => [
+      'maui_code' => "SP_AEP_GEOG_5-12",
+      'label' => "Geography Added Endorsement Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SOC_STDS_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_GRM_5-12_FLED' => [
+      'maui_code' => "SP_AEP_GRM_5-12_FLED",
+      'label' => "German Added Endorsement Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "FGN_LANG_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_GRM_K-12_FLED' => [
+      'maui_code' => "SP_AEP_GRM_K-12_FLED",
+      'label' => "German Added Endorsement Program K-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "FGN_LANG_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_HIST_SP_K-8' => [
+      'maui_code' => "SP_AEP_HIST_SP_K-8",
+      'label' => "History Added Endorsement Program K-8",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "ELEM_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_ITAL_5-12_FLED' => [
+      'maui_code' => "SP_AEP_ITAL_5-12_FLED",
+      'label' => "Italian Added Endorsement Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "FGN_LANG_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_ITAL_K-12_FLED' => [
+      'maui_code' => "SP_AEP_ITAL_K-12_FLED",
+      'label' => "Italian Added Endorsement Program K-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "FGN_LANG_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_JAP_5-12_FLED' => [
+      'maui_code' => "SP_AEP_JAP_5-12_FLED",
+      'label' => "Japanese Added Endorsement Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "FGN_LANG_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_JAP_K-12_FLED' => [
+      'maui_code' => "SP_AEP_JAP_K-12_FLED",
+      'label' => "Japanese Added Endorsement Program K-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "FGN_LANG_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_JOURN_5-12' => [
+      'maui_code' => "SP_AEP_JOURN_5-12",
+      'label' => "Added Endorsement Program 5-12",
+      'end_session' => "20178",
+      'start_session' => "19903",
+      'parent_code' => "JOURNALISM_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_LANG_ARTS_5-8' => [
+      'maui_code' => "SP_AEP_LANG_ARTS_5-8",
+      'label' => "Language Arts Added Endorsement Program 5-8",
+      'end_session' => "",
+      'start_session' => "20093",
+      'parent_code' => "MIDDLE_SCHOOL",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_LAT_5-12_FLED' => [
+      'maui_code' => "SP_AEP_LAT_5-12_FLED",
+      'label' => "Latin Added Endorsement Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "FGN_LANG_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_LAT_K-12_FLED' => [
+      'maui_code' => "SP_AEP_LAT_K-12_FLED",
+      'label' => "Latin Added Endorsement Program K-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "FGN_LANG_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_MATH_5-8' => [
+      'maui_code' => "SP_AEP_MATH_5-8",
+      'label' => "Mathematics Added Endorsement Program 5-8",
+      'end_session' => "",
+      'start_session' => "20093",
+      'parent_code' => "MIDDLE_SCHOOL",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_MATH_SP_K-8' => [
+      'maui_code' => "SP_AEP_MATH_SP_K-8",
+      'label' => "Mathematics Added Endorsement Program K-8",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "ELEM_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_MUSIC_SP_K-8' => [
+      'maui_code' => "SP_AEP_MUSIC_SP_K-8",
+      'label' => "Music Added Endorsement Program K-8",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "ELEM_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_PHYSICS_5-12' => [
+      'maui_code' => "SP_AEP_PHYSICS_5-12",
+      'label' => "Physics Added Endorsement Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SCI_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_PHYS_ED_K-8' => [
+      'maui_code' => "SP_AEP_PHYS_ED_K-8",
+      'label' => "Physical Education Added Endorsement Program K-8",
+      'end_session' => "",
+      'start_session' => "20133",
+      'parent_code' => "ELEM_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_PHYS_SCI_5-12' => [
+      'maui_code' => "SP_AEP_PHYS_SCI_5-12",
+      'label' => "Physical Science Added Endorsement Program 5-12",
+      'end_session' => "20128",
+      'start_session' => "19903",
+      'parent_code' => "SCI_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_PR_SUP_SP_ED_PK-12' => [
+      'maui_code' => "SP_AEP_PR_SUP_SP_ED_PK-12",
+      'label' => "Educ Leadership Principal & Supervisor Spec Educ Added Endorsmnt Prog PK-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "EDUC_PLS",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_PSYCH_5-12' => [
+      'maui_code' => "SP_AEP_PSYCH_5-12",
+      'label' => "Psychology Added Endorsement Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SOC_STDS_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_RDG_5-12' => [
+      'maui_code' => "SP_AEP_RDG_5-12",
+      'label' => "Added Endorsement Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "READING_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_READ_SP_K-12' => [
+      'maui_code' => "SP_AEP_READ_SP_K-12",
+      'label' => "Reading Specialist Added Endorsement Program K-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "TCH_LRN",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_READ_SP_K-8' => [
+      'maui_code' => "SP_AEP_READ_SP_K-8",
+      'label' => "Reading Added Endorsement Program K-8",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "ELEM_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_RUS_5-12_FLED' => [
+      'maui_code' => "SP_AEP_RUS_5-12_FLED",
+      'label' => "Russian Added Endorsement Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "FGN_LANG_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_RUS_K-12_FLED' => [
+      'maui_code' => "SP_AEP_RUS_K-12_FLED",
+      'label' => "Russian Added Endorsement Program K-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "FGN_LANG_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_SCHL_C_5-12' => [
+      'maui_code' => "SP_AEP_SCHL_C_5-12",
+      'label' => "School Counseling Added Endorsement Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "CRSD",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_SCHL_C_K-12' => [
+      'maui_code' => "SP_AEP_SCHL_C_K-12",
+      'label' => "School Counseling Added Endorsement Program K-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "CRSD",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_SCHL_C_K-8' => [
+      'maui_code' => "SP_AEP_SCHL_C_K-8",
+      'label' => "School Counseling Added Endorsement Program K-8",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "CRSD",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_SCHL_PSYCH_B-21' => [
+      'maui_code' => "SP_AEP_SCHL_PSYCH_B-21",
+      'label' => "School Psychologist Added Endorsement Program B-21",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "PSYCH_QUANT",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_SCH_AUD_B-21' => [
+      'maui_code' => "SP_AEP_SCH_AUD_B-21",
+      'label' => "Added Endorsement Program B-21",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SCHOOL_AUDIOLOGIST",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_SCH_LIBR_5-12' => [
+      'maui_code' => "SP_AEP_SCH_LIBR_5-12",
+      'label' => "Added Endorsement Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SCH_TEACH_LIBR",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_SCH_LIBR_K-12' => [
+      'maui_code' => "SP_AEP_SCH_LIBR_K-12",
+      'label' => "Added Endorsement Program K-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SCH_TEACH_LIBR",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_SCH_LIBR_K-8' => [
+      'maui_code' => "SP_AEP_SCH_LIBR_K-8",
+      'label' => "Added Endorsement Program K-8",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SCH_TEACH_LIBR",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_SCH_SOC_WRKR_B-21' => [
+      'maui_code' => "SP_AEP_SCH_SOC_WRKR_B-21",
+      'label' => "Added Endorsement Program B-21",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SCH_SOCIAL_WRKR",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_SCH_SP_PATH_B-21' => [
+      'maui_code' => "SP_AEP_SCH_SP_PATH_B-21",
+      'label' => "Added Endorsement Program B-21",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SCH_SPEECH_LANG_PATH",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_SCI_5-8' => [
+      'maui_code' => "SP_AEP_SCI_5-8",
+      'label' => "Science Added Endorsement Program 5-8",
+      'end_session' => "",
+      'start_session' => "20093",
+      'parent_code' => "MIDDLE_SCHOOL",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_SCI_SP_K-8' => [
+      'maui_code' => "SP_AEP_SCI_SP_K-8",
+      'label' => "Science Added Endorsement Program K-8",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "ELEM_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_SOCIO_5-12' => [
+      'maui_code' => "SP_AEP_SOCIO_5-12",
+      'label' => "Sociology Added Endorsement Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SOC_STDS_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_SOC_SCI_SP_K-8' => [
+      'maui_code' => "SP_AEP_SOC_SCI_SP_K-8",
+      'label' => "Social Science Added Endorsement Program K-8",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "ELEM_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_SOC_ST_5-8' => [
+      'maui_code' => "SP_AEP_SOC_ST_5-8",
+      'label' => "Social Studies Added Endorsement Program 5-8",
+      'end_session' => "",
+      'start_session' => "20093",
+      'parent_code' => "MIDDLE_SCHOOL",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_SPAN_5-12_FLED' => [
+      'maui_code' => "SP_AEP_SPAN_5-12_FLED",
+      'label' => "Spanish Added Endorsement Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "FGN_LANG_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_SPAN_K-12_FLED' => [
+      'maui_code' => "SP_AEP_SPAN_K-12_FLED",
+      'label' => "Spanish Added Endorsement Program K-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "FGN_LANG_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_TAG_K-12' => [
+      'maui_code' => "SP_AEP_TAG_K-12",
+      'label' => "Added Endorsement Program K-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "TAG_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AEP_WRLD_HIST_5-12' => [
+      'maui_code' => "SP_AEP_WRLD_HIST_5-12",
+      'label' => "World History Added Endorsement Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SOC_STDS_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AG_SAF_HLTH' => [
+      'maui_code' => "SP_AG_SAF_HLTH",
+      'label' => "Agricultural Safety & Health",
+      'end_session' => "",
+      'start_session' => "20068",
+      'parent_code' => "OCC_ENV_HLTH",
+      'objectives' => [
+        'MS',
+        'PHD',
+      ],
+    ],
+    'SP_ALGEBRA_HS_CRED_5-8' => [
+      'maui_code' => "SP_ALGEBRA_HS_CRED_5-8",
+      'label' => "Algebra for High School Credit 5-8",
+      'end_session' => "",
+      'start_session' => "20168",
+      'parent_code' => "MIDDLE_SCHOOL",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_AMER_ST_SPRT_ST' => [
+      'maui_code' => "SP_AMER_ST_SPRT_ST",
+      'label' => "Sport Studies",
+      'end_session' => "",
+      'start_session' => "20108",
+      'parent_code' => "AM_STDS",
+      'objectives' => [
+        'MA',
+        'PHD',
+      ],
+    ],
+    'SP_ANES_NURS' => [
+      'maui_code' => "SP_ANES_NURS",
+      'label' => "Anesthesia Nursing",
+      'end_session' => "",
+      'start_session' => "19948",
+      'parent_code' => "NURS",
+      'objectives' => [
+        'DNP',
+        'MA',
+        'MSN',
+      ],
+    ],
+    'SP_ANIMAL_LRN_PSYCH' => [
+      'maui_code' => "SP_ANIMAL_LRN_PSYCH",
+      'label' => "Animal Learning and Biopsychology",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "PSYCH",
+      'objectives' => [
+        'MA',
+        'PHD',
+      ],
+    ],
+    'SP_ART_ED' => [
+      'maui_code' => "SP_ART_ED",
+      'label' => "Art Education",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "TCH_LRN",
+      'objectives' => [
+        'MA',
+        'MAT',
+        'PHD',
+      ],
+    ],
+    'SP_ASTRONOMY' => [
+      'maui_code' => "SP_ASTRONOMY",
+      'label' => "Astronomy",
+      'end_session' => "",
+      'start_session' => "20123",
+      'parent_code' => "PHYSICS",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'SP_ATHLETIC_TRNG' => [
+      'maui_code' => "SP_ATHLETIC_TRNG",
+      'label' => "Athletic Training",
+      'end_session' => "20173",
+      'start_session' => "20123",
+      'parent_code' => "HLTH_HUM_PHYS",
+      'objectives' => [
+        'MS',
+      ],
+    ],
+    'SP_ATHL_ADM' => [
+      'maui_code' => "SP_ATHL_ADM",
+      'label' => "Athletic Administration",
+      'end_session' => "20101",
+      'start_session' => "19953",
+      'parent_code' => "HLTH_SPORT",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'SP_BIOCHEM' => [
+      'maui_code' => "SP_BIOCHEM",
+      'label' => "Biochemistry",
+      'end_session' => "20203",
+      'start_session' => "20163",
+      'parent_code' => "BIOMED_SCI_GRAD",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'SP_BIOINF_CMP' => [
+      'maui_code' => "SP_BIOINF_CMP",
+      'label' => "Bioinformatics and Computational Biology",
+      'end_session' => "",
+      'start_session' => "20138",
+      'parent_code' => "INFORM",
+      'objectives' => [
+        'CER',
+        'MS',
+        'PHD',
+      ],
+    ],
+    'SP_BIOSTATS' => [
+      'maui_code' => "SP_BIOSTATS",
+      'label' => "Biostatistics",
+      'end_session' => "20068",
+      'start_session' => "19903",
+      'parent_code' => "PREV_MED",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'SP_BIOSTATS_MPH_PRO' => [
+      'maui_code' => "SP_BIOSTATS_MPH_PRO",
+      'label' => "Biostatistics",
+      'end_session' => "",
+      'start_session' => "20001",
+      'parent_code' => "MASTERS_PH",
+      'objectives' => [
+        'MPH',
+      ],
+    ],
+    'SP_BRASS' => [
+      'maui_code' => "SP_BRASS",
+      'label' => "Brass",
+      'end_session' => "",
+      'start_session' => "20203",
+      'parent_code' => "MUSIC",
+      'objectives' => [
+        'DMA',
+        'MA',
+      ],
+    ],
+    'SP_BUSINESS' => [
+      'maui_code' => "SP_BUSINESS",
+      'label' => "Business",
+      'end_session' => "",
+      'start_session' => "20171",
+      'parent_code' => "HLTH_MGMT_POL",
+      'objectives' => [
+        'MHA',
+      ],
+    ],
+    'SP_CANCER_BIOL' => [
+      'maui_code' => "SP_CANCER_BIOL",
+      'label' => "Cancer Biology",
+      'end_session' => "",
+      'start_session' => "20163",
+      'parent_code' => "BIOMED_SCI_GRAD",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'SP_CAREER' => [
+      'maui_code' => "SP_CAREER",
+      'label' => "Career",
+      'end_session' => "",
+      'start_session' => "20183",
+      'parent_code' => "BUSN_ANALYTICS",
+      'objectives' => [
+        'MS',
+      ],
+    ],
+    'SP_CELL_DEV_BIOL' => [
+      'maui_code' => "SP_CELL_DEV_BIOL",
+      'label' => "Cell and Developmental Biology",
+      'end_session' => "",
+      'start_session' => "20163",
+      'parent_code' => "BIOMED_SCI_GRAD",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'SP_CELL_DEV_BIOL_2A1' => [
+      'maui_code' => "SP_CELL_DEV_BIOL_2A1",
+      'label' => "Cell and Developmental Biology",
+      'end_session' => "20131",
+      'start_session' => "20058",
+      'parent_code' => "BIOLOGY",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'SP_CHILD_LIFE_HHP' => [
+      'maui_code' => "SP_CHILD_LIFE_HHP",
+      'label' => "Child Life",
+      'end_session' => "",
+      'start_session' => "20153",
+      'parent_code' => "HLTH_HUM_PHYS",
+      'objectives' => [
+        'MS',
+      ],
+    ],
+    'SP_CHLD_DEV_PSYCH' => [
+      'maui_code' => "SP_CHLD_DEV_PSYCH",
+      'label' => "Child Development and Psychology",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "PSYCH",
+      'objectives' => [
+        'MA',
+        'PHD',
+      ],
+    ],
+    'SP_CHOR_CNDCT_PED' => [
+      'maui_code' => "SP_CHOR_CNDCT_PED",
+      'label' => "Choral Conducting & Pedagogy",
+      'end_session' => "",
+      'start_session' => "20203",
+      'parent_code' => "MUSIC",
+      'objectives' => [
+        'DMA',
+        'MA',
+      ],
+    ],
+    'SP_CLIN_DEV_PSYCH' => [
+      'maui_code' => "SP_CLIN_DEV_PSYCH",
+      'label' => "Clinical-Developmental Psychology",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "PSYCH",
+      'objectives' => [
+        'MA',
+        'PHD',
+      ],
+    ],
+    'SP_CLIN_EXER_PHYS' => [
+      'maui_code' => "SP_CLIN_EXER_PHYS",
+      'label' => "Clinical Exercise Physiology",
+      'end_session' => "",
+      'start_session' => "20123",
+      'parent_code' => "HLTH_HUM_PHYS",
+      'objectives' => [
+        'MS',
+      ],
+    ],
+    'SP_CLIN_MENTAL_HLTH_COUNS' => [
+      'maui_code' => "SP_CLIN_MENTAL_HLTH_COUNS",
+      'label' => "Clinical Mental Health Counseling",
+      'end_session' => "",
+      'start_session' => "20183",
+      'parent_code' => "CRSD",
+      'objectives' => [
+        'MA',
+      ],
+    ],
+    'SP_CLIN_NURS_LD' => [
+      'maui_code' => "SP_CLIN_NURS_LD",
+      'label' => "Clinical Nurse Leader",
+      'end_session' => "",
+      'start_session' => "20071",
+      'parent_code' => "NURS",
+      'objectives' => [
+        'MSN',
+      ],
+    ],
+    'SP_CLIN_PHRM_SCI' => [
+      'maui_code' => "SP_CLIN_PHRM_SCI",
+      'label' => "Clinical Pharmaceutical Sciences",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "PHAR",
+      'objectives' => [
+        'MS',
+        'PHD',
+      ],
+    ],
+    'SP_CLIN_PSYCH' => [
+      'maui_code' => "SP_CLIN_PSYCH",
+      'label' => "Clinical Psychology",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "PSYCH",
+      'objectives' => [
+        'MA',
+        'PHD',
+      ],
+    ],
+    'SP_COMM_BEH_HLTH_MPH_PG' => [
+      'maui_code' => "SP_COMM_BEH_HLTH_MPH_PG",
+      'label' => "Community and Behavioral Health",
+      'end_session' => "",
+      'start_session' => "20001",
+      'parent_code' => "MASTERS_PH",
+      'objectives' => [
+        'MPH',
+      ],
+    ],
+    'SP_COMM_REHAB' => [
+      'maui_code' => "SP_COMM_REHAB",
+      'label' => "Community/Rehabilitation Counseling",
+      'end_session' => "20101",
+      'start_session' => "20081",
+      'parent_code' => "CRSD",
+      'objectives' => [
+        'MA',
+      ],
+    ],
+    'SP_COMM_RSRCH' => [
+      'maui_code' => "SP_COMM_RSRCH",
+      'label' => "Communication Research",
+      'end_session' => "",
+      'start_session' => "19931",
+      'parent_code' => "COMM",
+      'objectives' => [
+        'MA',
+        'PHD',
+      ],
+    ],
+    'SP_COMPOSITION' => [
+      'maui_code' => "SP_COMPOSITION",
+      'label' => "Composition",
+      'end_session' => "",
+      'start_session' => "20203",
+      'parent_code' => "MUSIC",
+      'objectives' => [
+        'MA',
+        'PHD',
+      ],
+    ],
+    'SP_COMP_GENET' => [
+      'maui_code' => "SP_COMP_GENET",
+      'label' => "Computational Genetics",
+      'end_session' => "",
+      'start_session' => "20031",
+      'parent_code' => "GENETICS",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'SP_CONSULT_AEP' => [
+      'maui_code' => "SP_CONSULT_AEP",
+      'label' => "Consultant Added Endorsement Program",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SPEC_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_COST_DIR' => [
+      'maui_code' => "SP_COST_DIR",
+      'label' => "Costume Direction",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "THEATRE_ARTS",
+      'objectives' => [
+        'MFA',
+      ],
+    ],
+    'SP_COUPLE_FAM_THER' => [
+      'maui_code' => "SP_COUPLE_FAM_THER",
+      'label' => "Couple and Family Therapy",
+      'end_session' => "",
+      'start_session' => "20173",
+      'parent_code' => "PSYCH_QUANT",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'SP_CREAT_WRT' => [
+      'maui_code' => "SP_CREAT_WRT",
+      'label' => "Creative Writing",
+      'end_session' => "",
+      'start_session' => "19993",
+      'parent_code' => "ENGL",
+      'objectives' => [
+        'MFA',
+      ],
+    ],
+    'SP_CS_SFTW_ENG' => [
+      'maui_code' => "SP_CS_SFTW_ENG",
+      'label' => "Software Engineering",
+      'end_session' => "",
+      'start_session' => "19921",
+      'parent_code' => "COMP_SCI",
+      'objectives' => [
+        'MCS',
+      ],
+    ],
+    'SP_CULT_ST' => [
+      'maui_code' => "SP_CULT_ST",
+      'label' => "Cultural Studies in Sport and Leisure",
+      'end_session' => "20041",
+      'start_session' => "19951",
+      'parent_code' => "HLTH_SPORT",
+      'objectives' => [
+        'MA',
+        'PHD',
+      ],
+    ],
+    'SP_CURR_SPRV' => [
+      'maui_code' => "SP_CURR_SPRV",
+      'label' => "Curriculum and Supervision",
+      'end_session' => "20128",
+      'start_session' => "19903",
+      'parent_code' => "TCH_LRN",
+      'objectives' => [
+        'MA',
+        'PHD',
+      ],
+    ],
+    'SP_C_EDUC' => [
+      'maui_code' => "SP_C_EDUC",
+      'label' => "Counselor Education",
+      'end_session' => "20058",
+      'start_session' => "19903",
+      'parent_code' => "CRSD",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'SP_C_EDUC_SPRV' => [
+      'maui_code' => "SP_C_EDUC_SPRV",
+      'label' => "Counselor Education and Supervision",
+      'end_session' => "",
+      'start_session' => "20058",
+      'parent_code' => "CRSD",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'SP_C_PSYCH' => [
+      'maui_code' => "SP_C_PSYCH",
+      'label' => "Counseling Psychology",
+      'end_session' => "20205",
+      'start_session' => "20153",
+      'parent_code' => "PSYCH_QUANT",
+      'objectives' => [
+        'MA',
+        'PHD',
+      ],
+    ],
+    'SP_DESIGN' => [
+      'maui_code' => "SP_DESIGN",
+      'label' => "Design",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "THEATRE_ARTS",
+      'objectives' => [
+        'MFA',
+      ],
+    ],
+    'SP_DEV_READ' => [
+      'maui_code' => "SP_DEV_READ",
+      'label' => "Developmental Reading",
+      'end_session' => "",
+      'start_session' => "19823",
+      'parent_code' => "TCH_LRN",
+      'objectives' => [
+        'MA',
+      ],
+    ],
+    'SP_DIRECTING' => [
+      'maui_code' => "SP_DIRECTING",
+      'label' => "Directing",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "THEATRE_ARTS",
+      'objectives' => [
+        'MFA',
+      ],
+    ],
+    'SP_DRAMA' => [
+      'maui_code' => "SP_DRAMA",
+      'label' => "Dramaturgy",
+      'end_session' => "",
+      'start_session' => "19993",
+      'parent_code' => "THEATRE_ARTS",
+      'objectives' => [
+        'MFA',
+      ],
+    ],
+    'SP_EARLY_CHILD_ED' => [
+      'maui_code' => "SP_EARLY_CHILD_ED",
+      'label' => "Early Childhood Education and Care",
+      'end_session' => "20071",
+      'start_session' => "19903",
+      'parent_code' => "TCH_LRN",
+      'objectives' => [
+        'MA',
+      ],
+    ],
+    'SP_EDUC_ADMIN' => [
+      'maui_code' => "SP_EDUC_ADMIN",
+      'label' => "Educational Administration",
+      'end_session' => "20101",
+      'start_session' => "19903",
+      'parent_code' => "EDUC_PLS",
+      'objectives' => [
+        'EDS',
+        'EDU',
+        'MA',
+        'PHD',
+      ],
+    ],
+    'SP_EDUC_LDRSHIP' => [
+      'maui_code' => "SP_EDUC_LDRSHIP",
+      'label' => "Educational Leadership",
+      'end_session' => "",
+      'start_session' => "20101",
+      'parent_code' => "EDUC_PLS",
+      'objectives' => [
+        'EDS',
+        'MA',
+        'PHD',
+      ],
+    ],
+    'SP_EDUC_PSYCH' => [
+      'maui_code' => "SP_EDUC_PSYCH",
+      'label' => "Educational Psychology",
+      'end_session' => "20153",
+      'start_session' => "19903",
+      'parent_code' => "PSYCH_QUANT",
+      'objectives' => [
+        'MA',
+        'PHD',
+      ],
+    ],
+    'SP_ED_ADM_SP_LIC_PK-12' => [
+      'maui_code' => "SP_ED_ADM_SP_LIC_PK-12",
+      'label' => "Educ Ldrsh Principal & Supervisor of Spec Educ Licensure Prep Program PK-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "EDUC_PLS",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_ED_MEAS_STAT' => [
+      'maui_code' => "SP_ED_MEAS_STAT",
+      'label' => "Educational Measurement and Statistics",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "PSYCH_QUANT",
+      'objectives' => [
+        'MA',
+        'PHD',
+      ],
+    ],
+    'SP_EL_ED' => [
+      'maui_code' => "SP_EL_ED",
+      'label' => "Elementary Education",
+      'end_session' => "20101",
+      'start_session' => "19903",
+      'parent_code' => "TCH_LRN",
+      'objectives' => [
+        'MA',
+        'PHD',
+      ],
+    ],
+    'SP_END_ENGL_5-12' => [
+      'maui_code' => "SP_END_ENGL_5-12",
+      'label' => "Added Endorsement Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "ENGL_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_END_MATH_5-12' => [
+      'maui_code' => "SP_END_MATH_5-12",
+      'label' => "Added Endorsement Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "MATH_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_ENGL_ED' => [
+      'maui_code' => "SP_ENGL_ED",
+      'label' => "English Education",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "TCH_LRN",
+      'objectives' => [
+        'MA',
+        'MAT',
+      ],
+    ],
+    'SP_ENV_ENGR' => [
+      'maui_code' => "SP_ENV_ENGR",
+      'label' => "Environmental Engineering",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "CIV_ENV_ENGR",
+      'objectives' => [
+        'MS',
+        'PHD',
+      ],
+    ],
+    'SP_ENV_SCI' => [
+      'maui_code' => "SP_ENV_SCI",
+      'label' => "Environmental Science",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "CIV_ENV_ENGR",
+      'objectives' => [
+        'MS',
+        'PHD',
+      ],
+    ],
+    'SP_EPIDEM_MPH_PG' => [
+      'maui_code' => "SP_EPIDEM_MPH_PG",
+      'label' => "Epidemiology",
+      'end_session' => "",
+      'start_session' => "20001",
+      'parent_code' => "MASTERS_PH",
+      'objectives' => [
+        'MPH',
+      ],
+    ],
+    'SP_ERGON_MPH_PG' => [
+      'maui_code' => "SP_ERGON_MPH_PG",
+      'label' => "Ergonomics",
+      'end_session' => "",
+      'start_session' => "20001",
+      'parent_code' => "MASTERS_PH",
+      'objectives' => [
+        'MPH',
+      ],
+    ],
+    'SP_ESL_AEP_K-12' => [
+      'maui_code' => "SP_ESL_AEP_K-12",
+      'label' => "Added Endorsement Program K-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "ESL_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_EVOLU' => [
+      'maui_code' => "SP_EVOLU",
+      'label' => "Evolution",
+      'end_session' => "20131",
+      'start_session' => "20058",
+      'parent_code' => "BIOLOGY",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'SP_EXECUTIVE' => [
+      'maui_code' => "SP_EXECUTIVE",
+      'label' => "Executive",
+      'end_session' => "",
+      'start_session' => "20138",
+      'parent_code' => "HLTH_MGMT_POL",
+      'objectives' => [
+        'MHA',
+      ],
+    ],
+    'SP_EXPER_PATH' => [
+      'maui_code' => "SP_EXPER_PATH",
+      'label' => "Experimental Pathology",
+      'end_session' => "",
+      'start_session' => "20203",
+      'parent_code' => "BIOMED_SCI_GRAD",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'SP_FAMILY_NP' => [
+      'maui_code' => "SP_FAMILY_NP",
+      'label' => "Family Nurse Practitioner",
+      'end_session' => "",
+      'start_session' => "19948",
+      'parent_code' => "NURS",
+      'objectives' => [
+        'DNP',
+        'MA',
+        'MSN',
+      ],
+    ],
+    'SP_FAM_NP' => [
+      'maui_code' => "SP_FAM_NP",
+      'label' => "Family Nurse Practitioner",
+      'end_session' => "20178",
+      'start_session' => "20141",
+      'parent_code' => "ADV_PR_NURS",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'SP_FGN_LANG_ED' => [
+      'maui_code' => "SP_FGN_LANG_ED",
+      'label' => "Foreign Language Education",
+      'end_session' => "20111",
+      'start_session' => "19921",
+      'parent_code' => "TCH_LRN",
+      'objectives' => [
+        'MA',
+        'MAT',
+        'PHD',
+      ],
+    ],
+    'SP_FGN_LANG_ESL_ED' => [
+      'maui_code' => "SP_FGN_LANG_ESL_ED",
+      'label' => "Multilingual Education",
+      'end_session' => "20201",
+      'start_session' => "19991",
+      'parent_code' => "TCH_LRN",
+      'objectives' => [
+        'MA',
+        'MAT',
+        'PHD',
+      ],
+    ],
+    'SP_FINANCE' => [
+      'maui_code' => "SP_FINANCE",
+      'label' => "Finance",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "BUSN",
+      'objectives' => [
+        'MA',
+        'PHD',
+      ],
+    ],
+    'SP_FREE_RAD_RADIAT_BIOL' => [
+      'maui_code' => "SP_FREE_RAD_RADIAT_BIOL",
+      'label' => "Free Radical and Radiation Biology",
+      'end_session' => "",
+      'start_session' => "20163",
+      'parent_code' => "BIOMED_SCI_GRAD",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'SP_GENETICS' => [
+      'maui_code' => "SP_GENETICS",
+      'label' => "Genetics",
+      'end_session' => "20131",
+      'start_session' => "20058",
+      'parent_code' => "BIOLOGY",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'SP_GEN_EXP_PSYCH' => [
+      'maui_code' => "SP_GEN_EXP_PSYCH",
+      'label' => "General Experimental Psychology",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "PSYCH",
+      'objectives' => [
+        'MA',
+        'PHD',
+      ],
+    ],
+    'SP_GEOINFORMATICS' => [
+      'maui_code' => "SP_GEOINFORMATICS",
+      'label' => "Geoinformatics",
+      'end_session' => "",
+      'start_session' => "20098",
+      'parent_code' => "INFORM",
+      'objectives' => [
+        'CER',
+        'MS',
+        'PHD',
+      ],
+    ],
+    'SP_HEALTH_COMM' => [
+      'maui_code' => "SP_HEALTH_COMM",
+      'label' => "Health Communication",
+      'end_session' => "20178",
+      'start_session' => "20048",
+      'parent_code' => "MASTERS_PH",
+      'objectives' => [
+        'MPH',
+      ],
+    ],
+    'SP_HEALTH_SYST' => [
+      'maui_code' => "SP_HEALTH_SYST",
+      'label' => "Health Systems",
+      'end_session' => "20178",
+      'start_session' => "20168",
+      'parent_code' => "NRSG_ADV_PRACT",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'SP_HEALTH_SYSTEMS' => [
+      'maui_code' => "SP_HEALTH_SYSTEMS",
+      'label' => "Health Systems",
+      'end_session' => "",
+      'start_session' => "20163",
+      'parent_code' => "NURS",
+      'objectives' => [
+        'DNP',
+      ],
+    ],
+    'SP_HIGHER_ED' => [
+      'maui_code' => "SP_HIGHER_ED",
+      'label' => "Higher Education and Student Affairs",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "EDUC_PLS",
+      'objectives' => [
+        'EDS',
+        'MA',
+        'PHD',
+      ],
+    ],
+    'SP_HIGHER_EDUC' => [
+      'maui_code' => "SP_HIGHER_EDUC",
+      'label' => "Higher Education",
+      'end_session' => "",
+      'start_session' => "20203",
+      'parent_code' => "EDUC_PLS",
+      'objectives' => [
+        'EDD',
+      ],
+    ],
+    'SP_HLTH_COMM' => [
+      'maui_code' => "SP_HLTH_COMM",
+      'label' => "Health Communication",
+      'end_session' => "20178",
+      'start_session' => "20048",
+      'parent_code' => "COMM_BEH_HLTH",
+      'objectives' => [
+        'MS',
+        'PHD',
+      ],
+    ],
+    'SP_HLTH_INFORM' => [
+      'maui_code' => "SP_HLTH_INFORM",
+      'label' => "Health Informatics",
+      'end_session' => "",
+      'start_session' => "20068",
+      'parent_code' => "INFORM",
+      'objectives' => [
+        'CER',
+        'MS',
+        'PHD',
+      ],
+    ],
+    'SP_HLTH_INFO_PHARM' => [
+      'maui_code' => "SP_HLTH_INFO_PHARM",
+      'label' => "Health Informatics-Pharmacy",
+      'end_session' => "",
+      'start_session' => "20178",
+      'parent_code' => "INFORM",
+      'objectives' => [
+        'MS',
+      ],
+    ],
+    'SP_HLTH_PROM' => [
+      'maui_code' => "SP_HLTH_PROM",
+      'label' => "Health Promotion",
+      'end_session' => "20041",
+      'start_session' => "19951",
+      'parent_code' => "HLTH_SPORT",
+      'objectives' => [
+        'MA',
+      ],
+    ],
+    'SP_HYD' => [
+      'maui_code' => "SP_HYD",
+      'label' => "Hydraulics",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "CIV_ENV_ENGR",
+      'objectives' => [
+        'MS',
+        'PHD',
+      ],
+    ],
+    'SP_IMMUN' => [
+      'maui_code' => "SP_IMMUN",
+      'label' => "Immunology",
+      'end_session' => "20203",
+      'start_session' => "20163",
+      'parent_code' => "BIOMED_SCI_GRAD",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'SP_INDUS_HYG' => [
+      'maui_code' => "SP_INDUS_HYG",
+      'label' => "Industrial Hygiene",
+      'end_session' => "20188",
+      'start_session' => "20001",
+      'parent_code' => "OCC_ENV_HLTH",
+      'objectives' => [
+        'MS',
+        'PHD',
+      ],
+    ],
+    'SP_INFO_SCI_(INFO)' => [
+      'maui_code' => "SP_INFO_SCI_(INFO)",
+      'label' => "Information Science",
+      'end_session' => "",
+      'start_session' => "20068",
+      'parent_code' => "INFORM",
+      'objectives' => [
+        'CER',
+        'MS',
+        'PHD',
+      ],
+    ],
+    'SP_INFO_SCI_(LIS)' => [
+      'maui_code' => "SP_INFO_SCI_(LIS)",
+      'label' => "Information Sciences",
+      'end_session' => "20161",
+      'start_session' => "19928",
+      'parent_code' => "LIBR_INFO_SCI",
+      'objectives' => [
+        'MA',
+      ],
+    ],
+    'SP_INFO_TECH' => [
+      'maui_code' => "SP_INFO_TECH",
+      'label' => "Information Technology",
+      'end_session' => "",
+      'start_session' => "20193",
+      'parent_code' => "ENGIN_INFO_TECH",
+      'objectives' => [
+        'MS',
+      ],
+    ],
+    'SP_INSTR_DSGN_TECH' => [
+      'maui_code' => "SP_INSTR_DSGN_TECH",
+      'label' => "Instructional Design and Technology",
+      'end_session' => "20063",
+      'start_session' => "19903",
+      'parent_code' => "PSQF_EDUCATION",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'SP_INST_STR_I_MM_AEP_5-12' => [
+      'maui_code' => "SP_INST_STR_I_MM_AEP_5-12",
+      'label' => "Instructional Strategist I Mild Moderate Added Endorsement Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SPEC_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_INST_STR_I_MM_AEP_K-8' => [
+      'maui_code' => "SP_INST_STR_I_MM_AEP_K-8",
+      'label' => "Instructional Strategist I Mild Moderate Added Endorsement Program K-8",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SPEC_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_INT_ST_SELF-DEFINED' => [
+      'maui_code' => "SP_INT_ST_SELF-DEFINED",
+      'label' => "Self-Defined",
+      'end_session' => "",
+      'start_session' => "20128",
+      'parent_code' => "INTERDISC_STUDIES",
+      'objectives' => [
+        'MA',
+        'MFA',
+        'MS',
+        'PHD',
+      ],
+    ],
+    'SP_IN_ST_II_BD_LD_AEP_K12' => [
+      'maui_code' => "SP_IN_ST_II_BD_LD_AEP_K12",
+      'label' => "Instructional Strategist II BD LD Added Endorsement Program K-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SPEC_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_IN_ST_II_BD_LD_LPP_K12' => [
+      'maui_code' => "SP_IN_ST_II_BD_LD_LPP_K12",
+      'label' => "Instructional Strategist II BD LD Licensure Preparation Program K-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SPEC_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_JAZZ_ST' => [
+      'maui_code' => "SP_JAZZ_ST",
+      'label' => "Jazz Studies",
+      'end_session' => "",
+      'start_session' => "20203",
+      'parent_code' => "MUSIC",
+      'objectives' => [
+        'MA',
+      ],
+    ],
+    'SP_LANG_LIT_CLTR_GLBL_ED' => [
+      'maui_code' => "SP_LANG_LIT_CLTR_GLBL_ED",
+      'label' => "Literacy, Culture, and Language Education",
+      'end_session' => "",
+      'start_session' => "20203",
+      'parent_code' => "TCH_LRN",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'SP_LANG_LIT_CULT' => [
+      'maui_code' => "SP_LANG_LIT_CULT",
+      'label' => "Language, Literacy, and Culture",
+      'end_session' => "20201",
+      'start_session' => "19978",
+      'parent_code' => "TCH_LRN",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'SP_LAW' => [
+      'maui_code' => "SP_LAW",
+      'label' => "Law",
+      'end_session' => "",
+      'start_session' => "20163",
+      'parent_code' => "MASTERS_PH",
+      'objectives' => [
+        'MPH',
+      ],
+    ],
+    'SP_LEIS_REC_MGMT' => [
+      'maui_code' => "SP_LEIS_REC_MGMT",
+      'label' => "Leisure and Recreational Sport Management",
+      'end_session' => "20123",
+      'start_session' => "20023",
+      'parent_code' => "HLTH_SPORT",
+      'objectives' => [
+        'MA',
+      ],
+    ],
+    'SP_LEIS_REC_SPT_MGMT' => [
+      'maui_code' => "SP_LEIS_REC_SPT_MGMT",
+      'label' => "Leisure and Recreational Sport Management",
+      'end_session' => "20191",
+      'start_session' => "20023",
+      'parent_code' => "LEIS_STDS",
+      'objectives' => [
+        'MA',
+      ],
+    ],
+    'SP_LIT_ST' => [
+      'maui_code' => "SP_LIT_ST",
+      'label' => "Literary Studies",
+      'end_session' => "",
+      'start_session' => "19863",
+      'parent_code' => "ENGL",
+      'objectives' => [
+        'MA',
+      ],
+    ],
+    'SP_LPP_SCH_AUD_B-21' => [
+      'maui_code' => "SP_LPP_SCH_AUD_B-21",
+      'label' => "Licensure Preparation Program B-21",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SCHOOL_AUDIOLOGIST",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_LPP_SCH_LIB_K-12' => [
+      'maui_code' => "SP_LPP_SCH_LIB_K-12",
+      'label' => "Licensure Preparation Program K-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SCH_TEACH_LIBR",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_LPP_SCH_SOC_WRKR_B-21' => [
+      'maui_code' => "SP_LPP_SCH_SOC_WRKR_B-21",
+      'label' => "Licensure Preparation Program B-21",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SCH_SOCIAL_WRKR",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_LPP_SCH_SP_PATH_B-21' => [
+      'maui_code' => "SP_LPP_SCH_SP_PATH_B-21",
+      'label' => "Licensure Preparation Program B-21",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SCH_SPEECH_LANG_PATH",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_LRNG_SCI' => [
+      'maui_code' => "SP_LRNG_SCI",
+      'label' => "Learning Sciences",
+      'end_session' => "",
+      'start_session' => "20153",
+      'parent_code' => "PSYCH_QUANT",
+      'objectives' => [
+        'MA',
+      ],
+    ],
+    'SP_LW' => [
+      'maui_code' => "SP_LW",
+      'label' => "Law",
+      'end_session' => "",
+      'start_session' => "20171",
+      'parent_code' => "HLTH_MGMT_POL",
+      'objectives' => [
+        'MHA',
+      ],
+    ],
+    'SP_MAR_FAM_THER' => [
+      'maui_code' => "SP_MAR_FAM_THER",
+      'label' => "Couple and Family Therapy",
+      'end_session' => "20173",
+      'start_session' => "19903",
+      'parent_code' => "CRSD",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'SP_MATH_ED' => [
+      'maui_code' => "SP_MATH_ED",
+      'label' => "Mathematics Education",
+      'end_session' => "",
+      'start_session' => "20131",
+      'parent_code' => "TCH_LRN",
+      'objectives' => [
+        'MA',
+        'MAT',
+        'PHD',
+      ],
+    ],
+    'SP_MECH_ENG' => [
+      'maui_code' => "SP_MECH_ENG",
+      'label' => "Mechanical Engineering",
+      'end_session' => "",
+      'start_session' => "20193",
+      'parent_code' => "ENGIN_INFO_TECH",
+      'objectives' => [
+        'MS',
+      ],
+    ],
+    'SP_MEDICINE' => [
+      'maui_code' => "SP_MEDICINE",
+      'label' => "Medicine",
+      'end_session' => "",
+      'start_session' => "20163",
+      'parent_code' => "MASTERS_PH",
+      'objectives' => [
+        'MPH',
+      ],
+    ],
+    'SP_MED_NAT_PROD_CHEM' => [
+      'maui_code' => "SP_MED_NAT_PROD_CHEM",
+      'label' => "Medicinal & Natural Products Chemistry",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "PHAR",
+      'objectives' => [
+        'MS',
+        'PHD',
+      ],
+    ],
+    'SP_MGMT_ORGS' => [
+      'maui_code' => "SP_MGMT_ORGS",
+      'label' => "Management",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "BUSN",
+      'objectives' => [
+        'MA',
+        'PHD',
+      ],
+    ],
+    'SP_MGMT_SCI' => [
+      'maui_code' => "SP_MGMT_SCI",
+      'label' => "Business Analytics",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "BUSN",
+      'objectives' => [
+        'MA',
+        'PHD',
+      ],
+    ],
+    'SP_MICROBIOL' => [
+      'maui_code' => "SP_MICROBIOL",
+      'label' => "Microbiology",
+      'end_session' => "20203",
+      'start_session' => "20163",
+      'parent_code' => "BIOMED_SCI_GRAD",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'SP_MKTG' => [
+      'maui_code' => "SP_MKTG",
+      'label' => "Marketing",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "BUSN",
+      'objectives' => [
+        'MA',
+        'PHD',
+      ],
+    ],
+    'SP_MOLEC_CELL_BIOL' => [
+      'maui_code' => "SP_MOLEC_CELL_BIOL",
+      'label' => "Molecular Medicine",
+      'end_session' => "20205",
+      'start_session' => "20163",
+      'parent_code' => "BIOMED_SCI_GRAD",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'SP_MOLEC_PHYS_BIOPHYS' => [
+      'maui_code' => "SP_MOLEC_PHYS_BIOPHYS",
+      'label' => "Molecular Physiology and Biophysics",
+      'end_session' => "",
+      'start_session' => "20163",
+      'parent_code' => "BIOMED_SCI_GRAD",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'SP_MUSICOL' => [
+      'maui_code' => "SP_MUSICOL",
+      'label' => "Musicology",
+      'end_session' => "",
+      'start_session' => "20203",
+      'parent_code' => "MUSIC",
+      'objectives' => [
+        'MA',
+        'PHD',
+      ],
+    ],
+    'SP_MUSIC_THER' => [
+      'maui_code' => "SP_MUSIC_THER",
+      'label' => "Music Therapy",
+      'end_session' => "",
+      'start_session' => "19988",
+      'parent_code' => "MUSIC",
+      'objectives' => [
+        'MA',
+      ],
+    ],
+    'SP_MUS_ED' => [
+      'maui_code' => "SP_MUS_ED",
+      'label' => "Music Education",
+      'end_session' => "",
+      'start_session' => "20203",
+      'parent_code' => "MUSIC",
+      'objectives' => [
+        'MA',
+        'PHD',
+      ],
+    ],
+    'SP_MUS_THEORY' => [
+      'maui_code' => "SP_MUS_THEORY",
+      'label' => "Music Theory",
+      'end_session' => "",
+      'start_session' => "20203",
+      'parent_code' => "MUSIC",
+      'objectives' => [
+        'MA',
+        'PHD',
+      ],
+    ],
+    'SP_NEUROBIOL_2A4' => [
+      'maui_code' => "SP_NEUROBIOL_2A4",
+      'label' => "Neurobiology",
+      'end_session' => "20131",
+      'start_session' => "20058",
+      'parent_code' => "BIOLOGY",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'SP_NONFIC' => [
+      'maui_code' => "SP_NONFIC",
+      'label' => "Nonfiction Writing",
+      'end_session' => "",
+      'start_session' => "19993",
+      'parent_code' => "ENGL",
+      'objectives' => [
+        'MFA',
+      ],
+    ],
+    'SP_NURS_INFOR' => [
+      'maui_code' => "SP_NURS_INFOR",
+      'label' => "Nursing Informatics",
+      'end_session' => "",
+      'start_session' => "19998",
+      'parent_code' => "NURS",
+      'objectives' => [
+        'MSN',
+      ],
+    ],
+    'SP_NURS_MGR' => [
+      'maui_code' => "SP_NURS_MGR",
+      'label' => "Nurse Manager",
+      'end_session' => "19951",
+      'start_session' => "19883",
+      'parent_code' => "NURS",
+      'objectives' => [
+        'MA',
+        'MSN',
+      ],
+    ],
+    'SP_OCC_ENV_HLTH_MPH' => [
+      'maui_code' => "SP_OCC_ENV_HLTH_MPH",
+      'label' => "Occupational and Environmental Health",
+      'end_session' => "",
+      'start_session' => "20001",
+      'parent_code' => "MASTERS_PH",
+      'objectives' => [
+        'MPH',
+      ],
+    ],
+    'SP_ORAL_MAX_RAD' => [
+      'maui_code' => "SP_ORAL_MAX_RAD",
+      'label' => "Oral and Maxillofacial Radiology",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "STOMA",
+      'objectives' => [
+        'MS',
+      ],
+    ],
+    'SP_ORAL_MED' => [
+      'maui_code' => "SP_ORAL_MED",
+      'label' => "Oral Medicine",
+      'end_session' => "",
+      'start_session' => "19918",
+      'parent_code' => "STOMA",
+      'objectives' => [
+        'MS',
+      ],
+    ],
+    'SP_ORAL_PATH' => [
+      'maui_code' => "SP_ORAL_PATH",
+      'label' => "Oral Pathology",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "STOMA",
+      'objectives' => [
+        'MS',
+      ],
+    ],
+    'SP_ORCH_CNDCT' => [
+      'maui_code' => "SP_ORCH_CNDCT",
+      'label' => "Orchestral Conducting",
+      'end_session' => "",
+      'start_session' => "20203",
+      'parent_code' => "MUSIC",
+      'objectives' => [
+        'DMA',
+        'MA',
+      ],
+    ],
+    'SP_ORGAN' => [
+      'maui_code' => "SP_ORGAN",
+      'label' => "Organ",
+      'end_session' => "",
+      'start_session' => "20203",
+      'parent_code' => "MUSIC",
+      'objectives' => [
+        'DMA',
+        'MA',
+      ],
+    ],
+    'SP_PEDIAT_NP_PC' => [
+      'maui_code' => "SP_PEDIAT_NP_PC",
+      'label' => "Pediatric Nurse Practitioner-Primary Care",
+      'end_session' => "20178",
+      'start_session' => "20141",
+      'parent_code' => "ADV_PR_NURS",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'SP_PED_NP' => [
+      'maui_code' => "SP_PED_NP",
+      'label' => "Pediatric Nurse Practitioner",
+      'end_session' => "",
+      'start_session' => "19948",
+      'parent_code' => "NURS",
+      'objectives' => [
+        'DNP',
+        'MA',
+        'MSN',
+      ],
+    ],
+    'SP_PED_NP_ACUTE' => [
+      'maui_code' => "SP_PED_NP_ACUTE",
+      'label' => "Pediatric Nurse Practitioner-Acute Care",
+      'end_session' => "",
+      'start_session' => "20153",
+      'parent_code' => "NURS",
+      'objectives' => [
+        'DNP',
+        'MSN',
+      ],
+    ],
+    'SP_PED_NP_ACUTE_1' => [
+      'maui_code' => "SP_PED_NP_ACUTE_1",
+      'label' => "Pediatric Nurse Practitioner-Acute Care",
+      'end_session' => "20178",
+      'start_session' => "20153",
+      'parent_code' => "ADV_PR_NURS",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'SP_PED_NP_PC' => [
+      'maui_code' => "SP_PED_NP_PC",
+      'label' => "Pediatric Nurse Practitioner-Primary Care",
+      'end_session' => "",
+      'start_session' => "20138",
+      'parent_code' => "NURS",
+      'objectives' => [
+        'DNP',
+      ],
+    ],
+    'SP_PERCUS' => [
+      'maui_code' => "SP_PERCUS",
+      'label' => "Percussion",
+      'end_session' => "",
+      'start_session' => "20203",
+      'parent_code' => "MUSIC",
+      'objectives' => [
+        'DMA',
+        'MA',
+      ],
+    ],
+    'SP_PHARM' => [
+      'maui_code' => "SP_PHARM",
+      'label' => "Pharmaceutics",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "PHAR",
+      'objectives' => [
+        'MS',
+        'PHD',
+      ],
+    ],
+    'SP_PHARMACOL' => [
+      'maui_code' => "SP_PHARMACOL",
+      'label' => "Pharmacology",
+      'end_session' => "",
+      'start_session' => "20163",
+      'parent_code' => "BIOMED_SCI_GRAD",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'SP_PHARMACY' => [
+      'maui_code' => "SP_PHARMACY",
+      'label' => "Pharmacy",
+      'end_session' => "",
+      'start_session' => "20163",
+      'parent_code' => "MASTERS_PH",
+      'objectives' => [
+        'MPH',
+      ],
+    ],
+    'SP_PHARM_SOCIOECON' => [
+      'maui_code' => "SP_PHARM_SOCIOECON",
+      'label' => "Health Services Research",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "PHAR",
+      'objectives' => [
+        'MS',
+        'PHD',
+      ],
+    ],
+    'SP_PHYS_SCI_AEP_5-12' => [
+      'maui_code' => "SP_PHYS_SCI_AEP_5-12",
+      'label' => "Physical Science Added Endorsement Program 5-12",
+      'end_session' => "20118",
+      'start_session' => "20118",
+      'parent_code' => "TCH_LRN",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_PIANO' => [
+      'maui_code' => "SP_PIANO",
+      'label' => "Piano",
+      'end_session' => "",
+      'start_session' => "20203",
+      'parent_code' => "MUSIC",
+      'objectives' => [
+        'DMA',
+        'MA',
+      ],
+    ],
+    'SP_PK12_ADMIN' => [
+      'maui_code' => "SP_PK12_ADMIN",
+      'label' => "PK-12 Administration",
+      'end_session' => "",
+      'start_session' => "20203",
+      'parent_code' => "EDUC_PLS",
+      'objectives' => [
+        'EDD',
+      ],
+    ],
+    'SP_PLAYWRT' => [
+      'maui_code' => "SP_PLAYWRT",
+      'label' => "Playwriting",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "THEATRE_ARTS",
+      'objectives' => [
+        'MFA',
+      ],
+    ],
+    'SP_POL_ADM_MPH_PG' => [
+      'maui_code' => "SP_POL_ADM_MPH_PG",
+      'label' => "Policy and Administration",
+      'end_session' => "20103",
+      'start_session' => "20001",
+      'parent_code' => "MASTERS_PH",
+      'objectives' => [
+        'MPH',
+      ],
+    ],
+    'SP_POL_MPH_PG' => [
+      'maui_code' => "SP_POL_MPH_PG",
+      'label' => "Policy",
+      'end_session' => "",
+      'start_session' => "20078",
+      'parent_code' => "MASTERS_PH",
+      'objectives' => [
+        'MPH',
+      ],
+    ],
+    'SP_PRACT_VETERINARIANS' => [
+      'maui_code' => "SP_PRACT_VETERINARIANS",
+      'label' => "Practicing Veterinarians",
+      'end_session' => "",
+      'start_session' => "20163",
+      'parent_code' => "MASTERS_PH",
+      'objectives' => [
+        'MPH',
+      ],
+    ],
+    'SP_PROFESSIONAL' => [
+      'maui_code' => "SP_PROFESSIONAL",
+      'label' => "Professional",
+      'end_session' => "",
+      'start_session' => "20183",
+      'parent_code' => "BUSN_ANALYTICS",
+      'objectives' => [
+        'MS',
+      ],
+    ],
+    'SP_PSYCH_MH_APN' => [
+      'maui_code' => "SP_PSYCH_MH_APN",
+      'label' => "Psychiatric/Mental Health Nurse Practitioner",
+      'end_session' => "",
+      'start_session' => "19988",
+      'parent_code' => "NURS",
+      'objectives' => [
+        'DNP',
+        'MSN',
+      ],
+    ],
+    'SP_PSYCH_MH_NP' => [
+      'maui_code' => "SP_PSYCH_MH_NP",
+      'label' => "Psychiatric/Mental Health Nurse Practitioner",
+      'end_session' => "20178",
+      'start_session' => "20141",
+      'parent_code' => "ADV_PR_NURS",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'SP_PSYCH_SP' => [
+      'maui_code' => "SP_PSYCH_SP",
+      'label' => "Psychology of Sport",
+      'end_session' => "20041",
+      'start_session' => "19951",
+      'parent_code' => "HLTH_SPORT",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'SP_PSYCH_SP_HLTH_BEHAV' => [
+      'maui_code' => "SP_PSYCH_SP_HLTH_BEHAV",
+      'label' => "Psychology of Sport and Health Behavior",
+      'end_session' => "20041",
+      'start_session' => "20023",
+      'parent_code' => "HLTH_SPORT",
+      'objectives' => [
+        'MA',
+      ],
+    ],
+    'SP_PSYCH_SP_PH_ACT' => [
+      'maui_code' => "SP_PSYCH_SP_PH_ACT",
+      'label' => "Psychology of Sport and Physical Activity",
+      'end_session' => "20123",
+      'start_session' => "20041",
+      'parent_code' => "HLTH_SPORT",
+      'objectives' => [
+        'MA',
+        'PHD',
+      ],
+    ],
+    'SP_REHAB_C' => [
+      'maui_code' => "SP_REHAB_C",
+      'label' => "Rehabilitation Counseling",
+      'end_session' => "20101",
+      'start_session' => "19903",
+      'parent_code' => "CRSD",
+      'objectives' => [
+        'MA',
+        'PHD',
+      ],
+    ],
+    'SP_REHAB_COUNS_PROG' => [
+      'maui_code' => "SP_REHAB_COUNS_PROG",
+      'label' => "Rehabilitation Counseling Program",
+      'end_session' => "",
+      'start_session' => "20183",
+      'parent_code' => "CRSD",
+      'objectives' => [
+        'MA',
+      ],
+    ],
+    'SP_REHAB_C_EDUC' => [
+      'maui_code' => "SP_REHAB_C_EDUC",
+      'label' => "Rehabilitation Counselor Education",
+      'end_session' => "20168",
+      'start_session' => "20058",
+      'parent_code' => "CRSD",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'SP_REHAB_MNTL_HLTH_CNSLNG' => [
+      'maui_code' => "SP_REHAB_MNTL_HLTH_CNSLNG",
+      'label' => "Rehabilitation and Mental Health Counseling",
+      'end_session' => "20181",
+      'start_session' => "20103",
+      'parent_code' => "CRSD",
+      'objectives' => [
+        'MA',
+      ],
+    ],
+    'SP_REHAB_PSYCH' => [
+      'maui_code' => "SP_REHAB_PSYCH",
+      'label' => "Rehabilitation Psychology",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "CRSD",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'SP_RHET_ST' => [
+      'maui_code' => "SP_RHET_ST",
+      'label' => "Rhetorical Studies",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "COMM",
+      'objectives' => [
+        'MA',
+        'PHD',
+      ],
+    ],
+    'SP_SCHL_C' => [
+      'maui_code' => "SP_SCHL_C",
+      'label' => "School Counseling",
+      'end_session' => "",
+      'start_session' => "19971",
+      'parent_code' => "CRSD",
+      'objectives' => [
+        'MA',
+      ],
+    ],
+    'SP_SCHL_CURR_AS_PLCY' => [
+      'maui_code' => "SP_SCHL_CURR_AS_PLCY",
+      'label' => "School Curriculum and Assessment Policy",
+      'end_session' => "",
+      'start_session' => "20073",
+      'parent_code' => "EDUC_PLS",
+      'objectives' => [
+        'EDS',
+      ],
+    ],
+    'SP_SCHL_C_LPP_K-12' => [
+      'maui_code' => "SP_SCHL_C_LPP_K-12",
+      'label' => "School Counseling Licensure Preparation Program K-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "CRSD",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_SCHL_PSYCH' => [
+      'maui_code' => "SP_SCHL_PSYCH",
+      'label' => "School Psychology",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "PSYCH_QUANT",
+      'objectives' => [
+        'EDS',
+        'PHD',
+      ],
+    ],
+    'SP_SCHL_PSYCH LP_B-21' => [
+      'maui_code' => "SP_SCHL_PSYCH LP_B-21",
+      'label' => "School Psychologist Licensure Preparation Program B-21",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "PSYCH_QUANT",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_SCI_ED' => [
+      'maui_code' => "SP_SCI_ED",
+      'label' => "Science Education",
+      'end_session' => "",
+      'start_session' => "20111",
+      'parent_code' => "TCH_LRN",
+      'objectives' => [
+        'MAT',
+        'MS',
+        'PHD',
+      ],
+    ],
+    'SP_SCI_ED_AEA_BIOL_5-12' => [
+      'maui_code' => "SP_SCI_ED_AEA_BIOL_5-12",
+      'label' => "Science Education Additional Emphasis Area Biology 5-12",
+      'end_session' => "20118",
+      'start_session' => "20118",
+      'parent_code' => "TCH_LRN",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_SCI_ED_AEA_CHEM_5-12' => [
+      'maui_code' => "SP_SCI_ED_AEA_CHEM_5-12",
+      'label' => "Science Education Additional Emphasis Area Chemistry 5-12",
+      'end_session' => "20118",
+      'start_session' => "20118",
+      'parent_code' => "TCH_LRN",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_SCI_ED_AEA_ERSCI_5-12' => [
+      'maui_code' => "SP_SCI_ED_AEA_ERSCI_5-12",
+      'label' => "Science Education Additional Emphasis Area Earth Science 5-12",
+      'end_session' => "20118",
+      'start_session' => "20118",
+      'parent_code' => "TCH_LRN",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_SCI_ED_AEA_PHYS_5-12' => [
+      'maui_code' => "SP_SCI_ED_AEA_PHYS_5-12",
+      'label' => "Science Education Additional Emphasis Area Physics 5-12",
+      'end_session' => "20118",
+      'start_session' => "20118",
+      'parent_code' => "TCH_LRN",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_SCI_ED_ALL_SCI_AEP_912' => [
+      'maui_code' => "SP_SCI_ED_ALL_SCI_AEP_912",
+      'label' => "Science Education All Science Added Endorsement Program 9-12",
+      'end_session' => "20118",
+      'start_session' => "20118",
+      'parent_code' => "TCH_LRN",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_SCI_ED_BIOL_AEP_5-12' => [
+      'maui_code' => "SP_SCI_ED_BIOL_AEP_5-12",
+      'label' => "Science Education Biology Added Endorsement Program 5-12",
+      'end_session' => "20118",
+      'start_session' => "20118",
+      'parent_code' => "TCH_LRN",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_SCI_ED_CHEM_AEP_5-12' => [
+      'maui_code' => "SP_SCI_ED_CHEM_AEP_5-12",
+      'label' => "Science Education Chemistry Added Endorsement Program 5-12",
+      'end_session' => "20118",
+      'start_session' => "20118",
+      'parent_code' => "TCH_LRN",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_SCI_ED_ERTHSCI_AEP_512' => [
+      'maui_code' => "SP_SCI_ED_ERTHSCI_AEP_512",
+      'label' => "Science Education Earth Science Added Endorsement Program 5-12",
+      'end_session' => "20118",
+      'start_session' => "20118",
+      'parent_code' => "TCH_LRN",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_SCI_ED_GEN_SCI_AEP_512' => [
+      'maui_code' => "SP_SCI_ED_GEN_SCI_AEP_512",
+      'label' => "Science Education General Science Added Endorsement Program 5-12",
+      'end_session' => "20118",
+      'start_session' => "20118",
+      'parent_code' => "TCH_LRN",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_SCI_ED_PHYS_AEP_5-12' => [
+      'maui_code' => "SP_SCI_ED_PHYS_AEP_5-12",
+      'label' => "Science Education Physics Added Endorsement Program 5-12",
+      'end_session' => "20118",
+      'start_session' => "20118",
+      'parent_code' => "TCH_LRN",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_SCI_ED_TEP_BIO_EMP512' => [
+      'maui_code' => "SP_SCI_ED_TEP_BIO_EMP512",
+      'label' => "Science Education Teacher Education Program Biology Emphasis 5-12",
+      'end_session' => "20118",
+      'start_session' => "20118",
+      'parent_code' => "TCH_LRN",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_SCI_ED_TEP_CHEM_EM_512' => [
+      'maui_code' => "SP_SCI_ED_TEP_CHEM_EM_512",
+      'label' => "Science Education Teacher Education Program Chemistry Emphasis 5-12",
+      'end_session' => "20118",
+      'start_session' => "20118",
+      'parent_code' => "TCH_LRN",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_SCI_ED_TEP_PHYS_EM_512' => [
+      'maui_code' => "SP_SCI_ED_TEP_PHYS_EM_512",
+      'label' => "Science Education Teacher Education Program Physics Emphasis 5-12",
+      'end_session' => "20118",
+      'start_session' => "20118",
+      'parent_code' => "TCH_LRN",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_SC_ED_TEP_ERTHSC_EM512' => [
+      'maui_code' => "SP_SC_ED_TEP_ERTHSC_EM512",
+      'label' => "Science Education Teacher Education Program Earth Science Emphasis 5-12",
+      'end_session' => "20118",
+      'start_session' => "20118",
+      'parent_code' => "TCH_LRN",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_SFTWR_ENGR_(ECE)' => [
+      'maui_code' => "SP_SFTWR_ENGR_(ECE)",
+      'label' => "Software Engineering",
+      'end_session' => "",
+      'start_session' => "19921",
+      'parent_code' => "ELEC_COMP_ENGR",
+      'objectives' => [
+        'MS',
+      ],
+    ],
+    'SP_SOC_FDTN_ED' => [
+      'maui_code' => "SP_SOC_FDTN_ED",
+      'label' => "Schools, Culture and Society",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "EDUC_PLS",
+      'objectives' => [
+        'MA',
+        'PHD',
+      ],
+    ],
+    'SP_SOC_PSYCH' => [
+      'maui_code' => "SP_SOC_PSYCH",
+      'label' => "Social Psychology",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "PSYCH",
+      'objectives' => [
+        'MA',
+        'PHD',
+      ],
+    ],
+    'SP_SOC_WORK_ADV_ST' => [
+      'maui_code' => "SP_SOC_WORK_ADV_ST",
+      'label' => "Advanced Standing",
+      'end_session' => "",
+      'start_session' => "20153",
+      'parent_code' => "SOC_WK",
+      'objectives' => [
+        'MSW',
+      ],
+    ],
+    'SP_SPCH_COMM_THTR_AEP_K8' => [
+      'maui_code' => "SP_SPCH_COMM_THTR_AEP_K8",
+      'label' => "Speech Communication/Theatre Added Endorsement Program K-8",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "ELEM_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_SPEC_ED' => [
+      'maui_code' => "SP_SPEC_ED",
+      'label' => "Special Education",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "TCH_LRN",
+      'objectives' => [
+        'MA',
+        'PHD',
+      ],
+    ],
+    'SP_SPT_LEIS_MGMT' => [
+      'maui_code' => "SP_SPT_LEIS_MGMT",
+      'label' => "Sport and Leisure Management",
+      'end_session' => "20041",
+      'start_session' => "19951",
+      'parent_code' => "HLTH_SPORT",
+      'objectives' => [
+        'MA',
+      ],
+    ],
+    'SP_SPT_ST' => [
+      'maui_code' => "SP_SPT_ST",
+      'label' => "Sport Studies",
+      'end_session' => "20101",
+      'start_session' => "20023",
+      'parent_code' => "HLTH_SPORT",
+      'objectives' => [
+        'MA',
+        'PHD',
+      ],
+    ],
+    'SP_SS_ED' => [
+      'maui_code' => "SP_SS_ED",
+      'label' => "Social Studies Education",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "TCH_LRN",
+      'objectives' => [
+        'MA',
+        'MAT',
+        'PHD',
+      ],
+    ],
+    'SP_STAGE_MGMT' => [
+      'maui_code' => "SP_STAGE_MGMT",
+      'label' => "Stage Management",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "THEATRE_ARTS",
+      'objectives' => [
+        'MFA',
+      ],
+    ],
+    'SP_STEM_EDUC' => [
+      'maui_code' => "SP_STEM_EDUC",
+      'label' => "STEM Education",
+      'end_session' => "",
+      'start_session' => "20161",
+      'parent_code' => "TCH_LRN",
+      'objectives' => [
+        'MS',
+      ],
+    ],
+    'SP_STRING' => [
+      'maui_code' => "SP_STRING",
+      'label' => "String",
+      'end_session' => "",
+      'start_session' => "20203",
+      'parent_code' => "MUSIC",
+      'objectives' => [
+        'DMA',
+        'MA',
+      ],
+    ],
+    'SP_STRUCT_MECH_MTLS' => [
+      'maui_code' => "SP_STRUCT_MECH_MTLS",
+      'label' => "Structures, Mechanics and Materials",
+      'end_session' => "",
+      'start_session' => "19803",
+      'parent_code' => "CIV_ENV_ENGR",
+      'objectives' => [
+        'MS',
+        'PHD',
+      ],
+    ],
+    'SP_ST_AFF_ADM_REA' => [
+      'maui_code' => "SP_ST_AFF_ADM_REA",
+      'label' => "Student Affairs Administration and Research",
+      'end_session' => "",
+      'start_session' => "20003",
+      'parent_code' => "CRSD",
+      'objectives' => [
+        'PHD',
+      ],
+    ],
+    'SP_ST_DEV_PSE' => [
+      'maui_code' => "SP_ST_DEV_PSE",
+      'label' => "Student Development in Postsecondary Education",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "CRSD",
+      'objectives' => [
+        'MA',
+        'PHD',
+      ],
+    ],
+    'SP_SUSTAIN_WATER_DEV' => [
+      'maui_code' => "SP_SUSTAIN_WATER_DEV",
+      'label' => "Sustainable Water Development",
+      'end_session' => "",
+      'start_session' => "20163",
+      'parent_code' => "CIV_ENV_ENGR",
+      'objectives' => [
+        'MS',
+        'PHD',
+      ],
+    ],
+    'SP_SW_ACC_ADV_ST' => [
+      'maui_code' => "SP_SW_ACC_ADV_ST",
+      'label' => "Accelerated Advanced Standing",
+      'end_session' => "",
+      'start_session' => "20161",
+      'parent_code' => "SOC_WK",
+      'objectives' => [
+        'MSW',
+      ],
+    ],
+    'SP_TCHNG_LDRSHP_CLT_COMP' => [
+      'maui_code' => "SP_TCHNG_LDRSHP_CLT_COMP",
+      'label' => "Teaching, Leadership, and Cultural Competency",
+      'end_session' => "",
+      'start_session' => "20161",
+      'parent_code' => "TCH_LRN",
+      'objectives' => [
+        'MA',
+      ],
+    ],
+    'SP_TEP_ALL_SCI_5-12' => [
+      'maui_code' => "SP_TEP_ALL_SCI_5-12",
+      'label' => "Teacher Education Program All Science 5-12",
+      'end_session' => "",
+      'start_session' => "20133",
+      'parent_code' => "SCI_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_TEP_AM_GOV_5-12' => [
+      'maui_code' => "SP_TEP_AM_GOV_5-12",
+      'label' => "Teacher Education Program American Government Emphasis 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SOC_STDS_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_TEP_AM_HIST_5-12' => [
+      'maui_code' => "SP_TEP_AM_HIST_5-12",
+      'label' => "Teacher Education Program American History Emphasis 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SOC_STDS_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_TEP_ANTH_5-12' => [
+      'maui_code' => "SP_TEP_ANTH_5-12",
+      'label' => "Teacher Education Program Anthropology Emphasis 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SOC_STDS_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_TEP_BIOL_5-12' => [
+      'maui_code' => "SP_TEP_BIOL_5-12",
+      'label' => "Teacher Education Program Biology Emphasis 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SCI_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_TEP_CHEM_5-12' => [
+      'maui_code' => "SP_TEP_CHEM_5-12",
+      'label' => "Teacher Education Program Chemistry Emphasis 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SCI_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_TEP_CHIN_5-12_FLED' => [
+      'maui_code' => "SP_TEP_CHIN_5-12_FLED",
+      'label' => "Chinese Teacher Education Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "FGN_LANG_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_TEP_CHIN_K-12_FLED' => [
+      'maui_code' => "SP_TEP_CHIN_K-12_FLED",
+      'label' => "Chinese Teacher Education Program K-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "FGN_LANG_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_TEP_EARTH_SCI_5-12' => [
+      'maui_code' => "SP_TEP_EARTH_SCI_5-12",
+      'label' => "Teacher Education Program Earth Science Emphasis 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SCI_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_TEP_ENGL_5-12' => [
+      'maui_code' => "SP_TEP_ENGL_5-12",
+      'label' => "Teacher Education Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "ENGL_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_TEP_FREN_FLED' => [
+      'maui_code' => "SP_TEP_FREN_FLED",
+      'label' => "French Teacher Education Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "FGN_LANG_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_TEP_FREN_K-12_FLED' => [
+      'maui_code' => "SP_TEP_FREN_K-12_FLED",
+      'label' => "French Teacher Education Program K-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "FGN_LANG_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_TEP_GEOG_5-12' => [
+      'maui_code' => "SP_TEP_GEOG_5-12",
+      'label' => "Teacher Education Program Geography Emphasis 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SOC_STDS_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_TEP_GRM_FLED' => [
+      'maui_code' => "SP_TEP_GRM_FLED",
+      'label' => "German Teacher Education Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "FGN_LANG_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_TEP_GRM_K-12_FLED' => [
+      'maui_code' => "SP_TEP_GRM_K-12_FLED",
+      'label' => "German Teacher Education Program K-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "FGN_LANG_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_TEP_HIST_5-12' => [
+      'maui_code' => "SP_TEP_HIST_5-12",
+      'label' => "Teacher Education Program History Emphasis 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SOC_STDS_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_TEP_ITAL_5-12_FLED' => [
+      'maui_code' => "SP_TEP_ITAL_5-12_FLED",
+      'label' => "Italian Teacher Education Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "FGN_LANG_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_TEP_ITAL_K-12_FLED' => [
+      'maui_code' => "SP_TEP_ITAL_K-12_FLED",
+      'label' => "Italian Teacher Education Program K-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "FGN_LANG_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_TEP_JAP_FLED' => [
+      'maui_code' => "SP_TEP_JAP_FLED",
+      'label' => "Japanese Teacher Education Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "FGN_LANG_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_TEP_JAP_K-12_FLED' => [
+      'maui_code' => "SP_TEP_JAP_K-12_FLED",
+      'label' => "Japanese Teacher Education Program K-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "FGN_LANG_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_TEP_K-12' => [
+      'maui_code' => "SP_TEP_K-12",
+      'label' => "Teacher Education Program K-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "ART_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_TEP_K-12_MUSIC' => [
+      'maui_code' => "SP_TEP_K-12_MUSIC",
+      'label' => "Teacher Education Program K-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "MUSIC_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_TEP_K-6' => [
+      'maui_code' => "SP_TEP_K-6",
+      'label' => "Teacher Education Program K-6",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "ELEM_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_TEP_LAT_5-12_FLED' => [
+      'maui_code' => "SP_TEP_LAT_5-12_FLED",
+      'label' => "Latin Teacher Education Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "FGN_LANG_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_TEP_LAT_K-12_FLED' => [
+      'maui_code' => "SP_TEP_LAT_K-12_FLED",
+      'label' => "Latin Teacher Education Program K-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "FGN_LANG_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_TEP_PHYSICS_5-12' => [
+      'maui_code' => "SP_TEP_PHYSICS_5-12",
+      'label' => "Teacher Education Program Physics Emphasis 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SCI_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_TEP_PSYCH_5-12' => [
+      'maui_code' => "SP_TEP_PSYCH_5-12",
+      'label' => "Teacher Education Program Psychology Emphasis 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SOC_STDS_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_TEP_RUS_5-12_FLED' => [
+      'maui_code' => "SP_TEP_RUS_5-12_FLED",
+      'label' => "Russian Teacher Education Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "FGN_LANG_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_TEP_RUS_K-12_FLED' => [
+      'maui_code' => "SP_TEP_RUS_K-12_FLED",
+      'label' => "Russian Teacher Education Program K-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "FGN_LANG_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_TEP_SOCIO_5-12' => [
+      'maui_code' => "SP_TEP_SOCIO_5-12",
+      'label' => "Teacher Education Program Sociology Emphasis 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SOC_STDS_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_TEP_SPAN_FLED' => [
+      'maui_code' => "SP_TEP_SPAN_FLED",
+      'label' => "Spanish Teacher Education Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "FGN_LANG_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_TEP_SPAN_K-12_FLED' => [
+      'maui_code' => "SP_TEP_SPAN_K-12_FLED",
+      'label' => "Spanish Teacher Education Program K-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "FGN_LANG_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_TEP_SS_5-12' => [
+      'maui_code' => "SP_TEP_SS_5-12",
+      'label' => "Teacher Education Program Economics Emphasis 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SOC_STDS_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_TEP_WRLD_HIST_5-12' => [
+      'maui_code' => "SP_TEP_WRLD_HIST_5-12",
+      'label' => "Teacher Education Program World History Emphasis 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "SOC_STDS_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_TE_MATH' => [
+      'maui_code' => "SP_TE_MATH",
+      'label' => "Teacher Education Program 5-12",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "MATH_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_TE_MATH_K-12' => [
+      'maui_code' => "SP_TE_MATH_K-12",
+      'label' => "Teacher Education Program K-12",
+      'end_session' => "20103",
+      'start_session' => "19903",
+      'parent_code' => "MATH_EDUC",
+      'objectives' => [
+        'EDU',
+      ],
+    ],
+    'SP_THER_REC_(HSS)' => [
+      'maui_code' => "SP_THER_REC_(HSS)",
+      'label' => "Therapeutic Recreation",
+      'end_session' => "20123",
+      'start_session' => "19951",
+      'parent_code' => "HLTH_SPORT",
+      'objectives' => [
+        'MA',
+      ],
+    ],
+    'SP_THER_REC_(LS)' => [
+      'maui_code' => "SP_THER_REC_(LS)",
+      'label' => "Therapeutic Recreation",
+      'end_session' => "20191",
+      'start_session' => "20023",
+      'parent_code' => "LEIS_STDS",
+      'objectives' => [
+        'MA',
+      ],
+    ],
+    'SP_TRANSP' => [
+      'maui_code' => "SP_TRANSP",
+      'label' => "Transportation",
+      'end_session' => "",
+      'start_session' => "19803",
+      'parent_code' => "CIV_ENV_ENGR",
+      'objectives' => [
+        'MS',
+        'PHD',
+      ],
+    ],
+    'SP_VETERINARY_MED' => [
+      'maui_code' => "SP_VETERINARY_MED",
+      'label' => "Veterinary Medicine",
+      'end_session' => "",
+      'start_session' => "20163",
+      'parent_code' => "MASTERS_PH",
+      'objectives' => [
+        'MPH',
+      ],
+    ],
+    'SP_VOICE' => [
+      'maui_code' => "SP_VOICE",
+      'label' => "Voice",
+      'end_session' => "",
+      'start_session' => "20203",
+      'parent_code' => "MUSIC",
+      'objectives' => [
+        'DMA',
+        'MA',
+      ],
+    ],
+    'SP_WIND_CNDCT' => [
+      'maui_code' => "SP_WIND_CNDCT",
+      'label' => "Wind Conducting",
+      'end_session' => "",
+      'start_session' => "20203",
+      'parent_code' => "MUSIC",
+      'objectives' => [
+        'DMA',
+        'MA',
+      ],
+    ],
+    'SP_WOODWIND' => [
+      'maui_code' => "SP_WOODWIND",
+      'label' => "Woodwind",
+      'end_session' => "",
+      'start_session' => "20203",
+      'parent_code' => "MUSIC",
+      'objectives' => [
+        'DMA',
+        'MA',
+      ],
+    ],
+    'SP_WORLD_LANG_ED' => [
+      'maui_code' => "SP_WORLD_LANG_ED",
+      'label' => "World Language Education",
+      'end_session' => "",
+      'start_session' => "20203",
+      'parent_code' => "TCH_LRN",
+      'objectives' => [
+        'MAT',
+      ],
+    ],
+    'SP_WTR_RES' => [
+      'maui_code' => "SP_WTR_RES",
+      'label' => "Water Resources",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "CIV_ENV_ENGR",
+      'objectives' => [
+        'MS',
+        'PHD',
+      ],
+    ],
+    'STAT' => [
+      'maui_code' => "STAT",
+      'label' => "Statistics",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'STAT_GENETICS' => [
+      'maui_code' => "STAT_GENETICS",
+      'label' => "Statistical Genetics",
+      'end_session' => "20108",
+      'start_session' => "20023",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+        'PHD',
+      ],
+    ],
+    'STOMA' => [
+      'maui_code' => "STOMA",
+      'label' => "Stomatology",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PI',
+      ],
+    ],
+    'STRATEGIC_COMM' => [
+      'maui_code' => "STRATEGIC_COMM",
+      'label' => "Strategic Communication",
+      'end_session' => "",
+      'start_session' => "20128",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+      ],
+    ],
+    'STUDY_ABR_NDS' => [
+      'maui_code' => "STUDY_ABR_NDS",
+      'label' => "Study Abroad Non-degree Student",
+      'end_session' => "",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'NONE',
+      ],
+    ],
+    'SUSTAIN_WATER_DEV' => [
+      'maui_code' => "SUSTAIN_WATER_DEV",
+      'label' => "Sustainable Water Development",
+      'end_session' => "",
+      'start_session' => "20178",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'TCH_LRN' => [
+      'maui_code' => "TCH_LRN",
+      'label' => "Teaching and Learning",
+      'end_session' => "20123",
+      'start_session' => "19903",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'MAT',
+        'PHD',
+      ],
+    ],
+    'TEACH_ENGL_AS_FOR_LANG' => [
+      'maui_code' => "TEACH_ENGL_AS_FOR_LANG",
+      'label' => "Teaching English as a Foreign Language",
+      'end_session' => "20178",
+      'start_session' => "20153",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'THEATRE_ARTS' => [
+      'maui_code' => "THEATRE_ARTS",
+      'label' => "Theatre Arts",
+      'end_session' => "",
+      'start_session' => "19848",
+      'parent_code' => "",
+      'objectives' => [
+        'MFA',
+        'PI',
+      ],
+    ],
+    'TRANSL_BIOMED' => [
+      'maui_code' => "TRANSL_BIOMED",
+      'label' => "Translational Biomedicine",
+      'end_session' => "",
+      'start_session' => "19993",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'TRANSL_CLIN_INVEST' => [
+      'maui_code' => "TRANSL_CLIN_INVEST",
+      'label' => "Translational and Clinical Investigation",
+      'end_session' => "",
+      'start_session' => "20118",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'TRANSP_STDS' => [
+      'maui_code' => "TRANSP_STDS",
+      'label' => "Transportation Studies",
+      'end_session' => "",
+      'start_session' => "19703",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'URBAN_REG' => [
+      'maui_code' => "URBAN_REG",
+      'label' => "Urban and Regional Planning",
+      'end_session' => "",
+      'start_session' => "19663",
+      'parent_code' => "",
+      'objectives' => [
+        'MA',
+        'MS',
+        'PI',
+      ],
+    ],
+    'WM_STDS' => [
+      'maui_code' => "WM_STDS",
+      'label' => "Gender, Women's and Sexuality Studies",
+      'end_session' => "",
+      'start_session' => "20103",
+      'parent_code' => "",
+      'objectives' => [
+        'CER',
+        'PHD',
+        'PI',
+      ],
+    ],
+    'ZOOLOGY' => [
+      'maui_code' => "ZOOLOGY",
+      'label' => "Zoology",
+      'end_session' => "19861",
+      'start_session' => "19653",
+      'parent_code' => "",
+      'objectives' => [
+        'MS',
+        'PHD',
+      ],
+    ],
+    'ct_biol_lifesci' => [
+      'maui_code' => "ct_biol_lifesci",
+      'label' => "Biological/Life Sciences",
+      'end_session' => "",
+      'start_session' => "20043",
+      'parent_code' => "COLL_TCH",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'ct_fineart_hum' => [
+      'maui_code' => "ct_fineart_hum",
+      'label' => "Fine Arts and Humanities",
+      'end_session' => "",
+      'start_session' => "20043",
+      'parent_code' => "COLL_TCH",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'ct_phys_mathsci' => [
+      'maui_code' => "ct_phys_mathsci",
+      'label' => "Physical and Mathematical Sciences",
+      'end_session' => "",
+      'start_session' => "20043",
+      'parent_code' => "COLL_TCH",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+    'ct_soc_sci' => [
+      'maui_code' => "ct_soc_sci",
+      'label' => "Social Sciences",
+      'end_session' => "",
+      'start_session' => "20043",
+      'parent_code' => "COLL_TCH",
+      'objectives' => [
+        'CER',
+      ],
+    ],
+  ];
+
+}

@@ -1,0 +1,44 @@
+uuid: 3178e8df-ac3e-48bd-92f4-fb3f3dd43b6a
+langcode: en
+status: true
+dependencies:
+  module:
+    - ctools
+    - entity_print
+    - user
+  theme:
+    - uids_base
+id: printlinks
+theme: uids_base
+region: content
+weight: 0
+provider: null
+plugin: print_links
+settings:
+  id: print_links
+  label: 'Print Links'
+  provider: entity_print
+  label_display: '0'
+  pdf_enabled: true
+  pdf_link_text: 'View PDF'
+  epub_enabled: false
+  epub_link_text: 'View EPub'
+  word_docx_enabled: false
+  word_docx_link_text: 'View Word Document'
+  context_mapping:
+    entity: '@node.node_route_context:node'
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    bundles:
+      area_of_study: area_of_study
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+  user_role:
+    id: user_role
+    roles:
+      authenticated: authenticated
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'

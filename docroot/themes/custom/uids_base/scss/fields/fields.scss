@@ -15,10 +15,18 @@
   line-height: 1.7;
   font-size: 1.2rem;
   margin-bottom: $xsm;
+
+  [class*="card__"] & {
+    font-size: inherit;
+    line-height: inherit;
+  }
 }
 
 .field--label-inline {
   margin-bottom: $sm;
+  .svg-inline--fa {
+    margin-right: .3rem;
+  }
 }
 
 .field--label-inline {
@@ -29,14 +37,47 @@
 
 .field__item {
   line-height: 1.7;
-  font-size: 1.2rem;
   margin-top: 0;
+
+  &.h1, &.h2, &.h3, &.h4, &.h5, &.h6, &[class*="element--"] {
+    line-height: inherit;
+  }
+
+  [class*="card__"] & {
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  @at-root {
+    div#{&},
+    p#{&} {
+      font-size: 1.2rem;
+      [class*="element--"] &,
+      .h1 &, .h2 &, .h3 &, .h4 &, .h5 &, .h6 & {
+        font-size: inherit;
+        line-height: inherit;
+      }
+    }
+  }
 }
+
 
 .field--label-above {
   margin-bottom: $sm;
   ul {
     margin-top: 0;
+  }
+}
+
+.field--label-visually_hidden {
+  .svg-inline--fa {
+    margin-right: .3rem;
+  }
+  .field__items {
+    display: inline;
+  }
+  .field__item {
+    display: inline;
   }
 }
 
@@ -46,8 +87,11 @@
   }
 }
 
+.field--label-inline.field--type-string,
 .field--label-inline.field--type-entity-reference,
-.field--label-inline.field--type-link {
+.field--label-visually_hidden.field--type-entity-reference,
+.field--label-inline.field--type-link,
+.field--label-visually_hidden.field--type-link {
   .field__item  + .field__item {
     &:before {
       content: ",";

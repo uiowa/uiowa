@@ -1,0 +1,21 @@
+uuid: a9c77e95-6be2-49be-ba0d-b518e6e66101
+langcode: en
+status: true
+dependencies:
+  module:
+    - fragments
+    - options
+id: fragment.field_grad_degrees_offered
+field_name: field_grad_degrees_offered
+entity_type: fragment
+type: list_string
+settings:
+  allowed_values_function: grad_degrees_offered_allowed_values
+  allowed_values: {  }
+module: options
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

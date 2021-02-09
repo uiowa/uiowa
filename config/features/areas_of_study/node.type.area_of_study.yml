@@ -4,10 +4,15 @@ status: true
 dependencies:
   module:
     - menu_ui
+    - node_revision_delete
 third_party_settings:
   menu_ui:
     available_menus: {  }
     parent: ''
+  node_revision_delete:
+    minimum_revisions_to_keep: 10
+    minimum_age_to_delete: 0
+    when_to_delete: 0
 name: 'Area of Study'
 type: area_of_study
 description: 'Use <em>area of study</em> for majors, minors, etc. that will be searchable and filterable on the view page.'

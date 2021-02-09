@@ -94,6 +94,7 @@ function uiowa_aggregator_preprocess_block(&$variables) {
         'class' => [
           'aggregator-wrapper',
           'uiowa-aggregator',
+          'list-container',
         ],
       ],
     ];
@@ -107,24 +108,22 @@ function uiowa_aggregator_preprocess_block(&$variables) {
 
         // Get block layout builder styles if they exist.
         if (isset($variables["elements"]["#layout_builder_style"]) && !empty($variables["elements"]["#layout_builder_style"])) {
-          $variables["elements"]["#layout_builder_style"];
           $parent_lb_styles = $variables["elements"]["#layout_builder_style"];
+          $parent_lb_styles[] = 'list-item';
         }
 
         // Unset classes meant for children.
         if (isset($variables["attributes"]["class"])) {
           foreach ($variables["attributes"]["class"] as $key => $style) {
-            if (substr($style, 0, strlen('bg')) === 'bg') {
-              unset($variables["attributes"]["class"][$key]);
-            }
-            if (substr($style, 0, strlen('card')) === 'card') {
-              unset($variables["attributes"]["class"][$key]);
-            }
-            if (substr($style, 0, strlen('media')) === 'media') {
-              unset($variables["attributes"]["class"][$key]);
-            }
-            if (substr($style, 0, strlen('hide')) === 'hide') {
-              unset($variables["attributes"]["class"][$key]);
+            foreach ([
+              'bg',
+              'card',
+              'media',
+              'hide',
+            ] as $check) {
+              if (substr($style, 0, strlen($check)) === $check) {
+                unset($variables['attributes']['class'][$key]);
+              }
             }
           }
         }

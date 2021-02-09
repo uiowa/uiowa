@@ -1,0 +1,13 @@
+project:
+  local:
+    hostname: history.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: history
+  human_name: history.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: history.prod
+drupal:
+  db:
+    database: history_uiowa_edu

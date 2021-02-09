@@ -12,7 +12,15 @@ use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\media\Entity\Media;
 use Drupal\node\NodeInterface;
+use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\views\Plugin\views\field\EntityField;
+
+/**
+ * Implements hook_preprocess().
+ */
+function uids_base_preprocess(&$variables, $hook) {
+  $variables['base_path'] = base_path();
+}
 
 /**
  * Implements hook_preprocess_HOOK() for html.html.twig.
@@ -124,7 +132,13 @@ function uids_base_preprocess_page(&$variables) {
   // The uiowa_auth module replaces local authentication with SAML SSO.
   if (\Drupal::service('module_handler')->moduleExists('uiowa_auth')) {
     if (!(\Drupal::currentUser()->isAuthenticated())) {
-      $login_url = Url::fromRoute('samlauth.saml_controller_login');
+      $destination = \Drupal::request()->getRequestUri();
+
+      $login_url = Url::fromRoute('samlauth.saml_controller_login', [], [
+        'query' => [
+          'destination' => $destination,
+        ],
+      ]);
 
       $variables['footer_login_link'] = [
         '#type' => 'link',
@@ -133,8 +147,6 @@ function uids_base_preprocess_page(&$variables) {
       ];
     }
   }
-
-  $variables['has_node_image'] = FALSE;
 
   // Set a variable for whether layout builder is enabled.
   $variables['layout_builder_enabled'] = FALSE;
@@ -145,18 +157,6 @@ function uids_base_preprocess_page(&$variables) {
       // @todo Is there a better way to have a soft dependency on a class?
       if (class_exists('\Drupal\layout_builder_custom\LayoutBuilderHelper')) {
         $variables['layout_builder_enabled'] = \Drupal::classResolver('\Drupal\layout_builder_custom\LayoutBuilderHelper')->layoutBuilderEnabled($node);
-      }
-
-      $type = $node->getType();
-      switch ($type) {
-        case 'page':
-        case 'article':
-          if ($node->hasField('field_image') && !$node->get('field_image')
-            ->isEmpty() && $node->preview_view_mode !== 'teaser') {
-            $variables['has_node_image'] = TRUE;
-          }
-          break;
-
       }
     }
   }
@@ -179,20 +179,29 @@ function uids_base_preprocess_page(&$variables) {
  * Implements hook_preprocess_HOOK() for node.html.twig.
  */
 function uids_base_preprocess_node(&$variables) {
-  if (isset($variables['node'])) {
-    if (in_array($variables['node']->getType(), ['article', 'page'])) {
-      $block_manager = \Drupal::service('plugin.manager.block');
-      $config = [];
-      $plugin_block = $block_manager->createInstance('system_breadcrumb_block', $config);
-      $variables['breadcrumb'] = $plugin_block->build();
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    if (isset($variables['node'])) {
+      if (in_array($variables['node']->getType(), ['article', 'page'])) {
+        $block_manager = \Drupal::service('plugin.manager.block');
+        $config = [];
+        $plugin_block = $block_manager->createInstance('system_breadcrumb_block', $config);
+        $variables['breadcrumb'] = $plugin_block->build();
+      }
     }
-  }
-  $node = \Drupal::routeMatch()->getParameter('node');
+    $node = \Drupal::routeMatch()->getParameter('node');
 
-  if ($node instanceof NodeInterface) {
-    // @todo Is there a better way to have a soft dependency on a class?
-    if (class_exists('\Drupal\layout_builder_custom\LayoutBuilderHelper')) {
-      $variables['layout_builder_enabled'] = \Drupal::classResolver('\Drupal\layout_builder_custom\LayoutBuilderHelper')->layoutBuilderEnabled($node);
+    if ($node instanceof NodeInterface) {
+      $node = $variables["node"];
+      switch ($node->getType()) {
+        case 'person':
+          $variables['#attached']['library'][] = 'uids_base/person';
+          break;
+      }
+      // @todo Is there a better way to have a soft dependency on a class?
+      if (class_exists('\Drupal\layout_builder_custom\LayoutBuilderHelper')) {
+        $variables['layout_builder_enabled'] = \Drupal::classResolver('\Drupal\layout_builder_custom\LayoutBuilderHelper')->layoutBuilderEnabled($node);
+      }
     }
   }
 }
@@ -256,12 +265,12 @@ function uids_base_preprocess_field(&$variables) {
       // If the caption is not set yet, attempt to set it from
       // the 'field_image_caption' field.
       /** @var \Drupal\node\NodeInterface $node */
-      if (!$caption->count() && (NULL !== $node = $variables['element']['#object']) && $node->hasField('field_image_caption')) {
+      if ((!$caption || !$caption->count()) && (NULL !== $node = $variables['element']['#object']) && $node->hasField('field_image_caption')) {
         $caption = $node->get('field_image_caption');
       }
 
       // If the caption has been set, render it.
-      if ($caption->count()) {
+      if ($caption && $caption->count()) {
         $caption = $caption->view();
       }
       else {
@@ -272,6 +281,7 @@ function uids_base_preprocess_field(&$variables) {
       break;
   }
 
+  // @todo Is this code still necessary?
   if (isset($variables['page_featured_image'])) {
     $block_manager = \Drupal::service('plugin.manager.block');
     $config = [];
@@ -294,11 +304,24 @@ function uids_base_preprocess_field(&$variables) {
  * Implements hook_preprocess_layout().
  */
 function uids_base_preprocess_layout(&$variables) {
-  $node = \Drupal::routeMatch()->getParameter('node');
-  $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
-  $title_hidden = FALSE;
-  $variables['has_node_image'] = FALSE;
+  $node = $variables['content']['#entity'] ?: NULL;
+  // If we don't have the node yet, attempt
+  // to grab it from the route.
+  // @todo Is this necessary? Possibly we can
+  //   remove it.
+  if (!$node) {
+    $route_matcher = \Drupal::routeMatch();
+    $node = $route_matcher->getParameter('node');
+    $node = (isset($node) ? $node : $route_matcher->getParameter('node_preview'));
+  }
+  // If we have found a node instance, continue.
   if ($node instanceof NodeInterface) {
+    $title_hidden = FALSE;
+    /** @var \Drupal\Core\Layout\LayoutDefinition $layout */
+    $layout = $variables['layout'];
+
+    // @todo Scope this to target layout so it doesn't run
+    //   every time a layout is preprocessed.
     if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
       $publish_options = $node->get('field_publish_options')->getValue();
       if (array_search('title_hidden', array_column($publish_options, 'value')) !== FALSE) {
@@ -311,8 +334,82 @@ function uids_base_preprocess_layout(&$variables) {
       }
     }
 
-    // Create a featured image boolean variable for easier Twig use.
-    $variables['has_node_image'] = $node->hasField('field_image') && !$node->get('field_image')->isEmpty();
+    // Process the header layout.
+    if ($layout->id() === 'layout_header') {
+      $contains_title = FALSE;
+      $contains_background = FALSE;
+
+      // Only run the following if 'featured_image_display'
+      // is not already set.
+      if (!isset($variables['featured_image_display'])) {
+        $variables['featured_image_display'] = FALSE;
+
+        // Check if the featured image exists.
+        if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
+          // Check value of 'field_featured_image_display'.
+          if ($node->hasField('field_featured_image_display') && !$node->field_featured_image_display->isEmpty()) {
+            if ($node->field_featured_image_display->value !== 'do_not_display') {
+              // Use the node setting.
+              $variables['featured_image_display'] = $node->field_featured_image_display->value;
+            }
+          }
+          else {
+            $site_wide_setting = \Drupal::config("sitenow_{$node->getType()}s.settings")->get('featured_image_display_default');
+            if ($site_wide_setting && $site_wide_setting !== 'do_not_display') {
+              // Use the site-wide default.
+              $variables['featured_image_display'] = $site_wide_setting;
+            }
+          }
+        }
+
+        if (!$variables['featured_image_display']) {
+          unset($variables['content']['background']);
+        }
+      }
+
+      // Loop through regions in the layout.
+      foreach (Element::children($variables['content']) as $region) {
+        // Loop through blocks in that region.
+        foreach (Element::children($variables['content'][$region]) as $block_uuid) {
+          if ($region === 'content'
+            && isset($variables['content'][$region][$block_uuid])
+            && isset($variables['content'][$region][$block_uuid]['#plugin_id'])
+          ) {
+            // Check if this block plugin_id matches the pattern for a
+            // page title block.
+            $plugin_id = $variables['content'][$region][$block_uuid]['#plugin_id'];
+            $start_check = 'field_block:node:';
+            $end_check = ':title';
+            if (substr($plugin_id, 0, strlen($start_check)) === $start_check
+              && substr($plugin_id, -strlen($end_check)) === $end_check
+            ) {
+              $contains_title = TRUE;
+              break;
+            }
+          }
+          elseif ($region == 'background') {
+            // If there is anything in this region, then we have a background.
+            if (!empty(Element::children($variables['content'][$region][$block_uuid]))) {
+              $contains_background = TRUE;
+              break;
+            }
+          }
+        }
+      }
+      if ($contains_title) {
+        $variables['attributes']['class'][] = 'layout--title';
+        if ($contains_background && $variables['featured_image_display']) {
+          $variables['attributes']['class'][] = 'layout--title--with-background';
+        }
+        else {
+          $variables['attributes']['class'][] = 'layout--onecol--no--background';
+        }
+
+        if ($title_hidden) {
+          $variables['attributes']['class'][] = 'layout--title--hidden';
+        }
+      }
+    }
 
     // Add sitenow library if sitenow_v2 config split is active.
     $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
@@ -320,56 +417,6 @@ function uids_base_preprocess_layout(&$variables) {
     // This site has the 'sitenow_v2' split enabled.
     if (isset($filters[$sitenow_v2_split]) && $filters[$sitenow_v2_split]['status']) {
       $variables['#attached']['library'][] = 'uids_base/sitenow';
-    }
-  }
-
-  /** @var \Drupal\Core\Layout\LayoutDefinition $layout */
-  $layout = $variables['layout'];
-
-  if ($layout->id() === 'layout_header') {
-    $contains_title = FALSE;
-    $contains_background = FALSE;
-    // Loop through regions in the layout.
-    foreach (Element::children($variables['content']) as $region) {
-      // Loop through blocks in that region.
-      foreach (Element::children($variables['content'][$region]) as $block_uuid) {
-        if ($region === 'content'
-          && isset($variables['content'][$region][$block_uuid])
-          && isset($variables['content'][$region][$block_uuid]['#plugin_id'])
-        ) {
-          // Check if this block plugin_id matches the pattern for a
-          // page title block.
-          $plugin_id = $variables['content'][$region][$block_uuid]['#plugin_id'];
-          $start_check = 'field_block:node:';
-          $end_check = ':title';
-          if (substr($plugin_id, 0, strlen($start_check)) === $start_check
-            && substr($plugin_id, -strlen($end_check)) === $end_check
-          ) {
-            $contains_title = TRUE;
-            break;
-          }
-        }
-        elseif ($region == 'background') {
-          // If there is anything in this region, then we have a background.
-          if (!empty(Element::children($variables['content'][$region][$block_uuid]))) {
-            $contains_background = TRUE;
-            break;
-          }
-        }
-      }
-    }
-    if ($contains_title) {
-      $variables['attributes']['class'][] = 'layout--title';
-      if ($contains_background && $variables['has_node_image']) {
-        $variables['attributes']['class'][] = 'layout--title--with-background';
-      }
-      else {
-        $variables['attributes']['class'][] = 'layout--onecol--no--background';
-      }
-
-      if ($title_hidden) {
-        $variables['attributes']['class'][] = 'layout--title--hidden';
-      }
     }
   }
 }
@@ -477,6 +524,11 @@ function uids_base_preprocess_block(&$variables) {
     }
   }
 
+  // Check if the hover effect should be applied on the stat block.
+  if ($variables['derivative_plugin_id'] == 'uiowa_statistic' && isset($variables['elements']['#layout_builder_style'])) {
+    $variables['has_hover_effect'] = !in_array('stat--static', $variables['elements']['#layout_builder_style']);
+  }
+
 }
 
 /**
@@ -568,14 +620,7 @@ function uids_base_preprocess_paragraph(&$variables) {
               $variables['h_size'] = $headline_field['child_heading_size'];
             }
             else {
-              $options = [
-                'h2' => 'h3',
-                'h3' => 'h4',
-                'h4' => 'h5',
-                'h5' => 'h6',
-                'h6' => 'h6',
-              ];
-              $variables['h_size'] = $options[$headline_field['heading_size']];
+              $variables['h_size'] = HeadlineHelper::getHeadingSizeUp($headline_field['heading_size']);
             }
           }
         }
