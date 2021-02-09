@@ -320,7 +320,9 @@ trait ProcessMediaTrait {
       // image is broken if we don't have a 'src'.
       if ($src) {
         // Process the 'src' into a consistent format.
-        $file_path = rawurldecode($src);
+        // Get the filepath and filename separated,
+        // and fix any spaces in the URL prior to trying to download.
+        $file_path = str_replace(' ', '%20', rawurldecode($src));
         $filename = basename($file_path);
 
         // If it's an external image, don't touch it
@@ -334,10 +336,15 @@ trait ProcessMediaTrait {
 
         if (!$fid) {
           // Get the prefix to the path for downloading purposes.
-          $prefix_path = str_replace($stub, '', substr($src, 0, strpos($src, $filename)));
+          // Also remove URL front, in case absolute URLs to same site
+          // were used.
+          $prefix_path = explode($stub, $file_path);
+          $prefix_path = array_pop($prefix_path);
+          // And take out the filename.
+          $prefix_path = str_replace($filename, '', $prefix_path);
 
           // Download the file and create the file record.
-          $fid = $this->downloadFile($file_path, $this->getSourceBasePath() . $prefix_path, $drupal_file_directory);
+          $fid = $this->downloadFile($filename, $this->getSourceBasePath() . $prefix_path, $drupal_file_directory);
 
           // Get meta data an create the media entity.
           $meta = [];
