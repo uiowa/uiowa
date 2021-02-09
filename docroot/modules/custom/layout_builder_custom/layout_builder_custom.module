@@ -317,7 +317,6 @@ function layout_builder_custom_form_layout_builder_configure_section_alter(&$for
     '#suffix' => '</label>',
   ];
 
-
   // Loop through regions.
   // @todo Only add detail wrapper when this is a multiple column layout
   foreach ($layout->getPluginDefinition()->get('regions') as $region_name => $region) {
@@ -337,8 +336,8 @@ function layout_builder_custom_form_layout_builder_configure_section_alter(&$for
       ],
       '#default_value' => $config['region_formats'][$region_name]['format'] ?: 'stacked',
       '#attributes' => [
-        'name' => "layout_settings[$region_name][format]"
-      ]
+        'name' => "layout_settings[$region_name][format]",
+      ],
     ];
 
     $form[$region_name]['grid_row_max'] = [
@@ -347,7 +346,7 @@ function layout_builder_custom_form_layout_builder_configure_section_alter(&$for
       '#description' => t('When using a grid option, blocks will display side-by-side on larger screen formats up to the maximum number per row and then wrap.'),
       '#options' => [
         2 => t('2 (default)'),
-        3,
+        3 => 3,
       ],
       '#default_value' => $config['region_formats'][$region_name]['grid_row_max'] ?: 2,
       '#states' => [
@@ -384,7 +383,6 @@ function _layout_builder_custom_submit_section_form(array &$form, FormStateInter
     '#markup' => t('Region settings'),
     '#suffix' => '</label>',
   ];
-
 
   // Loop through regions.
   // @todo Only add detail wrapper when this is a multiple column layout
@@ -699,16 +697,18 @@ function layout_builder_custom_preprocess_layout(&$variables) {
           case 2:
             $class = 'grid--threecol--33-34-33';
             break;
+
           case 3:
             $class = 'grid--twocol--50-50';
             break;
+
         }
         $variables['region_attributes'][$region_name]->addClass($class);
       }
     }
   }
 
-//  $config = $layout
+  // $config = $layout
 }
 
 /**
