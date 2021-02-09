@@ -5,7 +5,7 @@ namespace Drupal\admissions_core\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 
 /**
- * An Area of Study Buttons block.
+ * An Area of Study Requirements Heading block.
  *
  * @Block(
  *   id = "aosrequirements_block",
