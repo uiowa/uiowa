@@ -15,10 +15,18 @@
   line-height: 1.7;
   font-size: 1.2rem;
   margin-bottom: $xsm;
+
+  [class*="card__"] & {
+    font-size: inherit;
+    line-height: inherit;
+  }
 }
 
 .field--label-inline {
   margin-bottom: $sm;
+  .svg-inline--fa {
+    margin-right: .3rem;
+  }
 }
 
 .field--label-inline {
@@ -31,11 +39,20 @@
   line-height: 1.7;
   margin-top: 0;
 
+  &.h1, &.h2, &.h3, &.h4, &.h5, &.h6, &[class*="element--"] {
+    line-height: inherit;
+  }
+
+  [class*="card__"] & {
+    font-size: inherit;
+    line-height: inherit;
+  }
+
   @at-root {
     div#{&},
     p#{&} {
       font-size: 1.2rem;
-      [class*="element-"] &,
+      [class*="element--"] &,
       .h1 &, .h2 &, .h3 &, .h4 &, .h5 &, .h6 & {
         font-size: inherit;
         line-height: inherit;

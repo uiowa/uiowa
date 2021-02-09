@@ -1891,7 +1891,8 @@ function sitenow_update_8048() {
       foreach ($section->getComponents() as $component) {
         if ($component->getPluginId() === 'inline_block:uiowa_events') {
           $styles = $component->get('layout_builder_styles_style');
-          // Events - Small circle left-aligned, left align content, transparent.
+          // Events - Small circle left-aligned,
+          // left align content, transparent.
           $styles[] = 'card_media_position_left';
           $styles[] = 'media_format_circle';
           $styles[] = 'card_image_small';
