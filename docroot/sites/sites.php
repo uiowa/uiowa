@@ -2183,3 +2183,9 @@ $sites['labcheatum.local.drupal.uiowa.edu'] = 'cheatum.lab.uiowa.edu';
 $sites['labcheatum.dev.drupal.uiowa.edu'] = 'cheatum.lab.uiowa.edu';
 $sites['labcheatum.stage.drupal.uiowa.edu'] = 'cheatum.lab.uiowa.edu';
 $sites['labcheatum.prod.drupal.uiowa.edu'] = 'cheatum.lab.uiowa.edu';
+
+// Directory aliases for boes.lab.uiowa.edu.
+$sites['labboes.local.drupal.uiowa.edu'] = 'boes.lab.uiowa.edu';
+$sites['labboes.dev.drupal.uiowa.edu'] = 'boes.lab.uiowa.edu';
+$sites['labboes.stage.drupal.uiowa.edu'] = 'boes.lab.uiowa.edu';
+$sites['labboes.prod.drupal.uiowa.edu'] = 'boes.lab.uiowa.edu';
