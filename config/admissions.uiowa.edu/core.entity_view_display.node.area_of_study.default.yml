@@ -158,29 +158,7 @@ third_party_settings:
                 block_margin_bottom: block_margin_bottom
                 block_margin_top: block_margin_top
                 block_margin_right: block_margin_right
-            weight: 2
-          -
-            uuid: f99d4ffa-b056-484b-bc4b-caf2a203cfc0
-            region: first
-            configuration:
-              id: 'field_block:node:area_of_study:field_area_of_study_why'
-              label: null
-              provider: layout_builder
-              label_display: null
-              formatter:
-                label: above
-                type: text_default
-                settings: {  }
-                third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-            additional:
-              layout_builder_styles_style:
-                block_margin_top: block_margin_top
-                block_margin_bottom: block_margin_bottom
-                block_margin_right: block_margin_right
-            weight: 1
+            weight: 3
           -
             uuid: 32b68e28-f595-45a5-a247-b3b7c6613d30
             region: second
@@ -210,24 +188,6 @@ third_party_settings:
                 block_margin_bottom: block_margin_bottom
             weight: 8
           -
-            uuid: 0eeb1ce7-7903-4640-89a5-cd8d147d3244
-            region: first
-            configuration:
-              id: 'field_block:node:area_of_study:body'
-              label: null
-              provider: layout_builder
-              label_display: null
-              formatter:
-                label: hidden
-                type: text_default
-                settings: {  }
-                third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-            additional: {  }
-            weight: 0
-          -
             uuid: b4d948cb-4c09-4224-bd33-436b6b200a70
             region: second
             configuration:
@@ -251,20 +211,49 @@ third_party_settings:
               context_mapping: {  }
             additional: {  }
             weight: 6
-        third_party_settings:
-          layout_builder_lock:
-            lock: {  }
-      -
-        layout_id: layout_onecol
-        layout_settings:
-          label: ''
-          layout_builder_styles_style:
-            - section_background_style_gray
-            - ''
-        components:
+          -
+            uuid: 0eeb1ce7-7903-4640-89a5-cd8d147d3244
+            region: first
+            configuration:
+              id: 'field_block:node:area_of_study:body'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: hidden
+                type: text_default
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 0
+          -
+            uuid: f99d4ffa-b056-484b-bc4b-caf2a203cfc0
+            region: first
+            configuration:
+              id: 'field_block:node:area_of_study:field_area_of_study_why'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: above
+                type: text_default
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional:
+              layout_builder_styles_style:
+                block_margin_top: block_margin_top
+                block_margin_bottom: block_margin_bottom
+                block_margin_right: block_margin_right
+            weight: 1
           -
             uuid: 616b3735-14cb-45ac-8d36-f0ed42845915
-            region: content
+            region: first
             configuration:
               id: 'field_block:node:area_of_study:field_area_of_study_requirement'
               label: null
@@ -282,8 +271,10 @@ third_party_settings:
               layout_builder_styles_style:
                 block_margin_top: block_margin_top
                 block_margin_right: block_margin_right
-            weight: 0
-        third_party_settings: {  }
+            weight: 4
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
       -
         layout_id: layout_threecol
         layout_settings:
