@@ -2,6 +2,7 @@
 
 namespace Drupal\sitenow_migrate\Plugin\migrate\source;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\migrate\MigrateException;
 
@@ -277,6 +278,135 @@ trait ProcessMediaTrait {
       }
       $row->setSourceProperty("{$field_name}_fid", $mid);
     }
+  }
+
+  /**
+   * Replace inline image tags with media references.
+   *
+   * Used this as reference: https://stackoverflow.com/a/3195048.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Drupal\migrate\MigrateException
+   */
+  protected function replaceInlineImages($content, $stub) {
+    $drupal_file_directory = $this->getDrupalFileDirectory();
+
+    // Create a HTML content fragment.
+    $document = Html::load($content);
+
+    // Get all the image from the $content.
+    $images = $document->getElementsByTagName('img');
+
+    // As we replace the inline images, they are actually
+    // removed in the DOMNodeList $images, so we have to
+    // use a regressive loop to count through them.
+    // See https://www.php.net/manual/en/domnode.replacechild.php#50500.
+    $i = $images->length - 1;
+
+    while ($i >= 0) {
+      // The current inline image element.
+      $img = $images->item($i);
+      $src = $img->getAttribute('src');
+      // No point in continuing after this point because the
+      // image is broken if we don't have a 'src'.
+      if ($src) {
+        // Process the 'src' into a consistent format.
+        $file_path = rawurldecode($src);
+        $filename = basename($file_path);
+
+        // If it's an external image, don't touch it
+        // and continue on to the next iteration.
+        if (!str_contains($file_path, $stub)) {
+          $i--;
+          continue;
+        }
+        // Attempt to get existing image.
+        $fid = $this->getD8FileByFilename($filename);
+
+        if (!$fid) {
+          // Get the prefix to the path for downloading purposes.
+          $prefix_path = str_replace($stub, '', substr($src, 0, strpos($src, $filename)));
+
+          // Download the file and create the file record.
+          $fid = $this->downloadFile($file_path, $this->getSourceBasePath() . $prefix_path, $drupal_file_directory);
+
+          // Get meta data an create the media entity.
+          $meta = [];
+          foreach (['alt', 'title'] as $name) {
+            if ($prop = $img->getAttribute($name)) {
+              $meta[$name] = $prop;
+            }
+          }
+          $this->createMediaEntity($fid, $meta);
+        }
+
+        // Get the media UUID.
+        $uuid = $this->getMid($file_path)['uuid'];
+
+        // There is an issue at this point if we don't have an MID,
+        // and we definitely don't want to replace the existing item
+        // with a broken media embed.
+        if ($uuid) {
+          // Create the <drupal-media> element.
+          $media_embed = $document->createElement('drupal-media');
+          $media_embed->setAttribute('data-entity-uuid', $uuid);
+          // @todo Determine how to correctly set the crop.
+          //   $media_embed->setAttribute('data-view-mode', 'full_no_crop');
+          $media_embed->setAttribute('data-entity-type', 'media');
+
+          // Set the alignment if we can determine it.
+          $align = $this->getImageAlign($img);
+          if ($align) {
+            $media_embed->setAttribute('data-align', $align);
+          }
+
+          // Replace the <img> element with the <drupal-media> element.
+          $img->parentNode->replaceChild($media_embed, $img);
+        }
+        // If we weren't able to find or download an image,
+        // let's insert a token for cleanup later.
+        else {
+          $token = $document->createComment('Missing image: ' . $file_path);
+          // Replace the <img> element with our token comment.
+          $img->parentNode->replaceChild($token, $img);
+        }
+      }
+
+      $i--;
+    }
+
+    // Convert back into a string and return it.
+    return Html::serialize($document);
+  }
+
+  /**
+   * Attempt to determine the image alignment.
+   */
+  protected function getImageAlign($img) {
+    $align = NULL;
+    if ($img->getAttribute('align')) {
+      $align = $img->getAttribute('align');
+    }
+    elseif ($img->getAttribute('style')) {
+      preg_match('/(?:float: )(left|right)/i', $img->getAttribute('style'), $align_match);
+      if ($align_match && !empty($align_match)) {
+        $align = $align_match[1];
+      }
+    }
+
+    return $align;
+  }
+
+  /**
+   * Get the D7 file record using the filename.
+   */
+  protected function getD8FileByFilename($filename) {
+    $connection = \Drupal::database();
+    $query = $connection->select('file_managed', 'f');
+    return $query->fields('f', ['fid'])
+      ->condition('f.filename', $filename)
+      ->execute()
+      ->fetchField();
   }
 
 }
