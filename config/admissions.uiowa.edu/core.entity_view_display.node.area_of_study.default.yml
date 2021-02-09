@@ -276,13 +276,37 @@ third_party_settings:
           layout_builder_lock:
             lock: {  }
       -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          layout_builder_styles_style:
+            0: section_background_style_gray
+            1: ''
+            remove_default_bottom_padding: remove_default_bottom_padding
+        components:
+          -
+            uuid: d9aedf25-b1dd-47e5-9b9e-e7acadc30640
+            region: content
+            configuration:
+              id: aosrequirements_block
+              label: null
+              provider: admissions_core
+              label_display: null
+              context_mapping: {  }
+            additional: {  }
+            weight: 0
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+      -
         layout_id: layout_threecol
         layout_settings:
           label: ''
           column_widths: 33-34-33
           layout_builder_styles_style:
-            - section_background_style_gray
-            - section_margin_extended_width_container
+            0: section_background_style_gray
+            1: section_margin_extended_width_container
+            remove_default_top_padding: remove_default_top_padding
         components:
           -
             uuid: 80782091-bbe7-4ef5-93f5-eed311e0124e
@@ -302,7 +326,7 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
-            weight: 0
+            weight: 1
           -
             uuid: 0bd90b7b-ffe8-4e15-81ec-1d76c92f6f32
             region: second
