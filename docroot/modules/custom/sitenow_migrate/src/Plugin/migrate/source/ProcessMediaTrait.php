@@ -69,7 +69,7 @@ trait ProcessMediaTrait {
     $query = $connection->select('file_managed', 'f');
     $query->join('media__field_media_image', 'fmi', 'f.fid = fmi.field_media_image_target_id');
     $query->join('media', 'm', 'fmi.entity_id = m.mid');
-    return $query->fields('m', ['uuid'])
+    return $query->fields('m', ['uuid', 'mid'])
       ->condition('f.filename', $filename)
       ->execute()
       ->fetchAssoc();
@@ -99,11 +99,10 @@ trait ProcessMediaTrait {
     $connection = \Drupal::database();
     $query = $connection->select($migrate_map, 'mm');
     $query->join('media__field_media_image', 'fmi', 'mm.destid1 = fmi.field_media_image_target_id');
-    $result = $query->fields('fmi', ['entity_id'])
+    return $query->fields('fmi', ['entity_id'])
       ->condition('mm.sourceid1', $original_fid)
-      ->execute();
-    $new_fid = $result->fetchField();
-    return $new_fid;
+      ->execute()
+      ->fetchField();
   }
 
   /**
@@ -171,7 +170,7 @@ trait ProcessMediaTrait {
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  public function createMediaEntity($fid, array $meta, $owner_id = 0) {
+  public function createMediaEntity($fid, array $meta, $owner_id = 1) {
     /** @var \Drupal\file\FileInterface $file */
     $file = $this->entityTypeManager->getStorage('file')->load($fid);
 
@@ -233,6 +232,7 @@ trait ProcessMediaTrait {
           return FALSE;
       }
     }
+    return FALSE;
   }
 
   /**
@@ -262,6 +262,8 @@ trait ProcessMediaTrait {
         'title' => $row->getSourceProperty("{$field_name}_title"),
       ];
 
+      // If there's no fid in the D8 database,
+      // then we'll need to fetch it from the source.
       if (!$new_fid) {
         // Use the filename, update the source base path with the subdirectory.
         $new_fid = $this->downloadFile($filename, $this->getSourceBasePath() . $subdir, $this->getDrupalFileDirectory());
@@ -270,13 +272,20 @@ trait ProcessMediaTrait {
         }
       }
       else {
-        $mid = $this->getMid($filename);
+        $mid = $this->getMid($filename)['mid'];
         // And in case we had the file, but not the media entity.
         if (!$mid) {
           $mid = $this->createMediaEntity($new_fid, $meta, 1);
         }
       }
-      $row->setSourceProperty("{$field_name}_fid", $mid);
+      if ($mid) {
+        $row->setSourceProperty("{$field_name}_fid", $mid);
+      }
+      else {
+        // If we don't have a media ID at this point,
+        // we need to unset the ID.
+        $row->setSourceProperty("{$field_name}_fid", NULL);
+      }
     }
   }
 
@@ -337,11 +346,14 @@ trait ProcessMediaTrait {
               $meta[$name] = $prop;
             }
           }
-          $this->createMediaEntity($fid, $meta);
+          // If we successfully downloaded the file, create the media entity.
+          if ($fid) {
+            $this->createMediaEntity($fid, $meta);
+          }
         }
 
         // Get the media UUID.
-        $uuid = $this->getMid($file_path)['uuid'];
+        $uuid = $this->getMid($filename)['uuid'];
 
         // There is an issue at this point if we don't have an MID,
         // and we definitely don't want to replace the existing item
