@@ -7,6 +7,7 @@
  */
 
 use Drupal\block\Entity\Block;
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Config\FileStorage;
 use Drupal\node\Entity\Node;
 use Drupal\taxonomy\Entity\Term;
@@ -1930,4 +1931,102 @@ function sitenow_update_8049() {
   $source = new FileStorage($config_path);
   $config_storage = \Drupal::service('config.storage');
   $config_storage->write('config_ignore.settings', $source->read('config_ignore.settings'));
+}
+
+/**
+ * Update instances of <drupal-entity> to <drupal-media> in textareas.
+ */
+function sitenow_update_8050() {
+  // @todo Should be able to limit this to sites with sitenow_v2 split enabled.
+
+  $entity_types = [
+    'block_content',
+    'media',
+    'node',
+    'paragraph',
+  ];
+
+  foreach ($entity_types as $entity_type) {
+    $bundles = \Drupal::service('entity_type.bundle.info')->getBundleInfo($entity_type);
+
+    // @todo Handle case where no bundles exist?
+    foreach ($bundles as $bundle => $bundle_label) {
+      /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $entityFieldManager */
+      $entityFieldManager = \Drupal::service('entity_field.manager');
+      $fields = $entityFieldManager->getFieldDefinitions($entity_type, $bundle);
+      $field_check = [];
+      /**
+       * @var string $field_name
+       * @var FieldConfig $definition
+       */
+      foreach ($fields as $field_name => $definition) {
+        if (in_array($definition->getType(), [
+          'text_long',
+          'text_with_summary',
+        ])) {
+          $field_check[$field_name] = $definition;
+        }
+      }
+
+      // Only need to run the following if we found fields to check against.
+      if (!empty($field_check)) {
+
+        // Retrieve all entities of this bundle type;
+        $entities = \Drupal::entityTypeManager()->getStorage($entity_type)
+          ->loadByProperties(['type' => $bundle]);
+
+        // Loop through the loaded entities.
+        foreach ($entities as $entity) {
+          $needs_save = FALSE;
+
+          // Loop through the fields we defined before.
+          foreach ($field_check as $name => $definition) {
+            // If the field has a value (or values).
+            if (!$entity->get($name)->isEmpty()) {
+              $updated_values = [];
+              $field_values = $entity->{$name}->getValue();
+
+              foreach ($field_values as $field_value) {
+
+                // @todo Any special handling for text_with_summary fields?
+                $document = Html::load($field_value['value']);
+
+                // Get all <drupal-entity> instances.
+                $de_instances = $document->getElementsByTagName('drupal-entity');
+
+                // Example: <drupal-entity data-align="center" data-embed-button="media_entity_embed" data-entity-embed-display="view_mode:media.full" data-entity-embed-display-settings="" data-entity-type="media" data-entity-uuid="463f699b-e367-48b1-9a30-5df1fbe88762"></drupal-entity>
+
+                // As we replace the inline images, they are actually
+                // removed in the DOMNodeList $images, so we have to
+                // use a regressive loop to count through them.
+                // See https://www.php.net/manual/en/domnode.replacechild.php#50500.
+                $i = $de_instances->length - 1;
+
+                while ($i >= 0) {
+                  // The current inline image element.
+                  $de_instance = $de_instances->item($i);
+
+                  $dm_instance = $document->createElement('drupal-media');
+                  // @todo Set attributes from existing media embed.
+                  $de_instance->parentNode->replaceChild($dm_instance, $de_instance);
+                }
+
+                $updated_values[] = Html::serialize($document);
+              }
+
+              if (count($updated_values) === 1) {
+                $updated_values = $updated_values[0];
+              }
+
+              $entity->{$name} = $updated_values;
+              $needs_save = TRUE;
+            }
+          }
+          if ($needs_save) {
+            $entity->save();
+          }
+        }
+      }
+    }
+  }
 }
