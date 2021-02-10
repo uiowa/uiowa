@@ -46,7 +46,6 @@ class Blog extends BaseNodeSource {
     $query = parent::query();
     $query->join('field_data_body', 'b', 'n.nid = b.entity_id');
     $query->leftJoin('field_data_field_large_featured_blog_image', 'image', 'n.nid = image.entity_id');
-    $query->leftJoin('url_alias', 'alias', "alias.source = CONCAT('node/', n.nid)");
     $query = $query->fields('b', [
       'entity_type',
       'bundle',
@@ -73,9 +72,6 @@ class Blog extends BaseNodeSource {
         'status',
         'promote',
         'sticky',
-      ])
-      ->fields('alias', [
-        'alias',
       ]);
     return $query;
   }
@@ -136,6 +132,8 @@ class Blog extends BaseNodeSource {
 
     // Strip tags so they don't show up in the field teaser.
     $row->setSourceProperty('body_summary', strip_tags($row->getSourceProperty('body_summary')));
+
+    $this->fetchUrlAliases($row);
 
     // Call the parent prepareRow.
     return parent::prepareRow($row);
