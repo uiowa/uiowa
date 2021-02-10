@@ -141,7 +141,7 @@ class Article extends BaseNodeSource {
     $content = $row->getSourceProperty('body_value');
 
     // Replace any inline images, if they exist.
-    $content = $this->replaceInlineImages($content, '/sites/gc/files/');
+    $content = $this->replaceInlineImages($content, '/sites/www.engineering.uiowa.edu/files/');
     $row->setSourceProperty('body_value', $content);
 
     // Strip tags so they don't show up in the field teaser.
