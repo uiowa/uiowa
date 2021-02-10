@@ -317,9 +317,11 @@ function layout_builder_custom_form_layout_builder_configure_section_alter(&$for
     '#suffix' => '</label>',
   ];
 
+  $regions = $layout->getPluginDefinition()->get('regions');
+
   // Loop through regions.
   // @todo Only add detail wrapper when this is a multiple column layout
-  foreach ($layout->getPluginDefinition()->get('regions') as $region_name => $region) {
+  foreach ($regions as $region_name => $region) {
     $form[$region_name] = [
       '#type' => 'details',
       '#title' => $region['label'],
