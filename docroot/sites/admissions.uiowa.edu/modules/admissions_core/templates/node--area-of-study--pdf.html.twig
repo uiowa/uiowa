@@ -89,8 +89,40 @@
     </h1>
   {{ title_suffix }}
 
-  <div{{ content_attributes.addClass('node__content') }}>
-    {{ content }}
+  <div class="intro">
+    {{ content.body.0 }}
+  </div>
+
+  <div class="aos-link">
+    <a href="https://admissions.uiowa.edu{{ url }}">
+      <i class="fas fa-arrow-right"></i>
+      admissions.uiowa.edu{{ url }}
+    </a>
+  </div>
+
+  <div class="node__content first">
+    {{ content.field_area_of_study_why }}
+    {{ content.field_area_of_study_requirement }}
+    {{ content.field_area_of_study_scholarship }}
+  </div>
+
+  <div class="node__content second">
+    {{ content.field_area_of_study_course_work }}
+    {{ content.field_area_of_study_opportunity }}
+    {{ content.field_area_of_study_career }}
+  </div>
+
+  <div class="learn-more">
+    <h2>Learn More</h2>
+    <p>
+      <span class="learn-more-phone"><i class="fas fa-phone"></i>319-335-3847</span>
+      <span class="learn-more-email"><i class="fas fa-envelope"></i>admissions@uiowa.edu</span>
+      <span class="learn-more-web"><i class="fas fa-arrow-right"></i>http://admissions.uiowa.edu</span>
+    </p>
+  </div>
+
+  <div class="nondiscrimination-statement">
+    <p><small>The University of Iowa prohibits discrimination in employment, educational programs, and activities on the basis of race, creed, color, religion, national origin, age, sex, pregnancy, disability, genetic information, status as a U.S. veteran, service in the U.S. military, sexual orientation, gender identity, associational preferences, or any other classification that deprives the person of consideration as an individual. The university also affirms its commitment to providing equal opportunities and equal access to university facilities. For additional information on nondiscrimination policies, contact the Director, Office of Equal Opportunity and Diversity, the University of Iowa, 202 Jessup Hall, Iowa City, IA, 52242-1316, 319-335-0705 (voice), 319-335-0697 (TDD), diversity@uiowa.edu.</small></p>
   </div>
 
 </div>
