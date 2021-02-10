@@ -110,7 +110,7 @@ content:
   body:
     label: hidden
     type: text_default
-    weight: 1
+    weight: 0
     settings: {  }
     third_party_settings: {  }
     region: content
@@ -122,13 +122,20 @@ content:
     type: text_default
     region: content
   field_area_of_study_certificates:
-    weight: 4
+    weight: 3
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
     region: content
+  field_area_of_study_course_work:
+    type: text_default
+    weight: 7
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
   field_area_of_study_link:
     weight: 12
     label: above
@@ -143,7 +150,7 @@ content:
     region: content
   field_area_of_study_majors:
     type: entity_reference_revisions_entity_view
-    weight: 2
+    weight: 1
     label: above
     settings:
       view_mode: default
@@ -151,7 +158,7 @@ content:
     third_party_settings: {  }
     region: content
   field_area_of_study_minors:
-    weight: 3
+    weight: 2
     label: above
     settings:
       link_to_entity: false
@@ -159,7 +166,7 @@ content:
     type: string
     region: content
   field_area_of_study_online:
-    weight: 6
+    weight: 5
     label: above
     settings:
       link_to_entity: false
@@ -174,7 +181,7 @@ content:
     type: text_default
     region: content
   field_area_of_study_preprof:
-    weight: 5
+    weight: 4
     label: above
     settings:
       link_to_entity: false
@@ -188,45 +195,40 @@ content:
     third_party_settings: {  }
     type: text_default
     region: content
-  field_area_of_study_subtitle:
-    weight: 7
-    label: above
-    settings: {  }
-    third_party_settings: {  }
+  field_area_of_study_scholarship:
     type: text_default
-    region: content
-  field_area_of_study_why:
     weight: 8
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_area_of_study_why:
+    weight: 6
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
-  links:
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
 hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
   field_area_of_study_comp_txt: true
   field_area_of_study_competitive: true
-  field_area_of_study_course_work: true
   field_area_of_study_first_year: true
   field_area_of_study_four_txt: true
   field_area_of_study_four_year: true
   field_area_of_study_honors: true
   field_area_of_study_intl: true
   field_area_of_study_mail_code: true
-  field_area_of_study_scholarship: true
   field_area_of_study_select_txt: true
   field_area_of_study_selective: true
   field_area_of_study_stat: true
   field_area_of_study_stories: true
+  field_area_of_study_subtitle: true
   field_area_of_study_teaching: true
   field_area_of_study_teaching_txt: true
   field_area_of_study_transfer: true
   field_image: true
+  links: true
   search_api_excerpt: true
