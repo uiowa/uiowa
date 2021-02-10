@@ -1938,7 +1938,6 @@ function sitenow_update_8049() {
  */
 function sitenow_update_8050() {
   // @todo Should be able to limit this to sites with sitenow_v2 split enabled.
-
   $entity_types = [
     'block_content',
     'media',
@@ -1957,7 +1956,7 @@ function sitenow_update_8050() {
       $field_check = [];
       /**
        * @var string $field_name
-       * @var FieldConfig $definition
+       * @var \Drupal\field\Entity\FieldConfig $definition
        */
       foreach ($fields as $field_name => $definition) {
         if (in_array($definition->getType(), [
@@ -1971,7 +1970,7 @@ function sitenow_update_8050() {
       // Only need to run the following if we found fields to check against.
       if (!empty($field_check)) {
 
-        // Retrieve all entities of this bundle type;
+        // Retrieve all entities of this bundle type;.
         $entities = \Drupal::entityTypeManager()->getStorage($entity_type)
           ->loadByProperties(['type' => $bundle]);
 
@@ -1994,8 +1993,7 @@ function sitenow_update_8050() {
                 // Get all <drupal-entity> instances.
                 $de_instances = $document->getElementsByTagName('drupal-entity');
 
-                // Example: <drupal-entity data-align="center" data-embed-button="media_entity_embed" data-entity-embed-display="view_mode:media.full" data-entity-embed-display-settings="" data-entity-type="media" data-entity-uuid="463f699b-e367-48b1-9a30-5df1fbe88762"></drupal-entity>
-
+                // Example: <drupal-entity data-align="center" data-embed-button="media_entity_embed" data-entity-embed-display="view_mode:media.full" data-entity-embed-display-settings="" data-entity-type="media" data-entity-uuid="463f699b-e367-48b1-9a30-5df1fbe88762"></drupal-entity>.
                 // As we replace the inline images, they are actually
                 // removed in the DOMNodeList $images, so we have to
                 // use a regressive loop to count through them.
