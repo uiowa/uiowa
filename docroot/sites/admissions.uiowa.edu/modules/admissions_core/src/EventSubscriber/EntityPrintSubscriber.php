@@ -29,6 +29,5 @@ class EntityPrintSubscriber implements EventSubscriberInterface {
    */
   public function alterCss(PrintCssAlterEvent $event) {
     $event->getBuild()['#attached']['library'][] = 'admissions_core/pdf';
-    $event->getBuild()['#attached']['library'][] = 'fontawesome/fontawesome.webfonts';
   }
 }
