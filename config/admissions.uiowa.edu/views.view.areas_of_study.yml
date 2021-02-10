@@ -296,6 +296,9 @@ display:
       defaults:
         access: false
         fields: false
+        title: false
+        filters: false
+        filter_groups: false
       fields:
         nid:
           id: nid
@@ -429,12 +432,42 @@ display:
           entity_field: title
           plugin_id: field
       path: areas-of-study/print-links
+      title: 'Print Links'
+      filters:
+        status:
+          value: '1'
+          table: node_field_data
+          field: status
+          plugin_id: boolean
+          entity_type: node
+          entity_field: status
+          id: status
+          expose:
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+          group: 1
+        type:
+          id: type
+          table: node_field_data
+          field: type
+          value:
+            area_of_study: area_of_study
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
+          expose:
+            operator_limit_selection: false
+            operator_list: {  }
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
     cache_metadata:
       max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
-        - url
         - url.query_args
         - 'user.node_grants:view'
         - user.roles
