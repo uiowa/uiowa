@@ -1978,7 +1978,7 @@ function sitenow_update_8050() {
 
           // Retrieve all entities of this bundle type;.
           // Media is listed as 'bundle,' but other entity types
-          // are listed as 'type.'
+          // are listed as 'type'.
           $type = $entity_type == 'media' ? 'bundle' : 'type';
           $entities = \Drupal::entityTypeManager()->getStorage($entity_type)
             ->loadByProperties([$type => $bundle]);
@@ -2003,7 +2003,7 @@ function sitenow_update_8050() {
                   $de_instances = $document->getElementsByTagName('drupal-entity');
 
                   // DE Example: <drupal-entity data-align="center" data-embed-button="media_entity_embed" data-entity-embed-display="view_mode:media.full" data-entity-embed-display-settings="" data-entity-type="media" data-entity-uuid="463f699b-e367-48b1-9a30-5df1fbe88762"></drupal-entity>.
-                  // DM Example: <drupal-media data-align="center" data-entity-type="media" data-entity-uuid="10e236e2-b20c-4b6c-9c60-f5f1ad1e316d" data-view-mode="large__no_crop"></drupal-media>
+                  // DM Example: <drupal-media data-align="center" data-entity-type="media" data-entity-uuid="10e236e2-b20c-4b6c-9c60-f5f1ad1e316d" data-view-mode="large__no_crop"></drupal-media>.
                   // As we replace the inline images, they are actually
                   // removed in the DOMNodeList $images, so we have to
                   // use a regressive loop to count through them.
