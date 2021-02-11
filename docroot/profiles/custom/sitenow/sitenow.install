@@ -1938,11 +1938,11 @@ function sitenow_update_8049() {
  */
 function sitenow_update_8050() {
   /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
-  $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
-  $sitenow_v2_split = 'config_split:sitenow_v2';
+//  $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
+//  $sitenow_v2_split = 'config_split:sitenow_v2';
 
   // This site has the 'sitenow_v2' split in config.
-  if (isset($filters[$sitenow_v2_split])) {
+//  if (isset($filters[$sitenow_v2_split])) {
     $entity_types = [
       'block_content',
       'media',
@@ -1951,11 +1951,13 @@ function sitenow_update_8050() {
     ];
 
     foreach ($entity_types as $entity_type) {
+      var_dump($entity_type);
       $bundles = \Drupal::service('entity_type.bundle.info')
         ->getBundleInfo($entity_type);
 
       // @todo Handle case where no bundles exist?
       foreach ($bundles as $bundle => $bundle_label) {
+        var_dump($bundle);
         /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $entityFieldManager */
         $entityFieldManager = \Drupal::service('entity_field.manager');
         $fields = $entityFieldManager->getFieldDefinitions($entity_type, $bundle);
@@ -2033,5 +2035,5 @@ function sitenow_update_8050() {
         }
       }
     }
-  }
+//  }
 }
