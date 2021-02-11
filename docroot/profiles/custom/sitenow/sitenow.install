@@ -1938,11 +1938,11 @@ function sitenow_update_8049() {
  */
 function sitenow_update_8050() {
   /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
-//  $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
-//  $sitenow_v2_split = 'config_split:sitenow_v2';
+  $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
+  $sitenow_v2_split = 'config_split:sitenow_v2';
 
   // This site has the 'sitenow_v2' split in config.
-//  if (isset($filters[$sitenow_v2_split])) {
+  if (isset($filters[$sitenow_v2_split])) {
     $entity_types = [
       'block_content',
       'media',
@@ -1951,13 +1951,11 @@ function sitenow_update_8050() {
     ];
 
     foreach ($entity_types as $entity_type) {
-      var_dump($entity_type);
       $bundles = \Drupal::service('entity_type.bundle.info')
         ->getBundleInfo($entity_type);
 
       // @todo Handle case where no bundles exist?
       foreach ($bundles as $bundle => $bundle_label) {
-        var_dump($bundle);
         /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $entityFieldManager */
         $entityFieldManager = \Drupal::service('entity_field.manager');
         $fields = $entityFieldManager->getFieldDefinitions($entity_type, $bundle);
@@ -2004,7 +2002,8 @@ function sitenow_update_8050() {
                   // Get all <drupal-entity> instances.
                   $de_instances = $document->getElementsByTagName('drupal-entity');
 
-                  // Example: <drupal-entity data-align="center" data-embed-button="media_entity_embed" data-entity-embed-display="view_mode:media.full" data-entity-embed-display-settings="" data-entity-type="media" data-entity-uuid="463f699b-e367-48b1-9a30-5df1fbe88762"></drupal-entity>.
+                  // DE Example: <drupal-entity data-align="center" data-embed-button="media_entity_embed" data-entity-embed-display="view_mode:media.full" data-entity-embed-display-settings="" data-entity-type="media" data-entity-uuid="463f699b-e367-48b1-9a30-5df1fbe88762"></drupal-entity>.
+                  // DM Example: <drupal-media data-align="center" data-entity-type="media" data-entity-uuid="10e236e2-b20c-4b6c-9c60-f5f1ad1e316d" data-view-mode="large__no_crop"></drupal-media>
                   // As we replace the inline images, they are actually
                   // removed in the DOMNodeList $images, so we have to
                   // use a regressive loop to count through them.
@@ -2014,9 +2013,28 @@ function sitenow_update_8050() {
                   while ($i >= 0) {
                     // The current inline image element.
                     $de_instance = $de_instances->item($i);
-
                     $dm_instance = $document->createElement('drupal-media');
-                    // @todo Set attributes from existing media embed.
+
+                    // Loop through attributes that are the same for both formats.
+                    foreach ([
+                      'data-align',
+                      'data-entity-type',
+                      'data-entity-uuid',
+                    ] as $attr_name) {
+                      $attribute = $de_instance->getAttribute($attr_name);
+
+                      // Set the attribute on the new instance if it has a value set.
+                      if (!empty($attribute)) {
+                        $dm_instance->setAttribute($attr_name, $attribute);
+                      }
+                    }
+
+                    $old_view_mode = $de_instance->getAttribute('data-entity-embed-display');
+
+                    if (!empty($old_view_mode)) {
+                      // @todo Parse out the view mode from the existing embed attribute.
+                    }
+
                     $de_instance->parentNode->replaceChild($dm_instance, $de_instance);
 
                     $i--;
@@ -2040,5 +2058,5 @@ function sitenow_update_8050() {
         }
       }
     }
-//  }
+  }
 }
