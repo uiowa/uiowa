@@ -4,12 +4,11 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.admissions_requirement.field_ar_intro
-    - field.field.paragraph.admissions_requirement.field_ar_process_content
-    - field.field.paragraph.admissions_requirement.field_ar_process_label
-    - field.field.paragraph.admissions_requirement.field_ar_requirement_content
-    - field.field.paragraph.admissions_requirement.field_ar_requirement_label
+    - field.field.paragraph.admissions_requirement.field_ar_process
+    - field.field.paragraph.admissions_requirement.field_ar_requirement
     - paragraphs.paragraphs_type.admissions_requirement
   module:
+    - link
     - text
 id: paragraph.admissions_requirement.default
 targetEntityType: paragraph
@@ -24,41 +23,21 @@ content:
     third_party_settings: {  }
     type: text_textarea
     region: content
-  field_ar_process_content:
-    weight: 3
+  field_ar_process:
+    weight: 6
     settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
+      placeholder_url: ''
+      placeholder_title: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: link_default
     region: content
-  field_ar_process_label:
-    weight: 4
+  field_ar_requirement:
+    weight: 5
     settings:
-      size: 60
-      placeholder: ''
+      placeholder_url: ''
+      placeholder_title: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_ar_requirement_content:
-    weight: 1
-    settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
-  field_ar_requirement_label:
-    weight: 2
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
+    type: link_default
     region: content
 hidden:
   created: true
