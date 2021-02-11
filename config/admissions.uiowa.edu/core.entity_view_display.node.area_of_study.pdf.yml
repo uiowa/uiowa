@@ -39,7 +39,6 @@ dependencies:
     - entity_reference_revisions
     - layout_builder
     - layout_builder_restrictions
-    - link
     - text
     - user
 third_party_settings:
@@ -108,12 +107,12 @@ bundle: area_of_study
 mode: pdf
 content:
   body:
-    label: hidden
     type: text_default
     weight: 0
+    region: content
+    label: above
     settings: {  }
     third_party_settings: {  }
-    region: content
   field_area_of_study_career:
     weight: 10
     label: above
@@ -136,18 +135,6 @@ content:
     label: above
     settings: {  }
     third_party_settings: {  }
-  field_area_of_study_link:
-    weight: 12
-    label: above
-    settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
-    type: link
-    region: content
   field_area_of_study_majors:
     type: entity_reference_revisions_entity_view
     weight: 1
@@ -220,6 +207,7 @@ hidden:
   field_area_of_study_four_year: true
   field_area_of_study_honors: true
   field_area_of_study_intl: true
+  field_area_of_study_link: true
   field_area_of_study_mail_code: true
   field_area_of_study_select_txt: true
   field_area_of_study_selective: true
