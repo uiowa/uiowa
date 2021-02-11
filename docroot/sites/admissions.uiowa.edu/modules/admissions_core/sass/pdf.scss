@@ -28,33 +28,6 @@
   src: local('Roboto-Regular'), url('../fonts/Roboto-Regular.ttf') format('truetype');
 }
 
-@font-face {
-  font-family: 'Font Awesome 5 Free';
-  font-variant: normal;
-  font-weight: bold;
-  src: url("/libraries/fontawesome//webfonts/fa-solid-900.ttf") format("truetype");
-}
-
-.fas {
-  font-family: 'Font Awesome 5 Free', sans-serif;
-  display: inline-block;
-  font-style: normal;
-  font-variant: normal;
-  line-height: 1;
-}
-
-.fa-envelope:before {
-  content: "\f0e0";
-}
-
-.fa-phone:before {
-  content: "\f095";
-}
-
-.fa-arrow-right:before {
-  content: "\f061";
-}
-
 p,
 dl,
 ol,
@@ -101,8 +74,7 @@ h2, h3, h4, h5, h6 {
 }
 
 .uids-component--light-intro,
-.element--light-intro,
-.intro p {
+.element--light-intro {
   font-weight: normal;
   line-height: 1.2;
   font-size: 2rem;
@@ -110,8 +82,11 @@ h2, h3, h4, h5, h6 {
 }
 
 .node--type-area-of-study {
+  .intro p {
+    @extend .element--light-intro;
+  }
+
   .aos-link {
-    @include clearfix;
     margin-bottom: $lg;
 
     a {
@@ -134,25 +109,24 @@ h2, h3, h4, h5, h6 {
     }
   }
 
+  .field {
+    margin-bottom: $gutter;
+
+    .field__label {
+      @extend .element--bold-intro;
+    }
+
+    .field__item {
+      line-height: 1.7;
+      font-size: $content-font-size;
+    }
+  }
+
   .field--name-field-area-of-study-scholarship {
     @extend .element--bold-intro;
   }
 
-  div.first {
-    width: 48%;
-    float: left;
-    margin: 0 2% 0 0;
-  }
-
-  div.second {
-    width: 48%;
-    float: left;
-    margin: 0 0 0 2%;
-  }
-
   .learn-more {
-    @include clearfix;
-
     span {
       margin: 0 $gutter 0 0;
 

@@ -100,16 +100,8 @@
     </a>
   </div>
 
-  <div class="node__content first">
-    {{ content.field_area_of_study_why }}
-    {{ content.field_area_of_study_requirement }}
-    {{ content.field_area_of_study_scholarship }}
-  </div>
-
-  <div class="node__content second">
-    {{ content.field_area_of_study_course_work }}
-    {{ content.field_area_of_study_opportunity }}
-    {{ content.field_area_of_study_career }}
+  <div{{ content_attributes.addClass('node__content') }}>
+    {{ content|without('body') }}
   </div>
 
   <div class="learn-more">
