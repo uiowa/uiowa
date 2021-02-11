@@ -2195,3 +2195,9 @@ $sites['labkumar.local.drupal.uiowa.edu'] = 'kumar.lab.uiowa.edu';
 $sites['labkumar.dev.drupal.uiowa.edu'] = 'kumar.lab.uiowa.edu';
 $sites['labkumar.stage.drupal.uiowa.edu'] = 'kumar.lab.uiowa.edu';
 $sites['labkumar.prod.drupal.uiowa.edu'] = 'kumar.lab.uiowa.edu';
+
+// Directory aliases for resch.lab.uiowa.edu.
+$sites['labresch.local.drupal.uiowa.edu'] = 'resch.lab.uiowa.edu';
+$sites['labresch.dev.drupal.uiowa.edu'] = 'resch.lab.uiowa.edu';
+$sites['labresch.stage.drupal.uiowa.edu'] = 'resch.lab.uiowa.edu';
+$sites['labresch.prod.drupal.uiowa.edu'] = 'resch.lab.uiowa.edu';
