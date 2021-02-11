@@ -60,10 +60,10 @@
   'card_text': content.field_ar_intro,
   'base_path': base_path ~ directory,
   'headline_level': 'h2',
-  'requirement_label': admissions_requirement_links['requirement_label'],
-  'requirement_url': admissions_requirement_links['requirement_url'],
-  'process_label': admissions_requirement_links['process_label'],
-  'process_url': admissions_requirement_links['process_url'],
+  'requirement_label': content.field_ar_requirement[0]['#title']|render,
+  'requirement_url': content.field_ar_requirement[0]['#url'],
+  'process_label': content.field_ar_process[0]['#title']|render,
+  'process_url': content.field_ar_process[0]['#url'],
   'media_sizes': 'card__media--small',
 } %}
 {% embed '@uids_base/uids/card.html.twig' with admissions_requirement only %}
