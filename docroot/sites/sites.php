@@ -2201,3 +2201,9 @@ $sites['labresch.local.drupal.uiowa.edu'] = 'resch.lab.uiowa.edu';
 $sites['labresch.dev.drupal.uiowa.edu'] = 'resch.lab.uiowa.edu';
 $sites['labresch.stage.drupal.uiowa.edu'] = 'resch.lab.uiowa.edu';
 $sites['labresch.prod.drupal.uiowa.edu'] = 'resch.lab.uiowa.edu';
+
+// Directory aliases for iowaneuroscienceclub.org.uiowa.edu.
+$sites['orgiowaneuroscienceclub.local.drupal.uiowa.edu'] = 'iowaneuroscienceclub.org.uiowa.edu';
+$sites['orgiowaneuroscienceclub.dev.drupal.uiowa.edu'] = 'iowaneuroscienceclub.org.uiowa.edu';
+$sites['orgiowaneuroscienceclub.stage.drupal.uiowa.edu'] = 'iowaneuroscienceclub.org.uiowa.edu';
+$sites['orgiowaneuroscienceclub.prod.drupal.uiowa.edu'] = 'iowaneuroscienceclub.org.uiowa.edu';
