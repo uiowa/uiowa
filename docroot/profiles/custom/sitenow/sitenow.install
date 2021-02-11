@@ -1979,8 +1979,11 @@ function sitenow_update_8050() {
         if (!empty($field_check)) {
 
           // Retrieve all entities of this bundle type;.
+          // Media is listed as 'bundle,' but other entity types
+          // are listed as 'type.'
+          $type = $entity_type == 'media' ? 'bundle' : 'type';
           $entities = \Drupal::entityTypeManager()->getStorage($entity_type)
-            ->loadByProperties(['type' => $bundle]);
+            ->loadByProperties([$type => $bundle]);
 
           // Loop through the loaded entities.
           foreach ($entities as $entity) {
@@ -2015,6 +2018,8 @@ function sitenow_update_8050() {
                     $dm_instance = $document->createElement('drupal-media');
                     // @todo Set attributes from existing media embed.
                     $de_instance->parentNode->replaceChild($dm_instance, $de_instance);
+
+                    $i--;
                   }
 
                   $updated_values[] = Html::serialize($document);
