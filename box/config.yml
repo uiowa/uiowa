@@ -133,6 +133,7 @@ apache_vhosts:
     servername: careers.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+
   -
     servername: org-cd2h.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
@@ -1489,7 +1490,6 @@ apache_vhosts:
     servername: sitesanunsettledbody.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-  
   -
     servername: labuppu.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
@@ -1524,6 +1524,10 @@ apache_vhosts:
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
   -
     servername: labboes.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: siteschtc.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
 

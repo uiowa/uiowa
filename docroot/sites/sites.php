@@ -2183,3 +2183,9 @@ $sites['labboes.local.drupal.uiowa.edu'] = 'boes.lab.uiowa.edu';
 $sites['labboes.dev.drupal.uiowa.edu'] = 'boes.lab.uiowa.edu';
 $sites['labboes.stage.drupal.uiowa.edu'] = 'boes.lab.uiowa.edu';
 $sites['labboes.prod.drupal.uiowa.edu'] = 'boes.lab.uiowa.edu';
+
+// Directory aliases for chtc.sites.uiowa.edu.
+$sites['siteschtc.local.drupal.uiowa.edu'] = 'chtc.sites.uiowa.edu';
+$sites['siteschtc.dev.drupal.uiowa.edu'] = 'chtc.sites.uiowa.edu';
+$sites['siteschtc.stage.drupal.uiowa.edu'] = 'chtc.sites.uiowa.edu';
+$sites['siteschtc.prod.drupal.uiowa.edu'] = 'chtc.sites.uiowa.edu';
