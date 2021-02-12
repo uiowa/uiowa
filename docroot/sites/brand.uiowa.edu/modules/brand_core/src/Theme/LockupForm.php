@@ -11,7 +11,7 @@ use Drupal\Core\Theme\ThemeNegotiatorInterface;
 class LockupForm implements ThemeNegotiatorInterface {
 
   /**
-   * @inheritDoc
+   * {@inheritdoc}
    */
   public function applies(RouteMatchInterface $route_match) {
     if ($route_match->getRouteName() == 'node.add') {
@@ -31,7 +31,7 @@ class LockupForm implements ThemeNegotiatorInterface {
   }
 
   /**
-   * @inheritDoc
+   * {@inheritdoc}
    */
   public function determineActiveTheme(RouteMatchInterface $route_match) {
     return 'uids_base';
