@@ -2040,7 +2040,10 @@ function sitenow_update_8050() {
                     $i--;
                   }
 
-                  $updated_values[] = Html::serialize($document);
+                  $updated_values[] = [
+                    'value' => Html::serialize($document),
+                    'format' => $field_value['format'],
+                  ];
                 }
 
                 if (count($updated_values) === 1) {
