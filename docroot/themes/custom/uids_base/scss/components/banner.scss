@@ -7,38 +7,6 @@
   color: $secondary;
 }
 
-.banner {
-  min-height: 18rem;
-  // Banner Heights
-  &--large {
-    @include breakpoint(sm) {
-      min-height: 33rem;
-    }
-    @include breakpoint(menu) {
-      min-height: 48rem;
-    }
-  }
-
-  &--medium {
-    @include breakpoint(sm) {
-      min-height: 33rem;
-    }
-  }
-
-  // Override background color if button is within a gold container
-  &.bg-pattern--brain-reversed,
-  &.bg--gold {
-    .bttn--primary {
-      color: #fff;
-      background: $secondary;
-      border: 1px solid $secondary;
-
-      svg {
-        color: $primary;
-      }
-    }
-  }
-}
 
 .layout--onecol,
 .layout--twocol--75-25 .layout__region--first,
@@ -105,7 +73,7 @@
 .layout--twocol--50-50 {
   .banner .banner__content {
     @include breakpoint(sm) {
-      padding: 3rem;
+      padding: 1.5rem;
     }
   }
 
@@ -127,11 +95,24 @@
   }
 }
 
-// Remove left/right padding if edge-to-edge is selected
-.layout--onecol[class*=page__container--edge] {
-  .banner .banner__content {
-    @include breakpoint(container) {
-      padding: 3rem 0;
+// Adjust padding for left aligned bottom content
+.layout--onecol {
+  .banner {
+    &.banner--vertical-bottom.banner--horizontal-left {
+      .banner__content {
+        @include breakpoint(sm) {
+          padding: 3rem 1.5rem 4rem 1.5rem;
+        }
+      }
+    }
+  }
+
+  // Remove left/right padding if edge-to-edge is selected
+  .layout--onecol[class*=page__container--edge] {
+    .banner__content {
+      @include breakpoint(container) {
+        padding: 3rem 0;
+      }
     }
   }
 }
@@ -145,59 +126,6 @@
     }
   }
 }
-
-// Gradient overlays
-.banner {
-  &--gradient-left {
-
-    &:after {
-      @include breakpoint(container) {
-        background: linear-gradient(90deg, rgba(0, 0, 0, .86) 0, rgba(0, 0, 0, .23) 65%, transparent);
-      }
-    }
-
-    &.banner--gradient-light {
-      &:after {
-        background: rgba(255, 255, 255, .7);
-
-        @include breakpoint(container) {
-          background: linear-gradient(90deg, #fff 1%, hsla(0, 0%, 100%, .92) 32%, hsla(0, 0%, 100%, 0));
-        }
-      }
-
-      &[class*="bg-"]:after {
-        background: none;
-      }
-    }
-
-    &[class*="bg-"]:after {
-      background: none;
-    }
-  }
-
-  &--gradient-bottom {
-    &:after {
-      @include breakpoint(container) {
-        background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 70%);
-      }
-    }
-
-    &.banner--gradient-light {
-      &:after {
-        background: rgba(255, 255, 255, .7);
-
-        @include breakpoint(container) {
-          background: linear-gradient(180deg, transparent 0, hsla(0, 0%, 100%, .9) 55%);
-        }
-      }
-
-      &[class*="bg-"]:after {
-        background: none;
-      }
-    }
-  }
-}
-
 
 .banner__image {
   .contextual-region {
@@ -215,3 +143,12 @@
   width: 100% !important;
 }
 
+.media--video .video-controls {
+  z-index: 2;
+  .banner--vertical-bottom.banner--horizontal-left & {
+    @include breakpoint(sm) {
+      left: 1.5rem;
+      bottom: 1.5rem;
+    }
+  }
+}
