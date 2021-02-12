@@ -6,7 +6,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Datetime\DateFormatter;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
+use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
@@ -45,7 +45,7 @@ class ControllerAlterSubscriber implements EventSubscriberInterface {
   /**
    * Add a disclaimer about feed import/clear timings to aggregator overview.
    */
-  public function onView(GetResponseForControllerResultEvent $event) {
+  public function onView(ViewEvent $event) {
     $request = $event->getRequest();
     $route = $request->attributes->get('_route');
 

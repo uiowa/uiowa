@@ -9,9 +9,11 @@ dependencies:
     - field.field.node.area_of_study.field_area_of_study_comp_txt
     - field.field.node.area_of_study.field_area_of_study_competitive
     - field.field.node.area_of_study.field_area_of_study_course_work
+    - field.field.node.area_of_study.field_area_of_study_first_year
     - field.field.node.area_of_study.field_area_of_study_four_txt
     - field.field.node.area_of_study.field_area_of_study_four_year
     - field.field.node.area_of_study.field_area_of_study_honors
+    - field.field.node.area_of_study.field_area_of_study_intl
     - field.field.node.area_of_study.field_area_of_study_link
     - field.field.node.area_of_study.field_area_of_study_majors
     - field.field.node.area_of_study.field_area_of_study_minors
@@ -27,11 +29,13 @@ dependencies:
     - field.field.node.area_of_study.field_area_of_study_subtitle
     - field.field.node.area_of_study.field_area_of_study_teaching
     - field.field.node.area_of_study.field_area_of_study_teaching_txt
+    - field.field.node.area_of_study.field_area_of_study_transfer
     - field.field.node.area_of_study.field_area_of_study_why
     - field.field.node.area_of_study.field_image
     - node.type.area_of_study
     - views.view.areas_of_study_block
   module:
+    - admissions_core
     - entity_reference_revisions
     - layout_builder
     - layout_builder_restrictions
@@ -154,7 +158,84 @@ third_party_settings:
                 block_margin_bottom: block_margin_bottom
                 block_margin_top: block_margin_top
                 block_margin_right: block_margin_right
-            weight: 2
+            weight: 3
+          -
+            uuid: 32b68e28-f595-45a5-a247-b3b7c6613d30
+            region: second
+            configuration:
+              id: 'field_block:node:area_of_study:field_area_of_study_link'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: above
+                type: link
+                settings:
+                  trim_length: null
+                  url_only: false
+                  url_plain: false
+                  rel: '0'
+                  target: '0'
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional:
+              layout_builder_styles_style:
+                block_background_style_gray: block_background_style_gray
+                block_padding_all: block_padding_all
+                block_margin_top: block_margin_top
+                block_margin_bottom: block_margin_bottom
+                block_margin_right: block_margin_left
+            weight: 8
+          -
+            uuid: b4d948cb-4c09-4224-bd33-436b6b200a70
+            region: second
+            configuration:
+              id: 'views_block:areas_of_study_block-block_1'
+              label: null
+              provider: views
+              label_display: null
+              views_label: ''
+              items_per_page: none
+              context_mapping: {  }
+            additional:
+              layout_builder_styles_style:
+                block_margin_right: block_margin_left
+            weight: 7
+          -
+            uuid: 088e48b0-97ec-479c-ae31-bac797a7e224
+            region: second
+            configuration:
+              id: aosbuttons_block
+              label: null
+              provider: admissions_core
+              label_display: null
+              context_mapping: {  }
+            additional:
+              layout_builder_styles_style:
+                block_margin_right: block_margin_left
+            weight: 6
+          -
+            uuid: 0eeb1ce7-7903-4640-89a5-cd8d147d3244
+            region: first
+            configuration:
+              id: 'field_block:node:area_of_study:body'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: hidden
+                type: text_default
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional:
+              layout_builder_styles_style:
+                block_margin_right: block_margin_right
+            weight: 0
           -
             uuid: f99d4ffa-b056-484b-bc4b-caf2a203cfc0
             region: first
@@ -178,29 +259,6 @@ third_party_settings:
                 block_margin_right: block_margin_right
             weight: 1
           -
-            uuid: 32b68e28-f595-45a5-a247-b3b7c6613d30
-            region: second
-            configuration:
-              id: 'field_block:node:area_of_study:field_area_of_study_link'
-              label: null
-              provider: layout_builder
-              label_display: null
-              formatter:
-                label: above
-                type: link
-                settings:
-                  trim_length: null
-                  url_only: false
-                  url_plain: false
-                  rel: '0'
-                  target: '0'
-                third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-            additional: {  }
-            weight: 7
-          -
             uuid: 616b3735-14cb-45ac-8d36-f0ed42845915
             region: first
             configuration:
@@ -220,19 +278,75 @@ third_party_settings:
               layout_builder_styles_style:
                 block_margin_top: block_margin_top
                 block_margin_right: block_margin_right
-            weight: 3
+            weight: 4
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          layout_builder_styles_style:
+            0: section_background_style_gray
+            1: ''
+            remove_default_bottom_padding: remove_default_bottom_padding
+        components:
           -
-            uuid: 0eeb1ce7-7903-4640-89a5-cd8d147d3244
+            uuid: d9aedf25-b1dd-47e5-9b9e-e7acadc30640
+            region: content
+            configuration:
+              id: aosrequirements_block
+              label: null
+              provider: admissions_core
+              label_display: null
+              context_mapping: {  }
+            additional: {  }
+            weight: 0
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+      -
+        layout_id: layout_threecol
+        layout_settings:
+          label: ''
+          column_widths: 33-34-33
+          layout_builder_styles_style:
+            0: section_background_style_gray
+            1: section_margin_extended_width_container
+            remove_default_top_padding: remove_default_top_padding
+        components:
+          -
+            uuid: 80782091-bbe7-4ef5-93f5-eed311e0124e
             region: first
             configuration:
-              id: 'field_block:node:area_of_study:body'
+              id: 'field_block:node:area_of_study:field_area_of_study_first_year'
               label: null
               provider: layout_builder
               label_display: null
               formatter:
                 label: hidden
-                type: text_default
-                settings: {  }
+                type: entity_reference_revisions_entity_view
+                settings:
+                  view_mode: default
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 1
+          -
+            uuid: 0bd90b7b-ffe8-4e15-81ec-1d76c92f6f32
+            region: second
+            configuration:
+              id: 'field_block:node:area_of_study:field_area_of_study_transfer'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: hidden
+                type: entity_reference_revisions_entity_view
+                settings:
+                  view_mode: default
                 third_party_settings: {  }
               context_mapping:
                 entity: layout_builder.entity
@@ -240,18 +354,24 @@ third_party_settings:
             additional: {  }
             weight: 0
           -
-            uuid: b4d948cb-4c09-4224-bd33-436b6b200a70
-            region: second
+            uuid: 22b71f98-fc42-4580-9e02-06eccddf12eb
+            region: third
             configuration:
-              id: 'views_block:areas_of_study_block-block_1'
+              id: 'field_block:node:area_of_study:field_area_of_study_intl'
               label: null
-              provider: views
+              provider: layout_builder
               label_display: null
-              views_label: ''
-              items_per_page: none
-              context_mapping: {  }
+              formatter:
+                label: hidden
+                type: entity_reference_revisions_entity_view
+                settings:
+                  view_mode: default
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
             additional: {  }
-            weight: 6
+            weight: 0
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -263,6 +383,7 @@ third_party_settings:
           layout_builder_styles_style:
             0: ''
             1: ''
+            section_padding_remove_default_padding: section_padding_remove_default_padding
             section_alignment_start: section_alignment_start
         components:
           -
@@ -323,7 +444,10 @@ third_party_settings:
               context_mapping:
                 entity: layout_builder.entity
                 view_mode: view_mode
-            additional: {  }
+            additional:
+              layout_builder_styles_style:
+                block_background_style_gray: block_background_style_gray
+                block_padding_all: block_padding_all
             weight: 0
         third_party_settings:
           layout_builder_lock:
@@ -458,6 +582,15 @@ content:
     third_party_settings: {  }
     type: text_default
     region: content
+  field_area_of_study_first_year:
+    type: entity_reference_revisions_entity_view
+    weight: 33
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
   field_area_of_study_four_txt:
     weight: 28
     label: above
@@ -479,6 +612,15 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: list_default
+    region: content
+  field_area_of_study_intl:
+    type: entity_reference_revisions_entity_view
+    weight: 35
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
     region: content
   field_area_of_study_link:
     weight: 20
@@ -591,6 +733,15 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
+  field_area_of_study_transfer:
+    type: entity_reference_revisions_entity_view
+    weight: 34
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
     region: content
   field_area_of_study_why:
     weight: 15

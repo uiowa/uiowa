@@ -3,7 +3,6 @@
 namespace Drupal\admissions_core\EventSubscriber;
 
 use Drupal\Core\Block\BlockPluginInterface;
-use Drupal\Core\Render\PreviewFallbackInterface;
 use Drupal\layout_builder\Event\SectionComponentBuildRenderArrayEvent;
 use Drupal\layout_builder\LayoutBuilderEvents;
 use Drupal\layout_builder\Plugin\Block\FieldBlock;
@@ -61,7 +60,8 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
               if ($state) {
                 $home_location[] = $state;
               }
-            } else {
+            }
+            else {
               $country_value = \Drupal::service('country_manager')->getList()[$country]->__toString();
               $home_location[] = $country_value;
             }
@@ -72,7 +72,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
             }
           }
           if (!empty($home_location)) {
-            $node->field_person_hometown->value =  implode(', ', $home_location);
+            $node->field_person_hometown->value = implode(', ', $home_location);
             $content = $block->build();
 
             $build = [

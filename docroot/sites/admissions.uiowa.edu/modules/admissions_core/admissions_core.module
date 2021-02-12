@@ -13,26 +13,12 @@ use Drupal\node\NodeInterface;
 use Drupal\views\ViewExecutable;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Template\Attribute;
 
 /**
  * Implements hook_entity_presave().
  */
 function admissions_core_entity_presave(EntityInterface $entity) {
   switch ($entity->bundle()) {
-    // Statistic Fragment.
-    case 'stat':
-      $output = '';
-      if ($entity->hasField('field_stat_figure_pre') && !empty($entity->get('field_stat_figure_pre'))) {
-        $output .= $entity->get('field_stat_figure_pre')->value . ' ';
-      }
-      // Required field. Go on, get it.
-      $output .= $entity->get('field_stat_figure')->text;
-      if ($entity->hasField('field_stat_figure_suf') && !empty($entity->get('field_stat_figure_suf'))) {
-        $output .= ' ' . $entity->get('field_stat_figure_suf')->value;
-      }
-      $entity->setTitle($output);
-      break;
     case 'student_profile':
       // Setting the student profile title with the first/last name values.
       $output = $entity->get('field_person_first_name')->value . " " . $entity->get('field_person_last_name')->value;
@@ -44,7 +30,7 @@ function admissions_core_entity_presave(EntityInterface $entity) {
 /**
  * Implements hook_form_alter().
  */
-function admissions_core_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+function admissions_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
     case 'node_student_profile_form':
     case 'node_student_profile_edit_form':
@@ -74,7 +60,7 @@ function admissions_core_form_alter(&$form, \Drupal\Core\Form\FormStateInterface
 
     case 'fragment_stat_edit_form':
     case 'fragment_stat_add_form':
-      $form['#attached']['library'][]  = 'admissions_core/admin';
+      $form['#attached']['library'][] = 'admissions_core/admin';
       break;
 
     case 'node_area_of_study_form':
@@ -82,22 +68,22 @@ function admissions_core_form_alter(&$form, \Drupal\Core\Form\FormStateInterface
       $form['field_area_of_study_teaching_txt']['#states'] = [
         'visible' => [
           'input[name="field_area_of_study_teaching[teaching_licensure]"]' => ['checked' => TRUE],
-        ]
+        ],
       ];
       $form['field_area_of_study_select_txt']['#states'] = [
         'visible' => [
           'input[name="field_area_of_study_selective[selective_admission]"]' => ['checked' => TRUE],
-        ]
+        ],
       ];
       $form['field_area_of_study_four_txt']['#states'] = [
         'visible' => [
           'input[name="field_area_of_study_four_year[four_year_graduate_plan]"]' => ['checked' => TRUE],
-        ]
+        ],
       ];
       $form['field_area_of_study_comp_txt']['#states'] = [
         'visible' => [
           'input[name="field_area_of_study_competitive[competitive_admission]"]' => ['checked' => TRUE],
-        ]
+        ],
       ];
       break;
   }
@@ -182,7 +168,35 @@ function admissions_core_preprocess_paragraph__admissions_card(&$variables) {
         $id = $paragraph->id();
         foreach ($parent->get('field_area_of_study_stories')->getValue() as $delta => $item) {
           if ($item['target_id'] === $id) {
-            $variables['zebra'] = ($delta % 2 == 0 ? 'odd':'even');
+            $variables['zebra'] = ($delta % 2 == 0 ? 'odd' : 'even');
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function admissions_core_preprocess_paragraph__admissions_requirement(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    $paragraph = $variables['paragraph'];
+    $parent = $paragraph->getParentEntity();
+    if ($parent instanceof ContentEntityInterface) {
+      $admissions_requirements = [
+        'field_area_of_study_first_year' => t('First-Year'),
+        'field_area_of_study_transfer' => t('Transfer'),
+        'field_area_of_study_intl' => t('International'),
+      ];
+      $id = $paragraph->id();
+      foreach ($admissions_requirements as $requirement => $label) {
+        if ($parent->hasField($requirement)) {
+          foreach ($parent->get($requirement)->getValue() as $delta => $item) {
+            if ($item['target_id'] === $id) {
+              $variables['requirement_card_label'] = $label;
+            }
           }
         }
       }
@@ -201,26 +215,45 @@ function admissions_core_preprocess_layout(&$variables) {
   if ($layout->id() === 'layout_header') {
     $node = \Drupal::routeMatch()->getParameter('node');
     $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
-    if ($node instanceof NodeInterface && $node->getType() === 'area_of_study') {
-      $variables['#attached']['library'][] = 'admissions_core/area-of-study';
-
-      if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
-        // Set the featured image display.
-        $variables['featured_image_display'] = 'small';
+    if ($node instanceof NodeInterface) {
+      if (in_array($node->getType(), [
+        'area_of_study',
+        'student_profile',
+      ])) {
+        if (!isset($variables['banner_attributes'])) {
+          $variables['banner_settings'] = [];
+        }
       }
-      $banner_classes = ['banner--horizontal-center', 'banner--vertical-center', 'banner--transparent', 'banner--small'];
-      foreach ($banner_classes as $class) {
-        $variables['attributes']['class'][] = $class;
-      }
+      switch ($node->getType()) {
+        case 'area_of_study':
+          // @todo Move this to admissions_core_preprocess_node().
+          $variables['#attached']['library'][] = 'admissions_core/area-of-study';
 
-    }
-    // Limit to just Student profiles.
-    if ($node instanceof NodeInterface && $node->getType() === 'student_profile') {
-      if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
-        // Set the featured image display.
-        $variables['featured_image_display'] = 'large';
-        // Override default gradient
-        $variables['attributes']['class'][] = 'banner--transparent';
+          if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
+
+            // Set the featured image display.
+            $variables['featured_image_display'] = 'small';
+
+            // Set banner defaults.
+            $variables['banner_settings']['transparent'] = TRUE;
+            $variables['banner_settings']['horizontal_align'] = 'center';
+            $variables['banner_settings']['vertical_align'] = 'center';
+          }
+          break;
+
+        case 'student_profile':
+          if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
+
+            // Set the featured image display.
+            $variables['featured_image_display'] = 'large';
+
+            // Set banner defaults.
+            $variables['banner_settings']['transparent'] = TRUE;
+            $variables['banner_settings']['horizontal_align'] = 'center';
+            $variables['banner_settings']['vertical_align'] = 'bottom';
+          }
+          break;
+
       }
     }
   }
@@ -263,6 +296,14 @@ function admissions_core_theme($existing, $type, $theme, $path) {
       'template' => 'field--node--field-area-of-study-subtitle--area-of-study--default',
       'base hook' => 'field',
     ],
+    'field__node__field_area_of_study_link__area_of_study__default' => [
+      'template' => 'field--node--field-area-of-study-link--area-of-study--default',
+      'base hook' => 'field',
+    ],
+    'field__node__field_area_of_study_scholarship__area_of_study__default' => [
+      'template' => 'field--node--field-area-of-study-scholarship--area-of-study--default',
+      'base hook' => 'field',
+    ],
     'field__field_student_profile_blurb' => [
       'template' => 'field--field-student-profile-blurb',
       'base hook' => 'field',
@@ -285,6 +326,10 @@ function admissions_core_theme($existing, $type, $theme, $path) {
     ],
     'paragraph__admissions_card__default' => [
       'template' => 'paragraph--admissions-card--default',
+      'base hook' => 'paragraph',
+    ],
+    'paragraph__admissions_requirement__default' => [
+      'template' => 'paragraph--admissions-requirement--default',
       'base hook' => 'paragraph',
     ],
     'entity_print__node__area_of_study' => [
@@ -310,6 +355,7 @@ function admissions_core_theme_suggestions_field_alter(array &$suggestions, arra
     case 'field_area_of_study_course_work':
       $suggestions[] = 'field__bold_headline_label';
       break;
+
     case 'field_person_territory':
       $suggestions[] = 'field__comma_separated';
       break;
@@ -333,7 +379,7 @@ function admissions_core_views_pre_render(ViewExecutable $view) {
 }
 
 /**
- * Added allowed values function for student profiles territory field
+ * Added allowed values function for student profiles territory field.
  */
 function admissions_core_state_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
   $options = [
