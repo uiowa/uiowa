@@ -142,7 +142,7 @@ class LockupController extends ControllerBase {
           $lockup->setFont($regular, $ssize, $text_color);
           $lockup->setLineHeight($sline_height);
           $lockup->setLetterSpacing($sletter_spacing);
-          $lockup->setUseKerning(true);
+          $lockup->setUseKerning(TRUE);
           $s_lines = [];
           foreach ($s_explode as $key => $line) {
             str_replace('\r', '', $line);
@@ -161,7 +161,7 @@ class LockupController extends ControllerBase {
         $lockup->setFont($bold, $psize, $text_color);
         $lockup->setLineHeight($pline_height);
         $lockup->setLetterSpacing($pletter_spacing);
-        $lockup->setUseKerning(true);
+        $lockup->setUseKerning(TRUE);
         $p_lines = [];
         foreach ($p_explode as $key => $line) {
           str_replace('\r', '', $line);
@@ -225,7 +225,7 @@ class LockupController extends ControllerBase {
         $lockup->setFont($regular, $ssize, $text_color);
         $lockup->setLineHeight($sline_height);
         $lockup->setLetterSpacing($sletter_spacing);
-        $lockup->setUseKerning(true);
+        $lockup->setUseKerning(TRUE);
 
         if (isset($s_lines[0])) {
           $lockup->addText(html_entity_decode(
@@ -268,7 +268,7 @@ class LockupController extends ControllerBase {
           $lockup->setFont($regular, $ssize, $text_color);
           $lockup->setLineHeight($sline_height);
           $lockup->setLetterSpacing($sletter_spacing);
-          $lockup->setUseKerning(true);
+          $lockup->setUseKerning(TRUE);
           $s_lines = [];
           foreach ($s_explode as $key => $line) {
             str_replace('\r', '', $line);
@@ -287,7 +287,7 @@ class LockupController extends ControllerBase {
         $lockup->setFont($bold, $psize, $text_color);
         $lockup->setLineHeight($pline_height);
         $lockup->setLetterSpacing($pletter_spacing);
-        $lockup->setUseKerning(true);
+        $lockup->setUseKerning(TRUE);
         $p_lines = [];
         foreach ($p_explode as $key => $line) {
           str_replace('\r', '', $line);
@@ -343,7 +343,7 @@ class LockupController extends ControllerBase {
         $lockup->setFont($regular, $ssize, $text_color);
         $lockup->setLineHeight($sline_height);
         $lockup->setLetterSpacing($sletter_spacing);
-        $lockup->setUseKerning(true);
+        $lockup->setUseKerning(TRUE);
 
         if (isset($s_explode[0])) {
           $s1y = $horizontal_center - $stc + $text['s1y'] - $text['offset'] + $text['correction'];
@@ -410,7 +410,7 @@ class LockupController extends ControllerBase {
     $lockup->addAttribute('viewBox', '0 0 400 100');
     $lockup->addAttribute('role', 'img');
     $aria_label = 'The University of Iowa';
-    foreach($p_explode as $line) {
+    foreach ($p_explode as $line) {
       $aria_label .= ' ' . $line;
     }
     if (isset($s_explode)) {
@@ -581,7 +581,7 @@ class LockupController extends ControllerBase {
         $text['p2y'] = $half_p1h + $pmb + $p_data['lines'][1][1];
         $text['p3y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $pmb + $p_data['lines'][2][1];
         $text['s1y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $pmb + $p_data['lines'][2][1] + $psg + $s_data['lines'][0][1];
-        $text['s2y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $pmb + $p_data['lines'][2][1] + $psg + $s_data['lines'][0][1]+ $smb + $s_data['lines'][1][1];
+        $text['s2y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $pmb + $p_data['lines'][2][1] + $psg + $s_data['lines'][0][1] + $smb + $s_data['lines'][1][1];
         break;
 
       case 'p3s3':
@@ -596,8 +596,8 @@ class LockupController extends ControllerBase {
         $text['p2y'] = $half_p1h + $pmb + $p_data['lines'][1][1];
         $text['p3y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $pmb + $p_data['lines'][2][1];
         $text['s1y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $pmb + $p_data['lines'][2][1] + $psg + $s_data['lines'][0][1];
-        $text['s2y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $pmb + $p_data['lines'][2][1] + $psg + $s_data['lines'][0][1]+ $smb + $s_data['lines'][1][1];
-        $text['s3y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $pmb + $p_data['lines'][2][1] + $psg + $s_data['lines'][0][1]+ $smb + $s_data['lines'][1][1] + $smb + $s_data['lines'][2][1];
+        $text['s2y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $pmb + $p_data['lines'][2][1] + $psg + $s_data['lines'][0][1] + $smb + $s_data['lines'][1][1];
+        $text['s3y'] = $half_p1h + $pmb + $p_data['lines'][1][1] + $pmb + $p_data['lines'][2][1] + $psg + $s_data['lines'][0][1] + $smb + $s_data['lines'][1][1] + $smb + $s_data['lines'][2][1];
         break;
     }
 
