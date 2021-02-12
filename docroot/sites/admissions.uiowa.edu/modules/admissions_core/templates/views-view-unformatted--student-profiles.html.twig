@@ -104,6 +104,7 @@
 
     {%
     set classes = [
+        'card--person-teaser',
         'card--list',
         'card--stacked',
         'media--circle',
@@ -144,11 +145,14 @@
 
     {% block card_tag %}
         {% if person_hometown|striptags|trim is not empty %}
-            <div class="card__date"><span class="fas fa-map-marker-alt"></span> {{ person_hometown }} </div>
+            <div class="card__date"><span class="fas fa-map-marker-alt"></span>{{ person_hometown }}</div>
         {% endif %}
+    {% endblock %}
+
+    {% block card_content %}
         {% if person_blurb|striptags|trim is not empty %}
           <hr class="element--spacer-gold" />
-          <div class="lead">{{ person_blurb|striptags|trim }}</div>
+          <div class="lead">{{ person_blurb }}</div>
         {% endif %}
     {% endblock %}
 

@@ -177,7 +177,13 @@
   .card {
     @include breakpoint(sm) {
       border-bottom: 1px solid rgba(0, 0, 0, .125);
-
+      // @todo Remove when uiowa/uiowa#2670 and uiowa/uiowa#2554 are resolved.
+      &.card--media-left,
+      &.card--media-right {
+        .paragraph--type--section:not([class*="bg-"]) & {
+          margin-bottom: 0;
+        }
+      }
       &:last-child {
         border-bottom: none;
       }
@@ -186,7 +192,7 @@
 }
 
 // People Table
-.view-id-people {
+.view-display-id-page_people_table {
 
   table td,
   table th {

@@ -1,0 +1,13 @@
+services:
+  uiowa_maui.api:
+    class: Drupal\uiowa_maui\MauiApi
+    arguments: ['@logger.channel.uiowa_maui', '@cache.uiowa_maui', '@http_client']
+  logger.channel.uiowa_maui:
+    parent: logger.channel_base
+    arguments: [ 'uiowa_maui' ]
+  cache.uiowa_maui:
+    class: Drupal\Core\Cache\CacheBackendInterface
+    tags:
+      - { name: cache.bin }
+    factory: cache_factory:get
+    arguments: ['uiowa_maui']

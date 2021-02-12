@@ -12,7 +12,15 @@ use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\media\Entity\Media;
 use Drupal\node\NodeInterface;
+use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\views\Plugin\views\field\EntityField;
+
+/**
+ * Implements hook_preprocess().
+ */
+function uids_base_preprocess(&$variables, $hook) {
+  $variables['base_path'] = base_path();
+}
 
 /**
  * Implements hook_preprocess_HOOK() for html.html.twig.
@@ -124,7 +132,13 @@ function uids_base_preprocess_page(&$variables) {
   // The uiowa_auth module replaces local authentication with SAML SSO.
   if (\Drupal::service('module_handler')->moduleExists('uiowa_auth')) {
     if (!(\Drupal::currentUser()->isAuthenticated())) {
-      $login_url = Url::fromRoute('samlauth.saml_controller_login');
+      $destination = \Drupal::request()->getRequestUri();
+
+      $login_url = Url::fromRoute('samlauth.saml_controller_login', [], [
+        'query' => [
+          'destination' => $destination,
+        ],
+      ]);
 
       $variables['footer_login_link'] = [
         '#type' => 'link',
@@ -251,12 +265,12 @@ function uids_base_preprocess_field(&$variables) {
       // If the caption is not set yet, attempt to set it from
       // the 'field_image_caption' field.
       /** @var \Drupal\node\NodeInterface $node */
-      if (!$caption->count() && (NULL !== $node = $variables['element']['#object']) && $node->hasField('field_image_caption')) {
+      if ((!$caption || !$caption->count()) && (NULL !== $node = $variables['element']['#object']) && $node->hasField('field_image_caption')) {
         $caption = $node->get('field_image_caption');
       }
 
       // If the caption has been set, render it.
-      if ($caption->count()) {
+      if ($caption && $caption->count()) {
         $caption = $caption->view();
       }
       else {
@@ -347,10 +361,13 @@ function uids_base_preprocess_layout(&$variables) {
             }
           }
         }
+      }
 
-        if (!$variables['featured_image_display']) {
-          unset($variables['content']['background']);
-        }
+      if (!$variables['featured_image_display']) {
+        unset($variables['content']['background']);
+      }
+      else {
+        $variables['attributes']['class'][] = 'banner--' . $variables['featured_image_display'];
       }
 
       // Loop through regions in the layout.
@@ -382,6 +399,33 @@ function uids_base_preprocess_layout(&$variables) {
           }
         }
       }
+
+      if (!isset($variables['banner_settings'])) {
+        if (!isset($variables['banner_attributes'])) {
+          $variables['banner_settings'] = [];
+        }
+        $defaults = [
+          'transparent' => FALSE,
+          'horizontal_align' => 'left',
+          'vertical_align' => 'bottom',
+        ];
+
+        $variables['banner_settings'] = $defaults + $variables['banner_settings'];
+      }
+
+      // Set default for banner gradient.
+      if ($variables['banner_settings']['transparent']) {
+        $variables['attributes']['class'][] = 'banner--transparent';
+      }
+      else {
+        $variables['attributes']['class'][] = 'banner--gradient-bottom';
+        $variables['attributes']['class'][] = 'banner--gradient-dark';
+      }
+
+      // Set other banner default classes.
+      $variables['attributes']['class'][] = 'banner--horizontal-' . $variables['banner_settings']['horizontal_align'];
+      $variables['attributes']['class'][] = 'banner--vertical-' . $variables['banner_settings']['vertical_align'];
+
       if ($contains_title) {
         $variables['attributes']['class'][] = 'layout--title';
         if ($contains_background && $variables['featured_image_display']) {
@@ -597,14 +641,7 @@ function uids_base_preprocess_paragraph(&$variables) {
               $variables['h_size'] = $headline_field['child_heading_size'];
             }
             else {
-              $options = [
-                'h2' => 'h3',
-                'h3' => 'h4',
-                'h4' => 'h5',
-                'h5' => 'h6',
-                'h6' => 'h6',
-              ];
-              $variables['h_size'] = $options[$headline_field['heading_size']];
+              $variables['h_size'] = HeadlineHelper::getHeadingSizeUp($headline_field['heading_size']);
             }
           }
         }
