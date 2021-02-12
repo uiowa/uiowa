@@ -2070,3 +2070,21 @@ function sitenow_update_8050() {
     }
   }
 }
+
+/**
+ * Convert coronavirus.uiowa.edu to V3.
+ */
+function sitenow_update_8051() {
+  $site_path = \Drupal::service('site.path');
+  if ($site_path == 'sites/coronavirus.uiowa.edu') {
+    // Disable splits.
+    $config_factory = \Drupal::configFactory();
+    $sitenow_v2 = $config_factory->getEditable('config_split.config_split.sitenow_v2');
+    $sitenow_v2->set('status', FALSE);
+    $sitenow_v2->save(TRUE);
+
+    $coronavirus = $config_factory->getEditable('config_split.config_split.coronavirus_uiowa_edu');
+    $coronavirus->set('status', FALSE);
+    $coronavirus->save(TRUE);
+  }
+}
