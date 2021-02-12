@@ -133,6 +133,7 @@ apache_vhosts:
     servername: careers.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+
   -
     servername: org-cd2h.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
@@ -1489,7 +1490,6 @@ apache_vhosts:
     servername: sitesanunsettledbody.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-  
   -
     servername: labuppu.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
@@ -1524,6 +1524,22 @@ apache_vhosts:
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
   -
     servername: labboes.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: siteschtc.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: labkumar.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: labresch.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: orgiowaneuroscienceclub.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
 
@@ -1581,8 +1597,8 @@ php_memory_limit: 512M
 solr_version: 4.5.1
 
 post_provision_scripts:
-  - ../../../acquia/blt/scripts/drupal-vm/configure-solr.sh
-  - ../../../acquia/blt/scripts/drupal-vm/post-provision.php
+  - ../../../acquia/blt-drupal-vm/scripts/drupal-vm/configure-solr.sh
+  - ../../../acquia/blt-drupal-vm/scripts/drupal-vm/post-provision.php
   - ../../../../box/post-provision.sh
 nodejs_version: 14.x
 

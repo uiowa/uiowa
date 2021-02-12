@@ -27,7 +27,7 @@ class ScholarshipsJumpMenuBlock extends BlockBase {
       'transfer' => $config['transfer_path'],
       'international' => $config['international_path'],
       'resident' => $config['resident_path'],
-      'nonresident' => $config['nonresident_path']
+      'nonresident' => $config['nonresident_path'],
     ];
     $form_state = new FormState();
     $form_state->addBuildInfo('scholarship_paths', $paths);
@@ -44,18 +44,18 @@ class ScholarshipsJumpMenuBlock extends BlockBase {
     if (isset($config['transfer_path'])) {
       $transfer_entity = Node::load($config['transfer_path']);
     }
-    $form['transfer_path'] = array(
+    $form['transfer_path'] = [
       '#type' => 'entity_autocomplete',
       '#title' => $this->t('Transfer Path'),
       '#description' => $this->t('Url for the transfer option'),
       '#target_type' => 'node',
       '#selection_handler' => 'default',
-      '#selection_settings' => array(
-        'target_bundles' => array('page'),
-      ),
+      '#selection_settings' => [
+        'target_bundles' => ['page'],
+      ],
       '#default_value' => isset($transfer_entity) ? $transfer_entity : NULL,
-      '#required' => TRUE
-    );
+      '#required' => TRUE,
+    ];
     if (isset($config['international_path'])) {
       $international_entity = Node::load($config['international_path']);
     }
@@ -65,11 +65,11 @@ class ScholarshipsJumpMenuBlock extends BlockBase {
       '#description' => $this->t('Url for the international option'),
       '#target_type' => 'node',
       '#selection_handler' => 'default',
-      '#selection_settings' => array(
-        'target_bundles' => array('page'),
-      ),
+      '#selection_settings' => [
+        'target_bundles' => ['page'],
+      ],
       '#default_value' => isset($international_entity) ? $international_entity : NULL,
-      '#required' => TRUE
+      '#required' => TRUE,
     ];
     if (isset($config['resident_path'])) {
       $resident_entity = Node::load($config['resident_path']);
@@ -80,11 +80,11 @@ class ScholarshipsJumpMenuBlock extends BlockBase {
       '#description' => $this->t('Url for the resident option'),
       '#target_type' => 'node',
       '#selection_handler' => 'default',
-      '#selection_settings' => array(
-        'target_bundles' => array('page'),
-      ),
+      '#selection_settings' => [
+        'target_bundles' => ['page'],
+      ],
       '#default_value' => isset($resident_entity) ? $resident_entity : NULL,
-      '#required' => TRUE
+      '#required' => TRUE,
     ];
     if (isset($config['nonresident_path'])) {
       $nonresident_entity = Node::load($config['nonresident_path']);
@@ -95,11 +95,11 @@ class ScholarshipsJumpMenuBlock extends BlockBase {
       '#description' => $this->t('Url for the nonresident option'),
       '#target_type' => 'node',
       '#selection_handler' => 'default',
-      '#selection_settings' => array(
-        'target_bundles' => array('page'),
-      ),
+      '#selection_settings' => [
+        'target_bundles' => ['page'],
+      ],
       '#default_value' => isset($nonresident_entity) ? $nonresident_entity : NULL,
-      '#required' => TRUE
+      '#required' => TRUE,
     ];
 
     return $form;
