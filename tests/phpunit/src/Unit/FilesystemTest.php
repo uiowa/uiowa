@@ -90,9 +90,6 @@ EOD;
     foreach ($sites as $site) {
       $path = "docroot/sites/{$site}";
 
-      // Output the site to the console to identify test failures.
-      fwrite(STDERR, $site . PHP_EOL);
-
       $this->assertFileExists("{$path}/blt.yml");
       $this->assertFileExists("{$path}/default.local.drush.yml");
       $this->assertFileExists("{$path}/default.settings.php");
