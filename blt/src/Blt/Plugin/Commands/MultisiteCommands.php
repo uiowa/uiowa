@@ -184,6 +184,7 @@ class MultisiteCommands extends BltTasks {
    *
    * @param array $options
    *   Command options.
+   *
    * @option envs
    *   Array of allowed environments for installation to happen on.
    * @option dry-run
@@ -265,43 +266,6 @@ class MultisiteCommands extends BltTasks {
             }
             catch (BltException $e) {
               $this->say('<comment>Note:</comment> file permission error on Acquia Cloud can be safely ignored.');
-            }
-
-            // The site name option used during drush site:install is
-            // overwritten if installed from existing configuration.
-            $this->taskDrush()
-              ->stopOnFail(FALSE)
-              ->drush('config:set')
-              ->args([
-                'system.site',
-                'name',
-                $multisite,
-              ])
-              ->run();
-
-            // If a requester was added, add them as a webmaster for the site.
-            if ($requester = $this->getConfigValue('uiowa.requester')) {
-              $this->taskDrush()
-                ->stopOnFail(FALSE)
-                ->drush('user:create')
-                ->args($requester)
-                ->drush('user:role:add')
-                ->args([
-                  'webmaster',
-                  $requester,
-                ])
-                ->run();
-            }
-
-            // Activate and import any config splits.
-            if ($split = $this->getConfigValue('uiowa.config.split')) {
-              $this->taskDrush()
-                ->stopOnFail(FALSE)
-                ->drush('config:set')
-                ->args("config_split.config_split.{$split}", 'status', TRUE)
-                ->drush('cache:rebuild')
-                ->drush('config:import')
-                ->run();
             }
           }
 
@@ -875,6 +839,56 @@ EOD;
     }
     else {
       $this->logger->warning("Slack webhook URL not configured. Cannot send message: {$message}");
+    }
+  }
+
+  /**
+   * Run post-install tasks.
+   *
+   * @throws \Robo\Exception\TaskException
+   *
+   * @hook post-command drupal:install
+   */
+  public function postDrupalInstall($result, CommandData $commandData) {
+    if ($multisite = $this->input->getOption('site')) {
+      $this->switchSiteContext($multisite);
+
+      // The site name option used during drush site:install is
+      // overwritten if installed from existing configuration.
+      $this->taskDrush()
+        ->stopOnFail(FALSE)
+        ->drush('config:set')
+        ->args([
+          'system.site',
+          'name',
+          $multisite,
+        ])
+        ->run();
+
+      // If a requester was added, add them as a webmaster for the site.
+      if ($requester = $this->getConfigValue('uiowa.requester')) {
+        $this->taskDrush()
+          ->stopOnFail(FALSE)
+          ->drush('user:create')
+          ->args($requester)
+          ->drush('user:role:add')
+          ->args([
+            'webmaster',
+            $requester,
+          ])
+          ->run();
+      }
+
+      // Activate and import any config splits.
+      if ($split = $this->getConfigValue('uiowa.config.split')) {
+        $this->taskDrush()
+          ->stopOnFail(FALSE)
+          ->drush('config:set')
+          ->args("config_split.config_split.{$split}", 'status', TRUE)
+          ->drush('cache:rebuild')
+          ->drush('config:import')
+          ->run();
+      }
     }
   }
 

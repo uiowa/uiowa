@@ -1,0 +1,30 @@
+uuid: a9671d79-8a8d-4dc4-8a2d-5fd49d6e342f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_scholar_bio
+    - node.type.scholar
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    minimal: minimal
+    filtered_html: '0'
+    full_html: '0'
+    plain_text: '0'
+id: node.scholar.field_scholar_bio
+field_name: field_scholar_bio
+entity_type: node
+bundle: scholar
+label: Abstract
+description: 'Use this field to give general information about the person or to talk about the focus of their studies or research.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+  required_summary: false
+field_type: text_with_summary

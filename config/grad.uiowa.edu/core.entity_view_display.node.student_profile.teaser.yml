@@ -1,0 +1,71 @@
+uuid: eda99db0-d9ae-4b47-9885-c41353902224
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.student_profile.body
+    - field.field.node.student_profile.field_grad_program_all_degree
+    - field.field.node.student_profile.field_image
+    - field.field.node.student_profile.field_person_bio_headline
+    - field.field.node.student_profile.field_person_distinction
+    - field.field.node.student_profile.field_person_first_name
+    - field.field.node.student_profile.field_person_hometown
+    - field.field.node.student_profile.field_person_last_name
+    - field.field.node.student_profile.field_person_quote
+    - field.field.node.student_profile.field_tags
+    - node.type.student_profile
+  module:
+    - smart_trim
+    - user
+id: node.student_profile.teaser
+targetEntityType: node
+bundle: student_profile
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: smart_trim
+    weight: 2
+    settings:
+      trim_length: 150
+      trim_type: chars
+      trim_suffix: ''
+      wrap_class: trimmed
+      more_text: More
+      more_class: more-link
+      summary_handler: full
+      wrap_output: false
+      more_link: false
+      trim_options:
+        text: false
+        trim_zero: false
+    third_party_settings: {  }
+    region: content
+  field_image:
+    type: entity_reference_entity_view
+    weight: 0
+    region: content
+    label: visually_hidden
+    settings:
+      view_mode: full__widescreen
+      link: false
+    third_party_settings: {  }
+  field_person_distinction:
+    type: string
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  field_grad_program_all_degree: true
+  field_person_bio_headline: true
+  field_person_first_name: true
+  field_person_hometown: true
+  field_person_last_name: true
+  field_person_quote: true
+  field_tags: true
+  links: true
+  search_api_excerpt: true

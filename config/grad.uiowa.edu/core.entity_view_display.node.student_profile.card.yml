@@ -1,0 +1,68 @@
+uuid: 5c8360fe-aacc-440c-b1e6-8142d06d75a4
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.card
+    - field.field.node.student_profile.body
+    - field.field.node.student_profile.field_grad_program_all_degree
+    - field.field.node.student_profile.field_image
+    - field.field.node.student_profile.field_person_bio_headline
+    - field.field.node.student_profile.field_person_distinction
+    - field.field.node.student_profile.field_person_first_name
+    - field.field.node.student_profile.field_person_hometown
+    - field.field.node.student_profile.field_person_last_name
+    - field.field.node.student_profile.field_person_quote
+    - field.field.node.student_profile.field_tags
+    - node.type.student_profile
+  module:
+    - layout_builder
+    - user
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: false
+id: node.student_profile.card
+targetEntityType: node
+bundle: student_profile
+mode: card
+content:
+  field_image:
+    weight: 3
+    label: hidden
+    settings:
+      view_mode: full
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_entity_view
+    region: content
+  field_person_bio_headline:
+    type: string
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_person_distinction:
+    weight: 1
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  links:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  body: true
+  field_grad_program_all_degree: true
+  field_person_first_name: true
+  field_person_hometown: true
+  field_person_last_name: true
+  field_person_quote: true
+  field_tags: true
+  search_api_excerpt: true

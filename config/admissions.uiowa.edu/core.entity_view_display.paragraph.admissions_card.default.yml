@@ -1,0 +1,65 @@
+uuid: 6c3d8ba9-bc8a-4bd3-bf47-281b6e44fd6f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.admissions_card.field_admissions_card_content
+    - field.field.paragraph.admissions_card.field_admissions_card_link
+    - field.field.paragraph.admissions_card.field_admissions_card_media
+    - field.field.paragraph.admissions_card.field_admissions_card_subtitle
+    - field.field.paragraph.admissions_card.field_admissions_card_title
+    - paragraphs.paragraphs_type.admissions_card
+  module:
+    - link
+    - text
+id: paragraph.admissions_card.default
+targetEntityType: paragraph
+bundle: admissions_card
+mode: default
+content:
+  field_admissions_card_content:
+    weight: 3
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_admissions_card_link:
+    weight: 1
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  field_admissions_card_media:
+    type: entity_reference_entity_view
+    weight: 2
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
+  field_admissions_card_subtitle:
+    weight: 4
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_admissions_card_title:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden:
+  search_api_excerpt: true

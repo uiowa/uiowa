@@ -1,0 +1,23 @@
+uuid: a3c0a214-dea4-411c-98f3-bd89920ee0a9
+langcode: en
+status: true
+dependencies:
+  config:
+    - fragments.fragment_type.program
+    - field.storage.fragment.field_program_conferred_by_grad
+id: fragment.program.field_program_conferred_by_grad
+field_name: field_program_conferred_by_grad
+entity_type: fragment
+bundle: program
+label: 'Degree conferred by the Graduate College'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean
