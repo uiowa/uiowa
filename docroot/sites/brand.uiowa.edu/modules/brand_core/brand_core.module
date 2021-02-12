@@ -370,7 +370,7 @@ function brand_core_mail($key, &$message, $params) {
     case 'lockup-review-digest':
       $message['subject'] = t('Brand Manual - You have @results @label to review', [
         '@results' => $params['results'],
-        '@label' => $params['label']
+        '@label' => $params['label'],
       ], $options);
 
       $message['body'][] = t('You have @results @label to review:', [

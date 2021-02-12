@@ -3,18 +3,29 @@
 namespace Drupal\admissions_core;
 
 use Drupal\Component\Transliteration\TransliterationInterface;
-use \Drupal\entity_print\FilenameGenerator;
+use Drupal\entity_print\FilenameGenerator;
 use Drupal\entity_print\FilenameGeneratorInterface;
 
+/**
+ * An overridden service for generating PDF filenames.
+ */
 class MailcodeFilenameGenerator extends FilenameGenerator {
 
   /**
    * The original FilenameGenerator service.
    *
-   * @var FilenameGeneratorInterface
+   * @var \Drupal\entity_print\FilenameGeneratorInterface
    */
   protected $innerService;
 
+  /**
+   * The constructor.
+   *
+   * @param \Drupal\entity_print\FilenameGeneratorInterface $filenameGenerator
+   *   The original service.
+   * @param \Drupal\Component\Transliteration\TransliterationInterface $transliteration
+   *   The transliteration service.
+   */
   public function __construct(FilenameGeneratorInterface $filenameGenerator, TransliterationInterface $transliteration) {
     $this->innerService = $filenameGenerator;
     parent::__construct($transliteration);
@@ -42,4 +53,5 @@ class MailcodeFilenameGenerator extends FilenameGenerator {
 
     return $filenames ? implode('-', $filenames) : static::DEFAULT_FILENAME;
   }
+
 }
