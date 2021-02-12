@@ -106,4 +106,42 @@ class ReplaceCommands extends BltTasks {
     }
   }
 
+  /**
+   * Roll our own version of blt/drupal-check that scans multisite code.
+   *
+   * @command tests:deprecated
+   */
+  public function postTestsDeprecated() {
+    $this->say("Checking for deprecated code.");
+    $bin = $this->getConfigValue('composer.bin');
+    $docroot = $this->getConfigValue('docroot');
+
+    $paths = [
+      "{$docroot}/modules/custom" => '',
+      "{$docroot}/themes/custom" => '',
+      "{$docroot}/sites" => "{$docroot}/sites/simpletest",
+    ];
+
+    foreach ($paths as $path => $exclude) {
+      if (!empty($exclude)) {
+        $cmd = "$bin/drupal-check -e {$exclude} -d {$path}";
+      }
+      else {
+        $cmd = "$bin/drupal-check -d {$path}";
+      }
+
+      $result = $this->taskExecStack()
+        ->dir($this->getConfigValue('repo.root'))
+        ->exec($cmd)
+        ->run();
+
+      $exit_code = $result->getExitCode();
+
+      if ($exit_code) {
+        $this->logger->notice('Review deprecation warnings and re-run.');
+        throw new BltException("Drupal Check in {$path} failed.");
+      }
+    }
+  }
+
 }
