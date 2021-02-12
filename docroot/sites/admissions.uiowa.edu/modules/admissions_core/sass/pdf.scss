@@ -89,6 +89,7 @@ h2, h3, h4, h5, h6 {
   height: 0;
   border: 1px solid transparent;
   margin: 0;
+  margin-top: -$sm;
 }
 
 .uids-component--light-intro,
@@ -153,7 +154,25 @@ h2, h3, h4, h5, h6 {
       }
     }
   }
+/*
+  .field--name-field-area-of-study-majors {
+    .field__items {
+      .field__item,
+      .paragraph {
+        float: left;
+      }
 
+      .field__item .paragraph--type--degree {
+        display: inline-block;
+        &:before {
+          content: ",";
+          padding-right: $xsm;
+          margin-left: -3px;
+        }
+      }
+    }
+  }
+*/
   .field--name-field-area-of-study-majors,
   .field--name-field-area-of-study-minors,
   .field--name-field-area-of-study-preprof,
@@ -179,6 +198,10 @@ h2, h3, h4, h5, h6 {
   .learn-more {
     span {
       margin: 0 $gutter 0 0;
+    }
+
+    img {
+      margin: 0 $xsm 0 0;
     }
 
     h2 {
