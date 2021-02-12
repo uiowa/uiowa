@@ -32,4 +32,5 @@ class AOSRequirements extends BlockBase {
 
     return ['#markup' => $markup];
   }
+
 }

@@ -6,10 +6,6 @@
  */
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Template\Attribute;
-use Drupal\Core\Url;
-use Drupal\file\Entity\File;
-use Drupal\media\Entity\Media;
 
 /**
  * Implements hook_page_attachments().
@@ -105,7 +101,7 @@ function ighn_core_preprocess_page_title(&$variables) {
       switch ($node->getType()) {
         case 'ighn_person':
           if ($node->hasField('field_ighn_person_credentials') && !$node->get('field_ighn_person_credentials')
-              ->isEmpty()) {
+            ->isEmpty()) {
             $variables['subtitle'] = $node->field_ighn_person_credentials->value;
           }
           break;

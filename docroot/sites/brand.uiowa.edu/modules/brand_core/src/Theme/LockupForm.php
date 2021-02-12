@@ -5,7 +5,7 @@ namespace Drupal\brand_core\Theme;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Theme\ThemeNegotiatorInterface;
 
-/*
+/**
  * Use uiowa_bootstrap theme for Lockup form instead of admin theme.
  */
 class LockupForm implements ThemeNegotiatorInterface {
@@ -19,7 +19,8 @@ class LockupForm implements ThemeNegotiatorInterface {
       if ($node_type == 'lockup') {
         return TRUE;
       }
-    } elseif ($route_match->getRouteName() == 'entity.node.edit_form') {
+    }
+    elseif ($route_match->getRouteName() == 'entity.node.edit_form') {
       $node = $route_match->getParameter('node');
       if ($node->bundle() == 'lockup') {
         return TRUE;
@@ -35,4 +36,5 @@ class LockupForm implements ThemeNegotiatorInterface {
   public function determineActiveTheme(RouteMatchInterface $route_match) {
     return 'uids_base';
   }
+
 }

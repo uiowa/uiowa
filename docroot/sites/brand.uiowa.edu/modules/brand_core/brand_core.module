@@ -9,6 +9,7 @@
  * @see https://www.drupal.org/node/2217931
  */
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Link;
 use Drupal\Core\Render\BubbleableMetadata;
@@ -18,6 +19,9 @@ use Drupal\user\Entity\User;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\brand_core\Controller\LockupController;
 
+/**
+ *
+ */
 function brand_core_toolbar_alter(&$items) {
   $items["administration"]['#attached']['library'][] = 'brand_core/toolbar-overrides';
   return $items;
@@ -180,7 +184,7 @@ function brand_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
 /**
  * Implements hook_ENTITY_TYPE_presave().
  */
-function brand_core_node_presave(Drupal\Core\Entity\EntityInterface $entity) {
+function brand_core_node_presave(EntityInterface $entity) {
   $bundle = $entity->bundle();
   if ($bundle == 'lockup') {
     // Trim the right of values (extra, empty lines).
@@ -188,7 +192,7 @@ function brand_core_node_presave(Drupal\Core\Entity\EntityInterface $entity) {
       'field_lockup_primary_unit',
       'field_lockup_sub_unit',
       'field_lockup_p_unit_stacked',
-      'field_lockup_s_unit_stacked'
+      'field_lockup_s_unit_stacked',
     ];
     foreach ($fields as $field) {
       $value = $entity->get($field)->value;
@@ -379,7 +383,7 @@ function brand_core_mail($key, &$message, $params) {
 /**
  * Implements hook_ENTITY_TYPE_update().
  */
-function brand_core_node_update(Drupal\Core\Entity\EntityInterface $entity) {
+function brand_core_node_update(EntityInterface $entity) {
   $type = $entity->bundle();
   if ($type == 'lockup') {
     $state = $entity->get('moderation_state')->value;
