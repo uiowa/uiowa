@@ -1950,12 +1950,6 @@ function sitenow_update_8050() {
       'paragraph',
     ];
 
-    $media_view_mode_map = [
-      'image_large' => 'small__no_crop',
-      'image_medium' => 'small__no_crop',
-      'image_small' => 'small__no_crop',
-    ];
-
     foreach ($entity_types as $entity_type) {
       $bundles = \Drupal::service('entity_type.bundle.info')
         ->getBundleInfo($entity_type);
@@ -2039,9 +2033,7 @@ function sitenow_update_8050() {
                     if (!empty($old_view_mode)) {
                       // @todo Parse out the view mode from the existing embed attribute.
                       $old_view_mode = str_replace('view_mode:media.', '', $old_view_mode);
-                      if (isset($media_view_mode_map[$old_view_mode])) {
-                        $dm_instance->setAttribute('data-view-mode', $media_view_mode_map[$old_view_mode]);
-                      }
+                      $dm_instance->setAttribute('data-view-mode', $old_view_mode);
                     }
 
                     $de_instance->parentNode->replaceChild($dm_instance, $de_instance);
