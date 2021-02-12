@@ -114,12 +114,15 @@ class ReplaceCommands extends BltTasks {
   public function testsDeprecated() {
     $this->say("Checking for deprecated code.");
     $bin = $this->getConfigValue('composer.bin');
+    $root = $this->getConfigValue('repo.root');
     $docroot = $this->getConfigValue('docroot');
 
     $paths = [
-      "{$docroot}/modules/custom" => '',
-      "{$docroot}/themes/custom" => '',
-      "{$docroot}/sites" => "{$docroot}/sites/simpletest",
+      "{$root}/tests/" => '',
+      "{$docroot}/profiles/custom/" => '',
+      "{$docroot}/modules/custom/" => '',
+      "{$docroot}/themes/custom/" => '',
+      "{$docroot}/sites/" => "{$docroot}/sites/simpletest",
     ];
 
     foreach ($paths as $path => $exclude) {
