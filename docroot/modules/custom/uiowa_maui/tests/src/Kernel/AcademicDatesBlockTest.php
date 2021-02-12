@@ -42,7 +42,7 @@ class AcademicDatesBlockTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->plugin = [
@@ -153,8 +153,8 @@ class AcademicDatesBlockTest extends KernelTestBase {
     $sut->blockSubmit([], $form_state);
     $this->assertFalse($form_state->hasAnyErrors());
     $config = $sut->getConfiguration();
-    $this->assertEqual($config['session'], NULL);
-    $this->assertEqual($config['category'], NULL);
+    $this->assertEquals(NULL, $config['session']);
+    $this->assertEquals(NULL, $config['category']);
   }
 
   /**
@@ -177,8 +177,8 @@ class AcademicDatesBlockTest extends KernelTestBase {
     $sut->blockSubmit([], $form_state);
     $this->assertFalse($form_state->hasAnyErrors());
     $config = $sut->getConfiguration();
-    $this->assertEqual($config['session'], 0);
-    $this->assertEqual($config['category'], 1);
+    $this->assertEquals(0, $config['session']);
+    $this->assertEquals(1, $config['category']);
   }
 
   /**
