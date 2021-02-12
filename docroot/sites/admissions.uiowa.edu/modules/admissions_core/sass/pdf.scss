@@ -99,6 +99,16 @@ h2, h3, h4, h5, h6 {
 
   .aos-link {
     margin: $sm 0;
+    display: block;
+    width: 70%;
+    color: $secondary;
+    background: $primary;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: $base-font-size;
+    padding: 1rem 2rem 1rem 1rem;
+    font-family: "Antonio",sans-serif !important;
+    text-transform: uppercase;
 
     a {
       display: block;
@@ -115,6 +125,29 @@ h2, h3, h4, h5, h6 {
         margin-top: 1px;
       }
     }
+  }
+
+  .paragraph--type--degree {
+    .field--name-field-degree-label {
+      float: left;
+    }
+
+    .field--name-field-degree-abbreviation.field--label-hidden.field__item{
+      margin: 0 $xsm;
+      float: left;
+      &:before {
+        content: "(";
+      }
+      &:after {
+        content: ")";
+      }
+    }
+  }
+
+  .field--name-field-area-of-study-why {
+    clear: both;
+    display: inline-block;
+    margin-top: $gutter;
   }
 
   .field--name-field-area-of-study-majors,
