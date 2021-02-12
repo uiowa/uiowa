@@ -38,3 +38,20 @@
     height: auto;
   }
 }
+
+// Full width images
+.media--type-image {
+  &--full {
+    img {
+      width: 100%;
+    }
+  }
+  &--full-bleed {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    img {
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+    }
+  }
+}

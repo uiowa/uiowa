@@ -1,0 +1,28 @@
+uuid: 10087c9c-1738-485c-b01e-a55836fd3bfc
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_image
+    - media.type.image
+    - node.type.student_profile
+id: node.student_profile.field_image
+field_name: field_image
+entity_type: node
+bundle: student_profile
+label: 'Person photo'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

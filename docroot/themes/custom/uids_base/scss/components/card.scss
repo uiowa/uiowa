@@ -27,6 +27,30 @@
   }
 }
 
+// Border color adjustment for cards not using a bg color
+.card:not([class*="bg-"]) {
+  border-color: rgba(0,0,0,.125);
+  .bg--black--pattern--brain &,
+  .bg-pattern--brain-black &,
+  .bg--black & {
+    border-color: rgba(255,255,255,.325);
+    .bttn--sans-serif {
+      border-color: rgba(255,255,255,.325);
+    }
+  }
+  .bttn--sans-serif {
+    border-color: rgba(0,0,0,.125);
+  }
+}
+
+.card:not([class*="bg-"]) {
+  .layout__container:not([class*="bg-"]) & {
+    .bttn--sans-serif {
+      border-color: rgba(0,0,0,.125);
+    }
+  }
+}
+
 // Set background for all v2 cards
 .paragraph--type--section {
   &[class*=bg-] {
@@ -76,7 +100,7 @@
       display: none;
 
       &+.card__body {
-        padding: 0;
+        padding: 0 !important;
       }
     }
   }
