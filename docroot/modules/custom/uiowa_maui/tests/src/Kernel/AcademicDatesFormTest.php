@@ -28,7 +28,7 @@ class AcademicDatesFormTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->maui = $this->getMockBuilder('\Drupal\uiowa_maui\MauiApi')
@@ -94,7 +94,7 @@ class AcademicDatesFormTest extends KernelTestBase {
 
     $this->assertArrayHasKey('session', $form);
     $this->assertArrayHasKey('category', $form);
-    $this->assertEqual(1, $form['session']['#default_value']);
+    $this->assertEquals(1, $form['session']['#default_value']);
   }
 
   /**
@@ -124,7 +124,7 @@ class AcademicDatesFormTest extends KernelTestBase {
 
     $this->assertArrayHasKey('session', $form);
     $this->assertArrayNotHasKey('category', $form);
-    $this->assertEqual(2, $form['session']['#default_value']);
+    $this->assertEquals(2, $form['session']['#default_value']);
   }
 
   /**
@@ -134,7 +134,7 @@ class AcademicDatesFormTest extends KernelTestBase {
     $one = new AcademicDatesForm($this->maui);
     $two = new AcademicDatesForm($this->maui);
 
-    $this->assertNotEqual($one->getFormId(), $two->getFormId());
+    $this->assertNotEquals($one->getFormId(), $two->getFormId());
   }
 
   /**

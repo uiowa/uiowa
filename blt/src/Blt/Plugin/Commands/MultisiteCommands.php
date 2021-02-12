@@ -184,6 +184,7 @@ class MultisiteCommands extends BltTasks {
    *
    * @param array $options
    *   Command options.
+   *
    * @option envs
    *   Array of allowed environments for installation to happen on.
    * @option dry-run
