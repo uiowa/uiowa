@@ -104,6 +104,8 @@ h2, h3, h4, h5, h6 {
   .intro p {
     @extend .element--light-intro;
     margin: 0 0 1rem 0;
+    font-family: 'Zilla Slab', serif;
+    line-height: 1;
   }
 
   .aos-link {
@@ -114,24 +116,12 @@ h2, h3, h4, h5, h6 {
     text-decoration: none;
     text-transform: uppercase;
     font-size: $base-font-size;
-    padding: 1rem 2rem 1rem 1rem;
+    padding: .7rem 2rem 1rem 1rem;
     font-family: "Antonio",sans-serif !important;
     text-transform: uppercase;
-
-    a {
-      display: block;
-      width: 70%;
-      color: $secondary;
-      background: $primary;
-      text-decoration: none;
-      text-transform: uppercase;
-      font-size: $base-font-size;
-      padding: 1rem 2rem 1rem 1rem;
-      font-family: $font-family-caps-bold;
-
-      img {
-        margin-top: 1px;
-      }
+    img {
+      margin-top: 1px;
+      margin-right: 5px;
     }
   }
 
@@ -176,7 +166,7 @@ h2, h3, h4, h5, h6 {
 
     .field__item {
       line-height: $reduced-line-height;
-      font-size: $content-font-size;
+      font-size: 1rem;
       font-family: 'Roboto', sans-serif!important;
       color: #666;
     }
