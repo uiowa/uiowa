@@ -2031,15 +2031,9 @@ function sitenow_update_8050() {
 
                     $old_view_mode = $de_instance->getAttribute('data-entity-embed-display');
                     if (!empty($old_view_mode)) {
-                      if ($old_view_mode == "view_mode:media.image_large") {
-                        $dm_instance->setAttribute('data-view-mode', 'image_large');
-                      }
-                      if ($old_view_mode == "view_mode:media.image_medium") {
-                        $dm_instance->setAttribute('data-view-mode', 'image_medium');
-                      }
-                      if ($old_view_mode == "view_mode:media.image_small") {
-                        $dm_instance->setAttribute('data-view-mode', 'image_small');
-                      }
+                      // @todo Parse out the view mode from the existing embed attribute.
+                      $old_view_mode = str_replace('view_mode:media.', '', $old_view_mode);
+                      $dm_instance->setAttribute('data-view-mode', $old_view_mode);
                     }
 
                     $de_instance->parentNode->replaceChild($dm_instance, $de_instance);
