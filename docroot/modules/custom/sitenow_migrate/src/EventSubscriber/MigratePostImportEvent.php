@@ -397,7 +397,11 @@ class MigratePostImportEvent implements EventSubscriberInterface {
     Database::setActiveConnection('drupal_7');
     $connection = Database::getConnection();
     $query = $connection->select('field_data_taxonomy_vocabulary_2', 'tv');
-    $query->fields('tv', ['entity_id', 'delta', 'taxonomy_vocabulary_2_target_id']);
+    $query->fields('tv', [
+      'entity_id',
+      'delta',
+      'taxonomy_vocabulary_2_target_id',
+    ]);
     $results = $query->condition('bundle', 'blog_entry_image_large', '=')
       ->execute();
 
