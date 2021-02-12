@@ -117,6 +117,9 @@ class MigratePostImportEvent implements EventSubscriberInterface {
    */
   public function onMigratePostImport(MigrateImportEvent $event) {
     $migration = $event->getMigration();
+    $source = $migration->getSourcePlugin();
+    $source->postImportProcess();
+
     switch ($migration->id()) {
 
       // Right now, page migration is set to run last.
@@ -128,11 +131,6 @@ class MigratePostImportEvent implements EventSubscriberInterface {
         $this->logger->notice($this->t('Checking for possible broken links'));
         $candidates = $this->checkForPossibleLinkBreaks();
         $this->updateInternalLinks($candidates);
-        break;
-
-      case 'd7_writinguniversity_blog_categories':
-        $this->addWritingUniversityCategories($migration);
-        break;
 
       case 'd7_file':
       case 'd7_article':
@@ -377,51 +375,6 @@ class MigratePostImportEvent implements EventSubscriberInterface {
       $sourceToDestIds[$row->sourceid1] = $row->destid1;
     }
     return $sourceToDestIds;
-  }
-
-  /**
-   * Add newly migrated Writing University terms to their respective pages.
-   */
-  private function addWritingUniversityCategories() {
-    $nid_mapping = $this->connection->select('migrate_map_d7_writinguniversity_blog', 'mm')
-      ->fields('mm', ['sourceid1', 'destid1'])
-      ->execute()
-      ->fetchAllKeyed(0, 1);
-
-    $tid_mapping = $this->connection->select('migrate_map_d7_writinguniversity_blog_categories', 'mc')
-      ->fields('mc', ['sourceid1', 'destid1'])
-      ->execute()
-      ->fetchAllKeyed(0, 1);
-
-    // Switch to the D7 database and grab all our connections.
-    Database::setActiveConnection('drupal_7');
-    $connection = Database::getConnection();
-    $query = $connection->select('field_data_taxonomy_vocabulary_2', 'tv');
-    $query->fields('tv', [
-      'entity_id',
-      'delta',
-      'taxonomy_vocabulary_2_target_id',
-    ]);
-    $results = $query->condition('bundle', 'blog_entry_image_large', '=')
-      ->execute();
-
-    $to_update = [];
-    foreach ($results as $result) {
-      // Grab the old nid and map to the new.
-      $nid = $nid_mapping[$result->entity_id];
-      // Check if we already loaded the node, else load it.
-      if (!isset($to_update[$nid])) {
-        $to_update[$nid] = $this->entityTypeManager->getStorage('node')->load($nid);
-      }
-      $node = $to_update[$nid];
-      // If the node doesn't already reference the tag, append it.
-      if (!str_contains($node->get('field_tags')->getString(), $tid_mapping[$result->taxonomy_vocabulary_2_target_id])) {
-        $node->get('field_tags')->appendItem($tid_mapping[$result->taxonomy_vocabulary_2_target_id]);
-      }
-    }
-    foreach ($to_update as $nid => $node) {
-      $node->save();
-    }
   }
 
 }
