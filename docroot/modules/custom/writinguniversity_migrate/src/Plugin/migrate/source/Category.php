@@ -59,6 +59,9 @@ class Category extends SqlBase {
     ];
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function postImportProcess() {
     // Use the D8 database and grab all our connections.
     $connection = \Drupal::database();
