@@ -111,7 +111,7 @@ class ReplaceCommands extends BltTasks {
    *
    * @command tests:deprecated
    */
-  public function postTestsDeprecated() {
+  public function testsDeprecated() {
     $this->say("Checking for deprecated code.");
     $bin = $this->getConfigValue('composer.bin');
     $docroot = $this->getConfigValue('docroot');
