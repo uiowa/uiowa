@@ -29,7 +29,7 @@ class FilesystemTest extends UnitTestCase {
    * Test that the robots.txt file does not exist.
    */
   public function testRobotsTxtDoesNotExist() {
-    $this->assertFileNotExists($this->root . '/robots.txt');
+    $this->assertFileDoesNotExist($this->root . '/robots.txt');
   }
 
   /**
