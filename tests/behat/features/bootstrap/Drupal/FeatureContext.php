@@ -4,14 +4,13 @@ namespace Drupal;
 
 use Behat\Behat\Hook\Scope\AfterFeatureScope;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
-use Behat\Behat\Context\SnippetAcceptingContext;
 use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
 
 /**
  * FeatureContext class defines custom step definitions for Behat.
  */
-class FeatureContext extends RawDrupalContext implements SnippetAcceptingContext {
+class FeatureContext extends RawDrupalContext {
 
   /**
    * Every scenario gets its own context instance.
