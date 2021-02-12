@@ -35,11 +35,16 @@
   <file>docroot/modules/custom</file>
   <file>docroot/themes/custom</file>
   <file>docroot/profiles/custom</file>
+  <file>docroot/sites/</file>
   <file>tests</file>
 
   <exclude-pattern>*/behat</exclude-pattern>
   <exclude-pattern>*/node_modules</exclude-pattern>
   <exclude-pattern>*/vendor</exclude-pattern>
-  <exclude-pattern>docroot/modules/custom/views_tree/</exclude-pattern>
+  <exclude-pattern>docroot/sites/simpletest</exclude-pattern>
+  <exclude-pattern>docroot/sites/settings</exclude-pattern>
+  <exclude-pattern>docroot/sites/*/settings</exclude-pattern>
+  <exclude-pattern>docroot/sites/*/default.settings.php</exclude-pattern>
+  <exclude-pattern>docroot/sites/*/*.yml</exclude-pattern>
 
 </ruleset>
