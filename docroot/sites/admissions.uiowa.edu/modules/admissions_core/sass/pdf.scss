@@ -82,6 +82,15 @@ h2, h3, h4, h5, h6 {
   margin-bottom: 0;
 }
 
+.element--spacer-separator {
+  clear: both;
+  float: none;
+  width: 100%;
+  height: 0;
+  border: 1px solid transparent;
+  margin: 0;
+}
+
 .uids-component--light-intro,
 .element--light-intro {
   font-weight: normal;
@@ -99,8 +108,7 @@ h2, h3, h4, h5, h6 {
 
   .aos-link {
     margin: $sm 0;
-    display: block;
-    width: 70%;
+    display: inline-block;
     color: $secondary;
     background: $primary;
     text-decoration: none;
@@ -127,27 +135,33 @@ h2, h3, h4, h5, h6 {
     }
   }
 
-  .paragraph--type--degree {
+  .field--name-field-area-of-study-minors {
+    clear: both;
+  }
+
+  .field--name-field-area-of-study-majors {
+    display: inline-block;
+    > .field__item {
+      display: block;
+      width: 100%;
+      clear: both;
+    }
     .field--name-field-degree-label {
       float: left;
     }
-
-    .field--name-field-degree-abbreviation.field--label-hidden.field__item{
-      margin: 0 $xsm;
-      float: left;
-      &:before {
-        content: "(";
-      }
-      &:after {
-        content: ")";
+    .paragraph--type--degree {
+      clear: both;
+      .field--name-field-degree-abbreviation.field--label-hidden.field__item{
+        margin: 0 $xsm;
+        float: left;
+        &:before {
+          content: "(";
+        }
+        &:after {
+          content: ")";
+        }
       }
     }
-  }
-
-  .field--name-field-area-of-study-why {
-    clear: both;
-    display: inline-block;
-    margin-top: $gutter;
   }
 
   .field--name-field-area-of-study-majors,

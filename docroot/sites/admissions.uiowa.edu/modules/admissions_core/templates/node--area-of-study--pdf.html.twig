@@ -94,14 +94,20 @@
   </div>
 
   <div class="aos-link">
-    <a href="https://admissions.uiowa.edu{{ url }}">
       <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/arrow.png" width="15" height="14" />
       admissions.uiowa.edu{{ url }}
-    </a>
   </div>
 
   <div{{ content_attributes.addClass('node__content') }}>
-    {{ content|without('body')|render|striptags('<p><strong><div>')|t }}
+    {{ content.field_area_of_study_majors|render|striptags('<p><strong><div>')|t }}
+    {{ content.field_area_of_study_minors|render|striptags('<p><strong><div>')|t }}
+    <hr class="element--spacer-separator" />
+    {{ content.field_area_of_study_why|render|striptags('<p><strong><div>')|t }}
+    {{ content.field_area_of_study_requirement|render|striptags('<p><strong><div>')|t }}
+    {{ content.field_area_of_study_scholarship|render|striptags('<p><strong><div>')|t }}
+    {{ content.field_area_of_study_course_work|render|striptags('<p><strong><div>')|t }}
+    {{ content.field_area_of_study_opportunity|render|striptags('<p><strong><div>')|t }}
+    {{ content.field_area_of_study_career|render|striptags('<p><strong><div>')|t }}
   </div>
 
   <div class="learn-more">
