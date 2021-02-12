@@ -31,20 +31,20 @@ class ScholarshipsJumpMenu extends FormBase {
       '#options' => [
         'first-year' => 'First Year',
         'transfer' => 'Transfer',
-        'international' => 'International'
+        'international' => 'International',
       ],
       "#empty_option" => t('- Select -'),
       '#ajax' => [
         'callback' => [$this, 'scholarshipTypeCallback'],
         'event' => 'change',
-      ]
+      ],
     ];
     $form['resident'] = [
       '#type' => 'select',
       '#title' => $this->t('Resident'),
       '#options' => [
         'resident' => 'From Iowa',
-        'nonresident' => 'From Outside Iowa'
+        'nonresident' => 'From Outside Iowa',
       ],
       "#empty_option" => t('- Select Residency -'),
       '#states' => [
@@ -55,7 +55,7 @@ class ScholarshipsJumpMenu extends FormBase {
       '#ajax' => [
         'callback' => [$this, 'scholarshipResidentCallback'],
         'event' => 'change',
-      ]
+      ],
     ];
 
     return $form;

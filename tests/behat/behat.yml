@@ -2,7 +2,7 @@ default:
   suites:
     default:
       paths:
-        - %paths.base%/features
+        - "%paths.base%/features"
   extensions:
     Behat\MinkExtension:
       default_session: goutte
@@ -22,7 +22,7 @@ default:
         error_message_selector: '.messages.messages--error'
     jarnaiz\JUnitFormatter\JUnitFormatterExtension:
         filename: report.xml
-        outputDir: %paths.base%/build/tests
+        outputDir: "%paths.base%/build/tests"
     Bex\Behat\ScreenshotExtension:
       screenshot_taking_mode: failed_steps
       image_drivers:
