@@ -11,11 +11,13 @@ dependencies:
     - field.field.node.page.field_tags
     - field.field.node.page.field_teaser
     - field.field.node.page.layout_builder__layout
+    - field.field.node.page.layout_selection
     - node.type.page
     - system.menu.main
   module:
     - layout_builder
     - layout_builder_restrictions
+    - layout_library
     - menu_block
     - system
     - text
@@ -263,6 +265,8 @@ third_party_settings:
               - 'inline_block:uiowa_slider'
               - 'inline_block:uiowa_timeline'
       whitelisted_blocks: {  }
+  layout_library:
+    enable: true
 _core:
   default_config_hash: 0AcX0F0voV5TKB6_GPZxJpAfbKCnDU7er_5TWcqIgSw
 id: node.page.default
@@ -303,4 +307,5 @@ hidden:
   field_tags: true
   field_teaser: true
   layout_builder__layout: true
+  layout_selection: true
   search_api_excerpt: true

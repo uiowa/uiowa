@@ -1,0 +1,116 @@
+uuid: 01815bcd-bc1d-493f-b793-79fe9691fbea
+langcode: en
+status: true
+dependencies: {  }
+id: page_with_sidebar
+label: 'Page with sidebar'
+targetEntityType: node
+targetBundle: page
+layout:
+  -
+    layout_id: layout_header
+    layout_settings:
+      label: ''
+      layout_builder_styles_style:
+        - ''
+        - section_margin_edge_to_edge
+    components:
+      -
+        uuid: fab6f5fc-44ba-4fd4-8a0e-4abbd2ce51ac
+        region: content
+        configuration:
+          id: 'field_block:node:page:title'
+          label: null
+          provider: layout_builder
+          label_display: null
+          formatter:
+            label: hidden
+            type: string
+            settings:
+              link_to_entity: false
+            third_party_settings: {  }
+          context_mapping:
+            entity: layout_builder.entity
+            view_mode: view_mode
+        additional: {  }
+        weight: 0
+      -
+        uuid: 8c8f7547-ac1e-4ea4-a537-f45a3ce7b0a8
+        region: content
+        configuration:
+          id: system_breadcrumb_block
+          label: null
+          provider: system
+          label_display: null
+          context_mapping: {  }
+        additional: {  }
+        weight: 1
+      -
+        uuid: ae459948-4715-4e4a-ba8f-0ac2e95bf31e
+        region: background
+        configuration:
+          id: 'field_block:node:page:field_image'
+          label: null
+          provider: layout_builder
+          label_display: null
+          formatter:
+            label: hidden
+            type: entity_reference_entity_view
+            settings:
+              view_mode: full__widescreen
+            third_party_settings: {  }
+          context_mapping:
+            entity: layout_builder.entity
+            view_mode: view_mode
+        additional: {  }
+        weight: 0
+    third_party_settings: {  }
+  -
+    layout_id: layout_page
+    layout_settings:
+      label: ''
+      layout_builder_styles_style:
+        - ''
+        - section_margin_edge_to_edge
+    components:
+      -
+        uuid: ef2e792d-1ed8-4064-a881-63317567a2a2
+        region: sidebar
+        configuration:
+          id: 'menu_block:main'
+          label: null
+          provider: menu_block
+          label_display: null
+          follow: true
+          follow_parent: active
+          level: 2
+          depth: 0
+          expand_all_items: false
+          parent: 'main:'
+          suggestion: main
+          label_type: block
+          label_link: false
+          context_mapping: {  }
+        additional:
+          layout_builder_styles_style:
+            block_menu_vertical: block_menu_vertical
+        weight: 0
+      -
+        uuid: 9b6722e8-ee04-4275-9213-42569b80a885
+        region: content
+        configuration:
+          id: 'field_block:node:page:body'
+          label: null
+          provider: layout_builder
+          label_display: null
+          formatter:
+            label: hidden
+            type: text_default
+            settings: {  }
+            third_party_settings: {  }
+          context_mapping:
+            entity: layout_builder.entity
+            view_mode: view_mode
+        additional: {  }
+        weight: 0
+    third_party_settings: {  }
