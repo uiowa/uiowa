@@ -10,6 +10,7 @@ use Drupal\Core\Url;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Component\Utility\Html;
+use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\views\Entity\View;
 use Drupal\views\Views;
 use Drupal\Core\Form\FormStateInterface;
@@ -473,14 +474,8 @@ function sitenow_articles_preprocess_block(&$variables) {
             $view->display_handler->setOption('heading_size', $headline_field['child_heading_size']);
           }
           else {
-            $options = [
-              'h2' => 'h3',
-              'h3' => 'h4',
-              'h4' => 'h5',
-              'h5' => 'h6',
-              'h6' => 'h6',
-            ];
-            $view->display_handler->setOption('heading_size', $options[$headline_field['heading_size']]);
+            $heading_size = HeadlineHelper::getHeadingSizeUp($headline_field['heading_size']);
+            $view->display_handler->setOption('heading_size', $heading_size);
           }
         }
       }

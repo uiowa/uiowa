@@ -1891,7 +1891,8 @@ function sitenow_update_8048() {
       foreach ($section->getComponents() as $component) {
         if ($component->getPluginId() === 'inline_block:uiowa_events') {
           $styles = $component->get('layout_builder_styles_style');
-          // Events - Small circle left-aligned, left align content, transparent.
+          // Events - Small circle left-aligned,
+          // left align content, transparent.
           $styles[] = 'card_media_position_left';
           $styles[] = 'media_format_circle';
           $styles[] = 'card_image_small';
@@ -1915,9 +1916,26 @@ function sitenow_update_8048() {
 }
 
 /**
- * Set new style defaults for existing article blocks.
+ * Sometimes config ignore needs a little push.
  */
 function sitenow_update_8049() {
+  $site_path = \Drupal::service('site.path');
+
+  if ($site_path != 'sites/hr.uiowa.edu') {
+    $config_path = Settings::get('config_sync_directory');
+  }
+  else {
+    $config_path = DRUPAL_ROOT . '/../config/hr.uiowa.edu/';
+  }
+  $source = new FileStorage($config_path);
+  $config_storage = \Drupal::service('config.storage');
+  $config_storage->write('config_ignore.settings', $source->read('config_ignore.settings'));
+}
+
+/**
+ * Set new style defaults for existing article blocks.
+ */
+function sitenow_update_8050() {
   // Find NIDs for all nodes with at least one article block.
   $query = \Drupal::entityQuery('node')
     ->condition('type', 'page')
@@ -1978,7 +1996,7 @@ function sitenow_update_8049() {
 /**
  * Set new style defaults for existing people blocks.
  */
-function sitenow_update_8050() {
+function sitenow_update_8051() {
   // Find NIDs for all nodes with at least one people block.
   $query = \Drupal::entityQuery('node')
     ->condition('type', 'page')
@@ -2033,5 +2051,4 @@ function sitenow_update_8050() {
       }
     }
   }
-
 }

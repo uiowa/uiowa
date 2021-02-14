@@ -1,0 +1,188 @@
+uuid: 34caf4ff-523a-4ef6-98a8-749e9a14b882
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.mentor.field_grad_program_all_degree
+    - field.field.node.mentor.field_image
+    - field.field.node.mentor.field_person_credential
+    - field.field.node.mentor.field_person_email
+    - field.field.node.mentor.field_person_first_name
+    - field.field.node.mentor.field_person_last_name
+    - field.field.node.mentor.field_person_mentor_qualif
+    - field.field.node.mentor.field_person_mentor_ug_role
+    - field.field.node.mentor.field_person_phone
+    - field.field.node.mentor.field_person_position
+    - field.field.node.mentor.field_person_research_assistants
+    - field.field.node.mentor.field_person_website
+    - field.field.node.mentor.field_scholar_bio
+    - field.field.node.mentor.field_scholar_bio_headline
+    - field.field.node.mentor.field_uiowa_college
+    - node.type.mentor
+  module:
+    - content_moderation
+    - link
+    - media_library
+    - path
+    - telephone
+    - text
+    - uiowa_entities
+id: node.mentor.default
+targetEntityType: node
+bundle: mentor
+mode: default
+content:
+  field_grad_program_all_degree:
+    weight: 8
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_image:
+    weight: 3
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+    type: media_library_widget
+    region: content
+  field_person_credential:
+    weight: 2
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_person_email:
+    weight: 5
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: email_default
+    region: content
+  field_person_first_name:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_person_last_name:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_person_mentor_qualif:
+    weight: 14
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_person_mentor_ug_role:
+    weight: 13
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_person_phone:
+    weight: 6
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: telephone_default
+    region: content
+  field_person_position:
+    weight: 4
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_person_research_assistants:
+    weight: 12
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_person_website:
+    weight: 7
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+    region: content
+  field_scholar_bio:
+    weight: 11
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+      show_summary: false
+    third_party_settings: {  }
+    type: text_textarea_with_summary
+    region: content
+  field_scholar_bio_headline:
+    weight: 10
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_uiowa_college:
+    weight: 9
+    settings:
+      types:
+        - college
+    third_party_settings: {  }
+    type: uiowa_academic_units_widget
+    region: content
+  moderation_state:
+    type: moderation_state_default
+    weight: 17
+    settings: {  }
+    region: content
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 16
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  promote:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 15
+    region: content
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 18
+    region: content
+    third_party_settings: {  }
+  url_redirects:
+    weight: 19
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  sticky: true
+  title: true
+  uid: true

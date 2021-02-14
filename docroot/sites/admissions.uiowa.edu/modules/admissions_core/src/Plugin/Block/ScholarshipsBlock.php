@@ -12,7 +12,7 @@ use Drupal\views\Views;
  * @Block(
  *   id = "admissions_core_scholarships",
  *   admin_label = @Translation("Scholarships"),
- *   category = @Translation("Admissions Core")
+ *   category = @Translation("Site custom")
  * )
  */
 class ScholarshipsBlock extends BlockBase {
@@ -73,7 +73,7 @@ class ScholarshipsBlock extends BlockBase {
       '#options' => [
         'first-year' => 'First Year',
         'transfer' => 'Transfer',
-        'international' => 'International'
+        'international' => 'International',
       ],
       '#default_value' => isset($config['scholarship_type']) ? $config['scholarship_type'] : '',
     ];
@@ -83,7 +83,7 @@ class ScholarshipsBlock extends BlockBase {
       '#description' => $this->t('Filter scholarships by resident statuses. Leave blank for all. Multiple selections are treated like ORs.'),
       '#options' => [
         'resident' => 'Resident',
-        'nonresident' => 'Non-Resident'
+        'nonresident' => 'Non-Resident',
       ],
       '#default_value' => isset($config['resident']) ? $config['resident'] : '',
     ];

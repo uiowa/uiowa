@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.person.field_image
+    - field.field.node.person.field_meta_tags
     - field.field.node.person.field_person_bio
     - field.field.node.person.field_person_contact_information
     - field.field.node.person.field_person_credential
@@ -27,6 +28,7 @@ dependencies:
     - layout_builder
     - layout_builder_restrictions
     - link
+    - metatag
     - system
     - telephone
     - text
@@ -211,6 +213,13 @@ content:
       view_mode: large__square
       link: false
     third_party_settings: {  }
+  field_meta_tags:
+    weight: 12
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: metatag_empty_formatter
+    region: content
   field_person_bio:
     weight: 5
     label: visually_hidden

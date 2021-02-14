@@ -44,10 +44,13 @@
   font-family: $font-family-sans-serif !important;
 }
 #search-results .gs-result .gs-title, #search-results .gs-result .gs-title a, #search-results .gs-title b {
-  color: $blk;
+  color: $link-color;
   font-size: 28px;
   line-height: 1.2;
   text-decoration: none;
+}
+#search-results .gs-result .gs-title:hover {
+  text-decoration: underline;
 }
 #search-results .gs-snippet, #search-results .gs-snippet b {
   font-size: 18px;
@@ -79,7 +82,7 @@
   padding-right: 0;
 }
 #search-results .gsc-url-top .gs-visibleUrl, #search-results .gsc-url-bottom .gs-visibleUrl {
-  color: $link-color;
+  color: $brand-cool-gray;
   font-size: 25px;
   line-height: 1.5;
 }
