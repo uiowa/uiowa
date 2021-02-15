@@ -2033,7 +2033,7 @@ function sitenow_update_8050() {
                     if (!empty($old_view_mode)) {
                       // @todo Parse out the view mode from the existing embed attribute.
                       $old_view_mode = str_replace('view_mode:media.', '', $old_view_mode);
-                      $old_view_mode = str_replace('image_','', $old_view_mode);
+                      $old_view_mode = str_replace('image_', '', $old_view_mode);
                       $dm_instance->setAttribute('data-view-mode', $old_view_mode);
                     }
 
