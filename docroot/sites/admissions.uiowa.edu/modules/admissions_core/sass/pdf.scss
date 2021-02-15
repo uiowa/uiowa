@@ -212,13 +212,23 @@ h6 {
     }
   }
 
+  .field--name-field-area-of-study-link,
+  .field--name-field-area-of-study-majors,
+  .field--name-field-area-of-study-minors {
+    margin-bottom: $gutter;
+  }
+
   .field--name-field-area-of-study-certificates,
   .field--name-field-area-of-study-link,
   .field--name-field-area-of-study-majors,
   .field--name-field-area-of-study-minors,
   .field--name-field-area-of-study-online,
-  .field--name-field-area-of-study-preprof {
-    margin-bottom: $gutter;
+  .field--name-field-area-of-study-preprof,
+  .field--name-field-area-of-study-teaching,
+  .field--name-field-area-of-study-honors,
+  .field--name-field-area-of-study-four-year,
+  .field--name-field-area-of-study-selective,
+  .field--name-field-area-of-study-competitive {
 
     .field__label {
       @extend .element--bold-intro;
@@ -232,10 +242,32 @@ h6 {
     }
   }
 
-  .field--name-field-area-of-study-certificates,
-  .field--name-field-area-of-study-online,
-  .field--name-field-area-of-study-preprof {
-    margin-bottom: 0;
+  .field--name-field-area-of-study-teaching,
+  .field--name-field-area-of-study-honors,
+  .field--name-field-area-of-study-four-year,
+  .field--name-field-area-of-study-selective,
+  .field--name-field-area-of-study-competitive {
+    display: inline;
+    clear: left;
+    .field__item {
+      display: inline;
+    }
+  }
+
+  .field--name-field-area-of-study-comp-txt,
+  .field--name-field-area-of-study-select-txt,
+  .field--name-field-area-of-study-four-txt,
+  .field--name-field-area-of-study-teaching-txt {
+    line-height: $reduced-line-height;
+    font-size: 0.8rem;
+    font-family: 'Roboto', sans-serif!important;
+    color: #666;
+    display: inline;
+    &:before {
+      content: ":";
+      padding-right: $xsm;
+      margin-left: -$xsm;
+    }
   }
 
   .field--name-field-area-of-study-scholarship {
