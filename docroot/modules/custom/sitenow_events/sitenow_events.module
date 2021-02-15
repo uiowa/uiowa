@@ -37,8 +37,8 @@ function sitenow_events_preprocess_block(&$variables) {
 
     if (isset($data['events'])) {
       // Get block layout builder styles if they exist.
-      if (isset($variables["elements"]["#layout_builder_style"]) && !empty($variables["elements"]["#layout_builder_style"])) {
-        $parent_lb_styles = $variables["elements"]["#layout_builder_style"];
+      if (isset($variables['elements']['#attributes']['class']) && !empty($variables['elements']['#attributes']['class'])) {
+        $parent_lb_styles = $variables['elements']['#attributes']['class'];
         $parent_lb_styles[] = 'list-item';
       }
 
