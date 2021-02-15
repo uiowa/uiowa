@@ -100,6 +100,32 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     '#default_value' => ($top_links_limit ? $top_links_limit : 2),
   ];
 
+  // These fields are only available to writing university for now.
+  $form['fonts'] = [
+    '#type' => 'details',
+    '#title' => t('Theme settings'),
+    '#description' => t('Configure various theme settings for the uids_base theme.'),
+    '#weight' => -1000,
+    '#open' => TRUE,
+    '#tree' => TRUE,
+  ];
+
+  $form['fonts']['font-family'] = [
+    '#type' => 'select',
+    '#title' => t('Font family'),
+    '#description' => t('Select an option'),
+    '#options' => [
+      'sans-serif' => t('Sans serif (Roboto)'),
+      'serif' => t('Serif (Lora)'),
+    ],
+    '#default_value' => theme_get_setting('fonts.font-family'),
+  ];
+
+//  $site_path = \Drupal::service('site.path');
+//  if ($site_path != 'sites/writinguniversity.org') {
+//    $form['fonts']['#access'] = FALSE;
+//  }
+
   $form['theme_settings']['#open'] = FALSE;
   $form['favicon']['#open'] = TRUE;
 
