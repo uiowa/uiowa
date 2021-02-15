@@ -105,11 +105,18 @@ h6 {
 }
 
 .node--type-area-of-study {
-  .intro p {
+  .subtitle p {
     @extend .element--light-intro;
     margin: 0 0 1rem;
     font-family: 'Zilla Slab', serif;
     line-height: 1;
+  }
+
+  .intro {
+    p {
+      color: $secondary;
+    }
+    margin-bottom: $gutter;
   }
 
   .aos-link {
