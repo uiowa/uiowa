@@ -27,7 +27,7 @@ class AOSRequirements extends BlockBase {
    */
   public function build() {
     $markup = '<div class="element--bold-intro text-align-center">
-            New Headline
+            Admission Process
     </div>';
 
     return ['#markup' => $markup];
