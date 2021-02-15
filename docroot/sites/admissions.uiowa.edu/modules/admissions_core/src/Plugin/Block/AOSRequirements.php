@@ -26,11 +26,11 @@ class AOSRequirements extends BlockBase {
    * {@inheritdoc}
    */
   public function build() {
-    $markup = '<div class="element--bold-intro text-align-center">
-            Admission Process
-    </div>';
-
-    return ['#markup' => $markup];
+    return [
+      '#markup' => $this->t('Admission Process'),
+      '#prefix' => '<div class="element--bold-intro text-align-center">',
+      '#suffix' => '</div>',
+    ];
   }
 
 }
