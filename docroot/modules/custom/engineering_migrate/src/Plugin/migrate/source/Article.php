@@ -2,6 +2,7 @@
 
 namespace Drupal\engineering_migrate\Plugin\migrate\source;
 
+use Drupal\migrate\MigrateExecutable;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
@@ -53,6 +54,13 @@ class Article extends BaseNodeSource {
    * @var array
    */
   protected $refMapping;
+
+  /**
+   * Counter for memory resets.
+   *
+   * @var int
+   */
+  protected $rowCount = 0;
 
   /**
    * {@inheritdoc}
@@ -136,7 +144,9 @@ class Article extends BaseNodeSource {
   public function prepareRow(Row $row) {
     // Process image field if it exists.
     $this->processImageField($row, 'field_image');
-
+    \Drupal::logger('migrate')->notice('Memory usage: @memory', [
+      '@memory' => $this->clearMemory(),
+    ]);
     // Search for D7 inline embeds and replace with D8 inline entities.
     $content = $row->getSourceProperty('body_value');
 
@@ -160,6 +170,12 @@ class Article extends BaseNodeSource {
     $this->getTags($row);
 
     $this->fetchUrlAliases($row);
+
+//    if ($this->rowCount++ % 100 == 0) {
+//      \Drupal::logger('migrate')->notice('Up to row @row', [
+//        '@row' => $this->rowCount,
+//      ]);
+//    }
 
     // Call the parent prepareRow.
     return parent::prepareRow($row);
