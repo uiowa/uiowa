@@ -464,16 +464,23 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 }
 
   // Firefox only
-  @-moz-document url-prefix() { 
-    #superfish-main-accordion {
-      padding-bottom: 250px !important;
+  @-moz-document url-prefix() {
+    .o-canvas__menu .region-primary-menu {
+      &::after {
+        float: left;
+        padding-bottom: 100%;
+        content: '';
+        clear: both;
+      }
       @include breakpoint(sm) {
-        padding-bottom: 100px !important;
+        &::after {
+          padding-bottom: 32.25%;
+        }
       }
     }
   }
 
-  // Extra padding to help other browsers
+  // Extra padding to help other browsers with menu drawer
   .o-canvas--open .o-canvas__drawer {
     padding-bottom: 250px;
     @include breakpoint(sm) {
