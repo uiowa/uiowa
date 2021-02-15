@@ -57,6 +57,7 @@ function uids_base_preprocess_html(&$variables) {
   // Only set to sticky if it is set and nav_style is 'toggle'.
   if (theme_get_setting('fonts.font-family') === 'serif') {
     $variables['attributes']['class'][] = 'text--serif';
+    $variables['#attached']['library'][] = 'uids_base/global-lora';
   }
 
   $node = \Drupal::routeMatch()->getParameter('node');
