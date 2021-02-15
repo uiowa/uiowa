@@ -221,7 +221,7 @@ class SettingsForm extends ConfigFormBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Show RSS Feed icon'),
       '#default_value' => $show_feed,
-      '#description' => $this->t('If checked, a linked RSS icon will be displayed.'),
+      '#description' => $this->t('If checked, a linked RSS icon will be displayed on the main news page and year views.'),
       '#size' => 60,
     ];
 
