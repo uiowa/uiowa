@@ -103,7 +103,6 @@ class ListBlock extends CoreBlock {
     return $filter_options;
   }
 
-
   /**
    * {@inheritdoc}
    */
@@ -144,7 +143,7 @@ class ListBlock extends CoreBlock {
     if (!empty($allow_settings['display_more_link'])) {
       $form['override']['display_more_toggle'] = [
         '#type' => 'checkbox',
-        '#title' => $this->t('Display More link')
+        '#title' => $this->t('Display More link'),
       ];
 
       // @todo Figure out how to make the style of this field
@@ -169,7 +168,6 @@ class ListBlock extends CoreBlock {
     }
 
     // Provide "Exposed filters" block settings form.
-
     $exposed_filter_values = !empty($block_configuration['exposed_filter_values']) ? $block_configuration['exposed_filter_values'] : [];
 
     $subform_state = SubformState::createForSubform($form['exposed_filters'], $form, $form_state);
@@ -210,7 +208,6 @@ class ListBlock extends CoreBlock {
     $allow_settings = array_filter($this->getOption('allow'));
 
     // @todo Set default value for items_per_page if left blank.
-
     // Save "Pager offset" settings to block configuration.
     if (!empty($allow_settings['offset'])) {
       $block->setConfigurationValue('pager_offset', $form_state->getValue([
