@@ -236,9 +236,9 @@ function sitenow_articles_preprocess_views_view(&$variables) {
         unset($variables['header']['area']);
       }
 
-      // If this the page display and two arguments were provided, this is
-      // filtered by month so we'll hide the not-so-useful feed link.
-      if ($view->current_display == 'page_articles' && count($view->args) == 2) {
+      // If this is the page display and arguments were provided, hide the
+      // feed icons since we don't want to promote those filtered RSS feeds.
+      if ($view->current_display == 'page_articles' && !empty($view->args)) {
         $variables['feed_icons'] = [];
       }
 
