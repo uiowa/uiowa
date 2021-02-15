@@ -29,8 +29,8 @@ function sitenow_articles_update_9001() {
     ->set('display.default.display_options.arguments.created_year.validate.type', 'numeric')
     ->set('display.default.display_options.arguments.created_month.validate.type', 'numeric')
     ->set('display.default.display_options.filters.status.expose.operator_limit_selection', false)
-    ->set('display.default.display_options.filters.status.expose.operator_list', NULL)
+    ->set('display.default.display_options.filters.status.expose.operator_list', [])
     ->set('display.default.display_options.filters.type.expose.operator_limit_selection', false)
-    ->set('display.default.display_options.filters.type.expose.operator_list', NULL)
+    ->set('display.default.display_options.filters.type.expose.operator_list', [])
     ->save();
 }
