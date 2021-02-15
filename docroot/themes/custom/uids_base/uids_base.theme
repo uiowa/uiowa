@@ -54,6 +54,11 @@ function uids_base_preprocess_html(&$variables) {
   // Set a variable for whether layout builder is enabled.
   $variables['layout_builder_enabled'] = FALSE;
 
+  // Only set to sticky if it is set and nav_style is 'toggle'.
+  if (theme_get_setting('fonts.font-family') === 'serif') {
+    $variables['attributes']['class'][] = 'text--serif';
+  }
+
   $node = \Drupal::routeMatch()->getParameter('node');
 
   if ($node instanceof NodeInterface) {

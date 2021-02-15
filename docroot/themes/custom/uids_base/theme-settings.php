@@ -121,10 +121,10 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     '#default_value' => theme_get_setting('fonts.font-family'),
   ];
 
-//  $site_path = \Drupal::service('site.path');
-//  if ($site_path != 'sites/writinguniversity.org') {
-//    $form['fonts']['#access'] = FALSE;
-//  }
+  $site_path = \Drupal::service('site.path');
+  if ($site_path != 'sites/writinguniversity.org') {
+    $form['fonts']['#access'] = FALSE;
+  }
 
   $form['theme_settings']['#open'] = FALSE;
   $form['favicon']['#open'] = TRUE;
