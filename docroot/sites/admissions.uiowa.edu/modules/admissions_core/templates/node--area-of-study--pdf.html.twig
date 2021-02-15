@@ -90,7 +90,7 @@
   {{ title_suffix }}
 
   <div class="intro">
-    {{ content.body.0 }}
+    {{ content.body.0|render|striptags('<p><strong><div>')|t }}
   </div>
 
   <h2 class="aos-link">

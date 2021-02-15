@@ -134,6 +134,38 @@ h6 {
     clear: both;
   }
 
+  // Majors
+  .field--name-field-area-of-study-majors {
+    .field__items {
+      .field__item .paragraph--type--degree {
+        &:before {
+          content: ",";
+          //padding-right: $xsm;
+          margin-left: -$sm;
+          //margin-right: -$xsm;
+          padding: 0;
+        }
+      }
+
+      .field__item {
+        display: inline;
+
+        &:first-child {
+          .paragraph--type--degree {
+            margin-right: -.125rem;
+            padding-left: 0;
+
+            &:before {
+              content: "";
+              padding: 0;
+              margin: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+
   .field--name-field-area-of-study-majors {
     .paragraph--type--degree {
       display: inline;
@@ -179,35 +211,6 @@ h6 {
       }
     }
   }
-  // Majors
-  .field--name-field-area-of-study-majors {
-    .field__items {
-      .field__item .paragraph--type--degree {
-        &:before {
-          content: ",";
-          padding-right: $xsm;
-          margin-left: -3px;
-        }
-      }
-
-      .field__item {
-        display: inline;
-
-        &:first-child {
-          .paragraph--type--degree {
-            margin-right: -$xsm;
-            padding-left: 0;
-
-            &:before {
-              content: "";
-              padding: 0;
-              margin: 0;
-            }
-          }
-        }
-      }
-    }
-  }
 
   .field--name-field-area-of-study-certificates,
   .field--name-field-area-of-study-link,
@@ -227,6 +230,12 @@ h6 {
       font-family: 'Roboto', sans-serif!important;
       color: #666;
     }
+  }
+
+  .field--name-field-area-of-study-certificates,
+  .field--name-field-area-of-study-online,
+  .field--name-field-area-of-study-preprof {
+    margin-bottom: 0;
   }
 
   .field--name-field-area-of-study-scholarship {
