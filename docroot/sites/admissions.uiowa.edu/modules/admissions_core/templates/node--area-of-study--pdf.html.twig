@@ -101,6 +101,9 @@
   <div{{ content_attributes.addClass('node__content') }}>
     {{ content.field_area_of_study_majors|render|striptags('<p><strong><div>')|t }}
     {{ content.field_area_of_study_minors|render|striptags('<p><strong><div>')|t }}
+    {{ content.field_area_of_study_certificates|render|striptags('<p><strong><div>')|t }}
+    {{ content.field_area_of_study_preprof|render|striptags('<p><strong><div>')|t }}
+    {{ content.field_area_of_study_online|render|striptags('<p><strong><div>')|t }}
     <hr class="element--spacer-separator" />
     {{ content.field_area_of_study_why|render|striptags('<p><strong><div>')|t }}
     {{ content.field_area_of_study_requirement|render|striptags('<p><strong><div>')|t }}
