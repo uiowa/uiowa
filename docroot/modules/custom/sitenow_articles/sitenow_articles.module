@@ -491,14 +491,14 @@ function sitenow_articles_preprocess_block(&$variables) {
       }
 
       // Get block layout builder styles if they exist.
-      if (isset($variables["elements"]["#layout_builder_style"]) && !empty($variables["elements"]["#layout_builder_style"])) {
-        $parent_lb_styles = $variables["elements"]["#layout_builder_style"];
-        $parent_lb_styles[] = 'list-item';
-        $view->display_handler->setOption('parent_lb_styles', $parent_lb_styles);
-      }
+      if (isset($variables['attributes']['class'])) {
+        if (!empty($variables['attributes']['class'])) {
+          $parent_lb_styles = $variables['elements']['#attributes']['class'];
+          $parent_lb_styles[] = 'list-item';
+          $view->display_handler->setOption('parent_lb_styles', $parent_lb_styles);
+        }
 
-      // Unset classes meant for children.
-      if (isset($variables["attributes"]["class"])) {
+        // Unset classes meant for children.
         foreach ($variables["attributes"]["class"] as $key => $style) {
           foreach ([
             'bg',
@@ -512,7 +512,7 @@ function sitenow_articles_preprocess_block(&$variables) {
           }
         }
       }
-
+      
       if ($block->hasField('field_collection_results') && !$block->get('field_collection_results')->isEmpty()) {
         $items = $block->field_collection_results->value;
         $view->setItemsPerPage($items);
