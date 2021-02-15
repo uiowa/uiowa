@@ -29,20 +29,19 @@
 {% set video_field = content.field_uiowa_hero_video[0]['#media'].field_media_video_file.entity.uri.value %}
 {% set video_url = file_url(content.field_uiowa_hero_video[0]['#media'].field_media_video_file.entity.uri.value) %}
 {% set video_thumbnail = file_url(content.field_uiowa_hero_image[0]['#media'].field_media_image.entity.uri.value) %}
-
 {# @todo Replace this with adding classes to <section> via attributes. #}
-{% if elements['#layout_builder_style'][0] == 'hero__container-bottom' %}
+{% if elements['#layout_builder_style'][0] == 'block_style_hero_left_aligned' %}
 	{% set vertical_align = 'bottom' %}
-{% elseif  elements['#layout_builder_style'][0] == 'hero__container-grid' %}
+{% elseif  elements['#layout_builder_style'][0] == 'block_style_hero_grid' %}
 	{% set vertical_align = 'grid' %}
 {% else %}
 	{% set vertical_align = 'center' %}
 {% endif %}
 
 
-{% if elements['#layout_builder_style'][0] == 'hero__container-bottom' %}
+{% if elements['#layout_builder_style'][0] == 'block_style_hero_left_aligned' %}
 	{% set vertical_align = 'bottom' %}
-{% elseif  elements['#layout_builder_style'][0] == 'hero__container-grid' %}
+{% elseif  elements['#layout_builder_style'][0] == 'block_style_hero_grid' %}
 	{% set vertical_align = 'grid' %}
 {% else %}
 	{% set vertical_align = 'center' %}
