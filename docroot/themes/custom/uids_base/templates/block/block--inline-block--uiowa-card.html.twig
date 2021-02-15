@@ -25,11 +25,10 @@
 * @see template_preprocess_block()
 */
 #}
-{% set styles = elements['#layout_builder_style'] %}
 {% set style_classes = [] %}
 {% set size_classes = [] %}
 
-{% for style in styles %}
+{% for style in attributes.class %}
 	{# Remove media classes if media--circle  #}
 	{% if style starts with 'media--circle' %}
 		{% set style_classes = style_classes|merge([style]) %}
