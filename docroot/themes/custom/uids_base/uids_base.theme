@@ -508,6 +508,7 @@ function uids_base_preprocess_block(&$variables) {
     }
   }
 
+  // @todo Combine this section with the section before it.
   if (in_array($variables['base_plugin_id'], [
     'system_menu_block',
     'menu_block',
@@ -558,7 +559,7 @@ function uids_base_preprocess_block(&$variables) {
     $block = $variables['elements']['content']['#block_content'];
 
     // Remove headline classes from attributes.
-    $variables['headline_classes'] = array_filter($variables['elements']['#layout_builder_style'], function ($v) {
+    $variables['headline_classes'] = array_filter($variables['elements']['#attributes']['class'], function ($v) {
       return substr($v, 0, 13) === 'bold-headline';
     });
 
@@ -584,8 +585,8 @@ function uids_base_preprocess_block(&$variables) {
   }
 
   // Check if the hover effect should be applied on the stat block.
-  if ($variables['derivative_plugin_id'] == 'uiowa_statistic' && isset($variables['elements']['#layout_builder_style'])) {
-    $variables['has_hover_effect'] = !in_array('stat--static', $variables['elements']['#layout_builder_style']);
+  if ($variables['derivative_plugin_id'] == 'uiowa_statistic' && isset($variables['elements']['#attributes']['class'])) {
+    $variables['has_hover_effect'] = !in_array('stat--static', $variables['elements']['#attributes']['class']);
   }
 
 }
