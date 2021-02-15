@@ -34,6 +34,15 @@ abstract class BaseNodeSource extends SqlBase {
   protected $entityTypeManager;
 
   /**
+   * Number of records to fetch from the database during each batch.
+   *
+   * A value of zero indicates no batching is to be done.
+   *
+   * @var int
+   */
+  protected $batchSize = 50;
+
+  /**
    * {@inheritdoc}
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration, StateInterface $state, ModuleHandlerInterface $module_handler, FileSystemInterface $file_system, EntityTypeManager $entityTypeManager) {
@@ -251,6 +260,40 @@ abstract class BaseNodeSource extends SqlBase {
       ->execute()
       ->fetchCol();
     $row->setSourceProperty('alias', $record);
+  }
+
+  /**
+   * Utility class to run post migration import processes.
+   */
+  public function postImportProcess() {
+    return FALSE;
+  }
+
+  /**
+   * Attempt to clear the entity cache if needed to avoid memory overflows.
+   * Based on core/modules/migrate/src/MigrateExecutable.php, line 543.
+   *
+   * @return int
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   */
+  public function clearMemory() {
+    // First, try resetting Drupal's static storage - this frequently releases
+    // plenty of memory to continue.
+    drupal_static_reset();
+
+    // Entity storage can blow up with caches so clear them out.
+    $manager = $this->entityTypeManager;
+    foreach ($manager->getDefinitions() as $id => $definition) {
+      $manager
+        ->getStorage($id)
+        ->resetCache();
+    }
+
+    // @TODO: explore resetting the container.
+    // Run garbage collector to further reduce memory.
+    gc_collect_cycles();
+    return memory_get_usage();
   }
 
 }
