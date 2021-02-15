@@ -512,7 +512,7 @@ function sitenow_articles_preprocess_block(&$variables) {
           }
         }
       }
-      
+
       if ($block->hasField('field_collection_results') && !$block->get('field_collection_results')->isEmpty()) {
         $items = $block->field_collection_results->value;
         $view->setItemsPerPage($items);
