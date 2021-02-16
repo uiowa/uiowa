@@ -2219,3 +2219,9 @@ $sites['fohr.local.drupal.uiowa.edu'] = 'hr.fo.uiowa.edu';
 $sites['fohr.dev.drupal.uiowa.edu'] = 'hr.fo.uiowa.edu';
 $sites['fohr.stage.drupal.uiowa.edu'] = 'hr.fo.uiowa.edu';
 $sites['fohr.prod.drupal.uiowa.edu'] = 'hr.fo.uiowa.edu';
+
+// Directory aliases for facultyhonors.clas.uiowa.edu.
+$sites['clasfacultyhonors.local.drupal.uiowa.edu'] = 'facultyhonors.clas.uiowa.edu';
+$sites['clasfacultyhonors.dev.drupal.uiowa.edu'] = 'facultyhonors.clas.uiowa.edu';
+$sites['clasfacultyhonors.stage.drupal.uiowa.edu'] = 'facultyhonors.clas.uiowa.edu';
+$sites['clasfacultyhonors.prod.drupal.uiowa.edu'] = 'facultyhonors.clas.uiowa.edu';
