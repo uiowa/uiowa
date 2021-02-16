@@ -1,5 +1,22 @@
+// This might be closer to what we actually want.
 body.text--serif {
-  main {
-    font-family: "Lora", serif;
+  $text--serif: "Lora";
+
+  .field--name-body,
+  .block-inline-blockuiowa-text-area,
+  .field--name-field-person-bio,
+  .event-description,
+  .card__body {
+    p {
+      font-family: $text--serif, serif;
+    }
+  }
+  .card .field--name-field-teaser {
+    font-family: $text--serif, serif;
   }
 }
+
+// This is for if we only want to target main.
+//body.text--serif main {
+//  font-family: "Lora", serif;
+//}
