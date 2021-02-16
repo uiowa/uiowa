@@ -148,7 +148,7 @@ h6 {
         &:before {
           content: ",";
           //padding-right: $xsm;
-          margin-left: -$sm;
+          margin-left: -.825rem;
           //margin-right: -$xsm;
           padding: 0;
         }
@@ -174,8 +174,24 @@ h6 {
   }
 
   .field--name-field-area-of-study-majors {
+
+    .field__item:first-child {
+      .paragraph--type--degree {
+        .field--name-field-degree-abbreviation {
+          &:before {
+            margin-left: -.175rem;
+          }
+        }
+      }
+    }
+
+
+
     .paragraph--type--degree {
       display: inline;
+        &:before {
+          margin-left: -.125rem;
+        }
 
       .field--name-field-degree-abbreviation.field--label-hidden.field__item {
         margin: 0 $xsm;
@@ -273,7 +289,7 @@ h6 {
     &:before {
       content: ":";
       padding-right: $xsm;
-      margin-left: -$xsm;
+      margin-left: -.285rem;
     }
   }
 
