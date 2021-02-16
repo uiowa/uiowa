@@ -227,11 +227,21 @@ function sitenow_articles_node_view(array &$build, EntityInterface $entity, Enti
  * Implements hook_preprocess_HOOK().
  */
 function sitenow_articles_preprocess_views_view(&$variables) {
-  switch ($variables["id"]) {
+  switch ($variables['id']) {
     case 'articles':
-      if (empty($variables["header"]["area"]["#text"])) {
-        unset($variables["header"]["area"]);
+      /** @var  \Drupal\views\ViewExecutable $view */
+      $view = $variables['view'];
+
+      if (empty($variables['header']['area']['#text'])) {
+        unset($variables['header']['area']);
       }
+
+      // If this is the page display and arguments were provided, hide the
+      // feed icons since we don't want to promote those filtered RSS feeds.
+      if ($view->current_display == 'page_articles' && !empty($view->args)) {
+        $variables['feed_icons'] = [];
+      }
+
       break;
 
   }
