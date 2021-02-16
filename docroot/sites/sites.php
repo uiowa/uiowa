@@ -2225,3 +2225,9 @@ $sites['clasfacultyhonors.local.drupal.uiowa.edu'] = 'facultyhonors.clas.uiowa.e
 $sites['clasfacultyhonors.dev.drupal.uiowa.edu'] = 'facultyhonors.clas.uiowa.edu';
 $sites['clasfacultyhonors.stage.drupal.uiowa.edu'] = 'facultyhonors.clas.uiowa.edu';
 $sites['clasfacultyhonors.prod.drupal.uiowa.edu'] = 'facultyhonors.clas.uiowa.edu';
+
+// Directory aliases for cdd.uiowa.edu.
+$sites['cdd.local.drupal.uiowa.edu'] = 'cdd.uiowa.edu';
+$sites['cdd.dev.drupal.uiowa.edu'] = 'cdd.uiowa.edu';
+$sites['cdd.stage.drupal.uiowa.edu'] = 'cdd.uiowa.edu';
+$sites['cdd.prod.drupal.uiowa.edu'] = 'cdd.uiowa.edu';
