@@ -2207,3 +2207,9 @@ $sites['orgiowaneuroscienceclub.local.drupal.uiowa.edu'] = 'iowaneuroscienceclub
 $sites['orgiowaneuroscienceclub.dev.drupal.uiowa.edu'] = 'iowaneuroscienceclub.org.uiowa.edu';
 $sites['orgiowaneuroscienceclub.stage.drupal.uiowa.edu'] = 'iowaneuroscienceclub.org.uiowa.edu';
 $sites['orgiowaneuroscienceclub.prod.drupal.uiowa.edu'] = 'iowaneuroscienceclub.org.uiowa.edu';
+
+// Directory aliases for umallik.lab.uiowa.edu.
+$sites['labumallik.local.drupal.uiowa.edu'] = 'umallik.lab.uiowa.edu';
+$sites['labumallik.dev.drupal.uiowa.edu'] = 'umallik.lab.uiowa.edu';
+$sites['labumallik.stage.drupal.uiowa.edu'] = 'umallik.lab.uiowa.edu';
+$sites['labumallik.prod.drupal.uiowa.edu'] = 'umallik.lab.uiowa.edu';
