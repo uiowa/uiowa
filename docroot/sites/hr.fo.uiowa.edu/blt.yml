@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: fohr.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: fohr
+  human_name: hr.fo.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: fohr.prod
+drupal:
+  db:
+    database: hr_fo_uiowa_edu
+uiowa:
+  requester: mforcier
