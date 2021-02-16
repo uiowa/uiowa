@@ -61,7 +61,6 @@
         padding: 2rem;
       }
     }
-
   }
 }
 
@@ -97,6 +96,15 @@
 
 // Adjust padding for left aligned bottom content
 .layout--onecol {
+  &[class*=page__container--edge] {
+    .banner.banner--vertical-bottom.banner--horizontal-left {
+      .banner__content {
+        @include breakpoint(container) {
+          padding: 3rem 1.5rem 4rem 0rem;
+        }
+      }
+    }
+  }
   .banner {
     &.banner--vertical-bottom.banner--horizontal-left {
       .banner__content {
@@ -106,6 +114,7 @@
       }
     }
   }
+}
 
   // Remove left/right padding if edge-to-edge is selected
   .layout--onecol[class*=page__container--edge] {
@@ -115,7 +124,6 @@
       }
     }
   }
-}
 
 // Set larger heading size for large banner only
 .banner--large,
