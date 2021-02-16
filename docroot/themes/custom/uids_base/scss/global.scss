@@ -463,30 +463,22 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   }
 }
 
-  // Firefox only
-  @-moz-document url-prefix() {
-    .o-canvas__menu .region-primary-menu {
-      &::after {
-        float: left;
-        padding-bottom: 100%;
-        content: '';
-        clear: both;
-      }
-      @include breakpoint(sm) {
-        &::after {
-          padding-bottom: 32.25%;
-        }
-      }
+// Extra padding to help browsers with a full menu drawer
+.o-canvas__menu .region-primary-menu {
+  &::after {
+    float: left;
+    padding-bottom: 100%;
+    content: '';
+    clear: both;
+    display: list-item;
+    color: #fff;
+  }
+  @include breakpoint(sm) {
+    &::after {
+      padding-bottom: 50px;
     }
   }
-
-  // Extra padding to help other browsers with menu drawer
-  .o-canvas--open .o-canvas__drawer {
-    padding-bottom: 250px;
-    @include breakpoint(sm) {
-      padding-bottom: 100px;
-    }
-  }
+}
 
 @media all and (min-width: 0px) and (max-width: 855px) and (-ms-high-contrast: none),
 (-ms-high-contrast: active) {
