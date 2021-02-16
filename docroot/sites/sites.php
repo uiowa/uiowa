@@ -2231,3 +2231,9 @@ $sites['cdd.local.drupal.uiowa.edu'] = 'cdd.uiowa.edu';
 $sites['cdd.dev.drupal.uiowa.edu'] = 'cdd.uiowa.edu';
 $sites['cdd.stage.drupal.uiowa.edu'] = 'cdd.uiowa.edu';
 $sites['cdd.prod.drupal.uiowa.edu'] = 'cdd.uiowa.edu';
+
+// Directory aliases for iddrc.uiowa.edu.
+$sites['iddrc.local.drupal.uiowa.edu'] = 'iddrc.uiowa.edu';
+$sites['iddrc.dev.drupal.uiowa.edu'] = 'iddrc.uiowa.edu';
+$sites['iddrc.stage.drupal.uiowa.edu'] = 'iddrc.uiowa.edu';
+$sites['iddrc.prod.drupal.uiowa.edu'] = 'iddrc.uiowa.edu';
