@@ -2207,3 +2207,33 @@ $sites['orgiowaneuroscienceclub.local.drupal.uiowa.edu'] = 'iowaneuroscienceclub
 $sites['orgiowaneuroscienceclub.dev.drupal.uiowa.edu'] = 'iowaneuroscienceclub.org.uiowa.edu';
 $sites['orgiowaneuroscienceclub.stage.drupal.uiowa.edu'] = 'iowaneuroscienceclub.org.uiowa.edu';
 $sites['orgiowaneuroscienceclub.prod.drupal.uiowa.edu'] = 'iowaneuroscienceclub.org.uiowa.edu';
+
+// Directory aliases for umallik.lab.uiowa.edu.
+$sites['labumallik.local.drupal.uiowa.edu'] = 'umallik.lab.uiowa.edu';
+$sites['labumallik.dev.drupal.uiowa.edu'] = 'umallik.lab.uiowa.edu';
+$sites['labumallik.stage.drupal.uiowa.edu'] = 'umallik.lab.uiowa.edu';
+$sites['labumallik.prod.drupal.uiowa.edu'] = 'umallik.lab.uiowa.edu';
+
+// Directory aliases for hr.fo.uiowa.edu.
+$sites['fohr.local.drupal.uiowa.edu'] = 'hr.fo.uiowa.edu';
+$sites['fohr.dev.drupal.uiowa.edu'] = 'hr.fo.uiowa.edu';
+$sites['fohr.stage.drupal.uiowa.edu'] = 'hr.fo.uiowa.edu';
+$sites['fohr.prod.drupal.uiowa.edu'] = 'hr.fo.uiowa.edu';
+
+// Directory aliases for facultyhonors.clas.uiowa.edu.
+$sites['clasfacultyhonors.local.drupal.uiowa.edu'] = 'facultyhonors.clas.uiowa.edu';
+$sites['clasfacultyhonors.dev.drupal.uiowa.edu'] = 'facultyhonors.clas.uiowa.edu';
+$sites['clasfacultyhonors.stage.drupal.uiowa.edu'] = 'facultyhonors.clas.uiowa.edu';
+$sites['clasfacultyhonors.prod.drupal.uiowa.edu'] = 'facultyhonors.clas.uiowa.edu';
+
+// Directory aliases for cdd.uiowa.edu.
+$sites['cdd.local.drupal.uiowa.edu'] = 'cdd.uiowa.edu';
+$sites['cdd.dev.drupal.uiowa.edu'] = 'cdd.uiowa.edu';
+$sites['cdd.stage.drupal.uiowa.edu'] = 'cdd.uiowa.edu';
+$sites['cdd.prod.drupal.uiowa.edu'] = 'cdd.uiowa.edu';
+
+// Directory aliases for iddrc.uiowa.edu.
+$sites['iddrc.local.drupal.uiowa.edu'] = 'iddrc.uiowa.edu';
+$sites['iddrc.dev.drupal.uiowa.edu'] = 'iddrc.uiowa.edu';
+$sites['iddrc.stage.drupal.uiowa.edu'] = 'iddrc.uiowa.edu';
+$sites['iddrc.prod.drupal.uiowa.edu'] = 'iddrc.uiowa.edu';
