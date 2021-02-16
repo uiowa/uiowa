@@ -4,6 +4,9 @@ namespace Drupal\sitenow_core;
 
 use Drupal\Core\Security\TrustedCallbackInterface;
 
+/**
+ * Provide pre-rendering for user login block.
+ */
 class UserLoginBlockPreRender implements TrustedCallbackInterface {
 
   /**
@@ -14,13 +17,14 @@ class UserLoginBlockPreRender implements TrustedCallbackInterface {
   }
 
   /**
-   * #pre_render callback: Alters layout builder to use dropbuttons to add custom blocks.
+   * Pre-render callback for user_login_block.
    *
    * @param array $build
    *   The block build render array.
    *
    * @return array
    *   The render array.
+   *
    * @see uiowa_auth_block_view_user_login_block_alter()
    * @see sitenow_core_block_view_user_login_block_alter()
    */
@@ -44,9 +48,7 @@ class UserLoginBlockPreRender implements TrustedCallbackInterface {
       $build['content']['hawkid']['message'] = [
         '#prefix' => '<div class="alert alert-warning">',
         '#suffix' => '</div>',
-        '#markup' => t('The SiteNow service is restricted to current
-       University of Iowa members. You must <a href="@link">log in</a> first to access the request
-       form.', [
+        '#markup' => t('The SiteNow service is restricted to current University of Iowa members. You must <a href="@link">log in</a> first to access the request form.', [
           '@link' => $url->toString(),
         ]),
       ];
