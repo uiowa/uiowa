@@ -27,9 +27,9 @@ class ListBlock extends CoreBlock {
     }
 
     $form['allow']['#options']['offset'] = $this->t('Pager offset');
-    // @todo Figure out how to add an option to set help text for more link.
-    $form['allow']['#options']['display_more_link'] = $this->t('Display more link');
+    $form['allow']['#options']['hide_fields'] = $this->t('Hide fields');
     $form['allow']['#options']['sort_sorts'] = $this->t('Adjust the order of sorts');
+    $form['allow']['#options']['display_more_link'] = $this->t('Display more link');
 
     $defaults = [];
     if (!empty($form['allow']['#default_value'])) {
@@ -41,6 +41,25 @@ class ListBlock extends CoreBlock {
 
     $form['allow']['#default_value'] = $defaults;
 
+    // Show a text area to add custom help text to the display more link.
+    $more_link_help_text = $this->getOption('more_link_help_text');
+    $form['more_link_help_text'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('More link help text'),
+      '#description' => $this->t('Set help text to display below more link.'),
+      '#default_value' => $more_link_help_text ?: '',
+      '#states' => [
+        'visible' => [
+          [
+            "input[name='allow[display_more_link]']" => [
+              'checked' => TRUE,
+            ],
+          ],
+        ],
+      ],
+    ];
+
+    // Show exposed filters that can be set in the block form.
     $customized_filters = $this->getOption('filter_in_block');
     $form['filter_in_block'] = [
       '#type' => 'checkboxes',
@@ -58,6 +77,7 @@ class ListBlock extends CoreBlock {
     parent::submitOptionsForm($form, $form_state);
     if ($form_state->get('section') === 'allow') {
       $this->setOption('filter_in_block', Checkboxes::getCheckedCheckboxes($form_state->getValue('filter_in_block')));
+      $this->setOption('more_link_help_text', $form_state->getValue('more_link_help_text'));
     }
   }
 
@@ -71,8 +91,8 @@ class ListBlock extends CoreBlock {
       'items_per_page' => $this->t('Items per page'),
       'offset' => $this->t('Pager offset'),
       'display_more_link' => $this->t('Display more link'),
+      'hide_fields' => $this->t('Hide fields'),
       'sort_sorts' => $this->t('Adjust the order of sorts'),
-      'filter_in_block' => $this->t('Set exposed filters in block settings.'),
     ];
     $filter_intersect = array_intersect_key($filter_options, $filtered_allow);
 
@@ -140,31 +160,80 @@ class ListBlock extends CoreBlock {
       ];
     }
 
-    if (!empty($allow_settings['display_more_link'])) {
-      $form['override']['display_more_toggle'] = [
-        '#type' => 'checkbox',
-        '#title' => $this->t('Display More link'),
+    // Provide "Hide fields" block settings form.
+    if (!empty($allow_settings['hide_fields'])) {
+      // Set up the configuration table for hiding / sorting fields.
+      $fields = $this->getHandlers('field');
+      $header = [];
+      if (!empty($allow_settings['hide_fields'])) {
+        $header['hide'] = $this->t('Hide');
+      }
+      $header['label'] = $this->t('Label');
+      if (!empty($allow_settings['sort_fields'])) {
+        $header['weight'] = $this->t('Weight');
+      }
+      $form['override']['hide_fields'] = [
+        '#type' => 'details',
+        '#title' => $this->t('Hide fields'),
+        '#description' => $this->t('Choose to hide some of the fields.'),
+      ];
+      $form['override']['hide_fields']['field_list'] = [
+        '#type' => 'table',
+        '#header' => $header,
+        '#rows' => [],
       ];
 
-      // @todo Figure out how to make the style of this field
-      //   look like other LinkIt fields.
-      $form['override']['display_more_path'] = [
-        '#type' => 'linkit',
-        '#title' => $this->t('Path'),
-        '#description' => $this->t('Start typing to see a list of results. Click to select.'),
-        '#autocomplete_route_name' => 'linkit.autocomplete',
-        '#autocomplete_route_parameters' => [
-          'linkit_profile_id' => 'default',
-        ],
-        '#default_value' => isset($block_configuration['display_more_path']) ? $block_configuration['display_more_path'] : NULL,
-      ];
-      $form['#attached']['library'][] = 'linkit/linkit.autocomplete';
-      // @todo Add "Display more path" setting.
-      // @todo Only show "Display more path" setting when "Display more" is checked.
+      // Add each field to the configuration table.
+      foreach ($fields as $field_name => $plugin) {
+        $field_label = $plugin->adminLabel();
+        if (!empty($plugin->options['label'])) {
+          $field_label .= ' (' . $plugin->options['label'] . ')';
+        }
+        $form['override']['hide_fields']['field_list'][$field_name]['#weight'] = !empty($block_configuration['fields'][$field_name]['weight']) ? $block_configuration['fields'][$field_name]['weight'] : 0;
+        $form['override']['hide_fields']['field_list'][$field_name]['hide'] = [
+          '#type' => 'checkbox',
+          '#default_value' => !empty($block_configuration['fields'][$field_name]['hide']) ? $block_configuration['fields'][$field_name]['hide'] : 0,
+        ];
+        $form['override']['hide_fields']['field_list'][$field_name]['label'] = [
+          '#markup' => $field_label,
+        ];
+      }
     }
 
+    // Provide "Configure sorts" block settings form.
     if (!empty($allow_settings['sort_sorts'])) {
-      // @todo Add "Sort" setting. How to populate this from the view?
+      $form['override']['sort'] = [
+        '#type' => 'details',
+        '#title' => $this->t('Sort options'),
+        '#description' => $this->t('Choose which sorts to use and in which order.'),
+      ];
+
+      $sorts = $this->getHandlers('sort');
+      $options = [
+        'ASC' => $this->t('Sort ascending'),
+        'DESC' => $this->t('Sort descending'),
+      ];
+      foreach ($sorts as $sort_name => $plugin) {
+        $form['override']['sort'][$sort_name] = [
+          '#type' => 'details',
+          '#title' => $plugin->adminLabel(),
+        ];
+        $form['override']['sort'][$sort_name]['plugin'] = [
+          '#type' => 'value',
+          '#value' => $plugin,
+        ];
+        $form['override']['sort'][$sort_name]['order'] = [
+          '#title' => $this->t('Order'),
+          '#type' => 'radios',
+          '#options' => $options,
+          '#default_value' => $plugin->options['order'],
+        ];
+
+        // Set default values for sorts for this block.
+        if (!empty($block_configuration["sort"][$sort_name])) {
+          $form['override']['sort'][$sort_name]['order']['#default_value'] = $block_configuration["sort"][$sort_name];
+        }
+      }
     }
 
     // Provide "Exposed filters" block settings form.
@@ -197,6 +266,38 @@ class ListBlock extends CoreBlock {
       }
     }
 
+    if (!empty($allow_settings['display_more_link'])) {
+      $form['override']['display_more_toggle'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Display More link'),
+      ];
+
+      // @todo Figure out how to make the style of this field
+      //   look like other LinkIt fields.
+      $form['override']['display_more_path'] = [
+        '#type' => 'linkit',
+        '#title' => $this->t('Path'),
+        '#description' => $this->t('Start typing to see a list of results. Click to select.'),
+        '#autocomplete_route_name' => 'linkit.autocomplete',
+        '#autocomplete_route_parameters' => [
+          'linkit_profile_id' => 'default',
+        ],
+        '#default_value' => isset($block_configuration['display_more_path']) ? $block_configuration['display_more_path'] : NULL,
+        '#states' => [
+          'visible' => [
+            [
+              "input[name='settings[override][display_more_toggle]']" => [
+                'checked' => TRUE,
+              ],
+            ],
+          ],
+        ],
+      ];
+      $form['#attached']['library'][] = 'linkit/linkit.autocomplete';
+      // @todo Add "Display more path" setting.
+      // @todo Only show "Display more path" setting when "Display more" is checked.
+    }
+
     return $form;
   }
 
@@ -221,8 +322,16 @@ class ListBlock extends CoreBlock {
       // @todo Save "Display more path" setting to block configuration.
     }
 
+    // Provide "Configure sorts" block settings form.
     if (!empty($allow_settings['sort_sorts'])) {
-      // @todo Save "Sort" setting to block configuration.
+      // @todo Process configure sorts.
+    }
+
+    // Save "Hide fields" settings to block configuration.
+    if (!empty($allow_settings['hide_fields'])) {
+      if ($fields = array_filter($form_state->getValue(['override', 'hide_fields', 'field_list']))) {
+        $block->setConfigurationValue('fields', $fields);
+      }
     }
 
     // Save "Filter in block" settings to block configuration.
@@ -253,6 +362,21 @@ class ListBlock extends CoreBlock {
 
     // @todo Set view pager based on "Display pager" setting.
     // @todo Figure out how to display a more link based on "Display more path" setting.
+    // Change fields output based on block configuration.
+    if (!empty($allow_settings['hide_fields'])) {
+      if (!empty($config['fields']) && $this->view->getStyle()->usesFields()) {
+        $fields = $this->view->getHandlers('field');
+        foreach (array_keys($fields) as $field_name) {
+          // Remove each field in sequence and re-add them to sort
+          // appropriately or hide if disabled.
+          $this->view->removeHandler($display_id, 'field', $field_name);
+          if (empty($allow_settings['hide_fields']) || (!empty($allow_settings['hide_fields']) && empty($config['fields'][$field_name]['hide']))) {
+            $this->view->addHandler($display_id, 'field', $fields[$field_name]['table'], $fields[$field_name]['field'], $fields[$field_name], $field_name);
+          }
+        }
+      }
+    }
+
     // @todo Set view sorts based on "Sort" setting.
     // Set view filter based on "Filter" setting.
     $exposed_filter_values = !empty($config['exposed_filter_values']) ? $config['exposed_filter_values'] : [];

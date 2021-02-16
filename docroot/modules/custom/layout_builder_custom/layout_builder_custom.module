@@ -619,6 +619,21 @@ function layout_builder_custom_preprocess_block(&$variables) {
         Cache::invalidateTags(['media:' . $id]);
       }
       break;
+
+    case 'views_block:people_block-block_people':
+      if (isset($variables['attributes']['class'])) {
+        /** @var \Drupal\views\ViewExecutable $view */
+        $view = $variables['content']['#view'];
+        // Temporary way of filtering out unwanted styles.
+        $classes = array_filter($variables['attributes']['class'], function($class) {
+          return !in_array($class, [
+            'js-layout-builder-block',
+            'layout-builder-block',
+            'contextual-region',
+          ]);
+        });
+        $view->display_handler->setOption('block_styles', $classes);
+      }
   }
 }
 
