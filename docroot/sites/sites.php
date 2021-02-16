@@ -2213,3 +2213,9 @@ $sites['labumallik.local.drupal.uiowa.edu'] = 'umallik.lab.uiowa.edu';
 $sites['labumallik.dev.drupal.uiowa.edu'] = 'umallik.lab.uiowa.edu';
 $sites['labumallik.stage.drupal.uiowa.edu'] = 'umallik.lab.uiowa.edu';
 $sites['labumallik.prod.drupal.uiowa.edu'] = 'umallik.lab.uiowa.edu';
+
+// Directory aliases for hr.fo.uiowa.edu.
+$sites['fohr.local.drupal.uiowa.edu'] = 'hr.fo.uiowa.edu';
+$sites['fohr.dev.drupal.uiowa.edu'] = 'hr.fo.uiowa.edu';
+$sites['fohr.stage.drupal.uiowa.edu'] = 'hr.fo.uiowa.edu';
+$sites['fohr.prod.drupal.uiowa.edu'] = 'hr.fo.uiowa.edu';
