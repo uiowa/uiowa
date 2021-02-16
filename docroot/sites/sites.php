@@ -2237,3 +2237,15 @@ $sites['iddrc.local.drupal.uiowa.edu'] = 'iddrc.uiowa.edu';
 $sites['iddrc.dev.drupal.uiowa.edu'] = 'iddrc.uiowa.edu';
 $sites['iddrc.stage.drupal.uiowa.edu'] = 'iddrc.uiowa.edu';
 $sites['iddrc.prod.drupal.uiowa.edu'] = 'iddrc.uiowa.edu';
+
+// Directory aliases for deroo.lab.uiowa.edu.
+$sites['labderoo.local.drupal.uiowa.edu'] = 'deroo.lab.uiowa.edu';
+$sites['labderoo.dev.drupal.uiowa.edu'] = 'deroo.lab.uiowa.edu';
+$sites['labderoo.stage.drupal.uiowa.edu'] = 'deroo.lab.uiowa.edu';
+$sites['labderoo.prod.drupal.uiowa.edu'] = 'deroo.lab.uiowa.edu';
+
+// Directory aliases for iisc.uiowa.edu.
+$sites['iisc.local.drupal.uiowa.edu'] = 'iisc.uiowa.edu';
+$sites['iisc.dev.drupal.uiowa.edu'] = 'iisc.uiowa.edu';
+$sites['iisc.stage.drupal.uiowa.edu'] = 'iisc.uiowa.edu';
+$sites['iisc.prod.drupal.uiowa.edu'] = 'iisc.uiowa.edu';
