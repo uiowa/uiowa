@@ -67,5 +67,5 @@ function sitenow_core_module_implements_alter(&$implementations, $hook) {
  * Implements hook_block_view_BASE_BLOCK_ID_alter().
  */
 function sitenow_core_block_view_user_login_block_alter(array &$build, BlockPluginInterface $block) {
-  $build['#pre_render'][] = UserLoginBlockPreRender::class . '::preRender';
+  $build['#pre_render'][] = [UserLoginBlockPreRender::class, 'preRender'];
 }
