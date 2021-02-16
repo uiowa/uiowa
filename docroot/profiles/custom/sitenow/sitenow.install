@@ -1996,7 +1996,6 @@ function sitenow_update_8050() {
 
                 foreach ($field_values as $field_value) {
 
-                  // @todo Any special handling for text_with_summary fields?
                   $document = Html::load($field_value['value']);
 
                   // Get all <drupal-entity> instances.
@@ -2048,12 +2047,15 @@ function sitenow_update_8050() {
                   ];
                 }
 
-                if (count($updated_values) === 1) {
-                  $updated_values = $updated_values[0];
-                }
+                // Only make updates if there are updated values.
+                if (!empty($updated_values)) {
+                  if (count($updated_values) === 1) {
+                    $updated_values = $updated_values[0];
+                  }
 
-                $entity->{$name} = $updated_values;
-                $needs_save = TRUE;
+                  $entity->{$name} = $updated_values;
+                  $needs_save = TRUE;
+                }
               }
             }
             if ($needs_save) {
