@@ -329,7 +329,11 @@ class ListBlock extends CoreBlock {
 
     // Save "Hide fields" settings to block configuration.
     if (!empty($allow_settings['hide_fields'])) {
-      if ($fields = array_filter($form_state->getValue(['override', 'hide_fields', 'field_list']))) {
+      if ($fields = array_filter($form_state->getValue([
+        'override',
+        'hide_fields',
+        'field_list',
+      ]))) {
         $block->setConfigurationValue('fields', $fields);
       }
     }

@@ -625,7 +625,7 @@ function layout_builder_custom_preprocess_block(&$variables) {
         /** @var \Drupal\views\ViewExecutable $view */
         $view = $variables['content']['#view'];
         // Temporary way of filtering out unwanted styles.
-        $classes = array_filter($variables['attributes']['class'], function($class) {
+        $classes = array_filter($variables['attributes']['class'], function ($class) {
           return !in_array($class, [
             'js-layout-builder-block',
             'layout-builder-block',
