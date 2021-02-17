@@ -41,7 +41,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
   }
 
   /**
-   * Add the DB size field label to the status command annotation data.
+   * Add custom field labels to the status command annotation data.
    *
    * @hook init core:status
    */
