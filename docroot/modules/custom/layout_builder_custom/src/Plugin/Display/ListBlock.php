@@ -152,13 +152,12 @@ class ListBlock extends CoreBlock {
       ];
     }
 
-//    if (!empty($allow_settings['pager_display'])) {
-      $form['override']['pager'] = [
-        '#type' => 'checkbox',
-        '#title' => $this->t('Display pager'),
-        '#default_value' => isset($block_configuration['pager_display']) ? $block_configuration['pager_display'] : FALSE,
-      ];
-//    }
+    // @todo Re-factor this based on a coherent set of paging choices.
+    $form['override']['pager'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Display pager'),
+      '#default_value' => isset($block_configuration['pager_display']) ? $block_configuration['pager_display'] : FALSE,
+    ];
 
     // Provide "Hide fields" block settings form.
     if (!empty($allow_settings['hide_fields'])) {
@@ -364,15 +363,14 @@ class ListBlock extends CoreBlock {
     $allow_settings = array_filter($this->getOption('allow'));
 
     // Save "Pager type" settings to block configuration.
-//    if (!empty($allow_settings['pager'])) {
-      if ($pager = $form_state->getValue(['override', 'pager'])) {
-        $configuration['pager'] = 'none';
-      }
-      else {
-        $configuration['pager'] = 'some';
-      }
+    // @todo Re-factor this based on changes to pager options.
+    if ($pager = $form_state->getValue(['override', 'pager'])) {
+      $configuration['pager'] = 'none';
+    }
+    else {
+      $configuration['pager'] = 'some';
+    }
     $block->setConfigurationValue('pager', $configuration['pager']);
-//    }
 
     // @todo Set default value for items_per_page if left blank.
     // Save "Pager offset" settings to block configuration.
@@ -384,7 +382,6 @@ class ListBlock extends CoreBlock {
     }
 
     if (!empty($allow_settings['display_more_link'])) {
-      // @todo Save "Display pager" setting to block configuration.
       // @todo Save "Display more path" setting to block configuration.
     }
 
@@ -431,13 +428,12 @@ class ListBlock extends CoreBlock {
     }
 
     // Change pager style settings based on block configuration.
-//    if (!empty($allow_settings['pager'])) {
-      if (!empty($config['pager'])) {
-        $pager = $this->view->display_handler->getOption('pager');
-        $pager['type'] = $config['pager'];
-        $this->view->display_handler->setOption('pager', $pager);
-      }
-//    }
+    // @todo Re-factor based on updates to pager option.
+    if (!empty($config['pager'])) {
+      $pager = $this->view->display_handler->getOption('pager');
+      $pager['type'] = $config['pager'];
+      $this->view->display_handler->setOption('pager', $pager);
+    }
 
     // @todo Figure out how to display a more link based on "Display more path" setting.
     // Change fields output based on block configuration.
