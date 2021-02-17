@@ -45,6 +45,7 @@ p, ul {
   margin-top: 0;
   margin-bottom: 0.7rem;
   color: #666;
+  word-wrap: break-word;
 
   strong {
     font-weight: bold!important;
@@ -52,13 +53,14 @@ p, ul {
   }
 
   a {
-    word-wrap: break-word;
+    word-wrap:break-word;
+    display: inline;
     text-decoration: none;
     color: #666;
 
     &::after {
       content: " (" attr(href) ")";
-      word-wrap: anywhere;
+      word-wrap: break-word;
     }
   }
 }
@@ -109,6 +111,40 @@ h6 {
   font-size: 1.4rem;
   margin-top: 0;
   margin-bottom: 0;
+}
+
+.column-container {
+  position: relative;
+  width: 100%;
+  &:after {
+    display: block;
+    height: 1px;
+    clear: both;
+  }
+}
+
+.column-container__left {
+  display: block;
+  width: 45%;
+  margin-right: -45%;
+  float: left;
+  page-break-inside: avoid;
+  word-wrap: break-word;
+  a {
+    word-wrap: break-word;
+  }
+}
+.column-container__right {
+  display: block;
+  font-size: 13px;
+  margin-left: 45%;
+  padding-left: 12px;
+  width: 45%;
+  word-wrap: break-word;
+
+  a {
+    word-wrap: break-word;
+  }
 }
 
 .node--type-area-of-study {

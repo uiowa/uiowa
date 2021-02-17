@@ -83,6 +83,7 @@
 
 <div{{ attributes.addClass(classes) }}>
 
+  {# PDF First Page #}
   {{ title_prefix }}
     <h1{{ title_attributes.addClass('pdf-title') }}>
       {{ label }}
@@ -119,12 +120,29 @@
     {{ content.field_area_of_study_comp_txt|render|striptags('<p><strong><div>')|t }}
 
     <hr class="element--spacer-separator" />
+
+    <div class="column-container">
+      <div class="column-container__left">
     {{ content.field_area_of_study_why|render }}
-    {{ content.field_area_of_study_requirement|render }}
-    {{ content.field_area_of_study_scholarship|render }}
-    {{ content.field_area_of_study_course_work|render }}
-    {{ content.field_area_of_study_opportunity|render }}
-    {{ content.field_area_of_study_career|render }}
+      </div>
+      <div class="column-container__right">
+        {{ content.field_area_of_study_requirement|render }}
+      </div>
+    </div>
+   {# PDF Second Page #}
+    <div class="column-container">
+      <div class="column-container__left">
+        {{ content.field_area_of_study_scholarship|render }}
+        {{ content.field_area_of_study_course_work|render }}
+      </div>
+      <div class="column-container__right">
+        {{ content.field_area_of_study_opportunity|render }}
+        {{ content.field_area_of_study_career|render }}
+      </div>
+    </div>
+
+
+
   </div>
 
   <div class="learn-more">
