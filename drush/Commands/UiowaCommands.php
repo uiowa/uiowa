@@ -19,39 +19,39 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
   use SiteAliasManagerAwareTrait;
   use ProcessManagerAwareTrait;
 
-  /**
-   * Add database size to status command output.
-   *
-   * @param mixed $result
-   *   The command result.
-   * @param \Consolidation\AnnotatedCommand\CommandData $commandData
-   *   The command data.
-   *
-   * @hook alter core:status
-   *
-   * @return array
-   *   The altered command result.
-   */
-  public function alterStatus($result, CommandData $commandData) {
-    if ($app = getenv('AH_SITE_GROUP')) {
-      $result['application'] = $app;
-    }
-
-    return $result;
-  }
-
-  /**
-   * Add the DB size field label to the status command annotation data.
-   *
-   * @hook init core:status
-   */
-  public function initStatus(InputInterface $input, AnnotationData $annotationData) {
-    $annotationData->append('field-labels', "\n application: Application");
-    $defaults = $annotationData->getList('default-fields');
-    array_unshift($defaults, 'application');
-    $annotationData->set('default-fields', $defaults);
-    $input->setOption('fields', $defaults);
-  }
+//  /**
+//   * Add database size to status command output.
+//   *
+//   * @param mixed $result
+//   *   The command result.
+//   * @param \Consolidation\AnnotatedCommand\CommandData $commandData
+//   *   The command data.
+//   *
+//   * @hook alter core:status
+//   *
+//   * @return array
+//   *   The altered command result.
+//   */
+//  public function alterStatus($result, CommandData $commandData) {
+//    if ($app = getenv('AH_SITE_GROUP')) {
+//      $result['application'] = $app;
+//    }
+//
+//    return $result;
+//  }
+//
+//  /**
+//   * Add the DB size field label to the status command annotation data.
+//   *
+//   * @hook init core:status
+//   */
+//  public function initStatus(InputInterface $input, AnnotationData $annotationData) {
+//    $annotationData->append('field-labels', "\n application: Application");
+//    $defaults = $annotationData->getList('default-fields');
+//    array_unshift($defaults, 'application');
+//    $annotationData->set('default-fields', $defaults);
+//    $input->setOption('fields', $defaults);
+//  }
 
   /**
    * Invoke BLT update command after sql:sync for remote targets only.
