@@ -61,6 +61,7 @@ p, ul {
     &::after {
       content: " (" attr(href) ")";
       word-wrap: break-word;
+      display: inline;
     }
   }
 }
@@ -122,28 +123,39 @@ h6 {
     clear: both;
   }
 }
-
 .column-container__left {
   display: block;
   width: 45%;
   margin-right: -45%;
   float: left;
-  page-break-inside: avoid;
   word-wrap: break-word;
+  page-break-inside: avoid;
   a {
     word-wrap: break-word;
   }
 }
 .column-container__right {
   display: block;
+  float: left;
   font-size: 13px;
-  margin-left: 45%;
+  margin-left: 50%;
   padding-left: 12px;
-  width: 45%;
+  width: 40%;
   word-wrap: break-word;
+
+  &:before {
+    display: block;
+    float: left;
+    height: 1px;
+    clear: both;
+    background-color: green;
+  }
 
   a {
     word-wrap: break-word;
+    &::after {
+      word-wrap: break-word;
+    }
   }
 }
 
