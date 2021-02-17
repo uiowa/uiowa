@@ -20,7 +20,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
   use ProcessManagerAwareTrait;
 
   /**
-   * Add database size to status command output.
+   * Add additional fields to status command output.
    *
    * @param mixed $result
    *   The command result.
