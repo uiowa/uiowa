@@ -39,7 +39,7 @@ ul {
   font-family: 'Roboto', sans-serif;
 }
 
-p {
+p, ul {
   line-height: $reduced-line-height;
   font-size: 0.8rem;
   margin-top: 0;
@@ -53,6 +53,14 @@ p {
 
   a {
     word-wrap: break-word;
+    text-decoration: none;
+    color: #666;
+
+    &::after {
+      content: attr(href);
+      padding-left: $xsm;
+      word-wrap: anywhere;
+    }
   }
 }
 
