@@ -40,7 +40,7 @@ abstract class BaseNodeSource extends SqlBase {
    *
    * @var int
    */
-  protected $batchSize = 50;
+  protected $batchSize = 100;
 
   /**
    * {@inheritdoc}
@@ -236,12 +236,12 @@ abstract class BaseNodeSource extends SqlBase {
     $nid = $row->getSourceProperty('nid');
     foreach ($tables as $table_name => $fields) {
       foreach ($fields as $field) {
-        $query = $this->select($table_name, 't');
-        $record = $query->fields('t', [$field])
+        $row->setSourceProperty($field, $this->select($table_name, 't')
+          ->fields('t', [$field])
           ->condition('entity_id', $nid, '=')
           ->execute()
-          ->fetchCol();
-        $row->setSourceProperty($field, $record);
+          ->fetchCol());
+        unset($field);
       }
     }
   }
@@ -254,12 +254,11 @@ abstract class BaseNodeSource extends SqlBase {
    */
   public function fetchUrlAliases(Row &$row) {
     $nid = $row->getSourceProperty('nid');
-    $query = $this->select('url_alias', 'alias');
-    $record = $query->fields('alias', ['alias'])
+    $row->setSourceProperty('alias', $this->select('url_alias', 'alias')
+      ->fields('alias', ['alias'])
       ->condition('source', 'node/' . $nid, '=')
       ->execute()
-      ->fetchCol();
-    $row->setSourceProperty('alias', $record);
+      ->fetchCol());
   }
 
   /**
@@ -271,9 +270,12 @@ abstract class BaseNodeSource extends SqlBase {
 
   /**
    * Attempt to clear the entity cache if needed to avoid memory overflows.
+   *
    * Based on core/modules/migrate/src/MigrateExecutable.php, line 543.
    *
    * @return int
+   *   Return the existing memory usage.
+   *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
@@ -290,7 +292,6 @@ abstract class BaseNodeSource extends SqlBase {
         ->resetCache();
     }
 
-    // @TODO: explore resetting the container.
     // Run garbage collector to further reduce memory.
     gc_collect_cycles();
     return memory_get_usage();

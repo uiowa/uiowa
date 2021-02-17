@@ -44,6 +44,7 @@ trait ProcessMediaTrait {
     $file_data = $this->fidQuery($fid);
     if ($file_data) {
       $uuid = $this->getMid($file_data['filename'])['uuid'];
+      unset($file_data);
       return $this->constructInlineEntity($uuid);
     }
     // Failed to find a file, so let's leave the content unchanged.
@@ -52,27 +53,34 @@ trait ProcessMediaTrait {
 
   /**
    * Simple query to get info on the Drupal 7 file based on fid.
+   *
+   * @param int $fid
+   *   The file id to query against.
+   *
+   * @return array
+   *   Return associative array of file information for the given fid.
    */
   public function fidQuery($fid) {
-    $query = $this->select('file_managed', 'f')
+    return $this->select('file_managed', 'f')
       ->fields('f')
-      ->condition('f.fid', $fid);
-    $results = $query->execute();
-    return $results->fetchAssoc();
+      ->condition('f.fid', $fid)
+      ->execute()
+      ->fetchAssoc();
   }
 
   /**
    * Fetch the media uuid based on the provided filename.
    */
   public function getMid($filename) {
-    $connection = \Drupal::database();
-    $query = $connection->select('file_managed', 'f');
+    $query = \Drupal::database()->select('file_managed', 'f');
     $query->join('media__field_media_image', 'fmi', 'f.fid = fmi.field_media_image_target_id');
     $query->join('media', 'm', 'fmi.entity_id = m.mid');
-    return $query->fields('m', ['uuid', 'mid'])
+    $results = $query->fields('m', ['uuid', 'mid'])
       ->condition('f.filename', $filename)
       ->execute()
       ->fetchAssoc();
+    unset($query);
+    return $results;
   }
 
   /**
@@ -96,13 +104,14 @@ trait ProcessMediaTrait {
    * Fetch the media id based on the original site's fid.
    */
   protected function getFid($original_fid, $migrate_map = 'migrate_map_d7_file') {
-    $connection = \Drupal::database();
-    $query = $connection->select($migrate_map, 'mm');
+    $query = \Drupal::database()->select($migrate_map, 'mm');
     $query->join('media__field_media_image', 'fmi', 'mm.destid1 = fmi.field_media_image_target_id');
-    return $query->fields('fmi', ['entity_id'])
+    $results = $query->fields('fmi', ['entity_id'])
       ->condition('mm.sourceid1', $original_fid)
       ->execute()
       ->fetchField();
+    unset($query);
+    return $results;
   }
 
   /**
@@ -140,13 +149,17 @@ trait ProcessMediaTrait {
 
     // Try to write the file.
     $file = file_save_data($raw_file, $drupal_file_directory . $filename);
+    // Drop the raw file out of memory for a little cleanup.
+    unset($raw_file);
 
     // If we have a file, continue.
     if ($file) {
-      // Get a connection for the destination database.
-      $connection = \Drupal::database();
-      $query = $connection->select('file_managed', 'f');
-      return $query->fields('f', ['fid'])
+      // Drop the file out of memory for a little cleanup.
+      unset($file);
+      // Get a connection for the destination database
+      // and retrieve the id for the newly created file.
+      return \Drupal::database()->select('file_managed', 'f')
+        ->fields('f', ['fid'])
         ->condition('f.filename', $filename)
         ->execute()
         ->fetchField();
@@ -206,7 +219,13 @@ trait ProcessMediaTrait {
           $media->setName($title);
           $media->setOwnerId($owner_id);
           $media->save();
-          return $media->id();
+          $id = $media->id();
+          // Minor memory cleanup.
+          unset($media);
+          unset($file);
+          $this->entityTypeManager->getStorage('media')->resetCache([$id]);
+          $this->entityTypeManager->getStorage('file')->resetCache([$fid]);
+          return $id;
 
         case 'application':
         case 'document':
@@ -226,7 +245,13 @@ trait ProcessMediaTrait {
           $media->setName($file->getFileName());
           $media->setOwnerId($owner_id);
           $media->save();
-          return $media->id();
+          $id = $media->id();
+          // Minor memory cleanup.
+          unset($media);
+          unset($file);
+          $this->entityTypeManager->getStorage('media')->resetCache([$id]);
+          $this->entityTypeManager->getStorage('file')->resetCache([$fid]);
+          return $id;
 
         default:
           return FALSE;
@@ -249,10 +274,11 @@ trait ProcessMediaTrait {
       $filename_w_subdir = explode('/', $filename_w_subdir);
       $filename = array_pop($filename_w_subdir);
       $subdir = implode('/', $filename_w_subdir) . '/';
-      // Get a connection for the destination database.
-      $dest_connection = \Drupal::database();
-      $dest_query = $dest_connection->select('file_managed', 'f');
-      $new_fid = $dest_query->fields('f', ['fid'])
+      unset($filename_w_subdir);
+      // Get a connection for the destination database
+      // and retrieve the associated fid.
+      $new_fid = \Drupal::database()->select('file_managed', 'f')
+        ->fields('f', ['fid'])
         ->condition('f.filename', $filename)
         ->execute()
         ->fetchField();
@@ -267,15 +293,18 @@ trait ProcessMediaTrait {
       if (!$new_fid) {
         // Use the filename, update the source base path with the subdirectory.
         $new_fid = $this->downloadFile($filename, $this->getSourceBasePath() . $subdir, $this->getDrupalFileDirectory());
+        unset($subdir);
         if ($new_fid) {
           $mid = $this->createMediaEntity($new_fid, $meta, 1);
         }
       }
       else {
         $mid = $this->getMid($filename)['mid'];
+        unset($filename);
         // And in case we had the file, but not the media entity.
         if (!$mid) {
           $mid = $this->createMediaEntity($new_fid, $meta, 1);
+          unset($meta);
         }
       }
       if ($mid) {
@@ -391,11 +420,24 @@ trait ProcessMediaTrait {
         }
       }
 
+      unset($token);
+      unset($img);
+      unset($file_path);
+      unset($filename);
+      unset($src);
+      unset($prefix_path);
+      unset($meta);
+
       $i--;
     }
 
     // Convert back into a string and return it.
-    return Html::serialize($document);
+    $html = Html::serialize($document);
+    // Do a little bit of cleanup.
+    unset($images);
+    unset($document);
+
+    return $html;
   }
 
   /**
@@ -420,9 +462,8 @@ trait ProcessMediaTrait {
    * Get the D7 file record using the filename.
    */
   protected function getD8FileByFilename($filename) {
-    $connection = \Drupal::database();
-    $query = $connection->select('file_managed', 'f');
-    return $query->fields('f', ['fid'])
+    return \Drupal::database()->select('file_managed', 'f')
+      ->fields('f', ['fid'])
       ->condition('f.filename', $filename)
       ->execute()
       ->fetchField();

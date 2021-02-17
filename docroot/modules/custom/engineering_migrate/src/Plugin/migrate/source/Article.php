@@ -142,11 +142,16 @@ class Article extends BaseNodeSource {
    * @throws \Drupal\migrate\MigrateException
    */
   public function prepareRow(Row $row) {
+    // Add a small delay to help ensure garbage collection runs.
+    // Can be removed if we're using the clearMemory method below.
+    time_nanosleep(0, 10000000);
+    // Clear out some memory every 100 rows.
+    if ($this->rowCount % 100 == 0) {
+      $this->clearMemory();
+    }
+
     // Process image field if it exists.
     $this->processImageField($row, 'field_image');
-    \Drupal::logger('migrate')->notice('Memory usage: @memory', [
-      '@memory' => $this->clearMemory(),
-    ]);
     // Search for D7 inline embeds and replace with D8 inline entities.
     $content = $row->getSourceProperty('body_value');
 
@@ -170,12 +175,7 @@ class Article extends BaseNodeSource {
     $this->getTags($row);
 
     $this->fetchUrlAliases($row);
-
-//    if ($this->rowCount++ % 100 == 0) {
-//      \Drupal::logger('migrate')->notice('Up to row @row', [
-//        '@row' => $this->rowCount,
-//      ]);
-//    }
+    $this->processImageField($row, 'field_image');
 
     // Call the parent prepareRow.
     return parent::prepareRow($row);
