@@ -463,6 +463,23 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   }
 }
 
+// Extra padding to help browsers with a full menu drawer
+.o-canvas__menu .region-primary-menu {
+  &::after {
+    float: left;
+    padding-bottom: 100%;
+    content: '';
+    clear: both;
+    display: list-item;
+    color: #fff;
+  }
+  @include breakpoint(sm) {
+    &::after {
+      padding-bottom: 50px;
+    }
+  }
+}
+
 @media all and (min-width: 0px) and (max-width: 855px) and (-ms-high-contrast: none),
 (-ms-high-contrast: active) {
   .o-canvas__group {
