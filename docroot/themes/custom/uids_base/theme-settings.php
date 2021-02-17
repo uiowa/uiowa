@@ -116,7 +116,7 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     '#description' => t('Select an option'),
     '#options' => [
       'sans-serif' => t('Sans serif (Roboto)'),
-      'serif' => t('Serif (Lora)'),
+      'serif' => t('Serif (Zilla Slab)'),
     ],
     '#default_value' => theme_get_setting('fonts.font-family'),
   ];
