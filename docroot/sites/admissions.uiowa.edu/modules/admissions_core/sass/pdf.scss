@@ -57,8 +57,7 @@ p, ul {
     color: #666;
 
     &::after {
-      content: attr(href);
-      padding-left: $xsm;
+      content: " (" attr(href) ")";
       word-wrap: anywhere;
     }
   }
