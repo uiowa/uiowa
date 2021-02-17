@@ -15,6 +15,7 @@ dependencies:
     - field.field.node.area_of_study.field_area_of_study_honors
     - field.field.node.area_of_study.field_area_of_study_intl
     - field.field.node.area_of_study.field_area_of_study_link
+    - field.field.node.area_of_study.field_area_of_study_mail_code
     - field.field.node.area_of_study.field_area_of_study_majors
     - field.field.node.area_of_study.field_area_of_study_minors
     - field.field.node.area_of_study.field_area_of_study_online
@@ -633,6 +634,14 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+    region: content
+  field_area_of_study_mail_code:
+    weight: 36
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
     region: content
   field_area_of_study_majors:
     type: entity_reference_revisions_entity_view
