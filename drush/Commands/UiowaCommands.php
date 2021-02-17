@@ -50,6 +50,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
     $defaults = $annotationData->getList('default-fields');
 
     // If no specific fields were requested, add ours to the defaults.
+    // @todo Is there a more-defined context for when to do this?
     if ($fields == $defaults) {
       $annotationData->append('field-labels', "\n application: Application");
       array_unshift($defaults, 'application');
