@@ -253,4 +253,11 @@ abstract class BaseNodeSource extends SqlBase {
     $row->setSourceProperty('alias', $record);
   }
 
+  /**
+   * Utility class to run post migration import processes.
+   */
+  public function postImportProcess() {
+    return FALSE;
+  }
+
 }
