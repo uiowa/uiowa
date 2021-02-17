@@ -280,6 +280,15 @@ content:
     third_party_settings: {  }
     type: text_default
     region: content
+  field_image:
+    type: entity_reference_entity_view
+    weight: 23
+    region: content
+    label: hidden
+    settings:
+      view_mode: small__widescreen
+      link: false
+    third_party_settings: {  }
 hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
@@ -290,6 +299,5 @@ hidden:
   field_area_of_study_stat: true
   field_area_of_study_stories: true
   field_area_of_study_transfer: true
-  field_image: true
   links: true
   search_api_excerpt: true
