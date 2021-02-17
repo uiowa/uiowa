@@ -203,8 +203,8 @@ class ListBlock extends CoreBlock {
         '#description' => $this->t('Choose which sorts to use and in which order.'),
       ];
       $options = [
-        'ASC' => $this->t('Sort ascending'),
-        'DESC' => $this->t('Sort descending'),
+        'ASC' => $this->t('Ascending'),
+        'DESC' => $this->t('Descending'),
       ];
 
       $sorts = $this->getHandlers('sort');
@@ -229,9 +229,9 @@ class ListBlock extends CoreBlock {
 
       // Sort available sort plugins by their currently configured weight.
       $sorted_sorts = [];
-      if (isset($block_configuration['sorts'])) {
+      if (isset($block_configuration['sort'])) {
 
-        foreach (array_keys($block_configuration['sorts']) as $sort_name) {
+        foreach (array_keys($block_configuration['sort']) as $sort_name) {
           if (!empty($sorts[$sort_name])) {
             $sorted_sorts[$sort_name] = $sorts[$sort_name];
             unset($sorts[$sort_name]);
@@ -259,15 +259,14 @@ class ListBlock extends CoreBlock {
         ];
 
         $form['override']['sort']['sort_list'][$sort_name]['order'] = [
-          '#title' => $this->t('Order'),
           '#type' => 'radios',
           '#options' => $options,
           '#default_value' => $plugin->options['order'],
         ];
 
         // Set default values for sorts for this block.
-        if (!empty($block_configuration["sort"][$sort_name])) {
-          $form['override']['sort']['sort_list'][$sort_name]['order']['#default_value'] = $block_configuration["sort"][$sort_name];
+        if (!empty($block_configuration['sort'][$sort_name])) {
+          $form['override']['sort']['sort_list'][$sort_name]['order']['#default_value'] = $block_configuration['sort'][$sort_name]['order'];
         }
 
         $form['override']['sort']['sort_list'][$sort_name]['weight'] = [
@@ -275,14 +274,14 @@ class ListBlock extends CoreBlock {
           '#title' => $this->t('Weight for @title', ['@title' => $sort_label]),
           '#title_display' => 'invisible',
           '#delta' => 50,
-          '#default_value' => !empty($block_configuration['sorts'][$sort_name]['weight']) ? $block_configuration['sorts'][$sort_name]['weight'] : 0,
+          '#default_value' => !empty($block_configuration['sort'][$sort_name]['weight']) ? $block_configuration['sort'][$sort_name]['weight'] : 0,
           '#attributes' => ['class' => ['sort-weight']],
         ];
       }
     }
 
+    // Display exposed filters to allow them to be set for the block.
     $customizable_filters = $this->getOption('filter_in_block');
-
     if (!empty($customizable_filters)) {
       $form['override']['exposed_filters'] = [
         '#type' => 'details',
@@ -321,6 +320,7 @@ class ListBlock extends CoreBlock {
       }
     }
 
+    // Display a "More" link.
     if (!empty($allow_settings['display_more_link'])) {
       $form['override']['display_more_toggle'] = [
         '#type' => 'checkbox',
@@ -388,6 +388,13 @@ class ListBlock extends CoreBlock {
     // Provide "Configure sorts" block settings form.
     if (!empty($allow_settings['sort_sorts'])) {
       // @todo Process configure sorts.
+      if ($sorts = array_filter($form_state->getValue([
+        'override',
+        'sorts',
+        'sort_list',
+      ]))) {
+        $block->setConfigurationValue('sorts', $sorts);
+      }
     }
 
     // Save "Hide fields" settings to block configuration.
@@ -451,7 +458,24 @@ class ListBlock extends CoreBlock {
       }
     }
 
-    // @todo Set view sorts based on "Sort" setting.
+    // Change sorts based on block configuration.
+    if (!empty($allow_settings['sort_sorts'])) {
+      $sorts = $this->view->getHandlers('sort', $display_id);
+      // Remove existing sorts from the view.
+      foreach ($sorts as $sort_name => $sort) {
+        $this->view->removeHandler($display_id, 'sort', $sort_name);
+      }
+      if (!empty($config['sort'])) {
+        uasort($config['sort'], '\Drupal\layout_builder_custom\Plugin\Display\Block::sortByWeight');
+        foreach ($config['sort'] as $sort_name => $sort) {
+          if (!empty($config['sort'][$sort_name])) {
+            $sort['order'] = $config['sort'][$sort_name];
+            // Re-add sorts in the order that was selected for the block.
+            $this->view->setHandler($display_id, 'sort', $sort_name, $sort);
+          }
+        }
+      }
+    }
     // Set view filter based on "Filter" setting.
     $exposed_filter_values = !empty($config['exposed_filter_values']) ? $config['exposed_filter_values'] : [];
     $this->view->setExposedInput($exposed_filter_values);
