@@ -11,7 +11,13 @@
   }
 }
 
+// These override the grid settings in grid.scss from UIDS
 .inner--list.grid--threecol--33-34-33 .list-container,
 .inner--list.grid--twocol--50-50 .list-container {
   display: block;
+}
+
+.inner--grid.grid--threecol--33-34-33 .list-container,
+.inner--grid.grid--twocol--50-50 .list-container{
+  grid-template-columns: inherit;
 }
