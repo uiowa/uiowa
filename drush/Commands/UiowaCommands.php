@@ -9,6 +9,7 @@ use Consolidation\AnnotatedCommand\AnnotationData;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\SiteAlias\SiteAliasManagerAwareInterface;
 use Consolidation\SiteAlias\SiteAliasManagerAwareTrait;
+use Consolidation\SiteProcess\SiteProcess;
 use Symfony\Component\Console\Input\InputInterface;
 
 /**
@@ -36,17 +37,6 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
       $result['application'] = $app;
     }
 
-    if (isset($result['bootstrap']) && $result['bootstrap'] == 'Successful') {
-      $db = $result['db-name'];
-      $selfRecord = $this->siteAliasManager()->getSelf();
-      $args = ["SELECT SUM(ROUND(((data_length + index_length) / 1024 / 1024), 2)) AS \"Size\" FROM information_schema.TABLES WHERE table_schema = \"$db\";"];
-      $options = ['yes' => TRUE];
-      $process = $this->processManager()->drush($selfRecord, 'sql:query', $args, $options);
-      $process->mustRun();
-      $output = trim($process->getOutput());
-      $result['db-size'] = $output . " MB";
-    }
-
     return $result;
   }
 
@@ -57,14 +47,8 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
    */
   public function initStatus(InputInterface $input, AnnotationData $annotationData) {
     $annotationData->append('field-labels', "\n application: Application");
-    $annotationData->append('field-labels', "\n db-size: DB Size");
-
     $defaults = $annotationData->getList('default-fields');
-    $key = array_search('db-name', $defaults);
-    array_splice($defaults, $key, 0, 'db-size');
     array_unshift($defaults, 'application');
-
-
     $annotationData->set('default-fields', $defaults);
     $input->setOption('fields', $defaults);
   }
@@ -105,6 +89,38 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
   }
 
   /**
+   * Show the database size.
+   *
+   * @command uiowa:database:size
+   *
+   * @aliases uds
+   *
+   * @field-labels
+   *   table: Table
+   *   size: Size
+   *
+   * @return string
+   */
+  public function databaseSize() {
+    $selfRecord = $this->siteAliasManager()->getSelf();
+
+    /** @var SiteProcess $process */
+    $process = $this->processManager()->drush($selfRecord, 'core-status', [], ['fields' => 'db-name', 'format' => 'json']);
+    $process->run();
+    $result = $process->getOutputAsJson();
+
+    if (isset($result['db-name'])) {
+      $db = $result['db-name'];
+      $args = ["SELECT SUM(ROUND(((data_length + index_length) / 1024 / 1024), 2)) AS \"Size\" FROM information_schema.TABLES WHERE table_schema = \"$db\";"];
+      $options = ['yes' => TRUE];
+      $process = $this->processManager()->drush($selfRecord, 'sql:query', $args, $options);
+      $process->mustRun();
+      $output = trim($process->getOutput());
+      return "{$output} MB";
+    }
+  }
+
+  /**
    * Show tables larger than the input size.
    *
    * @param int $size
@@ -112,9 +128,9 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
    * @param mixed $options
    *   The command options.
    *
-   * @command uiowa:sql:tables
+   * @command uiowa:table:size
    *
-   * @aliases ust
+   * @aliases uts
    *
    * @field-labels
    *   table: Table
@@ -123,7 +139,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
    * @return \Consolidation\OutputFormatters\StructuredData\RowsOfFields
    *   Tables in RowsOfFields output formatter.
    */
-  public function sqlTables(int $size = 1, $options = ['format' => 'table']) {
+  public function tableSize(int $size = 1, $options = ['format' => 'table']) {
     $size = $this->input()->getArgument('size') * 1024 * 1024;
     $selfRecord = $this->siteAliasManager()->getSelf();
     $args = ["SELECT table_name AS \"Tables\", ROUND(((data_length + index_length) / 1024 / 1024), 2) \"Size in MB\" FROM information_schema.TABLES WHERE table_schema = DATABASE() AND (data_length + index_length) > $size ORDER BY (data_length + index_length) DESC;"];
