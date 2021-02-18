@@ -6,6 +6,7 @@ use Drupal\Core\Entity\Element\EntityAutocomplete;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\SubformState;
 use Drupal\Core\Render\Element\Checkboxes;
+use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\views\Plugin\Block\ViewsBlock;
 use Drupal\views\Plugin\views\display\Block as CoreBlock;
 
@@ -138,63 +139,52 @@ class ListBlock extends CoreBlock {
     $allow_settings = array_filter($this->getOption('allow'));
     $block_configuration = $block->getConfiguration();
 
-    // Modify "Items per page" block settings form.
-    if (!empty($allow_settings['items_per_page'])) {
-      // Items per page.
-      $form['override']['items_per_page']['#type'] = 'number';
-      unset($form['override']['items_per_page']['#options']);
-    }
+    $form['headline'] = HeadlineHelper::getElement([
+      'headline' => $block_configuration['headline'] ?? NULL,
+      'hide_headline' => $block_configuration['hide_headline'] ?? 0,
+      'heading_size' => $block_configuration['heading_size'] ?? 'h2',
+      'headline_style' => $block_configuration['headline_style'] ?? 'default',
+      'child_heading_size' => $block_configuration['child_heading_size'] ?? 'h3',
+    ]);
+    $form['headline']['#weight'] = 1;
 
-    // Provide "Pager offset" block settings form.
-    if (!empty($allow_settings['offset'])) {
-      $form['override']['pager_offset'] = [
-        '#type' => 'number',
-        '#title' => $this->t('Offset'),
-        '#default_value' => isset($block_configuration['pager_offset']) ? $block_configuration['pager_offset'] : 0,
-        '#description' => $this->t('For example, set this to 3 and the first 3 items will not be displayed.'),
-      ];
-    }
-
-    // @todo Re-factor this based on a coherent set of paging choices.
-    $form['override']['pager'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Display pager'),
-      '#default_value' => isset($block_configuration['pager_display']) ? $block_configuration['pager_display'] : FALSE,
-    ];
-
-    // Provide "Hide fields" block settings form.
-    if (!empty($allow_settings['hide_fields'])) {
-      // Set up the configuration table for hiding / sorting fields.
-      $fields = $this->getHandlers('field');
-      $header = [];
-      if (!empty($allow_settings['hide_fields'])) {
-        $header['hide'] = $this->t('Hide');
-      }
-      $header['label'] = $this->t('Label');
-      $form['override']['hide_fields'] = [
+    // Display exposed filters to allow them to be set for the block.
+    $customizable_filters = $this->getOption('filter_in_block');
+    if (!empty($customizable_filters)) {
+      $form['override']['exposed_filters'] = [
         '#type' => 'details',
-        '#title' => $this->t('Hide fields'),
-        '#description' => $this->t('Choose to hide some of the fields.'),
+        '#title' => $this->t('Exposed filters'),
+        '#description' => $this->t('Set default filters.'),
       ];
-      $form['override']['hide_fields']['field_list'] = [
-        '#type' => 'table',
-        '#header' => $header,
-        '#rows' => [],
-      ];
+      // Provide "Exposed filters" block settings form.
+      $exposed_filter_values = !empty($block_configuration['exposed_filter_values']) ? $block_configuration['exposed_filter_values'] : [];
 
-      // Add each field to the configuration table.
-      foreach ($fields as $field_name => $plugin) {
-        $field_label = $plugin->adminLabel();
-        if (!empty($plugin->options['label'])) {
-          $field_label .= ' (' . $plugin->options['label'] . ')';
+      $subform_state = SubformState::createForSubform($form['override']['exposed_filters'], $form, $form_state);
+      $subform_state->set('exposed', TRUE);
+
+      $filter_plugins = $this->getHandlers('filter');
+
+      foreach ($customizable_filters as $customizable_filter) {
+        /** @var \Drupal\views\Plugin\views\filter\FilterPluginBase $filter */
+        $filter = $filter_plugins[$customizable_filter];
+        $filter->buildExposedForm($form['override']['exposed_filters'], $subform_state);
+
+        // Set the label and default values of the form element, based on the
+        // block configuration.
+        $exposed_info = $filter->exposedInfo();
+        $form['override']['exposed_filters'][$exposed_info['value']]['#title'] = $exposed_info['label'];
+        // The following is essentially using this patch:
+        // https://www.drupal.org/project/views_block_placement_exposed_form_defaults/issues/3158789
+        if ($form['override']['exposed_filters'][$exposed_info['value']]['#type'] == 'entity_autocomplete') {
+          $form['override']['exposed_filters'][$exposed_info['value']]['#default_value'] = EntityAutocomplete::valueCallback(
+            $form['override']['exposed_filters'][$exposed_info['value']],
+            $exposed_filter_values[$exposed_info['value']],
+            $form_state
+          );
         }
-        $form['override']['hide_fields']['field_list'][$field_name]['hide'] = [
-          '#type' => 'checkbox',
-          '#default_value' => !empty($block_configuration['fields'][$field_name]['hide']) ? $block_configuration['fields'][$field_name]['hide'] : 0,
-        ];
-        $form['override']['hide_fields']['field_list'][$field_name]['label'] = [
-          '#markup' => $field_label,
-        ];
+        else {
+          $form['override']['exposed_filters'][$exposed_info['value']]['#default_value'] = !empty($exposed_filter_values[$exposed_info['value']]) ? $exposed_filter_values[$exposed_info['value']] : [];
+        }
       }
     }
 
@@ -203,7 +193,7 @@ class ListBlock extends CoreBlock {
       $form['override']['sort'] = [
         '#type' => 'details',
         '#title' => $this->t('Sort options'),
-        '#description' => $this->t('Choose which sorts to use and in which order.'),
+        '#description' => $this->t('Choose the order of the available sorts by dragging the drag handle ([icon]) and moving it up or down. For each sort, select "Ascending" to display results from first to last (e.g. A-Z), or "Descending" to display results from last to first (e.g. Z-A).'),
       ];
       $options = [
         'ASC' => $this->t('Ascending'),
@@ -283,44 +273,68 @@ class ListBlock extends CoreBlock {
       }
     }
 
-    // Display exposed filters to allow them to be set for the block.
-    $customizable_filters = $this->getOption('filter_in_block');
-    if (!empty($customizable_filters)) {
-      $form['override']['exposed_filters'] = [
-        '#type' => 'details',
-        '#title' => $this->t('Exposed filters'),
-        '#description' => $this->t('Set default filters.'),
-      ];
-      // Provide "Exposed filters" block settings form.
-      $exposed_filter_values = !empty($block_configuration['exposed_filter_values']) ? $block_configuration['exposed_filter_values'] : [];
-
-      $subform_state = SubformState::createForSubform($form['override']['exposed_filters'], $form, $form_state);
-      $subform_state->set('exposed', TRUE);
-
-      $filter_plugins = $this->getHandlers('filter');
-
-      foreach ($customizable_filters as $customizable_filter) {
-        /** @var \Drupal\views\Plugin\views\filter\FilterPluginBase $filter */
-        $filter = $filter_plugins[$customizable_filter];
-        $filter->buildExposedForm($form['override']['exposed_filters'], $subform_state);
-
-        // Set the label and default values of the form element, based on the
-        // block configuration.
-        $exposed_info = $filter->exposedInfo();
-        $form['override']['exposed_filters'][$exposed_info['value']]['#title'] = $exposed_info['label'];
-        // The following is essentially using this patch:
-        // https://www.drupal.org/project/views_block_placement_exposed_form_defaults/issues/3158789
-        if ($form['override']['exposed_filters'][$exposed_info['value']]['#type'] == 'entity_autocomplete') {
-          $form['override']['exposed_filters'][$exposed_info['value']]['#default_value'] = EntityAutocomplete::valueCallback(
-            $form['override']['exposed_filters'][$exposed_info['value']],
-            $exposed_filter_values[$exposed_info['value']],
-            $form_state
-          );
-        }
-        else {
-          $form['override']['exposed_filters'][$exposed_info['value']]['#default_value'] = !empty($exposed_filter_values[$exposed_info['value']]) ? $exposed_filter_values[$exposed_info['value']] : [];
-        }
+    // Provide "Hide fields" block settings form.
+    if (!empty($allow_settings['hide_fields'])) {
+      // Set up the configuration table for hiding / sorting fields.
+      $fields = $this->getHandlers('field');
+      $header = [];
+      if (!empty($allow_settings['hide_fields'])) {
+        $header['hide'] = $this->t('Hide');
       }
+      $header['label'] = $this->t('Label');
+      $form['override']['hide_fields'] = [
+        '#type' => 'details',
+        '#title' => $this->t('Hide fields'),
+        '#description' => $this->t('Choose to hide some of the fields.'),
+      ];
+      $form['override']['hide_fields']['field_list'] = [
+        '#type' => 'table',
+        '#header' => $header,
+        '#rows' => [],
+      ];
+
+      // Add each field to the configuration table.
+      foreach ($fields as $field_name => $plugin) {
+        $field_label = $plugin->adminLabel();
+        if (!empty($plugin->options['label'])) {
+          $field_label .= ' (' . $plugin->options['label'] . ')';
+        }
+        $form['override']['hide_fields']['field_list'][$field_name]['hide'] = [
+          '#type' => 'checkbox',
+          '#default_value' => !empty($block_configuration['fields'][$field_name]['hide']) ? $block_configuration['fields'][$field_name]['hide'] : 0,
+        ];
+        $form['override']['hide_fields']['field_list'][$field_name]['label'] = [
+          '#markup' => $field_label,
+        ];
+      }
+    }
+
+    // Modify "Items per page" block settings form.
+    if (!empty($allow_settings['items_per_page'])) {
+      // Items per page.
+      $form['override']['items_per_page']['#type'] = 'number';
+      $form['override']['items_per_page']['#title'] = $this->t('Items to display');
+      $form['override']['items_per_page']['#description'] = $this->t('Select the number of entries to display');
+      unset($form['override']['items_per_page']['#options']);
+    }
+
+    // Provide "Pager offset" block settings form.
+    if (!empty($allow_settings['offset'])) {
+      $form['override']['pager_offset'] = [
+        '#type' => 'number',
+        '#title' => $this->t('Offset'),
+        '#default_value' => isset($block_configuration['pager_offset']) ? $block_configuration['pager_offset'] : 0,
+        '#description' => $this->t('For example, set this to 3 and the first 3 items will not be displayed.'),
+      ];
+    }
+
+    // @todo Re-factor this based on a coherent set of paging choices.
+    if (!empty($allow_settings['pager'])) {
+      $form['override']['pager'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Show pager'),
+        '#default_value' => isset($block_configuration['pager_display']) ? $block_configuration['pager_display'] : FALSE,
+      ];
     }
 
     // Display a "More" link.
@@ -355,6 +369,8 @@ class ListBlock extends CoreBlock {
       // @todo Add more link help text from view block settings.
     }
 
+    $form['override']['#weight'] = 5;
+
     return $form;
   }
 
@@ -362,6 +378,11 @@ class ListBlock extends CoreBlock {
    * {@inheritdoc}
    */
   public function blockSubmit(ViewsBlock $block, $form, FormStateInterface $form_state) {
+    // Alter the headline field settings for configuration.
+    foreach ($form_state->getValues()['headline']['container'] as $name => $value) {
+      $this->configuration[$name] = $value;
+    }
+
     parent::blockSubmit($block, $form, $form_state);
     $allow_settings = array_filter($this->getOption('allow'));
 
@@ -483,6 +504,7 @@ class ListBlock extends CoreBlock {
     $exposed_filter_values = !empty($config['exposed_filter_values']) ? $config['exposed_filter_values'] : [];
     $this->view->setExposedInput($exposed_filter_values);
     $this->view->exposed_data = $exposed_filter_values;
+
   }
 
   /**
