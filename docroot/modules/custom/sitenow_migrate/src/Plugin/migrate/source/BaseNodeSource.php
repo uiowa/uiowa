@@ -40,7 +40,7 @@ abstract class BaseNodeSource extends SqlBase {
    *
    * @var int
    */
-  protected $batchSize = 100;
+  protected $batchSize = 0;
 
   /**
    * {@inheritdoc}
