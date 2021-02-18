@@ -26,6 +26,8 @@ class ListBlock extends CoreBlock {
       return;
     }
 
+    $form['allow']['#options']['items_per_page'] = $this->t('Items to display');
+    $form['allow']['#options']['pager'] = $this->t('Show pager');
     $form['allow']['#options']['offset'] = $this->t('Pager offset');
     $form['allow']['#options']['hide_fields'] = $this->t('Hide fields');
     $form['allow']['#options']['sort_sorts'] = $this->t('Adjust the order of sorts');
@@ -88,11 +90,12 @@ class ListBlock extends CoreBlock {
     parent::optionsSummary($categories, $options);
     $filtered_allow = array_filter($this->getOption('allow'));
     $filter_options = [
-      'items_per_page' => $this->t('Items per page'),
-      'offset' => $this->t('Pager offset'),
-      'display_more_link' => $this->t('Display more link'),
+      'items_per_page' => $this->t('Items to display'),
+      'pager' => $this->t('Show pager'),
+      'offset' => $this->t('Offset'),
       'hide_fields' => $this->t('Hide fields'),
       'sort_sorts' => $this->t('Adjust the order of sorts'),
+      'display_more_link' => $this->t('Display more link'),
     ];
     $filter_intersect = array_intersect_key($filter_options, $filtered_allow);
 
@@ -146,7 +149,7 @@ class ListBlock extends CoreBlock {
     if (!empty($allow_settings['offset'])) {
       $form['override']['pager_offset'] = [
         '#type' => 'number',
-        '#title' => $this->t('Pager offset'),
+        '#title' => $this->t('Offset'),
         '#default_value' => isset($block_configuration['pager_offset']) ? $block_configuration['pager_offset'] : 0,
         '#description' => $this->t('For example, set this to 3 and the first 3 items will not be displayed.'),
       ];
