@@ -4,11 +4,9 @@ status: true
 dependencies:
   config:
     - field.field.node.transfer_tips.body
-    - field.field.node.transfer_tips.field_transfer_tips_path
     - node.type.transfer_tips
   module:
     - content_moderation
-    - link
     - path
     - text
 id: node.transfer_tips.default
@@ -32,14 +30,6 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_transfer_tips_path:
-    weight: 122
-    settings:
-      placeholder_url: ''
-      placeholder_title: ''
-    third_party_settings: {  }
-    type: link_default
-    region: content
   moderation_state:
     type: moderation_state_default
     weight: 100

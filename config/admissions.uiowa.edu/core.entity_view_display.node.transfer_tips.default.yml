@@ -4,10 +4,8 @@ status: true
 dependencies:
   config:
     - field.field.node.transfer_tips.body
-    - field.field.node.transfer_tips.field_transfer_tips_path
     - node.type.transfer_tips
   module:
-    - link
     - text
     - user
 id: node.transfer_tips.default
@@ -22,23 +20,11 @@ content:
     settings: {  }
     third_party_settings: {  }
     region: content
-  field_transfer_tips_path:
-    weight: 102
-    label: above
-    settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
-    type: link
-    region: content
   links:
     weight: 100
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
