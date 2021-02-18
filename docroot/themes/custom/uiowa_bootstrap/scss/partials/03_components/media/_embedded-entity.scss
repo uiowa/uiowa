@@ -1,32 +1,3 @@
-.embedded-entity {
-  max-width: 100%;
-  margin-bottom: 0.5rem;
-}
-.align-left.embedded-entity,
-.align-left .embedded-entity {
-  @include media-breakpoint-up(sm) {
-    margin-right: 1rem;
-  }
-}
-.align-right.embedded-entity,
-.align-right .embedded-entity {
-  @include media-breakpoint-up(sm) {
-    margin-left: 1rem;
-  }
-}
-figure.caption .embedded-entity + figcaption {
-  font-size: 90%;
-  color: $gray-600;
-}
-figure.caption.align-right .embedded-entity + figcaption {
-  text-align: right;
-}
-.alert {
-  figure.caption .embedded-entity + figcaption {
-    color: $gray-900;
-  }
-}
-
 .embed-responsive {
   position: relative;
   display: block;
@@ -83,7 +54,8 @@ figure.caption.align-right .embedded-entity + figcaption {
 
 .media--type-remote-video {
   @extend .embed-responsive;
-
+  &.media--view-mode-full,
+  &.media--view-mode-default,
   &.media--view-mode-image-large,
   &.media--view-mode-image-medium,
   &.media--view-mode-image-small,
@@ -98,6 +70,8 @@ figure.caption.align-right .embedded-entity + figcaption {
 }
 
 figure.caption .media--type-remote-video iframe,
+.media--type-remote-video.media--view-mode-full iframe,
+.media--type-remote-video.media--view-mode-default iframe,
 .media--type-remote-video.media--view-mode-image-medium iframe,
 .media--type-remote-video.media--view-mode-image-large iframe,
 .media--type-remote-video.media--view-mode-image-small iframe,
@@ -142,5 +116,143 @@ figure.caption .media--type-remote-video.media--view-mode-small iframe,
   @include media-breakpoint-up(sm) {
     width: 426px;
     height: 240px;
+  }
+}
+
+.embedded-entity {
+  max-width: 100%;
+  margin-bottom: 0;
+
+  figure & {
+    margin-bottom: 0;
+  }
+
+  figcaption {
+    margin-top: 0.5rem;
+  }
+}
+
+
+.embedded-entity+p {
+  margin-top: 1rem !important;
+}
+
+.embedded-entity.align-center,
+.media.align-center {
+  .field--name-field-media-oembed-video iframe,
+  .field--name-field-media-instagram iframe {
+    margin: 0 auto !important;
+  }
+}
+
+figure.caption {
+  display: block;
+
+  @include media-breakpoint-up(sm) {
+    display: table;
+  }
+
+  margin: 0;
+  margin-bottom: .5rem;
+
+  &.align-center {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  figcaption {
+    display: block;
+
+    @include media-breakpoint-up(sm) {
+      display: table-caption;
+    }
+
+    max-width: none;
+    caption-side: bottom;
+  }
+}
+
+.align-left,
+figure.align-left,
+.align-left.embedded-entity,
+.align-left .embedded-entity {
+  float: none;
+  margin: 0;
+
+  @include media-breakpoint-up(sm) {
+    margin-right: 1rem;
+    margin-bottom: .5rem;
+    float: left;
+  }
+}
+
+.align-right,
+figure.align-right,
+.align-right.embedded-entity,
+.align-right .embedded-entity {
+  float: none;
+  margin: 0;
+
+  @include media-breakpoint-up(sm) {
+    margin-left: 1rem;
+    margin-bottom: .5rem;
+    float: right;
+  }
+}
+
+figure.caption .embedded-entity+figcaption {
+  font-size: 90%;
+  color: $gray-900;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+figure.caption.align-right .embedded-entity+figcaption {
+  @include media-breakpoint-up(sm) {
+    text-align: right;
+  }
+}
+
+.alert {
+  figure.caption .embedded-entity+figcaption {
+    color: $gray-900;
+  }
+}
+
+// Media alignment
+
+@media (min-width: 576px) {
+
+  .align-right.embedded-entity,
+  .align-right .embedded-entity {
+    margin-left: 1rem;
+  }
+
+  .align-left.embedded-entity,
+  .align-left .embedded-entity {
+    margin-right: 1rem;
+  }
+
+}
+
+
+.align-center {
+  text-align: center;
+}
+
+.embedded-entity.align-center {
+
+  .media--type-image,
+  .field--name-field-media-image {
+    margin: 0 auto;
+  }
+}
+
+.field--name-field-media-image {
+  min-width: 1px;
+
+  img {
+    max-width: 100%;
+    height: auto;
   }
 }
