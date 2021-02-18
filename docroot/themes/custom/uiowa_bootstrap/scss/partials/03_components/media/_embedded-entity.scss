@@ -54,6 +54,7 @@
 
 .media--type-remote-video {
   @extend .embed-responsive;
+  &.media--view-mode-full,
   &.media--view-mode-default,
   &.media--view-mode-image-large,
   &.media--view-mode-image-medium,
@@ -69,6 +70,7 @@
 }
 
 figure.caption .media--type-remote-video iframe,
+.media--type-remote-video.media--view-mode-full iframe,
 .media--type-remote-video.media--view-mode-default iframe,
 .media--type-remote-video.media--view-mode-image-medium iframe,
 .media--type-remote-video.media--view-mode-image-large iframe,
