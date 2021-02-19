@@ -443,6 +443,8 @@ strong {
 
 
   .learn-more {
+    position: absolute;
+    bottom: 40px;
     span {
       margin: 0 $gutter 0 0;
     }
@@ -451,7 +453,9 @@ strong {
       margin: 0 $xsm 0 0;
     }
     p {
-      display: inline;
+      //display: inline;
+      border-top: 3px solid $primary;
+      padding-top: 10px;
     }
 
     h2 {
@@ -462,12 +466,12 @@ strong {
       line-height: $reduced-line-height;
       border-bottom: 5px solid $primary;
       margin: 0 0 .5rem;
-      padding-bottom: 1rem;
-      display: inline;
     }
   }
 
   .nondiscrimination-statement {
+    position: absolute;
+    bottom: 0;
     p {
       margin-top: 10px;
       small {
