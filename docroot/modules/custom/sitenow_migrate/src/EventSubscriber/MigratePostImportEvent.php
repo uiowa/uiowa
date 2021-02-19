@@ -117,6 +117,9 @@ class MigratePostImportEvent implements EventSubscriberInterface {
    */
   public function onMigratePostImport(MigrateImportEvent $event) {
     $migration = $event->getMigration();
+    $source = $migration->getSourcePlugin();
+    $source->postImportProcess();
+
     switch ($migration->id()) {
 
       // Right now, page migration is set to run last.
@@ -128,6 +131,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
         $this->logger->notice($this->t('Checking for possible broken links'));
         $candidates = $this->checkForPossibleLinkBreaks();
         $this->updateInternalLinks($candidates);
+
       case 'd7_file':
       case 'd7_article':
       case 'd7_person':
