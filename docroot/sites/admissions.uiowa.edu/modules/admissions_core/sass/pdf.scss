@@ -70,7 +70,7 @@ p, ul {
 h1 {
   font-family: $font-family-caps;
   text-transform: uppercase;
-  font-size: 55px;
+  font-size: 35px;
   line-height: 40px;
   margin: 0;
 }
@@ -117,22 +117,48 @@ strong {
   margin-bottom: 0;
 }
 
+.aos-pullquote {
+  width: 25%;
+  display: inline-block;
+  float: right;
+  background: #f1f1f1;
+  padding: 15px 25px;
+  margin: 10px 0 10px 10px;
+  clear: right;
+  img {
+    display: inline;
+    clear: left;
+  }
+}
+
 .column-container {
   position: relative;
   width: 100%;
+  page-break-inside: auto;
+  page-break-before: auto;
   &:after {
     display: block;
     height: 1px;
     clear: both;
   }
 }
+/*
 .column-container__left {
-  display: block;
+  display: inline-block;
   width: 25%;
   margin-right: -25%;
   float: left;
   word-wrap: break-word;
-  page-break-inside: avoid;
+  page-break-inside: auto;
+  page-break-before: avoid;
+  page-break-after: avoid;
+
+  &:after {
+    display: block;
+    float: left;
+    height: 1px;
+    clear: right;
+  }
 
   img {
     display: inline;
@@ -144,7 +170,7 @@ strong {
   }
 }
 .column-container__right {
-  display: block;
+  display: inline-block;
   float: left;
   font-size: 13px;
   margin-left: 28%;
@@ -156,7 +182,7 @@ strong {
     display: block;
     float: left;
     height: 1px;
-    clear: both;
+    clear: left;
   }
 
   a {
@@ -166,7 +192,7 @@ strong {
     }
   }
 }
-
+*/
 .node--type-area-of-study {
   .subtitle p {
     @extend .element--bold-intro;
@@ -215,6 +241,10 @@ strong {
 
   .field--name-field-area-of-study-minors {
     clear: both;
+  }
+
+  .field--name-field-area-of-study-why {
+    margin-top: -10px;
   }
 
   // Course work
@@ -425,9 +455,8 @@ strong {
 
   .field--name-field-area-of-study-opportunity {
     .element--bold-intro {
-      font-size: 0.9rem;
-      font-family: $font-family-caps;
-      text-transform: uppercase;
+     // font-family: $font-family-caps;
+      //text-transform: uppercase;
     }
 
     .field__item {

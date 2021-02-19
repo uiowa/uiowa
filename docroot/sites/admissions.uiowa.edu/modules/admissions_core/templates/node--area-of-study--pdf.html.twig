@@ -90,8 +90,8 @@
     </h1>
   {{ title_suffix }}
 
-  <div class="subtitle">
-    {{ content.field_area_of_study_subtitle|render|striptags('<p><strong><div>')|t }}
+  <div class="intro">
+    {{ content.body.0|render|striptags('<p><strong><div>')|t }}
   </div>
   <h2 class="aos-link">
     <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/arrow.png" width="15" height="14" />
@@ -103,11 +103,8 @@
 
 
 
-    <div class="column-container">
-      <div class="column-container__left">
-        <div class="intro">
-          {{ content.body.0|render|striptags('<p><strong><div>')|t }}
-        </div>
+
+      <div class="aos-pullquote">
         {{ content.field_area_of_study_majors|render|striptags('<p><strong><div>')|t }}
         {{ content.field_area_of_study_minors|render|striptags('<p><ul><li><strong><div>')|t }}
         {% if content.field_area_of_study_certificates|render|striptags is not empty %}
@@ -146,17 +143,15 @@
           {{ content.field_area_of_study_competitive|render|striptags('<p><strong><div>')|t }}
         {% endif %}
         {{ content.field_area_of_study_comp_txt|render|striptags('<p><strong><div>')|t }}
-
         {{ content.field_area_of_study_scholarship|render }}
-        {# {{ content.field_image }} #}
-
       </div>
-      <div class="column-container__right">
         {{ content.field_area_of_study_why|render }}
         {{ content.field_area_of_study_requirement|render }}
         {{ content.field_area_of_study_career|render }}
-      </div>
+        {{ content.field_area_of_study_course_work|render }}
+        {{ content.field_area_of_study_opportunity|render }}
     </div>
+
 
     <div class="learn-more">
       <!--<h2>Learn More</h2>-->
@@ -172,13 +167,5 @@
     </div>
 
    {# PDF Second Page #}
-    <div class="column-container">
-      <div class="column-container__left">
-        {{ content.field_area_of_study_opportunity|render }}
-      </div>
-      <div class="column-container__right">
-        {{ content.field_area_of_study_course_work|render }}
-      </div>
-    </div>
-  </div>
+
 </div>
