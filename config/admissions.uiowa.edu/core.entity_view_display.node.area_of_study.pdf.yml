@@ -40,7 +40,6 @@ dependencies:
     - layout_builder
     - layout_builder_restrictions
     - options
-    - smart_trim
     - text
     - user
 third_party_settings:
@@ -118,19 +117,9 @@ content:
   field_area_of_study_career:
     weight: 10
     label: above
-    settings:
-      trim_length: 200
-      trim_type: words
-      trim_suffix: '...'
-      wrap_output: false
-      wrap_class: trimmed
-      more_link: false
-      more_class: more-link
-      more_text: More
-      summary_handler: full
-      trim_options: {  }
+    settings: {  }
     third_party_settings: {  }
-    type: smart_trim
+    type: text_default
     region: content
   field_area_of_study_certificates:
     weight: 3
@@ -141,21 +130,12 @@ content:
     type: string
     region: content
   field_area_of_study_comp_txt:
-    type: smart_trim
+    type: string
     weight: 15
     region: content
     label: hidden
     settings:
-      trim_length: 200
-      trim_type: words
-      trim_suffix: '...'
-      wrap_output: false
-      wrap_class: trimmed
-      more_link: false
-      more_class: more-link
-      more_text: More
-      summary_handler: full
-      trim_options: {  }
+      link_to_entity: false
     third_party_settings: {  }
   field_area_of_study_competitive:
     type: list_default
@@ -165,23 +145,11 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_area_of_study_course_work:
-    type: smart_trim
+    type: text_default
     weight: 7
     region: content
     label: above
-    settings:
-      trim_length: 200
-      trim_type: words
-      trim_suffix: '...'
-      wrap_class: trimmed
-      more_text: More
-      more_class: more-link
-      wrap_output: false
-      more_link: false
-      trim_options:
-        text: false
-        trim_zero: false
-      summary_handler: full
+    settings: {  }
     third_party_settings: {  }
   field_area_of_study_first_year:
     type: entity_reference_revisions_entity_view
@@ -193,21 +161,12 @@ content:
       link: ''
     third_party_settings: {  }
   field_area_of_study_four_txt:
-    type: smart_trim
+    type: string
     weight: 21
     region: content
     label: hidden
     settings:
-      trim_length: 200
-      trim_type: words
-      trim_suffix: '...'
-      wrap_output: false
-      wrap_class: trimmed
-      more_link: false
-      more_class: more-link
-      more_text: More
-      summary_handler: full
-      trim_options: {  }
+      link_to_entity: false
     third_party_settings: {  }
   field_area_of_study_four_year:
     type: list_default
@@ -251,19 +210,9 @@ content:
   field_area_of_study_opportunity:
     weight: 11
     label: above
-    settings:
-      trim_length: 200
-      trim_type: words
-      trim_suffix: '...'
-      wrap_output: false
-      wrap_class: trimmed
-      more_link: false
-      more_class: more-link
-      more_text: More
-      summary_handler: full
-      trim_options: {  }
+    settings: {  }
     third_party_settings: {  }
-    type: smart_trim
+    type: text_default
     region: content
   field_area_of_study_preprof:
     weight: 4
@@ -276,57 +225,24 @@ content:
   field_area_of_study_requirement:
     weight: 9
     label: above
-    settings:
-      trim_length: 200
-      trim_type: words
-      trim_suffix: '...'
-      wrap_class: trimmed
-      more_text: More
-      more_class: more-link
-      wrap_output: false
-      more_link: false
-      trim_options:
-        text: false
-        trim_zero: false
-      summary_handler: full
+    settings: {  }
     third_party_settings: {  }
-    type: smart_trim
+    type: text_default
     region: content
   field_area_of_study_scholarship:
-    type: smart_trim
+    type: text_default
     weight: 8
     region: content
     label: above
-    settings:
-      trim_length: 200
-      trim_type: words
-      trim_suffix: '...'
-      wrap_class: trimmed
-      more_text: More
-      more_class: more-link
-      wrap_output: false
-      more_link: false
-      trim_options:
-        text: false
-        trim_zero: false
-      summary_handler: full
+    settings: {  }
     third_party_settings: {  }
   field_area_of_study_select_txt:
-    type: smart_trim
+    type: string
     weight: 16
     region: content
     label: hidden
     settings:
-      trim_length: 200
-      trim_type: words
-      trim_suffix: '...'
-      wrap_output: false
-      wrap_class: trimmed
-      more_link: false
-      more_class: more-link
-      more_text: More
-      summary_handler: full
-      trim_options: {  }
+      link_to_entity: false
     third_party_settings: {  }
   field_area_of_study_selective:
     type: list_default
@@ -350,40 +266,19 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_area_of_study_teaching_txt:
-    type: smart_trim
+    type: string
     weight: 13
     region: content
     label: hidden
     settings:
-      trim_length: 200
-      trim_type: words
-      trim_suffix: '...'
-      wrap_output: false
-      wrap_class: trimmed
-      more_link: false
-      more_class: more-link
-      more_text: More
-      summary_handler: full
-      trim_options: {  }
+      link_to_entity: false
     third_party_settings: {  }
   field_area_of_study_why:
     weight: 6
     label: above
-    settings:
-      trim_length: 200
-      trim_type: words
-      trim_suffix: '...'
-      wrap_class: trimmed
-      more_text: More
-      more_class: more-link
-      wrap_output: false
-      more_link: false
-      trim_options:
-        text: false
-        trim_zero: false
-      summary_handler: full
+    settings: {  }
     third_party_settings: {  }
-    type: smart_trim
+    type: text_default
     region: content
   field_image:
     type: entity_reference_entity_view
