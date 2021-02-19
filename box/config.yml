@@ -1562,6 +1562,14 @@ apache_vhosts:
     servername: iddrc.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: labderoo.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: iisc.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
 
 # Multisite installations should configure additional databases here.
 # It's recommended to prefix database names with 'drupal'. Otherwise,
@@ -1609,6 +1617,9 @@ php_packages_extra:
   - ffmpeg
   - 'php{{ php_version }}-zip'
 
+# Keep Composer updated during provisioning.
+composer_keep_updated: true
+
 # XDebug configuration.
 php_xdebug_default_enable: 1
 php_xdebug_cli_disable: no
@@ -1620,6 +1631,7 @@ post_provision_scripts:
   - ../../../acquia/blt-drupal-vm/scripts/drupal-vm/configure-solr.sh
   - ../../../acquia/blt-drupal-vm/scripts/drupal-vm/post-provision.php
   - ../../../../box/post-provision.sh
+
 nodejs_version: 14.x
 
 nodejs_npm_global_packages:
