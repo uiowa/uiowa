@@ -719,9 +719,9 @@ display:
         - 'config:field.storage.node.field_person_phone'
         - 'config:field.storage.node.field_person_position'
         - 'config:field.storage.node.field_teaser'
-  block_people:
+  list_card:
     display_plugin: block
-    id: block_people
+    id: list_card
     display_title: 'People List'
     position: 3
     display_options:
@@ -862,7 +862,7 @@ display:
           1: AND
       filter_in_block:
         - field_tags_target_id
-      more_link_help_text: 'This is some help text.'
+      more_link_help_text: 'Check to include a ''display more'' link. To use the default <a href="/admin/config/system/sitenow-people">people path set within SiteNow People</a>, make sure the ‘Enable people listing’ box is checked. Alternatively, a custom URL path can be provided in the ‘Path’ text box below. '
       display_description: ''
       block_description: 'People list'
     cache_metadata:

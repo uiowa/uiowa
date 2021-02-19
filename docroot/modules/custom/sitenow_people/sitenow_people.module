@@ -494,6 +494,7 @@ function sitenow_people_field_widget_paragraphs_form_alter(&$element, &$form_sta
 function sitenow_people_preprocess_block(&$variables) {
   switch ($variables['elements']['#plugin_id']) {
     case 'inline_block:uiowa_people':
+      // @todo The following line should be moved to uids_base.
       $variables['#attached']['library'][] = 'uids_base/people';
       $block = $variables['elements']['content']['#block_content'];
       if ($block->hasField('field_collection_sort') && !$block->get('field_collection_sort')->isEmpty()) {
