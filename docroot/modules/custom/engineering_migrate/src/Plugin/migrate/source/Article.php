@@ -68,6 +68,7 @@ class Article extends BaseNodeSource {
     $query = parent::query();
     $query->join('field_data_body', 'b', 'n.nid = b.entity_id');
     $query->leftJoin('field_data_field_image', 'image', 'n.nid = image.entity_id');
+    $query->leftJoin('field_data_field_author', 'author', 'n.nid = author.entity_id');
     $query = $query->fields('b', [
       'entity_type',
       'bundle',
@@ -86,6 +87,9 @@ class Article extends BaseNodeSource {
         'field_image_title',
         'field_image_width',
         'field_image_height',
+      ])
+      ->fields('author', [
+        'field_author_value',
       ])
       ->orderBy('nid');
     return $query;
@@ -168,6 +172,11 @@ class Article extends BaseNodeSource {
 
     $this->fetchAdditionalFields($row, $tables);
     $this->getTags($row);
+
+    // Minor adjustments to keep formatting consistent.
+    $author = $row->getSourceProperty('field_author_value');
+    $author = preg_replace('|by:?\s|i', '', $author);
+    $row->setSourceProperty('field_author_value', $author);
 
     $this->fetchUrlAliases($row);
 
