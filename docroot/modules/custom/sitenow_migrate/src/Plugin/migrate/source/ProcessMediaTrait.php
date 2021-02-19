@@ -36,19 +36,75 @@ trait ProcessMediaTrait {
     return 'public://' . date('Y-m') . '/';
   }
 
+  public function replaceInlineFiles($content) {
+    return preg_replace_callback("|\[\[\{.*?\"fid\":\"(.*?)\".*?\]\]|", [
+      $this,
+      'entityReplace',
+    ], $content);
+  }
+
   /**
    * Regex to find Drupal 7 JSON for inline embedded files.
    */
   public function entityReplace($match) {
     $fid = $match[1];
+    $align = (preg_match("|.*?float: (.*?);.*?|", $match[0], $align)) ? $align[1] : NULL;
     $file_data = $this->fidQuery($fid);
     if ($file_data) {
-      $uuid = $this->getMid($file_data['filename'])['uuid'];
+      $filename = $file_data['filename'];
+      $uuid = $this->getMid($filename)['uuid'];
+      if (!$uuid) {
+        $new_fid = \Drupal::database()->select('file_managed', 'f')
+          ->fields('f', ['fid'])
+          ->condition('f.filename', $filename)
+          ->execute()
+          ->fetchField();
+        // If there's no fid in the D8 database,
+        // then we'll need to fetch it from the source.
+        $meta = [
+          'title' => 'title',
+          'alt' => 'alt',
+        ];
+        // @todo fetch the actual meta.
+        if (!$new_fid) {
+          // Use the filename, update the source base path with the subdirectory.
+          $source_base_path = str_replace('public://', $this->getSourceBasePath(), $file_data['uri']);
+          $source_base_path = str_replace($filename, '', $source_base_path);
+          $new_fid = $this->downloadFile($filename, $source_base_path, $this->getDrupalFileDirectory());
+          if ($new_fid) {
+            $this->createMediaEntity($new_fid, $meta, 1);
+            $uuid = $this->getMid($filename)['uuid'];
+          }
+        }
+        else {
+          $uuid = $this->getMid($filename)['uuid'];
+          // And in case we had the file, but not the media entity.
+          if (!$uuid) {
+            $this->createMediaEntity($new_fid, $meta, 1);
+            $uuid = $this->getMid($filename)['uuid'];
+          }
+        }
+      }
       unset($file_data);
-      return $this->constructInlineEntity($uuid);
+      return $this->constructInlineEntity($uuid, $align);
     }
     // Failed to find a file, so let's leave the content unchanged.
     return $match;
+  }
+
+  /**
+   * Build the new inline embed entity format for Drupal 8 images.
+   */
+  public function constructInlineEntity($uuid, $align) {
+    $align = isset($align) ? $align : 'center';
+    // @todo add handling for non-image media embeds.
+    $parts = [
+      '<drupal-media data-align="' . $align . '"',
+      'data-entity-type="media"',
+      'data-entity-uuid="' . $uuid . '">',
+      '</drupal-media>',
+    ];
+    return implode(" ", $parts);
   }
 
   /**
@@ -81,23 +137,6 @@ trait ProcessMediaTrait {
       ->fetchAssoc();
     unset($query);
     return $results;
-  }
-
-  /**
-   * Build the new inline embed entity format for Drupal 8 images.
-   */
-  public function constructInlineEntity($uuid) {
-    $parts = [
-      '<drupal-entity',
-      'data-embed-button="media_entity_embed"',
-      'data-entity-embed-display="view_mode:media.full"',
-      'data-entity-embed-display-settings=""',
-      'data-entity-type="media"',
-      'data-entity-uuid="' . $uuid . '"',
-      'data-langcode="en">',
-      '</drupal-entity>',
-    ];
-    return implode(" ", $parts);
   }
 
   /**
