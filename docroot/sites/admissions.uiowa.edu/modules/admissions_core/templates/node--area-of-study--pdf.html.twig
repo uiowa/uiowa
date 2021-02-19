@@ -111,38 +111,38 @@
         {{ content.field_area_of_study_majors|render|striptags('<p><strong><div>')|t }}
         {{ content.field_area_of_study_minors|render|striptags('<p><ul><li><strong><div>')|t }}
         {% if content.field_area_of_study_certificates|render|striptags is not empty %}
-          <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/checkbox.png" width="11" height="10" />
+          <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/checkbox.png" width="11" height="11" />
           {{ content.field_area_of_study_certificates|render|striptags('<p><ul><li><strong><div>')|t }}
         {% endif %}
         {% if content.field_area_of_study_preprof|render|striptags  is not empty %}
-          <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/checkbox.png" width="11" height="10" />
+          <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/checkbox.png" width="11" height="11" />
           {{ content.field_area_of_study_preprof|render|striptags('<p><ul><li><strong><div>')|t }}
         {% endif %}
         {% if content.field_area_of_study_online|render|striptags  is not empty %}
-          <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/checkbox.png" width="11" height="10" />
+          <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/checkbox.png" width="11" height="11" />
           {{ content.field_area_of_study_online|render|striptags('<p><ul><li><strong><div>')|t }}
         {% endif %}
         {% if content.field_area_of_study_teaching|render|striptags is not empty %}
-          <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/checkbox.png" width="11" height="10" />
+          <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/checkbox.png" width="11" height="11" />
           {{ content.field_area_of_study_teaching|render|striptags('<p><ul><li><strong><div>')|t }}
         {% endif %}
         {{ content.field_area_of_study_teaching_txt|render|striptags('<p><strong><div>')|t }}
         {% if content.field_area_of_study_honors|render|striptags is not empty %}
-          <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/checkbox.png" width="11" height="10" />
+          <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/checkbox.png" width="11" height="11" />
           {{ content.field_area_of_study_honors|render|striptags('<p><strong><div>')|t }}
         {% endif %}
         {% if content.field_area_of_study_four_year|render|striptags is not empty %}
-          <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/checkbox.png" width="11" height="10" />
+          <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/checkbox.png" width="11" height="11" />
           {{ content.field_area_of_study_four_year|render|striptags('<p><strong><div>')|t }}
         {% endif %}
         {{ content.field_area_of_study_four_txt|render|striptags('<p><strong><div>')|t }}
         {% if content.field_area_of_study_selective|render|striptags is not empty %}
-          <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/checkbox.png" width="11" height="10" />
+          <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/checkbox.png" width="11" height="11" />
           {{ content.field_area_of_study_selective|render|striptags('<p><strong><div>')|t }}
         {% endif %}
         {{ content.field_area_of_study_select_txt|render|striptags('<p><strong><div>')|t }}
         {% if field_area_of_study_competitive|render|striptags is not empty %}
-          <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/checkbox.png" width="11" height="10" />
+          <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/checkbox.png" width="11" height="11" />
           {{ content.field_area_of_study_competitive|render|striptags('<p><strong><div>')|t }}
         {% endif %}
         {{ content.field_area_of_study_comp_txt|render|striptags('<p><strong><div>')|t }}
@@ -156,6 +156,19 @@
         {{ content.field_area_of_study_requirement|render }}
         {{ content.field_area_of_study_career|render }}
       </div>
+    </div>
+    <hr class="element--spacer-separator" />
+    <div class="learn-more">
+      <!--<h2>Learn More</h2>-->
+      <p>
+        <span class="learn-more-phone"><img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/phone-gray.png" width="11" height="10" /> 319-335-3847</span>
+        <span class="learn-more-email"><img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/envelope-gray.png" width="11" height="10" /> admissions@uiowa.edu</span>
+        <span class="learn-more-web"><img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/arrow-gray.png" width="11" height="10" /> http://admissions.uiowa.edu</span>
+      </p>
+    </div>
+
+    <div class="nondiscrimination-statement">
+      <p><small>The University of Iowa prohibits discrimination in employment, educational programs, and activities on the basis of race, creed, color, religion, national origin, age, sex, pregnancy, disability, genetic information, status as a U.S. veteran, service in the U.S. military, sexual orientation, gender identity, associational preferences, or any other classification that deprives the person of consideration as an individual. The university also affirms its commitment to providing equal opportunities and equal access to university facilities. For additional information on nondiscrimination policies, contact the Director, Office of Equal Opportunity and Diversity, the University of Iowa, 202 Jessup Hall, Iowa City, IA, 52242-1316, 319-335-0705 (voice), 319-335-0697 (TDD), diversity@uiowa.edu.</small></p>
     </div>
 
    {# PDF Second Page #}
@@ -174,17 +187,5 @@
 
   </div>
 
-  <div class="learn-more">
-    <h2>Learn More</h2>
-    <p>
-      <span class="learn-more-phone"><img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/phone-gray.png" width="11" height="10" /> 319-335-3847</span>
-      <span class="learn-more-email"><img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/envelope-gray.png" width="11" height="10" /> admissions@uiowa.edu</span>
-      <span class="learn-more-web"><img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/arrow-gray.png" width="11" height="10" /> http://admissions.uiowa.edu</span>
-    </p>
-  </div>
-
-  <div class="nondiscrimination-statement">
-    <p><small>The University of Iowa prohibits discrimination in employment, educational programs, and activities on the basis of race, creed, color, religion, national origin, age, sex, pregnancy, disability, genetic information, status as a U.S. veteran, service in the U.S. military, sexual orientation, gender identity, associational preferences, or any other classification that deprives the person of consideration as an individual. The university also affirms its commitment to providing equal opportunities and equal access to university facilities. For additional information on nondiscrimination policies, contact the Director, Office of Equal Opportunity and Diversity, the University of Iowa, 202 Jessup Hall, Iowa City, IA, 52242-1316, 319-335-0705 (voice), 319-335-0697 (TDD), diversity@uiowa.edu.</small></p>
-  </div>
 
 </div>

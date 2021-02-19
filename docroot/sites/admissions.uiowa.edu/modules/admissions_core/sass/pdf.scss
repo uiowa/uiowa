@@ -104,6 +104,7 @@ strong {
   float: none;
   width: 100%;
   height: 0;
+  margin: 10px 0;
   border: 1px solid transparent;
 }
 
@@ -194,7 +195,7 @@ strong {
     text-decoration: none;
     text-transform: uppercase;
     font-size: 1rem;
-    padding: 0.5rem 1rem 0.7rem 0.7rem;
+    padding: 0.2rem 1rem 0.5rem 0.7rem;
     font-family: "Antonio",sans-serif !important;
     text-transform: uppercase;
 
@@ -232,7 +233,7 @@ strong {
       background: $primary;
       color: #000;
       padding: 5px !important;
-      font-size: .6rem;
+      font-size: .5rem;
       text-transform: uppercase;
       }
     }
@@ -256,7 +257,7 @@ strong {
 
         &:first-child {
           .paragraph--type--degree {
-            margin-right: -.125rem;
+            margin-right: -.025rem;
             padding-left: 0;
 
             &:before {
@@ -433,9 +434,9 @@ strong {
       p, ul, li {
         font-size: 0.7rem;
       }
-      p:last-child {display: none;}
+
       ul, li {
-        margin-left: -10px;
+        margin-left: -15px;
       }
     }
   }
@@ -449,21 +450,31 @@ strong {
     img {
       margin: 0 $xsm 0 0;
     }
+    p {
+      display: inline;
+    }
 
     h2 {
       font-family: $font-family-caps;
-      font-size: 1.2rem;
+      font-size: .9rem;
       text-transform: uppercase;
       font-weight: bold;
       line-height: $reduced-line-height;
       border-bottom: 5px solid $primary;
-      margin: 0 0 1rem;
+      margin: 0 0 .5rem;
+      padding-bottom: 1rem;
+      display: inline;
     }
   }
 
   .nondiscrimination-statement {
-    p small {
-      font-size: 0.6rem;
+    p {
+      margin-top: 10px;
+      small {
+        font-size: 0.4rem;
+        color: #000;
+        margin-top: 10px;
+      }
     }
   }
 }
