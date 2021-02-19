@@ -52,6 +52,7 @@ class AOSRequirements extends BlockBase implements ContainerFactoryPluginInterfa
     $this->requestStack = $request_stack;
     $this->nodeStorage = $node_storage;
   }
+
   /**
    * {@inheritdoc}
    */
