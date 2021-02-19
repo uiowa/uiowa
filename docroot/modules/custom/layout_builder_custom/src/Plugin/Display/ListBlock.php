@@ -7,6 +7,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\SubformState;
 use Drupal\Core\Render\Element\Checkboxes;
 use Drupal\Core\Url;
+use Drupal\link\LinkItemInterface;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\views\Plugin\Block\ViewsBlock;
 use Drupal\views\Plugin\views\display\Block as CoreBlock;
@@ -354,12 +355,17 @@ class ListBlock extends CoreBlock {
 
       // @todo Figure out how to make the style of this field
       //   look like other LinkIt fields.
+      // @todo Maybe add check for LinkIt and instead use built in
+      //   link field if not available.
       $form['override']['display_more_path'] = [
-        '#type' => 'linkit',
+        '#type' => 'entity_autocomplete',
         '#title' => $this->t('Path'),
-        '#autocomplete_route_name' => 'linkit.autocomplete',
-        '#autocomplete_route_parameters' => [
-          'linkit_profile_id' => 'default',
+        // @todo The user should be able to select an entity type. Will be fixed
+        //    in https://www.drupal.org/node/2423093.
+        '#target_type' => 'node',
+        // Disable autocompletion when the first character is '/', '#' or '?'.
+        '#attributes' => [
+          'data-autocomplete-first-character-blacklist' => '/#?',
         ],
         '#default_value' => isset($block_configuration['display_more_path']) ? $block_configuration['display_more_path'] : NULL,
         '#states' => [
