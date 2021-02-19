@@ -26,7 +26,7 @@
 $reduced-line-height: 1.3;
 
 body {
-  padding: 0.7rem;
+ //padding: 0.7rem;
 }
 
 blockquote,
@@ -41,7 +41,7 @@ ul {
 
 p, ul {
   line-height: $reduced-line-height;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   margin-top: 0;
   margin-bottom: 0.7rem;
   color: #666;
@@ -62,6 +62,7 @@ p, ul {
       content: " (" attr(href) ")";
       word-wrap: break-word;
       display: inline;
+      color: #999;
     }
   }
 }
@@ -78,7 +79,8 @@ h2,
 h3,
 h4,
 h5,
-h6 {
+h6,
+strong {
   font-family: 'Zilla Slab', serif;
 }
 
@@ -125,11 +127,16 @@ h6 {
 }
 .column-container__left {
   display: block;
-  width: 50%;
-  margin-right: -50%;
+  width: 25%;
+  margin-right: -25%;
   float: left;
   word-wrap: break-word;
   page-break-inside: avoid;
+
+  img {
+    display: inline;
+    clear: left;
+  }
 
   a {
     word-wrap: break-word;
@@ -139,9 +146,9 @@ h6 {
   display: block;
   float: left;
   font-size: 13px;
-  margin-left: 50%;
+  margin-left: 28%;
   padding-left: 12px;
-  width: 45%;
+  width: 72%;
   word-wrap: break-word;
 
   &:before {
@@ -166,10 +173,14 @@ h6 {
     color: #666;
     line-height: 1;
   }
+  h2, h3, h4, h5, h6 {
+    margin: 0;
+  }
 
   .intro {
     p {
-      color: #666;
+      color: #333;
+      font-size: .7rem;
     }
     margin-bottom: 0;
     margin-top: .75rem;
@@ -203,6 +214,28 @@ h6 {
 
   .field--name-field-area-of-study-minors {
     clear: both;
+  }
+
+  // Course work
+  .field--name-field-area-of-study-course-work {
+    p {
+      //margin-bottom: .4rem;
+    }
+    ul {
+      margin-left: -20px;
+    }
+    ul.inline {
+      margin-left: -40px;
+      li {
+      display: inline-block;
+      list-style: none;
+      background: $primary;
+      color: #000;
+      padding: 5px !important;
+      font-size: .6rem;
+      text-transform: uppercase;
+      }
+    }
   }
 
   // Majors
@@ -279,6 +312,7 @@ h6 {
     .field__item {
       display: inline;
       padding-left: $xsm;
+      font-size: .7rem;
 
       &:before {
         content: ",";
@@ -305,6 +339,7 @@ h6 {
     margin-bottom: $gutter;
   }
 
+
   .field--name-field-area-of-study-certificates,
   .field--name-field-area-of-study-link,
   .field--name-field-area-of-study-majors,
@@ -319,13 +354,39 @@ h6 {
 
     .field__label {
       @extend .element--bold-intro;
+      font-family: $font-family-caps;
+      text-transform: uppercase;
     }
 
     .field__item {
       line-height: $reduced-line-height;
-      font-size: 0.8rem;
+      font-size: 0.7rem;
       font-family: 'Roboto', sans-serif!important;
       color: #666;
+    }
+  }
+
+  // Sidebar adjustments
+  .field--name-field-area-of-study-majors,
+  .field--name-field-area-of-study-minors,
+  .field--name-field-area-of-study-scholarship {
+    .field__label {
+      font-size: .9rem;
+      font-family: $font-family-caps;
+      text-transform: uppercase;
+    }
+    .field__item {
+      font-size: .7rem;
+      p {
+        font-size: .7rem;
+      }
+    }
+  }
+
+  .field--name-field-area-of-study-scholarship {
+    margin-top: 20px;
+    p {
+      line-height: 1;
     }
   }
 
@@ -335,7 +396,7 @@ h6 {
   .field--name-field-area-of-study-selective,
   .field--name-field-area-of-study-competitive {
     display: inline;
-    clear: left;
+    //clear: left;
     .field__item {
       display: inline;
     }
@@ -346,7 +407,7 @@ h6 {
   .field--name-field-area-of-study-four-txt,
   .field--name-field-area-of-study-teaching-txt {
     line-height: $reduced-line-height;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     font-family: 'Roboto', sans-serif!important;
     color: #666;
     display: inline;
@@ -360,6 +421,25 @@ h6 {
   .field--name-field-area-of-study-scholarship {
     @extend .element--bold-intro;
   }
+
+  .field--name-field-area-of-study-opportunity {
+    .element--bold-intro {
+      font-size: 0.9rem;
+      font-family: $font-family-caps;
+      text-transform: uppercase;
+    }
+
+    .field__item {
+      p, ul, li {
+        font-size: 0.7rem;
+      }
+      p:last-child {display: none;}
+      ul, li {
+        margin-left: -10px;
+      }
+    }
+  }
+
 
   .learn-more {
     span {
