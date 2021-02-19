@@ -87,14 +87,6 @@ class Article extends BaseNodeSource {
         'field_image_width',
         'field_image_height',
       ])
-      ->fields('n', [
-        'title',
-        'created',
-        'changed',
-        'status',
-        'promote',
-        'sticky',
-      ])
       ->orderBy('nid');
     return $query;
   }
@@ -178,7 +170,6 @@ class Article extends BaseNodeSource {
     $this->getTags($row);
 
     $this->fetchUrlAliases($row);
-    $this->processImageField($row, 'field_image');
 
     // Call the parent prepareRow.
     return parent::prepareRow($row);
