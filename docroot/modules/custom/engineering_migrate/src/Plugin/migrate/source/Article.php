@@ -2,7 +2,6 @@
 
 namespace Drupal\engineering_migrate\Plugin\migrate\source;
 
-use Drupal\migrate\MigrateExecutable;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
@@ -95,7 +94,8 @@ class Article extends BaseNodeSource {
         'status',
         'promote',
         'sticky',
-      ]);
+      ])
+      ->orderBy('nid');
     return $query;
   }
 
@@ -144,12 +144,12 @@ class Article extends BaseNodeSource {
   public function prepareRow(Row $row) {
     // Add a small delay to help ensure garbage collection runs.
     // Can be removed if we're using the clearMemory method below.
-    time_nanosleep(0, 10000000);
+    time_nanosleep(0, 1000000);
     // Clear out some memory every 100 rows.
-    if ($this->rowCount % 100 == 0) {
-      $this->clearMemory();
-    }
-
+//    if ($this->rowCount++ % 100 == 0) {
+//      \Drupal::logger('migrate')->notice($this->clearMemory());
+//    }
+    \Drupal::logger('migrate')->notice(memory_get_usage() . ' ' . memory_get_peak_usage());
     // Process image field if it exists.
     $this->processImageField($row, 'field_image');
     // Search for D7 inline embeds and replace with D8 inline entities.
@@ -157,6 +157,9 @@ class Article extends BaseNodeSource {
 
     // Replace any inline images, if they exist.
     $content = $this->replaceInlineImages($content, '/sites/www.engineering.uiowa.edu/files/');
+    $content = $this->replaceInlineFiles($content);
+    // Remove excess style markup.
+    $content = preg_replace("#<style type=\"text/css\">(.|\n)*?</style>#", '', $content);
     $row->setSourceProperty('body_value', $content);
 
     // Strip tags so they don't show up in the field teaser.
