@@ -604,6 +604,18 @@ function _layout_builder_custom_add_lbs_heading(&$form) {
   }
 }
 
+function layout_builder_custom_block_build_alter(array &$build, \Drupal\Core\Block\BlockPluginInterface $block) {
+  $test = 'thing';
+}
+
+function layout_builder_custom_block_view_alter(array &$build, \Drupal\Core\Block\BlockPluginInterface $block) {
+  $test = 'thing';
+}
+
+function layout_builder_custom_preprocess_views_view(&$variables) {
+  $test = 'thing';
+}
+
 /**
  * Implements hook_preprocess_HOOK().
  */
@@ -620,7 +632,7 @@ function layout_builder_custom_preprocess_block(&$variables) {
       }
       break;
 
-    case 'views_block:people_block-block_people':
+    case 'views_block:people_list_block-list_card':
       if (isset($variables['attributes']['class'])) {
         /** @var \Drupal\views\ViewExecutable $view */
         $view = $variables['content']['#view'];

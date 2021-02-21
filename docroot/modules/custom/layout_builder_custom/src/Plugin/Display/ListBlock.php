@@ -23,6 +23,33 @@ class ListBlock extends CoreBlock {
   /**
    * {@inheritdoc}
    */
+  public function optionsSummary(&$categories, &$options) {
+    parent::optionsSummary($categories, $options);
+    $filtered_allow = array_filter($this->getOption('allow'));
+    $filter_options = [
+      'items_per_page' => $this->t('Items to display'),
+      'pager' => $this->t('Show pager'),
+      'offset' => $this->t('Offset'),
+      'hide_fields' => $this->t('Hide fields'),
+      'configure_sorts' => $this->t('Adjust the order of sorts'),
+      'display_more_link' => $this->t('Display more link'),
+    ];
+    $filter_intersect = array_intersect_key($filter_options, $filtered_allow);
+
+    $options['allow'] = [
+      'category' => 'block',
+      'title' => $this->t('Allow settings'),
+      'value' => empty($filtered_allow) ? $this->t('None') : implode(', ', $filter_intersect),
+    ];
+
+    $customizable_filters = $this->getOption('filter_in_block');
+    $filter_count = !empty($customizable_filters) ? count($customizable_filters) : 0;
+    $options['allow']['value'] .= ', ' . $this->formatPlural($filter_count, '1 filter in block', '@count filters in block');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
     parent::buildOptionsForm($form, $form_state);
     if ($form_state->get('section') !== 'allow') {
@@ -30,10 +57,10 @@ class ListBlock extends CoreBlock {
     }
 
     $form['allow']['#options']['items_per_page'] = $this->t('Items to display');
-    $form['allow']['#options']['pager'] = $this->t('Show pager');
     $form['allow']['#options']['offset'] = $this->t('Pager offset');
+    $form['allow']['#options']['pager'] = $this->t('Show pager');
     $form['allow']['#options']['hide_fields'] = $this->t('Hide fields');
-    $form['allow']['#options']['sort_sorts'] = $this->t('Adjust the order of sorts');
+    $form['allow']['#options']['configure_sorts'] = $this->t('Configure sorts');
     $form['allow']['#options']['display_more_link'] = $this->t('Display more link');
 
     $defaults = [];
@@ -87,33 +114,6 @@ class ListBlock extends CoreBlock {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  public function optionsSummary(&$categories, &$options) {
-    parent::optionsSummary($categories, $options);
-    $filtered_allow = array_filter($this->getOption('allow'));
-    $filter_options = [
-      'items_per_page' => $this->t('Items to display'),
-      'pager' => $this->t('Show pager'),
-      'offset' => $this->t('Offset'),
-      'hide_fields' => $this->t('Hide fields'),
-      'sort_sorts' => $this->t('Adjust the order of sorts'),
-      'display_more_link' => $this->t('Display more link'),
-    ];
-    $filter_intersect = array_intersect_key($filter_options, $filtered_allow);
-
-    $options['allow'] = [
-      'category' => 'block',
-      'title' => $this->t('Allow settings'),
-      'value' => empty($filtered_allow) ? $this->t('None') : implode(', ', $filter_intersect),
-    ];
-
-    $customizable_filters = $this->getOption('filter_in_block');
-    $filter_count = !empty($customizable_filters) ? count($customizable_filters) : 0;
-    $options['allow']['value'] .= ', ' . $this->formatPlural($filter_count, '1 filter in block', '@count filters in block');
-  }
-
-  /**
    * Get a list of exposed filters.
    *
    * @return array
@@ -154,6 +154,7 @@ class ListBlock extends CoreBlock {
     if (!empty($allow_settings['items_per_page'])) {
       // Items per page.
       $form['override']['items_per_page']['#type'] = 'number';
+      $form['override']['items_per_page']['#min'] = 0;
       $form['override']['items_per_page']['#title'] = $this->t('Items to display');
       $form['override']['items_per_page']['#description'] = $this->t('Select the number of entries to display');
       unset($form['override']['items_per_page']['#options']);
@@ -200,7 +201,7 @@ class ListBlock extends CoreBlock {
     }
 
     // Provide "Configure sorts" block settings form.
-    if (!empty($allow_settings['sort_sorts'])) {
+    if (!empty($allow_settings['configure_sorts'])) {
       $form['override']['sort'] = [
         '#type' => 'details',
         '#title' => $this->t('Sort options'),
@@ -234,6 +235,8 @@ class ListBlock extends CoreBlock {
       // Sort available sort plugins by their currently configured weight.
       $sorted_sorts = [];
       if (isset($block_configuration['sort'])) {
+
+        uasort($block_configuration['sort'], '\Drupal\layout_builder_custom\Plugin\Display\Block::sortByWeight');
 
         foreach (array_keys($block_configuration['sort']) as $sort_name) {
           if (!empty($sorts[$sort_name])) {
@@ -429,7 +432,7 @@ class ListBlock extends CoreBlock {
     }
 
     // Provide "Configure sorts" block settings form.
-    if (!empty($allow_settings['sort_sorts'])) {
+    if (!empty($allow_settings['configure_sorts'])) {
       // @todo Process configure sorts.
       if ($sorts = array_filter($form_state->getValue([
         'override',
@@ -493,7 +496,7 @@ class ListBlock extends CoreBlock {
     }
 
     // Change sorts based on block configuration.
-    if (!empty($allow_settings['sort_sorts'])) {
+    if (!empty($allow_settings['configure_sorts'])) {
       $sorts = $this->view->getHandlers('sort', $display_id);
       // Remove existing sorts from the view.
       foreach ($sorts as $sort_name => $sort) {
@@ -528,8 +531,6 @@ class ListBlock extends CoreBlock {
         '#weight' => 100,
       ];
     }
-    // @todo Add condition to only show this if it was set.
-
   }
 
   /**
@@ -538,6 +539,23 @@ class ListBlock extends CoreBlock {
   public function usesExposed() {
     // We don't want this to be available on this type of block.
     return FALSE;
+  }
+
+  /**
+   * Exposed widgets.
+   *
+   * Exposed widgets typically only work with ajax in Drupal core, however
+   * #2605218 totally breaks the rest of the functionality in this display and
+   * in Core's Block display as well, so we allow non-ajax block views to use
+   * exposed filters and manually set the #action to the current request uri.
+   */
+  public function elementPreRender(array $element) {
+    /** @var \Drupal\views\ViewExecutable $view */
+    $view = $element['#view'];
+    if (!empty($view->exposed_widgets['#action']) && !$view->ajaxEnabled()) {
+      $view->exposed_widgets['#action'] = $this->request->getRequestUri();
+    }
+    return parent::elementPreRender($element);
   }
 
   /**
