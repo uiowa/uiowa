@@ -96,8 +96,8 @@
       <div class="aos-pullquote__right">
         {{ content.field_area_of_study_majors|render|striptags('<p><strong><div>')|t }}
         {{ content.field_area_of_study_minors|render|striptags('<p><ul><li><strong><div>')|t }}
-        {{ content.field_area_of_study_subprogram_type|render|striptags('<p><ul><li><strong><div>')|t }}
         {{ content.field_area_of_study_subprogram|render|striptags('<p><ul><li><strong><div>')|t }}
+
         {% if content.field_area_of_study_certificates|render|striptags is not empty %}
           <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/checkbox.png" width="11" height="11" />
           {{ content.field_area_of_study_certificates|render|striptags('<p><ul><li><strong><div>')|t }}
