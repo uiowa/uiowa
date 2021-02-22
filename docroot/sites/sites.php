@@ -2261,3 +2261,9 @@ $sites['studiovakhtangidarjania.local.drupal.uiowa.edu'] = 'vakhtangidarjania.st
 $sites['studiovakhtangidarjania.dev.drupal.uiowa.edu'] = 'vakhtangidarjania.studio.uiowa.edu';
 $sites['studiovakhtangidarjania.stage.drupal.uiowa.edu'] = 'vakhtangidarjania.studio.uiowa.edu';
 $sites['studiovakhtangidarjania.prod.drupal.uiowa.edu'] = 'vakhtangidarjania.studio.uiowa.edu';
+
+// Directory aliases for mnfreund.sites.uiowa.edu.
+$sites['sitesmnfreund.local.drupal.uiowa.edu'] = 'mnfreund.sites.uiowa.edu';
+$sites['sitesmnfreund.dev.drupal.uiowa.edu'] = 'mnfreund.sites.uiowa.edu';
+$sites['sitesmnfreund.stage.drupal.uiowa.edu'] = 'mnfreund.sites.uiowa.edu';
+$sites['sitesmnfreund.prod.drupal.uiowa.edu'] = 'mnfreund.sites.uiowa.edu';
