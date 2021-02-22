@@ -2273,3 +2273,9 @@ $sites['orgfreementalhealthclinic.local.drupal.uiowa.edu'] = 'freementalhealthcl
 $sites['orgfreementalhealthclinic.dev.drupal.uiowa.edu'] = 'freementalhealthclinic.org.uiowa.edu';
 $sites['orgfreementalhealthclinic.stage.drupal.uiowa.edu'] = 'freementalhealthclinic.org.uiowa.edu';
 $sites['orgfreementalhealthclinic.prod.drupal.uiowa.edu'] = 'freementalhealthclinic.org.uiowa.edu';
+
+// Directory aliases for historyofuigeography.sites.uiowa.edu.
+$sites['siteshistoryofuigeography.local.drupal.uiowa.edu'] = 'historyofuigeography.sites.uiowa.edu';
+$sites['siteshistoryofuigeography.dev.drupal.uiowa.edu'] = 'historyofuigeography.sites.uiowa.edu';
+$sites['siteshistoryofuigeography.stage.drupal.uiowa.edu'] = 'historyofuigeography.sites.uiowa.edu';
+$sites['siteshistoryofuigeography.prod.drupal.uiowa.edu'] = 'historyofuigeography.sites.uiowa.edu';
