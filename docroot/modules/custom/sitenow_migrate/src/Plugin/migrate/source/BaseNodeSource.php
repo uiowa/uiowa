@@ -237,4 +237,27 @@ abstract class BaseNodeSource extends SqlBase {
     }
   }
 
+  /**
+   * Fetch url aliases from our database.
+   *
+   * @param \Drupal\migrate\Row $row
+   *   The migration row result.
+   */
+  public function fetchUrlAliases(Row &$row) {
+    $nid = $row->getSourceProperty('nid');
+    $query = $this->select('url_alias', 'alias');
+    $record = $query->fields('alias', ['alias'])
+      ->condition('source', 'node/' . $nid, '=')
+      ->execute()
+      ->fetchCol();
+    $row->setSourceProperty('alias', $record);
+  }
+
+  /**
+   * Utility class to run post migration import processes.
+   */
+  public function postImportProcess() {
+    return FALSE;
+  }
+
 }

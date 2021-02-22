@@ -1,0 +1,22 @@
+uuid: a4e8b66b-b34f-448d-bb17-66c6bb7931a7
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: areas_of_study
+label: 'Areas of Study'
+type: 'canonical_entities:node'
+pattern: 'academics/[node:title]'
+selection_criteria:
+  54f05111-8938-48c9-8c4f-ed10afcf4603:
+    id: node_type
+    bundles:
+      area_of_study: area_of_study
+    negate: false
+    context_mapping:
+      node: node
+    uuid: 54f05111-8938-48c9-8c4f-ed10afcf4603
+selection_logic: and
+weight: -5
+relationships: {  }

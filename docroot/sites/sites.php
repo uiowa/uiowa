@@ -1812,12 +1812,6 @@ $sites['pharmacyuip.dev.drupal.uiowa.edu'] = 'uip.pharmacy.uiowa.edu';
 $sites['pharmacyuip.stage.drupal.uiowa.edu'] = 'uip.pharmacy.uiowa.edu';
 $sites['pharmacyuip.prod.drupal.uiowa.edu'] = 'uip.pharmacy.uiowa.edu';
 
-// Directory aliases for licensing.sites.uiowa.edu.
-$sites['siteslicensing.local.drupal.uiowa.edu'] = 'licensing.sites.uiowa.edu';
-$sites['siteslicensing.dev.drupal.uiowa.edu'] = 'licensing.sites.uiowa.edu';
-$sites['siteslicensing.stage.drupal.uiowa.edu'] = 'licensing.sites.uiowa.edu';
-$sites['siteslicensing.prod.drupal.uiowa.edu'] = 'licensing.sites.uiowa.edu';
-
 // Directory aliases for reno.sites.uiowa.edu.
 $sites['sitesreno.local.drupal.uiowa.edu'] = 'reno.sites.uiowa.edu';
 $sites['sitesreno.dev.drupal.uiowa.edu'] = 'reno.sites.uiowa.edu';
@@ -2130,12 +2124,6 @@ $sites['sitesanunsettledbody.dev.drupal.uiowa.edu'] = 'anunsettledbody.sites.uio
 $sites['sitesanunsettledbody.stage.drupal.uiowa.edu'] = 'anunsettledbody.sites.uiowa.edu';
 $sites['sitesanunsettledbody.prod.drupal.uiowa.edu'] = 'anunsettledbody.sites.uiowa.edu';
 
-// Directory aliases for aadr.dentistry.uiowa.edu.
-$sites['dentistryaadr.local.drupal.uiowa.edu'] = 'aadr.dentistry.uiowa.edu';
-$sites['dentistryaadr.dev.drupal.uiowa.edu'] = 'aadr.dentistry.uiowa.edu';
-$sites['dentistryaadr.stage.drupal.uiowa.edu'] = 'aadr.dentistry.uiowa.edu';
-$sites['dentistryaadr.prod.drupal.uiowa.edu'] = 'aadr.dentistry.uiowa.edu';
-
 // Directory aliases for uppu.lab.uiowa.edu.
 $sites['labuppu.local.drupal.uiowa.edu'] = 'uppu.lab.uiowa.edu';
 $sites['labuppu.dev.drupal.uiowa.edu'] = 'uppu.lab.uiowa.edu';
@@ -2177,3 +2165,111 @@ $sites['orguimsa.local.drupal.uiowa.edu'] = 'uimsa.org.uiowa.edu';
 $sites['orguimsa.dev.drupal.uiowa.edu'] = 'uimsa.org.uiowa.edu';
 $sites['orguimsa.stage.drupal.uiowa.edu'] = 'uimsa.org.uiowa.edu';
 $sites['orguimsa.prod.drupal.uiowa.edu'] = 'uimsa.org.uiowa.edu';
+
+// Directory aliases for cheatum.lab.uiowa.edu.
+$sites['labcheatum.local.drupal.uiowa.edu'] = 'cheatum.lab.uiowa.edu';
+$sites['labcheatum.dev.drupal.uiowa.edu'] = 'cheatum.lab.uiowa.edu';
+$sites['labcheatum.stage.drupal.uiowa.edu'] = 'cheatum.lab.uiowa.edu';
+$sites['labcheatum.prod.drupal.uiowa.edu'] = 'cheatum.lab.uiowa.edu';
+
+// Directory aliases for boes.lab.uiowa.edu.
+$sites['labboes.local.drupal.uiowa.edu'] = 'boes.lab.uiowa.edu';
+$sites['labboes.dev.drupal.uiowa.edu'] = 'boes.lab.uiowa.edu';
+$sites['labboes.stage.drupal.uiowa.edu'] = 'boes.lab.uiowa.edu';
+$sites['labboes.prod.drupal.uiowa.edu'] = 'boes.lab.uiowa.edu';
+
+// Directory aliases for chtc.sites.uiowa.edu.
+$sites['siteschtc.local.drupal.uiowa.edu'] = 'chtc.sites.uiowa.edu';
+$sites['siteschtc.dev.drupal.uiowa.edu'] = 'chtc.sites.uiowa.edu';
+$sites['siteschtc.stage.drupal.uiowa.edu'] = 'chtc.sites.uiowa.edu';
+$sites['siteschtc.prod.drupal.uiowa.edu'] = 'chtc.sites.uiowa.edu';
+
+// Directory aliases for kumar.lab.uiowa.edu.
+$sites['labkumar.local.drupal.uiowa.edu'] = 'kumar.lab.uiowa.edu';
+$sites['labkumar.dev.drupal.uiowa.edu'] = 'kumar.lab.uiowa.edu';
+$sites['labkumar.stage.drupal.uiowa.edu'] = 'kumar.lab.uiowa.edu';
+$sites['labkumar.prod.drupal.uiowa.edu'] = 'kumar.lab.uiowa.edu';
+
+// Directory aliases for resch.lab.uiowa.edu.
+$sites['labresch.local.drupal.uiowa.edu'] = 'resch.lab.uiowa.edu';
+$sites['labresch.dev.drupal.uiowa.edu'] = 'resch.lab.uiowa.edu';
+$sites['labresch.stage.drupal.uiowa.edu'] = 'resch.lab.uiowa.edu';
+$sites['labresch.prod.drupal.uiowa.edu'] = 'resch.lab.uiowa.edu';
+
+// Directory aliases for iowaneuroscienceclub.org.uiowa.edu.
+$sites['orgiowaneuroscienceclub.local.drupal.uiowa.edu'] = 'iowaneuroscienceclub.org.uiowa.edu';
+$sites['orgiowaneuroscienceclub.dev.drupal.uiowa.edu'] = 'iowaneuroscienceclub.org.uiowa.edu';
+$sites['orgiowaneuroscienceclub.stage.drupal.uiowa.edu'] = 'iowaneuroscienceclub.org.uiowa.edu';
+$sites['orgiowaneuroscienceclub.prod.drupal.uiowa.edu'] = 'iowaneuroscienceclub.org.uiowa.edu';
+
+// Directory aliases for umallik.lab.uiowa.edu.
+$sites['labumallik.local.drupal.uiowa.edu'] = 'umallik.lab.uiowa.edu';
+$sites['labumallik.dev.drupal.uiowa.edu'] = 'umallik.lab.uiowa.edu';
+$sites['labumallik.stage.drupal.uiowa.edu'] = 'umallik.lab.uiowa.edu';
+$sites['labumallik.prod.drupal.uiowa.edu'] = 'umallik.lab.uiowa.edu';
+
+// Directory aliases for hr.fo.uiowa.edu.
+$sites['fohr.local.drupal.uiowa.edu'] = 'hr.fo.uiowa.edu';
+$sites['fohr.dev.drupal.uiowa.edu'] = 'hr.fo.uiowa.edu';
+$sites['fohr.stage.drupal.uiowa.edu'] = 'hr.fo.uiowa.edu';
+$sites['fohr.prod.drupal.uiowa.edu'] = 'hr.fo.uiowa.edu';
+
+// Directory aliases for facultyhonors.clas.uiowa.edu.
+$sites['clasfacultyhonors.local.drupal.uiowa.edu'] = 'facultyhonors.clas.uiowa.edu';
+$sites['clasfacultyhonors.dev.drupal.uiowa.edu'] = 'facultyhonors.clas.uiowa.edu';
+$sites['clasfacultyhonors.stage.drupal.uiowa.edu'] = 'facultyhonors.clas.uiowa.edu';
+$sites['clasfacultyhonors.prod.drupal.uiowa.edu'] = 'facultyhonors.clas.uiowa.edu';
+
+// Directory aliases for cdd.uiowa.edu.
+$sites['cdd.local.drupal.uiowa.edu'] = 'cdd.uiowa.edu';
+$sites['cdd.dev.drupal.uiowa.edu'] = 'cdd.uiowa.edu';
+$sites['cdd.stage.drupal.uiowa.edu'] = 'cdd.uiowa.edu';
+$sites['cdd.prod.drupal.uiowa.edu'] = 'cdd.uiowa.edu';
+
+// Directory aliases for iddrc.uiowa.edu.
+$sites['iddrc.local.drupal.uiowa.edu'] = 'iddrc.uiowa.edu';
+$sites['iddrc.dev.drupal.uiowa.edu'] = 'iddrc.uiowa.edu';
+$sites['iddrc.stage.drupal.uiowa.edu'] = 'iddrc.uiowa.edu';
+$sites['iddrc.prod.drupal.uiowa.edu'] = 'iddrc.uiowa.edu';
+
+// Directory aliases for deroo.lab.uiowa.edu.
+$sites['labderoo.local.drupal.uiowa.edu'] = 'deroo.lab.uiowa.edu';
+$sites['labderoo.dev.drupal.uiowa.edu'] = 'deroo.lab.uiowa.edu';
+$sites['labderoo.stage.drupal.uiowa.edu'] = 'deroo.lab.uiowa.edu';
+$sites['labderoo.prod.drupal.uiowa.edu'] = 'deroo.lab.uiowa.edu';
+
+// Directory aliases for iisc.uiowa.edu.
+$sites['iisc.local.drupal.uiowa.edu'] = 'iisc.uiowa.edu';
+$sites['iisc.dev.drupal.uiowa.edu'] = 'iisc.uiowa.edu';
+$sites['iisc.stage.drupal.uiowa.edu'] = 'iisc.uiowa.edu';
+$sites['iisc.prod.drupal.uiowa.edu'] = 'iisc.uiowa.edu';
+
+// Directory aliases for 3ddesign.studio.uiowa.edu.
+$sites['studio3ddesign.local.drupal.uiowa.edu'] = '3ddesign.studio.uiowa.edu';
+$sites['studio3ddesign.dev.drupal.uiowa.edu'] = '3ddesign.studio.uiowa.edu';
+$sites['studio3ddesign.stage.drupal.uiowa.edu'] = '3ddesign.studio.uiowa.edu';
+$sites['studio3ddesign.prod.drupal.uiowa.edu'] = '3ddesign.studio.uiowa.edu';
+
+// Directory aliases for vakhtangidarjania.studio.uiowa.edu.
+$sites['studiovakhtangidarjania.local.drupal.uiowa.edu'] = 'vakhtangidarjania.studio.uiowa.edu';
+$sites['studiovakhtangidarjania.dev.drupal.uiowa.edu'] = 'vakhtangidarjania.studio.uiowa.edu';
+$sites['studiovakhtangidarjania.stage.drupal.uiowa.edu'] = 'vakhtangidarjania.studio.uiowa.edu';
+$sites['studiovakhtangidarjania.prod.drupal.uiowa.edu'] = 'vakhtangidarjania.studio.uiowa.edu';
+
+// Directory aliases for mnfreund.sites.uiowa.edu.
+$sites['sitesmnfreund.local.drupal.uiowa.edu'] = 'mnfreund.sites.uiowa.edu';
+$sites['sitesmnfreund.dev.drupal.uiowa.edu'] = 'mnfreund.sites.uiowa.edu';
+$sites['sitesmnfreund.stage.drupal.uiowa.edu'] = 'mnfreund.sites.uiowa.edu';
+$sites['sitesmnfreund.prod.drupal.uiowa.edu'] = 'mnfreund.sites.uiowa.edu';
+
+// Directory aliases for freementalhealthclinic.org.uiowa.edu.
+$sites['orgfreementalhealthclinic.local.drupal.uiowa.edu'] = 'freementalhealthclinic.org.uiowa.edu';
+$sites['orgfreementalhealthclinic.dev.drupal.uiowa.edu'] = 'freementalhealthclinic.org.uiowa.edu';
+$sites['orgfreementalhealthclinic.stage.drupal.uiowa.edu'] = 'freementalhealthclinic.org.uiowa.edu';
+$sites['orgfreementalhealthclinic.prod.drupal.uiowa.edu'] = 'freementalhealthclinic.org.uiowa.edu';
+
+// Directory aliases for historyofuigeography.sites.uiowa.edu.
+$sites['siteshistoryofuigeography.local.drupal.uiowa.edu'] = 'historyofuigeography.sites.uiowa.edu';
+$sites['siteshistoryofuigeography.dev.drupal.uiowa.edu'] = 'historyofuigeography.sites.uiowa.edu';
+$sites['siteshistoryofuigeography.stage.drupal.uiowa.edu'] = 'historyofuigeography.sites.uiowa.edu';
+$sites['siteshistoryofuigeography.prod.drupal.uiowa.edu'] = 'historyofuigeography.sites.uiowa.edu';

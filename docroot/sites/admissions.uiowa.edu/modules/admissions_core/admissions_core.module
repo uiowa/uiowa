@@ -13,7 +13,6 @@ use Drupal\node\NodeInterface;
 use Drupal\views\ViewExecutable;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Template\Attribute;
 
 /**
  * Implements hook_entity_presave().
@@ -31,7 +30,7 @@ function admissions_core_entity_presave(EntityInterface $entity) {
 /**
  * Implements hook_form_alter().
  */
-function admissions_core_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+function admissions_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
     case 'node_student_profile_form':
     case 'node_student_profile_edit_form':
@@ -61,7 +60,7 @@ function admissions_core_form_alter(&$form, \Drupal\Core\Form\FormStateInterface
 
     case 'fragment_stat_edit_form':
     case 'fragment_stat_add_form':
-      $form['#attached']['library'][]  = 'admissions_core/admin';
+      $form['#attached']['library'][] = 'admissions_core/admin';
       break;
 
     case 'node_area_of_study_form':
@@ -69,22 +68,22 @@ function admissions_core_form_alter(&$form, \Drupal\Core\Form\FormStateInterface
       $form['field_area_of_study_teaching_txt']['#states'] = [
         'visible' => [
           'input[name="field_area_of_study_teaching[teaching_licensure]"]' => ['checked' => TRUE],
-        ]
+        ],
       ];
       $form['field_area_of_study_select_txt']['#states'] = [
         'visible' => [
           'input[name="field_area_of_study_selective[selective_admission]"]' => ['checked' => TRUE],
-        ]
+        ],
       ];
       $form['field_area_of_study_four_txt']['#states'] = [
         'visible' => [
           'input[name="field_area_of_study_four_year[four_year_graduate_plan]"]' => ['checked' => TRUE],
-        ]
+        ],
       ];
       $form['field_area_of_study_comp_txt']['#states'] = [
         'visible' => [
           'input[name="field_area_of_study_competitive[competitive_admission]"]' => ['checked' => TRUE],
-        ]
+        ],
       ];
       break;
   }
@@ -169,7 +168,7 @@ function admissions_core_preprocess_paragraph__admissions_card(&$variables) {
         $id = $paragraph->id();
         foreach ($parent->get('field_area_of_study_stories')->getValue() as $delta => $item) {
           if ($item['target_id'] === $id) {
-            $variables['zebra'] = ($delta % 2 == 0 ? 'odd':'even');
+            $variables['zebra'] = ($delta % 2 == 0 ? 'odd' : 'even');
           }
         }
       }
@@ -184,27 +183,6 @@ function admissions_core_preprocess_paragraph__admissions_requirement(&$variable
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
     $paragraph = $variables['paragraph'];
-    $variables['admissions_requirement_links'] = [];
-    if ($paragraph->hasField('field_ar_requirement_label') && !$paragraph->get('field_ar_requirement_label')->isEmpty()) {
-      $variables['admissions_requirement_links']['requirement_label'] = $paragraph->field_ar_requirement_label->value;
-    }
-    else {
-      $variables['admissions_requirement_links']['requirement_label'] = t('Admissions Requirements');
-    }
-    if ($paragraph->hasField('field_ar_requirement_content') && !$paragraph->get('field_ar_requirement_content')->isEmpty()) {
-      $path = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $paragraph->field_ar_requirement_content->target_id);
-      $variables['admissions_requirement_links']['requirement_url'] = $path;
-    }
-    if ($paragraph->hasField('field_ar_process_label') && !$paragraph->get('field_ar_process_label')->isEmpty()) {
-      $variables['admissions_requirement_links']['process_label'] = $paragraph->field_ar_process_label->value;
-    }
-    else {
-      $variables['admissions_requirement_links']['process_label'] = t('Application Process');
-    }
-    if ($paragraph->hasField('field_ar_process_content') && !$paragraph->get('field_ar_process_content')->isEmpty()) {
-      $path = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $paragraph->field_ar_process_content->target_id);
-      $variables['admissions_requirement_links']['process_url'] = $path;
-    }
     $parent = $paragraph->getParentEntity();
     if ($parent instanceof ContentEntityInterface) {
       $admissions_requirements = [
@@ -256,7 +234,7 @@ function admissions_core_preprocess_layout(&$variables) {
             // Set the featured image display.
             $variables['featured_image_display'] = 'small';
 
-            // Set banner defaults
+            // Set banner defaults.
             $variables['banner_settings']['transparent'] = TRUE;
             $variables['banner_settings']['horizontal_align'] = 'center';
             $variables['banner_settings']['vertical_align'] = 'center';
@@ -269,7 +247,7 @@ function admissions_core_preprocess_layout(&$variables) {
             // Set the featured image display.
             $variables['featured_image_display'] = 'large';
 
-            // Set banner defaults
+            // Set banner defaults.
             $variables['banner_settings']['transparent'] = TRUE;
             $variables['banner_settings']['horizontal_align'] = 'center';
             $variables['banner_settings']['vertical_align'] = 'bottom';
@@ -377,6 +355,7 @@ function admissions_core_theme_suggestions_field_alter(array &$suggestions, arra
     case 'field_area_of_study_course_work':
       $suggestions[] = 'field__bold_headline_label';
       break;
+
     case 'field_person_territory':
       $suggestions[] = 'field__comma_separated';
       break;
@@ -400,7 +379,7 @@ function admissions_core_views_pre_render(ViewExecutable $view) {
 }
 
 /**
- * Added allowed values function for student profiles territory field
+ * Added allowed values function for student profiles territory field.
  */
 function admissions_core_state_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
   $options = [

@@ -4,12 +4,11 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.admissions_requirement.field_ar_intro
-    - field.field.paragraph.admissions_requirement.field_ar_process_content
-    - field.field.paragraph.admissions_requirement.field_ar_process_label
-    - field.field.paragraph.admissions_requirement.field_ar_requirement_content
-    - field.field.paragraph.admissions_requirement.field_ar_requirement_label
+    - field.field.paragraph.admissions_requirement.field_ar_process
+    - field.field.paragraph.admissions_requirement.field_ar_requirement
     - paragraphs.paragraphs_type.admissions_requirement
   module:
+    - link
     - text
 id: paragraph.admissions_requirement.default
 targetEntityType: paragraph
@@ -23,12 +22,32 @@ content:
     third_party_settings: {  }
     type: text_default
     region: content
+  field_ar_process:
+    weight: 2
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  field_ar_requirement:
+    weight: 1
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
 hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
-  field_ar_process_content: true
-  field_ar_process_label: true
-  field_ar_requirement_content: true
-  field_ar_requirement_label: true
   search_api_excerpt: true

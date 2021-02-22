@@ -40,17 +40,18 @@ function grad_core_form_alter(&$form, FormStateInterface $form_state, $form_id) 
     case 'node_mentor_form':
       _sitenow_node_form_defaults($form, $form_state);
       break;
+
     case 'node_thesis_defense_edit_form':
     case 'node_thesis_defense_form':
       // Our submit handler must execute before the layout_builder_styles one
       // so it can take advantage of the logic there.
       array_unshift($form['actions']['submit']['#submit'], '_grad_core_thesis_defense_submit');
-    // Currently errors on save.
-    // @todo Get this to work so that duration of 0 with no end date can occur.
-    // if (isset($form['field_thesis_defense_date'])) {
-    // $form['field_thesis_defense_date']['widget'][0]['end_value']['#access'] = FALSE;
-    // $form['field_thesis_defense_date']['widget'][0]['duration']['#access'] = FALSE;
-    // }
+      // Currently errors on save.
+      // @todo Get this to work so that duration of 0 with no end date can occur.
+      // if (isset($form['field_thesis_defense_date'])) {
+      // $form['field_thesis_defense_date']['widget'][0]['end_value']['#access'] = FALSE;
+      // $form['field_thesis_defense_date']['widget'][0]['duration']['#access'] = FALSE;
+      // }
       break;
   }
 }
@@ -94,7 +95,7 @@ function grad_core_preprocess_page_title(&$variables) {
       switch ($node->getType()) {
         case 'mentor':
           if ($node->hasField('field_person_position') && !$node->get('field_person_position')
-              ->isEmpty()) {
+            ->isEmpty()) {
             $variables['subtitle'] = $node->field_person_position->value;
           }
           break;
