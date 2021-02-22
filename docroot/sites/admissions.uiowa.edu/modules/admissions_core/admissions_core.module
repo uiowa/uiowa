@@ -147,6 +147,18 @@ function admissions_core_preprocess_entity_print(&$variables) {
  */
 function admissions_core_preprocess_field(&$variables) {
   switch ($variables["element"]["#field_name"]) {
+    case 'field_area_of_study_subprogram':
+      $node = $variables["element"]["#object"];
+      // If Subprogram Type is selected, use as label.
+      if (!$node->get('field_area_of_study_sub_type')->isEmpty()) {
+        $field_name = 'field_area_of_study_sub_type';
+        $field_definition = $node->getFieldDefinition($field_name)->getFieldStorageDefinition();
+        $field_allowed_options = options_allowed_values($field_definition, $node);
+        $field_value_label = $field_allowed_options[$node->{$field_name}->value];
+        $variables["label"] = $field_value_label;
+      }
+      break;
+
     case 'field_area_of_study_why':
       $variables["label"] = t('Why Iowa?');
       break;
@@ -264,6 +276,10 @@ function admissions_core_preprocess_layout(&$variables) {
  */
 function admissions_core_theme($existing, $type, $theme, $path) {
   return [
+    'block__views_block__areas_of_study_block_block_information' => [
+      'template' => 'block--views-block--areas-of-study-block-block-information',
+      'base hook' => 'block',
+    ],
     'node__scholarship__teaser' => [
       'template' => 'node--scholarship--teaser',
       'base hook' => 'node',
@@ -434,6 +450,21 @@ function admissions_core_state_options(FieldStorageConfig $definition, ContentEn
     'WI' => 'Wisconsin',
     'WY' => 'Wyoming',
     'DC' => 'District of Columbia',
+  ];
+  return $options;
+}
+
+/**
+ * Added allowed values function for AoS Subprogram type.
+ */
+function admissions_core_subprogram_type_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  $options = [
+    'areas_of_emphasis' => 'Areas of Emphasis',
+    'areas_of_specialization' => 'Areas of Specialization',
+    'focus_areas' => 'Focus Areas',
+    'interest_areas' => 'Interest Areas',
+    'tracks' => 'Tracks',
+    'concentrations' => 'Concentrations',
   ];
   return $options;
 }
