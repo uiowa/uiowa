@@ -264,6 +264,10 @@ function admissions_core_preprocess_layout(&$variables) {
  */
 function admissions_core_theme($existing, $type, $theme, $path) {
   return [
+    'block__views_block__areas_of_study_block_block_information' => [
+      'template' => 'block--views-block--areas-of-study-block-block-information',
+      'base hook' => 'block',
+    ],
     'node__scholarship__teaser' => [
       'template' => 'node--scholarship--teaser',
       'base hook' => 'node',
