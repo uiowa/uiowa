@@ -1,31 +1,524 @@
 // The dompdf library has VERY limited CSS 3 support.
 // @see: https://github.com/dompdf/dompdf/wiki/CSSCompatibility.
-
-// Many UIDS components include selectors/properties that are not supported so
-// we've created our own PDF-version of the partials. Unsupported selectors or
-// properties are commented out in those partials.
+// Many UIDS components include selectors/properties that are not supported
+// by dompdf. Unsupported selectors will break PDF generation. To be safe, we
+// only import variables and utilities and recreate styles as necessary.
 @import "../../../../themes/custom/uids_base/uids/assets/scss/variables";
 @import "../../../../themes/custom/uids_base/uids/assets/scss/utilities";
-@import "pdf/fonts";
-@import "pdf/paragraphs";
-@import "../../../../themes/custom/uids_base/uids/components/typography/headings/headings";
+@font-face {
+  font-family: 'Antonio';
+  font-variant: normal;
+  font-weight: bold;
+  src: local('Antonio-Bold'), url("../fonts/Antonio-Bold.ttf") format('truetype');
+}
+@font-face {
+  font-family: 'Zilla Slab';
+  font-variant: normal;
+  font-weight: bold;
+  src: local('ZillaSlab-Bold'), url("../fonts/ZillaSlab-Bold.ttf") format('truetype');
+}
+@font-face {
+  font-family: 'Roboto';
+  font-variant: normal;
+  font-weight: bold;
+  src: local('Roboto-Regular'), url("../fonts/Roboto-Regular.ttf") format('truetype');
+}
+$reduced-line-height: 1.3;
+
+body {
+ //padding: 0.7rem;
+}
+
+blockquote,
+dl,
+ol,
+p,
+pre,
+table,
+ul {
+  font-family: 'Roboto', sans-serif;
+}
+
+p, ul {
+  line-height: $reduced-line-height;
+  font-size: 0.7rem;
+  margin-top: 0;
+  margin-bottom: 0.7rem;
+  color: #666;
+  word-wrap: break-word;
+
+  strong {
+    font-weight: bold!important;
+    color: #333;
+  }
+
+  a {
+    word-wrap:break-word;
+    display: inline;
+    text-decoration: none;
+    color: #666;
+
+    &::after {
+      content: " (" attr(href) ")";
+      word-wrap: break-word;
+      display: inline;
+      color: #999;
+    }
+  }
+}
+
+h1 {
+  font-family: $font-family-caps;
+  text-transform: uppercase;
+  font-size: 35px;
+  line-height: 40px;
+  margin: 0;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6,
+strong {
+  font-family: 'Zilla Slab', serif;
+}
+
+.logo {
+  display: block;
+  text-align: right;
+}
+
+.element--bold-intro,
+.uids-component--bold-intro {
+  font-family: $font-family-serif;
+  font-weight: bold;
+  line-height: $reduced-line-height;
+  font-size: 1.3rem;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.element--spacer-separator {
+  clear: both;
+  float: none;
+  width: 100%;
+  height: 0;
+  margin: 10px 0;
+  border: 1px solid transparent;
+}
+
+.element--light-intro,
+.uids-component--light-intro {
+  font-weight: normal;
+  line-height: $reduced-line-height;
+  font-size: 1.4rem;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.aos-pullquote__right {
+  width: 25%;
+  display: inline-block;
+  float: right;
+  background: #f1f1f1;
+  padding: 15px 25px;
+  margin: 10px 0 10px 10px;
+  clear: right;
+  img {
+    display: inline;
+    clear: left;
+  }
+}
+
+.aos-pullquote__left {
+  width: 25%;
+  display: inline-block;
+  float: left;
+  background: #f1f1f1;
+  padding: 15px 25px;
+  margin: 10px 10px 10px 0px;
+  clear: right;
+  img {
+    display: inline;
+    clear: left;
+  }
+}
 
 
+.column-container {
+  position: relative;
+  width: 100%;
+  page-break-inside: auto;
+  page-break-before: auto;
+  &:after {
+    display: block;
+    height: 1px;
+    clear: both;
+  }
+}
+/*
+.column-container__left {
+  display: inline-block;
+  width: 25%;
+  margin-right: -25%;
+  float: left;
+  word-wrap: break-word;
+  page-break-inside: auto;
+  page-break-before: avoid;
+  page-break-after: avoid;
+
+  &:after {
+    display: block;
+    float: left;
+    height: 1px;
+    clear: right;
+  }
+
+  img {
+    display: inline;
+    clear: left;
+  }
+
+  a {
+    word-wrap: break-word;
+  }
+}
+.column-container__right {
+  display: inline-block;
+  float: left;
+  font-size: 13px;
+  margin-left: 28%;
+  padding-left: 12px;
+  width: 72%;
+  word-wrap: break-word;
+
+  &:before {
+    display: block;
+    float: left;
+    height: 1px;
+    clear: left;
+  }
+
+  a {
+    word-wrap: break-word;
+    &::after {
+      word-wrap: break-word;
+    }
+  }
+}
+*/
 .node--type-area-of-study {
-  .pdf-title {
-     color: $secondary;
-     text-decoration: none;
-     font-family: Zilla Slab, serif;
+  .subtitle p {
+    @extend .element--bold-intro;
+    margin: 0 0 1rem;
+    color: #666;
+    line-height: 1;
+  }
+  h2, h3, h4, h5, h6 {
+    margin: 0;
   }
 
-  .field__label {
-    font-weight: $font-weight-bold;
-    font-size: $content-font-size;
+  .intro {
+    p {
+      color: #333;
+      font-size: .7rem;
+    }
+    margin-bottom: 0;
+    margin-top: .75rem;
   }
 
-  .field__item {
-    font-weight: $font-weight-normal;
-    font-size: $content-font-size;
-    @include margin($bottom: $md, $top: 0);
+  .aos-link {
+    margin: $sm 0;
+    display: inline-block;
+    color: $secondary;
+    background: $primary;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 1rem;
+    padding: 0.2rem 1rem 0.5rem 0.7rem;
+    font-family: "Antonio",sans-serif !important;
+    text-transform: uppercase;
+
+    img {
+      margin-top: 1px;
+      margin-right: 5px;
+    }
+  }
+
+  .field--name-field-media-image {
+    img {
+      width: 300px;
+      height: 200px;
+      margin-top: 20px;
+    }
+  }
+
+  .field--name-field-area-of-study-minors {
+    clear: both;
+  }
+
+  .field--name-field-area-of-study-why {
+    margin-top: -10px;
+  }
+
+  // Course work
+  .field--name-field-area-of-study-course-work {
+    p {
+      //margin-bottom: .4rem;
+    }
+    ul {
+      margin-left: -20px;
+    }
+    ul.inline {
+      margin-left: -40px;
+      li {
+      display: inline-block;
+      list-style: none;
+      background: $primary;
+      color: #000;
+      padding: 5px !important;
+      font-size: .5rem;
+      text-transform: uppercase;
+      }
+    }
+  }
+
+  // Majors
+  .field--name-field-area-of-study-majors {
+    .field__items {
+      .field__item {
+
+        clear: both;
+        .field__item {
+          display: inline;
+          clear: none;
+        }
+
+
+
+        &:first-child {
+          .paragraph--type--degree {
+            margin-right: -.025rem;
+            padding-left: 0;
+
+            &:before {
+              content: "";
+              padding: 0;
+              margin: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .field--name-field-area-of-study-majors {
+
+    .field__item {
+      .paragraph--type--degree {
+        clear: both;
+      }
+    }
+
+
+
+    .paragraph--type--degree {
+      display: inline;
+
+      .field--name-field-degree-abbreviation.field--label-hidden.field__item {
+        margin: 0 $xsm;
+        display: inline;
+
+        &:before {
+          content: "(";
+        }
+
+        &:after {
+          content: ")";
+        }
+      }
+    }
+  }
+
+  .field--name-field-area-of-study-certificates {
+    display: inline;
+  }
+
+  .field--name-field-area-of-study-certificates,
+  .field--name-field-area-of-study-minors,
+  .field--name-field-area-of-study-online,
+  .field--name-field-area-of-study-preprof {
+    line-height: .5;
+    display: inline;
+    .field__item {
+      display: inline;
+      font-size: .7rem;
+
+      &:before {
+        content: ",";
+        padding-right: $xsm;
+        margin-left: -.125rem;
+      }
+
+      &:first-child {
+        margin-right: 0;
+        padding-left: 0;
+
+        &:before {
+          content: "";
+          padding: 0;
+          margin: 0;
+        }
+      }
+    }
+  }
+
+  .field--name-field-area-of-study-link,
+  .field--name-field-area-of-study-majors,
+  .field--name-field-area-of-study-minors {
+    margin-bottom: $gutter;
+  }
+
+
+  .field--name-field-area-of-study-certificates,
+  .field--name-field-area-of-study-link,
+  .field--name-field-area-of-study-majors,
+  .field--name-field-area-of-study-minors,
+  .field--name-field-area-of-study-online,
+  .field--name-field-area-of-study-preprof,
+  .field--name-field-area-of-study-teaching,
+  .field--name-field-area-of-study-honors,
+  .field--name-field-area-of-study-four-year,
+  .field--name-field-area-of-study-selective,
+  .field--name-field-area-of-study-competitive {
+
+    .field__label {
+      @extend .element--bold-intro;
+      font-family: $font-family-caps;
+      text-transform: uppercase;
+    }
+
+    .field__item {
+      line-height: $reduced-line-height;
+      font-size: 0.7rem;
+      font-family: 'Roboto', sans-serif!important;
+      color: #666;
+    }
+  }
+
+  // Sidebar adjustments
+  .field--name-field-area-of-study-majors,
+  .field--name-field-area-of-study-minors,
+  .field--name-field-area-of-study-scholarship {
+    .field__label {
+      font-size: .9rem;
+      font-family: $font-family-caps;
+      text-transform: uppercase;
+    }
+    .field__item {
+      font-size: .7rem;
+      p {
+        font-size: .7rem;
+      }
+    }
+  }
+
+  .field--name-field-area-of-study-scholarship {
+    margin-top: 20px;
+    p {
+      line-height: 1;
+    }
+  }
+
+  .field--name-field-area-of-study-teaching,
+  .field--name-field-area-of-study-honors,
+  .field--name-field-area-of-study-four-year,
+  .field--name-field-area-of-study-selective,
+  .field--name-field-area-of-study-competitive {
+    display: inline;
+    //clear: left;
+    .field__item {
+      display: inline;
+    }
+  }
+
+  .field--name-field-area-of-study-comp-txt,
+  .field--name-field-area-of-study-select-txt,
+  .field--name-field-area-of-study-four-txt,
+  .field--name-field-area-of-study-teaching-txt {
+    line-height: $reduced-line-height;
+    font-size: 0.7rem;
+    font-family: 'Roboto', sans-serif!important;
+    color: #666;
+    display: inline;
+    &:before {
+      content: ":";
+      padding-right: $xsm;
+      margin-left: -.4rem;
+    }
+  }
+
+  .field--name-field-area-of-study-scholarship {
+    @extend .element--bold-intro;
+  }
+
+  .field--name-field-area-of-study-opportunity {
+    .element--bold-intro {
+     // font-family: $font-family-caps;
+      //text-transform: uppercase;
+    }
+
+    .field__item {
+      p, ul, li {
+        font-size: 0.7rem;
+      }
+
+      ul, li {
+        margin-left: -15px;
+      }
+    }
+  }
+
+
+  .learn-more {
+    position: absolute;
+    bottom: 50px;
+    width: 100%;
+    border-top: 3px solid $primary;
+    span {
+      margin: 0 $gutter 0 0;
+      color: #000;
+    }
+
+    img {
+      margin: 0 $xsm 0 0;
+    }
+    p {
+      padding-top: 10px;
+    }
+
+    h2 {
+      font-family: $font-family-caps;
+      font-size: .9rem;
+      text-transform: uppercase;
+      font-weight: bold;
+      line-height: $reduced-line-height;
+      margin: .5rem .5rem 0 0;
+      display: inline-block;
+    }
+  }
+
+  .nondiscrimination-statement {
+    position: absolute;
+    bottom: 0;
+    p {
+      margin-top: 10px;
+      small {
+        font-size: 0.4rem;
+        color: #000;
+        margin-top: 10px;
+      }
+    }
   }
 }
