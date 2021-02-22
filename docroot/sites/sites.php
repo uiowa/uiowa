@@ -2255,3 +2255,9 @@ $sites['studio3ddesign.local.drupal.uiowa.edu'] = '3ddesign.studio.uiowa.edu';
 $sites['studio3ddesign.dev.drupal.uiowa.edu'] = '3ddesign.studio.uiowa.edu';
 $sites['studio3ddesign.stage.drupal.uiowa.edu'] = '3ddesign.studio.uiowa.edu';
 $sites['studio3ddesign.prod.drupal.uiowa.edu'] = '3ddesign.studio.uiowa.edu';
+
+// Directory aliases for vakhtangidarjania.studio.uiowa.edu.
+$sites['studiovakhtangidarjania.local.drupal.uiowa.edu'] = 'vakhtangidarjania.studio.uiowa.edu';
+$sites['studiovakhtangidarjania.dev.drupal.uiowa.edu'] = 'vakhtangidarjania.studio.uiowa.edu';
+$sites['studiovakhtangidarjania.stage.drupal.uiowa.edu'] = 'vakhtangidarjania.studio.uiowa.edu';
+$sites['studiovakhtangidarjania.prod.drupal.uiowa.edu'] = 'vakhtangidarjania.studio.uiowa.edu';
