@@ -113,7 +113,7 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
   $form['fonts']['font-family'] = [
     '#type' => 'select',
     '#title' => t('Font family'),
-    '#description' => t('Select an option'),
+    '#description' => t('This option changes the font family for most text areas that are not part of a styled block component or element'),
     '#options' => [
       'sans-serif' => t('Sans serif (Roboto)'),
       'serif' => t('Serif (Zilla Slab)'),
