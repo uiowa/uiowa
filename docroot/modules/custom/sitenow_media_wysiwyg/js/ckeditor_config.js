@@ -36,12 +36,12 @@ CKEDITOR.on('dialogDefinition', function (ev) {
   }
 });
 
-// If our document has 'text--serif' set on the body class
+// If our document has 'text--serif' set on the body class.
 // Set in uids_base_preprocess_html() of docroot/themes/custom/uids_base/uids_base.theme.
 if (document.getElementsByTagName("body")[0].classList.contains('text--serif')) {
 
   // Set allowed fields.
-  let allowedFields = [
+  let allowedInstances = [
     "edit-body-0-value",
     "edit-field-person-bio-0-value",
     "edit-settings-block-form-field-uiowa-text-area-0-value"
@@ -50,7 +50,7 @@ if (document.getElementsByTagName("body")[0].classList.contains('text--serif')) 
   let ckeInstances = Object.keys(CKEDITOR.instances);
 
   // For each of our allowed fields...
-  allowedFields.forEach(function(field) {
+  allowedInstances.forEach(function(field) {
     // For each instance key...
     ckeInstances.forEach(function(instance) {
       // If the key includes one of our allowed fields...
