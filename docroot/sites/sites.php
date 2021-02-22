@@ -2249,3 +2249,9 @@ $sites['iisc.local.drupal.uiowa.edu'] = 'iisc.uiowa.edu';
 $sites['iisc.dev.drupal.uiowa.edu'] = 'iisc.uiowa.edu';
 $sites['iisc.stage.drupal.uiowa.edu'] = 'iisc.uiowa.edu';
 $sites['iisc.prod.drupal.uiowa.edu'] = 'iisc.uiowa.edu';
+
+// Directory aliases for 3ddesign.studio.uiowa.edu.
+$sites['studio3ddesign.local.drupal.uiowa.edu'] = '3ddesign.studio.uiowa.edu';
+$sites['studio3ddesign.dev.drupal.uiowa.edu'] = '3ddesign.studio.uiowa.edu';
+$sites['studio3ddesign.stage.drupal.uiowa.edu'] = '3ddesign.studio.uiowa.edu';
+$sites['studio3ddesign.prod.drupal.uiowa.edu'] = '3ddesign.studio.uiowa.edu';
