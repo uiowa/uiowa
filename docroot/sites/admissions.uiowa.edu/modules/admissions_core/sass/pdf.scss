@@ -117,7 +117,7 @@ strong {
   margin-bottom: 0;
 }
 
-.aos-pullquote {
+.aos-pullquote__right {
   width: 25%;
   display: inline-block;
   float: right;
@@ -130,6 +130,21 @@ strong {
     clear: left;
   }
 }
+
+.aos-pullquote__left {
+  width: 25%;
+  display: inline-block;
+  float: left;
+  background: #f1f1f1;
+  padding: 15px 25px;
+  margin: 10px 10px 10px 0px;
+  clear: right;
+  img {
+    display: inline;
+    clear: left;
+  }
+}
+
 
 .column-container {
   position: relative;
@@ -272,18 +287,15 @@ strong {
   // Majors
   .field--name-field-area-of-study-majors {
     .field__items {
-      .field__item .paragraph--type--degree {
-        &:before {
-          content: ",";
-          //padding-right: $xsm;
-          margin-left: -.825rem;
-          //margin-right: -$xsm;
-          padding: 0;
-        }
-      }
-
       .field__item {
-        display: inline;
+
+        clear: both;
+        .field__item {
+          display: inline;
+          clear: none;
+        }
+
+
 
         &:first-child {
           .paragraph--type--degree {
@@ -303,13 +315,9 @@ strong {
 
   .field--name-field-area-of-study-majors {
 
-    .field__item:first-child {
+    .field__item {
       .paragraph--type--degree {
-        .field--name-field-degree-abbreviation {
-          &:before {
-            margin-left: -.175rem;
-          }
-        }
+        clear: both;
       }
     }
 
@@ -317,9 +325,6 @@ strong {
 
     .paragraph--type--degree {
       display: inline;
-        &:before {
-          margin-left: -.125rem;
-        }
 
       .field--name-field-degree-abbreviation.field--label-hidden.field__item {
         margin: 0 $xsm;
@@ -336,13 +341,17 @@ strong {
     }
   }
 
+  .field--name-field-area-of-study-certificates {
+    display: inline;
+  }
+
   .field--name-field-area-of-study-certificates,
   .field--name-field-area-of-study-minors,
   .field--name-field-area-of-study-online,
   .field--name-field-area-of-study-preprof {
+    line-height: .5;
     .field__item {
       display: inline;
-      padding-left: $xsm;
       font-size: .7rem;
 
       &:before {
@@ -473,17 +482,19 @@ strong {
 
   .learn-more {
     position: absolute;
-    bottom: 40px;
+    bottom: 50px;
+    width: 100%;
+    border-top: 3px solid $primary;
     span {
       margin: 0 $gutter 0 0;
+      color: #000;
     }
 
     img {
       margin: 0 $xsm 0 0;
     }
     p {
-      //display: inline;
-      border-top: 3px solid $primary;
+      display: inline;
       padding-top: 10px;
     }
 
@@ -493,8 +504,8 @@ strong {
       text-transform: uppercase;
       font-weight: bold;
       line-height: $reduced-line-height;
-      border-bottom: 5px solid $primary;
-      margin: 0 0 .5rem;
+      margin: .5rem .5rem 0 0;
+      display: inline-block;
     }
   }
 
