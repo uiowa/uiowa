@@ -2159,3 +2159,46 @@ function sitenow_update_9002() {
   $config->set('fonts.font-family', 'sans-serif');
   $config->save();
 }
+
+/**
+ * Sometimes config ignore needs a little push.
+ */
+function sitenow_update_9003() {
+  /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
+  $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
+  $split = 'config_split:person_extended';
+
+  // This site has the 'person_extended' split in config.
+  if (isset($filters[$split])) {
+    $site_path = \Drupal::service('site.path');
+
+    if ($site_path === 'sites/immuno.grad.uiowa.edu') {
+      // $config_path = DRUPAL_ROOT . '/../config/immuno.grad.uiowa.edu/';
+      // $source = new FileStorage($config_path);
+      // $config_storage = \Drupal::service('config.storage');
+      // $config_storage->write('config_ignore.settings', $source->read('config_ignore.settings'));
+      // @todo Import configuration updates from immuno split.
+    }
+
+    // @todo Loop through person nodes.
+    // @todo Check if Lab fields have values.
+    // @todo If so, create a Contact Info paragraph instance.
+    //   and populate with Lab info.
+    // @todo Remove Lab field instances from node.
+    // @todo Check if Office fields have values.
+    // @todo If so, create a Contact Info paragraph instance.
+    //   and populate with Office info.
+    // @todo Remove Office field instances from node.
+    // @todo Mark the node as having changed if relevant.
+
+    if ($site_path === 'sites/immuno.grad.uiowa.edu') {
+      // @todo Loop through person nodes.
+      // @todo Check if department field has value.
+      // @todo If so, copy the value to the new immuno department field.
+      // @todo Remove department field instance from the node.
+      // @todo Mark the node as having changed if relevant.
+    }
+
+    // @todo Save node if there were changes.
+  }
+}
