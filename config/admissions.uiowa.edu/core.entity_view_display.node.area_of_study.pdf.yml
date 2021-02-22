@@ -28,6 +28,8 @@ dependencies:
     - field.field.node.area_of_study.field_area_of_study_selective
     - field.field.node.area_of_study.field_area_of_study_stat
     - field.field.node.area_of_study.field_area_of_study_stories
+    - field.field.node.area_of_study.field_area_of_study_sub_type
+    - field.field.node.area_of_study.field_area_of_study_subprogram
     - field.field.node.area_of_study.field_area_of_study_subtitle
     - field.field.node.area_of_study.field_area_of_study_teaching
     - field.field.node.area_of_study.field_area_of_study_teaching_txt
@@ -250,6 +252,21 @@ content:
     region: content
     label: hidden
     settings: {  }
+    third_party_settings: {  }
+  field_area_of_study_sub_type:
+    type: list_default
+    weight: 25
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_area_of_study_subprogram:
+    type: string
+    weight: 24
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
     third_party_settings: {  }
   field_area_of_study_subtitle:
     type: text_default
