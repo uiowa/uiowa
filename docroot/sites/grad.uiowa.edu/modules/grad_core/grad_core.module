@@ -146,3 +146,25 @@ function grad_core_theme($existing, $type, $theme, $path) {
     ],
   ];
 }
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function grad_core_preprocess_node(&$variables) {
+  /** @var \Drupal\node\Entity\Node $node */
+  $node = $variables['node'];
+
+  // Append person credentials to the node label in the teaser view mode. This
+  // happens on the full node view for all people by default in LBC.
+  // @see \Drupal\layout_builder_custom/EventSubscriber\SectionComponentSubscriber
+  if ($node->getType() == 'mentor' && $variables['view_mode'] == 'teaser') {
+    if ($node->hasField('field_person_credential') && $creds = $node->get('field_person_credential')->getString()) {
+      $title = $node->getTitle();
+      $variables['label'] = t('@title, @creds', [
+        '@title' => $title,
+        '@creds' => $creds,
+      ]);
+    }
+  }
+
+}
