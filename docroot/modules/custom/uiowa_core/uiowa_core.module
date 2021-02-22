@@ -113,6 +113,9 @@ function uiowa_core_google_tag_insert_alter(&$satisfied, Container $container) {
   }
 }
 
+/**
+ * Implements hook_preprocess_html().
+ */
 function uiowa_core_preprocess_html(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if ($admin_context->isAdminRoute()) {
