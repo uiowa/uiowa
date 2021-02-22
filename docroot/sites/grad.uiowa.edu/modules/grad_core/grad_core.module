@@ -12,16 +12,11 @@ use Drupal\Core\Form\FormStateInterface;
  * Implements hook_entity_presave().
  */
 function grad_core_entity_presave(EntityInterface $entity) {
-  $extra = '';
   switch ($entity->bundle()) {
-    case 'mentor':
-      if ($credentials = $entity->get('field_person_credential')->value) {
-        $extra = ", $credentials";
-      }
     case 'thesis_defense':
     case 'scholar':
       // Setting the title with the first/last name values.
-      $output = $entity->get('field_person_first_name')->value . " " . $entity->get('field_person_last_name')->value . $extra;
+      $output = $entity->get('field_person_first_name')->value . " " . $entity->get('field_person_last_name')->value;
       $entity->setTitle($output);
       break;
 
