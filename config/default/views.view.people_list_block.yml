@@ -71,9 +71,9 @@ display:
             items_per_page: true
             items_per_page_label: 'Items per page'
             items_per_page_options: '9'
-            items_per_page_options_all: false
+            items_per_page_options_all: true
             items_per_page_options_all_label: '- All -'
-            offset: false
+            offset: true
             offset_label: Offset
           quantity: 9
       style:
@@ -703,6 +703,9 @@ display:
       display_extenders: {  }
       use_ajax: true
       group_by: true
+      use_more: false
+      use_more_always: true
+      use_more_text: more
     cache_metadata:
       max-age: -1
       contexts:
@@ -730,10 +733,10 @@ display:
       block_category: Lists
       allow:
         items_per_page: true
-        pager: pager
         offset: offset
+        pager: pager
         hide_fields: hide_fields
-        sort_sorts: sort_sorts
+        configure_sorts: configure_sorts
         display_more_link: display_more_link
       filters:
         status:
