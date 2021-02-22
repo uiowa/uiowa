@@ -1,0 +1,25 @@
+<?php
+/**
+ * @file
+ * Install tasks.
+ */
+
+/**
+ * Resave mentor titles without credentials.
+ */
+function grad_core_update_9002() {
+  $storage = \Drupal::entityTypeManager()->getStorage('node');
+
+  $nids = \Drupal::entityQuery('node')
+    ->condition('type', 'mentor')
+    ->execute();
+
+  $result = $storage->loadMultiple($nids);
+
+  /** @var \Drupal\node\Entity\Node $node */
+  foreach ($result as $node) {
+    $title = $node->get('field_person_first_name')->value . " " . $node->get('field_person_last_name')->value;
+    $node->setTitle($title);
+    $node->save();
+  }
+}
