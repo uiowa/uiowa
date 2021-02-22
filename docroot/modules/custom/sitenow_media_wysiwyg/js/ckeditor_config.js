@@ -39,17 +39,28 @@ CKEDITOR.on('dialogDefinition', function (ev) {
 // If our document has 'text--serif' set on the body class
 // Set in uids_base_preprocess_html() of docroot/themes/custom/uids_base/uids_base.theme.
 if (document.getElementsByTagName("body")[0].classList.contains('text--serif')) {
-  // Define a set of fields that we want to have text-serif.
-  let fields = ["field--name-body", "field--name-field-person-bio", "field--name-field-uiowa-text-area", "field--name-field-uiowa-card-excerpt"];
-  // Get the off canvas UI when it is generated.
-  let off_canvas_ui = document.getElementById("layout-builder-update-block");
-  // For each of our defined fields...
-  fields.forEach(function(field) {
-    // If the off canvas UI contains one...
-    if(off_canvas_ui.getElementsByClassName(field).length) {
-      // Give the CKEditor the 'text--serif' class.
-      CKEDITOR.config.bodyClass = 'text--serif';
-    }
+
+  // Set allowed fields.
+  let allowedFields = [
+    "edit-body-0-value",
+    "edit-field-person-bio-0-value",
+    "edit-settings-block-form-field-uiowa-text-area-0-value"
+  ];
+  // Get ckeditor instances keys.
+  let ckeInstances = Object.keys(CKEDITOR.instances);
+
+  // For each of our allowed fields...
+  allowedFields.forEach(function(field) {
+    // For each instance key...
+    ckeInstances.forEach(function(instance) {
+      // If the key includes one of our allowed fields...
+      // We do this check because some fields have generated block ids concatenated to them.
+      // We want to affect those blocks, but not have to know the ids, so we do this check.
+      if (instance.includes(field)) {
+        // Add text-serif to the WYSIWYG editor.
+        CKEDITOR.instances[instance].config.bodyClass = 'text--serif';
+      }
+    });
   });
 }
 
