@@ -476,6 +476,15 @@ function uids_base_preprocess_block(&$variables) {
     }
   }
 
+  // If inner list, remove any inner grid classes.
+  if (isset($variables["attributes"]["class"]) && in_array('inner--list', $variables["attributes"]["class"])) {
+    foreach ($variables["attributes"]["class"] as $key => $style) {
+      if (substr($style, 0, strlen('inner--grid')) === 'inner--grid') {
+        unset($variables["attributes"]["class"][$key]);
+      }
+    }
+  }
+
   // @todo Combine this section with the section before it.
   if (in_array($variables['base_plugin_id'], [
     'system_menu_block',
