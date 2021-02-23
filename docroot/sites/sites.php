@@ -1812,12 +1812,6 @@ $sites['pharmacyuip.dev.drupal.uiowa.edu'] = 'uip.pharmacy.uiowa.edu';
 $sites['pharmacyuip.stage.drupal.uiowa.edu'] = 'uip.pharmacy.uiowa.edu';
 $sites['pharmacyuip.prod.drupal.uiowa.edu'] = 'uip.pharmacy.uiowa.edu';
 
-// Directory aliases for licensing.sites.uiowa.edu.
-$sites['siteslicensing.local.drupal.uiowa.edu'] = 'licensing.sites.uiowa.edu';
-$sites['siteslicensing.dev.drupal.uiowa.edu'] = 'licensing.sites.uiowa.edu';
-$sites['siteslicensing.stage.drupal.uiowa.edu'] = 'licensing.sites.uiowa.edu';
-$sites['siteslicensing.prod.drupal.uiowa.edu'] = 'licensing.sites.uiowa.edu';
-
 // Directory aliases for reno.sites.uiowa.edu.
 $sites['sitesreno.local.drupal.uiowa.edu'] = 'reno.sites.uiowa.edu';
 $sites['sitesreno.dev.drupal.uiowa.edu'] = 'reno.sites.uiowa.edu';
@@ -2249,3 +2243,33 @@ $sites['iisc.local.drupal.uiowa.edu'] = 'iisc.uiowa.edu';
 $sites['iisc.dev.drupal.uiowa.edu'] = 'iisc.uiowa.edu';
 $sites['iisc.stage.drupal.uiowa.edu'] = 'iisc.uiowa.edu';
 $sites['iisc.prod.drupal.uiowa.edu'] = 'iisc.uiowa.edu';
+
+// Directory aliases for 3ddesign.studio.uiowa.edu.
+$sites['studio3ddesign.local.drupal.uiowa.edu'] = '3ddesign.studio.uiowa.edu';
+$sites['studio3ddesign.dev.drupal.uiowa.edu'] = '3ddesign.studio.uiowa.edu';
+$sites['studio3ddesign.stage.drupal.uiowa.edu'] = '3ddesign.studio.uiowa.edu';
+$sites['studio3ddesign.prod.drupal.uiowa.edu'] = '3ddesign.studio.uiowa.edu';
+
+// Directory aliases for vakhtangidarjania.studio.uiowa.edu.
+$sites['studiovakhtangidarjania.local.drupal.uiowa.edu'] = 'vakhtangidarjania.studio.uiowa.edu';
+$sites['studiovakhtangidarjania.dev.drupal.uiowa.edu'] = 'vakhtangidarjania.studio.uiowa.edu';
+$sites['studiovakhtangidarjania.stage.drupal.uiowa.edu'] = 'vakhtangidarjania.studio.uiowa.edu';
+$sites['studiovakhtangidarjania.prod.drupal.uiowa.edu'] = 'vakhtangidarjania.studio.uiowa.edu';
+
+// Directory aliases for mnfreund.sites.uiowa.edu.
+$sites['sitesmnfreund.local.drupal.uiowa.edu'] = 'mnfreund.sites.uiowa.edu';
+$sites['sitesmnfreund.dev.drupal.uiowa.edu'] = 'mnfreund.sites.uiowa.edu';
+$sites['sitesmnfreund.stage.drupal.uiowa.edu'] = 'mnfreund.sites.uiowa.edu';
+$sites['sitesmnfreund.prod.drupal.uiowa.edu'] = 'mnfreund.sites.uiowa.edu';
+
+// Directory aliases for freementalhealthclinic.org.uiowa.edu.
+$sites['orgfreementalhealthclinic.local.drupal.uiowa.edu'] = 'freementalhealthclinic.org.uiowa.edu';
+$sites['orgfreementalhealthclinic.dev.drupal.uiowa.edu'] = 'freementalhealthclinic.org.uiowa.edu';
+$sites['orgfreementalhealthclinic.stage.drupal.uiowa.edu'] = 'freementalhealthclinic.org.uiowa.edu';
+$sites['orgfreementalhealthclinic.prod.drupal.uiowa.edu'] = 'freementalhealthclinic.org.uiowa.edu';
+
+// Directory aliases for historyofuigeography.sites.uiowa.edu.
+$sites['siteshistoryofuigeography.local.drupal.uiowa.edu'] = 'historyofuigeography.sites.uiowa.edu';
+$sites['siteshistoryofuigeography.dev.drupal.uiowa.edu'] = 'historyofuigeography.sites.uiowa.edu';
+$sites['siteshistoryofuigeography.stage.drupal.uiowa.edu'] = 'historyofuigeography.sites.uiowa.edu';
+$sites['siteshistoryofuigeography.prod.drupal.uiowa.edu'] = 'historyofuigeography.sites.uiowa.edu';

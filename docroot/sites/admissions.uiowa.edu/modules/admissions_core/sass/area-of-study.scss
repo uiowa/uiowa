@@ -37,9 +37,10 @@
     text-transform: uppercase;
   }
   .paragraph--type--degree {
-    display: flex;
+    .field__item {
+      display: inline;
+    }
     .field--name-field-degree-abbreviation.field--label-hidden.field__item{
-      margin: 0 $xsm;
       &:before {
         content: "(";
       }
