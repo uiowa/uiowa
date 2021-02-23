@@ -436,10 +436,10 @@ class ListBlock extends CoreBlock {
       // @todo Process configure sorts.
       if ($sorts = array_filter($form_state->getValue([
         'override',
-        'sorts',
+        'sort',
         'sort_list',
       ]))) {
-        $block->setConfigurationValue('sorts', $sorts);
+        $block->setConfigurationValue('sort', $sorts);
       }
     }
 
@@ -496,23 +496,23 @@ class ListBlock extends CoreBlock {
     }
 
     // Change sorts based on block configuration.
-//    if (!empty($allow_settings['configure_sorts'])) {
-//      $sorts = $this->view->getHandlers('sort', $display_id);
-//      // Remove existing sorts from the view.
-//      foreach ($sorts as $sort_name => $sort) {
-//        $this->view->removeHandler($display_id, 'sort', $sort_name);
-//      }
-//      if (!empty($config['sort'])) {
-//        uasort($config['sort'], '\Drupal\layout_builder_custom\Plugin\Display\Block::sortByWeight');
-//        foreach ($config['sort'] as $sort_name => $sort) {
-//          if (!empty($config['sort'][$sort_name])) {
-//            $sort['order'] = $config['sort'][$sort_name];
-//            // Re-add sorts in the order that was selected for the block.
-//            $this->view->setHandler($display_id, 'sort', $sort_name, $sort);
-//          }
-//        }
-//      }
-//    }
+    if (!empty($allow_settings['configure_sorts'])) {
+      $sorts = $this->view->getHandlers('sort', $display_id);
+      // Remove existing sorts from the view.
+      foreach ($sorts as $sort_name => $sort) {
+        $this->view->removeHandler($display_id, 'sort', $sort_name);
+      }
+      if (!empty($config['sort'])) {
+        uasort($config['sort'], '\Drupal\layout_builder_custom\Plugin\Display\Block::sortByWeight');
+        foreach ($config['sort'] as $sort_name => $sort) {
+          if (!empty($config['sort'][$sort_name])) {
+            $sort['order'] = $config['sort'][$sort_name];
+            // Re-add sorts in the order that was selected for the block.
+            $this->view->setHandler($display_id, 'sort', $sort_name, $sort);
+          }
+        }
+      }
+    }
 
     // Set view filter based on "Filter" setting.
     $exposed_filter_values = !empty($config['exposed_filter_values']) ? $config['exposed_filter_values'] : [];
