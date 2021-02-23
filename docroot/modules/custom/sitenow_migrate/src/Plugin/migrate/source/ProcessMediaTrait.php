@@ -3,6 +3,7 @@
 namespace Drupal\sitenow_migrate\Plugin\migrate\source;
 
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\migrate\MigrateException;
 
@@ -186,8 +187,8 @@ trait ProcessMediaTrait {
       throw new MigrateException("Could not create or write to directory '{$dir}'");
     }
 
-    // Try to write the file.
-    $file = file_save_data($raw_file, $drupal_file_directory . $filename);
+    // Try to write the file, set the replacement behavior to EXISTS_ERROR.
+    $file = file_save_data($raw_file, implode('/', [$dir, $filename]), 2);
     // Drop the raw file out of memory for a little cleanup.
     unset($raw_file);
 
