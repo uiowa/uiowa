@@ -188,13 +188,14 @@ trait ProcessMediaTrait {
     }
 
     // Try to write the file, set the replacement behavior to EXISTS_ERROR.
-    $file = file_save_data($raw_file, implode('/', [$dir, $filename]), 2);
+    $file = file_save_data($raw_file, implode('/', [$dir, $filename]), FileSystemInterface::EXISTS_ERROR);
     // Drop the raw file out of memory for a little cleanup.
     unset($raw_file);
 
     // If we have a file, continue.
     if ($file) {
       // Drop the file out of memory for a little cleanup.
+      Cache::invalidateTags($file->getCacheTagsToInvalidate());
       unset($file);
       // Get a connection for the destination database
       // and retrieve the id for the newly created file.
@@ -332,7 +333,7 @@ trait ProcessMediaTrait {
       // then we'll need to fetch it from the source.
       if (!$new_fid) {
         // Use the filename, update the source base path with the subdirectory.
-        $new_fid = $this->downloadFile($filename, $this->getSourceBasePath() . $subdir, $this->getDrupalFileDirectory());
+        $new_fid = $this->downloadFile($filename, $this->getSourceBasePath() . $subdir, $this->getDrupalFileDirectory() . $subdir);
         unset($subdir);
         if ($new_fid) {
           $mid = $this->createMediaEntity($new_fid, $meta, 1);
@@ -413,7 +414,7 @@ trait ProcessMediaTrait {
           $prefix_path = str_replace($filename, '', $prefix_path);
 
           // Download the file and create the file record.
-          $fid = $this->downloadFile($filename, $this->getSourceBasePath() . $prefix_path, $drupal_file_directory);
+          $fid = $this->downloadFile($filename, $this->getSourceBasePath() . $prefix_path, $drupal_file_directory . $prefix_path);
 
           // Get meta data an create the media entity.
           $meta = [];

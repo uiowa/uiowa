@@ -142,10 +142,9 @@ class Article extends BaseNodeSource {
     // Can be removed if we're using the clearMemory method below.
     time_nanosleep(0, 1000000);
     // Clear out some memory every 100 rows.
-//    if ($this->rowCount++ % 100 == 0) {
-//      \Drupal::logger('migrate')->notice($this->clearMemory());
-//    }
-    \Drupal::logger('migrate')->notice(memory_get_usage() . ' ' . memory_get_peak_usage());
+    if ($this->rowCount++ % 100 == 0) {
+      $this->clearMemory();
+    }
     // Process image field if it exists.
     $this->processImageField($row, 'field_image');
     // Search for D7 inline embeds and replace with D8 inline entities.
