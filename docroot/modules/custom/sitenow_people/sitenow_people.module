@@ -523,31 +523,33 @@ function sitenow_people_preprocess_block(&$variables) {
       else {
         $tids = ['all'];
       }
-      // Contextual relationship filter.
-      $args = implode('+', $tids);
-      $view->setArguments([$args]);
+
+      $tids = implode('+', $tids);
 
       // Set custom view variable to send to person teaser template.
+      $heading_size = NULL;
+
       if ($block->hasField('field_uiowa_headline')) {
         $headline_fields = $block->get('field_uiowa_headline')->getValue();
         foreach ($headline_fields as $headline_field) {
           // There isn't a headline, so set the children to this heading size.
           if (empty($headline_field['headline'])) {
-            $view->display_handler->setOption('heading_size', $headline_field['child_heading_size']);
+            $heading_size = $headline_field['child_heading_size'];
           }
           else {
             $heading_size = HeadlineHelper::getHeadingSizeUp($headline_field['heading_size']);
-            $view->display_handler->setOption('heading_size', $heading_size);
           }
         }
       }
 
       // Get block layout builder styles if they exist.
+      $parent_lb_styles = NULL;
+
       if (isset($variables['attributes']['class'])) {
         if (!empty($variables['attributes']['class'])) {
           $parent_lb_styles = $variables['attributes']['class'];
-          $parent_lb_styles[] = 'list-item';
-          $view->display_handler->setOption('parent_lb_styles', $parent_lb_styles);
+          array_push($parent_lb_styles, 'list-item');
+          $parent_lb_styles = implode(',', $parent_lb_styles);
         }
 
         // Unset classes meant for children.
@@ -584,6 +586,12 @@ function sitenow_people_preprocess_block(&$variables) {
       // IF show pager, change pager_type to 'full'.
       $pager['type'] = $pager_type;
       $view->display_handler->setOption('pager', $pager);
+
+      $view->setArguments([
+        $tids,
+        $heading_size,
+        $parent_lb_styles,
+      ]);
 
       $view->preExecute();
       $view->execute();

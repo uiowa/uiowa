@@ -83,7 +83,7 @@
 {% set style_classes = [] %}
 {% set size_classes = [] %}
 
-{% set parent_lb_styles = view.display_handler.getOption('parent_lb_styles') %}
+{% set parent_lb_styles = view.args.2|split(',') %}
 {% for style in parent_lb_styles %}
 
   {% set classes = classes|merge([style]) %}
@@ -100,7 +100,7 @@
 
 {% set headline_level = heading_size ?: 'h3' %}
 {% if view %}
-  {% set headline_level = view.display_handler.getOption('heading_size') %}
+  {% set headline_level = view.args.1 %}
   {# @todo Remove once we can set card styles on SiteNow People and account for other implementations. #}
   {% if view.id != 'people_block' %}
     {% set classes = classes|merge(['card--list']) %}
