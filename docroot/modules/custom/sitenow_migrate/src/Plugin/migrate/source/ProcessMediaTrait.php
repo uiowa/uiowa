@@ -37,6 +37,12 @@ trait ProcessMediaTrait {
     return 'public://' . date('Y-m') . '/';
   }
 
+  /**
+   * Regex replace for inline files or images.
+   *
+   * @param $content
+   * @return string|string[]|null
+   */
   public function replaceInlineFiles($content) {
     return preg_replace_callback("|\[\[\{.*?\"fid\":\"(.*?)\".*?\]\]|", [
       $this,
@@ -68,7 +74,7 @@ trait ProcessMediaTrait {
         ];
         // @todo fetch the actual meta.
         if (!$new_fid) {
-          // Use the filename, update the source base path with the subdirectory.
+          // Use filename, update the source base path with the subdirectory.
           $source_base_path = str_replace('public://', $this->getSourceBasePath(), $file_data['uri']);
           $source_base_path = str_replace($filename, '', $source_base_path);
           $new_fid = $this->downloadFile($filename, $source_base_path, $this->getDrupalFileDirectory());

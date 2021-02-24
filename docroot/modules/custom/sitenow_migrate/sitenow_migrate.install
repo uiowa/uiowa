@@ -33,7 +33,8 @@ function sitenow_migrate_install() {
     if (!file_exists($destination . DIRECTORY_SEPARATOR . $file->filename)) {
       try {
         $file_system->copy($file->uri, $destination, FileSystemInterface::EXISTS_ERROR);
-      } catch (FileException $e) {
+      }
+      catch (FileException $e) {
         // Ignore and continue.
       }
 
