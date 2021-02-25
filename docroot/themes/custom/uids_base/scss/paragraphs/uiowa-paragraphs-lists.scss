@@ -144,7 +144,9 @@
     padding: 2rem;
   }
   .card--person-teaser {
-    padding: 2rem;
+    @include breakpoint(sm) {
+      padding: 2rem;
+    }
   }
 }
 
@@ -270,6 +272,7 @@
   .card,
   .node--view-mode-teaser.media {
     @include card-enclosed;
+    border: 1px solid rgba(0,0,0,.125)!important;
   }
 }
 
