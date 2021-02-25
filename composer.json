@@ -6,29 +6,13 @@
     "prefer-stable": true,
     "license": "GPL-2.0-only",
     "repositories": {
-        "block_content_template": {
-            "type": "git",
-            "url": "git@github.com:uiowa/block_content_template.git"
-        },
-        "drupal": {
-            "type": "composer",
-            "url": "https://packages.drupal.org/8"
-        },
         "asset-packagist": {
             "type": "composer",
             "url": "https://asset-packagist.org"
         },
-        "uiowa_bar": {
+        "block_content_template": {
             "type": "git",
-            "url": "git@github.com:uiowa/uiowa_bar"
-        },
-        "uiowa_auth": {
-            "type": "git",
-            "url": "git@github.com:uiowa/uiowa_auth"
-        },
-        "uiowa_footer": {
-            "type": "git",
-            "url": "git@github.com:uiowa/uiowa_footer"
+            "url": "git@github.com:uiowa/block_content_template.git"
         },
         "colorbox": {
             "type": "package",
@@ -39,6 +23,23 @@
                 "dist": {
                     "url": "https://github.com/jackmoore/colorbox/archive/1.6.4.zip",
                     "type": "zip"
+                }
+            }
+        },
+        "drupal": {
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
+        },
+        "drupal-pyrello/views_tree": {
+            "type": "package",
+            "package": {
+                "name": "drupal-pyrello/views_tree",
+                "version": "1.0.0",
+                "type": "drupal-module",
+                "source": {
+                    "url": "https://git.drupalcode.org/sandbox/pyrello-3195611.git",
+                    "type": "git",
+                    "reference": "1.0.x"
                 }
             }
         },
@@ -54,18 +55,17 @@
                 }
             }
         },
-        "drupal-pyrello/views_tree": {
-            "type": "package",
-            "package": {
-                "name": "drupal-pyrello/views_tree",
-                "version": "1.0.0",
-                "type": "drupal-module",
-                "source": {
-                    "url": "https://git.drupalcode.org/sandbox/pyrello-3195611.git",
-                    "type": "git",
-                    "reference": "1.0.x"
-                }
-            }
+        "uiowa_auth": {
+            "type": "git",
+            "url": "git@github.com:uiowa/uiowa_auth"
+        },
+        "uiowa_bar": {
+            "type": "git",
+            "url": "git@github.com:uiowa/uiowa_bar"
+        },
+        "uiowa_footer": {
+            "type": "git",
+            "url": "git@github.com:uiowa/uiowa_footer"
         }
     },
     "autoload": {
@@ -183,6 +183,7 @@
         "drupal/superfish": "^1.2",
         "drupal/swiftmailer": "^2.0@beta",
         "drupal/theme_permission": "^2.0",
+        "drupal/ultimate_cron": "^2.0@alpha",
         "drupal/views_ical": "^1.0@alpha",
         "drupal/webform": "^6.0",
         "drupal/weight": "^3.2",
@@ -218,20 +219,6 @@
             "drupal/core": "-p2"
         },
         "patches": {
-            "drupal/inline_entity_form": {
-                "Custom blocks created in inline forms should not be reusable": "https://www.drupal.org/files/issues/2020-05-04/3002175-26.patch"
-            },
-            "drupal/menu_block": {
-                "Hide block title if menu tree contains no links": "https://www.drupal.org/files/issues/2020-02-12/menu_block-hide_block_if_no_links-2757215-13.patch",
-                "Suppress display of regular system menu blocks in Layout Builder": "https://www.drupal.org/files/issues/2019-12-11/menu_block-remove_duplicates-3062278-11.patch"
-            },
-            "drupal/default_content": {
-                "Add a Normalizer and Denormalizer to support Layout Builder": "https://www.drupal.org/files/issues/2020-08-24/default_content-add-normalizer-denormalizer-for-layout-builder-3160146-25.patch",
-                "Predictable order of content import": "https://www.drupal.org/files/issues/2020-10-08/3175870.patch"
-            },
-            "drupal/purge": {
-                "Port purge commands to Drush 9": "https://www.drupal.org/files/issues/2921309-17-port-purge-drush-9.patch"
-            },
             "drupal/config_ignore": {
                 "Support for export filtering via Drush": "https://www.drupal.org/files/issues/2021-01-04/config_ignore_2857247-61.patch"
             },
@@ -248,34 +235,49 @@
                 "Media viewmode control": "https://www.drupal.org/files/issues/2020-01-31/3097416-ckeditor-view-modes-8.9-combined.patch",
                 "Expose Layout Builder data to REST and JSON:API": "https://www.drupal.org/files/issues/2020-07-07/2942975-116.patch",
                 "Temporary Hotfix for YouTube oEmbeds": "https://www.drupal.org/files/issues/2020-12-04/3186415-8.9.x-youtube-headers-html.patch",
-                "Themes have no context of the entity being rendered in preprocessing a layout when using Layout builder": "https://www.drupal.org/files/issues/2020-02-11/3111192-entity-14.patch"
+                "Themes have no context of the entity being rendered in preprocessing a layout when using Layout builder": "https://www.drupal.org/files/issues/2020-02-11/3111192-entity-14.patch",
+                "Add optional parameters to StatementInterface::fetchObject() to be in line with the PDO implementation of the method fetchObject()": "https://www.drupal.org/files/issues/2021-02-08/3128548-59.patch"
+            },
+            "drupal/default_content": {
+                "Add a Normalizer and Denormalizer to support Layout Builder": "https://www.drupal.org/files/issues/2020-08-24/default_content-add-normalizer-denormalizer-for-layout-builder-3160146-25.patch",
+                "Predictable order of content import": "https://www.drupal.org/files/issues/2020-10-08/3175870.patch"
+            },
+            "drupal/entity_embed": {
+                "Logs flooded with warning messages Invalid display settings encountered": "https://www.drupal.org/files/issues/2019-12-11/3077225-10.reduce-invalid-config-logs.patch"
+            },
+            "drupal/entity_print": {
+                "Error on layout builder": "https://www.drupal.org/files/issues/2020-02-06/3111643-1.patch"
+            },
+            "drupal/google_analytics": {
+                "Add possibility to add G-ID to the existing ID-Field": "https://www.drupal.org/files/issues/2020-11-19/3178179-13.patch"
+            },
+            "drupal/inline_entity_form": {
+                "Custom blocks created in inline forms should not be reusable": "https://www.drupal.org/files/issues/2020-05-04/3002175-26.patch"
             },
             "drupal/layout_builder_styles": {
                 "Section dependency on layout plugin configuration form": "https://www.drupal.org/files/issues/2019-08-23/layout_builder_styles-3062261-%2310.patch",
                 "Grouping of layout builder styles": "https://www.drupal.org/files/issues/2021-01-20/style_groups_for_layout_builder_styles-3075502--beta4.patch"
-            },
-            "drupal/redirect": {
-                "Match redirect": "https://www.drupal.org/files/issues/2020-04-13/redirect-n2831605-31.patch"
-            },
-            "drupal/entity_embed": {
-                "Logs flooded with warning messages Invalid display settings encountered": "https://www.drupal.org/files/issues/2019-12-11/3077225-10.reduce-invalid-config-logs.patch"
             },
             "drupal/media_entity_facebook": {
                 "Allow creation of new Facebook media entities using the Media Browser": "https://www.drupal.org/files/issues/2020-03-31/3120085-media-library-add-5.patch",
                 "Support for Facebook API - Not a long term solution": "https://www.drupal.org/files/issues/2020-10-26/3176739-4.patch",
                 "undefined function file_unmanaged_copy": "https://www.drupal.org/files/issues/2020-07-19/3160072-6.patch"
             },
+            "drupal/menu_block": {
+                "Hide block title if menu tree contains no links": "https://www.drupal.org/files/issues/2020-02-12/menu_block-hide_block_if_no_links-2757215-13.patch",
+                "Suppress display of regular system menu blocks in Layout Builder": "https://www.drupal.org/files/issues/2019-12-11/menu_block-remove_duplicates-3062278-11.patch"
+            },
             "drupal/paragraphs": {
                 "Langcode error when switching away from IEF for paragraphs in LB": "https://www.drupal.org/files/issues/2020-06-25/paragraphs-2901390-51.patch"
             },
+            "drupal/purge": {
+                "Port purge commands to Drush 9": "https://www.drupal.org/files/issues/2921309-17-port-purge-drush-9.patch"
+            },
+            "drupal/redirect": {
+                "Match redirect": "https://www.drupal.org/files/issues/2020-04-13/redirect-n2831605-31.patch"
+            },
             "jackmoore/colorbox": {
                 "Accessibility improvements": "https://patch-diff.githubusercontent.com/raw/jackmoore/colorbox/pull/832.diff"
-            },
-            "drupal/google_analytics": {
-                "Add possibility to add G-ID to the existing ID-Field": "https://www.drupal.org/files/issues/2020-11-19/3178179-13.patch"
-            },
-            "drupal/entity_print": {
-                "Error on layout builder": "https://www.drupal.org/files/issues/2020-02-06/3111643-1.patch"
             }
         },
         "installer-types": [

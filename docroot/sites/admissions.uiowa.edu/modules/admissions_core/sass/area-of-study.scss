@@ -24,6 +24,7 @@
   }
   .bttn.bttn--link {
     padding-left: 0;
+    text-align: left;
   }
   // @todo remove after https://github.com/uiowa/uiowa/issues/2706 is fixed.
   .views-element-container {
@@ -36,9 +37,10 @@
     text-transform: uppercase;
   }
   .paragraph--type--degree {
-    display: flex;
+    .field__item {
+      display: inline;
+    }
     .field--name-field-degree-abbreviation.field--label-hidden.field__item{
-      margin: 0 $xsm;
       &:before {
         content: "(";
       }

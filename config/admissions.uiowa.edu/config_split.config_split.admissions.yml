@@ -13,7 +13,6 @@ module:
   weight: 0
 theme: {  }
 blacklist:
-  - block.block.printlinks
   - core.entity_view_display.node.area_of_study.pdf
   - core.entity_view_mode.node.pdf
 graylist:
@@ -39,17 +38,21 @@ graylist:
   - field.field.node.area_of_study.field_area_of_study_four_year
   - field.field.node.area_of_study.field_area_of_study_intl
   - field.field.node.area_of_study.field_area_of_study_link
+  - field.field.node.area_of_study.field_area_of_study_mail_code
   - field.field.node.area_of_study.field_area_of_study_opportunity
   - field.field.node.area_of_study.field_area_of_study_requirement
   - field.field.node.area_of_study.field_area_of_study_scholarship
   - field.field.node.area_of_study.field_area_of_study_selective
   - field.field.node.area_of_study.field_area_of_study_select_txt
   - field.field.node.area_of_study.field_area_of_study_stories
+  - field.field.node.area_of_study.field_area_of_study_subprogram
   - field.field.node.area_of_study.field_area_of_study_subtitle
+  - field.field.node.area_of_study.field_area_of_study_sub_type
   - field.field.node.area_of_study.field_area_of_study_teaching
   - field.field.node.area_of_study.field_area_of_study_teaching_txt
   - field.field.node.area_of_study.field_area_of_study_transfer
   - field.field.node.area_of_study.field_area_of_study_why
+  - field.field.node.area_of_study.field_image
   - field.field.node.person.field_person_hometown
   - field.field.node.person.field_person_territory
   - field.field.node.scholarship.field_scholarship_resident
@@ -87,17 +90,21 @@ graylist:
   - field.storage.node.field_area_of_study_honors
   - field.storage.node.field_area_of_study_intl
   - field.storage.node.field_area_of_study_link
+  - field.storage.node.field_area_of_study_mail_code
   - field.storage.node.field_area_of_study_opportunity
   - field.storage.node.field_area_of_study_requirement
   - field.storage.node.field_area_of_study_scholarship
   - field.storage.node.field_area_of_study_selective
   - field.storage.node.field_area_of_study_select_txt
   - field.storage.node.field_area_of_study_stories
+  - field.storage.node.field_area_of_study_subprogram
   - field.storage.node.field_area_of_study_subtitle
+  - field.storage.node.field_area_of_study_sub_type
   - field.storage.node.field_area_of_study_teaching
   - field.storage.node.field_area_of_study_teaching_txt
   - field.storage.node.field_area_of_study_transfer
   - field.storage.node.field_area_of_study_why
+  - field.storage.node.field_image
   - field.storage.node.field_person_first_name
   - field.storage.node.field_person_hometown
   - field.storage.node.field_person_last_name
@@ -149,6 +156,7 @@ graylist:
   - 'user.role.*'
   - fragment.fragment_type.stat
   - 'field.storage.fragment.field_stat_*'
+  - 'core.entity_view_display.media.image.*'
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 90
