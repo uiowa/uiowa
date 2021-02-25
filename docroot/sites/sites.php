@@ -2273,3 +2273,9 @@ $sites['siteshistoryofuigeography.local.drupal.uiowa.edu'] = 'historyofuigeograp
 $sites['siteshistoryofuigeography.dev.drupal.uiowa.edu'] = 'historyofuigeography.sites.uiowa.edu';
 $sites['siteshistoryofuigeography.stage.drupal.uiowa.edu'] = 'historyofuigeography.sites.uiowa.edu';
 $sites['siteshistoryofuigeography.prod.drupal.uiowa.edu'] = 'historyofuigeography.sites.uiowa.edu';
+
+// Directory aliases for quenchiowa.org.uiowa.edu.
+$sites['orgquenchiowa.local.drupal.uiowa.edu'] = 'quenchiowa.org.uiowa.edu';
+$sites['orgquenchiowa.dev.drupal.uiowa.edu'] = 'quenchiowa.org.uiowa.edu';
+$sites['orgquenchiowa.stage.drupal.uiowa.edu'] = 'quenchiowa.org.uiowa.edu';
+$sites['orgquenchiowa.prod.drupal.uiowa.edu'] = 'quenchiowa.org.uiowa.edu';
