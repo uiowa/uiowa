@@ -85,13 +85,6 @@
   {% set headline_level = view.display_handler.getOption('heading_size') %}
 {% endif %}
 
-{% set card_name = [] %}
-{% if content.field_person_credential.0 is not null %}
-  {% set card_name = label|merge([content.field_person_credential.0]) %}
-{% else %}
-  {% set card_name = label|render %}
-{% endif %}
-
 {{ attach_library('classy/node') }}
 {{ attach_library('uids_base/paragraphs-lists') }}
 {{ attach_library('uids_base/person') }}
@@ -104,7 +97,7 @@
   'card_tag': content.field_person_email | render,
   'person_phone': content.field_person_phone | render,
   'media_styles': ['media--circle', 'card__media--medium', 'media--border'],
-  'card_title': card_name,
+  'card_title': label,
   'card_link_url': url,
   'headline_level': headline_level,
 } %}
