@@ -40,8 +40,11 @@ trait ProcessMediaTrait {
   /**
    * Regex replace for inline files or images.
    *
-   * @param $content
-   * @return string|string[]|null
+   * @param string $content
+   *   Body content that should be checked and updated.
+   *
+   * @return string
+   *   The updated body content with inline replacements.
    */
   public function replaceInlineFiles($content) {
     return preg_replace_callback("|\[\[\{.*?\"fid\":\"(.*?)\".*?\]\]|", [
