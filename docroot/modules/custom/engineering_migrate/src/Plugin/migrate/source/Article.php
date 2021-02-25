@@ -67,7 +67,7 @@ class Article extends BaseNodeSource {
   public function query() {
     $query = parent::query();
     $query->join('field_data_body', 'b', 'n.nid = b.entity_id');
-    $query->leftJoin('field_data_field_image', 'image', 'n.nid = image.entity_id');
+    $query->leftJoin('field_data_field_image', 'image', 'nr.vid = image.revision_id');
     $query->leftJoin('field_data_field_author', 'author', 'n.nid = author.entity_id');
     $query = $query->fields('b', [
       'entity_type',
