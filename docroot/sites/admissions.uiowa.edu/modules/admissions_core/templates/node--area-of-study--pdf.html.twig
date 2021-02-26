@@ -82,13 +82,20 @@
 {{ attach_library('classy/node') }}
 
 <div{{ attributes.addClass(classes) }}>
-
-  {# PDF First Page #}
-  {{ title_prefix }}
-    <h1{{ title_attributes.addClass('pdf-title') }}>
-      {{ label }}
-    </h1>
-  {{ title_suffix }}
+  <div class="column-container">
+    <div class="column-container__left">
+      {{ title_prefix }}
+      <h1{{ title_attributes.addClass('pdf-title') }}>
+        {{ label }}
+      </h1>
+      {{ title_suffix }}
+    </div>
+    <div class="column-container__right">
+  <div class="logo">
+    <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/Block-IOWA-BLACK.png" width="98" height="26" />
+  </div>
+    </div>
+  </div>
 
 
 
@@ -97,19 +104,10 @@
         {{ content.field_area_of_study_majors|render|striptags('<p><strong><div>')|t }}
         {{ content.field_area_of_study_minors|render|striptags('<p><ul><li><strong><div>')|t }}
         {{ content.field_area_of_study_subprogram|render|striptags('<p><ul><li><strong><div>')|t }}
+        {{ content.field_area_of_study_certificates|render|striptags('<p><ul><li><strong><div>')|t }}
+        {{ content.field_area_of_study_preprof|render|striptags('<p><ul><li><strong><div>')|t }}
+        {{ content.field_area_of_study_online|render|striptags('<p><ul><li><strong><div>')|t }}
 
-        {% if content.field_area_of_study_certificates|render|striptags is not empty %}
-          <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/checkbox.png" width="11" height="11" />
-          {{ content.field_area_of_study_certificates|render|striptags('<p><ul><li><strong><div>')|t }}
-        {% endif %}
-        {% if content.field_area_of_study_preprof|render|striptags  is not empty %}
-          <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/checkbox.png" width="11" height="11" />
-          {{ content.field_area_of_study_preprof|render|striptags('<p><ul><li><strong><div>')|t }}
-        {% endif %}
-        {% if content.field_area_of_study_online|render|striptags  is not empty %}
-          <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/checkbox.png" width="11" height="11" />
-          {{ content.field_area_of_study_online|render|striptags('<p><ul><li><strong><div>')|t }}
-        {% endif %}
         {% if content.field_area_of_study_teaching|render|striptags is not empty %}
           <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/checkbox.png" width="11" height="11" />
           {{ content.field_area_of_study_teaching|render|striptags('<p><ul><li><strong><div>')|t }}
