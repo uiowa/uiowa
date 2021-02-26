@@ -34,6 +34,15 @@ abstract class BaseNodeSource extends SqlBase {
   protected $entityTypeManager;
 
   /**
+   * Number of records to fetch from the database during each batch.
+   *
+   * A value of zero indicates no batching is to be done.
+   *
+   * @var int
+   */
+  protected $batchSize = 100;
+
+  /**
    * {@inheritdoc}
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration, StateInterface $state, ModuleHandlerInterface $module_handler, FileSystemInterface $file_system, EntityTypeManager $entityTypeManager) {
@@ -227,12 +236,12 @@ abstract class BaseNodeSource extends SqlBase {
     $nid = $row->getSourceProperty('nid');
     foreach ($tables as $table_name => $fields) {
       foreach ($fields as $field) {
-        $query = $this->select($table_name, 't');
-        $record = $query->fields('t', [$field])
+        $row->setSourceProperty($field, $this->select($table_name, 't')
+          ->fields('t', [$field])
           ->condition('entity_id', $nid, '=')
           ->execute()
-          ->fetchCol();
-        $row->setSourceProperty($field, $record);
+          ->fetchCol());
+        unset($field);
       }
     }
   }
@@ -245,12 +254,11 @@ abstract class BaseNodeSource extends SqlBase {
    */
   public function fetchUrlAliases(Row &$row) {
     $nid = $row->getSourceProperty('nid');
-    $query = $this->select('url_alias', 'alias');
-    $record = $query->fields('alias', ['alias'])
+    $row->setSourceProperty('alias', $this->select('url_alias', 'alias')
+      ->fields('alias', ['alias'])
       ->condition('source', 'node/' . $nid, '=')
       ->execute()
-      ->fetchCol();
-    $row->setSourceProperty('alias', $record);
+      ->fetchCol());
   }
 
   /**
@@ -258,6 +266,35 @@ abstract class BaseNodeSource extends SqlBase {
    */
   public function postImportProcess() {
     return FALSE;
+  }
+
+  /**
+   * Attempt to clear the entity cache if needed to avoid memory overflows.
+   *
+   * Based on core/modules/migrate/src/MigrateExecutable.php, line 543.
+   *
+   * @return int
+   *   Return the existing memory usage.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   */
+  public function clearMemory() {
+    // First, try resetting Drupal's static storage - this frequently releases
+    // plenty of memory to continue.
+    drupal_static_reset();
+
+    // Entity storage can blow up with caches so clear them out.
+    $manager = $this->entityTypeManager;
+    foreach ($manager->getDefinitions() as $id => $definition) {
+      $manager
+        ->getStorage($id)
+        ->resetCache();
+    }
+
+    // Run garbage collector to further reduce memory.
+    gc_collect_cycles();
+    return memory_get_usage();
   }
 
 }
