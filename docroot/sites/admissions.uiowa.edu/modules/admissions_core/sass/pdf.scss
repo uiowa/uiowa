@@ -29,12 +29,7 @@
   font-weight: bold;
   src: local('Roboto-Bold'), url("../fonts/Roboto-Bold.ttf") format('truetype');
 }
-
 $reduced-line-height: 1.3;
-
-body {
- //padding: 0.7rem;
-}
 
 blockquote,
 dl,
@@ -46,7 +41,8 @@ ul {
   font-family: 'Roboto', sans-serif;
 }
 
-p, ul {
+p,
+ul {
   line-height: $reduced-line-height;
   font-size: 0.7rem;
   margin-top: 0;
@@ -64,7 +60,7 @@ p, ul {
   }
 
   a {
-    word-wrap:break-word;
+    word-wrap: break-word;
     display: inline;
     text-decoration: none;
     color: #666;
@@ -84,7 +80,7 @@ h1 {
   font-size: 30px;
   line-height: 20px;
   margin: 0;
-  color: #666;
+  color: #000;
 }
 
 h2,
@@ -93,7 +89,7 @@ h4,
 h5,
 h6 {
   font-family: Roboto,sans-serif;
-  font-size: .8rem;
+  font-size: 0.8rem;
   font-weight: 700;
   font-weight: bold;
 }
@@ -130,7 +126,7 @@ h6 {
   margin-top: 0;
   margin-bottom: 0;
 }
-
+// Sidebar used for majors/minors
 .aos-pullquote__right {
   width: 25%;
   display: inline-block;
@@ -139,31 +135,20 @@ h6 {
   padding: 15px 25px;
   margin: 10px 0 10px 10px;
   clear: right;
+
   img {
     display: inline;
     clear: left;
   }
 }
 
-.aos-pullquote__left {
-  width: 25%;
-  display: inline-block;
-  float: left;
-  background: #f1f1f1;
-  padding: 15px 25px;
-  margin: 10px 10px 10px 0px;
-  clear: right;
-  img {
-    display: inline;
-    clear: left;
-  }
-}
-
+// Top two column layout for page title and logo
 .column-container {
   position: relative;
   width: 100%;
   page-break-inside: auto;
   page-break-before: auto;
+
   &:after {
     display: block;
     height: 1px;
@@ -181,20 +166,24 @@ h6 {
   page-break-inside: auto;
   page-break-before: avoid;
   page-break-after: avoid;
+
   &:after {
     display: block;
     float: left;
     height: 1px;
     clear: right;
   }
+
   img {
     display: inline;
     clear: left;
   }
+
   a {
     word-wrap: break-word;
   }
 }
+
 .column-container__right {
   display: inline-block;
   float: left;
@@ -203,14 +192,17 @@ h6 {
   padding-left: 12px;
   width: 25%;
   word-wrap: break-word;
+
   &:before {
     display: block;
     float: left;
     height: 1px;
     clear: left;
   }
+
   a {
     word-wrap: break-word;
+
     &::after {
       word-wrap: break-word;
     }
@@ -224,29 +216,36 @@ h6 {
     color: #666;
     line-height: 1;
   }
-  h2, h3, h4, h5, h6 {
+
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     margin: 0;
   }
 
-    ul {
-      margin-left: -10px;
-    }
+  ul {
+    margin-left: -10px;
+  }
 
-    div.list-column {
-      float: left;
-      margin-right: 25px;
-      & + p {
-        clear: both;
-      }
+  // Added class for creating columns for groupings of lists
+  div.list-column {
+    float: left;
+    margin-right: 25px;
+
+    & + p {
+      clear: both;
     }
+  }
 
   .intro {
     p {
       color: #333;
-      font-size: .7rem;
+      font-size: 0.7rem;
     }
     margin-bottom: 0;
-    margin-top: .75rem;
+    margin-top: 0.75rem;
   }
 
   .aos-link {
@@ -282,12 +281,12 @@ h6 {
   .field--name-field-area-of-study-why {
     margin-top: -10px;
   }
-
   // Majors
   .field--name-field-area-of-study-majors {
     .field__items {
       .field__item {
         clear: both;
+
         .field__item {
           display: inline;
           clear: none;
@@ -338,10 +337,11 @@ h6 {
   .field--name-field-area-of-study-minors,
   .field--name-field-area-of-study-online,
   .field--name-field-area-of-study-preprof {
-    line-height: .5;
+    line-height: 0.5;
+
     .field__item {
       display: inline;
-      font-size: .7rem;
+      font-size: 0.7rem;
 
       &:before {
         content: ",";
@@ -362,31 +362,29 @@ h6 {
     }
   }
 
-  .field--name-field-area-of-study-link,
-  .field--name-field-area-of-study-majors,
-  .field--name-field-area-of-study-minors,
-  .field--name-field-area-of-study-subprogram,
-  .field--name-field-area-of-study-certificates,
-  .field--name-field-area-of-study-preprof,
-  .field--name-field-area-of-study-online {
-    margin-bottom: $sm;
-  }
-
-
   .field--name-field-area-of-study-certificates,
   .field--name-field-area-of-study-link,
   .field--name-field-area-of-study-majors,
   .field--name-field-area-of-study-minors,
   .field--name-field-area-of-study-online,
   .field--name-field-area-of-study-preprof,
-  .field--name-field-area-of-study-teaching,
-  .field--name-field-area-of-study-honors,
-  .field--name-field-area-of-study-four-year,
-  .field--name-field-area-of-study-selective,
-  .field--name-field-area-of-study-competitive,
-  .field--name-field-area-of-study-subprogram,
-  .field--name-field-area-of-study-scholarship {
+  .field--name-field-area-of-study-subprogram {
+    margin-bottom: $sm;
+  }
 
+  .field--name-field-area-of-study-certificates,
+  .field--name-field-area-of-study-competitive,
+  .field--name-field-area-of-study-four-year,
+  .field--name-field-area-of-study-honors,
+  .field--name-field-area-of-study-link,
+  .field--name-field-area-of-study-majors,
+  .field--name-field-area-of-study-minors,
+  .field--name-field-area-of-study-online,
+  .field--name-field-area-of-study-preprof,
+  .field--name-field-area-of-study-scholarship,
+  .field--name-field-area-of-study-selective,
+  .field--name-field-area-of-study-subprogram,
+  .field--name-field-area-of-study-teaching {
     .field__label {
       @extend .element--bold-intro;
       font-family: $font-family-caps;
@@ -401,55 +399,59 @@ h6 {
       line-height: 1;
     }
   }
-
   // Sidebar adjustments
+  .field--name-field-area-of-study-certificates,
   .field--name-field-area-of-study-majors,
   .field--name-field-area-of-study-minors,
-  .field--name-field-area-of-study-scholarship,
-  .field--name-field-area-of-study-subprogram,
-  .field--name-field-area-of-study-certificates,
+  .field--name-field-area-of-study-online,
   .field--name-field-area-of-study-preprof,
-  .field--name-field-area-of-study-online {
+  .field--name-field-area-of-study-scholarship,
+  .field--name-field-area-of-study-subprogram {
     .field__label {
-      font-size: .8rem;
+      font-size: 0.8rem;
       font-family: $font-family-caps;
       text-transform: uppercase;
     }
+
     .field__item {
-      font-size: .7rem;
+      font-size: 0.7rem;
+
       p {
-        font-size: .7rem;
+        font-size: 0.7rem;
       }
     }
   }
 
   .field--name-field-area-of-study-scholarship {
     margin-top: $sm;
+
     p {
       line-height: 1;
     }
   }
 
-  .field--name-field-area-of-study-teaching,
-  .field--name-field-area-of-study-honors,
+  .field--name-field-area-of-study-competitive,
   .field--name-field-area-of-study-four-year,
+  .field--name-field-area-of-study-honors,
   .field--name-field-area-of-study-selective,
-  .field--name-field-area-of-study-competitive {
+  .field--name-field-area-of-study-teaching {
     display: inline;
+
     .field__item {
       display: inline;
     }
   }
 
   .field--name-field-area-of-study-comp-txt,
-  .field--name-field-area-of-study-select-txt,
   .field--name-field-area-of-study-four-txt,
+  .field--name-field-area-of-study-select-txt,
   .field--name-field-area-of-study-teaching-txt {
     line-height: $reduced-line-height;
     font-size: 0.7rem;
     font-family: 'Roboto', sans-serif!important;
     color: #666;
     display: inline;
+
     &:before {
       content: ":";
       padding-right: $xsm;
@@ -457,12 +459,12 @@ h6 {
     }
   }
 
-
   .learn-more {
     position: absolute;
     bottom: 40px;
     width: 100%;
     border-top: 3px solid $primary;
+
     span {
       margin: 0 $gutter 0 0;
       color: #000;
@@ -471,17 +473,18 @@ h6 {
     img {
       margin: 0 $xsm 0 0;
     }
+
     p {
       padding-top: 10px;
     }
 
     h2 {
       font-family: $font-family-caps;
-      font-size: .9rem;
+      font-size: 0.9rem;
       text-transform: uppercase;
       font-weight: bold;
       line-height: $reduced-line-height;
-      margin: .5rem .5rem 0 0;
+      margin: 0.5rem 0.5rem 0 0;
       display: inline-block;
     }
   }
@@ -489,8 +492,10 @@ h6 {
   .nondiscrimination-statement {
     position: absolute;
     bottom: 0;
+
     p {
       margin-top: 10px;
+
       small {
         font-size: 0.4rem;
         color: #000;
