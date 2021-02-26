@@ -56,7 +56,7 @@ p, ul {
   word-wrap: break-word;
 
   strong {
-    color: #333;
+    color: #666;
     font-size: 0.7rem;
     font-family: Roboto,sans-serif;
     font-weight: 700;
@@ -83,9 +83,8 @@ h1 {
   text-transform: uppercase;
   font-size: 30px;
   line-height: 20px;
-
   margin: 0;
-  color: #999;
+  color: #BBBCBC;
 }
 
 h2,
@@ -93,7 +92,6 @@ h3,
 h4,
 h5,
 h6 {
-  //font-family: 'Zilla Slab', serif;
   font-family: Roboto,sans-serif;
   font-size: .8rem;
   font-weight: 700;
@@ -161,7 +159,6 @@ h6 {
   }
 }
 
-
 .column-container {
   position: relative;
   width: 100%;
@@ -173,7 +170,6 @@ h6 {
     clear: both;
   }
 }
-
 
 .column-container__left {
   display: inline-block;
@@ -221,7 +217,6 @@ h6 {
   }
 }
 
-
 .node--type-area-of-study {
   .subtitle p {
     @extend .element--bold-intro;
@@ -232,6 +227,18 @@ h6 {
   h2, h3, h4, h5, h6 {
     margin: 0;
   }
+
+    ul {
+      margin-left: -10px;
+    }
+
+    div.list-column {
+      float: left;
+      margin-right: 25px;
+      & + p {
+        clear: both;
+      }
+    }
 
   .intro {
     p {
@@ -276,40 +283,15 @@ h6 {
     margin-top: -10px;
   }
 
-  // Course work
-  .field--name-field-area-of-study-course-work {
-    p {
-      //margin-bottom: .4rem;
-    }
-    ul {
-      margin-left: -20px;
-    }
-    ul.inline {
-      margin-left: -40px;
-      li {
-      display: inline-block;
-      list-style: none;
-      background: $primary;
-      color: #000;
-      padding: 5px !important;
-      font-size: .5rem;
-      text-transform: uppercase;
-      }
-    }
-  }
-
   // Majors
   .field--name-field-area-of-study-majors {
     .field__items {
       .field__item {
-
         clear: both;
         .field__item {
           display: inline;
           clear: none;
         }
-
-
 
         &:first-child {
           .paragraph--type--degree {
@@ -328,14 +310,11 @@ h6 {
   }
 
   .field--name-field-area-of-study-majors {
-
     .field__item {
       .paragraph--type--degree {
         clear: both;
       }
     }
-
-
 
     .paragraph--type--degree {
       display: inline;
@@ -353,10 +332,6 @@ h6 {
         }
       }
     }
-  }
-
-  .field--name-field-area-of-study-certificates {
-    display: inline;
   }
 
   .field--name-field-area-of-study-certificates,
@@ -449,7 +424,7 @@ h6 {
   }
 
   .field--name-field-area-of-study-scholarship {
-    margin-top: 20px;
+    margin-top: $sm;
     p {
       line-height: 1;
     }
@@ -461,7 +436,6 @@ h6 {
   .field--name-field-area-of-study-selective,
   .field--name-field-area-of-study-competitive {
     display: inline;
-    //clear: left;
     .field__item {
       display: inline;
     }
@@ -480,23 +454,6 @@ h6 {
       content: ":";
       padding-right: $xsm;
       margin-left: -.4rem;
-    }
-  }
-
-  .field--name-field-area-of-study-opportunity {
-    .element--bold-intro {
-     // font-family: $font-family-caps;
-      //text-transform: uppercase;
-    }
-
-    .field__item {
-      p, ul, li {
-        font-size: 0.7rem;
-      }
-
-      ul, li {
-        margin-left: -15px;
-      }
     }
   }
 
