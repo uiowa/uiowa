@@ -5,8 +5,11 @@ namespace Drupal\layout_builder_custom\Plugin\Display;
 use Drupal\Core\Entity\Element\EntityAutocomplete;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\SubformState;
+use Drupal\Core\Form\SubformStateInterface;
 use Drupal\Core\Render\Element\Checkboxes;
 use Drupal\Core\Url;
+use Drupal\link\Plugin\Field\FieldFormatter\LinkFormatter;
+use Drupal\link\Plugin\Field\FieldWidget\LinkWidget;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\views\Plugin\Block\ViewsBlock;
 use Drupal\views\Plugin\views\display\Block as CoreBlock;
@@ -90,6 +93,9 @@ class ListBlock extends CoreBlock {
       ],
     ];
 
+    // @todo Add option to set default "More" path.
+    // @todo Allow developer to set token for this path which can map
+    //   back to custom module settings (e.g. SiteNow People path)
     // Show exposed filters that can be set in the block form.
     $customized_filters = $this->getOption('filter_in_block');
     $form['filter_in_block'] = [
@@ -332,16 +338,16 @@ class ListBlock extends CoreBlock {
       ];
     }
 
-    // @todo Re-factor this based on a coherent set of paging choices.
+    // Provide "Show pager" block setting.
     if (!empty($allow_settings['pager'])) {
       $form['override']['pager'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Show pager'),
-        '#default_value' => isset($block_configuration['pager']) ? $block_configuration['pager'] : FALSE,
+        '#default_value' => isset($block_configuration['pager']),
       ];
     }
 
-    // Display a "More" link.
+    // Provides settings related to displaying a "More" link.
     if (!empty($allow_settings['display_more_link'])) {
 
       $more_link_help_text = $this->getOption('more_link_help_text');
@@ -349,19 +355,31 @@ class ListBlock extends CoreBlock {
         $more_link_help_text = $this->t('Start typing to see a list of results. Click to select.');
       }
 
+      $more_path = isset($block_configuration['display_more_path']) ? $block_configuration['display_more_path'] : '';
+
       $form['override']['display_more_toggle'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Display More link'),
         '#description' => $more_link_help_text,
+        '#default_value' => !empty($more_path),
       ];
 
-      // @todo Figure out how to make the style of this field
-      //   look like other LinkIt fields.
-      // @todo Maybe add check for LinkIt and instead use built in
-      //   link field if not available.
       $form['override']['display_more_path'] = [
         '#type' => 'entity_autocomplete',
         '#title' => $this->t('Path'),
+        '#description' => $this
+          ->t('Start typing the title of a piece of content to select it. You can also enter an internal path such as %add-node or an external URL such as %url. Enter %front to link to the front page.', array(
+            '%front' => '<front>',
+            '%add-node' => '/node/add',
+            '%url' => 'http://example.com',
+          )),
+        '#default_value' => isset($block_configuration['display_more_path']) ? static::getUriAsDisplayableString($block_configuration['display_more_path']) : NULL,
+        '#element_validate' => array(
+          array(
+            LinkWidget::class,
+            'validateUriElement',
+          ),
+        ),
         // @todo The user should be able to select an entity type. Will be fixed
         //   in https://www.drupal.org/node/2423093.
         '#target_type' => 'node',
@@ -369,7 +387,7 @@ class ListBlock extends CoreBlock {
         '#attributes' => [
           'data-autocomplete-first-character-blacklist' => '/#?',
         ],
-        '#default_value' => isset($block_configuration['display_more_path']) ? $block_configuration['display_more_path'] : NULL,
+        '#process_default_value' => FALSE,
         '#states' => [
           'visible' => [
             [
@@ -381,7 +399,6 @@ class ListBlock extends CoreBlock {
         ],
       ];
       $form['#attached']['library'][] = 'linkit/linkit.autocomplete';
-      // @todo Add more link help text from view block settings.
     }
 
     $form['override']['#weight'] = 5;
@@ -392,20 +409,7 @@ class ListBlock extends CoreBlock {
   /**
    * {@inheritdoc}
    */
-  public function blockValidate(ViewsBlock $block, array $form, FormStateInterface $form_state) {
-    parent::blockValidate($block, $form, $form_state);
-
-    // @todo Add link validation for display 'more' link.
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function blockSubmit(ViewsBlock $block, $form, FormStateInterface $form_state) {
-    // Alter the headline field settings for configuration.
-    foreach ($form_state->getValues()['headline']['container'] as $name => $value) {
-      $this->configuration[$name] = $value;
-    }
 
     // Set default value for items_per_page if left blank.
     if (empty($form_state->getValue(['override', 'items_per_page']))) {
@@ -414,6 +418,11 @@ class ListBlock extends CoreBlock {
 
     parent::blockSubmit($block, $form, $form_state);
     $allow_settings = array_filter($this->getOption('allow'));
+
+    // Alter the headline field settings for configuration.
+    foreach ($form_state->getValues()['headline']['container'] as $name => $value) {
+      $block->setConfigurationValue($name, $value);
+    }
 
     // Save "Pager type" settings to block configuration.
     $configuration['pager'] = 'some';
@@ -430,13 +439,16 @@ class ListBlock extends CoreBlock {
       ]));
     }
 
+    // Save display more link setting.
     if (!empty($allow_settings['display_more_link'])) {
-      // @todo Save "Display more path" setting to block configuration.
+      $block->setConfigurationValue('display_more_path', $form_state->getValue([
+        'override',
+        'display_more_path',
+      ]));
     }
 
-    // Provide "Configure sorts" block settings form.
+    // Save "Configure sorts" setting.
     if (!empty($allow_settings['configure_sorts'])) {
-      // @todo Process configure sorts.
       if ($sorts = array_filter($form_state->getValue([
         'override',
         'sort',
@@ -459,6 +471,15 @@ class ListBlock extends CoreBlock {
 
     // Save "Filter in block" settings to block configuration.
     $block->setConfigurationValue('exposed_filter_values', $form_state->getValue('exposed_filters'));
+
+    if ($form_state instanceof SubformStateInterface) {
+      $styles = $this->getLayoutBuilderStyles($form, $form_state->getCompleteFormState());
+    }
+    else {
+      $styles = $this->getLayoutBuilderStyles($form, $form_state);
+    }
+
+    $block->setConfigurationValue('layout_builder_styles', $styles);
   }
 
   /**
@@ -471,6 +492,9 @@ class ListBlock extends CoreBlock {
     $config = $block->getConfiguration();
     [, $display_id] = explode('-', $block->getDerivativeId(), 2);
 
+    if (!empty($config['layout_builder_styles'])) {
+      $this->view->display_handler->setOption('block_styles', $config['layout_builder_styles']);
+    }
     // Change pager offset settings based on block configuration.
     if (!empty($allow_settings['offset'])) {
       $this->view->setOffset($config['pager_offset']);
@@ -523,13 +547,35 @@ class ListBlock extends CoreBlock {
     $this->view->setExposedInput($exposed_filter_values);
     $this->view->exposed_data = $exposed_filter_values;
 
-    // @todo Figure out how to display a more link based on "Display more path" setting.
-    if (!empty($allow_settings['display_more_link'])) {
+    if (!empty($config['headline'])) {
+      $this->view->element['heading'] = [
+        '#theme' => 'uiowa_core_headline',
+        '#headline' => $config['headline'],
+        '#hide_headline' => $config['hide_headline'],
+        '#heading_size' => $config['heading_size'],
+        '#headline_style' => $config['headline_style'],
+      ];
+    }
+
+    // @todo This is copied over from uiowa_maui block,
+    //   but the logic doesn't totally make sense to me.
+    if (empty($config['headline'])) {
+      $child_heading_size = $config['child_heading_size'];
+    }
+    else {
+      $child_heading_size = HeadlineHelper::getHeadingSizeUp($config['heading_size']);
+    }
+
+    $this->view->display_handler->setOption('heading_size', $child_heading_size);
+
+    // Add display more link if allowed and configured.
+    // @todo Add fallback to default path if more link is not set and
+    //    default path is set.
+    if (!empty($allow_settings['display_more_link']) && !empty($config['display_more_path'])) {
       $this->view->element['more_link'] = [
         '#type' => 'link',
         '#title' => 'View more ',
-        // @todo Replace with actual more link.
-        '#url' => Url::fromUri('https://uiowa.edu'),
+        '#url' => Url::fromUri($config['display_more_path']),
         '#attributes' => [
           'class' => ['bttn', 'bttn--primary', 'bttn--caps'],
         ],
@@ -564,6 +610,30 @@ class ListBlock extends CoreBlock {
   }
 
   /**
+   * Get Layout Builder Styles from the form state.
+   *
+   * @see _layout_builder_styles_prepare_styles_for_saving()
+   *
+   * @return array|string
+   */
+  protected function getLayoutBuilderStyles(array $form, FormStateInterface $form_state) {
+    $styles = [];
+    foreach ($form as $id => $el) {
+      if (strpos($id, 'layout_builder_style_') === 0) {
+        $value = $form_state->getValue($id);
+        if ($value) {
+          if (is_array($value)) {
+            $styles += $value;
+          } else {
+            $styles[] = $value;
+          }
+        }
+      }
+    }
+    return $styles;
+  }
+
+  /**
    * Sort array by weight.
    *
    * @param int $a
@@ -581,6 +651,57 @@ class ListBlock extends CoreBlock {
       return 0;
     }
     return ($a_weight < $b_weight) ? -1 : 1;
+  }
+
+  /**
+   * Gets the URI without the 'internal:' or 'entity:' scheme.
+   *
+   * This method is copied from
+   * Drupal\link\Plugin\Field\FieldWidget\LinkWidget::getUriAsDisplayableString()
+   * since I can't figure out another way to use a protected
+   * method from that class.
+   *
+   * @param string $uri
+   *   The URI to get the displayable string for.
+   *
+   * @return string
+   *
+   * @see Drupal\link\Plugin\Field\FieldWidget\LinkWidget::getUriAsDisplayableString()
+   */
+  protected static function getUriAsDisplayableString($uri) {
+    $scheme = parse_url($uri, PHP_URL_SCHEME);
+
+    // By default, the displayable string is the URI.
+    $displayable_string = $uri;
+
+    // A different displayable string may be chosen in case of the 'internal:'
+    // or 'entity:' built-in schemes.
+    if ($scheme === 'internal') {
+      $uri_reference = explode(':', $uri, 2)[1];
+
+      // @todo '<front>' is valid input for BC reasons, may be removed by
+      //   https://www.drupal.org/node/2421941
+      $path = parse_url($uri, PHP_URL_PATH);
+      if ($path === '/') {
+        $uri_reference = '<front>' . substr($uri_reference, 1);
+      }
+
+      $displayable_string = $uri_reference;
+    }
+    elseif ($scheme === 'entity') {
+      [$entity_type, $entity_id] = explode('/', substr($uri, 7), 2);
+      // Show the 'entity:' URI as the entity autocomplete would.
+      // @todo Support entity types other than 'node'. Will be fixed in
+      //    https://www.drupal.org/node/2423093.
+      if ($entity_type == 'node' && $entity = \Drupal::entityTypeManager()->getStorage($entity_type)->load($entity_id)) {
+        $displayable_string = EntityAutocomplete::getEntityLabels([$entity]);
+      }
+    }
+    elseif ($scheme === 'route') {
+      $displayable_string = ltrim($displayable_string, 'route:');
+    }
+
+    return $displayable_string;
   }
 
 }

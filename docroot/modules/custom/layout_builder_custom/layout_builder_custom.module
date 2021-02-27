@@ -633,6 +633,16 @@ function _layout_builder_custom_add_lbs_heading(&$form) {
   }
 }
 
+function layout_builder_custom_preprocess_views_view(&$variables) {
+  /** @var \Drupal\views\ViewExecutable $view */
+  $view = $variables['view'];
+
+  $block_styles = $view->display_handler->getOption('block_styles');
+  if ($block_styles) {
+    $variables['block_styles'] = $block_styles;
+  }
+}
+
 /**
  * Implements hook_preprocess_HOOK().
  */
@@ -661,7 +671,7 @@ function layout_builder_custom_preprocess_block(&$variables) {
             'contextual-region',
           ]);
         });
-        $view->display_handler->setOption('block_styles', $classes);
+//        $view->display_handler->setOption('block_styles', $classes);
       }
   }
 }
