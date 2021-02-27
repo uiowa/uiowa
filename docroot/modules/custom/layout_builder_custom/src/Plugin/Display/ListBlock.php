@@ -503,10 +503,11 @@ class ListBlock extends CoreBlock {
         $this->view->removeHandler($display_id, 'sort', $sort_name);
       }
       if (!empty($config['sort'])) {
-        uasort($config['sort'], '\Drupal\layout_builder_custom\Plugin\Display\Block::sortByWeight');
+        uasort($config['sort'], '\Drupal\layout_builder_custom\Plugin\Display\ListBlock::sortByWeight');
         foreach ($config['sort'] as $sort_name => $sort) {
-          if (!empty($config['sort'][$sort_name])) {
-            $sort['order'] = $config['sort'][$sort_name];
+          if (!empty($config['sort'][$sort_name]) && !empty($sorts[$sort_name])) {
+            $sort = $sorts[$sort_name];
+            $sort['order'] = $config['sort'][$sort_name]['order'];
             // Re-add sorts in the order that was selected for the block.
             $this->view->setHandler($display_id, 'sort', $sort_name, $sort);
           }
