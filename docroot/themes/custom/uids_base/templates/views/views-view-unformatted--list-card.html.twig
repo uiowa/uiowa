@@ -21,10 +21,8 @@
 {% if title %}
   <h3>{{ title }}</h3>
 {% endif %}
-{% set block_styles = [] %}
 {% set headline_size = 'h2' %}
 {% if view %}
-  {% set block_styles = view.display_handler.getOption('block_styles') %}
   {% set headline_size = view.display_handler.getOption('heading_size') %}
 {% endif %}
 {% for key,row in rows %}
@@ -35,29 +33,8 @@
 
     {% set media_attributes = media_attributes ?: create_attribute() %}
 
-    {% set orientation_style = 'card--media-right' %}
-    {% for style in block_styles %}
-      {{ dump(style) }}
-      {% if style starts with 'card--media-' or style == 'card--stacked' %}
-        {% set orientation_style = style %}
-        {{ dump('Found match') }}
-      {% endif %}
-    {% endfor %}
-
-    {%
-      set classes = [
-      'card--list',
-      'card--person-teaser',
-      'bg--white',
-      orientation_style,
-      'media--border',
-      'card--centered-right',
-      'card--alignment-right'
-    ]
-    %}
-
     {% set person_card_view = {
-      'attributes': attributes.addClass(classes, block_styles),
+      'attributes': attributes.addClass(row_item_classes),
       'card_title': view.style_plugin.getField(key, 'title'),
       'card_image': view.style_plugin.getField(key, 'field_image'),
       'card_tag': view.style_plugin.getField(key, 'field_person_email'),

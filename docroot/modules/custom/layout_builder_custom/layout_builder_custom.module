@@ -633,13 +633,59 @@ function _layout_builder_custom_add_lbs_heading(&$form) {
   }
 }
 
-function layout_builder_custom_preprocess_views_view(&$variables) {
+function layout_builder_custom_preprocess_views_view_unformatted(&$variables) {
   /** @var \Drupal\views\ViewExecutable $view */
   $view = $variables['view'];
+  $variables['row_item_classes'] = [];
 
-  $block_styles = $view->display_handler->getOption('block_styles');
-  if ($block_styles) {
-    $variables['block_styles'] = $block_styles;
+  $row_styles = $view->display_handler->getOption('row_styles');
+  if (isset($row_styles) && !empty($variables['rows'])) {
+
+    // Convert single selection to an array for consistent processing.
+    if (!is_array($row_styles)) {
+      $row_styles = [$row_styles];
+    }
+
+    $default_classes = [
+      'card--list',
+      'card--person-teaser',
+      'bg--white',
+      'media--border',
+      'card--centered-right',
+      'card--alignment-right',
+    ];
+
+    // @todo Pass through media classes too.
+    $default_media_style_ids = [
+      'media--circle',
+      'card__media--small',
+      'card__media',
+    ];
+
+    // Retrieve all styles from selection(s).
+    $item_classes = [
+      'card_media_position' => 'card--media-right',
+    ];
+    $item_media_classes = [];
+    foreach ($row_styles as $style_id) {
+      // Account for incorrectly configured component configuration which may
+      // have a NULL style ID. We cannot pass NULL to the storage handler or
+      // it will throw an exception.
+      if (empty($style_id)) {
+        continue;
+      }
+      /** @var \Drupal\layout_builder_styles\LayoutBuilderStyleInterface $style */
+      $style = \Drupal::entityTypeManager()->getStorage('layout_builder_style')->load($style_id);
+      if ($style) {
+        // @todo Check if the style group matches a class that is used for
+        //   the media element and put it in a separate array.
+        $classes = \preg_split('(\r\n|\r|\n)', $style->getClasses());
+        $item_classes[$style->getGroup()] = implode(', ', $classes);
+        $variables['#cache']['tags'][] = 'config:layout_builder_styles.style.' . $style->id();
+      }
+    }
+    // @todo Add media element classes to a separate variable.
+    $variables['row_item_classes'] = array_merge($default_classes, array_values($item_classes));
   }
 }
 

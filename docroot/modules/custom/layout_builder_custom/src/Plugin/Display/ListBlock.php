@@ -493,7 +493,7 @@ class ListBlock extends CoreBlock {
     [, $display_id] = explode('-', $block->getDerivativeId(), 2);
 
     if (!empty($config['layout_builder_styles'])) {
-      $this->view->display_handler->setOption('block_styles', $config['layout_builder_styles']);
+      $this->view->display_handler->setOption('row_styles', $config['layout_builder_styles']);
     }
     // Change pager offset settings based on block configuration.
     if (!empty($allow_settings['offset'])) {
