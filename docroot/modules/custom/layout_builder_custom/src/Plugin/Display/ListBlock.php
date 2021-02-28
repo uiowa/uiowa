@@ -8,7 +8,6 @@ use Drupal\Core\Form\SubformState;
 use Drupal\Core\Form\SubformStateInterface;
 use Drupal\Core\Render\Element\Checkboxes;
 use Drupal\Core\Url;
-use Drupal\link\Plugin\Field\FieldFormatter\LinkFormatter;
 use Drupal\link\Plugin\Field\FieldWidget\LinkWidget;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\views\Plugin\Block\ViewsBlock;
@@ -368,18 +367,18 @@ class ListBlock extends CoreBlock {
         '#type' => 'entity_autocomplete',
         '#title' => $this->t('Path'),
         '#description' => $this
-          ->t('Start typing the title of a piece of content to select it. You can also enter an internal path such as %add-node or an external URL such as %url. Enter %front to link to the front page.', array(
+          ->t('Start typing the title of a piece of content to select it. You can also enter an internal path such as %add-node or an external URL such as %url. Enter %front to link to the front page.', [
             '%front' => '<front>',
             '%add-node' => '/node/add',
             '%url' => 'http://example.com',
-          )),
+          ]),
         '#default_value' => isset($block_configuration['display_more_path']) ? static::getUriAsDisplayableString($block_configuration['display_more_path']) : NULL,
-        '#element_validate' => array(
-          array(
+        '#element_validate' => [
+          [
             LinkWidget::class,
             'validateUriElement',
-          ),
-        ),
+          ],
+        ],
         // @todo The user should be able to select an entity type. Will be fixed
         //   in https://www.drupal.org/node/2423093.
         '#target_type' => 'node',
@@ -570,7 +569,7 @@ class ListBlock extends CoreBlock {
 
     // Add display more link if allowed and configured.
     // @todo Add fallback to default path if more link is not set and
-    //    default path is set.
+    //   default path is set.
     if (!empty($allow_settings['display_more_link']) && !empty($config['display_more_path'])) {
       $this->view->element['more_link'] = [
         '#type' => 'link',
@@ -615,6 +614,7 @@ class ListBlock extends CoreBlock {
    * @see _layout_builder_styles_prepare_styles_for_saving()
    *
    * @return array|string
+   *   Returns layout builder styles for this block form.
    */
   protected function getLayoutBuilderStyles(array $form, FormStateInterface $form_state) {
     $styles = [];
@@ -624,7 +624,8 @@ class ListBlock extends CoreBlock {
         if ($value) {
           if (is_array($value)) {
             $styles += $value;
-          } else {
+          }
+          else {
             $styles[] = $value;
           }
         }
@@ -665,6 +666,7 @@ class ListBlock extends CoreBlock {
    *   The URI to get the displayable string for.
    *
    * @return string
+   *   The displayable string.
    *
    * @see Drupal\link\Plugin\Field\FieldWidget\LinkWidget::getUriAsDisplayableString()
    */
@@ -692,7 +694,7 @@ class ListBlock extends CoreBlock {
       [$entity_type, $entity_id] = explode('/', substr($uri, 7), 2);
       // Show the 'entity:' URI as the entity autocomplete would.
       // @todo Support entity types other than 'node'. Will be fixed in
-      //    https://www.drupal.org/node/2423093.
+      //   https://www.drupal.org/node/2423093.
       if ($entity_type == 'node' && $entity = \Drupal::entityTypeManager()->getStorage($entity_type)->load($entity_id)) {
         $displayable_string = EntityAutocomplete::getEntityLabels([$entity]);
       }

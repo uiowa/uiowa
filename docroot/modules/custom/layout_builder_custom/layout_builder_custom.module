@@ -633,6 +633,9 @@ function _layout_builder_custom_add_lbs_heading(&$form) {
   }
 }
 
+/**
+ * Implements hook_preprocess_views_view_unformatted().
+ */
 function layout_builder_custom_preprocess_views_view_unformatted(&$variables) {
   // @todo Figure out how to appropriately scope this.
   /** @var \Drupal\views\ViewExecutable $view */
@@ -705,21 +708,6 @@ function layout_builder_custom_preprocess_block(&$variables) {
         Cache::invalidateTags(['media:' . $id]);
       }
       break;
-
-    case 'views_block:people_list_block-list_card':
-      if (isset($variables['attributes']['class'])) {
-        /** @var \Drupal\views\ViewExecutable $view */
-        $view = $variables['content']['#view'];
-        // Temporary way of filtering out unwanted styles.
-        $classes = array_filter($variables['attributes']['class'], function ($class) {
-          return !in_array($class, [
-            'js-layout-builder-block',
-            'layout-builder-block',
-            'contextual-region',
-          ]);
-        });
-//        $view->display_handler->setOption('block_styles', $classes);
-      }
   }
 }
 
