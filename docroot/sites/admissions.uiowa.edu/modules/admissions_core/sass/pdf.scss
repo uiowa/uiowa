@@ -94,11 +94,6 @@ h6 {
   font-weight: bold;
 }
 
-.logo {
-  display: block;
-  text-align: right;
-}
-
 .element--bold-intro,
 .uids-component--bold-intro {
   font-family: $font-family-serif;
@@ -126,8 +121,14 @@ h6 {
   margin-top: 0;
   margin-bottom: 0;
 }
-// Sidebar used for majors/minors
-.aos-pullquote__right {
+
+.print__logo {
+  display: block;
+  text-align: right;
+}
+
+// Sidebar used for majors/minors and list items
+.print__sidebar--right {
   width: 25%;
   display: inline-block;
   float: right;
@@ -143,7 +144,7 @@ h6 {
 }
 
 // Top two column layout for page title and logo
-.column-container {
+.print__container {
   position: relative;
   width: 100%;
   page-break-inside: auto;
@@ -156,7 +157,7 @@ h6 {
   }
 }
 
-.column-container__left {
+.print__container--left {
   display: inline-block;
   width: 75%;
   margin-right: -75%;
@@ -184,7 +185,7 @@ h6 {
   }
 }
 
-.column-container__right {
+.print__container--right {
   display: inline-block;
   float: left;
   font-size: 13px;
@@ -209,14 +210,64 @@ h6 {
   }
 }
 
-.node--type-area-of-study {
-  .subtitle p {
-    @extend .element--bold-intro;
-    margin: 0 0 1rem;
-    color: #666;
-    line-height: 1;
+// Added class for creating columns for groupings of lists
+.print__list--column {
+  float: left;
+  margin-right: 25px;
+
+  & + p {
+    clear: both;
+  }
+}
+
+
+.print__contact {
+  position: absolute;
+  bottom: 40px;
+  width: 100%;
+  border-top: 3px solid $primary;
+
+  span {
+    margin: 0 $gutter 0 0;
+    color: #000;
   }
 
+  img {
+    margin: 0 $xsm 0 0;
+  }
+
+  p {
+    padding-top: 10px;
+  }
+
+  h2 {
+    font-family: $font-family-caps;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    line-height: $reduced-line-height;
+    margin: 0.5rem 0.5rem 0 0;
+    display: inline-block;
+  }
+}
+
+.print__contact--statement {
+  position: absolute;
+  bottom: 0;
+
+  p {
+    margin-top: 10px;
+
+    small {
+      font-size: 0.4rem;
+      color: #000;
+      margin-top: 10px;
+    }
+  }
+}
+
+// AOS styles
+.node--type-area-of-study {
   h2,
   h3,
   h4,
@@ -229,51 +280,6 @@ h6 {
     margin-left: -10px;
   }
 
-  // Added class for creating columns for groupings of lists
-  div.list-column {
-    float: left;
-    margin-right: 25px;
-
-    & + p {
-      clear: both;
-    }
-  }
-
-  .intro {
-    p {
-      color: #333;
-      font-size: 0.7rem;
-    }
-    margin-bottom: 0;
-    margin-top: 0.75rem;
-  }
-
-  .aos-link {
-    margin: $sm 0;
-    display: inline-block;
-    color: $secondary;
-    background: $primary;
-    text-decoration: none;
-    text-transform: uppercase;
-    font-size: 1rem;
-    padding: 0.2rem 1rem 0.5rem 0.7rem;
-    font-family: "Antonio",sans-serif !important;
-    text-transform: uppercase;
-
-    img {
-      margin-top: 1px;
-      margin-right: 5px;
-    }
-  }
-
-  .field--name-field-media-image {
-    img {
-      width: 300px;
-      height: 200px;
-      margin-top: 20px;
-    }
-  }
-
   .field--name-field-area-of-study-minors {
     clear: both;
   }
@@ -281,6 +287,7 @@ h6 {
   .field--name-field-area-of-study-why {
     margin-top: -10px;
   }
+
   // Majors
   .field--name-field-area-of-study-majors {
     .field__items {
@@ -399,6 +406,7 @@ h6 {
       line-height: 1;
     }
   }
+
   // Sidebar adjustments
   .field--name-field-area-of-study-certificates,
   .field--name-field-area-of-study-majors,
@@ -458,49 +466,5 @@ h6 {
       margin-left: -.4rem;
     }
   }
-
-  .learn-more {
-    position: absolute;
-    bottom: 40px;
-    width: 100%;
-    border-top: 3px solid $primary;
-
-    span {
-      margin: 0 $gutter 0 0;
-      color: #000;
-    }
-
-    img {
-      margin: 0 $xsm 0 0;
-    }
-
-    p {
-      padding-top: 10px;
-    }
-
-    h2 {
-      font-family: $font-family-caps;
-      font-size: 0.9rem;
-      text-transform: uppercase;
-      font-weight: bold;
-      line-height: $reduced-line-height;
-      margin: 0.5rem 0.5rem 0 0;
-      display: inline-block;
-    }
-  }
-
-  .nondiscrimination-statement {
-    position: absolute;
-    bottom: 0;
-
-    p {
-      margin-top: 10px;
-
-      small {
-        font-size: 0.4rem;
-        color: #000;
-        margin-top: 10px;
-      }
-    }
-  }
 }
+
