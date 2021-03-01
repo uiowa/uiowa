@@ -103,9 +103,24 @@
 
 {% embed '@uids_base/uids/card.html.twig' with person_card only %}
 
-  {% block card_tag %}
-    <div class="card__date">{{ card_tag }}</div>
-    <div class="card__date">{{ person_phone }}</div>
+  {% block card_details %}
+    {% if card_subtitle or card_tag or person_phone is not empty %}
+      <div class="card__details">
+        {% block card_subtitle %}
+          {% if card_subtitle is not empty %}
+            <div class="card__subtitle">{{ card_subtitle }}</div>
+          {% endif %}
+        {% endblock %}
+        {% block card_tag %}
+          {% if card_tag is not empty %}
+            <div class="card__date">{{ card_tag }}</div>
+          {% endif %}
+          {% if person_phone is not empty %}
+            <div class="card__date">{{ person_phone }}</div>
+          {% endif %}
+        {% endblock %}
+      </div>
+    {% endif %}
   {% endblock %}
 
 {% endembed %}
