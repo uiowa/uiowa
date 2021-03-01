@@ -96,6 +96,8 @@
       <div class="aos-pullquote__right">
         {{ content.field_area_of_study_majors|render|striptags('<p><strong><div>')|t }}
         {{ content.field_area_of_study_minors|render|striptags('<p><ul><li><strong><div>')|t }}
+        {{ content.field_area_of_study_subprogram|render|striptags('<p><ul><li><strong><div>')|t }}
+
         {% if content.field_area_of_study_certificates|render|striptags is not empty %}
           <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/checkbox.png" width="11" height="11" />
           {{ content.field_area_of_study_certificates|render|striptags('<p><ul><li><strong><div>')|t }}
@@ -111,8 +113,8 @@
         {% if content.field_area_of_study_teaching|render|striptags is not empty %}
           <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/checkbox.png" width="11" height="11" />
           {{ content.field_area_of_study_teaching|render|striptags('<p><ul><li><strong><div>')|t }}
+          {{ content.field_area_of_study_teaching_txt|render|striptags('<p><strong><div>')|t }}
         {% endif %}
-        {{ content.field_area_of_study_teaching_txt|render|striptags('<p><strong><div>')|t }}
         {% if content.field_area_of_study_honors|render|striptags is not empty %}
           <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/checkbox.png" width="11" height="11" />
           {{ content.field_area_of_study_honors|render|striptags('<p><strong><div>')|t }}
@@ -120,18 +122,18 @@
         {% if content.field_area_of_study_four_year|render|striptags is not empty %}
           <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/checkbox.png" width="11" height="11" />
           {{ content.field_area_of_study_four_year|render|striptags('<p><strong><div>')|t }}
+          {{ content.field_area_of_study_four_txt|render|striptags('<p><strong><div>')|t }}
         {% endif %}
-        {{ content.field_area_of_study_four_txt|render|striptags('<p><strong><div>')|t }}
         {% if content.field_area_of_study_selective|render|striptags is not empty %}
           <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/checkbox.png" width="11" height="11" />
           {{ content.field_area_of_study_selective|render|striptags('<p><strong><div>')|t }}
+          {{ content.field_area_of_study_select_txt|render|striptags('<p><strong><div>')|t }}
         {% endif %}
-        {{ content.field_area_of_study_select_txt|render|striptags('<p><strong><div>')|t }}
         {% if field_area_of_study_competitive|render|striptags is not empty %}
           <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/checkbox.png" width="11" height="11" />
           {{ content.field_area_of_study_competitive|render|striptags('<p><strong><div>')|t }}
+          {{ content.field_area_of_study_comp_txt|render|striptags('<p><strong><div>')|t }}
         {% endif %}
-        {{ content.field_area_of_study_comp_txt|render|striptags('<p><strong><div>')|t }}
         {{ content.field_area_of_study_scholarship|render|striptags('<p><strong><div>')|t }}
       </div>
 
