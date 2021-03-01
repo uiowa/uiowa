@@ -9,17 +9,18 @@
  * @see https://www.drupal.org/node/2217931
  */
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Render\BubbleableMetadata;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\views\ViewExecutable;
-use Drupal\Component\Utility\Html;
 use Drupal\views\Views;
 use Drupal\views\Entity\View;
-use Drupal\Core\Render\Element;
 
 /**
  * Implements hook_form_alter().
@@ -306,8 +307,8 @@ function sitenow_people_uip_classes_alter(&$options, $entity, $bundle) {
 function sitenow_people_views_pre_render(ViewExecutable $view) {
   // Add <th> label for Draggable Views, otherwise it is flagged
   // for accessibility.
-  if ($view->id() == "people" && $view->current_display == 'page_people_table') {
-    $view->field["draggableviews"]->options["label"] = 'Sort Control';
+  if ($view->id() == 'people' && $view->current_display == 'page_people_table') {
+    $view->field['draggableviews']->options['label'] = 'Sort Control';
   }
 }
 
@@ -660,4 +661,58 @@ function _sitenow_people_person_form_submit(array &$form, FormStateInterface $fo
       }
     }
   }
+}
+
+/**
+ * Implements hook_token_info().
+ */
+function sitenow_people_token_info(): array {
+  $info = [];
+  $info['types']['sitenow_people'] = [
+    'name' => t('SiteNow People'),
+    'description' => t('Tokens for SiteNow People.'),
+  ];
+  $info['tokens']['sitenow_people']['sitenow_people_path'][] = 'A token to display the SiteNow People page path.';
+  return $info;
+}
+
+/**
+ * Implements hook_tokens().
+ */
+function sitenow_people_tokens($type, $tokens, array $data, array $options, \Drupal\Core\Render\BubbleableMetadata $bubbleable_metadata) {
+  $replacements = [];
+  if ($type == 'sitenow_people') {
+
+    foreach ($tokens as $name => $original) {
+      // Find the desired token by name.
+      switch ($name) {
+        case 'sitenow_people_path':
+          $replacements[$original] = _sitenow_people_path_token_value();
+          break;
+      }
+    }
+  }
+  return $replacements;
+}
+
+function _sitenow_people_path_token_value() {
+
+  // Load people listing view.
+  $view = Drupal::entityTypeManager()->getStorage('view')->load('people');
+
+  // Loop through displays except Master.
+  $displays = $view->get('display');
+  unset($displays['default']);
+  foreach ($displays as $display) {
+    // If display is not enabled, skip this display.
+    if (!$display['display_options']['enabled']) {
+      continue;
+    }
+
+    // @todo Do we need to do anything besides this?
+    return '/' . $display['display_options']['path'];
+  }
+
+  // @todo Is this appropriate when there is no value?
+  return '';
 }
