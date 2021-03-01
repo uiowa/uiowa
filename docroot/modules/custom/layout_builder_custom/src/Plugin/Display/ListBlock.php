@@ -33,7 +33,7 @@ class ListBlock extends CoreBlock {
       'offset' => $this->t('Offset'),
       'hide_fields' => $this->t('Hide fields'),
       'configure_sorts' => $this->t('Adjust the order of sorts'),
-      'display_more_link' => $this->t('Display more link'),
+      'use_more' => $this->t('Display more link'),
     ];
     $filter_intersect = array_intersect_key($filter_options, $filtered_allow);
 
@@ -62,7 +62,7 @@ class ListBlock extends CoreBlock {
     $form['allow']['#options']['pager'] = $this->t('Show pager');
     $form['allow']['#options']['hide_fields'] = $this->t('Hide fields');
     $form['allow']['#options']['configure_sorts'] = $this->t('Configure sorts');
-    $form['allow']['#options']['display_more_link'] = $this->t('Display more link');
+    $form['allow']['#options']['use_more'] = $this->t('Display more link');
 
     $defaults = [];
     if (!empty($form['allow']['#default_value'])) {
@@ -84,7 +84,7 @@ class ListBlock extends CoreBlock {
       '#states' => [
         'visible' => [
           [
-            "input[name='allow[display_more_link]']" => [
+            "input[name='allow[use_more]']" => [
               'checked' => TRUE,
             ],
           ],
@@ -347,7 +347,7 @@ class ListBlock extends CoreBlock {
     }
 
     // Provides settings related to displaying a "More" link.
-    if (!empty($allow_settings['display_more_link'])) {
+    if (!empty($allow_settings['use_more'])) {
 
       $more_link_help_text = $this->getOption('more_link_help_text');
       if (empty($more_link_help_text)) {
@@ -356,11 +356,11 @@ class ListBlock extends CoreBlock {
 
       $more_path = isset($block_configuration['display_more_path']) ? $block_configuration['display_more_path'] : '';
 
-      $form['override']['display_more_toggle'] = [
+      $form['override']['use_more'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Display More link'),
         '#description' => $more_link_help_text,
-        '#default_value' => !empty($more_path),
+        '#default_value' => !empty($block_configuration['use_more']),
       ];
 
       $form['override']['display_more_path'] = [
@@ -372,7 +372,7 @@ class ListBlock extends CoreBlock {
             '%add-node' => '/node/add',
             '%url' => 'http://example.com',
           ]),
-        '#default_value' => isset($block_configuration['display_more_path']) ? static::getUriAsDisplayableString($block_configuration['display_more_path']) : NULL,
+        '#default_value' => isset($block_configuration['use_more_link_url']) ? static::getUriAsDisplayableString($block_configuration['use_more_link_url']) : NULL,
         '#element_validate' => [
           [
             LinkWidget::class,
@@ -390,7 +390,7 @@ class ListBlock extends CoreBlock {
         '#states' => [
           'visible' => [
             [
-              "input[name='settings[override][display_more_toggle]']" => [
+              "input[name='settings[override][use_more]']" => [
                 'checked' => TRUE,
               ],
             ],
@@ -438,9 +438,15 @@ class ListBlock extends CoreBlock {
       ]));
     }
 
-    // Save display more link setting.
-    if (!empty($allow_settings['display_more_link'])) {
-      $block->setConfigurationValue('display_more_path', $form_state->getValue([
+    if (!empty($allow_settings['use_more'])) {
+
+      $block->setConfigurationValue('use_more', $form_state->getValue([
+        'override',
+        'use_more',
+      ]));
+
+      // Save display more link setting.
+      $block->setConfigurationValue('use_more_link_url', $form_state->getValue([
         'override',
         'display_more_path',
       ]));
@@ -567,19 +573,18 @@ class ListBlock extends CoreBlock {
 
     $this->view->display_handler->setOption('heading_size', $child_heading_size);
 
-    // Add display more link if allowed and configured.
-    // @todo Add fallback to default path if more link is not set and
-    //   default path is set.
-    if (!empty($allow_settings['display_more_link']) && !empty($config['display_more_path'])) {
-      $this->view->element['more_link'] = [
-        '#type' => 'link',
-        '#title' => 'View more ',
-        '#url' => Url::fromUri($config['display_more_path']),
-        '#attributes' => [
-          'class' => ['bttn', 'bttn--primary', 'bttn--caps'],
-        ],
-        '#weight' => 100,
-      ];
+    if (!empty($allow_settings['use_more'])) {
+      if (isset($config['use_more']) && $config['use_more']) {
+        $this->view->display_handler->setOption('use_more', TRUE);
+        $this->view->display_handler->setOption('link_display', 'custom_url');
+        if (!empty($config['use_more_link_url'])) {
+          $this->view->display_handler->setOption('link_url', Url::fromUri($config['use_more_link_url'])->toString());
+        }
+      }
+      else {
+        // Don't display the more link.
+        $this->view->display_handler->setOption('use_more', FALSE);
+      }
     }
   }
 

@@ -88,6 +88,13 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function sitenow_people_form_views_ui_edit_display_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['options']['link_url']['#description'][2]['#items'][] = '{{ sitenow_people.path }} == SiteNow People path setting';
+}
+
+/**
  * Implements hook_entity_presave().
  */
 function sitenow_people_entity_presave(EntityInterface $entity) {
@@ -672,7 +679,10 @@ function sitenow_people_token_info(): array {
     'name' => t('SiteNow People'),
     'description' => t('Tokens for SiteNow People.'),
   ];
-  $info['tokens']['sitenow_people']['sitenow_people_path'][] = 'A token to display the SiteNow People page path.';
+  $info['tokens']['sitenow_people']['path'] = [
+    'name' => 'SiteNow People path',
+    'description' => 'A token to display the SiteNow People page path.',
+  ];
   return $info;
 }
 
@@ -695,6 +705,9 @@ function sitenow_people_tokens($type, $tokens, array $data, array $options, \Dru
   return $replacements;
 }
 
+/**
+ * Callback to get the SiteNow People view path.
+ */
 function _sitenow_people_path_token_value() {
 
   // Load people listing view.
