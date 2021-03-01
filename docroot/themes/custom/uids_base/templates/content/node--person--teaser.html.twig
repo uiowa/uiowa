@@ -93,8 +93,8 @@
   'card_image': content.field_image | render,
   'card_text': content.field_teaser | render,
   'card_subtitle': content.field_person_position | render,
-  'card_tag': content.field_person_email | render,
-  'person_phone': content.field_person_phone | render,
+  'card_date': content.field_person_email | render,
+  'card_tag': content.field_person_phone | render,
   'media_styles': ['media--circle', 'card__media--small', 'media--border'],
   'card_title': label,
   'card_link_url': url,
@@ -102,25 +102,18 @@
 } %}
 
 {% embed '@uids_base/uids/card.html.twig' with person_card only %}
-
-  {% block card_details %}
-    {% if card_subtitle or card_tag or person_phone is not empty %}
-      <div class="card__details">
-        {% block card_subtitle %}
-          {% if card_subtitle is not empty %}
-            <div class="card__subtitle">{{ card_subtitle }}</div>
-          {% endif %}
-        {% endblock %}
-        {% block card_tag %}
-          {% if card_tag is not empty %}
-            <div class="card__date">{{ card_tag }}</div>
-          {% endif %}
-          {% if person_phone is not empty %}
-            <div class="card__date">{{ person_phone }}</div>
-          {% endif %}
-        {% endblock %}
+  {% block card_tag %}
+    {% if card_tag is not empty %}
+      <div class="card__date">
+        {{ card_tag }}
       </div>
     {% endif %}
   {% endblock %}
-
+  {% block card_date %}
+    {% if card_date is not empty %}
+      <div class="card__date">
+        {{ card_date }}
+      </div>
+    {% endif %}
+  {% endblock %}
 {% endembed %}
