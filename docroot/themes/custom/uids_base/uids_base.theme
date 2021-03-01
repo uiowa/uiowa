@@ -851,13 +851,11 @@ function uids_base_preprocess_input(&$variables) {
     $variables['attributes']['class'] = [];
   }
 
-  // Set the placeholder attribute for date inputs if we know the expected
-  // format and no placeholder has already been set. This helps people input
-  // the date as a string for browsers that do not support the HTML input.
+  // Set the placeholder attribute for date inputs. The required format is
+  // always YYYY-MM-DD. This helps people input the date as a string for
+  // browsers that do not support the HTML input.
   if (isset($variables['element']['#type']) && $variables['element']['#type'] === 'date') {
-    if (!isset($variables['attributes']['placeholder']) && isset($variables['element']['#date_date_format'])) {
-      $variables['attributes']['placeholder'] = $variables['element']['#date_date_format'];
-    }
+    $variables['attributes']['placeholder'] = 'YYYY-MM-DD';
   }
 }
 
