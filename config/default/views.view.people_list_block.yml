@@ -703,9 +703,11 @@ display:
       display_extenders: {  }
       use_ajax: true
       group_by: true
-      use_more: false
-      use_more_always: true
-      use_more_text: more
+      use_more: true
+      use_more_always: false
+      use_more_text: 'View more'
+      link_url: '{{ sitenow_people.path }}'
+      link_display: custom_url
     cache_metadata:
       max-age: -1
       contexts:
@@ -737,7 +739,7 @@ display:
         pager: pager
         hide_fields: hide_fields
         configure_sorts: configure_sorts
-        display_more_link: display_more_link
+        use_more: use_more
       filters:
         status:
           value: '1'
