@@ -689,7 +689,7 @@ function sitenow_people_token_info(): array {
 /**
  * Implements hook_tokens().
  */
-function sitenow_people_tokens($type, $tokens, array $data, array $options, \Drupal\Core\Render\BubbleableMetadata $bubbleable_metadata) {
+function sitenow_people_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
   $replacements = [];
   if ($type == 'sitenow_people') {
 
