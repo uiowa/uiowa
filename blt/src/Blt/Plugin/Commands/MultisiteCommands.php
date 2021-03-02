@@ -565,6 +565,7 @@ EOD
                 foreach ($cert->domains as $domain) {
                   if ($domain == $sans_search) {
                     $row['ssl'] = $domain;
+                    $has_ssl_coverage = TRUE;
                     break;
                   }
 
