@@ -156,8 +156,9 @@ function admissions_core_preprocess_field(&$variables) {
         $field_definition = $node->getFieldDefinition($field_name)->getFieldStorageDefinition();
         $field_allowed_options = options_allowed_values($field_definition, $node);
         $field_value_label = $field_allowed_options[$node->{$field_name}->value];
-        $variables['items'] = $field_value_label;
+        $variables['label'] = $field_value_label;
       }
+    break;
     case 'field_area_of_study_link':
       $node = $variables["element"]["#object"];
       // Add field_area_of_study_college to the end of field_area_of_study_link.
