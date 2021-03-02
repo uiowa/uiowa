@@ -112,3 +112,25 @@ function uiowa_core_google_tag_insert_alter(&$satisfied, Container $container) {
     $satisfied = FALSE;
   }
 }
+
+/**
+ * Implements hook_preprocess_html().
+ */
+function uiowa_core_preprocess_html(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if ($admin_context->isAdminRoute()) {
+    /** @var \Drupal\Core\Theme\ActiveTheme $active_theme */
+    $active_theme_name = \Drupal::service('theme.manager')->getActiveTheme()->getName();
+    $default_theme_name = \Drupal::config('system.theme')->get('default');
+    if ($active_theme_name === 'claro' && $default_theme_name === 'uids_base') {
+      $config_factory = \Drupal::configFactory();
+      $config = $config_factory->getEditable('uids_base.settings');
+
+      // Only set 'text--serif' if 'fonts.font-family' setting is set to serif.
+      if ($config->get('fonts.font-family') === 'serif') {
+        $variables['attributes']['class'][] = 'text--serif';
+        $variables['#attached']['library'][] = 'uids_base/global-serif';
+      }
+    }
+  }
+}
