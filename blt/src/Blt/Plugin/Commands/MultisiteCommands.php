@@ -515,7 +515,7 @@ EOD
       'DBs',
       'SANs',
       'SSL - Coverage',
-      'SSL - Related Domains',
+      'SSL - Related Domain',
     ]);
 
     $rows = [];
