@@ -2,6 +2,10 @@
 @import "assets/scss/_utilities.scss";
 @import "components/card/card.scss";
 
+.card__description {
+  word-wrap: anywhere;
+  overflow-wrap: anywhere;
+}
 // ie11
 @media all and (-ms-high-contrast: none),
 (-ms-high-contrast: active) {
@@ -98,8 +102,9 @@
   &.hide-images {
     .card__media {
       display: none;
-
-      &+.card__body {
+    }
+    .card__body {
+      @include breakpoint(menu) {
         padding: 0 !important;
       }
     }

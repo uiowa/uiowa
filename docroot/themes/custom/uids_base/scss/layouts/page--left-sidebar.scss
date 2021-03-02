@@ -48,6 +48,11 @@
 .content__container .layout__container.layout--no-sidebar,
 .content__container .layout__container.layout--has-sidebar.sidebar-invisible {
   margin-bottom: 0;
+  .layout__region--main {
+    @include breakpoint(menu) {
+      @include inner-grid(75);
+    }
+  }
 }
 
 .layout--has-sidebar {
