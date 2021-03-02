@@ -145,7 +145,7 @@
   }
   .card--person-teaser {
     @include breakpoint(sm) {
-      padding: 2rem;
+      padding: 2rem!important;
     }
   }
 }
@@ -426,10 +426,14 @@
   }
 
   .featured-content-item {
-    @include card-enclosed;
     display: inline-block;
+    @include card-enclosed;
+    border: none!important;
     width: 100%;
     margin-bottom: $gutter;
+    .card--person-teaser {
+      border: 1px solid;
+    }
   }
 
   .node--type-article {
