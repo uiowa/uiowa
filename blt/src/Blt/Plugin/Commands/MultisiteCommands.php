@@ -532,7 +532,7 @@ EOD
     // Consider the parent domain related and search for it since it could
     // be covered with one SSL SAN while double subdomains cannot. However,
     // uiowa.edu is the exception because we cannot cover *.uiowa.edu.
-    $related_search = $host_parts[1] == 'uiowa.edu' ? NULL : $host_parts[1];
+    $related_search = ($host_parts[1] == 'uiowa.edu') ? NULL : $host_parts[1];
 
     // If the host is one subdomain off uiowa.edu or a vanity domain,
     // search for the host instead.
