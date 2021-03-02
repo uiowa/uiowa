@@ -237,16 +237,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         case 'inline_block:uiowa_collection':
           $form['settings']['view_mode']['#type'] = 'radios';
 
-
-//          $view_mode = $form['settings']['view_mode'];
-//          unset($form['settings']['view_mode']);
-//          $form["settings"]["block_form"]["#block"]->view_mode[] = $view_mode;
-
           // This removes the `none` option from the view mode selections.
           //We need to have a view mode, so we remove the option to select nothing.
-
-
-
           array_shift($form['settings']['view_mode']['#options']);
 
           // @todo Re-enable 'tab' after theming/functionality is in place.
