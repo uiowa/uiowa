@@ -283,6 +283,25 @@ third_party_settings:
                 block_margin_top: block_margin_top
                 block_margin_right: block_margin_right
             weight: 4
+          -
+            uuid: b520a8bc-238e-4097-b8d9-0ea8a0827c51
+            region: second
+            configuration:
+              id: 'field_block:node:area_of_study:field_area_of_study_college'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: hidden
+                type: entity_reference_label
+                settings:
+                  link: true
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 9
         third_party_settings:
           layout_builder_lock:
             lock: {  }
