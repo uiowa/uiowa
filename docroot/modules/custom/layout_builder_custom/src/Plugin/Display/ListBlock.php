@@ -146,11 +146,11 @@ class ListBlock extends CoreBlock {
     $block_configuration = $block->getConfiguration();
 
     $form['headline'] = HeadlineHelper::getElement([
-      'headline' => $block_configuration['headline'] ?? NULL,
-      'hide_headline' => $block_configuration['hide_headline'] ?? 0,
-      'heading_size' => $block_configuration['heading_size'] ?? 'h2',
-      'headline_style' => $block_configuration['headline_style'] ?? 'default',
-      'child_heading_size' => $block_configuration['child_heading_size'] ?? 'h3',
+      'headline' => $block_configuration['headline']['headline'] ?? NULL,
+      'hide_headline' => $block_configuration['headline']['hide_headline'] ?? 0,
+      'heading_size' => $block_configuration['headline']['heading_size'] ?? 'h2',
+      'headline_style' => $block_configuration['headline']['headline_style'] ?? 'default',
+      'child_heading_size' => $block_configuration['headline']['child_heading_size'] ?? 'h3',
     ]);
     $form['headline']['#weight'] = 1;
 
@@ -217,10 +217,11 @@ class ListBlock extends CoreBlock {
       ];
 
       $sorts = $this->getHandlers('sort');
-      $header = [];
-      $header['label'] = $this->t('Label');
-      $header['order'] = $this->t('Order');
-      $header['weight'] = $this->t('Weight');
+      $header = [
+        'label' => $this->t('Label'),
+        'order' => $this->t('Order'),
+        'weight' => $this->t('Weight'),
+      ];
       $form['override']['sort']['sort_list'] = [
         '#type' => 'table',
         '#header' => $header,
@@ -354,8 +355,6 @@ class ListBlock extends CoreBlock {
         $more_link_help_text = $this->t('Start typing to see a list of results. Click to select.');
       }
 
-      $more_path = isset($block_configuration['display_more_path']) ? $block_configuration['display_more_path'] : '';
-
       $form['override']['use_more'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Display More link'),
@@ -419,16 +418,17 @@ class ListBlock extends CoreBlock {
     $allow_settings = array_filter($this->getOption('allow'));
 
     // Alter the headline field settings for configuration.
-    foreach ($form_state->getValues()['headline']['container'] as $name => $value) {
-      $block->setConfigurationValue($name, $value);
-    }
+      $block->setConfigurationValue('headline', $form_state->getValue([
+        'headline',
+        'container',
+      ]));
 
     // Save "Pager type" settings to block configuration.
-    $configuration['pager'] = 'some';
-    if ($pager = $form_state->getValue(['override', 'pager'])) {
-      $configuration['pager'] = 'full';
+    $pager = 'some';
+    if ($form_state->getValue(['override', 'pager'])) {
+      $pager = 'full';
     }
-    $block->setConfigurationValue('pager', $configuration['pager']);
+    $block->setConfigurationValue('pager', $pager);
 
     // Save "Pager offset" settings to block configuration.
     if (!empty($allow_settings['offset'])) {
@@ -513,16 +513,17 @@ class ListBlock extends CoreBlock {
     }
 
     // Change fields output based on block configuration.
-    if (!empty($allow_settings['hide_fields'])) {
-      if (!empty($config['fields']) && $this->view->getStyle()->usesFields()) {
-        $fields = $this->view->getHandlers('field');
-        foreach (array_keys($fields) as $field_name) {
-          // Remove each field in sequence and re-add them to sort
-          // appropriately or hide if disabled.
-          $this->view->removeHandler($display_id, 'field', $field_name);
-          if (empty($allow_settings['hide_fields']) || (!empty($allow_settings['hide_fields']) && empty($config['fields'][$field_name]['hide']))) {
-            $this->view->addHandler($display_id, 'field', $fields[$field_name]['table'], $fields[$field_name]['field'], $fields[$field_name], $field_name);
-          }
+    if ($this->view->getStyle()->usesFields() &&
+      !empty($allow_settings['hide_fields']) &&
+      !empty($config['fields'])) {
+      $fields = $this->view->getHandlers('field');
+      foreach (array_keys($fields) as $field_name) {
+        // Remove each field in sequence and re-add them to sort
+        // appropriately or hide if disabled.
+        // @todo This isn't working during AJAX.
+        $this->view->removeHandler($display_id, 'field', $field_name);
+        if (empty($config['fields'][$field_name]['hide'])) {
+          $this->view->addHandler($display_id, 'field', $fields[$field_name]['table'], $fields[$field_name]['field'], $fields[$field_name], $field_name);
         }
       }
     }
@@ -553,29 +554,29 @@ class ListBlock extends CoreBlock {
     $this->view->exposed_data = $exposed_filter_values;
 
     if (!empty($config['headline'])) {
-      $this->view->element['heading'] = [
+      $headline = $config['headline'];
+      $this->view->element['headline'] = [
         '#theme' => 'uiowa_core_headline',
-        '#headline' => $config['headline'],
-        '#hide_headline' => $config['hide_headline'],
-        '#heading_size' => $config['heading_size'],
-        '#headline_style' => $config['headline_style'],
+        '#headline' => $headline['headline'],
+        '#hide_headline' => $headline['hide_headline'],
+        '#heading_size' => $headline['heading_size'],
+        '#headline_style' => $headline['headline_style'],
       ];
+      if (empty($headline['headline'])) {
+        $child_heading_size = $headline['child_heading_size'];
+      }
+      else {
+        $child_heading_size = HeadlineHelper::getHeadingSizeUp($headline['heading_size']);
+      }
+
+      $this->view->display_handler->setOption('heading_size', $child_heading_size);
     }
 
-    // @todo This is copied over from uiowa_maui block,
-    //   but the logic doesn't totally make sense to me.
-    if (empty($config['headline'])) {
-      $child_heading_size = $config['child_heading_size'];
-    }
-    else {
-      $child_heading_size = HeadlineHelper::getHeadingSizeUp($config['heading_size']);
-    }
-
-    $this->view->display_handler->setOption('heading_size', $child_heading_size);
 
     if (!empty($allow_settings['use_more'])) {
       if (isset($config['use_more']) && $config['use_more']) {
         $this->view->display_handler->setOption('use_more', TRUE);
+        $this->view->display_handler->setOption('use_more_always', TRUE);
         $this->view->display_handler->setOption('link_display', 'custom_url');
         if (!empty($config['use_more_link_url'])) {
           $this->view->display_handler->setOption('link_url', Url::fromUri($config['use_more_link_url'])->toString());
