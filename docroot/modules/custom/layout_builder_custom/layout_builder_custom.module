@@ -553,6 +553,13 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
       }
 
       $element["field_accordion_type"]["widget"]["#default_value"] = 'multi_select';
+      $element['field_accordion_type']['widget']['#states'] = [
+        'invisible' => [
+          ':input[name="settings[view_mode]"]' => [
+            'value' => 'descriptive_list',
+          ]
+        ]
+      ];
       unset($element["field_accordion_type"]["widget"]["#options"]["_none"]);
       $foo = $element;
       break;
