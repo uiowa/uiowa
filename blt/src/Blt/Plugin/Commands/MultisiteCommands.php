@@ -543,12 +543,13 @@ EOD
     }
 
     foreach ($applications as $name => $uuid) {
-      $row = [];
-      $row[] = $name;
-      $row[] = count($databases->getAll($uuid));
-
-      // Reset related domain for this application.
-      $related = NULL;
+      $row = [
+        'app' => $name,
+        'dbs' => count($databases->getAll($uuid)),
+        'sans' => NULL,
+        'ssl' => NULL,
+        'related' => NULL,
+      ];
 
       $envs = $environments->getAll($uuid);
 
@@ -558,18 +559,17 @@ EOD
 
           foreach ($certs as $cert) {
             if ($cert->flags->active == TRUE) {
-              $row[] = count($cert->domains);
+              $row['sans'] = count($cert->domains);
 
               if ($sans_search) {
                 foreach ($cert->domains as $domain) {
                   if ($domain == $sans_search) {
-                    $row[] = $domain;
-                    $has_ssl_coverage = TRUE;
+                    $row['ssl'] = $domain;
                     break;
                   }
 
                   if ($domain == $related_search) {
-                    $related = $domain;
+                    $row['related'] = $domain;
                     break;
                   }
                 }
@@ -579,12 +579,6 @@ EOD
         }
       }
 
-      // Append an empty string so related domains go in the next column.
-      if (!$has_ssl_coverage) {
-        $row[] = '';
-      }
-
-      $row[] = $related;
       $rows[] = $row;
     }
 
