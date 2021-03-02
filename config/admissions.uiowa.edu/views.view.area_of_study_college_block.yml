@@ -47,9 +47,8 @@ display:
           sort_asc_label: Asc
           sort_desc_label: Desc
       pager:
-        type: some
+        type: none
         options:
-          items_per_page: 5
           offset: 0
       style:
         type: grid
@@ -248,6 +247,9 @@ display:
     display_options:
       display_extenders:
         metatag_display_extender: {  }
+      allow:
+        items_per_page: false
+      block_description: 'Areas of Study by College'
     cache_metadata:
       max-age: -1
       contexts:
