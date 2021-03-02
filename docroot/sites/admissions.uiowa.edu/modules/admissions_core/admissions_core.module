@@ -142,6 +142,10 @@ function admissions_core_preprocess_entity_print(&$variables) {
   }
 }
 
+
+
+
+
 /**
  * Implements hook_preprocess_HOOK().
  */
@@ -155,7 +159,18 @@ function admissions_core_preprocess_field(&$variables) {
         $field_definition = $node->getFieldDefinition($field_name)->getFieldStorageDefinition();
         $field_allowed_options = options_allowed_values($field_definition, $node);
         $field_value_label = $field_allowed_options[$node->{$field_name}->value];
-        $variables["label"] = $field_value_label;
+        $variables['items'] = $field_value_label;
+      }
+    case 'field_area_of_study_link':
+      $node = $variables["element"]["#object"];
+      // Add field_area_of_study_college to the end of field_area_of_study_link
+      if ($node->hasField('field_area_of_study_college') && !$node->get('field_area_of_study_college')->isEmpty()) {
+        $items_length = count(\Drupal\Core\Render\Element::children($variables['element']));
+        $colleges = $node->field_area_of_study_college->view();
+        foreach (\Drupal\Core\Render\Element::children($colleges) as $delta) {
+          $variables['items'][$delta + $items_length]['content'] = $colleges[$delta];
+          $variables['items'][$delta + $items_length]['attributes'] = !empty($colleges['#items'][$delta]->_attributes) ? new Attribute($colleges['#items'][$delta]->_attributes) : new Attribute();
+        }
       }
       break;
 
@@ -240,6 +255,9 @@ function admissions_core_preprocess_layout(&$variables) {
         case 'area_of_study':
           // @todo Move this to admissions_core_preprocess_node().
           $variables['#attached']['library'][] = 'admissions_core/area-of-study';
+
+
+
 
           if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
 
