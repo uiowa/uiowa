@@ -65,6 +65,7 @@
   'process_label': content.field_ar_process[0]['#title']|render,
   'process_url': content.field_ar_process[0]['#url'],
   'media_sizes': 'card__media--small',
+  'transfer_tip': transfer_tip,
 } %}
 {% embed '@uids_base/uids/card.html.twig' with admissions_requirement only %}
   {% block card_img %}
@@ -78,6 +79,9 @@
   {% block card_content %}
     {% if card_text is not empty %}
       {{ card_text }}
+    {% endif %}
+    {% if transfer_tip is not empty %}
+      <span class="transfer-tip"></span><i class="fas fa-lightbulb"></i> <a href="{{ transfer_tip }}" class="">Transfer tips</a></span>
     {% endif %}
     {% if requirement_url is not empty %}
       <a href="{{ requirement_url }}" class="bttn bttn--link bttn--sans-serif">{{ requirement_label }} <i class="fas fa-arrow-right"></i></a>
