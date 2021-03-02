@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: sitesmnfreund.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: sitesmnfreund
+  human_name: mnfreund.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesmnfreund.prod
+drupal:
+  db:
+    database: mnfreund_sites_uiowa_edu
+uiowa:
+  requester: mnfreund

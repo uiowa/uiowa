@@ -28,6 +28,8 @@ dependencies:
     - field.field.node.area_of_study.field_area_of_study_selective
     - field.field.node.area_of_study.field_area_of_study_stat
     - field.field.node.area_of_study.field_area_of_study_stories
+    - field.field.node.area_of_study.field_area_of_study_sub_type
+    - field.field.node.area_of_study.field_area_of_study_subprogram
     - field.field.node.area_of_study.field_area_of_study_subtitle
     - field.field.node.area_of_study.field_area_of_study_teaching
     - field.field.node.area_of_study.field_area_of_study_teaching_txt
@@ -252,6 +254,28 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
+  field_area_of_study_sub_type:
+    type: list_default
+    weight: 25
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_area_of_study_subprogram:
+    type: string
+    weight: 24
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_area_of_study_subtitle:
+    type: text_default
+    weight: 22
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
   field_area_of_study_teaching:
     type: list_default
     weight: 13
@@ -274,6 +298,15 @@ content:
     third_party_settings: {  }
     type: text_default
     region: content
+  field_image:
+    type: entity_reference_entity_view
+    weight: 23
+    region: content
+    label: hidden
+    settings:
+      view_mode: small__widescreen
+      link: false
+    third_party_settings: {  }
 hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
@@ -283,9 +316,7 @@ hidden:
   field_area_of_study_mail_code: true
   field_area_of_study_stat: true
   field_area_of_study_stories: true
-  field_area_of_study_subtitle: true
   field_area_of_study_transfer: true
   field_area_of_study_transfer_tip: true
-  field_image: true
   links: true
   search_api_excerpt: true

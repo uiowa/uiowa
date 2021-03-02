@@ -27,6 +27,8 @@ dependencies:
     - field.field.node.area_of_study.field_area_of_study_selective
     - field.field.node.area_of_study.field_area_of_study_stat
     - field.field.node.area_of_study.field_area_of_study_stories
+    - field.field.node.area_of_study.field_area_of_study_sub_type
+    - field.field.node.area_of_study.field_area_of_study_subprogram
     - field.field.node.area_of_study.field_area_of_study_subtitle
     - field.field.node.area_of_study.field_area_of_study_teaching
     - field.field.node.area_of_study.field_area_of_study_teaching_txt
@@ -194,7 +196,7 @@ third_party_settings:
             uuid: b4d948cb-4c09-4224-bd33-436b6b200a70
             region: second
             configuration:
-              id: 'views_block:areas_of_study_block-block_1'
+              id: 'views_block:areas_of_study_block-block_information'
               label: null
               provider: views
               label_display: null
@@ -737,6 +739,21 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
+    region: content
+  field_area_of_study_sub_type:
+    weight: 38
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  field_area_of_study_subprogram:
+    weight: 37
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
     region: content
   field_area_of_study_subtitle:
     weight: 13
