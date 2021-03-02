@@ -54,6 +54,12 @@ function uids_base_preprocess_html(&$variables) {
   // Set a variable for whether layout builder is enabled.
   $variables['layout_builder_enabled'] = FALSE;
 
+  // Only set 'text--serif' if 'fonts.font-family' setting is set to serif.
+  if (theme_get_setting('fonts.font-family') === 'serif') {
+    $variables['attributes']['class'][] = 'text--serif';
+    $variables['#attached']['library'][] = 'uids_base/global-serif';
+  }
+
   $node = \Drupal::routeMatch()->getParameter('node');
 
   if ($node instanceof NodeInterface) {
