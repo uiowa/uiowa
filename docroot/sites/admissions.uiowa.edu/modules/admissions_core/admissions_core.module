@@ -208,6 +208,13 @@ function admissions_core_preprocess_paragraph__admissions_requirement(&$variable
           foreach ($parent->get($requirement)->getValue() as $delta => $item) {
             if ($item['target_id'] === $id) {
               $variables['requirement_card_label'] = $label;
+              // Get and pass the transfer tip path to the template if it exists.
+              if ($requirement == 'field_area_of_study_transfer') {
+                if ($parent->hasField('field_area_of_study_transfer_tip') && !empty($parent->get('field_area_of_study_transfer_tip'))) {
+                  $transfer_tip = $parent->get('field_area_of_study_transfer_tip')->getValue();
+                  $variables['transfer_tip'] = \Drupal::service('path_alias.manager')->getAliasByPath('/node/'. $transfer_tip[0]["target_id"]);
+                }
+              }
             }
           }
         }
