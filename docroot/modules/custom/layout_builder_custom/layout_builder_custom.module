@@ -551,6 +551,10 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
         $element['field_uiowa_headline']['widget'][0]['container']['child_heading_size']['#description'] =
           t('The heading size for all accordion headings. Does not apply to descriptive list.');
       }
+
+      $element["field_accordion_type"]["widget"]["#default_value"] = 'multi_select';
+      unset($element["field_accordion_type"]["widget"]["#options"]["_none"]);
+      $foo = $element;
       break;
 
     case 'inline_block:uiowa_cta':
