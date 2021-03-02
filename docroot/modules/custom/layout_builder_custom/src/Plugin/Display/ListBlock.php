@@ -418,10 +418,10 @@ class ListBlock extends CoreBlock {
     $allow_settings = array_filter($this->getOption('allow'));
 
     // Alter the headline field settings for configuration.
-      $block->setConfigurationValue('headline', $form_state->getValue([
-        'headline',
-        'container',
-      ]));
+    $block->setConfigurationValue('headline', $form_state->getValue([
+      'headline',
+      'container',
+    ]));
 
     // Save "Pager type" settings to block configuration.
     $pager = 'some';
@@ -571,7 +571,6 @@ class ListBlock extends CoreBlock {
 
       $this->view->display_handler->setOption('heading_size', $child_heading_size);
     }
-
 
     if (!empty($allow_settings['use_more'])) {
       if (isset($config['use_more']) && $config['use_more']) {
