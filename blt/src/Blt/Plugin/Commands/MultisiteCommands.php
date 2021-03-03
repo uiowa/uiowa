@@ -515,7 +515,7 @@ EOD
       'DBs',
       'SANs',
       'SSL - Coverage',
-      'SSL - Related Domains',
+      'SSL - Related Domain',
     ]);
 
     $rows = [];
@@ -530,8 +530,9 @@ EOD
     $sans_search = '*.' . $host_parts[1];
 
     // Consider the parent domain related and search for it since it could
-    // be covered with one SSL SAN while double subdomains cannot.
-    $related_search = $host_parts[1];
+    // be covered with one SSL SAN while double subdomains cannot. However,
+    // uiowa.edu is the exception because we cannot cover *.uiowa.edu.
+    $related_search = ($host_parts[1] == 'uiowa.edu') ? NULL : $host_parts[1];
 
     // If the host is one subdomain off uiowa.edu or a vanity domain,
     // search for the host instead.
@@ -542,12 +543,13 @@ EOD
     }
 
     foreach ($applications as $name => $uuid) {
-      $row = [];
-      $row[] = $name;
-      $row[] = count($databases->getAll($uuid));
-
-      // Reset related domain for this application.
-      $related = NULL;
+      $row = [
+        'app' => $name,
+        'dbs' => count($databases->getAll($uuid)),
+        'sans' => NULL,
+        'ssl' => NULL,
+        'related' => NULL,
+      ];
 
       $envs = $environments->getAll($uuid);
 
@@ -557,18 +559,18 @@ EOD
 
           foreach ($certs as $cert) {
             if ($cert->flags->active == TRUE) {
-              $row[] = count($cert->domains);
+              $row['sans'] = count($cert->domains);
 
               if ($sans_search) {
                 foreach ($cert->domains as $domain) {
                   if ($domain == $sans_search) {
-                    $row[] = $domain;
+                    $row['ssl'] = $domain;
                     $has_ssl_coverage = TRUE;
                     break;
                   }
 
                   if ($domain == $related_search) {
-                    $related = $domain;
+                    $row['related'] = $domain;
                     break;
                   }
                 }
@@ -578,12 +580,6 @@ EOD
         }
       }
 
-      // Append an empty string so related domains go in the next column.
-      if (!$has_ssl_coverage) {
-        $row[] = '';
-      }
-
-      $row[] = $related;
       $rows[] = $row;
     }
 
