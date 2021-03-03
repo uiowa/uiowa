@@ -273,6 +273,13 @@
   .node--view-mode-teaser.media {
     @include card-enclosed;
     border: 1px solid rgba(0,0,0,.125)!important;
+    &.card--person-teaser {
+      .card__body {
+        @include breakpoint(sm) {
+          padding: 0;
+        }
+      }
+    }
   }
 }
 
@@ -288,10 +295,14 @@
 .paragraph--type--people.grid,
 .paragraph--type--people.masonry {
   .card {
-    padding: 2rem!important;
+    @include breakpoint(sm) {
+      padding: 2rem !important;
+    }
   }
   &.hide-images .card  {
-    padding: 2rem!important;
+    @include breakpoint(sm) {
+      padding: 2rem !important;
+    }
   }
 }
 
@@ -355,6 +366,14 @@
 
   .card {
     @include card-enclosed;
+    border-color: rgba(0,0,0,.125) !important;
+    &.card--person-teaser {
+      .card__body {
+        @include breakpoint(sm) {
+          padding: 0;
+        }
+      }
+    }
   }
 }
 
@@ -439,8 +458,16 @@
     border: none!important;
     width: 100%;
     margin-bottom: $gutter;
-    .card--person-teaser {
+    .card.card--person-teaser {
+      .card__body {
+        @include breakpoint(sm) {
+          padding: 0;
+        }
+      }
+    }
+    .card, .node--view-mode-teaser.media  {
       border: 1px solid;
+      border-color: rgba(0,0,0,.125) !important;
     }
   }
 
@@ -497,6 +524,17 @@
 
   .card__body {
     padding: 2rem;
+  }
+  .card {
+    border: 1px solid;
+    border-color: rgba(0,0,0,.125)!important;
+  }
+  .card.card--person-teaser {
+    .card__body {
+      @include breakpoint(sm) {
+        padding: 0;
+      }
+    }
   }
 
   .node__content .field--name-title {
