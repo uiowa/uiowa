@@ -237,8 +237,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         case 'inline_block:uiowa_collection':
           $form['settings']['view_mode']['#type'] = 'radios';
 
-          // This removes the `none` option from the view mode selections.
-          //We need to have a view mode, so we remove the option to select nothing.
+          // We need to have a specified view mode,
+          // so we remove the undefined 'default' option.
           array_shift($form['settings']['view_mode']['#options']);
 
           // @todo Re-enable 'tab' after theming/functionality is in place.
@@ -552,15 +552,18 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
           t('The heading size for all accordion headings. Does not apply to descriptive list.');
       }
 
+      // Default to multiselect and remove the empty option.
       $element["field_accordion_type"]["widget"]["#default_value"] = 'multi_select';
+      unset($element["field_accordion_type"]["widget"]["#options"]["_none"]);
+      // Only show the "accordion type" field if accordion view mode
+      // has been selected.
       $element['field_accordion_type']['widget']['#states'] = [
-        'invisible' => [
+        'visible' => [
           ':input[name="settings[view_mode]"]' => [
-            'value' => 'descriptive_list',
+            'value' => 'accordion',
           ]
         ]
       ];
-      unset($element["field_accordion_type"]["widget"]["#options"]["_none"]);
       $foo = $element;
       break;
 
