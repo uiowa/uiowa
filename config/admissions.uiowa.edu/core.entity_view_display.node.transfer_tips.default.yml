@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.transfer_tips.body
+    - field.field.node.transfer_tips.field_transfer_tips_aos
     - node.type.transfer_tips
   module:
     - text
@@ -14,14 +15,23 @@ bundle: transfer_tips
 mode: default
 content:
   body:
-    label: hidden
     type: text_default
-    weight: 101
+    weight: 2
+    region: content
+    label: hidden
     settings: {  }
     third_party_settings: {  }
+  field_transfer_tips_aos:
+    weight: 1
+    label: visually_hidden
+    settings:
+      link: true
+      view_mode: default
+    third_party_settings: {  }
+    type: entity_reference_entity_view
     region: content
   links:
-    weight: 100
+    weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }

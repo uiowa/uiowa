@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.transfer_tips.body
+    - field.field.node.transfer_tips.field_transfer_tips_aos
     - node.type.transfer_tips
   module:
     - content_moderation
@@ -30,6 +31,16 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_transfer_tips_aos:
+    weight: 122
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete_tags
+    region: content
   moderation_state:
     type: moderation_state_default
     weight: 100
@@ -83,7 +94,7 @@ content:
     third_party_settings: {  }
   url_redirects:
     weight: 50
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden: {  }
