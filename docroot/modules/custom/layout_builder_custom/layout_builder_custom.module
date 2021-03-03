@@ -573,7 +573,7 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
       }
 
       // Default to multiselect and remove the empty option.
-      $element["field_accordion_type"]["widget"]["#default_value"] = 'multi_select';
+      $element["field_accordion_type"]["widget"]["#default_value"] = isset($element["field_accordion_type"]["widget"]["#default_value"]) ? $element["field_accordion_type"]["widget"]["#default_value"] : 'multi_select';
       unset($element["field_accordion_type"]["widget"]["#options"]["_none"]);
       // Only show the "accordion type" field if accordion view mode
       // has been selected.
