@@ -2303,3 +2303,14 @@ $sites['physics.local.drupal.uiowa.edu'] = 'physics.uiowa.edu';
 $sites['physics.dev.drupal.uiowa.edu'] = 'physics.uiowa.edu';
 $sites['physics.stage.drupal.uiowa.edu'] = 'physics.uiowa.edu';
 $sites['physics.prod.drupal.uiowa.edu'] = 'physics.uiowa.edu';
+// Directory aliases for scholardev.sites.uiowa.edu.
+$sites['sitesscholardev.local.drupal.uiowa.edu'] = 'scholardev.sites.uiowa.edu';
+$sites['sitesscholardev.dev.drupal.uiowa.edu'] = 'scholardev.sites.uiowa.edu';
+$sites['sitesscholardev.stage.drupal.uiowa.edu'] = 'scholardev.sites.uiowa.edu';
+$sites['sitesscholardev.prod.drupal.uiowa.edu'] = 'scholardev.sites.uiowa.edu';
+
+// Directory aliases for frrbp.medicine.uiowa.edu.
+$sites['medicinefrrbp.local.drupal.uiowa.edu'] = 'frrbp.medicine.uiowa.edu';
+$sites['medicinefrrbp.dev.drupal.uiowa.edu'] = 'frrbp.medicine.uiowa.edu';
+$sites['medicinefrrbp.stage.drupal.uiowa.edu'] = 'frrbp.medicine.uiowa.edu';
+$sites['medicinefrrbp.prod.drupal.uiowa.edu'] = 'frrbp.medicine.uiowa.edu';
