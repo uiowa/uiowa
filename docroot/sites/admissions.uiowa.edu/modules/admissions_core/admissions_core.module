@@ -165,11 +165,19 @@ function admissions_core_preprocess_field(&$variables) {
       $node = $variables["element"]["#object"];
       // Add field_area_of_study_college to the end of field_area_of_study_link.
       if ($node->hasField('field_area_of_study_college') && !$node->get('field_area_of_study_college')->isEmpty()) {
-        $items_length = count(Element::children($variables['element']));
+        $existing_links = [];
+        foreach (Element::children($variables['items']) as $delta) {
+          $existing_links[$delta] = $variables['items'][$delta];
+          unset($variables['items'][$delta]);
+        }
         $colleges = $node->field_area_of_study_college->view();
-        foreach (Element::children($colleges) as $delta) {
-          $variables['items'][$delta + $items_length]['content'] = $colleges[$delta];
-          $variables['items'][$delta + $items_length]['attributes'] = !empty($colleges['#items'][$delta]->_attributes) ? new Attribute($colleges['#items'][$delta]->_attributes) : new Attribute();
+        $college_count = count(Element::children($colleges));
+        foreach (Element::children($colleges) as $college_delta) {
+          $variables['items'][$college_delta]['content'] = $colleges[$college_delta];
+          $variables['items'][$college_delta]['attributes'] = !empty($colleges['#items'][$college_delta]->_attributes) ? new Attribute($colleges['#items'][$college_delta]->_attributes) : new Attribute();
+        }
+        foreach ($existing_links as $delta => $link) {
+          $variables['items'][$delta + $college_count] = $link;
         }
       }
       break;
