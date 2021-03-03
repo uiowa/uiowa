@@ -2291,3 +2291,9 @@ $sites['labcuhal.local.drupal.uiowa.edu'] = 'cuhal.lab.uiowa.edu';
 $sites['labcuhal.dev.drupal.uiowa.edu'] = 'cuhal.lab.uiowa.edu';
 $sites['labcuhal.stage.drupal.uiowa.edu'] = 'cuhal.lab.uiowa.edu';
 $sites['labcuhal.prod.drupal.uiowa.edu'] = 'cuhal.lab.uiowa.edu';
+
+// Directory aliases for scholardev.sites.uiowa.edu.
+$sites['sitesscholardev.local.drupal.uiowa.edu'] = 'scholardev.sites.uiowa.edu';
+$sites['sitesscholardev.dev.drupal.uiowa.edu'] = 'scholardev.sites.uiowa.edu';
+$sites['sitesscholardev.stage.drupal.uiowa.edu'] = 'scholardev.sites.uiowa.edu';
+$sites['sitesscholardev.prod.drupal.uiowa.edu'] = 'scholardev.sites.uiowa.edu';
