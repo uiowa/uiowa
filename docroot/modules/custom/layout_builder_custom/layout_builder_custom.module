@@ -257,7 +257,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
 
           // Move view mode to the block form.
           $form["settings"]["block_form"]["view_mode"] = $form['settings']['view_mode'];
-          unset($form['settings']['view_mode']);
+          $form['settings']['view_mode']['#access'] = FALSE;
           break;
 
         case 'menu_block:main':
@@ -404,6 +404,20 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
           //   know the image size was changed?
         }
       }
+      break;
+
+    case 'inline_block:uiowa_collection':
+      // Move the view mode value back out of the block form.
+      $view_mode = $form_state->getValue(
+        ['settings',
+          'block_form',
+          'view_mode']
+      );
+      $form_state->setValue(
+        ['settings',
+          'view_mode'],
+        $view_mode
+      );
       break;
   }
 
