@@ -26,9 +26,8 @@
 */
 #}
 {% set id = "accordion-" ~ id %}
-{% set multiselect = (content.field_accordion_type.0['#markup'] == 'multi_select') ? 'true' : 'false' %}
 <div class="collection--accordion">
   <div class="accordion" role="tablist" aria-multiselectable="{{ multiselect }}" id="{{ id }}">
-    {{ content|without('field_accordion_type') }}
+    {{ content }}
   </div>
 </div>
