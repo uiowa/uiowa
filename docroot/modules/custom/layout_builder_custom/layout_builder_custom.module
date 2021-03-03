@@ -254,6 +254,10 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           if (!in_array($form['settings']['view_mode']['#default_value'], $view_options)) {
             $form['settings']['view_mode']['#default_value'] = 'descriptive_list';
           }
+
+          // Move view mode to the block form.
+          $form["settings"]["block_form"]["view_mode"] = $form['settings']['view_mode'];
+          unset($form['settings']['view_mode']);
           break;
 
         case 'menu_block:main':
@@ -559,11 +563,15 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
       // has been selected.
       $element['field_accordion_type']['widget']['#states'] = [
         'visible' => [
-          ':input[name="settings[view_mode]"]' => [
+          ':input[name="settings[block_form][view_mode]"]' => [
             'value' => 'accordion',
           ],
         ],
       ];
+
+      $element["view_mode"]["#weight"] = 2;
+      $element["field_accordion_type"]["#weight"] = 3;
+      $element["field_uiowa_collection_items"]["#weight"] = 4;
       break;
 
     case 'inline_block:uiowa_cta':
