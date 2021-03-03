@@ -13,7 +13,6 @@ module:
   weight: 0
 theme: {  }
 blacklist:
-  - block.block.printlinks
   - core.entity_view_display.node.area_of_study.pdf
   - core.entity_view_mode.node.pdf
 graylist:
@@ -31,6 +30,7 @@ graylist:
   - core.entity_view_mode.media.grid_gallery
   - field.field.node.area_of_study.body
   - field.field.node.area_of_study.field_area_of_study_career
+  - field.field.node.area_of_study.field_area_of_study_college
   - field.field.node.area_of_study.field_area_of_study_competitive
   - field.field.node.area_of_study.field_area_of_study_comp_txt
   - field.field.node.area_of_study.field_area_of_study_course_work
@@ -39,17 +39,21 @@ graylist:
   - field.field.node.area_of_study.field_area_of_study_four_year
   - field.field.node.area_of_study.field_area_of_study_intl
   - field.field.node.area_of_study.field_area_of_study_link
+  - field.field.node.area_of_study.field_area_of_study_mail_code
   - field.field.node.area_of_study.field_area_of_study_opportunity
   - field.field.node.area_of_study.field_area_of_study_requirement
   - field.field.node.area_of_study.field_area_of_study_scholarship
   - field.field.node.area_of_study.field_area_of_study_selective
   - field.field.node.area_of_study.field_area_of_study_select_txt
   - field.field.node.area_of_study.field_area_of_study_stories
+  - field.field.node.area_of_study.field_area_of_study_subprogram
   - field.field.node.area_of_study.field_area_of_study_subtitle
+  - field.field.node.area_of_study.field_area_of_study_sub_type
   - field.field.node.area_of_study.field_area_of_study_teaching
   - field.field.node.area_of_study.field_area_of_study_teaching_txt
   - field.field.node.area_of_study.field_area_of_study_transfer
   - field.field.node.area_of_study.field_area_of_study_why
+  - field.field.node.area_of_study.field_image
   - field.field.node.person.field_person_hometown
   - field.field.node.person.field_person_territory
   - field.field.node.scholarship.field_scholarship_resident
@@ -78,6 +82,7 @@ graylist:
   - field.field.paragraph.admissions_requirement.field_ar_process
   - field.field.paragraph.admissions_requirement.field_ar_requirement
   - field.storage.node.field_area_of_study_career
+  - field.storage.node.field_area_of_study_college
   - field.storage.node.field_area_of_study_competitive
   - field.storage.node.field_area_of_study_comp_txt
   - field.storage.node.field_area_of_study_course_work
@@ -87,17 +92,21 @@ graylist:
   - field.storage.node.field_area_of_study_honors
   - field.storage.node.field_area_of_study_intl
   - field.storage.node.field_area_of_study_link
+  - field.storage.node.field_area_of_study_mail_code
   - field.storage.node.field_area_of_study_opportunity
   - field.storage.node.field_area_of_study_requirement
   - field.storage.node.field_area_of_study_scholarship
   - field.storage.node.field_area_of_study_selective
   - field.storage.node.field_area_of_study_select_txt
   - field.storage.node.field_area_of_study_stories
+  - field.storage.node.field_area_of_study_subprogram
   - field.storage.node.field_area_of_study_subtitle
+  - field.storage.node.field_area_of_study_sub_type
   - field.storage.node.field_area_of_study_teaching
   - field.storage.node.field_area_of_study_teaching_txt
   - field.storage.node.field_area_of_study_transfer
   - field.storage.node.field_area_of_study_why
+  - field.storage.node.field_image
   - field.storage.node.field_person_first_name
   - field.storage.node.field_person_hometown
   - field.storage.node.field_person_last_name
@@ -133,6 +142,7 @@ graylist:
   - sitenow_people.person_type.counselor
   - sitenow_people.person_type.student
   - views.view.areas_of_study_block
+  - views.view.area_of_study_college_block
   - views.view.counselors
   - views.view.person_card
   - views.view.scholarships
@@ -149,6 +159,7 @@ graylist:
   - 'user.role.*'
   - fragment.fragment_type.stat
   - 'field.storage.fragment.field_stat_*'
+  - 'core.entity_view_display.media.image.*'
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 90

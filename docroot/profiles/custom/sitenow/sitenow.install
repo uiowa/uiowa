@@ -7,6 +7,7 @@
  */
 
 use Drupal\block\Entity\Block;
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Config\FileStorage;
 use Drupal\node\Entity\Node;
 use Drupal\taxonomy\Entity\Term;
@@ -1930,4 +1931,231 @@ function sitenow_update_8049() {
   $source = new FileStorage($config_path);
   $config_storage = \Drupal::service('config.storage');
   $config_storage->write('config_ignore.settings', $source->read('config_ignore.settings'));
+}
+
+/**
+ * Update instances of <drupal-entity> to <drupal-media> in textareas.
+ */
+function sitenow_update_8050() {
+  /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
+  $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
+  $sitenow_v2_split = 'config_split:sitenow_v2';
+
+  // This site has the 'sitenow_v2' split in config.
+  if (isset($filters[$sitenow_v2_split])) {
+    $entity_types = [
+      'block_content',
+      'media',
+      'node',
+      'paragraph',
+    ];
+
+    foreach ($entity_types as $entity_type) {
+      $bundles = \Drupal::service('entity_type.bundle.info')
+        ->getBundleInfo($entity_type);
+
+      // @todo Handle case where no bundles exist?
+      foreach ($bundles as $bundle => $bundle_label) {
+        /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $entityFieldManager */
+        $entityFieldManager = \Drupal::service('entity_field.manager');
+        $fields = $entityFieldManager->getFieldDefinitions($entity_type, $bundle);
+        $field_check = [];
+        /**
+         * @var string $field_name
+         * @var \Drupal\field\Entity\FieldConfig $definition
+         */
+        foreach ($fields as $field_name => $definition) {
+          if (in_array($definition->getType(), [
+            'text_long',
+            'text_with_summary',
+          ])) {
+            $field_check[$field_name] = $definition;
+          }
+        }
+
+        // Only need to run the following if we found fields to check against.
+        if (!empty($field_check)) {
+
+          // Retrieve all entities of this bundle type;.
+          // Media is listed as 'bundle,' but other entity types
+          // are listed as 'type'.
+          $type = $entity_type == 'media' ? 'bundle' : 'type';
+          $entities = \Drupal::entityTypeManager()->getStorage($entity_type)
+            ->loadByProperties([$type => $bundle]);
+
+          // Loop through the loaded entities.
+          foreach ($entities as $entity) {
+            $needs_save = FALSE;
+
+            // Loop through the fields we defined before.
+            foreach ($field_check as $name => $definition) {
+              // If the field has a value (or values).
+              if (!$entity->get($name)->isEmpty()) {
+                $updated_values = [];
+                $field_values = $entity->{$name}->getValue();
+
+                foreach ($field_values as $field_value) {
+
+                  $document = Html::load($field_value['value']);
+
+                  // Get all <drupal-entity> instances.
+                  $de_instances = $document->getElementsByTagName('drupal-entity');
+
+                  // DE Example: <drupal-entity data-align="center" data-embed-button="media_entity_embed" data-entity-embed-display="view_mode:media.full" data-entity-embed-display-settings="" data-entity-type="media" data-entity-uuid="463f699b-e367-48b1-9a30-5df1fbe88762"></drupal-entity>.
+                  // DM Example: <drupal-media data-align="center" data-entity-type="media" data-entity-uuid="10e236e2-b20c-4b6c-9c60-f5f1ad1e316d" data-view-mode="large__no_crop"></drupal-media>.
+                  // As we replace the inline images, they are actually
+                  // removed in the DOMNodeList $images, so we have to
+                  // use a regressive loop to count through them.
+                  // See https://www.php.net/manual/en/domnode.replacechild.php#50500.
+                  $i = $de_instances->length - 1;
+
+                  while ($i >= 0) {
+                    // The current inline image element.
+                    $de_instance = $de_instances->item($i);
+                    $dm_instance = $document->createElement('drupal-media');
+
+                    // Loop through attributes that are the same for both formats.
+                    foreach ([
+                      'data-align',
+                      'data-entity-type',
+                      'data-entity-uuid',
+                    ] as $attr_name) {
+                      $attribute = $de_instance->getAttribute($attr_name);
+
+                      // Set the attribute on the new instance if it has a value set.
+                      if (!empty($attribute)) {
+                        $dm_instance->setAttribute($attr_name, $attribute);
+                      }
+                    }
+
+                    $old_view_mode = $de_instance->getAttribute('data-entity-embed-display');
+                    if (!empty($old_view_mode)) {
+                      // @todo Parse out the view mode from the existing embed attribute.
+                      $old_view_mode = str_replace('view_mode:media.', '', $old_view_mode);
+                      $old_view_mode = str_replace('image_', '', $old_view_mode);
+                      $dm_instance->setAttribute('data-view-mode', $old_view_mode);
+                    }
+
+                    $de_instance->parentNode->replaceChild($dm_instance, $de_instance);
+
+                    $i--;
+                  }
+
+                  $updated_values[] = [
+                    'value' => Html::serialize($document),
+                    'format' => $field_value['format'],
+                  ];
+                }
+
+                // Only make updates if there are updated values.
+                if (!empty($updated_values)) {
+                  if (count($updated_values) === 1) {
+                    $updated_values = $updated_values[0];
+                  }
+
+                  $entity->{$name} = $updated_values;
+                  $needs_save = TRUE;
+                }
+              }
+            }
+            if ($needs_save) {
+              $entity->save();
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Convert coronavirus.uiowa.edu to V3.
+ */
+function sitenow_update_8051() {
+  $site_path = \Drupal::service('site.path');
+  if ($site_path == 'sites/coronavirus.uiowa.edu') {
+    // Disable splits.
+    $config_factory = \Drupal::configFactory();
+    $sitenow_v2 = $config_factory->getEditable('config_split.config_split.sitenow_v2');
+    $sitenow_v2->set('status', FALSE);
+    $sitenow_v2->save(TRUE);
+
+    $coronavirus = $config_factory->getEditable('config_split.config_split.coronavirus_uiowa_edu');
+    $coronavirus->set('status', FALSE);
+    $coronavirus->save(TRUE);
+  }
+}
+
+/**
+ * Set list grid defaults for existing list blocks.
+ */
+function sitenow_update_9001() {
+  $block_types = [
+    'uiowa_aggregator',
+    'uiowa_events',
+    'uiowa_articles',
+    'uiowa_people',
+  ];
+  foreach ($block_types as $block_type) {
+    // Find NIDs for all nodes with at least one aggregator block.
+    $query = \Drupal::entityQuery('node')
+      ->condition('type', 'page')
+      ->condition('layout_builder__layout', '%' . $block_type . '%', 'LIKE');
+
+    $results = $query->execute();
+
+    foreach ($results as $nid) {
+      $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+      $layout = $node->get('layout_builder__layout');
+
+      // Grab the sections. We'll set updated ones back in below.
+      $layout_sections = $layout->getSections();
+
+      /**
+       * @var integer $delta_s
+       * @var \Drupal\layout_builder\Section $section
+       */
+      foreach ($layout_sections as $delta_s => $section) {
+        $section_is_updated = FALSE;
+
+        // insertComponent() uses delta and region
+        // which makes it more difficult to re-set components.
+        // With an array and iterator we can set it directly.
+        $section_arr = $section->toArray();
+        $i = 0;
+
+        /**
+         * @var \Drupal\layout_builder\SectionComponent $component
+         */
+        foreach ($section->getComponents() as $component) {
+          if ($component->getPluginId() === 'inline_block:' . $block_type) {
+            $styles = $component->get('layout_builder_styles_style');
+            $styles[] = 'list_format_list';
+            $styles[] = 'block_grid_threecol_33_34_33';
+            $component->set('layout_builder_styles_style', $styles);
+            $section_arr['components'][$i] = $component->toArray();
+            $section_is_updated = TRUE;
+          }
+          $i++;
+        }
+
+        if ($section_is_updated) {
+          // Create a section from array, set, and save.
+          $layout_sections[$delta_s] = Section::fromArray($section_arr);
+          $node->set('layout_builder__layout', $layout_sections)
+            ->save();
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Set new font-family theme setting.
+ */
+function sitenow_update_9002() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uids_base.settings');
+  $config->set('fonts.font-family', 'sans-serif');
+  $config->save();
 }

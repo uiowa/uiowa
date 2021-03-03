@@ -361,6 +361,12 @@
     }
   }
 
+  &.hide-images .uiowa-events {
+    .card__body {
+      padding: 0;
+    }
+  }
+
   .card {
     @include breakpoint(sm) {
       margin-bottom: $mobile-width-gutter;
@@ -495,6 +501,12 @@
       column-count: 3;
       column-gap: 1.25rem;
       orphans: 1;
+    }
+  }
+
+  &.hide-images .uiowa-events {
+    .card__body {
+      padding: 0;
     }
   }
 

@@ -54,6 +54,12 @@ function uids_base_preprocess_html(&$variables) {
   // Set a variable for whether layout builder is enabled.
   $variables['layout_builder_enabled'] = FALSE;
 
+  // Only set 'text--serif' if 'fonts.font-family' setting is set to serif.
+  if (theme_get_setting('fonts.font-family') === 'serif') {
+    $variables['attributes']['class'][] = 'text--serif';
+    $variables['#attached']['library'][] = 'uids_base/global-serif';
+  }
+
   $node = \Drupal::routeMatch()->getParameter('node');
 
   if ($node instanceof NodeInterface) {
@@ -470,6 +476,16 @@ function uids_base_preprocess_block(&$variables) {
     }
   }
 
+  // If inner list, remove any inner grid classes.
+  if (isset($variables["attributes"]["class"]) && in_array('inner--list', $variables["attributes"]["class"])) {
+    foreach ($variables["attributes"]["class"] as $key => $style) {
+      if (substr($style, 0, strlen('inner--grid')) === 'inner--grid') {
+        unset($variables["attributes"]["class"][$key]);
+      }
+    }
+  }
+
+  // @todo Combine this section with the section before it.
   if (in_array($variables['base_plugin_id'], [
     'system_menu_block',
     'menu_block',
@@ -520,7 +536,7 @@ function uids_base_preprocess_block(&$variables) {
     $block = $variables['elements']['content']['#block_content'];
 
     // Remove headline classes from attributes.
-    $variables['headline_classes'] = array_filter($variables['elements']['#layout_builder_style'], function ($v) {
+    $variables['headline_classes'] = array_filter($variables['elements']['#attributes']['class'], function ($v) {
       return substr($v, 0, 13) === 'bold-headline';
     });
 
@@ -546,8 +562,8 @@ function uids_base_preprocess_block(&$variables) {
   }
 
   // Check if the hover effect should be applied on the stat block.
-  if ($variables['derivative_plugin_id'] == 'uiowa_statistic' && isset($variables['elements']['#layout_builder_style'])) {
-    $variables['has_hover_effect'] = !in_array('stat--static', $variables['elements']['#layout_builder_style']);
+  if ($variables['derivative_plugin_id'] == 'uiowa_statistic' && isset($variables['elements']['#attributes']['class'])) {
+    $variables['has_hover_effect'] = !in_array('stat--static', $variables['elements']['#attributes']['class']);
   }
 
 }
@@ -839,6 +855,13 @@ function uids_base_preprocess_form(&$variables) {
 function uids_base_preprocess_input(&$variables) {
   if (isset($variables['element']['#name']) && $variables['element']['#name'] === 'search-terms') {
     $variables['attributes']['class'] = [];
+  }
+
+  // Set the placeholder attribute for date inputs. The required format is
+  // always YYYY-MM-DD. This helps people input the date as a string for
+  // browsers that do not support the HTML date element.
+  if (isset($variables['element']['#type']) && $variables['element']['#type'] === 'date') {
+    $variables['attributes']['placeholder'] = 'YYYY-MM-DD';
   }
 }
 

@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.area_of_study.body
     - field.field.node.area_of_study.field_area_of_study_career
     - field.field.node.area_of_study.field_area_of_study_certificates
+    - field.field.node.area_of_study.field_area_of_study_college
     - field.field.node.area_of_study.field_area_of_study_comp_txt
     - field.field.node.area_of_study.field_area_of_study_competitive
     - field.field.node.area_of_study.field_area_of_study_course_work
@@ -16,6 +17,7 @@ dependencies:
     - field.field.node.area_of_study.field_area_of_study_honors
     - field.field.node.area_of_study.field_area_of_study_intl
     - field.field.node.area_of_study.field_area_of_study_link
+    - field.field.node.area_of_study.field_area_of_study_mail_code
     - field.field.node.area_of_study.field_area_of_study_majors
     - field.field.node.area_of_study.field_area_of_study_minors
     - field.field.node.area_of_study.field_area_of_study_online
@@ -27,6 +29,8 @@ dependencies:
     - field.field.node.area_of_study.field_area_of_study_selective
     - field.field.node.area_of_study.field_area_of_study_stat
     - field.field.node.area_of_study.field_area_of_study_stories
+    - field.field.node.area_of_study.field_area_of_study_sub_type
+    - field.field.node.area_of_study.field_area_of_study_subprogram
     - field.field.node.area_of_study.field_area_of_study_subtitle
     - field.field.node.area_of_study.field_area_of_study_teaching
     - field.field.node.area_of_study.field_area_of_study_teaching_txt
@@ -38,7 +42,7 @@ dependencies:
     - entity_reference_revisions
     - layout_builder
     - layout_builder_restrictions
-    - link
+    - options
     - text
     - user
 third_party_settings:
@@ -107,12 +111,12 @@ bundle: area_of_study
 mode: pdf
 content:
   body:
-    label: hidden
     type: text_default
-    weight: 1
+    weight: 0
+    region: content
+    label: above
     settings: {  }
     third_party_settings: {  }
-    region: content
   field_area_of_study_career:
     weight: 10
     label: above
@@ -121,35 +125,6 @@ content:
     type: text_default
     region: content
   field_area_of_study_certificates:
-    weight: 4
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
-  field_area_of_study_link:
-    weight: 12
-    label: above
-    settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
-    type: link
-    region: content
-  field_area_of_study_majors:
-    type: entity_reference_revisions_entity_view
-    weight: 2
-    label: above
-    settings:
-      view_mode: default
-      link: ''
-    third_party_settings: {  }
-    region: content
-  field_area_of_study_minors:
     weight: 3
     label: above
     settings:
@@ -157,8 +132,78 @@ content:
     third_party_settings: {  }
     type: string
     region: content
+  field_area_of_study_comp_txt:
+    type: string
+    weight: 15
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_area_of_study_competitive:
+    type: list_default
+    weight: 14
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_area_of_study_course_work:
+    type: text_default
+    weight: 7
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_area_of_study_first_year:
+    type: entity_reference_revisions_entity_view
+    weight: 18
+    region: content
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+  field_area_of_study_four_txt:
+    type: string
+    weight: 21
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_area_of_study_four_year:
+    type: list_default
+    weight: 20
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_area_of_study_honors:
+    type: list_default
+    weight: 19
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_area_of_study_majors:
+    type: entity_reference_revisions_entity_view
+    weight: 1
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
+  field_area_of_study_minors:
+    weight: 2
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
   field_area_of_study_online:
-    weight: 6
+    weight: 5
     label: above
     settings:
       link_to_entity: false
@@ -173,7 +218,7 @@ content:
     type: text_default
     region: content
   field_area_of_study_preprof:
-    weight: 5
+    weight: 4
     label: above
     settings:
       link_to_entity: false
@@ -187,44 +232,91 @@ content:
     third_party_settings: {  }
     type: text_default
     region: content
-  field_area_of_study_subtitle:
-    weight: 7
-    label: above
-    settings: {  }
-    third_party_settings: {  }
+  field_area_of_study_scholarship:
     type: text_default
-    region: content
-  field_area_of_study_why:
     weight: 8
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_area_of_study_select_txt:
+    type: string
+    weight: 16
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_area_of_study_selective:
+    type: list_default
+    weight: 17
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_area_of_study_sub_type:
+    type: list_default
+    weight: 25
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_area_of_study_subprogram:
+    type: string
+    weight: 24
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_area_of_study_subtitle:
+    type: text_default
+    weight: 22
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_area_of_study_teaching:
+    type: list_default
+    weight: 12
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_area_of_study_teaching_txt:
+    type: string
+    weight: 13
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_area_of_study_why:
+    weight: 6
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
-  links:
-    weight: 0
+  field_image:
+    type: entity_reference_entity_view
+    weight: 23
     region: content
-    settings: {  }
+    label: hidden
+    settings:
+      view_mode: small__widescreen
+      link: false
     third_party_settings: {  }
 hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
-  field_area_of_study_comp_txt: true
-  field_area_of_study_competitive: true
-  field_area_of_study_course_work: true
-  field_area_of_study_first_year: true
-  field_area_of_study_four_txt: true
-  field_area_of_study_four_year: true
-  field_area_of_study_honors: true
+  field_area_of_study_college: true
   field_area_of_study_intl: true
-  field_area_of_study_scholarship: true
-  field_area_of_study_select_txt: true
-  field_area_of_study_selective: true
+  field_area_of_study_link: true
+  field_area_of_study_mail_code: true
   field_area_of_study_stat: true
   field_area_of_study_stories: true
-  field_area_of_study_teaching: true
-  field_area_of_study_teaching_txt: true
   field_area_of_study_transfer: true
-  field_image: true
+  links: true
   search_api_excerpt: true
