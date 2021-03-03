@@ -411,11 +411,13 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
       $view_mode = $form_state->getValue(
         ['settings',
           'block_form',
-          'view_mode']
+          'view_mode'
+        ]
       );
       $form_state->setValue(
         ['settings',
-          'view_mode'],
+          'view_mode'
+        ],
         $view_mode
       );
       break;
