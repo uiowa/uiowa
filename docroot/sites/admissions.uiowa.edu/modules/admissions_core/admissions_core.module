@@ -6,13 +6,15 @@
  */
 
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
+use Drupal\Core\Template\Attribute;
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\views\ViewExecutable;
-use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\Core\Entity\ContentEntityInterface;
 
 /**
  * Implements hook_entity_presave().
@@ -147,6 +149,39 @@ function admissions_core_preprocess_entity_print(&$variables) {
  */
 function admissions_core_preprocess_field(&$variables) {
   switch ($variables["element"]["#field_name"]) {
+    case 'field_area_of_study_subprogram':
+      $node = $variables["element"]["#object"];
+      // If Subprogram Type is selected, use as label.
+      if (!$node->get('field_area_of_study_sub_type')->isEmpty()) {
+        $field_name = 'field_area_of_study_sub_type';
+        $field_definition = $node->getFieldDefinition($field_name)->getFieldStorageDefinition();
+        $field_allowed_options = options_allowed_values($field_definition, $node);
+        $field_value_label = $field_allowed_options[$node->{$field_name}->value];
+        $variables['label'] = $field_value_label;
+      }
+      break;
+
+    case 'field_area_of_study_link':
+      $node = $variables["element"]["#object"];
+      // Add field_area_of_study_college to the end of field_area_of_study_link.
+      if ($node->hasField('field_area_of_study_college') && !$node->get('field_area_of_study_college')->isEmpty()) {
+        $existing_links = [];
+        foreach (Element::children($variables['items']) as $delta) {
+          $existing_links[$delta] = $variables['items'][$delta];
+          unset($variables['items'][$delta]);
+        }
+        $colleges = $node->field_area_of_study_college->view();
+        $college_count = count(Element::children($colleges));
+        foreach (Element::children($colleges) as $college_delta) {
+          $variables['items'][$college_delta]['content'] = $colleges[$college_delta];
+          $variables['items'][$college_delta]['attributes'] = !empty($colleges['#items'][$college_delta]->_attributes) ? new Attribute($colleges['#items'][$college_delta]->_attributes) : new Attribute();
+        }
+        foreach ($existing_links as $delta => $link) {
+          $variables['items'][$delta + $college_count] = $link;
+        }
+      }
+      break;
+
     case 'field_area_of_study_why':
       $variables["label"] = t('Why Iowa?');
       break;
@@ -264,6 +299,10 @@ function admissions_core_preprocess_layout(&$variables) {
  */
 function admissions_core_theme($existing, $type, $theme, $path) {
   return [
+    'block__views_block__areas_of_study_block_block_information' => [
+      'template' => 'block--views-block--areas-of-study-block-block-information',
+      'base hook' => 'block',
+    ],
     'node__scholarship__teaser' => [
       'template' => 'node--scholarship--teaser',
       'base hook' => 'node',
@@ -434,6 +473,21 @@ function admissions_core_state_options(FieldStorageConfig $definition, ContentEn
     'WI' => 'Wisconsin',
     'WY' => 'Wyoming',
     'DC' => 'District of Columbia',
+  ];
+  return $options;
+}
+
+/**
+ * Added allowed values function for AoS Subprogram type.
+ */
+function admissions_core_subprogram_type_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  $options = [
+    'areas_of_emphasis' => 'Areas of Emphasis',
+    'areas_of_specialization' => 'Areas of Specialization',
+    'focus_areas' => 'Focus Areas',
+    'interest_areas' => 'Interest Areas',
+    'tracks' => 'Tracks',
+    'concentrations' => 'Concentrations',
   ];
   return $options;
 }

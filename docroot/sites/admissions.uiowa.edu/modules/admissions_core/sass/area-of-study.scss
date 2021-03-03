@@ -14,6 +14,13 @@
       margin-right: $md;
     }
   }
+  .field--name-field-area-of-study-link {
+    .field__items div {
+      font-size: 1.2rem;
+      line-height: 1.7;
+      margin-top: 0;
+    }
+  }
   .block-field-blocknodearea-of-studyfield-area-of-study-first-year,
   .block-field-blocknodearea-of-studyfield-area-of-study-transfer,
   .block-field-blocknodearea-of-studyfield-area-of-study-intl,
@@ -26,6 +33,18 @@
     padding-left: 0;
     text-align: left;
   }
+  .views-field-field-area-of-study-teaching,
+  .views-field-field-area-of-study-honors,
+  .views-field-field-area-of-study-competitive,
+  .views-field-field-area-of-study-four-year,
+  .views-field-field-area-of-study-selective {
+    margin-top: $sm;
+    .field__label {
+      margin-bottom: 0;
+    }
+  }
+
+
   // @todo remove after https://github.com/uiowa/uiowa/issues/2706 is fixed.
   .views-element-container {
     margin-top: 0;
@@ -37,9 +56,10 @@
     text-transform: uppercase;
   }
   .paragraph--type--degree {
-    display: flex;
+    .field__item {
+      display: inline;
+    }
     .field--name-field-degree-abbreviation.field--label-hidden.field__item{
-      margin: 0 $xsm;
       &:before {
         content: "(";
       }

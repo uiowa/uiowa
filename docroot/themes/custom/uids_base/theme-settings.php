@@ -100,6 +100,37 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     '#default_value' => ($top_links_limit ? $top_links_limit : 2),
   ];
 
+  // These fields are only available to writing university for now.
+  $form['fonts'] = [
+    '#type' => 'details',
+    '#title' => t('Theme settings'),
+    '#description' => t('Configure various theme settings for the uids_base theme.'),
+    '#weight' => -1000,
+    '#open' => TRUE,
+    '#tree' => TRUE,
+  ];
+
+  $form['fonts']['font-family'] = [
+    '#type' => 'select',
+    '#title' => t('Font family'),
+    '#description' => t('This option changes the font family for most text areas that are not part of a styled block component or element'),
+    '#options' => [
+      'sans-serif' => t('Sans serif (Roboto)'),
+      'serif' => t('Serif (Zilla Slab)'),
+    ],
+    '#default_value' => theme_get_setting('fonts.font-family'),
+  ];
+
+  // Only allow access to these sites.
+  $form['fonts']['#access'] = FALSE;
+  $site_path = \Drupal::service('site.path');
+  if (
+    $site_path == 'sites/writinguniversity.org' ||
+    $site_path == 'sites/sandbox.uiowa.edu'
+  ) {
+    $form['fonts']['#access'] = TRUE;
+  }
+
   $form['theme_settings']['#open'] = FALSE;
   $form['favicon']['#open'] = TRUE;
 
