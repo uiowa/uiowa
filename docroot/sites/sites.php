@@ -2297,3 +2297,9 @@ $sites['cs.local.drupal.uiowa.edu'] = 'cs.uiowa.edu';
 $sites['cs.dev.drupal.uiowa.edu'] = 'cs.uiowa.edu';
 $sites['cs.stage.drupal.uiowa.edu'] = 'cs.uiowa.edu';
 $sites['cs.prod.drupal.uiowa.edu'] = 'cs.uiowa.edu';
+
+// Directory aliases for physics.uiowa.edu.
+$sites['physics.local.drupal.uiowa.edu'] = 'physics.uiowa.edu';
+$sites['physics.dev.drupal.uiowa.edu'] = 'physics.uiowa.edu';
+$sites['physics.stage.drupal.uiowa.edu'] = 'physics.uiowa.edu';
+$sites['physics.prod.drupal.uiowa.edu'] = 'physics.uiowa.edu';
