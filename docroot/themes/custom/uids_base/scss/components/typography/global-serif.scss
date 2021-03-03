@@ -1,0 +1,30 @@
+@import "../../../uids/assets/scss/_variables.scss";
+
+body.text--serif {
+  $text--serif: $font-family-serif;
+
+  .field--name-body,
+  .block-inline-blockuiowa-text-area,
+  .field--name-field-person-bio,
+  .event-description,
+  // This is the rule for styles that will be put in to the WYSIWYG.
+  // Set in `docroot/modules/custom/sitenow_media_wysiwyg/js/ckeditor_config.js`.
+  &.cke_contents_ltr {
+    p,
+    li {
+      &:not(.uids-component--bold-intro):not(.element--bold-intro):not(.uids-component--light-intro):not(.element--light-intro):not(.element--light-intro-serif) {
+        font-family: $text--serif, serif;
+        font-size: calc(#{$content-font-size} + 1px);
+      }
+    }
+
+    .lead {
+      &:not(.uids-component--bold-intro):not(.element--bold-intro):not(.uids-component--light-intro):not(.element--light-intro):not(.element--light-intro-serif) {
+        font-family: $text--serif, serif;
+        font-size: 1.6rem;
+      }
+    }
+  }
+}
+
+

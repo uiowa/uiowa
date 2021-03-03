@@ -2279,3 +2279,15 @@ $sites['orgquenchiowa.local.drupal.uiowa.edu'] = 'quenchiowa.org.uiowa.edu';
 $sites['orgquenchiowa.dev.drupal.uiowa.edu'] = 'quenchiowa.org.uiowa.edu';
 $sites['orgquenchiowa.stage.drupal.uiowa.edu'] = 'quenchiowa.org.uiowa.edu';
 $sites['orgquenchiowa.prod.drupal.uiowa.edu'] = 'quenchiowa.org.uiowa.edu';
+
+// Directory aliases for salondeclase.sites.uiowa.edu.
+$sites['sitessalondeclase.local.drupal.uiowa.edu'] = 'salondeclase.sites.uiowa.edu';
+$sites['sitessalondeclase.dev.drupal.uiowa.edu'] = 'salondeclase.sites.uiowa.edu';
+$sites['sitessalondeclase.stage.drupal.uiowa.edu'] = 'salondeclase.sites.uiowa.edu';
+$sites['sitessalondeclase.prod.drupal.uiowa.edu'] = 'salondeclase.sites.uiowa.edu';
+
+// Directory aliases for cuhal.lab.uiowa.edu.
+$sites['labcuhal.local.drupal.uiowa.edu'] = 'cuhal.lab.uiowa.edu';
+$sites['labcuhal.dev.drupal.uiowa.edu'] = 'cuhal.lab.uiowa.edu';
+$sites['labcuhal.stage.drupal.uiowa.edu'] = 'cuhal.lab.uiowa.edu';
+$sites['labcuhal.prod.drupal.uiowa.edu'] = 'cuhal.lab.uiowa.edu';

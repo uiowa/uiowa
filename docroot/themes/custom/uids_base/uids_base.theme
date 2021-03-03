@@ -54,6 +54,12 @@ function uids_base_preprocess_html(&$variables) {
   // Set a variable for whether layout builder is enabled.
   $variables['layout_builder_enabled'] = FALSE;
 
+  // Only set 'text--serif' if 'fonts.font-family' setting is set to serif.
+  if (theme_get_setting('fonts.font-family') === 'serif') {
+    $variables['attributes']['class'][] = 'text--serif';
+    $variables['#attached']['library'][] = 'uids_base/global-serif';
+  }
+
   $node = \Drupal::routeMatch()->getParameter('node');
 
   if ($node instanceof NodeInterface) {
@@ -887,6 +893,13 @@ function uids_base_preprocess_form(&$variables) {
 function uids_base_preprocess_input(&$variables) {
   if (isset($variables['element']['#name']) && $variables['element']['#name'] === 'search-terms') {
     $variables['attributes']['class'] = [];
+  }
+
+  // Set the placeholder attribute for date inputs. The required format is
+  // always YYYY-MM-DD. This helps people input the date as a string for
+  // browsers that do not support the HTML date element.
+  if (isset($variables['element']['#type']) && $variables['element']['#type'] === 'date') {
+    $variables['attributes']['placeholder'] = 'YYYY-MM-DD';
   }
 }
 

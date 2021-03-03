@@ -2150,10 +2150,20 @@ function sitenow_update_9001() {
   }
 }
 
-/**
- * Set new style defaults for existing article blocks.
+/** 
+ * Set new font-family theme setting.
  */
 function sitenow_update_9002() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uids_base.settings');
+  $config->set('fonts.font-family', 'sans-serif');
+  $config->save();
+}
+
+/** 
+ * Set new style defaults for existing article blocks.
+ */
+function sitenow_update_9003() {
   // Find NIDs for all nodes with at least one article block.
   $query = \Drupal::entityQuery('node')
     ->condition('type', 'page')
@@ -2214,7 +2224,7 @@ function sitenow_update_9002() {
 /**
  * Set new style defaults for existing people blocks.
  */
-function sitenow_update_9003() {
+function sitenow_update_9004() {
   // Find NIDs for all nodes with at least one people block.
   $query = \Drupal::entityQuery('node')
     ->condition('type', 'page')
