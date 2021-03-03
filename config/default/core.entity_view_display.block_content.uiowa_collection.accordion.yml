@@ -12,6 +12,7 @@ dependencies:
     - entity_reference_revisions
     - layout_builder
     - layout_builder_custom
+    - options
 third_party_settings:
   layout_builder:
     allow_custom: false
@@ -21,6 +22,13 @@ targetEntityType: block_content
 bundle: uiowa_collection
 mode: accordion
 content:
+  field_accordion_type:
+    type: list_key
+    weight: 2
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
   field_uiowa_collection_items:
     type: entity_reference_revisions_entity_view
     weight: 1
@@ -38,5 +46,4 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
-  field_accordion_type: true
   search_api_excerpt: true
