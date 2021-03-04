@@ -220,7 +220,7 @@ function admissions_core_preprocess_paragraph__admissions_requirement(&$variable
                   // Get the first array item. We aren't going for perfection.
                   $transfer_tip = reset($nids);
                   // Get and pass the transfer tip path to the template if it exists.
-                  $variables['transfer_tip'] = \Drupal::service('path_alias.manager')->getAliasByPath('/node/'. $transfer_tip);
+                  $variables['transfer_tip'] = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $transfer_tip);
                 }
               }
             }
