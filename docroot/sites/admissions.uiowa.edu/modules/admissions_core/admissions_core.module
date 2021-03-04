@@ -26,6 +26,11 @@ function admissions_core_entity_presave(EntityInterface $entity) {
       $output = $entity->get('field_person_first_name')->value . " " . $entity->get('field_person_last_name')->value;
       $entity->setTitle($output);
       break;
+    case 'transfer_tips':
+        // Setting the transfer tips title with the aos field value + transfer tip verbiate.
+        $output = $entity->get('title')->value . " Transfer Tips";
+        $entity->setTitle($output);
+        break;
   }
 }
 
