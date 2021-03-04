@@ -6,13 +6,15 @@
  */
 
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
+use Drupal\Core\Template\Attribute;
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\views\ViewExecutable;
-use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\Core\Entity\ContentEntityInterface;
 
 /**
  * Implements hook_entity_presave().
@@ -155,7 +157,28 @@ function admissions_core_preprocess_field(&$variables) {
         $field_definition = $node->getFieldDefinition($field_name)->getFieldStorageDefinition();
         $field_allowed_options = options_allowed_values($field_definition, $node);
         $field_value_label = $field_allowed_options[$node->{$field_name}->value];
-        $variables["label"] = $field_value_label;
+        $variables['label'] = $field_value_label;
+      }
+      break;
+
+    case 'field_area_of_study_link':
+      $node = $variables["element"]["#object"];
+      // Add field_area_of_study_college to the end of field_area_of_study_link.
+      if ($node->hasField('field_area_of_study_college') && !$node->get('field_area_of_study_college')->isEmpty()) {
+        $existing_links = [];
+        foreach (Element::children($variables['items']) as $delta) {
+          $existing_links[$delta] = $variables['items'][$delta];
+          unset($variables['items'][$delta]);
+        }
+        $colleges = $node->field_area_of_study_college->view();
+        $college_count = count(Element::children($colleges));
+        foreach (Element::children($colleges) as $college_delta) {
+          $variables['items'][$college_delta]['content'] = $colleges[$college_delta];
+          $variables['items'][$college_delta]['attributes'] = !empty($colleges['#items'][$college_delta]->_attributes) ? new Attribute($colleges['#items'][$college_delta]->_attributes) : new Attribute();
+        }
+        foreach ($existing_links as $delta => $link) {
+          $variables['items'][$delta + $college_count] = $link;
+        }
       }
       break;
 
@@ -208,10 +231,19 @@ function admissions_core_preprocess_paragraph__admissions_requirement(&$variable
           foreach ($parent->get($requirement)->getValue() as $delta => $item) {
             if ($item['target_id'] === $id) {
               $variables['requirement_card_label'] = $label;
-              // Get and pass the transfer tip path to the template if it exists.
+              // Look up any published transfer tips with the AoS id.
               if ($requirement == 'field_area_of_study_transfer') {
-                if ($parent->hasField('field_area_of_study_transfer_tip') && !empty($parent->get('field_area_of_study_transfer_tip'))) {
-                  $transfer_tip = $parent->get('field_area_of_study_transfer_tip')->getValue();
+                $query = \Drupal::entityQuery('node')
+                  ->condition('status', 1)
+                  ->condition('type', 'transfer_tips')
+                  ->condition('field_transfer_tips_aos', $parent->id());
+                $nids = $query->execute();
+
+                if (!empty($nids)) {
+                  // Get the first array item. We aren't going for perfection.
+                  $transfer_tip = reset($nids);
+                  // Get and pass the transfer tip path to the template if it exists.
+                  $variables['transfer_tip'] = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $transfer_tip);
                 }
               }
             }
