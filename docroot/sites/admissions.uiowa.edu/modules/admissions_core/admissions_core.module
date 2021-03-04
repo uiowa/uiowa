@@ -27,8 +27,10 @@ function admissions_core_entity_presave(EntityInterface $entity) {
       $entity->setTitle($output);
       break;
     case 'transfer_tips':
+      // Assumes this stays a required field.
+      $area_of_study = $entity->field_transfer_tips_aos->entity->title->value;
         // Setting the transfer tips title with the aos field value + transfer tip verbiate.
-        $output = $entity->get('title')->value . " Transfer Tips";
+        $output = $area_of_study . " Transfer Tips";
         $entity->setTitle($output);
         break;
   }
