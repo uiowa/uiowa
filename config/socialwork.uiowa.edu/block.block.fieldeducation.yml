@@ -1,0 +1,31 @@
+uuid: 5210127b-030e-4592-86b6-c513d0fbb224
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.field-education
+  module:
+    - menu_block
+  theme:
+    - uids_base
+id: fieldeducation
+theme: uids_base
+region: secondary_menu
+weight: 0
+provider: null
+plugin: 'menu_block:field-education'
+settings:
+  id: 'menu_block:field-education'
+  label: 'Field Education'
+  provider: menu_block
+  label_display: visible
+  follow: false
+  follow_parent: child
+  level: 1
+  depth: 0
+  expand_all_items: false
+  parent: 'field-education:'
+  suggestion: field_education
+  label_type: block
+  label_link: false
+visibility: {  }
