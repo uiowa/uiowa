@@ -2321,3 +2321,9 @@ $sites['researchuirf.local.drupal.uiowa.edu'] = 'uirf.research.uiowa.edu';
 $sites['researchuirf.dev.drupal.uiowa.edu'] = 'uirf.research.uiowa.edu';
 $sites['researchuirf.stage.drupal.uiowa.edu'] = 'uirf.research.uiowa.edu';
 $sites['researchuirf.prod.drupal.uiowa.edu'] = 'uirf.research.uiowa.edu';
+
+// Directory aliases for vote.uiowa.edu.
+$sites['vote.local.drupal.uiowa.edu'] = 'vote.uiowa.edu';
+$sites['vote.dev.drupal.uiowa.edu'] = 'vote.uiowa.edu';
+$sites['vote.stage.drupal.uiowa.edu'] = 'vote.uiowa.edu';
+$sites['vote.prod.drupal.uiowa.edu'] = 'vote.uiowa.edu';
