@@ -590,7 +590,6 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
       $element["field_accordion_type"]["#weight"] = 3;
       $element["field_uiowa_collection_items"]["#weight"] = 4;
 
-      $element["field_accordion_type"]["widget"]["#default_value"] = isset($element["field_accordion_type"]["widget"]["#default_value"]) ? $element["field_accordion_type"]["widget"]["#default_value"] : 'multi_select';
       break;
 
     case 'inline_block:uiowa_cta':

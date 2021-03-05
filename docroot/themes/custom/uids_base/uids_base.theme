@@ -664,6 +664,8 @@ function uids_base_preprocess_paragraph(&$variables) {
       }
     }
   }
+  $accordion_item = \Drupal::entityTypeManager()->getStorage('paragraph')->load($id)->values["field_automatically_open"]["x-default"][0]["value"];
+  $bar = $accordion_item;
 }
 
 /**
