@@ -18,13 +18,17 @@ third_party_settings:
     enabled: true
     sections:
       -
-        layout_id: layout_onecol
+        layout_id: layout_twocol
         layout_settings:
           label: ''
+          column_widths: 67-33
+          layout_builder_styles_style:
+            - ''
+            - ''
         components:
           -
             uuid: 9660b11c-6bf4-4f05-8eae-c91b5cc481ab
-            region: content
+            region: first
             configuration:
               label_display: '0'
               context_mapping:
@@ -36,27 +40,10 @@ third_party_settings:
                 settings: {  }
                 third_party_settings: {  }
             additional: {  }
-            weight: 0
-          -
-            uuid: f5077e08-e535-4af5-9185-5a0f3494e03a
-            region: content
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:taxonomy_term:academic_groups:field_image'
-              formatter:
-                type: entity_reference_entity_view
-                label: above
-                settings:
-                  view_mode: default
-                  link: false
-                third_party_settings: {  }
-            additional: {  }
-            weight: 1
+            weight: 5
           -
             uuid: d96957ab-1a76-4bae-8af8-ac157dbfa85c
-            region: content
+            region: second
             configuration:
               label_display: '0'
               context_mapping:
@@ -70,7 +57,24 @@ third_party_settings:
                   link: false
                 third_party_settings: {  }
             additional: {  }
-            weight: 2
+            weight: 1
+          -
+            uuid: f5077e08-e535-4af5-9185-5a0f3494e03a
+            region: second
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:taxonomy_term:academic_groups:field_image'
+              formatter:
+                type: entity_reference_entity_view
+                label: above
+                settings:
+                  view_mode: default
+                  link: false
+                third_party_settings: {  }
+            additional: {  }
+            weight: 0
         third_party_settings: {  }
   layout_builder_restrictions:
     allowed_block_categories: {  }
