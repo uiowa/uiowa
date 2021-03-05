@@ -2327,3 +2327,9 @@ $sites['vote.local.drupal.uiowa.edu'] = 'vote.uiowa.edu';
 $sites['vote.dev.drupal.uiowa.edu'] = 'vote.uiowa.edu';
 $sites['vote.stage.drupal.uiowa.edu'] = 'vote.uiowa.edu';
 $sites['vote.prod.drupal.uiowa.edu'] = 'vote.uiowa.edu';
+
+// Directory aliases for inclusionteam.uiowa.edu.
+$sites['inclusionteam.local.drupal.uiowa.edu'] = 'inclusionteam.uiowa.edu';
+$sites['inclusionteam.dev.drupal.uiowa.edu'] = 'inclusionteam.uiowa.edu';
+$sites['inclusionteam.stage.drupal.uiowa.edu'] = 'inclusionteam.uiowa.edu';
+$sites['inclusionteam.prod.drupal.uiowa.edu'] = 'inclusionteam.uiowa.edu';
