@@ -2333,3 +2333,9 @@ $sites['inclusionteam.local.drupal.uiowa.edu'] = 'inclusionteam.uiowa.edu';
 $sites['inclusionteam.dev.drupal.uiowa.edu'] = 'inclusionteam.uiowa.edu';
 $sites['inclusionteam.stage.drupal.uiowa.edu'] = 'inclusionteam.uiowa.edu';
 $sites['inclusionteam.prod.drupal.uiowa.edu'] = 'inclusionteam.uiowa.edu';
+
+// Directory aliases for csw.uiowa.edu.
+$sites['csw.local.drupal.uiowa.edu'] = 'csw.uiowa.edu';
+$sites['csw.dev.drupal.uiowa.edu'] = 'csw.uiowa.edu';
+$sites['csw.stage.drupal.uiowa.edu'] = 'csw.uiowa.edu';
+$sites['csw.prod.drupal.uiowa.edu'] = 'csw.uiowa.edu';
