@@ -670,8 +670,13 @@ function uids_base_preprocess_paragraph(&$variables) {
           }
         }
       }
+
+      // If our bundle is the collection item and we have a 'field_automatically_open' value set...
       if ($paragraph->bundle() == 'uiowa_collection_item' &&
         $opened = $paragraph->get('field_automatically_open')->getValue()[0]['value']) {
+
+        // Pass a true or false based upon the value to the template.
+        // Template: docroot/themes/custom/uids_base/uids_base.theme .
         $variables['field_automatically_open'] = ($opened) ? 'true' : 'false';
       }
     }
