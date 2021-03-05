@@ -17,10 +17,9 @@ mode: teaser
 content:
   body:
     label: hidden
-    type: text_summary_or_trimmed
-    weight: 1
-    settings:
-      trim_length: 600
+    type: text_default
+    weight: 0
+    settings: {  }
     third_party_settings: {  }
     region: content
   field_transfer_tips_aos:
@@ -29,11 +28,11 @@ content:
     region: content
     label: visually_hidden
     settings:
-      link: true
-      view_mode: default
+      view_mode: teaser
+      link: false
     third_party_settings: {  }
   links:
-    weight: 0
+    weight: 1
     region: content
     settings: {  }
     third_party_settings: {  }
