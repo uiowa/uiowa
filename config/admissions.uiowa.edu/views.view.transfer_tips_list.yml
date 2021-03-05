@@ -55,6 +55,11 @@ display:
         type: default
       row:
         type: fields
+        options:
+          default_field_elements: true
+          inline: {  }
+          separator: ''
+          hide_empty: true
       fields:
         title:
           id: title
@@ -176,10 +181,24 @@ display:
             format: filtered_html
           plugin_id: text
       footer: {  }
-      empty: {  }
+      empty:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content:
+            value: 'There are currently no results to display.'
+            format: filtered_html
+          plugin_id: text
       relationships: {  }
       arguments: {  }
       display_extenders: {  }
+      use_ajax: true
     cache_metadata:
       max-age: -1
       contexts:
@@ -188,13 +207,16 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags: {  }
-  block_1:
+  block_transfer_tips:
     display_plugin: block
-    id: block_1
+    id: block_transfer_tips
     display_title: Block
     position: 1
     display_options:
-      display_extenders: {  }
+      display_extenders:
+        metatag_display_extender: {  }
+      block_description: 'Transfer Tips'
+      block_category: 'Lists (Views)'
     cache_metadata:
       max-age: -1
       contexts:
