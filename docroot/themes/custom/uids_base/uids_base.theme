@@ -670,6 +670,10 @@ function uids_base_preprocess_paragraph(&$variables) {
           }
         }
       }
+      if ($paragraph->bundle() == 'uiowa_collection_item' &&
+        $opened = $paragraph->get('field_automatically_open')->getValue()[0]['value']) {
+        $variables['field_automatically_open'] = ($opened) ? 'true' : 'false';
+      }
     }
   }
 }
