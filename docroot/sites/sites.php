@@ -2345,3 +2345,9 @@ $sites['studentsuccess.local.drupal.uiowa.edu'] = 'studentsuccess.uiowa.edu';
 $sites['studentsuccess.dev.drupal.uiowa.edu'] = 'studentsuccess.uiowa.edu';
 $sites['studentsuccess.stage.drupal.uiowa.edu'] = 'studentsuccess.uiowa.edu';
 $sites['studentsuccess.prod.drupal.uiowa.edu'] = 'studentsuccess.uiowa.edu';
+
+// Directory aliases for getinvolved.uiowa.edu.
+$sites['getinvolved.local.drupal.uiowa.edu'] = 'getinvolved.uiowa.edu';
+$sites['getinvolved.dev.drupal.uiowa.edu'] = 'getinvolved.uiowa.edu';
+$sites['getinvolved.stage.drupal.uiowa.edu'] = 'getinvolved.uiowa.edu';
+$sites['getinvolved.prod.drupal.uiowa.edu'] = 'getinvolved.uiowa.edu';
