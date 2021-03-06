@@ -92,7 +92,6 @@ class ListBlock extends CoreBlock {
       ],
     ];
 
-    // @todo Add option to set default "More" path.
     // @todo Allow developer to set token for this path which can map
     //   back to custom module settings (e.g. SiteNow People path)
     // Show exposed filters that can be set in the block form.
@@ -475,7 +474,7 @@ class ListBlock extends CoreBlock {
     }
 
     // Save "Filter in block" settings to block configuration.
-    $block->setConfigurationValue('exposed_filter_values', $form_state->getValue('exposed_filters'));
+    $block->setConfigurationValue('exposed_filter_values', $form_state->getValue(['override', 'exposed_filters']));
 
     if ($form_state instanceof SubformStateInterface) {
       $styles = $this->getLayoutBuilderStyles($form, $form_state->getCompleteFormState());
@@ -518,9 +517,7 @@ class ListBlock extends CoreBlock {
       !empty($config['fields'])) {
       $fields = $this->view->getHandlers('field');
       foreach (array_keys($fields) as $field_name) {
-        // Remove each field in sequence and re-add them to sort
-        // appropriately or hide if disabled.
-        // @todo This isn't working during AJAX.
+        // Remove each field in sequence and re-add them if not hidden.
         $this->view->removeHandler($display_id, 'field', $field_name);
         if (empty($config['fields'][$field_name]['hide'])) {
           $this->view->addHandler($display_id, 'field', $fields[$field_name]['table'], $fields[$field_name]['field'], $fields[$field_name], $field_name);
@@ -551,7 +548,7 @@ class ListBlock extends CoreBlock {
     // Set view filter based on "Filter" setting.
     $exposed_filter_values = !empty($config['exposed_filter_values']) ? $config['exposed_filter_values'] : [];
     $this->view->setExposedInput($exposed_filter_values);
-    $this->view->exposed_data = $exposed_filter_values;
+//    $this->view->exposed_data = $exposed_filter_values;
 
     if (!empty($config['headline'])) {
       $headline = $config['headline'];
