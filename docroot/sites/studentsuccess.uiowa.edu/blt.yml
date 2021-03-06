@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: studentsuccess.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: studentsuccess
+  human_name: studentsuccess.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: studentsuccess.prod
+drupal:
+  db:
+    database: studentsuccess_uiowa_edu
+uiowa:
+  requester: dquam
