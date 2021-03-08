@@ -73,9 +73,9 @@
 
 {{ attach_library('admissions_core/scholarship-teaser') }}
 
-{% set accordion_button_teaser %}
-  {% block accordion_button_teaser %}
-    <div class="accordion__button__teaser">
+{% set accordion_teaser %}
+  {% block accordion_teaser %}
+    <div class="accordion_teaser">
       {{ node.field_transfer_tips_aos.entity.title.value }}
     </div>
   {% endblock %}
@@ -90,13 +90,13 @@
   'accordion_item_content': content,
   'accordion_item_expanded': 'false',
   'attributes': attributes,
-  'accordion_button_teaser': accordion_button_teaser,
+  'accordion_teaser': accordion_teaser,
 } %}
 
 {% embed '@uids_base/uids/accordion-item.html.twig' with accordion_item only %}
   {% block accordion_label %}
     <div class="accordion__button__content">
-      {{ accordion_button_teaser }}
+      {{ accordion_teaser }}
     </div>
   {% endblock %}
 {% endembed %}
