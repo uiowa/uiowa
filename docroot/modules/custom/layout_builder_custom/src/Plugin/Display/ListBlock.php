@@ -473,7 +473,10 @@ class ListBlock extends CoreBlock {
     }
 
     // Save "Filter in block" settings to block configuration.
-    $block->setConfigurationValue('exposed_filter_values', $form_state->getValue(['override', 'exposed_filters']));
+    $block->setConfigurationValue('exposed_filter_values', $form_state->getValue([
+      'override',
+      'exposed_filters'
+    ]));
 
     if ($form_state instanceof SubformStateInterface) {
       $styles = $this->getLayoutBuilderStyles($form, $form_state->getCompleteFormState());
