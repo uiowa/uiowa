@@ -2321,3 +2321,33 @@ $sites['researchuirf.local.drupal.uiowa.edu'] = 'uirf.research.uiowa.edu';
 $sites['researchuirf.dev.drupal.uiowa.edu'] = 'uirf.research.uiowa.edu';
 $sites['researchuirf.stage.drupal.uiowa.edu'] = 'uirf.research.uiowa.edu';
 $sites['researchuirf.prod.drupal.uiowa.edu'] = 'uirf.research.uiowa.edu';
+
+// Directory aliases for vote.uiowa.edu.
+$sites['vote.local.drupal.uiowa.edu'] = 'vote.uiowa.edu';
+$sites['vote.dev.drupal.uiowa.edu'] = 'vote.uiowa.edu';
+$sites['vote.stage.drupal.uiowa.edu'] = 'vote.uiowa.edu';
+$sites['vote.prod.drupal.uiowa.edu'] = 'vote.uiowa.edu';
+
+// Directory aliases for inclusionteam.uiowa.edu.
+$sites['inclusionteam.local.drupal.uiowa.edu'] = 'inclusionteam.uiowa.edu';
+$sites['inclusionteam.dev.drupal.uiowa.edu'] = 'inclusionteam.uiowa.edu';
+$sites['inclusionteam.stage.drupal.uiowa.edu'] = 'inclusionteam.uiowa.edu';
+$sites['inclusionteam.prod.drupal.uiowa.edu'] = 'inclusionteam.uiowa.edu';
+
+// Directory aliases for csw.uiowa.edu.
+$sites['csw.local.drupal.uiowa.edu'] = 'csw.uiowa.edu';
+$sites['csw.dev.drupal.uiowa.edu'] = 'csw.uiowa.edu';
+$sites['csw.stage.drupal.uiowa.edu'] = 'csw.uiowa.edu';
+$sites['csw.prod.drupal.uiowa.edu'] = 'csw.uiowa.edu';
+
+// Directory aliases for studentsuccess.uiowa.edu.
+$sites['studentsuccess.local.drupal.uiowa.edu'] = 'studentsuccess.uiowa.edu';
+$sites['studentsuccess.dev.drupal.uiowa.edu'] = 'studentsuccess.uiowa.edu';
+$sites['studentsuccess.stage.drupal.uiowa.edu'] = 'studentsuccess.uiowa.edu';
+$sites['studentsuccess.prod.drupal.uiowa.edu'] = 'studentsuccess.uiowa.edu';
+
+// Directory aliases for getinvolved.uiowa.edu.
+$sites['getinvolved.local.drupal.uiowa.edu'] = 'getinvolved.uiowa.edu';
+$sites['getinvolved.dev.drupal.uiowa.edu'] = 'getinvolved.uiowa.edu';
+$sites['getinvolved.stage.drupal.uiowa.edu'] = 'getinvolved.uiowa.edu';
+$sites['getinvolved.prod.drupal.uiowa.edu'] = 'getinvolved.uiowa.edu';
