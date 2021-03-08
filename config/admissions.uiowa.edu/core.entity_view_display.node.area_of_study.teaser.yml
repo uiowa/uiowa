@@ -50,15 +50,18 @@ content:
   body:
     label: hidden
     type: text_summary_or_trimmed
-    weight: 101
+    weight: 0
     settings:
       trim_length: 600
     third_party_settings: {  }
     region: content
-  links:
-    weight: 100
+  field_image:
+    type: entity_reference_label
+    weight: 1
     region: content
-    settings: {  }
+    label: above
+    settings:
+      link: true
     third_party_settings: {  }
 hidden:
   entity_print_view_epub: true
@@ -96,5 +99,5 @@ hidden:
   field_area_of_study_teaching_txt: true
   field_area_of_study_transfer: true
   field_area_of_study_why: true
-  field_image: true
+  links: true
   search_api_excerpt: true
