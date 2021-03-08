@@ -137,9 +137,6 @@ class ListBlock extends CoreBlock {
    */
   public function blockForm(ViewsBlock $block, array &$form, FormStateInterface $form_state) {
     $form = parent::blockForm($block, $form, $form_state);
-    $form['exposed_filters'] = [
-      '#tree' => TRUE,
-    ];
 
     $allow_settings = array_filter($this->getOption('allow'));
     $block_configuration = $block->getConfiguration();
@@ -170,7 +167,9 @@ class ListBlock extends CoreBlock {
         '#type' => 'details',
         '#title' => $this->t('Exposed filters'),
         '#description' => $this->t('Set default filters.'),
+        '#tree' => TRUE,
       ];
+
       // Provide "Exposed filters" block settings form.
       $exposed_filter_values = !empty($block_configuration['exposed_filter_values']) ? $block_configuration['exposed_filter_values'] : [];
 
@@ -361,7 +360,7 @@ class ListBlock extends CoreBlock {
         '#default_value' => !empty($block_configuration['use_more']),
       ];
 
-      $form['override']['display_more_path'] = [
+      $form['override']['use_more_link_url'] = [
         '#type' => 'entity_autocomplete',
         '#title' => $this->t('Path'),
         '#description' => $this
@@ -447,7 +446,7 @@ class ListBlock extends CoreBlock {
       // Save display more link setting.
       $block->setConfigurationValue('use_more_link_url', $form_state->getValue([
         'override',
-        'display_more_path',
+        'use_more_link_url',
       ]));
     }
 
@@ -548,7 +547,7 @@ class ListBlock extends CoreBlock {
     // Set view filter based on "Filter" setting.
     $exposed_filter_values = !empty($config['exposed_filter_values']) ? $config['exposed_filter_values'] : [];
     $this->view->setExposedInput($exposed_filter_values);
-//    $this->view->exposed_data = $exposed_filter_values;
+    $this->view->exposed_data = $exposed_filter_values;
 
     if (!empty($config['headline'])) {
       $headline = $config['headline'];
