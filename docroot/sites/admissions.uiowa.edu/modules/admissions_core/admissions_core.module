@@ -432,7 +432,7 @@ function admissions_core_views_pre_render(ViewExecutable $view) {
 /**
  * Implements hook_theme_suggestions_HOOK_alter() for taxonomies.
  */
-function admissions_core_theme_suggestions_taxonomy_term_alter(&$suggestions, $variables, $hook) {
+function admissions_core_theme_suggestions_taxonomy_term_alter(&$suggestions, $variables) {
   if ($variables['elements']['#view_mode'] == 'teaser') {
     $suggestions[] = 'taxonomy_term__teaser';
   }
