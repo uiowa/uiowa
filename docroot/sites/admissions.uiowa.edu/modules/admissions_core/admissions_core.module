@@ -435,8 +435,9 @@ function admissions_core_views_pre_render(ViewExecutable $view) {
  * {@inheritdoc}
  */
 function admissions_core_theme_suggestions_taxonomy_term_alter(&$suggestions, $vars, $hook) {
-  if($vars['elements']['#view_mode'] == 'teaser') {
-    $suggestions[] = 'taxonomy_term__teaser'; // note underscores
+  if ($vars['elements']['#view_mode'] == 'teaser') {
+    // Note underscores.
+    $suggestions[] = 'taxonomy_term__teaser';
   }
 }
 
