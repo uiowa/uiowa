@@ -22,7 +22,7 @@ class RequestASiteUriConstraint {
    */
   public static function validate(array &$element, FormStateInterface $formState, array &$form) {
     $webformKey = $element['#webform_key'];
-    $value = $formState->getValue($webformKey);
+    $value = rtrim($formState->getValue($webformKey), '/');
 
     $url = parse_url($value);
 
