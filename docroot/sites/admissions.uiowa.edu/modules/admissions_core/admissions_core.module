@@ -387,6 +387,10 @@ function admissions_core_theme($existing, $type, $theme, $path) {
       'template' => 'node--area-of-study--teaser',
       'base hook' => 'node',
     ],
+    'taxonomy_term__teaser' => [
+      'template' => 'taxonomy-term--teaser',
+      'base hook' => 'node',
+    ],
   ];
 }
 
@@ -426,14 +430,26 @@ function admissions_core_views_pre_render(ViewExecutable $view) {
 }
 
 /**
+ * Implements hook_theme_suggestions_HOOK_alter() for taxonomies.
+ *
+ * {@inheritdoc}
+ */
+function admissions_core_theme_suggestions_taxonomy_term_alter(&$suggestions, $vars, $hook) {
+  if($vars['elements']['#view_mode'] == 'teaser') {
+    $suggestions[] = 'taxonomy_term__teaser'; // note underscores
+  }
+}
+
+/**
  * Implements hook_preprocess_views_view().
  */
 function admissions_core_preprocess_views_view(&$variables) {
   $view = $variables['view'];
   $id = $view->storage->id();
-
-  if ($id == 'academic_groups_taxonomy_term') {
-    $variables['attributes']['class'][] = 'grid--threecol--33-34-33';
+  switch ($id) {
+    case 'academic_groups_block':
+    case 'academic_groups_taxonomy_term':
+      $variables['attributes']['class'][] = 'grid--threecol--33-34-33';
   }
 }
 
