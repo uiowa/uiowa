@@ -59,12 +59,12 @@ class AreaOfStudy extends BaseNodeSource {
     $query = parent::query();
     $query->join('field_data_body', 'intro', 'n.nid = intro.entity_id');
     $query->leftJoin('field_data_field_sub_title', 'subtitle', 'n.nid = subtitle.entity_id');
-    $query->leftJoin('field_data_field_undergradtype', 'undergradtype', 'n.nid = undergradtype.entity_id');
+    $query->leftJoin('field_data_field_undergradtype', 'undergrad_type', 'n.nid = undergradtype.entity_id');
     $query->leftJoin('field_data_field_mail_item_code', 'mail_item_code', 'n.nid = mail_item_code.entity_id');
     $query->leftJoin('field_data_field_alt_names', 'alt_names', 'n.nid = alt_names.entity_id');
     $query->leftJoin('field_data_field_alt_description', 'alt_description', 'n.nid = alt_description.entity_id');
-    $query->leftJoin('field_data_field_academic_group', 'academic_group', 'n.nid = academic_group.entity_id');
-    $query->leftJoin('field_data_field_program_types', 'program_types', 'n.nid = program_types.entity_id');
+//    $query->leftJoin('field_data_field_academic_group', 'academic_group', 'n.nid = academic_group.entity_id');
+//    $query->leftJoin('field_data_field_program_types', 'program_types', 'n.nid = program_types.entity_id');
     $query->leftJoin('field_data_field_degree', 'degree', 'n.nid = degree.entity_id');
     $query->leftJoin('field_data_field_minor', 'minor', 'n.nid = minor.entity_id');
     $query->leftJoin('field_data_field_certificates', 'certificates', 'n.nid = certificates.entity_id');
@@ -120,6 +120,21 @@ class AreaOfStudy extends BaseNodeSource {
       'body_summary',
       'body_format',
     ])
+      ->fields('subtitle', [
+        'field_sub_title_value',
+      ])
+      ->fields('undergrad_type', [
+        'field_undergradtype_tid',
+      ])
+      ->fields('mail_item_code', [
+        'field_mail_item_code_value',
+      ])
+      ->fields('alt_names', [
+        'field_alt_names_value',
+      ])
+      ->fields('alt_description', [
+        'field_alt_description_value',
+      ])
       ->fields('alias', [
         'alias',
       ]);
@@ -172,6 +187,11 @@ class AreaOfStudy extends BaseNodeSource {
     // Strip tags so they don't show up in the field teaser.
     $row->setSourceProperty('body_summary', strip_tags($row->getSourceProperty('body_summary')));
 
+    // Grab the various multi-value fields.
+    $tables = [
+      'field_data_field_academic_group' => ['field_data_field_academic_group_tid'],
+      'field_data_field_program_types' => ['field_data_field_program_types_value'],
+    ];
     // Call the parent prepareRow.
     return parent::prepareRow($row);
   }
