@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: inclusionteam.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: inclusionteam
+  human_name: inclusionteam.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: inclusionteam.prod
+drupal:
+  db:
+    database: inclusionteam_uiowa_edu
+uiowa:
+  requester: dquam
