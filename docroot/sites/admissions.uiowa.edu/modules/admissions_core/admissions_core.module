@@ -432,7 +432,7 @@ function admissions_core_preprocess_views_view(&$variables) {
   $view = $variables['view'];
   $id = $view->storage->id();
 
-  if ($id == 'taxonomy_term') {
+  if ($id == 'academic_groups_taxonomy_term') {
     $variables['attributes']['class'][] = 'grid--threecol--33-34-33';
   }
 }
