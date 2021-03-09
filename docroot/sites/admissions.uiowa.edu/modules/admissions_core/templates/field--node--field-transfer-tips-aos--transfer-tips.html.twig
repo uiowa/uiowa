@@ -39,14 +39,15 @@
 #}
 {%
   set classes = [
-  'bttn',
-  'bttn--outline',
-  'bttn--sans-serif',
+  'card',
+  'bg--white',
 ]
 %}
+
+{{ attach_library('classy/node') }}
 <h1 {{ attributes.addClass(classes) }}>
   {%- for item in items -%}
-    <span>{{ item.content }}<i class="fas fa-arrow-right"></i></span>
+    <a href="{{ item.content['#url'] }}" class="bttn bttn--outline bttn--sans-serif">{{ item.content['#title']|render }}<i class="fas fa-arrow-right"></i></a>
   {%- endfor -%}
 </h1>
 
