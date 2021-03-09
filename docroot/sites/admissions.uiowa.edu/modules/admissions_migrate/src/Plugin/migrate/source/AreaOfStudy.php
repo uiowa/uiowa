@@ -105,7 +105,8 @@ class AreaOfStudy extends BaseNodeSource {
     $query->leftJoin('field_data_field_progimage', 'image', 'n.nid = image.entity_id');
     $query->leftJoin('field_data_field_searchtag', 'search_tags', 'n.nid = search_tags.entity_id');
     $query->leftJoin('url_alias', 'alias', "alias.source = CONCAT('node/', n.nid)");
-    $query = $query->fields('b', [
+
+    $query = $query->fields('intro', [
       'entity_type',
       'bundle',
       'deleted',
@@ -132,6 +133,7 @@ class AreaOfStudy extends BaseNodeSource {
       ->fields('alias', [
         'alias',
       ]);
+
     return $query;
   }
 
