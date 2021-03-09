@@ -216,9 +216,17 @@ class MultisiteCommands extends BltTasks {
       return new CommandError("Multisite installation not allowed on {$env} environment. Must be one of {$allowed}. Use option to override.");
     }
 
+    $multisites = $this->getConfigValue('multisites');
+
+    $this->say('Finding uninstalled sites...');
+    $progress = $this->io()->createProgressBar();
+    $progress->setMaxSteps(count($multisites));
+    $progress->start();
+
     $uninstalled = [];
 
-    foreach ($this->getConfigValue('multisites') as $multisite) {
+    foreach ($multisites as $multisite) {
+      $progress->advance();
       $this->switchSiteContext($multisite);
       $db = $this->getConfigValue('drupal.db.database');
 
@@ -232,6 +240,8 @@ class MultisiteCommands extends BltTasks {
         $uninstalled[] = $multisite;
       }
     }
+
+    $progress->finish();
 
     if (!empty($uninstalled)) {
       $this->io()->listing($uninstalled);
