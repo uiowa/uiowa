@@ -67,7 +67,7 @@ class AreaOfStudy extends BaseNodeSource {
     $query->leftJoin('field_data_field_certificates', 'certificates', 'n.nid = certificates.entity_id');
     $query->leftJoin('field_data_field_preprofessional', 'preprofessional', 'n.nid = preprofessional.entity_id');
     $query->leftJoin('field_data_field_online', 'online', 'n.nid = online.entity_id');
-    $query->leftJoin('field_data_field_tracks', 'subprogram', 'n.nid = subprogram_type.entity_id');
+    $query->leftJoin('field_data_field_tracks', 'subprogram', 'n.nid = subprogram.entity_id');
     $query->leftJoin('field_data_field_track_type_name', 'subprogram_type', 'n.nid = subprogram_type.entity_id');
     $query->leftJoin('field_data_field_teacher_license', 'teacher_license', 'n.nid = teacher_license.entity_id');
     $query->leftJoin('field_data_field_teaching_desc', 'teacher_desc', 'n.nid = teacher_desc.entity_id');
