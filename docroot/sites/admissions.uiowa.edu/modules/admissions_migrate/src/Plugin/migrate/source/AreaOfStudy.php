@@ -58,8 +58,6 @@ class AreaOfStudy extends BaseNodeSource {
     $query->join('field_data_body', 'intro', 'n.nid = intro.entity_id');
     $query->leftJoin('field_data_field_sub_title', 'subtitle', 'n.nid = subtitle.entity_id');
     $query->leftJoin('field_data_field_mail_item_code', 'mail_item_code', 'n.nid = mail_item_code.entity_id');
-    $query->leftJoin('field_data_field_alt_names', 'alt_names', 'n.nid = alt_names.entity_id');
-    $query->leftJoin('field_data_field_alt_description', 'alt_description', 'n.nid = alt_description.entity_id');
     // $query->leftJoin('field_data_field_academic_group', 'academic_group', 'n.nid = academic_group.entity_id');
     // $query->leftJoin('field_data_field_program_types', 'program_types', 'n.nid = program_types.entity_id');
     $query->leftJoin('field_data_field_degree', 'degree', 'n.nid = degree.entity_id');
@@ -123,12 +121,6 @@ class AreaOfStudy extends BaseNodeSource {
       ])
       ->fields('mail_item_code', [
         'field_mail_item_code_value',
-      ])
-      ->fields('alt_names', [
-        'field_alt_names_value',
-      ])
-      ->fields('alt_description', [
-        'field_alt_description_value',
       ])
       ->fields('alias', [
         'alias',
