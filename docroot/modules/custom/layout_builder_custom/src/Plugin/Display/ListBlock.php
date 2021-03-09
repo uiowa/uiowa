@@ -341,7 +341,7 @@ class ListBlock extends CoreBlock {
       $form['override']['pager'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Show pager'),
-        '#default_value' => isset($block_configuration['pager']),
+        '#default_value' => ($block_configuration['pager'] == 'full'),
       ];
     }
 
