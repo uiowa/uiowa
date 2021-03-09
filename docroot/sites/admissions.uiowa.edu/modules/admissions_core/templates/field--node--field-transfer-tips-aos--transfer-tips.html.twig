@@ -37,12 +37,19 @@
  * @see template_preprocess_field()
  */
 #}
+
 {%
   set classes = [
-  'card',
+  'card--list',
   'bg--white',
+  'card--centered-left',
+  'card--alignment-left',
+  'card--media-left',
+  'card',
 ]
 %}
+
+{{ attach_library('uids_base/card') }}
 
 <h1 {{ attributes.addClass(classes) }}>
   {%- for item in items -%}
