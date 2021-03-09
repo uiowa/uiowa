@@ -2357,3 +2357,9 @@ $sites['labstrathearn.local.drupal.uiowa.edu'] = 'strathearn.lab.uiowa.edu';
 $sites['labstrathearn.dev.drupal.uiowa.edu'] = 'strathearn.lab.uiowa.edu';
 $sites['labstrathearn.stage.drupal.uiowa.edu'] = 'strathearn.lab.uiowa.edu';
 $sites['labstrathearn.prod.drupal.uiowa.edu'] = 'strathearn.lab.uiowa.edu';
+
+// Directory aliases for carterradiochem.lab.uiowa.edu.
+$sites['labcarterradiochem.local.drupal.uiowa.edu'] = 'carterradiochem.lab.uiowa.edu';
+$sites['labcarterradiochem.dev.drupal.uiowa.edu'] = 'carterradiochem.lab.uiowa.edu';
+$sites['labcarterradiochem.stage.drupal.uiowa.edu'] = 'carterradiochem.lab.uiowa.edu';
+$sites['labcarterradiochem.prod.drupal.uiowa.edu'] = 'carterradiochem.lab.uiowa.edu';
