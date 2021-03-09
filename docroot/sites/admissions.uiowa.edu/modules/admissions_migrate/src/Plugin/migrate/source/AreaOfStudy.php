@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\grad_migrate\Plugin\migrate\source;
+namespace Drupal\admissions_migrate\Plugin\migrate\source;
 
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\migrate\Row;
