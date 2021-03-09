@@ -178,26 +178,26 @@ class ListBlock extends CoreBlock {
 
       $filter_plugins = $this->getHandlers('filter');
 
-      foreach ($customizable_filters as $customizable_filter) {
+      foreach ($customizable_filters as $filter_id) {
         /** @var \Drupal\views\Plugin\views\filter\FilterPluginBase $filter */
-        $filter = $filter_plugins[$customizable_filter];
+        $filter = $filter_plugins[$filter_id];
         $filter->buildExposedForm($form['override']['exposed_filters'], $subform_state);
 
         // Set the label and default values of the form element, based on the
         // block configuration.
         $exposed_info = $filter->exposedInfo();
-        $form['override']['exposed_filters'][$exposed_info['value']]['#title'] = $exposed_info['label'];
+        $form['override']['exposed_filters'][$filter_id]['#title'] = $exposed_info['label'];
         // The following is essentially using this patch:
         // https://www.drupal.org/project/views_block_placement_exposed_form_defaults/issues/3158789
-        if ($form['override']['exposed_filters'][$exposed_info['value']]['#type'] == 'entity_autocomplete') {
-          $form['override']['exposed_filters'][$exposed_info['value']]['#default_value'] = EntityAutocomplete::valueCallback(
-            $form['override']['exposed_filters'][$exposed_info['value']],
-            $exposed_filter_values[$exposed_info['value']],
+        if ($form['override']['exposed_filters'][$filter_id]['#type'] == 'entity_autocomplete') {
+          $form['override']['exposed_filters'][$filter_id]['#default_value'] = EntityAutocomplete::valueCallback(
+            $form['override']['exposed_filters'][$filter_id],
+            $exposed_filter_values[$filter_id],
             $form_state
           );
         }
         else {
-          $form['override']['exposed_filters'][$exposed_info['value']]['#default_value'] = !empty($exposed_filter_values[$exposed_info['value']]) ? $exposed_filter_values[$exposed_info['value']] : [];
+          $form['override']['exposed_filters'][$filter_id]['#default_value'] = !empty($exposed_filter_values[$filter_id]) ? $exposed_filter_values[$filter_id] : [];
         }
       }
     }
@@ -590,7 +590,7 @@ class ListBlock extends CoreBlock {
   /**
    * {@inheritdoc}
    */
-  public function usesExposed() {
+  public function displaysExposed() {
     // We don't want this to be available on this type of block.
     return FALSE;
   }
