@@ -2,10 +2,8 @@
 
 namespace Drupal\grad_migrate\Plugin\migrate\source;
 
-use Drupal\Component\Utility\Html;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\migrate\Row;
-use Drupal\taxonomy\Entity\Term;
 
 /**
  * Basic implementation of the source plugin.
@@ -63,8 +61,8 @@ class AreaOfStudy extends BaseNodeSource {
     $query->leftJoin('field_data_field_mail_item_code', 'mail_item_code', 'n.nid = mail_item_code.entity_id');
     $query->leftJoin('field_data_field_alt_names', 'alt_names', 'n.nid = alt_names.entity_id');
     $query->leftJoin('field_data_field_alt_description', 'alt_description', 'n.nid = alt_description.entity_id');
-//    $query->leftJoin('field_data_field_academic_group', 'academic_group', 'n.nid = academic_group.entity_id');
-//    $query->leftJoin('field_data_field_program_types', 'program_types', 'n.nid = program_types.entity_id');
+    // $query->leftJoin('field_data_field_academic_group', 'academic_group', 'n.nid = academic_group.entity_id');
+    // $query->leftJoin('field_data_field_program_types', 'program_types', 'n.nid = program_types.entity_id');
     $query->leftJoin('field_data_field_degree', 'degree', 'n.nid = degree.entity_id');
     $query->leftJoin('field_data_field_minor', 'minor', 'n.nid = minor.entity_id');
     $query->leftJoin('field_data_field_certificates', 'certificates', 'n.nid = certificates.entity_id');
