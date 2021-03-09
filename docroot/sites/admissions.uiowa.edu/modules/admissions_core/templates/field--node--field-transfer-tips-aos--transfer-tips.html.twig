@@ -43,11 +43,8 @@
   'bg--white',
 ]
 %}
-
-{{ attach_library('classy/node') }}
 <h1 {{ attributes.addClass(classes) }}>
   {%- for item in items -%}
     <a href="{{ item.content['#url'] }}" class="bttn bttn--outline bttn--sans-serif">{{ item.content['#title']|render }}<i class="fas fa-arrow-right"></i></a>
   {%- endfor -%}
 </h1>
-
