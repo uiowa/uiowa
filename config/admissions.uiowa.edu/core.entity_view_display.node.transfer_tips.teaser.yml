@@ -1,0 +1,40 @@
+uuid: 8675a563-b70c-4481-bc8f-6ab9dbd99d09
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.transfer_tips.body
+    - field.field.node.transfer_tips.field_meta_tags
+    - field.field.node.transfer_tips.field_transfer_tips_aos
+    - node.type.transfer_tips
+  module:
+    - text
+    - user
+id: node.transfer_tips.teaser
+targetEntityType: node
+bundle: transfer_tips
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_transfer_tips_aos:
+    type: entity_reference_label
+    weight: 1
+    region: content
+    label: visually_hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_meta_tags: true
+  links: true
+  search_api_excerpt: true
