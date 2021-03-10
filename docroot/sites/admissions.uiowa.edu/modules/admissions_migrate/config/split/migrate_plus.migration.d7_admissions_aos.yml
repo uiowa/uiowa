@@ -36,12 +36,32 @@ process:
   body: body
   field_teaser: body_summary
   moderation_state: moderation_state
-  field_area_of_study_subtitle: field_sub_title_value
-  field_area_of_study_mail_code: field_mail_item_code_value
-  field_area_of_study_minors: field_minor_value
-  field_area_of_study_certificates: field_certificates_value
-  field_area_of_study_preprof: field_preprofessional_value
-  field_area_of_study_online: field_online_value
+  field_area_of_study_subtitle: field_sub_title
+  field_area_of_study_mail_code: field_mail_item_code
+  field_area_of_study_minors:
+    plugin: sub_process
+    source: field_minor
+    process:
+      value: value
+      format: format
+  field_area_of_study_certificates:
+    plugin: sub_process
+    source: field_certificates
+    process:
+      value: value
+      format: format
+  field_area_of_study_preprof:
+    plugin: sub_process
+    source: field_preprofessional
+    process:
+      value: value
+      format: format
+  field_area_of_study_online:
+    plugin: sub_process
+    source: field_online
+    process:
+      value: value
+      format: format
 destination:
   plugin: 'entity:node'
   default_bundle: area_of_study
