@@ -79,6 +79,12 @@ process:
       4: interest_areas
       5: tracks
       6: concentrations
+  field_area_of_study_teaching:
+    plugin: static_map
+    source: field_teacher_license
+    map:
+      0: teaching_licensure
+  field_area_of_study_teaching_txt: field_teaching_desc
 destination:
   plugin: 'entity:node'
   default_bundle: area_of_study
