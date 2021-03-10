@@ -1,9 +1,9 @@
-uuid: d6c01c3b-917a-451f-af57-71910de87a3e
+uuid: 39babb60-b7e7-48dd-8611-c744c7a0b095
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.paragraph.descriptive_list
+    - core.entity_view_mode.paragraph.tab
     - field.field.paragraph.uiowa_collection_item.field_automatically_open
     - field.field.paragraph.uiowa_collection_item.field_collection_body
     - field.field.paragraph.uiowa_collection_item.field_collection_headline
@@ -15,10 +15,10 @@ third_party_settings:
   layout_builder:
     allow_custom: false
     enabled: false
-id: paragraph.uiowa_collection_item.descriptive_list
+id: paragraph.uiowa_collection_item.tab
 targetEntityType: paragraph
 bundle: uiowa_collection_item
-mode: descriptive_list
+mode: tab
 content:
   field_collection_body:
     weight: 1
@@ -36,5 +36,8 @@ content:
     type: string
     region: content
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_automatically_open: true
   search_api_excerpt: true
