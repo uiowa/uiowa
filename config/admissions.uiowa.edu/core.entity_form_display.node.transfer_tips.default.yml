@@ -4,10 +4,12 @@ status: true
 dependencies:
   config:
     - field.field.node.transfer_tips.body
+    - field.field.node.transfer_tips.field_meta_tags
     - field.field.node.transfer_tips.field_transfer_tips_aos
     - node.type.transfer_tips
   module:
     - content_moderation
+    - metatag
     - path
     - text
 id: node.transfer_tips.default
@@ -31,6 +33,13 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_meta_tags:
+    weight: 26
+    settings:
+      sidebar: true
+    third_party_settings: {  }
+    type: metatag_firehose
+    region: content
   field_transfer_tips_aos:
     weight: 8
     settings:
