@@ -62,6 +62,23 @@ process:
     process:
       value: value
       format: format
+  field_area_of_study_subprogram:
+    plugin: sub_process
+    source: field_tracks
+    process:
+      value: value
+      format: format
+  field_area_of_study_sub_type:
+    plugin: static_map
+    source: field_track_type_name
+    map:
+      0: _none
+      1: areas_of_emphasis
+      2: areas_of_specialization
+      3: focus_areas
+      4: interest_areas
+      5: tracks
+      6: concentrations
 destination:
   plugin: 'entity:node'
   default_bundle: area_of_study
