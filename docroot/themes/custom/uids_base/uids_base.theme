@@ -433,7 +433,7 @@ function uids_base_preprocess_layout(&$variables) {
       }
 
       // Set default for banner gradient.
-      if ($variables['banner_settings']['transparent']) {
+      if (isset($variables['banner_settings']['transparent'])) {
         $variables['attributes']['class'][] = 'banner--transparent';
       }
       else {
@@ -442,8 +442,10 @@ function uids_base_preprocess_layout(&$variables) {
       }
 
       // Set other banner default classes.
-      $variables['attributes']['class'][] = 'banner--horizontal-' . $variables['banner_settings']['horizontal_align'];
-      $variables['attributes']['class'][] = 'banner--vertical-' . $variables['banner_settings']['vertical_align'];
+      if (isset($variables['banner_settings']['horizontal_align'], $variables['banner_settings']['vertical_align'])) {
+        $variables['attributes']['class'][] = 'banner--horizontal-' . $variables['banner_settings']['horizontal_align'];
+        $variables['attributes']['class'][] = 'banner--vertical-' . $variables['banner_settings']['vertical_align'];
+      }
 
       if ($contains_title) {
         $variables['attributes']['class'][] = 'layout--title';
