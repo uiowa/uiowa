@@ -15,7 +15,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Provides base node source abstract class.
  *
- * This class copies heavily from \Drupal\node\Plugin\migrate\source\d7\Node.
+ * Unfortunately, we cannot extend migrate_drupal classes without turning on
+ * the entire module which is overkill for most of our needs. We've copied
+ * parts of the D7 node source plugin as needed here.
+ *
+ * @see \Drupal\node\Plugin\migrate\source\d7\Node
  */
 abstract class BaseNodeSource extends SqlBase {
 
