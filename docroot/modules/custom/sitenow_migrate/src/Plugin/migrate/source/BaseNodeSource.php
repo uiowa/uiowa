@@ -19,6 +19,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * the entire module which is overkill for most of our needs. We've copied
  * parts of the D7 node source plugin as needed here.
  *
+ * @todo Look into a better way of code reuse.
+ *
  * @see \Drupal\node\Plugin\migrate\source\d7\Node
  */
 abstract class BaseNodeSource extends SqlBase {
