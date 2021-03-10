@@ -85,6 +85,29 @@ process:
     map:
       0: teaching_licensure
   field_area_of_study_teaching_txt: field_teaching_desc
+  field_area_of_study_honors:
+    plugin: static_map
+    source: field_honors_courses
+    map:
+      0: honors_courses
+  field_area_of_study_four_year:
+    plugin: static_map
+    source: field_four_year_grad
+    map:
+      0: four_year_graduate_plan
+  field_area_of_study_four_txt: field_fouryear_desc
+  field_area_of_study_selective:
+    plugin: static_map
+    source: field_selective
+    map:
+      0: selective_admission
+  field_area_of_study_select_txt: field_selective_description
+  field_area_of_study_competitive:
+    plugin: static_map
+    source: field_competitive
+    map:
+      0: competitive_admission
+  field_area_of_study_comp_txt: field_competitive_description
 destination:
   plugin: 'entity:node'
   default_bundle: area_of_study
