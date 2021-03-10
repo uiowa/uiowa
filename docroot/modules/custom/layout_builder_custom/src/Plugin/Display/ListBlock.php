@@ -550,7 +550,6 @@ class ListBlock extends CoreBlock {
     // Set view filter based on "Filter" setting.
     $exposed_filter_values = !empty($config['exposed_filter_values']) ? $config['exposed_filter_values'] : [];
     $this->view->setExposedInput($exposed_filter_values);
-    $this->view->exposed_data = $exposed_filter_values;
 
     if (!empty($config['headline'])) {
       $headline = $config['headline'];
@@ -585,6 +584,19 @@ class ListBlock extends CoreBlock {
         $this->view->display_handler->setOption('use_more', FALSE);
       }
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function usesExposed() {
+    $filters = $this->getHandlers('filter');
+    foreach ($filters as $filter) {
+      if ($filter->isExposed() && !empty($filter->exposedInfo())) {
+        return TRUE;
+      }
+    }
+    return FALSE;
   }
 
   /**
