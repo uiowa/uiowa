@@ -229,20 +229,7 @@ display:
           expose:
             label: ''
       title: 'Transfer Tips List'
-      header:
-        area:
-          id: area
-          table: views
-          field: area
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: false
-          tokenize: false
-          content:
-            value: '<h2>Transfer Tips List</h2>'
-            format: filtered_html
-          plugin_id: text
+      header: {  }
       footer: {  }
       empty:
         area:
@@ -281,6 +268,8 @@ display:
         metatag_display_extender: {  }
       block_description: 'Transfer Tips'
       block_category: 'Lists (Views)'
+      allow:
+        items_per_page: false
     cache_metadata:
       max-age: -1
       contexts:
