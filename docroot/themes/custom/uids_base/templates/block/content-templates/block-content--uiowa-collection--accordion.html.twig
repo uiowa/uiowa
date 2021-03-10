@@ -26,9 +26,8 @@
 */
 #}
 {% set id = "accordion-" ~ id %}
-
 <div class="collection--accordion">
-  <div class="accordion" role="tablist" aria-multiselectable="true" id="{{ id }}">
+  <div class="accordion" role="tablist" aria-multiselectable="{{ multiselect }}" id="{{ id }}">
     {{ content }}
   </div>
 </div>
