@@ -1,0 +1,29 @@
+uuid: 9c7544f9-3c13-4ade-876a-c2f4497d6bc3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_academic_groups_media
+    - media.type.remote_video
+    - taxonomy.vocabulary.academic_groups
+id: taxonomy_term.academic_groups.field_academic_groups_media
+field_name: field_academic_groups_media
+entity_type: taxonomy_term
+bundle: academic_groups
+label: 'Academic Groups Video'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      remote_video: remote_video
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
