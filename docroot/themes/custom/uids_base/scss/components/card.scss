@@ -2,6 +2,14 @@
 @import "assets/scss/_utilities.scss";
 @import "components/card/card.scss";
 
+.card p + p {
+  margin-top: $sm;
+}
+// set font weight to normal if intro classes are used
+.card p[class*="element-"], p[class*="uids-component-"] {
+  font-weight: normal;
+}
+
 .card__description {
   word-wrap: anywhere;
   overflow-wrap: anywhere;
