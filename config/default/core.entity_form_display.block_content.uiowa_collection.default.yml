@@ -4,18 +4,26 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_collection
-    - field.field.block_content.uiowa_collection.field_uiowa_headline
+    - field.field.block_content.uiowa_collection.field_accordion_type
     - field.field.block_content.uiowa_collection.field_uiowa_collection_items
+    - field.field.block_content.uiowa_collection.field_uiowa_headline
   module:
+    - layout_builder_custom
     - paragraphs
 id: block_content.uiowa_collection.default
 targetEntityType: block_content
 bundle: uiowa_collection
 mode: default
 content:
+  field_accordion_type:
+    weight: 2
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
   field_uiowa_collection_items:
     type: paragraphs
-    weight: 2
+    weight: 3
     settings:
       title: Paragraph
       title_plural: Paragraphs
