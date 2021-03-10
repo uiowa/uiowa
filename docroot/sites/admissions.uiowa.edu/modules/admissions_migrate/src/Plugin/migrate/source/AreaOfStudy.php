@@ -58,13 +58,15 @@ class AreaOfStudy extends BaseNodeSource {
     $query->join('field_data_body', 'intro', 'n.nid = intro.entity_id');
     $query->leftJoin('field_data_field_sub_title', 'subtitle', 'n.nid = subtitle.entity_id');
     $query->leftJoin('field_data_field_mail_item_code', 'mail_item_code', 'n.nid = mail_item_code.entity_id');
-    // $query->leftJoin('field_data_field_academic_group', 'academic_group', 'n.nid = academic_group.entity_id');
-    // $query->leftJoin('field_data_field_program_types', 'program_types', 'n.nid = program_types.entity_id');
+
+    // @todo Map this paragraph item.
     $query->leftJoin('field_data_field_degree', 'degree', 'n.nid = degree.entity_id');
+
     $query->leftJoin('field_data_field_minor', 'minor', 'n.nid = minor.entity_id');
     $query->leftJoin('field_data_field_certificates', 'certificates', 'n.nid = certificates.entity_id');
     $query->leftJoin('field_data_field_preprofessional', 'preprofessional', 'n.nid = preprofessional.entity_id');
     $query->leftJoin('field_data_field_online', 'online', 'n.nid = online.entity_id');
+
     $query->leftJoin('field_data_field_tracks', 'subprogram', 'n.nid = subprogram.entity_id');
     $query->leftJoin('field_data_field_track_type_name', 'subprogram_type', 'n.nid = subprogram_type.entity_id');
     $query->leftJoin('field_data_field_teacher_license', 'teacher_license', 'n.nid = teacher_license.entity_id');
@@ -122,6 +124,18 @@ class AreaOfStudy extends BaseNodeSource {
       ->fields('mail_item_code', [
         'field_mail_item_code_value',
       ])
+      ->fields('minor', [
+        'field_minor_value',
+      ])
+      ->fields('certificates', [
+        'field_certificates_value',
+      ])
+      ->fields('preprofessional', [
+        'field_preprofessional_value',
+      ])
+      ->fields('online', [
+        'field_online_value',
+      ])
       ->fields('alias', [
         'alias',
       ]);
@@ -176,10 +190,15 @@ class AreaOfStudy extends BaseNodeSource {
     $row->setSourceProperty('body_summary', strip_tags($row->getSourceProperty('body_summary')));
 
     // Grab the various multi-value fields.
-    $tables = [
-      'field_data_field_academic_group' => ['field_data_field_academic_group_tid'],
-      'field_data_field_program_types' => ['field_data_field_program_types_value'],
+    $multivalue_fields = [
+      'field_data_field_minor' => ['field_minor_value'],
+      'field_data_field_certificates' => ['field_certificates_value'],
+      'field_data_field_preprofessional' => ['field_preprofessional_value'],
+      'field_data_field_online' => ['field_online_value'],
     ];
+
+    $this->fetchAdditionalFields($row, $multivalue_fields);
+
     // Call the parent prepareRow.
     return parent::prepareRow($row);
   }
