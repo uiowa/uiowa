@@ -7,10 +7,9 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\State\StateInterface;
-use Drupal\migrate\Plugin\migrate\source\SqlBase;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Row;
-use Drupal\migrate_drupal\Plugin\migrate\source\d7\FieldableEntity;
+use Drupal\node\Plugin\migrate\source\d7\Node;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -18,20 +17,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @see \Drupal\node\Plugin\migrate\source\d7\Node
  */
-abstract class BaseNodeSource extends FieldableEntity {
+abstract class BaseNodeSource extends Node {
   /**
    * The module handler.
    *
-   * @var \Drupal\Core\Extension\ModuleHandlerInterface
+   * @var FileSystemInterface
    */
-  protected $moduleHandler;
-
-  /**
-   * The EntityTypeManager service.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManager
-   */
-  protected $entityTypeManager;
+  protected $fileSystem;
 
   /**
    * Number of records to fetch from the database during each batch.
@@ -46,10 +38,8 @@ abstract class BaseNodeSource extends FieldableEntity {
    * {@inheritdoc}
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration, StateInterface $state, ModuleHandlerInterface $module_handler, FileSystemInterface $file_system, EntityTypeManager $entityTypeManager) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $migration, $state, $entityTypeManager);
-    $this->moduleHandler = $module_handler;
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $migration, $state, $entityTypeManager, $module_handler);
     $this->fileSystem = $file_system;
-    $this->entityTypeManager = $entityTypeManager;
   }
 
   /**
@@ -66,111 +56,6 @@ abstract class BaseNodeSource extends FieldableEntity {
       $container->get('file_system'),
       $container->get('entity_type.manager')
     );
-  }
-
-  /**
-   * The join options between the node and the node_revisions table.
-   */
-  const JOIN = 'n.vid = nr.vid';
-
-  /**
-   * {@inheritdoc}
-   */
-  public function query() {
-    // Select node in its last revision.
-    $query = $this->select('node_revision', 'nr')
-      ->fields('n', [
-        'nid',
-        'type',
-        'language',
-        'uid',
-        'status',
-        'created',
-        'changed',
-        'comment',
-        'promote',
-        'sticky',
-        'tnid',
-        'translate',
-      ])
-      ->fields('nr', [
-        'vid',
-        'title',
-        'log',
-        'timestamp',
-      ]);
-    $query->addField('n', 'uid', 'node_uid');
-    $query->addField('nr', 'uid', 'revision_uid');
-    $query->innerJoin('node', 'n', static::JOIN);
-
-    // If the content_translation module is enabled, get the source langcode
-    // to fill the content_translation_source field.
-    if ($this->moduleHandler->moduleExists('content_translation')) {
-      $query->leftJoin('node', 'nt', 'n.tnid = nt.nid');
-      $query->addField('nt', 'language', 'source_langcode');
-    }
-    $this->handleTranslations($query);
-
-    if (isset($this->configuration['node_type'])) {
-      $query->condition('n.type', $this->configuration['node_type']);
-    }
-
-    return $query;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function prepareRow(Row $row) {
-    // Always include this fragment at the beginning of every prepareRow()
-    // implementation, so parent classes can ignore rows.
-    if (parent::prepareRow($row) === FALSE) {
-      return FALSE;
-    }
-    // Determine if the content should be published or not.
-    switch ($row->getSourceProperty('status')) {
-
-      case 1:
-        $row->setSourceProperty('moderation_state', 'published');
-        break;
-
-      default:
-        $row->setSourceProperty('moderation_state', 'draft');
-    }
-
-    return parent::prepareRow($row);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function fields() {
-    $fields = [
-      'nid' => $this->t('Node ID'),
-      'type' => $this->t('Type'),
-      'title' => $this->t('Title'),
-      'node_uid' => $this->t('Node authored by (uid)'),
-      'revision_uid' => $this->t('Revision authored by (uid)'),
-      'created' => $this->t('Created timestamp'),
-      'changed' => $this->t('Modified timestamp'),
-      'status' => $this->t('Published'),
-      'promote' => $this->t('Promoted to front page'),
-      'sticky' => $this->t('Sticky at top of lists'),
-      'revision' => $this->t('Create new revision'),
-      'language' => $this->t('Language (fr, en, ...)'),
-      'tnid' => $this->t('The translation set id for this node'),
-      'timestamp' => $this->t('The timestamp the latest revision of this node was created.'),
-    ];
-    return $fields;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getIds() {
-    $ids['nid']['type'] = 'integer';
-    $ids['nid']['alias'] = 'n';
-    return $ids;
   }
 
   /**
