@@ -2363,3 +2363,15 @@ $sites['labcarterradiochem.local.drupal.uiowa.edu'] = 'carterradiochem.lab.uiowa
 $sites['labcarterradiochem.dev.drupal.uiowa.edu'] = 'carterradiochem.lab.uiowa.edu';
 $sites['labcarterradiochem.stage.drupal.uiowa.edu'] = 'carterradiochem.lab.uiowa.edu';
 $sites['labcarterradiochem.prod.drupal.uiowa.edu'] = 'carterradiochem.lab.uiowa.edu';
+
+// Directory aliases for uiems.org.uiowa.edu.
+$sites['orguiems.local.drupal.uiowa.edu'] = 'uiems.org.uiowa.edu';
+$sites['orguiems.dev.drupal.uiowa.edu'] = 'uiems.org.uiowa.edu';
+$sites['orguiems.stage.drupal.uiowa.edu'] = 'uiems.org.uiowa.edu';
+$sites['orguiems.prod.drupal.uiowa.edu'] = 'uiems.org.uiowa.edu';
+
+// Directory aliases for book.grad.uiowa.edu.
+$sites['gradbook.local.drupal.uiowa.edu'] = 'book.grad.uiowa.edu';
+$sites['gradbook.dev.drupal.uiowa.edu'] = 'book.grad.uiowa.edu';
+$sites['gradbook.stage.drupal.uiowa.edu'] = 'book.grad.uiowa.edu';
+$sites['gradbook.prod.drupal.uiowa.edu'] = 'book.grad.uiowa.edu';
