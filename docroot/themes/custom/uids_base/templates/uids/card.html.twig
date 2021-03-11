@@ -95,7 +95,7 @@
       {% endblock %}
 
       {% block card_content %}
-        {% if card_text is not empty %}
+        {% if card_text|striptags|trim is not empty %}
           <div class="card__description">{{ card_text }}</div>
         {% endif %}
       {% endblock %}
