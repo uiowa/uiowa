@@ -10,22 +10,15 @@ use Drupal\Core\State\StateInterface;
 use Drupal\migrate\Plugin\migrate\source\SqlBase;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Row;
+use Drupal\migrate_drupal\Plugin\migrate\source\d7\FieldableEntity;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides base node source abstract class.
- *
- * Unfortunately, we cannot extend migrate_drupal classes without turning on
- * the entire module which is overkill for most of our needs. We've copied
- * parts of the D7 node source plugin as needed here.
- *
- * @todo Look into a better way of code reuse.
+ * Provides base node source abstract class with additional functionality.
  *
  * @see \Drupal\node\Plugin\migrate\source\d7\Node
  */
-abstract class BaseNodeSource extends SqlBase {
-  use FieldableEntityTrait;
-
+abstract class BaseNodeSource extends FieldableEntity {
   /**
    * The module handler.
    *
@@ -53,7 +46,7 @@ abstract class BaseNodeSource extends SqlBase {
    * {@inheritdoc}
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration, StateInterface $state, ModuleHandlerInterface $module_handler, FileSystemInterface $file_system, EntityTypeManager $entityTypeManager) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $migration, $state);
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $migration, $state, $entityTypeManager);
     $this->moduleHandler = $module_handler;
     $this->fileSystem = $file_system;
     $this->entityTypeManager = $entityTypeManager;
