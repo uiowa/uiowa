@@ -605,7 +605,11 @@ function uids_base_preprocess_block_content__uiowa_collection__tab(&$variables) 
  */
 function uids_base_preprocess_block_content__uiowa_collection__accordion(&$variables) {
   $block = $variables['elements']['#block_content'];
-  $variables['multiselect'] = ($block->get('field_accordion_type')->getValue()[0]['value'] == 'multi_select') ? 'true' : 'false';
+  // If the value hasn't been set, or is set to multi-select,
+  // pass "true" for use in constructing the accordion.
+  // "False" designates a single-select accordion.
+  $variables['multiselect'] = (!isset($block->field_accordion_type->value) ||
+    $block->field_accordion_type->value == 'multi_select') ? 'true' : 'false';
 }
 
 /**
@@ -686,8 +690,7 @@ function uids_base_preprocess_paragraph(&$variables) {
 
       // If our bundle is the collection item and we have a 'field_automatically_open' value set...
       if ($paragraph->bundle() == 'uiowa_collection_item' &&
-        $opened = $paragraph->get('field_automatically_open')->getValue()[0]['value']) {
-
+        $opened = $paragraph->field_automatically_open->value) {
         // Pass a true or false based upon the value to the template.
         // Template: docroot/themes/custom/uids_base/uids_base.theme .
         $variables['field_automatically_open'] = ($opened) ? 'true' : 'false';

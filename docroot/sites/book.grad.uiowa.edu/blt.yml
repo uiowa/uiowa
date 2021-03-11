@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: gradbook.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: gradbook
+  human_name: book.grad.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: gradbook.prod
+drupal:
+  db:
+    database: book_grad_uiowa_edu
+uiowa:
+  requester: ktandy
