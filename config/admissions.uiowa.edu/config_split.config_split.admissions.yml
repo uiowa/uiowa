@@ -13,12 +13,9 @@ module:
   weight: 0
 theme: {  }
 blacklist:
-  - core.entity_view_display.node.area_of_study.pdf
   - core.entity_view_mode.node.pdf
 graylist:
   - config_split.config_split.admissions
-  - core.entity_form_display.node.area_of_study.default
-  - core.entity_form_display.node.page.default
   - core.entity_form_display.node.student_profile.default
   - core.entity_form_display.node.transfer_tips.default
   - core.entity_form_display.paragraph.admissions_card.default
@@ -153,6 +150,7 @@ graylist:
   - field.storage.taxonomy_term.field_image
   - image.style.grid_gallery
   - metatag.metatag_defaults.node__transfer_tips
+  - node.type.area_of_study
   - node.type.student_profile
   - node.type.transfer_tips
   - paragraphs.paragraphs_type.admissions_card
@@ -175,20 +173,19 @@ graylist:
   - views.view.student_card
   - views.view.student_profiles
   - views.view.transfer_tips_list
-  - field.field.node.area_of_study.field_area_of_study_ref_ar
-  - field.storage.node.field_area_of_study_ref_ar
-  - field.field.node.student_profile.field_person_territory
-  - 'core.entity_form_display.node.scholarship.*'
-  - 'core.entity_view_display.node.scholarship.*'
-  - 'core.entity_view_display.node.page.*'
   - 'core.entity_form_display.node.person.*'
-  - 'core.entity_view_display.node.person.*'
-  - 'user.role.*'
-  - fragment.fragment_type.stat
-  - 'field.storage.fragment.field_stat_*'
-  - 'core.entity_view_display.media.image.*'
+  - 'core.entity_form_display.node.scholarship.*'
   - 'core.entity_view_display.block_content.uiowa_collection.*'
+  - 'core.entity_view_display.media.image.*'
+  - 'core.entity_view_display.node.page.*'
+  - 'core.entity_view_display.node.person.*'
+  - 'core.entity_view_display.node.scholarship.*'
   - 'core.entity_view_display.paragraph.uiowa_collection_item.*'
+  - field.field.node.student_profile.field_person_territory
+  - 'field.storage.fragment.field_stat_*'
+  - 'field.storage.node.field_area_of_study_*'
+  - fragment.fragment_type.stat
+  - 'user.role.*'
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 90
