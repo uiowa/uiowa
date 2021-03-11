@@ -21,7 +21,7 @@ abstract class BaseNodeSource extends Node {
   /**
    * The module handler.
    *
-   * @var FileSystemInterface
+   * @var \Drupal\Core\File\FileSystemInterface
    */
   protected $fileSystem;
 
