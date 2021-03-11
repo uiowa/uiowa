@@ -13,17 +13,13 @@ module:
   weight: 0
 theme: {  }
 blacklist:
-  - core.entity_view_display.node.area_of_study.pdf
   - core.entity_view_mode.node.pdf
 graylist:
   - config_split.config_split.admissions
-  - core.entity_form_display.node.area_of_study.default
   - core.entity_form_display.node.student_profile.default
   - core.entity_form_display.node.transfer_tips.default
   - core.entity_form_display.paragraph.admissions_card.default
   - core.entity_form_display.paragraph.admissions_requirement.default
-  - core.entity_view_display.node.area_of_study.default
-  - core.entity_view_display.node.area_of_study.teaser
   - core.entity_view_display.node.student_profile.default
   - core.entity_view_display.node.student_profile.teaser
   - core.entity_view_display.node.transfer_tips.default
@@ -31,33 +27,6 @@ graylist:
   - core.entity_view_display.paragraph.admissions_card.default
   - core.entity_view_display.paragraph.admissions_requirement.default
   - core.entity_view_mode.media.grid_gallery
-  - field.field.node.area_of_study.body
-  - field.field.node.area_of_study.field_area_of_study_academic_gp
-  - field.field.node.area_of_study.field_area_of_study_career
-  - field.field.node.area_of_study.field_area_of_study_college
-  - field.field.node.area_of_study.field_area_of_study_competitive
-  - field.field.node.area_of_study.field_area_of_study_comp_txt
-  - field.field.node.area_of_study.field_area_of_study_course_work
-  - field.field.node.area_of_study.field_area_of_study_first_year
-  - field.field.node.area_of_study.field_area_of_study_four_txt
-  - field.field.node.area_of_study.field_area_of_study_four_year
-  - field.field.node.area_of_study.field_area_of_study_intl
-  - field.field.node.area_of_study.field_area_of_study_link
-  - field.field.node.area_of_study.field_area_of_study_mail_code
-  - field.field.node.area_of_study.field_area_of_study_opportunity
-  - field.field.node.area_of_study.field_area_of_study_requirement
-  - field.field.node.area_of_study.field_area_of_study_scholarship
-  - field.field.node.area_of_study.field_area_of_study_selective
-  - field.field.node.area_of_study.field_area_of_study_select_txt
-  - field.field.node.area_of_study.field_area_of_study_stories
-  - field.field.node.area_of_study.field_area_of_study_subprogram
-  - field.field.node.area_of_study.field_area_of_study_subtitle
-  - field.field.node.area_of_study.field_area_of_study_sub_type
-  - field.field.node.area_of_study.field_area_of_study_teaching
-  - field.field.node.area_of_study.field_area_of_study_teaching_txt
-  - field.field.node.area_of_study.field_area_of_study_transfer
-  - field.field.node.area_of_study.field_area_of_study_why
-  - field.field.node.area_of_study.field_image
   - field.field.node.person.field_person_hometown
   - field.field.node.person.field_person_territory
   - field.field.node.scholarship.field_scholarship_resident
@@ -88,35 +57,9 @@ graylist:
   - field.field.paragraph.admissions_requirement.field_ar_intro
   - field.field.paragraph.admissions_requirement.field_ar_process
   - field.field.paragraph.admissions_requirement.field_ar_requirement
-  - field.storage.node.body
   - field.field.taxonomy_term.academic_groups.field_academic_groups_media
   - field.field.taxonomy_term.academic_groups.field_image
-  - field.storage.node.field_area_of_study_academic_gp
-  - field.storage.node.field_area_of_study_career
-  - field.storage.node.field_area_of_study_college
-  - field.storage.node.field_area_of_study_competitive
-  - field.storage.node.field_area_of_study_comp_txt
-  - field.storage.node.field_area_of_study_course_work
-  - field.storage.node.field_area_of_study_first_year
-  - field.storage.node.field_area_of_study_four_txt
-  - field.storage.node.field_area_of_study_four_year
-  - field.storage.node.field_area_of_study_honors
-  - field.storage.node.field_area_of_study_intl
-  - field.storage.node.field_area_of_study_link
-  - field.storage.node.field_area_of_study_mail_code
-  - field.storage.node.field_area_of_study_opportunity
-  - field.storage.node.field_area_of_study_requirement
-  - field.storage.node.field_area_of_study_scholarship
-  - field.storage.node.field_area_of_study_selective
-  - field.storage.node.field_area_of_study_select_txt
-  - field.storage.node.field_area_of_study_stories
-  - field.storage.node.field_area_of_study_subprogram
-  - field.storage.node.field_area_of_study_subtitle
-  - field.storage.node.field_area_of_study_sub_type
-  - field.storage.node.field_area_of_study_teaching
-  - field.storage.node.field_area_of_study_teaching_txt
-  - field.storage.node.field_area_of_study_transfer
-  - field.storage.node.field_area_of_study_why
+  - field.storage.node.body
   - field.storage.node.field_image
   - field.storage.node.field_meta_tags
   - field.storage.node.field_person_first_name
@@ -149,6 +92,7 @@ graylist:
   - field.storage.taxonomy_term.field_image
   - image.style.grid_gallery
   - metatag.metatag_defaults.node__transfer_tips
+  - node.type.area_of_study
   - node.type.student_profile
   - node.type.transfer_tips
   - paragraphs.paragraphs_type.admissions_card
@@ -171,20 +115,19 @@ graylist:
   - views.view.student_card
   - views.view.student_profiles
   - views.view.transfer_tips_list
-  - field.field.node.area_of_study.field_area_of_study_ref_ar
-  - field.storage.node.field_area_of_study_ref_ar
-  - field.field.node.student_profile.field_person_territory
-  - 'core.entity_form_display.node.scholarship.*'
-  - 'core.entity_view_display.node.scholarship.*'
-  - 'core.entity_view_display.node.page.*'
   - 'core.entity_form_display.node.person.*'
-  - 'core.entity_view_display.node.person.*'
-  - 'user.role.*'
-  - fragment.fragment_type.stat
-  - 'field.storage.fragment.field_stat_*'
-  - 'core.entity_view_display.media.image.*'
+  - 'core.entity_form_display.node.scholarship.*'
   - 'core.entity_view_display.block_content.uiowa_collection.*'
+  - 'core.entity_view_display.media.image.*'
+  - 'core.entity_view_display.node.page.*'
+  - 'core.entity_view_display.node.person.*'
+  - 'core.entity_view_display.node.scholarship.*'
   - 'core.entity_view_display.paragraph.uiowa_collection_item.*'
+  - field.field.node.student_profile.field_person_territory
+  - 'field.storage.fragment.field_stat_*'
+  - 'field.storage.node.field_area_of_study_*'
+  - fragment.fragment_type.stat
+  - 'user.role.*'
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 90
