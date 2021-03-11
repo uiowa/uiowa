@@ -2,7 +2,13 @@
 
 namespace Drupal\sitenow_migrate\Plugin\migrate\source;
 
+/**
+ * Provides methods for interacting with fields without migrate_drupal.
+ *
+ * @see \Drupal\migrate_drupal\Plugin\migrate\source\d7\FieldableEntity
+ */
 trait FieldableEntityTrait {
+
   /**
    * Returns all non-deleted field instances attached to a specific entity type.
    *
@@ -73,4 +79,5 @@ trait FieldableEntityTrait {
     }
     return $values;
   }
+
 }
