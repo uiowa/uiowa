@@ -1,0 +1,39 @@
+uuid: e450ec00-f76c-4d0f-bab5-b2e9b6defc64
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.colleges.field_college_website
+    - taxonomy.vocabulary.colleges
+  module:
+    - link
+    - text
+id: taxonomy_term.colleges.default
+targetEntityType: taxonomy_term
+bundle: colleges
+mode: default
+content:
+  description:
+    label: hidden
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_college_website:
+    weight: 1
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true
