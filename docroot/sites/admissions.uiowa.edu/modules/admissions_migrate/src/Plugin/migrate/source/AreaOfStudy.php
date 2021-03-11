@@ -56,15 +56,23 @@ class AreaOfStudy extends BaseNodeSource {
    * @throws \Drupal\migrate\MigrateException
    */
   public function prepareRow(Row $row) {
-    // Strip tags so they don't show up in the field teaser.
-    $row->setSourceProperty('body_summary', strip_tags($row->getSourceProperty('body_summary')));
-
     $nid = $row->getSourceProperty('nid');
 
     // Get Field API field values.
     foreach ($this->getFields('node', 'undergraduate_majors_programs') as $field_name => $field) {
       $row->setSourceProperty($field_name, $this->getFieldValues('node', $field_name, $nid));
     }
+
+    $row->setSourceProperty('related_links', [
+      [
+        'url' => $row->getSourceProperty('field_dept_url')[0]['url'],
+        'title' => $row->getSourceProperty('field_dept_url')[0]['title'],
+      ],
+      [
+        'url' => $row->getSourceProperty('field_catalog_url')[0]['url'],
+        'title' => $row->getSourceProperty('field_catalog_url')[0]['title'],
+      ],
+    ]);
 
     // Call the parent prepareRow.
     return parent::prepareRow($row);

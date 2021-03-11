@@ -107,6 +107,12 @@ process:
     map:
       0: competitive_admission
   field_area_of_study_comp_txt: field_competitive_description
+  field_area_of_study_link:
+    plugin: sub_process
+    source: related_links
+    process:
+      uri: url
+      title: title
 destination:
   plugin: 'entity:node'
   default_bundle: area_of_study
