@@ -10,7 +10,7 @@ use Drupal\migrate\Row;
  *
  * @MigrateSource(
  *  id = "d7_admissions_aos",
- *  source_module = "admissions_migrate"
+ *  source_module = "node"
  * )
  */
 class AreaOfStudy extends BaseNodeSource {
