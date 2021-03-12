@@ -16,7 +16,11 @@ source:
 process:
   tid: tid
   name: name
-  description: description
+  description:
+    plugin: callback
+    callable: strip_tags
+    source: description
+  format: format
 destination:
   plugin: 'entity:taxonomy_term'
   default_bundle: academic_groups
