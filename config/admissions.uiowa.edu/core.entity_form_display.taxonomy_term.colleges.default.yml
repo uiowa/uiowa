@@ -4,9 +4,11 @@ status: true
 dependencies:
   config:
     - field.field.taxonomy_term.colleges.field_college_website
+    - field.field.taxonomy_term.colleges.field_image
     - taxonomy.vocabulary.colleges
   module:
     - link
+    - media_library
     - path
     - text
 id: taxonomy_term.colleges.default
@@ -15,24 +17,31 @@ bundle: colleges
 mode: default
 content:
   description:
-    type: text_textfield
-    weight: 0
+    type: text_textarea
+    weight: 2
     region: content
     settings:
-      size: 60
       placeholder: ''
+      rows: 5
     third_party_settings: {  }
   field_college_website:
-    weight: 101
+    weight: 5
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
     region: content
+  field_image:
+    weight: 1
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+    type: media_library_widget
+    region: content
   name:
     type: string_textfield
-    weight: -5
+    weight: 0
     region: content
     settings:
       size: 60
@@ -40,7 +49,7 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 30
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -48,7 +57,7 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 100
+    weight: 4
     region: content
     third_party_settings: {  }
 hidden: {  }

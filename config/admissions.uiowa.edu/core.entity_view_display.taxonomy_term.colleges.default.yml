@@ -4,10 +4,29 @@ status: true
 dependencies:
   config:
     - field.field.taxonomy_term.colleges.field_college_website
+    - field.field.taxonomy_term.colleges.field_image
     - taxonomy.vocabulary.colleges
   module:
+    - ctools
+    - layout_builder
+    - layout_builder_restrictions
     - link
+    - system
     - text
+  theme:
+    - uids_base
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: false
+  layout_builder_restrictions:
+    allowed_block_categories: {  }
+    entity_view_mode_restriction:
+      whitelisted_blocks: {  }
+      blacklisted_blocks: {  }
+      allowed_layouts: {  }
+    entity_view_mode_restriction_by_region:
+      allowed_layouts: {  }
 id: taxonomy_term.colleges.default
 targetEntityType: taxonomy_term
 bundle: colleges
@@ -31,6 +50,14 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+    region: content
+  field_image:
+    weight: 2
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
     region: content
 hidden:
   entity_print_view_epub: true
