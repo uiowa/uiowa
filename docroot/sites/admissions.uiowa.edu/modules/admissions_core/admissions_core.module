@@ -301,6 +301,7 @@ function admissions_core_preprocess_layout(&$variables) {
           break;
 
         case 'student_profile':
+          $variables['#attached']['library'][] = 'admissions_core/student-profile';
           if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
 
             // Set the featured image display.
@@ -449,6 +450,14 @@ function admissions_core_theme_suggestions_field_alter(array &$suggestions, arra
  * Implements hook_views_pre_render().
  */
 function admissions_core_views_pre_render(ViewExecutable $view) {
+  if ($view->id() == 'student_card') {
+    $headline_markup = [
+      '#markup' => '<span class="fas fa-user"></span> &nbsp;<a href="/student-profiles">' . $view->element["headline"]["#headline"] . '</a>',
+    ];
+    $view->element["headline"]["#headline"] = $headline_markup;
+    // Headline size field doesn't seem to be working. Override.
+    $view->element["headline"]["#heading_size"] = 'h4';
+  }
   if ($view->id() == "counselors") {
     switch ($view->current_display) {
       case 'block_counselors':
@@ -456,7 +465,6 @@ function admissions_core_views_pre_render(ViewExecutable $view) {
         $view->element['#attached']['library'][] = 'admissions_core/counselors-list';
         $view->element['#attached']['library'][] = 'admissions_core/person';
         break;
-
     }
   }
 }
