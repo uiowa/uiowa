@@ -5,10 +5,7 @@ namespace Drupal\layout_builder_custom\Plugin\Display;
 use Drupal\Core\Entity\Element\EntityAutocomplete;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\SubformState;
-use Drupal\Core\Form\SubformStateInterface;
 use Drupal\Core\Render\Element\Checkboxes;
-use Drupal\Core\Url;
-use Drupal\link\Plugin\Field\FieldWidget\LinkWidget;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\views\Plugin\Block\ViewsBlock;
 use Drupal\views\Plugin\views\display\Block as CoreBlock;
@@ -32,6 +29,12 @@ class ListBlock extends CoreBlock {
       'items_per_page' => $this->t('Items to display'),
     ];
     $filter_intersect = array_intersect_key($filter_options, $filtered_allow);
+
+    $options['allow'] = [
+      'category' => 'block',
+      'title' => $this->t('Allow settings'),
+      'value' => empty($filtered_allow) ? $this->t('None') : implode(', ', $filter_intersect),
+    ];
 
     $customizable_filters = $this->getOption('filter_in_block');
     $filter_count = !empty($customizable_filters) ? count($customizable_filters) : 0;
@@ -184,7 +187,6 @@ class ListBlock extends CoreBlock {
     }
 
     parent::blockSubmit($block, $form, $form_state);
-    $allow_settings = array_filter($this->getOption('allow'));
 
     // Alter the headline field settings for configuration.
     $block->setConfigurationValue('headline', $form_state->getValue([
@@ -195,7 +197,7 @@ class ListBlock extends CoreBlock {
     // Save "Filter in block" settings to block configuration.
     $block->setConfigurationValue('exposed_filter_values', $form_state->getValue([
       'override',
-      'exposed_filters'
+      'exposed_filters',
     ]));
   }
 
@@ -205,9 +207,7 @@ class ListBlock extends CoreBlock {
   public function preBlockBuild(ViewsBlock $block) {
     parent::preBlockBuild($block);
 
-    $allow_settings = array_filter($this->getOption('allow'));
     $config = $block->getConfiguration();
-    [, $display_id] = explode('-', $block->getDerivativeId(), 2);
 
     // Attach the headline, if configured.
     if (!empty($config['headline'])) {
