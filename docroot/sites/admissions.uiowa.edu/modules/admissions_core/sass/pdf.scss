@@ -467,4 +467,56 @@ h6 {
     }
   }
 }
+.node--type-page {
 
+  table, .table {
+    font-size: 10px;
+    border-spacing: 0;
+    color: $secondary;
+    background-color: $white;
+
+    td,
+    th {
+      vertical-align: middle;
+      font-size: $content-font-size;
+    }
+
+    th {
+      background-color: $light;
+      color: #000;
+    }
+
+    thead th {
+      background-color: #fff;
+    }
+
+    tbody th {
+      background-color: #fff;
+      left: 0;
+    }
+
+    tbody tr:last-child td,
+    tbody tr:last-child th {
+      border-bottom-width: 0;
+    }
+
+    thead td,
+    thead th {
+      color: $light;
+    }
+
+    &.is-striped {
+
+      thead th {
+        background: $light;
+        text-transform: uppercase;
+        color: black;
+        font-size: 10px;
+      }
+      p, td {
+        font-size: 10px;
+        padding: 12px;
+      }
+    }
+  }
+}
