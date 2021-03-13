@@ -79,7 +79,6 @@ class AreaOfStudy extends BaseNodeSource {
       ];
     }
 
-
     $row->setSourceProperty('related_links', $related_links);
 
     // Call the parent prepareRow.

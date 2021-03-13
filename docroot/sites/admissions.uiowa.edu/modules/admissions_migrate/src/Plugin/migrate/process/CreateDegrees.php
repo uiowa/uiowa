@@ -2,19 +2,21 @@
 
 namespace Drupal\admissions_migrate\Plugin\migrate\process;
 
-use Drupal\migrate\Annotation\MigrateProcessPlugin;
 use Drupal\migrate\MigrateExecutableInterface;
 use Drupal\migrate\ProcessPluginBase;
 use Drupal\migrate\Row;
 use Drupal\paragraphs\Entity\Paragraph;
 
 /**
+ * Custom process plugin to create degree paragraph items on AOS nodes.
+ *
  * @MigrateProcessPlugin(
  *   id = "create_degrees",
  *   handle_multiples = TRUE
  * )
  */
 class CreateDegrees extends ProcessPluginBase {
+
   /**
    * {@inheritdoc}
    */
@@ -35,7 +37,20 @@ class CreateDegrees extends ProcessPluginBase {
     return TRUE;
   }
 
-  private function createParagraphItem($item, $row) {
+  /**
+   * Create a paragraph item and return the expected field values.
+   *
+   * @param array $item
+   *   The item to generate the paragraph from.
+   * @param \Drupal\migrate\Row $row
+   *   The current row.
+   *
+   * @return array
+   *   Array keyed by paragraph target ID and revision ID.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  private function createParagraphItem(array $item, Row $row) {
     if (str_contains($item['value'], '(')) {
       list($label, $abbr) = explode('(', $item['value']);
       $label = trim($label);
@@ -49,7 +64,7 @@ class CreateDegrees extends ProcessPluginBase {
       ]);
     }
 
-    /** @var Paragraph $paragraph */
+    /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
     $paragraph = Paragraph::create([
       'type' => 'degree',
       'field_degree_label' => $label,
@@ -63,6 +78,5 @@ class CreateDegrees extends ProcessPluginBase {
       'target_revision_id' => $paragraph->getRevisionId(),
     ];
   }
-
 
 }
