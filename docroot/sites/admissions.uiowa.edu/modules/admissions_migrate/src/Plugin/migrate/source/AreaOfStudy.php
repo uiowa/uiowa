@@ -63,16 +63,24 @@ class AreaOfStudy extends BaseNodeSource {
       $row->setSourceProperty($field_name, $this->getFieldValues('node', $field_name, $nid));
     }
 
-    $row->setSourceProperty('related_links', [
-      [
-        'url' => $row->getSourceProperty('field_dept_url')[0]['url'],
-        'title' => $row->getSourceProperty('field_dept_url')[0]['title'],
-      ],
-      [
-        'url' => $row->getSourceProperty('field_catalog_url')[0]['url'],
-        'title' => $row->getSourceProperty('field_catalog_url')[0]['title'],
-      ],
-    ]);
+    $related_links = [];
+
+    if ($dept_url = $row->getSourceProperty('field_dept_url')) {
+      $related_links[] = [
+        'url' => $dept_url[0]['url'],
+        'title' => $dept_url[0]['title'],
+      ];
+    }
+
+    if ($catalog_url = $row->getSourceProperty('field_catalog_url')) {
+      $related_links[] = [
+        'url' => $catalog_url[0]['url'],
+        'title' => $catalog_url[0]['title'],
+      ];
+    }
+
+
+    $row->setSourceProperty('related_links', $related_links);
 
     // Call the parent prepareRow.
     return parent::prepareRow($row);
