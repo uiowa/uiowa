@@ -48,6 +48,9 @@ process:
         source: tid
   field_area_of_study_subtitle: field_sub_title
   field_area_of_study_mail_code: field_mail_item_code
+  field_area_of_study_majors:
+    plugin: create_degrees
+    source: field_degree
   field_area_of_study_minors:
     plugin: sub_process
     source: field_minor
