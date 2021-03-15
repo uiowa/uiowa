@@ -469,8 +469,6 @@ function admissions_core_views_pre_render(ViewExecutable $view) {
       '#markup' => '<span class="fas fa-user"></span> &nbsp;<a href="/student-profiles">' . $view->element["headline"]["#headline"] . '</a>',
     ];
     $view->element["headline"]["#headline"] = $headline_markup;
-    // Headline size field doesn't seem to be working. Override.
-    $view->element["headline"]["#heading_size"] = 'h4';
   }
   if ($view->id() == "counselors") {
     switch ($view->current_display) {
