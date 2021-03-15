@@ -106,6 +106,9 @@ class ListBlock extends CoreBlock {
   public function blockForm(ViewsBlock $block, array &$form, FormStateInterface $form_state) {
     $form = parent::blockForm($block, $form, $form_state);
 
+    $allow_settings = array_filter($this->getOption('allow'));
+    $block_configuration = $block->getConfiguration();
+
     // @todo Possibly wire this up to the views title?
     $form['headline'] = HeadlineHelper::getElement([
       'headline' => $block_configuration['headline']['headline'] ?? NULL,
@@ -115,9 +118,6 @@ class ListBlock extends CoreBlock {
       'child_heading_size' => $block_configuration['headline']['child_heading_size'] ?? 'h3',
     ]);
     $form['headline']['#weight'] = 1;
-
-    $allow_settings = array_filter($this->getOption('allow'));
-    $block_configuration = $block->getConfiguration();
 
     // Modify "Items per page" block settings form.
     if (!empty($allow_settings['items_per_page'])) {
