@@ -3,12 +3,14 @@
 namespace Drupal\admissions_migrate\Plugin\migrate\process;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\migrate\MigrateExecutableInterface;
 use Drupal\migrate\ProcessPluginBase;
 use Drupal\migrate\Row;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\ParagraphInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -20,6 +22,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * )
  */
 class CreateDegrees extends ProcessPluginBase implements ContainerFactoryPluginInterface {
+  use LoggerChannelTrait;
+
   /**
    * The entity_type.manager service.
    *
@@ -82,7 +86,7 @@ class CreateDegrees extends ProcessPluginBase implements ContainerFactoryPluginI
     else {
       $label = $item['value'];
 
-      \Drupal::logger('admissions_migrate')->warning('Cannot split degree on abbreviation for AOS: @aos.', [
+      $this->getLogger('admissions_migrate')->warning('Cannot split degree on abbreviation for AOS: @aos.', [
         '@aos' => $row->getSourceProperty('title'),
       ]);
     }
