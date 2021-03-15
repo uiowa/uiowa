@@ -8,9 +8,6 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\migrate\MigrateExecutableInterface;
 use Drupal\migrate\ProcessPluginBase;
 use Drupal\migrate\Row;
-use Drupal\paragraphs\Entity\Paragraph;
-use Drupal\paragraphs\ParagraphInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -27,15 +24,21 @@ class CreateDegrees extends ProcessPluginBase implements ContainerFactoryPluginI
   /**
    * The entity_type.manager service.
    *
-   * @var EntityTypeManagerInterface
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 
+  /**
+   * {@inheritdoc}
+   */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entityTypeManager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManager = $entityTypeManager;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
       $configuration,
@@ -44,6 +47,7 @@ class CreateDegrees extends ProcessPluginBase implements ContainerFactoryPluginI
       $container->get('entity_type.manager')
     );
   }
+
   /**
    * {@inheritdoc}
    */
@@ -91,7 +95,7 @@ class CreateDegrees extends ProcessPluginBase implements ContainerFactoryPluginI
       ]);
     }
 
-    /** @var ParagraphInterface $paragraph */
+    /** @var \Drupal\paragraphs\Entity\ParagraphInterface $paragraph */
     $paragraph = $this->entityTypeManager->getStorage('paragraph')->create([
       'type' => 'degree',
       'field_degree_label' => $label,
