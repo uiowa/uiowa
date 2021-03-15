@@ -5,6 +5,8 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.area_of_study.body
+    - field.field.node.area_of_study.field_area_of_study_pretty_title
+    - field.field.node.area_of_study.field_area_of_study_academic_gp
     - field.field.node.area_of_study.field_area_of_study_career
     - field.field.node.area_of_study.field_area_of_study_certificates
     - field.field.node.area_of_study.field_area_of_study_college
@@ -49,20 +51,25 @@ content:
   body:
     label: hidden
     type: text_summary_or_trimmed
-    weight: 101
+    weight: 0
     settings:
       trim_length: 600
     third_party_settings: {  }
     region: content
-  links:
-    weight: 100
+  field_image:
+    type: entity_reference_entity_view
+    weight: 1
     region: content
-    settings: {  }
+    label: hidden
+    settings:
+      view_mode: medium__ultrawide
+      link: false
     third_party_settings: {  }
 hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
+  field_area_of_study_academic_gp: true
   field_area_of_study_career: true
   field_area_of_study_certificates: true
   field_area_of_study_college: true
@@ -81,6 +88,7 @@ hidden:
   field_area_of_study_online: true
   field_area_of_study_opportunity: true
   field_area_of_study_preprof: true
+  field_area_of_study_pretty_title: true
   field_area_of_study_requirement: true
   field_area_of_study_scholarship: true
   field_area_of_study_select_txt: true
@@ -94,5 +102,5 @@ hidden:
   field_area_of_study_teaching_txt: true
   field_area_of_study_transfer: true
   field_area_of_study_why: true
-  field_image: true
+  links: true
   search_api_excerpt: true
