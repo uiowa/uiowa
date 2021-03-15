@@ -132,6 +132,15 @@ process:
   field_area_of_study_opportunity: field_studopps
   field_area_of_study_career: field_careers
   field_area_of_study_scholarship: field_scholarships
+  field_area_of_study_first_year:
+    plugin: create_requirement
+    source: field_requirements
+  field_area_of_study_transfer:
+    plugin: create_requirement
+    source: field_requirements_trans
+  field_area_of_study_intl:
+    plugin: create_requirement
+    source: field_requirements_intl
 destination:
   plugin: 'entity:node'
   default_bundle: area_of_study
