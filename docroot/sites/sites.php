@@ -2381,3 +2381,9 @@ $sites['nlp.local.drupal.uiowa.edu'] = 'nlp.uiowa.edu';
 $sites['nlp.dev.drupal.uiowa.edu'] = 'nlp.uiowa.edu';
 $sites['nlp.stage.drupal.uiowa.edu'] = 'nlp.uiowa.edu';
 $sites['nlp.prod.drupal.uiowa.edu'] = 'nlp.uiowa.edu';
+
+// Directory aliases for jprineas.lab.uiowa.edu.
+$sites['labjprineas.local.drupal.uiowa.edu'] = 'jprineas.lab.uiowa.edu';
+$sites['labjprineas.dev.drupal.uiowa.edu'] = 'jprineas.lab.uiowa.edu';
+$sites['labjprineas.stage.drupal.uiowa.edu'] = 'jprineas.lab.uiowa.edu';
+$sites['labjprineas.prod.drupal.uiowa.edu'] = 'jprineas.lab.uiowa.edu';
