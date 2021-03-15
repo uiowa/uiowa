@@ -5,6 +5,8 @@ namespace Drupal\admissions_migrate\EventSubscriber;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\migrate\Event\MigrateEvents;
 use Drupal\migrate\Event\MigratePostRowSaveEvent;
+use Drupal\migrate\Event\MigrateRollbackEvent;
+use Drupal\paragraphs\Entity\Paragraph;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -35,7 +37,45 @@ class MigrateEventSubscriber implements EventSubscriberInterface {
   public static function getSubscribedEvents() {
     return [
       MigrateEvents::POST_ROW_SAVE => ['onPostRowSave'],
+      MigrateEvents::POST_ROLLBACK => ['onPostRollback'],
     ];
+  }
+
+  /**
+   * Delete entities not tracked in migrate map after rolling back.
+   *
+   * @param MigrateRollbackEvent $event
+   *   The post rollback event.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function onPostRollback(MigrateRollbackEvent $event) {
+    $migration = $event->getMigration();
+
+    if ($migration->id() == 'd7_admissions_aos') {
+      $entities = [
+        'paragraph' => 'degree',
+        'node' => 'transfer_tips',
+      ];
+
+      foreach ($entities as $type => $bundle) {
+        $field = ($type == 'taxonomy_term') ? 'vid' : 'type';
+
+        $query = \Drupal::entityTypeManager()->getStorage($type)->getQuery();
+
+        $ids = $query
+          ->condition($field, $bundle)
+          ->execute();
+
+        if ($ids) {
+          $controller = \Drupal::entityTypeManager()->getStorage($type);
+          $entities = $controller->loadMultiple($ids);
+          $controller->delete($entities);
+        }
+      }
+    }
   }
 
   /**
