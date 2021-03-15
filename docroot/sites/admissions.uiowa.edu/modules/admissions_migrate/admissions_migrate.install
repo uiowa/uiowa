@@ -33,6 +33,7 @@ function admissions_migrate_install() {
 
   if ($env == 'local' || $env == 'dev') {
     $entities = [
+      'paragraph' => 'degree',
       'taxonomy_term' => 'academic_groups',
       'node' => 'areas_of_study',
       'node' => 'transfer_tips',
