@@ -95,7 +95,7 @@ class CreateDegrees extends ProcessPluginBase implements ContainerFactoryPluginI
       ]);
     }
 
-    /** @var \Drupal\paragraphs\Entity\ParagraphInterface $paragraph */
+    /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
     $paragraph = $this->entityTypeManager->getStorage('paragraph')->create([
       'type' => 'degree',
       'field_degree_label' => $label,
