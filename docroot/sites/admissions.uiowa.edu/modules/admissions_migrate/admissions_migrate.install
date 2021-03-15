@@ -27,28 +27,33 @@ function admissions_migrate_install() {
   $config->set('status', TRUE);
   $config->save(TRUE);
 
-  // Delete all existing entities that we will migrate.
-  $query = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->getQuery();
+  // Delete all existing entities that we will migrate. Only do this in local
+  // and dev where we continually sync, enable and re-run the migrations.
+  $env = getenv('AH_SITE_ENVIRONMENT') ?: 'local';
 
-  $tids = $query
-    ->condition('vid', 'academic_groups')
-    ->execute();
+  if ($env == 'local' || $env == 'dev') {
+    $query = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->getQuery();
 
-  if ($tids) {
-    $controller = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
-    $entities = $controller->loadMultiple($tids);
-    $controller->delete($entities);
-  }
+    $tids = $query
+      ->condition('vid', 'academic_groups')
+      ->execute();
 
-  $query = \Drupal::entityTypeManager()->getStorage('node')->getQuery();
+    if ($tids) {
+      $controller = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+      $entities = $controller->loadMultiple($tids);
+      $controller->delete($entities);
+    }
 
-  $nids = $query
-    ->condition('type', 'area_of_study')
-    ->execute();
+    $query = \Drupal::entityTypeManager()->getStorage('node')->getQuery();
 
-  if ($nids) {
-    $controller = \Drupal::entityTypeManager()->getStorage('node');
-    $entities = $controller->loadMultiple($nids);
-    $controller->delete($entities);
+    $nids = $query
+      ->condition('type', 'area_of_study')
+      ->execute();
+
+    if ($nids) {
+      $controller = \Drupal::entityTypeManager()->getStorage('node');
+      $entities = $controller->loadMultiple($nids);
+      $controller->delete($entities);
+    }
   }
 }
