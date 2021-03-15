@@ -32,28 +32,26 @@ function admissions_migrate_install() {
   $env = getenv('AH_SITE_ENVIRONMENT') ?: 'local';
 
   if ($env == 'local' || $env == 'dev') {
-    $query = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->getQuery();
+    $entities = [
+      'taxonomy_term' => 'academic_groups',
+      'node' => 'areas_of_study',
+      'node' => 'transfer_tips',
+    ];
 
-    $tids = $query
-      ->condition('vid', 'academic_groups')
-      ->execute();
+    foreach ($entities as $type => $bundle) {
+      $field = ($type == 'taxonomy_term') ? 'vid' : 'type';
 
-    if ($tids) {
-      $controller = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
-      $entities = $controller->loadMultiple($tids);
-      $controller->delete($entities);
-    }
+      $query = \Drupal::entityTypeManager()->getStorage($type)->getQuery();
 
-    $query = \Drupal::entityTypeManager()->getStorage('node')->getQuery();
+      $ids = $query
+        ->condition($field, $bundle)
+        ->execute();
 
-    $nids = $query
-      ->condition('type', 'area_of_study')
-      ->execute();
-
-    if ($nids) {
-      $controller = \Drupal::entityTypeManager()->getStorage('node');
-      $entities = $controller->loadMultiple($nids);
-      $controller->delete($entities);
+      if ($ids) {
+        $controller = \Drupal::entityTypeManager()->getStorage($type);
+        $entities = $controller->loadMultiple($ids);
+        $controller->delete($entities);
+      }
     }
   }
 }
