@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.area_of_study.body
+    - field.field.node.area_of_study.field_area_of_study_pretty_title
     - field.field.node.area_of_study.field_area_of_study_academic_gp
     - field.field.node.area_of_study.field_area_of_study_career
     - field.field.node.area_of_study.field_area_of_study_certificates
@@ -697,6 +698,14 @@ content:
     region: content
   field_area_of_study_preprof:
     weight: 11
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_area_of_study_pretty_title:
+    weight: 41
     label: above
     settings:
       link_to_entity: false

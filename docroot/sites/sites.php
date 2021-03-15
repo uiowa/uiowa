@@ -2369,3 +2369,15 @@ $sites['orguiems.local.drupal.uiowa.edu'] = 'uiems.org.uiowa.edu';
 $sites['orguiems.dev.drupal.uiowa.edu'] = 'uiems.org.uiowa.edu';
 $sites['orguiems.stage.drupal.uiowa.edu'] = 'uiems.org.uiowa.edu';
 $sites['orguiems.prod.drupal.uiowa.edu'] = 'uiems.org.uiowa.edu';
+
+// Directory aliases for book.grad.uiowa.edu.
+$sites['gradbook.local.drupal.uiowa.edu'] = 'book.grad.uiowa.edu';
+$sites['gradbook.dev.drupal.uiowa.edu'] = 'book.grad.uiowa.edu';
+$sites['gradbook.stage.drupal.uiowa.edu'] = 'book.grad.uiowa.edu';
+$sites['gradbook.prod.drupal.uiowa.edu'] = 'book.grad.uiowa.edu';
+
+// Directory aliases for nlp.uiowa.edu.
+$sites['nlp.local.drupal.uiowa.edu'] = 'nlp.uiowa.edu';
+$sites['nlp.dev.drupal.uiowa.edu'] = 'nlp.uiowa.edu';
+$sites['nlp.stage.drupal.uiowa.edu'] = 'nlp.uiowa.edu';
+$sites['nlp.prod.drupal.uiowa.edu'] = 'nlp.uiowa.edu';
