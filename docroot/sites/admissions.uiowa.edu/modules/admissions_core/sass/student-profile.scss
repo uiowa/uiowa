@@ -1,6 +1,20 @@
 @import "../../../../../themes/custom/uids_base/uids/components/headline/headline.scss";
 
 .block-views-blockstudent-card-block-student-grid {
+  .views-col {
+    display: flex;
+    align-items: stretch;
+    a:not(:empty) {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      .empty-img {
+        background-image: url('/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/one-person-BLACK.png');
+      }
+    }
+  }
   .views-element-container {
     margin-top: 0;
   }
