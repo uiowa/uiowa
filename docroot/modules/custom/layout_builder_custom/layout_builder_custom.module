@@ -143,6 +143,10 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       unset($form['settings']['label']);
       unset($form['settings']['label_display']);
       unset($form['settings']['admin_label']['#title']);
+      // Hide ones implemented by Views because ListBlock has headline.
+      unset($form["settings"]["views_label_fieldset"]);
+      unset($form["settings"]["views_label_checkbox"]);
+      unset($form["settings"]["views_label"]);
 
       // Set '#states' for block grid columns.
       $form['layout_builder_style_grid_columns']['#states'] = [
