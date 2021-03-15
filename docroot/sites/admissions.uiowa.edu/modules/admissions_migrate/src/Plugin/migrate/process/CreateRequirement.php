@@ -57,7 +57,7 @@ class CreateRequirement extends ProcessPluginBase implements ContainerFactoryPlu
       'field_ar_intro' => [
         'value' => $value['value'],
         'format' => 'minimal',
-      ]
+      ],
     ]);
 
     $paragraph->save();

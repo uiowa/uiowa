@@ -15,14 +15,14 @@ class MigrateEventSubscriber implements EventSubscriberInterface {
   /**
    * The entity_type.manager service.
    *
-   * @var EntityTypeManagerInterface
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 
   /**
    * Constructs event subscriber.
    *
-   * @param EntityTypeManagerInterface $entityTypeManager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity_type.manager service.
    */
   public function __construct(EntityTypeManagerInterface $entityTypeManager) {
@@ -34,14 +34,14 @@ class MigrateEventSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents() {
     return [
-      MigrateEvents::POST_ROW_SAVE => ['onPostRowSave']
+      MigrateEvents::POST_ROW_SAVE => ['onPostRowSave'],
     ];
   }
 
   /**
    * Create transfer tips nodes after saving a row so we know the destination.
    *
-   * @param MigratePostRowSaveEvent $event
+   * @param \Drupal\migrate\Event\MigratePostRowSaveEvent $event
    *   The migrate post row save event.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
