@@ -2,10 +2,14 @@
 
 namespace Drupal\admissions_migrate\Plugin\migrate\process;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\migrate\MigrateExecutableInterface;
 use Drupal\migrate\ProcessPluginBase;
 use Drupal\migrate\Row;
 use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\paragraphs\ParagraphInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Custom process plugin to create degree paragraph items on AOS nodes.
@@ -15,8 +19,27 @@ use Drupal\paragraphs\Entity\Paragraph;
  *   handle_multiples = TRUE
  * )
  */
-class CreateDegrees extends ProcessPluginBase {
+class CreateDegrees extends ProcessPluginBase implements ContainerFactoryPluginInterface {
+  /**
+   * The entity_type.manager service.
+   *
+   * @var EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
 
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entityTypeManager) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->entityTypeManager = $entityTypeManager;
+  }
+
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('entity_type.manager')
+    );
+  }
   /**
    * {@inheritdoc}
    */
@@ -64,8 +87,8 @@ class CreateDegrees extends ProcessPluginBase {
       ]);
     }
 
-    /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
-    $paragraph = Paragraph::create([
+    /** @var ParagraphInterface $paragraph */
+    $paragraph = $this->entityTypeManager->getStorage('paragraph')->create([
       'type' => 'degree',
       'field_degree_label' => $label,
       'field_degree_abbreviation' => $abbr ?? NULL,
