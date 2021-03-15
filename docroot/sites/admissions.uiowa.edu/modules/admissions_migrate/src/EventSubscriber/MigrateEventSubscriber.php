@@ -6,7 +6,6 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\migrate\Event\MigrateEvents;
 use Drupal\migrate\Event\MigratePostRowSaveEvent;
 use Drupal\migrate\Event\MigrateRollbackEvent;
-use Drupal\paragraphs\Entity\Paragraph;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -44,7 +43,7 @@ class MigrateEventSubscriber implements EventSubscriberInterface {
   /**
    * Delete entities not tracked in migrate map after rolling back.
    *
-   * @param MigrateRollbackEvent $event
+   * @param \Drupal\migrate\Event\MigrateRollbackEvent $event
    *   The post rollback event.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
