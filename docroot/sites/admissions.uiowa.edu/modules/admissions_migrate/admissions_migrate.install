@@ -26,4 +26,29 @@ function admissions_migrate_install() {
   $config = $config_factory->getEditable('config_split.config_split.admissions_migrate');
   $config->set('status', TRUE);
   $config->save(TRUE);
+
+  // Delete all existing entities that we will migrate.
+  $query = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->getQuery();
+
+  $tids = $query
+    ->condition('vid', 'academic_groups')
+    ->execute();
+
+  if ($tids) {
+    $controller = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+    $entities = $controller->loadMultiple($tids);
+    $controller->delete($entities);
+  }
+
+  $query = \Drupal::entityTypeManager()->getStorage('node')->getQuery();
+
+  $nids = $query
+    ->condition('type', 'area_of_study')
+    ->execute();
+
+  if ($nids) {
+    $controller = \Drupal::entityTypeManager()->getStorage('node');
+    $entities = $controller->loadMultiple($nids);
+    $controller->delete($entities);
+  }
 }
