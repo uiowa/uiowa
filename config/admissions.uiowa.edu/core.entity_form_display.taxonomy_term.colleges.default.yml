@@ -18,14 +18,14 @@ mode: default
 content:
   description:
     type: text_textarea
-    weight: 2
+    weight: 3
     region: content
     settings:
       placeholder: ''
       rows: 5
     third_party_settings: {  }
   field_college_website:
-    weight: 5
+    weight: 2
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -49,7 +49,7 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 3
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -57,12 +57,8 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 4
+    weight: 5
     region: content
     third_party_settings: {  }
-  tvi:
-    weight: 100
-    settings: {  }
-    third_party_settings: {  }
-    region: content
-hidden: {  }
+hidden:
+  tvi: true
