@@ -69,7 +69,7 @@
       </div>
     {% else %}
         {% for item in items %}
-          <{{ item_tag }}{{ attributes.addClass(classes, 'field__item') }}>{{ item.content }}</{{ item_tag }}>
+          <{{ item_tag }}{{ attributes.addClass(classes, 'field__item') }}>{{ block('field_icon') }}{{ item.content }}</{{ item_tag }}>
         {% endfor %}
     {% endif %}
   {% else %}
