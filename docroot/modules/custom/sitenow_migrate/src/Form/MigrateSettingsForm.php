@@ -16,16 +16,16 @@ class MigrateSettingsForm extends ConfigFormBase {
   /**
    * The config.storage service.
    *
-   * @var StorageInterface
+   * @var \Drupal\Core\Config\StorageInterface
    */
   protected $configStorage;
 
   /**
    * Form constructor.
    *
-   * @param ConfigFactoryInterface $config_factory
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config.factory service.
-   * @param StorageInterface $configStorage
+   * @param \Drupal\Core\Config\StorageInterface $configStorage
    *   The config.storage service.
    */
   public function __construct(ConfigFactoryInterface $config_factory, StorageInterface $configStorage) {
@@ -36,12 +36,12 @@ class MigrateSettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-public static function create(ContainerInterface $container) {
-  return new static(
+  public static function create(ContainerInterface $container) {
+    return new static(
     $container->get('config.factory'),
     $container->get('config.storage')
-  );
-}
+    );
+  }
 
   /**
    * {@inheritdoc}
