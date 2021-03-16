@@ -151,6 +151,16 @@ function admissions_core_preprocess_entity_print(&$variables) {
       ]);
     }
   }
+  if ($variables['theme_hook_original'] == 'entity_print__node__page') {
+    // The debug path nests this differently for some reason.
+    $node = $variables['content'][0]['#node'] ?? $variables['content'][0][0]['#node'] ?? NULL;
+
+    if ($node) {
+      $variables['title'] = t('@title', [
+        '@title' => $node->getTitle(),
+      ]);
+    }
+  }
 }
 
 /**
@@ -414,6 +424,14 @@ function admissions_core_theme($existing, $type, $theme, $path) {
     'node__area_of_study__pdf' => [
       'template' => 'node--area-of-study--pdf',
       'base hook' => 'node',
+    ],
+    'node__page__pdf' => [
+      'template' => 'node--page--pdf',
+      'base hook' => 'node',
+    ],
+    'entity_print__node__page' => [
+      'template' => 'entity-print--node--page',
+      'base hook' => 'entity_print',
     ],
     'node__area_of_study__teaser' => [
       'template' => 'node--area-of-study--teaser',
