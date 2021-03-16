@@ -82,22 +82,6 @@ class MigratePostImportEvent implements EventSubscriberInterface {
     $this->entityTypeManager = $entityTypeManager;
     $this->logger = $logger;
     $this->connection = $connection;
-
-    // Switch to the D7 database.
-    Database::setActiveConnection('drupal_7');
-    $connection = Database::getConnection();
-    $query = $connection->select('variable', 'v');
-    $query->fields('v', ['value'])
-      ->condition('v.name', 'file_public_path', '=');
-    $result = $query->execute();
-    // Switch back to the D8 database.
-    Database::setActiveConnection();
-    // Get path from public filepath; we don't have the settings file.
-    $this->basePath = explode('/', $result->fetchField())[1];
-    // If it's a subdomain site, replace '.' with '/'.
-    if (substr($this->basePath, 0, 10) == 'uiowa.edu.') {
-      substr_replace($this->basePath, '/', 9, 1);
-    }
   }
 
   /**
@@ -112,8 +96,6 @@ class MigratePostImportEvent implements EventSubscriberInterface {
 
   /**
    * Calls for additional processing after each migration has completed.
-   *
-   * {@inheritdoc}
    */
   public function onMigratePostImport(MigrateImportEvent $event) {
     $migration = $event->getMigration();
@@ -128,6 +110,22 @@ class MigratePostImportEvent implements EventSubscriberInterface {
       // Right now, page migration is set to run last.
       // This should only run after it has finished.
       case 'd7_page':
+        // @todo Fix this.
+        Database::setActiveConnection('drupal_7');
+        $connection = Database::getConnection();
+        $query = $connection->select('variable', 'v');
+        $query->fields('v', ['value'])
+          ->condition('v.name', 'file_public_path', '=');
+        $result = $query->execute();
+        // Switch back to the D8 database.
+        Database::setActiveConnection();
+        // Get path from public filepath; we don't have the settings file.
+        $this->basePath = explode('/', $result->fetchField())[1];
+        // If it's a subdomain site, replace '.' with '/'.
+        if (substr($this->basePath, 0, 10) == 'uiowa.edu.') {
+          substr_replace($this->basePath, '/', 9, 1);
+        }
+
         $this->sourceToDestIds = $this->fetchMapping();
         $this->d7Aliases = $this->fetchAliases(TRUE);
         $this->d8Aliases = $this->fetchAliases();
