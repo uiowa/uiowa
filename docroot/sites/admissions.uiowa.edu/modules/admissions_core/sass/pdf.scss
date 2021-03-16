@@ -467,4 +467,54 @@ h6 {
     }
   }
 }
+.node--type-page {
 
+  table, .table {
+    font-size: 10px;
+    border-spacing: 0;
+    color: black;
+    background-color: $white;
+    border-collapse: collapse;
+
+    td,
+    p {
+      vertical-align: middle;
+      font-size: 10px;
+      color: black;
+      padding: 5px;
+    }
+
+    thead td,
+    thead th {
+      background-color: $light;
+      text-transform: uppercase;
+      color: black;
+      font-size: 10px;
+      padding: 10px;
+    }
+
+    &.is-striped {
+      thead th {
+        background-color: $light;
+        text-transform: uppercase;
+        color: black;
+        font-size: 10px;
+        padding: 10px;
+      }
+      
+      td, th {
+        padding: 5px;
+        min-width: 50px;
+      }
+
+      p, td {
+        font-size: 10px;
+        color: black;
+      }
+
+      tr {
+        border: solid 0.5px black;
+      }
+    }
+  }
+}
