@@ -483,10 +483,12 @@ function admissions_core_theme_suggestions_field_alter(array &$suggestions, arra
  */
 function admissions_core_views_pre_render(ViewExecutable $view) {
   if ($view->id() == 'student_card') {
-    $headline_markup = [
-      '#markup' => '<span class="fas fa-user"></span> &nbsp;<a href="/student-profiles">' . $view->element["headline"]["#headline"] . '</a>',
-    ];
-    $view->element["headline"]["#headline"] = $headline_markup;
+    if (isset($view->element["headline"]["#headline"]) && !empty($view->element["headline"]["#headline"])) {
+      $headline_markup = [
+        '#markup' => '<span class="fas fa-user"></span> &nbsp;<a href="/student-profiles">' . $view->element["headline"]["#headline"] . '</a>',
+      ];
+      $view->element["headline"]["#headline"] = $headline_markup;
+    }
   }
   if ($view->id() == "counselors") {
     switch ($view->current_display) {
