@@ -46,6 +46,14 @@ process:
         plugin: migration_lookup
         migration: d7_admissions_academic_groups
         source: tid
+  field_area_of_study_college:
+    plugin: sub_process
+    source: field_college
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: d7_admissions_colleges
+        source: tid
   field_area_of_study_subtitle: field_sub_title
   field_area_of_study_mail_code: field_mail_item_code
   field_area_of_study_majors:
@@ -147,3 +155,4 @@ destination:
 migration_dependencies:
   required:
     - d7_admissions_academic_groups
+    - d7_admissions_colleges
