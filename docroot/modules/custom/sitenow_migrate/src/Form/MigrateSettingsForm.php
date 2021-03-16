@@ -113,7 +113,7 @@ class MigrateSettingsForm extends ConfigFormBase {
     $form['database']['port'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Database Host Port'),
-      '#description' => $this->t('The database host port. Use 33067 for DevDesktop.'),
+      '#description' => $this->t('The database host port. The MySQL default port is 3306 but use 33067 for DevDesktop.'),
       '#default_value' => $migrate_group_sitenow_migrate_config->get('shared_configuration.source.database.port'),
       '#required' => TRUE,
     ];
