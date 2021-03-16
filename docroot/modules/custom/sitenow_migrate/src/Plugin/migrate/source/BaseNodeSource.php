@@ -92,24 +92,6 @@ abstract class BaseNodeSource extends Node {
   }
 
   /**
-   * Adapt our query for translations.
-   *
-   * @param \Drupal\Core\Database\Query\SelectInterface $query
-   *   The generated query.
-   */
-  protected function handleTranslations(SelectInterface $query) {
-    // Check whether or not we want translations.
-    if (empty($this->configuration['translations'])) {
-      // No translations: Yield untranslated nodes, or default translations.
-      $query->where('n.tnid = 0 OR n.tnid = n.nid');
-    }
-    else {
-      // Translations: Yield only non-default translations.
-      $query->where('n.tnid <> 0 AND n.tnid <> n.nid');
-    }
-  }
-
-  /**
    * Fetch additional multi-value fields from our database.
    *
    * @param \Drupal\migrate\Row $row
