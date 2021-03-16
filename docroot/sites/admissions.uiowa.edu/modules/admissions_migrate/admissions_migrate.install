@@ -26,33 +26,4 @@ function admissions_migrate_install() {
   $config = $config_factory->getEditable('config_split.config_split.admissions_migrate');
   $config->set('status', TRUE);
   $config->save(TRUE);
-
-  // Delete all existing entities that we will migrate. Only do this in local
-  // and dev where we continually sync, enable and re-run the migrations.
-  $env = getenv('AH_SITE_ENVIRONMENT') ?: 'local';
-
-  if ($env == 'local' || $env == 'dev') {
-    $entities = [
-      'paragraph' => 'degree',
-      'taxonomy_term' => 'academic_groups',
-      'node' => 'areas_of_study',
-      'node' => 'transfer_tips',
-    ];
-
-    foreach ($entities as $type => $bundle) {
-      $field = ($type == 'taxonomy_term') ? 'vid' : 'type';
-
-      $query = \Drupal::entityTypeManager()->getStorage($type)->getQuery();
-
-      $ids = $query
-        ->condition($field, $bundle)
-        ->execute();
-
-      if ($ids) {
-        $controller = \Drupal::entityTypeManager()->getStorage($type);
-        $entities = $controller->loadMultiple($ids);
-        $controller->delete($entities);
-      }
-    }
-  }
 }
