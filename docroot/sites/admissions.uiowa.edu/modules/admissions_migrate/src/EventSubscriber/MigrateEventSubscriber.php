@@ -95,6 +95,7 @@ class MigrateEventSubscriber implements EventSubscriberInterface {
         'type' => 'transfer_tips',
         'field_transfer_tips_aos' => $event->getDestinationIdValues()[0],
         'body' => $row->getSourceProperty('field_transfer_tips'),
+        'uid' => 1,
       ]);
 
       $node->save();
