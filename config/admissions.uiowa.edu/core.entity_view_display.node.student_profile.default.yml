@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.student_profile.body
     - field.field.node.student_profile.field_image
+    - field.field.node.student_profile.field_meta_tags
     - field.field.node.student_profile.field_person_first_name
     - field.field.node.student_profile.field_person_hometown
     - field.field.node.student_profile.field_person_last_name
@@ -24,6 +25,7 @@ dependencies:
     - heading
     - layout_builder
     - layout_builder_restrictions
+    - metatag
     - options
     - text
     - user
@@ -260,6 +262,13 @@ content:
     third_party_settings: {  }
     type: entity_reference_entity_view
     region: content
+  field_meta_tags:
+    weight: 14
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: metatag_empty_formatter
+    region: content
   field_person_first_name:
     weight: 1
     label: visually_hidden
@@ -331,6 +340,9 @@ content:
     third_party_settings: {  }
     region: content
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_person_last_name: true
   field_student_profile_gender: true
   field_student_profile_grad_date: true
