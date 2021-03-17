@@ -76,6 +76,31 @@ function admissions_core_form_alter(&$form, FormStateInterface $form_state, $for
 
     case 'node_area_of_study_form':
     case 'node_area_of_study_edit_form':
+      $form['field_area_of_study_majors']['#states'] = [
+        'visible' => [
+          'input[name="field_area_of_study_program_type[major]"]' => ['checked' => TRUE],
+        ],
+      ];
+      $form["field_area_of_study_certificates"]['#states'] = [
+        'visible' => [
+          'input[name="field_area_of_study_program_type[certificate]"]' => ['checked' => TRUE],
+        ],
+      ];
+      $form["field_area_of_study_minors"]['#states'] = [
+        'visible' => [
+          'input[name="field_area_of_study_program_type[minor]"]' => ['checked' => TRUE],
+        ],
+      ];
+      $form["field_area_of_study_preprof"]['#states'] = [
+        'visible' => [
+          'input[name="field_area_of_study_program_type[preprofessional_program]"]' => ['checked' => TRUE],
+        ],
+      ];
+      $form["field_area_of_study_online"]['#states'] = [
+        'visible' => [
+          'input[name="field_area_of_study_program_type[online_offcampus_program]"]' => ['checked' => TRUE],
+        ],
+      ];
       $form['field_area_of_study_teaching_txt']['#states'] = [
         'visible' => [
           'input[name="field_area_of_study_teaching[teaching_licensure]"]' => ['checked' => TRUE],
