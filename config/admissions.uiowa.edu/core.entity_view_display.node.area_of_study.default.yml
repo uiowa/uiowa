@@ -23,6 +23,7 @@ dependencies:
     - field.field.node.area_of_study.field_area_of_study_online
     - field.field.node.area_of_study.field_area_of_study_opportunity
     - field.field.node.area_of_study.field_area_of_study_preprof
+    - field.field.node.area_of_study.field_area_of_study_pretty_title
     - field.field.node.area_of_study.field_area_of_study_requirement
     - field.field.node.area_of_study.field_area_of_study_scholarship
     - field.field.node.area_of_study.field_area_of_study_select_txt
@@ -574,7 +575,7 @@ content:
     type: string
     region: content
   field_area_of_study_college:
-    weight: 39
+    weight: 42
     label: above
     settings:
       link: true
@@ -697,6 +698,14 @@ content:
     region: content
   field_area_of_study_preprof:
     weight: 11
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_area_of_study_pretty_title:
+    weight: 41
     label: above
     settings:
       link_to_entity: false
