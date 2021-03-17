@@ -15,7 +15,7 @@
  *   Calling other methods, such as node.delete(), will result in an exception.
  *   See \Drupal\node\Entity\Node for a full list of public properties and
  *   methods for the node object.
- * - label: The title of the node.
+ * - label: (optional) The title of the node.
  * - content: All node items. Use {{ content }} to print them all,
  *   or print a subset such as {{ content.field_example }}. Use
  *   {{ content|without('field_example') }} to temporarily suppress the printing
@@ -23,8 +23,8 @@
  * - author_picture: The node author user entity, rendered using the "compact"
  *   view mode.
  * - metadata: Metadata for this node.
- * - date: Themed creation date field.
- * - author_name: Themed author name field.
+ * - date: (optional) Themed creation date field.
+ * - author_name: (optional) Themed author name field.
  * - url: Direct URL of the current node.
  * - display_submitted: Whether submission information should be displayed.
  * - attributes: HTML attributes for the containing element.
@@ -65,39 +65,39 @@
  *
  * @see template_preprocess_node()
  *
- * @todo Remove the id attribute (or make it a class), because if that gets
- *   rendered twice on a page this is invalid CSS for example: two lists
- *   in different view modes.
+ * @todo Override for area_of_study PDF layout.
  */
 #}
-
 {%
   set classes = [
-  'card--list',
-  'bg--white',
-  'card--media-left',
-  'media--border',
-  'card--centered-left',
-  'card--alignment-left'
+  'node',
+  'node--type-' ~ node.bundle|clean_class,
+  'uids-content',
+  node.isPromoted() ? 'node--promoted',
+  node.isSticky() ? 'node--sticky',
+  not node.isPublished() ? 'node--unpublished',
+  view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
 ]
 %}
-
-{% set headline_level = heading_size ?: 'h2' %}
-
 {{ attach_library('classy/node') }}
-{{ attach_library('uids_base/paragraphs-lists') }}
-{{ attach_library('uids_base/node-type-person') }}
 
-{% set person_card = {
-  'attributes': attributes.addClass(classes),
-  'card_image': content.field_image|render,
-  'media_styles': 'media--circle',
-  'media_sizes': 'card__media--small',
-  'card_text': content|without('field_image', 'field_person_email', 'field_person_phone', 'field_person_education', 'field_person_credential', 'links')|render,
-  'card_subtitle': content.field_person_education.0,
-  'card_title': label|render,
-  'card_link_url': url,
-  'headline_level': headline_level,
-} %}
+<div{{ attributes.addClass(classes) }}>
+  <div class="print__container">
+    <div class="print__container--left">
+      {{ title_prefix }}
+      <h1{{ title_attributes.addClass('pdf-title') }}>
+        {{ label }}
+      </h1>
+      {{ title_suffix }}
+    </div>
+    <div class="print__container--right">
+      <div class="print__logo">
+        <img src="/sites/admissions.uiowa.edu/modules/admissions_core/assets/images/Block-IOWA-BLACK.png" width="98" height="26" />
+      </div>
+    </div>
 
-{% embed '@uids_base/uids/card.html.twig' with person_card only %}{% endembed %}
+  <div{{ content_attributes.addClass('node__content') }}>
+    {{ content.body.0|render }}
+  </div>
+
+</div>

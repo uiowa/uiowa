@@ -64,7 +64,7 @@ class HeadlineHelper {
     $element['container']['headline'] = [
       '#type' => 'textfield',
       '#title' => t('Headline'),
-      '#description' => $element['#description'],
+      '#description' => $defaults['description'],
       '#size' => 80,
       '#default_value' => $defaults['headline'],
       '#attributes' => [
