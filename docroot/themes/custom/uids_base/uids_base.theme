@@ -419,18 +419,16 @@ function uids_base_preprocess_layout(&$variables) {
         }
       }
 
-      if (!isset($variables['banner_settings'])) {
-        if (!isset($variables['banner_attributes'])) {
-          $variables['banner_settings'] = [];
-        }
-        $defaults = [
-          'transparent' => FALSE,
-          'horizontal_align' => 'left',
-          'vertical_align' => 'bottom',
-        ];
-
-        $variables['banner_settings'] = $defaults + $variables['banner_settings'];
+      if (!isset($variables['banner_attributes'])) {
+        $variables['banner_settings'] = [];
       }
+      $defaults = [
+        'transparent' => FALSE,
+        'horizontal_align' => 'left',
+        'vertical_align' => 'bottom',
+      ];
+
+      $variables['banner_settings'] = $variables['banner_settings'] + $defaults;
 
       // Set default for banner gradient.
       if (isset($variables['banner_settings']['transparent'])) {
