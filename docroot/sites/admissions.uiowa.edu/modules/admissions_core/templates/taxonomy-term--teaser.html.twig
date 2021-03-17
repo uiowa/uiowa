@@ -9,8 +9,8 @@
 
 {% set aos_card = {
   'attributes': attributes.addClass(classes),
-  'card_image': content.field_image | render,
-  'card_text': content.description,
+  'card_image': content.field_image|render,
+  'card_text': content.description|render,
   'card_title': name,
   'card_link_url': url,
 } %}

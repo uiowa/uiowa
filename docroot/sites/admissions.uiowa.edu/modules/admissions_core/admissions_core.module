@@ -151,6 +151,16 @@ function admissions_core_preprocess_entity_print(&$variables) {
       ]);
     }
   }
+  if ($variables['theme_hook_original'] == 'entity_print__node__page') {
+    // The debug path nests this differently for some reason.
+    $node = $variables['content'][0]['#node'] ?? $variables['content'][0][0]['#node'] ?? NULL;
+
+    if ($node) {
+      $variables['title'] = t('@title', [
+        '@title' => $node->getTitle(),
+      ]);
+    }
+  }
 }
 
 /**
@@ -266,6 +276,17 @@ function admissions_core_preprocess_paragraph__admissions_requirement(&$variable
 /**
  * Implements hook_preprocess_HOOK().
  */
+function admissions_core_preprocess_block(&$variables) {
+  switch ($variables['plugin_id']) {
+    case 'views_block:student_card-block_student_grid':
+      $variables['#attached']['library'][] = 'admissions_core/student-profile';
+      break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
 function admissions_core_preprocess_layout(&$variables) {
   /** @var \Drupal\Core\Layout\LayoutDefinition $layout */
   $layout = $variables['layout'];
@@ -325,6 +346,10 @@ function admissions_core_theme($existing, $type, $theme, $path) {
   return [
     'block__views_block__areas_of_study_block_block_information' => [
       'template' => 'block--views-block--areas-of-study-block-block-information',
+      'base hook' => 'block',
+    ],
+    'block__views_block__student_card_block_student_grid' => [
+      'template' => 'block--views-block--student-card-block-student-grid',
       'base hook' => 'block',
     ],
     'node__scholarship__teaser' => [
@@ -395,6 +420,10 @@ function admissions_core_theme($existing, $type, $theme, $path) {
       'template' => 'field--node--title--student-profile--default',
       'base hook' => 'field',
     ],
+    'field__taxonomy_term__field_college_website__colleges__default' => [
+      'template' => 'field--taxonomy-term--field-college-website--colleges--default',
+      'base hook' => 'field',
+    ],
     'fragment__stat' => [
       'template' => 'fragment--stat',
       'base hook' => 'fragment',
@@ -414,6 +443,14 @@ function admissions_core_theme($existing, $type, $theme, $path) {
     'node__area_of_study__pdf' => [
       'template' => 'node--area-of-study--pdf',
       'base hook' => 'node',
+    ],
+    'node__page__pdf' => [
+      'template' => 'node--page--pdf',
+      'base hook' => 'node',
+    ],
+    'entity_print__node__page' => [
+      'template' => 'entity-print--node--page',
+      'base hook' => 'entity_print',
     ],
     'node__area_of_study__teaser' => [
       'template' => 'node--area-of-study--teaser',
@@ -449,6 +486,14 @@ function admissions_core_theme_suggestions_field_alter(array &$suggestions, arra
  * Implements hook_views_pre_render().
  */
 function admissions_core_views_pre_render(ViewExecutable $view) {
+  if ($view->id() == 'student_card') {
+    if (isset($view->element["headline"]["#headline"]) && !empty($view->element["headline"]["#headline"])) {
+      $headline_markup = [
+        '#markup' => '<span class="fas fa-user"></span> &nbsp;<a href="/student-profiles">' . $view->element["headline"]["#headline"] . '</a>',
+      ];
+      $view->element["headline"]["#headline"] = $headline_markup;
+    }
+  }
   if ($view->id() == "counselors") {
     switch ($view->current_display) {
       case 'block_counselors':
@@ -456,7 +501,6 @@ function admissions_core_views_pre_render(ViewExecutable $view) {
         $view->element['#attached']['library'][] = 'admissions_core/counselors-list';
         $view->element['#attached']['library'][] = 'admissions_core/person';
         break;
-
     }
   }
 }
