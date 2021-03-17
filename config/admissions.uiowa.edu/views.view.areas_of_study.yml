@@ -68,28 +68,22 @@ display:
           description: ''
           columns:
             title: title
-            field_area_of_study_degrees: field_area_of_study_degrees
-            field_area_of_study_college: field_area_of_study_college
-            field_area_of_study_related: field_area_of_study_related
+            nothing: title
+            field_area_of_study_subprogram: field_area_of_study_subprogram
           info:
             title:
               sortable: true
               default_sort_order: asc
+              align: views-align-left
+              separator: ''
+              empty_column: false
+              responsive: ''
+            nothing:
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
-            field_area_of_study_degrees:
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_area_of_study_college:
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_area_of_study_related:
+            field_area_of_study_subprogram:
               align: ''
               separator: ''
               empty_column: false
@@ -536,6 +530,55 @@ display:
           entity_type: node
           entity_field: title
           plugin_id: field
+        nothing:
+          id: nothing
+          table: views
+          field: nothing
+          relationship: none
+          group_type: group
+          admin_label: 'Combination of Majors, Minors, Certificates, Preprofessional, Online/Off-campus'
+          label: ''
+          exclude: false
+          alter:
+            alter_text: true
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: false
+          plugin_id: custom
         field_area_of_study_subprogram:
           id: field_area_of_study_subprogram
           table: node__field_area_of_study_subprogram
