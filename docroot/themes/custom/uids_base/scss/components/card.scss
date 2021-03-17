@@ -3,25 +3,29 @@
 @import "components/card/card.scss";
 
 // @todo move back to UIDS
-.card p + p {
-  margin-top: $sm;
-}
 
-.card .card__description + .btn,
-.card .card__description + .bttn,
-.card__title + .bttn {
-  margin-top: 1.05rem;
-}
+.card {
+  p + p {
+    margin-top: $sm;
+  }
 
-// set font weight to normal if intro classes are used
-.card p[class*="element-"], .card p[class*="uids-component-"] {
-  font-weight: normal;
-}
+  // set font weight to normal if intro classes are used
+  p[class*="element-"],
+  p[class*="uids-component-"] {
+    font-weight: normal;
+  }
 
-.card__description {
-  font-size: 1rem;
-  word-wrap: anywhere;
-  overflow-wrap: anywhere;
+  .card__description + .btn,
+  .card__description + .bttn,
+  &__title + .bttn {
+    margin-top: 1.05rem;
+  }
+
+  &__description {
+    font-size: 1rem;
+    word-wrap: anywhere;
+    overflow-wrap: anywhere;
+  }
 }
 
 // ie11
