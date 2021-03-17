@@ -11,12 +11,17 @@ module:
   entity_print: 0
   fragments: 0
   weight: 0
+  tvi: 15
 theme: {  }
 blacklist:
   - core.entity_view_mode.node.pdf
   - metatag.metatag_defaults.node__area_of_study
   - metatag.metatag_defaults.node__student_profile
   - metatag.metatag_defaults.node__transfer_tips
+  - simple_sitemap.bundle_settings.default.taxonomy_term.colleges
+  - taxonomy.vocabulary.colleges
+  - views.view.colleges_taxonomy_term
+  - 'field.storage.taxonomy_term.field_college_*'
 graylist:
   - config_split.config_split.admissions
   - core.entity_form_display.node.student_profile.default
