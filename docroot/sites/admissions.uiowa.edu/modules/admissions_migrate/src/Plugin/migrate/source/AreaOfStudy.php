@@ -11,7 +11,6 @@ use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\pathauto\AliasCleanerInterface;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\migrate\Row;
-use Drupal\token\TokenInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -24,15 +23,21 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterface {
   /**
-   * @var AliasCleanerInterface
+   * @var \Drupal\pathauto\AliasCleanerInterface
    */
   protected $aliasCleaner;
 
+  /**
+   * {@inheritdoc}
+   */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration, StateInterface $state, ModuleHandlerInterface $module_handler, FileSystemInterface $file_system, EntityTypeManager $entityTypeManager, AliasCleanerInterface $aliasCleaner) {
     $this->aliasCleaner = $aliasCleaner;
     parent::__construct($configuration, $plugin_id, $plugin_definition, $migration, $state, $module_handler, $file_system, $entityTypeManager);
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration = NULL) {
     return new static(
       $configuration,
