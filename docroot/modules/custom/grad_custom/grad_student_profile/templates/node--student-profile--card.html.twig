@@ -97,12 +97,12 @@ set classes = [
 
 {% set person_card = {
   'attributes': attributes.addClass(classes),
-  'card_image': content.field_image | render,
-  'card_text': content | without('field_image', 'field_person_credential', 'field_person_distinction', 'links'),
-  'card_date': content.field_person_distinction | render,
-  'card_title': label | render,
+  'card_image': content.field_image|render,
+  'card_text': content|without('field_image', 'field_person_credential', 'field_person_distinction', 'links')|render,
+  'card_date': content.field_person_distinction|render,
+  'card_title': label|render,
   'card_link_url': url,
-  'card_link_title': 'Read more' | t,
+  'card_link_title': 'Read more'|t,
   'headline_level': headline_level,
   'headline_class': 'h1 headline headline--uppercase',
   'media_sizes' : 'card__media--large',
