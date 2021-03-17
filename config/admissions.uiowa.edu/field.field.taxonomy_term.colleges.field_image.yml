@@ -1,18 +1,18 @@
-uuid: a021baba-13cb-44b0-a6eb-9a1998571435
+uuid: 19509906-cb55-4e4e-b779-d23d8558b2be
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_image
+    - field.storage.taxonomy_term.field_image
     - media.type.image
-    - node.type.student_profile
-id: node.student_profile.field_image
+    - taxonomy.vocabulary.colleges
+id: taxonomy_term.colleges.field_image
 field_name: field_image
-entity_type: node
-bundle: student_profile
+entity_type: taxonomy_term
+bundle: colleges
 label: 'Featured image'
-description: 'Banner that displays on the full student profile page'
-required: true
+description: ''
+required: false
 translatable: true
 default_value: {  }
 default_value_callback: ''
@@ -24,6 +24,6 @@ settings:
     sort:
       field: _none
       direction: ASC
-    auto_create: true
+    auto_create: false
     auto_create_bundle: ''
 field_type: entity_reference

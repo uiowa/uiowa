@@ -76,7 +76,7 @@
     {% set paragraph_card = {
       'attributes': card_attributes.addClass(['card--enclosed']),
       'card_image': content.field_card_image|render,
-      'card_text': content.field_card_body,
+      'card_text': content.field_card_body|render,
       'card_subtitle': content.field_card_subtitle,
       'card_title': content.field_card_title|render,
       'card_link_url': content.field_card_link[0]['#url'],
