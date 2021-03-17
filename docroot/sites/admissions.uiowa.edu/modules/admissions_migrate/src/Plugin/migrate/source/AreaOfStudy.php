@@ -2,8 +2,17 @@
 
 namespace Drupal\admissions_migrate\Plugin\migrate\source;
 
+use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\State\StateInterface;
+use Drupal\migrate\Plugin\MigrationInterface;
+use Drupal\pathauto\AliasCleanerInterface;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\migrate\Row;
+use Drupal\token\TokenInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Basic implementation of the source plugin.
@@ -13,42 +22,30 @@ use Drupal\migrate\Row;
  *  source_module = "node"
  * )
  */
-class AreaOfStudy extends BaseNodeSource {
-
+class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterface {
   /**
-   * The public file directory path.
-   *
-   * @var string
+   * @var AliasCleanerInterface
    */
-  protected $publicPath;
+  protected $aliasCleaner;
 
-  /**
-   * The private file directory path, if any.
-   *
-   * @var string
-   */
-  protected $privatePath;
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration, StateInterface $state, ModuleHandlerInterface $module_handler, FileSystemInterface $file_system, EntityTypeManager $entityTypeManager, AliasCleanerInterface $aliasCleaner) {
+    $this->aliasCleaner = $aliasCleaner;
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $migration, $state, $module_handler, $file_system, $entityTypeManager);
+  }
 
-  /**
-   * The temporary file directory path.
-   *
-   * @var string
-   */
-  protected $temporaryPath;
-
-  /**
-   * Node-to-node mapping for author content.
-   *
-   * @var array
-   */
-  protected $authorMapping;
-
-  /**
-   * Term-to-term mapping for tags.
-   *
-   * @var array
-   */
-  protected $termMapping;
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration = NULL) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $migration,
+      $container->get('state'),
+      $container->get('module_handler'),
+      $container->get('file_system'),
+      $container->get('entity_type.manager'),
+      $container->get('pathauto.alias_cleaner')
+    );
+  }
 
   /**
    * Prepare row used for altering source data prior to its insertion.
@@ -80,6 +77,9 @@ class AreaOfStudy extends BaseNodeSource {
     }
 
     $row->setSourceProperty('related_links', $related_links);
+
+    $alias = $this->aliasCleaner->cleanString($row->getSourceProperty('title'));
+    $row->setSourceProperty('custom_alias', "/academics/{$alias}");
 
     // Call the parent prepareRow.
     return parent::prepareRow($row);

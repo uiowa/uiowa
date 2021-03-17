@@ -16,6 +16,10 @@ source:
   plugin: d7_admissions_aos
   node_type: undergraduate_majors_programs
 process:
+  path/pathauto:
+    plugin: default_value
+    default_value: 0
+  path/alias: custom_alias
   langcode:
     plugin: static_map
     bypass: true
