@@ -88,12 +88,12 @@
 
 {% set mentor_card = {
   'attributes': attributes.addClass(classes),
-  'card_text': content|without('title', 'field_image', 'field_person_position', 'field_person_email', 'field_person_phone', 'links'),
+  'card_text': content|without('title', 'field_image', 'field_person_position', 'field_person_email', 'field_person_phone', 'links')|render,
   'card_subtitle': content.field_person_position,
   'card_tag': content.field_person_email,
   'person_phone': content.field_person_phone.0,
-  'card_title': label | render,
-  'card_image': content.field_image | render,
+  'card_title': label|render,
+  'card_image': content.field_image|render,
   'media_styles': 'media--circle',
   'media_sizes': 'card__media--small',
   'card_link_url': url,
