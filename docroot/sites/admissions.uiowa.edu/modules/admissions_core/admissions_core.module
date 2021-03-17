@@ -553,7 +553,7 @@ function admissions_core_preprocess_views_view_field(&$variables) {
         }
       }
       $degrees = array_unique($degrees);
-      $degree_options_label = (count($degrees) > 1)? ' Degree options' : ' Degree option';
+      $degree_options_label = (count($degrees) > 1) ? ' Degree options' : ' Degree option';
       foreach ($degrees as $item) {
         $degree_options .= $item . ', ';
       }
