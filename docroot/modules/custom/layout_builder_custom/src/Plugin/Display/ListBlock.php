@@ -14,7 +14,7 @@ use Drupal\views\Plugin\Block\ViewsBlock;
 use Drupal\views\Plugin\views\display\Block as CoreBlock;
 
 /**
- * Provides a List Block display plugin.
+ * Provides a List Block display plugin override.
  *
  * Adapted from Drupal\ctools_views\Plugin\Display\Block and
  * https://www.drupal.org/project/views_block_placement_exposed_form_defaults.
@@ -28,6 +28,7 @@ class ListBlock extends CoreBlock {
     parent::optionsSummary($categories, $options);
     $filtered_allow = array_filter($this->getOption('allow'));
     $filter_options = [
+      // We are just changing the label here to be consistent current use.
       'items_per_page' => $this->t('Items to display'),
       'pager' => $this->t('Show pager'),
       'offset' => $this->t('Offset'),
@@ -57,6 +58,7 @@ class ListBlock extends CoreBlock {
       return;
     }
 
+    // Making the label more user-friendly.
     $form['allow']['#options']['items_per_page'] = $this->t('Items to display');
     $form['allow']['#options']['offset'] = $this->t('Pager offset');
     $form['allow']['#options']['pager'] = $this->t('Show pager');
@@ -141,6 +143,7 @@ class ListBlock extends CoreBlock {
     $allow_settings = array_filter($this->getOption('allow'));
     $block_configuration = $block->getConfiguration();
 
+    // @todo Possibly wire this up to the views title?
     $form['headline'] = HeadlineHelper::getElement([
       'headline' => $block_configuration['headline']['headline'] ?? NULL,
       'hide_headline' => $block_configuration['headline']['hide_headline'] ?? 0,
@@ -152,7 +155,6 @@ class ListBlock extends CoreBlock {
 
     // Modify "Items per page" block settings form.
     if (!empty($allow_settings['items_per_page'])) {
-      // Items per page.
       $form['override']['items_per_page']['#type'] = 'number';
       $form['override']['items_per_page']['#min'] = 0;
       $form['override']['items_per_page']['#title'] = $this->t('Items to display');
@@ -397,6 +399,7 @@ class ListBlock extends CoreBlock {
       $form['#attached']['library'][] = 'linkit/linkit.autocomplete';
     }
 
+    // Set overrides to show up in the middle of the form.
     $form['override']['#weight'] = 5;
 
     return $form;
@@ -475,7 +478,7 @@ class ListBlock extends CoreBlock {
     // Save "Filter in block" settings to block configuration.
     $block->setConfigurationValue('exposed_filter_values', $form_state->getValue([
       'override',
-      'exposed_filters'
+      'exposed_filters',
     ]));
 
     if ($form_state instanceof SubformStateInterface) {
@@ -501,6 +504,27 @@ class ListBlock extends CoreBlock {
     if (!empty($config['layout_builder_styles'])) {
       $this->view->display_handler->setOption('row_styles', $config['layout_builder_styles']);
     }
+
+    // Attach the headline, if configured.
+    if (!empty($config['headline'])) {
+      $headline = $config['headline'];
+      $this->view->element['headline'] = [
+        '#theme' => 'uiowa_core_headline',
+        '#headline' => $headline['headline'],
+        '#hide_headline' => $headline['hide_headline'],
+        '#heading_size' => $headline['heading_size'],
+        '#headline_style' => $headline['headline_style'],
+      ];
+      if (empty($headline['headline'])) {
+        $child_heading_size = $headline['child_heading_size'];
+      }
+      else {
+        $child_heading_size = HeadlineHelper::getHeadingSizeUp($headline['heading_size']);
+      }
+
+      $this->view->display_handler->setOption('heading_size', $child_heading_size);
+    }
+
     // Change pager offset settings based on block configuration.
     if (!empty($allow_settings['offset'])) {
       $this->view->setOffset($config['pager_offset']);
@@ -551,25 +575,6 @@ class ListBlock extends CoreBlock {
     $exposed_filter_values = !empty($config['exposed_filter_values']) ? $config['exposed_filter_values'] : [];
     $this->view->setExposedInput($exposed_filter_values);
 
-    if (!empty($config['headline'])) {
-      $headline = $config['headline'];
-      $this->view->element['headline'] = [
-        '#theme' => 'uiowa_core_headline',
-        '#headline' => $headline['headline'],
-        '#hide_headline' => $headline['hide_headline'],
-        '#heading_size' => $headline['heading_size'],
-        '#headline_style' => $headline['headline_style'],
-      ];
-      if (empty($headline['headline'])) {
-        $child_heading_size = $headline['child_heading_size'];
-      }
-      else {
-        $child_heading_size = HeadlineHelper::getHeadingSizeUp($headline['heading_size']);
-      }
-
-      $this->view->display_handler->setOption('heading_size', $child_heading_size);
-    }
-
     if (!empty($allow_settings['use_more'])) {
       if (isset($config['use_more']) && $config['use_more']) {
         $this->view->display_handler->setOption('use_more', TRUE);
@@ -588,6 +593,8 @@ class ListBlock extends CoreBlock {
 
   /**
    * {@inheritdoc}
+   *
+   * @todo Determine whether this is necessary to have.
    */
   public function usesExposed() {
     $filters = $this->getHandlers('filter');
