@@ -23,6 +23,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterface {
   /**
+   * The pathauto.alias_cleaner service.
+   *
    * @var \Drupal\pathauto\AliasCleanerInterface
    */
   protected $aliasCleaner;

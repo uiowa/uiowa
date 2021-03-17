@@ -62,14 +62,14 @@ class MigrateEventSubscriber implements EventSubscriberInterface {
       foreach ($entities as $type => $bundle) {
         $field = ($type == 'taxonomy_term') ? 'vid' : 'type';
 
-        $query = \Drupal::entityTypeManager()->getStorage($type)->getQuery();
+        $query = $this->entityTypeManager->getStorage($type)->getQuery();
 
         $ids = $query
           ->condition($field, $bundle)
           ->execute();
 
         if ($ids) {
-          $controller = \Drupal::entityTypeManager()->getStorage($type);
+          $controller = $this->entityTypeManager->getStorage($type);
           $entities = $controller->loadMultiple($ids);
           $controller->delete($entities);
         }
