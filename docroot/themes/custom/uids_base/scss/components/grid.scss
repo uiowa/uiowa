@@ -11,7 +11,16 @@
   }
 }
 
-// These override the grid settings in grid.scss from UIDS
+// Set first item within list-container to full width
+.grid--first-item-full-width {
+  .list-container {
+    :first-child {
+      grid-column: 1 / -1;
+    }
+  }
+}
+
+  // These override the grid settings in grid.scss from UIDS
 .inner--list.grid--threecol--33-34-33 .list-container,
 .inner--list.grid--twocol--50-50 .list-container {
   display: inherit;
