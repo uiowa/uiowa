@@ -26,7 +26,12 @@ process:
     source: language
     map:
       und: en
-  title: title
+  title:
+    plugin: extract
+    source: field_alt_names
+    index:
+      - 0
+      - value
   type:
     plugin: default_value
     default_value: area_of_study
@@ -44,7 +49,10 @@ process:
     plugin: default_value
     default_value: '1126'
   moderation_state: moderation_state
-  field_area_of_study_pretty_title: field_alt_names
+  field_area_of_study_pretty_title:
+    plugin: skip_on_empty
+    method: process
+    source: custom_alt_title
   field_area_of_study_academic_gp:
     plugin: sub_process
     source: field_academic_group
