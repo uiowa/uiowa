@@ -578,33 +578,25 @@ function admissions_core_preprocess_views_view_field(&$variables) {
         }
       }
       $degrees = array_unique($degrees);
-      $degree_options_label = (count($degrees) > 1) ? ' Degree options' : ' Degree option';
       foreach ($degrees as $item) {
         $degree_options .= $item . ', ';
       }
       if (!empty($degree_options)) {
-        $degree_options = trim($degree_options, ', ');
-        $markup .= '<div class="degree-options">' . $degree_options . $degree_options_label . '</div>';
+        $markup .=  $degree_options;
       }
       // AoS Program Type text fields.
       $fields = [
-        'field_area_of_study_minors',
-        'field_area_of_study_certificates',
-        'field_area_of_study_preprof',
-        'field_area_of_study_online',
+        'Minor' => 'field_area_of_study_minors',
+        'Certificate' => 'field_area_of_study_certificates',
+        'Online Option' => 'field_area_of_study_online',
       ];
-      $other_programs = '';
-      foreach ($fields as $field) {
+      foreach ($fields as $label => $field) {
         $value = $node->get($field)->value;
         if ($value) {
-          $label = $node->$field->getFieldDefinition()->getLabel();
-          $other_programs .= $label . ': ' . $value . ', ';
+          $markup .= $label . ', ';
         }
       }
-      if (!empty($other_programs)) {
-        $other_programs = trim($other_programs, ', ');
-        $markup .= '<div class="other-programs">' . $other_programs . '</div>';
-      }
+      $markup = trim($markup, ', ');
       if (!empty($markup)) {
         $variables['output'] = [
           '#markup' => $markup,

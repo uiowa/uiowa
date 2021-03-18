@@ -69,14 +69,22 @@ display:
           summary: ''
           description: ''
           columns:
+            field_area_of_study_pretty_title: field_area_of_study_pretty_title
             title: title
-            nothing: title
-            field_area_of_study_subprogram: field_area_of_study_subprogram
+            nothing: nothing
+            field_area_of_study_college: field_area_of_study_college
           info:
+            field_area_of_study_pretty_title:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
             title:
               sortable: true
               default_sort_order: asc
-              align: views-align-left
+              align: ''
               separator: ''
               empty_column: false
               responsive: ''
@@ -85,7 +93,7 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            field_area_of_study_subprogram:
+            field_area_of_study_college:
               align: ''
               separator: ''
               empty_column: false
@@ -650,7 +658,7 @@ display:
           relationship: none
           group_type: group
           admin_label: 'Combination of Majors, Minors, Certificates, Preprofessional, Online/Off-campus'
-          label: ''
+          label: Degree/Type
           exclude: false
           alter:
             alter_text: true
