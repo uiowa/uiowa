@@ -8,6 +8,7 @@ use Drupal\Core\Database\Database;
  * Provides functions for processing links in source plugins.
  */
 trait LinkReplaceTrait {
+
   /**
    * Regex callback for updating links broken by the migration.
    */
