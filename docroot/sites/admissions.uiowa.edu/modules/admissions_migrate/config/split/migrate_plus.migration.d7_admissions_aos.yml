@@ -71,6 +71,15 @@ process:
         source: tid
   field_area_of_study_subtitle: field_sub_title
   field_area_of_study_mail_code: field_mail_item_code
+  field_area_of_study_program_type:
+    plugin: static_map
+    source: field_program_types
+    map:
+      0: major
+      1: minor
+      2: certificate
+      3: preprofessional_program
+      4: online_offcampus_program
   field_area_of_study_majors:
     plugin: create_degrees
     source: field_degree
