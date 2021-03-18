@@ -355,29 +355,4 @@ class MigratePostImportEvent implements EventSubscriberInterface {
     return $aliases;
   }
 
-  /**
-   * Query the migration map to get a D7-nid => D8-nid indexed array.
-   */
-  private function fetchMapping($page_id = 'd7_page', $article_id = 'd7_article') {
-    if ($this->connection->schema()->tableExists('migrate_map_' . $page_id)) {
-      $sub_result1 = $this->connection->select('migrate_map_' . $page_id, 'mm')
-        ->fields('mm', ['sourceid1', 'destid1']);
-    }
-    if ($this->connection->schema()->tableExists('migrate_map_' . $article_id)) {
-      $sub_result2 = $this->connection->select('migrate_map_' . $article_id, 'mma')
-        ->fields('mma', ['sourceid1', 'destid1']);
-      $unioned = isset($sub_result1) ? $sub_result1->union($sub_result2) : $sub_result2;
-    }
-    else {
-      $unioned = $sub_result1;
-    }
-
-    $result = $unioned->execute();
-    $sourceToDestIds = [];
-    foreach ($result as $row) {
-      $sourceToDestIds[$row->sourceid1] = $row->destid1;
-    }
-    return $sourceToDestIds;
-  }
-
 }
