@@ -3,7 +3,6 @@
 namespace Drupal\sitenow_migrate\Plugin\migrate\source;
 
 use Drupal\Core\Database\Database;
-use Drupal\migrate\MigrateException;
 
 /**
  * Provides functions for processing links in source plugins.
@@ -13,6 +12,7 @@ trait LinkReplaceTrait {
    * Regex callback for updating links broken by the migration.
    */
   private function linkReplace($match) {
+
     $old_link = $match[1];
     $this->logger->notice($this->t('Old link found... @old_link', [
       '@old_link' => $old_link,
@@ -182,6 +182,7 @@ trait LinkReplaceTrait {
     // Return an associative array of
     // source_nid -> destination_nid.
     return $sub_result->execute()
-      ->fetchAllKeyed(0,1);
+      ->fetchAllKeyed(0, 1);
   }
+
 }
