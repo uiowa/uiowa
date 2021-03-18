@@ -67,6 +67,7 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
       $row->setSourceProperty($field_name, $this->getFieldValues('node', $field_name, $nid));
     }
 
+    // Combine link fields into one.
     $related_links = [];
 
     if ($dept_url = $row->getSourceProperty('field_dept_url')) {
@@ -83,10 +84,22 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
       ];
     }
 
-    $row->setSourceProperty('related_links', $related_links);
+    $row->setSourceProperty('custom_related_links', $related_links);
 
+    // We want the default alias but also want to leave 'generate' unchecked.
     $alias = $this->aliasCleaner->cleanString($row->getSourceProperty('title'));
     $row->setSourceProperty('custom_alias', "/academics/{$alias}");
+
+    // We map the first alt title to title and title to alt title if different.
+    $title = $row->getSourceProperty('title');
+    $alt = $row->getSourceProperty('field_alt_names')[0]['value'];
+
+    if ($title != $alt) {
+      $row->setSourceProperty('custom_alt_title', $title);
+    }
+    else {
+      $row->setSourceProperty('custom_alt_title', NULL);
+    }
 
     // Call the parent prepareRow.
     return parent::prepareRow($row);
