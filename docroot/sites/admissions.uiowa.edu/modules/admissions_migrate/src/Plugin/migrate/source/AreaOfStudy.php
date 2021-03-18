@@ -83,7 +83,7 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
       ];
     }
 
-    $row->setSourceProperty('related_links', $related_links);
+    $row->setSourceProperty('custom_related_links', $related_links);
 
     $alias = $this->aliasCleaner->cleanString($row->getSourceProperty('title'));
     $row->setSourceProperty('custom_alias', "/academics/{$alias}");
