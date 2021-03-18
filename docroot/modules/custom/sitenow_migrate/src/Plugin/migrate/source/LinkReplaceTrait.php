@@ -104,24 +104,30 @@ trait LinkReplaceTrait {
   /**
    * Query for a list of nodes which may contain newly broken links.
    */
-  private function checkForPossibleLinkBreaks() {
-    // Check for possible link breaks in standard body fields.
-    $query = $this->connection->select('node__body', 'nb')
-      ->fields('nb', ['entity_id']);
-    $query->condition($query->orConditionGroup()
-      ->condition('nb.body_value', $this->basePath, 'LIKE')
-      ->condition('nb.body_value', "%<a href%node/%", 'LIKE')
-    );
-    $result = $query->execute();
-    $candidates = $result->fetchCol();
-
-    foreach ($candidates as $candidate) {
-      $this->logger->notice($this->t('Possible broken link found in node @candidate', [
-        '@candidate' => $candidate,
-      ]));
+  private function reportPossibleLinkBreaks($fields) {
+    foreach ($fields as $field => $columns) {
+      $candidates = \Drupal::database()->select($field, 'f')
+        ->fields('f', ['entity_id'] + $columns)
+        ->execute()
+        ->fetchAllAssoc('entity_id');
+      foreach ($candidates as $entity_id => $cols) {
+        $oopsie_daisies = [];
+        foreach ($cols as $key => $value) {
+          if ($key === 'entity_id') {
+            continue;
+          }
+          if (preg_match_all('|<a.*?>(.*?)<\/a>|i', $value, $matches)) {
+            $oopsie_daisies[$entity_id] = implode(',', $matches[1]);
+          }
+        }
+        foreach ($oopsie_daisies as $id => $links) {
+          $this->logger->notice($this->t('Possible broken links found in node @candidate: @links', [
+            '@candidate' => $id,
+            '@links' => $links,
+          ]));
+        }
+      }
     }
-
-    return $candidates;
   }
 
   /**
