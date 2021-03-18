@@ -57,7 +57,7 @@
   'attributes': attributes.addClass(classes),
   'card_image': requirement_card_label|lower,
   'card_title': requirement_card_label,
-  'card_text': content.field_ar_intro,
+  'card_text': content.field_ar_intro|render,
   'base_path': base_path ~ directory,
   'headline_level': 'h2',
   'requirement_label': content.field_ar_requirement[0]['#title']|render,

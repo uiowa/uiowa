@@ -24,6 +24,7 @@ dependencies:
     - field.field.node.area_of_study.field_area_of_study_opportunity
     - field.field.node.area_of_study.field_area_of_study_preprof
     - field.field.node.area_of_study.field_area_of_study_pretty_title
+    - field.field.node.area_of_study.field_area_of_study_program_type
     - field.field.node.area_of_study.field_area_of_study_requirement
     - field.field.node.area_of_study.field_area_of_study_scholarship
     - field.field.node.area_of_study.field_area_of_study_select_txt
@@ -195,7 +196,7 @@ third_party_settings:
                 block_margin_top: block_margin_top
                 block_margin_bottom: block_margin_bottom
                 block_margin_right: block_margin_left
-            weight: 9
+            weight: 11
           -
             uuid: b4d948cb-4c09-4224-bd33-436b6b200a70
             region: second
@@ -210,20 +211,7 @@ third_party_settings:
             additional:
               layout_builder_styles_style:
                 block_margin_right: block_margin_left
-            weight: 8
-          -
-            uuid: 088e48b0-97ec-479c-ae31-bac797a7e224
-            region: second
-            configuration:
-              id: aosbuttons_block
-              label: null
-              provider: admissions_core
-              label_display: null
-              context_mapping: {  }
-            additional:
-              layout_builder_styles_style:
-                block_margin_right: block_margin_left
-            weight: 7
+            weight: 10
           -
             uuid: 0eeb1ce7-7903-4640-89a5-cd8d147d3244
             region: first
@@ -287,6 +275,35 @@ third_party_settings:
                 block_margin_top: block_margin_top
                 block_margin_right: block_margin_right
             weight: 7
+          -
+            uuid: b9b2c71a-d021-4f7a-8984-3fbed7d276c3
+            region: second
+            configuration:
+              id: applybutton_block
+              label: null
+              provider: admissions_core
+              label_display: null
+              context_mapping: {  }
+            additional:
+              layout_builder_styles_style:
+                block_margin_left: block_margin_left
+                block_margin_bottom: block_margin_bottom
+            weight: 8
+          -
+            uuid: 72a16b6d-a7e1-418d-ba24-3ed9c93504cc
+            region: second
+            configuration:
+              id: requestinfobutton_block
+              label: null
+              provider: admissions_core
+              label_display: null
+              context_mapping: {  }
+            additional:
+              layout_builder_styles_style:
+                block_margin_left: block_margin_left
+                block_margin_bottom: block_margin_bottom
+                block_margin_top: block_margin_top
+            weight: 9
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -713,6 +730,13 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
+  field_area_of_study_program_type:
+    weight: 43
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
     region: content
   field_area_of_study_requirement:
     weight: 16
