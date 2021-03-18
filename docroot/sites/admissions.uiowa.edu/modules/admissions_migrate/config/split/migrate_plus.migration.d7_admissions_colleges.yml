@@ -17,9 +17,21 @@ process:
   tid: tid
   name: name
   description:
-    plugin: callback
-    callable: strip_tags
-    source: description
+    -
+      plugin: callback
+      callable: strip_tags
+      source: description
+    -
+      plugin: callback
+      callable: htmlspecialchars_decode
+    -
+      plugin: str_replace
+      search: "&#39;"
+      replace: "'"
+    -
+      plugin: str_replace
+      search: "&rsquo;"
+      replace: "'"
   format: format
   field_college_website:
     plugin: field_link
