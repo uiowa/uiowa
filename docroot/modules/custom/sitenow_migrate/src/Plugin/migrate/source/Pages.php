@@ -15,6 +15,7 @@ use Drupal\migrate\Row;
 class Pages extends BaseNodeSource {
 
   use ProcessMediaTrait;
+  use LinkReplaceTrait;
 
   /**
    * The public file directory path.
