@@ -96,7 +96,7 @@ class MigrateSettingsForm extends ConfigFormBase {
     ];
 
     $form['database']['password'] = [
-      '#type' => 'textfield',
+      '#type' => 'password',
       '#title' => $this->t('Database User Password'),
       '#description' => $this->t('The database user password, if applicable. Leave empty for DevDesktop.'),
       '#default_value' => $migrate_group_sitenow_migrate_config->get('shared_configuration.source.database.password'),
