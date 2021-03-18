@@ -26,6 +26,7 @@
  */
 #}
 {{ attach_library('admissions_core/area-of-study') }}
+
 {%
   set classes = [
     'block',
@@ -36,14 +37,21 @@
   ]
 %}
 <div{{ attributes.addClass(classes) }}>
-
-  <h2><div class="bold-headline--serif bold-headline bold-headline--highlight">Find Your Major</div></h2>
+  {% block heading %}
+        {% set aos_headline = {
+          "headline_level" : h2,
+          "headline_class" : 'headline bold-headline--serif bold-headline',
+          "headline_text" : "Find Your Major",
+        } %}
+      {% include '@uids_base/uids/headline.html.twig' with aos_headline only %}
+  {% endblock %}
+  
   <hr class="element--spacer-gold" />
 
   <p>Iowa offers majors, minors, and certificates in more than 200 areas of study.<br>Unsure of what to study? Check out academic groups to see our majors listed by interest areas.</p>
 
   {{ content }}
   
-  <a href="/areas-of-study" class="bttn bttn--primary bttn--caps">VIEW ALL AREAS OF STUDY<i class="fas fa-arrow-right"></i></a>
-  <a href="/academics" class="bttn bttn--primary bttn--caps">EXPLORE YOUR INTERESTS<i class="fas fa-arrow-right"></i></a>
+  <a href="/areas-of-study" class="bttn bttn--primary bttn--caps">View all areas of study<i class="fas fa-arrow-right"></i></a>
+  <a href="/academics" class="bttn bttn--primary bttn--caps">Explore your interests<i class="fas fa-arrow-right"></i></a>
 </div>
