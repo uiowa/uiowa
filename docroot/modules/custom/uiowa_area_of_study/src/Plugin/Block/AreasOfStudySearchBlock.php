@@ -79,6 +79,9 @@ class AreasOfStudySearchBlock extends BlockBase implements ContainerFactoryPlugi
     if ($view) {
       $view->setDisplay($display_id);
       $view->initHandlers();
+      unset($view->filter["field_area_of_study_program_type_value"]);
+      unset($view->filter["field_area_of_study_academic_gp_target_id"]);
+      unset($view->filter["field_area_of_study_college_target_id"]);
       $form_state = (new FormState())
         ->setStorage([
           'view' => $view,
