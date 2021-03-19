@@ -1,0 +1,20 @@
+@import "../../../../../themes/custom/uids_base/uids/assets/scss/_variables.scss";
+@import "../../../../../themes/custom/uids_base/uids/assets/scss/_utilities.scss";
+@import "../../../../../themes/custom/uids_base/uids/components/headline/headline.scss";
+
+.view-colleges-taxonomy-term {
+  h3, ul {
+    margin: 0 auto;
+    max-width: 1300px;
+  }
+  h3 {
+    @include headline-serif;
+    margin-bottom: $md;
+  }
+}
+
+  // Remove default margin until we can get layout-builder-enabled class to appear for taxonomy pages
+  body:not(.page-node-type-article):not(.page-node-type-page).path-taxonomy.layout-builder-disabled main.page__container {
+    margin-bottom: 0;
+  }
+
