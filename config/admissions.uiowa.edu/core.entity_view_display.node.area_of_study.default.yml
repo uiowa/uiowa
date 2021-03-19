@@ -39,6 +39,7 @@ dependencies:
     - field.field.node.area_of_study.field_area_of_study_transfer
     - field.field.node.area_of_study.field_area_of_study_why
     - field.field.node.area_of_study.field_image
+    - field.field.node.area_of_study.field_meta_tags
     - node.type.area_of_study
     - views.view.areas_of_study_block
   module:
@@ -47,6 +48,7 @@ dependencies:
     - layout_builder
     - layout_builder_restrictions
     - link
+    - metatag
     - options
     - text
     - user
@@ -835,6 +837,13 @@ content:
       link: false
     third_party_settings: {  }
     type: entity_reference_entity_view
+    region: content
+  field_meta_tags:
+    weight: 42
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: metatag_empty_formatter
     region: content
   links:
     weight: 0
