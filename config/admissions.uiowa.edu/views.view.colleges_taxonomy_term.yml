@@ -304,7 +304,7 @@ display:
         metatag_display_extender: {  }
       path: taxonomy/term/%
       style:
-        type: default
+        type: html_list
         options:
           grouping:
             -
@@ -313,6 +313,9 @@ display:
               rendered_strip: false
           row_class: ''
           default_row_class: true
+          type: ul
+          wrapper_class: 'item-list bg--gray block-padding__all block--edge-to-edge grid--threecol--33-34-33 grid--gap-remove'
+          class: 'list-container container'
       defaults:
         style: false
         row: false
@@ -457,7 +460,7 @@ display:
           entity_field: type
           plugin_id: field
       display_description: ''
-      css_class: 'grid--threecol--33-34-33 grid--first-item-full-width'
+      css_class: ''
     cache_metadata:
       max-age: -1
       contexts:
