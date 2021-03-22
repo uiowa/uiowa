@@ -2,6 +2,7 @@
 
 namespace Drupal\admissions_migrate\Plugin\migrate\source;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\File\FileSystemInterface;
@@ -11,7 +12,6 @@ use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\pathauto\AliasCleanerInterface;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\migrate\Row;
-use Drupal\sitenow_migrate\Plugin\migrate\source\LinkReplaceTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -23,9 +23,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * )
  */
 class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterface {
-
-  use LinkReplaceTrait;
-
   /**
    * The pathauto.alias_cleaner service.
    *
@@ -113,10 +110,49 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
    * Report possible fields to check for broken links after migration.
    */
   public function postImportProcess() {
-    $toCheck = [
-      'node__body' => ['body_value'],
+    $fields = [
+      'body',
+      'field_area_of_study_subtitle',
+      'field_area_of_study_why',
+      'field_area_of_study_course_work',
+      'field_area_of_study_requirement',
+      'field_area_of_study_transfer',
+      'field_area_of_study_intl',
+      'field_area_of_study_opportunity',
+      'field_area_of_study_career',
+      'field_area_of_study_scholarship',
     ];
-    $this->reportPossibleLinkBreaks($toCheck);
+
+    $query = $this->entityTypeManager->getStorage('node')->getQuery();
+
+    $ids = $query
+      ->condition('type', 'area_of_study')
+      ->execute();
+
+    if ($ids) {
+      $controller = $this->entityTypeManager->getStorage('node');
+      $entities = $controller->loadMultiple($ids);
+
+      foreach ($entities as $entity) {
+        foreach ($fields as $field) {
+          $html = Html::load($entity->$field->getString());
+          $links = $html->getElementsByTagName('a');
+
+          foreach ($links as $link) {
+            $href = $link->getAttribute('href');
+
+            if (strpos($href, '/node/') === 0 || stristr($href, 'admissions.uiowa.edu/node/')) {
+              $this->logger->notice('Internal link @link detected in @field on @aos.', [
+                '@link' => $href,
+                '@field' => $field,
+                '@aos' => $entity->label(),
+              ]);
+            }
+          }
+        }
+      }
+    }
+
     return parent::postImportProcess();
   }
 
