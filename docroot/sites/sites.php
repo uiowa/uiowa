@@ -2393,3 +2393,9 @@ $sites['labhistoryoftechnology.local.drupal.uiowa.edu'] = 'historyoftechnology.l
 $sites['labhistoryoftechnology.dev.drupal.uiowa.edu'] = 'historyoftechnology.lab.uiowa.edu';
 $sites['labhistoryoftechnology.stage.drupal.uiowa.edu'] = 'historyoftechnology.lab.uiowa.edu';
 $sites['labhistoryoftechnology.prod.drupal.uiowa.edu'] = 'historyoftechnology.lab.uiowa.edu';
+
+// Directory aliases for hot.lab.uiowa.edu.
+$sites['labhot.local.drupal.uiowa.edu'] = 'hot.lab.uiowa.edu';
+$sites['labhot.dev.drupal.uiowa.edu'] = 'hot.lab.uiowa.edu';
+$sites['labhot.stage.drupal.uiowa.edu'] = 'hot.lab.uiowa.edu';
+$sites['labhot.prod.drupal.uiowa.edu'] = 'hot.lab.uiowa.edu';
