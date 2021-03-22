@@ -20,7 +20,6 @@ class Articles extends BaseNodeSource {
    * Prepare row used for altering source data prior to its insertion.
    */
   public function prepareRow(Row $row) {
-
     // Check if an image was attached, and if so, update with new fid.
     $original_fid = $row->getSourceProperty('field_image_fid');
     if (isset($original_fid)) {
@@ -28,12 +27,12 @@ class Articles extends BaseNodeSource {
     }
 
     // Search for D7 inline embeds and replace with D8 inline entities.
-    $content = $row->getSourceProperty('field_article_body_value');
+    $content = $row->getSourceProperty('field_article_body');
     $content = preg_replace_callback("|\[\[\{.*?\"fid\":\"(.*?)\".*?\]\]|", [
       $this,
       'entityReplace',
     ], $content);
-    $row->setSourceProperty('field_article_body_value', $content);
+    $row->setSourceProperty('field_article_body', $content);
 
     // Check summary, and create one if none exists.
     if (!$row->getSourceProperty('field_article_body_summary')) {
