@@ -34,9 +34,12 @@ class Articles extends BaseNodeSource {
       $row->setSourceProperty('field_article_body', $content);
 
       // Check summary, and create one if none exists.
-      if (!$row->getSourceProperty('field_article_body_summary')) {
+      if (empty($content[0]['summary'])) {
         $new_summary = $this->extractSummaryFromText($content[0]['value']);
         $row->setSourceProperty('field_article_body_summary', $new_summary);
+      }
+      else {
+        $row->setSourceProperty('field_article_body_summary', $content[0]['summary']);
       }
     }
   }
