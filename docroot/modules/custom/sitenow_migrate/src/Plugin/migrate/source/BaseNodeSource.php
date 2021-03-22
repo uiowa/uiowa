@@ -7,6 +7,7 @@ use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\State\StateInterface;
+use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Row;
 use Drupal\node\Plugin\migrate\source\d7\Node;
@@ -139,11 +140,12 @@ abstract class BaseNodeSource extends Node {
   }
 
   /**
-   * Utility class to run post migration import processes.
+   * Run post-migration tasks.
+   *
+   * @param MigrateImportEvent $event
+   *   The migrate import event.
    */
-  public function postImportProcess() {
-    return FALSE;
-  }
+  public function postImportProcess(MigrateImportEvent $event) {}
 
   /**
    * Attempt to clear the entity cache if needed to avoid memory overflows.

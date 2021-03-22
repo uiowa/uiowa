@@ -120,7 +120,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
     $source = $migration->getSourcePlugin();
 
     if (method_exists($source, 'postImportProcess')) {
-      $source->postImportProcess();
+      $source->postImportProcess($event);
     }
 
     switch ($migration->id()) {

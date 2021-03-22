@@ -8,7 +8,9 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\State\StateInterface;
+use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Plugin\MigrationInterface;
+use Drupal\node\Entity\Node;
 use Drupal\pathauto\AliasCleanerInterface;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\migrate\Row;
@@ -152,8 +154,6 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
         }
       }
     }
-
-    return parent::postImportProcess();
   }
 
 }
