@@ -90,7 +90,7 @@ class CreateDegrees extends ProcessPluginBase implements ContainerFactoryPluginI
     else {
       $label = $item['value'];
 
-      $this->getLogger('admissions_migrate')->warning('Cannot split degree on abbreviation for AOS: @aos.', [
+      $this->getLogger('admissions_migrate')->notice('Cannot split degree on abbreviation for AOS: @aos.', [
         '@aos' => $row->getSourceProperty('title'),
       ]);
     }
