@@ -5,6 +5,7 @@ namespace Drupal\sitenow_migrate\Plugin\migrate\source;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\State\StateInterface;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Row;
@@ -17,12 +18,21 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @see \Drupal\node\Plugin\migrate\source\d7\Node
  */
 abstract class BaseNodeSource extends Node {
+  use LoggerChannelTrait;
+
   /**
    * The module handler.
    *
    * @var \Drupal\Core\File\FileSystemInterface
    */
   protected $fileSystem;
+
+  /**
+   * The sitenow_migrate logger channel.
+   *
+   * @var \Psr\Log\LoggerInterface
+   */
+  protected $logger;
 
   /**
    * Number of records to fetch from the database during each batch.
@@ -39,6 +49,7 @@ abstract class BaseNodeSource extends Node {
   public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration, StateInterface $state, ModuleHandlerInterface $module_handler, FileSystemInterface $file_system, EntityTypeManager $entityTypeManager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $migration, $state, $entityTypeManager, $module_handler);
     $this->fileSystem = $file_system;
+    $this->logger = $this->getLogger('sitenow_migrate');
   }
 
   /**
