@@ -109,46 +109,75 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
   }
 
   /**
-   * Report possible fields to check for broken links after migration.
+   * {@inheritdoc}
    */
-  public function postImportProcess() {
-    $fields = [
-      'body',
-      'field_area_of_study_subtitle',
-      'field_area_of_study_why',
-      'field_area_of_study_course_work',
-      'field_area_of_study_requirement',
-      'field_area_of_study_transfer',
-      'field_area_of_study_intl',
-      'field_area_of_study_opportunity',
-      'field_area_of_study_career',
-      'field_area_of_study_scholarship',
+  public function postImportProcess(MigrateImportEvent $event) {
+    $migration = $event->getMigration();
+
+    // @todo: Update what we can lookup in the migration map.
+    $map = $migration->getIdMap();
+
+    $entity_types = [
+      'taxonomy_term' => [
+        'academic_groups' => [
+          'description'
+        ],
+        'colleges' => [
+          'description',
+        ]
+      ],
+      'node' => [
+        'transfer_tips' => [
+          'body',
+        ],
+        'area_of_study' => [
+          'body',
+          'field_area_of_study_subtitle',
+          'field_area_of_study_why',
+          'field_area_of_study_course_work',
+          'field_area_of_study_requirement',
+          'field_area_of_study_opportunity',
+          'field_area_of_study_career',
+          'field_area_of_study_scholarship',
+        ],
+      ],
+      'paragraph' => [
+        'admissions_requirement' => [
+          'field_ar_intro',
+        ]
+      ]
     ];
 
-    $query = $this->entityTypeManager->getStorage('node')->getQuery();
+    foreach ($entity_types as $entity_type => $bundles) {
+      foreach ($bundles as $bundle => $fields) {
+        $field = ($entity_type == 'taxonomy_term') ? 'vid' : 'type';
+        $query = $this->entityTypeManager->getStorage($entity_type)->getQuery();
 
-    $ids = $query
-      ->condition('type', 'area_of_study')
-      ->execute();
+        $ids = $query
+          ->condition($field, $bundle)
+          ->execute();
 
-    if ($ids) {
-      $controller = $this->entityTypeManager->getStorage('node');
-      $entities = $controller->loadMultiple($ids);
+        if ($ids) {
+          $controller = $this->entityTypeManager->getStorage($entity_type);
+          $entities = $controller->loadMultiple($ids);
 
-      foreach ($entities as $entity) {
-        foreach ($fields as $field) {
-          $html = Html::load($entity->$field->getString());
-          $links = $html->getElementsByTagName('a');
+          foreach ($entities as $entity) {
+            foreach ($fields as $field) {
+              $document = Html::load($entity->$field->getString());
+              $links = $document->getElementsByTagName('a');
 
-          foreach ($links as $link) {
-            $href = $link->getAttribute('href');
+              foreach ($links as $link) {
+                $href = $link->getAttribute('href');
 
-            if (strpos($href, '/node/') === 0 || stristr($href, 'admissions.uiowa.edu/node/')) {
-              $this->logger->notice('Internal link @link detected in @field on @aos.', [
-                '@link' => $href,
-                '@field' => $field,
-                '@aos' => $entity->label(),
-              ]);
+                if (strpos($href, '/node/') === 0 || stristr($href, 'admissions.uiowa.edu/node/')) {
+                  $this->logger->notice('Internal link @link found in field @field on @bundle @aos.', [
+                    '@link' => $href,
+                    '@field' => $field,
+                    '@bundle' => $bundle,
+                    '@aos' => $entity->label(),
+                  ]);
+                }
+              }
             }
           }
         }
