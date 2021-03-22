@@ -249,12 +249,4 @@ class ListBlock extends CoreBlock {
     return FALSE;
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function displaysExposed() {
-    // We don't want this to be available on this type of block.
-    return FALSE;
-  }
-
 }
