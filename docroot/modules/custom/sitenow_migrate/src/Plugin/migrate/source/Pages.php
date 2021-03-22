@@ -9,86 +9,13 @@ use Drupal\migrate\Row;
  *
  * @MigrateSource(
  *  id = "pages",
- *  source_module = "sitenow_migrate"
+ *  source_module = "node"
  * )
  */
 class Pages extends BaseNodeSource {
 
   use ProcessMediaTrait;
   use LinkReplaceTrait;
-
-  /**
-   * The public file directory path.
-   *
-   * @var string
-   */
-  protected $publicPath;
-
-  /**
-   * The private file directory path, if any.
-   *
-   * @var string
-   */
-  protected $privatePath;
-
-  /**
-   * The temporary file directory path.
-   *
-   * @var string
-   */
-  protected $temporaryPath;
-
-  /**
-   * {@inheritdoc}
-   */
-  public function query() {
-    $query = parent::query();
-    $query->join('field_data_body', 'b', 'n.nid = b.entity_id');
-    $query = $query->fields('b', [
-      'body_value',
-      'body_summary',
-      'body_format',
-    ])
-      ->condition('n.type', 'page');
-    return $query;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function fields() {
-    $fields = [
-      'nid' => $this->t('Node ID'),
-      'vid' => $this->t('Node revision ID'),
-      'language' => $this->t('Language'),
-      'title' => $this->t('Node Title'),
-      'uid' => $this->t('User ID of node author'),
-      'status' => $this->t('Published/unpublished'),
-      'created' => $this->t('Timestamp of creation'),
-      'changed' => $this->t('Timestamp of last change'),
-      'comment' => $this->t('Comments enabled/disabled'),
-      'promote' => $this->t('Promoted'),
-      'sticky' => $this->t('Stickied'),
-      'tnid' => $this->t('Translation ID'),
-      'translate' => $this->t('Page being translated?'),
-      'body_value' => $this->t('The actual body text being migrated'),
-      'body_summary' => $this->t("The page's summary test"),
-      'body_format' => $this->t("The body text field's formatting"),
-    ];
-    return $fields;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getIds() {
-    return [
-      'nid' => [
-        'type' => 'integer',
-        'alias' => 'n',
-      ],
-    ];
-  }
 
   /**
    * Prepare row used for altering source data prior to its insertion.
