@@ -142,7 +142,7 @@ abstract class BaseNodeSource extends Node {
   /**
    * Run post-migration tasks.
    *
-   * @param MigrateImportEvent $event
+   * @param \Drupal\migrate\Event\MigrateImportEvent $event
    *   The migrate import event.
    */
   public function postImportProcess(MigrateImportEvent $event) {}

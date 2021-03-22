@@ -10,7 +10,6 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\State\StateInterface;
 use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Plugin\MigrationInterface;
-use Drupal\node\Entity\Node;
 use Drupal\pathauto\AliasCleanerInterface;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\migrate\Row;
@@ -114,17 +113,17 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
   public function postImportProcess(MigrateImportEvent $event) {
     $migration = $event->getMigration();
 
-    // @todo: Update what we can lookup in the migration map.
+    // @todo Update what we can lookup in the migration map.
     $map = $migration->getIdMap();
 
     $entity_types = [
       'taxonomy_term' => [
         'academic_groups' => [
-          'description'
+          'description',
         ],
         'colleges' => [
           'description',
-        ]
+        ],
       ],
       'node' => [
         'transfer_tips' => [
@@ -144,8 +143,8 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
       'paragraph' => [
         'admissions_requirement' => [
           'field_ar_intro',
-        ]
-      ]
+        ],
+      ],
     ];
 
     foreach ($entity_types as $entity_type => $bundles) {
