@@ -15,3 +15,12 @@ a.bttn {
     }
   }
 }
+
+.bttn {
+  margin: 0 1rem 1rem 0;
+  + .bttn {
+    @include breakpoint(sm) {
+      margin: inherit;
+    }
+  }
+}
