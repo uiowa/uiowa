@@ -2,7 +2,7 @@
 
 namespace Drupal\sitenow_migrate\Plugin\migrate\source;
 
-use Drupal\migrate\Plugin\migrate\source\SqlBase;
+use Drupal\file\Plugin\migrate\source\d7\File;
 use Drupal\migrate\Row;
 
 /**
@@ -10,75 +10,10 @@ use Drupal\migrate\Row;
  *
  * @MigrateSource(
  *  id = "files",
- *  source_module = "sitenow_migrate"
+ *  source_module = "file"
  * )
  */
-class Files extends SqlBase {
-
-  /**
-   * The public file directory path.
-   *
-   * @var string
-   */
-  protected $publicPath;
-
-  /**
-   * The private file directory path, if any.
-   *
-   * @var string
-   */
-  protected $privatePath;
-
-  /**
-   * The temporary file directory path.
-   *
-   * @var string
-   */
-  protected $temporaryPath;
-
-  /**
-   * {@inheritdoc}
-   */
-  public function query() {
-    $query = $this->select('file_managed', 'f');
-    // Limit it to only files which appear in the file_usage table.
-    $query->innerJoin('file_usage', 'u', 'u.fid = f.fid');
-    $query = $query->fields('f', [
-      'fid',
-      'filename',
-      'uri',
-      'filemime',
-    ])
-      // Need distinct to avoid duplicates from the file_usage join.
-      ->distinct();
-    return $query;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function fields() {
-    $fields = [
-      'fid' => $this->t('File ID from D7'),
-      'filename' => $this->t('Filename'),
-      'uri' => $this->t('URI'),
-      'filemime' => $this->t('Filemime'),
-    ];
-    return $fields;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getIds() {
-    return [
-      'fid' => [
-        'type' => 'integer',
-        'alias' => 'f',
-      ],
-    ];
-  }
-
+class Files extends File {
   /**
    * Prepare row used for altering source data prior to its insertion.
    */
@@ -88,13 +23,16 @@ class Files extends SqlBase {
     if (str_starts_with($row->getSourceProperty('uri'), "private://")) {
       return FALSE;
     }
-    // Create source filepath based on URI.
+
+    // @todo: Use the parent class filepath source property.
     $row->setSourceProperty('uri', str_replace("public://", "", $row->getSourceProperty('uri')));
 
     $fileType = explode('/', $row->getSourceProperty('filemime'))[0];
+
     if ($fileType == 'image') {
       $row->setSourceProperty('meta', $this->fetchMeta($row));
     }
+
     return parent::prepareRow($row);
   }
 
@@ -105,6 +43,7 @@ class Files extends SqlBase {
     $query = $this->select('file_managed', 'f');
     $query->join('field_data_field_file_image_alt_text', 'a', 'a.entity_id = f.fid');
     $query->join('field_data_field_file_image_title_text', 't', 't.entity_id = f.fid');
+
     $result = $query->fields('a', [
       'field_file_image_alt_text_value',
     ])
@@ -113,6 +52,7 @@ class Files extends SqlBase {
       ])
       ->condition('f.fid', $row->getSourceProperty('fid'))
       ->execute();
+
     return $result->fetchAssoc();
   }
 
