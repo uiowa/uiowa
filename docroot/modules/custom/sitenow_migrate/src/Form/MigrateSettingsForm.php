@@ -130,7 +130,7 @@ class MigrateSettingsForm extends ConfigFormBase {
         '#type' => 'textfield',
         '#title' => $this->t('Files Path'),
         '#description' => $this->t('The files path to pull from'),
-        '#default_value' => $migrate_plus_d7_file_config->get('source.constants.SOURCE_BASE_PATH'),
+        '#default_value' => $migrate_plus_d7_file_config->get('source.constants.source_base_path'),
       ];
     }
 
@@ -167,12 +167,12 @@ class MigrateSettingsForm extends ConfigFormBase {
 
     if ($form_state->getValue('sitenow_migrate_file_path')) {
       $this->config('migrate_plus.migration.d7_file')
-        ->set('source.constants.SOURCE_BASE_PATH', $form_state->getValue('sitenow_migrate_file_path'))
+        ->set('source.constants.source_base_path', $form_state->getValue('sitenow_migrate_file_path'))
         ->save();
 
       // Set file directory to avoid needing dynamic setting during migration.
       $this->config('migrate_plus.migration.d7_file')
-        ->set('source.constants.DRUPAL_FILE_DIRECTORY', 'public://' . date('Y-m'))
+        ->set('source.constants.drupal_file_directory', 'public://' . date('Y-m'))
         ->save();
     }
 

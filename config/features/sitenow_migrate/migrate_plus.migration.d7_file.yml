@@ -17,8 +17,8 @@ label: Files
 source:
   plugin: files
   constants:
-    SOURCE_BASE_PATH: ''
-    DRUPAL_FILE_DIRECTORY: ''
+    source_base_path: ''
+    drupal_file_directory: ''
 process:
   filename:
     plugin: get
@@ -28,7 +28,7 @@ process:
       plugin: concat
       delimiter: /
       source:
-        - constants/SOURCE_BASE_PATH
+        - constants/source_base_path
         - uri
     -
       plugin: urlencode
@@ -37,7 +37,7 @@ process:
       plugin: concat
       delimiter: /
       source:
-        - constants/DRUPAL_FILE_DIRECTORY
+        - constants/drupal_file_directory
         - filename
     -
       plugin: urlencode
