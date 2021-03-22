@@ -81,32 +81,3 @@
   line-height: 1.7;
   font-weight: 400;
 }
-
-
-.views-exposed-form {
-  &.views-exposed-form--minimal {
-    border-radius: 0;
-    border: none;
-    background: transparent;
-    &.uids-content:not(.uids-search) {
-      padding: 5px 0;
-      .form-item {
-        margin-top: 0;
-        margin-right: 0;
-      }
-      .form-actions {
-        margin-right: 0;
-        margin-top: 0;
-      }
-      .button {
-        border: 1px solid $secondary;
-      }
-    }
-
-    .js-form-item {
-      label {
-        @include element-invisible;
-      }
-    }
-  }
-}
