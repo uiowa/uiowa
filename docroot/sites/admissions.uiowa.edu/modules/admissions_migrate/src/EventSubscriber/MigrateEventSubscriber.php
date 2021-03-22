@@ -54,24 +54,30 @@ class MigrateEventSubscriber implements EventSubscriberInterface {
     $migration = $event->getMigration();
 
     if ($migration->id() == 'd7_admissions_aos') {
-      $entities = [
-        'paragraph' => 'degree',
-        'node' => 'transfer_tips',
+      $entity_types = [
+        'paragraph' => [
+          'degree',
+          'admissions_requirement',
+        ],
+        'node' => [
+          'transfer_tips',
+        ],
       ];
 
-      foreach ($entities as $type => $bundle) {
-        $field = ($type == 'taxonomy_term') ? 'vid' : 'type';
+      foreach ($entity_types as $type => $bundles) {
+        foreach ($bundles as $bundle) {
+          $field = ($type == 'taxonomy_term') ? 'vid' : 'type';
+          $query = $this->entityTypeManager->getStorage($type)->getQuery();
 
-        $query = $this->entityTypeManager->getStorage($type)->getQuery();
+          $ids = $query
+            ->condition($field, $bundle)
+            ->execute();
 
-        $ids = $query
-          ->condition($field, $bundle)
-          ->execute();
-
-        if ($ids) {
-          $controller = $this->entityTypeManager->getStorage($type);
-          $entities = $controller->loadMultiple($ids);
-          $controller->delete($entities);
+          if ($ids) {
+            $controller = $this->entityTypeManager->getStorage($type);
+            $entities = $controller->loadMultiple($ids);
+            $controller->delete($entities);
+          }
         }
       }
     }
