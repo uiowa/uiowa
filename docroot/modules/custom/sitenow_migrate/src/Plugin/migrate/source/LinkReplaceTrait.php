@@ -107,19 +107,22 @@ trait LinkReplaceTrait {
   private function reportPossibleLinkBreaks($fields) {
     foreach ($fields as $field => $columns) {
       $candidates = \Drupal::database()->select($field, 'f')
-        ->fields('f', ['entity_id'] + $columns)
+        ->fields('f', array_merge($columns, ['entity_id']))
         ->execute()
         ->fetchAllAssoc('entity_id');
+
       foreach ($candidates as $entity_id => $cols) {
         $oopsie_daisies = [];
         foreach ($cols as $key => $value) {
           if ($key === 'entity_id') {
             continue;
           }
+
           if (preg_match_all('|<a.*?>(.*?)<\/a>|i', $value, $matches)) {
             $oopsie_daisies[$entity_id] = implode(',', $matches[1]);
           }
         }
+
         foreach ($oopsie_daisies as $id => $links) {
           $this->logger->notice($this->t('Possible broken links found in node @candidate: @links', [
             '@candidate' => $id,
