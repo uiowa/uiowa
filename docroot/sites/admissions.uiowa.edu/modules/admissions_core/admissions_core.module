@@ -129,8 +129,16 @@ function admissions_core_form_alter(&$form, FormStateInterface $form_state, $for
  * Implements hook_form_FORM_ID_alter().
  */
 function admissions_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if ($form['#id'] == 'views-exposed-form-counselors-block-counselors') {
-    $form["territory"]["#options"]["All"] = t("- All -");
+  $view = $form_state->get('view');
+  if ($view->id() == 'student_card') {
+    if ($view->current_display == 'block_student_grid') {
+      $form['#attributes']['class'][] = 'hidden';
+    }
+  }
+  if ($view->id() == 'counselors') {
+    if ($view->current_display == 'block_counselors') {
+      $form["territory"]["#options"]["All"] = t("- All -");
+    }
   }
 }
 
