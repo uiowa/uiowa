@@ -20,27 +20,25 @@ class Articles extends BaseNodeSource {
    * Prepare row used for altering source data prior to its insertion.
    */
   public function prepareRow(Row $row) {
-    // Check if an image was attached, and if so, update with new fid.
-    $original_fid = $row->getSourceProperty('field_image_fid');
-    if (isset($original_fid)) {
-      $row->setSourceProperty('field_image_fid', $this->getFid($original_fid));
-    }
+    parent::prepareRow($row);
 
     // Search for D7 inline embeds and replace with D8 inline entities.
     $content = $row->getSourceProperty('field_article_body');
-    $content = preg_replace_callback("|\[\[\{.*?\"fid\":\"(.*?)\".*?\]\]|", [
-      $this,
-      'entityReplace',
-    ], $content);
-    $row->setSourceProperty('field_article_body', $content);
 
-    // Check summary, and create one if none exists.
-    if (!$row->getSourceProperty('field_article_body_summary')) {
-      $new_summary = $this->extractSummaryFromText($content);
-      $row->setSourceProperty('field_article_body_summary', $new_summary);
+    if (!empty($content)) {
+      $content[0]['value'] = preg_replace_callback("|\[\[\{.*?\"fid\":\"(.*?)\".*?\]\]|", [
+        $this,
+        'entityReplace',
+      ], $content[0]['value']);
+
+      $row->setSourceProperty('field_article_body', $content);
+
+      // Check summary, and create one if none exists.
+      if (!$row->getSourceProperty('field_article_body_summary')) {
+        $new_summary = $this->extractSummaryFromText($content[0]['value']);
+        $row->setSourceProperty('field_article_body_summary', $new_summary);
+      }
     }
-    // Call the parent prepareRow.
-    return parent::prepareRow($row);
   }
 
 }
