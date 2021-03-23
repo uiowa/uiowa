@@ -244,8 +244,8 @@ class MigratePostImportEvent implements EventSubscriberInterface {
       $old_nid = end($link_parts);
 
       // Check that there is a mapping and set it to the new id.
-      if (isset($this->sourceToDestIds[$old_id])) {
-        $new_nid = $this->sourceToDestIds[$old_id];
+      if (isset($this->sourceToDestIds[$old_nid])) {
+        $new_nid = $this->sourceToDestIds[$old_nid];
         // Display message in terminal.
         $this->logger->notice($this->t('Old nid... @old_nid', [
           '@old_nid' => $old_nid,
@@ -253,7 +253,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
         $this->logger->notice($this->t('New nid... @new_nid', [
           '@new_nid' => $new_nid,
         ]));
-        $new_link = '<a href="/node/' . $new_id . $suffix . '"';
+        $new_link = '<a href="/node/' . $new_nid . $suffix . '"';
       }
       // No mapping found, so keep the old link.
       else {
