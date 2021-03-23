@@ -168,6 +168,8 @@ trait LinkReplaceTrait {
 
   /**
    * Query the migration map to get a D7-nid => D8-nid indexed array.
+   *
+   * @todo: Use the actual migrate map service.
    */
   private function fetchMapping($migrate_maps) {
     // Grab the first map to initiate the query. If there are more
