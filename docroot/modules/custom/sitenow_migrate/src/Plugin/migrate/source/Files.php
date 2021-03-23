@@ -3,7 +3,10 @@
 namespace Drupal\sitenow_migrate\Plugin\migrate\source;
 
 use Drupal\file\Plugin\migrate\source\d7\File;
+use Drupal\migrate\MigrateSkipRowException;
 use Drupal\migrate\Row;
+use function PHPUnit\Framework\returnValue;
+use function PHPUnit\Framework\throwException;
 
 /**
  * Basic implementation of the source plugin.
@@ -18,11 +21,11 @@ class Files extends File {
    * Prepare row used for altering source data prior to its insertion.
    */
   public function prepareRow(Row $row) {
-    parent::prepareRow($row);
+    $scheme = parse_url($row->getSourceProperty('uri'), PHP_URL_SCHEME);
 
-    // Skip if the file is in the private directory, because
-    // we won't be able to download it directly.
-    if (str_starts_with($row->getSourceProperty('uri'), "private://")) {
+    // @todo: We probably need to break up this migration by file type to
+    // process remote videos and other schemes differently.
+    if ($scheme != 'public') {
       return FALSE;
     }
 
@@ -31,6 +34,8 @@ class Files extends File {
     if ($fileType == 'image') {
       $row->setSourceProperty('meta', $this->fetchMeta($row));
     }
+
+    return parent::prepareRow($row);
   }
 
   /**
