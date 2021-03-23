@@ -17,9 +17,10 @@ class People extends BaseNodeSource {
   use ProcessMediaTrait;
 
   /**
-   * Prepare row used for altering source data prior to insertion.
+   * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
+    parent::prepareRow($row);
 
     // Get mid from fid for profile image.
     $fid = $row->getSourceProperty('field_person_image_fid');
@@ -37,8 +38,7 @@ class People extends BaseNodeSource {
       $row->setSourceProperty('field_person_bio_summary', $new_summary);
     }
 
-    // Call the parent prepareRow.
-    return parent::prepareRow($row);
+    return TRUE;
   }
 
   /**

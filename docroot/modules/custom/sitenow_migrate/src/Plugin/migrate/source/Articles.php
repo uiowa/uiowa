@@ -17,7 +17,7 @@ class Articles extends BaseNodeSource {
   use ProcessMediaTrait;
 
   /**
-   * Prepare row used for altering source data prior to its insertion.
+   * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
@@ -49,6 +49,8 @@ class Articles extends BaseNodeSource {
         $row->setSourceProperty('field_article_body_summary', $content[0]['summary']);
       }
     }
+
+    return TRUE;
   }
 
 }

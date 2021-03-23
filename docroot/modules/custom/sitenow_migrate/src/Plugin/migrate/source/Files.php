@@ -15,16 +15,18 @@ use Drupal\migrate\Row;
  */
 class Files extends File {
   /**
-   * Prepare row used for altering source data prior to its insertion.
+   * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
+    parent::prepareRow($row);
+
     $fileType = explode('/', $row->getSourceProperty('filemime'))[0];
 
     if ($fileType == 'image') {
       $row->setSourceProperty('meta', $this->fetchMeta($row));
     }
 
-    return parent::prepareRow($row);
+    return TRUE;
   }
 
   /**

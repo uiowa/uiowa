@@ -18,9 +18,11 @@ class Pages extends BaseNodeSource {
   use LinkReplaceTrait;
 
   /**
-   * Prepare row used for altering source data prior to its insertion.
+   * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
+    parent::prepareRow($row);
+
     // Search for D7 inline embeds and replace with D8 inline entities.
     $content = $row->getSourceProperty('body_value');
     $content = preg_replace_callback("|\[\[\{.*?\"fid\":\"(.*?)\".*?\]\]|", [
@@ -34,8 +36,8 @@ class Pages extends BaseNodeSource {
       $new_summary = $this->extractSummaryFromText($content);
       $row->setSourceProperty('body_summary', $new_summary);
     }
-    // Call the parent prepareRow.
-    return parent::prepareRow($row);
+
+    return TRUE;
   }
 
 }
