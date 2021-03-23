@@ -70,6 +70,15 @@ abstract class BaseNodeSource extends Node {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function prepareRow(Row $row) {
+    parent::prepareRow($row);
+    $moderation_state = $row->getSourceProperty('status') == 1 ? 'published' : 'draft';
+    $row->setSourceProperty('moderation_state', $moderation_state);
+  }
+
+  /**
    * Extract a summary from a block of text.
    */
   protected function extractSummaryFromText($text) {
