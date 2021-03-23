@@ -18,22 +18,19 @@ class Files extends File {
    * Prepare row used for altering source data prior to its insertion.
    */
   public function prepareRow(Row $row) {
+    parent::prepareRow($row);
+
     // Skip if the file is in the private directory, because
     // we won't be able to download it directly.
     if (str_starts_with($row->getSourceProperty('uri'), "private://")) {
       return FALSE;
     }
 
-    // @todo: Use the parent class filepath source property.
-    $row->setSourceProperty('uri', str_replace("public://", "", $row->getSourceProperty('uri')));
-
     $fileType = explode('/', $row->getSourceProperty('filemime'))[0];
 
     if ($fileType == 'image') {
       $row->setSourceProperty('meta', $this->fetchMeta($row));
     }
-
-    return parent::prepareRow($row);
   }
 
   /**
