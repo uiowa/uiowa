@@ -22,6 +22,13 @@ class Articles extends BaseNodeSource {
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
 
+    // Check if an image was attached, and if so, update with new fid.
+    $image = $row->getSourceProperty('field_image');
+
+    if (!empty($image)) {
+      $row->setSourceProperty('field_image_fid', $this->getFid($image[0]['fid']));
+    }
+
     // Search for D7 inline embeds and replace with D8 inline entities.
     $content = $row->getSourceProperty('field_article_body');
 
