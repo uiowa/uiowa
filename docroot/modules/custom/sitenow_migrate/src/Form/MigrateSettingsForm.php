@@ -66,7 +66,6 @@ class MigrateSettingsForm extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildForm($form, $form_state);
     $migrate_group_sitenow_migrate_config = $this->config('migrate_plus.migration_group.sitenow_migrate');
-    $migrate_plus_d7_file_config = $this->config('migrate_plus.migration.d7_file');
 
     $form['markup'] = [
       '#type' => 'markup',
@@ -118,25 +117,18 @@ class MigrateSettingsForm extends ConfigFormBase {
       '#required' => TRUE,
     ];
 
-    // @todo: Investigate why we can't use sitenow_migrate shared configuration.
-    // It'd be nice considering the shared_configuration is already config-
-    // ignored but using it borked all the migrations for some reason. This
-    // setting is required for the files migration but a base_url could be
-    // useful for other migrations and the files path could be set off that.
-    if (!$migrate_plus_d7_file_config->isNew()) {
-      $form['files'] = [
-        '#type' => 'fieldset',
-        '#title' => $this->t('File Settings'),
-        '#description' => $this->t('Production files path. e.g. https://itaccessibility.uiowa.edu/sites/itaccessibility.uiowa.edu/files/'),
-      ];
+    $form['constants'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Paths'),
+      '#description' => $this->t('Path constants used in migrations.'),
+    ];
 
-      $form['files']['sitenow_migrate_file_path'] = [
-        '#type' => 'textfield',
-        '#title' => $this->t('Files Path'),
-        '#description' => $this->t('The files path to pull from'),
-        '#default_value' => $migrate_plus_d7_file_config->get('source.constants.source_base_path'),
-      ];
-    }
+    $form['constants']['source_base_path'] = [
+      '#type' => 'url',
+      '#title' => $this->t('Base URL'),
+      '#description' => $this->t('The full URL to the site.'),
+      '#default_value' => $migrate_group_sitenow_migrate_config->get('shared_configuration.source.constants.source_base_path'),
+    ];
 
     return $form;
   }
@@ -155,30 +147,26 @@ class MigrateSettingsForm extends ConfigFormBase {
       $this->configStorage->write('migrate_plus.migration_group.sitenow_migrate', $source->read('migrate_plus.migration_group.sitenow_migrate'));
     }
 
-    $shared_db_config = [
-      'database',
-      'username',
-      'password',
-      'host',
-      'port',
+    $shared_config = [
+      'source' => [
+        'key' => 'drupal_7',
+        'constants' => [
+          'source_base_path' => $form_state->getValue('source_base_path'),
+          'drupal_file_directory' => 'public://' . date('Y-m'),
+        ],
+        'database' => [
+          'database' => $form_state->getValue('database'),
+          'username' => $form_state->getValue('username'),
+          'password' => $form_state->getValue('password'),
+          'host' => $form_state->getValue('host'),
+          'port' => $form_state->getValue('port'),
+        ],
+      ],
     ];
 
-    foreach ($shared_db_config as $config) {
-      $this->config('migrate_plus.migration_group.sitenow_migrate')
-        ->set("shared_configuration.source.database.{$config}", $form_state->getValue($config))
-        ->save();
-    }
-
-    // Set the d7_files migration constants.
-    if ($form_state->getValue('sitenow_migrate_file_path')) {
-      $this->config('migrate_plus.migration.d7_file')
-        ->set('source.constants.source_base_path', $form_state->getValue('sitenow_migrate_file_path'))
-        ->save();
-
-      $this->config('migrate_plus.migration.d7_file')
-        ->set('source.constants.drupal_file_directory', 'public://' . date('Y-m'))
-        ->save();
-    }
+    $this->config('migrate_plus.migration_group.sitenow_migrate')
+      ->set('shared_configuration', $shared_config)
+      ->save();
 
     parent::submitForm($form, $form_state);
   }
