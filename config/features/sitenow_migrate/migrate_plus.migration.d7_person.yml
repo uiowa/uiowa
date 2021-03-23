@@ -36,7 +36,17 @@ process:
   moderation_state: moderation_state
   field_image: person_mid
   field_person_bio: field_person_bio
-  field_person_email: field_person_email
+  field_person_email:
+    plugin: sub_process
+    source: field_person_email
+    process:
+      value: email
+  field_person_website:
+    plugin: sub_process
+    source: field_person_website
+    process:
+      uri: url
+      title: title
   field_person_first_name: field_people_first_name
   field_person_last_name: field_people_last_name
   field_person_phone: field_person_phone

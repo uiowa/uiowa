@@ -23,19 +23,34 @@ class People extends BaseNodeSource {
     parent::prepareRow($row);
 
     // Get mid from fid for profile image.
-    $fid = $row->getSourceProperty('field_person_image_fid');
-    if ($fid) {
-      $mid = $this->profileImage($fid)['entity_id'];
-    }
-    if ($mid) {
-      $row->setSourceProperty('person_mid', $mid);
+    $image = $row->getSourceProperty('field_person_image');
+
+    if (!empty($image)) {
+      $mid = $this->profileImage($image[0]['fid'])['entity_id'];
+
+      if ($mid) {
+        $row->setSourceProperty('person_mid', $mid);
+      }
     }
 
     // Check summary, and create one if none exists.
-    if (!$row->getSourceProperty('field_person_bio_summary')) {
-      $content = $row->getSourceProperty('field_person_bio_value');
-      $new_summary = $this->extractSummaryFromText($content);
-      $row->setSourceProperty('field_person_bio_summary', $new_summary);
+    $bio = $row->getSourceProperty('field_person_bio');
+
+    if (!empty($bio)) {
+      $bio[0]['value'] = preg_replace_callback("|\[\[\{.*?\"fid\":\"(.*?)\".*?\]\]|", [
+        $this,
+        'entityReplace',
+      ], $bio[0]['value']);
+
+      $row->setSourceProperty('field_person_bio', $bio);
+
+      if (isset($bio[0]['summary']) && !empty($bio[0]['summary'])) {
+        $row->setSourceProperty('field_person_bio_summary', $bio[0]['summary']);
+      }
+      else {
+        $new_summary = $this->extractSummaryFromText($bio[0]['value']);
+        $row->setSourceProperty('field_person_bio_summary', $new_summary);
+      }
     }
 
     return TRUE;
