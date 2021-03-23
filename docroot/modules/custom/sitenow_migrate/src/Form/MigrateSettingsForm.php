@@ -118,7 +118,11 @@ class MigrateSettingsForm extends ConfigFormBase {
       '#required' => TRUE,
     ];
 
-    // Only allow migration settings to be saved if config entities exist.
+    // @todo: Investigate why we can't use sitenow_migrate shared configuration.
+    // It'd be nice considering the shared_configuration is already config-
+    // ignored but using it borked all the migrations for some reason. This
+    // setting is required for the files migration but a base_url could be
+    // useful for other migrations and the files path could be set off that.
     if (!$migrate_plus_d7_file_config->isNew()) {
       $form['files'] = [
         '#type' => 'fieldset',
@@ -165,12 +169,12 @@ class MigrateSettingsForm extends ConfigFormBase {
         ->save();
     }
 
+    // Set the d7_files migration constants.
     if ($form_state->getValue('sitenow_migrate_file_path')) {
       $this->config('migrate_plus.migration.d7_file')
         ->set('source.constants.source_base_path', $form_state->getValue('sitenow_migrate_file_path'))
         ->save();
 
-      // Set file directory to avoid needing dynamic setting during migration.
       $this->config('migrate_plus.migration.d7_file')
         ->set('source.constants.drupal_file_directory', 'public://' . date('Y-m'))
         ->save();
