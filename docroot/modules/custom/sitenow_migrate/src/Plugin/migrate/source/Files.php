@@ -20,8 +20,7 @@ class Files extends File {
   public function prepareRow(Row $row) {
     $scheme = parse_url($row->getSourceProperty('uri'), PHP_URL_SCHEME);
 
-    // @todo: We probably need to break up this migration by file type to
-    // process remote videos and other schemes differently.
+    // @todo: Break up this migration by file type to process differently.
     if ($scheme != 'public') {
       return FALSE;
     }
