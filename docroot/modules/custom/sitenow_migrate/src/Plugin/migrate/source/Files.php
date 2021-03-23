@@ -18,13 +18,6 @@ class Files extends File {
    * Prepare row used for altering source data prior to its insertion.
    */
   public function prepareRow(Row $row) {
-    $scheme = parse_url($row->getSourceProperty('uri'), PHP_URL_SCHEME);
-
-    // @todo: Break up this migration by file type to process differently.
-    if ($scheme != 'public') {
-      return FALSE;
-    }
-
     $fileType = explode('/', $row->getSourceProperty('filemime'))[0];
 
     if ($fileType == 'image') {
