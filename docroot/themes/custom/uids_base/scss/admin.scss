@@ -1526,7 +1526,8 @@ only screen and (min-resolution: 1.5dppx) {
 /* @end */
 
 // Contrast issues within the layout edit screen
-[class*="bg--black"] [class*="bg--black"] .bttn--primary {
+[class*="bg--black"] [class*="bg--black"] .bttn--primary,
+[class*="bg--black"] [class*="bg--black"] .cta__wrapper[class*="bg--gold"] .bttn--primary {
   color: #151515;
 }
 
@@ -1535,7 +1536,9 @@ only screen and (min-resolution: 1.5dppx) {
   color: #fff;
 }
 
-[class*="bg--gold"] [class*="bg--gold"] .bttn--primary {
+[class*="bg--gold"] [class*="bg--gold"] .block-inline-blockuiowa-text-area .bttn--primary,
+[class*="bg--gold"] [class*="bg--gold"] .block-field-blocknodepagebody .bttn--primary,
+[class*="bg--gold"] [class*="bg--gold"] .cta__wrapper:not([class*="bg-"]) .bttn--primary{
   color: $primary;
 }
 
