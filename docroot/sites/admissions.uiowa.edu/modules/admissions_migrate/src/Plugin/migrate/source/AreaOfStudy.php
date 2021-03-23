@@ -103,8 +103,6 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
    * {@inheritdoc}
    */
   public function postImportProcess(MigrateImportEvent $event) {
-    $migration = $event->getMigration();
-
     $entity_types = [
       'taxonomy_term' => [
         'academic_groups' => [
