@@ -39,12 +39,14 @@ dependencies:
     - field.field.node.area_of_study.field_area_of_study_transfer
     - field.field.node.area_of_study.field_area_of_study_why
     - field.field.node.area_of_study.field_image
+    - field.field.node.area_of_study.field_meta_tags
     - node.type.area_of_study
   module:
     - content_moderation
     - field_group
     - link
     - media_library
+    - metatag
     - paragraphs
     - path
     - text
@@ -425,6 +427,13 @@ content:
       media_types: {  }
     third_party_settings: {  }
     type: media_library_widget
+    region: content
+  field_meta_tags:
+    weight: 29
+    settings:
+      sidebar: true
+    third_party_settings: {  }
+    type: metatag_firehose
     region: content
   moderation_state:
     type: moderation_state_default
