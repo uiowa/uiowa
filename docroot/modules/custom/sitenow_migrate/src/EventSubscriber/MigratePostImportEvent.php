@@ -130,7 +130,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
       // Right now, page migration is set to run last.
       // This should only run after it has finished.
       case 'd7_page':
-        $this->sourceToDestIds = $this->fetchMapping();
+        $this->sourceToDestIds = $this->fetchMapping(['d7_page_migration_map']);
         $this->d7Aliases = $this->fetchAliases(TRUE);
         $this->d8Aliases = $this->fetchAliases();
         $this->logger->notice($this->t('Checking for possible broken links'));
