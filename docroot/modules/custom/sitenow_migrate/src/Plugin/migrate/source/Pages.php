@@ -24,17 +24,24 @@ class Pages extends BaseNodeSource {
     parent::prepareRow($row);
 
     // Search for D7 inline embeds and replace with D8 inline entities.
-    $content = $row->getSourceProperty('body_value');
-    $content = preg_replace_callback("|\[\[\{.*?\"fid\":\"(.*?)\".*?\]\]|", [
-      $this,
-      'entityReplace',
-    ], $content);
-    $row->setSourceProperty('body_value', $content);
+    $content = $row->getSourceProperty('body');
 
-    // Check summary, and create one if none exists.
-    if (!$row->getSourceProperty('body_summary')) {
-      $new_summary = $this->extractSummaryFromText($content);
-      $row->setSourceProperty('body_summary', $new_summary);
+    if (isset($content[0])) {
+      $content[0]['value'] = preg_replace_callback("|\[\[\{.*?\"fid\":\"(.*?)\".*?\]\]|", [
+        $this,
+        'entityReplace',
+      ], $content[0]['value']);
+
+      $row->setSourceProperty('body', $content);
+
+      // Check summary, and create one if none exists.
+      if (isset($content[0]['summary']) && !empty($content[0]['summary'])) {
+        $row->setSourceProperty('body_summary', $content[0]['summary']);
+      }
+      else {
+        $new_summary = $this->extractSummaryFromText($content[0]['value']);
+        $row->setSourceProperty('body_summary', $new_summary);
+      }
     }
 
     return TRUE;
