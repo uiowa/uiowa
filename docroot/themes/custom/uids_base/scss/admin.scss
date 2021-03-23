@@ -1530,10 +1530,15 @@ only screen and (min-resolution: 1.5dppx) {
   color: #151515;
 }
 
+[class*="bg--black"] [class*="bg--black"] [class*="bg--gold"] .bttn--primary,
+[class*="bg--black"] [class*="bg--black"] .bg-pattern--brain-reversed .bttn--primary {
+  color: #fff;
+}
+
 [class*="bg--gold"] [class*="bg--gold"] .bttn--primary {
   color: $primary;
 }
 
 [class*="bg--black"] [class*="bg--black"]  :before {
-  color: #000;
+  color: $secondary;
 }
