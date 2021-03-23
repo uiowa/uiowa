@@ -3,10 +3,7 @@
 namespace Drupal\sitenow_migrate\Plugin\migrate\source;
 
 use Drupal\file\Plugin\migrate\source\d7\File;
-use Drupal\migrate\MigrateSkipRowException;
 use Drupal\migrate\Row;
-use function PHPUnit\Framework\returnValue;
-use function PHPUnit\Framework\throwException;
 
 /**
  * Basic implementation of the source plugin.
