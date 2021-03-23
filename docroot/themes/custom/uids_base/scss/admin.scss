@@ -255,15 +255,15 @@ form#node-page-layout-builder-form {
     padding: 3rem;
   }
 
-  &.bg--gray {
+  &[class*="bg--gray"] {
     background: $light;
   }
 
-  &.bg--white {
+  &[class*="bg--white"] {
     background: #fff;
   }
 
-  &.bg--black {
+  &[class*="bg--black"] {
     background: $secondary;
   }
 
@@ -282,7 +282,7 @@ form#node-page-layout-builder-form {
     background-size: auto auto;
   }
 
-  &.bg--gold {
+  &[class*="bg--gold"] {
     background: $primary;
   }
 }
@@ -375,9 +375,10 @@ form#node-page-layout-builder-form {
   // rule to remove top padding from the second one.
   $backgrounds:
     ':not([class*="bg-"])',
-    '.bg--gold',
-    '.bg--black',
-    '.bg--gray',
+    '[class*="bg--gold"]',
+    '[class*="bg--black"]',
+    '[class*="bg--gray"]',
+    '[class*="bg--white"]',
     '.bg-pattern--brain',
     '.bg-pattern--brain-reversed',
     '.bg-pattern--brain-black';
@@ -788,7 +789,7 @@ body.toolbar-vertical.toolbar-tray-open {
   display: none;
 }
 
-.bg--black,
+[class*="bg--black"],
 .bg-pattern--brain-black,
 .bg-dark {
   & .layout-builder-block--placeholder {
@@ -933,7 +934,7 @@ div[data-drupal-selector="edit-moderation-state-0"] {
   border-bottom-color: transparent !important;
   border-left-color: transparent !important;
 
-  .bg--black &,
+  [class*="bg--black"] &,
   .bg--black--pattern--brain &,
   .bg-pattern--brain-black & {
     color: $secondary;
@@ -1523,3 +1524,16 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 /* @end */
+
+// Contrast issues within the layout edit screen
+[class*="bg--black"] [class*="bg--black"] .bttn--primary {
+  color: #151515;
+}
+
+[class*="bg--gold"] [class*="bg--gold"] .bttn--primary {
+  color: $primary;
+}
+
+[class*="bg--black"] [class*="bg--black"]  :before {
+  color: #000;
+}
