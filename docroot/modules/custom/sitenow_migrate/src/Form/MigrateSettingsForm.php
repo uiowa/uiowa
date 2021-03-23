@@ -160,6 +160,8 @@ class MigrateSettingsForm extends ConfigFormBase {
           'password' => $form_state->getValue('password'),
           'host' => $form_state->getValue('host'),
           'port' => $form_state->getValue('port'),
+          'driver' => 'mysql',
+          'prefix' => NULL,
         ],
       ],
     ];
