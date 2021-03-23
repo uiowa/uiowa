@@ -349,9 +349,12 @@ class MigratePostImportEvent implements EventSubscriberInterface {
     foreach ($result as $row) {
       $source_path = ($drupal7) ? $row->source : $row->path;
       preg_match("|\d+|", $source_path, $match);
-      $nid = $match[0];
-      $aliases[$nid] = $row->alias;
-      $aliases[$row->alias] = $nid;
+
+      if (isset($match[0])) {
+        $nid = $match[0];
+        $aliases[$nid] = $row->alias;
+        $aliases[$row->alias] = $nid;
+      }
     }
 
     return $aliases;
