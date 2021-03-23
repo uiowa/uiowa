@@ -8,6 +8,7 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Database\Connection;
 use Drupal\migrate\Event\MigrateEvents;
 use Drupal\migrate\Event\MigrateImportEvent;
+use Drupal\sitenow_migrate\Plugin\migrate\source\LinkReplaceTrait;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -18,6 +19,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class MigratePostImportEvent implements EventSubscriberInterface {
   use StringTranslationTrait;
+  use LinkReplaceTrait;
 
   /**
    * The EntityTypeManager service.
