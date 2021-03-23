@@ -57,17 +57,10 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
   }
 
   /**
-   * Prepare row used for altering source data prior to its insertion.
-   *
-   * @throws \Drupal\migrate\MigrateException
+   * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
-    $nid = $row->getSourceProperty('nid');
-
-    // Get Field API field values.
-    foreach ($this->getFields('node', 'undergraduate_majors_programs') as $field_name => $field) {
-      $row->setSourceProperty($field_name, $this->getFieldValues('node', $field_name, $nid));
-    }
+    parent::prepareRow($row);
 
     // Combine link fields into one.
     $related_links = [];
@@ -103,8 +96,7 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
       $row->setSourceProperty('custom_alt_title', NULL);
     }
 
-    // Call the parent prepareRow.
-    return parent::prepareRow($row);
+    return TRUE;
   }
 
   /**
