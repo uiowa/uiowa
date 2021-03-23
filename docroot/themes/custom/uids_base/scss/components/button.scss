@@ -16,11 +16,17 @@ a.bttn {
   }
 }
 
-.bttn {
-  margin: 0 1rem 1rem 0;
-  + .bttn {
+.block-inline-blockuiowa-text-area,
+.block-field-blocknodepagebody {
+  .bttn {
+    margin: 0 1rem 1rem 0;
     @include breakpoint(sm) {
       margin: inherit;
+    }
+    + .bttn {
+      @include breakpoint(sm) {
+        margin: inherit;
+      }
     }
   }
 }
