@@ -174,6 +174,8 @@ class SettingsForm extends ConfigFormBase {
       '#default_value' => $default["display_options"]["header"]["area"]["content"]["value"],
     ];
 
+    // Future filter options go here.
+
     $form['global']['sitenow_people_sort'] = [
       '#type' => 'select',
       '#title' => $this->t('Sort'),
