@@ -16,6 +16,8 @@ label: Articles
 source:
   plugin: pharmacy_migrate_articles
   node_type: article
+  constants:
+    uid_admin: 1
 process:
   langcode:
     plugin: static_map
@@ -23,9 +25,15 @@ process:
     source: language
     map:
       und: en
+  moderation_state: moderation_state
+  created: created
+  changed: changed
+  status: status
+  promote: promote
+  uid: constants/uid_admin
+  sticky: sticky
   title: title
   body: body
-  moderation_state: moderation_state
 destination:
   plugin: 'entity:node'
   default_bundle: article
