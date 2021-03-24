@@ -25,7 +25,7 @@ trait ProcessMediaTrait {
    * @return string
    *   The URL.
    *
-   * @throws MigrateException
+   * @throws \Drupal\migrate\MigrateException
    */
   protected function getSourcePublicFilesUrl(): string {
     if (isset($this->configuration['constants']) && isset($this->configuration['constants']['source_base_path'])) {
