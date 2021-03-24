@@ -2399,3 +2399,15 @@ $sites['labhot.local.drupal.uiowa.edu'] = 'hot.lab.uiowa.edu';
 $sites['labhot.dev.drupal.uiowa.edu'] = 'hot.lab.uiowa.edu';
 $sites['labhot.stage.drupal.uiowa.edu'] = 'hot.lab.uiowa.edu';
 $sites['labhot.prod.drupal.uiowa.edu'] = 'hot.lab.uiowa.edu';
+
+// Directory aliases for pediatricaudiology.lab.uiowa.edu.
+$sites['labpediatricaudiology.local.drupal.uiowa.edu'] = 'pediatricaudiology.lab.uiowa.edu';
+$sites['labpediatricaudiology.dev.drupal.uiowa.edu'] = 'pediatricaudiology.lab.uiowa.edu';
+$sites['labpediatricaudiology.stage.drupal.uiowa.edu'] = 'pediatricaudiology.lab.uiowa.edu';
+$sites['labpediatricaudiology.prod.drupal.uiowa.edu'] = 'pediatricaudiology.lab.uiowa.edu';
+
+// Directory aliases for psycholinguistics.lab.uiowa.edu.
+$sites['labpsycholinguistics.local.drupal.uiowa.edu'] = 'psycholinguistics.lab.uiowa.edu';
+$sites['labpsycholinguistics.dev.drupal.uiowa.edu'] = 'psycholinguistics.lab.uiowa.edu';
+$sites['labpsycholinguistics.stage.drupal.uiowa.edu'] = 'psycholinguistics.lab.uiowa.edu';
+$sites['labpsycholinguistics.prod.drupal.uiowa.edu'] = 'psycholinguistics.lab.uiowa.edu';
