@@ -175,6 +175,20 @@ class SettingsForm extends ConfigFormBase {
     ];
 
     // Future filter options go here.
+    $form['global']['sitenow_people_filter'] = [
+      '#type' => 'fieldset',
+      '#title' => 'Filter',
+      '#description' => $this->t('Allow visitors to filter people by one or more of the following options.'),
+      '#collapsible' => FALSE,
+    ];
+
+    $form['global']['sitenow_people_filter']['filter_search'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Search'),
+      '#description' => $this->t('Allow filtering by name'),
+      '#default_value' => isset($default["display_options"]["filters"]["combine"]["exposed"]),
+      '#size' => 60,
+    ];
 
     $form['global']['sitenow_people_sort'] = [
       '#type' => 'select',
@@ -210,10 +224,12 @@ class SettingsForm extends ConfigFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // Get values.
+    $filters = [];
     $status = $form_state->getValue('sitenow_people_status');
     $title = $form_state->getValue('sitenow_people_title');
     $path = $form_state->getValue('sitenow_people_path');
     $header_content = $form_state->getValue('sitenow_people_header_content');
+    $filters['combine'] = $form_state->getValue('search');
     $sort = $form_state->getValue('sitenow_people_sort');
 
     // Clean path.
@@ -244,6 +260,18 @@ class SettingsForm extends ConfigFormBase {
       $view->set('status', TRUE);
       $enabled_display =& $view->getDisplay($sort);
       $enabled_display["display_options"]["enabled"] = TRUE;
+
+      // Loop through and toggle filters based on form selections.
+      foreach ($filters as $key => $filter) {
+        if ($filter == 1) {
+          $default["display_options"]["filters"][$key]["exposed"] = TRUE;
+        }
+        else {
+          if (isset($default["display_options"]["filters"][$key]["exposed"])) {
+            unset($default["display_options"]["filters"][$key]["exposed"]);
+          }
+        }
+      }
     }
     else {
       $view->set('status', FALSE);
