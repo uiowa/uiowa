@@ -6,11 +6,9 @@ dependencies:
     - core.entity_view_mode.node.teaser
     - field.storage.node.field_person_data
     - node.type.person
-    - taxonomy.vocabulary.research_areas
   module:
     - draggableviews
     - node
-    - taxonomy
     - user
 _core:
   default_config_hash: SRH1EhxAiIRj01P9xYv0h_LfIfWxjll0Yq-eDfjziFI
@@ -209,157 +207,6 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           plugin_id: boolean
-        combine:
-          id: combine
-          table: views
-          field: combine
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: contains
-          value: ''
-          group: 1
-          expose:
-            operator_id: combine_op
-            label: Search
-            description: ''
-            use_operator: false
-            operator: combine_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: search
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              viewer: '0'
-              editor: '0'
-              publisher: '0'
-              webmaster: '0'
-              administrator: '0'
-            placeholder: ''
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          fields:
-            title: title
-            field_person_data: field_person_data
-          plugin_id: combine
-          exposed: true
-        field_person_types_target_id:
-          id: field_person_types_target_id
-          table: node__field_person_types
-          field: field_person_types_target_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: '='
-          value: ''
-          group: 1
-          exposed: true
-          expose:
-            operator_id: field_person_types_target_id_op
-            label: 'Person Type'
-            description: ''
-            use_operator: false
-            operator: field_person_types_target_id_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: type
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              viewer: '0'
-              editor: '0'
-              publisher: '0'
-              webmaster: '0'
-              administrator: '0'
-            placeholder: ''
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          plugin_id: string
-        field_person_research_areas_target_id:
-          id: field_person_research_areas_target_id
-          table: node__field_person_research_areas
-          field: field_person_research_areas_target_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: or
-          value: {  }
-          group: 1
-          exposed: true
-          expose:
-            operator_id: field_person_research_areas_target_id_op
-            label: 'Research area'
-            description: ''
-            use_operator: false
-            operator: field_person_research_areas_target_id_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: research
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              viewer: '0'
-              editor: '0'
-              publisher: '0'
-              webmaster: '0'
-              administrator: '0'
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-          type: select
-          limit: true
-          vid: research_areas
-          hierarchy: false
-          error_message: true
-          parent: 0
-          level_labels: ''
-          force_deepest: false
-          save_lineage: false
-          hierarchy_depth: 0
-          required_depth: 0
-          none_label: '- Please select -'
-          plugin_id: taxonomy_index_tid
       style:
         type: default
         options:
@@ -594,9 +441,7 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
-        - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       max-age: -1
@@ -669,9 +514,7 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
-        - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       max-age: -1
@@ -745,9 +588,7 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
-        - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       max-age: -1
@@ -1068,8 +909,6 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
-        - url
-        - user
         - 'user.node_grants:view'
         - user.permissions
       max-age: 0
