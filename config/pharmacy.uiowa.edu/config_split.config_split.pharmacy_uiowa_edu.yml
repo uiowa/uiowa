@@ -6,12 +6,17 @@ id: pharmacy_uiowa_edu
 label: Pharmacy
 description: 'The Pharmacy site split.'
 folder: ../config/pharmacy.uiowa.edu
-module: {  }
+module:
+  migrate: 0
+  migrate_drupal: 0
+  migrate_plus: 0
+  migrate_tools: 0
+  pharmacy_migrate: 0
+  sitenow_migrate: 0
 theme: {  }
 blacklist: {  }
 graylist:
   - config_split.config_split.pharmacy_uiowa_edu
-  - webform.settings
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 90
