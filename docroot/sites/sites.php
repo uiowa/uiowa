@@ -2405,3 +2405,9 @@ $sites['labpediatricaudiology.local.drupal.uiowa.edu'] = 'pediatricaudiology.lab
 $sites['labpediatricaudiology.dev.drupal.uiowa.edu'] = 'pediatricaudiology.lab.uiowa.edu';
 $sites['labpediatricaudiology.stage.drupal.uiowa.edu'] = 'pediatricaudiology.lab.uiowa.edu';
 $sites['labpediatricaudiology.prod.drupal.uiowa.edu'] = 'pediatricaudiology.lab.uiowa.edu';
+
+// Directory aliases for psycholinguistics.lab.uiowa.edu.
+$sites['labpsycholinguistics.local.drupal.uiowa.edu'] = 'psycholinguistics.lab.uiowa.edu';
+$sites['labpsycholinguistics.dev.drupal.uiowa.edu'] = 'psycholinguistics.lab.uiowa.edu';
+$sites['labpsycholinguistics.stage.drupal.uiowa.edu'] = 'psycholinguistics.lab.uiowa.edu';
+$sites['labpsycholinguistics.prod.drupal.uiowa.edu'] = 'psycholinguistics.lab.uiowa.edu';
