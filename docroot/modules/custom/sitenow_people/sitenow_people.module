@@ -82,6 +82,11 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
         }
       }
 
+      // Internal-use field.
+      if (isset($form['field_person_data'])) {
+        $form['field_person_data']['#access'] = FALSE;
+      }
+
       break;
   }
 }
@@ -95,6 +100,13 @@ function sitenow_people_entity_presave(EntityInterface $entity) {
       // Setting the title with the first/last name values.
       $output = $entity->get('field_person_first_name')->value . " " . $entity->get('field_person_last_name')->value;
       $entity->setTitle($output);
+      if ($entity->hasField('field_person_data')) {
+        $data = [];
+        if ($entity->hasField('field_person_position') && !empty($entity->get('field_person_position'))) {
+          $data['field_person_position'] = $entity->get('field_person_position')->getValue();
+        }
+        $entity->set('field_person_data', json_encode($data));
+      }
       break;
 
   }
