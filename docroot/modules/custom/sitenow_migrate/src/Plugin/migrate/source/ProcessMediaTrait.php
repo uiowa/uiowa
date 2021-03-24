@@ -20,14 +20,27 @@ trait ProcessMediaTrait {
   protected $fileSystem;
 
   /**
-   * Get the source path from the migration config.
+   * Get the URL of the source public files path with a trailing slash.
+   *
+   * @return string
+   *   The URL.
+   *
+   * @throws MigrateException
    */
-  protected function getSourceBasePath() {
+  protected function getSourcePublicFilesUrl(): string {
     if (isset($this->configuration['constants']) && isset($this->configuration['constants']['source_base_path'])) {
-      return $this->configuration['constants']['source_base_path'];
-    }
+      $base_url = rtrim($this->configuration['constants']['source_base_path'], '/');
 
-    return '';
+      if ($files_dir = $this->variableGet('file_public_path', NULL)) {
+        return "{$base_url}/{$files_dir}/";
+      }
+      else {
+        throw new MigrateException('Cannot process media. No public files path variable set.');
+      }
+    }
+    else {
+      throw new MigrateException('Cannot process media. No source base URL set.');
+    }
   }
 
   /**
@@ -78,7 +91,7 @@ trait ProcessMediaTrait {
         // @todo fetch the actual meta.
         if (!$new_fid) {
           // Use filename, update the source base path with the subdirectory.
-          $source_base_path = str_replace('public://', $this->getSourceBasePath(), $file_data['uri']);
+          $source_base_path = str_replace('public://', $this->getSourcePublicFilesUrl(), $file_data['uri']);
           $source_base_path = str_replace($filename, '', $source_base_path);
           $new_fid = $this->downloadFile($filename, $source_base_path, $this->getDrupalFileDirectory());
           if ($new_fid) {
@@ -342,7 +355,7 @@ trait ProcessMediaTrait {
       // then we'll need to fetch it from the source.
       if (!$new_fid) {
         // Use the filename, update the source base path with the subdirectory.
-        $new_fid = $this->downloadFile($filename, $this->getSourceBasePath() . $subdir, $this->getDrupalFileDirectory() . $subdir);
+        $new_fid = $this->downloadFile($filename, $this->getSourcePublicFilesUrl() . $subdir, $this->getDrupalFileDirectory() . $subdir);
         unset($subdir);
         if ($new_fid) {
           $mid = $this->createMediaEntity($new_fid, $meta, 1);
@@ -423,7 +436,7 @@ trait ProcessMediaTrait {
           $prefix_path = str_replace($filename, '', $prefix_path);
 
           // Download the file and create the file record.
-          $fid = $this->downloadFile($filename, $this->getSourceBasePath() . $prefix_path, $drupal_file_directory . $prefix_path);
+          $fid = $this->downloadFile($filename, $this->getSourcePublicFilesUrl() . $prefix_path, $drupal_file_directory . $prefix_path);
 
           // Get meta data an create the media entity.
           $meta = [];
