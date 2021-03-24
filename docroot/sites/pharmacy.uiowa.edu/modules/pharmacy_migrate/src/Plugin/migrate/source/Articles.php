@@ -10,7 +10,7 @@ use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
  * Migrate Source plugin.
  *
  * @MigrateSource(
- *   id = "pharmacy_migrate_articles",
+ *   id = "pharmacy_articles",
  *   source_module = "node"
  * )
  */
