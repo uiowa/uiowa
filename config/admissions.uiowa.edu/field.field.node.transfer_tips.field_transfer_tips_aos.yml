@@ -1,0 +1,29 @@
+uuid: 9853a3f0-be40-4471-a66b-ba71dec7c652
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_transfer_tips_aos
+    - node.type.area_of_study
+    - node.type.transfer_tips
+id: node.transfer_tips.field_transfer_tips_aos
+field_name: field_transfer_tips_aos
+entity_type: node
+bundle: transfer_tips
+label: 'Area of Study'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      area_of_study: area_of_study
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

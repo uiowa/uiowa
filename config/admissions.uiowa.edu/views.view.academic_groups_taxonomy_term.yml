@@ -141,11 +141,10 @@ display:
             type: 'entity:taxonomy_term'
             fail: 'not found'
           validate_options:
-            bundles:
-              academic_groups: academic_groups
             access: true
             operation: view
             multiple: 0
+            bundles: {  }
           break_phrase: false
           add_table: false
           require_value: false
@@ -316,7 +315,7 @@ display:
       tags: {  }
   page_1:
     id: page_1
-    display_title: Page
+    display_title: 'Academic groups'
     display_plugin: page
     position: 1
     display_options:
@@ -326,6 +325,52 @@ display:
       path: taxonomy/term/%
       display_extenders:
         metatag_display_extender: {  }
+      display_description: ''
+      arguments:
+        tid:
+          id: tid
+          table: taxonomy_index
+          field: tid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          default_action: 'not found'
+          exception:
+            value: ''
+            title_enable: false
+            title: All
+          title_enable: true
+          title: '{{ arguments.tid }}'
+          default_argument_type: fixed
+          default_argument_options:
+            argument: ''
+          default_argument_skip_url: false
+          summary_options:
+            base_path: ''
+            count: true
+            items_per_page: 25
+            override: false
+          summary:
+            sort_order: asc
+            number_of_records: 0
+            format: default_summary
+          specify_validation: true
+          validate:
+            type: 'entity:taxonomy_term'
+            fail: ignore
+          validate_options:
+            bundles:
+              academic_groups: academic_groups
+            access: true
+            operation: view
+            multiple: 0
+          break_phrase: false
+          add_table: false
+          require_value: false
+          reduce_duplicates: false
+          plugin_id: taxonomy_index_tid
+      defaults:
+        arguments: false
     cache_metadata:
       contexts:
         - 'languages:language_interface'

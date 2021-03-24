@@ -9,8 +9,10 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\layout_builder_custom\LayoutBuilderPreRender;
+use Drupal\layout_builder_custom\Plugin\Display\ListBlock;
 use Drupal\layout_builder_styles\LayoutBuilderStyleGroups;
 use Drupal\layout_builder_styles\LayoutBuilderStyleInterface;
+use Drupal\views\Plugin\views\display\Block;
 
 /**
  * Implements hook_element_info_alter().
@@ -141,6 +143,11 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       unset($form['settings']['label']);
       unset($form['settings']['label_display']);
       unset($form['settings']['admin_label']['#title']);
+      // Hide ones implemented by Views because ListBlock has headline.
+      // @todo Investigate whether this can be added to ListBlock.
+      unset($form['settings']['views_label_fieldset']);
+      unset($form['settings']['views_label_checkbox']);
+      unset($form['settings']['views_label']);
 
       // Set '#states' for block grid columns.
       $form['layout_builder_style_grid_columns']['#states'] = [
@@ -236,6 +243,9 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
 
         case 'inline_block:uiowa_collection':
           $form['settings']['view_mode']['#type'] = 'radios';
+
+          // We need to have a specified view mode,
+          // so we remove the undefined 'default' option.
           array_shift($form['settings']['view_mode']['#options']);
 
           // @todo Re-enable 'tab' after theming/functionality is in place.
@@ -251,6 +261,10 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           if (!in_array($form['settings']['view_mode']['#default_value'], $view_options)) {
             $form['settings']['view_mode']['#default_value'] = 'descriptive_list';
           }
+
+          // Move view mode to the block form.
+          $form["settings"]["block_form"]["view_mode"] = $form['settings']['view_mode'];
+          $form['settings']['view_mode']['#access'] = FALSE;
           break;
 
         case 'menu_block:main':
@@ -397,6 +411,22 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
           //   know the image size was changed?
         }
       }
+      break;
+
+    case 'inline_block:uiowa_collection':
+      // Move the view mode value back out of the block form.
+      $view_mode = $form_state->getValue(
+        ['settings',
+          'block_form',
+          'view_mode',
+        ]
+      );
+      $form_state->setValue(
+        ['settings',
+          'view_mode',
+        ],
+        $view_mode
+      );
       break;
   }
 
@@ -548,6 +578,25 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
         $element['field_uiowa_headline']['widget'][0]['container']['child_heading_size']['#description'] =
           t('The heading size for all accordion headings. Does not apply to descriptive list.');
       }
+
+      // Default to multiselect and remove the empty option.
+      $element["field_accordion_type"]["widget"]["#default_value"] = isset($element["field_accordion_type"]["widget"]["#default_value"]) ? $element["field_accordion_type"]["widget"]["#default_value"] : 'multi_select';
+      unset($element["field_accordion_type"]["widget"]["#options"]["_none"]);
+      // Only show the "accordion type" field if accordion view mode
+      // has been selected.
+      $element['field_accordion_type']['widget']['#states'] = [
+        'visible' => [
+          ':input[name="settings[block_form][view_mode]"]' => [
+            'value' => 'accordion',
+          ],
+        ],
+      ];
+
+      // Now that we have view mode on the block form, place the fields in the right order.
+      $element["view_mode"]["#weight"] = 2;
+      $element["field_accordion_type"]["#weight"] = 3;
+      $element["field_uiowa_collection_items"]["#weight"] = 4;
+
       break;
 
     case 'inline_block:uiowa_cta':
@@ -658,5 +707,14 @@ function layout_builder_custom_preprocess_media(&$variables) {
     $variables['attributes'] = [
       'class' => ['media--video'],
     ] + $variables['attributes'];
+  }
+}
+
+/**
+ * Implements hook_views_plugins_display_alter().
+ */
+function layout_builder_custom_views_plugins_display_alter(&$displays) {
+  if (!empty($displays['block']['class']) && $displays['block']['class'] == Block::class) {
+    $displays['block']['class'] = ListBlock::class;
   }
 }

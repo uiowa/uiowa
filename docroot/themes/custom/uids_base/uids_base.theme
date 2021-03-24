@@ -185,6 +185,19 @@ function uids_base_preprocess_page(&$variables) {
  * Implements hook_preprocess_HOOK() for node.html.twig.
  */
 function uids_base_preprocess_node(&$variables) {
+  /** @var \Drupal\node\Entity\Node $node */
+  $node = $variables['node'];
+  // Append person credentials to the node label in the teaser view mode.
+  if ($variables['view_mode'] == 'teaser') {
+    if ($node->hasField('field_person_credential') && $creds = $node->get('field_person_credential')->getString()) {
+      $title = $node->getTitle();
+      $variables['label'] = t('@title, @creds', [
+        '@title' => $title,
+        '@creds' => $creds,
+      ]);
+    }
+  }
+
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
     if (isset($variables['node'])) {
@@ -406,18 +419,16 @@ function uids_base_preprocess_layout(&$variables) {
         }
       }
 
-      if (!isset($variables['banner_settings'])) {
-        if (!isset($variables['banner_attributes'])) {
-          $variables['banner_settings'] = [];
-        }
-        $defaults = [
-          'transparent' => FALSE,
-          'horizontal_align' => 'left',
-          'vertical_align' => 'bottom',
-        ];
-
-        $variables['banner_settings'] = $defaults + $variables['banner_settings'];
+      if (!isset($variables['banner_attributes'])) {
+        $variables['banner_settings'] = [];
       }
+      $defaults = [
+        'transparent' => FALSE,
+        'horizontal_align' => 'left',
+        'vertical_align' => 'bottom',
+      ];
+
+      $variables['banner_settings'] = $variables['banner_settings'] + $defaults;
 
       // Set default for banner gradient.
       if ($variables['banner_settings']['transparent']) {
@@ -588,6 +599,18 @@ function uids_base_preprocess_block_content__uiowa_collection__tab(&$variables) 
 }
 
 /**
+ * Implements hook_preprocess_HOOK() for block_content__uiowa_collection__accordion.html.twig.
+ */
+function uids_base_preprocess_block_content__uiowa_collection__accordion(&$variables) {
+  $block = $variables['elements']['#block_content'];
+  // If the value hasn't been set, or is set to multi-select,
+  // pass "true" for use in constructing the accordion.
+  // "False" designates a single-select accordion.
+  $variables['multiselect'] = (!isset($block->field_accordion_type->value) ||
+    $block->field_accordion_type->value == 'multi_select') ? 'true' : 'false';
+}
+
+/**
  * Implements hook_preprocess_HOOK().
  */
 function uids_base_preprocess_menu(&$variables) {
@@ -661,6 +684,14 @@ function uids_base_preprocess_paragraph(&$variables) {
             }
           }
         }
+      }
+
+      // If our bundle is the collection item and we have a 'field_automatically_open' value set...
+      if ($paragraph->bundle() == 'uiowa_collection_item' &&
+        $opened = $paragraph->field_automatically_open->value) {
+        // Pass a true or false based upon the value to the template.
+        // Template: docroot/themes/custom/uids_base/uids_base.theme .
+        $variables['field_automatically_open'] = ($opened) ? 'true' : 'false';
       }
     }
   }

@@ -23,8 +23,8 @@ trait ProcessMediaTrait {
    * Get the source path from the migration config.
    */
   protected function getSourceBasePath() {
-    if (isset($this->configuration['constants']) && isset($this->configuration['constants']['SOURCE_BASE_PATH'])) {
-      return $this->configuration['constants']['SOURCE_BASE_PATH'];
+    if (isset($this->configuration['constants']) && isset($this->configuration['constants']['source_base_path'])) {
+      return $this->configuration['constants']['source_base_path'];
     }
 
     return '';
