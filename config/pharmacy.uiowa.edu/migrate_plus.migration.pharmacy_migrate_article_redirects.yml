@@ -1,0 +1,32 @@
+id: pharmacy_migrate_article_redirects
+label: Article Redirects
+migration_group: sitenow_migrate
+migration_tags:
+  - pharmacy
+source:
+  plugin: pharmacy_migrate_articles
+  node_type: article
+  constants:
+    redirect_prefix: 'internal:/node/'
+    dash: '-'
+    uid_admin: 1
+    status_code: 301
+process:
+  temp_nid:
+    plugin: migration_lookup
+    source: nid
+    migration: pharmacy_migrate_articles
+  redirect_source:
+    plugin: get
+    source: alias
+  redirect_redirect:
+    plugin: concat
+    source:
+      - constants/redirect_prefix
+      - '@temp_nid'
+  status_code: constants/status_code
+destination:
+  plugin: entity:redirect
+migration_dependencies:
+  required:
+    - pharmacy_migrate_articles
