@@ -1,4 +1,5 @@
 <?php
+
 namespace Drupal\pharmacy_migrate\Plugin\migrate\source;
 
 use Drupal\migrate\Row;
@@ -62,7 +63,7 @@ class Articles extends BaseNodeSource {
       }
     }
 
-    //@todo: Unlink anchors in body from articles before 2016.
+    // @todo Unlink anchors in body from articles before 2016.
     return TRUE;
   }
 
