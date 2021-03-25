@@ -97,6 +97,7 @@ trait ProcessMediaTrait {
           $source_base_path = str_replace('public://', $this->getSourcePublicFilesUrl(), $file_data['uri']);
           $source_base_path = str_replace($filename, '', $source_base_path);
           $new_fid = $this->downloadFile($filename, $source_base_path, $this->getDrupalFileDirectory());
+
           if ($new_fid) {
             $this->createMediaEntity($new_fid, $meta, 1);
             $uuid = $this->getMid($filename)['uuid'];
@@ -104,6 +105,7 @@ trait ProcessMediaTrait {
         }
         else {
           $uuid = $this->getMid($filename)['uuid'];
+
           // And in case we had the file, but not the media entity.
           if (!$uuid) {
             $this->createMediaEntity($new_fid, $meta, 1);
@@ -333,58 +335,52 @@ trait ProcessMediaTrait {
   /**
    * Process an image field.
    */
-  protected function processImageField(&$row, $field_name) {
-    // Check if an image was attached, and if so, update with new fid.
-    $original_fid = $row->getSourceProperty("{$field_name}_fid");
+  protected function processImageField($fid, $alt = NULL, $title = NULL) {
+    $uri = $this->fidQuery($fid)['uri'];
+    $filename_w_subdir = str_replace('public://', '', $uri);
 
-    if (isset($original_fid)) {
-      $uri = $this->fidQuery($original_fid)['uri'];
-      $filename_w_subdir = str_replace('public://', '', $uri);
-      // Split apart the filename from the subdirectory path.
-      $filename_w_subdir = explode('/', $filename_w_subdir);
-      $filename = array_pop($filename_w_subdir);
-      $subdir = implode('/', $filename_w_subdir) . '/';
-      unset($filename_w_subdir);
-      // Get a connection for the destination database
-      // and retrieve the associated fid.
-      $new_fid = \Drupal::database()->select('file_managed', 'f')
-        ->fields('f', ['fid'])
-        ->condition('f.filename', $filename)
-        ->execute()
-        ->fetchField();
+    // Split apart the filename from the subdirectory path.
+    $filename_w_subdir = explode('/', $filename_w_subdir);
+    $filename = array_pop($filename_w_subdir);
+    $subdir = implode('/', $filename_w_subdir) . '/';
+    unset($filename_w_subdir);
 
-      $meta = [
-        'alt' => $row->getSourceProperty("{$field_name}_alt"),
-        'title' => $row->getSourceProperty("{$field_name}_title"),
-      ];
+    // Get a connection for the destination database
+    // and retrieve the associated fid.
+    $new_fid = \Drupal::database()->select('file_managed', 'f')
+      ->fields('f', ['fid'])
+      ->condition('f.filename', $filename)
+      ->execute()
+      ->fetchField();
 
-      // If there's no fid in the D8 database,
-      // then we'll need to fetch it from the source.
-      if (!$new_fid) {
-        // Use the filename, update the source base path with the subdirectory.
-        $new_fid = $this->downloadFile($filename, $this->getSourcePublicFilesUrl() . $subdir, $this->getDrupalFileDirectory() . $subdir);
-        unset($subdir);
-        if ($new_fid) {
-          $mid = $this->createMediaEntity($new_fid, $meta, 1);
-        }
+    $meta = [
+      'alt' => $alt ?? $filename,
+      'title' => $title,
+    ];
+
+    // If there's no fid in the D8 database,
+    // then we'll need to fetch it from the source.
+    if (!$new_fid) {
+      // Use the filename, update the source base path with the subdirectory.
+      $new_fid = $this->downloadFile($filename, $this->getSourcePublicFilesUrl() . $subdir, $this->getDrupalFileDirectory() . $subdir);
+      unset($subdir);
+
+      if ($new_fid) {
+        $mid = $this->createMediaEntity($new_fid, $meta, 1);
       }
-      else {
-        $mid = $this->getMid($filename)['mid'];
-        unset($filename);
-        // And in case we had the file, but not the media entity.
-        if (!$mid) {
-          $mid = $this->createMediaEntity($new_fid, $meta, 1);
-          unset($meta);
-        }
+    }
+    else {
+      $mid = $this->getMid($filename)['mid'];
+      unset($filename);
+
+      // And in case we had the file, but not the media entity.
+      if (!$mid) {
+        $mid = $this->createMediaEntity($new_fid, $meta, 1);
+        unset($meta);
       }
-      if ($mid) {
-        $row->setSourceProperty("{$field_name}_fid", $mid);
-      }
-      else {
-        // If we don't have a media ID at this point,
-        // we need to unset the ID.
-        $row->setSourceProperty("{$field_name}_fid", NULL);
-      }
+    }
+    if ($mid) {
+      return $mid;
     }
   }
 

@@ -53,6 +53,13 @@ class Articles extends BaseNodeSource {
       $row->setSourceProperty('body_summary', $this->getSummaryFromTextField($body));
     }
 
+    $image = $row->getSourceProperty('field_article_image');
+
+    if (!empty($image)) {
+      $mid = $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']);
+      $row->setSourceProperty('field_article_image_mid', $mid);
+    }
+
     // @todo Unlink anchors in body from articles before 2016.
     return TRUE;
   }
