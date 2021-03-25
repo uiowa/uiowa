@@ -43,24 +43,14 @@ class Articles extends BaseNodeSource {
     parent::prepareRow($row);
 
     // Search for D7 inline embeds and replace with D8 inline entities.
-    $content = $row->getSourceProperty('body');
+    $body = $row->getSourceProperty('body');
 
-    if (!empty($content)) {
-      $content[0]['value'] = preg_replace_callback("|\[\[\{.*?\"fid\":\"(.*?)\".*?\]\]|", [
-        $this,
-        'entityReplace',
-      ], $content[0]['value']);
+    if (!empty($body)) {
+      $body[0]['value'] = $this->replaceInlineFiles($body[0]['value']);
+      $row->setSourceProperty('body', $body);
 
-      $row->setSourceProperty('body', $content);
-
-      // Check summary, and create one if none exists.
-      if (empty($content[0]['summary'])) {
-        $new_summary = $this->extractSummaryFromText($content[0]['value']);
-        $row->setSourceProperty('body_summary', $new_summary);
-      }
-      else {
-        $row->setSourceProperty('body_summary', $content[0]['summary']);
-      }
+      // Extract the summary.
+      $row->setSourceProperty('body_summary', $this->getSummaryFromTextField($body));
     }
 
     // @todo Unlink anchors in body from articles before 2016.

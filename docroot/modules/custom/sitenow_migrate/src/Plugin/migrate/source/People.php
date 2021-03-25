@@ -37,20 +37,9 @@ class People extends BaseNodeSource {
     $bio = $row->getSourceProperty('field_person_bio');
 
     if (!empty($bio)) {
-      $bio[0]['value'] = preg_replace_callback("|\[\[\{.*?\"fid\":\"(.*?)\".*?\]\]|", [
-        $this,
-        'entityReplace',
-      ], $bio[0]['value']);
-
+      $bio[0]['value'] = $this->replaceInlineFiles($bio[0]['value']);
       $row->setSourceProperty('field_person_bio', $bio);
-
-      if (isset($bio[0]['summary']) && !empty($bio[0]['summary'])) {
-        $row->setSourceProperty('field_person_bio_summary', $bio[0]['summary']);
-      }
-      else {
-        $new_summary = $this->extractSummaryFromText($bio[0]['value']);
-        $row->setSourceProperty('field_person_bio_summary', $new_summary);
-      }
+      $row->setSourceProperty('field_person_bio_summary', $this->getSummaryFromTextField($bio));
     }
 
     return TRUE;

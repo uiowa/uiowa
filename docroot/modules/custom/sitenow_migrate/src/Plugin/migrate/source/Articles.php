@@ -30,24 +30,14 @@ class Articles extends BaseNodeSource {
     }
 
     // Search for D7 inline embeds and replace with D8 inline entities.
-    $content = $row->getSourceProperty('field_article_body');
+    $body = $row->getSourceProperty('field_article_body');
 
-    if (!empty($content)) {
-      $content[0]['value'] = preg_replace_callback("|\[\[\{.*?\"fid\":\"(.*?)\".*?\]\]|", [
-        $this,
-        'entityReplace',
-      ], $content[0]['value']);
-
-      $row->setSourceProperty('field_article_body', $content);
+    if (!empty($body)) {
+      $body[0]['value'] =$this->replaceInlineFiles($body[0]['value']);
+      $row->setSourceProperty('field_article_body', $body);
 
       // Check summary, and create one if none exists.
-      if (empty($content[0]['summary'])) {
-        $new_summary = $this->extractSummaryFromText($content[0]['value']);
-        $row->setSourceProperty('field_article_body_summary', $new_summary);
-      }
-      else {
-        $row->setSourceProperty('field_article_body_summary', $content[0]['summary']);
-      }
+      $row->setSourceProperty('field_article_body_summary', $this->getSummaryFromTextField($body));
     }
 
     return TRUE;

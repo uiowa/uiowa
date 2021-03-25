@@ -73,6 +73,7 @@ trait ProcessMediaTrait {
     $fid = $match[1];
     $align = (preg_match("|.*?float: (.*?);.*?|", $match[0], $align)) ? $align[1] : NULL;
     $file_data = $this->fidQuery($fid);
+
     if ($file_data) {
       $filename = $file_data['filename'];
       $uuid = $this->getMid($filename)['uuid'];
@@ -82,12 +83,14 @@ trait ProcessMediaTrait {
           ->condition('f.filename', $filename)
           ->execute()
           ->fetchField();
+
         // If there's no fid in the D8 database,
         // then we'll need to fetch it from the source.
         $meta = [
           'title' => 'title',
           'alt' => 'alt',
         ];
+
         // @todo fetch the actual meta.
         if (!$new_fid) {
           // Use filename, update the source base path with the subdirectory.
@@ -108,9 +111,11 @@ trait ProcessMediaTrait {
           }
         }
       }
+
       unset($file_data);
       return $this->constructInlineEntity($uuid, $align);
     }
+
     // Failed to find a file, so let's leave the content unchanged.
     return $match;
   }
@@ -120,6 +125,7 @@ trait ProcessMediaTrait {
    */
   public function constructInlineEntity($uuid, $align) {
     $align = isset($align) ? $align : 'center';
+
     // @todo add handling for non-image media embeds.
     $parts = [
       '<drupal-media data-align="' . $align . '"',
@@ -127,6 +133,7 @@ trait ProcessMediaTrait {
       'data-entity-uuid="' . $uuid . '">',
       '</drupal-media>',
     ];
+
     return implode(" ", $parts);
   }
 
