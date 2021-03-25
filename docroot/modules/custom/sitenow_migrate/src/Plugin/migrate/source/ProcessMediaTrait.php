@@ -84,14 +84,14 @@ trait ProcessMediaTrait {
           ->execute()
           ->fetchField();
 
-        // If there's no fid in the D8 database,
-        // then we'll need to fetch it from the source.
+        // @todo fetch the actual meta.
         $meta = [
-          'title' => 'title',
-          'alt' => 'alt',
+          'title' => $filename,
+          'alt' => explode('.', $filename)[0]
         ];
 
-        // @todo fetch the actual meta.
+        // If there's no fid in the D8 database,
+        // then we'll need to fetch it from the source.
         if (!$new_fid) {
           // Use filename, update the source base path with the subdirectory.
           $source_base_path = str_replace('public://', $this->getSourcePublicFilesUrl(), $file_data['uri']);
