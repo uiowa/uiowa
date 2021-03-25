@@ -188,13 +188,13 @@ abstract class BaseNodeSource extends Node {
   /**
    * Return the summary of a text field.
    *
-   * @param $field
-   *    A text field array that includes value, format and summary keys.
+   * @param array $field
+   *   A text field array that includes value, format and summary keys.
    *
    * @return string
    *   The summary if set or an extraction of the body value if not.
    */
-  public function getSummaryFromTextField($field): string {
+  public function getSummaryFromTextField(array $field): string {
     if (empty($field[0]['summary'])) {
       return $this->extractSummaryFromText($field[0]['value']);
     }

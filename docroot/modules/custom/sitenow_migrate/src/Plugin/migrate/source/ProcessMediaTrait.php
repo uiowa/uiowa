@@ -87,7 +87,7 @@ trait ProcessMediaTrait {
         // @todo fetch the actual meta.
         $meta = [
           'title' => $filename,
-          'alt' => explode('.', $filename)[0]
+          'alt' => explode('.', $filename)[0],
         ];
 
         // If there's no fid in the D8 database,
@@ -334,6 +334,19 @@ trait ProcessMediaTrait {
 
   /**
    * Process an image field.
+   *
+   * @param int $fid
+   *   The file ID.
+   * @param string $alt
+   *   The image alt text.
+   * @param string $title
+   *   The optional image title.
+   *
+   * @return int|null
+   *   The media ID or null if unable to process.
+   *
+   * @throws \Drupal\migrate\MigrateException
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   protected function processImageField($fid, $alt = NULL, $title = NULL) {
     $uri = $this->fidQuery($fid)['uri'];
@@ -379,9 +392,8 @@ trait ProcessMediaTrait {
         unset($meta);
       }
     }
-    if ($mid) {
-      return $mid;
-    }
+
+    return $mid ?? NULL;
   }
 
   /**
