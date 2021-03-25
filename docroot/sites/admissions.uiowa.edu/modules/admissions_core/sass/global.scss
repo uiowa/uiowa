@@ -38,3 +38,34 @@
 body:not(.page-node-type-article):not(.page-node-type-page).path-taxonomy.layout-builder-disabled main.page__container {
   margin-bottom: 0;
 }
+
+// Views exposed form override
+.views-exposed-form {
+  &.views-exposed-form--minimal {
+    border-radius: 0;
+    border: none;
+    background: transparent;
+    margin-bottom: 0;
+    &.uids-content:not(.uids-search) {
+      padding: 5px 0;
+      .form-item {
+        margin-top: 0;
+        margin-right: 0;
+      }
+      .form-actions {
+        margin-right: 0;
+        margin-top: 0;
+      }
+      .button {
+        border: 1px solid $secondary;
+      }
+    }
+
+    .js-form-item {
+      flex: 1;
+      label {
+        @include element-invisible;
+      }
+    }
+  }
+}
