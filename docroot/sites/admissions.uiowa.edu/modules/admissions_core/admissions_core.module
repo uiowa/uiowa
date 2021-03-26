@@ -572,6 +572,9 @@ function admissions_core_preprocess_views_view(&$variables) {
     case 'academic_groups_taxonomy_term':
       $variables['attributes']['class'][] = 'grid--threecol--33-34-33';
       break;
+    case 'areas_of_study':
+      $variables['#attached']['library'][] = 'admissions_core/area-of-study';
+      break;
 
   }
 }
@@ -616,6 +619,7 @@ function admissions_core_preprocess_views_view_field(&$variables) {
         }
       }
       $markup = trim($markup, ', ');
+      $markup = '<div class="degree-options">' . $markup . '</div>';
       if (!empty($markup)) {
         $variables['output'] = [
           '#markup' => $markup,
