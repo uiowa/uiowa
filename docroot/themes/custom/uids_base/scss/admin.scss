@@ -1545,3 +1545,25 @@ only screen and (min-resolution: 1.5dppx) {
 [class*="bg--black"] [class*="bg--black"]  :before {
   color: $secondary;
 }
+
+// lb_direct_add overrides
+.layout-builder__direct-add__list li a {
+  font-size: 16px;
+  color: #000;
+  font-weight: 500;
+}
+
+.layout-builder__direct-add__list:after {
+  border-bottom-color: #fff!important;
+}
+.layout-builder__direct-add__list:before {
+  border-color: rgba(153, 153, 153, 0)!important;
+  border-bottom-color: #e2e4e7!important;
+}
+
+[class*="bg--"] .layout-builder__direct-add__list:before,
+[class*="bg--"] .layout-builder__direct-add__list:after,
+[class*="bg--"] [class*="bg--"] .layout-builder__direct-add__list:before,
+[class*="bg--"] [class*="bg--"] .layout-builder__direct-add__list:after {
+  border-color: transparent;
+}
