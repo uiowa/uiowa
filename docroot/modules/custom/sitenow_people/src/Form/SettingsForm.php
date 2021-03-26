@@ -316,7 +316,7 @@ class SettingsForm extends ConfigFormBase {
                   'webmaster' => '0',
                   'administrator' => '0',
                 ],
-                'placeholder' => '',
+                'placeholder' => 'Search by name',
               ],
               'is_grouped' => FALSE,
               'group_info' => [
