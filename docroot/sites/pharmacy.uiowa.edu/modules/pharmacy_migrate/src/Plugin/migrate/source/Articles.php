@@ -42,6 +42,8 @@ class Articles extends BaseNodeSource {
    */
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
+    $this->clearMemory();
+
     $body = $row->getSourceProperty('body');
 
     if (!empty($body)) {

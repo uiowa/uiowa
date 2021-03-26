@@ -45,6 +45,13 @@ abstract class BaseNodeSource extends Node {
   protected $batchSize = 100;
 
   /**
+   * Counter for memory resets.
+   *
+   * @var int
+   */
+  protected $rowCount = 0;
+
+  /**
    * {@inheritdoc}
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration, StateInterface $state, ModuleHandlerInterface $module_handler, FileSystemInterface $file_system, EntityTypeManager $entityTypeManager) {
@@ -177,21 +184,23 @@ abstract class BaseNodeSource extends Node {
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function clearMemory() {
-    // First, try resetting Drupal's static storage - this frequently releases
-    // plenty of memory to continue.
-    drupal_static_reset();
+    if ($this->rowCount++ % 100 == 0) {
+      // First, try resetting Drupal's static storage - this frequently releases
+      // plenty of memory to continue.
+      drupal_static_reset();
 
-    // Entity storage can blow up with caches so clear them out.
-    $manager = $this->entityTypeManager;
-    foreach ($manager->getDefinitions() as $id => $definition) {
-      $manager
-        ->getStorage($id)
-        ->resetCache();
+      // Entity storage can blow up with caches so clear them out.
+      $manager = $this->entityTypeManager;
+      foreach ($manager->getDefinitions() as $id => $definition) {
+        $manager
+          ->getStorage($id)
+          ->resetCache();
+      }
+
+      // Run garbage collector to further reduce memory.
+      gc_collect_cycles();
+      return memory_get_usage();
     }
-
-    // Run garbage collector to further reduce memory.
-    gc_collect_cycles();
-    return memory_get_usage();
   }
 
   /**
