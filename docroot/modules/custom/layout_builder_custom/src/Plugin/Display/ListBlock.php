@@ -240,13 +240,7 @@ class ListBlock extends CoreBlock {
    * @todo Determine whether this is necessary to have.
    */
   public function usesExposed() {
-    $filters = $this->getHandlers('filter');
-    foreach ($filters as $filter) {
-      if ($filter->isExposed() && !empty($filter->exposedInfo())) {
-        return TRUE;
-      }
-    }
-    return FALSE;
+    return TRUE;
   }
 
 }
