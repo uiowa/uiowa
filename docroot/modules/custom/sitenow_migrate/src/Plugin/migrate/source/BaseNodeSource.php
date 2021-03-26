@@ -79,11 +79,18 @@ abstract class BaseNodeSource extends Node {
   }
 
   /**
-   * Extract a summary from a block of text.
+   * Extract a plain text summary from a block of text.
+   *
+   * @param $text
+   *   The text to convert to a trimmed plain text version.
+   *
+   * @return string
+   *   The plain text string.
    */
   protected function extractSummaryFromText($text) {
     $new_summary = substr($text, 0, 200);
     $looper = TRUE;
+
     // Shorten the string until we reach a natural(ish) breaking point.
     while ($looper && strlen($new_summary) > 0) {
       switch (substr($new_summary, -1)) {
@@ -105,8 +112,10 @@ abstract class BaseNodeSource extends Node {
           $new_summary = substr($new_summary, 0, -1);
       }
     }
-    // Strip out any HTML, and set the new summary.
+    // Strip out any HTML, decode special characters and replace quotes.
     $new_summary = preg_replace("|<.*?>|", '', $new_summary);
+    $new_summary = htmlspecialchars_decode($new_summary);
+    $new_summary = str_replace(['&#39;', '&rsquo;'], ["'", "'"], $new_summary);
 
     return $new_summary;
   }
