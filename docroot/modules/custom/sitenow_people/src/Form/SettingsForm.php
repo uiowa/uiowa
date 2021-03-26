@@ -333,7 +333,6 @@ class SettingsForm extends ConfigFormBase {
               ],
               'fields' => [
                 'title' => 'title',
-                'field_person_data' => 'field_person_data',
               ],
               'plugin_id' => 'combine',
             ];
