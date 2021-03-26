@@ -51,6 +51,9 @@ function sitenow_seo_form_alter(&$form, FormStateInterface $form_state, $form_id
         if (isset($form["field_meta_tags"]["widget"][0]["open_graph"])) {
           $form["field_meta_tags"]["widget"][0]["open_graph"]["#open"] = FALSE;
         }
+        if (isset($form["field_meta_tags"]["widget"][0]["twitter_cards"])) {
+          $form["field_meta_tags"]["widget"][0]["twitter_cards"]["#open"] = FALSE;
+        }
       }
       break;
 
