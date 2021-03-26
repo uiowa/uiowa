@@ -240,7 +240,24 @@ class ListBlock extends CoreBlock {
    * @todo Determine whether this is necessary to have.
    */
   public function usesExposed() {
-    return TRUE;
+    $filters = $this->getHandlers('filter');
+    foreach ($filters as $filter) {
+      if ($filter->isExposed() && !empty($filter->exposedInfo())) {
+        return TRUE;
+      }
+    }
+    // Hotfix shim to keep these pagers working for now.
+    // @todo Solve ListBlock paging.
+    $display = $this->view->getDisplay();
+    $exceptions = [
+      'block_people_slf',
+      'block_people_sfl',
+      'block_articles'
+    ];
+    if (in_array($display->display["id"], $exceptions)) {
+      return TRUE;
+    }
+    return FALSE;
   }
 
 }
