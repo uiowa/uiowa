@@ -91,7 +91,7 @@ abstract class BaseNodeSource extends Node {
    *
    * @todo Use smart_trim for this.
    *
-   * @param $text
+   * @param string $text
    *   The text to convert to a trimmed plain text version.
    *
    * @return string
