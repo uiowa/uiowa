@@ -20,6 +20,7 @@ class People extends BaseNodeSource {
    */
   public function query() {
     $query = parent::query();
+    $query->condition('n.status', 1);
     $query->leftJoin('url_alias', 'alias', "alias.source = CONCAT('node/', n.nid)");
     $query->fields('alias', ['alias']);
     return $query;
