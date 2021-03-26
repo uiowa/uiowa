@@ -42,18 +42,36 @@ class Articles extends BaseNodeSource {
    */
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
-
-    // Search for D7 inline embeds and replace with D8 inline entities.
     $body = $row->getSourceProperty('body');
 
     if (!empty($body)) {
+      // Search for D7 inline embeds and replace with D8 inline entities.
       $body[0]['value'] = $this->replaceInlineFiles($body[0]['value']);
-      $row->setSourceProperty('body', $body);
 
       // Extract the summary.
       $row->setSourceProperty('body_summary', $this->getSummaryFromTextField($body));
+
+      // Unlink anchors in body from articles before 2016.
+      $created_year = date('Y', $row->getSourceProperty('created'));
+
+      if ($created_year < 2016) {
+        $doc = Html::load($body[0]['value']);
+        $links = $doc->getElementsByTagName('a');
+
+        foreach ($links as $link) {
+          $text = $doc->createTextNode($link->nodeValue);
+          $link->parentNode->replaceChild($text, $link);
+        }
+
+        $doc->saveHTML();
+        $html = Html::serialize($doc);
+        $body[0]['value'] = $html;
+      }
+
+      $row->setSourceProperty('body', $body);
     }
 
+    // Process the image field.
     $image = $row->getSourceProperty('field_article_image');
 
     if (!empty($image)) {
@@ -61,23 +79,24 @@ class Articles extends BaseNodeSource {
       $row->setSourceProperty('field_article_image_mid', $mid);
     }
 
-    // Unlink anchors in body from articles before 2016.
-    $created_year = date('Y', $row->getSourceProperty('created'));
+    // Create combined array of taxonomy terms to map to tags.
+    $tags = [];
 
-    if ($created_year < 2016) {
-      $doc = Html::load($body[0]['value']);
-      $links = $doc->getElementsByTagName('a');
+    $reference_fields = [
+      'field_department_multi',
+      'field_audience_multi',
+      'field_news_category',
+    ];
 
-      foreach ($links as $link) {
-        $text = $doc->createTextNode($link->nodeValue);
-        $link->parentNode->replaceChild($text, $link);
+    foreach ($reference_fields as $field_name) {
+      if ($refs = $row->getSourceProperty($field_name)) {
+        foreach ($refs as $ref) {
+          $tags[] = $ref['tid'];
+        }
       }
-
-      $doc->saveHTML();
-      $html = Html::serialize($doc);
-      $body[0]['value'] = $html;
-      $row->setSourceProperty('body', $body);
     }
+
+    $row->setSourceProperty('tags', $tags);
 
     return TRUE;
   }
