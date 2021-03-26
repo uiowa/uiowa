@@ -2,6 +2,7 @@
 
 namespace Drupal\pharmacy_migrate\Plugin\migrate\source;
 
+use Drupal\Component\Utility\Html;
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
@@ -60,7 +61,24 @@ class Articles extends BaseNodeSource {
       $row->setSourceProperty('field_article_image_mid', $mid);
     }
 
-    // @todo Unlink anchors in body from articles before 2016.
+    // Unlink anchors in body from articles before 2016.
+    $created_year = date('Y', $row->getSourceProperty('created'));
+
+    if ($created_year < 2016) {
+      $doc = Html::load($body[0]['value']);
+      $links = $doc->getElementsByTagName('a');
+
+      foreach ($links as $link) {
+        $text = $doc->createTextNode($link->nodeValue);
+        $link->parentNode->replaceChild($text, $link);
+      }
+
+      $doc->saveHTML();
+      $html = Html::serialize($doc);
+      $body[0]['value'] = $html;
+      $row->setSourceProperty('body', $body);
+    }
+
     return TRUE;
   }
 
