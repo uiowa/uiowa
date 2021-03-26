@@ -17,6 +17,13 @@ use Drupal\node\NodeInterface;
 use Drupal\views\ViewExecutable;
 
 /**
+ * Implements hook_preprocess_HOOK() for html.html.twig.
+ */
+function admissions_core_preprocess_html(&$variables) {
+  $variables['#attached']['library'][] = 'admissions_core/global';
+}
+
+/**
  * Implements hook_entity_presave().
  */
 function admissions_core_entity_presave(EntityInterface $entity) {
@@ -129,8 +136,23 @@ function admissions_core_form_alter(&$form, FormStateInterface $form_state, $for
  * Implements hook_form_FORM_ID_alter().
  */
 function admissions_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if ($form['#id'] == 'views-exposed-form-counselors-block-counselors') {
-    $form["territory"]["#options"]["All"] = t("- All -");
+  $view = $form_state->get('view');
+  if ($view->id() == 'student_card') {
+    if ($view->current_display == 'block_student_grid') {
+      $form['#attributes']['class'][] = 'hidden';
+    }
+  }
+  if ($view->id() == 'counselors') {
+    if ($view->current_display == 'block_counselors') {
+      $form["territory"]["#options"]["All"] = t("- All -");
+    }
+  }
+  if ($form['#id'] == 'views-exposed-form-areas-of-study-areas-of-study') {
+    $current_route = \Drupal::routeMatch();
+    $route_name = $current_route->getRouteName();
+    if ($route_name != 'view.areas_of_study.areas_of_study') {
+      $form['#attributes']['class'][] = 'views-exposed-form--minimal';
+    }
   }
 }
 
