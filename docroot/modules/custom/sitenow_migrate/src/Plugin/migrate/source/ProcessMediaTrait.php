@@ -218,8 +218,9 @@ trait ProcessMediaTrait {
       throw new MigrateException("Could not create or write to directory '{$dir}'");
     }
 
-    // Try to write the file, set the replacement behavior to EXISTS_ERROR.
-    $file = file_save_data($raw_file, implode('/', [$dir, $filename]), FileSystemInterface::EXISTS_ERROR);
+    // Try to write the file, replacing any existing file with the same name.
+    $file = file_save_data($raw_file, implode('/', [$dir, $filename]), FileSystemInterface::EXISTS_REPLACE);
+
     // Drop the raw file out of memory for a little cleanup.
     unset($raw_file);
 
