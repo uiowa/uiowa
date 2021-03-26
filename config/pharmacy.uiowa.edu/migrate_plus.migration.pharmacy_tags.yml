@@ -1,0 +1,21 @@
+id: pharmacy_tags
+label: Pharmacy Tags
+migration_group: sitenow_migrate
+source:
+  plugin: d7_taxonomy_term
+  bundle:
+    - academic_departments
+    - audience
+    - news_categories
+process:
+  tid: tid
+  name: name
+  description: description
+destination:
+  plugin: 'entity:taxonomy_term'
+  default_bundle: tags
+migration_dependencies: { }
+dependencies:
+  enforced:
+    module:
+      - pharmacy_migrate
