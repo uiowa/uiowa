@@ -2,6 +2,7 @@
 
 namespace Drupal\sitenow_migrate\Plugin\migrate\source;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Entity\EntityTypeManager;
@@ -88,6 +89,8 @@ abstract class BaseNodeSource extends Node {
   /**
    * Extract a plain text summary from a block of text.
    *
+   * @todo Use smart_trim for this.
+   *
    * @param $text
    *   The text to convert to a trimmed plain text version.
    *
@@ -119,10 +122,10 @@ abstract class BaseNodeSource extends Node {
           $new_summary = substr($new_summary, 0, -1);
       }
     }
-    // Strip out any HTML, decode special characters and replace quotes.
+    // Strip out any HTML, decode special characters and replace spaces.
     $new_summary = preg_replace("|<.*?>|", '', $new_summary);
-    $new_summary = htmlspecialchars_decode($new_summary);
-    $new_summary = str_replace(['&#39;', '&rsquo;'], ["'", "'"], $new_summary);
+    $new_summary = Html::decodeEntities($new_summary);
+    $new_summary = str_replace('&nbsp;', ' ', $new_summary);
 
     return $new_summary;
   }
