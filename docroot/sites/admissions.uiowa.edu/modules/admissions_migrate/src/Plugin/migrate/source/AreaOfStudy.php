@@ -103,6 +103,9 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
    * {@inheritdoc}
    */
   public function postImportProcess(MigrateImportEvent $event) {
+    $migration = $event->getMigration();
+    $map = $migration->getIdMap();
+
     $entity_types = [
       'taxonomy_term' => [
         'academic_groups' => [
@@ -156,12 +159,28 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
                 $href = $link->getAttribute('href');
 
                 if (strpos($href, '/node/') === 0 || stristr($href, 'admissions.uiowa.edu/node/')) {
-                  $this->logger->notice('Internal link @link found in field @field on @bundle @aos.', [
-                    '@link' => $href,
-                    '@field' => $field,
-                    '@bundle' => $bundle,
-                    '@aos' => $entity->label(),
-                  ]);
+                  $nid = explode('node/', $href)[1];
+                  $lookup = $map->lookupDestinationIds(['nid' => $nid]);
+
+                  // @todo Check against manually created NID map.
+                  if (!empty($lookup)) {
+                    $destination = $lookup[0][0];
+                    $link->setAttribute('href', "/node/{$destination}");
+                    $link->parentNode->replaceChild($link, $link);
+
+                    $document->saveHTML();
+                    $html = Html::serialize($document);
+                    $entity->$field->value = $html;
+                    $entity->save();
+
+                    $this->logger->notice('Replaced internal link @link in field @field on @bundle @aos.', [
+                      '@link' => $href,
+                      '@field' => $field,
+                      '@bundle' => $bundle,
+                      '@aos' => $entity->label(),
+                    ]);
+
+                  }
                 }
               }
             }
