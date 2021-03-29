@@ -254,7 +254,7 @@ class ListBlock extends CoreBlock {
       'block_people_sfl',
       'block_articles'
     ];
-    if (in_array($display->display["id"], $exceptions)) {
+    if (in_array($display->display['id'], $exceptions)) {
       return TRUE;
     }
     return FALSE;
