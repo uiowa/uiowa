@@ -2411,3 +2411,15 @@ $sites['labpsycholinguistics.local.drupal.uiowa.edu'] = 'psycholinguistics.lab.u
 $sites['labpsycholinguistics.dev.drupal.uiowa.edu'] = 'psycholinguistics.lab.uiowa.edu';
 $sites['labpsycholinguistics.stage.drupal.uiowa.edu'] = 'psycholinguistics.lab.uiowa.edu';
 $sites['labpsycholinguistics.prod.drupal.uiowa.edu'] = 'psycholinguistics.lab.uiowa.edu';
+
+// Directory aliases for pennathur.lab.uiowa.edu.
+$sites['labpennathur.local.drupal.uiowa.edu'] = 'pennathur.lab.uiowa.edu';
+$sites['labpennathur.dev.drupal.uiowa.edu'] = 'pennathur.lab.uiowa.edu';
+$sites['labpennathur.stage.drupal.uiowa.edu'] = 'pennathur.lab.uiowa.edu';
+$sites['labpennathur.prod.drupal.uiowa.edu'] = 'pennathur.lab.uiowa.edu';
+
+// Directory aliases for strategicplan.uiowa.edu.
+$sites['strategicplan.local.drupal.uiowa.edu'] = 'strategicplan.uiowa.edu';
+$sites['strategicplan.dev.drupal.uiowa.edu'] = 'strategicplan.uiowa.edu';
+$sites['strategicplan.stage.drupal.uiowa.edu'] = 'strategicplan.uiowa.edu';
+$sites['strategicplan.prod.drupal.uiowa.edu'] = 'strategicplan.uiowa.edu';
