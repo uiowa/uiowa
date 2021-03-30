@@ -160,9 +160,8 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
 
                 if (strpos($href, '/node/') === 0 || stristr($href, 'admissions.uiowa.edu/node/')) {
                   $nid = explode('node/', $href)[1];
-                  $lookup = $map->lookupDestinationIds(['nid' => $nid]);
+                  $lookup = !empty($map->lookupDestinationIds(['nid' => $nid])) ?: $this->manualLookup($nid);
 
-                  // @todo Check against manually created NID map.
                   if (!empty($lookup)) {
                     $destination = $lookup[0][0];
                     $link->setAttribute('href', "/node/{$destination}");
@@ -188,6 +187,47 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
         }
       }
     }
+  }
+
+  /**
+   * Look up a node URL from a manually created source -> destination map.
+   *
+   * @param $nid
+   *   The NID to look up.
+   *
+   * @return array
+   *   A simulated array of arrays similar to the migrate idMap.
+   */
+  protected function manualLookup($nid) {
+    $lookup = [];
+
+    $map = [
+      79 =>	71,
+      53 =>	206,
+      54 =>	151,
+      77 =>	61,
+      195 => 156,
+      196 => 216,
+      147 => 211,
+      146 => 166,
+      214 => 171,
+      215 => 201,
+      137 => 21,
+      244 => 161,
+      291 => 221,
+      294 => 56,
+      72 =>	61,
+      93681 => 71,
+      71 => 286,
+    ];
+
+    if (isset($map[$nid])) {
+      $lookup = [
+        [$map[$nid]]
+      ];
+    }
+
+    return $lookup;
   }
 
 }
