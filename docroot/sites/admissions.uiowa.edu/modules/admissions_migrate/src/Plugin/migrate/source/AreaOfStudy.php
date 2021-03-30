@@ -139,11 +139,11 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
 
     foreach ($entity_types as $entity_type => $bundles) {
       foreach ($bundles as $bundle => $fields) {
-        $field = ($entity_type == 'taxonomy_term') ? 'vid' : 'type';
+        $condition = ($entity_type == 'taxonomy_term') ? 'vid' : 'type';
         $query = $this->entityTypeManager->getStorage($entity_type)->getQuery();
 
         $ids = $query
-          ->condition($field, $bundle)
+          ->condition($condition, $bundle)
           ->execute();
 
         if ($ids) {
