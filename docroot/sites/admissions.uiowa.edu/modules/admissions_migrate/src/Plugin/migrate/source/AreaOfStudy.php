@@ -205,7 +205,7 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
   /**
    * Look up a node URL from a manually created source -> destination map.
    *
-   * @param $nid
+   * @param int $nid
    *   The NID to look up.
    *
    * @return array
@@ -215,10 +215,10 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
     $lookup = [];
 
     $map = [
-      79 =>	71,
-      53 =>	206,
-      54 =>	151,
-      77 =>	61,
+      79 => 71,
+      53 => 206,
+      54 => 151,
+      77 => 61,
       195 => 156,
       196 => 216,
       147 => 211,
@@ -229,14 +229,14 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
       244 => 161,
       291 => 221,
       294 => 56,
-      72 =>	61,
+      72 => 61,
       93681 => 71,
       71 => 286,
     ];
 
     if (isset($map[$nid])) {
       $lookup = [
-        [$map[$nid]]
+        [$map[$nid]],
       ];
     }
 
