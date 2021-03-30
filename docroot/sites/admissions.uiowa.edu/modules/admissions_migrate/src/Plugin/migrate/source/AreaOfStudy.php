@@ -160,8 +160,14 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
 
                 if (strpos($href, '/node/') === 0 || stristr($href, 'admissions.uiowa.edu/node/')) {
                   $nid = explode('node/', $href)[1];
-                  $lookup = !empty($map->lookupDestinationIds(['nid' => $nid])) ?: $this->manualLookup($nid);
+                  $lookup = $map->lookupDestinationIds(['nid' => $nid]);
 
+                  // Fallback to a manual map of NIDs provided by the customer.
+                  if (empty($lookup)) {
+                    $lookup = $this->manualLookup($nid);
+                  }
+
+                  // If we still don't have a lookup, log we can't replace it.
                   if (!empty($lookup)) {
                     $destination = $lookup[0][0];
                     $link->setAttribute('href', "/node/{$destination}");
@@ -171,14 +177,14 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
                     $html = Html::serialize($document);
                     $entity->$field->value = $html;
                     $entity->save();
-
-                    $this->logger->notice('Replaced internal link @link in field @field on @bundle @aos.', [
+                  }
+                  else {
+                    $this->logger->notice('Cannot replace internal link @link in field @field on @bundle @aos.', [
                       '@link' => $href,
                       '@field' => $field,
                       '@bundle' => $bundle,
                       '@aos' => $entity->label(),
                     ]);
-
                   }
                 }
               }
