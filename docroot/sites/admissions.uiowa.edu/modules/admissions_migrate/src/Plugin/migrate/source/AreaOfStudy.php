@@ -155,8 +155,8 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
             $entities = $controller->loadMultiple($ids);
 
             foreach ($entities as $entity) {
-              foreach ($fields as $field) {
-                $document = Html::load($entity->$field->getString());
+              foreach ($fields as $field_name) {
+                $document = Html::load($entity->$field_name->value);
                 $links = $document->getElementsByTagName('a');
 
                 foreach ($links as $link) {
@@ -179,13 +179,13 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
 
                       $document->saveHTML();
                       $html = Html::serialize($document);
-                      $entity->$field->value = $html;
+                      $entity->$field_name->value = $html;
                       $entity->save();
                     }
                     else {
                       $this->logger->notice('Cannot replace internal link @link in field @field on @bundle @aos.', [
                         '@link' => $href,
-                        '@field' => $field,
+                        '@field' => $field_name,
                         '@bundle' => $bundle,
                         '@aos' => $entity->label(),
                       ]);
