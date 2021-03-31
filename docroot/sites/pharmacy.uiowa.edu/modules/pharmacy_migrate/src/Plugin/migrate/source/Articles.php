@@ -19,6 +19,13 @@ class Articles extends BaseNodeSource {
   use ProcessMediaTrait;
 
   /**
+   * Lower the default batch size to 30 for memory issues.
+   *
+   * @var int
+   */
+  protected $batchSize = 30;
+
+  /**
    * {@inheritdoc}
    */
   public function query() {
