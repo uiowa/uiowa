@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.scholarship.body
+    - field.field.node.scholarship.field_meta_tags
     - field.field.node.scholarship.field_scholarship_application
     - field.field.node.scholarship.field_scholarship_contact
     - field.field.node.scholarship.field_scholarship_deadline
@@ -20,6 +21,7 @@ dependencies:
     - allowed_formats
     - content_moderation
     - link
+    - metatag
     - path
     - text
     - weight
@@ -44,6 +46,13 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_meta_tags:
+    weight: 27
+    settings:
+      sidebar: true
+    third_party_settings: {  }
+    type: metatag_firehose
+    region: content
   field_scholarship_application:
     weight: 12
     settings:

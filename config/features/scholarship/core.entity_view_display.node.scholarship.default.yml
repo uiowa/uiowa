@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.scholarship.body
+    - field.field.node.scholarship.field_meta_tags
     - field.field.node.scholarship.field_scholarship_application
     - field.field.node.scholarship.field_scholarship_contact
     - field.field.node.scholarship.field_scholarship_deadline
@@ -60,12 +61,12 @@ content:
     type: text_default
     region: content
   field_scholarship_more_info:
+    type: text_default
     weight: 7
+    region: content
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: text_default
-    region: content
   field_scholarship_renewal:
     weight: 6
     label: above
@@ -93,4 +94,5 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_meta_tags: true
   search_api_excerpt: true
