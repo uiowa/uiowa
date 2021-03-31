@@ -180,10 +180,10 @@ abstract class BaseNodeSource extends Node {
    *
    * This method should be called in migration source prepareRow methods.
    *
-   * @see MigrateExecutable::attemptMemoryReclaim
-   *
    * @param int $size
    *   The number of rows to reset memory after.
+   *
+   * @see MigrateExecutable::attemptMemoryReclaim
    *
    * @return int
    *   Return the existing memory usage.
