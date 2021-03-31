@@ -178,7 +178,12 @@ abstract class BaseNodeSource extends Node {
   /**
    * Attempt to clear the entity cache if needed to avoid memory overflows.
    *
-   * Based on core/modules/migrate/src/MigrateExecutable.php, line 543.
+   * This method should be called in migration source prepareRow methods.
+   *
+   * @see MigrateExecutable::attemptMemoryReclaim
+   *
+   * @param int $size
+   *   The number of rows to reset memory after.
    *
    * @return int
    *   Return the existing memory usage.
@@ -186,8 +191,8 @@ abstract class BaseNodeSource extends Node {
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function clearMemory() {
-    if ($this->rowCount++ % 100 == 0) {
+  public function clearMemory($size = 100) {
+    if ($this->rowCount++ % $size == 0) {
       // First, try resetting Drupal's static storage - this frequently releases
       // plenty of memory to continue.
       drupal_static_reset();
