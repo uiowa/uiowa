@@ -57,7 +57,7 @@
   'card_tag': content.author|render,
   'event_icon': event_icon|trans,
   'headline_level': heading_size,
-  'card_text': content.description,
+  'card_text': content.description|render,
 } %}
 
 {% embed '@uids_base/uids/card.html.twig' with aggregator_card only %}

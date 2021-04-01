@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "53421db5cec498a83645e29c3e6b86ec",
+    "content-hash": "b5ff3c1dba7371cc5f6318e25a8994c1",
     "packages": [
         {
             "name": "acquia/blt",
@@ -627,7 +627,7 @@
             "version": "5.15.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/FortAwesome/Font-Awesome.git",
+                "url": "git@github.com:FortAwesome/Font-Awesome.git",
                 "reference": "fcec2d1b01ff069ac10500ac42e4478d20d21f4c"
             },
             "dist": {
@@ -7448,26 +7448,26 @@
         },
         {
             "name": "drupal/memcache",
-            "version": "2.2.0",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/memcache.git",
-                "reference": "8.x-2.2"
+                "reference": "8.x-2.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/memcache-8.x-2.2.zip",
-                "reference": "8.x-2.2",
-                "shasum": "1d9876763c7ef04a9bba698ddcadbe708037fed2"
+                "url": "https://ftp.drupal.org/files/projects/memcache-8.x-2.3.zip",
+                "reference": "8.x-2.3",
+                "shasum": "b2f9715612be74f9ce55daaf838f6f17a9eb2f5a"
             },
             "require": {
-                "drupal/core": "^8.8 || ^9"
+                "drupal/core": "^8.9 || ^9"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-2.2",
-                    "datestamp": "1601053267",
+                    "version": "8.x-2.3",
+                    "datestamp": "1614802365",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -7746,6 +7746,10 @@
                 {
                     "name": "johnwebdev",
                     "homepage": "https://www.drupal.org/user/3331569"
+                },
+                {
+                    "name": "rutiolma",
+                    "homepage": "https://www.drupal.org/user/757938"
                 },
                 {
                     "name": "stefan.r",
@@ -9544,6 +9548,71 @@
             }
         },
         {
+            "name": "drupal/tvi",
+            "version": "1.0.0-rc2",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/tvi.git",
+                "reference": "8.x-1.0-rc2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/tvi-8.x-1.0-rc2.zip",
+                "reference": "8.x-1.0-rc2",
+                "shasum": "4c6c06e7eceac7019649b7a18a81fdf62cb2fc91"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.0-rc2",
+                    "datestamp": "1597077732",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "RC releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Kevin Quillen (kevinquillen)",
+                    "homepage": "https://www.drupal.org/u/kevinquillen",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "derekwebb1",
+                    "homepage": "https://www.drupal.org/user/64114"
+                },
+                {
+                    "name": "kevinquillen",
+                    "homepage": "https://www.drupal.org/user/317279"
+                },
+                {
+                    "name": "mikeohara",
+                    "homepage": "https://www.drupal.org/user/1118796"
+                },
+                {
+                    "name": "richgerdes",
+                    "homepage": "https://www.drupal.org/user/3437973"
+                }
+            ],
+            "description": "Enables you to change the presentation of taxonomy term pages with Views, allowing you to create multiple Views on the same path with different output.",
+            "homepage": "http://drupal.org/project/tvi",
+            "keywords": [
+                "Drupal"
+            ],
+            "support": {
+                "source": "http://cgit.drupalcode.org/tvi",
+                "issues": "http://drupal.org/project/issues/tvi"
+            }
+        },
+        {
             "name": "drupal/ultimate_cron",
             "version": "2.0.0-alpha5",
             "source": {
@@ -9723,7 +9792,7 @@
             "extra": {
                 "drupal": {
                     "version": "6.0.2",
-                    "datestamp": "1614791851",
+                    "datestamp": "1614794871",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -9989,6 +10058,7 @@
                     "type": "github"
                 }
             ],
+            "abandoned": "loophp/phposinfo",
             "time": "2020-05-19T14:14:28+00:00"
         },
         {
@@ -18719,15 +18789,15 @@
         },
         {
             "name": "uiowa/uiowa_footer",
-            "version": "1.0.0-alpha7",
+            "version": "1.0.0-alpha8",
             "source": {
                 "type": "git",
                 "url": "git@github.com:uiowa/uiowa_footer",
-                "reference": "139566103898d26792873c7f3d7c31c88b689d7b"
+                "reference": "e6bca0ecbed2ba43434fe30b962fa7fdf9b73cb0"
             },
             "type": "drupal-custom-module",
             "description": "Configuration and block implementation for common footer.",
-            "time": "2021-02-08T22:15:46+00:00"
+            "time": "2021-03-31T20:09:16+00:00"
         },
         {
             "name": "webflo/drupal-finder",
@@ -19031,7 +19101,7 @@
                 "issues": "https://github.com/acquia/blt-vm/issues",
                 "source": "https://github.com/acquia/blt-vm/tree/master"
             },
-            "time": "2020-09-08T16:45:29+00:00"
+            "time": "2021-02-26T17:42:17+00:00"
         },
         {
             "name": "acquia/blt-phpcs",
@@ -21299,6 +21369,7 @@
         "drupal/rabbit_hole": 10,
         "drupal/redirect": 20,
         "drupal/swiftmailer": 10,
+        "drupal/tvi": 5,
         "drupal/ultimate_cron": 15,
         "drupal/views_ical": 15,
         "kartsims/easysvg": 20,

@@ -2375,3 +2375,51 @@ $sites['gradbook.local.drupal.uiowa.edu'] = 'book.grad.uiowa.edu';
 $sites['gradbook.dev.drupal.uiowa.edu'] = 'book.grad.uiowa.edu';
 $sites['gradbook.stage.drupal.uiowa.edu'] = 'book.grad.uiowa.edu';
 $sites['gradbook.prod.drupal.uiowa.edu'] = 'book.grad.uiowa.edu';
+
+// Directory aliases for nlp.uiowa.edu.
+$sites['nlp.local.drupal.uiowa.edu'] = 'nlp.uiowa.edu';
+$sites['nlp.dev.drupal.uiowa.edu'] = 'nlp.uiowa.edu';
+$sites['nlp.stage.drupal.uiowa.edu'] = 'nlp.uiowa.edu';
+$sites['nlp.prod.drupal.uiowa.edu'] = 'nlp.uiowa.edu';
+
+// Directory aliases for jprineas.lab.uiowa.edu.
+$sites['labjprineas.local.drupal.uiowa.edu'] = 'jprineas.lab.uiowa.edu';
+$sites['labjprineas.dev.drupal.uiowa.edu'] = 'jprineas.lab.uiowa.edu';
+$sites['labjprineas.stage.drupal.uiowa.edu'] = 'jprineas.lab.uiowa.edu';
+$sites['labjprineas.prod.drupal.uiowa.edu'] = 'jprineas.lab.uiowa.edu';
+
+// Directory aliases for historyoftechnology.lab.uiowa.edu.
+$sites['labhistoryoftechnology.local.drupal.uiowa.edu'] = 'historyoftechnology.lab.uiowa.edu';
+$sites['labhistoryoftechnology.dev.drupal.uiowa.edu'] = 'historyoftechnology.lab.uiowa.edu';
+$sites['labhistoryoftechnology.stage.drupal.uiowa.edu'] = 'historyoftechnology.lab.uiowa.edu';
+$sites['labhistoryoftechnology.prod.drupal.uiowa.edu'] = 'historyoftechnology.lab.uiowa.edu';
+
+// Directory aliases for hot.lab.uiowa.edu.
+$sites['labhot.local.drupal.uiowa.edu'] = 'hot.lab.uiowa.edu';
+$sites['labhot.dev.drupal.uiowa.edu'] = 'hot.lab.uiowa.edu';
+$sites['labhot.stage.drupal.uiowa.edu'] = 'hot.lab.uiowa.edu';
+$sites['labhot.prod.drupal.uiowa.edu'] = 'hot.lab.uiowa.edu';
+
+// Directory aliases for pediatricaudiology.lab.uiowa.edu.
+$sites['labpediatricaudiology.local.drupal.uiowa.edu'] = 'pediatricaudiology.lab.uiowa.edu';
+$sites['labpediatricaudiology.dev.drupal.uiowa.edu'] = 'pediatricaudiology.lab.uiowa.edu';
+$sites['labpediatricaudiology.stage.drupal.uiowa.edu'] = 'pediatricaudiology.lab.uiowa.edu';
+$sites['labpediatricaudiology.prod.drupal.uiowa.edu'] = 'pediatricaudiology.lab.uiowa.edu';
+
+// Directory aliases for psycholinguistics.lab.uiowa.edu.
+$sites['labpsycholinguistics.local.drupal.uiowa.edu'] = 'psycholinguistics.lab.uiowa.edu';
+$sites['labpsycholinguistics.dev.drupal.uiowa.edu'] = 'psycholinguistics.lab.uiowa.edu';
+$sites['labpsycholinguistics.stage.drupal.uiowa.edu'] = 'psycholinguistics.lab.uiowa.edu';
+$sites['labpsycholinguistics.prod.drupal.uiowa.edu'] = 'psycholinguistics.lab.uiowa.edu';
+
+// Directory aliases for pennathur.lab.uiowa.edu.
+$sites['labpennathur.local.drupal.uiowa.edu'] = 'pennathur.lab.uiowa.edu';
+$sites['labpennathur.dev.drupal.uiowa.edu'] = 'pennathur.lab.uiowa.edu';
+$sites['labpennathur.stage.drupal.uiowa.edu'] = 'pennathur.lab.uiowa.edu';
+$sites['labpennathur.prod.drupal.uiowa.edu'] = 'pennathur.lab.uiowa.edu';
+
+// Directory aliases for strategicplan.uiowa.edu.
+$sites['strategicplan.local.drupal.uiowa.edu'] = 'strategicplan.uiowa.edu';
+$sites['strategicplan.dev.drupal.uiowa.edu'] = 'strategicplan.uiowa.edu';
+$sites['strategicplan.stage.drupal.uiowa.edu'] = 'strategicplan.uiowa.edu';
+$sites['strategicplan.prod.drupal.uiowa.edu'] = 'strategicplan.uiowa.edu';
