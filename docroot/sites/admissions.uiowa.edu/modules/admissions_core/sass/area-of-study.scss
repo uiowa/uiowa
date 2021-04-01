@@ -74,12 +74,43 @@
 }
 
 .view-display-id-areas_of_study {
+  display: flex;
+  flex-wrap: wrap;
+
   .views-field {
     .degree-options {
       margin-top: $sm;
       text-transform: uppercase;
       font-size: $small-font-size;
     }
+  }
+  .view-header {
+    width: 100%;
+  }
+  .view-content {
+    flex: 1 0 0;
+  }
+  .view-empty {
+    flex: 0 0 75%;
+    max-width: 75%;
+  }
+  .view-filters {
+    flex: 0 0 100%;
+    max-width: 100%;
+
+    @include breakpoint(sm) {
+      flex: 0 0 25%;
+      max-width: 25%;
+      margin-right: $desktop-width-gutter;
+    }
+    .form-item {
+      width: 100%;
+    }
+  }
+  .pager {
+    flex: 0 0 100%;
+    max-width: 100%;
+    order: 1;
   }
 }
 
