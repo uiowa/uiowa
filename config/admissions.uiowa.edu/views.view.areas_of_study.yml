@@ -558,6 +558,7 @@ display:
         filters: false
         filter_groups: false
         fields: false
+        empty: false
       filter_groups:
         operator: AND
         groups:
@@ -803,6 +804,18 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+      empty:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content: 'There are currently no results.'
+          plugin_id: text_custom
     cache_metadata:
       max-age: -1
       contexts:
