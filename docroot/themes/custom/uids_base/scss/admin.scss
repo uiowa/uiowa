@@ -1547,6 +1547,21 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 // lb_direct_add overrides
+
+.layout-builder__direct-add__toggle {
+  border: 1px solid #ccc;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10);
+  padding: 1rem;
+  text-decoration: underline;
+
+  &:hover,
+  &:focus {
+    border-bottom-style: solid;
+    border-color: #aaa;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.20);
+  }
+}
+
 .layout-builder__direct-add__list li a {
   font-size: 16px;
   color: #000;
