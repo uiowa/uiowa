@@ -1,11 +1,11 @@
-uuid: 6fb03bfc-1049-4be1-a273-e94c8f6cbb66
+uuid: de43c4ba-c615-47fb-853f-e06c79aec2b0
 langcode: en
 status: true
 dependencies: {  }
-id: pharmacy_uiowa_edu
-label: Pharmacy
-description: 'The Pharmacy site split.'
-folder: ../config/pharmacy.uiowa.edu
+id: pharmacy_migrate
+label: 'Pharmacy Migrate'
+description: 'Migrations for Pharmacy'
+folder: ./sites/pharmacy.uiowa.edu/modules/pharmacy_migrate/config/split
 module:
   migrate: 0
   migrate_drupal: 0
@@ -15,9 +15,9 @@ module:
   sitenow_migrate: 0
 theme: {  }
 blacklist:
-  - config_split.config_split.pharmacy_uiowa_edu
+  - config_split.config_split.pharmacy_migrate
   - 'migrate_plus.migration.pharmacy_*'
 graylist: {  }
 graylist_dependents: true
 graylist_skip_equal: true
-weight: 90
+weight: 80
