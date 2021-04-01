@@ -246,6 +246,17 @@ class ListBlock extends CoreBlock {
         return TRUE;
       }
     }
+    // Hotfix shim to keep these pagers working for now.
+    // @todo Solve ListBlock paging.
+    $display = $this->view->getDisplay();
+    $exceptions = [
+      'block_people_slf',
+      'block_people_sfl',
+      'block_articles'
+    ];
+    if (in_array($display->display['id'], $exceptions)) {
+      return TRUE;
+    }
     return FALSE;
   }
 
