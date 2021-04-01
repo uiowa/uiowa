@@ -171,7 +171,7 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
                       $lookup = $this->manualLookup($nid);
                     }
 
-                    // If we still don't have a lookup, log we can't replace it.
+                    // Fix it or log if we don't have a lookup.
                     if (!empty($lookup)) {
                       $destination = $lookup[0][0];
                       $link->setAttribute('href', "/node/{$destination}");
