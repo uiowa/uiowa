@@ -103,10 +103,10 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
    * {@inheritdoc}
    */
   public function postImportProcess(MigrateImportEvent $event) {
-    // @todo Figure why this is being called more than once.
-    static $run = FALSE;
+    // @todo Figure out why this event fires multiple times.
+    $has_run = $this->state->get('admissions_migrate_post_import', FALSE);
 
-    if ($run == FALSE) {
+    if ($has_run == FALSE) {
       $migration = $event->getMigration();
       $map = $migration->getIdMap();
 
@@ -198,7 +198,7 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
         }
       }
 
-      $run = TRUE;
+      $this->state->set('admissions_migrate_post_import', TRUE);
     }
   }
 
