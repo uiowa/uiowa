@@ -8,7 +8,9 @@
     @include flex(0, 1, 100%);
     @include flex-wrap(wrap);
     .field__item {
-      flex: 1;
+      @include breakpoint(sm) {
+        flex: 1;
+      }
     }
     .field__item:not(:last-child) {
       margin-right: $md;
