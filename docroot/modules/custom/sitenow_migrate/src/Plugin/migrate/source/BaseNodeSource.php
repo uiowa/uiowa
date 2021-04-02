@@ -97,8 +97,14 @@ abstract class BaseNodeSource extends Node {
    * @return string
    *   The plain text string.
    */
-  protected function extractSummaryFromText($text) {
-    $new_summary = substr($text, 0, 200);
+  protected function extractSummaryFromText(string $text) {
+    // Strip out any HTML, decode special characters and replace spaces.
+    $new_summary = Html::decodeEntities($text);
+    $new_summary = str_replace('&nbsp;', ' ', $new_summary);
+    $new_summary = strip_tags($new_summary);
+
+    $new_summary = substr($new_summary, 0, 200);
+
     $looper = TRUE;
 
     // Shorten the string until we reach a natural(ish) breaking point.
@@ -122,10 +128,6 @@ abstract class BaseNodeSource extends Node {
           $new_summary = substr($new_summary, 0, -1);
       }
     }
-    // Strip out any HTML, decode special characters and replace spaces.
-    $new_summary = preg_replace("|<.*?>|", '', $new_summary);
-    $new_summary = Html::decodeEntities($new_summary);
-    $new_summary = str_replace('&nbsp;', ' ', $new_summary);
 
     return $new_summary;
   }
