@@ -27,7 +27,9 @@
   .field--name-field-area-of-study-first-year,
   .field--name-field-area-of-study-transfer,
   .field--name-field-area-of-study-intl {
-    display: flex;
+    @include breakpoint(sm) {
+      display: flex;
+    }
   }
   .bttn.bttn--link {
     padding-left: 0;
