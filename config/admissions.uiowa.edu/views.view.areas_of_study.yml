@@ -80,12 +80,15 @@ display:
                   collapsible: false
                   is_secondary: true
               field_area_of_study_academic_gp_target_id:
-                plugin_id: default
+                plugin_id: bef
                 advanced:
                   rewrite:
                     filter_rewrite_values: ''
                   collapsible: false
                   is_secondary: false
+                select_all_none: false
+                select_all_none_nested: false
+                display_inline: 0
               field_area_of_study_college_target_id:
                 plugin_id: default
                 advanced:
@@ -438,64 +441,6 @@ display:
             group_items: {  }
           reduce_duplicates: false
           plugin_id: list_field
-        field_area_of_study_academic_gp_target_id:
-          id: field_area_of_study_academic_gp_target_id
-          table: node__field_area_of_study_academic_gp
-          field: field_area_of_study_academic_gp_target_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: or
-          value: {  }
-          group: 1
-          exposed: true
-          expose:
-            operator_id: field_area_of_study_academic_gp_target_id_op
-            label: 'Academic Group'
-            description: ''
-            use_operator: false
-            operator: field_area_of_study_academic_gp_target_id_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: academic_group
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              viewer: '0'
-              editor: '0'
-              publisher: '0'
-              webmaster: '0'
-              administrator: '0'
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-          type: select
-          limit: true
-          vid: academic_groups
-          hierarchy: false
-          error_message: true
-          parent: 0
-          level_labels: ''
-          force_deepest: false
-          save_lineage: false
-          hierarchy_depth: 0
-          required_depth: 0
-          none_label: '- Please select -'
-          plugin_id: taxonomy_index_tid
         field_area_of_study_college_target_id:
           id: field_area_of_study_college_target_id
           table: node__field_area_of_study_college
@@ -544,6 +489,64 @@ display:
           type: select
           limit: true
           vid: colleges
+          hierarchy: false
+          error_message: true
+          parent: 0
+          level_labels: ''
+          force_deepest: false
+          save_lineage: false
+          hierarchy_depth: 0
+          required_depth: 0
+          none_label: '- Please select -'
+          plugin_id: taxonomy_index_tid
+        field_area_of_study_academic_gp_target_id:
+          id: field_area_of_study_academic_gp_target_id
+          table: node__field_area_of_study_academic_gp
+          field: field_area_of_study_academic_gp_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_area_of_study_academic_gp_target_id_op
+            label: 'Academic Group'
+            description: ''
+            use_operator: false
+            operator: field_area_of_study_academic_gp_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: academic_group
+            required: false
+            remember: false
+            multiple: true
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: select
+          limit: true
+          vid: academic_groups
           hierarchy: false
           error_message: true
           parent: 0
