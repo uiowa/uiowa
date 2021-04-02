@@ -104,23 +104,26 @@
       width: 100%;
     }
     .views-exposed-form {
-      .form-actions {
-        width: 100%;
-        margin: 1em 0 0 0 !important;
-    
-        .button {
-          width: 49%;
+      &.uids-content:not(.uids-search) {
+        padding: 19px;
+        .form-item {
+          margin: 0;
         }
-        input#edit-submit-areas-of-study {
-          @include bttn--primary;
+        input, select {
+          margin-bottom: 19px;
         }
-      }
-      .form--inline {
-        padding: 5px 0px 10px;
-        .js-form-item {
-          margin: 5px 0px 0px 0px !important;
-          uids-content [type=text] {
-            margin: 0 0 19px !important;
+        .form-actions {
+          width: 100%;
+          margin: 0;
+          display: flex;
+          gap: 19px;
+
+          .button {
+            flex: 46% 1 1;
+            margin-bottom: 0;
+          }
+          input#edit-submit-areas-of-study {
+            @include bttn--primary;
           }
         }
       }
