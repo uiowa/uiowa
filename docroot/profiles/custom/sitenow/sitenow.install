@@ -9,20 +9,20 @@
 use Drupal\block\Entity\Block;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Config\FileStorage;
-use Drupal\node\Entity\Node;
-use Drupal\taxonomy\Entity\Term;
-use Drupal\user\Entity\User;
-use Drupal\menu_link_content\Entity\MenuLinkContent;
-use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\field\Entity\FieldConfig;
-use Drupal\paragraphs\ParagraphInterface;
-use Drupal\paragraphs\Entity\Paragraph;
-use Drupal\filter\Plugin\Filter\FilterHtmlCorrector;
 use Drupal\Core\Database\Database;
+use Drupal\Core\Site\Settings;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\filter\Plugin\Filter\FilterHtmlCorrector;
+use Drupal\layout_builder\InlineBlockUsage;
 use Drupal\layout_builder\Section;
 use Drupal\layout_builder\SectionComponent;
-use Drupal\layout_builder\InlineBlockUsage;
-use Drupal\Core\Site\Settings;
+use Drupal\menu_link_content\Entity\MenuLinkContent;
+use Drupal\node\Entity\Node;
+use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\paragraphs\ParagraphInterface;
+use Drupal\taxonomy\Entity\Term;
+use Drupal\user\Entity\User;
 
 /**
  * Update some uiowa_footer settings which are ignored.
@@ -2163,13 +2163,32 @@ function sitenow_update_9002() {
 /**
  * Set menu links to expanded by default.
  */
-function sitenow_update_9003(&$sandbox) {
-  $menu_link_content = \Drupal::entityTypeManager()->getStorage('menu_link_content');
-  $table_name = $menu_link_content->getDataTable() ?: $menu_link_content->getBaseTable();
+function sitenow_update_9003(&$sandbox) {// Process all nodes that have a filled field_reference.
+  if (!isset($sandbox['total'])) {
+    $query = \Drupal::entityQuery('menu_link_content')
+      ->condition('expanded', 0, '=')
+      ->execute();
+    $sandbox['total'] = count($query);
+    $sandbox['current'] = 0;
+    $sandbox['query'] = $query;
 
-  $database = \Drupal::database();
+    if (empty($sandbox['total'])) {
+      $sandbox['#finished'] = 1;
+      return;
+    }
+  }
+  // Loop through menu links in batches.
+  $per_batch = 100;
+  $batch = array_slice($sandbox['query'], $sandbox['current'], $sandbox['current'] + $per_batch);
+  if (empty($batch)) {
+    $sandbox['#finished'] = 1;
+    \Drupal::service('router.builder')->rebuild();
+    return;
+  }
 
-  $database->update($table_name)
-    ->fields(['expanded' => TRUE])
-    ->execute();
+  foreach ($batch as $mcid) {
+    $menu_item = MenuLinkContent::load($mcid);
+    $menu_item->expanded = 1;
+    $menu_item->save();
+  }
 }
