@@ -109,8 +109,28 @@
         .form-item {
           margin: 0;
         }
-        input, select {
-          margin-bottom: 19px;
+        input, select, fieldset {
+          &.form-item {
+            margin-bottom: 19px;
+          }
+        }
+        fieldset {
+          border: 0;
+          padding: 0;
+          .fieldset-legend {
+            display: block;
+            margin: 0;
+            font-size: .8rem;
+            font-weight: 700;
+            line-height: 1.8;
+          }
+          .fieldset-wrapper {
+            padding: 0.75rem;
+          }
+          .form-type-checkbox {
+            display: flex;
+            align-items: baseline;
+          }
         }
         .form-actions {
           width: 100%;
