@@ -147,13 +147,6 @@ function admissions_core_form_views_exposed_form_alter(&$form, FormStateInterfac
       $form["territory"]["#options"]["All"] = t("- All -");
     }
   }
-  if ($form['#id'] == 'views-exposed-form-areas-of-study-areas-of-study') {
-    $current_route = \Drupal::routeMatch();
-    $route_name = $current_route->getRouteName();
-    if ($route_name != 'view.areas_of_study.areas_of_study' && $route_name != 'views.ajax') {
-      $form['#attributes']['class'][] = 'views-exposed-form--minimal';
-    }
-  }
 }
 
 /**
