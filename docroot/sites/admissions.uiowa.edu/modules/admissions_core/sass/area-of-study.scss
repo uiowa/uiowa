@@ -103,12 +103,35 @@
     .form-item {
       width: 100%;
     }
+    .views-exposed-form {
+      .form-actions {
+        width: 100%;
+        margin: 1em 0 0 0 !important;
+    
+        .button {
+          width: 49%;
+        }
+        input#edit-submit-areas-of-study {
+          @include bttn--primary;
+        }
+      }
+      .form--inline {
+        padding: 5px 0px 10px;
+        .js-form-item {
+          margin: 5px 0px 0px 0px !important;
+          uids-content [type=text] {
+            margin: 0 0 19px !important;
+          }
+        }
+      }
+    }
   }
   .pager {
     flex: 0 0 100%;
     max-width: 100%;
     order: 1;
   }
+
 }
 
 // Card p styles extended.
