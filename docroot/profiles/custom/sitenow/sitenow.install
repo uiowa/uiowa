@@ -2159,3 +2159,17 @@ function sitenow_update_9002() {
   $config->set('fonts.font-family', 'sans-serif');
   $config->save();
 }
+
+/**
+ * Set menu links to expanded by default.
+ */
+function sitenow_update_9003(&$sandbox) {
+  $menu_link_content = \Drupal::entityTypeManager()->getStorage('menu_link_content');
+  $table_name = $menu_link_content->getDataTable() ?: $menu_link_content->getBaseTable();
+
+  $database = \Drupal::database();
+
+  $database->update($table_name)
+    ->fields(['expanded' => TRUE])
+    ->execute();
+}
