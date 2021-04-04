@@ -54,12 +54,12 @@ content:
     type: media_library_widget
     region: content
   field_meta_tags:
-    type: metatag_firehose
     weight: 33
-    region: content
     settings:
       sidebar: true
     third_party_settings: {  }
+    type: metatag_firehose
+    region: content
   field_person_bio:
     weight: 10
     settings:
@@ -71,7 +71,6 @@ content:
   field_person_contact_information:
     type: paragraphs
     weight: 32
-    region: content
     settings:
       title: 'Contact Information'
       title_plural: 'Contact Information'
@@ -87,6 +86,7 @@ content:
         collapse_edit_all: collapse_edit_all
         duplicate: duplicate
     third_party_settings: {  }
+    region: content
   field_person_credential:
     weight: 4
     settings:
@@ -106,13 +106,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_person_education:
-    type: string_textarea
     weight: 11
-    region: content
     settings:
       rows: 2
       placeholder: ''
     third_party_settings: {  }
+    type: string_textarea
+    region: content
   field_person_email:
     type: email_default
     weight: 8
@@ -160,24 +160,20 @@ content:
     type: string_textfield
     region: content
   field_person_research_areas:
+    type: entity_reference_autocomplete
     weight: 24
+    region: content
     settings:
       match_operator: STARTS_WITH
       match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete_tags
-    region: content
   field_person_types:
-    type: entity_reference_autocomplete
+    type: options_buttons
     weight: 2
     region: content
-    settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
   field_person_university_id:
     type: string_textfield
@@ -188,13 +184,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_person_website:
+    type: link_default
     weight: 12
+    region: content
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
-    type: link_default
-    region: content
   field_pt_student_current:
     weight: 25
     settings:

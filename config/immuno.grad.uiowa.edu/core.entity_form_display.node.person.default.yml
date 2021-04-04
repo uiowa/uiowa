@@ -14,13 +14,7 @@ dependencies:
     - field.field.node.person.field_person_first_name
     - field.field.node.person.field_person_hide
     - field.field.node.person.field_person_hometown
-    - field.field.node.person.field_person_lab_building
-    - field.field.node.person.field_person_lab_phone
-    - field.field.node.person.field_person_lab_room
     - field.field.node.person.field_person_last_name
-    - field.field.node.person.field_person_office_building
-    - field.field.node.person.field_person_office_phone
-    - field.field.node.person.field_person_office_room
     - field.field.node.person.field_person_phone
     - field.field.node.person.field_person_position
     - field.field.node.person.field_person_publications_link
@@ -69,12 +63,12 @@ content:
     type: media_library_widget
     region: content
   field_meta_tags:
-    type: metatag_firehose
     weight: 33
-    region: content
     settings:
       sidebar: true
     third_party_settings: {  }
+    type: metatag_firehose
+    region: content
   field_person_bio:
     weight: 14
     settings:
@@ -82,6 +76,25 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
+    region: content
+  field_person_contact_information:
+    type: paragraphs
+    weight: 32
+    settings:
+      title: 'Contact Information'
+      title_plural: 'Contact Information'
+      edit_mode: open
+      closed_mode: summary
+      autocollapse: none
+      closed_mode_threshold: 0
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: uiowa_contact
+      features:
+        add_above: '0'
+        collapse_edit_all: collapse_edit_all
+        duplicate: duplicate
+    third_party_settings: {  }
     region: content
   field_person_credential:
     weight: 6
@@ -101,6 +114,14 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_person_education:
+    weight: 11
+    settings:
+      rows: 2
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
   field_person_email:
     type: email_default
     weight: 11
@@ -124,55 +145,9 @@ content:
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
-  field_person_lab_building:
-    type: string_textfield
-    weight: 29
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_person_lab_phone:
-    type: telephone_default
-    weight: 31
-    region: content
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-  field_person_lab_room:
-    type: string_textfield
-    weight: 30
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
   field_person_last_name:
     type: string_textfield
     weight: 4
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_person_office_building:
-    type: string_textfield
-    weight: 33
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_person_office_phone:
-    type: telephone_default
-    weight: 32
-    region: content
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-  field_person_office_room:
-    type: string_textfield
-    weight: 34
     region: content
     settings:
       size: 60
@@ -367,8 +342,6 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
-  field_person_contact_information: true
-  field_person_education: true
   field_person_hometown: true
   search_api_excerpt: true
   title: true
