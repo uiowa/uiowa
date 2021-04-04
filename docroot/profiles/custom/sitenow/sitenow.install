@@ -2169,7 +2169,7 @@ function sitenow_update_9003(&$sandbox) {
   $split = 'config_split:person_extended';
 
   // This site has the 'person_extended' split in config.
-  if (isset($filters[$split])) {
+  if (isset($filters[$split]) && $filters[$split]['status']) {
     $site_path = \Drupal::service('site.path');
 
     if ($site_path === 'sites/immuno.grad.uiowa.edu') {
