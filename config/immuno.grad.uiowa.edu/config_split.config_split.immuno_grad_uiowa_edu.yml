@@ -8,9 +8,11 @@ description: 'Site split for immuno.grad.uiowa.edu. Some fields build on ''perso
 folder: ../config/immuno.grad.uiowa.edu
 module: {  }
 theme: {  }
-blacklist: {  }
-graylist:
+blacklist:
   - config_split.config_split.immuno_grad_uiowa_edu
+  - field.storage.node.field_person_department
+  - taxonomy.vocabulary.department
+graylist:
   - core.date_format.month_day_year
   - core.date_format.month_year
   - field.storage.node.field_person_publications_link
