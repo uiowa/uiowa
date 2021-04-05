@@ -78,17 +78,28 @@ function sitenow_events_paragraph_preprocess_paragraph(&$variables) {
           $variables['attributes']['id'][] = Html::getClass($paragraph->field_uip_id->value);
         }
 
-        $start = date('d-m-Y');
+        $date_format = date('d-m-Y');
+
+        // Defaults to upcoming.
+        $display_id = 'events';
+        $start = 'now';
+        $end = '+365 days';
+
+        if ($paragraph->get('field_events_past')->value == TRUE) {
+          $display_id = 'past';
+          $start = '-365 days';
+          $end = 'yesterday';
+        }
 
         $data = sitenow_events_load([
-          'display_id' => 'events',
+          'display_id' => $display_id,
           'filters[department]' => $paragraph->get('field_events_department')->getString(),
           'filters[audiences]' => $paragraph->get('field_events_audiences')->getString(),
           'filters[interests]' => $paragraph->get('field_events_gen_interests')->getString(),
           'filters[types]' => $paragraph->get('field_events_event_types')->getString(),
           'filters[keywords]' => $paragraph->get('field_events_keywords')->getString(),
-          'filters[startdate][value][date]' => date('m-d-Y', strtotime($start)),
-          'filters[enddate][value][date]' => date('m-d-Y', strtotime($start . '+365 days')),
+          'filters[startdate][value][date]' => date('m-d-Y', strtotime(date($date_format) . $start)),
+          'filters[enddate][value][date]' => date('m-d-Y', strtotime(date($date_format) . $end)),
           'page' => 0,
           'items_per_page' => $paragraph->get('field_events_results')->getString(),
         ]);
