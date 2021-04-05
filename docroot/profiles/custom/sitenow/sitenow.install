@@ -2203,3 +2203,14 @@ function sitenow_update_9003(&$sandbox) {// Process all nodes that have a filled
     $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
   }
 }
+
+/**
+ * Update menu block instance settings to show 1 level of menu.
+ */
+function sitenow_update_9004(&$sandbox) {
+  // @todo Loop through pages.
+  // @todo Check if page is using a custom layout.
+  // @todo If so, check if the layout contains a 'menu_block:main' block instance.
+  // @todo If so, update the block instance to set the depth to 1.
+  // @todo If node has been altered, save it.
+}
