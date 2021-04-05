@@ -2190,5 +2190,16 @@ function sitenow_update_9003(&$sandbox) {// Process all nodes that have a filled
     $menu_item = MenuLinkContent::load($mcid);
     $menu_item->expanded = 1;
     $menu_item->save();
+    $sandbox['current']++;
+  }
+
+  \Drupal::messenger()
+    ->addMessage($sandbox['current'] . ' menu items processed.');
+
+  if ($sandbox['current'] >= $sandbox['total']) {
+    $sandbox['#finished'] = 1;
+  }
+  else {
+    $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
   }
 }
