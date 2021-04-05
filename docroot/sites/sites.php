@@ -2435,3 +2435,9 @@ $sites['physicsvanallen.local.drupal.uiowa.edu'] = 'vanallen.physics.uiowa.edu';
 $sites['physicsvanallen.dev.drupal.uiowa.edu'] = 'vanallen.physics.uiowa.edu';
 $sites['physicsvanallen.stage.drupal.uiowa.edu'] = 'vanallen.physics.uiowa.edu';
 $sites['physicsvanallen.prod.drupal.uiowa.edu'] = 'vanallen.physics.uiowa.edu';
+
+// Directory aliases for luo.lab.uiowa.edu.
+$sites['labluo.local.drupal.uiowa.edu'] = 'luo.lab.uiowa.edu';
+$sites['labluo.dev.drupal.uiowa.edu'] = 'luo.lab.uiowa.edu';
+$sites['labluo.stage.drupal.uiowa.edu'] = 'luo.lab.uiowa.edu';
+$sites['labluo.prod.drupal.uiowa.edu'] = 'luo.lab.uiowa.edu';
