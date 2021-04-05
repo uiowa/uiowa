@@ -8,7 +8,9 @@
     @include flex(0, 1, 100%);
     @include flex-wrap(wrap);
     .field__item {
-      flex: 1;
+      @include breakpoint(sm) {
+        flex: 1;
+      }
     }
     .field__item:not(:last-child) {
       margin-right: $md;
@@ -27,7 +29,9 @@
   .field--name-field-area-of-study-first-year,
   .field--name-field-area-of-study-transfer,
   .field--name-field-area-of-study-intl {
-    display: flex;
+    @include breakpoint(sm) {
+      display: flex;
+    }
   }
   .bttn.bttn--link {
     padding-left: 0;
