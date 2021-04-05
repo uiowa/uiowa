@@ -42,7 +42,6 @@ class Articles extends BaseNodeSource {
    */
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
-
     $body = $row->getSourceProperty('body');
 
     if (!empty($body)) {
@@ -52,22 +51,36 @@ class Articles extends BaseNodeSource {
       // Extract the summary.
       $row->setSourceProperty('body_summary', $this->getSummaryFromTextField($body));
 
-      // Unlink anchors in body from articles before 2016.
+      // Parse links.
+      $doc = Html::load($body[0]['value']);
+      $links = $doc->getElementsByTagName('a');
+      $i = $links->length - 1;
       $created_year = date('Y', $row->getSourceProperty('created'));
 
-      if ($created_year < 2016) {
-        $doc = Html::load($body[0]['value']);
-        $links = $doc->getElementsByTagName('a');
+      while ($i >= 0) {
+        $link = $links->item($i);
+        $href = $link->getAttribute('href');
 
-        foreach ($links as $link) {
+        // Unlink anchors in body from articles before 2016.
+        if ($created_year < 2016) {
           $text = $doc->createTextNode($link->nodeValue);
           $link->parentNode->replaceChild($text, $link);
+          $doc->saveHTML();
+        }
+        else {
+          if (strpos($href, '/node/') === 0 || stristr($href, 'pharmacy.uiowa.edu/node/')) {
+            $this->logger->info('Internal link @link found in article @article.', [
+              '@link' => $href,
+              '@article' => $row->getSourceProperty('title'),
+            ]);
+          }
         }
 
-        $doc->saveHTML();
-        $html = Html::serialize($doc);
-        $body[0]['value'] = $html;
+        $i--;
       }
+
+      $html = Html::serialize($doc);
+      $body[0]['value'] = $html;
 
       $row->setSourceProperty('body', $body);
     }
