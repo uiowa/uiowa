@@ -8,7 +8,6 @@ dependencies:
     - field.field.node.person.field_person_bio
     - field.field.node.person.field_person_contact_information
     - field.field.node.person.field_person_credential
-    - field.field.node.person.field_person_department
     - field.field.node.person.field_person_education
     - field.field.node.person.field_person_email
     - field.field.node.person.field_person_first_name
@@ -127,25 +126,6 @@ third_party_settings:
             section_alignment_start: section_alignment_start
         components:
           -
-            uuid: 31d47173-0115-4fe7-933f-848510287ad4
-            region: first
-            configuration:
-              id: 'field_block:node:person:field_person_department'
-              label: null
-              provider: layout_builder
-              label_display: null
-              formatter:
-                label: inline
-                type: entity_reference_label
-                settings:
-                  link: false
-                third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-            additional: {  }
-            weight: 2
-          -
             uuid: e0cbb1a7-b222-44d0-9dae-c6d78d5e74c2
             region: first
             configuration:
@@ -242,14 +222,6 @@ content:
       link: ''
     third_party_settings: {  }
     region: content
-  field_person_department:
-    type: entity_reference_label
-    weight: 2
-    region: content
-    label: above
-    settings:
-      link: false
-    third_party_settings: {  }
   field_person_education:
     weight: 6
     label: above

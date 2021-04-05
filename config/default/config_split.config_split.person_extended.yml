@@ -8,16 +8,11 @@ description: 'Additional fields and functionality for the person content type.'
 folder: ../config/features/person_extended
 module: {  }
 theme: {  }
-blacklist: {  }
-graylist:
-  - field.storage.node.field_person_department
-  - field.storage.node.field_person_research_areas
+blacklist:
   - field.storage.node.field_person_university_id
-  - field.storage.node.field_person_website
   - field.storage.node.field_pt_student_current
-  - taxonomy.vocabulary.department
+graylist:
   - taxonomy.vocabulary.person_types
-  - taxonomy.vocabulary.research_areas
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 80
