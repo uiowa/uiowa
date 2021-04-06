@@ -86,6 +86,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
     $this->connection = $connection;
 
     // Switch to the D7 database.
+    // @todo Use shared configuration base URL for this.
     Database::setActiveConnection('drupal_7');
     $connection = Database::getConnection();
     $query = $connection->select('variable', 'v');

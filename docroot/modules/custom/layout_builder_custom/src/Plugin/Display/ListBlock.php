@@ -252,7 +252,7 @@ class ListBlock extends CoreBlock {
     $exceptions = [
       'block_people_slf',
       'block_people_sfl',
-      'block_articles'
+      'block_articles',
     ];
     if (in_array($display->display['id'], $exceptions)) {
       return TRUE;

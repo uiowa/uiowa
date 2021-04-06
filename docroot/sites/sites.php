@@ -2423,3 +2423,21 @@ $sites['strategicplan.local.drupal.uiowa.edu'] = 'strategicplan.uiowa.edu';
 $sites['strategicplan.dev.drupal.uiowa.edu'] = 'strategicplan.uiowa.edu';
 $sites['strategicplan.stage.drupal.uiowa.edu'] = 'strategicplan.uiowa.edu';
 $sites['strategicplan.prod.drupal.uiowa.edu'] = 'strategicplan.uiowa.edu';
+
+// Directory aliases for bam.sites.uiowa.edu.
+$sites['sitesbam.local.drupal.uiowa.edu'] = 'bam.sites.uiowa.edu';
+$sites['sitesbam.dev.drupal.uiowa.edu'] = 'bam.sites.uiowa.edu';
+$sites['sitesbam.stage.drupal.uiowa.edu'] = 'bam.sites.uiowa.edu';
+$sites['sitesbam.prod.drupal.uiowa.edu'] = 'bam.sites.uiowa.edu';
+
+// Directory aliases for vanallen.physics.uiowa.edu.
+$sites['physicsvanallen.local.drupal.uiowa.edu'] = 'vanallen.physics.uiowa.edu';
+$sites['physicsvanallen.dev.drupal.uiowa.edu'] = 'vanallen.physics.uiowa.edu';
+$sites['physicsvanallen.stage.drupal.uiowa.edu'] = 'vanallen.physics.uiowa.edu';
+$sites['physicsvanallen.prod.drupal.uiowa.edu'] = 'vanallen.physics.uiowa.edu';
+
+// Directory aliases for luo.lab.uiowa.edu.
+$sites['labluo.local.drupal.uiowa.edu'] = 'luo.lab.uiowa.edu';
+$sites['labluo.dev.drupal.uiowa.edu'] = 'luo.lab.uiowa.edu';
+$sites['labluo.stage.drupal.uiowa.edu'] = 'luo.lab.uiowa.edu';
+$sites['labluo.prod.drupal.uiowa.edu'] = 'luo.lab.uiowa.edu';
