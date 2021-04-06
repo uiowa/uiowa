@@ -128,15 +128,18 @@ trait ProcessMediaTrait {
   public function constructInlineEntity($uuid, $align) {
     $align = isset($align) ? $align : 'center';
 
-    // @todo add handling for non-image media embeds.
-    $parts = [
-      '<drupal-media data-align="' . $align . '"',
-      'data-entity-type="media"',
-      'data-entity-uuid="' . $uuid . '">',
-      '</drupal-media>',
+    $media = [
+      '#type' => 'html_tag',
+      '#tag' => 'drupal-media',
+      '#attributes' => [
+        'data-align' => $align,
+        'data-entity-type' => 'media',
+        'data-entity-uuid' => $uuid,
+        'data-view-mode' => 'large__no_crop',
+      ],
     ];
 
-    return implode(" ", $parts);
+    return \Drupal::service('renderer')->renderPlain($media);
   }
 
   /**
@@ -167,6 +170,7 @@ trait ProcessMediaTrait {
       ->condition('f.filename', $filename)
       ->execute()
       ->fetchAssoc();
+
     unset($query);
     return $results;
   }
