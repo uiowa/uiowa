@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.person.field_grad_program_all_degree
     - field.field.node.person.field_image
     - field.field.node.person.field_meta_tags
     - field.field.node.person.field_person_bio
@@ -18,9 +19,7 @@ dependencies:
     - field.field.node.person.field_person_position
     - field.field.node.person.field_person_research_areas
     - field.field.node.person.field_person_types
-    - field.field.node.person.field_person_university_id
     - field.field.node.person.field_person_website
-    - field.field.node.person.field_pt_student_current
     - field.field.node.person.field_tags
     - field.field.node.person.field_teaser
     - node.type.person
@@ -141,19 +140,6 @@ third_party_settings:
             additional: {  }
             weight: -9
           -
-            uuid: 234062aa-1d55-4cb2-a398-7cdf98e7de79
-            region: second
-            configuration:
-              id: 'views_block:person_card-block_1'
-              label: null
-              provider: views
-              label_display: null
-              views_label: ''
-              items_per_page: none
-              context_mapping: {  }
-            additional: {  }
-            weight: 0
-          -
             uuid: 532de6e6-fc41-4b7d-a135-5d1cf2c63cf3
             region: first
             configuration:
@@ -168,7 +154,38 @@ third_party_settings:
                   link: false
                 third_party_settings: {  }
             additional: {  }
-            weight: 17
+            weight: 3
+          -
+            uuid: 234062aa-1d55-4cb2-a398-7cdf98e7de79
+            region: second
+            configuration:
+              id: 'views_block:person_card-block_1'
+              label: null
+              provider: views
+              label_display: null
+              views_label: ''
+              items_per_page: none
+              context_mapping: {  }
+            additional: {  }
+            weight: 0
+          -
+            uuid: 92ff4f7e-44da-4f93-88cc-c2f2826a2eb2
+            region: first
+            configuration:
+              id: 'field_block:node:person:field_grad_program_all_degree'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: above
+                type: list_default
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 4
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -260,6 +277,14 @@ content:
     settings:
       link: false
     third_party_settings: {  }
+  field_person_types:
+    type: entity_reference_label
+    weight: 11
+    region: content
+    label: inline
+    settings:
+      link: false
+    third_party_settings: {  }
   field_person_website:
     type: link
     weight: 4
@@ -278,14 +303,12 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
-  field_meta_tags: true
+  field_grad_program_all_degree: true
   field_person_credential: true
-  field_person_education: true
   field_person_first_name: true
   field_person_hide: true
   field_person_hometown: true
   field_person_last_name: true
-  field_person_types: true
   field_person_university_id: true
   field_pt_student_current: true
   field_tags: true

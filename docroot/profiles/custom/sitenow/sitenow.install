@@ -2163,134 +2163,122 @@ function sitenow_update_9002() {
 /**
  * Update sites using the person_extended to reflect changes to that split.
  */
-function sitenow_update_9003(&$sandbox) {
+function sitenow_update_9004(&$sandbox) {
   /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
   $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
   $split = 'config_split:person_extended';
 
-  // This site has the 'person_extended' split in config.
-  if (isset($filters[$split]) && $filters[$split]['status']) {
-    $site_path = \Drupal::service('site.path');
+  // If person_extended split isn't registered or
+  // isn't active, return early.
+  if (!isset($filters[$split]) || !$filters[$split]['status']) {
+    return t('person_extended split is not active, so no update to run.');
+  }
 
-    if ($site_path === 'sites/immuno.grad.uiowa.edu') {
-      // $config_path = DRUPAL_ROOT . '/../config/immuno.grad.uiowa.edu/';
-      // $source = new FileStorage($config_path);
-      // $config_storage = \Drupal::service('config.storage');
-      // $config_storage->write('config_ignore.settings', $source->read('config_ignore.settings'));
-      // @todo Import configuration updates from immuno split.
-    }
+  $site_path = \Drupal::service('site.path');
 
-    // Process all nodes that have a filled person.
-    if (!isset($sandbox['total'])) {
-      $query = \Drupal::entityQuery('node')
-        ->condition('type', 'person')
-        ->execute();
-      $sandbox['total'] = count($query);
-      $sandbox['current'] = 0;
-      $sandbox['query'] = $query;
+  // Process all nodes that have a filled person.
+  if (!isset($sandbox['total'])) {
+    $query = \Drupal::entityQuery('node')
+      ->condition('type', 'person')
+      ->execute();
+    $sandbox['total'] = count($query);
+    $sandbox['current'] = 0;
+    $sandbox['query'] = $query;
 
-      if (empty($sandbox['total'])) {
-        $sandbox['#finished'] = 1;
-        return;
-      }
-    }
-    // Loop through the same nodes in batches.
-    $nodes_per_batch = 25;
-    $batch = array_slice($sandbox['query'], $sandbox['current'], $sandbox['current'] + $nodes_per_batch);
-    if (empty($batch)) {
+    if (empty($sandbox['total'])) {
       $sandbox['#finished'] = 1;
       return;
     }
+  }
+  // Loop through the same nodes in batches.
+  $nodes_per_batch = 25;
+  $batch = array_slice($sandbox['query'], $sandbox['current'], $sandbox['current'] + $nodes_per_batch);
+  if (empty($batch)) {
+    $sandbox['#finished'] = 1;
+    return;
+  }
 
-    foreach ($batch as $nid) {
-      $node = Node::load($nid);
-      $save_node = FALSE;
-      // @todo Check if Lab fields have values.
-      $field_fragments = [
-        'room',
-        'building',
-        'phone',
-      ];
-      foreach ([
-        'lab',
-        'office',
-      ] as $location_type) {
-        $location = [];
-        foreach ($field_fragments as $fragment_name) {
-          $field_name = "field_person_{$location_type}_{$fragment_name}";
-          if (is_null($field_value = $node->get($field_name))) {
-            $location[$field_name] = $field_value;
-            // Remove field instances from node.
-            $node->set($field_name, NULL);
-            // Now we need to save the node.
-            $save_node = TRUE;
-          }
+  foreach ($batch as $nid) {
+    $node = Node::load($nid);
+    $save_node = FALSE;
+    // @todo Check if Lab fields have values.
+    $field_fragments = [
+      'room',
+      'building',
+      'phone',
+    ];
+    foreach ([
+      'lab',
+      'office',
+    ] as $location_type) {
+      $location = [];
+      foreach ($field_fragments as $fragment_name) {
+        $field_name = "field_person_{$location_type}_{$fragment_name}";
+        if (is_null($field_value = $node->get($field_name))) {
+          $location[$field_name] = $field_value;
+          // Remove field instances from node.
+          $node->set($field_name, NULL);
+          // Now we need to save the node.
+          $save_node = TRUE;
+        }
+      }
+
+      if (!empty($location)) {
+        // Create a Contact Info paragraph instance.
+        // and populate with location info.
+        $contact_info = Paragraph::create([
+          'type' => 'uiowa_contact',
+          'field_uiowa_contact_label' => [
+            'value' => ucfirst($location_type),
+          ],
+        ]);
+        if (isset($location["field_person_{$location_type}_phone"])) {
+          $contact_info->field_uiowa_contact_phone = $location["field_person_{$location_type}_phone"];
+        }
+        $address = '';
+        if (isset($location["field_person_{$location_type}_room"])) {
+          $address .= $location["field_person_{$location_type}_room"]->value;
+        }
+        if ($address !== '') {
+          $address .= ' ';
+        }
+        if (isset($location["field_person_{$location_type}_building"])) {
+          $address .= $location["field_person_{$location_type}_building"]->value;
         }
 
-        if (!empty($location)) {
-          // Create a Contact Info paragraph instance.
-          // and populate with location info.
-          $contact_info = Paragraph::create([
-            'type' => 'uiowa_contact',
-            'field_uiowa_contact_label' => [
-              'value' => ucfirst($location_type),
+        if ($address !== '') {
+          $contact_info->field_uiowa_contact_address =  [
+            'address' => [
+              'country_code' => 'US',
+              'address_line1' => $address,
             ],
-          ]);
-          if (isset($location["field_person_{$location_type}_phone"])) {
-            $contact_info->field_uiowa_contact_phone = $location["field_person_{$location_type}_phone"];
-          }
-          $address = '';
-          if (isset($location["field_person_{$location_type}_room"])) {
-            $address .= $location["field_person_{$location_type}_room"]->value;
-          }
-          if ($address !== '') {
-            $address .= ' ';
-          }
-          if (isset($location["field_person_{$location_type}_building"])) {
-            $address .= $location["field_person_{$location_type}_building"]->value;
-          }
-
-          if ($address !== '') {
-            $contact_info->field_uiowa_contact_address =  [
-              'address' => [
-                'country_code' => 'US',
-                'address_line1' => $address,
-              ],
-            ];
-          }
-          $contact_info->save();
-
-          $node->field_person_contact_information[] = [
-            'target_id' => $contact_info->id(),
-            'target_revision_id' => $contact_info->getRevisionId(),
           ];
         }
-      }
+        $contact_info->save();
 
-      if ($site_path === 'sites/immuno.grad.uiowa.edu') {
-        // @todo Check if department field has value.
-        // @todo If so, copy the value to the new immuno department field.
-        // @todo Remove department field instance from the node.
-        // @todo Mark the node as having changed if relevant.
+        $node->field_person_contact_information[] = [
+          'target_id' => $contact_info->id(),
+          'target_revision_id' => $contact_info->getRevisionId(),
+        ];
       }
-
-      // Save node if there were changes.
-      if ($save_node) {
-        // Set revision message and save.
-        $node->setRevisionLogMessage('Automated save.');
-        $node->save();
-      }
-      $sandbox['current']++;
     }
 
-    \Drupal::messenger()
-      ->addMessage($sandbox['current'] . ' nodes processed.');
+    // Save node if there were changes.
+    if ($save_node) {
+      // Set revision message and save.
+      $node->setRevisionLogMessage('Automated save.');
+      $node->save();
+    }
+    $sandbox['current']++;
+  }
 
-    if ($sandbox['current'] >= $sandbox['total']) {
-      $sandbox['#finished'] = 1;
-    }
-    else {
-      $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
-    }
+  \Drupal::messenger()
+    ->addMessage($sandbox['current'] . ' nodes processed.');
+
+  if ($sandbox['current'] >= $sandbox['total']) {
+    $sandbox['#finished'] = 1;
+  }
+  else {
+    $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
   }
 }
