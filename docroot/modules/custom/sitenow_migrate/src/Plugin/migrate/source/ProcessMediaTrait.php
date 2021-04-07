@@ -139,7 +139,7 @@ trait ProcessMediaTrait {
         'data-align' => $align,
         'data-entity-type' => 'media',
         'data-entity-uuid' => $uuid,
-        'data-view-mode' => 'large__no_crop',
+        'data-view-mode' => 'small__no_crop',
       ],
     ];
 
