@@ -101,7 +101,9 @@ abstract class BaseNodeSource extends Node {
     // Strip out any HTML, decode special characters and replace spaces.
     $new_summary = Html::decodeEntities($text);
     $new_summary = str_replace('&nbsp;', ' ', $new_summary);
-    $new_summary = strip_tags($new_summary);
+    // Also want to remove any excess whitespace on the left
+    // that might cause weird spacing for our summaries.
+    $new_summary = ltrim(strip_tags($new_summary));
 
     $new_summary = substr($new_summary, 0, 200);
 
