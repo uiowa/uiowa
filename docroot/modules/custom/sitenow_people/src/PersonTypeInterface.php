@@ -15,6 +15,7 @@ interface PersonTypeInterface extends ConfigEntityInterface {
    * Returns whether the person type allow alternate labels.
    *
    * @return bool
+   *   Whether the person type supports alternate versions.
    */
   public function getAllowFormer();
 
