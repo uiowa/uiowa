@@ -2160,6 +2160,12 @@ function sitenow_update_9002() {
   $config->save();
 }
 
+/**
+ * Enable grad_person_extended split.
+ *
+ * In cases where the person_extended split was being used,
+ * enable the grad_person_extended split to take its place.
+ */
 function sitenow_update_9004() {
 
   /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
