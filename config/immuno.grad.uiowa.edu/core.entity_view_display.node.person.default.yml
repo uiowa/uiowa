@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.person.field_grad_program_all_degree
     - field.field.node.person.field_image
     - field.field.node.person.field_meta_tags
     - field.field.node.person.field_person_bio
@@ -489,6 +490,7 @@ content:
     type: string
     region: content
 hidden:
+  field_grad_program_all_degree: true
   field_meta_tags: true
   field_person_credential: true
   field_person_education: true
