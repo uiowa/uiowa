@@ -18,6 +18,7 @@ dependencies:
     - field.field.node.person.field_person_phone
     - field.field.node.person.field_person_position
     - field.field.node.person.field_person_research_areas
+    - field.field.node.person.field_person_type_status
     - field.field.node.person.field_person_types
     - field.field.node.person.field_person_university_id
     - field.field.node.person.field_person_website
@@ -32,6 +33,7 @@ dependencies:
     - layout_builder_restrictions
     - link
     - metatag
+    - options
     - system
     - telephone
     - text
@@ -279,6 +281,13 @@ content:
     settings:
       link: false
     third_party_settings: {  }
+  field_person_type_status:
+    weight: 13
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
   field_person_types:
     type: entity_reference_label
     weight: 11
