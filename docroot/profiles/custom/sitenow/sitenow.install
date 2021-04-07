@@ -2275,12 +2275,22 @@ function sitenow_update_9005() {
   $config_path = DRUPAL_ROOT . '/../config/default';
   $source = new FileStorage($config_path);
 
-  // Create the split in active config and import config_ignore settings
-  // otherwise the status will be imported as false (and everything will be
-  // deleted on cim) since that is what exists in the default split config.
+  // Create field storage for new person type status field.
+  \Drupal::entityTypeManager()
+    ->getStorage('field_storage_config')
+    ->create($source->read('field.storage.node.field_person_type_status'))
+    ->save();
+
+  // The following config is needed for the next update.
+  $config_names = [
+    'config_ignore.settings',
+    'field.field.node.person.field_person_type_status',
+    'config_split.config_split.grad_person_extended',
+  ];
   $config_storage = \Drupal::service('config.storage');
-  $config_storage->write('config_split.config_split.grad_person_extended', $source->read('config_split.config_split.grad_person_extended'));
-  $config_storage->write('config_ignore.settings', $source->read('config_ignore.settings'));
+  foreach ($config_names as $config_name) {
+    $config_storage->write($config_name, $source->read($config_name));
+  }
 
   // Enable the 'person_extended' split.
   $config_factory = \Drupal::configFactory();
@@ -2302,8 +2312,6 @@ function sitenow_update_9006(&$sandbox) {
   if (!isset($filters[$split]) || !$filters[$split]['status']) {
     return t('person_extended split is not active, so no update to run.');
   }
-
-  $site_path = \Drupal::service('site.path');
 
   // Process all nodes that have a filled person.
   if (!isset($sandbox['total'])) {
@@ -2343,8 +2351,8 @@ function sitenow_update_9006(&$sandbox) {
       $location = [];
       foreach ($field_fragments as $fragment_name) {
         $field_name = "field_person_{$location_type}_{$fragment_name}";
-        if (is_null($field_value = $node->get($field_name))) {
-          $location[$field_name] = $field_value;
+        if ($node->hasField($field_name) && $node->{$field_name}->value) {
+          $location[$field_name] = $node->get($field_name);
           // Remove field instances from node.
           $node->set($field_name, NULL);
           // Now we need to save the node.
@@ -2390,6 +2398,11 @@ function sitenow_update_9006(&$sandbox) {
           'target_revision_id' => $contact_info->getRevisionId(),
         ];
       }
+    }
+
+    if ($node->hasField('field_pt_student_current') && !$node->field_pt_student_current->value) {
+      $node->field_person_type_status->setValue(['value' => 'student']);
+      $save_node = TRUE;
     }
 
     // Save node if there were changes.
