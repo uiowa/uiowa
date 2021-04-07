@@ -9,17 +9,19 @@
  * @see https://www.drupal.org/node/2217931
  */
 
+use Drupal\Component\Utility\Html;
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
-use Drupal\Core\Url;
-use Drupal\uiowa_core\HeadlineHelper;
-use Drupal\views\ViewExecutable;
-use Drupal\Component\Utility\Html;
-use Drupal\views\Views;
-use Drupal\views\Entity\View;
 use Drupal\Core\Render\Element;
+use Drupal\Core\Url;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\uiowa_core\HeadlineHelper;
+use Drupal\views\Entity\View;
+use Drupal\views\ViewExecutable;
+use Drupal\views\Views;
 
 /**
  * Implements hook_form_alter().
@@ -41,7 +43,7 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
         // Remove disabled person types from select list.
         $disabled_types = \Drupal::entityTypeManager()
           ->getStorage('person_type')->loadByProperties(['status' => FALSE]);
-        foreach ($form["field_person_types"]["widget"]["#options"] as $key => $option) {
+        foreach ($form['field_person_types']['widget']['#options'] as $key => $option) {
           if (array_key_exists($key, $disabled_types)) {
             unset($form['field_person_types']['widget']['#options'][$key]);
           }
@@ -685,4 +687,25 @@ function _sitenow_people_person_form_submit(array &$form, FormStateInterface $fo
       }
     }
   }
+}
+
+/**
+ * Implements hook_allowed_values_function().
+ */
+function sitenow_people_person_type_statuses_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  $allowed_types = \Drupal::entityTypeManager()
+    ->getStorage('person_type')->loadByProperties([
+      'status' => TRUE,
+      'allow_former' => TRUE,
+    ]);
+
+  $types = [];
+
+  foreach ($allowed_types as $type) {
+    $types[$type->id()] = t('Former @type', [
+      '@type' => $type->label(),
+    ]);
+  }
+
+  return $types;
 }

@@ -12,6 +12,13 @@ interface PersonTypeInterface extends ConfigEntityInterface {
   const TYPE_COMPONENT = 'component';
 
   /**
+   * Returns whether the person type allow alternate labels.
+   *
+   * @return bool
+   */
+  public function getAllowFormer();
+
+  /**
    * Returns list of person fields to allow based on this type.
    *
    * @return array
