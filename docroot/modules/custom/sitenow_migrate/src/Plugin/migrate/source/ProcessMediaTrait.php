@@ -70,8 +70,13 @@ trait ProcessMediaTrait {
    * Regex to find Drupal 7 JSON for inline embedded files.
    */
   public function entityReplace($match) {
-    $fid = $match[1];
-    $align = (preg_match("|.*?float: (.*?);.*?|", $match[0], $align)) ? $align[1] : NULL;
+    // Decode to JSON associative array.
+    // The actual JSON data is surrounded by two sets of brackets,
+    // so the matched, non-bracketed JSON is in the [0][0] index
+    // of the json_decode result.
+    $file_properties = json_decode($match[0], TRUE)[0][0];
+    $fid = $file_properties['fid'];
+    $align = isset($file_properties['fields']['alignment']) ? $file_properties['fields']['alignment'] : NULL;
     $file_data = $this->fidQuery($fid);
 
     if ($file_data) {
@@ -84,10 +89,9 @@ trait ProcessMediaTrait {
           ->execute()
           ->fetchField();
 
-        // @todo fetch the actual meta.
         $meta = [
-          'title' => $filename,
-          'alt' => explode('.', $filename)[0],
+          'title' => isset($file_properties['attributes']['title']) ? $file_properties['attributes']['title'] : $filename,
+          'alt' => isset($file_properties['attributes']['alt']) ? $file_properties['attributes']['alt'] : explode('.', $filename)[0],
         ];
 
         // If there's no fid in the D8 database,
