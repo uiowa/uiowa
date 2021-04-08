@@ -2441,3 +2441,9 @@ $sites['labluo.local.drupal.uiowa.edu'] = 'luo.lab.uiowa.edu';
 $sites['labluo.dev.drupal.uiowa.edu'] = 'luo.lab.uiowa.edu';
 $sites['labluo.stage.drupal.uiowa.edu'] = 'luo.lab.uiowa.edu';
 $sites['labluo.prod.drupal.uiowa.edu'] = 'luo.lab.uiowa.edu';
+
+// Directory aliases for imfaculty.sites.uiowa.edu.
+$sites['sitesimfaculty.local.drupal.uiowa.edu'] = 'imfaculty.sites.uiowa.edu';
+$sites['sitesimfaculty.dev.drupal.uiowa.edu'] = 'imfaculty.sites.uiowa.edu';
+$sites['sitesimfaculty.stage.drupal.uiowa.edu'] = 'imfaculty.sites.uiowa.edu';
+$sites['sitesimfaculty.prod.drupal.uiowa.edu'] = 'imfaculty.sites.uiowa.edu';
