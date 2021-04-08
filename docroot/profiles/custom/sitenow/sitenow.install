@@ -2313,11 +2313,17 @@ function sitenow_update_9006(&$sandbox) {
     return t('person_extended split is not active, so no update to run.');
   }
 
+  // @todo Remove when debugging is removed.
+  define('CHECK_NID', 616);
+
   // Process all nodes that have a filled person.
   if (!isset($sandbox['total'])) {
     $query = \Drupal::entityQuery('node')
       ->condition('type', 'person')
       ->execute();
+    // @todo Remove debugging message.
+    \Drupal::messenger()
+      ->addMessage('Affected NIDs:' . print_r($query, TRUE));
     $sandbox['total'] = count($query);
     $sandbox['current'] = 0;
     $sandbox['query'] = $query;
@@ -2336,9 +2342,9 @@ function sitenow_update_9006(&$sandbox) {
   }
 
   foreach ($batch as $nid) {
+    // Load the node, set a flag for whether we need to save the node.
     $node = Node::load($nid);
     $save_node = FALSE;
-    // @todo Check if Lab fields have values.
     $field_fragments = [
       'room',
       'building',
@@ -2352,7 +2358,7 @@ function sitenow_update_9006(&$sandbox) {
       foreach ($field_fragments as $fragment_name) {
         $field_name = "field_person_{$location_type}_{$fragment_name}";
         if ($node->hasField($field_name) && $node->{$field_name}->value) {
-          $location[$field_name] = $node->get($field_name);
+          $location[$fragment_name] = $node->{$field_name}->value;
           // Remove field instances from node.
           $node->set($field_name, NULL);
           // Now we need to save the node.
@@ -2369,42 +2375,77 @@ function sitenow_update_9006(&$sandbox) {
             'value' => ucfirst($location_type),
           ],
         ]);
-        if (isset($location["field_person_{$location_type}_phone"])) {
-          $contact_info->field_uiowa_contact_phone = $location["field_person_{$location_type}_phone"];
+
+        // @todo Remove debugging message.
+        if ($nid == CHECK_NID) {
+          \Drupal::messenger()
+            ->addMessage('Location: ' . print_r($location, TRUE));
         }
-        $address = '';
-        if (isset($location["field_person_{$location_type}_room"])) {
-          $address .= $location["field_person_{$location_type}_room"]->value;
-        }
-        if ($address !== '') {
-          $address .= ' ';
-        }
-        if (isset($location["field_person_{$location_type}_building"])) {
-          $address .= $location["field_person_{$location_type}_building"]->value;
+        // If a phone number is present, pop it off the array
+        // and add it.
+        if (isset($location['phone'])) {
+          $contact_info->field_uiowa_contact_phone = array_pop($location);
         }
 
+        // Create the address_line1 string.
+        $address = implode(' ', $location);
+
+        // If there is an address_line1, build the address object.
+        // @todo Figure out why this isn't working. I have tried this
+        //   syntax, as well as the $contact_info->set('field') syntax
+        //   and neither one persists after the paragraph is saved.
         if ($address !== '') {
-          $contact_info->field_uiowa_contact_address =  [
+
+          // @todo Remove debugging message.
+          if ($nid == CHECK_NID) {
+            \Drupal::messenger()
+              ->addMessage('Address is set: ' . print_r($address, TRUE));
+          }
+          $contact_info->field_uiowa_contact_address = [
             'address' => [
               'country_code' => 'US',
               'address_line1' => $address,
             ],
           ];
+          // @todo Remove debugging message.
+          if ($nid == CHECK_NID) {
+            \Drupal::messenger()
+              ->addMessage('Contact info (prior to saving): ' . print_r($contact_info->toArray(), TRUE));
+          }
         }
+        // Save the contact info.
         $contact_info->save();
 
+        // @todo Remove debugging message.
+        if ($nid == CHECK_NID) {
+          \Drupal::messenger()
+            ->addMessage('Contact info (after saving): ' . print_r($contact_info->toArray(), TRUE));
+        }
+
+        // Attach the contact info to the node.
         $node->field_person_contact_information[] = [
           'target_id' => $contact_info->id(),
           'target_revision_id' => $contact_info->getRevisionId(),
         ];
+        // @todo Remove debugging message.
+        if ($nid == CHECK_NID) {
+          \Drupal::messenger()
+            ->addMessage('Contact info attached.');
+        }
+        $save_node = TRUE;
       }
     }
 
-    // If the field_pt_student_current field is present
-    // and set to FALSE.
-    if ($node->hasField('field_pt_student_current') && !$node->field_pt_student_current->value) {
-      $node->field_person_type_status->setValue(['value' => 'student']);
-      $save_node = TRUE;
+    // Check if we have the current student field and
+    // the person types field.
+    if ($node->hasField('field_pt_student_current') && $node->hasField('field_person_types')) {
+      // If the person type includes 'student' and
+      // current student is FALSE, set the person type status.
+      $existing_types = array_column($node->field_person_types->getValue(), 'target_id');
+      if (in_array('student', $existing_types) && !$node->field_pt_student_current->value) {
+        $node->field_person_type_status->setValue(['value' => 'student']);
+        $save_node = TRUE;
+      }
     }
 
     // Save node if there were changes.
