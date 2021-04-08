@@ -2400,6 +2400,8 @@ function sitenow_update_9006(&$sandbox) {
       }
     }
 
+    // If the field_pt_student_current field is present
+    // and set to FALSE.
     if ($node->hasField('field_pt_student_current') && !$node->field_pt_student_current->value) {
       $node->field_person_type_status->setValue(['value' => 'student']);
       $save_node = TRUE;
