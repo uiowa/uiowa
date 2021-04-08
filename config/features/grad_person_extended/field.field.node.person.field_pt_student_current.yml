@@ -1,0 +1,23 @@
+uuid: f6ca865a-6010-4da9-8f2e-67be772264d7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_pt_student_current
+    - node.type.person
+id: node.person.field_pt_student_current
+field_name: field_pt_student_current
+entity_type: node
+bundle: person
+label: 'Current student'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean
