@@ -37,6 +37,11 @@
 {% set content_rendered = content | render %}
 {% if content_rendered is not empty %}
   <div{{ attributes.addClass(classes) }}>
+    {{ title_prefix }}
+    {% if label %}
+      <h2{{ title_attributes }}>{{ label }}</h2>
+    {% endif %}
+    {{ title_suffix }}
     <div class="list-container">
       <div class="text-align-center">
         {{ content.field_uiowa_program_title|render }}
