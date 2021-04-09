@@ -54,7 +54,11 @@
       <div>
         {{ content.field_uiowa_program_cta_title|render }}
         {{ content.field_uiowa_program_cta_excerpt|render }}
-        {{ content.field_uiowa_program_cta_link|render }}
+        <a href="{{ content.field_uiowa_program_cta_link[0]['#url'] }}" class="bttn bttn--primary bttn--caps">
+          {{ content.field_uiowa_program_cta_link[0]['#title']|render }}
+          <i class="fas fa-arrow-right"></i>
+        </a>
+
       </div>
     </div>
   </div>
