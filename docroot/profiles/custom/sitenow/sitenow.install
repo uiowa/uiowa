@@ -2344,6 +2344,8 @@ function sitenow_update_9006(&$sandbox) {
   foreach ($batch as $nid) {
     // Load the node, set a flag for whether we need to save the node.
     $node = Node::load($nid);
+    // Unset any gremlins.
+    $node->set('field_person_contact_information', NULL);
     $save_node = FALSE;
     $field_fragments = [
       'room',
@@ -2401,12 +2403,11 @@ function sitenow_update_9006(&$sandbox) {
             \Drupal::messenger()
               ->addMessage('Address is set: ' . print_r($address, TRUE));
           }
-          $contact_info->field_uiowa_contact_address = [
-            'address' => [
-              'country_code' => 'US',
-              'address_line1' => $address,
-            ],
+          $field_uiowa_contact_address = [
+            'country_code' => 'US',
+            'address_line1' => $address,
           ];
+          $contact_info->set('field_uiowa_contact_address', $field_uiowa_contact_address);
           // @todo Remove debugging message.
           if ($nid == CHECK_NID) {
             \Drupal::messenger()
