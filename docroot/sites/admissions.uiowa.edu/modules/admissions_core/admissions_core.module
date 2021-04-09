@@ -543,6 +543,10 @@ function admissions_core_views_pre_render(ViewExecutable $view) {
         break;
     }
   }
+  if ($view->id() == "areas_of_study") {
+    $view->element['#attached']['library'][] = 'uids_base/stat';
+    $view->element['#attached']['library'][] = 'uids_base/twocol';
+  }
 }
 
 /**
