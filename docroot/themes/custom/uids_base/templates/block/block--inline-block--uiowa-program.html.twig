@@ -1,0 +1,56 @@
+{#
+/**
+ * @file
+ * Theme override to display a block.
+ *
+ * Available variables:
+ * - plugin_id: The ID of the block implementation.
+ * - label: The configured label of the block if visible.
+ * - configuration: A list of the block's configuration values.
+ *   - label: The configured label for the block.
+ *   - label_display: The display settings for the label.
+ *   - provider: The module or other provider that provided this block plugin.
+ *   - Block plugin specific settings will also be stored here.
+ * - content: The content of this block.
+ * - attributes: array of HTML attributes populated by modules, intended to
+ *   be added to the main container tag of this template.
+ *   - id: A valid HTML ID and guaranteed unique.
+ * - title_attributes: Same as attributes, except applied to the main title
+ *   tag that appears in the template.
+ * - title_prefix: Additional output populated by modules, intended to be
+ *   displayed in front of the main title tag that appears in the template.
+ * - title_suffix: Additional output populated by modules, intended to be
+ *   displayed after the main title tag that appears in the template.
+ *
+ * @see template_preprocess_block()
+ */
+#}
+{%
+  set classes = [
+  'block',
+  'block-' ~ configuration.provider|clean_class,
+  'block-' ~ plugin_id|clean_class,
+  'grid--first-item-full-width',
+  'grid--twocol--50-50',
+]
+%}
+{% set content_rendered = content | render %}
+{% if content_rendered is not empty %}
+  <div{{ attributes.addClass(classes) }}>
+    <div class="list-container">
+      <div class="text-align-center">
+        {{ content.field_uiowa_program_title|render }}
+        {{ content.field_uiowa_program_description|render }}
+      </div>
+      <div>
+        {{ content.field_uiowa_program_excerpttitle|render }}
+        {{ content.field_uiowa_program_excerpt|render }}
+      </div>
+      <div>
+        {{ content.field_uiowa_program_cta_title|render }}
+        {{ content.field_uiowa_program_cta_excerpt|render }}
+        {{ content.field_uiowa_program_cta_link|render }}
+      </div>
+    </div>
+  </div>
+{% endif %}
