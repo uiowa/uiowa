@@ -2281,10 +2281,14 @@ function sitenow_update_9005() {
     ->create($source->read('field.storage.node.field_person_type_status'))
     ->save();
 
+  // Create field instance for 'field_person_type_status'.
+  \Drupal::entityTypeManager()->getStorage('field_config')
+    ->create($source->read('field.field.node.person.field_person_type_status'))
+    ->save();
+
   // The following config is needed for the next update.
   $config_names = [
     'config_ignore.settings',
-    'field.field.node.person.field_person_type_status',
     'config_split.config_split.grad_person_extended',
   ];
   $config_storage = \Drupal::service('config.storage');
@@ -2321,9 +2325,7 @@ function sitenow_update_9006(&$sandbox) {
     $query = \Drupal::entityQuery('node')
       ->condition('type', 'person')
       ->execute();
-    // @todo Remove debugging message.
-    \Drupal::messenger()
-      ->addMessage('Affected NIDs:' . print_r($query, TRUE));
+
     $sandbox['total'] = count($query);
     $sandbox['current'] = 0;
     $sandbox['query'] = $query;
@@ -2378,11 +2380,6 @@ function sitenow_update_9006(&$sandbox) {
           ],
         ]);
 
-        // @todo Remove debugging message.
-        if ($nid == CHECK_NID) {
-          \Drupal::messenger()
-            ->addMessage('Location: ' . print_r($location, TRUE));
-        }
         // If a phone number is present, pop it off the array
         // and add it.
         if (isset($location['phone'])) {
@@ -2393,46 +2390,21 @@ function sitenow_update_9006(&$sandbox) {
         $address = implode(' ', $location);
 
         // If there is an address_line1, build the address object.
-        // @todo Figure out why this isn't working. I have tried this
-        //   syntax, as well as the $contact_info->set('field') syntax
-        //   and neither one persists after the paragraph is saved.
         if ($address !== '') {
-
-          // @todo Remove debugging message.
-          if ($nid == CHECK_NID) {
-            \Drupal::messenger()
-              ->addMessage('Address is set: ' . print_r($address, TRUE));
-          }
           $field_uiowa_contact_address = [
             'country_code' => 'US',
             'address_line1' => $address,
           ];
           $contact_info->set('field_uiowa_contact_address', $field_uiowa_contact_address);
-          // @todo Remove debugging message.
-          if ($nid == CHECK_NID) {
-            \Drupal::messenger()
-              ->addMessage('Contact info (prior to saving): ' . print_r($contact_info->toArray(), TRUE));
-          }
         }
         // Save the contact info.
         $contact_info->save();
-
-        // @todo Remove debugging message.
-        if ($nid == CHECK_NID) {
-          \Drupal::messenger()
-            ->addMessage('Contact info (after saving): ' . print_r($contact_info->toArray(), TRUE));
-        }
 
         // Attach the contact info to the node.
         $node->field_person_contact_information[] = [
           'target_id' => $contact_info->id(),
           'target_revision_id' => $contact_info->getRevisionId(),
         ];
-        // @todo Remove debugging message.
-        if ($nid == CHECK_NID) {
-          \Drupal::messenger()
-            ->addMessage('Contact info attached.');
-        }
         $save_node = TRUE;
       }
     }
