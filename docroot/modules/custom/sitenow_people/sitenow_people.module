@@ -30,6 +30,8 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
   switch ($form_id) {
     case 'node_person_edit_form':
     case 'node_person_form':
+    $form['#prefix'] = '<div id="form-ajax-wrapper">';
+    $form['#suffix'] = '</div>';
       // Our submit handler must execute before the layout_builder_styles one
       // so it can take advantage of the logic there.
       array_unshift($form['actions']['submit']['#submit'], '_sitenow_people_person_form_submit');
@@ -74,6 +76,45 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
             ];
           }
         }
+        // Show/hide person type statuses based on person type selections.
+        $form['field_person_types']['widget']['#ajax'] = [
+          'callback' => '_person_types_callback',
+          'event' => 'change',
+          'wrapper' => 'form-ajax-wrapper',
+          'speed' => 'fast',
+          'progress' => [
+            'type' => 'throbber',
+            'message' => t('Please wait...'),
+          ],
+        ];
+
+        $type_selections = [];
+
+        if (!empty($form_state->getValue('field_person_types'))) {
+          $types = $form_state->getValue('field_person_types');
+          // Adjust structure of array.
+          foreach ($types as $value) {
+            $type_selections[] = $value['target_id'];
+          }
+        }
+        elseif (!empty($form['field_person_types']['widget']['#default_value'])) {
+          $type_selections = $form['field_person_types']['widget']['#default_value'];
+        }
+        else {
+          $form['field_person_type_status']['#access'] = FALSE;
+          return $form;
+        }
+
+        if (!empty($type_selections)) {
+          $person_type_status_options = $form['field_person_type_status']['widget']['#options'];
+          foreach ($person_type_status_options as $key => $option) {
+            // Unset options that aren't associated with selected person type.
+            if (!in_array($key, $type_selections)) {
+              unset($person_type_status_options[$key]);
+            }
+          }
+          $form['field_person_type_status']['widget']['#options'] = $person_type_status_options;
+        }
       }
 
       // If it exists, change the 'Link text' field to say 'Label' on
@@ -86,6 +127,13 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
 
       break;
   }
+}
+
+/**
+ * Custom callback for person types field.
+ */
+function _person_types_callback(&$form, $form_state) {
+  return $form;
 }
 
 /**
