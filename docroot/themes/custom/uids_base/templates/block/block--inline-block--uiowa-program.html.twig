@@ -44,7 +44,7 @@
     {{ title_suffix }}
     <div class="list-container">
       <div class="text-align-center">
-        {{ content.field_uiowa_program_title|render }}
+        <h2 class="headline headline--serif">{{ content.field_uiowa_program_title[0]['#text'] }}</h2>
         {{ content.field_uiowa_program_description|render }}
       </div>
       <div>
