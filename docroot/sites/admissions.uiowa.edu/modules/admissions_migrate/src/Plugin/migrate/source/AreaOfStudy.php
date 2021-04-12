@@ -103,72 +103,144 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
    * {@inheritdoc}
    */
   public function postImportProcess(MigrateImportEvent $event) {
-    $entity_types = [
-      'taxonomy_term' => [
-        'academic_groups' => [
-          'description',
+    // @todo Figure out why this event fires multiple times.
+    $has_run = $this->state->get('admissions_migrate_post_import', FALSE);
+
+    if ($has_run == FALSE) {
+      $migration = $event->getMigration();
+      $map = $migration->getIdMap();
+
+      $entity_types = [
+        'taxonomy_term' => [
+          'academic_groups' => [
+            'description',
+          ],
+          'colleges' => [
+            'description',
+          ],
         ],
-        'colleges' => [
-          'description',
+        'node' => [
+          'transfer_tips' => [
+            'body',
+          ],
+          'area_of_study' => [
+            'body',
+            'field_area_of_study_subtitle',
+            'field_area_of_study_why',
+            'field_area_of_study_course_work',
+            'field_area_of_study_requirement',
+            'field_area_of_study_opportunity',
+            'field_area_of_study_career',
+            'field_area_of_study_scholarship',
+          ],
         ],
-      ],
-      'node' => [
-        'transfer_tips' => [
-          'body',
+        'paragraph' => [
+          'admissions_requirement' => [
+            'field_ar_intro',
+          ],
         ],
-        'area_of_study' => [
-          'body',
-          'field_area_of_study_subtitle',
-          'field_area_of_study_why',
-          'field_area_of_study_course_work',
-          'field_area_of_study_requirement',
-          'field_area_of_study_opportunity',
-          'field_area_of_study_career',
-          'field_area_of_study_scholarship',
-        ],
-      ],
-      'paragraph' => [
-        'admissions_requirement' => [
-          'field_ar_intro',
-        ],
-      ],
-    ];
+      ];
 
-    foreach ($entity_types as $entity_type => $bundles) {
-      foreach ($bundles as $bundle => $fields) {
-        $field = ($entity_type == 'taxonomy_term') ? 'vid' : 'type';
-        $query = $this->entityTypeManager->getStorage($entity_type)->getQuery();
+      foreach ($entity_types as $entity_type => $bundles) {
+        foreach ($bundles as $bundle => $fields) {
+          $condition = ($entity_type == 'taxonomy_term') ? 'vid' : 'type';
+          $query = $this->entityTypeManager->getStorage($entity_type)->getQuery();
 
-        $ids = $query
-          ->condition($field, $bundle)
-          ->execute();
+          $ids = $query
+            ->condition($condition, $bundle)
+            ->execute();
 
-        if ($ids) {
-          $controller = $this->entityTypeManager->getStorage($entity_type);
-          $entities = $controller->loadMultiple($ids);
+          if ($ids) {
+            $controller = $this->entityTypeManager->getStorage($entity_type);
+            $entities = $controller->loadMultiple($ids);
 
-          foreach ($entities as $entity) {
-            foreach ($fields as $field) {
-              $document = Html::load($entity->$field->getString());
-              $links = $document->getElementsByTagName('a');
+            foreach ($entities as $entity) {
+              foreach ($fields as $field_name) {
+                $document = Html::load($entity->$field_name->value);
+                $links = $document->getElementsByTagName('a');
 
-              foreach ($links as $link) {
-                $href = $link->getAttribute('href');
+                foreach ($links as $link) {
+                  $href = $link->getAttribute('href');
 
-                if (strpos($href, '/node/') === 0 || stristr($href, 'admissions.uiowa.edu/node/')) {
-                  $this->logger->notice('Internal link @link found in field @field on @bundle @aos.', [
-                    '@link' => $href,
-                    '@field' => $field,
-                    '@bundle' => $bundle,
-                    '@aos' => $entity->label(),
-                  ]);
+                  if (strpos($href, '/node/') === 0 || stristr($href, 'admissions.uiowa.edu/node/')) {
+                    $nid = explode('node/', $href)[1];
+                    $lookup = $map->lookupDestinationIds(['nid' => $nid]);
+
+                    // Fallback to a manual map of NIDs provided by the customer.
+                    if (empty($lookup)) {
+                      $lookup = $this->manualLookup($nid);
+                    }
+
+                    // Fix it or log if we don't have a lookup.
+                    if (!empty($lookup)) {
+                      $destination = $lookup[0][0];
+                      $link->setAttribute('href', "/node/{$destination}");
+                      $link->parentNode->replaceChild($link, $link);
+
+                      $document->saveHTML();
+                      $html = Html::serialize($document);
+                      $entity->$field_name->value = $html;
+                      $entity->save();
+                    }
+                    else {
+                      $this->logger->notice('Cannot replace internal link @link in field @field on @bundle @aos.', [
+                        '@link' => $href,
+                        '@field' => $field_name,
+                        '@bundle' => $bundle,
+                        '@aos' => $entity->label(),
+                      ]);
+                    }
+                  }
                 }
               }
             }
           }
         }
       }
+
+      $this->state->set('admissions_migrate_post_import', TRUE);
     }
+  }
+
+  /**
+   * Look up a node URL from a manually created source -> destination map.
+   *
+   * @param int $nid
+   *   The NID to look up.
+   *
+   * @return array
+   *   A simulated array of arrays similar to the migrate idMap.
+   */
+  protected function manualLookup($nid) {
+    $lookup = [];
+
+    $map = [
+      79 => 71,
+      53 => 206,
+      54 => 151,
+      77 => 61,
+      195 => 156,
+      196 => 216,
+      147 => 211,
+      146 => 166,
+      214 => 171,
+      215 => 201,
+      137 => 21,
+      244 => 161,
+      291 => 221,
+      294 => 56,
+      72 => 61,
+      93681 => 71,
+      71 => 286,
+    ];
+
+    if (isset($map[$nid])) {
+      $lookup = [
+        [$map[$nid]],
+      ];
+    }
+
+    return $lookup;
   }
 
 }

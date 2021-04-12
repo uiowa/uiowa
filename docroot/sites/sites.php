@@ -2423,3 +2423,39 @@ $sites['strategicplan.local.drupal.uiowa.edu'] = 'strategicplan.uiowa.edu';
 $sites['strategicplan.dev.drupal.uiowa.edu'] = 'strategicplan.uiowa.edu';
 $sites['strategicplan.stage.drupal.uiowa.edu'] = 'strategicplan.uiowa.edu';
 $sites['strategicplan.prod.drupal.uiowa.edu'] = 'strategicplan.uiowa.edu';
+
+// Directory aliases for bam.sites.uiowa.edu.
+$sites['sitesbam.local.drupal.uiowa.edu'] = 'bam.sites.uiowa.edu';
+$sites['sitesbam.dev.drupal.uiowa.edu'] = 'bam.sites.uiowa.edu';
+$sites['sitesbam.stage.drupal.uiowa.edu'] = 'bam.sites.uiowa.edu';
+$sites['sitesbam.prod.drupal.uiowa.edu'] = 'bam.sites.uiowa.edu';
+
+// Directory aliases for vanallen.physics.uiowa.edu.
+$sites['physicsvanallen.local.drupal.uiowa.edu'] = 'vanallen.physics.uiowa.edu';
+$sites['physicsvanallen.dev.drupal.uiowa.edu'] = 'vanallen.physics.uiowa.edu';
+$sites['physicsvanallen.stage.drupal.uiowa.edu'] = 'vanallen.physics.uiowa.edu';
+$sites['physicsvanallen.prod.drupal.uiowa.edu'] = 'vanallen.physics.uiowa.edu';
+
+// Directory aliases for luo.lab.uiowa.edu.
+$sites['labluo.local.drupal.uiowa.edu'] = 'luo.lab.uiowa.edu';
+$sites['labluo.dev.drupal.uiowa.edu'] = 'luo.lab.uiowa.edu';
+$sites['labluo.stage.drupal.uiowa.edu'] = 'luo.lab.uiowa.edu';
+$sites['labluo.prod.drupal.uiowa.edu'] = 'luo.lab.uiowa.edu';
+
+// Directory aliases for imfaculty.sites.uiowa.edu.
+$sites['sitesimfaculty.local.drupal.uiowa.edu'] = 'imfaculty.sites.uiowa.edu';
+$sites['sitesimfaculty.dev.drupal.uiowa.edu'] = 'imfaculty.sites.uiowa.edu';
+$sites['sitesimfaculty.stage.drupal.uiowa.edu'] = 'imfaculty.sites.uiowa.edu';
+$sites['sitesimfaculty.prod.drupal.uiowa.edu'] = 'imfaculty.sites.uiowa.edu';
+
+// Directory aliases for tippieconsultingclub.org.uiowa.edu.
+$sites['orgtippieconsultingclub.local.drupal.uiowa.edu'] = 'tippieconsultingclub.org.uiowa.edu';
+$sites['orgtippieconsultingclub.dev.drupal.uiowa.edu'] = 'tippieconsultingclub.org.uiowa.edu';
+$sites['orgtippieconsultingclub.stage.drupal.uiowa.edu'] = 'tippieconsultingclub.org.uiowa.edu';
+$sites['orgtippieconsultingclub.prod.drupal.uiowa.edu'] = 'tippieconsultingclub.org.uiowa.edu';
+
+// Directory aliases for dei.sports.uiowa.edu.
+$sites['sportsdei.local.drupal.uiowa.edu'] = 'dei.sports.uiowa.edu';
+$sites['sportsdei.dev.drupal.uiowa.edu'] = 'dei.sports.uiowa.edu';
+$sites['sportsdei.stage.drupal.uiowa.edu'] = 'dei.sports.uiowa.edu';
+$sites['sportsdei.prod.drupal.uiowa.edu'] = 'dei.sports.uiowa.edu';

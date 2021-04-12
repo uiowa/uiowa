@@ -10,6 +10,7 @@ dependencies:
     - taxonomy.vocabulary.colleges
     - user.role.authenticated
   module:
+    - better_exposed_filters
     - node
     - options
     - taxonomy
@@ -44,15 +45,57 @@ display:
           query_comment: ''
           query_tags: {  }
       exposed_form:
-        type: basic
+        type: bef
         options:
           submit_button: Search
-          reset_button: false
+          reset_button: true
           reset_button_label: Reset
           exposed_sorts_label: 'Sort by'
           expose_sort_order: false
           sort_asc_label: Asc
           sort_desc_label: Desc
+          text_input_required: 'Select any filter and click on Apply to see results'
+          text_input_required_format: filtered_html
+          bef:
+            general:
+              autosubmit: true
+              autosubmit_exclude_textfield: false
+              autosubmit_textfield_delay: 0
+              autosubmit_hide: false
+              input_required: false
+              allow_secondary: false
+              secondary_label: 'Advanced options'
+              secondary_open: false
+            filter:
+              combine:
+                plugin_id: default
+                advanced:
+                  collapsible: false
+                  is_secondary: false
+              field_area_of_study_program_type_value:
+                plugin_id: default
+                advanced:
+                  rewrite:
+                    filter_rewrite_values: ''
+                  collapsible: false
+                  is_secondary: true
+              field_area_of_study_academic_gp_target_id:
+                plugin_id: bef
+                advanced:
+                  rewrite:
+                    filter_rewrite_values: ''
+                  collapsible: false
+                  is_secondary: false
+                select_all_none: false
+                select_all_none_nested: false
+                display_inline: 0
+              field_area_of_study_college_target_id:
+                plugin_id: default
+                advanced:
+                  rewrite:
+                    filter_rewrite_values: ''
+                  collapsible: false
+                  is_secondary: false
       pager:
         type: none
         options:
@@ -71,7 +114,7 @@ display:
           columns:
             field_area_of_study_pretty_title: field_area_of_study_pretty_title
             title: title
-            nothing: nothing
+            nothing: title
             field_area_of_study_college: field_area_of_study_college
           info:
             field_area_of_study_pretty_title:
@@ -84,7 +127,7 @@ display:
             title:
               sortable: true
               default_sort_order: asc
-              align: ''
+              align: views-align-left
               separator: ''
               empty_column: false
               responsive: ''
@@ -212,7 +255,7 @@ display:
           exposed: true
           expose:
             operator_id: title_op
-            label: 'Search'
+            label: Search
             description: ''
             use_operator: false
             operator: title_op
@@ -230,7 +273,7 @@ display:
               publisher: '0'
               webmaster: '0'
               administrator: '0'
-            placeholder: 'Search'
+            placeholder: Search
           is_grouped: false
           group_info:
             label: ''
@@ -398,64 +441,6 @@ display:
             group_items: {  }
           reduce_duplicates: false
           plugin_id: list_field
-        field_area_of_study_academic_gp_target_id:
-          id: field_area_of_study_academic_gp_target_id
-          table: node__field_area_of_study_academic_gp
-          field: field_area_of_study_academic_gp_target_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: or
-          value: {  }
-          group: 1
-          exposed: true
-          expose:
-            operator_id: field_area_of_study_academic_gp_target_id_op
-            label: 'Academic Group'
-            description: ''
-            use_operator: false
-            operator: field_area_of_study_academic_gp_target_id_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: academic_group
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              viewer: '0'
-              editor: '0'
-              publisher: '0'
-              webmaster: '0'
-              administrator: '0'
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-          type: select
-          limit: true
-          vid: academic_groups
-          hierarchy: false
-          error_message: true
-          parent: 0
-          level_labels: ''
-          force_deepest: false
-          save_lineage: false
-          hierarchy_depth: 0
-          required_depth: 0
-          none_label: '- Please select -'
-          plugin_id: taxonomy_index_tid
         field_area_of_study_college_target_id:
           id: field_area_of_study_college_target_id
           table: node__field_area_of_study_college
@@ -514,10 +499,71 @@ display:
           required_depth: 0
           none_label: '- Please select -'
           plugin_id: taxonomy_index_tid
+        field_area_of_study_academic_gp_target_id:
+          id: field_area_of_study_academic_gp_target_id
+          table: node__field_area_of_study_academic_gp
+          field: field_area_of_study_academic_gp_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_area_of_study_academic_gp_target_id_op
+            label: 'Academic Interests'
+            description: ''
+            use_operator: false
+            operator: field_area_of_study_academic_gp_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: academic_group
+            required: false
+            remember: false
+            multiple: true
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: select
+          limit: true
+          vid: academic_groups
+          hierarchy: false
+          error_message: true
+          parent: 0
+          level_labels: ''
+          force_deepest: false
+          save_lineage: false
+          hierarchy_depth: 0
+          required_depth: 0
+          none_label: '- Please select -'
+          plugin_id: taxonomy_index_tid
       defaults:
         filters: false
         filter_groups: false
         fields: false
+        empty: false
+        header: false
+        title: false
       filter_groups:
         operator: AND
         groups:
@@ -763,6 +809,33 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+      empty:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content: 'There are currently no results.'
+          plugin_id: text_custom
+      header:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          tokenize: false
+          content:
+            value: "<div class=\"layout layout--twocol layout--twocol--75-25 section-padding__removed-top layout__container\">\r\n  <div class=\"layout__spacing_container\">\r\n    <div class=\"layout__region layout__region--first\">\r\n      <div class=\"block block-layout-builder block-inline-blockuiowa-text-area uids-content\">\r\n        <p class=\"element--light-intro\">Iowa offers over 200 majors, minors, and certificates.</p>\r\n        <p>Students are encouraged to work across disciplines to find their passion. If you are unsure of what you&rsquo;d like to study at Iowa, look at an&nbsp;<a tabindex=\"-1\" href=\"https://admissions.uiowa.edu/academics/open-major\">open\r\n            major</a>, or take our&nbsp;<a tabindex=\"-1\" href=\"http://uiowa.mymajors.com/\">MyMajors assessment</a>&nbsp;to explore possible majors based on your interests and strengths.</p>\r\n        <p>Use our program search to explore all of our areas of study and find what is right for you.&nbsp;</p>\r\n      </div>\r\n    </div>\r\n    <div class=\"layout__region layout__region--second\">\r\n      <div class=\"element--flex-center stat stat__grid\">\r\n        <div>\r\n          <h2 class=\"stat__title\"> 200 + </h2>\r\n        </div>\r\n        <p class=\"stat__description\">Areas of Study</p>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+            format: filtered_html
+          plugin_id: text
+      title: 'Majors, Minors, and Certificates'
     cache_metadata:
       max-age: -1
       contexts:
