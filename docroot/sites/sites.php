@@ -2447,3 +2447,9 @@ $sites['sitesimfaculty.local.drupal.uiowa.edu'] = 'imfaculty.sites.uiowa.edu';
 $sites['sitesimfaculty.dev.drupal.uiowa.edu'] = 'imfaculty.sites.uiowa.edu';
 $sites['sitesimfaculty.stage.drupal.uiowa.edu'] = 'imfaculty.sites.uiowa.edu';
 $sites['sitesimfaculty.prod.drupal.uiowa.edu'] = 'imfaculty.sites.uiowa.edu';
+
+// Directory aliases for tippieconsultingclub.org.uiowa.edu.
+$sites['orgtippieconsultingclub.local.drupal.uiowa.edu'] = 'tippieconsultingclub.org.uiowa.edu';
+$sites['orgtippieconsultingclub.dev.drupal.uiowa.edu'] = 'tippieconsultingclub.org.uiowa.edu';
+$sites['orgtippieconsultingclub.stage.drupal.uiowa.edu'] = 'tippieconsultingclub.org.uiowa.edu';
+$sites['orgtippieconsultingclub.prod.drupal.uiowa.edu'] = 'tippieconsultingclub.org.uiowa.edu';
