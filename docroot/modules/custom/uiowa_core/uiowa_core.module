@@ -106,6 +106,10 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       // Allow menu items to be hidden to certain users with an opt-in process.
       // New roles added to the site will automatically see menu links however.
       if (isset($form["menu_per_role__hide_role"])) {
+        // Don't want folks controlling menu link visibility for administrators.
+        if (isset($form["menu_per_role__hide_role"]["widget"]["#options"]["administrator"])) {
+          unset($form["menu_per_role__hide_role"]["widget"]["#options"]["administrator"]);
+        }
         if (!\Drupal::currentUser()
           ->hasPermission('administer menu link visibility')) {
           $form["menu_per_role__hide_role"]['#access'] = FALSE;
