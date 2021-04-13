@@ -4,6 +4,7 @@ namespace Drupal\sitenow_migrate\Plugin\migrate\source;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Database\Database;
+use Drupal\migrate\Plugin\MigrationInterface;
 
 /**
  * Provides functions for processing links in source plugins.
@@ -72,6 +73,58 @@ trait LinkReplaceTrait {
    * Post-migration method of replacing internal links.
    */
   private function postLinkReplace($row, $field_name, $no_links_prior = 0) {
+    $field = $row->getSourceProperty($field_name);
+    if (!empty($field)) {
+      // Search for D7 inline embeds and replace with D8 inline entities.
+      $field[0]['value'] = $this->replaceInlineFiles($field[0]['value']);
+
+      // Parse links.
+      $doc = Html::load($field[0]['value']);
+      $links = $doc->getElementsByTagName('a');
+      $i = $links->length - 1;
+      $created_year = date('Y', $row->getSourceProperty('created'));
+
+      while ($i >= 0) {
+        $link = $links->item($i);
+        $href = $link->getAttribute('href');
+
+        // Unlink anchors in body from articles before the given
+        // no_links_prior value (default 0).
+        if ($created_year < $no_links_prior) {
+          $text = $doc->createTextNode($link->nodeValue);
+          $link->parentNode->replaceChild($text, $link);
+          $doc->saveHTML();
+        } else {
+          // @todo update this to get sitename in place of pharmacy.uiowa.edu.
+          if (strpos($href, '/node/') === 0 || stristr($href, 'pharmacy.uiowa.edu/node/')) {
+            $nid = explode('node/', $href)[1];
+
+            // @todo update this to allow for easier 'manualLookup' implementation.
+            if ($lookup = $this->manualLookup($nid)) {
+              $link->setAttribute('href', $lookup);
+              $link->parentNode->replaceChild($link, $link);
+              $this->logger->info('Replaced internal link @link in article @article.', [
+                '@link' => $href,
+                '@article' => $row->getSourceProperty('title'),
+              ]);
+
+            } else {
+              $this->logger->notice('Unable to replace internal link @link in article @article.', [
+                '@link' => $href,
+                '@article' => $row->getSourceProperty('title'),
+              ]);
+            }
+          }
+        }
+
+        $i--;
+      }
+
+      $html = Html::serialize($doc);
+      $field[0]['value'] = $html;
+
+      $row->setSourceProperty($field_name, $field);
+    }
 
     $old_link = $match[1];
     $this->logger->notice($this->t('Old link found... @old_link', [
@@ -193,67 +246,28 @@ trait LinkReplaceTrait {
   }
 
   /**
-   * Retrieve D7/8 aliases in an indexed array of nid => alias and alias => nid.
+   * Query for a list of fields which may contain newly broken links.
    */
-  private function fetchAliases($drupal7 = FALSE) {
-    if ($drupal7) {
-      // Switch to the D7 database.
-      Database::setActiveConnection('drupal_7');
-      $connection = Database::getConnection();
-      $query = $connection->select('url_alias', 'ua');
-      $query->fields('ua', ['source', 'alias']);
-      $result = $query->execute();
-      // Switch back to the D8 database.
-      Database::setActiveConnection();
-    }
-    else {
-      $query = $this->connection->select('path_alias', 'pa');
-      $query->fields('pa', ['path', 'alias']);
-      $result = $query->execute();
+  private function checkForPossibleLinkBreaks() {
+    // @todo update to check for non-node-specific fields.
+    // Check for possible link breaks in standard body fields.
+    $query = $this->connection->select('node__body', 'nb')
+      ->fields('nb', ['entity_id']);
+    $query->condition($query->orConditionGroup()
+      ->condition('nb.body_value', $this->basePath, 'LIKE')
+      ->condition('nb.body_value', "%<a href%node/%", 'LIKE')
+    );
+    $result = $query->execute();
+    $candidates = $result->fetchCol();
+
+    // @todo If non-node fields, should report the field and the parent entity.
+    foreach ($candidates as $candidate) {
+      $this->logger->notice($this->t('Possible broken link found in node @candidate', [
+        '@candidate' => $candidate,
+      ]));
     }
 
-    $aliases = [];
-    // Pull out the nids and create our nid=>alias, alias=>nid indexer.
-    foreach ($result as $row) {
-      $source_path = ($drupal7) ? $row->source : $row->path;
-      preg_match("|\d+|", $source_path, $match);
-      $nid = $match[0];
-      $aliases[$nid] = $row->alias;
-      $aliases[$row->alias] = $nid;
-    }
-
-    return $aliases;
-  }
-
-  /**
-   * Query the migration map to get a D7-nid => D8-nid indexed array.
-   *
-   * @todo Use the actual migrate map service.
-   */
-  private function fetchMapping($migrate_maps) {
-    // Grab the first map to initiate the query. If there are more
-    // they will need to be unioned to this one.
-    $first_migrate_map = array_shift($migrate_maps);
-    if ($this->connection->schema()->tableExists($first_migrate_map)) {
-      $sub_result = $this->connection->select($first_migrate_map, 'mm')
-        ->fields('mm', ['sourceid1', 'destid1']);
-    }
-    // @todo handle a missing first migrate_map.
-    else {
-      return FALSE;
-    }
-    foreach ($migrate_maps as $migrate_map) {
-      if ($this->connection->schema()->tableExists($migrate_map)) {
-        $next_sub_result = $this->connection->select($migrate_map, 'mm')
-          ->fields('mm', ['sourceid1', 'destid1']);
-        $sub_result = $sub_result->union($next_sub_result);
-      }
-    }
-
-    // Return an associative array of
-    // source_nid -> destination_nid.
-    return $sub_result->execute()
-      ->fetchAllKeyed(0, 1);
+    return $candidates;
   }
 
 }
