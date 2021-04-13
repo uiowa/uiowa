@@ -74,7 +74,6 @@ AddEncoding gzip svgz
 
   # Redirect all traffic from HTTP to HTTPS.
   RewriteCond %{HTTP_HOST} !\.acquia-sites\.com [NC]
-  RewriteCond %{HTTP_HOST} !\.local\.drupal\.uiowa\.edu [NC]
   RewriteCond %{HTTPS} off
   RewriteCond %{HTTP:X-Forwarded-Proto} !https
   RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
