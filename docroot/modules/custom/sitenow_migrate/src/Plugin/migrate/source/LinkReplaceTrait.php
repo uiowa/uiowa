@@ -2,6 +2,7 @@
 
 namespace Drupal\sitenow_migrate\Plugin\migrate\source;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Database\Database;
 
 /**
@@ -10,9 +11,67 @@ use Drupal\Core\Database\Database;
 trait LinkReplaceTrait {
 
   /**
-   * Regex callback for updating links broken by the migration.
+   * Pre-migrate method for replacing links.
    */
-  private function linkReplace($match) {
+  private function preLinkReplace($row, $field_name, $no_links_prior = 0) {
+    $field = $row->getSourceProperty($field_name);
+    if (!empty($field)) {
+      // Search for D7 inline embeds and replace with D8 inline entities.
+      $field[0]['value'] = $this->replaceInlineFiles($field[0]['value']);
+
+      // Parse links.
+      $doc = Html::load($field[0]['value']);
+      $links = $doc->getElementsByTagName('a');
+      $i = $links->length - 1;
+      $created_year = date('Y', $row->getSourceProperty('created'));
+
+      while ($i >= 0) {
+        $link = $links->item($i);
+        $href = $link->getAttribute('href');
+
+        // Unlink anchors in body from articles before the given
+        // no_links_prior value (default 0).
+        if ($created_year < $no_links_prior) {
+          $text = $doc->createTextNode($link->nodeValue);
+          $link->parentNode->replaceChild($text, $link);
+          $doc->saveHTML();
+        } else {
+          // @todo update this to get sitename in place of pharmacy.uiowa.edu.
+          if (strpos($href, '/node/') === 0 || stristr($href, 'pharmacy.uiowa.edu/node/')) {
+            $nid = explode('node/', $href)[1];
+
+            // @todo update this to allow for easier 'manualLookup' implementation.
+            if ($lookup = $this->manualLookup($nid)) {
+              $link->setAttribute('href', $lookup);
+              $link->parentNode->replaceChild($link, $link);
+              $this->logger->info('Replaced internal link @link in article @article.', [
+                '@link' => $href,
+                '@article' => $row->getSourceProperty('title'),
+              ]);
+
+            } else {
+              $this->logger->notice('Unable to replace internal link @link in article @article.', [
+                '@link' => $href,
+                '@article' => $row->getSourceProperty('title'),
+              ]);
+            }
+          }
+        }
+
+        $i--;
+      }
+
+      $html = Html::serialize($doc);
+      $field[0]['value'] = $html;
+
+      $row->setSourceProperty($field_name, $field);
+    }
+  }
+
+  /**
+   * Post-migration method of replacing internal links.
+   */
+  private function postLinkReplace($row, $field_name, $no_links_prior = 0) {
 
     $old_link = $match[1];
     $this->logger->notice($this->t('Old link found... @old_link', [
