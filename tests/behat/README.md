@@ -1,14 +1,20 @@
 # Behat
-In order to run behat tests locally, you must override the `project.local.protocol` in your blt/local.blt.yml file. It needs to be set to `http` so that it matches the base URL set in the tests/behat/local.yml configuration.
+In order to run behat tests locally, you must override the DrupalVM SSL certificate in the box/local.config.yml file. It needs to be set to the path where you downloaded the certs. You can use the `box/certs/` directory because it is excluded from VCS. Do not commit these certs to the repo! The local certificates are stored in the developer Wiki.
 
-Example snippet to include the blt/local.blt.yml file:
+Example snippet to include the box/local.config.yml file:
 ```
-project:
-  local:
-    protocol: http
+apache_vhosts_ssl:
+  -
+    servername: '{{ drupal_domain }}'
+    documentroot: '{{ drupal_core_path }}'
+    certificate_file: '/var/www/uiowa/box/certs/local.crt'
+    certificate_key_file: '/var/www/uiowa/box/certs/local.key'
+    certificate_chain_file: '/var/www/uiowa/box/certs/local-chain.crt'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+
 ```
 
-Once set, run `blt setup:behat` to generate the behat local config file.
+Once set, run `vagrant provision` to install the new certificates.
 
 To run behat tests, run `blt behat`. Additional options and filtering can be specified - see `blt behat --help` for details or `blt list tests` for all tests-related commands.
 
