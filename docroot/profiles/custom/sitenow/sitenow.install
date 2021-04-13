@@ -2253,3 +2253,190 @@ function sitenow_update_9004(&$sandbox) {
       ->addMessage($table_name . ' records found (after): ' . $count);
   }
 }
+
+/**
+ * Enable grad_person_extended split.
+ *
+ * In cases where the person_extended split was being used,
+ * enable the grad_person_extended split to take its place.
+ */
+function sitenow_update_9005() {
+
+  /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
+  $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
+  $split = 'config_split:person_extended';
+
+  // If person_extended split isn't registered or
+  // isn't active, return early.
+  if (!isset($filters[$split]) || !$filters[$split]['status']) {
+    return t('person_extended split is not active, so no update to run.');
+  }
+
+  $config_path = DRUPAL_ROOT . '/../config/default';
+  $source = new FileStorage($config_path);
+
+  // Create field storage for new person type status field.
+  \Drupal::entityTypeManager()
+    ->getStorage('field_storage_config')
+    ->create($source->read('field.storage.node.field_person_type_status'))
+    ->save();
+
+  // Create field instance for 'field_person_type_status'.
+  \Drupal::entityTypeManager()->getStorage('field_config')
+    ->create($source->read('field.field.node.person.field_person_type_status'))
+    ->save();
+
+  // The following config is needed for the next update.
+  $config_names = [
+    'config_ignore.settings',
+    'config_split.config_split.grad_person_extended',
+  ];
+  $config_storage = \Drupal::service('config.storage');
+  foreach ($config_names as $config_name) {
+    $config_storage->write($config_name, $source->read($config_name));
+  }
+
+  // Enable the 'person_extended' split.
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('config_split.config_split.grad_person_extended');
+  $config->set('status', TRUE);
+  $config->save(TRUE);
+}
+
+/**
+ * Update sites using the person_extended to reflect changes to that split.
+ */
+function sitenow_update_9006(&$sandbox) {
+  /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
+  $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
+  $split = 'config_split:person_extended';
+
+  // If person_extended split isn't registered or
+  // isn't active, return early.
+  if (!isset($filters[$split]) || !$filters[$split]['status']) {
+    return t('person_extended split is not active, so no update to run.');
+  }
+
+  // @todo Remove when debugging is removed.
+  define('CHECK_NID', 616);
+
+  // Process all nodes that have a filled person.
+  if (!isset($sandbox['total'])) {
+    $query = \Drupal::entityQuery('node')
+      ->condition('type', 'person')
+      ->execute();
+
+    $sandbox['total'] = count($query);
+    $sandbox['current'] = 0;
+    $sandbox['query'] = $query;
+
+    if (empty($sandbox['total'])) {
+      $sandbox['#finished'] = 1;
+      return;
+    }
+  }
+  // Loop through the same nodes in batches.
+  $nodes_per_batch = 25;
+  $batch = array_slice($sandbox['query'], $sandbox['current'], $sandbox['current'] + $nodes_per_batch);
+  if (empty($batch)) {
+    $sandbox['#finished'] = 1;
+    return;
+  }
+
+  foreach ($batch as $nid) {
+    // Load the node, set a flag for whether we need to save the node.
+    $node = Node::load($nid);
+    // Unset any gremlins.
+    $node->set('field_person_contact_information', NULL);
+    $save_node = FALSE;
+    $field_fragments = [
+      'room',
+      'building',
+      'phone',
+    ];
+    foreach ([
+      'lab',
+      'office',
+    ] as $location_type) {
+      $location = [];
+      foreach ($field_fragments as $fragment_name) {
+        $field_name = "field_person_{$location_type}_{$fragment_name}";
+        if ($node->hasField($field_name) && $node->{$field_name}->value) {
+          $location[$fragment_name] = $node->{$field_name}->value;
+          // Remove field instances from node.
+          $node->set($field_name, NULL);
+          // Now we need to save the node.
+          $save_node = TRUE;
+        }
+      }
+
+      if (!empty($location)) {
+        // Create a Contact Info paragraph instance.
+        // and populate with location info.
+        $contact_info = Paragraph::create([
+          'type' => 'uiowa_contact',
+          'field_uiowa_contact_label' => [
+            'value' => ucfirst($location_type),
+          ],
+        ]);
+
+        // If a phone number is present, pop it off the array
+        // and add it.
+        if (isset($location['phone'])) {
+          $contact_info->field_uiowa_contact_phone = array_pop($location);
+        }
+
+        // Create the address_line1 string.
+        $address = implode(' ', $location);
+
+        // If there is an address_line1, build the address object.
+        if ($address !== '') {
+          $field_uiowa_contact_address = [
+            'country_code' => 'US',
+            'address_line1' => $address,
+          ];
+          $contact_info->set('field_uiowa_contact_address', $field_uiowa_contact_address);
+        }
+        // Save the contact info.
+        $contact_info->save();
+
+        // Attach the contact info to the node.
+        $node->field_person_contact_information[] = [
+          'target_id' => $contact_info->id(),
+          'target_revision_id' => $contact_info->getRevisionId(),
+        ];
+        $save_node = TRUE;
+      }
+    }
+
+    // Check if we have the current student field and
+    // the person types field.
+    if ($node->hasField('field_pt_student_current') && $node->hasField('field_person_types')) {
+      // If the person type includes 'student' and
+      // current student is FALSE, set the person type status.
+      $existing_types = array_column($node->field_person_types->getValue(), 'target_id');
+      if (in_array('student', $existing_types) && !$node->field_pt_student_current->value) {
+        $node->field_person_type_status->setValue(['value' => 'student']);
+        $save_node = TRUE;
+      }
+    }
+
+    // Save node if there were changes.
+    if ($save_node) {
+      // Set revision message and save.
+      $node->setRevisionLogMessage('Automated save.');
+      $node->save();
+    }
+    $sandbox['current']++;
+  }
+
+  \Drupal::messenger()
+    ->addMessage($sandbox['current'] . ' nodes processed.');
+
+  if ($sandbox['current'] >= $sandbox['total']) {
+    $sandbox['#finished'] = 1;
+  }
+  else {
+    $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+  }
+}

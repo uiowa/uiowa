@@ -1,0 +1,39 @@
+uuid: 871003a2-76e1-4dbc-b0b7-bce39150ab87
+langcode: en
+status: true
+dependencies: {  }
+id: pharmacy_article_redirects
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - pharmacy
+migration_group: sitenow_migrate
+label: 'Article Redirects'
+source:
+  plugin: pharmacy_articles
+  node_type: article
+  constants:
+    redirect_prefix: 'internal:/node/'
+    dash: '-'
+    uid_admin: 1
+    status_code: 301
+process:
+  temp_nid:
+    plugin: migration_lookup
+    source: nid
+    migration: pharmacy_articles
+  redirect_source:
+    plugin: get
+    source: alias
+  redirect_redirect:
+    plugin: concat
+    source:
+      - constants/redirect_prefix
+      - '@temp_nid'
+  status_code: constants/status_code
+destination:
+  plugin: 'entity:redirect'
+migration_dependencies:
+  required:
+    - pharmacy_articles
