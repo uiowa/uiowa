@@ -3,30 +3,25 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.person.field_grad_program_all_degree
     - field.field.node.person.field_image
+    - field.field.node.person.field_meta_tags
     - field.field.node.person.field_person_bio
     - field.field.node.person.field_person_contact_information
     - field.field.node.person.field_person_credential
-    - field.field.node.person.field_person_department
     - field.field.node.person.field_person_education
     - field.field.node.person.field_person_email
     - field.field.node.person.field_person_first_name
     - field.field.node.person.field_person_hide
     - field.field.node.person.field_person_hometown
-    - field.field.node.person.field_person_lab_building
-    - field.field.node.person.field_person_lab_phone
-    - field.field.node.person.field_person_lab_room
     - field.field.node.person.field_person_last_name
-    - field.field.node.person.field_person_office_building
-    - field.field.node.person.field_person_office_phone
-    - field.field.node.person.field_person_office_room
     - field.field.node.person.field_person_phone
     - field.field.node.person.field_person_position
     - field.field.node.person.field_person_research_areas
+    - field.field.node.person.field_person_type_status
     - field.field.node.person.field_person_types
     - field.field.node.person.field_person_university_id
     - field.field.node.person.field_person_website
-    - field.field.node.person.field_pt_student_current
     - field.field.node.person.field_tags
     - field.field.node.person.field_teaser
     - node.type.person
@@ -36,6 +31,8 @@ dependencies:
     - layout_builder
     - layout_builder_restrictions
     - link
+    - metatag
+    - options
     - system
     - telephone
     - text
@@ -131,63 +128,6 @@ third_party_settings:
             section_alignment_start: section_alignment_start
         components:
           -
-            uuid: 31d47173-0115-4fe7-933f-848510287ad4
-            region: first
-            configuration:
-              id: 'field_block:node:person:field_person_department'
-              label: null
-              provider: layout_builder
-              label_display: null
-              formatter:
-                label: inline
-                type: entity_reference_label
-                settings:
-                  link: false
-                third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-            additional: {  }
-            weight: 2
-          -
-            uuid: b301c8f7-531e-48cc-8b83-518004541915
-            region: first
-            configuration:
-              id: 'field_block:node:person:field_person_office_building'
-              label: null
-              provider: layout_builder
-              label_display: null
-              formatter:
-                label: inline
-                type: string
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-            additional: {  }
-            weight: 12
-          -
-            uuid: 75ec76b8-18b3-4187-88ee-7ed67daea597
-            region: first
-            configuration:
-              id: 'field_block:node:person:field_person_office_phone'
-              label: null
-              provider: layout_builder
-              label_display: null
-              formatter:
-                label: inline
-                type: telephone_link
-                settings:
-                  title: ''
-                third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-            additional: {  }
-            weight: 13
-          -
             uuid: e0cbb1a7-b222-44d0-9dae-c6d78d5e74c2
             region: first
             configuration:
@@ -203,54 +143,6 @@ third_party_settings:
             additional: {  }
             weight: -9
           -
-            uuid: 234062aa-1d55-4cb2-a398-7cdf98e7de79
-            region: second
-            configuration:
-              id: 'views_block:person_card-block_1'
-              label: null
-              provider: views
-              label_display: null
-              views_label: ''
-              items_per_page: none
-              context_mapping: {  }
-            additional: {  }
-            weight: 0
-          -
-            uuid: c38bcde8-8b85-49e6-b363-368ca1b4fe9b
-            region: first
-            configuration:
-              id: 'field_block:node:person:field_person_office_room'
-              label: null
-              provider: layout_builder
-              label_display: null
-              formatter:
-                label: inline
-                type: string
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            additional: {  }
-            weight: 11
-          -
-            uuid: a076a67e-6d5d-48ab-99c0-04eea26ca5e1
-            region: first
-            configuration:
-              id: 'field_block:node:person:field_person_lab_phone'
-              label: null
-              provider: layout_builder
-              label_display: null
-              formatter:
-                label: inline
-                type: telephone_link
-                settings:
-                  title: ''
-                third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-            additional: {  }
-            weight: 16
-          -
             uuid: 532de6e6-fc41-4b7d-a135-5d1cf2c63cf3
             region: first
             configuration:
@@ -265,45 +157,38 @@ third_party_settings:
                   link: false
                 third_party_settings: {  }
             additional: {  }
-            weight: 17
+            weight: 3
           -
-            uuid: 4adfcbd2-3ce0-4263-bf8c-22d85ac3a0f9
+            uuid: 234062aa-1d55-4cb2-a398-7cdf98e7de79
+            region: second
+            configuration:
+              id: 'views_block:person_card-block_1'
+              label: null
+              provider: views
+              label_display: null
+              views_label: ''
+              items_per_page: none
+              context_mapping: {  }
+            additional: {  }
+            weight: 0
+          -
+            uuid: 92ff4f7e-44da-4f93-88cc-c2f2826a2eb2
             region: first
             configuration:
-              id: 'field_block:node:person:field_person_lab_room'
+              id: 'field_block:node:person:field_grad_program_all_degree'
               label: null
               provider: layout_builder
               label_display: null
               formatter:
                 label: above
-                type: string
-                settings:
-                  link_to_entity: false
+                type: list_default
+                settings: {  }
                 third_party_settings: {  }
               context_mapping:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
-            weight: 14
-          -
-            uuid: daeac87f-3076-4216-9833-8e33a2294a03
-            region: first
-            configuration:
-              id: 'field_block:node:person:field_person_lab_building'
-              label: null
-              provider: layout_builder
-              label_display: null
-              formatter:
-                label: above
-                type: string
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-            additional: {  }
-            weight: 15
+            weight: 4
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -334,6 +219,13 @@ content:
       view_mode: large__square
       link: false
     third_party_settings: {  }
+  field_meta_tags:
+    weight: 12
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: metatag_empty_formatter
+    region: content
   field_person_bio:
     weight: 5
     label: visually_hidden
@@ -350,14 +242,6 @@ content:
       link: ''
     third_party_settings: {  }
     region: content
-  field_person_department:
-    type: entity_reference_label
-    weight: 2
-    region: content
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
   field_person_education:
     weight: 6
     label: above
@@ -371,54 +255,6 @@ content:
     region: content
     label: inline
     settings: {  }
-    third_party_settings: {  }
-  field_person_lab_building:
-    type: string
-    weight: 5
-    region: content
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-  field_person_lab_phone:
-    type: telephone_link
-    weight: 7
-    region: content
-    label: above
-    settings:
-      title: ''
-    third_party_settings: {  }
-  field_person_lab_room:
-    type: string
-    weight: 6
-    region: content
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-  field_person_office_building:
-    type: string
-    weight: 8
-    region: content
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-  field_person_office_phone:
-    type: telephone_link
-    weight: 10
-    region: content
-    label: above
-    settings:
-      title: ''
-    third_party_settings: {  }
-  field_person_office_room:
-    type: string
-    weight: 9
-    region: content
-    label: above
-    settings:
-      link_to_entity: false
     third_party_settings: {  }
   field_person_phone:
     weight: 3
@@ -444,6 +280,21 @@ content:
     settings:
       link: false
     third_party_settings: {  }
+  field_person_type_status:
+    weight: 13
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  field_person_types:
+    type: entity_reference_label
+    weight: 11
+    region: content
+    label: inline
+    settings:
+      link: false
+    third_party_settings: {  }
   field_person_website:
     type: link
     weight: 4
@@ -462,16 +313,13 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
-  field_meta_tags: true
+  field_grad_program_all_degree: true
   field_person_credential: true
-  field_person_education: true
   field_person_first_name: true
   field_person_hide: true
   field_person_hometown: true
   field_person_last_name: true
-  field_person_types: true
   field_person_university_id: true
-  field_pt_student_current: true
   field_tags: true
   field_teaser: true
   search_api_excerpt: true
