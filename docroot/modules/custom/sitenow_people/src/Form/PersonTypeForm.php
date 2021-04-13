@@ -52,8 +52,6 @@ class PersonTypeForm extends EntityForm {
    * {@inheritdoc}
    */
   public function form(array $form, FormStateInterface $form_state) {
-    $form = parent::form($form, $form_state);
-
     $form['label'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Label'),
@@ -83,6 +81,12 @@ class PersonTypeForm extends EntityForm {
       '#title' => $this->t('Description'),
       '#default_value' => $this->entity->get('description'),
       '#description' => $this->t('Description of the person type.'),
+    ];
+
+    $form['allow_former'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Allow displaying an alternate version of this type, such as "Former."'),
+      '#default_value' => $this->entity->getAllowFormer(),
     ];
 
     $form['allowed_fields'] = [
@@ -120,7 +124,8 @@ class PersonTypeForm extends EntityForm {
         ],
       ];
     }
-    return $form;
+
+    return parent::form($form, $form_state);
   }
 
   /**
@@ -148,6 +153,7 @@ class PersonTypeForm extends EntityForm {
    * {@inheritdoc}
    */
   public function save(array $form, FormStateInterface $form_state) {
+    $this->entity->set('allow_former', $form_state->getValue('allow_former'));
     $result = parent::save($form, $form_state);
     $message_args = ['%label' => $this->entity->label()];
     $message = $result == SAVED_NEW
