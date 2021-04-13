@@ -1,7 +1,7 @@
 # Behat
 In order to run behat tests locally, you must override the DrupalVM SSL certificate in the box/local.config.yml file. It needs to be set to the path where you downloaded the certs. You can use the `box/certs/` directory because it is excluded from VCS. Do not commit these certs to the repo! The local certificates are stored in the developer Wiki.
 
-Example snippet to include the box/local.config.yml file:
+Example snippet to include in the box/local.config.yml file:
 ```
 apache_vhosts_ssl:
   -
