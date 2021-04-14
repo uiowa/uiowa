@@ -2459,3 +2459,9 @@ $sites['sportsdei.local.drupal.uiowa.edu'] = 'dei.sports.uiowa.edu';
 $sites['sportsdei.dev.drupal.uiowa.edu'] = 'dei.sports.uiowa.edu';
 $sites['sportsdei.stage.drupal.uiowa.edu'] = 'dei.sports.uiowa.edu';
 $sites['sportsdei.prod.drupal.uiowa.edu'] = 'dei.sports.uiowa.edu';
+
+// Directory aliases for sim-ia.uiowa.edu.
+$sites['sim-ia.local.drupal.uiowa.edu'] = 'sim-ia.uiowa.edu';
+$sites['sim-ia.dev.drupal.uiowa.edu'] = 'sim-ia.uiowa.edu';
+$sites['sim-ia.stage.drupal.uiowa.edu'] = 'sim-ia.uiowa.edu';
+$sites['sim-ia.prod.drupal.uiowa.edu'] = 'sim-ia.uiowa.edu';
