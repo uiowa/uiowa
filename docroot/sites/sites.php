@@ -2448,12 +2448,6 @@ $sites['orgtippieconsultingclub.dev.drupal.uiowa.edu'] = 'tippieconsultingclub.o
 $sites['orgtippieconsultingclub.stage.drupal.uiowa.edu'] = 'tippieconsultingclub.org.uiowa.edu';
 $sites['orgtippieconsultingclub.prod.drupal.uiowa.edu'] = 'tippieconsultingclub.org.uiowa.edu';
 
-// Directory aliases for dei.sports.uiowa.edu.
-$sites['sportsdei.local.drupal.uiowa.edu'] = 'dei.sports.uiowa.edu';
-$sites['sportsdei.dev.drupal.uiowa.edu'] = 'dei.sports.uiowa.edu';
-$sites['sportsdei.stage.drupal.uiowa.edu'] = 'dei.sports.uiowa.edu';
-$sites['sportsdei.prod.drupal.uiowa.edu'] = 'dei.sports.uiowa.edu';
-
 // Directory aliases for sim-ia.uiowa.edu.
 $sites['sim-ia.local.drupal.uiowa.edu'] = 'sim-ia.uiowa.edu';
 $sites['sim-ia.dev.drupal.uiowa.edu'] = 'sim-ia.uiowa.edu';
