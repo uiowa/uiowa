@@ -3,8 +3,6 @@
 namespace Drupal\sitenow_migrate\Plugin\migrate\source;
 
 use Drupal\Component\Utility\Html;
-use Drupal\Core\Database\Database;
-use Drupal\migrate\Plugin\MigrationInterface;
 
 /**
  * Provides functions for processing links in source plugins.
@@ -36,7 +34,8 @@ trait LinkReplaceTrait {
           $text = $doc->createTextNode($link->nodeValue);
           $link->parentNode->replaceChild($text, $link);
           $doc->saveHTML();
-        } else {
+        }
+        else {
           // @todo update this to get sitename in place of pharmacy.uiowa.edu.
           if (strpos($href, '/node/') === 0 || stristr($href, 'pharmacy.uiowa.edu/node/')) {
             $nid = explode('node/', $href)[1];
@@ -50,7 +49,8 @@ trait LinkReplaceTrait {
                 '@article' => $row->getSourceProperty('title'),
               ]);
 
-            } else {
+            }
+            else {
               $this->logger->notice('Unable to replace internal link @link in article @article.', [
                 '@link' => $href,
                 '@article' => $row->getSourceProperty('title'),
@@ -94,7 +94,8 @@ trait LinkReplaceTrait {
           $text = $doc->createTextNode($link->nodeValue);
           $link->parentNode->replaceChild($text, $link);
           $doc->saveHTML();
-        } else {
+        }
+        else {
           // @todo update this to get sitename in place of pharmacy.uiowa.edu.
           if (strpos($href, '/node/') === 0 || stristr($href, 'pharmacy.uiowa.edu/node/')) {
             $nid = explode('node/', $href)[1];
@@ -108,7 +109,8 @@ trait LinkReplaceTrait {
                 '@article' => $row->getSourceProperty('title'),
               ]);
 
-            } else {
+            }
+            else {
               $this->logger->notice('Unable to replace internal link @link in article @article.', [
                 '@link' => $href,
                 '@article' => $row->getSourceProperty('title'),
