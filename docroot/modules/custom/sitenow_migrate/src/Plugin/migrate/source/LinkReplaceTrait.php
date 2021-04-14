@@ -4,6 +4,7 @@ namespace Drupal\sitenow_migrate\Plugin\migrate\source;
 
 use Drupal\Component\Utility\Html;
 use Drupal\migrate\Plugin\MigrationInterface;
+use Drupal\migrate\Row;
 
 /**
  * Provides functions for processing links in source plugins.
@@ -12,8 +13,15 @@ trait LinkReplaceTrait {
 
   /**
    * Pre-migrate method for replacing links.
+   *
+   * @param \Drupal\migrate\Row $row
+   *   The migration source row.
+   * @param string $field_name
+   *   The fields that should get link preprocessing.
+   * @param int $no_links_prior
+   *   The creation year before which links should be removed.
    */
-  private function preLinkReplace($row, $field_name, $no_links_prior = 0) {
+  private function preLinkReplace(Row $row, string $field_name, int $no_links_prior = 0) {
     $field = $row->getSourceProperty($field_name);
     if (!empty($field)) {
       // Search for D7 inline embeds and replace with D8 inline entities.
@@ -72,8 +80,13 @@ trait LinkReplaceTrait {
 
   /**
    * Post-migration method of replacing internal links.
+   *
+   * @param \Drupal\migrate\Plugin\MigrationInterface $migration
+   *   The migration object.
+   * @param string $field_name
+   *   The field name which should receive post-migration link processing.
    */
-  private function postLinkReplace(MigrationInterface $migration, $field_name) {
+  private function postLinkReplace(MigrationInterface $migration, string $field_name) {
     $mapping = $migration->getIdMap();
     $destination_ids = $migration->getDestinationIds();
     $nodes = \Drupal::service('entity_type.manager')
@@ -126,8 +139,12 @@ trait LinkReplaceTrait {
 
   /**
    * Query for a list of nodes which may contain newly broken links.
+   *
+   * @param array $fields
+   *   A [field => column] associative array for database columns
+   *   that should be checked for potential broken links.
    */
-  private function reportPossibleLinkBreaks($fields) {
+  private function reportPossibleLinkBreaks(array $fields) {
     foreach ($fields as $field => $columns) {
       $candidates = \Drupal::database()->select($field, 'f')
         ->fields('f', array_merge($columns, ['entity_id']))
