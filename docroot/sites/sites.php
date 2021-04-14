@@ -2459,3 +2459,9 @@ $sites['athleticsdei.local.drupal.uiowa.edu'] = 'dei.athletics.uiowa.edu';
 $sites['athleticsdei.dev.drupal.uiowa.edu'] = 'dei.athletics.uiowa.edu';
 $sites['athleticsdei.stage.drupal.uiowa.edu'] = 'dei.athletics.uiowa.edu';
 $sites['athleticsdei.prod.drupal.uiowa.edu'] = 'dei.athletics.uiowa.edu';
+
+// Directory aliases for camps.athletics.uiowa.edu.
+$sites['athleticscamps.local.drupal.uiowa.edu'] = 'camps.athletics.uiowa.edu';
+$sites['athleticscamps.dev.drupal.uiowa.edu'] = 'camps.athletics.uiowa.edu';
+$sites['athleticscamps.stage.drupal.uiowa.edu'] = 'camps.athletics.uiowa.edu';
+$sites['athleticscamps.prod.drupal.uiowa.edu'] = 'camps.athletics.uiowa.edu';
