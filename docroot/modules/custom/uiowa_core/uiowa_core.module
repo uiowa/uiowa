@@ -41,6 +41,15 @@ function template_preprocess_uiowa_core_headline(&$variables) {
 }
 
 /**
+ * Implements hook_library_info_alter().
+ */
+function uiowa_core_library_info_alter(array &$libraries, string $extension): void {
+  if ($extension == 'claro') {
+    $libraries['global-styling']['css']['theme']["/themes/custom/uids_base/assets/css/admin-theme.css"] = [];
+  }
+}
+
+/**
  * Implements hook_page_attachments().
  */
 function uiowa_core_page_attachments(&$page) {
