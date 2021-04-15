@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: athleticsdei.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: athleticsdei
+  human_name: dei.athletics.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: athleticsdei.prod
+drupal:
+  db:
+    database: dei_athletics_uiowa_edu
+uiowa:
+  requester: wdecora
