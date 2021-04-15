@@ -173,4 +173,10 @@ trait LinkReplaceTrait {
     }
   }
 
+  /**
+   * Override for manual lookup tables of pre-migrated content.
+   */
+  private function manualLookup() {
+  }
+
 }
