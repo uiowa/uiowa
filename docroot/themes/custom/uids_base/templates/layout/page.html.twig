@@ -42,9 +42,9 @@
  * @see html.html.twig
  */
 #}
-{#{% if logged_in %}#}
-{#  {{ attach_library('uids_base/admin') }}#}
-{#{% endif %}#}
+{% if logged_in %}
+  {{ attach_library('uids_base/admin') }}
+{% endif %}
 
 {% set node_attributes = create_attribute() %}
 
