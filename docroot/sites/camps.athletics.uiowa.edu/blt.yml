@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: athleticscamps.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: athleticscamps
+  human_name: camps.athletics.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: athleticscamps.prod
+drupal:
+  db:
+    database: camps_athletics_uiowa_edu
+uiowa:
+  requester: wdecora

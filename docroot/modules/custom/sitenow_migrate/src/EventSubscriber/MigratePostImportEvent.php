@@ -8,6 +8,7 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Database\Connection;
 use Drupal\migrate\Event\MigrateEvents;
 use Drupal\migrate\Event\MigrateImportEvent;
+use Drupal\sitenow_migrate\Plugin\migrate\source\LinkReplaceTrait;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -18,6 +19,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class MigratePostImportEvent implements EventSubscriberInterface {
   use StringTranslationTrait;
+  use LinkReplaceTrait;
 
   /**
    * The EntityTypeManager service.
@@ -84,6 +86,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
     $this->connection = $connection;
 
     // Switch to the D7 database.
+    // @todo Use shared configuration base URL for this.
     Database::setActiveConnection('drupal_7');
     $connection = Database::getConnection();
     $query = $connection->select('variable', 'v');
@@ -118,14 +121,17 @@ class MigratePostImportEvent implements EventSubscriberInterface {
   public function onMigratePostImport(MigrateImportEvent $event) {
     $migration = $event->getMigration();
     $source = $migration->getSourcePlugin();
-    $source->postImportProcess();
+
+    if (method_exists($source, 'postImportProcess')) {
+      $source->postImportProcess($event);
+    }
 
     switch ($migration->id()) {
 
       // Right now, page migration is set to run last.
       // This should only run after it has finished.
       case 'd7_page':
-        $this->sourceToDestIds = $this->fetchMapping();
+        $this->sourceToDestIds = $this->fetchMapping(['d7_page_migration_map']);
         $this->d7Aliases = $this->fetchAliases(TRUE);
         $this->d8Aliases = $this->fetchAliases();
         $this->logger->notice($this->t('Checking for possible broken links'));
@@ -239,8 +245,8 @@ class MigratePostImportEvent implements EventSubscriberInterface {
       $old_nid = end($link_parts);
 
       // Check that there is a mapping and set it to the new id.
-      if (isset($this->sourceToDestIds[$old_id])) {
-        $new_nid = $this->sourceToDestIds[$old_id];
+      if (isset($this->sourceToDestIds[$old_nid])) {
+        $new_nid = $this->sourceToDestIds[$old_nid];
         // Display message in terminal.
         $this->logger->notice($this->t('Old nid... @old_nid', [
           '@old_nid' => $old_nid,
@@ -248,7 +254,7 @@ class MigratePostImportEvent implements EventSubscriberInterface {
         $this->logger->notice($this->t('New nid... @new_nid', [
           '@new_nid' => $new_nid,
         ]));
-        $new_link = '<a href="/node/' . $new_id . $suffix . '"';
+        $new_link = '<a href="/node/' . $new_nid . $suffix . '"';
       }
       // No mapping found, so keep the old link.
       else {
@@ -344,37 +350,15 @@ class MigratePostImportEvent implements EventSubscriberInterface {
     foreach ($result as $row) {
       $source_path = ($drupal7) ? $row->source : $row->path;
       preg_match("|\d+|", $source_path, $match);
-      $nid = $match[0];
-      $aliases[$nid] = $row->alias;
-      $aliases[$row->alias] = $nid;
+
+      if (isset($match[0])) {
+        $nid = $match[0];
+        $aliases[$nid] = $row->alias;
+        $aliases[$row->alias] = $nid;
+      }
     }
 
     return $aliases;
-  }
-
-  /**
-   * Query the migration map to get a D7-nid => D8-nid indexed array.
-   */
-  private function fetchMapping($page_id = 'd7_page', $article_id = 'd7_article') {
-    if ($this->connection->schema()->tableExists('migrate_map_' . $page_id)) {
-      $sub_result1 = $this->connection->select('migrate_map_' . $page_id, 'mm')
-        ->fields('mm', ['sourceid1', 'destid1']);
-    }
-    if ($this->connection->schema()->tableExists('migrate_map_' . $article_id)) {
-      $sub_result2 = $this->connection->select('migrate_map_' . $article_id, 'mma')
-        ->fields('mma', ['sourceid1', 'destid1']);
-      $unioned = isset($sub_result1) ? $sub_result1->union($sub_result2) : $sub_result2;
-    }
-    else {
-      $unioned = $sub_result1;
-    }
-
-    $result = $unioned->execute();
-    $sourceToDestIds = [];
-    foreach ($result as $row) {
-      $sourceToDestIds[$row->sourceid1] = $row->destid1;
-    }
-    return $sourceToDestIds;
   }
 
 }

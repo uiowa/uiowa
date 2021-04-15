@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: sim-ia.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: sim-ia
+  human_name: sim-ia.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sim-ia.prod
+drupal:
+  db:
+    database: sim_ia_uiowa_edu
+uiowa:
+  requester: jbunch

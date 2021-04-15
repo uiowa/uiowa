@@ -20,14 +20,27 @@ trait ProcessMediaTrait {
   protected $fileSystem;
 
   /**
-   * Get the source path from the migration config.
+   * Get the URL of the source public files path with a trailing slash.
+   *
+   * @return string
+   *   The URL.
+   *
+   * @throws \Drupal\migrate\MigrateException
    */
-  protected function getSourceBasePath() {
-    if (isset($this->configuration['constants']) && isset($this->configuration['constants']['SOURCE_BASE_PATH'])) {
-      return $this->configuration['constants']['SOURCE_BASE_PATH'];
-    }
+  protected function getSourcePublicFilesUrl(): string {
+    if (isset($this->configuration['constants']) && isset($this->configuration['constants']['source_base_path'])) {
+      $base_url = rtrim($this->configuration['constants']['source_base_path'], '/');
 
-    return '';
+      if ($files_dir = $this->variableGet('file_public_path', NULL)) {
+        return "{$base_url}/{$files_dir}/";
+      }
+      else {
+        throw new MigrateException('Cannot process media. No public files path variable set.');
+      }
+    }
+    else {
+      throw new MigrateException('Cannot process media. No source base URL set.');
+    }
   }
 
   /**
@@ -57,9 +70,15 @@ trait ProcessMediaTrait {
    * Regex to find Drupal 7 JSON for inline embedded files.
    */
   public function entityReplace($match) {
-    $fid = $match[1];
-    $align = (preg_match("|.*?float: (.*?);.*?|", $match[0], $align)) ? $align[1] : NULL;
+    // Decode to JSON associative array.
+    // The actual JSON data is surrounded by two sets of brackets,
+    // so the matched, non-bracketed JSON is in the [0][0] index
+    // of the json_decode result.
+    $file_properties = json_decode($match[0], TRUE)[0][0];
+    $fid = $file_properties['fid'];
+    $align = isset($file_properties['fields']['alignment']) ? $file_properties['fields']['alignment'] : NULL;
     $file_data = $this->fidQuery($fid);
+
     if ($file_data) {
       $filename = $file_data['filename'];
       $uuid = $this->getMid($filename)['uuid'];
@@ -69,18 +88,20 @@ trait ProcessMediaTrait {
           ->condition('f.filename', $filename)
           ->execute()
           ->fetchField();
+
+        $meta = [
+          'title' => isset($file_properties['attributes']['title']) ? $file_properties['attributes']['title'] : $filename,
+          'alt' => isset($file_properties['attributes']['alt']) ? $file_properties['attributes']['alt'] : explode('.', $filename)[0],
+        ];
+
         // If there's no fid in the D8 database,
         // then we'll need to fetch it from the source.
-        $meta = [
-          'title' => 'title',
-          'alt' => 'alt',
-        ];
-        // @todo fetch the actual meta.
         if (!$new_fid) {
           // Use filename, update the source base path with the subdirectory.
-          $source_base_path = str_replace('public://', $this->getSourceBasePath(), $file_data['uri']);
+          $source_base_path = str_replace('public://', $this->getSourcePublicFilesUrl(), $file_data['uri']);
           $source_base_path = str_replace($filename, '', $source_base_path);
           $new_fid = $this->downloadFile($filename, $source_base_path, $this->getDrupalFileDirectory());
+
           if ($new_fid) {
             $this->createMediaEntity($new_fid, $meta, 1);
             $uuid = $this->getMid($filename)['uuid'];
@@ -88,6 +109,7 @@ trait ProcessMediaTrait {
         }
         else {
           $uuid = $this->getMid($filename)['uuid'];
+
           // And in case we had the file, but not the media entity.
           if (!$uuid) {
             $this->createMediaEntity($new_fid, $meta, 1);
@@ -95,9 +117,11 @@ trait ProcessMediaTrait {
           }
         }
       }
+
       unset($file_data);
       return $this->constructInlineEntity($uuid, $align);
     }
+
     // Failed to find a file, so let's leave the content unchanged.
     return $match;
   }
@@ -107,14 +131,19 @@ trait ProcessMediaTrait {
    */
   public function constructInlineEntity($uuid, $align) {
     $align = isset($align) ? $align : 'center';
-    // @todo add handling for non-image media embeds.
-    $parts = [
-      '<drupal-media data-align="' . $align . '"',
-      'data-entity-type="media"',
-      'data-entity-uuid="' . $uuid . '">',
-      '</drupal-media>',
+
+    $media = [
+      '#type' => 'html_tag',
+      '#tag' => 'drupal-media',
+      '#attributes' => [
+        'data-align' => $align,
+        'data-entity-type' => 'media',
+        'data-entity-uuid' => $uuid,
+        'data-view-mode' => 'small__no_crop',
+      ],
     ];
-    return implode(" ", $parts);
+
+    return \Drupal::service('renderer')->renderPlain($media);
   }
 
   /**
@@ -145,6 +174,7 @@ trait ProcessMediaTrait {
       ->condition('f.filename', $filename)
       ->execute()
       ->fetchAssoc();
+
     unset($query);
     return $results;
   }
@@ -196,8 +226,9 @@ trait ProcessMediaTrait {
       throw new MigrateException("Could not create or write to directory '{$dir}'");
     }
 
-    // Try to write the file, set the replacement behavior to EXISTS_ERROR.
-    $file = file_save_data($raw_file, implode('/', [$dir, $filename]), FileSystemInterface::EXISTS_ERROR);
+    // Try to write the file, replacing any existing file with the same name.
+    $file = file_save_data($raw_file, implode('/', [$dir, $filename]), FileSystemInterface::EXISTS_REPLACE);
+
     // Drop the raw file out of memory for a little cleanup.
     unset($raw_file);
 
@@ -312,60 +343,66 @@ trait ProcessMediaTrait {
 
   /**
    * Process an image field.
+   *
+   * @param int $fid
+   *   The file ID.
+   * @param string $alt
+   *   The image alt text.
+   * @param string $title
+   *   The optional image title.
+   *
+   * @return int|null
+   *   The media ID or null if unable to process.
+   *
+   * @throws \Drupal\migrate\MigrateException
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  protected function processImageField(&$row, $field_name) {
-    // Check if an image was attached, and if so, update with new fid.
-    $original_fid = $row->getSourceProperty("{$field_name}_fid");
+  protected function processImageField($fid, $alt = NULL, $title = NULL) {
+    $uri = $this->fidQuery($fid)['uri'];
+    $filename_w_subdir = str_replace('public://', '', $uri);
 
-    if (isset($original_fid)) {
-      $uri = $this->fidQuery($original_fid)['uri'];
-      $filename_w_subdir = str_replace('public://', '', $uri);
-      // Split apart the filename from the subdirectory path.
-      $filename_w_subdir = explode('/', $filename_w_subdir);
-      $filename = array_pop($filename_w_subdir);
-      $subdir = implode('/', $filename_w_subdir) . '/';
-      unset($filename_w_subdir);
-      // Get a connection for the destination database
-      // and retrieve the associated fid.
-      $new_fid = \Drupal::database()->select('file_managed', 'f')
-        ->fields('f', ['fid'])
-        ->condition('f.filename', $filename)
-        ->execute()
-        ->fetchField();
+    // Split apart the filename from the subdirectory path.
+    $filename_w_subdir = explode('/', $filename_w_subdir);
+    $filename = array_pop($filename_w_subdir);
+    $subdir = implode('/', $filename_w_subdir) . '/';
+    unset($filename_w_subdir);
 
-      $meta = [
-        'alt' => $row->getSourceProperty("{$field_name}_alt"),
-        'title' => $row->getSourceProperty("{$field_name}_title"),
-      ];
+    // Get a connection for the destination database
+    // and retrieve the associated fid.
+    $new_fid = \Drupal::database()->select('file_managed', 'f')
+      ->fields('f', ['fid'])
+      ->condition('f.filename', $filename)
+      ->execute()
+      ->fetchField();
 
-      // If there's no fid in the D8 database,
-      // then we'll need to fetch it from the source.
-      if (!$new_fid) {
-        // Use the filename, update the source base path with the subdirectory.
-        $new_fid = $this->downloadFile($filename, $this->getSourceBasePath() . $subdir, $this->getDrupalFileDirectory() . $subdir);
-        unset($subdir);
-        if ($new_fid) {
-          $mid = $this->createMediaEntity($new_fid, $meta, 1);
-        }
-      }
-      else {
-        $mid = $this->getMid($filename)['mid'];
-        unset($filename);
-        // And in case we had the file, but not the media entity.
-        if (!$mid) {
-          $mid = $this->createMediaEntity($new_fid, $meta, 1);
-          unset($meta);
-        }
-      }
-      if ($mid) {
-        $row->setSourceProperty("{$field_name}_fid", $mid);
-      }
-      else {
-        // If we don't have a media ID at this point,
-        // we need to unset the ID.
-        $row->setSourceProperty("{$field_name}_fid", NULL);
+    $meta = [
+      'alt' => $alt ?? $filename,
+      'title' => $title,
+    ];
+
+    // If there's no fid in the D8 database,
+    // then we'll need to fetch it from the source.
+    if (!$new_fid) {
+      // Use the filename, update the source base path with the subdirectory.
+      $new_fid = $this->downloadFile($filename, $this->getSourcePublicFilesUrl() . $subdir, $this->getDrupalFileDirectory() . $subdir);
+      unset($subdir);
+
+      if ($new_fid) {
+        $mid = $this->createMediaEntity($new_fid, $meta, 1);
       }
     }
+    else {
+      $mid = $this->getMid($filename)['mid'];
+      unset($filename);
+
+      // And in case we had the file, but not the media entity.
+      if (!$mid) {
+        $mid = $this->createMediaEntity($new_fid, $meta, 1);
+        unset($meta);
+      }
+    }
+
+    return $mid ?? NULL;
   }
 
   /**
@@ -423,7 +460,7 @@ trait ProcessMediaTrait {
           $prefix_path = str_replace($filename, '', $prefix_path);
 
           // Download the file and create the file record.
-          $fid = $this->downloadFile($filename, $this->getSourceBasePath() . $prefix_path, $drupal_file_directory . $prefix_path);
+          $fid = $this->downloadFile($filename, $this->getSourcePublicFilesUrl() . $prefix_path, $drupal_file_directory . $prefix_path);
 
           // Get meta data an create the media entity.
           $meta = [];

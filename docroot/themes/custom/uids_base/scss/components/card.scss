@@ -2,10 +2,32 @@
 @import "assets/scss/_utilities.scss";
 @import "components/card/card.scss";
 
-.card__description {
-  word-wrap: anywhere;
-  overflow-wrap: anywhere;
+// @todo move back to UIDS
+
+.card {
+  p + p {
+    margin-top: $sm;
+  }
+
+  // set font weight to normal if intro classes are used
+  p[class*="element-"],
+  p[class*="uids-component-"] {
+    font-weight: normal;
+  }
+
+  .card__description + .btn,
+  .card__description + .bttn,
+  &__title + .bttn {
+    margin-top: 1.05rem;
+  }
+
+  &__description {
+    font-size: 1rem;
+    word-wrap: anywhere;
+    overflow-wrap: anywhere;
+  }
 }
+
 // ie11
 @media all and (-ms-high-contrast: none),
 (-ms-high-contrast: active) {
@@ -31,19 +53,26 @@
   }
 }
 
+.card[class*="bg--gold"],
+.card[class*="bg--gray"] {
+  .bttn--sans-serif {
+    border-color: rgba(0,0,0,.225);
+  }
+}
+
 // Border color adjustment for cards not using a bg color
 .card:not([class*="bg-"]) {
   border-color: rgba(0,0,0,.125);
   .bg--black--pattern--brain &,
   .bg-pattern--brain-black &,
-  .bg--black & {
+  [class*="bg--black"] & {
     border-color: rgba(255,255,255,.325);
     .bttn--sans-serif {
       border-color: rgba(255,255,255,.325);
     }
   }
   .bttn--sans-serif {
-    border-color: rgba(0,0,0,.125);
+    border-color: rgba(0,0,0,.225);
   }
 }
 

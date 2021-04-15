@@ -95,12 +95,13 @@
         "cweagans/composer-patches": "^1.7",
         "dompdf/dompdf": "0.8.5",
         "drupal-pyrello/views_tree": "^1.0",
-        "drupal/acquia_connector": "^2.0@RC",
+        "drupal/acquia_connector": "^3.0@RC",
         "drupal/acquia_purge": "^1.0",
         "drupal/address": "^1.8",
         "drupal/administerusersbyrole": "^3.0",
         "drupal/allowed_formats": "^1.1",
         "drupal/antibot": "^1.4",
+        "drupal/better_exposed_filters": "^5.0@beta",
         "drupal/better_normalizers": "^1.0@beta",
         "drupal/big_pipe_sessionless": "^2.0",
         "drupal/block_content_permissions": "^1.9",
@@ -111,7 +112,7 @@
         "drupal/config_split": "^1.4",
         "drupal/core-composer-scaffold": "^9.0.0",
         "drupal/core-recommended": "^9.0.0",
-        "drupal/cshs": "^1.0@beta",
+        "drupal/cshs": "^2.0",
         "drupal/default_content": "^2.0",
         "drupal/devel": "^4.0",
         "drupal/diff": "^1.0@RC",
@@ -143,7 +144,7 @@
         "drupal/layout_builder_shortcuts": "1.0.x-dev#5cbeec3e4e2f19874dfeaf36345f67d38ef5fd8d",
         "drupal/layout_builder_styles": "^1.0@beta",
         "drupal/lazy": "^3.6",
-        "drupal/lb_direct_add": "1.x-dev#7268e198714c2d32e1a2ad06a0a45e63e79d55f3",
+        "drupal/lb_direct_add": "2.x-dev#c60b756193f8608c9bc7d77b13bc14db49fe5421",
         "drupal/linkit": "^5.0",
         "drupal/linkit_media_library": "^1.0",
         "drupal/mailsystem": "^4.1",
@@ -170,7 +171,7 @@
         "drupal/purge": "^3.0@beta",
         "drupal/rabbit_hole": "^1.0@beta",
         "drupal/redirect": "1.x-dev#e5201ca519bd947ee5478d9dee88af0c5d6fec89",
-        "drupal/reroute_email": "^1.1",
+        "drupal/reroute_email": "^2.0",
         "drupal/robotstxt": "^1.2",
         "drupal/schema_metatag": "^2.1",
         "drupal/search_api_autocomplete": "^1.2",
@@ -183,6 +184,7 @@
         "drupal/superfish": "^1.2",
         "drupal/swiftmailer": "^2.0@beta",
         "drupal/theme_permission": "^2.0",
+        "drupal/tvi": "^1.0@RC",
         "drupal/ultimate_cron": "^2.0@alpha",
         "drupal/views_ical": "^1.0@alpha",
         "drupal/webform": "^6.0",
@@ -236,7 +238,7 @@
                 "Expose Layout Builder data to REST and JSON:API": "https://www.drupal.org/files/issues/2020-07-07/2942975-116.patch",
                 "Temporary Hotfix for YouTube oEmbeds": "https://www.drupal.org/files/issues/2020-12-04/3186415-8.9.x-youtube-headers-html.patch",
                 "Themes have no context of the entity being rendered in preprocessing a layout when using Layout builder": "https://www.drupal.org/files/issues/2020-02-11/3111192-entity-14.patch",
-                "Add optional parameters to StatementInterface::fetchObject() to be in line with the PDO implementation of the method fetchObject()": "https://www.drupal.org/files/issues/2021-02-08/3128548-59.patch"
+                "Add Views EntityReference filter to be available for all entity reference fields": "https://www.drupal.org/files/issues/2021-03-06/2429699-389.patch"
             },
             "drupal/default_content": {
                 "Add a Normalizer and Denormalizer to support Layout Builder": "https://www.drupal.org/files/issues/2020-08-24/default_content-add-normalizer-denormalizer-for-layout-builder-3160146-25.patch",
@@ -256,7 +258,7 @@
             },
             "drupal/layout_builder_styles": {
                 "Section dependency on layout plugin configuration form": "https://www.drupal.org/files/issues/2019-08-23/layout_builder_styles-3062261-%2310.patch",
-                "Grouping of layout builder styles": "https://www.drupal.org/files/issues/2021-01-20/style_groups_for_layout_builder_styles-3075502--beta4.patch"
+                "Grouping of layout builder styles": "https://www.drupal.org/files/issues/2021-03-16/3075502-18_0.patch"
             },
             "drupal/media_entity_facebook": {
                 "Allow creation of new Facebook media entities using the Media Browser": "https://www.drupal.org/files/issues/2020-03-31/3120085-media-library-add-5.patch",
@@ -276,8 +278,17 @@
             "drupal/redirect": {
                 "Match redirect": "https://www.drupal.org/files/issues/2020-04-13/redirect-n2831605-31.patch"
             },
+            "drupal/schema_metatag": {
+                "Illegal offset type": "https://www.drupal.org/files/issues/2020-09-30/schema_metatag-undefined_index_objectinfo-3174103-2.patch"
+            },
             "jackmoore/colorbox": {
                 "Accessibility improvements": "https://patch-diff.githubusercontent.com/raw/jackmoore/colorbox/pull/832.diff"
+            },
+            "drupal/jquery_ui_touch_punch": {
+                "JQuery UI TouchPunch for D9": "https://www.drupal.org/files/issues/2021-02-26/jquery_ui_touch_punch.patch"
+            },
+            "drupal/better_exposed_filters": {
+                "Fixed focus of textfield for bef in views": "https://www.drupal.org/files/issues/2020-09-16/3103626-12.patch"
             }
         },
         "installer-types": [
