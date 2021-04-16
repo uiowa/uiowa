@@ -2,6 +2,7 @@
 
 namespace Drupal\sitenow_migrate\Plugin\migrate\source;
 
+use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Row;
 
 /**
@@ -15,6 +16,7 @@ use Drupal\migrate\Row;
 class Articles extends BaseNodeSource {
 
   use ProcessMediaTrait;
+  use LinkReplaceTrait;
 
   /**
    * {@inheritdoc}
@@ -43,4 +45,8 @@ class Articles extends BaseNodeSource {
     return TRUE;
   }
 
+  public function postImportProcess(MigrateImportEvent $event) {
+    $migration = $event->getMigration();
+    $this->postLinkReplace($migration, 'field_article_body');
+  }
 }

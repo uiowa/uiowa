@@ -45,11 +45,10 @@ trait LinkReplaceTrait {
           $doc->saveHTML();
         }
         else {
-          // @todo update this to get sitename in place of pharmacy.uiowa.edu.
-          if (strpos($href, '/node/') === 0 || stristr($href, 'pharmacy.uiowa.edu/node/')) {
+          $site_path = \str_replace('sites/', '', \Drupal::service('site.path'));
+          if (strpos($href, '/node/') === 0 || stristr($href, $site_path . '/node/')) {
             $nid = explode('node/', $href)[1];
 
-            // @todo update this to allow for easier 'manualLookup' implementation.
             if ($lookup = $this->manualLookup($nid)) {
               $link->setAttribute('href', $lookup);
               $link->parentNode->replaceChild($link, $link);
@@ -87,6 +86,7 @@ trait LinkReplaceTrait {
    *   The field name which should receive post-migration link processing.
    */
   private function postLinkReplace(MigrationInterface $migration, string $field_name) {
+    // @todo account for the possibility of multiple migrations.
     $mapping = $migration->getIdMap();
     $destination_ids = $migration->getDestinationIds();
     $nodes = \Drupal::service('entity_type.manager')
@@ -104,11 +104,10 @@ trait LinkReplaceTrait {
         while ($i >= 0) {
           $link = $links->item($i);
           $href = $link->getAttribute('href');
-          // @todo update this to get sitename in place of pharmacy.uiowa.edu.
-          if (strpos($href, '/node/') === 0 || stristr($href, 'pharmacy.uiowa.edu/node/')) {
+          $site_path = \str_replace('sites/', '', \Drupal::service('site.path'));
+          if (strpos($href, '/node/') === 0 || stristr($href, $site_path . '/node/')) {
             $nid = explode('node/', $href)[1];
 
-            // @todo update this to allow for easier 'manualLookup' implementation.
             if ($lookup = $this->manualLookup($nid) ||
               $lookup = $mapping->lookupSourceId(['nid' => $nid])) {
               $link->setAttribute('href', $lookup);
@@ -176,7 +175,8 @@ trait LinkReplaceTrait {
   /**
    * Override for manual lookup tables of pre-migrated content.
    */
-  private function manualLookup() {
+  private function manualLookup(int $nid) {
+    return [];
   }
 
 }
