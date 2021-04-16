@@ -85,13 +85,8 @@ class MultisiteCommands extends BltTasks {
         }
 
         if (!in_array($multisite, $options['exclude'])) {
-          // Define a site-specific cache directory.
-          // @see: https://github.com/drush-ops/drush/pull/4345
-          $tmp = "/tmp/.drush-cache-{$app}/{$env}/{$multisite}";
-
           $this->taskDrush()
             ->drush($cmd)
-            ->option('define', "drush.paths.cache-directory={$tmp}")
             ->run();
         }
         else {
