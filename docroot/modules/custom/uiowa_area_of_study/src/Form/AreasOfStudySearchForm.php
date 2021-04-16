@@ -5,7 +5,6 @@ namespace Drupal\uiowa_area_of_study\Form;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
-use Drupal\Component\Utility\UrlHelper;
 
 /**
  * Provides a Areas of Study search form.
