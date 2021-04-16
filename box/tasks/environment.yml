@@ -1,0 +1,11 @@
+- name: Add AH_SITE_GROUP environment variable.
+  lineinfile:
+    dest: /etc/environment
+    line: "AH_SITE_GROUP=drupalvm"
+    regexp: "^AH_SITE_GROUP"
+
+- name: Add AH_SITE_ENVIRONMENT environment variable.
+  lineinfile:
+    dest: /etc/environment
+    line: "AH_SITE_ENVIRONMENT=local"
+    regexp: "^AH_SITE_ENVIRONMENT"

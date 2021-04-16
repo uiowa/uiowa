@@ -1777,7 +1777,8 @@ solr_version: 4.5.1
 post_provision_scripts:
   - ../../../acquia/blt-drupal-vm/scripts/drupal-vm/configure-solr.sh
   - ../../../acquia/blt-drupal-vm/scripts/drupal-vm/post-provision.php
-  - ../../../../box/post-provision.sh
+
+post_provision_tasks_dir: ../../../../box/tasks/*.yml
 
 nodejs_version: 14.x
 
