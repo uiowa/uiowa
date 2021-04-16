@@ -2440,3 +2440,28 @@ function sitenow_update_9006(&$sandbox) {
     $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
   }
 }
+
+/**
+ * Update sites using the person_extended to reflect changes to that split.
+ */
+function sitenow_update_9007() {
+ $tables = [
+   'node__body' => 'body_value',
+   'node_revision__body' => 'body_value',
+   'block_content__field_uiowa_text_area' => 'field_uiowa_text_area_value',
+   'block_content_revision__field_uiowa_text_area' => 'field_uiowa_text_area_value',
+ ];
+ // Matched arrays of find/replace values.
+ $secondary = 'bttn--secondary bttn--caps';
+ $old_values = ['btn-primary', 'btn-secondary', 'btn-success', 'btn-danger', 'btn-info', 'btn-warning', 'btn-link', 'btn-light', 'btn-dark', 'btn'];
+ $new_values = ['bttn--primary bttn--caps', $secondary, $secondary, $secondary, $secondary, $secondary, '', $secondary, $secondary, 'bttn'];
+ foreach ($tables as $table => $column) {
+   foreach ($old_values  as $delta => $string) {
+     $db = \Drupal::database();
+     $db->update($table)->expression($column, 'REPLACE(' . $column .', :old_value, :new_value)', [
+       ':old_value' => $old_values[$delta],
+       ':new_value' => $new_values[$delta]
+     ])->execute();
+   }
+ }
+}
