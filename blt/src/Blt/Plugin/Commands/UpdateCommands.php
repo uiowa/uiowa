@@ -551,4 +551,33 @@ EOD;
     $this->setSchemaVersion(1014);
   }
 
+  /**
+   * Update 1015.
+   *
+   * @Update(
+   *   version = "1015",
+   *   description = "Set drush.yml config file for all multisites."
+   * )
+   */
+  protected function update1015() {
+    $root = $this->getConfigValue('repo.root');
+    $sites = Multisite::getAllSites($root);
+
+    foreach ($sites as $site) {
+      $file = "{$root}/docroot/sites/{$site}/drush.yml";
+
+      $yaml = [
+        'drush' => [
+          'paths' => [
+            'cache-directory' => '/tmp/.drush-cache-${env.AH_SITE_GROUP}/${env.AH_SITE_ENVIRONMENT}/' . $site,
+          ]
+        ]
+      ];
+
+      file_put_contents($file, Yaml::dump($yaml, 10, 2));
+    }
+
+    $this->setSchemaVersion(1015);
+  }
+
 }
