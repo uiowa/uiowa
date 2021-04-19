@@ -33,7 +33,7 @@
 {% set card_aria_describedby = '' %}
 {% endif %}
 
-<div{{ attributes.addclass(card_classes) }}>
+<div{{ attributes.addclass(card_classes) }} {{ card_data_attribute}}>
   {{ title_prefix }}
   {{ title_suffix }}
   {% block card_img %}
