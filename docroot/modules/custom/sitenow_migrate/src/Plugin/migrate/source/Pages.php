@@ -19,6 +19,13 @@ class Pages extends BaseNodeSource {
   use LinkReplaceTrait;
 
   /**
+   * NID mapping helper.
+   *
+   * @var array
+   */
+  protected $mapping = [];
+
+  /**
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
@@ -54,18 +61,26 @@ class Pages extends BaseNodeSource {
    * Override for manual lookup tables of pre-migrated content.
    */
   private function manualLookup(int $nid) {
-    // Check if the articles migration has run, and is needed for
-    // possible mapping.
-    $database = \Drupal::database();
-    // @todo check the people migration too, once it is functional.
-    if ($database->schema()->tableExists('migrate_map_d7_article')) {
-      return $database->select('migrate_map_d7_article', 'mm')
-        ->fields('mm', ['destid1'])
-        ->condition('mm.sourceid1', $nid, '=')
-        ->execute()
-        ->fetchField();
+    if (empty($this->mapping)) {
+      $database = \Drupal::database();
+      // The following works if all destination content is of a NODE type.
+      $tables = [
+        'migrate_map_d7_article',
+        'migrate_map_d7_page',
+        'migrate_map_d7_person',
+      ];
+      foreach ($tables as $table) {
+        if ($database->schema()->tableExists('migrate_map_d7_article')) {
+          $this->mapping += $database->select('migrate_map_d7_article', 'mm')
+            ->fields('mm', ['destid1'])
+            ->condition('mm.sourceid1', $nid, '=')
+            ->execute()
+            ->fetchField();
+        }
+      }
     }
-    return FALSE;
+
+    return isset($this->mapping[$nid]) ? $this->mapping[$nid] : FALSE;
   }
 
 }
