@@ -35,7 +35,7 @@ class Articles extends BaseNodeSource {
     $article_body = $row->getSourceProperty('field_article_body');
 
     if (!empty($article_body)) {
-      $article_body = $this->replaceInlineFiles($article_body);
+      $article_body[0]['value'] = $this->replaceInlineFiles($article_body[0]['value']);
       $row->setSourceProperty('field_article_body', $article_body);
 
       // Check summary, and create one if none exists.
