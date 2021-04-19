@@ -52,6 +52,7 @@ class Articles extends BaseNodeSource {
    *   The migration event.
    */
   public function postImportProcess(MigrateImportEvent $event) {
+    $this->reportPossibleLinkBreaks(['node__body' => ['body_value']]);
     $migration = $event->getMigration();
     $this->postLinkReplace($migration, 'body');
   }
