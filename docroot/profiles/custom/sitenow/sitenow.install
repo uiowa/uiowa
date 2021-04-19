@@ -2451,6 +2451,19 @@ function sitenow_update_9007() {
 
   // Limit to just sites running uids_base.
   if ($active_theme->getName() === 'uids_base') {
+    $secondary = 'bttn--secondary bttn--caps';
+    $search_replace = [
+      'btn-primary' => 'bttn--primary bttn--caps',
+      'btn-secondary' => $secondary,
+      'btn-success' => $secondary,
+      'btn-danger' => $secondary,
+      'btn-info' => $secondary,
+      'btn-warning' => $secondary,
+      'btn-light' => $secondary,
+      'btn-dark' => $secondary,
+      'btn-link' => '',
+      'btn' => 'bttn',
+    ];
     $entity_type_manager = \Drupal::entityTypeManager();
     $entity_field_manager = \Drupal::service('entity_field.manager');
     $text_long = $entity_field_manager->getFieldMapByFieldType('text_long');
@@ -2487,38 +2500,13 @@ function sitenow_update_9007() {
           $tables[] = $revision_table;
         }
         if (!empty($tables)) {
-          $secondary = 'bttn--secondary bttn--caps';
-          $old_values = [
-            'btn-primary',
-            'btn-secondary',
-            'btn-success',
-            'btn-danger',
-            'btn-info',
-            'btn-warning',
-            'btn-light',
-            'btn-dark',
-            'btn-link',
-            'btn'
-          ];
-          $new_values = [
-            'bttn--primary bttn--caps',
-            $secondary,
-            $secondary,
-            $secondary,
-            $secondary,
-            $secondary,
-            $secondary,
-            $secondary,
-            '', // btn-link
-            'bttn'
-          ];
           foreach ($tables as $table) {
-            foreach ($old_values as $delta => $string) {
+            foreach ($search_replace as $needle => $string) {
               $db = \Drupal::database();
               $db->update($table)
                 ->expression($value_column, 'REPLACE(' . $value_column . ', :old_value, :new_value)', [
-                  ':old_value' => $old_values[$delta],
-                  ':new_value' => $new_values[$delta]
+                  ':old_value' => $needle,
+                  ':new_value' => $string,
                 ])
                 ->execute();
             }
@@ -2526,5 +2514,19 @@ function sitenow_update_9007() {
         }
       }
     }
+
+    // Loop through SiteNow config ignored views.
+    $views = ['articles', 'people'];
+    foreach ($views as $view) {
+      $view = \Drupal::entityTypeManager()->getStorage('view')->load('people');
+      $default =& $view->getDisplay('default');
+      $header_content = $default["display_options"]["header"]["area"]["content"]["value"];
+      foreach ($search_replace as $needle => $string) {
+        $header_content = str_replace($needle, $string, $header_content);
+      }
+      $default["display_options"]["header"]["area"]["content"]["value"] = $header_content;
+      $view->save();
+    }
+
   }
 }
