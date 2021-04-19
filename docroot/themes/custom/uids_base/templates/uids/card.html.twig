@@ -13,6 +13,10 @@
     {# If we also have link text, then we'll show a psuedo-button. #}
     {% if card_link_title is not empty %}
       {% set show_button = true %}
+      {# If card_no_link is set, use button as link element. #}
+      {% if card_no_link %}
+        {% set link_element = 'button' %}
+      {% endif %}
     {% endif %}
   {% elseif card_link_title is not empty %}
     {# Title is not set, but there is link text, so use that instead. #}
@@ -33,7 +37,7 @@
 {% set card_aria_describedby = '' %}
 {% endif %}
 
-<div{{ attributes.addclass(card_classes) }} {{ card_data_attribute }}>
+<div{{ attributes.addclass(card_classes) }} {% if card_no_link %} data-uids-no-link{% endif %}>
   {{ title_prefix }}
   {{ title_suffix }}
   {% block card_img %}
