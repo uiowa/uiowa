@@ -157,7 +157,10 @@ trait LinkReplaceTrait {
             continue;
           }
 
-          if (preg_match_all('|<a.*?>(.*?)<\/a>|i', $value, $matches)) {
+          // Checks for any links using the node/ format
+          // and reports the node id on which it was found
+          // and the linked text.
+          if (preg_match_all('|<a.*?node.*?>(.*?)<\/a>|i', $value, $matches)) {
             $oopsie_daisies[$entity_id] = implode(',', $matches[1]);
           }
         }
