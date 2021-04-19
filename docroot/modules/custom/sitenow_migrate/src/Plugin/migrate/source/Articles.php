@@ -45,8 +45,15 @@ class Articles extends BaseNodeSource {
     return TRUE;
   }
 
+  /**
+   * Functions to run following a completed migration.
+   *
+   * @param \Drupal\migrate\Event\MigrateImportEvent $event
+   *   The migration event.
+   */
   public function postImportProcess(MigrateImportEvent $event) {
     $migration = $event->getMigration();
     $this->postLinkReplace($migration, 'field_article_body');
   }
+
 }
