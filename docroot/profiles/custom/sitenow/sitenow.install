@@ -10,6 +10,8 @@ use Drupal\block\Entity\Block;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Database\Database;
+use Drupal\Core\Entity\Sql\SqlContentEntityStorage;
+use Drupal\Core\Entity\Sql\SqlContentEntityStorageException;
 use Drupal\Core\Site\Settings;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
@@ -2442,26 +2444,87 @@ function sitenow_update_9006(&$sandbox) {
 }
 
 /**
- * Update sites using the person_extended to reflect changes to that split.
+ * Update button classes.
  */
 function sitenow_update_9007() {
- $tables = [
-   'node__body' => 'body_value',
-   'node_revision__body' => 'body_value',
-   'block_content__field_uiowa_text_area' => 'field_uiowa_text_area_value',
-   'block_content_revision__field_uiowa_text_area' => 'field_uiowa_text_area_value',
- ];
- // Matched arrays of find/replace values.
- $secondary = 'bttn--secondary bttn--caps';
- $old_values = ['btn-primary', 'btn-secondary', 'btn-success', 'btn-danger', 'btn-info', 'btn-warning', 'btn-link', 'btn-light', 'btn-dark', 'btn'];
- $new_values = ['bttn--primary bttn--caps', $secondary, $secondary, $secondary, $secondary, $secondary, '', $secondary, $secondary, 'bttn'];
- foreach ($tables as $table => $column) {
-   foreach ($old_values  as $delta => $string) {
-     $db = \Drupal::database();
-     $db->update($table)->expression($column, 'REPLACE(' . $column .', :old_value, :new_value)', [
-       ':old_value' => $old_values[$delta],
-       ':new_value' => $new_values[$delta]
-     ])->execute();
-   }
- }
+  $active_theme = \Drupal::service('theme.manager')->getActiveTheme();
+
+  // Limit to just sites running uids_base.
+  if ($active_theme->getName() === 'uids_base') {
+    $entity_type_manager = \Drupal::entityTypeManager();
+    $entity_field_manager = \Drupal::service('entity_field.manager');
+    $text_long = $entity_field_manager->getFieldMapByFieldType('text_long');
+    $text_with_summary = $entity_field_manager->getFieldMapByFieldType('text_with_summary');
+    $entity_field_map = array_merge($text_long, $text_with_summary);
+
+    foreach ($entity_field_map as $entity_type_id => $field_map) {
+      $entity_storage = $entity_type_manager->getStorage($entity_type_id);
+      if (!($entity_storage instanceof SqlContentEntityStorage)) {
+        continue;
+      }
+
+      $entity_type = $entity_type_manager->getDefinition($entity_type_id);
+      $field_storage_definitions = $entity_field_manager->getFieldStorageDefinitions($entity_type_id);
+      $table_mapping = $entity_storage->getTableMapping($field_storage_definitions);
+      foreach (array_intersect_key($field_storage_definitions, $field_map) as $field_storage_definition) {
+        $tables = [];
+        $field_name = $field_storage_definition->getName();
+        try {
+          $tables[] = $table_mapping->getFieldTableName($field_name);
+          $value_column = $table_mapping->getFieldColumnName($field_storage_definition, 'value');
+        } catch (SqlContentEntityStorageException $e) {
+          continue;
+        }
+        // See if the field has a revision table.
+        $revision_table = NULL;
+        if ($entity_type->isRevisionable() && $field_storage_definition->isRevisionable()) {
+          if ($table_mapping->requiresDedicatedTableStorage($field_storage_definition)) {
+            $revision_table = $table_mapping->getDedicatedRevisionTableName($field_storage_definition);
+          }
+          elseif ($table_mapping->allowsSharedTableStorage($field_storage_definition)) {
+            $revision_table = $entity_type->getRevisionDataTable() ?: $entity_type->getRevisionTable();
+          }
+          $tables[] = $revision_table;
+        }
+        if (!empty($tables)) {
+          $secondary = 'bttn--secondary bttn--caps';
+          $old_values = [
+            'btn-primary',
+            'btn-secondary',
+            'btn-success',
+            'btn-danger',
+            'btn-info',
+            'btn-warning',
+            'btn-light',
+            'btn-dark',
+            'btn-link',
+            'btn'
+          ];
+          $new_values = [
+            'bttn--primary bttn--caps',
+            $secondary,
+            $secondary,
+            $secondary,
+            $secondary,
+            $secondary,
+            $secondary,
+            $secondary,
+            '', // btn-link
+            'bttn'
+          ];
+          foreach ($tables as $table) {
+            foreach ($old_values as $delta => $string) {
+              $db = \Drupal::database();
+              $db->update($table)
+                ->expression($value_column, 'REPLACE(' . $value_column . ', :old_value, :new_value)', [
+                  ':old_value' => $old_values[$delta],
+                  ':new_value' => $new_values[$delta]
+                ])
+                ->execute();
+            }
+          }
+        }
+      }
+    }
+  }
 }
