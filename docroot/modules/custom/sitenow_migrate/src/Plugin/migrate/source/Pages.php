@@ -70,12 +70,11 @@ class Pages extends BaseNodeSource {
         'migrate_map_d7_person',
       ];
       foreach ($tables as $table) {
-        if ($database->schema()->tableExists('migrate_map_d7_article')) {
-          $this->mapping += $database->select('migrate_map_d7_article', 'mm')
-            ->fields('mm', ['destid1'])
-            ->condition('mm.sourceid1', $nid, '=')
+        if ($database->schema()->tableExists($table)) {
+          $this->mapping += $database->select($table, 'mm')
+            ->fields('mm', ['sourceid1', 'destid1'])
             ->execute()
-            ->fetchField();
+            ->fetchAllKeyed();
         }
       }
     }
