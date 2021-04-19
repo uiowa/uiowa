@@ -2465,3 +2465,15 @@ $sites['athleticscamps.local.drupal.uiowa.edu'] = 'camps.athletics.uiowa.edu';
 $sites['athleticscamps.dev.drupal.uiowa.edu'] = 'camps.athletics.uiowa.edu';
 $sites['athleticscamps.stage.drupal.uiowa.edu'] = 'camps.athletics.uiowa.edu';
 $sites['athleticscamps.prod.drupal.uiowa.edu'] = 'camps.athletics.uiowa.edu';
+
+// Directory aliases for dune.lab.uiowa.edu.
+$sites['labdune.local.drupal.uiowa.edu'] = 'dune.lab.uiowa.edu';
+$sites['labdune.dev.drupal.uiowa.edu'] = 'dune.lab.uiowa.edu';
+$sites['labdune.stage.drupal.uiowa.edu'] = 'dune.lab.uiowa.edu';
+$sites['labdune.prod.drupal.uiowa.edu'] = 'dune.lab.uiowa.edu';
+
+// Directory aliases for wohlgenannt.lab.uiowa.edu.
+$sites['labwohlgenannt.local.drupal.uiowa.edu'] = 'wohlgenannt.lab.uiowa.edu';
+$sites['labwohlgenannt.dev.drupal.uiowa.edu'] = 'wohlgenannt.lab.uiowa.edu';
+$sites['labwohlgenannt.stage.drupal.uiowa.edu'] = 'wohlgenannt.lab.uiowa.edu';
+$sites['labwohlgenannt.prod.drupal.uiowa.edu'] = 'wohlgenannt.lab.uiowa.edu';
