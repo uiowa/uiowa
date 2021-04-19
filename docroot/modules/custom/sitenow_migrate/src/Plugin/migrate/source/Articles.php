@@ -53,7 +53,7 @@ class Articles extends BaseNodeSource {
    */
   public function postImportProcess(MigrateImportEvent $event) {
     $migration = $event->getMigration();
-    $this->postLinkReplace($migration, 'field_article_body');
+    $this->postLinkReplace($migration, 'body');
   }
 
 }

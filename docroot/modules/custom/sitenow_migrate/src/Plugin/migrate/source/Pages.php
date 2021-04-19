@@ -2,6 +2,7 @@
 
 namespace Drupal\sitenow_migrate\Plugin\migrate\source;
 
+use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Row;
 
 /**
@@ -35,6 +36,35 @@ class Pages extends BaseNodeSource {
     }
 
     return TRUE;
+  }
+
+  /**
+   * Functions to run following a completed migration.
+   *
+   * @param \Drupal\migrate\Event\MigrateImportEvent $event
+   *   The migration event.
+   */
+  public function postImportProcess(MigrateImportEvent $event) {
+    $migration = $event->getMigration();
+    $this->postLinkReplace($migration, 'body');
+  }
+
+  /**
+   * Override for manual lookup tables of pre-migrated content.
+   */
+  private function manualLookup(int $nid) {
+    // Check if the articles migration has run, and is needed for
+    // possible mapping.
+    $database = \Drupal::database();
+    // @todo check the people migration too, once it is functional.
+    if ($database->schema()->tableExists('migrate_map_d7_article')) {
+      return $database->select('migrate_map_d7_article', 'mm')
+        ->fields('mm', ['destid1'])
+        ->condition('mm.sourceid1', $nid, '=')
+        ->execute()
+        ->fetchField();
+    }
+    return FALSE;
   }
 
 }
