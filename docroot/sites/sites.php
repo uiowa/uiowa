@@ -2477,3 +2477,9 @@ $sites['labwohlgenannt.local.drupal.uiowa.edu'] = 'wohlgenannt.lab.uiowa.edu';
 $sites['labwohlgenannt.dev.drupal.uiowa.edu'] = 'wohlgenannt.lab.uiowa.edu';
 $sites['labwohlgenannt.stage.drupal.uiowa.edu'] = 'wohlgenannt.lab.uiowa.edu';
 $sites['labwohlgenannt.prod.drupal.uiowa.edu'] = 'wohlgenannt.lab.uiowa.edu';
+
+// Directory aliases for meurice.sites.uiowa.edu.
+$sites['sitesmeurice.local.drupal.uiowa.edu'] = 'meurice.sites.uiowa.edu';
+$sites['sitesmeurice.dev.drupal.uiowa.edu'] = 'meurice.sites.uiowa.edu';
+$sites['sitesmeurice.stage.drupal.uiowa.edu'] = 'meurice.sites.uiowa.edu';
+$sites['sitesmeurice.prod.drupal.uiowa.edu'] = 'meurice.sites.uiowa.edu';
