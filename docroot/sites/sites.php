@@ -2489,3 +2489,9 @@ $sites['labkidneeds.local.drupal.uiowa.edu'] = 'kidneeds.lab.uiowa.edu';
 $sites['labkidneeds.dev.drupal.uiowa.edu'] = 'kidneeds.lab.uiowa.edu';
 $sites['labkidneeds.stage.drupal.uiowa.edu'] = 'kidneeds.lab.uiowa.edu';
 $sites['labkidneeds.prod.drupal.uiowa.edu'] = 'kidneeds.lab.uiowa.edu';
+
+// Directory aliases for icarc.lab.uiowa.edu.
+$sites['labicarc.local.drupal.uiowa.edu'] = 'icarc.lab.uiowa.edu';
+$sites['labicarc.dev.drupal.uiowa.edu'] = 'icarc.lab.uiowa.edu';
+$sites['labicarc.stage.drupal.uiowa.edu'] = 'icarc.lab.uiowa.edu';
+$sites['labicarc.prod.drupal.uiowa.edu'] = 'icarc.lab.uiowa.edu';
