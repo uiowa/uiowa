@@ -2477,3 +2477,21 @@ $sites['labwohlgenannt.local.drupal.uiowa.edu'] = 'wohlgenannt.lab.uiowa.edu';
 $sites['labwohlgenannt.dev.drupal.uiowa.edu'] = 'wohlgenannt.lab.uiowa.edu';
 $sites['labwohlgenannt.stage.drupal.uiowa.edu'] = 'wohlgenannt.lab.uiowa.edu';
 $sites['labwohlgenannt.prod.drupal.uiowa.edu'] = 'wohlgenannt.lab.uiowa.edu';
+
+// Directory aliases for meurice.sites.uiowa.edu.
+$sites['sitesmeurice.local.drupal.uiowa.edu'] = 'meurice.sites.uiowa.edu';
+$sites['sitesmeurice.dev.drupal.uiowa.edu'] = 'meurice.sites.uiowa.edu';
+$sites['sitesmeurice.stage.drupal.uiowa.edu'] = 'meurice.sites.uiowa.edu';
+$sites['sitesmeurice.prod.drupal.uiowa.edu'] = 'meurice.sites.uiowa.edu';
+
+// Directory aliases for kidneeds.lab.uiowa.edu.
+$sites['labkidneeds.local.drupal.uiowa.edu'] = 'kidneeds.lab.uiowa.edu';
+$sites['labkidneeds.dev.drupal.uiowa.edu'] = 'kidneeds.lab.uiowa.edu';
+$sites['labkidneeds.stage.drupal.uiowa.edu'] = 'kidneeds.lab.uiowa.edu';
+$sites['labkidneeds.prod.drupal.uiowa.edu'] = 'kidneeds.lab.uiowa.edu';
+
+// Directory aliases for icarc.lab.uiowa.edu.
+$sites['labicarc.local.drupal.uiowa.edu'] = 'icarc.lab.uiowa.edu';
+$sites['labicarc.dev.drupal.uiowa.edu'] = 'icarc.lab.uiowa.edu';
+$sites['labicarc.stage.drupal.uiowa.edu'] = 'icarc.lab.uiowa.edu';
+$sites['labicarc.prod.drupal.uiowa.edu'] = 'icarc.lab.uiowa.edu';
