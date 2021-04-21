@@ -85,16 +85,38 @@ trait LinkReplaceTrait {
    * @param string $field_name
    *   The field name which should receive post-migration link processing.
    */
-  private function postLinkReplace(array $fields_and_columns) {
-    foreach ($fields_and_columns as $field => $columns) {
-      $candidates = \Drupal::database()->select($field, 'f')
-        ->fields('f', array_merge($columns, ['entity_id']))
+  private function postLinkReplace(string $entity_type, array $field_tables) {
+    $entity_manager = \Drupal::service('entity_type.manager')
+      ->getStorage($entity_type);
+    $candidates = [];
+
+    foreach ($field_tables as $table => $columns) {
+      $results = \Drupal::database()->select($table, 't')
+        ->fields('t', array_merge($columns, ['entity_id']))
         ->execute()
         ->fetchAllAssoc('entity_id');
+      foreach ($results as $entity_id => $cols) {
+        foreach ($cols as $col => $value) {
+          if ($col === 'entity_id') {
+            continue;
+          }
 
-      foreach ($candidates as $entity_id => $cols) {
-        // @todo get entity and field.
-        $field = null;
+          // Checks for any links using the node/ format
+          // and reports the node id on which it was found
+          // and the linked text.
+          if (preg_match('|<a.*?node.*?>(.*?)<\/a>|i', $value)) {
+            $candidates[$entity_id][] = $col;
+          }
+        }
+      }
+    }
+
+    foreach ($candidates as $entity_id => $cols) {
+      $entity = $entity_manager->load($entity_id);
+      $changed = FALSE;
+      foreach ($cols as $col) {
+        $field_name = preg_replace('_value', '', $col);
+        $field = $entity->get($field_name);
 
         if (!empty($field)) {
           // Search for D7 inline embeds and replace with D8 inline entities.
@@ -133,10 +155,12 @@ trait LinkReplaceTrait {
 
         $html = Html::serialize($doc);
         $field[0]['value'] = $html;
-
-        $$node->set($field_name, $field);
+        $entity->set($field_name, $field);
+        $changed = TRUE;
       }
-
+      if ($changed) {
+        $entity->save();
+      }
     }
   }
 

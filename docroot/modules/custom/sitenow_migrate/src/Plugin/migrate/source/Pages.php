@@ -54,7 +54,7 @@ class Pages extends BaseNodeSource {
   public function postImportProcess(MigrateImportEvent $event) {
     $this->reportPossibleLinkBreaks(['node__body' => ['body_value']]);
     $migration = $event->getMigration();
-    $this->postLinkReplace(['node__body' => ['body_value']]);
+    $this->postLinkReplace('node', ['node__body' => ['body_value']]);
   }
 
   /**
