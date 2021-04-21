@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0802e219c4631e59e8c95ce6b5a65e08",
+    "content-hash": "52e7b8b4745b82e964b47c448cc38246",
     "packages": [
         {
             "name": "acquia/blt",
@@ -627,7 +627,7 @@
             "version": "5.15.2",
             "source": {
                 "type": "git",
-                "url": "git@github.com:FortAwesome/Font-Awesome.git",
+                "url": "https://github.com/FortAwesome/Font-Awesome.git",
                 "reference": "fcec2d1b01ff069ac10500ac42e4478d20d21f4c"
             },
             "dist": {
@@ -3153,48 +3153,40 @@
         },
         {
             "name": "drupal/acquia_connector",
-            "version": "2.0.0-rc3",
+            "version": "3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/acquia_connector.git",
-                "reference": "8.x-2.0-rc3"
+                "reference": "3.0.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/acquia_connector-8.x-2.0-rc3.zip",
-                "reference": "8.x-2.0-rc3",
-                "shasum": "6d3d9ca7a597b7db7a6c1f568a13fae16e0ac504"
+                "url": "https://ftp.drupal.org/files/projects/acquia_connector-3.0.2.zip",
+                "reference": "3.0.2",
+                "shasum": "4d7e226f677a4318586565e4684ee30281fd1fbc"
             },
             "require": {
-                "drupal/core": "^8.8 || ^9.0.0-alpha1",
+                "drupal/core": "^8.9 || ^9",
                 "ext-json": "*"
-            },
-            "require-dev": {
-                "acquia/coding-standards": "^0.4.1",
-                "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
-                "drupal/acquia_search_solr": "*",
-                "drupal/search_api": "^1.17",
-                "drupal/search_api_solr": "*"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-2.0-rc3",
-                    "datestamp": "1605728157",
+                    "version": "3.0.2",
+                    "datestamp": "1617129055",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "RC releases are not covered by Drupal security advisories."
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
                     }
                 },
                 "branch-alias": {
-                    "dev-8.x-2.x": "2.x-dev"
+                    "dev-3.x": "3.x-dev"
                 },
                 "drush": {
                     "services": {
-                        "drush.services.yml": "^9"
+                        "drush.services.yml": "^9 || ^10"
                     }
-                },
-                "phpcodesniffer-search-depth": 4
+                }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
@@ -3845,6 +3837,10 @@
                 {
                     "name": "Sam152",
                     "homepage": "https://www.drupal.org/user/1485048"
+                },
+                {
+                    "name": "frjo",
+                    "homepage": "https://www.drupal.org/user/5546"
                 },
                 {
                     "name": "jdwfly",
