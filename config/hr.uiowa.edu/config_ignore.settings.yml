@@ -1,5 +1,7 @@
 ignored_config_entities:
-  - acquia_connector.settings
+  - 'acquia_connector.settings:spi.site_uuid'
+  - 'acquia_connector.settings:spi.site_environment'
+  - 'acquia_connector.settings:spi.site_machine_name'
   - 'block.block.main_navigation__superfish__horizontal:status'
   - 'block.block.main_navigation__superfish__toggle:status'
   - 'block.block.main_navigation__superfish__mega:status'
@@ -12,6 +14,8 @@ ignored_config_entities:
   - 'config_split.config_split.sitenow_v2:status'
   - google_analytics.settings
   - 'google_tag.container.*'
+  - migrate_plus.migration_group.default
+  - migrate_plus.migration_group.sitenow_migrate
   - pathauto.pattern.article
   - pathauto.pattern.person
   - sitenow_articles.settings
