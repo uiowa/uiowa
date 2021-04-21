@@ -2466,6 +2466,8 @@ function sitenow_update_9007() {
       'btn-sm' => '',
       'btn-block' => '',
       'btn' => 'bttn',
+      'table--static' => '',
+      'table--is-striped' => '',
     ];
     $entity_type_manager = \Drupal::entityTypeManager();
     $entity_field_manager = \Drupal::service('entity_field.manager');
@@ -2503,18 +2505,18 @@ function sitenow_update_9007() {
           $tables[] = $revision_table;
         }
         if (!empty($tables)) {
+          $db = \Drupal::database();
           foreach ($tables as $table) {
             foreach ($search_replace as $needle => $string) {
-              $db = \Drupal::database();
               $db->update($table)
                 ->expression($value_column, 'REPLACE(' . $value_column . ', :old_value, :new_value)', [
                   ':old_value' => $needle,
                   ':new_value' => $string,
                 ])
                 ->execute();
-              \Drupal::messenger()
-                ->addMessage('Processed ' . $table . ' table ' . $value_column . ' column.');
             }
+            \Drupal::messenger()
+              ->addMessage('Processed ' . $table . ' table ' . $value_column . ' column.');
           }
         }
       }
