@@ -3,7 +3,6 @@
 namespace Drupal\sitenow_migrate\Plugin\migrate\source;
 
 use Drupal\Component\Utility\Html;
-use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Row;
 
 /**
@@ -80,16 +79,20 @@ trait LinkReplaceTrait {
   /**
    * Post-migration method of replacing internal links.
    *
-   * @param \Drupal\migrate\Plugin\MigrationInterface $migration
-   *   The migration object.
-   * @param string $field_name
-   *   The field name which should receive post-migration link processing.
+   * @param string $entity_type
+   *   The entity type on which to replace links.
+   * @param array $field_tables
+   *   Array of the database tables and columns to check for broken links.
    */
   private function postLinkReplace(string $entity_type, array $field_tables) {
+    // Initialize our storage manager and our
+    // "broken link candidates" list to add to and edit later.
     $entity_manager = \Drupal::service('entity_type.manager')
       ->getStorage($entity_type);
     $candidates = [];
 
+    // Iterate through each of the field tables we need to check.
+    // A lot of times, we may only need to check one table, one column.
     foreach ($field_tables as $table => $columns) {
       $results = \Drupal::database()->select($table, 't')
         ->fields('t', array_merge($columns, ['entity_id']))
@@ -97,31 +100,38 @@ trait LinkReplaceTrait {
         ->fetchAllAssoc('entity_id');
       foreach ($results as $entity_id => $cols) {
         foreach ($cols as $col => $value) {
+          // Skip over entity_id if we doubled it up.
           if ($col === 'entity_id') {
             continue;
           }
 
-          // Checks for any links using the node/ format
-          // and reports the node id on which it was found
-          // and the linked text.
+          // Checks for any links using the node/ format.
           if (preg_match('|<a.*?node.*?>(.*?)<\/a>|i', $value)) {
+            // Add the candidate entity_id and field column in which
+            // the broken link was discovered.
             $candidates[$entity_id][] = $col;
           }
         }
       }
     }
 
+    // We have our list of candidate entity_ids and fields
+    // in which we have a suspicion of broken links.
     foreach ($candidates as $entity_id => $cols) {
       $entity = $entity_manager->load($entity_id);
       $changed = FALSE;
+
+      // We'll check, fix, and set each field individually.
       foreach ($cols as $col) {
-        $field_name = preg_replace('_value', '', $col);
+        // We want the actual field name, but our candidate list
+        // has the database table names, which (should) contain
+        // a '_value' suffix. Stripping it out should give us the
+        // actual field name in most cases.
+        $field_name = str_replace('_value', '', $col);
         $field = $entity->get($field_name);
 
         if (!empty($field)) {
-          // Search for D7 inline embeds and replace with D8 inline entities.
-          $field[0]['value'] = $this->replaceInlineFiles($field[0]['value']);
-          // Parse links.
+          // Load the dom and parse for links.
           $doc = Html::load($field[0]['value']);
           $links = $doc->getElementsByTagName('a');
           $i = $links->length - 1;
@@ -132,19 +142,18 @@ trait LinkReplaceTrait {
             if (strpos($href, '/node/') === 0 || stristr($href, $site_path . '/node/')) {
               $nid = explode('node/', $href)[1];
 
-              if ($lookup = $this->manualLookup($nid) ||
-                $lookup = $mapping->lookupSourceId(['nid' => $nid])) {
+              if ($lookup = $this->manualLookup($nid)) {
                 $link->setAttribute('href', $lookup);
                 $link->parentNode->replaceChild($link, $link);
-                $this->logger->info('Replaced internal link @link in article @article.', [
+                $this->logger->info('Replaced internal link @link in entity @article.', [
                   '@link' => $href,
-                  '@article' => $node->get('title'),
+                  '@entity' => $entity->get('title'),
                 ]);
               }
               else {
-                $this->logger->notice('Unable to replace internal link @link in article @article.', [
+                $this->logger->notice('Unable to replace internal link @link in entity @entity.', [
                   '@link' => $href,
-                  '@article' => $node->getSourceProperty('title'),
+                  '@entity' => $entity->get('title'),
                 ]);
               }
             }
