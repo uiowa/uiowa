@@ -132,7 +132,7 @@ trait LinkReplaceTrait {
 
         if (!empty($field)) {
           // Load the dom and parse for links.
-          $doc = Html::load($field[0]['value']);
+          $doc = Html::load($field->getValue()['value']);
           $links = $doc->getElementsByTagName('a');
           $i = $links->length - 1;
           while ($i >= 0) {
@@ -145,15 +145,15 @@ trait LinkReplaceTrait {
               if ($lookup = $this->manualLookup($nid)) {
                 $link->setAttribute('href', $lookup);
                 $link->parentNode->replaceChild($link, $link);
-                $this->logger->info('Replaced internal link @link in entity @article.', [
+                $this->logger->info('Replaced internal link @link in entity @entity.', [
                   '@link' => $href,
-                  '@entity' => $entity->get('title'),
+                  '@entity' => $entity_id,
                 ]);
               }
               else {
                 $this->logger->notice('Unable to replace internal link @link in entity @entity.', [
                   '@link' => $href,
-                  '@entity' => $entity->get('title'),
+                  '@entity' => $entity_id,
                 ]);
               }
             }
@@ -163,7 +163,7 @@ trait LinkReplaceTrait {
         }
 
         $html = Html::serialize($doc);
-        $field[0]['value'] = $html;
+        $field->setValue($html);
         $entity->set($field_name, $field);
         $changed = TRUE;
       }
