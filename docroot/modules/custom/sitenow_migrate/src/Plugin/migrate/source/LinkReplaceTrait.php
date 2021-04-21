@@ -85,54 +85,58 @@ trait LinkReplaceTrait {
    * @param string $field_name
    *   The field name which should receive post-migration link processing.
    */
-  private function postLinkReplace(MigrationInterface $migration, string $field_name) {
-    // @todo account for the possibility of multiple migrations.
-    $mapping = $migration->getIdMap();
-    $destination_ids = $migration->getDestinationIds();
-    $nodes = \Drupal::service('entity_type.manager')
-      ->getStorage('node')
-      ->loadMultiple($destination_ids);
-    foreach ($nodes as $node) {
-      $field = $node->get($field_name);
-      if (!empty($field)) {
-        // Search for D7 inline embeds and replace with D8 inline entities.
-        $field[0]['value'] = $this->replaceInlineFiles($field[0]['value']);
-        // Parse links.
-        $doc = Html::load($field[0]['value']);
-        $links = $doc->getElementsByTagName('a');
-        $i = $links->length - 1;
-        while ($i >= 0) {
-          $link = $links->item($i);
-          $href = $link->getAttribute('href');
-          $site_path = \str_replace('sites/', '', \Drupal::service('site.path'));
-          if (strpos($href, '/node/') === 0 || stristr($href, $site_path . '/node/')) {
-            $nid = explode('node/', $href)[1];
+  private function postLinkReplace(array $fields_and_columns) {
+    foreach ($fields_and_columns as $field => $columns) {
+      $candidates = \Drupal::database()->select($field, 'f')
+        ->fields('f', array_merge($columns, ['entity_id']))
+        ->execute()
+        ->fetchAllAssoc('entity_id');
 
-            if ($lookup = $this->manualLookup($nid) ||
-              $lookup = $mapping->lookupSourceId(['nid' => $nid])) {
-              $link->setAttribute('href', $lookup);
-              $link->parentNode->replaceChild($link, $link);
-              $this->logger->info('Replaced internal link @link in article @article.', [
-                '@link' => $href,
-                '@article' => $node->get('title'),
-              ]);
+      foreach ($candidates as $entity_id => $cols) {
+        // @todo get entity and field.
+        $field = null;
+
+        if (!empty($field)) {
+          // Search for D7 inline embeds and replace with D8 inline entities.
+          $field[0]['value'] = $this->replaceInlineFiles($field[0]['value']);
+          // Parse links.
+          $doc = Html::load($field[0]['value']);
+          $links = $doc->getElementsByTagName('a');
+          $i = $links->length - 1;
+          while ($i >= 0) {
+            $link = $links->item($i);
+            $href = $link->getAttribute('href');
+            $site_path = \str_replace('sites/', '', \Drupal::service('site.path'));
+            if (strpos($href, '/node/') === 0 || stristr($href, $site_path . '/node/')) {
+              $nid = explode('node/', $href)[1];
+
+              if ($lookup = $this->manualLookup($nid) ||
+                $lookup = $mapping->lookupSourceId(['nid' => $nid])) {
+                $link->setAttribute('href', $lookup);
+                $link->parentNode->replaceChild($link, $link);
+                $this->logger->info('Replaced internal link @link in article @article.', [
+                  '@link' => $href,
+                  '@article' => $node->get('title'),
+                ]);
+              }
+              else {
+                $this->logger->notice('Unable to replace internal link @link in article @article.', [
+                  '@link' => $href,
+                  '@article' => $node->getSourceProperty('title'),
+                ]);
+              }
             }
-            else {
-              $this->logger->notice('Unable to replace internal link @link in article @article.', [
-                '@link' => $href,
-                '@article' => $node->getSourceProperty('title'),
-              ]);
-            }
+
+            $i--;
           }
-
-          $i--;
         }
+
+        $html = Html::serialize($doc);
+        $field[0]['value'] = $html;
+
+        $$node->set($field_name, $field);
       }
 
-      $html = Html::serialize($doc);
-      $field[0]['value'] = $html;
-
-      $$node->set($field_name, $field);
     }
   }
 
