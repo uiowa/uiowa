@@ -128,11 +128,11 @@ trait LinkReplaceTrait {
         // a '_value' suffix. Stripping it out should give us the
         // actual field name in most cases.
         $field_name = str_replace('_value', '', $col);
-        $field = $entity->get($field_name);
+        $field_data = $entity->get($field_name)->getValue()[0];
 
-        if (!empty($field)) {
+        if (!empty($field_data)) {
           // Load the dom and parse for links.
-          $doc = Html::load($field->getValue()['value']);
+          $doc = Html::load($field_data['value']);
           $links = $doc->getElementsByTagName('a');
           $i = $links->length - 1;
           while ($i >= 0) {
@@ -163,8 +163,8 @@ trait LinkReplaceTrait {
         }
 
         $html = Html::serialize($doc);
-        $field->setValue($html);
-        $entity->set($field_name, $field);
+        $field_data['value'] = $html;
+        $entity->set($field_name, $field_data);
         $changed = TRUE;
       }
       if ($changed) {
