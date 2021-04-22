@@ -2501,3 +2501,9 @@ $sites['sitesinventionofwriting.local.drupal.uiowa.edu'] = 'inventionofwriting.s
 $sites['sitesinventionofwriting.dev.drupal.uiowa.edu'] = 'inventionofwriting.sites.uiowa.edu';
 $sites['sitesinventionofwriting.stage.drupal.uiowa.edu'] = 'inventionofwriting.sites.uiowa.edu';
 $sites['sitesinventionofwriting.prod.drupal.uiowa.edu'] = 'inventionofwriting.sites.uiowa.edu';
+
+// Directory aliases for translateui.sites.uiowa.edu.
+$sites['sitestranslateui.local.drupal.uiowa.edu'] = 'translateui.sites.uiowa.edu';
+$sites['sitestranslateui.dev.drupal.uiowa.edu'] = 'translateui.sites.uiowa.edu';
+$sites['sitestranslateui.stage.drupal.uiowa.edu'] = 'translateui.sites.uiowa.edu';
+$sites['sitestranslateui.prod.drupal.uiowa.edu'] = 'translateui.sites.uiowa.edu';
