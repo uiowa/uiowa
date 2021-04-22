@@ -2531,3 +2531,9 @@ $sites['labcolleen-campbell.local.drupal.uiowa.edu'] = 'colleen-campbell.lab.uio
 $sites['labcolleen-campbell.dev.drupal.uiowa.edu'] = 'colleen-campbell.lab.uiowa.edu';
 $sites['labcolleen-campbell.stage.drupal.uiowa.edu'] = 'colleen-campbell.lab.uiowa.edu';
 $sites['labcolleen-campbell.prod.drupal.uiowa.edu'] = 'colleen-campbell.lab.uiowa.edu';
+
+// Directory aliases for benson.lab.uiowa.edu.
+$sites['labbenson.local.drupal.uiowa.edu'] = 'benson.lab.uiowa.edu';
+$sites['labbenson.dev.drupal.uiowa.edu'] = 'benson.lab.uiowa.edu';
+$sites['labbenson.stage.drupal.uiowa.edu'] = 'benson.lab.uiowa.edu';
+$sites['labbenson.prod.drupal.uiowa.edu'] = 'benson.lab.uiowa.edu';
