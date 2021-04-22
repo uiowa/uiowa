@@ -2507,3 +2507,9 @@ $sites['sitestranslateui.local.drupal.uiowa.edu'] = 'translateui.sites.uiowa.edu
 $sites['sitestranslateui.dev.drupal.uiowa.edu'] = 'translateui.sites.uiowa.edu';
 $sites['sitestranslateui.stage.drupal.uiowa.edu'] = 'translateui.sites.uiowa.edu';
 $sites['sitestranslateui.prod.drupal.uiowa.edu'] = 'translateui.sites.uiowa.edu';
+
+// Directory aliases for harwani.lab.uiowa.edu.
+$sites['labharwani.local.drupal.uiowa.edu'] = 'harwani.lab.uiowa.edu';
+$sites['labharwani.dev.drupal.uiowa.edu'] = 'harwani.lab.uiowa.edu';
+$sites['labharwani.stage.drupal.uiowa.edu'] = 'harwani.lab.uiowa.edu';
+$sites['labharwani.prod.drupal.uiowa.edu'] = 'harwani.lab.uiowa.edu';
