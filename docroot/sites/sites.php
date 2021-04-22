@@ -2495,3 +2495,9 @@ $sites['labicarc.local.drupal.uiowa.edu'] = 'icarc.lab.uiowa.edu';
 $sites['labicarc.dev.drupal.uiowa.edu'] = 'icarc.lab.uiowa.edu';
 $sites['labicarc.stage.drupal.uiowa.edu'] = 'icarc.lab.uiowa.edu';
 $sites['labicarc.prod.drupal.uiowa.edu'] = 'icarc.lab.uiowa.edu';
+
+// Directory aliases for inventionofwriting.sites.uiowa.edu.
+$sites['sitesinventionofwriting.local.drupal.uiowa.edu'] = 'inventionofwriting.sites.uiowa.edu';
+$sites['sitesinventionofwriting.dev.drupal.uiowa.edu'] = 'inventionofwriting.sites.uiowa.edu';
+$sites['sitesinventionofwriting.stage.drupal.uiowa.edu'] = 'inventionofwriting.sites.uiowa.edu';
+$sites['sitesinventionofwriting.prod.drupal.uiowa.edu'] = 'inventionofwriting.sites.uiowa.edu';
