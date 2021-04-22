@@ -2525,3 +2525,9 @@ $sites['labfaraci.local.drupal.uiowa.edu'] = 'faraci.lab.uiowa.edu';
 $sites['labfaraci.dev.drupal.uiowa.edu'] = 'faraci.lab.uiowa.edu';
 $sites['labfaraci.stage.drupal.uiowa.edu'] = 'faraci.lab.uiowa.edu';
 $sites['labfaraci.prod.drupal.uiowa.edu'] = 'faraci.lab.uiowa.edu';
+
+// Directory aliases for colleen-campbell.lab.uiowa.edu.
+$sites['labcolleen-campbell.local.drupal.uiowa.edu'] = 'colleen-campbell.lab.uiowa.edu';
+$sites['labcolleen-campbell.dev.drupal.uiowa.edu'] = 'colleen-campbell.lab.uiowa.edu';
+$sites['labcolleen-campbell.stage.drupal.uiowa.edu'] = 'colleen-campbell.lab.uiowa.edu';
+$sites['labcolleen-campbell.prod.drupal.uiowa.edu'] = 'colleen-campbell.lab.uiowa.edu';
