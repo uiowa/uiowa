@@ -2452,9 +2452,6 @@ function sitenow_update_9007() {
   // Limit to just sites running uids_base.
   if ($active_theme->getName() === 'uids_base') {
 
-    $check_limit = 1;
-    $table_check = 1;
-
     $secondary = 'bttn--secondary bttn--caps';
     $search_replace = [
       'btn-primary' => 'bttn--primary bttn--caps',
@@ -2534,51 +2531,45 @@ function sitenow_update_9007() {
             $results = $query->condition($or_group)
             ->execute();
 
-//            $count = $query->countQuery()->execute();
-//            \Drupal::messenger()
-//              ->addMessage('<div>Found ' . $count->fetchField() . ' for ' . $table . ' table and ' . $value_column . ' column.</div>');
-
             foreach ($results as $record) {
 
               $document = Html::load($record->{$value_column});
 
-              // Get all <drupal-entity> instances.
-              $table_instances = $document->getElementsByTagName('table');
+              foreach (['a', 'table'] as $tag) {
+                $instances = $document->getElementsByTagName($tag);
 
-              // DE Example: <drupal-entity data-align="center" data-embed-button="media_entity_embed" data-entity-embed-display="view_mode:media.full" data-entity-embed-display-settings="" data-entity-type="media" data-entity-uuid="463f699b-e367-48b1-9a30-5df1fbe88762"></drupal-entity>.
-              // DM Example: <drupal-media data-align="center" data-entity-type="media" data-entity-uuid="10e236e2-b20c-4b6c-9c60-f5f1ad1e316d" data-view-mode="large__no_crop"></drupal-media>.
-              // As we replace the inline images, they are actually
-              // removed in the DOMNodeList $images, so we have to
-              // use a regressive loop to count through them.
-              // See https://www.php.net/manual/en/domnode.replacechild.php#50500.
-              $i = $table_instances->length - 1;
+                // We don't actually need the regressive loop
+                // here, but its copied/pasted.
+                $i = $instances->length - 1;
 
-              while ($i >= 0) {
-                // The current inline image element.
-                $dom_table = $table_instances->item($i);
+                while ($i >= 0) {
+                  // The current inline image element.
+                  $dom_element = $instances->item($i);
 
-                $class = $dom_table->getAttribute('class');
+                  $class = $dom_element->getAttribute('class');
 
-                if ($table_check > 0) {
-                  \Drupal::messenger()
-                    ->addMessage('Sample record <pre>' . print_r($record, TRUE) . '</pre>');
-                  \Drupal::messenger()
-                    ->addMessage('Attributes <pre>' . print_r($class, TRUE) . '</pre>');
-                  $table_check--;
+                  switch ($tag) {
+                    case 'a':
+                      foreach ($search_replace as $needle => $replace) {
+                        $class = str_replace($needle, $replace, $class);
+                      }
+                      break;
+                    case 'table':
+                      foreach ($table_search as $needle) {
+                        $class = str_replace($needle, '', $class);
+                      }
+                      break;
+                  }
+
+                  if (trim($class)) {
+                    $dom_element->setAttribute('class', $class);
+                  }
+                  else {
+                    $dom_element->removeAttribute('class');
+                  }
+
+                  $i--;
                 }
-
-                foreach ($table_search as $needle) {
-                  $class = str_replace($needle, '', $class);
-                }
-
-                if (trim($class)) {
-                  $dom_table->setAttribute('class', $class);
-                }
-                else {
-                  $dom_table->removeAttribute('class');
-                }
-
-                $i--;
               }
 
               // Run database update to store updated $value_column as Html::serialize($document)
@@ -2592,15 +2583,6 @@ function sitenow_update_9007() {
 
               $update_count++;
             }
-
-//            foreach ($search_replace as $needle => $string) {
-//              $db->update($table)
-//                ->expression($value_column, 'REPLACE(' . $value_column . ', :old_value, :new_value)', [
-//                  ':old_value' => $needle,
-//                  ':new_value' => $string,
-//                ])
-//                ->execute();
-//            }
 
             if ($update_count) {
               \Drupal::messenger()
