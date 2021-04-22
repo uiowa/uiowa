@@ -50,6 +50,10 @@
 
 
 #apr-directory-service {
+  .apr.directory>div:first-child>a {
+    display: none;
+  }
+
   .apr-profile .apr-section.summary {
     ul {
       @extend %no-ul-list;
@@ -87,6 +91,31 @@
       grid-gap: 1.5em;
       row-gap: 1em;
       align-content: start;
+    }
+  }
+
+  .apr-profile #apr-sites li,
+  .profiles ul>li {
+    display: block;
+  }
+
+  .apr-profile .profile-image figcaption {
+    text-align: left;
+    font-size: 1.5rem;
+    font-weight: 600;
+    padding-top: .5em;
+    margin-bottom: .5em;
+  }
+
+  .apr-profile .apr-contact .apr-phone.apr-detail {
+    display: block;
+
+    &:before {
+      content:'Phone';
+      position: relative;
+      font-size: 1.3rem;
+      font-weight: 500;
+      display: block;
     }
   }
 
