@@ -2506,17 +2506,32 @@ function sitenow_update_9007() {
         }
         if (!empty($tables)) {
           $db = \Drupal::database();
+
           foreach ($tables as $table) {
+            $query = $db->select($table);
+
+            $or_group = $query->orConditionGroup();
+
             foreach ($search_replace as $needle => $string) {
-              $db->update($table)
-                ->expression($value_column, 'REPLACE(' . $value_column . ', :old_value, :new_value)', [
-                  ':old_value' => $needle,
-                  ':new_value' => $string,
-                ])
-                ->execute();
+              $or_group->condition($value_column, '%' . $db->escapeLike($needle) . '%', 'LIKE');
             }
+
+            $query->condition($or_group);
+
+            $results = $query->countQuery()->execute();
+
+//            foreach ($search_replace as $needle => $string) {
+//              $db->update($table)
+//                ->expression($value_column, 'REPLACE(' . $value_column . ', :old_value, :new_value)', [
+//                  ':old_value' => $needle,
+//                  ':new_value' => $string,
+//                ])
+//                ->execute();
+//            }
+//            \Drupal::messenger()
+//              ->addMessage('Processed ' . $table . ' table ' . $value_column . ' column.');
             \Drupal::messenger()
-              ->addMessage('Processed ' . $table . ' table ' . $value_column . ' column.');
+              ->addMessage('Found ' . $results->fetchField() . ' for ' . $table . ' table and ' . $value_column . ' column.');
           }
         }
       }
