@@ -2451,6 +2451,10 @@ function sitenow_update_9007() {
 
   // Limit to just sites running uids_base.
   if ($active_theme->getName() === 'uids_base') {
+
+    $check_limit = 1;
+    $table_check = 1;
+
     $secondary = 'bttn--secondary bttn--caps';
     $search_replace = [
       'btn-primary' => 'bttn--primary bttn--caps',
@@ -2466,8 +2470,13 @@ function sitenow_update_9007() {
       'btn-sm' => '',
       'btn-block' => '',
       'btn' => 'bttn',
-      'table--static' => '',
-      'table--is-striped' => '',
+    ];
+    // Table classes to remove.
+    $table_search = [
+      'table--static',
+      'table--is-striped',
+      'is-striped',
+      'table',
     ];
     $entity_type_manager = \Drupal::entityTypeManager();
     $entity_field_manager = \Drupal::service('entity_field.manager');
@@ -2508,7 +2517,9 @@ function sitenow_update_9007() {
           $db = \Drupal::database();
 
           foreach ($tables as $table) {
-            $query = $db->select($table);
+            $update_count = 0;
+            $query = $db->select($table, 't')
+            ->fields('t');
 
             $or_group = $query->orConditionGroup();
 
@@ -2516,9 +2527,71 @@ function sitenow_update_9007() {
               $or_group->condition($value_column, '%' . $db->escapeLike($needle) . '%', 'LIKE');
             }
 
-            $query->condition($or_group);
+            foreach ($table_search as $needle) {
+              $or_group->condition($value_column, '%' . $db->escapeLike($needle) . '%', 'LIKE');
+            }
 
-            $results = $query->countQuery()->execute();
+            $results = $query->condition($or_group)
+            ->execute();
+
+//            $count = $query->countQuery()->execute();
+//            \Drupal::messenger()
+//              ->addMessage('<div>Found ' . $count->fetchField() . ' for ' . $table . ' table and ' . $value_column . ' column.</div>');
+
+            foreach ($results as $record) {
+
+              $document = Html::load($record->{$value_column});
+
+              // Get all <drupal-entity> instances.
+              $table_instances = $document->getElementsByTagName('table');
+
+              // DE Example: <drupal-entity data-align="center" data-embed-button="media_entity_embed" data-entity-embed-display="view_mode:media.full" data-entity-embed-display-settings="" data-entity-type="media" data-entity-uuid="463f699b-e367-48b1-9a30-5df1fbe88762"></drupal-entity>.
+              // DM Example: <drupal-media data-align="center" data-entity-type="media" data-entity-uuid="10e236e2-b20c-4b6c-9c60-f5f1ad1e316d" data-view-mode="large__no_crop"></drupal-media>.
+              // As we replace the inline images, they are actually
+              // removed in the DOMNodeList $images, so we have to
+              // use a regressive loop to count through them.
+              // See https://www.php.net/manual/en/domnode.replacechild.php#50500.
+              $i = $table_instances->length - 1;
+
+              while ($i >= 0) {
+                // The current inline image element.
+                $dom_table = $table_instances->item($i);
+
+                $class = $dom_table->getAttribute('class');
+
+                if ($table_check > 0) {
+                  \Drupal::messenger()
+                    ->addMessage('Sample record <pre>' . print_r($record, TRUE) . '</pre>');
+                  \Drupal::messenger()
+                    ->addMessage('Attributes <pre>' . print_r($class, TRUE) . '</pre>');
+                  $table_check--;
+                }
+
+                foreach ($table_search as $needle) {
+                  $class = str_replace($needle, '', $class);
+                }
+
+                if (trim($class)) {
+                  $dom_table->setAttribute('class', $class);
+                }
+                else {
+                  $dom_table->removeAttribute('class');
+                }
+
+                $i--;
+              }
+
+              // Run database update to store updated $value_column as Html::serialize($document)
+              $db->update($table)
+                ->fields([
+                  $value_column => Html::serialize($document),
+                ])
+                ->condition('entity_id', $record->entity_id)
+                ->condition('revision_id', $record->revision_id)
+                ->execute();
+
+              $update_count++;
+            }
 
 //            foreach ($search_replace as $needle => $string) {
 //              $db->update($table)
@@ -2528,10 +2601,11 @@ function sitenow_update_9007() {
 //                ])
 //                ->execute();
 //            }
-//            \Drupal::messenger()
-//              ->addMessage('Processed ' . $table . ' table ' . $value_column . ' column.');
-            \Drupal::messenger()
-              ->addMessage('Found ' . $results->fetchField() . ' for ' . $table . ' table and ' . $value_column . ' column.');
+
+            if ($update_count) {
+              \Drupal::messenger()
+                ->addMessage('Processed ' . $update_count . ' update(s) for ' . $table . ' table ' . $value_column . ' column.');
+            }
           }
         }
       }
