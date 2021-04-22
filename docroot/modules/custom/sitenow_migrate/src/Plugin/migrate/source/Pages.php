@@ -51,9 +51,8 @@ class Pages extends BaseNodeSource {
    * @param \Drupal\migrate\Event\MigrateImportEvent $event
    *   The migration event.
    */
-  public function postImportProcess(MigrateImportEvent $event) {
+  public function postImport(MigrateImportEvent $event) {
     $this->reportPossibleLinkBreaks(['node__body' => ['body_value']]);
-    $migration = $event->getMigration();
     $this->postLinkReplace('node', ['node__body' => ['body_value']]);
   }
 

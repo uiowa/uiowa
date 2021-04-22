@@ -53,7 +53,7 @@ class Articles extends BaseNodeSource {
    * @param \Drupal\migrate\Event\MigrateImportEvent $event
    *   The migration event.
    */
-  public function postImportProcess(MigrateImportEvent $event) {
+  public function postImport(MigrateImportEvent $event) {
     $this->reportPossibleLinkBreaks(['node__body' => ['body_value']]);
   }
 

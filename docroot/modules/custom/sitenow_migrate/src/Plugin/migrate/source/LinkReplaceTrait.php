@@ -85,6 +85,7 @@ trait LinkReplaceTrait {
    *   Array of the database tables and columns to check for broken links.
    */
   private function postLinkReplace(string $entity_type, array $field_tables) {
+    $this->logger->info('Beginning link replace.');
     // Initialize our storage manager and our
     // "broken link candidates" list to add to and edit later.
     $entity_manager = \Drupal::service('entity_type.manager')
@@ -129,6 +130,11 @@ trait LinkReplaceTrait {
         // actual field name in most cases.
         $field_name = str_replace('_value', '', $col);
         $field_data = $entity->get($field_name)->getValue()[0];
+
+        $this->logger->info('Checking @link in entity @entity.', [
+          '@link' => $field_name,
+          '@entity' => $entity_id,
+        ]);
 
         if (!empty($field_data)) {
           // Load the dom and parse for links.
