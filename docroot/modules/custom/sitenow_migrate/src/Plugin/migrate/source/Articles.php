@@ -54,7 +54,12 @@ class Articles extends BaseNodeSource {
    *   The migration event.
    */
   public function postImport(MigrateImportEvent $event) {
-    $this->reportPossibleLinkBreaks(['node__body' => ['body_value']]);
+    static $have_run = FALSE;
+
+    if (!$have_run) {
+      $this->reportPossibleLinkBreaks(['node__body' => ['body_value']]);
+      $have_run = TRUE;
+    }
   }
 
 }
