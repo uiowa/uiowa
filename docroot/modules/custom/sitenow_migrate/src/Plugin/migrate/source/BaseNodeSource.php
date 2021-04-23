@@ -8,6 +8,7 @@ use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\State\StateInterface;
+use Drupal\migrate\Event\ImportAwareInterface;
 use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Row;
@@ -19,7 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @see \Drupal\node\Plugin\migrate\source\d7\Node
  */
-abstract class BaseNodeSource extends Node {
+abstract class BaseNodeSource extends Node implements ImportAwareInterface {
   use LoggerChannelTrait;
 
   /**
@@ -177,7 +178,15 @@ abstract class BaseNodeSource extends Node {
    * @param \Drupal\migrate\Event\MigrateImportEvent $event
    *   The migrate import event.
    */
-  public function postImportProcess(MigrateImportEvent $event) {}
+  public function postImport(MigrateImportEvent $event) {}
+
+  /**
+   * Run pre-migration tasks.
+   *
+   * @param \Drupal\migrate\Event\MigrateImportEvent $event
+   *   The migrate import event.
+   */
+  public function preImport(MigrateImportEvent $event) {}
 
   /**
    * Attempt to clear the entity cache if needed to avoid memory overflows.
