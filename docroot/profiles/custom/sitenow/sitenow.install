@@ -2451,6 +2451,7 @@ function sitenow_update_9007() {
 
   // Limit to just sites running uids_base.
   if ($active_theme->getName() === 'uids_base') {
+
     $secondary = 'bttn--secondary bttn--caps';
     $search_replace = [
       'btn-primary' => 'bttn--primary bttn--caps',
@@ -2466,8 +2467,13 @@ function sitenow_update_9007() {
       'btn-sm' => '',
       'btn-block' => '',
       'btn' => 'bttn',
-      'table--static' => '',
-      'table--is-striped' => '',
+    ];
+    // Table classes to remove.
+    $table_search = [
+      'table--static',
+      'table--is-striped',
+      'is-striped',
+      'table',
     ];
     $entity_type_manager = \Drupal::entityTypeManager();
     $entity_field_manager = \Drupal::service('entity_field.manager');
@@ -2508,7 +2514,9 @@ function sitenow_update_9007() {
           $db = \Drupal::database();
 
           foreach ($tables as $table) {
-            $query = $db->select($table);
+            $update_count = 0;
+            $query = $db->select($table, 't')
+            ->fields('t');
 
             $or_group = $query->orConditionGroup();
 
@@ -2516,22 +2524,70 @@ function sitenow_update_9007() {
               $or_group->condition($value_column, '%' . $db->escapeLike($needle) . '%', 'LIKE');
             }
 
-            $query->condition($or_group);
+            foreach ($table_search as $needle) {
+              $or_group->condition($value_column, '%' . $db->escapeLike($needle) . '%', 'LIKE');
+            }
 
-            $results = $query->countQuery()->execute();
+            $results = $query->condition($or_group)
+            ->execute();
 
-//            foreach ($search_replace as $needle => $string) {
-//              $db->update($table)
-//                ->expression($value_column, 'REPLACE(' . $value_column . ', :old_value, :new_value)', [
-//                  ':old_value' => $needle,
-//                  ':new_value' => $string,
-//                ])
-//                ->execute();
-//            }
-//            \Drupal::messenger()
-//              ->addMessage('Processed ' . $table . ' table ' . $value_column . ' column.');
-            \Drupal::messenger()
-              ->addMessage('Found ' . $results->fetchField() . ' for ' . $table . ' table and ' . $value_column . ' column.');
+            foreach ($results as $record) {
+
+              $document = Html::load($record->{$value_column});
+
+              foreach (['a', 'table'] as $tag) {
+                $instances = $document->getElementsByTagName($tag);
+
+                // We don't actually need the regressive loop
+                // here, but its copied/pasted.
+                $i = $instances->length - 1;
+
+                while ($i >= 0) {
+                  // The current inline image element.
+                  $dom_element = $instances->item($i);
+
+                  $class = $dom_element->getAttribute('class');
+
+                  switch ($tag) {
+                    case 'a':
+                      foreach ($search_replace as $needle => $replace) {
+                        $class = str_replace($needle, $replace, $class);
+                      }
+                      break;
+                    case 'table':
+                      foreach ($table_search as $needle) {
+                        $class = str_replace($needle, '', $class);
+                      }
+                      break;
+                  }
+
+                  if (trim($class)) {
+                    $dom_element->setAttribute('class', $class);
+                  }
+                  else {
+                    $dom_element->removeAttribute('class');
+                  }
+
+                  $i--;
+                }
+              }
+
+              // Run database update to store updated $value_column as Html::serialize($document)
+              $db->update($table)
+                ->fields([
+                  $value_column => Html::serialize($document),
+                ])
+                ->condition('entity_id', $record->entity_id)
+                ->condition('revision_id', $record->revision_id)
+                ->execute();
+
+              $update_count++;
+            }
+
+            if ($update_count) {
+              \Drupal::messenger()
+                ->addMessage('Processed ' . $update_count . ' update(s) for ' . $table . ' table ' . $value_column . ' column.');
+            }
           }
         }
       }
