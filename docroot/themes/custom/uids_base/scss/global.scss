@@ -118,6 +118,7 @@ $imgpath: '../../uids/assets/images';
     //width: 100%;
     //flex: 1 0 auto;
     flex-basis: 100%;
+    min-width: 0;
 
     &[class*="bg--"],
     &[class*="bg-pattern--"] {
@@ -224,6 +225,13 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
     margin-left: 0;
   }
 }
+
+// Container fix for responsive tables
+
+.layout__spacing_container {
+  min-width: 0;
+}
+
 
 // Block Margins / Padding
 
