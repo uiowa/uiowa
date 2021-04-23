@@ -19,13 +19,6 @@ class Pages extends BaseNodeSource {
   use LinkReplaceTrait;
 
   /**
-   * NID mapping helper.
-   *
-   * @var array
-   */
-  protected $mapping = [];
-
-  /**
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
@@ -52,15 +45,20 @@ class Pages extends BaseNodeSource {
    *   The migration event.
    */
   public function postImport(MigrateImportEvent $event) {
-    $this->reportPossibleLinkBreaks(['node__body' => ['body_value']]);
-    $this->postLinkReplace('node', ['node__body' => ['body_value']]);
+    static $have_run = FALSE;
+    if (!$have_run) {
+      $this->reportPossibleLinkBreaks(['node__body' => ['body_value']]);
+      $this->postLinkReplace('node', ['node__body' => ['body_value']]);
+      $have_run = TRUE;
+    }
   }
 
   /**
    * Override for manual lookup tables of pre-migrated content.
    */
   private function manualLookup(int $nid) {
-    if (empty($this->mapping)) {
+    static $mapping = [];
+    if (empty($mapping)) {
       $database = \Drupal::database();
       // The following works if all destination content is of a NODE type.
       $tables = [
@@ -70,15 +68,14 @@ class Pages extends BaseNodeSource {
       ];
       foreach ($tables as $table) {
         if ($database->schema()->tableExists($table)) {
-          $this->mapping += $database->select($table, 'mm')
+          $mapping += $database->select($table, 'mm')
             ->fields('mm', ['sourceid1', 'destid1'])
             ->execute()
             ->fetchAllKeyed();
         }
       }
     }
-
-    return isset($this->mapping[$nid]) ? $this->mapping[$nid] : FALSE;
+    return isset($mapping[$nid]) ? $mapping[$nid] : FALSE;
   }
 
 }

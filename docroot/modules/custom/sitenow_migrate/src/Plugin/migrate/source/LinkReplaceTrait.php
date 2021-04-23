@@ -49,7 +49,7 @@ trait LinkReplaceTrait {
             $nid = explode('node/', $href)[1];
 
             if ($lookup = $this->manualLookup($nid)) {
-              $link->setAttribute('href', $lookup);
+              $link->setAttribute('href', '/node/' . $lookup);
               $link->parentNode->replaceChild($link, $link);
               $this->logger->info('Replaced internal link @link in article @article.', [
                 '@link' => $href,
@@ -85,7 +85,7 @@ trait LinkReplaceTrait {
    *   Array of the database tables and columns to check for broken links.
    */
   private function postLinkReplace(string $entity_type, array $field_tables) {
-    $this->logger->info('Beginning link replace.');
+    $this->logger->notice('Beginning link replace.');
     // Initialize our storage manager and our
     // "broken link candidates" list to add to and edit later.
     $entity_manager = \Drupal::service('entity_type.manager')
@@ -149,10 +149,11 @@ trait LinkReplaceTrait {
               $nid = explode('node/', $href)[1];
 
               if ($lookup = $this->manualLookup($nid)) {
-                $link->setAttribute('href', $lookup);
+                $link->setAttribute('href', '/node/' . $lookup);
                 $link->parentNode->replaceChild($link, $link);
-                $this->logger->info('Replaced internal link @link in entity @entity.', [
-                  '@link' => $href,
+                $this->logger->info('Replaced internal link from /node/@nid to /node/@link in entity @entity.', [
+                  '@nid' => $nid,
+                  '@link' => $lookup,
                   '@entity' => $entity_id,
                 ]);
               }
