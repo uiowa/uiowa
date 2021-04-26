@@ -23,3 +23,7 @@ services:
     arguments: [ '@request_stack' ]
     tags:
       - { name: config.factory.override }
+  sitenow.commands:
+    class: \Drupal\sitenow\Commands\SiteNowCommands
+    tags:
+      - { name: drush.command }
