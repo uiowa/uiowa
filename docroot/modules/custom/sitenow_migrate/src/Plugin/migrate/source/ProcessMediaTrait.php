@@ -70,12 +70,13 @@ trait ProcessMediaTrait {
    * Regex to find Drupal 7 JSON for inline embedded files.
    */
   public function entityReplace($match) {
+    // FID is the matched subgroup.
+    $fid = $match[1];
     // Decode to JSON associative array.
     // The actual JSON data is surrounded by two sets of brackets,
     // so the matched, non-bracketed JSON is in the [0][0] index
     // of the json_decode result.
     $file_properties = json_decode($match[0], TRUE)[0][0];
-    $fid = $file_properties['fid'];
     $align = isset($file_properties['fields']['alignment']) ? $file_properties['fields']['alignment'] : NULL;
     $file_data = $this->fidQuery($fid);
 
@@ -97,11 +98,15 @@ trait ProcessMediaTrait {
         // If there's no fid in the D8 database,
         // then we'll need to fetch it from the source.
         if (!$new_fid) {
-          // Use filename, update the source base path with the subdirectory.
-          $source_base_path = str_replace('public://', $this->getSourcePublicFilesUrl(), $file_data['uri']);
-          $source_base_path = str_replace($filename, '', $source_base_path);
-          $new_fid = $this->downloadFile($filename, $source_base_path, $this->getDrupalFileDirectory());
+          $uri = $file_data['uri'];
+          $filename_w_subdir = str_replace('public://', '', $uri);
 
+          // Split apart the filename from the subdirectory path.
+          $filename_w_subdir = explode('/', $filename_w_subdir);
+          $filename = array_pop($filename_w_subdir);
+          $subdir = implode('/', $filename_w_subdir) . '/';
+          unset($filename_w_subdir);
+          $new_fid = $this->downloadFile($filename, $this->getSourcePublicFilesUrl() . $subdir, $this->getDrupalFileDirectory() . $subdir);
           if ($new_fid) {
             $this->createMediaEntity($new_fid, $meta, 1);
             $uuid = $this->getMid($filename)['uuid'];

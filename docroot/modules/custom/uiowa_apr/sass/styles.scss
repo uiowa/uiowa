@@ -107,17 +107,23 @@
     margin-bottom: .5em;
   }
 
-  .apr-profile .apr-contact .apr-phone.apr-detail {
+  .apr-profile .apr-section.summary li.apr-contact {
     display: block;
 
-    &:before {
-      content:'Phone';
-      position: relative;
-      font-size: 1.3rem;
-      font-weight: 500;
+    .apr-phone.apr-detail {
       display: block;
+
+      &:before {
+        content:'Phone';
+        position: relative;
+        font-size: 1.3rem;
+        font-weight: 500;
+        display: block;
+      }
     }
-  }
+  } 
+
+  .apr-profile
 
   .list-view {
     margin: $gutter 0;
