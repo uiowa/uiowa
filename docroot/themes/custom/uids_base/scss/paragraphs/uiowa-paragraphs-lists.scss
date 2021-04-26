@@ -35,7 +35,7 @@
 .view-id-people {
 
   .card__media {
-    @include card-media-horizontal-right;
+    //@include card-media-horizontal-right;
 
     @include breakpoint(sm) {
       margin-top: $lg;
@@ -71,7 +71,6 @@
     // @include list-group-item;
   }
 
-  .card__media,
   .content-image {
     @include card-media-horizontal-right;
 
@@ -133,8 +132,10 @@
 */
   .node--type-article,
   .card--list {
-    display: flex;
-    flex-direction: row-reverse;
+    @include breakpoint(sm) {
+      display: flex;
+      flex-direction: row-reverse;
+    }
   }
 }
 
@@ -162,7 +163,7 @@
 
   .views-row {
     @include list-group-item;
-    
+
     &:first-child {
       border-top: none;
     }
