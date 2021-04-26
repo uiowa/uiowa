@@ -2555,3 +2555,9 @@ $sites['athleticshawkit.local.drupal.uiowa.edu'] = 'hawkit.athletics.uiowa.edu';
 $sites['athleticshawkit.dev.drupal.uiowa.edu'] = 'hawkit.athletics.uiowa.edu';
 $sites['athleticshawkit.stage.drupal.uiowa.edu'] = 'hawkit.athletics.uiowa.edu';
 $sites['athleticshawkit.prod.drupal.uiowa.edu'] = 'hawkit.athletics.uiowa.edu';
+
+// Directory aliases for saa.org.uiowa.edu.
+$sites['orgsaa.local.drupal.uiowa.edu'] = 'saa.org.uiowa.edu';
+$sites['orgsaa.dev.drupal.uiowa.edu'] = 'saa.org.uiowa.edu';
+$sites['orgsaa.stage.drupal.uiowa.edu'] = 'saa.org.uiowa.edu';
+$sites['orgsaa.prod.drupal.uiowa.edu'] = 'saa.org.uiowa.edu';
