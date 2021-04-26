@@ -137,13 +137,27 @@ class Articles extends BaseNodeSource {
       ->condition('entity_id', $nid, '=')
       ->execute()
       ->fetchAllAssoc('field_image_gallery');
+    // Go ahead and pop out if we don't have any images to append
+    // to avoid creating media manager, and possibly other processes.
+    if (empty($results)) {
+      return;
+    }
+    $media_manager = \Drupal::service('entity_type.manager')
+      ->getStorage('media');
     foreach ($results as $fid => $meta) {
       // For each image, processImageField will check if it exists
       // and return the media id we need to place inline,
       // or download the file and create a new media entity if needed.
       $mid = $this->processImageField($fid, $meta['field_image_gallery_alt'], $meta['field_image_gallery_title']);
       if ($mid) {
-        // @todo fetch the body DOM, add the image(s), convert back and save.
+        // Unfortunately, we need the uuid, not the mid.
+        $uuid = $media_manager->load($mid)->uuid;
+        // Defaulting to center align for all image gallery images.
+        $media_render = $this->constructInlineEntity($uuid, 'center');
+        // @todo clean this up so we're not pulling and setting the same thing a bunch of times.
+        $content = $row->getSourceProperty('body');
+        $content = $content . $media_render;
+        $row->setSourceProperty('body', $content);
       }
     }
   }
