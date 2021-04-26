@@ -133,7 +133,7 @@ class Articles extends BaseNodeSource {
         'field_image_gallery_fid',
         'field_image_gallery_title',
         'field_image_gallery_alt',
-        ])
+      ])
       ->condition('entity_id', $nid, '=')
       ->execute()
       ->fetchAllAssoc('field_image_gallery');
