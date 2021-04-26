@@ -119,4 +119,33 @@ class Articles extends BaseNodeSource {
     return TRUE;
   }
 
+  /**
+   * Fetch our image gallery and append to the body.
+   *
+   * @param \Drupal\migrate\Row $row
+   *   The migration row result.
+   */
+  public function fetchImageGallery(Row &$row) {
+    $nid = $row->getSourceProperty('nid');
+    // Grab info on all images attached in the gallery.
+    $results = $this->select('field_data_field_image_gallery', 't')
+      ->fields('t', [
+        'field_image_gallery_fid',
+        'field_image_gallery_title',
+        'field_image_gallery_alt',
+        ])
+      ->condition('entity_id', $nid, '=')
+      ->execute()
+      ->fetchAllAssoc('field_image_gallery');
+    foreach ($results as $fid => $meta) {
+      // For each image, processImageField will check if it exists
+      // and return the media id we need to place inline,
+      // or download the file and create a new media entity if needed.
+      $mid = $this->processImageField($fid, $meta['field_image_gallery_alt'], $meta['field_image_gallery_title']);
+      if ($mid) {
+        // @todo fetch the body DOM, add the image(s), convert back and save.
+      }
+    }
+  }
+
 }
