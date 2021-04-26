@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labfaraci.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labfaraci
+  human_name: faraci.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labfaraci.prod
+drupal:
+  db:
+    database: faraci_lab_uiowa_edu
+uiowa:
+  requester: strommerl
