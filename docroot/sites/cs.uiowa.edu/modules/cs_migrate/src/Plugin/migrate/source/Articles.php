@@ -95,6 +95,9 @@ class Articles extends BaseNodeSource {
       $html = Html::serialize($doc);
       $body[0]['value'] = $html;
 
+      // Set the format to filtered_html while we have it.
+      $body[0]['format'] = 'filtered_html';
+
       $row->setSourceProperty('body', $body);
     }
 
@@ -155,9 +158,9 @@ class Articles extends BaseNodeSource {
         // Defaulting to center align for all image gallery images.
         $media_render = $this->constructInlineEntity($uuid, 'center');
         // @todo clean this up so we're not pulling and setting the same thing a bunch of times.
-        $content = $row->getSourceProperty('body');
-        $content = $content . $media_render;
-        $row->setSourceProperty('body', $content);
+        $body = $row->getSourceProperty('body');
+        $body[0]['value'] = $body[0]['value'] . $media_render;
+        $row->setSourceProperty('body', $body);
       }
     }
   }
