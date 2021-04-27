@@ -149,6 +149,7 @@ class Articles extends BaseNodeSource {
     }
     $media_manager = \Drupal::service('entity_type.manager')
       ->getStorage('media');
+    $body = $row->getSourceProperty('body');
     foreach ($results as $fid => $meta) {
       // For each image, processImageField will check if it exists
       // and return the media id we need to place inline,
@@ -159,12 +160,10 @@ class Articles extends BaseNodeSource {
         $uuid = $media_manager->load($mid)->uuid();
         // Defaulting to center align for all image gallery images.
         $media_render = $this->constructInlineEntity($uuid, 'center');
-        // @todo clean this up so we're not pulling and setting the same thing a bunch of times.
-        $body = $row->getSourceProperty('body');
         $body[0]['value'] = $body[0]['value'] . $media_render;
-        $row->setSourceProperty('body', $body);
       }
     }
+    $row->setSourceProperty('body', $body);
   }
 
 }
