@@ -119,6 +119,8 @@ class Articles extends BaseNodeSource {
       $row->setSourceProperty('field_article_source_link_direct', 0);
     }
 
+    $this->fetchImageGallery($row);
+
     return TRUE;
   }
 
@@ -139,7 +141,7 @@ class Articles extends BaseNodeSource {
       ])
       ->condition('entity_id', $nid, '=')
       ->execute()
-      ->fetchAllAssoc('field_image_gallery');
+      ->fetchAllAssoc('field_image_gallery_fid');
     // Go ahead and pop out if we don't have any images to append
     // to avoid creating media manager, and possibly other processes.
     if (empty($results)) {
@@ -154,7 +156,7 @@ class Articles extends BaseNodeSource {
       $mid = $this->processImageField($fid, $meta['field_image_gallery_alt'], $meta['field_image_gallery_title']);
       if ($mid) {
         // Unfortunately, we need the uuid, not the mid.
-        $uuid = $media_manager->load($mid)->uuid;
+        $uuid = $media_manager->load($mid)->uuid();
         // Defaulting to center align for all image gallery images.
         $media_render = $this->constructInlineEntity($uuid, 'center');
         // @todo clean this up so we're not pulling and setting the same thing a bunch of times.
