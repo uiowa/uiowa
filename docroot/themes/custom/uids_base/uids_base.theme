@@ -308,11 +308,6 @@ function uids_base_preprocess_field(&$variables) {
     $variables['breadcrumb'] = $plugin_block->build();
   }
 
-  // Add core drupal.tableheader library for sticky table headers.
-  if ($variables['element']['#field_type'] == 'text_long' && $variables['element']['#formatter'] == 'text_default') {
-    $variables['#attached']['library'][] = 'core/drupal.tableheader';
-  }
-
   // Add an extra class variable to uiowa_headline instances.
   if ($variables['element']['#field_type'] == 'uiowa_headline') {
     $bundle = $variables['element']['#bundle'];
