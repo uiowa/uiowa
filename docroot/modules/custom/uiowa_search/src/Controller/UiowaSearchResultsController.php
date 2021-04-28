@@ -38,19 +38,14 @@ class UiowaSearchResultsController extends ControllerBase {
       'site' => 'default_collection',
     ];
 
-    // Render a link to search.uiowa.edu ONLY if the site is using a different
-    // CSE ID OR limiting results to this domain. Otherwise, directing people
-    // to search.uiowa.edu adds no value - its the default CSE and all domains.
-    if ($config['cse_engine_id'] != '015014862498168032802:ben09oibdpm' || $config['cse_scope'] === 1) {
-      $build['search'] = [
-        '#type' => 'link',
-        '#title' => $this->t('Search all University of Iowa for @terms', ['@terms' => $search_terms]),
-        '#url' => Url::fromUri('https://search.uiowa.edu', ['query' => $search_params]),
-        '#attributes' => [
-          'target' => '_blank',
-        ],
-      ];
-    }
+    $build['search'] = [
+      '#type' => 'link',
+      '#title' => $this->t('Search all University of Iowa for @terms', ['@terms' => $search_terms]),
+      '#url' => Url::fromUri('https://search.uiowa.edu', ['query' => $search_params]),
+      '#attributes' => [
+        'target' => '_blank',
+      ],
+    ];
 
     $build['results_container'] = [
       '#type' => 'container',
