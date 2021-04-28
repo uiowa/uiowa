@@ -284,6 +284,12 @@
   .node--view-mode-teaser.media {
     @include card-enclosed;
     border: 1px solid rgba(0,0,0,.125)!important;
+    .media--circle {
+      margin-top: 2rem;
+      @include breakpoint(sm) {
+        margin-top: 0;
+      }
+    }
     &.card--person-teaser {
       .card__body {
         @include breakpoint(sm) {
@@ -479,6 +485,12 @@
     .card, .node--view-mode-teaser.media  {
       border: 1px solid;
       border-color: rgba(0,0,0,.125) !important;
+      .media--circle {
+        margin-top: 2rem;
+        @include breakpoint(sm) {
+          margin-top: 0;
+        }
+      }
     }
   }
 
