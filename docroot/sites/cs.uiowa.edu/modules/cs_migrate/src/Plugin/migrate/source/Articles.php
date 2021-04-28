@@ -46,7 +46,7 @@ class Articles extends BaseNodeSource {
 
     if (!empty($body)) {
       // Search for D7 inline embeds and replace with D8 inline entities.
-      $body[0]['value'] = $this->replaceInlineFiles($body[0]['value']);
+      $body[0]['value'] = $this->replaceInlineImages($body[0]['value'], '/sites/cs.uiowa.edu/files/');
 
       // Extract the summary.
       $row->setSourceProperty('body_summary', $this->getSummaryFromTextField($body));
@@ -69,23 +69,11 @@ class Articles extends BaseNodeSource {
         }
         else {
           if (strpos($href, '/node/') === 0 || stristr($href, 'cs.uiowa.edu/node/')) {
-            $nid = explode('node/', $href)[1];
-
-            if (FALSE) {
-              $link->setAttribute('href', $lookup);
-              $link->parentNode->replaceChild($link, $link);
-              $this->logger->info('Replaced internal link @link in article @article.', [
-                '@link' => $href,
-                '@article' => $row->getSourceProperty('title'),
-              ]);
-
-            }
-            else {
-              $this->logger->notice('Unable to replace internal link @link in article @article.', [
-                '@link' => $href,
-                '@article' => $row->getSourceProperty('title'),
-              ]);
-            }
+            // Report out any internal links which may need updating.
+            $this->logger->notice('Unable to replace internal link @link in article @article.', [
+              '@link' => $href,
+              '@article' => $row->getSourceProperty('title'),
+            ]);
           }
         }
 
