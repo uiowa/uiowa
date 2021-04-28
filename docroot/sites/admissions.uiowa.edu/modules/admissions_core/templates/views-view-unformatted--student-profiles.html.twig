@@ -107,7 +107,6 @@
         'card--person-teaser',
         'card--list',
         'card--stacked',
-        'media--circle',
         'media--border',
         'card--enclosed',
         'bg--white',
@@ -126,7 +125,7 @@
         'person_hometown': view.style_plugin.getField(key, 'field_person_hometown'),
         'person_territory': view.style_plugin.getField(key, 'field_student_profile_state'),
         'person_country': view.style_plugin.getField(key, 'field_student_profile_country'),
-        'media_attributes': media_attributes.addClass('card__media--medium card__media'),
+        'media_attributes': media_attributes.addClass('card__media--medium card__media media--circle'),
     } %}
 
     {% embed '@uids_base/uids/card.html.twig' with person_card_view only %}
