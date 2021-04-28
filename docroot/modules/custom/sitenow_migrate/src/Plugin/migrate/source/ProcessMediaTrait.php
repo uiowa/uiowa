@@ -133,8 +133,18 @@ trait ProcessMediaTrait {
 
   /**
    * Build the new inline embed entity format for Drupal 8 images.
+   *
+   * @param string $uuid
+   *   The unique identifier for the media to embed.
+   * @param string $align
+   *   The image alignment. Center if empty.
+   * @param string $view_mode
+   *   The image format. Defaults to 'small__no_crop'.
+   *
+   * @return string
+   *   Returns markup as a plaintext string.
    */
-  public function constructInlineEntity($uuid, $align) {
+  public function constructInlineEntity(string $uuid, string $align, $view_mode = 'small__no_crop') {
     $align = isset($align) ? $align : 'center';
 
     $media = [
@@ -144,7 +154,7 @@ trait ProcessMediaTrait {
         'data-align' => $align,
         'data-entity-type' => 'media',
         'data-entity-uuid' => $uuid,
-        'data-view-mode' => 'small__no_crop',
+        'data-view-mode' => $view_mode,
       ],
     ];
 
