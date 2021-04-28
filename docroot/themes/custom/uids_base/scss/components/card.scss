@@ -44,6 +44,17 @@
   }
 }
 
+// Remove padding if no section background and bg--white is set on card
+.layout__container:not([class*="bg-"]) {
+  .card--media-left[class*="bg--white"]:not([class*="card--enclosed"]),
+  .card--media-right[class*="bg--white"]:not([class*="card--enclosed"]) {
+    .card__body {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+}
+
 // Allow cards to be stacked within layouts
 .layout--fourcol,
 .layout--threecol,
@@ -143,7 +154,7 @@
   }
 }
 
-// @todo move to a workspace for uiowa.edu
+// Card__head styles
 
 .card {
   &__head {
