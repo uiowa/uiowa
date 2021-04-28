@@ -429,6 +429,8 @@ trait ProcessMediaTrait {
    *   Drupal field content which may contain embedded images.
    * @param string $stub
    *   File directory stub, e.g. '/sites/vwu/files/'.
+   * @param string $view_mode
+   *   The default view mode to set image formatting for all inline images.
    *
    * @return string
    *   The updated field content with replaced inline images.
@@ -436,7 +438,7 @@ trait ProcessMediaTrait {
    * @throws \Drupal\migrate\MigrateException
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  protected function replaceInlineImages($content, $stub) {
+  protected function replaceInlineImages(string $content, string $stub, $view_mode = 'medium__no_crop') {
     $drupal_file_directory = $this->getDrupalFileDirectory();
 
     // Create a HTML content fragment.
@@ -508,8 +510,7 @@ trait ProcessMediaTrait {
           // Create the <drupal-media> element.
           $media_embed = $document->createElement('drupal-media');
           $media_embed->setAttribute('data-entity-uuid', $uuid);
-          // @todo Determine how to correctly set the crop.
-          //   $media_embed->setAttribute('data-view-mode', 'full_no_crop');
+          $media_embed->setAttribute('data-view-mode', $view_mode);
           $media_embed->setAttribute('data-entity-type', 'media');
 
           // Set the alignment if we can determine it.
