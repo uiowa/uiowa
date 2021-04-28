@@ -46,7 +46,7 @@ class Articles extends BaseNodeSource {
 
     if (!empty($body)) {
       // Search for D7 inline embeds and replace with D8 inline entities.
-      $body[0]['value'] = $this->replaceInlineImages($body[0]['value'], '/sites/cs.uiowa.edu/files/');
+      $body[0]['value'] = $this->replaceInlineImages($body[0]['value'], '/sites/cs.uiowa.edu/files/', 'medium__no_crop');
 
       // Extract the summary.
       $row->setSourceProperty('body_summary', $this->getSummaryFromTextField($body));
