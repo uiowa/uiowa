@@ -91,7 +91,7 @@ class Articles extends BaseNodeSource {
     }
 
     // Process the image field.
-    $image = $row->getSourceProperty('field_image');
+    $image = $row->getSourceProperty('field_image_attach');
 
     if (!empty($image)) {
       $fid = $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']);
