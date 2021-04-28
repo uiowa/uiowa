@@ -159,7 +159,7 @@ class Articles extends BaseNodeSource {
         // Unfortunately, we need the uuid, not the mid.
         $uuid = $media_manager->load($mid)->uuid();
         // Defaulting to center align for all image gallery images.
-        $media_render = $this->constructInlineEntity($uuid, 'center');
+        $media_render = $this->constructInlineEntity($uuid, 'center', 'medium__no_crop');
         $body[0]['value'] = $body[0]['value'] . $media_render;
       }
     }
