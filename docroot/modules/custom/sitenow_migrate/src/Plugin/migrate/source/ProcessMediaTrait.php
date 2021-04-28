@@ -425,8 +425,16 @@ trait ProcessMediaTrait {
    *
    * Used this as reference: https://stackoverflow.com/a/3195048.
    *
-   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @param string $content
+   *   Drupal field content which may contain embedded images.
+   * @param string $stub
+   *   File directory stub, e.g. '/sites/vwu/files/'.
+   *
+   * @return string
+   *   The updated field content with replaced inline images.
+   *
    * @throws \Drupal\migrate\MigrateException
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   protected function replaceInlineImages($content, $stub) {
     $drupal_file_directory = $this->getDrupalFileDirectory();
