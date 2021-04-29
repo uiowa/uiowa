@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.event.field_event_category
     - field.field.node.event.field_event_hide
     - field.field.node.event.field_event_location
+    - field.field.node.event.field_event_virtual
     - field.field.node.event.field_event_when
     - field.field.node.event.field_meta_tags
     - field.field.node.event.field_tags
@@ -16,6 +17,7 @@ dependencies:
   module:
     - address
     - layout_builder
+    - link
     - smart_date
     - text
     - user
@@ -52,6 +54,18 @@ content:
     third_party_settings: {  }
     type: address_default
     region: content
+  field_event_virtual:
+    type: link
+    weight: 6
+    region: content
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
   field_event_when:
     weight: 0
     label: above
@@ -80,7 +94,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   links:
-    weight: 6
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }

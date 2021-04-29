@@ -8,12 +8,15 @@ dependencies:
     - field.field.node.event.field_event_category
     - field.field.node.event.field_event_hide
     - field.field.node.event.field_event_location
+    - field.field.node.event.field_event_virtual
     - field.field.node.event.field_event_when
     - field.field.node.event.field_meta_tags
     - field.field.node.event.field_tags
     - field.field.node.event.field_teaser
     - node.type.event
   module:
+    - address
+    - link
     - smart_date
     - user
 _core:
@@ -23,6 +26,25 @@ targetEntityType: node
 bundle: event
 mode: teaser
 content:
+  field_event_location:
+    type: address_default
+    weight: 1
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_event_virtual:
+    type: link
+    weight: 2
+    region: content
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
   field_event_when:
     type: smartdate_default
     weight: 0
@@ -37,13 +59,13 @@ content:
     third_party_settings: {  }
   field_teaser:
     type: basic_string
-    weight: 1
+    weight: 3
     region: content
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
   links:
-    weight: 2
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -52,7 +74,6 @@ hidden:
   content_moderation_control: true
   field_event_category: true
   field_event_hide: true
-  field_event_location: true
   field_meta_tags: true
   field_tags: true
   search_api_excerpt: true
