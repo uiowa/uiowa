@@ -5,6 +5,7 @@
  * Install, update and uninstall functions for the Admissions Core module.
  */
 
+use Drupal\Component\Utility\Html;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 
@@ -164,6 +165,46 @@ function admissions_core_update_8002() {
               'weight' => $weight,
             ])
             ->save();
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Update orgsync link in field_area_of_study_opportunity.
+ */
+function admissions_core_update_9001() {
+  $query = \Drupal::entityTypeManager()->getStorage('node')->getQuery();
+
+  $ids = $query
+    ->condition('type', 'area_of_study')
+    ->execute();
+
+  if ($ids) {
+    $controller = \Drupal::entityTypeManager()->getStorage('node');
+    $entities = $controller->loadMultiple($ids);
+
+    foreach ($entities as $entity) {
+      $document = Html::load($entity->field_area_of_study_opportunity->value);
+      $links = $document->getElementsByTagName('a');
+
+      foreach ($links as $link) {
+        if ($url = parse_url($link->getAttribute('href'))) {
+          if ($url['host'] == 'uiowa.orgsync.com') {
+            $link->setAttribute('href', "https://uiowa.campuslabs.com/engage");
+            $link->parentNode->replaceChild($link, $link);
+
+            $document->saveHTML();
+            $html = Html::serialize($document);
+            $entity->field_area_of_study_opportunity->value = $html;
+            $entity->save();
+
+            \Drupal::logger('admissions_core')->info('Replaced link @link on @oas.', [
+              '@link' => $url['host'],
+              '@aos' => $entity->label(),
+            ]);
+          }
         }
       }
     }

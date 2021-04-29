@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: sitestranslateui.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: sitestranslateui
+  human_name: translateui.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitestranslateui.prod
+drupal:
+  db:
+    database: translateui_sites_uiowa_edu
+uiowa:
+  requester: cfrances
