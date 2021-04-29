@@ -10,6 +10,7 @@ dependencies:
     - field.field.node.event.field_event_location
     - field.field.node.event.field_event_virtual
     - field.field.node.event.field_event_when
+    - field.field.node.event.field_image
     - field.field.node.event.field_meta_tags
     - field.field.node.event.field_tags
     - field.field.node.event.field_teaser
@@ -78,6 +79,15 @@ content:
     third_party_settings: {  }
     type: smartdate_default
     region: content
+  field_image:
+    type: entity_reference_entity_view
+    weight: 7
+    region: content
+    label: hidden
+    settings:
+      view_mode: large__widescreen
+      link: false
+    third_party_settings: {  }
   field_tags:
     type: entity_reference_label
     weight: 4
@@ -94,7 +104,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   links:
-    weight: 7
+    weight: 8
     region: content
     settings: {  }
     third_party_settings: {  }

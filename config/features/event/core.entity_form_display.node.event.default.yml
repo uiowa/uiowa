@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.event.field_event_location
     - field.field.node.event.field_event_virtual
     - field.field.node.event.field_event_when
+    - field.field.node.event.field_image
     - field.field.node.event.field_meta_tags
     - field.field.node.event.field_tags
     - field.field.node.event.field_teaser
@@ -98,6 +99,16 @@ content:
           MINUTELY: 0
           HOURLY: 0
     type: smartdate_timezone
+    region: content
+  field_image:
+    weight: 26
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
     region: content
   field_meta_tags:
     weight: 14

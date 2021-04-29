@@ -10,6 +10,7 @@ dependencies:
     - field.field.node.event.field_event_location
     - field.field.node.event.field_event_virtual
     - field.field.node.event.field_event_when
+    - field.field.node.event.field_image
     - field.field.node.event.field_meta_tags
     - field.field.node.event.field_tags
     - field.field.node.event.field_teaser
@@ -28,14 +29,14 @@ mode: teaser
 content:
   field_event_location:
     type: address_default
-    weight: 1
+    weight: 2
     region: content
     label: above
     settings: {  }
     third_party_settings: {  }
   field_event_virtual:
     type: link
-    weight: 2
+    weight: 3
     region: content
     label: above
     settings:
@@ -47,7 +48,7 @@ content:
     third_party_settings: {  }
   field_event_when:
     type: smartdate_default
-    weight: 0
+    weight: 1
     region: content
     label: inline
     settings:
@@ -57,15 +58,24 @@ content:
       force_chronological: false
       add_classes: 0
     third_party_settings: {  }
+  field_image:
+    type: entity_reference_entity_view
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      view_mode: large__widescreen
+      link: false
+    third_party_settings: {  }
   field_teaser:
     type: basic_string
-    weight: 3
+    weight: 4
     region: content
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
   links:
-    weight: 4
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
