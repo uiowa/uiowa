@@ -2567,3 +2567,9 @@ $sites['orgnsslha.local.drupal.uiowa.edu'] = 'nsslha.org.uiowa.edu';
 $sites['orgnsslha.dev.drupal.uiowa.edu'] = 'nsslha.org.uiowa.edu';
 $sites['orgnsslha.stage.drupal.uiowa.edu'] = 'nsslha.org.uiowa.edu';
 $sites['orgnsslha.prod.drupal.uiowa.edu'] = 'nsslha.org.uiowa.edu';
+
+// Directory aliases for gvillarini.iihr.uiowa.edu.
+$sites['iihrgvillarini.local.drupal.uiowa.edu'] = 'gvillarini.iihr.uiowa.edu';
+$sites['iihrgvillarini.dev.drupal.uiowa.edu'] = 'gvillarini.iihr.uiowa.edu';
+$sites['iihrgvillarini.stage.drupal.uiowa.edu'] = 'gvillarini.iihr.uiowa.edu';
+$sites['iihrgvillarini.prod.drupal.uiowa.edu'] = 'gvillarini.iihr.uiowa.edu';
