@@ -22,6 +22,10 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
     case 'node_event_edit_form':
       _sitenow_node_form_defaults($form, $form_state);
       $form['field_event_category']['#group'] = 'node_relations';
+      if (isset($form['field_event_hide'])) {
+        // Set field_event_hide to options group (promotion options).
+        $form['field_event_hide']['#group'] = 'options';
+      }
       break;
   }
 }
