@@ -4,9 +4,11 @@ status: true
 dependencies:
   config:
     - field.field.node.event.body
+    - field.field.node.event.field_event_category
     - field.field.node.event.field_event_location
     - field.field.node.event.field_event_when
     - field.field.node.event.field_meta_tags
+    - field.field.node.event.field_tags
     - field.field.node.event.field_teaser
     - node.type.event
   module:
@@ -54,6 +56,8 @@ content:
     third_party_settings: {  }
 hidden:
   content_moderation_control: true
+  field_event_category: true
   field_meta_tags: true
+  field_tags: true
   field_teaser: true
   search_api_excerpt: true

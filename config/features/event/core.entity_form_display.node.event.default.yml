@@ -4,9 +4,11 @@ status: true
 dependencies:
   config:
     - field.field.node.event.body
+    - field.field.node.event.field_event_category
     - field.field.node.event.field_event_location
     - field.field.node.event.field_event_when
     - field.field.node.event.field_meta_tags
+    - field.field.node.event.field_tags
     - field.field.node.event.field_teaser
     - node.type.event
     - workflows.workflow.editorial
@@ -41,6 +43,16 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_event_category:
+    weight: 27
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete_tags
+    region: content
   field_event_location:
     weight: 2
     settings: {  }
@@ -75,6 +87,16 @@ content:
       sidebar: true
     third_party_settings: {  }
     type: metatag_firehose
+    region: content
+  field_tags:
+    weight: 26
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete_tags
     region: content
   field_teaser:
     weight: 9
