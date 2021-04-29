@@ -1,9 +1,9 @@
-uuid: 97267359-5092-4c84-b790-b0a4d874ed58
+uuid: d0efe5ef-67c7-4e35-b8b5-e7f8b501562f
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.teaser
+    - core.entity_view_mode.node.token
     - field.field.node.event.body
     - field.field.node.event.field_event_location
     - field.field.node.event.field_event_when
@@ -11,42 +11,55 @@ dependencies:
     - field.field.node.event.field_teaser
     - node.type.event
   module:
+    - address
+    - layout_builder
     - smart_date
+    - text
     - user
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: false
 _core:
-  default_config_hash: GE8vxA9J85JTlqiqDwrBsmkZq8HXuJ5QEESclO3u8N8
-id: node.event.teaser
+  default_config_hash: ppIsOjQ5tKp_SD6BztnDSr18eW9MqwFx1xjOcNUIWyI
+id: node.event.token
 targetEntityType: node
 bundle: event
-mode: teaser
+mode: token
 content:
-  field_event_when:
-    type: smartdate_default
-    weight: 0
-    region: content
-    label: inline
-    settings:
-      format: default
-      format_type: medium
-      timezone_override: ''
-      force_chronological: false
-      add_classes: 0
-    third_party_settings: {  }
-  field_teaser:
-    type: basic_string
+  body:
+    label: hidden
+    type: text_default
     weight: 1
-    region: content
-    label: visually_hidden
     settings: {  }
     third_party_settings: {  }
-  links:
+    region: content
+  field_event_location:
     weight: 2
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: address_default
+    region: content
+  field_event_when:
+    weight: 0
+    label: above
+    settings:
+      timezone_override: ''
+      format: default
+      force_chronological: false
+      format_type: medium
+      add_classes: 0
+    third_party_settings: {  }
+    type: smartdate_default
+    region: content
+  links:
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
-  body: true
   content_moderation_control: true
-  field_event_location: true
   field_meta_tags: true
+  field_teaser: true
   search_api_excerpt: true

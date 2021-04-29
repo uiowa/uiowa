@@ -5,12 +5,15 @@ dependencies:
   config:
     - field.field.node.event.body
     - field.field.node.event.field_event_location
-    - field.field.node.event.field_teaser
     - field.field.node.event.field_event_when
+    - field.field.node.event.field_meta_tags
+    - field.field.node.event.field_teaser
     - node.type.event
+    - workflows.workflow.editorial
   module:
     - address
     - content_moderation
+    - metatag
     - path
     - smart_date
     - smart_date_recur
@@ -34,18 +37,18 @@ content:
     region: content
   created:
     type: datetime_timestamp
-    weight: 2
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
   field_event_location:
-    weight: 8
+    weight: 2
     settings: {  }
     third_party_settings: {  }
     type: address_default
     region: content
   field_event_when:
-    weight: 7
+    weight: 1
     settings:
       default_tz: ''
       custom_tz: America/Chicago
@@ -66,6 +69,13 @@ content:
           HOURLY: 0
     type: smartdate_timezone
     region: content
+  field_meta_tags:
+    weight: 13
+    settings:
+      sidebar: true
+    third_party_settings: {  }
+    type: metatag_firehose
+    region: content
   field_teaser:
     weight: 9
     settings:
@@ -82,7 +92,7 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 5
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -90,21 +100,21 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 3
+    weight: 5
     region: content
     third_party_settings: {  }
   status:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 6
+    weight: 8
     region: content
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 4
+    weight: 6
     region: content
     third_party_settings: {  }
   title:
@@ -117,7 +127,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 1
+    weight: 3
     settings:
       match_operator: CONTAINS
       size: 60
