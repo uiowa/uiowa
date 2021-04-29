@@ -19,6 +19,7 @@ dependencies:
     - address
     - content_moderation
     - link
+    - media_library
     - metatag
     - path
     - smart_date
@@ -103,12 +104,9 @@ content:
   field_image:
     weight: 26
     settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
+      media_types: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: media_library_widget
     region: content
   field_meta_tags:
     weight: 14
