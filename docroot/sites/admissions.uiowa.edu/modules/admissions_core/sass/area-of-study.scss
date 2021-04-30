@@ -36,13 +36,31 @@
       border-radius: unset;
     }
   }
-  .bttn.bttn--link {
-    padding-left: 0;
-    text-align: left;
-    text-transform: none;
-    letter-spacing: 0;
-    font-size: 1rem;
+  .field--name-field-area-of-study-first-year,
+  .field--name-field-area-of-study-transfer,
+  .field--name-field-area-of-study-intl {
+    .card .bttn.bttn--link.bttn--outline {
+      border-color: rgba(0,0,0,.225);
+      margin-right: $md;
+      &:hover, &:focus {
+        border: 1px solid rgba(0,0,0,.225);
+      }
+    }
+    .card .bttn {
+      margin-top: $md;
+    }
   }
+
+  // @todo remove after https://github.com/uiowa/uids/issues/448 is completed.
+  .card.card--media-left .card__media--small {
+    flex: 0 0 25%;
+    width: 25%;
+    margin: $lg auto 0;
+    @include breakpoint(sm) {
+      margin: 0
+    }
+  }
+
   .views-field-field-area-of-study-teaching,
   .views-field-field-area-of-study-honors,
   .views-field-field-area-of-study-competitive,
@@ -171,4 +189,5 @@
   font-size: 1rem;
   line-height: 1.7;
   font-weight: 400;
+  display: block;
 }
