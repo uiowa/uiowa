@@ -95,7 +95,7 @@ class Articles extends BaseNodeSource {
 
     // @todo Update with the correct field(s).
     $reference_fields = [
-      'field_clas_news_tags',
+      'field_mode_of_transportation',
     ];
 
     // Lookup and store new term given a TID on the old site.
