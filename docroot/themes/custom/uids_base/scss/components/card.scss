@@ -46,11 +46,29 @@
 
 // Remove padding if no section background and bg--white is set on card
 .layout__container:not([class*="bg-"]) {
+  .card--media-left[class*="bg--white"]:not([class*="card--enclosed"]) {
+    .card__media + .card__body {
+      @include breakpoint(sm) {
+        padding: 0 0 $md 2rem;
+      }
+    }
+  }
+  .card--media-right[class*="bg--white"]:not([class*="card--enclosed"]) {
+    .card__media + .card__body {
+      @include breakpoint(sm) {
+        padding: 0 2rem $md 0;
+      }
+    }
+  }
   .card--media-left[class*="bg--white"]:not([class*="card--enclosed"]),
   .card--media-right[class*="bg--white"]:not([class*="card--enclosed"]) {
     .card__body {
       padding-left: 0;
       padding-right: 0;
+      padding-bottom: 0;
+    }
+    .card__media + .card__body {
+      padding-top: 2rem;
     }
   }
 }
