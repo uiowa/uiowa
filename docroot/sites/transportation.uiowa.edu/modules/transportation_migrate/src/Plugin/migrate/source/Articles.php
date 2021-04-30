@@ -89,8 +89,11 @@ class Articles extends BaseNodeSource {
     }
 
     // Create combined array of taxonomy terms to map to tags.
-    $tags = [];
+    // ALL articles will receive a default news-ParkTransit tag
+    // which has a TID of 46.
+    $tags = [46];
 
+    // @todo Update with the correct field(s).
     $reference_fields = [
       'field_clas_news_tags',
     ];
@@ -135,7 +138,26 @@ class Articles extends BaseNodeSource {
    *   The new term or FALSE if not in the map.
    */
   protected function manualLookup($tid) {
-    $map = [];
+    $map = [
+      // Transit Study 2019-2020 => news-CAMBUS.
+      96 => 51,
+      // Cambus => news-CAMBUS.
+      6 => 51,
+      // UnPark Yourself => news-AlternativeTransportation.
+      66 => 76,
+      // Walking => news-BikeWalk.
+      8 => 101,
+      // University Vehicles => news-Fleet.
+      26 => 36,
+      // Parking => news-Parking.
+      5 => 81,
+      // Rideshare => news-Rideshare.
+      32 => 86,
+      // U-PASS => news-UPASS (labelled BusPass).
+      55 => 91,
+      // All terms should get news-ParkTransit as well.
+      0 => 46,
+    ];
 
     return isset($map[$tid]) ? $map[$tid] : FALSE;
   }
