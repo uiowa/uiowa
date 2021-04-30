@@ -135,28 +135,39 @@ class Articles extends BaseNodeSource {
    *   The new term or FALSE if not in the map.
    */
   protected function manualLookup($tid) {
+    // @todo map to the new TIDs if these terms are created.
     $map = [
-      6 => 'Space Physics',
-      5 => 'Plasma Physics',
-      13 => 'Photonics and Quantum Electronics',
-      11 => 'Nonlinear Dynamics',
-      9 => 'Mathematical Physics',
-      2 => 'Condensed Matter and Materials Physics',
+      // Space Physics
+      6 => 106,
+      // Plasma Physics
+      5 => 91,
+      // Photonics and Quantum Electronics
+      12 => 126,
+      13 => 126,
+      // Nonlinear Dynamics
+      11 => 121,
+      // Mathematical Physics
+      9 => 111,
+      // Condensed Matter and Materials Physics
+      2 => 86,
+      // Atmospheric and Environmental Physics (isn't created yet).
       8 => 'Atmospheric and Environmental Physics',
-      10 => 'Medical and Biomedical Physics',
-      1 => 'Astronomy and Astrophysics',
-      1211 => 'Astronomy and Astrophysics',
-      1216 => 'Astronomy and Astrophysics',
-      1221 => 'Astronomy and Astrophysics',
-      1226 => 'Astronomy and Astrophysics',
-      1231 => 'Astronomy and Astrophysics',
-      1236 => 'Astronomy and Astrophysics',
-      12 => 'Photonics and Quantum Electronics',
-      7 => 'Nuclear and Particle Physics',
-      3 => 'Nuclear and Particle Physics',
+      // Medical and Biomedical Physics
+      10 => 116,
+      // Astronomy and Astrophysics
+      1 => 76,
+      1211 => 76,
+      1216 => 76,
+      1221 => 76,
+      1226 => 76,
+      1231 => 76,
+      1236 => 76,
+      // Nuclear and Particle Physics
+      7 => 96,
+      3 => 96,
     ];
 
-    return isset($map[$nid]) ? $map[$nid] : FALSE;
+    return isset($map[$tid]) ? $map[$tid] : FALSE;
   }
 
 }
