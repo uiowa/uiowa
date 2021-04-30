@@ -135,7 +135,6 @@ class Articles extends BaseNodeSource {
    *   The new term or FALSE if not in the map.
    */
   protected function manualLookup($tid) {
-    // @todo map to the new TIDs if these terms are created.
     $map = [
       // Space Physics.
       6 => 106,
@@ -150,8 +149,9 @@ class Articles extends BaseNodeSource {
       9 => 111,
       // Condensed Matter and Materials Physics.
       2 => 86,
+      // @todo create this term in prod and update tid if needed.
       // Atmospheric and Environmental Physics (isn't created yet).
-      8 => 'Atmospheric and Environmental Physics',
+      8 => 141,
       // Medical and Biomedical Physics.
       10 => 116,
       // Astronomy and Astrophysics.
