@@ -42,7 +42,7 @@ class Articles extends BaseNodeSource {
    */
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
-    $body = $row->getSourceProperty('field_clas_news_description');
+    $body = $row->getSourceProperty('body');
 
     if (!empty($body)) {
       // Search for D7 inline embeds and replace with D8 inline entities.
@@ -114,16 +114,6 @@ class Articles extends BaseNodeSource {
     }
 
     $row->setSourceProperty('tags', $tags);
-
-    // Process the Link directly to source field if external link is provided.
-    $extlink = $row->getSourceProperty('field_clas_news_link');
-
-    if (!empty($extlink)) {
-      $row->setSourceProperty('field_article_source_link_direct', 1);
-    }
-    else {
-      $row->setSourceProperty('field_article_source_link_direct', 0);
-    }
 
     return TRUE;
   }
