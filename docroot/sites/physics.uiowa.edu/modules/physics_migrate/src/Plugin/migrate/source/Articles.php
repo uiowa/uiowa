@@ -137,24 +137,24 @@ class Articles extends BaseNodeSource {
   protected function manualLookup($tid) {
     // @todo map to the new TIDs if these terms are created.
     $map = [
-      // Space Physics
+      // Space Physics.
       6 => 106,
-      // Plasma Physics
+      // Plasma Physics.
       5 => 91,
-      // Photonics and Quantum Electronics
+      // Photonics and Quantum Electronics.
       12 => 126,
       13 => 126,
-      // Nonlinear Dynamics
+      // Nonlinear Dynamics.
       11 => 121,
-      // Mathematical Physics
+      // Mathematical Physics.
       9 => 111,
-      // Condensed Matter and Materials Physics
+      // Condensed Matter and Materials Physics.
       2 => 86,
       // Atmospheric and Environmental Physics (isn't created yet).
       8 => 'Atmospheric and Environmental Physics',
-      // Medical and Biomedical Physics
+      // Medical and Biomedical Physics.
       10 => 116,
-      // Astronomy and Astrophysics
+      // Astronomy and Astrophysics.
       1 => 76,
       1211 => 76,
       1216 => 76,
@@ -162,7 +162,7 @@ class Articles extends BaseNodeSource {
       1226 => 76,
       1231 => 76,
       1236 => 76,
-      // Nuclear and Particle Physics
+      // Nuclear and Particle Physics.
       7 => 96,
       3 => 96,
     ];
