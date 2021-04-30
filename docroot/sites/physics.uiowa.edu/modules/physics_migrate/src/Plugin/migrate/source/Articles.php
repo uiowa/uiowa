@@ -102,7 +102,7 @@ class Articles extends BaseNodeSource {
           if ($lookup = $this->manualLookup($ref['tid'])) {
             $tags[] = $lookup;
             $this->logger->info('Replaced term @tid in article @article.', [
-              '@term' => $ref['tid'],
+              '@tid' => $ref['tid'],
               '@article' => $row->getSourceProperty('title'),
             ]);
           }
