@@ -35,7 +35,7 @@
 .view-id-people {
 
   .card__media {
-    //@include card-media-horizontal-right;
+    @include card-media-horizontal-right;
 
     @include breakpoint(sm) {
       margin-top: $lg;
@@ -71,11 +71,17 @@
     // @include list-group-item;
   }
 
-  .content-image {
+  .content-image,
+  .card__media {
     @include card-media-horizontal-right;
 
     @include breakpoint(sm) {
       margin-top: $lg;
+    }
+    &.media--circle {
+      @include breakpoint(sm) {
+        margin-top: 0;
+      }
     }
   }
 }
