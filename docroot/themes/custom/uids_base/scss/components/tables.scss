@@ -2,33 +2,22 @@
 @import "assets/scss/_utilities.scss";
 @import "components/tables/tables.scss";
 
-table caption {
-  @include element-invisible;
-}
-
-// @todo Remove this when it is added to UIDS.
-table thead td,
-table thead th {
-  vertical-align: middle;
-}
-
-.lb__container .table__responsive-container {
+.lb__container .table-responsive {
   margin-right: auto;
 }
 
 // @todo Move this to UIDS
 table a {
-
-  .bg--white &,
-  .bg--gray &,
+  [class*="bg--gray"] &,
+  [class*="bg--white"] &,
+  [class*="bg--black"] &,
+  [class*="bg--gold"] &,
   .bg-pattern--brain-reversed &,
   .bg--gold--pattern--brain &,
-  .bg--gold &,
   .bg-pattern--brain &,
   .bg--white--pattern--brain &,
   .bg--black--pattern--brain &,
-  .bg-pattern--brain-black &,
-  .bg--black & {
+  .bg-pattern--brain-black & {
     color: #00558c;
   }
 }

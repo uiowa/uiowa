@@ -496,6 +496,7 @@ class ListBlock extends CoreBlock {
    */
   public function preBlockBuild(ViewsBlock $block) {
     parent::preBlockBuild($block);
+    $this->setOption('exposed_block', FALSE);
 
     $allow_settings = array_filter($this->getOption('allow'));
     $config = $block->getConfiguration();
@@ -603,14 +604,17 @@ class ListBlock extends CoreBlock {
         return TRUE;
       }
     }
-    return FALSE;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function displaysExposed() {
-    // We don't want this to be available on this type of block.
+    // Hotfix shim to keep these pagers working for now.
+    // @todo Solve ListBlock paging.
+    $display = $this->view->getDisplay();
+    $exceptions = [
+      'block_people_slf',
+      'block_people_sfl',
+      'block_articles',
+    ];
+    if (in_array($display->display['id'], $exceptions)) {
+      return TRUE;
+    }
     return FALSE;
   }
 

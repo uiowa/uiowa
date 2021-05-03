@@ -53,19 +53,26 @@
   }
 }
 
+.card[class*="bg--gold"],
+.card[class*="bg--gray"] {
+  .bttn--sans-serif {
+    border-color: rgba(0,0,0,.225);
+  }
+}
+
 // Border color adjustment for cards not using a bg color
 .card:not([class*="bg-"]) {
   border-color: rgba(0,0,0,.125);
   .bg--black--pattern--brain &,
   .bg-pattern--brain-black &,
-  .bg--black & {
+  [class*="bg--black"] & {
     border-color: rgba(255,255,255,.325);
     .bttn--sans-serif {
       border-color: rgba(255,255,255,.325);
     }
   }
   .bttn--sans-serif {
-    border-color: rgba(0,0,0,.125);
+    border-color: rgba(0,0,0,.225);
   }
 }
 
