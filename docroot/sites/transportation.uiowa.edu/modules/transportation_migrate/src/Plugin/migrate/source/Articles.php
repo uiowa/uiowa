@@ -55,25 +55,16 @@ class Articles extends BaseNodeSource {
       $doc = Html::load($body[0]['value']);
       $links = $doc->getElementsByTagName('a');
       $i = $links->length - 1;
-      $created_year = date('Y', $row->getSourceProperty('created'));
 
       while ($i >= 0) {
         $link = $links->item($i);
         $href = $link->getAttribute('href');
 
-        // Unlink anchors in body from articles before 2016.
-        if ($created_year < 2016) {
-          $text = $doc->createTextNode($link->nodeValue);
-          $link->parentNode->replaceChild($text, $link);
-          $doc->saveHTML();
-        }
-        else {
-          if (strpos($href, '/node/') === 0 || stristr($href, 'transportation.uiowa.edu/node/')) {
-            $this->logger->notice('Unable to replace internal link @link in article @article.', [
-              '@link' => $href,
-              '@article' => $row->getSourceProperty('title'),
-            ]);
-          }
+        if (strpos($href, '/node/') === 0 || stristr($href, 'transportation.uiowa.edu/node/')) {
+          $this->logger->notice('Unable to replace internal link @link in article @article.', [
+            '@link' => $href,
+            '@article' => $row->getSourceProperty('title'),
+          ]);
         }
 
         $i--;
