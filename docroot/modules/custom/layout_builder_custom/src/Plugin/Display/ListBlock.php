@@ -162,6 +162,25 @@ class ListBlock extends CoreBlock {
       unset($form['override']['items_per_page']['#options']);
     }
 
+    // Provide "Pager offset" block settings form.
+    if (!empty($allow_settings['offset'])) {
+      $form['override']['pager_offset'] = [
+        '#type' => 'number',
+        '#title' => $this->t('Offset'),
+        '#default_value' => isset($block_configuration['pager_offset']) ? $block_configuration['pager_offset'] : 0,
+        '#description' => $this->t('For example, set this to 3 and the first 3 items will not be displayed.'),
+      ];
+    }
+
+    // Provide "Show pager" block setting.
+    if (!empty($allow_settings['pager'])) {
+      $form['override']['pager'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Show pager'),
+        '#default_value' => ($block_configuration['pager'] == 'full'),
+      ];
+    }
+
     // Display exposed filters to allow them to be set for the block.
     $customizable_filters = $this->getOption('filter_in_block');
     if (!empty($customizable_filters)) {
@@ -328,25 +347,6 @@ class ListBlock extends CoreBlock {
       }
     }
 
-    // Provide "Pager offset" block settings form.
-    if (!empty($allow_settings['offset'])) {
-      $form['override']['pager_offset'] = [
-        '#type' => 'number',
-        '#title' => $this->t('Offset'),
-        '#default_value' => isset($block_configuration['pager_offset']) ? $block_configuration['pager_offset'] : 0,
-        '#description' => $this->t('For example, set this to 3 and the first 3 items will not be displayed.'),
-      ];
-    }
-
-    // Provide "Show pager" block setting.
-    if (!empty($allow_settings['pager'])) {
-      $form['override']['pager'] = [
-        '#type' => 'checkbox',
-        '#title' => $this->t('Show pager'),
-        '#default_value' => ($block_configuration['pager'] == 'full'),
-      ];
-    }
-
     // Provides settings related to displaying a "More" link.
     if (!empty($allow_settings['use_more'])) {
 
@@ -396,7 +396,6 @@ class ListBlock extends CoreBlock {
           ],
         ],
       ];
-      $form['#attached']['library'][] = 'linkit/linkit.autocomplete';
     }
 
     // Set overrides to show up in the middle of the form.
