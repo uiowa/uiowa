@@ -594,8 +594,6 @@ class ListBlock extends CoreBlock {
 
   /**
    * {@inheritdoc}
-   *
-   * @todo Determine whether this is necessary to have.
    */
   public function usesExposed() {
     $filters = $this->getHandlers('filter');
@@ -618,6 +616,9 @@ class ListBlock extends CoreBlock {
     return FALSE;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function displaysExposed() {
     return FALSE;
   }
