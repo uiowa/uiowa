@@ -618,6 +618,10 @@ class ListBlock extends CoreBlock {
     return FALSE;
   }
 
+  public function displaysExposed() {
+    return FALSE;
+  }
+
   /**
    * Exposed widgets.
    *
