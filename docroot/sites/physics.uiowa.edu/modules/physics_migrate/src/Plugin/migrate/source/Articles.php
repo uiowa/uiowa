@@ -149,9 +149,8 @@ class Articles extends BaseNodeSource {
       9 => 111,
       // Condensed Matter and Materials Physics.
       2 => 86,
-      // @todo create this term in prod and update tid if needed.
-      // Atmospheric and Environmental Physics (isn't created yet).
-      8 => 141,
+      // Atmospheric and Environmental Physics.
+      8 => 146,
       // Medical and Biomedical Physics.
       10 => 116,
       // Astronomy and Astrophysics.
