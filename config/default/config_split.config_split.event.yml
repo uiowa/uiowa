@@ -12,12 +12,22 @@ module:
 theme: {  }
 blacklist: {  }
 graylist:
+  - config_ignore.settings
+  - field.storage.node.field_event_category
+  - field.storage.node.field_event_hide
   - field.storage.node.field_event_location
+  - field.storage.node.field_event_virtual
   - field.storage.node.field_event_when
+  - metatag.metatag_defaults.node__event
+  - metatag.settings
   - node.type.event
+  - pathauto.pattern.event
   - simple_sitemap.bundle_settings.default.node.event
+  - taxonomy.vocabulary.event_categories
   - views.view.events
   - 'smart_date.*'
+  - 'user.role.*'
+  - 'core.entity_view_display.node.event.*'
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 80
