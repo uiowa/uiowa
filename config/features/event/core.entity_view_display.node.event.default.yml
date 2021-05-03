@@ -32,19 +32,19 @@ third_party_settings:
       -
         layout_id: layout_header
         layout_settings:
-          label: ''
+          label: Header
           layout_builder_styles_style:
             - ''
             - ''
         components:
           -
             uuid: 834fd627-6768-49f1-a5a3-608c27b5bcba
-            region: content
+            region: background
             configuration:
               id: 'field_block:node:event:field_image'
-              label: null
+              label: 'Featured Image'
               provider: layout_builder
-              label_display: null
+              label_display: '0'
               formatter:
                 label: visually_hidden
                 type: entity_reference_entity_view
@@ -55,15 +55,15 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
-            weight: 1
+            weight: 2
           -
             uuid: a7192d3a-b76b-4e95-9c75-2ccd6335f9e5
             region: content
             configuration:
               id: 'field_block:node:event:title'
-              label: null
+              label: Title
               provider: layout_builder
-              label_display: null
+              label_display: '0'
               formatter:
                 label: visually_hidden
                 type: string
@@ -74,10 +74,8 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
-            weight: 0
-        third_party_settings:
-          layout_builder_lock:
-            lock: {  }
+            weight: -9
+        third_party_settings: {  }
       -
         layout_id: layout_twocol_section
         layout_settings:
