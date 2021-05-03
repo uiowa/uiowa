@@ -220,6 +220,10 @@ function sitenow_events_theme($existing, $type, $theme, $path) {
       'file' => 'includes/sitenow_events.single_event.inc',
       'variables' => ['event' => NULL],
     ],
+    'field__node__title__event__default' => [
+      'template' => 'field--node--title--event--default',
+      'base hook' => 'field',
+    ],
   ];
 }
 
