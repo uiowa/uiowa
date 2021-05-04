@@ -2676,7 +2676,11 @@ function sitenow_update_9008() {
 
             if ($update_count) {
               \Drupal::messenger()
-                ->addMessage('Processed ' . $update_count . ' update(s) for ' . $table . ' table ' . $value_column . ' column.');
+                ->addMessage(t('Processed @update_count update(s) for @table table @value_column column.', [
+                  '@update_count' => $update_count,
+                  '@table' => $table,
+                  '@value_column' => $value_column,
+                ]));
 
               $fix_count = $db->update($table)
                 ->condition($value_column, '%' . $db->escapeLike('tabletable--') . '%', 'LIKE')
@@ -2687,7 +2691,11 @@ function sitenow_update_9008() {
                 ->execute();
 
               \Drupal::messenger()
-                ->addMessage('Fixed ' . $fix_count . ' instance(s) where the customer had manually changed the table class in ' . $table . ' table ' . $value_column . ' column.');
+                ->addMessage(t('Fixed @fix_count instance(s) where the customer had manually changed the table class in @table table @value_column column.', [
+                  '@fix_count' => $fix_count,
+                  '@table' => $table,
+                  '@value_column' => $value_column,
+                ]));
             }
           }
         }
