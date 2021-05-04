@@ -94,7 +94,7 @@ third_party_settings:
             weight: -8
         third_party_settings: {  }
       -
-        layout_id: layout_twocol_section
+        layout_id: layout_twocol
         layout_settings:
           label: ''
           column_widths: 67-33
@@ -103,6 +103,21 @@ third_party_settings:
             1: ''
             section_alignment_start: section_alignment_start
         components:
+          -
+            uuid: 326c86d2-b6c1-487c-9882-088f992f23cd
+            region: first
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:event:body'
+              formatter:
+                label: hidden
+                type: text_default
+                settings: {  }
+                third_party_settings: {  }
+            additional: {  }
+            weight: 0
           -
             uuid: 57f035d2-5d1e-40c8-a1fe-673f40b55f3d
             region: second
@@ -121,36 +136,6 @@ third_party_settings:
                   add_classes: 0
                 third_party_settings: {  }
                 type: smartdate_default
-            additional: {  }
-            weight: 0
-          -
-            uuid: 326c86d2-b6c1-487c-9882-088f992f23cd
-            region: first
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:event:body'
-              formatter:
-                label: hidden
-                type: text_default
-                settings: {  }
-                third_party_settings: {  }
-            additional: {  }
-            weight: 0
-          -
-            uuid: 80301d6e-e516-4cae-a7b4-6c4f93b156a3
-            region: second
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:event:field_event_location'
-              formatter:
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-                type: address_default
             additional: {  }
             weight: 2
           -
@@ -171,6 +156,21 @@ third_party_settings:
                   target: '0'
                 third_party_settings: {  }
                 type: link
+            additional: {  }
+            weight: 0
+          -
+            uuid: 80301d6e-e516-4cae-a7b4-6c4f93b156a3
+            region: second
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:event:field_event_location'
+              formatter:
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+                type: address_default
             additional: {  }
             weight: 1
         third_party_settings:
