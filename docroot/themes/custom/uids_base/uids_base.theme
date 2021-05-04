@@ -216,6 +216,7 @@ function uids_base_preprocess_node(&$variables) {
         case 'person':
           $variables['#attached']['library'][] = 'uids_base/person';
           break;
+
         case 'event':
           $variables['#attached']['library'][] = 'uids_base/sitenow-events-single';
           break;
