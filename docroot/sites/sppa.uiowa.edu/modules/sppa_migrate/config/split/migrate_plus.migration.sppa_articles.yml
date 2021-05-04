@@ -24,12 +24,12 @@ process:
     source: language
     map:
       und: en
-  moderation_state: moderation_state
+  moderation_state:
+    plugin: default_value
+    default_value: published
   created: created
   changed: changed
-  status:
-    plugin: default_value
-    default_value: 1
+  status: status
   promote: promote
   uid: constants/uid_admin
   title: title
