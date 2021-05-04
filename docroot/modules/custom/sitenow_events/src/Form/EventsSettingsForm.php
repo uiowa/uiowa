@@ -106,6 +106,25 @@ class EventsSettingsForm extends ConfigFormBase {
       '#required' => TRUE,
     ];
 
+    $featured_image_display_default = $config->get('featured_image_display_default');
+
+    $form['event_node']['featured_image_display_default'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Display featured image'),
+      '#description' => $this->t('Set the default behavior for how to display a featured image.'),
+      '#options' => [
+        'do_not_display' => $this
+          ->t('Do not display'),
+        'small' => $this
+          ->t('Small'),
+        'medium' => $this
+          ->t('Medium'),
+        'large' => $this
+          ->t('Large'),
+      ],
+      '#default_value' => $featured_image_display_default ?: 'large',
+    ];
+
     return $form;
   }
 
@@ -132,6 +151,12 @@ class EventsSettingsForm extends ConfigFormBase {
     $path = $form_state->getValue('sitenow_events_single_event_path');
     // Clean path.
     $path = $this->aliasCleaner->cleanString($path);
+    $featured_image_display_default = $form_state->getValue('featured_image_display_default');
+
+    $this->configFactory->getEditable(static::SETTINGS)
+      // Save the featured image display default.
+      ->set('featured_image_display_default', $featured_image_display_default)
+      ->save();
 
     $this->config('sitenow_events.settings')
       ->set('event_link', $form_state->getValue('sitenow_events_event_link'))
