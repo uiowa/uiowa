@@ -13,6 +13,7 @@ use Drupal\layout_builder_custom\Plugin\Display\ListBlock;
 use Drupal\layout_builder_styles\LayoutBuilderStyleGroups;
 use Drupal\layout_builder_styles\LayoutBuilderStyleInterface;
 use Drupal\views\Plugin\views\display\Block;
+use Drupal\views\ViewExecutable;
 
 /**
  * Implements hook_config_schema_info_alter().
@@ -788,6 +789,36 @@ function _layout_builder_custom_add_lbs_heading(&$form) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK().
+ */
+function layout_builder_custom_preprocess_block(&$variables) {
+
+  switch ($variables['elements']['#plugin_id']) {
+    case 'inline_block:uiowa_banner':
+      $block = $variables['elements']['content']['#block_content'];
+      // Media entity template needs to change based on this block,
+      // so invalidate cache.
+      if ($block->hasField('field_uiowa_banner_image') && !$block->get('field_uiowa_banner_image')->isEmpty()) {
+        $id = $block->get('field_uiowa_banner_image')->target_id;
+        Cache::invalidateTags(['media:' . $id]);
+      }
+      break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function layout_builder_custom_preprocess_media(&$variables) {
+  $media = $variables['elements']['#media'];
+  if ($media->bundle() === 'video') {
+    $variables['attributes'] = [
+        'class' => ['media--video'],
+      ] + $variables['attributes'];
+  }
+}
+
+/**
  * Implements hook_preprocess_views_view_unformatted().
  */
 function layout_builder_custom_preprocess_views_view_unformatted(&$variables) {
@@ -847,40 +878,20 @@ function layout_builder_custom_preprocess_views_view_unformatted(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_HOOK().
- */
-function layout_builder_custom_preprocess_block(&$variables) {
-
-  switch ($variables['elements']['#plugin_id']) {
-    case 'inline_block:uiowa_banner':
-      $block = $variables['elements']['content']['#block_content'];
-      // Media entity template needs to change based on this block,
-      // so invalidate cache.
-      if ($block->hasField('field_uiowa_banner_image') && !$block->get('field_uiowa_banner_image')->isEmpty()) {
-        $id = $block->get('field_uiowa_banner_image')->target_id;
-        Cache::invalidateTags(['media:' . $id]);
-      }
-      break;
-  }
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
-function layout_builder_custom_preprocess_media(&$variables) {
-  $media = $variables['elements']['#media'];
-  if ($media->bundle() === 'video') {
-    $variables['attributes'] = [
-      'class' => ['media--video'],
-    ] + $variables['attributes'];
-  }
-}
-
-/**
  * Implements hook_views_plugins_display_alter().
  */
 function layout_builder_custom_views_plugins_display_alter(&$displays) {
   if (!empty($displays['block']['class']) && $displays['block']['class'] == Block::class) {
     $displays['block']['class'] = ListBlock::class;
+  }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function layout_builder_custom_views_pre_render(ViewExecutable $view) {
+  // @todo This may be overly broad.
+  if ($view->display_handler instanceof ListBlock) {
+    $view->exposed_raw_input = [];
   }
 }
