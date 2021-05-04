@@ -9,7 +9,6 @@ dependencies:
     - field.field.node.event.field_event_location
     - field.field.node.event.field_event_virtual
     - field.field.node.event.field_event_when
-    - field.field.node.event.field_featured_image_display
     - field.field.node.event.field_image
     - field.field.node.event.field_meta_tags
     - field.field.node.event.field_tags
@@ -20,7 +19,6 @@ dependencies:
     - layout_builder
     - layout_builder_restrictions
     - link
-    - options
     - smart_date
     - system
     - text
@@ -172,21 +170,6 @@ third_party_settings:
                 view_mode: view_mode
             additional: {  }
             weight: 1
-          -
-            uuid: 899f359c-6acc-4d09-8d00-acac92231cc0
-            region: second
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:event:field_featured_image_display'
-              formatter:
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-                type: list_default
-            additional: {  }
-            weight: 0
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -242,13 +225,6 @@ content:
       add_classes: 0
     third_party_settings: {  }
     type: smartdate_default
-    region: content
-  field_featured_image_display:
-    weight: 6
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
     region: content
   field_image:
     weight: 5
