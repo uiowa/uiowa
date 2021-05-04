@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labpediatricaudiology.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labpediatricaudiology
+  human_name: pediatricaudiology.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labpediatricaudiology.prod
+drupal:
+  db:
+    database: pediatricaudiology_lab_uiowa_edu
+uiowa:
+  requester: amontelius

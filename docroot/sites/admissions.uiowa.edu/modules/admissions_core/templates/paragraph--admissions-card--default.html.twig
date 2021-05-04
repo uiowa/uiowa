@@ -61,7 +61,7 @@
 
 {% set admissions_card = {
   'attributes': attributes.addClass(classes),
-  'card_text': content.field_admissions_card_content,
+  'card_text': content.field_admissions_card_content|render,
   'card_subtitle': content.field_admissions_card_subtitle,
   'card_title': content.field_admissions_card_title|render,
   'card_link_url': content.field_admissions_card_link[0]['#url'],

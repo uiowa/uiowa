@@ -9,17 +9,19 @@
  * @see https://www.drupal.org/node/2217931
  */
 
+use Drupal\Component\Utility\Html;
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
-use Drupal\Core\Url;
-use Drupal\uiowa_core\HeadlineHelper;
-use Drupal\views\ViewExecutable;
-use Drupal\Component\Utility\Html;
-use Drupal\views\Views;
-use Drupal\views\Entity\View;
 use Drupal\Core\Render\Element;
+use Drupal\Core\Url;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\uiowa_core\HeadlineHelper;
+use Drupal\views\Entity\View;
+use Drupal\views\ViewExecutable;
+use Drupal\views\Views;
 
 /**
  * Implements hook_form_alter().
@@ -28,6 +30,8 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
   switch ($form_id) {
     case 'node_person_edit_form':
     case 'node_person_form':
+      $form['#prefix'] = '<div id="form-ajax-wrapper">';
+      $form['#suffix'] = '</div>';
       // Our submit handler must execute before the layout_builder_styles one
       // so it can take advantage of the logic there.
       array_unshift($form['actions']['submit']['#submit'], '_sitenow_people_person_form_submit');
@@ -41,7 +45,7 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
         // Remove disabled person types from select list.
         $disabled_types = \Drupal::entityTypeManager()
           ->getStorage('person_type')->loadByProperties(['status' => FALSE]);
-        foreach ($form["field_person_types"]["widget"]["#options"] as $key => $option) {
+        foreach ($form['field_person_types']['widget']['#options'] as $key => $option) {
           if (array_key_exists($key, $disabled_types)) {
             unset($form['field_person_types']['widget']['#options'][$key]);
           }
@@ -72,6 +76,45 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
             ];
           }
         }
+        // Show/hide person type statuses based on person type selections.
+        $form['field_person_types']['widget']['#ajax'] = [
+          'callback' => '_person_types_callback',
+          'event' => 'change',
+          'wrapper' => 'form-ajax-wrapper',
+          'speed' => 'fast',
+          'progress' => [
+            'type' => 'throbber',
+            'message' => t('Please wait...'),
+          ],
+        ];
+
+        $type_selections = [];
+
+        if (!empty($form_state->getValue('field_person_types'))) {
+          $types = $form_state->getValue('field_person_types');
+          // Adjust structure of array.
+          foreach ($types as $value) {
+            $type_selections[] = $value['target_id'];
+          }
+        }
+        elseif (!empty($form['field_person_types']['widget']['#default_value'])) {
+          $type_selections = $form['field_person_types']['widget']['#default_value'];
+        }
+        else {
+          $form['field_person_type_status']['#access'] = FALSE;
+          return $form;
+        }
+
+        if (!empty($type_selections)) {
+          $person_type_status_options = $form['field_person_type_status']['widget']['#options'];
+          foreach ($person_type_status_options as $key => $option) {
+            // Unset options that aren't associated with selected person type.
+            if (!in_array($key, $type_selections)) {
+              unset($person_type_status_options[$key]);
+            }
+          }
+          $form['field_person_type_status']['widget']['#options'] = $person_type_status_options;
+        }
       }
 
       // If it exists, change the 'Link text' field to say 'Label' on
@@ -84,6 +127,13 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
 
       break;
   }
+}
+
+/**
+ * Custom callback for person types field.
+ */
+function _person_types_callback(&$form, $form_state) {
+  return $form;
 }
 
 /**
@@ -465,6 +515,32 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
       }
     }
   }
+
+  if ($view->id() == 'people') {
+    $person_type_filter = 'type';
+    if (isset($form[$person_type_filter])) {
+      // Get available person type configuration entities.
+      $storage = Drupal::getContainer()->get('entity_type.manager')->getStorage('person_type');
+      $types = $storage->getQuery();
+      $types = $types->condition('status', 1)
+        ->sort('title')
+        ->execute();
+
+      // Build a list of person type options.
+      $options = [];
+      $person_types = $storage->loadMultiple($types);
+      foreach ($person_types as $type) {
+        $options[$type->id()] = $type->label();
+      }
+
+      // Rebuild the person type text filter as select list.
+      $form[$person_type_filter]['#type'] = 'select';
+      $form[$person_type_filter]['#multiple'] = FALSE;
+      $form[$person_type_filter]['#empty_option'] = t('- Any -');
+      $form[$person_type_filter]['#options'] = $options;
+      unset($form[$person_type_filter]['#size']);
+    }
+  }
 }
 
 /**
@@ -659,4 +735,25 @@ function _sitenow_people_person_form_submit(array &$form, FormStateInterface $fo
       }
     }
   }
+}
+
+/**
+ * Implements hook_allowed_values_function().
+ */
+function sitenow_people_person_type_statuses_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  $allowed_types = \Drupal::entityTypeManager()
+    ->getStorage('person_type')->loadByProperties([
+      'status' => TRUE,
+      'allow_former' => TRUE,
+    ]);
+
+  $types = [];
+
+  foreach ($allowed_types as $type) {
+    $types[$type->id()] = t('Former @type', [
+      '@type' => $type->label(),
+    ]);
+  }
+
+  return $types;
 }

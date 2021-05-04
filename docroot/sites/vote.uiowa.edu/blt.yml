@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: vote.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: vote
+  human_name: vote.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: vote.prod
+drupal:
+  db:
+    database: vote_uiowa_edu
+uiowa:
+  requester: dquam

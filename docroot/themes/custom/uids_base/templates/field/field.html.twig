@@ -69,13 +69,12 @@
       </div>
     {% else %}
         {% for item in items %}
-          <{{ item_tag }}{{ attributes.addClass(classes, 'field__item') }}>{{ item.content }}</{{ item_tag }}>
+          <{{ item_tag }}{{ attributes.addClass(classes, 'field__item') }}>{{ block('field_icon') }}{{ item.content }}</{{ item_tag }}>
         {% endfor %}
     {% endif %}
   {% else %}
     <div{{ attributes.addClass(classes) }}>
-      {% block field_icon %}
-      {% endblock %}
+      {% block field_icon %}{% endblock %}
       <div{{ title_attributes.addClass(title_classes).removeClass(remove_classes) }}>{% block field_label_icon %}{% endblock %}{{ label }}</div>
       {% if multiple %}
       <div class="field__items">

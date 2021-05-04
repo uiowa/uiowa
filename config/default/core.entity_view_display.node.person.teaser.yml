@@ -18,6 +18,7 @@ dependencies:
     - field.field.node.person.field_person_phone
     - field.field.node.person.field_person_position
     - field.field.node.person.field_person_research_areas
+    - field.field.node.person.field_person_type_status
     - field.field.node.person.field_person_types
     - field.field.node.person.field_person_website
     - field.field.node.person.field_tags
@@ -37,7 +38,7 @@ content:
     region: content
     label: hidden
     settings:
-      view_mode: large__square
+      view_mode: medium__square
       link: false
     third_party_settings: {  }
   field_person_credential:
@@ -52,12 +53,12 @@ content:
     type: email_mailto
     weight: 2
     region: content
-    label: inline
+    label: visually_hidden
     settings: {  }
     third_party_settings: {  }
   field_person_phone:
     weight: 3
-    label: inline
+    label: visually_hidden
     settings:
       title: ''
     third_party_settings: {  }
@@ -94,6 +95,7 @@ hidden:
   field_person_hometown: true
   field_person_last_name: true
   field_person_research_areas: true
+  field_person_type_status: true
   field_person_types: true
   field_person_website: true
   field_tags: true
