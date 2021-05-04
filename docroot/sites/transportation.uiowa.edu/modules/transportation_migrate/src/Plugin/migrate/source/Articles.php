@@ -139,14 +139,6 @@ class Articles extends BaseNodeSource {
     }
 
     $row->setSourceProperty('tags', $tags);
-    $title = $row->getSourceProperty('title');
-    preg_match('|<h2>(.*?)<\/h2>|', $body[0]['value'], $matches);
-    $h2 = $matches[1];
-    $this->logger->notice('Match: @bool; Title: @title;h2: @h2', [
-      '@bool' => rtrim($title) == rtrim($h2),
-      '@title' => $title,
-      '@h2' => $h2,
-    ]);
 
     return TRUE;
   }
