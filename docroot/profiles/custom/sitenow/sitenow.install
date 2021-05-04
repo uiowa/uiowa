@@ -2667,7 +2667,6 @@ function sitenow_update_9008() {
             foreach ($table_search as $needle => $replace) {
               $update_count += $db->update($table)
                 ->condition($value_column, '%' . $db->escapeLike($needle) . '%', 'LIKE')
-                ->condition($value_column, '%' . $db->escapeLike($replace) . '%', 'NOT LIKE')
                 ->expression($value_column, "REPLACE($value_column, :old, :new)", [
                   ':old' => $needle,
                   ':new' => $replace,
@@ -2678,6 +2677,17 @@ function sitenow_update_9008() {
             if ($update_count) {
               \Drupal::messenger()
                 ->addMessage('Processed ' . $update_count . ' update(s) for ' . $table . ' table ' . $value_column . ' column.');
+
+              $fix_count = $db->update($table)
+                ->condition($value_column, '%' . $db->escapeLike('tabletable--') . '%', 'LIKE')
+                ->expression($value_column, "REPLACE($value_column, :old, :new)", [
+                  ':old' => 'tabletable--',
+                  ':new' => 'table--',
+                ])
+                ->execute();
+
+              \Drupal::messenger()
+                ->addMessage('Fixed ' . $fix_count . ' instance(s) where the customer had manually changed the table class in ' . $table . ' table ' . $value_column . ' column.');
             }
           }
         }
