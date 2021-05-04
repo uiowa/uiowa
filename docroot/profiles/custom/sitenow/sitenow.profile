@@ -788,16 +788,23 @@ function sitenow_preprocess_node(&$variables) {
       $moderation_state = $revision->get('moderation_state')->getString();
       $status = $revision->get('status')->value;
       if ($status == 0) {
-        $pre_vowel = (in_array($moderation_state[0], [
-          'a',
-          'e',
-          'i',
-          'o',
-          'u',
-        ]) ? 'n' : '');
-        $warning_text = t('This content is currently in a@pre_vowel @moderation_state state.', [
+        if ($moderation_state) {
+          $pre_vowel = (in_array($moderation_state[0], [
+            'a',
+            'e',
+            'i',
+            'o',
+            'u',
+          ]) ? 'n' : '');
+          $state = $moderation_state;
+        }
+        else {
+          $pre_vowel = 'n';
+          $state = 'unpublished';
+        }
+        $warning_text = t('This content is currently in a@pre_vowel @state state.', [
           '@pre_vowel' => $pre_vowel,
-          '@moderation_state' => $moderation_state,
+          '@state' => $state,
         ]);
 
         switch ($variables['view_mode']) {
