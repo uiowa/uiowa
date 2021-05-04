@@ -135,20 +135,22 @@ third_party_settings:
             uuid: 57f035d2-5d1e-40c8-a1fe-673f40b55f3d
             region: second
             configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
               id: 'field_block:node:event:field_event_when'
+              label: null
+              provider: layout_builder
+              label_display: null
               formatter:
                 label: above
+                type: smartdate_default
                 settings:
                   timezone_override: ''
                   format: default
-                  force_chronological: false
-                  format_type: medium
+                  force_chronological: true
                   add_classes: 0
                 third_party_settings: {  }
-                type: smartdate_default
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
             additional: {  }
             weight: 2
           -
