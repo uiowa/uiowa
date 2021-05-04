@@ -94,6 +94,16 @@ class Articles extends BaseNodeSource {
         $to_remove->parentNode->removeChild($to_remove);
       }
 
+      // Now time to grab the first headline and replace the title with it.
+      // Assuming it should always be found as the first <h2> in the body content.
+      $headline = $doc->getElementsByTagName('h2')->item(0);
+      if (isset($headline)) {
+        // Replace the title with its text.
+        $row->setSourceProperty('title', $headline->textContent);
+        // And remove it from the body content.
+        $headline->parentNode->removeChild($headline);
+      }
+
       $html = Html::serialize($doc);
       $body[0]['value'] = $html;
 
