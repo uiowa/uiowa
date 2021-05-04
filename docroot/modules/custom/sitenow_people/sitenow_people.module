@@ -367,6 +367,8 @@ function sitenow_people_views_pre_render(ViewExecutable $view) {
   if ($view->id() == 'people' && $view->current_display == 'page_people_table') {
     $view->field['draggableviews']->options['label'] = 'Sort Control';
   }
+  // Add replacement token for people page path.
+  $view->build_info['substitutions']['{{ sitenow_people.path }}'] = _sitenow_people_path_token_value();
 }
 
 /**
