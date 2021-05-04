@@ -70,6 +70,30 @@ class Articles extends BaseNodeSource {
         $i--;
       }
 
+      // Time to get rid of duplicate datelines.
+      // First lets get our paragraphs.
+      $paragraphs = $doc->getElementsByTagName('p');
+      // Looping through forward this time,
+      // because we won't remove it yet and this lets us find the first
+      // instance first before going further.
+      foreach ($paragraphs as $paragraph) {
+        $text = $paragraph->textContent;
+        // Check for a Month DD, YYYY format
+        // Allowing for extra spaces, but nothing else in the line.
+        // Assuming the month will always be spelled out in full here,
+        // which in investigating appears to be the case.
+        if (preg_match('@(?:\s|&nbsp;)*(?:January|February|March|April|May|June|July|August|September|October|November|December)(?:\s|&nbsp;)*[0-3]?[0-9],(?:\s|&nbsp;)+\d{4}(?:\s|&nbsp;)*@i', $text)) {
+          // Mark it to remove, and exit our looping.
+          $to_remove = $paragraph;
+          break;
+        }
+      }
+      if (isset($to_remove)) {
+        // Can't remove directly, so grab the parent
+        // and use it to remove our node.
+        $to_remove->parentNode->removeChild($to_remove);
+      }
+
       $html = Html::serialize($doc);
       $body[0]['value'] = $html;
 
@@ -105,6 +129,14 @@ class Articles extends BaseNodeSource {
     }
 
     $row->setSourceProperty('tags', $tags);
+    $title = $row->getSourceProperty('title');
+    preg_match('|<h2>(.*?)<\/h2>|', $body[0]['value'], $matches);
+    $h2 = $matches[1];
+    $this->logger->notice('Match: @bool; Title: @title;h2: @h2', [
+      '@bool' => rtrim($title) == rtrim($h2),
+      '@title' => $title,
+      '@h2' => $h2,
+    ]);
 
     return TRUE;
   }
