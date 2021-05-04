@@ -2667,6 +2667,7 @@ function sitenow_update_9008() {
             foreach ($table_search as $needle => $replace) {
               $update_count += $db->update($table)
                 ->condition($value_column, '%' . $db->escapeLike($needle) . '%', 'LIKE')
+                ->condition($value_column, '%' . $db->escapeLike($replace) . '%', 'NOT LIKE')
                 ->expression($value_column, "REPLACE($value_column, :old, :new)", [
                   ':old' => $needle,
                   ':new' => $replace,
