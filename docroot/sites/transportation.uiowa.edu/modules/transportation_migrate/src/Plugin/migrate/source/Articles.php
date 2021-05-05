@@ -48,9 +48,6 @@ class Articles extends BaseNodeSource {
       // Search for D7 inline embeds and replace with D8 inline entities.
       $body[0]['value'] = $this->replaceInlineFiles($body[0]['value']);
 
-      // Extract the summary.
-      $row->setSourceProperty('body_summary', $this->getSummaryFromTextField($body));
-
       // Parse links.
       $doc = Html::load($body[0]['value']);
       $links = $doc->getElementsByTagName('a');
@@ -111,6 +108,9 @@ class Articles extends BaseNodeSource {
       $body[0]['format'] = 'filtered_html';
 
       $row->setSourceProperty('body', $body);
+
+      // Extract the summary.
+      $row->setSourceProperty('body_summary', $this->getSummaryFromTextField($body));
     }
 
     // Create combined array of taxonomy terms to map to tags.
@@ -118,7 +118,6 @@ class Articles extends BaseNodeSource {
     // which has a TID of 46.
     $tags = [46];
 
-    // @todo Update with the correct field(s).
     $reference_fields = [
       'field_mode_of_transportation',
     ];
