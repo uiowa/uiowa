@@ -38,37 +38,7 @@ third_party_settings:
             0: ''
             1: ''
             remove_default_bottom_padding: remove_default_bottom_padding
-        components:
-          -
-            uuid: a7192d3a-b76b-4e95-9c75-2ccd6335f9e5
-            region: content
-            configuration:
-              id: 'field_block:node:event:title'
-              label: Title
-              provider: layout_builder
-              label_display: '0'
-              formatter:
-                label: visually_hidden
-                type: string
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-            additional: {  }
-            weight: 1
-          -
-            uuid: 164271cd-c7b5-4b1f-8709-af87ec89589b
-            region: content
-            configuration:
-              id: system_breadcrumb_block
-              label: null
-              provider: system
-              label_display: null
-              context_mapping: {  }
-            additional: {  }
-            weight: 0
+        components: {  }
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -99,7 +69,7 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
-            weight: 0
+            weight: 2
           -
             uuid: 592c2dc2-3673-4f54-b1a9-8dd226b18956
             region: second
@@ -182,6 +152,36 @@ third_party_settings:
                 view_mode: view_mode
             additional: {  }
             weight: 1
+          -
+            uuid: a7192d3a-b76b-4e95-9c75-2ccd6335f9e5
+            region: first
+            configuration:
+              id: 'field_block:node:event:title'
+              label: Title
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: visually_hidden
+                type: string
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 1
+          -
+            uuid: 164271cd-c7b5-4b1f-8709-af87ec89589b
+            region: first
+            configuration:
+              id: system_breadcrumb_block
+              label: null
+              provider: system
+              label_display: null
+              context_mapping: {  }
+            additional: {  }
+            weight: 0
         third_party_settings:
           layout_builder_lock:
             lock: {  }
