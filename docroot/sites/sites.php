@@ -2573,3 +2573,9 @@ $sites['iihrgvillarini.local.drupal.uiowa.edu'] = 'gvillarini.iihr.uiowa.edu';
 $sites['iihrgvillarini.dev.drupal.uiowa.edu'] = 'gvillarini.iihr.uiowa.edu';
 $sites['iihrgvillarini.stage.drupal.uiowa.edu'] = 'gvillarini.iihr.uiowa.edu';
 $sites['iihrgvillarini.prod.drupal.uiowa.edu'] = 'gvillarini.iihr.uiowa.edu';
+
+// Directory aliases for iowasummerwritingfestival.uiowa.edu.
+$sites['iowasummerwritingfestival.local.drupal.uiowa.edu'] = 'iowasummerwritingfestival.uiowa.edu';
+$sites['iowasummerwritingfestival.dev.drupal.uiowa.edu'] = 'iowasummerwritingfestival.uiowa.edu';
+$sites['iowasummerwritingfestival.stage.drupal.uiowa.edu'] = 'iowasummerwritingfestival.uiowa.edu';
+$sites['iowasummerwritingfestival.prod.drupal.uiowa.edu'] = 'iowasummerwritingfestival.uiowa.edu';
