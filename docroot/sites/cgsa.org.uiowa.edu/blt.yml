@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: orgcgsa.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: orgcgsa
+  human_name: cgsa.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgcgsa.prod
+drupal:
+  db:
+    database: cgsa_org_uiowa_edu
+uiowa:
+  requester: lwhowell
