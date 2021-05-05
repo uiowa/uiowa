@@ -209,6 +209,7 @@ function uids_base_preprocess_node(&$variables) {
       }
     }
     $node = \Drupal::routeMatch()->getParameter('node');
+    $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
 
     if ($node instanceof NodeInterface) {
       $node = $variables["node"];
