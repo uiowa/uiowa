@@ -82,12 +82,12 @@
 ]
 %}
 
-{% if event.virtual %}
+{% if content.field_event_virtual.0.url is not empty %}
   {% set event_icon = '<span class="fas fa-laptop"></span>' %}
   {% set event_location = 'Virtual' %}
 {% else %}
   {% set event_icon = '<span class="fas fa-map-marker-alt"></span>' %}
-  {% set event_location = event.location_name %}
+  {% set event_location = content.field_event_location.0.organization %}
 {% endif %}
 
 {% set headline_level = heading_size ?: 'h3' %}
@@ -96,7 +96,6 @@
 {% endif %}
 
 {{ attach_library('classy/node') }}
-{{ attach_library('uids_base/node-type-event') }}
 {{ attach_library('uids_base/paragraphs-lists') }}
 {{ attach_library('uids_base/event') }}
 {{ attach_library('uids_base/media') }}
@@ -127,7 +126,7 @@
   {% endblock %}
 
   {% block card_content %}
-    {{ content|without('field_image', 'links', 'field_event_when') }}
+    {{ content|without('field_image', 'links', 'field_event_when', 'field_event_virtual', 'field_event_location') }}
   {% endblock %}
 
 {% endembed %}
