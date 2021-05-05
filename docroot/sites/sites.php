@@ -2585,3 +2585,9 @@ $sites['iowasummerwritingfestival.local.drupal.uiowa.edu'] = 'iowasummerwritingf
 $sites['iowasummerwritingfestival.dev.drupal.uiowa.edu'] = 'iowasummerwritingfestival.uiowa.edu';
 $sites['iowasummerwritingfestival.stage.drupal.uiowa.edu'] = 'iowasummerwritingfestival.uiowa.edu';
 $sites['iowasummerwritingfestival.prod.drupal.uiowa.edu'] = 'iowasummerwritingfestival.uiowa.edu';
+
+// Directory aliases for tippie.uiowa.edu.
+$sites['tippie.local.drupal.uiowa.edu'] = 'tippie.uiowa.edu';
+$sites['tippie.dev.drupal.uiowa.edu'] = 'tippie.uiowa.edu';
+$sites['tippie.stage.drupal.uiowa.edu'] = 'tippie.uiowa.edu';
+$sites['tippie.prod.drupal.uiowa.edu'] = 'tippie.uiowa.edu';
