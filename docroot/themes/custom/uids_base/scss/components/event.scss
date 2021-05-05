@@ -19,7 +19,9 @@
 
 // Event block
 .uiowa-card-event.card.card--media-left {
-  flex-direction: unset;
+  @include breakpoint(sm) {
+    flex-direction: unset;
+  }
   margin-bottom: 0;
 
   .layout--fourcol &,
