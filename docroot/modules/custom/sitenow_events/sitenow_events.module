@@ -7,10 +7,28 @@
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\uiowa_core\HeadlineHelper;
 use GuzzleHttp\Exception\RequestException;
+
+/**
+ * Implements hook_form_alter().
+ */
+function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    case 'node_event_form':
+    case 'node_event_edit_form':
+      _sitenow_node_form_defaults($form, $form_state);
+      $form['field_event_category']['#group'] = 'node_relations';
+      if (isset($form['field_event_hide'])) {
+        // Set field_event_hide to options group (promotion options).
+        $form['field_event_hide']['#group'] = 'options';
+      }
+      break;
+  }
+}
 
 /**
  * Implements hook_preprocess_HOOK().
