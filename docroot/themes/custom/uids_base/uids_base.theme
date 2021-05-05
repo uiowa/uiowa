@@ -219,6 +219,7 @@ function uids_base_preprocess_node(&$variables) {
 
         case 'event':
           $variables['#attached']['library'][] = 'uids_base/sitenow-events-single';
+          $variables['#attached']['library'][] = 'uids_base/person';
           break;
       }
       // @todo Is there a better way to have a soft dependency on a class?
