@@ -2579,3 +2579,10 @@ $sites['orgcgsa.local.drupal.uiowa.edu'] = 'cgsa.org.uiowa.edu';
 $sites['orgcgsa.dev.drupal.uiowa.edu'] = 'cgsa.org.uiowa.edu';
 $sites['orgcgsa.stage.drupal.uiowa.edu'] = 'cgsa.org.uiowa.edu';
 $sites['orgcgsa.prod.drupal.uiowa.edu'] = 'cgsa.org.uiowa.edu';
+
+// Directory aliases for iowasummerwritingfestival.uiowa.edu.
+$sites['iowasummerwritingfestival.local.drupal.uiowa.edu'] = 'iowasummerwritingfestival.uiowa.edu';
+$sites['iowasummerwritingfestival.dev.drupal.uiowa.edu'] = 'iowasummerwritingfestival.uiowa.edu';
+$sites['iowasummerwritingfestival.stage.drupal.uiowa.edu'] = 'iowasummerwritingfestival.uiowa.edu';
+$sites['iowasummerwritingfestival.prod.drupal.uiowa.edu'] = 'iowasummerwritingfestival.uiowa.edu';
+
