@@ -2591,3 +2591,9 @@ $sites['tippie.local.drupal.uiowa.edu'] = 'tippie.uiowa.edu';
 $sites['tippie.dev.drupal.uiowa.edu'] = 'tippie.uiowa.edu';
 $sites['tippie.stage.drupal.uiowa.edu'] = 'tippie.uiowa.edu';
 $sites['tippie.prod.drupal.uiowa.edu'] = 'tippie.uiowa.edu';
+
+// Directory aliases for whitmanweb.iwp.uiowa.edu.
+$sites['iwpwhitmanweb.local.drupal.uiowa.edu'] = 'whitmanweb.iwp.uiowa.edu';
+$sites['iwpwhitmanweb.dev.drupal.uiowa.edu'] = 'whitmanweb.iwp.uiowa.edu';
+$sites['iwpwhitmanweb.stage.drupal.uiowa.edu'] = 'whitmanweb.iwp.uiowa.edu';
+$sites['iwpwhitmanweb.prod.drupal.uiowa.edu'] = 'whitmanweb.iwp.uiowa.edu';
