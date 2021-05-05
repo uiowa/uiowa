@@ -2585,4 +2585,3 @@ $sites['iowasummerwritingfestival.local.drupal.uiowa.edu'] = 'iowasummerwritingf
 $sites['iowasummerwritingfestival.dev.drupal.uiowa.edu'] = 'iowasummerwritingfestival.uiowa.edu';
 $sites['iowasummerwritingfestival.stage.drupal.uiowa.edu'] = 'iowasummerwritingfestival.uiowa.edu';
 $sites['iowasummerwritingfestival.prod.drupal.uiowa.edu'] = 'iowasummerwritingfestival.uiowa.edu';
-
