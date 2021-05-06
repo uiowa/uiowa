@@ -24,7 +24,7 @@ trait ProcessMediaTrait {
    *
    * @var string
    */
-  protected $view_mode = 'medium__no_crop';
+  protected $viewMode = 'medium__no_crop';
 
   /**
    * Get the URL of the source public files path with a trailing slash.

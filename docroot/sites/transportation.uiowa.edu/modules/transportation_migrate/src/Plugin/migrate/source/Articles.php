@@ -46,7 +46,7 @@ class Articles extends BaseNodeSource {
 
     if (!empty($body)) {
       // Search for D7 inline embeds and replace with D8 inline entities.
-      $this->view_mode = 'large__no_crop';
+      $this->viewMode = 'large__no_crop';
       $body[0]['value'] = $this->replaceInlineFiles($body[0]['value']);
 
       // Parse links.
