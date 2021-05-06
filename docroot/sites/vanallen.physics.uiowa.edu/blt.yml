@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: physicsvanallen.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: physicsvanallen
+  human_name: vanallen.physics.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: physicsvanallen.prod
+drupal:
+  db:
+    database: vanallen_physics_uiowa_edu
+uiowa:
+  requester: gmccrory

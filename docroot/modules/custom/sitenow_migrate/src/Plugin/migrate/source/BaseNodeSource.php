@@ -2,11 +2,13 @@
 
 namespace Drupal\sitenow_migrate\Plugin\migrate\source;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\State\StateInterface;
+use Drupal\migrate\Event\ImportAwareInterface;
 use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Row;
@@ -18,7 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @see \Drupal\node\Plugin\migrate\source\d7\Node
  */
-abstract class BaseNodeSource extends Node {
+abstract class BaseNodeSource extends Node implements ImportAwareInterface {
   use LoggerChannelTrait;
 
   /**
@@ -43,6 +45,13 @@ abstract class BaseNodeSource extends Node {
    * @var int
    */
   protected $batchSize = 100;
+
+  /**
+   * Counter for memory resets.
+   *
+   * @var int
+   */
+  protected $rowCount = 0;
 
   /**
    * {@inheritdoc}
@@ -79,11 +88,28 @@ abstract class BaseNodeSource extends Node {
   }
 
   /**
-   * Extract a summary from a block of text.
+   * Extract a plain text summary from a block of text.
+   *
+   * @todo Use smart_trim for this.
+   *
+   * @param string $text
+   *   The text to convert to a trimmed plain text version.
+   *
+   * @return string
+   *   The plain text string.
    */
-  protected function extractSummaryFromText($text) {
-    $new_summary = substr($text, 0, 200);
+  protected function extractSummaryFromText(string $text) {
+    // Strip out any HTML, decode special characters and replace spaces.
+    $new_summary = Html::decodeEntities($text);
+    $new_summary = str_replace('&nbsp;', ' ', $new_summary);
+    // Also want to remove any excess whitespace on the left
+    // that might cause weird spacing for our summaries.
+    $new_summary = ltrim(strip_tags($new_summary));
+
+    $new_summary = substr($new_summary, 0, 200);
+
     $looper = TRUE;
+
     // Shorten the string until we reach a natural(ish) breaking point.
     while ($looper && strlen($new_summary) > 0) {
       switch (substr($new_summary, -1)) {
@@ -105,8 +131,6 @@ abstract class BaseNodeSource extends Node {
           $new_summary = substr($new_summary, 0, -1);
       }
     }
-    // Strip out any HTML, and set the new summary.
-    $new_summary = preg_replace("|<.*?>|", '', $new_summary);
 
     return $new_summary;
   }
@@ -154,12 +178,25 @@ abstract class BaseNodeSource extends Node {
    * @param \Drupal\migrate\Event\MigrateImportEvent $event
    *   The migrate import event.
    */
-  public function postImportProcess(MigrateImportEvent $event) {}
+  public function postImport(MigrateImportEvent $event) {}
+
+  /**
+   * Run pre-migration tasks.
+   *
+   * @param \Drupal\migrate\Event\MigrateImportEvent $event
+   *   The migrate import event.
+   */
+  public function preImport(MigrateImportEvent $event) {}
 
   /**
    * Attempt to clear the entity cache if needed to avoid memory overflows.
    *
-   * Based on core/modules/migrate/src/MigrateExecutable.php, line 543.
+   * This method should be called in migration source prepareRow methods.
+   *
+   * @param int $size
+   *   The number of rows to reset memory after.
+   *
+   * @see MigrateExecutable::attemptMemoryReclaim
    *
    * @return int
    *   Return the existing memory usage.
@@ -167,22 +204,42 @@ abstract class BaseNodeSource extends Node {
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function clearMemory() {
-    // First, try resetting Drupal's static storage - this frequently releases
-    // plenty of memory to continue.
-    drupal_static_reset();
+  public function clearMemory($size = 100) {
+    if ($this->rowCount++ % $size == 0) {
+      // First, try resetting Drupal's static storage - this frequently releases
+      // plenty of memory to continue.
+      drupal_static_reset();
 
-    // Entity storage can blow up with caches so clear them out.
-    $manager = $this->entityTypeManager;
-    foreach ($manager->getDefinitions() as $id => $definition) {
-      $manager
-        ->getStorage($id)
-        ->resetCache();
+      // Entity storage can blow up with caches so clear them out.
+      $manager = $this->entityTypeManager;
+      foreach ($manager->getDefinitions() as $id => $definition) {
+        $manager
+          ->getStorage($id)
+          ->resetCache();
+      }
+
+      // Run garbage collector to further reduce memory.
+      gc_collect_cycles();
+      return memory_get_usage();
     }
+  }
 
-    // Run garbage collector to further reduce memory.
-    gc_collect_cycles();
-    return memory_get_usage();
+  /**
+   * Return the summary of a text field.
+   *
+   * @param array $field
+   *   A text field array that includes value, format and summary keys.
+   *
+   * @return string
+   *   The summary if set or an extraction of the body value if not.
+   */
+  public function getSummaryFromTextField(array $field): string {
+    if (empty($field[0]['summary'])) {
+      return $this->extractSummaryFromText($field[0]['value']);
+    }
+    else {
+      return $field[0]['summary'];
+    }
   }
 
 }

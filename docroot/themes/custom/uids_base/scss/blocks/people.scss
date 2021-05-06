@@ -68,7 +68,9 @@
 
   .card--list {
     display: flex;
-    flex-direction: row-reverse;
+    @include breakpoint(sm) {
+      flex-direction: row-reverse;
+    }
   }
 
   .view-content {

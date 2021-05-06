@@ -14,7 +14,7 @@ trait ProcessGradMediaTrait {
   /**
    * Get the source path from the migration config.
    */
-  protected function getSourceBasePath() {
+  protected function getSourcePublicFilesUrl() {
     if (isset($this->configuration['constants']) && isset($this->configuration['constants']['SOURCE_BASE_PATH'])) {
       return $this->configuration['constants']['SOURCE_BASE_PATH'];
     }
@@ -58,7 +58,7 @@ trait ProcessGradMediaTrait {
 
       if (!$new_fid) {
         // Use the filename, update the source base path with the subdirectory.
-        $new_fid = $this->downloadFile($filename, $this->getSourceBasePath() . $subdir, $this->getDrupalFileDirectory());
+        $new_fid = $this->downloadFile($filename, $this->getSourcePublicFilesUrl() . $subdir, $this->getDrupalFileDirectory());
         if ($new_fid) {
           $mid = $this->createMediaEntity($new_fid, $meta, 1);
         }
