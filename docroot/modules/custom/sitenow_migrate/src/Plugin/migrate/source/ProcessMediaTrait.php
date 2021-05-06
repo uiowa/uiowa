@@ -20,6 +20,13 @@ trait ProcessMediaTrait {
   protected $fileSystem;
 
   /**
+   * The default image view_mode.
+   *
+   * @var string
+   */
+  protected $view_mode = 'medium__no_crop';
+
+  /**
    * Get the URL of the source public files path with a trailing slash.
    *
    * @return string
@@ -77,7 +84,7 @@ trait ProcessMediaTrait {
     // so the matched, non-bracketed JSON is in the [0][0] index
     // of the json_decode result.
     $file_properties = json_decode($match[0], TRUE)[0][0];
-    $align = isset($file_properties['fields']['alignment']) ? $file_properties['fields']['alignment'] : NULL;
+    $align = isset($file_properties['fields']['alignment']) ? $file_properties['fields']['alignment'] : '';
     $file_data = $this->fidQuery($fid);
 
     if ($file_data) {
@@ -124,7 +131,7 @@ trait ProcessMediaTrait {
       }
 
       unset($file_data);
-      return $this->constructInlineEntity($uuid, $align);
+      return isset($uuid) ? $this->constructInlineEntity($uuid, $align) : '';
     }
 
     // Failed to find a file, so let's leave the content unchanged.
@@ -144,7 +151,7 @@ trait ProcessMediaTrait {
    * @return string
    *   Returns markup as a plaintext string.
    */
-  public function constructInlineEntity(string $uuid, string $align, $view_mode = 'small__no_crop') {
+  public function constructInlineEntity(string $uuid, string $align, $view_mode = '') {
     $align = isset($align) ? $align : 'center';
 
     $media = [
@@ -154,7 +161,7 @@ trait ProcessMediaTrait {
         'data-align' => $align,
         'data-entity-type' => 'media',
         'data-entity-uuid' => $uuid,
-        'data-view-mode' => $view_mode,
+        'data-view-mode' => isset($view_mode) ? $view_mode : $this->view_mode,
       ],
     ];
 
@@ -438,7 +445,8 @@ trait ProcessMediaTrait {
    * @throws \Drupal\migrate\MigrateException
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  protected function replaceInlineImages(string $content, string $stub, $view_mode = 'medium__no_crop') {
+  protected function replaceInlineImages(string $content, string $stub, $view_mode = '') {
+    $view_mode = isset($view_mode) ? $view_mode : $this->view_mode;
     $drupal_file_directory = $this->getDrupalFileDirectory();
 
     // Create a HTML content fragment.
