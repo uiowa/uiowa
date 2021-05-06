@@ -63,6 +63,25 @@ class Articles extends BaseNodeSource {
             '@article' => $row->getSourceProperty('title'),
           ]);
         }
+        // Update URL path for hardcoded links.
+        if ($href === 'https://transportation.uiowa.edu/transit-services-persons-disabilities-bionic-bus') {
+          $this->logger->notice('Replaced hardcoded link @link in article @article.', [
+            '@link' => $href,
+            '@article' => $row->getSourceProperty('title'),
+          ]);
+          // Replace with internal link to /cambus/bionic-bus.
+          $link->setAttribute('href', '/node/376');
+          $link->parentNode->replaceChild($link, $link);
+        }
+        if ($href === 'https://transportation.uiowa.edu/transit') {
+          $this->logger->notice('Replaced hardcoded link @link in article @article.', [
+            '@link' => $href,
+            '@article' => $row->getSourceProperty('title'),
+          ]);
+          // Replace with the internal link to /cambus/transit.
+          $link->setAttribute('href', '/node/371');
+          $link->parentNode->replaceChild($link, $link);
+        }
 
         $i--;
       }
@@ -92,7 +111,7 @@ class Articles extends BaseNodeSource {
       }
 
       // Now time to grab the first headline and replace the title with it.
-      // Assuming it should always be found as the first <h2> in the body content.
+      // Assuming it should always be the first <h2> in the body content.
       $headline = $doc->getElementsByTagName('h2')->item(0);
       if (isset($headline)) {
         // Replace the title with its text.
