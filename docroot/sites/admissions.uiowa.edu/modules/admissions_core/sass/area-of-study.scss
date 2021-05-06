@@ -32,6 +32,9 @@
     @include breakpoint(sm) {
       display: flex;
     }
+    .media--circle img {
+      border-radius: unset;
+    }
   }
   .field--name-field-area-of-study-first-year,
   .field--name-field-area-of-study-transfer,
@@ -45,16 +48,6 @@
     }
     .card .bttn {
       margin-top: $md;
-    }
-  }
-
-  // @todo remove after https://github.com/uiowa/uids/issues/448 is completed.
-  .card.card--media-left .card__media--small {
-    flex: 0 0 25%;
-    width: 25%;
-    margin: $lg auto 0;
-    @include breakpoint(sm) {
-      margin: 0
     }
   }
 

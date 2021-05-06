@@ -2567,3 +2567,33 @@ $sites['orgnsslha.local.drupal.uiowa.edu'] = 'nsslha.org.uiowa.edu';
 $sites['orgnsslha.dev.drupal.uiowa.edu'] = 'nsslha.org.uiowa.edu';
 $sites['orgnsslha.stage.drupal.uiowa.edu'] = 'nsslha.org.uiowa.edu';
 $sites['orgnsslha.prod.drupal.uiowa.edu'] = 'nsslha.org.uiowa.edu';
+
+// Directory aliases for gvillarini.iihr.uiowa.edu.
+$sites['iihrgvillarini.local.drupal.uiowa.edu'] = 'gvillarini.iihr.uiowa.edu';
+$sites['iihrgvillarini.dev.drupal.uiowa.edu'] = 'gvillarini.iihr.uiowa.edu';
+$sites['iihrgvillarini.stage.drupal.uiowa.edu'] = 'gvillarini.iihr.uiowa.edu';
+$sites['iihrgvillarini.prod.drupal.uiowa.edu'] = 'gvillarini.iihr.uiowa.edu';
+
+// Directory aliases for cgsa.org.uiowa.edu.
+$sites['orgcgsa.local.drupal.uiowa.edu'] = 'cgsa.org.uiowa.edu';
+$sites['orgcgsa.dev.drupal.uiowa.edu'] = 'cgsa.org.uiowa.edu';
+$sites['orgcgsa.stage.drupal.uiowa.edu'] = 'cgsa.org.uiowa.edu';
+$sites['orgcgsa.prod.drupal.uiowa.edu'] = 'cgsa.org.uiowa.edu';
+
+// Directory aliases for iowasummerwritingfestival.uiowa.edu.
+$sites['iowasummerwritingfestival.local.drupal.uiowa.edu'] = 'iowasummerwritingfestival.uiowa.edu';
+$sites['iowasummerwritingfestival.dev.drupal.uiowa.edu'] = 'iowasummerwritingfestival.uiowa.edu';
+$sites['iowasummerwritingfestival.stage.drupal.uiowa.edu'] = 'iowasummerwritingfestival.uiowa.edu';
+$sites['iowasummerwritingfestival.prod.drupal.uiowa.edu'] = 'iowasummerwritingfestival.uiowa.edu';
+
+// Directory aliases for tippie.uiowa.edu.
+$sites['tippie.local.drupal.uiowa.edu'] = 'tippie.uiowa.edu';
+$sites['tippie.dev.drupal.uiowa.edu'] = 'tippie.uiowa.edu';
+$sites['tippie.stage.drupal.uiowa.edu'] = 'tippie.uiowa.edu';
+$sites['tippie.prod.drupal.uiowa.edu'] = 'tippie.uiowa.edu';
+
+// Directory aliases for whitmanweb.iwp.uiowa.edu.
+$sites['iwpwhitmanweb.local.drupal.uiowa.edu'] = 'whitmanweb.iwp.uiowa.edu';
+$sites['iwpwhitmanweb.dev.drupal.uiowa.edu'] = 'whitmanweb.iwp.uiowa.edu';
+$sites['iwpwhitmanweb.stage.drupal.uiowa.edu'] = 'whitmanweb.iwp.uiowa.edu';
+$sites['iwpwhitmanweb.prod.drupal.uiowa.edu'] = 'whitmanweb.iwp.uiowa.edu';
