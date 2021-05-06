@@ -94,8 +94,6 @@ class ListBlock extends CoreBlock {
       ],
     ];
 
-    // @todo Allow developer to set token for this path which can map
-    //   back to custom module settings (e.g. SiteNow People path)
     // Show exposed filters that can be set in the block form.
     $customized_filters = $this->getOption('filter_in_block');
     $form['filter_in_block'] = [
@@ -594,7 +592,7 @@ class ListBlock extends CoreBlock {
   /**
    * {@inheritdoc}
    */
-  public function usesExposed() {
+  public function usesExposed(): bool {
     $filters = $this->getHandlers('filter');
     foreach ($filters as $filter) {
       if ($filter->isExposed() && !empty($filter->exposedInfo())) {
@@ -618,19 +616,25 @@ class ListBlock extends CoreBlock {
   /**
    * {@inheritdoc}
    */
-  public function displaysExposed() {
+  public function displaysExposed(): bool {
+    // If we are not utilizing the filter in block option,
+    // then use the default behavior. Otherwise, do not display
+    // exposed filters.
+    if (empty($this->options['filter_in_block'])) {
+      return parent::displaysExposed();
+    }
     return FALSE;
   }
 
   /**
-   * Exposed widgets.
+   * {@inheritdoc}
    *
    * Exposed widgets typically only work with ajax in Drupal core, however
    * #2605218 totally breaks the rest of the functionality in this display and
    * in Core's Block display as well, so we allow non-ajax block views to use
    * exposed filters and manually set the #action to the current request uri.
    */
-  public function elementPreRender(array $element) {
+  public function elementPreRender(array $element): array {
     /** @var \Drupal\views\ViewExecutable $view */
     $view = $element['#view'];
     if (!empty($view->exposed_widgets['#action']) && !$view->ajaxEnabled()) {
@@ -644,10 +648,10 @@ class ListBlock extends CoreBlock {
    *
    * @see _layout_builder_styles_prepare_styles_for_saving()
    *
-   * @return array|string
+   * @return array
    *   Returns layout builder styles for this block form.
    */
-  protected function getLayoutBuilderStyles(array $form, FormStateInterface $form_state) {
+  protected function getLayoutBuilderStyles(array $form, FormStateInterface $form_state): array {
     $styles = [];
     foreach ($form as $id => $el) {
       if (strpos($id, 'layout_builder_style_') === 0) {
@@ -676,7 +680,7 @@ class ListBlock extends CoreBlock {
    * @return int
    *   Return the more weight
    */
-  public static function sortByWeight($a, $b) {
+  public static function sortByWeight($a, $b): int {
     $a_weight = isset($a['weight']) ? $a['weight'] : 0;
     $b_weight = isset($b['weight']) ? $b['weight'] : 0;
     if ($a_weight == $b_weight) {
@@ -701,7 +705,7 @@ class ListBlock extends CoreBlock {
    *
    * @see Drupal\link\Plugin\Field\FieldWidget\LinkWidget::getUriAsDisplayableString()
    */
-  protected static function getUriAsDisplayableString($uri) {
+  protected static function getUriAsDisplayableString($uri): string {
     $scheme = parse_url($uri, PHP_URL_SCHEME);
 
     // By default, the displayable string is the URI.
