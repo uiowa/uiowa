@@ -532,6 +532,7 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
       foreach ($person_types as $type) {
         $options[$type->id()] = $type->label();
       }
+      asort($options);
 
       // Rebuild the person type text filter as select list.
       $form[$person_type_filter]['#type'] = 'select';
