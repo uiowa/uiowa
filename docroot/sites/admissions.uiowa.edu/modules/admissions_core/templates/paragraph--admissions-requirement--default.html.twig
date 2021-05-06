@@ -64,8 +64,9 @@
   'requirement_url': content.field_ar_requirement[0]['#url'],
   'process_label': content.field_ar_process[0]['#title']|render,
   'process_url': content.field_ar_process[0]['#url'],
-  'media_sizes': 'card__media--small',
+  'media_sizes': 'media--circle card__media--small',
   'transfer_tip': transfer_tip,
+  'card_no_link': true,
 } %}
 {% embed '@uids_base/uids/card.html.twig' with admissions_requirement only %}
   {% block card_img %}
@@ -84,7 +85,7 @@
       <span class="transfer-tip"><i class="fas fa-lightbulb"></i> <a href="{{ transfer_tip }}" class="">Transfer tips</a></span>
     {% endif %}
     {% if requirement_url is not empty %}
-      <a href="{{ requirement_url }}" class="bttn bttn--link bttn--sans-serif">{{ requirement_label }} <i class="fas fa-arrow-right"></i></a>
+      <a href="{{ requirement_url }}" class="bttn bttn--link bttn--outline bttn--sans-serif">{{ requirement_label }} <i class="fas fa-arrow-right"></i></a>
     {% endif %}
     {% if process_url is not empty %}
       <a href="{{ process_url }}" class="bttn bttn--outline bttn--sans-serif">{{ process_label }} <i class="fas fa-arrow-right"></i></a>

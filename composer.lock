@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "94b9f7db65aeaa4c01188b972e8bd05c",
+    "content-hash": "d6603d21cafe4f18e38dd2eff70d512b",
     "packages": [
         {
             "name": "acquia/blt",
@@ -627,7 +627,7 @@
             "version": "5.15.2",
             "source": {
                 "type": "git",
-                "url": "git@github.com:FortAwesome/Font-Awesome.git",
+                "url": "https://github.com/FortAwesome/Font-Awesome.git",
                 "reference": "fcec2d1b01ff069ac10500ac42e4478d20d21f4c"
             },
             "dist": {
@@ -642,7 +642,7 @@
             "version": "5.3.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/aFarkas/lazysizes.git",
+                "url": "git@github.com:aFarkas/lazysizes.git",
                 "reference": "916afff5de0a3ffd2ab6b65c57b8336442f04500"
             },
             "dist": {
@@ -908,20 +908,21 @@
         },
         {
             "name": "composer/composer",
-            "version": "2.0.9",
+            "version": "2.0.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "591c2c155cac0d2d7f34af41d3b1e29bcbfc685e"
+                "reference": "986e8b86b7b570632ad0a905c3726c33dd4c0efb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/591c2c155cac0d2d7f34af41d3b1e29bcbfc685e",
-                "reference": "591c2c155cac0d2d7f34af41d3b1e29bcbfc685e",
+                "url": "https://api.github.com/repos/composer/composer/zipball/986e8b86b7b570632ad0a905c3726c33dd4c0efb",
+                "reference": "986e8b86b7b570632ad0a905c3726c33dd4c0efb",
                 "shasum": ""
             },
             "require": {
                 "composer/ca-bundle": "^1.0",
+                "composer/metadata-minifier": "^1.0",
                 "composer/semver": "^3.0",
                 "composer/spdx-licenses": "^1.2",
                 "composer/xdebug-handler": "^1.1",
@@ -985,7 +986,7 @@
             "support": {
                 "irc": "irc://irc.freenode.org/composer",
                 "issues": "https://github.com/composer/composer/issues",
-                "source": "https://github.com/composer/composer/tree/2.0.9"
+                "source": "https://github.com/composer/composer/tree/2.0.13"
             },
             "funding": [
                 {
@@ -1001,7 +1002,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-27T15:09:27+00:00"
+            "time": "2021-04-27T11:11:08+00:00"
         },
         {
             "name": "composer/installers",
@@ -1150,6 +1151,75 @@
                 }
             ],
             "time": "2021-01-14T11:07:16+00:00"
+        },
+        {
+            "name": "composer/metadata-minifier",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/composer/metadata-minifier.git",
+                "reference": "c549d23829536f0d0e984aaabbf02af91f443207"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/composer/metadata-minifier/zipball/c549d23829536f0d0e984aaabbf02af91f443207",
+                "reference": "c549d23829536f0d0e984aaabbf02af91f443207",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.3.2 || ^7.0 || ^8.0"
+            },
+            "require-dev": {
+                "composer/composer": "^2",
+                "phpstan/phpstan": "^0.12.55",
+                "symfony/phpunit-bridge": "^4.2 || ^5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Composer\\MetadataMinifier\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jordi Boggiano",
+                    "email": "j.boggiano@seld.be",
+                    "homepage": "http://seld.be"
+                }
+            ],
+            "description": "Small utility library that handles metadata minification and expansion.",
+            "keywords": [
+                "composer",
+                "compression"
+            ],
+            "support": {
+                "issues": "https://github.com/composer/metadata-minifier/issues",
+                "source": "https://github.com/composer/metadata-minifier/tree/1.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://packagist.com",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/composer",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/composer/composer",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2021-04-07T13:37:33+00:00"
         },
         {
             "name": "composer/semver",
@@ -1313,16 +1383,16 @@
         },
         {
             "name": "composer/xdebug-handler",
-            "version": "1.4.5",
+            "version": "1.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/xdebug-handler.git",
-                "reference": "f28d44c286812c714741478d968104c5e604a1d4"
+                "reference": "f27e06cd9675801df441b3656569b328e04aa37c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/f28d44c286812c714741478d968104c5e604a1d4",
-                "reference": "f28d44c286812c714741478d968104c5e604a1d4",
+                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/f27e06cd9675801df441b3656569b328e04aa37c",
+                "reference": "f27e06cd9675801df441b3656569b328e04aa37c",
                 "shasum": ""
             },
             "require": {
@@ -1330,7 +1400,8 @@
                 "psr/log": "^1.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8.35 || ^5.7 || 6.5 - 8"
+                "phpstan/phpstan": "^0.12.55",
+                "symfony/phpunit-bridge": "^4.2 || ^5"
             },
             "type": "library",
             "autoload": {
@@ -1356,7 +1427,7 @@
             "support": {
                 "irc": "irc://irc.freenode.org/composer",
                 "issues": "https://github.com/composer/xdebug-handler/issues",
-                "source": "https://github.com/composer/xdebug-handler/tree/1.4.5"
+                "source": "https://github.com/composer/xdebug-handler/tree/1.4.6"
             },
             "funding": [
                 {
@@ -1372,7 +1443,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-11-13T08:04:11+00:00"
+            "time": "2021-03-25T17:01:18+00:00"
         },
         {
             "name": "consolidation/annotated-command",
@@ -2643,26 +2714,26 @@
         },
         {
             "name": "doctrine/inflector",
-            "version": "1.4.3",
+            "version": "1.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/inflector.git",
-                "reference": "4650c8b30c753a76bf44fb2ed00117d6f367490c"
+                "reference": "4bd5c1cdfcd00e9e2d8c484f79150f67e5d355d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/inflector/zipball/4650c8b30c753a76bf44fb2ed00117d6f367490c",
-                "reference": "4650c8b30c753a76bf44fb2ed00117d6f367490c",
+                "url": "https://api.github.com/repos/doctrine/inflector/zipball/4bd5c1cdfcd00e9e2d8c484f79150f67e5d355d9",
+                "reference": "4bd5c1cdfcd00e9e2d8c484f79150f67e5d355d9",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2 || ^8.0"
+                "php": "^7.1 || ^8.0"
             },
             "require-dev": {
-                "doctrine/coding-standard": "^7.0",
-                "phpstan/phpstan": "^0.11",
-                "phpstan/phpstan-phpunit": "^0.11",
-                "phpstan/phpstan-strict-rules": "^0.11",
+                "doctrine/coding-standard": "^8.0",
+                "phpstan/phpstan": "^0.12",
+                "phpstan/phpstan-phpunit": "^0.12",
+                "phpstan/phpstan-strict-rules": "^0.12",
                 "phpunit/phpunit": "^7.0 || ^8.0 || ^9.0"
             },
             "type": "library",
@@ -2719,7 +2790,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/inflector/issues",
-                "source": "https://github.com/doctrine/inflector/tree/1.4.x"
+                "source": "https://github.com/doctrine/inflector/tree/1.4.4"
             },
             "funding": [
                 {
@@ -2735,7 +2806,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-05-29T07:19:59+00:00"
+            "time": "2021-04-16T17:34:40+00:00"
         },
         {
             "name": "doctrine/instantiator",
@@ -3465,6 +3536,10 @@
                 {
                     "name": "floretan",
                     "homepage": "https://www.drupal.org/user/66163"
+                },
+                {
+                    "name": "nord102",
+                    "homepage": "https://www.drupal.org/user/3471419"
                 }
             ],
             "description": "Limit which text formats are available for each field instance.",
@@ -3839,6 +3914,10 @@
                     "homepage": "https://www.drupal.org/user/1485048"
                 },
                 {
+                    "name": "frjo",
+                    "homepage": "https://www.drupal.org/user/5546"
+                },
+                {
                     "name": "jdwfly",
                     "homepage": "https://www.drupal.org/user/298179"
                 },
@@ -4172,16 +4251,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "9.1.5",
+            "version": "9.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "075ea2e792edbe573a29f02e80d6edf445f18e14"
+                "reference": "0cbed9e7b0243ccc89a3735853eedb40becf8095"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/075ea2e792edbe573a29f02e80d6edf445f18e14",
-                "reference": "075ea2e792edbe573a29f02e80d6edf445f18e14",
+                "url": "https://api.github.com/repos/drupal/core/zipball/0cbed9e7b0243ccc89a3735853eedb40becf8095",
+                "reference": "0cbed9e7b0243ccc89a3735853eedb40becf8095",
                 "shasum": ""
             },
             "require": {
@@ -4418,9 +4497,9 @@
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
             "support": {
-                "source": "https://github.com/drupal/core/tree/9.1.5"
+                "source": "https://github.com/drupal/core/tree/9.1.7"
             },
-            "time": "2021-03-04T14:36:14+00:00"
+            "time": "2021-04-20T23:05:22+00:00"
         },
         {
             "name": "drupal/core-composer-scaffold",
@@ -4523,16 +4602,16 @@
         },
         {
             "name": "drupal/core-recommended",
-            "version": "9.1.5",
+            "version": "9.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core-recommended.git",
-                "reference": "809cd5dd382f95abf1e81abf8910c0eb9c97f012"
+                "reference": "ced38da112867c8fff15d5079926c95e5bcdca5b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core-recommended/zipball/809cd5dd382f95abf1e81abf8910c0eb9c97f012",
-                "reference": "809cd5dd382f95abf1e81abf8910c0eb9c97f012",
+                "url": "https://api.github.com/repos/drupal/core-recommended/zipball/ced38da112867c8fff15d5079926c95e5bcdca5b",
+                "reference": "ced38da112867c8fff15d5079926c95e5bcdca5b",
                 "shasum": ""
             },
             "require": {
@@ -4541,7 +4620,7 @@
                 "doctrine/annotations": "1.11.1",
                 "doctrine/lexer": "1.2.1",
                 "doctrine/reflection": "1.2.2",
-                "drupal/core": "9.1.5",
+                "drupal/core": "9.1.7",
                 "egulias/email-validator": "2.1.22",
                 "guzzlehttp/guzzle": "6.5.5",
                 "guzzlehttp/promises": "1.4.0",
@@ -4602,9 +4681,9 @@
             ],
             "description": "Locked core dependencies; require this project INSTEAD OF drupal/core.",
             "support": {
-                "source": "https://github.com/drupal/core-recommended/tree/9.1.5"
+                "source": "https://github.com/drupal/core-recommended/tree/9.1.7"
             },
-            "time": "2021-03-04T14:36:14+00:00"
+            "time": "2021-04-20T23:05:22+00:00"
         },
         {
             "name": "drupal/crop",
@@ -8144,8 +8223,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.6+8-dev",
-                    "datestamp": "1609550251",
+                    "version": "8.x-1.6+9-dev",
+                    "datestamp": "1612055345",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -8313,6 +8392,66 @@
             "homepage": "https://www.drupal.org/project/menu_link_weight",
             "support": {
                 "source": "https://git.drupalcode.org/project/menu_link_weight"
+            }
+        },
+        {
+            "name": "drupal/menu_per_role",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/menu_per_role.git",
+                "reference": "8.x-1.2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/menu_per_role-8.x-1.2.zip",
+                "reference": "8.x-1.2",
+                "shasum": "9530d04a80a212e3ff648b5a91403f6e74de39fe"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.2",
+                    "datestamp": "1584722198",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "AlexisWilke",
+                    "homepage": "https://www.drupal.org/user/356197"
+                },
+                {
+                    "name": "Grimreaper",
+                    "homepage": "https://www.drupal.org/user/2388214"
+                },
+                {
+                    "name": "dawehner",
+                    "homepage": "https://www.drupal.org/user/99340"
+                },
+                {
+                    "name": "fago",
+                    "homepage": "https://www.drupal.org/user/16747"
+                },
+                {
+                    "name": "neerajskydiver",
+                    "homepage": "https://www.drupal.org/user/227792"
+                }
+            ],
+            "description": "Allows restricting access to menu items per role.",
+            "homepage": "https://www.drupal.org/project/menu_per_role",
+            "support": {
+                "source": "https://git.drupalcode.org/project/menu_per_role"
             }
         },
         {
@@ -9135,6 +9274,50 @@
             }
         },
         {
+            "name": "drupal/responsive_table_filter",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/responsive_table_filter.git",
+                "reference": "8.x-1.2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/responsive_table_filter-8.x-1.2.zip",
+                "reference": "8.x-1.2",
+                "shasum": "27490864376f49f8809a3100807bfb97d3d8b59f"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.2",
+                    "datestamp": "1587719485",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "joelpittet",
+                    "homepage": "https://www.drupal.org/user/160302"
+                }
+            ],
+            "description": "Provides a text filter that wraps table tags with an figure element.",
+            "homepage": "https://www.drupal.org/project/responsive_table_filter",
+            "support": {
+                "source": "https://git.drupalcode.org/project/responsive_table_filter"
+            }
+        },
+        {
             "name": "drupal/robotstxt",
             "version": "1.4.0",
             "source": {
@@ -9214,7 +9397,7 @@
             "extra": {
                 "drupal": {
                     "version": "8.x-3.0-alpha2",
-                    "datestamp": "1588183221",
+                    "datestamp": "1619629056",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Alpha releases are not covered by Drupal security advisories."
@@ -10159,75 +10342,6 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/tvi",
                 "issues": "http://drupal.org/project/issues/tvi"
-            }
-        },
-        {
-            "name": "drupal/ultimate_cron",
-            "version": "2.0.0-alpha5",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/ultimate_cron.git",
-                "reference": "8.x-2.0-alpha5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/ultimate_cron-8.x-2.0-alpha5.zip",
-                "reference": "8.x-2.0-alpha5",
-                "shasum": "0f10464fff29eca89024e7afa5b6d8d07bd52f75"
-            },
-            "require": {
-                "drupal/core": "^8.7.7 || ^9"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "drupal": {
-                    "version": "8.x-2.0-alpha5",
-                    "datestamp": "1600928948",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Alpha releases are not covered by Drupal security advisories."
-                    }
-                },
-                "drush": {
-                    "services": {
-                        "drush.services.yml": "^9 || ^10"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Berdir",
-                    "homepage": "https://www.drupal.org/user/214652"
-                },
-                {
-                    "name": "Dane Powell",
-                    "homepage": "https://www.drupal.org/user/339326"
-                },
-                {
-                    "name": "Primsi",
-                    "homepage": "https://www.drupal.org/user/282629"
-                },
-                {
-                    "name": "arnested",
-                    "homepage": "https://www.drupal.org/user/245635"
-                },
-                {
-                    "name": "gielfeldt",
-                    "homepage": "https://www.drupal.org/user/366993"
-                },
-                {
-                    "name": "miro_dietiker",
-                    "homepage": "https://www.drupal.org/user/227761"
-                }
-            ],
-            "description": "Ultimate cron",
-            "homepage": "https://www.drupal.org/project/ultimate_cron",
-            "support": {
-                "source": "https://git.drupalcode.org/project/ultimate_cron"
             }
         },
         {
@@ -16837,16 +16951,16 @@
         },
         {
             "name": "symfony/filesystem",
-            "version": "v4.4.19",
+            "version": "v4.4.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
-                "reference": "83a6feed14846d2d9f3916adbaf838819e4e3380"
+                "reference": "940826c465be2690c9fae91b2793481e5cbd6834"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/filesystem/zipball/83a6feed14846d2d9f3916adbaf838819e4e3380",
-                "reference": "83a6feed14846d2d9f3916adbaf838819e4e3380",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/940826c465be2690c9fae91b2793481e5cbd6834",
+                "reference": "940826c465be2690c9fae91b2793481e5cbd6834",
                 "shasum": ""
             },
             "require": {
@@ -16879,7 +16993,7 @@
             "description": "Provides basic utilities for the filesystem",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/filesystem/tree/v4.4.19"
+                "source": "https://github.com/symfony/filesystem/tree/v4.4.21"
             },
             "funding": [
                 {
@@ -16895,7 +17009,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-27T09:09:26+00:00"
+            "time": "2021-03-28T09:59:32+00:00"
         },
         {
             "name": "symfony/finder",
@@ -21612,21 +21726,21 @@
         },
         {
             "name": "symfony/cache-contracts",
-            "version": "v2.2.0",
+            "version": "v2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/cache-contracts.git",
-                "reference": "8034ca0b61d4dd967f3698aaa1da2507b631d0cb"
+                "reference": "c0446463729b89dd4fa62e9aeecc80287323615d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/cache-contracts/zipball/8034ca0b61d4dd967f3698aaa1da2507b631d0cb",
-                "reference": "8034ca0b61d4dd967f3698aaa1da2507b631d0cb",
+                "url": "https://api.github.com/repos/symfony/cache-contracts/zipball/c0446463729b89dd4fa62e9aeecc80287323615d",
+                "reference": "c0446463729b89dd4fa62e9aeecc80287323615d",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2.5",
-                "psr/cache": "^1.0"
+                "psr/cache": "^1.0|^2.0|^3.0"
             },
             "suggest": {
                 "symfony/cache-implementation": ""
@@ -21634,7 +21748,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.2-dev"
+                    "dev-main": "2.4-dev"
                 },
                 "thanks": {
                     "name": "symfony/contracts",
@@ -21671,7 +21785,7 @@
                 "standards"
             ],
             "support": {
-                "source": "https://github.com/symfony/cache-contracts/tree/v2.2.0"
+                "source": "https://github.com/symfony/cache-contracts/tree/v2.4.0"
             },
             "funding": [
                 {
@@ -21687,7 +21801,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-09-07T11:33:47+00:00"
+            "time": "2021-03-23T23:28:01+00:00"
         },
         {
             "name": "symfony/var-exporter",
@@ -21903,7 +22017,6 @@
         "drupal/redirect": 20,
         "drupal/swiftmailer": 10,
         "drupal/tvi": 5,
-        "drupal/ultimate_cron": 15,
         "drupal/views_ical": 15,
         "kartsims/easysvg": 20,
         "uiowa/block_content_template": 20,

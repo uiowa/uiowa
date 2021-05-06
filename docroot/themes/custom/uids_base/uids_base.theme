@@ -209,11 +209,17 @@ function uids_base_preprocess_node(&$variables) {
       }
     }
     $node = \Drupal::routeMatch()->getParameter('node');
+    $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
 
     if ($node instanceof NodeInterface) {
       $node = $variables["node"];
       switch ($node->getType()) {
         case 'person':
+          $variables['#attached']['library'][] = 'uids_base/person';
+          break;
+
+        case 'event':
+          $variables['#attached']['library'][] = 'uids_base/sitenow-events-single';
           $variables['#attached']['library'][] = 'uids_base/person';
           break;
       }
@@ -306,10 +312,6 @@ function uids_base_preprocess_field(&$variables) {
     $config = [];
     $plugin_block = $block_manager->createInstance('system_breadcrumb_block', $config);
     $variables['breadcrumb'] = $plugin_block->build();
-  }
-
-  if ($variables['element']['#field_type'] == 'text_long' && $variables['element']['#formatter'] == 'text_default') {
-    $variables['#attached']['library'][] = 'uids_base/tables';
   }
 
   // Add an extra class variable to uiowa_headline instances.
@@ -728,16 +730,6 @@ function uids_base_preprocess_views_view_field(&$variables) {
         }
       }
     }
-  }
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
-function uids_base_preprocess_views_view_table(&$variables) {
-  // For all view tables except for draggable view tables.
-  if (!isset($variables["view"]->display_handler->handlers["field"]["draggableviews"])) {
-    $variables['attributes']['class'][] = 'table is-striped';
   }
 }
 

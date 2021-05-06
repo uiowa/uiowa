@@ -10,6 +10,8 @@ use Drupal\block\Entity\Block;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Database\Database;
+use Drupal\Core\Entity\Sql\SqlContentEntityStorage;
+use Drupal\Core\Entity\Sql\SqlContentEntityStorageException;
 use Drupal\Core\Site\Settings;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
@@ -2438,5 +2440,266 @@ function sitenow_update_9006(&$sandbox) {
   }
   else {
     $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+  }
+}
+
+/**
+ * Update button classes.
+ */
+function sitenow_update_9007() {
+  $active_theme = \Drupal::service('theme.manager')->getActiveTheme();
+
+  // Limit to just sites running uids_base.
+  if ($active_theme->getName() === 'uids_base') {
+
+    $secondary = 'bttn--secondary bttn--caps';
+    $search_replace = [
+      'btn-primary' => 'bttn--primary bttn--caps',
+      'btn-secondary' => $secondary,
+      'btn-success' => $secondary,
+      'btn-danger' => $secondary,
+      'btn-info' => $secondary,
+      'btn-warning' => $secondary,
+      'btn-light' => $secondary,
+      'btn-dark' => $secondary,
+      'btn-link' => '',
+      'btn-lg' => '',
+      'btn-sm' => '',
+      'btn-block' => '',
+      'btn' => 'bttn',
+    ];
+    // Table classes to remove.
+    $table_search = [
+      'table--static',
+      'table--is-striped',
+      'is-striped',
+      'table',
+    ];
+    $entity_type_manager = \Drupal::entityTypeManager();
+    $entity_field_manager = \Drupal::service('entity_field.manager');
+    $text_long = $entity_field_manager->getFieldMapByFieldType('text_long');
+    $text_with_summary = $entity_field_manager->getFieldMapByFieldType('text_with_summary');
+    $entity_field_map = array_merge($text_long, $text_with_summary);
+
+    foreach ($entity_field_map as $entity_type_id => $field_map) {
+      $entity_storage = $entity_type_manager->getStorage($entity_type_id);
+      if (!($entity_storage instanceof SqlContentEntityStorage)) {
+        continue;
+      }
+
+      $entity_type = $entity_type_manager->getDefinition($entity_type_id);
+      $field_storage_definitions = $entity_field_manager->getFieldStorageDefinitions($entity_type_id);
+      $table_mapping = $entity_storage->getTableMapping($field_storage_definitions);
+      foreach (array_intersect_key($field_storage_definitions, $field_map) as $field_storage_definition) {
+        $tables = [];
+        $field_name = $field_storage_definition->getName();
+        try {
+          $tables[] = $table_mapping->getFieldTableName($field_name);
+          $value_column = $table_mapping->getFieldColumnName($field_storage_definition, 'value');
+        } catch (SqlContentEntityStorageException $e) {
+          continue;
+        }
+        // See if the field has a revision table.
+        $revision_table = NULL;
+        if ($entity_type->isRevisionable() && $field_storage_definition->isRevisionable()) {
+          if ($table_mapping->requiresDedicatedTableStorage($field_storage_definition)) {
+            $revision_table = $table_mapping->getDedicatedRevisionTableName($field_storage_definition);
+          }
+          elseif ($table_mapping->allowsSharedTableStorage($field_storage_definition)) {
+            $revision_table = $entity_type->getRevisionDataTable() ?: $entity_type->getRevisionTable();
+          }
+          $tables[] = $revision_table;
+        }
+        if (!empty($tables)) {
+          $db = \Drupal::database();
+
+          foreach ($tables as $table) {
+            $update_count = 0;
+            $query = $db->select($table, 't')
+            ->fields('t');
+
+            $or_group = $query->orConditionGroup();
+
+            foreach ($search_replace as $needle => $string) {
+              $or_group->condition($value_column, '%' . $db->escapeLike($needle) . '%', 'LIKE');
+            }
+
+            foreach ($table_search as $needle) {
+              $or_group->condition($value_column, '%' . $db->escapeLike($needle) . '%', 'LIKE');
+            }
+
+            $results = $query->condition($or_group)
+            ->execute();
+
+            foreach ($results as $record) {
+
+              $document = Html::load($record->{$value_column});
+
+              foreach (['a', 'table'] as $tag) {
+                $instances = $document->getElementsByTagName($tag);
+
+                // We don't actually need the regressive loop
+                // here, but its copied/pasted.
+                $i = $instances->length - 1;
+
+                while ($i >= 0) {
+                  // The current inline image element.
+                  $dom_element = $instances->item($i);
+
+                  $class = $dom_element->getAttribute('class');
+
+                  switch ($tag) {
+                    case 'a':
+                      foreach ($search_replace as $needle => $replace) {
+                        $class = str_replace($needle, $replace, $class);
+                      }
+                      break;
+                    case 'table':
+                      foreach ($table_search as $needle) {
+                        $class = str_replace($needle, '', $class);
+                      }
+                      break;
+                  }
+
+                  if (trim($class)) {
+                    $dom_element->setAttribute('class', $class);
+                  }
+                  else {
+                    $dom_element->removeAttribute('class');
+                  }
+
+                  $i--;
+                }
+              }
+
+              // Run database update to store updated $value_column as Html::serialize($document)
+              $db->update($table)
+                ->fields([
+                  $value_column => Html::serialize($document),
+                ])
+                ->condition('entity_id', $record->entity_id)
+                ->condition('revision_id', $record->revision_id)
+                ->execute();
+
+              $update_count++;
+            }
+
+            if ($update_count) {
+              \Drupal::messenger()
+                ->addMessage('Processed ' . $update_count . ' update(s) for ' . $table . ' table ' . $value_column . ' column.');
+            }
+          }
+        }
+      }
+    }
+
+    // Loop through SiteNow config ignored views.
+    $views = ['articles', 'people'];
+    foreach ($views as $view) {
+      $view = \Drupal::entityTypeManager()->getStorage('view')->load('people');
+      $default =& $view->getDisplay('default');
+      $header_content = $default["display_options"]["header"]["area"]["content"]["value"];
+      foreach ($search_replace as $needle => $string) {
+        $header_content = str_replace($needle, $string, $header_content);
+      }
+      $default["display_options"]["header"]["area"]["content"]["value"] = $header_content;
+      $view->save();
+    }
+
+  }
+}
+
+/**
+ * Fix table classes that were inadvertently broken.
+ */
+function sitenow_update_9008() {
+  $active_theme = \Drupal::service('theme.manager')->getActiveTheme();
+
+  // Limit to just sites running uids_base.
+  if ($active_theme->getName() === 'uids_base') {
+
+    $table_search = [
+      '--gray-borders' => 'table--gray-borders',
+      '--hover-highlight' => 'table--hover-highlight',
+      '--width-default' => 'table--width-default',
+    ];
+    $entity_type_manager = \Drupal::entityTypeManager();
+    $entity_field_manager = \Drupal::service('entity_field.manager');
+    $text_long = $entity_field_manager->getFieldMapByFieldType('text_long');
+    $text_with_summary = $entity_field_manager->getFieldMapByFieldType('text_with_summary');
+    $entity_field_map = array_merge($text_long, $text_with_summary);
+
+    foreach ($entity_field_map as $entity_type_id => $field_map) {
+      $entity_storage = $entity_type_manager->getStorage($entity_type_id);
+      if (!($entity_storage instanceof SqlContentEntityStorage)) {
+        continue;
+      }
+
+      $entity_type = $entity_type_manager->getDefinition($entity_type_id);
+      $field_storage_definitions = $entity_field_manager->getFieldStorageDefinitions($entity_type_id);
+      $table_mapping = $entity_storage->getTableMapping($field_storage_definitions);
+      foreach (array_intersect_key($field_storage_definitions, $field_map) as $field_storage_definition) {
+        $tables = [];
+        $field_name = $field_storage_definition->getName();
+        try {
+          $tables[] = $table_mapping->getFieldTableName($field_name);
+          $value_column = $table_mapping->getFieldColumnName($field_storage_definition, 'value');
+        } catch (SqlContentEntityStorageException $e) {
+          continue;
+        }
+        // See if the field has a revision table.
+        $revision_table = NULL;
+        if ($entity_type->isRevisionable() && $field_storage_definition->isRevisionable()) {
+          if ($table_mapping->requiresDedicatedTableStorage($field_storage_definition)) {
+            $revision_table = $table_mapping->getDedicatedRevisionTableName($field_storage_definition);
+          }
+          elseif ($table_mapping->allowsSharedTableStorage($field_storage_definition)) {
+            $revision_table = $entity_type->getRevisionDataTable() ?: $entity_type->getRevisionTable();
+          }
+          $tables[] = $revision_table;
+        }
+        if (!empty($tables)) {
+          $db = \Drupal::database();
+
+          foreach ($tables as $table) {
+            $update_count = 0;
+
+            foreach ($table_search as $needle => $replace) {
+              $update_count += $db->update($table)
+                ->condition($value_column, '%' . $db->escapeLike($needle) . '%', 'LIKE')
+                ->expression($value_column, "REPLACE($value_column, :old, :new)", [
+                  ':old' => $needle,
+                  ':new' => $replace,
+                ])
+                ->execute();
+            }
+
+            if ($update_count) {
+              \Drupal::messenger()
+                ->addMessage(t('Processed @update_count update(s) for @table table @value_column column.', [
+                  '@update_count' => $update_count,
+                  '@table' => $table,
+                  '@value_column' => $value_column,
+                ]));
+
+              $fix_count = $db->update($table)
+                ->condition($value_column, '%' . $db->escapeLike('tabletable--') . '%', 'LIKE')
+                ->expression($value_column, "REPLACE($value_column, :old, :new)", [
+                  ':old' => 'tabletable--',
+                  ':new' => 'table--',
+                ])
+                ->execute();
+
+              \Drupal::messenger()
+                ->addMessage(t('Fixed @fix_count instance(s) where the customer had manually changed the table class in @table table @value_column column.', [
+                  '@fix_count' => $fix_count,
+                  '@table' => $table,
+                  '@value_column' => $value_column,
+                ]));
+            }
+          }
+        }
+      }
+    }
   }
 }

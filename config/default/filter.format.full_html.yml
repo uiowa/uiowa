@@ -27,6 +27,7 @@ dependencies:
     - entity_embed
     - linkit
     - media
+    - responsive_table_filter
 name: 'Full HTML'
 format: full_html
 weight: -8
@@ -131,3 +132,11 @@ filters:
         small__square: small__square
         small__ultrawide: small__ultrawide
         small__widescreen: small__widescreen
+  filter_responsive_table:
+    id: filter_responsive_table
+    provider: responsive_table_filter
+    status: true
+    weight: 0
+    settings:
+      wrapper_element: div
+      wrapper_classes: table-responsive

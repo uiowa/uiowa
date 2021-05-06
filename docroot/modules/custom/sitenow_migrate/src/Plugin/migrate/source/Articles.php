@@ -2,6 +2,7 @@
 
 namespace Drupal\sitenow_migrate\Plugin\migrate\source;
 
+use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Row;
 
 /**
@@ -15,6 +16,7 @@ use Drupal\migrate\Row;
 class Articles extends BaseNodeSource {
 
   use ProcessMediaTrait;
+  use LinkReplaceTrait;
 
   /**
    * {@inheritdoc}
@@ -30,17 +32,34 @@ class Articles extends BaseNodeSource {
     }
 
     // Search for D7 inline embeds and replace with D8 inline entities.
-    $body = $row->getSourceProperty('field_article_body');
+    $article_body = $row->getSourceProperty('field_article_body');
 
-    if (!empty($body)) {
-      $body[0]['value'] = $this->replaceInlineFiles($body[0]['value']);
-      $row->setSourceProperty('field_article_body', $body);
+    if (!empty($article_body)) {
+      $article_body[0]['value'] = $this->replaceInlineFiles($article_body[0]['value']);
+      $row->setSourceProperty('field_article_body', $article_body);
 
       // Check summary, and create one if none exists.
-      $row->setSourceProperty('field_article_body_summary', $this->getSummaryFromTextField($body));
+      if (empty($row->getSourceProperty('field_article_body_summary'))) {
+        $row->setSourceProperty('field_article_body_summary', $this->getSummaryFromTextField($article_body));
+      }
     }
 
     return TRUE;
+  }
+
+  /**
+   * Functions to run following a completed migration.
+   *
+   * @param \Drupal\migrate\Event\MigrateImportEvent $event
+   *   The migration event.
+   */
+  public function postImport(MigrateImportEvent $event) {
+    static $have_run = FALSE;
+
+    if (!$have_run) {
+      $this->reportPossibleLinkBreaks(['node__body' => ['body_value']]);
+      $have_run = TRUE;
+    }
   }
 
 }
