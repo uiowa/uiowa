@@ -133,8 +133,18 @@ trait ProcessMediaTrait {
 
   /**
    * Build the new inline embed entity format for Drupal 8 images.
+   *
+   * @param string $uuid
+   *   The unique identifier for the media to embed.
+   * @param string $align
+   *   The image alignment. Center if empty.
+   * @param string $view_mode
+   *   The image format. Defaults to 'small__no_crop'.
+   *
+   * @return string
+   *   Returns markup as a plaintext string.
    */
-  public function constructInlineEntity($uuid, $align) {
+  public function constructInlineEntity(string $uuid, string $align, $view_mode = 'small__no_crop') {
     $align = isset($align) ? $align : 'center';
 
     $media = [
@@ -144,7 +154,7 @@ trait ProcessMediaTrait {
         'data-align' => $align,
         'data-entity-type' => 'media',
         'data-entity-uuid' => $uuid,
-        'data-view-mode' => 'small__no_crop',
+        'data-view-mode' => $view_mode,
       ],
     ];
 
@@ -415,10 +425,20 @@ trait ProcessMediaTrait {
    *
    * Used this as reference: https://stackoverflow.com/a/3195048.
    *
-   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @param string $content
+   *   Drupal field content which may contain embedded images.
+   * @param string $stub
+   *   File directory stub, e.g. '/sites/vwu/files/'.
+   * @param string $view_mode
+   *   The default view mode to set image formatting for all inline images.
+   *
+   * @return string
+   *   The updated field content with replaced inline images.
+   *
    * @throws \Drupal\migrate\MigrateException
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  protected function replaceInlineImages($content, $stub) {
+  protected function replaceInlineImages(string $content, string $stub, $view_mode = 'medium__no_crop') {
     $drupal_file_directory = $this->getDrupalFileDirectory();
 
     // Create a HTML content fragment.
@@ -490,8 +510,7 @@ trait ProcessMediaTrait {
           // Create the <drupal-media> element.
           $media_embed = $document->createElement('drupal-media');
           $media_embed->setAttribute('data-entity-uuid', $uuid);
-          // @todo Determine how to correctly set the crop.
-          //   $media_embed->setAttribute('data-view-mode', 'full_no_crop');
+          $media_embed->setAttribute('data-view-mode', $view_mode);
           $media_embed->setAttribute('data-entity-type', 'media');
 
           // Set the alignment if we can determine it.
