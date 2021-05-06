@@ -1,0 +1,23 @@
+uuid: de43c4ba-c615-47fb-853f-e06c79aec2b0
+langcode: en
+status: true
+dependencies: {  }
+id: transportation_migrate
+label: 'Parking and Transportation Migrate'
+description: 'Migrations for Transportation'
+folder: ./sites/transportation.uiowa.edu/modules/transportation_migrate/config/split
+module:
+  migrate: 0
+  migrate_drupal: 0
+  migrate_plus: 0
+  migrate_tools: 0
+  transportation_migrate: 0
+  sitenow_migrate: 0
+theme: {  }
+blacklist:
+  - config_split.config_split.transportation_migrate
+  - 'migrate_plus.migration.transportation_*'
+graylist: {  }
+graylist_dependents: true
+graylist_skip_equal: true
+weight: 80
