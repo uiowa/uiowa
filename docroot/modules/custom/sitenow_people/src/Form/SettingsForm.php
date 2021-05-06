@@ -111,7 +111,7 @@ class SettingsForm extends ConfigFormBase {
     foreach ($displays as $display) {
       $sort_options[$display['id']] = $display['display_title'];
       // Override the default sort value. Assumes only one display is enabled...
-      if (isset($display["display_options"]["enabled"]) && $display["display_options"]["enabled"] == 1) {
+      if (isset($display['display_options']['enabled']) && $display['display_options']['enabled'] == 1) {
         $default_sort = $display['id'];
       }
     }
@@ -171,7 +171,7 @@ class SettingsForm extends ConfigFormBase {
       '#format' => 'filtered_html',
       '#title' => $this->t('Header Content'),
       '#description' => $this->t('Enter any content that is displayed above the people listing.'),
-      '#default_value' => $default["display_options"]["header"]["area"]["content"]["value"],
+      '#default_value' => $default['display_options']['header']['area']['content']['value'],
     ];
 
     // Future filter options go here.
@@ -257,16 +257,16 @@ class SettingsForm extends ConfigFormBase {
     $displays = $view->get('display');
     unset($displays['default']);
     foreach ($displays as $display) {
-      $display[$display['id']] =& $view->getDisplay($display['id']);
+      $displays[$display['id']] =& $view->getDisplay($display['id']);
       // Set validated and clean path.
-      $display[$display['id']]['display_options']['path'] = $path;
-      $display[$display['id']]["display_options"]["enabled"] = FALSE;
+      $displays[$display['id']]['display_options']['path'] = $path;
+      $displays[$display['id']]['display_options']['enabled'] = FALSE;
     }
 
     // Set default display to set global settings.
     $default =& $view->getDisplay('default');
     // Set title.
-    $default['display_options']["title"] = $title;
+    $default['display_options']['title'] = $title;
     // Set header area content.
     $default['display_options']['header']['area']['content']['value'] = $header_content['value'];
 
