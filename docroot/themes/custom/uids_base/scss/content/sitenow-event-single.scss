@@ -38,3 +38,28 @@
     margin: $gutter 0;
   }
 }
+
+// @todo remove when https://github.com/uiowa/uiowa/issues/2756 is completed.
+
+.page-node-type-event {
+  .block-field-blocknodeeventfield-event-location {
+    padding-top: 1rem;
+  }
+  .layout__region--second {
+    border: 1px solid #ccc;
+    padding-bottom: 2rem;
+    .block-layout-builder:first-child:not(.block-field-blocknodeeventfield-image) {
+      padding-top: 2rem;
+    }
+    .block-field-blocknodeeventfield-image + .block-layout-builder {
+      padding-top: 2rem;
+    }
+    .block-layout-builder:not(.block-field-blocknodeeventfield-image) {
+      padding-left: 1rem;
+      padding-right: 2rem;
+    }
+    .address {
+      font-size: 1.1rem;
+    }
+  }
+}
