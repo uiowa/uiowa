@@ -2749,7 +2749,7 @@ function sitenow_update_9009(&$sandbox) {
 
       // Loop through field definitions for the entity type, making
       // sure they match the field storage definitions.
-      foreach (array_intersect_key($field_storage_definitions, $field_map) as $field_storage_definition) {
+      foreach (array_intersect_key($field_storage_definitions, $field_map) as $bundle => $field_storage_definition) {
 
         // Initialize a list of tables we will query against.
         $tables = [];
