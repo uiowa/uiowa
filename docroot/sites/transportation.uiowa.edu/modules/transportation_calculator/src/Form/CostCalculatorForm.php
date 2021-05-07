@@ -29,8 +29,8 @@ class CostCalculatorForm extends FormBase {
     $form = [
       '#attached' => [
         'library' => [
-          'transportation_calculator/transportation_calculator'
-        ]
+          'transportation_calculator/transportation_calculator',
+        ],
       ],
       'distance' => [
         '#type' => 'number',
@@ -49,7 +49,7 @@ class CostCalculatorForm extends FormBase {
       'aaa_cost_per_mile' => [
         '#title' => t('AAA cost per mile'),
         '#type' => 'number',
-        '#description' => t('Based on <a href="@aaa">AAA’s average cost per mile</a> for operating a vehicle 15,000 miles per year.', array('@aaa' => 'http://exchange.aaa.com/automobiles-travel/automobiles/driving-costs/#.WH6WfLYrJsZ')),
+        '#description' => t('Based on <a href="@aaa">AAA’s average cost per mile</a> for operating a vehicle 15,000 miles per year.', ['@aaa' => 'http://exchange.aaa.com/automobiles-travel/automobiles/driving-costs/#.WH6WfLYrJsZ']),
         '#field_prefix' => t('$'),
         '#default_value' => 0.5899,
         '#disabled' => TRUE,
@@ -75,9 +75,9 @@ class CostCalculatorForm extends FormBase {
         ],
         '#attributes' => [
           'class' => [
-            'bttn--primary'
-          ]
-        ]
+            'bttn--primary',
+          ],
+        ],
       ],
       'results' => [
         '#type' => 'container',
@@ -85,7 +85,7 @@ class CostCalculatorForm extends FormBase {
           'id' => $wrapper,
           'aria-live' => 'polite',
         ],
-      ]
+      ],
     ];
 
     return $form;
@@ -93,7 +93,7 @@ class CostCalculatorForm extends FormBase {
 
   /**
    * @param array $form
-   * @param FormStateInterface $form_state
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
    * @return array
    */
   public function calculateCost(array &$form, FormStateInterface $form_state): array {
@@ -107,27 +107,27 @@ class CostCalculatorForm extends FormBase {
       '#attributes' => [
         'class' => [
           'results-wrapper',
-        ]
+        ],
       ],
       'costs' => [
         '#type' => 'container',
         '#attributes' => [
           'class' => [
             'costs',
-          ]
+          ],
         ],
         'monthly' => [
           '#type' => 'container',
           '#attributes' => [
             'class' => [
-              'costs-monthly'
+              'costs-monthly',
             ],
           ],
           'item' => [
             '#type' => 'item',
             '#title' => t('Monthly commute costs'),
             '#markup' => t('<span>@monthly</span>', [
-              '@monthly' => number_format($monthly, 2)
+              '@monthly' => number_format($monthly, 2),
             ]),
             '#field_prefix' => '$',
           ],
@@ -136,17 +136,17 @@ class CostCalculatorForm extends FormBase {
           '#type' => 'container',
           '#attributes' => [
             'class' => [
-              'costs-yearly'
+              'costs-yearly',
             ],
           ],
           'item' => [
             '#type' => 'item',
             '#title' => t('Yearly commute costs'),
             '#markup' => t('<span>@yearly</span>', [
-              '@yearly' => number_format($yearly, 2)
+              '@yearly' => number_format($yearly, 2),
             ]),
             '#field_prefix' => '$',
-          ]
+          ],
         ],
       ],
       'savings' => [
@@ -154,7 +154,7 @@ class CostCalculatorForm extends FormBase {
         '#attributes' => [
           'class' => [
             'savings',
-          ]
+          ],
         ],
         'table' => [
           '#type' => 'table',
