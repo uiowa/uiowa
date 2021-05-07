@@ -4,6 +4,7 @@ namespace Drupal\transportation_calculator\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Component\Utility\Html;
 
 /**
  * Provides a Transportation Cost Calculator form.
@@ -14,7 +15,9 @@ class CostCalculatorForm extends FormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'transportation_calculator_cost_calculator';
+    static $count;
+    $count++;
+    return 'transportation_calculator_cost_calculator_' . $count;
   }
 
   /**
