@@ -26,7 +26,7 @@ class CostCalculatorForm extends FormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $wrapper = Html::getUniqueId('calculator-results');
 
-    $form = [
+    return [
       '#attached' => [
         'library' => [
           'transportation_calculator/transportation_calculator',
@@ -87,8 +87,6 @@ class CostCalculatorForm extends FormBase {
         ],
       ],
     ];
-
-    return $form;
   }
 
   /**
