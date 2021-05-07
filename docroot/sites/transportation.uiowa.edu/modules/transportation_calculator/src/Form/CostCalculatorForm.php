@@ -190,7 +190,7 @@ class CostCalculatorForm extends FormBase {
             [
               'mode' => $this->t('380 Express'),
               'cost' => '$690.00',
-              'savings' => '$' . number_format($yearly - 690),
+              'savings' => '$' . number_format($yearly - 690, 2),
             ],
             [
               'mode' => $this->t('Bus Pass (U-PASS)'),
