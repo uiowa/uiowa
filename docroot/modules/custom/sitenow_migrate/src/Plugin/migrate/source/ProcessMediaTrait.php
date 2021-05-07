@@ -161,7 +161,7 @@ trait ProcessMediaTrait {
         'data-align' => $align,
         'data-entity-type' => 'media',
         'data-entity-uuid' => $uuid,
-        'data-view-mode' => isset($view_mode) ? $view_mode : $this->view_mode,
+        'data-view-mode' => isset($view_mode) ? $view_mode : $this->viewMode,
       ],
     ];
 
