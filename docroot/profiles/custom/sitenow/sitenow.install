@@ -2732,6 +2732,9 @@ function sitenow_update_9009(&$sandbox) {
 
     // Loop through each entity type in our field map.
     foreach ($entity_field_map as $entity_type_id => $field_map) {
+      if ($entity_type_id !== 'node') {
+        continue;
+      }
       $entity_storage = $entity_type_manager->getStorage($entity_type_id);
       if (!($entity_storage instanceof SqlContentEntityStorage)) {
         continue;
@@ -2790,7 +2793,7 @@ function sitenow_update_9009(&$sandbox) {
             foreach ($results as $result) {
               // @todo Check if the entity type = node and the bundle = Area of Study
               // @todo If above is true, we are going to change the format to filtered_html
-              $output_report[$entity_type_id][] = $result->entity_id;
+              $output_report[] = "https://admissions.prod.uiowa.edu/node/{$result->entity_id}";
             }
 
             $update_count = $query->countQuery()->execute()->fetchField();
@@ -2811,7 +2814,7 @@ function sitenow_update_9009(&$sandbox) {
 
     \Drupal::messenger()
       ->addMessage(t("Nodes to update:\n@report", [
-        '@report' => print_r($output_report, TRUE),
+        '@report' => implode($output_report, "\n"),
       ]));
   }
 }
