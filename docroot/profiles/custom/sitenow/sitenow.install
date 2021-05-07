@@ -2703,3 +2703,115 @@ function sitenow_update_9008() {
     }
   }
 }
+
+/**
+ * Update Admissions Area of Study text field formats.
+ *
+ * Provide a list of instances of nodes that contain long text
+ * fields with full_html as the format. Additionally convert
+ * any of these that are Area of Study nodes to use filtered_html.
+ */
+function sitenow_update_9009(&$sandbox) {
+
+  $site_path = \Drupal::service('site.path');
+
+  // Limiting this to Admissions
+  if ($site_path === 'sites/admissions.uiowa.edu') {
+
+    // Grab some services for later use.
+    $entity_type_manager = \Drupal::entityTypeManager();
+    $entity_field_manager = \Drupal::service('entity_field.manager');
+
+    // Get lists of fields grouped by entity type and matching the 'text_long'
+    // and 'text_with_summary' field types and merge them.
+    $text_long = $entity_field_manager->getFieldMapByFieldType('text_long');
+    $text_with_summary = $entity_field_manager->getFieldMapByFieldType('text_with_summary');
+    $entity_field_map = array_merge($text_long, $text_with_summary);
+
+    $output_report = [];
+
+    // Loop through each entity type in our field map.
+    foreach ($entity_field_map as $entity_type_id => $field_map) {
+      $entity_storage = $entity_type_manager->getStorage($entity_type_id);
+      if (!($entity_storage instanceof SqlContentEntityStorage)) {
+        continue;
+      }
+
+      // Get the entity type definition.
+      $entity_type = $entity_type_manager->getDefinition($entity_type_id);
+      // Get the list of field storage definitions for the entity type.
+      $field_storage_definitions = $entity_field_manager->getFieldStorageDefinitions($entity_type_id);
+      // Get the table mapping for the field storage definitions.
+      $table_mapping = $entity_storage->getTableMapping($field_storage_definitions);
+
+      // Loop through field definitions for the entity type, making
+      // sure they match the field storage definitions.
+      foreach (array_intersect_key($field_storage_definitions, $field_map) as $field_storage_definition) {
+
+        // Initialize a list of tables we will query against.
+        $tables = [];
+        $field_name = $field_storage_definition->getName();
+        try {
+          // Add the table to the list.
+          $tables[] = $table_mapping->getFieldTableName($field_name);
+          // Get the names of the table columns for value and format.
+          $value_column = $table_mapping->getFieldColumnName($field_storage_definition, 'value');
+          $format_column = $table_mapping->getFieldColumnName($field_storage_definition, 'format');
+        } catch (SqlContentEntityStorageException $e) {
+          continue;
+        }
+        // See if the field has a revision table.
+        $revision_table = NULL;
+        if ($entity_type->isRevisionable() && $field_storage_definition->isRevisionable()) {
+          // Determine the appropriate revision table to use.
+          if ($table_mapping->requiresDedicatedTableStorage($field_storage_definition)) {
+            $revision_table = $table_mapping->getDedicatedRevisionTableName($field_storage_definition);
+          }
+          elseif ($table_mapping->allowsSharedTableStorage($field_storage_definition)) {
+            $revision_table = $entity_type->getRevisionDataTable() ?: $entity_type->getRevisionTable();
+          }
+          // Add the revision table to our list.
+          $tables[] = $revision_table;
+        }
+
+        // We have tables, continue...
+        if (!empty($tables)) {
+          $db = \Drupal::database();
+
+          // Loop through our tables.
+          foreach ($tables as $table) {
+            $query = $db->select($table, 't')
+              ->condition($format_column, 'full_html', '=')
+              ->fields('t');
+
+            // Select instances that use the full_html format.
+            $results = $query->execute();
+
+            foreach ($results as $result) {
+              // @todo Check if the entity type = node and the bundle = Area of Study
+              // @todo If above is true, we are going to change the format to filtered_html
+              $output_report[$entity_type_id][] = $result->entity_id;
+            }
+
+            $update_count = $query->countQuery()->execute()->fetchField();
+
+            if ($update_count) {
+
+              \Drupal::messenger()
+                ->addMessage(t('Found @update_count matches(s) for @table table @value_column column.', [
+                  '@update_count' => $update_count,
+                  '@table' => $table,
+                  '@value_column' => $value_column,
+                ]));
+            }
+          }
+        }
+      }
+    }
+
+    \Drupal::messenger()
+      ->addMessage(t("Nodes to update:\n@report", [
+        '@report' => print_r($output_report, TRUE),
+      ]));
+  }
+}
