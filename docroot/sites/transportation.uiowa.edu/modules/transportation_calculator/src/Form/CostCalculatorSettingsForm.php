@@ -54,7 +54,7 @@ class CostCalculatorSettingsForm extends ConfigFormBase {
         '#min' => 0,
         '#description' => $this->t('How much do you currently pay for monthly parking?'),
         '#field_prefix' => $this->t('$'),
-        '#default_value' => $this->config('transportation_calculator.settings')->get('days-of-travel') ?? 21,
+        '#default_value' => $this->config('transportation_calculator.settings')->get('parking-cost') ?? 62,
       ],
     ];
 

@@ -37,21 +37,21 @@ class CostCalculatorForm extends FormBase {
         '#title' => $this->t('Distance'),
         '#description' => $this->t('What is your daily round trip commute distance?'),
         '#field_suffix' => $this->t('Miles'),
-        '#default_value' => 45,
+        '#default_value' => $this->config('transportation_calculator.settings')->get('distance') ?? 45,
       ],
       'days_travel' => [
         '#title' => $this->t('Days of travel'),
         '#type' => 'number',
         '#description' => $this->t('How many days a month do you normally travel to work?'),
         '#field_suffix' => $this->t('Days'),
-        '#default_value' => 21,
+        '#default_value' => $this->config('transportation_calculator.settings')->get('days-of-travel') ?? 21,
       ],
       'aaa_cost_per_mile' => [
         '#title' => $this->t('AAA cost per mile'),
         '#type' => 'number',
         '#description' => $this->t('Based on <a href="@aaa">AAA’s average cost per mile</a> for operating a vehicle 15,000 miles per year.', ['@aaa' => 'http://exchange.aaa.com/automobiles-travel/automobiles/driving-costs/#.WH6WfLYrJsZ']),
         '#field_prefix' => $this->t('$'),
-        '#default_value' => 0.5899,
+        '#default_value' => $this->config('transportation_calculator.settings')->get('aaa-cost') ?? 0.5899,
         '#disabled' => TRUE,
         '#step' => 0.0001,
       ],
@@ -60,7 +60,7 @@ class CostCalculatorForm extends FormBase {
         '#type' => 'number',
         '#description' => $this->t('How much do you currently pay for monthly parking?'),
         '#field_prefix' => $this->t('$'),
-        '#default_value' => 62,
+        '#default_value' => $this->config('transportation_calculator.settings')->get('parking-cost') ?? 62,
         '#step' => 0.1,
       ],
       'submit' => [
@@ -103,8 +103,15 @@ class CostCalculatorForm extends FormBase {
   public function calculateCost(array &$form, FormStateInterface $form_state): array {
     $monthly = $form_state->getValue('distance') * $form_state->getValue('days_travel') * $form_state->getValue('aaa_cost_per_mile') + $form_state->getValue('cost_to_park');
     $yearly = $monthly * 12;
-    $vanpool = (10.44 + .2252 * $form_state->getValue('distance') * 21) * 12 / 6;
-    $upass = 15 * 12;
+
+    $van_base_rate = $this->config('transportation_calculator.settings')->get('van-base-rate') ?? 10.44;
+    $van_mileage_rate = $this->config('transportation_calculator.settings')->get('van-mileage-rate') ?? 0.2252;
+    $van_average_working_days = $this->config('transportation_calculator.settings')->get('average-working-days') ?? 21;
+    $van_maximum_riders = $this->config('transportation_calculator.settings')->get('maximum-van-riders') ?? 6;
+    $vanpool = ($van_base_rate + $van_mileage_rate * $form_state->getValue('distance') * $van_average_working_days) * 12 / $van_maximum_riders;
+
+    $upass_cost = $this->config('transportation_calculator.settings')->get('upass-cost') ?? 15;
+    $upass_yearly = $upass_cost * 12;
 
     $form['results'] = [
       '#type' => 'container',
@@ -194,8 +201,8 @@ class CostCalculatorForm extends FormBase {
             ],
             [
               'mode' => $this->t('Bus Pass (U-PASS)'),
-              'cost' => '$' . number_format($upass, 2),
-              'savings' => '$' . number_format($yearly - $upass, 2),
+              'cost' => '$' . number_format($upass_yearly, 2),
+              'savings' => '$' . number_format($yearly - $upass_yearly, 2),
             ],
             [
               'mode' => $this->t('Bike/Walk'),
