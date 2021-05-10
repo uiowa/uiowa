@@ -2703,3 +2703,19 @@ function sitenow_update_9008() {
     }
   }
 }
+
+/**
+ * Import events view settings if they do not already exist since they are ignored.
+ */
+function sitenow_update_9009() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('views.view.events');
+
+  if (empty($config->get())) {
+    $config_path = DRUPAL_ROOT . '/../config/default';
+    $source = new FileStorage($config_path);
+
+    $config_storage = \Drupal::service('config.storage');
+    $config_storage->write('views.view.events', $source->read('views.view.events'));
+  }
+}
