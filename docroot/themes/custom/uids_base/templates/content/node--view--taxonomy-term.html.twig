@@ -73,28 +73,15 @@
 
 {%
   set classes = [
-  'card--list',
   'card--media-right',
-  'card--person-teaser',
 ]
 %}
-
-{% set headline_level = heading_size ?: 'h3' %}
-{% if view %}
-  {% set headline_level = view.display_handler.getOption('heading_size') %}
-{% endif %}
-
-{{ attach_library('classy/node') }}
-{{ attach_library('uids_base/paragraphs-lists') }}
-{{ attach_library('uids_base/person') }}
 
 {% set taxonomy_card = {
   'attributes': attributes.addClass(classes),
   'card_text': content.field_teaser | render,
   'card_title': label,
-  'card_link_url': url,
-  'headline_level': headline_level,
+  'card_link_url': url ?: node_link,
 } %}
 
-{% embed '@uids_base/uids/card.html.twig' with taxonomy_card only %}
-{% endembed %}
+{% include '@uids_base/uids/card.html.twig' with taxonomy_card only %}
