@@ -259,7 +259,8 @@ function admissions_core_update_9002() {
         // Get the names of the table columns for value and format.
         $value_column = $table_mapping->getFieldColumnName($field_storage_definition, 'value');
         $format_column = $table_mapping->getFieldColumnName($field_storage_definition, 'format');
-      } catch (SqlContentEntityStorageException $e) {
+      }
+      catch (SqlContentEntityStorageException $e) {
         continue;
       }
 
