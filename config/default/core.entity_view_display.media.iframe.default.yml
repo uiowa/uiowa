@@ -1,0 +1,53 @@
+uuid: d69cb92c-df5d-4425-9793-26a4f9d58752
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.media.iframe.field_media_inline_frame
+    - media.type.iframe
+  module:
+    - iframe
+    - image
+id: media.iframe.default
+targetEntityType: media
+bundle: iframe
+mode: default
+content:
+  field_media_inline_frame:
+    type: iframe_default
+    label: visually_hidden
+    weight: 0
+    settings:
+      url: ''
+      title: ''
+      width: ''
+      height: ''
+      class: ''
+      frameborder: '0'
+      scrolling: ''
+      transparency: '0'
+      tokensupport: '0'
+      allowfullscreen: '0'
+    third_party_settings: {  }
+    region: content
+  name:
+    type: string
+    weight: 1
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  thumbnail:
+    type: image
+    weight: 2
+    region: content
+    label: above
+    settings:
+      image_style: ''
+      image_link: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  search_api_excerpt: true
+  uid: true

@@ -1,0 +1,27 @@
+uuid: 13783a2b-f450-4c1a-b426-239a37bba817
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.media.media_library
+    - field.field.media.iframe.field_media_inline_frame
+    - media.type.iframe
+id: media.iframe.media_library
+targetEntityType: media
+bundle: iframe
+mode: media_library
+content:
+  name:
+    type: string_textfield
+    settings:
+      size: 60
+      placeholder: ''
+    weight: 0
+    third_party_settings: {  }
+    region: content
+hidden:
+  created: true
+  field_media_inline_frame: true
+  path: true
+  status: true
+  uid: true
