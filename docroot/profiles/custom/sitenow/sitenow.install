@@ -2732,6 +2732,7 @@ function sitenow_update_9009(&$sandbox) {
 
     // Loop through each entity type in our field map.
     foreach ($entity_field_map as $entity_type_id => $field_map) {
+      // We are limiting this to nodes.
       if ($entity_type_id !== 'node') {
         continue;
       }
@@ -2749,7 +2750,7 @@ function sitenow_update_9009(&$sandbox) {
 
       // Loop through field definitions for the entity type, making
       // sure they match the field storage definitions.
-      foreach (array_intersect_key($field_storage_definitions, $field_map) as $bundle => $field_storage_definition) {
+      foreach (array_intersect_key($field_storage_definitions, $field_map) as $field_storage_definition) {
 
         // Initialize a list of tables we will query against.
         $tables = [];
@@ -2763,6 +2764,7 @@ function sitenow_update_9009(&$sandbox) {
         } catch (SqlContentEntityStorageException $e) {
           continue;
         }
+
         // See if the field has a revision table.
         $revision_table = NULL;
         if ($entity_type->isRevisionable() && $field_storage_definition->isRevisionable()) {
@@ -2773,39 +2775,65 @@ function sitenow_update_9009(&$sandbox) {
           elseif ($table_mapping->allowsSharedTableStorage($field_storage_definition)) {
             $revision_table = $entity_type->getRevisionDataTable() ?: $entity_type->getRevisionTable();
           }
-          // Add the revision table to our list.
+
           $tables[] = $revision_table;
         }
 
-        // We have tables, continue...
+        // We have a table, continue...
         if (!empty($tables)) {
           $db = \Drupal::database();
+          foreach ($tables as $i => $table) {
+            // Update the format for area_of_study and transfer_tips nodes.
+            $update_count = $db->update($table)
+              ->condition($format_column, 'full_html')
+              ->condition('bundle', [
+                'area_of_study',
+                'transfer_tips'
+              ], 'IN')
+              ->fields([
+                $format_column => 'filtered_html',
+              ])
+              ->execute();
 
-          // Loop through our tables.
-          foreach ($tables as $table) {
-            $query = $db->select($table, 't')
-              ->condition($format_column, 'full_html', '=')
-              ->fields('t');
-
-            // Select instances that use the full_html format.
-            $results = $query->execute();
-
-            foreach ($results as $result) {
-              // @todo Check if the entity type = node and the bundle = Area of Study
-              // @todo If above is true, we are going to change the format to filtered_html
-              $output_report[] = "https://admissions.prod.uiowa.edu/node/{$result->entity_id}";
-            }
-
-            $update_count = $query->countQuery()->execute()->fetchField();
-
+            // If we updated any items, display a message.
             if ($update_count) {
-
               \Drupal::messenger()
-                ->addMessage(t('Found @update_count matches(s) for @table table @value_column column.', [
+                ->addMessage(t('Updated @update_count matches(s) for @table table @value_column column.', [
                   '@update_count' => $update_count,
                   '@table' => $table,
                   '@value_column' => $value_column,
                 ]));
+            }
+
+            // If this is not the revision table, then we want to collect
+            // any nodes that are not area_of_study or transfer_tips to
+            // report.
+            if ($i === 0) {
+              $results = $db->select($table, 't')
+                ->condition($format_column, 'full_html')
+                ->condition('bundle', [
+                  'area_of_study',
+                  'transfer_tips'
+                ], 'NOT IN')
+                ->fields('t')
+                ->execute();
+
+              foreach ($results as $result) {
+                $output_report[] = "https://admissions.prod.drupal.uiowa.edu/node/{$result->entity_id}";
+              }
+
+              $results = $db->select($table, 't')
+                ->condition($format_column, 'full_html')
+                ->condition('bundle', [
+                  'area_of_study',
+                  'transfer_tips'
+                ], 'NOT IN')
+                ->fields('t')
+                ->execute();
+
+              foreach ($results as $result) {
+                $output_report[] = "https://admissions.prod.drupal.uiowa.edu/node/{$result->entity_id}";
+              }
             }
           }
         }
@@ -2813,7 +2841,7 @@ function sitenow_update_9009(&$sandbox) {
     }
 
     \Drupal::messenger()
-      ->addMessage(t("Nodes to update:\n@report", [
+      ->addMessage(t("Admissions nodes using the full_html format:\n@report", [
         '@report' => implode($output_report, "\n"),
       ]));
   }
