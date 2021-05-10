@@ -80,36 +80,47 @@ class CostCalculatorSettingsForm extends ConfigFormBase {
           '#min' => 0,
           '#step' => .0001,
           '#field_prefix' => $this->t('$'),
-          '#default_value' => $this->config('transportation_calculator.settings')->get('days-of-travel') ?? 0.2252,
+          '#default_value' => $this->config('transportation_calculator.settings')->get('van-mileage-rate') ?? 0.2252,
         ],
-
-        'van-mileage-rate' => [
+        'maximum-van-riders' => [
           '#type' => 'number',
-          '#title' => 'Van mileage rate',
+          '#title' => 'Maximum van riders',
           '#min' => 0,
-          '#step' => .0001,
-          '#field_prefix' => $this->t('$'),
-          '#default_value' => $this->config('transportation_calculator.settings')->get('days-of-travel') ?? 0.2252,
+          '#description' => $this->t('The maximum number of people that may ride in a van.'),
+          '#default_value' => $this->config('transportation_calculator.settings')->get('maximum-van-riders') ?? 6,
+        ],
+        'average-working-days' => [
+          '#type' => 'number',
+          '#title' => 'Average working days per month',
+          '#min' => 0,
+          '#default_value' => $this->config('transportation_calculator.settings')->get('average-working-days') ?? 21,
         ],
       ],
       'UPASS' => [
         '#type' => 'fieldset',
         '#title' => $this->t('UPASS values'),
         '#description' => $this->t('Yearly cost of UPASS = [monthly UPASS cost]*12'),
-        'cost' => [
+        'upass-cost' => [
           '#type' => 'number',
           '#title' => 'Monthly UPASS cost',
           '#min' => 0,
-          '#step' => .01,
-          '#description' => $this->t('What is your daily round trip commute distance?'),
-          '#field_suffix' => $this->t('Miles'),
-          '#default_value' => $this->config('transportation_calculator.settings')->get('distance') ?? 45,
+          '#description' => $this->t('The monthly cost of a UPASS for faculty/staff.'),
+          '#field_prefix' => $this->t('$'),
+          '#default_value' => $this->config('transportation_calculator.settings')->get('upass-cost') ?? 15,
         ],
       ],
       'AAA' => [
         '#type' => 'fieldset',
         '#title' => $this->t('AAA values'),
-        '#description' => $this->t('Site visitors may not customize these values while using the calculator.'),
+        'aaa-cost' => [
+          '#type' => 'number',
+          '#title' => 'AAA cost per mile',
+          '#min' => 0,
+          '#step' => .0001,
+          '#description' => $this->t('The AAA average cost per mile.'),
+          '#field_prefix' => $this->t('$'),
+          '#default_value' => $this->config('transportation_calculator.settings')->get('aaa-cost') ?? 0.5899,
+        ],
       ],
     ];
 
