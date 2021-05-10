@@ -93,20 +93,6 @@ class EventsSettingsForm extends ConfigFormBase {
       '#title' => $this->t('Site-wide settings'),
       '#description' => $this->t('These settings affect all event lists and single instances.'),
     ];
-    $form['global']['sitenow_events_status'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Enable Event page'),
-      '#default_value' => $config->get('event_status'),
-      '#description' => $this->t('If checked, an event page will display at the configurable path below.'),
-      '#size' => 60,
-    ];
-    $form['global']['sitenow_events_title'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Event title'),
-      '#description' => $this->t('The title for the event listing. Defaults to <em>Event</em>.'),
-      '#default_value' => $config->get('event_title'),
-      '#required' => TRUE,
-    ];
     $form['global']['sitenow_events_event_link'] = [
       '#type' => 'select',
       '#title' => $this->t('Link Option'),
@@ -124,7 +110,26 @@ class EventsSettingsForm extends ConfigFormBase {
       '#default_value' => $config->get('single_event_path'),
       '#required' => TRUE,
     ];
-    $form['global']['sitenow_events_header_content'] = [
+    $form['view_page'] = [
+      '#type' => 'fieldset',
+      '#title' => 'View Page Settings',
+      '#collapsible' => FALSE,
+    ];
+    $form['view_page']['sitenow_events_status'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Enable Event page'),
+      '#default_value' => $config->get('event_status'),
+      '#description' => $this->t('If checked, an event page will display at the configurable path below.'),
+      '#size' => 60,
+    ];
+    $form['view_page']['sitenow_events_title'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Event title'),
+      '#description' => $this->t('The title for the event listing. Defaults to <em>Event</em>.'),
+      '#default_value' => $config->get('event_title'),
+      '#required' => TRUE,
+    ];
+    $form['view_page']['sitenow_events_header_content'] = [
       '#type' => 'text_format',
       '#format' => 'filtered_html',
       '#title' => $this->t('Header Content'),
