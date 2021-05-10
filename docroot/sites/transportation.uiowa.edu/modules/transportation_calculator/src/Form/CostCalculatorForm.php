@@ -113,6 +113,8 @@ class CostCalculatorForm extends FormBase {
     $upass_cost = $this->config('transportation_calculator.settings')->get('upass-cost') ?? 15;
     $upass_yearly = $upass_cost * 12;
 
+    $express_380_cost = $this->config('transportation_calculator.settings')->get('380-express') ?? 690;
+
     $form['results'] = [
       '#type' => 'container',
       '#attributes' => [
@@ -196,8 +198,8 @@ class CostCalculatorForm extends FormBase {
             ],
             [
               'mode' => $this->t('380 Express'),
-              'cost' => '$690.00',
-              'savings' => '$' . number_format($yearly - 690, 2),
+              'cost' => '$' . number_format($express_380_cost, 2),
+              'savings' => '$' . number_format($yearly - $express_380_cost, 2),
             ],
             [
               'mode' => $this->t('Bus Pass (U-PASS)'),

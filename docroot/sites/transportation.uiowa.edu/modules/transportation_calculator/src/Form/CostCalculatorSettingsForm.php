@@ -122,6 +122,19 @@ class CostCalculatorSettingsForm extends ConfigFormBase {
           '#default_value' => $this->config('transportation_calculator.settings')->get('aaa-cost') ?? 0.5899,
         ],
       ],
+      '380-express' => [
+        '#type' => 'fieldset',
+        '#title' => $this->t('380 express values'),
+        '380-express' => [
+          '#type' => 'number',
+          '#title' => '380 express cost',
+          '#min' => 0,
+          '#step' => .01,
+          '#description' => $this->t('The cost of 380 express.'),
+          '#field_prefix' => $this->t('$'),
+          '#default_value' => $this->config('transportation_calculator.settings')->get('380-express') ?? 690,
+        ],
+      ],
     ];
 
     return parent::buildForm($form, $form_state);
@@ -140,6 +153,33 @@ class CostCalculatorSettingsForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->config('transportation_calculator.settings')
       ->set('distance', $form_state->getValue('distance'))
+      ->save();
+    $this->config('transportation_calculator.settings')
+      ->set('days-of-travel', $form_state->getValue('days-of-travel'))
+      ->save();
+    $this->config('transportation_calculator.settings')
+      ->set('parking-cost', $form_state->getValue('parking-cost'))
+      ->save();
+    $this->config('transportation_calculator.settings')
+      ->set('van-base-rate', $form_state->getValue('van-base-rate'))
+      ->save();
+    $this->config('transportation_calculator.settings')
+      ->set('van-mileage-rate', $form_state->getValue('van-mileage-rate'))
+      ->save();
+    $this->config('transportation_calculator.settings')
+      ->set('maximum-van-riders', $form_state->getValue('maximum-van-riders'))
+      ->save();
+    $this->config('transportation_calculator.settings')
+      ->set('average-working-days', $form_state->getValue('average-working-days'))
+      ->save();
+    $this->config('transportation_calculator.settings')
+      ->set('upass-cost', $form_state->getValue('upass-cost'))
+      ->save();
+    $this->config('transportation_calculator.settings')
+      ->set('aaa-cost', $form_state->getValue('aaa-cost'))
+      ->save();
+    $this->config('transportation_calculator.settings')
+      ->set('380-express', $form_state->getValue('380-express'))
       ->save();
 
     parent::submitForm($form, $form_state);
