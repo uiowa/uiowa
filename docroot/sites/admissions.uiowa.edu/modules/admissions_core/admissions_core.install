@@ -210,3 +210,124 @@ function admissions_core_update_9001() {
     }
   }
 }
+
+/**
+ * Update text field formats in appropriate content types.
+ *
+ * Provide a list of instances of nodes that contain long text
+ * fields with full_html as the format. Additionally convert
+ * any of these that are Area of Study nodes to use filtered_html.
+ */
+function admissions_core_update_9002() {
+  // Grab some services for later use.
+  $entity_type_manager = \Drupal::entityTypeManager();
+  $entity_field_manager = \Drupal::service('entity_field.manager');
+
+  // Get lists of fields grouped by entity type and matching the 'text_long'
+  // and 'text_with_summary' field types and merge them.
+  $text_long = $entity_field_manager->getFieldMapByFieldType('text_long');
+  $text_with_summary = $entity_field_manager->getFieldMapByFieldType('text_with_summary');
+  $entity_field_map = array_merge_recursive($text_long, $text_with_summary);
+
+  $output_report = [];
+
+  // Loop through each entity type in our field map.
+  foreach ($entity_field_map as $entity_type_id => $field_map) {
+    // We are limiting this to nodes.
+    if ($entity_type_id !== 'node') {
+      continue;
+    }
+    $entity_storage = $entity_type_manager->getStorage($entity_type_id);
+
+    // Get the entity type definition.
+    $entity_type = $entity_type_manager->getDefinition($entity_type_id);
+    // Get the list of field storage definitions for the entity type.
+    $field_storage_definitions = $entity_field_manager->getFieldStorageDefinitions($entity_type_id);
+    // Get the table mapping for the field storage definitions.
+    $table_mapping = $entity_storage->getTableMapping($field_storage_definitions);
+
+    // Loop through field definitions for the entity type, making
+    // sure they match the field storage definitions.
+    foreach (array_intersect_key($field_storage_definitions, $field_map) as $field_storage_definition) {
+
+      // Initialize a list of tables we will query against.
+      $tables = [];
+      $field_name = $field_storage_definition->getName();
+      try {
+        // Add the table to the list.
+        $tables[] = $table_mapping->getFieldTableName($field_name);
+        // Get the names of the table columns for value and format.
+        $value_column = $table_mapping->getFieldColumnName($field_storage_definition, 'value');
+        $format_column = $table_mapping->getFieldColumnName($field_storage_definition, 'format');
+      }
+      catch (SqlContentEntityStorageException $e) {
+        continue;
+      }
+
+      // See if the field has a revision table.
+      $revision_table = NULL;
+      if ($entity_type->isRevisionable() && $field_storage_definition->isRevisionable()) {
+        // Determine the appropriate revision table to use.
+        if ($table_mapping->requiresDedicatedTableStorage($field_storage_definition)) {
+          $revision_table = $table_mapping->getDedicatedRevisionTableName($field_storage_definition);
+        }
+        elseif ($table_mapping->allowsSharedTableStorage($field_storage_definition)) {
+          $revision_table = $entity_type->getRevisionDataTable() ?: $entity_type->getRevisionTable();
+        }
+
+        $tables[] = $revision_table;
+      }
+
+      // We have a table, continue...
+      if (!empty($tables)) {
+        $db = \Drupal::database();
+        foreach ($tables as $i => $table) {
+          // Update the format for area_of_study and transfer_tips nodes.
+          $update_count = $db->update($table)
+            ->condition($format_column, 'full_html')
+            ->condition('bundle', [
+              'area_of_study',
+              'transfer_tips'
+            ], 'IN')
+            ->fields([
+              $format_column => 'filtered_html',
+            ])
+            ->execute();
+
+          // If we updated any items, display a message.
+          if ($update_count) {
+            \Drupal::messenger()
+              ->addMessage(t('Updated @update_count matches(s) for @table table @value_column column.', [
+                '@update_count' => $update_count,
+                '@table' => $table,
+                '@value_column' => $value_column,
+              ]));
+          }
+
+          // If this is not the revision table, then we want to collect
+          // any nodes that are not area_of_study or transfer_tips to
+          // report.
+          if ($i === 0) {
+            $results = $db->select($table, 't')
+              ->condition($format_column, 'full_html')
+              ->condition('bundle', [
+                'area_of_study',
+                'transfer_tips'
+              ], 'NOT IN')
+              ->fields('t')
+              ->execute();
+
+            foreach ($results as $result) {
+              $output_report[] = "https://admissions.prod.drupal.uiowa.edu/node/{$result->entity_id}";
+            }
+          }
+        }
+      }
+    }
+  }
+
+  \Drupal::messenger()
+    ->addMessage(t("Admissions nodes using the full_html format:\n@report", [
+      '@report' => implode($output_report, "\n"),
+    ]));
+}
