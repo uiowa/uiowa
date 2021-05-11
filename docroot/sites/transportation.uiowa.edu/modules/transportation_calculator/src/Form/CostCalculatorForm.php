@@ -34,6 +34,7 @@ class CostCalculatorForm extends FormBase {
       ],
       'distance' => [
         '#type' => 'number',
+        '#min' => 0,
         '#step' => 0.01,
         '#title' => $this->t('Distance'),
         '#description' => $this->t('What is your daily round trip commute distance?'),
@@ -53,6 +54,7 @@ class CostCalculatorForm extends FormBase {
       'aaa_cost_per_mile' => [
         '#title' => $this->t('AAA cost per mile'),
         '#type' => 'number',
+        '#min' => 0,
         '#description' => $this->t('Based on <a href="@aaa">AAA’s average cost per mile</a> for operating a vehicle 15,000 miles per year.', ['@aaa' => 'http://exchange.aaa.com/automobiles-travel/automobiles/driving-costs/#.WH6WfLYrJsZ']),
         '#field_prefix' => $this->t('$'),
         '#default_value' => $this->config('transportation_calculator.settings')->get('aaa-cost') ?? 0.5899,
@@ -62,6 +64,7 @@ class CostCalculatorForm extends FormBase {
       'cost_to_park' => [
         '#title' => $this->t('Parking Cost'),
         '#type' => 'number',
+        '#min' => 0,
         '#description' => $this->t('How much do you currently pay for monthly parking?'),
         '#field_prefix' => $this->t('$'),
         '#default_value' => $this->config('transportation_calculator.settings')->get('parking-cost') ?? 62,
