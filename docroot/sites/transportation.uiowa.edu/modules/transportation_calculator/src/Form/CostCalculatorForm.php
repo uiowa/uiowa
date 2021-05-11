@@ -34,6 +34,7 @@ class CostCalculatorForm extends FormBase {
       ],
       'distance' => [
         '#type' => 'number',
+        '#step' => 0.01,
         '#title' => $this->t('Distance'),
         '#description' => $this->t('What is your daily round trip commute distance?'),
         '#field_suffix' => $this->t('Miles'),
@@ -42,6 +43,9 @@ class CostCalculatorForm extends FormBase {
       'days_travel' => [
         '#title' => $this->t('Days of travel'),
         '#type' => 'number',
+        '#min' => 0,
+        '#max' => 31,
+        '#step' => 0.01,
         '#description' => $this->t('How many days a month do you normally travel to work?'),
         '#field_suffix' => $this->t('Days'),
         '#default_value' => $this->config('transportation_calculator.settings')->get('days-of-travel') ?? 21,
