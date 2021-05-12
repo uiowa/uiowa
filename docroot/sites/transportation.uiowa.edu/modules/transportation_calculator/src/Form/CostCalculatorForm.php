@@ -4,7 +4,6 @@ namespace Drupal\transportation_calculator\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Component\Utility\Html;
 
 /**
  * Provides a Transportation Cost Calculator form.
