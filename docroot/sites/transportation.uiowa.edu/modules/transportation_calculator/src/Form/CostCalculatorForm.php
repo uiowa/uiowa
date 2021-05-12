@@ -24,10 +24,10 @@ class CostCalculatorForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $wrapper = Html::getUniqueId('calculator-results');
+    $wrapper_id = $this->getFormId() . '-wrapper';
 
-    return [
-      '#prefix' => '<div id="' . $wrapper . '">',
+    $form = [
+      '#prefix' => '<div id="' . $wrapper_id . '" aria-live="polite">',
       '#suffix' => '</div>',
       '#attached' => [
         'library' => [
@@ -77,7 +77,7 @@ class CostCalculatorForm extends FormBase {
         '#value' => 'Submit',
         '#ajax' => [
           'callback' => [$this, 'calculateCost'],
-          'wrapper' => $wrapper,
+          'wrapper' => $wrapper_id,
           'method' => 'html',
           'disable-refocus' => TRUE,
           'effect' => 'fade',
@@ -91,11 +91,14 @@ class CostCalculatorForm extends FormBase {
       'results' => [
         '#type' => 'container',
         '#attributes' => [
-          'id' => $wrapper,
-          'aria-live' => 'polite',
+          'class' => [
+            'results-wrapper',
+          ],
         ],
       ],
     ];
+
+    return $form;
   }
 
   /**
@@ -113,7 +116,6 @@ class CostCalculatorForm extends FormBase {
     if ($form_state->hasAnyErrors()) {
       return $form;
     }
-    $form_state->clearErrors();
     $monthly = $form_state->getValue('distance') * $form_state->getValue('days_travel') * $form_state->getValue('aaa_cost_per_mile') + $form_state->getValue('cost_to_park');
     $yearly = $monthly * 12;
 
@@ -128,102 +130,95 @@ class CostCalculatorForm extends FormBase {
 
     $express_380_cost = $this->config('transportation_calculator.settings')->get('380-express') ?? 690;
 
-    $form['results'] = [
+    $form['results']['costs'] = [
       '#type' => 'container',
       '#attributes' => [
         'class' => [
-          'results-wrapper',
+          'costs',
         ],
       ],
-      'costs' => [
+      'monthly' => [
         '#type' => 'container',
         '#attributes' => [
           'class' => [
-            'costs',
+            'costs-monthly',
           ],
         ],
-        'monthly' => [
-          '#type' => 'container',
-          '#attributes' => [
-            'class' => [
-              'costs-monthly',
-            ],
-          ],
-          'item' => [
-            '#type' => 'item',
-            '#title' => $this->t('Monthly commute costs'),
-            '#markup' => $this->t('<span>@monthly</span>', [
-              '@monthly' => number_format($monthly, 2),
-            ]),
-            '#field_prefix' => '$',
-          ],
-        ],
-        'yearly' => [
-          '#type' => 'container',
-          '#attributes' => [
-            'class' => [
-              'costs-yearly',
-            ],
-          ],
-          'item' => [
-            '#type' => 'item',
-            '#title' => $this->t('Yearly commute costs'),
-            '#markup' => $this->t('<span>@yearly</span>', [
-              '@yearly' => number_format($yearly, 2),
-            ]),
-            '#field_prefix' => '$',
-          ],
+        'item' => [
+          '#type' => 'item',
+          '#title' => $this->t('Monthly commute costs'),
+          '#markup' => $this->t('<span>@monthly</span>', [
+            '@monthly' => number_format($monthly, 2),
+          ]),
+          '#field_prefix' => '$',
         ],
       ],
-      'savings' => [
+      'yearly' => [
         '#type' => 'container',
         '#attributes' => [
           'class' => [
-            'savings',
+            'costs-yearly',
           ],
         ],
-        'table' => [
-          '#type' => 'table',
-          '#caption' => $this->t('Depending on your distance from campus, some modes may not apply.'),
-          '#header' => [
-            $this->t('Mode of Transportation'), $this->t('Cost Per Year'), $this->t('Yearly Savings'),
+        'item' => [
+          '#type' => 'item',
+          '#title' => $this->t('Yearly commute costs'),
+          '#markup' => $this->t('<span>@yearly</span>', [
+            '@yearly' => number_format($yearly, 2),
+          ]),
+          '#field_prefix' => '$',
+        ],
+      ],
+    ];
+
+    $form['results']['savings'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => [
+          'savings',
+        ],
+      ],
+      'table' => [
+        '#type' => 'table',
+        '#caption' => $this->t('Depending on your distance from campus, some modes may not apply.'),
+        '#header' => [
+          $this->t('Mode of Transportation'), $this->t('Cost Per Year'), $this->t('Yearly Savings'),
+        ],
+        '#rows' => [
+          [
+            'mode' => $this->t('CAMBUS'),
+            'cost' => '$' . number_format(0, 2),
+            'savings' => '$' . number_format($yearly, 2),
           ],
-          '#rows' => [
-            [
-              'mode' => $this->t('CAMBUS'),
-              'cost' => '$' . number_format(0, 2),
-              'savings' => '$' . number_format($yearly, 2),
-            ],
-            [
-              'mode' => $this->t('Parking'),
-              'cost' => '$' . number_format($yearly, 2),
-              'savings' => '$' . number_format(0, 2),
-            ],
-            [
-              'mode' => $this->t('Vanpool'),
-              'cost' => '$' . number_format($vanpool, 2),
-              'savings' => '$' . number_format($yearly - $vanpool, 2),
-            ],
-            [
-              'mode' => $this->t('Carpool'),
-              'cost' => '$' . number_format($yearly / 2, 2),
-              'savings' => '$' . number_format($yearly / 2, 2),
-            ],
-            [
-              'mode' => $this->t('380 Express'),
-              'cost' => '$' . number_format($express_380_cost, 2),
-              'savings' => '$' . number_format($yearly - $express_380_cost, 2),
-            ],
-            [
-              'mode' => $this->t('Bus Pass (U-PASS)'),
-              'cost' => '$' . number_format($upass_yearly, 2),
-              'savings' => '$' . number_format($yearly - $upass_yearly, 2),
-            ],
-            [
-              'mode' => $this->t('Bike/Walk'),
-              'cost' => '$0.00',
-              'savings' => '$' . number_format($yearly, 2),
-            ],
+          [
+            'mode' => $this->t('Parking'),
+            'cost' => '$' . number_format($yearly, 2),
+            'savings' => '$' . number_format(0, 2),
+          ],
+          [
+            'mode' => $this->t('Vanpool'),
+            'cost' => '$' . number_format($vanpool, 2),
+            'savings' => '$' . number_format($yearly - $vanpool, 2),
+          ],
+          [
+            'mode' => $this->t('Carpool'),
+            'cost' => '$' . number_format($yearly / 2, 2),
+            'savings' => '$' . number_format($yearly / 2, 2),
+          ],
+          [
+            'mode' => $this->t('380 Express'),
+            'cost' => '$' . number_format($express_380_cost, 2),
+            'savings' => '$' . number_format($yearly - $express_380_cost, 2),
+          ],
+          [
+            'mode' => $this->t('Bus Pass (U-PASS)'),
+            'cost' => '$' . number_format($upass_yearly, 2),
+            'savings' => '$' . number_format($yearly - $upass_yearly, 2),
+          ],
+          [
+            'mode' => $this->t('Bike/Walk'),
+            'cost' => '$0.00',
+            'savings' => '$' . number_format($yearly, 2),
           ],
         ],
       ],
