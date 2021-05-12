@@ -123,7 +123,7 @@ class CostCalculatorSettingsForm extends ConfigFormBase {
           '#step' => .0001,
           '#description' => $this->t('The AAA average cost per mile.'),
           '#field_prefix' => $this->t('$'),
-          '#default_value' => $this->config('transportation_calculator.settings')->get('aaa-cost') ?? 0.5899,
+          '#default_value' => $this->config('transportation_calculator.settings')->get('aaa-cost') ?? 0.57,
         ],
       ],
       '380-express' => [
