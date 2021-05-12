@@ -878,7 +878,6 @@ function layout_builder_custom_preprocess_views_view_unformatted(&$variables) {
     $default_classes = [
       'card--list',
       'card--person-teaser',
-      'media--border',
       'card--centered-right',
       'card--alignment-right',
     ];
@@ -908,7 +907,7 @@ function layout_builder_custom_preprocess_views_view_unformatted(&$variables) {
         // @todo Check if the style group matches a class that is used for
         //   the media element and put it in a separate array.
         $classes = \preg_split('(\r\n|\r|\n)', $style->getClasses());
-        $item_classes[$style->getGroup()] = implode(', ', $classes);
+        $item_classes[$style->getGroup()] = implode(' ', $classes);
         $variables['#cache']['tags'][] = 'config:layout_builder_styles.style.' . $style->id();
       }
     }
