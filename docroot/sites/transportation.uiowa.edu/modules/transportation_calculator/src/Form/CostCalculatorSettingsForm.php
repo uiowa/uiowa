@@ -147,13 +147,6 @@ class CostCalculatorSettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    parent::validateForm($form, $form_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->config('transportation_calculator.settings')
       ->set('distance', $form_state->getValue('distance'))
