@@ -2597,3 +2597,9 @@ $sites['iwpwhitmanweb.local.drupal.uiowa.edu'] = 'whitmanweb.iwp.uiowa.edu';
 $sites['iwpwhitmanweb.dev.drupal.uiowa.edu'] = 'whitmanweb.iwp.uiowa.edu';
 $sites['iwpwhitmanweb.stage.drupal.uiowa.edu'] = 'whitmanweb.iwp.uiowa.edu';
 $sites['iwpwhitmanweb.prod.drupal.uiowa.edu'] = 'whitmanweb.iwp.uiowa.edu';
+
+// Directory aliases for nutrition.athletics.uiowa.edu.
+$sites['athleticsnutrition.local.drupal.uiowa.edu'] = 'nutrition.athletics.uiowa.edu';
+$sites['athleticsnutrition.dev.drupal.uiowa.edu'] = 'nutrition.athletics.uiowa.edu';
+$sites['athleticsnutrition.stage.drupal.uiowa.edu'] = 'nutrition.athletics.uiowa.edu';
+$sites['athleticsnutrition.prod.drupal.uiowa.edu'] = 'nutrition.athletics.uiowa.edu';
