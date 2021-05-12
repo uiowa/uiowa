@@ -234,20 +234,4 @@ class CostCalculatorForm extends FormBase {
     // no-op.
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    if ($form_state->getValue('distance') < 0) {
-      $form_state->setErrorByName('distance', $this->t('Distance must be greater than 0.'));
-    }
-    $days_travel = $form_state->getValue('days_travel');
-    if ($days_travel < 0 || $days_travel > 31) {
-      $form_state->setErrorByName('days_travel', $this->t('Days of travel must be between 0 and 31.'));
-    }
-    if ($form_state->getValue('cost_to_park') < 0) {
-      $form_state->setErrorByName('cost_to_park', $this->t('Parking cost must be greater than 0.'));
-    }
-  }
-
 }
