@@ -47,7 +47,7 @@ class CostCalculatorForm extends FormBase {
         '#type' => 'number',
         '#min' => 0,
         '#max' => 31,
-        '#step' => 0.01,
+        '#step' => 0.5,
         '#description' => $this->t('How many days a month do you normally travel to work?'),
         '#field_suffix' => $this->t('Days'),
         '#default_value' => $this->config('transportation_calculator.settings')->get('days-of-travel') ?? 21,
