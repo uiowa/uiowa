@@ -288,6 +288,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         case 'inline_block:uiowa_aggregator':
         case 'inline_block:uiowa_card':
         case 'inline_block:uiowa_events':
+        case 'views_block:people_list_block-list_card':
           // Set '#states' for card image size.
           $form['layout_builder_style_card_image_size']['#states'] = [
             'visible' => [
@@ -506,6 +507,7 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
     case 'inline_block:uiowa_aggregator':
     case 'inline_block:uiowa_card':
     case 'inline_block:uiowa_events':
+    case 'views_block:people_list_block-list_card':
       $media_position = $form_state->getValue('layout_builder_style_card_media_position');
       $media_format = $form_state->getValue('layout_builder_style_media_format');
 
@@ -811,10 +813,48 @@ function layout_builder_custom_preprocess_block(&$variables) {
  */
 function layout_builder_custom_preprocess_media(&$variables) {
   $media = $variables['elements']['#media'];
-  if ($media->bundle() === 'video') {
-    $variables['attributes'] = [
-      'class' => ['media--video'],
-    ] + $variables['attributes'];
+  switch ($media->bundle()) {
+    case 'image':
+      $referring_item = $media->_referringItem;
+      // So far, only way to get media viewmode switching lb block > view > node > media deep.
+      if ($referring_item) {
+        /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $referring_field */
+        $referring_field = $referring_item->getParent();
+        if ($referring_field) {
+          $parent_entity = $referring_field->getParent();
+          $parent_entity = $parent_entity->getEntity();
+          // If view is attached to parent entity.
+          if (isset($parent_entity->view)) {
+            $view = $parent_entity->view;
+            // If row_styles were attached to the view.
+            if (isset($view->display_handler->options['row_styles'])) {
+              $row_styles = $view->display_handler->options['row_styles'];
+              $media_formats = [
+                'media--widescreen' => 'large__widescreen',
+                'media--square' => 'large__square',
+                'media--circle' => 'large__square',
+              ];
+              // Change view_mode based on lb_styles.
+              foreach ($media_formats as $style => $view_mode) {
+                if (in_array($style, $row_styles)) {
+                  $variables['content']['field_media_image'][0]['#responsive_image_style_id'] = $view_mode;
+                  // Important: Delete the cache keys to prevent this from being
+                  // applied to all the instances of the same image.
+                  if (isset($variables['content']['field_media_image'][0]['#cache']) && isset($variables['content']['field_media_image'][0]['#cache']['keys'])) {
+                    unset($variables['content']['field_media_image'][0]['#cache']['keys']);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      break;
+    case 'video':
+      $variables['attributes'] = [
+        'class' => ['media--video'],
+      ] + $variables['attributes'];
+      break;
   }
 }
 
