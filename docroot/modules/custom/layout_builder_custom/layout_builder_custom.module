@@ -827,12 +827,12 @@ function layout_builder_custom_preprocess_media(&$variables) {
           if (isset($parent_entity->view)) {
             $view = $parent_entity->view;
             // If row_styles were attached to the view.
-            if (isset($view->display_handler->options['row_styles'])) {
-              $row_styles = $view->display_handler->options['row_styles'];
+            if ($view->display_handler->getOption('row_styles')) {
+              $row_styles = $view->display_handler->getOption('row_styles');
               $media_formats = [
-                'media--widescreen' => 'large__widescreen',
-                'media--square' => 'large__square',
-                'media--circle' => 'large__square',
+                'media_format_widescreen' => 'large__widescreen',
+                'media_format_square' => 'large__square',
+                'media_format_circle' => 'large__square',
               ];
               // Change view_mode based on lb_styles.
               foreach ($media_formats as $style => $view_mode) {
