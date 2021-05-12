@@ -27,6 +27,8 @@ class CostCalculatorForm extends FormBase {
     $wrapper = Html::getUniqueId('calculator-results');
 
     return [
+      '#prefix' => '<div id="' . $wrapper . '">',
+      '#suffix' => '</div>',
       '#attached' => [
         'library' => [
           'transportation_calculator/transportation_calculator',
@@ -105,6 +107,10 @@ class CostCalculatorForm extends FormBase {
    *   The form results.
    */
   public function calculateCost(array &$form, FormStateInterface $form_state): array {
+    if ($form_state->hasAnyErrors()) {
+      return $form;
+    }
+    $form_state->clearErrors();
     $monthly = $form_state->getValue('distance') * $form_state->getValue('days_travel') * $form_state->getValue('aaa_cost_per_mile') + $form_state->getValue('cost_to_park');
     $yearly = $monthly * 12;
 
@@ -220,7 +226,7 @@ class CostCalculatorForm extends FormBase {
       ],
     ];
 
-    return $form['results'];
+    return $form;
   }
 
   /**
@@ -228,6 +234,22 @@ class CostCalculatorForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // no-op.
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    if ($form_state->getValue('distance') < 0) {
+      $form_state->setErrorByName('distance', $this->t('Distance must be greater than 0.'));
+    }
+    $days_travel = $form_state->getValue('days_travel');
+    if ($days_travel < 0 || $days_travel > 31) {
+      $form_state->setErrorByName('days_travel', $this->t('Days of travel must be between 0 and 31.'));
+    }
+    if ($form_state->getValue('cost_to_park') < 0) {
+      $form_state->setErrorByName('cost_to_park', $this->t('Parking cost must be greater than 0.'));
+    }
   }
 
 }
