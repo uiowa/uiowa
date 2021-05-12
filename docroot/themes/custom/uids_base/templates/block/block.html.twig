@@ -32,9 +32,17 @@
     'block-' ~ plugin_id|clean_class,
   ]
 %}
+
+  {% set style_classes = [] %}
+  {% for style in attributes.class %}
+    {% if style starts with 'card'%}
+      {% set style_classes = style_classes|merge([style]) %}
+    {% endif %}
+  {% endfor %}
+
 {% set content_rendered = content|render %}
 {% if content_rendered is not empty %}
-<div{{ attributes.addClass(classes) }}>
+  <div{{ attributes.addClass(classes).removeClass(style_classes) }}>
   {{ title_prefix }}
   {% if label %}
     <h2{{ title_attributes }}>{{ label }}</h2>
