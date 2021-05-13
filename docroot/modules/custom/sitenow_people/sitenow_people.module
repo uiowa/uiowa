@@ -580,6 +580,25 @@ function sitenow_people_field_widget_paragraphs_form_alter(&$element, &$form_sta
  */
 function sitenow_people_preprocess_block(&$variables) {
   switch ($variables['elements']['#plugin_id']) {
+    case 'views_block:people_list_block-list_card':
+      if (isset($variables['attributes']['class'])) {
+        // Unset classes meant for children.
+        foreach ($variables['attributes']['class'] as $key => $style) {
+          foreach ([
+            'bg',
+            'card',
+            'media',
+            'hide',
+          ] as $check) {
+            if (substr($style, 0, strlen($check)) === $check) {
+              unset($variables['attributes']['class'][$key]);
+            }
+          }
+        }
+      }
+
+      break;
+
     case 'inline_block:uiowa_people':
       // @todo The following line should be moved to uids_base.
       $variables['#attached']['library'][] = 'uids_base/people';
@@ -621,31 +640,6 @@ function sitenow_people_preprocess_block(&$variables) {
           }
         }
       }
-
-      // Get block layout builder styles if they exist.
-//      $parent_lb_styles = NULL;
-//
-//      if (isset($variables['attributes']['class'])) {
-//        if (!empty($variables['attributes']['class'])) {
-//          $parent_lb_styles = $variables['attributes']['class'];
-//          array_push($parent_lb_styles, 'list-item');
-//          $parent_lb_styles = implode(',', $parent_lb_styles);
-//        }
-//
-//        // Unset classes meant for children.
-//        foreach ($variables['attributes']['class'] as $key => $style) {
-//          foreach ([
-//            'bg',
-//            'card',
-//            'media',
-//            'hide',
-//          ] as $check) {
-//            if (substr($style, 0, strlen($check)) === $check) {
-//              unset($variables['attributes']['class'][$key]);
-//            }
-//          }
-//        }
-//      }
 
       if ($block->hasField('field_collection_results') && !$block->get('field_collection_results')->isEmpty()) {
         $items = $block->field_collection_results->value;
