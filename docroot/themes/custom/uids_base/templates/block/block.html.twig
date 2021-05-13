@@ -46,7 +46,6 @@
 
 {% set content_rendered = content|render %}
 {% if content_rendered is not empty %}
-  {{  devel_breakpoint(attributes) }}
   <div{{ attributes.addClass(classes).removeClass(card_classes, bg_classes) }}>
   {{ title_prefix }}
   {% if label %}
