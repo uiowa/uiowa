@@ -33,16 +33,21 @@
   ]
 %}
 
-  {% set style_classes = [] %}
+  {% set card_classes = [] %}
+  {% set bg_classes = [] %}
   {% for style in attributes.class %}
-    {% if style starts with 'card'%}
-      {% set style_classes = style_classes|merge([style]) %}
+    {% if style starts with 'card' %}
+      {% set card_classes = card_classes|merge([style]) %}
+    {% endif %}
+    {% if style starts with 'bg' %}
+      {% set bg_classes = bg_classes|merge([style]) %}
     {% endif %}
   {% endfor %}
 
 {% set content_rendered = content|render %}
 {% if content_rendered is not empty %}
-  <div{{ attributes.addClass(classes).removeClass(style_classes) }}>
+  {{  devel_breakpoint(attributes) }}
+  <div{{ attributes.addClass(classes).removeClass(card_classes, bg_classes) }}>
   {{ title_prefix }}
   {% if label %}
     <h2{{ title_attributes }}>{{ label }}</h2>
