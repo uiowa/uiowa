@@ -616,6 +616,7 @@ function uids_base_preprocess_block_content__uiowa_collection__accordion(&$varia
  * Implements hook_preprocess_HOOK().
  */
 function uids_base_preprocess_menu(&$variables) {
+  //print_r($variables);
   switch ($variables["menu_name"]) {
     case 'top-links':
       $variables['limit'] = theme_get_setting('header.top_links_limit');
@@ -623,6 +624,58 @@ function uids_base_preprocess_menu(&$variables) {
 
   }
 
+}
+
+/**
+ * Implements hook_preprocess_menu_local_task().
+ */
+
+function uids_base_preprocess_menu_local_task(&$variables) {
+  /** @var \Drupal\Core\Url $url */
+  $url = $variables['link']['#url'];
+  //var_dump($variables['link']);
+  $variables['link']['#options']['attributes']['class'][] = 'local-task-icon';
+
+  if ($url instanceof \Drupal\Core\Url){
+    $route_name = $url->getRouteName();
+
+
+
+    // Using switch case because we can't have dots in class names like what we get from the line below... Or can we?
+    // $variables['link']['#options']['attributes']['class'][] = 'local-task-icon--'.$route_name;
+
+    switch($route_name){
+      case 'entity.node.canonical':
+        $variables['link']['#options']['attributes']['class'][] = 'local-task-icon--view';
+        break;
+      case 'entity.node.edit_form':
+        $variables['link']['#options']['attributes']['class'][] = 'local-task-icon--edit';
+        break;
+      case 'entity.node.delete_form':
+
+        $variables['link']['#options']['attributes']['class'][] = 'local-task-icon--delete';
+        break;
+      case 'layout_builder.overrides.node.view':
+        $variables['link']['#options']['attributes']['class'][] = 'local-task-icon--layout';
+        break;
+      case 'entity.node.version_history':
+        $variables['link']['#options']['attributes']['class'][] = 'local-task-icon--history';
+        break;
+      case 'entity.node.entity_usage':
+        $variables['link']['#options']['attributes']['class'][] = 'local-task-icon--usage';
+        break;
+      case 'entity.node.devel_load':
+        $variables['link']['#options']['attributes']['class'][] = 'local-task-icon--devel';
+        break;
+    }
+
+
+  }
+
+  // if ($url instanceof \Drupal\Core\Url && $url->getRouteName() == 'entity.node.canonical') {
+  //   $variables['link']['#options']['attributes']['class'][] = 'local-task-icon--view';
+  //   $variables['link']['#options']['attributes']['class'][] = 'local-task-icon';
+  // }
 }
 
 /**

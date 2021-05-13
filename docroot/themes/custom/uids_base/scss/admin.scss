@@ -1613,3 +1613,50 @@ only screen and (min-resolution: 1.5dppx) {
 .layout-builder__direct-add__list {
   top: auto;
 }
+
+
+.local-task-icon::before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  margin-right: 5px;
+  font-size: 14px;
+
+}
+
+.local-task-icon--view::before {
+  content: "\f0ac";
+}
+
+.local-task-icon--edit::before {
+  content: "\f044";
+}
+
+.tabs li>a.local-task-icon--delete {
+  color: #BD472A;
+}
+
+.local-task-icon--delete::before {
+  content: "\f2ed";
+  color: #BD472A;
+}
+
+.local-task-icon--layout::before {
+  content: "\f009";
+}
+
+.local-task-icon--history::before {
+  content: "\f1da";
+}
+
+.local-task-icon--usage::before {
+  content: "\f0c1";
+}
+
+.local-task-icon--devel::before {
+  content: "\f121";
+}
