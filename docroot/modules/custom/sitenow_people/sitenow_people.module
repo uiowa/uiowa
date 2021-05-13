@@ -519,9 +519,9 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
   if ($view->id() == 'people_block') {
     if ($view->current_display == 'block_people_sfl' || $view->current_display == 'block_people_slf') {
       $exposed_input = $view->getExposedInput();
-      if (isset($exposed_input["items_per_page"])) {
-        $form["items_per_page"]["#options"] = [$exposed_input["items_per_page"] => $exposed_input["items_per_page"]];
-        $form["#attributes"]["class"][] = 'hidden';
+      if (isset($exposed_input['items_per_page'])) {
+        $form['items_per_page']['#options'] = [$exposed_input['items_per_page'] => $exposed_input['items_per_page']];
+        $form['#attributes']['class'][] = 'hidden';
       }
     }
   }
@@ -621,6 +621,31 @@ function sitenow_people_preprocess_block(&$variables) {
           }
         }
       }
+
+      // Get block layout builder styles if they exist.
+//      $parent_lb_styles = NULL;
+//
+//      if (isset($variables['attributes']['class'])) {
+//        if (!empty($variables['attributes']['class'])) {
+//          $parent_lb_styles = $variables['attributes']['class'];
+//          array_push($parent_lb_styles, 'list-item');
+//          $parent_lb_styles = implode(',', $parent_lb_styles);
+//        }
+//
+//        // Unset classes meant for children.
+//        foreach ($variables['attributes']['class'] as $key => $style) {
+//          foreach ([
+//            'bg',
+//            'card',
+//            'media',
+//            'hide',
+//          ] as $check) {
+//            if (substr($style, 0, strlen($check)) === $check) {
+//              unset($variables['attributes']['class'][$key]);
+//            }
+//          }
+//        }
+//      }
 
       if ($block->hasField('field_collection_results') && !$block->get('field_collection_results')->isEmpty()) {
         $items = $block->field_collection_results->value;

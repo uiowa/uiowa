@@ -932,8 +932,15 @@ function layout_builder_custom_views_plugins_display_alter(&$displays) {
  * Implements hook_views_pre_render().
  */
 function layout_builder_custom_views_pre_render(ViewExecutable $view) {
-  // @todo This may be overly broad.
-  if ($view->display_handler instanceof ListBlock) {
+  // Hotfix shim to not display exposed blocks, necessary because of the hotfix above.
+  // @todo Remove this exception when these view displays are removed.
+  $display = $view->getDisplay();
+  $exceptions = [
+    'block_people_slf',
+    'block_people_sfl',
+    'block_articles',
+  ];
+  if (!in_array($display->display['id'], $exceptions) && $view->display_handler instanceof ListBlock) {
     $view->exposed_raw_input = [];
   }
 }
