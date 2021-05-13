@@ -839,9 +839,7 @@ function layout_builder_custom_preprocess_media(&$variables) {
                 if (in_array($style, $row_styles)) {
                   $variables['content']['field_media_image'][0]['#responsive_image_style_id'] = $view_mode;
                   // Prevents sticky cached images.
-                  // Could be better.
-                  // @todo Make it better future developer.
-                  Cache::invalidateTags(['media:' . $media->id()]);
+                  $variables['content']['field_media_image'][0]['#cache']['max-age'] = 0;
                 }
               }
             }
