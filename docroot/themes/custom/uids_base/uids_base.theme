@@ -631,15 +631,11 @@ function uids_base_preprocess_menu(&$variables) {
  */
 
 function uids_base_preprocess_menu_local_task(&$variables) {
-  /** @var \Drupal\Core\Url $url */
   $url = $variables['link']['#url'];
-  //var_dump($variables['link']);
   $variables['link']['#options']['attributes']['class'][] = 'local-task-icon';
 
   if ($url instanceof \Drupal\Core\Url){
     $route_name = $url->getRouteName();
-
-
 
     // Using switch case because we can't have dots in class names like what we get from the line below... Or can we?
     // $variables['link']['#options']['attributes']['class'][] = 'local-task-icon--'.$route_name;
@@ -668,14 +664,7 @@ function uids_base_preprocess_menu_local_task(&$variables) {
         $variables['link']['#options']['attributes']['class'][] = 'local-task-icon--devel';
         break;
     }
-
-
   }
-
-  // if ($url instanceof \Drupal\Core\Url && $url->getRouteName() == 'entity.node.canonical') {
-  //   $variables['link']['#options']['attributes']['class'][] = 'local-task-icon--view';
-  //   $variables['link']['#options']['attributes']['class'][] = 'local-task-icon';
-  // }
 }
 
 /**
