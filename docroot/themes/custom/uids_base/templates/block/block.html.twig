@@ -33,16 +33,16 @@
   ]
 %}
 
-  {% set card_classes = [] %}
-  {% set bg_classes = [] %}
-  {% for style in attributes.class %}
-    {% if style starts with 'card' %}
-      {% set card_classes = card_classes|merge([style]) %}
-    {% endif %}
-    {% if style starts with 'bg' %}
-      {% set bg_classes = bg_classes|merge([style]) %}
-    {% endif %}
-  {% endfor %}
+{% set card_classes = [] %}
+{% set bg_classes = [] %}
+{% for style in attributes.class %}
+  {% if style starts with 'card' %}
+    {% set card_classes = card_classes|merge([style]) %}
+  {% endif %}
+  {% if style starts with 'bg' %}
+    {% set bg_classes = bg_classes|merge([style]) %}
+  {% endif %}
+{% endfor %}
 
 {% set content_rendered = content|render %}
 {% if content_rendered is not empty %}
