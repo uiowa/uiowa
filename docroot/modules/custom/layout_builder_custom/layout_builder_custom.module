@@ -838,11 +838,10 @@ function layout_builder_custom_preprocess_media(&$variables) {
               foreach ($media_formats as $style => $view_mode) {
                 if (in_array($style, $row_styles)) {
                   $variables['content']['field_media_image'][0]['#responsive_image_style_id'] = $view_mode;
-                  // Important: Delete the cache keys to prevent this from being
-                  // applied to all the instances of the same image.
-                  if (isset($variables['content']['field_media_image'][0]['#cache']) && isset($variables['content']['field_media_image'][0]['#cache']['keys'])) {
-                    unset($variables['content']['field_media_image'][0]['#cache']['keys']);
-                  }
+                  // Prevents sticky cached images.
+                  // Could be better.
+                  // @todo Make it better future developer.
+                  Cache::invalidateTags(['media:' . $media->id()]);
                 }
               }
             }
