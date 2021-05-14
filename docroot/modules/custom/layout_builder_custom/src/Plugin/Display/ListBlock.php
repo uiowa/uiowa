@@ -600,7 +600,7 @@ class ListBlock extends CoreBlock {
       }
     }
     // Hotfix shim to keep these pagers working for now.
-    // @todo Solve ListBlock paging.
+    // @todo Remove this exception when these view displays are removed.
     $display = $this->view->getDisplay();
     $exceptions = [
       'block_people_slf',
@@ -617,6 +617,17 @@ class ListBlock extends CoreBlock {
    * {@inheritdoc}
    */
   public function displaysExposed(): bool {
+    // Hotfix shim to not display exposed blocks, necessary because of the hotfix above.
+    // @todo Remove this exception when these view displays are removed.
+    $display = $this->view->getDisplay();
+    $exceptions = [
+      'block_people_slf',
+      'block_people_sfl',
+      'block_articles',
+    ];
+    if (in_array($display->display['id'], $exceptions)) {
+      return FALSE;
+    }
     // If we are not utilizing the filter in block option,
     // then use the default behavior. Otherwise, do not display
     // exposed filters.

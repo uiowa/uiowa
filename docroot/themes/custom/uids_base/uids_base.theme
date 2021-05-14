@@ -239,9 +239,9 @@ function uids_base_preprocess_media(array &$variables) {
   $media = $variables['media'];
 
   // Get the media entity's bundle (such as video, image, etc.)
-  $mediaType = $variables['media']->bundle();
+  $media_type = $variables['media']->bundle();
   // $variables;
-  if ($mediaType == 'video') {
+  if ($media_type == 'video') {
     $referring_item = $media->_referringItem;
     if ($referring_item) {
       /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $referring_field */
@@ -616,53 +616,37 @@ function uids_base_preprocess_block_content__uiowa_collection__accordion(&$varia
  * Implements hook_preprocess_HOOK().
  */
 function uids_base_preprocess_menu(&$variables) {
-  //print_r($variables);
   switch ($variables["menu_name"]) {
     case 'top-links':
       $variables['limit'] = theme_get_setting('header.top_links_limit');
       break;
 
   }
-
 }
 
 /**
  * Implements hook_preprocess_menu_local_task().
  */
-
 function uids_base_preprocess_menu_local_task(&$variables) {
   $url = $variables['link']['#url'];
-  $variables['link']['#options']['attributes']['class'][] = 'local-task-icon';
 
-  if ($url instanceof \Drupal\Core\Url){
+  if ($url instanceof Url) {
     $route_name = $url->getRouteName();
 
-    // Using switch case because we can't have dots in class names like what we get from the line below... Or can we?
-    // $variables['link']['#options']['attributes']['class'][] = 'local-task-icon--'.$route_name;
+    $route_icon_map = [
+      'entity.node.canonical' => 'view',
+      'entity.node.edit_form' => 'edit',
+      'entity.node.delete_form' => 'delete',
+      'layout_builder.overrides.node.view' => 'layout',
+      'entity.node.version_history' => 'history',
+      'entity.node.entity_usage' => 'usage',
+      'entity.node.devel_load' => 'devel',
+    ];
 
-    switch($route_name){
-      case 'entity.node.canonical':
-        $variables['link']['#options']['attributes']['class'][] = 'local-task-icon--view';
-        break;
-      case 'entity.node.edit_form':
-        $variables['link']['#options']['attributes']['class'][] = 'local-task-icon--edit';
-        break;
-      case 'entity.node.delete_form':
-
-        $variables['link']['#options']['attributes']['class'][] = 'local-task-icon--delete';
-        break;
-      case 'layout_builder.overrides.node.view':
-        $variables['link']['#options']['attributes']['class'][] = 'local-task-icon--layout';
-        break;
-      case 'entity.node.version_history':
-        $variables['link']['#options']['attributes']['class'][] = 'local-task-icon--history';
-        break;
-      case 'entity.node.entity_usage':
-        $variables['link']['#options']['attributes']['class'][] = 'local-task-icon--usage';
-        break;
-      case 'entity.node.devel_load':
-        $variables['link']['#options']['attributes']['class'][] = 'local-task-icon--devel';
-        break;
+    // Set the icon if the route matches an entry in the map.
+    if (isset($route_icon_map[$route_name])) {
+      $variables['link']['#options']['attributes']['class'][] = 'local-task-icon';
+      $variables['link']['#options']['attributes']['class'][] = 'local-task-icon--' . $route_icon_map[$route_name];
     }
   }
 }
