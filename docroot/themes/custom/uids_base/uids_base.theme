@@ -239,9 +239,9 @@ function uids_base_preprocess_media(array &$variables) {
   $media = $variables['media'];
 
   // Get the media entity's bundle (such as video, image, etc.)
-  $mediaType = $variables['media']->bundle();
+  $media_type = $variables['media']->bundle();
   // $variables;
-  if ($mediaType == 'video') {
+  if ($media_type == 'video') {
     $referring_item = $media->_referringItem;
     if ($referring_item) {
       /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $referring_field */

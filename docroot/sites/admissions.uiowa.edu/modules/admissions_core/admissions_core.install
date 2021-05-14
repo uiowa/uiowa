@@ -287,7 +287,7 @@ function admissions_core_update_9002() {
             ->condition($format_column, 'full_html')
             ->condition('bundle', [
               'area_of_study',
-              'transfer_tips'
+              'transfer_tips',
             ], 'IN')
             ->fields([
               $format_column => 'filtered_html',
@@ -312,7 +312,7 @@ function admissions_core_update_9002() {
               ->condition($format_column, 'full_html')
               ->condition('bundle', [
                 'area_of_study',
-                'transfer_tips'
+                'transfer_tips',
               ], 'NOT IN')
               ->fields('t')
               ->execute();
