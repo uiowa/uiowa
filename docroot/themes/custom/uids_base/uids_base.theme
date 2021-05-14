@@ -911,7 +911,7 @@ function uids_base_preprocess_input(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_superfish().
+ * Implements hook_preprocess_superfish_menu_items().
  */
 function uids_base_preprocess_superfish_menu_items(array &$variables) {
   if (isset($variables['menu_items']) && $variables['element']['#settings']['menu_type'] === 'vertical') {
