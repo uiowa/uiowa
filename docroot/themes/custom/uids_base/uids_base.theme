@@ -900,6 +900,20 @@ function uids_base_preprocess_input(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_superfish().
+ */
+function uids_base_preprocess_superfish_menu_items(array &$variables) {
+  if (isset($variables['menu_items']) && $variables['element']['#settings']['menu_type'] === 'vertical') {
+    foreach ($variables['menu_items'] as $i => $menu_item) {
+      if (isset($menu_item['link_menuparent'])) {
+        $variables['menu_items'][$i]['link_menuparent']['#options']['attributes']['role'] = 'button';
+        $variables['menu_items'][$i]['link_menuparent']['#options']['attributes']['aria-haspopup'] = 'true';
+      }
+    }
+  }
+}
+
+/**
  * Implements hook_form_alter().
  */
 function uids_base_form_alter(&$form, $form_state, $form_id) {
@@ -935,17 +949,5 @@ function uids_base_form_views_exposed_form_alter(&$form, $form_state, $form_id) 
   $view = $form_state->getStorage('view');
   if ($form_id == 'views_exposed_form' && in_array($view['view']->id(), $view_ids)) {
     $form['#attributes']['class'][] = 'uids-search';
-  }
-}
-
-/**
- * Implements hook_preprocess_superfish().
- */
-function uids_base_preprocess_superfish_menu_items(array &$variables) {
-  if (isset($variables['menu_items']) && $variables['element']['#settings']['menu_type'] === 'vertical') {
-    foreach ($variables['menu_items'] as $i => $menu_item) {
-      $variables['menu_items'][$i]['link_menuparent']['#options']['attributes']['role'] = 'button';
-      $variables['menu_items'][$i]['link_menuparent']['#options']['attributes']['aria-haspopup'] = 'true';
-    }
   }
 }
