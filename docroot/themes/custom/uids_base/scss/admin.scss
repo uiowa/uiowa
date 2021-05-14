@@ -1617,10 +1617,12 @@ only screen and (min-resolution: 1.5dppx) {
 // @todo Move to special tabs component?
 
 .tabs>li>a.local-task-icon {
-  &:hover {
+  &:hover,
+  &:focus {
     background: #f3f3f3;
   }
-  &.is-active:hover {
+  &.is-active:hover,
+  &.is-active:focus {
     background: #ffcd00;
   }
 }
@@ -1629,7 +1631,8 @@ only screen and (min-resolution: 1.5dppx) {
   &.local-task-icon--delete {
     color: $danger;
   }
-  &:hover:before {
+  &:hover:before,
+  &:focus:before {
     color: $secondary;
   }
   &:before {
