@@ -16,13 +16,3 @@ document.addEventListener('click', function (event) {
   clone.removeAttribute('aria-haspopup');
 
 }, false);
-
-// @todo: Remove this whenever SF adds cloning menu parents on tab.
-document.addEventListener('keyup', function (event) {
-  // If the tabbed element doesn't have the right selector, bail.
-  if (!event.target.matches('#superfish-main-accordion a.menuparent')) return;
-
-  if( event.key === 'Tab' ) {
-    event.target.click();
-  }
-})
