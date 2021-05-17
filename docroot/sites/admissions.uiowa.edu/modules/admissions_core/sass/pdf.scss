@@ -392,7 +392,11 @@ h6 {
   .field--name-field-area-of-study-scholarship,
   .field--name-field-area-of-study-selective,
   .field--name-field-area-of-study-subprogram,
-  .field--name-field-area-of-study-teaching {
+  .field--name-field-area-of-study-teaching,
+  .field--name-field-area-of-study-course-work {
+    page-break-inside: avoid;
+    page-break-before: auto;
+
     .field__label {
       @extend .element--bold-intro;
       font-family: $font-family-caps;
@@ -405,6 +409,10 @@ h6 {
       font-family: 'Roboto', sans-serif!important;
       color: #666;
       line-height: 1;
+    }
+    p {
+      page-break-inside: auto;
+      page-break-before: avoid;
     }
   }
 
@@ -482,7 +490,6 @@ h6 {
     p,
     em {
       vertical-align: middle;
-      //padding: 5px;
       word-wrap: normal;
       font-size: 10px;
       color: black;
