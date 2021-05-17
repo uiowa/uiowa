@@ -76,6 +76,8 @@ class AlertsBlock extends BlockBase implements ContainerFactoryPluginInterface {
         '#type' => 'container',
         '#attributes' => [
           'class' => 'hawk-alerts-wrapper',
+          'role' => 'region',
+          'aria-label' => 'Hawk Alerts',
         ],
         '#attached' => [
           'library' => [
