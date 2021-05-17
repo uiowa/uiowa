@@ -476,13 +476,25 @@ h6 {
     color: black;
     background-color: $white;
     border-collapse: collapse;
+    margin-top: 5px;
 
     td,
-    p {
+    p,
+    em {
       vertical-align: middle;
+      //padding: 5px;
+      word-wrap: normal;
       font-size: 10px;
       color: black;
+      margin-top: 0;
+      line-height: $reduced-line-height;
+    }
+    td, p {
       padding: 5px;
+    }
+    tr { 
+      page-break-inside: avoid;
+      page-break-before: auto;
     }
 
     thead td,
@@ -495,6 +507,16 @@ h6 {
     }
 
     &.is-striped {
+
+      .table, table {
+        margin-top: 5px;
+        font-size: 10px;
+        border-spacing: 0;
+        color: black;
+        background-color: $white;
+        border-collapse: collapse;
+      }
+
       thead th {
         background-color: $light;
         text-transform: uppercase;
@@ -508,13 +530,18 @@ h6 {
         min-width: 50px;
       }
 
-      p, td {
+      p, td, em, strong {
         font-size: 10px;
         color: black;
+        line-height: 1;
+        word-wrap: normal;
+        vertical-align: middle;
       }
 
       tr {
         border: solid 0.5px black;
+        page-break-inside: avoid;
+        page-break-before: auto;
       }
     }
   }
