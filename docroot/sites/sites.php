@@ -2621,3 +2621,9 @@ $sites['speakout.local.drupal.uiowa.edu'] = 'speakout.uiowa.edu';
 $sites['speakout.dev.drupal.uiowa.edu'] = 'speakout.uiowa.edu';
 $sites['speakout.stage.drupal.uiowa.edu'] = 'speakout.uiowa.edu';
 $sites['speakout.prod.drupal.uiowa.edu'] = 'speakout.uiowa.edu';
+
+// Directory aliases for youth.dance.uiowa.edu.
+$sites['danceyouth.local.drupal.uiowa.edu'] = 'youth.dance.uiowa.edu';
+$sites['danceyouth.dev.drupal.uiowa.edu'] = 'youth.dance.uiowa.edu';
+$sites['danceyouth.stage.drupal.uiowa.edu'] = 'youth.dance.uiowa.edu';
+$sites['danceyouth.prod.drupal.uiowa.edu'] = 'youth.dance.uiowa.edu';
