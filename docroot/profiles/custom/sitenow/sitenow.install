@@ -2736,10 +2736,10 @@ function sitenow_update_9009() {
 
   // Loop through the results.
   foreach ($results as $record) {
-    \Drupal::messenger()
-      ->addMessage(t('Record ID: @record', [
-        '@record' => $record->entity_id,
-      ]));
+//    \Drupal::messenger()
+//      ->addMessage(t('Record ID: @record', [
+//        '@record' => $record->entity_id,
+//      ]));
 
     // @todo Remove debugging.
 //    if ($check_count > 1) {
@@ -2774,7 +2774,7 @@ function sitenow_update_9009() {
       // Limit this to only the uiowa_people block component.
       if ($component->getPluginId() === 'inline_block:uiowa_people') {
         // Remove the old component by its uuid.
-//        $section->removeComponent($component->getUuid());
+        $section->removeComponent($component->getUuid());
         $component_arr = $component->toArray();
         $revision_id = $component_arr['configuration']['block_revision_id'];
 
@@ -2868,10 +2868,10 @@ function sitenow_update_9009() {
               case 'field_person_email':
               case 'field_person_phone':
               case 'field_person_position':
-              if (in_array('block_hide_details', $styles)) {
-                $hide = 1;
-              }
-              break;
+                if (in_array('block_hide_details', $styles)) {
+                  $hide = 1;
+                }
+                break;
             }
           }
 
@@ -2916,20 +2916,21 @@ function sitenow_update_9009() {
             '@component' => print_r($new_component, TRUE),
           ]));
         }
-//        $section->appendComponent($new_component);
+        $section->appendComponent($new_component);
 
         // @todo Do we need to worry about the order of the components? If so, we may need to reconstruct the section.
         // @todo Remove the existing people block and revisions?
         // @todo Remove break statement, which is just in here for debugging.
-
-        // Replace the old section with our newly created one.
-        $section = serialize($section);
-        $db->update($table_name)
-          ->condition('revision_id', $revision_id)
-          ->fields([
-            $section_column => $section,
-          ]);
       }
     }
+
+    // Replace the old section with our newly created one.
+    $db->update($table_name)
+      ->condition('revision_id', $record->revision_id)
+      ->fields([
+        $section_column => serialize($section),
+      ]);
+    //
+    //        $section = NULL;
   }
 }
