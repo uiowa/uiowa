@@ -15,6 +15,7 @@ use Drupal\Core\Session\AccountProxy;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\layout_builder\Section;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Entity\EntityInterface;
@@ -24,6 +25,65 @@ use Drupal\layout_builder\InlineBlockUsage;
  * Implements hook_preprocess_HOOK().
  */
 function sitenow_preprocess_html(&$variables) {
+  // @todo Load config updates for LB styles and view.
+  $db = \Drupal::database();
+  $block_storage = \Drupal::entityTypeManager()
+    ->getStorage('block_content');
+  /** @var \Drupal\Core\Block\BlockManager $block_manager */
+  $block_manager = \Drupal::service('plugin.manager.block');
+  $view_block_plugin_id = 'views_block:people_list_block-list_card';
+
+  $table_name = 'node_revision__layout_builder__layout';
+  $section_column = 'layout_builder__layout_section';
+
+  // Select instances where the section contains a uiowa_people block.
+  $query = $db->select($table_name, 'n')
+    ->condition($section_column, '%uiowa_people%', 'LIKE')
+    ->fields('n', ['entity_id', 'revision_id', 'delta', 'layout_builder__layout_section']);
+
+  $count = $query->countQuery()->execute()->fetchField();
+
+  \Drupal::messenger()
+    ->addMessage('People block records found: ' . $count);
+
+  $results = $query->execute();
+
+  // @todo Remove debugging.
+  $check_count = 0;
+
+  // Loop through the results.
+  foreach ($results as $record) {
+    \Drupal::messenger()
+      ->addMessage(t('Record ID: @record', [
+        '@record' => $record->entity_id,
+      ]));
+
+    // @todo Remove debugging.
+    //    if ($check_count > 1) {
+    //      break;
+    //    }
+
+    // Unserialize the section field into it's class object.
+    /** @var Section $section */
+    $section = unserialize($record->layout_builder__layout_section);
+
+    \Drupal::messenger()
+      ->addMessage(t('Section info: @section', [
+        '@section' => getType($section),
+      ]));
+
+    if (!$section instanceof Section) {
+      \Drupal::messenger()
+        ->addMessage(t('Section String: ' . print_r($section, TRUE)));
+      continue;
+    }
+  }
+
+
+
+
+
+
   $version = sitenow_get_version();
 
   $meta_web_author = [

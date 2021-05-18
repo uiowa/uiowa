@@ -2736,17 +2736,26 @@ function sitenow_update_9009() {
 
   // Loop through the results.
   foreach ($results as $record) {
+    \Drupal::messenger()
+      ->addMessage(t('Record ID: @record', [
+        '@record' => $record->entity_id,
+      ]));
 
     // @todo Remove debugging.
-    if ($check_count > 1) {
-      break;
-    }
+//    if ($check_count > 1) {
+//      break;
+//    }
 
     // Unserialize the section field into it's class object.
     /** @var Section $section */
     $section = unserialize($record->layout_builder__layout_section);
 
-    if (!($section instanceof Section)) {
+    \Drupal::messenger()
+      ->addMessage(t('Section info: @section', [
+        '@section' => getType($section),
+      ]));
+
+    if (!$section instanceof Section) {
       \Drupal::messenger()->addMessage(t('Section String: ' . print_r($section, TRUE)));
       continue;
     }
@@ -2765,7 +2774,7 @@ function sitenow_update_9009() {
       // Limit this to only the uiowa_people block component.
       if ($component->getPluginId() === 'inline_block:uiowa_people') {
         // Remove the old component by its uuid.
-        $section->removeComponent($component->getUuid());
+//        $section->removeComponent($component->getUuid());
         $component_arr = $component->toArray();
         $revision_id = $component_arr['configuration']['block_revision_id'];
 
@@ -2907,12 +2916,11 @@ function sitenow_update_9009() {
             '@component' => print_r($new_component, TRUE),
           ]));
         }
-        $section->appendComponent($new_component);
+//        $section->appendComponent($new_component);
 
         // @todo Do we need to worry about the order of the components? If so, we may need to reconstruct the section.
         // @todo Remove the existing people block and revisions?
         // @todo Remove break statement, which is just in here for debugging.
-        break;
 
         // Replace the old section with our newly created one.
         $section = serialize($section);
