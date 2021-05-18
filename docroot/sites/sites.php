@@ -2651,3 +2651,9 @@ $sites['sitesgsurgres.local.drupal.uiowa.edu'] = 'gsurgres.sites.uiowa.edu';
 $sites['sitesgsurgres.dev.drupal.uiowa.edu'] = 'gsurgres.sites.uiowa.edu';
 $sites['sitesgsurgres.stage.drupal.uiowa.edu'] = 'gsurgres.sites.uiowa.edu';
 $sites['sitesgsurgres.prod.drupal.uiowa.edu'] = 'gsurgres.sites.uiowa.edu';
+
+// Directory aliases for staffcouncil.clas.uiowa.edu.
+$sites['classtaffcouncil.local.drupal.uiowa.edu'] = 'staffcouncil.clas.uiowa.edu';
+$sites['classtaffcouncil.dev.drupal.uiowa.edu'] = 'staffcouncil.clas.uiowa.edu';
+$sites['classtaffcouncil.stage.drupal.uiowa.edu'] = 'staffcouncil.clas.uiowa.edu';
+$sites['classtaffcouncil.prod.drupal.uiowa.edu'] = 'staffcouncil.clas.uiowa.edu';
