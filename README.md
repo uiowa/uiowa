@@ -104,6 +104,15 @@ Before starting updates, make sure your local environment is on a feature branch
 
 Configuration tracked in the repository will need to be exported before deployment. To ensure configuration is exported correctly, manually sync a site from production using Drush. Then run database updates and export any configuration changes. Add and commit the config changes and then run another `blt dsa` to check for any further config discrepancies. If there are none, proceed with code deployment as per usual.
 
+# Testing Dependencies
+Testing a uids change in uiowa:
+Update the hash with the uids commit you wish you test in the uids_base package.json file
+Then run 'yarn upgrade @uiowa/uids'
+'rm -rf ./node_modules'
+'yarn cache clean'
+'yarn install'
+'yarn workspace uids_base gulp --development'
+
 ## Core
 Follow the `drupal/core-recommended` [instructions](https://github.com/drupal/core-recommended#upgrading) on updating.
 
