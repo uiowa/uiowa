@@ -106,7 +106,7 @@ Configuration tracked in the repository will need to be exported before deployme
 
 ## Testing Dependencies
 Testing a uids change in uiowa:
-1. Update the hash with the uids commit you wish you test in the uids_base package.json file
+1. Update the hash with the uids commit you wish you test in the uids_base package.json file: "@uiowa/uids": "uiowa/uids#[Enter hash here]"
 2. Then run `yarn upgrade @uiowa/uids`
 3. `rm -rf ./node_modules`
 4. `yarn cache clean`
