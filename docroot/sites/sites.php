@@ -2615,3 +2615,9 @@ $sites['endingviolence.local.drupal.uiowa.edu'] = 'endingviolence.uiowa.edu';
 $sites['endingviolence.dev.drupal.uiowa.edu'] = 'endingviolence.uiowa.edu';
 $sites['endingviolence.stage.drupal.uiowa.edu'] = 'endingviolence.uiowa.edu';
 $sites['endingviolence.prod.drupal.uiowa.edu'] = 'endingviolence.uiowa.edu';
+
+// Directory aliases for speakout.uiowa.edu.
+$sites['speakout.local.drupal.uiowa.edu'] = 'speakout.uiowa.edu';
+$sites['speakout.dev.drupal.uiowa.edu'] = 'speakout.uiowa.edu';
+$sites['speakout.stage.drupal.uiowa.edu'] = 'speakout.uiowa.edu';
+$sites['speakout.prod.drupal.uiowa.edu'] = 'speakout.uiowa.edu';
