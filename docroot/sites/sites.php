@@ -2609,3 +2609,39 @@ $sites['obermann.local.drupal.uiowa.edu'] = 'obermann.uiowa.edu';
 $sites['obermann.dev.drupal.uiowa.edu'] = 'obermann.uiowa.edu';
 $sites['obermann.stage.drupal.uiowa.edu'] = 'obermann.uiowa.edu';
 $sites['obermann.prod.drupal.uiowa.edu'] = 'obermann.uiowa.edu';
+
+// Directory aliases for endingviolence.uiowa.edu.
+$sites['endingviolence.local.drupal.uiowa.edu'] = 'endingviolence.uiowa.edu';
+$sites['endingviolence.dev.drupal.uiowa.edu'] = 'endingviolence.uiowa.edu';
+$sites['endingviolence.stage.drupal.uiowa.edu'] = 'endingviolence.uiowa.edu';
+$sites['endingviolence.prod.drupal.uiowa.edu'] = 'endingviolence.uiowa.edu';
+
+// Directory aliases for speakout.uiowa.edu.
+$sites['speakout.local.drupal.uiowa.edu'] = 'speakout.uiowa.edu';
+$sites['speakout.dev.drupal.uiowa.edu'] = 'speakout.uiowa.edu';
+$sites['speakout.stage.drupal.uiowa.edu'] = 'speakout.uiowa.edu';
+$sites['speakout.prod.drupal.uiowa.edu'] = 'speakout.uiowa.edu';
+
+// Directory aliases for youth.dance.uiowa.edu.
+$sites['danceyouth.local.drupal.uiowa.edu'] = 'youth.dance.uiowa.edu';
+$sites['danceyouth.dev.drupal.uiowa.edu'] = 'youth.dance.uiowa.edu';
+$sites['danceyouth.stage.drupal.uiowa.edu'] = 'youth.dance.uiowa.edu';
+$sites['danceyouth.prod.drupal.uiowa.edu'] = 'youth.dance.uiowa.edu';
+
+// Directory aliases for legal.studentlife.uiowa.edu.
+$sites['studentlifelegal.local.drupal.uiowa.edu'] = 'legal.studentlife.uiowa.edu';
+$sites['studentlifelegal.dev.drupal.uiowa.edu'] = 'legal.studentlife.uiowa.edu';
+$sites['studentlifelegal.stage.drupal.uiowa.edu'] = 'legal.studentlife.uiowa.edu';
+$sites['studentlifelegal.prod.drupal.uiowa.edu'] = 'legal.studentlife.uiowa.edu';
+
+// Directory aliases for parents.uiowa.edu.
+$sites['parents.local.drupal.uiowa.edu'] = 'parents.uiowa.edu';
+$sites['parents.dev.drupal.uiowa.edu'] = 'parents.uiowa.edu';
+$sites['parents.stage.drupal.uiowa.edu'] = 'parents.uiowa.edu';
+$sites['parents.prod.drupal.uiowa.edu'] = 'parents.uiowa.edu';
+
+// Directory aliases for executive.jobs.uiowa.edu.
+$sites['jobsexecutive.local.drupal.uiowa.edu'] = 'executive.jobs.uiowa.edu';
+$sites['jobsexecutive.dev.drupal.uiowa.edu'] = 'executive.jobs.uiowa.edu';
+$sites['jobsexecutive.stage.drupal.uiowa.edu'] = 'executive.jobs.uiowa.edu';
+$sites['jobsexecutive.prod.drupal.uiowa.edu'] = 'executive.jobs.uiowa.edu';
