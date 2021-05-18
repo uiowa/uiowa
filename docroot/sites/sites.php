@@ -2639,3 +2639,9 @@ $sites['parents.local.drupal.uiowa.edu'] = 'parents.uiowa.edu';
 $sites['parents.dev.drupal.uiowa.edu'] = 'parents.uiowa.edu';
 $sites['parents.stage.drupal.uiowa.edu'] = 'parents.uiowa.edu';
 $sites['parents.prod.drupal.uiowa.edu'] = 'parents.uiowa.edu';
+
+// Directory aliases for executive.jobs.uiowa.edu.
+$sites['jobsexecutive.local.drupal.uiowa.edu'] = 'executive.jobs.uiowa.edu';
+$sites['jobsexecutive.dev.drupal.uiowa.edu'] = 'executive.jobs.uiowa.edu';
+$sites['jobsexecutive.stage.drupal.uiowa.edu'] = 'executive.jobs.uiowa.edu';
+$sites['jobsexecutive.prod.drupal.uiowa.edu'] = 'executive.jobs.uiowa.edu';
