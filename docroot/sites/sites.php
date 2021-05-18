@@ -2603,3 +2603,9 @@ $sites['athleticsnutrition.local.drupal.uiowa.edu'] = 'nutrition.athletics.uiowa
 $sites['athleticsnutrition.dev.drupal.uiowa.edu'] = 'nutrition.athletics.uiowa.edu';
 $sites['athleticsnutrition.stage.drupal.uiowa.edu'] = 'nutrition.athletics.uiowa.edu';
 $sites['athleticsnutrition.prod.drupal.uiowa.edu'] = 'nutrition.athletics.uiowa.edu';
+
+// Directory aliases for obermann.uiowa.edu.
+$sites['obermann.local.drupal.uiowa.edu'] = 'obermann.uiowa.edu';
+$sites['obermann.dev.drupal.uiowa.edu'] = 'obermann.uiowa.edu';
+$sites['obermann.stage.drupal.uiowa.edu'] = 'obermann.uiowa.edu';
+$sites['obermann.prod.drupal.uiowa.edu'] = 'obermann.uiowa.edu';
