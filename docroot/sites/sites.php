@@ -2609,3 +2609,9 @@ $sites['obermann.local.drupal.uiowa.edu'] = 'obermann.uiowa.edu';
 $sites['obermann.dev.drupal.uiowa.edu'] = 'obermann.uiowa.edu';
 $sites['obermann.stage.drupal.uiowa.edu'] = 'obermann.uiowa.edu';
 $sites['obermann.prod.drupal.uiowa.edu'] = 'obermann.uiowa.edu';
+
+// Directory aliases for endingviolence.uiowa.edu.
+$sites['endingviolence.local.drupal.uiowa.edu'] = 'endingviolence.uiowa.edu';
+$sites['endingviolence.dev.drupal.uiowa.edu'] = 'endingviolence.uiowa.edu';
+$sites['endingviolence.stage.drupal.uiowa.edu'] = 'endingviolence.uiowa.edu';
+$sites['endingviolence.prod.drupal.uiowa.edu'] = 'endingviolence.uiowa.edu';
