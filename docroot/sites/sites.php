@@ -2645,3 +2645,9 @@ $sites['jobsexecutive.local.drupal.uiowa.edu'] = 'executive.jobs.uiowa.edu';
 $sites['jobsexecutive.dev.drupal.uiowa.edu'] = 'executive.jobs.uiowa.edu';
 $sites['jobsexecutive.stage.drupal.uiowa.edu'] = 'executive.jobs.uiowa.edu';
 $sites['jobsexecutive.prod.drupal.uiowa.edu'] = 'executive.jobs.uiowa.edu';
+
+// Directory aliases for gsurgres.sites.uiowa.edu.
+$sites['sitesgsurgres.local.drupal.uiowa.edu'] = 'gsurgres.sites.uiowa.edu';
+$sites['sitesgsurgres.dev.drupal.uiowa.edu'] = 'gsurgres.sites.uiowa.edu';
+$sites['sitesgsurgres.stage.drupal.uiowa.edu'] = 'gsurgres.sites.uiowa.edu';
+$sites['sitesgsurgres.prod.drupal.uiowa.edu'] = 'gsurgres.sites.uiowa.edu';
