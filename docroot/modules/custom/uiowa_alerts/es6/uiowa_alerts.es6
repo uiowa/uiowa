@@ -53,6 +53,11 @@
               // Get the existing alerts on the page and track IDs.
               document.querySelectorAll('.hawk-alerts-wrapper .messages').forEach( (existing_alert) => {
                 existing_alerts.push(existing_alert.getAttribute('data-drupal-message-id'));
+
+                // Add a landmark and labeled-by attribute while iterating.
+                // @see: https://www.drupal.org/project/drupal/issues/3098857
+                existing_alert.setAttribute('role', 'region');
+                existing_alert.setAttribute('aria-labelledby', 'drupal-live-announce')
               });
 
               // Return any existing alerts that are not in the feed anymore.
