@@ -31,7 +31,7 @@
 
                   let alert = `
 <div class="hawk-alert alert alert-danger">
-<div class="hawk-alert-message">
+<div class="hawk-alert-message" role="region" aria-label="hawk alert message">
     <span class="hawk-alert-heading">
         <span class="hawk-alert-label">Hawk Alert</span>
         <span class="hawk-alert-date">${month} ${date.getDate()}, ${date.getFullYear()} - ${time}</span>
