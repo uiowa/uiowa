@@ -42,13 +42,10 @@ ul {
 }
 
 p,
-ul {
-  line-height: $reduced-line-height;
+ul,
+em {
   font-size: 0.7rem;
-  margin-top: 0;
-  margin-bottom: 0.7rem;
   color: #666;
-  line-height: 1;
   word-wrap: break-word;
 
   strong {
@@ -90,7 +87,6 @@ h5,
 h6 {
   font-family: Roboto,sans-serif;
   font-size: 0.8rem;
-  font-weight: 700;
   font-weight: bold;
 }
 
@@ -276,6 +272,13 @@ h6 {
     margin: 0;
   }
 
+  p,
+  ul {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    line-height: 1;
+  }
+
   ul {
     margin-left: -10px;
   }
@@ -391,11 +394,16 @@ h6 {
   .field--name-field-area-of-study-scholarship,
   .field--name-field-area-of-study-selective,
   .field--name-field-area-of-study-subprogram,
-  .field--name-field-area-of-study-teaching {
+  .field--name-field-area-of-study-teaching,
+  .field--name-field-area-of-study-course-work {
+    page-break-inside: avoid;
+    page-break-before: auto;
+
     .field__label {
       @extend .element--bold-intro;
       font-family: $font-family-caps;
       text-transform: uppercase;
+      page-break-after: avoid;
     }
 
     .field__item {
@@ -404,6 +412,8 @@ h6 {
       font-family: 'Roboto', sans-serif!important;
       color: #666;
       line-height: 1;
+      page-break-inside: auto;
+      page-break-before: avoid;
     }
   }
 
@@ -475,13 +485,47 @@ h6 {
     color: black;
     background-color: $white;
     border-collapse: collapse;
+    margin-top: 5px;
+    width: 100%;
+    page-break-inside: avoid !important;
+
+    caption {
+      line-height: $reduced-line-height;
+      display: block;
+    }
 
     td,
-    p {
-      vertical-align: middle;
+    p,
+    em,
+    strong,
+    span {
+      word-wrap: normal;
       font-size: 10px;
       color: black;
+    }
+    td, th {
       padding: 5px;
+      min-width: 50px;
+    }
+    td {
+      padding: 10px;
+
+      p,
+      ul {
+        &:first-of-type {
+          margin-top: 0;
+        }
+
+        &:last-of-type {
+          margin-bottom: 0;
+        }
+      }
+
+    }
+    tr {
+      page-break-inside: avoid;
+      page-break-before: auto;
+      border: solid 0.5px black;
     }
 
     thead td,
@@ -491,30 +535,6 @@ h6 {
       color: black;
       font-size: 10px;
       padding: 10px;
-    }
-
-    &.is-striped {
-      thead th {
-        background-color: $light;
-        text-transform: uppercase;
-        color: black;
-        font-size: 10px;
-        padding: 10px;
-      }
-      
-      td, th {
-        padding: 5px;
-        min-width: 50px;
-      }
-
-      p, td {
-        font-size: 10px;
-        color: black;
-      }
-
-      tr {
-        border: solid 0.5px black;
-      }
     }
   }
 }
