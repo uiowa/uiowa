@@ -4,10 +4,20 @@ status: true
 dependencies:
   config:
     - block_content.type.featured_content
+    - field.field.block_content.featured_content.field_featured_content_item
 id: block_content.featured_content.default
 targetEntityType: block_content
 bundle: featured_content
 mode: default
-content: {  }
+content:
+  field_featured_content_item:
+    weight: 0
+    label: hidden
+    settings:
+      view_mode: teaser
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_entity_view
+    region: content
 hidden:
   search_api_excerpt: true

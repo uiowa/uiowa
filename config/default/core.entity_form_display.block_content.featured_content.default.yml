@@ -4,11 +4,22 @@ status: true
 dependencies:
   config:
     - block_content.type.featured_content
+    - field.field.block_content.featured_content.field_featured_content_item
 id: block_content.featured_content.default
 targetEntityType: block_content
 bundle: featured_content
 mode: default
 content:
+  field_featured_content_item:
+    weight: 26
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
   info:
     type: string_textfield
     weight: -5
