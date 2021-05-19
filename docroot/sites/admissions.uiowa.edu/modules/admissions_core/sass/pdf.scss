@@ -487,13 +487,10 @@ h6 {
     border-collapse: collapse;
     margin-top: 5px;
     width: 100%;
-    page-break-inside: avoid;
-    page-break-after: auto !important;
+    page-break-inside: avoid !important;
 
     caption {
       line-height: $reduced-line-height;
-      page-break-inside: avoid !important;
-      page-break-before: auto;
       display: block;
     }
 
@@ -529,9 +526,6 @@ h6 {
       page-break-inside: avoid;
       page-break-before: auto;
       border: solid 0.5px black;
-    }
-    td[rowspan] {
-      page-break-inside: avoid !important;
     }
 
     thead td,
