@@ -2657,3 +2657,9 @@ $sites['classtaffcouncil.local.drupal.uiowa.edu'] = 'staffcouncil.clas.uiowa.edu
 $sites['classtaffcouncil.dev.drupal.uiowa.edu'] = 'staffcouncil.clas.uiowa.edu';
 $sites['classtaffcouncil.stage.drupal.uiowa.edu'] = 'staffcouncil.clas.uiowa.edu';
 $sites['classtaffcouncil.prod.drupal.uiowa.edu'] = 'staffcouncil.clas.uiowa.edu';
+
+// Directory aliases for ncec.sites.uiowa.edu.
+$sites['sitesncec.local.drupal.uiowa.edu'] = 'ncec.sites.uiowa.edu';
+$sites['sitesncec.dev.drupal.uiowa.edu'] = 'ncec.sites.uiowa.edu';
+$sites['sitesncec.stage.drupal.uiowa.edu'] = 'ncec.sites.uiowa.edu';
+$sites['sitesncec.prod.drupal.uiowa.edu'] = 'ncec.sites.uiowa.edu';
