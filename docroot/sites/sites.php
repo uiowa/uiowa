@@ -2663,3 +2663,9 @@ $sites['sitesncec.local.drupal.uiowa.edu'] = 'ncec.sites.uiowa.edu';
 $sites['sitesncec.dev.drupal.uiowa.edu'] = 'ncec.sites.uiowa.edu';
 $sites['sitesncec.stage.drupal.uiowa.edu'] = 'ncec.sites.uiowa.edu';
 $sites['sitesncec.prod.drupal.uiowa.edu'] = 'ncec.sites.uiowa.edu';
+
+// Directory aliases for nejadnik.lab.uiowa.edu.
+$sites['labnejadnik.local.drupal.uiowa.edu'] = 'nejadnik.lab.uiowa.edu';
+$sites['labnejadnik.dev.drupal.uiowa.edu'] = 'nejadnik.lab.uiowa.edu';
+$sites['labnejadnik.stage.drupal.uiowa.edu'] = 'nejadnik.lab.uiowa.edu';
+$sites['labnejadnik.prod.drupal.uiowa.edu'] = 'nejadnik.lab.uiowa.edu';
