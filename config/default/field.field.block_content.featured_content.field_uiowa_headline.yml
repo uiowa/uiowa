@@ -1,0 +1,27 @@
+uuid: 5f6ba910-81b0-4fad-a1ae-3d725a19ee6b
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.featured_content
+    - field.storage.block_content.field_uiowa_headline
+  module:
+    - layout_builder_custom
+id: block_content.featured_content.field_uiowa_headline
+field_name: field_uiowa_headline
+entity_type: block_content
+bundle: featured_content
+label: Headline
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    headline: ''
+    child_heading_size: h2
+    heading_size: h2
+    hide_headline: 0
+    headline_style: default
+default_value_callback: ''
+settings: {  }
+field_type: uiowa_headline
