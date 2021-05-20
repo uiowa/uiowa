@@ -2726,7 +2726,7 @@ function sitenow_update_9009() {
     // Select instances where the section contains a uiowa_people block.
     $query = $db->select($table_name, 'n')
       ->condition($section_column, '%uiowa_people%', 'LIKE')
-      ->fields('n', ['entity_id', 'revision_id', 'delta', 'layout_builder__layout_section']);
+      ->fields('n', ['entity_id', 'revision_id', 'delta', $section_column]);
 
     $count = $query->countQuery()->execute()->fetchField();
 
@@ -2740,20 +2740,13 @@ function sitenow_update_9009() {
 
     // Loop through the results.
     foreach ($results as $record) {
-      \Drupal::messenger()
-        ->addMessage(t('Count: @check_count; Record: @id; Revision: @revision; Delta: @delta', [
-          '@check_count' => $check_count,
-          '@id' => $record->entity_id,
-          '@revision' => $record->revision_id,
-          '@delta' => $record->delta,
-        ]));
 
       // Unserialize the section field into it's class object.
       /** @var Section $section */
       $section = unserialize($record->layout_builder__layout_section);
 
       // Loop through the components in the section.
-      foreach ($section->getComponents() as $component) {
+      foreach ($section->getComponents() as &$component) {
 
         // @todo Remove debugging.
         if ($check_count < 1) {
@@ -2764,156 +2757,160 @@ function sitenow_update_9009() {
         }
 
         // Limit this to only the uiowa_people block component.
-        if ($component->getPluginId() === 'inline_block:uiowa_people') {
-          // Remove the old component by its uuid.
-          $section->removeComponent($component->getUuid());
-          $component_arr = $component->toArray();
-          $revision_id = $component_arr['configuration']['block_revision_id'];
-
-          if (!$revision_id) {
-            continue;
-          }
-          if ($check_count < 1) {
-            \Drupal::messenger()
-              ->addMessage(t('Revision id: @id', [
-                '@id' => $revision_id,
-              ]));
-          }
-
-          $styles = $component->get('layout_builder_styles');
-          $default_lb_styles = [
-            'card_media_position_left',
-            'media_format_circle',
-            'content_alignment_left',
-            'card_image_medium',
-            'list_format_list',
-            'block_grid_threecol_33_34_33',
-          ];
-
-          $people_block = $block_storage->loadRevision($revision_id);
-
-          // @todo Need to figure out how to instantiate a views block
-          //   and override it configuration with the fields from the
-          //   old block.
-
-          $config = [
-            'id' => 'views_block:people_list_block-list_card',
-            'label' => NULL,
-            'provider' => 'views',
-            'label_display' => NULL,
-            'views_label' => '',
-            'items_per_page' => $people_block->get('field_collection_reference')->getValue()[0] ?: 'none',
-            // @todo Do we need to set defaults for this?
-            'headline' => $people_block->get('field_uiowa_headline')->getValue()[0],
-            'pager' => $people_block->get('field_collection_pager')->getValue()[0],
-            // @todo Can this be set in the people block?
-            'pager_offset' => 0,
-            'use_more' => $people_block->get('field_collection_more')->getValue()[0],
-            'use_more_link_url' => $people_block->get('field_collection_more_path')->getValue()[0],
-            'sort' => [
-              'sticky' => [
-                'order' => 'DESC',
-                'weight' => 0,
-              ],
-              'field_person_first_name_value' => [
-                'order' => 'DESC',
-                'weight' => 0,
-              ],
-              'field_person_last_name_value' => [
-                'order' => 'DESC',
-                'weight' => 0,
-              ],
-            ],
-            'exposed_filter_values' => [
-              'field_tags_target_id' => $people_block->get('field_collection_reference')->getValue()[0] ?: NULL,
-            ],
-            'layout_builder_styles' => $default_lb_styles,
-          ];
-
-          $fields = [
-            'field_person_credential',
-            'title',
-            'field_teaser',
-            'field_person_email',
-            'field_image',
-            'field_person_phone',
-            'field_person_position',
-          ];
-
-          // Process field visibility settings.
-          foreach ($fields as $field) {
-            $hide = 0;
-            // @todo Set this based on current LB style settings.
-
-            if (isset($styles)) {
-              switch ($field) {
-                case 'field_image':
-                  if (in_array('block_hide_image', $styles)) {
-                    $hide = 1;
-                  }
-                  break;
-                case 'field_teaser':
-                  if (in_array('block_hide_description', $styles)) {
-                    $hide = 1;
-                  }
-                  break;
-                case 'field_person_email':
-                case 'field_person_phone':
-                case 'field_person_position':
-                  if (in_array('block_hide_details', $styles)) {
-                    $hide = 1;
-                  }
-                  break;
-              }
-            }
-
-            $config['fields'][$field]['hide'] = $hide;
-          }
-
-          // @todo Process sorting defaults.
-          $current_sort = $people_block->get('field_collection_sort')->getValue()[0];
-          if ($current_sort['value'] == 'block_people_slf') {
-            $config['sort']['field_person_first_name_value']['weight'] = 1;
-          }
-
-          if ($check_count < 1) {
-            \Drupal::messenger()
-              ->addMessage(t('Config: @component', [
-                '@component' => print_r($config, TRUE),
-              ]));
-          }
-
-
-          $new_styles = [];
-          if (!empty($styles)) {
-            foreach ($styles as $key => $style) {
-              if (!in_array($style, [
-                'block_hide_description',
-                'block_hide_details',
-                'block_hide_image',
-              ])) {
-                $new_styles[] = $style;
-              }
-            }
-          }
-
-          $new_styles = $default_lb_styles + $new_styles;
-
-          // Create a new component, set styles, and append to section.
-          $new_component = new SectionComponent($component->getUuid(), $component->getRegion(), $config);
-          $new_component->set('layout_builder_styles_style', $new_styles);
-          if ($check_count < 1) {
-            \Drupal::messenger()
-              ->addMessage(t('New component: @component', [
-                '@component' => print_r($new_component, TRUE),
-              ]));
-          }
-          $section->appendComponent($new_component);
-
-          // @todo Do we need to worry about the order of the components? If so, we may need to reconstruct the section.
-          // @todo Remove the existing people block and revisions?
-          // @todo Remove break statement, which is just in here for debugging.
+        if ($component->getPluginId() !== 'inline_block:uiowa_people') {
+          continue;
         }
+        $component_arr = $component->toArray();
+        $revision_id = $component_arr['configuration']['block_revision_id'];
+
+        if (!$revision_id) {
+          continue;
+        }
+
+        if ($check_count < 1) {
+          \Drupal::messenger()
+            ->addMessage(t('Revision id: @id', [
+              '@id' => $revision_id,
+            ]));
+        }
+
+        $styles = $component->get('layout_builder_styles');
+        $default_lb_styles = [
+          'card_media_position_left',
+          'media_format_circle',
+          'content_alignment_left',
+          'card_image_medium',
+          'list_format_list',
+          'block_grid_threecol_33_34_33',
+        ];
+
+        $people_block = $block_storage->loadRevision($revision_id);
+
+        // @todo Need to figure out how to instantiate a views block
+        //   and override it configuration with the fields from the
+        //   old block.
+
+        $config = [
+          'id' => 'views_block:people_list_block-list_card',
+          'label' => NULL,
+          'provider' => 'views',
+          'label_display' => NULL,
+          'views_label' => '',
+          'items_per_page' => $people_block->field_collection_results->value ?: 'none',
+          // @todo Do we need to set defaults for this?
+          'headline' => $people_block->field_uiowa_headline->value,
+          'pager' => $people_block->field_collection_pager->value ? 'full' : 'some',
+          // @todo Can this be set in the people block?
+          'pager_offset' => 0,
+          'use_more' => $people_block->field_collection_more->value,
+          'use_more_link_url' => $people_block->field_collection_more_path->value,
+          'sort' => [
+            'sticky' => [
+              'order' => 'DESC',
+              'weight' => 0,
+            ],
+            'field_person_first_name_value' => [
+              'order' => 'DESC',
+              'weight' => 0,
+            ],
+            'field_person_last_name_value' => [
+              'order' => 'DESC',
+              'weight' => 0,
+            ],
+          ],
+          'exposed_filter_values' => [
+            'field_tags_target_id' => [],
+          ],
+          'layout_builder_styles' => $default_lb_styles,
+          'context_mapping' => [],
+        ];
+
+        // Process tags.
+        if (isset($people_block->get('field_collection_reference')->getValue()[0])) {
+          foreach ($people_block->get('field_collection_reference')->getValue()[0] as $target) {
+            $config['exposed_filter_values']['field_tags_target_id'][] = ['target_id' => $target];
+          }
+        }
+
+        $fields = [
+          'field_person_credential',
+          'title',
+          'field_teaser',
+          'field_person_email',
+          'field_image',
+          'field_person_phone',
+          'field_person_position',
+        ];
+
+        // Process field visibility settings.
+        foreach ($fields as $field) {
+          $hide = 0;
+          // @todo Set this based on current LB style settings.
+
+          if (isset($styles)) {
+            switch ($field) {
+              case 'field_image':
+                if (in_array('block_hide_image', $styles)) {
+                  $hide = 1;
+                }
+                break;
+              case 'field_teaser':
+                if (in_array('block_hide_description', $styles)) {
+                  $hide = 1;
+                }
+                break;
+              case 'field_person_email':
+              case 'field_person_phone':
+              case 'field_person_position':
+                if (in_array('block_hide_details', $styles)) {
+                  $hide = 1;
+                }
+                break;
+            }
+          }
+
+          $config['fields'][$field]['hide'] = $hide;
+        }
+
+        // Process sorting defaults.
+        $current_sort = $people_block->get('field_collection_sort')->getValue()[0];
+        if ($current_sort['value'] == 'block_people_slf') {
+          $config['sort']['field_person_first_name_value']['weight'] = 1;
+        }
+
+        if ($check_count < 1) {
+          \Drupal::messenger()
+            ->addMessage(t('Config: @component', [
+              '@component' => print_r($config, TRUE),
+            ]));
+        }
+
+        $new_styles = [];
+        if (!empty($styles)) {
+          foreach ($styles as $key => $style) {
+            if (!in_array($style, [
+              'block_hide_description',
+              'block_hide_details',
+              'block_hide_image',
+            ])) {
+              $new_styles[] = $style;
+            }
+          }
+        }
+
+        $new_styles = $default_lb_styles + $new_styles;
+
+        // Repurpose the existing component and set new styles.
+        $component->setConfiguration($config);
+        $component->set('layout_builder_styles_style', $new_styles);
+        if ($check_count < 1) {
+          \Drupal::messenger()
+            ->addMessage(t('New component: @component', [
+              '@component' => print_r($component, TRUE),
+            ]));
+        }
+
+        // @todo Remove the existing people block and revisions?
       }
 
       // Replace the old section with our newly created one.
