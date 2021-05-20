@@ -831,7 +831,7 @@ function layout_builder_custom_preprocess_block(&$variables) {
         $entity->addCacheTags($variables['content']['#cache']['tags']);
 
         // Construct the entity teaser markup manually to pass in the heading
-        // size variable for the template and append it the block content.
+        // size variable for the template and append it to the block content.
         $build = \Drupal::entityTypeManager()->getViewBuilder($entity->getEntityTypeId())->view($entity, 'teaser');
         $build['#heading_size'] = $heading_size;
         $render = \Drupal::service('renderer')->render($build);
