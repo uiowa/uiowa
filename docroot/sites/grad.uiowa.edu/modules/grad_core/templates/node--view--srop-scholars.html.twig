@@ -74,7 +74,6 @@
 {%
   set classes = [
   'card--list',
-  'bg--white',
   'card--media-left',
   'media--border',
   'card--centered-left',
@@ -90,12 +89,12 @@
 
 {% set person_card = {
   'attributes': attributes.addClass(classes),
-  'card_image': content.field_image | render,
+  'card_image': content.field_image|render,
   'media_styles': 'media--circle',
   'media_sizes': 'card__media--small',
-  'card_text': content|without('field_image', 'field_person_email', 'field_person_phone', 'field_person_education', 'field_person_credential', 'links'),
+  'card_text': content|without('field_image', 'field_person_email', 'field_person_phone', 'field_person_education', 'field_person_credential', 'links')|render,
   'card_subtitle': content.field_person_education.0,
-  'card_title': label | render,
+  'card_title': label|render,
   'card_link_url': url,
   'headline_level': headline_level,
 } %}

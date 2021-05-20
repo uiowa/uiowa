@@ -15,6 +15,12 @@ $imgpath: '../../uids/assets/images';
   }
 }
 
+// Unset equal height columns
+.section-alignment__start {
+  .layout__spacing_container {
+    align-items: flex-start;
+  }
+}
 
 // Layout container padding
 
@@ -118,6 +124,7 @@ $imgpath: '../../uids/assets/images';
     //width: 100%;
     //flex: 1 0 auto;
     flex-basis: 100%;
+    min-width: 0;
 
     &[class*="bg--"],
     &[class*="bg-pattern--"] {
@@ -225,6 +232,13 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   }
 }
 
+// Container fix for responsive tables
+
+.layout__spacing_container {
+  min-width: 0;
+}
+
+
 // Block Margins / Padding
 
 .block-padding {
@@ -249,23 +263,29 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 }
 
 .block-margin {
-  @include breakpoint(sm) {
-    &__top {
+  &__top {
+    margin-top: $md;
+
+    &--extra {
       margin-top: $md;
-      &--extra {
+      @include breakpoint(sm) {
         margin-top: $mobile-height-gutter;
       }
     }
+  }
 
-    &__right {
+  &__right {
+    @include breakpoint(sm) {
       margin-right: $md;
     }
+  }
 
-    &__bottom {
-      margin-bottom: $md;
-    }
+  &__bottom {
+    margin-bottom: $md;
+  }
 
-    &__left {
+  &__left {
+    @include breakpoint(sm) {
       margin-left: $md;
     }
   }
@@ -396,6 +416,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
 .views-element-container {
   @include margin($top: $lg);
+  flex-basis: 100%;
 
   .views-element-container {
     margin-top: inherit;
@@ -507,6 +528,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
 .block-inline-blockuiowa-collection {
   flex-basis: 100%;
+  min-width: 0;
 }
 
 .screen-reader-text {

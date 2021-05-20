@@ -111,7 +111,7 @@ class SettingsForm extends ConfigFormBase {
     foreach ($displays as $display) {
       $sort_options[$display['id']] = $display['display_title'];
       // Override the default sort value. Assumes only one display is enabled...
-      if (isset($display["display_options"]["enabled"]) && $display["display_options"]["enabled"] == 1) {
+      if (isset($display['display_options']['enabled']) && $display['display_options']['enabled'] == 1) {
         $default_sort = $display['id'];
       }
     }
@@ -171,7 +171,36 @@ class SettingsForm extends ConfigFormBase {
       '#format' => 'filtered_html',
       '#title' => $this->t('Header Content'),
       '#description' => $this->t('Enter any content that is displayed above the people listing.'),
-      '#default_value' => $default["display_options"]["header"]["area"]["content"]["value"],
+      '#default_value' => $default['display_options']['header']['area']['content']['value'],
+    ];
+
+    // Future filter options go here.
+    $form['global']['sitenow_people_filter'] = [
+      '#type' => 'fieldset',
+      '#title' => 'Filter',
+      '#description' => $this->t('Allow visitors to filter people by one or more of the following options.'),
+      '#collapsible' => FALSE,
+    ];
+    $form['global']['sitenow_people_filter']['filter_search'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Search'),
+      '#description' => $this->t('Allow filtering by name'),
+      '#default_value' => isset($default["display_options"]["filters"]["combine"]),
+      '#size' => 60,
+    ];
+    $form['global']['sitenow_people_filter']['filter_type'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Person Type'),
+      '#description' => $this->t('Allow filtering by person type'),
+      '#default_value' => isset($default["display_options"]["filters"]["field_person_types_target_id"]),
+      '#size' => 60,
+    ];
+    $form['global']['sitenow_people_filter']['filter_research'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Research Area'),
+      '#description' => $this->t('Allow filtering by research area'),
+      '#default_value' => isset($default["display_options"]["filters"]["field_person_research_areas_target_id"]),
+      '#size' => 60,
     ];
 
     $form['global']['sitenow_people_sort'] = [
@@ -208,10 +237,14 @@ class SettingsForm extends ConfigFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // Get values.
+    $filters = [];
     $status = $form_state->getValue('sitenow_people_status');
     $title = $form_state->getValue('sitenow_people_title');
     $path = $form_state->getValue('sitenow_people_path');
     $header_content = $form_state->getValue('sitenow_people_header_content');
+    $filters['combine'] = $form_state->getValue('filter_search');
+    $filters['field_person_types_target_id'] = $form_state->getValue('filter_type');
+    $filters['field_person_research_areas_target_id'] = $form_state->getValue('filter_research');
     $sort = $form_state->getValue('sitenow_people_sort');
 
     // Clean path.
@@ -224,16 +257,16 @@ class SettingsForm extends ConfigFormBase {
     $displays = $view->get('display');
     unset($displays['default']);
     foreach ($displays as $display) {
-      $display[$display['id']] =& $view->getDisplay($display['id']);
+      $displays[$display['id']] =& $view->getDisplay($display['id']);
       // Set validated and clean path.
-      $display[$display['id']]['display_options']['path'] = $path;
-      $display[$display['id']]["display_options"]["enabled"] = FALSE;
+      $displays[$display['id']]['display_options']['path'] = $path;
+      $displays[$display['id']]['display_options']['enabled'] = FALSE;
     }
 
     // Set default display to set global settings.
     $default =& $view->getDisplay('default');
     // Set title.
-    $default['display_options']["title"] = $title;
+    $default['display_options']['title'] = $title;
     // Set header area content.
     $default['display_options']['header']['area']['content']['value'] = $header_content['value'];
 
@@ -242,6 +275,185 @@ class SettingsForm extends ConfigFormBase {
       $view->set('status', TRUE);
       $enabled_display =& $view->getDisplay($sort);
       $enabled_display["display_options"]["enabled"] = TRUE;
+
+      // Loop through and toggle filters based on form selections.
+      // @todo Store as configuration and just toggle the exposed status.
+      // Currently causes no results because the filters fire blank values.
+      foreach ($filters as $key => $filter) {
+        // Unset all so that they stay in order.
+        unset($default["display_options"]["filters"][$key]);
+        if ($filter == 1) {
+          if ($key == 'combine') {
+            $default["display_options"]["filters"][$key] = [
+              'id' => 'combine',
+              'table' => 'views',
+              'field' => 'combine',
+              'relationship' => 'none',
+              'group_type' => 'group',
+              'admin_label' => '',
+              'operator' => 'contains',
+              'value' => '',
+              'group' => 1,
+              'exposed' => 1,
+              'expose' => [
+                'operator_id' => 'combine_op',
+                'label' => 'Search',
+                'description' => '',
+                'use_operator' => FALSE,
+                'operator' => 'combine_op',
+                'operator_limit_selection' => FALSE,
+                'operator_list' => [],
+                'identifier' => 'search',
+                'required' => FALSE,
+                'remember' => FALSE,
+                'multiple' => FALSE,
+                'remember_roles' => [
+                  'authenticated' => 'authenticated',
+                  'anonymous' => '0',
+                  'viewer' => '0',
+                  'editor' => '0',
+                  'publisher' => '0',
+                  'webmaster' => '0',
+                  'administrator' => '0',
+                ],
+                'placeholder' => 'Search by name',
+              ],
+              'is_grouped' => FALSE,
+              'group_info' => [
+                'label' => "",
+                'description' => '',
+                'identifier' => '',
+                'optional' => TRUE,
+                'widget' => 'select',
+                'multiple' => FALSE,
+                'remember' => FALSE,
+                'default_group' => 'All',
+                'default_group_multiple' => [],
+                'group_items' => [],
+              ],
+              'fields' => [
+                'title' => 'title',
+              ],
+              'plugin_id' => 'combine',
+            ];
+          }
+          if ($key == 'field_person_types_target_id') {
+            $default["display_options"]["filters"][$key] = [
+              'id' => 'field_person_types_target_id',
+              'table' => 'node__field_person_types',
+              'field' => 'field_person_types_target_id',
+              'relationship' => 'none',
+              'group_type' => 'group',
+              'admin_label' => '',
+              'operator' => '=',
+              'value' => '',
+              'group' => 1,
+              'exposed' => 1,
+              'expose' => [
+                'operator_id' => 'field_person_types_target_id_op',
+                'label' => 'Person Type',
+                'description' => '',
+                'use_operator' => FALSE,
+                'operator' => 'field_person_types_target_id_op',
+                'operator_limit_selection' => FALSE,
+                'operator_list' => [],
+                'identifier' => 'type',
+                'required' => FALSE,
+                'remember' => FALSE,
+                'multiple' => FALSE,
+                'remember_roles' => [
+                  'authenticated' => 'authenticated',
+                  'anonymous' => '0',
+                  'viewer' => '0',
+                  'editor' => '0',
+                  'publisher' => '0',
+                  'webmaster' => '0',
+                  'administrator' => '0',
+                ],
+                'placeholder' => '',
+              ],
+              'is_grouped' => FALSE,
+              'group_info' => [
+                'label' => "",
+                'description' => '',
+                'identifier' => '',
+                'optional' => TRUE,
+                'widget' => 'select',
+                'multiple' => FALSE,
+                'remember' => FALSE,
+                'default_group' => 'All',
+                'default_group_multiple' => [],
+                'group_items' => [],
+              ],
+              'plugin_id' => 'string',
+            ];
+          }
+          if ($key == 'field_person_research_areas_target_id') {
+            $default["display_options"]["filters"][$key] = [
+              'id' => 'field_person_research_areas_target_id',
+              'table' => 'node__field_person_research_areas',
+              'field' => 'field_person_research_areas_target_id',
+              'relationship' => 'none',
+              'group_type' => 'group',
+              'admin_label' => '',
+              'operator' => 'or',
+              'value' => [],
+              'group' => 1,
+              'exposed' => 1,
+              'expose' => [
+                'operator_id' => 'field_person_research_areas_target_id_op',
+                'label' => 'Research Area',
+                'description' => '',
+                'use_operator' => FALSE,
+                'operator' => 'field_person_research_areas_target_id_op',
+                'operator_limit_selection' => FALSE,
+                'operator_list' => [],
+                'identifier' => 'research',
+                'required' => FALSE,
+                'remember' => FALSE,
+                'multiple' => FALSE,
+                'remember_roles' => [
+                  'authenticated' => 'authenticated',
+                  'anonymous' => '0',
+                  'viewer' => '0',
+                  'editor' => '0',
+                  'publisher' => '0',
+                  'webmaster' => '0',
+                  'administrator' => '0',
+                ],
+                'reduce' => FALSE,
+              ],
+              'is_grouped' => FALSE,
+              'group_info' => [
+                'label' => "",
+                'description' => '',
+                'identifier' => '',
+                'optional' => TRUE,
+                'widget' => 'select',
+                'multiple' => FALSE,
+                'remember' => FALSE,
+                'default_group' => 'All',
+                'default_group_multiple' => [],
+                'group_items' => [],
+              ],
+              "reduce_duplicates" => FALSE,
+              "type" => 'select',
+              "limit" => TRUE,
+              "vid" => 'research_areas',
+              "hierarchy" => FALSE,
+              'error_message' => TRUE,
+              'parent' => 0,
+              'level_labels' => FALSE,
+              'force_deepest' => FALSE,
+              'save_lineage' => FALSE,
+              'hierarchy_depth' => 0,
+              'required_depth' => 0,
+              'none_label' => '- Please select -',
+              'plugin_id' => 'taxonomy_index_tid',
+            ];
+          }
+        }
+      }
     }
     else {
       $view->set('status', FALSE);

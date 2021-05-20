@@ -75,7 +75,6 @@
   set classes = [
   'card--list',
   'card--person-teaser',
-  'bg--white',
   'card--media-left',
   'media--border',
   'card--centered-left',
@@ -88,11 +87,11 @@
 
 {% set thesis_defense_card = {
   'attributes': attributes.addClass(classes),
-  'card_text': content.field_thesis_defense_chairs,
+  'card_text': content.field_thesis_defense_chairs|render,
   'card_subtitle': content.field_thesis_defense_title.0,
   'card_date':  content.field_thesis_defense_date.0,
   'card_tag':  content.field_thesis_defense_location.0,
-  'card_title': label | render,
+  'card_title': label|render,
   'card_link_url': url,
   'headline_level': 'h2',
 } %}

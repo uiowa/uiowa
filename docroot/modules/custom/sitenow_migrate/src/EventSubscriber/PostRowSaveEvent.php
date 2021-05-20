@@ -55,32 +55,6 @@ class PostRowSaveEvent implements EventSubscriberInterface {
         $fids = $event->getDestinationIdValues();
         $this->makeEntity($row, $fids);
         break;
-
-      // Body content needs to be put into paragraph for Basic Pages.
-      case 'd7_page-deprecated':
-        $row = $event->getRow();
-        $nids = $event->getDestinationIdValues();
-        $this->createParagraph($row, $nids);
-
-        break;
-
-      // Inefficient node_load but body/format migration won't correctly attach.
-      case 'd7_article':
-      case 'd7_person':
-      case 'd7_page':
-        $nids = $event->getDestinationIdValues();
-
-        /** @var \Drupal\node\NodeInterface $node */
-        $node = $this->entityTypeManager->getStorage('node')->load($nids[0]);
-
-        if ($node->getType() == 'article' || $node->getType() == 'page') {
-          $node->body->format = 'filtered_html';
-        }
-        else {
-          $node->field_person_bio->format = 'filtered_html';
-        }
-
-        $node->save();
     }
   }
 
@@ -140,37 +114,6 @@ class PostRowSaveEvent implements EventSubscriberInterface {
           return;
       }
     }
-  }
-
-  /**
-   * Edits the empty text paragraph associated with the new node.
-   *
-   * Rollback functionality is preserved this way, as well.
-   */
-  public function createParagraph($row, $nids) {
-    $newContent = $row->getSourceProperty('body_value');
-
-    // Load our newly created node and get the default content block.
-    /** @var \Drupal\node\NodeInterface $node */
-    $node = $this->entityTypeManager->getStorage('node')->load($nids[0]);
-
-    $section_target = end($node->get('field_page_content_block')->getValue());
-
-    /** @var \Drupal\paragraphs\ParagraphInterface $section */
-    $section = $this->entityTypeManager->getStorage('paragraph')->load($section_target['target_id']);
-
-    $paragraph_target = end($section->get('field_section_content_block')->getValue());
-
-    /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
-    $paragraph = $this->entityTypeManager->getStorage('paragraph')->load($paragraph_target['target_id']);
-
-    $paragraph->set('field_text_body', [
-      'value' => $newContent,
-      'format' => 'filtered_html',
-    ]);
-
-    $paragraph->save();
-    $node->save();
   }
 
 }

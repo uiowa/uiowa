@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies: {  }
+id: sppa_migrate
+label: 'SPPA Migrate'
+description: 'Migrations for SPPA'
+folder: ./sites/sppa.uiowa.edu/modules/sppa_migrate/config/split
+module:
+  migrate: 0
+  migrate_drupal: 0
+  migrate_plus: 0
+  migrate_tools: 0
+  sppa_migrate: 0
+  sitenow_migrate: 0
+theme: {  }
+blacklist:
+  - config_split.config_split.sppa_migrate
+  - 'migrate_plus.migration.sppa_*'
+graylist: {  }
+graylist_dependents: true
+graylist_skip_equal: true
+weight: 80

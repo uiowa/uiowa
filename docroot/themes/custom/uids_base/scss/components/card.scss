@@ -2,10 +2,32 @@
 @import "assets/scss/_utilities.scss";
 @import "components/card/card.scss";
 
-.card__description {
-  word-wrap: anywhere;
-  overflow-wrap: anywhere;
+// @todo move back to UIDS
+
+.card {
+  p + p {
+    margin-top: $sm;
+  }
+
+  // set font weight to normal if intro classes are used
+  p[class*="element-"],
+  p[class*="uids-component-"] {
+    font-weight: normal;
+  }
+
+  .card__description + .btn,
+  .card__description + .bttn,
+  &__title + .bttn {
+    margin-top: 1.05rem;
+  }
+
+  &__description {
+    font-size: 1rem;
+    word-wrap: anywhere;
+    overflow-wrap: anywhere;
+  }
 }
+
 // ie11
 @media all and (-ms-high-contrast: none),
 (-ms-high-contrast: active) {
@@ -22,6 +44,32 @@
   }
 }
 
+// Remove padding if no section background and bg--white is set on card
+.layout__container:not([class*="bg-"]) {
+  .card--media-left[class*="bg--white"]:not([class*="card--enclosed"]) {
+    .card__media + .card__body {
+      @include breakpoint(sm) {
+        padding: 0 0 $md 2rem;
+      }
+    }
+  }
+  .card--media-right[class*="bg--white"]:not([class*="card--enclosed"]) {
+    .card__media + .card__body {
+      @include breakpoint(sm) {
+        padding: 0 2rem $md 0;
+      }
+    }
+  }
+  .card--media-left[class*="bg--white"]:not([class*="card--enclosed"]),
+  .card--media-right[class*="bg--white"]:not([class*="card--enclosed"]) {
+    .card__body {
+      padding-left: 0;
+      padding-right: 0;
+      padding-bottom: 0;
+    }
+  }
+}
+
 // Allow cards to be stacked within layouts
 .layout--fourcol,
 .layout--threecol,
@@ -31,19 +79,26 @@
   }
 }
 
+.card[class*="bg--gold"],
+.card[class*="bg--gray"] {
+  .bttn--sans-serif {
+    border-color: rgba(0,0,0,.225);
+  }
+}
+
 // Border color adjustment for cards not using a bg color
 .card:not([class*="bg-"]) {
   border-color: rgba(0,0,0,.125);
   .bg--black--pattern--brain &,
   .bg-pattern--brain-black &,
-  .bg--black & {
+  [class*="bg--black"] & {
     border-color: rgba(255,255,255,.325);
     .bttn--sans-serif {
       border-color: rgba(255,255,255,.325);
     }
   }
   .bttn--sans-serif {
-    border-color: rgba(0,0,0,.125);
+    border-color: rgba(0,0,0,.225);
   }
 }
 
@@ -111,5 +166,51 @@
   }
   &.hide-details .card__details {
     display: none;
+  }
+}
+
+// Card__head styles
+
+.card {
+  &__head {
+    flex-wrap: wrap;
+    padding: 0;
+    text-align: center;
+    @include center(horizontal);
+    @include breakpoint(sm) {
+      padding: 0 0 2rem;
+    }
+    @include breakpoint(menu) {
+      margin: 0;
+      display: block;
+    }
+
+    p {
+      @include brand-cool-gray;
+      margin: 0;
+    }
+
+    .bold-headline {
+      display: block;
+    }
+
+    .bttn {
+      flex-basis: 100%;
+      padding-top: $sm;
+      @include breakpoint(sm) {
+        padding-top: $md;
+      }
+
+      &.bttn--link:focus,
+      &.bttn--link:hover {
+        background: transparent;
+        text-decoration: underline;
+      }
+    }
+
+    h2 {
+      margin: 0;
+      padding: 0;
+    }
   }
 }

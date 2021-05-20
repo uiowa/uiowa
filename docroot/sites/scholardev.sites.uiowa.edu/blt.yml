@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: sitesscholardev.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: sitesscholardev
+  human_name: scholardev.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesscholardev.prod
+drupal:
+  db:
+    database: scholardev_sites_uiowa_edu
+uiowa:
+  requester: kdauplai

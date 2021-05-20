@@ -5,7 +5,9 @@
 
   .button--primary {
 
-    .bg--gray &,
+
+    [class*="bg--gray"] &,
+    [class*="bg--white"] &,
     .bg-pattern--brain &,
     .bg--white--pattern--brain & {
       background: $primary;
@@ -712,7 +714,7 @@
   }
 }
 
-.bg--gold,
+[class*="bg--gold"],
 .bg--brain-reversed,
 .bg-pattern--brain-reversed,
 .bg-yellow {
@@ -732,7 +734,7 @@
   }
 }
 
-.bg--black,
+[class*="bg--black"],
 .bg-pattern--brain-black,
 .bg-dark {
   & .block-webform {

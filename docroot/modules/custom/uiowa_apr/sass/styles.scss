@@ -50,6 +50,10 @@
 
 
 #apr-directory-service {
+  .apr.directory>div:first-child>a {
+    display: none;
+  }
+
   .apr-profile .apr-section.summary {
     ul {
       @extend %no-ul-list;
@@ -89,6 +93,37 @@
       align-content: start;
     }
   }
+
+  .apr-profile #apr-sites li,
+  .profiles ul>li {
+    display: block;
+  }
+
+  .apr-profile .profile-image figcaption {
+    text-align: left;
+    font-size: 1.5rem;
+    font-weight: 600;
+    padding-top: .5em;
+    margin-bottom: .5em;
+  }
+
+  .apr-profile .apr-section.summary li.apr-contact {
+    display: block;
+
+    .apr-phone.apr-detail {
+      display: block;
+
+      &:before {
+        content:'Phone';
+        position: relative;
+        font-size: 1.3rem;
+        font-weight: 500;
+        display: block;
+      }
+    }
+  } 
+
+  .apr-profile
 
   .list-view {
     margin: $gutter 0;
@@ -136,6 +171,20 @@
     li.active {
       font-weight: $font-weight-bold;
     }
+  }
+
+  h2, .h2 {
+    font-size: 1.5rem;
+  }
+
+  h3, .h3 {
+    font-size: 1.3rem;
+  }
+
+  h4, .h4 {
+    font-size: 1rem;
+    margin-top: 0px;
+    font-weight: 300;
   }
 }
 
