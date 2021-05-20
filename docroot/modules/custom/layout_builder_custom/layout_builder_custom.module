@@ -12,6 +12,7 @@ use Drupal\layout_builder_custom\LayoutBuilderPreRender;
 use Drupal\layout_builder_custom\Plugin\Display\ListBlock;
 use Drupal\layout_builder_styles\LayoutBuilderStyleGroups;
 use Drupal\layout_builder_styles\LayoutBuilderStyleInterface;
+use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\views\Plugin\views\display\Block;
 use Drupal\views\ViewExecutable;
 
@@ -806,6 +807,42 @@ function _layout_builder_custom_add_lbs_heading(&$form) {
 function layout_builder_custom_preprocess_block(&$variables) {
 
   switch ($variables['elements']['#plugin_id']) {
+    case 'inline_block:featured_content':
+      // Unset the entity reference render array and create our own.
+      unset($variables['content']['field_featured_content_item']);
+      $variables['content']['referenced_items'] = [];
+
+      /** @var \Drupal\block_content\Entity\BlockContent $block */
+      $block = $variables['content']['#block_content'];
+      $headline_field = $block->get('field_uiowa_headline')->getValue()[0];
+
+      if (empty($headline_field['headline'])) {
+        $heading_size = $block->get('field_uiowa_headline')['child_heading_size'];
+      }
+      else {
+        $heading_size = HeadlineHelper::getHeadingSizeUp($headline_field['heading_size']);
+      }
+
+      foreach ($block->get('field_featured_content_item') as $item) {
+        $entity = $item->getProperties(TRUE)['entity']->getTarget()->getEntity();
+
+        // Associate the block's cache tags with each entity so that the
+        // appropriate render cache ID is cleared when the block changes.
+        $entity->addCacheTags($variables['content']['#cache']['tags']);
+
+        // Construct the entity teaser markup manually to pass in the heading
+        // size variable for the template and append it the block content.
+        $build = \Drupal::entityTypeManager()->getViewBuilder($entity->getEntityTypeId())->view($entity, 'teaser');
+        $build['#heading_size'] = $heading_size;
+        $render = \Drupal::service('renderer')->render($build);
+
+        $variables['content']['referenced_items'][] = [
+          '#markup' => $render,
+        ];
+      }
+
+      break;
+
     case 'inline_block:uiowa_banner':
       $block = $variables['elements']['content']['#block_content'];
       // Media entity template needs to change based on this block,
