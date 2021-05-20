@@ -817,7 +817,7 @@ function layout_builder_custom_preprocess_block(&$variables) {
       $headline_field = $block->get('field_uiowa_headline')->getValue()[0];
 
       if (empty($headline_field['headline'])) {
-        $heading_size = $block->get('field_uiowa_headline')['child_heading_size'];
+        $heading_size = $headline_field['child_heading_size'];
       }
       else {
         $heading_size = HeadlineHelper::getHeadingSizeUp($headline_field['heading_size']);
