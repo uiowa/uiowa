@@ -226,6 +226,12 @@ function uids_base_preprocess_page(&$variables) {
 function uids_base_preprocess_node(&$variables) {
   /** @var \Drupal\node\Entity\Node $node */
   $node = $variables['node'];
+
+  // Create heading_size variable if render property was set.
+  if (isset($variables['elements']['#heading_size'])) {
+    $variables['heading_size'] = $variables['elements']['#heading_size'];
+  }
+
   // Append person credentials to the node label in the teaser view mode.
   if ($variables['view_mode'] == 'teaser') {
     if ($node->hasField('field_person_credential') && $creds = $node->get('field_person_credential')->getString()) {
