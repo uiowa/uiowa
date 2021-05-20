@@ -4,7 +4,7 @@
 .view-id-people {
   .views-exposed-form {
     .form--inline {
-      @include breakpoint(container) {
+      @include breakpoint(sm) {
         flex-wrap: unset;
       }
     }
@@ -35,6 +35,14 @@
 
 
 .view-display-id-page_people_table {
+  table {
+    @include breakpoint(sm) {
+      display: block;
+    }
+    tbody tr:not(.is-selected):nth-child(2n), table tbody tr:not(.is-selected):nth-child(2n) th {
+      background-color: #fff;
+    }
+  }
   .tabledrag-changed-warning {
     // @extend .alert;
     // @extend .alert-warning;
