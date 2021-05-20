@@ -61,10 +61,12 @@ class AlertsBlock extends BlockBase implements ContainerFactoryPluginInterface {
     $config = $this->config->get('uiowa_alerts.settings');
 
     $build = [
-      '#type' => 'container',
-      '#attributes' => [
-        'class' => [
-          'uiowa-alerts-wrapper',
+      'wrapper' => [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => [
+            'uiowa-alerts-wrapper',
+          ],
         ],
       ],
     ];
@@ -72,10 +74,12 @@ class AlertsBlock extends BlockBase implements ContainerFactoryPluginInterface {
     if ($config->get('hawk_alert.display')) {
       $source = $config->get('hawk_alert.source');
 
-      $build['hawk_alerts'] = [
+      $build['wrapper']['hawk_alerts'] = [
         '#type' => 'container',
         '#attributes' => [
-          'class' => 'hawk-alerts-wrapper',
+          'class' => [
+            'hawk-alerts-wrapper',
+          ],
         ],
         '#attached' => [
           'library' => [
@@ -95,7 +99,7 @@ class AlertsBlock extends BlockBase implements ContainerFactoryPluginInterface {
       $filtered_message = check_markup($message, 'minimal');
       $level = $config->get('custom_alert.level');
 
-      $build['custom_alert'] = [
+      $build['wrapper']['custom_alert'] = [
         '#type' => 'container',
         '#attributes' => [
           'class' => [
