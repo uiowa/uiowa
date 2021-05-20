@@ -572,6 +572,11 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
     ->getPlugin();
 
   switch ($block->getPluginId()) {
+    case 'inline_block:featured_content':
+      $element['field_uiowa_headline']['widget'][0]['container']['heading_size']['#access'] = FALSE;
+      $element['field_uiowa_headline']['widget'][0]['container']['child_heading_size']['#access'] = FALSE;
+      break;
+
     case 'inline_block:uiowa_text_area':
       if (isset($element['field_uiowa_headline'])) {
         // Unset the unnecessary 'child_heading_size' field option.
