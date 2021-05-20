@@ -13,7 +13,9 @@
     width: 100%;
   }
   .card__media {
-    margin-top: 0;
+    @include breakpoint(sm) {
+      margin-top: 0;
+    }
   }
   .view-content {
     @include list-group;
