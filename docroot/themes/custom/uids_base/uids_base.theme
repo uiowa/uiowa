@@ -237,6 +237,7 @@ function uids_base_preprocess_node(&$variables) {
       ]);
     }
 
+    // Add appropriate card styles for v2/3 teaser view modes.
     // @todo Remove after v2 dies.
     $is_v2 = \Drupal::config('config_split.config_split.sitenow_v2')->get('status');
 
