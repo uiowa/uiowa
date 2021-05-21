@@ -2753,14 +2753,17 @@ function sitenow_update_9009() {
         }
 
         $people_block = $block_storage->loadRevision($revision_id);
-        $people_block->delete();
+
+        if (is_null($people_block)) {
+          continue;
+        }
 
         // Default LB styles for new block.
         $new_styles = [
-          'card_media_position_left',
+          'card_media_position_right',
           'media_format_circle',
           'content_alignment_left',
-          'card_image_medium',
+          'card_image_small',
           'list_format_list',
           'block_grid_threecol_33_34_33',
         ];
@@ -2773,7 +2776,7 @@ function sitenow_update_9009() {
           'label_display' => NULL,
           'views_label' => '',
           'items_per_page' => $people_block->field_collection_results->value ?: 'none',
-          'headline' => $people_block->field_uiowa_headline->value,
+          'headline' => $people_block->get('field_uiowa_headline')->getValue()[0],
           'pager' => $people_block->field_collection_pager->value ? 'full' : 'some',
           'pager_offset' => 0,
           'use_more' => $people_block->field_collection_more->value,
@@ -2783,12 +2786,12 @@ function sitenow_update_9009() {
               'order' => 'DESC',
               'weight' => 0,
             ],
-            'field_person_first_name_value' => [
-              'order' => 'DESC',
+            'field_person_last_name_value' => [
+              'order' => 'ASC',
               'weight' => 0,
             ],
-            'field_person_last_name_value' => [
-              'order' => 'DESC',
+            'field_person_first_name_value' => [
+              'order' => 'ASC',
               'weight' => 0,
             ],
           ],
@@ -2829,8 +2832,10 @@ function sitenow_update_9009() {
 
         // Process sorting defaults.
         $current_sort = $people_block->field_collection_sort->value;
-        if ($current_sort['value'] == 'block_people_slf') {
-          $config['sort']['field_person_first_name_value']['weight'] = 1;
+        if ($current_sort == 'block_people_sfl') {
+          $last_name_sort = $config['sort']['field_person_last_name_value'];
+          unset($config['sort']['field_person_last_name_value']);
+          $config['sort']['field_person_last_name_value'] = $last_name_sort;
         }
 
         // Repurpose the existing component and set new styles.

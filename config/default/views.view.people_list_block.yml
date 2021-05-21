@@ -607,18 +607,6 @@ display:
           entity_type: node
           entity_field: sticky
           plugin_id: standard
-        field_person_first_name_value:
-          id: field_person_first_name_value
-          table: node__field_person_first_name
-          field: field_person_first_name_value
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: DESC
-          exposed: false
-          expose:
-            label: ''
-          plugin_id: standard
         field_person_last_name_value:
           id: field_person_last_name_value
           table: node__field_person_last_name
@@ -626,7 +614,19 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          order: DESC
+          order: ASC
+          exposed: false
+          expose:
+            label: ''
+          plugin_id: standard
+        field_person_first_name_value:
+          id: field_person_first_name_value
+          table: node__field_person_first_name
+          field: field_person_first_name_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
           exposed: false
           expose:
             label: ''
