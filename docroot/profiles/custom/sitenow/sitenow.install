@@ -2922,6 +2922,24 @@ function sitenow_update_9009() {
         ])
         ->execute();
 
+      // Check if we have a tempstore of this node.
+      // Temp store is saved in the db in the key_value_expire,
+      // And holds a serialized blob with the unsaved changes.
+      // Might be a better method of accessing this through the Layout Builder API
+      // and layoutTempstoreRepository, but have not found it yet.
+      $temp_stores = $db->select('key_value_expire', 'kve')
+        ->fields('kve', ['value'])
+        ->condition('name', 'node.' . $record->entity_id . '.default.en', '=')
+        ->execute()
+        ->fetchCol();
+      foreach ($temp_stores as $temp_store) {
+        // @todo Process this and update the right section with our new block.
+        \Drupal::messenger()
+          ->addMessage(t('Temp Store: @value', [
+            '@value' => print_r($temp_store, TRUE),
+          ]));
+      }
+
       $check_count++;
     }
   }
