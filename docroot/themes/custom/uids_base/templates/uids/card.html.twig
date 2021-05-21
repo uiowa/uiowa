@@ -1,7 +1,7 @@
 {{ attach_library('uids_base/card') }}
 {{ attach_library('uids_base/media') }}
 {% set attributes = attributes ?: create_attribute() %}
-{% set card_classes = ['card'] %}
+{% set card_classes = ['card', 'click-container'] %}
 {% set media_attributes = media_attributes ?: create_attribute() %}
 
 {# The following code is to determine where a link should be attached, if it exists. #}
@@ -13,6 +13,10 @@
     {# If we also have link text, then we'll show a psuedo-button. #}
     {% if card_link_title is not empty %}
       {% set show_button = true %}
+      {# If card_no_link is set, use button as link element. #}
+      {% if card_no_link %}
+        {% set link_element = 'button' %}
+      {% endif %}
     {% endif %}
   {% elseif card_link_title is not empty %}
     {# Title is not set, but there is link text, so use that instead. #}
@@ -33,7 +37,7 @@
 {% set card_aria_describedby = '' %}
 {% endif %}
 
-<div{{ attributes.addclass(card_classes) }}>
+<div{{ attributes.addclass(card_classes) }}{% if card_no_link %} data-uids-no-link{% endif %}>
   {{ title_prefix }}
   {{ title_suffix }}
   {% block card_img %}
@@ -62,6 +66,7 @@
             'headline_text': card_title,
             'headline_url': card_link_url,
             'headline_aria': card_aria_describedby,
+            'headline_url_class': link_element == 'title' ? 'click-target' : null,
           } %}
           {% include '@uids_base/uids/headline.html.twig' with card_heading only %}
         {% endif %}

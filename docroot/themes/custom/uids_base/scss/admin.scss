@@ -22,6 +22,11 @@ $imgpath: '../../uids/assets/images';
   width: 100% !important;
 }
 
+// Override classy negative bottom margin.
+#drupal-off-canvas table {
+  margin: 0 -20px 0 -20px;
+}
+
 #drupal-off-canvas .layout-builder-style-heading {
   border-bottom: 1px solid #999;
   font-size: 15px;
@@ -890,33 +895,38 @@ div[data-drupal-selector="edit-moderation-state-0"] {
 
   .paragraphs-dropdown-toggle {
     width: 26px !important;
+    height: 26px !important;
+    border: none !important;
     background: url(/modules/contrib/paragraphs/icons/icon-actions.svg) no-repeat center !important;
   }
 
   .paragraphs-dropdown-actions {
     border: none;
-    top: 0;
+    top: 1px;
     right: 26px;
-    width: 128px;
+    width: 98px;
     box-shadow: none;
+    background: inherit;
   }
 }
 
 
 // Statistic admin UX.
+#drupal-off-canvas {
+  [id*="edit-settings-block-form-group-uiowa-statistic-title--"] {
 
-[id*="edit-settings-block-form-group-uiowa-statistic-title--"] {
+    .fieldset-legend {
+      display: none !important;
+    }
 
-  .fieldset-legend {
-    display: none;
-  }
-
-  .fieldset-wrapper {
-    display: grid;
-    grid-template-columns: 19% 56% 19%;
-    grid-gap: 3%;
+    .fieldset-wrapper {
+      display: grid;
+      grid-template-columns: 19% 56% 19%;
+      grid-gap: 3%;
+    }
   }
 }
+
 
 
 // Claro Dropbutton

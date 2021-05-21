@@ -13,6 +13,114 @@ use Drupal\layout_builder_custom\Plugin\Display\ListBlock;
 use Drupal\layout_builder_styles\LayoutBuilderStyleGroups;
 use Drupal\layout_builder_styles\LayoutBuilderStyleInterface;
 use Drupal\views\Plugin\views\display\Block;
+use Drupal\views\ViewExecutable;
+
+/**
+ * Implements hook_config_schema_info_alter().
+ */
+function layout_builder_custom_config_schema_info_alter(&$definitions) {
+  // Add to the views block plugin schema.
+  $definitions['views_block']['mapping']['pager'] = [
+    'type' => 'string',
+    'label' => 'Pager type',
+  ];
+  $definitions['views_block']['mapping']['fields'] = [
+    'type' => 'sequence',
+    'label' => 'Fields settings',
+    'sequence' => [
+      [
+        'type' => 'mapping',
+        'label' => 'Field settings',
+        'mapping' => [
+          'hide' => [
+            'type' => 'boolean',
+            'label' => 'Hide field',
+          ],
+          'weight' => [
+            'type' => 'integer',
+            'label' => 'Field weight',
+          ],
+        ],
+      ],
+    ],
+  ];
+  $definitions['views_block']['mapping']['filter'] = [
+    'type' => 'sequence',
+    'label' => 'Filters settings',
+    'sequence' => [
+      [
+        'type' => 'mapping',
+        'label' => 'Filter settings',
+        'mapping' => [
+          'type' => [
+            'type' => 'string',
+            'label' => 'Plugin id',
+          ],
+          'disable' => [
+            'type' => 'boolean',
+            'label' => 'Disable filter',
+          ],
+        ],
+      ],
+    ],
+  ];
+  $definitions['views_block']['mapping']['sort'] = [
+    'type' => 'sequence',
+    'label' => 'Sort settings',
+    'sequence' => [
+      [
+        'type' => 'string',
+        'label' => 'Sort order value',
+      ],
+    ],
+  ];
+  $definitions['views_block']['mapping']['pager_offset'] = [
+    'type' => 'integer',
+    'label' => 'Pager offset',
+  ];
+
+  // Add to the views block display plugin schema.
+  // @todo Figure out which of these to keep and which to get rid of.
+  $definitions['views.display.block']['mapping']['allow']['mapping']['offset'] = [
+    'type' => 'string',
+    'label' => 'Pager offset',
+  ];
+  $definitions['views.display.block']['mapping']['allow']['mapping']['pager'] = [
+    'type' => 'string',
+    'label' => 'Pager type',
+  ];
+  $definitions['views.display.block']['mapping']['allow']['mapping']['hide_fields'] = [
+    'type' => 'string',
+    'label' => 'Hide fields',
+  ];
+  $definitions['views.display.block']['mapping']['allow']['mapping']['sort_fields'] = [
+    'type' => 'string',
+    'label' => 'Sort fields',
+  ];
+  $definitions['views.display.block']['mapping']['allow']['mapping']['disable_filters'] = [
+    'type' => 'string',
+    'label' => 'Disable filters',
+  ];
+  $definitions['views.display.block']['mapping']['allow']['mapping']['configure_sorts'] = [
+    'type' => 'string',
+    'label' => 'Configure sorts',
+  ];
+
+  $definitions['views.display.block']['mapping']['customizable_exposed_filters'] = [
+    'type' => 'sequence',
+    'sequence' => [
+      'type' => 'string',
+    ],
+  ];
+  $definitions['views_block']['mapping']['exposed_filter_values'] = [
+    'type' => 'sequence',
+    'sequence' => [
+      // We do not know how all filter form elements will store data.
+      'type' => 'ignore',
+    ],
+  ];
+
+}
 
 /**
  * Implements hook_element_info_alter().
@@ -180,6 +288,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         case 'inline_block:uiowa_aggregator':
         case 'inline_block:uiowa_card':
         case 'inline_block:uiowa_events':
+        case 'views_block:people_list_block-list_card':
           // Set '#states' for card image size.
           $form['layout_builder_style_card_image_size']['#states'] = [
             'visible' => [
@@ -200,18 +309,22 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
 
           // Label the white background option as the default.
           $form['layout_builder_style_background']['#options']['block_background_style_light'] = 'White (default)';
+          $form['layout_builder_style_card_media_position']['#options']['card_media_position_stacked'] = 'Stacked';
 
           if ($block->getPluginId() == 'inline_block:uiowa_events') {
             $form['layout_builder_style_card_media_position']['#options']['card_media_position_left'] = 'Left (default)';
-            $form['layout_builder_style_card_media_position']['#options']['card_media_position_stacked'] = 'Stacked';
             $form['layout_builder_style_media_format']['#options']['media_format_circle'] = 'Circle (default)';
             $form['layout_builder_style_card_image_size']['#options']['card_image_small'] = 'Small (default)';
           }
           if ($block->getPluginId() == 'inline_block:uiowa_aggregator') {
             $form['layout_builder_style_card_media_position']['#options']['card_media_position_right'] = 'Right (default)';
-            $form['layout_builder_style_card_media_position']['#options']['card_media_position_stacked'] = 'Stacked';
             $form['layout_builder_style_card_image_size']['#options']['card_image_small'] = 'Small (default)';
             $form['layout_builder_style_media_format']['#options']['media_format_widescreen'] = 'Widescreen (16:9) (default)';
+          }
+          if ($block->getPluginId() == 'views_block:people_list_block-list_card') {
+            $form['layout_builder_style_card_media_position']['#options']['card_media_position_right'] = 'Right (default)';
+            $form['layout_builder_style_card_image_size']['#options']['card_image_small'] = 'Small (default)';
+            $form['layout_builder_style_media_format']['#options']['media_format_circle'] = 'Circle (default)';
           }
 
           // If the block is new, set its default background
@@ -228,6 +341,12 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             if ($block->getPluginId() == 'inline_block:uiowa_aggregator') {
               $form['layout_builder_style_card_media_position']['#default_value'] = 'card_media_position_right';
               $form['layout_builder_style_media_format']['#default_value'] = 'media_format_widescreen';
+              $form['layout_builder_style_card_image_size']['#default_value'] = 'card_image_small';
+              $form['layout_builder_style_content_alignment']['#default_value'] = 'content_alignment_left';
+            }
+            if ($block->getPluginId() == 'views_block:people_list_block-list_card') {
+              $form['layout_builder_style_card_media_position']['#default_value'] = 'card_media_position_right';
+              $form['layout_builder_style_media_format']['#default_value'] = 'media_format_circle';
               $form['layout_builder_style_card_image_size']['#default_value'] = 'card_image_small';
               $form['layout_builder_style_content_alignment']['#default_value'] = 'content_alignment_left';
             }
@@ -398,6 +517,7 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
     case 'inline_block:uiowa_aggregator':
     case 'inline_block:uiowa_card':
     case 'inline_block:uiowa_events':
+    case 'views_block:people_list_block-list_card':
       $media_position = $form_state->getValue('layout_builder_style_card_media_position');
       $media_format = $form_state->getValue('layout_builder_style_media_format');
 
@@ -452,6 +572,11 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
     ->getPlugin();
 
   switch ($block->getPluginId()) {
+    case 'inline_block:featured_content':
+      $element['field_uiowa_headline']['widget'][0]['container']['heading_size']['#access'] = FALSE;
+      $element['field_uiowa_headline']['widget'][0]['container']['child_heading_size']['#access'] = FALSE;
+      break;
+
     case 'inline_block:uiowa_text_area':
       if (isset($element['field_uiowa_headline'])) {
         // Unset the unnecessary 'child_heading_size' field option.
@@ -703,10 +828,104 @@ function layout_builder_custom_preprocess_block(&$variables) {
  */
 function layout_builder_custom_preprocess_media(&$variables) {
   $media = $variables['elements']['#media'];
-  if ($media->bundle() === 'video') {
-    $variables['attributes'] = [
-      'class' => ['media--video'],
-    ] + $variables['attributes'];
+  switch ($media->bundle()) {
+    case 'image':
+      $referring_item = $media->_referringItem;
+      // So far, only way to get media viewmode switching lb block > view > node > media deep.
+      if ($referring_item) {
+        /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $referring_field */
+        $referring_field = $referring_item->getParent();
+        if ($referring_field) {
+          $parent_entity = $referring_field->getParent();
+          $parent_entity = $parent_entity->getEntity();
+          // If view is attached to parent entity.
+          if (isset($parent_entity->view)) {
+            $view = $parent_entity->view;
+            // If row_styles were attached to the view.
+            if ($view->display_handler->getOption('row_styles')) {
+              $row_styles = $view->display_handler->getOption('row_styles');
+              $media_formats = [
+                'media_format_widescreen' => 'large__widescreen',
+                'media_format_square' => 'large__square',
+                'media_format_circle' => 'large__square',
+              ];
+              // Change view_mode based on lb_styles.
+              foreach ($media_formats as $style => $view_mode) {
+                if (in_array($style, $row_styles)) {
+                  $variables['content']['field_media_image'][0]['#responsive_image_style_id'] = $view_mode;
+                  // Prevents sticky cached images.
+                  $variables['content']['field_media_image'][0]['#cache']['max-age'] = 0;
+                }
+              }
+            }
+          }
+        }
+      }
+      break;
+
+    case 'video':
+      $variables['attributes'] = [
+        'class' => ['media--video'],
+      ] + $variables['attributes'];
+      break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_views_view_unformatted().
+ */
+function layout_builder_custom_preprocess_views_view_unformatted(&$variables) {
+  // @todo Figure out how to appropriately scope this.
+  /** @var \Drupal\views\ViewExecutable $view */
+  $view = $variables['view'];
+  $variables['row_item_classes'] = [];
+
+  $row_styles = $view->display_handler->getOption('row_styles');
+  if (isset($row_styles) && !empty($variables['rows'])) {
+
+    // Convert single selection to an array for consistent processing.
+    if (!is_array($row_styles)) {
+      $row_styles = [$row_styles];
+    }
+
+    $default_classes = [
+      'card--list',
+      'card--person-teaser',
+      'card--centered-right',
+      'card--alignment-right',
+    ];
+
+    // @todo Pass through media classes too.
+    $default_media_style_ids = [
+      'media--circle',
+      'card__media--small',
+      'card__media',
+    ];
+
+    // Retrieve all styles from selection(s).
+    $item_classes = [
+      'card_media_position' => 'card--media-right',
+    ];
+    $item_media_classes = [];
+    foreach ($row_styles as $style_id) {
+      // Account for incorrectly configured component configuration which may
+      // have a NULL style ID. We cannot pass NULL to the storage handler or
+      // it will throw an exception.
+      if (empty($style_id)) {
+        continue;
+      }
+      /** @var \Drupal\layout_builder_styles\LayoutBuilderStyleInterface $style */
+      $style = \Drupal::entityTypeManager()->getStorage('layout_builder_style')->load($style_id);
+      if ($style) {
+        // @todo Check if the style group matches a class that is used for
+        //   the media element and put it in a separate array.
+        $classes = \preg_split('(\r\n|\r|\n)', $style->getClasses());
+        $item_classes[$style->getGroup()] = implode(' ', $classes);
+        $variables['#cache']['tags'][] = 'config:layout_builder_styles.style.' . $style->id();
+      }
+    }
+    // @todo Add media element classes to a separate variable.
+    $variables['row_item_classes'] = array_merge($default_classes, array_values($item_classes));
   }
 }
 
@@ -714,7 +933,27 @@ function layout_builder_custom_preprocess_media(&$variables) {
  * Implements hook_views_plugins_display_alter().
  */
 function layout_builder_custom_views_plugins_display_alter(&$displays) {
-  if (!empty($displays['block']['class']) && $displays['block']['class'] == Block::class) {
+  $is_v2 = \Drupal::config('config_split.config_split.sitenow_v2')->get('status');
+
+  // Only swap views block for v3 sites because it breaks things.
+  if ($is_v2 === FALSE && !empty($displays['block']['class']) && $displays['block']['class'] == Block::class) {
     $displays['block']['class'] = ListBlock::class;
+  }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function layout_builder_custom_views_pre_render(ViewExecutable $view) {
+  // Hotfix shim to not display exposed blocks, necessary because of the hotfix above.
+  // @todo Remove this exception when these view displays are removed.
+  $display = $view->getDisplay();
+  $exceptions = [
+    'block_people_slf',
+    'block_people_sfl',
+    'block_articles',
+  ];
+  if (!in_array($display->display['id'], $exceptions) && $view->display_handler instanceof ListBlock) {
+    $view->exposed_raw_input = [];
   }
 }
