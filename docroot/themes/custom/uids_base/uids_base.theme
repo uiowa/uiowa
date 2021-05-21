@@ -226,6 +226,7 @@ function uids_base_preprocess_page(&$variables) {
 function uids_base_preprocess_node(&$variables) {
   /** @var \Drupal\node\Entity\Node $node */
   $node = $variables['node'];
+
   // Append person credentials to the node label in the teaser view mode.
   if ($variables['view_mode'] == 'teaser') {
     if ($node->hasField('field_person_credential') && $creds = $node->get('field_person_credential')->getString()) {
@@ -234,6 +235,18 @@ function uids_base_preprocess_node(&$variables) {
         '@title' => $title,
         '@creds' => $creds,
       ]);
+    }
+
+    // @todo Remove after v2 dies.
+    $is_v2 = \Drupal::config('config_split.config_split.sitenow_v2')->get('status');
+
+    if ($is_v2 && $node->getType() == 'page') {
+      $variables['attributes']['class'][] = 'card--stacked';
+      $variables['media_classes'] = ['media--widescreen', 'card__media--large'];
+    }
+    else {
+      $variables['attributes']['class'][] = 'card--media-right';
+      $variables['media_classes'] = ['media--widescreen', 'card__media--small'];
     }
   }
 

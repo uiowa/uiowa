@@ -79,7 +79,6 @@
     not node.isPublished() ? 'node--unpublished',
     view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
     'card--list',
-    'card--media-right'
 ]
 %}
 {{ attach_library('classy/node') }}
@@ -91,7 +90,7 @@
   'card_title': label,
   'content': content,
   'card_link_url': url,
-  'media_styles': ['media--widescreen', 'card__media--small'],
+  'media_styles': media_classes,
   'headline_level': headline_level,
 } %}
 
