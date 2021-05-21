@@ -83,10 +83,10 @@
 %}
 
 {% if node.field_event_virtual.0.uri is not empty %}
-  {% set event_icon = '<span class="fas fa-laptop"></span>' %}
+  {% set event_icon = '<span role="presentation" class="fas fa-laptop"></span>' %}
   {% set event_location = 'Virtual' %}
 {% else %}
-  {% set event_icon = '<span class="fas fa-map-marker-alt"></span>' %}
+  {% set event_icon = '<span role="presentation" class="fas fa-map-marker-alt"></span>' %}
   {% set event_location = content.field_event_location.0.organization %}
 {% endif %}
 
