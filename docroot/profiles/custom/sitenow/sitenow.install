@@ -2731,6 +2731,10 @@ function sitenow_update_9009() {
 
     $results = $query->execute();
 
+    // We need to keep track of nodes we've updated
+    // and check if there are unsaved changes in LB.
+    $check_key_value_nids = [];
+
     // Loop through the results.
     foreach ($results as $record) {
 
@@ -2841,6 +2845,9 @@ function sitenow_update_9009() {
         // Repurpose the existing component and set new styles.
         $component->setConfiguration($config);
         $component->set('layout_builder_styles_style', $new_styles);
+
+        // Delete the old people block.
+        $people_block->delete();
       }
 
       // Replace the old section with our newly created one.
@@ -2852,6 +2859,13 @@ function sitenow_update_9009() {
         ])
         ->execute();
 
+      if (!in_array($record->entity_id, $check_key_value_nids)) {
+        $check_key_value_nids[$record->entity_id] = $section;
+      }
+    }
+
+    foreach ($check_key_value_nids as $nid => $section) {
+
       // Check if we have a tempstore of this node.
       // Temp store is saved in the db in the key_value_expire,
       // And holds a serialized blob with the unsaved changes.
@@ -2859,26 +2873,28 @@ function sitenow_update_9009() {
       // and layoutTempstoreRepository, but have not found it yet.
       $temp_stores = $db->select('key_value_expire', 'kve')
         ->fields('kve', ['value'])
-        ->condition('name', 'node.' . $record->entity_id . '.default.en', '=')
+        ->condition('name', 'node.' . $nid . '.default.en', '=')
         ->execute()
         ->fetchCol();
       foreach ($temp_stores as $temp_store) {
         // Unserialize and replace the section in question with our updated one.
         $stored_data = unserialize($temp_store);
         $section_storage = $stored_data->data['section_storage'];
+        /** @var \Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage $section_storage */
+        // @todo We need to generate this section similar to above,
+        //   in case any of the saved changes are different than
+        //   the version of the section saved above.
         $section_storage->insertSection($record->delta, $section);
         $stored_data->data['section_storage'] = $section_storage;
 
         // Insert the updated tempstore.
         $db->update('key_value_expire')
-          ->condition('name', 'node.' . $record->entity_id . '.default.en', '=')
+          ->condition('name', 'node.' . $nid . '.default.en', '=')
           ->fields([
             'value' => serialize($stored_data),
           ])
           ->execute();
       }
-
-      $check_count++;
     }
   }
 }
