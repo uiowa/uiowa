@@ -244,6 +244,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         }
       }
 
+
       // Always set title field to not be required.
       $form['settings']['label']['#required'] = FALSE;
 
@@ -413,6 +414,16 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       break;
 
     case 'layout_builder_configure_section':
+      // Remove container settings - None - empty option
+      unset($form['layout_builder_style_container']['#empty_option']);
+      // Add (Default) after Normal option
+      $form['layout_builder_style_container']['#options']['section_margin_fixed_width_container'] = 'Normal (Default)';
+      // Set Normal as the default option when opening form
+      if (isset($form['layout_builder_style_container'])) {
+        // @todo set this only if no container value was previously set
+          $form['layout_builder_style_container']['#default_value'] = ['section_margin_fixed_width_container'];
+      }
+
       // Add our LBS heading before style options.
       _layout_builder_custom_add_lbs_heading($form);
 
