@@ -2708,13 +2708,9 @@ function sitenow_update_9008() {
  * Update all LB people blocks to views block.
  */
 function sitenow_update_9009() {
-  // @todo Load config updates for LB styles and view.
   $db = \Drupal::database();
   $block_storage = \Drupal::entityTypeManager()
     ->getStorage('block_content');
-  /** @var \Drupal\Core\Block\BlockManager $block_manager */
-  $block_manager = \Drupal::service('plugin.manager.block');
-  $view_block_plugin_id = 'views_block:people_list_block-list_card';
 
   $section_column = 'layout_builder__layout_section';
   $tables = [
@@ -2735,9 +2731,6 @@ function sitenow_update_9009() {
 
     $results = $query->execute();
 
-    // @todo Remove debugging.
-    $check_count = 0;
-
     // Loop through the results.
     foreach ($results as $record) {
 
@@ -2747,14 +2740,6 @@ function sitenow_update_9009() {
 
       // Loop through the components in the section.
       foreach ($section->getComponents() as &$component) {
-
-        // @todo Remove debugging.
-        if ($check_count < 1) {
-          \Drupal::messenger()
-            ->addMessage(t('People block: @component', [
-              '@component' => print_r($component, TRUE),
-            ]));
-        }
 
         // Limit this to only the uiowa_people block component.
         if ($component->getPluginId() !== 'inline_block:uiowa_people') {
@@ -2767,15 +2752,11 @@ function sitenow_update_9009() {
           continue;
         }
 
-        if ($check_count < 1) {
-          \Drupal::messenger()
-            ->addMessage(t('Revision id: @id', [
-              '@id' => $revision_id,
-            ]));
-        }
+        $people_block = $block_storage->loadRevision($revision_id);
+        $people_block->delete();
 
-        $styles = $component->get('layout_builder_styles');
-        $default_lb_styles = [
+        // Default LB styles for new block.
+        $new_styles = [
           'card_media_position_left',
           'media_format_circle',
           'content_alignment_left',
@@ -2784,12 +2765,7 @@ function sitenow_update_9009() {
           'block_grid_threecol_33_34_33',
         ];
 
-        $people_block = $block_storage->loadRevision($revision_id);
-
-        // @todo Need to figure out how to instantiate a views block
-        //   and override it configuration with the fields from the
-        //   old block.
-
+        // Build out the new view block configuration.
         $config = [
           'id' => 'views_block:people_list_block-list_card',
           'label' => NULL,
@@ -2797,10 +2773,8 @@ function sitenow_update_9009() {
           'label_display' => NULL,
           'views_label' => '',
           'items_per_page' => $people_block->field_collection_results->value ?: 'none',
-          // @todo Do we need to set defaults for this?
           'headline' => $people_block->field_uiowa_headline->value,
           'pager' => $people_block->field_collection_pager->value ? 'full' : 'some',
-          // @todo Can this be set in the people block?
           'pager_offset' => 0,
           'use_more' => $people_block->field_collection_more->value,
           'use_more_link_url' => $people_block->field_collection_more_path->value,
@@ -2821,7 +2795,7 @@ function sitenow_update_9009() {
           'exposed_filter_values' => [
             'field_tags_target_id' => [],
           ],
-          'layout_builder_styles' => $default_lb_styles,
+          'layout_builder_styles' => $new_styles,
           'context_mapping' => [],
         ];
 
@@ -2845,72 +2819,23 @@ function sitenow_update_9009() {
         // Process field visibility settings.
         foreach ($fields as $field) {
           $hide = 0;
-          // @todo Set this based on current LB style settings.
 
-          if (isset($styles)) {
-            switch ($field) {
-              case 'field_image':
-                if (in_array('block_hide_image', $styles)) {
-                  $hide = 1;
-                }
-                break;
-              case 'field_teaser':
-                if (in_array('block_hide_description', $styles)) {
-                  $hide = 1;
-                }
-                break;
-              case 'field_person_email':
-              case 'field_person_phone':
-              case 'field_person_position':
-                if (in_array('block_hide_details', $styles)) {
-                  $hide = 1;
-                }
-                break;
-            }
+          if (in_array($field, ['field_person_email', 'field_person_phone', 'field_teaser'])) {
+            $hide = 1;
           }
 
           $config['fields'][$field]['hide'] = $hide;
         }
 
         // Process sorting defaults.
-        $current_sort = $people_block->get('field_collection_sort')->getValue()[0];
+        $current_sort = $people_block->field_collection_sort->value;
         if ($current_sort['value'] == 'block_people_slf') {
           $config['sort']['field_person_first_name_value']['weight'] = 1;
         }
 
-        if ($check_count < 1) {
-          \Drupal::messenger()
-            ->addMessage(t('Config: @component', [
-              '@component' => print_r($config, TRUE),
-            ]));
-        }
-
-        $new_styles = [];
-        if (!empty($styles)) {
-          foreach ($styles as $key => $style) {
-            if (!in_array($style, [
-              'block_hide_description',
-              'block_hide_details',
-              'block_hide_image',
-            ])) {
-              $new_styles[] = $style;
-            }
-          }
-        }
-
-        $new_styles = $default_lb_styles + $new_styles;
-
         // Repurpose the existing component and set new styles.
         $component->setConfiguration($config);
         $component->set('layout_builder_styles_style', $new_styles);
-        if ($check_count < 1) {
-          \Drupal::messenger()
-            ->addMessage(t('New component: @component', [
-              '@component' => print_r($component, TRUE),
-            ]));
-        }
-
-        // @todo Remove the existing people block and revisions?
       }
 
       // Replace the old section with our newly created one.
@@ -2921,8 +2846,6 @@ function sitenow_update_9009() {
           $section_column => serialize($section),
         ])
         ->execute();
-
-      $check_count++;
     }
   }
 }

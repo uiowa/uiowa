@@ -77,6 +77,7 @@ display:
       style:
         type: default
         options:
+          grouping: {  }
           row_class: ''
           default_row_class: true
           uses_fields: true
@@ -647,62 +648,11 @@ display:
             value: 'There are currently no results to display.'
             format: filtered_html
           plugin_id: text
-      relationships:
-        field_tags:
-          id: field_tags
-          table: node__field_tags
-          field: field_tags
-          relationship: none
-          group_type: group
-          admin_label: 'field_tags: Taxonomy term'
-          required: false
-          plugin_id: standard
-      arguments:
-        tid:
-          id: tid
-          table: taxonomy_term_field_data
-          field: tid
-          relationship: field_tags
-          group_type: group
-          admin_label: ''
-          default_action: ignore
-          exception:
-            value: all
-            title_enable: false
-            title: All
-          title_enable: false
-          title: ''
-          default_argument_type: fixed
-          default_argument_options:
-            argument: ''
-          default_argument_skip_url: false
-          summary_options:
-            base_path: ''
-            count: true
-            items_per_page: 25
-            override: false
-          summary:
-            sort_order: asc
-            number_of_records: 0
-            format: default_summary
-          specify_validation: true
-          validate:
-            type: 'entity:taxonomy_term'
-            fail: empty
-          validate_options:
-            bundles:
-              tags: tags
-            operation: view
-            multiple: 1
-            access: false
-          break_phrase: true
-          not: false
-          entity_type: taxonomy_term
-          entity_field: tid
-          plugin_id: taxonomy
+      relationships: {  }
+      arguments: {  }
       display_extenders: {  }
       use_ajax: true
-      group_by: true
+      group_by: false
       use_more: true
       use_more_always: false
       use_more_text: 'View more'
@@ -713,7 +663,6 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
-        - url
         - url.query_args
         - 'user.node_grants:view'
         - user.permissions
@@ -826,7 +775,7 @@ display:
             identifier: field_tags_target_id
             required: false
             remember: false
-            multiple: false
+            multiple: true
             remember_roles:
               authenticated: authenticated
               anonymous: '0'
@@ -848,7 +797,7 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          reduce_duplicates: false
+          reduce_duplicates: true
           type: textfield
           limit: true
           vid: tags
@@ -857,6 +806,10 @@ display:
           parent: 0
           level_labels: ''
           force_deepest: false
+          save_lineage: false
+          hierarchy_depth: 0
+          required_depth: 0
+          none_label: '- Please select -'
           plugin_id: taxonomy_index_tid
       defaults:
         filters: false
