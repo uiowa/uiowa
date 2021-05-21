@@ -2675,3 +2675,9 @@ $sites['iihrwkrajewski.local.drupal.uiowa.edu'] = 'wkrajewski.iihr.uiowa.edu';
 $sites['iihrwkrajewski.dev.drupal.uiowa.edu'] = 'wkrajewski.iihr.uiowa.edu';
 $sites['iihrwkrajewski.stage.drupal.uiowa.edu'] = 'wkrajewski.iihr.uiowa.edu';
 $sites['iihrwkrajewski.prod.drupal.uiowa.edu'] = 'wkrajewski.iihr.uiowa.edu';
+
+// Directory aliases for howes.lab.uiowa.edu.
+$sites['labhowes.local.drupal.uiowa.edu'] = 'howes.lab.uiowa.edu';
+$sites['labhowes.dev.drupal.uiowa.edu'] = 'howes.lab.uiowa.edu';
+$sites['labhowes.stage.drupal.uiowa.edu'] = 'howes.lab.uiowa.edu';
+$sites['labhowes.prod.drupal.uiowa.edu'] = 'howes.lab.uiowa.edu';
