@@ -244,7 +244,7 @@ function uids_base_preprocess_node(&$variables) {
       $variables['attributes']['class'][] = 'card--stacked';
       $variables['media_classes'] = ['media--widescreen', 'card__media--large'];
     }
-    else {
+    elseif (!$is_v2 && $node->getType() == 'page') {
       $variables['attributes']['class'][] = 'card--media-right';
       $variables['media_classes'] = ['media--widescreen', 'card__media--small'];
     }
