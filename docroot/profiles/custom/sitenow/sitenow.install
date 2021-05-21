@@ -2851,7 +2851,7 @@ function sitenow_update_9009() {
           $section_column => serialize($section),
         ])
         ->execute();
-      
+
       // Check if we have a tempstore of this node.
       // Temp store is saved in the db in the key_value_expire,
       // And holds a serialized blob with the unsaved changes.
@@ -2863,11 +2863,19 @@ function sitenow_update_9009() {
         ->execute()
         ->fetchCol();
       foreach ($temp_stores as $temp_store) {
-        // @todo Process this and update the right section with our new block.
-        \Drupal::messenger()
-          ->addMessage(t('Temp Store: @value', [
-            '@value' => print_r($temp_store, TRUE),
-          ]));
+        // Unserialize and replace the section in question with our updated one.
+        $stored_data = unserialize($temp_store);
+        $section_storage = $stored_data->data['section_storage'];
+        $section_storage->insertSection($record->delta, $section);
+        $stored_data->data['section_storage'] = $section_storage;
+
+        // Insert the updated tempstore.
+        $db->update('key_value_expire')
+          ->condition('name', 'node.' . $record->entity_id . '.default.en', '=')
+          ->fields([
+            'value' => serialize($stored_data),
+          ])
+          ->execute();
       }
 
       $check_count++;
