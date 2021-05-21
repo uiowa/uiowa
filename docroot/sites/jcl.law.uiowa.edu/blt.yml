@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: lawjcl.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: lawjcl
+  human_name: jcl.law.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lawjcl.prod
+drupal:
+  db:
+    database: jcl_law_uiowa_edu
+uiowa:
+  requester: dquam
