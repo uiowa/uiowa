@@ -418,19 +418,17 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       // Add (Default) after Normal option.
       $form['layout_builder_style_container']['#options']['section_margin_fixed_width_container'] = 'Normal (Default)';
 
-      /**
-       * Custom startsWith function
-       */
-      function startsWith($haystack, $needle) {
-        $length = strlen($needle);
-        return substr($haystack, 0, $length) === $needle;
-      }
+      if (isset($form['#attributes']['data-layout-builder-target-highlight-id'])) {
 
-      // Set normal as the default only if a new section is added.
-      if (isset($form['#attributes']['data-layout-builder-target-highlight-id']) && !(startsWith($form['#attributes']['data-layout-builder-target-highlight-id'], "section-update"))) {
-        $form['layout_builder_style_container']['#default_value'] = ['section_margin_fixed_width_container'];
-      }
+        $match = 'section-update';
+        $is_update = substr($form['#attributes']['data-layout-builder-target-highlight-id'], 0, strlen($match)) === $match;
 
+        // Set normal as the default only if a new section is added.
+        if (!$is_update) {
+          $form['layout_builder_style_container']['#default_value'] = ['section_margin_fixed_width_container'];
+        }
+
+      }
       // Add our LBS heading before style options.
       _layout_builder_custom_add_lbs_heading($form);
 
