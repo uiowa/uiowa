@@ -247,13 +247,34 @@ function uids_base_preprocess_node(&$variables) {
     // @todo Remove after v2 dies.
     $is_v2 = \Drupal::config('config_split.config_split.sitenow_v2')->get('status');
 
-    if ($is_v2 && $node->getType() == 'page') {
-      $variables['attributes']['class'][] = 'card--stacked';
-      $variables['media_classes'] = ['media--widescreen', 'card__media--large'];
-    }
-    elseif (!$is_v2 && $node->getType() == 'page') {
-      $variables['attributes']['class'][] = 'card--media-right';
-      $variables['media_classes'] = ['media--widescreen', 'card__media--small'];
+    if (in_array($node->getType(), [
+      'article',
+      'page',
+    ])) {
+//      $is_stacked = FALSE;
+//      if ($referring_item = $node->_referringItem) {
+//        if ($parent = $referring_item->getParent()) {
+//          if ($parent = $parent->getParent()) {
+//            if ($paragraph = $parent->getEntity()) {
+//              $classes = $paragraph->field_uip_classes->getValue();
+//              foreach (['grid', 'masonry'] as $check) {
+//                if (in_array($check, array_column($classes, 'value'))) {
+//                  $is_stacked = TRUE;
+//                  break;
+//                }
+//              }
+//            }
+//          }
+//        }
+//      }
+      if ($is_v2/* && $is_stacked*/) {
+        $variables['attributes']['class'][] = 'card--stacked';
+        $variables['media_classes'] = ['media--widescreen', 'card__media--large'];
+      }
+      else {
+        $variables['attributes']['class'][] = 'card--media-right';
+        $variables['media_classes'] = ['media--widescreen', 'card__media--small'];
+      }
     }
   }
 
