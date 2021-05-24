@@ -227,7 +227,7 @@ function uids_base_preprocess_node(&$variables) {
   /** @var \Drupal\node\Entity\Node $node */
   $node = $variables['node'];
 
-  // Create heading_size variable if render property was set.
+  // Create heading_size variable for templates if render property was set.
   if (isset($variables['elements']['#heading_size'])) {
     $variables['heading_size'] = $variables['elements']['#heading_size'];
   }

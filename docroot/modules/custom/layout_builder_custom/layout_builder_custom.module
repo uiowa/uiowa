@@ -808,12 +808,14 @@ function layout_builder_custom_preprocess_block(&$variables) {
 
   switch ($variables['elements']['#plugin_id']) {
     case 'inline_block:featured_content':
-      // Unset the entity reference render array and create our own.
+      // Take control of the referenced entity renders to pass in heading size.
       unset($variables['content']['field_featured_content_item']);
       $variables['content']['referenced_items'] = [];
 
       /** @var \Drupal\block_content\Entity\BlockContent $block */
       $block = $variables['content']['#block_content'];
+
+      // This is a single value field.
       $headline_field = $block->get('field_uiowa_headline')->getValue()[0];
 
       if (empty($headline_field['headline'])) {
