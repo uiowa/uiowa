@@ -15,7 +15,7 @@ use Drupal\filter\Plugin\FilterBase;
  *   id = "filter_icon",
  *   title = @Translation("Add role attribute to icons"),
  *   type = Drupal\filter\Plugin\FilterInterface::TYPE_TRANSFORM_REVERSIBLE,
- *   weight = 100
+ *   weight = -30
  * )
  */
 class FilterIcon extends FilterBase {
