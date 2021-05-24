@@ -704,14 +704,25 @@ EOD;
         ->printOutput(FALSE)
         ->printMetadata(FALSE)
         ->run();
+
+        $result = $this->taskGit()
+        ->dir($this->getConfigValue('repo.root'))
+        ->exec('git rev-parse --abbrev-ref HEAD')
+        ->interactive(FALSE)
+        ->printOutput(FALSE)
+        ->printMetadata(FALSE)
+        ->run();
+
+      $branch = $result->getMessage();
+
       $steps += [
-        'Push this branch and merge via a pull request.',
         'Coordinate a new release and deploy to the test and prod environments.',
       ];
     }
 
     $this->say("Committed site <comment>{$host}</comment> code.");
     $this->say("Continue initializing additional multisites or follow the next steps below.");
+    $this->say("Push this branch and merge via a pull request: <comment>git push --set-upstream origin {$branch}</comment>");
 
     $steps += [
       'Deploy a release to production as per usual.',
