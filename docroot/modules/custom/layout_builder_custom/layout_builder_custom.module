@@ -417,9 +417,17 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       unset($form['layout_builder_style_container']['#empty_option']);
       // Add (Default) after Normal option.
       $form['layout_builder_style_container']['#options']['section_margin_fixed_width_container'] = 'Normal (Default)';
-      // Set Normal as the default option when opening form.
-      if (isset($form['layout_builder_style_container'])) {
-        // @todo set this only if no container value was previously set
+
+      /**
+       * Custom startsWith function
+       */
+      function startsWith($haystack, $needle) {
+        $length = strlen($needle);
+        return substr($haystack, 0, $length) === $needle;
+      }
+
+      // Set normal as the default only if a new section is added.
+      if (isset($form['#attributes']['data-layout-builder-target-highlight-id']) && !(startsWith($form['#attributes']['data-layout-builder-target-highlight-id'], "section-update"))) {
         $form['layout_builder_style_container']['#default_value'] = ['section_margin_fixed_width_container'];
       }
 
