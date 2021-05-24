@@ -251,23 +251,7 @@ function uids_base_preprocess_node(&$variables) {
       'article',
       'page',
     ])) {
-//      $is_stacked = FALSE;
-//      if ($referring_item = $node->_referringItem) {
-//        if ($parent = $referring_item->getParent()) {
-//          if ($parent = $parent->getParent()) {
-//            if ($paragraph = $parent->getEntity()) {
-//              $classes = $paragraph->field_uip_classes->getValue();
-//              foreach (['grid', 'masonry'] as $check) {
-//                if (in_array($check, array_column($classes, 'value'))) {
-//                  $is_stacked = TRUE;
-//                  break;
-//                }
-//              }
-//            }
-//          }
-//        }
-//      }
-      if ($is_v2/* && $is_stacked*/) {
+      if ($is_v2) {
         $variables['attributes']['class'][] = 'card--stacked';
         $variables['media_classes'] = ['media--widescreen', 'card__media--large'];
       }
