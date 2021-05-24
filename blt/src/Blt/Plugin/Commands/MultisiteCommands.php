@@ -705,7 +705,7 @@ EOD;
         ->printMetadata(FALSE)
         ->run();
 
-        $result = $this->taskGit()
+      $result = $this->taskGit()
         ->dir($this->getConfigValue('repo.root'))
         ->exec('git rev-parse --abbrev-ref HEAD')
         ->interactive(FALSE)
