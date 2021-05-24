@@ -82,13 +82,13 @@
       {{ card_text }}
     {% endif %}
     {% if transfer_tip is not empty %}
-      <span class="transfer-tip"><i class="fas fa-lightbulb"></i> <a href="{{ transfer_tip }}" class="">Transfer tips</a></span>
+      <span class="transfer-tip"><i role="presentation" class="fas fa-lightbulb"></i> <a href="{{ transfer_tip }}" class="">Transfer tips</a></span>
     {% endif %}
     {% if requirement_url is not empty %}
-      <a href="{{ requirement_url }}" class="bttn bttn--link bttn--outline bttn--sans-serif">{{ requirement_label }} <i class="fas fa-arrow-right"></i></a>
+      <a href="{{ requirement_url }}" class="bttn bttn--link bttn--outline bttn--sans-serif">{{ requirement_label }} <i role="presentation" class="fas fa-arrow-right"></i></a>
     {% endif %}
     {% if process_url is not empty %}
-      <a href="{{ process_url }}" class="bttn bttn--outline bttn--sans-serif">{{ process_label }} <i class="fas fa-arrow-right"></i></a>
+      <a href="{{ process_url }}" class="bttn bttn--outline bttn--sans-serif">{{ process_label }} <i role="presentation" class="fas fa-arrow-right"></i></a>
     {% endif %}
   {% endblock %}
 {% endembed %}
