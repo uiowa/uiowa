@@ -1877,6 +1877,10 @@ apache_vhosts:
     servername: testing3.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: testing4.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
 
 # Multisite installations should configure additional databases here.
 # It's recommended to prefix database names with 'drupal'. Otherwise,

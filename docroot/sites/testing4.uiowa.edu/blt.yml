@@ -1,0 +1,13 @@
+project:
+  local:
+    hostname: testing4.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: testing4
+  human_name: testing4.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: testing4.prod
+drupal:
+  db:
+    database: testing4_uiowa_edu
