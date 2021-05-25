@@ -1,4 +1,8 @@
 services:
+  grad_core.section_component_subscriber:
+    class: Drupal\grad_core\EventSubscriber\SectionComponentSubscriber
+    tags:
+      - { name: event_subscriber }
   grad_core.entity_print_subscriber:
     class: Drupal\grad_core\EventSubscriber\EntityPrintSubscriber
     tags:
