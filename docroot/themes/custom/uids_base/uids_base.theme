@@ -253,8 +253,8 @@ function uids_base_preprocess_node(&$variables) {
           $variables['attributes']['class'][] = 'card--stacked';
           $variables['media_classes'] = ['media--widescreen', 'card__media--large'];
         case 'article':
-          $variables['attributes']['class'][] = '';
-          $variables['media_classes'] = [''];
+          unset($variables['attributes']['class']);
+          unset($variables['media_classes']);
       }
     }
     elseif (!$is_v2 && $node->getType() == 'page' || 'article') {
