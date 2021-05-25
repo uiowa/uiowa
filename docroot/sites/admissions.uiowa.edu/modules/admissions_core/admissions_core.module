@@ -529,7 +529,7 @@ function admissions_core_views_pre_render(ViewExecutable $view) {
   if ($view->id() == 'student_card') {
     if (isset($view->element["headline"]["#headline"]) && !empty($view->element["headline"]["#headline"])) {
       $headline_markup = [
-        '#markup' => '<span class="fas fa-user"></span> &nbsp;<a href="/student-profiles">' . $view->element["headline"]["#headline"] . '</a>',
+        '#markup' => '<span role="presentation" class="fas fa-user"></span> &nbsp;<a href="/student-profiles">' . $view->element["headline"]["#headline"] . '</a>',
       ];
       $view->element["headline"]["#headline"] = $headline_markup;
     }
