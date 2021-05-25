@@ -2711,15 +2711,28 @@ function sitenow_update_9008() {
  */
 function _convert_people_block_component(SectionComponent &$component, BlockContentInterface $block) {
 
+  $styles = $component->get('layout_builder_styles');
+
   // Default LB styles for new block.
   $new_styles = [
     'card_media_position_right',
     'media_format_circle',
     'content_alignment_left',
     'card_image_small',
-    'list_format_list',
-    'block_grid_threecol_33_34_33',
   ];
+
+  foreach ($styles as $key => $style) {
+    // @todo Get any relevant LB styles from existing.
+    if (!in_array($style, [
+      'block_hide_description',
+      'block_hide_details',
+      'block_hide_image',
+    ])) {
+      $new_styles[] = $style;
+    }
+  }
+
+  $new_styles = array_unique($new_styles);
 
   // Build out the new view block configuration.
   $config = [
@@ -2775,16 +2788,29 @@ function _convert_people_block_component(SectionComponent &$component, BlockCont
     'field_person_position',
   ];
 
-  // Process field visibility settings.
+  // Process field visibility settings
   foreach ($fields as $field) {
     $hide = 0;
-
-    if (in_array($field, [
-      'field_person_email',
-      'field_person_phone',
-      'field_teaser'
-    ])) {
-      $hide = 1;
+    if (isset($styles)) {
+      switch ($field) {
+        case 'field_image':
+          if (in_array('block_hide_image', $styles)) {
+            $hide = 1;
+          }
+          break;
+        case 'field_teaser':
+          if (in_array('block_hide_description', $styles)) {
+            $hide = 1;
+          }
+          break;
+        case 'field_person_email':
+        case 'field_person_phone':
+        case 'field_person_position':
+        if (in_array('block_hide_details', $styles)) {
+          $hide = 1;
+        }
+        break;
+      }
     }
 
     $config['fields'][$field]['hide'] = $hide;
