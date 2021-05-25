@@ -1,0 +1,5 @@
+services:
+  grad_core.entity_print_subscriber:
+    class: Drupal\grad_core\EventSubscriber\EntityPrintSubscriber
+    tags:
+      - { name: event_subscriber }

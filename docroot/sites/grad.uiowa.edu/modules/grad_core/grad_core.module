@@ -7,6 +7,7 @@
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Template\Attribute;
 
 /**
  * Implements hook_entity_presave().
@@ -20,6 +21,22 @@ function grad_core_entity_presave(EntityInterface $entity) {
       $entity->setTitle($output);
       break;
 
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function grad_core_preprocess_entity_print(&$variables) {
+  if ($variables['theme_hook_original'] == 'entity_print__node__page') {
+    // The debug path nests this differently for some reason.
+    $node = $variables['content'][0]['#node'] ?? $variables['content'][0][0]['#node'] ?? NULL;
+
+    if ($node) {
+      $variables['title'] = t('@title', [
+        '@title' => $node->getTitle(),
+      ]);
+    }
   }
 }
 
@@ -123,6 +140,14 @@ function grad_core_theme($existing, $type, $theme, $path) {
     'field__field_thesis_defense_location' => [
       'template' => 'field--node--field-thesis-defense-location',
       'base hook' => 'field',
+    ],
+    'node__page__pdf' => [
+      'template' => 'node--page--pdf',
+      'base hook' => 'node',
+    ],
+    'entity_print__node__page' => [
+      'template' => 'entity-print--node--page',
+      'base hook' => 'entity_print',
     ],
     'node__mentor__teaser' => [
       'template' => 'node--mentor--teaser',

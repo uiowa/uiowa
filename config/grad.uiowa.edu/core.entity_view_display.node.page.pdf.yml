@@ -1,0 +1,158 @@
+uuid: 2b9dca63-86ee-443b-9a5d-0b7d465a3b9a
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.pdf
+    - field.field.node.page.body
+    - field.field.node.page.field_featured_image_display
+    - field.field.node.page.field_image
+    - field.field.node.page.field_meta_tags
+    - field.field.node.page.field_publish_options
+    - field.field.node.page.field_tags
+    - field.field.node.page.field_teaser
+    - field.field.node.page.layout_builder__layout
+    - node.type.page
+  module:
+    - layout_builder
+    - layout_builder_restrictions
+    - text
+    - user
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: false
+  layout_builder_restrictions:
+    entity_view_mode_restriction:
+      allowed_blocks: {  }
+      allowed_layouts:
+        - layout_onecol
+        - layout_twocol
+        - layout_threecol
+        - layout_fourcol
+        - layout_page
+      whitelisted_blocks:
+        'Chaos Tools': {  }
+        'Content fields':
+          - 'field_block:node:page:body'
+        'Custom blocks': {  }
+        Devel: {  }
+        Forms: {  }
+        'Lists (Views)': {  }
+        MAUI:
+          - uiowa_maui_academic_dates
+        Menus:
+          - 'menu_block:main'
+          - 'system_menu_block:main'
+        Superfish: {  }
+        System: {  }
+        'University of Iowa Alerts': {  }
+        User: {  }
+        Webform:
+          - webform_block
+        core: {  }
+      blacklisted_blocks:
+        'Custom block types':
+          - uiowa_hero
+          - uiowa_page_title_hero
+          - uiowa_spacer_separator
+        'Inline blocks':
+          - 'inline_block:uiowa_hero'
+          - 'inline_block:uiowa_page_title_hero'
+          - 'inline_block:uiowa_spacer_separator'
+    allowed_block_categories:
+      - 'Chaos Tools'
+      - 'Content fields'
+      - 'Custom block types'
+      - 'Custom blocks'
+      - Devel
+      - Forms
+      - 'Inline blocks'
+      - 'Lists (Views)'
+      - MAUI
+      - Menus
+      - 'Site custom'
+      - Superfish
+      - System
+      - 'University of Iowa Alerts'
+      - User
+      - Webform
+      - core
+    entity_view_mode_restriction_by_region:
+      allowed_layouts:
+        - layout_onecol
+        - layout_twocol
+        - layout_threecol
+        - layout_fourcol
+        - layout_page
+      blacklisted_blocks:
+        layout_fourcol:
+          all_regions:
+            'Custom block types':
+              - uiowa_slider
+            'Inline blocks':
+              - 'inline_block:uiowa_slider'
+        layout_onecol: {  }
+        layout_page:
+          all_regions:
+            'Custom block types':
+              - uiowa_slider
+            'Inline blocks':
+              - 'inline_block:uiowa_slider'
+        layout_threecol:
+          all_regions:
+            'Custom block types':
+              - uiowa_slider
+            'Inline blocks':
+              - 'inline_block:uiowa_slider'
+        layout_twocol:
+          all_regions:
+            'Custom block types':
+              - uiowa_slider
+            'Inline blocks':
+              - 'inline_block:uiowa_slider'
+      whitelisted_blocks: {  }
+_core:
+  default_config_hash: 0AcX0F0voV5TKB6_GPZxJpAfbKCnDU7er_5TWcqIgSw
+id: node.page.pdf
+targetEntityType: node
+bundle: page
+mode: pdf
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  content_moderation_control:
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_image:
+    type: entity_reference_entity_view
+    weight: 0
+    region: content
+    label: visually_hidden
+    settings:
+      view_mode: full__ultrawide
+      link: false
+    third_party_settings: {  }
+  links:
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_featured_image_display: true
+  field_meta_tags: true
+  field_publish_options: true
+  field_tags: true
+  field_teaser: true
+  layout_builder__layout: true
+  search_api_excerpt: true

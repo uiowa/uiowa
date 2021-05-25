@@ -181,13 +181,14 @@ third_party_settings:
           - 'field_block:node:page:body'
         'Custom blocks': {  }
         Devel: {  }
+        'Entity Print': {  }
         Forms: {  }
         'Lists (Views)': {  }
         MAUI:
           - uiowa_maui_academic_dates
         Menus:
-          - 'menu_block:main'
           - 'system_menu_block:main'
+          - 'menu_block:main'
         Superfish: {  }
         System: {  }
         'University of Iowa Alerts': {  }
@@ -210,6 +211,7 @@ third_party_settings:
       - 'Custom block types'
       - 'Custom blocks'
       - Devel
+      - 'Entity Print'
       - Forms
       - 'Inline blocks'
       - 'Lists (Views)'
@@ -290,6 +292,9 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_featured_image_display: true
   field_meta_tags: true
   field_publish_options: true
