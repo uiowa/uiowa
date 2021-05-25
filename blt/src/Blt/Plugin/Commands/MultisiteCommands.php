@@ -715,19 +715,19 @@ EOD;
 
       $branch = $result->getMessage();
 
-      $steps += [
-        'Coordinate a new release and deploy to the test and prod environments.',
+      $steps = [
+        0 => "Push this branch and merge via a pull request: <comment>git push --set-upstream origin {$branch}</comment>",
+        1 =>'Coordinate a new release and deploy to the test and prod environments.',
       ];
     }
 
     $this->say("Committed site <comment>{$host}</comment> code.");
     $this->say("Continue initializing additional multisites or follow the next steps below.");
-    $this->say("Push this branch and merge via a pull request: <comment>git push --set-upstream origin {$branch}</comment>");
 
     $steps += [
-      'Deploy a release to production as per usual.',
-      'Once deployed, invoke the uiowa:multisite:install BLT command in the production environment on the appropriate application(s)',
-      'Add the multisite domains to environments as needed.',
+      1 => 'Deploy a release to production as per usual.',
+      2 => 'Once deployed, invoke the <comment>uiowa:multisite:install</comment> BLT command in the production environment on the appropriate application(s)',
+      3 => 'Add the multisite domains to environments as needed.',
     ];
 
     $this->io()->listing($steps);
