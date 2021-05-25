@@ -31,7 +31,7 @@ class EntityPrintSubscriber implements EventSubscriberInterface {
    *   The PrintCssAlterEvent event.
    */
   public function alterCss(PrintCssAlterEvent $event) {
-    $event->getBuild()['#attached']['library'][] = 'grad_core/pdf';
+    $event->getBuild()['#attached']['library'][] = 'grad_core/sass/pdf';
   }
 
 }
