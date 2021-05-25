@@ -717,7 +717,7 @@ EOD;
 
       $steps = [
         0 => "Push this branch and merge via a pull request: <comment>git push --set-upstream origin {$branch}</comment>",
-        1 =>'Coordinate a new release and deploy to the test and prod environments.',
+        1 => 'Coordinate a new release and deploy to the test and prod environments.',
       ];
     }
 
