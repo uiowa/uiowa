@@ -140,6 +140,11 @@
       display: flex;
       flex-direction: row-reverse;
     }
+    &.card--person-teaser {
+      @include breakpoint(sm) {
+        margin-top: 1.6rem;
+      }
+    }
   }
 }
 
@@ -151,6 +156,7 @@
   .card--person-teaser {
     @include breakpoint(sm) {
       padding: 2rem!important;
+      margin-top: 0;
     }
   }
 }
