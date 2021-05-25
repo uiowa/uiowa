@@ -333,6 +333,7 @@ function sitenow_articles_preprocess_paragraph(&$variables) {
 
         $view = Views::getView('articles_block');
         $view->setDisplay('block_articles');
+        $view->display_handler->setOption('parent_entity', $paragraph);
 
         if ($paragraph->hasField('field_reference') && !$paragraph->get('field_reference')->isEmpty()) {
           $tids = $paragraph->get('field_reference')->getValue();
