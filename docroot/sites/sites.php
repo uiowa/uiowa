@@ -2711,9 +2711,3 @@ $sites['testing4.local.drupal.uiowa.edu'] = 'testing4.uiowa.edu';
 $sites['testing4.dev.drupal.uiowa.edu'] = 'testing4.uiowa.edu';
 $sites['testing4.stage.drupal.uiowa.edu'] = 'testing4.uiowa.edu';
 $sites['testing4.prod.drupal.uiowa.edu'] = 'testing4.uiowa.edu';
-
-// Directory aliases for testing5.uiowa.edu.
-$sites['testing5.local.drupal.uiowa.edu'] = 'testing5.uiowa.edu';
-$sites['testing5.dev.drupal.uiowa.edu'] = 'testing5.uiowa.edu';
-$sites['testing5.stage.drupal.uiowa.edu'] = 'testing5.uiowa.edu';
-$sites['testing5.prod.drupal.uiowa.edu'] = 'testing5.uiowa.edu';
