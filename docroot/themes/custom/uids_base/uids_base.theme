@@ -273,6 +273,7 @@ function uids_base_preprocess_node(&$variables) {
             break;
           }
         }
+        $node->addCacheTags($paragraph->getCacheTags());
       }
 
       if ($is_v2 && $is_stacked) {
