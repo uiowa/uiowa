@@ -251,7 +251,10 @@ function uids_base_preprocess_node(&$variables) {
       switch ($node->getType()) {
         case 'page':
           $variables['attributes']['class'][] = 'card--stacked';
-          $variables['media_classes'] = ['media--widescreen', 'card__media--large'];
+          $variables['media_classes'] = [
+            'media--widescreen',
+            'card__media--large',
+          ];
         case 'article':
           unset($variables['attributes']['class']);
           unset($variables['media_classes']);
