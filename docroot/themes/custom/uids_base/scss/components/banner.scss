@@ -46,12 +46,12 @@
 
     .bold-headline {
       @include breakpoint(menu) {
-        font-size: 2.4rem;
+        //font-size: 2.4rem;
       }
 
       &.bold-headline--highlight {
         @include breakpoint(menu) {
-          font-size: 1.8rem;
+          //font-size: 1.8rem;
         }
       }
     }
@@ -135,14 +135,14 @@
   }
 
 // Set larger heading size for large banner only
-.banner--large,
-.layout--title.banner {
-  .bold-headline {
-    @include breakpoint(md) {
-      font-size: calc(100% + 3.5vw);
-    }
+.banner--large .bold-headline--fixed,
+.layout--title.banner .bold-headline--fixed {
+  @include breakpoint(md) {
+    font-size: calc(100% + 3.5vw);
   }
 }
+
+
 
 .banner__image {
   .contextual-region {
