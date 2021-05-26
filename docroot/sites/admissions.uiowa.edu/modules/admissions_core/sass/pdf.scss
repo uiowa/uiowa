@@ -143,8 +143,8 @@ h6 {
 .print__container {
   position: relative;
   width: 100%;
-  page-break-inside: auto;
-  page-break-before: auto;
+  // page-break-inside: auto;
+  // page-break-before: auto;
 
   &:after {
     display: block;
@@ -160,9 +160,9 @@ h6 {
   float: left;
   margin-top: -15px;
   word-wrap: break-word;
-  page-break-inside: auto;
-  page-break-before: avoid;
-  page-break-after: avoid;
+  // page-break-inside: auto;
+  // page-break-before: avoid;
+  // page-break-after: avoid;
 
   &:after {
     display: block;
@@ -396,14 +396,14 @@ h6 {
   .field--name-field-area-of-study-subprogram,
   .field--name-field-area-of-study-teaching,
   .field--name-field-area-of-study-course-work {
-    page-break-inside: avoid;
-    page-break-before: auto;
+    // page-break-inside: avoid;
+    // page-break-before: auto;
 
     .field__label {
       @extend .element--bold-intro;
       font-family: $font-family-caps;
       text-transform: uppercase;
-      page-break-after: avoid;
+      // page-break-after: avoid;
     }
 
     .field__item {
@@ -412,8 +412,8 @@ h6 {
       font-family: 'Roboto', sans-serif!important;
       color: #666;
       line-height: 1;
-      page-break-inside: auto;
-      page-break-before: avoid;
+      // page-break-inside: auto;
+      // page-break-before: avoid;
     }
   }
 
@@ -487,11 +487,13 @@ h6 {
     border-collapse: collapse;
     margin-top: 5px;
     width: 100%;
-    page-break-inside: avoid !important;
+    // page-break-inside: avoid !important;
 
     caption {
+      font-size: 10px;
+      width: 100%;
       line-height: $reduced-line-height;
-      display: block;
+      display: table-caption;
     }
 
     td,
@@ -529,7 +531,8 @@ h6 {
     }
 
     thead td,
-    thead th {
+    thead th,
+    th {
       background-color: $light;
       text-transform: uppercase;
       color: black;
