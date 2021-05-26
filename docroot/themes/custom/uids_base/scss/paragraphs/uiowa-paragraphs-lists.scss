@@ -69,10 +69,6 @@
     @include list-group-flush;
   }
 
-  .featured-content-item {
-    // @include list-group-item;
-  }
-
   .content-image,
   .card__media {
     @include card-media-horizontal-right;
@@ -144,6 +140,11 @@
       display: flex;
       flex-direction: row-reverse;
     }
+    &.card--person-teaser {
+      @include breakpoint(sm) {
+        margin-top: 1.6rem;
+      }
+    }
   }
 }
 
@@ -155,6 +156,7 @@
   .card--person-teaser {
     @include breakpoint(sm) {
       padding: 2rem!important;
+      margin-top: 0;
     }
   }
 }
@@ -170,7 +172,6 @@
   }
 
   .views-row {
-    @include list-group-item;
 
     &:first-child {
       border-top: none;
