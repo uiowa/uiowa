@@ -338,7 +338,6 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           if ($form_id === 'layout_builder_add_block') {
             $form['layout_builder_style_background']['#default_value'] = 'block_background_style_light';
 
-
             if ($block->getPluginId() == 'inline_block:uiowa_events') {
               $form['layout_builder_style_card_media_position']['#default_value'] = 'card_media_position_left';
               $form['layout_builder_style_media_format']['#default_value'] = 'media_format_circle';
