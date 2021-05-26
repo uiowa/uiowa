@@ -2711,7 +2711,7 @@ function sitenow_update_9008() {
  */
 function _convert_people_block_component(SectionComponent &$component, BlockContentInterface $block) {
 
-  $styles = $component->get('layout_builder_styles');
+  $styles = $component->get('layout_builder_styles_style');
 
   // Default LB styles for new block.
   $new_styles = [
@@ -2719,18 +2719,28 @@ function _convert_people_block_component(SectionComponent &$component, BlockCont
     'media_format_circle',
     'content_alignment_left',
     'card_image_small',
+    'list_format_list',
+    'block_grid_threecol_33_34_33',
   ];
 
   if (is_array($styles)) {
 
-    foreach ($styles as $key => $style) {
-      // @todo Get any relevant LB styles from existing.
-      if (!in_array($style, [
-        'block_hide_description',
-        'block_hide_details',
-        'block_hide_image',
-      ])) {
-        $new_styles[] = $style;
+    $style_update_map = [
+      'block_hide_descriptions' => 'delete',
+      'block_hide_details' => 'delete',
+      'block_hide_image' => 'delete',
+      'block_grid_twocol_50_50' => 'block_grid_threecol_33_34_33',
+      'list_format_grid' => 'list_format_list',
+    ];
+
+    foreach ($styles as $style) {
+      if (isset($style_update_map[$style])) {
+        if ($style_update_map[$style] === 'delete') {
+          continue;
+        }
+        if ($key = array_search($style_update_map[$style], $new_styles)) {
+          $new_styles[$key] = $style;
+        }
       }
     }
 
@@ -2802,13 +2812,12 @@ function _convert_people_block_component(SectionComponent &$component, BlockCont
           }
           break;
         case 'field_teaser':
-          if (in_array('block_hide_description', $styles)) {
+          if (in_array('block_hide_descriptions', $styles)) {
             $hide = 1;
           }
           break;
         case 'field_person_email':
         case 'field_person_phone':
-        case 'field_person_position':
         if (in_array('block_hide_details', $styles)) {
           $hide = 1;
         }
