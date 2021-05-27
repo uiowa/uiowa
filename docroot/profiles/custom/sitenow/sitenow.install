@@ -2994,12 +2994,6 @@ function sitenow_update_9009() {
 function sitenow_update_9010() {
   $connection = Database::getConnection();
 
-  $container_settings = ['section_margin_fixed_width_container',
-    'section_margin_extended_width_container',
-    'section_margin_full_width_container',
-    'section_margin_edge_to_edge',
-    'section_margin_remove_default_margins'];
-
   // We need to adjust the records for the current node
   // version and previous revisions.
   foreach (['node_revision__layout_builder__layout', 'node__layout_builder__layout'] as $table_name) {
