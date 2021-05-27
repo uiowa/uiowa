@@ -3055,6 +3055,8 @@ function sitenow_update_9010() {
   $nid_matcher = '(' . implode('|', array_keys($nids)) . ')';
 
   foreach ($records as $record) {
+    $replaced = FALSE;
+
     // If it's not in our list of updated nodes, skip it.
     if (!preg_match("@node\." . $nid_matcher . "\.default\.en@", $record->name)) {
       continue;
@@ -3066,8 +3068,20 @@ function sitenow_update_9010() {
     // Loop through sections in the storage.
     foreach ($section_storage->getSections() as $delta => &$section) {
       $layout_settings = $section->getLayoutSettings();
-     // @todo update section here.
+      // Check if we have any section_margin_ layout builder styles,
+      // and skip if we do.
+      if (preg_match('@section_margin_@', implode(',', array_keys($layout_settings['layout_builder_styles_style'])))) {
+        continue;
+      }
+      $layout_settings['layout_builder_styles_style']['section_margin_fixed_width_container'] = 'section_margin_fixed_width_container';
+      $replaced = TRUE;
     }
+    // If we didn't update any sections,
+    // let's continue without touching the DB.
+    if (!$replaced) {
+      continue;
+    }
+
     $stored_data->data['section_storage'] = $section_storage;
 
     // Insert the updated tempstore.
