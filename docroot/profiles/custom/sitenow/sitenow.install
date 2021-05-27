@@ -3013,5 +3013,7 @@ function sitenow_update_9010() {
 
     \Drupal::messenger()
       ->addMessage($table_name . ' records found (before): ' . $count);
+    // @todo Add section_margin_fixed_width_container if no section_margin found.
   }
+  // @todo Update sections w/no section_margin_ that might be in the temp store.
 }
