@@ -3008,8 +3008,15 @@ function sitenow_update_9010() {
     \Drupal::messenger()
       ->addMessage($table_name . ' records found (before): ' . count($records));
 
+    // We'll want to collect NIDs for pages we're updating
+    // to check against the temp store later.
+    $nids = [];
+
     // @todo Batch this.
     foreach ($records as $record) {
+      // Add the entity ID to our update list.
+      $nids[$record->entity_id] = $record->entity_id;
+
       // Unserialize the record and extract the layout settings.
       $stored_data = unserialize($record->layout_builder__layout_section);
       $layout_settings = $stored_data->getLayoutSettings();
@@ -3037,5 +3044,39 @@ function sitenow_update_9010() {
     \Drupal::messenger()
       ->addMessage($table_name . ' records found (after): ' . $count);
   }
-  // @todo Update sections w/no section_margin_ that might be in the temp store.
+
+  // Update sections w/no section_margin_ that might be in the temp store.
+  $query = $connection->select('key_value_expire', 'kve')
+    ->fields('kve', ['name', 'value', 'expire'])
+    ->condition('collection', 'tempstore.shared.layout_builder.section_storage.overrides', '=');
+  $records = $query->execute()->fetchAll();
+
+  // Create a helper for regex later.
+  $nid_matcher = '(' . implode('|', array_keys($nids)) . ')';
+
+  foreach ($records as $record) {
+    // If it's not in our list of updated nodes, skip it.
+    if (!preg_match("@node\." . $nid_matcher . "\.default\.en@", $record->name)) {
+      continue;
+    }
+    // Unserialize and replace the section in question with our updated one.
+    $stored_data = unserialize($record->value);
+    /** @var \Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage $section_storage */
+    $section_storage = $stored_data->data['section_storage'];
+    // Loop through sections in the storage.
+    foreach ($section_storage->getSections() as $delta => &$section) {
+      $layout_settings = $section->getLayoutSettings();
+     // @todo update section here.
+    }
+    $stored_data->data['section_storage'] = $section_storage;
+
+    // Insert the updated tempstore.
+    $connection->update('key_value_expire')
+      ->condition('name', $record->name, '=')
+      ->condition('expire', $record->expire, '=')
+      ->fields([
+        'value' => serialize($stored_data),
+      ])
+      ->execute();
+  }
 }
