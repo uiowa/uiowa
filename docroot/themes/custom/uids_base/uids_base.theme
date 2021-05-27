@@ -242,6 +242,28 @@ function uids_base_preprocess_node(&$variables) {
     if (isset($variables['elements']['#heading_size'])) {
       $variables['heading_size'] = $variables['elements']['#heading_size'];
     }
+
+    // Add appropriate card styles for v2/3 teaser view modes.
+    // @todo Remove after v2 dies.
+    $is_v2 = \Drupal::config('config_split.config_split.sitenow_v2')->get('status');
+
+    if ($is_v2) {
+      switch ($node->getType()) {
+        case 'page':
+          $variables['attributes']['class'][] = 'card--stacked';
+          $variables['media_classes'] = [
+            'media--widescreen',
+            'card__media--large',
+          ];
+        case 'article':
+          unset($variables['attributes']['class']);
+          unset($variables['media_classes']);
+      }
+    }
+    elseif (!$is_v2 && $node->getType() == 'page' || 'article') {
+      $variables['attributes']['class'][] = 'card--media-right';
+      $variables['media_classes'] = ['media--widescreen', 'card__media--small'];
+    }
   }
 
   $admin_context = \Drupal::service('router.admin_context');
