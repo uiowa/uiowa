@@ -3006,14 +3006,42 @@ function sitenow_update_9010() {
     // If the section has a "section_margin_*" style, we can ignore it.
     // It already has a container style selected.
     $query = $connection->select($table_name, 'n')
-      ->fields('n', ['entity_id'])
+      ->fields('n', ['entity_id', 'delta', 'layout_builder__layout_section'])
+      ->condition('layout_builder__layout_section', '%section_margin_%', 'NOT LIKE');
+
+    $records = $query->execute()->fetchAll();
+
+    \Drupal::messenger()
+      ->addMessage($table_name . ' records found (before): ' . count($records));
+
+    // @todo Batch this.
+    foreach ($records as $record) {
+      // Unserialize the record and extract the layout settings.
+      $stored_data = unserialize($record->layout_builder__layout_section);
+      $layout_settings = $stored_data->getLayoutSettings();
+      // Add in the 'Normal' container style.
+      // We only pulled records that didn't have a container style,
+      // so this can simply be appended.
+      $layout_settings['layout_builder_styles_style']['section_margin_fixed_width_container'] = 'section_margin_fixed_width_container';
+      $stored_data->setLayoutSettings($layout_settings);
+
+      // Insert the updated settings back into the DB.
+      $connection->update($table_name)
+        ->condition('entity_id', $record->entity_id, '=')
+        ->condition('delta', $record->delta, '=')
+        ->fields([
+          'layout_builder__layout_section' => serialize($stored_data),
+        ])
+        ->execute();
+    }
+    $query = $connection->select($table_name, 'n')
+      ->fields('n', ['entity_id', 'delta', 'layout_builder__layout_section'])
       ->condition('layout_builder__layout_section', '%section_margin_%', 'NOT LIKE');
 
     $count = $query->countQuery()->execute()->fetchField();
 
     \Drupal::messenger()
-      ->addMessage($table_name . ' records found (before): ' . $count);
-    // @todo Add section_margin_fixed_width_container if no section_margin found.
+      ->addMessage($table_name . ' records found (after): ' . $count);
   }
   // @todo Update sections w/no section_margin_ that might be in the temp store.
 }
