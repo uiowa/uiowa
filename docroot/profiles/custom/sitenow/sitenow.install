@@ -3074,6 +3074,7 @@ function sitenow_update_9010() {
         continue;
       }
       $layout_settings['layout_builder_styles_style']['section_margin_fixed_width_container'] = 'section_margin_fixed_width_container';
+      $section->setLayoutSettings($layout_settings);
       $replaced = TRUE;
     }
     // If we didn't update any sections,
