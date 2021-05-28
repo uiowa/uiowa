@@ -3045,6 +3045,11 @@ function sitenow_update_9010() {
       ->addMessage($table_name . ' records found (after): ' . $count);
   }
 
+  // If the key_value_expire table doesn't exist, we're done.
+  if (!$connection->schema()->tableExists('key_value_expire')) {
+    return;
+  }
+
   // Update sections w/no section_margin_ that might be in the temp store.
   $query = $connection->select('key_value_expire', 'kve')
     ->fields('kve', ['name', 'value', 'expire'])
