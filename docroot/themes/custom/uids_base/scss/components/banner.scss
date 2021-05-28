@@ -134,12 +134,10 @@
     }
   }
 
-// Set larger heading size for large banner only
-.banner--large .bold-headline--large,
+// Set large heading size for page titles in banner
 .layout--title.banner .bold-headline {
-  @include breakpoint(md) {
-    font-size: calc(100% + 3.5vw);
-  }
+  font-size: 5.5rem;
+  font-size: containerClamp(2.5rem, 5.5rem);
 }
 
 .banner__image {
