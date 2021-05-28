@@ -2989,8 +2989,65 @@ function sitenow_update_9009() {
 }
 
 /**
- * Fix table classes that were inadvertently broken.
+ * Update existing uiowa_banner blocks to have a default headline_size style.
  */
 function sitenow_update_9011() {
+  // @todo check all of the following for instances of "%uiowa_banner%"
+  // @todo check the temp storage
+  $db = \Drupal::database();
+  $block_storage = \Drupal::entityTypeManager()
+    ->getStorage('block_content');
 
+  $section_column = 'layout_builder__layout_section';
+  $tables = [
+    'node__layout_builder__layout',
+    'node_revision__layout_builder__layout',
+  ];
+
+  foreach ($tables as $table_name) {
+    // Select instances where the section contains a uiowa_banner block.
+    $query = $db->select($table_name, 'n')
+      ->condition($section_column, '%uiowa_banner%', 'LIKE')
+      ->fields('n', ['entity_id', 'revision_id', 'delta', $section_column]);
+
+    $count = $query->countQuery()->execute()->fetchField();
+
+    \Drupal::messenger()
+      ->addMessage('Banner block records found: ' . $count);
+
+    $results = $query->execute();
+
+    // Loop through the results.
+    foreach ($results as $record) {
+      // Unserialize the section field into it's class object.
+      /** @var Section $section */
+      $section = unserialize($record->layout_builder__layout_section);
+
+      // Loop through the components in the section.
+      foreach ($section->getComponents() as &$component) {
+
+        // Limit this to only the uiowa_people block component.
+        if ($component->getPluginId() !== 'inline_block:uiowa_banner') {
+          continue;
+        }
+
+        // Pull the layout builder styles from the component.
+        $styles = $component->get('layout_builder_styles_style');
+        // Add key for new layout builder style.
+        $styles[] = 'headline_large';
+        // Set the layout builder styles on the component.
+        $component->set('layout_builder_styles_style', $styles);
+
+      }
+      // Serialize section component and update section component db record.
+      // Replace the old section with our newly created one.
+      $db->update($table_name)
+        ->condition('revision_id', $record->revision_id)
+        ->condition('delta', $record->delta)
+        ->fields([
+          $section_column => serialize($section),
+        ])
+        ->execute();
+    }
+  }
 }
