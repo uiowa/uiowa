@@ -2693,3 +2693,9 @@ $sites['enrollment.local.drupal.uiowa.edu'] = 'enrollment.uiowa.edu';
 $sites['enrollment.dev.drupal.uiowa.edu'] = 'enrollment.uiowa.edu';
 $sites['enrollment.stage.drupal.uiowa.edu'] = 'enrollment.uiowa.edu';
 $sites['enrollment.prod.drupal.uiowa.edu'] = 'enrollment.uiowa.edu';
+
+// Directory aliases for engage.uiowa.edu.
+$sites['engage.local.drupal.uiowa.edu'] = 'engage.uiowa.edu';
+$sites['engage.dev.drupal.uiowa.edu'] = 'engage.uiowa.edu';
+$sites['engage.stage.drupal.uiowa.edu'] = 'engage.uiowa.edu';
+$sites['engage.prod.drupal.uiowa.edu'] = 'engage.uiowa.edu';
