@@ -2699,3 +2699,9 @@ $sites['engage.local.drupal.uiowa.edu'] = 'engage.uiowa.edu';
 $sites['engage.dev.drupal.uiowa.edu'] = 'engage.uiowa.edu';
 $sites['engage.stage.drupal.uiowa.edu'] = 'engage.uiowa.edu';
 $sites['engage.prod.drupal.uiowa.edu'] = 'engage.uiowa.edu';
+
+// Directory aliases for uichr.uiowa.edu.
+$sites['uichr.local.drupal.uiowa.edu'] = 'uichr.uiowa.edu';
+$sites['uichr.dev.drupal.uiowa.edu'] = 'uichr.uiowa.edu';
+$sites['uichr.stage.drupal.uiowa.edu'] = 'uichr.uiowa.edu';
+$sites['uichr.prod.drupal.uiowa.edu'] = 'uichr.uiowa.edu';
