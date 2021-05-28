@@ -6,6 +6,7 @@ dependencies:
     - block_content.type.featured_content
     - field.storage.block_content.field_featured_content_item
     - node.type.article
+    - node.type.page
     - node.type.person
 id: block_content.featured_content.field_featured_content_item
 field_name: field_featured_content_item
@@ -22,6 +23,7 @@ settings:
   handler_settings:
     target_bundles:
       article: article
+      page: page
       person: person
     sort:
       field: title
