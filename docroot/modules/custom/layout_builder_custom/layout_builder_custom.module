@@ -287,6 +287,10 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           if (isset($form['layout_builder_style_background'])) {
             $form['layout_builder_style_background']['#access'] = FALSE;
           }
+          // Move headline size option to top of display options.
+          if (isset($form['layout_builder_style_headline_size'])) {
+            $form['layout_builder_style_headline_size']['#weight'] = 89;
+          }
 
           $form['#attached']['library'][] = 'layout_builder_custom/banner-block-form';
           break;
