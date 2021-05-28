@@ -143,8 +143,6 @@ h6 {
 .print__container {
   position: relative;
   width: 100%;
-  page-break-inside: auto;
-  page-break-before: auto;
 
   &:after {
     display: block;
@@ -160,9 +158,6 @@ h6 {
   float: left;
   margin-top: -15px;
   word-wrap: break-word;
-  page-break-inside: auto;
-  page-break-before: avoid;
-  page-break-after: avoid;
 
   &:after {
     display: block;
@@ -478,6 +473,15 @@ h6 {
   }
 }
 .node--type-page {
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: $font-family-serif;
+    font-size: 0.8rem;
+    page-break-after: avoid;
+  }
 
   table, .table {
     font-size: 10px;
@@ -487,12 +491,6 @@ h6 {
     border-collapse: collapse;
     margin-top: 5px;
     width: 100%;
-    page-break-inside: avoid !important;
-
-    caption {
-      line-height: $reduced-line-height;
-      display: block;
-    }
 
     td,
     p,
@@ -509,6 +507,7 @@ h6 {
     }
     td {
       padding: 10px;
+      font-family: 'Roboto', sans-serif;
 
       p,
       ul {
@@ -529,12 +528,17 @@ h6 {
     }
 
     thead td,
-    thead th {
-      background-color: $light;
+    thead th,
+    th,
+    caption,
+    caption strong {
+      font-family: 'Roboto', sans-serif;
       text-transform: uppercase;
+      background-color: $light;
       color: black;
-      font-size: 10px;
+      font-size: 10px !important;
       padding: 10px;
+      line-height: $reduced-line-height;
     }
   }
 }
