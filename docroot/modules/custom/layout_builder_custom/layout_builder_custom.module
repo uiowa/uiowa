@@ -590,6 +590,11 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
       break;
 
     case 'inline_block:uiowa_banner':
+      if (isset($element['field_uiowa_banner_title'])) {
+        // Update the label for the Heading sizes to remove Size label.
+        $element['field_uiowa_banner_title']['widget'][0]['container']['size']['#title'] =
+          t('Heading');
+      }
       // @todo Should this be scoped to a condition checking if layout_builder_styles is enabled?
       $all_styles = _layout_builder_styles_retrieve_by_type(LayoutBuilderStyleInterface::TYPE_COMPONENT);
 
