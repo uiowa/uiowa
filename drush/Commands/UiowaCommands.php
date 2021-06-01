@@ -217,24 +217,25 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
     $selfRecord = $this->siteAliasManager()->getSelf();
     $timestamp = strtotime($last_login);
 
+    // Query for non-admins that have logged in within the argument timeframe.
     $query = \Drupal::entityQuery('user')
       ->condition('uid', 0, '!=')
       ->condition('roles', ['administrator'], 'NOT IN')
       ->condition('login', $timestamp, '>=');
 
 
-    // If the query is empty, there are no active non-admin users.
-    $active = !empty($query->execute());
+    // If the query result is empty, then the site is considered inactive.
+    $inactive = empty($query->execute());
 
-    if (!$active) {
+    if ($inactive) {
       $this->logger()->notice(t('Non-admins <comment>have not</comment> accessed @site recently.', [
         '@site' => $selfRecord->uri(),
       ]));
 
-      // Get a list of webmaster emails for contacting.
+      // Run another query to load all users with the role webmaster.
       $query = \Drupal::entityQuery('user')
         ->condition('uid', 0, '!=')
-        ->condition('roles', 'webmaster', 'IN');
+        ->condition('roles', ['webmaster'], 'IN');
 
       $ids = $query->execute();
 
