@@ -3,7 +3,6 @@
 namespace Drush\Commands;
 
 use Consolidation\OutputFormatters\Options\FormatterOptions;
-use Consolidation\OutputFormatters\StructuredData\AbstractStructuredList;
 use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
 use Consolidation\SiteProcess\ProcessManagerAwareInterface;
 use Consolidation\SiteProcess\ProcessManagerAwareTrait;
@@ -11,7 +10,7 @@ use Consolidation\AnnotatedCommand\AnnotationData;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\SiteAlias\SiteAliasManagerAwareInterface;
 use Consolidation\SiteAlias\SiteAliasManagerAwareTrait;
-use Consolidation\SiteProcess\SiteProcess;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\user\Entity\User;
 use Drush\Drupal\Commands\sql\SanitizePluginInterface;
 use Symfony\Component\Console\Input\InputInterface;
@@ -22,6 +21,7 @@ use Symfony\Component\Console\Input\InputInterface;
 class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterface, ProcessManagerAwareInterface, SanitizePluginInterface {
   use SiteAliasManagerAwareTrait;
   use ProcessManagerAwareTrait;
+  use StringTranslationTrait;
 
   /**
    * Configuration that should sanitized.
@@ -117,12 +117,17 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
    *   size: Size
    *
    * @return string
+   *   The size of the database in megabytes.
    */
   public function databaseSize() {
     $selfRecord = $this->siteAliasManager()->getSelf();
 
-    /** @var SiteProcess $process */
-    $process = $this->processManager()->drush($selfRecord, 'core-status', [], ['fields' => 'db-name', 'format' => 'json']);
+    /** @var \Consolidation\SiteProcess\SiteProcess $process */
+    $process = $this->processManager()->drush($selfRecord, 'core-status', [], [
+      'fields' => 'db-name',
+      'format' => 'json',
+    ]);
+
     $process->run();
     $result = $process->getOutputAsJson();
 
@@ -212,6 +217,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
    * @default-fields name
    *
    * @return \Consolidation\OutputFormatters\StructuredData\RowsOfFields
+   *   Rows of all webmaster information if the site is inactive.
    */
   public function inactive($last_login = '9 months ago') {
     $selfRecord = $this->siteAliasManager()->getSelf();
@@ -223,12 +229,11 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
       ->condition('roles', ['administrator'], 'NOT IN')
       ->condition('login', $timestamp, '>=');
 
-
     // If the query result is empty, then the site is considered inactive.
     $inactive = empty($query->execute());
 
     if ($inactive) {
-      $this->logger()->notice(t('Non-admins <comment>have not</comment> accessed @site recently.', [
+      $this->logger()->notice($this->t('Non-admins <comment>have not</comment> accessed @site recently.', [
         '@site' => $selfRecord->uri(),
       ]));
 
@@ -245,7 +250,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
       foreach (User::loadMultiple($ids) as $user) {
         $rows[] = [
           'name' => $user->getAccountName(),
-          'email' => $user->getEmail()
+          'email' => $user->getEmail(),
         ];
       }
 
@@ -261,7 +266,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
 
     }
     else {
-      $this->logger()->notice(t('Non-admins <comment>have</comment> accessed @site recently.', [
+      $this->logger()->notice($this->t('Non-admins <comment>have</comment> accessed @site recently.', [
         '@site' => $selfRecord->uri(),
       ]));
     }
@@ -276,7 +281,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
     $record = $this->siteAliasManager()->getSelf();
 
     foreach ($this->sanitizedConfig as $config) {
-      /** @var SiteProcess $process */
+      /** @var \Consolidation\SiteProcess\SiteProcess $process */
       $process = $this->processManager()->drush($record, 'config:delete', [
         $config,
       ]);
@@ -309,7 +314,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
     ];
 
     foreach ($configs as $config) {
-      /** @var SiteProcess $process */
+      /** @var \Consolidation\SiteProcess\SiteProcess $process */
       $process = $this->processManager()->drush($record, 'config:get', [
         $config,
       ]);
@@ -325,4 +330,5 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
       }
     }
   }
+
 }
